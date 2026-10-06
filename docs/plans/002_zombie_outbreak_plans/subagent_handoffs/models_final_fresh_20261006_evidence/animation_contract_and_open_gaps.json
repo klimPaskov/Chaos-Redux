@@ -1,0 +1,821 @@
+﻿{
+    "findings":  [
+                     "Base job and all seven specialized intake manifests assign humanoid_unit. The current profile contract specifies idle, move and attack at 24 FPS, while all 64 selected exported/reimported actions are 30 FPS. Resolve the rate policy before acceptance.",
+                     "The humanoid_unit profile lists only idle, move and attack; the eight runtime states also use defend, support_attack, retreat, training and death, whose profile frame-rate/loop policy is not explicitly defined there.",
+                     "The demonic intake manifest assigns humanoid_unit to a 44-bone winged rig. Review that profile classification against the separate 30 FPS nonhumanoid_winged_biped profile, but do not infer a reassignment.",
+                     "The base job calls the movement role move_shamble while runtime and intake records name it move. The base input manifest marks earlier Meshy walk candidates rejected; a later move task and FBX path/hash are recorded in the intake manifest but are not reconciled to the approved move_shamble role or final export checkpoint.",
+                     "The prior mutant variant handoff reports a knockdown flip flattened during grounding; no later role-specific repair receipt was found in the bounded package evidence."
+                 ],
+    "profile_contract":  {
+                             "job_profile_from_base_job":  "humanoid_unit",
+                             "base_job_root_policy":  "in_place",
+                             "base_job_required_roles":  [
+                                                             "idle",
+                                                             "move_shamble",
+                                                             "attack_unarmed",
+                                                             "defend",
+                                                             "support_attack",
+                                                             "retreat",
+                                                             "training",
+                                                             "death"
+                                                         ],
+                             "base_job_runtime_states":  [
+                                                             "idle",
+                                                             "move",
+                                                             "attack",
+                                                             "defend",
+                                                             "support_attack",
+                                                             "retreat",
+                                                             "training",
+                                                             "death"
+                                                         ],
+                             "nonhumanoid_winged_biped_actions":  [
+                                                                      {
+                                                                          "role":  "idle",
+                                                                          "fps":  30,
+                                                                          "loop":  true,
+                                                                          "root_policy":  "in_place",
+                                                                          "authoring_route":  "blender_authored_skeletal"
+                                                                      },
+                                                                      {
+                                                                          "role":  "move",
+                                                                          "fps":  30,
+                                                                          "loop":  true,
+                                                                          "root_policy":  "in_place",
+                                                                          "authoring_route":  "blender_authored_skeletal"
+                                                                      },
+                                                                      {
+                                                                          "role":  "attack",
+                                                                          "fps":  30,
+                                                                          "loop":  false,
+                                                                          "root_policy":  "in_place",
+                                                                          "authoring_route":  "blender_authored_skeletal"
+                                                                      },
+                                                                      {
+                                                                          "role":  "death",
+                                                                          "fps":  30,
+                                                                          "loop":  false,
+                                                                          "root_policy":  "in_place",
+                                                                          "authoring_route":  "blender_authored_skeletal"
+                                                                      }
+                                                                  ],
+                             "path":  ".tools/3d_pipeline/config/asset_profiles.json",
+                             "humanoid_unit_actions":  [
+                                                           {
+                                                               "role":  "idle",
+                                                               "provider_action_id":  0,
+                                                               "fps":  24,
+                                                               "loop":  true,
+                                                               "root_policy":  "in_place"
+                                                           },
+                                                           {
+                                                               "role":  "attack",
+                                                               "provider_action_id":  4,
+                                                               "fps":  24,
+                                                               "loop":  false,
+                                                               "root_policy":  "in_place"
+                                                           },
+                                                           {
+                                                               "role":  "move",
+                                                               "provider_action_id":  null,
+                                                               "fps":  24,
+                                                               "loop":  true,
+                                                               "root_policy":  "in_place",
+                                                               "authoring_route":  "blender_authored_skeletal"
+                                                           }
+                                                       ],
+                             "sha256":  "5750E6533A3ABCE3FFA74F1F163BE55688DBF93C919BFB413192497352FCBBCB",
+                             "variant_intake_profiles":  [
+                                                             {
+                                                                 "profile":  "humanoid_unit",
+                                                                 "role_task_count":  8,
+                                                                 "manifest_path":  "docs/assets/002_zombie_outbreak/models_3d/infected_zombies/blender/working/v1/intake_manifest.json",
+                                                                 "manifest_sha256":  "8E39FF0264DB9A4D1BC732B9DACB58616BB2495FDC4C7C56CF4E85C0C001CC85",
+                                                                 "slug":  "infected_zombies"
+                                                             },
+                                                             {
+                                                                 "profile":  "humanoid_unit",
+                                                                 "role_task_count":  8,
+                                                                 "manifest_path":  "docs/assets/002_zombie_outbreak/models_3d/rabid_zombies/blender/working/v1/intake_manifest.json",
+                                                                 "manifest_sha256":  "D39E40452974F114DD194E6A5BFEB4F88F8A8BA512F15ED7A85B6B054B1BF27E",
+                                                                 "slug":  "rabid_zombies"
+                                                             },
+                                                             {
+                                                                 "profile":  "humanoid_unit",
+                                                                 "role_task_count":  8,
+                                                                 "manifest_path":  "docs/assets/002_zombie_outbreak/models_3d/parasitic_zombies/blender/working/v1/intake_manifest.json",
+                                                                 "manifest_sha256":  "ABCED4A0136F060E153A7FA9B3EA7CB248DB5B2485859CC2282D15AD43A38066",
+                                                                 "slug":  "parasitic_zombies"
+                                                             },
+                                                             {
+                                                                 "profile":  "humanoid_unit",
+                                                                 "role_task_count":  8,
+                                                                 "manifest_path":  "docs/assets/002_zombie_outbreak/models_3d/mutant_zombies/blender/working/v1/intake_manifest.json",
+                                                                 "manifest_sha256":  "B906C448A31EDC0D5FA14CB40A56BE5904996E4E5303A1585E3D3A8DB42786DE",
+                                                                 "slug":  "mutant_zombies"
+                                                             },
+                                                             {
+                                                                 "profile":  "humanoid_unit",
+                                                                 "role_task_count":  8,
+                                                                 "manifest_path":  "docs/assets/002_zombie_outbreak/models_3d/undead_zombies/blender/working/v1/intake_manifest.json",
+                                                                 "manifest_sha256":  "5357EA7C4394F89FAAECBFAE0A006C0CF401952CD7EBF23E73A7FDF62D0AFA54",
+                                                                 "slug":  "undead_zombies"
+                                                             },
+                                                             {
+                                                                 "profile":  "humanoid_unit",
+                                                                 "role_task_count":  8,
+                                                                 "manifest_path":  "docs/assets/002_zombie_outbreak/models_3d/necrotic_zombies/blender/working/v1/intake_manifest.json",
+                                                                 "manifest_sha256":  "BAEBB862B86B1550399AC354C0A6AC66B99E692BC6CA8F53ED7BFEE1EDDC506E",
+                                                                 "slug":  "necrotic_zombies"
+                                                             },
+                                                             {
+                                                                 "profile":  "humanoid_unit",
+                                                                 "role_task_count":  8,
+                                                                 "manifest_path":  "docs/assets/002_zombie_outbreak/models_3d/demonic_zombies/blender/working/v1/intake_manifest.json",
+                                                                 "manifest_sha256":  "7C33B56104AB60B9368BB2F75911B2AA9A8BAFCED709BC49C9D29CF4CB8A0FAD",
+                                                                 "slug":  "demonic_zombies"
+                                                             }
+                                                         ],
+                             "package_profile_assignment_evidence":  "Base job.yaml and all seven specialized intake manifests assign humanoid_unit.",
+                             "variant_job_yaml_missing_count":  7,
+                             "demonic_profile_assignment":  "humanoid_unit in intake manifest; rig has 44 bones and wings, so profile classification still needs parent review.",
+                             "profile_action_roles_not_in_contract":  [
+                                                                          "defend",
+                                                                          "support_attack",
+                                                                          "retreat",
+                                                                          "training",
+                                                                          "death"
+                                                                      ]
+                         },
+    "semantic_evidence_limits":  {
+                                     "full_semantic_role_acceptance":  {
+
+                                                                       },
+                                     "current_exports_and_reimport_hashes_match":  {
+
+                                                                                   },
+                                     "per_bone_inventory_roles":  [
+                                                                      "zombies/idle",
+                                                                      "zombies/attack",
+                                                                      "infected_zombies/attack"
+                                                                  ],
+                                     "per_bone_inventory_assets":  [
+                                                                       "zombies",
+                                                                       "infected_zombies"
+                                                                   ],
+                                     "per_bone_channel_inventories":  3,
+                                     "remaining_runtime_actions_without_same_detailed_channel_inventory":  61
+                                 },
+    "selected_export_and_reimport_roles":  {
+                                               "fps_distribution":  [
+                                                                        {
+                                                                            "count":  64,
+                                                                            "fps":  30
+                                                                        }
+                                                                    ],
+                                               "action_count":  64,
+                                               "roles":  [
+                                                             {
+                                                                 "fps":  30,
+                                                                 "unique_sampled_bounds":  5,
+                                                                 "frame_end":  339,
+                                                                 "slug":  "zombies",
+                                                                 "reimport_proof":  "docs\\assets\\002_zombie_outbreak\\models_3d\\zombies\\validation\\reimport_v3_idle.json",
+                                                                 "role":  "idle",
+                                                                 "frame_start":  1,
+                                                                 "action_name":  "chaosx_zombies_idle"
+                                                             },
+                                                             {
+                                                                 "fps":  30,
+                                                                 "unique_sampled_bounds":  5,
+                                                                 "frame_end":  146,
+                                                                 "slug":  "zombies",
+                                                                 "reimport_proof":  "docs\\assets\\002_zombie_outbreak\\models_3d\\zombies\\validation\\reimport_v3_move.json",
+                                                                 "role":  "move",
+                                                                 "frame_start":  1,
+                                                                 "action_name":  "chaosx_zombies_move"
+                                                             },
+                                                             {
+                                                                 "fps":  30,
+                                                                 "unique_sampled_bounds":  5,
+                                                                 "frame_end":  122,
+                                                                 "slug":  "zombies",
+                                                                 "reimport_proof":  "docs\\assets\\002_zombie_outbreak\\models_3d\\zombies\\validation\\reimport_v3_attack.json",
+                                                                 "role":  "attack",
+                                                                 "frame_start":  3,
+                                                                 "action_name":  "chaosx_zombies_attack"
+                                                             },
+                                                             {
+                                                                 "fps":  30,
+                                                                 "unique_sampled_bounds":  5,
+                                                                 "frame_end":  50,
+                                                                 "slug":  "zombies",
+                                                                 "reimport_proof":  "docs\\assets\\002_zombie_outbreak\\models_3d\\zombies\\validation\\reimport_v3_defend.json",
+                                                                 "role":  "defend",
+                                                                 "frame_start":  1,
+                                                                 "action_name":  "chaosx_zombies_defend"
+                                                             },
+                                                             {
+                                                                 "fps":  30,
+                                                                 "unique_sampled_bounds":  5,
+                                                                 "frame_end":  122,
+                                                                 "slug":  "zombies",
+                                                                 "reimport_proof":  "docs\\assets\\002_zombie_outbreak\\models_3d\\zombies\\validation\\reimport_v3_support_attack.json",
+                                                                 "role":  "support_attack",
+                                                                 "frame_start":  3,
+                                                                 "action_name":  "chaosx_zombies_support_attack"
+                                                             },
+                                                             {
+                                                                 "fps":  30,
+                                                                 "unique_sampled_bounds":  5,
+                                                                 "frame_end":  50,
+                                                                 "slug":  "zombies",
+                                                                 "reimport_proof":  "docs\\assets\\002_zombie_outbreak\\models_3d\\zombies\\validation\\reimport_v3_retreat.json",
+                                                                 "role":  "retreat",
+                                                                 "frame_start":  1,
+                                                                 "action_name":  "chaosx_zombies_retreat"
+                                                             },
+                                                             {
+                                                                 "fps":  30,
+                                                                 "unique_sampled_bounds":  5,
+                                                                 "frame_end":  85,
+                                                                 "slug":  "zombies",
+                                                                 "reimport_proof":  "docs\\assets\\002_zombie_outbreak\\models_3d\\zombies\\validation\\reimport_v3_training.json",
+                                                                 "role":  "training",
+                                                                 "frame_start":  1,
+                                                                 "action_name":  "chaosx_zombies_training"
+                                                             },
+                                                             {
+                                                                 "fps":  30,
+                                                                 "unique_sampled_bounds":  5,
+                                                                 "frame_end":  106,
+                                                                 "slug":  "zombies",
+                                                                 "reimport_proof":  "docs\\assets\\002_zombie_outbreak\\models_3d\\zombies\\validation\\reimport_v3_death.json",
+                                                                 "role":  "death",
+                                                                 "frame_start":  1,
+                                                                 "action_name":  "chaosx_zombies_death"
+                                                             },
+                                                             {
+                                                                 "fps":  30,
+                                                                 "unique_sampled_bounds":  5,
+                                                                 "frame_end":  346,
+                                                                 "slug":  "infected_zombies",
+                                                                 "reimport_proof":  "docs\\assets\\002_zombie_outbreak\\models_3d\\infected_zombies\\validation\\reimport_v2_idle.json",
+                                                                 "role":  "idle",
+                                                                 "frame_start":  1,
+                                                                 "action_name":  "chaosx_infected_zombies_idle"
+                                                             },
+                                                             {
+                                                                 "fps":  30,
+                                                                 "unique_sampled_bounds":  5,
+                                                                 "frame_end":  74,
+                                                                 "slug":  "infected_zombies",
+                                                                 "reimport_proof":  "docs\\assets\\002_zombie_outbreak\\models_3d\\infected_zombies\\validation\\reimport_v2_move.json",
+                                                                 "role":  "move",
+                                                                 "frame_start":  1,
+                                                                 "action_name":  "chaosx_infected_zombies_move"
+                                                             },
+                                                             {
+                                                                 "fps":  30,
+                                                                 "unique_sampled_bounds":  5,
+                                                                 "frame_end":  122,
+                                                                 "slug":  "infected_zombies",
+                                                                 "reimport_proof":  "docs\\assets\\002_zombie_outbreak\\models_3d\\infected_zombies\\validation\\reimport_v2_attack.json",
+                                                                 "role":  "attack",
+                                                                 "frame_start":  3,
+                                                                 "action_name":  "chaosx_infected_zombies_attack"
+                                                             },
+                                                             {
+                                                                 "fps":  30,
+                                                                 "unique_sampled_bounds":  5,
+                                                                 "frame_end":  91,
+                                                                 "slug":  "infected_zombies",
+                                                                 "reimport_proof":  "docs\\assets\\002_zombie_outbreak\\models_3d\\infected_zombies\\validation\\reimport_v2_defend.json",
+                                                                 "role":  "defend",
+                                                                 "frame_start":  1,
+                                                                 "action_name":  "chaosx_infected_zombies_defend"
+                                                             },
+                                                             {
+                                                                 "fps":  30,
+                                                                 "unique_sampled_bounds":  5,
+                                                                 "frame_end":  122,
+                                                                 "slug":  "infected_zombies",
+                                                                 "reimport_proof":  "docs\\assets\\002_zombie_outbreak\\models_3d\\infected_zombies\\validation\\reimport_v2_support_attack.json",
+                                                                 "role":  "support_attack",
+                                                                 "frame_start":  3,
+                                                                 "action_name":  "chaosx_infected_zombies_support_attack"
+                                                             },
+                                                             {
+                                                                 "fps":  30,
+                                                                 "unique_sampled_bounds":  5,
+                                                                 "frame_end":  50,
+                                                                 "slug":  "infected_zombies",
+                                                                 "reimport_proof":  "docs\\assets\\002_zombie_outbreak\\models_3d\\infected_zombies\\validation\\reimport_v2_retreat.json",
+                                                                 "role":  "retreat",
+                                                                 "frame_start":  1,
+                                                                 "action_name":  "chaosx_infected_zombies_retreat"
+                                                             },
+                                                             {
+                                                                 "fps":  30,
+                                                                 "unique_sampled_bounds":  5,
+                                                                 "frame_end":  211,
+                                                                 "slug":  "infected_zombies",
+                                                                 "reimport_proof":  "docs\\assets\\002_zombie_outbreak\\models_3d\\infected_zombies\\validation\\reimport_v2_training.json",
+                                                                 "role":  "training",
+                                                                 "frame_start":  1,
+                                                                 "action_name":  "chaosx_infected_zombies_training"
+                                                             },
+                                                             {
+                                                                 "fps":  30,
+                                                                 "unique_sampled_bounds":  5,
+                                                                 "frame_end":  134,
+                                                                 "slug":  "infected_zombies",
+                                                                 "reimport_proof":  "docs\\assets\\002_zombie_outbreak\\models_3d\\infected_zombies\\validation\\reimport_v2_death.json",
+                                                                 "role":  "death",
+                                                                 "frame_start":  1,
+                                                                 "action_name":  "chaosx_infected_zombies_death"
+                                                             },
+                                                             {
+                                                                 "fps":  30,
+                                                                 "unique_sampled_bounds":  5,
+                                                                 "frame_end":  57,
+                                                                 "slug":  "rabid_zombies",
+                                                                 "reimport_proof":  "docs\\assets\\002_zombie_outbreak\\models_3d\\rabid_zombies\\validation\\reimport_v2_idle.json",
+                                                                 "role":  "idle",
+                                                                 "frame_start":  1,
+                                                                 "action_name":  "chaosx_rabid_zombies_idle"
+                                                             },
+                                                             {
+                                                                 "fps":  30,
+                                                                 "unique_sampled_bounds":  5,
+                                                                 "frame_end":  79,
+                                                                 "slug":  "rabid_zombies",
+                                                                 "reimport_proof":  "docs\\assets\\002_zombie_outbreak\\models_3d\\rabid_zombies\\validation\\reimport_v2_move.json",
+                                                                 "role":  "move",
+                                                                 "frame_start":  1,
+                                                                 "action_name":  "chaosx_rabid_zombies_move"
+                                                             },
+                                                             {
+                                                                 "fps":  30,
+                                                                 "unique_sampled_bounds":  5,
+                                                                 "frame_end":  122,
+                                                                 "slug":  "rabid_zombies",
+                                                                 "reimport_proof":  "docs\\assets\\002_zombie_outbreak\\models_3d\\rabid_zombies\\validation\\reimport_v2_attack.json",
+                                                                 "role":  "attack",
+                                                                 "frame_start":  3,
+                                                                 "action_name":  "chaosx_rabid_zombies_attack"
+                                                             },
+                                                             {
+                                                                 "fps":  30,
+                                                                 "unique_sampled_bounds":  5,
+                                                                 "frame_end":  86,
+                                                                 "slug":  "rabid_zombies",
+                                                                 "reimport_proof":  "docs\\assets\\002_zombie_outbreak\\models_3d\\rabid_zombies\\validation\\reimport_v2_defend.json",
+                                                                 "role":  "defend",
+                                                                 "frame_start":  1,
+                                                                 "action_name":  "chaosx_rabid_zombies_defend"
+                                                             },
+                                                             {
+                                                                 "fps":  30,
+                                                                 "unique_sampled_bounds":  5,
+                                                                 "frame_end":  122,
+                                                                 "slug":  "rabid_zombies",
+                                                                 "reimport_proof":  "docs\\assets\\002_zombie_outbreak\\models_3d\\rabid_zombies\\validation\\reimport_v2_support_attack.json",
+                                                                 "role":  "support_attack",
+                                                                 "frame_start":  3,
+                                                                 "action_name":  "chaosx_rabid_zombies_support_attack"
+                                                             },
+                                                             {
+                                                                 "fps":  30,
+                                                                 "unique_sampled_bounds":  5,
+                                                                 "frame_end":  50,
+                                                                 "slug":  "rabid_zombies",
+                                                                 "reimport_proof":  "docs\\assets\\002_zombie_outbreak\\models_3d\\rabid_zombies\\validation\\reimport_v2_retreat.json",
+                                                                 "role":  "retreat",
+                                                                 "frame_start":  1,
+                                                                 "action_name":  "chaosx_rabid_zombies_retreat"
+                                                             },
+                                                             {
+                                                                 "fps":  30,
+                                                                 "unique_sampled_bounds":  5,
+                                                                 "frame_end":  43,
+                                                                 "slug":  "rabid_zombies",
+                                                                 "reimport_proof":  "docs\\assets\\002_zombie_outbreak\\models_3d\\rabid_zombies\\validation\\reimport_v2_training.json",
+                                                                 "role":  "training",
+                                                                 "frame_start":  1,
+                                                                 "action_name":  "chaosx_rabid_zombies_training"
+                                                             },
+                                                             {
+                                                                 "fps":  30,
+                                                                 "unique_sampled_bounds":  5,
+                                                                 "frame_end":  67,
+                                                                 "slug":  "rabid_zombies",
+                                                                 "reimport_proof":  "docs\\assets\\002_zombie_outbreak\\models_3d\\rabid_zombies\\validation\\reimport_v2_death.json",
+                                                                 "role":  "death",
+                                                                 "frame_start":  1,
+                                                                 "action_name":  "chaosx_rabid_zombies_death"
+                                                             },
+                                                             {
+                                                                 "fps":  30,
+                                                                 "unique_sampled_bounds":  5,
+                                                                 "frame_end":  264,
+                                                                 "slug":  "parasitic_zombies",
+                                                                 "reimport_proof":  "docs\\assets\\002_zombie_outbreak\\models_3d\\parasitic_zombies\\validation\\reimport_v2_idle.json",
+                                                                 "role":  "idle",
+                                                                 "frame_start":  1,
+                                                                 "action_name":  "chaosx_parasitic_zombies_idle"
+                                                             },
+                                                             {
+                                                                 "fps":  30,
+                                                                 "unique_sampled_bounds":  5,
+                                                                 "frame_end":  124,
+                                                                 "slug":  "parasitic_zombies",
+                                                                 "reimport_proof":  "docs\\assets\\002_zombie_outbreak\\models_3d\\parasitic_zombies\\validation\\reimport_v2_move.json",
+                                                                 "role":  "move",
+                                                                 "frame_start":  1,
+                                                                 "action_name":  "chaosx_parasitic_zombies_move"
+                                                             },
+                                                             {
+                                                                 "fps":  30,
+                                                                 "unique_sampled_bounds":  5,
+                                                                 "frame_end":  122,
+                                                                 "slug":  "parasitic_zombies",
+                                                                 "reimport_proof":  "docs\\assets\\002_zombie_outbreak\\models_3d\\parasitic_zombies\\validation\\reimport_v2_attack.json",
+                                                                 "role":  "attack",
+                                                                 "frame_start":  3,
+                                                                 "action_name":  "chaosx_parasitic_zombies_attack"
+                                                             },
+                                                             {
+                                                                 "fps":  30,
+                                                                 "unique_sampled_bounds":  5,
+                                                                 "frame_end":  141,
+                                                                 "slug":  "parasitic_zombies",
+                                                                 "reimport_proof":  "docs\\assets\\002_zombie_outbreak\\models_3d\\parasitic_zombies\\validation\\reimport_v2_defend.json",
+                                                                 "role":  "defend",
+                                                                 "frame_start":  1,
+                                                                 "action_name":  "chaosx_parasitic_zombies_defend"
+                                                             },
+                                                             {
+                                                                 "fps":  30,
+                                                                 "unique_sampled_bounds":  5,
+                                                                 "frame_end":  122,
+                                                                 "slug":  "parasitic_zombies",
+                                                                 "reimport_proof":  "docs\\assets\\002_zombie_outbreak\\models_3d\\parasitic_zombies\\validation\\reimport_v2_support_attack.json",
+                                                                 "role":  "support_attack",
+                                                                 "frame_start":  3,
+                                                                 "action_name":  "chaosx_parasitic_zombies_support_attack"
+                                                             },
+                                                             {
+                                                                 "fps":  30,
+                                                                 "unique_sampled_bounds":  5,
+                                                                 "frame_end":  50,
+                                                                 "slug":  "parasitic_zombies",
+                                                                 "reimport_proof":  "docs\\assets\\002_zombie_outbreak\\models_3d\\parasitic_zombies\\validation\\reimport_v2_retreat.json",
+                                                                 "role":  "retreat",
+                                                                 "frame_start":  1,
+                                                                 "action_name":  "chaosx_parasitic_zombies_retreat"
+                                                             },
+                                                             {
+                                                                 "fps":  30,
+                                                                 "unique_sampled_bounds":  5,
+                                                                 "frame_end":  85,
+                                                                 "slug":  "parasitic_zombies",
+                                                                 "reimport_proof":  "docs\\assets\\002_zombie_outbreak\\models_3d\\parasitic_zombies\\validation\\reimport_v2_training.json",
+                                                                 "role":  "training",
+                                                                 "frame_start":  1,
+                                                                 "action_name":  "chaosx_parasitic_zombies_training"
+                                                             },
+                                                             {
+                                                                 "fps":  30,
+                                                                 "unique_sampled_bounds":  5,
+                                                                 "frame_end":  281,
+                                                                 "slug":  "parasitic_zombies",
+                                                                 "reimport_proof":  "docs\\assets\\002_zombie_outbreak\\models_3d\\parasitic_zombies\\validation\\reimport_v2_death.json",
+                                                                 "role":  "death",
+                                                                 "frame_start":  1,
+                                                                 "action_name":  "chaosx_parasitic_zombies_death"
+                                                             },
+                                                             {
+                                                                 "fps":  30,
+                                                                 "unique_sampled_bounds":  5,
+                                                                 "frame_end":  211,
+                                                                 "slug":  "mutant_zombies",
+                                                                 "reimport_proof":  "docs\\assets\\002_zombie_outbreak\\models_3d\\mutant_zombies\\validation\\reimport_v2_idle.json",
+                                                                 "role":  "idle",
+                                                                 "frame_start":  1,
+                                                                 "action_name":  "chaosx_mutant_zombies_idle"
+                                                             },
+                                                             {
+                                                                 "fps":  30,
+                                                                 "unique_sampled_bounds":  5,
+                                                                 "frame_end":  47,
+                                                                 "slug":  "mutant_zombies",
+                                                                 "reimport_proof":  "docs\\assets\\002_zombie_outbreak\\models_3d\\mutant_zombies\\validation\\reimport_v2_move.json",
+                                                                 "role":  "move",
+                                                                 "frame_start":  1,
+                                                                 "action_name":  "chaosx_mutant_zombies_move"
+                                                             },
+                                                             {
+                                                                 "fps":  30,
+                                                                 "unique_sampled_bounds":  5,
+                                                                 "frame_end":  122,
+                                                                 "slug":  "mutant_zombies",
+                                                                 "reimport_proof":  "docs\\assets\\002_zombie_outbreak\\models_3d\\mutant_zombies\\validation\\reimport_v2_attack.json",
+                                                                 "role":  "attack",
+                                                                 "frame_start":  3,
+                                                                 "action_name":  "chaosx_mutant_zombies_attack"
+                                                             },
+                                                             {
+                                                                 "fps":  30,
+                                                                 "unique_sampled_bounds":  5,
+                                                                 "frame_end":  50,
+                                                                 "slug":  "mutant_zombies",
+                                                                 "reimport_proof":  "docs\\assets\\002_zombie_outbreak\\models_3d\\mutant_zombies\\validation\\reimport_v2_defend.json",
+                                                                 "role":  "defend",
+                                                                 "frame_start":  1,
+                                                                 "action_name":  "chaosx_mutant_zombies_defend"
+                                                             },
+                                                             {
+                                                                 "fps":  30,
+                                                                 "unique_sampled_bounds":  5,
+                                                                 "frame_end":  122,
+                                                                 "slug":  "mutant_zombies",
+                                                                 "reimport_proof":  "docs\\assets\\002_zombie_outbreak\\models_3d\\mutant_zombies\\validation\\reimport_v2_support_attack.json",
+                                                                 "role":  "support_attack",
+                                                                 "frame_start":  3,
+                                                                 "action_name":  "chaosx_mutant_zombies_support_attack"
+                                                             },
+                                                             {
+                                                                 "fps":  30,
+                                                                 "unique_sampled_bounds":  5,
+                                                                 "frame_end":  50,
+                                                                 "slug":  "mutant_zombies",
+                                                                 "reimport_proof":  "docs\\assets\\002_zombie_outbreak\\models_3d\\mutant_zombies\\validation\\reimport_v2_retreat.json",
+                                                                 "role":  "retreat",
+                                                                 "frame_start":  1,
+                                                                 "action_name":  "chaosx_mutant_zombies_retreat"
+                                                             },
+                                                             {
+                                                                 "fps":  30,
+                                                                 "unique_sampled_bounds":  5,
+                                                                 "frame_end":  85,
+                                                                 "slug":  "mutant_zombies",
+                                                                 "reimport_proof":  "docs\\assets\\002_zombie_outbreak\\models_3d\\mutant_zombies\\validation\\reimport_v2_training.json",
+                                                                 "role":  "training",
+                                                                 "frame_start":  1,
+                                                                 "action_name":  "chaosx_mutant_zombies_training"
+                                                             },
+                                                             {
+                                                                 "fps":  30,
+                                                                 "unique_sampled_bounds":  5,
+                                                                 "frame_end":  76,
+                                                                 "slug":  "mutant_zombies",
+                                                                 "reimport_proof":  "docs\\assets\\002_zombie_outbreak\\models_3d\\mutant_zombies\\validation\\reimport_v2_death.json",
+                                                                 "role":  "death",
+                                                                 "frame_start":  1,
+                                                                 "action_name":  "chaosx_mutant_zombies_death"
+                                                             },
+                                                             {
+                                                                 "fps":  30,
+                                                                 "unique_sampled_bounds":  5,
+                                                                 "frame_end":  300,
+                                                                 "slug":  "undead_zombies",
+                                                                 "reimport_proof":  "docs\\assets\\002_zombie_outbreak\\models_3d\\undead_zombies\\validation\\reimport_v2_idle.json",
+                                                                 "role":  "idle",
+                                                                 "frame_start":  1,
+                                                                 "action_name":  "chaosx_undead_zombies_idle"
+                                                             },
+                                                             {
+                                                                 "fps":  30,
+                                                                 "unique_sampled_bounds":  5,
+                                                                 "frame_end":  107,
+                                                                 "slug":  "undead_zombies",
+                                                                 "reimport_proof":  "docs\\assets\\002_zombie_outbreak\\models_3d\\undead_zombies\\validation\\reimport_v2_move.json",
+                                                                 "role":  "move",
+                                                                 "frame_start":  1,
+                                                                 "action_name":  "chaosx_undead_zombies_move"
+                                                             },
+                                                             {
+                                                                 "fps":  30,
+                                                                 "unique_sampled_bounds":  5,
+                                                                 "frame_end":  122,
+                                                                 "slug":  "undead_zombies",
+                                                                 "reimport_proof":  "docs\\assets\\002_zombie_outbreak\\models_3d\\undead_zombies\\validation\\reimport_v2_attack.json",
+                                                                 "role":  "attack",
+                                                                 "frame_start":  3,
+                                                                 "action_name":  "chaosx_undead_zombies_attack"
+                                                             },
+                                                             {
+                                                                 "fps":  30,
+                                                                 "unique_sampled_bounds":  5,
+                                                                 "frame_end":  38,
+                                                                 "slug":  "undead_zombies",
+                                                                 "reimport_proof":  "docs\\assets\\002_zombie_outbreak\\models_3d\\undead_zombies\\validation\\reimport_v2_defend.json",
+                                                                 "role":  "defend",
+                                                                 "frame_start":  1,
+                                                                 "action_name":  "chaosx_undead_zombies_defend"
+                                                             },
+                                                             {
+                                                                 "fps":  30,
+                                                                 "unique_sampled_bounds":  5,
+                                                                 "frame_end":  152,
+                                                                 "slug":  "undead_zombies",
+                                                                 "reimport_proof":  "docs\\assets\\002_zombie_outbreak\\models_3d\\undead_zombies\\validation\\reimport_v2_support_attack.json",
+                                                                 "role":  "support_attack",
+                                                                 "frame_start":  3,
+                                                                 "action_name":  "chaosx_undead_zombies_support_attack"
+                                                             },
+                                                             {
+                                                                 "fps":  30,
+                                                                 "unique_sampled_bounds":  5,
+                                                                 "frame_end":  50,
+                                                                 "slug":  "undead_zombies",
+                                                                 "reimport_proof":  "docs\\assets\\002_zombie_outbreak\\models_3d\\undead_zombies\\validation\\reimport_v2_retreat.json",
+                                                                 "role":  "retreat",
+                                                                 "frame_start":  1,
+                                                                 "action_name":  "chaosx_undead_zombies_retreat"
+                                                             },
+                                                             {
+                                                                 "fps":  30,
+                                                                 "unique_sampled_bounds":  5,
+                                                                 "frame_end":  85,
+                                                                 "slug":  "undead_zombies",
+                                                                 "reimport_proof":  "docs\\assets\\002_zombie_outbreak\\models_3d\\undead_zombies\\validation\\reimport_v2_training.json",
+                                                                 "role":  "training",
+                                                                 "frame_start":  1,
+                                                                 "action_name":  "chaosx_undead_zombies_training"
+                                                             },
+                                                             {
+                                                                 "fps":  30,
+                                                                 "unique_sampled_bounds":  5,
+                                                                 "frame_end":  106,
+                                                                 "slug":  "undead_zombies",
+                                                                 "reimport_proof":  "docs\\assets\\002_zombie_outbreak\\models_3d\\undead_zombies\\validation\\reimport_v2_death.json",
+                                                                 "role":  "death",
+                                                                 "frame_start":  1,
+                                                                 "action_name":  "chaosx_undead_zombies_death"
+                                                             },
+                                                             {
+                                                                 "fps":  30,
+                                                                 "unique_sampled_bounds":  5,
+                                                                 "frame_end":  339,
+                                                                 "slug":  "necrotic_zombies",
+                                                                 "reimport_proof":  "docs\\assets\\002_zombie_outbreak\\models_3d\\necrotic_zombies\\validation\\reimport_v2_idle.json",
+                                                                 "role":  "idle",
+                                                                 "frame_start":  1,
+                                                                 "action_name":  "chaosx_necrotic_zombies_idle"
+                                                             },
+                                                             {
+                                                                 "fps":  30,
+                                                                 "unique_sampled_bounds":  5,
+                                                                 "frame_end":  88,
+                                                                 "slug":  "necrotic_zombies",
+                                                                 "reimport_proof":  "docs\\assets\\002_zombie_outbreak\\models_3d\\necrotic_zombies\\validation\\reimport_v2_move.json",
+                                                                 "role":  "move",
+                                                                 "frame_start":  1,
+                                                                 "action_name":  "chaosx_necrotic_zombies_move"
+                                                             },
+                                                             {
+                                                                 "fps":  30,
+                                                                 "unique_sampled_bounds":  5,
+                                                                 "frame_end":  122,
+                                                                 "slug":  "necrotic_zombies",
+                                                                 "reimport_proof":  "docs\\assets\\002_zombie_outbreak\\models_3d\\necrotic_zombies\\validation\\reimport_v2_attack.json",
+                                                                 "role":  "attack",
+                                                                 "frame_start":  3,
+                                                                 "action_name":  "chaosx_necrotic_zombies_attack"
+                                                             },
+                                                             {
+                                                                 "fps":  30,
+                                                                 "unique_sampled_bounds":  5,
+                                                                 "frame_end":  136,
+                                                                 "slug":  "necrotic_zombies",
+                                                                 "reimport_proof":  "docs\\assets\\002_zombie_outbreak\\models_3d\\necrotic_zombies\\validation\\reimport_v2_defend.json",
+                                                                 "role":  "defend",
+                                                                 "frame_start":  1,
+                                                                 "action_name":  "chaosx_necrotic_zombies_defend"
+                                                             },
+                                                             {
+                                                                 "fps":  30,
+                                                                 "unique_sampled_bounds":  5,
+                                                                 "frame_end":  122,
+                                                                 "slug":  "necrotic_zombies",
+                                                                 "reimport_proof":  "docs\\assets\\002_zombie_outbreak\\models_3d\\necrotic_zombies\\validation\\reimport_v2_support_attack.json",
+                                                                 "role":  "support_attack",
+                                                                 "frame_start":  3,
+                                                                 "action_name":  "chaosx_necrotic_zombies_support_attack"
+                                                             },
+                                                             {
+                                                                 "fps":  30,
+                                                                 "unique_sampled_bounds":  5,
+                                                                 "frame_end":  50,
+                                                                 "slug":  "necrotic_zombies",
+                                                                 "reimport_proof":  "docs\\assets\\002_zombie_outbreak\\models_3d\\necrotic_zombies\\validation\\reimport_v2_retreat.json",
+                                                                 "role":  "retreat",
+                                                                 "frame_start":  1,
+                                                                 "action_name":  "chaosx_necrotic_zombies_retreat"
+                                                             },
+                                                             {
+                                                                 "fps":  30,
+                                                                 "unique_sampled_bounds":  5,
+                                                                 "frame_end":  85,
+                                                                 "slug":  "necrotic_zombies",
+                                                                 "reimport_proof":  "docs\\assets\\002_zombie_outbreak\\models_3d\\necrotic_zombies\\validation\\reimport_v2_training.json",
+                                                                 "role":  "training",
+                                                                 "frame_start":  1,
+                                                                 "action_name":  "chaosx_necrotic_zombies_training"
+                                                             },
+                                                             {
+                                                                 "fps":  30,
+                                                                 "unique_sampled_bounds":  5,
+                                                                 "frame_end":  141,
+                                                                 "slug":  "necrotic_zombies",
+                                                                 "reimport_proof":  "docs\\assets\\002_zombie_outbreak\\models_3d\\necrotic_zombies\\validation\\reimport_v2_death.json",
+                                                                 "role":  "death",
+                                                                 "frame_start":  1,
+                                                                 "action_name":  "chaosx_necrotic_zombies_death"
+                                                             },
+                                                             {
+                                                                 "fps":  30,
+                                                                 "unique_sampled_bounds":  5,
+                                                                 "frame_end":  237,
+                                                                 "slug":  "demonic_zombies",
+                                                                 "reimport_proof":  "docs\\assets\\002_zombie_outbreak\\models_3d\\demonic_zombies\\validation\\reimport_r2_v2_idle.json",
+                                                                 "role":  "idle",
+                                                                 "frame_start":  1,
+                                                                 "action_name":  "chaosx_demonic_zombies_idle"
+                                                             },
+                                                             {
+                                                                 "fps":  30,
+                                                                 "unique_sampled_bounds":  5,
+                                                                 "frame_end":  261,
+                                                                 "slug":  "demonic_zombies",
+                                                                 "reimport_proof":  "docs\\assets\\002_zombie_outbreak\\models_3d\\demonic_zombies\\validation\\reimport_r2_v2_move.json",
+                                                                 "role":  "move",
+                                                                 "frame_start":  1,
+                                                                 "action_name":  "chaosx_demonic_zombies_move"
+                                                             },
+                                                             {
+                                                                 "fps":  30,
+                                                                 "unique_sampled_bounds":  5,
+                                                                 "frame_end":  122,
+                                                                 "slug":  "demonic_zombies",
+                                                                 "reimport_proof":  "docs\\assets\\002_zombie_outbreak\\models_3d\\demonic_zombies\\validation\\reimport_r2_v2_attack.json",
+                                                                 "role":  "attack",
+                                                                 "frame_start":  3,
+                                                                 "action_name":  "chaosx_demonic_zombies_attack"
+                                                             },
+                                                             {
+                                                                 "fps":  30,
+                                                                 "unique_sampled_bounds":  5,
+                                                                 "frame_end":  44,
+                                                                 "slug":  "demonic_zombies",
+                                                                 "reimport_proof":  "docs\\assets\\002_zombie_outbreak\\models_3d\\demonic_zombies\\validation\\reimport_r2_v2_defend.json",
+                                                                 "role":  "defend",
+                                                                 "frame_start":  1,
+                                                                 "action_name":  "chaosx_demonic_zombies_defend"
+                                                             },
+                                                             {
+                                                                 "fps":  30,
+                                                                 "unique_sampled_bounds":  5,
+                                                                 "frame_end":  122,
+                                                                 "slug":  "demonic_zombies",
+                                                                 "reimport_proof":  "docs\\assets\\002_zombie_outbreak\\models_3d\\demonic_zombies\\validation\\reimport_r2_v2_support_attack.json",
+                                                                 "role":  "support_attack",
+                                                                 "frame_start":  3,
+                                                                 "action_name":  "chaosx_demonic_zombies_support_attack"
+                                                             },
+                                                             {
+                                                                 "fps":  30,
+                                                                 "unique_sampled_bounds":  5,
+                                                                 "frame_end":  50,
+                                                                 "slug":  "demonic_zombies",
+                                                                 "reimport_proof":  "docs\\assets\\002_zombie_outbreak\\models_3d\\demonic_zombies\\validation\\reimport_r2_v2_retreat.json",
+                                                                 "role":  "retreat",
+                                                                 "frame_start":  1,
+                                                                 "action_name":  "chaosx_demonic_zombies_retreat"
+                                                             },
+                                                             {
+                                                                 "fps":  30,
+                                                                 "unique_sampled_bounds":  5,
+                                                                 "frame_end":  43,
+                                                                 "slug":  "demonic_zombies",
+                                                                 "reimport_proof":  "docs\\assets\\002_zombie_outbreak\\models_3d\\demonic_zombies\\validation\\reimport_r2_v2_training.json",
+                                                                 "role":  "training",
+                                                                 "frame_start":  1,
+                                                                 "action_name":  "chaosx_demonic_zombies_training"
+                                                             },
+                                                             {
+                                                                 "fps":  30,
+                                                                 "unique_sampled_bounds":  5,
+                                                                 "frame_end":  68,
+                                                                 "slug":  "demonic_zombies",
+                                                                 "reimport_proof":  "docs\\assets\\002_zombie_outbreak\\models_3d\\demonic_zombies\\validation\\reimport_r2_v2_death.json",
+                                                                 "role":  "death",
+                                                                 "frame_start":  1,
+                                                                 "action_name":  "chaosx_demonic_zombies_death"
+                                                             }
+                                                         ]
+                                           },
+    "captured_utc":  "2026-10-06T02:52:49.0206509Z"
+}

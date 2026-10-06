@@ -18,12 +18,15 @@ This record follows the parent task dated 2026-10-05, which explicitly authorize
 - A target-selection interface, new decision category, or new event branch was not designed. Those would exceed the accepted release QA scope.
 - The historical sixteen-action inventory is superseded by the parent-accepted two-action capital-state consolidation described below.
 - The historical weaponized cure action budget is superseded by the parent-accepted consolidation, and the six League-duration/martial-law descriptions are corrected in commit `978c7b5d5745cc00058e136a88b8c068ebe00b94`.
-Weighted AI ranking, mechanical scenarios and current GUI evidence remain unresolved; the wording repair does not establish their results.
+The corrected frozen-source probability comparison is partial: 8 old research IDs become 1 generic mission, raw research 1 has unresolved target eligibility, and the separate review adapter gives exact eligible raw 0 score-only evidence.
+Mechanical scenarios and full GUI matrices remain unresolved; this is not a normalized combined race.
 - Model, portrait, and counter production remain outside this QA patch. Their existing provenance and acceptance gaps are listed in the handoff.
 
 ## Implementation evidence and limits
 
-Implementation evidence proves only the source changes listed in `subagent_handoffs/release_qa_20261005.md`. It does not establish approval beyond the parent task, live-game correctness, probability balance, or shared GUI fit. `hoi4.event_inspect`, `hoi4.event_render`, `hoi4.decision_inspect`, `hoi4.gui_inspect`, `hoi4.gui_render`, and `hoi4.probability_inspect` did not return source/scenario artifacts within their recorded timeout windows. No before/after scenario comparison is claimed.
+The initial owner handoff is a historical source/evidence snapshot, not the current coverage ceiling.
+`subagent_handoffs/probability_final_fresh_20261006.md` records the successful partial frozen-source comparison and separate exact review willingness score; generic research target eligibility remains unresolved.
+The corrected cure panel and source-correct main super popup have bounded current visual acceptance, while the corrected slot2 description/slot3 tooltip, native lifecycle and broader balance gates remain open.
 # Parent integration
 
 Explicit Settings requests prepare and revalidate a populated mainland state on a normal civilian host, then dispatch `chaosx.nr2.1` to that host.
@@ -49,9 +52,25 @@ First-defeat totals are preserved in `zombie_postwar_zombie_dead`, `zombie_postw
 `casualties_k` is converted to people with `constant:zombie_postwar.people_per_thousand`, currently 1000, and eligibility is initialized in the caller.
 The approved fictional scene replaces the unverified runtime film still; subagent_handoffs/super_scene_20261006.md records installed hash and archived prior bytes.
 Audio IDs 1/5 are verified; IDs 2/3/6 remain unresolved after HTTP 429 and missing runtime matches.
-The cure baseline contains unresolved dynamic text; the shared after-layout image uses the previous texture and cannot prove post-scene acceptance.
+The old unresolved-token cure baseline is historical.
+The corrected local/shared 0/46/100 six-fixture panel is complete with unresolved 0 at revision 726122c540c023d128dfb7369d4666068444efe6d387674b836b2042748c8a8a; parent review accepted its four-line shared body after height 136/body 96 and shorter copy.
+The earlier 4px overflow is superseded; source/evidence is committed as `275fa0e9cf27126558ba99d28e287db86f2ab31a`.
+The source-correct main super popup is reviewed, while final slot 2 description/slot 3 tooltip render timed out after 600 seconds and remains unaccepted.
+The shared after-layout image using the previous texture remains historical, and the fresh current-texture after has not yet been accepted.
 Current `find_cure_tier_0_desc` through `find_cure_tier_3_desc` say League membership and investment can shorten research, without stale fixed durations.
 Current `extreme_martial_law_desc` and `disease_extreme_martial_law_desc` restrict zombie prevention to new rear-area outbreaks and exclude established fronts.
 Those six shared source strings are implemented in the committed tranche above; native timing, prevention and GUI fit remain unverified.
-Current slot2/3/5 quote strings contain the Liberty Song with Dickinson and Lee attribution, Yeats and Binyon; this is source wording evidence rather than visual acceptance.
+Current slot 2/3/5 quote strings contain the Liberty Song with Dickinson and Lee attribution, Yeats and Binyon; this is source wording evidence rather than visual acceptance.
 See `release_qa_completion_20261006.md` for current dispositions, source evidence and review gates.
+
+## Parent portrait and category-picture review, 2026-10-06
+
+The user's G5/G6 direction authorizes a coherent set of original HOI4-style portraits for the twelve active fictional horde and weaponized-strain consumers.
+The mixed legacy images have no original source receipts and several use visibly different rendering styles.
+The four collective horde stages preserve their progressive identity, and the eight weaponized portraits depict distinct anonymous creatures rather than recognizable film actors.
+Stable portrait sprites and gameplay consumers are preserved, and the unused fifth horde portrait remains outside this production scope.
+Parent review accepted the original infected v1 and rabid v2 masters at full resolution and native/4x sizes; the first rabid style-reference attempt was rejected for reusing the infected face.
+The seven creator-category pictures use manually reviewed 114x101 crops of the accepted portrait sources so their imagery and provenance remain aligned.
+All 12 active portraits are accepted and installed in commit `36b6585eda6f2d91bcabbda70f50d670e04c571b`; all seven accepted category crops are installed and round-trip verified, committed as `bbfbf46281d89ae9b4d74fe89471cc075b9f8873`.
+`subagent_handoffs/portrait_replacement_20261006.md` and `subagent_handoffs/category_portraits_release_20261006.md` supersede the earlier partial-review state.
+The unused leader5 and protected Event014 Hannibal are outside this package; Hannibal original/crop/license/static approval evidence remains missing.

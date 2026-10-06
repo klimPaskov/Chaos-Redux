@@ -3,7 +3,9 @@
 ## Release QA evidence, 2026-10-06
 
 The bounded source changes, current asset status and remaining release gates are recorded in the [release reconciliation](../../plans/002_zombie_outbreak_plans/release_qa_completion_20261006.md).
-Full release signoff remains incomplete; current source, accepted design, historical evidence and unresolved engine validation are distinguished in that report.
+The 12 active fictional portraits and seven creator-category crops are parent-reviewed and installed; protected Event014 Hannibal and the unused fifth horde portrait remain separate unresolved scope items.
+The corrected six-fixture cure panel resolves dynamic text and fits its parent-reviewed four-line body; the former 4px overflow is a historical defect.
+The current main super-event popup is visually accepted, while corrected League description/terminal-tooltip states and model/source-lineage gates keep full release signoff incomplete.
 
 ## Scope
 

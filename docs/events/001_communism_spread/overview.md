@@ -157,7 +157,7 @@ The decision category includes a crisis dashboard above the decisions. The dashb
 - the Revolutionary Threat Meter from 0% to 100%
 - a short status line: Contained, Growing Unrest, Dangerous, Revolutionary Crisis, or Collapse Imminent
 - controlled-state totals split by Agitation Zone, Insurgent Stronghold, and Communist Lockdown icons
-- current daily communist support from controlled states, shown as the raw daily support value
+- a short prompt to select a marked state for intervention; daily support detail remains in the controlled-state tooltip
 
 The dashboard threat value is rebuilt by `refresh_communism_spread_dashboard_values`. It combines communist party support, the number and level of communist-controlled states, active evolution stages, and open rebel war pressure. The visual meter uses the nearest 10% progress sprite through `GetCommunismThreatMeterSprite`. The rebel-war warning is gated by the same rebuilt threat value and cannot fire while the meter is below the configured 50% warning threshold.
 

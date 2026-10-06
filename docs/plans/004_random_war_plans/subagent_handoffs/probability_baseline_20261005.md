@@ -1,6 +1,6 @@
 # Event 004 Probability Audit Handoff
 
-Status: Read-only baseline review is complete. The event-option scores are recorded from source, while normalized option probabilities and random-draw distributions remain unresolved because the required MCP evaluation and comparison calls timed out.
+Status: Read-only audit is updated. Current event-option evaluations returned exact conditional shares for both complete option pools. Before/after option comparisons and direct-random distributions remain unresolved because their MCP calls timed out.
 
 No gameplay files were edited. Exact pre-patch copies are preserved in `docs/plans/004_random_war_plans/probability_before_20261005/`.
 
@@ -46,7 +46,7 @@ The scenario names `tier2_special_available`, `tier3_special_unavailable`, and `
 | `tier3_special_unavailable` | Same two source options and no source-local eligibility trigger or modifier. The evaluation timed out before normalization was confirmed. | The ID is only a label in the submitted scenario set. The unavailable-special-pool condition and remaining ordinary target pool are not encoded. |
 | `final_declaration_count` | Same two source options and no source-local eligibility trigger or modifier. The evaluation timed out before normalization was confirmed. | The ID is only a label in the submitted scenario set. The documented source count bounds are available, but eligible countries, chain state, and realized declaration count are unprovided. |
 
-## MCP analyses and results
+## Baseline MCP analyses and results, 2026-10-05
 
 - `hoi4.probability_inspect` succeeded for `event_option_ai_chance` and found the four candidates described above.
 - Separate `hoi4.probability_evaluate` calls for the two fixed option pools used the same four named scenarios and both timed out after 600 seconds. The source values 80/20 and 70/30 are therefore score-only evidence, not MCP-confirmed normalized probabilities.
@@ -92,10 +92,10 @@ The direct-random comparison used the saved effects snapshot and current effects
 
 ## Remaining blockers
 
-- The baseline direct-random probability inspection timed out after 600 seconds.
-- Both event-option evaluations and both event-option comparisons timed out after 600 seconds.
-- The event-options renderer timed out after 600 seconds, so no comparison or matrix view is available.
-- The corrected Event004 structural trace timed out after 600 seconds. The direct-random comparison timed out after 600 seconds and predates the latest effects hash.
+- The baseline and fresh direct-random probability inspections timed out after 600 seconds. Random-target outcome probabilities remain unresolved.
+- The baseline event-option evaluations timed out. The 2026-10-06 follow-up returned exact current evaluations, but the two before/after event-option comparisons still timed out after 600 seconds.
+- The earlier event-options structural renderer and both separate `probability_render` requests timed out after 600 seconds. Current probability-evaluation results include ranking and matrix render artifacts.
+- The corrected Event004 structural trace timed out after 600 seconds. The direct-random comparison timed out and did not bind the latest effects hash.
 - The direct-random pool has no complete scenario-specific country inventory or state-transition manifest, so target identity, special-pool frequency, repetition, and final fired declaration-count behavior remain unresolved.
 
 No balance target was selected and no gameplay change was applied by this auditor.
@@ -104,3 +104,42 @@ Parent integration addendum: the owner subsequently marked the shared Settings f
 The resulting current effects SHA-256 is `624c579e7ed14b9c395b202ba06b5423b9430c7c6311b38e9f16ff6fe006b860`.
 This change affects feedback idempotence, with no chance or score change.
 The recorded timed-out comparison does not validate this current revision.
+
+## Live MCP recovery follow-up, 2026-10-06
+
+The live checkout reports HEAD `973dea61c8c5059b1dd188f01c205a85562f5cd0`. Parent confirmed its Event004 commit `c45a0f4988574390182f3683eb1d4b8e249e8bf4` is an ancestor and that other owners have published later commits. This audit remains bound to the verified Event004 source hashes in the table above, not a changed checkout.
+
+Current `hoi4.probability_inspect` succeeded separately for the complete attacker pool `[chaosx.nr4.2.a, chaosx.nr4.2.b]` and defender pool `[chaosx.nr4.3.a, chaosx.nr4.3.b]`. Each inspection found exactly two active options, `poolComplete = true`, `analysisSupport = exact`, no eligibility conditions, no required inputs, and zero unresolved candidates. Both bind to event source hash `7a22c703c0bdba95727d05a201be4251c3964386fa52606b45404fed5540f1ba`. The inspector revision was `0a15314ebb757b4827eed0a9138e91902e505324aa6b5e1b2ab484c84d73e10d`, and the adapter is `event_option_ai_chance` version `hoi4-1.19.2.v1` for verified game version Operation Postern 1.19.2.0 (d245).
+
+The attacker-pool inspect artifact is `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/53b1a5d42bb63d003b15db41aa33232947d90c9ddde2ef7cdffa4ce6d3aa897c/df54f9030c2c3aa628c9c027d24cb9b5787f85574d0ac73d49fa451446db2009/probability-inspect-7a22c703c0bd.json`. The defender-pool inspect artifact is `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/cac0a05f5cb66e8c6858c06d428013644186377f7121d0a7ea39d19c26aba1f1/962a6b05aa92c85ecd922b2c54fdadb320964c2a7062035121c7f4b776ddf176/probability-inspect-7a22c703c0bd.json`.
+
+The shared scenario set remained `004_random_war_baseline_20261005`: `calm_baseline_1936` at 1936.1.1, `tier2_special_available` at 1939.1.1, `tier3_special_unavailable` at 1940.1.1, and `final_declaration_count` at 1945.1.1. All four declarations retain actor GER and empty state. These are the documented event-option contexts. They do not encode stage variables, resource balances, special-country availability, or any target-country pool state.
+
+Separate current-source `probability_evaluate` calls succeeded for both fixed pools across all four scenarios. They share scenario hash `9bb06be6872fbdefed26af55a526b72ae6540228765674caf61c415a9efde5e2`, source hash `7a22c703c0bdba95727d05a201be4251c3964386fa52606b45404fed5540f1ba`, source revision `98594bcf0fe170e68feac98f9abf8941bdfc69d70c27eeb4a81f5b76f7234088`, and adapter version `hoi4-1.19.2.v1`. Both analyses report complete pools, eight candidate instances across four scenarios, eight eligible, none excluded, zero diagnostics, and zero unresolved.
+
+| Event option pool | Candidate | Raw score | Exact conditional share | Rank in all four scenarios |
+|---|---|---:|---:|---:|
+| Attacker `chaosx.nr4.2` | `chaosx.nr4.2.a` | 80 | 4/5 = 0.8 | 1 |
+| Attacker `chaosx.nr4.2` | `chaosx.nr4.2.b` | 20 | 1/5 = 0.2 | 2 |
+| Defender `chaosx.nr4.3` | `chaosx.nr4.3.a` | 70 | 7/10 = 0.7 | 1 |
+| Defender `chaosx.nr4.3` | `chaosx.nr4.3.b` | 30 | 3/10 = 0.3 | 2 |
+
+Each result is exact for the local event-option choice after the event fires and has an available complete option pool. The engine event-option adapter uses proportional categorical selection with a d100 path, and these outcomes exceed its sub-one-percent resolution limit. The result does not estimate event firing frequency. The four named scenarios do not change these static scores, so no rank reversal occurred among them.
+
+In every analyzed scenario both options remain eligible with positive shares. No option is impossible, blocked, excluded, or starved, and neither pool has a 100% dominant outcome. The result describes one choice per event presentation, not popup frequency or repeated War Contagion outcomes. Current delivery aggregation limits responses per participant per invocation, while repeated cluster selection and target-country repetition remain unresolved under the failed direct-random inspection.
+
+The source has no event-option trigger or resource eligibility gate. The political power, command power, stability, and war-support values are option effects applied after selection. The numeric evaluation therefore conditions on the event being presented and does not gate an option on whether the actor can pay its stated effect. The effects do not change the evaluated eligibility, ranking, or conditional shares.
+
+The attacker evaluation ID is `probability-26a7600c072928d38ff45e45`, with JSON artifact `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/70416d46ab3d2115bf85b0a6bc9e6210a43486b72bdab02e775e4938353f37c5/746d13644f20800c58f5efebca327b228d2e8e372ce4e359c16f3593cd9509e8/probability-26a7600c072928d38ff45e45.json`, ranking image `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/6eaf2629b08b37c878eb455297b054cd3b7531aeb170e56ac59de0c18d0faa38/1fc5c9d8877f8f2fd10f2ce2c49f911e8535e37e11263dafb4739b48cd1022ca/probability-probability-26a7600c072928d38ff45e45-ranking.png`, and matrix image `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/7b123e95ad76f55d6e94f0d04c6c873958b0617666511e010ae07e6b0e7c46ca/42c57adf01483f5f30a9875065f382262f259dbc380724921e3538dccf7d0ad6/probability-probability-26a7600c072928d38ff45e45-matrix.png`.
+
+The defender evaluation ID is `probability-a9775cecdb4a46a4ac23547d`, with JSON artifact `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/dc88d62c5221df71113327bd88ade32754d2cd841755dcd47c95e47efb0dca10/6fa7988387779b4f42f7b52cc1255fb67d2ab34f8e3bcf55ea8f267caf8db231/probability-a9775cecdb4a46a4ac23547d.json`, ranking image `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/ba131ec23c8e6c71f42864daacff23a7231fdaf5e289a9b853097f14634b5590/f0c232376d5e001aa5a5bae74172acdc3a42ecc7e3cac4a2c95283802ed6f9d3/probability-probability-a9775cecdb4a46a4ac23547d-ranking.png`, and matrix image `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/5e1f50cbd4b4b0f50dee1fe0d89defb09ee66bee71858f1800b334799985ed07/e21396cd741d17f1846331beb57e0a73b9f87baabf4d7eab100581f33e8f7da3/probability-probability-a9775cecdb4a46a4ac23547d-matrix.png`.
+
+The JSON artifacts were read as JSON text. The returned ranges were complete at 20,127 and 20,139 bytes, matching their declared sizes, with no continuation URI.
+
+The before/after event-option comparisons used the preserved baseline event path, current event path, same candidate pools, and identical scenario set, but both timed out after 600 seconds. No comparison ID, source delta, or comparison artifact was returned. The current conditional shares are MCP-proven above, and the baseline source snapshot retains the same raw scores, but there is no MCP-proven numeric before/after delta.
+
+The fresh `direct_random` inspection on current `common/scripted_effects/004_random_war_effects.txt` timed out after 600 seconds. Per parent instruction, this route was not retried and no direct-random evaluation, sweep, or comparison was submitted. Source documentation and constants show integer ranges `[1, 101)` for the special roll and `[7, 9)` for the final declaration target count, but direct-random probability and actual candidate-country coverage remain unresolved. The four scenario labels do not provide special-target country identities or a complete eligible pool.
+
+Separate `probability_render` requests for the two completed event-option analysis IDs timed out after 600 seconds. The evaluation calls themselves returned ranking, matrix, waterfall, and unresolved image artifacts, so those evaluation-provided resources remain available for review. No option-weight change or balance target is recommended by this audit.
+
+No event-option sweep was run because these complete pools have no parameter or external-factor path to vary and their rankings are invariant across the four scenarios. The direct-random threshold sweep was blocked by its inspection timeout and incomplete target-country pools. No simulation or sequence analysis was run because no uncertain inputs or complete custom-pool lifecycle manifest were declared.

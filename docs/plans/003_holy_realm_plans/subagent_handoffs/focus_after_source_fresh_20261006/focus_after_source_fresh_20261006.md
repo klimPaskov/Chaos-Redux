@@ -130,3 +130,9 @@ Evidence file manifest:
 | parent_source_repair_20261006.json | Parent G6 initial source/availability repair proof |
 | parent_clearance_source_repair.json | F5 clearance and chapter-entry presentation proof |
 | parent_final_positions_source_repair.json | D584 final three-position repair proof |
+
+## Parent disposition after audit
+
+The parent viewed and accepted the final D584 native raster and its repeated icon families as intentional route cues.
+The Storehouses tooltip mismatch is resolved by the accepted two-key prose correction in the final focus commit; its national reward remains unchanged and foreign grants remain an unaccepted proposal.
+The source geometry and final description-resolution evidence remain as cited above; the later Storehouses prose correction changes no geometry, assets or gameplay.

@@ -8,7 +8,8 @@ If the workbook needs a corresponding event-detail or scenario-field change, the
 ## Release-QA queue, 2026-10-06
 
 Disposition: accepted and queued under the user's explicit prohibition of workbook and CSV edits in this release pass.
-Current evidence is `release_qa_completion_20261006.md`; older row observations remain historical until the catalog owner verifies the workbook.
+Current evidence is `release_qa_completion_20261006.md`; the installed 12 portraits/seven category crops do not authorize a Playable status, and the corrected cure-panel source/evidence commit 275fa0e9 does not clear remaining model/Hannibal and multi-slot tooltip gates or authorize Playable status.
+Older row observations remain historical until the catalog owner verifies the workbook.
 Keep status `Needs Testing` until explicit user approval authorizes another status.
 Copy current in-game Event Details and evolution/scenario wording; super-event quotation/button text and debug rejection prose are not event details.
 Any catalog field that actually mirrors cure timing or martial-law scope must follow the corrected current source: League membership/investment can shorten research, and martial law prevents new rear-area outbreaks rather than halting established fronts.

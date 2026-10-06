@@ -61,24 +61,47 @@ The initial nine actions separate into Refuge 3, Arhats 2, Diplomacy 1, Doctrine
 The closed-refuge-roads action is hidden from humans before its existing Bodhisattva unlock, while its existing active marker preserves its timer presentation.
 The complete mapping and source comparison are in `subagent_handoffs/mandala_tab_filtering_20261006.md`.
 
-Parent review accepted a position-only focus layout correction that separates optional military branches, the teaching side lane, the four Schism responses and the later supernatural and nuclear routes.
-All 111 focus definitions are identical outside their x/y fields; 62 focus positions changed.
+The first parent-reviewed position-only tranche separated optional military branches, the teaching side lane, the four Schism responses and the later supernatural and nuclear routes.
+At that historical source receipt all 111 definitions were identical outside x/y fields and 62 positions changed; later G6 source transformations below have their own preservation evidence.
 The reviewed reference and exact source receipt are in `subagent_handoffs/focus_release_20261006_evidence/parent_geometry_applied_20261006.json`.
 The independent straight-line source projection has no node intersections or same-row collisions and reduces crossing pairs from 33 to 12.
 These are reference-model results, not production MCP diagnostics, and the remaining projected crossings are unresolved.
-The post-change inspect and render both returned `Transport closed`, so the focus layout has no current production acceptance.
+Those post-change transport failures are historical.
+Fresh production inspection/render of current 03BC410C source succeeded with 111 nodes, 129 links, 12 crossings, 9 long links, 4 through-node links and 8 detours; the four through-node problems await further exact position repair, so layout acceptance remains pending.
+Seven native `shortcut` entries with initial position `(20,0)` and no zoom override are applied; Secure the High Passes requires Chaos greater than 600 and revalidates target authorization at completion.
+Twelve parent-reviewed filter icons are installed in commit `fc92f2896caa961b87bbc62a865c3d2927b9b815`; their former missing-asset status is superseded.
+The six Buddha-milestone AND arrows and three distant chapter-entry arrows are expressed as visible native completion requirements instead of connectors, preserving the gameplay conditions, paths, costs, rewards and AI.
+This is an explicit presentation simplification accepted by parent G6 review independently of unresolved broad nested-spec acceptance; the six-milestone formula preserves all nine conditions across the 512-vector source proof.
+The historical pre-final F5 native result has 111 nodes/120 links, zero crossings/long links, one Vow-to-Refuse through-node link and one Seal-to-First-Doctrine detour.
+The parent applied the final three position-only relocations, yielding source `d584ec8fe5988781fa1b36306a44e01cf3680f89d610d256f4dcf6c343d5f575`; all non-position focus bytes remain identical to F5.
+Final D584 inspection with8F2E English source reports111 normal/14 continuous focuses and120 connectors, zero crossing/long/through-node/detour findings and zero focus diagnostics; the matching8400x2904 native render/raster was parent reviewed.
+The late Suppress Subjects description fix resolves the quote-description warning without geometry/behavior change.
+Focus source/locale/evidence commit is `FOCUS_SOURCE_LOCALE_EVIDENCE_COMMIT_PENDING_PARENT`; broader AI/native-gameplay/spec acceptance remains open.
+Parent G6 review accepted accurate Storehouses national-logistics prose: one controlled-Realm supply hub, centralized CP 25/Reach 4 and conditional Cohesion 5.
+The free compact-member infrastructure promise is removed without gameplay changes or promotion of unaccepted member-support design; foreign aid remains a future proposal.
+The two-key prose correction changes the English hash to `bd034b82f5ec41f7da5b04116b8c5c1258fc47baba7f3dde29427b118240a2b8`; native geometry was reviewed under prior 8F2E and its fields are unchanged.
+Default Refuge 1920/UI 1 is parent visually accepted, including its intentional blank risk row; the other four tabs, thresholds and six other promoted Mandala-sheet states remain outside matrix acceptance after the recorded render-budget failures.
+The tab-filter/manpower/Open Roads/62-position tranche is committed as `0673d82669248621d4fdacbb1e54140c39fa8563`.
 
 Parent review authorized original portrait art for the anonymous fictional 1936 Bodhisattva incarnation and its stages because the legacy portrait source lineage is absent.
 This is an imagined supernatural character, not Siddhartha Gautama, Padmasambhava or another named historical person's substituted identity.
-The original Godly Figure and Refuge seeds were reviewed at native size and accepted; the whole static and real-frame animation package remains subject to parent review before installation.
+The complete 12-DDS portrait package is accepted, installed and committed as `d92a67c4a885943747fbdb0a982c1fcffbe6e6b0`, with ten static portraits and two parent-authorized eight-authored-pose mirrored animations documented in `subagent_handoffs/portraits_release_20261006.md`.
+The unused Final Silence portrait remains outside this active package.
 The existing Mandala animation package is a separate accepted consumer and does not establish portrait provenance.
 
 ## Refuge resource correction, 2026-10-06
 
-Parent accepted removing only the five flat manpower grants from `THR_white_scarf_relief_caravans`, `THR_second_refuge_register`, `THR_open_refuge_roads`, `THR_bodhisattva_hold_teachings_for_refugees`, and `THR_bodhisattva_invite_foreign_pilgrims` under the user's G6 release-QA direction. These actions created recruits without a population or mobilization source, and some recur. Costs, availability, cooldowns, AI weights, and all non-manpower outcomes remain unchanged. `THR_open_refuge_roads` is now one-time because its existing memory flag blocks the alternative `THR_close_refuge_roads` route after selection; no other decision received a one-time gate.
+Parent accepted removing only the five flat manpower grants from `THR_white_scarf_relief_caravans`, `THR_second_refuge_register`, `THR_open_refuge_roads`, `THR_bodhisattva_hold_teachings_for_refugees` and `THR_bodhisattva_invite_foreign_pilgrims` under the user's G6 release-QA direction.
+These actions created 25,000 to 180,000 recruits without a population or mobilization source; several recur.
+Political Power prices, route/availability gates, cooldowns, timers, AI weights and all non-manpower outcomes remain intact, including White-Scarf reductions to Final Silence Pressure/Chaos and the separate 120,000-manpower peacekeeping return.
+`THR_open_refuge_roads` is one-time because its existing memory permanently blocks the alternative Close Refuge Roads route; repeating that one-way purchase was the defect.
+No other decision received a one-time gate or resource rebalance in this tranche.
 
-## Manpower resource correction, 2026-10-06
 
-Parent accepted removing only the five flat manpower grants from `THR_white_scarf_relief_caravans`, `THR_second_refuge_register`, `THR_open_refuge_roads`, `THR_bodhisattva_hold_teachings_for_refugees`, and `THR_bodhisattva_invite_foreign_pilgrims`. These actions created 25,000 to 180,000 recruits without a population or mobilization source; several recur. Their Political Power prices, route gates, timer behavior, AI weights, and all non-manpower outcomes remain intact.
+## Final focus and Storehouses review, 2026-10-06
 
-`THR_open_refuge_roads` is now one-time because its existing `holy_realm_memory_open_refuge_roads` choice permanently blocks the alternative `THR_close_refuge_roads`; repeating its purchase previously let the player reuse the completed one-way choice. No other decision was made one-time or otherwise rebalanced in this tranche.
+Parent acceptance within the user G6 repair authority covers the final focus layout and seven shortcuts in `08a32875eb5e693d52903b0cd88fb35a0d809b1e`.
+Six Buddhahood milestone arrows and three distant entry arrows become visible completion checks while retaining every requirement; this presentation simplification removes crossing and long links without removing route content.
+Native inspection reports zero crossings, long links, node intersections or layout diagnostics for all 111 focuses.
+The High Pass focus authorizes force only above the existing 600 coercive threshold and revalidates that threshold for each eligible target.
+The Storehouses wording describes its actual national logistics and conditional cohesion reward; an unsupported promise of free foreign infrastructure is removed under G4/G6, with no new grant or broader design acceptance inferred.

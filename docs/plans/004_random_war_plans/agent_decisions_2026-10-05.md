@@ -89,3 +89,11 @@ Expect one "No Declaration of War" report and no declaration.
 Expect the documented cost, only the three documented modifiers, no flat or weekly manpower grant, and expiration after 45 days.
 
 No game was launched by this agent.
+
+## Current parent reconciliation, 2026-10-06
+
+The accepted source repair tranche is committed as c45a0f4988574390182f3683eb1d4b8e249e8bf4.
+The updated specialist handoff records current conditional shares of 80/20 and 70/30 across four named scenarios.
+Older failed-evaluation paragraphs remain historical; before/after comparisons and direct-random distributions remain unresolved after 600-second timeouts.
+Source retains one observer report plus at most one participant response, defender precedence, prepared-profile persistence/reset and calibrated reserves without native manpower gifts.
+See `release_qa_completion_20261006.md` for current dispositions, source evidence and review gates.

@@ -1,5 +1,10 @@
 # Event 004: Random War
 
+## Release QA evidence, 2026-10-06
+
+The bounded source changes, current asset status and remaining release gates are recorded in the [release reconciliation](../../plans/004_random_war_plans/release_qa_completion_20261006.md).
+Full release signoff remains incomplete; current source, accepted design, historical evidence and unresolved engine validation are distinguished in that report.
+
 ## Overview
 
 Random War is a repeatable minor event that creates unexpected wars between eligible sovereign countries. The base event creates one declaration. At higher chaos tiers, the War Contagion evolution track increases the number of declarations and makes compatible Chaos Redux special countries more likely to participate.
