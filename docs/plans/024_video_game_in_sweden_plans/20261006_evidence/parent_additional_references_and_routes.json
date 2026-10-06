@@ -1,0 +1,99 @@
+{
+  "variableLocalisation": {
+    "status": "ok",
+    "code": "OK",
+    "workspaceId": "mod_chaos_redux_ea3b2d67c2c0",
+    "filesScanned": [],
+    "proposedFiles": [],
+    "changedFiles": [],
+    "diagnostics": [],
+    "artifacts": [],
+    "validation": {
+      "passed": true,
+      "checks": []
+    },
+    "blockers": [],
+    "data": {
+      "id": "5cb39e320b8b359394a5a98eadff92bd51c3aed771d78c93f0f9723ddb570f41",
+      "revision": "62273f37ed30e5479acb331a8973f48dadc1867c4913c8a940e3e790e7af32d4",
+      "source": "wiki",
+      "title": "Data structures",
+      "heading": "Localisation",
+      "path": "C:\\Users\\klimp\\OneDrive\\Documents\\Paradox Interactive\\Hearts of Iron IV\\mod\\chaos_redux\\paradox_wiki\\Data structures - Hearts of Iron 4 Wiki.md",
+      "startLine": 488,
+      "endLine": 519,
+      "excerpt": "### Localisation <a id=\"Localisation\"></a> *Parts of this section are transcluded from [Localisation § Formatting variables](<Localisation - Hearts of Iron 4 Wiki.md#Formatting_variables>)*",
+      "authority": "Offline Paradox Wiki snapshot",
+      "sectionStartLine": 488,
+      "sectionEndLine": 546,
+      "startColumn": 1,
+      "text": "### Localisation <a id=\"Localisation\"></a>\n\n*Parts of this section are transcluded from [Localisation § Formatting variables](<Localisation - Hearts of Iron 4 Wiki.md#Formatting_variables>)*\n\nIn order to display the value of a variable in localisation, `[?var_name]` is used, with the question mark signifying that it's a variable. **The question mark is mandatory** in order to distinguish the variable from the event targets. For example, such a localisation value will work:  `var_value_tt: \"There are [?num_of_dogs] dog(s) in the country\"`\nBy default, the scope where this is used gets assumed. Scoping works the same way as it does with variables regularly:  `GER_var_value_tt: \"There are [?GER.num_of_dogs] dog(s) in [GER.GetNameWithFlag]\"`\nWhen the variable is a scope by itself, the question mark is still mandatory to use to distinguish from event targets:  `target_tt: \"The target country is [?target_country.GetName]\"`. **Variables can only be displayed in UI that supports dynamic localisation**, otherwise it will appear exactly as in the localisation file. List of such UI elements and necessary conditions for them to support dynamic localisation can be found in [Localisation § Namespaces](<Localisation - Hearts of Iron 4 Wiki.md#Namespaces>).\n\nIf the variable points to a certain address with more localised text, such as a country, namespaces can be used in the same manner as with a regular tag or event target:  `most_dogs_tt: \"[?most_dogs.GetNameDefCap] has the most dogs out of any country.\"` Question marks are still mandatory to include in this case.\n\nVariables have a unique way for applying colouring, also allowing extra formatting characters. These are applied after a pipe placed at the end of the variable's name, such as `[?my_variable|R]` that will turn the colour of the variable `my_variable` red. If no colouring is applied, it will use the same colour as regular text: the §-colour block, textbox's `text_color_mode`, or the font's default colour in that order.\n\nThe list of formatting characters that are restricted to variables only are the following:\n\n| Code | Effect |\n| --- | --- |\n| \\* | Converts the variable to SI units—appends \"K\" or \"M\" and divides the variable appropriately, such as 65 536 becoming 65.53K and 1 500 000 becoming 1.50M. Displays 2 decimals after the dot by default. |\n| ^ | Same as \\*. |\n| = | Prefixes the variable with **+** if the value is positive or **-** if it is negative. |\n| 0..9 | Controls the number of decimals to display. Due to the nature of the game's variables, there are no more than 5 decimals that can be shown. Using any digit greater than 5 will instead have the same result as 5. |\n| % | Converts the variable to percentage, multiplying by 100 and appending a %. By default, will show 2 digits after the decimal point, though the second digit will always be 0. |\n| %% | Appends a percentage to the end of the variable without multiplying by 100. |\n| + | Colours the variable green if positive, yellow if zero, red if negative. |\n| - | Colours the variable red if positive, yellow if zero, green if negative. |\n\nAny unrecognised symbols will neither change how the variable is localised nor get recognised as an error in-game. For example, it's common practice in the base game to prepend a dot before the digit used to control the amount of displayed digits as `[?var|.1]`. In case of overlap between mutually-exclusive rules, the last-used one will be prioritised. However, static colouring has a lower priority than dynamic colouring (e.g. `[?var|+Y]` will be treated as `[?var|+]`), and using `%%` will also override `%`.\n\nSome examples of formatting characters in usage:\n\n```yaml\nl_english:\n loc_key: \"Democratic party popularity: [?party_popularity@democracy|%G0]\"",
+      "nextLine": 520,
+      "nextColumn": 1
+    }
+  },
+  "localGameSections": [
+    {
+      "path": "C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/script_concept_documentation.md",
+      "lines": [
+        216,
+        221
+      ],
+      "revision": "884bfe9f9207ea4b25b36b5129d0f77d11d4b2f7eb0592587767ec58d24930c7"
+    },
+    {
+      "path": "C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/script_constants/documentation.md",
+      "lines": [
+        1,
+        36
+      ],
+      "revision": "e2812efbddc7961038e1f1f2b6dd6b059bdc70704ec87d1fe530835d9141be1c"
+    }
+  ],
+  "vanillaPrecedent": {
+    "tool": "hoi4.source_lookup",
+    "symbol": "generic.23",
+    "path": "game:events/Generic.txt",
+    "lines": [
+      1985,
+      2029
+    ],
+    "indexRevision": "8c22b463fa4529e6ea26b1b1ffcde8551ef8200cd6fdeec70b37c677976b929f",
+    "complete": true,
+    "limits": "One definition, references excluded, returned excerpt ends before final event end at2059. Source lookup was slow but succeeded."
+  },
+  "eventCompare": {
+    "request": {
+      "selector": {
+        "kind": "event",
+        "eventId": "chaosx.nr24.41"
+      },
+      "proposedSources": "prepass HEAD version of owned event file as a current-to-before overlay",
+      "maxChainNodes": 3,
+      "maxRenderNodes": 6,
+      "render": true
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "tool call error: tool call failed for `hoi4_agent_tools/hoi4.event_compare`\n\nCaused by:\n    timed out awaiting tools/call after 600s"
+        }
+      ],
+      "isError": true
+    },
+    "limits": "600 second tools/call timeout, no graph or visual artifact returned."
+  },
+  "capabilities": {
+    "launcher": "C:/Users/klimp/AppData/Roaming/npm/hoi4-agent-tools.cmd",
+    "packageVersion": "3.9.0",
+    "verifiedLiveRoutes": [
+      "reference_context",
+      "reference_search",
+      "reference_read",
+      "source_lookup",
+      "script_validate"
+    ],
+    "missingHealthHandshake": "No server health or version tool exposed. Package version is local installation identity; no native tasks used."
+  }
+}

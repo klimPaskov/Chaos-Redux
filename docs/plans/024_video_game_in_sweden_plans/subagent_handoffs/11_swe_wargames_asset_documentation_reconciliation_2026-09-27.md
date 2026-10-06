@@ -1,5 +1,13 @@
 # Event 24 SWE wargames asset documentation reconciliation
 
+Current-state disposition, 6 October: superseded for current completion claims by `../takeover_status_2026-10-06.md`.
+The inherited reconciliation below is retained as historical evidence for its dated sources and artifacts.
+Its old counts, pending-audit notices, and current-revision claims do not certify the finishing-pass source.
+
+Disposition: superseded for runtime inventory by `docs/events/024_video_game_in_sweden/assets_visual_audit_2026-10-03.md`.
+The user-selected vanilla experimental spirit remains intact, but this reconciliation missed the custom experimental sprite's two foreign dynamic-modifier consumers.
+The current custom count is 31, including that active texture; it is not an unused orphan.
+
 ## Scope and source of truth
 
 The user's explicit CBRN visual instruction selects installed vanilla `SWE_wargames` for the experimental-war-game spirit. The current source confirms `picture = SWE_wargames` at `common/ideas/024_hearts_of_iron_ideas.txt:39`; installed `common/ideas/sweden.txt:780-782` uses the same picture, installed `interface/ideas.gfx:7770-7773` registers `GFX_idea_SWE_wargames`, and the installed `gfx/interface/ideas/idea_SWE_wargames.dds` exists. The current source-wired Event24-owned inventory is therefore 30 DDS files: four bespoke ideas, 17 decisions, one Rulebook Commander trait, six achievement states, and two full-canvas pictures. The five idea definitions have four Event24-owned textures and one installed vanilla texture.

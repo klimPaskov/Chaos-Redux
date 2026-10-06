@@ -7,7 +7,7 @@ This file records decisions made under the user's requested filename during the 
 ## D27. Manual firing refusals use the shared requester report
 
 Disposition: implemented in `video_game_in_sweden_prepare_random_event_fire`.
-A refused manual request selects `no_country` when no Swedish host is available, `already_active` for a running cabinet, or `unavailable` after the fire-once opening has been spent.
+A refused manual request selects `no_country` when no living Swedish country exists, `unavailable` for a living but ineligible Sweden, `already_active` for a running cabinet, or `unavailable` after the fire-once opening has been spent.
 The existing Settings requester target and per-request guard deliver one report, including a request made by a foreign player, and suppress the dispatcher's subsequent generic report.
 Natural selection stays quiet and a running cabinet retains its host and achievements.
 The new runtime case tests all three reasons and repeated calls within one request.
@@ -19,7 +19,7 @@ Disposition: implemented in the owned event and effects files.
 The old queue could show the same report for each reply and bypass its cap for human partners.
 Each responding country retains its own single policy choice, while Sweden receives one summary after the third answer or at programme closure if fewer replies arrived.
 The summary copies the five outcome counts before dispatch so a late answer cannot alter an open report.
-The summary's count and pending guard are set before scheduling, and its shown guard is set when it opens.
+The summary's queued and pending flags are set before scheduling, and its shown guard is set when it opens.
 The report states the received choices in plain text and adds no reward.
 The queued latch is a country flag, and the obsolete numeric report counter and configurable repeat cap are removed.
 Outcome counts remain actual counts from zero through three, while publication is boolean.

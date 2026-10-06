@@ -1,5 +1,13 @@
 # Event 24 completion audit handoff
 
+Current-state disposition, 6 October: superseded for current completion claims by `../takeover_status_2026-10-06.md`.
+The inherited reconciliation below is retained as historical evidence for its dated sources and artifacts.
+Its old counts, pending-audit notices, and current-revision claims do not certify the finishing-pass source.
+
+## Disposition
+
+Superseded for current-state claims by `docs/plans/024_video_game_in_sweden_plans/024_video_game_in_sweden_completion_handoff.md`. This remains the historical completion-audit record. It predates the 2026-09-20 Field-Validated Planner retirement and the 2026-09-26 asset-provenance reconciliation. A fresh completion audit is in progress.
+
 ## Scope
 
 The completion role reviewed the accepted package against host selection, firing, baseline lifecycle, evolutions, decisions, missions, commander traits, foreign responses, AI, assets, achievements, localisation, documentation, and catalog alignment.

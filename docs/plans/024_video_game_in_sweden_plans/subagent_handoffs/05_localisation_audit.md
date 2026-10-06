@@ -1,5 +1,13 @@
 # Event 24 localisation audit handoff
 
+Current-state disposition, 6 October: superseded for current completion claims by `../takeover_status_2026-10-06.md`.
+The inherited reconciliation below is retained as historical evidence for its dated sources and artifacts.
+Its old counts, pending-audit notices, and current-revision claims do not certify the finishing-pass source.
+
+## Disposition
+
+Superseded for current-state claims by `docs/plans/024_video_game_in_sweden_plans/subagent_handoffs/09_localisation_audit_2026-09-26.md`. This remains the historical audit and parent-fix record.
+
 ## Scope
 
 The localisation audit checked Event 24 event text, event names, options, category labels, decisions, missions, scripted localisation, Event Details, evolution rows, unavailable-weight display, achievements, texticons, and encoding.

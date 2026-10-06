@@ -1,5 +1,8 @@
 # Event 24 source repairs and remaining acceptance
 
+Disposition: historical source and acceptance inventory for the 3 October tranche.
+Current acceptance and dispositions are in `takeover_status_2026-10-06.md`, including the implemented 4 and 5 October repairs.
+
 Status: incomplete implementation, with reviewed visual repairs committed and source repairs awaiting the remaining acceptance work.
 The implemented daily-observation and restriction-receipt source tranche is recorded in report 22, with numerical and native acceptance still outstanding.
 The accepted package remains binding and no omission, smaller substitute, or new asset family is approved by this report.

@@ -1,5 +1,13 @@
 # Event 24 decision and mission audit handoff
 
+Current-state disposition, 6 October: superseded for current completion claims by `../takeover_status_2026-10-06.md`.
+The inherited reconciliation below is retained as historical evidence for its dated sources and artifacts.
+Its old counts, pending-audit notices, and current-revision claims do not certify the finishing-pass source.
+
+## Disposition
+
+Superseded for current-state claims by a fresh decision and mission audit requested on 2026-09-26. This remains the historical audit and parent-fix record; the current audit is in progress.
+
 ## Scope
 
 The decision and mission audit reviewed the normal event-owned category, phase action counts, mission ownership, availability gates, cost text, cleanup, and persistence.

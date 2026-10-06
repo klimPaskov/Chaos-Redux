@@ -1,5 +1,9 @@
 # Event 24 asset handoff: icon package
 
+Current-state disposition, 6 October: superseded for current completion claims by `../takeover_status_2026-10-06.md`.
+The inherited reconciliation below is retained as historical evidence for its dated sources and artifacts.
+Its old counts, pending-audit notices, and current-revision claims do not certify the finishing-pass source.
+
 ## Scope
 
 The icon production role created original native-alpha source art, processed PNGs, and final DDS files for the Event 24 ideas, decisions, commander traits, achievements, and the four primary decision actions that initially lacked bespoke icons.
@@ -26,6 +30,8 @@ No icon placeholder or copied generic icon remains in the Event 24 decision set.
 
 ## Current disposition
 
-This handoff records the earlier 30-file icon package. The user's explicit 2026-09-20 decision retired Field-Validated Planner and its icon, and the later explicit visual instruction selects installed vanilla `SWE_wargames` for the experimental-war-game spirit. Current gameplay selects four bespoke idea sprites and one vanilla idea sprite; only Rulebook Commander remains as a trait consumer. The current active worker-owned inventory is 28 DDS files: 4 bespoke ideas, 17 decisions, 1 commander trait, and 6 achievement states. The custom experimental source PNG, processed PNG, DDS, and GFX registration remain unused archival records.
-
-The earlier temporary-workspace gap count predates the current source and processed PNG restoration in `docs/assets/024_video_game_in_sweden/manifest.md`; its present completeness and source-to-runtime equality require parent review. The prior final DDS files remain present except for the retired Field-Validated Planner DDS. The earlier visual review remains historical evidence for the assets it inspected, including the custom experimental icon that no longer has a runtime consumer.
+The original handoff is historical production evidence, including the subsequently retired Field-Validated Planner trait.
+The 2026-10-03 parent audit supersedes its current counts and runtime assertions: 29 active custom icon/trait/achievement DDS files plus the report and category pictures form a 31-file custom inventory.
+Four textures serve staged Swedish ideas, the custom experimental texture serves foreign Copy/Study modifiers, the experimental spirit uses vanilla `SWE_wargames`, 17 textures serve decisions and their exact objective symbols, one serves Rulebook Commander, and six serve the two achievement triplets.
+The source package has been restored, 25 outputs were rebuilt, and every custom DDS was reopened and proved equal to its processed PNG.
+Current exhaustive coverage and limits are in `docs/events/024_video_game_in_sweden/assets_visual_audit_2026-10-03.md`.

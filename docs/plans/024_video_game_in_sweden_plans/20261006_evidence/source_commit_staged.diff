@@ -1,0 +1,1385 @@
+diff --git a/common/decisions/024_video_game_in_sweden_decisions.txt b/common/decisions/024_video_game_in_sweden_decisions.txt
+index 306532e1c..8ae7d99c1 100644
+--- a/common/decisions/024_video_game_in_sweden_decisions.txt
++++ b/common/decisions/024_video_game_in_sweden_decisions.txt
+@@ -267,6 +267,9 @@ video_game_in_sweden_program_category = {
+ 		complete_effect = {
+ 			video_game_in_sweden_start_followup_review = yes
+ 		}
++		cancel_effect = {
++			clr_country_flag = video_game_in_sweden_followup_review_running
++		}
+ 		remove_effect = {
+ 			video_game_in_sweden_finish_followup_review = yes
+ 		}
+diff --git a/common/script_constants/024_video_game_in_sweden_constants.txt b/common/script_constants/024_video_game_in_sweden_constants.txt
+index a3af58f51..a8de0715a 100644
+--- a/common/script_constants/024_video_game_in_sweden_constants.txt
++++ b/common/script_constants/024_video_game_in_sweden_constants.txt
+@@ -28,7 +28,6 @@ video_game_in_sweden_event = {
+ 	evolution_ii_min_chaos = 400
+ 	evolution_iii_min_chaos = 600
+ 	maximum_foreign_responses = 3
+-	maximum_visible_foreign_reports = 2
+ 	maximum_risk_route = 4
+ 	trust_model_favorable_war_score = 10
+ 	recent_victory_war_score = 10
+diff --git a/common/scripted_effects/024_video_game_in_sweden_effects.txt b/common/scripted_effects/024_video_game_in_sweden_effects.txt
+index 2dff6913f..e74d06ec8 100644
+--- a/common/scripted_effects/024_video_game_in_sweden_effects.txt
++++ b/common/scripted_effects/024_video_game_in_sweden_effects.txt
+@@ -191,6 +191,38 @@ video_game_in_sweden_prepare_random_event_fire = {
+ 		}
+ 		set_temp_variable = { video_game_in_sweden_prefire_ready = 1 }
+ 	}
++	# The Settings requester receives one reason before the shared dispatcher
++	# falls back to its generic no-target report. Natural selection stays quiet.
++	if = {
++		limit = {
++			check_variable = { video_game_in_sweden_prefire_ready < constant:video_game_in_sweden_value.one }
++			check_variable = { events_log_manual_event_detail_trigger > constant:video_game_in_sweden_value.zero }
++		}
++		set_temp_variable = { chaosx_forced_event_failure_reason = constant:forced_event_feedback_reason.no_country }
++		if = {
++			limit = {
++				any_country_with_original_tag = {
++					original_tag_to_check = SWE
++					exists = yes
++				}
++			}
++			# A living Sweden may be unavailable through capitulation, lost
++			# territory, or the shared crisis capacity. It is not a missing tag.
++			set_temp_variable = { chaosx_forced_event_failure_reason = constant:forced_event_feedback_reason.unavailable }
++		}
++		if = {
++			limit = { is_in_array = { global.fired_events = constant:video_game_in_sweden_event.id } }
++			set_temp_variable = { chaosx_forced_event_failure_reason = constant:forced_event_feedback_reason.unavailable }
++			if = {
++				limit = {
++					has_event_target = video_game_in_sweden_host
++					event_target:video_game_in_sweden_host = { has_country_flag = video_game_in_sweden_program_active }
++				}
++				set_temp_variable = { chaosx_forced_event_failure_reason = constant:forced_event_feedback_reason.already_active }
++			}
++		}
++		chaosx_report_forced_event_failure = yes
++	}
+ }
+ 
+ video_game_in_sweden_initialize_program = {
+@@ -227,7 +259,14 @@ video_game_in_sweden_initialize_program = {
+ 		set_variable = { video_game_in_sweden_incident_count = constant:video_game_in_sweden_value.zero }
+ 		set_variable = { video_game_in_sweden_incident_ready_day = constant:video_game_in_sweden_timing.incident_cooldown_days }
+ 		set_variable = { video_game_in_sweden_foreign_response_count = 0 }
+-		set_variable = { video_game_in_sweden_foreign_report_count = 0 }
++		clr_country_flag = video_game_in_sweden_foreign_summary_queued
++		set_variable = { video_game_in_sweden_foreign_replied_count = constant:video_game_in_sweden_value.zero }
++		set_variable = { video_game_in_sweden_foreign_copy_count = constant:video_game_in_sweden_value.zero }
++		set_variable = { video_game_in_sweden_foreign_study_count = constant:video_game_in_sweden_value.zero }
++		set_variable = { video_game_in_sweden_foreign_ban_count = constant:video_game_in_sweden_value.zero }
++		set_variable = { video_game_in_sweden_foreign_ridicule_count = constant:video_game_in_sweden_value.zero }
++		set_variable = { video_game_in_sweden_foreign_ignored_count = constant:video_game_in_sweden_value.zero }
++		clr_country_flag = video_game_in_sweden_foreign_summary_shown
+ 		set_variable = { video_game_in_sweden_national_league_seasons = 0 }
+ 		set_variable = { video_game_in_sweden_national_league_native_days = constant:video_game_in_sweden_timing.national_league_burden_days }
+ 		set_variable = { video_game_in_sweden_mission_elapsed_days = 0 }
+@@ -1848,13 +1887,17 @@ video_game_in_sweden_queue_opening_incident = {
+ 			NOT = { has_country_flag = video_game_in_sweden_opening_incident_queued }
+ 			NOT = { video_game_in_sweden_is_incident_pause_crisis = yes }
+ 		}
+-		set_country_flag = video_game_in_sweden_opening_incident_queued
+ 		set_temp_variable = { video_game_in_sweden_opening_production_weight = constant:video_game_in_sweden_incident.opening_production_weight }
++		if = {
++			limit = { has_country_flag = video_game_in_sweden_incident_production_seen }
++			set_temp_variable = { video_game_in_sweden_opening_production_weight = constant:video_game_in_sweden_value.zero }
++		}
+ 		set_temp_variable = { video_game_in_sweden_opening_diplomatic_weight = constant:video_game_in_sweden_value.zero }
+ 		set_temp_variable = { video_game_in_sweden_opening_offensive_weight = constant:video_game_in_sweden_value.zero }
+ 		set_temp_variable = { video_game_in_sweden_opening_casualties_weight = constant:video_game_in_sweden_value.zero }
+ 		if = {
+ 			limit = {
++				NOT = { has_country_flag = video_game_in_sweden_incident_diplomatic_seen }
+ 				OR = {
+ 					has_country_flag = video_game_in_sweden_diplomacy_active
+ 					is_in_faction = yes
+@@ -1866,25 +1909,39 @@ video_game_in_sweden_queue_opening_incident = {
+ 		}
+ 		if = {
+ 			limit = { has_war = yes }
+-			set_temp_variable = { video_game_in_sweden_opening_offensive_weight = constant:video_game_in_sweden_incident.opening_offensive_weight }
+-			set_temp_variable = { video_game_in_sweden_opening_casualties_weight = constant:video_game_in_sweden_incident.opening_casualties_weight }
+-		}
+-		random_list = {
+-			video_game_in_sweden_opening_production_weight = {
+-				set_variable = { video_game_in_sweden_current_incident = constant:video_game_in_sweden_value.incident_production }
+-			}
+-			video_game_in_sweden_opening_diplomatic_weight = {
+-				set_variable = { video_game_in_sweden_current_incident = constant:video_game_in_sweden_value.incident_diplomatic }
++			if = {
++				limit = { NOT = { has_country_flag = video_game_in_sweden_incident_offensive_seen } }
++				set_temp_variable = { video_game_in_sweden_opening_offensive_weight = constant:video_game_in_sweden_incident.opening_offensive_weight }
+ 			}
+-			video_game_in_sweden_opening_offensive_weight = {
+-				set_variable = { video_game_in_sweden_current_incident = constant:video_game_in_sweden_value.incident_offensive }
++			if = {
++				limit = { NOT = { has_country_flag = video_game_in_sweden_incident_casualties_seen } }
++				set_temp_variable = { video_game_in_sweden_opening_casualties_weight = constant:video_game_in_sweden_incident.opening_casualties_weight }
+ 			}
+-			video_game_in_sweden_opening_casualties_weight = {
+-				set_variable = { video_game_in_sweden_current_incident = constant:video_game_in_sweden_value.incident_casualties }
++		}
++		set_temp_variable = { video_game_in_sweden_opening_total_weight = video_game_in_sweden_opening_production_weight }
++		add_to_temp_variable = { video_game_in_sweden_opening_total_weight = video_game_in_sweden_opening_diplomatic_weight }
++		add_to_temp_variable = { video_game_in_sweden_opening_total_weight = video_game_in_sweden_opening_offensive_weight }
++		add_to_temp_variable = { video_game_in_sweden_opening_total_weight = video_game_in_sweden_opening_casualties_weight }
++		if = {
++			limit = { check_variable = { video_game_in_sweden_opening_total_weight > constant:video_game_in_sweden_value.zero } }
++			set_country_flag = video_game_in_sweden_opening_incident_queued
++			random_list = {
++				video_game_in_sweden_opening_production_weight = {
++					set_variable = { video_game_in_sweden_current_incident = constant:video_game_in_sweden_value.incident_production }
++				}
++				video_game_in_sweden_opening_diplomatic_weight = {
++					set_variable = { video_game_in_sweden_current_incident = constant:video_game_in_sweden_value.incident_diplomatic }
++				}
++				video_game_in_sweden_opening_offensive_weight = {
++					set_variable = { video_game_in_sweden_current_incident = constant:video_game_in_sweden_value.incident_offensive }
++				}
++				video_game_in_sweden_opening_casualties_weight = {
++					set_variable = { video_game_in_sweden_current_incident = constant:video_game_in_sweden_value.incident_casualties }
++				}
+ 			}
++			video_game_in_sweden_prepare_incident_severity = yes
++			country_event = { id = chaosx.nr24.30 days = constant:video_game_in_sweden_timing.evolution_iii_opening_incident_days }
+ 		}
+-		video_game_in_sweden_prepare_incident_severity = yes
+-		country_event = { id = chaosx.nr24.30 days = constant:video_game_in_sweden_timing.evolution_iii_opening_incident_days }
+ 	}
+ }
+ 
+@@ -2696,6 +2753,10 @@ video_game_in_sweden_close_program = {
+ 			}
+ 			set_country_flag = video_game_in_sweden_cleanup_owns_host
+ 		}
++		if = {
++			limit = { has_country_flag = video_game_in_sweden_cleanup_owns_host }
++			video_game_in_sweden_publish_foreign_summary = yes
++		}
+ 		video_game_in_sweden_clear_mission_state = yes
+ 		video_game_in_sweden_cancel_active_missions = yes
+ 		if = {
+@@ -2766,6 +2827,7 @@ video_game_in_sweden_close_program = {
+ 				remove_unit_leader_trait = video_game_in_sweden_rulebook_commander
+ 			}
+ 		}
++		clr_country_flag = video_game_in_sweden_followup_review_running
+ 		clr_country_flag = video_game_in_sweden_program_active
+ 		clr_country_flag = video_game_in_sweden_prefire_opening_pending
+ 		clr_country_flag = video_game_in_sweden_program_closing
+@@ -3011,24 +3073,6 @@ video_game_in_sweden_adjust_incident_reliance = {
+ 	video_game_in_sweden_change_reliance = yes
+ }
+ 
+-# COUNTRY scope. Clears the seen-family cycle once every valid family has
+-# appeared, so the next draw can repeat a family only in a new cycle.
+-video_game_in_sweden_reset_incident_cycle = {
+-	clr_country_flag = video_game_in_sweden_incident_terrain_seen
+-	clr_country_flag = video_game_in_sweden_incident_supply_seen
+-	clr_country_flag = video_game_in_sweden_incident_enemy_seen
+-	clr_country_flag = video_game_in_sweden_incident_template_seen
+-	clr_country_flag = video_game_in_sweden_incident_diplomatic_seen
+-	clr_country_flag = video_game_in_sweden_incident_workplace_seen
+-	clr_country_flag = video_game_in_sweden_incident_party_seen
+-	clr_country_flag = video_game_in_sweden_incident_casualties_seen
+-	clr_country_flag = video_game_in_sweden_incident_counterplan_seen
+-	clr_country_flag = video_game_in_sweden_incident_bootleg_seen
+-	clr_country_flag = video_game_in_sweden_incident_production_seen
+-	clr_country_flag = video_game_in_sweden_incident_offensive_seen
+-	clr_country_flag = video_game_in_sweden_enemy_adaptation
+-}
+-
+ # COUNTRY scope. Monthly incident check. A due incident fires with a chance
+ # that rises with Reliance and officer competition and falls with debriefed
+ # doctrine, a red team and field validation. Incidents pause during a severe
+@@ -3041,11 +3085,8 @@ video_game_in_sweden_roll_incident = {
+ 			NOT = { video_game_in_sweden_is_incident_pause_crisis = yes }
+ 			check_variable = { var = video_game_in_sweden_current_incident value = 0 compare = equals }
+ 		}
+-		# Once every currently valid family has appeared, begin a fresh cycle.
+-		if = {
+-			limit = { NOT = { video_game_in_sweden_has_unseen_incident_family = yes } }
+-			video_game_in_sweden_reset_incident_cycle = yes
+-		}
++		# Each family is shown once for this cabinet. A later phase can unlock
++		# another unseen family, but an exhausted pool does not recycle prose.
+ 		if = {
+ 			limit = { video_game_in_sweden_has_unseen_incident_family = yes }
+ 			video_game_in_sweden_compute_incident_chance = yes
+@@ -3802,166 +3843,216 @@ video_game_in_sweden_clear_answering_partner = {
+ 	}
+ }
+ 
++# COUNTRY scope, the answering partner. Replies remain individual choices for
++# foreign players, but Sweden receives one summary for the whole licence round.
+ video_game_in_sweden_queue_foreign_report = {
+ 	if = {
+ 		limit = {
+ 			has_event_target = video_game_in_sweden_host
+ 			event_target:video_game_in_sweden_host = { exists = yes }
+ 		}
+-		if = {
+-			limit = { is_ai = no }
+-			set_country_flag = video_game_in_sweden_foreign_direct_choice
+-		}
+-		save_global_event_target_as = video_game_in_sweden_last_partner
+-		if = {
+-			limit = {
+-				event_target:video_game_in_sweden_host = {
+-					is_ai = no
+-					OR = {
+-						check_variable = {
+-							var = video_game_in_sweden_foreign_report_count
+-							value = constant:video_game_in_sweden_event.maximum_visible_foreign_reports
+-							compare = less_than
+-						}
+-						event_target:video_game_in_sweden_foreign_partner = {
+-							has_country_flag = video_game_in_sweden_foreign_direct_choice
+-						}
+-					}
+-				}
++		event_target:video_game_in_sweden_host = {
++			add_to_variable = { video_game_in_sweden_foreign_replied_count = constant:video_game_in_sweden_value.one }
++			if = {
++				limit = { check_variable = { video_game_in_sweden_foreign_outcome = constant:video_game_in_sweden_value.foreign_copy } }
++				add_to_variable = { video_game_in_sweden_foreign_copy_count = constant:video_game_in_sweden_value.one }
+ 			}
+-			event_target:video_game_in_sweden_host = {
+-				set_country_flag = video_game_in_sweden_foreign_report_pending
+-				add_to_variable = { video_game_in_sweden_foreign_report_count = 1 }
+-				country_event = { id = chaosx.nr24.41 days = 1 }
++			else_if = {
++				limit = { check_variable = { video_game_in_sweden_foreign_outcome = constant:video_game_in_sweden_value.foreign_study } }
++				add_to_variable = { video_game_in_sweden_foreign_study_count = constant:video_game_in_sweden_value.one }
++			}
++			else_if = {
++				limit = { check_variable = { video_game_in_sweden_foreign_outcome = constant:video_game_in_sweden_value.foreign_ban } }
++				add_to_variable = { video_game_in_sweden_foreign_ban_count = constant:video_game_in_sweden_value.one }
++			}
++			else_if = {
++				limit = { check_variable = { video_game_in_sweden_foreign_outcome = constant:video_game_in_sweden_value.foreign_ridicule } }
++				add_to_variable = { video_game_in_sweden_foreign_ridicule_count = constant:video_game_in_sweden_value.one }
++			}
++			else_if = {
++				limit = { check_variable = { video_game_in_sweden_foreign_outcome = constant:video_game_in_sweden_value.foreign_no_action } }
++				add_to_variable = { video_game_in_sweden_foreign_ignored_count = constant:video_game_in_sweden_value.one }
+ 			}
+-		}
+-		else = {
+ 			if = {
+-				limit = { has_event_target = video_game_in_sweden_last_partner }
+-				clear_global_event_target = video_game_in_sweden_last_partner
++				limit = {
++					check_variable = { var = video_game_in_sweden_foreign_replied_count value = constant:video_game_in_sweden_event.maximum_foreign_responses compare = greater_than_or_equals }
++				}
++				video_game_in_sweden_publish_foreign_summary = yes
+ 			}
+ 		}
+ 	}
+-	else = {
+-		if = {
+-			limit = { has_event_target = video_game_in_sweden_last_partner }
+-			clear_global_event_target = video_game_in_sweden_last_partner
+-		}
+-	}
++}
++
++# COUNTRY scope, Sweden. Called after the last reply or when the programme
++# closes. Freeze the counts before dispatch so late replies cannot change an
++# open report. Queued and pending flags precede the one delayed event.
++video_game_in_sweden_publish_foreign_summary = {
+ 	if = {
+-		limit = { has_country_flag = video_game_in_sweden_foreign_direct_choice }
+-		clr_country_flag = video_game_in_sweden_foreign_direct_choice
++		limit = {
++			exists = yes
++			is_ai = no
++			check_variable = { video_game_in_sweden_foreign_replied_count > constant:video_game_in_sweden_value.zero }
++			NOT = { has_country_flag = video_game_in_sweden_foreign_summary_queued }
++		}
++		set_variable = { video_game_in_sweden_foreign_summary_copy = video_game_in_sweden_foreign_copy_count }
++		set_variable = { video_game_in_sweden_foreign_summary_study = video_game_in_sweden_foreign_study_count }
++		set_variable = { video_game_in_sweden_foreign_summary_ban = video_game_in_sweden_foreign_ban_count }
++		set_variable = { video_game_in_sweden_foreign_summary_ridicule = video_game_in_sweden_foreign_ridicule_count }
++		set_variable = { video_game_in_sweden_foreign_summary_ignored = video_game_in_sweden_foreign_ignored_count }
++		set_country_flag = video_game_in_sweden_foreign_report_pending
++		set_country_flag = video_game_in_sweden_foreign_summary_queued
++		country_event = { id = chaosx.nr24.41 days = 1 }
+ 	}
+ }
+ 
+ video_game_in_sweden_resolve_foreign_copy = {
+-	clr_country_flag = video_game_in_sweden_foreign_response_pending
+ 	if = {
+-		limit = { has_event_target = video_game_in_sweden_host }
+-		save_global_event_target_as = video_game_in_sweden_last_partner
+-		set_temp_variable = { video_game_in_sweden_foreign_copy_days = constant:video_game_in_sweden_timing.foreign_copy_days }
+-		add_dynamic_modifier = {
+-			modifier = video_game_in_sweden_foreign_copy
+-			days = video_game_in_sweden_foreign_copy_days
+-		}
+-		event_target:video_game_in_sweden_host = {
+-			set_variable = { video_game_in_sweden_foreign_outcome = constant:video_game_in_sweden_value.foreign_copy }
+-			set_temp_variable = { video_game_in_sweden_reliance_delta = constant:video_game_in_sweden_reliance.foreign_license_gain }
+-			video_game_in_sweden_change_reliance = yes
+-		}
+-		add_opinion_modifier = {
+-			target = event_target:video_game_in_sweden_host
+-			modifier = video_game_in_sweden_license_copied
++		limit = { video_game_in_sweden_can_answer_foreign_offer = yes }
++		clr_country_flag = video_game_in_sweden_foreign_response_pending
++		if = {
++			limit = { has_event_target = video_game_in_sweden_host }
++			set_temp_variable = { video_game_in_sweden_foreign_copy_days = constant:video_game_in_sweden_timing.foreign_copy_days }
++			add_dynamic_modifier = {
++				modifier = video_game_in_sweden_foreign_copy
++				days = video_game_in_sweden_foreign_copy_days
++			}
++			event_target:video_game_in_sweden_host = {
++				set_variable = { video_game_in_sweden_foreign_outcome = constant:video_game_in_sweden_value.foreign_copy }
++				set_temp_variable = { video_game_in_sweden_reliance_delta = constant:video_game_in_sweden_reliance.foreign_license_gain }
++				video_game_in_sweden_change_reliance = yes
++			}
++			add_opinion_modifier = {
++				target = event_target:video_game_in_sweden_host
++				modifier = video_game_in_sweden_license_copied
++			}
+ 		}
++		video_game_in_sweden_queue_foreign_report = yes
++		video_game_in_sweden_clear_answering_partner = yes
++	}
++	else = {
++		# An unanswered offer is void once the cabinet or the partner is lost.
++		# Cleanup still cannot release a different, newer partner.
++		clr_country_flag = video_game_in_sweden_foreign_response_pending
++		video_game_in_sweden_clear_answering_partner = yes
+ 	}
+-	video_game_in_sweden_queue_foreign_report = yes
+-	video_game_in_sweden_clear_answering_partner = yes
+ }
+ 
+ video_game_in_sweden_resolve_foreign_study = {
+-	clr_country_flag = video_game_in_sweden_foreign_response_pending
+ 	if = {
+-		limit = { has_event_target = video_game_in_sweden_host }
+-		save_global_event_target_as = video_game_in_sweden_last_partner
+-		set_temp_variable = { video_game_in_sweden_foreign_study_days = constant:video_game_in_sweden_timing.foreign_study_days }
+-		add_dynamic_modifier = {
+-			modifier = video_game_in_sweden_foreign_study
+-			days = video_game_in_sweden_foreign_study_days
+-		}
+-		event_target:video_game_in_sweden_host = {
+-			set_variable = { video_game_in_sweden_foreign_outcome = constant:video_game_in_sweden_value.foreign_study }
+-			add_political_power = constant:video_game_in_sweden_award.foreign_study_political_power
+-		}
+-		add_opinion_modifier = {
+-			target = event_target:video_game_in_sweden_host
+-			modifier = video_game_in_sweden_license_studied
++		limit = { video_game_in_sweden_can_answer_foreign_offer = yes }
++		clr_country_flag = video_game_in_sweden_foreign_response_pending
++		if = {
++			limit = { has_event_target = video_game_in_sweden_host }
++			set_temp_variable = { video_game_in_sweden_foreign_study_days = constant:video_game_in_sweden_timing.foreign_study_days }
++			add_dynamic_modifier = {
++				modifier = video_game_in_sweden_foreign_study
++				days = video_game_in_sweden_foreign_study_days
++			}
++			event_target:video_game_in_sweden_host = {
++				set_variable = { video_game_in_sweden_foreign_outcome = constant:video_game_in_sweden_value.foreign_study }
++				add_political_power = constant:video_game_in_sweden_award.foreign_study_political_power
++			}
++			add_opinion_modifier = {
++				target = event_target:video_game_in_sweden_host
++				modifier = video_game_in_sweden_license_studied
++			}
+ 		}
++		video_game_in_sweden_queue_foreign_report = yes
++		video_game_in_sweden_clear_answering_partner = yes
++	}
++	else = {
++		# An unanswered offer is void once the cabinet or the partner is lost.
++		# Cleanup still cannot release a different, newer partner.
++		clr_country_flag = video_game_in_sweden_foreign_response_pending
++		video_game_in_sweden_clear_answering_partner = yes
+ 	}
+-	video_game_in_sweden_queue_foreign_report = yes
+-	video_game_in_sweden_clear_answering_partner = yes
+ }
+ 
+ video_game_in_sweden_resolve_foreign_ban = {
+-	clr_country_flag = video_game_in_sweden_foreign_response_pending
+ 	if = {
+-		limit = { has_event_target = video_game_in_sweden_host }
+-		save_global_event_target_as = video_game_in_sweden_last_partner
+-		set_temp_variable = { video_game_in_sweden_foreign_ban_days = constant:video_game_in_sweden_timing.foreign_ban_days }
+-		add_dynamic_modifier = {
+-			modifier = video_game_in_sweden_foreign_ban
+-			days = video_game_in_sweden_foreign_ban_days
+-		}
+-		event_target:video_game_in_sweden_host = {
+-			set_variable = { video_game_in_sweden_foreign_outcome = constant:video_game_in_sweden_value.foreign_ban }
+-			set_temp_variable = { video_game_in_sweden_reliance_delta = constant:video_game_in_sweden_reliance.separate_policy_loss }
+-			multiply_temp_variable = { video_game_in_sweden_reliance_delta = -1 }
+-			video_game_in_sweden_change_reliance = yes
+-		}
+-		add_opinion_modifier = {
+-			target = event_target:video_game_in_sweden_host
+-			modifier = video_game_in_sweden_license_banned
++		limit = { video_game_in_sweden_can_answer_foreign_offer = yes }
++		clr_country_flag = video_game_in_sweden_foreign_response_pending
++		if = {
++			limit = { has_event_target = video_game_in_sweden_host }
++			set_temp_variable = { video_game_in_sweden_foreign_ban_days = constant:video_game_in_sweden_timing.foreign_ban_days }
++			add_dynamic_modifier = {
++				modifier = video_game_in_sweden_foreign_ban
++				days = video_game_in_sweden_foreign_ban_days
++			}
++			event_target:video_game_in_sweden_host = {
++				set_variable = { video_game_in_sweden_foreign_outcome = constant:video_game_in_sweden_value.foreign_ban }
++				set_temp_variable = { video_game_in_sweden_reliance_delta = constant:video_game_in_sweden_reliance.separate_policy_loss }
++				multiply_temp_variable = { video_game_in_sweden_reliance_delta = -1 }
++				video_game_in_sweden_change_reliance = yes
++			}
++			add_opinion_modifier = {
++				target = event_target:video_game_in_sweden_host
++				modifier = video_game_in_sweden_license_banned
++			}
+ 		}
++		video_game_in_sweden_queue_foreign_report = yes
++		video_game_in_sweden_clear_answering_partner = yes
++	}
++	else = {
++		# An unanswered offer is void once the cabinet or the partner is lost.
++		# Cleanup still cannot release a different, newer partner.
++		clr_country_flag = video_game_in_sweden_foreign_response_pending
++		video_game_in_sweden_clear_answering_partner = yes
+ 	}
+-	video_game_in_sweden_queue_foreign_report = yes
+-	video_game_in_sweden_clear_answering_partner = yes
+ }
+ 
+ video_game_in_sweden_resolve_foreign_ridicule = {
+-	clr_country_flag = video_game_in_sweden_foreign_response_pending
+ 	if = {
+-		limit = { has_event_target = video_game_in_sweden_host }
+-		save_global_event_target_as = video_game_in_sweden_last_partner
+-		set_temp_variable = { video_game_in_sweden_foreign_ridicule_days = constant:video_game_in_sweden_timing.foreign_ridicule_days }
+-		add_dynamic_modifier = {
+-			modifier = video_game_in_sweden_foreign_ridicule
+-			days = video_game_in_sweden_foreign_ridicule_days
+-		}
+-		event_target:video_game_in_sweden_host = {
+-			set_variable = { video_game_in_sweden_foreign_outcome = constant:video_game_in_sweden_value.foreign_ridicule }
+-			add_political_power = constant:video_game_in_sweden_award.foreign_ridicule_political_power
+-			# A later Swedish victory embarrasses the newspapers that laughed.
+-			add_to_array = { video_game_in_sweden_ridiculers = PREV }
+-		}
+-		add_opinion_modifier = {
+-			target = event_target:video_game_in_sweden_host
+-			modifier = video_game_in_sweden_license_ridiculed
++		limit = { video_game_in_sweden_can_answer_foreign_offer = yes }
++		clr_country_flag = video_game_in_sweden_foreign_response_pending
++		if = {
++			limit = { has_event_target = video_game_in_sweden_host }
++			set_temp_variable = { video_game_in_sweden_foreign_ridicule_days = constant:video_game_in_sweden_timing.foreign_ridicule_days }
++			add_dynamic_modifier = {
++				modifier = video_game_in_sweden_foreign_ridicule
++				days = video_game_in_sweden_foreign_ridicule_days
++			}
++			event_target:video_game_in_sweden_host = {
++				set_variable = { video_game_in_sweden_foreign_outcome = constant:video_game_in_sweden_value.foreign_ridicule }
++				add_political_power = constant:video_game_in_sweden_award.foreign_ridicule_political_power
++				# A later Swedish victory embarrasses the newspapers that laughed.
++				add_to_array = { video_game_in_sweden_ridiculers = PREV }
++			}
++			add_opinion_modifier = {
++				target = event_target:video_game_in_sweden_host
++				modifier = video_game_in_sweden_license_ridiculed
++			}
+ 		}
++		video_game_in_sweden_queue_foreign_report = yes
++		video_game_in_sweden_clear_answering_partner = yes
++	}
++	else = {
++		# An unanswered offer is void once the cabinet or the partner is lost.
++		# Cleanup still cannot release a different, newer partner.
++		clr_country_flag = video_game_in_sweden_foreign_response_pending
++		video_game_in_sweden_clear_answering_partner = yes
+ 	}
+-	video_game_in_sweden_queue_foreign_report = yes
+-	video_game_in_sweden_clear_answering_partner = yes
+ }
+ 
+ video_game_in_sweden_resolve_foreign_no_action = {
+-	clr_country_flag = video_game_in_sweden_foreign_response_pending
+ 	if = {
+-		limit = { has_event_target = video_game_in_sweden_host }
+-		save_global_event_target_as = video_game_in_sweden_last_partner
+-		event_target:video_game_in_sweden_host = {
+-			set_variable = { video_game_in_sweden_foreign_outcome = constant:video_game_in_sweden_value.foreign_no_action }
++		limit = { video_game_in_sweden_can_answer_foreign_offer = yes }
++		clr_country_flag = video_game_in_sweden_foreign_response_pending
++		if = {
++			limit = { has_event_target = video_game_in_sweden_host }
++			event_target:video_game_in_sweden_host = {
++				set_variable = { video_game_in_sweden_foreign_outcome = constant:video_game_in_sweden_value.foreign_no_action }
++			}
+ 		}
++		video_game_in_sweden_queue_foreign_report = yes
++		video_game_in_sweden_clear_answering_partner = yes
++	}
++	else = {
++		# An unanswered offer is void once the cabinet or the partner is lost.
++		# Cleanup still cannot release a different, newer partner.
++		clr_country_flag = video_game_in_sweden_foreign_response_pending
++		video_game_in_sweden_clear_answering_partner = yes
+ 	}
+-	video_game_in_sweden_queue_foreign_report = yes
+-	video_game_in_sweden_clear_answering_partner = yes
+ }
+ 
+ video_game_in_sweden_update_achievement_tracking = {
+diff --git a/common/scripted_localisation/024_video_game_in_sweden.txt b/common/scripted_localisation/024_video_game_in_sweden.txt
+index ed88e9a74..70f7f266d 100644
+--- a/common/scripted_localisation/024_video_game_in_sweden.txt
++++ b/common/scripted_localisation/024_video_game_in_sweden.txt
+@@ -159,6 +159,10 @@ defined_text = {
+ 
+ defined_text = {
+ 	name = GetVideoGameActiveMission
++	text = {
++		trigger = { video_game_in_sweden_has_pending_mission_report = yes }
++		localization_key = video_game_mission_report_pending
++	}
+ 	text = {
+ 		trigger = { check_variable = { var = video_game_in_sweden_active_mission value = constant:video_game_in_sweden_value.mission_field_validation compare = equals } }
+ 		localization_key = video_game_mission_field_validation
+@@ -645,3 +649,25 @@ defined_text = {
+ 		localization_key = video_game_reassessment_victory_none
+ 	}
+ }
++
++# Audit result text, scoped to the receiving Swedish country. A shorter
++# reassessment cannot offer another copy of the same one-time follow-up.
++defined_text = {
++	name = GetVideoGameAuditPartialResult
++	text = {
++		trigger = { has_country_flag = video_game_in_sweden_narrow_reality_audit_started }
++		localization_key = video_game_narrow_audit_partial_result_tt
++	}
++	text = { localization_key = video_game_audit_partial_result_tt }
++}
++
++# Audit result text, scoped to the receiving Swedish country. A shorter
++# reassessment cannot offer another copy of the same one-time follow-up.
++defined_text = {
++	name = GetVideoGameAuditFailedResult
++	text = {
++		trigger = { has_country_flag = video_game_in_sweden_narrow_reality_audit_started }
++		localization_key = video_game_narrow_audit_failed_result_tt
++	}
++	text = { localization_key = video_game_audit_failed_result_tt }
++}
+diff --git a/common/scripted_triggers/024_video_game_in_sweden_triggers.txt b/common/scripted_triggers/024_video_game_in_sweden_triggers.txt
+index 8ac1f3ab5..7feef8d3e 100644
+--- a/common/scripted_triggers/024_video_game_in_sweden_triggers.txt
++++ b/common/scripted_triggers/024_video_game_in_sweden_triggers.txt
+@@ -55,6 +55,17 @@ video_game_in_sweden_is_current_host = {
+ 	video_game_in_sweden_is_valid_host = yes
+ }
+ 
++# COUNTRY scope, the responding foreign government. Boolean only, no inputs
++# or side effects. An offer survives only while its cabinet and diplomacy do.
++video_game_in_sweden_can_answer_foreign_offer = {
++	has_country_flag = video_game_in_sweden_foreign_response_pending
++	exists = yes
++	NOT = { has_capitulated = yes }
++	has_event_target = video_game_in_sweden_host
++	event_target:video_game_in_sweden_host = { video_game_in_sweden_is_current_host = yes }
++	NOT = { has_war_with = event_target:video_game_in_sweden_host }
++}
++
+ video_game_in_sweden_can_pay_controlled_exercise = {
+ 	NOT = { has_army_experience < constant:video_game_in_sweden_cost.controlled_exercise_army_experience }
+ 	NOT = { has_equipment = { support_equipment < constant:video_game_in_sweden_cost.controlled_exercise_support_equipment } }
+@@ -274,7 +285,25 @@ video_game_in_sweden_has_field_start_package = {
+ 	controls_state = constant:video_game_in_sweden_event.stockholm_state
+ }
+ 
++# COUNTRY scope. The result stays owned by its report through acknowledgement.
++video_game_in_sweden_has_pending_mission_report = {
++	OR = {
++		has_country_flag = video_game_in_sweden_field_validation_report_pending
++		has_country_flag = video_game_in_sweden_reality_audit_report_pending
++		has_country_flag = video_game_in_sweden_dual_track_report_pending
++		has_country_flag = video_game_in_sweden_restriction_report_pending
++	}
++}
++
+ video_game_in_sweden_no_active_mission = {
++	# Start effects reserve the mission immediately. Native activation may
++	# register it at the next daily check, so both forms must be absent.
++	NOT = { has_country_flag = video_game_in_sweden_field_validation_active }
++	NOT = { has_country_flag = video_game_in_sweden_reality_audit_active }
++	NOT = { has_country_flag = video_game_in_sweden_dual_track_active }
++	NOT = { has_country_flag = video_game_in_sweden_restriction_active }
++	# A result owns its flags until the player acknowledges the delayed report.
++	NOT = { video_game_in_sweden_has_pending_mission_report = yes }
+ 	NOT = { has_active_mission = video_game_field_validation_mission }
+ 	NOT = { has_active_mission = video_game_reality_audit_mission }
+ 	NOT = { has_active_mission = video_game_dual_track_verification }
+diff --git a/docs/events/024_video_game_in_sweden/overview.md b/docs/events/024_video_game_in_sweden/overview.md
+index ce9a2f4f5..31d6c6c94 100644
+--- a/docs/events/024_video_game_in_sweden/overview.md
++++ b/docs/events/024_video_game_in_sweden/overview.md
+@@ -1,8 +1,8 @@
+ # Event 24: Video Game in Sweden
+ 
+-Implementation status is incomplete.
+-The current acceptance ledger is [report 16](../../plans/024_video_game_in_sweden_plans/16_source_repairs_and_remaining_acceptance_2026-10-03.md), with the implemented continuity and restriction repair tranche recorded in [report 22](../../plans/024_video_game_in_sweden_plans/22_runtime_continuity_and_restriction_receipts_2026-10-03.md).
+-Historical analysis below is not clearance for the current source revision or every accepted route.
++The current source, evidence, decisions, and live acceptance checklist are recorded in [the 6 October takeover status](../../plans/024_video_game_in_sweden_plans/takeover_status_2026-10-06.md).
++The full event remains below completion until the outstanding probability and native acceptance checks are resolved.
++The 3 October [source repair report](../../plans/024_video_game_in_sweden_plans/16_source_repairs_and_remaining_acceptance_2026-10-03.md) and [runtime repair report](../../plans/024_video_game_in_sweden_plans/22_runtime_continuity_and_restriction_receipts_2026-10-03.md) retain historical evidence for their own source revisions.
+ 
+ The user's explicit 2026-09-20 instruction retires the Field-Validated Planner trait and reward. Field validation remains a mission with its other outcomes. Full field validation, Reality Audit, and event cleanup remove Rulebook Commander without awarding a replacement trait.
+ 
+@@ -440,6 +440,16 @@ Every path into Evolution II requires broad public reach, including the step fro
+ An officer or controlled programme that never widened civilian access stays in Evolution I and can conclude there.
+ The officer route gains its reach by publishing its formal league tables through `video_game_expand_access`, which remains available during Evolution I after the league is formalised, so a high-Chaos officer opening that enters Evolution I at once can still reach the national craze.
+ 
++## Report frequency
++
++Each incident family is shown at most once during the cabinet's lifetime.
++Exhausting the currently valid families does not reset their seen flags, and later evolutions can admit additional unseen families.
++There are twelve distinct incident families and no world news broadcast.
++Opening, each evolution, National Final, schoolroom campaign, final review, containment review, and Trust reassessment each have their existing stage or shown guards.
++A failed player-ordered mission may be attempted again, but one completed attempt dispatches one result report.
++Foreign choices are capped at three recipients and one Swedish summary.
++A refused manual firing request produces one shared requester report without changing the Swedish programme.
++
+ ## Commander lifecycle
+ 
+ The Rulebook Commander is a rare result of competitive command culture, not a guaranteed reward.
+@@ -466,7 +476,9 @@ Each selected partner receives one response event and one temporary opinion or i
+ 
+ The public response choices are copy, study, ban, ridicule, and no action.
+ 
+-The host receives no more than two visible foreign reports unless a human foreign office makes the choice directly, while the total validated response pool remains capped at three.
++Sweden receives one summary for the entire licence round after its third answer, or at programme closure if fewer replies arrived.
++The summary preserves the five outcome counts before dispatch, and every foreign player still receives at most one individual choice.
++Each resolver consumes its pending offer before rewards and rechecks the current host, respondent, war, and capitulation, so an expired popup cannot grant stale benefits or release a newer partner.
+ 
+ Foreign countries do not receive Sweden's decision category, Reliance variable, staged ideas, missions, or evolution chain.
+ 
+@@ -476,7 +488,7 @@ The AI licenses less as a subject (0.4) and when its sea lanes are closed in war
+ Every government that ridiculed the cabinet is remembered, and if Sweden later ends a war with a favourable war score and no recent core loss during the programme, each receives Embarrassment over the Swedish Cabinet (political power gain -5% for 60 days) once.
+ The four response opinion modifiers decay by one point a month.
+ 
+-The foreign response is dispatched after the configured delay and rechecks the host, partner, pending flag, war state, and capitulation state before opening. The host receives a compact report event after the foreign response is resolved.
++The foreign response is dispatched after the configured delay and rechecks the host, partner, pending flag, war state, and capitulation state before opening. Accepted answers contribute to the single Swedish summary.
+ The engine drops reply event `chaosx.nr24.40` if, in the day before it opens, its partner stops existing, capitulates or goes to war with Sweden. The 30-day maintenance therefore releases such a partner through `video_game_in_sweden_release_unreachable_foreign_partner`, which clears the partner's pending flag and the `video_game_in_sweden_foreign_partner` target with the same cleanup as the dispatch fallback (`video_game_in_sweden_release_foreign_partner`).
+ Foreign Licenses then becomes available again while responses and partners remain. A response already sent stays counted, so the cap of three is never exceeded, and a released partner keeps `video_game_in_sweden_foreign_response_seen` and is not drawn again. A partner that can still answer is never touched.
+ Each reply option clears the partner target through `video_game_in_sweden_clear_answering_partner`, which clears it only while it still names the answering government, so a late answer from a released partner cannot take the target from a newer partner whose reply is on its way.
+@@ -495,13 +507,14 @@ The named probability scenarios are `P24-O1` through `P24-O4` in `P24_FINAL_OPEN
+ 
+ The four scenarios cover a peaceful stable staff opening, a peaceful public opening, a wartime officer opening, and a severe emergency with supply and core-loss flags.
+ 
+-The live HOI4 probability inspection resolved the three-option opening pool with no unresolved inputs.
++The archived probability inspection resolved the three-option opening pool at its recorded source revision.
++Those archived results do not certify subsequent route, incident, or AI changes.
+ 
+ The named four-scenario evaluation produced bounded matrix evidence and reported 12 unresolved external or adapter inputs, so it is not presented as an exact normalized probability claim.
+ 
+ The emergency source state makes controlled handling dominant and sets the commercial opening factor to zero, which is an intentional safety result rather than a hidden forced crisis.
+ 
+-A bounded sweep across Chaos, stability, surrender progress, and army experience covers six additional safety points and preserves the same explicit uncertainty. The current-source control comparison reports zero comparison changes under the identical named matrix.
++A bounded sweep across Chaos, stability, surrender progress, and army experience covers six additional safety points and preserves the same explicit uncertainty. The historical current-source control comparison reports zero comparison changes under its identical named matrix.
+ 
+ ## Achievements and persistence
+ 
+@@ -548,11 +561,11 @@ Report `.50` is shown once per reassessment: the fixed one-year review and any e
+ Restriction closes official leagues, removes score-based policy authority, and withdraws state-supported public facilities through distinct departmental receipts.
+ The existing sixty-day proof period yields receipts at days twenty, forty, and sixty within the existing ninety-day mission.
+ Its completion closes the category without granting Validated Wargaming Methods.
+-Only a ninety-day Stability backlash remains, carried by an iconless finite modifier.
++Only a ninety-day Stability backlash remains, carried by a finite modifier with the national-craze icon.
+ The closed host can still receive its final restriction report, and late callbacks cannot renew the result.
+ 
+ Native civilian-office reservations use their actual action terms.
+-Foreign licensing and establishment of the second ledger reserve an office for thirty days, separately from reply delivery and mission verification.
++Foreign licensing and establishment of an independent planning staff reserve an office for thirty days, separately from reply delivery and mission verification.
+ National seasons begin with forty-five days and increase later reservations to sixty, seventy-five, then ninety days.
+ Full and narrow audit rows select their respective regional and proof-period descriptions through one flag-based localisation getter.
+ 
+diff --git a/docs/plans/024_video_game_in_sweden_plans/agent_decisions_2026-10-05.md b/docs/plans/024_video_game_in_sweden_plans/agent_decisions_2026-10-05.md
+new file mode 100644
+index 000000000..88654aa72
+--- /dev/null
++++ b/docs/plans/024_video_game_in_sweden_plans/agent_decisions_2026-10-05.md
+@@ -0,0 +1,124 @@
++# Event 024 decisions carried into the 6 October finishing pass
++
++Acceptance basis: the user assigns the complete 024 workstream and its inherited changes to this pass, authorizes repairs to weak design under G6, requires G1 through G8, and explicitly reserves live play for the orchestrator.
++The 4 October decision log remains historical implementation evidence.
++This file records decisions made under the user's requested filename during the 6 October pass.
++
++## D27. Manual firing refusals use the shared requester report
++
++Disposition: implemented in `video_game_in_sweden_prepare_random_event_fire`.
++A refused manual request selects `no_country` when no Swedish host is available, `already_active` for a running cabinet, or `unavailable` after the fire-once opening has been spent.
++The existing Settings requester target and per-request guard deliver one report, including a request made by a foreign player, and suppress the dispatcher's subsequent generic report.
++Natural selection stays quiet and a running cabinet retains its host and achievements.
++The new runtime case tests all three reasons and repeated calls within one request.
++No shared Settings source is edited.
++
++## D28. Foreign replies produce one Swedish summary
++
++Disposition: implemented in the owned event and effects files.
++The old queue could show the same report for each reply and bypass its cap for human partners.
++Each responding country retains its own single policy choice, while Sweden receives one summary after the third answer or at programme closure if fewer replies arrived.
++The summary copies the five outcome counts before dispatch so a late answer cannot alter an open report.
++The summary's count and pending guard are set before scheduling, and its shown guard is set when it opens.
++The report states the received choices in plain text and adds no reward.
++The queued latch is a country flag, and the obsolete numeric report counter and configurable repeat cap are removed.
++Outcome counts remain actual counts from zero through three, while publication is boolean.
++Existing foreign rewards, costs, and the three-recipient limit retain their values.
++The runtime cases cover repeated summary requests, stable counts, and an empty round.
++
++## D29. Expired foreign offers cannot grant rewards
++
++Disposition: implemented in all five foreign resolvers.
++Each answer checks its still-pending offer, the current Swedish host, the answering country's existence and capitulation, and peace with Sweden before granting consequences or counting a reply.
++This closes the gap where an already-open foreign popup could grant Swedish benefits after closure, war, or partner release.
++Invalid answers clear only their own pending state and use the existing identity-guarded pointer cleanup.
++The previous R4-8 policy allowing released partners to apply their late outcome is superseded by this decision because an expired offer should not grant a second or stale benefit.
++The runtime case tests every resolver after release, host loss, and war, with a different newer partner retained.
++
++## D30. The lifetime fixture states its actual dependency boundary
++
++Disposition: implemented in `tests/lifetime/actual_source_lifetime_audit.py`.
++The failing ticket assertion treated an archived 024 caller with today's shared helper, trigger, and tuning as a complete historical baseline.
++The shared helper's handling of caller-owned load storage changed, so the observed middle value is two tickets rather than four.
++The test retains the zero-ticket uninitialized-output check and verifies the fully initialized archived caller against the current caller's two-ticket result.
++Its middle case is explicitly an observation under current dependencies, not a historical probability comparison.
++The runner accepts `--output` so this pass preserves the previous tracked report and writes separate current evidence.
++All six lifetime cases pass without a gameplay or tuning change.
++
++## D31. Incident families remain seen for the whole cabinet
++
++Disposition: implemented in `video_game_in_sweden_roll_incident`.
++The previous reset recycled all seen families whenever the currently valid pool was exhausted, so a peaceful baseline could repeat the same counterplan and bootleg prose indefinitely.
++The reset call and its unused helper are removed under the explicit G2 instruction and the core specification's rule that rare incidents must not repeat endlessly.
++Each of the twelve distinct families retains its existing eligibility, cost, severity, and relative weight when it is first available.
++Later phases can open additional unseen families, while an exhausted pool stays quiet.
++The pre-edit effects source is preserved with its SHA-256 in `20261006_probability` for the auditor's same-scenario comparison.
++Probability-tool discovery succeeded, while the weighted helper inspection was still pending after more than two minutes when the authorized source repair proceeded.
++No numerical probability acceptance is inferred from this source review.
++The Evolution III opening pool also excludes each already-seen family and checks that the remaining total weight is positive before drawing.
++If all four opening families have already appeared, the transition adds no duplicate report.
++This is an explicit G2 design change to the earlier guaranteed opening incident, rather than an unreported omission.
++The runtime case covers exhaustion of all four opening families.
++
++## D32. Conclusions and audit reports describe what happened
++
++Disposition: implemented in both owned English localisation files after the independent wording audit.
++The ordinary conclusion describes retained training and civilian clubs, the officer conclusion describes retiring league rankings, and the commercial aftermath describes municipal games.
++The audit reports name missing troops, stores, and independent reviews instead of a field package or recorded loss.
++Requirement text explains that an interruption can limit the result even after recovery.
++Acknowledgements describe outcomes, and the final-review title describes a decision about the cabinet.
++Foreign-licence text describes one summary and the current government's answer, preserving the displayed trade-opinion benefit, term, and civilian-office cost.
++Event Details, evolution titles, and catalog detail fields are unchanged.
++
++## D33. Cancelling a follow-up clears its running state
++
++Disposition: implemented by the decision auditor's local cancellation callback and the parent's programme-close cleanup.
++The timed follow-up could be cancelled when its host was lost without calling its normal completion effect, leaving its running marker set.
++Both paths clear that marker without granting the follow-up reward.
++Simple resource payment checks remain visible under the earlier accepted tooltip rule.
++
++## D34. Mission starts reserve the cabinet before native activation
++
++Disposition: implemented in `video_game_in_sweden_no_active_mission` after the independent decision audit.
++The old guard checked only native active missions, while each start effect sets its country flag before native activation registers the mission.
++The offline Decision modding reference at lines 465 through 479 documents daily activation checks.
++The guard checks all four immediate active flags as well as all four native missions, preventing a second same-day action from replacing the first mission after charging both costs.
++The idle state stays available, and normal completion and cancellation clear the same active flags.
++The pre-edit trigger file and hash are preserved in `20261006_probability` for scenario comparison.
++The runtime case checks every reserved flag with all native mission predicates false, then checks the idle state again.
++No cost, reward, weight, or duration value is retuned.
++
++## D35. One private predicate owns foreign-offer validity
++
++Disposition: implemented after the bounded scripted-system review.
++The five identical guards are extracted into `video_game_in_sweden_can_answer_foreign_offer` in the owned trigger file.
++It reads country flags, existence, capitulation, the saved current host, and war status and returns a boolean without side effects.
++All five resolver limits call it, and the same valid, repeated, released, closed-host, and wartime reply cases pass against the shared predicate.
++The host identity check retains both scope entries: the predicate enters Sweden from the responder, then the current-host trigger enters the saved host from Sweden and compares it with that Swedish PREV.
++The frozen `715b572e` effects snapshot remains the exact final weighted-pool source for the incident comparison.
++This later extraction changes no weighted-pool code or eligibility and is verified separately by source equivalence and the runtime cases.
++
++## D36. A mission result remains authoritative until it is answered
++
++Disposition: implemented after source review confirmed the delayed-report race.
++The no-active-mission predicate also excludes all four pending mission-report flags.
++A player therefore cannot start an audit that clears `dual_track_failed` before the queued dual-track report opens, or replace proof and result state before the previous report is acknowledged.
++Its single requirement tooltip names both running missions and unanswered result reports.
++The source case covers each pending flag with native missions absent.
++
++## D37. Primary and narrow audit reports state their own evidence
++
++Disposition: implemented in the owned event, scripted localisation, and English localisation files.
++The narrow reassessment has its own report title and full, partial, and failed descriptions.
++Partial and failed narrow tooltips no longer promise another copy of the one-time narrow action.
++The primary full description also accommodates the accepted active-front alternative instead of claiming every report came from all three Swedish regions.
++The four pending-report guards preserve these result and proof flags through delayed delivery and acknowledgement.
++There is no additional event, route, price, reward, or asset.
++An independent decision review rejected a suspected Trust-surge leak because the three direct recovery decisions already end the surge and record reassessment before starting their path.
++The existing early choices are retained and no duplicate review decision is added.
++
++## Validation limits
++
++The source model executes bounded declared predicates and records scheduled events.
++It does not prove native delivery, save persistence, decision presentation, modifier expiry, or achievements.
++Current MCP findings, probability coverage, graphics review, inherited-document dispositions, commits, and exact live checks are recorded in `takeover_status_2026-10-06.md`.
+diff --git a/docs/plans/024_video_game_in_sweden_plans/tests/lifetime/actual_source_lifetime_audit.py b/docs/plans/024_video_game_in_sweden_plans/tests/lifetime/actual_source_lifetime_audit.py
+index 469349302..1449b486d 100644
+--- a/docs/plans/024_video_game_in_sweden_plans/tests/lifetime/actual_source_lifetime_audit.py
++++ b/docs/plans/024_video_game_in_sweden_plans/tests/lifetime/actual_source_lifetime_audit.py
+@@ -324,20 +324,25 @@ class ActualSourceLifetime(unittest.TestCase):
+                     model.temp[key] = Decimal(0)
+                 model.call(outer)
+                 results.append(len(model.temp_arrays["video_game_in_sweden_prefire_host_pool"]))
+-            self.assertEqual(results, [0, 4, 2])
++            # This archives only the Event 24 wrapper. Its shared helpers and
++            # tuning are today's source, so the middle result is an observed
++            # compatibility case, not a frozen historical ticket count.
++            self.assertEqual(results[0], 0)
+         finally:
+             APIS[outer] = current
+         model.temp, model.temp_arrays = {}, {"video_game_in_sweden_prefire_host_pool": []}
+         model.call(outer)
+         after_tickets = len(model.temp_arrays["video_game_in_sweden_prefire_host_pool"])
+         self.assertEqual(after_tickets, 2)
++        self.assertEqual(results[2], after_tickets)
+         model.temp = {output: Decimal(0), load: Decimal(0)}
+         model.temp_arrays = {}
+         model.call(outer)
+         self.assertNotIn("video_game_in_sweden_prefire_host_pool", model.temp_arrays)
+         self.assertIn("video_game_in_sweden_prefire_host_pool", model.trace[-1]["dropped_arrays"])
+-        CASES.append({"case": "nested ticket/load forwarding BEFORE versus current AFTER", "before_tickets": results,
++        CASES.append({"case": "archived wrapper under current shared dependencies", "archived_wrapper_tickets": results,
+                       "after_tickets_without_external_scalar_storage": after_tickets, "before_source": BASELINE,
++                      "dependency_basis": "current shared helper, trigger and tuning, not a frozen historical baseline",
+                       "declared_external_predicates": sorted(provider_names),
+                       "new_callee_array_dropped": True,
+                       "proof_kind": "conservative source arithmetic under explicit false-provider fixtures"})
+@@ -507,6 +512,10 @@ def inventory():
+ 
+ 
+ if __name__ == "__main__":
++    import argparse
++    parser = argparse.ArgumentParser()
++    parser.add_argument("--output", type=Path, default=DEST / "actual_source_lifetime_results.json")
++    args = parser.parse_args()
+     result = unittest.TextTestRunner(verbosity=2).run(unittest.defaultTestLoader.loadTestsFromTestCase(ActualSourceLifetime))
+     report = {"proof_kind": "bounded conservative actual-source model, not HOI4 execution",
+               "source_sha256": {p: hashlib.sha256((REPO / p).read_bytes()).hexdigest() for p in PATHS},
+@@ -525,7 +534,8 @@ if __name__ == "__main__":
+                   "native character retirement/transfer", "random selection and probability",
+                   "complete mission lifecycle", "meta expansion", "tooltip/localisation rendering"],
+               "failures": [str(err) for _, err in result.failures + result.errors]}
+-    (DEST / "actual_source_lifetime_results.json").write_text(json.dumps(report, indent=2), encoding="utf-8")
++    args.output.parent.mkdir(parents=True, exist_ok=True)
++    args.output.write_text(json.dumps(report, indent=2), encoding="utf-8")
+     print(json.dumps({"apis_inventoried": len(report["api_inventory"]), "tests_run": result.testsRun,
+-                      "model_tests_successful": result.wasSuccessful(), "artifact": str(DEST / "actual_source_lifetime_results.json")}))
++                      "model_tests_successful": result.wasSuccessful(), "artifact": str(args.output)}))
+     raise SystemExit(0 if result.wasSuccessful() else 1)
+diff --git a/docs/plans/024_video_game_in_sweden_plans/tests/test_runtime_observation.py b/docs/plans/024_video_game_in_sweden_plans/tests/test_runtime_observation.py
+index 5cf009606..ae9fc651b 100644
+--- a/docs/plans/024_video_game_in_sweden_plans/tests/test_runtime_observation.py
++++ b/docs/plans/024_video_game_in_sweden_plans/tests/test_runtime_observation.py
+@@ -17,6 +17,12 @@ spec.loader.exec_module(life)
+ 
+ runtime = life.parse(life.REPO / "common/scripted_effects/024_video_game_in_sweden_runtime_effects.txt")
+ life.APIS.update({n.key: n for n in runtime})
++feedback = life.parse(life.REPO / "common/scripted_effects/chaosx_forced_event_feedback_effects.txt")
++life.APIS.update({n.key: n for n in feedback})
++for group in life.parse(life.REPO / "common/script_constants/chaosx_forced_event_feedback_constants.txt"):
++    for item in group.body:
++        if item.key != "schema" and isinstance(item.body, str):
++            life.CONSTANTS[group.key + "." + item.key] = Decimal(item.body)
+ life.CONSTANTS["video_game_in_sweden_timing.runtime_watch_days"] = Decimal(1)
+ # The shared day-to-date converter and its unit constants run as written.
+ dynamic = life.parse(life.REPO / "common/scripted_effects/chaosx_dynamic_effects.txt")
+@@ -30,6 +36,8 @@ for group in life.parse(life.REPO / "common/script_constants/chaosx_date_units_c
+ class ObserverModel(life.FrameModel):
+     def __init__(self):
+         super().__init__()
++        # Declared original-tag SWE roster for native iterator fixtures.
++        self.swedish_countries = ["SWE"]
+         self.native_predicates = {
+             "video_game_in_sweden_is_current_host": True,
+             "video_game_in_sweden_is_valid_host": True,
+@@ -74,7 +82,8 @@ class ObserverModel(life.FrameModel):
+                          "every_unit_leader", "has_dynamic_modifier", "divide_temp_variable", "clamp_variable", "add_dynamic_modifier",
+                          "clear_array", "force_update_dynamic_modifier", "clamp_temp_variable", "clear_variable",
+                          "round_temp_variable",
+-                         "random_enemy_country", "any_enemy_country", "save_global_event_target_as"):
++                         "random_enemy_country", "any_enemy_country", "any_country_with_original_tag",
++                         "save_global_event_target_as", "add_opinion_modifier"):
+                 name = f"__native_{n.path}_{n.start}_{n.key}"
+                 self.native_nodes[name] = n
+                 life.APIS[name] = n
+@@ -93,7 +102,7 @@ class ObserverModel(life.FrameModel):
+                 self.flags.setdefault(self.actor, set()).discard(n.body)
+                 return True
+             if n.key == "country_event":
+-                self.scheduled.append((life.field(n.body, "id"), self.number(life.field(n.body, "days"))))
++                self.scheduled.append((life.field(n.body, "id"), self.number(life.field(n.body, "days", "0"))))
+                 return True
+             if n.key == "FROM.FROM":
+                 return self.scope("141", n.body)
+@@ -155,6 +164,15 @@ class ObserverModel(life.FrameModel):
+             if n.key == "save_global_event_target_as":
+                 self.targets[n.body] = self.actor
+                 return True
++            if n.key == "add_opinion_modifier":
++                self.called.append(n.key)
++                return True
++            if n.key == "any_country_with_original_tag":
++                self.asserted_original_tag = life.field(n.body, "original_tag_to_check")
++                if self.asserted_original_tag != "SWE":
++                    raise life.Unsupported("undeclared original-tag roster")
++                conditions = [c for c in n.body if c.key != "original_tag_to_check"]
++                return any(self.scope(actor, conditions) for actor in self.swedish_countries)
+             if n.key == "any_enemy_country":
+                 return any(self.scope(enemy, n.body) for enemy in self.enemies)
+             if n.key == "random_enemy_country":
+@@ -176,6 +194,7 @@ class ObservationSourceTests(unittest.TestCase):
+     def model(self):
+         model = ObserverModel()
+         model.flags["SWE"] = {"video_game_in_sweden_host_selected", "video_game_in_sweden_program_active"}
++        model.facts.update({("SWE", "exists", "yes"): True, ("SWE", "is_ai", "no"): True})
+         return model
+ 
+     def test_daily_elapsed_is_one_not_monthly(self):
+@@ -666,6 +685,138 @@ class ObservationSourceTests(unittest.TestCase):
+             self.assertNotIn("video_game_in_sweden_prefire_opening_pending", model.flags["SWE"])
+             self.assertNotIn("video_game_in_sweden_debug_invalid", model.flags["SWE"])
+ 
++    def test_manual_refusal_reports_one_reason_to_the_requester(self):
++        helper = life.APIS["video_game_in_sweden_prepare_random_event_fire"]
++        refusal = [n for n in helper.body if n.key == "if" and
++                   any(c.key == "chaosx_report_forced_event_failure" for c in n.body)]
++        self.assertEqual(len(refusal), 1)
++        for fired, active, reason in ((False, False, "no_country"), (False, False, "unavailable"),
++                                     (True, True, "already_active"), (True, False, "unavailable")):
++            model = self.model()
++            model.targets["chaosx_manual_event_requester"] = "GER"
++            model.flags["GER"] = {"chaosx_manual_event_requested"}
++            model.facts.update({("GER", "exists", "yes"): True, ("GER", "is_ai", "no"): True})
++            if active:
++                model.targets["video_game_in_sweden_host"] = "SWE"
++            model.arrays["global.fired_events"] = [Decimal(24)] if fired else []
++            model.temp.update({"video_game_in_sweden_prefire_ready": Decimal(0),
++                               "events_log_manual_event_detail_trigger": Decimal(1)})
++            model.swedish_countries = [] if reason == "no_country" else ["SWE"]
++            model.run(refusal)
++            model.run(refusal)
++            self.assertEqual(model.scheduled, [("chaosx_forced_event_feedback.1", Decimal(0))])
++            self.assertEqual(model.saved[("GER", "chaosx_manual_event_failure_reason")],
++                             model.number("constant:forced_event_feedback_reason." + reason))
++            self.assertNotIn("chaosx_manual_event_failure_shown", model.flags["SWE"])
++
++    def test_same_day_mission_reservation_blocks_a_second_action(self):
++        model = self.model()
++        del model.native_predicates["video_game_in_sweden_no_active_mission"]
++        for mission in ("video_game_field_validation_mission", "video_game_reality_audit_mission",
++                        "video_game_dual_track_verification", "video_game_restriction_enforcement"):
++            model.facts[("SWE", "has_active_mission", mission)] = False
++        self.assertTrue(model.call("video_game_in_sweden_no_active_mission"))
++        for active in ("field_validation", "reality_audit", "dual_track", "restriction"):
++            flag = "video_game_in_sweden_" + active + "_active"
++            model.flags["SWE"].add(flag)
++            self.assertFalse(model.call("video_game_in_sweden_no_active_mission"))
++            model.flags["SWE"].remove(flag)
++        for report in ("field_validation", "reality_audit", "dual_track", "restriction"):
++            flag = "video_game_in_sweden_" + report + "_report_pending"
++            model.flags["SWE"].add(flag)
++            self.assertFalse(model.call("video_game_in_sweden_no_active_mission"))
++            model.flags["SWE"].remove(flag)
++        self.assertTrue(model.call("video_game_in_sweden_no_active_mission"))
++
++    def test_foreign_summary_freezes_counts_and_fires_once(self):
++        model = self.model()
++        model.facts[("SWE", "exists", "yes")] = True
++        model.facts[("SWE", "is_ai", "no")] = True
++        for name, count in (("copy", 1), ("study", 1), ("ban", 0), ("ridicule", 1), ("ignored", 0)):
++            model.saved[("SWE", "video_game_in_sweden_foreign_" + name + "_count")] = Decimal(count)
++        model.saved[("SWE", "video_game_in_sweden_foreign_replied_count")] = Decimal(3)
++        model.call("video_game_in_sweden_publish_foreign_summary")
++        model.saved[("SWE", "video_game_in_sweden_foreign_copy_count")] = Decimal(2)
++        model.call("video_game_in_sweden_publish_foreign_summary")
++        self.assertEqual(model.scheduled, [("chaosx.nr24.41", Decimal(1))])
++        self.assertEqual(model.saved[("SWE", "video_game_in_sweden_foreign_summary_copy")], Decimal(1))
++        self.assertEqual(model.saved[("SWE", "video_game_in_sweden_foreign_summary_study")], Decimal(1))
++        self.assertIn("video_game_in_sweden_foreign_summary_queued", model.flags["SWE"])
++
++    def test_exhausted_incident_pool_stays_quiet(self):
++        model = self.model()
++        families = ("terrain", "supply", "enemy", "template", "diplomatic", "workplace", "party", "casualties",
++                    "counterplan", "bootleg", "production", "offensive")
++        seen = {"video_game_in_sweden_incident_" + name + "_seen" for name in families}
++        model.flags["SWE"].update(seen)
++        model.native_predicates.update({"video_game_in_sweden_has_live_program_package": True,
++                                        "video_game_in_sweden_is_incident_pause_crisis": False,
++                                        "video_game_in_sweden_has_unseen_incident_family": False})
++        model.saved[("SWE", "video_game_in_sweden_current_incident")] = Decimal(0)
++        model.saved[("SWE", "video_game_in_sweden_incident_ready_day")] = Decimal(0)
++        for day in (365, 730):
++            model.saved[("SWE", "video_game_in_sweden_program_days")] = Decimal(day)
++            model.call("video_game_in_sweden_roll_incident")
++        self.assertEqual(model.scheduled, [])
++        self.assertTrue(seen.issubset(model.flags["SWE"]))
++
++    def test_exhausted_opening_families_do_not_repeat_at_evolution_iii(self):
++        model = self.model()
++        for family in ("production", "diplomatic", "offensive", "casualties"):
++            model.flags["SWE"].add("video_game_in_sweden_incident_" + family + "_seen")
++        model.native_predicates["video_game_in_sweden_is_incident_pause_crisis"] = False
++        model.saved[("SWE", "video_game_in_sweden_current_incident")] = Decimal(0)
++        model.temp["video_game_in_sweden_opening_total_weight"] = Decimal(0)
++        model.facts.update({("SWE", "has_war", "yes"): True, ("SWE", "is_in_faction", "yes"): False,
++                            ("SWE", "is_subject", "yes"): False})
++        model.call("video_game_in_sweden_queue_opening_incident")
++        self.assertEqual(model.scheduled, [])
++        self.assertEqual(model.temp["video_game_in_sweden_opening_total_weight"], Decimal(0))
++        self.assertNotIn("video_game_in_sweden_opening_incident_queued", model.flags["SWE"])
++
++    def test_empty_foreign_round_has_no_summary(self):
++        model = self.model()
++        model.facts[("SWE", "exists", "yes")] = True
++        model.facts[("SWE", "is_ai", "no")] = True
++        model.saved[("SWE", "video_game_in_sweden_foreign_replied_count")] = Decimal(0)
++        model.call("video_game_in_sweden_publish_foreign_summary")
++        self.assertEqual(model.scheduled, [])
++
++    def test_three_foreign_answers_are_counted_once_and_summarized(self):
++        model = self.model()
++        model.targets["video_game_in_sweden_host"] = "SWE"
++        model.stubs.add("video_game_in_sweden_change_reliance")
++        for actor, answer in (("GER", "copy"), ("DEN", "study"), ("NOR", "no_action")):
++            model.root = model.actor = actor
++            model.targets["video_game_in_sweden_foreign_partner"] = actor
++            model.flags[actor] = {"video_game_in_sweden_foreign_response_pending"}
++            model.facts.update({(actor, "exists", "yes"): True, (actor, "has_capitulated", "yes"): False,
++                                (actor, "has_war_with", "event_target:video_game_in_sweden_host"): False})
++            model.call("video_game_in_sweden_resolve_foreign_" + answer)
++            model.call("video_game_in_sweden_resolve_foreign_" + answer)
++        self.assertEqual(model.saved[("SWE", "video_game_in_sweden_foreign_replied_count")], Decimal(3))
++        self.assertEqual(model.saved[("SWE", "video_game_in_sweden_foreign_summary_copy")], Decimal(1))
++        self.assertEqual(model.saved[("SWE", "video_game_in_sweden_foreign_summary_study")], Decimal(1))
++        self.assertEqual(model.saved[("SWE", "video_game_in_sweden_foreign_summary_ignored")], Decimal(1))
++        self.assertEqual(model.scheduled, [("chaosx.nr24.41", Decimal(1))])
++        self.assertEqual(len(model.modifier_grants), 2)
++
++    def test_stale_foreign_answers_grant_no_reward(self):
++        for name in ("copy", "study", "ban", "ridicule", "no_action"):
++            for pending, current, at_war in ((False, True, False), (True, False, False), (True, True, True)):
++                model = self.model()
++                model.root = model.actor = "GER"
++                model.targets.update({"video_game_in_sweden_host": "SWE", "video_game_in_sweden_foreign_partner": "DEN"})
++                model.flags["GER"] = {"video_game_in_sweden_foreign_response_pending"} if pending else set()
++                model.native_predicates["video_game_in_sweden_is_current_host"] = current
++                model.facts.update({("GER", "exists", "yes"): True, ("GER", "has_capitulated", "yes"): False,
++                                    ("GER", "has_war_with", "event_target:video_game_in_sweden_host"): at_war})
++                model.call("video_game_in_sweden_resolve_foreign_" + name)
++                self.assertEqual(model.modifier_grants, [])
++                self.assertEqual(model.scheduled, [])
++                self.assertNotIn(("SWE", "video_game_in_sweden_foreign_outcome"), model.saved)
++                self.assertEqual(model.targets["video_game_in_sweden_foreign_partner"], "DEN")
++
+     def test_invalid_restriction_records_failure_without_a_backlash_reward(self):
+         model = self.model()
+         model.targets["video_game_in_sweden_host"] = "SWE"
+diff --git a/events/024_hearts_of_iron.txt b/events/024_hearts_of_iron.txt
+index c65d67e61..117414401 100644
+--- a/events/024_hearts_of_iron.txt
++++ b/events/024_hearts_of_iron.txt
+@@ -841,7 +841,29 @@ country_event = {
+ 
+ country_event = {
+ 	id = chaosx.nr24.32
+-	title = chaosx.nr24.32.t
++	title = {
++		trigger = { has_country_flag = video_game_in_sweden_narrow_reality_audit_started }
++		text = chaosx.nr24.32.narrow_t
++	}
++	title = { text = chaosx.nr24.32.t }
++	desc = {
++		trigger = {
++			has_country_flag = video_game_in_sweden_narrow_reality_audit_started
++			check_variable = { var = video_game_in_sweden_audit_result value = constant:video_game_in_sweden_value.result_full compare = equals }
++		}
++		text = chaosx.nr24.32.narrow_full_d
++	}
++	desc = {
++		trigger = {
++			has_country_flag = video_game_in_sweden_narrow_reality_audit_started
++			check_variable = { var = video_game_in_sweden_audit_result value = constant:video_game_in_sweden_value.result_partial compare = equals }
++		}
++		text = chaosx.nr24.32.narrow_partial_d
++	}
++	desc = {
++		trigger = { has_country_flag = video_game_in_sweden_narrow_reality_audit_started }
++		text = chaosx.nr24.32.narrow_failed_d
++	}
+ 	desc = {
+ 		trigger = { check_variable = { var = video_game_in_sweden_audit_result value = constant:video_game_in_sweden_value.result_full compare = equals } }
+ 		text = chaosx.nr24.32.full_d
+@@ -870,7 +892,7 @@ country_event = {
+ 		name = chaosx.nr24.32.b
+ 		trigger = { check_variable = { var = video_game_in_sweden_audit_result value = constant:video_game_in_sweden_value.result_partial compare = equals } }
+ 		ai_chance = { base = 1 }
+-		custom_effect_tooltip = video_game_audit_partial_result_tt
++		custom_effect_tooltip = video_game_audit_partial_result_display_tt
+ 		clr_country_flag = video_game_in_sweden_reality_audit_report_pending
+ 	}
+ 	option = {
+@@ -880,7 +902,7 @@ country_event = {
+ 			NOT = { check_variable = { var = video_game_in_sweden_audit_result value = constant:video_game_in_sweden_value.result_partial compare = equals } }
+ 		}
+ 		ai_chance = { base = 1 }
+-		custom_effect_tooltip = video_game_audit_failed_result_tt
++		custom_effect_tooltip = video_game_audit_failed_result_display_tt
+ 		clr_country_flag = video_game_in_sweden_reality_audit_report_pending
+ 	}
+ }
+@@ -1221,14 +1243,17 @@ country_event = {
+ 	desc = chaosx.nr24.41.d
+ 	picture = GFX_report_event_024_video_game_in_sweden_release
+ 	is_triggered_only = yes
++	trigger = {
++		has_country_flag = video_game_in_sweden_foreign_report_pending
++		NOT = { has_country_flag = video_game_in_sweden_foreign_summary_shown }
++	}
++	immediate = { set_country_flag = video_game_in_sweden_foreign_summary_shown }
+ 
+ 	option = {
+ 		name = chaosx.nr24.41.a
+ 		ai_chance = { base = 1 }
+-		custom_effect_tooltip = video_game_foreign_report_effect_tt
+ 		hidden_effect = {
+ 			clr_country_flag = video_game_in_sweden_foreign_report_pending
+-			clear_global_event_target = video_game_in_sweden_last_partner
+ 		}
+ 	}
+ }
+diff --git a/localisation/english/024_hearts_of_iron_l_english.yml b/localisation/english/024_hearts_of_iron_l_english.yml
+index 418289016..65af88d60 100644
+--- a/localisation/english/024_hearts_of_iron_l_english.yml
++++ b/localisation/english/024_hearts_of_iron_l_english.yml
+@@ -36,9 +36,9 @@ chaosx.nr24.13.d: "Senior offices now compare real reports with the Swedish cabi
+ chaosx.nr24.13.a: "Call the senior offices together."
+ video_game_evolution_iii_paths_tt: "The Reality Audit, a dual-track staff, an official restriction, and Trust the Model are now open in the campaign cabinet category. Choosing one closes the others."
+ 
+-chaosx.nr24.20.t: "The Trial Has a Filing Number"
+-chaosx.nr24.20.d: "The Swedish board has completed its allotted trial. The useful tables can be filed with the staff papers, left in the public rooms, or returned to the officers who made a sport of command. The cabinet will be dismantled after the chosen disposition has been recorded."
+-chaosx.nr24.20.officer_culture_d: "The staff colleges have finished their season of contests. Rankings have been set beside field reports, the useful drills written into the training manuals, and the printed scores returned to the archive. The officers' league is retired with thanks and a short memorandum on the difference between a referee and an enemy."
++chaosx.nr24.20.t: "The Swedish Trial Ends"
++chaosx.nr24.20.d: "The cabinet's trial has ended. The army can retain its training exercises, and civilian clubs can keep their evening games under ordinary supervision."
++chaosx.nr24.20.officer_culture_d: "Field exercises have exposed the limits of the officers' contests. The staff colleges will keep the drills that match real roads and supplies, and the army will retire the league rankings."
+ chaosx.nr24.20.craze_d: "The national craze has settled into the ordinary life of clubs and study circles. Factory rosters are protected, ministries no longer quote tournament tables, and the municipal halls keep their evening boards for anyone who wishes to argue about railways in a civil manner."
+ chaosx.nr24.20.a: "Keep the useful method in the staff manuals."
+ chaosx.nr24.20.b: "Keep the public schoolrooms open."
+@@ -49,9 +49,9 @@ video_game_conclusion_methods_tt: "The programme closes. §YValidated Wargaming
+ video_game_conclusion_clubs_tt: "The programme closes. §YMunicipal Campaign Clubs§! add §G+[?constant:video_game_in_sweden_effect.commercial_aftermath_recruitable|%0]§! recruitable population for [?constant:video_game_in_sweden_timing.ordinary_aftermath_days|0] days."
+ video_game_conclusion_commander_tt: "Any §YRulebook Commander§! returns to ordinary staff habits."
+ 
+-chaosx.nr24.21.t: "The Public Rooms Receive a Circular"
+-chaosx.nr24.21.d: "The commercial release has left behind a modest civic institution. Municipal halls have kept their evening tables, publishers have discovered the limits of a national syllabus, and the Ministry has issued a circular reminding every organiser that a projected map is not a road, a depot, or a competent clerk."
+-chaosx.nr24.21.a: "File the circular with the other safeguards."
++chaosx.nr24.21.t: "Swedish Clubs Keep the Campaign Boards"
++chaosx.nr24.21.d: "Municipal halls will keep their evening campaign games, and publishers will supply the study circles. Their projected maps will remain classroom exercises, with military orders left to the serving commands."
++chaosx.nr24.21.a: "Let the clubs continue their games."
+ chaosx.nr24.22.t: "A Review of the Campaign Cabinet"
+ chaosx.nr24.22.d: "The cabinet trial has run past its allotted year, and its tables now carry more authority in the staff rooms than any trial was meant to have. The Ministry has ordered a review: debrief the officers and close the trial, or keep the cabinet running while the referees cut back its standing."
+ chaosx.nr24.22.a: "Debrief the staff and close the trial."
+@@ -90,9 +90,9 @@ chaosx.nr24.30.offensive_a: "Halt the offensive for a field review."
+ chaosx.nr24.30.offensive_b: "Press on as the tables direct."
+ video_game_incident_terrain_admit_tt: "Simulation Reliance falls by §G-[?constant:video_game_in_sweden_reliance.field_validation_loss|0]§!.[GetVideoGameTrustAdmission] For [?video_game_in_sweden_mm_admit_days|0] days, army attack §R-[?video_game_in_sweden_mm_admit_1|%1]§! and army speed §R-[?video_game_in_sweden_mm_admit_2|%1]§!."
+ video_game_incident_terrain_dismiss_tt: "Simulation Reliance rises by §R+[?constant:video_game_in_sweden_reliance.rules_revision_gain|0]§!. For [?video_game_in_sweden_mm_dismiss_days|0] days, army attack §R-[?video_game_in_sweden_mm_dismiss_1|%1]§! and army speed §R-[?video_game_in_sweden_mm_dismiss_2|%1]§!."
+-video_game_incident_supply_admit_tt: "Simulation Reliance falls by §G-[?constant:video_game_in_sweden_reliance.logistics_review_loss|0]§!. The rail-table review is filed.[GetVideoGameTrustAdmission] For [?video_game_in_sweden_mm_admit_days|0] days, supply consumption §R+[?video_game_in_sweden_mm_admit_1|%1]§! and organisation recovery §R-[?video_game_in_sweden_mm_admit_2|%1]§!."
++video_game_incident_supply_admit_tt: "Simulation Reliance falls by §G-[?constant:video_game_in_sweden_reliance.logistics_review_loss|0]§!. The rail timetable has been checked.[GetVideoGameTrustAdmission] For [?video_game_in_sweden_mm_admit_days|0] days, supply consumption §R+[?video_game_in_sweden_mm_admit_1|%1]§! and organisation recovery §R-[?video_game_in_sweden_mm_admit_2|%1]§!."
+ video_game_incident_supply_dismiss_tt: "Simulation Reliance rises by §R+[?constant:video_game_in_sweden_award.incident_supply_overconfidence|0]§!. For [?video_game_in_sweden_mm_dismiss_days|0] days, supply consumption §R+[?video_game_in_sweden_mm_dismiss_1|%1]§! and organisation recovery §R-[?video_game_in_sweden_mm_dismiss_2|%1]§!."
+-video_game_incident_enemy_admit_tt: "Simulation Reliance falls by §G-[?constant:video_game_in_sweden_reliance.red_team_loss|0]§!. The red-team review is filed, and reports of opponents leaving the script stop arriving.[GetVideoGameTrustAdmission] For [?video_game_in_sweden_mm_admit_days|0] days, planning speed §R-[?video_game_in_sweden_mm_admit_1|%1]§! and maximum planning §R-[?video_game_in_sweden_mm_admit_2|%1]§!."
++video_game_incident_enemy_admit_tt: "Simulation Reliance falls by §G-[?constant:video_game_in_sweden_reliance.red_team_loss|0]§!. The independent review is complete, and reports of opponents leaving the script stop arriving.[GetVideoGameTrustAdmission] For [?video_game_in_sweden_mm_admit_days|0] days, planning speed §R-[?video_game_in_sweden_mm_admit_1|%1]§! and maximum planning §R-[?video_game_in_sweden_mm_admit_2|%1]§!."
+ video_game_incident_enemy_dismiss_tt: "Simulation Reliance rises by §R+[?constant:video_game_in_sweden_award.incident_enemy_overconfidence|0]§!. For [?video_game_in_sweden_mm_dismiss_days|0] days, planning speed §R-[?video_game_in_sweden_mm_dismiss_1|%1]§! and maximum planning §R-[?video_game_in_sweden_mm_dismiss_2|%1]§!."
+ video_game_incident_template_admit_tt: "Simulation Reliance falls by §G-[?constant:video_game_in_sweden_reliance.separate_policy_loss|0]§!. The approved patterns stay inside staff work, and such reports become rarer. For [?video_game_in_sweden_mm_admit_days|0] days, army training time §G-[?video_game_in_sweden_mm_admit_1|%1]§! and terrain adaptation §R-[?video_game_in_sweden_mm_admit_2|%1]§!."
+ video_game_incident_template_dismiss_tt: "Simulation Reliance rises by §R+[?constant:video_game_in_sweden_reliance.national_league_gain|0]§!. Such reports become more common. For [?video_game_in_sweden_mm_dismiss_days|0] days, army training time §G-[?video_game_in_sweden_mm_dismiss_1|%1]§! and terrain adaptation §R-[?video_game_in_sweden_mm_dismiss_2|%1]§!."
+@@ -119,21 +119,29 @@ video_game_trust_admission_line: " Under Trust the Model, this admission opens t
+ video_game_trust_admission_none: ""
+ 
+ chaosx.nr24.31.t: "Field Validation Report"
+-chaosx.nr24.31.d: "The field party has returned with a report that separates the cabinet's useful observations from its tidy assumptions. Its pages divide the findings in three: some can be retained, some require a narrower office, and some should not be allowed near a marching order."
++chaosx.nr24.31.d: "The field party has compared the cabinet's forecasts with roads, supply columns, and divisional exercises. Its officers found which assumptions held, which need correction, and which failed under field conditions."
+ chaosx.nr24.31.a: "The field report is accepted."
+-chaosx.nr24.31.b: "File the errors for correction."
++chaosx.nr24.31.b: "Correct the faults found in the field."
+ chaosx.nr24.31.c: "Close the exercise as inconclusive."
+ video_game_field_report_full_tt: "Simulation Reliance has fallen by §G-[?constant:video_game_in_sweden_reliance.field_validation_loss|0]§!. Army training is §G[?constant:video_game_in_sweden_package.field_training|%0]§! faster for [?constant:video_game_in_sweden_timing.field_training_days|0] days, the field-tested supply and enemy assumptions no longer produce mismatch reports, and any §YRulebook Commander§! has been corrected."
+ video_game_field_report_partial_tt: "Simulation Reliance has fallen by §G-[?constant:video_game_in_sweden_award.partial_field_validation_loss|0]§!. Reviewed findings quiet the matching mismatch reports, and a targeted follow-up review is available."
+ video_game_field_report_failed_tt: "Simulation Reliance has fallen by §G-[?constant:video_game_in_sweden_award.failed_field_validation_gain|0]§!. §YUnresolved Field Findings§! slow planning and reinforcement for [?constant:video_game_in_sweden_timing.field_validation_failure_penalty_days|0] days. A targeted follow-up review is available, and a later official restriction costs [?constant:video_game_in_sweden_effect.restriction_failure_fee_factor|%0] of its usual price."
+ 
+ chaosx.nr24.32.t: "Reality Audit Report"
+-chaosx.nr24.32.d: "The audit could not hold its field package together long enough to answer the cabinet. Its parties have been recalled from their regions, and the senior offices have gone back to the old tables with a long list of findings that nobody was able to test."
+-chaosx.nr24.32.full_d: "The audit parties have returned from the southern plains, the garrisons around Stockholm and the northern forests with every figure checked against roads, depots and weather. Red pencil marks now cover each place where the cabinet assumed a railway that was not there, and the staff colleges will teach the corrected method as one instrument among several."
+-chaosx.nr24.32.partial_d: "The audit parties have returned with most of their comparisons complete. Gaps remain where a region slipped out of the field package, a store ran short or an independent review was never filed, so the Ministry will keep a provisional comparison staff beside the cabinet until a narrower reassessment finishes the work."
++chaosx.nr24.32.narrow_t: "Swedish Forecasts Reassessed"
++chaosx.nr24.32.narrow_full_d: "The smaller field party has compared the disputed forecasts with roads, stores, and troop movements. The corrected exercises can remain in Swedish training without directing military orders."
++chaosx.nr24.32.narrow_partial_d: "The smaller party checked several disputed forecasts, but interruptions in supplies or troop movements left others untested. The comparison staff will continue under provisional orders until the government settles the cabinet's future."
++chaosx.nr24.32.narrow_failed_d: "The smaller party could not keep troops and stores ready long enough to test the disputed forecasts. The army still has no field evidence for those assumptions, and the government must settle the cabinet's future."
++video_game_audit_partial_result_display_tt: "[GetVideoGameAuditPartialResult]"
++video_game_audit_failed_result_display_tt: "[GetVideoGameAuditFailedResult]"
++video_game_narrow_audit_partial_result_tt: "Simulation Reliance has fallen to at most ?Y[?constant:video_game_in_sweden_reliance.doctrine_max|0]?!. ?YIndependent Staff Comparison?! continues for [?constant:video_game_in_sweden_timing.provisional_dual_track_days|0] days. An official restriction remains available."
++video_game_narrow_audit_failed_result_tt: "?YSimulation Orthodoxy?! returns, and ?YUnresolved Field Findings?! slow planning and reinforcement for [?constant:video_game_in_sweden_timing.reality_audit_failure_penalty_days|0] days. An official restriction remains available."
++chaosx.nr24.32.d: "The audit parties could not keep their divisions and stores together long enough to finish the comparison. Sweden's commands still rely on untested forecasts and must choose another way to settle the matter."
++chaosx.nr24.32.full_d: "Field officers have checked the cabinet's forecasts against railway routes, depots, and marching columns. The staff colleges will retain exercises corrected by those observations and keep the cabinet's timetable out of military orders."
++chaosx.nr24.32.partial_d: "The audit parties have returned with most of their comparisons complete. Missing troops, short stores, or an unfinished independent review left some forecasts untested. A provisional comparison staff will remain beside the cabinet while Sweden prepares a narrower reassessment."
+ chaosx.nr24.32.a: "Teach the corrected method."
+ chaosx.nr24.32.b: "Keep the comparison staff in place."
+-chaosx.nr24.32.c: "Record the untested findings."
++chaosx.nr24.32.c: "The tables remain untested."
+ video_game_audit_full_result_tt: "Simulation Reliance has fallen to at most §Y[?constant:video_game_in_sweden_reliance.habit_max|0]§!. Any §YRulebook Commander§! has been corrected, and §YValidated Wargaming Methods§! guides Swedish training for [?constant:video_game_in_sweden_timing.validated_methods_days|0] days before the programme closes."
+ video_game_audit_partial_result_tt: "Simulation Reliance has fallen to at most §Y[?constant:video_game_in_sweden_reliance.doctrine_max|0]§!. §YIndependent Staff Comparison§! continues for [?constant:video_game_in_sweden_timing.provisional_dual_track_days|0] days, and a narrow reassessment or an official restriction can settle the programme."
+ video_game_audit_failed_result_tt: "§YSimulation Orthodoxy§! returns to the senior offices, while the Reliance shed at the start of the audit stays shed. §YUnresolved Field Findings§! weigh on planning and reinforcement for [?constant:video_game_in_sweden_timing.reality_audit_failure_penalty_days|0] days. A narrow reassessment or an official restriction remains available."
+@@ -148,8 +156,8 @@ video_game_dual_report_failed_tt: "The dual-track staff has been dissolved. The
+ chaosx.nr24.34.t: "Order of Restriction"
+ chaosx.nr24.34.d: "The Ministry has closed the officer leagues, removed tournament scores from policy papers, and returned the public playing rooms to municipal custody. All three departments have reported their work complete, and the restriction office has closed the programme."
+ chaosx.nr24.34.failure_d: "The restriction office could not complete its work before the programme was closed. Its incomplete files have been returned to the Ministry."
+-chaosx.nr24.34.a: "File the three departmental reports."
+-chaosx.nr24.34.b: "Retain the incomplete departmental files."
++chaosx.nr24.34.a: "Keep the cabinet out of military orders."
++chaosx.nr24.34.b: "Some offices still follow its forecasts."
+ video_game_restriction_report_success_tt: "Simulation Reliance has fallen to at most §Y[?constant:video_game_in_sweden_reliance.instrument_max|0]§!, and the programme is closed. Resentment over the closing notices changes stability by §R[?constant:video_game_in_sweden_effect.backlash_stability|%0]§! for [?constant:video_game_in_sweden_timing.backlash_days|0] days."
+ video_game_restriction_report_failed_tt: "The programme is closed without further effect."
+ chaosx.nr24.35.t: "The National Final"
+@@ -157,7 +165,7 @@ chaosx.nr24.35.favourite_d: "The national final at the Stockholm exhibition hall
+ chaosx.nr24.35.upset_d: "The national final has gone to a study circle from a small northern town, whose captain ignored the approved plan and won by marching around it. The favourites have lodged a protest about the rules, and several staff officers have quietly asked for the captain's notes."
+ chaosx.nr24.35.a: "Award the cup with ministerial ceremony."
+ chaosx.nr24.35.b: "Print the winning plan beside the official one."
+-chaosx.nr24.36.t: "The Ministry Closes the File"
++chaosx.nr24.36.t: "A Decision on the Swedish Cabinet"
+ chaosx.nr24.36.d: "The cabinet's reviews have gone round the senior offices for months without a settled answer. The Ministry will no longer keep the question open: the cabinet either stays as a supervised comparison instrument for a fixed term or is restricted by order."
+ chaosx.nr24.36.a: "Keep it as a supervised instrument for a fixed term."
+ chaosx.nr24.36.b: "Restrict it by order."
+@@ -192,11 +200,11 @@ video_game_foreign_copy_tt: "§YSwedish Training Tables§!: planning speed §G+[
+ video_game_foreign_study_tt: "§YStudy of Swedish Campaign Tables§!: army experience gain §G+[?constant:video_game_in_sweden_effect.foreign_study_xp|%1]§! for [?constant:video_game_in_sweden_timing.foreign_study_days|0] days. Relations with [GetVideoGameForeignHostName] improve slightly, fading over time."
+ video_game_foreign_ban_tt: "§YRestrictions on Swedish Campaign Tables§!: stability §R[?constant:video_game_in_sweden_effect.foreign_ban_stability|%0]§! for [?constant:video_game_in_sweden_timing.foreign_ban_days|0] days. Relations with [GetVideoGameForeignHostName] cool, recovering over time."
+ video_game_foreign_ridicule_tt: "§YDispute over Swedish Campaign Tables§!: stability §R[?constant:video_game_in_sweden_effect.foreign_ridicule_stability|%0]§! for [?constant:video_game_in_sweden_timing.foreign_ridicule_days|0] days. Relations with [GetVideoGameForeignHostName] sour, recovering over time, and the newspapers may regret it if Sweden wins its next war."
+-video_game_foreign_no_action_tt: "The packet is filed without further action."
++video_game_foreign_no_action_tt: "The government declines the offer."
+ 
+-chaosx.nr24.41.t: "A Foreign Reply to the Cabinet"
+-chaosx.nr24.41.d: "The foreign office of [GetVideoGameForeignPartnerName] has replied to Sweden's packet. [GetVideoGameForeignOutcome]"
+-chaosx.nr24.41.a: "Enter the reply in the correspondence file."
++chaosx.nr24.41.t: "Foreign Replies to the Swedish Cabinet"
++chaosx.nr24.41.d: "The foreign offices have answered Sweden's offer of campaign tables. [?video_game_in_sweden_foreign_summary_copy|0] accepted copies, [?video_game_in_sweden_foreign_summary_study|0] commissioned studies, [?video_game_in_sweden_foreign_summary_ban|0] prohibited the tables, [?video_game_in_sweden_foreign_summary_ridicule|0] mocked them in the press, and [?video_game_in_sweden_foreign_summary_ignored|0] declined the offer."
++chaosx.nr24.41.a: "We have their answers."
+ video_game_foreign_report_effect_tt: "[GetVideoGameForeignOutcomeEffect]"
+ video_game_foreign_effect_copy: "Simulation Reliance has risen by §R+[?constant:video_game_in_sweden_reliance.foreign_license_gain|0]§!."
+ video_game_foreign_effect_study: "Sweden has gained £pol_power §G[?constant:video_game_in_sweden_award.foreign_study_political_power|0]§! political power."
+@@ -249,6 +257,7 @@ video_game_route_controlled: "Controlled staff trial"
+ video_game_route_commercial: "Civilian circulation"
+ video_game_route_officer: "Competitive officer league"
+ video_game_route_unavailable: "N/A"
++video_game_mission_report_pending: "Awaiting the field report"
+ video_game_mission_none: "No active mission"
+ video_game_mission_field_validation: "Field validation in progress"
+ video_game_mission_reality_audit: "Reality audit in progress"
+@@ -260,7 +269,7 @@ video_game_supplied_region_rule: "A training region counts while Sweden fully co
+ video_game_foreign_partner_tt: "An eligible government must be available, at peace with Sweden, and below the [?constant:video_game_in_sweden_event.maximum_foreign_responses|0]-response limit. Only one packet may await a reply at a time. A subject with little autonomy may send packets only to its overlord or faction partners, and packets beyond Sweden's land frontier need a Swedish coast and sea lanes that enemy navies do not command."
+ video_game_foreign_supply_tt: "The Swedish field army must meet its train, lorry, and fuel needs before a foreign packet can be sent."
+ video_game_national_league_requirements_tt: "A public league season requires Stability above [?constant:video_game_in_sweden_effect.stable_program_stability|%0]."
+-video_game_reality_audit_requirements_tt: "To begin, Sweden needs an army and one supplied training region in §Y$STATE_138$§!, §Y$STATE_141$§!, or §Y$STATE_666$§!, or an active front. $video_game_supplied_region_rule$ At war, the field army must not be short of trains, lorries, or fuel, whichever proof is used. Sweden must own and control Stockholm, keep positive train, support-equipment, and fuel reserves after payment, and have Stability above [?constant:video_game_in_sweden_effect.minimum_audit_stability|%0]. A full report also needs all three training regions supplied, or an active front with the Stockholm region supplied, and both the rail-table and independent staff reviews, which can be filed while the audit runs."
++video_game_reality_audit_requirements_tt: "To begin, Sweden needs an army and one supplied training region in §Y$STATE_138$§!, §Y$STATE_141$§!, or §Y$STATE_666$§!, or an active front. $video_game_supplied_region_rule$ At war, the field army must not be short of trains, lorries, or fuel, whichever proof is used. Sweden must own and control Stockholm, keep positive train, support-equipment, and fuel reserves after payment, and have Stability above [?constant:video_game_in_sweden_effect.minimum_audit_stability|%0]. A full report also needs all three training regions supplied, or an active front with the Stockholm region supplied, and both the rail-table and independent staff reviews, which can be completed during the audit."
+ video_game_narrow_reality_audit_requirements_tt: "A narrow reassessment requires a failed or partial report and an active Swedish host. After paying the listed costs, keep some trains, support equipment, and fuel in reserve, with Stability above [?constant:video_game_in_sweden_effect.minimum_audit_stability|%0]."
+ video_game_dual_track_requirements_tt: "No other field or reassessment mission can be active when the dual-track staff opens."
+ video_game_restrict_use_requirements_tt: "Issue the order during the official-authority phase when no review mission is active."
+@@ -332,10 +341,10 @@ video_game_preparedness_clubs_cost: "£pol_power [?constant:video_game_in_sweden
+ video_game_preparedness_clubs_cost_blocked: "£pol_power §R[?constant:video_game_in_sweden_cost.preparedness_clubs_political_power|0]§!  £support_equipment_text_icon §R[?constant:video_game_in_sweden_cost.preparedness_clubs_support_equipment|0]§!"
+ video_game_preparedness_clubs_cost_tooltip: "The charter leaves the clubs useful when the campaign map is put away."
+ video_game_foreign_licenses: "Offer a Foreign Licence"
+-video_game_foreign_licenses_desc: "Send a limited Swedish packet to one eligible foreign government. Licence fees and press attention give Swedish trade §G+[?constant:video_game_in_sweden_package.licence_trade_opinion|%0]§! trade opinion for [?constant:video_game_in_sweden_timing.licence_benefit_days|0] days. The Foreign Office may approach only [?constant:video_game_in_sweden_event.maximum_foreign_responses|0] governments, one at a time, and retain [?constant:video_game_in_sweden_event.maximum_visible_foreign_reports|0] replies in its file. A foreign office may copy, study, ban, ridicule, or ignore the packet. Sweden's cabinet remains under its own staff."
++video_game_foreign_licenses_desc: "Offer Swedish campaign tables to a foreign government. Publicity raises trade opinion by ?G+[?constant:video_game_in_sweden_package.licence_trade_opinion|%0]?! for [?constant:video_game_in_sweden_timing.licence_benefit_days|0] days. Approach up to [?constant:video_game_in_sweden_event.maximum_foreign_responses|0] governments, one at a time. Sweden receives one summary of their replies."
+ video_game_foreign_licenses_cost: "£convoy_texticon [?constant:video_game_in_sweden_cost.foreign_licenses_convoys|0]  £pol_power [?constant:video_game_in_sweden_cost.foreign_licenses_political_power|0]  £civ_factory [?constant:video_game_in_sweden_cost.foreign_licenses_civilian_factory|0]"
+ video_game_foreign_licenses_cost_blocked: "£convoy_texticon §R[?constant:video_game_in_sweden_cost.foreign_licenses_convoys|0]§!  £pol_power §R[?constant:video_game_in_sweden_cost.foreign_licenses_political_power|0]§!  £civ_factory §R[?constant:video_game_in_sweden_cost.foreign_licenses_civilian_factory|0]§!"
+-video_game_foreign_licenses_cost_tooltip: "One civilian office is reserved for [?constant:video_game_in_sweden_timing.foreign_license_burden_days|0] days. Each recipient can be approached once, and another packet must wait until the current reply is filed."
++video_game_foreign_licenses_cost_tooltip: "Reserve one civilian office for [?constant:video_game_in_sweden_timing.foreign_license_burden_days|0] days. Each government can receive one offer. Send the next after the current government answers or becomes unable to receive it."
+ video_game_separate_policy: "Separate the Public Policy"
+ video_game_separate_policy_desc: "Draw a firm line between public instruction and military orders. Clubs keep playing, but ministries and senior commands may no longer cite their results. The decision lowers Simulation Reliance by §G-[?constant:video_game_in_sweden_reliance.separate_policy_loss|0]§!, cuts the political-attention cost of the craze by §G[?constant:video_game_in_sweden_package.separate_policy_attention_cut|%0]§!, holds the next stage back by [?constant:video_game_in_sweden_timing.separate_policy_evolution_delay_days|0] days, and draws political opposition."
+ video_game_separate_policy_cost: "£pol_power [?constant:video_game_in_sweden_cost.separate_policy_political_power|0]  £stability_texticon [?constant:video_game_in_sweden_cost.separate_policy_stability_cost_display|0]%"
+@@ -343,12 +352,12 @@ video_game_separate_policy_cost_blocked: "£pol_power §R[?constant:video_game_i
+ video_game_separate_policy_cost_tooltip: "Opening charges: £pol_power [?constant:video_game_in_sweden_cost.separate_policy_political_power|0]  £stability_texticon [?constant:video_game_in_sweden_cost.separate_policy_stability_cost_display|0]%. The Stability payment reflects the public reaction to the new boundary."
+ 
+ video_game_begin_reality_audit: "Begin the Reality Audit"
+-video_game_begin_reality_audit_desc: "Send divisions, stores, and staff officers to test the cabinet against real fronts, roads, and supply work. Opening a full audit lowers Simulation Reliance by §G-[?constant:video_game_in_sweden_reliance.reality_audit_full|0]§!. The report must answer to all three Swedish field regions, or to an active front and the Stockholm region, and its rail-table and adjudicator reviews can be filed while the parties are in the field."
++video_game_begin_reality_audit_desc: "Send divisions, stores, and staff officers to test the cabinet against real fronts, roads, and supply work. Opening a full audit lowers Simulation Reliance by §G-[?constant:video_game_in_sweden_reliance.reality_audit_full|0]§!. The report must answer to all three Swedish field regions, or to an active front and the Stockholm region, and its rail-table and adjudicator reviews can be completed during the fieldwork."
+ video_game_reality_audit_cost: "£army_experience [?constant:video_game_in_sweden_cost.reality_audit_army_experience|0]  £support_equipment_text_icon [?constant:video_game_in_sweden_cost.reality_audit_support_equipment|0]  £fuel_texticon [?constant:video_game_in_sweden_cost.reality_audit_fuel|0]"
+ video_game_reality_audit_cost_blocked: "£army_experience §R[?constant:video_game_in_sweden_cost.reality_audit_army_experience|0]§!  £support_equipment_text_icon §R[?constant:video_game_in_sweden_cost.reality_audit_support_equipment|0]§!  £fuel_texticon §R[?constant:video_game_in_sweden_cost.reality_audit_fuel|0]§!"
+ video_game_reality_audit_cost_tooltip: "Payment: £army_experience [?constant:video_game_in_sweden_cost.reality_audit_army_experience|0]  £support_equipment_text_icon [?constant:video_game_in_sweden_cost.reality_audit_support_equipment|0]  £fuel_texticon [?constant:video_game_in_sweden_cost.reality_audit_fuel|0]  £train_texticon [?constant:video_game_in_sweden_cost.reality_audit_trains|0]. Keep some trains, support equipment, and fuel in stock during the field proof. A disrupted audit produces a partial or failed report."
+ video_game_narrow_reality_audit: "Conduct a Narrow Reassessment"
+-video_game_narrow_reality_audit_desc: "After a poor report, send a smaller party to the front with a shorter list of questions. Opening it lowers Simulation Reliance by §G-[?constant:video_game_in_sweden_award.narrow_reality_audit_loss|0]§! and can restore useful practice. The filed report remains part of the record."
++video_game_narrow_reality_audit_desc: "After a poor report, send a smaller party to the front with a shorter list of questions. Opening it lowers Simulation Reliance by §G-[?constant:video_game_in_sweden_award.narrow_reality_audit_loss|0]§! and can restore useful practice. The earlier finding still stands."
+ video_game_narrow_reality_audit_cost: "£army_experience [?constant:video_game_in_sweden_cost.narrow_reality_audit_army_experience|0]  £support_equipment_text_icon [?constant:video_game_in_sweden_cost.narrow_reality_audit_support_equipment|0]  £fuel_texticon [?constant:video_game_in_sweden_cost.narrow_reality_audit_fuel|0]"
+ video_game_narrow_reality_audit_cost_blocked: "£army_experience §R[?constant:video_game_in_sweden_cost.narrow_reality_audit_army_experience|0]§!  £support_equipment_text_icon §R[?constant:video_game_in_sweden_cost.narrow_reality_audit_support_equipment|0]§!  £fuel_texticon §R[?constant:video_game_in_sweden_cost.narrow_reality_audit_fuel|0]§!"
+ video_game_narrow_reality_audit_cost_tooltip: "Payment: £army_experience [?constant:video_game_in_sweden_cost.narrow_reality_audit_army_experience|0]  £support_equipment_text_icon [?constant:video_game_in_sweden_cost.narrow_reality_audit_support_equipment|0]  £fuel_texticon [?constant:video_game_in_sweden_cost.narrow_reality_audit_fuel|0]  £train_texticon [?constant:video_game_in_sweden_cost.narrow_reality_audit_trains|0]. Keep some trains, support equipment, and fuel in stock during the shorter proof. This recovery attempt does not erase the earlier finding."
+@@ -393,20 +402,20 @@ video_game_trust_model_cost_blocked: "£command_power §R[?constant:video_game_i
+ video_game_trust_model_cost_tooltip: "Cost: £command_power [?constant:video_game_in_sweden_cost.trust_model_command_power|0]  £pol_power [?constant:video_game_in_sweden_cost.trust_model_political_power|0]  £stability_texticon [?constant:video_game_in_sweden_cost.trust_model_stability_loss_display|0]%  £war_support_icon [?constant:video_game_in_sweden_cost.trust_model_war_support_loss_display|0]%. The cabinet receives one final authority for one term, and must be reassessed."
+ 
+ # Missions
+-video_game_field_validation_mission_requirements_tt: "Keep one supplied training region in §Y$STATE_138$§!, §Y$STATE_141$§!, or §Y$STATE_666$§!, or an active front, for [?constant:video_game_in_sweden_timing.field_validation_proof_days|0] days. $video_game_supplied_region_rule$ Own and control Stockholm, retain positive train, support-equipment, and fuel reserves, and complete either the rail-table or independent staff review. A recorded interruption or a Swedish core state lost during the exercise limits the report to a partial finding. Losing Stockholm or [?constant:video_game_in_sweden_event.several_core_losses|0] core states ends the exercise in failure."
++video_game_field_validation_mission_requirements_tt: "Keep one supplied training region in §Y$STATE_138$§!, §Y$STATE_141$§!, or §Y$STATE_666$§!, or an active front, for [?constant:video_game_in_sweden_timing.field_validation_proof_days|0] days. $video_game_supplied_region_rule$ Own and control Stockholm, retain positive train, support-equipment, and fuel reserves, and complete either the rail-table or independent staff review. An interruption, even if later repaired, or a Swedish core state lost during the exercise limits the report to a partial finding. Losing Stockholm or [?constant:video_game_in_sweden_event.several_core_losses|0] core states ends the exercise in failure."
+ video_game_field_validation_mission: "Field Validation"
+ video_game_field_validation_mission_desc: "$video_game_field_validation_mission_requirements_tt$"
+ video_game_reality_audit_mission: "Reality Audit"
+ video_game_reality_audit_mission_desc: "[GetVideoGameAuditProofRequirements]"
+ video_game_reality_audit_regions_tt: "[GetVideoGameAuditProofRequirements]"
+-video_game_full_audit_proof_requirements: "Keep all three training regions, §Y$STATE_138$§!, §Y$STATE_141$§!, and §Y$STATE_666$§!, supplied, or an active front with §Y$STATE_141$§! supplied, for [?constant:video_game_in_sweden_timing.reality_audit_proof_days|0] days. $video_game_supplied_region_rule$ Own and control Stockholm, retain positive train, support-equipment, and fuel reserves, and file both staff reviews. A recorded loss of reserves, transport, or regional presence, a missing review, or one Swedish core state lost during the audit limits the report to a partial finding. Losing Stockholm or [?constant:video_game_in_sweden_event.several_core_losses|0] core states ends the audit in failure."
+-video_game_narrow_audit_proof_requirements: "Keep one supplied training region in §Y$STATE_138$§!, §Y$STATE_141$§!, or §Y$STATE_666$§!, or an active front, for [?constant:video_game_in_sweden_timing.narrow_reality_audit_proof_days|0] days. $video_game_supplied_region_rule$ Own and control Stockholm, retain positive train, support-equipment, and fuel reserves, and file both staff reviews for a full finding. Losing Stockholm or [?constant:video_game_in_sweden_event.several_core_losses|0] core states ends the reassessment in failure. This shorter reassessment does not erase the earlier report."
++video_game_full_audit_proof_requirements: "Keep all three training regions, §Y$STATE_138$§!, §Y$STATE_141$§!, and §Y$STATE_666$§!, supplied, or an active front with §Y$STATE_141$§! supplied, for [?constant:video_game_in_sweden_timing.reality_audit_proof_days|0] days. $video_game_supplied_region_rule$ Own and control Stockholm, retain positive train, support-equipment, and fuel reserves, and complete both staff reviews. A loss of reserves, transport, or troops from a training region, even if later repaired, an unfinished review, or one Swedish core state lost during the audit limits the report to a partial finding. Losing Stockholm or [?constant:video_game_in_sweden_event.several_core_losses|0] core states ends the audit in failure."
++video_game_narrow_audit_proof_requirements: "Keep one supplied training region in §Y$STATE_138$§!, §Y$STATE_141$§!, or §Y$STATE_666$§!, or an active front, for [?constant:video_game_in_sweden_timing.narrow_reality_audit_proof_days|0] days. $video_game_supplied_region_rule$ Own and control Stockholm, retain positive train, support-equipment, and fuel reserves, and complete both staff reviews for a full finding. Losing Stockholm or [?constant:video_game_in_sweden_event.several_core_losses|0] core states ends the reassessment in failure. This shorter reassessment does not erase the earlier report."
+ video_game_dual_track_mission_requirements_tt: "Hold Stockholm and keep the field army supplied for [?constant:video_game_in_sweden_timing.dual_track_proof_days|0] days, commission independent staff plans, and resolve their differences with the cabinet. Without both comparisons, verification fails when its time runs out and leaves the choice between a Reality Audit and an official restriction."
+ video_game_restriction_mission_requirements_tt: "Complete the league closures, policy exclusions, and withdrawal of public playing rooms over [?constant:video_game_in_sweden_timing.restriction_proof_days|0] days. Enforcement requires no further payment."
+ video_game_mission_lost_ground_tt: "Stockholm or [?constant:video_game_in_sweden_event.several_core_losses|0] Swedish core states have been lost since this work began"
+ video_game_program_ended_tt: "Sweden no longer runs the campaign cabinet, this stage of the trial has been switched off in the event settings, or the world has ended"
+ video_game_host_lost_tt: "Sweden no longer runs the campaign cabinet"
+-video_game_no_other_mission_tt: "No other campaign cabinet mission is running"
++video_game_no_other_mission_tt: "No cabinet mission is running, and no result report awaits an answer."
+ video_game_dual_track_verification: "Dual-Track Verification"
+ video_game_dual_track_verification_desc: "$video_game_dual_track_mission_requirements_tt$"
+ video_game_restriction_enforcement: "Restriction Enforcement"
+diff --git a/localisation/english/024_video_game_in_sweden_requirement_flags_l_english.yml b/localisation/english/024_video_game_in_sweden_requirement_flags_l_english.yml
+index 381165cf3..14af4dd7b 100644
+--- a/localisation/english/024_video_game_in_sweden_requirement_flags_l_english.yml
++++ b/localisation/english/024_video_game_in_sweden_requirement_flags_l_english.yml
+@@ -12,7 +12,7 @@ video_game_in_sweden_field_validation_success: "The field validation succeeded"
+ video_game_in_sweden_foreign_pool_exhausted: "No foreign government is left to approach"
+ video_game_in_sweden_foreign_response_seen: "This government has already answered a Swedish packet"
+ video_game_in_sweden_host_selected: "This country hosts the campaign cabinet"
+-video_game_in_sweden_logistics_review_complete: "The rail-table review has been filed"
++video_game_in_sweden_logistics_review_complete: "The rail timetable has been checked"
+ video_game_in_sweden_narrow_reality_audit_started: "A narrow reassessment has begun"
+ video_game_in_sweden_preparedness_clubs: "The clubs hold a preparedness charter"
+ video_game_in_sweden_program_active: "The campaign cabinet programme is running"

@@ -1,5 +1,8 @@
 # Event 24 runtime continuity and restriction receipts
 
+Disposition: historical source and acceptance inventory for the 3 October tranche.
+Current acceptance and dispositions are in `takeover_status_2026-10-06.md`, including the implemented 4 and 5 October repairs.
+
 Status: implemented source repair tranche, with native acceptance and the full Event 24 package incomplete.
 Acceptance basis: the user explicitly accepted every Event 24 specification and requested implementation without simplification.
 This tranche implements the accepted continuity, finite emergency resolution, and cleanup requirements.

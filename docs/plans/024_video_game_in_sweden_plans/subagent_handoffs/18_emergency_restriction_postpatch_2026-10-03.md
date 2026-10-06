@@ -1,0 +1,109 @@
+# Event 24 Emergency Restriction Postpatch Probability Audit
+
+Audit date: 2026-10-03.
+
+Workspace: C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux.
+
+Status: incomplete pending parent-relayed probability results. The owner patch is source-reviewed against immutable prepatch and postpatch copies. Child probability tools are not callable. The parent will run postpatch inspect and compare through its route. No numerical signoff is available.
+
+This audit is separate from the 79-comparator comparison in handoff 14 and the emergency restriction source baseline in handoff 15. It uses only the parent-preserved 2026-10-03_pre_emergency_restriction and 2026-10-03_post_emergency_restriction snapshots. No gameplay file was edited, no game was launched, and no commit was made.
+
+## Immutable source identities
+
+The seven BEFORE and seven AFTER files were hash-checked. The post_emergency_restriction copies were captured once after the owner patch. They were not recopied.
+
+| Source | Immutable BEFORE path and SHA-256 | Immutable AFTER path and SHA-256 |
+| --- | --- | --- |
+| events/024_hearts_of_iron.txt | docs/plans/024_video_game_in_sweden_plans/probability_snapshots/2026-10-03_pre_emergency_restriction/024_hearts_of_iron.txt, 75e81ff4f8889a30957f23bc67a473f617fc4238b8dda07eca0a6edb8693798c | docs/plans/024_video_game_in_sweden_plans/probability_snapshots/2026-10-03_post_emergency_restriction/024_hearts_of_iron.txt, 75e81ff4f8889a30957f23bc67a473f617fc4238b8dda07eca0a6edb8693798c |
+| common/scripted_effects/024_video_game_in_sweden_effects.txt | docs/plans/024_video_game_in_sweden_plans/probability_snapshots/2026-10-03_pre_emergency_restriction/024_video_game_in_sweden_effects.txt, 09cc1d0ebbf726289129cd831d6db4348ead725907e9a25a6f5d3316ef6920a2 | docs/plans/024_video_game_in_sweden_plans/probability_snapshots/2026-10-03_post_emergency_restriction/024_video_game_in_sweden_effects.txt, 07a41c3ee9c2d47243121eb0320508da87e4444e543f62f28b304afbf3abc620 |
+| common/scripted_triggers/024_video_game_in_sweden_triggers.txt | docs/plans/024_video_game_in_sweden_plans/probability_snapshots/2026-10-03_pre_emergency_restriction/024_video_game_in_sweden_triggers.txt, 97e110186baae1922fd837d57a8ad4f3f8e7655b94b0344b490aef7a273776ac | docs/plans/024_video_game_in_sweden_plans/probability_snapshots/2026-10-03_post_emergency_restriction/024_video_game_in_sweden_triggers.txt, 81c4b0839b9e3c22c03e268a8f91cc4039cbbab0596d5f629c2ab6682b622b9f |
+| common/decisions/024_video_game_in_sweden_decisions.txt | docs/plans/024_video_game_in_sweden_plans/probability_snapshots/2026-10-03_pre_emergency_restriction/024_video_game_in_sweden_decisions.txt, dc1ea5273d6f22cfe8361c8d8ba176d344fc4ba98865f62a2145455d694f7f30 | docs/plans/024_video_game_in_sweden_plans/probability_snapshots/2026-10-03_post_emergency_restriction/024_video_game_in_sweden_decisions.txt, 8b19fcb187ff40bcfd66c49ff54ec18b009d5724cc6d74ec5bc416af463b6eef |
+| common/script_constants/024_video_game_in_sweden_constants.txt | docs/plans/024_video_game_in_sweden_plans/probability_snapshots/2026-10-03_pre_emergency_restriction/024_video_game_in_sweden_constants.txt, 622621c00d24cf036cf3fec3f1f82949db6d92b3af4701af396bef4e132d632c | docs/plans/024_video_game_in_sweden_plans/probability_snapshots/2026-10-03_post_emergency_restriction/024_video_game_in_sweden_constants.txt, 622621c00d24cf036cf3fec3f1f82949db6d92b3af4701af396bef4e132d632c |
+| common/scripted_localisation/024_video_game_in_sweden.txt | docs/plans/024_video_game_in_sweden_plans/probability_snapshots/2026-10-03_pre_emergency_restriction/024_video_game_in_sweden.txt, a0b0c2726ffa3adba7dbe40080e8b5b2b98bd35051eae351e773de1ba6723b08 | docs/plans/024_video_game_in_sweden_plans/probability_snapshots/2026-10-03_post_emergency_restriction/024_video_game_in_sweden.txt, 7f32d36bbed25964a53a6953b5175c0b942fb8915327356cd4a94db7d54d6fba |
+| localisation/english/024_hearts_of_iron_l_english.yml | docs/plans/024_video_game_in_sweden_plans/probability_snapshots/2026-10-03_pre_emergency_restriction/024_hearts_of_iron_l_english.yml, 13eb7d9ba4a784068ed5c5ceadc55d3a59342b11e4ca61101e77f49e238797d7 | docs/plans/024_video_game_in_sweden_plans/probability_snapshots/2026-10-03_post_emergency_restriction/024_hearts_of_iron_l_english.yml, 8fb0f709798ba80aaea3ea766d4d3c89b2a3e4c647860625a7e21900d7e5c146 |
+
+The event file and script constants file are byte-identical before and after. The decision file differs by removal of ai_hint_pp_cost = 30 from video_game_restrict_use. The effects, triggers, scripted localisation, and localisation files contain the quote and atomic payment changes. No ai_will_do block, ai_chance base, ai_chance factor, or constant weight was changed in these snapshots.
+
+After the post_emergency_restriction copies were frozen, the owner made presentation-only edits in the live scripted-localisation and English localisation files. The frozen scripted-localisation AFTER hash is 7f32d36bbed25964a53a6953b5175c0b942fb8915327356cd4a94db7d54d6fba; the live file hash is 9708e7a30210b49c0e94f2a95072423923aac6f7c8dbf12701da7f467ae84231. Its only diff adds a whole-number political-power quote branch when the quote equals zero or the nominal cap, using video_game_restriction_political_power_quote_whole; non-endpoint PP quotes continue through the fractional key. The frozen English-localisation AFTER hash is 8fb0f709798ba80aaea3ea766d4d3c89b2a3e4c647860625a7e21900d7e5c146; the current live file hash is a0b3442db8fc1a6c84215a39bbb6ceb396e7990f599464c04a331fc670ed548c. Its live presentation shows PP and Stability inline, places the full three-icon PP/Stability/War Support quote in the hover tooltip, formats non-endpoint PP to five decimals, and formats percentage quotes to three decimals. The earlier |2-to-|3 formatter observation is historical, not the current live formatter. The parent confirms all financial source files remain unchanged from the frozen AFTER copies; only these two presentation files changed after capture. These edits do not change the quote calculation, payment effect, availability helper, or AI values; they are outside the frozen financial and probability comparison. Neither AFTER copy was overwritten. A transient source FileError cleared on the parent's retry. The live source metadata is Archive+Pinned, not read-only, with no link target; the parent independently confirmed the snapshot copies are not hardlinked.
+
+## Source changes verified
+
+The owner patch adds video_game_in_sweden_quote_restriction in common/scripted_triggers/024_video_game_in_sweden_triggers.txt. It reads has_political_power, has_stability, and has_war_support into temporary quote variables, clamps them to zero through the existing nominal caps, and returns yes. It is called by video_game_in_sweden_can_pay_restriction, by three numeric scripted-localisation getters, and by video_game_in_sweden_pay_restriction.
+
+The payment effect now evaluates one fresh quote and debits political power, Stability, and War Support from that quote in one conditional block. The previous independent per-resource debit blocks are removed.
+
+In the frozen AFTER source, the Restrict Use decision uses the three quote getters for its normal and blocked cost text. The YAML values are backed by video_game_restriction_political_power_quote_value, video_game_restriction_stability_quote_value, and video_game_restriction_war_support_quote_value. The three existing texticons remain political power, Stability, and War Support. A later live-only presentation edit moves the War Support icon/value from the inline normal/blocked fields into their hover tooltip while retaining the full three-icon quote there; it is not in the frozen AFTER source and does not alter payment or AI logic.
+
+The decision removes ai_hint_pp_cost = 30 only from video_game_restrict_use. This is a cost hint change, not an ai_will_do weight edit. The decision's available trigger and custom_cost_trigger call video_game_in_sweden_can_pay_restriction. Any AI consequence from the cost-hint removal still needs the requested decision-pool comparison.
+
+Within the frozen fee BEFORE/AFTER copies, trust_supply remains -0.08 in common/script_constants/024_video_game_in_sweden_constants.txt:319 and is consumed by supply_consumption_factor in common/dynamic_modifiers/024_video_game_in_sweden_dynamic_modifiers.txt:15. The parent reports a later ordinary, non-probability live-source fix changes trust_supply from -0.08 to +0.08, keeping the magnitude unchanged while matching the accepted serious-supply-risk direction. This gives an 8% supply-consumption risk by source interpretation, not a verified campaign result. The change is outside the frozen fee comparison; do not copy it over the immutable fee constants snapshot. The separate pre-supply-risk constants and dynamic-modifier snapshots are preserved. The parent reports the fee quote, input costs, and AI weights remain unchanged from the frozen AFTER set, while dynamic campaign balance remains unverified. This source-only sign fix is tracked separately in handoff 16.
+
+Source-path limitation: events/024_hearts_of_iron.txt is byte-identical before and after. A compare using that event file alone cannot establish the availability or before/after delta of the helper definitions in the separate effect and trigger files. No helper binding is claimed here. The parent must use a confirmed inlineClausewitz composite if supported, or leave the helper delta unresolved. A zero-delta event-file result does not prove the affordability repair had no effect.
+
+## Weighted surfaces and raw values
+
+The event option surface is chaosx.nr24.50 with the complete source candidate pool chaosx.nr24.50.a, chaosx.nr24.50.b, and chaosx.nr24.50.c.
+
+| Option | Source gate | Raw ai_chance base and modifiers |
+| --- | --- | --- |
+| chaosx.nr24.50.a Reality Audit | can_begin_reality_audit and can_pay_reality_audit | audit_crisis = 3.5, supply-crisis factor 2.0, route factors controlled 1.2, commercial 0.8, officer 1.0 |
+| chaosx.nr24.50.b Dual-Track | can_use_dual_track and can_pay_dual_track | base 2.0, Stability factor 1.6 when Stability exceeds 0.50, route factors controlled 1.1, commercial 0.8, officer 1.4 |
+| chaosx.nr24.50.c Restrict Use | can_restrict_use and can_pay_restriction | restrict_crisis = 4.0, route factors controlled 1.1, commercial 1.0, officer 0.9 |
+
+These ai_chance values are raw source scores, not normalized option probabilities. The event-option result would be conditional on the event firing and the complete eligible local pool. MCP poolComplete remains unknown.
+
+The affected decision pool is video_game_in_sweden_program_category with all eighteen source candidates:
+
+video_game_controlled_exercise, video_game_logistics_module, video_game_expand_access, video_game_conclude_trial, video_game_rules_revision, video_game_field_validation, video_game_red_team, video_game_officer_league, video_game_national_league, video_game_protect_shifts, video_game_preparedness_clubs, video_game_foreign_licenses, video_game_separate_policy, video_game_begin_reality_audit, video_game_narrow_reality_audit, video_game_dual_track, video_game_restrict_use, and video_game_trust_model.
+
+Decision ai_will_do values are willingness scores in the decision race, not click probabilities. Their score blocks are unchanged in the snapshots. The Restrict Use cost hint was removed, so the complete decision pool is needed for the parent comparison. No ranking claim is made.
+
+## Preserved scenarios and input coverage
+
+The same scenario IDs P24-C5 and P24-C7 are to be used before and after. No new scenario IDs are introduced.
+
+| Scenario | Named state facts to preserve | Scope and external inputs that remain unresolved |
+| --- | --- | --- |
+| P24-C5 | phase 4, route 1, current_incident 0, last_incident 2, political power 0, Stability 0.02, has_war_support 0.01, fuel 0, trains 0, support equipment 0, army experience 0, command power 0, valid Swedish host, no active mission, supply failure and lost core | Native binding for ROOT, Swedish host, resource facts, country flags, Evolution III active/enabled state, current supply gap versus historical supply-crisis state, has_war, event targets, and field-package requirements remains unresolved. |
+| P24-C7 | phase 4, route 1, current_incident 0, last_incident 0, political power 0, Stability 0.02, has_war_support 0.01, fuel 0, trains 0, support equipment 0, army experience 0, command power 0, surrender progress 0.9, valid Swedish host, no active mission, near capitulation | Native binding for ROOT, Swedish host, resource facts, surrender progress, country flags, Evolution III active/enabled state, event targets, and field-package requirements remains unresolved. |
+
+The values above are explicit audit assumptions and generic envelope facts. They are not verified campaign state or proven adapter bindings. The earlier facility custom-pool scenario file confirms a generic scenario envelope shape only. It does not establish that the native Event24 adapters bind these named facts to country variables or scopes. The parent intends to use its same P24-C5/C7 generic-envelope probe, with native bindings and helper dependency deltas declared unresolved.
+
+## Source-only affordability baseline
+
+Before the patch, video_game_in_sweden_can_pay_restriction requires at least 30 political power, 0.04 Stability, and 0.04 War Support. The P24-C5 and P24-C7 assumptions of 0 political power, 0.02 Stability, and 0.01 War Support fail all three source gates if those values bind to the relevant country scope.
+
+Reality Audit requires 12 Army Experience, 100 support equipment, 750 fuel, and 8 trains, plus the field-start package, completed logistics and red-team flags, and active Evolution III state. Under the stated zero resources its payment gate fails if bound. Dual-Track requires 10 Army Experience, 20 command power, and one available civilian project factory. Its payment gate fails on the stated zero Army Experience and command power if bound.
+
+The patched quote formula source-clamps political power to 0 through 30, Stability to 0 through 0.04, and War Support to 0 through 0.03. On the declared C5 and C7 values it yields source-calculated quotes of 0 political power, 0.02 Stability, and 0.01 War Support if the dynamic readers bind. The source also yields 25 political power at an available value of 25, 29.99 at 29.99, and caps the amounts at 30, 0.04, and 0.03. These are arithmetic checks of the owner formula, not observed game values or probability results.
+
+The new source quote makes video_game_in_sweden_can_pay_restriction return yes through the quote helper. The remaining can_restrict_use trigger still requires its campaign and host conditions. With zero resource facts, the source gates for .50.a and .50.b remain false if bound. Whether .50.c becomes an eligible native candidate is unresolved until the parent result proves scope binding and pool completeness.
+
+## Dynamic-variable documentation
+
+C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/dynamic_variables_documentation.md has SHA-256 538525747f0c285062c9ce8db14b4e07c3cf6bac1013115fa4f57291cb4ebdda. Lines 431-433 list has_political_power. Lines 435-438 list has_stability. Lines 439-442 list has_war_support. Line 785 documents stability. A targeted search found no standalone raw war_support dynamic-variable entry. This supports using has_war_support as the quote reader at source level and does not establish adapter or ROOT-scope binding.
+
+## Parent-relay inspect and comparison request
+
+The parent should inspect postpatch first with event_option_ai_chance, the frozen AFTER events/024_hearts_of_iron.txt path, and the complete chaosx.nr24.50.a, .50.b, .50.c pool. Inspect the decision_ai_will_do adapter against the frozen AFTER decisions path and the complete eighteen-candidate pool as well.
+
+The parent dispatched both mandatory comparisons in cell111. The event request uses adapter event_option_ai_chance; before.path docs/plans/024_video_game_in_sweden_plans/probability_snapshots/2026-10-03_pre_emergency_restriction/024_hearts_of_iron.txt; after.path docs/plans/024_video_game_in_sweden_plans/probability_snapshots/2026-10-03_post_emergency_restriction/024_hearts_of_iron.txt; candidatePool [chaosx.nr24.50.a, chaosx.nr24.50.b, chaosx.nr24.50.c]. The decision request uses adapter decision_ai_will_do; before.path docs/plans/024_video_game_in_sweden_plans/probability_snapshots/2026-10-03_pre_emergency_restriction/024_video_game_in_sweden_decisions.txt; after.path docs/plans/024_video_game_in_sweden_plans/probability_snapshots/2026-10-03_post_emergency_restriction/024_video_game_in_sweden_decisions.txt; candidatePool containing all eighteen video_game_* decisions listed above. Both requests use scenarioSet P24_EMERGENCY_RESTRICTION_MATRIX with the same P24-C5/P24-C7 facts in the table: has_political_power 0, has_stability 0.02, has_war_support 0.01, other listed resource inputs zero, phase 4, route 1, current incident 0, last incident 2 for C5 or 0 for C7, and surrender progress 0.9 for C7. These are generic-envelope scenario facts, not verified native bindings. The before and after objects use their real frozen paths; no sourceRevision or sourceHash fields are added. The confirmed schemaVersion 1.0 scenario envelope is generic custom-pool shape evidence only and does not prove native-variable binding.
+
+These frozen paths bind only the event root or decision file passed in each call. The event file is byte-identical before and after, so its event-option comparison must still be attempted, but a zero-delta result proves only that the root event text did not change. The decision snapshots bind removal of ai_hint_pp_cost = 30, but do not by themselves bind the before/after versions of the separate scripted trigger and effect helpers. If a decision comparison resolves those references from the current workspace, it sees the live AFTER helper on both sides and cannot establish prepatch helper behavior.
+
+For helper-dependent comparison, use a multi-file or inlineClausewitz composite only if the parent's live tool schema explicitly confirms that input contract and the parent can bind corresponding BEFORE and AFTER event, decision, trigger, effect, and relevant constants sources. No such composite contract is confirmed in this child session. Do not fabricate source-bundle keys or infer that inlineClausewitz is accepted. If no confirmed multi-file contract exists, complete the path-based inspect/compare attempts above, then leave the quote-helper availability delta, resource binding, and helper execution unresolved. Do not interpret a zero-delta event-only compare as evidence that the repair had no effect.
+
+Render status: not applicable for the completed timeout attempts. Both cell111 comparisons timed out without result artifacts or unresolved rows, so there was nothing to render and no render ID exists. No artifact, revision, analysisId, comparisonId, scenario hash, poolComplete value, unresolved rows, or render ID was returned. The event source is unchanged; its before/after helper-file delta remains unresolved, so an empty or zero-looking event delta must not be signed off as good. The decision path differs by removal of ai_hint_pp_cost = 30, but adapter budget-hint semantics remain unverified. No exact rank, normalized selection probability, or numerical signoff is available. If a future compare returns unresolved rows, request the unresolved render then and retain its artifact URI.
+
+## Status and remaining blockers
+
+- The child attempted postpatch probability_inspect first for the .50 pool and the eighteen-decision pool. Both direct calls failed before dispatch with TypeError because the child-local probability tool is absent.
+- The parent reports that the prepatch probability_inspect for the frozen BEFORE .50 three-option pool timed out awaiting tools/call after 600 seconds and returned no artifact. This is distinct from the child-local route gap.
+- The parent reports that both postpatch probability_inspect requests in cell100 timed out awaiting tools/call after 600 seconds: event_option_ai_chance for the frozen AFTER chaosx.nr24.50 three-option pool and decision_ai_will_do for the frozen AFTER complete eighteen-decision pool. Neither returned an artifact.
+- Both source-path probability_compare requests in parent cell111 timed out awaiting tools/call after 600 seconds. Neither produced a result or artifact. Native variable, resource, ROOT, helper-file delta, and AI-hint semantics remain unresolved. The generic state-envelope probe does not verify native binding. Do not claim a rank or treat a zero event-file delta as good signoff.
+- The parent reports no artifact, revision, analysisId, comparisonId, scenario hash, poolComplete value, unresolved rows, or render IDs. No unresolved-row rendering was applicable to the timeout result.
+- Native ROOT and host binding, resource fact binding, active flags, quote helper execution, and cross-file helper binding remain unresolved.
+- Parent cell65/.68 status for the earlier 79-comparator audit remains separate and is not used as emergency comparison evidence.
+- No numerical selection probability, score normalization, ranking, threshold sensitivity, or balance signoff is reported.
+
+Handoff status: blocked on the parent probability service. Both cell100 postpatch inspections and both cell111 source-path comparisons timed out awaiting tools/call after 600 seconds without artifacts. The child-local registry gap remains a separate pre-dispatch TypeError, not the parent service timeout. Parent will stop this turn on the service blocker and resume using the handoff 16 ledger; this is not full-goal completion. This child made no gameplay edit, did not choose any fee or weight target, and made no commit or game launch.
