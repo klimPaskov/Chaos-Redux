@@ -367,6 +367,8 @@ Do not add a treaty/new world order after every contained or short-lived disaste
 
 For long or cross-file chains, use the read-only `hoi4.event_inspect`, `hoi4.event_render`, and `hoi4.event_compare` tools to map entry points, branches, state and scope flow, impact, and structural changes. Event-owned GUI surfaces may also use `hoi4.gui_inspect` and `hoi4.gui_render`. Edit event source through the normal workflow, then compare and lint again. MCP evidence augments the event contract below and does not replace source review or the completion audit.
 
+Check the live selector schema before narrowing an event call: an event selector is `selector: { kind: "event", eventId: "namespace.id" }`, not a bare `eventId` or `id` object.
+
 #### MCP evidence gate
 
 Before treating an inspection or render as lifecycle evidence, read its `analysisMode`, `complete`, indexed `counts.helpers`, `filesScanned` or source-hash inventory, unresolved entries, and diagnostics. `trace` and `explain_path` use focused analysis, and `scan`, `roots`, `lint`, or `event_render` use focused analysis when a selector is supplied. Focused analysis reads only `events/**/*.txt` and `common/on_actions/**/*.txt`, disables workspace-wide helper projections and lifecycle passes, and keeps the focused-boundary blocker even when `expandHelpers = true`. `state_flow` and `impact` request full analysis even when narrowed, while selector-free `scan` requests full analysis. Use a full route when helper or lifecycle coverage is required, and do not treat a focused trace or a zero helper count as proof that the chain has no helpers. If the required event route is unavailable, record the exact blocker and do not substitute source-only evidence.
