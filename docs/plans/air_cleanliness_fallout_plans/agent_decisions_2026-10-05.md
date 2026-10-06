@@ -104,6 +104,20 @@ Disposition: implemented in source; GUI render blocked.
 The existing monthly visual lifecycle applies the changed weather setting; phase ground and gameplay cues remain as defined by A22.
 Reason: Reset All Settings must reset this visual preference too.
 
+
+## F12. Fallout graphics follow their native consumers
+
+Disposition: implemented assets and wiring; matched generic focus MCP raster reviewed, native consumer checks remain open.
+The thirty-three generic focuses receive distinct 94x86 painted medallions and matching shine sprites.
+Five USA decisions and both NZL rescue decisions use 32x32 miniatures; the USA category uses its own 52x40 texture rather than a focus picture.
+Thirty report pictures use the inspected 210x176 tilted white frame and sepia family, including a valid Working Machine DDS and period replacements for modern or poor scenes.
+The native Recognition glyph retains the exact parent-approved committed bytes.
+Three generic focus endpoint coordinates remove unused vertical gaps without changing prerequisites, rewards, eligibility or AI.
+Three NZL node coordinates straighten the Relief Speaker, Storm Port and Pacific Rescue chains; the full rendered tree and empty target cells support the change.
+Reason: resolve all eight assigned graphics-plan rows, repeated vanilla icons, stretched category/decision textures, the invalid report texture, and poor crops or baked writing.
+The seven existing achievement triplets are visually reviewed and accepted; no achievement art or conditions were substituted.
+Source masters, rejected alternatives and processing records are retained locally; prompts, runtime hashes, approvals and handoffs are tracked separately.
+
 ## F13. Fallout prose names the actual people, work and consequences
 
 Disposition: source prose cleanup; full visual wrapping remains unobserved.
@@ -112,6 +126,16 @@ Descriptions name food, medical work, cargo, census papers, routes and public ch
 Reason: enforce G3 across the full owned text surface, including phrases the previous takeover retained as diegetic bookkeeping.
 This changes display wording, not resource amounts, selectors, flags, dates or event effects.
 The complete before/after key list and token/value invariance are recorded in the final prose handoff.
+
+## F14. New Zealand characters load before recruitment
+
+Disposition: implemented in `cf5968f92`; focused inspection resolves the missing leaders, native recruitment remains a live check.
+The six existing character definitions belong in `common/characters/fallout_consolidated_characters.txt`; activation recruits their stable IDs behind the same `has_character` guards.
+The previous full midgame `generate_character` blocks had no history templates, contrary to the offline character reference.
+Each complete role body, trait, portrait, cost, availability condition and AI clause is preserved after removing only `token_base` and changing indentation.
+Reason: make the Parliament, Relief Speaker, Harbor Constable and three advisors available to their existing promotions and UI consumers.
+This supplies no new person, portrait, country route or balance target.
+The static loader and actual in-place/dynamic-country callers are independently audited; advisor willingness evidence is routed separately.
 
 ## F15. Relief refunds represent an actual charge, and results get time to circulate
 

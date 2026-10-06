@@ -1,5 +1,10 @@
 # Fallout Event ID Ledger
 
+## October source disposition
+
+The October takeover enables the living-world scheduler; earlier dormant wording below describes the source boundary at each original tranche.
+Current scheduler and content coverage limits are recorded in `takeover_status_2026-10-06.md`, which does not claim completion of the two-chain-per-successor library.
+
 ## Public catalog boundary
 
 The `FALLOUT-*` identities in this implementation ledger are internal candidate labels for dormant survivor content. They are not public event registrations. The Events, Clusters, and Scenarios sheets and all three exported catalog snapshots intentionally contain no Fallout rows. Historical catalogue wording below is retained only to preserve tranche provenance.
@@ -1246,3 +1251,11 @@ Agent decision A17 adds one opening chain for each memory a vanilla 1936 major-p
 | `yellow_river_famine_councils` | River Grain Quotas | `1151` to `1157` | 1151 | 710118 | 7270 | 9224 |
 
 The reserved route upper bound is `7272`. The mechanic is described in `docs/systems/air_cleanliness/fallout_memory_chains.md`.
+
+## Finishing-pass local notices, 2026-10-06
+
+`chaosx.fallout.905` is the declined manual launch report, called only by the owned manual entry effect when its admission fails.
+`chaosx_air_treaty.24` is the closed reconstruction-answer notice, called only when an already displayed answer is no longer valid.
+Both ids are unique in the current event sources.
+They are local acknowledgments, carry no scheduler candidate, transaction route, resource grant, or public catalogue root, and add at most one report per user action.
+The existing manual launch ids `900` through `904` and ordinary candidate ids remain unchanged.

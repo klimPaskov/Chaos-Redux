@@ -1,5 +1,14 @@
 # Air Cleanliness Treaty and Fallout Decision Audit
 
+## Final parent disposition, 2026-10-06
+
+Core commit `9ec627597` resolves the earlier P1 cost-row and Recognition presentation findings with three native custom-cost rows, shared affordability selectors, the new glyph, and owned effect tooltips.
+It resolves the P2 source presentation gates with staged families and active-project visibility; native panel density and target clones remain unobserved.
+The P3 NZL duration concern is not an outstanding source defect: both durations are stored with `set_variable`, then passed as `days = var:<normal variable>`, matching installed `common/scripted_effects/SIA_scripted_effects.txt:780`.
+The patrol source uses `fallout_nzl_patrol_window_days`; the weather source uses `fallout_nzl_weather_warning_days`.
+The excerpt below preserves the earlier audit snapshot, rather than overriding these current-source dispositions.
+Native expiry, decision-panel fit, and blocked MCP probability comparisons remain open checks.
+
 Date: 2026-10-06.
 
 Repository root: C:\Users\klimp\OneDrive\Documents\Paradox Interactive\Hearts of Iron IV\mod\chaos_redux.

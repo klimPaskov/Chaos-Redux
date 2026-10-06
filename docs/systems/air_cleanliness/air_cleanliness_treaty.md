@@ -5,7 +5,7 @@
 Cleaning Day, filter convoy and verification expose the existing equipment and factory commitments through native, per-component cost rows.
 The primary action families are staged by treaty size, sampling work/rest, and recipient phase; paid projects retain their own completion and cancellation receipts.
 Relief passage needs a strict live-member majority and a payable peaceful pledge.
-An unfunded session gives no relief or success memory, refunds its caller's saved native PP quote once, and leaves the recipient free; invalidated and unfunded callers retry after fourteen days.
+An unfunded session gives no relief or success memory, refunds its caller's actually charged PP quote once, and leaves the recipient free; invalidated and unfunded callers retry after fourteen days.
 Reconstruction reserves one sender/recipient pair per participant, matches the carried proposer and generation, rejects capitulation, and releases exact lost-country pairs on annexation/capitulation.
 Its refusal flag uses a constant-derived literal year, and stale answers produce a closing notice.
 An inspection whose response supplies disappeared ends after one notice instead of reopening its request.
@@ -180,13 +180,20 @@ On completion the target gains Condemnation through `condemnation_add_source` (p
 
 ### Member relief votes
 
-`air_cleanliness_treaty_call_relief_vote` targets any live member, including the caller, whose emergency priority state is at Phase 4 or worse and under its own control, and which has not faced a vote in the last `relief_vote_recipient_cooldown_days`. Only one vote can be open across the treaty. The caller pays `relief_vote_political_power` through the native cost row and waits `relief_vote_cooldown_days` before calling another.
+`air_cleanliness_treaty_call_relief_vote` targets any live member, including the caller, whose emergency priority state is at Phase 4 or worse and under its own control, and which has not faced a vote in the last `relief_vote_recipient_cooldown_days`. Only one vote can be open across the treaty. The custom cost row displays `relief_vote_political_power`; the admitted owner effect debits it once and stores that actual quote for cancellation.
+Stale admission is not charged.
+Completed political decisions retain `relief_vote_cooldown_days` caller pacing; unfunded or invalid sessions use `relief_vote_retry_days`.
+All valid results reserve `relief_vote_report_gap_days` across the treaty before another session can open, protecting the preceding report even when Easy Decisions shortens the native timer.
 
 1. The open effect raises `global.air_cleanliness_treaty_relief_vote_transaction`, records the caller, recipient, state, and generation on global variables, and places the caller and the recipient in `global.air_cleanliness_treaty_relief_vote_yes`. Every other live member stores the transaction as its ballot receipt and receives `chaosx_air_treaty.18` with yes, no, and abstain answers.
-2. After `relief_vote_duration_days` the count includes only voters that are still live members. The vote passes with more yes than no votes and at least `relief_vote_minimum_yes` yes votes.
-3. A passed vote walks the yes list. Each yes voter other than the recipient that holds `relief_vote_pledge_support` support equipment pays it, up to `relief_vote_maximum_pledges` deliveries, and the recipient gains `air_cleanliness_treaty_relief_vote_support` toward it. Each delivery adds shelter and food reserve and lowers disease and refugee pressure in the state by the per-pledge constants.
-4. A failed vote costs the recipient `relief_vote_rejected_stability` stability, sets `air_cleanliness_treaty_relief_vote_rejected_memory`, and gives the recipient `air_cleanliness_treaty_relief_vote_refused` toward every no voter.
-5. Report `chaosx_air_treaty.19` goes to every live member, with a recipient-specific option when the vote fails. An invalid vote is abandoned through `chaosx_air_treaty.14` and the political power is not returned. An annexed caller's vote is released and an annexed voter's ballot is removed. The Fallout pause releases the vote silently.
+2. After `relief_vote_duration_days` the count includes only voters that are still live members. The vote passes with more yes votes than half of all live treaty members and at least `relief_vote_minimum_yes` yes votes; abstention therefore cannot supply the missing majority.
+3. A passed vote walks the yes list. Each peaceful live yes voter other than the recipient that holds `relief_vote_pledge_support` support equipment pays it, up to `relief_vote_maximum_pledges` deliveries, and the recipient gains `air_cleanliness_treaty_relief_vote_support` toward it. Each delivery adds shelter and food reserve and lowers disease and refugee pressure in the state by the per-pledge constants.
+4. An otherwise funded political rejection costs the recipient `relief_vote_rejected_stability` stability, sets `air_cleanliness_treaty_relief_vote_rejected_memory`, and gives the recipient `air_cleanliness_treaty_relief_vote_refused` toward every no voter.
+5. No payable donor at closure produces an unfunded result: no aid, success memory, recipient penalty or recipient recent-target lock, and one refund of the saved fee.
+6. Report `chaosx_air_treaty.19` goes once to each live member, with the appropriate recipient/caller acknowledgment.
+An invalid vote is abandoned through `chaosx_air_treaty.14`; its saved fee is consumed before refund and its caller gets the short retry window.
+An annexed caller's vote is released and an annexed voter's ballot is removed.
+The Fallout pause releases the vote silently.
 
 ### Clean Day betrayal
 

@@ -1,0 +1,271 @@
+{
+  "schemaVersion": "1.0",
+  "evidenceStatus": "NOT_MCP_VALIDATED",
+  "blocker": "HOI4 probability and event routes returned tool-level Transport closed before scenario parsing; scenario hashes and comparison ids were not issued.",
+  "description": "These bounded synthetic scenario contracts preserve the parent-requested compare cases. They are not save observations, engine results, score traces, probability claims, or validated MCP request payloads.",
+  "schedulerSelector": {
+    "surface": "common/scripted_effects/fallout_consolidated_effects.txt::fallout_event_select_reviewed_candidate",
+    "adapterAttempted": "custom_weighted_pool",
+    "manifestDiscovery": "No applicable declared pool found; source selector is a deterministic maximum-score race.",
+    "completeWithinFixture": true,
+    "scenarios": [
+      {
+        "id": "first_negative",
+        "slotOpen": true,
+        "candidatePoolComplete": true,
+        "rows": [
+          {
+            "id": 100,
+            "eligible": true,
+            "score": -1
+          }
+        ],
+        "expectedToExercise": "First eligible negative-score candidate must be retained."
+      },
+      {
+        "id": "first_zero",
+        "slotOpen": true,
+        "candidatePoolComplete": true,
+        "rows": [
+          {
+            "id": 100,
+            "eligible": true,
+            "score": 0
+          }
+        ],
+        "expectedToExercise": "First eligible zero-score candidate must be retained."
+      },
+      {
+        "id": "negative_ranking",
+        "slotOpen": true,
+        "candidatePoolComplete": true,
+        "rows": [
+          {
+            "id": 200,
+            "eligible": true,
+            "score": -3
+          },
+          {
+            "id": 100,
+            "eligible": true,
+            "score": -1
+          }
+        ],
+        "expectedToExercise": "Highest score wins when all scores are negative."
+      },
+      {
+        "id": "id_tie",
+        "slotOpen": true,
+        "candidatePoolComplete": true,
+        "rows": [
+          {
+            "id": 200,
+            "eligible": true,
+            "score": 0,
+            "classPriority": 1,
+            "targetId": 1,
+            "partnerIndex": 0
+          },
+          {
+            "id": 100,
+            "eligible": true,
+            "score": 0,
+            "classPriority": 1,
+            "targetId": 1,
+            "partnerIndex": 0
+          }
+        ],
+        "expectedToExercise": "Existing tie order resolves to lower candidate id after class priority."
+      },
+      {
+        "id": "preserved_eligibility",
+        "slotOpen": true,
+        "candidatePoolComplete": true,
+        "rows": [
+          {
+            "id": 100,
+            "eligible": false,
+            "score": 20
+          },
+          {
+            "id": 200,
+            "eligible": true,
+            "score": -1
+          }
+        ],
+        "expectedToExercise": "Hard eligibility gate rejects the high-score row and retains the eligible negative row."
+      }
+    ],
+    "uncertainty": "Scores are isolated comparator fixtures, not derived from Fallout candidate state. No MCP result confirms these exact outcomes.",
+    "downstreamStatus": "Current disk source now allows requested scores of any numeric value, ordinary receipt validity requires the score variable to exist, and country runtime validity requires score zero only when no selected candidate ID exists; selected candidate IDs greater than zero may carry negative scores. This is source-level control-flow evidence only, not an MCP probability result.",
+    "downstreamSourceGuards": [
+      "common/scripted_effects/fallout_consolidated_effects.txt::fallout_event_select_reviewed_candidate",
+      "common/scripted_effects/fallout_consolidated_effects.txt::fallout_event_schedule_ordinary_receipt",
+      "common/scripted_triggers/fallout_consolidated_triggers.txt::fallout_event_ordinary_receipt_is_consistent",
+      "common/scripted_triggers/fallout_consolidated_triggers.txt::fallout_event_country_runtime_row_is_current"
+    ],
+    "currentAbsoluteSources": {
+      "effects": {
+        "path": "C:\\Users\\klimp\\OneDrive\\Documents\\Paradox Interactive\\Hearts of Iron IV\\mod\\chaos_redux\\common\\scripted_effects\\fallout_consolidated_effects.txt",
+        "sha256": "71e0e020c58c631b1113cdbbc93c5e840615ba73bee1d95ffbd2dfc18f2b447c"
+      },
+      "triggers": {
+        "path": "C:\\Users\\klimp\\OneDrive\\Documents\\Paradox Interactive\\Hearts of Iron IV\\mod\\chaos_redux\\common\\scripted_triggers\\fallout_consolidated_triggers.txt",
+        "sha256": "5939150be25080ef71d9483f23b0066d60d9cf09aebbf5086452afcf5a639982"
+      }
+    }
+  },
+  "reconstruction": {
+    "surfaceIds": [
+      "fallout_treaty_reconvene_secretariat",
+      "chaosx_air_treaty.22.a",
+      "chaosx_air_treaty.22.b",
+      "fallout_treaty_closed_answer.a"
+    ],
+    "candidatePoolAssumptions": {
+      "missionPool": [
+        "fallout_treaty_reconvene_secretariat"
+      ],
+      "event22LocalOptions": [
+        "chaosx_air_treaty.22.a",
+        "chaosx_air_treaty.22.b",
+        "fallout_treaty_closed_answer.a"
+      ],
+      "syntheticCountryRoster": [
+        "SYN_A",
+        "SYN_B",
+        "SYN_C"
+      ],
+      "completeOnlyWithinSyntheticWorld": true,
+      "event22PoolStatus": "Three local options in current source; a/b require a current answer, and the closed-answer acknowledgement is available only when the answer is closed. MCP inspect for all three returned Transport closed."
+    },
+    "scenarios": [
+      {
+        "id": "recipient_free",
+        "assumptions": [
+          "SYN_A and SYN_B exist and are current Fallout treaty-memory registry members",
+          "SYN_B has no incoming reconstruction proposer lock",
+          "SYN_A can pay the full political-power and Recognition cost",
+          "both countries are independent, non-capitulated, and at peace",
+          "Fallout transition generation is 5"
+        ]
+      },
+      {
+        "id": "recipient_pending",
+        "assumptions": [
+          "Same as recipient_free, but SYN_B carries an incoming proposal from surviving SYN_C",
+          "SYN_C proposal points to SYN_B and uses generation 5"
+        ]
+      },
+      {
+        "id": "sender_lost",
+        "assumptions": [
+          "SYN_B still carries an incoming proposer pointer to SYN_DEAD",
+          "SYN_DEAD does not exist",
+          "on_annex cleanup is exercised for the annexed country"
+        ]
+      },
+      {
+        "id": "wrong_generation",
+        "assumptions": [
+          "SYN_B points to existing proposer SYN_A",
+          "SYN_A proposal remains active and targets SYN_B",
+          "saved generation is 4 while global Fallout generation is 5"
+        ]
+      }
+    ],
+    "uncertainty": "Typed variable/event-target bindings, cancellation timing, and post-annex live lifecycle were not accepted by MCP. Current source includes a new cleanup effect absent from HEAD, so there is no tracked before-file for that helper.",
+    "currentAbsoluteSources": {
+      "events": {
+        "path": "C:\\Users\\klimp\\OneDrive\\Documents\\Paradox Interactive\\Hearts of Iron IV\\mod\\chaos_redux\\events\\fallout_world_end_events.txt",
+        "sha256": "c84bd766e1296ffb19c0bcb1c06d08de7cac69137cb783c8eedd030a14864c12"
+      },
+      "triggers": {
+        "path": "C:\\Users\\klimp\\OneDrive\\Documents\\Paradox Interactive\\Hearts of Iron IV\\mod\\chaos_redux\\common\\scripted_triggers\\fallout_consolidated_triggers.txt",
+        "sha256": "5939150be25080ef71d9483f23b0066d60d9cf09aebbf5086452afcf5a639982"
+      },
+      "effects": {
+        "path": "C:\\Users\\klimp\\OneDrive\\Documents\\Paradox Interactive\\Hearts of Iron IV\\mod\\chaos_redux\\common\\scripted_effects\\fallout_consolidated_effects.txt",
+        "sha256": "71e0e020c58c631b1113cdbbc93c5e840615ba73bee1d95ffbd2dfc18f2b447c"
+      },
+      "annex_hook": {
+        "path": "C:\\Users\\klimp\\OneDrive\\Documents\\Paradox Interactive\\Hearts of Iron IV\\mod\\chaos_redux\\common\\on_actions\\fallout_consolidated_on_actions.txt",
+        "sha256": "b2f2e168553d3368a32ad6820534e1d783adf69f6c5795ce7a46f8eae2f563ef"
+      },
+      "cleanup_effects": {
+        "path": "C:\\Users\\klimp\\OneDrive\\Documents\\Paradox Interactive\\Hearts of Iron IV\\mod\\chaos_redux\\common\\scripted_effects\\fallout_treaty_reconstruction_cleanup_effects.txt",
+        "sha256": "c8aa1d8b8e1a6d84a57efbedde4b234abc861fc7c3b940511cb5b7a3b6a2dca7"
+      }
+    }
+  },
+  "reliefVote": {
+    "surfaces": [
+      "air_cleanliness_treaty_call_relief_vote",
+      "chaosx_air_treaty.18.a",
+      "chaosx_air_treaty.18.b",
+      "chaosx_air_treaty.18.c"
+    ],
+    "scenarios": [
+      {
+        "id": "relief_four_two_yes",
+        "assumptions": [
+          "four current live members",
+          "two yes votes and two no votes, so the yes count does not exceed half the live membership",
+          "at least one of the two yes voters is a payable donor other than the recipient and is at peace with the recipient",
+          "no strict majority despite a funded payload",
+          "complete four-member synthetic pool"
+        ]
+      },
+      {
+        "id": "relief_four_three_yes_one_pledge",
+        "assumptions": [
+          "four current live members",
+          "three yes votes, which exceeds half the live membership and meets the two-yes minimum",
+          "exactly one payable yes donor other than the recipient, at peace with the recipient",
+          "recipient remains live and valid through resolution",
+          "complete four-member synthetic pool"
+        ]
+      },
+      {
+        "id": "relief_zero_equipment",
+        "assumptions": [
+          "ballot passes by votes, but no live yes voter other than the recipient can pay the support-equipment pledge",
+          "the unfunded result refunds the quote and applies no payload",
+          "complete four-member synthetic pool"
+        ]
+      },
+      {
+        "id": "relief_lost_recipient",
+        "assumptions": [
+          "recipient ceases to exist or leaves live membership before resolution",
+          "the vote cancels and releases receipts without applying an outcome",
+          "complete four-member synthetic pool"
+        ]
+      }
+    ],
+    "status": "Current source now contains the strict live-member majority, minimum-yes, payable-donor, unfunded/refund, and lost-recipient cancellation paths. MCP before/after comparison remains unreturned.",
+    "currentAbsoluteSources": {
+      "decisions": {
+        "path": "C:\\Users\\klimp\\OneDrive\\Documents\\Paradox Interactive\\Hearts of Iron IV\\mod\\chaos_redux\\common\\decisions\\fallout_consolidated_decisions.txt",
+        "sha256": "a43bab2328fc2091cb7fd50bfcc519c9e0e900bc12820910cb74e0f79014c35b"
+      },
+      "effects": {
+        "path": "C:\\Users\\klimp\\OneDrive\\Documents\\Paradox Interactive\\Hearts of Iron IV\\mod\\chaos_redux\\common\\scripted_effects\\fallout_consolidated_effects.txt",
+        "sha256": "71e0e020c58c631b1113cdbbc93c5e840615ba73bee1d95ffbd2dfc18f2b447c"
+      },
+      "triggers": {
+        "path": "C:\\Users\\klimp\\OneDrive\\Documents\\Paradox Interactive\\Hearts of Iron IV\\mod\\chaos_redux\\common\\scripted_triggers\\fallout_consolidated_triggers.txt",
+        "sha256": "5939150be25080ef71d9483f23b0066d60d9cf09aebbf5086452afcf5a639982"
+      },
+      "events": {
+        "path": "C:\\Users\\klimp\\OneDrive\\Documents\\Paradox Interactive\\Hearts of Iron IV\\mod\\chaos_redux\\events\\fallout_world_end_events.txt",
+        "sha256": "c84bd766e1296ffb19c0bcb1c06d08de7cac69137cb783c8eedd030a14864c12"
+      },
+      "constants": {
+        "path": "C:\\Users\\klimp\\OneDrive\\Documents\\Paradox Interactive\\Hearts of Iron IV\\mod\\chaos_redux\\common\\script_constants\\fallout_consolidated_constants.txt",
+        "sha256": "bfad5a45f90da32040e04e26d7f4cb324941c2e96d08bef1a09c5a169e658056"
+      }
+    }
+  },
+  "additionalStatus": "All named fixtures are bounded source-control-flow cases only. No MCP scenario hash, score trace, selection probability, or numeric probability claim was returned."
+}

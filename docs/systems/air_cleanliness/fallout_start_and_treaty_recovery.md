@@ -28,7 +28,9 @@ The original seed, refugee, Desert City, and dead-city country-history contracts
 
 A relief vote needs a strict majority of live treaty members and a willing donor who can send equipment.
 No supplies means an unfunded session, no success memory, and no penalty against the recipient.
-Unused session funding returns once; cancelled and unfunded callers can retry after fourteen days.
+The admitted effect charges the displayed 25 PP and saves that actual amount; cancelled and unfunded sessions return it once.
+Stale admission makes no debit or refund.
+The caller retry and treaty-wide result-circulation windows last fourteen days.
 Completed decisions retain their ordinary pacing.
 
 Reconstruction proposals reserve one sender and one recipient.
