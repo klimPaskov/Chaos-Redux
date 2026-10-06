@@ -33,3 +33,12 @@ The report now shows actual WT and overall Chaos differences, with a negative br
 This supersedes requested-packet snapshot claims in the earlier handoffs while retaining their history.
 The accepted rationale, before/after hashes, local references, immutable baseline, source-model results, and failed domain calls are in `balance_evidence_2026-10-06/`.
 No numerical probability or native execution acceptance is claimed.
+
+
+## Graphics crop accepted on 2026-10-06
+
+The user-assigned graphics plan permits cropping the sharp upper-right portion of the existing Red Line photograph.
+Parent review accepted the crop at x=148, y=0, right=397, bottom=96, followed by a 397x153 black-and-white export.
+It removes the smeared newspapers while retaining the guard, checkpoint railings and crowd; the sprite and filename remain stable.
+The acceptance evidence is docs/plans/gfx_fix_2026-10/008_report.md and its permanent source/comparison package.
+No gameplay design or event text changed in this graphics correction.
