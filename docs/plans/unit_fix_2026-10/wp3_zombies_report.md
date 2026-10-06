@@ -47,6 +47,11 @@ They are not presented as additional independent takes.
 Two lower-register growl-loop attempts fail the recorded-edge gate; the dedicated demonic idle/defend pool is still open.
 
 The audio/presentation tranche is committed as `dbbd5444b`, `79a62a4c5`, `45582d8ba` and `6e393c848`.
+Two mutant attack snarls are installed and wired from the original classified CC0 takes 4/7, with -5/-7 semitone and formant shifts, -3 dBFS peaks, original 14.966 ms onset, and durations within one sample of the originals.
+An own two-take mutant footstep cue uses EQ-only derivatives of the accepted short recordings; it preserves 0.100/0.170-second lengths, zero inspected onset and the 40 ms release.
+All six move/retreat event times remain fixed; the slowest 0.88 sound rate gives a maximum 0.193182-second sample against the closest 0.2667-second gap.
+The fresh eight-model, 64-state source audit retains 39 existing findings and has no missing sound reference or sample-overlap finding.
+Live listening, source-contact proof and the broader action/voice requirements remain open.
 The mutant model tranche is committed as `f0987fd93` after parent review, with the remaining mutant requirements still open.
 
 ### Installed mutant geometry, idle and two material maps
@@ -97,7 +102,7 @@ Final geometry, UV or weight changes require mask rebinding and re-QA against th
 | infected_zombies | Blood burst lifetime; shared idle/movement gain; recovered moan 01. | Coat/skin/feet bake and masks; chest-height attack at 1.17 seconds; defend/training closures and skull clearance; coat-hem skinning; 312 non-manifold edges; eight blocked roles; actual cough/retch/spit sources. |
 | rabid_zombies | Blood burst lifetime; shared idle/movement gain; recovered moan 01. | Standing four-second frantic idle; move seam; forward lunge replacing back kick; wrist/forearm skinning and suit bake; 112 non-manifold edges; seven blocked roles; distinct shriek and death gasp. |
 | parasitic_zombies | Blood burst lifetime; feed gain 0.55. | Actual tentacle rig, weights, idle and whip lag; forward lash/grab; defend closure and death at most 4.5 seconds; tube caps and duplicate removal; 554 non-manifold edges; seven blocked roles; wet lash and suction sources. |
-| mutant_zombies | Blood burst lifetime; shared idle/movement gain; recovered moan 01; reviewed four-spur mesh repair, calm closed idle, diffuse median 86.740 and source-detail normal installed. | Skin/jaw specular recipe; attack claw curls and seven other action-role gates; filmed idle motion target; dedicated heavy voice, breathing and footsteps. |
+| mutant_zombies | Blood burst lifetime; recovered moan 01; reviewed four-spur mesh repair, calm closed idle, diffuse median 86.740 and source-detail normal; two own pitched/formant-shifted snarls and two short EQ footfalls wired. | Skin/jaw specular recipe; attack claw curls and seven other action-role gates; filmed idle motion target; two roars, distinct death bellow, and own breathing loop; live sound fit and balance. |
 | undead_zombies | Blood burst lifetime; attack grunt at 2.45 seconds; shared movement gain; one complete feeding cue instead of overlapping restarts. | Source-based suit/skin grade and gloss masks; substantial idle; plant/training easing and retreat seam; attack knees and armpit/hem weights; 330 non-manifold edges; seven blocked roles; two extra moan takes. |
 | necrotic_zombies | Blood burst lifetime; fall cue at 3.30 seconds; shared movement gain. | Bone/teeth gloss masks, distinct skin/rags; foot plants, arm sweep and transition easing; retreat seam; rag/thigh skinning; 73 non-manifold edges; seven blocked roles. |
 | demonic_zombies | Blood burst lifetime; shared idle/movement gain; recovered moan 01; three-variant scream and attack pools; reviewed current-mesh skin/head grade, 12-pixel padding and provider normal installed. | Forearm/hand and wing skinning/joints; standing slash and leap landing; death, training, idle, retreat and plant repairs; final region-mask rebind and specular; 36 non-manifold edges; seven blocked roles; own idle/defend growls and retiming after the authored action repairs. |

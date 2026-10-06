@@ -54,6 +54,30 @@ The six movement recordings are from “Footsteps” by GboxMikeFozzy, labeled C
 | `05-footstep.ogg` | `https://opengameart.org/sites/default/files/05-footstep.ogg` | `F1B4893DD3CEBE23438567A0DCAF047848A52B594E7EB03E5C212D99E83D2298` | CC0 |
 | `06-footstep.ogg` | `https://opengameart.org/sites/default/files/06-footstep.ogg` | `39147CC1B98ABB4B5378AD07B15D50D18F2AA0F0FD2F5514F078C1E574D14773` | CC0 |
 
+## Superseded full-source mutant heavy-footfall derivatives
+
+The source members remain GboxMikeFozzy's separately recorded footstep takes under the CC0 source page above. They are staged only as two processed candidates from two distinct source recordings, not as new recordings or a replacement for the global shared step pool.
+
+| Candidate role | Original source member | Original SHA-256 | Source role | Processing | Processed intermediate SHA-256 |
+| --- | --- | --- | --- | --- | --- |
+| mutant heavy footfall, take 05 derivative | `05-footstep.ogg` | `F1B4893DD3CEBE23438567A0DCAF047848A52B594E7EB03E5C212D99E83D2298` | source-labeled footstep | rubberband pitch ratio 0.793700526 (-4 semitones), tempo 1, formants shifted, crisp percussive transient, +2 dB EQ at 160 Hz, low-pass at 4500 Hz; duration retained | `126EF7D3B6C329E12621D894644EFE0803BAEDB3C5DF8AB1F6B4AC22150FEB62` |
+| mutant heavy footfall, take 06 derivative | `06-footstep.ogg` | `39147CC1B98ABB4B5378AD07B15D50D18F2AA0F0FD2F5514F078C1E574D14773` | source-labeled footstep | rubberband pitch ratio 0.793700526 (-4 semitones), tempo 1, formants shifted, crisp percussive transient, +2 dB EQ at 160 Hz, low-pass at 4500 Hz; duration retained | `DA20AFA98666FD41A1C2B83BF05B8D80EE062A2AB1E1E7DFC2D7F36987CDFB72` |
+
+The latency-compensated version-2 intermediates keep the original decoded durations at 0.313764 s and 0.245669 s. They remove the rubberband filter's measured 440-sample (9.977 ms) leading offset, then restore those 440 samples as trailing silence so the recorded onset and total duration remain aligned. Their hashes are `C64FAB0D12366CFC0364C5FD8A87B529981DFA38A3BB85BA51FBE106E4262771` (take 05) and `384BB9311D3E88EBAF0C2D713317ED852CE37A8D9F2D776AB20D55DF65DF1C48` (take 06).
+
+The full-source versions passed technical mastering but are superseded for timing and must not be installed as a pool. Take 05 lasts 0.313764 s, longer than the 0.2667 s closest normal-rate plant interval; slower animation rate expands contact spacing but still does not make that long take suitable. The bounded v2 evidence remains in the receipts and is not a replacement for the short accepted pool.
+
+## Heavy-footfall candidates from current short steps
+
+The selected take-05 and take-06 inputs are the parent-installed 0.100 s and 0.170 s shared step files with the prescribed 40 ms release. Their source originals remain the distinct CC0 GboxMikeFozzy subway footstep recordings in the table above. Parent install hashes and the 40 ms release proof are in `docs/plans/unit_fix_2026-10/wp3_evidence/step_release40_install_20261006.json`. These exact short outputs are the processing inputs; the shared global files were not changed.
+
+| Candidate role | Current short input and SHA-256 | Original recorded source and SHA-256 | Processing-stage SHA-256 | Role/license lineage |
+| --- | --- | --- | --- | --- |
+| mutant heavy footfall, short take 05 | `sound/002_zombie_outbreak/zombies/zombie_move_step_05.wav` / `96D9710768E55EF052903EF9B0A0A3543AA813191B5E7FE1B8DD65C2E084D3CA` | `05-footstep.ogg` / `F1B4893DD3CEBE23438567A0DCAF047848A52B594E7EB03E5C212D99E83D2298` | `7F397E13D3FDAA3CB646714DC714A7B26D71AA8E15969C0BAAB09587D3345FA8` | current accepted derivative of recorded GboxMikeFozzy footstep; CC0 |
+| mutant heavy footfall, short take 06 | `sound/002_zombie_outbreak/zombies/zombie_move_step_06.wav` / `EEC4C49578F73FA60748E0ACE5641F83A5EC8189C632501CA766E37FED00F747` | `06-footstep.ogg` / `39147CC1B98ABB4B5378AD07B15D50D18F2AA0F0FD2F5514F078C1E574D14773` | `3D13B9A2FDBFF63C2E54C18E7CC644B7DEA01A57258D3CD53A273AC9145D84AC` | current accepted derivative of recorded GboxMikeFozzy footstep; CC0 |
+
+Processing is source-only EQ: +4 dB at 160 Hz and a 4.5 kHz low-pass, followed by a constant gain adjustment to the -6 dBFS sample-peak target. No pitch or time filter is used in this short-window version, so both files preserve their exact 0.100/0.170 s durations and 0 ms measured onset delay. The input's prescribed 40 ms release remains in the same samples and duration. Candidate files are `candidates/mutant_footfall_short_eq_only_candidates/mutant_heavy_footfall_short_take05_eq.wav` (SHA-256 `0DD242938341B52794292555CC5406B97BA85573CA27635F94566A0291D0FD37`) and `mutant_heavy_footfall_short_take06_eq.wav` (SHA-256 `625251A86F203DD43637F1FF395F8BB15BC3EDC0187DE2460F8E783DD10EDE19`). Both pass `master.py inspect --role step`; onset, release, short-gap proof, exact commands, and full source chains are in `evidence/wp3_mutant_short_footfall_receipts_20261006.json`.
+
 ## Sample windows for isolated step-master candidates
 
 `candidates/step_excerpt_input/zombie_move_step_03_excerpt.wav` is the 0.100 s sample window from `03-footstep.ogg` at source offset 0.110 s; archived OGG SHA-256 `9817CC93897ED1DE5DA87675B26BE4196BFDA3DAA6F1DE9DC4398A68D250CDB9`, excerpt input SHA-256 `4876C27ABD80E79F40B9A100DE472E2A558B936C81D3AEAB09105177E3CA5460`.
@@ -75,6 +99,19 @@ All inputs are listening-classified takes from the existing `Zombies Sound Pack`
 | low-growl loop candidate, take 14 | `zombie-14.wav` | `B1FFFBF93FD9CF353A9DD0D519B6CD6E739BD3FB28853A580E018AC73EFDDA4B` | listening-classified demonic attack growl | 0.0259–0.666667 | rubberband pitch ratio 0.7937005260 (-4 semitones), tempo 1, formants preserved | `8D983BE44F6B4E094DFEEF80F8D8C9C4994134B68A426D05ED5A7D64D913C79E` |
 
 Pitch derivatives are correlated variants of the named CC0 recordings, not new recordings or independent takes. Their pitch processing preserves the trimmed source duration. Final one-shot levels and the proposed loop seam pass remain controlled by `.tools/3d_pipeline/audio/master.py`; a loop candidate is not promoted if it fails the shared loop boundary or -20 LUFS/-1 dBTP gate.
+
+## Mutant attack-snarl pitch derivatives
+
+Both source takes are already listening-classified as mutant zombie attacks in `docs/assets/002_zombie_outbreak/models_3d/zombie_variant_sound_spec.json` and `zombie_variant_sound_receipts.json`. The source archive is “Zombies Sound Pack” by artisticdude, labeled CC0 1.0 at <https://opengameart.org/content/zombies-sound-pack>. Each processed intermediate is a pitch-shifted derivative with its own exact hash; the original-take count remains two, with one derivative from each take.
+
+| Candidate role | Original source | Original SHA-256 | Source classification | Pitch/formant processing | Pitch-stage SHA-256 |
+| --- | --- | --- | --- | --- | --- |
+| mutant attack snarl, take 04 derivative | `zombie-4.wav` | `36B6376649969E11112361AFB00E6D161A2433F9DB045273D9ED40D6E9B06AB0` | listening-classified mutant attack | rubberband pitch ratio 0.749153538 (-5 semitones), tempo 1, formants shifted, crisp transients, percussive detector, quality mode; duration retained | `1578F14A21E60162DAC9F7FD9125C47C296B7508331F476AE2E17B692C6E8720` |
+| mutant attack snarl, take 07 derivative | `zombie-7.wav` | `8E63E327C960BFE76D0402F7A54F7629272E6346E5C6B84AC35AD52B9597DEC8` | listening-classified mutant attack | rubberband pitch ratio 0.667419927 (-7 semitones), tempo 1, formants shifted, crisp transients, percussive detector, quality mode; duration retained | `9FCC2D5A71F804D338E3DB85D770C6ED8FCA0B45C62D207A6A65D6C7C507AFB2` |
+
+Latency-compensated version-2 intermediates keep the exact original durations of 0.729184 s and 0.583333 s. They remove the filter's measured 220-sample (4.989 ms) leading offset and restore those samples as trailing silence. The hashes are `B0C7972ADF75A54146861598CEF02C83C97B47401B6FAAA3BA9489D068A77B8F` (take 04) and `93B3C2E2424E887BAE376ABD640716868D2361414D33A7605DEA7E30093ADD84` (take 07). The master recipe keeps its standard 10 ms pre-roll, so final candidates may be approximately 5 ms shorter than their source; the recorded transient is retained.
+
+The master tool receives these exact staged pitch intermediates under explicit source hashes and attribution rows, then applies its ordinary one-shot shot gate. The derived audio remains for listening review and parent selection; no runtime sound file or definition is changed.
 
 ## Cross-package recorded breathing source for mutant-breath review
 

@@ -35,6 +35,11 @@ The parent reviewed the exact two-map set on front and quarter surface previews 
 The parent approved matching front and quarter rest-pose previews and installed only those two maps.
 The grade remains tied to the original preimage and current UV/weight masks, so a later rig or UV change requires rebinding and re-QA rather than applying another darkening pass to the published texture.
 The unchanged specular and all animated deformation requirements remain open.
+- `implemented`: mutant attack uses two lower-register, formant-shifted derivatives of its already classified attack recordings.
+The original contact onset and duration are retained, so the voice events keep their measured times.
+- `implemented`: mutant movement and retreat use an own two-take footstep pool with a source-only bass/EQ treatment.
+An EQ-only route preserves the accepted short onsets and 40 ms releases; longer raw-source and latency-shifted candidates were rejected for state timing.
+The ±12% sound-rate variation changes sample duration without changing the animation plant gap, leaving 0.073518 seconds at the closest current plants.
 - `unresolved`: WP3 requests footsteps at -3 dBFS while section 3.5 and the shared mastering gate require -6 dBFS.
 Already accepted -6 dBFS samples remain in place; this preserves the actual mastering contract without claiming that the conflicting WP3 target passed.
 - `unresolved`: model-specific undead/demonic specular instructions retain low or constant G values while section 3.2 rejects constant G.
