@@ -22,8 +22,6 @@ natural_disaster_event = {
 	evolution_i_tier = 1
 	evolution_ii_tier = 2
 	evolution_iii_tier = 3
-	report_event_base = 100
-	news_event_base = 200
 }
 
 natural_disaster_call_result = {
@@ -336,6 +334,22 @@ natural_disaster_report_policy = {
 	global = 3
 	silent = 4
 	delayed_batch = 5
+}
+
+natural_disaster_report_aggregation = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	visible_state_names = 4
+	state_names_one = 1
+	state_names_two = 2
+	state_names_three = 3
+	family_names_two = 2
+	# Hold dispatch until same-day controller-change callbacks have merged their rows.
+	dispatch_delay_days = 1
+	news_event_id_offset = 200
 }
 
 natural_disaster_aftermath_policy = {
@@ -1046,6 +1060,7 @@ natural_disaster_cost = {
 	reconstruct_trains = 15
 	reconstruct_convoys = 24
 	reconstruct_fuel = 6500
+	# Kept for the shared Black Friday quote table; the current relief recipes do not debit these stocks.
 	foreign_support_equipment = 300
 	foreign_trucks = 200
 	foreign_convoys = 20
@@ -1077,9 +1092,9 @@ natural_disaster_cost_gate = {
 	unit_step = 1
 }
 
-# Fixed-point Stability and War Support floors. Stabilization and
-# reconstruction Stability checks read the Black Friday price table and
-# subtract stability_step to form the same inclusive floor.
+# Fixed-point Stability and War Support floors for current warning,
+# chain-prevention and outbound relief checks. Recovery fee quote fields
+# remain reserved for the shared price table, without an active recovery debit.
 natural_disaster_cost_gate_fixed = {
 	schema = {
 		any_key = yes
@@ -1100,7 +1115,6 @@ natural_disaster_cost_fixed = {
 	}
 
 	warning_stability = -0.005
-	warning_war_support = -0.005
 	rescue_stability = -0.010
 	stabilize_stability = -0.015
 	reconstruct_stability = -0.020
@@ -1189,22 +1203,11 @@ natural_disaster_warning_cost_fixed = {
 	regional_stability = -0.0075
 	catastrophic_stability = -0.0090
 	abnormal_stability = -0.0100
-	local_war_support = -0.0025
-	severe_war_support = -0.0050
-	regional_war_support = -0.0075
-	catastrophic_war_support = -0.0090
-	abnormal_war_support = -0.0100
 	local_stability_gate = 0.0024
 	severe_stability_gate = 0.0049
 	regional_stability_gate = 0.0074
 	catastrophic_stability_gate = 0.0089
 	abnormal_stability_gate = 0.0099
-	local_war_support_gate = 0.0024
-	severe_war_support_gate = 0.0049
-	regional_war_support_gate = 0.0074
-	catastrophic_war_support_gate = 0.0089
-	abnormal_war_support_gate = 0.0099
-	civilian_burden_per_action = 0.01
 }
 
 natural_disaster_scenario_type = {

@@ -1,4 +1,4 @@
-# ============================================================================
+﻿# ============================================================================
 # CHAOS REDUX - EVENT 013 NATURAL DISASTERS EFFECTS
 # ============================================================================
 # Fresh reusable disaster runtime. Public callers set the documented temp
@@ -23,6 +23,35 @@
 # ============================================================================
 
 natural_disaster_set_call_defaults = {
+	# Localisation reads real variables rather than unsupported constant namespaces.
+	set_variable = { global.natural_disaster_display_warning_cost_fixed_local_stability = constant:natural_disaster_warning_cost_fixed.local_stability }
+	multiply_variable = { global.natural_disaster_display_warning_cost_fixed_local_stability = constant:universal_cost_framework.negative_one }
+	set_variable = { global.natural_disaster_display_warning_cost_fixed_severe_stability = constant:natural_disaster_warning_cost_fixed.severe_stability }
+	multiply_variable = { global.natural_disaster_display_warning_cost_fixed_severe_stability = constant:universal_cost_framework.negative_one }
+	set_variable = { global.natural_disaster_display_warning_cost_fixed_regional_stability = constant:natural_disaster_warning_cost_fixed.regional_stability }
+	multiply_variable = { global.natural_disaster_display_warning_cost_fixed_regional_stability = constant:universal_cost_framework.negative_one }
+	set_variable = { global.natural_disaster_display_warning_cost_fixed_catastrophic_stability = constant:natural_disaster_warning_cost_fixed.catastrophic_stability }
+	multiply_variable = { global.natural_disaster_display_warning_cost_fixed_catastrophic_stability = constant:universal_cost_framework.negative_one }
+	set_variable = { global.natural_disaster_display_warning_cost_fixed_abnormal_stability = constant:natural_disaster_warning_cost_fixed.abnormal_stability }
+	multiply_variable = { global.natural_disaster_display_warning_cost_fixed_abnormal_stability = constant:universal_cost_framework.negative_one }
+	set_variable = { global.natural_disaster_display_cost_fixed_rescue_stability = constant:natural_disaster_cost_fixed.rescue_stability }
+	multiply_variable = { global.natural_disaster_display_cost_fixed_rescue_stability = constant:universal_cost_framework.negative_one }
+	set_variable = { global.natural_disaster_display_cost_fixed_foreign_relief_stability = constant:natural_disaster_cost_fixed.foreign_relief_stability }
+	multiply_variable = { global.natural_disaster_display_cost_fixed_foreign_relief_stability = constant:universal_cost_framework.negative_one }
+	set_variable = { global.natural_disaster_display_aftermath_foreign_relief_bonus_cap = constant:natural_disaster_aftermath.foreign_relief_bonus_cap }
+	set_variable = { global.natural_disaster_display_aftermath_foreign_relief_days = constant:natural_disaster_aftermath.foreign_relief_days }
+	# The delivered capacity bonus uses the existing stabilization-duration mirror.
+	set_variable = { global.natural_disaster_display_aftermath_stabilization_days = constant:natural_disaster_aftermath.stabilization_days }
+	set_variable = { global.natural_disaster_display_aftermath_foreign_relief_dependency_days = constant:natural_disaster_aftermath.foreign_relief_dependency_days }
+	set_variable = { global.natural_disaster_display_cost_fixed_construction_burden = constant:natural_disaster_cost_fixed.construction_burden }
+	set_variable = { global.natural_disaster_display_cost_fixed_heavy_construction_burden = constant:natural_disaster_cost_fixed.heavy_construction_burden }
+	set_variable = { global.natural_disaster_display_cost_fixed_foreign_dependency_consumer_goods = constant:natural_disaster_cost_fixed.foreign_dependency_consumer_goods }
+	set_variable = { global.natural_disaster_display_cost_fixed_foreign_dependency_political_power_gain = constant:natural_disaster_cost_fixed.foreign_dependency_political_power_gain }
+	set_variable = { global.natural_disaster_display_warning_cost_gate_abnormal_civilian_factories = constant:natural_disaster_warning_cost_gate.abnormal_civilian_factories }
+	set_variable = { global.natural_disaster_display_warning_cost_gate_catastrophic_civilian_factories = constant:natural_disaster_warning_cost_gate.catastrophic_civilian_factories }
+	set_variable = { global.natural_disaster_display_warning_cost_gate_local_civilian_factories = constant:natural_disaster_warning_cost_gate.local_civilian_factories }
+	set_variable = { global.natural_disaster_display_warning_cost_gate_regional_civilian_factories = constant:natural_disaster_warning_cost_gate.regional_civilian_factories }
+	set_variable = { global.natural_disaster_display_warning_cost_gate_severe_civilian_factories = constant:natural_disaster_warning_cost_gate.severe_civilian_factories }
 	set_temp_variable = { natural_disaster_call_result = constant:natural_disaster_call_result.rejected }
 	set_temp_variable = { natural_disaster_call_reject_reason = constant:natural_disaster_call_reject_reason.none }
 	set_temp_variable = { natural_disaster_call_sequence_id = 0 }
@@ -1133,7 +1162,6 @@ natural_disaster_sync_open_card_to_evolution_ii = {
 				if = {
 					limit = { check_variable = { natural_disaster_chain_risk > constant:natural_disaster_chain.none } }
 					set_variable = { natural_disaster_path_status = constant:natural_disaster_path_status.chain_risk }
-					natural_disaster_schedule_family_report = yes
 				}
 			}
 		}
@@ -1877,6 +1905,34 @@ natural_disaster_prepare_job_outcome_snapshot = {
 
 natural_disaster_enqueue_state_job = {
 	set_temp_variable = { natural_disaster_job_sequence_id = natural_disaster_sequence_id }
+	if = {
+		limit = {
+			check_variable = { natural_disaster_job_type = constant:natural_disaster_job_type.impact }
+			has_state_flag = natural_disaster_repeat_impact_scheduled
+			has_variable = natural_disaster_repeat_sequence_id
+		}
+		set_temp_variable = { natural_disaster_job_sequence_id = natural_disaster_repeat_sequence_id }
+	}
+	if = {
+		limit = {
+			OR = {
+				check_variable = { natural_disaster_job_type = constant:natural_disaster_job_type.warning }
+				check_variable = { natural_disaster_job_type = constant:natural_disaster_job_type.impact }
+				check_variable = { natural_disaster_job_type = constant:natural_disaster_job_type.followup }
+			}
+		NOT = {
+			meta_trigger = {
+				text = { has_global_flag = natural_disaster_report_sequence_finalized_[SEQUENCE_ID] }
+				SEQUENCE_ID = "[?natural_disaster_job_sequence_id|.0]"
+			}
+		}
+	}
+		if = {
+			limit = { NOT = { has_variable = global.natural_disaster_report_sequence_pending_jobs_@var:natural_disaster_job_sequence_id } }
+			set_variable = { global.natural_disaster_report_sequence_pending_jobs_@var:natural_disaster_job_sequence_id = 0 }
+		}
+		add_to_variable = { global.natural_disaster_report_sequence_pending_jobs_@var:natural_disaster_job_sequence_id = 1 }
+	}
 	set_temp_variable = { natural_disaster_job_family_snapshot = natural_disaster_family }
 	set_temp_variable = { natural_disaster_job_followup_route_snapshot = natural_disaster_followup_route }
 	set_temp_variable = { natural_disaster_job_severity_snapshot = natural_disaster_severity }
@@ -1900,6 +1956,16 @@ natural_disaster_enqueue_state_job = {
 	set_temp_variable = { natural_disaster_job_skyfall_variant_snapshot = constant:natural_disaster_skyfall_variant.none }
 	set_temp_variable = { natural_disaster_job_path_basin_snapshot = constant:natural_disaster_path_basin.none }
 	natural_disaster_prepare_job_outcome_snapshot = yes
+	if = {
+		limit = {
+			check_variable = { natural_disaster_job_type = constant:natural_disaster_job_type.impact }
+			has_state_flag = natural_disaster_repeat_impact_scheduled
+			has_variable = natural_disaster_repeat_sequence_id
+		}
+		set_temp_variable = { natural_disaster_job_family_snapshot = natural_disaster_repeat_family }
+		set_temp_variable = { natural_disaster_job_severity_snapshot = natural_disaster_repeat_severity }
+		set_temp_variable = { natural_disaster_job_segment_snapshot = natural_disaster_repeat_impact_index }
+	}
 	set_temp_variable = { natural_disaster_date_offset = natural_disaster_job_delay_days }
 	natural_disaster_convert_days_to_date_offset = yes
 	set_temp_variable = { natural_disaster_job_desired_due_date = global.date }
@@ -1987,122 +2053,6 @@ natural_disaster_execute_warning = {
 			controller = {
 				set_country_flag = natural_disaster_warning_unread
 				set_country_flag = natural_disaster_aftermath_category_visible
-			}
-		}
-	}
-}
-
-natural_disaster_fire_family_report = {
-	set_temp_variable = { natural_disaster_report_event_id = 0 }
-	event_target:natural_disaster_impact_state = {
-		set_temp_variable = { natural_disaster_current_family = natural_disaster_current_job_family }
-		set_temp_variable = { natural_disaster_current_severity = natural_disaster_current_job_severity }
-		set_variable = { natural_disaster_report_followup_route = natural_disaster_current_job_followup_route }
-		set_variable = { natural_disaster_report_snapshot_severity = natural_disaster_current_job_severity }
-		set_variable = { natural_disaster_report_snapshot_deaths = natural_disaster_current_job_deaths }
-		set_variable = { natural_disaster_report_snapshot_damage_transport = natural_disaster_current_job_damage_transport }
-		set_variable = { natural_disaster_report_snapshot_damage_industry = natural_disaster_current_job_damage_industry }
-		set_variable = { natural_disaster_report_snapshot_damage_ports = natural_disaster_current_job_damage_ports }
-		set_variable = { natural_disaster_report_snapshot_damage_air = natural_disaster_current_job_damage_air }
-		set_variable = { natural_disaster_report_snapshot_damage_resources = natural_disaster_current_job_damage_resources }
-		set_variable = { natural_disaster_report_snapshot_damage_shelter = natural_disaster_current_job_damage_shelter }
-		set_variable = { natural_disaster_report_snapshot_warning_choice = natural_disaster_current_job_warning_choice }
-		set_variable = { natural_disaster_report_snapshot_warning_outcome = natural_disaster_current_job_warning_outcome }
-		set_variable = { natural_disaster_report_snapshot_warning_matched = natural_disaster_current_job_warning_matched }
-		set_variable = { natural_disaster_report_snapshot_phase = natural_disaster_current_job_phase }
-		set_variable = { natural_disaster_report_snapshot_sequence_id = natural_disaster_current_job_sequence_id }
-		set_variable = { natural_disaster_report_snapshot_segment = natural_disaster_current_job_segment }
-		set_variable = { natural_disaster_report_snapshot_report_date = natural_disaster_current_job_due_date }
-		set_variable = { natural_disaster_report_snapshot_followup_due_date = natural_disaster_current_job_chain_due_date }
-		set_variable = { natural_disaster_report_snapshot_has_linked_state = natural_disaster_current_job_has_chain_target }
-		set_variable = { natural_disaster_report_snapshot_origin_family = natural_disaster_current_job_origin_family }
-		set_variable = { natural_disaster_report_snapshot_origin_medium = natural_disaster_current_job_origin_medium }
-		set_variable = { natural_disaster_report_snapshot_skyfall_variant = natural_disaster_current_job_skyfall_variant }
-		set_variable = { natural_disaster_report_snapshot_path_basin = natural_disaster_current_job_path_basin }
-		if = {
-			limit = { check_variable = { natural_disaster_current_job_has_chain_target > 0 } }
-			var:natural_disaster_current_job_chain_target_state = { save_event_target_as = natural_disaster_report_linked_state }
-		}
-		natural_disaster_prepare_family_profile = yes
-		natural_disaster_prepare_severity_profile = yes
-		save_event_target_as = natural_disaster_report_state
-		set_temp_variable = { nd_achievement_report_family = natural_disaster_current_family }
-		set_temp_variable = { nd_achievement_report_policy = natural_disaster_report_policy }
-		controller = {
-			if = {
-				limit = {
-					OR = {
-						check_variable = { nd_achievement_report_policy = constant:natural_disaster_report_policy.affected_country }
-						check_variable = { nd_achievement_report_policy = constant:natural_disaster_report_policy.delayed_batch }
-					}
-				}
-				natural_disaster_achievement_record_report_group = yes
-			}
-			if = {
-				limit = { check_variable = { nd_achievement_report_policy = constant:natural_disaster_report_policy.global } }
-				set_country_flag = achievement_nd_global_announcer_used
-			}
-		}
-		if = {
-			limit = { check_variable = { natural_disaster_report_policy = constant:natural_disaster_report_policy.caller } }
-			var:natural_disaster_caller_country = {
-				meta_effect = {
-					text = { country_event = { id = chaosx.nr13.[REPORT_EVENT_ID] } }
-					REPORT_EVENT_ID = "[?natural_disaster_report_event_id|.0]"
-				}
-			}
-			controller = {
-				if = {
-					limit = {
-						check_variable = {
-							var = PREV.natural_disaster_caller_country
-							value = THIS
-							compare = not_equals
-						}
-					}
-					meta_effect = {
-						text = { country_event = { id = chaosx.nr13.[REPORT_EVENT_ID] } }
-						REPORT_EVENT_ID = "[?natural_disaster_report_event_id|.0]"
-					}
-				}
-			}
-		}
-		else_if = {
-			limit = { check_variable = { natural_disaster_report_policy = constant:natural_disaster_report_policy.global } }
-			every_country = {
-				limit = { exists = yes }
-				meta_effect = {
-					text = { country_event = { id = chaosx.nr13.[REPORT_EVENT_ID] } }
-					REPORT_EVENT_ID = "[?natural_disaster_report_event_id|.0]"
-				}
-			}
-		}
-		else = {
-			controller = {
-				meta_effect = {
-					text = { country_event = { id = chaosx.nr13.[REPORT_EVENT_ID] } }
-					REPORT_EVENT_ID = "[?natural_disaster_report_event_id|.0]"
-				}
-			}
-		}
-	}
-}
-
-natural_disaster_fire_family_news = {
-	set_temp_variable = { natural_disaster_news_event_id = 0 }
-	event_target:natural_disaster_impact_state = {
-		set_temp_variable = { natural_disaster_current_family = natural_disaster_current_job_family }
-		set_temp_variable = { natural_disaster_current_severity = natural_disaster_current_job_severity }
-		set_variable = { natural_disaster_news_snapshot_origin_medium = natural_disaster_current_job_origin_medium }
-		set_variable = { natural_disaster_news_snapshot_skyfall_variant = natural_disaster_current_job_skyfall_variant }
-		set_variable = { natural_disaster_news_snapshot_path_basin = natural_disaster_current_job_path_basin }
-		natural_disaster_prepare_family_profile = yes
-		natural_disaster_prepare_severity_profile = yes
-		save_event_target_as = natural_disaster_news_state
-		controller = {
-			meta_effect = {
-				text = { news_event = { id = chaosx.nr13.[NEWS_EVENT_ID] } }
-				NEWS_EVENT_ID = "[?natural_disaster_news_event_id|.0]"
 			}
 		}
 	}
@@ -2196,33 +2146,109 @@ natural_disaster_process_due_job = {
 
 		if = {
 			limit = { has_event_target = natural_disaster_impact_state }
+			set_temp_variable = { natural_disaster_current_job_still_matches_card = 0 }
+			event_target:natural_disaster_impact_state = {
+				if = {
+					limit = {
+						check_variable = { natural_disaster_current_job_type = constant:natural_disaster_job_type.warning }
+						has_state_flag = natural_disaster_warning_scheduled
+						check_variable = { var = natural_disaster_sequence_id value = natural_disaster_current_job_sequence_id compare = equals }
+						check_variable = { var = natural_disaster_family value = natural_disaster_current_job_family compare = equals }
+						check_variable = { var = natural_disaster_path_segment_index value = natural_disaster_current_job_segment compare = equals }
+					}
+					set_temp_variable = { natural_disaster_current_job_still_matches_card = 1 }
+				}
+				else_if = {
+					limit = {
+						check_variable = { natural_disaster_current_job_type = constant:natural_disaster_job_type.impact }
+						has_state_flag = natural_disaster_impact_scheduled
+						OR = {
+							AND = {
+								NOT = { has_state_flag = natural_disaster_repeat_impact_scheduled }
+								check_variable = { var = natural_disaster_sequence_id value = natural_disaster_current_job_sequence_id compare = equals }
+								check_variable = { var = natural_disaster_family value = natural_disaster_current_job_family compare = equals }
+								check_variable = { var = natural_disaster_path_segment_index value = natural_disaster_current_job_segment compare = equals }
+							}
+							AND = {
+								has_state_flag = natural_disaster_repeat_impact_scheduled
+								has_variable = natural_disaster_repeat_sequence_id
+								check_variable = { var = natural_disaster_repeat_sequence_id value = natural_disaster_current_job_sequence_id compare = equals }
+								check_variable = { var = natural_disaster_repeat_family value = natural_disaster_current_job_family compare = equals }
+								check_variable = { var = natural_disaster_repeat_impact_index value = natural_disaster_current_job_segment compare = equals }
+							}
+						}
+					}
+					set_temp_variable = { natural_disaster_current_job_still_matches_card = 1 }
+				}
+				else_if = {
+					limit = {
+						check_variable = { natural_disaster_current_job_type = constant:natural_disaster_job_type.followup }
+						check_variable = { natural_disaster_chain_risk > constant:natural_disaster_chain.none }
+						check_variable = { var = natural_disaster_sequence_id value = natural_disaster_current_job_sequence_id compare = equals }
+						check_variable = { var = natural_disaster_family value = natural_disaster_current_job_family compare = equals }
+						check_variable = { var = natural_disaster_path_segment_index value = natural_disaster_current_job_segment compare = equals }
+					}
+					set_temp_variable = { natural_disaster_current_job_still_matches_card = 1 }
+				}
+				else_if = {
+					limit = {
+						check_variable = { natural_disaster_current_job_type = constant:natural_disaster_job_type.reassessment }
+						has_state_flag = natural_disaster_aftermath_active
+						check_variable = { var = natural_disaster_sequence_id value = natural_disaster_current_job_sequence_id compare = equals }
+						check_variable = { var = natural_disaster_family value = natural_disaster_current_job_family compare = equals }
+						check_variable = { var = natural_disaster_path_segment_index value = natural_disaster_current_job_segment compare = equals }
+					}
+					set_temp_variable = { natural_disaster_current_job_still_matches_card = 1 }
+				}
+			}
 			if = {
-				limit = { check_variable = { natural_disaster_current_job_type = constant:natural_disaster_job_type.warning } }
-				natural_disaster_execute_warning = yes
-			}
-			else_if = {
-				limit = { check_variable = { natural_disaster_current_job_type = constant:natural_disaster_job_type.impact } }
-				natural_disaster_execute_impact = yes
-			}
-			else_if = {
-				limit = { check_variable = { natural_disaster_current_job_type = constant:natural_disaster_job_type.report } }
-				natural_disaster_fire_family_report = yes
-			}
-			else_if = {
-				limit = { check_variable = { natural_disaster_current_job_type = constant:natural_disaster_job_type.news } }
-				natural_disaster_fire_family_news = yes
-			}
-			else_if = {
-				limit = { check_variable = { natural_disaster_current_job_type = constant:natural_disaster_job_type.followup } }
-				natural_disaster_execute_chain_followup = yes
-			}
-			else_if = {
-				limit = { check_variable = { natural_disaster_current_job_type = constant:natural_disaster_job_type.reassessment } }
-				natural_disaster_execute_reassessment = yes
+				limit = { check_variable = { natural_disaster_current_job_still_matches_card > 0 } }
+				if = {
+					limit = { check_variable = { natural_disaster_current_job_type = constant:natural_disaster_job_type.warning } }
+					natural_disaster_execute_warning = yes
+				}
+				else_if = {
+					limit = { check_variable = { natural_disaster_current_job_type = constant:natural_disaster_job_type.impact } }
+					natural_disaster_execute_impact = yes
+				}
+				else_if = {
+					limit = { check_variable = { natural_disaster_current_job_type = constant:natural_disaster_job_type.followup } }
+					natural_disaster_execute_chain_followup = yes
+				}
+				else_if = {
+					limit = { check_variable = { natural_disaster_current_job_type = constant:natural_disaster_job_type.reassessment } }
+					natural_disaster_execute_reassessment = yes
+				}
 			}
 		}
 	}
 	natural_disaster_achievement_mark_sequence_ended = yes
+	if = {
+		limit = {
+			OR = {
+				check_variable = { natural_disaster_current_job_type = constant:natural_disaster_job_type.warning }
+				check_variable = { natural_disaster_current_job_type = constant:natural_disaster_job_type.impact }
+				check_variable = { natural_disaster_current_job_type = constant:natural_disaster_job_type.followup }
+			}
+			NOT = {
+				meta_trigger = {
+					text = { has_global_flag = natural_disaster_report_sequence_finalized_[SEQUENCE_ID] }
+					SEQUENCE_ID = "[?natural_disaster_current_job_sequence_id|.0]"
+				}
+			}
+		}
+		set_temp_variable = { natural_disaster_report_pending_sequence_id = natural_disaster_current_job_sequence_id }
+		if = {
+			limit = { has_variable = global.natural_disaster_report_sequence_pending_jobs_@var:natural_disaster_report_pending_sequence_id }
+			subtract_from_variable = { global.natural_disaster_report_sequence_pending_jobs_@var:natural_disaster_report_pending_sequence_id = 1 }
+			if = {
+				limit = { check_variable = { global.natural_disaster_report_sequence_pending_jobs_@var:natural_disaster_report_pending_sequence_id < 1 } }
+				set_variable = { global.natural_disaster_report_sequence_pending_jobs_@var:natural_disaster_report_pending_sequence_id = 0 }
+				natural_disaster_finalize_report_sequence = yes
+				clear_variable = global.natural_disaster_report_sequence_pending_jobs_@var:natural_disaster_report_pending_sequence_id
+			}
+		}
+	}
 	if = {
 		limit = { check_variable = { natural_disaster_job_due_date_entries^num < 1 } }
 		clr_country_flag = natural_disaster_queue_active
@@ -4892,10 +4918,6 @@ natural_disaster_prepare_family_profile = {
 		set_temp_variable = { natural_disaster_damage_air = 1 }
 	}
 
-	set_temp_variable = { natural_disaster_report_event_id = constant:natural_disaster_event.report_event_base }
-	add_to_temp_variable = { natural_disaster_report_event_id = natural_disaster_current_family }
-	set_temp_variable = { natural_disaster_news_event_id = constant:natural_disaster_event.news_event_base }
-	add_to_temp_variable = { natural_disaster_news_event_id = natural_disaster_current_family }
 	natural_disaster_apply_resilience_profile = yes
 }
 
@@ -4965,6 +4987,10 @@ natural_disaster_damage_selected_building = {
 	# Damage only a building the state has: damage_building logs an error for a missing one.
 	# Naval bases and supply hubs are province buildings, the rest are state buildings.
 	set_temp_variable = { natural_disaster_building_present_above = constant:natural_disaster_damage.building_present_above }
+	clear_temp_array = natural_disaster_report_building_command_receipts
+	set_temp_variable = { natural_disaster_report_building_damage_before = 0 }
+	set_temp_variable = { natural_disaster_report_building_damage_after = 0 }
+	set_temp_variable = { natural_disaster_report_building_damage_delta = 0 }
 	if = {
 		limit = {
 			OR = {
@@ -4974,6 +5000,7 @@ natural_disaster_damage_selected_building = {
 		}
 		meta_effect = {
 			text = {
+				set_temp_variable = { natural_disaster_report_building_damage_before = damaged_building_level@[BUILDING_TYPE] }
 				if = {
 					limit = {
 						any_province_building_level = {
@@ -4986,7 +5013,9 @@ natural_disaster_damage_selected_building = {
 						type = [BUILDING_TYPE]
 						damage = [BUILDING_DAMAGE]
 					}
+					add_to_temp_array = { array = natural_disaster_report_building_command_receipts value = 1 }
 				}
+				set_temp_variable = { natural_disaster_report_building_damage_after = damaged_building_level@[BUILDING_TYPE] }
 			}
 			BUILDING_TYPE = "[?natural_disaster_damage_building.GetTokenKey]"
 			BUILDING_DAMAGE = "[?natural_disaster_building_damage|2]"
@@ -4996,6 +5025,7 @@ natural_disaster_damage_selected_building = {
 	else = {
 		meta_effect = {
 			text = {
+				set_temp_variable = { natural_disaster_report_building_damage_before = damaged_building_level@[BUILDING_TYPE] }
 				if = {
 					limit = {
 						non_damaged_building_level = {
@@ -5007,11 +5037,59 @@ natural_disaster_damage_selected_building = {
 						type = [BUILDING_TYPE]
 						damage = [BUILDING_DAMAGE]
 					}
+					add_to_temp_array = { array = natural_disaster_report_building_command_receipts value = 1 }
 				}
+				set_temp_variable = { natural_disaster_report_building_damage_after = damaged_building_level@[BUILDING_TYPE] }
 			}
 			BUILDING_TYPE = "[?natural_disaster_damage_building.GetTokenKey]"
 			BUILDING_DAMAGE = "[?natural_disaster_building_damage|2]"
 			PRESENT_ABOVE = "[?natural_disaster_building_present_above|0]"
+		}
+	}
+	if = {
+		limit = {
+			check_variable = { natural_disaster_report_building_command_receipts^num > 0 }
+			has_variable = natural_disaster_report_active_consequence_id
+		}
+		set_temp_variable = { natural_disaster_report_building_damage_delta = natural_disaster_report_building_damage_after }
+		subtract_from_temp_variable = { natural_disaster_report_building_damage_delta = natural_disaster_report_building_damage_before }
+		if = {
+			limit = { check_variable = { natural_disaster_report_building_damage_delta > 0 } }
+			if = {
+				limit = {
+					OR = {
+						check_variable = { natural_disaster_damage_building = token:infrastructure }
+						check_variable = { natural_disaster_damage_building = token:supply_node }
+					}
+				}
+				add_to_variable = { natural_disaster_report_consequence_damage_transport_@var:natural_disaster_report_active_consequence_id = natural_disaster_report_building_damage_delta }
+			}
+			else_if = {
+				limit = {
+					OR = {
+						check_variable = { natural_disaster_damage_building = token:industrial_complex }
+						check_variable = { natural_disaster_damage_building = token:arms_factory }
+					}
+				}
+				add_to_variable = { natural_disaster_report_consequence_damage_industry_@var:natural_disaster_report_active_consequence_id = natural_disaster_report_building_damage_delta }
+			}
+			else_if = {
+				limit = {
+					OR = {
+						check_variable = { natural_disaster_damage_building = token:naval_base }
+						check_variable = { natural_disaster_damage_building = token:dockyard }
+					}
+				}
+				add_to_variable = { natural_disaster_report_consequence_damage_ports_@var:natural_disaster_report_active_consequence_id = natural_disaster_report_building_damage_delta }
+			}
+			else_if = {
+				limit = { check_variable = { natural_disaster_damage_building = token:air_base } }
+				add_to_variable = { natural_disaster_report_consequence_damage_air_@var:natural_disaster_report_active_consequence_id = natural_disaster_report_building_damage_delta }
+			}
+			else_if = {
+				limit = { check_variable = { natural_disaster_damage_building = token:radar_station } }
+				add_to_variable = { natural_disaster_report_consequence_damage_radar_@var:natural_disaster_report_active_consequence_id = natural_disaster_report_building_damage_delta }
+			}
 		}
 	}
 }
@@ -5436,6 +5514,10 @@ natural_disaster_apply_population_loss = {
 	chaos_meter_register_state_civilian_deaths_percent = yes
 	set_variable = { natural_disaster_last_deaths = chaos_deaths_change }
 	add_to_variable = { natural_disaster_total_deaths = chaos_deaths_change }
+	if = {
+		limit = { has_variable = natural_disaster_report_active_consequence_id }
+		set_variable = { natural_disaster_report_consequence_deaths_@var:natural_disaster_report_active_consequence_id = chaos_deaths_change }
+	}
 	# Event 013 owns the sequence and exact civilian loss. Pass its positive
 	# family/severity/driver ledgers as the famine receipt; no movement proof is
 	# inferred from the disaster death amount.
@@ -6045,7 +6127,6 @@ natural_disaster_prepare_warning_profile_costs = {
 	set_temp_variable = { nd_warning_fuel_cost = global.black_friday_price_natural_disaster_warning_cost_local_fuel }
 	set_temp_variable = { nd_warning_command_power_cost = global.black_friday_price_natural_disaster_warning_cost_local_command_power }
 	set_temp_variable = { nd_warning_stability_cost = constant:natural_disaster_warning_cost_fixed.local_stability }
-	set_temp_variable = { nd_warning_war_support_cost = constant:natural_disaster_warning_cost_fixed.local_war_support }
 	if = {
 		limit = { FROM = { check_variable = { natural_disaster_severity = constant:natural_disaster_severity.severe } } }
 		set_temp_variable = { nd_warning_manpower_cost = global.black_friday_price_natural_disaster_warning_cost_severe_manpower }
@@ -6056,7 +6137,6 @@ natural_disaster_prepare_warning_profile_costs = {
 		set_temp_variable = { nd_warning_fuel_cost = global.black_friday_price_natural_disaster_warning_cost_severe_fuel }
 		set_temp_variable = { nd_warning_command_power_cost = global.black_friday_price_natural_disaster_warning_cost_severe_command_power }
 		set_temp_variable = { nd_warning_stability_cost = constant:natural_disaster_warning_cost_fixed.severe_stability }
-		set_temp_variable = { nd_warning_war_support_cost = constant:natural_disaster_warning_cost_fixed.severe_war_support }
 	}
 	else_if = {
 		limit = { FROM = { check_variable = { natural_disaster_severity = constant:natural_disaster_severity.regional } } }
@@ -6068,7 +6148,6 @@ natural_disaster_prepare_warning_profile_costs = {
 		set_temp_variable = { nd_warning_fuel_cost = global.black_friday_price_natural_disaster_warning_cost_regional_fuel }
 		set_temp_variable = { nd_warning_command_power_cost = global.black_friday_price_natural_disaster_warning_cost_regional_command_power }
 		set_temp_variable = { nd_warning_stability_cost = constant:natural_disaster_warning_cost_fixed.regional_stability }
-		set_temp_variable = { nd_warning_war_support_cost = constant:natural_disaster_warning_cost_fixed.regional_war_support }
 	}
 	else_if = {
 		limit = { FROM = { check_variable = { natural_disaster_severity = constant:natural_disaster_severity.catastrophic } } }
@@ -6080,7 +6159,6 @@ natural_disaster_prepare_warning_profile_costs = {
 		set_temp_variable = { nd_warning_fuel_cost = global.black_friday_price_natural_disaster_warning_cost_catastrophic_fuel }
 		set_temp_variable = { nd_warning_command_power_cost = global.black_friday_price_natural_disaster_warning_cost_catastrophic_command_power }
 		set_temp_variable = { nd_warning_stability_cost = constant:natural_disaster_warning_cost_fixed.catastrophic_stability }
-		set_temp_variable = { nd_warning_war_support_cost = constant:natural_disaster_warning_cost_fixed.catastrophic_war_support }
 	}
 	else_if = {
 		limit = { FROM = { check_variable = { natural_disaster_severity = constant:natural_disaster_severity.abnormal } } }
@@ -6092,7 +6170,6 @@ natural_disaster_prepare_warning_profile_costs = {
 		set_temp_variable = { nd_warning_fuel_cost = global.black_friday_price_natural_disaster_warning_cost_abnormal_fuel }
 		set_temp_variable = { nd_warning_command_power_cost = global.black_friday_price_natural_disaster_warning_cost_abnormal_command_power }
 		set_temp_variable = { nd_warning_stability_cost = constant:natural_disaster_warning_cost_fixed.abnormal_stability }
-		set_temp_variable = { nd_warning_war_support_cost = constant:natural_disaster_warning_cost_fixed.abnormal_war_support }
 	}
 }
 
@@ -6138,39 +6215,6 @@ natural_disaster_deduct_warning_command_power = {
 	add_command_power = nd_warning_payment
 }
 
-natural_disaster_add_warning_civilian_burden = {
-	if = {
-		limit = { NOT = { has_variable = natural_disaster_warning_civilian_burden_count } }
-		set_variable = { natural_disaster_warning_civilian_burden_count = 0 }
-	}
-	add_to_variable = { natural_disaster_warning_civilian_burden_count = 1 }
-	set_variable = { natural_disaster_warning_civilian_burden_value = natural_disaster_warning_civilian_burden_count }
-	multiply_variable = { natural_disaster_warning_civilian_burden_value = constant:natural_disaster_warning_cost_fixed.civilian_burden_per_action }
-	set_country_flag = natural_disaster_warning_civilian_burden_active
-	remove_dynamic_modifier = { modifier = natural_disaster_warning_civilian_burden }
-	add_dynamic_modifier = { modifier = natural_disaster_warning_civilian_burden }
-	country_event = { id = chaosx.nr13.6 days = @ND_WARNING_ACTION_LOCK_DAYS }
-}
-
-natural_disaster_release_warning_civilian_burden = {
-	if = {
-		limit = { check_variable = { natural_disaster_warning_civilian_burden_count > 0 } }
-		subtract_from_variable = { natural_disaster_warning_civilian_burden_count = 1 }
-	}
-	remove_dynamic_modifier = { modifier = natural_disaster_warning_civilian_burden }
-	if = {
-		limit = { check_variable = { natural_disaster_warning_civilian_burden_count > 0 } }
-		set_variable = { natural_disaster_warning_civilian_burden_value = natural_disaster_warning_civilian_burden_count }
-		multiply_variable = { natural_disaster_warning_civilian_burden_value = constant:natural_disaster_warning_cost_fixed.civilian_burden_per_action }
-		add_dynamic_modifier = { modifier = natural_disaster_warning_civilian_burden }
-	}
-	else = {
-		clr_country_flag = natural_disaster_warning_civilian_burden_active
-		clear_variable = natural_disaster_warning_civilian_burden_count
-		clear_variable = natural_disaster_warning_civilian_burden_value
-	}
-}
-
 # COUNTRY scope (payer). Credits one Event 013 action paid at the Black Friday
 # sale price toward the Black Friday achievement; a no-op outside a valid
 # natural sale. Every Event 013 action pays materials rather than political
@@ -6190,18 +6234,11 @@ natural_disaster_pay_warning_air = {
 	set_temp_variable = { nd_warning_train_cost = 0 }
 	set_temp_variable = { nd_warning_convoy_cost = 0 }
 	set_temp_variable = { nd_warning_fuel_cost = 0 }
-	set_temp_variable = { nd_warning_command_power_cost = 0 }
 	set_temp_variable = { nd_warning_stability_cost = 0 }
-	set_temp_variable = { nd_warning_war_support_cost = 0 }
 	natural_disaster_prepare_warning_profile_costs = yes
 	natural_disaster_deduct_warning_manpower = yes
 	natural_disaster_deduct_warning_support = yes
 	natural_disaster_deduct_warning_fuel = yes
-	natural_disaster_deduct_warning_command_power = yes
-	if = {
-		limit = { FROM = { check_variable = { natural_disaster_severity > constant:natural_disaster_severity.severe } } }
-		natural_disaster_add_warning_civilian_burden = yes
-	}
 	set_temp_variable = { nd_sale_family = constant:universal_cost_family.equipment }
 	natural_disaster_credit_black_friday_purchase = yes
 }
@@ -6215,7 +6252,6 @@ natural_disaster_pay_warning_naval_coast = {
 	set_temp_variable = { nd_warning_fuel_cost = 0 }
 	set_temp_variable = { nd_warning_command_power_cost = 0 }
 	set_temp_variable = { nd_warning_stability_cost = 0 }
-	set_temp_variable = { nd_warning_war_support_cost = 0 }
 	natural_disaster_prepare_warning_profile_costs = yes
 	natural_disaster_deduct_warning_manpower = yes
 	natural_disaster_deduct_warning_convoys = yes
@@ -6232,15 +6268,12 @@ natural_disaster_pay_warning_command_rail = {
 	set_temp_variable = { nd_warning_train_cost = 0 }
 	set_temp_variable = { nd_warning_convoy_cost = 0 }
 	set_temp_variable = { nd_warning_fuel_cost = 0 }
-	set_temp_variable = { nd_warning_command_power_cost = 0 }
 	set_temp_variable = { nd_warning_stability_cost = 0 }
-	set_temp_variable = { nd_warning_war_support_cost = 0 }
 	natural_disaster_prepare_warning_profile_costs = yes
 	natural_disaster_deduct_warning_manpower = yes
 	natural_disaster_deduct_warning_trains = yes
 	natural_disaster_deduct_warning_support = yes
 	natural_disaster_deduct_warning_fuel = yes
-	natural_disaster_deduct_warning_command_power = yes
 	set_temp_variable = { nd_sale_family = constant:universal_cost_family.equipment }
 	natural_disaster_credit_black_friday_purchase = yes
 }
@@ -6254,16 +6287,10 @@ natural_disaster_pay_warning_civilian_shutdown = {
 	set_temp_variable = { nd_warning_fuel_cost = 0 }
 	set_temp_variable = { nd_warning_command_power_cost = 0 }
 	set_temp_variable = { nd_warning_stability_cost = 0 }
-	set_temp_variable = { nd_warning_war_support_cost = 0 }
 	natural_disaster_prepare_warning_profile_costs = yes
 	natural_disaster_deduct_warning_manpower = yes
 	natural_disaster_deduct_warning_support = yes
 	add_stability = nd_warning_stability_cost
-	if = {
-		limit = { has_war = yes }
-		add_war_support = nd_warning_war_support_cost
-	}
-	natural_disaster_add_warning_civilian_burden = yes
 	set_temp_variable = { nd_sale_family = constant:universal_cost_family.equipment }
 	natural_disaster_credit_black_friday_purchase = yes
 }
@@ -6277,7 +6304,6 @@ natural_disaster_pay_warning_shelter_medical = {
 	set_temp_variable = { nd_warning_fuel_cost = 0 }
 	set_temp_variable = { nd_warning_command_power_cost = 0 }
 	set_temp_variable = { nd_warning_stability_cost = 0 }
-	set_temp_variable = { nd_warning_war_support_cost = 0 }
 	natural_disaster_prepare_warning_profile_costs = yes
 	natural_disaster_deduct_warning_manpower = yes
 	natural_disaster_deduct_warning_support = yes
@@ -6295,7 +6321,6 @@ natural_disaster_pay_warning_transport = {
 	set_temp_variable = { nd_warning_fuel_cost = 0 }
 	set_temp_variable = { nd_warning_command_power_cost = 0 }
 	set_temp_variable = { nd_warning_stability_cost = 0 }
-	set_temp_variable = { nd_warning_war_support_cost = 0 }
 	natural_disaster_prepare_warning_profile_costs = yes
 	natural_disaster_deduct_warning_manpower = yes
 	natural_disaster_deduct_warning_trucks = yes
@@ -6314,7 +6339,6 @@ natural_disaster_pay_warning_fuel_convoy = {
 	set_temp_variable = { nd_warning_fuel_cost = 0 }
 	set_temp_variable = { nd_warning_command_power_cost = 0 }
 	set_temp_variable = { nd_warning_stability_cost = 0 }
-	set_temp_variable = { nd_warning_war_support_cost = 0 }
 	natural_disaster_prepare_warning_profile_costs = yes
 	natural_disaster_deduct_warning_manpower = yes
 	natural_disaster_deduct_warning_support = yes
@@ -6337,12 +6361,10 @@ natural_disaster_pay_warning_field_research = {
 	set_temp_variable = { nd_warning_fuel_cost = 0 }
 	set_temp_variable = { nd_warning_command_power_cost = 0 }
 	set_temp_variable = { nd_warning_stability_cost = 0 }
-	set_temp_variable = { nd_warning_war_support_cost = 0 }
 	natural_disaster_prepare_warning_profile_costs = yes
 	natural_disaster_deduct_warning_manpower = yes
 	natural_disaster_deduct_warning_support = yes
 	natural_disaster_deduct_warning_command_power = yes
-	natural_disaster_add_warning_civilian_burden = yes
 	set_temp_variable = { nd_sale_family = constant:universal_cost_family.equipment }
 	natural_disaster_credit_black_friday_purchase = yes
 }
@@ -6987,21 +7009,12 @@ natural_disaster_set_foreign_relief_status = {
 	natural_disaster_update_abnormal_history_record = yes
 }
 
-natural_disaster_begin_outbound_relief_light_burden = {
+natural_disaster_begin_outbound_relief_lock = {
 	set_country_flag = natural_disaster_outbound_relief_active
-	set_temp_variable = { natural_disaster_relief_burden_days = constant:natural_disaster_aftermath.foreign_relief_days }
+	set_temp_variable = { natural_disaster_relief_lock_days = constant:natural_disaster_aftermath.foreign_relief_days }
 	add_timed_idea = {
-		idea = natural_disaster_outbound_relief_light_burden
-		days = natural_disaster_relief_burden_days
-	}
-}
-
-natural_disaster_begin_outbound_relief_heavy_burden = {
-	set_country_flag = natural_disaster_outbound_relief_active
-	set_temp_variable = { natural_disaster_relief_burden_days = constant:natural_disaster_aftermath.foreign_relief_days }
-	add_timed_idea = {
-		idea = natural_disaster_outbound_relief_burden
-		days = natural_disaster_relief_burden_days
+		idea = natural_disaster_outbound_relief_lock
+		days = natural_disaster_relief_lock_days
 	}
 }
 
@@ -7009,22 +7022,12 @@ natural_disaster_pay_neighbor_relief = {
 	set_temp_variable = { natural_disaster_relief_manpower_cost = global.black_friday_price_natural_disaster_cost_rescue_manpower }
 	multiply_temp_variable = { natural_disaster_relief_manpower_cost = -1 }
 	add_manpower = natural_disaster_relief_manpower_cost
-	set_temp_variable = { natural_disaster_relief_support_cost = global.black_friday_price_natural_disaster_cost_foreign_support_equipment }
-	multiply_temp_variable = { natural_disaster_relief_support_cost = -1 }
-	add_equipment_to_stockpile = { type = support_equipment_1 amount = natural_disaster_relief_support_cost }
-	set_temp_variable = { natural_disaster_relief_truck_cost = global.black_friday_price_natural_disaster_cost_foreign_trucks }
-	multiply_temp_variable = { natural_disaster_relief_truck_cost = -1 }
-	add_equipment_to_stockpile = { type = motorized_equipment_1 amount = natural_disaster_relief_truck_cost }
 	set_temp_variable = { natural_disaster_relief_convoy_cost = global.black_friday_price_natural_disaster_cost_foreign_convoys }
 	multiply_temp_variable = { natural_disaster_relief_convoy_cost = -1 }
 	add_equipment_to_stockpile = { type = convoy_1 amount = natural_disaster_relief_convoy_cost }
-	set_temp_variable = { natural_disaster_relief_fuel_cost = global.black_friday_price_natural_disaster_cost_foreign_fuel }
-	multiply_temp_variable = { natural_disaster_relief_fuel_cost = -1 }
-	add_fuel = natural_disaster_relief_fuel_cost
 	add_stability = constant:natural_disaster_cost_fixed.foreign_relief_stability
-	add_war_support = constant:natural_disaster_cost_fixed.foreign_relief_war_support
-	natural_disaster_begin_outbound_relief_light_burden = yes
-	set_temp_variable = { nd_sale_family = constant:universal_cost_family.equipment }
+	natural_disaster_begin_outbound_relief_lock = yes
+	set_temp_variable = { nd_sale_family = constant:universal_cost_family.convoy }
 	natural_disaster_credit_black_friday_purchase = yes
 }
 
@@ -7118,12 +7121,8 @@ natural_disaster_pay_port_lifeline_relief = {
 	set_temp_variable = { natural_disaster_relief_convoy_cost = global.black_friday_price_natural_disaster_cost_foreign_port_convoys }
 	multiply_temp_variable = { natural_disaster_relief_convoy_cost = -1 }
 	add_equipment_to_stockpile = { type = convoy_1 amount = natural_disaster_relief_convoy_cost }
-	set_temp_variable = { natural_disaster_relief_fuel_cost = global.black_friday_price_natural_disaster_cost_foreign_port_fuel }
-	multiply_temp_variable = { natural_disaster_relief_fuel_cost = -1 }
-	add_fuel = natural_disaster_relief_fuel_cost
 	add_stability = constant:natural_disaster_cost_fixed.foreign_relief_stability
-	add_war_support = constant:natural_disaster_cost_fixed.foreign_relief_war_support
-	natural_disaster_begin_outbound_relief_light_burden = yes
+	natural_disaster_begin_outbound_relief_lock = yes
 	set_temp_variable = { nd_sale_family = constant:universal_cost_family.convoy }
 	natural_disaster_credit_black_friday_purchase = yes
 }
@@ -7135,15 +7134,8 @@ natural_disaster_pay_engineer_relief = {
 	set_temp_variable = { natural_disaster_relief_truck_cost = global.black_friday_price_natural_disaster_cost_foreign_engineer_trucks }
 	multiply_temp_variable = { natural_disaster_relief_truck_cost = -1 }
 	add_equipment_to_stockpile = { type = motorized_equipment_1 amount = natural_disaster_relief_truck_cost }
-	set_temp_variable = { natural_disaster_relief_train_cost = global.black_friday_price_natural_disaster_cost_foreign_engineer_trains }
-	multiply_temp_variable = { natural_disaster_relief_train_cost = -1 }
-	add_equipment_to_stockpile = { type = train_equipment amount = natural_disaster_relief_train_cost }
-	set_temp_variable = { natural_disaster_relief_fuel_cost = global.black_friday_price_natural_disaster_cost_foreign_engineer_fuel }
-	multiply_temp_variable = { natural_disaster_relief_fuel_cost = -1 }
-	add_fuel = natural_disaster_relief_fuel_cost
 	add_stability = constant:natural_disaster_cost_fixed.foreign_relief_stability
-	add_war_support = constant:natural_disaster_cost_fixed.foreign_relief_war_support
-	natural_disaster_begin_outbound_relief_heavy_burden = yes
+	natural_disaster_begin_outbound_relief_lock = yes
 	set_temp_variable = { nd_sale_family = constant:universal_cost_family.equipment }
 	natural_disaster_credit_black_friday_purchase = yes
 }
@@ -7152,18 +7144,11 @@ natural_disaster_pay_medical_relief = {
 	set_temp_variable = { natural_disaster_relief_manpower_cost = global.black_friday_price_natural_disaster_cost_foreign_medical_manpower }
 	multiply_temp_variable = { natural_disaster_relief_manpower_cost = -1 }
 	add_manpower = natural_disaster_relief_manpower_cost
-	set_temp_variable = { natural_disaster_relief_support_cost = global.black_friday_price_natural_disaster_cost_foreign_medical_support_equipment }
-	multiply_temp_variable = { natural_disaster_relief_support_cost = -1 }
-	add_equipment_to_stockpile = { type = support_equipment_1 amount = natural_disaster_relief_support_cost }
 	set_temp_variable = { natural_disaster_relief_truck_cost = global.black_friday_price_natural_disaster_cost_foreign_medical_trucks }
 	multiply_temp_variable = { natural_disaster_relief_truck_cost = -1 }
 	add_equipment_to_stockpile = { type = motorized_equipment_1 amount = natural_disaster_relief_truck_cost }
-	set_temp_variable = { natural_disaster_relief_fuel_cost = global.black_friday_price_natural_disaster_cost_foreign_medical_fuel }
-	multiply_temp_variable = { natural_disaster_relief_fuel_cost = -1 }
-	add_fuel = natural_disaster_relief_fuel_cost
 	add_stability = constant:natural_disaster_cost_fixed.foreign_relief_stability
-	add_war_support = constant:natural_disaster_cost_fixed.foreign_relief_war_support
-	natural_disaster_begin_outbound_relief_light_burden = yes
+	natural_disaster_begin_outbound_relief_lock = yes
 	set_temp_variable = { nd_sale_family = constant:universal_cost_family.equipment }
 	natural_disaster_credit_black_friday_purchase = yes
 }
@@ -7187,9 +7172,6 @@ natural_disaster_pay_chain_prevention = {
 			set_temp_variable = { nd_chain_convoy_cost = global.black_friday_price_natural_disaster_cost_warning_convoys }
 			multiply_temp_variable = { nd_chain_convoy_cost = -1 }
 			add_equipment_to_stockpile = { type = convoy_1 amount = nd_chain_convoy_cost }
-			set_temp_variable = { nd_chain_fuel_cost = global.black_friday_price_natural_disaster_cost_rescue_fuel }
-			multiply_temp_variable = { nd_chain_fuel_cost = -1 }
-			add_fuel = nd_chain_fuel_cost
 			add_stability = constant:natural_disaster_cost_fixed.rescue_stability
 		}
 		else_if = {
@@ -7239,9 +7221,6 @@ natural_disaster_pay_chain_prevention = {
 			set_temp_variable = { nd_chain_truck_cost = global.black_friday_price_natural_disaster_cost_rescue_trucks }
 			multiply_temp_variable = { nd_chain_truck_cost = -1 }
 			add_equipment_to_stockpile = { type = motorized_equipment_1 amount = nd_chain_truck_cost }
-			set_temp_variable = { nd_chain_fuel_cost = global.black_friday_price_natural_disaster_cost_rescue_fuel }
-			multiply_temp_variable = { nd_chain_fuel_cost = -1 }
-			add_fuel = nd_chain_fuel_cost
 			add_stability = constant:natural_disaster_cost_fixed.rescue_stability
 		}
 		else_if = {
@@ -7263,9 +7242,6 @@ natural_disaster_pay_chain_prevention = {
 				multiply_temp_variable = { nd_chain_transport_cost = -1 }
 				add_equipment_to_stockpile = { type = convoy_1 amount = nd_chain_transport_cost }
 			}
-			set_temp_variable = { nd_chain_fuel_cost = global.black_friday_price_natural_disaster_cost_stabilize_fuel }
-			multiply_temp_variable = { nd_chain_fuel_cost = -1 }
-			add_fuel = nd_chain_fuel_cost
 			set_temp_variable = { nd_stability_payment = global.black_friday_price_natural_disaster_cost_fixed_stabilize_stability }
 			multiply_temp_variable = { nd_stability_payment = -1 }
 			add_stability = nd_stability_payment
@@ -7281,9 +7257,6 @@ natural_disaster_pay_chain_prevention = {
 			set_temp_variable = { nd_chain_train_cost = global.black_friday_price_natural_disaster_cost_warning_trains }
 			multiply_temp_variable = { nd_chain_train_cost = -1 }
 			add_equipment_to_stockpile = { type = train_equipment amount = nd_chain_train_cost }
-			set_temp_variable = { nd_chain_fuel_cost = global.black_friday_price_natural_disaster_cost_rescue_fuel }
-			multiply_temp_variable = { nd_chain_fuel_cost = -1 }
-			add_fuel = nd_chain_fuel_cost
 			add_stability = constant:natural_disaster_cost_fixed.rescue_stability
 		}
 		else = {
@@ -7989,6 +7962,7 @@ natural_disaster_register_transferred_state_responsibility = {
 }
 
 natural_disaster_handle_state_control_change = {
+	save_event_target_as = natural_disaster_report_annex_transfer_state
 	if = {
 		limit = {
 			has_event_target = natural_disaster_new_responsible_country
@@ -7999,9 +7973,40 @@ natural_disaster_handle_state_control_change = {
 		}
 		if = {
 			limit = { has_event_target = natural_disaster_former_responsible_country }
-			event_target:natural_disaster_former_responsible_country = {
-				natural_disaster_transfer_pending_jobs_for_state = yes
-				natural_disaster_release_transferred_state_pointers = yes
+			set_temp_variable = { natural_disaster_transfer_former_country_id = event_target:natural_disaster_former_responsible_country.id }
+			set_temp_variable = { natural_disaster_transfer_new_country_id = event_target:natural_disaster_new_responsible_country.id }
+			if = {
+				limit = {
+					NOT = {
+						check_variable = {
+							var = natural_disaster_transfer_former_country_id
+							value = natural_disaster_transfer_new_country_id
+							compare = equals
+						}
+					}
+				}
+				event_target:natural_disaster_former_responsible_country = {
+					if = {
+						limit = {
+							NOT = { exists = yes }
+							has_country_flag = natural_disaster_report_popup_open
+							has_variable = natural_disaster_report_active_sequence_id
+						}
+						natural_disaster_close_current_report_batch = yes
+					}
+					else_if = {
+						limit = {
+							NOT = { exists = yes }
+							has_country_flag = natural_disaster_report_popup_open
+						}
+						clr_country_flag = natural_disaster_report_popup_open
+						clr_country_flag = natural_disaster_aftermath_unread
+						clr_country_flag = natural_disaster_report_dispatch_scheduled
+					}
+					natural_disaster_transfer_pending_jobs_for_state = yes
+					natural_disaster_transfer_pending_report_rows_for_state = yes
+					natural_disaster_release_transferred_state_pointers = yes
+				}
 			}
 		}
 		clr_state_flag = natural_disaster_inbound_relief_active
@@ -8115,22 +8120,1242 @@ natural_disaster_activate_aftermath_for_state = {
 	}
 }
 
-natural_disaster_schedule_family_report = {
-	set_temp_variable = { natural_disaster_random_ceiling = constant:natural_disaster_sequence.report_max_days }
-	add_to_temp_variable = { natural_disaster_random_ceiling = 1 }
-	set_temp_variable_to_random = {
-		var = natural_disaster_report_delay
-		min = constant:natural_disaster_sequence.report_min_days
-		max = natural_disaster_random_ceiling
-		integer = yes
+natural_disaster_begin_report_consequence = {
+	if = {
+		limit = {
+			NOT = {
+				meta_trigger = {
+					text = { has_global_flag = natural_disaster_report_sequence_finalized_[SEQUENCE_ID] }
+					SEQUENCE_ID = "[?natural_disaster_sequence_id|.0]"
+				}
+			}
+		}
+		if = {
+			limit = { NOT = { has_variable = global.natural_disaster_report_consequence_id } }
+			set_variable = { global.natural_disaster_report_consequence_id = 0 }
+		}
+		add_to_variable = { global.natural_disaster_report_consequence_id = 1 }
+		set_temp_variable = { natural_disaster_report_new_consequence_id = global.natural_disaster_report_consequence_id }
+		if = {
+			limit = { has_variable = natural_disaster_report_active_consequence_id }
+			set_variable = { natural_disaster_report_consequence_parent_@var:natural_disaster_report_new_consequence_id = natural_disaster_report_active_consequence_id }
+		}
+		else = {
+			set_variable = { natural_disaster_report_consequence_parent_@var:natural_disaster_report_new_consequence_id = 0 }
+		}
+		set_variable = { natural_disaster_report_active_consequence_id = natural_disaster_report_new_consequence_id }
+		set_variable = { natural_disaster_report_consequence_sequence_@var:natural_disaster_report_new_consequence_id = natural_disaster_sequence_id }
+		set_variable = { natural_disaster_report_consequence_family_@var:natural_disaster_report_new_consequence_id = natural_disaster_current_family }
+		set_variable = { natural_disaster_report_consequence_origin_medium_@var:natural_disaster_report_new_consequence_id = natural_disaster_origin_medium }
+		set_variable = { natural_disaster_report_consequence_severity_@var:natural_disaster_report_new_consequence_id = natural_disaster_current_severity }
+		set_variable = { natural_disaster_report_consequence_policy_@var:natural_disaster_report_new_consequence_id = natural_disaster_report_policy }
+		set_variable = { natural_disaster_report_consequence_deaths_@var:natural_disaster_report_new_consequence_id = 0 }
+		set_variable = { natural_disaster_report_consequence_controller_id_@var:natural_disaster_report_new_consequence_id = 0 }
+		set_variable = { natural_disaster_report_consequence_owner_id_@var:natural_disaster_report_new_consequence_id = 0 }
+		set_variable = { natural_disaster_report_consequence_caller_id_@var:natural_disaster_report_new_consequence_id = 0 }
+		set_variable = { natural_disaster_report_consequence_damage_transport_@var:natural_disaster_report_new_consequence_id = 0 }
+		set_variable = { natural_disaster_report_consequence_damage_industry_@var:natural_disaster_report_new_consequence_id = 0 }
+		set_variable = { natural_disaster_report_consequence_damage_ports_@var:natural_disaster_report_new_consequence_id = 0 }
+		set_variable = { natural_disaster_report_consequence_damage_air_@var:natural_disaster_report_new_consequence_id = 0 }
+		set_variable = { natural_disaster_report_consequence_damage_radar_@var:natural_disaster_report_new_consequence_id = 0 }
+		controller = {
+			set_variable = { PREV.natural_disaster_report_consequence_controller_id_@var:natural_disaster_report_new_consequence_id = THIS.id }
+		}
+		OWNER = {
+			set_variable = { PREV.natural_disaster_report_consequence_owner_id_@var:natural_disaster_report_new_consequence_id = THIS.id }
+		}
+		if = {
+			limit = { has_variable = natural_disaster_caller_country }
+			set_variable = { natural_disaster_report_consequence_caller_id_@var:natural_disaster_report_new_consequence_id = var:natural_disaster_caller_country.id }
+		}
 	}
-	set_temp_variable = { natural_disaster_job_type = constant:natural_disaster_job_type.report }
-	set_temp_variable = { natural_disaster_job_delay_days = natural_disaster_report_delay }
-	set_temp_variable = { natural_disaster_job_due_date = 0 }
-	natural_disaster_enqueue_state_job = yes
-	set_variable = { natural_disaster_report_due_date = natural_disaster_job_due_date }
-	natural_disaster_update_abnormal_history_record = yes
 }
+
+natural_disaster_commit_report_consequence = {
+	if = {
+		limit = { has_variable = natural_disaster_report_active_consequence_id }
+		set_temp_variable = { natural_disaster_report_committing_consequence_id = natural_disaster_report_active_consequence_id }
+		set_temp_variable = { natural_disaster_report_committing_sequence_id = natural_disaster_report_consequence_sequence_@var:natural_disaster_report_committing_consequence_id }
+		set_temp_variable = { natural_disaster_report_consequence_duplicate = 0 }
+		if = {
+		limit = {
+			NOT = {
+				meta_trigger = {
+					text = { has_global_flag = natural_disaster_report_sequence_finalized_[SEQUENCE_ID] }
+					SEQUENCE_ID = "[?natural_disaster_report_committing_sequence_id|.0]"
+				}
+			}
+		}
+			if = {
+				limit = {
+					is_in_array = {
+						array = global.natural_disaster_report_committed_consequence_id_entries_@var:natural_disaster_report_committing_sequence_id
+						value = natural_disaster_report_committing_consequence_id
+					}
+				}
+				set_temp_variable = { natural_disaster_report_consequence_duplicate = 1 }
+			}
+			if = {
+				limit = { check_variable = { natural_disaster_report_consequence_duplicate < 1 } }
+				add_to_array = {
+					array = global.natural_disaster_report_committed_consequence_id_entries_@var:natural_disaster_report_committing_sequence_id
+					value = natural_disaster_report_committing_consequence_id
+				}
+				add_to_array = { array = global.natural_disaster_report_consequence_state_entries_@var:natural_disaster_report_committing_sequence_id value = THIS }
+				add_to_array = { array = global.natural_disaster_report_consequence_id_entries_@var:natural_disaster_report_committing_sequence_id value = natural_disaster_report_committing_consequence_id }
+				add_to_array = { array = global.natural_disaster_report_consequence_family_entries_@var:natural_disaster_report_committing_sequence_id value = natural_disaster_report_consequence_family_@var:natural_disaster_report_committing_consequence_id }
+				add_to_array = { array = global.natural_disaster_report_consequence_origin_medium_entries_@var:natural_disaster_report_committing_sequence_id value = natural_disaster_report_consequence_origin_medium_@var:natural_disaster_report_committing_consequence_id }
+				add_to_array = { array = global.natural_disaster_report_consequence_severity_entries_@var:natural_disaster_report_committing_sequence_id value = natural_disaster_report_consequence_severity_@var:natural_disaster_report_committing_consequence_id }
+				add_to_array = { array = global.natural_disaster_report_consequence_policy_entries_@var:natural_disaster_report_committing_sequence_id value = natural_disaster_report_consequence_policy_@var:natural_disaster_report_committing_consequence_id }
+				add_to_array = { array = global.natural_disaster_report_consequence_controller_id_entries_@var:natural_disaster_report_committing_sequence_id value = natural_disaster_report_consequence_controller_id_@var:natural_disaster_report_committing_consequence_id }
+				add_to_array = { array = global.natural_disaster_report_consequence_owner_id_entries_@var:natural_disaster_report_committing_sequence_id value = natural_disaster_report_consequence_owner_id_@var:natural_disaster_report_committing_consequence_id }
+				add_to_array = { array = global.natural_disaster_report_consequence_caller_id_entries_@var:natural_disaster_report_committing_sequence_id value = natural_disaster_report_consequence_caller_id_@var:natural_disaster_report_committing_consequence_id }
+				add_to_array = { array = global.natural_disaster_report_consequence_deaths_entries_@var:natural_disaster_report_committing_sequence_id value = natural_disaster_report_consequence_deaths_@var:natural_disaster_report_committing_consequence_id }
+				add_to_array = { array = global.natural_disaster_report_consequence_damage_transport_entries_@var:natural_disaster_report_committing_sequence_id value = natural_disaster_report_consequence_damage_transport_@var:natural_disaster_report_committing_consequence_id }
+				add_to_array = { array = global.natural_disaster_report_consequence_damage_industry_entries_@var:natural_disaster_report_committing_sequence_id value = natural_disaster_report_consequence_damage_industry_@var:natural_disaster_report_committing_consequence_id }
+				add_to_array = { array = global.natural_disaster_report_consequence_damage_ports_entries_@var:natural_disaster_report_committing_sequence_id value = natural_disaster_report_consequence_damage_ports_@var:natural_disaster_report_committing_consequence_id }
+				add_to_array = { array = global.natural_disaster_report_consequence_damage_air_entries_@var:natural_disaster_report_committing_sequence_id value = natural_disaster_report_consequence_damage_air_@var:natural_disaster_report_committing_consequence_id }
+				add_to_array = { array = global.natural_disaster_report_consequence_damage_radar_entries_@var:natural_disaster_report_committing_sequence_id value = natural_disaster_report_consequence_damage_radar_@var:natural_disaster_report_committing_consequence_id }
+				meta_effect = {
+					text = { set_global_flag = natural_disaster_report_sequence_has_visible_policy_[SEQUENCE_ID] }
+					SEQUENCE_ID = "[?natural_disaster_report_committing_sequence_id|.0]"
+				}
+				set_temp_variable = { natural_disaster_report_global_state_duplicate = 0 }
+				if = {
+					limit = {
+						is_in_array = {
+							array = global.natural_disaster_report_sequence_state_id_entries_@var:natural_disaster_report_committing_sequence_id
+							value = THIS.id
+						}
+					}
+					set_temp_variable = { natural_disaster_report_global_state_duplicate = 1 }
+				}
+				if = {
+					limit = { check_variable = { natural_disaster_report_global_state_duplicate < 1 } }
+					add_to_array = {
+						array = global.natural_disaster_report_sequence_state_id_entries_@var:natural_disaster_report_committing_sequence_id
+						value = THIS.id
+					}
+					add_to_array = {
+						array = global.natural_disaster_report_sequence_state_entries_@var:natural_disaster_report_committing_sequence_id
+						value = THIS
+					}
+				}
+			}
+		}
+		if = {
+			limit = { check_variable = { natural_disaster_report_consequence_parent_@var:natural_disaster_report_committing_consequence_id > 0 } }
+			set_variable = { natural_disaster_report_active_consequence_id = natural_disaster_report_consequence_parent_@var:natural_disaster_report_committing_consequence_id }
+		}
+		else = { clear_variable = natural_disaster_report_active_consequence_id }
+		clear_variable = natural_disaster_report_consequence_parent_@var:natural_disaster_report_committing_consequence_id
+		clear_variable = natural_disaster_report_consequence_sequence_@var:natural_disaster_report_committing_consequence_id
+		clear_variable = natural_disaster_report_consequence_family_@var:natural_disaster_report_committing_consequence_id
+		clear_variable = natural_disaster_report_consequence_origin_medium_@var:natural_disaster_report_committing_consequence_id
+		clear_variable = natural_disaster_report_consequence_severity_@var:natural_disaster_report_committing_consequence_id
+		clear_variable = natural_disaster_report_consequence_policy_@var:natural_disaster_report_committing_consequence_id
+		clear_variable = natural_disaster_report_consequence_deaths_@var:natural_disaster_report_committing_consequence_id
+		clear_variable = natural_disaster_report_consequence_controller_id_@var:natural_disaster_report_committing_consequence_id
+		clear_variable = natural_disaster_report_consequence_owner_id_@var:natural_disaster_report_committing_consequence_id
+		clear_variable = natural_disaster_report_consequence_caller_id_@var:natural_disaster_report_committing_consequence_id
+		clear_variable = natural_disaster_report_consequence_damage_transport_@var:natural_disaster_report_committing_consequence_id
+		clear_variable = natural_disaster_report_consequence_damage_industry_@var:natural_disaster_report_committing_consequence_id
+		clear_variable = natural_disaster_report_consequence_damage_ports_@var:natural_disaster_report_committing_consequence_id
+		clear_variable = natural_disaster_report_consequence_damage_air_@var:natural_disaster_report_committing_consequence_id
+		clear_variable = natural_disaster_report_consequence_damage_radar_@var:natural_disaster_report_committing_consequence_id
+	}
+}
+
+natural_disaster_report_add_consequence_row_to_country = {
+	set_temp_variable = { natural_disaster_report_country_duplicate_receipt = 0 }
+	if = {
+		limit = {
+			is_in_array = {
+				array = natural_disaster_report_consequence_id_entries_@var:natural_disaster_report_sequence_id
+				value = global.natural_disaster_report_consequence_id_entries_@var:natural_disaster_report_sequence_id^natural_disaster_report_final_consequence_index
+			}
+		}
+		set_temp_variable = { natural_disaster_report_country_duplicate_receipt = 1 }
+	}
+	if = {
+		limit = { check_variable = { natural_disaster_report_country_duplicate_receipt < 1 } }
+		set_temp_variable = { natural_disaster_report_country_state_id = PREV.id }
+		add_to_array = {
+			array = natural_disaster_report_consequence_id_entries_@var:natural_disaster_report_sequence_id
+			value = global.natural_disaster_report_consequence_id_entries_@var:natural_disaster_report_sequence_id^natural_disaster_report_final_consequence_index
+		}
+		add_to_array = {
+			array = natural_disaster_report_consequence_state_id_entries_@var:natural_disaster_report_sequence_id
+			value = natural_disaster_report_country_state_id
+		}
+		add_to_array = {
+			array = natural_disaster_report_consequence_state_entries_@var:natural_disaster_report_sequence_id
+			value = PREV
+		}
+		add_to_array = {
+			array = natural_disaster_report_consequence_family_entries_@var:natural_disaster_report_sequence_id
+			value = global.natural_disaster_report_consequence_family_entries_@var:natural_disaster_report_sequence_id^natural_disaster_report_final_consequence_index
+		}
+		add_to_array = {
+			array = natural_disaster_report_consequence_severity_entries_@var:natural_disaster_report_sequence_id
+			value = global.natural_disaster_report_consequence_severity_entries_@var:natural_disaster_report_sequence_id^natural_disaster_report_final_consequence_index
+		}
+		add_to_array = {
+			array = natural_disaster_report_consequence_origin_medium_entries_@var:natural_disaster_report_sequence_id
+			value = global.natural_disaster_report_consequence_origin_medium_entries_@var:natural_disaster_report_sequence_id^natural_disaster_report_final_consequence_index
+		}
+		add_to_array = {
+			array = natural_disaster_report_consequence_deaths_entries_@var:natural_disaster_report_sequence_id
+			value = global.natural_disaster_report_consequence_deaths_entries_@var:natural_disaster_report_sequence_id^natural_disaster_report_final_consequence_index
+		}
+		add_to_array = {
+			array = natural_disaster_report_consequence_damage_transport_entries_@var:natural_disaster_report_sequence_id
+			value = global.natural_disaster_report_consequence_damage_transport_entries_@var:natural_disaster_report_sequence_id^natural_disaster_report_final_consequence_index
+		}
+		add_to_array = {
+			array = natural_disaster_report_consequence_damage_industry_entries_@var:natural_disaster_report_sequence_id
+			value = global.natural_disaster_report_consequence_damage_industry_entries_@var:natural_disaster_report_sequence_id^natural_disaster_report_final_consequence_index
+		}
+		add_to_array = {
+			array = natural_disaster_report_consequence_damage_ports_entries_@var:natural_disaster_report_sequence_id
+			value = global.natural_disaster_report_consequence_damage_ports_entries_@var:natural_disaster_report_sequence_id^natural_disaster_report_final_consequence_index
+		}
+		add_to_array = {
+			array = natural_disaster_report_consequence_damage_air_entries_@var:natural_disaster_report_sequence_id
+			value = global.natural_disaster_report_consequence_damage_air_entries_@var:natural_disaster_report_sequence_id^natural_disaster_report_final_consequence_index
+		}
+		add_to_array = {
+			array = natural_disaster_report_consequence_damage_radar_entries_@var:natural_disaster_report_sequence_id
+			value = global.natural_disaster_report_consequence_damage_radar_entries_@var:natural_disaster_report_sequence_id^natural_disaster_report_final_consequence_index
+		}
+		add_to_variable = {
+			natural_disaster_report_batch_deaths_@var:natural_disaster_report_sequence_id = global.natural_disaster_report_consequence_deaths_entries_@var:natural_disaster_report_sequence_id^natural_disaster_report_final_consequence_index
+		}
+		add_to_variable = {
+			natural_disaster_report_batch_damage_transport_@var:natural_disaster_report_sequence_id = global.natural_disaster_report_consequence_damage_transport_entries_@var:natural_disaster_report_sequence_id^natural_disaster_report_final_consequence_index
+		}
+		add_to_variable = {
+			natural_disaster_report_batch_damage_industry_@var:natural_disaster_report_sequence_id = global.natural_disaster_report_consequence_damage_industry_entries_@var:natural_disaster_report_sequence_id^natural_disaster_report_final_consequence_index
+		}
+		add_to_variable = {
+			natural_disaster_report_batch_damage_ports_@var:natural_disaster_report_sequence_id = global.natural_disaster_report_consequence_damage_ports_entries_@var:natural_disaster_report_sequence_id^natural_disaster_report_final_consequence_index
+		}
+		add_to_variable = {
+			natural_disaster_report_batch_damage_air_@var:natural_disaster_report_sequence_id = global.natural_disaster_report_consequence_damage_air_entries_@var:natural_disaster_report_sequence_id^natural_disaster_report_final_consequence_index
+		}
+		add_to_variable = {
+			natural_disaster_report_batch_damage_radar_@var:natural_disaster_report_sequence_id = global.natural_disaster_report_consequence_damage_radar_entries_@var:natural_disaster_report_sequence_id^natural_disaster_report_final_consequence_index
+		}
+		set_temp_variable = { natural_disaster_report_country_family_candidate = global.natural_disaster_report_consequence_family_entries_@var:natural_disaster_report_sequence_id^natural_disaster_report_final_consequence_index }
+		if = {
+			limit = { check_variable = { natural_disaster_report_country_family_candidate = constant:natural_disaster_family.meteor_impact } }
+			set_temp_variable = { natural_disaster_report_country_meteor_medium_candidate = global.natural_disaster_report_consequence_origin_medium_entries_@var:natural_disaster_report_sequence_id^natural_disaster_report_final_consequence_index }
+			if = {
+				limit = { has_variable = natural_disaster_report_batch_meteor_medium_@var:natural_disaster_report_sequence_id }
+				if = {
+					limit = {
+						NOT = {
+							check_variable = {
+								var = natural_disaster_report_batch_meteor_medium_@var:natural_disaster_report_sequence_id
+								value = natural_disaster_report_country_meteor_medium_candidate
+								compare = equals
+							}
+						}
+					}
+					set_variable = { natural_disaster_report_batch_meteor_medium_@var:natural_disaster_report_sequence_id = constant:natural_disaster_origin_medium.none }
+				}
+			}
+			else = { set_variable = { natural_disaster_report_batch_meteor_medium_@var:natural_disaster_report_sequence_id = natural_disaster_report_country_meteor_medium_candidate } }
+		}
+		set_temp_variable = { natural_disaster_report_country_family_duplicate = 0 }
+		if = {
+			limit = {
+				is_in_array = {
+					array = natural_disaster_report_family_entries_@var:natural_disaster_report_sequence_id
+					value = natural_disaster_report_country_family_candidate
+				}
+			}
+			set_temp_variable = { natural_disaster_report_country_family_duplicate = 1 }
+		}
+		if = {
+			limit = { check_variable = { natural_disaster_report_country_family_duplicate < 1 } }
+			add_to_array = {
+				array = natural_disaster_report_family_entries_@var:natural_disaster_report_sequence_id
+				value = natural_disaster_report_country_family_candidate
+			}
+		}
+		set_temp_variable = { natural_disaster_report_country_state_duplicate = 0 }
+		if = {
+			limit = {
+				is_in_array = {
+					array = natural_disaster_report_state_id_entries_@var:natural_disaster_report_sequence_id
+					value = natural_disaster_report_country_state_id
+				}
+			}
+			set_temp_variable = { natural_disaster_report_country_state_duplicate = 1 }
+		}
+		if = {
+			limit = { check_variable = { natural_disaster_report_country_state_duplicate < 1 } }
+			add_to_array = {
+				array = natural_disaster_report_state_id_entries_@var:natural_disaster_report_sequence_id
+				value = natural_disaster_report_country_state_id
+			}
+			add_to_array = {
+				array = natural_disaster_report_state_entries_@var:natural_disaster_report_sequence_id
+				value = PREV
+			}
+		}
+		set_temp_variable = { natural_disaster_report_country_worst_family = global.natural_disaster_report_consequence_family_entries_@var:natural_disaster_report_sequence_id^natural_disaster_report_final_consequence_index }
+		set_temp_variable = { natural_disaster_report_country_worst_severity = global.natural_disaster_report_consequence_severity_entries_@var:natural_disaster_report_sequence_id^natural_disaster_report_final_consequence_index }
+		if = {
+			limit = { NOT = { has_variable = natural_disaster_report_worst_severity_@var:natural_disaster_report_sequence_id } }
+			set_variable = { natural_disaster_report_worst_family_@var:natural_disaster_report_sequence_id = natural_disaster_report_country_worst_family }
+			set_variable = { natural_disaster_report_worst_severity_@var:natural_disaster_report_sequence_id = natural_disaster_report_country_worst_severity }
+		}
+		else_if = {
+			limit = {
+				OR = {
+					check_variable = {
+						var = natural_disaster_report_country_worst_severity
+						value = natural_disaster_report_worst_severity_@var:natural_disaster_report_sequence_id
+						compare = greater_than
+					}
+					AND = {
+						check_variable = {
+							var = natural_disaster_report_country_worst_severity
+							value = natural_disaster_report_worst_severity_@var:natural_disaster_report_sequence_id
+							compare = equals
+						}
+						check_variable = {
+							var = natural_disaster_report_country_worst_family
+							value = natural_disaster_report_worst_family_@var:natural_disaster_report_sequence_id
+							compare = less_than
+						}
+					}
+				}
+			}
+			set_variable = { natural_disaster_report_worst_family_@var:natural_disaster_report_sequence_id = natural_disaster_report_country_worst_family }
+			set_variable = { natural_disaster_report_worst_severity_@var:natural_disaster_report_sequence_id = natural_disaster_report_country_worst_severity }
+		}
+		set_temp_variable = { natural_disaster_report_country_recipient_duplicate = 0 }
+		if = {
+			limit = {
+				is_in_array = {
+					array = global.natural_disaster_report_recipient_id_entries_@var:natural_disaster_report_sequence_id
+					value = THIS.id
+				}
+			}
+			set_temp_variable = { natural_disaster_report_country_recipient_duplicate = 1 }
+		}
+		if = {
+			limit = { check_variable = { natural_disaster_report_country_recipient_duplicate < 1 } }
+			add_to_array = {
+				array = global.natural_disaster_report_recipient_id_entries_@var:natural_disaster_report_sequence_id
+				value = THIS.id
+			}
+		}
+	}
+}
+
+natural_disaster_report_add_current_row_to_recipient = {
+	event_target:natural_disaster_report_current_state = {
+		event_target:natural_disaster_report_current_recipient = {
+			natural_disaster_report_add_consequence_row_to_country = yes
+		}
+	}
+}
+
+natural_disaster_rebuild_report_sequence_country_summary = {
+	set_variable = { natural_disaster_report_batch_deaths_@var:natural_disaster_report_sequence_id = 0 }
+	set_variable = { natural_disaster_report_batch_damage_transport_@var:natural_disaster_report_sequence_id = 0 }
+	set_variable = { natural_disaster_report_batch_damage_industry_@var:natural_disaster_report_sequence_id = 0 }
+	set_variable = { natural_disaster_report_batch_damage_ports_@var:natural_disaster_report_sequence_id = 0 }
+	set_variable = { natural_disaster_report_batch_damage_air_@var:natural_disaster_report_sequence_id = 0 }
+	set_variable = { natural_disaster_report_batch_damage_radar_@var:natural_disaster_report_sequence_id = 0 }
+	clear_array = natural_disaster_report_family_entries_@var:natural_disaster_report_sequence_id
+	clear_array = natural_disaster_report_state_entries_@var:natural_disaster_report_sequence_id
+	clear_array = natural_disaster_report_state_id_entries_@var:natural_disaster_report_sequence_id
+	clear_variable = natural_disaster_report_worst_family_@var:natural_disaster_report_sequence_id
+	clear_variable = natural_disaster_report_worst_severity_@var:natural_disaster_report_sequence_id
+	clear_variable = natural_disaster_report_batch_meteor_medium_@var:natural_disaster_report_sequence_id
+	set_temp_variable = { natural_disaster_report_rebuild_row_index = 0 }
+	for_each_loop = {
+		array = natural_disaster_report_consequence_state_entries_@var:natural_disaster_report_sequence_id
+		value = natural_disaster_report_rebuild_state
+		index = natural_disaster_report_rebuild_row_index
+		add_to_variable = { natural_disaster_report_batch_deaths_@var:natural_disaster_report_sequence_id = natural_disaster_report_consequence_deaths_entries_@var:natural_disaster_report_sequence_id^natural_disaster_report_rebuild_row_index }
+		add_to_variable = { natural_disaster_report_batch_damage_transport_@var:natural_disaster_report_sequence_id = natural_disaster_report_consequence_damage_transport_entries_@var:natural_disaster_report_sequence_id^natural_disaster_report_rebuild_row_index }
+		add_to_variable = { natural_disaster_report_batch_damage_industry_@var:natural_disaster_report_sequence_id = natural_disaster_report_consequence_damage_industry_entries_@var:natural_disaster_report_sequence_id^natural_disaster_report_rebuild_row_index }
+		add_to_variable = { natural_disaster_report_batch_damage_ports_@var:natural_disaster_report_sequence_id = natural_disaster_report_consequence_damage_ports_entries_@var:natural_disaster_report_sequence_id^natural_disaster_report_rebuild_row_index }
+		add_to_variable = { natural_disaster_report_batch_damage_air_@var:natural_disaster_report_sequence_id = natural_disaster_report_consequence_damage_air_entries_@var:natural_disaster_report_sequence_id^natural_disaster_report_rebuild_row_index }
+		add_to_variable = { natural_disaster_report_batch_damage_radar_@var:natural_disaster_report_sequence_id = natural_disaster_report_consequence_damage_radar_entries_@var:natural_disaster_report_sequence_id^natural_disaster_report_rebuild_row_index }
+		set_temp_variable = { natural_disaster_report_rebuild_family = natural_disaster_report_consequence_family_entries_@var:natural_disaster_report_sequence_id^natural_disaster_report_rebuild_row_index }
+		set_temp_variable = { natural_disaster_report_rebuild_severity = natural_disaster_report_consequence_severity_entries_@var:natural_disaster_report_sequence_id^natural_disaster_report_rebuild_row_index }
+		if = {
+			limit = {
+				NOT = {
+					is_in_array = {
+						array = natural_disaster_report_family_entries_@var:natural_disaster_report_sequence_id
+						value = natural_disaster_report_rebuild_family
+					}
+				}
+			}
+			add_to_array = { array = natural_disaster_report_family_entries_@var:natural_disaster_report_sequence_id value = natural_disaster_report_rebuild_family }
+		}
+		set_temp_variable = { natural_disaster_report_rebuild_state_id = natural_disaster_report_consequence_state_id_entries_@var:natural_disaster_report_sequence_id^natural_disaster_report_rebuild_row_index }
+		if = {
+			limit = {
+				NOT = {
+					is_in_array = {
+						array = natural_disaster_report_state_id_entries_@var:natural_disaster_report_sequence_id
+						value = natural_disaster_report_rebuild_state_id
+					}
+				}
+			}
+			add_to_array = { array = natural_disaster_report_state_id_entries_@var:natural_disaster_report_sequence_id value = natural_disaster_report_rebuild_state_id }
+			add_to_array = {
+				array = natural_disaster_report_state_entries_@var:natural_disaster_report_sequence_id
+				value = natural_disaster_report_rebuild_state
+			}
+		}
+		if = {
+			limit = { NOT = { has_variable = natural_disaster_report_worst_severity_@var:natural_disaster_report_sequence_id } }
+			set_variable = { natural_disaster_report_worst_family_@var:natural_disaster_report_sequence_id = natural_disaster_report_rebuild_family }
+			set_variable = { natural_disaster_report_worst_severity_@var:natural_disaster_report_sequence_id = natural_disaster_report_rebuild_severity }
+		}
+		else_if = {
+			limit = {
+				OR = {
+					check_variable = {
+						var = natural_disaster_report_rebuild_severity
+						value = natural_disaster_report_worst_severity_@var:natural_disaster_report_sequence_id
+						compare = greater_than
+					}
+					AND = {
+						check_variable = {
+							var = natural_disaster_report_rebuild_severity
+							value = natural_disaster_report_worst_severity_@var:natural_disaster_report_sequence_id
+							compare = equals
+						}
+						check_variable = {
+							var = natural_disaster_report_rebuild_family
+							value = natural_disaster_report_worst_family_@var:natural_disaster_report_sequence_id
+							compare = less_than
+						}
+					}
+				}
+			}
+			set_variable = { natural_disaster_report_worst_family_@var:natural_disaster_report_sequence_id = natural_disaster_report_rebuild_family }
+			set_variable = { natural_disaster_report_worst_severity_@var:natural_disaster_report_sequence_id = natural_disaster_report_rebuild_severity }
+		}
+		if = {
+			limit = { check_variable = { natural_disaster_report_rebuild_family = constant:natural_disaster_family.meteor_impact } }
+			set_temp_variable = { natural_disaster_report_rebuild_meteor_medium = natural_disaster_report_consequence_origin_medium_entries_@var:natural_disaster_report_sequence_id^natural_disaster_report_rebuild_row_index }
+			if = {
+				limit = { has_variable = natural_disaster_report_batch_meteor_medium_@var:natural_disaster_report_sequence_id }
+				if = {
+					limit = {
+						NOT = {
+							check_variable = {
+								var = natural_disaster_report_batch_meteor_medium_@var:natural_disaster_report_sequence_id
+								value = natural_disaster_report_rebuild_meteor_medium
+								compare = equals
+							}
+						}
+					}
+					set_variable = { natural_disaster_report_batch_meteor_medium_@var:natural_disaster_report_sequence_id = constant:natural_disaster_origin_medium.none }
+				}
+			}
+			else = { set_variable = { natural_disaster_report_batch_meteor_medium_@var:natural_disaster_report_sequence_id = natural_disaster_report_rebuild_meteor_medium } }
+		}
+	}
+}
+
+# Country scope. Move only queued consequence rows for the transferred state.
+# A recipient with this sequence already open has already seen it; its receipt
+# blocks a second popup. A queued sequence can absorb the rows before dispatch.
+natural_disaster_transfer_pending_report_rows_for_state = {
+	# An annexed country cannot acknowledge its open report. Discard the
+	# already-presented batch and preserve the unshown queue for its new controller.
+	if = {
+		limit = { NOT = { exists = yes } has_country_flag = natural_disaster_report_popup_open }
+		natural_disaster_close_current_report_batch = yes
+	}
+	if = {
+		limit = {
+			# A surviving recipient keeps the consequence it originally suffered.
+			NOT = { exists = yes }
+			has_event_target = natural_disaster_new_responsible_country
+			event_target:natural_disaster_new_responsible_country = { exists = yes }
+			has_event_target = natural_disaster_report_annex_transfer_state
+			event_target:natural_disaster_new_responsible_country = { exists = yes }
+			NOT = {
+				check_variable = {
+					var = THIS.id
+					value = event_target:natural_disaster_new_responsible_country.id
+					compare = equals
+				}
+			}
+		}
+		clear_temp_array = natural_disaster_report_annex_empty_sequence_entries
+		for_each_loop = {
+			array = natural_disaster_report_pending_sequence_entries
+			value = natural_disaster_report_transfer_sequence_id
+			index = natural_disaster_report_annex_queue_index
+			set_temp_variable = { natural_disaster_report_transfer_target_can_receive = 0 }
+			event_target:natural_disaster_new_responsible_country = {
+				if = {
+					limit = {
+						NOT = {
+							meta_trigger = {
+								text = { has_country_flag = natural_disaster_report_sequence_sent_[SEQUENCE_ID] }
+								SEQUENCE_ID = "[?natural_disaster_report_transfer_sequence_id|.0]"
+							}
+						}
+					}
+					set_temp_variable = { natural_disaster_report_transfer_target_can_receive = 1 }
+				}
+				else_if = {
+					limit = {
+						meta_trigger = {
+							text = { has_country_flag = natural_disaster_report_sequence_sent_[SEQUENCE_ID] }
+							SEQUENCE_ID = "[?natural_disaster_report_transfer_sequence_id|.0]"
+						}
+						is_in_array = {
+							array = natural_disaster_report_pending_sequence_entries
+							value = natural_disaster_report_transfer_sequence_id
+						}
+						NOT = {
+							check_variable = {
+								var = natural_disaster_report_active_sequence_id
+								value = natural_disaster_report_transfer_sequence_id
+								compare = equals
+							}
+						}
+					}
+					set_temp_variable = { natural_disaster_report_transfer_target_can_receive = 1 }
+				}
+			}
+			if = {
+				limit = { check_variable = { natural_disaster_report_transfer_target_can_receive > 0 } }
+				clear_temp_array = natural_disaster_report_annex_retained_ids
+				clear_temp_array = natural_disaster_report_annex_retained_state_ids
+				clear_temp_array = natural_disaster_report_annex_retained_states
+				clear_temp_array = natural_disaster_report_annex_retained_families
+				clear_temp_array = natural_disaster_report_annex_retained_severities
+				clear_temp_array = natural_disaster_report_annex_retained_media
+				clear_temp_array = natural_disaster_report_annex_retained_deaths
+				clear_temp_array = natural_disaster_report_annex_retained_damage_transport
+				clear_temp_array = natural_disaster_report_annex_retained_damage_industry
+				clear_temp_array = natural_disaster_report_annex_retained_damage_ports
+				clear_temp_array = natural_disaster_report_annex_retained_damage_air
+				clear_temp_array = natural_disaster_report_annex_retained_damage_radar
+				set_temp_variable = { natural_disaster_report_annex_moved_rows = 0 }
+				for_each_loop = {
+					array = natural_disaster_report_consequence_id_entries_@var:natural_disaster_report_transfer_sequence_id
+					value = natural_disaster_report_transfer_row_id
+					index = natural_disaster_report_annex_row_index
+					set_temp_variable = { natural_disaster_report_transfer_row_state_id = natural_disaster_report_consequence_state_id_entries_@var:natural_disaster_report_transfer_sequence_id^natural_disaster_report_annex_row_index }
+					if = {
+						limit = {
+							check_variable = {
+								var = natural_disaster_report_transfer_row_state_id
+								value = event_target:natural_disaster_report_annex_transfer_state.id
+								compare = equals
+							}
+						}
+						set_temp_variable = { natural_disaster_report_transfer_row_family = natural_disaster_report_consequence_family_entries_@var:natural_disaster_report_transfer_sequence_id^natural_disaster_report_annex_row_index }
+						set_temp_variable = { natural_disaster_report_transfer_row_severity = natural_disaster_report_consequence_severity_entries_@var:natural_disaster_report_transfer_sequence_id^natural_disaster_report_annex_row_index }
+						set_temp_variable = { natural_disaster_report_transfer_row_medium = natural_disaster_report_consequence_origin_medium_entries_@var:natural_disaster_report_transfer_sequence_id^natural_disaster_report_annex_row_index }
+						set_temp_variable = { natural_disaster_report_transfer_row_deaths = natural_disaster_report_consequence_deaths_entries_@var:natural_disaster_report_transfer_sequence_id^natural_disaster_report_annex_row_index }
+						set_temp_variable = { natural_disaster_report_transfer_row_damage_transport = natural_disaster_report_consequence_damage_transport_entries_@var:natural_disaster_report_transfer_sequence_id^natural_disaster_report_annex_row_index }
+						set_temp_variable = { natural_disaster_report_transfer_row_damage_industry = natural_disaster_report_consequence_damage_industry_entries_@var:natural_disaster_report_transfer_sequence_id^natural_disaster_report_annex_row_index }
+						set_temp_variable = { natural_disaster_report_transfer_row_damage_ports = natural_disaster_report_consequence_damage_ports_entries_@var:natural_disaster_report_transfer_sequence_id^natural_disaster_report_annex_row_index }
+						set_temp_variable = { natural_disaster_report_transfer_row_damage_air = natural_disaster_report_consequence_damage_air_entries_@var:natural_disaster_report_transfer_sequence_id^natural_disaster_report_annex_row_index }
+						set_temp_variable = { natural_disaster_report_transfer_row_damage_radar = natural_disaster_report_consequence_damage_radar_entries_@var:natural_disaster_report_transfer_sequence_id^natural_disaster_report_annex_row_index }
+						event_target:natural_disaster_new_responsible_country = {
+							if = {
+								limit = {
+									NOT = {
+										is_in_array = {
+											array = natural_disaster_report_consequence_id_entries_@var:natural_disaster_report_transfer_sequence_id
+											value = natural_disaster_report_transfer_row_id
+										}
+									}
+								}
+								add_to_array = { array = natural_disaster_report_consequence_id_entries_@var:natural_disaster_report_transfer_sequence_id value = natural_disaster_report_transfer_row_id }
+								add_to_array = { array = natural_disaster_report_consequence_state_id_entries_@var:natural_disaster_report_transfer_sequence_id value = natural_disaster_report_transfer_row_state_id }
+								add_to_array = { array = natural_disaster_report_consequence_state_entries_@var:natural_disaster_report_transfer_sequence_id value = event_target:natural_disaster_report_annex_transfer_state }
+								add_to_array = { array = natural_disaster_report_consequence_family_entries_@var:natural_disaster_report_transfer_sequence_id value = natural_disaster_report_transfer_row_family }
+								add_to_array = { array = natural_disaster_report_consequence_severity_entries_@var:natural_disaster_report_transfer_sequence_id value = natural_disaster_report_transfer_row_severity }
+								add_to_array = { array = natural_disaster_report_consequence_origin_medium_entries_@var:natural_disaster_report_transfer_sequence_id value = natural_disaster_report_transfer_row_medium }
+								add_to_array = { array = natural_disaster_report_consequence_deaths_entries_@var:natural_disaster_report_transfer_sequence_id value = natural_disaster_report_transfer_row_deaths }
+								add_to_array = { array = natural_disaster_report_consequence_damage_transport_entries_@var:natural_disaster_report_transfer_sequence_id value = natural_disaster_report_transfer_row_damage_transport }
+								add_to_array = { array = natural_disaster_report_consequence_damage_industry_entries_@var:natural_disaster_report_transfer_sequence_id value = natural_disaster_report_transfer_row_damage_industry }
+								add_to_array = { array = natural_disaster_report_consequence_damage_ports_entries_@var:natural_disaster_report_transfer_sequence_id value = natural_disaster_report_transfer_row_damage_ports }
+								add_to_array = { array = natural_disaster_report_consequence_damage_air_entries_@var:natural_disaster_report_transfer_sequence_id value = natural_disaster_report_transfer_row_damage_air }
+								add_to_array = { array = natural_disaster_report_consequence_damage_radar_entries_@var:natural_disaster_report_transfer_sequence_id value = natural_disaster_report_transfer_row_damage_radar }
+							}
+						}
+						set_temp_variable = { natural_disaster_report_annex_moved_rows = 1 }
+					}
+					else = {
+						add_to_temp_array = { array = natural_disaster_report_annex_retained_ids value = natural_disaster_report_transfer_row_id }
+						add_to_temp_array = { array = natural_disaster_report_annex_retained_state_ids value = natural_disaster_report_transfer_row_state_id }
+						add_to_temp_array = { array = natural_disaster_report_annex_retained_states value = natural_disaster_report_consequence_state_entries_@var:natural_disaster_report_transfer_sequence_id^natural_disaster_report_annex_row_index }
+						add_to_temp_array = { array = natural_disaster_report_annex_retained_families value = natural_disaster_report_consequence_family_entries_@var:natural_disaster_report_transfer_sequence_id^natural_disaster_report_annex_row_index }
+						add_to_temp_array = { array = natural_disaster_report_annex_retained_severities value = natural_disaster_report_consequence_severity_entries_@var:natural_disaster_report_transfer_sequence_id^natural_disaster_report_annex_row_index }
+						add_to_temp_array = { array = natural_disaster_report_annex_retained_media value = natural_disaster_report_consequence_origin_medium_entries_@var:natural_disaster_report_transfer_sequence_id^natural_disaster_report_annex_row_index }
+						add_to_temp_array = { array = natural_disaster_report_annex_retained_deaths value = natural_disaster_report_consequence_deaths_entries_@var:natural_disaster_report_transfer_sequence_id^natural_disaster_report_annex_row_index }
+						add_to_temp_array = { array = natural_disaster_report_annex_retained_damage_transport value = natural_disaster_report_consequence_damage_transport_entries_@var:natural_disaster_report_transfer_sequence_id^natural_disaster_report_annex_row_index }
+						add_to_temp_array = { array = natural_disaster_report_annex_retained_damage_industry value = natural_disaster_report_consequence_damage_industry_entries_@var:natural_disaster_report_transfer_sequence_id^natural_disaster_report_annex_row_index }
+						add_to_temp_array = { array = natural_disaster_report_annex_retained_damage_ports value = natural_disaster_report_consequence_damage_ports_entries_@var:natural_disaster_report_transfer_sequence_id^natural_disaster_report_annex_row_index }
+						add_to_temp_array = { array = natural_disaster_report_annex_retained_damage_air value = natural_disaster_report_consequence_damage_air_entries_@var:natural_disaster_report_transfer_sequence_id^natural_disaster_report_annex_row_index }
+						add_to_temp_array = { array = natural_disaster_report_annex_retained_damage_radar value = natural_disaster_report_consequence_damage_radar_entries_@var:natural_disaster_report_transfer_sequence_id^natural_disaster_report_annex_row_index }
+					}
+				}
+				clear_array = natural_disaster_report_consequence_id_entries_@var:natural_disaster_report_transfer_sequence_id
+				clear_array = natural_disaster_report_consequence_state_id_entries_@var:natural_disaster_report_transfer_sequence_id
+				clear_array = natural_disaster_report_consequence_state_entries_@var:natural_disaster_report_transfer_sequence_id
+				clear_array = natural_disaster_report_consequence_family_entries_@var:natural_disaster_report_transfer_sequence_id
+				clear_array = natural_disaster_report_consequence_severity_entries_@var:natural_disaster_report_transfer_sequence_id
+				clear_array = natural_disaster_report_consequence_origin_medium_entries_@var:natural_disaster_report_transfer_sequence_id
+				clear_array = natural_disaster_report_consequence_deaths_entries_@var:natural_disaster_report_transfer_sequence_id
+				clear_array = natural_disaster_report_consequence_damage_transport_entries_@var:natural_disaster_report_transfer_sequence_id
+				clear_array = natural_disaster_report_consequence_damage_industry_entries_@var:natural_disaster_report_transfer_sequence_id
+				clear_array = natural_disaster_report_consequence_damage_ports_entries_@var:natural_disaster_report_transfer_sequence_id
+				clear_array = natural_disaster_report_consequence_damage_air_entries_@var:natural_disaster_report_transfer_sequence_id
+				clear_array = natural_disaster_report_consequence_damage_radar_entries_@var:natural_disaster_report_transfer_sequence_id
+				for_each_loop = {
+					array = natural_disaster_report_annex_retained_ids
+					value = natural_disaster_report_annex_retained_id
+					index = natural_disaster_report_annex_retain_index
+					add_to_array = { array = natural_disaster_report_consequence_id_entries_@var:natural_disaster_report_transfer_sequence_id value = natural_disaster_report_annex_retained_id }
+					add_to_array = { array = natural_disaster_report_consequence_state_id_entries_@var:natural_disaster_report_transfer_sequence_id value = natural_disaster_report_annex_retained_state_ids^natural_disaster_report_annex_retain_index }
+					add_to_array = { array = natural_disaster_report_consequence_state_entries_@var:natural_disaster_report_transfer_sequence_id value = natural_disaster_report_annex_retained_states^natural_disaster_report_annex_retain_index }
+					add_to_array = { array = natural_disaster_report_consequence_family_entries_@var:natural_disaster_report_transfer_sequence_id value = natural_disaster_report_annex_retained_families^natural_disaster_report_annex_retain_index }
+					add_to_array = { array = natural_disaster_report_consequence_severity_entries_@var:natural_disaster_report_transfer_sequence_id value = natural_disaster_report_annex_retained_severities^natural_disaster_report_annex_retain_index }
+					add_to_array = { array = natural_disaster_report_consequence_origin_medium_entries_@var:natural_disaster_report_transfer_sequence_id value = natural_disaster_report_annex_retained_media^natural_disaster_report_annex_retain_index }
+					add_to_array = { array = natural_disaster_report_consequence_deaths_entries_@var:natural_disaster_report_transfer_sequence_id value = natural_disaster_report_annex_retained_deaths^natural_disaster_report_annex_retain_index }
+					add_to_array = { array = natural_disaster_report_consequence_damage_transport_entries_@var:natural_disaster_report_transfer_sequence_id value = natural_disaster_report_annex_retained_damage_transport^natural_disaster_report_annex_retain_index }
+					add_to_array = { array = natural_disaster_report_consequence_damage_industry_entries_@var:natural_disaster_report_transfer_sequence_id value = natural_disaster_report_annex_retained_damage_industry^natural_disaster_report_annex_retain_index }
+					add_to_array = { array = natural_disaster_report_consequence_damage_ports_entries_@var:natural_disaster_report_transfer_sequence_id value = natural_disaster_report_annex_retained_damage_ports^natural_disaster_report_annex_retain_index }
+					add_to_array = { array = natural_disaster_report_consequence_damage_air_entries_@var:natural_disaster_report_transfer_sequence_id value = natural_disaster_report_annex_retained_damage_air^natural_disaster_report_annex_retain_index }
+					add_to_array = { array = natural_disaster_report_consequence_damage_radar_entries_@var:natural_disaster_report_transfer_sequence_id value = natural_disaster_report_annex_retained_damage_radar^natural_disaster_report_annex_retain_index }
+				}
+				if = {
+					limit = { check_variable = { natural_disaster_report_annex_moved_rows > 0 } }
+					set_temp_variable = { natural_disaster_report_sequence_id = natural_disaster_report_transfer_sequence_id }
+					natural_disaster_rebuild_report_sequence_country_summary = yes
+					event_target:natural_disaster_new_responsible_country = {
+						set_temp_variable = { natural_disaster_report_sequence_id = natural_disaster_report_transfer_sequence_id }
+						natural_disaster_rebuild_report_sequence_country_summary = yes
+						if = {
+							limit = {
+								NOT = {
+									meta_trigger = {
+										text = { has_country_flag = natural_disaster_report_sequence_sent_[SEQUENCE_ID] }
+										SEQUENCE_ID = "[?natural_disaster_report_transfer_sequence_id|.0]"
+									}
+								}
+							}
+							set_temp_variable = { natural_disaster_report_sequence_id = natural_disaster_report_transfer_sequence_id }
+							natural_disaster_queue_current_report_batch = yes
+						}
+						else = { natural_disaster_schedule_report_dispatch = yes }
+					}
+					if = {
+						limit = { check_variable = { natural_disaster_report_consequence_id_entries_@var:natural_disaster_report_transfer_sequence_id^num < 1 } }
+						add_to_temp_array = { array = natural_disaster_report_annex_empty_sequence_entries value = natural_disaster_report_transfer_sequence_id }
+						clear_array = natural_disaster_report_family_entries_@var:natural_disaster_report_transfer_sequence_id
+						clear_array = natural_disaster_report_state_entries_@var:natural_disaster_report_transfer_sequence_id
+						clear_array = natural_disaster_report_state_id_entries_@var:natural_disaster_report_transfer_sequence_id
+						clear_variable = natural_disaster_report_batch_meteor_medium_@var:natural_disaster_report_transfer_sequence_id
+						clear_variable = natural_disaster_report_batch_deaths_@var:natural_disaster_report_transfer_sequence_id
+						clear_variable = natural_disaster_report_batch_damage_transport_@var:natural_disaster_report_transfer_sequence_id
+						clear_variable = natural_disaster_report_batch_damage_industry_@var:natural_disaster_report_transfer_sequence_id
+						clear_variable = natural_disaster_report_batch_damage_ports_@var:natural_disaster_report_transfer_sequence_id
+						clear_variable = natural_disaster_report_batch_damage_air_@var:natural_disaster_report_transfer_sequence_id
+						clear_variable = natural_disaster_report_batch_damage_radar_@var:natural_disaster_report_transfer_sequence_id
+						clear_variable = natural_disaster_report_worst_family_@var:natural_disaster_report_transfer_sequence_id
+						clear_variable = natural_disaster_report_worst_severity_@var:natural_disaster_report_transfer_sequence_id
+					}
+			}
+		}
+		}
+		if = {
+			limit = { check_variable = { natural_disaster_report_annex_empty_sequence_entries^num > 0 } }
+			clear_temp_array = natural_disaster_report_annex_kept_sequence_entries
+			for_each_loop = {
+				array = natural_disaster_report_pending_sequence_entries
+				value = natural_disaster_report_annex_pending_sequence
+				if = {
+					limit = {
+						NOT = {
+							is_in_array = {
+								array = natural_disaster_report_annex_empty_sequence_entries
+								value = natural_disaster_report_annex_pending_sequence
+							}
+						}
+					}
+					add_to_temp_array = { array = natural_disaster_report_annex_kept_sequence_entries value = natural_disaster_report_annex_pending_sequence }
+				}
+			}
+			clear_array = natural_disaster_report_pending_sequence_entries
+			for_each_loop = {
+				array = natural_disaster_report_annex_kept_sequence_entries
+				value = natural_disaster_report_annex_pending_sequence
+				add_to_array = { array = natural_disaster_report_pending_sequence_entries value = natural_disaster_report_annex_pending_sequence }
+			}
+			if = {
+				limit = { check_variable = { natural_disaster_report_pending_sequence_entries^num < 1 } }
+				clr_country_flag = natural_disaster_report_dispatch_scheduled
+			}
+			else = { natural_disaster_schedule_report_dispatch = yes }
+		}
+		clear_temp_array = natural_disaster_report_annex_empty_sequence_entries
+		clear_temp_array = natural_disaster_report_annex_kept_sequence_entries
+		clear_temp_array = natural_disaster_report_annex_retained_ids
+		clear_temp_array = natural_disaster_report_annex_retained_state_ids
+		clear_temp_array = natural_disaster_report_annex_retained_states
+		clear_temp_array = natural_disaster_report_annex_retained_families
+		clear_temp_array = natural_disaster_report_annex_retained_severities
+		clear_temp_array = natural_disaster_report_annex_retained_media
+		clear_temp_array = natural_disaster_report_annex_retained_deaths
+		clear_temp_array = natural_disaster_report_annex_retained_damage_transport
+		clear_temp_array = natural_disaster_report_annex_retained_damage_industry
+		clear_temp_array = natural_disaster_report_annex_retained_damage_ports
+		clear_temp_array = natural_disaster_report_annex_retained_damage_air
+		clear_temp_array = natural_disaster_report_annex_retained_damage_radar
+	}
+}
+
+natural_disaster_queue_current_report_batch = {
+	if = {
+		limit = {
+			exists = yes
+			exists = yes
+			NOT = {
+				meta_trigger = {
+					text = { has_country_flag = natural_disaster_report_sequence_sent_[SEQUENCE_ID] }
+					SEQUENCE_ID = "[?natural_disaster_report_sequence_id|.0]"
+				}
+			}
+		}
+		meta_effect = {
+			text = { set_country_flag = natural_disaster_report_sequence_sent_[SEQUENCE_ID] }
+			SEQUENCE_ID = "[?natural_disaster_report_sequence_id|.0]"
+		}
+		add_to_array = {
+			array = natural_disaster_report_pending_sequence_entries
+			value = natural_disaster_report_sequence_id
+		}
+		if = {
+			limit = {
+				NOT = { has_country_flag = natural_disaster_report_popup_open }
+				NOT = { has_country_flag = natural_disaster_report_dispatch_scheduled }
+			}
+			set_country_flag = natural_disaster_report_dispatch_scheduled
+			set_temp_variable = { natural_disaster_report_dispatch_delay = constant:natural_disaster_report_aggregation.dispatch_delay_days }
+		country_event = { id = chaosx.nr13.100 days = natural_disaster_report_dispatch_delay }
+		}
+	}
+}
+
+natural_disaster_schedule_report_dispatch = {
+	if = {
+		limit = {
+			exists = yes
+			exists = yes
+			check_variable = { natural_disaster_report_pending_sequence_entries^num > 0 }
+			NOT = { has_country_flag = natural_disaster_report_popup_open }
+			NOT = { has_country_flag = natural_disaster_report_dispatch_scheduled }
+		}
+		set_country_flag = natural_disaster_report_dispatch_scheduled
+		set_temp_variable = { natural_disaster_report_dispatch_delay = constant:natural_disaster_report_aggregation.dispatch_delay_days }
+		country_event = { id = chaosx.nr13.100 days = natural_disaster_report_dispatch_delay }
+	}
+}
+
+natural_disaster_load_current_report_batch = {
+	if = {
+		limit = {
+			NOT = { has_country_flag = natural_disaster_report_popup_open }
+			check_variable = { natural_disaster_report_pending_sequence_entries^num > 0 }
+		}
+		set_variable = { natural_disaster_report_active_sequence_id = natural_disaster_report_pending_sequence_entries^0 }
+		remove_from_array = { array = natural_disaster_report_pending_sequence_entries index = 0 }
+		set_country_flag = natural_disaster_report_popup_open
+		clear_array = natural_disaster_report_batch_state_entries
+		set_variable = { natural_disaster_report_batch_family_count = natural_disaster_report_family_entries_@var:natural_disaster_report_active_sequence_id^num }
+		set_variable = { natural_disaster_report_batch_worst_family = natural_disaster_report_worst_family_@var:natural_disaster_report_active_sequence_id }
+		set_variable = { natural_disaster_report_batch_second_family = 0 }
+		set_variable = { natural_disaster_report_batch_meteor_medium = constant:natural_disaster_origin_medium.none }
+		if = {
+			limit = { has_variable = natural_disaster_report_batch_meteor_medium_@var:natural_disaster_report_active_sequence_id }
+			set_variable = { natural_disaster_report_batch_meteor_medium = natural_disaster_report_batch_meteor_medium_@var:natural_disaster_report_active_sequence_id }
+		}
+		for_each_loop = {
+			array = natural_disaster_report_family_entries_@var:natural_disaster_report_active_sequence_id
+			value = natural_disaster_report_batch_family_candidate
+			if = {
+				limit = {
+					check_variable = { natural_disaster_report_batch_second_family < 1 }
+					NOT = {
+						check_variable = {
+							var = natural_disaster_report_batch_family_candidate
+							value = natural_disaster_report_batch_worst_family
+							compare = equals
+						}
+					}
+				}
+			set_variable = { natural_disaster_report_batch_second_family = natural_disaster_report_batch_family_candidate }
+			}
+		}
+		set_variable = { natural_disaster_report_batch_deaths = natural_disaster_report_batch_deaths_@var:natural_disaster_report_active_sequence_id }
+		set_variable = { natural_disaster_report_batch_actual_damage_transport = natural_disaster_report_batch_damage_transport_@var:natural_disaster_report_active_sequence_id }
+		set_variable = { natural_disaster_report_batch_actual_damage_industry = natural_disaster_report_batch_damage_industry_@var:natural_disaster_report_active_sequence_id }
+		set_variable = { natural_disaster_report_batch_actual_damage_ports = natural_disaster_report_batch_damage_ports_@var:natural_disaster_report_active_sequence_id }
+		set_variable = { natural_disaster_report_batch_actual_damage_air = natural_disaster_report_batch_damage_air_@var:natural_disaster_report_active_sequence_id }
+		set_variable = { natural_disaster_report_batch_actual_damage_radar = natural_disaster_report_batch_damage_radar_@var:natural_disaster_report_active_sequence_id }
+		set_variable = { natural_disaster_report_active_state_index_0 = 0 }
+		set_variable = { natural_disaster_report_active_state_index_1 = 1 }
+		set_variable = { natural_disaster_report_active_state_index_2 = 2 }
+		set_variable = { natural_disaster_report_active_state_index_3 = 3 }
+		clr_country_flag = natural_disaster_report_batch_damage_transport
+		clr_country_flag = natural_disaster_report_batch_damage_industry
+		clr_country_flag = natural_disaster_report_batch_damage_ports
+		clr_country_flag = natural_disaster_report_batch_damage_air
+		clr_country_flag = natural_disaster_report_batch_damage_radar
+		clr_country_flag = natural_disaster_report_batch_recovery_rescue
+		clr_country_flag = natural_disaster_report_batch_recovery_stabilization
+		clr_country_flag = natural_disaster_report_batch_recovery_reconstruction
+		if = {
+			limit = { check_variable = { natural_disaster_report_batch_actual_damage_transport > 0 } }
+			set_country_flag = natural_disaster_report_batch_damage_transport
+		}
+		if = {
+			limit = { check_variable = { natural_disaster_report_batch_actual_damage_industry > 0 } }
+			set_country_flag = natural_disaster_report_batch_damage_industry
+		}
+		if = {
+			limit = { check_variable = { natural_disaster_report_batch_actual_damage_ports > 0 } }
+			set_country_flag = natural_disaster_report_batch_damage_ports
+		}
+		if = {
+			limit = { check_variable = { natural_disaster_report_batch_actual_damage_air > 0 } }
+			set_country_flag = natural_disaster_report_batch_damage_air
+		}
+		if = {
+			limit = { check_variable = { natural_disaster_report_batch_actual_damage_radar > 0 } }
+			set_country_flag = natural_disaster_report_batch_damage_radar
+		}
+		for_each_scope_loop = {
+			array = natural_disaster_report_state_entries_@var:natural_disaster_report_active_sequence_id
+			ROOT = {
+				if = {
+					limit = {
+						check_variable = {
+							var = natural_disaster_report_batch_state_entries^num
+							value = constant:natural_disaster_report_aggregation.visible_state_names
+							compare = less_than
+						}
+					}
+					add_to_array = { array = natural_disaster_report_batch_state_entries value = PREV }
+				}
+			}
+			if = {
+				limit = {
+					has_state_flag = natural_disaster_aftermath_active
+					OR = {
+						check_variable = { var = natural_disaster_sequence_id value = ROOT.natural_disaster_report_active_sequence_id compare = equals }
+						AND = {
+							has_variable = natural_disaster_repeat_sequence_id
+							check_variable = { var = natural_disaster_repeat_sequence_id value = ROOT.natural_disaster_report_active_sequence_id compare = equals }
+						}
+					}
+					check_variable = { natural_disaster_phase = constant:natural_disaster_phase.early_rescue }
+				}
+				ROOT = { set_country_flag = natural_disaster_report_batch_recovery_rescue }
+			}
+			else_if = {
+				limit = {
+					has_state_flag = natural_disaster_aftermath_active
+					OR = {
+						check_variable = { var = natural_disaster_sequence_id value = ROOT.natural_disaster_report_active_sequence_id compare = equals }
+						AND = {
+							has_variable = natural_disaster_repeat_sequence_id
+							check_variable = { var = natural_disaster_repeat_sequence_id value = ROOT.natural_disaster_report_active_sequence_id compare = equals }
+						}
+					}
+					check_variable = { natural_disaster_phase = constant:natural_disaster_phase.middle_stabilization }
+				}
+				ROOT = { set_country_flag = natural_disaster_report_batch_recovery_stabilization }
+			}
+			else_if = {
+				limit = {
+					has_state_flag = natural_disaster_aftermath_active
+					OR = {
+						check_variable = { var = natural_disaster_sequence_id value = ROOT.natural_disaster_report_active_sequence_id compare = equals }
+						AND = {
+							has_variable = natural_disaster_repeat_sequence_id
+							check_variable = { var = natural_disaster_repeat_sequence_id value = ROOT.natural_disaster_report_active_sequence_id compare = equals }
+						}
+					}
+					check_variable = { natural_disaster_phase = constant:natural_disaster_phase.late_reconstruction }
+				}
+				ROOT = { set_country_flag = natural_disaster_report_batch_recovery_reconstruction }
+			}
+		}
+		set_variable = { natural_disaster_report_batch_state_count = natural_disaster_report_state_id_entries_@var:natural_disaster_report_active_sequence_id^num }
+		set_variable = { natural_disaster_report_active_state_hidden_count = natural_disaster_report_batch_state_count }
+		subtract_from_variable = { natural_disaster_report_active_state_hidden_count = natural_disaster_report_batch_state_entries^num }
+	}
+}
+
+natural_disaster_close_current_report_batch = {
+	if = {
+		limit = { has_variable = natural_disaster_report_active_sequence_id }
+		set_temp_variable = { natural_disaster_report_closed_sequence_id = natural_disaster_report_active_sequence_id }
+		clr_country_flag = natural_disaster_report_popup_open
+		clr_country_flag = natural_disaster_aftermath_unread
+		set_country_flag = natural_disaster_report_received
+		clear_array = natural_disaster_report_batch_state_entries
+		clear_array = natural_disaster_report_consequence_id_entries_@var:natural_disaster_report_closed_sequence_id
+		clear_array = natural_disaster_report_consequence_state_id_entries_@var:natural_disaster_report_closed_sequence_id
+		clear_array = natural_disaster_report_consequence_state_entries_@var:natural_disaster_report_closed_sequence_id
+		clear_array = natural_disaster_report_consequence_family_entries_@var:natural_disaster_report_closed_sequence_id
+		clear_array = natural_disaster_report_consequence_severity_entries_@var:natural_disaster_report_closed_sequence_id
+		clear_array = natural_disaster_report_consequence_origin_medium_entries_@var:natural_disaster_report_closed_sequence_id
+		clear_array = natural_disaster_report_consequence_deaths_entries_@var:natural_disaster_report_closed_sequence_id
+		clear_array = natural_disaster_report_consequence_damage_transport_entries_@var:natural_disaster_report_closed_sequence_id
+		clear_array = natural_disaster_report_consequence_damage_industry_entries_@var:natural_disaster_report_closed_sequence_id
+		clear_array = natural_disaster_report_consequence_damage_ports_entries_@var:natural_disaster_report_closed_sequence_id
+		clear_array = natural_disaster_report_consequence_damage_air_entries_@var:natural_disaster_report_closed_sequence_id
+		clear_array = natural_disaster_report_consequence_damage_radar_entries_@var:natural_disaster_report_closed_sequence_id
+		clear_array = natural_disaster_report_state_entries_@var:natural_disaster_report_closed_sequence_id
+		clear_array = natural_disaster_report_state_id_entries_@var:natural_disaster_report_closed_sequence_id
+		clear_array = natural_disaster_report_family_entries_@var:natural_disaster_report_closed_sequence_id
+		clear_variable = natural_disaster_report_batch_meteor_medium_@var:natural_disaster_report_closed_sequence_id
+		clear_variable = natural_disaster_report_batch_deaths_@var:natural_disaster_report_closed_sequence_id
+		clear_variable = natural_disaster_report_batch_damage_transport_@var:natural_disaster_report_closed_sequence_id
+		clear_variable = natural_disaster_report_batch_damage_industry_@var:natural_disaster_report_closed_sequence_id
+		clear_variable = natural_disaster_report_batch_damage_ports_@var:natural_disaster_report_closed_sequence_id
+		clear_variable = natural_disaster_report_batch_damage_air_@var:natural_disaster_report_closed_sequence_id
+		clear_variable = natural_disaster_report_batch_damage_radar_@var:natural_disaster_report_closed_sequence_id
+		clear_variable = natural_disaster_report_worst_family_@var:natural_disaster_report_closed_sequence_id
+		clear_variable = natural_disaster_report_worst_severity_@var:natural_disaster_report_closed_sequence_id
+		clear_variable = natural_disaster_report_batch_family_count
+		clear_variable = natural_disaster_report_batch_worst_family
+		clear_variable = natural_disaster_report_batch_second_family
+		clear_variable = natural_disaster_report_batch_meteor_medium
+		clear_variable = natural_disaster_report_batch_deaths
+		clear_variable = natural_disaster_report_batch_actual_damage_transport
+		clear_variable = natural_disaster_report_batch_actual_damage_industry
+		clear_variable = natural_disaster_report_batch_actual_damage_ports
+		clear_variable = natural_disaster_report_batch_actual_damage_air
+		clear_variable = natural_disaster_report_batch_actual_damage_radar
+		clear_variable = natural_disaster_report_batch_state_count
+		clear_variable = natural_disaster_report_active_state_hidden_count
+		clear_variable = natural_disaster_report_active_state_index_0
+		clear_variable = natural_disaster_report_active_state_index_1
+		clear_variable = natural_disaster_report_active_state_index_2
+		clear_variable = natural_disaster_report_active_state_index_3
+		clear_variable = natural_disaster_report_active_sequence_id
+		clr_country_flag = natural_disaster_report_batch_damage_transport
+		clr_country_flag = natural_disaster_report_batch_damage_industry
+		clr_country_flag = natural_disaster_report_batch_damage_ports
+		clr_country_flag = natural_disaster_report_batch_damage_air
+		clr_country_flag = natural_disaster_report_batch_damage_radar
+		clr_country_flag = natural_disaster_report_batch_recovery_rescue
+		clr_country_flag = natural_disaster_report_batch_recovery_stabilization
+		clr_country_flag = natural_disaster_report_batch_recovery_reconstruction
+		natural_disaster_schedule_report_dispatch = yes
+	}
+}
+
+natural_disaster_finalize_report_sequence = {
+	set_temp_variable = { natural_disaster_report_final_sequence_id = natural_disaster_report_pending_sequence_id }
+	set_temp_variable = { natural_disaster_report_sequence_id = natural_disaster_report_final_sequence_id }
+	if = {
+		limit = {
+			NOT = {
+				meta_trigger = {
+					text = { has_global_flag = natural_disaster_report_sequence_finalized_[SEQUENCE_ID] }
+					SEQUENCE_ID = "[?natural_disaster_report_final_sequence_id|.0]"
+				}
+			}
+		}
+		# Close before firing any country or news event so reentry cannot dispatch twice.
+		meta_effect = {
+			text = { set_global_flag = natural_disaster_report_sequence_finalized_[SEQUENCE_ID] }
+			SEQUENCE_ID = "[?natural_disaster_report_final_sequence_id|.0]"
+		}
+		if = {
+			limit = {
+				meta_trigger = {
+					text = { has_global_flag = natural_disaster_report_sequence_has_visible_policy_[SEQUENCE_ID] }
+					SEQUENCE_ID = "[?natural_disaster_report_final_sequence_id|.0]"
+				}
+			}
+			for_each_scope_loop = {
+				array = global.natural_disaster_report_sequence_state_entries_@var:natural_disaster_report_final_sequence_id
+				if = {
+					limit = { check_variable = { var = natural_disaster_sequence_id value = natural_disaster_report_final_sequence_id compare = equals } }
+					set_variable = { natural_disaster_report_due_date = global.date }
+				}
+			}
+			# Finalization updates only its own historical report date. A newer live
+			# card must not have its entire payload copied into this older history.
+			for_each_loop = {
+				array = global.natural_disaster_abnormal_history_sequence_id_entries
+				value = natural_disaster_report_history_sequence
+				index = natural_disaster_report_history_index
+				if = {
+					limit = { check_variable = { var = natural_disaster_report_history_sequence value = natural_disaster_report_final_sequence_id compare = equals } }
+					set_variable = { global.natural_disaster_abnormal_history_report_date_entries^natural_disaster_report_history_index = global.date }
+				}
+			}
+		}
+		if = {
+			limit = {
+				meta_trigger = {
+					text = { has_global_flag = natural_disaster_report_sequence_news_candidate_[SEQUENCE_ID] }
+					SEQUENCE_ID = "[?natural_disaster_report_final_sequence_id|.0]"
+				}
+				NOT = {
+					meta_trigger = {
+						text = { has_global_flag = natural_disaster_report_sequence_news_sent_[SEQUENCE_ID] }
+						SEQUENCE_ID = "[?natural_disaster_report_final_sequence_id|.0]"
+					}
+				}
+			}
+			# Mark the sequence before selecting or scheduling so nested calls cannot
+			# race a second world-news event into the same consequence window.
+			meta_effect = {
+				text = { set_global_flag = natural_disaster_report_sequence_news_sent_[SEQUENCE_ID] }
+				SEQUENCE_ID = "[?natural_disaster_report_final_sequence_id|.0]"
+			}
+			set_temp_variable = { natural_disaster_report_news_best_candidate_index = constant:natural_disaster_threshold.invalid_array_index }
+			set_temp_variable = { natural_disaster_report_news_best_severity = 0 }
+			set_temp_variable = { natural_disaster_report_news_best_family = 0 }
+			set_temp_variable = { natural_disaster_report_news_candidate_index = 0 }
+			for_each_scope_loop = {
+				array = global.natural_disaster_report_sequence_news_candidate_state_entries_@var:natural_disaster_report_final_sequence_id
+				set_temp_variable = { natural_disaster_report_news_candidate_family = global.natural_disaster_report_sequence_news_candidate_family_entries_@var:natural_disaster_report_final_sequence_id^natural_disaster_report_news_candidate_index }
+				set_temp_variable = { natural_disaster_report_news_candidate_severity = global.natural_disaster_report_sequence_news_candidate_severity_entries_@var:natural_disaster_report_final_sequence_id^natural_disaster_report_news_candidate_index }
+				if = {
+					limit = {
+						NOT = {
+							meta_trigger = {
+								text = { has_global_flag = natural_disaster_news_cooldown_[FAMILY_ID] }
+								FAMILY_ID = "[?natural_disaster_report_news_candidate_family|.0]"
+							}
+						}
+						OR = {
+							check_variable = { natural_disaster_report_news_best_candidate_index < 0 }
+							check_variable = { natural_disaster_report_news_candidate_severity > natural_disaster_report_news_best_severity }
+							AND = {
+								check_variable = { natural_disaster_report_news_candidate_severity = natural_disaster_report_news_best_severity }
+								check_variable = { natural_disaster_report_news_candidate_family < natural_disaster_report_news_best_family }
+							}
+						}
+					}
+					set_temp_variable = { natural_disaster_report_news_best_candidate_index = natural_disaster_report_news_candidate_index }
+					set_temp_variable = { natural_disaster_report_news_best_severity = natural_disaster_report_news_candidate_severity }
+					set_temp_variable = { natural_disaster_report_news_best_family = natural_disaster_report_news_candidate_family }
+				}
+				add_to_temp_variable = { natural_disaster_report_news_candidate_index = 1 }
+			}
+			if = {
+				limit = { check_variable = { natural_disaster_report_news_best_candidate_index > constant:natural_disaster_threshold.invalid_array_index } }
+				set_temp_variable = { natural_disaster_report_news_family = natural_disaster_report_news_best_family }
+				set_temp_variable = { natural_disaster_report_news_event_id = natural_disaster_report_news_family }
+				add_to_temp_variable = { natural_disaster_report_news_event_id = constant:natural_disaster_report_aggregation.news_event_id_offset }
+				set_temp_variable = { natural_disaster_report_news_cooldown_days = constant:natural_disaster_sequence.news_family_cooldown_days }
+				set_variable = { global.natural_disaster_report_sequence_news_state_@var:natural_disaster_report_final_sequence_id = global.natural_disaster_report_sequence_news_candidate_state_entries_@var:natural_disaster_report_final_sequence_id^natural_disaster_report_news_best_candidate_index }
+				set_variable = { global.natural_disaster_report_sequence_news_medium_@var:natural_disaster_report_final_sequence_id = global.natural_disaster_report_sequence_news_candidate_medium_entries_@var:natural_disaster_report_final_sequence_id^natural_disaster_report_news_best_candidate_index }
+				set_variable = { global.natural_disaster_report_sequence_news_variant_@var:natural_disaster_report_final_sequence_id = global.natural_disaster_report_sequence_news_candidate_variant_entries_@var:natural_disaster_report_final_sequence_id^natural_disaster_report_news_best_candidate_index }
+				set_variable = { global.natural_disaster_report_sequence_news_basin_@var:natural_disaster_report_final_sequence_id = global.natural_disaster_report_sequence_news_candidate_basin_entries_@var:natural_disaster_report_final_sequence_id^natural_disaster_report_news_best_candidate_index }
+				var:global.natural_disaster_report_sequence_news_state_@var:natural_disaster_report_final_sequence_id = {
+					set_variable = { natural_disaster_news_snapshot_origin_medium = global.natural_disaster_report_sequence_news_medium_@var:natural_disaster_report_final_sequence_id }
+					set_variable = { natural_disaster_news_snapshot_skyfall_variant = global.natural_disaster_report_sequence_news_variant_@var:natural_disaster_report_final_sequence_id }
+					set_variable = { natural_disaster_news_snapshot_path_basin = global.natural_disaster_report_sequence_news_basin_@var:natural_disaster_report_final_sequence_id }
+					save_event_target_as = natural_disaster_news_state
+				}
+				meta_effect = {
+					text = {
+						set_global_flag = {
+							flag = natural_disaster_news_cooldown_[FAMILY_ID]
+							days = [COOLDOWN_DAYS]
+						}
+						news_event = { id = chaosx.nr13.[NEWS_EVENT_ID] }
+					}
+					FAMILY_ID = "[?natural_disaster_report_news_family|.0]"
+					COOLDOWN_DAYS = "[?natural_disaster_report_news_cooldown_days|.0]"
+					NEWS_EVENT_ID = "[?natural_disaster_report_news_event_id|.0]"
+				}
+			}
+		}
+		set_temp_variable = { natural_disaster_report_final_consequence_index = 0 }
+		for_each_scope_loop = {
+			array = global.natural_disaster_report_consequence_state_entries_@var:natural_disaster_report_final_sequence_id
+			save_event_target_as = natural_disaster_report_current_state
+			set_temp_variable = { natural_disaster_report_row_policy = global.natural_disaster_report_consequence_policy_entries_@var:natural_disaster_report_final_sequence_id^natural_disaster_report_final_consequence_index }
+			set_temp_variable = { natural_disaster_report_row_family = global.natural_disaster_report_consequence_family_entries_@var:natural_disaster_report_final_sequence_id^natural_disaster_report_final_consequence_index }
+			if = {
+				limit = { check_variable = { natural_disaster_report_row_policy = constant:natural_disaster_report_policy.global } }
+				set_temp_variable = { natural_disaster_report_original_controller_id = global.natural_disaster_report_consequence_controller_id_entries_@var:natural_disaster_report_final_sequence_id^natural_disaster_report_final_consequence_index }
+				if = {
+					limit = { check_variable = { natural_disaster_report_original_controller_id > 0 } }
+					var:natural_disaster_report_original_controller_id = {
+						if = {
+							limit = { exists = yes }
+							set_country_flag = achievement_nd_global_announcer_used
+						}
+					}
+				}
+				every_country = {
+					limit = { exists = yes }
+					save_event_target_as = natural_disaster_report_current_recipient
+					event_target:natural_disaster_report_current_state = { save_event_target_as = natural_disaster_report_current_state }
+					natural_disaster_report_add_current_row_to_recipient = yes
+				}
+			}
+			else_if = {
+				limit = {
+					OR = {
+						check_variable = { natural_disaster_report_row_policy = constant:natural_disaster_report_policy.affected_country }
+						check_variable = { natural_disaster_report_row_policy = constant:natural_disaster_report_policy.delayed_batch }
+						check_variable = { natural_disaster_report_row_policy = constant:natural_disaster_report_policy.caller }
+						check_variable = { natural_disaster_report_row_policy = constant:natural_disaster_report_policy.silent }
+					}
+				}
+				set_temp_variable = { natural_disaster_report_controller_found = 0 }
+				set_temp_variable = { natural_disaster_report_original_controller_id = global.natural_disaster_report_consequence_controller_id_entries_@var:natural_disaster_report_final_sequence_id^natural_disaster_report_final_consequence_index }
+				set_temp_variable = { natural_disaster_report_original_caller_id = global.natural_disaster_report_consequence_caller_id_entries_@var:natural_disaster_report_final_sequence_id^natural_disaster_report_final_consequence_index }
+				if = {
+					limit = { check_variable = { natural_disaster_report_controller_found < 1 } }
+					if = {
+						limit = { check_variable = { natural_disaster_report_original_controller_id > 0 } }
+						var:natural_disaster_report_original_controller_id = {
+							if = {
+								limit = { exists = yes }
+								save_event_target_as = natural_disaster_report_current_recipient
+								natural_disaster_report_add_current_row_to_recipient = yes
+								set_temp_variable = { natural_disaster_report_controller_found = 1 }
+							}
+						}
+					}
+				}
+				if = {
+					limit = { check_variable = { natural_disaster_report_controller_found < 1 } has_event_target = natural_disaster_report_current_state }
+					event_target:natural_disaster_report_current_state = {
+						controller = {
+						if = {
+							limit = { exists = yes }
+							save_event_target_as = natural_disaster_report_current_recipient
+							natural_disaster_report_add_current_row_to_recipient = yes
+							set_temp_variable = { natural_disaster_report_controller_found = 1 }
+						}
+						}
+					}
+				}
+				if = {
+					limit = { check_variable = { natural_disaster_report_controller_found < 1 } }
+					event_target:natural_disaster_report_current_state = {
+						OWNER = {
+							if = {
+								limit = { exists = yes }
+								save_event_target_as = natural_disaster_report_current_recipient
+								natural_disaster_report_add_current_row_to_recipient = yes
+								set_temp_variable = { natural_disaster_report_controller_found = 1 }
+							}
+						}
+					}
+				}
+				if = {
+					limit = {
+						check_variable = { natural_disaster_report_controller_found > 0 }
+						OR = {
+							check_variable = { natural_disaster_report_row_policy = constant:natural_disaster_report_policy.affected_country }
+							check_variable = { natural_disaster_report_row_policy = constant:natural_disaster_report_policy.delayed_batch }
+						}
+					}
+					event_target:natural_disaster_report_current_recipient = {
+						set_temp_variable = { nd_achievement_report_family = natural_disaster_report_row_family }
+						natural_disaster_achievement_record_report_group = yes
+					}
+				}
+				if = {
+					limit = {
+						check_variable = { natural_disaster_report_row_policy = constant:natural_disaster_report_policy.caller }
+						check_variable = { natural_disaster_report_original_caller_id > 0 }
+					}
+					var:natural_disaster_report_original_caller_id = {
+						if = {
+							limit = { exists = yes }
+							save_event_target_as = natural_disaster_report_current_recipient
+							natural_disaster_report_add_current_row_to_recipient = yes
+						}
+					}
+				}
+			}
+			add_to_temp_variable = { natural_disaster_report_final_consequence_index = 1 }
+		}
+		for_each_loop = {
+			array = global.natural_disaster_report_recipient_id_entries_@var:natural_disaster_report_final_sequence_id
+			value = natural_disaster_report_recipient_id
+			var:natural_disaster_report_recipient_id = {
+				if = {
+					limit = { exists = yes }
+					set_temp_variable = { natural_disaster_report_sequence_id = natural_disaster_report_final_sequence_id }
+					natural_disaster_queue_current_report_batch = yes
+				}
+			}
+		}
+		clear_array = global.natural_disaster_report_committed_consequence_id_entries_@var:natural_disaster_report_final_sequence_id
+		clear_array = global.natural_disaster_report_consequence_state_entries_@var:natural_disaster_report_final_sequence_id
+		clear_array = global.natural_disaster_report_consequence_id_entries_@var:natural_disaster_report_final_sequence_id
+		clear_array = global.natural_disaster_report_consequence_family_entries_@var:natural_disaster_report_final_sequence_id
+		clear_array = global.natural_disaster_report_consequence_origin_medium_entries_@var:natural_disaster_report_final_sequence_id
+		clear_array = global.natural_disaster_report_consequence_severity_entries_@var:natural_disaster_report_final_sequence_id
+		clear_array = global.natural_disaster_report_consequence_policy_entries_@var:natural_disaster_report_final_sequence_id
+		clear_array = global.natural_disaster_report_consequence_controller_id_entries_@var:natural_disaster_report_final_sequence_id
+		clear_array = global.natural_disaster_report_consequence_owner_id_entries_@var:natural_disaster_report_final_sequence_id
+		clear_array = global.natural_disaster_report_consequence_caller_id_entries_@var:natural_disaster_report_final_sequence_id
+		clear_array = global.natural_disaster_report_consequence_deaths_entries_@var:natural_disaster_report_final_sequence_id
+		clear_array = global.natural_disaster_report_consequence_damage_transport_entries_@var:natural_disaster_report_final_sequence_id
+		clear_array = global.natural_disaster_report_consequence_damage_industry_entries_@var:natural_disaster_report_final_sequence_id
+		clear_array = global.natural_disaster_report_consequence_damage_ports_entries_@var:natural_disaster_report_final_sequence_id
+		clear_array = global.natural_disaster_report_consequence_damage_air_entries_@var:natural_disaster_report_final_sequence_id
+		clear_array = global.natural_disaster_report_consequence_damage_radar_entries_@var:natural_disaster_report_final_sequence_id
+		clear_array = global.natural_disaster_report_sequence_state_id_entries_@var:natural_disaster_report_final_sequence_id
+		clear_array = global.natural_disaster_report_sequence_state_entries_@var:natural_disaster_report_final_sequence_id
+		clear_array = global.natural_disaster_report_recipient_id_entries_@var:natural_disaster_report_final_sequence_id
+		clear_array = global.natural_disaster_report_sequence_news_candidate_family_entries_@var:natural_disaster_report_final_sequence_id
+		clear_array = global.natural_disaster_report_sequence_news_candidate_severity_entries_@var:natural_disaster_report_final_sequence_id
+		clear_array = global.natural_disaster_report_sequence_news_candidate_state_entries_@var:natural_disaster_report_final_sequence_id
+		clear_array = global.natural_disaster_report_sequence_news_candidate_medium_entries_@var:natural_disaster_report_final_sequence_id
+		clear_array = global.natural_disaster_report_sequence_news_candidate_variant_entries_@var:natural_disaster_report_final_sequence_id
+		clear_array = global.natural_disaster_report_sequence_news_candidate_basin_entries_@var:natural_disaster_report_final_sequence_id
+		clear_variable = global.natural_disaster_report_sequence_news_family_@var:natural_disaster_report_final_sequence_id
+		clear_variable = global.natural_disaster_report_sequence_news_severity_@var:natural_disaster_report_final_sequence_id
+		clear_variable = global.natural_disaster_report_sequence_news_state_@var:natural_disaster_report_final_sequence_id
+		clear_variable = global.natural_disaster_report_sequence_news_medium_@var:natural_disaster_report_final_sequence_id
+		clear_variable = global.natural_disaster_report_sequence_news_variant_@var:natural_disaster_report_final_sequence_id
+		clear_variable = global.natural_disaster_report_sequence_news_basin_@var:natural_disaster_report_final_sequence_id
+		meta_effect = {
+			text = { clr_global_flag = natural_disaster_report_sequence_news_candidate_[SEQUENCE_ID] }
+			SEQUENCE_ID = "[?natural_disaster_report_final_sequence_id|.0]"
+		}
+		meta_effect = {
+			text = { clr_global_flag = natural_disaster_report_sequence_has_visible_policy_[SEQUENCE_ID] }
+			SEQUENCE_ID = "[?natural_disaster_report_final_sequence_id|.0]"
+		}
+	}
+}
+
 
 natural_disaster_schedule_family_news = {
 	set_temp_variable = { natural_disaster_should_news = 0 }
@@ -8187,20 +9412,70 @@ natural_disaster_schedule_family_news = {
 	}
 
 	if = {
-		limit = { check_variable = { natural_disaster_should_news > 0 } }
-		set_temp_variable = { natural_disaster_job_type = constant:natural_disaster_job_type.news }
-		set_temp_variable = { natural_disaster_job_delay_days = constant:natural_disaster_threshold.minimum_job_delay_days }
-		natural_disaster_enqueue_state_job = yes
-		meta_effect = {
-			text = {
-				set_global_flag = {
-					flag = natural_disaster_news_cooldown_[FAMILY_ID]
-					days = [COOLDOWN_DAYS]
+		limit = {
+			check_variable = { natural_disaster_should_news > 0 }
+			NOT = {
+				meta_trigger = {
+					text = { has_global_flag = natural_disaster_report_sequence_finalized_[SEQUENCE_ID] }
+					SEQUENCE_ID = "[?natural_disaster_sequence_id|.0]"
 				}
 			}
-			FAMILY_ID = "[?natural_disaster_current_family|.0]"
-			COOLDOWN_DAYS = "[?natural_disaster_news_cooldown_days|.0]"
 		}
+		if = {
+			limit = {
+				NOT = {
+					meta_trigger = {
+						text = { has_global_flag = natural_disaster_report_sequence_news_candidate_[SEQUENCE_ID] }
+						SEQUENCE_ID = "[?natural_disaster_sequence_id|.0]"
+					}
+				}
+			}
+			meta_effect = {
+				text = { set_global_flag = natural_disaster_report_sequence_news_candidate_[SEQUENCE_ID] }
+				SEQUENCE_ID = "[?natural_disaster_sequence_id|.0]"
+			}
+			set_variable = { global.natural_disaster_report_sequence_news_family_@var:natural_disaster_sequence_id = natural_disaster_current_family }
+			set_variable = { global.natural_disaster_report_sequence_news_severity_@var:natural_disaster_sequence_id = natural_disaster_current_severity }
+			set_variable = { global.natural_disaster_report_sequence_news_state_@var:natural_disaster_sequence_id = THIS }
+			set_variable = { global.natural_disaster_report_sequence_news_medium_@var:natural_disaster_sequence_id = natural_disaster_origin_medium }
+			set_variable = { global.natural_disaster_report_sequence_news_variant_@var:natural_disaster_sequence_id = natural_disaster_skyfall_variant }
+			set_variable = { global.natural_disaster_report_sequence_news_basin_@var:natural_disaster_sequence_id = natural_disaster_path_basin }
+		}
+		else_if = {
+			limit = {
+				OR = {
+					check_variable = {
+						var = natural_disaster_current_severity
+						value = global.natural_disaster_report_sequence_news_severity_@var:natural_disaster_sequence_id
+						compare = greater_than
+					}
+					AND = {
+						check_variable = {
+							var = natural_disaster_current_severity
+						value = global.natural_disaster_report_sequence_news_severity_@var:natural_disaster_sequence_id
+						compare = equals
+						}
+						check_variable = {
+							var = natural_disaster_current_family
+						value = global.natural_disaster_report_sequence_news_family_@var:natural_disaster_sequence_id
+							compare = less_than
+						}
+					}
+				}
+			}
+			set_variable = { global.natural_disaster_report_sequence_news_family_@var:natural_disaster_sequence_id = natural_disaster_current_family }
+			set_variable = { global.natural_disaster_report_sequence_news_severity_@var:natural_disaster_sequence_id = natural_disaster_current_severity }
+			set_variable = { global.natural_disaster_report_sequence_news_state_@var:natural_disaster_sequence_id = THIS }
+			set_variable = { global.natural_disaster_report_sequence_news_medium_@var:natural_disaster_sequence_id = natural_disaster_origin_medium }
+			set_variable = { global.natural_disaster_report_sequence_news_variant_@var:natural_disaster_sequence_id = natural_disaster_skyfall_variant }
+			set_variable = { global.natural_disaster_report_sequence_news_basin_@var:natural_disaster_sequence_id = natural_disaster_path_basin }
+		}
+		add_to_array = { array = global.natural_disaster_report_sequence_news_candidate_family_entries_@var:natural_disaster_sequence_id value = natural_disaster_current_family }
+		add_to_array = { array = global.natural_disaster_report_sequence_news_candidate_severity_entries_@var:natural_disaster_sequence_id value = natural_disaster_current_severity }
+		add_to_array = { array = global.natural_disaster_report_sequence_news_candidate_state_entries_@var:natural_disaster_sequence_id value = THIS }
+		add_to_array = { array = global.natural_disaster_report_sequence_news_candidate_medium_entries_@var:natural_disaster_sequence_id value = natural_disaster_origin_medium }
+		add_to_array = { array = global.natural_disaster_report_sequence_news_candidate_variant_entries_@var:natural_disaster_sequence_id value = natural_disaster_skyfall_variant }
+		add_to_array = { array = global.natural_disaster_report_sequence_news_candidate_basin_entries_@var:natural_disaster_sequence_id value = natural_disaster_path_basin }
 	}
 	meta_effect = {
 		text = { set_global_flag = natural_disaster_family_seen_[FAMILY_ID] }
@@ -8911,8 +10186,6 @@ natural_disaster_execute_chain_followup = {
 			set_temp_variable = { natural_disaster_damage_air = 0 }
 			set_temp_variable = { natural_disaster_damage_resources = 0 }
 			set_temp_variable = { natural_disaster_damage_shelter = 0 }
-			set_temp_variable = { natural_disaster_report_event_id = 0 }
-			set_temp_variable = { natural_disaster_news_event_id = 0 }
 			set_temp_variable = { natural_disaster_death_fraction = 0 }
 			set_temp_variable = { natural_disaster_damage_points = 0 }
 			set_temp_variable = { natural_disaster_modifier_days = 0 }
@@ -8944,6 +10217,7 @@ natural_disaster_execute_chain_followup = {
 			set_temp_variable = { nd_effect_building_scale = natural_disaster_building_scale }
 			multiply_temp_variable = { nd_effect_building_scale = natural_disaster_chain_impact_scale }
 			multiply_temp_variable = { nd_effect_building_scale = natural_disaster_chain_building_outcome }
+			natural_disaster_begin_report_consequence = yes
 			set_temp_variable = { natural_disaster_chain_original_supply_scale = natural_disaster_supply_scale }
 			multiply_variable = { natural_disaster_supply_scale = natural_disaster_chain_impact_scale }
 			multiply_variable = { natural_disaster_supply_scale = natural_disaster_chain_disruption_outcome }
@@ -8977,7 +10251,7 @@ natural_disaster_execute_chain_followup = {
 			}
 			natural_disaster_apply_state_disruption = yes
 			set_variable = { natural_disaster_supply_scale = natural_disaster_chain_original_supply_scale }
-			natural_disaster_schedule_family_report = yes
+			natural_disaster_commit_report_consequence = yes
 			set_temp_variable = { nd_effect_death_scale = 0 }
 			set_temp_variable = { nd_effect_building_scale = 0 }
 			if = {
@@ -9104,7 +10378,6 @@ natural_disaster_apply_terminal_failure_consequence = {
 			natural_disaster_schedule_chain_followup = yes
 		}
 		natural_disaster_apply_state_disruption = yes
-		natural_disaster_schedule_family_report = yes
 		# A failed Event 013 famine-prevention mission on the current Event 012
 		# host is the exact preventable-famine owner. Drought selection, famine
 		# risk, or civilian deaths alone are not enough to write the flag.
@@ -9378,8 +10651,10 @@ natural_disaster_apply_neighbor_impact = {
 	set_temp_variable = { natural_disaster_damage_points = natural_disaster_neighbor_damage_points }
 	set_temp_variable = { nd_effect_death_scale = 0 }
 	set_temp_variable = { nd_effect_building_scale = 0 }
+	natural_disaster_begin_report_consequence = yes
 	natural_disaster_apply_population_loss = yes
 	natural_disaster_apply_family_building_damage = yes
+	natural_disaster_commit_report_consequence = yes
 	natural_disaster_achievement_track_impact = yes
 	natural_disaster_activate_aftermath_for_state = yes
 	if = {
@@ -9389,7 +10664,6 @@ natural_disaster_apply_neighbor_impact = {
 		set_variable = { natural_disaster_phase = constant:natural_disaster_phase.closed }
 		set_variable = { natural_disaster_cleanup_state = 1 }
 	}
-	natural_disaster_schedule_family_report = yes
 	clr_state_flag = natural_disaster_impact_scheduled
 }
 
@@ -9526,13 +10800,14 @@ natural_disaster_execute_repeated_impact = {
 	air_contamination_register_natural_disaster_source = yes
 	set_temp_variable = { nd_effect_death_scale = 0 }
 	set_temp_variable = { nd_effect_building_scale = 0 }
+	natural_disaster_begin_report_consequence = yes
 	natural_disaster_apply_population_loss = yes
 	natural_disaster_apply_family_building_damage = yes
 	natural_disaster_achievement_track_impact = yes
 	natural_disaster_resolve_causal_chain_risk = yes
 	natural_disaster_apply_state_disruption = yes
 	natural_disaster_schedule_chain_followup = yes
-	natural_disaster_schedule_family_report = yes
+	natural_disaster_commit_report_consequence = yes
 	natural_disaster_schedule_family_news = yes
 	natural_disaster_register_abnormal_gui_card = yes
 	set_variable = { natural_disaster_severity = natural_disaster_repeat_display_severity }
@@ -9580,6 +10855,7 @@ natural_disaster_prepare_persisted_geography_context = {
 # building damage, disruption modifier, or reconstruction burden. Its sole live
 # objective is the delayed, basin-locked tsunami chain.
 natural_disaster_execute_ocean_impact_proxy = {
+	natural_disaster_begin_report_consequence = yes
 	set_temp_variable = { natural_disaster_resolved_chain = constant:natural_disaster_chain.none }
 	if = {
 		limit = { has_state_flag = natural_disaster_warning_active }
@@ -9607,7 +10883,7 @@ natural_disaster_execute_ocean_impact_proxy = {
 	natural_disaster_activate_chain_only_card = yes
 	natural_disaster_schedule_chain_followup = yes
 	natural_disaster_update_abnormal_history_record = yes
-	natural_disaster_schedule_family_report = yes
+	natural_disaster_commit_report_consequence = yes
 	natural_disaster_schedule_family_news = yes
 	natural_disaster_maybe_emit_family_super_event = yes
 }
@@ -9624,8 +10900,6 @@ natural_disaster_execute_impact = {
 	set_temp_variable = { natural_disaster_secondary_building = token:industrial_complex }
 	set_temp_variable = { natural_disaster_tertiary_building = token:arms_factory }
 	set_temp_variable = { natural_disaster_default_chain = constant:natural_disaster_chain.aftershock }
-	set_temp_variable = { natural_disaster_report_event_id = 0 }
-	set_temp_variable = { natural_disaster_news_event_id = 0 }
 	set_temp_variable = { natural_disaster_death_fraction = 0 }
 	set_temp_variable = { natural_disaster_modifier_days = 0 }
 	set_temp_variable = { natural_disaster_mod_supply = 0 }
@@ -9714,6 +10988,7 @@ natural_disaster_execute_impact = {
 			set_variable = { natural_disaster_path_status = constant:natural_disaster_path_status.impacted }
 			set_temp_variable = { nd_effect_death_scale = 0 }
 			set_temp_variable = { nd_effect_building_scale = 0 }
+			natural_disaster_begin_report_consequence = yes
 			natural_disaster_apply_population_loss = yes
 			natural_disaster_record_event012_civilian_weaponisation = yes
 			natural_disaster_apply_family_building_damage = yes
@@ -9738,7 +11013,7 @@ natural_disaster_execute_impact = {
 				set_variable = { natural_disaster_cleanup_state = 1 }
 			}
 			natural_disaster_schedule_chain_followup = yes
-			natural_disaster_schedule_family_report = yes
+			natural_disaster_commit_report_consequence = yes
 			natural_disaster_schedule_family_news = yes
 
 			if = {

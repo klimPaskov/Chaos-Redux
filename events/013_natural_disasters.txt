@@ -132,16 +132,6 @@ country_event = {
 }
 
 country_event = {
-	id = chaosx.nr13.6
-	hidden = yes
-	is_triggered_only = yes
-
-	immediate = {
-		natural_disaster_release_warning_civilian_burden = yes
-	}
-}
-
-country_event = {
 	id = chaosx.nr13.7
 	hidden = yes
 	is_triggered_only = yes
@@ -211,6 +201,46 @@ country_event = {
 
 	option = {
 		name = chaosx.nr13.127.a
+	}
+}
+
+# A forced foreign-relief completion can outlive the recipient card it targeted.
+# It never charges the donor unless a fresh card selection succeeds.
+country_event = {
+	id = chaosx.nr13.128
+	title = chaosx.nr13.128.t
+	desc = chaosx.nr13.128.d
+	picture = GFX_report_event_nd_regional_aftermath
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr13.128.a
+	}
+}
+
+# One recipient receives one sequence summary at a time. The active state list
+# remains frozen until the option closes this report.
+country_event = {
+	id = chaosx.nr13.100
+	title = chaosx.nr13.100.t
+	desc = chaosx.nr13.100.d
+	picture = GFX_report_event_nd_regional_aftermath
+	is_triggered_only = yes
+	trigger = {
+		exists = yes
+		has_country_flag = natural_disaster_report_dispatch_scheduled
+		NOT = { has_country_flag = natural_disaster_report_popup_open }
+		check_variable = { natural_disaster_report_pending_sequence_entries^num > 0 }
+	}
+
+	immediate = {
+		clr_country_flag = natural_disaster_report_dispatch_scheduled
+		natural_disaster_load_current_report_batch = yes
+	}
+
+	option = {
+		name = chaosx.nr13.100.a
+		natural_disaster_close_current_report_batch = yes
 	}
 }
 

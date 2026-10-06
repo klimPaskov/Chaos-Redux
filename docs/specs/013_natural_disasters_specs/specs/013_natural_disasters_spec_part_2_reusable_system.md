@@ -6,6 +6,27 @@ The controller turns one Event 013 firing into a season. A season is a list of p
 
 The controller should prepare the whole season before the first impact when possible. That lets the system avoid same-day hits, repeat targets, and news spam. It also lets the manual Disaster Barrage scenario show the player a coherent event rather than a random shower of unrelated popups.
 
+## Accepted report and news disposition, 2026-10-05
+
+The parent accepted, within the user's Event 013 release-repair authorization, at most one aggregate report per recipient and sequence and at most one eligible world-news event per sequence. The acceptance also preserves actual consequence accounting, affected-state and mixed-family summary, all later physical effects, caller/global/affected/delayed/silent delivery semantics, controller-transfer handling, and no second popup for later recovery outcomes.
+
+This disposition supersedes the per-impact one-to-two-day report and immutable job-snapshot presentation claims below. The implementation records a unique consequence when death or building effects are applied, aggregates only positive measured results by recipient and sequence, then flushes after the sequence's scheduled warning, impact, and follow-up jobs drain. Recovery failures after delivery still update their state card, map, and history, while the recipient receipt suppresses a second report. The implementation and validation limits are recorded in `docs/plans/013_natural_disasters_plans/2026-10-05_report_news_implementation_handoff.md`.
+
+The design is accepted and implemented in source; event-render, source-comparison, province-building getter behavior, open-popup localization behavior, and live gameplay remain unverified engine questions. The supplemental `chaosx.nr13.100` report uses Event 013's existing root identity and has no separate event-log or catalog row.
+
+## Accepted recovery and relief bill, 2026-10-06
+
+The parent accepts G4 consolidation within the user-authorized release repair.
+Rescue, stabilization and reconstruction spend their three route/material fees and impose their existing active consumer-goods factor: 5% for rescue/stabilization and 10% for reconstruction.
+Their duplicate upfront Stability loss and fee-only Stability gates are removed.
+Inbound routing spends manpower and the selected two-resource transport route, with no upfront Stability or War Support loss.
+Its full quote also names the active civilian-work commitment and the existing 365-day dependency at +2% consumer-goods factor and flat -0.10 daily Political Power, together with its actual temporary recovery capacity.
+Consumer goods and daily Political Power count toward the four-type bill.
+Chain prevention retains its distinct Stability cost.
+The full route/severity quotes disclose every applied cost while inline rows show at most three amounts.
+This acceptance supersedes conflicting fee prose below; the current helpers, decision gates, ideas, cost audit and parent journal are the implementation evidence.
+Exact fee boundaries, AI eligibility and native hover layout remain unverified engine acceptance gates.
+
 ### Season state
 
 A season should store these ideas in variables, flags, arrays, or event targets according to implementation needs.
@@ -18,7 +39,7 @@ A season should store these ideas in variables, flags, arrays, or event targets 
 | Anchor region | Optional region around which family weights cluster. |
 | Disaster queue | Ordered list of impact entries with family, target, delay, severity, and policy. |
 | News throttle ledger | Prevents weak repeated news and keeps strong family news meaningful. |
-| Report ledger | Ensures affected countries reliably receive delayed reports. |
+| Report ledger | Ensures each eligible recipient receives at most one aggregate report per sequence. |
 | Aftermath ledger | Tracks active disaster cards, recovery work, failure risk, and cleanup progress. |
 | Death ledger | Feeds civilian deaths into the shared Deaths system with family type and state. |
 | Damage ledger | Records damaged building categories, transport disruption, and recovery needs. |
@@ -36,13 +57,13 @@ An impact should resolve in this order.
 4. Apply family-specific impact damage.
 5. Feed civilian deaths into the Deaths system.
 6. Create or refresh state modifiers.
-7. Schedule the affected-country report in 1 to 2 days.
+7. Record the actual consequence for the recipient-and-sequence report summary; do not create a new report for a presentation refresh or report request.
 8. Open or refresh aftermath category notification for the affected country.
 9. Roll family-specific chains if severity and aftermath allow it.
 10. Decide whether a news event is still meaningful after throttling.
 11. Advance the queue and schedule the next delayed impact.
 
-This order keeps the affected country report honest. It reports what happened after the damage is known, rather than announcing a planned disaster that later fails due to invalid target state.
+This order keeps the recipient summary factual. It records what happened after the damage is known, rather than announcing a planned disaster that later fails due to invalid target state.
 
 ## Warning model
 
@@ -213,6 +234,6 @@ Physical eligibility is an immutable gate, not a scoring preference. Volcanic er
 
 An accepted call immediately exposes a state-targeted forecast decision naming the exact family, state, severity, hazard class, and scheduled date. Acknowledgment clears only the forecast alert. The warning remains a later family-specific preparation window, and every impact remains at least one day after the call.
 
-Every report job stores immutable impact facts in the aligned delayed-job arrays: family, severity, deaths, transport, industry, port, air, resource and shelter damage, warning choice and result, fine follow-up route, follow-up target and due date, recovery phase, origin family and medium, path basin, sequence, and segment. Delivery text reads the snapshot rather than mutable current state. Controller reports are mandatory; caller/global distribution and news are independent policies.
+The per-impact report-job snapshot design in this paragraph is superseded by the accepted 2026-10-05 disposition above. Physical jobs retain the state data required for their own execution, while actual death deltas, measured building deltas, family, severity, and affected-state identity enter sequence-keyed consequence rows only when their effects are applied. Presentation rows remain separate from caller, global, affected-country, delayed-batch, silent, and news policy selection.
 
 Open aftermath cards are registered in a bounded global state ledger. When Regional Cascades first opens, an event-driven idempotent synchronization upgrades unresolved serious cards once, preserves their identity and existing route, creates a valid route only when none exists, and never replays the impact or writes another history row. No periodic world scan is used.
