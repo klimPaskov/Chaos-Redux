@@ -105,3 +105,12 @@ The named MCP scenarios in the owner reports are `015_minor_peacetime_1936`, `01
 - Audio source and license record: `docs/super_events/015_utopia_manifesto/audio_research.md`, installed runtime WAV: `sound/015_utopia_manifesto/super_event_57_utopia_has_neighbors.wav`.
 
 Skills used: `.agents/skills/chaos-redux-events/SKILL.md` and `.agents/skills/chaos-redux-subagents/SKILL.md`. No gameplay files, assets, localisation, GUI, workbook, or CSVs were changed by this auditor.
+
+## Parent follow-up: generic focus completion state, 2026-10-06
+
+The parent closed the former generic-completion omission through the documented no-reward `unlock_national_focus` effect.
+The exact 56-ID native inventory, capture and restore hooks, current source hashes and route failures are in `final_generic_focus_return_reference_2026-10-06.md`.
+The earlier `093d8377...` effects hash remains the price-helper audit identity, not the final whole-file identity after these independent tree-state hooks.
+The seven quote-helper bodies, prices, formation recipes and numeric AI weights are unchanged by this follow-up.
+Prior native generic completions are restored without issuing rewards again; unfinished original focus progress is still cancelled.
+Current native focus render, bypass presentation and the live no-duplicate-reward check remain unverified.

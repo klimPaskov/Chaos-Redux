@@ -86,13 +86,17 @@ Count ordinary reports, evolution reports, proclamation reports and world news s
 Hover each changed option and price; inspect low and high values, disabled refresh, focus shortcut labels and all five route identities.
 Expected: no clipped text, overlap, raw keys, missing icons or misleading fee colours.
 After safe teardown, a captured generic origin returns to generic; a foreign tree or leader installed later remains.
+Before adoption, complete `industrial_effort` and `construction_effort` as CUB and note civilian factories, industry bonus and Army XP.
+After adopting and repealing, those original nodes must be complete/bypassed, while factories, bonuses and XP do not increase from restoration; an originally incomplete generic node remains incomplete.
+Repeat teardown: no reward or completion changes and no retained completion flags.
 Before formation, alter the election setting without changing the original leader, then repeal: the external setting remains.
 For a formed Practical Commonwealth, test its expected paused/open election state and a visibly different external setting: only the still-owned state is restored.
 
 ## Deviations, omissions and blockers
 
 The approved-light recipient restriction is an explicit accepted design deviation, pending literal capture/return mapping.
-Generic-tree return uses the existing `keep_completed = no` contract; prior generic focus completions are not reconstructed.
+Generic-tree return uses `keep_completed = no` followed by reward-free restoration of the 56 native generic IDs that were completed before adoption.
+An unfinished pre-adoption focus is cancelled and its partial progress is not restored.
 No political route was replaced with a generic route.
 A native script cannot distinguish an external election write that leaves the same value as Event 015 expected; the ownership guard does not claim that attribution.
 Current GUI appearance, full weighted-scenario coverage, source-master lineage and the listed live checks remain unverified, so Event 015 is not declared release-qualified.

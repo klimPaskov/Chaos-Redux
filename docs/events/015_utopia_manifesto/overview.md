@@ -404,3 +404,11 @@ The event contains 108 definitions and 11 English localisation files, a 124-focu
 The recorded July audit remains evidence for its frozen snapshot and does not certify the current source or current GUI.
 The required current MCP event, focus, probability and GUI evidence and orchestrator live checks remain separate qualification gates; the final release report states which were obtained.
 Catalog wording is handed off in `docs/plans/015_utopia_manifesto_plans/catalog_changes_pending.md`; the workbook and export CSVs are not edited by this repair task.
+
+## Original generic focus completions
+
+Before adopting the manifesto, the actor records which of the 56 current native generic focus IDs are complete.
+When the safe teardown still owns the replacement tree and returns to the captured generic origin, it marks those IDs through `unlock_national_focus` without granting their rewards again.
+Foreign replacement trees are preserved, and all private completion flags clear during teardown.
+An unfinished original focus is cancelled at adoption; partial focus progress is not restored.
+The native-ID inventory, no-reward API citations and unverified live status are recorded in `docs/plans/015_utopia_manifesto_plans/subagent_handoffs/final_generic_focus_return_reference_2026-10-06.md`.

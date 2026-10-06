@@ -1,0 +1,586 @@
+# Overview: Event 015 private helpers for preserving completed vanilla generic-focus IDs across its replacement-tree lifecycle.
+# Contract:
+# Purpose: capture, restore without rewards, and clear the completed-focus receipt for the installed generic_focus tree.
+# Scope: COUNTRY.
+# Inputs: none; capture is called only from the proven generic_focus origin branch before tree adoption.
+# Outputs: Boolean country flags keyed to exact native focus IDs; restore marks only receipted focuses complete.
+# Defaults: no receipt flag is set unless its focus was completed when captured.
+# Side effects: unlock_national_focus bypasses a receipted focus without firing its completion effect; no focus reward is replayed.
+# Lifecycle: capture clears stale receipt flags first; restore clears each consumed receipt; teardown clears all remaining receipts.
+# Usage: call capture before loading utopia_manifesto_tree, then restore immediately after the guarded return loads generic_focus.
+
+utopia_manifesto_capture_generic_focus_receipt = {
+	utopia_manifesto_clear_generic_focus_receipt = yes
+	if = {
+		limit = { has_focus_tree = generic_focus }
+		if = {
+			limit = { has_completed_focus = army_effort }
+			set_country_flag = utopia_manifesto_generic_focus_receipt_army_effort
+		}
+		if = {
+			limit = { has_completed_focus = equipment_effort }
+			set_country_flag = utopia_manifesto_generic_focus_receipt_equipment_effort
+		}
+		if = {
+			limit = { has_completed_focus = motorization_effort }
+			set_country_flag = utopia_manifesto_generic_focus_receipt_motorization_effort
+		}
+		if = {
+			limit = { has_completed_focus = doctrine_effort }
+			set_country_flag = utopia_manifesto_generic_focus_receipt_doctrine_effort
+		}
+		if = {
+			limit = { has_completed_focus = equipment_effort_2 }
+			set_country_flag = utopia_manifesto_generic_focus_receipt_equipment_effort_2
+		}
+		if = {
+			limit = { has_completed_focus = mechanization_effort }
+			set_country_flag = utopia_manifesto_generic_focus_receipt_mechanization_effort
+		}
+		if = {
+			limit = { has_completed_focus = doctrine_effort_2 }
+			set_country_flag = utopia_manifesto_generic_focus_receipt_doctrine_effort_2
+		}
+		if = {
+			limit = { has_completed_focus = equipment_effort_3 }
+			set_country_flag = utopia_manifesto_generic_focus_receipt_equipment_effort_3
+		}
+		if = {
+			limit = { has_completed_focus = armor_effort }
+			set_country_flag = utopia_manifesto_generic_focus_receipt_armor_effort
+		}
+		if = {
+			limit = { has_completed_focus = special_forces }
+			set_country_flag = utopia_manifesto_generic_focus_receipt_special_forces
+		}
+		if = {
+			limit = { has_completed_focus = aviation_effort }
+			set_country_flag = utopia_manifesto_generic_focus_receipt_aviation_effort
+		}
+		if = {
+			limit = { has_completed_focus = fighter_focus }
+			set_country_flag = utopia_manifesto_generic_focus_receipt_fighter_focus
+		}
+		if = {
+			limit = { has_completed_focus = bomber_focus }
+			set_country_flag = utopia_manifesto_generic_focus_receipt_bomber_focus
+		}
+		if = {
+			limit = { has_completed_focus = aviation_effort_2 }
+			set_country_flag = utopia_manifesto_generic_focus_receipt_aviation_effort_2
+		}
+		if = {
+			limit = { has_completed_focus = CAS_effort }
+			set_country_flag = utopia_manifesto_generic_focus_receipt_cas_effort
+		}
+		if = {
+			limit = { has_completed_focus = rocket_effort }
+			set_country_flag = utopia_manifesto_generic_focus_receipt_rocket_effort
+		}
+		if = {
+			limit = { has_completed_focus = NAV_effort }
+			set_country_flag = utopia_manifesto_generic_focus_receipt_nav_effort
+		}
+		if = {
+			limit = { has_completed_focus = naval_effort }
+			set_country_flag = utopia_manifesto_generic_focus_receipt_naval_effort
+		}
+		if = {
+			limit = { has_completed_focus = flexible_navy }
+			set_country_flag = utopia_manifesto_generic_focus_receipt_flexible_navy
+		}
+		if = {
+			limit = { has_completed_focus = large_navy }
+			set_country_flag = utopia_manifesto_generic_focus_receipt_large_navy
+		}
+		if = {
+			limit = { has_completed_focus = submarine_effort }
+			set_country_flag = utopia_manifesto_generic_focus_receipt_submarine_effort
+		}
+		if = {
+			limit = { has_completed_focus = cruiser_effort }
+			set_country_flag = utopia_manifesto_generic_focus_receipt_cruiser_effort
+		}
+		if = {
+			limit = { has_completed_focus = destroyer_effort }
+			set_country_flag = utopia_manifesto_generic_focus_receipt_destroyer_effort
+		}
+		if = {
+			limit = { has_completed_focus = capital_ships_effort }
+			set_country_flag = utopia_manifesto_generic_focus_receipt_capital_ships_effort
+		}
+		if = {
+			limit = { has_completed_focus = industrial_effort }
+			set_country_flag = utopia_manifesto_generic_focus_receipt_industrial_effort
+		}
+		if = {
+			limit = { has_completed_focus = construction_effort }
+			set_country_flag = utopia_manifesto_generic_focus_receipt_construction_effort
+		}
+		if = {
+			limit = { has_completed_focus = production_effort }
+			set_country_flag = utopia_manifesto_generic_focus_receipt_production_effort
+		}
+		if = {
+			limit = { has_completed_focus = construction_effort_2 }
+			set_country_flag = utopia_manifesto_generic_focus_receipt_construction_effort_2
+		}
+		if = {
+			limit = { has_completed_focus = production_effort_2 }
+			set_country_flag = utopia_manifesto_generic_focus_receipt_production_effort_2
+		}
+		if = {
+			limit = { has_completed_focus = infrastructure_effort }
+			set_country_flag = utopia_manifesto_generic_focus_receipt_infrastructure_effort
+		}
+		if = {
+			limit = { has_completed_focus = production_effort_3 }
+			set_country_flag = utopia_manifesto_generic_focus_receipt_production_effort_3
+		}
+		if = {
+			limit = { has_completed_focus = infrastructure_effort_2 }
+			set_country_flag = utopia_manifesto_generic_focus_receipt_infrastructure_effort_2
+		}
+		if = {
+			limit = { has_completed_focus = construction_effort_3 }
+			set_country_flag = utopia_manifesto_generic_focus_receipt_construction_effort_3
+		}
+		if = {
+			limit = { has_completed_focus = nuclear_effort }
+			set_country_flag = utopia_manifesto_generic_focus_receipt_nuclear_effort
+		}
+		if = {
+			limit = { has_completed_focus = extra_tech_slot }
+			set_country_flag = utopia_manifesto_generic_focus_receipt_extra_tech_slot
+		}
+		if = {
+			limit = { has_completed_focus = extra_tech_slot_2 }
+			set_country_flag = utopia_manifesto_generic_focus_receipt_extra_tech_slot_2
+		}
+		if = {
+			limit = { has_completed_focus = secret_weapons }
+			set_country_flag = utopia_manifesto_generic_focus_receipt_secret_weapons
+		}
+		if = {
+			limit = { has_completed_focus = political_effort }
+			set_country_flag = utopia_manifesto_generic_focus_receipt_political_effort
+		}
+		if = {
+			limit = { has_completed_focus = collectivist_ethos }
+			set_country_flag = utopia_manifesto_generic_focus_receipt_collectivist_ethos
+		}
+		if = {
+			limit = { has_completed_focus = nationalism_focus }
+			set_country_flag = utopia_manifesto_generic_focus_receipt_nationalism_focus
+		}
+		if = {
+			limit = { has_completed_focus = internationalism_focus }
+			set_country_flag = utopia_manifesto_generic_focus_receipt_internationalism_focus
+		}
+		if = {
+			limit = { has_completed_focus = liberty_ethos }
+			set_country_flag = utopia_manifesto_generic_focus_receipt_liberty_ethos
+		}
+		if = {
+			limit = { has_completed_focus = militarism }
+			set_country_flag = utopia_manifesto_generic_focus_receipt_militarism
+		}
+		if = {
+			limit = { has_completed_focus = political_correctness }
+			set_country_flag = utopia_manifesto_generic_focus_receipt_political_correctness
+		}
+		if = {
+			limit = { has_completed_focus = neutrality_focus }
+			set_country_flag = utopia_manifesto_generic_focus_receipt_neutrality_focus
+		}
+		if = {
+			limit = { has_completed_focus = interventionism_focus }
+			set_country_flag = utopia_manifesto_generic_focus_receipt_interventionism_focus
+		}
+		if = {
+			limit = { has_completed_focus = military_youth }
+			set_country_flag = utopia_manifesto_generic_focus_receipt_military_youth
+		}
+		if = {
+			limit = { has_completed_focus = deterrence }
+			set_country_flag = utopia_manifesto_generic_focus_receipt_deterrence
+		}
+		if = {
+			limit = { has_completed_focus = volunteer_corps }
+			set_country_flag = utopia_manifesto_generic_focus_receipt_volunteer_corps
+		}
+		if = {
+			limit = { has_completed_focus = paramilitarism }
+			set_country_flag = utopia_manifesto_generic_focus_receipt_paramilitarism
+		}
+		if = {
+			limit = { has_completed_focus = indoctrination_focus }
+			set_country_flag = utopia_manifesto_generic_focus_receipt_indoctrination_focus
+		}
+		if = {
+			limit = { has_completed_focus = foreign_expeditions }
+			set_country_flag = utopia_manifesto_generic_focus_receipt_foreign_expeditions
+		}
+		if = {
+			limit = { has_completed_focus = why_we_fight }
+			set_country_flag = utopia_manifesto_generic_focus_receipt_why_we_fight
+		}
+		if = {
+			limit = { has_completed_focus = political_commissars }
+			set_country_flag = utopia_manifesto_generic_focus_receipt_political_commissars
+		}
+		if = {
+			limit = { has_completed_focus = ideological_fanaticism }
+			set_country_flag = utopia_manifesto_generic_focus_receipt_ideological_fanaticism
+		}
+		if = {
+			limit = { has_completed_focus = technology_sharing }
+			set_country_flag = utopia_manifesto_generic_focus_receipt_technology_sharing
+		}
+	}
+}
+
+utopia_manifesto_restore_generic_focus_receipt = {
+	if = {
+		limit = { has_focus_tree = generic_focus }
+		if = {
+			limit = { has_country_flag = utopia_manifesto_generic_focus_receipt_army_effort }
+			unlock_national_focus = army_effort
+			clr_country_flag = utopia_manifesto_generic_focus_receipt_army_effort
+		}
+		if = {
+			limit = { has_country_flag = utopia_manifesto_generic_focus_receipt_equipment_effort }
+			unlock_national_focus = equipment_effort
+			clr_country_flag = utopia_manifesto_generic_focus_receipt_equipment_effort
+		}
+		if = {
+			limit = { has_country_flag = utopia_manifesto_generic_focus_receipt_motorization_effort }
+			unlock_national_focus = motorization_effort
+			clr_country_flag = utopia_manifesto_generic_focus_receipt_motorization_effort
+		}
+		if = {
+			limit = { has_country_flag = utopia_manifesto_generic_focus_receipt_doctrine_effort }
+			unlock_national_focus = doctrine_effort
+			clr_country_flag = utopia_manifesto_generic_focus_receipt_doctrine_effort
+		}
+		if = {
+			limit = { has_country_flag = utopia_manifesto_generic_focus_receipt_equipment_effort_2 }
+			unlock_national_focus = equipment_effort_2
+			clr_country_flag = utopia_manifesto_generic_focus_receipt_equipment_effort_2
+		}
+		if = {
+			limit = { has_country_flag = utopia_manifesto_generic_focus_receipt_mechanization_effort }
+			unlock_national_focus = mechanization_effort
+			clr_country_flag = utopia_manifesto_generic_focus_receipt_mechanization_effort
+		}
+		if = {
+			limit = { has_country_flag = utopia_manifesto_generic_focus_receipt_doctrine_effort_2 }
+			unlock_national_focus = doctrine_effort_2
+			clr_country_flag = utopia_manifesto_generic_focus_receipt_doctrine_effort_2
+		}
+		if = {
+			limit = { has_country_flag = utopia_manifesto_generic_focus_receipt_equipment_effort_3 }
+			unlock_national_focus = equipment_effort_3
+			clr_country_flag = utopia_manifesto_generic_focus_receipt_equipment_effort_3
+		}
+		if = {
+			limit = { has_country_flag = utopia_manifesto_generic_focus_receipt_armor_effort }
+			unlock_national_focus = armor_effort
+			clr_country_flag = utopia_manifesto_generic_focus_receipt_armor_effort
+		}
+		if = {
+			limit = { has_country_flag = utopia_manifesto_generic_focus_receipt_special_forces }
+			unlock_national_focus = special_forces
+			clr_country_flag = utopia_manifesto_generic_focus_receipt_special_forces
+		}
+		if = {
+			limit = { has_country_flag = utopia_manifesto_generic_focus_receipt_aviation_effort }
+			unlock_national_focus = aviation_effort
+			clr_country_flag = utopia_manifesto_generic_focus_receipt_aviation_effort
+		}
+		if = {
+			limit = { has_country_flag = utopia_manifesto_generic_focus_receipt_fighter_focus }
+			unlock_national_focus = fighter_focus
+			clr_country_flag = utopia_manifesto_generic_focus_receipt_fighter_focus
+		}
+		if = {
+			limit = { has_country_flag = utopia_manifesto_generic_focus_receipt_bomber_focus }
+			unlock_national_focus = bomber_focus
+			clr_country_flag = utopia_manifesto_generic_focus_receipt_bomber_focus
+		}
+		if = {
+			limit = { has_country_flag = utopia_manifesto_generic_focus_receipt_aviation_effort_2 }
+			unlock_national_focus = aviation_effort_2
+			clr_country_flag = utopia_manifesto_generic_focus_receipt_aviation_effort_2
+		}
+		if = {
+			limit = { has_country_flag = utopia_manifesto_generic_focus_receipt_cas_effort }
+			unlock_national_focus = CAS_effort
+			clr_country_flag = utopia_manifesto_generic_focus_receipt_cas_effort
+		}
+		if = {
+			limit = { has_country_flag = utopia_manifesto_generic_focus_receipt_rocket_effort }
+			unlock_national_focus = rocket_effort
+			clr_country_flag = utopia_manifesto_generic_focus_receipt_rocket_effort
+		}
+		if = {
+			limit = { has_country_flag = utopia_manifesto_generic_focus_receipt_nav_effort }
+			unlock_national_focus = NAV_effort
+			clr_country_flag = utopia_manifesto_generic_focus_receipt_nav_effort
+		}
+		if = {
+			limit = { has_country_flag = utopia_manifesto_generic_focus_receipt_naval_effort }
+			unlock_national_focus = naval_effort
+			clr_country_flag = utopia_manifesto_generic_focus_receipt_naval_effort
+		}
+		if = {
+			limit = { has_country_flag = utopia_manifesto_generic_focus_receipt_flexible_navy }
+			unlock_national_focus = flexible_navy
+			clr_country_flag = utopia_manifesto_generic_focus_receipt_flexible_navy
+		}
+		if = {
+			limit = { has_country_flag = utopia_manifesto_generic_focus_receipt_large_navy }
+			unlock_national_focus = large_navy
+			clr_country_flag = utopia_manifesto_generic_focus_receipt_large_navy
+		}
+		if = {
+			limit = { has_country_flag = utopia_manifesto_generic_focus_receipt_submarine_effort }
+			unlock_national_focus = submarine_effort
+			clr_country_flag = utopia_manifesto_generic_focus_receipt_submarine_effort
+		}
+		if = {
+			limit = { has_country_flag = utopia_manifesto_generic_focus_receipt_cruiser_effort }
+			unlock_national_focus = cruiser_effort
+			clr_country_flag = utopia_manifesto_generic_focus_receipt_cruiser_effort
+		}
+		if = {
+			limit = { has_country_flag = utopia_manifesto_generic_focus_receipt_destroyer_effort }
+			unlock_national_focus = destroyer_effort
+			clr_country_flag = utopia_manifesto_generic_focus_receipt_destroyer_effort
+		}
+		if = {
+			limit = { has_country_flag = utopia_manifesto_generic_focus_receipt_capital_ships_effort }
+			unlock_national_focus = capital_ships_effort
+			clr_country_flag = utopia_manifesto_generic_focus_receipt_capital_ships_effort
+		}
+		if = {
+			limit = { has_country_flag = utopia_manifesto_generic_focus_receipt_industrial_effort }
+			unlock_national_focus = industrial_effort
+			clr_country_flag = utopia_manifesto_generic_focus_receipt_industrial_effort
+		}
+		if = {
+			limit = { has_country_flag = utopia_manifesto_generic_focus_receipt_construction_effort }
+			unlock_national_focus = construction_effort
+			clr_country_flag = utopia_manifesto_generic_focus_receipt_construction_effort
+		}
+		if = {
+			limit = { has_country_flag = utopia_manifesto_generic_focus_receipt_production_effort }
+			unlock_national_focus = production_effort
+			clr_country_flag = utopia_manifesto_generic_focus_receipt_production_effort
+		}
+		if = {
+			limit = { has_country_flag = utopia_manifesto_generic_focus_receipt_construction_effort_2 }
+			unlock_national_focus = construction_effort_2
+			clr_country_flag = utopia_manifesto_generic_focus_receipt_construction_effort_2
+		}
+		if = {
+			limit = { has_country_flag = utopia_manifesto_generic_focus_receipt_production_effort_2 }
+			unlock_national_focus = production_effort_2
+			clr_country_flag = utopia_manifesto_generic_focus_receipt_production_effort_2
+		}
+		if = {
+			limit = { has_country_flag = utopia_manifesto_generic_focus_receipt_infrastructure_effort }
+			unlock_national_focus = infrastructure_effort
+			clr_country_flag = utopia_manifesto_generic_focus_receipt_infrastructure_effort
+		}
+		if = {
+			limit = { has_country_flag = utopia_manifesto_generic_focus_receipt_production_effort_3 }
+			unlock_national_focus = production_effort_3
+			clr_country_flag = utopia_manifesto_generic_focus_receipt_production_effort_3
+		}
+		if = {
+			limit = { has_country_flag = utopia_manifesto_generic_focus_receipt_infrastructure_effort_2 }
+			unlock_national_focus = infrastructure_effort_2
+			clr_country_flag = utopia_manifesto_generic_focus_receipt_infrastructure_effort_2
+		}
+		if = {
+			limit = { has_country_flag = utopia_manifesto_generic_focus_receipt_construction_effort_3 }
+			unlock_national_focus = construction_effort_3
+			clr_country_flag = utopia_manifesto_generic_focus_receipt_construction_effort_3
+		}
+		if = {
+			limit = { has_country_flag = utopia_manifesto_generic_focus_receipt_nuclear_effort }
+			unlock_national_focus = nuclear_effort
+			clr_country_flag = utopia_manifesto_generic_focus_receipt_nuclear_effort
+		}
+		if = {
+			limit = { has_country_flag = utopia_manifesto_generic_focus_receipt_extra_tech_slot }
+			unlock_national_focus = extra_tech_slot
+			clr_country_flag = utopia_manifesto_generic_focus_receipt_extra_tech_slot
+		}
+		if = {
+			limit = { has_country_flag = utopia_manifesto_generic_focus_receipt_extra_tech_slot_2 }
+			unlock_national_focus = extra_tech_slot_2
+			clr_country_flag = utopia_manifesto_generic_focus_receipt_extra_tech_slot_2
+		}
+		if = {
+			limit = { has_country_flag = utopia_manifesto_generic_focus_receipt_secret_weapons }
+			unlock_national_focus = secret_weapons
+			clr_country_flag = utopia_manifesto_generic_focus_receipt_secret_weapons
+		}
+		if = {
+			limit = { has_country_flag = utopia_manifesto_generic_focus_receipt_political_effort }
+			unlock_national_focus = political_effort
+			clr_country_flag = utopia_manifesto_generic_focus_receipt_political_effort
+		}
+		if = {
+			limit = { has_country_flag = utopia_manifesto_generic_focus_receipt_collectivist_ethos }
+			unlock_national_focus = collectivist_ethos
+			clr_country_flag = utopia_manifesto_generic_focus_receipt_collectivist_ethos
+		}
+		if = {
+			limit = { has_country_flag = utopia_manifesto_generic_focus_receipt_nationalism_focus }
+			unlock_national_focus = nationalism_focus
+			clr_country_flag = utopia_manifesto_generic_focus_receipt_nationalism_focus
+		}
+		if = {
+			limit = { has_country_flag = utopia_manifesto_generic_focus_receipt_internationalism_focus }
+			unlock_national_focus = internationalism_focus
+			clr_country_flag = utopia_manifesto_generic_focus_receipt_internationalism_focus
+		}
+		if = {
+			limit = { has_country_flag = utopia_manifesto_generic_focus_receipt_liberty_ethos }
+			unlock_national_focus = liberty_ethos
+			clr_country_flag = utopia_manifesto_generic_focus_receipt_liberty_ethos
+		}
+		if = {
+			limit = { has_country_flag = utopia_manifesto_generic_focus_receipt_militarism }
+			unlock_national_focus = militarism
+			clr_country_flag = utopia_manifesto_generic_focus_receipt_militarism
+		}
+		if = {
+			limit = { has_country_flag = utopia_manifesto_generic_focus_receipt_political_correctness }
+			unlock_national_focus = political_correctness
+			clr_country_flag = utopia_manifesto_generic_focus_receipt_political_correctness
+		}
+		if = {
+			limit = { has_country_flag = utopia_manifesto_generic_focus_receipt_neutrality_focus }
+			unlock_national_focus = neutrality_focus
+			clr_country_flag = utopia_manifesto_generic_focus_receipt_neutrality_focus
+		}
+		if = {
+			limit = { has_country_flag = utopia_manifesto_generic_focus_receipt_interventionism_focus }
+			unlock_national_focus = interventionism_focus
+			clr_country_flag = utopia_manifesto_generic_focus_receipt_interventionism_focus
+		}
+		if = {
+			limit = { has_country_flag = utopia_manifesto_generic_focus_receipt_military_youth }
+			unlock_national_focus = military_youth
+			clr_country_flag = utopia_manifesto_generic_focus_receipt_military_youth
+		}
+		if = {
+			limit = { has_country_flag = utopia_manifesto_generic_focus_receipt_deterrence }
+			unlock_national_focus = deterrence
+			clr_country_flag = utopia_manifesto_generic_focus_receipt_deterrence
+		}
+		if = {
+			limit = { has_country_flag = utopia_manifesto_generic_focus_receipt_volunteer_corps }
+			unlock_national_focus = volunteer_corps
+			clr_country_flag = utopia_manifesto_generic_focus_receipt_volunteer_corps
+		}
+		if = {
+			limit = { has_country_flag = utopia_manifesto_generic_focus_receipt_paramilitarism }
+			unlock_national_focus = paramilitarism
+			clr_country_flag = utopia_manifesto_generic_focus_receipt_paramilitarism
+		}
+		if = {
+			limit = { has_country_flag = utopia_manifesto_generic_focus_receipt_indoctrination_focus }
+			unlock_national_focus = indoctrination_focus
+			clr_country_flag = utopia_manifesto_generic_focus_receipt_indoctrination_focus
+		}
+		if = {
+			limit = { has_country_flag = utopia_manifesto_generic_focus_receipt_foreign_expeditions }
+			unlock_national_focus = foreign_expeditions
+			clr_country_flag = utopia_manifesto_generic_focus_receipt_foreign_expeditions
+		}
+		if = {
+			limit = { has_country_flag = utopia_manifesto_generic_focus_receipt_why_we_fight }
+			unlock_national_focus = why_we_fight
+			clr_country_flag = utopia_manifesto_generic_focus_receipt_why_we_fight
+		}
+		if = {
+			limit = { has_country_flag = utopia_manifesto_generic_focus_receipt_political_commissars }
+			unlock_national_focus = political_commissars
+			clr_country_flag = utopia_manifesto_generic_focus_receipt_political_commissars
+		}
+		if = {
+			limit = { has_country_flag = utopia_manifesto_generic_focus_receipt_ideological_fanaticism }
+			unlock_national_focus = ideological_fanaticism
+			clr_country_flag = utopia_manifesto_generic_focus_receipt_ideological_fanaticism
+		}
+		if = {
+			limit = { has_country_flag = utopia_manifesto_generic_focus_receipt_technology_sharing }
+			unlock_national_focus = technology_sharing
+			clr_country_flag = utopia_manifesto_generic_focus_receipt_technology_sharing
+		}
+	}
+}
+
+utopia_manifesto_clear_generic_focus_receipt = {
+	clr_country_flag = utopia_manifesto_generic_focus_receipt_army_effort
+	clr_country_flag = utopia_manifesto_generic_focus_receipt_equipment_effort
+	clr_country_flag = utopia_manifesto_generic_focus_receipt_motorization_effort
+	clr_country_flag = utopia_manifesto_generic_focus_receipt_doctrine_effort
+	clr_country_flag = utopia_manifesto_generic_focus_receipt_equipment_effort_2
+	clr_country_flag = utopia_manifesto_generic_focus_receipt_mechanization_effort
+	clr_country_flag = utopia_manifesto_generic_focus_receipt_doctrine_effort_2
+	clr_country_flag = utopia_manifesto_generic_focus_receipt_equipment_effort_3
+	clr_country_flag = utopia_manifesto_generic_focus_receipt_armor_effort
+	clr_country_flag = utopia_manifesto_generic_focus_receipt_special_forces
+	clr_country_flag = utopia_manifesto_generic_focus_receipt_aviation_effort
+	clr_country_flag = utopia_manifesto_generic_focus_receipt_fighter_focus
+	clr_country_flag = utopia_manifesto_generic_focus_receipt_bomber_focus
+	clr_country_flag = utopia_manifesto_generic_focus_receipt_aviation_effort_2
+	clr_country_flag = utopia_manifesto_generic_focus_receipt_cas_effort
+	clr_country_flag = utopia_manifesto_generic_focus_receipt_rocket_effort
+	clr_country_flag = utopia_manifesto_generic_focus_receipt_nav_effort
+	clr_country_flag = utopia_manifesto_generic_focus_receipt_naval_effort
+	clr_country_flag = utopia_manifesto_generic_focus_receipt_flexible_navy
+	clr_country_flag = utopia_manifesto_generic_focus_receipt_large_navy
+	clr_country_flag = utopia_manifesto_generic_focus_receipt_submarine_effort
+	clr_country_flag = utopia_manifesto_generic_focus_receipt_cruiser_effort
+	clr_country_flag = utopia_manifesto_generic_focus_receipt_destroyer_effort
+	clr_country_flag = utopia_manifesto_generic_focus_receipt_capital_ships_effort
+	clr_country_flag = utopia_manifesto_generic_focus_receipt_industrial_effort
+	clr_country_flag = utopia_manifesto_generic_focus_receipt_construction_effort
+	clr_country_flag = utopia_manifesto_generic_focus_receipt_production_effort
+	clr_country_flag = utopia_manifesto_generic_focus_receipt_construction_effort_2
+	clr_country_flag = utopia_manifesto_generic_focus_receipt_production_effort_2
+	clr_country_flag = utopia_manifesto_generic_focus_receipt_infrastructure_effort
+	clr_country_flag = utopia_manifesto_generic_focus_receipt_production_effort_3
+	clr_country_flag = utopia_manifesto_generic_focus_receipt_infrastructure_effort_2
+	clr_country_flag = utopia_manifesto_generic_focus_receipt_construction_effort_3
+	clr_country_flag = utopia_manifesto_generic_focus_receipt_nuclear_effort
+	clr_country_flag = utopia_manifesto_generic_focus_receipt_extra_tech_slot
+	clr_country_flag = utopia_manifesto_generic_focus_receipt_extra_tech_slot_2
+	clr_country_flag = utopia_manifesto_generic_focus_receipt_secret_weapons
+	clr_country_flag = utopia_manifesto_generic_focus_receipt_political_effort
+	clr_country_flag = utopia_manifesto_generic_focus_receipt_collectivist_ethos
+	clr_country_flag = utopia_manifesto_generic_focus_receipt_nationalism_focus
+	clr_country_flag = utopia_manifesto_generic_focus_receipt_internationalism_focus
+	clr_country_flag = utopia_manifesto_generic_focus_receipt_liberty_ethos
+	clr_country_flag = utopia_manifesto_generic_focus_receipt_militarism
+	clr_country_flag = utopia_manifesto_generic_focus_receipt_political_correctness
+	clr_country_flag = utopia_manifesto_generic_focus_receipt_neutrality_focus
+	clr_country_flag = utopia_manifesto_generic_focus_receipt_interventionism_focus
+	clr_country_flag = utopia_manifesto_generic_focus_receipt_military_youth
+	clr_country_flag = utopia_manifesto_generic_focus_receipt_deterrence
+	clr_country_flag = utopia_manifesto_generic_focus_receipt_volunteer_corps
+	clr_country_flag = utopia_manifesto_generic_focus_receipt_paramilitarism
+	clr_country_flag = utopia_manifesto_generic_focus_receipt_indoctrination_focus
+	clr_country_flag = utopia_manifesto_generic_focus_receipt_foreign_expeditions
+	clr_country_flag = utopia_manifesto_generic_focus_receipt_why_we_fight
+	clr_country_flag = utopia_manifesto_generic_focus_receipt_political_commissars
+	clr_country_flag = utopia_manifesto_generic_focus_receipt_ideological_fanaticism
+	clr_country_flag = utopia_manifesto_generic_focus_receipt_technology_sharing
+}

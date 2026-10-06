@@ -71,7 +71,7 @@ Those are narrow source edits, with no shared layout change.
 
 Full repeal and collapse explicitly return a country to `generic_focus` only when acceptance recorded that generic origin and the currently loaded tree still belongs to Event 015.
 A tree another package installed is preserved.
-The original generic completed-focus list is not reconstructed; acceptance already explicitly replaced that tree with `keep_completed = no`.
+The original tree loads through `keep_completed = no`; a pre-adoption snapshot now restores all originally completed generic IDs through `unlock_national_focus`, without replaying their completion rewards.
 The manually approved non-generic class had no source producer, original-tree identifier or literal return mapping.
 It is rejected until an explicit safe capture/return mapping is authored, instead of replacing unique content and leaving it stranded after teardown.
 This is a parent-accepted G6 safety restriction and a declared deviation from the former manual light-tree allowance.
@@ -128,3 +128,12 @@ The installed `set_temp_variable` effect documentation and the existing shared q
 No ordinary amount, sale ratio, resource type, AI numeric weight or outcome is changed.
 This is an owner-applied lifetime correction, not an observed free-fee runtime claim.
 The prior probability artifacts do not prove this corrected quote flow; exact-price live fixtures remain required.
+
+## Generic focus completion restoration, 6 October
+
+Implemented under G4/G6: capture all 56 exact native generic focus completions before accepting the manifesto, and restore only those completed IDs after the guarded return to `generic_focus`.
+`unlock_national_focus` bypasses the recorded focus without its completion effect, preventing factory, research-bonus and Army XP rewards from being obtained a second time.
+The foreign-tree guard remains in place and all private completion flags clear on teardown, including a preserved foreign replacement.
+The explicit native ID inventory and API evidence are in `subagent_handoffs/final_generic_focus_return_reference_2026-10-06.md`.
+This supersedes the former limitation that completed generic focuses were not reconstructed; unfinished focus progress still cancels at adoption.
+Native focus inspection/render and the live return status remain unverified; no completion is claimed for those engine checks.
