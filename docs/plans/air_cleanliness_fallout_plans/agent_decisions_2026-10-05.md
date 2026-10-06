@@ -66,7 +66,7 @@ Availability requires a prospective peaceful donor with the existing 30-support-
 An unfunded session grants no aid or success memory and imposes no rejection penalty or 180-day recipient lock.
 Its caller recovers the saved native 25-PP quote once and may retry after fourteen days.
 Invalid cancellation uses the same consumed quote and retry window; funded success and political rejection retain their 120/180-day pacing.
-The sole paid decision caller also receives its fee back if admission became stale before its complete effect.
+F15 replaces native billing with a charge after admission; a stale start makes no debit.
 Reason: a successful relief report must represent actual supplies, and resupply must not lock a failed caller out for four months.
 The four saved-quote tests execute the production refund body and demonstrate that repeated invocation cannot credit twice.
 
@@ -112,6 +112,17 @@ Descriptions name food, medical work, cargo, census papers, routes and public ch
 Reason: enforce G3 across the full owned text surface, including phrases the previous takeover retained as diegetic bookkeeping.
 This changes display wording, not resource amounts, selectors, flags, dates or event effects.
 The complete before/after key list and token/value invariance are recorded in the final prose handoff.
+
+## F15. Relief refunds represent an actual charge, and results get time to circulate
+
+Disposition: implemented in source; native fee and timing checks remain required.
+The relief vote shows its existing 25-PP price as a native custom-cost row, checks affordability, and charges it once only after successful admission.
+The stored refund quote is the amount actually debited by that owned effect; stale admission makes no debit or refund.
+Reason: the native Easy Decisions mode bypasses the old engine cost, so recording a nominal native quote could create PP on cancellation.
+After a valid vote closes, the secretariat waits fourteen days before admitting any next vote, using one schema-owned constant and a literal timed global flag.
+Reason: normal 21-day sessions already outlast the default thirteen-day result report, but Easy Decisions shortens native sessions to one day; the circulation gap protects the existing global result fields and keeps reports sparse.
+Existing caller and recipient cooldowns, strict-majority rules, donor payments, payload magnitudes and all AI factors remain unchanged.
+The production-source cases cover real charge/refund cycles, repeated calls, and the 24/25/75 PP boundary.
 
 ## Retained limits
 

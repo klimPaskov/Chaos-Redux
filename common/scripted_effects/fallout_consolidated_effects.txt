@@ -140232,7 +140232,7 @@ air_cleanliness_treaty_open_relief_vote = {
 		}
 		set_country_flag = air_cleanliness_treaty_relief_vote_caller
 		set_variable = { air_cleanliness_treaty_relief_vote_transaction = global.air_cleanliness_treaty_relief_vote_transaction }
-		set_variable = { air_cleanliness_treaty_relief_vote_paid_quote = constant:air_cleanliness_treaty_joint_action.relief_vote_political_power }
+		air_cleanliness_treaty_charge_relief_vote_quote = yes
 		set_temp_variable = { air_cleanliness_treaty_operation_lock_days = constant:air_cleanliness_treaty_joint_action.relief_vote_duration_days }
 		add_to_temp_variable = { air_cleanliness_treaty_operation_lock_days = constant:air_cleanliness_treaty_operation.reservation_slack_days }
 		meta_effect = { text = { set_global_flag = { flag = air_cleanliness_treaty_relief_vote_open days = [LOCK_DAYS] } } LOCK_DAYS = "[?air_cleanliness_treaty_operation_lock_days|.0]" }
@@ -140252,10 +140252,7 @@ air_cleanliness_treaty_open_relief_vote = {
 		}
 	}
 	else = {
-		# The sole caller is the paid native decision complete_effect.
-		# A stale second click returns its fee without changing the live vote.
-		set_temp_variable = { air_cleanliness_treaty_relief_vote_refund = constant:air_cleanliness_treaty_joint_action.relief_vote_political_power }
-		add_political_power = air_cleanliness_treaty_relief_vote_refund
+		# A stale click was not charged and does not change the live vote.
 		set_temp_variable = { air_cleanliness_treaty_withdrawn_operation_request = constant:air_cleanliness_treaty_operation_id.relief_vote }
 		air_cleanliness_treaty_report_withdrawn_operation = yes
 	}
@@ -140321,6 +140318,20 @@ air_cleanliness_treaty_relief_vote_set_retry_window = {
 }
 
 # Supported scope: COUNTRY. Refunds only the saved, unconsumed native fee.
+# COUNTRY scope. The custom-cost decision and all direct callers pay the same
+# amount only after admission, so the saved cancellation quote is money spent.
+# No temporary output; a second call cannot charge an outstanding quote twice.
+air_cleanliness_treaty_charge_relief_vote_quote = {
+	if = {
+		limit = { NOT = { has_variable = air_cleanliness_treaty_relief_vote_paid_quote } }
+		set_variable = { air_cleanliness_treaty_relief_vote_paid_quote = constant:air_cleanliness_treaty_joint_action.relief_vote_political_power }
+		set_temp_variable = { air_cleanliness_treaty_relief_vote_payment = air_cleanliness_treaty_relief_vote_paid_quote }
+		multiply_temp_variable = { air_cleanliness_treaty_relief_vote_payment = -1 }
+		add_political_power = air_cleanliness_treaty_relief_vote_payment
+		set_temp_variable = { air_cleanliness_treaty_relief_vote_payment = constant:air_cleanliness_treaty_joint_action.zero }
+	}
+}
+
 air_cleanliness_treaty_refund_relief_vote_quote = {
 	if = {
 		limit = { has_variable = air_cleanliness_treaty_relief_vote_paid_quote }
@@ -140489,6 +140500,8 @@ air_cleanliness_treaty_close_relief_vote = {
 				meta_effect = { text = { set_country_flag = { flag = air_cleanliness_treaty_relief_vote_recent_target days = [LOCK_DAYS] } } LOCK_DAYS = "[?air_cleanliness_treaty_operation_lock_days|.0]" }
 			}
 		}
+		set_temp_variable = { air_cleanliness_treaty_operation_lock_days = constant:air_cleanliness_treaty_joint_action.relief_vote_report_gap_days }
+		meta_effect = { text = { set_global_flag = { flag = air_cleanliness_treaty_relief_reports_circulating days = [LOCK_DAYS] } } LOCK_DAYS = "[?air_cleanliness_treaty_operation_lock_days|.0]" }
 		air_cleanliness_treaty_release_relief_vote = yes
 		for_each_scope_loop = {
 			array = global.air_cleanliness_treaty_members

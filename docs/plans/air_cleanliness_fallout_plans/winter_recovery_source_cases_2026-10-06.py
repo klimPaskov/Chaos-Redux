@@ -26,7 +26,8 @@ constants = {}
 for filename in ('fallout_consolidated_constants.txt', 'fallout_winter_recovery_memory_constants.txt'):
     text = (ROOT / 'common/script_constants' / filename).read_text(encoding='utf-8-sig')
     groups = ('fallout_winter_recovery_memory',) if filename.startswith('fallout_winter') else (
-        'fallout_air_winter_memory', 'fallout_survival_resource', 'fallout_survival_numeric', 'fallout_runtime')
+        'fallout_air_winter_memory', 'fallout_survival_resource', 'fallout_survival_numeric', 'fallout_runtime',
+        'fallout_event_runtime', 'air_cleanliness_treaty_joint_action')
     for group in groups:
         category = definition(text, group)
         for key in category.children():
@@ -58,12 +59,18 @@ class World:
             return self.generation
         if value in constants:
             return constants[value]
+        if value.startswith("constant:"):
+            raise AssertionError("Unresolved source constant: " + value)
         try:
             return float(value)
         except ValueError:
             return self.temps.get(value, scope['vars'].get(value, 0))
 
     def conditions(self, nodes, scope):
+        if len(nodes) == 3 and all(n.key == '' for n in nodes) and nodes[1].value in ('<', '>'):
+            left = self.number(nodes[0].value, scope)
+            right = self.number(nodes[2].value, scope)
+            return left < right if nodes[1].value == '<' else left > right
         answers = []
         for node in nodes:
             key = node.key

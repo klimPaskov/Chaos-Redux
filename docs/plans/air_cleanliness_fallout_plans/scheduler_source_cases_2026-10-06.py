@@ -78,3 +78,33 @@ for paid, expected in ((25, 100), (27, 102), (0, 75), (None, 75)):
     world.execute(refund.children())
     assert world.country['vars']['political_power'] == expected
 print('4 saved-quote/refund cases passed; repeated cancellation cannot credit twice.')
+
+# The production charge is owner-authored after guarded admission, independent
+# of the console's native cost bypass. Repeated entry cannot multiply a quote.
+charge = model.definition(source, 'air_cleanliness_treaty_charge_relief_vote_quote')
+for initial in (25, 75):
+    world = model.World()
+    world.country['vars']['political_power'] = initial
+    world.execute(charge.children())
+    assert world.country['vars']['political_power'] == initial - 25
+    assert world.country['vars']['air_cleanliness_treaty_relief_vote_paid_quote'] == 25
+    world.execute(charge.children())
+    assert world.country['vars']['political_power'] == initial - 25
+    world.execute(refund.children())
+    assert world.country['vars']['political_power'] == initial
+    world.execute(refund.children())
+    assert world.country['vars']['political_power'] == initial
+print('2 real-charge/refund-cycle cases passed; no native fee assumption or double charge.')
+
+# The real native custom-cost trigger is inclusive at the actual quoted fee.
+decisions = (root / 'common/decisions/fallout_consolidated_decisions.txt').read_text(encoding='utf-8-sig')
+start = decisions.index('air_cleanliness_treaty_call_relief_vote = {')
+end = decisions.index('\n\t}', start) + 3
+decision = model.parse(decisions[start:end]).children()[0]
+cost_gate = decision.children('custom_cost_trigger')[0]
+assert decision.scalar('cost') == '0'
+for amount, expected in ((24, False), (25, True), (75, True)):
+    world = model.World()
+    world.country['vars']['political_power'] = amount
+    assert world.conditions(cost_gate.children(), world.country) == expected
+print('3 production relief custom-cost boundary cases passed; native primitive explicitly modelled.')
