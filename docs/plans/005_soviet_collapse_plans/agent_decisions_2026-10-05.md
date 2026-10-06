@@ -144,3 +144,15 @@ The parent installed and pixel-verified 45 textures, including the unconsumed le
 The two legacy Warroom aliases remain pointed to Home Guard because the user's explicit size/frame-only rule does not authorize their path correction; the narrow exception is awaiting a reply.
 The active focus Warroom already consumes its proper installed texture, and no registry file was edited.
 The final MCP raster returned Transport closed; `docs/plans/gfx_fix_2026-10/005_baltic_report.md` records the installed evidence and incomplete alias/engine acceptance.
+
+## Graphics review: Riga audit follow-up, 2026-10-06
+
+Acceptance basis: the user's G5 rule includes every visible size defect, including the auditor's additional Riga finding outside the original 303-row list.
+The small dispatch board is replaced by an original rail junction, manual point lever, physical semaphore and blank dispatch panel in the Baltic brass-and-laurel family.
+The parent reviewed the complete native-alpha source, the 94x86 PNG, decoded DDS contrasts and updated full 42-focus sheet.
+The visible subject occupies 88x79 rather than 64x60, with intact paint and at least three pixels of transparent margin.
+The semaphore's red-white arm is railway equipment, not a national flag.
+The parent applied and committed a single ASCII punctuation correction from `Riga?s` to `Riga's`, retaining every other shared localisation byte and staged change.
+The remaining legacy Warroom mapping and closed final MCP route remain explicit blockers.
+Four retained textures are normalized to the approved 2D base-level DDS header after the independent decoder rejected their mip/depth fields.
+Their complete pixel payloads and decoded RGBA arrays remain byte-identical.

@@ -1,5 +1,22 @@
 # Event 005 Baltic GFX Fix Report
 
+## Final parent follow-up
+
+The independent audit found Riga Corridor Switchyards visibly undersized at 64x60 inside its 94x86 canvas.
+The parent accepted a complete original native-alpha painting with a rail junction, manual point lever, physical semaphore, blank dispatch panel and Riga harbor skyline.
+Its visible subject is 88x79 with transparent margins of 3/3/3/4 pixels, and the installed DDS exactly matches the approved PNG.
+The complete active tree retains 42 distinct 94x86 images, with 40 focus textures and ten legacy textures promoted and two focus textures retained.
+Four current retained headers used inconsistent mip-count or depth fields and were normalized through the approved writer, preserving their entire BGRA payloads and decoded RGBA pixels.
+The header receipt is `header_normalization_followup/parent_installed.json`, and all 42 active DDS files pass the canonical base-level header check.
+The earlier 45-file receipt is the first promotion tranche, and the Riga follow-up receipt is `riga_followup/notes/parent_installed.json`.
+The updated current 42-row crosswalk and full-tree sheet supersede the earlier seven-retained staging state.
+The legacy Pan-Baltic normal/shine mapping remains blocked by the user size/frame-only `.gfx` rule, and final MCP rendering remains unavailable.
+The Riga focus description's literal `Riga?s` was corrected to `Riga's` in isolated commit `b313c2a8d`.
+For the live Riga check, use a paused 1936 LAT fixture, run `effect set_global_flag = { flag = chaos_tier value = 3 }` and `effect load_focus_tree = { tree = soviet_collapse_baltic_focus_tree }`, then hover Riga Corridor Switchyards.
+Expect a full-size rail-control emblem with no lettering or colored fringe, and the description should display `Riga's`.
+Repeat the tree review as EST and LIT for their country-only branches.
+The earlier USA-only fixture cannot show all six tag-specific Baltic focuses.
+
 **Disposition:** 45 reviewed runtime textures are installed; the legacy Warroom alias correction and final engine acceptance remain unresolved.
 
 **Acceptance basis:** The parent task explicitly authorizes all Event 005 Baltic-family GFX review repairs and names the canonical reference root, row set, 94x86 target, native-transparency workflow, output ownership, and no-runtime/no-`.gfx` boundary.
