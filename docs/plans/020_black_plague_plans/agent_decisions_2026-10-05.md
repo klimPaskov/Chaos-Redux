@@ -94,3 +94,14 @@ No repository-wide state-flow or helper-expansion query was used.
 The 26 ordinary state actions share a visibility gate but have distinct target predicates.
 Their exact simultaneous visible count remains unresolved without decision/GUI scenario evidence.
 No source-only action count is presented as proof of clipping or native panel overflow.
+
+
+## Graphics decisions accepted on 2026-10-06
+
+The current graphics brief authorizes coherent eight-frame seal animation and a brass/parchment progress meter, plus solid trap and badge interiors.
+Each seal keeps one immutable core with seven separately authored native-alpha glint layers; no transform-only animation was substituted.
+The terminal-readiness family uses 34px runtime frames and a 272x34 sheet because its sole consumer is a 41px decision row; the 64px authored masters remain preserved.
+This canvas correction clears the actual overlap without dropping frames or changing the 6fps loop.
+The meter has a matched 60-percent MCP comparison and coherent 0/100-percent post-change coverage.
+The renderer does not expose a supported time/frame selector for the seal shader, so in-consumer motion remains a stated validation limit.
+Evidence is docs/plans/gfx_fix_2026-10/020_report.md and 020_gui_handoff.md.
