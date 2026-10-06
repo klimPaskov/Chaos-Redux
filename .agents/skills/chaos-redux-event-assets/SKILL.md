@@ -969,6 +969,8 @@ When an asset package contains many generated or sourced images, create a contac
 For replacement work, preserve the pre-edit runtime textures, relevant registry text, and original review sheets with hashes in the owning workspace before generating comparison sheets.
 Inspect a contact-sheet script's entry point and configured output paths before running it; do not assume `--help` is read-only when the script has no argument parser.
 Write new sheets to an isolated task directory, never over shared baseline sheets; use the preserved runtime snapshots if another session replaces the shared sheets.
+For offline sheet-load failures, resolve the actual mod or installed-vanilla texture and use DirectXTex for a review-only PNG decode when Pillow cannot handle its DDS format; record source paths, hashes and decoder limits instead of declaring the asset missing or corrupt.
+A sheet that displays only frame 1 does not review a whole strip; inspect every changed frame separately at native size, and keep all offline sheet evidence distinct from the required MCP GUI render and comparison evidence.
 
 Small template, facility, unit, counter, and emblem packages always require a native-size contact sheet, even when the package contains one final asset.
 
