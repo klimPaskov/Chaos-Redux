@@ -78,6 +78,17 @@ The regression command prints this counterexample as a limitation, separately fr
 The event documentation must not claim the workbook matches current wording while [catalog_changes_pending.md](catalog_changes_pending.md) still queues changes for its owner.
 No workbook or CSV is edited by this pass.
 
+## D43. Retain the price table's negative debit output
+
+Disposition: implemented in source.
+The acceptance basis is the takeover's matching quote/payment requirement and the documented helper-output lifetime.
+
+`black_friday_price_table_refresh_entries` owns `black_friday_price_spend` before calling the quote helper or the nested Soviet Collapse table writer.
+The nested writer's negative globals therefore retain the quote's actual negation rather than reading an absent temporary as zero.
+The source regression reproduced zero negative outputs at full, half, and quarter price before the repair, and verifies matching positive/negative outputs afterward.
+The price table version advances from 17 to 18 so initialization rebuilds already-stamped values.
+No ordinary amount, sale ratio, owner outcome, or AI weight changes.
+
 ## References and checks
 
 - Offline `paradox_wiki/Data structures - Hearts of Iron 4 Wiki.md`, lines 435–442: temporary helper lifetime.

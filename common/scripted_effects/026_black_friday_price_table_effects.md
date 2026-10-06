@@ -13,6 +13,10 @@ The CXT decision `chaosx_test_country_event026_price_probe_decision` is the live
 
 ## Contract
 
+Before reading the quote after helper return, a caller initializes `black_friday_price_payable` to the ordinary amount and `black_friday_price_spend` to `constant:black_friday_event.zero` in its own block.
+`black_friday_price_table_refresh_entries` owns both outputs for its direct quotes and its nested owner-table calls.
+Version 18 rebuilds negative debit globals with retained caller storage, as recorded in Event 026 decision D43.
+
 | Effect | Scope | Inputs | Outputs and side effects |
 | --- | --- | --- | --- |
 | `black_friday_price_table_quote` | Any | Temp `black_friday_price_ordinary`, temp `black_friday_price_ratio` (payment ratio in basis points of `constant:black_friday_event.ratio_basis`), optional temp `black_friday_price_quantum` (smallest payable step; unset or zero means 1) | Caller-owned temp `black_friday_price_payable`. A positive price below the full ratio becomes `ordinary x ratio / ratio_basis` rounded up to a whole number of steps, at least one step and never more than the ordinary price, so a price smaller than one step keeps its ordinary amount. Zero, negative, and full-ratio prices are returned unchanged. Caller-owned temp `black_friday_price_spend` holds the negated payable amount, which a payment line can add directly. No other side effect. |

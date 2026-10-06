@@ -10,6 +10,8 @@ const effectsPath = 'common/scripted_effects/026_black_friday_effects.txt';
 const nativeSource = fs.readFileSync(path.join(root, nativePath), 'utf8');
 const effectsSource = fs.readFileSync(path.join(root, effectsPath), 'utf8');
 const dynamic = parse(fs.readFileSync(path.join(root, 'common/dynamic_modifiers/026_black_friday_dynamic_modifiers.txt'), 'utf8'))[0].value;
+const priceDefinitions = new Map(parse(fs.readFileSync(path.join(root, 'common/scripted_effects/026_black_friday_price_table_effects.txt'), 'utf8')).map(node => [node.key, node.value]));
+definitions.set('black_friday_price_table_quote', priceDefinitions.get('black_friday_price_table_quote'));
 for (const category of parse(fs.readFileSync(path.join(root, 'common/script_constants/026_black_friday_constants.txt'), 'utf8'))) {
   for (const entry of category.value) if (!Array.isArray(entry.value)) constants.set(`constant:${category.key}.${entry.key}`, ticks(entry.value));
 }
@@ -47,7 +49,7 @@ class NativeVM extends VM {
   eval(nodes) {
     const primitives = new Set(['has_country_flag', 'set_country_flag', 'clr_country_flag', 'has_dynamic_modifier',
       'add_dynamic_modifier', 'remove_dynamic_modifier', 'force_update_dynamic_modifier', 'clear_variable',
-      'clamp_temp_variable', 'has_idea', 'is_ai', 'country_event', 'has_political_power', 'add_political_power']);
+      'clamp_temp_variable', 'round_temp_variable', 'has_idea', 'is_ai', 'country_event', 'has_political_power', 'add_political_power']);
     const translated = nodes.map(node => {
       if (!primitives.has(node.key)) return node;
       const name = `native_test_primitive_${this.nativeCalls.size}`;
@@ -71,6 +73,7 @@ class NativeVM extends VM {
           return node.op === '<' ? a < b : node.op === '>' ? a > b : a === b;
         }
         if (key === 'add_political_power') { this.write('political_power', this.value('political_power') + this.value(value), false); return true; }
+        if (key === 'round_temp_variable') { const a = this.value(value); assert(a >= 0n); this.write(value, (a + S / 2n) / S * S); return true; }
         const variable = this.field(value, 'var'), min = this.field(value, 'min'), max = this.field(value, 'max');
         let amount = this.value(variable);
         if (max !== undefined && amount > this.value(max)) amount = this.value(max);
@@ -183,6 +186,20 @@ for (const [ratio, payable] of [[10000, 50], [5000, 25], [2500, 13]]) {
     assert.equal(vm.run('black_friday_simple_cost_is_affordable'), false);
   });
 }
+for (const ratio of [10000, 5000, 2500]) check(`table_negative_spend_output_${ratio}`, () => {
+  const vm = new NativeVM(); vm.set('black_friday_price_ratio', ratio);
+  const refresh = priceDefinitions.get('black_friday_price_table_refresh_entries');
+  const prefix = refresh.slice(0, refresh.findIndex(node => node.key === 'black_friday_price_table_quote'));
+  // Bound the large table to one REAL positive/negative pair. The fixture cost
+  // is 100, while the production initializer and nested quote/write nodes run.
+  const owner = priceDefinitions.get('black_friday_price_table_refresh_soviet_collapse_entries').slice(0, 4);
+  constants.set(owner[0].value[0].value, ticks(100));
+  definitions.set('table_owner_pair_fixture', owner);
+  definitions.set('table_initialization_fixture', [...prefix, { key: 'table_owner_pair_fixture', op: '=', value: 'yes' }]);
+  vm.run('table_initialization_fixture');
+  assert.equal(vm.value(owner[2].value[0].key), ticks(ratio / 100));
+  assert.equal(vm.value(owner[3].value[0].key), -ticks(ratio / 100));
+});
 for (const reason of ['active', 'fired', 'disabled', 'paused', 'world_end', 'reserved', 'below_chaos']) {
   check(`manual_failure_${reason}_once`, () => {
     const vm = new NativeVM();
