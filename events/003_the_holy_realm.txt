@@ -30,12 +30,21 @@ country_event = {
 	hidden = yes
 
 	trigger = {
-		holy_realm_has_valid_refuge_host = yes
 		NOT = { has_global_flag = holy_realm_exists }
 	}
 
 	immediate = {
-		holy_realm_select_weighted_refuge_host = yes
+		if = {
+			limit = {
+				NOT = {
+					AND = {
+						has_event_target = holy_realm_prefire_refuge_host
+						event_target:holy_realm_prefire_refuge_host = { can_host_holy_realm_refuge = yes }
+					}
+				}
+			}
+			holy_realm_select_weighted_refuge_host = yes
+		}
 		if = {
 			limit = {
 				has_event_target = holy_realm_prefire_refuge_host
@@ -49,11 +58,33 @@ country_event = {
 				else = {
 					set_country_flag = holy_realm_memory_invited_figure
 					holy_realm_form_country = yes
-					news_event = { id = chaosx.news.9 days = 2 }
+					holy_realm_publish_refuge_news = yes
 					country_event = { id = chaosx.nr3.4 days = 20 }
 				}
 			}
 		}
+		else = {
+			country_event = { id = chaosx.nr3.5 }
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr3.5
+	title = chaosx.nr3.5.t
+	desc = {
+		trigger = { has_global_flag = holy_realm_exists }
+		text = chaosx.nr3.5.formed.d
+	}
+	desc = {
+		trigger = { NOT = { has_global_flag = holy_realm_exists } }
+		text = chaosx.nr3.5.d
+	}
+	picture = GFX_report_event_holy_realm_refuge
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr3.5.a
 	}
 }
 
@@ -96,7 +127,7 @@ country_event = {
 		hidden_effect = {
 			set_country_flag = holy_realm_memory_invited_figure
 			holy_realm_form_country = yes
-			news_event = { id = chaosx.news.9 days = 2 }
+			holy_realm_publish_refuge_news = yes
 			country_event = { id = chaosx.nr3.4 days = 20 }
 			BHU = {
 				if = {
@@ -161,7 +192,7 @@ country_event = {
 		hidden_effect = {
 			set_country_flag = holy_realm_memory_proclaimed_mandate
 			holy_realm_form_country = yes
-			news_event = { id = chaosx.news.9 days = 2 }
+			holy_realm_publish_refuge_news = yes
 			country_event = { id = chaosx.nr3.4 days = 10 }
 		}
 	}
@@ -884,6 +915,8 @@ country_event = {
 	}
 }
 
+# Legacy queued world-wide witness report. The current terminal path delegates
+# to Fallout and no longer schedules this popup.
 country_event = {
 	id = chaosx.nr3.73
 	title = chaosx.nr3.73.t
@@ -916,14 +949,6 @@ country_event = {
 			if = {
 				limit = { holy_realm_can_complete_terminal_final_silence = yes }
 				holy_realm_complete_terminal_final_silence = yes
-				every_other_country = {
-					limit = {
-						exists = yes
-						NOT = { is_holy_realm_country = yes }
-					}
-					country_event = { id = chaosx.nr3.73 days = 1 }
-				}
-				country_event = { id = chaosx.nr3.90 days = 1 }
 			}
 			else = {
 				holy_realm_complete_nonterminal_final_silence = yes
@@ -950,6 +975,8 @@ country_event = {
 	}
 }
 
+# Legacy Final Silence strike-wave callbacks remain for existing queued chains;
+# current terminal completion requests Fallout directly.
 country_event = {
 	id = chaosx.nr3.82
 	title = chaosx.nr3.82.t
@@ -1030,6 +1057,8 @@ country_event = {
 	}
 }
 
+# Legacy completion notification for terminal strike-wave callbacks. The active
+# Fallout route has no Event003 popup or secondary world-end effect.
 country_event = {
 	id = chaosx.nr3.90
 	title = chaosx.nr3.90.t
@@ -1039,9 +1068,6 @@ country_event = {
 
 	option = {
 		name = chaosx.nr3.90.a
-		hidden_effect = {
-			world_end_scenario_triggered = yes
-		}
 	}
 }
 
@@ -1714,7 +1740,7 @@ country_event = {
 		hidden_effect = {
 			set_country_flag = holy_realm_teaching_pramudita_discipline
 			holy_realm_advance_bodhisattva_bhumi = yes
-			add_political_power = 75
+			add_political_power = constant:holy_realm_buddhahood.bhumi_teaching_discipline_political_power
 			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
 			holy_realm_add_mandala_reach = yes
 		}
@@ -1752,7 +1778,7 @@ country_event = {
 		hidden_effect = {
 			set_country_flag = holy_realm_teaching_vimala_order
 			holy_realm_advance_bodhisattva_bhumi = yes
-			add_political_power = 100
+			add_political_power = constant:holy_realm_buddhahood.bhumi_teaching_order_political_power
 			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
 			holy_realm_add_mandala_reach = yes
 		}

@@ -69,6 +69,10 @@ holy_realm_ensure_buddhahood_counters = {
 		limit = { NOT = { has_variable = crisis_teaching_successes } }
 		set_variable = { crisis_teaching_successes = 0 }
 	}
+	# Display bounds mirror the tuning constants and are read only by the Mandala GUI.
+	set_variable = { holy_realm_ui_bodhi_max = constant:holy_realm_buddhahood.bodhi_max }
+	set_variable = { holy_realm_ui_dhyana_max = constant:holy_realm_buddhahood.dhyana_max }
+	set_variable = { holy_realm_ui_teaching_successes_required = constant:holy_realm_buddhahood.teaching_successes_required }
 	clamp_variable = { var = bodhi_progress min = 0 max = constant:holy_realm_buddhahood.bodhi_max }
 	clamp_variable = { var = dhyana_depth min = 0 max = constant:holy_realm_buddhahood.dhyana_max }
 	clamp_variable = { var = compassion min = 0 max = 100 }
@@ -988,23 +992,23 @@ holy_realm_advance_bodhisattva_bhumi = {
 		set_variable = { bodhisattva_bhumi = 0 }
 	}
 	if = {
-		limit = { check_variable = { bodhisattva_bhumi < 10 } }
+		limit = { check_variable = { bodhisattva_bhumi < constant:holy_realm_buddhahood.bhumi_max } }
 		add_to_variable = { bodhisattva_bhumi = 1 }
 	}
 	if = {
-		limit = { check_variable = { bodhisattva_bhumi > 9 } }
+		limit = { check_variable = { bodhisattva_bhumi > constant:holy_realm_buddhahood.bhumi_dharmamegha_floor } }
 		set_country_leader_portrait = {
 			portrait = "GFX_portrait_THR_bodhisattva_dharmamegha"
 		}
 	}
 	else_if = {
-		limit = { check_variable = { bodhisattva_bhumi > 7 } }
+		limit = { check_variable = { bodhisattva_bhumi > constant:holy_realm_buddhahood.bhumi_acala_floor } }
 		set_country_leader_portrait = {
 			portrait = "GFX_portrait_THR_bodhisattva_acala"
 		}
 	}
 	else_if = {
-		limit = { check_variable = { bodhisattva_bhumi > 0 } }
+		limit = { check_variable = { bodhisattva_bhumi > constant:holy_realm_buddhahood.bhumi_pramudita_floor } }
 		set_country_leader_portrait = {
 			portrait = "GFX_portrait_THR_bodhisattva_pramudita"
 		}
@@ -1012,17 +1016,29 @@ holy_realm_advance_bodhisattva_bhumi = {
 	set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
 	holy_realm_add_spiritual_legitimacy = yes
 	if = {
-		limit = { check_variable = { bodhisattva_bhumi > 3 } }
-		add_political_power = 50
+		limit = {
+			check_variable = { bodhisattva_bhumi > constant:holy_realm_buddhahood.bhumi_authority_reward_floor }
+			NOT = { has_country_flag = holy_realm_bhumi_authority_reward_received }
+		}
+		set_country_flag = holy_realm_bhumi_authority_reward_received
+		add_political_power = constant:holy_realm_buddhahood.bhumi_authority_political_power
 	}
 	if = {
-		limit = { check_variable = { bodhisattva_bhumi > 6 } }
-		add_political_power = 75
-		add_command_power = 15
+		limit = {
+			check_variable = { bodhisattva_bhumi > constant:holy_realm_buddhahood.bhumi_awakened_reward_floor }
+			NOT = { has_country_flag = holy_realm_bhumi_awakened_reward_received }
+		}
+		set_country_flag = holy_realm_bhumi_awakened_reward_received
+		add_political_power = constant:holy_realm_buddhahood.bhumi_awakened_political_power
+		add_command_power = constant:holy_realm_buddhahood.bhumi_awakened_command_power
 	}
 	if = {
-		limit = { check_variable = { bodhisattva_bhumi > 8 } }
-		add_stability = 0.02
+		limit = {
+			check_variable = { bodhisattva_bhumi > constant:holy_realm_buddhahood.bhumi_stability_reward_floor }
+			NOT = { has_country_flag = holy_realm_bhumi_stability_reward_received }
+		}
+		set_country_flag = holy_realm_bhumi_stability_reward_received
+		add_stability = constant:holy_realm_buddhahood.bhumi_dharmamegha_stability
 	}
 	holy_realm_refresh_bodhisattva_leader_trait = yes
 }
@@ -1797,6 +1813,54 @@ holy_realm_set_stage_final_silence = {
 	holy_realm_try_form_master_idea = yes
 }
 
+holy_realm_publish_refuge_news = {
+	if = {
+		limit = { NOT = { has_global_flag = holy_realm_refuge_news_sent } }
+		set_global_flag = holy_realm_refuge_news_sent
+		news_event = { id = chaosx.news.9 days = 2 }
+	}
+}
+
+# COUNTRY scope; cancel or fail a targeted pilgrimage escort. Returns the
+# recorded PP quote plus the fixed command-power and support-equipment costs,
+# withdraws its exact Black Friday credit receipt, frees the teaching seat,
+# clears active state, and keeps the established failure penalties.
+holy_realm_cancel_pilgrimage_route_escort = {
+	if = {
+		limit = { has_country_flag = holy_realm_pilgrimage_route_escort_active }
+		if = {
+			limit = {
+				has_variable = holy_realm_pilgrimage_route_escort_pp_paid
+				check_variable = { holy_realm_pilgrimage_route_escort_pp_paid > 0 }
+			}
+			add_political_power = holy_realm_pilgrimage_route_escort_pp_paid
+		}
+		add_command_power = constant:holy_realm_decision.pilgrimage_escort_command_power
+		add_equipment_to_stockpile = {
+			type = support_equipment_1
+			amount = constant:holy_realm_decision.pilgrimage_escort_support_equipment
+		}
+		set_temp_variable = { black_friday_political_power_receipt_credited = 0 }
+		set_temp_variable = { black_friday_political_power_receipt_sale_sequence = 0 }
+		if = {
+			limit = { has_country_flag = holy_realm_pilgrimage_route_escort_sale_credit }
+			set_temp_variable = { black_friday_political_power_receipt_credited = 1 }
+			set_temp_variable = { black_friday_political_power_receipt_sale_sequence = holy_realm_pilgrimage_route_escort_sale_sequence }
+		}
+		black_friday_withdraw_political_power_purchase_with_receipt = yes
+		set_variable = { holy_realm_pilgrimage_route_escort_pp_paid = 0 }
+		clr_country_flag = holy_realm_pilgrimage_route_escort_sale_credit
+		set_variable = { holy_realm_pilgrimage_route_escort_sale_sequence = 0 }
+		holy_realm_finish_teaching_mission_slot = yes
+		clr_country_flag = holy_realm_pilgrimage_route_escort_active
+		custom_effect_tooltip = THR_bodhisattva_guard_pilgrimage_route_failure_tt
+		set_temp_variable = { holy_realm_defilements_delta = constant:holy_realm_counter.small_gain }
+		holy_realm_add_defilements = yes
+		set_temp_variable = { holy_realm_sangha_delta = constant:holy_realm_counter.small_loss }
+		holy_realm_add_sangha_cohesion = yes
+	}
+}
+
 holy_realm_form_country = {
 	set_country_flag = holy_realm_active
 	random_faction_disqualify_current_target_achievement_ledgers = yes
@@ -2279,7 +2343,7 @@ holy_realm_complete_nonterminal_final_silence = {
 	holy_realm_add_chaos = yes
 	if = {
 		limit = {
-			NOT = { has_global_flag = world_end_final_silence }
+			NOT = { has_country_flag = holy_realm_final_silence_terminal_completed }
 			has_country_flag = holy_realm_empty_seat_leader
 			is_faction_leader = yes
 			num_faction_members > 3
@@ -2523,6 +2587,54 @@ holy_realm_select_weighted_refuge_host = {
 		random_country = {
 			limit = { can_host_holy_realm_refuge = yes }
 			save_event_target_as = holy_realm_prefire_refuge_host
+		}
+	}
+}
+# Reports an unavailable manual refuge request without dispatching the birth event.
+holy_realm_report_unavailable_refuge_host = {
+	if = {
+		limit = {
+			has_event_target = chaosx_manual_event_requester
+			event_target:chaosx_manual_event_requester = {
+				exists = yes
+				is_ai = no
+				NOT = { has_country_flag = chaosx_manual_event_failure_shown }
+			}
+		}
+		event_target:chaosx_manual_event_requester = {
+			set_country_flag = chaosx_manual_event_failure_shown
+			country_event = { id = chaosx.nr3.5 }
+		}
+	}
+}
+
+# COUNTRY scope; manual Settings entry validates and exposes the same host to the log.
+# The entry event reuses this regular target after revalidating it, without rerolling.
+holy_realm_prepare_event_fire = {
+	if = {
+		limit = {
+			check_variable = { event_id = constant:holy_realm_event_log.event_id }
+			check_variable = { events_log_manual_event_detail_trigger > 0 }
+		}
+		if = {
+			limit = { has_global_flag = holy_realm_exists }
+			set_temp_variable = { event_single_fire_allowed = 0 }
+			holy_realm_report_unavailable_refuge_host = yes
+		}
+		else = {
+			holy_realm_select_weighted_refuge_host = yes
+			if = {
+				limit = {
+					NOT = {
+						AND = {
+							has_event_target = holy_realm_prefire_refuge_host
+							event_target:holy_realm_prefire_refuge_host = { can_host_holy_realm_refuge = yes }
+						}
+					}
+				}
+				set_temp_variable = { event_single_fire_allowed = 0 }
+				holy_realm_report_unavailable_refuge_host = yes
+			}
 		}
 	}
 }

@@ -73,12 +73,30 @@ holy_realm_bodhisattva_path_unlocked = {
 	holy_realm_has_bodhisattva_stage = yes
 }
 
+holy_realm_bhumi_advancement_available = {
+	OR = {
+		NOT = { has_variable = bodhisattva_bhumi }
+		check_variable = {
+			var = bodhisattva_bhumi
+			value = constant:holy_realm_buddhahood.bhumi_max
+			compare = less_than
+		}
+	}
+}
+
 holy_realm_arhat_path_unlocked = {
 	holy_realm_has_arhat_stage = yes
 }
 
 holy_realm_buddha_path_unlocked = {
 	holy_realm_has_buddha_mandate = yes
+}
+
+# Country scope; the Unshaken Seat requires the current capital and its
+# sanctuary to have remained secure through the recent-fall period.
+holy_realm_capital_sanctuary_secured = {
+	capital_scope = { is_controlled_by = ROOT }
+	NOT = { has_country_flag = holy_realm_capital_sanctuary_recently_fallen }
 }
 
 holy_realm_divine_path_unlocked = {
@@ -451,7 +469,7 @@ holy_realm_can_form_silent_mandala = {
 	num_faction_members > @HOLY_REALM_SILENT_MANDALA_MIN_FACTION_MEMBERS
 	NOT = { has_country_flag = holy_realm_silent_mandala_formed }
 	NOT = { has_country_flag = holy_realm_false_buddha_schism_pressure }
-	NOT = { has_global_flag = world_end_final_silence }
+	NOT = { has_country_flag = holy_realm_final_silence_terminal_completed }
 }
 
 holy_realm_sangha_compact_member_valid = {
@@ -775,9 +793,21 @@ holy_realm_final_doctrine_balance_leans_vow = {
 }
 
 holy_realm_can_fund_mandala_peacekeeping = {
-	has_manpower > constant:holy_realm_decision.mandala_peacekeeping_manpower
-	has_equipment = { infantry_equipment > constant:holy_realm_decision.mandala_peacekeeping_infantry_equipment }
-	has_equipment = { support_equipment > constant:holy_realm_decision.mandala_peacekeeping_support_equipment }
+	check_variable = {
+		var = manpower_k
+		value = constant:holy_realm_decision.mandala_peacekeeping_manpower_k_gate
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = num_equipment@infantry_equipment
+		value = constant:holy_realm_decision.mandala_peacekeeping_infantry_equipment
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = num_equipment@support_equipment
+		value = constant:holy_realm_decision.mandala_peacekeeping_support_equipment
+		compare = greater_than_or_equals
+	}
 }
 
 holy_realm_has_final_silence_nuke_stockpile = {
@@ -933,4 +963,11 @@ is_holy_realm_foreign_responder = {
 		has_global_flag = holy_realm_global_warning
 		has_global_flag = world_end_final_silence
 	}
+}
+
+holy_realm_schism_response_unresolved = {
+	NOT = { has_completed_focus = THR_debate_the_pretender_focus }
+	NOT = { has_completed_focus = THR_exile_the_echo }
+	NOT = { has_completed_focus = THR_break_false_mandala }
+	NOT = { has_completed_focus = THR_absorb_the_shadow }
 }

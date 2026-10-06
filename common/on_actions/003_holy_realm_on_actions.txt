@@ -1,8 +1,8 @@
 # ============================================================================
 # CHAOS REDUX - HOLY REALM ON ACTIONS
 # ============================================================================
-# Hooks Holy Realm runtime behavior into generic on_actions without adding new
-# daily or monthly country iterations beyond the existing event pulse.
+# Hooks event callbacks into generic on_actions. The doctrine balance uses
+# tag-specific daily actions for the three valid mountain hosts only.
 # ============================================================================
 
 @HOLY_REALM_CAPITAL_SANCTUARY_RECENT_FALL_DAYS = 180
@@ -115,7 +115,33 @@ on_actions = {
 		}
 	}
 
-	on_daily = {
+	on_daily_TIB = {
+		effect = {
+			if = {
+				limit = {
+					is_holy_realm_country = yes
+					has_power_balance = {
+						id = holy_realm_final_doctrine_balance
+					}
+				}
+				holy_realm_daily_doctrine_balance_pulse = yes
+			}
+		}
+	}
+	on_daily_BHU = {
+		effect = {
+			if = {
+				limit = {
+					is_holy_realm_country = yes
+					has_power_balance = {
+						id = holy_realm_final_doctrine_balance
+					}
+				}
+				holy_realm_daily_doctrine_balance_pulse = yes
+			}
+		}
+	}
+	on_daily_NEP = {
 		effect = {
 			if = {
 				limit = {

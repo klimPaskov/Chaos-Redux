@@ -1,0 +1,137 @@
+# ============================================================================
+# CHAOS REDUX - HOLY REALM ON ACTIONS
+# ============================================================================
+# Hooks Holy Realm runtime behavior into generic on_actions without adding new
+# daily or monthly country iterations beyond the existing event pulse.
+# ============================================================================
+
+@HOLY_REALM_CAPITAL_SANCTUARY_RECENT_FALL_DAYS = 180
+
+on_actions = {
+	on_state_control_changed = {
+		effect = {
+			if = {
+				limit = { fallout_world_rewrite_callbacks_are_allowed = yes }
+				if = {
+					limit = {
+						NOT = { is_holy_realm_country = yes }
+						FROM = { is_holy_realm_country = yes }
+						FROM.FROM = { is_capital = yes }
+					}
+					FROM = {
+						set_country_flag = {
+							flag = holy_realm_capital_sanctuary_recently_fallen
+							days = @HOLY_REALM_CAPITAL_SANCTUARY_RECENT_FALL_DAYS
+						}
+					}
+				}
+				if = {
+					limit = {
+						has_event_target = holy_realm_lotus_bridge_actor
+						FROM = { has_country_flag = holy_realm_lotus_bridge_protected_target }
+						FROM.FROM = { is_capital = yes }
+					}
+					event_target:holy_realm_lotus_bridge_actor = {
+						clr_country_flag = holy_realm_lotus_bridge_watch_valid
+						set_country_flag = holy_realm_lotus_bridge_capital_fell
+					}
+					FROM = { clr_country_flag = holy_realm_lotus_bridge_protected_target }
+				}
+			}
+		}
+	}
+
+	on_join_faction = {
+		effect = {
+			if = {
+				limit = {
+					FROM = {
+						has_country_flag = holy_realm_mandala_of_nations_leader
+						is_faction_leader = yes
+					}
+				}
+				holy_realm_mandala_of_nations_member_joined = yes
+			}
+		}
+	}
+
+	on_declare_war = {
+		effect = {
+			if = {
+				limit = {
+					is_holy_realm_country = yes
+					FROM = {
+						NOT = { is_holy_realm_country = yes }
+						NOT = { is_special_chaos_country = yes }
+					}
+				}
+				set_country_flag = holy_realm_ordinary_conquest_abuse
+			}
+			if = {
+				limit = {
+					is_holy_realm_country = yes
+					FROM = { is_special_chaos_country = yes }
+				}
+				clr_country_flag = holy_realm_current_chaos_war_walls_used
+				clr_country_flag = holy_realm_current_chaos_war_water_used
+				clr_country_flag = holy_realm_current_chaos_war_sky_used
+			}
+		}
+	}
+
+	on_leave_faction = {
+		effect = {
+			if = {
+				limit = {
+					fallout_world_rewrite_callbacks_are_allowed = yes
+					has_event_target = holy_realm_mandala_of_nations_leader
+					event_target:holy_realm_mandala_of_nations_leader = {
+						exists = yes
+						has_country_flag = holy_realm_mandala_of_nations_leader
+					}
+				}
+				event_target:holy_realm_mandala_of_nations_leader = {
+					holy_realm_refresh_sangha_of_nations_status = yes
+				}
+			}
+			if = {
+				limit = {
+					fallout_world_rewrite_callbacks_are_allowed = yes
+					has_country_flag = holy_realm_mandala_peace_vow_locked
+				}
+				if = {
+					limit = {
+						FROM = { has_country_flag = holy_realm_mandala_of_nations_leader }
+					}
+					save_event_target_as = holy_realm_compact_departing_country
+					FROM = {
+						country_event = { id = chaosx.nr3.130 }
+						holy_realm_refresh_mandala_of_nations_faction = yes
+						holy_realm_refresh_sangha_of_nations_status = yes
+					}
+				}
+				holy_realm_clear_mandala_peace_vow = yes
+			}
+		}
+	}
+
+	on_daily = {
+		effect = {
+			if = {
+				limit = {
+					is_holy_realm_country = yes
+					has_power_balance = {
+						id = holy_realm_final_doctrine_balance
+					}
+				}
+				holy_realm_daily_doctrine_balance_pulse = yes
+			}
+		}
+	}
+
+	on_capitulation = {
+		effect = {
+			holy_realm_on_country_capitulation = yes
+		}
+	}
+}

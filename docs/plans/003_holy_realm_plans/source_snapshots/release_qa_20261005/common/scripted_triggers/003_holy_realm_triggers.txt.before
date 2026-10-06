@@ -1,0 +1,936 @@
+# Overview:
+# - Scripted triggers for the Holy Realm formation route, stage gates, doctrine
+#   memory, foreign containment, and Final Silence world-end conditions.
+
+@HOLY_REALM_GREAT_MANDALA_MIN_FACTION_MEMBERS = 3
+@HOLY_REALM_SILENT_MANDALA_MIN_FACTION_MEMBERS = 1
+
+is_holy_realm_country = {
+	has_country_flag = holy_realm_active
+}
+
+can_host_holy_realm_refuge = {
+	exists = yes
+	uses_normal_civilian_systems = yes
+	NOT = { is_special_chaos_country = yes }
+	NOT = { is_zombie_outbreak_country = yes }
+	NOT = { is_weaponized_zombie_outbreak_country = yes }
+	NOT = { has_country_flag = holy_realm_refused_calling }
+	OR = {
+		tag = TIB
+		AND = {
+			NOT = { TIB = { exists = yes } }
+			OR = {
+				tag = BHU
+				tag = NEP
+			}
+		}
+	}
+}
+
+holy_realm_has_valid_refuge_host = {
+	OR = {
+		TIB = { can_host_holy_realm_refuge = yes }
+		AND = {
+			NOT = { TIB = { exists = yes } }
+			OR = {
+				BHU = { can_host_holy_realm_refuge = yes }
+				NEP = { can_host_holy_realm_refuge = yes }
+			}
+		}
+	}
+}
+
+holy_realm_is_sovereign = {
+	exists = yes
+	is_subject = no
+}
+
+holy_realm_has_bodhisattva_stage = {
+	has_country_flag = holy_realm_stage_bodhisattva
+}
+
+holy_realm_has_arhat_stage = {
+	has_country_flag = holy_realm_stage_arhat_administration
+}
+
+holy_realm_has_buddha_mandate = {
+	OR = {
+		has_country_flag = holy_realm_stage_buddha_mandate
+		has_country_flag = holy_realm_buddhahood_attained
+	}
+}
+
+holy_realm_has_divine_sovereignty = {
+	has_country_flag = holy_realm_stage_divine_sovereignty
+}
+
+holy_realm_has_final_silence_stage = {
+	has_country_flag = holy_realm_stage_final_silence
+}
+
+holy_realm_bodhisattva_path_unlocked = {
+	holy_realm_has_bodhisattva_stage = yes
+}
+
+holy_realm_arhat_path_unlocked = {
+	holy_realm_has_arhat_stage = yes
+}
+
+holy_realm_buddha_path_unlocked = {
+	holy_realm_has_buddha_mandate = yes
+}
+
+holy_realm_divine_path_unlocked = {
+	holy_realm_has_divine_sovereignty = yes
+}
+
+holy_realm_final_path_unlocked = {
+	holy_realm_has_final_silence_stage = yes
+}
+
+holy_realm_chaos_below_peace_focus_ceiling = {
+	check_variable = { global.chaos_meter_value < constant:holy_realm_chaos.peace_focus_ceiling }
+}
+
+holy_realm_chaos_below_mercy_focus_ceiling = {
+	check_variable = { global.chaos_meter_value < constant:holy_realm_chaos.mercy_focus_ceiling }
+}
+
+holy_realm_chaos_above_intervention_floor = {
+	check_variable = { global.chaos_meter_value > constant:holy_realm_chaos.intervention_floor }
+}
+
+holy_realm_chaos_above_coercive_floor = {
+	check_variable = { global.chaos_meter_value > constant:holy_realm_chaos.coercive_floor }
+}
+
+holy_realm_chaos_above_divine_floor = {
+	check_variable = { global.chaos_meter_value > constant:holy_realm_chaos.divine_floor }
+}
+
+holy_realm_chaos_above_final_gate = {
+	check_variable = { global.chaos_meter_value > constant:holy_realm_chaos.final_silence_gate }
+}
+
+holy_realm_chaos_at_least_chaos_tier = {
+	check_variable = {
+		var = global.chaos_meter_value
+		value = constant:chaos_meter_tier_range.tier_3.min
+		compare = greater_than_or_equals
+	}
+}
+
+holy_realm_chaos_at_least_totalen_chaos = {
+	check_variable = {
+		var = global.chaos_meter_value
+		value = constant:chaos_meter_tier_range.tier_4.min
+		compare = greater_than_or_equals
+	}
+}
+
+holy_realm_chaos_at_least_world_collapse = {
+	OR = {
+		has_global_flag = { flag = chaos_tier value = 5 }
+		check_variable = {
+			var = global.chaos_meter_value
+			value = constant:chaos_meter_tier_range.tier_final.min
+			compare = greater_than_or_equals
+		}
+	}
+}
+
+holy_realm_chaos_source_controls_major_capital = {
+	is_special_chaos_country = yes
+	OR = {
+		is_major = yes
+		any_controlled_state = {
+			is_capital = yes
+			owner = { is_major = yes }
+		}
+	}
+}
+
+holy_realm_chaos_threatens_realm_or_compact = {
+	OR = {
+		any_enemy_country = { is_special_chaos_country = yes }
+		any_neighbor_country = { is_special_chaos_country = yes }
+		any_allied_country = {
+			is_in_faction_with = ROOT
+			any_enemy_country = { is_special_chaos_country = yes }
+		}
+		holy_realm_chaos_at_least_totalen_chaos = yes
+	}
+}
+
+holy_realm_can_become_buddha = {
+	is_holy_realm_country = yes
+	holy_realm_is_sovereign = yes
+	has_country_flag = holy_realm_focus_unshaken_seat
+	NOT = { holy_realm_has_buddha_mandate = yes }
+	check_variable = {
+		var = bodhi_progress
+		value = constant:holy_realm_buddhahood.bodhi_max
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = dhyana_depth
+		value = constant:holy_realm_buddhahood.dhyana_max
+		compare = greater_than_or_equals
+	}
+	check_variable = { defilements < constant:holy_realm_buddhahood.defilements_threshold }
+	check_variable = {
+		var = teaching_successes
+		value = constant:holy_realm_buddhahood.teaching_successes_required
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = crisis_teaching_successes
+		value = constant:holy_realm_buddhahood.crisis_teaching_successes_required
+		compare = greater_than_or_equals
+	}
+}
+
+holy_realm_can_use_buddha_power = {
+	is_holy_realm_country = yes
+	holy_realm_has_buddha_mandate = yes
+}
+
+holy_realm_can_use_buddha_power_one_becomes_many = {
+	holy_realm_can_use_buddha_power = yes
+	NOT = { has_country_flag = holy_realm_power_one_becomes_many_active }
+	NOT = { has_country_flag = holy_realm_power_one_becomes_many_cooldown }
+	check_variable = {
+		var = meditation_charge
+		value = constant:holy_realm_buddhahood.power_one_becomes_many_charge_cost
+		compare = greater_than_or_equals
+	}
+}
+
+holy_realm_can_use_buddha_power_passing_through_walls = {
+	holy_realm_can_use_buddha_power = yes
+	NOT = { has_country_flag = holy_realm_power_walls_cooldown }
+	check_variable = {
+		var = meditation_charge
+		value = constant:holy_realm_buddhahood.power_passing_through_walls_charge_cost
+		compare = greater_than_or_equals
+	}
+}
+
+holy_realm_can_use_buddha_power_walking_on_water = {
+	holy_realm_can_use_buddha_power = yes
+	NOT = { has_country_flag = holy_realm_power_water_cooldown }
+	check_variable = {
+		var = meditation_charge
+		value = constant:holy_realm_buddhahood.power_walking_on_water_charge_cost
+		compare = greater_than_or_equals
+	}
+}
+
+holy_realm_can_use_buddha_power_lotus_bridge = {
+	holy_realm_can_use_buddha_power = yes
+	NOT = { has_country_flag = holy_realm_power_lotus_bridge_cooldown }
+	check_variable = {
+		var = meditation_charge
+		value = constant:holy_realm_buddhahood.power_lotus_bridge_charge_cost
+		compare = greater_than_or_equals
+	}
+}
+
+holy_realm_can_use_buddha_power_vanishing_from_sight = {
+	holy_realm_can_use_buddha_power = yes
+	NOT = { has_country_flag = holy_realm_power_vanish_cooldown }
+	check_variable = {
+		var = meditation_charge
+		value = constant:holy_realm_buddhahood.power_vanishing_from_sight_charge_cost
+		compare = greater_than_or_equals
+	}
+}
+
+holy_realm_can_use_buddha_power_seated_in_sky = {
+	holy_realm_can_use_buddha_power = yes
+	NOT = { has_country_flag = holy_realm_power_sky_cooldown }
+	check_variable = {
+		var = meditation_charge
+		value = constant:holy_realm_buddhahood.power_seated_in_sky_charge_cost
+		compare = greater_than_or_equals
+	}
+}
+
+holy_realm_can_use_buddha_power_touching_sun_moon = {
+	holy_realm_can_use_buddha_power = yes
+	NOT = { has_country_flag = holy_realm_power_sun_moon_cooldown }
+	check_variable = {
+		var = meditation_charge
+		value = constant:holy_realm_buddhahood.power_touching_sun_moon_charge_cost
+		compare = greater_than_or_equals
+	}
+}
+
+holy_realm_buddha_power_target_valid = {
+	is_holy_realm_country = yes
+	FROM = {
+		exists = yes
+		NOT = { is_holy_realm_country = yes }
+		is_special_chaos_country = yes
+	}
+}
+
+holy_realm_buddha_power_ai_reserve_charge = {
+	check_variable = { meditation_charge < constant:holy_realm_ai.buddha_power_reserve_charge }
+}
+
+holy_realm_buddha_power_target_current_war = {
+	FROM = { has_war_with = ROOT }
+}
+
+holy_realm_buddha_power_target_major_chaos = {
+	FROM = { holy_realm_chaos_source_controls_major_capital = yes }
+}
+
+holy_realm_buddha_power_sun_moon_crisis_target = {
+	OR = {
+		holy_realm_chaos_at_least_world_collapse = yes
+		holy_realm_buddha_power_target_current_war = yes
+		holy_realm_buddha_power_target_major_chaos = yes
+	}
+}
+
+holy_realm_lotus_bridge_target_valid = {
+	is_holy_realm_country = yes
+	FROM = {
+		exists = yes
+		uses_normal_civilian_systems = yes
+		NOT = { is_holy_realm_country = yes }
+		NOT = { is_special_chaos_country = yes }
+		capital_scope = { is_controlled_by = PREV }
+		OR = {
+			is_in_faction_with = ROOT
+			has_country_flag = holy_realm_bodhisattva_recent_visit
+			has_country_flag = holy_realm_mandala_observer_recent
+			has_country_flag = holy_realm_mandala_development_recent_country
+		}
+	}
+}
+
+holy_realm_has_open_teaching_slot = {
+	OR = {
+		NOT = { has_variable = active_teaching_missions }
+		AND = {
+			OR = {
+				holy_realm_buddha_path_unlocked = yes
+				has_country_flag = holy_realm_power_one_becomes_many_active
+				has_country_flag = holy_realm_focus_one_becomes_many
+			}
+			check_variable = { active_teaching_missions < constant:holy_realm_decision.teaching_slot_awakened }
+		}
+		AND = {
+			OR = {
+				has_country_flag = holy_realm_teaching_network_expanded
+				has_country_flag = holy_realm_governance_teaching_examiners
+			}
+			NOT = { holy_realm_buddha_path_unlocked = yes }
+			NOT = { has_country_flag = holy_realm_power_one_becomes_many_active }
+			NOT = { has_country_flag = holy_realm_focus_one_becomes_many }
+			check_variable = { active_teaching_missions < constant:holy_realm_decision.teaching_slot_expanded }
+		}
+		AND = {
+			NOT = { has_country_flag = holy_realm_teaching_network_expanded }
+			NOT = { has_country_flag = holy_realm_governance_teaching_examiners }
+			NOT = { holy_realm_buddha_path_unlocked = yes }
+			NOT = { has_country_flag = holy_realm_power_one_becomes_many_active }
+			NOT = { has_country_flag = holy_realm_focus_one_becomes_many }
+			check_variable = { active_teaching_missions < constant:holy_realm_decision.teaching_slot_base }
+		}
+	}
+}
+
+holy_realm_sangha_compact_alignment_valid = {
+	OR = {
+		has_defensive_war = yes
+		any_enemy_country = { is_special_chaos_country = yes }
+		any_neighbor_country = { is_special_chaos_country = yes }
+		has_country_flag = holy_realm_bodhisattva_recent_visit
+		has_country_flag = holy_realm_mandala_observer_recent
+		has_country_flag = holy_realm_mandala_development_recent_country
+		has_country_flag = holy_realm_mandala_mission
+	}
+}
+
+holy_realm_sangha_compact_candidate_valid = {
+	exists = yes
+	uses_normal_civilian_systems = yes
+	is_major = no
+	is_subject = no
+	is_in_faction = no
+	has_offensive_war = no
+	NOT = { is_holy_realm_country = yes }
+	NOT = { is_special_chaos_country = yes }
+	NOT = { has_war_with = FROM }
+	NOT = { has_country_flag = holy_realm_peace_letter_blocked }
+	OR = {
+		holy_realm_sangha_compact_alignment_valid = yes
+		AND = {
+			FROM = { has_country_flag = holy_realm_governance_pilgrim_assembly }
+			has_stability < 0.45
+		}
+		AND = {
+			FROM = { has_country_flag = holy_realm_governance_refuge_courts }
+			has_stability < 0.55
+		}
+	}
+}
+
+holy_realm_has_sangha_compact_candidate = {
+	is_holy_realm_country = yes
+	any_country = {
+		holy_realm_sangha_compact_candidate_valid = yes
+	}
+}
+
+holy_realm_has_great_mandala_compact_basis = {
+	has_global_flag = holy_realm_mandala_of_nations_formed
+	is_faction_leader = yes
+	num_faction_members > @HOLY_REALM_GREAT_MANDALA_MIN_FACTION_MEMBERS
+	check_variable = {
+		var = sangha_cohesion
+		value = constant:holy_realm_buddhahood.great_mandala_cohesion_required
+		compare = greater_than_or_equals
+	}
+}
+
+holy_realm_controls_protected_sanctuary_corridor = {
+	322 = {
+		is_owned_and_controlled_by = ROOT
+		has_state_flag = holy_realm_protected_state
+	}
+	323 = {
+		is_owned_and_controlled_by = ROOT
+		has_state_flag = holy_realm_protected_state
+	}
+	324 = {
+		is_owned_and_controlled_by = ROOT
+		has_state_flag = holy_realm_protected_state
+	}
+	601 = {
+		is_owned_and_controlled_by = ROOT
+		has_state_flag = holy_realm_protected_state
+	}
+	985 = {
+		is_owned_and_controlled_by = ROOT
+		has_state_flag = holy_realm_protected_state
+	}
+}
+
+holy_realm_can_form_great_mandala = {
+	is_holy_realm_country = yes
+	holy_realm_is_sovereign = yes
+	has_country_flag = holy_realm_buddhahood_attained
+	has_country_flag = holy_realm_focus_refusal_of_empires
+	check_variable = { defilements < constant:holy_realm_buddhahood.defilements_threshold }
+	OR = {
+		holy_realm_has_great_mandala_compact_basis = yes
+		holy_realm_controls_protected_sanctuary_corridor = yes
+	}
+	has_offensive_war = no
+	NOT = { has_country_flag = holy_realm_great_mandala_formed }
+	NOT = { has_country_flag = holy_realm_silent_mandala_formed }
+	NOT = { has_country_flag = holy_realm_false_buddha_schism_pressure }
+	NOT = { has_country_flag = holy_realm_focus_world_is_a_border }
+	NOT = { has_country_flag = holy_realm_memory_world_is_a_border }
+	NOT = { has_country_flag = holy_realm_world_asked_to_kneel_unlocked }
+}
+
+holy_realm_can_form_silent_mandala = {
+	is_holy_realm_country = yes
+	holy_realm_is_sovereign = yes
+	has_country_flag = holy_realm_final_silence_nonterminal_completed
+	has_country_flag = holy_realm_focus_empty_seat
+	has_global_flag = holy_realm_mandala_of_nations_formed
+	is_faction_leader = yes
+	num_faction_members > @HOLY_REALM_SILENT_MANDALA_MIN_FACTION_MEMBERS
+	NOT = { has_country_flag = holy_realm_silent_mandala_formed }
+	NOT = { has_country_flag = holy_realm_false_buddha_schism_pressure }
+	NOT = { has_global_flag = world_end_final_silence }
+}
+
+holy_realm_sangha_compact_member_valid = {
+	exists = yes
+	uses_normal_civilian_systems = yes
+	is_major = no
+	is_subject = no
+	has_offensive_war = no
+	NOT = { is_holy_realm_country = yes }
+	NOT = { is_special_chaos_country = yes }
+	holy_realm_sangha_compact_alignment_valid = yes
+}
+
+holy_realm_sangha_compact_member_hard_valid = {
+	exists = yes
+	uses_normal_civilian_systems = yes
+	is_major = no
+	is_subject = no
+	has_offensive_war = no
+	NOT = { is_holy_realm_country = yes }
+	NOT = { is_special_chaos_country = yes }
+}
+
+holy_realm_bhutan_conquest_target_valid = {
+	BHU = {
+		exists = yes
+		NOT = { is_holy_realm_country = yes }
+		NOT = { is_subject_of = ROOT }
+		ROOT = { can_declare_war_on = PREV }
+	}
+}
+
+holy_realm_nepal_conquest_target_valid = {
+	NEP = {
+		exists = yes
+		NOT = { is_holy_realm_country = yes }
+		NOT = { is_subject_of = ROOT }
+		ROOT = { can_declare_war_on = PREV }
+	}
+}
+
+holy_realm_sikkim_conquest_target_valid = {
+	SKK = {
+		exists = yes
+		NOT = { is_holy_realm_country = yes }
+		NOT = { is_subject_of = ROOT }
+		ROOT = { can_declare_war_on = PREV }
+	}
+}
+
+holy_realm_himalayan_mandala_incomplete = {
+	OR = {
+		holy_realm_bhutan_conquest_target_valid = yes
+		holy_realm_nepal_conquest_target_valid = yes
+		holy_realm_sikkim_conquest_target_valid = yes
+	}
+}
+
+holy_realm_himalayan_core_state = {
+	OR = {
+		state = 322 # Tibet
+		state = 323 # Nepal
+		state = 324 # Bhutan
+		state = 601 # Chamdo/Kham
+		state = 985 # Sikkim
+	}
+}
+
+holy_realm_state_can_be_annexed_or_soon_cored = {
+	OR = {
+		holy_realm_himalayan_core_state = yes
+		AND = {
+			event_target:holy_realm_war_victor = {
+				OR = {
+					has_country_flag = holy_realm_northern_indian_register_unlocked
+					has_country_flag = holy_realm_northern_indian_core_register_unlocked
+				}
+			}
+			holy_realm_northern_indian_core_state = yes
+		}
+		AND = {
+			event_target:holy_realm_war_victor = {
+				has_country_flag = holy_realm_western_chinese_core_register_unlocked
+			}
+			holy_realm_western_chinese_core_state = yes
+		}
+		AND = {
+			event_target:holy_realm_war_victor = {
+				has_country_flag = holy_realm_eastern_chinese_core_register_unlocked
+			}
+			holy_realm_eastern_chinese_core_state = yes
+		}
+	}
+}
+
+holy_realm_northern_indian_core_state = {
+	OR = {
+		state = 432 # Assam
+		state = 435 # Bihar
+		state = 438 # United Provinces
+		state = 439 # Delhi
+		state = 440 # West Punjab
+		state = 441 # Kashmir
+		state = 787 # Northern Kashmir
+		state = 986 # East Punjab
+	}
+}
+
+holy_realm_western_chinese_core_state = {
+	OR = {
+		state = 283 # Gansu
+		state = 325 # Yunnan
+		state = 604 # Qinghai
+		state = 605 # Sichuan
+		state = 616 # Ningxia
+		state = 617 # Urumqi
+		state = 621 # Suiyuan
+		state = 622 # Shaanbei
+	}
+}
+
+holy_realm_eastern_chinese_core_state = {
+	OR = {
+		state = 592 # Guangzhou
+		state = 593 # Guangdong
+		state = 595 # Fujian
+		state = 596 # Zhejiang
+		state = 597 # Shandong
+		state = 598 # Jiangsu
+		state = 600 # Jiangxi
+		state = 602 # Hunan
+		state = 603 # Guizhou
+		state = 606 # Anhui
+		state = 607 # Henan
+		state = 608 # Beiping
+		state = 609 # East Hebei
+		state = 613 # Shanghai
+		state = 614 # Hebei
+		state = 620 # Hubei
+	}
+}
+
+holy_realm_peace_letter_target_valid = {
+	is_holy_realm_country = yes
+	FROM = {
+		exists = yes
+		uses_normal_civilian_systems = yes
+		NOT = { is_holy_realm_country = yes }
+		NOT = { is_special_chaos_country = yes }
+		NOT = { is_subject_of = ROOT }
+		is_subject = no
+		NOT = { has_war_with = ROOT }
+		NOT = { has_country_flag = holy_realm_peace_letter_pending }
+		NOT = { has_country_flag = holy_realm_peace_letter_accepted }
+		NOT = { has_country_flag = holy_realm_peace_letter_blocked }
+		NOT = { has_country_flag = holy_realm_mandala_protectorate }
+	}
+	OR = {
+		FROM = { is_neighbor_of = ROOT }
+		any_subject_country = {
+			FROM = { is_neighbor_of = PREV }
+		}
+		AND = {
+			has_country_flag = holy_realm_buddha_expansion_authority
+			FROM = {
+				any_owned_state = {
+					OR = {
+						holy_realm_himalayan_core_state = yes
+						holy_realm_northern_indian_core_state = yes
+						holy_realm_western_chinese_core_state = yes
+						holy_realm_eastern_chinese_core_state = yes
+					}
+				}
+			}
+		}
+	}
+	OR = {
+		FROM = {
+			is_major = no
+			is_in_faction = no
+		}
+		has_country_flag = holy_realm_world_asked_to_kneel_unlocked
+	}
+}
+
+holy_realm_bodhisattva_visit_target_valid = {
+	is_holy_realm_country = yes
+	FROM = {
+		exists = yes
+		uses_normal_civilian_systems = yes
+		NOT = { is_holy_realm_country = yes }
+		NOT = { is_special_chaos_country = yes }
+		NOT = { is_subject_of = ROOT }
+		NOT = { is_in_faction_with = ROOT }
+	}
+	OR = {
+		FROM = { is_neighbor_of = ROOT }
+		FROM = { has_war = yes }
+		FROM = { has_stability < 0.45 }
+	}
+}
+
+holy_realm_bodhisattva_distant_visit_target_valid = {
+	is_holy_realm_country = yes
+	check_variable = { spiritual_legitimacy > 50 }
+	check_variable = { mandala_reach > 35 }
+	FROM = {
+		exists = yes
+		uses_normal_civilian_systems = yes
+		is_major = no
+		NOT = { is_holy_realm_country = yes }
+		NOT = { is_special_chaos_country = yes }
+		NOT = { is_subject_of = ROOT }
+		NOT = { is_in_faction_with = ROOT }
+		OR = {
+			has_war = yes
+			has_stability < 0.40
+			has_war_support < 0.40
+		}
+	}
+}
+
+holy_realm_bodhisattva_conversion_target_valid = {
+	is_holy_realm_country = yes
+	check_variable = { spiritual_legitimacy > 72 }
+	check_variable = { mandala_reach > 58 }
+	FROM = {
+		exists = yes
+		uses_normal_civilian_systems = yes
+		is_major = no
+		is_subject = no
+		NOT = { is_holy_realm_country = yes }
+		NOT = { is_special_chaos_country = yes }
+		NOT = { is_in_faction = yes }
+		has_country_flag = holy_realm_bodhisattva_recent_visit
+		has_stability < 0.35
+		has_war_support < 0.45
+		OR = {
+			has_war = yes
+			surrender_progress > 0.45
+			num_of_factories < 18
+		}
+	}
+}
+
+holy_realm_peace_letter_acceptance_possible = {
+	FROM = { is_holy_realm_country = yes }
+	is_major = no
+	is_in_faction = no
+	NOT = { has_war_with = FROM }
+	OR = {
+		has_war = yes
+		has_stability < 0.35
+		AND = {
+			FROM = {
+				has_country_flag = holy_realm_peace_by_submission_unlocked
+				check_variable = { mandala_reach > 70 }
+				num_divisions > 24
+			}
+		}
+	}
+}
+
+holy_realm_force_integration_target_valid = {
+	is_holy_realm_country = yes
+	FROM = {
+		exists = yes
+		has_country_flag = holy_realm_refused_peace_letter
+		NOT = { is_holy_realm_country = yes }
+		NOT = { is_subject_of = ROOT }
+		NOT = { has_war_with = ROOT }
+	}
+	can_declare_war_on = FROM
+}
+
+holy_realm_final_doctrine_is_armed = {
+	has_country_flag = holy_realm_final_doctrine_armed
+	NOT = { has_country_flag = holy_realm_final_doctrine_renounced }
+}
+
+holy_realm_final_doctrine_balance_leans_final = {
+	has_power_balance = {
+		id = holy_realm_final_doctrine_balance
+	}
+	OR = {
+		is_power_balance_in_range = {
+			id = holy_realm_final_doctrine_balance
+			range = holy_realm_final_silence_influence_range
+		}
+		is_power_balance_in_range = {
+			id = holy_realm_final_doctrine_balance
+			range = holy_realm_final_silence_dominant_range
+		}
+	}
+}
+
+holy_realm_final_doctrine_balance_final_dominant = {
+	has_power_balance = {
+		id = holy_realm_final_doctrine_balance
+	}
+	is_power_balance_in_range = {
+		id = holy_realm_final_doctrine_balance
+		range = holy_realm_final_silence_dominant_range
+	}
+}
+
+holy_realm_final_doctrine_balance_leans_vow = {
+	has_power_balance = {
+		id = holy_realm_final_doctrine_balance
+	}
+	OR = {
+		is_power_balance_in_range = {
+			id = holy_realm_final_doctrine_balance
+			range = holy_realm_vow_influence_range
+		}
+		is_power_balance_in_range = {
+			id = holy_realm_final_doctrine_balance
+			range = holy_realm_vow_dominant_range
+		}
+	}
+}
+
+holy_realm_can_fund_mandala_peacekeeping = {
+	has_manpower > constant:holy_realm_decision.mandala_peacekeeping_manpower
+	has_equipment = { infantry_equipment > constant:holy_realm_decision.mandala_peacekeeping_infantry_equipment }
+	has_equipment = { support_equipment > constant:holy_realm_decision.mandala_peacekeeping_support_equipment }
+}
+
+holy_realm_has_final_silence_nuke_stockpile = {
+	num_of_nukes > constant:holy_realm_final_silence.normal_nuke_stockpile_gate
+}
+
+holy_realm_has_scripted_strike_capability = {
+	holy_realm_has_final_silence_nuke_stockpile = yes
+	OR = {
+		has_tech = nukes
+		has_tech = thermonuclear_bombs
+		has_country_flag = holy_realm_scripted_strike_network
+		has_country_flag = holy_realm_final_silence_engine
+	}
+}
+
+holy_realm_can_extinguish_defilements = {
+	is_holy_realm_country = yes
+	holy_realm_is_sovereign = yes
+	holy_realm_has_buddha_mandate = yes
+	has_country_flag = holy_realm_buddha_power_demonstrated
+	check_variable = {
+		var = dhyana_depth
+		value = constant:holy_realm_buddhahood.dhyana_max
+		compare = greater_than_or_equals
+	}
+	check_variable = { defilements < constant:holy_realm_buddhahood.final_silence_defilements_gate }
+	check_variable = {
+		var = meditation_charge
+		value = constant:holy_realm_buddhahood.power_extinction_defilements_charge_cost
+		compare = greater_than_or_equals
+	}
+	NOT = { has_country_flag = holy_realm_false_buddha_schism_pressure }
+	NOT = { has_country_flag = holy_realm_final_silence_extinction_rite_completed }
+	NOT = { has_country_flag = holy_realm_stage_final_silence }
+}
+
+holy_realm_can_begin_final_silence_ritual = {
+	is_holy_realm_country = yes
+	holy_realm_is_sovereign = yes
+	holy_realm_has_buddha_mandate = yes
+	holy_realm_final_path_unlocked = yes
+	holy_realm_final_doctrine_is_armed = yes
+	holy_realm_final_doctrine_balance_final_dominant = yes
+	has_country_flag = holy_realm_buddha_power_demonstrated
+	has_country_flag = holy_realm_memory_ministry_of_release
+	has_country_flag = holy_realm_final_silence_extinction_rite_completed
+	custom_trigger_tooltip = {
+		tooltip = THR_final_silence_stockpile_required_tt
+		holy_realm_has_scripted_strike_capability = yes
+	}
+	capital_scope = { is_controlled_by = ROOT }
+	NOT = { has_country_flag = holy_realm_false_buddha_schism_pressure }
+	NOT = { has_country_flag = holy_realm_final_doctrine_renounced }
+	NOT = { has_country_flag = holy_realm_stage_final_silence }
+	NOT = { has_global_flag = world_end }
+}
+
+holy_realm_can_complete_terminal_final_silence = {
+	holy_realm_can_begin_final_silence_ritual = yes
+	check_variable = { global.chaos_meter_value > constant:holy_realm_chaos.final_silence_gate }
+	NOT = { has_global_flag = world_end_disabled }
+	world_end_fallout_scenario_enabled = yes
+}
+
+holy_realm_has_most_factories_in_world = {
+	num_of_factories > constant:holy_realm_final_silence.min_factories
+	all_other_country = {
+		OR = {
+			NOT = { exists = yes }
+			num_of_factories < ROOT.num_of_factories
+		}
+	}
+}
+
+holy_realm_can_start_final_silence = {
+	holy_realm_can_complete_terminal_final_silence = yes
+}
+
+holy_realm_final_silence_valid_target_state = {
+	impassable = no
+	OWNER = { NOT = { is_holy_realm_country = yes } }
+	CONTROLLER = { NOT = { is_holy_realm_country = yes } }
+}
+
+holy_realm_final_silence_current_wave_state = {
+	holy_realm_final_silence_valid_target_state = yes
+	NOT = { has_state_flag = holy_realm_final_silence_struck }
+	OR = {
+		AND = {
+			check_variable = { var = global.holy_realm_final_silence_wave value = constant:holy_realm_final_silence.wave_asia compare = equals }
+			OR = {
+				is_on_continent = asia
+				is_on_continent = middle_east
+			}
+		}
+		AND = {
+			check_variable = { var = global.holy_realm_final_silence_wave value = constant:holy_realm_final_silence.wave_europe_africa compare = equals }
+			OR = {
+				is_on_continent = europe
+				is_on_continent = africa
+			}
+		}
+		AND = {
+			check_variable = { var = global.holy_realm_final_silence_wave value = constant:holy_realm_final_silence.wave_americas compare = equals }
+			OR = {
+				is_on_continent = north_america
+				is_on_continent = south_america
+			}
+		}
+		AND = {
+			check_variable = { var = global.holy_realm_final_silence_wave value = constant:holy_realm_final_silence.wave_oceania_cleanup compare = equals }
+		}
+	}
+}
+
+holy_realm_final_silence_current_visual_wave_state = {
+	NOT = { has_state_flag = holy_realm_final_silence_visual_queued }
+	OR = {
+		AND = {
+			check_variable = { var = global.holy_realm_final_silence_wave value = constant:holy_realm_final_silence.wave_asia compare = equals }
+			OR = {
+				is_on_continent = asia
+				is_on_continent = middle_east
+			}
+		}
+		AND = {
+			check_variable = { var = global.holy_realm_final_silence_wave value = constant:holy_realm_final_silence.wave_europe_africa compare = equals }
+			OR = {
+				is_on_continent = europe
+				is_on_continent = africa
+			}
+		}
+		AND = {
+			check_variable = { var = global.holy_realm_final_silence_wave value = constant:holy_realm_final_silence.wave_americas compare = equals }
+			OR = {
+				is_on_continent = north_america
+				is_on_continent = south_america
+			}
+		}
+		AND = {
+			check_variable = { var = global.holy_realm_final_silence_wave value = constant:holy_realm_final_silence.wave_oceania_cleanup compare = equals }
+		}
+	}
+}
+
+is_holy_realm_foreign_responder = {
+	exists = yes
+	uses_normal_civilian_systems = yes
+	NOT = { is_holy_realm_country = yes }
+	NOT = { is_special_chaos_country = yes }
+	OR = {
+		has_global_flag = holy_realm_global_warning
+		has_global_flag = world_end_final_silence
+	}
+}

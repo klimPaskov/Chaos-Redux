@@ -1,8 +1,13 @@
 # The Holy Realm
 
+## Release QA evidence, 2026-10-06
+
+The bounded source changes, current asset status and remaining release gates are recorded in the [release reconciliation](../../plans/003_holy_realm_plans/release_qa_completion_20261006.md).
+Full release signoff remains incomplete; current source, accepted design, historical evidence and unresolved engine validation are distinguished in that report.
+
 ## Overview
 
-The Holy Realm is event ID 3 and remains registered as a fire-once Chaos Redux event. It transforms Tibet into a full country path rather than a short event chain. If Tibet no longer exists, Bhutan or Nepal can serve as the Himalayan fallback host. If none of those countries exists as a valid normal country, the event is unavailable and displays as N/A in the event list. The route starts as a mountain refuge, becomes a Bodhisattva-led state, creates the Arhat Administration, prepares the Unshaken Seat, and can then realize Buddhahood through teaching, meditation, and low Defilements. Peaceful renunciation, Sangha Compact work, anti-chaos Buddha powers, pilgrimage-protection ledgers, and Final Silence are separate commitments with their own gates and consequences.
+The Holy Realm is event ID 3 and remains registered as a fire-once Chaos Redux event. It transforms Tibet into a full country path rather than a short event chain. If Tibet no longer exists, Bhutan or Nepal can serve as the Himalayan fallback host. If none of those countries exists as a valid normal country, automatic event selection is unavailable and shows the shared no-host reason; a manual request or direct forced entry receives the event-owned explanation. The route starts as a mountain refuge, becomes a Bodhisattva-led state, creates the Arhat Administration, prepares the Unshaken Seat, and can then realize Buddhahood through teaching, meditation, and low Defilements. Peaceful renunciation, Sangha Compact work, anti-chaos Buddha powers, pilgrimage-protection ledgers, and Final Silence are separate commitments with their own gates and consequences.
 
 Detailed Buddhahood counters, concentration sequence, power gates, achievement hooks, GUI surface, and asset evidence live in [Holy Realm Buddhahood Progression](systems/buddhahood_progression.md).
 
@@ -17,9 +22,9 @@ The Buddhahood layer adds Bodhi Progress, Dhyana Depth, Compassion, Detachment, 
 
 ## Flow
 
-1. `chaosx.nr3.1` redirects the event to Tibet if possible. If Tibet no longer exists, it can redirect only to Bhutan or Nepal. If none of those tags exists as a valid normal country, event selection treats the event as unavailable.
+1. `chaosx.nr3.1` redirects the event to Tibet if possible. If Tibet no longer exists, it can redirect only to Bhutan or Nepal. Automatic event selection shows the shared no-host reason; an explicit manual request or direct forced entry receives `chaosx.nr3.5` instead of ending silently.
 2. `chaosx.nr3.2` offers the spec formation choices: leave the monastery outside government, invite the figure into government, restrict the gatherings, or proclaim the mandate immediately.
-3. A formed Realm records its host origin, sets the shared `THR` cosmetic tag, loads `THR_focus`, initializes counters, adds immediate Holy Realm cores on Bhutan and Nepal, opens decisions, and broadcasts an ambiguous refuge news item. The event transforms an existing host. It does not set `holy_realm_event_created_country`.
+3. A formed Realm records its host origin, sets the shared `THR` cosmetic tag, loads `THR_focus`, initializes counters, adds immediate Holy Realm cores on Bhutan and Nepal, opens decisions, and broadcasts one major refuge news item. The event transforms an existing host. It does not set `holy_realm_event_created_country`.
 4. Refuge policy is remembered through `chaosx.nr3.4`: open roads, register names, or close passes.
 5. Bhutan, Nepal, and Tibet can receive a Himalayan unity invitation through `chaosx.nr3.3`.
 6. The focus tree drives the major stages through country flags and focus prerequisites. Evolutions are reserved for special crises or transformations rather than normal stage advancement.
@@ -28,7 +33,7 @@ The Buddhahood layer adds Bodhi Progress, Dhyana Depth, Compassion, Detachment, 
    - `THR_sit_beneath_prayer_flags`, `THR_first_quiet`, `THR_second_quiet`, `THR_third_quiet`, and `THR_fourth_quiet` expose the Dhyana route and require the concentration sequence to raise `dhyana_depth`. `THR_return_to_the_seat` keeps meditation active after Buddhahood and unlocks the emergency vow decision for real chaos threats.
    - `THR_council_of_abbots`, `THR_name_protector_regent`, and `THR_seat_pilgrim_assembly` are the mutually exclusive early governance choices before the Unshaken Seat.
    - `THR_arhats_take_office` creates the Arhat Administration.
-   - `THR_buddha_mandate` is localised as the Unshaken Seat and marks the focus prerequisite for Buddhahood.
+   - `THR_buddha_mandate` is localised as the Unshaken Seat and requires the current capital to be controlled after the 180-day recent-fall warning has cleared. It marks the focus prerequisite for Buddhahood.
    - `THR_the_awakened_one`, `THR_show_the_powers`, `THR_powers_are_not_toys`, `THR_read_pattern_suffering`, `THR_one_becomes_many_focus`, `THR_path_through_walls`, `THR_lotus_bridge_focus`, `THR_vanishing_from_sight_focus`, `THR_seated_in_sky_focus`, and `THR_touch_sun_moon_focus` form the post-Buddhahood anti-chaos power branch.
    - `THR_debate_the_pretender_focus`, `THR_exile_the_echo`, `THR_break_false_mandala`, and `THR_absorb_the_shadow` are hidden until the False Buddha Schism evolution has triggered. They resolve the Schism through teaching, exile, suppression, or high-chaos absorption. If the echo is exiled, `THR_answer_false_buddha_echo_abroad` can turn it into a foreign incident: a contacted or unstable host may contain the echo and clear the route stain, or shelter it and keep the crisis alive.
    - `THR_throne_without_body` and `THR_doctrine_last_war`, localised as the Last Wheel, open Divine Sovereignty and the locked final doctrine path after the powers have been shown.
@@ -38,7 +43,7 @@ The Buddhahood layer adds Bodhi Progress, Dhyana Depth, Compassion, Detachment, 
 8. The borderland tree starts separately with `THR_complete_himalayan_mandala` and `THR_guardians_outer_passes`, then opens the pilgrimage-protection route through `THR_letters_beyond_passes` without excluding the peaceful or Final Silence main branch. `THR_mandala_receives_borderlands`, `THR_high_pass_states_enter_mandala`, `THR_roads_must_be_quiet`, `THR_outer_valleys_register`, `THR_mandala_borders`, `THR_peace_by_submission`, `THR_northern_indian_register`, `THR_northern_indian_state_registers`, `THR_eastern_mandala`, `THR_western_chinese_registers`, `THR_eastern_chinese_registers`, and the high-chaos `THR_world_is_a_border` unlock protection letters, refusal war goals, Arhat administration, and direct progressive regional cores rather than generic bonuses. The lower branch is framed as pilgrimage corridors, petitions, and protection ledgers. The high-chaos capstone remains explicitly coercive.
 9. Arhat events cover empowered administration, constrained ledgers, village silence, false attainment, inquiries, removals, and expanded methods.
 10. Doctrine branches cover restraint, peacekeeping, coercive pacification, Divine Sovereignty, Renunciation, and Final Silence.
-11. Decisions provide Arhat oversight, refugee policy, diplomacy, doctrine selection, conquest-route border tools, concentration vows, Buddhahood realization, Buddha powers, False Buddha Schism resolution, Final Silence ritual completion, Mandala Break disruption, and foreign containment responses.
+11. Decisions provide Arhat oversight, refugee policy, diplomacy, doctrine selection, conquest-route border tools, concentration vows, Buddhahood realization, Buddha powers, False Buddha Schism resolution, Final Silence ritual completion, Mandala Break disruption, and foreign containment responses. The Refuge Circuit, White-Scarf Envoys, and Wounded Border Bodhisattva missions unlock under their established teaching, Buddha, and guardian-threat gates, and each can be completed once.
 12. `holy_realm_final_doctrine_balance` initializes at formation and attaches `holy_realm_doctrine_balance_category` to the balance-of-power screen. It represents the struggle between the Vow against Annihilation and Final Silence. Final Silence influence adds a small daily Final Silence Pressure tick. Vow influence lowers pressure.
 
 ## System Integration
@@ -64,7 +69,7 @@ The Holy Realm extends existing Chaos Redux systems rather than creating paralle
 - Mandala of Nations: `THR_mandala_of_nations` creates the `faction_template_holy_realm_mandala_of_nations` faction as the Sangha Compact implementation, sets peaceful faction rules, adds goals, applies the Mandala Peace Vow to members, and reduces chaos when valid countries join. Entrants must be non-chaos, non-puppet, minor countries with a crisis, chaos threat, teaching history, observer/development contact, or Pilgrim Assembly humanitarian opening. Invalid joins are rejected and reduce Sangha Cohesion. Members receive a `can_not_declare_war` rule while inside the faction, so the peaceful coalition cannot declare offensive wars.
 - Compact refusal and exit notices: invalid entrants fire `chaosx.nr3.128` for the rejected country and `chaosx.nr3.129` for the Holy Realm before they are removed. A member leaving after receiving the Mandala Peace Vow fires `chaosx.nr3.130` for the Holy Realm, clears the vow, and refreshes valid compact status without adding a polling hook.
 - Identity formables: `THR_form_great_mandala` applies the `THR_GREAT_MANDALA` cosmetic tag only after Buddhahood, the Refusal of Empires, low Defilements, no ordinary-conquest disqualifier, and either a stable Mandala of Nations or protected sanctuary corridor. `THR_form_silent_mandala` applies `THR_SILENT_MANDALA` only after non-terminal Final Silence, the Empty Seat focus, an intact compact, and no active Schism. Both tags remain registered in `is_special_chaos_country`. Neither is treated as an actual nonhuman country.
-- Doctrine balance: the built-in balance of power uses `common/bop/003_holy_realm_bop.txt`, with Vow and Final Silence sides. It gives range modifiers, stores current doctrine pressure flags, and is moved by decisions, focuses, and teaching events. Final Silence launch requires the Final Silence side to dominate the balance.
+- Doctrine balance: the built-in balance of power uses `common/bop/003_holy_realm_bop.txt`, with Vow and Final Silence sides. It gives range modifiers, stores current doctrine pressure flags, and is moved by decisions, focuses, and teaching events. Final Silence launch requires the Final Silence side to dominate the balance. The daily pressure pulse uses only `on_daily_TIB`, `on_daily_BHU`, and `on_daily_NEP` and runs only for the active Holy Realm host.
 - Bodhisattva bhumi system: `holy_realm_advance_bodhisattva_bhumi` advances up to ten bhumis, refreshes the leader portrait, and swaps leader traits through `holy_realm_bodhisattva_pramudita`, `holy_realm_bodhisattva_vimala`, `holy_realm_bodhisattva_acala`, and `holy_realm_bodhisattva_dharmamegha`.
 
 ## Interactive Values
@@ -164,7 +169,9 @@ Final Silence uses a ritual gate and an outcome gate.
 - no active False Buddha Schism remains
 - `world_end` is not already active
 
-If global Chaos is above `1000`, `world_end_disabled` is not set, and no other world-end is active, the terminal branch records Final Silence cause memory and requests the maximum-intensity Fallout aftermath before the shared world-end lock is written. Otherwise completion uses the non-terminal Empty Seat branch, leaves `world_end` unset, disables the armed doctrine, and shows super-event slot `8`. After `THR_empty_seat`, `THR_witnesses_keep_the_record` sends the aftermath back through prior teaching and compact contact: valid witnesses gain opinion, stability, and, for compact members, war support, while the Realm gains Sangha Cohesion if at least three witnesses answer.
+If global Chaos is above `1000`, `world_end_disabled` is not set, and no other world-end is active, the terminal branch records Final Silence cause memory and requests the maximum-intensity Fallout aftermath. The current terminal route queues no Event003 country popup or world-wide witness popup; Fallout owns the single terminal presentation. Otherwise completion uses the non-terminal Empty Seat branch, leaves `world_end` unset, disables the armed doctrine, and shows Holy Realm super-event slot `8`. After `THR_empty_seat`, `THR_witnesses_keep_the_record` sends the aftermath back through prior teaching and compact contact: valid witnesses gain opinion, stability, and, for compact members, war support, while the Realm gains Sangha Cohesion if at least three witnesses answer.
+
+Both Empty Mandala and the dedicated Final Silence terminal achievement require completed Final Silence cause memory and actual `world_end_fallout`; the dedicated achievement retains its additional country and capital-safety criteria.
 
 The former thermonuclear Final Silence flag, regional payload constants, texture, and distinct audio wiring remain compatibility surfaces for retained callbacks and historical state. They are not a separate current triggerable-scenario or terminal-ritual route. Current terminal completion enters Fallout at maximum intensity.
 
@@ -215,7 +222,7 @@ Holy Realm achievements are registered in `common/achievements/chaos_redux_achie
 - `31_mountain_circle_by_vow_achievement`: complete Himalayan unity peacefully and receive the Himalayan Unity spirit.
 - `32_mandate_without_a_sword_achievement`: reach the Buddha Mandate with Compassion Drift below `1` and without arming Final Silence.
 - `33_register_without_edges_achievement`: integrate Northern Indian and Eastern Mandala states, then unlock `The World Is Asked to Kneel`.
-- `34_empty_mandala_achievement`: complete the Final Silence world-end scenario as the Holy Realm.
+- `34_empty_mandala_achievement`: realize Fallout through Final Silence as the Holy Realm, with completed cause memory and actual Fallout state.
 - `holy_realm_no_empire_of_the_wheel`: become the Buddha through the clean renunciation route, help defeat chaos, and avoid offensive conquest against normal countries.
 - `holy_realm_four_dhyanas_under_fire`: reach Dhyana Depth 4 during a chaos war while the capital is controlled.
 - `holy_realm_one_becomes_many`: complete three teaching or relief missions during One Becomes Many, including one under chaos-war pressure.

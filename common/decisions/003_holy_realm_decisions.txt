@@ -189,7 +189,7 @@ holy_realm_mandala_category = {
 		}
 		complete_effect = {
 			hidden_effect = { black_friday_credit_political_power_purchase = yes }
-			add_political_power = 35
+			add_political_power = constant:holy_realm_decision.mandala_scribes_political_power_refund
 			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
 			holy_realm_add_mandala_reach = yes
 			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
@@ -562,8 +562,19 @@ holy_realm_mandala_category = {
 				is_faction_leader = yes
 				hidden_trigger = { has_global_flag = holy_realm_mandala_of_nations_formed }
 				holy_realm_chaos_threatens_realm_or_compact = yes
-				command_power > constant:holy_realm_decision.mandala_joint_defense_command_power
-				has_equipment = { support_equipment > constant:holy_realm_decision.mandala_joint_defense_support_equipment }
+				custom_trigger_tooltip = {
+					tooltip = THR_mandala_joint_defense_cost_required_tt
+					check_variable = {
+						var = command_power
+						value = constant:holy_realm_decision.mandala_joint_defense_command_power
+						compare = greater_than_or_equals
+					}
+					check_variable = {
+						var = num_equipment@support_equipment
+						value = constant:holy_realm_decision.mandala_joint_defense_support_equipment
+						compare = greater_than_or_equals
+					}
+				}
 			}
 			visible = {
 				is_holy_realm_country = yes
@@ -967,13 +978,17 @@ holy_realm_mandala_category = {
 		days_remove = constant:holy_realm_decision.refuge_days
 		available = {
 			is_holy_realm_country = yes
-			OR = {
-				NOT = { has_variable = bodhisattva_bhumi }
-				check_variable = { bodhisattva_bhumi < 10 }
+			holy_realm_bodhisattva_path_unlocked = yes
+			NOT = { has_country_flag = holy_realm_bodhisattva_mission_refuge_memory }
+			custom_trigger_tooltip = {
+				tooltip = THR_bodhisattva_bhumi_advancement_required_tt
+				holy_realm_bhumi_advancement_available = yes
 			}
 		}
 		visible = {
-			always = no
+			is_holy_realm_country = yes
+			holy_realm_bodhisattva_path_unlocked = yes
+			NOT = { has_country_flag = holy_realm_bodhisattva_mission_refuge_memory }
 		}
 		complete_effect = {
 			hidden_effect = { black_friday_credit_political_power_purchase = yes }
@@ -1001,13 +1016,16 @@ holy_realm_mandala_category = {
 		available = {
 			is_holy_realm_country = yes
 			holy_realm_buddha_path_unlocked = yes
-			OR = {
-				NOT = { has_variable = bodhisattva_bhumi }
-				check_variable = { bodhisattva_bhumi < 10 }
+			NOT = { has_country_flag = holy_realm_bodhisattva_mission_envoys_memory }
+			custom_trigger_tooltip = {
+				tooltip = THR_bodhisattva_bhumi_advancement_required_tt
+				holy_realm_bhumi_advancement_available = yes
 			}
 		}
 		visible = {
-			always = no
+			is_holy_realm_country = yes
+			holy_realm_buddha_path_unlocked = yes
+			NOT = { has_country_flag = holy_realm_bodhisattva_mission_envoys_memory }
 		}
 		complete_effect = {
 			hidden_effect = { black_friday_credit_political_power_purchase = yes }
@@ -1037,14 +1055,27 @@ holy_realm_mandala_category = {
 		days_remove = constant:holy_realm_decision.diplomacy_days
 		available = {
 			is_holy_realm_country = yes
-			OR = {
-				NOT = { has_variable = bodhisattva_bhumi }
-				check_variable = { bodhisattva_bhumi < 10 }
+			has_country_flag = holy_realm_guardian_escort_missions_unlocked
+			NOT = { has_country_flag = holy_realm_bodhisattva_mission_border_memory }
+			custom_trigger_tooltip = {
+				tooltip = THR_bodhisattva_bhumi_advancement_required_tt
+				holy_realm_bhumi_advancement_available = yes
 			}
 			check_variable = { mandala_reach > 35 }
+			OR = {
+				has_war = yes
+				holy_realm_chaos_threatens_realm_or_compact = yes
+			}
 		}
 		visible = {
-			always = no
+			is_holy_realm_country = yes
+			has_country_flag = holy_realm_guardian_escort_missions_unlocked
+			NOT = { has_country_flag = holy_realm_bodhisattva_mission_border_memory }
+			check_variable = { mandala_reach > 35 }
+			OR = {
+				has_war = yes
+				holy_realm_chaos_threatens_realm_or_compact = yes
+			}
 		}
 		complete_effect = {
 			hidden_effect = { black_friday_credit_political_power_purchase = yes }
@@ -1311,7 +1342,7 @@ holy_realm_mandala_category = {
 					modifier = holy_realm_quiet_envoys_opinion
 				}
 			}
-			add_political_power = 25
+			add_political_power = constant:holy_realm_decision.mandala_border_courts_political_power_refund
 			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.medium_gain }
 			holy_realm_add_mandala_reach = yes
 		}
@@ -1382,7 +1413,10 @@ holy_realm_mandala_category = {
 			is_holy_realm_country = yes
 			holy_realm_buddha_path_unlocked = yes
 			has_country_flag = holy_realm_doctrine_peacekeeping
-			holy_realm_can_fund_mandala_peacekeeping = yes
+			custom_trigger_tooltip = {
+				tooltip = THR_mandala_peacekeeping_cost_required_tt
+				holy_realm_can_fund_mandala_peacekeeping = yes
+			}
 		}
 		visible = {
 			is_holy_realm_country = yes
@@ -2146,6 +2180,10 @@ holy_realm_bodhisattva_category = {
 				tooltip = holy_realm_teaching_slot_available_tt
 				holy_realm_has_open_teaching_slot = yes
 			}
+			custom_trigger_tooltip = {
+				tooltip = THR_bodhisattva_bhumi_advancement_required_tt
+				holy_realm_bhumi_advancement_available = yes
+			}
 			check_variable = { spiritual_legitimacy > 38 }
 		}
 		visible = {
@@ -2184,6 +2222,10 @@ holy_realm_bodhisattva_category = {
 			custom_trigger_tooltip = {
 				tooltip = holy_realm_teaching_slot_available_tt
 				holy_realm_has_open_teaching_slot = yes
+			}
+			custom_trigger_tooltip = {
+				tooltip = THR_bodhisattva_bhumi_advancement_required_tt
+				holy_realm_bhumi_advancement_available = yes
 			}
 			check_variable = { spiritual_legitimacy > 48 }
 			check_variable = { mandala_reach > 30 }
@@ -2355,6 +2397,7 @@ holy_realm_bodhisattva_category = {
 			is_holy_realm_country = yes
 			has_country_flag = holy_realm_dharma_teachings_unlocked
 			has_country_flag = holy_realm_guardian_escort_missions_unlocked
+			NOT = { has_country_flag = holy_realm_pilgrimage_route_escort_active }
 		}
 		target_trigger = {
 			FROM = {
@@ -2387,8 +2430,23 @@ holy_realm_bodhisattva_category = {
 					}
 				}
 			}
-			command_power > constant:holy_realm_decision.pilgrimage_escort_command_power
-			has_equipment = { support_equipment > constant:holy_realm_decision.pilgrimage_escort_support_equipment }
+			custom_trigger_tooltip = {
+				tooltip = THR_bodhisattva_guard_pilgrimage_route_busy_tt
+				NOT = { has_country_flag = holy_realm_pilgrimage_route_escort_active }
+			}
+			custom_trigger_tooltip = {
+				tooltip = THR_bodhisattva_guard_pilgrimage_route_cost_tt
+				check_variable = {
+					var = command_power
+					value = constant:holy_realm_decision.pilgrimage_escort_command_power
+					compare = greater_than_or_equals
+				}
+				check_variable = {
+					var = num_equipment@support_equipment
+					value = constant:holy_realm_decision.pilgrimage_escort_support_equipment
+					compare = greater_than_or_equals
+				}
+			}
 		}
 		visible = {
 			is_holy_realm_country = yes
@@ -2396,10 +2454,31 @@ holy_realm_bodhisattva_category = {
 			has_country_flag = holy_realm_guardian_escort_missions_unlocked
 		}
 		cancel_trigger = {
-			NOT = { FROM = { is_fully_controlled_by = ROOT } }
+			OR = {
+				NOT = { FROM = { is_fully_controlled_by = ROOT } }
+				NOT = {
+					FROM = {
+						ROOT = {
+							divisions_in_state = { state = PREV size > @HOLY_REALM_PILGRIMAGE_ESCORT_DIVISION_FLOOR }
+						}
+					}
+				}
+			}
 		}
 		complete_effect = {
-			hidden_effect = { black_friday_credit_political_power_purchase = yes }
+			set_variable = { holy_realm_pilgrimage_route_escort_pp_paid = global.black_friday_price_holy_realm_decision_pilgrimage_escort_cost }
+			hidden_effect = {
+				clr_country_flag = holy_realm_pilgrimage_route_escort_sale_credit
+				set_variable = { holy_realm_pilgrimage_route_escort_sale_sequence = 0 }
+				set_temp_variable = { black_friday_political_power_receipt_credited = 0 }
+				set_temp_variable = { black_friday_political_power_receipt_sale_sequence = 0 }
+				black_friday_credit_political_power_purchase_with_receipt = yes
+				if = {
+					limit = { check_variable = { black_friday_political_power_receipt_credited = 1 } }
+					set_country_flag = holy_realm_pilgrimage_route_escort_sale_credit
+					set_variable = { holy_realm_pilgrimage_route_escort_sale_sequence = black_friday_political_power_receipt_sale_sequence }
+				}
+			}
 			holy_realm_start_teaching_mission_slot = yes
 			set_temp_variable = { holy_realm_command_power_spend = constant:holy_realm_decision.pilgrimage_escort_command_power }
 			multiply_temp_variable = { holy_realm_command_power_spend = -1 }
@@ -2413,8 +2492,6 @@ holy_realm_bodhisattva_category = {
 			set_country_flag = holy_realm_pilgrimage_route_escort_active
 		}
 		remove_effect = {
-			holy_realm_finish_teaching_mission_slot = yes
-			clr_country_flag = holy_realm_pilgrimage_route_escort_active
 			if = {
 				limit = {
 					FROM = {
@@ -2424,6 +2501,11 @@ holy_realm_bodhisattva_category = {
 						}
 					}
 				}
+				holy_realm_finish_teaching_mission_slot = yes
+				clr_country_flag = holy_realm_pilgrimage_route_escort_active
+				set_variable = { holy_realm_pilgrimage_route_escort_pp_paid = 0 }
+				clr_country_flag = holy_realm_pilgrimage_route_escort_sale_credit
+				set_variable = { holy_realm_pilgrimage_route_escort_sale_sequence = 0 }
 				custom_effect_tooltip = THR_bodhisattva_guard_pilgrimage_route_success_tt
 				set_country_flag = holy_realm_memory_guarded_pilgrimage_route
 				FROM = {
@@ -2444,20 +2526,11 @@ holy_realm_bodhisattva_category = {
 				holy_realm_add_mandala_reach = yes
 			}
 			else = {
-				custom_effect_tooltip = THR_bodhisattva_guard_pilgrimage_route_failure_tt
-				set_temp_variable = { holy_realm_defilements_delta = constant:holy_realm_counter.small_gain }
-				holy_realm_add_defilements = yes
-				set_temp_variable = { holy_realm_sangha_delta = constant:holy_realm_counter.small_loss }
-				holy_realm_add_sangha_cohesion = yes
+				holy_realm_cancel_pilgrimage_route_escort = yes
 			}
 		}
 		cancel_effect = {
-			holy_realm_finish_teaching_mission_slot = yes
-			clr_country_flag = holy_realm_pilgrimage_route_escort_active
-			set_temp_variable = { holy_realm_defilements_delta = constant:holy_realm_counter.small_gain }
-			holy_realm_add_defilements = yes
-			set_temp_variable = { holy_realm_sangha_delta = constant:holy_realm_counter.small_loss }
-			holy_realm_add_sangha_cohesion = yes
+			holy_realm_cancel_pilgrimage_route_escort = yes
 		}
 		ai_will_do = {
 			factor = 1.1
@@ -2661,8 +2734,19 @@ holy_realm_bodhisattva_category = {
 				value = constant:holy_realm_buddhahood.dhyana_max
 				compare = greater_than_or_equals
 			}
-			command_power > constant:holy_realm_decision.renew_vow_under_fire_command_power
-			has_equipment = { support_equipment > constant:holy_realm_decision.renew_vow_under_fire_support_equipment }
+			custom_trigger_tooltip = {
+				tooltip = THR_renew_vow_under_fire_cost_required_tt
+				check_variable = {
+					var = command_power
+					value = constant:holy_realm_decision.renew_vow_under_fire_command_power
+					compare = greater_than_or_equals
+				}
+				check_variable = {
+					var = num_equipment@support_equipment
+					value = constant:holy_realm_decision.renew_vow_under_fire_support_equipment
+					compare = greater_than_or_equals
+				}
+			}
 			NOT = { has_country_flag = holy_realm_renew_vow_under_fire_cooldown }
 		}
 		visible = {
@@ -2836,7 +2920,12 @@ holy_realm_buddha_powers_category = {
 		target_array = global.enabled_countries_list
 		target_root_trigger = { holy_realm_can_use_buddha_power_one_becomes_many = yes }
 		target_trigger = { holy_realm_buddha_power_target_valid = yes }
-		available = { holy_realm_can_use_buddha_power_one_becomes_many = yes }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = THR_buddha_power_one_becomes_many_gate_tt
+				holy_realm_can_use_buddha_power_one_becomes_many = yes
+			}
+		}
 		visible = { holy_realm_has_buddha_mandate = yes }
 		complete_effect = {
 			hidden_effect = { black_friday_credit_political_power_purchase = yes }
@@ -2875,7 +2964,12 @@ holy_realm_buddha_powers_category = {
 		target_array = global.enabled_countries_list
 		target_root_trigger = { holy_realm_can_use_buddha_power_passing_through_walls = yes }
 		target_trigger = { holy_realm_buddha_power_target_valid = yes }
-		available = { holy_realm_can_use_buddha_power_passing_through_walls = yes }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = THR_buddha_power_resource_gate_tt
+				holy_realm_can_use_buddha_power_passing_through_walls = yes
+			}
+		}
 		visible = { holy_realm_has_buddha_mandate = yes }
 		complete_effect = {
 			hidden_effect = { black_friday_credit_political_power_purchase = yes }
@@ -2915,7 +3009,12 @@ holy_realm_buddha_powers_category = {
 		target_array = global.enabled_countries_list
 		target_root_trigger = { holy_realm_can_use_buddha_power_walking_on_water = yes }
 		target_trigger = { holy_realm_buddha_power_target_valid = yes }
-		available = { holy_realm_can_use_buddha_power_walking_on_water = yes }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = THR_buddha_power_resource_gate_tt
+				holy_realm_can_use_buddha_power_walking_on_water = yes
+			}
+		}
 		visible = { holy_realm_has_buddha_mandate = yes }
 		complete_effect = {
 			hidden_effect = { black_friday_credit_political_power_purchase = yes }
@@ -2955,7 +3054,12 @@ holy_realm_buddha_powers_category = {
 		target_array = global.enabled_countries_list
 		target_root_trigger = { holy_realm_can_use_buddha_power_lotus_bridge = yes }
 		target_trigger = { holy_realm_lotus_bridge_target_valid = yes }
-		available = { holy_realm_can_use_buddha_power_lotus_bridge = yes }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = THR_buddha_power_resource_gate_tt
+				holy_realm_can_use_buddha_power_lotus_bridge = yes
+			}
+		}
 		visible = { holy_realm_has_buddha_mandate = yes }
 		complete_effect = {
 			hidden_effect = { black_friday_credit_political_power_purchase = yes }
@@ -2986,7 +3090,12 @@ holy_realm_buddha_powers_category = {
 		target_array = global.enabled_countries_list
 		target_root_trigger = { holy_realm_can_use_buddha_power_vanishing_from_sight = yes }
 		target_trigger = { holy_realm_buddha_power_target_valid = yes }
-		available = { holy_realm_can_use_buddha_power_vanishing_from_sight = yes }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = THR_buddha_power_resource_gate_tt
+				holy_realm_can_use_buddha_power_vanishing_from_sight = yes
+			}
+		}
 		visible = { holy_realm_has_buddha_mandate = yes }
 		complete_effect = {
 			hidden_effect = { black_friday_credit_political_power_purchase = yes }
@@ -3022,7 +3131,12 @@ holy_realm_buddha_powers_category = {
 		target_array = global.enabled_countries_list
 		target_root_trigger = { holy_realm_can_use_buddha_power_seated_in_sky = yes }
 		target_trigger = { holy_realm_buddha_power_target_valid = yes }
-		available = { holy_realm_can_use_buddha_power_seated_in_sky = yes }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = THR_buddha_power_resource_gate_tt
+				holy_realm_can_use_buddha_power_seated_in_sky = yes
+			}
+		}
 		visible = { holy_realm_has_buddha_mandate = yes }
 		complete_effect = {
 			hidden_effect = { black_friday_credit_political_power_purchase = yes }
@@ -3062,7 +3176,12 @@ holy_realm_buddha_powers_category = {
 		target_array = global.enabled_countries_list
 		target_root_trigger = { holy_realm_can_use_buddha_power_touching_sun_moon = yes }
 		target_trigger = { holy_realm_buddha_power_target_valid = yes }
-		available = { holy_realm_can_use_buddha_power_touching_sun_moon = yes }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = THR_buddha_power_resource_gate_tt
+				holy_realm_can_use_buddha_power_touching_sun_moon = yes
+			}
+		}
 		visible = { holy_realm_has_buddha_mandate = yes }
 		complete_effect = {
 			hidden_effect = { black_friday_credit_political_power_purchase = yes }
@@ -3111,7 +3230,12 @@ holy_realm_buddha_powers_category = {
 		icon = GFX_decision_holy_realm_power_extinction_defilements
 		cost = global.black_friday_price_holy_realm_decision_buddha_power_cost
 		days_remove = constant:holy_realm_decision.warning_days
-		available = { holy_realm_can_extinguish_defilements = yes }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = THR_buddha_power_extinction_gate_tt
+				holy_realm_can_extinguish_defilements = yes
+			}
+		}
 		visible = { holy_realm_has_buddha_mandate = yes }
 		complete_effect = {
 			hidden_effect = { black_friday_credit_political_power_purchase = yes }
@@ -3212,6 +3336,7 @@ holy_realm_doctrine_balance_category = {
 			}
 			has_variable = bodhisattva_bhumi
 			check_variable = { bodhisattva_bhumi > 3 }
+			NOT = { has_country_flag = holy_realm_bop_bodhisattva_council_memory }
 		}
 		visible = {
 			is_holy_realm_country = yes
@@ -3652,7 +3777,7 @@ holy_realm_doctrine_balance_category = {
 			}
 			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.medium_loss }
 			holy_realm_add_final_silence_pressure = yes
-			add_political_power = 25
+			add_political_power = constant:holy_realm_decision.open_lotus_audit_political_power_refund
 		}
 		ai_will_do = {
 			factor = 1.5
@@ -3790,7 +3915,7 @@ holy_realm_doctrine_balance_category = {
 
 	THR_bop_nuclear_sutra_committee = {
 		icon = generic_scorched_earth
-		cost = global.black_friday_price_pp_130
+		cost = global.black_friday_price_pp_155
 		days_remove = constant:holy_realm_decision.warning_days
 		available = {
 			is_holy_realm_country = yes
@@ -3810,7 +3935,6 @@ holy_realm_doctrine_balance_category = {
 			}
 			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.medium_gain }
 			holy_realm_add_final_silence_pressure = yes
-			add_political_power = -25
 			add_command_power = 35
 			set_temp_variable = { holy_realm_chaos_delta = constant:holy_realm_chaos.mild_control_gain }
 			set_temp_variable = { holy_realm_chaos_reason = constant:chaos_meter_history_reason.special.holy_realm_doctrinal_control }

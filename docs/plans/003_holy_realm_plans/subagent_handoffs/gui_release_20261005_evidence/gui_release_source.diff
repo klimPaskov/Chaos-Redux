@@ -1,0 +1,287 @@
+--- interface/chaosx_decisions.gui:holy_realm_mandala_category_container.before
++++ interface/chaosx_decisions.gui:holy_realm_mandala_category_container.after
+@@ -5,7 +5,7 @@
+ 
+ 			iconType = {
+ 				name = "holy_realm_mandala_core"
+-				spriteType = "GFX_holy_realm_mandala_dormant_animated"
++				spriteType = "GFX_holy_realm_mandala_dormant"
+ 				position = { x = 126 y = 12 }
+ 				Orientation = "UPPER_LEFT"
+ 				frame = 1
+@@ -17,7 +17,7 @@
+ 				name = "holy_realm_mandala_values"
+ 				position = { x = 8 y = 238 }
+ 				font = "hoi_18b"
+-				text = "holy_realm_mandala_gui_values"
++				text = "[GetHolyRealmPanelPrimaryValueLine]"
+ 				format = left
+ 				maxWidth = 454
+ 				maxHeight = 26
+@@ -27,7 +27,7 @@
+ 				name = "holy_realm_mandala_secondary"
+ 				position = { x = 8 y = 266 }
+ 				font = "hoi_16mbs"
+-				text = "holy_realm_mandala_gui_secondary"
++				text = "[GetHolyRealmPanelSecondaryValueLine]"
+ 				format = left
+ 				maxWidth = 454
+ 				maxHeight = 24
+@@ -37,7 +37,7 @@
+ 				name = "holy_realm_mandala_chaos"
+ 				position = { x = 8 y = 292 }
+ 				font = "hoi_16mbs"
+-				text = "holy_realm_mandala_gui_chaos"
++				text = "[GetHolyRealmPanelRiskValueLine]"
+ 				format = left
+ 				maxWidth = 454
+ 				maxHeight = 24
+@@ -65,45 +65,45 @@
+ 
+ 			buttonType = {
+ 				name = "holy_realm_panel_tab_refuge_button"
+-				position = { x = 8 y = 356 }
++				position = { x = 16 y = 356 }
+ 				quadTextureSprite = "GFX_button_123x34"
+-				buttonText = "holy_realm_panel_tab_refuge"
++				buttonText = "[GetHolyRealmPanelTabRefugeButtonText]"
+ 				buttonFont = "hoi_16mbs"
+ 				pdx_tooltip = "holy_realm_panel_tab_refuge_tt"
+ 			}
+ 
+ 			buttonType = {
+ 				name = "holy_realm_panel_tab_arhats_button"
+-				position = { x = 165 y = 356 }
++				position = { x = 173 y = 356 }
+ 				quadTextureSprite = "GFX_button_123x34"
+-				buttonText = "holy_realm_panel_tab_arhats"
++				buttonText = "[GetHolyRealmPanelTabArhatsButtonText]"
+ 				buttonFont = "hoi_16mbs"
+ 				pdx_tooltip = "holy_realm_panel_tab_arhats_tt"
+ 			}
+ 
+ 			buttonType = {
+ 				name = "holy_realm_panel_tab_diplomacy_button"
+-				position = { x = 322 y = 356 }
++				position = { x = 330 y = 356 }
+ 				quadTextureSprite = "GFX_button_123x34"
+-				buttonText = "holy_realm_panel_tab_diplomacy"
++				buttonText = "[GetHolyRealmPanelTabDiplomacyButtonText]"
+ 				buttonFont = "hoi_16mbs"
+ 				pdx_tooltip = "holy_realm_panel_tab_diplomacy_tt"
+ 			}
+ 
+ 			buttonType = {
+ 				name = "holy_realm_panel_tab_doctrine_button"
+-				position = { x = 8 y = 394 }
++				position = { x = 95 y = 394 }
+ 				quadTextureSprite = "GFX_button_123x34"
+-				buttonText = "holy_realm_panel_tab_doctrine"
++				buttonText = "[GetHolyRealmPanelTabDoctrineButtonText]"
+ 				buttonFont = "hoi_16mbs"
+ 				pdx_tooltip = "holy_realm_panel_tab_doctrine_tt"
+ 			}
+ 
+ 			buttonType = {
+ 				name = "holy_realm_panel_tab_warnings_button"
+-				position = { x = 165 y = 394 }
++				position = { x = 252 y = 394 }
+ 				quadTextureSprite = "GFX_button_123x34"
+-				buttonText = "holy_realm_panel_tab_warnings_short"
++				buttonText = "[GetHolyRealmPanelTabWarningsButtonText]"
+ 				buttonFont = "hoi_16mbs"
+ 				pdx_tooltip = "holy_realm_panel_tab_warnings_tt"
+ 			}
+--- common/scripted_effects/003_holy_realm_effects.txt.before
++++ common/scripted_effects/003_holy_realm_effects.txt.after
+@@ -69,6 +69,10 @@
+ 		limit = { NOT = { has_variable = crisis_teaching_successes } }
+ 		set_variable = { crisis_teaching_successes = 0 }
+ 	}
++	# Display bounds mirror the tuning constants and are read only by the Mandala GUI.
++	set_variable = { holy_realm_ui_bodhi_max = constant:holy_realm_buddhahood.bodhi_max }
++	set_variable = { holy_realm_ui_dhyana_max = constant:holy_realm_buddhahood.dhyana_max }
++	set_variable = { holy_realm_ui_teaching_successes_required = constant:holy_realm_buddhahood.teaching_successes_required }
+ 	clamp_variable = { var = bodhi_progress min = 0 max = constant:holy_realm_buddhahood.bodhi_max }
+ 	clamp_variable = { var = dhyana_depth min = 0 max = constant:holy_realm_buddhahood.dhyana_max }
+ 	clamp_variable = { var = compassion min = 0 max = 100 }
+--- common/scripted_localisation/003_holy_realm_scripted_localisation.txt.before
++++ common/scripted_localisation/003_holy_realm_scripted_localisation.txt.after
+@@ -612,3 +612,143 @@
+ 		localization_key = holy_realm_ledger_summary_locked
+ 	}
+ }
++
++
++defined_text = {
++	name = GetHolyRealmPanelPrimaryValueLine
++
++	text = {
++		trigger = { has_country_flag = holy_realm_mandala_tab_arhats }
++		localization_key = holy_realm_mandala_arhats_primary
++	}
++	text = {
++		trigger = { has_country_flag = holy_realm_mandala_tab_diplomacy }
++		localization_key = holy_realm_mandala_diplomacy_primary
++	}
++	text = {
++		trigger = { has_country_flag = holy_realm_mandala_tab_doctrine }
++		localization_key = holy_realm_mandala_doctrine_primary
++	}
++	text = {
++		trigger = { has_country_flag = holy_realm_mandala_tab_warnings }
++		localization_key = holy_realm_mandala_warnings_primary
++	}
++	text = {
++		trigger = { always = yes }
++		localization_key = holy_realm_mandala_refuge_primary
++	}
++}
++
++defined_text = {
++	name = GetHolyRealmPanelSecondaryValueLine
++
++	text = {
++		trigger = { has_country_flag = holy_realm_mandala_tab_arhats }
++		localization_key = holy_realm_mandala_arhats_secondary
++	}
++	text = {
++		trigger = { has_country_flag = holy_realm_mandala_tab_diplomacy }
++		localization_key = holy_realm_mandala_diplomacy_secondary
++	}
++	text = {
++		trigger = { has_country_flag = holy_realm_mandala_tab_doctrine }
++		localization_key = holy_realm_mandala_doctrine_secondary
++	}
++	text = {
++		trigger = { has_country_flag = holy_realm_mandala_tab_warnings }
++		localization_key = holy_realm_mandala_warnings_secondary
++	}
++	text = {
++		trigger = { always = yes }
++		localization_key = holy_realm_mandala_refuge_secondary
++	}
++}
++
++defined_text = {
++	name = GetHolyRealmPanelRiskValueLine
++
++	text = {
++		trigger = { has_country_flag = holy_realm_mandala_tab_doctrine }
++		localization_key = holy_realm_mandala_doctrine_risk
++	}
++	text = {
++		trigger = {
++			has_country_flag = holy_realm_mandala_tab_warnings
++			holy_realm_chaos_above_final_gate = yes
++		}
++		localization_key = holy_realm_mandala_warnings_risk
++	}
++	text = {
++		trigger = { has_country_flag = holy_realm_mandala_tab_warnings }
++		localization_key = holy_realm_mandala_empty_line
++	}
++	text = {
++		trigger = { always = yes }
++		localization_key = holy_realm_mandala_empty_line
++	}
++}
++
++defined_text = {
++	name = GetHolyRealmPanelTabRefugeButtonText
++
++	text = {
++		trigger = { has_country_flag = holy_realm_mandala_tab_refuge }
++		localization_key = holy_realm_panel_tab_refuge_selected
++	}
++	text = {
++		trigger = { always = yes }
++		localization_key = holy_realm_panel_tab_refuge
++	}
++}
++
++defined_text = {
++	name = GetHolyRealmPanelTabArhatsButtonText
++
++	text = {
++		trigger = { has_country_flag = holy_realm_mandala_tab_arhats }
++		localization_key = holy_realm_panel_tab_arhats_selected
++	}
++	text = {
++		trigger = { always = yes }
++		localization_key = holy_realm_panel_tab_arhats
++	}
++}
++
++defined_text = {
++	name = GetHolyRealmPanelTabDiplomacyButtonText
++
++	text = {
++		trigger = { has_country_flag = holy_realm_mandala_tab_diplomacy }
++		localization_key = holy_realm_panel_tab_diplomacy_selected
++	}
++	text = {
++		trigger = { always = yes }
++		localization_key = holy_realm_panel_tab_diplomacy
++	}
++}
++
++defined_text = {
++	name = GetHolyRealmPanelTabDoctrineButtonText
++
++	text = {
++		trigger = { has_country_flag = holy_realm_mandala_tab_doctrine }
++		localization_key = holy_realm_panel_tab_doctrine_selected
++	}
++	text = {
++		trigger = { always = yes }
++		localization_key = holy_realm_panel_tab_doctrine
++	}
++}
++
++defined_text = {
++	name = GetHolyRealmPanelTabWarningsButtonText
++
++	text = {
++		trigger = { has_country_flag = holy_realm_mandala_tab_warnings }
++		localization_key = holy_realm_panel_tab_warnings_selected
++	}
++	text = {
++		trigger = { always = yes }
++		localization_key = holy_realm_panel_tab_warnings_short
++	}
++}
+--- localisation/english/003_the_holy_realm_l_english.yml.before
++++ localisation/english/003_the_holy_realm_l_english.yml.after
+@@ -269,9 +269,28 @@
+ 
+ holy_realm_mandala_category: "Holy Mandala"
+ holy_realm_mandala_category_desc: "The Mandala guides refugee relief, authority at home, and the Realm's conduct abroad. Its leaders must decide whether the monasteries protect those who reach them or demand obedience."
+-holy_realm_mandala_gui_values: "§GSpiritual Legitimacy§!: §Y[?spiritual_legitimacy|.0]§!  §CBodhi§!: §Y[?bodhi_progress|.0]/108§!  §WDhyana§!: §Y[?dhyana_depth|.0]/4§!"
+-holy_realm_mandala_gui_secondary: "§YTeachings§!: §Y[?teaching_successes|.0]/12§!  §OMeditation Charge§!: §Y[?meditation_charge|.0]§!  §RDefilements§!: §Y[?defilements|.0]§!"
+-holy_realm_mandala_gui_chaos: "Chaos: [GetHolyRealmColoredChaosValue]  [GetHolyRealmFinalPressureLine]"
++holy_realm_mandala_gui_values: "[GetHolyRealmPanelPrimaryValueLine]"
++holy_realm_mandala_gui_secondary: "[GetHolyRealmPanelSecondaryValueLine]"
++holy_realm_mandala_gui_chaos: "[GetHolyRealmPanelRiskValueLine]"
++holy_realm_mandala_refuge_primary: "§GSpiritual Legitimacy§!: §Y[?spiritual_legitimacy|.0]§!"
++holy_realm_mandala_refuge_secondary: "§CCompassion Drift§!: §Y[?compassion_drift|.0]§!  §CSangha Cohesion§!: §Y[?sangha_cohesion|.0]§!"
++holy_realm_mandala_arhats_primary: "§GSpiritual Legitimacy§!: §Y[?spiritual_legitimacy|.0]§!"
++holy_realm_mandala_arhats_secondary: "§RDefilements§!: §Y[?defilements|.0]§!  §CSangha Cohesion§!: §Y[?sangha_cohesion|.0]§!"
++holy_realm_mandala_diplomacy_primary: "§CMandala Reach§!: §Y[?mandala_reach|.0]§!"
++holy_realm_mandala_diplomacy_secondary: "§GSpiritual Legitimacy§!: §Y[?spiritual_legitimacy|.0]§!  §CSangha Cohesion§!: §Y[?sangha_cohesion|.0]§!"
++holy_realm_mandala_doctrine_primary: "§CBodhi Progress§!: §Y[?bodhi_progress|.0]/[?holy_realm_ui_bodhi_max|.0]§!"
++holy_realm_mandala_doctrine_secondary: "§WDhyana Depth§!: §Y[?dhyana_depth|.0]/[?holy_realm_ui_dhyana_max|.0]§!  §YTeaching Successes§!: §Y[?teaching_successes|.0]/[?holy_realm_ui_teaching_successes_required|.0]§!"
++holy_realm_mandala_doctrine_risk: "§RDefilements§!: §Y[?defilements|.0]§!"
++holy_realm_mandala_warnings_primary: "§RFinal Silence Pressure§!: §Y[?final_silence_pressure|.0]§!"
++holy_realm_mandala_warnings_secondary: "§OMeditation Charge§!: §Y[?meditation_charge|.0]§!  §RDefilements§!: §Y[?defilements|.0]§!"
++holy_realm_mandala_warnings_risk: "Chaos: [GetHolyRealmColoredChaosValue]"
++holy_realm_mandala_empty_line: " "
++holy_realm_panel_tab_refuge_selected: "> Refuge"
++holy_realm_panel_tab_arhats_selected: "> Arhats"
++holy_realm_panel_tab_diplomacy_selected: "> Diplomacy"
++holy_realm_panel_tab_doctrine_selected: "> Doctrine"
++holy_realm_panel_tab_warnings_selected: "> Alert"
++
+ holy_realm_mandala_core_tt: "The Mandala changes with teaching, meditation, Buddhahood, wrathful protection, Final Silence, and the Empty Seat."
+ holy_realm_chaos_value_low: "§G[?global.chaos_meter_value|.0]§!"
+ holy_realm_chaos_value_rising: "§Y[?global.chaos_meter_value|.0]§!"
