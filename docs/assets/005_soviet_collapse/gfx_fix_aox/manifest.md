@@ -66,4 +66,5 @@ Native-size review sheets are saved in contact_sheets as before_native_checker_0
 
 Decoded DDS review is saved in contact_sheets as roundtrip_native_checker_01 through roundtrip_native_checker_04, roundtrip_native_dark_01 through roundtrip_native_dark_04, and lineage_evidence_01 through lineage_evidence_04.
 
-All 47 rows were reviewed by the parent and are handed off for root-owned runtime promotion and commit. This package does not claim runtime promotion.
+All 47 rows were reviewed, installed and independently pixel-verified by the parent, then committed in d860ea329.
+The final named-tree MCP raster returned Transport closed, so final engine rendering and live acceptance remain pending.

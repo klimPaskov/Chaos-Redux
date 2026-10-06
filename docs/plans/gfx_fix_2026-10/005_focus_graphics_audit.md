@@ -60,4 +60,97 @@ The pre-change raster artifact caucasusBeforeRaster.json has status ok, zero blo
 
 No probability analysis was run because this assignment changed no weight or gameplay source. No focus source, localisation, .gfx, GUI, gameplay, spreadsheet, runtime path, or asset file was edited for this audit; only this report is added. Live-game validation remains with the user.
 
-The AOX and BBH staged art reviews are not complete. AOX’s artist reported the requested extreme_path arc correction complete but is still finalizing the 47-focus manifest and crosswalk, so the package is not ready. No BBH ready notice had arrived when this report was prepared.
+The Caucasus review was completed before the AOX and BBH packages were ready. Both packages are now audited below. For AOX, the frozen package includes the parent-selected arc-free extreme_path candidate 2.
+
+## BBH focus art audit
+
+The BBH staging package covers 47 focus ids for BBH_soviet_collapse_focus_tree. I compared every manifest id, title, description, completion-reward block, focus icon key, normal sprite, shine sprite, and runtime path against common/national_focus/005_soviet_collapse_custom_splinters.txt, localisation/english/005_soviet_collapse_l_english.yml, and interface/005_soviet_collapse_focus_icons.gfx. All 47 focus blocks, all titles and descriptions, all completion-reward blocks, all sprite keys, and all 94 normal/shine path assignments match. No visual-subject and reward mismatch was found in the 47-entry contact sheets.
+
+The native checker and dark sheets and the enlarged review sheet were reviewed for all 47 finals. The complete set uses a consistent dark, aged-metal and brass relief style suited to the Black Banner Host, with distinct subjects for its military columns, depots, prison networks, village assemblies, diplomacy, and extreme route. Repeated wagons, black pennants, prison motifs, and field papers support that shared identity; the inspected images are not byte-identical or pixel duplicates.
+
+The three revised slots pass their requested corrections. BBH_birth now has a broad, balanced brass-laurel frame around its preserved black-wing, central-standard, single-crimson-star identity; its visible bounds are (3,4,91,81). BBH_league uses three blank commune seals on a teal medallion and has no circled-A letterforms; candidate attempt 03 was rejected and attempt 04 was accepted. BBH_anti_protectorate_letters shows an unmarked letter with a smooth blank wax disk, chain, key, and black banner; candidate attempt 01 was rejected and attempt 02 was accepted. BBH_first_guard also uses the accepted plain black pennant rather than the rejected red-banner/star candidate, and BBH_temporary_free_city_pacts uses the accepted 1920s municipal gate rather than the rejected medieval castle. BBH_endgame retains its distinct existing banner-and-weapons art.
+
+The full final set contains no readable text or letterforms and no foreign or national flags. Plain black faction pennants and the BBH birth star are faction identity art, not foreign flag imagery. Documents and maps remain blank or unlabeled. The manifest symbol audit records zero accepted text/letterform assets and zero accepted foreign/national flag assets, which agrees with the native and enlarged visual review. No background-removal fallback was used.
+
+| Coverage stage | Paths | Unique file SHA-256 | Unique decoded RGBA pixel hashes |
+| --- | ---: | ---: | ---: |
+| Source PNGs, including the one retained endgame source | 47 | 47 | 47 |
+| Processed PNGs | 47 | 47 | 47 |
+| Staged DDS files | 47 | 47 | 47 |
+| Parent-installed runtime DDS files | 47 | 47 | 47 |
+
+Independent decoding of all 47 staged DDS files confirms exact processed-PNG RGBA equality, 94x86 dimensions, 32-bit BGRA headers, 32,464-byte file lengths, alpha range 0-255, and no nontransparent pixels on the outer canvas edge. Every processed icon has at least a 3 px transparent safety margin; the smallest reported margin is 3 px. The coverage receipt records 47 unique source hashes, 47 unique staged-DDS hashes, 47 unique decoded-pixel hashes, 94 logical sprite aliases, and 47 stable runtime targets.
+
+After the parent reported promotion, I independently compared all 47 current runtime target DDS files with the staged DDS files. All 47 byte hashes match the selected staged outputs; the parent-installed receipt records old and output hashes plus decoded-pixel hashes for every target. The current runtime set therefore has 47 unique file hashes and 47 unique decoded-pixel hashes. The existing GFX entries already bind each normal and shine sprite to its assigned target path, so no registry change was required. This file-level installation check does not establish live-game acceptance.
+
+Reviewed BBH evidence includes docs/assets/005_soviet_collapse/gfx_fix_bbh/manifest.json, evidence/coverage_audit.json, evidence/dds_roundtrip.json, evidence/candidate_lineage.json, evidence/symbol_audit.json, evidence/transparency_audit.json, previews/after_native_checker.png, previews/after_native_dark.png, previews/after_enlarged_review.png, gfx_handoff.md, and evidence/mcp_focus_review.md.
+
+The MCP note contains pre-art inspect and raster evidence only. The current HOI4 MCP connection is reported as Transport closed, so there is no post-promotion BBH raster or current engine-render evidence. I made no MCP retry and do not treat staged source/render evidence as engine validation. No gameplay, AI, weight, focus, localisation, sprite-registry, or asset file was edited for this audit; only this report is extended.
+
+## AOX focus art audit
+
+The AOX package covers 47 focus ids for AOX_soviet_collapse_focus_tree. I compared all 47 inventory entries with the active focus blocks in common/national_focus/005_soviet_collapse_custom_splinters.txt and the corresponding English localisation. All source focus ids, titles, descriptions, completion-reward blocks, icon keys, and localisation values matched. All 47 rows in staged_to_runtime_crosswalk.csv match their normal and shine aliases, stable runtime target, and existing sprite registry entry; the registry contains 94 AOX aliases for these 47 icons.
+
+The four after-native checker sheets, four after-native dark sheets, and four enlarged checker sheets were inspected across all 47 focus icons. The set reads as a consistent Kronstadt naval-fortress family with distinct imagery for ships, signals, dockyards, port offices, coastal defenses, elected councils, and diplomacy. The 47 selected source PNGs, processed PNGs, staged DDS files, and decoded pixel arrays each have 47 unique file or pixel hashes; no duplicate image path was found.
+
+The red broadcast arcs requested for removal from AOX_extreme_path are absent from the selected candidate 2 source, processed PNG, decoded DDS sheet, and enlarged review. The final icon depicts three small harbor settlements around a central iron transmitter mast, with one physical red-glass mast lamp; it has no neon arcs, red smoke overlay, labels, or flags. The signal-network image implies the “Every Port a Council” subject while the focus description explains the election and broadcast. The vivid red in AOX_radical_turn is painted torch/fire imagery, not a broadcast overlay. The small plain red pennants in AOX_every_harbor_a_soviet read as maritime signals rather than national flags, and the birth anchor-star identity remains confined to AOX_birth under the accepted scope.
+
+The selected birth icon preserves the anchor-star identity in a centered brass wreath. The remaining art is free of readable lettering, map labels, company marks, and national flags; papers and ledgers remain blank or unlabeled in the inspected sheets. The existing national-focus reference canvas is 100x88, while the active AOX consumer and all 47 runtime DDS targets use 94x86; the package follows the verified live consumer size. The source inventory records 47 baseline textures with one shared DDS hash and one shared decoded-pixel hash, which the final set replaces with 47 unique images.
+
+| AOX coverage stage | Paths | Unique file SHA-256 | Unique decoded RGBA pixel hashes |
+| --- | ---: | ---: | ---: |
+| Source PNGs | 47 | 47 | 47 |
+| Processed PNGs | 47 | 47 | 47 |
+| Staged DDS files | 47 | 47 | 47 |
+| Parent-installed runtime DDS files | 47 | 47 | 47 |
+
+Independent decoding confirms all 47 installed runtime DDS files byte-match their reviewed staged DDS files. Every file has the strict one-level 32-bit BGRA header, 94x86 dimensions, and 32,464-byte length; every processed PNG and decoded DDS pair has exact RGBA equality, alpha range 0-255, and zero nontransparent pixels on the outer canvas edge. All 47 visible-content bounds retain at least 3 px of transparent margin.
+
+The selected AOX_extreme_path correction is the candidate 2 edit from AOX_extreme_path-candidate1.png; candidate lineage records the targeted removal of crimson UI-like arcs while retaining the physical red mast lamp. This was independently verified in source_png/AOX_extreme_path-candidate2.png, processed_png/focus_005_aox_extreme_path.png, and the final native/enlarged and roundtrip sheets.
+
+The current manifest and crosswalk record installed_parent_reviewed, and all three AOX plan dispositions are marked implemented for this output set. The parent-installed receipt and independent current-file checks show all 47 staged/runtime hashes match. The existing GFX definitions already use the exact stable targets, and no registry edit was needed. AOX was committed by the parent as d860ea329.
+
+The saved MCP inspect and raster artifacts in notes/mcp_evidence.md are pre-art evidence. The current HOI4 MCP connection is reported as Transport closed, so no post-promotion AOX raster or engine-render acceptance is available. I did not retry MCP. File-hash equality confirms installed DDS bytes but does not establish live-game visual acceptance; that remains with the user.
+
+Reviewed AOX evidence includes manifest.md, staged_to_runtime_crosswalk.csv, notes/aox_source_inventory.json, notes/candidate_lineage.json, notes/dds_roundtrip_report.json, notes/plan_issue_dispositions.json, notes/verify_aox_dds.py, notes/parent_installed.json, all four after_native_checker sheets, all four after_native_dark sheets, all four after_enlarged_checker sheets, all four roundtrip checker sheets, all four roundtrip dark sheets, the selected extreme_path candidate source and processed PNG, and notes/mcp_evidence.md.
+
+## Baltic audit and parent-recorded follow-ups
+
+The read-only auditor independently compared all 45 initial installed Baltic textures with their staged DDS, PNG and recorded hashes.
+All 45 comparisons passed, with 38 distinct pixel images because seven legacy/focus alias pairs intentionally depict the same subject.
+All 42 active focuses resolve against the current source, localisation and sprite registrations with no mismatches, and their pixel images are distinct.
+The source/native visual review confirmed the correct local Estonia, Latvia and Lithuania flags and no readable lettering.
+The legacy Pan-Baltic normal and shine aliases at `interface/005_soviet_collapse.gfx:848` and `:1252` still resolve to Home Guard.
+Their separate Warroom texture is installed but unconsumed pending the explicit exception to the user's `.gfx` rule.
+The active focus-prefixed Warroom aliases resolve correctly.
+
+The auditor found an additional Riga Corridor Switchyards size defect, with a 64x60 visible subject inside its 94x86 canvas.
+The parent did not accept that as an exception and commissioned one original native-alpha replacement.
+Independent source, native and decoded-DDS review confirms a period rail junction, manual point lever, blank dispatch panel, physical semaphore and Riga port skyline, matching the focus's supply and rail rewards.
+No lettering, glyphs or foreign flag is present.
+The semaphore's striped red-white arm is equipment.
+Source and focus references are `common/national_focus/005_soviet_collapse_republics.txt:5981-5999`, the corresponding English keys and `interface/005_soviet_collapse_focus_icons.gfx:2474-2475`.
+The staged/runtime file SHA is `c4d12af9f1549244ec33d5aac2d43c9aa4a63c2a679a5860d2532cba2953575d`, and the decoded RGBA SHA is `9cb51c42aed3b31d883418697cc4dfc4cb38c7026d24f5dc28cbee3b6d4583a5`.
+The subject occupies 88x79, with margins L/T/R/B of 3/3/3/4 and no nontransparent outer-edge pixels.
+Its parent receipt, installed file, source/PNG/DDS proofs and current 42-row inventory agree.
+
+The expanded format check found four retained base-level headers outside the approved writer's canonical contract.
+Three stored `mip_count=1`.
+Tallinn Harbor Customs stored flags `0x2100F`, including `DDSD_MIPMAPCOUNT`, with a depth field of 1 but no `DDSD_DEPTH` flag.
+The parent rewrote those headers through the mandated writer with flags `0x100F`, depth 0 and mip count 0.
+For all four original/stage/runtime triples, the independent audit confirms exact old/output/runtime hashes and identical complete 32,336-byte pixel payloads and decoded RGBA arrays.
+This is canonical-format consistency evidence, not evidence that the engine rejected the original headers.
+
+The final current inventory contains 42 unique focus IDs, runtime paths, file hashes and pixel hashes.
+Every active focus texture passes independent strict canonical DDS decoding at 94x86.
+The final promotion summary is 40 focus paths promoted, two retained and ten legacy paths promoted, totalling 50 DDS paths.
+The updated crosswalk and after-inventory agree with that summary.
+Receipts are `gfx_fix_baltic/riga_followup/notes/parent_installed.json`, `riga_followup/notes/current_42_focus_inventory.json` and `header_normalization_followup/parent_installed.json`.
+The current full-tree sheet is `gfx_fix_baltic/riga_followup/current_42_focus_sheet.png`.
+
+The auditor also approved the sole Riga description punctuation correction, from ASCII question mark `0x3F` to apostrophe `0x27`, without a semantic or quoting change.
+The parent committed it as `b313c2a8d` with shared-file and index preservation evidence in `005_riga_localisation_evidence.json`.
+The auditor made no file writes during the Baltic/Riga/format/localisation follow-ups.
+The parent records these returned results in this section and retains final review responsibility.
+MCP remains `Transport closed`, so no final engine render or live acceptance is claimed.
+The legacy Warroom aliases, five grounded painted finals and remaining original-row backlog remain explicit incomplete work.
