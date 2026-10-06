@@ -1,0 +1,67 @@
+{
+  "schema": 1,
+  "task": "final undead support_attack feeding cue overlap audit",
+  "method": "Read exact installed entity, sound definition, support_attack animation, and WAV bytes; playback-duration bound uses the declared -0.06 playback-rate offset as a 0.94 minimum rate.",
+  "sources": {
+    "entity": {
+      "path": "gfx/entities/chaosx_undead_zombies.asset",
+      "sha256": "EDBCCDA0E05213669BDF4D24BB14B27CA9EEF9129E87344C0AC0213011CAE3E3"
+    },
+    "sound_definition": {
+      "path": "sound/chaosx_base_zombie_sound.asset",
+      "sha256": "5D071535DBD4B1AED9006E1C71D536F3119667FBDD7E306EEB28916B3077206F"
+    },
+    "support_attack_animation": {
+      "path": "gfx/models/units/chaosx_undead_zombies/chaosx_undead_zombies_support_attack.anim",
+      "sha256": "FE2BF6274F323F838A9B58ABC31514DD3FCB683673CDD38E2966C56D5DC172DA"
+    },
+    "eating_sample": {
+      "path": "sound/002_zombie_outbreak/zombies/base/base_zombie_eating.wav",
+      "sha256": "D7E16C783C71BC1EB3E7104D05D7B01DBD1D630A89475EF5727036BB77A3AA5D",
+      "codec": "PCM integer",
+      "channels": 1,
+      "sample_rate_hz": 44100,
+      "bits_per_sample": 16,
+      "sample_frames": 104484,
+      "duration_seconds": 2.3692517006802722
+    }
+  },
+  "entity_events": {
+    "state": "support_attack",
+    "feeding_start_seconds": 1.5,
+    "feeding_cue": "chaosx_base_zombie_eating",
+    "second_feeding_start_present": false,
+    "second_feeding_start_removed_seconds": 3.1333,
+    "recovery_grunt_seconds": 4.0333,
+    "recovery_grunt_cue": "chaosx_undead_zombie_grunt"
+  },
+  "mouth_motion_landmarks": [
+    {
+      "frame": 48,
+      "fps": 30.0,
+      "time_from_action_start_seconds": 1.5666666666666667,
+      "seconds_after_feeding_start": 0.06666666666666665
+    },
+    {
+      "frame": 97,
+      "fps": 30.0,
+      "time_from_action_start_seconds": 3.2,
+      "seconds_after_feeding_start": 1.7000000000000002
+    }
+  ],
+  "worst_case_playback": {
+    "minimum_rate": 0.94,
+    "duration_seconds": 2.5204805326385875,
+    "cue_start_seconds": 1.5,
+    "cue_end_seconds": 4.0204805326385875,
+    "grunt_seconds": 4.0333,
+    "clearance_seconds": 0.012819467361412151,
+    "overlap": false
+  },
+  "result": {
+    "both_mouth_motions_covered": true,
+    "feeding_cue_does_not_overlap_grunt_at_minimum_rate": true,
+    "clearance_seconds": 0.012819467361412151,
+    "scope_limit": "Timing coverage uses annotated action frames 48 and 97 on the hash-bound support_attack animation. This verifies timeline coverage and cue/grunt non-overlap mathematically; it does not assert live-game playback behavior."
+  }
+}

@@ -19,6 +19,10 @@ Playback-rate variation remains; the longest 0.17-second file lasts about 0.193 
 - `implemented`: demonic scream and attack effects each use three variants, with the two extra screams and lower attack voice derived from the same already classified CC0 recordings.
 Pitch variants are expressly allowed by the ticket; the source counts remain one scream recording and two attack recordings and are reported separately from variant counts.
 The dedicated low-growl loop candidates fail the recorded-edge gate and stay outside runtime.
+- `implemented`: undead support_attack starts the existing 2.369-second feeding recording once, at 1.50 seconds.
+Its nominal playback spans both hands-to-mouth movements and ends at 3.869 seconds, near the 4.00-second grunt.
+Removing the second start at 3.1333 seconds prevents two copies of the same feeding recording from overlapping on one unit while retaining the complete sourced cue.
+The recovery grunt starts at 4.0333 seconds, one frame later, so the retained slowest feeding playback rate (0.94×) can finish near 4.020 seconds without touching the grunt.
 - `unresolved`: WP3 requests footsteps at -3 dBFS while section 3.5 and the shared mastering gate require -6 dBFS.
 Already accepted -6 dBFS samples remain in place; this preserves the actual mastering contract without claiming that the conflicting WP3 target passed.
 - `unresolved`: model-specific undead/demonic specular instructions retain low or constant G values while section 3.2 rejects constant G.
