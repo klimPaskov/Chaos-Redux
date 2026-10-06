@@ -81,3 +81,15 @@ The final strict active-consumer pass supersedes the earlier grammatical-retenti
 Its source-keyed before/after inventory and bounded no-consumer exceptions are in the localization handoff.
 The parent also made `.139` a continuing-crisis headline and `.145` a report about another Soviet emergency, removing scenario-control terminology from their visible text.
 Final colour audit remains zero; no populated GUI or native execution acceptance is claimed.
+
+## Graphics review: Kazakhstan residuals, 2026-10-06
+
+Acceptance basis: the user's Event 005 graphics-fix task authorizes clean cut-outs, removal of stray fragments, preservation of stable sprite names, and complete per-tree review of the October graphics plan.
+The earlier shared edge repair is retained wherever current decoded art already satisfies the named defect; repeating erosion would damage thin details without restoring missing artwork.
+For the Kazakhstan cavalry-school ribbons, reviewed colour-only edge bleeding preserves alpha while removing the coloured fringe and detached dash.
+For the southern-republic flags, detached alpha above and below the painted frame is removed.
+For the engineers and Turkish-language channels, faint outer shadow pixels below alpha 32 are removed while the subject and its antialiasing remain intact.
+Both legacy aliases and the focus-consumed aliases receive identical repaired DDS bytes.
+No event mechanics, focus rewards, AI weights, country identities, or catalog wording are changed by this graphics tranche.
+Implementation evidence and the exact twenty-row graphics disposition are in `docs/plans/gfx_fix_2026-10/005_kaz_report.md`.
+Focus-layout diagnostics remain separate open findings; this tranche does not claim full focus-tree or Event 005 completion.
