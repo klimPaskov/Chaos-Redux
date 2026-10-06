@@ -124,6 +124,15 @@ Reason: normal 21-day sessions already outlast the default thirteen-day result r
 Existing caller and recipient cooldowns, strict-majority rules, donor payments, payload magnitudes and all AI factors remain unchanged.
 The production-source cases cover real charge/refund cycles, repeated calls, and the 24/25/75 PP boundary.
 
+## F16. Relief requirements describe the implemented vote
+
+Disposition: implemented player text, native wrapping remains a live check.
+The effect tooltip names a majority of all live members instead of merely more yes than no ballots, so abstentions have their actual effect.
+The same government counts once when the caller also receives relief.
+The compact explanation states conditional support-equipment payments, the four delivery effects, neutral unfunded refunds, political rejection, and the existing cooldowns without a misleading negative-loss phrase.
+Reason: the published-diff review found the old majority wording beside the corrected effect, which could mislead a player choosing abstention.
+No vote weight, eligibility, debit, payload or duration changes in this text correction.
+
 ## Retained limits
 
 F11, recorded under the same G6 authority: the ordinary named fictional NZL radio coordinator is presented as the grounded institutional Radio Service Board, retaining its internal tokens, trait, role, and gameplay.
