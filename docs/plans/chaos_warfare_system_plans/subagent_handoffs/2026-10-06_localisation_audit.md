@@ -84,3 +84,93 @@ The parent retains responsibility for native evidence gates, final source reread
 No gameplay/localisation source patch, workbook edit, CSV edit, or commit was made by this auditor.
 Skills used: `chaos-redux-events`, `chaos-redux-decisions-missions`, and `chaos-redux-subagents`.
 No skill was created or updated.
+
+## Follow-up: thirty inherited prose and title replacements
+
+Disposition: implemented bounded review of parent-applied replacements.
+Acceptance basis: parent assigned the exact thirty before/after entries in `.git/cbrn_takeover_20261006/prose_review_inventory.json` and retained source ownership.
+The nine localisation files named by that inventory were the only additional prose scope.
+Other owners' `016_mengele` strings were excluded.
+All thirty current values match the final inventory.
+No missing or duplicate definition was found for those thirty exact keys in their named files.
+All dynamic bracket tokens were preserved except the three explicitly approved `[FROM.GetName]` title removals: `cbrn_destroy_contaminated_records`, `cbrn_admit_accidental_release`, and `cbrn_permit_inspection`.
+The shortened titles are Destroy Attack Evidence, Admit an Accidental Release, and Permit Inspection.
+
+Two residual semicolons were found in `cbrn_export_protective_equipment_complete_tt` and `sp_cbrn_medical_trial_reward_desc`.
+The parent replaced them with periods and clarified recipient opinion and supplier reserve ownership.
+The final shipment text reads: "A complete shipment supplies [FROM.GetNameDef] and improves its government's opinion of us. If [ROOT.GetNameDef] meets international compliance terms, successful delivery may ease current Condemnation. The operation ends if either partner becomes ineligible. Undelivered masks return to the supplier's reserve."
+The final medical trial text reads: "Trial batches can undergo a full clinical review or enter emergency production. Review earns public confidence but takes time. An emergency schedule carries political risk."
+Both were reread in current source.
+No remaining banned implementation words, em dashes, or semicolons occur in the thirty values.
+The replacements describe physical orders, samples, laboratory papers, and shipping papers without confusing those objects with script bookkeeping.
+No sourced quotation was changed.
+
+Narrow semantic checks confirmed the following:
+
+- `bio_battlefield_launch_available_tt` retains the no-release consequence for invalid target or authority.
+  `common/scripted_effects/biological_battlefield_effects.txt:474–529` gates actual dispatch behind the native context and payload predicates and uses the rejected-reservation branch without dispatch when context is invalid.
+- `cbrn_bio_facility.5.desc` identifies the former custodian and retains accidental-release framing without claiming deliberate use.
+  `common/scripted_effects/biological_facility_capture_effects.txt:542–600` uses the exact original arsenal actor where that country exists, dispatches `captured_facility` source with `accident` result, and sends event `.5` to that original actor.
+  `events/biological_facility_capture_events.txt` supplies an acknowledgement-only report option.
+- `cbrn_answer_inspection_demand_timeout_tt` retains refusal only when the demanding country exists.
+  `common/scripted_effects/cbrn_diplomacy_effects.txt:303–315` otherwise clears the demand without calling refusal.
+  `common/scripted_effects/condemnation_response_effects.txt:321–337` removes inspectors and observers and adds public Coverup pressure on the refusal branch.
+- Evidence destruction still reduces evidence more than sealing, raises Resistance, and adds hidden Coverup consequences.
+  `common/scripted_effects/cbrn_occupation_effects.txt:802` starts the destruction branch, and `common/script_constants/cbrn_occupation_constants.txt:229–230` defines suppression as 10 for sealing and 25 for destruction.
+  The renamed evidence is physical papers and samples already described by the prior text.
+- Admission and inspection still operate on the selected state and preserve earlier attacks, deaths, and contamination.
+  Target declarations, `[FROM.GetName]` requirement text, and FROM-scoped effects remain in `common/decisions/cbrn_occupation_decisions.txt:279–398`.
+  `common/scripted_triggers/cbrn_occupation_triggers.txt:406–419` and `458–465` retain the control, responsibility, previous-response, and discovery gates.
+  `common/scripted_effects/cbrn_occupation_effects.txt:896–936` retains the inspection evidence increase, seal removal, national inspections, and Coverup pressure clearing.
+- `cbrn_startup_history_1939_uk_desc` restates its existing mass civilian issue and Parliament attribution claim.
+  Removing setup terminology introduces no additional historical quantity, date, or gameplay benefit.
+  This is a before/after semantic check, not fresh historical verification.
+
+The remaining replacements preserve their prior conditions and consequences while removing implementation phrasing, shortening titles, or naming concrete evidence.
+No additional semantic drift was found in this bounded review.
+Long state names no longer expand the three approved static titles, while state requirements and native targeting still identify the selected target.
+Native panel fit and target presentation were not rendered or observed.
+No MCP retry, game launch, desktop control, workbook/CSV operation, source edit, or commit occurred in this follow-up.
+The parent-provided source audit results of two fixed achievement-lifetime defects and 28 passes with 21 baseline fault checks were not rerun here and do not expand this localisation review's coverage.
+No unresolved wording decision remains in the thirty replacements.
+The existing native evidence gaps and incomplete whole-workstream verdict remain unchanged.
+
+## Final two-key refinement
+
+Disposition: implemented parent-owned wording refinement, verified by this read-only follow-up.
+The final tracked inventory is `docs/plans/chaos_warfare_system_plans/subagent_handoffs/2026-10-06_prose_changes.json`.
+This phase adds one numeric token and does not contradict the earlier phase's token-preservation finding.
+
+`localisation/english/cbrn_diplomacy_l_english.yml:18`, `cbrn_share_forensic_evidence_desc`, restores "detected ordinary biological outbreak".
+The ordinary qualifier makes the existing eligible pathogen scope explicit without changing a mechanic or losing a token.
+
+`localisation/english/biological_facility_recovery_raids_l_english.yml:32`, `bio_facility_capture_secure_limited_tt`, replaces "40 percent" with `[?constant:bio_facility_capture_payload.secure_limited_fraction|%0]`.
+`common/script_constants/biological_facility_capture_constants.txt:34–41` defines that category as fixed-point data and sets the fraction to `0.40`.
+`common/scripted_effects/biological_facility_capture_effects.txt:665–675` binds the same constant to the fraction used by limited recovery's transfer helper.
+The numeric scale and binding are correct: percentage formatting should multiply `0.40` by 100, append the percent sign, and show zero decimal places, yielding `40%`.
+The final inventory contains both exact current values.
+No pre-existing dynamic token was removed, and all other wording in these two values is unchanged from the prior phase.
+
+Parent-provided local reference evidence, retrieved directly because the parent's reference routes were unavailable: offline Localisation wiki lines 196–200 and 214, revision `1a8f72362a34b4bb653186746b9fae0b98e463205cb02f12ccf2c3d9ccd3a064`; installed `documentation/script_concept_documentation.md` lines 216–222, SHA-256 `884bfe9f9207ea4b25b36b5129d0f77d11d4b2f7eb0592587767ec58d24930c7`; and vanilla `localisation/english/TAOG_decisions_l_english.yml:503`, SHA-256 `42b34845b31c1ddd77bfdbd23aafd775786184f75eec6a5b9fe9c765e6b8f177`.
+The earlier successful auditor reference reads remain separate evidence and do not establish the parent's later route health.
+The native formatter's actual `40%` display remains an acceptance check.
+No native display proof, MCP call, game launch, gameplay/localisation source edit, workbook/CSV operation, or commit was made in this final follow-up.
+No new wording issue or uncertainty was found beyond that native display gate.
+
+## Final target-name placement
+
+Verified `localisation/english/cbrn_occupation_l_english.yml:35` and `43`: Destroy Attack Evidence names "the nerve-suppression attack in [FROM.GetName]", and Admit an Accidental Release begins "Publicly acknowledge the toxic release in [FROM.GetName]".
+Both shortened titles remain static.
+The state-name getter was deliberately relocated from those titles into their descriptions, not accidentally lost.
+Permit Inspection already retains `[FROM.GetName]` in its description at line 48.
+The getter and existing selected-state binding are unchanged.
+The parent reports that `2026-10-06_prose_changes.json` was updated to match this final placement.
+This note adds no native display proof or new source, MCP, game, or spreadsheet validation.
+
+## Parent's paired destruction-percentage check
+
+After the specialist's thirty-key review, the parent replaced the adjacent limited-destruction tooltip's static fifty percent with `[?constant:bio_facility_capture_payload.destroy_limited_fraction|%0]`.
+This is the thirty-first changed key in the final inventory, not part of the earlier thirty-key claim.
+The existing fixed-point value is 0.50 at `biological_facility_capture_constants.txt:42`, and the existing effect reads that same constant at `biological_facility_capture_effects.txt:729`.
+The parent read the same local formatting references recorded in `2026-10-06_prose_changes.md`; no earlier token is removed and no coefficient or source effect changes.
+The two resulting percentage displays, forty and fifty percent, remain native UI acceptance checks.

@@ -95,3 +95,14 @@ The same dispatcher initializes `cbrn_state_attribution_output` before the evide
 This preserves confirmed attribution for the chemical-war requirement instead of relying on newly created nested temporary storage.
 Both changes preserve native loss arithmetic, evidence thresholds, caps and random coefficients.
 The regression extends the actual-source helper-frame cases; its immediate-loss fragment deliberately excludes native caps and random multipliers, and does not claim native achievement execution.
+
+## Concrete prose and compact action titles
+
+Disposition: implemented within G3/G5 and the explicit repair authority.
+Thirty-one inherited system strings replace references to shared dispatch, recorded outcomes and setup profiles with descriptions of the world and player choices, and keep recovery percentages tied to their tuning source.
+Physical evidence is described as orders, samples and papers rather than generic bookkeeping terms.
+Destroy Attack Evidence, Admit an Accidental Release and Permit Inspection leave the state in the native target and description instead of appending a potentially long name to the title.
+Coercive Security and Protected Occupation authorization titles are also shortened.
+The limited-recovery and limited-destruction tooltips read their existing forty- and fifty-percent fractions dynamically from the same constants as the effects, without changing tuning.
+The exact wording, source checks and formatting references are in `subagent_handoffs/2026-10-06_prose_changes.md` and its JSON inventory.
+Catalog alignment is accepted and queued for the workbook owner because the user explicitly excludes workbook and export edits from this workstream.
