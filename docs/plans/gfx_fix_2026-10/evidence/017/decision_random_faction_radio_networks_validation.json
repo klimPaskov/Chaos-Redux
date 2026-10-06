@@ -3,7 +3,7 @@
   "event_id": "017",
   "asset_id": "decision_random_faction_radio_networks",
   "asset_type": "decision_icon",
-  "status": "parent_visual_accepted_user_live_check_pending",
+  "status": "parent_visual_accepted_after_alpha_normalization_live_check_pending",
   "original_defect": {
     "source": "C:/Users/klimp/Videos/chaos_redux_trailer/records/gfx_review/gfx_fix_plan.md",
     "summary": "The external GFX review plan reports a thin mast with scattered colored dots and a semi-transparent body; the interior alpha mean was 144 and 44% of interior pixels were below alpha 120, so the 32x32 icon read as faint noise."
@@ -79,9 +79,9 @@
     ]
   },
   "processed_png": {
-    "workspace_path": "docs/assets/gfx_fix_other_icons_resume/processed_png/017_random_faction/decision_random_faction_radio_networks_v2.png",
-    "evidence_path": "docs/plans/gfx_fix_2026-10/evidence/017/decision_random_faction_radio_networks_processed_32x32.png",
-    "sha256": "c11dd8fe1cbb30ef38bcfa4e6e26db8774ba100f37f61362d275ed9e4806dc7f",
+    "workspace_path": "docs/assets/gfx_fix_other_icons_resume/processed_png/017_random_faction/decision_random_faction_radio_networks_v2_alpha_normalized.png",
+    "evidence_path": "docs/plans/gfx_fix_2026-10/evidence/017/decision_random_faction_radio_networks_processed_alpha_normalized_32x32.png",
+    "sha256": "d882a2567200dbff3220b211ed23027b0060d100dde91851d192db2f4dedf6d8",
     "size_px": [
       32,
       32
@@ -103,7 +103,8 @@
         0,
         255
       ],
-      "alpha_ge200_pct_visible": 50.283553875236294,
+      "mean_alpha_over_nonzero_pixels": 216.73708920187792,
+      "mean_alpha_over_full_canvas": 90.166015625,
       "transparent_corner_alpha": [
         0,
         0,
@@ -111,31 +112,33 @@
         0
       ]
     },
-    "processing": "Alpha>=8 defines complete subject bounds; exterior alpha 1-7 outside those bounds was cleared; premultiplied-alpha Lanczos contain resize; no opaque background removal and no visual component layer."
+    "processing": "For each post-resize pixel, alpha < 16 becomes 0; alpha >= 128 becomes 255; alpha in [16,127] is unchanged. RGB bytes, canvas, and position are unchanged. RGB, canvas, placement, visible bounds, and zero-alpha gaps are unchanged."
   },
   "runtime_dds_validation": {
-    "sha256": "558b1cf4d39ac9ee425bdec824491bba14d23b064f241e7eeae1c72d07694aea",
+    "sha256": "e170ad6bb0af65af93bf5e41181145f31621bf9668547287e104d5af5374e21b",
     "checks": {
-      "runtime_present": true,
-      "runtime_sha_matches_staged": true,
+      "DDS_magic_header_size_and_Bgra_masks": true,
       "native_dimensions": true,
-      "strict_BGRA_header": true,
-      "one_level_exact_length": true,
-      "raw_native_BCBA_payload_equals_png": true,
-      "Pillow_native_DDS_decode_equals_PNG": true,
-      "existing_GFX_texturefile_matches_runtime_path": true
+      "texture_caps_and_no_mips": true,
+      "exact_length": true,
+      "raw_BGRA_payload_equals_normalized_PNG": true,
+      "Pillow_DDS_decode_equals_normalized_PNG": true,
+      "runtime_copy_matches_alpha_normalized_stage": true,
+      "existing_GFX_texturefile_matches_runtime_path": true,
+      "RGB_and_canvas_unchanged_from_superseded_processed_PNG": true,
+      "visible_bounds_unchanged": true,
+      "no_transparent_pixels_filled": true,
+      "transparent_corners_remain_zero": true
     },
     "all_checks_pass": true,
-    "native_pixel_comparison": "Raw BGRA payload equality and Pillow DDS RGBA decode are both exact against the processed PNG.",
-    "contact_sheet_path": "docs/plans/gfx_fix_2026-10/evidence/017/decision_random_faction_radio_networks_native_4x_before_after_roundtrip.png",
-    "contact_sheet_sha256": "aef5c5b733c2b118e89c6ce81f29626065a3a6b6f1639609dec19f78501521b2",
+    "native_pixel_comparison": "Raw BGRA payload equality and Pillow DDS RGBA decode are both exact against the alpha-normalized processed PNG.",
+    "contact_sheet_path": "docs/plans/gfx_fix_2026-10/evidence/017/decision_random_faction_radio_networks_opacity_before_after.png",
+    "contact_sheet_sha256": "1295260c8646c96d80f1faf81a315fb34c59dce4fb5c8243ef49e969356be522",
     "contact_sheet_contents": [
-      "original runtime DDS native and 4x view",
-      "native-alpha ImageGen source",
-      "processed native PNG",
-      "4x processed preview",
-      "runtime DDS decoded 4x view",
-      "pixel-equality and alpha-bound note"
+      "before normalized processed PNG at native and 4x",
+      "after normalized processed PNG at native and 4x",
+      "runtime DDS decoded at native and 4x",
+      "alpha means and unchanged visible-bound note"
     ]
   },
   "prior_runtime_texture": {
@@ -147,8 +150,14 @@
     "status": "accepted",
     "reviewer": "parent/root",
     "date": "2026-10-06",
-    "basis": "Parent accepted after native-size and 4x before/after review.",
-    "accepted_note": "Radio Networks v2 at 32x32 with 28x28 bounds."
+    "basis": "Parent accepted the source/native composition, then accepted the bounded post-resize alpha-normalized final after native/4x opacity review.",
+    "accepted_note": "Radio Networks v2 at 32x32 with 28x28 bounds.",
+    "final_contrast_review": {
+      "status": "accepted",
+      "reviewer": "parent/root",
+      "date": "2026-10-06",
+      "note": "Parent reviewed all three opacity before/after sheets and accepted the normalized finals: interiors read solid, RGB and placement stay unchanged, and intentional gaps remain intact."
+    }
   },
   "1936_fixture_and_live_action": {
     "fixture_id": "qa_001_fresh_head",
@@ -158,10 +167,65 @@
     "fixture_record": "docs/testing/live_qa/20261003_full_playtest/coverage.csv:18",
     "prior_fixture_setup": "Fresh 1936 USA, random timer parked; Settings > Trigger Events > Force Trigger Mode; about 2.5 months at speed 5; first option chosen for each popup.",
     "prior_observed_event_result": "Siam Joins Allies.",
-    "icon_follow_up_action": "Use the qa_001_fresh_head 1936 USA fixture (snapshot ce195cbe3) with the random timer parked. Force Event 017 from Settings > Trigger Events > Force Trigger Mode, run the existing scenario cadence of about 2.5 months at speed 5, and answer popups with the first option. The prior live QA row records ?Siam Joins Allies.? For the icon check, remain as the USA/Allies faction leader after accession, wait until the valid radio-pressure-target gate makes random_faction_faction_leader_decisions_visible true, open the Bloc Pressure category, and inspect decision random_faction_radio_networks (?Build Radio Networks?) without needing to complete it.",
+    "icon_follow_up_action": "Use a fresh 1936 session with the random timer parked. Force Event 017 through Settings, obtain a faction leader registered in global.random_faction_faction_leaders with a reachable radio-pressure target, then open Bloc Pressure and inspect random_faction_radio_networks (Build Radio Networks). The prior Siam/Allies QA observation does not establish USA as the faction leader.",
     "expected_visible_result": "The Build Radio Networks decision shows the complete bronze radio mast, horizontal aerial, and transmitter base in the 32x32 slot, with 28x28 visible bounds and 2 px clear margins; the old colored specks and ghost body are absent.",
     "execution_status": "Not run by this subagent; parent source/native acceptance is separate from user/orchestrator live validation."
   },
   "omissions": [],
-  "live_validation_owner": "user/orchestrator"
+  "live_validation_owner": "user/orchestrator",
+  "superseded_processed_png": {
+    "workspace_path": "docs/assets/gfx_fix_other_icons_resume/processed_png/017_random_faction/decision_random_faction_radio_networks_v2.png",
+    "evidence_path": "docs/plans/gfx_fix_2026-10/evidence/017/decision_random_faction_radio_networks_processed_32x32.png",
+    "sha256": "c11dd8fe1cbb30ef38bcfa4e6e26db8774ba100f37f61362d275ed9e4806dc7f",
+    "mean_alpha_over_nonzero_pixels": 159.468809073724,
+    "visible_bbox_xyxy": [
+      2,
+      2,
+      30,
+      30
+    ]
+  },
+  "alpha_normalization": {
+    "rule": "For each post-resize pixel, alpha < 16 becomes 0; alpha >= 128 becomes 255; alpha in [16,127] is unchanged. RGB bytes, canvas, and position are unchanged.",
+    "prior_processed_png_path": "docs/assets/gfx_fix_other_icons_resume/processed_png/017_random_faction/decision_random_faction_radio_networks_v2.png",
+    "prior_processed_png_sha256": "c11dd8fe1cbb30ef38bcfa4e6e26db8774ba100f37f61362d275ed9e4806dc7f",
+    "normalized_processed_png_path": "docs/assets/gfx_fix_other_icons_resume/processed_png/017_random_faction/decision_random_faction_radio_networks_v2_alpha_normalized.png",
+    "normalized_processed_png_sha256": "d882a2567200dbff3220b211ed23027b0060d100dde91851d192db2f4dedf6d8",
+    "runtime_dds_path": "gfx/interface/decisions/017_random_faction/decision_random_faction_radio_networks.dds",
+    "runtime_dds_sha256": "e170ad6bb0af65af93bf5e41181145f31621bf9668547287e104d5af5374e21b",
+    "prior_visible_alpha_mean_nonzero": 159.468809073724,
+    "normalized_visible_alpha_mean_nonzero": 216.73708920187792,
+    "prior_bbox_xyxy": [
+      2,
+      2,
+      30,
+      30
+    ],
+    "normalized_bbox_xyxy": [
+      2,
+      2,
+      30,
+      30
+    ],
+    "visible_bounds_unchanged": true,
+    "margins_l_r_t_b": [
+      2,
+      2,
+      2,
+      2
+    ],
+    "pixels_below_16_set_zero": 598,
+    "pixels_at_least_128_set_255": 339,
+    "pixels_between_16_and_127_unchanged": 87,
+    "pixels_that_remained_zero": 495,
+    "rgb_and_canvas_placement_unchanged": true,
+    "no_zero_alpha_pixels_filled": true
+  },
+  "superseded_runtime_dds": {
+    "path": "gfx/interface/decisions/017_random_faction/decision_random_faction_radio_networks.dds",
+    "sha256": "558b1cf4d39ac9ee425bdec824491bba14d23b064f241e7eeae1c72d07694aea",
+    "prior_processed_png_sha256": "c11dd8fe1cbb30ef38bcfa4e6e26db8774ba100f37f61362d275ed9e4806dc7f",
+    "permanent_evidence_copy_path": "docs/plans/gfx_fix_2026-10/evidence/017/decision_random_faction_radio_networks_superseded_pre_alpha.dds",
+    "permanent_evidence_copy_sha256": "558b1cf4d39ac9ee425bdec824491bba14d23b064f241e7eeae1c72d07694aea"
+  }
 }

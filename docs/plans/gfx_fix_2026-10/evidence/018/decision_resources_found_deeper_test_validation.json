@@ -3,7 +3,7 @@
   "event_id": "018",
   "asset_id": "decision_resources_found_deeper_test",
   "asset_type": "decision_icon",
-  "status": "parent_visual_accepted_user_live_check_pending",
+  "status": "parent_visual_accepted_after_alpha_normalization_live_check_pending",
   "original_defect": {
     "source": "C:/Users/klimp/Videos/chaos_redux_trailer/records/gfx_review/gfx_fix_plan.md",
     "summary": "The external GFX review plan reports a 13x32 drill silhouette touching the top and bottom edges and using only 41% of the tile width, so it appeared clipped and narrow."
@@ -79,9 +79,9 @@
     ]
   },
   "processed_png": {
-    "workspace_path": "docs/assets/gfx_fix_other_icons_resume/processed_png/018_resources_found/decision_resources_found_deeper_test_v1.png",
-    "evidence_path": "docs/plans/gfx_fix_2026-10/evidence/018/decision_resources_found_deeper_test_processed_32x32.png",
-    "sha256": "36a1f9c855c422edb02b0fcd338dbfc88780923c4e17f63ac280dd74667c8e86",
+    "workspace_path": "docs/assets/gfx_fix_other_icons_resume/processed_png/018_resources_found/decision_resources_found_deeper_test_v2_alpha_normalized.png",
+    "evidence_path": "docs/plans/gfx_fix_2026-10/evidence/018/decision_resources_found_deeper_test_processed_alpha_normalized_32x32.png",
+    "sha256": "9d2edc92e1a3069097cc22054edd40c79528288ec6c909e4e99e13f6b3b58b79",
     "size_px": [
       32,
       32
@@ -103,7 +103,8 @@
         0,
         255
       ],
-      "alpha_ge200_pct_visible": 46.83195592286501,
+      "mean_alpha_over_nonzero_pixels": 212.1679389312977,
+      "mean_alpha_over_full_canvas": 54.28515625,
       "transparent_corner_alpha": [
         0,
         0,
@@ -111,31 +112,33 @@
         0
       ]
     },
-    "processing": "Alpha>=8 defines complete subject bounds; exterior alpha 1-7 outside those bounds was cleared; premultiplied-alpha Lanczos contain resize; no opaque background removal and no visual component layer."
+    "processing": "For each post-resize pixel, alpha < 16 becomes 0; alpha >= 128 becomes 255; alpha in [16,127] is unchanged. RGB bytes, canvas, and position are unchanged. RGB, canvas, placement, visible bounds, and zero-alpha gaps are unchanged."
   },
   "runtime_dds_validation": {
-    "sha256": "358dca311f105ff964e371ba2a75d39df708426270f8f2e9989faa7eadddc95e",
+    "sha256": "73ae9dce0b93be973ca8e85f27bd5130922274b0b928aee087ff18c5bd9b2737",
     "checks": {
-      "runtime_present": true,
-      "runtime_sha_matches_staged": true,
+      "DDS_magic_header_size_and_Bgra_masks": true,
       "native_dimensions": true,
-      "strict_BGRA_header": true,
-      "one_level_exact_length": true,
-      "raw_native_BCBA_payload_equals_png": true,
-      "Pillow_native_DDS_decode_equals_PNG": true,
-      "existing_GFX_texturefile_matches_runtime_path": true
+      "texture_caps_and_no_mips": true,
+      "exact_length": true,
+      "raw_BGRA_payload_equals_normalized_PNG": true,
+      "Pillow_DDS_decode_equals_normalized_PNG": true,
+      "runtime_copy_matches_alpha_normalized_stage": true,
+      "existing_GFX_texturefile_matches_runtime_path": true,
+      "RGB_and_canvas_unchanged_from_superseded_processed_PNG": true,
+      "visible_bounds_unchanged": true,
+      "no_transparent_pixels_filled": true,
+      "transparent_corners_remain_zero": true
     },
     "all_checks_pass": true,
-    "native_pixel_comparison": "Raw BGRA payload equality and Pillow DDS RGBA decode are both exact against the processed PNG.",
-    "contact_sheet_path": "docs/plans/gfx_fix_2026-10/evidence/018/decision_resources_found_deeper_test_native_4x_before_after_roundtrip.png",
-    "contact_sheet_sha256": "6d7d9d9ac4a682395c179f7c2c7d9ac1f16103cd5594c9669f2be4032b6c8ea5",
+    "native_pixel_comparison": "Raw BGRA payload equality and Pillow DDS RGBA decode are both exact against the alpha-normalized processed PNG.",
+    "contact_sheet_path": "docs/plans/gfx_fix_2026-10/evidence/018/decision_resources_found_deeper_test_opacity_before_after.png",
+    "contact_sheet_sha256": "8be68059f89be74d1561a14962eeb8746daea361c046e696717b20c4962d9f16",
     "contact_sheet_contents": [
-      "original runtime DDS native and 4x view",
-      "native-alpha ImageGen source",
-      "processed native PNG",
-      "4x processed preview",
-      "runtime DDS decoded 4x view",
-      "pixel-equality and alpha-bound note"
+      "before normalized processed PNG at native and 4x",
+      "after normalized processed PNG at native and 4x",
+      "runtime DDS decoded at native and 4x",
+      "alpha means and unchanged visible-bound note"
     ]
   },
   "prior_runtime_texture": {
@@ -147,8 +150,14 @@
     "status": "accepted",
     "reviewer": "parent/root",
     "date": "2026-10-06",
-    "basis": "Parent accepted after native-size and 4x before/after review.",
-    "accepted_note": "Deeper Test at 32x32 as a wider uncut drill."
+    "basis": "Parent accepted the source/native composition, then accepted the bounded post-resize alpha-normalized final after native/4x opacity review.",
+    "accepted_note": "Deeper Test at 32x32 as a wider uncut drill.",
+    "final_contrast_review": {
+      "status": "accepted",
+      "reviewer": "parent/root",
+      "date": "2026-10-06",
+      "note": "Parent reviewed all three opacity before/after sheets and accepted the normalized finals: interiors read solid, RGB and placement stay unchanged, and intentional gaps remain intact."
+    }
   },
   "1936_fixture_and_live_action": {
     "fixture_id": "qa_001_fresh_head",
@@ -163,5 +172,60 @@
     "execution_status": "Not run by this subagent; parent source/native acceptance is separate from user/orchestrator live validation."
   },
   "omissions": [],
-  "live_validation_owner": "user/orchestrator"
+  "live_validation_owner": "user/orchestrator",
+  "superseded_processed_png": {
+    "workspace_path": "docs/assets/gfx_fix_other_icons_resume/processed_png/018_resources_found/decision_resources_found_deeper_test_v1.png",
+    "evidence_path": "docs/plans/gfx_fix_2026-10/evidence/018/decision_resources_found_deeper_test_processed_32x32.png",
+    "sha256": "36a1f9c855c422edb02b0fcd338dbfc88780923c4e17f63ac280dd74667c8e86",
+    "mean_alpha_over_nonzero_pixels": 144.3030303030303,
+    "visible_bbox_xyxy": [
+      2,
+      3,
+      30,
+      29
+    ]
+  },
+  "alpha_normalization": {
+    "rule": "For each post-resize pixel, alpha < 16 becomes 0; alpha >= 128 becomes 255; alpha in [16,127] is unchanged. RGB bytes, canvas, and position are unchanged.",
+    "prior_processed_png_path": "docs/assets/gfx_fix_other_icons_resume/processed_png/018_resources_found/decision_resources_found_deeper_test_v1.png",
+    "prior_processed_png_sha256": "36a1f9c855c422edb02b0fcd338dbfc88780923c4e17f63ac280dd74667c8e86",
+    "normalized_processed_png_path": "docs/assets/gfx_fix_other_icons_resume/processed_png/018_resources_found/decision_resources_found_deeper_test_v2_alpha_normalized.png",
+    "normalized_processed_png_sha256": "9d2edc92e1a3069097cc22054edd40c79528288ec6c909e4e99e13f6b3b58b79",
+    "runtime_dds_path": "gfx/interface/decisions/018_resources_found/decision_resources_found_deeper_test.dds",
+    "runtime_dds_sha256": "73ae9dce0b93be973ca8e85f27bd5130922274b0b928aee087ff18c5bd9b2737",
+    "prior_visible_alpha_mean_nonzero": 144.3030303030303,
+    "normalized_visible_alpha_mean_nonzero": 212.1679389312977,
+    "prior_bbox_xyxy": [
+      2,
+      3,
+      30,
+      29
+    ],
+    "normalized_bbox_xyxy": [
+      2,
+      3,
+      30,
+      29
+    ],
+    "visible_bounds_unchanged": true,
+    "margins_l_r_t_b": [
+      2,
+      2,
+      3,
+      3
+    ],
+    "pixels_below_16_set_zero": 762,
+    "pixels_at_least_128_set_255": 201,
+    "pixels_between_16_and_127_unchanged": 61,
+    "pixels_that_remained_zero": 661,
+    "rgb_and_canvas_placement_unchanged": true,
+    "no_zero_alpha_pixels_filled": true
+  },
+  "superseded_runtime_dds": {
+    "path": "gfx/interface/decisions/018_resources_found/decision_resources_found_deeper_test.dds",
+    "sha256": "358dca311f105ff964e371ba2a75d39df708426270f8f2e9989faa7eadddc95e",
+    "prior_processed_png_sha256": "36a1f9c855c422edb02b0fcd338dbfc88780923c4e17f63ac280dd74667c8e86",
+    "permanent_evidence_copy_path": "docs/plans/gfx_fix_2026-10/evidence/018/decision_resources_found_deeper_test_superseded_pre_alpha.dds",
+    "permanent_evidence_copy_sha256": "358dca311f105ff964e371ba2a75d39df708426270f8f2e9989faa7eadddc95e"
+  }
 }

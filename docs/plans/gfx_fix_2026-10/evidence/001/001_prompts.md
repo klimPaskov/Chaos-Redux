@@ -4,7 +4,7 @@ The accepted prompts below produced generated fictional staged period photograph
 
 ## communist_state_control
 
-ImageGen output: exec-370452cb-4f36-4672-9b00-4e70d64cc761.png (1536x1024, RGB). Generation fit because the event uses fictional alternate-history state-control imagery and does not require a real person or archive-specific object.
+ImageGen output: exec-370452cb-4f36-4672-9b00-4e70d64cc761.png (1536x1024, RGB). Tool-reported path: C:\Users\klimp\.codex\generated_images\01a10fb9-88b7-7592-b9c6-4d9d772e98d5\exec-370452cb-4f36-4672-9b00-4e70d64cc761.png. The retained selected source is source_png/001_communism_spread/communist_state_control_source.png. Generation fit because the event uses fictional alternate-history state-control imagery and does not require a real person or archive-specific object.
 
 > Use case: historical-scene
 > Asset type: HOI4 report-event photograph source, Event 001 Communism Spread; final consumer is a 210x176 sepia tilted documentary card with transparent outer margins.
@@ -19,9 +19,9 @@ ImageGen output: exec-370452cb-4f36-4672-9b00-4e70d64cc761.png (1536x1024, RGB).
 
 ## communist_insurgency_start
 
-Candidate v1_crowd was rejected after native-size group review because it was too close to the existing field assembly scene communist_uprising. Its source and processed card remain in source_png/001_communism_spread/communist_insurgency_start_v1_rejected_crowd.png and processed_png/001_communism_spread/communist_insurgency_start_v1_rejected_crowd.png; its temporary DDS is retained under notes/001_communism_spread/rejected_candidate_v1_insurgency_start.dds.
+Candidate v1_crowd is ImageGen output exec-7c7d3673-c375-4e76-aab0-26f01dbccaf1.png (1536x1024, RGB), from C:\Users\klimp\.codex\generated_images\01a10fb9-88b7-7592-b9c6-4d9d772e98d5\exec-7c7d3673-c375-4e76-aab0-26f01dbccaf1.png. It was rejected after native-size group review because it was too close to the existing field assembly scene communist_uprising. Its source and processed card remain in source_png/001_communism_spread/communist_insurgency_start_v1_rejected_crowd.png and processed_png/001_communism_spread/communist_insurgency_start_v1_rejected_crowd.png; its temporary DDS is retained under notes/001_communism_spread/rejected_candidate_v1_insurgency_start.dds.
 
-Candidate v2_bridge was selected for its bridge-led composition. ImageGen output: exec-63d8de50-cfd3-431f-a9c9-38cebf9403d3.png (1536x1024, RGB). Generation fit because this fictional alternate-history uprising scene needs a unique period setting rather than an image of a verifiable real event.
+Candidate v2_bridge was selected for its bridge-led composition. ImageGen output: exec-63d8de50-cfd3-431f-a9c9-38cebf9403d3.png (1536x1024, RGB). Tool-reported path: C:\Users\klimp\.codex\generated_images\01a10fb9-88b7-7592-b9c6-4d9d772e98d5\exec-63d8de50-cfd3-431f-a9c9-38cebf9403d3.png. Its retained selected source is source_png/001_communism_spread/communist_insurgency_start_source.png. Generation fit because this fictional alternate-history uprising scene needs a unique period setting rather than an image of a verifiable real event.
 
 > Use case: historical-scene
 > Asset type: HOI4 report-event photograph source, Event 001 Communism Spread; final consumer is a 210x176 sepia tilted documentary card with transparent outer margins.

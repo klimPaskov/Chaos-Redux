@@ -31,7 +31,8 @@ The main agent can keep the current sprite definition and consume gfx/event_pict
 Permanent source, before/after comparison and DDS evidence are retained in `docs/plans/gfx_fix_2026-10/evidence/008/`.
 The assigned finding is implemented without a substitute image or omitted asset.
 
-Orchestrator live check: in a paused 1936 human-country session, fire Event 008 and reach the Red Line news report.
-Its 397x153 black-and-white picture should show the checkpoint guard and crowd, with no smeared newspaper stacks in the foreground.
+Consumer audit: this news sprite has no current event or GUI consumer; Event 008 country reports use GFX_report_event_tensions_rising.
+The corrected 397x153 image remains a registered reserve pending the requested disposition.
+There is no live Red Line news popup to test; the permanent native before/after sheet proves the crop without inventing a new popup.
 
 Skills used: event-assets, subagents, shared-git-commit.
