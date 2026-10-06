@@ -310,6 +310,25 @@ africa_prepare_manual_event_fire = {
 			}
 		}
 	}
+	if = {
+		limit = { check_variable = { africa_prefire_ready < constant:africa_value.one } }
+		# The requester belongs to Settings. Its shared guard aggregates failures
+		# from Fire Selected and suppresses a second generic acknowledgement.
+		set_temp_variable = { chaosx_forced_event_failure_reason = constant:forced_event_feedback_reason.no_country }
+		if = {
+			limit = { OR = { has_global_flag = africa_event_active has_global_flag = africa_event_resolved } }
+			set_temp_variable = { chaosx_forced_event_failure_reason = constant:forced_event_feedback_reason.already_active }
+		}
+		else_if = {
+			limit = { has_global_flag = world_end }
+			set_temp_variable = { chaosx_forced_event_failure_reason = constant:forced_event_feedback_reason.unavailable }
+		}
+		else_if = {
+			limit = { has_event_target = africa_prefire_host }
+			set_temp_variable = { chaosx_forced_event_failure_reason = constant:forced_event_feedback_reason.dispatch_failed }
+		}
+		chaosx_report_forced_event_failure = yes
+	}
 }
 
 # ---------------------------------------------------------------------------

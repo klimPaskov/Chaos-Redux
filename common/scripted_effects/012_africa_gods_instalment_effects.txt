@@ -103,6 +103,10 @@ gods_of_africa_deliver_instalment = {
 			has_country_flag = gods_of_africa_instalments_signed
 			gods_of_africa_contract_ledger_can_close = yes
 		}
+		# Every automatic attempt suppresses progress and empty-shipment
+		# popups, including a final fuel shipment capped by Africa's tanks.
+		# The full-compliance and failure branches still own their closure report.
+		set_country_flag = gods_of_africa_instalment_progress_only
 		set_variable = { gods_of_africa_payment_family = gods_of_africa_demand_family }
 		set_variable = { gods_of_africa_payment_instalment_material = gods_of_africa_demand_instalment_material }
 		set_variable = { gods_of_africa_payment_amount = gods_of_africa_instalment_amount }
@@ -130,6 +134,7 @@ gods_of_africa_deliver_instalment = {
 				gods_of_africa_demand_transfer_is_clear = yes
 				gods_of_africa_host_can_receive_demand_payment = yes
 			}
+			set_temp_variable = { gods_of_africa_instalment_requested_amount = gods_of_africa_payment_amount }
 			if = {
 				limit = { NOT = { check_variable = { gods_of_africa_instalments_left > constant:gods_of_africa_value.one } } }
 				# The last instalment settles the agreement in full.
@@ -139,16 +144,44 @@ gods_of_africa_deliver_instalment = {
 				gods_of_africa_transfer_payment = yes
 				if = {
 					limit = { check_variable = { gods_of_africa_payment_success > constant:gods_of_africa_value.zero } }
-					subtract_from_variable = { gods_of_africa_instalments_left = constant:gods_of_africa_value.one }
-					gods_of_africa_schedule_next_instalment = yes
 					gods_of_africa_apply_partial_delivery = yes
-					# The report names the instalment rather than a partial payment.
+					# Preserve the latest shipment's meaning without a progress popup.
 					set_variable = { gods_of_africa_last_response_kind = constant:gods_of_africa_history_kind.instalment }
-					set_variable = { gods_of_africa_last_instalments_left = gods_of_africa_instalments_left }
 				}
 				else = {
 					set_temp_variable = { gods_of_africa_report_family = gods_of_africa_demand_instalment_material }
 					gods_of_africa_record_undelivered_payment = yes
+				}
+			}
+			if = {
+				limit = {
+					has_country_flag = gods_of_africa_demand_active
+					has_country_flag = gods_of_africa_instalments_signed
+					check_variable = { gods_of_africa_instalment_amount > constant:gods_of_africa_value.zero }
+				}
+				# A short shipment still leaves a fraction of a tranche owed.
+				# Round the number of remaining tranches upward from the real balance.
+				set_temp_variable = { gods_of_africa_equipment_amount = gods_of_africa_demand_remaining }
+				divide_temp_variable = { gods_of_africa_equipment_amount = gods_of_africa_instalment_amount }
+				gods_of_africa_floor_equipment_amount = yes
+				set_variable = { gods_of_africa_instalments_left = gods_of_africa_equipment_amount }
+				multiply_temp_variable = { gods_of_africa_equipment_amount = gods_of_africa_instalment_amount }
+				if = {
+					limit = { check_variable = { gods_of_africa_equipment_amount < gods_of_africa_demand_remaining } }
+					add_to_variable = { gods_of_africa_instalments_left = constant:gods_of_africa_value.one }
+				}
+				set_variable = { gods_of_africa_last_instalments_left = gods_of_africa_instalments_left }
+				gods_of_africa_schedule_next_instalment = yes
+				if = {
+					limit = {
+						check_variable = { gods_of_africa_demand_instalment_material = constant:gods_of_africa_demand_family.fuel }
+						check_variable = { gods_of_africa_payment_delivered > constant:gods_of_africa_value.zero }
+						check_variable = { gods_of_africa_payment_delivered < gods_of_africa_instalment_requested_amount }
+					}
+					# Africa's tank shortage has delayed its own delivery. It cannot
+					# make the participant late on the remaining agreed shipment.
+					add_to_variable = { gods_of_africa_demand_deadline = constant:gods_of_africa_instalments.interval_days }
+					gods_of_africa_sync_demand_mission_timeout = yes
 				}
 			}
 		}
@@ -157,5 +190,6 @@ gods_of_africa_deliver_instalment = {
 			set_variable = { gods_of_africa_demand_deadline = global.num_days }
 			gods_of_africa_fail_demand = yes
 		}
+		clr_country_flag = gods_of_africa_instalment_progress_only
 	}
 }

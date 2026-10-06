@@ -65,3 +65,8 @@ If the workbook keeps per-event notes for Event 012, add these facts in the in-g
 - A host that keeps its own national focus tree receives "A Programme for the Charter" (`chaosx.nr12.1211.t`) with the choices "Plan the government around the Charter." and "Keep the national programme for now."
 - New Charter League Court decision "Adopt the Continental Programme" (`africa_adopt_continental_programme`): "The national focus tree is replaced by The African Continental Charter. Focuses already finished keep their effects, and finished Charter focuses stay complete." (`africa_adopt_continental_programme_tt`)
 - A host on the generic focus tree still receives The African Continental Charter directly, and South Africa keeps its own tree.
+
+## Continuing-support response count (2026-10-06)
+
+If per-event notes describe the support agreement, use: "Intermediate shipments update the mission. The agreement closes with one report of the material sent and the balance still owed."
+The response paragraph is `gods_of_africa_response_support_summary` in `012_africa_gods_l_english.yml`.

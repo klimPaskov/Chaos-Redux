@@ -26,7 +26,8 @@ gods_of_africa_capture_response_report = yes
 ```
 
 Full compliance and accepted substitutes capture the family actually paid with a zero remaining balance.
-Refusal and expiry capture a zero payment and the unpaid balance before clearing the contract.
+Refusal and expiry capture the unpaid balance before clearing the contract.
+Ordinary demands capture zero paid, while a signed continuing-support agreement captures its cumulative measured shipments.
 The `.604` selector distinguishes all five cases, plus the two report-only kinds below, and uses only these latest-response fields.
 
 `gods_of_africa_record_undelivered_payment` runs in participant COUNTRY scope when a payment, an accepted substitute or a voluntary shipment moved nothing.
@@ -78,3 +79,14 @@ No new raster asset, icon, or GUI is required.
 The owning handoff records source scenarios and remaining MCP/runtime limits.
 Future receipt work may retain separate pending-report snapshots if the native consumer shows that multiple queued instances need independent historical data.
 The present contract reports the latest completed response and punishment, and makes no claim of a per-instance archive.
+
+## Continuing-support reporting
+
+During every automatic instalment attempt, `gods_of_africa_instalment_progress_only` suppresses the partial and empty-shipment popup while preserving measurement, history, balance, cooldown and mission updates.
+The instalment owner clears this transient flag before returning.
+Closure captures the signed agreement before demand cleanup, stores `gods_of_africa_last_response_support_agreement` and reports cumulative measured payment as the frozen demand amount minus the remaining balance.
+The completed, refused or failed agreement produces one response report, with an optional separate punishment report for a failure.
+Each later capture and report cleanup clears the support-summary flag so another demand cannot inherit it.
+The remaining instalment count is the real balance divided by the agreed tranche size, rounded upward.
+A fuel shipment limited by Africa's free tank space keeps its unpaid fraction in that count, postpones the next attempt and extends the deadline by one agreed interval.
+A short final shipment uses the same rule, so its displayed next date stays in the future.

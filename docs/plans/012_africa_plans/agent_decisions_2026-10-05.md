@@ -39,3 +39,28 @@ No Internet file was downloaded and no sound was synthesized.
 
 The missing requested `unit_s3_report.md` is a documentation route gap.
 The current shared delivery report is `docs/plans/unit_fix_2026-10/pipeline_report.md`, with `geometry_animation_tools_handoff.md`, `texture_tools_handoff.md`, and `audio_tools_handoff.md` as section-specific handoffs.
+
+## Takeover reporting, 2026-10-06
+
+Disposition: `implemented`, with native shipment movement remaining an orchestrator live check.
+Acceptance basis: the current user assignment to finish 012, G2 requiring a low popup count within each chain, and G7 requiring feedback for a forced launch that cannot apply.
+A three-instalment continuing-support agreement previously sent `.604` after every shipment.
+The two intermediate shipments update the mission, material contribution, history and unpaid balance without a report.
+The agreement sends one closure report, showing all material paid and what remains owed, and a failed agreement may also send one punishment report.
+An empty intermediate shipment keeps its retry gate and mission without repeatedly opening a report.
+The transient suppression flag covers every automatic instalment attempt, including a short final fuel shipment, and is cleared before the attempt returns.
+The support-summary flag is reset on each capture, empty shipment and report cleanup.
+A partially stored fuel shipment cannot count as a complete instalment: the remaining count is rounded up from the real balance.
+Its next attempt moves into the future and its deadline gains one interval, matching the accepted full-tank deferral, so Africa's storage shortage cannot create a participant breach.
+Manual Africa preflight selects a valid African host as before and reports its most specific rejection through the existing guarded `chaosx_report_forced_event_failure` helper.
+The change stays in the event owner and preserves Settings batch aggregation.
+The evidence file is `takeover_reporting_evidence_2026-10-06.json` beside this document.
+
+## Takeover autonomy-art decision, 2026-10-06
+
+Disposition: `accepted and queued` until the asset handoff is installed and reviewed.
+Acceptance basis: the assigned 012 GFX fix table and G5 covering every visible defect.
+The table incorrectly describes the two autonomy sprites as dead.
+`common/autonomous_states/012_africa_autonomy.txt` defines both autonomy states, and their live relationship consumers use native implicit autonomy sprite lookup.
+They keep their current sprite IDs and receive separate 35x35 autonomy artwork instead of focus textures or deletion.
+The unused division-template emblem sprites are a separate family and require their own consumer check.

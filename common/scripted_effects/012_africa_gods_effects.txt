@@ -2964,8 +2964,11 @@ gods_of_africa_apply_partial_delivery = {
 		set_variable = { gods_of_africa_last_demand_status = constant:gods_of_africa_demand_status.resolved }
 		gods_of_africa_clear_demand = yes
 	}
-	set_country_flag = gods_of_africa_outcome_report_pending
-	country_event = { id = chaosx.nr12.604 }
+	if = {
+		limit = { NOT = { has_country_flag = gods_of_africa_instalment_progress_only } }
+		set_country_flag = gods_of_africa_outcome_report_pending
+		country_event = { id = chaosx.nr12.604 }
+	}
 }
 
 gods_of_africa_submit_substitute = {

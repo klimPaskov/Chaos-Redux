@@ -3,6 +3,7 @@
 # These private fields never add counters to the decision categories.
 
 gods_of_africa_capture_response_report = {
+	clr_country_flag = gods_of_africa_last_response_support_agreement
 	if = {
 		limit = { has_variable = gods_of_africa_demand_family }
 		set_variable = { gods_of_africa_last_response_kind = gods_of_africa_report_kind }
@@ -26,6 +27,18 @@ gods_of_africa_capture_response_report = {
 		}
 		set_variable = { gods_of_africa_last_response_amount = gods_of_africa_report_amount }
 		set_variable = { gods_of_africa_last_response_balance = gods_of_africa_report_balance }
+		if = {
+			limit = {
+				has_country_flag = gods_of_africa_instalments_signed
+				check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.continuing_support }
+				NOT = { check_variable = { gods_of_africa_report_kind = constant:gods_of_africa_history_kind.partial } }
+			}
+			# Closure reports summarize all measured instalments, including an
+			# early whole-balance payment. Intermediate reports are suppressed.
+			set_country_flag = gods_of_africa_last_response_support_agreement
+			set_variable = { gods_of_africa_last_response_amount = gods_of_africa_demand_amount }
+			subtract_from_variable = { gods_of_africa_last_response_amount = gods_of_africa_report_balance }
+		}
 		gods_of_africa_capture_response_subject = yes
 		# Owners that can break agreed terms set this temporary kind explicitly
 		# before every capture; zero means the answer broke no agreement.
@@ -43,6 +56,7 @@ gods_of_africa_capture_response_report = {
 # answer stays closed for a short time so neither a player nor the AI resends
 # it every day. Caller sets temporary gods_of_africa_report_family.
 gods_of_africa_record_undelivered_payment = {
+	clr_country_flag = gods_of_africa_last_response_support_agreement
 	set_variable = { gods_of_africa_last_response_kind = constant:gods_of_africa_history_kind.undelivered }
 	set_variable = { gods_of_africa_last_response_family = gods_of_africa_report_family }
 	clear_variable = gods_of_africa_last_response_mobile_type
@@ -58,8 +72,11 @@ gods_of_africa_record_undelivered_payment = {
 	clear_variable = gods_of_africa_last_response_breach_kind
 	set_variable = { gods_of_africa_payment_retry_day = global.num_days }
 	add_to_variable = { gods_of_africa_payment_retry_day = constant:gods_of_africa_timing.undelivered_retry_days }
-	set_country_flag = gods_of_africa_outcome_report_pending
-	country_event = { id = chaosx.nr12.604 }
+	if = {
+		limit = { NOT = { has_country_flag = gods_of_africa_instalment_progress_only } }
+		set_country_flag = gods_of_africa_outcome_report_pending
+		country_event = { id = chaosx.nr12.604 }
+	}
 }
 
 # COUNTRY scope on a participant during gods_of_africa_capture_response_report.
@@ -85,6 +102,7 @@ gods_of_africa_capture_response_subject = {
 }
 
 gods_of_africa_clear_report_receipts = {
+	clr_country_flag = gods_of_africa_last_response_support_agreement
 	clear_variable = gods_of_africa_last_response_kind
 	clear_variable = gods_of_africa_last_response_family
 	clear_variable = gods_of_africa_last_response_mobile_type
