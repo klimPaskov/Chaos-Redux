@@ -124,7 +124,7 @@ def plan_consistent_outward_winding(positions, triangles, *, adjacency_mode="exa
         high = [max(welded[v][axis] for v in used) for axis in range(3)]
         center = tuple((a+b)/2 for a, b in zip(low, high))
         area = sum(_area(*(welded[v] for v in f)) for f in oriented.values())
-        component_nonmanifold = sorted({id(edge): edge for face_id in group for edge in nonmanifold_by_face[face_id]}.values(), key=lambda row: tuple(row["incident_face_indices"]))
+        component_nonmanifold = sorted({id(edge): edge for face_id in group for edge in nonmanifold_by_face.get(face_id, ())}.values(), key=lambda row: tuple(row["incident_face_indices"]))
         if component_nonmanifold:
             component = {"component": len(components), "triangles": len(group), "positional_vertices": len(used),
                          "boundary_edges": sum(len(boundary_by_face[face_id]) for face_id in group),
