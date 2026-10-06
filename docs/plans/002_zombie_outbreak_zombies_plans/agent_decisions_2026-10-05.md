@@ -31,6 +31,10 @@ This removes the large height jump at the cycle boundary while retaining visible
 - `implemented`: the mutant diffuse uses its immutable provider detail with an occupied median of 86.740, within the requested 80–95 interval, instead of the bright 156.610 preimage.
 Its normal uses a source-detail 1.15× tangent-strength adjustment with unit-vector normalization after the untouched repack failed the normal gate.
 The parent reviewed the exact two-map set on front and quarter surface previews before installation; the skin/jaw specular requirement remains open.
+- `implemented`: the demonic current-mesh diffuse receives source-island dilation before a calibrated ten-percent skin/head darkening, and its normal is repacked from immutable provider detail.
+The parent approved matching front and quarter rest-pose previews and installed only those two maps.
+The grade remains tied to the original preimage and current UV/weight masks, so a later rig or UV change requires rebinding and re-QA rather than applying another darkening pass to the published texture.
+The unchanged specular and all animated deformation requirements remain open.
 - `unresolved`: WP3 requests footsteps at -3 dBFS while section 3.5 and the shared mastering gate require -6 dBFS.
 Already accepted -6 dBFS samples remain in place; this preserves the actual mastering contract without claiming that the conflicting WP3 target passed.
 - `unresolved`: model-specific undead/demonic specular instructions retain low or constant G values while section 3.2 rejects constant G.

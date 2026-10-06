@@ -36,6 +36,9 @@ The earlier 46-finding count remains the intermediate particle/timing boundary.
 The undead support_attack uses the complete existing feeding recording once at 1.50 seconds, spanning both hands-to-mouth movements rather than restarting it at 3.1333 seconds.
 The final `wp3_evidence/final_feeding_review/` lint has no sample-overlap finding across the 64 states and retains 39 other findings.
 No sound source or waveform was shortened for that feeding correction.
+Commit `f5b125d45` completes the 40 ms release fade on steps 05 and 06 while retaining their 0.100/0.170-second durations and -6 dBFS peaks.
+Their installed RMS values are -25.118/-21.473 dBFS; these short files do not yield a useful integrated-LUFS reading.
+The same minimum 0.20-second contact gap and slowest-rate duration bound remain valid.
 The recovery grunt starts at 4.0333 seconds, leaving the complete feeding cue clear even at the slowest retained 0.94 playback rate, which finishes near 4.020 seconds.
 The demonic scream and attack pools each contain three variants after wiring two extra pitches of the classified scream recording and one lower pitch of the classified attack recording.
 The new files are `demonic_scream_low.wav`, `demonic_scream_high.wav`, and `demonic_attack_low.wav`, all passing the shot-mastering gate at -3 dBFS peak.
@@ -44,7 +47,7 @@ They are not presented as additional independent takes.
 Two lower-register growl-loop attempts fail the recorded-edge gate; the dedicated demonic idle/defend pool is still open.
 
 The audio/presentation tranche is committed as `dbbd5444b`, `79a62a4c5`, `45582d8ba` and `6e393c848`.
-The following mutant model tranche is installed after parent review, with the remaining mutant requirements still open.
+The mutant model tranche is committed as `f0987fd93` after parent review, with the remaining mutant requirements still open.
 
 ### Installed mutant geometry, idle and two material maps
 
@@ -74,6 +77,18 @@ Its compact hash-bound evidence is `wp3_evidence/installed_model_audit_compact_2
 The unchanged mutant source normals still have 7,161 positional split-normal groups; native 60-degree smoothing state and visible faceting require a separate source check and are not proven by removing the four spurs.
 The existing specular map remains visually glossy and cannot satisfy the jaw-wetness/skin recipe through the available six-class validator; it remains an explicit model requirement.
 
+### Installed demonic diffuse and provider-normal repack
+
+The parent reviewed matching current/final front and quarter rest-pose views before publishing the two maps through `current_mesh_skin10_manifest.json`.
+Decoded current-mesh skin/head means change from 90.2978/96.0626 to 80.9032/86.1547, reductions of 10.404%/10.314%.
+The provider-source islands are dilated by 12 pixels before grading; bilinear vertex samples below luminance 12 change from 6.83% to 0.90083%.
+Nearest samples remain 1.825%, so the sampling method is explicit and this is not a claim that every diagnostic passes.
+The 512 DXT5 normal has ten mips, G/A standard deviations 19.709869/19.358717 and mean tangent tilt 0.167045.
+Diffuse SHA is `319386BAE79A81B50CC5AFA9463CE2BF57B5463C321054DB440E06CB0094926D`; normal SHA is `ADDB26AEF0993F1E6D4A84B48AD1D42F86D4F8E467A864F7A61604DDA77F9C73`.
+The parent receipt is `wp3_evidence/demonic_parent_install_receipt_20261006.json`.
+This is a bounded current-mesh material improvement; the unchanged specular, rig/weights, geometry and action defects remain open.
+Final geometry, UV or weight changes require mask rebinding and re-QA against the original grade basis, without darkening the already graded map again.
+
 ## Per-ticket work and remaining acceptance
 
 | Model | Delivered presentation changes | Requested model repair and acceptance still open |
@@ -85,7 +100,7 @@ The existing specular map remains visually glossy and cannot satisfy the jaw-wet
 | mutant_zombies | Blood burst lifetime; shared idle/movement gain; recovered moan 01; reviewed four-spur mesh repair, calm closed idle, diffuse median 86.740 and source-detail normal installed. | Skin/jaw specular recipe; attack claw curls and seven other action-role gates; filmed idle motion target; dedicated heavy voice, breathing and footsteps. |
 | undead_zombies | Blood burst lifetime; attack grunt at 2.45 seconds; shared movement gain; one complete feeding cue instead of overlapping restarts. | Source-based suit/skin grade and gloss masks; substantial idle; plant/training easing and retreat seam; attack knees and armpit/hem weights; 330 non-manifold edges; seven blocked roles; two extra moan takes. |
 | necrotic_zombies | Blood burst lifetime; fall cue at 3.30 seconds; shared movement gain. | Bone/teeth gloss masks, distinct skin/rags; foot plants, arm sweep and transition easing; retreat seam; rag/thigh skinning; 73 non-manifold edges; seven blocked roles. |
-| demonic_zombies | Blood burst lifetime; shared idle/movement gain; recovered moan 01; three-variant scream and attack pools. | Forearm/hand and wing skinning/joints; standing slash and leap landing; death, training, idle, retreat and plant repairs; source-island padding/region grade; 36 non-manifold edges; seven blocked roles; own idle/defend growls and retiming after the authored action repairs. |
+| demonic_zombies | Blood burst lifetime; shared idle/movement gain; recovered moan 01; three-variant scream and attack pools; reviewed current-mesh skin/head grade, 12-pixel padding and provider normal installed. | Forearm/hand and wing skinning/joints; standing slash and leap landing; death, training, idle, retreat and plant repairs; final region-mask rebind and specular; 36 non-manifold edges; seven blocked roles; own idle/defend growls and retiming after the authored action repairs. |
 
 The seven other models' baseline counts remain tied to unchanged installed mesh/action hashes; the mutant's updated installed hashes and measurements are recorded above and in the current WP3 inventory.
 They are unresolved acceptance findings, not a waiver or a declaration that all tickets were repaired.
@@ -129,7 +144,9 @@ Source-role gaps retain their old cues and concrete recording needs; staged cand
 The paleogenetic creature still inherits movement and feeding effects from this package; `wp3_to_wp5_sound_dependency_handoff.md` names each call and the WP5-owned separation dependency.
 
 Skills used: `chaos-redux-3d-model-pipeline`, `chaos-redux-event-assets`, `chaos-redux-subagents`, and `chaos-redux-shared-git-commit`.
-No skill was created or changed in this bounded package.
+The official `skill-creator` guidance was used for a small 3D skill update, committed as `e185e3078`.
+It records the verified factory-startup Lab command, importable extension-module names, argument ordering and task-owned worker/memory evidence.
+No new skill was created.
 
 Disposition: `implemented` for this documentation handoff; package mesh/action reconstruction, visual acceptance, final entity wiring, and audio install remain open where the measurements below show gaps. The authorized package scope comes from the user-authored unit-fix plan, SHA-256 `1939b400cba160c6d4903e37952e8e55efdb1bfeacf0b4ab061e89c8792c79b2`.
 
