@@ -89,6 +89,18 @@ Its compact hash-bound evidence is `wp3_evidence/installed_model_audit_compact_2
 The unchanged mutant source normals still have 7,161 positional split-normal groups; native 60-degree smoothing state and visible faceting require a separate source check and are not proven by removing the four spurs.
 The existing specular map remains visually glossy and cannot satisfy the jaw-wetness/skin recipe through the available six-class validator; it remains an explicit model requirement.
 
+### Rejected mutant attack reconstruction
+
+The current sparse phase checkpoint has 7,680 keys rather than the source 28,800, with the exact strike windows at frames 17-19 and 77-88 and unchanged accepted mesh/rig/weights/UVs.
+Its actual export still has 51 translation violations outside those windows; the largest is RightHand at frame 95, 1.39588 units per frame.
+Native reimport against the accepted mesh confirms ground penetration of -0.06802 units at frame 60 and a backward chest/head arch in the phase views.
+The source sweep finds 32 penetrating frames, so matching loop endpoints and zero quaternion sign flips do not make this action acceptable.
+The material binder also fails action retention through save/reopen, and the native previews remain magenta; the exact maps are staged but rendered material binding is unresolved.
+The animation SHA is `8b314481fe933da7aed4d483d360bf5c898b04c5bfe24c578a6e3f4a951ef5c5`; it is rejected, uninstalled and separate from the unchanged runtime attack.
+The source checkpoint, decoded report and native proof remain in the mutant job; the phase receipt explicitly states that its metadata was reconstructed from intact measured inputs after a failed write.
+A separate earlier body-eased export (`dd27c0d3a7448d87a5f9e234986127402f8b6070012edba77f2fe09b920ff28c`) still needs its missing exact native reimport receipt; that evidence step is queued behind the undead worker.
+Actual role repair remains open, with no wider strike exemptions, static substitute or action alias.
+
 ### Installed demonic diffuse and provider-normal repack
 
 The parent reviewed matching current/final front and quarter rest-pose views before publishing the two maps through `current_mesh_skin10_manifest.json`.
@@ -158,6 +170,7 @@ The paleogenetic creature still inherits movement and feeding effects from this 
 Skills used: `chaos-redux-3d-model-pipeline`, `chaos-redux-event-assets`, `chaos-redux-subagents`, and `chaos-redux-shared-git-commit`.
 The official `skill-creator` guidance was used for a small 3D skill update, committed as `e185e3078`.
 It records the verified factory-startup Lab command, importable extension-module names, argument ordering and task-owned worker/memory evidence.
+The follow-up skill safeguard, committed as `9ec06f479`, requires explicit UTF-8 and validated sibling metadata writes, labels reconstructed evidence, and selects pose rigs through the working body modifier/action slot.
 No new skill was created.
 
 Disposition: `implemented` for this documentation handoff; package mesh/action reconstruction, visual acceptance, final entity wiring, and audio install remain open where the measurements below show gaps. The authorized package scope comes from the user-authored unit-fix plan, SHA-256 `1939b400cba160c6d4903e37952e8e55efdb1bfeacf0b4ab061e89c8792c79b2`.

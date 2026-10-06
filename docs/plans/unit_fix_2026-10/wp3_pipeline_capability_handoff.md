@@ -43,3 +43,13 @@ Other package repairs should check for a complete job profile before export inst
 These observations are package-independent workflow guidance for the pipeline/skill owner.
 They are retained here because the task assigns shared tool edits to section 3 and limits WP3's ownership to its package.
 Any skill update should carry only the reusable route, format, path and intake rules, with no event-specific source or model context.
+
+## Animated-checkpoint material retention
+
+The locked material binder verified the current mutant DDS inputs but rejected its copied checkpoint after save/reopen with `changed sections: ['actions']; object deltas: {}`.
+Source checkpoint SHA is `96e0ad277bdf66d4165366d97e0de01b4cc18029ad032b130e6a2432052372d4`; rejected material-copy SHA is `10f41b4636fb2a4d7dbe0a656f8ab3c5a5c9260e4df62a1cd836d3186fa8ca92`.
+The exact diagnostic is retained at `docs/assets/002_zombie_outbreak/models_3d/mutant_zombies/logs/adapter/6f47c873f7f14c01a3e81070bbf88d86.result.json`, SHA `365b1e4fd3961f38b76217ab33824336431665a26bc5283f86424582fc2d75d6`.
+Both source and native reimport previews remain magenta; correctly staged files and DDS hashes do not prove rendered binding.
+WP3 kept the failed material copy and attack outside runtime, without retrying or weakening the retention check.
+Needed: the pipeline owner should inspect the before/after action fingerprints and preserve all intended action data through non-destructive material binding and save/reopen.
+The diagnosed section difference is recorded as an unresolved retention failure; WP3 does not infer a cause or patch the shared tool.
