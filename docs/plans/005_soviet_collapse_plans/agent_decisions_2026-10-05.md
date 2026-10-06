@@ -112,3 +112,13 @@ The defense-compact shield is retained for its original role, while those follow
 Existing oil, voting and foreign-guarantee compositions are fitted and centered proportionally, with matching legacy/focus copies.
 The parent independently reviewed and installed ten DDSs, with source/pixel evidence in `docs/plans/gfx_fix_2026-10/005_caucasus_report.md`.
 The closed MCP transport blocks final render acceptance; implementation evidence is not promoted to an engine-completion claim.
+
+## Graphics review: Black Banner Host subjects, 2026-10-06
+
+Acceptance basis: the user's BBH placeholder-tree finding, per-focus subject requirement and G6 authority.
+All 47 focus slots receive distinct 94x86 textures based on their actual names, descriptions and rewards.
+The birth identity uses a wider painted brass frame, the existing bespoke endgame retains its design, and the other slots show their specific military, commune, logistics or diplomatic work.
+Parent review rejected circled-A-like commune tokens and revised them to blank seals, and replaced a medieval free-city candidate with a period municipal gate and mounted column.
+The anti-protectorate wax seal is blank; the remaining apparent native-size mark was verified at source resolution as envelope-fold shading.
+The parent reviewed the complete native sheets, installed all 47 files and independently checked the runtime DDS pixels against their approved PNGs.
+The closed MCP transport leaves final engine rendering unresolved; source and independent audit evidence is recorded in `docs/plans/gfx_fix_2026-10/005_bbh_report.md`.
