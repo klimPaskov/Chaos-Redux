@@ -1,0 +1,81 @@
+> Current parent status: 45 reviewed DDS textures installed and independently pixel-verified; all42 active focus canvases94x86. Legacy Warroom normal/shine aliases remain on Home Guard pending explicit exception to the user .gfx rule. Worker staging statements below are historical. Final MCP/live acceptance pending.
+
+﻿# Event 005 Baltic Focus Icon Package Manifest
+
+**Status:** Assets are staged for parent review; runtime DDS, `.gfx`, focus, localisation, and gameplay files have not been modified.
+
+**Asset type:** Hearts of Iron IV national-focus icons in the Event 005 Baltic republic tree, plus the registered Event 005 Baltic GFX aliases named in `gfx_fix_plan.md`.
+
+**Canvas:** Every new or reprocessed image is 94x86 RGBA PNG and 94x86 uncompressed BGRA DDS. Unchanged previously accepted runtime assets retain their existing bytes and dimensions.
+
+**Source mode:** New subjects use the built-in ImageGen tool with `transparent_background=true` in the first generation call. Mechanical crops use untouched copies of current runtime DDS files decoded to RGBA PNG; their original DDS bytes are retained in `source_dds/live/`.
+
+**Alpha:** Native alpha is retained; no background-removal fallback was used. The final audits cover 38 unique processed PNGs: all retain `alpha_range=[0,255]`, have zero chroma-edge pixels after targeted cleanup, and pass the focus-canvas size check.
+
+## New original subjects
+
+| Asset and sprite | Focus ID / localisation | Native source and prompt | Processed PNG | Staged DDS | Status |
+| --- | --- | --- | --- | --- | --- |
+| Baltic Home Guard Staff; `GFX_baltic_soviet_collapse_home_guard_staff` | Registered legacy sprite; no matching focus ID or localisation key in the Baltic tree. | `source_png/imagegen/goal_005_baltic_home_guard_staff_source.png`; `prompts/goal_005_baltic_home_guard_staff.prompt.txt` | `processed_png/goal_005_baltic_home_guard_staff_94x86.png` | `gfx/interface/goals/005_soviet_collapse/baltic_soviet_collapse_home_guard_staff.dds` | Staged for review. |
+| Baltic Restoration Pact; `GFX_baltic_soviet_collapse_restoration_pact` | Registered legacy sprite; no matching focus ID or localisation key in the Baltic tree. | Selected native source `source_png/imagegen/goal_005_baltic_restoration_pact_v3_source.png`; selected prompt `prompts/goal_005_baltic_restoration_pact_v3.prompt.txt`; rejected candidates and prompts remain under `source_png/imagegen/` and `prompts/`. | `processed_png/goal_005_baltic_restoration_pact_v3_94x86.png` | `gfx/interface/goals/005_soviet_collapse/baltic_soviet_collapse_restoration_pact.dds` | Staged for review; v3 has a blank scroll and distinct Estonia, Latvia, and Lithuania flags. |
+| Pan-Baltic War Room; `GFX_focus_baltic_soviet_collapse_pan_baltic_war_room` and `GFX_baltic_soviet_collapse_pan_baltic_war_room` | `baltic_soviet_collapse_pan_baltic_war_room`; localisation keys `baltic_soviet_collapse_pan_baltic_war_room` and `_desc`. | Selected source `source_png/imagegen/goal_005_baltic_pan_baltic_war_room_edit2_source.png`; prompts `prompts/goal_005_baltic_pan_baltic_war_room_v2.prompt.txt`, `...edit1.prompt.txt`, and `...edit2.prompt.txt`; rejected v1/v2/edit1 sources are retained. | `processed_png/goal_005_baltic_pan_baltic_war_room_edit2_94x86.png` | Focus path `focus_005_baltic_soviet_collapse_pan_baltic_war_room.dds`; proposed legacy path `baltic_soviet_collapse_pan_baltic_war_room.dds`. | Focus asset staged; legacy alias path correction is pending parent wiring. |
+| Baltic League Defense; `GFX_focus_baltic_soviet_collapse_baltic_defense_compact` | `baltic_soviet_collapse_baltic_defense_compact`; localisation keys `baltic_soviet_collapse_baltic_defense_compact` and `_desc`. | `source_png/imagegen/goal_005_baltic_baltic_defense_compact_source.png`; `prompts/goal_005_baltic_baltic_defense_compact.prompt.txt` | `processed_png/goal_005_baltic_baltic_defense_compact_94x86.png` | `gfx/interface/goals/005_soviet_collapse/focus_005_baltic_soviet_collapse_baltic_defense_compact.dds` | Staged for review. |
+| Tallinn-Riga-Vilnius Rotation; `GFX_focus_baltic_soviet_collapse_tallinn_riga_vilnius_rotation` | `baltic_soviet_collapse_tallinn_riga_vilnius_rotation`; localisation keys `baltic_soviet_collapse_tallinn_riga_vilnius_rotation` and `_desc`. | `source_png/imagegen/goal_005_baltic_tallinn_riga_vilnius_rotation_source.png`; `prompts/goal_005_baltic_tallinn_riga_vilnius_rotation.prompt.txt` | `processed_png/goal_005_baltic_tallinn_riga_vilnius_rotation_94x86.png` | `gfx/interface/goals/005_soviet_collapse/focus_005_baltic_soviet_collapse_tallinn_riga_vilnius_rotation.dds` | Staged for review. |
+| German Border Pressure; `GFX_baltic_soviet_collapse_german_border_pressure` and `GFX_focus_baltic_soviet_collapse_german_border_pressure` | `baltic_soviet_collapse_german_border_pressure`; localisation keys `baltic_soviet_collapse_german_border_pressure` and `_desc`. | `source_png/imagegen/goal_005_baltic_german_border_pressure_source.png`; `prompts/goal_005_baltic_german_border_pressure.prompt.txt` | `processed_png/goal_005_baltic_german_border_pressure_edgeclean_94x86.png` | Direct and focus DDS paths ending in `baltic_soviet_collapse_german_border_pressure.dds` and `focus_005_baltic_soviet_collapse_german_border_pressure.dds`. | Replaces the warning-sign artwork and resolves both direct and focus rows. |
+| Estonian Forest-Coast Guard; `GFX_focus_baltic_soviet_collapse_estonian_forest_coast_guard` | `baltic_soviet_collapse_estonian_forest_coast_guard`; localisation keys `baltic_soviet_collapse_estonian_forest_coast_guard` and `_desc`. | `source_png/imagegen/goal_005_baltic_estonian_forest_coast_guard_source.png`; `prompts/goal_005_baltic_estonian_forest_coast_guard.prompt.txt` | `processed_png/goal_005_baltic_estonian_forest_coast_guard_94x86.png` | `gfx/interface/goals/005_soviet_collapse/focus_005_baltic_soviet_collapse_estonian_forest_coast_guard.dds` | Replaces the undersized terrain vignette with a full coast-and-forest defense icon. |
+
+## Reframed and edge-corrected existing icons
+
+| Asset and aliases | Source PNG | Processed PNG | Staged DDS paths | Status |
+| --- | --- | --- | --- | --- |
+| Scandinavian Listening Mission; `GFX_baltic_soviet_collapse_scandinavian_listening_mission`, `GFX_focus_baltic_soviet_collapse_scandinavian_listening_mission` | `source_png/runtime_decoded/baltic_soviet_collapse_scandinavian_listening_mission.png` | `processed_png/goal_005_baltic_scandinavian_listening_mission_margin2_edgeclean_94x86.png` | Direct and focus aliases each have a 94x86 DDS at their registered basename. | The old accepted output already had zero magenta spill; this pass clears the top crop and neutralizes two alpha 1–3 chroma-edge pixels. |
+| British Naval Observers; `GFX_baltic_soviet_collapse_british_naval_observers`, `GFX_focus_baltic_soviet_collapse_british_naval_observers` | `source_png/runtime_decoded/baltic_soviet_collapse_british_naval_observers.png` | `processed_png/goal_005_baltic_british_naval_observers_margin2_edgeclean_94x86.png` | Direct and focus aliases each have a 94x86 DDS at their registered basename. | Reframed to clear the top rim and neutralize three alpha 1–3 chroma-edge pixels. |
+| Baltic Recognition Dossier; `GFX_baltic_soviet_collapse_baltic_recognition_dossier`, `GFX_focus_baltic_soviet_collapse_baltic_recognition_dossier` | `source_png/runtime_decoded/baltic_soviet_collapse_baltic_recognition_dossier.png` | `processed_png/goal_005_baltic_baltic_recognition_dossier_margin2_edgeclean_94x86.png` | Direct and focus aliases each have a 94x86 DDS at their registered basename. | Reframed to clear the top rim and neutralize two alpha 1–3 chroma-edge pixels. |
+| Sponsor Fleet Rights; `GFX_baltic_soviet_collapse_sponsor_fleet_rights`, `GFX_focus_baltic_soviet_collapse_sponsor_fleet_rights` | `source_png/runtime_decoded/baltic_soviet_collapse_sponsor_fleet_rights.png` | `processed_png/goal_005_baltic_sponsor_fleet_rights_margin2_edgeclean_94x86.png` | Direct and focus aliases each have a 94x86 DDS at their registered basename. | Reframed to clear the top rim and neutralize five alpha 1–5 chroma-edge pixels. |
+| Foreign Advisers Under Baltic Law; `GFX_baltic_soviet_collapse_foreign_advisers_under_baltic_law`, `GFX_focus_baltic_soviet_collapse_foreign_advisers_under_baltic_law` | `source_png/runtime_decoded/baltic_soviet_collapse_foreign_advisers_under_baltic_law.png` | `processed_png/goal_005_baltic_foreign_advisers_under_baltic_law_margin2_edgeclean_94x86.png` | Direct and focus aliases each have a 94x86 DDS at their registered basename. | Reframed to clear the top rim and neutralize five alpha 1–6 chroma-edge pixels. |
+| Port Economy; `GFX_baltic_soviet_collapse_the_port_economy` | `source_png/runtime_decoded/baltic_soviet_collapse_the_port_economy.png` | `processed_png/baltic_soviet_collapse_the_port_economy_alpha_erosion1.png` | `gfx/interface/goals/005_soviet_collapse/baltic_soviet_collapse_the_port_economy.dds` | Alpha-only one-pixel erosion; RGB remains byte-identical to the decoded input. |
+
+## Existing focus aliases normalized to the focus canvas
+
+All 25 pre-existing focus textures that measured 100x88 now have staged 94x86 outputs. Their original DDS files and decoded PNGs remain unchanged under `source_dds/live/` and `source_png/runtime_decoded/`; each processed candidate preserves the artwork with an aspect-preserving transparent fit and RGB-only cleanup of confirmed edge chroma pixels. No alpha erosion was needed. The 25 normalized icons have visible subject bounds at least 2 px inside the canvas, zero remaining chroma-edge pixels, and exact DDS round trips. The all-25 source/output hash and margin records are in `notes/focus_100x88_normalization_all25.json`; the 42-focus registered-path crosswalk is in `notes/focus_tree_42_crosswalk.json`.
+
+| Focus ID | Source DDS | Processed PNG | Staged DDS |
+| --- | --- | --- | --- |
+| `baltic_soviet_collapse_military_border_government` | `focus_005_baltic_soviet_collapse_military_border_government.dds` (100x88) | `processed_png/goal_005_focus_military_border_government_normalized_edgeclean_94x86.png` | `gfx/interface/goals/005_soviet_collapse/focus_005_baltic_soviet_collapse_military_border_government.dds` |
+| `baltic_soviet_collapse_no_retreat_from_the_capital` | `focus_005_baltic_soviet_collapse_no_retreat_from_the_capital.dds` (100x88) | `processed_png/goal_005_focus_no_retreat_from_the_capital_normalized_edgeclean_94x86.png` | `gfx/interface/goals/005_soviet_collapse/focus_005_baltic_soviet_collapse_no_retreat_from_the_capital.dds` |
+| `baltic_soviet_collapse_coastal_defense_batteries` | `focus_005_baltic_soviet_collapse_coastal_defense_batteries.dds` (100x88) | `processed_png/goal_005_focus_coastal_defense_batteries_normalized_edgeclean_94x86.png` | `gfx/interface/goals/005_soviet_collapse/focus_005_baltic_soviet_collapse_coastal_defense_batteries.dds` |
+| `baltic_soviet_collapse_the_border_front_at_home` | `focus_005_baltic_soviet_collapse_the_border_front_at_home.dds` (100x88) | `processed_png/goal_005_focus_the_border_front_at_home_normalized_edgeclean_94x86.png` | `gfx/interface/goals/005_soviet_collapse/focus_005_baltic_soviet_collapse_the_border_front_at_home.dds` |
+| `baltic_soviet_collapse_volunteer_rifle_societies` | `focus_005_baltic_soviet_collapse_volunteer_rifle_societies.dds` (100x88) | `processed_png/goal_005_focus_volunteer_rifle_societies_normalized_edgeclean_94x86.png` | `gfx/interface/goals/005_soviet_collapse/focus_005_baltic_soviet_collapse_volunteer_rifle_societies.dds` |
+| `baltic_soviet_collapse_university_volunteer_lists` | `focus_005_baltic_soviet_collapse_university_volunteer_lists.dds` (100x88) | `processed_png/goal_005_focus_university_volunteer_lists_normalized_edgeclean_94x86.png` | `gfx/interface/goals/005_soviet_collapse/focus_005_baltic_soviet_collapse_university_volunteer_lists.dds` |
+| `baltic_soviet_collapse_the_port_economy` | `focus_005_baltic_soviet_collapse_the_port_economy.dds` (100x88) | `processed_png/goal_005_focus_the_port_economy_normalized_edgeclean_94x86.png` | `gfx/interface/goals/005_soviet_collapse/focus_005_baltic_soviet_collapse_the_port_economy.dds` |
+
+The table above lists the first seven linked to explicit focus review rows; the other 18 normalized paths appear in `notes/focus_100x88_normalization_all25.json` and `notes/focus_tree_42_crosswalk.json`. Across the 25 textures, 111 confirmed edge RGB pixels were replaced from nearest clean opaque interior colors with alpha preserved; the records are in `notes/focus_normalization_edgeclean.json` and `notes/focus_normalization_remaining_18_edgeclean.json`. All 45 staged DDS header and pixel-roundtrip results are in `notes/dds_validation_final.json`.
+
+## Previously resolved rows retained unchanged
+
+These rows were checked against `docs/plans/gfx_fix_2026-10/final_contact_sheet_index.json` and `final_contact_sheets/005_1.png`; current direct DDS hashes match the previously accepted outputs and measured magenta/green edge counts are zero. Their current DDS and sprite paths remain in `notes/source_snapshot.json` and `notes/runtime_crosswalk.json`.
+
+| Sprite | Severity | Disposition |
+| --- | --- | --- |
+| `GFX_baltic_soviet_collapse_military_border_government` | 1 | Already resolved in the current direct DDS. |
+| `GFX_baltic_soviet_collapse_no_retreat_from_the_capital` | 1 | Already resolved in the current direct DDS. |
+| `GFX_baltic_soviet_collapse_latvian_port_guard_boards` | 1; focus alias severity 2 | Already resolved in the current direct and focus DDS. |
+| `GFX_baltic_soviet_collapse_coastal_defense_batteries` | 1 | Already resolved in the current direct DDS. |
+| `GFX_baltic_soviet_collapse_the_border_front_at_home` | 1 | Already resolved in the current direct DDS. |
+| `GFX_baltic_soviet_collapse_volunteer_rifle_societies` | 1 | Already resolved in the current direct DDS. |
+| `GFX_baltic_soviet_collapse_university_volunteer_lists` | 1 | Already resolved in the current direct DDS. |
+
+## Review evidence and related files
+
+- Row-level status and the exact current/staged paths are in `notes/runtime_crosswalk.json`.
+- Current-runtime snapshots and input hashes are in `notes/source_snapshot.json` and `source_dds/live/`.
+- Native ImageGen candidate branches and prompt files are documented in `notes/candidate_lineage.md`.
+- Focus-tree MCP results and local copied artifacts are in `notes/mcp_focus_evidence.md`, `notes/mcp_focus_inspect.json`, `notes/mcp_focus_raster.manifest.json`, and `contact_sheets/mcp_baltic_focus_tree_before.png`.
+- The original narrow sprite sheets remain `contact_sheets/before_native.png` and `contact_sheets/after_native_final.png`. The complete 42-focus set is indexed at `notes/full_42_baltic_focus_tree_sheet_index.json` and shown in `contact_sheets/full_42_baltic_focus_tree_before.jpg` and `contact_sheets/full_42_baltic_focus_tree_after_final.jpg`.
+- Source-to-processed-to-decoded-DDS review is `contact_sheets/qa_final_lineage_roundtrip_v2.png`; checker, dark, light, and smooth previews are `contact_sheets/qa_final_contrast_v2.png`.
+- All 45 staged DDS files pass strict BGRA header and pixel-roundtrip checks in `notes/dds_validation_final.json`; the 38 unique final processed PNGs pass `notes/alpha_audit_final.json` and `notes/size_audit_final.json`. The 25 normalized focus DDSs have native checker/dark/light and enlarged-checker previews at `contact_sheets/focus_100x88_all25_final_native_contrast.jpg` and `contact_sheets/focus_100x88_all25_final_enlarged_checker.jpg`.
+- All retained imagegen outputs, prompts, and processing records are linked in `notes/candidate_lineage.md` and the `prompts/`, `source_png/`, and `processed_png/` folders.
+- Canonical references, component-role checks, installed Vanilla precedent, and official flag-geometry sources are recorded in `notes/reference_basis.md`.
+- Chroma-pixel coordinates, one-pixel crop settings, and the rejected broad defringe trial are in `notes/processing_decisions.md` and `notes/edge_color_repair.json`.
+- Accepted current-runtime output-hash comparisons are in `notes/previous_review_match.json`.
+- The final post-edge-clean round-trip sheet and contrast sheet are `contact_sheets/qa_final_lineage_roundtrip_v2.png` and `contact_sheets/qa_final_contrast_v2.png`.

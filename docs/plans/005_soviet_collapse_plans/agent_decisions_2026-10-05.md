@@ -132,3 +132,15 @@ First Guard preserves its tall source proportions rather than stretching to fill
 The five outdated plan suffixes are mapped to the current registered consumers without renaming sprites or changing gameplay source.
 The parent reviewed all 47 native DDS tiles, installed the textures and independently verified their exact approved PNG pixels.
 The final named-tree MCP raster returned Transport closed; `docs/plans/gfx_fix_2026-10/005_aox_report.md` records the accepted art and remaining engine acceptance gap.
+
+## Graphics review: Baltic subjects and consumer framing, 2026-10-06
+
+Acceptance basis: the user's Baltic graphics findings, exact consumer sizes and G6 authority.
+Home Guard uses a coastal watch post, pine shore and crossed rifles; restoration uses a blank treaty and the three correct Baltic flags; War Room uses officers and a map table.
+Defense Compact uses three linked shields and rifles, the rotating capital talks use three architectural seals, German Border Pressure uses a period eagle and regional map, and Estonian Forest-Coast Guard uses a coastal battery and forest.
+The parent rejected incorrect flag and clipped-frame candidates, reviewed their replacements at source resolution and reviewed all 42 current focus subjects at native size.
+Twenty-five mixed-size 100x88 focus canvases are normalized proportionally to 94x86 while retaining their artwork, with RGB-only cleanup for 111 confirmed chroma edge pixels.
+The parent installed and pixel-verified 45 textures, including the unconsumed legacy Warroom file.
+The two legacy Warroom aliases remain pointed to Home Guard because the user's explicit size/frame-only rule does not authorize their path correction; the narrow exception is awaiting a reply.
+The active focus Warroom already consumes its proper installed texture, and no registry file was edited.
+The final MCP raster returned Transport closed; `docs/plans/gfx_fix_2026-10/005_baltic_report.md` records the installed evidence and incomplete alias/engine acceptance.
