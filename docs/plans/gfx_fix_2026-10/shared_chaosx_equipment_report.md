@@ -1,0 +1,49 @@
+﻿# Shared equipment icon repair report
+
+Status: 2 of the 11 finding rows are complete in the shared worktree: seven research-aligned equipment-wide payload cylinders and seven chemical tank-shell modules, comprising 14 promoted DDS textures. The parent has wired all 28 affected GFX leaves, but has not yet supplied the commit hash, so this report does not describe the package as committed. The 27-variant chemical-air row is visually approved and in DDS production; the remaining eight finding rows were transferred to `shared_remaining_equipment`.
+
+## Finding dispositions
+
+| Severity | Finding | Disposition |
+| --- | --- | --- |
+| 1 | `GFX_chemical_tabun_payload_cylinder` used a 33x22 text-only source instead of a wide cylinder. | Implemented as seven separate, text-free 131x52 equipment textures. The parent wired all 21 equipment aliases; the distinct `GFX_tabun_medium` research sprite remains on its protected 64x64 technology texture. Parent commit is pending. |
+| 2 | `GFX_coal_golem_equipment_medium` used an opaque dark scene tile. | Transferred to `shared_remaining_equipment`; new transparent golem cutout and review are pending with that owner. |
+| 2 | `GFX_EMI_livens_tabun_projectile` reused the Phosgene projectile. | Transferred to `shared_remaining_equipment`; original 56x42 Tabun projectile and repoint are pending with that owner. |
+| 2 | Seven chemical tank-shell sprites reused two vanilla flamethrower icons. | Implemented as seven original 70x43 shells with distinct research-aligned bands and no labels. Parent approved the final palette and visual sheet, then wired all seven dedicated sprite leaves. Parent commit is pending. |
+| 2 | `GFX_archetype_livens_projector_equipment_medium` depicted supply crates instead of a Livens projector. | Transferred to `shared_remaining_equipment`; the 58x40 projector-battery icon is pending with that owner. |
+| 3 | Three Livens equipment tiers reused one drawing with baked Roman numerals. | Transferred to `shared_remaining_equipment`; three distinct 94x45 drawings without numerals are pending with that owner. |
+| 2 | Twenty-seven chemical-air rack variants used 64x64 textures in 56x42 module rows. | All 27 original native-alpha sources and 56x42 previews are parent-approved across seven native/4x review batches. Canonical DDS conversion, pixel-roundtrip QA, and hash-guarded replacement of the existing paths remain pending. |
+| 2 | `GFX_tularemia_bomb_equipment` used a photo collage and a pasted symbol. | Transferred to `shared_remaining_equipment`; separate original 131x52 equipment art is pending with that owner; the protected 64x64 research texture remains unchanged. |
+| 3 | `GFX_zombie_cure_bomb_equipment` combined two overlapping corner glyphs. | Transferred to `shared_remaining_equipment`; separate original 131x52 equipment art is pending with that owner; the protected research texture remains unchanged. |
+| 3 | `GFX_livens_projectile_slot` used a jagged overlay. | Transferred to `shared_remaining_equipment`; the 508x248 transparent overlay is pending with that owner. |
+| 3 | `GFX_livens_projector_chassis_blueprint` included pseudo-writing and a rat sketch. | Transferred to `shared_remaining_equipment`; the full-canvas 508x248 blueprint scene is pending with that owner. |
+
+## Completed 14-texture cylinder and tank-shell package
+
+The seven 131x52 cylinder textures use separate equipment paths, preserving the protected 64x64 research sprites and technology DDS files. The seven 70x43 tank-shell textures use separate tank-module paths and match the sampled research palette. The user explicitly forbids baked text and numerals; accepted designs distinguish agents with the original drawings and researched color bands.
+
+| Agent | Cylinder DDS | SHA-256 | Tank-shell DDS | SHA-256 |
+| --- | --- | --- | --- | --- |
+| Chlorine | `gfx/interface/technologies/equipment_wide/chemical_chlorine_payload_cylinder.dds` | `6c271520fad7190f139fab0a4729ca27f2c9d33b59c9118d7c67c8574b0ea7b8` | `gfx/interface/equipmentdesigner/tanks/modules/chemical_tank_shells/tank_module_chemical_shell_chlorine.dds` | `4010d340ec65ff2d6367e98ecb7ad6914ba3758dc298d46b1dc3e4e1c6dba1c0` |
+| Phosgene | `gfx/interface/technologies/equipment_wide/chemical_phosgene_payload_cylinder.dds` | `9a343a42393b5faf5b59c80f6a1d5fb08f145c097ff7667b6d6e274b8e147521` | `gfx/interface/equipmentdesigner/tanks/modules/chemical_tank_shells/tank_module_chemical_shell_phosgene.dds` | `d11300bd48bab88b2e8b42b9cb0d977a9f92e1e4c951a54f69a53676c74374ec` |
+| Mustard | `gfx/interface/technologies/equipment_wide/chemical_mustard_payload_cylinder.dds` | `57e5072af7949476db0b3dd404bd9fa91ccaf47abcb73d695f5c1d6c4f448b94` | `gfx/interface/equipmentdesigner/tanks/modules/chemical_tank_shells/tank_module_chemical_shell_mustard.dds` | `4f0dd58a55f0ed53277c33f0f00c9d301add610a7d897a3cc9de5a5982520e9d` |
+| Lewisite | `gfx/interface/technologies/equipment_wide/chemical_lewisite_payload_cylinder.dds` | `d102e2ea8aa789d91941f4dbaa35b8afa4691b74a4abc07657bd60500fae380c` | `gfx/interface/equipmentdesigner/tanks/modules/chemical_tank_shells/tank_module_chemical_shell_lewisite.dds` | `41e0ef1fd28d0b235c6fdb1bcb10ac88787ab25cefe93ccb7f05ff3166494101` |
+| Tabun | `gfx/interface/technologies/equipment_wide/chemical_tabun_payload_cylinder.dds` | `a39aef4d88503ed09fd8b7bdb83c51dcabcb1495a433904bb050f8f679397cfc` | `gfx/interface/equipmentdesigner/tanks/modules/chemical_tank_shells/tank_module_chemical_shell_tabun.dds` | `ca27dd6436f01423a3bec9148d2d3fa38ee9a51b0358fa14d6d747c493873f6f` |
+| Sarin | `gfx/interface/technologies/equipment_wide/chemical_sarin_payload_cylinder.dds` | `a26d85f0a769950f849adeae0844e5071b96a43497c54e50787b518b5a992145` | `gfx/interface/equipmentdesigner/tanks/modules/chemical_tank_shells/tank_module_chemical_shell_sarin.dds` | `8b647b3f174bbb6fd35120459b94939bb8bca926619fbb35bfb93fa34995e469` |
+| Soman | `gfx/interface/technologies/equipment_wide/chemical_soman_payload_cylinder.dds` | `0e690764722b58438ddebc2e633567d9e0477a2398f37d1307b14a9a6565da17` | `gfx/interface/equipmentdesigner/tanks/modules/chemical_tank_shells/tank_module_chemical_shell_soman.dds` | `cadb86288c244c88914da082872285d7452603bfca91663a01555b289661d48a` |
+
+The cylinder palette uses the exact protected 64x64 research assets and hashes documented in [the palette map](../../assets/gfx_fix_2026-10/shared_chaosx_equipment/evidence/chemical_cylinder_research_palette_map.json). The tank-shells follow installed vanilla `tank_module_flamethrower.dds` and `tank_module_flamethrower_2.dds` references, each 70x43, from `interface/tank_modules_icons.gfx` lines 443–450. Their reference hashes and paths are in [the vanilla-reference record](../../assets/gfx_fix_2026-10/shared_chaosx_equipment/evidence/vanilla_tank_module_reference_paths.json).
+
+The parent currently wires the 21 cylinder aliases (`GFX_chemical_<agent>_payload_cylinder`, `_medium`, and `_1_medium`) and the seven `GFX_EMI_chemical_tank_shell_<agent>` leaves. The read-only 28-leaf snapshot is [here](../../assets/gfx_fix_2026-10/shared_chaosx_equipment/evidence/equipment_shared_14_gfx_wiring_snapshot.json). The shared DDS and processed-PNG hashes, full original prompts, source lineages, exact palette samples, conversion records, guard receipts, and equality checks are consolidated in [the 14-texture manifest](../../assets/gfx_fix_2026-10/shared_chaosx_equipment/evidence/equipment_shared_14_cylinders_tank_shells_manifest.json). The 14 current DDS files passed the canonical writer's strict decode and exact RGBA round-trip checks; the current decoded alpha and dimensions are recorded in [the 14-texture audit](../../assets/gfx_fix_2026-10/shared_chaosx_equipment/evidence/equipment_shared_14_runtime_alpha.json).
+
+The shell reference comparison is [the compact native sheet](../../assets/gfx_fix_2026-10/shared_chaosx_equipment/evidence/tank_shell_palette_reconciled_native.png) and [the 4x sheet](../../assets/gfx_fix_2026-10/shared_chaosx_equipment/evidence/tank_shell_palette_reconciled_4x.png). The earlier sheet with captions that extended outside their cells is retained as [archived evidence](../../assets/gfx_fix_2026-10/shared_chaosx_equipment/evidence/tank_shell_palette_reconciled_native_captions-overflowed.png).
+
+## Chemical-air variants in progress
+
+All 27 variants now have native ImageGen sources with genuine alpha, processed 56x42 previews, and parent-approved native and 4x comparisons. This includes all three Tabun variants. Each exact request, source hash, processed hash, frozen current DDS hash, target path, and review sheet is listed in [the 27-variant manifest](../../assets/gfx_fix_2026-10/shared_chaosx_equipment/evidence/chem_air_variants_27_progress_manifest.json). The seven paired review batches are `chem_air_variant_batch1_before_after_{native,4x}.png` through `chem_air_variant_batch7_before_after_{native,4x}.png` under the same evidence folder. All 27 existing 64x64 DDS destinations still match the frozen baseline; none have been replaced yet. Their canonical conversion, strict round-trip verification, exact-hash promotion guards, and final family sheets form the next tranche.
+
+## Transferred rows and scope
+
+The eight remaining finding rows are assigned to `shared_remaining_equipment`: coal-golem equipment, the Tabun Livens projectile, Livens projector archetype, three Livens tiers, Tularemia bomb, zombie-cure bomb, projectile-slot overlay, and Livens blueprint. No source or runtime asset was created for those rows by this owner. Equipment costs, module stats, combat behavior, localization, and gameplay remain unchanged.
+
+No simplifications or unrelated technology substitutions were used for the completed 14-texture package. The whole equipment group remains partial until the air-variant row and transferred rows are finished, and the parent will report the commit state by its actual hash.
