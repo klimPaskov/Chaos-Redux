@@ -25,11 +25,23 @@ on_actions = {
 			if = {
 				limit = { has_global_flag = communism_spread }
 				if = {
-					limit = { ROOT = { has_country_flag = fighting_communist_rebels } FROM = { has_country_flag = communist_rebel_state } }
-					clr_country_flag = fighting_communist_rebels
-					clr_country_flag = communist_rebel_state
+					limit = { FROM = { has_country_flag = communist_rebel_state } }
+					FROM = {
+						if = {
+							limit = { has_variable = communist_rebel_parent }
+							var:communist_rebel_parent = {
+								if = {
+									limit = { exists = yes }
+									clr_country_flag = fighting_communist_rebels
+								}
+							}
+							clear_variable = communist_rebel_parent
+						}
+						clr_country_flag = communist_rebel_state
+						clr_country_flag = communist_state_control_rebel
+						clr_country_flag = communist_local_breakaway_rebel
+					}
 				}
-
 			}
 		}
 	}

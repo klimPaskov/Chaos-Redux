@@ -27,68 +27,92 @@ country_event = {
 	is_triggered_only = yes
 
 	immediate = {
-		random_state = {
-			set_temp_variable = { temp_oob_container = owner }
-			transfer_state_to = REV
+		set_temp_variable = { world_revolution_bootstrap_ready = 0 }
+		if = {
+			limit = { REV = { exists = yes } }
+			set_temp_variable = { world_revolution_bootstrap_ready = 1 }
 		}
-		REV = {
-			load_oob = "REV_1936"
-			create_communist_rebel_templates = yes
-			create_faction = revolution_front
-		} # if country doesn't exist, does nothing
-		every_state = {
-			limit = { is_owned_by = REV }
-			transfer_state_to = var:temp_oob_container
-		}
-		every_state = {
-			limit = { is_core_of = SOV }
-			add_claim_by = REV
-		}
-
-		# Annex all communist rebel states
-		every_country = {
-			limit = {
-				has_country_flag = communist_rebel_state
-				exists = yes
-			}
-
-			every_controlled_state = {
-				add_core_of = REV
-			}
-
-			every_unit_leader = {
-				set_nationality = REV
-			}
-
-			# The Revolution annexes the rebel country completely
-			REV = {
-				annex_country = {
-					target = PREV
-					transfer_troops = yes
+		else = {
+			random_state = {
+				limit = {
+					impassable = no
+					is_capital = no
+					owner = {
+						exists = yes
+						uses_normal_civilian_systems = yes
+						NOT = { num_of_owned_states < constant:communism_spread_evolution.world_revolution_seed_minimum_owned_states }
+						controls_state = PREV
+					}
 				}
-				add_war_support = 0.05
-				add_stability = 0.05
+				save_event_target_as = world_revolution_seed_state
+				owner = { save_event_target_as = world_revolution_seed_owner }
+				transfer_state_to = REV
+				REV = {
+					load_oob = "REV_1936"
+					create_communist_rebel_templates = yes
+					create_faction = revolution_front
+				}
+				event_target:world_revolution_seed_state = { transfer_state_to = event_target:world_revolution_seed_owner }
+				set_temp_variable = { world_revolution_bootstrap_ready = 1 }
+			}
+		}
+		if = {
+			limit = { check_variable = { world_revolution_bootstrap_ready > 0 } }
+			every_state = {
+				limit = { is_core_of = SOV }
+				add_claim_by = REV
 			}
 
-		}
+			# Annex all communist rebel states
+			every_country = {
+				limit = {
+					has_country_flag = communist_rebel_state
+					exists = yes
+				}
 
-		every_country = {
-			limit = {
-				hidden_trigger = { NOT = { is_special_chaos_country = yes } }
-				NOT = { has_government = communism }
+				every_controlled_state = {
+					add_core_of = REV
+				}
+
+				every_unit_leader = {
+					set_nationality = REV
+				}
+
+				# The Revolution annexes the rebel country completely
+				REV = {
+					annex_country = {
+						target = PREV
+						transfer_troops = yes
+					}
+					add_war_support = 0.05
+					add_stability = 0.05
+				}
+
 			}
-			country_event = { id = chaosx.nr91.2 }
-		}
-		every_country = {
-			limit = {
-				hidden_trigger = { NOT = { is_special_chaos_country = yes } }
-				has_government = communism
+
+			every_country = {
+				limit = {
+					hidden_trigger = { NOT = { is_special_chaos_country = yes } }
+					NOT = { has_government = communism }
+				}
+				country_event = { id = chaosx.nr91.2 }
 			}
-			country_event = { id = chaosx.nr91.3 }
+			every_country = {
+				limit = {
+					hidden_trigger = { NOT = { is_special_chaos_country = yes } }
+					has_government = communism
+				}
+				country_event = { id = chaosx.nr91.3 }
+			}
+			clr_global_flag = communism_spread
+			every_country = {
+				clear_communism_spread_system = yes
+			}
 		}
-		clr_global_flag = communism_spread
-		every_country = {
-			clear_communism_spread_system = yes
+		else_if = {
+			limit = { check_variable = { events_log_manual_event_detail_trigger > 0 } }
+			set_temp_variable = { chaosx_forced_event_failure_reason = constant:forced_event_feedback_reason.no_state }
+			chaosx_report_forced_event_failure = yes
 		}
 	}
 }

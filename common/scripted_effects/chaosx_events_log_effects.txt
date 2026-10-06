@@ -459,8 +459,11 @@ events_log_set_default_actor_for_current_event = {
 		set_temp_variable = { events_log_default_has_actor = 1 }
 	}
 	else_if = {
-		limit = { check_variable = { event_id = constant:communism_spread_event_log.event_id } }
-		SOV = { ROOT = { set_temp_variable = { events_log_default_actor = PREV } } }
+		limit = {
+			check_variable = { event_id = constant:communism_spread_event_log.event_id }
+			REV = { exists = yes }
+		}
+		REV = { ROOT = { set_temp_variable = { events_log_default_actor = PREV } } }
 		set_temp_variable = { events_log_default_has_actor = 1 }
 	}
 	else_if = {

@@ -1,0 +1,400 @@
+chaosx_communism_fight_category = {
+
+	communism_national_counter_agitation = {
+		icon = GFX_decision_generic_political_discourse
+		days_remove = constant:communism_spread_timing.national_counter_agitation_days
+		days_re_enable = constant:communism_spread_timing.national_counter_agitation_reenable_days
+		custom_cost_text = black_friday_communism_national_counter_agitation_cost
+		ai_hint_pp_cost = 35
+
+		custom_cost_trigger = { hidden_trigger = { black_friday_communism_national_counter_agitation_cost = yes } }
+
+		available = {
+			hidden_trigger = { NOT = { is_special_chaos_country = yes } }
+			NOT = { has_government = communism }
+			communism > 0.001
+		}
+
+		visible = {
+			has_global_flag = communism_spread
+			hidden_trigger = { NOT = { is_special_chaos_country = yes } }
+			NOT = { has_government = communism }
+			has_idea = communism_spread_idea
+		}
+
+		ai_will_do = {
+			base = 1
+			modifier = {
+				add = 2
+				communism > constant:communism_spread_state_control.min_support_for_state_spread
+			}
+			modifier = {
+				add = 2
+				has_communist_controlled_state = yes
+			}
+		}
+
+		complete_effect = {
+			hidden_effect = {
+				if = {
+					limit = { black_friday_is_active = yes }
+					# Existing-owner caller output storage.
+					set_temp_variable = { black_friday_owner_payment_success = constant:universal_cost_framework.zero }
+					black_friday_pay_communism_national_counter_agitation = yes
+				}
+				else = {
+					add_political_power = communism_counter_agitation_political_power_cost_negative
+					add_command_power = communism_counter_agitation_command_power_cost_negative
+				}
+				if = {
+					limit = { black_friday_owner_payment_succeeded = yes }
+					add_stability = constant:communism_spread_countermeasures.national_stability_cost
+				}
+			}
+		}
+
+		remove_effect = {
+			add_popularity = {
+				ideology = communism
+				popularity = constant:communism_spread_countermeasures.national_support_reduction
+			}
+			hidden_effect = {
+				reduce_communism_support_per_controlled_state = yes
+				refresh_communism_spread_pressure = yes
+				try_defeat_country_communism_spread_system = yes
+			}
+		}
+	}
+
+	communism_local_military_intervention = {
+		icon = GFX_decision_NOR_prepare_state_comm_1
+		state_target = any_controlled_state
+		on_map_mode = map_and_decisions_view
+		days_remove = constant:communism_spread_timing.local_intervention_days
+		days_re_enable = constant:communism_spread_timing.local_intervention_reenable_days
+		custom_cost_text = black_friday_communism_local_intervention_level_1_cost
+		ai_hint_pp_cost = 50
+
+		highlight_states = {
+			highlight_states_trigger = {
+				is_controlled_by = ROOT
+				OR = {
+					has_state_flag = communist_controlled_state
+					has_state_flag = communist_control_level_1
+					has_state_flag = communist_control_level_2
+					has_state_flag = communist_control_level_3
+				}
+			}
+			highlight_color_before_active = 2
+			highlight_color_while_active = 2
+		}
+
+		target_root_trigger = {
+			has_global_flag = communism_spread
+			hidden_trigger = { NOT = { is_special_chaos_country = yes } }
+			NOT = { has_government = communism }
+			OR = {
+				has_idea = communism_spread_idea
+				has_communist_controlled_state = yes
+				has_regular_communist_intervention_target = yes
+			}
+		}
+
+		target_trigger = {
+			FROM = {
+				is_controlled_by = ROOT
+				OR = {
+					has_state_flag = communist_control_level_1
+					AND = {
+						has_state_flag = communist_controlled_state
+						NOT = { has_state_flag = communist_control_level_2 }
+						NOT = { has_state_flag = communist_control_level_3 }
+					}
+				}
+			}
+		}
+
+		custom_cost_trigger = { hidden_trigger = { black_friday_communism_local_intervention_level_1_cost = yes } }
+
+		visible = {
+			has_global_flag = communism_spread
+			hidden_trigger = { NOT = { is_special_chaos_country = yes } }
+			NOT = { has_government = communism }
+			OR = {
+				has_idea = communism_spread_idea
+				has_communist_controlled_state = yes
+				has_regular_communist_intervention_target = yes
+			}
+		}
+
+		ai_will_do = {
+			base = 1
+			modifier = {
+				factor = 0.4
+				has_war = yes
+				enemies_strength_ratio > 0.7
+			}
+			modifier = {
+				factor = 0.5
+				has_stability < 0.35
+			}
+		}
+
+		complete_effect = {
+			complete_communism_local_intervention = yes
+		}
+
+		remove_effect = {
+			resolve_communism_local_intervention = yes
+		}
+	}
+
+	communism_local_military_intervention_level_2 = {
+		icon = GFX_decision_NOR_prepare_state_comm_2
+		state_target = any_controlled_state
+		on_map_mode = map_and_decisions_view
+		days_remove = constant:communism_spread_timing.local_intervention_days
+		days_re_enable = constant:communism_spread_timing.local_intervention_reenable_days
+		custom_cost_text = black_friday_communism_local_intervention_level_2_cost
+		ai_hint_pp_cost = 50
+
+		highlight_states = {
+			highlight_states_trigger = {
+				is_controlled_by = ROOT
+				OR = {
+					has_state_flag = communist_controlled_state
+					has_state_flag = communist_control_level_1
+					has_state_flag = communist_control_level_2
+					has_state_flag = communist_control_level_3
+				}
+			}
+			highlight_color_before_active = 2
+			highlight_color_while_active = 2
+		}
+
+		target_root_trigger = {
+			has_global_flag = communism_spread
+			hidden_trigger = { NOT = { is_special_chaos_country = yes } }
+			NOT = { has_government = communism }
+			OR = {
+				has_idea = communism_spread_idea
+				has_communist_controlled_state = yes
+				has_regular_communist_intervention_target = yes
+			}
+		}
+
+		target_trigger = {
+			FROM = {
+				is_controlled_by = ROOT
+				has_state_flag = communist_control_level_2
+			}
+		}
+
+		custom_cost_trigger = { hidden_trigger = { black_friday_communism_local_intervention_level_2_cost = yes } }
+
+		visible = {
+			has_global_flag = communism_spread
+			hidden_trigger = { NOT = { is_special_chaos_country = yes } }
+			NOT = { has_government = communism }
+			OR = {
+				has_idea = communism_spread_idea
+				has_communist_controlled_state = yes
+				has_regular_communist_intervention_target = yes
+			}
+		}
+
+		ai_will_do = {
+			base = 2
+			modifier = {
+				add = 2
+				FROM = { has_state_flag = communist_control_level_2 }
+			}
+			modifier = {
+				factor = 0.4
+				has_war = yes
+				enemies_strength_ratio > 0.7
+			}
+			modifier = {
+				factor = 0.5
+				has_stability < 0.35
+			}
+		}
+
+		complete_effect = {
+			complete_communism_local_intervention = yes
+		}
+
+		remove_effect = {
+			resolve_communism_local_intervention = yes
+		}
+	}
+
+	communism_local_military_intervention_level_3 = {
+		icon = GFX_decision_NOR_prepare_state_comm_3
+		state_target = any_controlled_state
+		on_map_mode = map_and_decisions_view
+		days_remove = constant:communism_spread_timing.local_intervention_days
+		days_re_enable = constant:communism_spread_timing.local_intervention_reenable_days
+		custom_cost_text = black_friday_communism_local_intervention_level_3_cost
+		ai_hint_pp_cost = 50
+
+		highlight_states = {
+			highlight_states_trigger = {
+				is_controlled_by = ROOT
+				OR = {
+					has_state_flag = communist_controlled_state
+					has_state_flag = communist_control_level_1
+					has_state_flag = communist_control_level_2
+					has_state_flag = communist_control_level_3
+				}
+			}
+			highlight_color_before_active = 2
+			highlight_color_while_active = 2
+		}
+
+		target_root_trigger = {
+			has_global_flag = communism_spread
+			hidden_trigger = { NOT = { is_special_chaos_country = yes } }
+			NOT = { has_government = communism }
+			OR = {
+				has_idea = communism_spread_idea
+				has_communist_controlled_state = yes
+				has_regular_communist_intervention_target = yes
+			}
+		}
+
+		target_trigger = {
+			FROM = {
+				is_controlled_by = ROOT
+				has_state_flag = communist_control_level_3
+			}
+		}
+
+		custom_cost_trigger = { hidden_trigger = { black_friday_communism_local_intervention_level_3_cost = yes } }
+
+		visible = {
+			has_global_flag = communism_spread
+			hidden_trigger = { NOT = { is_special_chaos_country = yes } }
+			NOT = { has_government = communism }
+			OR = {
+				has_idea = communism_spread_idea
+				has_communist_controlled_state = yes
+				has_regular_communist_intervention_target = yes
+			}
+		}
+
+		ai_will_do = {
+			base = 3
+			modifier = {
+				add = 3
+				FROM = { has_state_flag = communist_control_level_3 }
+			}
+			modifier = {
+				factor = 0.4
+				has_war = yes
+				enemies_strength_ratio > 0.7
+			}
+			modifier = {
+				factor = 0.5
+				has_stability < 0.35
+			}
+		}
+
+		complete_effect = {
+			complete_communism_local_intervention = yes
+		}
+
+		remove_effect = {
+			resolve_communism_local_intervention = yes
+		}
+	}
+
+	communism_emergency_intervention = {
+		icon = GFX_decision_generic_protection
+		days_remove = constant:communism_spread_timing.emergency_intervention_days
+		days_re_enable = constant:communism_spread_timing.emergency_intervention_reenable_days
+		custom_cost_text = black_friday_communism_emergency_intervention_cost
+		ai_hint_pp_cost = 100
+
+		custom_cost_trigger = { hidden_trigger = { black_friday_communism_emergency_intervention_cost = yes } }
+
+		available = {
+			hidden_trigger = { NOT = { is_special_chaos_country = yes } }
+			can_launch_communist_emergency_intervention = yes
+		}
+
+		visible = {
+			has_global_flag = communism_spread
+			hidden_trigger = { NOT = { is_special_chaos_country = yes } }
+			NOT = { has_government = communism }
+			has_idea = communism_spread_idea
+			has_communist_controlled_state = yes
+		}
+
+		ai_will_do = {
+			base = 0
+			modifier = {
+				add = 4
+				check_variable = { communism_control_level_3_states > 0 }
+			}
+			modifier = {
+				add = 3
+				check_variable = { communism_controlled_states > communism_emergency_control_threshold }
+			}
+			modifier = {
+				factor = 0.25
+				has_war = yes
+				enemies_strength_ratio > 0.7
+			}
+			modifier = {
+				factor = 0.5
+				has_stability < 0.35
+			}
+		}
+
+		complete_effect = {
+			hidden_effect = {
+				if = {
+					limit = { black_friday_is_active = yes }
+					# Existing-owner caller output storage.
+					set_temp_variable = { black_friday_owner_payment_success = constant:universal_cost_framework.zero }
+					black_friday_pay_communism_emergency_intervention = yes
+				}
+				else = {
+					add_political_power = communism_emergency_political_power_cost_negative
+					add_command_power = communism_emergency_command_power_cost_negative
+					add_manpower = communism_emergency_manpower_cost_negative
+					add_equipment_to_stockpile = {
+						type = infantry_equipment
+						amount = communism_emergency_equipment_cost_negative
+					}
+				}
+				if = {
+					limit = { black_friday_owner_payment_succeeded = yes }
+					add_stability = constant:communism_spread_emergency.stability_loss
+					add_war_support = constant:communism_spread_emergency.war_support_loss
+					add_dynamic_modifier = {
+						modifier = communism_emergency_disruption
+						days = 150
+					}
+				}
+			}
+		}
+
+		remove_effect = {
+			hidden_effect = {
+				prepare_communist_emergency_uprising_roll = yes
+				random_list = {
+					var:communist_uprising_chance = {
+						create_communist_emergency_uprising = yes
+						country_event = { id = chaosx.nr1.10 }
+					}
+					var:communist_no_uprising_chance = {
+						resolve_communist_emergency_without_uprising = yes
+						country_event = { id = chaosx.nr1.9 }
+					}
+				}
+			}
+		}
+	}
+}

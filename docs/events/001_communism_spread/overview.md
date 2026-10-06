@@ -1,5 +1,10 @@
 # 001 Communist Insurgency
 
+## Release QA evidence, 2026-10-06
+
+The bounded source changes, current asset status and remaining release gates are recorded in the [release reconciliation](../../plans/001_communism_spread_plans/release_qa_completion_20261006.md).
+Full release signoff remains incomplete; current source, accepted design, historical evidence and unresolved engine validation are distinguished in that report.
+
 ## What The Event Is
 
 `chaosx.nr1.1` starts a state-based communist insurgency. The national idea adds `+0.01` daily communist drift. State control is the real crisis layer, and every communist-controlled state adds another `+0.01` daily communist support through the `communism_state_control_pressure` dynamic modifier.
@@ -11,6 +16,7 @@ The event does not unlock World Revolution immediately. World Revolution enters 
 - `chaosx.nr1.1`: starts the system, gives the national idea, seeds one Level 1 controlled state, and queues maintenance
 - `chaosx.nr1.2`: state-based industry sabotage in a controlled state
 - `chaosx.nr1.34`: coordinated strike wave in a controlled state
+- `chaosx.nr1.35`: event-owned invalid-host explanation for manual preparation
 - `chaosx.nr1.3`: emergency intervention outcome shell for manual/forced use
 - `chaosx.nr1.4`: new state falls under communist control
 - `chaosx.nr1.5`: controlled state escalates to a stronger level
@@ -40,7 +46,7 @@ The root event remains fire-once event `1` in the Chaos Redux event system. When
 
 Countries matching `is_special_chaos_country = yes` are excluded from the root event spread, maintenance, decisions, and World Revolution state handoff. This keeps the insurgency focused on regular countries instead of special Chaos actors.
 
-Each affected country self-schedules hidden maintenance every `40-70` days. The former monthly on-action updater is not part of the current runtime. State-control runtime follows current state controllers rather than only legal owners, so occupation and civil-war splits keep the crisis attached to the side that actually controls the infected front. When a country takes control of an already communist-controlled state, the state-control-changed hook gives that country the crisis runtime, queues maintenance, and applies the active global evolution flags. Player-controlled countries with `Harder Crises for Players` enabled receive Non-AI Crisis Pressure while they have active intervention targets, emergency pressure, or a communist rebel war. That pressure raises spread, escalation, and sabotage chances and shortens their cooldowns through the shared crisis-pressure helpers.
+Each affected country self-schedules hidden maintenance every `40-70` days. The former monthly on-action updater is not part of the current runtime. A country sees only one state-control spread alert, escalation alert, local-intervention success report, local-intervention failure report, revolutionary-war warning, emergency-success report, and uprising report during each insurgency. It can also see the industry sabotage and strike-wave choices once each, and each rare evolution-incident variant once. Spread, escalation, and intervention outcomes continue throughout the crisis. Sabotage and strike rolls select from unreported report types only, then stop once both types have appeared. Rare incidents cycle through unreported variants, and stop after all variants in an enabled family have appeared. A full crisis can show at most 25 distinct Event 001 popups per country, excluding manual scenario events. State-control runtime follows current state controllers rather than only legal owners, so occupation and civil-war splits keep the crisis attached to the side that actually controls the infected front. When a country takes control of an already communist-controlled state, the state-control-changed hook gives that country the crisis runtime, queues maintenance, and applies the active global evolution flags. Player-controlled countries with `Harder Crises for Players` enabled receive Non-AI Crisis Pressure while they have active intervention targets, emergency pressure, or a communist rebel war. That pressure raises spread, escalation, and sabotage chances and shortens their cooldowns through the shared crisis-pressure helpers.
 
 Maintenance:
 
@@ -73,7 +79,7 @@ The event can be defeated country by country. A country drops out of the communi
 - it is not currently marked as fighting communist rebels
 - communist party support is below `min_support_for_state_spread`
 
-Local intervention clears or reduces Level 1 and Level 2 states. Level 3 states require emergency intervention. `Disrupt Communist Organizing` is a national support-reduction decision that remains available while the country has the insurgency idea, so the player can push communist popularity down after local control is contained. If emergency intervention does not trigger an uprising, controlled states are cleared or reduced and communist support is cut. If it does trigger an uprising, the country must defeat the communist rebel state in war. The existing annex hook clears the `fighting_communist_rebels` marker.
+Local intervention clears or reduces Level 1 and Level 2 states. Level 3 states require emergency intervention. `Disrupt Communist Organizing` is a national support-reduction decision that remains available while the country has the insurgency idea, so the player can push communist popularity down after local control is contained. If emergency intervention does not trigger an uprising, controlled states are cleared or reduced and communist support is cut. If it triggers an uprising, the country must defeat the communist rebel state in war. The rebel country stores its originating host so the annex hook can clear `fighting_communist_rebels` even when a third country annexes it. Emergency and local breakaway creation are blocked while the host already fights a communist rebel country.
 
 The global `communism_spread` flag is cleared once no non-special country has active communism spread state, controlled states, evolution flags, or rebel fighting state, and no communist rebel country remains. When this happens, the World Revolution unlock flag is also cleared and World Revolution weight is reset to `0`.
 
@@ -140,7 +146,7 @@ Emergency intervention rolls for uprising risk from:
 - communist party support scaled by `45`
 - maximum chance: `90`
 
-If an uprising happens, this system does not use vanilla `start_civil_war`. It marks controlled states for conversion through a priority budget: Level 3 states are selected first, then Level 2, then Level 1. Capital states are excluded from emergency and local breakaway conversion so the original country remains valid for the rebel war declaration. Emergency conversion uses a capped non-capital budget based on revolutionary threat, communist support, and Level 3 state count, and never exceeds `owned states - 1`.
+If an uprising happens, this system does not use vanilla `start_civil_war`. It marks controlled states for conversion through a priority budget: Level 3 states are selected first, then Level 2, then Level 1. Capital states are excluded from emergency and local breakaway conversion so the original country remains valid for the rebel war declaration. Emergency conversion uses a capped non-capital budget based on revolutionary threat, communist support, and Level 3 state count, and never exceeds `owned states - 1`. This is a deviation from the spec's stated per-level conversion chances and has no recorded acceptance basis.
 
 A dynamic communist rebel country is created, receives its own communist politics and leader, receives spawned division templates, and takes only the converted controlled states. It does not inherit half the original country's stockpile.
 
@@ -164,7 +170,7 @@ State-targeted intervention decisions reuse the Norwegian communist preparation 
 The level icons in the dashboard have tooltips showing how many controlled states are currently in that level. The same dot treatment is used on the local intervention state-targeted decisions so the player can distinguish control levels directly from the map decision icons. Controlled states also receive a passive state-map icon through `communism_control_state_mapicon_scripted_gui`, while intervention decisions use the engine's predefined yellow-style state outline color for hover highlights.
 
 - `communism_national_counter_agitation`: national. Reduces communist party support by `2%` after a timed operation, costs command power, political power, and stability, and can trigger country-level defeat once no controlled states remain.
-- `communism_local_military_intervention`: state-targeted. One visible decision appears for each owned communist-controlled state. Its text, tooltip, icon, cost, and outcome risk scale by control level and duration. Level 1 can sometimes clear. Level 2 normally needs repeated progress and usually regresses to Level 1. Level 3 cannot be cleared by local intervention and can only be temporarily suppressed.
+- `communism_local_military_intervention`: state-targeted. One visible decision appears for each communist-controlled state the country controls. Its text, tooltip, icon, cost, and outcome risk scale by control level and duration. Level 1 can sometimes clear. Level 2 normally needs repeated progress and usually regresses to Level 1. Level 3 cannot be cleared by local intervention and can only be temporarily suppressed.
 - `communism_emergency_intervention`: national. Affects all controlled states and may trigger the custom uprising.
 
 The active decision file contains the national counter-agitation, state-targeted local intervention, and emergency intervention paths described above. The former generic military, industrial, propaganda, economic, and emergency suppression loop is not part of the active decision file.
@@ -172,6 +178,11 @@ The active decision file contains the national counter-agitation, state-targeted
 ## World Revolution Handoff
 
 World Revolution is unlocked only after `Whispers of the World Revolution`. Once World Revolution fires later, it uses existing communist-controlled states instead of randomly selecting states from national communist popularity.
+
+A fresh REV setup temporarily uses one eligible non-capital, owner-controlled seed state and restores only that captured seed to its captured owner.
+An existing REV bypasses reseeding and retains its territory, setup and faction.
+The unrelated monthly Portugal–Galicia dispatch is absent, and Event091 history uses a guarded REV actor.
+These source contracts do not prove landless-tag usability or immediate engine ordering.
 
 World Revolution strength by state level:
 
@@ -186,7 +197,9 @@ Industrial, high-population, developed-infrastructure, high-support, high-threat
 Gameplay runs with registered vanilla-derived idea sprites and event pictures in `interface/001_communism_spread.gfx`. Decision icons reuse existing assets:
 
 - category: `GFX_decision_category_generic_communism`
-- local intervention: `GFX_decision_generic_military`
+- local intervention, Level 1: `GFX_decision_NOR_prepare_state_comm_1`
+- local intervention, Level 2: `GFX_decision_NOR_prepare_state_comm_2`
+- local intervention, Level 3: `GFX_decision_NOR_prepare_state_comm_3`
 - emergency intervention: `GFX_decision_generic_protection`
 - national pressure: `GFX_idea_communist_state_control_pressure`
 - Level 1 state control: `GFX_idea_communist_agitation_zone`
@@ -251,6 +264,6 @@ Map highlighting uses state-targeted decisions and highlighted controlled-state 
 - `communism_spread_strikes` controls the chance, dynamic cooldown reductions, and event mix for controlled-state sabotage and strike waves. The most important values are `base_chance`, `controlled_state_chance`, `controlled_state_ratio_chance_scale`, and `min_cooldown_days`.
 - `defeat_grace_days = 180` prevents a country from defeating the system immediately through early suppression.
 - `evolution_incident_cooldown_days`, `surprise_revolt_chance`, `worker_ritual_chance`, and `world_revolution_whisper_chance` control how often evolution incidents appear.
-- `communism_spread_drift.per_controlled_state = 0.01` is fixed to the spec.
+- `communism_spread_drift.per_controlled_state = 0.01` is fixed to the spec. `max_from_states = 0.90` caps the total state contribution, which deviates from the uncapped per-state formula and has no recorded acceptance basis.
 - Emergency uprising risk may need live-session tuning for large majors. `per_controlled_state_uprising_chance` and `communism_support_uprising_scale` are the first values to adjust.
 - Rebel unit counts are score-based, but the exact thresholds will need live-session tuning. The first values to adjust are `level_1_units`, `level_2_units`, `level_3_units`, industry bonuses, threat/support bonuses, and army/factory strength thresholds.

@@ -32,34 +32,36 @@ country_event = {
 	}
 
 	immediate = {
-		hidden_effect = {
-			if = {
-				limit = { NOT = { has_global_flag = communism_spread } }
-				set_global_flag = communism_spread
-				every_other_country = {
-					limit = {
-						hidden_trigger = { NOT = { is_special_chaos_country = yes } }
-						has_communism_spread_minimum_country_size = yes
-					}
-					country_event = { id = chaosx.nr1.1 }
-				}
+		if = {
+			limit = {
+				hidden_trigger = { NOT = { is_special_chaos_country = yes } }
+				has_communism_spread_minimum_country_size = yes
 			}
-
-			if = {
-				limit = {
-					hidden_trigger = { NOT = { is_special_chaos_country = yes } }
-					has_communism_spread_minimum_country_size = yes
-					NOT = { has_government = communism }
-				}
+			hidden_effect = {
 				if = {
-					limit = { NOT = { has_idea = communism_spread_idea } }
-					add_ideas = communism_spread_idea
+					limit = { NOT = { has_global_flag = communism_spread } }
+					set_global_flag = communism_spread
+					every_other_country = {
+						limit = {
+							hidden_trigger = { NOT = { is_special_chaos_country = yes } }
+							has_communism_spread_minimum_country_size = yes
+						}
+						country_event = { id = chaosx.nr1.1 }
+					}
 				}
-				queue_communism_spread_defeat_grace_timeout = yes
-				apply_communism_spread_initial_support = yes
-				seed_initial_communist_control_state = yes
-				refresh_communism_spread_pressure = yes
-				queue_initial_communism_spread_maintenance = yes
+
+				if = {
+					limit = { NOT = { has_government = communism } }
+					if = {
+						limit = { NOT = { has_idea = communism_spread_idea } }
+						add_ideas = communism_spread_idea
+					}
+					queue_communism_spread_defeat_grace_timeout = yes
+					apply_communism_spread_initial_support = yes
+					seed_initial_communist_control_state = yes
+					refresh_communism_spread_pressure = yes
+					queue_initial_communism_spread_maintenance = yes
+				}
 			}
 		}
 	}
@@ -86,6 +88,15 @@ country_event = {
 			has_government = communism
 		}
 		name = chaosx.nr1.1.b
+	}
+	option = {
+		trigger = {
+			OR = {
+				is_special_chaos_country = yes
+				NOT = { has_communism_spread_minimum_country_size = yes }
+			}
+		}
+		name = chaosx.nr1.1.invalid
 	}
 }
 
@@ -114,10 +125,11 @@ country_event = {
 			event_target:communist_sabotage_state = {
 				if = {
 					limit = { has_state_flag = communist_control_level_1 }
+					set_temp_variable = { communist_report_modifier_days = constant:communism_spread_timing.light_crackdown_scars_days }
 					apply_light_communist_sabotage_damage = yes
 					add_dynamic_modifier = {
 						modifier = communism_post_crackdown_scars
-						days = 45
+						days = communist_report_modifier_days
 					}
 				}
 				else_if = {
@@ -125,10 +137,11 @@ country_event = {
 					apply_moderate_communist_sabotage_damage = yes
 				}
 				else = {
+					set_temp_variable = { communist_report_modifier_days = constant:communism_spread_timing.heavy_crackdown_scars_days }
 					apply_heavy_communist_sabotage_damage = yes
 					add_dynamic_modifier = {
 						modifier = communism_post_crackdown_scars
-						days = 90
+						days = communist_report_modifier_days
 					}
 				}
 			}
@@ -137,6 +150,12 @@ country_event = {
 
 	option = {
 		name = chaosx.nr1.2.b
+		trigger = {
+			custom_trigger_tooltip = {
+				tooltip = communism_security_detachments_cp_requirement
+				NOT = { command_power < global.black_friday_price_cp_10 }
+			}
+		}
 		ai_chance = {
 			base = 35
 			modifier = {
@@ -179,7 +198,7 @@ country_event = {
 	id = chaosx.nr1.34
 	title = chaosx.nr1.34.t
 	desc = chaosx.nr1.34.d
-	picture = GFX_report_event_communist_industry_sabotage
+	picture = GFX_report_event_communist_strike_wave
 
 	is_triggered_only = yes
 
@@ -231,11 +250,12 @@ country_event = {
 	option = {
 		name = chaosx.nr1.3.a
 		ai_chance = { base = 50 }
+		set_temp_variable = { communist_report_modifier_days = constant:communism_spread_timing.post_emergency_disruption_days }
 		add_stability = constant:communism_spread_emergency.stability_loss
 		add_war_support = constant:communism_spread_emergency.war_support_loss
 		add_dynamic_modifier = {
 			modifier = communism_emergency_disruption
-			days = constant:communism_spread_timing.post_emergency_disruption_days
+			days = communist_report_modifier_days
 		}
 		hidden_effect = {
 			resolve_communist_emergency_without_uprising = yes
@@ -245,11 +265,12 @@ country_event = {
 	option = {
 		name = chaosx.nr1.3.b
 		ai_chance = { base = 50 }
+		set_temp_variable = { communist_report_modifier_days = constant:communism_spread_timing.post_emergency_disruption_days }
 		add_stability = constant:communism_spread_emergency.stability_loss
 		add_war_support = constant:communism_spread_emergency.war_support_loss
 		add_dynamic_modifier = {
 			modifier = communism_emergency_disruption
-			days = constant:communism_spread_timing.post_emergency_disruption_days
+			days = communist_report_modifier_days
 		}
 		hidden_effect = {
 			create_communist_emergency_uprising = yes
@@ -280,13 +301,6 @@ country_event = {
 
 	option = {
 		name = chaosx.nr1.5.a
-		if = {
-			limit = {
-				has_event_target = communist_target_state
-				event_target:communist_target_state = { has_state_flag = communist_control_level_3 }
-			}
-			add_stability = -0.015
-		}
 	}
 }
 
@@ -300,7 +314,7 @@ country_event = {
 
 	option = {
 		name = chaosx.nr1.6.a
-		add_stability = -0.005
+		custom_effect_tooltip = chaosx_tt_1_6a
 		hidden_effect = {
 			refresh_communism_spread_pressure = yes
 		}
@@ -317,11 +331,7 @@ country_event = {
 
 	option = {
 		name = chaosx.nr1.7.a
-		add_stability = constant:communism_spread_intervention.crackdown_stability_loss
-		add_popularity = {
-			ideology = communism
-			popularity = constant:communism_spread_intervention.failed_support_gain
-		}
+		custom_effect_tooltip = chaosx_tt_1_7a
 		hidden_effect = {
 			refresh_communism_spread_pressure = yes
 		}
@@ -339,9 +349,19 @@ country_event = {
 	trigger = {
 		has_communism_spread_minimum_country_size = yes
 		has_communism_rebel_war_warning_pressure = yes
+		NOT = { has_country_flag = fighting_communist_rebels }
+		NOT = { has_country_flag = communist_emergency_intervention_in_progress }
+	}
+
+	immediate = {
+		set_country_flag = communist_war_warning_reported
 	}
 
 	option = {
+		trigger = {
+			NOT = { has_country_flag = fighting_communist_rebels }
+			NOT = { has_country_flag = communist_emergency_intervention_in_progress }
+		}
 		name = chaosx.nr1.8.a
 		ai_chance = { base = 45 }
 		set_temp_variable = { black_friday_option_spend = global.black_friday_price_cp_25 }
@@ -350,14 +370,45 @@ country_event = {
 		add_stability = -0.03
 		hidden_effect = { set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.command_power } set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one } black_friday_credit_sale_purchase = yes }
 		hidden_effect = {
+			set_temp_variable = { communist_uprising_chance = 0 }
+			set_temp_variable = { communist_no_uprising_chance = 0 }
+			set_temp_variable = { communist_uprising_created = 0 }
 			prepare_communist_emergency_uprising_roll = yes
 			random_list = {
-				var:communist_uprising_chance = { create_communist_emergency_uprising = yes }
-				var:communist_no_uprising_chance = { resolve_communist_emergency_without_uprising = yes }
+				var:communist_uprising_chance = {
+					create_communist_emergency_uprising = yes
+					if = {
+						limit = { check_variable = { communist_uprising_created = 1 } }
+						if = {
+							limit = { NOT = { has_country_flag = communist_uprising_reported } }
+							set_country_flag = communist_uprising_reported
+							country_event = { id = chaosx.nr1.10 }
+						}
+					}
+					else = {
+						if = {
+							limit = { NOT = { has_country_flag = communist_crackdown_reported } }
+							set_country_flag = communist_crackdown_reported
+							country_event = { id = chaosx.nr1.9 }
+						}
+					}
+				}
+				var:communist_no_uprising_chance = {
+					resolve_communist_emergency_without_uprising = yes
+					if = {
+						limit = { NOT = { has_country_flag = communist_crackdown_reported } }
+						set_country_flag = communist_crackdown_reported
+						country_event = { id = chaosx.nr1.9 }
+					}
+				}
 			}
 		}
 	}
 	option = {
+		trigger = {
+			NOT = { has_country_flag = fighting_communist_rebels }
+			NOT = { has_country_flag = communist_emergency_intervention_in_progress }
+		}
 		name = chaosx.nr1.8.b
 		ai_chance = { base = 20 }
 		add_popularity = {
@@ -367,24 +418,39 @@ country_event = {
 		add_stability = 0.02
 		hidden_effect = {
 			every_owned_state = {
-				limit = { has_state_flag = communist_control_level_1 }
-				add_dynamic_modifier = {
-					modifier = communism_post_crackdown_scars
-					days = 60
+			limit = { has_state_flag = communist_control_level_1 }
+			set_temp_variable = { communist_report_modifier_days = constant:communism_spread_timing.moderate_crackdown_scars_days }
+			add_dynamic_modifier = {
+				modifier = communism_post_crackdown_scars
+				days = communist_report_modifier_days
 				}
 			}
 		}
 	}
 	option = {
+		trigger = {
+			NOT = { has_country_flag = fighting_communist_rebels }
+			NOT = { has_country_flag = communist_emergency_intervention_in_progress }
+		}
 		name = chaosx.nr1.8.c
 		ai_chance = { base = 35 }
 		add_command_power = 20
 		add_war_support = 0.03
+		set_temp_variable = { communist_report_modifier_days = constant:communism_spread_timing.warning_response_days }
 		add_dynamic_modifier = {
 			modifier = communism_emergency_disruption
-			days = 60
+			days = communist_report_modifier_days
 		}
 		set_country_flag = communist_loyalist_preparations
+	}
+	option = {
+		trigger = {
+			OR = {
+				has_country_flag = fighting_communist_rebels
+				has_country_flag = communist_emergency_intervention_in_progress
+			}
+		}
+		name = chaosx.nr1.8.invalid
 	}
 }
 
@@ -500,6 +566,7 @@ country_event = {
 
 	option = {
 		name = chaosx.nr1.15.a
+		set_temp_variable = { communist_report_modifier_days = constant:communism_spread_timing.worker_ritual_fear_days }
 		add_popularity = {
 			ideology = communism
 			popularity = constant:communism_spread_evolution.ritual_support_gain
@@ -509,7 +576,7 @@ country_event = {
 				set_state_flag = communist_worker_ritual_state
 				add_dynamic_modifier = {
 					modifier = communism_worker_ritual_fear
-					days = 90
+					days = communist_report_modifier_days
 				}
 				random_list = {
 					20 = {
@@ -623,6 +690,7 @@ country_event = {
 	option = {
 		name = chaosx.nr1.19.a
 		add_stability = constant:communism_spread_evolution.moderate_stability_loss
+		set_temp_variable = { communist_report_modifier_days = constant:communism_spread_timing.moderate_crackdown_scars_days }
 		hidden_effect = {
 			event_target:communist_evolution_state = {
 				if = {
@@ -633,7 +701,7 @@ country_event = {
 					limit = { has_state_flag = communist_control_level_2 }
 					add_dynamic_modifier = {
 						modifier = communism_post_crackdown_scars
-						days = 60
+						days = communist_report_modifier_days
 					}
 				}
 				else = {
@@ -664,13 +732,14 @@ country_event = {
 
 	option = {
 		name = chaosx.nr1.27.a
+		set_temp_variable = { communist_report_modifier_days = constant:communism_spread_timing.extended_worker_ritual_fear_days }
 		add_war_support = constant:communism_spread_evolution.minor_war_support_loss
 		hidden_effect = {
 			event_target:communist_evolution_state = {
 				set_state_flag = communist_worker_ritual_state
 				add_dynamic_modifier = {
 					modifier = communism_worker_ritual_fear
-					days = 120
+					days = communist_report_modifier_days
 				}
 			}
 			set_temp_variable = { chaos_change = 1 }
@@ -699,6 +768,7 @@ country_event = {
 
 	option = {
 		name = chaosx.nr1.28.a
+		set_temp_variable = { communist_report_modifier_days = constant:communism_spread_timing.worker_ritual_fear_days }
 		add_popularity = {
 			ideology = communism
 			popularity = constant:communism_spread_evolution.minor_ritual_support_gain
@@ -709,7 +779,7 @@ country_event = {
 				apply_light_communist_sabotage_damage = yes
 				add_dynamic_modifier = {
 					modifier = communism_worker_ritual_fear
-					days = 90
+					days = communist_report_modifier_days
 				}
 			}
 			refresh_communism_spread_pressure = yes
@@ -737,12 +807,13 @@ country_event = {
 	option = {
 		name = chaosx.nr1.29.a
 		add_stability = constant:communism_spread_evolution.minor_stability_loss
+		set_temp_variable = { communist_report_modifier_days = constant:communism_spread_timing.extended_worker_ritual_fear_days }
 		hidden_effect = {
 			event_target:communist_evolution_state = {
 				set_state_flag = communist_worker_ritual_state
 				add_dynamic_modifier = {
 					modifier = communism_worker_ritual_fear
-					days = 120
+					days = communist_report_modifier_days
 				}
 				random_list = {
 					15 = {
@@ -780,6 +851,7 @@ country_event = {
 
 	option = {
 		name = chaosx.nr1.30.a
+		set_temp_variable = { communist_report_modifier_days = constant:communism_spread_timing.worker_ritual_fear_days }
 		add_popularity = {
 			ideology = communism
 			popularity = constant:communism_spread_evolution.whisper_support_gain
@@ -815,6 +887,7 @@ country_event = {
 	option = {
 		name = chaosx.nr1.31.a
 		add_stability = constant:communism_spread_evolution.minor_stability_loss
+		set_temp_variable = { communist_report_modifier_days = constant:communism_spread_timing.worker_ritual_fear_days }
 		hidden_effect = {
 			event_target:communist_evolution_state = {
 				set_state_flag = communist_world_revolution_whisper_state
@@ -822,7 +895,7 @@ country_event = {
 					limit = { has_state_flag = communist_worker_ritual_state }
 					add_dynamic_modifier = {
 						modifier = communism_worker_ritual_fear
-						days = 90
+					days = communist_report_modifier_days
 					}
 				}
 			}
@@ -965,4 +1038,14 @@ country_event = {
 		name = PDXO_OK
 		clr_global_flag = communism_evolution_progression_cooldown
 	}
+}
+
+# Manual no-host acknowledgement; the preparation helper carries the failed host.
+country_event = {
+	id = chaosx.nr1.35
+	title = chaosx.nr1.35.t
+	desc = chaosx.nr1.35.d
+	picture = GFX_report_event_communist_insurgency_start
+	is_triggered_only = yes
+	option = { name = chaosx.nr1.35.a }
 }

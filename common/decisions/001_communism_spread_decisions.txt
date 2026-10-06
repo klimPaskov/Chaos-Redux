@@ -5,7 +5,8 @@ chaosx_communism_fight_category = {
 		days_remove = constant:communism_spread_timing.national_counter_agitation_days
 		days_re_enable = constant:communism_spread_timing.national_counter_agitation_reenable_days
 		custom_cost_text = black_friday_communism_national_counter_agitation_cost
-		ai_hint_pp_cost = 35
+		# Fixed hint covers the 35 PP base plus the 30 PP maximum state increment.
+		ai_hint_pp_cost = 65
 
 		custom_cost_trigger = { hidden_trigger = { black_friday_communism_national_counter_agitation_cost = yes } }
 
@@ -73,8 +74,6 @@ chaosx_communism_fight_category = {
 		days_remove = constant:communism_spread_timing.local_intervention_days
 		days_re_enable = constant:communism_spread_timing.local_intervention_reenable_days
 		custom_cost_text = black_friday_communism_local_intervention_level_1_cost
-		ai_hint_pp_cost = 50
-
 		highlight_states = {
 			highlight_states_trigger = {
 				is_controlled_by = ROOT
@@ -140,6 +139,10 @@ chaosx_communism_fight_category = {
 			}
 		}
 
+		cancel_trigger = {
+			NOT = { FROM = { is_controlled_by = ROOT } }
+		}
+
 		complete_effect = {
 			complete_communism_local_intervention = yes
 		}
@@ -156,8 +159,6 @@ chaosx_communism_fight_category = {
 		days_remove = constant:communism_spread_timing.local_intervention_days
 		days_re_enable = constant:communism_spread_timing.local_intervention_reenable_days
 		custom_cost_text = black_friday_communism_local_intervention_level_2_cost
-		ai_hint_pp_cost = 50
-
 		highlight_states = {
 			highlight_states_trigger = {
 				is_controlled_by = ROOT
@@ -220,6 +221,10 @@ chaosx_communism_fight_category = {
 			}
 		}
 
+		cancel_trigger = {
+			NOT = { FROM = { is_controlled_by = ROOT } }
+		}
+
 		complete_effect = {
 			complete_communism_local_intervention = yes
 		}
@@ -236,8 +241,6 @@ chaosx_communism_fight_category = {
 		days_remove = constant:communism_spread_timing.local_intervention_days
 		days_re_enable = constant:communism_spread_timing.local_intervention_reenable_days
 		custom_cost_text = black_friday_communism_local_intervention_level_3_cost
-		ai_hint_pp_cost = 50
-
 		highlight_states = {
 			highlight_states_trigger = {
 				is_controlled_by = ROOT
@@ -300,6 +303,10 @@ chaosx_communism_fight_category = {
 			}
 		}
 
+		cancel_trigger = {
+			NOT = { FROM = { is_controlled_by = ROOT } }
+		}
+
 		complete_effect = {
 			complete_communism_local_intervention = yes
 		}
@@ -314,18 +321,29 @@ chaosx_communism_fight_category = {
 		days_remove = constant:communism_spread_timing.emergency_intervention_days
 		days_re_enable = constant:communism_spread_timing.emergency_intervention_reenable_days
 		custom_cost_text = black_friday_communism_emergency_intervention_cost
-		ai_hint_pp_cost = 100
 
 		custom_cost_trigger = { hidden_trigger = { black_friday_communism_emergency_intervention_cost = yes } }
 
 		available = {
 			hidden_trigger = { NOT = { is_special_chaos_country = yes } }
-			can_launch_communist_emergency_intervention = yes
+			custom_trigger_tooltip = {
+				tooltip = communism_emergency_intervention_requirements_tt
+				can_launch_communist_emergency_intervention = yes
+			}
 		}
+
+		cancel_trigger = {
+			OR = {
+				has_country_flag = fighting_communist_rebels
+				NOT = { has_global_flag = communism_spread }
+			}
+		}
+		cancel_effect = { clr_country_flag = communist_emergency_intervention_in_progress }
 
 		visible = {
 			has_global_flag = communism_spread
 			hidden_trigger = { NOT = { is_special_chaos_country = yes } }
+			hidden_trigger = { NOT = { has_country_flag = fighting_communist_rebels } }
 			NOT = { has_government = communism }
 			has_idea = communism_spread_idea
 			has_communist_controlled_state = yes
@@ -371,29 +389,56 @@ chaosx_communism_fight_category = {
 				}
 				if = {
 					limit = { black_friday_owner_payment_succeeded = yes }
-					add_stability = constant:communism_spread_emergency.stability_loss
-					add_war_support = constant:communism_spread_emergency.war_support_loss
-					add_dynamic_modifier = {
-						modifier = communism_emergency_disruption
-						days = 150
-					}
+					set_country_flag = communist_emergency_intervention_in_progress
 				}
 			}
 		}
 
 		remove_effect = {
-			hidden_effect = {
+			 hidden_effect = {
+				if = {
+					limit = { has_country_flag = communist_emergency_intervention_in_progress }
+					add_stability = constant:communism_spread_emergency.stability_loss
+					add_war_support = constant:communism_spread_emergency.war_support_loss
+					set_temp_variable = { communist_emergency_disruption_days = constant:communism_spread_timing.post_emergency_disruption_days }
+					add_dynamic_modifier = {
+						modifier = communism_emergency_disruption
+						days = communist_emergency_disruption_days
+					}
+				}
+				set_temp_variable = { communist_uprising_chance = 0 }
+				set_temp_variable = { communist_no_uprising_chance = 0 }
+				set_temp_variable = { communist_uprising_created = 0 }
 				prepare_communist_emergency_uprising_roll = yes
 				random_list = {
 					var:communist_uprising_chance = {
 						create_communist_emergency_uprising = yes
-						country_event = { id = chaosx.nr1.10 }
+						if = {
+							limit = { check_variable = { communist_uprising_created = 1 } }
+							if = {
+								limit = { NOT = { has_country_flag = communist_uprising_reported } }
+								set_country_flag = communist_uprising_reported
+								country_event = { id = chaosx.nr1.10 }
+							}
+						}
+						else = {
+							if = {
+								limit = { NOT = { has_country_flag = communist_crackdown_reported } }
+								set_country_flag = communist_crackdown_reported
+								country_event = { id = chaosx.nr1.9 }
+							}
+						}
 					}
-					var:communist_no_uprising_chance = {
+				var:communist_no_uprising_chance = {
 						resolve_communist_emergency_without_uprising = yes
-						country_event = { id = chaosx.nr1.9 }
+						if = {
+							limit = { NOT = { has_country_flag = communist_crackdown_reported } }
+							set_country_flag = communist_crackdown_reported
+							country_event = { id = chaosx.nr1.9 }
+						}
 					}
 				}
+				clr_country_flag = communist_emergency_intervention_in_progress
 			}
 		}
 	}

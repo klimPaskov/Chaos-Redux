@@ -1,0 +1,23 @@
+# Generation and file lineage
+
+ImageGen default output root: C:/Users/klimp/.codex/generated_images/01a10dc7-8d62-78e0-b4f2-f91cbb50517c/. Original outputs were copied into the task workspace and left in their default location. Each first call used native transparent-background mode; each accepted source is the targeted opaque-edge edit output. Prompt text is in prompts/imagegen_prompt_log.md.
+
+| Asset | Initial native-alpha artifact ID and workspace copy | Accepted edge-fill edit artifact ID and workspace copy |
+| --- | --- | --- |
+| communist_industry_sabotage | exec-842221f3-cd82-42d3-9785-c2fefc8ba65b.png → source_png/communist_industry_sabotage_initial_native_alpha.png; exec-78e7bc77-5438-405f-b7f6-0295ce50c639.png → source_png/communist_industry_sabotage_native_alpha_unfit.png | exec-1e6b4897-436d-403a-9a22-40090f7bfd9e.png → source_png/communist_industry_sabotage_source.png |
+| communist_emergency_intervention | exec-5e7640e7-6779-48f1-b3b4-42fd05edc144.png → source_png/communist_emergency_intervention_native_alpha.png | exec-b0abae65-eac2-4d3c-adb3-d8ee3578e810.png → source_png/communist_emergency_intervention_source.png |
+| communist_control_escalates | exec-7c483a22-9960-43ba-8b91-1237cee8d96c.png → source_png/communist_control_escalates_native_alpha.png | exec-11f5d575-5df7-40fb-a222-620f31119c2b.png → source_png/communist_control_escalates_source.png |
+| communist_intervention_success | exec-1c5aa8ce-d570-41fe-9b24-5beb9289fed0.png → source_png/communist_intervention_success_native_alpha.png | exec-e76a3af9-577e-403c-be35-3dfe024944a9.png → source_png/communist_intervention_success_source.png |
+| communist_intervention_backfire | exec-8f352eda-5792-4662-a4b7-c9217510c13d.png → source_png/communist_intervention_backfire_native_alpha.png | exec-f85d2672-48f9-42f8-8687-0179c9ee4aa9.png → source_png/communist_intervention_backfire_source.png |
+| communist_emergency_success | exec-adf3a282-8172-488a-bc31-01c243613386.png → source_png/communist_emergency_success_native_alpha.png | exec-d38cd025-4061-47c2-8fde-0b1a184b9f3b.png → source_png/communist_emergency_success_source.png |
+| communist_unstable_activity | exec-ac15840d-0de7-4f00-9a9c-77ef6d865ef3.png → source_png/communist_unstable_activity_native_alpha.png | exec-fa7f2b5b-826d-4077-af15-7483c4f85711.png → source_png/communist_unstable_activity_source.png |
+| communist_dark_worker_rituals | exec-4f0c9295-789f-4d01-b91b-d96b07e58c36.png → source_png/communist_dark_worker_rituals_native_alpha.png | exec-c641bd3b-495c-4bef-b938-e6ea1a44ca0a.png → source_png/communist_dark_worker_rituals_source.png |
+| communist_world_revolution_whispers | exec-c36a679f-41b6-4305-b5b6-454205761807.png → source_png/communist_world_revolution_whispers_native_alpha.png | exec-ac626653-63b5-4783-8d8c-fc9e3200db04.png → source_png/communist_world_revolution_whispers_source.png |
+| communist_surprise_revolt | exec-88f44b1d-4aaf-4fca-8e1c-89e9ceb15032.png → source_png/communist_surprise_revolt_native_alpha.png | exec-1caaaaff-faa1-448e-84f5-19d74fb2ad27.png → source_png/communist_surprise_revolt_source.png |
+| communist_worker_ritual | exec-42778a5c-e2de-4b59-95db-658045bc4992.png → source_png/communist_worker_ritual_native_alpha.png | exec-6439560a-c1c6-42eb-8119-2c7d13a8bb8f.png → source_png/communist_worker_ritual_source.png |
+| communist_world_revolution_foreshadowing | exec-1d5ab1f9-082c-4df2-beb3-afbb8a322e1b.png → source_png/communist_world_revolution_foreshadowing_native_alpha.png | exec-b89086cf-2602-4ecc-b091-6bafe2f11be6.png → source_png/communist_world_revolution_foreshadowing_source.png |
+| communist_insurgency_defeated | exec-3df64da1-ec3e-416a-b1ef-51afe79fc221.png → source_png/communist_insurgency_defeated_native_alpha.png | exec-31f9094f-c918-4f5d-b7f1-b12012a1acb3.png → source_png/communist_insurgency_defeated_source.png |
+| communist_uprising | exec-2f2ac755-a29e-49b1-977d-79c618e5685e.png → source_png/communist_uprising_native_alpha.png | exec-d3808308-94d7-49d1-8719-1da806568f99.png → source_png/communist_uprising_source.png |
+| communist_war_warning | exec-f8d7a729-f16c-4781-a54b-af5e452119e8.png → source_png/communist_war_warning_native_alpha.png | exec-ca681208-02f8-444f-97bf-3b41d100b2fc.png → source_png/communist_war_warning_source.png |
+
+The report-card processor generated the 15 accepted previews in processed_png/. Its two alpha-response test previews were retained under notes/alpha_initial_tests/ and are not final assets. The 15 preview PNGs were converted to DDS with the repository-standard .agents/skills/chaos-redux-event-assets/tools/convert_to_dds.py command. Per-file SHA-256, dimensions, alpha values, DDS headers, and pixel-exact decoding evidence are in notes/asset_metadata_and_dds_validation.json.
