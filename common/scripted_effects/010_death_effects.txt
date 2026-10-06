@@ -280,6 +280,10 @@ death_initialize_global_state = {
 		set_variable = { global.death_world_end_footholds_recaptured = 0 }
 	}
 	if = {
+		limit = { NOT = { has_variable = global.death_world_end_unique_continents } }
+		set_variable = { global.death_world_end_unique_continents = 0 }
+	}
+	if = {
 		limit = { NOT = { has_variable = global.death_mainland_consumed_states_europe } }
 		set_variable = { global.death_mainland_consumed_states_europe = 0 }
 	}
@@ -312,14 +316,28 @@ death_initialize_global_state = {
 		limit = { NOT = { has_variable = global.death_herald_countries } }
 		set_variable = { global.death_herald_countries = 0 }
 	}
-	if = {
-		limit = { NOT = { has_global_flag = death_active } }
-		set_global_flag = death_active
-	}
+	set_variable = { global.death_custodial_sealed_exclusion_cost_display = constant:death_custodial_capacity.sealed_exclusion_cost }
+	set_variable = { global.death_custodial_memorial_stewardship_cost_display = constant:death_custodial_capacity.memorial_stewardship_cost }
+	set_variable = { global.death_custodial_transit_custodianship_cost_display = constant:death_custodial_capacity.transit_custodianship_cost }
+	set_variable = { global.death_seal_names_protection_days_display = constant:death_decision_tuning.seal_names_protection_days }
+	set_variable = { global.death_seal_names_cooldown_days_display = constant:death_decision_tuning.seal_names_cooldown_days }
+	set_variable = { global.death_seal_names_reconsumption_pressure_display = constant:death_decision_tuning.seal_names_reconsumption_pressure }
+	set_variable = { global.death_seal_names_exposure_reduction_display = constant:death_decision_tuning.seal_names_exposure_reduction }
+	multiply_variable = { global.death_seal_names_exposure_reduction_display = constant:universal_cost_framework.negative_one }
+	set_variable = { global.death_seal_names_mourning_debt_reduction_display = constant:death_decision_tuning.seal_names_mourning_debt_reduction }
+	multiply_variable = { global.death_seal_names_mourning_debt_reduction_display = constant:universal_cost_framework.negative_one }
+	set_variable = { global.death_interrogate_watch_gain_display = constant:death_decision_tuning.interrogate_empty_road_watch_gain }
+	set_variable = { global.death_interrogate_exposure_gain_display = constant:death_decision_tuning.interrogate_empty_road_exposure }
+	set_variable = { global.death_interrogate_pressure_reduction_display = constant:death_decision_tuning.quiet_quarantine_pressure_reduction }
+	multiply_variable = { global.death_interrogate_pressure_reduction_display = constant:universal_cost_framework.negative_one }
 	death_refresh_soul_power_display_variables = yes
 }
 
 death_initialize_ghost_host_tracking = {
+	if = {
+		limit = { NOT = { has_variable = global.death_focus_soul_power_bonus } }
+		set_variable = { global.death_focus_soul_power_bonus = 0 }
+	}
 	if = {
 		limit = { NOT = { has_variable = global.death_ghost_host_budget_spent } }
 		set_variable = { global.death_ghost_host_budget_spent = 0 }
@@ -373,6 +391,7 @@ death_refresh_soul_power_display_variables = {
 	divide_variable = { global.death_soul_power_population_budget = constant:death_ghosts.host_budget_population_point_k }
 	set_temp_variable = { death_soul_power_total = global.death_consumed_states }
 	add_to_temp_variable = { death_soul_power_total = global.death_soul_power_population_budget }
+	add_to_temp_variable = { death_soul_power_total = global.death_focus_soul_power_bonus }
 	if = {
 		limit = { has_global_flag = death_world_end_started }
 		set_temp_variable = { death_soul_power_foothold_budget = global.death_world_end_footholds }
@@ -419,6 +438,17 @@ death_refresh_soul_power_display_variables = {
 	set_variable = { global.death_world_end_host_soul_cost = constant:death_ghosts.world_end_host_budget_cost }
 	add_to_variable = { global.death_world_end_host_soul_cost = death_host_soul_cost_increase }
 	set_variable = { global.death_ghost_host_budget_spent = global.death_soul_power_spent }
+}
+
+death_award_no_graves_muster_reserve = {
+	if = {
+		limit = { NOT = { has_global_flag = death_no_graves_muster_reserve_awarded } }
+		death_refresh_soul_power_display_variables = yes
+		set_temp_variable = { death_focus_muster_reserve = global.death_passive_host_soul_cost }
+		add_to_variable = { global.death_focus_soul_power_bonus = death_focus_muster_reserve }
+		set_global_flag = death_no_graves_muster_reserve_awarded
+		death_refresh_soul_power_display_variables = yes
+	}
 }
 
 death_spend_soul_power = {
@@ -528,6 +558,8 @@ death_make_generic_subject_after_puppet = {
 }
 
 death_select_origin_state = {
+	clr_global_flag = death_origin_selection_failed
+	clr_global_flag = death_origin_outer_selection_used
 	random_state = {
 		limit = { death_is_valid_origin_state_preferred = yes }
 		save_event_target_as = death_selected_state
@@ -850,6 +882,7 @@ death_remove_custodial_policy_modifiers = {
 death_clear_custodial_projects_for_reconsumption = {
 	clr_state_flag = death_wasteland_surveyed
 	clr_state_flag = death_dead_zone_outpost
+	clr_state_flag = death_names_sealed_in_iron
 	clr_state_flag = death_custodial_policy_selected
 	clr_state_flag = death_custodial_sealed_exclusion
 	clr_state_flag = death_custodial_memorial_stewardship
@@ -898,6 +931,11 @@ death_refresh_custodial_policy_state = {
 }
 
 death_apply_active_wasteland_state = {
+	if = {
+		limit = { has_state_flag = death_names_sealed_in_iron }
+		add_to_variable = { global.death_spread_pressure = constant:death_decision_tuning.seal_names_reconsumption_pressure }
+		death_clamp_spread_pressure = yes
+	}
 	death_clear_custodial_projects_for_reconsumption = yes
 	set_state_flag = death_consumed_state
 	set_state_flag = death_active_wasteland
@@ -1045,6 +1083,30 @@ death_reveal_from_current_state = {
 		death_declare_war_on_neighbors = yes
 		death_emit_reveal_super_event = yes
 		set_country_flag = death_achievement_revealed_self
+	}
+	if = {
+		limit = { NOT = { has_global_flag = death_triggerable_scenario_started } }
+		death_emit_mainland_reveal_news = yes
+	}
+}
+
+death_emit_mainland_reveal_news = {
+	if = {
+		limit = {
+			has_global_flag = death_publicly_revealed
+			NOT = { has_global_flag = death_world_news_emitted }
+		}
+		set_global_flag = death_world_news_emitted
+		DTH = { news_event = { id = chaosx.nr10.4 days = 1 } }
+	}
+}
+
+death_queue_instant_outbreak_failure = {
+	if = {
+		limit = { NOT = { has_country_flag = death_instant_outbreak_failure_pending } }
+		set_country_flag = death_instant_outbreak_failure_pending
+		set_country_flag = chaosx_manual_event_failure_shown
+		country_event = { id = chaosx.nr10.5 days = 1 }
 	}
 }
 
@@ -1194,6 +1256,7 @@ death_record_second_shore_evolution = {
 		}
 		set_temp_variable = { death_evolution_stage_to_record = constant:death_event.stage_second_shore }
 		set_temp_variable = { death_evolution_tier_to_record = constant:chaos_meter_tier_id.tier_1 }
+		set_temp_variable = { death_evolution_stage_recorded = 0 }
 		death_record_evolution_stage = yes
 		if = {
 			limit = { check_variable = { death_evolution_stage_recorded > 0 } }
@@ -1223,6 +1286,7 @@ death_record_mainland_hunger_evolution = {
 		}
 		set_temp_variable = { death_evolution_stage_to_record = constant:death_event.stage_mainland_hunger }
 		set_temp_variable = { death_evolution_tier_to_record = constant:chaos_meter_tier_id.tier_2 }
+		set_temp_variable = { death_evolution_stage_recorded = 0 }
 		death_record_evolution_stage = yes
 		if = {
 			limit = { check_variable = { death_evolution_stage_recorded > 0 } }
@@ -1244,6 +1308,7 @@ death_record_mainland_hunger_evolution_from_war_bypass = {
 		}
 		set_temp_variable = { death_evolution_stage_to_record = constant:death_event.stage_mainland_hunger }
 		set_temp_variable = { death_evolution_tier_to_record = constant:chaos_meter_tier_id.tier_2 }
+		set_temp_variable = { death_evolution_stage_recorded = 0 }
 		death_record_evolution_stage = yes
 		if = {
 			limit = { check_variable = { death_evolution_stage_recorded > 0 } }
@@ -1266,6 +1331,7 @@ death_record_weak_ghost_hosts_evolution = {
 		}
 		set_temp_variable = { death_evolution_stage_to_record = constant:death_event.stage_weak_ghost_hosts }
 		set_temp_variable = { death_evolution_tier_to_record = constant:chaos_meter_tier_id.tier_3 }
+		set_temp_variable = { death_evolution_stage_recorded = 0 }
 		death_record_evolution_stage = yes
 		if = {
 			limit = { check_variable = { death_evolution_stage_recorded > 0 } }
@@ -1288,6 +1354,7 @@ death_record_hollow_ghost_hosts_evolution = {
 		}
 		set_temp_variable = { death_evolution_stage_to_record = constant:death_event.stage_hollow_ghost_hosts }
 		set_temp_variable = { death_evolution_tier_to_record = constant:chaos_meter_tier_id.tier_4 }
+		set_temp_variable = { death_evolution_stage_recorded = 0 }
 		death_record_evolution_stage = yes
 		if = {
 			limit = { check_variable = { death_evolution_stage_recorded > 0 } }
@@ -1309,6 +1376,7 @@ death_record_world_end_evolution = {
 		}
 		set_temp_variable = { death_evolution_stage_to_record = constant:death_event.stage_world_end }
 		set_temp_variable = { death_evolution_tier_to_record = constant:chaos_meter_tier_id.tier_final }
+		set_temp_variable = { death_evolution_stage_recorded = 0 }
 		death_record_evolution_stage = yes
 		if = {
 			limit = { check_variable = { death_evolution_stage_recorded > 0 } }
@@ -1405,9 +1473,6 @@ death_pay_patrol_cost = {
 	set_temp_variable = { death_sale_payment = global.black_friday_price_death_decision_cost_patrol_convoy }
 	multiply_temp_variable = { death_sale_payment = constant:universal_cost_framework.negative_one }
 	add_equipment_to_stockpile = { type = convoy_1 amount = death_sale_payment }
-	set_temp_variable = { death_sale_payment = global.black_friday_price_death_decision_cost_patrol_train }
-	multiply_temp_variable = { death_sale_payment = constant:universal_cost_framework.negative_one }
-	add_equipment_to_stockpile = { type = train_equipment_1 amount = death_sale_payment }
 	set_temp_variable = { death_sale_payment = global.black_friday_price_death_decision_cost_patrol_support }
 	multiply_temp_variable = { death_sale_payment = constant:universal_cost_framework.negative_one }
 	add_equipment_to_stockpile = { type = support_equipment_1 amount = death_sale_payment }
@@ -1528,9 +1593,6 @@ death_pay_memorial_stewardship_policy_cost = {
 death_pay_transit_custodianship_policy_cost = {
 	set_temp_variable = { death_custodial_capacity_cost = constant:death_custodial_capacity.transit_custodianship_cost }
 	death_spend_custodial_capacity = yes
-	set_temp_variable = { death_sale_payment = global.black_friday_price_death_decision_cost_custodial_transit_cp }
-	multiply_temp_variable = { death_sale_payment = constant:universal_cost_framework.negative_one }
-	add_command_power = death_sale_payment
 	set_temp_variable = { death_sale_payment = global.black_friday_price_death_decision_cost_custodial_transit_fuel }
 	multiply_temp_variable = { death_sale_payment = constant:universal_cost_framework.negative_one }
 	add_fuel = death_sale_payment
@@ -1540,18 +1602,12 @@ death_pay_transit_custodianship_policy_cost = {
 	set_temp_variable = { death_sale_payment = global.black_friday_price_death_decision_cost_custodial_transit_truck }
 	multiply_temp_variable = { death_sale_payment = constant:universal_cost_framework.negative_one }
 	add_equipment_to_stockpile = { type = motorized_equipment_1 amount = death_sale_payment }
-	set_temp_variable = { death_sale_payment = global.black_friday_price_death_decision_cost_custodial_transit_train }
-	multiply_temp_variable = { death_sale_payment = constant:universal_cost_framework.negative_one }
-	add_equipment_to_stockpile = { type = train_equipment_1 amount = death_sale_payment }
 	set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.equipment }
 	set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
 	black_friday_credit_sale_purchase = yes
 }
 
 death_pay_transit_custodianship_upkeep = {
-	set_temp_variable = { death_sale_payment = global.black_friday_price_death_decision_cost_custodial_transit_upkeep_cp }
-	multiply_temp_variable = { death_sale_payment = constant:universal_cost_framework.negative_one }
-	add_command_power = death_sale_payment
 	set_temp_variable = { death_sale_payment = global.black_friday_price_death_decision_cost_custodial_transit_upkeep_fuel }
 	multiply_temp_variable = { death_sale_payment = constant:universal_cost_framework.negative_one }
 	add_fuel = death_sale_payment
@@ -1561,9 +1617,6 @@ death_pay_transit_custodianship_upkeep = {
 	set_temp_variable = { death_sale_payment = global.black_friday_price_death_decision_cost_custodial_transit_upkeep_truck }
 	multiply_temp_variable = { death_sale_payment = constant:universal_cost_framework.negative_one }
 	add_equipment_to_stockpile = { type = motorized_equipment_1 amount = death_sale_payment }
-	set_temp_variable = { death_sale_payment = global.black_friday_price_death_decision_cost_custodial_transit_upkeep_train }
-	multiply_temp_variable = { death_sale_payment = constant:universal_cost_framework.negative_one }
-	add_equipment_to_stockpile = { type = train_equipment_1 amount = death_sale_payment }
 	set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.equipment }
 	set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
 	black_friday_credit_sale_purchase = yes
@@ -1579,12 +1632,6 @@ death_pay_last_shores_response_cost = {
 	set_temp_variable = { death_sale_payment = global.black_friday_price_death_decision_cost_last_shores_fuel }
 	multiply_temp_variable = { death_sale_payment = constant:universal_cost_framework.negative_one }
 	add_fuel = death_sale_payment
-	set_temp_variable = { death_sale_payment = global.black_friday_price_death_decision_cost_last_shores_convoy }
-	multiply_temp_variable = { death_sale_payment = constant:universal_cost_framework.negative_one }
-	add_equipment_to_stockpile = { type = convoy_1 amount = death_sale_payment }
-	set_temp_variable = { death_sale_payment = global.black_friday_price_death_decision_cost_last_shores_support }
-	multiply_temp_variable = { death_sale_payment = constant:universal_cost_framework.negative_one }
-	add_equipment_to_stockpile = { type = support_equipment_1 amount = death_sale_payment }
 	set_temp_variable = { death_sale_payment = global.black_friday_price_death_decision_cost_last_shores_truck }
 	multiply_temp_variable = { death_sale_payment = constant:universal_cost_framework.negative_one }
 	add_equipment_to_stockpile = { type = motorized_equipment_1 amount = death_sale_payment }
@@ -1639,6 +1686,9 @@ death_pay_seal_names_cost = {
 	set_temp_variable = { death_sale_payment = global.black_friday_price_death_decision_cost_seal_names_support }
 	multiply_temp_variable = { death_sale_payment = constant:universal_cost_framework.negative_one }
 	add_equipment_to_stockpile = { type = support_equipment_1 amount = death_sale_payment }
+	set_temp_variable = { death_sale_payment = global.black_friday_price_death_decision_cost_seal_names_train }
+	multiply_temp_variable = { death_sale_payment = constant:universal_cost_framework.negative_one }
+	add_equipment_to_stockpile = { type = train_equipment_1 amount = death_sale_payment }
 	set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.equipment }
 	set_temp_variable = { black_friday_purchase_non_political = constant:universal_cost_framework.one }
 	black_friday_credit_sale_purchase = yes
@@ -2174,6 +2224,7 @@ death_decision_spread_to_island_effect = {
 			can_pay_death_island_spread_souls = yes
 		}
 		set_temp_variable = { death_soul_power_to_spend = global.death_island_spread_soul_cost }
+		set_temp_variable = { death_island_spread_succeeded = 0 }
 		death_try_island_spread = yes
 		if = {
 			limit = {
@@ -2433,12 +2484,28 @@ death_decision_interrogate_empty_road_effect = {
 }
 
 death_decision_seal_names_in_iron_effect = {
-	death_pay_seal_names_cost = yes
-	death_initialize_forbidden_method_variables = yes
-	set_country_flag = death_sealed_names_in_iron
-	add_to_variable = { death_black_method_exposure = constant:death_decision_tuning.seal_names_exposure_reduction }
-	add_to_variable = { death_mourning_debt = constant:death_decision_tuning.seal_names_mourning_debt_reduction }
-	death_check_black_method_exposure = yes
+	if = {
+		limit = { FROM = { death_is_valid_seal_names_target = yes } }
+		death_pay_seal_names_cost = yes
+		death_initialize_forbidden_method_variables = yes
+		set_country_flag = death_sealed_names_in_iron
+		set_temp_variable = { death_seal_protection_days = global.death_seal_names_protection_days_display }
+		set_temp_variable = { death_seal_cooldown_days = global.death_seal_names_cooldown_days_display }
+		FROM = { death_apply_seal_names_to_current_state = yes }
+		add_to_variable = { death_black_method_exposure = constant:death_decision_tuning.seal_names_exposure_reduction }
+		add_to_variable = { death_mourning_debt = constant:death_decision_tuning.seal_names_mourning_debt_reduction }
+		death_check_black_method_exposure = yes
+	}
+}
+
+death_apply_seal_names_to_current_state = {
+	if = {
+		limit = { death_is_valid_seal_names_target = yes }
+		set_variable = { death_wither_progress = 0 }
+		set_state_flag = { flag = death_names_sealed_in_iron days = death_seal_protection_days }
+		set_state_flag = { flag = death_names_seal_cooldown days = death_seal_cooldown_days }
+		death_refresh_border_wither_from_current_state = yes
+	}
 }
 
 death_decision_burn_black_book_effect = {
@@ -2487,6 +2554,9 @@ death_decision_offer_prison_census_effect = {
 }
 
 death_decision_open_black_atlas_effect = {
+	clr_country_flag = death_black_atlas_tab_fronts
+	clr_country_flag = death_black_atlas_tab_compact
+	clr_country_flag = death_black_atlas_tab_book
 	set_country_flag = { flag = death_black_atlas_open days = @death_black_atlas_open_days }
 }
 
@@ -3215,6 +3285,10 @@ death_try_wither = {
 			add_to_variable = { death_wither_progress = constant:death_focus_reward.wither_progress_bonus }
 		}
 		if = {
+			limit = { DTH = { has_country_flag = death_focus_wasteland_roads } }
+			add_to_variable = { death_wither_progress = constant:death_focus_reward.wither_progress_bonus }
+		}
+		if = {
 			limit = { DTH = { has_country_flag = death_focus_state_without_state } }
 			add_to_variable = { death_wither_progress = constant:death_focus_reward.wither_progress_bonus }
 		}
@@ -3532,6 +3606,11 @@ death_check_defeat = {
 }
 
 death_finish_defeat = {
+	clr_global_flag = death_defeat_super_event_pending
+	if = {
+		limit = { death_should_emit_defeat_super_event = yes }
+		set_global_flag = death_defeat_super_event_pending
+	}
 	if = {
 		limit = { has_global_flag = death_publicly_revealed }
 		death_mark_public_defeat_achievements = yes
@@ -3544,6 +3623,7 @@ death_finish_defeat = {
 	clr_global_flag = death_active
 	clr_global_flag = death_world_end_started
 	clr_global_flag = world_end_death
+	clr_global_flag = death_instant_outbreak_started
 	clr_global_flag = death_living_declared_war
 	DTH = {
 		death_remove_country_runtime_package = yes
@@ -3553,9 +3633,10 @@ death_finish_defeat = {
 	}
 	death_refresh_world_threat_source = yes
 	if = {
-		limit = { death_should_emit_defeat_super_event = yes }
+		limit = { has_global_flag = death_defeat_super_event_pending }
 		death_emit_defeat_super_event = yes
 	}
+	clr_global_flag = death_defeat_super_event_pending
 	clr_global_flag = death_publicly_revealed
 	clr_global_flag = death_living_compact_formed
 	clear_global_event_target = death_living_compact_leader
@@ -3625,8 +3706,64 @@ death_mark_world_end_foothold_created = {
 	}
 	if = {
 		limit = {
+			is_on_continent = europe
+			NOT = { has_global_flag = death_world_end_continent_europe_counted }
+		}
+		set_global_flag = death_world_end_continent_europe_counted
+		add_to_variable = { global.death_world_end_unique_continents = 1 }
+	}
+	if = {
+		limit = {
+			is_on_continent = north_america
+			NOT = { has_global_flag = death_world_end_continent_north_america_counted }
+		}
+		set_global_flag = death_world_end_continent_north_america_counted
+		add_to_variable = { global.death_world_end_unique_continents = 1 }
+	}
+	if = {
+		limit = {
+			is_on_continent = south_america
+			NOT = { has_global_flag = death_world_end_continent_south_america_counted }
+		}
+		set_global_flag = death_world_end_continent_south_america_counted
+		add_to_variable = { global.death_world_end_unique_continents = 1 }
+	}
+	if = {
+		limit = {
+			is_on_continent = africa
+			NOT = { has_global_flag = death_world_end_continent_africa_counted }
+		}
+		set_global_flag = death_world_end_continent_africa_counted
+		add_to_variable = { global.death_world_end_unique_continents = 1 }
+	}
+	if = {
+		limit = {
+			is_on_continent = asia
+			NOT = { has_global_flag = death_world_end_continent_asia_counted }
+		}
+		set_global_flag = death_world_end_continent_asia_counted
+		add_to_variable = { global.death_world_end_unique_continents = 1 }
+	}
+	if = {
+		limit = {
+			is_on_continent = middle_east
+			NOT = { has_global_flag = death_world_end_continent_middle_east_counted }
+		}
+		set_global_flag = death_world_end_continent_middle_east_counted
+		add_to_variable = { global.death_world_end_unique_continents = 1 }
+	}
+	if = {
+		limit = {
+			is_on_continent = australia
+			NOT = { has_global_flag = death_world_end_continent_australia_counted }
+		}
+		set_global_flag = death_world_end_continent_australia_counted
+		add_to_variable = { global.death_world_end_unique_continents = 1 }
+	}
+	if = {
+		limit = {
 			check_variable = {
-				var = global.death_world_end_footholds
+				var = global.death_world_end_unique_continents
 				value = constant:death_world_end.six_continents_achievement_gate
 				compare = greater_than
 			}
@@ -3870,6 +4007,7 @@ death_launch_quiet_origin = {
 	death_select_origin_state = yes
 	if = {
 		limit = { has_event_target = death_selected_state }
+		set_global_flag = death_active
 		event_target:death_selected_state = {
 			death_schedule_missing_island_reports_for_current_state = yes
 			death_consume_current_state = yes
@@ -3881,43 +4019,68 @@ death_launch_quiet_origin = {
 }
 
 death_launch_instant_outbreak = {
+	clr_global_flag = death_instant_outbreak_launch_succeeded
 	death_initialize_global_state = yes
 	death_select_origin_state = yes
 	if = {
-		limit = { has_event_target = death_selected_state }
+		limit = {
+			has_event_target = death_selected_state
+			any_state = { death_is_valid_triggerable_mainland_reveal_target = yes }
+		}
+		set_global_flag = death_active
 		event_target:death_selected_state = {
 			death_consume_current_state = yes
 		}
 	}
-	if = {
-		limit = { check_variable = { triggerable_scenarios_intensity > constant:triggerable_scenario_intensity.low } }
-		death_triggerable_consume_extra_island = yes
-		death_triggerable_consume_extra_island = yes
+	else = {
+		if = {
+			limit = { NOT = { has_event_target = death_selected_state } }
+			set_global_flag = death_origin_selection_failed
+		}
+		set_country_flag = death_instant_outbreak_failure_no_candidates
+		clear_global_event_target = death_origin_state
 	}
 	if = {
-		limit = { check_variable = { triggerable_scenarios_intensity > constant:triggerable_scenario_intensity.medium } }
-		death_triggerable_consume_extra_island = yes
-		death_triggerable_consume_extra_island = yes
-	}
-	if = {
-		limit = { check_variable = { triggerable_scenarios_intensity = constant:triggerable_scenario_intensity.maximum } }
-		death_triggerable_consume_extra_island = yes
-		death_triggerable_consume_extra_island = yes
-	}
-	death_triggerable_consume_mainland_state = yes
-	if = {
-		limit = { check_variable = { triggerable_scenarios_intensity > constant:triggerable_scenario_intensity.medium } }
+		limit = { has_global_flag = death_active }
+		if = {
+			limit = { check_variable = { triggerable_scenarios_intensity > constant:triggerable_scenario_intensity.low } }
+			death_triggerable_consume_extra_island = yes
+			death_triggerable_consume_extra_island = yes
+		}
+		if = {
+			limit = { check_variable = { triggerable_scenarios_intensity > constant:triggerable_scenario_intensity.medium } }
+			death_triggerable_consume_extra_island = yes
+			death_triggerable_consume_extra_island = yes
+		}
+		if = {
+			limit = { check_variable = { triggerable_scenarios_intensity = constant:triggerable_scenario_intensity.maximum } }
+			death_triggerable_consume_extra_island = yes
+			death_triggerable_consume_extra_island = yes
+		}
 		death_triggerable_consume_mainland_state = yes
+		if = {
+			limit = { check_variable = { triggerable_scenarios_intensity > constant:triggerable_scenario_intensity.medium } }
+			death_triggerable_consume_mainland_state = yes
+		}
+		if = {
+			limit = { check_variable = { triggerable_scenarios_intensity = constant:triggerable_scenario_intensity.maximum } }
+			death_triggerable_consume_mainland_state = yes
+		}
+		DTH = { death_schedule_next_spread_pulse = yes }
+		if = {
+			limit = { has_global_flag = death_publicly_revealed }
+			set_global_flag = death_instant_outbreak_started
+			set_global_flag = death_instant_outbreak_launch_succeeded
+		}
+		else = {
+			set_country_flag = death_instant_outbreak_failure_no_candidates
+		}
 	}
-	if = {
-		limit = { check_variable = { triggerable_scenarios_intensity = constant:triggerable_scenario_intensity.maximum } }
-		death_triggerable_consume_mainland_state = yes
-	}
-	DTH = { death_schedule_next_spread_pulse = yes }
 }
 
 death_cleanup_triggerable_scenario_context = {
 	clr_global_flag = death_triggerable_scenario_started
+	clr_global_flag = death_instant_outbreak_launch_succeeded
 	clear_variable = global.death_triggerable_scenario_intensity
 	clear_variable = global.death_triggerable_scenario_type
 	if = {

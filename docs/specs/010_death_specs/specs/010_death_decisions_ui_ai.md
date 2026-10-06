@@ -73,7 +73,7 @@ Decisions:
 | `Flood the Shore Roads` | Owns target coastal/border state. | Infrastructure damage, trains, command power. | Slows Death movement/withering but hurts own logistics. | Desperate AI only. |
 | `Hold the Census Posts` | At war with Death and high consumed-population band. | Administrative burden, stability, divisions present. | Reduces ghost scaling or delays ghost spawn locally by keeping records/names. | High if fighting Death and stable enough. |
 | `Authorize Wasteland Entry Gear` | At war or bordering Death. | Support equipment, trucks, fuel, army XP. | Temporary reduction to attrition/strength loss in Death states. | High before offensives. |
-| `Establish a Dead-Zone Outpost` | Controls recaptured wasteland. | Engineers, support equipment, trucks, trains, supply connection, per-state cooldown. | Applies a recaptured outpost modifier with milder penalties and clearer logistics. No timed mission. | Only if state strategically important. |
+| `Establish a Dead-Zone Outpost` | Controls a surveyed recaptured wasteland and has an acting-country-owned division stationed there. | Army XP, support equipment, trucks, and trains. | Applies the permanent outpost modifier and grants custodial capacity once per state. No temporary construction burden or tested supply-connection requirement. | Only if state strategically important. |
 
 ### Living Containment Compact
 
@@ -103,9 +103,9 @@ Compact decisions:
 | Decision | Cost/requirement | Result |
 | --- | --- | --- |
 | `Call the Living Conference` | Major/threatened country, Death revealed, at least two eligible invitees. | Creates compact framework or strengthens existing compact. |
-| `Share Wasteland Entry Gear` | Support equipment, trucks, fuel, and compact membership. | Gives target member temporary attrition/strength-loss reduction. |
+| `Share Wasteland Entry Gear` | Command power, support equipment, trucks, fuel, and compact membership. | Gives target member temporary attrition/strength-loss reduction. |
 | `Open Military Access Corridors` | Relations/compact cohesion. | Members grant access for anti-Death operations where safe. |
-| `Joint Coastal Patrol Plan` | Convoys/fuel/naval capacity from members. | Raises watch network, increases Death's forced sea-jump costs, and can delay or block coastal jumps at high network strength. |
+| `Joint Coastal Patrol Plan` | Command power, fuel, convoys, and support equipment. | Raises watch network, increases Death's forced sea-jump costs, and can delay or block coastal jumps at high network strength. |
 | `Compact War Declaration` | Compact cohesion and threat threshold. | Pulls willing members into war against Death. Refuses unwilling members with events. |
 | `Emergency Refugee Shipping` | Convoys, stability, consumer goods burden. | Evacuates population from likely coastal or island targets, causing domestic costs. |
 
@@ -144,8 +144,8 @@ Decisions:
 | --- | --- | --- | --- |
 | `Open the Black Book` | Stability, political legitimacy, captured wasteland or high casualties. | Unlocks dark methods category. | Raises exposure and panic. |
 | `Bind the Unburied` | Consumed or recaptured wasteland, support equipment, army XP, mourning debt. | Creates weak bound-shade units that resist wasteland attrition better. | Condemnation/public horror, stability loss. |
-| `Interrogate the Empty Road` | Intelligence exposure, command power, divisions in wasteland. | Reveals next likely wither/coastal target band. | Can trigger a Zol attention event. |
-| `Seal the Names in Iron` | Trains, support equipment, recaptured wasteland or existing outpost, per-state cooldown. | Reduces local ghost spawn scaling from a recaptured state. | If the state is reconsumed, the seal breaks and debt/panic can rise. |
+| `Interrogate the Empty Road` | Black Book open, enough exposure, and no prior inquiry. | Political power and command power. | Reports currently available coastal or land-withering routes and pressure band; it does not predict a next state. It also raises Watch Network, lowers spread pressure, and increases Black Book exposure. | Can trigger a Zol attention event. |
+| `Seal Names in Iron` | Living-controlled recaptured wasteland bordering active Death land, with a separate 180-day state cooldown. | 35 political power, 150 support equipment, 3 trains. | Blocks Death's border wither in the selected state for 120 days, reduces Black Book exposure by 2 and mourning debt by 1, and raises spread pressure by 2 if Death retakes the state while the seal holds. |
 | `Burn the Book` | Only after using dark methods. | Removes branch and reduces exposure. | Loses bound units and may trigger backlash if debt high. |
 
 AI should use dark methods only when desperate, authoritarian, high chaos, or on the edge of collapse. Democracies should generally avoid it unless Death is at world-end and no normal route remains.
@@ -200,7 +200,7 @@ The path should be disabled for AI countries whose survival is essential to anot
 
 The player response is built primarily from decisions that help countries fight, enter, delay, contain, and recapture Death states. A narrow timed mission is allowed for quarantine-line maintenance because it tests whether the player actually keeps a fortified line bordering Death rather than clicking a permanent defensive buff.
 
-The real map work remains normal HOI4 play: move divisions, hold coasts, occupy Death-controlled tiles, and keep supply open. Decisions should read those facts as availability requirements instead of creating separate objectives. For example, a decision can require supplied divisions in a border state, control of a recaptured wasteland, a nearby port, or a working supply connection. If the requirement is not met, the decision should be blocked with a clear tooltip.
+The real map work remains normal HOI4 play: move divisions, hold coasts, occupy Death-controlled tiles, and keep supply open. Decision gates should use native predicates only when their behavior is documented and verified. The accepted Survey and Outpost requirements use an acting-country-owned division physically present in the selected recaptured state plus the paid field stores; neither action claims a current-supply check or supply connection. Any other supply-dependent gate needs a verified native predicate and a clear tooltip.
 
 Use decisions with cooldowns, temporary state modifiers, target-state flags, narrow mission checks, and cleanup logic. Do not add broad goal-style mission stacks or auto-completing objective cards for Death unless a later accepted spec explicitly asks for them.
 
@@ -217,8 +217,8 @@ Use decisions with cooldowns, temporary state modifiers, target-state flags, nar
 
 | Decision | Availability | Cost/requirement | Result direction | AI |
 | --- | --- | --- | --- | --- |
-| `Survey the Wasteland` | Controls a recaptured Death state. | Support equipment, trucks, army XP, supplied divisions. | Reveals the local cleanup/outpost path and applies a short attrition-reduction modifier. | Medium, higher for strategic states. |
-| `Build the Dead-Zone Outpost` | Controls a recaptured wasteland with supply connection. | Engineers, support equipment, trucks, trains, temporary construction burden. | Applies a recaptured outpost modifier. It does not restore population or industry. | Only for ports, chokepoints, capitals, or supply routes. |
+| `Survey the Wasteland` | Controls a recaptured Death state and has an acting-country-owned division in the selected state. A native supply-status gate was replaced because no documented division-supply predicate could be verified. | Army XP, support equipment, trucks. | Marks the state surveyed, applies Wasteland Entry Gear for 180 days, and grants custodial capacity once per state. | Low. |
+| `Build the Dead-Zone Outpost` | Controls a surveyed recaptured state and has an acting-country-owned division in the selected state. The original supply-connection, engineer, and temporary construction-burden requirements were replaced because no native connection predicate or construction-burden consumer could be verified. | Army XP, support equipment, trucks, trains. | Applies the permanent Dead-Zone Outpost modifier and grants custodial capacity once per state. It does not restore population or industry. | Low. |
 | `Seal the Empty Port` | Controls a recaptured coastal wasteland. | Convoys, trains, support equipment, fuel. | Reduces nearby coastal-jump chance and makes the port safer for anti-Death operations. | High if the coast is still threatened. |
 | `Issue Wasteland Entry Orders` | At war with Death or bordering Death. | Support equipment, trucks, fuel, army XP. | Temporary reduction to attrition and ticking strength loss while operating in Death states. | High before offensives. |
 
@@ -233,22 +233,26 @@ Use decisions with cooldowns, temporary state modifiers, target-state flags, nar
 
 ## Custom UI: The Black Atlas
 
-Death uses a compact scripted GUI window after reveal. The Black Atlas summarizes the current stage, consumed population, coastal risk, wither-line pressure, compact posture, and forbidden-route exposure without replacing normal map play. It is a transient decision-category dashboard: it does not include a separate close button or standalone decorative status icons, and consumed population is displayed in `K`, `M`, or `B` bands.
+Death uses a compact scripted GUI window after reveal. The Black Atlas summarizes the current stage, consumed population, coastal risk, wither-line pressure, compact posture, and forbidden-route exposure without replacing normal map play. It is a transient decision-category dashboard with a native Close button and no standalone decorative status icons; consumed population is displayed in `K`, `M`, or `B` bands.
+The parent accepted the four-tab summary under the user's G5/G6 repair authority on 6 October 2026, preserving all existing summary fields while reducing visible values to at most four.
 
 ### Entry point
 
 A decision category button: `Open the Black Atlas`.
 
-### UI tabs or panels
+### Accepted summary tabs
 
-| Panel | Player sees |
+| Tab | Player sees |
 | --- | --- |
-| `The Black Map` | Consumed-state count, Death-controlled states, continent status, current footholds. |
-| `The Census` | Consumed-population band, ghost tier, public panic band, death-log link if enabled. |
-| `Coasts` | Coastal jump risk by broad region, watch-network strength, active watch decisions. |
-| `The Line` | Neighboring wither targets, quarantine status, border decisions. |
-| `The Compact` | Compact members, cohesion, war-entry status, shared support actions. |
-| `Forbidden Methods` | Only if unlocked. Black-method exposure, bound names, oath risk. |
+| Seas | Stage, consumed-state count, consumed-population band and coastal risk. |
+| Fronts | Watch current/maximum, jump surcharge and front readiness, counting the two Watch numbers separately. |
+| Compact | Quarantine-line status, compact status/cohesion and current footholds. |
+| Book | The existing forbidden-office status, only while that context matters. |
+
+Labels and values use aligned native text controls.
+Four tab actions and Close keep the view within five navigation choices; the human-only opener hides while open and immediately reopens to Seas after closing.
+The larger six-panel map, census, coast, line, compact-members and forbidden-method concept remains an unresolved proposal, not implemented or accepted through this repair.
+The current scoped reference, source wiring and blocked production-render proof are recorded in `docs/plans/010_death_plans/subagent_handoffs/final_black_atlas_gui_audit_2026-10-06.md`.
 
 ### Information discipline
 
@@ -359,4 +363,4 @@ The Maritime Errata category displays the current evidence band and contextual a
 
 After Death's custom defeat, state-targeted survey and outpost decisions establish the required progression. Three mutually exclusive state-targeted policy decisions then spend custodial capacity inside their shared state effects: Sealed Exclusion for exposed coasts and borders, Memorial Stewardship for secure interior dead zones, and Transit Custodianship for surviving supply-node corridors. Memorial remains selectable per eligible state, but its +3% stability and up-to-2 mourning-debt national reconciliation can fire only once per country. Transit maintenance appears only when its timed maintained-corridor modifier has expired. Selection effects revalidate target and cost so map-target scope cannot grant a free policy.
 
-No new visual identifier is required. The implementation reuses the registered survey boat, quarantine line, Living Compact, dead-zone outpost, and wasteland-gear sprites; future art may split them only through the Event 010 asset workflow without renaming the gameplay decisions first.
+The Event 010 custodial-capacity cost uses `GFX_death_custodial_capacity_texticon`, registered in `interface/010_death.gfx` and displayed as `£GFX_death_custodial_capacity_texticon`. The asset lives under `gfx/interface/texticons/` and is an 18×18 transparent DDS matching the installed vanilla texticon family. Other decisions reuse the registered survey boat, quarantine line, Living Compact, dead-zone outpost, and wasteland-gear sprites; future art may split them only through the Event 010 asset workflow without renaming gameplay decisions first.

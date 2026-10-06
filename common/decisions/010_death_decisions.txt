@@ -511,9 +511,9 @@ death_country_containment_category = {
 			NOT = { has_global_flag = death_defeated }
 			NOT = { is_death_country = yes }
 			is_ai = no
+			NOT = { has_country_flag = death_black_atlas_open }
 		}
 		available = { always = yes }
-		days_re_enable = 14
 		complete_effect = {
 			custom_effect_tooltip = death_open_black_atlas_tt
 			hidden_effect = { death_decision_open_black_atlas_effect = yes }
@@ -1009,12 +1009,15 @@ death_country_containment_category = {
 		visible = {
 			death_dark_methods_visible = yes
 			death_black_book_is_open = yes
+			death_interrogate_empty_road_has_exposure = yes
 			NOT = { has_country_flag = death_interrogated_empty_road }
 		}
-		available = { hidden_trigger = { can_pay_death_interrogate_empty_road_cost = yes } }
+		available = {
+			hidden_trigger = { can_pay_death_interrogate_empty_road_cost = yes }
+			death_interrogate_empty_road_has_exposure = yes
+		}
 		custom_cost_trigger = { hidden_trigger = { can_pay_death_interrogate_empty_road_cost = yes } }
 		custom_cost_text = death_interrogate_empty_road_cost_text
-		days_re_enable = 120
 		complete_effect = {
 			custom_effect_tooltip = death_interrogate_empty_road_tt
 			hidden_effect = { death_decision_interrogate_empty_road_effect = yes }
@@ -1028,19 +1031,26 @@ death_country_containment_category = {
 
 	death_seal_names_in_iron = {
 		icon = GFX_decision_death_black_book
+		state_target = any_controlled_state
+		on_map_mode = map_and_decisions_view
 		visible = {
 			death_dark_methods_visible = yes
 			death_black_book_is_open = yes
+			death_has_seal_names_target = yes
 			check_variable = {
 				var = death_bound_names
 				value = 0
 				compare = greater_than
 			}
 		}
-		available = { hidden_trigger = { can_pay_death_seal_names_cost = yes } }
+		target_root_trigger = { death_has_seal_names_target = yes }
+		target_trigger = { FROM = { death_is_valid_seal_names_target = yes } }
+		available = {
+			hidden_trigger = { can_pay_death_seal_names_cost = yes }
+			FROM = { death_is_valid_seal_names_target = yes }
+		}
 		custom_cost_trigger = { hidden_trigger = { can_pay_death_seal_names_cost = yes } }
 		custom_cost_text = death_seal_names_cost_text
-		days_re_enable = 120
 		complete_effect = {
 			custom_effect_tooltip = death_seal_names_in_iron_tt
 			hidden_effect = { death_decision_seal_names_in_iron_effect = yes }

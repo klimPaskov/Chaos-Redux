@@ -15,10 +15,57 @@ country_event = {
 		hidden_effect = {
 			if = {
 				limit = {
-					NOT = { has_global_flag = death_active }
-					NOT = { has_global_flag = death_defeated }
+					NOT = { has_country_flag = death_instant_outbreak_failure_pending }
 				}
-				death_launch_quiet_origin = yes
+				if = {
+					limit = {
+						NOT = { has_global_flag = death_active }
+						NOT = { has_global_flag = death_defeated }
+						NOT = { has_global_flag = death_world_end_started }
+						NOT = { has_global_flag = world_end }
+					}
+					death_launch_quiet_origin = yes
+					if = {
+						limit = {
+							has_global_flag = death_origin_selection_failed
+							has_country_flag = chaosx_manual_event_requested
+						}
+						set_country_flag = death_instant_outbreak_failure_no_candidates
+						death_queue_instant_outbreak_failure = yes
+					}
+				}
+				else_if = {
+					limit = {
+						has_global_flag = death_defeated
+						has_country_flag = chaosx_manual_event_requested
+					}
+					set_country_flag = death_instant_outbreak_failure_defeated
+					death_queue_instant_outbreak_failure = yes
+				}
+				else_if = {
+					limit = {
+						has_country_flag = chaosx_manual_event_requested
+						OR = {
+							has_global_flag = death_world_end_started
+							has_global_flag = world_end
+						}
+					}
+					set_country_flag = death_instant_outbreak_failure_world_end
+					death_queue_instant_outbreak_failure = yes
+				}
+				else = {
+					if = {
+						limit = { has_country_flag = chaosx_manual_event_requested }
+						set_country_flag = death_instant_outbreak_failure_active
+						death_queue_instant_outbreak_failure = yes
+					}
+				}
+			}
+			else = {
+				if = {
+					limit = { has_country_flag = chaosx_manual_event_requested }
+					set_country_flag = chaosx_manual_event_failure_shown
+				}
 			}
 		}
 	}
@@ -58,6 +105,40 @@ country_event = {
 			set_country_flag = death_received_second_missing_island_report
 			add_to_variable = { global.death_missing_reports_seen = 1 }
 			death_record_second_missing_report_evidence = yes
+		}
+	}
+}
+
+news_event = {
+	id = chaosx.nr10.4
+	title = chaosx.nr10.4.t
+	desc = chaosx.nr10.4.d
+	picture = GFX_news_event_death_mainland_reveal
+	major = yes
+
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr10.4.a
+	}
+}
+
+country_event = {
+	id = chaosx.nr10.5
+	title = chaosx.nr10.5.t
+	desc = chaosx.nr10.5.d
+	picture = GFX_report_event_death_lighthouse
+
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr10.5.a
+		hidden_effect = {
+			clr_country_flag = death_instant_outbreak_failure_pending
+			clr_country_flag = death_instant_outbreak_failure_world_end
+			clr_country_flag = death_instant_outbreak_failure_defeated
+			clr_country_flag = death_instant_outbreak_failure_active
+			clr_country_flag = death_instant_outbreak_failure_no_candidates
 		}
 	}
 }

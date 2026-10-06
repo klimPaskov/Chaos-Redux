@@ -2747,38 +2747,94 @@ death_triggerable_spawn_stronger_hosts = {
 }
 
 trigger_death_scenario = {
-	set_global_flag = death_triggerable_scenario_started
-	set_country_flag = death_triggerable_scenario_launcher
-	set_variable = { global.death_triggerable_scenario_intensity = triggerable_scenarios_intensity }
-	set_variable = { triggerable_scenarios_death_type = constant:death_scenario_type.instant_outbreak }
-	set_variable = { global.death_triggerable_scenario_type = constant:death_scenario_type.instant_outbreak }
 	if = {
-		limit = { check_variable = { triggerable_scenarios_intensity = constant:triggerable_scenario_intensity.maximum } }
-		set_global_flag = death_maximum_manual_scenario_used
-	}
-	if = {
-		limit = { check_variable = { triggerable_scenarios_intensity = constant:triggerable_scenario_intensity.low } }
-		death_launch_instant_outbreak = yes
-		death_triggerable_spawn_passive_hosts = yes
-	}
-	else_if = {
-		limit = { check_variable = { triggerable_scenarios_intensity = constant:triggerable_scenario_intensity.medium } }
-		death_launch_instant_outbreak = yes
-		death_triggerable_spawn_passive_hosts = yes
-		death_triggerable_spawn_passive_hosts = yes
-	}
-	else_if = {
-		limit = { check_variable = { triggerable_scenarios_intensity = constant:triggerable_scenario_intensity.high } }
-		death_launch_instant_outbreak = yes
-		death_triggerable_spawn_stronger_hosts = yes
+		limit = { NOT = { has_country_flag = death_instant_outbreak_failure_pending } }
+		if = {
+			limit = { has_global_flag = death_defeated }
+			set_country_flag = death_instant_outbreak_failure_defeated
+			death_queue_instant_outbreak_failure = yes
+		}
+		else_if = {
+			limit = {
+				OR = {
+					has_global_flag = death_world_end_started
+					has_global_flag = world_end
+				}
+			}
+			set_country_flag = death_instant_outbreak_failure_world_end
+			death_queue_instant_outbreak_failure = yes
+		}
+		else_if = {
+			limit = { has_global_flag = death_active }
+			set_country_flag = death_instant_outbreak_failure_active
+			death_queue_instant_outbreak_failure = yes
+		}
+		else = {
+			set_global_flag = death_triggerable_scenario_started
+			set_country_flag = death_triggerable_scenario_launcher
+			set_variable = { global.death_triggerable_scenario_intensity = triggerable_scenarios_intensity }
+			set_variable = { triggerable_scenarios_death_type = constant:death_scenario_type.instant_outbreak }
+			set_variable = { global.death_triggerable_scenario_type = constant:death_scenario_type.instant_outbreak }
+			if = {
+				limit = { check_variable = { triggerable_scenarios_intensity = constant:triggerable_scenario_intensity.low } }
+				death_launch_instant_outbreak = yes
+				if = {
+					limit = { has_global_flag = death_instant_outbreak_launch_succeeded }
+					death_triggerable_spawn_passive_hosts = yes
+				}
+			}
+			else_if = {
+				limit = { check_variable = { triggerable_scenarios_intensity = constant:triggerable_scenario_intensity.medium } }
+				death_launch_instant_outbreak = yes
+				if = {
+					limit = { has_global_flag = death_instant_outbreak_launch_succeeded }
+					death_triggerable_spawn_passive_hosts = yes
+					death_triggerable_spawn_passive_hosts = yes
+				}
+			}
+			else_if = {
+				limit = { check_variable = { triggerable_scenarios_intensity = constant:triggerable_scenario_intensity.high } }
+				death_launch_instant_outbreak = yes
+				if = {
+					limit = { has_global_flag = death_instant_outbreak_launch_succeeded }
+					death_triggerable_spawn_stronger_hosts = yes
+				}
+			}
+			else = {
+				death_launch_instant_outbreak = yes
+				if = {
+					limit = { has_global_flag = death_instant_outbreak_launch_succeeded }
+					death_triggerable_spawn_stronger_hosts = yes
+					death_triggerable_spawn_stronger_hosts = yes
+				}
+			}
+			if = {
+				limit = {
+					has_global_flag = death_instant_outbreak_launch_succeeded
+				}
+				if = {
+					limit = { check_variable = { triggerable_scenarios_intensity = constant:triggerable_scenario_intensity.maximum } }
+					set_global_flag = death_maximum_manual_scenario_used
+				}
+				DTH = { death_emit_mainland_reveal_news = yes }
+				country_event = { id = chaosx.triggerable_scenarios.6 days = 1 }
+			}
+			else = {
+				if = {
+					limit = { NOT = { has_country_flag = death_instant_outbreak_failure_pending } }
+					set_country_flag = death_instant_outbreak_failure_no_candidates
+					death_queue_instant_outbreak_failure = yes
+				}
+				else = {
+					set_country_flag = chaosx_manual_event_failure_shown
+				}
+			}
+			death_cleanup_triggerable_scenario_context = yes
+		}
 	}
 	else = {
-		death_launch_instant_outbreak = yes
-		death_triggerable_spawn_stronger_hosts = yes
-		death_triggerable_spawn_stronger_hosts = yes
+		set_country_flag = chaosx_manual_event_failure_shown
 	}
-	country_event = { id = chaosx.triggerable_scenarios.6 days = 1 }
-	death_cleanup_triggerable_scenario_context = yes
 }
 
 trigger_mengele_clone_army_scenario = {

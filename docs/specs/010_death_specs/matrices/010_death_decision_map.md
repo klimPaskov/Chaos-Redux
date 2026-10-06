@@ -15,5 +15,5 @@
 | Reveal+ | Dark Methods | Bind unburied | Necromancy users | Army XP, support equipment, mourning debt | Bound-shade units | Caps and flags prevent farming. |
 | Reveal+ | Black Oath | Whisper to Zol | Desperate eligible countries | Relations/exposure | Opens oath chain | Hide if compact locked or Death gone. |
 | Reveal+ | Black Oath | Take Black Oath | Player/extreme AI | Stability, diplomacy, compact break | Herald route | Name debt cleanup or betrayal path. |
-| World-end | Emergency | Last Shores response | All threatened/major/coastal countries | High equipment, manpower, convoys, stability | Emergency war, foothold operations | Clear when Death defeated or world consumed. |
-| Aftermath | Reconstruction | Dead-zone outpost | Recaptured wasteland controller | Engineers/support/trucks/trains/time | Limited strategic reuse | Cancel if reconsumed. No population restore. |
+| World-end | Emergency | Last Shores response | All threatened/major/coastal countries | Command power, Army XP, fuel, and trucks | Emergency containment and mobile reserves | Clear when Death defeated or world consumed. |
+| Aftermath | Reconstruction | Dead-zone outpost | Recaptured wasteland controller with its own division in the surveyed state | Army XP, support equipment, trucks, trains | Limited strategic reuse | Cancel if reconsumed. No population restore. |
