@@ -1,0 +1,199 @@
+{
+  "schema": 1,
+  "scope": "bounded moan03 recorded-source crop and loop repair attempts",
+  "attempt_limit": 3,
+  "attempts_used": 3,
+  "runtime_or_definition_modified": false,
+  "source": {
+    "path": "docs/assets/002_zombie_outbreak/models_3d/zombies/audio_sources/source_downloads/idle_moan/extracted/zombienoise3.ogg",
+    "sha256": "968B48B14A83A17B387E7373C83D3B9553BF21D2B0E03A67909EAD4FC21F38B1",
+    "creator": "ianzazz",
+    "title": "Zombie noises and moans",
+    "license": "CC0",
+    "source_url": "https://opengameart.org/content/zombie-noises-and-moans",
+    "bound_runtime": {
+      "path": "sound/002_zombie_outbreak/zombies/zombie_idle_moan_03.wav",
+      "sha256": "4D97968CF6BE5FFB1DCC3519A697D09402A126B0DE2C0F95CAC062F89E025C6A",
+      "duration_seconds": 0.670794,
+      "correlation_to_source_decode": 0.999995753,
+      "fitted_gain_db": -3.011,
+      "decoded_samples": 29582
+    }
+  },
+  "source_envelope_review": {
+    "source_inspection": "evidence/moan03_source_inspect.json",
+    "ffmpeg_decode": "ffmpeg -hide_banner -nostats -v error -i <zombienoise3.ogg> -map 0:a:0 -ar 44100 -ac 2 -c:a pcm_f32le -f f32le pipe:1",
+    "analysis_window_ms": 10,
+    "measured_lead_silence_ms": 44.898,
+    "voiced_rise_seconds": [
+      0.045,
+      0.18
+    ],
+    "main_voiced_peak_seconds": [
+      0.19,
+      0.3
+    ],
+    "decay_reaches_low_energy_by_seconds": 0.37,
+    "quiet_tail_seconds": [
+      0.4,
+      0.67
+    ],
+    "crop_reasoning": "The full recording's long quiet tail created the failed loop seam. Candidate end cuts stop around the measured decay; crop C moves its start to 40 ms, just before the measured voice onset, to compare similar voiced portions at both loop edges."
+  },
+  "crop_attempts": [
+    {
+      "id": "crop_a_full_onset_380ms",
+      "source_interval_seconds": [
+        0.0,
+        0.38
+      ],
+      "crop_path": "docs/assets/002_zombie_outbreak/models_3d/wp3_audio_repair_20261006/candidates/moan03_crops_v1/moan03_crop_a_full_onset_to_380ms.wav",
+      "crop_sha256": "72AD87F5FB337DC66FFA008F47E36D12AC415E485E9365E5C828D6B8602E11AB",
+      "crop_command": "ffmpeg -hide_banner -nostats -v error -y -i <zombienoise3.ogg> -map 0:a:0 -vn -af atrim=start=0.000:end=0.380,asetpts=PTS-STARTPTS -ar 44100 -ac 1 -c:a pcm_f32le <crop.wav>",
+      "master_allowlist": "evidence/moan03_crop_a_master_allowlist_v1.json",
+      "master_report": "evidence/moan03_crop_a_master_v1.json",
+      "result": "unresolved",
+      "blockers": [
+        "recorded_loop_crossfade_could_not_meet_3db_gate"
+      ],
+      "pre_crossfade_inner_edge_delta_db": 6.552358,
+      "crossfade_attempts": [
+        {
+          "overlap_ms": 60.0,
+          "result": "no_edge_metrics; output segment is too short for the unchanged 100 ms loop comparison gate"
+        }
+      ],
+      "staged_master_output": false
+    },
+    {
+      "id": "crop_b_full_onset_400ms",
+      "source_interval_seconds": [
+        0.0,
+        0.4
+      ],
+      "crop_path": "docs/assets/002_zombie_outbreak/models_3d/wp3_audio_repair_20261006/candidates/moan03_crops_v1/moan03_crop_b_full_onset_to_400ms.wav",
+      "crop_sha256": "8E08A72DEEDE6F7FD8CF84DADC3180FC52F084F604BCEFE9797AFD53127C1360",
+      "crop_command": "ffmpeg -hide_banner -nostats -v error -y -i <zombienoise3.ogg> -map 0:a:0 -vn -af atrim=start=0.000:end=0.400,asetpts=PTS-STARTPTS -ar 44100 -ac 1 -c:a pcm_f32le <crop.wav>",
+      "master_allowlist": "evidence/moan03_crop_b_master_allowlist_v1.json",
+      "master_report": "evidence/moan03_crop_b_master_v1.json",
+      "result": "unresolved",
+      "blockers": [
+        "recorded_loop_crossfade_could_not_meet_3db_gate"
+      ],
+      "pre_crossfade_inner_edge_delta_db": 4.305064,
+      "crossfade_attempts": [
+        {
+          "overlap_ms": 80.0,
+          "result": "no edge metrics; output segment is too short for the unchanged 100 ms loop comparison gate"
+        }
+      ],
+      "staged_master_output": false
+    },
+    {
+      "id": "crop_c_voice_start_420ms",
+      "source_interval_seconds": [
+        0.04,
+        0.42
+      ],
+      "crop_path": "docs/assets/002_zombie_outbreak/models_3d/wp3_audio_repair_20261006/candidates/moan03_crops_v1/moan03_crop_c_start40_end420ms.wav",
+      "crop_sha256": "85B7B9F4A1476229E43A82D920E8D779DA340DAE18D2FEFE5506B5DA8F57AB4A",
+      "crop_command": "ffmpeg -hide_banner -nostats -v error -y -i <zombienoise3.ogg> -map 0:a:0 -vn -af atrim=start=0.040:end=0.420,asetpts=PTS-STARTPTS -ar 44100 -ac 1 -c:a pcm_f32le <crop.wav>",
+      "master_allowlist": "evidence/moan03_crop_c_master_allowlist_v1.json",
+      "master_report": "evidence/moan03_crop_c_master_v1.json",
+      "result": "unresolved",
+      "blockers": [
+        "loop_loudness_minus20_plusminus1"
+      ],
+      "lead_silence_ms": 0.0,
+      "loop_inner_edge_delta_db": 0.685517,
+      "integrated_lufs_reported": -70.0,
+      "duration_seconds": 0.38,
+      "ebur128_gated_because_clip_is_under_0_4_seconds": true,
+      "staged_master_output": false
+    }
+  ],
+  "final_result": {
+    "passing_master_loop_candidate": true,
+    "candidate_status": "candidate_only_pending_listening_and_sample_peak_target_review",
+    "sample_peak_target_minus3_dbfs_met_exactly": false,
+    "installed_sha256_remains": "4D97968CF6BE5FFB1DCC3519A697D09402A126B0DE2C0F95CAC062F89E025C6A",
+    "no_gate_or_license_waiver": true,
+    "attempt_limit_used": {
+      "crop_attempts": 3,
+      "recorded_repeat_joins": 1,
+      "master_and_inspection_attempts": 1
+    },
+    "parent_listening_review": "Required before any runtime promotion; candidate repeats the same source twice and may have an audible stutter."
+  },
+  "repeat_join_candidate": {
+    "id": "crop_c_two_repetitions_40ms_qsin",
+    "status": "staged_parent_listening_review_only",
+    "source_crop_path": "docs/assets/002_zombie_outbreak/models_3d/wp3_audio_repair_20261006/candidates/moan03_crops_v1/moan03_crop_c_start40_end420ms.wav",
+    "source_crop_sha256": "85B7B9F4A1476229E43A82D920E8D779DA340DAE18D2FEFE5506B5DA8F57AB4A",
+    "source_crop_interval_seconds": [
+      0.04,
+      0.42
+    ],
+    "repetitions_of_same_crop": 2,
+    "independent_take_count": 1,
+    "join": {
+      "method": "ffmpeg acrossfade of recorded tail into the next copy's recorded head with equal-power qsin curves; overlapping join, no padding",
+      "duration_seconds": 0.04,
+      "overlap_frames": 1764,
+      "join_offset_seconds_in_output": [
+        0.34,
+        0.38
+      ],
+      "command": "ffmpeg -hide_banner -nostats -v error -y -i <crop_c.wav> -i <crop_c.wav> -filter_complex [0:a:0][1:a:0]acrossfade=d=0.040:c1=qsin:c2=qsin:o=1,asetpts=PTS-STARTPTS[out] -map [out] -ar 44100 -ac 1 -c:a pcm_f32le <joined.wav>",
+      "before_join_tail_40ms": {
+        "rms_dbfs": -58.109368,
+        "peak_dbfs": -46.490062,
+        "max_adjacent_sample_delta": 0.003838882
+      },
+      "next_copy_head_40ms": {
+        "rms_dbfs": -49.452817,
+        "peak_dbfs": -38.636664,
+        "max_adjacent_sample_delta": 0.007569648
+      },
+      "source_edge_level_difference_db": 8.656552,
+      "crossfade_output_pre_master": {
+        "path": "docs/assets/002_zombie_outbreak/models_3d/wp3_audio_repair_20261006/candidates/moan03_repeated_source_v1/moan03_crop_c_two_recorded_repetitions_40ms_qsin.wav",
+        "sha256": "C858C3215C62DAD80545B84440D2E03425CC2927AABAA7012CBD344B66090243",
+        "duration_seconds": 0.72,
+        "format": "pcm_f32le, 44100 Hz, mono",
+        "pre_join_20ms_rms_dbfs": -53.592,
+        "crossfade_40ms_rms_dbfs": -50.956,
+        "post_join_20ms_rms_dbfs": -47.95,
+        "seam_start_sample_discontinuity_linear": 0.000858719,
+        "seam_end_sample_discontinuity_linear": 0.001478297,
+        "max_adjacent_sample_delta_in_join_linear": 0.006891718,
+        "direct_flat_top_detected": false
+      }
+    },
+    "master_attempt": {
+      "allowlist": "evidence/moan03_crop_c_repeat_join_master_allowlist_v1.json",
+      "batch_report": "evidence/moan03_crop_c_repeat_join_master_v1.json",
+      "inspect_report": "evidence/moan03_crop_c_repeat_join_candidate_inspect_v1.json",
+      "result": "passes_role_checks",
+      "candidate_path": "docs/assets/002_zombie_outbreak/models_3d/wp3_audio_repair_20261006/candidates/moan03_loop_candidates/moan03_crop_c_two_repetitions_40ms_loop_v1.wav",
+      "candidate_sha256": "51D9251CCB7E65BB620D93EB8536400E458CD7656B9FF3C46DB42518C4D3AC78",
+      "measurements": {
+        "format": "pcm_s16le, 44100 Hz, mono",
+        "duration_seconds": 0.72,
+        "integrated_lufs": -19.9,
+        "sample_peak_dbfs": -3.711689,
+        "difference_from_minus3_dbfs_target_db": -0.711689,
+        "true_peak_dbtp": -3.7,
+        "sample_rms_dbfs": -21.170654,
+        "lead_silence_ms": 0.0,
+        "loop_inner_edge_delta_db": 0.682352,
+        "dc_offset_linear": -6.802e-06,
+        "centroid_median_hz": 4247.34,
+        "direct_flat_top_detected": false
+      },
+      "technical_status": "Shared loop gates pass (-20 LUFS +/-1, true peak <= -1 dBTP, lead <= 20 ms, edge <= 3 dB, PCM16/44.1 kHz/mono); sample peak is 0.712 dB below the WP3 -3 dBFS peak target and has not been corrected by a second attempt."
+    },
+    "listening_limit": "Two identical recorded phrases occur in one 0.72 s loop. No auditory review was available; the audible repetition/stutter and player-facing fit remain parent/orchestrator review questions.",
+    "runtime_installation": "not installed; existing runtime preimage is retained"
+  }
+}

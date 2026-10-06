@@ -23,7 +23,9 @@ Motion peaks and joint heights are synchronization evidence, not proof of a defo
 Moan 01 has an exact source binding to ianzazz's archived CC0 `zombienoise1.ogg` and a passing installed derivative.
 Its measured installed-byte loudness changes from -40.5 to -20.2 LUFS; peak changes from -20.848 dBFS to -1.011 dBFS, true peak is -1.0 dBTP, duration changes from 2.116848 to 1.616848 seconds, and inner loop-edge mismatch improves from 16.234 to 2.769 dB.
 The previous runtime bytes remain available as the hash-bound local Git LFS object, inspected in `wp3_evidence/moan01_before_metrics.json`; the installation receipt and after inspection are linked from `wp3_audio_repair_handoff.md`.
-Moan 03's exact CC0 source binding is also resolved, but its loop candidate fails the unchanged recorded-edge gate and is not installed.
+Moan 03's exact CC0 source binding is resolved; three cropped candidates failed their edge or short-clip loudness gates.
+One source-only two-copy, 40 ms crossfade candidate now passes the shared loop gate at -19.9 LUFS, -3.7 dBTP and 0.682 dB edge mismatch, but its peak is -3.712 dBFS and its repeated phrase has no listening approval.
+It remains staged and the installed moan 03 is unchanged; `moan03_crop_repair_receipt_20261006.json` preserves the exact crops, joined source, internal seam measurements and rejected attempts.
 Moan 02 retains its accepted global-mastering bytes.
 Audio mastering proves file delivery; audible role and live playback acceptance remain separate.
 The resumed peak-limiter commit `6e393c848` replaces the accepted moan 01 master with a source-identical-duration derivative at -20.5 LUFS and -3.0 dBFS sample peak / -3.0 dBTP.
