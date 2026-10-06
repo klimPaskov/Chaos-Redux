@@ -1,5 +1,9 @@
 # WP1 Africa Strange Forces (012) - Delivery Report
 
+The shared-delivery sections below are the baseline before the WP1 repair pass.
+The section `WP1 entity repair pass - 6 October 2026` records the subsequent owned changes and supersedes baseline statements about unchanged entity definitions and plague carrier scale.
+The complete WP1 package remains incomplete.
+
 Disposition: `implemented` for this documentation handoff; package mesh/action reconstruction, visual acceptance, final entity wiring, and audio install remain open where the measurements below show gaps. The authorized package scope comes from the user-authored unit-fix plan, SHA-256 `1939b400cba160c6d4903e37952e8e55efdb1bfeacf0b4ab061e89c8792c79b2`.
 
 Package models: gorilla_heavy_infantry, pan_sappers, stone_cohorts, riverborn, forest_giants, oracle_recon, plague_carriers. The full per-model map, DDS, mesh, action, topology, reimport, and entity-lint evidence is in `docs/plans/unit_fix_2026-10/per_model_delivery_metrics.json`.
@@ -76,5 +80,106 @@ The parent owns package-manifest/handoff integration and final acceptance report
 - `docs/plans/unit_fix_2026-10/pipeline_evidence/runtime_reimport.json` - SHA-256 `8183c5446cef0085b9baa677e5cccde701214d603ada6e52c2c2e3efda19cee8`
 - `docs/plans/unit_fix_2026-10/pipeline_evidence/texture_delivery/manifest.json` - SHA-256 `8e7de281210db53460add9a647a10799e76c7eb90bfd62b428c24e434b4333ff`
 - `docs/plans/unit_fix_2026-10/audio_evidence/recovery_batch.json` - SHA-256 `148ffb5a39ce96a1ee6cd532b72dc5426ff5d3abbeccb4afe5a7eba734e533d8`.
+
+## WP1 entity repair pass - 6 October 2026
+
+Acceptance basis: the user's explicit WP1 assignment, the plan's common rules, every WP1 ticket, and section 3.
+The required `unit_s3_report.md` is absent.
+The existing `pipeline_report.md` and the geometry/animation, texture, and audio handoffs supply the completed shared-tool work and its limits.
+
+### Implemented entity repairs
+
+Plague carrier scale is `0.75` in its entity and job; its current manifest matches that scale.
+The locked parser reads source Y-height `8.2684822083` from the installed mesh, giving effective height `6.2013616562` instead of `8.2684822083`.
+Rest minimum Y remains zero; this is rest-bounds evidence and does not accept posed hooves, cargo, withers ratio, or animation.
+The attack state no longer plays `chaosx_plague_carriers_deploy_sfx`; the deploy state retains the cue.
+A suitable recorded donkey bray is still required.
+
+Gorilla heavy infantry, pan sappers, riverborn, and oracle recon death states no longer persist their finite blood bursts.
+The installed blood emitter has duration `0.1` seconds and particle life `0.5-1.0` seconds.
+The section 3 event lint reads all 63 WP1 states and reduces `keep_particle_on_impulse_emitter` from four findings to zero.
+No action timing was retuned from a guessed contact or a strongest-motion proxy.
+
+Owned entity paths: `gfx/entities/chaosx_gorilla_heavy_infantry.asset`, `chaosx_pan_sappers.asset`, `chaosx_riverborn.asset`, `chaosx_oracle_recon.asset`, and `chaosx_plague_carriers.asset`.
+Plague metadata paths: `docs/assets/012_africa/models_3d/plague_carriers/job.yaml` and `manifest.md`.
+Design decisions: `docs/plans/012_africa_plans/agent_decisions_2026-10-05.md`.
+Reference evidence: `wp1_evidence/reference_routes.json` and `local_references.json`, retaining source paths, line spans, and SHA revisions.
+
+### Installed-byte baseline and remaining acceptance
+
+The existing section 3 parsers reread seven meshes, 56 registered actions, and 21 active DDS maps.
+Every DDS map is 512 square, BC1/BC3, with ten mips; material-class recipes, atlas repairs, and normal detail remain separate requirements.
+Every mesh fails the manifold gate; 51 action roles fail the delivery scenario and five pass its numerical checks.
+Even a numerical action pass does not prove semantic performance, sole contacts, or live appearance.
+The compact hash-bound measurements are `wp1_evidence/measured_baseline_compact.json`.
+No mesh, action, or texture replacement was installed by this entity pass, so their before/after measurements are equal.
+
+| Model | Boundary / non-manifold edges at 0.002 units | Attack seam degrees / units | Support-attack seam degrees / units | Ticket disposition |
+|---|---:|---:|---:|---|
+| gorilla_heavy_infantry | 150 / 109 | 108.40 / 0.2388 | 17.57 / 0.1925 | Support pose, attack easing/recovery, idle breathing/shift/tap, per-class specular and manifold repair remain required. Finite death particle implemented. |
+| pan_sappers | 125 / 122 | 74.11 / 0.0259 | 111.89 / 1.3994 | Flask release and shovel/cleaver slots, sub-three-second throw, idle motion, support return, two-plant move, thigh/underarm rebake and manifold repair remain required. Finite death particle implemented. |
+| stone_cohorts | 88 / 74 | 19.32 / 0.1134 | 16.79 / 0.0212 | Stone/iron specular masks, shaft contact/fingers, easing/end-height repair, two-plant move, halberd painting and manifold repair remain required. |
+| riverborn | 159 / 175 | 16.28 / 0.0450 | 88.05 / 0.0865 | Front-facing spear/shield performance, chest clearance, easing/support return, large-loop/shell repair and class-aware atlas remain required. Finite death particle implemented. |
+| forest_giants | 176 / 213 | 17.14 / 0.0003 | 25.04 / 0.1656 | Wind-up/hold/follow-through, enlarged axe and thick haft, readable log/islands, bark specular and slit/manifold repair remain required. Capture in-point remains orchestrator-owned. |
+| oracle_recon | 322 / 285 | 74.30 / 0.0709 | 45.79 / 0.0411 | Move is still 715 frames, not 30-36. Two-plant recut, idle neck look-around, action returns, staff-tip locator/light, staff painting, skin/bone specular and manifold repair remain required. Finite death particle implemented. |
+| plague_carriers | 0 / 8 | 1.03 / 0.0000 | 0.77 / 0.0000 | Scale and wrong attack cue repaired. Chest/pelvis stamps, neck/ear/idle performance, source-backed normal rebake, smooth joint weights and rigid cargo review remain required. |
+
+Plague carrier exported stream vertices have `75.048%` single-influence weights, including UV splits and rigid cargo, versus the ticket's less-than-40% target.
+That read-only diagnostic is `wp1_evidence/plague_weight_distribution.json`; deliberate neck/leg deformation review remains required.
+Scale measurements are `wp1_evidence/plague_scale_rest_bounds.json`.
+
+### Authoring and source blockers
+
+The locked Blender 5.2.2 / adapter 1.11.0 / io_pdx_mesh 0.91.0 export route is healthy.
+The Blender Lab live authoring bridge is unreachable at `localhost:9877`, both by TCP probe and direct tool read.
+The user prohibits opening desktop windows; no window was opened to repair that capability.
+The pipeline requires bones, weights, and keys to be authored in that live session, so those repairs cannot be completed through repository-generated motion or weights.
+Safe background export capability is not a substitute for live authoring.
+Source-backed class masks, prop rebakes, and normal-detail repairs also remain unaccepted.
+No paid Meshy task or Internet audio download was started.
+
+The source lookup query for `plague_carriers_entity` did not return after approximately 100 seconds; the waiting orchestration cell was terminated and local definitions were read.
+The narrow installed-documentation search returned no `soundeffect` chapter, so exact vanilla sound/entity/particle definitions were inspected alongside the offline wiki.
+These are recorded reference-route limits, not engine acceptance.
+
+### Simplifications, omissions, and blockers
+
+The complete WP1 assignment is incomplete.
+Every unimplemented authored/model/material/audio requirement stays open as listed above and in the audio needs and worker handoffs.
+No static pose, alias, generated rig/weight/key, painted geometry substitute, or fabricated audio take was delivered as a requested repair.
+No model re-export is claimed for this entity pass; existing native import receipts establish their earlier geometry imports only.
+User/orchestrator runtime evidence and locked-crop re-filming are still required for full acceptance.
+
+### Exact orchestrator checks
+
+Use the showcase batch-1 setup save, camera 1920x1080, UI scale 1, and the existing divisions from `C:/Users/klimp/Videos/chaos_redux_trailer/records/showcase/plan.json`.
+Keep the crop locked to each listed friendly province; opposing provinces below identify the existing combat setup.
+
+| Model | Friendly / opposing province |
+|---|---|
+| gorilla_heavy_infantry | 1954 / 2037 |
+| pan_sappers | 2019 / 12811 |
+| stone_cohorts | 3834 / 2069 |
+| riverborn | 5038 / 2104 |
+| forest_giants | 5044 / 5071 |
+| oracle_recon | 5061 / 2060 |
+| plague_carriers | 7920 / 8012 |
+
+1. Inspect plague carrier idle and move beside gorilla/vanilla infantry at the same zoom.
+Expected scalar result: the entire donkey and cargo are 75% of their previous dimensions; no proportional distortion is introduced.
+Measure hoof contact and basket/pole clearance through move and idle; do not accept rest height alone.
+2. Run two complete plague attack cycles, then deployment/support-attack.
+Expected attack result: no containment deployment hiss at the head drop; existing hoof impacts remain.
+Expected deployment result: its existing deployment cue still plays.
+The missing bray and remaining articulation/weight defects are open findings.
+3. Trigger death for gorilla, pan, riverborn, and oracle.
+Expected particle result: one finite blood burst that clears, with the existing death and landing cues preserved.
+4. After the remaining model tickets pass, re-film each model's idle and two stationary attack/support cycles, plus move/retreat, defend/training, selection/orders and death.
+For forest giant attack, use an in-point at 4.6 seconds or later, after movement to the province edge.
+Measure the ticket-specific pose, plant, loop, crop, gloss, prop-readability and sound-contact thresholds before accepting the model.
+All seven WP1 models need re-filming: gorilla_heavy_infantry, pan_sappers, stone_cohorts, riverborn, forest_giants, oracle_recon, plague_carriers.
+
+Skills used: chaos-redux-3d-model-pipeline, chaos-redux-event-assets, chaos-redux-subagents, and chaos-redux-shared-git-commit.
+No skill was created or updated because the existing skills already specify these route, source and acceptance rules.
 - Per-model metrics `docs/plans/unit_fix_2026-10/per_model_delivery_metrics.json` - SHA-256 `89c6d0d0954719a09a8f9dd66eafbd5f3f42e3d2a28b4c29ff29b6f067b9e365`.
 - Package held-source report `docs/plans/unit_fix_2026-10/wp1_africa_audio_needs.md` - SHA-256 `01e1d7a045c1f48228934a39f05f433600b0d4fa0726f21336b3c3a74e6a6a12`.
