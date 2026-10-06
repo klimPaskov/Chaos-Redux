@@ -61,6 +61,10 @@ Supply external scope bindings only when their types are known.
 A true result covers only `checksPerformed`; `valid = null`, unresolved helpers, unchecked argument blocks, and omitted findings require further source inspection.
 These checks do not establish parameter semantics or game execution.
 
+With a mod-relative `path` instead of a body, `hoi4.script_validate` checks every effect and trigger body of an event, decision, national focus, scripted helper, or on-action file under the scope its structure fixes, and treats Chaos Redux scripted effects and triggers as known commands.
+Run it on each changed script file before handing work to live testing: its errors predict load errors the game reports, such as a dynamic variable compared as a trigger or a scope link outside its scopes.
+Its warnings cover player-facing text (colour codes in news and report events, including through scripted localisation, development wording, and unlocalised flags in decision and focus requirement tooltips) and visible events that would reach one player once per loop iteration; fix each one or record why it stays.
+
 ## Writes and recovery
 
 Domain rewrites validate the complete proposal, generate review evidence, apply through the internal transaction journal, re-index and post-validate the result, and retain exact-byte recovery data. A blocked proposal does not mutate source. Recovery is automatic when a write or post-validation fails; intentional reversal of a successful edit is a new authorized source change (normally through Git), because the public MCP surface does not expose caller-managed transaction, apply, or rollback tools.
@@ -74,8 +78,12 @@ This workflow rule does not disable or modify the installed server's internal va
 
 Focus, GUI, map, and event renders are deterministic offline evidence, not game screenshots. Scripted GUI previews include fidelity information and do not run, launch, automate, control, or capture HOI4. For GUI visual acceptance, follow `chaos-redux-scripted-gui`: treat the production MCP render as the one-to-one in-game visual review surface, fix every visible in-scope defect, and never dismiss a defect as a renderer discrepancy. Event analysis is bounded and static; dynamic destinations or runtime behavior may remain unresolved and must be reported.
 
+GUI scenarios accept `flags`, `variables`, and `closedFlags: true`, which treats undeclared flags as unset as the game does; set them so tabbed windows such as the settings window render one page at a time, and render each page as its own scenario.
+`GUI_UNRESOLVED_VISIBILITY_OVERLAP` means the scenario has not decided which overlapping element is visible; supply the missing flags or variables instead of treating the stack as a layout defect.
+`"background": "transparent"` renders without the preview backdrop for compositing; each element is its own `<g>` group in the full SVG, keyed by the element ids in `layout.json`.
+
 ## HTTP and troubleshooting
 
-Use stdio for local agents. For a separate process, run `hoi4-agent-tools-http --config PATH` with loopback binding, a long bearer token supplied through the configured environment variable, an exact origin allowlist, and explicit workspace grants. Non-loopback deployments need HTTPS, OAuth/OIDC, isolation, and the package limits described in the standalone `docs/http.md`.
+Use stdio for local agents. A stdio server exits when its launching process exits; Codex sessions that keep one server per subagent set `HOI4_AGENT_STDIO_IDLE_EXIT_MINUTES` (30) in the server environment so idle servers exit. For a separate process, run `hoi4-agent-tools-http --config PATH` with loopback binding, a long bearer token supplied through the configured environment variable, an exact origin allowlist, and explicit workspace grants. Non-loopback deployments need HTTPS, OAuth/OIDC, isolation, and the package limits described in the standalone `docs/http.md`.
 
 If tools are missing, check `npm list --global hoi4-agent-tools --depth=0`, confirm the project is trusted, and restart Codex. Call the domain tool you need directly while the MCP `cwd` is the target mod. Verify the package with its Inspector and integration tests when a required route is absent.
