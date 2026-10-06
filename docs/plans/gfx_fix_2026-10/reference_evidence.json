@@ -1,0 +1,101 @@
+[
+  {
+    "status": "ok",
+    "code": "OK",
+    "workspaceId": "mod_chaos_redux_ea3b2d67c2c0",
+    "filesScanned": [],
+    "proposedFiles": [],
+    "changedFiles": [],
+    "diagnostics": [],
+    "artifacts": [],
+    "validation": {
+      "passed": true,
+      "checks": []
+    },
+    "blockers": [],
+    "data": {
+      "id": "e71a709739ed01353c6300e5587cc50f7d653b44a95a9dd3cd31be8891d45f5b",
+      "revision": "f8e3d4ad382f4e5f8e170492a484d090bad62e3711cabfb5d3bf84e58ab32dd9",
+      "source": "wiki",
+      "title": "Graphical asset modding",
+      "heading": "spriteType",
+      "path": "C:\\Users\\klimp\\OneDrive\\Documents\\Paradox Interactive\\Hearts of Iron IV\\mod\\chaos_redux\\paradox_wiki\\Graphical asset modding - Hearts of Iron 4 Wiki.md",
+      "startLine": 30,
+      "endLine": 100,
+      "excerpt": "### spriteType <a id=\"spriteType\"></a> A **spriteType** and **textSpriteType** asset entry follows this format:",
+      "authority": "Offline Paradox Wiki snapshot",
+      "sectionStartLine": 30,
+      "sectionEndLine": 100,
+      "startColumn": 1,
+      "text": "### spriteType <a id=\"spriteType\"></a>\n\nA **spriteType** and **textSpriteType** asset entry follows this format:\n\n```text\nspriteTypes = {\n    spriteType = {\n        name = \"GFX_<name>\"\n        texturefile = <path>\n        noOfFrames = <int>\n        effectFile = <path>\n\n        allwaystransparent = <bool>\n        legacy_lazy_load = <bool>\n        transparencecheck = <bool>\n\n        animation = {\n            animationmaskfile = <path>\n            animationtexturefile = <path>\n            animationrotation = <float>\n            animationlooping = <bool>\n            animationtime = <float>\n            animationdelay = <float>\n            animationblendmode = <mode>\n            animationtype = <type>\n            animationrotationoffset = {\n                x = <float>\n                y = <float>\n            }\n            animationtexturescale = {\n                x = <float>\n                y = <float>\n            }\n            animationframes = {\n                <int> <int> # etc\n            }\n        }\n    }\n}\n```\n\n**name** is the name you have given to the asset. This may be prefixed with various other segments, such as *idea* for idea images, etc.\n\n**texturefile** is the path to the image, based of the `/Hearts of Iron IV/`, meaning you only include the folders within this folder, not the full filepath.\n\n**noOfFrames** is used for images with multiple *frames* within, for example `GFX_unit_level` has five images within for each of the unit level images, and so would have `noOfFrames = 5` set within its asset definition.\n\n**effectFile** is used to define an effect state to apply to the image, i.e. the button press effect on a button image. Effects are found in `/Hearts of Iron IV/gfx/FX/*.lua`. Multiple can be defined to add multiple effects.\n\n**allwaystransparent** defines whether or not an image can be clicked on and interacted with. If yes, the image will have no tooltip and can not be clicked on when used in game.\n\n**legacy_lazy_load** defines whether the image is lazy loaded.\n\n**transparencecheck** defines whether the image is bound by its alpha channel with regards to player clicks. Otherwise the bounding box is the image dimensions.\n\n**animation** scope is used to add animation to an image. It uses the following attributes:\n\n- **animationmaskfile** controls the mask image for the animation.\n- **animationtexturefile** controls the color image used for the animation.\n- **animationrotation** controls the rotation of the animation image. By default it is -90 clockwise.\n- **animationlooping** controls whether the animation loops.\n- **animationtime** controls the duration of the animation. It is measured in seconds.\n- **animationdelay** controls the delay between animation loops. It is measured in seconds.\n- **animationblendmode** controls the blend mode for the animation image. Can be *add*, *multiply* or *overlay*.\n- **animationtype** controls the type of animation. Can be *scrolling*, *rotating* or *pulsing*.\n- **animationrotationoffset** controls the *x* and *y* offsets for the rotation.\n- **animationtexturescale** controls the scale of the animation image.\n- **animationframes** sets the number of frames within the animation image.\n\nBe wary that the maximum file size for a sprite .dds files is around 16MB\n",
+      "nextLine": null,
+      "nextColumn": null
+    }
+  },
+  {
+    "status": "ok",
+    "code": "OK",
+    "workspaceId": "mod_chaos_redux_ea3b2d67c2c0",
+    "filesScanned": [],
+    "proposedFiles": [],
+    "changedFiles": [],
+    "diagnostics": [],
+    "artifacts": [],
+    "validation": {
+      "passed": true,
+      "checks": []
+    },
+    "blockers": [],
+    "data": {
+      "id": "e6d2e249edc2c6865ee3d109cfb67e3e30ebafd179ff4f2cb6b6bc2eb1494322",
+      "revision": "43ce647fc5fde27488855b060b5463c790e5e356149fceb010d36b960b40f838",
+      "source": "game_doc",
+      "title": " documentation",
+      "heading": "Scripted GUIs",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Hearts of Iron IV\\common\\scripted_guis\\_documentation.md",
+      "startLine": 1,
+      "endLine": 35,
+      "excerpt": "# Scripted GUIs Scripted guis can be used for adding moddable guis to the game",
+      "authority": "Installed game documentation",
+      "sectionStartLine": 1,
+      "sectionEndLine": 146,
+      "startColumn": 1,
+      "text": "# Scripted GUIs\n\nScripted guis can be used for adding moddable guis to the game\n\nexample:\n```\nscripted_gui = {\n\tscripted_gui_name = {\n\n\t\t# type of the gui. must be one of the following :\n\t\t# player_context # the scope will be player\n\t\t# selected_country_context # the scope will a target country, when you right click a country\n\t\t# selected_state_context # the scope will a target country, when you left click a state\n\t\t# diplomacy_target_context # the gui will be attached to diplomacy window & will target current selected country\n\t\t# decision_category # gui will be attached to a specific decision category (add scripted_gui = scripted_gui_name to category). scope is player\n\t\t# diplomatic_action # gui will be attached to a diplo action. check scripted diplomatic actions\n\t\t# national_focus_context # gui will be attached to a national focus view for the targeted country, the country which owns the national focus view\n\t\t# country_mapicon # a map icon will be for each country. the scope will be the country\n\t\t# state_mapicon # a map icon will be for each state. the scope will be the state\n\t\tcontext_type = player_context\n\n\t\t# name of the container that is defined under a gui file\n\t\twindow_name = \"container_name\"\n\n\t\t# by default gui is attached to main window (unless context overrides it)\n\t\t# you can specify a token or a window to override it\n\n\t\t# token must be one of the following:\n\t\t# top_bar, decision_tab, technology_tab, trade_tab, construction_tab, production_tab, deployment_tab, logistics_tab, diplomacy_tab, national_focus, politics_tab, selected_country_view, selected_state_view, selected_country_view_info, selected_country_view_diplomacy, army_ledger, navy_ledger, civilian_ledger, air_ledger, tech_infantry_folder, tech_support_folder, tech_armor_folder, tech_artillery_folder, tech_land_doctrine_folder, tech_naval_folder, tech_naval_doctrine_folder, tech_air_techs_folder, tech_air_doctrine_folder, tech_electronics_folder, tech_industry_folder\n\t\tparent_window_token = top_bar\n\n\t\t# if there is no token you can use, use a container name instead. in this case the game will search through all uis and attack scripted gui to one with this name\n\t\t# may not work\n\t\tparent_window_window = \"container_name\"\n",
+      "nextLine": 36,
+      "nextColumn": 1
+    }
+  },
+  {
+    "status": "ok",
+    "code": "OK",
+    "workspaceId": "mod_chaos_redux_ea3b2d67c2c0",
+    "filesScanned": [],
+    "proposedFiles": [],
+    "changedFiles": [],
+    "diagnostics": [],
+    "artifacts": [],
+    "validation": {
+      "passed": true,
+      "checks": []
+    },
+    "blockers": [],
+    "data": {
+      "id": "0c8995c371e7054e00524139c361f044a57cb3b5e8dec9e5cb8daa7c7aeeca10",
+      "revision": "996fc17096970b294292a69d35afa0c13ebf78feb76c84d1979372fde7864714",
+      "source": "wiki",
+      "title": "Unit modding",
+      "heading": "Icons",
+      "path": "C:\\Users\\klimp\\OneDrive\\Documents\\Paradox Interactive\\Hearts of Iron IV\\mod\\chaos_redux\\paradox_wiki\\Unit modding - Hearts of Iron 4 Wiki.md",
+      "startLine": 372,
+      "endLine": 404,
+      "excerpt": "## Icons <a id=\"Icons\"></a> When adding a new unit it may appear, that your unit gets random icons in the division designer (like anti air icon, or what ever)",
+      "authority": "Offline Paradox Wiki snapshot",
+      "sectionStartLine": 372,
+      "sectionEndLine": 404,
+      "startColumn": 1,
+      "text": "## Icons <a id=\"Icons\"></a>\n\nWhen adding a new unit it may appear, that your unit gets random icons in the division designer (like anti air icon, or what ever)\nThis is caused, because the actual unit has no icon. You can provide sprites in `/Hearts of Iron IV/gfx/interface/counters`.\nCreate a new gfx file for your new unit. Add the following content for each unit in `/Hearts of Iron IV/interface/subuniticons.gfx`\n\n```text\nspriteTypes = {\n\n   spriteType = {\n     name = \"GFX_unit_<your unit name>_icon_medium\"\n     textureFile = \"gfx/interface/counters/divisions_large/<your unit name>_icon.dds\"  ## Thats the paradox shepe, but you can use any path and file naming you want\n     noOfFrames = 2\n   }\n\n   spriteType = {\n     name = \"GFX_unit_<your unit name>_icon_medium_white\" # Do not omit \"medium\"\n     textureFile = \"gfx/interface/counters/divisions_small/onmap_unit_<your unit name>_icon.dds\"\n     noOfFrames = 2\n   }\n\n   spriteType = {\n     name = \"GFX_unit_<your unit name>_icon_small\"\n     texturefile = \"gfx/texticons/unit_<your unit name>_icon_small.dds\"\n     legacy_lazy_load = no\n     noOfFrames = 2\n   }\n\n}\n```\n\n---\n",
+      "nextLine": null,
+      "nextColumn": null
+    }
+  }
+]
