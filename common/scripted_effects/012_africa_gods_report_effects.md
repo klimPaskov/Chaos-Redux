@@ -90,3 +90,7 @@ Each later capture and report cleanup clears the support-summary flag so another
 The remaining instalment count is the real balance divided by the agreed tranche size, rounded upward.
 A fuel shipment limited by Africa's free tank space keeps its unpaid fraction in that count, postpones the next attempt and extends the deadline by one agreed interval.
 A short final shipment uses the same rule, so its displayed next date stays in the future.
+
+`gods_of_africa_refresh_instalment_count` derives the remaining count from the current signed balance without changing stock or timing.
+Both manual short prepayments and automatic shipments call it, so the next automatic branch cannot use an old instalment count.
+The final automatic branch compares the actual balance with the agreed tranche amount, and a signed agreement sends no intermediate partial-payment popup even after a manual prepayment.

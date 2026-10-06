@@ -2928,6 +2928,7 @@ gods_of_africa_apply_partial_delivery = {
 		if = { limit = { gods_of_africa_contract_has_substitute_terms = yes } set_temp_variable = { gods_of_africa_contract_close_kind = constant:gods_of_africa_contract_close.honored_substitute } }
 		gods_of_africa_close_contract_ledger = yes
 	}
+	gods_of_africa_refresh_instalment_count = yes
 	set_temp_variable = { gods_of_africa_report_kind = constant:gods_of_africa_history_kind.partial }
 	set_temp_variable = { gods_of_africa_report_amount = gods_of_africa_payment_delivered }
 	set_temp_variable = { gods_of_africa_report_balance = gods_of_africa_demand_remaining }
@@ -2953,7 +2954,15 @@ gods_of_africa_apply_partial_delivery = {
 		gods_of_africa_clear_demand = yes
 	}
 	if = {
-		limit = { NOT = { has_country_flag = gods_of_africa_instalment_progress_only } }
+		limit = {
+			NOT = { has_country_flag = gods_of_africa_instalment_progress_only }
+			NOT = {
+				AND = {
+					has_country_flag = gods_of_africa_instalments_signed
+					check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.continuing_support }
+				}
+			}
+		}
 		set_country_flag = gods_of_africa_outcome_report_pending
 		country_event = { id = chaosx.nr12.604 }
 	}
