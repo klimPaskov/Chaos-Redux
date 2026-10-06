@@ -7,6 +7,11 @@ The user-authorized scope is every WP3 ticket, with no paid Meshy tasks, no new 
 The sections below this execution record describe the earlier shared pipeline tranche, whose mesh/action measurements remain a baseline rather than model acceptance.
 The missing requested `unit_s3_report.md` was replaced for reference reading by the existing `pipeline_report.md`; no absent report or tool route was treated as successful evidence.
 
+The host-restart reconciliation verifies that all 72 installed mesh/action files still match the latest hash-bound audit: one geometry pass, seven geometry blockers, seven action passes and 57 action blockers.
+`wp3_evidence/restart_recovery_20261006.json` records the actual-byte comparisons and the fresh reference-search failure (`Transport closed`).
+The active mutant attack candidate stays outside runtime; the next serialized Blender tranche is undead material-region review and native AO.
+The nine completed WP3 commits were recovered from Git; pre-existing dirty zombie intake/blocker files remain reserved for their original owner.
+
 The focused presentation commit is `dbbd5444b`: all eight death blood bursts drop `keep_particle`, the undead attack grunt moves from 2.80 to 2.45 seconds, and the necrotic fall cue moves from 1.30 to 3.30 seconds.
 Shared idle volume changes from 0.22 to 0.42, shared movement from 0.34 to 0.50, and parasitic feeding from 0.45 to 0.55, matching the WP3 ticket values.
 An independent Luna review found no missing cue or WAV reference in this scoped diff.
