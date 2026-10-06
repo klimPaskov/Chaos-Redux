@@ -944,13 +944,19 @@ Use `not_needed`, `planned`, `sourced`, `generated`, `processed`, `converted`, `
 
 #### Candidate lineage and review
 
+Before each native ImageGen generation or edit, save the exact request arguments in a repo-contained prompt record: `prompt`, `transparent_background`, and supplied reference paths or recent-image count, with the actual referenced images identified and retained.
+
 While the asset workspace is active, keep the original generated source and every accepted intermediate immutable at distinct versioned paths. Keep source outputs separate from processed previews and runtime files. In the active manifest or linked prompt record, record for each generated candidate:
 
 - candidate id, parent candidate id or new-generation reason, and input paths with their declared roles
-- exact submitted prompt, focused edit delta, invariants, and background mode
-- tool-reported output path, retained workspace path, decoded dimensions, and alpha evidence
+- linked exact saved request, focused edit delta, invariants, and background mode
+- tool-reported output path, retained workspace path, source SHA-256, decoded dimensions, and alpha evidence
 - source-resolution and final-native-size review results, accepted/rejected status, and remaining defects
-- explicit final-selected candidate id, processed PNG path, and final runtime path after conversion
+- explicit final-selected candidate id, processed PNG path, final runtime path after conversion, and each subject's source-to-layer/frame-to-consumer mapping
+
+Before runtime promotion, review every newly generated or edited subject against its actual source and saved request; a correct-looking preview does not establish ImageGen lineage.
+Deterministic template/frame geometry and processing remain allowed under the applicable family contract, but cannot replace generated subject art.
+If an exact historical request is unavailable, mark it unavailable and preserve known source paths/hashes rather than reconstructing it; fresh generation or editing must remain within existing authorization and portrait/source-mode, provider, and fallback boundaries.
 
 Do not silently overwrite a prior accepted candidate or synchronize an older candidate into runtime. Before normal temporary-workspace cleanup, promote the lineage, prompts, final selection, and review facts into permanent documentation under the existing cleanup contract. Retain active image files until the required package review is complete; this rule does not create a second permanent asset archive.
 
