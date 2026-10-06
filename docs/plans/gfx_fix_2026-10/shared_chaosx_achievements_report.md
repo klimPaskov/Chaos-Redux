@@ -1,6 +1,12 @@
 # Shared Chaos Redux achievement icon repair report
 
-Disposition: four Event 031 achievement findings are implemented and parent-reviewed. A fifth finding is superseded by an already parent-integrated Event 024 medal triplet. Sixteen other finding rows remain unresolved.
+Disposition: five findings are implemented and parent-reviewed, including four Event 031 rows and Event 007 No Cores. A sixth finding is superseded by the already parent-integrated Event 024 medal triplet. Fifteen other finding rows remain unresolved.
+
+## Event 007 No Cores repair
+
+The near-duplicate map-and-figure subject was replaced with a distinct hollow-core map emblem in the Event 007 aged-bronze plaque style. Parent approved v002, which keeps the missing core region as a large empty center and uses a few broad map boundaries. The exact original and edit prompts are in [v001](../../assets/gfx_fix_2026-10/shared_chaosx_achievements/prompts/007_no_cores_subject_v001.md) and [v002](../../assets/gfx_fix_2026-10/shared_chaosx_achievements/prompts/007_no_cores_subject_v002_edit.md); the selected native-alpha source and processing evidence are [v002 source](../../assets/gfx_fix_2026-10/shared_chaosx_achievements/source/007_fury_no_cores_source_v002.png) and [alpha report](../../assets/gfx_fix_2026-10/shared_chaosx_achievements/evidence/007_fury_no_cores_alpha_report_v002.json).
+
+The selected 64x64 color subject was converted to the exact achievement source triplet by deterministic grayscale and the unchanged red-X overlay, then processed with `process_achievement_icons.py`. Parent-reviewed native-size and 4x candidate comparisons are [here](../../assets/gfx_fix_2026-10/shared_chaosx_achievements/contact_sheets/007_fury_no_cores_v002_candidate_native.png) and [here](../../assets/gfx_fix_2026-10/shared_chaosx_achievements/contact_sheets/007_fury_no_cores_v002_candidate_4x_nearest.png). All three promoted DDS states passed the strict 64x64 BGRA/source-layer audit in [007_no_cores_runtime_audit.txt](../../assets/gfx_fix_2026-10/shared_chaosx_achievements/evidence/007_no_cores_runtime_audit.txt). The current-runtime preflight and preserved originals are recorded in [007_art_promotion_preflight.json](../../assets/gfx_fix_2026-10/shared_chaosx_achievements/evidence/007_art_promotion_preflight.json), with exact final paths and SHA-256 values in [007_no_cores_runtime_paths.txt](../../assets/gfx_fix_2026-10/shared_chaosx_achievements/evidence/007_no_cores_runtime_paths.txt).
 
 ## Event 031 achievement family
 
@@ -23,7 +29,7 @@ The earlier state-only tranche was parent-committed as `544ef6ab9`; this report 
 | `GFX_achievement_031_fracture_from_within_not_eligible` | 1 | implemented | The red-X state is now regenerated from the fully grayscale subject and canonical overlay for all twelve Event 031 achievements. |
 | `GFX_achievement_031_no_second_blast` | 2 | implemented | The previously flat-square family was replaced with the parent-approved original laurel-medal family for all twelve Event 031 achievements. |
 | `GFX_achievement_031_maximum_survivor` | 2 | implemented | The completed state now has a clear survivor-and-shield medal and no red X; its grey and not-eligible siblings are derived consistently. |
-| `GFX_achievement_007_fury_no_cores` | 2 | unresolved | The current image remains near-duplicate to `007_fury_last_neighbor`; create a distinct coreless-map or empty-shield subject. |
+| `GFX_achievement_007_fury_no_cores` | 2 | implemented | Parent-approved v002 replaces the duplicate map-and-figure with a large hollow-core map emblem in the Event 007 bronze-plaque style. The three current DDS files and SHA-256 values are in [the 007 runtime crosswalk](../../assets/gfx_fix_2026-10/shared_chaosx_achievements/evidence/007_no_cores_runtime_paths.txt). |
 | `GFX_achievement_005_soviet_collapse_every_port_a_council` | 2 | unresolved | The current icon remains a second sailor portrait; replace it with a port or council object subject. |
 | `GFX_achievement_005_soviet_collapse_the_world_read_the_telegram` | 2 | unresolved | The current black-and-white photo remains; create the painted telegraph-key and telegram subject. |
 | `GFX_achievement_005_soviet_collapse_file_that_became_country` | 2 | unresolved | The current photo texture remains; create a painted dossier, map, and seal subject. |
