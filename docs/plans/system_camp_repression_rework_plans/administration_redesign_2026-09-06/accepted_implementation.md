@@ -1,5 +1,10 @@
 # National administration redesign
 
+Current continuation evidence: [6 October takeover status](../takeover_status_2026-10-06.md).
+The director authorized implementation of the latest takeover audit on 6 October 2026.
+Parent-selected authority, achievement, partner-order and dated-origin decisions within that scope are recorded in [the continuation decision log](../agent_decisions_2026-10-05.md).
+The partner reception district, Croatian wave split and altered-control geography are explicit modeling choices under the director's G6 authority, with limits carried into the takeover status.
+
 Status: accepted and in implementation.
 Acceptance basis: the user explicitly requested implementation of the complete Camps, Forced Labor and Repression plan on 2026-09-06.
 This document records the task boundary and integration contract; current evidence and unresolved work belong in completion.md.
