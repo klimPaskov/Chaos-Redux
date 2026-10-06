@@ -31,7 +31,10 @@ Audio mastering proves file delivery; audible role and live playback acceptance 
 The resumed peak-limiter commit `6e393c848` replaces the accepted moan 01 master with a source-identical-duration derivative at -20.5 LUFS and -3.0 dBFS sample peak / -3.0 dBTP.
 Its bounded recorded-sample attenuation is 1.988527 dB, and the loop-edge delta remains 2.769 dB.
 Current runtime SHA is `76661F92D59F934FD5D9AA66EFDB401B2718F674A8AA5053BDCFBCB63A33C0CE`; `wp3_evidence/moan01_peaklimit_install_20261006.json` and the fresh installed inspection bind that value.
-Two distinct additional source-labeled zombie moans and one low-breathing recording are staged with passing technical inspections, but are not counted as installed voices or reviewed listening results.
+Two additional source-labeled zombie moans remain staged, not installed.
+The low-breathing OGG derivative passes output-file checks but is held: the aligned archive WAV has 19,704 near-rail samples and 1,101 plateau runs spanning 0.060136-4.105533 seconds, and those intervals map into the candidate.
+Lossy decoding does not establish repaired source peaks; the near-rail-free tail is not proven to contain a complete breathing cycle.
+The exact original/candidate hashes and interval mapping are in `mutant_breath_source_clipping_alignment_20261006.json`; no derivative is promoted on the alternative encoding alone.
 
 Shared footsteps 03–06 isolate complete transients from their original CC0 recordings, with short releases; footsteps 01–02 already fit the shortest interval.
 The final six paths remain distinct recorded takes, at the shared -6 dBFS peak target, with a maximum duration of 0.17 seconds.
@@ -60,6 +63,16 @@ All six move/retreat event times remain fixed; the slowest 0.88 sound rate gives
 The fresh eight-model, 64-state source audit retains 39 existing findings and has no missing sound reference or sample-overlap finding.
 Live listening, source-contact proof and the broader action/voice requirements remain open.
 The mutant model tranche is committed as `f0987fd93` after parent review, with the remaining mutant requirements still open.
+
+### Paced recurring idle and defend voices
+
+Four dedicated ambient aliases reuse the existing moan, rattle and gurgle families, with their gain and pitch behavior preserved and 4-8-second randomized pauses.
+They replace ten one-shot entry cues across all eight models while preserving their state entry `trigger_once` behavior; impact, attack, selection and the legacy WP5 shared identifier retain their existing behavior.
+The current 64-state comparison clears all ten one-shot/silent-state findings: 39 findings become 29, with zero sample-overlap or missing-cue findings.
+All 44 current local WAV paths and the installed mesh/action hashes remain unchanged.
+This repairs recurring source wiring; actual cadence, state-exit stop/fade and crowd balance require orchestrator listening.
+Existing source-level and take-count gaps remain open; no new recording is claimed.
+Evidence is `wp3_evidence/idle_ambient_fix_20261006/parent_comparison.json`.
 
 ### Installed mutant geometry, idle and two material maps
 
@@ -144,7 +157,10 @@ There must be no restart at 3.1333 seconds and no overlap at the slowest sampled
 - Watch the mutant idle for three full six-second cycles from front and quarter views: expect slow breathing, a head sweep/sniff and claw motion with no height snap at the seam.
 Inspect its neck, shoulder and left toes for the removed spurs; compare the darker body and retained vein detail at the close and map-zoom crops.
 Measure the locked-crop peak-motion target 0.8–3.0 on the re-filmed idle; the parser and previews do not establish that filmed metric.
-- Leave each idle long enough to hear all current pool members, then exercise movement and parasitic feeding at the same camera distance as an adjacent vanilla unit.
+- Leave each idle for at least 30 seconds and exercise the base and demonic defend states: expect recurring voices with 4-8-second pauses rather than one voice followed by permanent silence.
+Switch each test unit into move, attack, training and death and check that the ambient cue stops/fades correctly without persisting over an unrelated state or piling up.
+Timed attacks, grabs, impacts and footsteps must remain one-shot cues at their existing events.
+Then exercise movement and parasitic feeding at the same camera distance as an adjacent vanilla unit.
 Expect the ticketed gains and louder moan 01; held takes and one-shot/repeating-state defects remain identified in the audio handoff.
 - Exercise attack, defend, support_attack, move, retreat, training and death for each model before closing its geometry/action ticket.
 Inspect the ticket-specific loops, holes, wrists, coat hems, tentacles, wings, crops and map-zoom texture behavior against the thresholds in the plan.

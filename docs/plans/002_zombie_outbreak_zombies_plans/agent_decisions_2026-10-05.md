@@ -49,3 +49,14 @@ Failed candidates remain outside runtime and the exact needs are retained in the
 
 Evidence: `docs/plans/unit_fix_2026-10/wp3_evidence/local_references.json` records local source revisions and line spans; `wp3_evidence/before/` and `wp3_evidence/after_entity_timing/` retain current consumers, decoded motion and the 64-state lint comparison.
 The shared report requested as `unit_s3_report.md` is absent; `docs/plans/unit_fix_2026-10/pipeline_report.md` is the existing section 3 implementation report read for this task.
+
+## Paced idle and defend voices
+
+Disposition: implemented within the user-authorized WP3 sound-state repair; audible cadence and state-exit cleanup remain orchestrator checks.
+Ten repeating idle/defend states previously triggered a one-shot voice once and then went silent.
+Four dedicated ambient aliases retain their exact existing moan, rattle and gurgle families, gain, pitch variation and audible limits, with 4-8-second randomized pauses, loop playback and a short exit fade.
+Existing attack, pain, selection and other timed one-shot effects keep their behavior; the legacy shared idle identifier remains available to the WP5 owner until its separate package removes that dependency.
+This prevents silence without turning impact/grab cues into repeating loops or producing a continuous short-voice chatter.
+No WAV, mesh or action bytes change, no recording or take is added, and the incomplete source/take requirements remain listed.
+The 64-state source comparison clears all ten one-shot/silent-state findings and changes 39 findings to 29, retaining the 11 motion-offset, 15 contact-proof and three duration findings.
+Evidence: `docs/plans/unit_fix_2026-10/wp3_evidence/idle_ambient_fix_20261006/parent_comparison.json`.
