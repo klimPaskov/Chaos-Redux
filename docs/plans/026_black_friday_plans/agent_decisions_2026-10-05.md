@@ -89,6 +89,16 @@ The source regression reproduced zero negative outputs at full, half, and quarte
 The price table version advances from 17 to 18 so initialization rebuilds already-stamped values.
 No ordinary amount, sale ratio, owner outcome, or AI weight changes.
 
+## D44. Remove achievement tag lettering and preserve the state family
+
+Disposition: implemented in the three existing runtime DDS files.
+The acceptance basis is the director's no-baked-text rule and the parent's visual acceptance of the corrected source and native-size states.
+The completed achievement tag is blank, all purchasing objects and five checks remain present, and the grey and ineligible states derive from that same corrected layer.
+The supplied completed/grey templates and red-X overlay are unchanged.
+The report, idea, sprite identifiers, consumer paths, and achievement identity remain stable.
+The permanent asset handoff records hashes and provenance, while the incomplete event-scoped workspace stays on disk under the assets skill.
+No replacement asset family or runtime fallback was introduced.
+
 ## References and checks
 
 - Offline `paradox_wiki/Data structures - Hearts of Iron 4 Wiki.md`, lines 435–442: temporary helper lifetime.
