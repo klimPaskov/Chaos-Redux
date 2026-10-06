@@ -14,57 +14,33 @@ country_event = {
 	id = chaosx.nr6.1
 	hidden = yes
 	is_triggered_only = yes
-	trigger = { NOT = { has_global_flag = independence_wave_country_opening_report_pending } }
 
 	immediate = {
-		clr_global_flag = independence_wave_event_log_actor_ready
 		if = {
-			# The pending flag is only a delivery receipt for a committed joint
-			# Event 005 + Event 006 plan. A stale flag must never swallow a fresh
-			# standalone invocation before the allocator has had a chance to run.
-			limit = {
-				has_global_flag = independence_wave_joint_presentation_pending
-				has_global_flag = liberation_release_joint_plan_executed
-				check_variable = { global.liberation_plan_phase = constant:liberation_plan_phase.committed }
-				check_variable = { global.liberation_plan_owner = constant:liberation_plan_owner.joint }
-				check_variable = {
-					var = global.independence_wave_presentation_country_count
-					value = constant:independence_wave_planner.no_candidates
-					compare = greater_than
-				}
-			}
-			clr_global_flag = independence_wave_joint_presentation_pending
-			set_global_flag = independence_wave_joint_presentation_delivered
-			# Unlock living vanilla-route overlays only after a committed joint
-			# Event 006 result is being delivered to the player.
-			set_global_flag = independence_wave_event6_runtime_unlocked
-			if = {
-				limit = {
-					has_event_target = independence_wave_latest_actor
-					event_target:independence_wave_latest_actor = { exists = yes }
-				}
-				set_global_flag = independence_wave_event_log_actor_ready
-			}
-			independence_wave_prepare_committed_country_opening_queue = yes
-			country_event = { id = chaosx.nr6.2 }
+			limit = { has_global_flag = independence_wave_country_opening_report_pending }
+			independence_wave_report_failed_manual_launch = yes
 		}
 		else = {
-			# Clear an orphaned joint-delivery marker before opening a new
-			# standalone transaction. This is state cleanup only; it creates no
-			# player-facing pre-event surface.
-			clr_global_flag = independence_wave_joint_presentation_pending
-			independence_wave_prepare_and_execute_standalone_incident = yes
+			clr_global_flag = independence_wave_event_log_actor_ready
 			if = {
+				# The pending flag is only a delivery receipt for a committed joint
+				# Event 005 + Event 006 plan. A stale flag must never swallow a fresh
+				# standalone invocation before the allocator has had a chance to run.
 				limit = {
-					has_global_flag = independence_wave_standalone_incident_committed
+					has_global_flag = independence_wave_joint_presentation_pending
+					has_global_flag = liberation_release_joint_plan_executed
+					check_variable = { global.liberation_plan_phase = constant:liberation_plan_phase.committed }
+					check_variable = { global.liberation_plan_owner = constant:liberation_plan_owner.joint }
 					check_variable = {
 						var = global.independence_wave_presentation_country_count
 						value = constant:independence_wave_planner.no_candidates
 						compare = greater_than
 					}
 				}
-				# The overlay runtime is a post-commit surface. A failed or
-				# cancelled standalone attempt never unlocks it.
+				clr_global_flag = independence_wave_joint_presentation_pending
+				set_global_flag = independence_wave_joint_presentation_delivered
+				# Unlock living vanilla-route overlays only after a committed joint
+				# Event 006 result is being delivered to the player.
 				set_global_flag = independence_wave_event6_runtime_unlocked
 				if = {
 					limit = {
@@ -76,6 +52,65 @@ country_event = {
 				independence_wave_prepare_committed_country_opening_queue = yes
 				country_event = { id = chaosx.nr6.2 }
 			}
+			else = {
+				# Clear an orphaned joint-delivery marker before opening a new
+				# standalone transaction. This is state cleanup only; it creates no
+				# player-facing pre-event surface.
+				clr_global_flag = independence_wave_joint_presentation_pending
+				independence_wave_prepare_and_execute_standalone_incident = yes
+				if = {
+					limit = {
+						has_global_flag = independence_wave_standalone_incident_committed
+						check_variable = {
+							var = global.independence_wave_presentation_country_count
+							value = constant:independence_wave_planner.no_candidates
+							compare = greater_than
+						}
+					}
+					# The overlay runtime is a post-commit surface. A failed or
+					# cancelled standalone attempt never unlocks it.
+					set_global_flag = independence_wave_event6_runtime_unlocked
+					if = {
+						limit = {
+							has_event_target = independence_wave_latest_actor
+							event_target:independence_wave_latest_actor = { exists = yes }
+						}
+						set_global_flag = independence_wave_event_log_actor_ready
+					}
+					independence_wave_prepare_committed_country_opening_queue = yes
+					country_event = { id = chaosx.nr6.2 }
+				}
+				else = { independence_wave_report_failed_manual_launch = yes }
+			}
+		}
+	}
+}
+
+# A Settings request receives one explanation when no wave can be launched.
+# The requester owns the per-request guard and the frozen reason flags.
+country_event = {
+	id = chaosx.nr6.73
+	title = chaosx.nr6.73.t
+	timeout_days = @CR_SC_INDEPENDENCE_WAVE_PUBLIC_REPORT_TIMEOUT_DAYS
+	desc = {
+		trigger = { has_country_flag = independence_wave_launch_waiting_for_replies }
+		text = chaosx.nr6.73.waiting.d
+	}
+	desc = {
+		trigger = { NOT = { has_country_flag = independence_wave_launch_waiting_for_replies } has_country_flag = independence_wave_launch_incomplete_release }
+		text = chaosx.nr6.73.incomplete.d
+	}
+	desc = {
+		trigger = { NOT = { has_country_flag = independence_wave_launch_waiting_for_replies } NOT = { has_country_flag = independence_wave_launch_incomplete_release } }
+		text = chaosx.nr6.73.d
+	}
+	picture = GFX_report_event_006_asset_001_wave_summary
+	is_triggered_only = yes
+	option = {
+		name = chaosx.nr6.73.a
+		hidden_effect = {
+			clr_country_flag = independence_wave_launch_waiting_for_replies
+			clr_country_flag = independence_wave_launch_incomplete_release
 		}
 	}
 }

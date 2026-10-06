@@ -1,0 +1,41 @@
+# Event 006 manual launch feedback.
+# COUNTRY scope: the event entry recipient.
+# The Settings dispatch chain supplies chaosx_manual_event_requester.
+# One failed request opens one report on that human requester and snapshots
+# whether the obstruction was unfinished replies or an incomplete release.
+# This helper changes no allocation, release, history, or retry state.
+independence_wave_report_failed_manual_launch = {
+	if = {
+		limit = {
+			has_event_target = chaosx_manual_event_requester
+			event_target:chaosx_manual_event_requester = {
+				exists = yes
+				is_ai = no
+				has_country_flag = chaosx_manual_event_requested
+				NOT = { has_country_flag = chaosx_manual_event_failure_shown }
+			}
+		}
+		event_target:chaosx_manual_event_requester = {
+			set_country_flag = chaosx_manual_event_failure_shown
+			clr_country_flag = independence_wave_launch_waiting_for_replies
+			clr_country_flag = independence_wave_launch_incomplete_release
+			if = {
+				limit = { has_global_flag = independence_wave_country_opening_report_pending }
+				set_country_flag = independence_wave_launch_waiting_for_replies
+			}
+			else_if = {
+				limit = {
+					OR = {
+						has_global_flag = independence_wave_standalone_incident_failed_during_finalization
+						AND = {
+							has_global_flag = independence_wave_standalone_incident_failed_after_mutation
+							NOT = { has_global_flag = independence_wave_standalone_incident_rolled_back_after_mutation }
+						}
+					}
+				}
+				set_country_flag = independence_wave_launch_incomplete_release
+			}
+			country_event = { id = chaosx.nr6.73 }
+		}
+	}
+}
