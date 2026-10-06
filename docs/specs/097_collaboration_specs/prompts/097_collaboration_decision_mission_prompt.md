@@ -22,7 +22,7 @@ The design audit in `docs/plans/097_collaboration_plans/subagent_handoffs/097_de
 6. Use one shared affordability predicate for each custom cost in both `available` and `custom_cost_trigger`, and debit the custom payment once in `complete_effect`.
 7. Name blocked requirements precisely, such as the stability floor for A1 and A4, the missing seated state for A2, and the current and required compliance for B1.
 8. Targets come from lists the event maintains in its own hooks: enemies holding seated states for each host, capitulated or exiled B1 targets, and each installer's living registry rows. Use root prechecks for the installer. Category visibility reads markers set by those hooks. Nothing searches every country every day.
-9. B1's compliance requirement uses the ladder in Part 4, written so a pure trigger can check it, with collaboration on its native 0 to 1 scale. Split B1 into visibility and availability as Part 4 states.
+9. B1's compliance requirement uses the ladder in Part 4, written so a pure trigger can check it, with collaboration on its native 0 to 1 scale and the boundary conventions from Part 3. Split B1 into visibility and availability as Part 4 states. Event 097's hooks never see a vanilla collaboration government being created, so the one-government check looks the original tag up directly, for example with an original-tag country trigger combined with the collaboration-government autonomy state, instead of searching every country.
 10. A2 and the Purge option subtract fixed points and stop at zero, following the reduction rules in Part 4. Verify the engine behavior first. Report a blocker if no accepted route works.
 11. B1 and the capitulation offer must call one shared installation helper that owns the registry, the Installed Administration spirit, auxiliaries, Chaos, and the competing-orders check. Auxiliary prices come from the template constants.
 12. The Divided Loyalties category uses a static category picture, after inspecting the canonical picture reference family and its contact sheet. The Prepared Governments category uses its icon and text only.
@@ -34,7 +34,7 @@ The design audit in `docs/plans/097_collaboration_plans/subagent_handoffs/097_de
 
 ## Engine checks for this part
 
-Verify these facts and record them in `docs/events/097_collaboration/` before relying on them: whether negative collaboration changes stop at zero, the scale of the collaboration and compliance reads, whether the compliance trigger accepts a variable, how spawned divisions are equipped, whether decision re-enable timers count from completion or removal, and whether cost text can show per-target quotes for targeted decisions.
+Verify these facts and record them in `docs/events/097_collaboration/` before relying on them: the names of the state modifiers used by the Amnesty option, whether the original-tag lookup accepts a scope or needs a meta trigger, whether negative collaboration changes stop at zero, the scale of the collaboration and compliance reads, whether the compliance trigger accepts a variable, how spawned divisions are equipped, whether decision re-enable timers count from completion or removal, and whether cost text can show per-target quotes for targeted decisions.
 
 ## Balance evidence
 

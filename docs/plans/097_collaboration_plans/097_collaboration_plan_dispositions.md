@@ -48,6 +48,14 @@ Disposition: promoted into an accepted spec. Part 4 was rewritten around these r
 - H7: the auxiliary template is fixed at six infantry battalions, and auxiliary prices come from that template.
 - M1 to M16 and L1 to L9: folded as A1 visibility and AI limits, a one-day delayed A1 capitulation follow-up, the reduction rules with an accepted computed-set equivalent, a static political power hint rule, hook-maintained target lists, the A3 and A5 transport display, a shared stability floor, A5 eligibility, B1 eligibility, B2 stage behavior, the reinstall loop guards, the Screen extension during Loyalty Commissions, the header without remaining days, full-duration penalties, war-scoped guards in Part 3, evolution-disabled rows, enemy band display, an Amnesty benefit, AI coverage, the B2 row limit, core-state cost scaling, the reference path note, the custom-cost key rules, the A1 uptime statement, and the seat bonus order.
 
+Second pass findings N1 to N18, promoted into the spec:
+
+- N1: the one-government check looks the original tag up directly, recorded in the decision prompt.
+- N2: Purge depends on engine clamping and is a blocker otherwise. Band texts use the value recorded at seat time, which Part 3 now stores.
+- N3: the computed set for A2 is no longer marked accepted. It is a candidate route that needs the user's approval, listed as unresolved in the README. The trains or trucks rule for A3 and the convoys or trucks rule for A5 are accepted design with the parent acceptance basis stated in the README.
+- N4: the stale matrix line was replaced.
+- N5 to N18: installed governments use A1 to A4, one A5 transport rule by coastline, a stated reason for the 20 and 30 percent stability floors, boundary conventions in Part 3, AI and row-limit agreement for Prepared Governments, seats kept until control changes when Administrations in Waiting is disabled, an A2 tie-break, Amnesty modifier names added to the engine checks, the A1 follow-up skipping states that changed hands, the Fifth Column seat increase only at an effective band of Wavering or higher, the auxiliary manpower destination, B1 affordability in the balance scenarios, an A5 rank at Defecting and Collapsing, B1 for targets with fewer than three cores, and expected results for P26.
+
 Unresolved: the engine checks listed in the decision prompt, and every AI conclusion pending MCP.
 
 ## `097_collaboration_scripted_architecture_plan.md`

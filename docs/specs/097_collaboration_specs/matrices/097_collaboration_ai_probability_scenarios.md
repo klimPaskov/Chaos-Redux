@@ -48,7 +48,7 @@ The expectations below are orderings, timing bands, and dominance or starvation 
 | P19 | Democracy at peace bordering an expanding power with a claim on it | Group precedence |
 | P20 | Installer holding three governments, target on its own continent | Positive counterpart of P12 |
 | P21 | Installer at 15 percent surrender progress with a peace conference near | Keep direct occupation case |
-| P22 | Host at war at 10 percent surrender progress with Deep or Pervasive incoming networks | A1 taken before the Fifth Column |
+| P22 | Host at war at 15 percent surrender progress with Deep or Pervasive incoming networks | A1 taken before the Fifth Column |
 | P23 | Host at Collapsing with Evolutions II, III, and IV active, allies at war, ideology different from the likely installer | A5 visibility, the four-action cap, and the A5 rule |
 | P24 | Two enemies hold seated states, one Ordinary and one Strong | A2 target ordering |
 | P25 | Expanding power with its own Fifth Column at Wavering | A1 for an expanding power |
@@ -102,10 +102,11 @@ The expectations below are orderings, timing bands, and dominance or starvation 
 
 - P7: A1 ranks first. A3 and A4 are not visible.
 - P8: A3 ranks first, A4 second when command power allows, A2 third when manpower is at least twice its cost. A1 is hidden at Collapsing.
-- A5 has positive weight for a country with allies still at war or with a ruling ideology different from the likely installer, and zero for a country with neither. A democracy weighs it higher. P23 checks both conditions together and that A2 hides when all five actions qualify.
+- A5 has positive weight for a country with allies still at war or with a ruling ideology different from the likely installer, and zero for a country with neither. A democracy weighs it higher. P23 checks both conditions together and that the category never shows more than four actions.
 - P22: A1 ranks first.
 - P24: A2 targets the Strong enemy.
 - P25: A1 has positive weight only once the expanding power's own Fifth Column appears.
+- At Defecting and Collapsing, A5 ranks between A3 and A4 when its rule is met.
 - No action has positive willingness when its effect is unavailable. A2 must be zero when no enemy holds a seated state.
 
 ### S6 Prepared Governments
@@ -147,6 +148,12 @@ Every timed surface follows the timing model in Part 2: the MTTH entry is evalua
 - S11: the cluster roll is audited with the shared cluster rules once the Intelligence cluster exists. Event 097 must not gain more than one extra firing per cluster activation.
 - S12 and S13 follow the orderings in Part 3. The audit confirms that every tie-break ends in a choice.
 - S14 follows the target orderings in Part 4.
+
+### P26 gate expectations
+
+- During the Fallout transition: S2 to S9 produce no new choices or timers that write collaboration, both categories are hidden, Collaborators Unmasked does not fire, and the event shows N/A.
+- With Event 097 disabled: S1 is zero and no firing happens. Behaviors of evolutions that already activated continue.
+- With one evolution disabled: that evolution's surfaces stop as Part 4 describes, and every other surface behaves as in its own scenarios.
 
 ## Sweeps
 

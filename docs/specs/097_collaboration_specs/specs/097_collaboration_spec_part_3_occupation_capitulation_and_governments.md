@@ -19,6 +19,8 @@ Several behaviors read the native collaboration of one occupier inside one host 
 
 The band edges are tuning anchors in one constant group and are shared by every behavior in this part.
 
+Boundary conventions apply across the whole specification. A band includes its lower edge. A percentage that something must be past is exceeded strictly. A requirement written as at least includes its value. A compliance requirement written as above is exceeded strictly.
+
 ## Baseline: capitulation through the engine
 
 Without any evolution, Event 097 changes wars only through the engine rules for collaboration.
@@ -64,9 +66,9 @@ The state receives:
 
 - an immediate compliance gain equal to half the new controller's collaboration inside the owner, capped at 40
 - a lowered resistance target for this controller, equal to a quarter of that collaboration and capped at 25, with a removable identifier
-- a seat marker recording the controller and the date
+- a seat marker recording the controller, the date, and the controller's collaboration inside the owner at that moment, which Part 4 texts use after the state is retaken
 
-While the Fifth Column is active in the owner, the compliance gain grows by half and its cap rises to 50.
+While the Fifth Column is active in the owner at an effective band of Wavering or higher, the compliance gain grows by half and its cap rises to 50.
 
 The order is fixed: the base gain and its cap of 40 first, then the Fifth Column increase and its cap of 50, then the halving from the owner's Loyalty Commissions in Part 4.
 

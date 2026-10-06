@@ -15,7 +15,7 @@ All weights in this part are intended orderings. Exact values must come from the
 | Neutral or isolated state | No war, no threatening neighbor | Accept | Rarely visible to the decision layer. |
 | Democracy at peace | Democratic ruling party, no war | Accept, with Screen rising if a fascist or communist neighbor is expanding | Weighs A5 higher than other ideologies once it becomes visible, because it expects a government in exile to fight on. Takes the prepared-government offer at reduced weight. |
 | Ideological revolutionary | Communist or fascist government with an active expansion route | Cultivate | As expanding power. |
-| Installed government | Government installed through Event 097 | Accept, or Screen when Contested | Uses A1 and A3 in its own wars. Never seeks a new overlord except through Turned Regime. |
+| Installed government | Government installed through Event 097 | Accept, or Screen when Contested | Uses A1 to A4 in its own wars like any other country. A5 is hidden for it. Never seeks a new overlord except through Turned Regime. |
 | Country in civil war | Active civil war | Accept, because Screen is blocked | Uses A1 only if stability allows it. |
 
 ### Group precedence
@@ -244,7 +244,7 @@ The implementation must check these scenarios and record the results.
 2. Firing counts across the range in Part 1, with and without Deep Networks, in a 1940s world war: when does a major power reach the vanilla 80 percent collaboration-government level without Evolution IV, and does the stance choice change that timing in a way players can feel.
 3. Fifth Column at Collapsing on a minor and on a major: does it hasten capitulation without making a major collapse from a single bad month.
 4. Open Gates frequency over a long war: does it stay at most three per host per war and prefer provincial districts.
-5. Evolution IV in a world war: how many governments are installed per year, and does the political power growth stop one power from installing everywhere.
+5. Evolution IV in a world war: how many governments are installed per year, does the political power growth stop one power from installing everywhere, and can a typical installer afford B1 including the auxiliary equipment and manpower.
 6. Turned Regime frequency: does it stay rare and happen only when the installer is losing.
 7. AI stance distribution per firing: does the world avoid polarizing into all cultivators or all screeners.
 8. Multiplayer: two human players with different stances, checking that every choice made inside the response window counts and that a player who has not answered when the window closes receives Accept.
