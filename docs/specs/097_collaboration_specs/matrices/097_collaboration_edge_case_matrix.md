@@ -35,5 +35,7 @@ Each row states a situation the implementation must handle and the required beha
 | Manual or forced trigger from settings | The event runs normally and sets the shared forced-setup marker that disqualifies Event 097 achievements. |
 | Console collaboration command | The engine already disables achievements. Event 097 behaviors read the native value normally, but only for hosts with Event 097 networks. |
 | Fewer than two powers left with governments after competing orders fired | Nothing is refunded. The milestone stays recorded. |
-| A country chooses Screen while already under Loyalty Commissions | Only the incoming multiplier applies. The commissions keep their duration. |
+| A country chooses Screen while already under Loyalty Commissions | The incoming multiplier applies, and the spirit is extended so that at least the full Vetting Campaign duration remains, continuing as a Vetting Campaign once the commissions end. |
+| A government installed through this route is annexed by its installer | The registry row retires, the original tag's 365-day reinstallation cooldown starts, and the installer's three-year installation count keeps the annexed government. |
+| A3 or A4 is running when the Fifth Column ends | The protective effect ends, and the timed penalty finishes its full duration. |
 | An installed government is itself a host in a later war | It participates in Divided Loyalties like any other country. |

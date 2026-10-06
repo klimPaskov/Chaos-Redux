@@ -25,7 +25,8 @@ Final text should use these instead of fixed names:
 - the qualitative band words for Foreign networks among us and Our networks abroad, through one scripted localisation selector each
 - the Fifth Column band word, through one selector
 - the restoration mood word, through one selector
-- the active protective measure and its remaining days, in the Divided Loyalties header
+- the names of running protective measures, in the Divided Loyalties category text
+- the band of the enemy A2 targets, before and after, and the current and required compliance for B1
 
 Selectors must not write formatting characters directly. Colour for band words comes from the shared colour identity named in Part 1.
 
@@ -67,11 +68,12 @@ Selectors must not write formatting characters directly. Colour for band words c
 
 ## Decisions
 
-- Divided Loyalties category name and description: a government trying to keep its own state loyal during a war. The header lines are written as game text, with no pipes, dividers, or raw variable names.
+- Divided Loyalties category name and description: a government trying to keep its own state loyal during a war. The status lines are written as game text, with no pipes, dividers, raw variable names, or remaining days. When measures hold the Fifth Column band down, one short phrase says so.
 - Prepared Governments category name and description: installing and sustaining governments made from prepared networks, described as an administrative act everyone involved understands.
 - Decision names and descriptions describe concrete measures: commissions, arrests, evacuated ministries, military commissars in civilian offices, ministers sent abroad with reserves, a sash and a chair for the prepared government, rifles for the auxiliaries. Descriptions explain visible effects and never reveal hidden thresholds, band formulas, or variant chances.
 - Blocked tooltips name the exact requirement, such as the stability minimum or the missing seated state.
 - Vetting Campaign and Loyalty Commissions spirit names and descriptions: a state that checks its own servants and pays for it in stability and supply.
+- Purge spirit name and description: a returning government's purge that costs it the trust of its own offices. Amnesty state modifier name and description: retaken offices kept running by the officials who already know them.
 - Collaborators Unmasked: Purge is the voice of a returning government that wants visible punishment, and its irony can point at how fast the same officials denounce each other. Amnesty is cold pragmatism: the trains must run and nobody else knows how. Neither option makes light of reprisals.
 
 ## Event list, history, and Chaos history

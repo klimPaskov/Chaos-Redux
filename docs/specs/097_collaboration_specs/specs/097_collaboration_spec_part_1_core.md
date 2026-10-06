@@ -95,11 +95,18 @@ The brief is explicit that the event ignores ideology, alliances, relations, and
 
 Collaboration cannot exceed 100 percent. A pair that already sits at the cap gains nothing from a later layer. The design adds no separate ceiling. The brief asks for stacking only as far as the native system meaningfully allows, and the native cap provides that limit.
 
-A typical campaign reaches the vanilla 80 percent collaboration-government threshold only after four or more firings, at least two of them under Deep Networks. Repeatable weight recovery and cap reduction make this rare without Evolution IV, which gives networks their own, lower installation route.
+Two Accept countries reach the vanilla 80 percent collaboration-government level after four firings when at least two of them use the Deep Networks layer, or after six base firings. Whether that happens early or late depends on how often the event fires, described below. Reaching it in mid-campaign is accepted, because the brief asks for stronger foundations for collaboration governments. Evolution IV adds its own lower installation route and the Installed Administration package at high Chaos.
 
 ### Expected number of natural firings
 
-The shared Repeatable rules halve the event's weight cap after each firing and recover a small amount of weight after each minor firing of any event. With the current defaults, the caps after successive natural firings are about 1000, 500, 250, 125, and 63. The design assumes two to five natural firings in an ordinary campaign, with a sixth or later firing possible but uncommon.
+The shared Repeatable rules halve the event's weight cap after each firing and recover a small amount of weight after each pacing update, major or minor. Every repeatable event shares those rules, so the halving evens out firing counts across the pool instead of limiting Event 097 on its own. The number of natural firings depends mainly on how many events are enabled, the Chaos path, and the player's event settings.
+
+A planning estimate from the probability review, not yet confirmed with the HOI4 probability tools, gives these ranges over ten years:
+
+- with a small enabled pool like today's default list, about six to eleven firings, with the fourth firing around the fifth to seventh year
+- with every event enabled, about one to three firings
+
+The design is built to work across that whole range. The native 100 percent cap stops depth growth in long campaigns with many firings, the stance choice lets each country slow its own exposure, and the evolutions give a campaign with few firings its deeper behavior.
 
 Network depth does not depend on firings alone. The Deep Networks tranche adds one extra layer to every pair without a firing, and later evolutions turn the existing depth into stronger behavior instead of requiring more firings. The table below states the depth a pair of two Accept countries reaches.
 
@@ -110,12 +117,14 @@ Network depth does not depend on firings alone. The Deep Networks tranche adds o
 | 3 | 45 | 40 tranche, then 65 |
 | 4 | 60 | 90 |
 | 5 | 75 | 100 |
+| 6 | 90 | 100 |
+| 7 | 100 | 100 |
 
-These figures are the reference for the balance scenarios in Part 6. Two countries that both choose Cultivate in every firing reach the Strong band after two firings and the Total band after three. Two countries that both choose Screen gain about 5.6 points per base firing in each direction, stay in the Thin band for two firings, and reach the Ordinary band on the third. Band names are defined in Part 3.
+From the seventh firing, every Accept pair is at the native cap in both columns. These figures are the reference for the balance scenarios in Part 6. Two countries that both choose Cultivate in every firing reach the Strong band after two firings and the Total band after three. Two countries that both choose Screen gain about 5.6 points per base firing in each direction, stay in the Thin band for two firings, and reach the Ordinary band on the third. Band names are defined in Part 3.
 
 ### Collaboration from other sources
 
-Collaboration earned through vanilla intelligence operations or other events stays untouched. Event 097 only adds to the native value and never overwrites it. Every reduction described in this specification is a relative reduction that stops at zero.
+Event 097 adds to the native value and never overwrites it, so collaboration earned through vanilla intelligence operations or other events stays in place. The few reductions in this specification subtract a fixed number of points from the current value, whatever produced it, and stop at zero.
 
 ## The opening report
 
@@ -163,7 +172,7 @@ The government opens a vetting campaign across ministries, police, the officer c
 
 The cost is a timed national spirit, working label Vetting Campaign, that lowers stability and raises consumer goods demand while the campaign runs. Its duration is dynamic. It runs longer for a country at war or under Fifth Column pressure, because vetting in wartime disrupts more of the state, and shorter for a country at peace. The ordinary anchors are 120 days at peace and 180 days at war, with stability and consumer goods values large enough to matter, such as 10 percent each. A country already running a Vetting Campaign from an earlier firing can choose Screen again, and the new campaign replaces the old one with the new duration instead of stacking.
 
-Screen also has a requirement: the country must not be in open civil war, and its stability must be above a minimum that the vetting campaign could not push below zero. The blocked tooltip names the exact requirement.
+Screen also has a requirement: the country must not be in open civil war, and its stability must be at least 30 percent, a tuning anchor that keeps the vetting campaign from pushing a fragile state toward collapse. The blocked tooltip names the exact requirement. The option is still visible when blocked, and the event always keeps Accept as a valid choice.
 
 Option direction: suspicion that turns on the speaker. The irony is that the vetting committee itself may contain the people it is looking for, and the report should let the player suspect this without stating it. Grim irony fits. Comedy at the expense of victims of purges does not.
 
@@ -192,7 +201,7 @@ The event owns a small set of hidden records. None of them is a new public meter
 
 - incoming network depth: the total collaboration that Event 097 has added inside this country, after incoming multipliers, capped at 100
 - outgoing network depth: the total collaboration that Event 097 has added for this country abroad before host multipliers, capped at 100
-- the stance chosen in each firing, kept for achievements and AI memory
+- the stance chosen in each firing, kept for achievements
 - Fifth Column state, active responses, and cooldowns (Part 3 and Part 4)
 
 The two depth records mirror what Event 097 has added. They do not try to read the native per-pair value, which the engine exposes reliably only in occupation contexts. They exist so the player and AI can understand the event's own contribution without a per-pair ledger of thousands of entries.

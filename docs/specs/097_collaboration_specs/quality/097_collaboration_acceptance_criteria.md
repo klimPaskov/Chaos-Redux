@@ -31,7 +31,7 @@ Event 097 is complete only when every criterion below holds in the implemented f
 
 ## Decisions and responses
 
-19. Divided Loyalties never shows more than four actions at once, and Prepared Governments shows at most two per target.
+19. Divided Loyalties never shows more than four actions at once, and Prepared Governments never shows more than six rows.
 20. Every action uses at most four spendable cost types with correct texticons, at most three inline values, and a full cost tooltip.
 21. Every tuning value lives in the Event 097 constant group.
 22. Blocked tooltips name the exact missing requirement.

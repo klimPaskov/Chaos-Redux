@@ -68,6 +68,8 @@ The state receives:
 
 While the Fifth Column is active in the owner, the compliance gain grows by half and its cap rises to 50.
 
+The order is fixed: the base gain and its cap of 40 first, then the Fifth Column increase and its cap of 50, then the halving from the owner's Loyalty Commissions in Part 4.
+
 An Open Gates state is seated at once when it changes hands.
 
 ### Recapture
@@ -140,7 +142,7 @@ The spirit's tooltip names the band and the country with the strongest network i
 
 At the Defecting and Collapsing bands, a frontline state can hand itself to the enemy without a battle.
 
-An Open Gates incident is considered for a host on a timer with an ordinary MTTH anchor of about 60 days at Defecting and about 30 days at Collapsing. Responses in Part 4 can slow it. The incident chooses one state that meets all of these conditions:
+An Open Gates incident is considered for a host on a timer that follows the timing model in Part 2, with an ordinary MTTH anchor of about 60 days at Defecting and about 30 days at Collapsing, a minimum of 20 days, and a maximum of 120 days. A timer started while A1 is active runs twice as long. A3 and A4 suspend the incident: a check that runs while either is active does nothing and starts a new timer. A band change during a running timer does not move it, and the check uses the band at that moment. The incident chooses one state that meets all of these conditions:
 
 - a core of the host, owned and controlled by the host
 - not the host's capital
@@ -148,17 +150,26 @@ An Open Gates incident is considered for a host on a timer with an ordinary MTTH
 - without any division of the host or its allies present
 - not seated or opened in the last 180 days
 
-If no state qualifies, the incident does nothing and its timer restarts. If several qualify, the state with the lowest victory-point value is preferred, so the incident favors provincial districts over major cities.
+If no state qualifies, the incident does nothing and its timer restarts. If several qualify, the state with the lowest victory-point value is preferred, so the incident favors provincial districts over major cities. Remaining ties go to the state bordering the most states controlled by that enemy, then to a random choice among equals.
 
 The chosen state changes controller to the enemy with the strongest network, without changing ownership, and receives a seated administration if Administrations in Waiting is active. The host receives a report from the point of view of a government that learns one of its districts has simply opened its doors. The enemy receives a report that one of its columns marched in without firing a shot.
 
-Caps: one incident per host every 90 days, and at most three per host per war. The incident needs a state-scope effect that changes control without ownership and a reliable trigger for friendly divisions present in a state. Both must be verified in the installed documentation. If either is missing, the implementation reports a blocker.
+Caps: one incident per host every 90 days, and at most three per host per war. The 90-day spacing sets the pace after the first incident, and the band decides how soon the first one comes. The incident needs a state-scope effect that changes control without ownership and a reliable trigger for friendly divisions present in a state. Both must be verified in the installed documentation. If either is missing, the implementation reports a blocker.
 
 ### Cleanup
 
 The spirit is removed when the condition fails with hysteresis, when the host makes peace with every participant enemy, when the host capitulates (after Evolution IV processing reads it), or when the host is annexed. Pending evaluation and Open Gates timers end with it.
 
 The host records the highest band it reached in each war. Evolution IV and achievements read that record. It clears when the war ends.
+
+## War-scoped guards
+
+Script has no war identity, and countries often fight overlapping wars. Every rule in this specification that says once per war, in this war, or until the war ends uses one of two scopes:
+
+- A guard tied to a pair of countries, such as Open Ministries, Collaborators Unmasked, Turned Regime, or the capitulation offer, clears when that pair stops being at war.
+- A guard tied to one host, such as the Open Gates cap, the highest recorded Fifth Column band, the Collapsing threshold reduction, or the charter from Part 4, clears when that host is at peace with every participant enemy.
+
+A host that stays at war with one enemy keeps its host guards.
 
 ## Evolution IV: prepared governments
 
@@ -181,7 +192,7 @@ When a participant host capitulates while Collaboration Governments is active, E
 
 An enemy qualifies when it controls at least one core state of the host, holds collaboration inside the host at or above the threshold, and there is no living government installed through this route for the host's original tag.
 
-When several enemies qualify, the installer is the one with the highest network band, then the most host core states controlled, then the country that received the capitulation.
+When several enemies qualify, the installer is the one with the highest network band, then the most host core states controlled, then the country that received the capitulation, then a random choice among equals. The first qualifying candidate is always accepted, so the selector never ends without an installer when one qualifies.
 
 The installer receives the Prepared Government event. It has two options:
 
@@ -236,7 +247,7 @@ The installed government is a dynamic country created by the vanilla route from 
 The installed government receives local auxiliary divisions raised from the police, gendarmerie, and militia that the network prepared. They are ordinary infantry formations with light equipment, suited to garrison and rear-area duty.
 
 - Count: one division for every two states of the new government, at least one and at most six
-- Template: a light infantry auxiliary template using ordinary infantry battalions, without artillery or support companies, with a working template name of Auxiliary Police
+- Template: a light auxiliary template of six ordinary infantry battalions, without artillery or support companies, with a working template name of Auxiliary Police. The decision costs in Part 4 are derived from this template.
 - Equipment: drawn from the installer's infantry equipment stockpile at installation, as part of the installation cost
 - Experience: low, representing police and militia rather than soldiers
 
@@ -274,7 +285,9 @@ A government installed through this route can defect to a rival during a war. Th
 
 The installed government is itself a participant, so later firings build networks inside it like any other country. The variant reads the rival's network only where the rival occupies the government's territory, which keeps every pair read in an occupation context. A rival that chose Cultivate in recent firings is the most likely beneficiary, because its networks inside every country are deeper than those of an ordinary power.
 
-The variant has an ordinary MTTH anchor of about 120 days while the conditions hold. When it fires, the government changes its overlord to the rival as a collaboration government, leaves the installer's war, and is placed on the rival's side. The registry row records the new installer and the route Turned Regime. The spirit resets to Imposed.
+The variant follows the timing model in Part 2 with an ordinary MTTH anchor of about 120 days, a minimum of 60 days, and a maximum of 365 days. At most one Turned Regime can happen anywhere in the world in any 365 days, which keeps it a rare variant even in a world war with several contested governments. A check that runs inside that world spacing does nothing and starts a new timer.
+
+When several rivals qualify, the government turns to the rival with the highest network band inside its country, then the one occupying the most of its core states, then a random choice among equals. When it fires, the government changes its overlord to the rival as a collaboration government, leaves the installer's war, and is placed on the rival's side. The registry row records the new installer and the route Turned Regime. The spirit resets to Imposed.
 
 Each government can turn at most once per war. The engine route for changing a subject's overlord during a war must be verified. If the engine cannot perform the transfer cleanly, the implementation reports a blocker and leaves the variant unimplemented with that reason recorded.
 

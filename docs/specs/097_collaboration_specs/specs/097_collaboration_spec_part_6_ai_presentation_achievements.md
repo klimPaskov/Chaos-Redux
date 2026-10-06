@@ -13,10 +13,24 @@ All weights in this part are intended orderings. Exact values must come from the
 | Expanding power | Major or regional power at war, or with an active war goal or war-preparation focus | Cultivate | Takes the prepared-government offer when it needs garrisons elsewhere. Uses B1 and B2 actively. Rarely takes A1 unless its own Fifth Column appears. |
 | Threatened neighbor | Borders an expanding power with a claim on it, or is already losing a war | Screen | Takes A1 early, A3 and A4 at Collapsing, and A5 when it has allies who will fight on. |
 | Neutral or isolated state | No war, no threatening neighbor | Accept | Rarely visible to the decision layer. |
-| Democracy at peace | Democratic ruling party, no war | Accept, with Screen rising if a fascist or communist neighbor is expanding | Uses A5 readily, because it expects a government in exile to fight on. Takes the prepared-government offer at reduced weight. |
+| Democracy at peace | Democratic ruling party, no war | Accept, with Screen rising if a fascist or communist neighbor is expanding | Weighs A5 higher than other ideologies once it becomes visible, because it expects a government in exile to fight on. Takes the prepared-government offer at reduced weight. |
 | Ideological revolutionary | Communist or fascist government with an active expansion route | Cultivate | As expanding power. |
 | Installed government | Government installed through Event 097 | Accept, or Screen when Contested | Uses A1 and A3 in its own wars. Never seeks a new overlord except through Turned Regime. |
 | Country in civil war | Active civil war | Accept, because Screen is blocked | Uses A1 only if stability allows it. |
+
+### Group precedence
+
+A country can match several groups. It uses the first group that matches, in this order:
+
+1. Installed government
+2. Country in civil war
+3. Threatened neighbor through losing a war, with its own surrender progress past 20 percent
+4. Expanding power or ideological revolutionary
+5. Threatened neighbor through a border with an expanding power that holds a claim on it
+6. Democracy at peace
+7. Neutral or isolated state
+
+A losing expanding power therefore behaves as a threatened neighbor, and a democracy beside a claimant behaves as a threatened neighbor.
 
 ### Opening stance weights
 
@@ -24,15 +38,19 @@ The stance choice is the decision most AI countries will make, so its ordering m
 
 - An expanding power at war prefers Cultivate strongly, but the weight falls when its own surrender progress passes 20 percent, because a cultivator becomes easier to defeat.
 - A threatened neighbor prefers Screen, but the weight falls when its stability is near the minimum, because the vetting spirit could destabilize it.
+- An installed government in the Contested stage prefers Screen.
 - Every other country prefers Accept.
-- No group should end with a near-zero chance for Accept. The world must not polarize into cultivators and screeners in every firing.
+- Floors: Accept never falls below 10 percent of a country's option weight, and Cultivate and Screen never fall below 5 percent while they are available. Event options are chosen with a percentage roll, so a share under 1 percent would never be picked.
+- The world must not polarize. No single stance may take more than about two thirds of all AI choices in one firing.
+- Stance weights use MTTH-backed entries, one per option, so the group inputs stay in one tuning place. Past stance choices do not change AI weights.
 
 ### Prepared-government offer weights
 
 - Install when the installer controls most of the host's cores and is fighting on another front.
 - Keep direct occupation when the installer plans to annex the territory through a peace conference it expects to win soon, or when the installer is itself losing.
 - A democratic installer installs at lower weight.
-- An installer that already holds three governments through this route installs only on its own continent.
+- An installer that already holds three governments through this route installs only on its own continent. Outside it, the Install weight is zero.
+- In a long world war, the target is about one to four installations per year worldwide. More than six in a year is a balance failure.
 
 ### Evolution and variant timing
 
@@ -108,7 +126,7 @@ Viewpoint of the former installer: a government it created now answers to its en
 
 Divided Loyalties texts describe protective measures in concrete terms: commissions, arrests, evacuated ministries, military commissars in civilian offices, ministers sent abroad with reserves and archives. Prepared Governments texts describe the installation and arming of a government as an administrative act that everyone involved understands.
 
-Decision descriptions explain visible effects. They must not reveal hidden thresholds, band formulas, or variant chances.
+Decision descriptions explain visible effects. They must not reveal hidden formulas, band calculations, or variant chances. Requirement values the player acts on are shown in tooltips, such as the compliance required for B1, the stability floor for A1 and A4, and the band of the enemy that A2 targets.
 
 ### Event Log and Event Details
 
@@ -222,8 +240,8 @@ The event has no DLC-only surface of its own. If verification shows that a requi
 
 The implementation must check these scenarios and record the results.
 
-1. A 1936 start with one firing in 1937: how much earlier do typical wars end, and does compliance at capitulation change garrison needs in a visible way.
-2. Four firings with Deep Networks active in a 1940s world war: how often does a major power reach the vanilla 80 percent collaboration-government threshold without Evolution IV.
+1. A 1936 start with one early firing: how much earlier do typical wars end, and does compliance at capitulation change garrison needs in a visible way.
+2. Firing counts across the range in Part 1, with and without Deep Networks, in a 1940s world war: when does a major power reach the vanilla 80 percent collaboration-government level without Evolution IV, and does the stance choice change that timing in a way players can feel.
 3. Fifth Column at Collapsing on a minor and on a major: does it hasten capitulation without making a major collapse from a single bad month.
 4. Open Gates frequency over a long war: does it stay at most three per host per war and prefer provincial districts.
 5. Evolution IV in a world war: how many governments are installed per year, and does the political power growth stop one power from installing everywhere.

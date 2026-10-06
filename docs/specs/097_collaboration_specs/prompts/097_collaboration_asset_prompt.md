@@ -12,7 +12,7 @@ Read the accepted design before producing anything:
 
 ## Global rules
 
-- Inspect the matching canonical reference family under `.agents/skills/chaos-redux-event-assets/assets/gfx_references/` and its contact sheet before generating each family.
+- Inspect the matching canonical reference family and its contact sheet before generating each family. The current skill places the library under `.agents/skills/chaos-redux-event-assets/assets/gfx_references/`, and this checkout still holds it under `assets/vanilla_reference/` in the same skill folder.
 - All art is fictional, period-documentary in feel for 1936 to 1945, and shows no real person, no real collaborator, no readable text, and no identifiable real national insignia of a foreign occupying army. Local flags may appear only as unreadable shapes.
 - The subject is ordinary people changing sides: officials, police, clerks, managers, local politicians. Do not make paperwork, archives, maps, or staff tables the main subject. Do not depict violence against civilians.
 - Icons use native ImageGen transparency, keep the alpha through processing and DDS conversion, and are each designed for their own consumer. Never resize one icon type into another.
@@ -51,7 +51,7 @@ The super-event image is coordinated with `docs/specs/097_collaboration_specs/pr
 | --- | --- | --- | --- |
 | `decision_category_097_collaboration_divided_loyalties_picture` | Divided Loyalties category picture | `GFX_decision_category_097_collaboration_divided_loyalties_picture` | A ministry corridor at night. A few officials work by lamplight. At the end of the corridor one figure waits by a half-open door. No buttons, meters, or text. |
 
-Inspect `assets/gfx_references/icons/decision_categories/pictures/` and its `contact_sheet.png` first. If the contact sheet is missing, create it, label each reference with filename and native dimensions, and update the reference README and catalog before producing the picture. The reference family uses `114x101`, but the final size follows the active category-picture consumer the implementation agent wires.
+Inspect the decision-category picture reference family and its `contact_sheet.png` first. The current skill names it `assets/gfx_references/icons/decision_categories/pictures/`, and this checkout holds it at `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/decision_categories/pictures/`. Use whichever folder exists when the picture is produced. If the contact sheet is missing, create it, label each reference with filename and native dimensions, and update the reference README and catalog before producing the picture. The reference family uses `114x101`, but the final size follows the active category-picture consumer the implementation agent wires.
 
 ## Decision category icons
 
@@ -89,12 +89,14 @@ Size `64x64`, transparent. Final folder `gfx/interface/ideas/097_collaboration/`
 | `idea_097_collaboration_entrenched_administration` | Installed Administration, Entrenched | A comfortable office chair with a coat hung on it |
 | `idea_097_collaboration_contested_administration` | Installed Administration, Contested | A sash pulled from two sides |
 | `idea_097_collaboration_abandoned_administration` | Installed Administration, Abandoned | An empty office with an open window and papers blowing out |
+| `idea_097_collaboration_purge` | Purge penalty after Collaborators Unmasked | A row of empty office desks with their name plates turned face down |
 
-The Fifth Column spirit uses one icon for every band, because the band name carries the state. The prepared-cadres state modifier from Part 3 needs a state-modifier icon from the matching reference family:
+The Fifth Column spirit uses one icon for every band, because the band name carries the state. The prepared-cadres state modifier from Part 3 and the Amnesty state modifier from Part 4 need state-modifier icons from the matching reference family:
 
 | Asset | Use | Direction |
 | --- | --- | --- |
 | `state_modifier_097_collaboration_prepared_cadres` | Prepared cadres state modifier | A ring of keys on a nail beside a door |
+| `state_modifier_097_collaboration_amnesty` | Amnesty state modifier after Collaborators Unmasked | A desk lamp still lit in a damaged office, with a coat on the chair |
 
 ## Achievement icons
 

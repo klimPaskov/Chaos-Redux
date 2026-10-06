@@ -19,6 +19,31 @@ Evolution activation never changes Chaos. A Chaos change appears only when an ev
 
 Each evolution becomes eligible when Chaos reaches its requirement and the evolution is enabled. It then activates through the shared MTTH-based evolution pacing used by other Chaos Redux events, not instantly at the threshold. Each evolution records one entry in the shared evolution log with no actor, because the event is global. The shared evolution context variables are set before the enable check, and a disabled evolution never sets a recorded flag that later content reads.
 
+### Timing model
+
+Every timed surface in Event 097 uses the same model: the evolution clocks here, and the Open Gates and Turned Regime timers in Part 3.
+
+1. When a countdown starts, the MTTH entry is evaluated once with the current world state.
+2. The result is clamped between the surface's minimum and maximum.
+3. One check is scheduled at that delay, spread evenly by up to a third of the delay in either direction, so countdowns started in the same situation do not land on the same day.
+4. The countdown is not recomputed when the world changes during it.
+5. When the check runs, it tests the surface's conditions again. If they still hold, the surface activates. If they no longer hold, nothing happens and the countdown can start again at the next opportunity.
+
+For an evolution, the conditions at the check are that the evolution is still enabled, still inactive, and that Chaos still meets its requirement. Chaos falling below the requirement or the evolution being disabled during a countdown therefore cancels that activation without leaving any flag behind.
+
+Each evolution has two MTTH entries, one for the pre-fire path before Event 097 has applied layers and one for the active path afterward. The pre-fire entry is slower, with an ordinary anchor of one and a half times the active base.
+
+| Evolution | Active base | Minimum | Maximum |
+| --- | --- | --- | --- |
+| I | 90 days | 30 days | 240 days |
+| II | 90 days | 30 days | 240 days |
+| III | 90 days | 30 days | 240 days |
+| IV | 120 days | 45 days | 300 days |
+
+Factor magnitudes are tuning anchors that live with the MTTH entries and must pass the timing scenarios in the probability matrix. The minimum clamp guarantees that stacked fast factors never activate an evolution in under 30 days.
+
+### Independence and entry paths
+
 Evolutions do not require one another. Evolution II can activate while Evolution I is disabled. Each later evolution reads the state of earlier ones only as an accelerating or strengthening factor, never as a hard prerequisite, so disabling one evolution never strands another.
 
 Evolution content acts only on networks that Event 097 has actually created. Behaviors check that the host has a non-zero incoming network depth from Event 097 before reading the native collaboration value. Collaboration from vanilla intelligence operations alone never triggers an Event 097 behavior.
@@ -44,9 +69,9 @@ Networks are no longer a few sympathizers in a café. They reach the middle of t
 - MTTH anchor: about 90 days once eligible
 - Faster when Event 097 has already fired once, and faster again after two firings
 - Faster when three or more wars between participants are active
-- Slower when Event 097 has never fired
+- The pre-fire entry applies before the first firing
 
-The pacing factors are tuning anchors for the probability audit. The ordinary expected range is roughly 60 to 120 days.
+The ordinary expected range on the active path is roughly 60 to 120 days.
 
 ### Changes
 
@@ -83,7 +108,7 @@ Networks prepare complete local administrations before conquest. When a state fa
 - Chaos requirement: 400
 - MTTH anchor: about 90 days once eligible
 - Faster when Deep Networks is active
-- Faster when a participant has capitulated since Event 097 first fired
+- Faster when a participant has capitulated since Event 097 first fired, or since the countdown started on the pre-fire path
 - Slower when no war between participants is active
 
 ### Changes
