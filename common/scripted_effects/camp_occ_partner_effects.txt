@@ -1,0 +1,203 @@
+# Dated Slovak, Croatian, Bulgarian occupied-territory and Vichy handovers.
+# Called only by Germany's existing month-guarded occupation pass.
+# Finite enrollment, one government answer, measured movement and destination
+# losses use the existing occupation helpers. No new periodic world hook.
+@CAMP_OCC_PARTNER_HALT_AUTONOMY = -0.2
+
+camp_occ_extended_partner_register_source = {
+	set_temp_variable = { camp_occ_source_authority = camp_occ_extended_authority }
+	camp_occ_stage_german_origin_request = yes
+	multiply_temp_variable = { camp_occ_source_requested_k = camp_occ_order_share }
+	set_temp_variable = { camp_occ_source_membership_k = camp_occ_source_requested_k }
+	set_temp_variable = { camp_occ_source_profile = constant:camp_occ_profile.germany }
+	set_temp_variable = { camp_occ_source_partner = constant:camp_occ_value.transfer_valid }
+	set_temp_variable = { camp_occ_source_proven = 1 }
+	camp_occ_register_cohort = yes
+}
+
+# Country, partner. One enrolled order spans all its provinces and Croatian waves.
+# The first transport waits for the government answer. The monthly pass remains
+# quiet after that answer, including a shortage or a temporarily invalid destination.
+camp_occ_extended_partner_process = {
+	set_temp_variable = { camp_occ_order_share = 0 }
+	# A previously unused district needs its physical baseline before preflight.
+	# Reconciliation preserves ambiguity and never creates a living origin row.
+	var:camp_occ_extended_destination = {
+		if = { limit = { camp_occ_state_has_german_authority = yes } camp_origin_reconcile_host_membership = yes }
+	}
+	if = {
+		limit = {
+			exists = yes
+			camp_occ_extended_partner_order_stands = yes
+			var:camp_occ_extended_destination = { camp_occ_extended_partner_reception_ready = yes }
+		}
+		every_controlled_state = {
+			limit = { camp_occ_extended_partner_candidate = yes }
+			camp_occ_extended_partner_register_source = yes
+		}
+		if = {
+			limit = {
+				NOT = { has_country_flag = camp_occ_extended_order_notified }
+				any_controlled_state = { camp_occ_state_has_partner_authority = yes check_variable = { camp_occ_remaining_k > 0 } }
+			}
+			set_country_flag = camp_occ_extended_order_notified
+			country_event = { id = camp_occ_partner.3 }
+		}
+		set_temp_variable = { camp_admin_month_key = 0 }
+		camp_admin_prepare_month_key = yes
+		if = {
+			limit = {
+				has_country_flag = camp_occ_extended_order_answered
+				camp_occ_extended_partner_wave_window = yes
+				NOT = { check_variable = { camp_occ_extended_last_transport_month = camp_admin_month_key } }
+			}
+			set_temp_variable = { camp_occ_extended_transport_moved_people = 0 }
+			set_temp_variable = { camp_occ_extended_wave_left = constant:camp_occ_partner_table.wave_people }
+			if = {
+				limit = { has_country_flag = camp_occ_extended_transports_delayed }
+				multiply_temp_variable = { camp_occ_extended_wave_left = constant:camp_occ_partner_table.delay_share }
+			}
+			every_controlled_state = {
+				limit = {
+					camp_occ_state_has_partner_authority = yes
+					check_variable = { camp_occ_remaining_k > 0 }
+					check_variable = { camp_occ_extended_wave_left > 0 }
+				}
+				camp_occ_extended_partner_move_source = yes
+			}
+			if = {
+				limit = { check_variable = { camp_occ_extended_transport_moved_people > 0 } }
+				set_variable = { camp_occ_extended_last_transport_month = camp_admin_month_key }
+			}
+		}
+	}
+}
+
+# State. One request, bounded by the source's living row and physical population.
+# Successful transfer appends a new row at the actual receiving district. Only
+# that row can receive arrival losses, before the ordinary monthly campaign.
+camp_occ_extended_partner_move_source = {
+	set_temp_variable = { camp_occ_extended_requested_people = camp_occ_remaining_k }
+	multiply_temp_variable = { camp_occ_extended_requested_people = constant:camp_occ_value.people_per_k }
+	if = {
+		limit = { CONTROLLER = { camp_occ_extended_cro_first_wave = yes } }
+		if = {
+			limit = { NOT = { has_state_flag = camp_occ_extended_first_wave_done } }
+			multiply_temp_variable = { camp_occ_extended_requested_people = constant:camp_occ_partner_table.cro_first_wave_share }
+		}
+		else = { set_temp_variable = { camp_occ_extended_requested_people = 0 } }
+	}
+	if = {
+		limit = { CONTROLLER = { has_country_flag = camp_occ_extended_transports_delayed } }
+		multiply_temp_variable = { camp_occ_extended_requested_people = constant:camp_occ_partner_table.delay_share }
+	}
+	clamp_temp_variable = { var = camp_occ_extended_requested_people min = 0 max = camp_occ_extended_wave_left }
+	set_temp_variable = { camp_occ_extended_population_margin = state_population_k }
+	subtract_from_temp_variable = { camp_occ_extended_population_margin = constant:camp_occ_value.minimum_population_k }
+	if = { limit = { has_variable = camp_admin_detainees_k } subtract_from_temp_variable = { camp_occ_extended_population_margin = camp_admin_detainees_k } }
+	multiply_temp_variable = { camp_occ_extended_population_margin = constant:camp_occ_value.people_per_k }
+	subtract_from_temp_variable = { camp_occ_extended_population_margin = constant:camp_occ_value.one_person }
+	clamp_temp_variable = { var = camp_occ_extended_requested_people min = 0 max = camp_occ_extended_population_margin }
+	set_temp_variable = { camp_occ_extended_requested_ceiling = camp_occ_extended_requested_people }
+	round_temp_variable = camp_occ_extended_requested_people
+	if = {
+		limit = { check_variable = { camp_occ_extended_requested_people > camp_occ_extended_requested_ceiling } }
+		subtract_from_temp_variable = { camp_occ_extended_requested_people = constant:camp_occ_value.one_person }
+	}
+	if = {
+		limit = { check_variable = { camp_occ_extended_requested_people > 0 } }
+		var:camp_occ_extended_destination = { camp_occ_stage_transfer_destination = yes }
+		set_temp_variable = { camp_occ_transfer_row_id = camp_occ_native_row_id }
+		set_temp_variable = { camp_occ_transfer_requested_people = camp_occ_extended_requested_people }
+		set_temp_variable = { camp_occ_transfer_route_proven = constant:camp_occ_value.transfer_valid }
+		set_temp_variable = { camp_occ_transfer_escape = 0 }
+		set_temp_variable = { camp_occ_custody_partner_route = constant:camp_occ_value.transfer_valid }
+		set_temp_variable = { camp_occ_transfer_result = 0 }
+		set_temp_variable = { camp_occ_transfer_committed_people = 0 }
+		set_temp_variable = { camp_occ_transfer_new_row_index = 0 }
+		set_temp_variable = { camp_occ_transfer_amount_k = 0 }
+		set_temp_variable = { camp_occ_appended_row_id = 0 }
+		camp_occ_transfer_survivors_exact = yes
+		set_temp_variable = { camp_occ_custody_partner_route = 0 }
+		if = {
+			limit = { check_variable = { camp_occ_transfer_result = constant:camp_occ_value.transfer_valid } }
+			add_to_temp_variable = { camp_occ_extended_transport_moved_people = camp_occ_transfer_committed_people }
+			if = { limit = { CONTROLLER = { camp_occ_extended_cro_first_wave = yes } } set_state_flag = camp_occ_extended_first_wave_done }
+			subtract_from_temp_variable = { camp_occ_extended_wave_left = camp_occ_transfer_committed_people }
+			set_temp_variable = { camp_occ_active_row_index = camp_occ_transfer_new_row_index }
+			set_temp_variable = { camp_occ_active_row_id = camp_occ_appended_row_id }
+			set_temp_variable = { camp_occ_requested_k = camp_occ_transfer_amount_k }
+			multiply_temp_variable = { camp_occ_requested_k = constant:camp_occ_arrival.violence_request_fraction }
+			set_temp_variable = { camp_occ_loss_cause = constant:camp_occ_cause.campaign_violence }
+			set_temp_variable = { camp_occ_loss_contract = 1 }
+			var:camp_occ_extended_destination = { camp_occ_record_deaths = yes }
+		}
+	}
+}
+
+# Country, Germany. Five explicit country scopes, never a world iterator.
+camp_occ_try_extended_partner_orders = {
+	if = {
+		limit = { original_tag = GER camp_occ_authority_has_campaign = yes }
+		set_temp_variable = { camp_occ_extended_authority = THIS }
+		set_temp_variable = { camp_occ_extended_destination = constant:camp_occ_partner_table.reception_state }
+		SLO = { if = { limit = { exists = yes } camp_occ_extended_partner_process = yes } }
+		CRO = { if = { limit = { exists = yes } camp_occ_extended_partner_process = yes } }
+		BUL = { if = { limit = { exists = yes } camp_occ_extended_partner_process = yes } }
+		VIC = { if = { limit = { exists = yes } camp_occ_extended_partner_process = yes } }
+		FRA = { if = { limit = { exists = yes has_cosmetic_tag = FRA_VICHY } camp_occ_extended_partner_process = yes } }
+	}
+}
+
+# Country answers are single-use, and a late report cannot restart a halted order.
+camp_occ_extended_partner_comply = {
+	if = {
+		limit = { camp_occ_extended_partner_order_stands = yes NOT = { has_country_flag = camp_occ_extended_order_answered } }
+		set_country_flag = camp_occ_extended_order_answered
+		camp_occ_extended_partner_dispatch_answer = yes
+	}
+}
+camp_occ_extended_partner_delay = {
+	if = {
+		limit = { camp_occ_extended_partner_order_stands = yes NOT = { has_country_flag = camp_occ_extended_order_answered } }
+		set_country_flag = camp_occ_extended_order_answered
+		set_country_flag = camp_occ_extended_transports_delayed
+		reverse_add_opinion_modifier = { target = GER modifier = camp_occ_partner_obstructed_transports }
+		camp_occ_extended_partner_dispatch_answer = yes
+	}
+}
+
+# The government answer dispatches this month's transport immediately. Waiting
+# for another calendar month would make a March-only Bulgarian order impossible.
+# The successful transport month marker in process prevents a second wave.
+camp_occ_extended_partner_dispatch_answer = {
+	GER = {
+		set_temp_variable = { camp_occ_extended_authority = THIS }
+		set_temp_variable = { camp_occ_extended_destination = constant:camp_occ_partner_table.reception_state }
+		PREV = { camp_occ_extended_partner_process = yes }
+	}
+}
+camp_occ_extended_partner_halt = {
+	if = {
+		limit = { camp_occ_extended_partner_order_stands = yes }
+		set_country_flag = camp_occ_extended_order_answered
+		set_country_flag = camp_occ_extended_transports_halted
+		save_event_target_as = camp_occ_halted_partner
+		clr_country_flag = camp_occ_extended_transports_delayed
+		add_stability = constant:camp_occ_partner_response.halt_stability
+		add_war_support = constant:camp_occ_partner_response.halt_war_support
+		if = { limit = { is_subject_of = GER } add_autonomy_ratio = { value = @CAMP_OCC_PARTNER_HALT_AUTONOMY localization = camp_occ_partner_halt_autonomy } }
+		reverse_add_opinion_modifier = { target = GER modifier = camp_occ_partner_halted_transports }
+		hidden_effect = {
+			# One national history entry, located at the partner's capital.
+			set_temp_variable = { camp_occ_extended_halt_place = 0 }
+			capital_scope = { set_temp_variable = { camp_occ_extended_halt_place = THIS.id } }
+			GER = {
+				set_temp_variable = { camp_admin_record_kind = constant:camp_admin_history_kind.extended_partner_halt }
+				set_temp_variable = { camp_admin_record_state_id = camp_occ_extended_halt_place }
+				camp_admin_record_history = yes
+			}
+		}
+		GER = { country_event = { id = camp_occ_partner.4 } }
+	}
+}

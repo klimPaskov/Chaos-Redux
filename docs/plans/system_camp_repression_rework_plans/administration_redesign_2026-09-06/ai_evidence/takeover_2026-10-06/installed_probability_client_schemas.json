@@ -1,0 +1,1297 @@
+{
+  "clientName": "camp-takeover-probability-audit-readonly",
+  "transport": "stdio",
+  "configuredProcess": "C:/Users/klimp/AppData/Roaming/npm/node_modules/hoi4-agent-tools/dist/bin/stdio.js",
+  "packageRoot": "C:/Users/klimp/Documents/Projects/hoi4-agent-tools",
+  "configPath": "C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/docs/plans/system_camp_repression_rework_plans/administration_redesign_2026-09-06/occupation/origin_ambiguity_mcp_2026-10-03/config.json",
+  "workspaceId": "camp_origin_architecture_oct3",
+  "serverVersion": {
+    "name": "hoi4-agent-tools",
+    "version": "3.8.1",
+    "websiteUrl": "https://github.com/klimPaskov/hoi4-agent-tools"
+  },
+  "serverCapabilities": {
+    "logging": {},
+    "prompts": {
+      "listChanged": true
+    },
+    "resources": {
+      "listChanged": true
+    },
+    "tools": {
+      "listChanged": true
+    },
+    "tasks": {
+      "list": {},
+      "cancel": {},
+      "requests": {
+        "tools": {
+          "call": {}
+        }
+      }
+    }
+  },
+  "sdkVersion": "1.30.0",
+  "probabilitySchemas": [
+    {
+      "name": "hoi4.probability_inspect",
+      "title": "Inspect AI and MTTH weighted logic",
+      "description": "Discover weighted adapters, candidates, provenance, and required inputs.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "workspaceId": {
+            "default": "current",
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_-]{0,63}$"
+          },
+          "adapter": {
+            "type": "string",
+            "enum": [
+              "event_mean_time_to_happen",
+              "event_option_ai_chance",
+              "decision_ai_will_do",
+              "mission_ai_will_do",
+              "national_focus_ai_will_do",
+              "technology_ai_will_do",
+              "doctrine_ai_will_do",
+              "direct_random",
+              "random_list",
+              "ai_strategy_factor",
+              "custom_weighted_pool"
+            ]
+          },
+          "source": {
+            "description": "Source selector; snapshotPath binds frozen bytes to path with expectedSourceHash."
+          },
+          "customPoolManifest": {
+            "description": "Declared custom weighted pool and state transitions."
+          },
+          "candidatePool": {
+            "maxItems": 100000,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 512
+            }
+          },
+          "refresh": {
+            "type": "boolean"
+          }
+        },
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "additionalProperties": false
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "ok",
+              "blocked",
+              "error"
+            ]
+          },
+          "code": {
+            "type": "string"
+          },
+          "workspaceId": {
+            "type": "string"
+          },
+          "filesScanned": {
+            "type": "array",
+            "items": {}
+          },
+          "proposedFiles": {
+            "type": "array",
+            "items": {}
+          },
+          "changedFiles": {
+            "type": "array",
+            "items": {}
+          },
+          "diagnostics": {
+            "maxItems": 20,
+            "type": "array",
+            "items": {}
+          },
+          "artifacts": {
+            "maxItems": 32,
+            "type": "array",
+            "items": {}
+          },
+          "validation": {},
+          "blockers": {
+            "type": "array",
+            "items": {}
+          },
+          "data": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": {}
+          }
+        },
+        "required": [
+          "status",
+          "code",
+          "workspaceId",
+          "filesScanned",
+          "proposedFiles",
+          "changedFiles",
+          "diagnostics",
+          "artifacts",
+          "validation",
+          "blockers",
+          "data"
+        ],
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "additionalProperties": false
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      },
+      "execution": {
+        "taskSupport": "optional"
+      }
+    },
+    {
+      "name": "hoi4.probability_evaluate",
+      "title": "Evaluate AI and MTTH scenarios",
+      "description": "Evaluate weights and probabilities under explicit scenarios.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "workspaceId": {
+            "default": "current",
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_-]{0,63}$"
+          },
+          "adapter": {
+            "type": "string",
+            "enum": [
+              "event_mean_time_to_happen",
+              "event_option_ai_chance",
+              "decision_ai_will_do",
+              "mission_ai_will_do",
+              "national_focus_ai_will_do",
+              "technology_ai_will_do",
+              "doctrine_ai_will_do",
+              "direct_random",
+              "random_list",
+              "ai_strategy_factor",
+              "custom_weighted_pool"
+            ]
+          },
+          "scenarioSet": {
+            "description": "Explicit world-state scenarios."
+          },
+          "candidatePool": {
+            "maxItems": 100000,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 512
+            }
+          },
+          "horizonDays": {
+            "type": "number",
+            "exclusiveMinimum": 0,
+            "maximum": 1000000
+          },
+          "metrics": {
+            "minItems": 1,
+            "maxItems": 4,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "conditional_probability",
+                "raw_value",
+                "cumulative_chance",
+                "effective_mtth_days"
+              ]
+            }
+          },
+          "acceptanceBands": {
+            "description": "Optional named metric acceptance bands."
+          },
+          "diagnosticThresholds": {
+            "description": "Optional diagnostic thresholds."
+          },
+          "outputs": {
+            "maxItems": 10,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "json",
+                "ranking",
+                "matrix",
+                "waterfall",
+                "timing",
+                "sensitivity",
+                "threshold",
+                "sequence",
+                "comparison",
+                "unresolved"
+              ]
+            }
+          },
+          "refresh": {
+            "type": "boolean"
+          },
+          "source": {
+            "description": "Source selector; snapshotPath binds frozen bytes to path with expectedSourceHash."
+          },
+          "customPoolManifest": {
+            "description": "Declared custom weighted pool and state transitions."
+          }
+        },
+        "required": [
+          "scenarioSet"
+        ],
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "additionalProperties": false
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "ok",
+              "blocked",
+              "error"
+            ]
+          },
+          "code": {
+            "type": "string"
+          },
+          "workspaceId": {
+            "type": "string"
+          },
+          "filesScanned": {
+            "type": "array",
+            "items": {}
+          },
+          "proposedFiles": {
+            "type": "array",
+            "items": {}
+          },
+          "changedFiles": {
+            "type": "array",
+            "items": {}
+          },
+          "diagnostics": {
+            "maxItems": 20,
+            "type": "array",
+            "items": {}
+          },
+          "artifacts": {
+            "maxItems": 32,
+            "type": "array",
+            "items": {}
+          },
+          "validation": {},
+          "blockers": {
+            "type": "array",
+            "items": {}
+          },
+          "data": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": {}
+          }
+        },
+        "required": [
+          "status",
+          "code",
+          "workspaceId",
+          "filesScanned",
+          "proposedFiles",
+          "changedFiles",
+          "diagnostics",
+          "artifacts",
+          "validation",
+          "blockers",
+          "data"
+        ],
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "additionalProperties": false
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      },
+      "execution": {
+        "taskSupport": "optional"
+      }
+    },
+    {
+      "name": "hoi4.probability_sweep",
+      "title": "Sweep AI and MTTH parameters",
+      "description": "Evaluate declared ranges, breakpoints, and rank reversals.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "workspaceId": {
+            "default": "current",
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_-]{0,63}$"
+          },
+          "adapter": {
+            "type": "string",
+            "enum": [
+              "event_mean_time_to_happen",
+              "event_option_ai_chance",
+              "decision_ai_will_do",
+              "mission_ai_will_do",
+              "national_focus_ai_will_do",
+              "technology_ai_will_do",
+              "doctrine_ai_will_do",
+              "direct_random",
+              "random_list",
+              "ai_strategy_factor",
+              "custom_weighted_pool"
+            ]
+          },
+          "scenarioSet": {
+            "description": "Explicit world-state scenarios."
+          },
+          "candidatePool": {
+            "maxItems": 100000,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 512
+            }
+          },
+          "horizonDays": {
+            "type": "number",
+            "exclusiveMinimum": 0,
+            "maximum": 1000000
+          },
+          "metrics": {
+            "minItems": 1,
+            "maxItems": 4,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "conditional_probability",
+                "raw_value",
+                "cumulative_chance",
+                "effective_mtth_days"
+              ]
+            }
+          },
+          "acceptanceBands": {
+            "description": "Optional named metric acceptance bands."
+          },
+          "diagnosticThresholds": {
+            "description": "Optional diagnostic thresholds."
+          },
+          "outputs": {
+            "maxItems": 10,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "json",
+                "ranking",
+                "matrix",
+                "waterfall",
+                "timing",
+                "sensitivity",
+                "threshold",
+                "sequence",
+                "comparison",
+                "unresolved"
+              ]
+            }
+          },
+          "refresh": {
+            "type": "boolean"
+          },
+          "source": {
+            "description": "Source selector; snapshotPath binds frozen bytes to path with expectedSourceHash."
+          },
+          "sweep": {
+            "type": "object",
+            "properties": {
+              "paths": {
+                "minItems": 1,
+                "maxItems": 32,
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 1024
+                }
+              },
+              "steps": {
+                "default": 25,
+                "type": "integer",
+                "minimum": 2,
+                "maximum": 10000
+              },
+              "pairwise": {
+                "default": false,
+                "type": "boolean"
+              },
+              "findRankReversals": {
+                "default": true,
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "paths"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "scenarioSet",
+          "source",
+          "sweep"
+        ],
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "additionalProperties": false
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "ok",
+              "blocked",
+              "error"
+            ]
+          },
+          "code": {
+            "type": "string"
+          },
+          "workspaceId": {
+            "type": "string"
+          },
+          "filesScanned": {
+            "type": "array",
+            "items": {}
+          },
+          "proposedFiles": {
+            "type": "array",
+            "items": {}
+          },
+          "changedFiles": {
+            "type": "array",
+            "items": {}
+          },
+          "diagnostics": {
+            "maxItems": 20,
+            "type": "array",
+            "items": {}
+          },
+          "artifacts": {
+            "maxItems": 32,
+            "type": "array",
+            "items": {}
+          },
+          "validation": {},
+          "blockers": {
+            "type": "array",
+            "items": {}
+          },
+          "data": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": {}
+          }
+        },
+        "required": [
+          "status",
+          "code",
+          "workspaceId",
+          "filesScanned",
+          "proposedFiles",
+          "changedFiles",
+          "diagnostics",
+          "artifacts",
+          "validation",
+          "blockers",
+          "data"
+        ],
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "additionalProperties": false
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      },
+      "execution": {
+        "taskSupport": "optional"
+      }
+    },
+    {
+      "name": "hoi4.probability_simulate",
+      "title": "Simulate uncertain weighted scenarios",
+      "description": "Run seeded simulations with distributions and confidence intervals.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "workspaceId": {
+            "default": "current",
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_-]{0,63}$"
+          },
+          "adapter": {
+            "type": "string",
+            "enum": [
+              "event_mean_time_to_happen",
+              "event_option_ai_chance",
+              "decision_ai_will_do",
+              "mission_ai_will_do",
+              "national_focus_ai_will_do",
+              "technology_ai_will_do",
+              "doctrine_ai_will_do",
+              "direct_random",
+              "random_list",
+              "ai_strategy_factor",
+              "custom_weighted_pool"
+            ]
+          },
+          "scenarioSet": {
+            "description": "Explicit world-state scenarios."
+          },
+          "candidatePool": {
+            "maxItems": 100000,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 512
+            }
+          },
+          "horizonDays": {
+            "type": "number",
+            "exclusiveMinimum": 0,
+            "maximum": 1000000
+          },
+          "metrics": {
+            "minItems": 1,
+            "maxItems": 4,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "conditional_probability",
+                "raw_value",
+                "cumulative_chance",
+                "effective_mtth_days"
+              ]
+            }
+          },
+          "acceptanceBands": {
+            "description": "Optional named metric acceptance bands."
+          },
+          "diagnosticThresholds": {
+            "description": "Optional diagnostic thresholds."
+          },
+          "outputs": {
+            "maxItems": 10,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "json",
+                "ranking",
+                "matrix",
+                "waterfall",
+                "timing",
+                "sensitivity",
+                "threshold",
+                "sequence",
+                "comparison",
+                "unresolved"
+              ]
+            }
+          },
+          "refresh": {
+            "type": "boolean"
+          },
+          "source": {
+            "description": "Source selector; snapshotPath binds frozen bytes to path with expectedSourceHash."
+          },
+          "samples": {
+            "default": 100000,
+            "type": "integer",
+            "minimum": 100,
+            "maximum": 10000000
+          },
+          "seed": {
+            "default": 1,
+            "type": "integer",
+            "minimum": -2147483648,
+            "maximum": 2147483647
+          },
+          "confidenceLevel": {
+            "default": 0.95,
+            "type": "number",
+            "minimum": 0.5,
+            "maximum": 0.9999
+          },
+          "samplingMethod": {
+            "default": "latin_hypercube",
+            "type": "string",
+            "enum": [
+              "latin_hypercube",
+              "pseudo_random"
+            ]
+          }
+        },
+        "required": [
+          "scenarioSet",
+          "source"
+        ],
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "additionalProperties": false
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "ok",
+              "blocked",
+              "error"
+            ]
+          },
+          "code": {
+            "type": "string"
+          },
+          "workspaceId": {
+            "type": "string"
+          },
+          "filesScanned": {
+            "type": "array",
+            "items": {}
+          },
+          "proposedFiles": {
+            "type": "array",
+            "items": {}
+          },
+          "changedFiles": {
+            "type": "array",
+            "items": {}
+          },
+          "diagnostics": {
+            "maxItems": 20,
+            "type": "array",
+            "items": {}
+          },
+          "artifacts": {
+            "maxItems": 32,
+            "type": "array",
+            "items": {}
+          },
+          "validation": {},
+          "blockers": {
+            "type": "array",
+            "items": {}
+          },
+          "data": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": {}
+          }
+        },
+        "required": [
+          "status",
+          "code",
+          "workspaceId",
+          "filesScanned",
+          "proposedFiles",
+          "changedFiles",
+          "diagnostics",
+          "artifacts",
+          "validation",
+          "blockers",
+          "data"
+        ],
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "additionalProperties": false
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      },
+      "execution": {
+        "taskSupport": "optional"
+      }
+    },
+    {
+      "name": "hoi4.probability_sequence",
+      "title": "Analyze a declared weighted sequence",
+      "description": "Analyze a manifest-declared dynamic weighted sequence.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "workspaceId": {
+            "default": "current",
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_-]{0,63}$"
+          },
+          "scenarioSet": {
+            "description": "Explicit world-state scenarios."
+          },
+          "customPoolManifest": {
+            "description": "Declared custom weighted pool and state transitions."
+          },
+          "horizonDays": {
+            "type": "number",
+            "exclusiveMinimum": 0,
+            "maximum": 1000000
+          },
+          "maxSteps": {
+            "default": 1000,
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100000
+          },
+          "samples": {
+            "default": 100000,
+            "type": "integer",
+            "minimum": 100,
+            "maximum": 10000000
+          },
+          "seed": {
+            "default": 1,
+            "type": "integer",
+            "minimum": -2147483648,
+            "maximum": 2147483647
+          },
+          "confidenceLevel": {
+            "default": 0.95,
+            "type": "number",
+            "minimum": 0.5,
+            "maximum": 0.9999
+          },
+          "acceptanceBands": {
+            "description": "Optional named metric acceptance bands."
+          },
+          "diagnosticThresholds": {
+            "description": "Optional diagnostic thresholds."
+          },
+          "outputs": {
+            "maxItems": 10,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "json",
+                "ranking",
+                "matrix",
+                "waterfall",
+                "timing",
+                "sensitivity",
+                "threshold",
+                "sequence",
+                "comparison",
+                "unresolved"
+              ]
+            }
+          }
+        },
+        "required": [
+          "scenarioSet",
+          "customPoolManifest",
+          "horizonDays"
+        ],
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "additionalProperties": false
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "ok",
+              "blocked",
+              "error"
+            ]
+          },
+          "code": {
+            "type": "string"
+          },
+          "workspaceId": {
+            "type": "string"
+          },
+          "filesScanned": {
+            "type": "array",
+            "items": {}
+          },
+          "proposedFiles": {
+            "type": "array",
+            "items": {}
+          },
+          "changedFiles": {
+            "type": "array",
+            "items": {}
+          },
+          "diagnostics": {
+            "maxItems": 20,
+            "type": "array",
+            "items": {}
+          },
+          "artifacts": {
+            "maxItems": 32,
+            "type": "array",
+            "items": {}
+          },
+          "validation": {},
+          "blockers": {
+            "type": "array",
+            "items": {}
+          },
+          "data": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": {}
+          }
+        },
+        "required": [
+          "status",
+          "code",
+          "workspaceId",
+          "filesScanned",
+          "proposedFiles",
+          "changedFiles",
+          "diagnostics",
+          "artifacts",
+          "validation",
+          "blockers",
+          "data"
+        ],
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "additionalProperties": false
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      },
+      "execution": {
+        "taskSupport": "optional"
+      }
+    },
+    {
+      "name": "hoi4.probability_compare",
+      "title": "Compare weighted source patches",
+      "description": "Compare sources or declared pools under identical scenarios.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "workspaceId": {
+            "default": "current",
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_-]{0,63}$"
+          },
+          "adapter": {
+            "type": "string",
+            "enum": [
+              "event_mean_time_to_happen",
+              "event_option_ai_chance",
+              "decision_ai_will_do",
+              "mission_ai_will_do",
+              "national_focus_ai_will_do",
+              "technology_ai_will_do",
+              "doctrine_ai_will_do",
+              "direct_random",
+              "random_list",
+              "ai_strategy_factor",
+              "custom_weighted_pool"
+            ]
+          },
+          "before": {
+            "description": "Source selector; snapshotPath binds frozen bytes to path with expectedSourceHash."
+          },
+          "after": {
+            "description": "Source selector; snapshotPath binds frozen bytes to path with expectedSourceHash."
+          },
+          "beforeManifest": {
+            "description": "Declared custom weighted pool and state transitions."
+          },
+          "afterManifest": {
+            "description": "Declared custom weighted pool and state transitions."
+          },
+          "scenarioSet": {
+            "description": "Explicit world-state scenarios."
+          },
+          "candidatePool": {
+            "maxItems": 100000,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 512
+            }
+          },
+          "horizonDays": {
+            "type": "number",
+            "exclusiveMinimum": 0,
+            "maximum": 1000000
+          },
+          "acceptanceBands": {
+            "description": "Optional named metric acceptance bands."
+          },
+          "diagnosticThresholds": {
+            "description": "Optional diagnostic thresholds."
+          },
+          "outputs": {
+            "maxItems": 10,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "json",
+                "ranking",
+                "matrix",
+                "waterfall",
+                "timing",
+                "sensitivity",
+                "threshold",
+                "sequence",
+                "comparison",
+                "unresolved"
+              ]
+            }
+          },
+          "refresh": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "scenarioSet"
+        ],
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "additionalProperties": false
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "ok",
+              "blocked",
+              "error"
+            ]
+          },
+          "code": {
+            "type": "string"
+          },
+          "workspaceId": {
+            "type": "string"
+          },
+          "filesScanned": {
+            "type": "array",
+            "items": {}
+          },
+          "proposedFiles": {
+            "type": "array",
+            "items": {}
+          },
+          "changedFiles": {
+            "type": "array",
+            "items": {}
+          },
+          "diagnostics": {
+            "maxItems": 20,
+            "type": "array",
+            "items": {}
+          },
+          "artifacts": {
+            "maxItems": 32,
+            "type": "array",
+            "items": {}
+          },
+          "validation": {},
+          "blockers": {
+            "type": "array",
+            "items": {}
+          },
+          "data": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": {}
+          }
+        },
+        "required": [
+          "status",
+          "code",
+          "workspaceId",
+          "filesScanned",
+          "proposedFiles",
+          "changedFiles",
+          "diagnostics",
+          "artifacts",
+          "validation",
+          "blockers",
+          "data"
+        ],
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "additionalProperties": false
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      },
+      "execution": {
+        "taskSupport": "optional"
+      }
+    },
+    {
+      "name": "hoi4.probability_render",
+      "title": "Render AI and MTTH analysis",
+      "description": "Render retained probability analysis as deterministic resources.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "workspaceId": {
+            "default": "current",
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_-]{0,63}$"
+          },
+          "analysisId": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          },
+          "expectedScenarioHash": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "outputs": {
+            "minItems": 1,
+            "maxItems": 10,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "json",
+                "ranking",
+                "matrix",
+                "waterfall",
+                "timing",
+                "sensitivity",
+                "threshold",
+                "sequence",
+                "comparison",
+                "unresolved"
+              ]
+            }
+          },
+          "includeHtml": {
+            "default": false,
+            "type": "boolean"
+          },
+          "filter": {
+            "description": "Optional scenario, candidate, metric, diagnostic, source, and page filter."
+          }
+        },
+        "required": [
+          "analysisId",
+          "outputs"
+        ],
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "additionalProperties": false
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "ok",
+              "blocked",
+              "error"
+            ]
+          },
+          "code": {
+            "type": "string"
+          },
+          "workspaceId": {
+            "type": "string"
+          },
+          "filesScanned": {
+            "type": "array",
+            "items": {}
+          },
+          "proposedFiles": {
+            "type": "array",
+            "items": {}
+          },
+          "changedFiles": {
+            "type": "array",
+            "items": {}
+          },
+          "diagnostics": {
+            "maxItems": 20,
+            "type": "array",
+            "items": {}
+          },
+          "artifacts": {
+            "maxItems": 32,
+            "type": "array",
+            "items": {}
+          },
+          "validation": {},
+          "blockers": {
+            "type": "array",
+            "items": {}
+          },
+          "data": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": {}
+          }
+        },
+        "required": [
+          "status",
+          "code",
+          "workspaceId",
+          "filesScanned",
+          "proposedFiles",
+          "changedFiles",
+          "diagnostics",
+          "artifacts",
+          "validation",
+          "blockers",
+          "data"
+        ],
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "additionalProperties": false
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      },
+      "execution": {
+        "taskSupport": "optional"
+      }
+    }
+  ],
+  "healthRouteSchemas": [],
+  "taskNegotiation": "Not requested; this audit uses only synchronous read-only domain tools.",
+  "initialInspect": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\"artifactCount\":1,\"code\":\"PROBABILITY_SOURCE_INSPECTED\",\"status\":\"ok\",\"workspaceId\":\"camp_origin_architecture_oct3\"}"
+      },
+      {
+        "name": "probability-inspect-5cc0fb7b0a0b.json",
+        "uri": "hoi4-agent://workspace/camp_origin_architecture_oct3/artifact/31da341b0dcc3f9447e8527ffa09085ef9565e30728067622fa5144445f7c217/00b9b201d5348abc541c16c87b27ae10516c410a22370e9d0ae35bee42ce36dd/probability-inspect-5cc0fb7b0a0b.json",
+        "description": "Discovered weighted surfaces and adapter capabilities",
+        "mimeType": "application/json",
+        "size": 291679,
+        "type": "resource_link"
+      }
+    ],
+    "structuredContent": {
+      "artifacts": [
+        {
+          "description": "Discovered weighted surfaces and adapter capabilities",
+          "mimeType": "application/json",
+          "name": "probability-inspect-5cc0fb7b0a0b.json",
+          "sha256": "31da341b0dcc3f9447e8527ffa09085ef9565e30728067622fa5144445f7c217",
+          "size": 291679,
+          "uri": "hoi4-agent://workspace/camp_origin_architecture_oct3/artifact/31da341b0dcc3f9447e8527ffa09085ef9565e30728067622fa5144445f7c217/00b9b201d5348abc541c16c87b27ae10516c410a22370e9d0ae35bee42ce36dd/probability-inspect-5cc0fb7b0a0b.json"
+        }
+      ],
+      "blockers": [],
+      "changedFiles": [],
+      "code": "PROBABILITY_SOURCE_INSPECTED",
+      "data": {
+        "adapterId": "decision_ai_will_do",
+        "adapterRequiredInputPaths": [],
+        "adapters": 11,
+        "availableAdapters": [],
+        "availableCandidates": 0,
+        "candidateExamples": [],
+        "candidates": 29,
+        "poolComplete": false,
+        "requiredInputPaths": [
+          "actor",
+          "command_power",
+          "date",
+          "exists",
+          "has_active_mission",
+          "has_army_experience",
+          "has_cosmetic_tag",
+          "has_government",
+          "has_idea",
+          "has_manpower",
+          "has_stability",
+          "has_tech",
+          "has_war",
+          "has_war_with",
+          "is_ai",
+          "scope.88",
+          "scope.FROM",
+          "scope.add_to_temp_variable",
+          "scope.any_controlled_state",
+          "scope.any_enemy_country",
+          "scope.any_subject_country",
+          "scope.has_equipment",
+          "scope.has_global_flag",
+          "scope.set_temp_variable",
+          "surrender_progress",
+          "variable.camp_active_site_count",
+          "variable.camp_ai_active_project_cap",
+          "variable.camp_ai_active_project_count",
+          "variable.camp_experiment_site_count",
+          "variable.camp_network_reach",
+          "variable.camp_radicalized_site_count",
+          "variable.genocide_deaths"
+        ],
+        "requiredInputPathsTruncated": true,
+        "requiredInputs": 42,
+        "sourceHash": "5cc0fb7b0a0bf1e64621868452f45adb79cfc88b1bc268f44c6e376f51841c66",
+        "sourceRevision": "e685899db9ff74314a7ee6283d179eeb10a73304faad1c8680afad740272eee4",
+        "unresolved": 0
+      },
+      "diagnostics": [],
+      "filesScanned": [
+        "mod:common/decisions/genocide_crisis_decisions.txt"
+      ],
+      "proposedFiles": [],
+      "status": "ok",
+      "validation": {
+        "checks": [],
+        "passed": true
+      },
+      "workspaceId": "camp_origin_architecture_oct3"
+    }
+  }
+}

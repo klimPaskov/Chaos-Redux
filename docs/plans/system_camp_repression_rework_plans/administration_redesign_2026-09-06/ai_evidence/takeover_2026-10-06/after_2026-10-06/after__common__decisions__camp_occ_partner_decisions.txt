@@ -1,0 +1,81 @@
+# ============================================================================
+# CHAOS REDUX - HUNGARY HALTS THE 1944 DEPORTATIONS
+# ============================================================================
+# Overview:
+# - Gives the Hungarian government a paid way to stop the German deportation
+#   transports at any point while the dated order (15 May to 9 July 1944) runs,
+#   after it first answered the demand in camp_occ_partner.1.
+# - The order and its closure are in camp_administration_occupation_effects.txt
+#   (camp_occ_try_partner_deportation, camp_occ_partner_halt_deportations).
+# - Lives in the vanilla political_actions category, which Hungary always sees.
+# ============================================================================
+
+political_actions = {
+	camp_occ_partner_halt_transports = {
+		icon = GFX_decision_generic_protection
+		cost = global.black_friday_price_camp_occ_partner_response_halt_pp
+		allowed = { OR = { original_tag = SLO original_tag = CRO original_tag = BUL original_tag = VIC original_tag = FRA } }
+		visible = {
+			has_country_flag = camp_occ_extended_order_notified
+			camp_occ_extended_partner_order_stands = yes
+			any_controlled_state = { camp_occ_state_has_partner_authority = yes check_variable = { camp_occ_remaining_k > 0 } }
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = camp_occ_partner_halt_transports_waiting_tt
+				camp_occ_extended_partner_can_halt = yes
+			}
+		}
+		complete_effect = {
+			if = {
+				limit = { camp_occ_extended_partner_can_halt = yes }
+				custom_effect_tooltip = camp_occ_extended_partner_halt_effect_tt
+				hidden_effect = { camp_occ_extended_partner_halt = yes black_friday_credit_political_power_purchase = yes }
+			}
+			else = { hidden_effect = { add_political_power = global.black_friday_price_camp_occ_partner_response_halt_pp } }
+		}
+		ai_will_do = {
+			base = constant:camp_occ_partner_ai.halt_decision
+			modifier = { factor = constant:camp_occ_partner_ai.halt_decision_fascist_factor has_government = fascism }
+			modifier = { factor = constant:camp_occ_partner_ai.halt_decision_subject_factor is_subject_of = GER NOT = { has_government = fascism } }
+		}
+	}
+	camp_occ_hun_halt_deportations = {
+		icon = GFX_decision_generic_protection
+		cost = global.black_friday_price_camp_occ_partner_response_halt_pp
+		allowed = { original_tag = HUN }
+		visible = {
+			has_country_flag = camp_occ_partner_order_notified
+			NOT = { has_country_flag = camp_occ_partner_deportations_halted }
+			camp_occ_partner_deportation_window_open = yes
+			any_controlled_state = { camp_occ_state_has_partner_authority = yes check_variable = { camp_occ_remaining_k > 0 } }
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = camp_occ_hun_halt_deportations_transports_tt
+				any_controlled_state = { camp_occ_state_has_partner_authority = yes check_variable = { camp_occ_remaining_k > 0 } }
+			}
+		}
+		complete_effect = {
+			if = {
+				limit = { any_controlled_state = { camp_occ_state_has_partner_authority = yes check_variable = { camp_occ_remaining_k > 0 } } }
+				custom_effect_tooltip = camp_occ_partner_halt_release_tt
+				camp_occ_partner_halt_deportations = yes
+				hidden_effect = { black_friday_credit_political_power_purchase = yes }
+			}
+			else = { hidden_effect = { add_political_power = global.black_friday_price_camp_occ_partner_response_halt_pp } }
+		}
+		ai_will_do = {
+			base = constant:camp_occ_partner_ai.halt_decision
+			modifier = {
+				factor = constant:camp_occ_partner_ai.halt_decision_fascist_factor
+				has_government = fascism
+			}
+			modifier = {
+				factor = constant:camp_occ_partner_ai.halt_decision_subject_factor
+				is_subject_of = GER
+				NOT = { has_government = fascism }
+			}
+		}
+	}
+}

@@ -1,7 +1,34 @@
 # Occupation consequence gates. No demographic choice, custody requirement or reward per death.
 camp_occ_state_is_china_region = {
 	NOT = { is_core_of = JAP }
+	NOT = { OR = { is_core_of = MAN is_core_of = MEN } }
 	OR = { is_core_of = CHI is_core_of = PRC is_core_of = GXC is_core_of = MEN is_core_of = MAN is_core_of = YUN is_core_of = SHX is_core_of = XSM }
+}
+camp_occ_country_counts_as_german_authority = {
+	OR = {
+		original_tag = GER
+		AND = {
+			is_subject_of = GER
+			NOT = { is_special_chaos_country = yes }
+			NOT = { OR = { original_tag = HUN original_tag = ROM original_tag = BUL original_tag = SLO original_tag = CRO original_tag = VIC has_cosmetic_tag = FRA_VICHY original_tag = ITA original_tag = FIN } }
+		}
+	}
+}
+# STATE: the controller is Germany or an eligible German administration.
+camp_occ_state_has_german_authority = {
+	CONTROLLER = { camp_occ_country_counts_as_german_authority = yes }
+}
+# STATE: Japan or a Japanese client controls a China-region state; core territory
+# of Manchukuo and Mengjiang is excluded by camp_occ_state_is_china_region.
+camp_occ_state_has_japanese_client_authority = {
+	CONTROLLER = { OR = { original_tag = JAP is_subject_of = JAP } }
+}
+camp_occ_state_accepts_transfer_authority = {
+	OR = {
+		is_controlled_by = var:camp_occ_transfer_authority
+		AND = { var:camp_occ_transfer_authority = { original_tag = GER } camp_occ_state_has_german_authority = yes }
+		AND = { var:camp_occ_transfer_authority = { original_tag = JAP } camp_occ_state_is_china_region = yes camp_occ_state_has_japanese_client_authority = yes }
+	}
 }
 camp_occ_authority_has_campaign = {
 	camp_admin_country_regime_valid = yes
@@ -20,7 +47,11 @@ camp_occ_state_has_current_authority = {
 	NOT = { has_state_flag = camp_occ_closed }
 	has_variable = camp_occ_responsible_country
 	var:camp_occ_responsible_country = { exists = yes camp_occ_authority_has_campaign = yes }
-	is_controlled_by = var:camp_occ_responsible_country
+	OR = {
+		is_controlled_by = var:camp_occ_responsible_country
+		AND = { var:camp_occ_responsible_country = { original_tag = GER } camp_occ_state_has_german_authority = yes }
+		AND = { var:camp_occ_responsible_country = { original_tag = JAP } camp_occ_state_is_china_region = yes camp_occ_state_has_japanese_client_authority = yes }
+	}
 }
 camp_occ_state_can_pulse = {
 	camp_occ_state_has_current_authority = yes
@@ -39,7 +70,10 @@ camp_occ_state_can_pulse = {
 # - Netherlands: the first train left Westerbork on 15 July 1942.
 # - Belgium: the first train left Mechelen on 4 August 1942.
 # - Norway: Norwegian police began arresting Jewish men on 26 October 1942.
-# - Greece: the first train left Salonika on 15 March 1943.
+# - Salonika, state 731: the first train left on 15 March 1943.
+# - Other Greek origins: the roundup began in Athens and other zones on
+#   24 March 1944.
+# - Italy: German deportations began with the Rome roundup on 16 October 1943.
 camp_occ_origin_campaign_deferred = {
 	OR = {
 		AND = { is_core_of = DEN date < 1943.10.1 }
@@ -47,7 +81,9 @@ camp_occ_origin_campaign_deferred = {
 		AND = { is_core_of = HOL date < 1942.7.15 }
 		AND = { is_core_of = BEL date < 1942.8.4 }
 		AND = { is_core_of = NOR date < 1942.10.26 }
-		AND = { is_core_of = GRE date < 1943.3.15 }
+		AND = { is_core_of = GRE state = 731 date < 1943.3.15 }
+		AND = { is_core_of = GRE NOT = { state = 731 } date < 1944.3.24 }
+		AND = { is_core_of = ITA date < 1943.10.16 }
 	}
 }
 # Any scope. The escape across the Oresund follows the October 1943 order
@@ -84,8 +120,15 @@ camp_occ_danish_rescue_source_ready = {
 # Any scope. USHMM: deportations from Hungary ran from 15 May 1944 until the last
 # transports of 9 July 1944, after Horthy ordered them halted on 7 July.
 camp_occ_partner_deportation_window_open = {
-	date > 1944.5.14
-	date < 1944.7.10
+	meta_trigger = {
+		text = { NOT = { date < "[SY].[SM].[SD]" } date < "[EY].[EM].[ED]" }
+		SY = "[?constant:camp_occ_partner_table.hun_start_year|.0]"
+		SM = "[?constant:camp_occ_partner_table.hun_start_month|.0]"
+		SD = "[?constant:camp_occ_partner_table.hun_start_day|.0]"
+		EY = "[?constant:camp_occ_partner_table.hun_end_year|.0]"
+		EM = "[?constant:camp_occ_partner_table.hun_end_month|.0]"
+		ED = "[?constant:camp_occ_partner_table.hun_end_day|.0]"
+	}
 }
 # COUNTRY, the partner. Hungary handed its Jews over only under German
 # domination: as a German subject, or with a fascist government inside
@@ -113,7 +156,10 @@ camp_occ_partner_deportation_candidate = {
 	is_on_continent = europe
 	camp_occ_has_foreign_german_campaign_origin = yes
 	NOT = { has_state_flag = camp_occ_registered }
-	CONTROLLER = { camp_occ_partner_order_stands = yes }
+	OR = {
+		AND = { camp_occ_partner_deportation_window_open = yes CONTROLLER = { camp_occ_partner_order_stands = yes } }
+		camp_occ_extended_partner_candidate = yes
+	}
 }
 # STATE. A registered partner-held cohort while the dated order stands. This is
 # never a current authority: campaign violence, generic movement, rescue and the
@@ -124,8 +170,10 @@ camp_occ_state_has_partner_authority = {
 	NOT = { has_state_flag = camp_occ_closed }
 	has_variable = camp_occ_responsible_country
 	var:camp_occ_responsible_country = { exists = yes original_tag = GER camp_occ_authority_has_campaign = yes }
-	camp_occ_partner_deportation_window_open = yes
-	CONTROLLER = { camp_occ_partner_order_stands = yes }
+	OR = {
+		AND = { camp_occ_partner_deportation_window_open = yes CONTROLLER = { camp_occ_partner_order_stands = yes } }
+		camp_occ_extended_partner_host_authority = yes
+	}
 }
 # STATE. Source authority for the exact custody transfer: the current authority,
 # or a partner-held cohort when the dated partner route staged its temp proof.
@@ -167,7 +215,7 @@ camp_occ_manual_transfer_country_ready = {
 
 camp_occ_killing_destination_active = {
 	state = 88
-	is_controlled_by = ROOT
+	camp_occ_state_has_german_authority = yes
 	camp_admin_site_is_operational = yes
 	extermination_camp > 0
 	check_variable = { camp_admin_role = constant:camp_admin_role.killing }

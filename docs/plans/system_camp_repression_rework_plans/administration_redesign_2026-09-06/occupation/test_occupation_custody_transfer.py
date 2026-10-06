@@ -369,7 +369,7 @@ class OccupationCustodyTransferTests(unittest.TestCase):
             "original_tag = GER", "date > 1944.8.8", "date < 1944.10.1",
             "NOT = { has_country_flag = camp_occ_lodz_auschwitz_transfer_recorded }",
             "camp_occ_authority_has_campaign = yes", "87 = {", "88 = {",
-            "is_controlled_by = PREV", "camp_occ_state_has_current_authority = yes",
+            "camp_occ_state_has_current_authority = yes",
             "camp_occ_killing_destination_active = yes", "camp_admin_support_ratio",
             "non_damaged_building_level@extermination_camp", "camp_occ_arrival.max_batches_per_month",
             "camp_occ_preflight_custody_source = yes", "camp_occ_transfer_to_custody_exact = yes",

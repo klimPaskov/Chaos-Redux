@@ -1,38 +1,64 @@
 {
   "status": "passed",
-  "count": 5,
+  "count": 7,
   "cases": [
-    "the production deferral holds the day before and not on the documented start: FRA 1942-03-27, HOL 1942-07-15, BEL 1942-08-04, NOR 1942-10-26, GRE 1943-03-15; DEN keeps 1943-10-01; POL, SOV, LIT, LAT, CZE, YUG, HUN and ITA origins are never deferred",
+    "the production deferral holds the day before and not on the documented start for Denmark, the Western origins, Salonika state 731, other Greek cores, and Italian cores; the non-dated Poland, Soviet, Baltic, Czech, Yugoslav and Hungarian origins remain unchanged",
     "13-state dated sensitivity: modeled campaign deaths fall from 707607 to 682271; only the FRA, HOL, BEL, NOR and GRE rows change, and every row still conserves its people",
+    "representative Thessaly state 47 and Italian Sardinia state 114 sensitivity reruns the prior and new dated windows with conserved source people",
     "the production monthly pass records no campaign death for a FRA, HOL, BEL, NOR or GRE origin row before its first deportation month and then matches the rerun sensitivity within one person per campaign month, before and after the change",
-    "the manual Auschwitz order cannot take a FRA, HOL, BEL, NOR or GRE origin cohort on the day before its start date (the prior rule allowed it) and can from that date",
+    "the production monthly pass records no Greek-other or Italian campaign death before its new first month, then matches each representative sensitivity within one person per campaign month",
+    "the manual Auschwitz order skips French, Dutch, Belgian, Norwegian, Salonika, other Greek, and Italian source cohorts before their own start dates and permits them on those dates",
     "the generic German campaign fraction stays 0.025 per month"
   ],
   "scenarios": {
     "deferral_boundaries": {
       "DEN": {
+        "origin": "DEN",
+        "state_id": 37,
         "deferred_until": "1943-10-01",
         "first_campaign_pass": "1943-10"
       },
       "FRA": {
+        "origin": "FRA",
+        "state_id": 16,
         "deferred_until": "1942-03-27",
         "first_campaign_pass": "1942-04"
       },
       "HOL": {
+        "origin": "HOL",
+        "state_id": 7,
         "deferred_until": "1942-07-15",
         "first_campaign_pass": "1942-08"
       },
       "BEL": {
+        "origin": "BEL",
+        "state_id": 6,
         "deferred_until": "1942-08-04",
         "first_campaign_pass": "1942-09"
       },
       "NOR": {
+        "origin": "NOR",
+        "state_id": 110,
         "deferred_until": "1942-10-26",
         "first_campaign_pass": "1942-11"
       },
-      "GRE": {
+      "GRE_SALONIKA": {
+        "origin": "GRE",
+        "state_id": 731,
         "deferred_until": "1943-03-15",
         "first_campaign_pass": "1943-04"
+      },
+      "GRE_OTHER": {
+        "origin": "GRE",
+        "state_id": 47,
+        "deferred_until": "1944-03-24",
+        "first_campaign_pass": "1944-04"
+      },
+      "ITA": {
+        "origin": "ITA",
+        "state_id": 114,
+        "deferred_until": "1943-10-16",
+        "first_campaign_pass": "1943-11"
       }
     },
     "thirteen_state_sensitivity_by_origin": {
@@ -167,6 +193,24 @@
       "campaign_months_after": 457,
       "apportioned_source_people": 1081811
     },
+    "incremental_greek_other_and_italian_sensitivity": {
+      "GRE": {
+        "state_id": 47,
+        "campaign_months_before": 25,
+        "campaign_months_after": 13,
+        "deaths_before": 12624,
+        "deaths_after": 7550,
+        "source_people": 26936
+      },
+      "ITA": {
+        "state_id": 114,
+        "campaign_months_before": 46,
+        "campaign_months_after": 18,
+        "deaths_before": 769,
+        "deaths_after": 410,
+        "source_people": 1138
+      }
+    },
     "production_monthly_pass": {
       "HOL": {
         "state_id": 7,
@@ -209,33 +253,59 @@
         "model_deaths_after": 244
       }
     },
+    "incremental_production_monthly_pass": {
+      "GRE_47": {
+        "allocated_people": 26936,
+        "production_deaths_before": 12624,
+        "production_deaths_after": 7550,
+        "model_deaths_before": 12624,
+        "model_deaths_after": 7550
+      },
+      "ITA_114": {
+        "allocated_people": 1138,
+        "production_deaths_before": 769,
+        "production_deaths_after": 410,
+        "model_deaths_before": 769,
+        "model_deaths_after": 410
+      }
+    },
     "manual_transfer_source": {
-      "FRA": {
+      "FRA_16": {
         "source_ready_day_before": false,
         "source_ready_day_before_under_prior_rule": true,
         "source_ready_on_start": true
       },
-      "HOL": {
+      "HOL_7": {
         "source_ready_day_before": false,
         "source_ready_day_before_under_prior_rule": true,
         "source_ready_on_start": true
       },
-      "BEL": {
+      "BEL_6": {
         "source_ready_day_before": false,
         "source_ready_day_before_under_prior_rule": true,
         "source_ready_on_start": true
       },
-      "NOR": {
+      "NOR_110": {
         "source_ready_day_before": false,
         "source_ready_day_before_under_prior_rule": true,
         "source_ready_on_start": true
       },
-      "GRE": {
+      "GRE_731": {
+        "source_ready_day_before": false,
+        "source_ready_day_before_under_prior_rule": true,
+        "source_ready_on_start": true
+      },
+      "GRE_47": {
+        "source_ready_day_before": false,
+        "source_ready_day_before_under_prior_rule": true,
+        "source_ready_on_start": true
+      },
+      "ITA_114": {
         "source_ready_day_before": false,
         "source_ready_day_before_under_prior_rule": true,
         "source_ready_on_start": true
       }
     }
   },
-  "limits": "Parsed production bodies with harness primitives, declared GER controllers over the staged windows and a monthly pass on the first of each month. Modeled campaign cause only; no deportation, arrival, custody or outside losses; no HOI4 execution."
+  "limits": "Parsed production triggers/effects with harness primitives, declared GER controllers over staged windows, and monthly passes on the first of each month. The harness seeds an aligned cohort row and mocks its provenance/row proof to isolate date eligibility; extended partner orders use their separate suite. Modeled campaign cause only; no deportation, arrival, custody or outside losses; no HOI4 execution."
 }

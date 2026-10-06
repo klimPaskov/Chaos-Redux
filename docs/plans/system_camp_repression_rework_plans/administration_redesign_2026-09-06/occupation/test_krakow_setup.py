@@ -26,7 +26,7 @@ class KrakowSetupTests(unittest.TestCase):
         eligible = block(TRIGGERS, "camp_admin_ger_krakow_setup_eligible", "camp_admin_country_regime_valid")
         self.assertIn("date > 1943.5.29", context)
         self.assertIn("88 = {", context)
-        self.assertIn("is_controlled_by = PREV", context)
+        self.assertIn("camp_occ_state_has_german_authority = yes", context)
         self.assertIn("NOT = { concentration_camp > 0 }", context)
         self.assertIn("NOT = { has_variable = genocide_responsible_country }", context)
         self.assertNotIn("camp_admin_budget", context)

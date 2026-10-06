@@ -92,3 +92,66 @@ country_event = {
 		custom_effect_tooltip = camp_occ_partner.2.a.tt
 	}
 }
+
+# One answer per partner, shared by all provinces and both Croatian waves.
+country_event = {
+	id = camp_occ_partner.3
+	title = camp_occ_partner.3.t
+	desc = { trigger = { original_tag = SLO } text = camp_occ_partner.3.slo.d }
+	desc = { trigger = { original_tag = CRO } text = camp_occ_partner.3.cro.d }
+	desc = { trigger = { original_tag = BUL } text = camp_occ_partner.3.bul.d }
+	desc = { text = camp_occ_partner.3.vic.d }
+	picture = GFX_report_event_generic_train
+	is_triggered_only = yes
+	trigger = { camp_occ_extended_partner_country = yes }
+	option = {
+		name = camp_occ_partner.3.a
+		trigger = { camp_occ_extended_partner_order_stands = yes NOT = { has_country_flag = camp_occ_extended_order_answered } }
+		custom_effect_tooltip = camp_occ_partner.3.a.tt
+		hidden_effect = { camp_occ_extended_partner_comply = yes }
+		ai_chance = {
+			base = constant:camp_occ_partner_ai.comply
+			modifier = { factor = constant:camp_occ_partner_ai.fascist_comply_factor has_government = fascism }
+		}
+	}
+	option = {
+		name = camp_occ_partner.3.b
+		trigger = { camp_occ_extended_partner_order_stands = yes NOT = { has_country_flag = camp_occ_extended_order_answered } }
+		custom_effect_tooltip = camp_occ_partner.3.b.tt
+		hidden_effect = { camp_occ_extended_partner_delay = yes }
+		ai_chance = {
+			base = constant:camp_occ_partner_ai.obstruct
+			modifier = { factor = constant:camp_occ_partner_ai.fascist_obstruct_factor has_government = fascism }
+		}
+	}
+	option = {
+		name = camp_occ_partner.3.c
+		trigger = { camp_occ_extended_partner_order_stands = yes NOT = { has_country_flag = camp_occ_extended_order_answered } }
+		custom_effect_tooltip = camp_occ_extended_partner_halt_effect_tt
+		hidden_effect = { camp_occ_extended_partner_halt = yes }
+		ai_chance = {
+			base = constant:camp_occ_partner_ai.halt
+			modifier = { factor = constant:camp_occ_partner_ai.fascist_halt_factor has_government = fascism }
+			modifier = { factor = constant:camp_occ_partner_ai.subject_halt_factor is_subject_of = GER NOT = { has_government = fascism } }
+		}
+	}
+	option = {
+		name = camp_occ_partner.3.e
+		trigger = {
+			OR = {
+				NOT = { camp_occ_extended_partner_order_stands = yes }
+				has_country_flag = camp_occ_extended_order_answered
+			}
+		}
+		custom_effect_tooltip = camp_occ_partner.3.e.tt
+	}
+}
+country_event = {
+	id = camp_occ_partner.4
+	title = camp_occ_partner.4.t
+	desc = camp_occ_partner.4.d
+	picture = GFX_report_event_generic_train
+	is_triggered_only = yes
+	trigger = { original_tag = GER }
+	option = { name = camp_occ_partner.4.a custom_effect_tooltip = camp_occ_partner.4.a.tt }
+}

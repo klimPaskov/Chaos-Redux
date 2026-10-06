@@ -1,0 +1,292 @@
+# Occupation consequence gates. No demographic choice, custody requirement or reward per death.
+camp_occ_state_is_china_region = {
+	NOT = { is_core_of = JAP }
+	OR = { is_core_of = CHI is_core_of = PRC is_core_of = GXC is_core_of = MEN is_core_of = MAN is_core_of = YUN is_core_of = SHX is_core_of = XSM }
+}
+camp_occ_authority_has_campaign = {
+	camp_admin_country_regime_valid = yes
+	NOT = { has_country_flag = camp_occ_country_closed }
+	OR = {
+		AND = { original_tag = JAP date > 1937.7.6 check_variable = { camp_admin_mandate > 1 } }
+		AND = { camp_admin_country_nazi_authority = yes date > 1941.6.21 check_variable = { camp_admin_mandate = 3 } }
+	}
+}
+camp_occ_has_foreign_german_campaign_origin = {
+	has_state_flag = camp_occ_origin_assigned
+	NOT = { has_state_flag = camp_occ_home_german_origin }
+}
+camp_occ_state_has_current_authority = {
+	has_state_flag = camp_occ_registered
+	NOT = { has_state_flag = camp_occ_closed }
+	has_variable = camp_occ_responsible_country
+	var:camp_occ_responsible_country = { exists = yes camp_occ_authority_has_campaign = yes }
+	is_controlled_by = var:camp_occ_responsible_country
+}
+camp_occ_state_can_pulse = {
+	camp_occ_state_has_current_authority = yes
+	camp_origin_host_provenance_ready = yes
+	check_variable = { camp_occ_remaining_k > 0 }
+	NOT = { has_global_flag = settings_chaos_deaths_disabled }
+	# External receipts retire exposure before each distinct campaign transaction.
+	# A generic occupation law is not a second debit of that transaction.
+}
+# STATE, row origin. Dated policy timing: the German campaign and the manual
+# deportation order reach an origin row only once mass deportation from that
+# country began (USHMM). The campaign rate itself is unchanged.
+# - Denmark: the largely independent Danish government kept Danish Jews out of
+#   German deportation until the order of October 1943.
+# - France: the first deportation train left for Auschwitz on 27 March 1942.
+# - Netherlands: the first train left Westerbork on 15 July 1942.
+# - Belgium: the first train left Mechelen on 4 August 1942.
+# - Norway: Norwegian police began arresting Jewish men on 26 October 1942.
+# - Greece: the first train left Salonika on 15 March 1943.
+camp_occ_origin_campaign_deferred = {
+	OR = {
+		AND = { is_core_of = DEN date < 1943.10.1 }
+		AND = { is_core_of = FRA date < 1942.3.27 }
+		AND = { is_core_of = HOL date < 1942.7.15 }
+		AND = { is_core_of = BEL date < 1942.8.4 }
+		AND = { is_core_of = NOR date < 1942.10.26 }
+		AND = { is_core_of = GRE date < 1943.3.15 }
+	}
+}
+# Any scope. The escape across the Oresund follows the October 1943 order
+# (USHMM: about 7,200 people reached Sweden in September and October 1943).
+# A Danish cohort first exposed later flees at its first exposed month.
+camp_occ_danish_rescue_window_open = {
+	NOT = { date < 1943.10.1 }
+}
+# Any scope. Sweden exists and remains a refuge: not a German subject or
+# faction member, not at war with Denmark, and either neutral or fighting Germany.
+camp_occ_danish_refuge_available = {
+	country_exists = SWE
+	SWE = {
+		NOT = { is_subject_of = GER }
+		NOT = { is_in_faction_with = GER }
+		NOT = { has_war_with = DEN }
+		OR = {
+			has_war = no
+			has_war_with = GER
+		}
+	}
+}
+# STATE, refuge destination held by Sweden itself and outside the camp registry.
+camp_occ_rescue_refuge_state_valid = {
+	is_owned_and_controlled_by = SWE
+	NOT = { has_state_flag = camp_occ_registered }
+}
+# STATE, Danish home state hosting a Danish-origin row under German control.
+camp_occ_danish_rescue_source_ready = {
+	is_core_of = DEN
+	camp_occ_state_has_current_authority = yes
+	NOT = { has_state_flag = camp_occ_danish_rescue_done }
+}
+# Any scope. USHMM: deportations from Hungary ran from 15 May 1944 until the last
+# transports of 9 July 1944, after Horthy ordered them halted on 7 July.
+camp_occ_partner_deportation_window_open = {
+	date > 1944.5.14
+	date < 1944.7.10
+}
+# COUNTRY, the partner. Hungary handed its Jews over only under German
+# domination: as a German subject, or with a fascist government inside
+# Germany's faction. Horthy's government in the Axis refused until then.
+camp_occ_partner_under_german_influence = {
+	original_tag = HUN
+	NOT = { has_war_with = GER }
+	OR = {
+		is_subject_of = GER
+		AND = {
+			is_in_faction_with = GER
+			has_government = fascism
+		}
+	}
+}
+# COUNTRY, the partner. The German order stands while Hungary is dominated and
+# its government has not halted the transports; a halt is permanent.
+camp_occ_partner_order_stands = {
+	camp_occ_partner_under_german_influence = yes
+	NOT = { has_country_flag = camp_occ_partner_deportations_halted }
+}
+# STATE. A European partner-held state with a foreign origin cohort that no
+# authority has registered yet.
+camp_occ_partner_deportation_candidate = {
+	is_on_continent = europe
+	camp_occ_has_foreign_german_campaign_origin = yes
+	NOT = { has_state_flag = camp_occ_registered }
+	CONTROLLER = { camp_occ_partner_order_stands = yes }
+}
+# STATE. A registered partner-held cohort while the dated order stands. This is
+# never a current authority: campaign violence, generic movement, rescue and the
+# manual order all ignore it, and the monthly pass closes it once the order lapses.
+camp_occ_state_has_partner_authority = {
+	has_state_flag = camp_occ_registered
+	has_state_flag = camp_occ_partner_host
+	NOT = { has_state_flag = camp_occ_closed }
+	has_variable = camp_occ_responsible_country
+	var:camp_occ_responsible_country = { exists = yes original_tag = GER camp_occ_authority_has_campaign = yes }
+	camp_occ_partner_deportation_window_open = yes
+	CONTROLLER = { camp_occ_partner_order_stands = yes }
+}
+# STATE. Source authority for the exact custody transfer: the current authority,
+# or a partner-held cohort when the dated partner route staged its temp proof.
+camp_occ_state_has_route_authority = {
+	OR = {
+		camp_occ_state_has_current_authority = yes
+		AND = {
+			check_variable = { camp_occ_custody_partner_route = constant:camp_occ_value.transfer_valid }
+			camp_occ_state_has_partner_authority = yes
+		}
+	}
+}
+camp_occ_country_has_records = {
+	OR = { check_variable = { camp_occ_states^num > 0 } check_variable = { camp_occ_eligible_states^num > 0 } }
+}
+
+# Country and selected-state gates for the paid German exact-cohort transfer.
+# The transaction rechecks row alignment, physical headroom and destination bind.
+camp_occ_manual_transfer_country_prerequisites_ready = {
+	has_country_flag = camp_admin_initialized
+	original_tag = GER
+	camp_occ_authority_has_campaign = yes
+	has_war = yes
+	date > 1943.5.29
+	NOT = { has_country_flag = camp_rework_expansion_frozen }
+	OR = {
+		germany_mengele_program_active = yes
+		germany_mengele_restricted_program_active = yes
+	}
+	has_variable = mengele_permission_level
+	check_variable = { mengele_permission_level > constant:germany_mengele_permission.rejected }
+}
+
+camp_occ_manual_transfer_country_ready = {
+	camp_occ_manual_transfer_country_prerequisites_ready = yes
+	camp_occ_manual_transfer_any_source_ready = yes
+	88 = { camp_occ_manual_transfer_destination_ready = yes }
+}
+
+camp_occ_killing_destination_active = {
+	state = 88
+	is_controlled_by = ROOT
+	camp_admin_site_is_operational = yes
+	extermination_camp > 0
+	check_variable = { camp_admin_role = constant:camp_admin_role.killing }
+	check_variable = { camp_admin_support_ratio > constant:camp_admin_value.zero }
+	has_variable = camp_admin_responsible_country
+	var:camp_admin_responsible_country = { tag = ROOT }
+}
+
+camp_occ_manual_transfer_destination_ready = {
+	camp_occ_killing_destination_active = yes
+	camp_admin_site_rows_reconciled = yes
+	set_temp_variable = { camp_occ_manual_destination_free_k = building_level@concentration_camp }
+	add_to_temp_variable = { camp_occ_manual_destination_free_k = building_level@gulag_labor_camp_network }
+	add_to_temp_variable = { camp_occ_manual_destination_free_k = building_level@extermination_camp }
+	multiply_temp_variable = { camp_occ_manual_destination_free_k = constant:camp_admin_value.capacity_per_building_k }
+	if = {
+		limit = { check_variable = { camp_occ_manual_destination_free_k < constant:camp_admin_value.marker_capacity_k } }
+		set_temp_variable = { camp_occ_manual_destination_free_k = constant:camp_admin_value.marker_capacity_k }
+	}
+	set_temp_variable = { camp_occ_manual_destination_developed_k = camp_admin_development_level }
+	clamp_temp_variable = { var = camp_occ_manual_destination_developed_k min = 0 max = constant:camp_admin_value.max_development }
+	multiply_temp_variable = { camp_occ_manual_destination_developed_k = constant:camp_admin_value.capacity_per_building_k }
+	add_to_temp_variable = { camp_occ_manual_destination_free_k = camp_occ_manual_destination_developed_k }
+	set_temp_variable = { camp_occ_manual_destination_population_headroom_k = state_population_k }
+	subtract_from_temp_variable = { camp_occ_manual_destination_population_headroom_k = constant:camp_admin_value.minimum_population_k }
+	clamp_temp_variable = { var = camp_occ_manual_destination_population_headroom_k min = 0 }
+	clamp_temp_variable = { var = camp_occ_manual_destination_free_k min = 0 max = camp_occ_manual_destination_population_headroom_k }
+	subtract_from_temp_variable = { camp_occ_manual_destination_free_k = camp_admin_detainees_k }
+	set_temp_variable = { camp_occ_manual_destination_share_k = state_population_k }
+	multiply_temp_variable = { camp_occ_manual_destination_share_k = constant:camp_admin_value.maximum_population_share }
+	subtract_from_temp_variable = { camp_occ_manual_destination_share_k = camp_admin_detainees_k }
+	clamp_temp_variable = { var = camp_occ_manual_destination_free_k min = 0 max = camp_occ_manual_destination_share_k }
+	set_temp_variable = { camp_occ_manual_destination_uncommitted_k = state_population_k }
+	subtract_from_temp_variable = { camp_occ_manual_destination_uncommitted_k = constant:camp_admin_value.minimum_population_k }
+	subtract_from_temp_variable = { camp_occ_manual_destination_uncommitted_k = camp_admin_detainees_k }
+	if = { limit = { has_variable = camp_occ_remaining_k } subtract_from_temp_variable = { camp_occ_manual_destination_uncommitted_k = camp_occ_remaining_k } }
+	NOT = { check_variable = { camp_occ_manual_destination_uncommitted_k < 0 } }
+	multiply_temp_variable = { camp_occ_manual_destination_free_k = constant:camp_occ_value.people_per_k }
+	check_variable = { var = camp_occ_manual_destination_free_k value = constant:camp_occ_value.manual_order_minimum_people compare = greater_than_or_equals }
+}
+
+camp_occ_manual_transfer_source_ready = {
+	camp_occ_state_has_current_authority = yes
+	has_variable = camp_occ_native_row_id
+	check_variable = { camp_occ_native_row_id > 0 }
+	check_variable = { camp_occ_remaining_k > constant:camp_occ_value.minimum_population_k }
+	NOT = { state = 88 }
+	is_on_continent = europe
+	NOT = { is_core_of = GER }
+	NOT = { has_state_flag = camp_occ_custody_rollback_failed }
+	NOT = { has_state_flag = camp_occ_transfer_rollback_failed }
+	var:camp_occ_responsible_country = { original_tag = GER }
+	# The dated origin deferral (Denmark, France, the Netherlands, Belgium, Norway,
+	# Greece) keeps these people out of deportation orders too.
+	OR = {
+		NOT = { has_variable = camp_occ_cohort_origin_state }
+		var:camp_occ_cohort_origin_state = { NOT = { camp_occ_origin_campaign_deferred = yes } }
+	}
+}
+
+# State. Fresh decision/tooltip eligibility for the same native living row used
+# by the exact transfer. The effect keeps its own final preflight and receipt.
+camp_occ_manual_transfer_live_source_ready = {
+	camp_occ_manual_transfer_source_ready = yes
+	set_temp_variable = { camp_occ_manual_source_margin_people = state_population_k }
+	subtract_from_temp_variable = { camp_occ_manual_source_margin_people = constant:camp_occ_value.minimum_population_k }
+	if = { limit = { has_variable = camp_admin_detainees_k } subtract_from_temp_variable = { camp_occ_manual_source_margin_people = camp_admin_detainees_k } }
+	multiply_temp_variable = { camp_occ_manual_source_margin_people = constant:camp_occ_value.people_per_k }
+	round_temp_variable = camp_occ_manual_source_margin_people
+	subtract_from_temp_variable = { camp_occ_manual_source_margin_people = constant:camp_occ_value.one_person }
+	check_variable = { var = camp_occ_manual_source_margin_people value = constant:camp_occ_value.manual_order_minimum_people compare = greater_than_or_equals }
+	set_temp_variable = { camp_occ_manual_source_aggregate_people = camp_occ_remaining_k }
+	multiply_temp_variable = { camp_occ_manual_source_aggregate_people = constant:camp_occ_value.people_per_k }
+	check_variable = { var = camp_occ_manual_source_aggregate_people value = constant:camp_occ_value.manual_order_minimum_people compare = greater_than_or_equals }
+	var:camp_occ_responsible_country = {
+		check_variable = { camp_occ_row_root_ids^num = camp_occ_row_ids^num }
+		check_variable = { camp_occ_row_origins^num = camp_occ_row_ids^num }
+		check_variable = { camp_occ_row_hosts^num = camp_occ_row_ids^num }
+		check_variable = { camp_occ_row_authorities^num = camp_occ_row_ids^num }
+		check_variable = { camp_occ_row_profiles^num = camp_occ_row_ids^num }
+		check_variable = { camp_occ_row_amounts_k^num = camp_occ_row_ids^num }
+		check_variable = { camp_occ_row_deaths_k^num = camp_occ_row_ids^num }
+		check_variable = { camp_occ_row_removed_k^num = camp_occ_row_ids^num }
+		check_variable = { camp_occ_row_released_k^num = camp_occ_row_ids^num }
+		check_variable = { camp_occ_row_moved_out_k^num = camp_occ_row_ids^num }
+		check_variable = { camp_occ_row_moved_in_k^num = camp_occ_row_ids^num }
+		check_variable = { camp_occ_row_statuses^num = camp_occ_row_ids^num }
+		any_of = {
+			array = camp_occ_row_ids
+			value = camp_occ_manual_row_probe_id
+			index = camp_occ_manual_row_probe_index
+			check_variable = { var = camp_occ_manual_row_probe_id value = PREV.camp_occ_native_row_id compare = equals }
+			check_variable = { camp_occ_row_statuses^camp_occ_manual_row_probe_index = constant:camp_occ_row_status.active }
+			check_variable = { camp_occ_row_root_ids^camp_occ_manual_row_probe_index > 0 }
+			var:camp_occ_row_hosts^camp_occ_manual_row_probe_index = { state = PREV.PREV }
+			var:camp_occ_row_authorities^camp_occ_manual_row_probe_index = { tag = PREV }
+			var:camp_occ_row_origins^camp_occ_manual_row_probe_index = { has_state_flag = camp_occ_registered }
+			set_temp_variable = { camp_occ_manual_row_probe_people = camp_occ_row_amounts_k^camp_occ_manual_row_probe_index }
+			check_variable = { camp_occ_manual_row_probe_people > 0 }
+			multiply_temp_variable = { camp_occ_manual_row_probe_people = constant:camp_occ_value.manual_auschwitz_living_share }
+			multiply_temp_variable = { camp_occ_manual_row_probe_people = constant:camp_occ_value.people_per_k }
+			set_temp_variable = { camp_occ_manual_row_probe_ceiling = camp_occ_manual_row_probe_people }
+			round_temp_variable = camp_occ_manual_row_probe_people
+			if = {
+				limit = { check_variable = { camp_occ_manual_row_probe_people > camp_occ_manual_row_probe_ceiling } }
+				subtract_from_temp_variable = { camp_occ_manual_row_probe_people = constant:camp_occ_value.one_person }
+			}
+			check_variable = { var = camp_occ_manual_row_probe_people value = constant:camp_occ_value.manual_order_minimum_people compare = greater_than_or_equals }
+		}
+	}
+}
+
+camp_occ_manual_transfer_any_source_ready = {
+	any_of_scopes = { array = camp_occ_states camp_occ_manual_transfer_live_source_ready = yes }
+}
+
+camp_occ_manual_transfer_can_pay = {
+	check_variable = { var = political_power value = global.black_friday_price_genocide_decision_cost_german_experiment_transfer compare = greater_than_or_equals }
+	check_variable = { var = army_experience value = global.black_friday_price_genocide_decision_cost_german_experiment_transfer_army_xp compare = greater_than_or_equals }
+	camp_rework_can_pay_support_equipment = yes
+	camp_rework_can_pay_trains = yes
+}

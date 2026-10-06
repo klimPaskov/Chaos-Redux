@@ -1,0 +1,315 @@
+{
+  "id": "partner_decision_remaining_threshold_sweep",
+  "name": "hoi4.probability_sweep",
+  "request": {
+    "workspaceId": "camp_origin_architecture_oct3",
+    "adapter": "decision_ai_will_do",
+    "source": {
+      "path": "common/decisions/camp_occ_partner_decisions.txt",
+      "snapshotPath": "docs/plans/system_camp_repression_rework_plans/administration_redesign_2026-09-06/ai_evidence/takeover_2026-10-06/after_2026-10-06/after__common__decisions__camp_occ_partner_decisions.txt",
+      "expectedSourceHash": "59e2515d8c9aa219d1c9ebd4a47b7c3852da4436546e18fa43dd53e4965779ad"
+    },
+    "scenarioSet": {
+      "schemaVersion": "1.0",
+      "id": "camp_takeover_partner_living_row_threshold_2026_10_06",
+      "workspaceId": "camp_origin_architecture_oct3",
+      "surfaceHint": "decision_ai_will_do",
+      "description": "Declared one-state sensitivity across the source-defined positive-living-row gate.",
+      "scenarios": [
+        {
+          "id": "partner_threshold",
+          "actor": "SLO",
+          "date": "1942.6.1",
+          "state": {
+            "original_tag": "SLO",
+            "has_government": "neutrality",
+            "is_subject_of": "GER"
+          },
+          "flags": [
+            "camp_occ_extended_order_notified",
+            "camp_occ_registered",
+            "camp_occ_partner_host"
+          ],
+          "controls": {
+            "70": "SLO"
+          },
+          "scopes": {
+            "70": {
+              "id": "70",
+              "type": "state",
+              "actor": "SLO",
+              "state": {
+                "state_id": 70,
+                "original_tag": "SLO",
+                "camp_occ_remaining_k": 0,
+                "camp_occ_responsible_country": "GER"
+              },
+              "flags": [
+                "camp_occ_registered",
+                "camp_occ_partner_host"
+              ]
+            },
+            "root": {
+              "id": "SLO",
+              "type": "country",
+              "actor": "SLO",
+              "state": {
+                "original_tag": "SLO",
+                "has_government": "neutrality",
+                "is_subject_of": "GER",
+                "is_in_faction_with": false,
+                "is_ai": true,
+                "has_war": false
+              },
+              "flags": [
+                "camp_occ_extended_order_notified"
+              ]
+            }
+          },
+          "scopePools": [
+            {
+              "id": "any_controlled_state",
+              "bindAs": "any_controlled_state",
+              "selection": "enumeration",
+              "complete": true,
+              "candidates": [
+                {
+                  "id": "70",
+                  "type": "state",
+                  "actor": "SLO",
+                  "state": {
+                    "state_id": 70,
+                    "original_tag": "SLO",
+                    "camp_occ_remaining_k": 0,
+                    "camp_occ_responsible_country": "GER"
+                  },
+                  "flags": [
+                    "camp_occ_registered",
+                    "camp_occ_partner_host"
+                  ]
+                }
+              ]
+            }
+          ],
+          "uncertainInputs": [
+            {
+              "path": "scopePools.any_controlled_state.70.camp_occ_remaining_k",
+              "range": {
+                "min": 0,
+                "max": 1
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "candidatePool": [
+      "camp_occ_partner_halt_transports"
+    ],
+    "metrics": [
+      "raw_value"
+    ],
+    "sweep": {
+      "paths": [
+        "scopePools.any_controlled_state.70.camp_occ_remaining_k"
+      ],
+      "steps": 3,
+      "findRankReversals": true
+    },
+    "outputs": [
+      "json",
+      "threshold",
+      "sensitivity",
+      "unresolved"
+    ]
+  },
+  "response": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\"artifactCount\":7,\"code\":\"PROBABILITY_ANALYZED_PARTIAL\",\"status\":\"ok\",\"workspaceId\":\"camp_origin_architecture_oct3\"}"
+      },
+      {
+        "name": "probability-92d8af85e40332c066f31aa9.json",
+        "uri": "hoi4-agent://workspace/camp_origin_architecture_oct3/artifact/0171ebaced8be4e1127b6886bed62f3c31d0d86b65415d18e04bb8f66fdeab4d/2badb51c789b070896d61ff7336751cc62227db0e53c0c4af6a0ea880169c993/probability-92d8af85e40332c066f31aa9.json",
+        "description": "Authoritative AI and MTTH scenario analysis JSON",
+        "mimeType": "application/json",
+        "size": 174476,
+        "type": "resource_link"
+      },
+      {
+        "name": "probability-probability-92d8af85e40332c066f31aa9-threshold.svg",
+        "uri": "hoi4-agent://workspace/camp_origin_architecture_oct3/artifact/a6d32ffc270e06218fbe6e53b5f3d111d3f383d152a2e17fa057722f7cf35cc8/ae0837e13bd88523b510380b29561125cc914f787391464074492feda7a358aa/probability-probability-92d8af85e40332c066f31aa9-threshold.svg",
+        "description": "AI and MTTH threshold visualization",
+        "mimeType": "image/svg+xml",
+        "size": 434,
+        "type": "resource_link"
+      },
+      {
+        "name": "probability-probability-92d8af85e40332c066f31aa9-threshold.png",
+        "uri": "hoi4-agent://workspace/camp_origin_architecture_oct3/artifact/b76acd470fd70e5eba53e1c69e5403c466b9e86517ed6cf501771449c31db8ae/73ac1744f19f8afd10fe7faf302eef480155e0d2f1824b989f812e0668e7c342/probability-probability-92d8af85e40332c066f31aa9-threshold.png",
+        "description": "AI and MTTH threshold raster visualization",
+        "mimeType": "image/png",
+        "size": 7058,
+        "type": "resource_link"
+      },
+      {
+        "name": "probability-probability-92d8af85e40332c066f31aa9-sensitivity.svg",
+        "uri": "hoi4-agent://workspace/camp_origin_architecture_oct3/artifact/5a023f6344f72b0fce4382fc08206a215942ff4d55f637eff7c3f93523ccc906/de3678a759552ce249573ffd244d1edc7ee2e2dbd6435d729244d51bf5885bdf/probability-probability-92d8af85e40332c066f31aa9-sensitivity.svg",
+        "description": "AI and MTTH sensitivity visualization",
+        "mimeType": "image/svg+xml",
+        "size": 667,
+        "type": "resource_link"
+      },
+      {
+        "name": "probability-probability-92d8af85e40332c066f31aa9-sensitivity.png",
+        "uri": "hoi4-agent://workspace/camp_origin_architecture_oct3/artifact/6e6934ff9fad139daace548d14ba76d3ea8c6b7854b558dd4a1101e43bcfb6e8/fc2f05f7f9823ea6585b4ed3b6e3e9d1dfa1e97f959b45889f6f72515ec98cd4/probability-probability-92d8af85e40332c066f31aa9-sensitivity.png",
+        "description": "AI and MTTH sensitivity raster visualization",
+        "mimeType": "image/png",
+        "size": 11192,
+        "type": "resource_link"
+      },
+      {
+        "name": "probability-probability-92d8af85e40332c066f31aa9-unresolved.svg",
+        "uri": "hoi4-agent://workspace/camp_origin_architecture_oct3/artifact/6e6a8fdaedebfe47ea31efd76b252f328117cbaf2b2129ecf2692789078c0f95/966b77f131372bb422a3d775747d9d9486d0f68d9d1377ccacba21c41babdc0e/probability-probability-92d8af85e40332c066f31aa9-unresolved.svg",
+        "description": "AI and MTTH unresolved visualization",
+        "mimeType": "image/svg+xml",
+        "size": 4349,
+        "type": "resource_link"
+      },
+      {
+        "name": "probability-probability-92d8af85e40332c066f31aa9-unresolved.png",
+        "uri": "hoi4-agent://workspace/camp_origin_architecture_oct3/artifact/5121560ba4414228ad6b8daf55a55a1b259c17c838772af101117e02bc265f9f/d86c91eb9bf2bbf355baa4aad056aac0bd54402707480d6a5d1ebbb3d8b829d8/probability-probability-92d8af85e40332c066f31aa9-unresolved.png",
+        "description": "AI and MTTH unresolved raster visualization",
+        "mimeType": "image/png",
+        "size": 93578,
+        "type": "resource_link"
+      }
+    ],
+    "structuredContent": {
+      "artifacts": [
+        {
+          "description": "Authoritative AI and MTTH scenario analysis JSON",
+          "mimeType": "application/json",
+          "name": "probability-92d8af85e40332c066f31aa9.json",
+          "sha256": "0171ebaced8be4e1127b6886bed62f3c31d0d86b65415d18e04bb8f66fdeab4d",
+          "size": 174476,
+          "uri": "hoi4-agent://workspace/camp_origin_architecture_oct3/artifact/0171ebaced8be4e1127b6886bed62f3c31d0d86b65415d18e04bb8f66fdeab4d/2badb51c789b070896d61ff7336751cc62227db0e53c0c4af6a0ea880169c993/probability-92d8af85e40332c066f31aa9.json"
+        },
+        {
+          "description": "AI and MTTH threshold visualization",
+          "mimeType": "image/svg+xml",
+          "name": "probability-probability-92d8af85e40332c066f31aa9-threshold.svg",
+          "sha256": "a6d32ffc270e06218fbe6e53b5f3d111d3f383d152a2e17fa057722f7cf35cc8",
+          "size": 434,
+          "uri": "hoi4-agent://workspace/camp_origin_architecture_oct3/artifact/a6d32ffc270e06218fbe6e53b5f3d111d3f383d152a2e17fa057722f7cf35cc8/ae0837e13bd88523b510380b29561125cc914f787391464074492feda7a358aa/probability-probability-92d8af85e40332c066f31aa9-threshold.svg"
+        },
+        {
+          "description": "AI and MTTH threshold raster visualization",
+          "mimeType": "image/png",
+          "name": "probability-probability-92d8af85e40332c066f31aa9-threshold.png",
+          "sha256": "b76acd470fd70e5eba53e1c69e5403c466b9e86517ed6cf501771449c31db8ae",
+          "size": 7058,
+          "uri": "hoi4-agent://workspace/camp_origin_architecture_oct3/artifact/b76acd470fd70e5eba53e1c69e5403c466b9e86517ed6cf501771449c31db8ae/73ac1744f19f8afd10fe7faf302eef480155e0d2f1824b989f812e0668e7c342/probability-probability-92d8af85e40332c066f31aa9-threshold.png"
+        },
+        {
+          "description": "AI and MTTH sensitivity visualization",
+          "mimeType": "image/svg+xml",
+          "name": "probability-probability-92d8af85e40332c066f31aa9-sensitivity.svg",
+          "sha256": "5a023f6344f72b0fce4382fc08206a215942ff4d55f637eff7c3f93523ccc906",
+          "size": 667,
+          "uri": "hoi4-agent://workspace/camp_origin_architecture_oct3/artifact/5a023f6344f72b0fce4382fc08206a215942ff4d55f637eff7c3f93523ccc906/de3678a759552ce249573ffd244d1edc7ee2e2dbd6435d729244d51bf5885bdf/probability-probability-92d8af85e40332c066f31aa9-sensitivity.svg"
+        },
+        {
+          "description": "AI and MTTH sensitivity raster visualization",
+          "mimeType": "image/png",
+          "name": "probability-probability-92d8af85e40332c066f31aa9-sensitivity.png",
+          "sha256": "6e6934ff9fad139daace548d14ba76d3ea8c6b7854b558dd4a1101e43bcfb6e8",
+          "size": 11192,
+          "uri": "hoi4-agent://workspace/camp_origin_architecture_oct3/artifact/6e6934ff9fad139daace548d14ba76d3ea8c6b7854b558dd4a1101e43bcfb6e8/fc2f05f7f9823ea6585b4ed3b6e3e9d1dfa1e97f959b45889f6f72515ec98cd4/probability-probability-92d8af85e40332c066f31aa9-sensitivity.png"
+        },
+        {
+          "description": "AI and MTTH unresolved visualization",
+          "mimeType": "image/svg+xml",
+          "name": "probability-probability-92d8af85e40332c066f31aa9-unresolved.svg",
+          "sha256": "6e6a8fdaedebfe47ea31efd76b252f328117cbaf2b2129ecf2692789078c0f95",
+          "size": 4349,
+          "uri": "hoi4-agent://workspace/camp_origin_architecture_oct3/artifact/6e6a8fdaedebfe47ea31efd76b252f328117cbaf2b2129ecf2692789078c0f95/966b77f131372bb422a3d775747d9d9486d0f68d9d1377ccacba21c41babdc0e/probability-probability-92d8af85e40332c066f31aa9-unresolved.svg"
+        },
+        {
+          "description": "AI and MTTH unresolved raster visualization",
+          "mimeType": "image/png",
+          "name": "probability-probability-92d8af85e40332c066f31aa9-unresolved.png",
+          "sha256": "5121560ba4414228ad6b8daf55a55a1b259c17c838772af101117e02bc265f9f",
+          "size": 93578,
+          "uri": "hoi4-agent://workspace/camp_origin_architecture_oct3/artifact/5121560ba4414228ad6b8daf55a55a1b259c17c838772af101117e02bc265f9f/d86c91eb9bf2bbf355baa4aad056aac0bd54402707480d6a5d1ebbb3d8b829d8/probability-probability-92d8af85e40332c066f31aa9-unresolved.png"
+        }
+      ],
+      "blockers": [],
+      "changedFiles": [],
+      "code": "PROBABILITY_ANALYZED_PARTIAL",
+      "data": {
+        "adapterId": "decision_ai_will_do",
+        "analysisId": "probability-92d8af85e40332c066f31aa9",
+        "analysisStatus": "partial",
+        "cacheKey": "92d8af85e40332c066f31aa99a99252f47627cfa854c1b1b8a18e33696b07e81",
+        "candidates": 1,
+        "diagnostics": 1,
+        "eligibleCandidates": 0,
+        "excludedCandidates": 0,
+        "operation": "sweep",
+        "scenarioHash": "c481a6bd270c11209306b5dc17b61f7a9910aec2e9c52bda16f81bb70fc8471a",
+        "scenarios": 1,
+        "scopePoolCandidates": 1,
+        "scopePools": 1,
+        "sourceHash": "611f3081df6f36318e941bd8af5c7c4a01cd03a3197e84fc49347cbb56473354",
+        "sourceRevision": "c2711ac692db32db3d693bc8c13a77c743df04c650a53372195676e5af3c8ba0",
+        "sweepPoints": 3,
+        "unresolved": 15,
+        "unresolvedCandidates": 1,
+        "visualResources": 6
+      },
+      "diagnostics": [
+        {
+          "category": "design",
+          "code": "PROBABILITY_MODIFIER_UNSATISFIED_IN_SCENARIOS",
+          "details": {
+            "candidateId": "camp_occ_partner_halt_transports",
+            "modifier": "factor:constant:camp_occ_partner_ai.halt_decision_fascist_factor",
+            "scenarios": 1
+          },
+          "location": {
+            "end": {
+              "column": 83,
+              "line": 39,
+              "offset": 1992
+            },
+            "path": "mod:docs/plans/system_camp_repression_rework_plans/administration_redesign_2026-09-06/ai_evidence/takeover_2026-10-06/after_2026-10-06/after__common__decisions__camp_occ_partner_decisions.txt",
+            "start": {
+              "column": 17,
+              "line": 39,
+              "offset": 1926
+            },
+            "symbol": "factor"
+          },
+          "message": "camp_occ_partner_halt_transports modifier factor:constant:camp_occ_partner_ai.halt_decision_fascist_factor is not active in any supplied scenario",
+          "severity": "info"
+        }
+      ],
+      "filesScanned": [],
+      "proposedFiles": [],
+      "status": "ok",
+      "validation": {
+        "checks": [
+          {
+            "id": "uncertainty-visible",
+            "message": "15 unresolved or bounded analysis item(s) are explicit",
+            "passed": true
+          }
+        ],
+        "passed": true
+      },
+      "workspaceId": "camp_origin_architecture_oct3"
+    }
+  }
+}

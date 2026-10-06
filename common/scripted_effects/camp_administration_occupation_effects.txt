@@ -123,11 +123,19 @@ camp_occ_register_cohort = {
 			NOT = { has_state_flag = camp_occ_registered }
 			OR = {
 				AND = {
-					is_controlled_by = var:camp_occ_source_authority
-					CONTROLLER = { camp_occ_authority_has_campaign = yes }
 					OR = {
-						AND = { check_variable = { camp_occ_source_profile = constant:camp_occ_profile.japan } camp_occ_state_is_china_region = yes CONTROLLER = { original_tag = JAP } }
-						AND = { check_variable = { camp_occ_source_profile = constant:camp_occ_profile.germany } camp_occ_has_foreign_german_campaign_origin = yes CONTROLLER = { original_tag = GER } }
+						AND = {
+							check_variable = { camp_occ_source_profile = constant:camp_occ_profile.japan }
+							camp_occ_state_is_china_region = yes
+							camp_occ_state_has_japanese_client_authority = yes
+							var:camp_occ_source_authority = { original_tag = JAP camp_occ_authority_has_campaign = yes }
+						}
+						AND = {
+							check_variable = { camp_occ_source_profile = constant:camp_occ_profile.germany }
+							camp_occ_has_foreign_german_campaign_origin = yes
+							camp_occ_state_has_german_authority = yes
+							var:camp_occ_source_authority = { original_tag = GER camp_occ_authority_has_campaign = yes }
+						}
 					}
 				}
 				# Dated partner deportation: the German authority directs it while
@@ -363,7 +371,7 @@ camp_occ_transfer_survivors_exact = {
 			check_variable = { camp_occ_transfer_route_proven = constant:camp_occ_value.transfer_valid }
 			check_variable = { camp_occ_transfer_requested_people > 0 }
 			has_event_target = camp_occ_transfer_destination
-			camp_occ_state_has_current_authority = yes
+			camp_occ_state_has_route_authority = yes
 			NOT = { has_state_flag = camp_occ_transfer_rollback_failed }
 			NOT = { state = event_target:camp_occ_transfer_destination }
 		}
@@ -422,7 +430,7 @@ camp_occ_transfer_survivors_exact = {
 						OR = {
 							AND = {
 								NOT = { check_variable = { camp_occ_transfer_escape = constant:camp_occ_value.transfer_valid } }
-								is_controlled_by = var:camp_occ_transfer_authority
+								camp_occ_state_accepts_transfer_authority = yes
 								OR = {
 									NOT = { has_state_flag = camp_occ_registered }
 									AND = { camp_occ_state_has_current_authority = yes check_variable = { camp_occ_responsible_country = camp_occ_transfer_authority } }
@@ -1113,7 +1121,6 @@ camp_occ_try_lodz_auschwitz_transfer = {
 			date < 1944.10.1
 			camp_occ_authority_has_campaign = yes
 			87 = {
-				is_controlled_by = PREV
 				camp_occ_state_has_current_authority = yes
 				has_variable = camp_occ_native_row_id
 				check_variable = { camp_occ_remaining_k > 0 }
@@ -1266,6 +1273,7 @@ camp_occ_monthly_country = {
 		camp_occ_try_lodz_auschwitz_transfer = yes
 		if = { limit = { original_tag = GER camp_occ_danish_rescue_window_open = yes } camp_occ_try_danish_rescue = yes }
 		if = { limit = { original_tag = GER camp_occ_partner_deportation_window_open = yes } camp_occ_try_partner_deportation = yes }
+		camp_occ_try_extended_partner_orders = yes
 		set_temp_variable = { camp_occ_month_row_index = camp_occ_row_ids^num }
 		while_loop_effect = {
 			limit = { check_variable = { camp_occ_month_row_index > 0 } }
@@ -1695,17 +1703,28 @@ camp_occ_track_controlled_state = {
 	if = {
 		limit = {
 			OR = {
-				AND = { has_state_flag = camp_occ_origin_assigned CONTROLLER = { original_tag = GER } }
-				AND = { camp_occ_state_is_china_region = yes CONTROLLER = { original_tag = JAP } }
+				AND = { has_state_flag = camp_occ_origin_assigned camp_occ_state_has_german_authority = yes }
+				AND = { camp_occ_state_is_china_region = yes camp_occ_state_has_japanese_client_authority = yes }
 			}
 		}
-		CONTROLLER = {
-			camp_occ_initialize_country = yes
-			if = {
-				limit = { NOT = { is_in_array = { array = camp_occ_eligible_states value = PREV } } }
-				add_to_array = { array = camp_occ_eligible_states value = PREV }
+		if = {
+			limit = { camp_occ_state_has_german_authority = yes }
+			GER = {
+				camp_occ_initialize_country = yes
+				if = { limit = { NOT = { is_in_array = { array = camp_occ_eligible_states value = PREV } } } add_to_array = { array = camp_occ_eligible_states value = PREV } }
+				camp_rework_register_country_for_monthly_pulse = yes
 			}
-			camp_rework_register_country_for_monthly_pulse = yes
+		}
+		else_if = {
+			limit = { camp_occ_state_is_china_region = yes camp_occ_state_has_japanese_client_authority = yes }
+			JAP = {
+				camp_occ_initialize_country = yes
+				if = {
+					limit = { NOT = { is_in_array = { array = camp_occ_eligible_states value = PREV } } }
+					add_to_array = { array = camp_occ_eligible_states value = PREV }
+				}
+				camp_rework_register_country_for_monthly_pulse = yes
+			}
 		}
 		camp_occ_try_register_current_state = yes
 	}
@@ -1714,19 +1733,23 @@ camp_occ_try_register_current_state = {
 	if = {
 		limit = {
 			NOT = { has_state_flag = camp_occ_registered }
-			CONTROLLER = { camp_occ_authority_has_campaign = yes }
+			OR = {
+				AND = { camp_occ_state_has_german_authority = yes GER = { camp_occ_authority_has_campaign = yes } }
+				AND = { camp_occ_state_has_japanese_client_authority = yes JAP = { camp_occ_authority_has_campaign = yes } }
+			}
 		}
-		set_temp_variable = { camp_occ_source_authority = CONTROLLER }
 		set_temp_variable = { camp_occ_source_proven = 0 }
 		set_temp_variable = { camp_occ_source_requested_k = 0 }
 		if = {
-			limit = { camp_occ_has_foreign_german_campaign_origin = yes CONTROLLER = { original_tag = GER } }
+			limit = { camp_occ_has_foreign_german_campaign_origin = yes camp_occ_state_has_german_authority = yes GER = { camp_occ_authority_has_campaign = yes } }
+			set_temp_variable = { camp_occ_source_authority = GER }
 			camp_occ_stage_german_origin_request = yes
 			set_temp_variable = { camp_occ_source_profile = constant:camp_occ_profile.germany }
 			set_temp_variable = { camp_occ_source_proven = 1 }
 		}
 		else_if = {
-			limit = { camp_occ_state_is_china_region = yes CONTROLLER = { original_tag = JAP } }
+			limit = { camp_occ_state_is_china_region = yes camp_occ_state_has_japanese_client_authority = yes JAP = { camp_occ_authority_has_campaign = yes } }
+			set_temp_variable = { camp_occ_source_authority = JAP }
 			# Snapshot actual present civilians; no claim that this fraction is a historical census.
 			set_temp_variable = { camp_occ_source_requested_k = state_population_k }
 			multiply_temp_variable = { camp_occ_source_requested_k = constant:camp_occ_value.japan_exposure_share }

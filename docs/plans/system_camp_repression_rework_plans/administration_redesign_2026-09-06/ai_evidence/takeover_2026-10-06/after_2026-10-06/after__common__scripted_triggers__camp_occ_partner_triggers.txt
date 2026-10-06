@@ -1,0 +1,165 @@
+# Partner-controlled origin gates. Germany owns the rows and their responsibility.
+# Window quotes are temporary, read-only, and never alter persistent camp state.
+camp_occ_extended_partner_country = {
+	OR = {
+		original_tag = SLO
+		original_tag = CRO
+		original_tag = BUL
+		original_tag = VIC
+		AND = { original_tag = FRA has_cosmetic_tag = FRA_VICHY }
+	}
+}
+camp_occ_extended_partner_influence = {
+	camp_occ_extended_partner_country = yes
+	NOT = { is_special_chaos_country = yes }
+	NOT = { has_war_with = GER }
+	OR = {
+		is_subject_of = GER
+		is_in_faction_with = GER
+		# Vichy is bound by the armistice even when vanilla keeps it outside the Axis.
+		original_tag = VIC
+		AND = { original_tag = FRA has_cosmetic_tag = FRA_VICHY }
+	}
+}
+# Country. The selected row supplies all date components and the enrollment share.
+camp_occ_extended_partner_quote = {
+	set_temp_variable = { camp_occ_order_sy = 0 }
+	set_temp_variable = { camp_occ_order_sm = 0 }
+	set_temp_variable = { camp_occ_order_sd = 0 }
+	set_temp_variable = { camp_occ_order_ey = 0 }
+	set_temp_variable = { camp_occ_order_em = 0 }
+	set_temp_variable = { camp_occ_order_ed = 0 }
+	set_temp_variable = { camp_occ_order_share = 0 }
+	if = {
+		limit = { original_tag = SLO }
+		set_temp_variable = { camp_occ_order_sy = constant:camp_occ_partner_table.slo_start_year }
+		set_temp_variable = { camp_occ_order_sm = constant:camp_occ_partner_table.slo_start_month }
+		set_temp_variable = { camp_occ_order_sd = constant:camp_occ_partner_table.slo_start_day }
+		set_temp_variable = { camp_occ_order_ey = constant:camp_occ_partner_table.slo_end_year }
+		set_temp_variable = { camp_occ_order_em = constant:camp_occ_partner_table.slo_end_month }
+		set_temp_variable = { camp_occ_order_ed = constant:camp_occ_partner_table.slo_end_day }
+		set_temp_variable = { camp_occ_order_share = constant:camp_occ_partner_table.slo_share }
+	}
+	else_if = {
+		limit = { original_tag = CRO }
+		set_temp_variable = { camp_occ_order_sy = constant:camp_occ_partner_table.cro_start_year }
+		set_temp_variable = { camp_occ_order_sm = constant:camp_occ_partner_table.cro_start_month }
+		set_temp_variable = { camp_occ_order_sd = constant:camp_occ_partner_table.cro_start_day }
+		set_temp_variable = { camp_occ_order_ey = constant:camp_occ_partner_table.cro_end_year }
+		set_temp_variable = { camp_occ_order_em = constant:camp_occ_partner_table.cro_end_month }
+		set_temp_variable = { camp_occ_order_ed = constant:camp_occ_partner_table.cro_end_day }
+		set_temp_variable = { camp_occ_order_share = constant:camp_occ_partner_table.cro_share }
+	}
+	else_if = {
+		limit = { original_tag = BUL }
+		set_temp_variable = { camp_occ_order_sy = constant:camp_occ_partner_table.bul_start_year }
+		set_temp_variable = { camp_occ_order_sm = constant:camp_occ_partner_table.bul_start_month }
+		set_temp_variable = { camp_occ_order_sd = constant:camp_occ_partner_table.bul_start_day }
+		set_temp_variable = { camp_occ_order_ey = constant:camp_occ_partner_table.bul_end_year }
+		set_temp_variable = { camp_occ_order_em = constant:camp_occ_partner_table.bul_end_month }
+		set_temp_variable = { camp_occ_order_ed = constant:camp_occ_partner_table.bul_end_day }
+		set_temp_variable = { camp_occ_order_share = constant:camp_occ_partner_table.bul_share }
+	}
+	else_if = {
+		limit = { OR = { original_tag = VIC AND = { original_tag = FRA has_cosmetic_tag = FRA_VICHY } } }
+		set_temp_variable = { camp_occ_order_sy = constant:camp_occ_partner_table.vic_start_year }
+		set_temp_variable = { camp_occ_order_sm = constant:camp_occ_partner_table.vic_start_month }
+		set_temp_variable = { camp_occ_order_sd = constant:camp_occ_partner_table.vic_start_day }
+		set_temp_variable = { camp_occ_order_ey = constant:camp_occ_partner_table.vic_end_year }
+		set_temp_variable = { camp_occ_order_em = constant:camp_occ_partner_table.vic_end_month }
+		set_temp_variable = { camp_occ_order_ed = constant:camp_occ_partner_table.vic_end_day }
+		set_temp_variable = { camp_occ_order_share = constant:camp_occ_partner_table.vic_share }
+	}
+	check_variable = { camp_occ_order_share > 0 }
+}
+camp_occ_extended_partner_window = {
+	set_temp_variable = { camp_occ_order_sy = 0 }
+	set_temp_variable = { camp_occ_order_sm = 0 }
+	set_temp_variable = { camp_occ_order_sd = 0 }
+	set_temp_variable = { camp_occ_order_ey = 0 }
+	set_temp_variable = { camp_occ_order_em = 0 }
+	set_temp_variable = { camp_occ_order_ed = 0 }
+	set_temp_variable = { camp_occ_order_share = 0 }
+	camp_occ_extended_partner_quote = yes
+	meta_trigger = {
+		text = {
+			NOT = { date < "[SY].[SM].[SD]" }
+			date < "[EY].[EM].[ED]"
+		}
+		SY = "[?camp_occ_order_sy|.0]"
+		SM = "[?camp_occ_order_sm|.0]"
+		SD = "[?camp_occ_order_sd|.0]"
+		EY = "[?camp_occ_order_ey|.0]"
+		EM = "[?camp_occ_order_em|.0]"
+		ED = "[?camp_occ_order_ed|.0]"
+	}
+}
+camp_occ_extended_partner_wave_window = {
+	camp_occ_extended_partner_window = yes
+	OR = {
+		NOT = { original_tag = CRO }
+		meta_trigger = {
+			text = {
+				OR = {
+					date < "[EY].[EM].[ED]"
+					NOT = { date < "[SY].[SM].[SD]" }
+				}
+			}
+			EY = "[?constant:camp_occ_partner_table.cro_first_end_year|.0]"
+			EM = "[?constant:camp_occ_partner_table.cro_first_end_month|.0]"
+			ED = "[?constant:camp_occ_partner_table.cro_first_end_day|.0]"
+			SY = "[?constant:camp_occ_partner_table.cro_second_start_year|.0]"
+			SM = "[?constant:camp_occ_partner_table.cro_second_start_month|.0]"
+			SD = "[?constant:camp_occ_partner_table.cro_second_start_day|.0]"
+		}
+	}
+}
+camp_occ_extended_cro_first_wave = {
+	original_tag = CRO
+	meta_trigger = {
+		text = { date < "[EY].[EM].[ED]" }
+		EY = "[?constant:camp_occ_partner_table.cro_first_end_year|.0]"
+		EM = "[?constant:camp_occ_partner_table.cro_first_end_month|.0]"
+		ED = "[?constant:camp_occ_partner_table.cro_first_end_day|.0]"
+	}
+}
+camp_occ_extended_partner_order_stands = {
+	GER = { exists = yes camp_occ_authority_has_campaign = yes }
+	camp_occ_extended_partner_influence = yes
+	camp_occ_extended_partner_window = yes
+	NOT = { has_country_flag = camp_occ_extended_transports_halted }
+}
+# State. Home Bulgarian provinces and unrelated territory never enter the order.
+camp_occ_extended_partner_source_region = {
+	OR = {
+		AND = { is_core_of = SLO CONTROLLER = { original_tag = SLO } }
+		AND = { is_core_of = CRO CONTROLLER = { original_tag = CRO } }
+		AND = { OR = { state = 106 state = 184 state = 731 state = 803 } CONTROLLER = { original_tag = BUL } }
+		AND = { is_core_of = FRA CONTROLLER = { OR = { original_tag = VIC AND = { original_tag = FRA has_cosmetic_tag = FRA_VICHY } } } }
+	}
+}
+camp_occ_extended_partner_candidate = {
+	is_on_continent = europe
+	camp_occ_has_foreign_german_campaign_origin = yes
+	camp_occ_extended_partner_source_region = yes
+	NOT = { has_state_flag = camp_occ_registered }
+	CONTROLLER = { camp_occ_extended_partner_order_stands = yes }
+}
+camp_occ_extended_partner_host_authority = {
+	camp_occ_extended_partner_source_region = yes
+	CONTROLLER = { camp_occ_extended_partner_order_stands = yes }
+}
+camp_occ_extended_partner_reception_ready = {
+	camp_occ_state_has_german_authority = yes
+	camp_origin_host_provenance_ready = yes
+	NOT = { has_state_flag = camp_occ_closed }
+	NOT = { has_state_flag = camp_occ_transfer_rollback_failed }
+	OR = {
+		NOT = { has_state_flag = camp_occ_registered }
+		AND = { camp_occ_state_has_current_authority = yes var:camp_occ_responsible_country = { original_tag = GER } }
+	}
+}
+camp_occ_extended_partner_can_halt = {
+	camp_occ_extended_partner_order_stands = yes
+	any_controlled_state = { camp_occ_state_has_partner_authority = yes check_variable = { camp_occ_remaining_k > 0 } }
+}

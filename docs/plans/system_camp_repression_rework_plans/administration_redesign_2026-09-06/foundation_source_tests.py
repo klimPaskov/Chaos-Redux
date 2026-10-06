@@ -34,14 +34,14 @@ class Runtime:
     def __init__(self):
         self.effects={}; self.triggers={}; self.constants={}; self.scopes={}; self.temp={}; self.targets={}
         self.date=datetime.date(1938,1,1); self.global_flags=set(); self.debits=0; self.logged=0
-        for path in ['common/scripted_effects/camp_administration_effects.txt','common/scripted_effects/camp_administration_ui_effects.txt','common/scripted_effects/camp_administration_origin_effects.txt','common/scripted_effects/camp_administration_occupation_effects.txt','common/scripted_effects/chaosx_dynamic_effects.txt']:
+        for path in ['common/scripted_effects/camp_administration_effects.txt','common/scripted_effects/camp_administration_ui_effects.txt','common/scripted_effects/camp_administration_origin_effects.txt','common/scripted_effects/camp_administration_occupation_effects.txt','common/scripted_effects/camp_occ_partner_effects.txt','common/scripted_effects/chaosx_dynamic_effects.txt']:
             source=(ROOT/path).read_text(encoding='utf-8-sig')
             self.effects.update({k:v for k,o,v in parse(source) if not k.startswith('@')})
             for key,value in re.findall(r'(?m)^(@[A-Z0-9_]+)\s*=\s*(-?\d+(?:\.\d+)?)\s*$',source): self.constants[key]=float(value)
         self.triggers.update({k:v for k,o,v in parse((ROOT/'common/scripted_triggers/camp_administration_triggers.txt').read_text())})
-        for name in ('camp_administration_origin_triggers','camp_administration_occupation_triggers','camp_administration_ui_triggers'):
+        for name in ('camp_administration_origin_triggers','camp_administration_occupation_triggers','camp_administration_ui_triggers','camp_occ_partner_triggers'):
             self.triggers.update({k:v for k,o,v in parse((ROOT/f'common/scripted_triggers/{name}.txt').read_text())})
-        for path in ['common/script_constants/camp_administration_constants.txt','common/script_constants/camp_administration_ui_constants.txt','common/script_constants/camp_administration_origin_constants.txt','common/script_constants/camp_administration_occupation_constants.txt','common/script_constants/chaos_meter_deaths_constants.txt']:
+        for path in ['common/script_constants/camp_administration_constants.txt','common/script_constants/camp_administration_ui_constants.txt','common/script_constants/camp_administration_origin_constants.txt','common/script_constants/camp_administration_occupation_constants.txt','common/script_constants/camp_occ_partner_constants.txt','common/script_constants/chaos_meter_deaths_constants.txt']:
             if not (ROOT/path).exists(): continue
             for cat,o,b in parse((ROOT/path).read_text()):
                 if isinstance(b,list):
@@ -105,6 +105,9 @@ class Runtime:
             array,index=x.split('^',1)
             return self.scopes[s]['arrays'][array][int(self.val(index,s,prev))]
         if x in self.temp: return self.temp[x]
+        # Native database country tokens resolve to scope pointers, rather than
+        # being read as a zero-valued variable in the current state.
+        if x in self.scopes: return x
         if x.startswith(('building_level@','non_damaged_building_level@')): return self.scopes[s].get(x.split('@')[1],0)
         if x=='infrastructure_level': return self.scopes[s].get('infrastructure',0)
         if x=='num_equipment@support_equipment': return self.scopes[s]['support']
@@ -117,6 +120,21 @@ class Runtime:
                 return all(values) if k=='AND' else any(values) if k=='OR' else not all(values)
             if k=='if':
                 return not self.cond(get(v,'limit',[]),s,prev) or self.cond([x for x in v if x[0]!='limit'],s,prev)
+            if k=='meta_trigger':
+                replacements={}
+                for name,_,token in v:
+                    if name=='text': continue
+                    match=re.fullmatch(r'\[\?([^|]+)\|\.0\]',token)
+                    replacements[name]=str(int(self.val(match.group(1),s,prev))) if match else token
+                def replace(entries):
+                    result=[]
+                    for name,operator,token in entries:
+                        if isinstance(token,list): token=replace(token)
+                        else:
+                            for key,value in replacements.items(): token=token.replace('['+key+']',value)
+                        result.append((name,operator,token))
+                    return result
+                return self.cond(replace(get(v,'text')),s,prev)
             if k=='all_of':
                 body=[x for x in v if x[0] not in ('array','value','index')]
                 for index,value in enumerate(self.scopes[s]['arrays'].get(get(v,'array'),[])):
@@ -153,6 +171,8 @@ class Runtime:
             if k=='has_dynamic_modifier': return get(v,'modifier') in self.scopes[s]['mods']
             if k=='is_controlled_by': return self.scopes[s]['controller']==self.target(v,s,prev)
             if k=='is_subject_of': return self.scopes[s].get('overlord')==self.target(v,s,prev)
+            if k=='has_cosmetic_tag': return self.scopes[s].get('cosmetic_tag')==v
+            if k=='is_special_chaos_country': return self.scopes[s].get('special_chaos',False)==(v=='yes')
             if k=='is_core_of': return self.target(v,s,prev) in self.scopes[s].get('cores',set())
             if k=='has_government': return self.scopes[s]['government']==v
             if k=='has_manpower':
@@ -844,8 +864,8 @@ def tests():
     results.append('Generic national reform availability rejects mismatched, foreign-authority, inactive-live and misaligned custody rows; effect-time checks prevent payment if a one-site or two-site ledger changes before execution')
     results.append('A sticky provenance host does not gate the generic national order: availability and the paid effect accept it because reform closes that host with incomplete records')
     paid=sale.check_native_costs()
-    assert len(paid)==79,len(paid)
-    results.append('Event 026 sale: all 79 positive native camp costs (78 camp decisions and the Hungarian halt) read a registered price-table global and each order credits one purchase')
+    assert len(paid)==80,len(paid)
+    results.append('Event 026 sale: all 80 positive native camp costs (78 camp decisions and the two partner halt actions) read a registered price-table global and each order credits one purchase')
     sale.check_stock_prices()
     results.append('Event 026 sale: no camp purchase check compares stock with an ordinary price; only the AI capacity heuristic keeps ordinary thresholds')
     for ratio in sale.SALE_RATIOS:

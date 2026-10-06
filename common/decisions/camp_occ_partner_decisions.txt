@@ -11,6 +11,35 @@
 # ============================================================================
 
 political_actions = {
+	camp_occ_partner_halt_transports = {
+		icon = GFX_decision_generic_protection
+		cost = global.black_friday_price_camp_occ_partner_response_halt_pp
+		allowed = { OR = { original_tag = SLO original_tag = CRO original_tag = BUL original_tag = VIC original_tag = FRA } }
+		visible = {
+			has_country_flag = camp_occ_extended_order_notified
+			camp_occ_extended_partner_order_stands = yes
+			any_controlled_state = { camp_occ_state_has_partner_authority = yes check_variable = { camp_occ_remaining_k > 0 } }
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = camp_occ_partner_halt_transports_waiting_tt
+				camp_occ_extended_partner_can_halt = yes
+			}
+		}
+		complete_effect = {
+			if = {
+				limit = { camp_occ_extended_partner_can_halt = yes }
+				custom_effect_tooltip = camp_occ_extended_partner_halt_effect_tt
+				hidden_effect = { camp_occ_extended_partner_halt = yes black_friday_credit_political_power_purchase = yes }
+			}
+			else = { hidden_effect = { add_political_power = global.black_friday_price_camp_occ_partner_response_halt_pp } }
+		}
+		ai_will_do = {
+			base = constant:camp_occ_partner_ai.halt_decision
+			modifier = { factor = constant:camp_occ_partner_ai.halt_decision_fascist_factor has_government = fascism }
+			modifier = { factor = constant:camp_occ_partner_ai.halt_decision_subject_factor is_subject_of = GER NOT = { has_government = fascism } }
+		}
+	}
 	camp_occ_hun_halt_deportations = {
 		icon = GFX_decision_generic_protection
 		cost = global.black_friday_price_camp_occ_partner_response_halt_pp
@@ -19,17 +48,22 @@ political_actions = {
 			has_country_flag = camp_occ_partner_order_notified
 			NOT = { has_country_flag = camp_occ_partner_deportations_halted }
 			camp_occ_partner_deportation_window_open = yes
+			any_controlled_state = { camp_occ_state_has_partner_authority = yes check_variable = { camp_occ_remaining_k > 0 } }
 		}
 		available = {
 			custom_trigger_tooltip = {
 				tooltip = camp_occ_hun_halt_deportations_transports_tt
-				any_controlled_state = { camp_occ_state_has_partner_authority = yes }
+				any_controlled_state = { camp_occ_state_has_partner_authority = yes check_variable = { camp_occ_remaining_k > 0 } }
 			}
 		}
 		complete_effect = {
-			custom_effect_tooltip = camp_occ_partner_halt_release_tt
-			camp_occ_partner_halt_deportations = yes
-			hidden_effect = { black_friday_credit_political_power_purchase = yes }
+			if = {
+				limit = { any_controlled_state = { camp_occ_state_has_partner_authority = yes check_variable = { camp_occ_remaining_k > 0 } } }
+				custom_effect_tooltip = camp_occ_partner_halt_release_tt
+				camp_occ_partner_halt_deportations = yes
+				hidden_effect = { black_friday_credit_political_power_purchase = yes }
+			}
+			else = { hidden_effect = { add_political_power = global.black_friday_price_camp_occ_partner_response_halt_pp } }
 		}
 		ai_will_do = {
 			base = constant:camp_occ_partner_ai.halt_decision

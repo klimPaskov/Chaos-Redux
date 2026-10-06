@@ -1,0 +1,25 @@
+[
+  {
+    "name": "hoi4.event_compare",
+    "arguments": {
+      "workspaceId": "camp_origin_architecture_oct3",
+      "before": {
+        "revision": "05d44b40df4da94b29ea68dcfe8546ffb54c0b721a7931d449f3911c15afd2b8"
+      },
+      "selector": {
+        "kind": "namespace",
+        "namespace": "camp_occ_partner"
+      },
+      "proposedSources": [
+        {
+          "relativePath": "events/camp_occ_partner_events.txt",
+          "source": "# ============================================================================\n# CHAOS REDUX - 1944 GERMAN DEPORTATION DEMAND ON HUNGARY\n# ============================================================================\n# Overview:\n# - camp_occ_partner.1 asks the Hungarian government (player or AI) to answer\n#   the German deportation order once, when camp_occ_try_partner_deportation\n#   first places Hungarian-held cohorts under German orders.\n# - camp_occ_partner.2 tells Germany once that Hungary halted the transports.\n# - The answers are camp_occ_partner_comply_with_order,\n#   camp_occ_partner_obstruct_deportations and camp_occ_partner_halt_deportations\n#   in camp_administration_occupation_effects.txt; the paid decision\n#   camp_occ_hun_halt_deportations offers the halt later in the window.\n# - USHMM: about 437,000 Jews were deported from Hungary between 15 May and\n#   9 July 1944; Regent Horthy halted the transports on 7 July.\n# ============================================================================\n\nadd_namespace = camp_occ_partner\n\ncountry_event = {\n\tid = camp_occ_partner.1\n\ttitle = camp_occ_partner.1.t\n\tdesc = camp_occ_partner.1.d\n\tpicture = GFX_report_event_hungary_parliament\n\tis_triggered_only = yes\n\ttrigger = { original_tag = HUN }\n\n\toption = {\n\t\tname = camp_occ_partner.1.a\n\t\ttrigger = { NOT = { has_country_flag = camp_occ_partner_deportations_halted } }\n\t\tcustom_effect_tooltip = camp_occ_partner.1.a.tt\n\t\tcamp_occ_partner_comply_with_order = yes\n\t\tai_chance = {\n\t\t\tbase = constant:camp_occ_partner_ai.comply\n\t\t\tmodifier = {\n\t\t\t\tfactor = constant:camp_occ_partner_ai.fascist_comply_factor\n\t\t\t\thas_government = fascism\n\t\t\t}\n\t\t}\n\t}\n\n\toption = {\n\t\tname = camp_occ_partner.1.b\n\t\ttrigger = { NOT = { has_country_flag = camp_occ_partner_deportations_halted } }\n\t\tcustom_effect_tooltip = camp_occ_partner.1.b.tt\n\t\tcamp_occ_partner_obstruct_deportations = yes\n\t\tai_chance = {\n\t\t\tbase = constant:camp_occ_partner_ai.obstruct\n\t\t\tmodifier = {\n\t\t\t\tfactor = constant:camp_occ_partner_ai.fascist_obstruct_factor\n\t\t\t\thas_government = fascism\n\t\t\t}\n\t\t}\n\t}\n\n\toption = {\n\t\tname = camp_occ_partner.1.c\n\t\ttrigger = { NOT = { has_country_flag = camp_occ_partner_deportations_halted } }\n\t\tcustom_effect_tooltip = camp_occ_partner_halt_release_tt\n\t\tcamp_occ_partner_halt_deportations = yes\n\t\tai_chance = {\n\t\t\tbase = constant:camp_occ_partner_ai.halt\n\t\t\tmodifier = {\n\t\t\t\tfactor = constant:camp_occ_partner_ai.fascist_halt_factor\n\t\t\t\thas_government = fascism\n\t\t\t}\n\t\t\tmodifier = {\n\t\t\t\tfactor = constant:camp_occ_partner_ai.subject_halt_factor\n\t\t\t\tis_subject_of = GER\n\t\t\t\tNOT = { has_government = fascism }\n\t\t\t}\n\t\t}\n\t}\n\n\t# The government already stopped the trains through the halt decision.\n\toption = {\n\t\tname = camp_occ_partner.1.e\n\t\ttrigger = { has_country_flag = camp_occ_partner_deportations_halted }\n\t\tcustom_effect_tooltip = camp_occ_partner.1.e.tt\n\t}\n}\n\ncountry_event = {\n\tid = camp_occ_partner.2\n\ttitle = camp_occ_partner.2.t\n\tdesc = camp_occ_partner.2.d\n\tpicture = GFX_report_event_hungary_refused\n\tis_triggered_only = yes\n\ttrigger = { original_tag = GER }\n\n\toption = {\n\t\tname = camp_occ_partner.2.a\n\t\tcustom_effect_tooltip = camp_occ_partner.2.a.tt\n\t}\n}\n"
+        }
+      ],
+      "render": false,
+      "maxChainNodes": 15,
+      "refresh": false
+    },
+    "output": "C:\\Users\\klimp\\OneDrive\\Documents\\Paradox Interactive\\Hearts of Iron IV\\mod\\chaos_redux\\docs\\plans\\system_camp_repression_rework_plans\\administration_redesign_2026-09-06\\mcp\\takeover_2026-10-06\\event_compare_inverse_to_head.json"
+  }
+]

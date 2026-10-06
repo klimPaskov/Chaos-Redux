@@ -186,7 +186,7 @@ camp_administration_civil_finish_review = {
 		clr_country_flag = camp_admin_institution_slot_active
 		set_country_flag = camp_admin_civil_review_complete
 		set_country_flag = camp_rework_reformed_legacy
-		if = { limit = { original_tag = ENG } set_country_flag = camp_admin_civil_british_review_complete }
+		if = { limit = { original_tag = ENG } set_country_flag = camp_admin_civil_british_review_complete set_country_flag = camp_rework_uk_raj_review_complete }
 		else_if = {
 			limit = { original_tag = RAJ }
 			set_country_flag = camp_rework_uk_indian_release_terms_complete
@@ -196,6 +196,7 @@ camp_administration_civil_finish_review = {
 		else_if = {
 			limit = { original_tag = USA }
 			set_country_flag = camp_rework_usa_court_review_complete
+			if = { limit = { has_war = yes } set_country_flag = camp_rework_achievement_usa_redress_before_victory }
 			set_variable = { civil_liberties_damage = constant:camp_admin_civil.zero }
 			set_variable = { court_challenge_pressure = constant:camp_admin_civil.zero }
 			if = { limit = { check_variable = { camp_admin_civil_admitted_k > 0 } } set_country_flag = camp_rework_redress_pending }

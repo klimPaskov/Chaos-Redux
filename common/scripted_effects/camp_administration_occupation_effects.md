@@ -24,6 +24,7 @@ The state cannot be reseeded after capture, closure, exhaustion or reform.
 The transfer helper uses a regular, same-chain destination event target; no global event target is created.
 Persistent country arrays carry row identity and provenance.
 The state's registry row is never reassigned to a conqueror, even when the former authority ceases to exist.
+German occupation rows are registered under GER even when an eligible German subject controls the state. Japan's China rows are registered under JAP for direct Japanese and client control, excluding MAN and MEN core states. Monthly eligibility lists are stored on the responsible country so the national campaign, not the puppet controller, processes the row.
 `camp_occ_transfer_survivors_exact` is a route-gated physical survivor transaction. Its first production caller is the dated Danish rescue in escape mode (`camp_occ_transfer_escape = 1`).
 It rejects an absent destination, inactive or wrong-host row, invalid or fractional request, wrong authority, unaligned arrays, inadequate origin headroom, closed host, and failed destination control before touching physical population.
 It measures the source debit and destination credit in whole people; any mismatch invokes physical inverse operations before metadata changes.

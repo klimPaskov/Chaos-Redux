@@ -66,3 +66,27 @@ Disposition: implemented (agent decision 16 in `docs/plans/system_camp_repressio
 
 The production monthly pass for each changed state records no campaign death before its first month and then matches the rerun within one person per campaign month.
 This is policy timing, not calibration: the result still counts only the local campaign cause and does not add the deportations themselves, which are not modeled for these origins.
+
+
+## Greek-zone and Italian start-date sensitivity (2026-10-06)
+
+Disposition: implemented as a dated-scope addition to the accepted occupation campaign timing. The origin trigger preserves the existing Danish, French, Dutch, Belgian, Norwegian, and Salonika dates, defers state 731 only until 1943-03-15, defers other Greek cores until 1944-03-24, and defers Italian cores until 1943-10-16.
+
+The historical anchors are the first Salonika deportation on 15 March 1943, the 24 March 1944 roundup in Athens and other mainland Greek communities, and the Rome roundup beginning on 16 October 1943. The US Holocaust Memorial Museum documents Salonika's March 1943 deportations and the later German deportations from mainland Greece in [Greece](https://encyclopedia.ushmm.org/content/en/article/greece) and its [1943 key dates](https://encyclopedia.ushmm.org/content/en/article/1943-key-dates). Yad Vashem's [Athens transport record](https://collections.yadvashem.org/en/deportations/10967781) records the 24 March synagogue deception and the transport's 2 April departure. The US Holocaust Memorial Museum's [Rome article](https://encyclopedia.ushmm.org/content/en/article/rome) places deportations in mid-October, and its [French Rome article](https://encyclopedia.ushmm.org/content/fr/article/rome) identifies 16 October.
+
+The existing thirteen-state sensitivity is unchanged because its Greek row is state 731. It remains 707,607 modeled campaign losses before versus 682,271 after the earlier Western and Salonika date work, across 530 versus 457 modeled campaign months. Its source subtotal remains 1,081,811 apportioned people.
+
+A separate representative rerun covers Greek core state 47 (Thessaly) and Italian core state 114 (Sardinia) over declared German-control windows ending 1945-04. The old Greek baseline uses the former shared Salonika threshold, and the old Italian baseline has no date deferral. The new monthly pass begins in April 1944 for state 47 and November 1943 for state 114.
+
+| Origin sample | State | Campaign months before / after | Modeled campaign losses before / after | Apportioned source people |
+| --- | ---: | ---: | ---: | ---: |
+| Other Greek core | 47 | 25 / 13 | 12,624 / 7,550 | 26,936 |
+| Italian core | 114 | 46 / 18 | 769 / 410 | 1,138 |
+
+The production monthly pass records no campaign loss for either sample before its new first month and then matches the separate source-model rerun. The manual Auschwitz source readiness check fails on the day before and succeeds on each origin's start date. The generic German campaign fraction remains 0.025 per month.
+
+These two figures are bounded source-model sensitivity values for one representative core state each, under declared German control. They are not casualty forecasts or historical totals. The test harness validates the production date trigger and monthly/manual call paths while supplying a valid aligned source row and mocking its host-row provenance proof; partner-order responses remain covered by their separate source suite. No HOI4 runtime behavior is asserted.
+
+Reference evidence for syntax: the offline wiki `Triggers - Hearts of Iron 4 Wiki.md` records `state` at line 1831, `is_core_of` at line 1846, and `date` at line 456, all revision `abc51ad18a2c46e46d47baa795c5a840ebaf7c4ae3e777426c64a9f4c0c0ce06`. Installed documentation `triggers_documentation.md` records the any-scope `date` trigger at lines 2490-2498 (MCP reference revision `7d27ed77dadaf3a213a4b3e2c624bf9c02dae495317abe8eee833b27c2d1de29`); its `state` and `is_core_of` sections are at lines 7561-7567 and 5390-5397. Vanilla state trigger examples appear in `common/scripted_triggers/003_holy_realm_triggers.txt:531-538`.
+
+The run of [`deportation_start_dates_source_tests.py`](deportation_start_dates_source_tests.py) passed seven cases. Its result artifact is [`deportation_start_dates_source_results.json`](deportation_start_dates_source_results.json). The harness's monthly pass runs on the first of each month, so the first campaign pass after the mid-month historical anchor is the following month.
