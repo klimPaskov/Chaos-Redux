@@ -23,6 +23,14 @@ The dedicated low-growl loop candidates fail the recorded-edge gate and stay out
 Its nominal playback spans both hands-to-mouth movements and ends at 3.869 seconds, near the 4.00-second grunt.
 Removing the second start at 3.1333 seconds prevents two copies of the same feeding recording from overlapping on one unit while retaining the complete sourced cue.
 The recovery grunt starts at 4.0333 seconds, one frame later, so the retained slowest feeding playback rate (0.94×) can finish near 4.020 seconds without touching the grunt.
+- `implemented`: the mutant mesh removes four isolated spur triangles at the neck, shoulder and left toes, with their loose edge and orphan vertex records.
+The accepted repair leaves every retained UV corner, weight, material and normal intact and preserves the exact 24-bone rest hierarchy, so it does not require replacing the other registered actions.
+The installed positional topology has zero boundary, non-manifold, duplicate, degenerate or same-direction edges at all three required tolerances.
+- `implemented`: the mutant idle uses a manually authored six-second breathing stance, head sweep/sniff and wrist flex on its existing rig.
+This removes the large height jump at the cycle boundary while retaining visible creature motion; the filmed motion target remains unresolved.
+- `implemented`: the mutant diffuse uses its immutable provider detail with an occupied median of 86.740, within the requested 80–95 interval, instead of the bright 156.610 preimage.
+Its normal uses a source-detail 1.15× tangent-strength adjustment with unit-vector normalization after the untouched repack failed the normal gate.
+The parent reviewed the exact two-map set on front and quarter surface previews before installation; the skin/jaw specular requirement remains open.
 - `unresolved`: WP3 requests footsteps at -3 dBFS while section 3.5 and the shared mastering gate require -6 dBFS.
 Already accepted -6 dBFS samples remain in place; this preserves the actual mastering contract without claiming that the conflicting WP3 target passed.
 - `unresolved`: model-specific undead/demonic specular instructions retain low or constant G values while section 3.2 rejects constant G.

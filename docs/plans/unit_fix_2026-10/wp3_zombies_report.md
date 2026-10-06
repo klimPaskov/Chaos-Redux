@@ -21,6 +21,10 @@ The previous runtime bytes remain available as the hash-bound local Git LFS obje
 Moan 03's exact CC0 source binding is also resolved, but its loop candidate fails the unchanged recorded-edge gate and is not installed.
 Moan 02 retains its accepted global-mastering bytes.
 Audio mastering proves file delivery; audible role and live playback acceptance remain separate.
+The resumed peak-limiter commit `6e393c848` replaces the accepted moan 01 master with a source-identical-duration derivative at -20.5 LUFS and -3.0 dBFS sample peak / -3.0 dBTP.
+Its bounded recorded-sample attenuation is 1.988527 dB, and the loop-edge delta remains 2.769 dB.
+Current runtime SHA is `76661F92D59F934FD5D9AA66EFDB401B2718F674A8AA5053BDCFBCB63A33C0CE`; `wp3_evidence/moan01_peaklimit_install_20261006.json` and the fresh installed inspection bind that value.
+Two distinct additional source-labeled zombie moans and one low-breathing recording are staged with passing technical inspections, but are not counted as installed voices or reviewed listening results.
 
 Shared footsteps 03–06 isolate complete transients from their original CC0 recordings, with short releases; footsteps 01–02 already fit the shortest interval.
 The final six paths remain distinct recorded takes, at the shared -6 dBFS peak target, with a maximum duration of 0.17 seconds.
@@ -29,11 +33,46 @@ This targets the six movement overlaps whose shortest contact interval is 0.20 s
 Per-file preimages, source offsets, after hashes and mastering inspections are recorded in the audio handoff.
 The fresh `wp3_evidence/after_audio/` lint reads the installed files and clears all six movement overlaps: the 64 states retain 40 findings, with only one sample overlap left, the undead eating cue.
 The earlier 46-finding count remains the intermediate particle/timing boundary.
+The undead support_attack uses the complete existing feeding recording once at 1.50 seconds, spanning both hands-to-mouth movements rather than restarting it at 3.1333 seconds.
+The final `wp3_evidence/final_feeding_review/` lint has no sample-overlap finding across the 64 states and retains 39 other findings.
+No sound source or waveform was shortened for that feeding correction.
+The recovery grunt starts at 4.0333 seconds, leaving the complete feeding cue clear even at the slowest retained 0.94 playback rate, which finishes near 4.020 seconds.
 The demonic scream and attack pools each contain three variants after wiring two extra pitches of the classified scream recording and one lower pitch of the classified attack recording.
 The new files are `demonic_scream_low.wav`, `demonic_scream_high.wav`, and `demonic_attack_low.wav`, all passing the shot-mastering gate at -3 dBFS peak.
 These are the pitch variants explicitly allowed by the demonic ticket: the scream pool still has one underlying recording, and the attack pool has two.
 They are not presented as additional independent takes.
 Two lower-register growl-loop attempts fail the recorded-edge gate; the dedicated demonic idle/defend pool is still open.
+
+The audio/presentation tranche is committed as `dbbd5444b`, `79a62a4c5`, `45582d8ba` and `6e393c848`.
+The following mutant model tranche is installed after parent review, with the remaining mutant requirements still open.
+
+### Installed mutant geometry, idle and two material maps
+
+- The mesh removes four source-reviewed spur triangles and their eleven loose edge records and ten orphan source vertex records.
+Triangles change from 31,282 to 31,278; positional boundary/non-manifold edges change from 8/4 to 0/0.
+All retained UV corners, skin weights, material assignments and normals are preserved; source height is 7.3518238, with the existing entity scale 0.8.
+All 24 bone names, indices, parents and inverse-rest components match the previous installed mesh exactly, so unchanged actions remain compatible.
+- The six-second idle has two breathing phases, a head sweep/sniff and wrist motion on the same mutant rig.
+It has 180 frames at 30 FPS; decoded quaternion continuity, local/world speed, root travel and the zero-degree/zero-unit loop seam pass with the explicit humanoid idle profile.
+Stride-plant measurements remain unmeasured and are not an idle gate; the plan's filmed peak-motion acceptance still needs the orchestrator.
+- The diffuse restores the immutable provider texture without the shared gamma lift and grades its occupied median to 86.740, within the 80–95 target, from the previous installed median 156.610.
+Existing vein/wound detail is retained; production delivery is 512 DXT1 with ten mips.
+- The normal preserves provider detail through a reviewed 1.15× tangent-strength adjustment with vector normalization and no noise or generated detail.
+Decoded G/A standard deviations are 15.2255/15.2545, mean tangent tilt is 0.12356, and production delivery is 512 DXT5 with ten mips.
+The untouched provider repack failed the normal gate and remains separate evidence, not an installed alternative.
+
+Installed mesh SHA is `e16d492de38c49af4a73aea30c8657ae0d6a091c59542ceb95817eb325ed4e07`; idle SHA is `9480e6de7eacbb00b172319c2c868e29ad3f8fdd23eac65174322f5bdfc96bf1`.
+Diffuse SHA is `ecd5bb5e4aed1c2114158c54204c2585e8ef395f890419e389a07e0dff53a2f9`; normal SHA is `ed43b774293d559f1300ba7a3318260f2dd6d2aa45e8c1ea4436bcae8465564a`.
+Native reimport binds the exact mesh/idle bytes; the parent separately reviewed the final front and quarter surface previews, including the darker diffuse and stronger normal.
+The adapter's BC1 material-bind limitation required a preview-only BC3 wrapper with identical decoded RGB across all ten mips; production stays BC1.
+Its nested 279-character normal path was copied, hash-identically, to a 216-character job-local path for Blender access.
+These are preview representation/path measures, not runtime source substitutions or relaxed gates.
+The complete mutant repair `job.yaml` was created after an absence check to supply required delivery metadata.
+Installation receipts are `wp3_evidence/mutant_parent_install_receipt.json`, `mutant_candidate_parent_review.json`, and the texture worker's approved-only CAS manifest.
+The fresh installed-byte audit reads all eight current meshes and 64 registered actions: one geometry pass, seven geometry blockers, seven action passes and 57 action blockers.
+Its compact hash-bound evidence is `wp3_evidence/installed_model_audit_compact_20261006.json`; the raw per-frame reports remain in the local audit directory.
+The unchanged mutant source normals still have 7,161 positional split-normal groups; native 60-degree smoothing state and visible faceting require a separate source check and are not proven by removing the four spurs.
+The existing specular map remains visually glossy and cannot satisfy the jaw-wetness/skin recipe through the available six-class validator; it remains an explicit model requirement.
 
 ## Per-ticket work and remaining acceptance
 
@@ -43,12 +82,12 @@ Two lower-register growl-loop attempts fail the recorded-edge gate; the dedicate
 | infected_zombies | Blood burst lifetime; shared idle/movement gain; recovered moan 01. | Coat/skin/feet bake and masks; chest-height attack at 1.17 seconds; defend/training closures and skull clearance; coat-hem skinning; 312 non-manifold edges; eight blocked roles; actual cough/retch/spit sources. |
 | rabid_zombies | Blood burst lifetime; shared idle/movement gain; recovered moan 01. | Standing four-second frantic idle; move seam; forward lunge replacing back kick; wrist/forearm skinning and suit bake; 112 non-manifold edges; seven blocked roles; distinct shriek and death gasp. |
 | parasitic_zombies | Blood burst lifetime; feed gain 0.55. | Actual tentacle rig, weights, idle and whip lag; forward lash/grab; defend closure and death at most 4.5 seconds; tube caps and duplicate removal; 554 non-manifold edges; seven blocked roles; wet lash and suction sources. |
-| mutant_zombies | Blood burst lifetime; shared idle/movement gain; recovered moan 01. | Skin/jaw materials and 80–95 diffuse median; calm closed idle and claw curls; two slits/duplicate faces; four non-manifold edges; eight blocked roles; dedicated heavy voice, breathing and footsteps. |
-| undead_zombies | Blood burst lifetime; attack grunt at 2.45 seconds; shared movement gain. | Source-based suit/skin grade and gloss masks; substantial idle; plant/training easing and retreat seam; attack knees and armpit/hem weights; 330 non-manifold edges; seven blocked roles; two extra moan takes. |
+| mutant_zombies | Blood burst lifetime; shared idle/movement gain; recovered moan 01; reviewed four-spur mesh repair, calm closed idle, diffuse median 86.740 and source-detail normal installed. | Skin/jaw specular recipe; attack claw curls and seven other action-role gates; filmed idle motion target; dedicated heavy voice, breathing and footsteps. |
+| undead_zombies | Blood burst lifetime; attack grunt at 2.45 seconds; shared movement gain; one complete feeding cue instead of overlapping restarts. | Source-based suit/skin grade and gloss masks; substantial idle; plant/training easing and retreat seam; attack knees and armpit/hem weights; 330 non-manifold edges; seven blocked roles; two extra moan takes. |
 | necrotic_zombies | Blood burst lifetime; fall cue at 3.30 seconds; shared movement gain. | Bone/teeth gloss masks, distinct skin/rags; foot plants, arm sweep and transition easing; retreat seam; rag/thigh skinning; 73 non-manifold edges; seven blocked roles. |
 | demonic_zombies | Blood burst lifetime; shared idle/movement gain; recovered moan 01; three-variant scream and attack pools. | Forearm/hand and wing skinning/joints; standing slash and leap landing; death, training, idle, retreat and plant repairs; source-island padding/region grade; 36 non-manifold edges; seven blocked roles; own idle/defend growls and retiming after the authored action repairs. |
 
-These counts are tied to the unchanged installed mesh/action hashes in the earlier crosswalk and current WP3 inventory.
+The seven other models' baseline counts remain tied to unchanged installed mesh/action hashes; the mutant's updated installed hashes and measurements are recorded above and in the current WP3 inventory.
 They are unresolved acceptance findings, not a waiver or a declaration that all tickets were repaired.
 All 24 current model maps have shared compression/mip delivery, but source material/detail repairs and the WP3 256-pixel specular targets are still part of model work.
 
@@ -61,6 +100,11 @@ Lock the crop to the known custom entity position and keep attacks stationary, o
 - Exercise death for each model: expect one brief hit burst rather than a retained emitter.
 For necrotic death, expect the body-fall cue at 3.30 seconds and no early fall sound at 1.30 seconds; inspect the actual body contact, since the decoded hips are 1.646 source units high at 3.30 seconds.
 - Capture two undead attack cycles: expect the grunt at 2.45 seconds alongside the feeding/grab recovery, with no grunt event at 2.80 seconds.
+- Exercise undead support_attack: expect one feeding cue starting at 1.50 seconds across both mouth movements and a recovery grunt at 4.0333 seconds.
+There must be no restart at 3.1333 seconds and no overlap at the slowest sampled voice rate.
+- Watch the mutant idle for three full six-second cycles from front and quarter views: expect slow breathing, a head sweep/sniff and claw motion with no height snap at the seam.
+Inspect its neck, shoulder and left toes for the removed spurs; compare the darker body and retained vein detail at the close and map-zoom crops.
+Measure the locked-crop peak-motion target 0.8–3.0 on the re-filmed idle; the parser and previews do not establish that filmed metric.
 - Leave each idle long enough to hear all current pool members, then exercise movement and parasitic feeding at the same camera distance as an adjacent vanilla unit.
 Expect the ticketed gains and louder moan 01; held takes and one-shot/repeating-state defects remain identified in the audio handoff.
 - Exercise attack, defend, support_attack, move, retreat, training and death for each model before closing its geometry/action ticket.
@@ -74,7 +118,8 @@ No game or capture session was launched here.
 
 No substitute model, generated production rig/weight/action, synthetic sound or unauthorized source download is accepted.
 Open model and audio requirements are listed individually above and in the two worker handoffs; WP3 is not presented as complete.
-The root runtime exposes no HOI4 reference or validation routes; its exact direct local reference paths, line spans, revisions and the installed-documentation chapter gap are in `wp3_evidence/local_references.json`.
+The root's earlier tool list lacked the HOI4 reference routes; the continuation exposes their schemas but live `reference_context` and `reference_search` calls fail with `Transport closed`.
+The exact retry responses are in `wp3_evidence/root_reference_route_retry_20261006.json`; direct local source paths, line spans, revisions and the installed-documentation chapter gap remain in `wp3_evidence/local_references.json`.
 The custom model worker's runtime does expose and successfully call the reference/context/search/read/source-lookup routes; its current schemas, responses and source revisions are retained in `wp3_model_repair_reference_evidence.json`.
 The source-lookup query returned no indexed infantry definition, so the installed vanilla definition and calibration were read directly.
 No event, decision, focus, scripted-GUI, probability, on-action or gameplay source is changed by this tranche.
