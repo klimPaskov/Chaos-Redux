@@ -1,0 +1,11 @@
+# Portrait source classification
+
+**Classification:** `fictional_high_chaos`, native ImageGen. The authorized subject is one unnamed fictional supernatural Bodhisattva incarnation in a 1936 alternate-history setting and its staged forms. The authorization excludes Siddhartha Gautama, Padmasambhava, any historical or living person, and the identity of any sourced religious painting.
+
+The existing Event003 effects create the leader under the anonymous name “The Bodhisattva” and switch its portrait among refuge, bodhisattva, arhat administration, Buddha Mandate, Divine Sovereignty, False Buddha, and Empty Seat stages. The reviewed portrait consumers identify no named historical individual. All generated face portraits use the accepted original Godly Figure face as their fictional identity anchor. The Empty Seat is intentionally people-free.
+
+Installed vanilla leader references were inspected before production: `Portrait_USA_Generic_land_4.dds` is a single-person, full-canvas 156x210 painterly portrait; `portrait_SOV_supreme_soviet.dds` is a full-canvas 156x210 council portrait. Only the USA generic reference was attached to the first ImageGen call, and only for painterly finish and framing. It transferred no face, uniform, insignia, identity, or background. A decoded copy of the attached style anchor and the council comparison image are archived in `notes/vanilla_references/`; both remain reference-only.
+
+The skill-local leader portrait contact sheet was also inspected. The `visual_components/portrait_backdrops` contact sheet was inspected after the installed vanilla references, solely to compare background treatment. No backdrop file was supplied to ImageGen, copied into a portrait, or used as an identity, source, or finished-image substitute. The production prompts create full-canvas scenes and do not ask for an identity from any source image.
+
+Internet research is limited to robe construction and the Acala-stage prop, as listed in `prop_research.md`. No Internet photograph, real-person portrait, deity statue, or religious painting was downloaded, attached to ImageGen, cropped, or used as face identity. Source-page rights or copyright do not transfer to this generated package. The output mode does not require RunPod or a grounded source placeholder.
