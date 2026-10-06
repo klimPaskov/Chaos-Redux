@@ -321,6 +321,11 @@ Apply native transparency to icons, counters, emblems, overlays, decorative UI p
 
 Validate native transparency before processing: unused corners and padding must contain real zero-alpha pixels, the painted subject must retain nonzero alpha and complete edges, and the image must contain no fake checkerboard, matte, halo, key colour, or unintended transparent holes.
 
+For transparent icon sources, a nonzero-alpha bounding box touching the canvas is not sufficient evidence of a clipped subject.
+Inspect boundary coverage at more than one alpha threshold (for example, 1, 8, and 16), together with source-resolution and native-size views.
+Isolated alpha-1 residue outside a complete, inset subject may receive bounded exterior-noise cleanup during normalization; preserve the untouched source, all legitimate subject detail, and the chosen threshold/bounds evidence.
+If a visible leaf, frame, or other subject part is actually cut off, use a focused ImageGen edit to restore it; padding or shrinking the clipped painting does not restore the missing detail.
+
 Background removal remains a fallback for either of these cases:
 
 - the built-in ImageGen result ignored the transparency request or failed alpha validation
