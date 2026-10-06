@@ -1,0 +1,57 @@
+# ============================================================================
+# FALLOUT - RECONSTRUCTION DELEGATION CLEANUP
+# COUNTRY scope. A vanished government releases only its own paired proposal.
+# The saved Recognition deposit is returned once to a surviving proposer.
+# on_annex supplies the annexed country as FROM; ROOT remains the annexer.
+# No recurring iterator or timed callback is added.
+# ============================================================================
+
+# Supported scope: COUNTRY.
+fallout_treaty_report_closed_answer = {
+	if = {
+		limit = { exists = yes is_ai = no }
+		country_event = { id = chaosx_air_treaty.24 }
+	}
+}
+
+# Supported scope: COUNTRY.
+fallout_treaty_abort_reconstruction_compact = {
+	if = {
+		limit = { has_country_flag = fallout_treaty_reconstruction_proposal_active }
+		save_event_target_as = fallout_treaty_reconstruction_proposer
+		if = {
+			limit = { has_variable = fallout_treaty_reconstruction_partner }
+			var:fallout_treaty_reconstruction_partner = { save_event_target_as = fallout_treaty_reconstruction_partner }
+		}
+		add_to_variable = { fallout_survival_current_entries^9 = constant:air_cleanliness_treaty_joint_action.reconstruction_recognition_cost }
+		fallout_orientation_clamp_resources = yes
+		set_variable = { fallout_treaty_reconstruction_last_result = constant:air_cleanliness_treaty_joint_action.reconstruction_result_lost }
+		fallout_treaty_clear_reconstruction_proposal = yes
+		if = {
+			limit = { exists = yes is_ai = no fallout_treaty_reconstruction_is_open = yes }
+			country_event = { id = chaosx_air_treaty.23 }
+		}
+	}
+}
+
+# Supported scope: COUNTRY (the annexed or capitulated country).
+fallout_treaty_cleanup_annexed_reconstruction = {
+	# An annexed recipient first closes the surviving sender's exact proposal.
+	if = {
+		limit = { has_variable = fallout_treaty_reconstruction_proposer }
+		var:fallout_treaty_reconstruction_proposer = {
+			if = {
+				limit = {
+					exists = yes
+					has_country_flag = fallout_treaty_reconstruction_proposal_active
+					has_variable = fallout_treaty_reconstruction_partner
+					check_variable = { var = fallout_treaty_reconstruction_partner value = PREV compare = equals }
+				}
+				fallout_treaty_abort_reconstruction_compact = yes
+			}
+		}
+		clear_variable = fallout_treaty_reconstruction_proposer
+	}
+	# An annexed sender releases its recipient without touching another sender.
+	fallout_treaty_abort_reconstruction_compact = yes
+}

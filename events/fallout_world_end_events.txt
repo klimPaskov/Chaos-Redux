@@ -299,26 +299,26 @@ country_event = {
 	}
 }
 
-# Response-store recount. This appears only when a response that was available
-# at event opening can no longer pay its exact equipment cost at selection.
+# An inspection ends when equipment promised at opening cannot be supplied
+# at selection. The request is closed after this single notice.
 country_event = {
 	id = chaosx_air_treaty.8
-	title = chaosx_air_treaty.8.t
+	title = fallout_treaty_inspection_supplies.t
 	desc = {
 		trigger = { has_government = democratic }
-		text = chaosx_air_treaty.8.democratic.d
+		text = fallout_treaty_inspection_supplies.democratic.d
 	}
 	desc = {
 		trigger = { has_government = communism }
-		text = chaosx_air_treaty.8.communism.d
+		text = fallout_treaty_inspection_supplies.communism.d
 	}
 	desc = {
 		trigger = { has_government = fascism }
-		text = chaosx_air_treaty.8.fascism.d
+		text = fallout_treaty_inspection_supplies.fascism.d
 	}
 	desc = {
 		trigger = { has_government = neutrality }
-		text = chaosx_air_treaty.8.neutrality.d
+		text = fallout_treaty_inspection_supplies.neutrality.d
 	}
 	picture = GFX_report_event_generic_factory
 	is_triggered_only = yes
@@ -331,16 +331,10 @@ country_event = {
 	}
 
 	option = {
-		name = chaosx_air_treaty.8.a
-		custom_effect_tooltip = chaosx_air_treaty.8.a.tt
+		name = fallout_treaty_inspection_supplies.a
+		custom_effect_tooltip = fallout_treaty_inspection_supplies.a.tt
 		ai_chance = { base = constant:air_cleanliness_treaty_lifecycle_ai.verification_recount_acknowledge_base }
-		hidden_effect = {
-			if = {
-				limit = { air_cleanliness_treaty_inspection_request_is_valid = yes }
-				country_event = { id = chaosx_air_treaty.6 }
-			}
-			else = { air_cleanliness_treaty_cancel_verification_transactions_for_country = yes }
-		}
+		hidden_effect = { air_cleanliness_treaty_cancel_verification_transactions_for_country = yes }
 	}
 }
 
@@ -744,6 +738,10 @@ country_event = {
 		}
 		text = chaosx_air_treaty.19.rejected.d
 	}
+	desc = {
+		trigger = { check_variable = { global.air_cleanliness_treaty_relief_vote_last_result = constant:air_cleanliness_treaty_joint_action.relief_vote_result_unfunded } }
+		text = chaosx_air_treaty.19.unfunded.d
+	}
 	picture = GFX_report_event_generic_sign_treaty2
 	is_triggered_only = yes
 
@@ -762,13 +760,7 @@ country_event = {
 	option = {
 		name = chaosx_air_treaty.19.b
 		trigger = {
-			NOT = {
-				check_variable = {
-					var = global.air_cleanliness_treaty_relief_vote_last_result
-					value = constant:air_cleanliness_treaty_joint_action.relief_vote_result_approved
-					compare = equals
-				}
-			}
+			check_variable = { global.air_cleanliness_treaty_relief_vote_last_result = constant:air_cleanliness_treaty_joint_action.relief_vote_result_rejected }
 			has_event_target = air_cleanliness_treaty_relief_vote_recipient
 			tag = event_target:air_cleanliness_treaty_relief_vote_recipient
 		}
@@ -778,13 +770,7 @@ country_event = {
 	option = {
 		name = chaosx_air_treaty.19.c
 		trigger = {
-			NOT = {
-				check_variable = {
-					var = global.air_cleanliness_treaty_relief_vote_last_result
-					value = constant:air_cleanliness_treaty_joint_action.relief_vote_result_approved
-					compare = equals
-				}
-			}
+			check_variable = { global.air_cleanliness_treaty_relief_vote_last_result = constant:air_cleanliness_treaty_joint_action.relief_vote_result_rejected }
 			NOT = {
 				AND = {
 					has_event_target = air_cleanliness_treaty_relief_vote_recipient
@@ -794,6 +780,24 @@ country_event = {
 		}
 		custom_effect_tooltip = chaosx_air_treaty.19.c.tt
 	}
+	option = {
+		name = chaosx_air_treaty.19.d
+		trigger = {
+			check_variable = { global.air_cleanliness_treaty_relief_vote_last_result = constant:air_cleanliness_treaty_joint_action.relief_vote_result_unfunded }
+			has_event_target = air_cleanliness_treaty_relief_vote_caller
+			tag = event_target:air_cleanliness_treaty_relief_vote_caller
+		}
+		custom_effect_tooltip = chaosx_air_treaty.19.d.tt
+	}
+	option = {
+		name = chaosx_air_treaty.19.e
+		trigger = {
+			check_variable = { global.air_cleanliness_treaty_relief_vote_last_result = constant:air_cleanliness_treaty_joint_action.relief_vote_result_unfunded }
+			NOT = { AND = { has_event_target = air_cleanliness_treaty_relief_vote_caller tag = event_target:air_cleanliness_treaty_relief_vote_caller } }
+		}
+		custom_effect_tooltip = chaosx_air_treaty.19.e.tt
+	}
+
 }
 
 # Clean Day betrayal, sent to every member whose aid was lost.
@@ -850,16 +854,18 @@ country_event = {
 country_event = {
 	id = chaosx_air_treaty.22
 	title = chaosx_air_treaty.22.t
-	desc = chaosx_air_treaty.22.d
+	desc = {
+		trigger = { fallout_treaty_reconstruction_answer_is_open = yes }
+		text = chaosx_air_treaty.22.d
+	}
+	desc = {
+		trigger = { NOT = { fallout_treaty_reconstruction_answer_is_open = yes } }
+		text = chaosx_air_treaty.22.closed.d
+	}
 	picture = GFX_report_event_generic_sign_treaty2
 	is_triggered_only = yes
 
-	immediate = {
-		if = {
-			limit = { has_variable = fallout_treaty_reconstruction_proposer }
-			var:fallout_treaty_reconstruction_proposer = { save_event_target_as = fallout_treaty_reconstruction_proposer }
-		}
-	}
+	# Keep the regular proposer target carried by the originating proposal.
 
 	option = {
 		name = chaosx_air_treaty.22.a
@@ -886,6 +892,7 @@ country_event = {
 
 	option = {
 		name = chaosx_air_treaty.22.b
+		trigger = { fallout_treaty_reconstruction_answer_is_open = yes }
 		custom_effect_tooltip = chaosx_air_treaty.22.b.tt
 		hidden_effect = { fallout_treaty_refuse_reconstruction_compact = yes }
 		ai_chance = {
@@ -897,6 +904,11 @@ country_event = {
 			}
 		}
 	}
+	option = {
+		name = fallout_treaty_closed_answer.a
+		trigger = { NOT = { fallout_treaty_reconstruction_answer_is_open = yes } }
+	}
+
 }
 
 # Reconstruction compact result, sent to the proposer and, when signed, to the
@@ -916,15 +928,13 @@ country_event = {
 	}
 	desc = {
 		trigger = {
-			NOT = {
-				check_variable = {
-					var = fallout_treaty_reconstruction_last_result
-					value = constant:air_cleanliness_treaty_joint_action.reconstruction_result_signed
-					compare = equals
-				}
-			}
+			check_variable = { var = fallout_treaty_reconstruction_last_result value = constant:air_cleanliness_treaty_joint_action.reconstruction_result_refused compare = equals }
 		}
 		text = chaosx_air_treaty.23.refused.d
+	}
+	desc = {
+		trigger = { check_variable = { var = fallout_treaty_reconstruction_last_result value = constant:air_cleanliness_treaty_joint_action.reconstruction_result_lost compare = equals } }
+		text = chaosx_air_treaty.23.lost.d
 	}
 	picture = GFX_report_event_generic_sign_treaty2
 	is_triggered_only = yes
@@ -963,17 +973,15 @@ country_event = {
 
 	option = {
 		name = chaosx_air_treaty.23.c
-		trigger = {
-			NOT = {
-				check_variable = {
-					var = fallout_treaty_reconstruction_last_result
-					value = constant:air_cleanliness_treaty_joint_action.reconstruction_result_signed
-					compare = equals
-				}
-			}
-		}
+		trigger = { check_variable = { var = fallout_treaty_reconstruction_last_result value = constant:air_cleanliness_treaty_joint_action.reconstruction_result_refused compare = equals } }
 		custom_effect_tooltip = chaosx_air_treaty.23.c.tt
 	}
+	option = {
+		name = chaosx_air_treaty.23.d
+		trigger = { check_variable = { var = fallout_treaty_reconstruction_last_result value = constant:air_cleanliness_treaty_joint_action.reconstruction_result_lost compare = equals } }
+		custom_effect_tooltip = chaosx_air_treaty.23.d.tt
+	}
+
 }
 
 # ============================================================================
@@ -8475,6 +8483,7 @@ country_event = {
 
 country_event = {
 	id = chaosx.fallout.64
+	hidden = yes
 	title = chaosx.fallout.64.t
 	desc = {
 		text = chaosx.fallout.64.household.success.d
@@ -8635,6 +8644,7 @@ country_event = {
 
 country_event = {
 	id = chaosx.fallout.68
+	hidden = yes
 	title = chaosx.fallout.68.t
 	desc = {
 		text = chaosx.fallout.68.seal.success.d
@@ -8768,6 +8778,7 @@ country_event = {
 
 country_event = {
 	id = chaosx.fallout.72
+	hidden = yes
 	title = chaosx.fallout.72.t
 	desc = {
 		text = chaosx.fallout.72.ration.success.d
@@ -8903,6 +8914,7 @@ country_event = {
 
 country_event = {
 	id = chaosx.fallout.76
+	hidden = yes
 	title = chaosx.fallout.76.t
 	desc = { text = chaosx.fallout.76.consolidate.success.d trigger = { check_variable = { fallout_orientation_last_branch = constant:fallout_orientation_government_branch.consolidate } check_variable = { fallout_orientation_last_outcome = constant:fallout_event_outcome_type.success } } }
 	desc = { text = chaosx.fallout.76.consolidate.partial.d trigger = { check_variable = { fallout_orientation_last_branch = constant:fallout_orientation_government_branch.consolidate } check_variable = { fallout_orientation_last_outcome = constant:fallout_event_outcome_type.partial } } }
@@ -9029,6 +9041,7 @@ country_event = {
 
 country_event = {
 	id = chaosx.fallout.80
+	hidden = yes
 	title = chaosx.fallout.80.t
 	desc = chaosx.fallout.80.d
 	picture = GFX_report_event_fallout_character_institution
@@ -9170,6 +9183,78 @@ country_event = {
 		if = {
 			limit = { has_country_flag = fallout_air_winter_dead_city_casualties_memory_applied }
 			custom_effect_tooltip = fallout_air_winter_dead_city_casualties_memory_tt
+		}
+		if = {
+			limit = { has_country_flag = fallout_air_winter_regional_recovery_memory_applied }
+			custom_effect_tooltip = fallout_air_winter_regional_recovery_memory_tt
+		}
+		if = {
+			limit = { has_country_flag = fallout_air_winter_regional_failure_memory_applied }
+			custom_effect_tooltip = fallout_air_winter_regional_failure_memory_tt
+		}
+		if = {
+			limit = { has_country_flag = fallout_air_winter_tunnel_shelters_memory_applied }
+			custom_effect_tooltip = fallout_air_winter_tunnel_shelters_memory_tt
+		}
+		if = {
+			limit = { has_country_flag = fallout_air_winter_tunnel_failure_memory_applied }
+			custom_effect_tooltip = fallout_air_winter_tunnel_failure_memory_tt
+		}
+		if = {
+			limit = { has_country_flag = fallout_air_winter_rail_recovery_memory_applied }
+			custom_effect_tooltip = fallout_air_winter_rail_recovery_memory_tt
+		}
+		if = {
+			limit = { has_country_flag = fallout_air_winter_rail_failure_memory_applied }
+			custom_effect_tooltip = fallout_air_winter_rail_failure_memory_tt
+		}
+		if = {
+			limit = { has_country_flag = fallout_air_winter_dam_recovery_memory_applied }
+			custom_effect_tooltip = fallout_air_winter_dam_recovery_memory_tt
+		}
+		if = {
+			limit = { has_country_flag = fallout_air_winter_dam_failure_memory_applied }
+			custom_effect_tooltip = fallout_air_winter_dam_failure_memory_tt
+		}
+		if = {
+			limit = { has_country_flag = fallout_air_winter_refinery_stores_memory_applied }
+			custom_effect_tooltip = fallout_air_winter_refinery_stores_memory_tt
+		}
+		if = {
+			limit = { has_country_flag = fallout_air_winter_refinery_heat_memory_applied }
+			custom_effect_tooltip = fallout_air_winter_refinery_heat_memory_tt
+		}
+		if = {
+			limit = { has_country_flag = fallout_air_winter_refinery_shutdown_memory_applied }
+			custom_effect_tooltip = fallout_air_winter_refinery_shutdown_memory_tt
+		}
+		if = {
+			limit = { has_country_flag = fallout_air_winter_refinery_failure_memory_applied }
+			custom_effect_tooltip = fallout_air_winter_refinery_failure_memory_tt
+		}
+		if = {
+			limit = { has_country_flag = fallout_air_winter_reactor_power_memory_applied }
+			custom_effect_tooltip = fallout_air_winter_reactor_power_memory_tt
+		}
+		if = {
+			limit = { has_country_flag = fallout_air_winter_reactor_scram_memory_applied }
+			custom_effect_tooltip = fallout_air_winter_reactor_scram_memory_tt
+		}
+		if = {
+			limit = { has_country_flag = fallout_air_winter_reactor_failure_memory_applied }
+			custom_effect_tooltip = fallout_air_winter_reactor_failure_memory_tt
+		}
+		if = {
+			limit = { has_country_flag = fallout_air_winter_furnace_stores_memory_applied }
+			custom_effect_tooltip = fallout_air_winter_furnace_stores_memory_tt
+		}
+		if = {
+			limit = { has_country_flag = fallout_air_winter_furnace_shutdown_memory_applied }
+			custom_effect_tooltip = fallout_air_winter_furnace_shutdown_memory_tt
+		}
+		if = {
+			limit = { has_country_flag = fallout_air_winter_furnace_failure_memory_applied }
+			custom_effect_tooltip = fallout_air_winter_furnace_failure_memory_tt
 		}
 	}
 }
@@ -11502,7 +11587,7 @@ country_event = {
 	id = chaosx.fallout.900
 	hidden = yes
 	is_triggered_only = yes
-	trigger = { fallout_manual_sweep_can_begin = yes }
+	# Entry helper reports an impossible forced launch instead of suppressing it.
 	immediate = {
 		set_temp_variable = { fallout_manual_selected_intensity_input = triggerable_scenarios_intensity }
 		fallout_manual_scenario_begin = yes
@@ -25668,4 +25753,3 @@ country_event = {
 	trigger = { fallout_event_1151_cleanup_can_enter = yes }
 	immediate = { fallout_event_1151_cleanup = yes }
 }
-

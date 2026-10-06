@@ -2938,6 +2938,7 @@ fallout_air_winter_apply_survivor_memory = {
 			fallout_orientation_apply_cohesion_loss = yes
 			set_country_flag = fallout_air_winter_dead_city_casualties_memory_applied
 		}
+		fallout_air_winter_apply_recovery_memory = yes
 		set_temp_variable = { fallout_survival_cohesion_delta = constant:fallout_air_winter_memory.zero }
 		fallout_orientation_clamp_resources = yes
 	}
@@ -2965,6 +2966,24 @@ fallout_air_winter_clear_survivor_memory_flags = {
 	clr_country_flag = fallout_air_winter_dead_city_altered_memory_applied
 	clr_country_flag = fallout_air_winter_dead_city_disaster_memory_applied
 	clr_country_flag = fallout_air_winter_dead_city_casualties_memory_applied
+	clr_country_flag = fallout_air_winter_regional_recovery_memory_applied
+	clr_country_flag = fallout_air_winter_regional_failure_memory_applied
+	clr_country_flag = fallout_air_winter_tunnel_shelters_memory_applied
+	clr_country_flag = fallout_air_winter_tunnel_failure_memory_applied
+	clr_country_flag = fallout_air_winter_rail_recovery_memory_applied
+	clr_country_flag = fallout_air_winter_rail_failure_memory_applied
+	clr_country_flag = fallout_air_winter_dam_recovery_memory_applied
+	clr_country_flag = fallout_air_winter_dam_failure_memory_applied
+	clr_country_flag = fallout_air_winter_refinery_stores_memory_applied
+	clr_country_flag = fallout_air_winter_refinery_heat_memory_applied
+	clr_country_flag = fallout_air_winter_refinery_shutdown_memory_applied
+	clr_country_flag = fallout_air_winter_refinery_failure_memory_applied
+	clr_country_flag = fallout_air_winter_reactor_power_memory_applied
+	clr_country_flag = fallout_air_winter_reactor_scram_memory_applied
+	clr_country_flag = fallout_air_winter_reactor_failure_memory_applied
+	clr_country_flag = fallout_air_winter_furnace_stores_memory_applied
+	clr_country_flag = fallout_air_winter_furnace_shutdown_memory_applied
+	clr_country_flag = fallout_air_winter_furnace_failure_memory_applied
 }
 
 # ============================================================================
@@ -16775,6 +16794,12 @@ fallout_manual_scenario_begin = {
 		set_country_flag = is_global_host
 		set_temp_variable = { fallout_manual_selected_intensity_input = fallout_manual_requested_intensity }
 		fallout_manual_initialize_sweep = yes
+	}
+	else = {
+		if = {
+			limit = { exists = yes is_ai = no }
+			country_event = { id = chaosx.fallout.905 }
+		}
 	}
 }
 
@@ -57350,7 +57375,8 @@ fallout_event_select_reviewed_candidate = {
 				fallout_event_set_candidate_tie_priority = yes
 				if = {
 					limit = {
-						check_variable = { fallout_event_candidate_score > constant:fallout_event_runtime.zero }
+						# The first eligible row establishes the baseline, even at zero
+						# or a negative score. Later rows keep the existing tie rules.
 						OR = {
 							check_variable = { fallout_event_selected_candidate_found = constant:fallout_event_runtime.zero }
 							check_variable = { fallout_event_candidate_score > fallout_event_selected_candidate_score }
@@ -60119,7 +60145,7 @@ fallout_event_schedule_ordinary_receipt = {
 				}
 			}
 			check_variable = { fallout_event_requested_candidate_id > constant:fallout_event_runtime.zero }
-			check_variable = { fallout_event_requested_score > constant:fallout_event_runtime.zero }
+			# Scores rank eligible rows; zero and negative scores remain valid.
 			check_variable = { fallout_event_requested_visible_budget_cost > constant:fallout_event_runtime.zero }
 			NOT = { check_variable = { fallout_event_requested_visible_budget_cost > constant:fallout_event_runtime.maximum_visible_budget_cost } }
 			NOT = { check_variable = { fallout_event_requested_partner_registry_index < constant:fallout_event_runtime.no_registry_index } }
@@ -63663,6 +63689,7 @@ fallout_orientation_resolve_component = {
 			else_if = { limit = { check_variable = { fallout_orientation_transaction_component = constant:fallout_event_orientation_component.immediate_resource_crisis } } fallout_orientation_apply_resource_result = yes }
 			else_if = { limit = { check_variable = { fallout_orientation_transaction_component = constant:fallout_event_orientation_component.government_archetype } } fallout_orientation_apply_government_result = yes }
 			else_if = { limit = { check_variable = { fallout_orientation_transaction_component = constant:fallout_event_orientation_component.character_or_institution } } fallout_orientation_apply_character_result = yes }
+			fallout_orientation_save_component_summary = yes
 			set_country_flag = fallout_orientation_result_applied
 		}
 		set_temp_variable = { fallout_event_orientation_component_to_record = fallout_orientation_transaction_component }
@@ -140280,6 +140307,7 @@ air_cleanliness_treaty_open_relief_vote = {
 		}
 		set_country_flag = air_cleanliness_treaty_relief_vote_caller
 		set_variable = { air_cleanliness_treaty_relief_vote_transaction = global.air_cleanliness_treaty_relief_vote_transaction }
+		set_variable = { air_cleanliness_treaty_relief_vote_paid_quote = constant:air_cleanliness_treaty_joint_action.relief_vote_political_power }
 		set_temp_variable = { air_cleanliness_treaty_operation_lock_days = constant:air_cleanliness_treaty_joint_action.relief_vote_duration_days }
 		add_to_temp_variable = { air_cleanliness_treaty_operation_lock_days = constant:air_cleanliness_treaty_operation.reservation_slack_days }
 		meta_effect = { text = { set_global_flag = { flag = air_cleanliness_treaty_relief_vote_open days = [LOCK_DAYS] } } LOCK_DAYS = "[?air_cleanliness_treaty_operation_lock_days|.0]" }
@@ -140297,6 +140325,14 @@ air_cleanliness_treaty_open_relief_vote = {
 				country_event = { id = chaosx_air_treaty.18 }
 			}
 		}
+	}
+	else = {
+		# The sole caller is the paid native decision complete_effect.
+		# A stale second click returns its fee without changing the live vote.
+		set_temp_variable = { air_cleanliness_treaty_relief_vote_refund = constant:air_cleanliness_treaty_joint_action.relief_vote_political_power }
+		add_political_power = air_cleanliness_treaty_relief_vote_refund
+		set_temp_variable = { air_cleanliness_treaty_withdrawn_operation_request = constant:air_cleanliness_treaty_operation_id.relief_vote }
+		air_cleanliness_treaty_report_withdrawn_operation = yes
 	}
 }
 
@@ -140336,6 +140372,7 @@ air_cleanliness_treaty_release_relief_vote = {
 		var:global.air_cleanliness_treaty_relief_vote_caller = {
 			clr_country_flag = air_cleanliness_treaty_relief_vote_caller
 			clear_variable = air_cleanliness_treaty_relief_vote_transaction
+			clear_variable = air_cleanliness_treaty_relief_vote_paid_quote
 		}
 	}
 	clr_global_flag = air_cleanliness_treaty_relief_vote_open
@@ -140347,11 +140384,34 @@ air_cleanliness_treaty_release_relief_vote = {
 	clear_array = global.air_cleanliness_treaty_relief_vote_no
 }
 
+# Supported scope: COUNTRY. A cancelled or unfunded session can be tried
+# again after resupply; successful and rejected votes keep ordinary pacing.
+air_cleanliness_treaty_relief_vote_set_retry_window = {
+	clr_country_flag = air_cleanliness_treaty_relief_vote_cooldown
+	set_temp_variable = { air_cleanliness_treaty_relief_vote_retry_days = constant:air_cleanliness_treaty_joint_action.relief_vote_retry_days }
+	meta_effect = {
+		text = { set_country_flag = { flag = air_cleanliness_treaty_relief_vote_cooldown days = [RETRY_DAYS] } }
+		RETRY_DAYS = "[?air_cleanliness_treaty_relief_vote_retry_days|.0]"
+	}
+}
+
+# Supported scope: COUNTRY. Refunds only the saved, unconsumed native fee.
+air_cleanliness_treaty_refund_relief_vote_quote = {
+	if = {
+		limit = { has_variable = air_cleanliness_treaty_relief_vote_paid_quote }
+		set_temp_variable = { air_cleanliness_treaty_relief_vote_refund = air_cleanliness_treaty_relief_vote_paid_quote }
+		clear_variable = air_cleanliness_treaty_relief_vote_paid_quote
+		add_political_power = air_cleanliness_treaty_relief_vote_refund
+	}
+}
+
 # Supported scope: COUNTRY, the caller whose vote failed validation. The
-# political capital spent on the session is not returned.
+# unused political capital is returned exactly once; a completed ballot is paid.
 air_cleanliness_treaty_cancel_relief_vote = {
 	if = {
 		limit = { has_country_flag = air_cleanliness_treaty_relief_vote_caller }
+		air_cleanliness_treaty_refund_relief_vote_quote = yes
+		air_cleanliness_treaty_relief_vote_set_retry_window = yes
 		set_temp_variable = { air_cleanliness_treaty_withdrawn_operation_request = constant:air_cleanliness_treaty_operation_id.relief_vote }
 		air_cleanliness_treaty_report_withdrawn_operation = yes
 	}
@@ -140372,11 +140432,30 @@ air_cleanliness_treaty_close_relief_vote = {
 		var:global.air_cleanliness_treaty_relief_vote_state = { save_event_target_as = air_cleanliness_treaty_relief_vote_state }
 		set_temp_variable = { air_cleanliness_treaty_relief_vote_yes_count = constant:air_cleanliness_treaty_joint_action.zero }
 		set_temp_variable = { air_cleanliness_treaty_relief_vote_no_count = constant:air_cleanliness_treaty_joint_action.zero }
+		set_temp_variable = { air_cleanliness_treaty_relief_vote_member_count = constant:air_cleanliness_treaty_joint_action.zero }
+		set_temp_variable = { air_cleanliness_treaty_relief_vote_payable_pledges = constant:air_cleanliness_treaty_joint_action.zero }
+		for_each_scope_loop = {
+			array = global.air_cleanliness_treaty_members
+			if = {
+				limit = { air_cleanliness_treaty_country_is_live_member = yes }
+				add_to_temp_variable = { air_cleanliness_treaty_relief_vote_member_count = constant:air_cleanliness_treaty_joint_action.one }
+			}
+		}
+		set_temp_variable = { air_cleanliness_treaty_relief_vote_majority = air_cleanliness_treaty_relief_vote_member_count }
+		divide_temp_variable = { air_cleanliness_treaty_relief_vote_majority = constant:air_cleanliness_treaty_joint_action.relief_vote_majority_divisor }
 		for_each_scope_loop = {
 			array = global.air_cleanliness_treaty_relief_vote_yes
 			if = {
 				limit = { air_cleanliness_treaty_country_is_live_member = yes }
 				add_to_temp_variable = { air_cleanliness_treaty_relief_vote_yes_count = constant:air_cleanliness_treaty_joint_action.one }
+				if = {
+					limit = {
+						NOT = { tag = event_target:air_cleanliness_treaty_relief_vote_recipient }
+						NOT = { has_war_with = event_target:air_cleanliness_treaty_relief_vote_recipient }
+						NOT = { has_equipment = { support_equipment < constant:air_cleanliness_treaty_joint_action.relief_vote_pledge_support } }
+					}
+					add_to_temp_variable = { air_cleanliness_treaty_relief_vote_payable_pledges = constant:air_cleanliness_treaty_joint_action.one }
+				}
 			}
 		}
 		for_each_scope_loop = {
@@ -140390,10 +140469,16 @@ air_cleanliness_treaty_close_relief_vote = {
 		set_variable = { global.air_cleanliness_treaty_relief_vote_last_no = air_cleanliness_treaty_relief_vote_no_count }
 		set_variable = { global.air_cleanliness_treaty_relief_vote_last_pledges = constant:air_cleanliness_treaty_joint_action.zero }
 		if = {
+			limit = { check_variable = { air_cleanliness_treaty_relief_vote_payable_pledges = constant:air_cleanliness_treaty_joint_action.zero } }
+			set_variable = { global.air_cleanliness_treaty_relief_vote_last_result = constant:air_cleanliness_treaty_joint_action.relief_vote_result_unfunded }
+			air_cleanliness_treaty_refund_relief_vote_quote = yes
+			air_cleanliness_treaty_relief_vote_set_retry_window = yes
+		}
+		else_if = {
 			limit = {
 				check_variable = {
 					var = air_cleanliness_treaty_relief_vote_yes_count
-					value = air_cleanliness_treaty_relief_vote_no_count
+					value = air_cleanliness_treaty_relief_vote_majority
 					compare = greater_than
 				}
 				check_variable = {
@@ -140409,6 +140494,7 @@ air_cleanliness_treaty_close_relief_vote = {
 					limit = {
 						air_cleanliness_treaty_country_is_live_member = yes
 						NOT = { tag = event_target:air_cleanliness_treaty_relief_vote_recipient }
+						NOT = { has_war_with = event_target:air_cleanliness_treaty_relief_vote_recipient }
 						NOT = { has_equipment = { support_equipment < constant:air_cleanliness_treaty_joint_action.relief_vote_pledge_support } }
 						check_variable = {
 							var = global.air_cleanliness_treaty_relief_vote_last_pledges
@@ -140472,8 +140558,11 @@ air_cleanliness_treaty_close_relief_vote = {
 			}
 		}
 		event_target:air_cleanliness_treaty_relief_vote_recipient = {
-			set_temp_variable = { air_cleanliness_treaty_operation_lock_days = constant:air_cleanliness_treaty_joint_action.relief_vote_recipient_cooldown_days }
-			meta_effect = { text = { set_country_flag = { flag = air_cleanliness_treaty_relief_vote_recent_target days = [LOCK_DAYS] } } LOCK_DAYS = "[?air_cleanliness_treaty_operation_lock_days|.0]" }
+			if = {
+				limit = { NOT = { check_variable = { global.air_cleanliness_treaty_relief_vote_last_result = constant:air_cleanliness_treaty_joint_action.relief_vote_result_unfunded } } }
+				set_temp_variable = { air_cleanliness_treaty_operation_lock_days = constant:air_cleanliness_treaty_joint_action.relief_vote_recipient_cooldown_days }
+				meta_effect = { text = { set_country_flag = { flag = air_cleanliness_treaty_relief_vote_recent_target days = [LOCK_DAYS] } } LOCK_DAYS = "[?air_cleanliness_treaty_operation_lock_days|.0]" }
+			}
 		}
 		air_cleanliness_treaty_release_relief_vote = yes
 		for_each_scope_loop = {
@@ -140597,6 +140686,7 @@ fallout_treaty_start_reconstruction_compact = {
 		clr_country_flag = fallout_treaty_reconstruction_partner_refused
 		set_variable = { fallout_treaty_reconstruction_partner = FROM }
 		set_variable = { fallout_treaty_reconstruction_generation = global.fallout_transition_generation }
+		save_event_target_as = fallout_treaty_reconstruction_proposer
 		FROM = {
 			set_variable = { fallout_treaty_reconstruction_proposer = ROOT }
 			country_event = { id = chaosx_air_treaty.22 }
@@ -140611,6 +140701,7 @@ fallout_treaty_accept_reconstruction_compact = {
 		limit = { fallout_treaty_reconstruction_answer_is_open = yes }
 		var:fallout_treaty_reconstruction_proposer = { set_country_flag = fallout_treaty_reconstruction_partner_accepted }
 	}
+	else = { fallout_treaty_report_closed_answer = yes }
 }
 
 # Supported scope: COUNTRY, the partner answering. Refusing ends the
@@ -140620,14 +140711,23 @@ fallout_treaty_refuse_reconstruction_compact = {
 		limit = { fallout_treaty_reconstruction_answer_is_open = yes }
 		var:fallout_treaty_reconstruction_proposer = { set_country_flag = fallout_treaty_reconstruction_partner_refused }
 	}
-	clear_variable = fallout_treaty_reconstruction_proposer
+	else = { fallout_treaty_report_closed_answer = yes }
+	# Retain the incoming lock until the proposer closes this project.
 }
 
 # Supported scope: COUNTRY, the proposer. Clears its proposal receipt.
 fallout_treaty_clear_reconstruction_proposal = {
 	if = {
 		limit = { has_variable = fallout_treaty_reconstruction_partner }
-		var:fallout_treaty_reconstruction_partner = { clear_variable = fallout_treaty_reconstruction_proposer }
+		var:fallout_treaty_reconstruction_partner = {
+			if = {
+				limit = {
+					has_variable = fallout_treaty_reconstruction_proposer
+					check_variable = { var = fallout_treaty_reconstruction_proposer value = PREV compare = equals }
+				}
+				clear_variable = fallout_treaty_reconstruction_proposer
+			}
+		}
 	}
 	clr_country_flag = fallout_treaty_reconstruction_proposal_active
 	clr_country_flag = fallout_treaty_reconstruction_partner_accepted
@@ -140650,7 +140750,10 @@ fallout_treaty_fail_reconstruction_compact = {
 			event_target:fallout_treaty_reconstruction_partner = {
 				ROOT = {
 					set_temp_variable = { air_cleanliness_treaty_operation_lock_days = constant:air_cleanliness_treaty_joint_action.reconstruction_refusal_days }
-					set_country_flag = { flag = fallout_treaty_reconstruction_refused_by_@PREV days = air_cleanliness_treaty_operation_lock_days }
+					meta_effect = {
+						text = { set_country_flag = { flag = fallout_treaty_reconstruction_refused_by_@PREV days = [LOCK_DAYS] } }
+						LOCK_DAYS = "[?air_cleanliness_treaty_operation_lock_days|.0]"
+					}
 				}
 			}
 			set_variable = { fallout_treaty_reconstruction_last_result = constant:air_cleanliness_treaty_joint_action.reconstruction_result_refused }

@@ -138,9 +138,7 @@ air_cleanliness_treaty_can_start_verification_mission = {
 		NOT = { has_country_flag = air_cleanliness_treaty_inspection_recent }
 	}
 	NOT = { has_war_with = FROM }
-	NOT = { has_equipment = { support_equipment < constant:air_cleanliness_treaty_runtime.verification_support_cost } }
-	NOT = { has_equipment = { convoy_1 < constant:air_cleanliness_treaty_runtime.verification_convoy_cost } }
-	NOT = { num_of_civilian_factories_available_for_projects < constant:air_cleanliness_treaty_runtime.verification_civilian_factories }
+	fallout_treaty_can_pay_verification = yes
 }
 
 # Supported scope: COUNTRY, the exact secretariat that owns the transaction.
@@ -317,9 +315,7 @@ air_cleanliness_treaty_can_start_cleaning_day = {
 		value = constant:air_contamination_threshold_bp.irreversible_100
 		compare = less_than
 	}
-	NOT = { has_equipment = { support_equipment < constant:air_cleanliness_treaty_runtime.cleaning_day_support_cost } }
-	NOT = { has_equipment = { convoy_1 < constant:air_cleanliness_treaty_runtime.cleaning_day_convoy_cost } }
-	NOT = { num_of_civilian_factories_available_for_projects < constant:air_cleanliness_treaty_runtime.cleaning_day_civilian_factories }
+	fallout_treaty_can_pay_cleaning = yes
 }
 
 # Supported scope: COUNTRY, the project sponsor
@@ -395,9 +391,7 @@ air_cleanliness_treaty_can_send_joint_filter_convoy = {
 		air_cleanliness_treaty_recipient_has_filter_convoy_state = yes
 	}
 	NOT = { has_war_with = FROM }
-	NOT = { has_equipment = { support_equipment < constant:air_cleanliness_treaty_runtime.filter_convoy_support_cost } }
-	NOT = { has_equipment = { convoy_1 < constant:air_cleanliness_treaty_runtime.filter_convoy_convoy_cost } }
-	NOT = { num_of_civilian_factories_available_for_projects < constant:air_cleanliness_treaty_runtime.filter_convoy_civilian_factories }
+	fallout_treaty_can_pay_convoy = yes
 }
 
 # Supported scope: COUNTRY. ROOT is the donor and FROM is the decision target.
@@ -11602,7 +11596,7 @@ fallout_event_ordinary_receipt_is_consistent = {
 			check_variable = { fallout_event_ordinary_crisis_break_used < constant:fallout_event_crisis_break_mode.upper_bound }
 			NOT = { check_variable = { fallout_event_ordinary_crisis_break_used < constant:fallout_event_crisis_break_mode.none } }
 			check_variable = { fallout_event_ordinary_candidate_id > constant:fallout_event_runtime.zero }
-			check_variable = { fallout_event_ordinary_score > constant:fallout_event_runtime.zero }
+			has_variable = fallout_event_ordinary_score
 			check_variable = { fallout_event_ordinary_visible_budget_cost > constant:fallout_event_runtime.zero }
 			NOT = { check_variable = { fallout_event_ordinary_visible_budget_cost > constant:fallout_event_runtime.maximum_visible_budget_cost } }
 			set_temp_variable = { fallout_event_partner_index_to_check = fallout_event_ordinary_partner_registry_index }
@@ -14874,7 +14868,13 @@ fallout_event_country_runtime_row_is_current = {
 	NOT = { check_variable = { var = fallout_event_last_visible_popup_day value = global.num_days compare = greater_than } }
 	check_variable = { var = fallout_event_last_selection_generation value = fallout_event_runtime_generation compare = equals }
 	NOT = { check_variable = { var = fallout_event_last_selection_day value = global.num_days compare = greater_than } }
-	NOT = { check_variable = { fallout_event_last_selected_score < constant:fallout_event_runtime.zero } }
+	OR = {
+		AND = {
+			check_variable = { fallout_event_last_selected_candidate_id = constant:fallout_event_runtime.zero }
+			check_variable = { fallout_event_last_selected_score = constant:fallout_event_runtime.zero }
+		}
+		check_variable = { fallout_event_last_selected_candidate_id > constant:fallout_event_runtime.zero }
+	}
 	NOT = { check_variable = { fallout_event_last_selected_candidate_id < constant:fallout_event_runtime.zero } }
 	check_variable = { fallout_event_last_selected_class < constant:fallout_event_class.upper_bound }
 	NOT = { check_variable = { fallout_event_last_selected_class < constant:fallout_event_class.none } }
@@ -37525,6 +37525,16 @@ air_cleanliness_treaty_country_can_receive_relief_vote = {
 
 # Supported scope: COUNTRY. ROOT calls the vote and FROM is the recipient,
 # which may be ROOT itself.
+air_cleanliness_treaty_has_relief_capacity = {
+	any_of_scopes = {
+		array = global.air_cleanliness_treaty_members
+		air_cleanliness_treaty_country_is_live_member = yes
+		NOT = { tag = FROM }
+		NOT = { has_war_with = FROM }
+		NOT = { has_equipment = { support_equipment < constant:air_cleanliness_treaty_joint_action.relief_vote_pledge_support } }
+	}
+}
+
 air_cleanliness_treaty_can_call_relief_vote = {
 	air_cleanliness_treaty_country_is_live_member = yes
 	air_cleanliness_treaty_operation_phase_is_open = yes
@@ -37535,6 +37545,7 @@ air_cleanliness_treaty_can_call_relief_vote = {
 		air_cleanliness_treaty_country_can_receive_relief_vote = yes
 	}
 	NOT = { has_war_with = FROM }
+	air_cleanliness_treaty_has_relief_capacity = yes
 }
 
 # Supported scope: COUNTRY. ROOT called the vote and FROM is its recipient.
@@ -37599,8 +37610,8 @@ fallout_treaty_reconstruction_is_open = {
 
 # Supported scope: COUNTRY. ROOT can pay for the reconstruction compact.
 fallout_treaty_can_pay_reconstruction = {
-	NOT = { has_political_power < constant:air_cleanliness_treaty_joint_action.reconstruction_political_power }
-	check_variable = { var = fallout_survival_current_entries^9 value = constant:air_cleanliness_treaty_joint_action.reconstruction_recognition_cost compare = greater_than_or_equals }
+	fallout_treaty_can_pay_reconstruction_pp = yes
+	fallout_treaty_can_pay_reconstruction_recognition = yes
 }
 
 # Supported scope: COUNTRY. FROM is another survivor that also remembers the
@@ -37609,6 +37620,8 @@ fallout_treaty_reconstruction_partner_is_valid = {
 	FROM = {
 		exists = yes
 		NOT = { tag = ROOT }
+		NOT = { has_variable = fallout_treaty_reconstruction_proposer }
+		NOT = { has_country_flag = fallout_treaty_reconstruction_proposal_active }
 		fallout_treaty_reconstruction_is_open = yes
 		has_capitulated = no
 		NOT = { has_war_with = ROOT }
@@ -37620,6 +37633,8 @@ fallout_treaty_reconstruction_partner_is_valid = {
 # Supported scope: COUNTRY. ROOT may open a reconstruction proposal to FROM.
 fallout_treaty_can_propose_reconstruction = {
 	fallout_treaty_reconstruction_is_open = yes
+	has_capitulated = no
+	NOT = { has_variable = fallout_treaty_reconstruction_proposer }
 	NOT = { has_country_flag = fallout_treaty_reconstruction_proposal_active }
 	fallout_treaty_reconstruction_partner_is_valid = yes
 	fallout_treaty_can_pay_reconstruction = yes
@@ -37628,6 +37643,7 @@ fallout_treaty_can_propose_reconstruction = {
 # Supported scope: COUNTRY. ROOT proposed and FROM is the decision target.
 fallout_treaty_reconstruction_proposal_is_valid = {
 	fallout_treaty_reconstruction_is_open = yes
+	has_capitulated = no
 	has_country_flag = fallout_treaty_reconstruction_proposal_active
 	NOT = { has_country_flag = fallout_treaty_reconstruction_partner_refused }
 	has_variable = fallout_treaty_reconstruction_partner
@@ -37646,9 +37662,14 @@ fallout_treaty_reconstruction_proposal_is_valid = {
 # read back from the partner's stored proposal variable.
 fallout_treaty_reconstruction_answer_is_open = {
 	fallout_treaty_reconstruction_is_open = yes
+	has_capitulated = no
 	has_variable = fallout_treaty_reconstruction_proposer
+	has_event_target = fallout_treaty_reconstruction_proposer
+	check_variable = { var = fallout_treaty_reconstruction_proposer value = event_target:fallout_treaty_reconstruction_proposer compare = equals }
 	var:fallout_treaty_reconstruction_proposer = {
 		exists = yes
+		has_capitulated = no
+		check_variable = { var = fallout_treaty_reconstruction_generation value = global.fallout_transition_generation compare = equals }
 		has_country_flag = fallout_treaty_reconstruction_proposal_active
 		NOT = { has_country_flag = fallout_treaty_reconstruction_partner_accepted }
 		NOT = { has_country_flag = fallout_treaty_reconstruction_partner_refused }

@@ -46,8 +46,12 @@ air_cleanliness_treaty_category = {
 			}
 		}
 
-		available = { air_cleanliness_treaty_can_start_cleaning_day = yes }
+		available = {
+			custom_trigger_tooltip = { tooltip = fallout_treaty_cleaning_ready_tt hidden_trigger = { air_cleanliness_treaty_can_start_cleaning_day = yes } }
+		}
 		cost = constant:air_cleanliness_treaty_runtime.zero
+		custom_cost_trigger = { fallout_treaty_can_pay_cleaning = yes }
+		custom_cost_text = fallout_treaty_cleaning_cost
 		days_remove = constant:air_cleanliness_treaty_runtime.cleaning_day_duration_days
 		modifier = {
 			civilian_factory_use = @CR_SC_AIR_CLEANLINESS_TREATY_RUNTIME_CLEANING_DAY_CIVILIAN_FACTORIES
@@ -56,7 +60,7 @@ air_cleanliness_treaty_category = {
 
 		complete_effect = {
 			hidden_effect = { air_cleanliness_treaty_start_cleaning_day_project = yes }
-			custom_effect_tooltip = air_cleanliness_global_cleaning_day_effect_tt
+			custom_effect_tooltip = fallout_treaty_cleaning_effect_tt
 		}
 		cancel_trigger = { NOT = { air_cleanliness_treaty_cleaning_day_project_is_valid = yes } }
 		cancel_effect = { air_cleanliness_treaty_cancel_cleaning_day_project = yes }
@@ -89,6 +93,7 @@ air_cleanliness_treaty_category = {
 		target_array = global.air_cleanliness_treaty_members
 
 		visible = {
+			air_cleanliness_treaty_single_convoy_is_presented = yes
 			air_cleanliness_treaty_country_is_live_member = yes
 			FROM = {
 				exists = yes
@@ -97,8 +102,12 @@ air_cleanliness_treaty_category = {
 			}
 		}
 
-		available = { air_cleanliness_treaty_can_send_joint_filter_convoy = yes }
+		available = {
+			custom_trigger_tooltip = { tooltip = fallout_treaty_convoy_ready_tt hidden_trigger = { air_cleanliness_treaty_can_send_joint_filter_convoy = yes } }
+		}
 		cost = constant:air_cleanliness_treaty_runtime.zero
+		custom_cost_trigger = { fallout_treaty_can_pay_convoy = yes }
+		custom_cost_text = fallout_treaty_convoy_cost
 		days_remove = constant:air_cleanliness_treaty_runtime.filter_convoy_duration_days
 		modifier = {
 			civilian_factory_use = @CR_SC_AIR_CLEANLINESS_TREATY_RUNTIME_FILTER_CONVOY_CIVILIAN_FACTORIES
@@ -107,7 +116,7 @@ air_cleanliness_treaty_category = {
 
 		complete_effect = {
 			hidden_effect = { air_cleanliness_treaty_start_joint_filter_convoy = yes }
-			custom_effect_tooltip = air_cleanliness_joint_filter_convoy_effect_tt
+			custom_effect_tooltip = fallout_treaty_convoy_effect_tt
 		}
 		cancel_trigger = { NOT = { air_cleanliness_treaty_filter_convoy_project_is_valid = yes } }
 		cancel_effect = { air_cleanliness_treaty_cancel_joint_filter_convoy = yes }
@@ -170,8 +179,12 @@ air_cleanliness_treaty_category = {
 			}
 		}
 
-		available = { air_cleanliness_treaty_can_start_verification_mission = yes }
+		available = {
+			custom_trigger_tooltip = { tooltip = fallout_treaty_verification_ready_tt hidden_trigger = { air_cleanliness_treaty_can_start_verification_mission = yes } }
+		}
 		cost = constant:air_cleanliness_treaty_runtime.zero
+		custom_cost_trigger = { fallout_treaty_can_pay_verification = yes }
+		custom_cost_text = fallout_treaty_verification_cost
 		days_remove = constant:air_cleanliness_treaty_runtime.verification_mission_duration_days
 		modifier = {
 			civilian_factory_use = @CR_SC_AIR_CLEANLINESS_TREATY_RUNTIME_VERIFICATION_CIVILIAN_FACTORIES
@@ -180,7 +193,7 @@ air_cleanliness_treaty_category = {
 
 		complete_effect = {
 			hidden_effect = { air_cleanliness_treaty_start_verification_mission = yes }
-			custom_effect_tooltip = air_cleanliness_treaty_verification_mission_effect_tt
+			custom_effect_tooltip = fallout_treaty_verification_effect_tt
 		}
 		cancel_trigger = { NOT = { air_cleanliness_treaty_verification_mission_is_valid = yes } }
 		cancel_effect = { air_cleanliness_treaty_cancel_verification_transaction = yes }
@@ -220,6 +233,7 @@ air_cleanliness_treaty_category = {
 		icon = GFX_decision_air_winter_samplers
 
 		visible = {
+			air_cleanliness_treaty_sampling_is_presented = yes
 			air_cleanliness_treaty_country_is_live_member = yes
 			OR = {
 				NOT = { has_global_flag = air_cleanliness_treaty_sampling_grid_in_progress }
@@ -303,6 +317,7 @@ air_cleanliness_treaty_category = {
 		}
 
 		visible = {
+			air_cleanliness_treaty_seed_exchange_is_presented = yes
 			air_cleanliness_treaty_country_is_live_member = yes
 			FROM = {
 				exists = yes
@@ -399,6 +414,7 @@ air_cleanliness_treaty_category = {
 		}
 
 		visible = {
+			air_cleanliness_treaty_evacuation_is_presented = yes
 			air_cleanliness_treaty_country_is_live_member = yes
 			FROM = {
 				exists = yes
@@ -605,6 +621,7 @@ air_cleanliness_treaty_category = {
 		}
 
 		visible = {
+			air_cleanliness_treaty_pooled_decon_is_presented = yes
 			air_cleanliness_treaty_country_is_live_member = yes
 			FROM = { exists = yes }
 		}
@@ -705,6 +722,7 @@ air_cleanliness_treaty_category = {
 		}
 
 		visible = {
+			air_cleanliness_treaty_relief_vote_is_presented = yes
 			air_cleanliness_treaty_country_is_live_member = yes
 			FROM = { exists = yes }
 		}
@@ -728,6 +746,10 @@ air_cleanliness_treaty_category = {
 			custom_trigger_tooltip = {
 				tooltip = air_cleanliness_treaty_operation_peace_tt
 				hidden_trigger = { NOT = { has_war_with = FROM } }
+			}
+			custom_trigger_tooltip = {
+				tooltip = fallout_treaty_relief_capacity_tt
+				hidden_trigger = { air_cleanliness_treaty_has_relief_capacity = yes }
 			}
 			hidden_trigger = { air_cleanliness_treaty_can_call_relief_vote = yes }
 		}

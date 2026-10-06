@@ -254,6 +254,12 @@ Runtime acceptance remains required for railway topology, supply-node removal, i
 
 ## B12: Ash-week orientation implementation
 
+Finishing disposition, 2026-10-06: implemented in source for all 108 cells and all five components.
+Human result acknowledgments are silent; five choices and one actual-outcome closure remain visible, with exact history and delays preserved.
+The source cases and independent audit are linked from the takeover status; MCP/native delivery remain unproven.
+The dormant-pilot paragraphs below are historical, not the current coverage or approval-setter status.
+
+
 Status: implemented by agent decisions A2, A14 and A16 (2026-10-04 and round 2). `fallout_orientation_reconcile_registry` and hidden step event `chaosx.fallout.85` start and advance orientation for every registry country. Resource crisis and government archetype run for every country with a region and archetype from the 108 cell rows in `FALLOUT_ORIENTATION_CELL_ROWS.md`, with the twelve pilot memory rows taking precedence where they match. The office or institution step offers the pilot memory candidates or the three candidates of the region and archetype cell, installs the appointed office as a national spirit and opens its role arc (decision A16, `FALLOUT_OFFICE_CANDIDATES.md`), and capital repair uses decision A3. The history below records the dormant period.
 
 Previous status: accepted design with a partial dormant pilot, caller and release remain blocked

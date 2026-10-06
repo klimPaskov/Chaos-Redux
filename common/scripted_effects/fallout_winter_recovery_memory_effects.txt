@@ -1,0 +1,159 @@
+# ============================================================================
+# FALLOUT - INHERITED WINTER RECOVERY
+# Country-scope continuation of the first survival account. Existing regional,
+# school and industrial outcomes are consumed once by the generation guard in
+# fallout_air_winter_apply_survivor_memory, never once per held state.
+# Controlled holdings carry physical stores and trained crews to any successor.
+# No temporary outputs escape this helper; its caller clamps the account.
+# ============================================================================
+
+# Supported scope: COUNTRY.
+fallout_air_winter_apply_recovery_memory = {
+	set_temp_variable = { fallout_winter_recovery_cohesion_delta = constant:fallout_air_winter_memory.zero }
+	# Regional crews preserve social trust; failed relief leaves families divided.
+	if = {
+		limit = { any_owned_state = { is_controlled_by = PREV has_state_flag = air_winter_memory_phase_1_success } }
+		add_to_temp_variable = { fallout_winter_recovery_cohesion_delta = constant:fallout_winter_recovery_memory.regional_cohesion }
+		set_country_flag = fallout_air_winter_regional_recovery_memory_applied
+	}
+	if = {
+		limit = { any_owned_state = { is_controlled_by = PREV has_state_flag = air_winter_memory_phase_1_failure } }
+		subtract_from_temp_variable = { fallout_winter_recovery_cohesion_delta = constant:fallout_winter_recovery_memory.regional_failure_cohesion }
+		set_country_flag = fallout_air_winter_regional_failure_memory_applied
+	}
+
+	# School shelters and first-aid classes survive with their local communities.
+	if = {
+		limit = { any_owned_state = { is_controlled_by = PREV has_state_flag = air_winter_memory_tunnel_school_protection } }
+		add_to_variable = { fallout_survival_current_entries^8 = constant:fallout_winter_recovery_memory.tunnel_shelter }
+		add_to_variable = { fallout_survival_current_entries^3 = constant:fallout_winter_recovery_memory.tunnel_medicine }
+		set_country_flag = fallout_air_winter_tunnel_shelters_memory_applied
+	}
+	if = {
+		limit = {
+			any_owned_state = {
+				is_controlled_by = PREV
+				OR = { has_state_flag = air_winter_memory_tunnel_civic_failure has_state_flag = air_winter_memory_tunnel_cellars_failure }
+			}
+		}
+		subtract_from_temp_variable = { fallout_winter_recovery_cohesion_delta = constant:fallout_winter_recovery_memory.tunnel_failure_cohesion }
+		set_country_flag = fallout_air_winter_tunnel_failure_memory_applied
+	}
+
+	# Cleared rail yards retain usable wagon parts. Buried trains cannot supply them.
+	if = {
+		limit = { any_owned_state = { is_controlled_by = PREV has_state_flag = air_winter_memory_rail_clearance_succeeded } }
+		add_to_variable = { fallout_survival_current_entries^4 = constant:fallout_winter_recovery_memory.rail_scrap }
+		set_country_flag = fallout_air_winter_rail_recovery_memory_applied
+	}
+	if = {
+		limit = { any_owned_state = { is_controlled_by = PREV has_state_flag = air_winter_memory_rail_clearance_failed } }
+		subtract_from_variable = { fallout_survival_current_entries^4 = constant:fallout_winter_recovery_memory.rail_failure_scrap }
+		set_country_flag = fallout_air_winter_rail_failure_memory_applied
+	}
+
+	# A surviving dam contributes its crews and waterworks, not a rebuilt dam.
+	if = {
+		limit = {
+			any_owned_state = {
+				is_controlled_by = PREV
+				OR = {
+					has_state_flag = air_winter_memory_dam_ice_crews_succeeded
+					has_state_flag = air_winter_memory_dam_drawdown_result
+					has_state_flag = air_winter_memory_dam_full_head_held
+				}
+			}
+		}
+		add_to_variable = { fallout_survival_current_entries^6 = constant:fallout_winter_recovery_memory.dam_power }
+		add_to_variable = { fallout_survival_current_entries^2 = constant:fallout_winter_recovery_memory.dam_water }
+		set_country_flag = fallout_air_winter_dam_recovery_memory_applied
+	}
+	if = {
+		limit = {
+			any_owned_state = {
+				is_controlled_by = PREV
+				OR = { has_state_flag = air_winter_memory_dam_ice_crews_failed has_state_flag = air_winter_memory_dam_full_head_failed }
+			}
+		}
+		subtract_from_variable = { fallout_survival_current_entries^6 = constant:fallout_winter_recovery_memory.dam_failure_power }
+		subtract_from_variable = { fallout_survival_current_entries^2 = constant:fallout_winter_recovery_memory.dam_failure_water }
+		set_country_flag = fallout_air_winter_dam_failure_memory_applied
+	}
+
+	# Stored refined fuel and district heat represent different uses of the plant.
+	if = {
+		limit = { any_owned_state = { is_controlled_by = PREV has_state_flag = air_winter_memory_refinery_military_output_held } }
+		add_to_variable = { fallout_survival_current_entries^5 = constant:fallout_winter_recovery_memory.refinery_fuel }
+		set_country_flag = fallout_air_winter_refinery_stores_memory_applied
+	}
+	if = {
+		limit = { any_owned_state = { is_controlled_by = PREV has_state_flag = air_winter_memory_refinery_district_heat_result } }
+		add_to_variable = { fallout_survival_current_entries^6 = constant:fallout_winter_recovery_memory.refinery_heat_power }
+		subtract_from_variable = { fallout_survival_current_entries^5 = constant:fallout_winter_recovery_memory.refinery_heat_fuel }
+		set_country_flag = fallout_air_winter_refinery_heat_memory_applied
+	}
+	if = {
+		limit = { any_owned_state = { is_controlled_by = PREV has_state_flag = air_winter_memory_refinery_shutdown_result } }
+		add_to_variable = { fallout_survival_current_entries^4 = constant:fallout_winter_recovery_memory.refinery_shutdown_scrap }
+		set_country_flag = fallout_air_winter_refinery_shutdown_memory_applied
+	}
+	if = {
+		limit = { any_owned_state = { is_controlled_by = PREV has_state_flag = air_winter_memory_refinery_military_output_failed } }
+		subtract_from_variable = { fallout_survival_current_entries^5 = constant:fallout_winter_recovery_memory.refinery_failure_fuel }
+		set_country_flag = fallout_air_winter_refinery_failure_memory_applied
+	}
+
+	# Plant crews preserve electrical know-how. A scram preserves safe spares.
+	if = {
+		limit = {
+			any_owned_state = {
+				is_controlled_by = PREV
+				OR = { has_state_flag = air_winter_memory_reactor_reduced_output_held has_state_flag = air_winter_memory_reactor_plant_council_succeeded }
+			}
+		}
+		add_to_variable = { fallout_survival_current_entries^6 = constant:fallout_winter_recovery_memory.reactor_power }
+		set_country_flag = fallout_air_winter_reactor_power_memory_applied
+	}
+	if = {
+		limit = { any_owned_state = { is_controlled_by = PREV has_state_flag = air_winter_memory_reactor_scram_succeeded } }
+		add_to_variable = { fallout_survival_current_entries^4 = constant:fallout_winter_recovery_memory.reactor_scram_scrap }
+		set_country_flag = fallout_air_winter_reactor_scram_memory_applied
+	}
+	if = {
+		limit = {
+			any_owned_state = {
+				is_controlled_by = PREV
+				OR = {
+					has_state_flag = air_winter_memory_reactor_scram_failed
+					has_state_flag = air_winter_memory_reactor_reduced_output_failed
+					has_state_flag = air_winter_memory_reactor_plant_council_failed
+				}
+			}
+		}
+		subtract_from_variable = { fallout_survival_current_entries^6 = constant:fallout_winter_recovery_memory.reactor_failure_power }
+		subtract_from_variable = { fallout_survival_current_entries^7 = constant:fallout_winter_recovery_memory.reactor_failure_filters }
+		set_country_flag = fallout_air_winter_reactor_failure_memory_applied
+	}
+
+	# Furnace stocks survive at the expense of fuel; shut plants retain spares.
+	if = {
+		limit = { any_owned_state = { is_controlled_by = PREV has_state_flag = air_winter_memory_furnace_full_shifts_held } }
+		add_to_variable = { fallout_survival_current_entries^4 = constant:fallout_winter_recovery_memory.furnace_scrap }
+		subtract_from_variable = { fallout_survival_current_entries^5 = constant:fallout_winter_recovery_memory.furnace_fuel }
+		set_country_flag = fallout_air_winter_furnace_stores_memory_applied
+	}
+	if = {
+		limit = { any_owned_state = { is_controlled_by = PREV has_state_flag = air_winter_memory_furnace_shutdown_complete } }
+		add_to_variable = { fallout_survival_current_entries^4 = constant:fallout_winter_recovery_memory.furnace_shutdown_scrap }
+		set_country_flag = fallout_air_winter_furnace_shutdown_memory_applied
+	}
+	if = {
+		limit = { any_owned_state = { is_controlled_by = PREV has_state_flag = air_winter_memory_furnace_full_shifts_failed } }
+		subtract_from_variable = { fallout_survival_current_entries^4 = constant:fallout_winter_recovery_memory.furnace_failure_scrap }
+		set_country_flag = fallout_air_winter_furnace_failure_memory_applied
+	}
+	set_temp_variable = { fallout_survival_cohesion_delta = fallout_winter_recovery_cohesion_delta }
+	fallout_survival_apply_cohesion_delta = yes
+	set_temp_variable = { fallout_survival_cohesion_delta = constant:fallout_air_winter_memory.zero }
+	set_temp_variable = { fallout_winter_recovery_cohesion_delta = constant:fallout_air_winter_memory.zero }
+}

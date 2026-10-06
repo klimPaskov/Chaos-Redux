@@ -1,0 +1,40 @@
+# ============================================================================
+# FALLOUT - ASH-WEEK CLOSURE SUMMARY
+# COUNTRY scope. Persists each authenticated result before its transient fields
+# are cleared, so five choice reports can share one closing outcome report.
+# Called only inside the result-applied guard of resolve_component.
+# No temporary outputs or extra recurring hooks.
+# ============================================================================
+
+# Supported scope: COUNTRY.
+fallout_orientation_save_component_summary = {
+	if = {
+		limit = { NOT = { check_variable = { fallout_orientation_summary_generation = global.fallout_transition_generation } } }
+		clear_variable = fallout_orientation_summary_national_outcome
+		clear_variable = fallout_orientation_summary_capital_outcome
+		clear_variable = fallout_orientation_summary_resource_outcome
+		clear_variable = fallout_orientation_summary_government_outcome
+		clear_variable = fallout_orientation_summary_office_outcome
+		set_variable = { fallout_orientation_summary_generation = global.fallout_transition_generation }
+	}
+	if = {
+		limit = { check_variable = { fallout_orientation_transaction_component = constant:fallout_event_orientation_component.national_orientation } }
+		set_variable = { fallout_orientation_summary_national_outcome = fallout_orientation_frozen_outcome }
+	}
+	else_if = {
+		limit = { check_variable = { fallout_orientation_transaction_component = constant:fallout_event_orientation_component.capital_condition } }
+		set_variable = { fallout_orientation_summary_capital_outcome = fallout_orientation_frozen_outcome }
+	}
+	else_if = {
+		limit = { check_variable = { fallout_orientation_transaction_component = constant:fallout_event_orientation_component.immediate_resource_crisis } }
+		set_variable = { fallout_orientation_summary_resource_outcome = fallout_orientation_frozen_outcome }
+	}
+	else_if = {
+		limit = { check_variable = { fallout_orientation_transaction_component = constant:fallout_event_orientation_component.government_archetype } }
+		set_variable = { fallout_orientation_summary_government_outcome = fallout_orientation_frozen_outcome }
+	}
+	else_if = {
+		limit = { check_variable = { fallout_orientation_transaction_component = constant:fallout_event_orientation_component.character_or_institution } }
+		set_variable = { fallout_orientation_summary_office_outcome = fallout_orientation_frozen_outcome }
+	}
+}

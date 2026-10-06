@@ -192,7 +192,8 @@ This pilot is not the Fallout living-world scheduler. It does not count toward a
 
 ## Air Winter memory in the Fallout survivor start
 
-`fallout_air_winter_apply_survivor_memory` runs once per Fallout generation inside each registry country's Ash-week orientation step, right after the treaty memory (agent decision A20). It reads the outcome memories of four Air Winter chains and changes the survivor's first survival account and Cohesion by the magnitudes in `fallout_air_winter_memory`:
+`fallout_air_winter_apply_survivor_memory` runs once per Fallout generation inside each registry country's Ash-week orientation step, right after the treaty memory (agent decision A20). It reads the original seed, refugee, Desert City and dead-city memories below, and the inherited regional, school and industrial outcomes described in [fallout_start_and_treaty_recovery.md](fallout_start_and_treaty_recovery.md).
+The original magnitudes live in `fallout_air_winter_memory`; the additional site outcomes use `fallout_winter_recovery_memory`:
 
 | Chain | Memory read | Survivor start |
 | --- | --- | --- |
@@ -310,6 +311,12 @@ The proof set is:
 Static documentation and vanilla precedents support the script surfaces. Runtime behavior remains unobserved for the country air-operations modifier, normal-map presentation, controller-side attrition, meta-generated event dispatch, delayed regular event-target retention, exact Desert City subtype routing, scripted event-picture selection, timed response decisions, state-population migration side effects, damaged-building route selection, equipment readback, repairable damage, control-loss cancellation, viewer-specific monitoring scope, and dynamic localisation rendering. Those observations are not claimed as passing evidence.
 
 ## Current completion boundary
+
+Current October source and runtime limits are recorded in the finishing-pass takeover status.
+The inherited account includes twenty-five regional, tunnel-school, rail, dam, refinery, reactor and furnace memory inputs, applied once per distinct outcome across controlled holdings.
+All 108 orientation cells and the living-world scheduler are active in source; statements below describing them as dormant are historical and superseded by the October decisions.
+The manual raw scenario 14 is registered and active in source, with native sweep and blackout behavior awaiting the orchestrator's checks.
+
 
 Implemented in the Air Winter tranche:
 

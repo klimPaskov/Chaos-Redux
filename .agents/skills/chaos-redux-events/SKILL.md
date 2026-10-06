@@ -156,6 +156,9 @@ Audit the whole owned description family and its dynamic substitutions for contr
 Native PowerShell stdin can replace non-ASCII program text before Python receives it, even when Python writes a UTF-8 BOM correctly.
 For localisation writes through that route, use ASCII program text with Unicode escapes or `chr()` for the `U+00A3` texticon and `U+00A7` formatting glyphs, or read the intended text from an explicitly UTF-8 file.
 Re-read the affected values as UTF-8 and verify their actual glyphs after writing.
+If an existing OneDrive-backed source file repeatedly rejects write-open with `OSError: [Errno 22] Invalid argument`, write the reviewed bytes to a uniquely named sibling file and replace the exact owned target atomically.
+Preserve BOM and line endings, verify both resolved paths stay in the intended directory, and re-read the target immediately before replacement to confirm its bytes still match the edit baseline.
+If another writer changed it, rebuild the narrow edit from that fresh content instead of replacing their work; retain or remove only the task-owned temporary file on failure.
 When normalizing physical line endings, preserve authored `\n` escapes inside localisation values rather than rewriting them as literal `\r\n` escapes.
 
 Event Details text must never display mechanical effects. The Event Details window, spreadsheet `Details` field, and player-facing detail summaries should describe the situation and premise, not list rewards, penalties, modifiers, variable changes, or script effects. If an event is meant to apply gameplay effects immediately regardless of which option the player chooses, place the real effects in the event `immediate` block inside a `hidden_effect`. The option should not reapply those effects. The option may show the immediate result only through a custom tooltip for cosmetic clarity, so the player sees the consequence without turning Event Details into an effects list.

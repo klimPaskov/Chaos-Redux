@@ -1,0 +1,51 @@
+# ============================================================================
+# FALLOUT - DECLINED MANUAL LAUNCH
+# One local explanation for an impossible forced Settings/console entry.
+# Successful entries retain the exact native sweep and owned coordinator.
+# No automatic caller or recurring pulse; one report per rejected attempt.
+# ============================================================================
+add_namespace = chaosx.fallout
+
+country_event = {
+	id = chaosx.fallout.905
+	title = chaosx.fallout.905.t
+	desc = {
+		trigger = { has_global_flag = fallout_active }
+		text = chaosx.fallout.905.d_fallout
+	}
+	desc = {
+		trigger = { NOT = { has_global_flag = fallout_active } has_global_flag = world_end }
+		text = chaosx.fallout.905.d_ended
+	}
+	desc = {
+		trigger = {
+			NOT = { has_global_flag = fallout_active }
+			NOT = { has_global_flag = world_end }
+			OR = {
+				has_global_flag = fallout_manual_scenario_active
+				has_global_flag = fallout_manual_sweep_active
+				has_global_flag = fallout_manual_countdown_active
+				has_global_flag = fallout_manual_request_sent
+			}
+		}
+		text = chaosx.fallout.905.d_ordered
+	}
+	desc = {
+		trigger = {
+			NOT = { has_global_flag = fallout_active }
+			NOT = { has_global_flag = world_end }
+			NOT = {
+				OR = {
+					has_global_flag = fallout_manual_scenario_active
+					has_global_flag = fallout_manual_sweep_active
+					has_global_flag = fallout_manual_countdown_active
+					has_global_flag = fallout_manual_request_sent
+				}
+			}
+		}
+		text = chaosx.fallout.905.d_busy
+	}
+	picture = GFX_report_event_fallout_orientation_closure
+	is_triggered_only = yes
+	option = { name = chaosx.fallout.905.a }
+}

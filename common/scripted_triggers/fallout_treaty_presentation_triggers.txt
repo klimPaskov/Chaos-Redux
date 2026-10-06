@@ -1,0 +1,74 @@
+# ============================================================================
+# AIR CLEANLINESS TREATY - STAGED ACTION PRESENTATION
+# Country-scope, read-only menu gates. Existing projects keep their own receipts
+# and remain visible until completion; these gates never cancel paid work.
+# Small treaties use one donor convoy, large treaties assemble a brigade.
+# Sampling and seed exchange share a policy slot. Phase 4 receives relief;
+# Phase 5 and 6 prioritize evacuation. No world iterator or extra UI is added.
+# ============================================================================
+
+air_cleanliness_treaty_single_convoy_is_presented = {
+	OR = {
+		has_country_flag = air_cleanliness_treaty_filter_convoy_project_active
+		NOT = { air_cleanliness_treaty_has_sampling_grid_quorum = yes }
+	}
+}
+
+air_cleanliness_treaty_pooled_decon_is_presented = {
+	OR = {
+		has_country_flag = air_cleanliness_treaty_pooled_decon_sponsor
+		air_cleanliness_treaty_has_sampling_grid_quorum = yes
+	}
+}
+
+air_cleanliness_treaty_sampling_is_presented = {
+	OR = {
+		has_country_flag = air_cleanliness_treaty_sampling_grid_sponsor
+		AND = {
+			air_cleanliness_treaty_has_sampling_grid_quorum = yes
+			NOT = { has_global_flag = air_cleanliness_treaty_sampling_grid_active }
+			NOT = { has_global_flag = air_cleanliness_treaty_sampling_grid_cooldown }
+			NOT = { has_global_flag = air_cleanliness_treaty_sampling_grid_in_progress }
+		}
+	}
+}
+
+air_cleanliness_treaty_seed_exchange_is_presented = {
+	OR = {
+		has_country_flag = air_cleanliness_treaty_seed_archive_active
+		NOT = { air_cleanliness_treaty_has_sampling_grid_quorum = yes }
+		has_global_flag = air_cleanliness_treaty_sampling_grid_active
+		has_global_flag = air_cleanliness_treaty_sampling_grid_cooldown
+		has_global_flag = air_cleanliness_treaty_sampling_grid_in_progress
+	}
+}
+
+# FROM is the targeted recipient. Existing owner/priority predicates remain in
+# the decision's target gate; this adds only its response phase.
+air_cleanliness_treaty_relief_vote_is_presented = {
+	OR = {
+		has_country_flag = air_cleanliness_treaty_relief_vote_caller
+		FROM = {
+			has_variable = air_winter_response_priority_state
+			var:air_winter_response_priority_state = {
+				is_owned_by = PREV
+				is_controlled_by = PREV
+				check_variable = { air_winter_phase = constant:air_winter_phase.black_harvest }
+			}
+		}
+	}
+}
+
+air_cleanliness_treaty_evacuation_is_presented = {
+	OR = {
+		has_country_flag = air_cleanliness_treaty_evacuation_active
+		FROM = {
+			has_variable = air_winter_response_priority_state
+			var:air_winter_response_priority_state = {
+				is_owned_by = PREV
+				is_controlled_by = PREV
+				check_variable = { var = air_winter_phase value = constant:air_winter_phase.ash_winter compare = greater_than_or_equals }
+			}
+		}
+	}
+}

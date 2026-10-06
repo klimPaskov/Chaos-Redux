@@ -1,6 +1,15 @@
 # Air Cleanliness and Fallout Implementation Status
 
-## Current static-core boundary
+## Current finishing pass, 2026-10-06
+
+The October takeover activates the living-world scheduler, all 108 orientation cells, the office roles, the eight major-memory openings, the NZL/USA packages, and the treaty extensions.
+The finishing pass adds selected-intensity admission notices, a six-report orientation closure, inherited regional/school/industrial outcomes, signed-score-safe dispatch receipts, and bounded treaty failure/cleanup paths.
+Source-level evidence and remaining content, asset, MCP, and native-runtime gates are recorded in [takeover_status_2026-10-06.md](takeover_status_2026-10-06.md) and [agent_decisions_2026-10-05.md](agent_decisions_2026-10-05.md).
+No current source claim establishes in-game completion.
+The older sections below are historical tranche evidence and do not override this finishing-pass status.
+
+
+## Historical static-core boundary
 
 The current source-ready tranche covers active Air Cleanliness and Air Winter, the Fallout consequence boundary, the exact 10,154-province manual sweep in 41 batches, its seven-day barrier, successor allocation, player continuation, the thirty-tag fracture contract, the universal generic focus and survivor decision package, the Year Ten focus route, and the Fallout GUI phase and dirty ledger. These surfaces are statically reconciled. Live HOI4 execution, native callback observation, multiplayer timing, bespoke country trees, and the ordinary post-Fallout 660-event scheduler are outside this tranche.
 

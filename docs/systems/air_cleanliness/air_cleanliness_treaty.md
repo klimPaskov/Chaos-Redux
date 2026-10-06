@@ -1,5 +1,18 @@
 # Air Cleanliness Treaty
 
+## Finishing-pass contract, 2026-10-06
+
+Cleaning Day, filter convoy and verification expose the existing equipment and factory commitments through native, per-component cost rows.
+The primary action families are staged by treaty size, sampling work/rest, and recipient phase; paid projects retain their own completion and cancellation receipts.
+Relief passage needs a strict live-member majority and a payable peaceful pledge.
+An unfunded session gives no relief or success memory, refunds its caller's saved native PP quote once, and leaves the recipient free; invalidated and unfunded callers retry after fourteen days.
+Reconstruction reserves one sender/recipient pair per participant, matches the carried proposer and generation, rejects capitulation, and releases exact lost-country pairs on annexation/capitulation.
+Its refusal flag uses a constant-derived literal year, and stale answers produce a closing notice.
+An inspection whose response supplies disappeared ends after one notice instead of reopening its request.
+See [fallout_start_and_treaty_recovery.md](fallout_start_and_treaty_recovery.md) and the takeover status for current source evidence and native validation limits.
+The older operation descriptions below retain their historical implementation detail where the finishing contract supersedes it.
+
+
 ## Current implementation boundary
 
 The Air Cleanliness Treaty is a persistent severe-contamination diplomacy and Air Winter mitigation system. It forms at 75 percent Air Contamination when at least one eligible founder has been observed by the existing Air Winter state pass.
