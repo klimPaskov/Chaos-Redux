@@ -1,6 +1,6 @@
 # Shared Chaos Redux pictures GFX repair report
 
-Status: in progress, with 11 of 16 findings delivered and 5 severity-3 findings queued for the final image tranche.
+Asset status: all 16 findings have source, processed preview, and DDS outputs. Integration status: parent `.gfx` texture-path update for Tibet is pending; the sprite name and active consumers are already recorded below.
 
 Scope is limited to the `shared_chaosx_pictures` findings in `C:/Users/klimp/Videos/chaos_redux_trailer/records/gfx_review/gfx_fix_plan.md` and `gfx_issues.json`.
 
@@ -74,18 +74,44 @@ The exact severity-2 ImageGen prompt set is retained at `docs/assets/gfx_fix_sha
 
 Each listed source PNG was generated with native ImageGen from the exact prompt stored under `docs/assets/gfx_fix_shared_chaosx_pictures/prompts/severity2_prompts.md`. Report scenes are opaque source art before repository card processing; news scenes are opaque, full-canvas period press images with no readable text or modern props.
 
-## Remaining finding statuses
+## Severity-3 assets prepared
 
-These five severity-3 findings remain queued.
+The final five severity-3 pictures have native ImageGen source candidates, processed previews, and converted runtime DDS files. The parent visually approved all five source/candidate scenes on 2026-10-06 before promotion. The exact prompts are stored in `docs/assets/gfx_fix_shared_chaosx_pictures/prompts/severity3_prompts.md`.
 
-| Severity | Sprite | Current or proposed runtime path | Active consumer | Status |
-|---:|---|---|---|---|
-| 3 | `GFX_news_alien_spacecraft` | `gfx/event_pictures/036_alien_spacecraft/news_alien_spacecraft.dds` | `chaosx.news.41` | Queued: replace the turbine cutaway with a black-and-white documentary-style alien craft or wreck. |
-| 3 | `GFX_news_balkans` | `gfx/event_pictures/045_third_balkan_war/news_balkans.dds` | Unconsumed sprite; only registered in `interface/chaosx_pictures.gfx` | Queued: replace the labeled map with a black-and-white period scene or unlabeled aged map. |
-| 3 | `GFX_news_failed_research` | `gfx/event_pictures/060_research_failure/news_failed_research.dds` | `chaosx.news.68` | Queued: restore period press contrast and retain a distinct research-failure subject. |
-| 3 | `GFX_report_event_alien_spacecraft` | `gfx/event_pictures/036_alien_spacecraft/report_event_alien_spacecraft.dds` | `chaosx.nr36.2`, `chaosx.nr16.18` | Queued: replace the stealth-bomber silhouette with a sepia saucer or wreck scene. |
-| 3 | `GFX_report_event_tibet` | Current alias path `gfx/event_pictures/003_holy_realm/report_event_lhasa.dds`; proposed unique path `gfx/event_pictures/003_holy_realm/report_event_tibet.dds` | `germany_mengele.40`-`.44`, `.47`, `.95` | Queued: create a distinct sepia monastery or plateau scene and ask the parent to point this sprite at the unique path. |
+| Sprite | Active consumer | Source PNG and SHA-256 | Processed PNG and SHA-256 | Before DDS SHA-256 | Final DDS and SHA-256 |
+|---|---|---|---|---|---|
+| `GFX_news_alien_spacecraft` | `chaosx.news.41` | `docs/assets/gfx_fix_shared_chaosx_pictures/source_generated/news_alien_spacecraft_source.png` (`5e568c29a24d5a8d8c3f471a798a603447f2149d1094437e59816bbd145ccec9`) | `docs/assets/gfx_fix_shared_chaosx_pictures/processed/news_alien_spacecraft.png` (`3a1a468fd745e06463ed584463ea7c0930f4f9ed1c9dc346f3e2b28f4c4094fa`) | `42bb47b79eec36de59c59e6a6e31f2414b31b032225862ad041d05309c5bf829` | `gfx/event_pictures/036_alien_spacecraft/news_alien_spacecraft.dds` (`201e681443d328e5453176906ae6c727bba28d3850c811ac288e02ca3baba3ae`) |
+| `GFX_news_balkans` | Unconsumed sprite; only registered in `interface/chaosx_pictures.gfx` | `docs/assets/gfx_fix_shared_chaosx_pictures/source_generated/news_balkans_source.png` (`8735043ae0fb377dc122bee3251dfe2e474631f66d340fc2ef7998c60587c62e`) | `docs/assets/gfx_fix_shared_chaosx_pictures/processed/news_balkans.png` (`d72a3e67ded4ba6e4f98dbbc142dc30e889c96bced0cdb2ec3a3ce5dab8e5472`) | `3857905cff1e43e27b740b842bc5ed45c767ecbba14d5c2996ee69d03fd2cfd8` | `gfx/event_pictures/045_third_balkan_war/news_balkans.dds` (`68403fe605d9045fec78f7bba8a2a8b69c14e5a663b75f82b513b13f9685bbe0`) |
+| `GFX_news_failed_research` | `chaosx.news.68` | `docs/assets/gfx_fix_shared_chaosx_pictures/source_generated/news_failed_research_candidate_v1.png` (`dd71bd176e2f291b848669bb2535caace32ec6cb09de627b58ccacfb36015e0a`) | `docs/assets/gfx_fix_shared_chaosx_pictures/processed/news_failed_research.png` (`1f57481cc412c8bb9471b82dcd8295b7b226d5ba9fa7d6f7c09d9a53a849dd10`) | `9ca4977293dd5d8f28e8912e3491d4c0c2e721d9245ec6dde93e997f11d1c3e3` | `gfx/event_pictures/060_research_failure/news_failed_research.dds` (`2416e47f3c574aa24147f526bfc608634efb867d65cb0dfc8f5cbcaf81d813a6`) |
+| `GFX_report_event_alien_spacecraft` | `chaosx.nr36.2`, `chaosx.nr16.18` | `docs/assets/gfx_fix_shared_chaosx_pictures/source_generated/report_event_alien_spacecraft_source.png` (`a03cb5c5ed683906362aff597f530e8ced48c0a975e7b60a71e83287f333b612`) | `docs/assets/gfx_fix_shared_chaosx_pictures/processed/report_event_alien_spacecraft.png` (`6f11d72f62c6a2009e5b400e90ed0461518e00d62e32061a15c47916bcfa114f`) | `5ac3c71a671d7f775191c32e2aa4c0c129a3a2be6482dcb8cf6d4dd1aa3ba573` | `gfx/event_pictures/036_alien_spacecraft/report_event_alien_spacecraft.dds` (`1eb239e32cc91db4679406bdf2af3133d000411d9d8ae00209ed0fa4fe8a6832`) |
+| `GFX_report_event_tibet` | `germany_mengele.40`, `.41`, `.42`, `.43`, `.44`, `.47`, `.95` | `docs/assets/gfx_fix_shared_chaosx_pictures/source_generated/report_event_tibet_source.png` (`7cc91784b53a317e6ef8e1c808a9cace9e3b56f313a26f35e826a0286939f797`) | `docs/assets/gfx_fix_shared_chaosx_pictures/processed/report_event_tibet.png` (`d5f91341e4f54a4dfe775ab590f4a706212ee384b201640e14c53ce688491a32`) | `d2a3cc142aff30b65e6ca0b2a80dd851a17bae9b8b10c8b1d21ff8a1a2844978` | `gfx/event_pictures/003_holy_realm/report_event_tibet.dds` (`9e78d8fe7b45c80ef6e4c4955208f68a9c7f85adbf24dc2fbb640885e61fdac3`) |
 
-## Remaining live checks
+All five final DDS files decode pixel-exactly to their processed PNGs. The three news images are opaque 397x153 black-and-white scenes; the two report images are 210x176 sepia cards with transparent corners. The before DDS snapshots are authoritative; old review JPGs from the shared trailer folder are not treated as baseline evidence.
 
-After parent integration, confirm the report images appear with transparent corners and the tilted thin border for `chaosx.nr4.2`, `.3`, `.4`, `chaosx.nr92.2`, `.3`, `.4`, `chaosx.nr74.2`, `chaosx.nr48.2`, and `chaosx.nr5_custom.36`. Confirm the news images appear without labels or crop loss for `chaosx.news.73`, `.54`, `.65`, `.74`, and `.51`. The foreign-liaison and railway-sovereignty report sprites have no active event consumer, so no in-game consumer check exists for those two rows because they are registry-only assets.
+### Parent-owned Tibet sprite path update
+
+The existing registry block in `interface/chaosx_pictures.gfx` currently points `GFX_report_event_tibet` to the Lhasa texture, which must remain available for its separate sprite. Parent-owned wiring should change only this texture path:
+
+```text
+spriteType = {
+	name = "GFX_report_event_tibet"
+	texturefile = "gfx/event_pictures/003_holy_realm/report_event_tibet.dds"
+}
+```
+
+The current texture path is `gfx/event_pictures/003_holy_realm/report_event_lhasa.dds`; the new unique path is `gfx/event_pictures/003_holy_realm/report_event_tibet.dds`. The new file is already installed, and `GFX_report_event_tibet` remains consumed by the seven `germany_mengele` event IDs in the table above. No `.gfx` file was changed in this asset task.
+
+### Limited parent colour-audit evidence
+
+The parent reports that `.tools/report_colour_audit.py` found zero colored pixels in event-picture groups `004`, `048`, `074`, and `092`, and in the complete `events/_chaosx_news.txt` surface. Parent-supplied artifacts are `docs/assets/gfx_fix_shared_chaosx_pictures/colour_audit_004.json`, `colour_audit_048.json`, `colour_audit_074.json`, `colour_audit_092.json`, and `colour_audit_news.json`. This records only the parent-reported colour result and does not claim other image-quality checks.
+
+## Full-group asset status and remaining user checks
+
+All 16 image findings now have source, processed preview, and runtime DDS outputs. The parent-owned Tibet `.gfx` path update is the only remaining wiring action. After that change, regenerate the group sheet from the live registry and confirm `germany_mengele.40`, `.41`, `.42`, `.43`, `.44`, `.47`, and `.95` show the new monastery image. Confirm the active news IDs and report IDs listed in the tables display their new crops without labels, clipping, or modern props. The foreign-liaison, railway-sovereignty, and Balkans news sprites are registry-only and have no active event consumer to check.
+
+## Parent Tibet integration
+
+Disposition: implemented under the explicit distinct-Tibet-picture request.
+The parent changed only the texture path in the existing `GFX_report_event_tibet` block to `gfx/event_pictures/003_holy_realm/report_event_tibet.dds`.
+The neighbouring unowned Equipment from Heaven sprite deletion remains separate work and is excluded from this commit.
+The new Tibet texture is 210x176, SHA-256 `9e78d8fe7b45c80ef6e4c4955208f68a9c7f85adbf24dc2fbb640885e61fdac3`; the sprite name and consumers remain stable.
