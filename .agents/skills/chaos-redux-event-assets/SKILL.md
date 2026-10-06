@@ -314,6 +314,8 @@ With Sunburst and the execution-path rule above, when a candidate is close, edit
 Restate the invariants in every edit: subject identity where authorized, pose/composition, palette/style, consumer canvas and intended footprint, reserved space, and alpha/background mode. For alpha-backed assets explicitly request preservation of real transparent unused canvas after every edit. For opaque scene art preserve the required painted background instead. State “no added text, symbols, subjects, borders, or UI controls” where applicable; list any deliberately authorized exception precisely. Keep functional UI labels and controls native even when the generated composition follows a complex layout.
 
 For a coordinated asset family, an accepted candidate may anchor only the stated palette, materials, texture, or motif vocabulary; the exact consumer family remains authoritative. Follow [Icon type separation rules](#icon-type-separation-rules) for independent surface art and [Achievement icons](#achievement-icons) for deterministic template composition and state derivation.
+When subtypes have established colour accents, record the exact sibling references and palette before generation, then compare every candidate at native size against its corresponding subtype rather than assigning arbitrary distinct colours.
+Map every alias of a shared texture to its actual consumer before changing dimensions; suffixes such as `_medium` occur on both equipment and technology sprites, so split incompatible canvases into separate stable paths and repoint only the matching consumers.
 
 #### Native transparency and background-removal fallback
 
