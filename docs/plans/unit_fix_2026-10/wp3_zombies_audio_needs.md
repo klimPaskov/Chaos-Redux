@@ -1,5 +1,22 @@
 # WP3 Zombie Outbreak (002) - Audio delivery and held-source needs
 
+## WP3 source review on 2026-10-06
+
+The earlier shared-mastering inventory below is historical evidence, superseded for moan 01 and the provenance of moan 03 by `wp3_audio_repair_handoff.md` and its hash-bound installation receipt.
+Moan 01 has an exact decoded match to archived CC0 `zombienoise1.ogg` and an installed, passing -20.2 LUFS derivative.
+Moan 03 also has an exact source match, to archived CC0 `zombienoise3.ogg`, but its recorded-edge crossfades fail the loop gate; its existing runtime file remains in place.
+Moan 02 retains its accepted globally mastered bytes; a weak comparison with an unaligned source member is not grounds to replace it.
+No source download is authorized in this session.
+
+Outstanding source roles from the WP3 tickets remain explicit: three or four 0.2–0.4-second cloth/flesh contacts; 0.5–1.2-second cough, retch and spit recordings for infected zombies; 0.3–0.6-second wet lash/squelch and a suction take for parasitic zombies; a distinct rabid shriek and death gasp; mutant snarls, two 1.0–1.5-second roars, death bellow, heavy footsteps and breathing; two or three demonic idle/defend low growls; and two extra undead moans.
+The demonic ticket's two extra screams and one attack voice are wired as explicitly permitted pitch variants of its existing classified CC0 recordings.
+Both active effects now have three variants, with one underlying scream recording and two underlying attack recordings; they are correlated derivatives, not new independent takes.
+Use CC0, CC BY or CC BY-SA recordings with exact original-member hashes and attribution.
+The archived Colodical idle recording is one staged review candidate, not two accepted undead takes or a demonic growl.
+Existing artisticdude variant assignments remain valid historical classifications; they do not establish the additional role and take requirements by filename alone.
+Candidate source families named in the approved plan include artisticdude's CC0 Zombies Sound Pack, Ogrebane's CC0 Monster Sound Effects 2, and licensed human/cloth/wet foley packs.
+The source search and concrete archive gaps are recorded in the audio handoff; no missing pool is replaced with a synthetic or unrelated cue.
+
 This package has 39 unique active mod sound paths: 37 are installed and 2 are held. Consumer counts are path-scoped; a shared pool path appears once per relevant package report.
 
 ## Installed file facts

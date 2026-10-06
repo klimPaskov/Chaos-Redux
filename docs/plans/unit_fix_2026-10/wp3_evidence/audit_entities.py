@@ -20,6 +20,18 @@ data = snapshot()
 data['models'] = [m for m in data['models'] if m['pdxmesh'] in {'chaosx_' + s + '_mesh' for s in SLUGS}]
 if len(data['models']) != 8:
     raise ValueError('Expected eight WP3 model consumers')
+def referenced_paths(value):
+    if isinstance(value, dict):
+        if isinstance(value.get('path'), str):
+            yield value['path']
+        for child in value.values():
+            yield from referenced_paths(child)
+    elif isinstance(value, list):
+        for child in value:
+            yield from referenced_paths(child)
+
+owned_references = set(referenced_paths(data['models']))
+data['files'] = [row for row in data['files'] if row['path'] in owned_references]
 (out / 'inventory.json').write_text(json.dumps(data, indent=2) + '\n', encoding='utf-8')
 motions = {}
 for model in data['models']:

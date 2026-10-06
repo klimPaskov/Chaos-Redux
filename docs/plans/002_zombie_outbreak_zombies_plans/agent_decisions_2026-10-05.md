@@ -11,7 +11,14 @@ The installed emitter lasts 0.1 seconds; retaining it as a continuous effect is 
 Decoded necrotic death bytes put the hips at 4.10 source units at the superseded 1.30-second cue and 1.646 at 3.30 seconds.
 Joint height does not prove deformed body contact, so final synchronization acceptance remains with stationary footage.
 - `implemented`: shared zombie idle volume is 0.42, shared movement volume is 0.50, and parasitic feeding volume is 0.55, within the ticketed targets.
-Existing sample pools, random delays and repetition prevention remain intact.
+Shared idle retains its pool and random delay; all existing pools retain repetition prevention.
+- `implemented`: movement takes 03–06 isolate complete recorded footsteps with bounded release fades rather than overlap adjacent contact events.
+Takes 01–02 already fit the shortest interval; the six original-source identities and distinct takes are preserved.
+Movement delay randomization is removed so an authored plant is not displaced by up to 80 milliseconds.
+Playback-rate variation remains; the longest 0.17-second file lasts about 0.193 seconds at the slowest allowed rate, below the shortest 0.20-second contact gap.
+- `implemented`: demonic scream and attack effects each use three variants, with the two extra screams and lower attack voice derived from the same already classified CC0 recordings.
+Pitch variants are expressly allowed by the ticket; the source counts remain one scream recording and two attack recordings and are reported separately from variant counts.
+The dedicated low-growl loop candidates fail the recorded-edge gate and stay outside runtime.
 - `unresolved`: WP3 requests footsteps at -3 dBFS while section 3.5 and the shared mastering gate require -6 dBFS.
 Already accepted -6 dBFS samples remain in place; this preserves the actual mastering contract without claiming that the conflicting WP3 target passed.
 - `unresolved`: model-specific undead/demonic specular instructions retain low or constant G values while section 3.2 rejects constant G.

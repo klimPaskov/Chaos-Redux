@@ -1,5 +1,91 @@
 # WP3 Zombie Outbreak (002) - Delivery Report
 
+## WP3 execution on 2026-10-06
+
+Package status: **incomplete**.
+The user-authorized scope is every WP3 ticket, with no paid Meshy tasks, no new sound downloads and no desktop or game launch.
+The sections below this execution record describe the earlier shared pipeline tranche, whose mesh/action measurements remain a baseline rather than model acceptance.
+The missing requested `unit_s3_report.md` was replaced for reference reading by the existing `pipeline_report.md`; no absent report or tool route was treated as successful evidence.
+
+The focused presentation commit is `dbbd5444b`: all eight death blood bursts drop `keep_particle`, the undead attack grunt moves from 2.80 to 2.45 seconds, and the necrotic fall cue moves from 1.30 to 3.30 seconds.
+Shared idle volume changes from 0.22 to 0.42, shared movement from 0.34 to 0.50, and parasitic feeding from 0.45 to 0.55, matching the WP3 ticket values.
+An independent Luna review found no missing cue or WAV reference in this scoped diff.
+Before/after source and lint evidence is in `wp3_evidence/before/` and `wp3_evidence/after_entity_timing/`.
+The same 64 states retain the same action hashes; the eight impulse-particle findings clear, taking the total from 54 to 46.
+Remaining findings at that boundary are 11 strongest-motion offsets, 15 missing contact proofs, 10 one-shot voices on repeating states, three samples longer than their state cycles, and seven overlaps.
+Motion peaks and joint heights are synchronization evidence, not proof of a deformed hand or body contacting a surface.
+
+Moan 01 has an exact source binding to ianzazz's archived CC0 `zombienoise1.ogg` and a passing installed derivative.
+Its measured installed-byte loudness changes from -40.5 to -20.2 LUFS; peak changes from -20.848 dBFS to -1.011 dBFS, true peak is -1.0 dBTP, duration changes from 2.116848 to 1.616848 seconds, and inner loop-edge mismatch improves from 16.234 to 2.769 dB.
+The previous runtime bytes remain available as the hash-bound local Git LFS object, inspected in `wp3_evidence/moan01_before_metrics.json`; the installation receipt and after inspection are linked from `wp3_audio_repair_handoff.md`.
+Moan 03's exact CC0 source binding is also resolved, but its loop candidate fails the unchanged recorded-edge gate and is not installed.
+Moan 02 retains its accepted global-mastering bytes.
+Audio mastering proves file delivery; audible role and live playback acceptance remain separate.
+
+Shared footsteps 03–06 isolate complete transients from their original CC0 recordings, with short releases; footsteps 01–02 already fit the shortest interval.
+The final six paths remain distinct recorded takes, at the shared -6 dBFS peak target, with a maximum duration of 0.17 seconds.
+The movement cue has no random start delay, and its retained ±12% rate variation keeps the longest sample below 0.194 seconds at the slowest rate.
+This targets the six movement overlaps whose shortest contact interval is 0.20 seconds without shifting the entity's authored plant events.
+Per-file preimages, source offsets, after hashes and mastering inspections are recorded in the audio handoff.
+The fresh `wp3_evidence/after_audio/` lint reads the installed files and clears all six movement overlaps: the 64 states retain 40 findings, with only one sample overlap left, the undead eating cue.
+The earlier 46-finding count remains the intermediate particle/timing boundary.
+The demonic scream and attack pools each contain three variants after wiring two extra pitches of the classified scream recording and one lower pitch of the classified attack recording.
+The new files are `demonic_scream_low.wav`, `demonic_scream_high.wav`, and `demonic_attack_low.wav`, all passing the shot-mastering gate at -3 dBFS peak.
+These are the pitch variants explicitly allowed by the demonic ticket: the scream pool still has one underlying recording, and the attack pool has two.
+They are not presented as additional independent takes.
+Two lower-register growl-loop attempts fail the recorded-edge gate; the dedicated demonic idle/defend pool is still open.
+
+## Per-ticket work and remaining acceptance
+
+| Model | Delivered presentation changes | Requested model repair and acceptance still open |
+|---|---|---|
+| zombies | Blood burst lifetime; shared idle/movement gain; recovered moan 01. | Coherent head/torso/arm/leg/helmet UVs and field-uniform bake; region specular; authored idle shifts and claw curls; 129 positional non-manifold edges; seven blocked action roles. |
+| infected_zombies | Blood burst lifetime; shared idle/movement gain; recovered moan 01. | Coat/skin/feet bake and masks; chest-height attack at 1.17 seconds; defend/training closures and skull clearance; coat-hem skinning; 312 non-manifold edges; eight blocked roles; actual cough/retch/spit sources. |
+| rabid_zombies | Blood burst lifetime; shared idle/movement gain; recovered moan 01. | Standing four-second frantic idle; move seam; forward lunge replacing back kick; wrist/forearm skinning and suit bake; 112 non-manifold edges; seven blocked roles; distinct shriek and death gasp. |
+| parasitic_zombies | Blood burst lifetime; feed gain 0.55. | Actual tentacle rig, weights, idle and whip lag; forward lash/grab; defend closure and death at most 4.5 seconds; tube caps and duplicate removal; 554 non-manifold edges; seven blocked roles; wet lash and suction sources. |
+| mutant_zombies | Blood burst lifetime; shared idle/movement gain; recovered moan 01. | Skin/jaw materials and 80–95 diffuse median; calm closed idle and claw curls; two slits/duplicate faces; four non-manifold edges; eight blocked roles; dedicated heavy voice, breathing and footsteps. |
+| undead_zombies | Blood burst lifetime; attack grunt at 2.45 seconds; shared movement gain. | Source-based suit/skin grade and gloss masks; substantial idle; plant/training easing and retreat seam; attack knees and armpit/hem weights; 330 non-manifold edges; seven blocked roles; two extra moan takes. |
+| necrotic_zombies | Blood burst lifetime; fall cue at 3.30 seconds; shared movement gain. | Bone/teeth gloss masks, distinct skin/rags; foot plants, arm sweep and transition easing; retreat seam; rag/thigh skinning; 73 non-manifold edges; seven blocked roles. |
+| demonic_zombies | Blood burst lifetime; shared idle/movement gain; recovered moan 01; three-variant scream and attack pools. | Forearm/hand and wing skinning/joints; standing slash and leap landing; death, training, idle, retreat and plant repairs; source-island padding/region grade; 36 non-manifold edges; seven blocked roles; own idle/defend growls and retiming after the authored action repairs. |
+
+These counts are tied to the unchanged installed mesh/action hashes in the earlier crosswalk and current WP3 inventory.
+They are unresolved acceptance findings, not a waiver or a declaration that all tickets were repaired.
+All 24 current model maps have shared compression/mip delivery, but source material/detail repairs and the WP3 256-pixel specular targets are still part of model work.
+
+## Orchestrator live checks for this tranche
+
+Use the existing showcase setup saves for batches 2 and 3, paused, at 1920×1080 and UI scale 1.
+The exact model positions in `C:/Users/klimp/Videos/chaos_redux_trailer/records/showcase/plan.json` are: zombies 12374, infected 12728, rabid 12791, parasitic 1562, mutant 1954, undead 2019, necrotic 3834 and demonic 5038.
+Lock the crop to the known custom entity position and keep attacks stationary, or set the in-point after engine repositioning.
+
+- Exercise death for each model: expect one brief hit burst rather than a retained emitter.
+For necrotic death, expect the body-fall cue at 3.30 seconds and no early fall sound at 1.30 seconds; inspect the actual body contact, since the decoded hips are 1.646 source units high at 3.30 seconds.
+- Capture two undead attack cycles: expect the grunt at 2.45 seconds alongside the feeding/grab recovery, with no grunt event at 2.80 seconds.
+- Leave each idle long enough to hear all current pool members, then exercise movement and parasitic feeding at the same camera distance as an adjacent vanilla unit.
+Expect the ticketed gains and louder moan 01; held takes and one-shot/repeating-state defects remain identified in the audio handoff.
+- Exercise attack, defend, support_attack, move, retreat, training and death for each model before closing its geometry/action ticket.
+Inspect the ticket-specific loops, holes, wrists, coat hems, tentacles, wings, crops and map-zoom texture behavior against the thresholds in the plan.
+
+All eight models require stationary idle/attack re-filming as `SC_<model>_idle.mkv` and `SC_<model>_attack.mkv` after model acceptance.
+Refresh `tools/unit_sounds.py`, `tools/anim_durations.py`, `project/showcase_v1.py`, and the audio/credits build from the same trailer timeline before the final video render, as documented in the showcase README.
+No game or capture session was launched here.
+
+## Simplifications, omissions, and blockers for this execution
+
+No substitute model, generated production rig/weight/action, synthetic sound or unauthorized source download is accepted.
+Open model and audio requirements are listed individually above and in the two worker handoffs; WP3 is not presented as complete.
+The root runtime exposes no HOI4 reference or validation routes; its exact direct local reference paths, line spans, revisions and the installed-documentation chapter gap are in `wp3_evidence/local_references.json`.
+The custom model worker's runtime does expose and successfully call the reference/context/search/read/source-lookup routes; its current schemas, responses and source revisions are retained in `wp3_model_repair_reference_evidence.json`.
+The source-lookup query returned no indexed infantry definition, so the installed vanilla definition and calibration were read directly.
+No event, decision, focus, scripted-GUI, probability, on-action or gameplay source is changed by this tranche.
+The footsteps' conflicting -3/-6 dBFS targets and per-model/shared specular conflicts are recorded in the event's `agent_decisions_2026-10-05.md`.
+The preserved global -6 dBFS footstep contract does not count as satisfying the conflicting -3 dBFS instruction.
+Source-role gaps retain their old cues and concrete recording needs; staged candidates do not count as wired takes.
+The paleogenetic creature still inherits movement and feeding effects from this package; `wp3_to_wp5_sound_dependency_handoff.md` names each call and the WP5-owned separation dependency.
+
+Skills used: `chaos-redux-3d-model-pipeline`, `chaos-redux-event-assets`, `chaos-redux-subagents`, and `chaos-redux-shared-git-commit`.
+No skill was created or changed in this bounded package.
+
 Disposition: `implemented` for this documentation handoff; package mesh/action reconstruction, visual acceptance, final entity wiring, and audio install remain open where the measurements below show gaps. The authorized package scope comes from the user-authored unit-fix plan, SHA-256 `1939b400cba160c6d4903e37952e8e55efdb1bfeacf0b4ab061e89c8792c79b2`.
 
 Package models: zombies, infected_zombies, rabid_zombies, parasitic_zombies, mutant_zombies, undead_zombies, necrotic_zombies, demonic_zombies. The full per-model map, DDS, mesh, action, topology, reimport, and entity-lint evidence is in `docs/plans/unit_fix_2026-10/per_model_delivery_metrics.json`.
