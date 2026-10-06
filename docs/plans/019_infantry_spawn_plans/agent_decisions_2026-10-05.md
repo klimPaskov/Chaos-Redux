@@ -60,3 +60,11 @@ Reference context/search/read routes returned some citations; failed and omitted
 Context inventories do not establish rule or engine coverage.
 The connected service version and standalone viewer availability were not independently confirmed.
 No repository-wide state-flow or helper-expansion query was used.
+
+
+## Graphics decisions accepted on 2026-10-06
+
+The current graphics brief authorizes solid badge interiors and removal of detached export fragments while retaining the existing artwork.
+Both zombie focus badges and the prototype-cannibalization icon preserve their main silhouettes and stable names.
+Independent native-size review accepted all three repaired textures.
+Evidence is docs/plans/gfx_fix_2026-10/019_report.md and alpha_independent_review.md.
