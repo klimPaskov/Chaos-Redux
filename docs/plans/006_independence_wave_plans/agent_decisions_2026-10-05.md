@@ -146,3 +146,14 @@ The shortened Asante and Sokoto reports retain their actual counterpart names an
 The Council of Communities report retains consent, community guarantees and autonomy conditions.
 No event id, option, cost, effect, scope pointer or report dispatch changes with this wording.
 The full report/news dependency colour audit returns zero findings.
+
+## D45. Use the danger symbol for severe domestic instability
+
+Disposition: `implemented` with matching MCP visual evidence.
+Basis: G5 and the parent's review of the severe-instability screenshot.
+
+The separate warning badge used the calm blue static dependency symbol even when domestic Instability was severe.
+The widget uses the existing three-state warning strip at frame three, preserving its position, scale and severity-only visibility.
+The matching before/after render changes only the badge's 35-by-44-pixel area; 1,203 pixels change and the rest of the screen is identical.
+The parent reviewed the corrected red badge and the five tabs at both resolutions.
+The [GUI handoff](subagent_handoffs/gui_takeover_20261006.md) retains the reference mapping, fixtures, click regions, current source hashes, validation findings and native playback limits.
