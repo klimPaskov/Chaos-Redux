@@ -248,12 +248,17 @@ asteroid_incoming_ai_country_is_friendly_ground_holder = {
 asteroid_incoming_ai_strike_would_hit_friendly_ground = {
 	hidden_trigger = {
 		OR = {
+			OWNER = { asteroid_incoming_ai_country_is_friendly_ground_holder = yes }
 			CONTROLLER = { asteroid_incoming_ai_country_is_friendly_ground_holder = yes }
 			any_neighbor_state = {
 				OR = {
+					OWNER = { asteroid_incoming_ai_country_is_friendly_ground_holder = yes }
 					CONTROLLER = { asteroid_incoming_ai_country_is_friendly_ground_holder = yes }
 					any_neighbor_state = {
-						CONTROLLER = { asteroid_incoming_ai_country_is_friendly_ground_holder = yes }
+						OR = {
+							OWNER = { asteroid_incoming_ai_country_is_friendly_ground_holder = yes }
+							CONTROLLER = { asteroid_incoming_ai_country_is_friendly_ground_holder = yes }
+						}
 					}
 				}
 			}
@@ -784,14 +789,114 @@ asteroid_incoming_state_is_open_for_worker_rehousing = {
 	NOT = { has_state_flag = asteroid_incoming_workers_rehoused }
 }
 
+# STATE scope, one candidate controlled by the deciding country in ROOT.
+# Entering ROOT makes PREV this candidate, rather than the decision's FROM
+# target, so each competitor is priced against its own stored quote.
+asteroid_incoming_candidate_keeps_emergency_reserves = {
+	hidden_trigger = {
+		has_variable = asteroid_incoming_cost_multiplier
+		ROOT = {
+			check_variable = { var = manpower_k value = PREV.asteroid_incoming_quote_manpower_reserve_k compare = greater_than }
+			check_variable = { var = num_equipment@support_equipment value = PREV.asteroid_incoming_quote_support_reserve compare = greater_than }
+			check_variable = { var = num_equipment@motorized_equipment_1 value = PREV.asteroid_incoming_quote_motorized_reserve compare = greater_than }
+		}
+	}
+}
+
+asteroid_incoming_candidate_keeps_prepared_emergency_reserves = {
+	hidden_trigger = {
+		has_variable = asteroid_incoming_cost_multiplier
+		ROOT = {
+			check_variable = { var = manpower_k value = PREV.asteroid_incoming_quote_prepared_manpower_reserve_k compare = greater_than }
+			check_variable = { var = num_equipment@support_equipment value = PREV.asteroid_incoming_quote_prepared_support_reserve compare = greater_than }
+			check_variable = { var = num_equipment@motorized_equipment_1 value = PREV.asteroid_incoming_quote_prepared_motorized_reserve compare = greater_than }
+		}
+	}
+}
+
+asteroid_incoming_candidate_keeps_rail_reserves = {
+	hidden_trigger = {
+		has_variable = asteroid_incoming_cost_multiplier
+		ROOT = {
+			check_variable = { var = num_equipment@train_equipment value = PREV.asteroid_incoming_quote_trains_reserve compare = greater_than }
+			check_variable = { var = num_equipment@support_equipment value = PREV.asteroid_incoming_quote_support_reserve compare = greater_than }
+			check_variable = { var = fuel_k value = PREV.asteroid_incoming_quote_fuel_reserve_k compare = greater_than }
+		}
+	}
+}
+
+asteroid_incoming_candidate_keeps_prepared_rail_reserves = {
+	hidden_trigger = {
+		has_variable = asteroid_incoming_cost_multiplier
+		ROOT = {
+			check_variable = { var = num_equipment@train_equipment value = PREV.asteroid_incoming_quote_prepared_trains_reserve compare = greater_than }
+			check_variable = { var = num_equipment@support_equipment value = PREV.asteroid_incoming_quote_prepared_support_reserve compare = greater_than }
+			check_variable = { var = fuel_k value = PREV.asteroid_incoming_quote_prepared_fuel_reserve_k compare = greater_than }
+		}
+	}
+}
+
+asteroid_incoming_candidate_keeps_industry_reserves = {
+	hidden_trigger = {
+		has_variable = asteroid_incoming_cost_multiplier
+		ROOT = {
+			check_variable = { var = manpower_k value = PREV.asteroid_incoming_quote_manpower_reserve_k compare = greater_than }
+			check_variable = { var = num_equipment@train_equipment value = PREV.asteroid_incoming_quote_trains_reserve compare = greater_than }
+			check_variable = { var = num_equipment@support_equipment value = PREV.asteroid_incoming_quote_support_reserve compare = greater_than }
+		}
+	}
+}
+
+asteroid_incoming_candidate_keeps_rehousing_reserves = {
+	hidden_trigger = {
+		has_variable = asteroid_incoming_cost_multiplier
+		ROOT = {
+			check_variable = { var = manpower_k value = PREV.asteroid_incoming_quote_manpower_reserve_k compare = greater_than }
+			check_variable = { var = num_equipment@train_equipment value = PREV.asteroid_incoming_quote_trains_reserve compare = greater_than }
+			check_variable = { var = num_equipment@motorized_equipment_1 value = PREV.asteroid_incoming_quote_motorized_reserve compare = greater_than }
+		}
+	}
+}
+
+asteroid_incoming_candidate_can_start_mobile_hospitals = {
+	OR = {
+		asteroid_incoming_candidate_keeps_emergency_reserves = yes
+		AND = {
+			ROOT = { has_country_flag = asteroid_incoming_medical_mobilization_selected NOT = { has_country_flag = asteroid_incoming_first_medical_response_used } }
+			asteroid_incoming_candidate_keeps_prepared_emergency_reserves = yes
+		}
+	}
+}
+
+asteroid_incoming_candidate_can_start_debris_clearing = {
+	OR = {
+		asteroid_incoming_candidate_keeps_emergency_reserves = yes
+		AND = {
+			ROOT = { has_country_flag = asteroid_incoming_transport_dispersion_selected NOT = { has_country_flag = asteroid_incoming_first_debris_response_used } }
+			asteroid_incoming_candidate_keeps_prepared_emergency_reserves = yes
+		}
+	}
+}
+
+asteroid_incoming_candidate_can_start_emergency_rail = {
+	OR = {
+		asteroid_incoming_candidate_keeps_rail_reserves = yes
+		AND = {
+			ROOT = { has_country_flag = asteroid_incoming_transport_dispersion_selected NOT = { has_country_flag = asteroid_incoming_first_rail_response_used } }
+			asteroid_incoming_candidate_keeps_prepared_rail_reserves = yes
+		}
+	}
+}
+
 # COUNTRY scope (the deciding country in ROOT), decision target in FROM. Each
-# is true only for the single highest-ranked state open for its action.
+# is true only for the single highest-ranked affordable state open for it.
 asteroid_incoming_from_is_first_mobile_hospitals_target = {
 	hidden_trigger = {
-		FROM = { asteroid_incoming_state_is_open_for_mobile_hospitals = yes }
+		FROM = { asteroid_incoming_state_is_open_for_mobile_hospitals = yes asteroid_incoming_candidate_can_start_mobile_hospitals = yes }
 		NOT = {
 			any_controlled_state = {
 				asteroid_incoming_state_is_open_for_mobile_hospitals = yes
+				asteroid_incoming_candidate_can_start_mobile_hospitals = yes
 				asteroid_incoming_state_outranks_target_for_emergency = yes
 			}
 		}
@@ -800,10 +905,11 @@ asteroid_incoming_from_is_first_mobile_hospitals_target = {
 
 asteroid_incoming_from_is_first_emergency_rail_target = {
 	hidden_trigger = {
-		FROM = { asteroid_incoming_state_is_open_for_emergency_rail = yes }
+		FROM = { asteroid_incoming_state_is_open_for_emergency_rail = yes asteroid_incoming_candidate_can_start_emergency_rail = yes }
 		NOT = {
 			any_controlled_state = {
 				asteroid_incoming_state_is_open_for_emergency_rail = yes
+				asteroid_incoming_candidate_can_start_emergency_rail = yes
 				asteroid_incoming_state_outranks_target_for_emergency = yes
 			}
 		}
@@ -812,10 +918,11 @@ asteroid_incoming_from_is_first_emergency_rail_target = {
 
 asteroid_incoming_from_is_first_debris_clearing_target = {
 	hidden_trigger = {
-		FROM = { asteroid_incoming_state_is_open_for_debris_clearing = yes }
+		FROM = { asteroid_incoming_state_is_open_for_debris_clearing = yes asteroid_incoming_candidate_can_start_debris_clearing = yes }
 		NOT = {
 			any_controlled_state = {
 				asteroid_incoming_state_is_open_for_debris_clearing = yes
+				asteroid_incoming_candidate_can_start_debris_clearing = yes
 				asteroid_incoming_state_outranks_target_for_emergency = yes
 			}
 		}
@@ -824,10 +931,11 @@ asteroid_incoming_from_is_first_debris_clearing_target = {
 
 asteroid_incoming_from_is_first_emergency_filters_target = {
 	hidden_trigger = {
-		FROM = { asteroid_incoming_state_is_open_for_emergency_filters = yes }
+		FROM = { asteroid_incoming_state_is_open_for_emergency_filters = yes asteroid_incoming_candidate_keeps_emergency_reserves = yes }
 		NOT = {
 			any_controlled_state = {
 				asteroid_incoming_state_is_open_for_emergency_filters = yes
+				asteroid_incoming_candidate_keeps_emergency_reserves = yes
 				asteroid_incoming_state_outranks_target_for_emergency = yes
 			}
 		}
@@ -836,10 +944,11 @@ asteroid_incoming_from_is_first_emergency_filters_target = {
 
 asteroid_incoming_from_is_first_supply_spine_target = {
 	hidden_trigger = {
-		FROM = { asteroid_incoming_state_is_open_for_supply_spine = yes }
+		FROM = { asteroid_incoming_state_is_open_for_supply_spine = yes asteroid_incoming_candidate_keeps_rail_reserves = yes }
 		NOT = {
 			any_controlled_state = {
 				asteroid_incoming_state_is_open_for_supply_spine = yes
+				asteroid_incoming_candidate_keeps_rail_reserves = yes
 				asteroid_incoming_state_outranks_target_for_reconstruction = yes
 			}
 		}
@@ -848,10 +957,11 @@ asteroid_incoming_from_is_first_supply_spine_target = {
 
 asteroid_incoming_from_is_first_outer_industry_target = {
 	hidden_trigger = {
-		FROM = { asteroid_incoming_state_is_open_for_outer_industry = yes }
+		FROM = { asteroid_incoming_state_is_open_for_outer_industry = yes asteroid_incoming_candidate_keeps_industry_reserves = yes }
 		NOT = {
 			any_controlled_state = {
 				asteroid_incoming_state_is_open_for_outer_industry = yes
+				asteroid_incoming_candidate_keeps_industry_reserves = yes
 				asteroid_incoming_state_outranks_target_for_reconstruction = yes
 			}
 		}
@@ -860,10 +970,11 @@ asteroid_incoming_from_is_first_outer_industry_target = {
 
 asteroid_incoming_from_is_first_worker_rehousing_target = {
 	hidden_trigger = {
-		FROM = { asteroid_incoming_state_is_open_for_worker_rehousing = yes }
+		FROM = { asteroid_incoming_state_is_open_for_worker_rehousing = yes asteroid_incoming_candidate_keeps_rehousing_reserves = yes }
 		NOT = {
 			any_controlled_state = {
 				asteroid_incoming_state_is_open_for_worker_rehousing = yes
+				asteroid_incoming_candidate_keeps_rehousing_reserves = yes
 				asteroid_incoming_state_outranks_target_for_reconstruction = yes
 			}
 		}

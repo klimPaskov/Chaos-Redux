@@ -534,6 +534,7 @@ asteroid_incoming_try_start_network_mission = {
 			asteroid_incoming_decision_target_state_is_valid = yes
 			ROOT = {
 				NOT = { has_active_mission = asteroid_incoming_reconnect_national_network_mission }
+				NOT = { has_country_flag = asteroid_incoming_network_reconnected }
 				asteroid_incoming_country_can_start_recovery_mission = yes
 			}
 		}
@@ -592,6 +593,7 @@ asteroid_incoming_try_start_outer_ring_mission = {
 			asteroid_incoming_decision_target_state_is_valid = yes
 			ROOT = {
 				NOT = { has_active_mission = asteroid_incoming_restore_outer_ring_mission }
+				NOT = { has_country_flag = asteroid_incoming_outer_ring_restored }
 				asteroid_incoming_country_can_start_recovery_mission = yes
 			}
 		}
@@ -619,6 +621,7 @@ asteroid_incoming_try_start_regional_economy_mission = {
 			ROOT = {
 				has_country_flag = asteroid_incoming_original_target_country
 				NOT = { has_active_mission = asteroid_incoming_rebuild_regional_economy_mission }
+				NOT = { has_country_flag = asteroid_incoming_regional_economy_complete }
 				asteroid_incoming_country_can_start_recovery_mission = yes
 			}
 		}
@@ -940,7 +943,11 @@ asteroid_incoming_disrupt_extraction_routes = {
 	asteroid_incoming_apply_rival_crater_route_disruption = yes
 	if = {
 		limit = { check_variable = { asteroid_incoming_crater_action_applied = constant:asteroid_incoming_runtime.one } }
-		set_state_flag = asteroid_incoming_rival_route_disruption_recorded
+		set_temp_variable = { asteroid_incoming_crater_operation_days = constant:asteroid_incoming_crater.operation_days }
+		meta_effect = {
+			text = { set_state_flag = { flag = asteroid_incoming_rival_route_disruption_recorded days = [OPERATION_DAYS] } }
+			OPERATION_DAYS = "[?asteroid_incoming_crater_operation_days|.0]"
+		}
 		ROOT = { set_country_flag = asteroid_incoming_extraction_routes_disrupted }
 	}
 }
@@ -949,7 +956,11 @@ asteroid_incoming_prepare_crater_offensive = {
 	asteroid_incoming_apply_rival_crater_offensive_plan = yes
 	if = {
 		limit = { check_variable = { asteroid_incoming_crater_action_applied = constant:asteroid_incoming_runtime.one } }
-		set_state_flag = asteroid_incoming_rival_offensive_recorded
+		set_temp_variable = { asteroid_incoming_crater_operation_days = constant:asteroid_incoming_crater.operation_days }
+		meta_effect = {
+			text = { set_state_flag = { flag = asteroid_incoming_rival_offensive_recorded days = [OPERATION_DAYS] } }
+			OPERATION_DAYS = "[?asteroid_incoming_crater_operation_days|.0]"
+		}
 		ROOT = { set_country_flag = asteroid_incoming_crater_offensive_prepared }
 	}
 }
@@ -1089,6 +1100,7 @@ asteroid_incoming_apply_repair_cost_surcharge = {
 	meta_effect = {
 		text = {
 			set_country_flag = { flag = asteroid_incoming_repair_costs_raised days = [SURCHARGE_DAYS] }
+			country_event = { id = chaosx.nr28.12 days = [SURCHARGE_DAYS] }
 		}
 		SURCHARGE_DAYS = "[?asteroid_incoming_surcharge_days|.0]"
 	}

@@ -665,7 +665,7 @@ asteroid_incoming_recovery_category = {
 			custom_trigger_tooltip = { tooltip = asteroid_incoming_blocked_crater_reserves_tt asteroid_incoming_has_crater_security_reserves_after_cost = yes }
 		}
 		target_root_trigger = { asteroid_incoming_country_has_crater_recovery_surface = yes has_global_flag = asteroid_incoming_minerals_active asteroid_incoming_country_has_crater_target = yes }
-		target_trigger = { FROM = { asteroid_incoming_crater_action_state_is_valid = yes NOT = { has_state_flag = asteroid_incoming_crater_action_pending_@ROOT } NOT = { has_state_flag = asteroid_incoming_crater_security_paid_@ROOT } NOT = { has_state_flag = asteroid_incoming_crater_security_action_in_progress } NOT = { asteroid_incoming_crater_perimeter_is_held = yes } } }
+		target_trigger = { FROM = { asteroid_incoming_crater_is_priority_owned_site = yes asteroid_incoming_crater_next_security_is_ready = yes asteroid_incoming_crater_action_state_is_valid = yes NOT = { has_state_flag = asteroid_incoming_crater_action_pending_@ROOT } NOT = { has_state_flag = asteroid_incoming_crater_security_paid_@ROOT } NOT = { has_state_flag = asteroid_incoming_crater_security_action_in_progress } NOT = { asteroid_incoming_crater_perimeter_is_held = yes } } }
 		custom_cost_trigger = {
 			has_manpower > constant:asteroid_incoming_recovery.decision_manpower
 			has_equipment = { support_equipment > constant:asteroid_incoming_recovery.decision_support_equipment }
@@ -757,7 +757,7 @@ asteroid_incoming_recovery_category = {
 			custom_trigger_tooltip = { tooltip = asteroid_incoming_blocked_crater_reserves_tt asteroid_incoming_has_material_survey_reserves_after_cost = yes }
 		}
 		target_root_trigger = { asteroid_incoming_country_has_crater_recovery_surface = yes has_global_flag = asteroid_incoming_minerals_active asteroid_incoming_country_has_crater_target = yes }
-		target_trigger = { FROM = { asteroid_incoming_crater_action_state_is_valid = yes NOT = { has_state_flag = asteroid_incoming_crater_action_pending_@ROOT } NOT = { has_state_flag = asteroid_incoming_crater_survey_paid_@ROOT } NOT = { has_state_flag = asteroid_incoming_crater_survey_action_in_progress } asteroid_incoming_crater_perimeter_is_held = yes NOT = { has_state_flag = asteroid_incoming_material_surveyed } } }
+		target_trigger = { FROM = { asteroid_incoming_crater_is_priority_owned_site = yes asteroid_incoming_crater_next_survey_is_ready = yes asteroid_incoming_crater_action_state_is_valid = yes NOT = { has_state_flag = asteroid_incoming_crater_action_pending_@ROOT } NOT = { has_state_flag = asteroid_incoming_crater_survey_paid_@ROOT } NOT = { has_state_flag = asteroid_incoming_crater_survey_action_in_progress } asteroid_incoming_crater_perimeter_is_held = yes NOT = { has_state_flag = asteroid_incoming_material_surveyed } } }
 		custom_cost_trigger = {
 			has_equipment = { support_equipment > constant:asteroid_incoming_recovery.decision_support_equipment }
 			has_fuel > constant:asteroid_incoming_recovery.decision_fuel
@@ -832,7 +832,7 @@ asteroid_incoming_recovery_category = {
 			custom_trigger_tooltip = { tooltip = asteroid_incoming_blocked_crater_reserves_tt asteroid_incoming_has_industry_recovery_reserves_after_cost = yes }
 		}
 		target_root_trigger = { asteroid_incoming_country_has_crater_recovery_surface = yes has_global_flag = asteroid_incoming_minerals_active asteroid_incoming_country_has_crater_target = yes }
-		target_trigger = { FROM = { asteroid_incoming_crater_action_state_is_valid = yes NOT = { has_state_flag = asteroid_incoming_crater_action_pending_@ROOT } NOT = { has_state_flag = asteroid_incoming_crater_fortification_paid_@ROOT } NOT = { has_state_flag = asteroid_incoming_crater_fortification_action_in_progress } NOT = { has_state_flag = asteroid_incoming_crater_access_fortified } } }
+		target_trigger = { FROM = { asteroid_incoming_crater_is_priority_owned_site = yes asteroid_incoming_crater_next_fortification_is_ready = yes asteroid_incoming_crater_action_state_is_valid = yes NOT = { has_state_flag = asteroid_incoming_crater_action_pending_@ROOT } NOT = { has_state_flag = asteroid_incoming_crater_fortification_paid_@ROOT } NOT = { has_state_flag = asteroid_incoming_crater_fortification_action_in_progress } NOT = { has_state_flag = asteroid_incoming_crater_access_fortified } } }
 		custom_cost_trigger = {
 			has_manpower > constant:asteroid_incoming_recovery.decision_manpower
 			has_equipment = { train_equipment > constant:asteroid_incoming_recovery.decision_train_equipment }
@@ -924,7 +924,7 @@ asteroid_incoming_recovery_category = {
 			custom_trigger_tooltip = { tooltip = asteroid_incoming_blocked_dust_reserves_tt asteroid_incoming_has_rival_reconnaissance_reserves_after_cost = yes }
 		}
 		target_root_trigger = { asteroid_incoming_country_has_crater_recovery_surface = yes has_war = yes has_global_flag = asteroid_incoming_minerals_active }
-		target_trigger = { FROM = { AND = { OR = { has_state_flag = asteroid_incoming_main_crater has_state_flag = asteroid_incoming_fragment_site } NOT = { has_state_flag = asteroid_incoming_rival_reconnaissance_recorded } NOT = { has_state_flag = asteroid_incoming_crater_action_pending_@ROOT } NOT = { has_state_flag = asteroid_incoming_crater_recon_paid_@ROOT } NOT = { has_state_flag = asteroid_incoming_crater_recon_action_in_progress } CONTROLLER = { exists = yes has_war_with = ROOT } } } }
+		target_trigger = { FROM = { asteroid_incoming_crater_is_priority_rival_site = yes asteroid_incoming_crater_next_recon_is_ready = yes AND = { OR = { has_state_flag = asteroid_incoming_main_crater has_state_flag = asteroid_incoming_fragment_site } NOT = { has_state_flag = asteroid_incoming_rival_reconnaissance_recorded } NOT = { has_state_flag = asteroid_incoming_crater_action_pending_@ROOT } NOT = { has_state_flag = asteroid_incoming_crater_recon_paid_@ROOT } NOT = { has_state_flag = asteroid_incoming_crater_recon_action_in_progress } CONTROLLER = { exists = yes has_war_with = ROOT } } } }
 		custom_cost_trigger = {
 			has_equipment = { support_equipment > constant:asteroid_incoming_recovery.decision_support_equipment }
 			has_manpower > constant:asteroid_incoming_recovery.decision_manpower
@@ -999,7 +999,7 @@ asteroid_incoming_recovery_category = {
 			custom_trigger_tooltip = { tooltip = asteroid_incoming_blocked_transport_reserves_tt asteroid_incoming_has_rail_recovery_reserves_after_cost = yes }
 		}
 		target_root_trigger = { asteroid_incoming_country_has_crater_recovery_surface = yes has_war = yes has_global_flag = asteroid_incoming_minerals_active }
-		target_trigger = { FROM = { AND = { OR = { has_state_flag = asteroid_incoming_main_crater has_state_flag = asteroid_incoming_fragment_site } NOT = { has_state_flag = asteroid_incoming_rival_route_disruption_recorded } NOT = { has_state_flag = asteroid_incoming_crater_action_pending_@ROOT } NOT = { has_state_flag = asteroid_incoming_crater_disruption_paid_@ROOT } NOT = { has_state_flag = asteroid_incoming_crater_disruption_action_in_progress } CONTROLLER = { exists = yes has_war_with = ROOT } } } }
+		target_trigger = { FROM = { asteroid_incoming_crater_is_priority_rival_site = yes asteroid_incoming_crater_next_disruption_is_ready = yes AND = { OR = { has_state_flag = asteroid_incoming_main_crater has_state_flag = asteroid_incoming_fragment_site } NOT = { has_state_flag = asteroid_incoming_rival_route_disruption_recorded } NOT = { has_state_flag = asteroid_incoming_crater_action_pending_@ROOT } NOT = { has_state_flag = asteroid_incoming_crater_disruption_paid_@ROOT } NOT = { has_state_flag = asteroid_incoming_crater_disruption_action_in_progress } CONTROLLER = { exists = yes has_war_with = ROOT } } } }
 		custom_cost_trigger = {
 			has_equipment = { train_equipment > constant:asteroid_incoming_recovery.decision_train_equipment }
 			has_equipment = { support_equipment > constant:asteroid_incoming_recovery.decision_support_equipment }
@@ -1078,7 +1078,7 @@ asteroid_incoming_recovery_category = {
 			custom_trigger_tooltip = { tooltip = asteroid_incoming_blocked_emergency_reserves_tt asteroid_incoming_has_crater_offensive_reserves_after_cost = yes }
 		}
 		target_root_trigger = { asteroid_incoming_country_has_crater_recovery_surface = yes has_war = yes has_global_flag = asteroid_incoming_minerals_active }
-		target_trigger = { FROM = { AND = { OR = { has_state_flag = asteroid_incoming_main_crater has_state_flag = asteroid_incoming_fragment_site } NOT = { has_state_flag = asteroid_incoming_rival_offensive_recorded } NOT = { has_state_flag = asteroid_incoming_crater_action_pending_@ROOT } NOT = { has_state_flag = asteroid_incoming_crater_offensive_paid_@ROOT } NOT = { has_state_flag = asteroid_incoming_crater_offensive_action_in_progress } CONTROLLER = { exists = yes has_war_with = ROOT } } } }
+		target_trigger = { FROM = { asteroid_incoming_crater_is_priority_rival_site = yes asteroid_incoming_crater_next_offensive_is_ready = yes AND = { OR = { has_state_flag = asteroid_incoming_main_crater has_state_flag = asteroid_incoming_fragment_site } NOT = { has_state_flag = asteroid_incoming_rival_offensive_recorded } NOT = { has_state_flag = asteroid_incoming_crater_action_pending_@ROOT } NOT = { has_state_flag = asteroid_incoming_crater_offensive_paid_@ROOT } NOT = { has_state_flag = asteroid_incoming_crater_offensive_action_in_progress } CONTROLLER = { exists = yes has_war_with = ROOT } } } }
 		custom_cost_trigger = {
 			has_manpower > constant:asteroid_incoming_recovery.decision_manpower
 			has_equipment = { support_equipment > constant:asteroid_incoming_recovery.decision_support_equipment }

@@ -586,25 +586,31 @@ asteroid_incoming_prepare_selected_building_loss = {
 # the before/after receipt remains explicit at each supported building call
 # site so actual levels, rather than requested levels, are recorded. Native
 # removal takes a level count directly, avoiding a per-level loop ceiling.
-# Province buildings need exact province targeting: the main centre clears them
-# in asteroid_incoming_clear_main_crater_province_buildings, while ring states
-# keep this fractional state-aggregate removal.
+# Ordinary province buildings use the all-province/cohort setter; state
+# buildings keep exact level removal. Special rail and supply network objects
+# retain their separately documented native-evidence gap.
 asteroid_incoming_remove_selected_building_levels = {
 	if = {
 		limit = {
 			has_variable = asteroid_incoming_selected_building
 			check_variable = { asteroid_incoming_remove_levels > constant:asteroid_incoming_dust.minimum }
 		}
-		set_temp_variable = { asteroid_incoming_selected_state_id = THIS.id }
-		meta_effect = {
-			text = {
-				remove_building = {
-					type = [BUILDING_TYPE]
-					level = asteroid_incoming_remove_levels
-					state = var:asteroid_incoming_selected_state_id
+		if = {
+			limit = { asteroid_incoming_selected_building_is_ordinary_provincial = yes }
+			asteroid_incoming_damage_selected_provincial_building = yes
+		}
+		else = {
+			set_temp_variable = { asteroid_incoming_selected_state_id = THIS.id }
+			meta_effect = {
+				text = {
+					remove_building = {
+						type = [BUILDING_TYPE]
+						level = asteroid_incoming_remove_levels
+						state = var:asteroid_incoming_selected_state_id
+					}
 				}
+				BUILDING_TYPE = "[?asteroid_incoming_selected_building.GetTokenKey]"
 			}
-			BUILDING_TYPE = "[?asteroid_incoming_selected_building.GetTokenKey]"
 		}
 	}
 }

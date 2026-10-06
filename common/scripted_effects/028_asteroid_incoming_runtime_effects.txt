@@ -325,7 +325,8 @@ asteroid_incoming_resolve_miss = {
 	set_global_flag = asteroid_incoming_miss_recorded
 	if = {
 		limit = { NOT = { has_global_flag = asteroid_incoming_miss_news_sent } }
-		news_event = { id = chaosx.news.96 days = 1 }
+		set_temp_variable = { asteroid_incoming_news_id = constant:asteroid_incoming_presentation.news_miss }
+		asteroid_incoming_queue_news = yes
 		set_global_flag = asteroid_incoming_miss_news_sent
 	}
 	# Opening eligibility alone cannot override a later disabled evolution.
@@ -610,8 +611,9 @@ asteroid_incoming_accept_selected_target = {
 			set_variable = { global.asteroid_incoming_preparedness = 0 }
 			if = {
 				limit = { NOT = { has_global_flag = asteroid_incoming_lock_news_sent } }
-				news_event = { id = chaosx.news.30 days = 1 }
 				set_global_flag = asteroid_incoming_lock_news_sent
+				set_temp_variable = { asteroid_incoming_news_id = constant:asteroid_incoming_presentation.news_forecast }
+				asteroid_incoming_queue_news = yes
 			}
 			event_target:asteroid_incoming_locked_country = { country_event = { id = chaosx.nr28.3 } }
 			# An event delay takes a literal, so the constant is injected as an integer.
@@ -1333,6 +1335,7 @@ asteroid_incoming_schedule_next_fragment_visual = {
 			}
 		}
 		# An event delay takes a literal, so the constant is injected as an integer.
+		set_variable = { global.asteroid_incoming_fragment_visual_host = THIS }
 		set_temp_variable = { asteroid_incoming_fragment_visual_hours = constant:asteroid_incoming_runtime.fragment_visual_interval_hours }
 		meta_effect = {
 			text = {
@@ -1993,8 +1996,9 @@ asteroid_incoming_monthly_dust_update_apply = {
 					compare = less_than
 				}
 			}
-			news_event = { id = chaosx.news.92 days = 1 }
 			set_global_flag = asteroid_incoming_dust_report_below_impact_sent
+			set_temp_variable = { asteroid_incoming_news_id = constant:asteroid_incoming_presentation.news_winter_easing }
+			asteroid_incoming_queue_news = yes
 		}
 		if = {
 			limit = {
@@ -2009,8 +2013,9 @@ asteroid_incoming_monthly_dust_update_apply = {
 					value = constant:asteroid_incoming_dust.stage_residual
 				}
 			}
-			news_event = { id = chaosx.news.93 days = 1 }
 			set_global_flag = asteroid_incoming_dust_report_residual_sent
+			set_temp_variable = { asteroid_incoming_news_id = constant:asteroid_incoming_presentation.news_residual_haze }
+			asteroid_incoming_queue_news = yes
 		}
 		if = {
 			limit = {
@@ -2025,8 +2030,9 @@ asteroid_incoming_monthly_dust_update_apply = {
 					value = constant:asteroid_incoming_dust.stage_none
 				}
 			}
-			news_event = { id = chaosx.news.94 days = 1 }
 			set_global_flag = asteroid_incoming_dust_report_clear_sent
+			set_temp_variable = { asteroid_incoming_news_id = constant:asteroid_incoming_presentation.news_clear_sky }
+			asteroid_incoming_queue_news = yes
 		}
 		asteroid_incoming_refresh_air_cleanliness_source = yes
 		asteroid_incoming_apply_monthly_air_pressure = yes
@@ -2278,6 +2284,7 @@ asteroid_incoming_update_achievements = {
 	# strikes receive no per-country Event 028 variables. AI site counts are
 	# refreshed by the mineral control hooks instead.
 	asteroid_incoming_resolve_orphaned_transaction = yes
+	asteroid_incoming_resume_presentation_delivery = yes
 	if = {
 		limit = {
 			has_event_target = asteroid_incoming_original_target_country

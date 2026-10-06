@@ -1,0 +1,134 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 028 CRATER ACTION PRIORITY
+# ============================================================================
+# STATE scope, deciding country in ROOT. Each family offers one affordable
+# next step at its highest-profile ready site, with state id breaking ties.
+# Only the persistent mineral-site array is searched (at most seven states).
+# One owned step and one rival step can accompany the three dust actions.
+# ============================================================================
+
+asteroid_incoming_crater_next_security_is_ready = {
+	hidden_trigger = {
+		asteroid_incoming_crater_security_requirements = yes
+		NOT = { has_state_flag = asteroid_incoming_crater_action_pending_@ROOT }
+		ROOT = { asteroid_incoming_has_crater_security_reserves_after_cost = yes }
+	}
+}
+
+asteroid_incoming_crater_next_survey_is_ready = {
+	hidden_trigger = {
+		asteroid_incoming_crater_survey_requirements = yes
+		NOT = { has_state_flag = asteroid_incoming_crater_action_pending_@ROOT }
+		ROOT = { asteroid_incoming_has_material_survey_reserves_after_cost = yes }
+	}
+}
+
+asteroid_incoming_crater_next_fortification_is_ready = {
+	hidden_trigger = {
+		asteroid_incoming_crater_fortification_requirements = yes
+		asteroid_incoming_crater_perimeter_is_held = yes
+		has_state_flag = asteroid_incoming_material_surveyed
+		NOT = { has_state_flag = asteroid_incoming_crater_action_pending_@ROOT }
+		ROOT = { asteroid_incoming_has_industry_recovery_reserves_after_cost = yes }
+	}
+}
+
+asteroid_incoming_crater_has_ready_owned_step = {
+	hidden_trigger = {
+		OR = {
+			asteroid_incoming_crater_next_security_is_ready = yes
+			asteroid_incoming_crater_next_survey_is_ready = yes
+			asteroid_incoming_crater_next_fortification_is_ready = yes
+		}
+	}
+}
+
+asteroid_incoming_crater_next_recon_is_ready = {
+	hidden_trigger = {
+		asteroid_incoming_rival_crater_recon_requirements = yes
+		NOT = { has_state_flag = asteroid_incoming_crater_action_pending_@ROOT }
+		NOT = { has_state_flag = asteroid_incoming_crater_recon_action_in_progress }
+		ROOT = { asteroid_incoming_has_rival_reconnaissance_reserves_after_cost = yes }
+	}
+}
+
+asteroid_incoming_crater_next_disruption_is_ready = {
+	hidden_trigger = {
+		has_state_flag = asteroid_incoming_rival_reconnaissance_recorded
+		asteroid_incoming_rival_crater_disruption_requirements = yes
+		NOT = { has_state_flag = asteroid_incoming_crater_action_pending_@ROOT }
+		NOT = { has_state_flag = asteroid_incoming_crater_disruption_action_in_progress }
+		ROOT = { asteroid_incoming_has_rail_recovery_reserves_after_cost = yes }
+	}
+}
+
+asteroid_incoming_crater_next_offensive_is_ready = {
+	hidden_trigger = {
+		has_state_flag = asteroid_incoming_rival_reconnaissance_recorded
+		NOT = { asteroid_incoming_crater_next_disruption_is_ready = yes }
+		asteroid_incoming_rival_crater_offensive_requirements = yes
+		NOT = { has_state_flag = asteroid_incoming_crater_action_pending_@ROOT }
+		NOT = { has_state_flag = asteroid_incoming_crater_offensive_action_in_progress }
+		ROOT = { asteroid_incoming_has_crater_offensive_reserves_after_cost = yes }
+	}
+}
+
+asteroid_incoming_crater_has_ready_rival_step = {
+	hidden_trigger = {
+		OR = {
+			asteroid_incoming_crater_next_recon_is_ready = yes
+			asteroid_incoming_crater_next_disruption_is_ready = yes
+			asteroid_incoming_crater_next_offensive_is_ready = yes
+		}
+	}
+}
+
+# Keep all comparison temporaries inside the selector that owns them.
+# Stronger profiles lead (main centre before fragment centres), then lower id.
+asteroid_incoming_crater_is_priority_owned_site = {
+	hidden_trigger = {
+		asteroid_incoming_crater_has_ready_owned_step = yes
+		set_temp_variable = { asteroid_incoming_crater_priority_profile = asteroid_incoming_state_profile }
+		set_temp_variable = { asteroid_incoming_crater_priority_id = THIS.id }
+		NOT = {
+			ROOT = {
+				any_of_scopes = {
+					array = global.asteroid_incoming_mineral_site_states
+					asteroid_incoming_crater_has_ready_owned_step = yes
+					set_temp_variable = { asteroid_incoming_crater_competitor_id = THIS.id }
+					OR = {
+						check_variable = { asteroid_incoming_state_profile > asteroid_incoming_crater_priority_profile }
+						AND = {
+							check_variable = { asteroid_incoming_state_profile = asteroid_incoming_crater_priority_profile }
+							check_variable = { asteroid_incoming_crater_competitor_id < asteroid_incoming_crater_priority_id }
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+asteroid_incoming_crater_is_priority_rival_site = {
+	hidden_trigger = {
+		asteroid_incoming_crater_has_ready_rival_step = yes
+		set_temp_variable = { asteroid_incoming_crater_priority_profile = asteroid_incoming_state_profile }
+		set_temp_variable = { asteroid_incoming_crater_priority_id = THIS.id }
+		NOT = {
+			ROOT = {
+				any_of_scopes = {
+					array = global.asteroid_incoming_mineral_site_states
+					asteroid_incoming_crater_has_ready_rival_step = yes
+					set_temp_variable = { asteroid_incoming_crater_competitor_id = THIS.id }
+					OR = {
+						check_variable = { asteroid_incoming_state_profile > asteroid_incoming_crater_priority_profile }
+						AND = {
+							check_variable = { asteroid_incoming_state_profile = asteroid_incoming_crater_priority_profile }
+							check_variable = { asteroid_incoming_crater_competitor_id < asteroid_incoming_crater_priority_id }
+						}
+					}
+				}
+			}
+		}
+	}
+}

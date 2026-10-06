@@ -1,0 +1,69 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 028 PROVINCIAL BUILDING DAMAGE
+# ============================================================================
+# STATE scope. The caller supplies one ordinary provincial building token and
+# its profile fraction. Railways and supply nodes are special network objects
+# and are deliberately outside this setter adapter.
+# Ascending original-level cohorts keep every province to one damage pass:
+# a reduced level is below every later cohort and cannot be hit again.
+# Before/after receipts remain with the existing caller.
+# ============================================================================
+
+asteroid_incoming_damage_selected_provincial_building = {
+	set_temp_variable = { asteroid_incoming_province_zero_level = constant:asteroid_incoming_runtime.zero }
+	if = {
+		limit = { check_variable = { asteroid_incoming_selected_fraction = constant:asteroid_incoming_runtime.one } }
+		meta_effect = {
+			text = {
+				set_building_level = {
+					type = [BUILDING_TYPE]
+					level = [ZERO_LEVEL]
+					province = { all_provinces = yes level > [ZERO_LEVEL] }
+				}
+			}
+			BUILDING_TYPE = "[?asteroid_incoming_selected_building.GetTokenKey]"
+			ZERO_LEVEL = "[?asteroid_incoming_province_zero_level|.0]"
+		}
+	}
+	else = {
+		# Facilities, camps, landmarks, dams and canals have one level per
+		# province; only the port and two fort types need all ten cohorts.
+		set_temp_variable = { asteroid_incoming_province_cohort_end = constant:asteroid_incoming_runtime.one }
+		if = {
+			limit = {
+				OR = {
+					check_variable = { asteroid_incoming_selected_building = token:naval_base }
+					check_variable = { asteroid_incoming_selected_building = token:bunker }
+					check_variable = { asteroid_incoming_selected_building = token:coastal_bunker }
+				}
+			}
+			set_temp_variable = { asteroid_incoming_province_cohort_end = constant:asteroid_incoming_runtime.maximum_province_building_level }
+		}
+		add_to_temp_variable = { asteroid_incoming_province_cohort_end = constant:asteroid_incoming_runtime.loop_increment }
+		for_loop_effect = {
+			start = constant:asteroid_incoming_runtime.one
+			end = asteroid_incoming_province_cohort_end
+			value = asteroid_incoming_province_original_level
+			set_temp_variable = { asteroid_incoming_province_level_loss = asteroid_incoming_province_original_level }
+			multiply_temp_variable = { asteroid_incoming_province_level_loss = asteroid_incoming_selected_fraction }
+			round_temp_variable = asteroid_incoming_province_level_loss
+			if = {
+				limit = { check_variable = { asteroid_incoming_province_level_loss > constant:asteroid_incoming_runtime.zero } }
+				set_temp_variable = { asteroid_incoming_province_remaining_level = asteroid_incoming_province_original_level }
+				subtract_from_temp_variable = { asteroid_incoming_province_remaining_level = asteroid_incoming_province_level_loss }
+				meta_effect = {
+					text = {
+						set_building_level = {
+							type = [BUILDING_TYPE]
+							level = [REMAINING_LEVEL]
+							province = { all_provinces = yes level = [ORIGINAL_LEVEL] }
+						}
+					}
+					BUILDING_TYPE = "[?asteroid_incoming_selected_building.GetTokenKey]"
+					REMAINING_LEVEL = "[?asteroid_incoming_province_remaining_level|.0]"
+					ORIGINAL_LEVEL = "[?asteroid_incoming_province_original_level|.0]"
+				}
+			}
+		}
+	}
+}

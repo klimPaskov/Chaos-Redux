@@ -13,6 +13,14 @@ defined_text = {
 		trigger = { has_global_flag = asteroid_incoming_board_ready }
 		localization_key = chaosx.nr28.1.desc
 	}
+	text = {
+		trigger = { has_global_flag = asteroid_incoming_transaction_resolved }
+		localization_key = chaosx.nr28.1.resolved_desc
+	}
+	text = {
+		trigger = { has_global_flag = asteroid_incoming_target_locked }
+		localization_key = chaosx.nr28.1.locked_desc
+	}
 	text = { localization_key = chaosx.nr28.1.blocked_desc }
 }
 
@@ -476,7 +484,7 @@ defined_text = {
 		trigger = {
 			asteroid_incoming_country_has_emergency_recovery_surface = yes
 			any_controlled_state = {
-				asteroid_incoming_state_is_open_for_mobile_hospitals = yes
+				asteroid_incoming_state_is_open_for_mobile_hospitals = yes asteroid_incoming_candidate_can_start_mobile_hospitals = yes
 				has_state_flag = asteroid_incoming_rescue_burden_active
 			}
 		}
@@ -486,35 +494,35 @@ defined_text = {
 		trigger = {
 			asteroid_incoming_country_has_emergency_recovery_surface = yes
 			check_variable = { var = asteroid_incoming_country_logistics_levels_lost value = constant:asteroid_incoming_runtime.zero compare = greater_than }
-			any_controlled_state = { asteroid_incoming_state_is_open_for_emergency_rail = yes }
+			any_controlled_state = { asteroid_incoming_state_is_open_for_emergency_rail = yes asteroid_incoming_candidate_can_start_emergency_rail = yes }
 		}
 		localization_key = asteroid_incoming.report.next.rail
 	}
 	text = {
 		trigger = {
 			asteroid_incoming_country_has_emergency_recovery_surface = yes
-			any_controlled_state = { asteroid_incoming_state_is_open_for_debris_clearing = yes }
+			any_controlled_state = { asteroid_incoming_state_is_open_for_debris_clearing = yes asteroid_incoming_candidate_can_start_debris_clearing = yes }
 		}
 		localization_key = asteroid_incoming.report.next.debris
 	}
 	text = {
 		trigger = {
 			asteroid_incoming_country_has_emergency_recovery_surface = yes
-			any_controlled_state = { asteroid_incoming_state_is_open_for_mobile_hospitals = yes }
+			any_controlled_state = { asteroid_incoming_state_is_open_for_mobile_hospitals = yes asteroid_incoming_candidate_can_start_mobile_hospitals = yes }
 		}
 		localization_key = asteroid_incoming.report.next.hospitals
 	}
 	text = {
 		trigger = {
 			asteroid_incoming_country_has_emergency_recovery_surface = yes
-			any_controlled_state = { asteroid_incoming_state_is_open_for_emergency_rail = yes }
+			any_controlled_state = { asteroid_incoming_state_is_open_for_emergency_rail = yes asteroid_incoming_candidate_can_start_emergency_rail = yes }
 		}
 		localization_key = asteroid_incoming.report.next.rail
 	}
 	text = {
 		trigger = {
 			asteroid_incoming_country_has_emergency_recovery_surface = yes
-			any_controlled_state = { asteroid_incoming_state_is_open_for_emergency_filters = yes }
+			any_controlled_state = { asteroid_incoming_state_is_open_for_emergency_filters = yes asteroid_incoming_candidate_keeps_emergency_reserves = yes }
 		}
 		localization_key = asteroid_incoming.report.next.filters
 	}
@@ -532,21 +540,21 @@ defined_text = {
 	text = {
 		trigger = {
 			asteroid_incoming_country_has_reconstruction_recovery_surface = yes
-			any_controlled_state = { asteroid_incoming_state_is_open_for_supply_spine = yes }
+			any_controlled_state = { asteroid_incoming_state_is_open_for_supply_spine = yes asteroid_incoming_candidate_keeps_rail_reserves = yes }
 		}
 		localization_key = asteroid_incoming.report.next.supply_spine
 	}
 	text = {
 		trigger = {
 			asteroid_incoming_country_has_reconstruction_recovery_surface = yes
-			any_controlled_state = { asteroid_incoming_state_is_open_for_outer_industry = yes }
+			any_controlled_state = { asteroid_incoming_state_is_open_for_outer_industry = yes asteroid_incoming_candidate_keeps_industry_reserves = yes }
 		}
 		localization_key = asteroid_incoming.report.next.outer_industry
 	}
 	text = {
 		trigger = {
 			asteroid_incoming_country_has_reconstruction_recovery_surface = yes
-			any_controlled_state = { asteroid_incoming_state_is_open_for_worker_rehousing = yes }
+			any_controlled_state = { asteroid_incoming_state_is_open_for_worker_rehousing = yes asteroid_incoming_candidate_keeps_rehousing_reserves = yes }
 		}
 		localization_key = asteroid_incoming.report.next.rehousing
 	}
@@ -558,6 +566,7 @@ defined_text = {
 		trigger = {
 			asteroid_incoming_country_has_dust_recovery_surface = yes
 			NOT = { has_country_flag = asteroid_incoming_factories_hardened }
+			asteroid_incoming_keeps_reserve_dust_hardening_quote = yes
 		}
 		localization_key = asteroid_incoming.report.next.harden
 	}
@@ -565,6 +574,7 @@ defined_text = {
 		trigger = {
 			asteroid_incoming_country_has_dust_recovery_surface = yes
 			NOT = { has_country_flag = asteroid_incoming_transport_protected }
+			asteroid_incoming_keeps_reserve_dust_transport_quote = yes
 		}
 		localization_key = asteroid_incoming.report.next.transport
 	}
@@ -572,22 +582,43 @@ defined_text = {
 		trigger = {
 			asteroid_incoming_country_has_dust_recovery_surface = yes
 			NOT = { has_country_flag = asteroid_incoming_observation_network }
+			asteroid_incoming_keeps_reserve_dust_observation_quote = yes
 		}
 		localization_key = asteroid_incoming.report.next.observation
 	}
 	text = {
-		trigger = { asteroid_incoming_country_has_dust_recovery_surface = yes }
+		trigger = {
+			asteroid_incoming_country_has_dust_recovery_surface = yes
+			NOT = {
+				any_of_scopes = {
+					array = global.asteroid_incoming_mineral_site_states
+					OR = {
+						asteroid_incoming_crater_has_ready_owned_step = yes
+						asteroid_incoming_crater_has_ready_rival_step = yes
+					}
+				}
+			}
+		}
 		localization_key = asteroid_incoming.report.next.dust_covered
 	}
 	text = {
 		trigger = {
 			asteroid_incoming_country_has_crater_recovery_surface = yes
 			any_controlled_state = {
-				asteroid_incoming_crater_action_state_is_valid = yes
-				NOT = { asteroid_incoming_crater_perimeter_is_held = yes }
+				asteroid_incoming_crater_is_priority_owned_site = yes
 			}
 		}
 		localization_key = asteroid_incoming.report.next.crater
+	}
+	text = {
+		trigger = {
+			asteroid_incoming_country_has_crater_recovery_surface = yes
+			any_of_scopes = {
+				array = global.asteroid_incoming_mineral_site_states
+				asteroid_incoming_crater_is_priority_rival_site = yes
+			}
+		}
+		localization_key = asteroid_incoming.report.next.rival_crater
 	}
 	text = {
 		trigger = {
@@ -897,4 +928,43 @@ defined_text = {
 		localization_key = asteroid_incoming.cost.debris_clearing.prepared
 	}
 	text = { localization_key = asteroid_incoming.cost.debris_clearing.normal }
+}
+
+
+defined_text = {
+	name = GetAsteroidIncomingMobileHospitalBlockedCost
+	text = {
+		trigger = {
+			has_country_flag = asteroid_incoming_medical_mobilization_selected
+			NOT = { has_country_flag = asteroid_incoming_first_medical_response_used }
+		}
+		localization_key = asteroid_incoming.cost.mobile_hospitals.prepared_blocked
+	}
+	text = { localization_key = asteroid_incoming.cost.mobile_hospitals.normal_blocked }
+}
+
+
+defined_text = {
+	name = GetAsteroidIncomingEmergencyRailBlockedCost
+	text = {
+		trigger = {
+			has_country_flag = asteroid_incoming_transport_dispersion_selected
+			NOT = { has_country_flag = asteroid_incoming_first_rail_response_used }
+		}
+		localization_key = asteroid_incoming.cost.emergency_rail.prepared_blocked
+	}
+	text = { localization_key = asteroid_incoming.cost.emergency_rail.normal_blocked }
+}
+
+
+defined_text = {
+	name = GetAsteroidIncomingDebrisClearingBlockedCost
+	text = {
+		trigger = {
+			has_country_flag = asteroid_incoming_transport_dispersion_selected
+			NOT = { has_country_flag = asteroid_incoming_first_debris_response_used }
+		}
+		localization_key = asteroid_incoming.cost.debris_clearing.prepared_blocked
+	}
+	text = { localization_key = asteroid_incoming.cost.debris_clearing.normal_blocked }
 }

@@ -1,0 +1,193 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 028 PRESENTATION DELIVERY
+# ============================================================================
+# One persistent world-news queue, deduplicated at enqueue and publication.
+# Hidden country callbacks wait while a super-event or asteroid news is open.
+# The existing monthly host recovers callbacks lost through annexation.
+# No daily on-action or new world iteration is added.
+# ============================================================================
+
+# COUNTRY scope. Input temp asteroid_incoming_news_id is an owned news id.
+asteroid_incoming_queue_news = {
+	if = {
+		limit = { NOT = { has_global_flag = asteroid_incoming_presentation_initialized } }
+		clear_array = global.asteroid_incoming_news_pending
+		clear_array = global.asteroid_incoming_news_published
+		clear_variable = global.asteroid_incoming_news_next_day
+		set_global_flag = asteroid_incoming_presentation_initialized
+	}
+	# A locked course supersedes an opening bulletin still waiting to be
+	# printed. The forecast itself gives the target and the danger.
+	if = {
+		limit = {
+			OR = {
+				check_variable = { asteroid_incoming_news_id = constant:asteroid_incoming_presentation.news_forecast }
+				check_variable = { asteroid_incoming_news_id = constant:asteroid_incoming_presentation.news_miss }
+				check_variable = { asteroid_incoming_news_id = constant:asteroid_incoming_presentation.news_unavailable }
+			}
+		}
+		remove_from_array = { array = global.asteroid_incoming_news_pending value = constant:asteroid_incoming_presentation.news_opening }
+	}
+	# A rapid fall through several dust stages needs only the latest bulletin.
+	if = {
+		limit = {
+			OR = {
+				check_variable = { asteroid_incoming_news_id = constant:asteroid_incoming_presentation.news_residual_haze }
+				check_variable = { asteroid_incoming_news_id = constant:asteroid_incoming_presentation.news_clear_sky }
+			}
+		}
+		remove_from_array = { array = global.asteroid_incoming_news_pending value = constant:asteroid_incoming_presentation.news_winter_easing }
+	}
+	if = {
+		limit = { check_variable = { asteroid_incoming_news_id = constant:asteroid_incoming_presentation.news_clear_sky } }
+		remove_from_array = { array = global.asteroid_incoming_news_pending value = constant:asteroid_incoming_presentation.news_residual_haze }
+	}
+	if = {
+		limit = {
+			NOT = { is_in_array = { array = global.asteroid_incoming_news_published value = asteroid_incoming_news_id } }
+			NOT = { is_in_array = { array = global.asteroid_incoming_news_pending value = asteroid_incoming_news_id } }
+		}
+		add_to_array = { array = global.asteroid_incoming_news_pending value = asteroid_incoming_news_id }
+		if = {
+			limit = { NOT = { has_variable = global.asteroid_incoming_news_next_day } }
+			asteroid_incoming_schedule_news_delivery = yes
+		}
+	}
+}
+
+# COUNTRY scope. Store the due day before scheduling to make duplicate
+# callbacks harmless even when they arrive in the same game hour.
+asteroid_incoming_schedule_news_delivery = {
+	set_variable = { global.asteroid_incoming_news_next_day = global.num_days }
+	add_to_variable = { global.asteroid_incoming_news_next_day = constant:asteroid_incoming_presentation.poll_days }
+	set_temp_variable = { asteroid_incoming_presentation_delay = constant:asteroid_incoming_presentation.poll_hours }
+	meta_effect = {
+		text = { country_event = { id = chaosx.nr28.10 hours = [DELAY] } }
+		DELAY = "[?asteroid_incoming_presentation_delay|.0]"
+	}
+}
+
+# COUNTRY scope. Discard a warning that became obsolete before delivery;
+# never show a forecast of a strike that has already happened.
+asteroid_incoming_deliver_next_news = {
+	if = {
+		limit = {
+			has_variable = global.asteroid_incoming_news_next_day
+			check_variable = { var = global.num_days value = global.asteroid_incoming_news_next_day compare = greater_than_or_equals }
+		}
+		if = {
+			limit = {
+				OR = {
+					has_global_flag = super_event_visible
+					has_global_flag = asteroid_incoming_super_event_pending
+					any_country = { is_ai = no has_country_flag = asteroid_incoming_news_open }
+				}
+			}
+			asteroid_incoming_schedule_news_delivery = yes
+		}
+		else = {
+			clear_variable = global.asteroid_incoming_news_next_day
+			if = {
+				limit = { check_variable = { global.asteroid_incoming_news_pending^num > constant:asteroid_incoming_runtime.zero } }
+				set_temp_variable = { asteroid_incoming_news_index = constant:asteroid_incoming_runtime.first_array_index }
+				set_temp_variable = { asteroid_incoming_news_id = global.asteroid_incoming_news_pending^asteroid_incoming_news_index }
+				remove_from_array = { array = global.asteroid_incoming_news_pending value = asteroid_incoming_news_id }
+				if = {
+					limit = {
+						NOT = { is_in_array = { array = global.asteroid_incoming_news_published value = asteroid_incoming_news_id } }
+						NOT = {
+							AND = {
+								has_global_flag = asteroid_incoming_transaction_resolved
+								OR = {
+									check_variable = { asteroid_incoming_news_id = constant:asteroid_incoming_presentation.news_opening }
+									check_variable = { asteroid_incoming_news_id = constant:asteroid_incoming_presentation.news_forecast }
+								}
+							}
+						}
+					}
+					add_to_array = { array = global.asteroid_incoming_news_published value = asteroid_incoming_news_id }
+					meta_effect = {
+						text = { news_event = { id = chaosx.news.[NEWS_ID] } }
+						NEWS_ID = "[?asteroid_incoming_news_id|.0]"
+					}
+				}
+				if = {
+					limit = { check_variable = { global.asteroid_incoming_news_pending^num > constant:asteroid_incoming_runtime.zero } }
+					asteroid_incoming_schedule_news_delivery = yes
+				}
+			}
+		}
+	}
+}
+
+# COUNTRY scope. The impact presentation waits for any open asteroid news
+# and an earlier super-event to close. Its saved target pointers survive
+# transaction cleanup; only this one-shot callback publishes slot 116.
+asteroid_incoming_present_impact_super_event = {
+	if = {
+		limit = {
+			has_global_flag = asteroid_incoming_super_event_pending
+			NOT = { has_global_flag = asteroid_incoming_super_event_presented }
+		}
+		if = {
+			limit = {
+				OR = {
+					has_global_flag = super_event_visible
+					any_country = {
+						is_ai = no
+						OR = {
+							has_country_flag = asteroid_incoming_news_open
+							has_country_flag = asteroid_incoming_report_open
+							has_country_flag = asteroid_incoming_report_pending
+							has_country_flag = asteroid_incoming_fragment_report_pending
+						}
+					}
+				}
+			}
+			set_temp_variable = { asteroid_incoming_presentation_delay = constant:asteroid_incoming_presentation.poll_hours }
+			meta_effect = {
+				text = { country_event = { id = chaosx.nr28.11 hours = [DELAY] } }
+				DELAY = "[?asteroid_incoming_presentation_delay|.0]"
+			}
+		}
+		else = {
+			clr_global_flag = asteroid_incoming_super_event_pending
+			set_global_flag = asteroid_incoming_super_event_presented
+			set_temp_variable = { asteroid_incoming_super_event_visible_days = constant:asteroid_incoming_runtime.super_event_visible_days }
+			set_temp_variable = { asteroid_incoming_super_event_id = constant:asteroid_incoming_event.super_event_id }
+			meta_effect = {
+				text = { set_global_flag = { flag = super_event_visible days = [VISIBLE_DAYS] value = [SUPER_EVENT_ID] } }
+				VISIBLE_DAYS = "[?asteroid_incoming_super_event_visible_days|.0]"
+				SUPER_EVENT_ID = "[?asteroid_incoming_super_event_id|.0]"
+			}
+			set_variable = { global.current_super_event_audio_id = constant:asteroid_incoming_event.super_event_audio_id }
+			every_country = { limit = { is_ai = no } play_current_super_event_audio = yes }
+		}
+	}
+}
+
+# COUNTRY scope, existing monthly global host. An annexed callback host
+# must not strand the news queue or the pending impact presentation.
+asteroid_incoming_resume_presentation_delivery = {
+	if = {
+		limit = {
+			check_variable = { global.asteroid_incoming_fragment_visual_queue^num > constant:asteroid_incoming_runtime.zero }
+			OR = {
+				NOT = { has_variable = global.asteroid_incoming_fragment_visual_host }
+				var:global.asteroid_incoming_fragment_visual_host = { exists = no }
+			}
+		}
+		asteroid_incoming_schedule_next_fragment_visual = yes
+	}
+	if = {
+		limit = {
+			has_variable = global.asteroid_incoming_news_next_day
+			check_variable = { global.asteroid_incoming_news_next_day < global.num_days }
+		}
+		country_event = { id = chaosx.nr28.10 }
+	}
+	if = {
+		limit = { has_global_flag = asteroid_incoming_super_event_pending }
+		country_event = { id = chaosx.nr28.11 }
+	}
+}

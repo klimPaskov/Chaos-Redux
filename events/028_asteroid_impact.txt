@@ -51,6 +51,7 @@ country_event = {
 		asteroid_incoming_refresh_board_ready = yes
 		if = {
 			limit = {
+				has_global_flag = asteroid_incoming_board_ready
 				NOT = { has_global_flag = asteroid_incoming_evolution_snapshot_recorded }
 			}
 			set_temp_variable = { events_log_evolution_event_id = constant:asteroid_incoming_event.id }
@@ -88,12 +89,22 @@ country_event = {
 			set_global_flag = asteroid_incoming_evolution_snapshot_recorded
 		}
 		if = {
-			limit = { NOT = { has_global_flag = asteroid_incoming_opening_news_sent } }
-			news_event = { id = chaosx.news.29 days = 1 }
+			limit = {
+				has_global_flag = asteroid_incoming_board_ready
+				NOT = { has_global_flag = asteroid_incoming_opening_news_sent }
+			}
 			set_global_flag = asteroid_incoming_opening_news_sent
+			set_temp_variable = { asteroid_incoming_news_id = constant:asteroid_incoming_presentation.news_opening }
+			asteroid_incoming_queue_news = yes
 		}
-		set_variable = { global.asteroid_incoming_opening_day = global.num_days }
-		set_global_flag = asteroid_incoming_opening_presented
+		if = {
+			limit = {
+				has_global_flag = asteroid_incoming_board_ready
+				NOT = { has_global_flag = asteroid_incoming_opening_presented }
+			}
+			set_variable = { global.asteroid_incoming_opening_day = global.num_days }
+			set_global_flag = asteroid_incoming_opening_presented
+		}
 	}
 
 	option = {
@@ -418,29 +429,13 @@ country_event = {
 				limit = { has_event_target = asteroid_incoming_main_crater_state }
 				event_target:asteroid_incoming_main_crater_state = { save_global_event_target_as = asteroid_incoming_super_event_main_state }
 			}
-			# A timed flag's days and value take literals only, so both are
-			# injected as integers from the constants (the Event 5 pattern).
-			set_temp_variable = { asteroid_incoming_super_event_visible_days = constant:asteroid_incoming_runtime.super_event_visible_days }
-			set_temp_variable = { asteroid_incoming_super_event_id = constant:asteroid_incoming_event.super_event_id }
-			meta_effect = {
-				text = {
-					set_global_flag = {
-						flag = super_event_visible
-						days = [VISIBLE_DAYS]
-						value = [SUPER_EVENT_ID]
-					}
-				}
-				VISIBLE_DAYS = "[?asteroid_incoming_super_event_visible_days|.0]"
-				SUPER_EVENT_ID = "[?asteroid_incoming_super_event_id|.0]"
-			}
-			set_variable = { global.current_super_event_audio_id = constant:asteroid_incoming_event.super_event_audio_id }
-			every_country = {
-				limit = { is_ai = no }
-				play_current_super_event_audio = yes
-			}
+			# Keep the impact presentation behind any forecast still open.
+			set_global_flag = asteroid_incoming_super_event_pending
+			country_event = { id = chaosx.nr28.11 }
 			set_temp_variable = { asteroid_incoming_history_payload = constant:asteroid_incoming_event.history_payload_impact }
 			asteroid_incoming_record_followup_history = yes
-			news_event = { id = chaosx.news.32 days = 1 }
+			set_temp_variable = { asteroid_incoming_news_id = constant:asteroid_incoming_presentation.news_impact }
+			asteroid_incoming_queue_news = yes
 			every_country = {
 				limit = {
 					OR = {
@@ -475,7 +470,8 @@ country_event = {
 				set_variable = { global.asteroid_incoming_outcome = constant:asteroid_incoming_event.history_payload_fail_closed }
 				set_temp_variable = { asteroid_incoming_history_payload = constant:asteroid_incoming_event.history_payload_fail_closed }
 				asteroid_incoming_record_followup_history = yes
-				news_event = { id = chaosx.news.97 days = 1 }
+				set_temp_variable = { asteroid_incoming_news_id = constant:asteroid_incoming_presentation.news_unavailable }
+				asteroid_incoming_queue_news = yes
 				asteroid_incoming_fail_closed_transaction = yes
 				asteroid_incoming_cleanup_transaction = yes
 				asteroid_incoming_cleanup_finished_transaction = yes
@@ -490,18 +486,21 @@ country_event = {
 	desc = chaosx.nr28.5.d
 	picture = GFX_report_event_028_asteroid_impact
 	is_triggered_only = yes
-	trigger = { has_country_flag = asteroid_incoming_report_pending }
+	trigger = { has_country_flag = asteroid_incoming_report_pending NOT = { has_country_flag = asteroid_incoming_report_seen } }
 
 	immediate = {
 		asteroid_incoming_bind_report_worst_state = yes
+		clr_country_flag = asteroid_incoming_report_pending
+		clr_country_flag = asteroid_incoming_fragment_report_pending
+		set_country_flag = asteroid_incoming_report_seen
+		set_country_flag = asteroid_incoming_report_open
 	}
 
 	option = {
 		name = chaosx.nr28.5.a
 		ai_chance = { base = 100 }
 		custom_effect_tooltip = chaosx.nr28.5.a.tt
-		clr_country_flag = asteroid_incoming_report_pending
-		set_country_flag = asteroid_incoming_report_seen
+		clr_country_flag = asteroid_incoming_report_open
 	}
 }
 
@@ -546,18 +545,21 @@ country_event = {
 	desc = chaosx.nr28.7.d
 	picture = GFX_report_event_028_asteroid_fragment_report
 	is_triggered_only = yes
-	trigger = { has_country_flag = asteroid_incoming_fragment_report_pending }
+	trigger = { has_country_flag = asteroid_incoming_fragment_report_pending NOT = { has_country_flag = asteroid_incoming_report_seen } }
 
 	immediate = {
 		asteroid_incoming_bind_report_worst_state = yes
+		clr_country_flag = asteroid_incoming_fragment_report_pending
+		clr_country_flag = asteroid_incoming_report_pending
+		set_country_flag = asteroid_incoming_report_seen
+		set_country_flag = asteroid_incoming_report_open
 	}
 
 	option = {
 		name = chaosx.nr28.7.a
 		ai_chance = { base = 100 }
 		custom_effect_tooltip = chaosx.nr28.7.a.tt
-		clr_country_flag = asteroid_incoming_fragment_report_pending
-		set_country_flag = asteroid_incoming_report_seen
+		clr_country_flag = asteroid_incoming_report_open
 	}
 }
 
@@ -706,5 +708,45 @@ country_event = {
 
 	immediate = {
 		asteroid_incoming_play_next_fragment_visual = yes
+	}
+}
+
+# One hidden delivery callback drains only the Event 028 news queue. It waits
+# while a super-event is visible and never republishes a consumed bulletin.
+country_event = {
+	id = chaosx.nr28.10
+	hidden = yes
+	is_triggered_only = yes
+	immediate = { asteroid_incoming_deliver_next_news = yes }
+}
+
+# Start the saved impact presentation after the player's forecast is closed.
+country_event = {
+	id = chaosx.nr28.11
+	hidden = yes
+	is_triggered_only = yes
+	immediate = { asteroid_incoming_present_impact_super_event = yes }
+}
+
+# Refresh stored prices at the end of a mission-failure surcharge even if
+# dust and local emergencies ended before the monthly recovery pass stopped.
+# A later failure can extend the flag; this callback then waits for it.
+country_event = {
+	id = chaosx.nr28.12
+	hidden = yes
+	is_triggered_only = yes
+	immediate = {
+		if = {
+			limit = { has_country_flag = asteroid_incoming_repair_costs_raised }
+			set_temp_variable = { asteroid_incoming_presentation_delay = constant:asteroid_incoming_presentation.poll_hours }
+			meta_effect = {
+				text = { country_event = { id = chaosx.nr28.12 hours = [DELAY] } }
+				DELAY = "[?asteroid_incoming_presentation_delay|.0]"
+			}
+		}
+		else = {
+			# Quotes belong to the affected state, which may have changed hands.
+			asteroid_incoming_refresh_state_cost_quotes = yes
+		}
 	}
 }
