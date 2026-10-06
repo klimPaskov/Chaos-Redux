@@ -24,7 +24,8 @@ Each achievement is registered in `common/achievements/chaos_redux_achievements.
 
 ## Icons
 
-Each achievement has three 64x64 DDS states in `gfx/achievements/`: `<id>.dds`, `<id>_grey.dds`, and `<id>_not_eligible.dds`. They are registered as `GFX_achievement_<id>`, `GFX_achievement_<id>_grey`, and `GFX_achievement_<id>_not_eligible` in `interface/fallout_consolidated.gfx`. Each icon comes from one native-transparency ImageGen medallion subject, built into the three states and composited onto the skill achievement templates with `.agents/skills/chaos-redux-event-assets/tools/process_achievement_icons.py`, which audited every triplet. Prompts, sources, layers, and review sheets are in `docs/assets/air_cleanliness_fallout/achievements/` while the Fallout asset work is active. The icons still need parent or user visual review.
+Each achievement has three 64x64 DDS states in `gfx/achievements/`: `<id>.dds`, `<id>_grey.dds`, and `<id>_not_eligible.dds`. They are registered as `GFX_achievement_<id>`, `GFX_achievement_<id>_grey`, and `GFX_achievement_<id>_not_eligible` in `interface/fallout_consolidated.gfx`. Each icon comes from one native-transparency ImageGen medallion subject, built into the three states and composited onto the skill achievement templates with `.agents/skills/chaos-redux-event-assets/tools/process_achievement_icons.py`, which audited every triplet. Prompts, sources, layers, and review sheets are in `docs/assets/air_cleanliness_fallout/achievements/` while the Fallout asset work is active. The parent reviewed all seven native and enlarged DDS triplets on 2026-10-06 and accepted their framing, subject readability, grey states, and not-eligible overlays.
+The retained review sheet is `docs/plans/air_cleanliness_fallout_plans/subagent_handoffs/fallout_achievements_review_2026-10-06.png`; native unlock behavior remains unobserved.
 
 Provenance (the workspace under `docs/assets/` is local and not tracked):
 
