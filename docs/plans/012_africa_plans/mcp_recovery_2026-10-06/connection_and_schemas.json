@@ -1,0 +1,504 @@
+{
+  "server": {
+    "name": "hoi4-agent-tools",
+    "version": "3.9.0",
+    "websiteUrl": "https://github.com/klimPaskov/hoi4-agent-tools"
+  },
+  "capabilities": {
+    "logging": {},
+    "prompts": {
+      "listChanged": true
+    },
+    "resources": {
+      "listChanged": true
+    },
+    "tools": {
+      "listChanged": true
+    },
+    "tasks": {
+      "list": {},
+      "cancel": {},
+      "requests": {
+        "tools": {
+          "call": {}
+        }
+      }
+    }
+  },
+  "clientCapabilities": {},
+  "tools": [
+    {
+      "name": "hoi4.focus_inspect",
+      "title": "Inspect focus trees",
+      "description": "Inspect focus trees and continuous palettes, including source references, diagnostics, and layout.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "mode": {
+            "type": "string",
+            "enum": [
+              "national",
+              "continuous"
+            ]
+          },
+          "workspaceId": {
+            "default": "current",
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_-]{0,63}$"
+          },
+          "relativePath": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1024
+          },
+          "treeId": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          },
+          "paletteId": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          },
+          "previous": {
+            "description": "Prior deterministic focus layout used to stabilize unchanged positions."
+          },
+          "laneSpacing": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100
+          },
+          "nodeSpacing": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100
+          },
+          "scenario": {
+            "type": "object",
+            "properties": {
+              "completedFocusIds": {
+                "maxItems": 10000,
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 256
+                }
+              }
+            },
+            "required": [
+              "completedFocusIds"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "additionalProperties": false
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "ok",
+              "blocked",
+              "error"
+            ]
+          },
+          "code": {
+            "type": "string"
+          },
+          "workspaceId": {
+            "type": "string"
+          },
+          "filesScanned": {
+            "type": "array",
+            "items": {}
+          },
+          "proposedFiles": {
+            "type": "array",
+            "items": {}
+          },
+          "changedFiles": {
+            "type": "array",
+            "items": {}
+          },
+          "diagnostics": {
+            "maxItems": 20,
+            "type": "array",
+            "items": {}
+          },
+          "artifacts": {
+            "maxItems": 32,
+            "type": "array",
+            "items": {}
+          },
+          "validation": {},
+          "blockers": {
+            "type": "array",
+            "items": {}
+          },
+          "data": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": {}
+          }
+        },
+        "required": [
+          "status",
+          "code",
+          "workspaceId",
+          "filesScanned",
+          "proposedFiles",
+          "changedFiles",
+          "diagnostics",
+          "artifacts",
+          "validation",
+          "blockers",
+          "data"
+        ],
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "additionalProperties": false
+      },
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      },
+      "execution": {
+        "taskSupport": "optional"
+      }
+    },
+    {
+      "name": "hoi4.focus_raster",
+      "title": "Rasterize focus review artifacts",
+      "description": "Render focus PNG with decoded source icons; also returns HTML, SVG, and JSON.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "mode": {
+            "type": "string",
+            "enum": [
+              "national",
+              "continuous"
+            ]
+          },
+          "workspaceId": {
+            "default": "current",
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_-]{0,63}$"
+          },
+          "relativePath": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1024
+          },
+          "treeId": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          },
+          "paletteId": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          },
+          "horizontalSpacing": {
+            "type": "integer",
+            "minimum": 80,
+            "maximum": 1000
+          },
+          "verticalSpacing": {
+            "type": "integer",
+            "minimum": 60,
+            "maximum": 1000
+          },
+          "reviewScale": {
+            "type": "number",
+            "minimum": 0.25,
+            "maximum": 1
+          },
+          "cropFocusIds": {
+            "maxItems": 16,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            }
+          },
+          "columns": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 12
+          },
+          "padding": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 1000
+          }
+        },
+        "required": [
+          "relativePath"
+        ],
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "additionalProperties": false
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "ok",
+              "blocked",
+              "error"
+            ]
+          },
+          "code": {
+            "type": "string"
+          },
+          "workspaceId": {
+            "type": "string"
+          },
+          "filesScanned": {
+            "type": "array",
+            "items": {}
+          },
+          "proposedFiles": {
+            "type": "array",
+            "items": {}
+          },
+          "changedFiles": {
+            "type": "array",
+            "items": {}
+          },
+          "diagnostics": {
+            "maxItems": 20,
+            "type": "array",
+            "items": {}
+          },
+          "artifacts": {
+            "maxItems": 32,
+            "type": "array",
+            "items": {}
+          },
+          "validation": {},
+          "blockers": {
+            "type": "array",
+            "items": {}
+          },
+          "data": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": {}
+          }
+        },
+        "required": [
+          "status",
+          "code",
+          "workspaceId",
+          "filesScanned",
+          "proposedFiles",
+          "changedFiles",
+          "diagnostics",
+          "artifacts",
+          "validation",
+          "blockers",
+          "data"
+        ],
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "additionalProperties": false
+      },
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      },
+      "execution": {
+        "taskSupport": "optional"
+      }
+    },
+    {
+      "name": "hoi4.script_validate",
+      "title": "Check HOI4 script commands and scopes",
+      "description": "Check an effect or trigger snippet (source, kind, scope) or a whole mod file (path) for syntax, native command kinds and scopes against cited installed documentation. Unknown helpers and native argument blocks remain explicit.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "workspaceId": {
+            "default": "current",
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_-]{0,63}$"
+          },
+          "source": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 64000
+          },
+          "path": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "effect",
+              "trigger"
+            ]
+          },
+          "scope": {
+            "type": "string",
+            "enum": [
+              "country",
+              "state",
+              "character",
+              "combatant",
+              "ace",
+              "strategic_region",
+              "operation",
+              "industrial_org",
+              "purchase_contract",
+              "raid_instance",
+              "special_project",
+              "faction"
+            ]
+          },
+          "documentation": {
+            "default": "game_doc",
+            "type": "string",
+            "enum": [
+              "game_doc",
+              "script_doc"
+            ]
+          },
+          "bindings": {
+            "default": [],
+            "maxItems": 16,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 256
+                },
+                "scope": {
+                  "type": "string",
+                  "enum": [
+                    "country",
+                    "state",
+                    "character",
+                    "combatant",
+                    "ace",
+                    "strategic_region",
+                    "operation",
+                    "industrial_org",
+                    "purchase_contract",
+                    "raid_instance",
+                    "special_project",
+                    "faction"
+                  ]
+                }
+              },
+              "required": [
+                "name",
+                "scope"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "limit": {
+            "default": 12,
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 32
+          }
+        },
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "additionalProperties": false
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "ok",
+              "blocked",
+              "error"
+            ]
+          },
+          "code": {
+            "type": "string"
+          },
+          "workspaceId": {
+            "type": "string"
+          },
+          "filesScanned": {
+            "type": "array",
+            "items": {}
+          },
+          "proposedFiles": {
+            "type": "array",
+            "items": {}
+          },
+          "changedFiles": {
+            "type": "array",
+            "items": {}
+          },
+          "diagnostics": {
+            "maxItems": 20,
+            "type": "array",
+            "items": {}
+          },
+          "artifacts": {
+            "maxItems": 32,
+            "type": "array",
+            "items": {}
+          },
+          "validation": {},
+          "blockers": {
+            "type": "array",
+            "items": {}
+          },
+          "data": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": {}
+          }
+        },
+        "required": [
+          "status",
+          "code",
+          "workspaceId",
+          "filesScanned",
+          "proposedFiles",
+          "changedFiles",
+          "diagnostics",
+          "artifacts",
+          "validation",
+          "blockers",
+          "data"
+        ],
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "additionalProperties": false
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      }
+    }
+  ]
+}
