@@ -1,5 +1,19 @@
 # Evolution II: Regional Contagion
 
+## Accepted implementation choices, 2026-10-06
+
+Acceptance basis: the user's completion assignment and G6 authority, recorded as D37 to D41 in `docs/plans/021_random_civil_war_plans/agent_decisions_2026-10-05.md`.
+Disposition: implemented in source, with runtime and visual acceptance open.
+Exposure advances only on an unanswered, due bounded review.
+Border monitoring covers arms-route sealing and recruitment disruption, lowering one stage and holding advancement for its response period.
+Relief and armed support retain separate costs and targets.
+Mobilizing adds pressure, and nearby-conflict risk lasts 180 days after the source war ends.
+Live sides can fund one campaign specialization, choosing supply escorts, prepared defenses or mobile columns with distinct benefits and penalties.
+At higher chaos, a once-per-crisis regional mobilization adds civilian strain and postwar recurrence memory.
+Governments can expose their recorded opposition sponsor, ending that exact commitment at an investigative and diplomatic cost.
+These responses share one slot after an order in the current phase closes, keeping at most six selectable actions.
+The existing country identity, Event 006 package and reinforcement content remain authoritative.
+
 `Regional Contagion` is a working label, not final localisation.
 
 ## Role

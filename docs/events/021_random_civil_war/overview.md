@@ -1,5 +1,13 @@
 # Event 021 Random Civil War
 
+Current source status, 2026-10-06: the takeover authority, pressure, exposure, campaign response and history-selection repairs are implemented.
+The authoritative pass report is `docs/plans/021_random_civil_war_plans/takeover_status_2026-10-06.md`.
+State Authority changes once per control transition and follows territorial losses, while temporary pressure relief is bounded and fades.
+Neighbour containment lowers exposure, live sides can specialize their campaign, and governments can challenge opposition sponsors.
+The country category keeps six selectable actions and uses its existing static presentation.
+Historical crisis entries show their own outcome summary rather than current live values.
+The event and SCN-018 remain `Needs Testing`, with live acceptance and incomplete MCP visual and probability evidence reported separately.
+
 This document is the canonical implementation summary for Event 021 Random Civil War.
 
 Stored deadlines and expiry dates use the same encoded hour units as `global.date`.

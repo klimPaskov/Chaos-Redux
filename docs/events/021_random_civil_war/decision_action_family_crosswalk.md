@@ -36,3 +36,22 @@ The crosswalk therefore resolves the completion-audit finding that the specifica
 The exposure and Global Fracture prevention surfaces use ordered phases. Before a border, support, or mediation commitment, up to five exposure actions remain visible and prevention actions stay hidden. After that commitment, the mutually exclusive exposure choices close, the relief action remains separate, and up to two prevention actions may appear: Review Command Loyalty and Protect State Communications. Outside a crisis each runs on its own prevention cooldown and returns while the country stays exposed, and using it there never hides the crisis version of the action in a later civil war. Settlement and reconstruction take precedence over both surfaces. This bounds the known overlap at five primary actions in source logic.
 Sponsor withdrawal is a settlement action of the recipient signatory. Reciprocal sponsor and recipient identifiers validate the receipt at obligation selection, and a durable settlement scope keeps the exact sponsor available for resolution after exposure cleanup. Each sponsor and recipient is limited to one active commitment in its corresponding direction so paired scope pointers cannot be overwritten.
 The remaining open gate is scenario and live-play proof that each phase-specific surface appears and resolves correctly.
+
+## Evolution II response families
+
+Disposition: implemented under the user's completion grant, D37 to D40.
+
+| Spec family | Runtime surface | Gameplay disposition |
+| --- | --- | --- |
+| Seal an arms route | Monitor the Border | Border patrols lower exposure one stage and hold advancement during the patrol period. |
+| Counter recruitment networks | Monitor the Border | The same paid containment operation disrupts recruitment and armed traffic, avoiding a duplicate button. |
+| Register and support displaced civilians | Open a Relief Corridor | Transport and political resources provide civilian relief separately from military sponsorship. |
+| Open a military aid corridor | Support the Government or Support the Opposition | The exact live recipient receives rifles while the sponsor pays transport loss and accepts a bounded commitment. |
+| Operational adaptation | Adapt the Campaign | One paid report chooses supply escorts, prepared defenses or mobile columns for 90 days, each with a countervailing military penalty. |
+| High-chaos side power | Mobilize the Region | One costly 60-day mobilization strains civilian work and leaves recurrence memory. |
+| Expose foreign intervention | Expose Foreign Intervention | The government ends the exact opposition sponsor's commitment at a political, investigative and diplomatic cost. |
+
+An optional response is shown only after an order visible in the current phase has closed.
+Affordable foreign intervention, adaptation and mobilization take priority over communications in that one slot.
+Unaffordable optional responses do not occupy it or consume their once-per-crisis use.
+This includes the selectable capital commitment card in the six-action ceiling.

@@ -1,5 +1,9 @@
 # Evolution III: Global Fracture
 
+The accepted high-chaos side tool is `event021_mass_mobilization`, implemented under D38 of `docs/plans/021_random_civil_war_plans/agent_decisions_2026-10-05.md`.
+It requires enabled Evolution II adaptation and Totalen Chaos or World Collapse, spends reserve arms and support equipment, and exchanges 60 days of military strength for civilian strain and postwar recurrence memory.
+Its source implementation does not establish runtime acceptance.
+
 `Global Fracture` is a working label, not final localisation.
 
 ## Role

@@ -48,7 +48,7 @@ The proposed text is the in-game text of `event021_evolution_ii_body`.
 Proposed Evo II:
 
 ```text
-Arms routes, sponsors, and displaced administrations are carrying the crisis across borders. Civilian relief and armed support now demand separate choices. In a few fighting units, night gatherings, sworn oaths, and repeated signs have appeared that no one outside their ranks can explain.
+Arms routes and foreign sponsors are carrying the crisis across borders. Civilian relief and armed support demand separate choices. The fighting sides are reorganizing their supplies, defenses and mobile columns. In a few units, night gatherings, sworn oaths and repeated signs have appeared that no one outside their ranks can explain.
 ```
 
 ## Unchanged fields
