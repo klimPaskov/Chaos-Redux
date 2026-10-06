@@ -1023,6 +1023,7 @@ cbrn_refresh_state_contamination_class = {
 }
 
 cbrn_apply_state_contamination_delta_internal = {
+	set_temp_variable = { cbrn_state_contamination_class_output = constant:cbrn_contamination_class.none }
 	cbrn_refresh_state_contamination_class = yes
 	set_temp_variable = { cbrn_state_previous_contamination_class = cbrn_state_contamination_class_output }
 	set_temp_variable = { cbrn_state_previous_contamination_value = @CR_SC_CBRN_MATH_ZERO }
@@ -1058,6 +1059,7 @@ cbrn_apply_state_contamination_delta_internal = {
 		}
 	}
 
+	set_temp_variable = { cbrn_state_contamination_class_output = constant:cbrn_contamination_class.none }
 	cbrn_refresh_state_contamination_class = yes
 	set_temp_variable = { cbrn_state_new_contamination_class = cbrn_state_contamination_class_output }
 	set_temp_variable = { cbrn_state_new_contamination_value = @CR_SC_CBRN_MATH_ZERO }
@@ -1069,6 +1071,7 @@ cbrn_apply_state_contamination_delta_internal = {
 	# The state helper compares the stored contribution with the new class and
 	# applies only the difference to the existing global system.
 	set_temp_variable = { cbrn_air_contribution_class = cbrn_state_new_contamination_class }
+	set_temp_variable = { cbrn_air_contribution_value = constant:cbrn_math.zero }
 	cbrn_chemical_set_air_contribution_from_class = yes
 	cbrn_air_cleanliness_update_chemical_state_contribution = yes
 	cbrn_chemical_refresh_state_modifier = yes

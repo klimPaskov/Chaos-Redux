@@ -66,3 +66,22 @@ The occupied/export suite's imported parser rejected a native bare advisor-token
 Its local parser now accepts bare list members and still parses the same operators and blocks, leaving the shared Event 026 VM unchanged.
 The 106 sabotage cases, 21 immediate-protection cases and 46 occupied/export cases pass against the current source.
 These source models do not replace native payment, damage or timer acceptance.
+
+## Chemical helper output lifetime
+
+Disposition: implemented, using the documented caller-owned temporary storage contract.
+Class refresh, Air contribution calculation and two consuming cleanup calls read values created only inside returning helpers.
+The four class callers, two Air calculator callers and two cleanup consumers now initialize the outputs before invocation.
+The change adds ten storage initializers and changes no coefficient, threshold, price, timer or condition.
+The existing explicit settings-rebuild iterator is retained without adding a periodic world scan.
+The conservative actual-source regression reproduces fourteen lost-output results from the frozen earlier caller and passes twenty class, contribution and cleanup-storage cases after the repair.
+Native Air changes and measured cleanup still require consumer acceptance.
+
+## Recovery action AI and public text
+
+Disposition: clarified and implemented within the existing recovery design.
+The normal decision system may execute both reconciliation actions for AI countries under the same valid-record gates.
+The earlier term player-triggered distinguished a chosen decision from an automatic periodic grant or clear, rather than requiring a human-only country.
+The inherited willingness weights remain six, with no balance change or invented numerical click probability.
+The export title is Audit Mask Shipment, with its recipient retained in the native target flag and tooltip, preventing long country names from overflowing the title.
+The final localisation audit corrects past-versus-current sanctions and contamination, all-country outbreak clearance, repeated nerve-attack protection and when Air protection is measured.

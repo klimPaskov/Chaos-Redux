@@ -1,0 +1,64 @@
+# Frozen pre-repair caller body from commit e08c6fad. Evidence only, not loaded script.
+cbrn_apply_state_contamination_delta_internal = {
+	cbrn_refresh_state_contamination_class = yes
+	set_temp_variable = { cbrn_state_previous_contamination_class = cbrn_state_contamination_class_output }
+	set_temp_variable = { cbrn_state_previous_contamination_value = @CR_SC_CBRN_MATH_ZERO }
+	if = {
+		limit = { has_variable = cbrn_chemical_contamination }
+		set_temp_variable = { cbrn_state_previous_contamination_value = cbrn_chemical_contamination }
+	}
+
+	if = {
+		limit = { has_variable = cbrn_state_contamination_delta }
+		if = {
+			limit = { NOT = { has_variable = cbrn_chemical_contamination } }
+			set_variable = { cbrn_chemical_contamination = @CR_SC_CBRN_MATH_ZERO }
+		}
+		add_to_variable = { cbrn_chemical_contamination = cbrn_state_contamination_delta }
+		clamp_variable = { var = cbrn_chemical_contamination min = constant:cbrn_meter.minimum max = constant:cbrn_contamination_threshold.maximum }
+	}
+
+	if = {
+		limit = {
+			has_variable = cbrn_state_contamination_duration_input
+			check_variable = { cbrn_state_contamination_duration_input > @CR_SC_CBRN_MATH_ZERO }
+		}
+		set_temp_variable = { cbrn_state_contamination_duration_local = cbrn_state_contamination_duration_input }
+		clamp_temp_variable = { var = cbrn_state_contamination_duration_local min = constant:cbrn_scheduler.contamination_minimum_days max = constant:cbrn_scheduler.contamination_maximum_days }
+		if = {
+			limit = { NOT = { has_variable = cbrn_chemical_contamination_duration_days } }
+			set_variable = { cbrn_chemical_contamination_duration_days = cbrn_state_contamination_duration_local }
+		}
+		else_if = {
+			limit = { check_variable = { var = cbrn_chemical_contamination_duration_days value = cbrn_state_contamination_duration_local compare = less_than } }
+			set_variable = { cbrn_chemical_contamination_duration_days = cbrn_state_contamination_duration_local }
+		}
+	}
+
+	cbrn_refresh_state_contamination_class = yes
+	set_temp_variable = { cbrn_state_new_contamination_class = cbrn_state_contamination_class_output }
+	set_temp_variable = { cbrn_state_new_contamination_value = @CR_SC_CBRN_MATH_ZERO }
+	if = {
+		limit = { has_variable = cbrn_chemical_contamination }
+		set_temp_variable = { cbrn_state_new_contamination_value = cbrn_chemical_contamination }
+	}
+	# Air Cleanliness is a state-class transition, not a monthly presence scan.
+	# The state helper compares the stored contribution with the new class and
+	# applies only the difference to the existing global system.
+	set_temp_variable = { cbrn_air_contribution_class = cbrn_state_new_contamination_class }
+	cbrn_chemical_set_air_contribution_from_class = yes
+	cbrn_air_cleanliness_update_chemical_state_contribution = yes
+	cbrn_chemical_refresh_state_modifier = yes
+	if = {
+		limit = { check_variable = { cbrn_state_previous_contamination_value > cbrn_chemical_contamination } }
+		cbrn_achievement_record_state_decontamination = yes
+	}
+	if = {
+		limit = { NOT = { check_variable = { cbrn_chemical_contamination > constant:cbrn_math.zero } } }
+		clr_state_flag = cbrn_achievement_nerve_episode_failed
+	}
+	if = {
+		limit = { has_variable = cbrn_last_chemical_agent_class }
+		cbrn_chemical_refresh_continuing_death_profile = yes
+	}
+}

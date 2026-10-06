@@ -1212,6 +1212,7 @@ cbrn_diplomacy_complete_international_decon_mission = {
 		var:cbrn_international_decon_provider = {
 			save_event_target_as = cbrn_diplomacy_decon_provider
 		}
+		set_temp_variable = { cbrn_state_contamination_class_output = constant:cbrn_contamination_class.none }
 		cbrn_refresh_state_contamination_class = yes
 		set_temp_variable = { cbrn_diplomacy_cleanup_points = constant:cbrn_diplomacy_decon.trace_or_local_cleanup }
 		if = {
@@ -1255,6 +1256,8 @@ cbrn_diplomacy_complete_international_decon_mission = {
 
 		set_temp_variable = { cbrn_state_contamination_delta = cbrn_diplomacy_cleanup_points }
 		multiply_temp_variable = { cbrn_state_contamination_delta = constant:cbrn_payload_math.negation_multiplier }
+		set_temp_variable = { cbrn_state_previous_contamination_value = constant:cbrn_math.zero }
+		set_temp_variable = { cbrn_state_new_contamination_value = constant:cbrn_math.zero }
 		cbrn_apply_state_contamination_delta_internal = yes
 		set_temp_variable = { cbrn_diplomacy_cleanup_completed = cbrn_state_previous_contamination_value }
 		subtract_from_temp_variable = { cbrn_diplomacy_cleanup_completed = cbrn_state_new_contamination_value }

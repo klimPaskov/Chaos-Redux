@@ -1315,3 +1315,27 @@ The ordinary `cbrn_apply_civilian_shelter_movement` calls this only after both e
 `black_friday_apply_cbrn_civilian_shelter_movement` calls it in `FROM` state scope only after its quoted PP, support, and train transaction succeeds.
 Example inside that successful country transaction: `FROM = { cbrn_complete_civilian_shelter_movement = yes }`.
 The existing timed flag and modifier expiration own cleanup.
+
+## Chemical state helper output storage
+
+These existing helpers require STATE scope and caller-owned temporary output storage before invocation.
+Temporary scalars first created only inside a returning helper are not a supported output-lifetime contract.
+
+- Before `cbrn_refresh_state_contamination_class`, initialize `cbrn_state_contamination_class_output` to `constant:cbrn_contamination_class.none`.
+The helper clamps the current contamination, writes the state's regular class, and returns that class through the preallocated output.
+It clears the regular class when the state is clean.
+- Before `cbrn_chemical_set_air_contribution_from_class`, initialize `cbrn_air_contribution_value` to `constant:cbrn_math.zero` and supply `cbrn_air_contribution_class`.
+The helper maps the class to the existing Air Cleanliness contribution, without applying the global update itself.
+- A caller that reads `cbrn_apply_state_contamination_delta_internal`'s previous or resulting contamination after return must initialize `cbrn_state_previous_contamination_value` and `cbrn_state_new_contamination_value` to `constant:cbrn_math.zero` before invoking it.
+The state-delta helper applies the supplied delta/duration, refreshes the class and state modifier, updates Air Cleanliness and continuing deaths, and records real cleanup for an open nerve episode.
+No price, threshold, cleanup coefficient or timing is changed by these storage requirements.
+
+Example in STATE scope:
+
+```text
+set_temp_variable = { cbrn_state_previous_contamination_value = constant:cbrn_math.zero }
+set_temp_variable = { cbrn_state_new_contamination_value = constant:cbrn_math.zero }
+cbrn_apply_state_contamination_delta_internal = yes
+set_temp_variable = { cleanup_completed = cbrn_state_previous_contamination_value }
+subtract_from_temp_variable = { cleanup_completed = cbrn_state_new_contamination_value }
+```
