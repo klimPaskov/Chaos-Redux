@@ -3,29 +3,35 @@
 ## WP3 source review on 2026-10-06
 
 The earlier shared-mastering inventory below is historical evidence, superseded for moan 01 and the provenance of moan 03 by `wp3_audio_repair_handoff.md` and its hash-bound installation receipt.
-Moan 01 has an exact decoded match to archived CC0 `zombienoise1.ogg` and an installed, passing -20.2 LUFS derivative.
+Moan 01 has an exact decoded match to archived CC0 `zombienoise1.ogg` and an installed, passing -20.5 LUFS / -3 dBFS peak derivative.
 Moan 03 also has an exact source match, to archived CC0 `zombienoise3.ogg`, but its recorded-edge crossfades fail the loop gate; its existing runtime file remains in place.
 Moan 02 retains its accepted globally mastered bytes; a weak comparison with an unaligned source member is not grounds to replace it.
 No source download is authorized in this session.
 
-Outstanding source roles from the WP3 tickets remain explicit: three or four 0.2–0.4-second cloth/flesh contacts; 0.5–1.2-second cough, retch and spit recordings for infected zombies; 0.3–0.6-second wet lash/squelch and a suction take for parasitic zombies; a distinct rabid shriek and death gasp; mutant snarls, two 1.0–1.5-second roars, death bellow, heavy footsteps and breathing; two or three demonic idle/defend low growls; and two extra undead moans.
+The parent installed the CC0 ianzazz-source peak-limited moan01 at SHA `76661F92D59F934FD5D9AA66EFDB401B2718F674A8AA5053BDCFBCB63A33C0CE`, retaining -20.5 LUFS, -3.0 dBFS peak and the passing 2.769 dB loop edge; its output and exact limiter receipt are in `docs/assets/002_zombie_outbreak/models_3d/wp3_audio_repair_20261006/evidence/wp3_audio_repair_resumed_receipts.json`. The installed moan02 remains unchanged and measures -20.0 LUFS/-3.049 dBFS sample peak. The installed moan03 remains unchanged because its recorded-sample loop crossfades failed the edge gate.
+
+Two distinct, source-labeled additional zombie idle/moan recordings are staged for parent and listening review: ianzazz `zombienoise2.ogg` (CC0), at -20.0 LUFS/-3.059 dBFS sample peak, and Colodical `zombieidlesfx.wav` (CC BY 3.0), with a peak-limited derivative at -20.7 LUFS/-3.0 dBFS. Multiple mastered outputs from the Colodical original count as one take. Neither candidate is installed or establishes an undead-exclusive voice without listening review. Their source and output hashes are in the WP3 repair receipt.
+
+One additional distinct mutant low-breathing candidate is staged from primbal's CC0 `horrorbreathing.ogg`, -20.6 LUFS/-1.0 dBTP, with a 0.854 dB loop-edge delta. The OGG is an alternate encoding of the same recording as the clipped WAV; it does not add a second take. The candidate uses the explicit subsonic source allowance because its 75.17 Hz median centroid matches the requested low-breath role. Listening review remains open.
+
+Outstanding source roles from the WP3 tickets remain explicit: three or four 0.2–0.4-second cloth/flesh contacts; 0.5–1.2-second cough, retch and spit recordings for infected zombies; 0.3–0.6-second wet lash/squelch and a suction take for parasitic zombies; a distinct rabid shriek and death gasp; mutant snarls, two 1.0–1.5-second roars, death bellow and heavy footsteps; two or three demonic idle/defend low growls; and listening review/parent selection for the two staged zombie idle/moan recordings and the one staged mutant breathing recording.
 The demonic ticket's two extra screams and one attack voice are wired as explicitly permitted pitch variants of its existing classified CC0 recordings.
 Both active effects now have three variants, with one underlying scream recording and two underlying attack recordings; they are correlated derivatives, not new independent takes.
 Use CC0, CC BY or CC BY-SA recordings with exact original-member hashes and attribution.
-The archived Colodical idle recording is one staged review candidate, not two accepted undead takes or a demonic growl.
+The archived Colodical idle recording is one source take with two staged mastering variants, not two accepted undead takes or a demonic growl.
 Existing artisticdude variant assignments remain valid historical classifications; they do not establish the additional role and take requirements by filename alone.
 Candidate source families named in the approved plan include artisticdude's CC0 Zombies Sound Pack, Ogrebane's CC0 Monster Sound Effects 2, and licensed human/cloth/wet foley packs.
 The source search and concrete archive gaps are recorded in the audio handoff; no missing pool is replaced with a synthetic or unrelated cue.
 
 This package has 39 unique active mod sound paths: 37 are installed and 2 are held. Consumer counts are path-scoped; a shared pool path appears once per relevant package report.
 
-## Installed file facts
+## Historical shared-mastering file facts
 
 The final install has 37 unique path(s) for this package, by file role: loop 1, shot 30, step 6. Each installed row maps to the authoritative install manifest and has an actual-workspace hash match. The global 135-file set is provenance-eligible and decodes as PCM signed 16-bit, 44.1 kHz mono.
 
 The installed derivative SHA is the one listed in the install manifest; the before SHA matches the captured baseline. Mastering is file-level evidence only and does not establish soundeffect state, role, repetition, contact timing, or live-game suitability.
 
-## Held active paths
+## Historical held-path snapshot
 
 This package has 2 held path(s): 2 have a blocking provenance row, 0 lack a final per-file provenance row, and 0 are marked provenance-eligible but are absent from the final install. All held bytes match the original baseline SHA-256.
 
