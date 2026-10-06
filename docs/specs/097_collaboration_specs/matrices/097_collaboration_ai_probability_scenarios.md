@@ -33,14 +33,14 @@ The expectations below are orderings, timing bands, and dominance or starvation 
 | P4 | Threatened minor with low stability | As P3, stability 25 percent |
 | P5 | Democracy at peace near an expanding power | Democratic, no war, fascist neighbor expanding |
 | P6 | Installed government, Contested | Installer at 45 percent surrender progress |
-| P7 | Host at Wavering against a Strong network | Surrender progress 30 percent |
-| P8 | Host at Collapsing against a Total network | Surrender progress 65 percent, command power 40, manpower short |
+| P7 | Host at Wavering against a Widespread network | Surrender progress 30 percent |
+| P8 | Host at Collapsing against a Pervasive network | Surrender progress 65 percent, command power 40, manpower short |
 | P9 | Installer offered a government while fighting on two fronts | Controls 80 percent of host cores, own surrender progress 10 percent |
 | P10 | Installer offered a government while losing | Own surrender progress 45 percent |
 | P11 | Democratic installer offered a government | As P9 with a democratic ruling party |
 | P12 | Installer holding three governments, target on another continent | As P9 |
 | P13 | Long world war, Chaos 850, all evolutions eligible | Many wars, several capitulations per year |
-| P14 | Owner retakes a seated state from a Strong network | At war, stability 50 percent |
+| P14 | Owner retakes a seated state from a Widespread network | At war, stability 50 percent |
 | P15 | Owner retakes a seated state with stability at 20 percent | As P14 |
 | P16 | Expanding power at war at 25 percent own surrender progress | Cultivate reversal past 20 percent |
 | P17 | Country in civil war | Screen blocked, Accept largest, a valid option remains |
@@ -48,9 +48,9 @@ The expectations below are orderings, timing bands, and dominance or starvation 
 | P19 | Democracy at peace bordering an expanding power with a claim on it | Group precedence |
 | P20 | Installer holding three governments, target on its own continent | Positive counterpart of P12 |
 | P21 | Installer at 15 percent surrender progress with a peace conference near | Keep direct occupation case |
-| P22 | Host at war at 15 percent surrender progress with Deep or Pervasive incoming networks | A1 taken before the Fifth Column |
+| P22 | Host at war at 15 percent surrender progress with Widespread or Pervasive incoming networks | A1 taken before the Fifth Column |
 | P23 | Host at Collapsing with Evolutions II, III, and IV active, allies at war, ideology different from the likely installer | A5 visibility, the four-action cap, and the A5 rule |
-| P24 | Two enemies hold seated states, one Ordinary and one Strong | A2 target ordering |
+| P24 | Two enemies hold seated states, one Established and one Widespread | A2 target ordering |
 | P25 | Expanding power with its own Fifth Column at Wavering | A1 for an expanding power |
 | P26 | Fallout transition begun, Event 097 disabled, and one evolution disabled | Gate behavior on every surface |
 | P27 | Long campaign from 1936 to 1946 under three declared Chaos paths and two pool sizes | Firing count, installation rate, and the Event 097 Chaos sum |
@@ -104,7 +104,7 @@ The expectations below are orderings, timing bands, and dominance or starvation 
 - P8: A3 ranks first, A4 second when command power allows, A2 third when manpower is at least twice its cost. A1 is hidden at Collapsing.
 - A5 has positive weight for a country with allies still at war or with a ruling ideology different from the likely installer, and zero for a country with neither. A democracy weighs it higher. P23 checks both conditions together and that the category never shows more than four actions.
 - P22: A1 ranks first.
-- P24: A2 targets the Strong enemy.
+- P24: A2 targets the Widespread enemy.
 - P25: A1 has positive weight only once the expanding power's own Fifth Column appears.
 - At Defecting and Collapsing, A5 ranks between A3 and A4 when its rule is met.
 - No action has positive willingness when its effect is unavailable. A2 must be zero when no enemy holds a seated state.

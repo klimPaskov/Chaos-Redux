@@ -94,6 +94,22 @@ Viewpoint: the capturing country. Direction: officials waiting with keys and lis
 
 Viewpoint: the owner whose capital has been taken. Direction: the ministries reopened the day after the city fell, with most of the same staff. Tone: grim, not melodramatic.
 
+### Capitulation report
+
+Viewpoint: a human occupier one day after its enemy capitulated. Direction: the defeated country's officials stayed at their desks and are already working under the new flag, with a Deep Networks line about department heads and police directors. Tone: quiet efficiency that should feel slightly wrong.
+
+### Fifth Column report
+
+Viewpoint: the host's own government when the Fifth Column first appears or its band rises. Direction: what its officials are now doing at that band, from delay and hedging to offices that already serve the victor. Tone: plain and uncomfortable.
+
+### Reports to the original country
+
+Viewpoint: a government in exile. Direction at installation: the people who formed the new government are familiar names, and the mood at home is described through the restoration line. Direction at abandonment: the regime that replaced it has lost its protector. Tone: bitter but restrained.
+
+### Restoration reckoning
+
+Viewpoint: a restored government facing the officials who served the installed regime. Direction follows the Collaborators Unmasked options at national scale: ministers, police directors, and prefects instead of one district office.
+
 ### Fifth Column spirit
 
 Name direction: a short name that uses the common phrase or a period equivalent. Description direction: each band describes behavior in the state. Wavering shows delay and hedging. Defecting shows offices that stop answering and local officials meeting the enemy. Collapsing shows a state that has started serving the victor before the war is over. The tooltip names the strongest foreign network by country.
@@ -155,7 +171,7 @@ Super-event slots are global numbers independent of event ids. Slot 97 already b
 
 ### Role and tone
 
-Role: irreversible political shift. Tone: cold, wide, and quiet. The world has not ended. It has been reorganized by people who were ready to serve whoever arrived first. Avoid generic apocalypse wording and avoid triumph.
+Role: irreversible political shift. Tone: cold, wide, and quiet, about a world reorganized by people who were ready to serve whoever arrived first. Avoid generic apocalypse wording and avoid triumph.
 
 ### What the world believes
 
@@ -187,11 +203,11 @@ The repository has no single shared forced-setup trigger. Achievement triggers i
 | Key | Working label | Who can earn it | Requirement | Disqualifiers | Difficulty |
 | --- | --- | --- | --- | --- | --- |
 | `097_collaboration_open_doors` | Every Door Already Open | Any participant | Make three different countries capitulate to you in one campaign, each while its Fifth Column was at Collapsing with you as its strongest network | Choosing Screen in any Event 097 firing | Hard |
-| `097_collaboration_clean_ministries` | Nobody Left to Open the Gates | Any participant | Choose Screen in at least three firings, then reach the Defecting band in a war against a major power and end that war without capitulating and without losing control of your capital | Losing control of the capital at any point in that war | Hard |
+| `097_collaboration_clean_ministries` | Nobody Left to Open the Gates | Any participant | Choose Screen in every Event 097 firing, with at least two firings, then reach the Defecting band in a war against a major power and end that war without capitulating and without losing control of your capital | Losing control of the capital at any point in that war | Hard |
 | `097_collaboration_three_continents` | Administrations Everywhere | Any participant | Hold living governments installed through Event 097 whose capitals lie on three different continents at the same time | none beyond forced setup | Very hard |
 | `097_collaboration_turned_regime` | Two Masters | Any participant | Receive a government through Turned Regime, then make its former installer capitulate while that government is still your subject | none beyond forced setup | Very hard, rare |
 | `097_collaboration_return_from_exile` | The Cabinet Comes Home | The original country of a government installed through Event 097 | Charter a government in exile before capitulating, have a government installed over your cores, then own your capital again within three years of that installation while the installed government no longer exists | Accepting a separate peace with the installer before your return | Hard |
-| `097_collaboration_quiet_capitulation` | Taken by Telephone | Any participant | Make a major power capitulate to you while you control fewer than half of its core states, its Fifth Column is active, and your network inside it is Total | none beyond forced setup | Very hard |
+| `097_collaboration_quiet_capitulation` | Taken by Telephone | Any participant | Make a major power capitulate to you while you control fewer than half of its core states, its Fifth Column is active, and your network inside it is Pervasive | none beyond forced setup | Very hard |
 
 ### Why these are not trivial
 
@@ -234,7 +250,9 @@ Each achievement needs the completed 64x64 icon generated first, then the grey a
 | Collaboration-government creation | Must be confirmed | Must be confirmed | Evolution IV relies on the vanilla creation route. Its DLC boundary must be verified. |
 | Compliance and resistance | Base game since the 1.9 update | Same | Seats, prepared cadres, and the Fifth Column rely on base-game compliance and resistance. |
 
-The event has no DLC-only surface of its own. If verification shows that a required engine surface is DLC-only, the implementation must report the exact limitation and not invent a parallel system.
+Event 097 relies only on the surfaces in this table.
+
+If verification shows that the engine cannot perform Open Gates or Turned Regime cleanly, every surface that depends on that variant is removed together and reported as one blocker: its reports, its Chaos row, its assets, its probability surface, and, for Turned Regime, the Two Masters achievement. If verification shows that a required engine surface is DLC-only, the implementation must report the exact limitation and not invent a parallel system.
 
 ## Balance review requirements
 

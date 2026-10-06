@@ -50,7 +50,11 @@ These come from the user's event brief and are fixed:
 
 ### Accepted design
 
-Everything else in the specification parts, matrices, handoffs, and prompts is design that expands the brief. Its acceptance basis is the parent planning agent's acceptance within the user's request to create full specifications and expand the idea thoroughly. It has not been reviewed by the user. It includes the stance choice, layer sizes, network bands, every number, both decision categories, Collaborators Unmasked, Open Gates, Turned Regime, the Installed Administration lifecycle, local auxiliaries, the restoration pressure contract, the cluster combinations with Events 039 and 052, the Event 063 link, the Chaos impact map, the super-event, and the achievements. All numbers are tuning anchors that must pass the balance and probability reviews named in the package. Payment rules that depend on what a country holds, such as trains or trucks for A3 and convoys or trucks for A5, are part of this accepted design and are not fallbacks.
+Everything else in the specification parts, matrices, handoffs, and prompts is design that expands the brief. Its acceptance basis is the parent planning agent's acceptance within the user's request to create full specifications and expand the idea thoroughly, after a repo exploration, a scripted architecture review, a decision audit, an AI probability review, and the mandatory improvement-loop pass. It has not been reviewed by the user.
+
+It includes the stance choice, layer sizes, the single network band ladder, every number, both decision categories, Collaborators Unmasked and its national version at restoration, Open Gates, Turned Regime, the Installed Administration lifecycle, local auxiliaries, the restoration pressure contract, the reports to occupiers and to original countries, the Event 052 and Event 063 links, the single Tordesillas entry point, the Chaos impact map with its rate guard, the super-event, and the achievements. All numbers are tuning anchors that must pass the balance and probability reviews named in the package. Payment rules that depend on what a country holds, such as trains or trucks for A3 and convoys or trucks for A5, are part of this accepted design and are not fallbacks.
+
+Proposals considered and rejected, with their reasons, are recorded in `docs/plans/097_collaboration_plans/097_collaboration_plan_dispositions.md`.
 
 ### Unresolved
 
@@ -58,9 +62,8 @@ These need a user decision or an engine fact before the dependent part is built:
 
 - The installer route for democratic and non-aligned governments, if the scripted collaboration-government effect honors the ideology rules (Part 3).
 - Whether a negative collaboration change stops at zero, which A2 and the Purge option need (Part 4). If it does not, the user decides whether A2 may set the value to the current reading minus the points.
-- Whether Open Gates and Turned Regime have clean engine routes (Part 3).
-- The Intelligence cluster's numeric id, which differs between the catalog, the cluster documentation, the Event 052 package, and runtime (Part 5).
-- A war-weighted selection factor for Event 097. It would need a new event-owned weight hook in the shared selection system, so it stays a proposal outside this specification.
-- Evolution pacing checkpoints, as described in the scripted architecture plan disposition.
+- Whether Open Gates and Turned Regime have clean engine routes (Part 3). If either does not, its dependent surfaces are removed together and reported as one blocker (Part 6).
+- The Intelligence cluster's numeric id, which differs between the catalog, the cluster documentation, the Event 052 package, and runtime, and the Event 039 type conflict that must be settled before the cluster rows are written (Part 5).
+- Whether Fallout's reset sees collaboration between countries that do not occupy each other. This is a question for the Fallout owner (Part 5).
 
-The research notes list every engine fact that could not be verified during planning, because vanilla files, vanilla documentation, and the HOI4 MCP tools were unavailable.
+The research notes and the scripted architecture plan list every engine fact that could not be verified during planning, because vanilla files, vanilla documentation, and the HOI4 MCP tools were unavailable.

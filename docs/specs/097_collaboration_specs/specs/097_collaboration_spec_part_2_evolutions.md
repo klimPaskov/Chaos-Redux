@@ -29,9 +29,13 @@ Every timed surface in Event 097 uses the same model: the evolution clocks here,
 4. The countdown is not recomputed when the world changes during it.
 5. When the check runs, it tests the surface's conditions again. If they still hold, the surface activates. If they no longer hold, nothing happens and the countdown can start again at the next opportunity.
 
+War activity in every MTTH factor is measured as the number of participants at war with another participant, which the event keeps current through its own war hooks, because the engine offers no count of wars.
+
+An evolution countdown can start whenever the Chaos value changes, when Event 097 fires, and when a war between participants begins, provided the evolution is eligible and no countdown for it is already running. These are event-driven moments. No periodic pulse is involved.
+
 For an evolution, the conditions at the check are that the evolution is still enabled, still inactive, and that Chaos still meets its requirement. Chaos falling below the requirement or the evolution being disabled during a countdown therefore cancels that activation without leaving any flag behind.
 
-Each evolution has two MTTH entries, one for the pre-fire path before Event 097 has applied layers and one for the active path afterward. The pre-fire entry is slower, with an ordinary anchor of one and a half times the active base.
+Each evolution has two MTTH entries, one for the pre-fire path before Event 097 has applied layers and one for the active path afterward. The pre-fire entry is slower, with an ordinary anchor of one and a half times the active base. A pre-fire countdown that is running when the first firing completes continues unchanged.
 
 | Evolution | Active base | Minimum | Maximum |
 | --- | --- | --- | --- |
@@ -68,7 +72,7 @@ Networks are no longer a few sympathizers in a café. They reach the middle of t
 - Chaos requirement: 200
 - MTTH anchor: about 90 days once eligible
 - Faster when Event 097 has already fired once, and faster again after two firings
-- Faster when three or more wars between participants are active
+- Faster when at least six participants are at war with another participant
 - The pre-fire entry applies before the first firing
 
 The ordinary expected range on the active path is roughly 60 to 120 days.
@@ -76,7 +80,7 @@ The ordinary expected range on the active path is roughly 60 to 120 days.
 ### Changes
 
 1. Every later firing uses the Deep Networks layer of 25 points instead of 15.
-2. Prepared cadres: when a participant host capitulates, every enemy that occupies its core states and holds at least a Strong network inside it, which means 40 percent collaboration or more, receives a lasting occupation bonus in those states. Part 3 defines the bands.
+2. Prepared cadres: when a participant host capitulates, every enemy that occupies its core states and holds at least a Widespread network inside it, which means 40 percent collaboration or more, receives a lasting occupation bonus in those states. Part 3 defines the bands.
 3. Opening reports and evolution reports use the deep sector vocabulary: ministries, prefectures, police, plant management, party offices, and military staffs.
 
 ### Active-event entry
@@ -150,7 +154,7 @@ When a host begins losing a war, the networks inside it stop waiting. Officials 
 ### Changes
 
 1. The Fifth Column condition: a participant host at war, past 20 percent surrender progress, with at least one participant enemy that holds part of its territory and at least 15 percent collaboration inside it, gains the Fifth Column national spirit. The spirit has three bands, Wavering, Defecting, and Collapsing, selected by surrender progress and scaled by the strongest enemy network. Part 3 defines the bands and values.
-2. Open Gates: at the Defecting and Collapsing bands, a frontline state can hand itself to the enemy without a battle. This is the evolution's rare incident. Part 3 defines the selection, guards, and caps.
+2. Open Gates: at the Defecting and Collapsing bands, a frontline state can hand itself to the enemy without a battle. This is the evolution's uncommon incident. Part 3 defines the selection, guards, and caps.
 3. Stronger seats: while the Fifth Column is active in a host, seated administrations in that host receive a larger compliance gain.
 4. Weaker exile: a host that reaches the Collapsing band in a war lowers the installation threshold for Evolution IV against it in the same war.
 
@@ -215,11 +219,11 @@ A title about governments that were formed before the countries they would gover
 
 ## Rare variants
 
-The baseline event has no rare variants because it is deliberately uniform. The evolutions own two rare variants, both defined in Part 3.
+Rare variants belong to the evolutions, because the baseline event is deliberately uniform. The evolutions own two of them, both defined in Part 3.
 
 | Variant | Evolution | Conditions in short | What it adds |
 | --- | --- | --- | --- |
-| Open Gates | III | Host at the Defecting or Collapsing band, an enemy with a strong network on an adjacent front, an undefended non-capital state | A state changes controller without a battle and receives a seated administration. |
+| Open Gates | III | Host at the Defecting or Collapsing band, the enemy with the strongest network controlling an adjacent state, an undefended non-capital core state | A state changes controller without a battle and receives a seated administration. |
 | Turned Regime | IV | An installed government whose installer is losing a war against a rival holding a much stronger network inside the government's country | The government changes masters during the war. |
 
 Both variants are uncommon by design. Their timing, caps, and AI behavior belong to the probability audit.

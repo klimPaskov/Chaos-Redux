@@ -37,6 +37,7 @@ Selectors must not write formatting characters directly. Colour for band words c
 - Variant lines: a Deep Networks opening in which the contacts already sit in ministries and police headquarters, an Administrations in Waiting line about offices that seem to know which flag they will serve under, a Collaboration Governments line about exiles abroad discussing who would run their country under foreign protection, and a repeat line from the second firing onward in which the government recognizes the same faces.
 - Option Accept: a resigned shrug, or the observation that a country cannot arrest its whole civil service. Slightly too comfortable.
 - Option Cultivate: cold opportunism that treats foreign officials as future employees. Register changes by ruling ideology: friends of the new order for fascist governments, fraternal parties and class allies for communist governments, consular contacts and commercial goodwill for democracies, which should read as self-serving euphemism, and keeping every door open for non-aligned governments.
+- Replacement for Screen when it is unavailable: a short admission that the state cannot afford a vetting campaign now, with Accept's effect and a tooltip naming the unmet requirement.
 - Option Screen: suspicion that may turn on the speaker. The text should let the player suspect that the vetting committee contains the people it is looking for, without saying so.
 - Option tooltips: the visible change to our networks abroad and to foreign networks among us, as percentages, then the current band words for both readings. Screen also shows the Vetting Campaign spirit and its duration.
 
@@ -51,10 +52,11 @@ Selectors must not write formatting characters directly. Colour for band words c
 
 - Seat report, capturing country: officials waiting with keys and lists, a police chief who already knows the patrol routes, a district council asking for instructions. Tone: unsettling efficiency.
 - Open Ministries report, owner whose capital fell: ministries reopened the next day with most of the same staff. Grim, not melodramatic.
+- Capitulation report, human occupier one day after the capitulation: the defeated country's officials stayed at their desks and already work under the new flag, with a Deep Networks line about department heads and police directors.
 - Prepared cadres report, government in exile: the people who kept the provinces running under the enemy were the same people who ran them before.
 - Prepared cadres state modifier name and description: local cadres who prepared the handover.
 - Fifth Column spirit name: a short name using the common phrase or a period equivalent. Band descriptions: Wavering shows delay and hedging. Defecting shows offices that stop answering and local officials meeting the enemy. Collapsing shows a state already serving the victor. The tooltip names the strongest foreign network by country.
-- Fifth Column acquisition report: the government learns that its own state has started to hedge.
+- Fifth Column report, when the spirit first appears in a war and each time its band rises: what the government's own officials are now doing at that band, from hedging to serving the victor.
 - Open Gates, host: a district opened its doors and nobody in the capital ordered it. Option direction can be bitter.
 - Open Gates, enemy: a column entered a district that was waiting for it. Option direction can be smug in a way that condemns the speaker.
 
@@ -64,7 +66,10 @@ Selectors must not write formatting characters directly. Colour for band words c
 - Installed Administration spirit stages: imposed and resented, entrenched and comfortable, contested and frightened, abandoned and alone.
 - Turned Regime, former installer: a government it created now answers to its enemy. New master: a government arrived prepared for the second time. The installed government: the same officials change sides again. The irony lands on the officials, not on the population.
 - Auxiliary template name: police and gendarmerie raised by the network. The working label is Auxiliary Police.
-- Restoration mood line in exile reports: the mood in the occupied homeland, using the selector words for the three restoration bands.
+- Restoration mood line in the two reports to the original country: the mood in the occupied homeland, using the selector words for the three restoration bands.
+
+- Reports to the original country: at installation, the familiar names who formed the new government and the restoration mood line. At abandonment, the regime that replaced it has lost its protector, with the restoration mood line.
+- National Collaborators Unmasked at restoration: the same option voices as the district version, addressed to ministers, police directors, and prefects of the former government.
 
 ## Decisions
 
@@ -80,7 +85,7 @@ Selectors must not write formatting characters directly. Colour for band words c
 
 - Event name: the existing name Collaboration stays.
 - Event Details premise: sympathizers ready to serve foreign governments have appeared in every country at once, each government has the same abroad, and the networks grow deeper as the world grows more unstable. No effects, numbers, stances, or evolution rules.
-- Event Details current-state line: one qualitative word or short phrase, such as first contacts, spreading, or entrenched.
+- Event Details current-state line: one qualitative word or short phrase, such as first contacts, spreading, or everywhere.
 - Unavailability reasons: one short reason for too few participants and one for a pass still in progress, in both the event list and the cluster member list.
 - Chaos history reasons: one short line for each row of the Chaos impact map, describing the outcome in the past tense.
 

@@ -2,8 +2,8 @@
 
 Role: `chaosx_scripted_system_architect`, plan mode granted by the parent for this task. Date: 2026-10-06.
 Disposition: `unresolved`. This plan proposes scripted architecture for the accepted-for-planning design in `docs/specs/097_collaboration_specs/`. It records no user decision and no parent acceptance, and the parent decides which parts become accepted design.
-Evidence class: source review of the repository at commit `5212636e`, the newer skill texts in the session upload folder, the offline wiki snapshot in `paradox_wiki/`, and the Event 097 specs.
-Spec parts 1, 2, 3, 4, and 5 and the Chaos impact and edge case matrices changed on disk during this pass, and the latest versions were re-read before writing (part 4 at 14:53).
+Evidence class: source review of the repository at commit `5212636e`, the newer skill texts in the session upload folder, the offline wiki snapshot in `paradox_wiki/`, and the Event 097 specs. Commits up to `07fe1e08` changed only `docs/`, so every source citation also holds at that commit.
+Every spec part and all three matrices changed on disk during this pass. The plan was aligned with the versions saved at 14:56, including the part 2 timing model, the part 3 war-scoped guards, and the part 4 rework of decisions. Parts 3, 4, and 6 changed again at about 15:03, and a keyword spot check of those edits found no change to timers, guards, hooks, or the registry, but they were not re-read line by line.
 No gameplay, script, localisation, interface, decision, event, on_action, constant, or idea file was edited. This file is the only write.
 
 Every repository identifier below was seen in the cited file at the cited line. Identifiers written in `collaboration_*`, `chaosx.nr97.<n>`, or `097_collaboration_*` form that are not followed by a citation are proposals of this plan and do not exist yet.
@@ -19,13 +19,15 @@ Every repository identifier below was seen in the cited file at the cited line. 
 1. Run the application pass as a self-scheduling hidden event chain in one stored owner country, with a beneficiary-outer and host-inner loop. The outer loop is a bounded `for_loop_effect` over the batch slice only, which stays far below the 1,000-iteration cap, and the inner loop is `for_each_scope_loop` over host arrays, which the offline wiki documents as equivalent to an `every_` scope with no iteration cap (`Data structures` line 1217, cap note only on lines 1219-1220).
 2. Group hosts by their stance so each beneficiary performs three host sweeps with one precomputed layer value per sweep. Per-pair work is then one native call and one self-exclusion check, and a `meta_effect` fallback (if `add_collaboration` rejects a variable `value`) costs three injections per beneficiary instead of one per pair.
 3. Keep the depth ledgers O(N) per firing. Outgoing depth is written once per beneficiary in its batch, and incoming depth once per host at pass completion.
-4. Arm evolution MTTH clocks from a new `collaboration_on_chaos_changed` call placed beside the existing `black_friday_on_chaos_changed = yes` call inside `add_chaos_meter_value` (`common/scripted_effects/chaos_meter_effects.txt:4592`), plus 097's own firing and war hooks. Each activation is delivered by one delayed hidden event per evolution. Nothing attaches to the shared host pulse.
+4. Implement the part 2 timing model once, as `collaboration_start_countdown`, and use it for evolution clocks, Open Gates, and Turned Regime. Evolution countdowns start from a new `collaboration_on_chaos_changed` call placed beside the existing `black_friday_on_chaos_changed = yes` call inside `add_chaos_meter_value` (`common/scripted_effects/chaos_meter_effects.txt:4592`), plus 097's own firing and war hooks. Each countdown is one delayed hidden event, evaluated once and never recomputed. Nothing attaches to the shared host pulse.
 5. After an evolution is active, gate its behavior with `has_disabled_current_evolution` only. `is_current_evolution_enabled` (`common/scripted_triggers/chaosx_settings_triggers.txt:55-58`) also tests the Chaos tier through `has_reached_current_evolution_tier` (`:60`), and the spec keeps active evolutions alive when Chaos falls (part 2, Shared pacing and logging).
 6. Measure "wars between participants" through an event-driven belligerent registry, because the engine exposes no war object or war counter in the offline wiki. This changes the measured quantity and needs parent acceptance (Q1).
-7. Implement every "once per war" guard with small arrays held by the guarded country and cleared in `on_peace`, and every "once per N days" guard with timed flags. Nothing then needs to enumerate targeted flags or variables for cleanup.
+7. Implement the part 3 war-scoped guards with small arrays and flags held by the guarded country. Pair guards are pruned for both sides in `on_war_relation_added` and are also checked lazily against `has_war_with`, because the engine has no war-relation removal hook. Host guards clear when the host has no participant enemy left, checked in `on_peace` and `on_peaceconference_ended`. Every "once per N days" guard is a timed flag. Nothing then needs to enumerate targeted flags or variables for cleanup.
 8. Route every write to native collaboration through one gate helper that checks the Fallout transition and active flags, so the Fallout clean-world proof can never be blocked by Event 097 (part 5, Fallout).
 9. Store installed-government rows as variables on the government, a live global array, and aligned global history arrays. Every creation goes through one installation helper shared by the capitulation offer, B1, and the public API.
 10. Charge installation costs only after the vanilla route proves it created a government, because the dynamic-country pool is finite and creation may fail (Section 7, rows V10 and V11).
+11. Keep the Fifth Column raw band and effective band as two stored values, because part 4 assigns each consumer to one of them.
+12. Drive category visibility and decision targets from markers and country-held target arrays that 097 hooks refresh, as part 4 requires, so no `visible`, `available`, or `target_trigger` block ever scans countries.
 
 ## 1. File map
 
@@ -75,7 +77,7 @@ No scripted GUI is proposed because part 4 selects a simple category.
 | --- | --- | --- |
 | `common/scripted_effects/chaosx_logic_effects.txt` | `add_to_array = { global.repeatable_events = 97 }  # COLLABORATION` at line 333 inside `initialize_event_categories` (line 232) | Replace the raw 97 with `constant:collaboration_event.event_id`. |
 | same | `evaluate_event_pool_candidate_unavailability` (line 588), event-specific precedent branch for Event 027 at lines 827-833 | Add one 097 branch: Fallout gate, pass running, fewer than two participants. |
-| same | `get_event_weight` (line 516) with the Event 009 dynamic cap branch | Optional wartime factor branch, only if the parent accepts Q3. |
+| same | `get_event_weight` (line 516) with the Event 009 dynamic cap branch | No edit under the current spec, which keeps the ordinary weight. Part 1 justifies that by saying no event-owned weight hook exists, which this branch contradicts (Q3). |
 | `common/scripted_triggers/chaosx_settings_triggers.txt` | `event_log_event_is_reworked_default_enabled` (lines 10-40) | Add the 097 id in the same change that completes registration and log wiring (edge matrix row on the rework queue). |
 | `common/script_constants/event_system_constants.txt` | `event_system_event_unavailability_reason` (line 91), last event reason `doctrine_research_no_valid_participant = 43` (line 140), `unknown = 99` (line 141) | Add `collaboration_too_few_participants`, `collaboration_pass_running`, and `collaboration_fallout` from the next free id at implementation time (44 today). |
 | `common/scripted_localisation/chaosx_scripted_localisation_events_log.txt` | `GetEventsLogEventAvailabilityReason` (line 13582), `GetEventsLogClusterMemberAvailabilityReason` (line 13421) | One row per new reason. |
@@ -121,8 +123,11 @@ All names are proposals. Points mean percentage points from 0 to 100. Fractions 
 | `collaboration_tranche_queued`, `collaboration_tranche_applied` | global flags | Deep Networks entry, tranche completion | Pass completion, Chaos guard |
 | `global.collaboration_belligerents` | array of countries | War hooks, bootstrap | MTTH factors, evolution entries, weight factor |
 | `collaboration_evolution_<n>_active`, `_logged`, `_prefire` for n from 1 to 4 | global flags | Activation events | Behavior gates, entries, opening variants |
-| `global.collaboration_evolution_<n>_due_day`, `_active_day` | variables | Clock arming, activation | Activation events, Event Details |
-| `global.collaboration_live_governments` | array of countries | Installation, retirement | Competing orders, B1 uniqueness, API |
+| `global.collaboration_evolution_<n>_due_day`, `_active_day` | variables | Countdown start, activation | Activation events, Event Details |
+| `global.collaboration_live_governments` | array of countries | Installation, retirement | Competing orders, API, row counts |
+| `global.collaboration_seated_states` | array of states | Seat start and end | Bounded cleanup when Administrations is disabled or Fallout begins, A2 target refresh |
+| `global.collaboration_reinstall_originals`, `_ready_days` | aligned arrays | Retirement | 365-day reinstallation cooldown per original tag, pruned on write, kept global because the original country may no longer exist |
+| `global.collaboration_last_turned_regime_day` | variable | Turned Regime | Worldwide 365-day spacing (part 3) |
 | `global.collaboration_history_ids`, `_governments`, `_originals`, `_installers`, `_routes`, `_install_days`, `_retire_days`, `_retire_reasons` | aligned arrays | Retirement | Achievements, Event 095 |
 | `global.collaboration_government_seq`, `global.collaboration_installers_with_two_count` | variables | Installation, retirement | Registry ids, competing orders |
 | `global.collaboration_firing_chaos_total`, `global.collaboration_seated_host_count`, `global.collaboration_turned_chaos_count` | variables | Chaos rows | Chaos guards |
@@ -140,7 +145,12 @@ All names are proposals. Points mean percentage points from 0 to 100. Fractions 
 | `collaboration_incoming_depth`, `collaboration_outgoing_depth`, `collaboration_incoming_band`, `collaboration_outgoing_band` | Ledgers in points and cached band ids |
 | flag `collaboration_pass_host` | Owned at least one state when the firing froze |
 | flag `collaboration_divided_loyalties_eligible` | Category visibility cache |
-| `collaboration_fc_band`, `collaboration_fc_network_band`, `collaboration_fc_strongest` | Fifth Column state and tooltip pointer |
+| `collaboration_fc_raw_band`, `collaboration_fc_band`, `collaboration_fc_network_band`, `collaboration_fc_strongest` | Fifth Column raw band from surrender progress, effective band after A1 or A3, strongest network band, tooltip pointer |
+| `collaboration_core_state_count` | Cached core-state count for the linear cost scale in part 4, refreshed by war hooks and after each decision |
+| `collaboration_a2_target`, flag `collaboration_a2_has_target` | Strongest seating enemy, refreshed by seat start and end for the owner |
+| arrays `collaboration_b1_visible_targets`, `collaboration_b2_visible_targets` | Installer-held target lists for B1 and B2, refreshed by capture, capitulation, exile, installation, and retirement hooks, capped at six rows in total |
+| `collaboration_commissions_expiry_day` | End of Loyalty Commissions, after which the remaining vetting time continues as a Vetting Campaign |
+| array `collaboration_install_days` | Installer's installation days for the three-year B1 price count, pruned on write |
 | `collaboration_fc_surrender_limit`, `_war_support`, `_stability`, `_factory_output`, `_recruitable`, `_occupied_compliance`, `_occupied_resistance` | Dynamic modifier inputs |
 | `collaboration_fc_highest_band`, `collaboration_fc_highest_strongest` | Highest band this war, read at capitulation |
 | timed flag `collaboration_fc_eval_pending` | Debounce with watchdog |
@@ -148,8 +158,8 @@ All names are proposals. Points mean percentage points from 0 to 100. Fractions 
 | `collaboration_vetting_form`, `collaboration_vetting_expiry_day` | Vetting family state |
 | `collaboration_a3_until_day`, `collaboration_a4_until_day`, flags for cooldowns | Response state |
 | flag `collaboration_exile_chartered` | A5, cleared at peace |
-| arrays `collaboration_unmasked_enemies`, `collaboration_open_ministries_controllers`, `collaboration_seat_reported_owners` | Per-war pair guards, cleared at peace |
-| flags `collaboration_collapsing_chaos_done`, `collaboration_fc_capitulation_chaos_done` | Per-war Chaos guards, cleared at peace |
+| arrays `collaboration_unmasked_enemies`, `collaboration_open_ministries_controllers`, `collaboration_seat_reported_owners` | Pair guards under the part 3 rules, pruned for the other side in `on_war_relation_added` and ignored for any listed country no longer at war with the holder |
+| flags `collaboration_collapsing_chaos_done`, `collaboration_fc_capitulation_chaos_done`, `collaboration_installation_chaos_done` | Host guards under the part 3 rules, cleared when the host has no participant enemy |
 | `collaboration_gov_installer`, `_original`, `_route`, `_install_day`, `_id`, `_stage`, `_stage_since_day`, `_entrench_due_day`, `_b2_uses`, flags `collaboration_installed_government`, `collaboration_gov_original_chartered`, `collaboration_gov_turned_this_war` | Installed-government row |
 | flag `collaboration_former_collaboration` | Marker after retirement by independence or abandonment expiry |
 | `collaboration_live_government_count`, `collaboration_b1_ready_day`, flags `collaboration_has_installed`, `collaboration_installed_three_recorded` | Installer state |
@@ -187,6 +197,7 @@ Timed targeted flags combine two documented forms, targeted flags (offline `Data
 | `collaboration_has_event_networks` | trigger, country | `check_variable = { collaboration_incoming_depth > 0 }`. Every evolution behavior checks it before any pair read (part 2). |
 | `collaboration_world_has_two_participants` | trigger, any | `any_country = { collaboration_is_participant = yes any_other_country = { collaboration_is_participant = yes } }`. It short-circuits on the first pair and is evaluated only at selection time, like the Event 027 availability branch. |
 | `collaboration_pass_is_running` | trigger, any | `has_global_flag = collaboration_pass_running`. |
+| `collaboration_host_has_participant_enemy` | trigger, country | `any_enemy_country = { collaboration_is_participant = yes }`, bounded by the country's enemies (offline `Scopes` line 375). It decides when host guards clear. |
 | `collaboration_deep_networks_live`, `collaboration_administrations_live`, `collaboration_fifth_column_live`, `collaboration_governments_live` | triggers, any | Active flag for that evolution, the shared evolution context set inside the trigger (temporaries may be set in triggers, offline `Data structures` line 441), `NOT = { has_disabled_current_evolution = yes }` (`chaosx_settings_triggers.txt:42`), and `collaboration_native_writes_allowed = yes`. They deliberately omit the tier check (recommendation 5). |
 | `collaboration_sphere_allows_installation` | trigger, host country | Installer `PREV` is in `collaboration_sphere_owners` and `collaboration_administrations_live = yes`. It opens the offer and B1 from Evolution II for that installer only (part 5, Tordesillas contract). |
 
@@ -319,7 +330,7 @@ Completion (`collaboration_pass_complete`):
 3. Applies the firing or tranche Chaos row.
 4. Copies `collaboration_stance` into `collaboration_last_stance`, increments the stance counters, and clears the current stance (part 1, Cleanup and persistence).
 5. Runs pending pre-fire follow-ups (Administrations sweep, Fifth Column evaluations), then queued API depth requests, then a queued tranche.
-6. Clears `collaboration_pass_running` unless a queued tranche starts, and re-arms evolution clocks because the firing count factor changed.
+6. Clears `collaboration_pass_running` unless a queued tranche starts, refreshes A5 and Divided Loyalties eligibility for hosts whose depth became non-zero, and calls `collaboration_try_start_evolution_countdowns`. Evolutions without a running countdown then start one from their active entries, while running pre-fire countdowns continue unchanged (Q24).
 
 `collaboration_pass_abort` clears running and watch flags and the cursor without applying another batch, as the edge matrix requires for the Fallout transition.
 
@@ -345,7 +356,7 @@ The engine exposes no war object, war count, or war-relation removal hook in the
 
 | Helper | Scope | Behavior |
 | --- | --- | --- |
-| `collaboration_belligerents_bootstrap` | any | Once per campaign behind `collaboration_belligerents_bootstrapped`. One `every_country` pass adds participants at war with a participant enemy. Called from the first root, the first clock arming, and the first evolution activation. |
+| `collaboration_belligerents_bootstrap` | any | Once per campaign behind `collaboration_belligerents_bootstrapped`. One `every_country` pass adds participants at war with a participant enemy. Called from the first root, the first evolution countdown start, and the first evolution activation. |
 | `collaboration_belligerents_add` | country | Adds THIS if missing. Called for ROOT and FROM in `on_war_relation_added` when both are participants. |
 | `collaboration_belligerents_remove` | country | Removes THIS. Called from `on_peace` and from `on_annex` for FROM. |
 | `collaboration_belligerents_compact` | any | Removes entries that no longer exist, no longer participate, or have no participant enemy. Called before any read. Bounded by the array size. |
@@ -358,9 +369,10 @@ The registry supplies the war factors of every evolution MTTH, the Administratio
 | Helper | Scope | Behavior |
 | --- | --- | --- |
 | `collaboration_set_evolution_context` | any | Input temp `collaboration_evolution_stage_input`. Sets `events_log_evolution_event_id`, `_type`, `_stage`, and `_tier` from `constant:collaboration_event.*`. Stages and tiers are both 1 to 4, because 200, 400, 600, and 800 Chaos are tiers 1 to 4 in `has_reached_current_evolution_tier`. |
-| `collaboration_try_arm_evolution_clocks` | any | For each inactive evolution, sets the context and requires `is_current_evolution_enabled = yes`, `collaboration_event_is_enabled = yes`, and `collaboration_native_writes_allowed = yes`. It computes the delay from the evolution's MTTH entry and stores `global.collaboration_evolution_<n>_due_day` when none is stored or the new day is earlier. It then fires `chaosx.nr97.1<n>` in the owner with `days = collaboration_evolution_delay`. A clock only ever moves earlier. |
-| `collaboration_on_chaos_changed` | any | Cheap gate on the lowest unarmed threshold, then `collaboration_try_arm_evolution_clocks` and `collaboration_pass_repair_if_stalled`. |
-| `collaboration_activate_evolution_<n>` | owner | Runs inside `chaosx.nr97.1<n>`. Requires not active, due day reached, the full enable check with tier, the event enabled, and the Fallout gate. Sets the active flag and day, clears the due day, records the log entry, sets `_prefire` when no firing has been applied, and runs the entry path. If eligibility failed at the due day, it clears the due day so the next hook can re-arm. |
+| `collaboration_start_countdown` | any | The part 2 timing model in one helper, shared by evolution clocks, Open Gates, and Turned Regime. Inputs: temps `collaboration_countdown_mtth_days`, `collaboration_countdown_min_days`, `collaboration_countdown_max_days`. Output: temp `collaboration_countdown_days` (caller preinitializes to 0). It clamps the MTTH value to the surface limits (precedent `001_communism_spread_effects.txt:1312-1315`), then draws a uniform spread of up to a third of the clamped delay in either direction with `set_temp_variable_to_random` (precedent `008_tensions_rising_effects.txt:291`), and rounds to whole days. The caller stores the due day and fires its check event with `days = collaboration_countdown_days`. |
+| `collaboration_try_start_evolution_countdowns` | any | For each inactive evolution with no stored due day, sets the context and requires `is_current_evolution_enabled = yes`, `collaboration_event_is_enabled = yes`, and `collaboration_native_writes_allowed = yes`. It reads the pre-fire entry while `global.collaboration_firings_applied` is 0 and the active entry otherwise, runs `collaboration_start_countdown` with the evolution's limits, stores `global.collaboration_evolution_<n>_due_day`, and fires `chaosx.nr97.1<n>` in the owner. A running countdown is never recomputed (part 2, Timing model, step 4). |
+| `collaboration_on_chaos_changed` | any | Cheap gate on the lowest inactive threshold, then `collaboration_try_start_evolution_countdowns` and `collaboration_pass_repair_if_stalled`. |
+| `collaboration_activate_evolution_<n>` | owner | Runs inside `chaosx.nr97.1<n>`. Exits unless the stored due day is reached, which discards a backlogged older delivery. It always clears the due day, then activates only if the evolution is still inactive, still enabled, Chaos still meets the requirement through `is_current_evolution_enabled`, the event is enabled, and Fallout allows it. Activation sets the active flag and day, records the log entry, sets `_prefire` when no firing has been applied, and runs the entry path. A failed check leaves no flag behind, and the next hook may start a new countdown. |
 | `collaboration_record_evolution_log` | any | Context set first, then `limit` with `is_current_evolution_enabled = yes` and `NOT = { has_global_flag = collaboration_evolution_<n>_logged }`, then the logged flag and `record_events_log_evolution_entry = yes` (`chaosx_events_log_effects.txt:967`). No actor is set, so the shared default `events_log_evolution_has_actor = 0` applies (events skill rule). |
 
 Entry paths:
@@ -407,16 +419,20 @@ collaboration_seat_on_control_changed = {
 
 `collaboration_seat_try_install`, state scope, inputs are the two regular targets above with proof temps `collaboration_seat_owner_supplied` and `collaboration_seat_controller_supplied`:
 1. Requires the controller at war with the owner and an Ordinary or better pair band read through `collaboration_read_pair_band` from the controller.
-2. Compliance gain is points times `constant:collaboration_seat.compliance_ratio`, capped at `compliance_cap`. With the Fifth Column active on the owner it uses `fifth_column_compliance_factor` and `fifth_column_compliance_cap`. With Loyalty Commissions on the owner it multiplies by `commissions_compliance_factor`. It applies `add_compliance` with a variable (offline `Effects` line 3734).
+2. Compliance gain follows the fixed part 3 order: points times `constant:collaboration_seat.compliance_ratio` capped at `compliance_cap`, then `fifth_column_compliance_factor` capped at `fifth_column_compliance_cap` while the owner's effective Fifth Column band is above none, then `commissions_compliance_factor` while the owner runs Loyalty Commissions. It applies `add_compliance` with a variable (offline `Effects` line 3734).
 3. Resistance uses `add_resistance_target = { id = @COLLABORATION_SEAT_RESISTANCE_ID amount = <negative variable> occupier = event_target:collaboration_seat_controller }` (offline `Effects` line 3737). Row V17 covers the negative amount.
-4. Sets the seat marker and the timed targeted guard flag with `days = @COLLABORATION_SEAT_GUARD_DAYS`.
+4. Sets the seat marker and the timed targeted guard flag with `days = @COLLABORATION_SEAT_GUARD_DAYS`, appends the state to `global.collaboration_seated_states`, and refreshes the owner's A2 target through `collaboration_refresh_a2_target`.
 5. Increments seat milestones: the first seat, and the owner's first seat ever (host flag) for the 5 and 15 host rows.
 6. Sends the first-seat report `chaosx.nr97.20` to the controller when the owner is not yet in its `collaboration_seat_reported_owners` array.
 7. Runs Open Ministries when the state is the owner's capital and the band is Strong or better, guarded by the owner's `collaboration_open_ministries_controllers` array. It adds `constant:collaboration_seat.open_ministries_compliance` to every other owner core state the controller holds, applies the war support loss, and sends `chaosx.nr97.21` to the owner.
 
 Outputs: temp `collaboration_seat_result` (preinit 0) is 1 on a new seat, so Open Gates and sweeps can count.
 
-`collaboration_seat_end` removes the resistance target with `remove_resistance_target = @COLLABORATION_SEAT_RESISTANCE_ID` (offline `Effects` line 3743) and clears the marker. When the new controller is the owner or not at war with the owner, it queues `chaosx.nr97.22` Collaborators Unmasked to the owner, guarded by `collaboration_unmasked_enemies`. The seating enemy travels as a normal variable on the owner (`collaboration_unmasked_pending_enemy`), because the event fires later and regular targets would not be frozen.
+`collaboration_seat_end` removes the resistance target with `remove_resistance_target = @COLLABORATION_SEAT_RESISTANCE_ID` (offline `Effects` line 3743), clears the marker, removes the state from `global.collaboration_seated_states`, and refreshes the owner's A2 target. When the new controller is the owner or not at war with the owner, and `collaboration_administrations_live` and the Fallout gate hold, it queues `chaosx.nr97.22` Collaborators Unmasked to the owner, guarded by `collaboration_unmasked_enemies`. The seating enemy travels as a normal variable on the owner (`collaboration_unmasked_pending_enemy`), because the event fires later and regular targets would not be frozen. The Purge option reads the enemy's collaboration at click time, which works only while that enemy still controls owner cores (row V34).
+
+`collaboration_refresh_a2_target`, owner scope, recomputes `collaboration_a2_target` as the seating enemy with the highest pair band, then the most seated states, over the owner's seated owned states only. This keeps A2 visibility and targeting on a hook-maintained marker, as part 4 requires.
+
+`collaboration_end_all_seats`, any scope, walks `global.collaboration_seated_states` and ends every seat without Unmasked. It runs once when a 097 hook first finds Administrations disabled after activation (part 4, Evolution disabled after activation) and once when the Fallout transition stops native work. Without the array, a disabled evolution's seats would persist until each state changed hands again.
 
 The resistance id is one constant per state. Only one seat is live per state, and `remove_resistance_target` acts on the scoped state, so a single id is enough. No repository file uses `add_resistance_target`, so the id range needs no reservation beyond 097.
 
@@ -427,13 +443,15 @@ Scheduling: `collaboration_schedule_fifth_column_evaluation`, host scope, sets t
 `collaboration_evaluate_fifth_column`, host scope, inside `chaosx.nr97.30`:
 1. Clears the pending flag. If `collaboration_fifth_column_live` fails, the host is not a participant at war, or `collaboration_has_event_networks` fails, it calls `collaboration_fifth_column_clear` and stops.
 2. Strongest network: iterates `every_enemy_country` (bounded by enemies) with a limit of participant and `any_controlled_state = { is_owned_by = ROOT is_core_of = ROOT }`, reads the pair band from each, and keeps the highest band. ROOT is the host because `chaosx.nr97.30` is received by the host, while `PREV` inside the state scope would be the enemy. Ties keep the first valid candidate. It stores `collaboration_fc_strongest` and `collaboration_fc_network_band`. With no Ordinary or better enemy, it clears.
-3. Target band from `surrender_progress` against `constant:collaboration_fifth_column.wavering_floor`, `defecting_floor`, and `collapsing_floor`. Surrender progress accepts constants in repository precedent (`012_africa_effects.txt:93`).
-4. Hysteresis: if the current band is higher than the target, it drops only when progress is below the current floor minus `constant:collaboration_fifth_column.hysteresis`.
-5. Responses: Loyalty Commissions or A3 lower the effective band by one, with at most one reduction in total. A4 zeroes the factory and recruitable inputs.
-6. Writes the seven modifier variables from `constant:collaboration_fifth_column_effect.*` times the network factor. Adds `collaboration_fifth_column` if missing and calls `force_update_dynamic_modifier = yes` (offline `Effects` line 346).
-7. Records the highest band this war. On the first Collapsing this war it applies the Collapsing Chaos row.
-8. Open Gates timer: at Defecting or Collapsing, when neither A3 nor A4 suspends it and no timer is pending, it calls `collaboration_schedule_open_gates`.
-9. Sets the flag `collaboration_fifth_column_active` for stronger seats.
+3. Raw band from `surrender_progress` against `constant:collaboration_fifth_column.wavering_floor`, `defecting_floor`, and `collapsing_floor`. Surrender progress accepts constants in repository precedent (`012_africa_effects.txt:93`).
+4. Hysteresis on the raw band: if the stored raw band is higher than the new one, it drops only when progress is below the stored band's floor minus `constant:collaboration_fifth_column.hysteresis`. The result is `collaboration_fc_raw_band`.
+5. Effective band: Loyalty Commissions or A3 lower the raw band by one, with at most one reduction in total, into `collaboration_fc_band`. A4 zeroes the factory and recruitable inputs.
+6. Writes the seven modifier variables from `constant:collaboration_fifth_column_effect.*` for the effective band times the network factor. A Wavering host lowered to none keeps the spirit with zero values, as part 4 requires. Adds `collaboration_fifth_column` if missing and calls `force_update_dynamic_modifier = yes` (offline `Effects` line 346).
+7. Records the highest raw band this war, which feeds the installation threshold, achievements, and the Collapsing Chaos row. On the first raw Collapsing this war it applies that row.
+8. Open Gates timer: when the effective band is Defecting or Collapsing and no timer is pending, it calls `collaboration_schedule_open_gates`. A3 and A4 do not block the start. Their suspension is applied at the check (part 3).
+9. Sets the flag `collaboration_fifth_column_active` while the effective band is above none, which enables the larger seat gain.
+
+Consumers per part 4: A3 and A4 visibility, A1 hiding, dynamic costs, the highest band record, the installation threshold, and achievements read the raw band. Modifier values, Open Gates, the larger seat gain, and the category text read the effective band.
 
 `collaboration_fifth_column_clear` removes the modifier, clears the variables, the flag, and the Open Gates due day. It does not clear the highest-band record, which `on_peace` and the capitulation handler consume.
 
@@ -441,11 +459,11 @@ Dynamic modifier `collaboration_fifth_column` maps the inputs to `surrender_limi
 
 ### 3.10 Open Gates
 
-`collaboration_schedule_open_gates`, host scope, computes the delay from `mtth:collaboration_open_gates_interval`, stores `collaboration_open_gates_due_day`, and fires `chaosx.nr97.31` in the host.
+`collaboration_schedule_open_gates`, host scope, runs `collaboration_start_countdown` with `mtth:collaboration_open_gates_interval` and the Open Gates limits (20 and 120 days). A timer started while Loyalty Commissions runs uses the doubled value from the MTTH factor. It stores `collaboration_open_gates_due_day` and fires `chaosx.nr97.31` in the host. A band change during the countdown does not move it.
 
 `collaboration_open_gates_incident`, host scope, inside `chaosx.nr97.31`:
-1. Requires the due day reached, band Defecting or higher, no suspension, no `collaboration_open_gates_cooldown` flag, and `collaboration_open_gates_war_count` below `constant:collaboration_open_gates.per_war_cap`. Otherwise it reschedules or stops.
-2. Selector `collaboration_open_gates_select_state` iterates `every_owned_state` with a limit of controlled by the host, core of the host, `is_capital = no`, `any_neighbor_state` controlled by the stored strongest country, no `collaboration_open_gates_guard`, and no host or ally divisions. Division presence uses `divisions_in_state = { state = collaboration_og_candidate size > 0 }` on the host and on each `every_allied_country` (offline `Triggers` line 1279, precedent `011_secret_alliance_effects.txt:3670`). Among qualifying states it keeps the lowest state variable `victory_points` (precedent `014_cannibalism_triggers.txt:1366`). Output is temp `collaboration_og_selected` (preinit 0) with temp proof `collaboration_og_selected_found`.
+1. Exits unless the due day is reached. Clears the due day. If A3 or A4 is running, it does nothing and starts a new timer (part 3). It also requires an effective band of Defecting or higher at this moment, no `collaboration_open_gates_cooldown` flag, and `collaboration_open_gates_war_count` below `constant:collaboration_open_gates.per_war_cap`. A failed band or cap check stops the timer, and the next Fifth Column evaluation may start another.
+2. Selector `collaboration_open_gates_select_state` iterates `every_owned_state` with a limit of controlled by the host, core of the host, `is_capital = no`, `any_neighbor_state` controlled by the stored strongest country, no `collaboration_open_gates_guard`, and no host or ally divisions. Division presence uses `divisions_in_state = { state = collaboration_og_candidate size > 0 }` on the host and on each `every_allied_country` (offline `Triggers` line 1279, precedent `011_secret_alliance_effects.txt:3670`). The part 3 order is lowest state variable `victory_points` (precedent `014_cannibalism_triggers.txt:1366`), then most neighbouring states controlled by that enemy, then random. One score covers it: VP times a negative weight, plus the neighbour count, plus a random fraction below one, keeping the maximum. Output is temp `collaboration_og_selected` (preinit 0) with temp proof `collaboration_og_selected_found`.
 3. Transfer: the selected state runs `set_state_controller_to` the strongest country (offline `Effects` line 3375, precedent `015_utopia_manifesto_effects.txt:2141`). If row V13 confirms that this fires `on_state_control_changed`, the seat follows through the ordinary hook. Otherwise the incident calls the seat helper directly.
 4. Sets the timed state guard and the host cooldown flag, increments the war count, applies the Open Gates Chaos row, and sends `chaosx.nr97.32` to the host and `chaosx.nr97.33` to the enemy.
 5. With no qualifying state it reschedules (part 3).
@@ -479,7 +497,7 @@ every_enemy_country = {
 }
 ```
 
-Score is band times `constant:collaboration_installer_score.band_weight` (1000), plus host cores controlled, plus `constant:collaboration_installer_score.receiver_bonus` (0.5) for the capitulation receiver. The weight keeps the spec order: band first, then cores, then the receiver. A strict greater-than keeps the first valid candidate on full ties.
+Score is band times `constant:collaboration_installer_score.band_weight` (1000), plus host cores controlled, plus `constant:collaboration_installer_score.receiver_bonus` (0.5) for the capitulation receiver, plus a random fraction from `set_temp_variable_to_random` below `constant:collaboration_installer_score.random_ceiling` (0.4). The weights keep the part 3 order: band, then cores, then the receiver, then a random choice among equals. Because the first valid candidate replaces the initial score of -1, the selector always returns an installer when one qualifies. The same scoring pattern selects the Turned Regime rival (band, then occupied cores, then random).
 
 Threshold per part 3: `constant:collaboration_installation.threshold_ordinary`, or `threshold_collapsing` when the host's highest band this war was Collapsing, plus `exile_charter_add` when the host chartered, minus `sphere_reduction` inside a registered sphere for that candidate, clamped to `threshold_floor` and `threshold_ceiling`. The comparison uses the numeric pair read, or a `meta_trigger` that injects the threshold.
 
@@ -495,15 +513,17 @@ Inputs (all caller-set, temp proof values must be 1):
 Outputs (caller preinitializes): temp `collaboration_install_result` from `constant:collaboration_install_result.*` (0 none, 1 success, plus one rejection id per failed guard) and temp `collaboration_install_government` (country pointer, preinit 0).
 
 Steps:
-1. Guards in order, each failing closed with its own result id: native writes allowed, behavior gate (`collaboration_governments_live`, or `collaboration_sphere_allows_installation` for the sphere route), host and installer participants, installer controls a host core, threshold met, no living government for the host's original tag (`any_of_scopes = { array = global.collaboration_live_governments original_tag = event_target:collaboration_install_host }`, offline `Triggers` line 640 and `Scopes` line 747), and B1 cooldown when the route is the decision.
+1. Guards in order, each failing closed with its own result id: native writes allowed, behavior gate (`collaboration_governments_live`, or `collaboration_sphere_allows_installation` for the sphere route), host and installer participants, installer neither a subject nor a live installed government, installer controls a host core, threshold met, no living collaboration government of any origin for the host's original tag, the original tag outside its 365-day reinstallation cooldown (`global.collaboration_reinstall_originals`), and the installer's B1 cooldown when the route is the decision.
+   The uniqueness check uses `any_country_with_original_tag` with `original_tag_to_check` (precedent `024_video_game_in_sweden_effects.txt:99-100`) and `has_autonomy_state = autonomy_collaboration_government`, so vanilla governments count, as part 4 now requires. The precedent passes a literal tag, so the host's tag is injected through `meta_trigger` (row V32). The check is bounded by the countries sharing that original tag.
 2. Snapshot the installer's current subjects that match the host's original tag and are dynamic, into a temp array.
 3. Vanilla route: `set_temp_variable = { country_to_initiate = event_target:collaboration_install_host }`, then `instantiate_collaboration_government = yes` (offline `Effects` line 4723). Row V10 must confirm the input shape and behavior first.
 4. Identify the new government. Prefer an output the vanilla effect provides (row V10). Otherwise find the one subject of the installer with `is_dynamic_country = yes` (offline `Triggers` line 652), the host's original tag, `has_autonomy_state = autonomy_collaboration_government`, and absence from the pre-call snapshot.
 5. If none is found, return the creation-failed result and change nothing else. Costs have not been charged yet.
 6. Write the row on the government, append it to `global.collaboration_live_governments`, raise the installer's live count and the two-government counter, and set `collaboration_gov_original_chartered` from the host's charter flag.
 7. Set stage Imposed through `collaboration_set_administration_stage`.
-8. Raise auxiliaries through `collaboration_raise_auxiliaries` with the count rule from part 3, debit the installer's infantry equipment through `remove_infantry_equipment_from_stockpile` (`chaosx_dynamic_effects.txt:747`), and create the template and units in the government, following `events/095_occupation_revolt.txt:38-58`.
-9. Apply the installation Chaos rows, run `collaboration_check_installer_system` and `collaboration_check_competing_orders`, and send reports.
+8. Raise auxiliaries through `collaboration_raise_auxiliaries` with the count rule from part 3. It creates the six-battalion Auxiliary Police template and the units in the government, following `events/095_occupation_revolt.txt:38-58`. The installer pays the template's equipment and manpower per division from constants that mirror the template, with `remove_infantry_equipment_from_stockpile` (`chaosx_dynamic_effects.txt:747`). If row V27 shows that spawned divisions arrive without equipment, the paid equipment goes to the government's stockpile instead (part 4, Auxiliary costs).
+9. Append the installation day to the installer's `collaboration_install_days` for the three-year B1 price count.
+10. Apply the installation Chaos rows under the once-per-original-tag-per-war guard, run `collaboration_check_installer_system` and `collaboration_check_competing_orders`, refresh the installer's B1 and B2 target arrays, and send reports.
 
 B1's political power is charged in `complete_effect` before the helper. On a failed result the decision refunds every debited cost and leaves the installer cooldown unset, as the decisions skill requires for paid actions that reject after payment.
 
@@ -511,7 +531,7 @@ B1's political power is charged in `complete_effect` before the helper. On a fai
 
 | Helper | Scope | Behavior |
 | --- | --- | --- |
-| `collaboration_registry_retire` | government | Inputs temp `collaboration_retire_reason`. Appends one row to every aligned history array, removes the government from the live array, lowers the installer's count and the two-government counter, removes the stage modifier, sets `collaboration_former_collaboration` for independence and abandonment expiry, applies the matching restoration Chaos row, and calls `collaboration_check_competing_orders` (milestones never refund). Idempotent through the provenance flag. |
+| `collaboration_registry_retire` | government | Inputs temp `collaboration_retire_reason`. Appends one row to every aligned history array, removes the government from the live array, lowers the installer's count and the two-government counter, removes the stage modifier, clears the row's B2 use count, starts the original tag's 365-day reinstallation cooldown, sets `collaboration_former_collaboration` for independence and abandonment expiry, applies the matching restoration Chaos row, refreshes the installer's B2 targets, and calls `collaboration_check_competing_orders` (milestones never refund). Idempotent through the provenance flag. |
 | `collaboration_registry_compact` | any | Retires live rows whose government no longer exists, with reason annexed. Called before counts. |
 | `collaboration_registry_find_original` | any | Input regular target of an original country. Output temp pointer and found flag. Bounded by the live array. |
 
@@ -531,14 +551,14 @@ The spec has two readings of a freed government. The lifecycle table makes "stop
 
 ### 3.16 Turned Regime
 
-`collaboration_schedule_turned_regime`, government scope, runs when Contested begins and the conditions in part 3 hold. It stores a due day from `mtth:collaboration_turned_regime_interval` and fires `chaosx.nr97.44`.
+`collaboration_schedule_turned_regime`, government scope, runs when Contested begins and the conditions in part 3 hold. It runs `collaboration_start_countdown` with `mtth:collaboration_turned_regime_interval` and the limits 60 and 365 days, stores the due day, and fires `chaosx.nr97.44`.
 
-`collaboration_turned_regime_incident`, government scope, re-checks every condition, the per-war flag, and row V12, then calls `collaboration_transfer_installed_government`:
+`collaboration_turned_regime_incident`, government scope, exits unless the due day is reached and clears it. Inside the worldwide spacing (`global.collaboration_last_turned_regime_day` less than 365 days ago) it does nothing and starts a new timer (part 3). It re-checks every condition, the Turned Regime pair guard (part 3 lists Turned Regime among pair guards, held here by the government against its installer), and row V12, selects the rival with the installer-selector scoring pattern, then calls `collaboration_transfer_installed_government`:
 1. Set the transaction flag so 097's own `on_subject_free` handler does not retire or abandon the row.
 2. Old installer runs `end_puppet` on the government (offline `Effects` line 1442).
 3. Rival runs `puppet = { target = <government> end_wars = no end_civil_wars = no }` (line 1441), then `set_autonomy` to `autonomy_collaboration_government` (line 1445) if the default autonomy differs.
 4. Government runs `add_to_war = { targeted_alliance = <rival> enemy = <old installer> }` (line 1505) if it is not already on the rival's side.
-5. Update the row (installer, route Turned Regime), reset to Imposed, adjust both installers' counts, apply the Turned Regime Chaos row within its campaign cap, run competing orders, and send `chaosx.nr97.45` and `chaosx.nr97.46`.
+5. Update the row (installer, route Turned Regime), reset to Imposed, adjust both installers' counts, set `global.collaboration_last_turned_regime_day` and the Turned Regime pair guard, apply the Turned Regime Chaos row within its campaign cap, run competing orders, refresh both installers' B2 targets, and send `chaosx.nr97.45` and `chaosx.nr97.46`.
 
 Every step depends on row V12. If the engine cannot do this cleanly, part 3 requires the variant to stay unimplemented with the reason recorded.
 
@@ -559,10 +579,10 @@ Every step depends on row V12. If the engine cannot do this cleanly, part 3 requ
 | `collaboration_chaos_collapsing` | Host flag per war, rolling 365-day cap from the aligned day and amount arrays, pruned on write | `collaboration_collapsing` |
 | `collaboration_chaos_open_gates` | Shares the incident cap | `collaboration_open_gates` |
 | `collaboration_chaos_fifth_column_capitulation` | Host flag per war | `collaboration_internal_capitulation` |
-| `collaboration_chaos_installation` | Once per installation, plus the first-government bonus | `collaboration_installation` |
+| `collaboration_chaos_installation` | Once per installation and once per original tag per war, through the host guard `collaboration_installation_chaos_done` on the original country, plus the first-government bonus | `collaboration_installation` |
 | `collaboration_chaos_installer_system` | Installer flag | `collaboration_installer_system` |
 | `collaboration_chaos_competing_orders` | Global flag | `collaboration_competing_orders` |
-| `collaboration_chaos_turned_regime` | Government flag per war and the campaign counter | `collaboration_turned_regime` |
+| `collaboration_chaos_turned_regime` | Turned Regime pair guard and the campaign counter | `collaboration_turned_regime` |
 | `collaboration_chaos_collapsing_survived` | Host flag per war, run from `on_peace` when the highest band was Collapsing and the host did not capitulate in that war | `collaboration_collapsing_survived` |
 | `collaboration_chaos_restoration` | Once per government, amount by retire reason | `collaboration_restoration` |
 
@@ -572,19 +592,26 @@ Ids start at the next free special id at implementation time (222 today). Major-
 
 | Helper | Scope | Contract |
 | --- | --- | --- |
-| `collaboration_divided_loyalties_visible` | trigger, country | `collaboration_is_participant` and the cached flag `collaboration_divided_loyalties_eligible`, set by the war hooks and ledger and cleared in `on_peace`. It does no world reads per frame. |
-| `collaboration_prepared_governments_visible` | trigger, country | `collaboration_governments_live` or a sphere registration with Administrations live, and either the cached target flag or a positive live count. |
-| `collaboration_quote_action` | country | Input temp `collaboration_action_id`. Outputs preinitialized to 0: `collaboration_quote_political_power`, `_manpower`, `_infantry_equipment`, `_trains`, `_trucks`, `_command_power`, `_army_experience`, `_convoys`, `_spirit_stability`, `_spirit_consumer_goods`, `_spirit_factory_output`. Minor or major anchors use `is_major`, and situation factors come from part 4. Command power is clamped to the 60 cap from the decisions skill. |
-| `collaboration_action_quote_is_affordable` | trigger, country | The single inclusive predicate used by both `available` and `custom_cost_trigger`, as the decisions skill requires. It runs the quote inside the trigger. |
+| `collaboration_divided_loyalties_visible` | trigger, country | `collaboration_is_participant`, the Fallout gate, the cached flag `collaboration_divided_loyalties_eligible` (set by war hooks and the ledger, cleared under host-guard rules), and at least one visible action or running measure. It does no world reads per frame. |
+| `collaboration_prepared_governments_visible` | trigger, country | The Fallout gate, `collaboration_governments_live` or a sphere registration with Administrations live, and a non-empty `collaboration_b1_visible_targets` or `collaboration_b2_visible_targets`. |
+| `collaboration_divided_loyalties_phase` | trigger set, country | One trigger per action, matching the part 4 visibility table and the "Rows by situation" table. A1 hides at raw Defecting or Collapsing. A3 and A4 need raw Defecting or Collapsing. A5 needs the governments evolution live, no capitulation, not a subject, not an installed government, and the surrender or Strong-occupation condition. A running or cooling action is hidden, and the category text names running measures. The phase design already keeps the list at four rows or fewer. |
+| `collaboration_refresh_core_state_count` | country | Recounts core states into `collaboration_core_state_count`. Called from war hooks and after each decision, so `custom_cost_trigger`, which runs every frame, never iterates states. |
+| `collaboration_quote_action` | country | Input temp `collaboration_action_id`. Outputs preinitialized to 0: `collaboration_quote_political_power`, `_manpower`, `_infantry_equipment`, `_trains`, `_trucks`, `_command_power`, `_army_experience`, `_convoys`, `_spirit_stability`, `_spirit_consumer_goods`, `_spirit_factory_output`. Anchors are interpolated linearly between the small and large anchors by the cached core-state count and the two core-count constants (part 4, Dynamic costs). Situation factors read the raw Fifth Column band and the A2 target's band. A3 quotes trains when the stockpile covers them and trucks otherwise, and A5 quotes convoys or trucks the same way. Command power is clamped to the 60 cap from the decisions skill. |
+| `collaboration_action_quote_is_affordable` | trigger, country | The single inclusive predicate used by both `available` and `custom_cost_trigger`, as the decisions skill requires. It runs the quote inside the trigger and checks the shared 20 percent stability floor for A1 and A4. |
 | `collaboration_pay_action_quote` | country | Debits once with the existing helpers `remove_infantry_equipment_from_stockpile` (line 747), `remove_trains_from_stockpile` (737), `remove_motorized_equipment_from_stockpile` (727), and `remove_convoys_from_stockpile` (732) in `chaosx_dynamic_effects.txt`, plus native resource effects. |
 | `collaboration_refund_action_quote` | country | Credits the same quote back when a post-payment guard rejects. |
-| `collaboration_divided_loyalties_slot_rules` | trigger, country | Encodes the four-button cap. A2 hides first when all five qualify, and running or cooling actions never show as buttons (part 4). |
+| `collaboration_apply_vetting` | country | Input temp form (campaign or commissions) and duration. Handles the part 4 lifecycle: A1 replaces a campaign and restarts the duration, Screen during commissions extends the family so at least a full campaign remains, and the remainder continues as a campaign when the commissions end through the hidden swap event `chaosx.nr97.25`. Only one vetting modifier is ever present. |
+| `collaboration_refresh_installer_targets` | installer | Rebuilds `collaboration_b1_visible_targets` and `collaboration_b2_visible_targets` with the six-row cap. B2 rows are added only when B2 can be taken now, and when the total exceeds six the B1 targets with the fewest controlled cores are dropped first. Called from capture, capitulation, exile, installation, retirement, and decision completion hooks. |
 
-Targeted decisions use game arrays held by ROOT (offline `Decision modding` lines 525-534 and `Data structures` lines 1797-1803): A2 uses `target_array = enemies` with a `target_trigger` that FROM controls a seated owned state of ROOT, B1 uses `target_array = occupied_countries`, and B2 uses `target_array = subjects` with the provenance flag. Per-installer and per-government cooldowns that cross targets are variables (`collaboration_b1_ready_day`, `collaboration_gov_b2_uses`), because `days_re_enable` applies per decision clone (offline `Decision modding` line 514).
+A2 is not a targeted decision under the current part 4, because it always acts on the strongest seating enemy. It reads the hook-maintained `collaboration_a2_target` and names it in the tooltip. B1 and B2 use `target_array` with the installer-held arrays above (offline `Decision modding` line 525 says the array must belong to the country). Per-installer and per-government cooldowns that cross targets are variables (`collaboration_b1_ready_day`, `collaboration_gov_b2_uses`), because `days_re_enable` applies per decision clone (offline `Decision modding` line 514).
 
-The B1 compliance threshold compares `core_compliance = { occupied_country_tag = FROM value > X }` (offline `Triggers` line 1158, repository precedent with a literal tag at `common/decisions/formable_nation_decisions.txt:1198-1210`) with a dynamic X injected by `meta_trigger` (row V26).
+The B1 compliance check uses the part 4 ladder from constants. It compares `core_compliance = { occupied_country_tag = FROM value > X }` (offline `Triggers` line 1158, repository precedent with a literal tag at `common/decisions/formable_nation_decisions.txt:1198-1210`) with the ladder value X for the current pair band, injected by `meta_trigger` (row V26). After the war against the target ends, the ordinary installation threshold applies.
 
-A1's capitulation clause (each occupier's capitulation compliance reduced by a quarter of its collaboration) needs the numeric pair read in the capitulation handler (row V8).
+The B1 political power price counts the installer's `collaboration_install_days` entries within the last three years, living or not, so annexing a government does not reset the price.
+
+A1 at capitulation runs as the hidden follow-up `chaosx.nr97.24`, one day after the capitulation, in the capitulated country. For each participant enemy that controls its cores at that moment, it subtracts a quarter of that enemy's collaboration, in compliance points, from each such state, never below zero. It needs the numeric pair read (row V8). The one-day delay removes the dependence on hook order that part 4 describes.
+
+The Amnesty option adds a 90-day state dynamic modifier `collaboration_amnesty_offices` to the retaken state with local factory output and recruitable population tokens (row V15). Purge applies one refreshed, never stacked, timed stability modifier.
 
 ### 3.20 Public API
 
@@ -616,12 +643,15 @@ Caller ids proposed: 39, 52, 63, 95, and one id for the cluster runtime. The Tor
 | Moment | Cleanup |
 | --- | --- |
 | Pass completion | Current stances cleared, counters kept, step arrays discarded with the effect chain |
-| `on_peace` for a country | Fifth Column clear, Open Gates due day and war count reset, highest-band record consumed by the survived row, per-war arrays and flags cleared, A5 charter cleared, belligerent removed, eligibility flag cleared |
+| `on_war_relation_added` between two countries | Each side drops the other from its pair-guard arrays, so a new war between the same pair starts with fresh pair guards (part 3, War-scoped guards) |
+| A host with no participant enemy left, checked in `on_peace` and for both sides of `on_peaceconference_ended` | Fifth Column clear, Open Gates due day and war count reset, highest-band record consumed by the survived row, host guard flags cleared, A5 charter cleared, belligerent removed, eligibility flag cleared |
 | Capitulation of a host | Fifth Column read, then cleared after Evolution IV processing |
 | Annex of FROM | Registry retirement if FROM was a government, abandonment of FROM's governments, owner repair, belligerent removal |
-| Seat change | Seat marker and resistance id, prepared cadres of the old controller |
-| Fallout transition | Pass abort at the next step, no new native writes anywhere, records kept |
-| Disabled evolution | Behavior gates fail at the next evaluation, and the Fifth Column evaluator clears its own modifier when its gate fails |
+| Seat change | Seat marker and resistance id, seated-state array entry, A2 target refresh, prepared cadres of the old controller |
+| Fallout transition | Pass abort at the next step, `collaboration_end_all_seats`, no new native writes anywhere, categories hidden, records kept |
+| Administrations disabled after activation | `collaboration_end_all_seats` once, A2 hidden, Unmasked stops |
+| Fifth Column disabled after activation | The evaluator clears its own modifier at the next evaluation, and A3 and A4 hide |
+| Governments disabled after activation | A5 and the Prepared Governments category hide, and B2 counters stop changing |
 
 ## 4. Hooks
 
@@ -632,11 +662,11 @@ All blocks go into the new `common/on_actions/097_collaboration_on_actions.txt`,
 | Hook | Scopes per offline `On actions` page | 097 use |
 | --- | --- | --- |
 | `on_state_control_changed` | ROOT new controller, FROM old controller, FROM.FROM state (line 450) | Seat start and end, Unmasked queue, prepared cadre removal, Fifth Column and Contested scheduling, pass stall repair |
-| `on_capitulation` | ROOT capitulated country, FROM winner, units already deleted and equipment transferred (line 254) | Fifth Column capitulation Chaos, A1 compliance reduction, prepared cadres, installer selector and offer, abandonment of the capitulated installer's governments, capitulation records |
+| `on_capitulation` | ROOT capitulated country, FROM winner, units already deleted and equipment transferred (line 254) | Fifth Column capitulation Chaos, scheduling of the A1 follow-up `chaosx.nr97.24` one day later, prepared cadres, installer selector and offer, abandonment of the capitulated installer's governments, capitulation records, installer target refresh |
 | `on_capitulation_immediate` | ROOT capitulated country, FROM winner, beginning of the process (line 255) | Not used unless row V20 shows that reads must happen before engine processing |
-| `on_war_relation_added` | ROOT attacker, FROM defender (line 250) | Belligerent registry, eligibility cache, Fifth Column and Contested scheduling, clock re-arm |
-| `on_peace` | THIS country no longer at war (line 253) | Per-war cleanup, survived Collapsing row, belligerent removal |
-| `on_peaceconference_ended` | ROOT winner, FROM loser, also fired by `white_peace` and accepted conditional surrender (line 216) | Partial peace re-evaluation of both sides |
+| `on_war_relation_added` | ROOT attacker, FROM defender (line 250) | Pair-guard pruning for both sides, belligerent registry, eligibility cache, core-count cache, Fifth Column and Contested scheduling, evolution countdown start |
+| `on_peace` | THIS country no longer at war (line 253) | Host-guard cleanup, survived Collapsing row, belligerent removal |
+| `on_peaceconference_ended` | ROOT winner, FROM loser, also fired by `white_peace` and accepted conditional surrender (line 216) | Host-guard cleanup for a side with no participant enemy left, and re-evaluation of both sides |
 | `on_annex` | ROOT winner, FROM annexed (line 257) | Registry retirement or abandonment, restoration route detection, owner repair |
 | `on_subject_free` | ROOT subject, FROM previous overlord (line 435) | Retirement with independence record unless a Turned Regime transfer is running |
 | `on_subject_annexed` | ROOT subject, FROM overlord (line 434) | Retirement with annexed record |
@@ -655,9 +685,9 @@ No `on_daily`, `on_weekly`, or `on_monthly` block is proposed, and no tag-specif
 
 ### 4.3 The Chaos-change hook
 
-`add_chaos_meter_value` already calls an event-owned helper on every nonzero change (`black_friday_on_chaos_changed = yes`, `chaos_meter_effects.txt:4592`, defined at `026_black_friday_effects.txt:2777`), with a comment that this avoids another recurring world scan. A sibling call for 097 lets evolution clocks arm when Chaos crosses 200, 400, 600, or 800 without a periodic hook.
+`add_chaos_meter_value` already calls an event-owned helper on every nonzero change (`black_friday_on_chaos_changed = yes`, `chaos_meter_effects.txt:4592`, defined at `026_black_friday_effects.txt:2777`), with a comment that this avoids another recurring world scan. A sibling call for 097 lets evolution countdowns start when Chaos crosses 200, 400, 600, or 800 without a periodic hook.
 
-Two paths change Chaos without this function: the settings value setter (`chaosx_settings_effects.txt:3666`) and the Event 020 scenario floor (`020_black_plague_scenario_effects.txt:788`). Arming then waits for the next ordinary change, at latest the monthly decay call in the host's `on_monthly` block (`chaosx_on_actions_chaos_meter.txt`, monthly decay added through `add_chaos_meter_value`), or for 097's own firing and war hooks. That delay is small against 60 to 120 day MTTH windows.
+Two paths change Chaos without this function: the settings value setter (`chaosx_settings_effects.txt:3666`) and the Event 020 scenario floor (`020_black_plague_scenario_effects.txt:788`). A countdown start then waits for the next ordinary change, at latest the monthly decay call in the host's `on_monthly` block (`chaosx_on_actions_chaos_meter.txt`, monthly decay added through `add_chaos_meter_value`), or for 097's own firing and war hooks. That delay is small against 60 to 120 day MTTH windows.
 
 ### 4.4 Event ids
 
@@ -673,6 +703,8 @@ Two paths change Chaos without this function: the settings value setter (`chaosx
 | `chaosx.nr97.21` | report | owner | Open Ministries report |
 | `chaosx.nr97.22` | choice | owner | Collaborators Unmasked |
 | `chaosx.nr97.23` | report | exiled host | Prepared cadres report |
+| `chaosx.nr97.24` | hidden | capitulated host | A1 capitulation follow-up, one day after capitulation |
+| `chaosx.nr97.25` | hidden | host | Vetting form swap when Loyalty Commissions end with Vetting Campaign time remaining |
 | `chaosx.nr97.30` | hidden | host | Fifth Column evaluation |
 | `chaosx.nr97.31` | hidden | host | Open Gates timer |
 | `chaosx.nr97.32`, `chaosx.nr97.33` | reports | host, enemy | Open Gates reports |
@@ -698,6 +730,10 @@ The offer is fired from the host's scope into the installer, so FROM inside `cha
 | Fifth Column evaluation | Debounced per host per triggering event | Host's enemies and their controlled states, short-circuited |
 | Open Gates selection | At most once per host per timer | Host's owned states |
 | Contested scheduling from installer state changes | Per installer state change while the installer has live governments | Installer's subjects |
+| `collaboration_end_all_seats` | Once per Administrations disable and once at the Fallout transition | Seated-state array |
+| Installer target refresh | Per capture, capitulation, exile, installation, retirement, or decision completion that involves the installer | Installer's occupied countries and subjects, capped at six rows |
+| A2 target refresh | Per seat start or end | Owner's seated owned states |
+| Uniqueness check, `any_country_with_original_tag` | Per installation attempt and per B1 target refresh | Countries sharing one original tag |
 
 Nothing runs from `on_daily`, `on_weekly`, or `on_monthly`, and nothing is added to the global host pulse.
 
@@ -712,28 +748,29 @@ Nothing runs from `on_daily`, `on_weekly`, or `on_monthly`, and nothing is added
 | 008 Tensions Rising | No MTTH. Stage recomputed at each firing and logged once per stage | `record_tensions_rising_evolution_if_needed` at `008_tensions_rising_effects.txt:240` |
 | 013 Natural Disasters | Delayed hidden job events with variable `days` | `chaosx.nr13.2` at `events/013_natural_disasters.txt:69-76`, scheduling at `013_natural_disasters_effects.txt:1930-1933` |
 
-Event 035 is the closest MTTH precedent, but its due-day check depends on the host pulse. Event 097 keeps the due-day model and replaces the polling pulse with one delayed event per evolution, which is the Event 013 delivery pattern.
+Event 035 is the closest MTTH precedent, and its once-evaluated due day already matches step 4 of the part 2 timing model. Its due-day check depends on the host pulse, so Event 097 keeps the due-day model and replaces the polling pulse with one delayed event per countdown, which is the Event 013 delivery pattern.
 
 ### 5.2 Proposed 097 pacing
 
-1. Eligibility arms a clock. Arming runs from `collaboration_on_chaos_changed`, firing completion, `on_war_relation_added` between participants, and the capitulation handler.
-2. Arming evaluates the evolution's MTTH entry once, stores the due day, and sends one delayed hidden event to the owner.
-3. Later arming calls may only move the due day earlier, for example when a firing completes and the "fired once" factor applies. The superseded later event finds the evolution already active and exits.
-4. At delivery the event re-checks enablement, the Chaos tier, the event-disabled state, and Fallout. If eligibility lapsed, it clears the due day, and the next hook re-arms when eligibility returns.
+This maps the part 2 timing model onto source.
+1. A countdown starts at the next opportunity after eligibility: `collaboration_on_chaos_changed`, firing completion, `on_war_relation_added` between participants, or the capitulation handler. An evolution with a stored due day never starts a second countdown.
+2. `collaboration_start_countdown` evaluates the pre-fire or active MTTH entry once, clamps it to the evolution's minimum and maximum, and spreads it by up to a third in either direction.
+3. The owner receives one delayed hidden event at that delay. The countdown is never recomputed.
+4. At delivery the event clears the due day and re-checks that the evolution is still inactive and enabled and that Chaos still meets its requirement. If any check fails, nothing is set, and a later opportunity may start a new countdown.
 5. Activation sets the active flag, records the log entry with no actor, and runs the entry path from Section 3.7. It never changes Chaos.
 
-The design is dynamic at arming points but does not re-evaluate continuously. That is the 035 behavior too, which stores its due day once on first eligibility.
+Open Gates and Turned Regime use the same helper with their own entries and limits (Sections 3.10 and 3.16).
 
 ### 5.3 MTTH entries in `common/mtth/097_collaboration_mtth.txt`
 
 | Entry | Scope | Base and modifiers | Probability surface |
 | --- | --- | --- | --- |
-| `collaboration_evolution_deep_networks_interval` | any | Base `constant:collaboration_mtth.deep_networks_days`. Factors: one firing applied, two or more firings, belligerent count at the war-proxy threshold, never fired. | S7 |
-| `collaboration_evolution_administrations_interval` | any | Base `administrations_days`. Factors: Deep Networks active, `collaboration_participant_capitulated`, empty belligerent registry. | S7 |
-| `collaboration_evolution_fifth_column_interval` | any | Base `fifth_column_days`. Factors: Administrations active, any belligerent past the near-defeat threshold through `any_of_scopes`, empty registry. | S7 |
-| `collaboration_evolution_governments_interval` | any | Base `governments_days`. Factors: Administrations and Fifth Column both active, capitulation within the recent window, empty registry. | S7 |
-| `collaboration_open_gates_interval` | host | Base by band, Defecting or Collapsing. Factor for Loyalty Commissions (half speed). | S8 |
-| `collaboration_turned_regime_interval` | government | Base `constant:collaboration_turned_regime.mtth_days`. | S9 |
+| `collaboration_evolution_deep_networks_prefire_interval`, `collaboration_evolution_deep_networks_active_interval` | any | Active base `constant:collaboration_mtth.deep_networks_days`, pre-fire base times `prefire_factor` (1.5). Factors: two or more firings, belligerent count at the war-proxy threshold. Limits 30 and 240 days. | S7 |
+| `collaboration_evolution_administrations_prefire_interval`, `_active_interval` | any | Base `administrations_days`. Factors: Deep Networks active, `collaboration_participant_capitulated`, empty belligerent registry. Limits 30 and 240 days. | S7 |
+| `collaboration_evolution_fifth_column_prefire_interval`, `_active_interval` | any | Base `fifth_column_days`. Factors: Administrations active, any belligerent past the near-defeat threshold through `any_of_scopes`, empty registry. Limits 30 and 240 days. | S7 |
+| `collaboration_evolution_governments_prefire_interval`, `_active_interval` | any | Base `governments_days`. Factors: Administrations and Fifth Column both active, capitulation within the recent window, empty registry. Limits 45 and 300 days. | S7 |
+| `collaboration_open_gates_interval` | host | Base by effective band, Defecting or Collapsing. Loyalty Commissions factor doubles the delay. Limits 20 and 120 days. | S8 |
+| `collaboration_turned_regime_interval` | government | Base `constant:collaboration_turned_regime.mtth_days`. Limits 60 and 365 days, plus the worldwide 365-day spacing at the check. | S9 |
 | `collaboration_ai_stance_accept_weight`, `_cultivate_weight`, `_screen_weight` | participant | Actor-group factors from part 6, with Accept never near zero. | S2 |
 | `collaboration_ai_offer_install_weight`, `_keep_weight` | installer | Part 6 offer ordering. | S3 |
 | `collaboration_ai_unmasked_purge_weight`, `_amnesty_weight` | owner | | S4 |
@@ -760,32 +797,34 @@ Every group begins with `schema`. Category names were checked against `common/sc
 | `collaboration_depth_band_id` | int | `scattered` 0, `established` 1, `deep` 2, `pervasive` 3 |
 | `collaboration_network_band` | fixed_point | `ordinary` 0.15, `strong` 0.40, `total` 0.70 |
 | `collaboration_network_band_id` | int | `thin` 0, `ordinary` 1, `strong` 2, `total` 3 |
-| `collaboration_timing` | int | `response_window` 14, `pass_step` 1, `pass_watch` 5, `fc_eval_delay` 1, `fc_eval_watch` 5, `gov_eval_watch` 5, `seat_guard` 180, `open_gates_state_guard` 180, `open_gates_host_cooldown` 90, `vetting_peace` 120, `vetting_war` 180, `a1_duration` 180, `a1_cooldown` 90, `a2_cooldown` 120, `a3_duration` 120, `a3_cooldown` 180, `a4_duration` 90, `a4_cooldown` 180, `unmasked_penalty` 90, `b1_cooldown` 180, `b2_cooldown` 180, `b2_entrench_advance` 90, `imposed_to_entrenched` 365, `abandoned_expiry` 730, `cadres_duration` 365, `collapsing_chaos_window` 365, `recent_capitulation` 365 |
+| `collaboration_timing` | int | `response_window` 14, `pass_step` 1, `pass_watch` 5, `fc_eval_delay` 1, `fc_eval_watch` 5, `gov_eval_watch` 5, `seat_guard` 180, `open_gates_state_guard` 180, `open_gates_host_cooldown` 90, `vetting_peace` 120, `vetting_war` 180, `a1_duration` 180, `a1_cooldown` 90, `a2_cooldown` 120, `a3_duration` 120, `a3_cooldown` 180, `a4_duration` 90, `a4_cooldown` 180, `unmasked_penalty` 90, `b1_cooldown` 180, `b2_cooldown` 180, `b2_entrench_advance` 90, `imposed_to_entrenched` 365, `abandoned_expiry` 730, `cadres_duration` 365, `collapsing_chaos_window` 365, `recent_capitulation` 365, `reinstall_cooldown` 365, `install_price_window` 1095, `turned_regime_world_spacing` 365, `amnesty_duration` 90, `purge_penalty` 90, `a1_capitulation_delay` 1 |
 | `collaboration_pass` | int | `pairs_per_step` 2000, `min_batch` 5, `max_batch` 40 |
-| `collaboration_mtth` | fixed_point | `deep_networks_days` 90, `administrations_days` 90, `fifth_column_days` 90, `governments_days` 120, `fired_once_factor`, `fired_twice_factor`, `never_fired_factor`, `wars_factor`, `no_war_factor`, `prior_evolution_factor`, `capitulation_factor`, `near_defeat_factor`, `near_defeat_progress` 0.40 |
+| `collaboration_mtth` | fixed_point | `deep_networks_days` 90, `administrations_days` 90, `fifth_column_days` 90, `governments_days` 120, `prefire_factor` 1.5, `evolution_min_days` 30, `evolution_max_days` 240, `governments_min_days` 45, `governments_max_days` 300, `countdown_spread` 0.333, `fired_twice_factor`, `wars_factor`, `no_war_factor`, `prior_evolution_factor`, `capitulation_factor`, `near_defeat_factor`, `near_defeat_progress` 0.40 |
 | `collaboration_war_proxy` | int | `belligerents_for_three_wars` (Q1) |
-| `collaboration_selection` | fixed_point | `war_weight_factor` 1.5 (Q3) |
+| `collaboration_selection` | fixed_point | Not created under the current spec, which keeps the ordinary weight (Q3) |
 | `collaboration_fifth_column` | fixed_point | `wavering_floor` 0.20, `defecting_floor` 0.40, `collapsing_floor` 0.60, `hysteresis` 0.05, `network_factor_ordinary` 0.5, `network_factor_strong` 1, `network_factor_total` 1.5 |
 | `collaboration_fifth_column_band` | int | `none` 0, `wavering` 1, `defecting` 2, `collapsing` 3 |
 | `collaboration_fifth_column_effect` | fixed_point | Per band: `<band>_surrender_limit`, `<band>_war_support`, `<band>_stability`, `<band>_factory_output`, `<band>_recruitable`, `<band>_occupied_compliance`, `<band>_occupied_resistance`, with part 3 values in the units row V16 confirms |
 | `collaboration_seat` | fixed_point | `compliance_ratio` 0.5, `compliance_cap` 40, `fifth_column_compliance_factor` 1.5, `fifth_column_compliance_cap` 50, `commissions_compliance_factor` 0.5, `resistance_ratio` 0.25, `resistance_cap` 25, `open_ministries_compliance` 15, `open_ministries_war_support` -0.10, `commissions_capitulation_ratio` 0.25 |
 | `collaboration_prepared_cadres` | fixed_point | `strong_compliance_growth` 0.25, `strong_resistance_target` -10, `total_compliance_growth` 0.5, `total_resistance_target` -20 |
-| `collaboration_open_gates` | fixed_point | `defecting_days` 60, `collapsing_days` 30, `commissions_factor` 2, `per_war_cap` 3 |
-| `collaboration_installation` | fixed_point | `threshold_ordinary` 0.40, `threshold_collapsing` 0.30, `exile_charter_add` 0.10, `sphere_reduction` 0.10, `threshold_floor` 0.25, `threshold_ceiling` 0.60, `vanilla_compliance` 80, `compliance_ratio` 0.5, `compliance_floor` 50 |
-| `collaboration_installer_score` | fixed_point | `band_weight` 1000, `receiver_bonus` 0.5 |
+| `collaboration_open_gates` | fixed_point | `defecting_days` 60, `collapsing_days` 30, `min_days` 20, `max_days` 120, `commissions_factor` 2, `per_war_cap` 3, `vp_weight` -1000, `random_ceiling` 0.9 |
+| `collaboration_installation` | fixed_point | `threshold_ordinary` 0.40, `threshold_collapsing` 0.30, `exile_charter_add` 0.10, `sphere_reduction` 0.10, `threshold_floor` 0.25, `threshold_ceiling` 0.60 |
+| `collaboration_compliance_ladder` | fixed_point | `points_tier_1` 60 with `compliance_tier_1` 50, `points_tier_2` 50 with `compliance_tier_2` 55, `points_tier_3` 40 with `compliance_tier_3` 60, `points_tier_4` 25 with `compliance_tier_4` 67 (part 4, Compliance ladder) |
+| `collaboration_installer_score` | fixed_point | `band_weight` 1000, `receiver_bonus` 0.5, `random_ceiling` 0.4 |
 | `collaboration_install_result` | int | `none` 0, `success` 1, then one id per rejection reason |
 | `collaboration_route` | int | `offer` 1, `decision` 2, `external_sphere` 3, `api` 4, `turned_regime` 5 |
 | `collaboration_retire_reason` | int | `independence` 1, `annexed` 2, `restoration_uprising` 3, `restoration_liberation` 4, `abandoned_expired` 5, `fallout` 6 |
 | `collaboration_admin_stage` | int | `imposed` 1, `entrenched` 2, `contested` 3, `abandoned` 4 |
 | `collaboration_admin_stage_effect` | fixed_point | Stage modifier values from part 3 |
-| `collaboration_auxiliaries` | fixed_point | `states_per_division` 2, `minimum` 1, `maximum` 6, `b2_divisions` 2, `b2_max_uses` 3, `start_experience` 0.1 |
+| `collaboration_auxiliaries` | fixed_point | `states_per_division` 2, `minimum` 1, `maximum` 6, `battalions` 6, `equipment_per_division`, `manpower_per_division` (both mirror the template), `b2_divisions` 2, `b2_max_uses` 3, `start_experience` 0.1 |
 | `collaboration_lifecycle` | fixed_point | `contested_installer_surrender` 0.40 |
-| `collaboration_turned_regime` | fixed_point | `mtth_days` 120, `installer_surrender` 0.40, `campaign_chaos_cap` 2 |
+| `collaboration_turned_regime` | fixed_point | `mtth_days` 120, `min_days` 60, `max_days` 365, `installer_surrender` 0.40, `campaign_chaos_cap` 2 |
 | `collaboration_competing_orders` | int | `min_powers` 2, `min_governments` 2, `installer_system` 3 |
 | `collaboration_restoration` | fixed_point | Input weights and band edges (Q15) |
-| `collaboration_vetting` | fixed_point | `stability` -0.10, `consumer_goods` 0.10, `collapsing_stability` -0.15, `minimum_stability` |
+| `collaboration_vetting` | fixed_point | `stability` -0.10, `consumer_goods` 0.10, `stability_floor` 0.20 (shared by A1 and A4), `screen_minimum_stability` |
+| `collaboration_amnesty` | fixed_point | State modifier values for local factory output and recruitable population (row V15) |
 | `collaboration_chaos` | int | `firing_base` 1, `firing_deep` 2, `firing_lifetime_cap` 10, `tranche` 1, `first_seat` 1, `seats_five` 2, `seats_fifteen` 3, `seat_hosts_tier_one` 5, `seat_hosts_tier_two` 15, `collapsing` 1, `major_bonus` 1, `collapsing_rolling_cap` 5, `open_gates` 2, `capitulation_defecting` 2, `capitulation_collapsing` 3, `installation` 2, `first_installation_bonus` 1, `installer_system` 3, `competing_orders` 5, `turned_regime` 3, `collapsing_survived` -1, `restoration_uprising` -2, `restoration_liberation` -1 |
-| `collaboration_decision_cost` | int | Minor and major anchors per action from part 4, plus situation factors |
+| `collaboration_decision_cost` | fixed_point | Small and large anchors per action from part 4, `small_core_states` and `large_core_states` for the linear scale, situation factors, `b1_pp_per_recent_install` 25, `command_power_cap` 60, `ai_a1_surrender_progress` 0.10, `ai_a2_manpower_multiple` 2, `ai_b1_min_cores` 3 |
 | `collaboration_api_caller` | int | `event_039` 39, `event_052` 52, `event_063` 63, `event_095` 95, `cluster_runtime` |
 
 The `points_per_unit` and `unit_per_point` pair keeps a single conversion between ledger points and native fractions. Without it, the formulas would hide the factor 100 as a magic number.
@@ -815,18 +854,18 @@ Each row must be checked in the installed `documentation/` files (`effects_docum
 | V1 | `add_collaboration` orientation: scoped country gains collaboration inside `target`, `value` on the 0 to 1 scale | Pass, API, A2, Unmasked | Offline `Effects` line 1246, Fallout orientation at `fallout_consolidated_effects.txt:41863-41877` | Swap the two scopes in the pair write. No design change. |
 | V2 | A pair value written without occupation persists and later drives surrender limit, capitulation compliance, and recipient score | Whole baseline | Offline `Defines` lines 480-482, stub behavior unverified | Blocker for the entire event design. Report before any other work. |
 | V3 | `add_collaboration` `value` accepts a temporary variable or `constant:` | Pass | Fallout passes only `@` constants | Use the three-per-beneficiary `meta_effect` wrapper. No design change. |
-| V4 | Negative `add_collaboration` values are accepted and clamp at zero | A2, Unmasked purge, Burn networks API | None in repository | Blocker for those three surfaces (part 4). No absolute `set_collaboration` substitute. |
+| V4 | Negative `add_collaboration` values are accepted and clamp at zero | A2, Unmasked purge, Burn networks API | None in repository | Part 4 accepts one equivalent for A2: `set_collaboration` to the current value minus the points, read in an occupation context where the enemy controls our cores, which needs V8. Purge may use the same read only when V34 allows it. The Burn networks API has no occupation context, so it stays a blocker. Anything else is a reported blocker with no substitute. |
 | V5 | Native cap at 1.0 | Repeated firings | Part 1 relies on it | Blocker for the cap semantics, because outside occupation the value cannot be read to clamp it. |
 | V6 | `has_collaboration` reads the pair value in occupation contexts, including when the reader occupies only some host cores, and what it returns without occupation | Every evolution read | Offline `Triggers` line 642 says the target is occupied by the current scope | Record the observed behavior as part 3 requires. If it reads zero in partial occupation, Strong and Total reads in seats and the Fifth Column become unreliable, which is a design blocker. |
 | V7 | `has_collaboration` `value` accepts `constant:` or variables | Pair band ladder | Fallout uses `@` | Use `@` band edges and `meta_trigger` for dynamic thresholds. |
-| V8 | Numeric game variable `has_collaboration@<country>`, its exact syntax with `PREV`, `ROOT`, or `var:` targets, and its occupation scope | Seat formula, installation threshold, A1 capitulation clause, B1 threshold | Offline `Data structures` line 1512, targeted read precedent `opinion@ROOT` at `018_resources_found_decision_effects.txt:1989` | Seven-step `meta_trigger` binary search at one-point resolution (Q22). |
+| V8 | Numeric game variable `has_collaboration@<country>`, its exact syntax with `PREV`, `ROOT`, or `var:` targets, and its occupation scope | Seat formula, installation threshold, A1 capitulation clause, B1 threshold | Offline `Data structures` line 1512, targeted read precedent `opinion@ROOT` at `018_resources_found_decision_effects.txt:1989` | Seven-step `meta_trigger` binary search at one-point resolution (Q22). The A1 follow-up and the V4 fallback for A2 depend on this row. |
 | V9 | Fallout coverage. `fallout_reset_old_world_diplomacy` resets a pair only `if has_collaboration > 0` (`fallout_consolidated_effects.txt:41866-41875`), and the clean-world proof uses the same trigger (`fallout_consolidated_triggers.txt:32158-32162`) | Part 5 Fallout promise | Row V6 | If `has_collaboration` reads zero without occupation, Event 097 pairs survive the Fallout reset and the proof passes vacuously. Report to the Fallout owner as a cross-system blocker. 097 must not patch Fallout. |
 | V10 | `instantiate_collaboration_government`: defining file, `country_to_initiate` input shape, ideology rules `can_create_collaboration_government` and `can_collaborate`, DLC checks, states transferred, autonomy state, leader, any output pointer | Installation | Offline `Effects` line 4723, mod ideology rules at `00_ideologies.txt:33`, `:120`, `:184` | Ideology refusal is the part 3 user decision among three directions. A missing output pointer uses the snapshot difference in Section 3.13. A DLC gate is reported as an exact limitation. |
 | V11 | Dynamic country pool size and failure behavior when full | Installation | Offline `Data structures` line 1785 mentions 50 dynamic countries | The helper already fails closed before charging. Report capacity as a balance risk shared with civil wars, Fallout fractures, and Event 039 carriers. |
 | V12 | Mid-war overlord transfer: `end_puppet`, `puppet` with `end_wars = no`, `set_autonomy` from the new overlord, `add_to_war`, and which on_actions fire | Turned Regime | Offline `Effects` lines 1441, 1442, 1445, 1505 | Part 3 requires the variant to stay unimplemented with the reason recorded. |
 | V13 | `set_state_controller_to` gives control without ownership and fires `on_state_control_changed` | Open Gates | Repository precedents at `015_utopia_manifesto_effects.txt:2141` and `021_random_civil_war_parent_effects.txt:4113` prove the effect exists | If no callback fires, the incident calls the seat helper directly. If the effect fails on an owned and controlled host state, Open Gates is blocked (part 3). |
 | V14 | `divisions_in_state` counts only the scoped country's divisions, accepts a temporary state variable, and `every_allied_country` is the right ally set | Open Gates | Offline `Triggers` line 1279, precedent `011_secret_alliance_effects.txt:3670` | If co-belligerents outside the faction must count, the parent decides between a war-side check and the engine ally set. If presence cannot be read reliably, Open Gates is blocked (part 3). |
-| V15 | Modifier tokens in the right scope: `surrender_limit`, `war_support_factor`, `stability_factor`, `industrial_capacity_factory`, `conscription_factor` versus `recruitable_population_factor`, `compliance_growth_on_our_occupied_states`, `resistance_target_on_our_occupied_states`, the consumer goods token, `political_power_factor`, and the state tokens `compliance_growth` and `resistance_target` | All spirits and cadres | Offline `List of modifiers` lines 312-392 and 444 | A missing token is reported, and a replacement token needs parent acceptance because it changes the effect. |
+| V15 | Modifier tokens in the right scope: `surrender_limit`, `war_support_factor`, `stability_factor`, `industrial_capacity_factory`, `conscription_factor` versus `recruitable_population_factor`, `compliance_growth_on_our_occupied_states`, `resistance_target_on_our_occupied_states`, the consumer goods token, `political_power_factor`, the state tokens `compliance_growth` and `resistance_target`, and the state tokens for local factory output and recruitable population used by the Amnesty modifier | All spirits, cadres, and Amnesty | Offline `List of modifiers` lines 312-392 and 444 | A missing token is reported, and a replacement token needs parent acceptance because it changes the effect. |
 | V16 | Units of those modifiers (fraction versus points) | Constant values | Repository uses fractional `resistance_target` at `001_communism_spread_dynamic_modifiers.txt:50` | Constant values change, the design does not. |
 | V17 | `add_resistance_target` with `id`, negative `amount` from a variable, `occupier` filter, and per-state `remove_resistance_target` | Seats | Offline `Effects` lines 3737 and 3743 | Use a state dynamic modifier with variable `resistance_target`, removed at seat end. Outcome is equivalent, but the parent should accept it because the spec names a removable identifier. |
 | V18 | `add_compliance` and `add_war_support` accept variables | Seats, Open Ministries | Offline `Effects` line 3734 for compliance | `meta_effect` injection. |
@@ -843,6 +882,9 @@ Each row must be checked in the installed `documentation/` files (`effects_docum
 | V29 | `for_each_scope_loop` has no iteration cap, and temporary arrays built in the same effect block are usable by it | Pass | Offline `Data structures` lines 1217-1220, temp array precedent `020_black_plague_response_action_effects.txt:1805-1809` | Split the inner loop into capped slices, which raises the step count. |
 | V30 | Whether `on_puppet`, `on_release_as_puppet`, or another generic Chaos source fires for a scripted collaboration government | Installation Chaos row | Offline `On actions` lines 260 and 263 | Part 3 already defines the outcome: the installation amount drops to zero for that installation. |
 | V31 | `has_war_with`, `every_enemy_country`, and `any_controlled_state` behave for governments in exile with no owned state | Fifth Column, participants | Offline `Scopes` lines 375 and 392 | Exclude stateless exiles from host-side reads, which part 1 already does. |
+| V32 | `any_country_with_original_tag` accepts a tag injected through `meta_trigger` (for example from a `GetTag` localisation call), and it sees dynamic collaboration governments of that original tag | Uniqueness across vanilla and 097 governments | Literal-tag precedent at `024_video_game_in_sweden_effects.txt:99-100`, offline `Effects` lines 103-104 | Keep a live array of known collaboration governments filled by 097 installs and by the `on_release_as_puppet` hook if row V30 shows vanilla creation fires it. If neither route can see vanilla governments, report that part 4's "whether installed through Event 097 or through vanilla" rule cannot be enforced. |
+| V33 | `set_temp_variable_to_random` bounds and distribution for the countdown spread and tie-breaks | Timing model, selectors | Precedent at `008_tensions_rising_effects.txt:291` | Use `random_days` on the delayed event for the spread, if row V22 testing shows it accepts a variable. |
+| V34 | Whether the Unmasked Purge can still read the enemy's collaboration at click time, given that `on_state_control_changed` fires after control has changed and the event resolves later | Purge fallback under V4 | Offline `On actions` line 450 | If the enemy no longer controls any owner core at click time, Purge has no occupation-context read, and only the native clamp in V4 can implement it. Report as a blocker for that case. |
 
 ## 8. Performance
 
@@ -872,40 +914,42 @@ Recommended starting values: `pairs_per_step` 2000, `min_batch` 5, `max_batch` 4
 3. The dynamic-country pool is shared and finite (V11). A competing-orders world may exhaust it alongside civil wars and Fallout fractures.
 4. A delayed event to a dead country is backlogged, not dropped (offline `Event modding` line 35). Without the owner check and repair path, a re-released former owner would replay stale steps.
 5. Several Chaos Redux systems already write compliance or resistance from `on_state_control_changed` and occupation mechanics (Event 007 Fury, CBRN occupation, genocide crisis, camp repression). Seats stack on top of them, which the balance pass must measure.
-6. Settings and Event 020 can set Chaos directly (Section 4.3), which delays clock arming until the next ordinary change.
+6. Settings and Event 020 can set Chaos directly (Section 4.3), which delays a countdown start until the next ordinary change.
 7. The Intelligence cluster has no runtime id, and Event 039 is registered as repeatable at runtime while its spec treats it as Fire-Once (part 5). Cluster hooks stay dormant until the cluster exists.
 8. The probability and MTTH surfaces S1 to S10 cannot be audited in this environment because of the MCP failure.
 9. Event options cannot show a greyed Screen option (V23), so the part 1 requirement text needs another presentation.
-10. The vanilla collaboration-government decision stays available. Deeper networks raise compliance at capitulation, so vanilla governments will appear more often and outside the 097 registry.
+10. The vanilla collaboration-government decision stays available. Deeper networks raise compliance at capitulation, so vanilla governments will appear more often. Part 4 makes them block B1 and the offer for their original tag, which depends on row V32.
+11. Part 1 now says the shared selection system has no event-owned weight factor. `get_event_weight` (`chaosx_logic_effects.txt:516`) contains an Event 009 branch, so that justification is inaccurate even though keeping the ordinary weight remains a valid choice (Q3).
+12. Pair guards rely on pruning in `on_war_relation_added`. If that callback does not fire when an existing pair re-enters war through a new war in which both are already belligerents on opposite sides, a stale guard could survive (row V21 covers the related peace callbacks).
+13. Several host guards and the reinstallation cooldown are keyed to an original country that may no longer exist. The reinstallation cooldown is global for that reason, and the installation Chaos host guard on a dead original country only clears when that tag exists again and reaches peace (Q23).
 
 ## 10. Open questions for the parent
 
 Q1. Accept the belligerent registry as the measure for "wars between participants", with a belligerent-count threshold standing in for "three or more wars", or name another measure.
 Q2. Accept the shared edit that adds `collaboration_on_chaos_changed = yes` beside the Event 026 call in `add_chaos_meter_value`.
-Q3. Implement the wartime selection factor in `get_event_weight`, where the Event 009 branch proves an event-owned hook exists, or keep the ordinary weight. Part 1 asks for the factor only if a hook exists, and one does.
+Q3. Correct the part 1 statement that no event-owned weight hook exists, because the Event 009 branch in `get_event_weight` is one. Keeping the ordinary weight needs no source change.
 Q4. Confirm that the base layer is frozen at the root (part 1 flow, step 1) rather than at application (part 1 layer table).
 Q5. Confirm the two classifiers: a participant owns a state or is an exiled government, and a host owns a state. Part 1 requires owning a state and also keeps stateless exiles as beneficiaries.
 Q6. Confirm that incoming depth adds the Accept-equivalent layer per host, because the per-pair value depends on each beneficiary's stance.
-Q7. Confirm that burns, A2, and the Unmasked purge leave the depth ledgers unchanged, since the ledgers mirror what Event 097 added.
 Q8. Resolve the freed-government conflict between the lifecycle table (Abandoned) and registry cleanup, part 5, and the edge matrix (retired as independent).
 Q9. Confirm that a host which is itself a live installed government cannot receive a new installed government, which follows from the one-per-original-tag rule.
-Q10. Decide whether governments created by the vanilla decision count toward the one-per-original-tag rule.
 Q11. Choose how the Screen requirement is shown, given V23.
-Q12. Confirm that "per war" means a continuous war period that ends when the country is fully at peace, because the engine exposes no war identity.
 Q13. Decide whether Event 097 registers a CXT test package under the AGENTS.md section 4, rule 11 "general system" clause, following `039_murder_mystery_on_actions.txt:9-30`.
 Q14. Decide whether 097 custom costs are quoted through the universal cost framework (`common/scripted_effects/chaosx_universal_cost_effects.md`) so Event 026 sales apply.
 Q15. Set the restoration pressure weights and band edges, which part 5 states only as directions.
-Q16. Set the A3 rule for "trains or trucks", for example trains when the stockpile covers the quote and trucks otherwise.
 Q17. After V12 passes, accept the Turned Regime transfer sequence in Section 3.16.
-Q18. Choose the Competing Orders super-event slot through the super-event workflow (not 97).
+Q18. Choose the Competing Orders super-event slot through the super-event workflow. Part 6 now says the next free slot, and slot 97 is taken.
 Q19. Build the Intelligence cluster in the 097 tranche, or ship 097 without cluster membership as part 5 allows.
 Q20. Reserve a caller id for the future Tordesillas owner now, or leave it unregistered until that owner exists.
-Q21. Confirm that A1's capitulation clause runs only against occupiers that hold host cores at the moment of capitulation.
 Q22. If V8 fails, accept the seven-step binary search pair read or reduce seat and threshold formulas to band steps.
+Q23. Decide where the once-per-original-tag-per-war installation Chaos guard lives when the original country no longer exists. This plan proposes a host guard on the original country with a global fallback array.
+Q24. Confirm that a running pre-fire evolution countdown continues unchanged when the first firing completes, because the part 2 timing model forbids recomputing it.
+
+Questions Q7, Q10, Q12, Q16, and Q21 from the first draft of this plan were settled by the 14:56 spec revision: depth readings do not fall after A2 or Purge (part 4), vanilla governments count toward the one-per-tag rule (part 4), war-scoped guards are defined in part 3, A3 takes trains when held and trucks otherwise (part 4), and the A1 follow-up runs against enemies controlling cores one day after capitulation (part 4).
 
 ## 11. Recommendations
 
-1. Verify V1, V2, V4, V6, V8, V9, and V10 first, because each one can block or reshape the design before any helper is written.
+1. Verify V1, V2, V4, V6, V8, V9, V10, and V32 first, because each one can block or reshape the design before any helper is written.
 2. Implement in this order: constants, gates and classifiers, firing and pass with ledgers, registration and log wiring, evolution clocks and entries, seats, Fifth Column and Open Gates, prepared cadres, installation and registry, lifecycle and Turned Regime, decisions, API, Chaos rows, presentation.
 3. Keep the pass budget, batch limits, and watch durations as constants so the user's live evidence can tune them in one place.
 4. Run the `chaosx_ai_probability_auditor` baseline for S1 to S10 as soon as the MCP server connects, before writing any `ai_chance`, `ai_will_do`, or MTTH value.

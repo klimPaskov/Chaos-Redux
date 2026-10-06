@@ -16,7 +16,7 @@ All values are tuning anchors in one constant group. Every change is recorded th
 | Seats reach five hosts | Prepared administrations have appeared in five different countries | Up | +2 | none | Once per campaign | as above | none |
 | Seats reach fifteen hosts | Prepared administrations are a worldwide pattern | Up | +3 | none | Once per campaign | as above | none |
 | Host reaches Collapsing | A state apparatus has begun serving the enemy before defeat | Up | +1 | +1 more when the host is a major power | Once per host per war, and at most +5 from this row in any 365 days | Capitulation Chaos has not happened yet, and war Chaos counts the war itself | Host survives Collapsing, below |
-| Open Gates | A district hands itself to the enemy without a battle | Up | +2 | none | At most three per host per war, matching the incident cap | Generic sources do not record control transfers without combat | none |
+| Open Gates | A district hands itself to the enemy without a battle | Up | +2 | none | The first incident per host per war only. Later incidents in the same war add nothing. | Generic sources do not record control transfers without combat | none |
 | Capitulation under the Fifth Column | The host surrendered from inside as much as from the front | Up | +2 at Defecting, +3 at Collapsing | +1 more when the host is a major power | Once per host per war | Generic capitulation adds its own +1 or +3 for the capitulation itself. This row measures only the internal collapse that drove it. | none |
 | Government installed through Event 097 | A prepared regime replaces a defeated government | Up | +2 | +1 more for an installer's first government | Once per installation, and once per original tag per war | The wiki documents the generic puppet source only for peace conferences, so this row assumes it does not fire for a scripted collaboration government. If live testing shows that it fires, this row adds nothing for that installation and only the first-government bonus and the milestone rows remain. | Government removed by restoration, below |
 | Installer reaches three governments | One power runs a system of prepared regimes | Up | +3 | none | Once per installer per campaign | none | none |
@@ -29,14 +29,18 @@ All values are tuning anchors in one constant group. Every change is recorded th
 
 - Evolution eligibility, MTTH completion, activation, logging, or any evolution flag.
 - Stance choices, vetting spirits, and every Divided Loyalties action.
-- Prepared cadres at capitulation, because the capitulation row already covers the outcome.
+- Prepared cadres at capitulation, because the generic capitulation source already counts the capitulation and the cadres change only how the occupation proceeds afterward.
 - Each individual seat after the milestones above, because capture and war Chaos already count the fighting.
 - Arm the Installed Administration.
 - Collaborators Unmasked.
 
+## Event-wide rate guard
+
+The recurring rows share one rolling cap: Host reaches Collapsing, Open Gates, Capitulation under the Fifth Column, Government installed, and Turned Regime together add at most +10 Chaos in any 365 days. A row that would pass the cap adds only the remainder, and the history entry still records the outcome. The one-time milestone rows, the firing row with its own lifetime cap, and the reversal rows are outside this cap.
+
 ## Lifetime perspective
 
-A long campaign with four firings, all four evolutions, several Fifth Column wars, and a competing-orders world produces roughly 30 to 45 points of Event 097 Chaos over many years. This is a meaningful contribution to a campaign's climb, comparable to a regional crisis, without letting one repeatable event push a calm world toward collapse by itself. The firing row's lifetime cap protects against repeated firings in long games.
+A planning estimate suggests that a high-Chaos world war without the rate guard could produce around 35 to 40 Event 097 Chaos per year, which is too much for one minor event. With the guard, the recurring rows stay at or below +10 per year, and the milestone and firing rows add a bounded total over the campaign. The real lifetime contribution is an output of probability scenario P27, not a figure fixed here, and it should stay comparable to a regional crisis rather than drive a calm world toward collapse on its own.
 
 ## Wiring
 

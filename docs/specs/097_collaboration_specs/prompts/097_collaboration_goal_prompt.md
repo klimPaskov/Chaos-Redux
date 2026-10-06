@@ -11,7 +11,7 @@ Non-negotiables:
 6. Seats, Open Gates, and prepared cadres act only on host core states with Event 097 networks.
 7. One installation helper and one registry serve the capitulation offer and the Seat decision.
 8. Every collaboration write checks the Fallout gates.
-9. Public values stay within the two qualitative readings and the Fifth Column band.
+9. Persistent public values stay within the two network readings and the Fifth Column band. The restoration mood appears only as a report line.
 
 Settle the engine facts listed in Step 1 of the coding prompt before building dependent features, and bring the open user decisions to the user. Do not ship a substitute route without approval.
 

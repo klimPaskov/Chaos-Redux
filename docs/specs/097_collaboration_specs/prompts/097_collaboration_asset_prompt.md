@@ -37,6 +37,16 @@ Size `210x176`, generated, processed with `.agents/skills/chaos-redux-event-asse
 | `report_event_097_collaboration_turned_regime` | `GFX_report_event_097_collaboration_turned_regime` | Turned Regime reports | An official in front of a mirror removing one armband and holding another. |
 | `report_event_097_collaboration_unmasked` | `GFX_report_event_097_collaboration_unmasked` | Collaborators Unmasked | A courtyard where returning soldiers question a row of seated local officials. Restrained, no violence shown. |
 
+### Image reuse
+
+These reports reuse images from the table above and need no new art:
+
+- the capitulation report to occupiers uses `GFX_report_event_097_collaboration_seat`
+- the prepared cadres report and both reports to the original country use `GFX_report_event_097_collaboration_open_ministries`
+- the national Collaborators Unmasked at restoration uses `GFX_report_event_097_collaboration_unmasked`
+- the Fifth Column report uses `GFX_report_event_097_collaboration_fifth_column`
+- the Deep Networks deepening report uses `GFX_report_event_097_collaboration_deep_networks`
+
 ## Super-event image
 
 | Asset | Size | Sprite | Final folder | Direction |

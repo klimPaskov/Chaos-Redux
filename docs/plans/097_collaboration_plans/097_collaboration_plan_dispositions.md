@@ -60,11 +60,50 @@ Unresolved: the engine checks listed in the decision prompt, and every AI conclu
 
 ## `097_collaboration_scripted_architecture_plan.md`
 
-Disposition: pending. The architecture role is still writing it.
+Disposition: accepted and queued as implementation guidance. The coding prompt points to it. Its helper, hook, constant, and verification structure is queued for the implementation goal because this goal produces design only. Parent decisions on its open questions:
 
-## Improvement loop pass
+- Q1 accepted: war activity is measured as the number of participants at war with another participant, kept current by war hooks. Part 2 uses a threshold of six in place of three wars.
+- Q2 accepted: evolution countdowns start from a call beside the Event 026 call in the shared Chaos add path, plus the firing and war hooks. Recorded in Part 2 and the coding prompt.
+- Q3 accepted: Part 1 now states that the shared weight lookup allows event branches and gives the reason Event 097 does not take one. The war-weighted factor is rejected for this specification for that reason.
+- Q4 accepted: the base layer is frozen when the firing begins.
+- Q5 accepted: participants include governments in exile, and hosts must own a state.
+- Q6 accepted: depth records add the Accept-equivalent layer per firing.
+- Q8 resolved together with the improvement-loop item R2: one Abandoned rule in Part 3.
+- Q9 accepted and stated in Part 3.
+- Q11 resolved: a replacement option with Accept's effect names the unmet Screen requirement, because event options cannot be shown greyed out.
+- Q13 settled earlier: the CXT fixture is required by the coding prompt.
+- Q14 accepted: costs are quoted through the universal cost framework.
+- Q15 accepted: restoration pressure points and band edges are in Part 5.
+- Q17 queued until engine row V12 is verified.
+- Q18 settled: the super-event takes a free slot through the super-event workflow.
+- Q19 accepted: the Intelligence cluster is built in the Event 097 tranche once the Event 039 type conflict is settled with the user.
+- Q20 accepted: no Tordesillas caller id is reserved in advance.
+- Q22 resolved differently: every network-dependent value uses band steps read through comparisons, so no exact collaboration number is needed and the binary search read is unnecessary.
+- Q23 accepted as proposed in the plan.
+- Q24 accepted and stated in Part 2.
 
-Disposition: pending. The mandatory near-completion pass is running.
+Superseded lines inside the plan: row V4 describes the computed set for A2 as accepted, which the spec now leaves to the user, and question Q13 is already answered by the coding prompt. The plan's Fallout coverage finding V9 is recorded in Part 5 as a question for the Fallout owner.
+
+## `097_collaboration_improvement_loop_closure.md`
+
+Disposition: closure recorded. The loop planner recommended closure with no broad expansion. Its items were resolved as follows.
+
+- R1 and C2 accepted: Tordesillas has one entry point, Install through Event 097 on the External sphere route. Sphere registration and the Evolution II exception were removed.
+- R2 accepted: one lifecycle rule. A losing or capitulated installer leaves its governments Contested. Any end of the subject relationship other than Turned Regime makes the government Abandoned, its row stays in the registry outside live counts, a renewed subject relationship with the old installer returns it to Imposed, and the row retires on restoration, end of the government, or after two years.
+- R3 accepted: the restoration mood is shown only as a line in two reports to the original country, and the prompts state that it is not a persistent value.
+- R4 accepted: the Fifth Column report has a defined trigger in Part 3 and direction in Part 6.
+- R5 accepted: an event-wide rolling cap of +10 per 365 days on the recurring Chaos rows, Open Gates Chaos only for the first incident per host per war, and the lifetime estimate moved to scenario P27.
+- R6 accepted: the prepared-cadres reason in the Chaos map was corrected.
+- R7 resolved differently: Screen is replaced by an option with Accept's effect that names the requirement, which keeps the choice visible to the player.
+- R8 accepted: a blocked Open Gates or Turned Regime removes its dependent surfaces together as one blocker.
+- R9 accepted: Clean Ministries requires Screen in every firing, with at least two firings.
+- R10 accepted: weight hook wording, conditional Fallout promise, Event 063 naming, Open Gates wording in Part 2, prepared cadres report image, and the stale architecture lines recorded above.
+- C1 accepted: the Add network depth write and both cluster combinations with Events 039 and 052 were cut, because they made one host deeper than the rest against the brief's symmetry. The Event 052 Burn networks hook stays.
+- C3 accepted: one band ladder of Scattered, Established, Widespread, and Pervasive at 15, 40, and 70 is used for the readings and every per-enemy band.
+- S1, S2, and S3 accepted: the capitulation report to occupiers, the two reports to the original country, and the national Collaborators Unmasked at restoration. They reuse existing images and options and add no values, decisions, or Chaos.
+- O1 accepted: Loyalty Commissions raises the surrender limit by an anchor of 5 percent, sized after the surrender define is verified.
+
+No further loop pass is planned for this planning goal. The implementation goal must run its own near-completion loop pass.
 
 ## `097_collaboration_source_inventory.md`
 

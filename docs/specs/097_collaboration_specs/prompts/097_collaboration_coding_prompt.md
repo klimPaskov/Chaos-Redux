@@ -40,14 +40,17 @@ The planning pass had no vanilla files, no vanilla documentation, and no HOI4 MC
 5. Whether the puppet on-action fires for that creation effect.
 6. Whether a state can change controller without changing owner by script, and whether a reliable trigger exists for friendly divisions present in a state. Open Gates depends on both.
 7. Whether a subject's overlord can be changed during a war cleanly. Turned Regime depends on it.
+8. Whether the collaboration trigger reads above zero for pairs where neither side occupies the other. Fallout's reset depends on it. Route the result to the Fallout owner, and do not patch Fallout from Event 097.
+
+The architecture plan lists these and the other engine checks as rows V1 to V34, with the design consequence of each failure. Verify V1, V2, V4, V6, V8, V9, V10, and V32 first.
 
 Then bring these decisions to the user and implement only what the user chooses:
 
 - the democratic and non-aligned installer route in Part 3, if fact 4 shows the ideology rule blocks it
-- whether Evolution clocks may use the shared daily host pulse, if the architecture plan recommends it
-- the war-weighted selection factor, recorded as an unresolved proposal in the package README
+- whether A2 may set the value to the current reading minus the points, if fact 1 shows negative changes do not stop at zero
+- the Event 039 type conflict, before the Intelligence cluster rows are written
 
-An engine fact that blocks a mapped feature is a blocker to report. Do not replace the feature with a substitute without user approval.
+An engine fact that blocks a mapped feature is a blocker to report. Do not replace the feature with a substitute without user approval. If Open Gates or Turned Regime is blocked, remove every surface that depends on it together and report one blocker, as Part 6 states.
 
 ## Step 2: implement
 
@@ -57,13 +60,14 @@ Follow the architecture plan for file layout, helper names, and hooks, and keep 
 - Participants: one trigger built on the shared special-country and nonhuman classifiers.
 - Opening transaction, response window, batched application pass, deepening tranche, and Fallout stand-down. The pass schedules itself and adds no periodic world hook. Pair work uses scope iterators, never counted loops.
 - Registration: switch the raw registration entry to the constant, add the unavailability reasons, add the Event Details premise and current-state line, add the evolution previews and all eight evolution selectors, and add Event 097 to the reworked default-enable list in the same change that completes this wiring.
-- Evolutions: MTTH pacing, one log entry each with no actor, disabled-evolution safety, active-event entries, and pre-fire openings.
+- Evolutions: the Part 2 timing model, one log entry each with no actor, disabled-evolution safety, active-event entries, and pre-fire openings. Countdowns start from one call placed beside the existing Event 026 call in the shared Chaos add path, plus Event 097's firing and war hooks. That shared edit is accepted. Once an evolution is active, gate its behavior on the disable check only, not on the Chaos tier.
 - Occupation and capitulation hooks: seats, Open Ministries, prepared cadres, Fifth Column evaluation, Open Gates, capitulation offer, and registry updates. Every hook is event-driven and checks participant status, Event 097 depth, core status, and the Fallout gates.
 - Installation helper shared by the capitulation offer and the Seat decision, with registry, Installed Administration lifecycle, auxiliaries, Chaos, and the competing-orders check.
-- Decisions and Collaborators Unmasked through `097_collaboration_decision_mission_prompt.md`.
+- Decisions and Collaborators Unmasked through `097_collaboration_decision_mission_prompt.md`, with costs quoted through the shared universal cost framework.
+- The reports added by the improvement loop: the capitulation report to occupiers, the Fifth Column report, the two reports to the original country, and the national Collaborators Unmasked at restoration, all from Part 3.
 - The public contract from Part 5 with caller proof checks, documented in the paired reference documents.
 - The complete Chaos impact map, with every row, repeat guard, reversal, history reason, and the generic-source overlap checks.
-- The public value budget: the two qualitative readings and, while active, the Fifth Column band. Every other value stays hidden.
+- The public value budget: the two network readings and, while active, the Fifth Column band. The restoration mood appears only as a line in reports. Every other value stays hidden. Network-dependent values use the band steps in Part 3, read through comparisons, never an exact collaboration number.
 - AI from Part 6 and the probability matrix. Run `chaosx_ai_probability_auditor` for a baseline before setting weights and a `hoi4.probability_compare` pass afterward with the same named scenarios.
 - Assets through `097_collaboration_asset_prompt.md`, super-event through `097_collaboration_super_event_prompt.md`, achievements through `097_collaboration_achievement_prompt.md`.
 - Final localisation written from the localisation direction. No working label becomes final text, and no unresearched super-event text ships.

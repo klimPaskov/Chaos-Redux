@@ -31,7 +31,7 @@ The baseline event touches only this native value. Every stronger behavior belon
 
 ## Participants
 
-A country participates in a firing when it exists, owns at least one state, and uses ordinary human civilian systems.
+A country participates in a firing when it exists, uses ordinary human civilian systems, and either owns at least one state or is a government in exile. Participants receive networks abroad. A participant that owns at least one state is also a host and receives foreign networks inside it.
 
 The shared classifiers decide the human boundary. Actual nonhuman countries never participate in either direction, because they have no population that could collaborate and no human society that would collaborate with them. Special Chaos countries managed by other events also stay outside the event in both directions. Their identities, governments, and lifecycles are owned by scripted logic that a native collaboration government or a seated foreign administration would break. Examples include Death's realm, rat realms, outbreak actors, and Fury hosts.
 
@@ -54,7 +54,7 @@ Each firing adds one layer of collaboration to every ordered pair of participant
 
 ### Base layer size
 
-| World state at the moment of application | Base layer |
+| World state when the firing begins | Base layer |
 | --- | --- |
 | Deep Networks not active | 15 percentage points |
 | Deep Networks active (Evolution I) | 25 percentage points |
@@ -89,7 +89,6 @@ The brief is explicit that the event ignores ideology, alliances, relations, and
 - engine collaboration stops at 100 percent, so repeated layers naturally lose value near the cap
 - Fifth Column strength scales with the host's military situation and the strongest enemy network (Part 3)
 - prepared administrations scale with the network of the specific occupier (Part 3)
-- cluster combinations with Events 039 and 052 add bounded extra depth to one host (Part 5)
 
 ### Engine cap and repeated firings
 
@@ -120,7 +119,7 @@ Network depth does not depend on firings alone. The Deep Networks tranche adds o
 | 6 | 90 | 100 |
 | 7 | 100 | 100 |
 
-From the seventh firing, every Accept pair is at the native cap in both columns. These figures are the reference for the balance scenarios in Part 6. Two countries that both choose Cultivate in every firing reach the Strong band after two firings and the Total band after three. Two countries that both choose Screen gain about 5.6 points per base firing in each direction, stay in the Thin band for two firings, and reach the Ordinary band on the third. Band names are defined in Part 3.
+From the seventh firing, every Accept pair is at the native cap in both columns. These figures are the reference for the balance scenarios in Part 6. Two countries that both choose Cultivate in every firing reach the Widespread band after two firings and the Pervasive band after three. Two countries that both choose Screen gain about 5.6 points per base firing in each direction, stay in the Scattered band for two firings, and reach the Established band on the third. Band names are defined in Part 3.
 
 ### Collaboration from other sources
 
@@ -170,11 +169,11 @@ Option direction: cold opportunism. The speaker plans ahead for conquests and tr
 
 The government opens a vetting campaign across ministries, police, the officer corps, and major enterprises. Foreign networks among its people grow at half the normal rate in this firing, and its own networks abroad also shrink because émigré contacts and friendly foreign officials stop trusting a government that is arresting its own.
 
-The cost is a timed national spirit, working label Vetting Campaign, that lowers stability and raises consumer goods demand while the campaign runs. Its duration is dynamic. It runs longer for a country at war or under Fifth Column pressure, because vetting in wartime disrupts more of the state, and shorter for a country at peace. The ordinary anchors are 120 days at peace and 180 days at war, with stability and consumer goods values large enough to matter, such as 10 percent each. A country already running a Vetting Campaign from an earlier firing can choose Screen again, and the new campaign replaces the old one with the new duration instead of stacking.
+The cost is a timed national spirit, working label Vetting Campaign, that lowers stability and raises consumer goods demand while the campaign runs. Its duration is dynamic and runs longer for a country at war or under Fifth Column pressure, because vetting in wartime disrupts more of the state, and shorter for a country at peace. The ordinary anchors are 120 days at peace and 180 days at war, with stability and consumer goods values large enough to matter, such as 10 percent each. A country already running a Vetting Campaign from an earlier firing can choose Screen again, and the new campaign replaces the old one with the new duration instead of stacking.
 
-Screen also has a requirement: the country must not be in open civil war, and its stability must be at least 30 percent, a tuning anchor that keeps the vetting campaign from pushing a fragile state toward collapse. The blocked tooltip names the exact requirement. The option is still visible when blocked, and the event always keeps Accept as a valid choice.
+Screen also has a requirement: the country must not be in open civil war, and its stability must be at least 30 percent, a tuning anchor that keeps the vetting campaign from pushing a fragile state toward collapse. Event options cannot be shown greyed out, so when Screen is unavailable the report shows a replacement option in its place. That option has Accept's effect, says that a vetting campaign cannot be afforded now, and its tooltip names the exact unmet requirement. The event always keeps Accept as a valid choice.
 
-Option direction: suspicion that turns on the speaker. The irony is that the vetting committee itself may contain the people it is looking for, and the report should let the player suspect this without stating it. Grim irony fits. Comedy at the expense of victims of purges does not.
+Option direction: suspicion that turns on the speaker. The irony is that the vetting committee itself may contain the people it is looking for, and the report should let the player suspect this without stating it. Grim irony fits here, while comedy at the expense of victims of purges never does.
 
 ### Text tone for the opening report
 
@@ -199,8 +198,8 @@ The event owns a small set of hidden records. None of them is a new public meter
 
 ### Country records
 
-- incoming network depth: the total collaboration that Event 097 has added inside this country, after incoming multipliers, capped at 100
-- outgoing network depth: the total collaboration that Event 097 has added for this country abroad before host multipliers, capped at 100
+- incoming network depth: for each firing, the base layer times this host's incoming multiplier, which is the network an Accept beneficiary gained inside it, summed and capped at 100
+- outgoing network depth: for each firing, the base layer times this country's outgoing multiplier, which is the network it gained inside an Accept host, summed and capped at 100
 - the stance chosen in each firing, kept for achievements
 - Fifth Column state, active responses, and cooldowns (Part 3 and Part 4)
 
@@ -212,10 +211,10 @@ The event keeps the public-facing value budget at the minimum the mechanic allow
 
 | Reading | Source | Bands |
 | --- | --- | --- |
-| Foreign networks among us | incoming network depth | Scattered below 20, Established from 20, Deep from 40, Pervasive from 70 |
+| Foreign networks among us | incoming network depth | Scattered below 15, Established from 15, Widespread from 40, Pervasive from 70 |
 | Our networks abroad | outgoing network depth | same bands |
 
-The readings appear in the opening-report option tooltips, in the Loyalties decision category header when that category is visible (Part 4), and in the reports of later evolutions. They use words, not numbers, and each band has a short tooltip that explains what it means in play. For example, Deep tells the player that enemy armies will find administrations ready to serve them and that capitulation will come sooner.
+The readings use the same four bands and edges as the network bands in Part 3, so the player meets one ladder of words everywhere. The readings appear in the opening-report option tooltips, in the Divided Loyalties category text when that category is visible (Part 4), and in the reports of later evolutions. They use words, not numbers, and each band has a short tooltip that explains what it means in play. For example, Widespread tells the player that enemy armies will find administrations ready to serve them and that capitulation will come sooner.
 
 The readings share one colour identity in dark tooltip and decision surfaces. Reports drawn on parchment use plain text for these words, without colour formatting.
 
@@ -223,7 +222,7 @@ The readings share one colour identity in dark tooltip and decision surfaces. Re
 
 Event 097 uses the shared Repeatable rules for weight recovery and cap reduction. Its normal eligibility needs at least two valid participants and no application pass in progress. Both conditions are reported through the shared unavailability path, so the event list shows `N/A` with a reason instead of a silent zero weight.
 
-The event uses the ordinary shared weight. The shared selection system has no event-owned weight factor, and adding one would change event selection for every event. A war-weighted factor for Event 097 is recorded as an unresolved proposal in the package README and is not part of this specification.
+The event uses the ordinary shared weight. The shared weight lookup does allow an event-specific branch, which Event 009 uses. Event 097 does not take one, because the probability review estimates that it already fires often in a small enabled pool, and a war factor would raise that further in exactly the wars where its effects are strongest.
 
 The event has no actor. It records one history row per firing with no country flag.
 
@@ -231,7 +230,7 @@ The event has no actor. It records one history row per firing with no country fl
 
 The Event Details text describes the premise and nothing else. It says that sympathizers prepared to serve foreign governments have appeared in every country at once, that each government has the same abroad, and that the networks grow deeper as the world grows more unstable. It does not list effects, numbers, stances, or evolution rules.
 
-One qualitative current-state line is allowed, in the same style as other Chaos Redux events that show a current reading: how deep the networks have grown in this campaign, using words such as first contacts, spreading, or entrenched, derived from the firing count and evolution state.
+One qualitative current-state line is allowed, in the same style as other Chaos Redux events that show a current reading: how deep the networks have grown in this campaign, using words such as first contacts, spreading, or everywhere, derived from the firing count and evolution state.
 
 ## Cleanup and persistence
 

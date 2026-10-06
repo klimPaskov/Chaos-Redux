@@ -12,12 +12,12 @@ Several behaviors read the native collaboration of one occupier inside one host 
 
 | Band | Collaboration of the occupier inside the host | Meaning in play |
 | --- | --- | --- |
-| Thin | below 15 | No Event 097 behavior |
-| Ordinary | 15 to 39 | One baseline layer or more is in place |
-| Strong | 40 to 69 | Several layers, or Deep Networks layers |
-| Total | 70 and above | The occupier's network runs through the whole host administration |
+| Scattered | below 15 | No Event 097 behavior |
+| Established | 15 to 39 | One baseline layer or more is in place |
+| Widespread | 40 to 69 | Several layers, or Deep Networks layers |
+| Pervasive | 70 and above | The occupier's network runs through the whole host administration |
 
-The band edges are tuning anchors in one constant group and are shared by every behavior in this part.
+The band edges are tuning anchors in one constant group. They are shared by every behavior in this part and by the two public readings in Part 1, which use the same words.
 
 Boundary conventions apply across the whole specification. A band includes its lower edge. A percentage that something must be past is exceeded strictly. A requirement written as at least includes its value. A compliance requirement written as above is exceeded strictly.
 
@@ -29,20 +29,20 @@ Without any evolution, Event 097 changes wars only through the engine rules for 
 - When the host capitulates, every occupier converts its collaboration into starting compliance in the host territory it holds.
 - When several enemies can receive the capitulation, the engine favors the one with more collaboration. Because the base layer is uniform, stance choices decide this in practice. A country that chose Cultivate in earlier firings is more likely to be the one its enemies surrender to.
 
-The event adds nothing here. The player should feel the change through faster wars and quieter occupations, and the decision categories and reports in later evolutions explain why.
+The event adds no rule here, but it makes the result visible. One day after a participant host with Event 097 networks inside it capitulates, a short report reaches every human participant enemy that controls its cores with at least an Established network. The report tells the occupier that the defeated country's officials stayed at their posts and are already working under the new flag. When Deep Networks is active, it adds a line about the department heads and police directors among them. The report reuses the seat image and adds no effect. The same one-day follow-up also runs the Loyalty Commissions reduction from Part 4.
 
 ## Evolution I: prepared cadres at capitulation
 
-When a participant host capitulates and Deep Networks is active, every participant enemy that occupies host states and holds at least a Strong network inside the host receives a lasting occupation bonus in each host core state it controls.
+When a participant host capitulates and Deep Networks is active, every participant enemy that occupies host core states and holds at least a Widespread network inside the host receives a lasting occupation bonus in each host core state it controls.
 
 | Occupier band | Compliance growth in those states | Resistance target in those states | Duration |
 | --- | --- | --- | --- |
-| Strong | +25 percent | -10 | 365 days |
-| Total | +50 percent | -20 | 365 days |
+| Widespread | +25 percent | -10 | 365 days |
+| Pervasive | +50 percent | -20 | 365 days |
 
 The bonus is a state-level modifier tied to the occupier. It is removed early when the occupier loses control of the state. It applies once per capitulation per occupier and host. It stacks with the engine's own compliance at capitulation because the two represent different things: the engine turns collaborators into starting compliance, and the prepared cadres keep that compliance growing.
 
-The host's government, if it survives in exile, receives a short report from its own point of view: the people who kept the provinces running under the enemy were the same people who ran them before.
+The host's government, if it survives in exile, receives a short report from its own point of view: the people who kept the provinces running under the enemy were the same people who ran them before. The report reuses the Open Ministries image.
 
 ## Evolution II: seated administrations
 
@@ -54,7 +54,7 @@ A seat is considered when a state changes controller and all of the following ar
 - the state is a core of the owner
 - the new controller is at war with the owner
 - Event 097 has added networks inside the owner
-- the new controller holds at least an Ordinary network inside the owner
+- the new controller holds at least an Established network inside the owner
 - the state has not been seated for this controller in the last 180 days
 - Administrations in Waiting is active and enabled
 
@@ -64,13 +64,19 @@ The previous controller can be the owner or one of the owner's allies. The seat 
 
 The state receives:
 
-- an immediate compliance gain equal to half the new controller's collaboration inside the owner, capped at 40
-- a lowered resistance target for this controller, equal to a quarter of that collaboration and capped at 25, with a removable identifier
-- a seat marker recording the controller, the date, and the controller's collaboration inside the owner at that moment, which Part 4 texts use after the state is retaken
+- an immediate compliance gain set by the new controller's network band inside the owner
+- a lowered resistance target for this controller, set by the same band, with a removable identifier
+- a seat marker recording the controller, the date, and the band at that moment, which Part 4 texts use after the state is retaken
 
-While the Fifth Column is active in the owner at an effective band of Wavering or higher, the compliance gain grows by half and its cap rises to 50.
+| Network band | Compliance gain | Resistance target |
+| --- | --- | --- |
+| Established | +12 | -6 |
+| Widespread | +25 | -12 |
+| Pervasive | +40 | -20 |
 
-The order is fixed: the base gain and its cap of 40 first, then the Fifth Column increase and its cap of 50, then the halving from the owner's Loyalty Commissions in Part 4.
+While the Fifth Column is active in the owner at an effective band of Wavering or higher, the compliance gain grows by half, up to a cap of 50. The order is fixed: the band value first, then the Fifth Column increase and its cap, then the halving from the owner's Loyalty Commissions in Part 4.
+
+Every formula in this specification that depends on one country's network inside another uses band steps like these, read through comparisons in occupation contexts. None of them needs the engine to return the exact collaboration number.
 
 An Open Gates state is seated at once when it changes hands.
 
@@ -80,7 +86,7 @@ When the state changes controller again, the seat ends. The resistance-target id
 
 ### Open ministries
 
-When the capture takes the owner's capital state and the new controller holds at least a Strong network inside the owner, the new controller receives an immediate additional compliance gain of 15 in every other owner core state it controls, and the owner loses 10 percent war support. This happens once per war for each owner and controller pair.
+When the capture takes the owner's capital state and the new controller holds at least a Widespread network inside the owner, the new controller receives an immediate additional compliance gain of 15 in every other owner core state it controls, and the owner loses 10 percent war support. This happens once per war for each owner and controller pair.
 
 ### Reports
 
@@ -99,7 +105,7 @@ A participant host has the Fifth Column when all of the following are true:
 - the host is at war with at least one participant enemy
 - Event 097 has added networks inside the host
 - the host's surrender progress is above 20 percent
-- at least one participant enemy controls a core state of the host and holds at least an Ordinary network inside it
+- at least one participant enemy controls a core state of the host and holds at least an Established network inside it
 - The Fifth Column evolution is active and enabled
 
 The strongest enemy network is the highest band among enemies that satisfy the last condition.
@@ -114,15 +120,19 @@ The strongest enemy network is the highest band among enemies that satisfy the l
 
 A band drops only when surrender progress falls 5 points below its floor. This prevents the spirit from flickering every time a single state changes hands.
 
+### Report
+
+The first time a host gains the Fifth Column in a war, and each time its raw band rises during that war, a short report reaches the host. It describes what its own officials are now doing at that band, from the government's point of view, and uses the Fifth Column image. The report has one acknowledgement option and no effect beyond the spirit itself. It does not repeat when a band falls and rises again within 90 days.
+
 ### Effects
 
 The host receives one national spirit, working label Fifth Column, implemented as one dynamic modifier whose values come from the band and from a network factor.
 
 | Strongest enemy network | Network factor |
 | --- | --- |
-| Ordinary | 0.5 |
-| Strong | 1.0 |
-| Total | 1.5 |
+| Established | 0.5 |
+| Widespread | 1.0 |
+| Pervasive | 1.5 |
 
 Values at network factor 1.0:
 
@@ -181,10 +191,10 @@ The installation threshold is the minimum collaboration an occupier needs inside
 
 | Situation | Threshold |
 | --- | --- |
-| Ordinary | 40 |
+| Usual case | 40 |
 | The host reached the Collapsing band in this war | 30 |
 | The host chartered a government in exile before capitulating (Part 4) | +10 to the threshold |
-| The host lies inside a registered external sphere for the occupier (Part 5) | -10 to the threshold |
+| The installation comes through the External sphere route from Part 5 | -10 to the threshold |
 
 The threshold never falls below 25 and never rises above 60.
 
@@ -192,7 +202,7 @@ The threshold never falls below 25 and never rises above 60.
 
 When a participant host capitulates while Collaboration Governments is active, Event 097 looks for one installer among the host's participant enemies.
 
-An enemy qualifies when it controls at least one core state of the host, holds collaboration inside the host at or above the threshold, and there is no living government installed through this route for the host's original tag.
+An enemy qualifies when it controls at least one core state of the host and holds collaboration inside the host at or above the threshold, no living collaboration government exists for the host's original tag, whether installed through Event 097 or through vanilla, and the original tag is not under its reinstallation cooldown from Part 4.
 
 When several enemies qualify, the installer is the one with the highest network band, then the most host core states controlled, then the country that received the capitulation, then a random choice among equals. The first qualifying candidate is always accepted, so the selector never ends without an installer when one qualifies.
 
@@ -212,7 +222,7 @@ Installation uses the vanilla collaboration-government creation path, with the i
 After the vanilla route creates the government, Event 097 adds its own layer:
 
 - a provenance marker that identifies the government as installed through Event 097
-- a registry row with the government, the original tag, the installer, the installation date, and the route used (offer, decision, or external sphere)
+- a registry row with the government, the original tag, the installer, the installation date, and the route used (offer, decision, or External sphere)
 - the Installed Administration spirit at its first stage
 - local auxiliary forces (below)
 - the Chaos change from the impact map
@@ -220,7 +230,7 @@ After the vanilla route creates the government, Event 097 adds its own layer:
 
 A democratic installer uses the same route. Text calls the result a provisional administration instead of a collaboration government. If the engine route refuses a democratic overlord, the implementation stops and reports the blocker. It must not quietly exclude democracies.
 
-Repository evidence makes this blocker likely rather than hypothetical. The mod's own copy of the ideology definitions sets `can_create_collaboration_government = no` for the democratic group, gives `can_collaborate = yes` only to communism and fascism, and gives the non-aligned group neither. Whether the scripted creation effect honors these rules could not be confirmed, because vanilla documentation and the HOI4 MCP tools were unavailable. The implementation must establish this before writing the installation helper. If the effect honors the rules, the user chooses between three directions, and the implementation must not pick one alone:
+The mod ideology files make this blocker likely. The mod's own copy of the ideology definitions sets `can_create_collaboration_government = no` for the democratic group, gives `can_collaborate = yes` only to communism and fascism, and gives the non-aligned group neither. Whether the scripted creation effect honors these rules could not be confirmed, because vanilla documentation and the HOI4 MCP tools were unavailable. The implementation must establish this before writing the installation helper. If the effect honors the rules, the user chooses between three directions, and the implementation must not pick one alone:
 
 - keep the vanilla route and accept that democratic and non-aligned installers cannot install, which narrows the brief's ideology-blind promise
 - change the ideology rules globally, which also changes vanilla intelligence operations for every democracy and non-aligned country
@@ -263,8 +273,8 @@ The installed government carries one Event 097 spirit at a time. It never holds 
 | --- | --- | --- | --- |
 | Imposed Administration | Installation | Stability -15 percent, war support -20 percent, faster auxiliary recruitment from local police cadres | 365 days pass without entering Contested, or Contested begins |
 | Entrenched Administration | 365 days in Imposed without being Contested | Stability -5 percent, war support -10 percent, consumer goods demand reduced because local elites manage supply | Contested begins |
-| Contested Administration | The installer is at war and past 40 percent surrender progress, or a rival participant at war with the installer occupies part of the government's territory and holds at least a Strong network inside the government's country | Stability -25 percent, war support -25 percent, Turned Regime becomes possible | The condition ends, returning to the previous stage |
-| Abandoned Administration | The installer capitulates, is annexed, or stops being the government's overlord for any reason other than Turned Regime | Stability -30 percent, political power gain -50 percent, the strongest restoration pressure for Event 095 | The original country is restored, or two years pass, after which the spirit is removed and the government continues as an ordinary country with a former-collaboration marker |
+| Contested Administration | The installer is at war and past 40 percent surrender progress, or the installer has capitulated and is still at war, or a rival participant at war with the installer occupies part of the government's territory and holds at least a Widespread network inside the government's country | Stability -25 percent, war support -25 percent, Turned Regime becomes possible | The condition ends, returning to the previous stage |
+| Abandoned Administration | The government stops being the installer's subject for any reason other than Turned Regime: the installer is annexed, the government is released at a peace conference, or it becomes independent through Event 063 or the engine | Stability -30 percent, political power gain -50 percent, the strongest restoration pressure for Event 095 | The old installer makes it a subject again, which returns it to Imposed. Otherwise the original country is restored, the government stops existing, or two years pass, after which the spirit is removed and the government continues as an ordinary country with a former-collaboration marker |
 
 The values are tuning anchors. Every stage must matter in play, because the spirit is the regime's whole political problem.
 
@@ -282,7 +292,7 @@ A government installed through this route can defect to a rival during a war. Th
 
 - the government is in the Contested stage
 - a rival participant is at war with the installer and with the government
-- the rival occupies at least one core state of the government and holds at least a Strong network inside the government's country
+- the rival occupies at least one core state of the government and holds at least a Widespread network inside the government's country
 - the installer is past 40 percent surrender progress, or the Fifth Column is active in the installer at the Defecting band or higher
 
 The installed government is itself a participant, so later firings build networks inside it like any other country. The variant reads the rival's network only where the rival occupies the government's territory, which keeps every pair read in an occupation context. A rival that chose Cultivate in recent firings is the most likely beneficiary, because its networks inside every country are deeper than those of an ordinary power.
@@ -299,8 +309,21 @@ The competing-orders milestone is reached the first time two or more different p
 
 ### Registry cleanup
 
-A registry row is retired when its government stops existing, when the government becomes independent, or when the original country is restored over its territory. Retirement keeps a small history record for achievements and Event 095 but removes the row from every live count.
+A registry row in the Abandoned stage stays in the registry, so Event 095 can still target the government, but it is outside every live count: the competing-orders check, the B1 price, the installer's government count, and achievements that count living governments. The row is retired when its government stops existing, when the Abandoned stage ends, or when the original country is restored over its territory. Retirement keeps a small history record for achievements and Event 095.
+
+A living installed government is itself a host. If it capitulates, no second government can be installed over the same original tag while it lives, because of the one-per-original-tag rule. Only Turned Regime can move it to a new master.
+
+## Reports to the original country
+
+The original country of an installed government learns what happened to it, if it still exists as a government in exile:
+
+- When a government is installed over its cores, it receives a short report about the officials, politicians, and officers who formed that government, from the exiles' point of view, with the restoration mood line from Part 5.
+- When that government enters the Abandoned stage, it receives a second short report about a regime left without its protector, again with the restoration mood line.
+
+Both reports reuse the Open Ministries image and carry no effect.
 
 ## Collaborators and the returning owner
 
-When a host survives, the networks inside it remain a problem. Part 4 defines the responses available to the host, and Part 5 defines how Event 095 and other events read the state left behind.
+When a host survives, the networks inside it remain a problem. Part 4 defines the responses available to the host during the war, and Part 5 defines how Event 095 and other events read the state left behind.
+
+When the original country is restored over the territory of a government installed through Event 097, whether by an Event 095 uprising, a peace-conference liberation, or another restoration route, the restored government faces a national version of Collaborators Unmasked. It uses the same two options and the same effects as the Part 4 event: Purge subtracts 10 points from the former installer's collaboration inside the restored country and costs the timed stability penalty, and Amnesty keeps the network and gives the restored capital state the Amnesty modifier. The text addresses the whole former government, its ministers and its police, instead of one district. The choice happens once per restoration. Post-war purges of collaborators after liberation, such as those in France after 1944, are the historical pattern this follows, used here only as general inspiration.

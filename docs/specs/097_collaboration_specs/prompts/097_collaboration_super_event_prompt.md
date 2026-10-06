@@ -19,7 +19,7 @@ Super-event slot 97 belongs to an Event 015 super-event. Use the next free slot 
 
 ## What the player should feel
 
-Cold recognition. The world did not burn. It was reorganized by people who were ready to serve whoever arrived. The player should look at their own ministries differently afterward.
+Cold recognition that the world has been reorganized by people who were ready to serve whoever arrived, with no great catastrophe needed. The player should look at their own ministries differently afterward.
 
 ## Title direction
 

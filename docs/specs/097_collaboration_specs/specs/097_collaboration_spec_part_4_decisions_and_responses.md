@@ -41,11 +41,11 @@ This category is an ordinary category with its icon and a concise description. I
 
 | Action | Working label | Visible when | Effect | Costs | Duration and cooldown |
 | --- | --- | --- | --- | --- | --- |
-| A1 | Loyalty Commissions | At war, and Administrations in Waiting or The Fifth Column is active, or a participant enemy controls one of our cores. Hidden while the Fifth Column is at Defecting or Collapsing. | Starts the wartime form of the vetting spirit. While it runs, seats against us gain half as much compliance, the Fifth Column counts one band lower, Open Gates timers started during it run twice as long, and if we capitulate, every occupier's compliance in our cores is reduced (below) | Political power, and stability and consumer goods through the spirit | Runs 180 days. Available again 90 days after it ends. |
+| A1 | Loyalty Commissions | At war, and Administrations in Waiting or The Fifth Column is active, or a participant enemy controls one of our cores. Hidden while the Fifth Column is at Defecting or Collapsing. | Starts the wartime form of the vetting spirit. While it runs, our surrender limit rises a little, seats against us gain half as much compliance, the Fifth Column counts one band lower, Open Gates timers started during it run twice as long, and if we capitulate, every occupier's compliance in our cores is reduced (below). The surrender limit change has an anchor of 5 percent, sized after the engine's collaboration surrender define is verified, so that A1 matters in wars before Administrations in Waiting and The Fifth Column. | Political power, and stability and consumer goods through the spirit | Runs 180 days. Available again 90 days after it ends. |
 | A2 | Arrest the Prepared Officials | Administrations in Waiting is active and a participant enemy holds at least one seated state of ours | Subtracts 15 points from that enemy's collaboration inside us, never below zero. Targets the seating enemy with the strongest network, then the one holding the most seated states, then a random one among equals. The tooltip names that enemy and its band. | Manpower for police and gendarmerie, infantry equipment, political power | Available again 120 days after use |
 | A3 | Evacuate the Ministries | The Fifth Column is at Defecting or Collapsing | The Fifth Column counts one band lower and Open Gates cannot happen for 120 days | Trains, or trucks when the country lacks the trains, plus a timed factory output penalty and political power | Runs 120 days. Available again 180 days after it ends. |
 | A4 | Commissars in the Ministries | The Fifth Column is at Defecting or Collapsing | Removes the factory output and recruitment penalties of the Fifth Column for 90 days and suspends Open Gates for the same period | Command power, army experience, and a timed stability penalty | Runs 90 days. Available again 180 days after it ends. |
-| A5 | Charter a Government in Exile | Collaboration Governments is active, we have not capitulated, we are not a subject or an installed government, and we are past 40 percent surrender progress or a participant enemy with at least a Strong network controls our cores | Raises the installation threshold against us by 10 until the war ends, and raises the starting restoration pressure of any government installed over us anyway. The tooltip says in plain words that a foreign power will need a deeper network here to install a government over us. | Political power, plus convoys for a country with a coastline or trucks overland for a landlocked country | Once per war |
+| A5 | Charter a Government in Exile | Collaboration Governments is active, we have not capitulated, we are not a subject or an installed government, and we are past 40 percent surrender progress or a participant enemy with at least a Widespread network controls our cores | Raises the installation threshold against us by 10 until the war ends, and raises the starting restoration pressure of any government installed over us anyway. The tooltip says in plain words that a foreign power will need a deeper network here to install a government over us. | Political power, plus convoys for a country with a coastline or trucks overland for a landlocked country | Once per war |
 
 An action that is running or waiting to become available again is not shown as a button, and the category text names the running measures instead. A1 and A3 never stack beyond one band in total, because both represent removing collaborators from contact with the enemy. A3 and A4 stack because they address different parts of the column.
 
@@ -78,7 +78,7 @@ The Fifth Column has a raw band from surrender progress and an effective band af
 
 ### A1 at capitulation
 
-If a country with Loyalty Commissions running capitulates, a hidden follow-up runs one day later, after the engine has converted collaboration into compliance. For each participant enemy that still controls our cores when the follow-up runs, it subtracts a quarter of that enemy's collaboration, in compliance points, from each of those states, never below zero. States that changed hands during the delay are skipped. The one-day delay makes the result independent of the order in which the engine and the capitulation hooks run.
+If a country with Loyalty Commissions running capitulates, a hidden follow-up runs one day later, after the engine has converted collaboration into compliance. For each participant enemy that still controls our cores when the follow-up runs, it subtracts compliance from each of those states by that enemy's network band, never below zero: 5 for Established, 12 for Widespread, and 20 for Pervasive. States that changed hands during the delay are skipped. The one-day delay makes the result independent of the order in which the engine and the capitulation hooks run.
 
 ### How reductions work
 
@@ -86,16 +86,16 @@ A2 and the Purge option subtract a fixed number of points from the current nativ
 
 The implementation must verify that a negative collaboration change stops at zero. Purge depends on that behavior, because it runs after the state has changed hands and the enemy may no longer occupy any of our cores, so no value is left to read. If the engine does not stop at zero, the implementation reports a blocker for Purge and A2. Setting the value to the current reading minus the points, read in an occupation context, is a candidate route for A2 that needs the user's approval before use.
 
-The Foreign networks among us reading describes every foreign power together, so it does not fall after A2 or Purge, which act on one enemy. The A2 tooltip and the Collaborators Unmasked text show that enemy's band before and after, using the value recorded when its administration was seated, lowered by the subtracted points.
+The Foreign networks among us reading describes every foreign power together, so it does not fall after A2 or Purge, which act on one enemy. The A2 tooltip names the targeted enemy's current band, read while it controls our cores. The Collaborators Unmasked text names the band recorded when its administration was seated, and says that the network has been cut back if Purge is chosen.
 
 ### Dynamic costs
 
-Costs scale with the country and the situation. The minor anchor applies to a country with few core states and the major anchor to a country with many, with a linear scale between two core-state counts kept in the constant group. All anchors live in one constant group.
+Costs are quoted through the shared universal cost framework, so cost-changing effects from other events, such as Event 026 sales, apply to them as they do elsewhere. Costs scale with the country and the situation. The minor anchor applies to a country with few core states and the major anchor to a country with many, with a linear scale between two core-state counts kept in the constant group. All anchors live in one constant group.
 
 | Action | Small country anchor | Large country anchor | Situation factor |
 | --- | --- | --- | --- |
 | A1 | 25 political power, 10 percent stability, 10 percent consumer goods | 50 political power, same spirit values | none, because A1 is hidden at Collapsing |
-| A2 | 5,000 manpower, 500 infantry equipment, 25 political power | 15,000 manpower, 1,500 infantry equipment, 50 political power | Manpower falls by a third when the enemy holds a Total network, because the officials are easy to find |
+| A2 | 5,000 manpower, 500 infantry equipment, 25 political power | 15,000 manpower, 1,500 infantry equipment, 50 political power | Manpower falls by a third when the enemy holds a Pervasive network, because the officials are easy to find |
 | A3 | 10 trains or 300 trucks, 15 percent factory output for 120 days, 25 political power | 20 trains or 600 trucks, same output penalty, 50 political power | Political power cost falls by 10 at Collapsing |
 | A4 | 25 command power, 25 army experience, 10 percent stability for 90 days | 40 command power, 50 army experience, same stability | Command power cost never exceeds 60 |
 | A5 | 50 political power, 5 convoys or 100 trucks | 100 political power, 15 convoys or 300 trucks | none |
@@ -178,9 +178,9 @@ Weights belong to the probability matrix and must be audited. Decision weights u
 ### Divided Loyalties
 
 - A1 has zero weight unless a participant enemy controls our cores or our surrender progress is past 10 percent. Outside an active Fifth Column it is taken at most once per war.
-- A country at war whose foreign networks reading is Deep or Pervasive takes A1 early in the war, before the Fifth Column appears.
+- A country at war whose foreign networks reading is Widespread or Pervasive takes A1 early in the war, before the Fifth Column appears.
 - A country at Defecting or Collapsing takes A3 first, then A5 when the A5 rule below is met, then A4 when it has the command power, then A2.
-- A2 is taken when the seating enemy holds a Strong or Total network and the country's available manpower is at least twice the action's manpower cost.
+- A2 is taken when the seating enemy holds a Widespread or Pervasive network and the country's available manpower is at least twice the action's manpower cost.
 - A5 is taken by a country with allies still at war, or by one whose ruling ideology differs from that of the likely installer. The likely installer is the participant enemy that controls our cores, holds the highest band, and can install through the resolved Part 3 route. A country that shares that enemy's ideology group and has no allies at war skips A5. A democracy weighs A5 higher than other ideologies.
 - Installed governments use A1 to A4 like any other country. A5 is hidden for them.
 

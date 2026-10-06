@@ -28,11 +28,11 @@ Titles and descriptions are direction only. Write final localisation in the Chao
 ### `097_collaboration_clean_ministries`
 
 - Title direction: no one left inside to open the gates.
-- Description direction: screen your state in at least three firings, then survive a war against a major power in which your ministries began defecting, without capitulating and without losing your capital.
+- Description direction: screen your state in every firing, with at least two firings, then survive a war against a major power in which your ministries began defecting, without capitulating and without losing your capital.
 - Eligible: any participant.
-- Unlock: at least three Screen choices recorded, then a war against a major power in which the player's recorded highest band reached Defecting or Collapsing, ending in peace with the player never capitulating and never losing control of the capital during that war.
-- Disqualifier: losing control of the capital at any point in that war.
-- Tracking: Screen count, highest band per war, a capital-lost marker per war cleared at war start, checked when the player leaves the war.
+- Unlock: at least two Event 097 firings with Screen chosen in every one of them, then a war against a major power in which the player's recorded highest raw band reached Defecting or Collapsing, ending in peace with the player never capitulating and never losing control of the capital during that war. The rule does not depend on how many firings a campaign sees.
+- Disqualifier: losing control of the capital at any point in that war, or choosing anything other than Screen in any firing.
+- Tracking: firing count, a marker for any non-Screen choice, the highest raw band per war, and a capital-lost marker that follows the host war-scoped guard rule in Part 3, checked when the player is at peace with every participant enemy.
 - Difficulty: hard.
 
 ### `097_collaboration_three_continents`
@@ -68,7 +68,7 @@ Titles and descriptions are direction only. Write final localisation in the Chao
 - Title direction: a major power taken by telephone.
 - Description direction: make a major power surrender to you while you hold less than half of its core territory, its state apparatus is turning against it, and your network runs through all of it.
 - Eligible: any participant.
-- Unlock: a major power capitulates to the player with an active Fifth Column, the player's network inside it in the Total band, and the player controlling fewer than half of its core states.
+- Unlock: a major power capitulates to the player with an active Fifth Column, the player's network inside it in the Pervasive band, and the player controlling fewer than half of its core states.
 - Tracking: core states are counted once in the capitulation hook over the loser's core states.
 - Difficulty: very hard.
 
