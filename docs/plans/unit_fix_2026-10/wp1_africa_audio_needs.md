@@ -1,5 +1,9 @@
 # WP1 Africa Strange Forces (012) - Audio delivery and held-source needs
 
+The original held-path audit below is the shared-delivery baseline before the WP1 repair pass.
+Current replacements and source hashes for forest idle, plague hoof steps, Pan death and stone recovery are recorded in `wp1_sound_attribution.md` and `wp1_evidence/audio_install/manifest.json`.
+The final table at the end records remaining needs; baseline current-byte statements do not apply to those three replaced canonical WAVs or nine added variants.
+
 This package has 43 unique active mod sound paths: 13 are installed and 30 are held. Consumer counts are path-scoped; a shared pool path appears once per relevant package report.
 
 ## Installed file facts
@@ -317,3 +321,24 @@ No source downloads or new recordings were performed. Source URLs and license fa
 - `docs/plans/unit_fix_2026-10/pipeline_evidence/contact_peak_evidence.json` - SHA-256 `b6193d744c0b10f3d4c6bf464799934010ab07f6ed9991d04ac89bce68a96af8`
 - `docs/plans/unit_fix_2026-10/pipeline_evidence/entity_lint_after.json` - SHA-256 `a388fae714faf098968191b752e99193a82fdd37a28daf6bf6b6ca372dfe42bc`
 - `docs/plans/unit_fix_2026-10/pipeline_evidence/final_inventory.json` - SHA-256 `d1f72e1456c6a09cdce948df00590534414b91518c8241ec36ca3e11ccb6bb6b`
+
+## WP1 repair disposition and remaining recordings
+
+The parent installed twelve source-derived WAVs: two forest idle beds, four plague hoof contacts, three Pan death takes and three stone-recovery takes.
+Every installed file has source/member/cut/output hashes and fresh runtime-byte metrics in the audio install evidence.
+The old forest attack, riverborn water impact/movement, Pan construction/sabotage, donkey voice, gorilla voice and other unresolved cues remain at their existing recordings.
+The model and waveform review interfaces do not establish live listening; the orchestrator's role/transition/plant checks remain required.
+
+| Unit | Delivered | Recording still needed and duration | License options / candidate sources |
+|---|---|---|---|
+| gorilla_heavy_infantry | Finite death blood burst; no sound source substitution. | Real gorilla bark/chest beat, about 0.5-1.5 s; three 0.4-0.6 s iron-on-earth blows; forearm/leather block thuds, about 0.2-0.4 s; two or three 0.2-0.4 s heavy footfalls with body energy. | CC0 or attributed CC BY zoo/field recordings; Wikimedia Commons gorilla calls, Freesound CC0 sledge/anvil/earth impacts. The archived chimp pant-hoot is the wrong species and metal-clanging lineage is unresolved. |
+| pan_sappers | Three public-domain goat calls combined with the clean archived CC0 leonelmail dirt fall, preserving the intended landing phase. | Two or three goat/deer hoof-on-dirt steps, about 0.1-0.3 s; three fuse-hiss/demolition-blast cues, 1.0-1.2 s with blast near 0.15 s; workshop tool clatter and wire ticks, about 0.2-0.6 s; breath/cloth ambience suitable for idle. | CC0 farm/hoof and workshop recordings, or already attributed CC BY/CC BY-SA packs. Existing Shovel Sound supplies only one shovel contact; it is not a complete construction cue. The clipped remaxim/qubodup fall is rejected and is not used in the delivered takes. |
+| stone_cohorts | Three CC BY 4.0 Work With Sounds / Monika Widzicka quern-stone grinding/settling takes. | Three 0.3-0.5 s stone-and-iron thrust impacts; a distinct 1-3 s rockslide/falling-stone death with appropriate settling detail. | CC0 rock-impact packs or PD/CC0 rockslide recordings. [WWS Quern-stones](https://commons.wikimedia.org/wiki/File:WWS_Quern-stones.ogg) covers grinding only; it does not supply a rockslide or thrust. |
+| riverborn | Five archived CC0 bamboo swishes remain unwired candidates; finite death blood burst. | Three wet-thud impact takes, about 0.2-0.5 s, under the existing splash; two or three wet bare-foot steps, about 0.1-0.3 s; source/variation review for selection and water hiss. | CC0 wet impacts/footsteps or PD water recordings. [Bamboo swishes](https://opengameart.org/content/swish-bamboo-stick-weapon-swhoshes) supply air movement; the dry shaft contacts fail RMS gates, and the previously referenced water originals are absent. |
+| forest_giants | Two distinct CC0 wood-creak loop beds, properly wired for continuous idle. | Three heavy wood-whoosh/ground blows, about 0.4-0.8 s; 1-3 s trunk-crack/tree crash; root-tear and leaf movement for emergence, about 0.5-1.5 s; distinct motion/selection/death role review. | CC0 field/Foley wood, earth-impact, tree-fall and roots/leaves recordings. [Wood Creak](https://freesound.org/people/claretcanelon/sounds/346140/) covers the delivered idle; the archived small-axe/dry-branch cuts are too light for the giant strike and remain candidates. |
+| oracle_recon | Finite death blood burst; no source substitution. | Barefoot contacts, about 0.1-0.3 s; breathy chant/whisper bed and observation swell in 200 Hz-4 kHz, about 1-3 s; a gasp and role-matched body fall, about 0.3-1 s. | CC0 or attributed CC BY vocal ambience/footsteps. No exact eligible per-file source chain was found for the current cues; low-band existing recordings remain held. |
+| plague_carriers | Four distinct CC0 outdoor ground/grass horse-hoof contacts; wrong attack deployment hiss removed. | Donkey bray, about 0.4-1 s, with two or three real takes; donkey-appropriate idle/death vocal and tail/variation review; selection/source binding review. | CC0 or attributed CC BY donkey field/zoo recordings from Freesound or Wikimedia Commons. [The archived horse collection](https://opengameart.org/content/horse-gallop-on-different-surfaces) supplies hoof contacts, not a bray; indoor/cartoon members were not selected. |
+
+Selection is a separate engine consumer from entity-state idle.
+No per-subunit selection voice is claimed from the new idle or movement pools; country/original-tag voice routing and mixed-infantry limitations remain open.
+Every genuinely missing recording remains a need for the orchestrator to source with permission; none was downloaded by this pass.

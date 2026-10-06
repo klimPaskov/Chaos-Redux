@@ -131,9 +131,14 @@ Scale measurements are `wp1_evidence/plague_scale_rest_bounds.json`.
 ### Authoring and source blockers
 
 The locked Blender 5.2.2 / adapter 1.11.0 / io_pdx_mesh 0.91.0 export route is healthy.
-The Blender Lab live authoring bridge is unreachable at `localhost:9877`, both by TCP probe and direct tool read.
-The user prohibits opening desktop windows; no window was opened to repair that capability.
-The pipeline requires bones, weights, and keys to be authored in that live session, so those repairs cannot be completed through repository-generated motion or weights.
+Initial Blender Lab TCP and direct-read probes failed at `localhost:9877`.
+A subsequent read-only live probe succeeded and verified Blender 5.2.2 build `d13f752e3b9c`, installed add-on 1.0.3, and module SHA `ba2f57daeca7c3fb2ad50aad75992dfb85c928345918da8bbda7bd08a038e061`.
+The observed live session then held WP3's `mutant_zombies/blender/working/v1/blender/checkpoints/21d_export_batches.blend`; WP1 did not load or modify it.
+The WP1 background pose inspection timed out after 1,800 seconds on the serialized worker lock, without producing a result or leaving an owned Blender worker.
+The current authoring blocker is exclusive session availability, requested from the orchestrator, rather than continued connection failure.
+The exposed client tool count differs from the full locked server inventory, but that count alone is not evidence of incompatibility.
+The user prohibits opening desktop windows; no window was opened.
+The pipeline requires bones, weights, and keys to be authored in a verified exclusive live session, so the blocked repairs cannot be completed through repository-generated motion or weights.
 Safe background export capability is not a substitute for live authoring.
 Source-backed class masks, prop rebakes, and normal-detail repairs also remain unaccepted.
 No paid Meshy task or Internet audio download was started.
@@ -181,5 +186,70 @@ All seven WP1 models need re-filming: gorilla_heavy_infantry, pan_sappers, stone
 
 Skills used: chaos-redux-3d-model-pipeline, chaos-redux-event-assets, chaos-redux-subagents, and chaos-redux-shared-git-commit.
 No skill was created or updated because the existing skills already specify these route, source and acceptance rules.
+
+## Forest idle sound lifecycle and model handoff
+
+Implemented: `chaosx_forest_giants_idle_loop_sfx` uses two distinct source-derived wood-creak beds with `max_audible = 1` and random repetition prevention.
+Only the forest giant idle state's `trigger_once` event consumes it; attack and defend retain the existing one-shot wrapper.
+The two compiled beds use source intervals 18.50-21.00 and 22.50-25.00 seconds from the verified claretcanelon CC0 recording; they measure `-20.8/-20.0` LUFS, `-1.0/-1.6` dBTP, and `1.584/1.211` dB inner-edge RMS difference.
+The old one-shot WAV stays byte-identical to SHA `4a8c467aba711a2aaf744a2711dfa37c0dd3e67b6480e57f18cd6705ebbeefe5`; its uncertain exact source interval is not counted as a third take.
+The forest idle state's source-lint findings are empty, and the WP1 one-shot-then-silent count falls from seven to six.
+Current evidence is `wp1_evidence/audio_install/installed_verification.json` and `wp1_sound_attribution.md`.
+The heavy attack/tree-fall/root-tear sound requirements remain open.
+
+The reviewed model worker handoff is `wp1_model_worker_handoff.md`.
+It lists every numbered ticket step, the healthy export dependencies, the shared-session ownership blocker, and the timed-out read-only adapter request.
+Plague `export/v4` matches all eight installed action hashes; its current-hash idle/move native receipts are usable, whereas the older per-hoof move receipt is stale.
+At scale `0.75`, their sampled whole-mesh minima are about `0.00301` units for idle and `0.00300` for move frames 1, 11, 31 and 41.
+Move frame 21 has minimum `0.03410357` units, above the `0.01` planted-frame tolerance, so its ground contact still needs authored correction.
+Per-part hoof identification and basket/pole clearance are unmeasured; no posed-contact pass is claimed.
+
+The installed `standardfuncsgfx.fxh` normal unpacker reads X from G and Y from negative A.
+The plague ticket's X-in-A/Y-in-G phrase conflicts with that consumer; a subsequent source-backed rebake must follow the actual shader and preserve verified source handedness.
+No normal texture was changed here.
+
+Additional live check: keep the forest giant idle for at least 20 seconds at province 5044, then change to attack, movement and death.
+Expected result: the wood-creak bed continues beyond its first 2.5-second sample, does not stack on every idle cycle, and stops when idle ends.
+Attack/defend wood cues remain individual sounds, with their existing timing; live transition and playback proof are pending.
+
+## Installed sound pools and final offline verification
+
+The parent reviewed the audio handoff `wp1_audio_worker_handoff.md` and installed twelve recorded-sample WAVs across four complete cue pools.
+Source/cut/output hashes, original preimages, licenses and processing commands are retained in `wp1_evidence/audio_install/manifest.json`.
+The permanent per-file credit and consumer handoff is `wp1_sound_attribution.md`.
+No recording was downloaded or synthesized; only the existing collection's licensing metadata was read online.
+
+| Consumer | Before / after takes | Delivered behavior | Remaining acceptance |
+|---|---:|---|---|
+| forest_giants idle | 1 one-shot / 2 looping beds | Distinct CC0 wood-creak beds continue during idle, without restarting on every animation cycle. The attack/defend one-shot stays separate. | Live transition/stop and auditory review; heavy attack and tree-fall sources remain missing. |
+| plague_carriers move/retreat | 1 / 4 | Four distinct outdoor horse-hoof contacts replace the long repeated movement cue. Their 45-75 ms durations fit the inherited 0.3333-second event gaps. | Anatomical hoof plants and field playback remain unverified; no donkey bray was found. |
+| pan_sappers death | 1 / 3 | Three distinct recorded goat calls are paired with a clean body fall on dirt. One cue contains voice and landing; the former landing hoof cue is removed. | Live body/voice fit and animation landing; no claim that the death pose is repaired. |
+| stone_cohorts collapse recovery | 1 / 3 | Three non-overlapping CC BY 4.0 stone-grind recordings replace the shared tool clatter. Existing event times and volumes remain. | Live grinding/settling fit; rockslide death and thrust impact sources remain open. |
+
+Pan death keeps voice at `0.1000` seconds and the intended body phase at the inherited `0.9667` seconds.
+The clean body source is trimmed at `0.420` seconds, faded in over 10 ms and delayed 37,339 samples; its source transient gives a relative `0.866689`-second placement.
+Fresh installed-waveform 10 ms RMS centres put all three body contacts at `0.977834` seconds, within `11.134` ms of the inherited target.
+This proves waveform placement, not anatomical ground contact in the unchanged action.
+The clipped remaxim/qubodup recording, with 82 near-rail samples and a 58-sample plateau, was rejected even though an attenuated derivative looked clean.
+The parent accepted the existing clean CC0 leonelmail dirt fall as the same physical component as the named BigSoundBank example; source choice preserves the planned role and avoids a new recording or weakened substitute.
+
+Fresh destination-byte analysis reads all twelve installed WAVs as PCM16, 44.1 kHz mono and passes the unchanged role gates, including lead, direct clipping, spectral, peak and loop-edge checks.
+Short hoof EBU values are gated and unavailable; the tool's `-70` sentinel is not interpreted as actual loudness.
+New WAV hashes are not shared with another active unit family.
+The source sound/particle audit covers 63 states, clears all four persistent blood findings, reduces silent-idle findings from seven to six, and reduces sample-overlap findings from 29 to 27.
+The remaining 27 overlaps, 29 missing-contact findings, ten measured-peak offsets and 15 sample/cycle findings remain open; a lower count is not a full sound-system pass.
+All 84 original mesh/action/texture payloads remain hash-identical, so this pass does not claim any mesh, rig, material, action or export repair.
+
+Additional orchestrator checks:
+
+1. At province 7920, move and retreat the plague carrier through two complete strides.
+Expected sound result: one short hoof contact for each existing event, four real variants and no movement bed overlapping the next plant.
+Check the frame-21 floating support finding separately; sound clips do not fix it.
+2. At province 2019, trigger Pan death at least three times across separate units.
+Expected result: varied goat cries at entry, one dirt body contact near the existing landing beat, and no second hoof clop on landing.
+3. At province 3834, trigger stone support-attack and death.
+Expected recovery result: stone grinding/settling, without the old shared workshop clatter; the still-pending death rockslide must not be reported as delivered.
+4. For the trailer, refresh `python tools/unit_sounds.py` in the trailer workspace after the orchestrator's replacement recordings are final, then rebuild `project/showcase_v1.py`, audio, credits and final video from the same timeline.
+No showcase clip or video was recorded, rendered or published by WP1.
 - Per-model metrics `docs/plans/unit_fix_2026-10/per_model_delivery_metrics.json` - SHA-256 `89c6d0d0954719a09a8f9dd66eafbd5f3f42e3d2a28b4c29ff29b6f067b9e365`.
 - Package held-source report `docs/plans/unit_fix_2026-10/wp1_africa_audio_needs.md` - SHA-256 `01e1d7a045c1f48228934a39f05f433600b0d4fa0726f21336b3c3a74e6a6a12`.
