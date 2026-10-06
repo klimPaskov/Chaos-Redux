@@ -133,3 +133,16 @@ Only when no actor was captured, it searches the bounded aligned Event 006 activ
 The selection-owner target receives the validity flag with the captured country, and prevents a later row replacing it.
 No country is released, initialized, enrolled or granted a different origin by this fallback.
 Event 021's preflight, static release contract and consumer ownership checks remain authoritative.
+
+## D44. State report choices in plain terms
+
+Disposition: `implemented` at source.
+Basis: G3 and a dependency walk over 752 report/news title, description and scripted-localisation return keys.
+
+Thirteen title/description strings and eight public option labels used the prohibited words records, receipts, ledgers or pilots, including several literal financial nouns.
+The revised text names wages, taxes, property claims, frontier disputes, agreement terms and aircrews directly.
+The Clyde report title is "The Clyde Shipyard Accounts".
+The shortened Asante and Sokoto reports retain their actual counterpart names and recognition, association, embargo and reconquest choices.
+The Council of Communities report retains consent, community guarantees and autonomy conditions.
+No event id, option, cost, effect, scope pointer or report dispatch changes with this wording.
+The full report/news dependency colour audit returns zero findings.
