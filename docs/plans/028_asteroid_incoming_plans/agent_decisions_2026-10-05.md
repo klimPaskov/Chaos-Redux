@@ -18,6 +18,8 @@ The latest dust-stage bulletin replaces earlier unprinted stage bulletins, so a 
 The super-event waits for open asteroid news and pending/open human country reports; queued asteroid news waits while any super-event is visible.
 Impact mechanics and the announced strike date remain independent of these presentation waits.
 The existing monthly host recovers news, super-event, and fragment-visual callbacks lost through annexation, without a new daily on-action.
+Presentation waits inspect only living human-controlled countries.
+Annexation clears the annexed country's open-news, open-report, and undelivered-report flags, while permanent delivery receipts remain intact, so a later release does not revive a phantom window.
 Forced re-entry explains a locked course or a completed passage and preserves its opening date and outcome.
 
 ## Recovery targets and prices
