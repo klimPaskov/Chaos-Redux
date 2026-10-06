@@ -964,6 +964,10 @@ Do not silently overwrite a prior accepted candidate or synchronize an older can
 
 When an asset package contains many generated or sourced images, create a contact sheet for review.
 
+For replacement work, preserve the pre-edit runtime textures, relevant registry text, and original review sheets with hashes in the owning workspace before generating comparison sheets.
+Inspect a contact-sheet script's entry point and configured output paths before running it; do not assume `--help` is read-only when the script has no argument parser.
+Write new sheets to an isolated task directory, never over shared baseline sheets; use the preserved runtime snapshots if another session replaces the shared sheets.
+
 Small template, facility, unit, counter, and emblem packages always require a native-size contact sheet, even when the package contains one final asset.
 
 The canonical decision category picture reference family always requires:
