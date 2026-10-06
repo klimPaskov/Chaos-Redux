@@ -58,7 +58,7 @@ No receipt redirects an existing contract to a successor host.
 | gods_of_africa_bind_contribution_campaign | HOST; bare gods_of_africa_campaign_activation_owned initialized to one inside actual Evolution III activation | Bind host generation/origin and active flag; consume input to zero; never call merely because a global flag is set |
 | gods_of_africa_refresh_grading_conduct | Historical PARTICIPANT; no inputs | Capture host/participant scopes, refresh controlled/owned African host-core caches, unique occupied IDs, deduplicated war episodes, prior flags and current floor causes; existing bounded owner review and before acceptance/final freeze |
 | gods_of_africa_measure_grading_wrath_floor | Historical PARTICIPANT; normal gods_of_africa_grading_wrath_floor | Compute maximum applicable existing floor and raise existing Wrath if needed; conduct calls it and parent replaces its sequential floor assignments |
-| gods_of_africa_begin_core_return | PARTICIPANT in actual territory branch; normal participant variable gods_of_africa_return_state holding the selected STATE (cleared by the caller afterwards); COUNTRY flag gods_of_africa_core_return_begin_ready | Freeze state/host/contract/day plus participant pre-owner/pre-controller flags before native state transfer |
+| gods_of_africa_begin_core_return | PARTICIPANT in actual territory branch or pending final ultimatum; normal participant variable gods_of_africa_return_state holding the selected STATE (cleared by the caller afterwards); COUNTRY flag gods_of_africa_core_return_begin_ready | Freeze state/host/participant/day and contract or ultimatum identity plus participant pre-owner/pre-controller flags before native state transfer |
 | gods_of_africa_complete_core_return | Same PARTICIPANT after that transfer; COUNTRY flag gods_of_africa_core_return_recorded | Require actual post-owner AND post-controller to be proven host; consume pending before first unique returned-state ID; refresh conduct before contract cleanup |
 | gods_of_africa_clear_core_return_work | PARTICIPANT; no inputs | Clear only return snapshots/pending; successful completion or explicit accounted parent recovery |
 | gods_of_africa_resolve_accepted_grading_conduct | PARTICIPANT inside HOST-root acceptance after the unique actual paid acceptance receipt | Resolve outstanding causes only with no war/controlled/owned core and same accepted offer tuple/day; call after gods_of_africa_record_accepted_reconciliation and before clearing paid/offer flags |
@@ -281,3 +281,29 @@ Native transfer semantics (variant selection by `send_equipment`, getter range) 
 No icons, assets, sprites, GUI, player-facing strings or spreadsheet changes are required by these helper-only files.
 The parent owns any shared documentation index link in chaosx_dynamic_effects.md.
 Future extensions must retain typed native receipts and accepted owner proof rather than widening permission through quotes, generic history or periodic observers.
+
+## State-return transfer shared by tribute and the final ultimatum
+
+`gods_of_africa_transfer_current_core_return` runs in STATE scope on an already selected African host-core state.
+Its regular `gods_of_africa_territory_payer` input identifies the actual returning participant, and `event_target:africa_host` identifies the receiving host.
+It stores the state pointer on that participant, begins the exact return proof, transfers ownership and control through the native effect, completes a ready proof and clears the caller input.
+It has no default target, price, timer or report and must be called only by the validated territory-payment or pending-ultimatum owner.
+
+Ordinary territory returns retain their live contract identity.
+A final-ultimatum return instead freezes its own pending ultimatum due-day and marks `gods_of_africa_core_return_ultimatum`, without inventing a demand contract.
+Both sources freeze participant ID, current host pointer and ID, generation, origin, same-day transfer, state ID and pre-transfer ownership/control.
+Completion requires the same source identity and actual host ownership and control after transfer.
+The existing unique `gods_of_africa_returned_core_state_ids` array records a successful return only once.
+Return-work cleanup clears the new participant and ultimatum fields alongside the prior snapshots.
+
+Example inside a validated pending ultimatum participant:
+
+```text
+save_event_target_as = gods_of_africa_territory_payer
+every_controlled_state = {
+	limit = { is_on_continent = africa is_core_of = event_target:africa_host }
+	gods_of_africa_transfer_current_core_return = yes
+}
+```
+
+The native transfer and the restitution factor need the live checks in `takeover_status_2026-10-06.md` under the Event 012 plans folder.

@@ -1048,15 +1048,20 @@ gods_of_africa_measure_grading_wrath_floor = {
 	}
 }
 
-# PARTICIPANT: parent passes the selected real STATE as a bare caller-initialized temp.
+# PARTICIPANT: normal input gods_of_africa_return_state holds the selected STATE.
 gods_of_africa_begin_core_return = {
 	clr_country_flag = gods_of_africa_core_return_begin_ready
 	if = {
 		limit = {
 			gods_of_africa_grading_conduct_can_observe = yes
-			gods_of_africa_contribution_contract_is_current = yes
-			has_variable = gods_of_africa_payment_family
-			check_variable = { gods_of_africa_payment_family = constant:gods_of_africa_demand_family.territory }
+			OR = {
+				AND = {
+					gods_of_africa_contribution_contract_is_current = yes
+					has_variable = gods_of_africa_payment_family
+					check_variable = { gods_of_africa_payment_family = constant:gods_of_africa_demand_family.territory }
+				}
+				gods_of_africa_final_ultimatum_is_open = yes
+			}
 			has_variable = gods_of_africa_return_state
 			NOT = { has_country_flag = gods_of_africa_core_return_pending }
 			var:gods_of_africa_return_state = {
@@ -1067,11 +1072,24 @@ gods_of_africa_begin_core_return = {
 		}
 		save_event_target_as = gods_of_africa_return_participant
 		set_variable = { gods_of_africa_core_return_state = gods_of_africa_return_state }
-		set_variable = { gods_of_africa_core_return_host = gods_of_africa_demand_host }
-		set_variable = { gods_of_africa_core_return_host_id = gods_of_africa_demand_host_id }
+		set_variable = { gods_of_africa_core_return_participant_id = THIS.id }
+		clr_country_flag = gods_of_africa_core_return_ultimatum
+		clear_variable = gods_of_africa_core_return_ultimatum_due_day
+		if = {
+			limit = { gods_of_africa_final_ultimatum_is_open = yes }
+			set_country_flag = gods_of_africa_core_return_ultimatum
+			set_variable = { gods_of_africa_core_return_host = event_target:africa_host }
+			set_variable = { gods_of_africa_core_return_host_id = event_target:africa_host.id }
+			set_variable = { gods_of_africa_core_return_ultimatum_due_day = gods_of_africa_final_ultimatum_due_day }
+			clear_variable = gods_of_africa_core_return_contract_id
+		}
+		else = {
+			set_variable = { gods_of_africa_core_return_host = gods_of_africa_demand_host }
+			set_variable = { gods_of_africa_core_return_host_id = gods_of_africa_demand_host_id }
+			set_variable = { gods_of_africa_core_return_contract_id = gods_of_africa_contract_ledger_id }
+		}
 		set_variable = { gods_of_africa_core_return_generation = event_target:africa_host.africa_host_generation }
 		set_variable = { gods_of_africa_core_return_origin_id = event_target:africa_host.africa_origin_host_id }
-		set_variable = { gods_of_africa_core_return_contract_id = gods_of_africa_contract_ledger_id }
 		set_variable = { gods_of_africa_core_return_day = global.num_days }
 		clr_country_flag = gods_of_africa_core_return_before_owned
 		clr_country_flag = gods_of_africa_core_return_before_controlled
@@ -1103,13 +1121,26 @@ gods_of_africa_complete_core_return = {
 			has_variable = gods_of_africa_core_return_state
 			has_variable = gods_of_africa_core_return_state_id
 			has_variable = gods_of_africa_core_return_host
+			has_variable = gods_of_africa_core_return_participant_id
+			check_variable = { gods_of_africa_core_return_participant_id = THIS.id }
 			check_variable = { gods_of_africa_core_return_host = event_target:africa_host }
 			check_variable = { gods_of_africa_core_return_host_id = event_target:africa_host.id }
 			check_variable = { gods_of_africa_core_return_generation = event_target:africa_host.africa_host_generation }
 			check_variable = { gods_of_africa_core_return_origin_id = event_target:africa_host.africa_origin_host_id }
 			check_variable = { gods_of_africa_core_return_day = global.num_days }
-			gods_of_africa_contribution_contract_is_current = yes
-			check_variable = { gods_of_africa_core_return_contract_id = gods_of_africa_contract_ledger_id }
+			OR = {
+				AND = {
+					NOT = { has_country_flag = gods_of_africa_core_return_ultimatum }
+					gods_of_africa_contribution_contract_is_current = yes
+					check_variable = { gods_of_africa_core_return_contract_id = gods_of_africa_contract_ledger_id }
+				}
+				AND = {
+					has_country_flag = gods_of_africa_core_return_ultimatum
+					gods_of_africa_final_ultimatum_is_open = yes
+					has_variable = gods_of_africa_core_return_ultimatum_due_day
+					check_variable = { gods_of_africa_core_return_ultimatum_due_day = gods_of_africa_final_ultimatum_due_day }
+				}
+			}
 			OR = {
 				has_country_flag = gods_of_africa_core_return_before_owned
 				has_country_flag = gods_of_africa_core_return_before_controlled
@@ -1139,6 +1170,9 @@ gods_of_africa_complete_core_return = {
 }
 
 gods_of_africa_clear_core_return_work = {
+	clr_country_flag = gods_of_africa_core_return_ultimatum
+	clear_variable = gods_of_africa_core_return_participant_id
+	clear_variable = gods_of_africa_core_return_ultimatum_due_day
 	clr_country_flag = gods_of_africa_core_return_pending
 	clr_country_flag = gods_of_africa_core_return_before_owned
 	clr_country_flag = gods_of_africa_core_return_before_controlled
@@ -1150,6 +1184,24 @@ gods_of_africa_clear_core_return_work = {
 	clear_variable = gods_of_africa_core_return_origin_id
 	clear_variable = gods_of_africa_core_return_contract_id
 	clear_variable = gods_of_africa_core_return_day
+}
+
+# STATE scope. The caller freezes the returning participant as the regular
+# gods_of_africa_territory_payer target. Keep proof around the exact native transfer.
+gods_of_africa_transfer_current_core_return = {
+	event_target:gods_of_africa_territory_payer = {
+		set_variable = { gods_of_africa_return_state = PREV }
+		gods_of_africa_begin_core_return = yes
+	}
+	transfer_state_to = event_target:africa_host
+	event_target:gods_of_africa_territory_payer = {
+		if = {
+			limit = { has_country_flag = gods_of_africa_core_return_begin_ready }
+			gods_of_africa_complete_core_return = yes
+		}
+		clear_variable = gods_of_africa_return_state
+		set_country_flag = gods_of_africa_territory_returned
+	}
 }
 
 # PARTICIPANT, inside actual host-acceptance callback AFTER unique paid acceptance receipt.

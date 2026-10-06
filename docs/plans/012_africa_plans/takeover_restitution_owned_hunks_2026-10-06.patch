@@ -1,0 +1,38 @@
+diff --git a/common/scripted_effects/012_africa_gods_effects.txt b/common/scripted_effects/012_africa_gods_effects.txt
+index 8fbab9c20..716e0b0c0 100644
+--- a/common/scripted_effects/012_africa_gods_effects.txt
++++ b/common/scripted_effects/012_africa_gods_effects.txt
+@@ -2819,19 +2819,7 @@ gods_of_africa_return_frozen_core_states = {
+ 				is_controlled_by = event_target:gods_of_africa_territory_payer
+ 				is_core_of = event_target:africa_host
+ 			}
+-			event_target:gods_of_africa_territory_payer = {
+-				set_variable = { gods_of_africa_return_state = PREV }
+-				gods_of_africa_begin_core_return = yes
+-			}
+-			transfer_state_to = event_target:africa_host
+-			event_target:gods_of_africa_territory_payer = {
+-				if = {
+-					limit = { has_country_flag = gods_of_africa_core_return_begin_ready }
+-					gods_of_africa_complete_core_return = yes
+-				}
+-				clear_variable = gods_of_africa_return_state
+-				set_country_flag = gods_of_africa_territory_returned
+-			}
++			gods_of_africa_transfer_current_core_return = yes
+ 		}
+ 	}
+ }
+diff --git a/docs/events/012_africa/gods_of_africa.md b/docs/events/012_africa/gods_of_africa.md
+index 8a083fcd5..645cf911b 100644
+--- a/docs/events/012_africa/gods_of_africa.md
++++ b/docs/events/012_africa/gods_of_africa.md
+@@ -138,7 +138,7 @@ State-targeting families strike up to 1 state at Pressure and Disruption, 3 at C
+ 
+ At Limited Strength every second punishment (`bluff_cycle`) is a bluff: it costs only `bluff_pp_loss` (2) political power, takes no stability or war support, and its report says the promised disaster weakened before it arrived.
+ 
+-A Tier V catastrophe is staged. Whenever its full gate opens, `gods_of_africa_issue_final_ultimatum` opens the `gods_of_africa_final_ultimatum_mission` and the `.618` notice instead of striking: within `gods_of_africa_ultimatum.deadline_days` (60) the participant may hand back every state of Africa's homeland it owns or controls and end any war with Africa in a white peace, or pay `settlement_pp` (150) political power and `settlement_equipment` (3000) infantry equipment. Either answer lifts the ultimatum, lowers Wrath by `wrath_relief` (25) and records `ultimatum_met` (21) in the history. Refusal or the deadline (`gods_of_africa_expire_final_ultimatum`) runs `gods_of_africa_evaluate_punishment` again, so intent, the extreme gate and the Strength ceiling are read at that moment: the catastrophe falls if Africa can still deliver it, otherwise the strongest punishment its Strength allows. The catastrophe is an Event 013 disaster and waves of civilian deaths in up to `catastrophe_wave_states` (3) different owned and controlled states drawn at random, each through the exact population transaction with the protected floor and its own Deaths entry. Every catastrophe brings its own waves, including a later one against a defiant government that receives no new demand contract. No other punishment and no ordinary demand falls on the participant while the ultimatum is open. The first Ultimatum-tier punishment, the final ultimatum and the catastrophe are Event 012 event-log milestones (`gods_first_heavy_punishment`, `gods_final_ultimatum`, `gods_catastrophe`) naming Africa and the participant; the catastrophe entry is written only when the Event 013 gateway accepted the disaster.
++A Tier V catastrophe is staged. Whenever its full gate opens, `gods_of_africa_issue_final_ultimatum` opens the `gods_of_africa_final_ultimatum_mission` and the `.618` notice instead of striking: within `gods_of_africa_ultimatum.deadline_days` (60) the participant may hand back every state of Africa's homeland it owns or controls and end any war with Africa in a white peace, or pay `settlement_pp` (150) political power and `settlement_equipment` (3000) infantry equipment. Handed-back land also receives the same unique-state restitution proof as a territory demand, bound to the current ultimatum. Either answer lifts the ultimatum, lowers Wrath by `wrath_relief` (25) and records `ultimatum_met` (21) in the history. Refusal or the deadline (`gods_of_africa_expire_final_ultimatum`) runs `gods_of_africa_evaluate_punishment` again, so intent, the extreme gate and the Strength ceiling are read at that moment: the catastrophe falls if Africa can still deliver it, otherwise the strongest punishment its Strength allows. The catastrophe is an Event 013 disaster and waves of civilian deaths in up to `catastrophe_wave_states` (3) different owned and controlled states drawn at random, each through the exact population transaction with the protected floor and its own Deaths entry. Every catastrophe brings its own waves, including a later one against a defiant government that receives no new demand contract. No other punishment and no ordinary demand falls on the participant while the ultimatum is open. The first Ultimatum-tier punishment, the final ultimatum and the catastrophe are Event 012 event-log milestones (`gods_first_heavy_punishment`, `gods_final_ultimatum`, `gods_catastrophe`) naming Africa and the participant; the catastrophe entry is written only when the Event 013 gateway accepted the disaster.
+ 
+ Let the World Answer adds the host decision `gods_of_africa_arm_offender_enemies`: Africa sends `gods_of_africa_coalition.equipment` (1000) infantry equipment from its own stocks and its common-defence reserve, and pays `pp_cost` (25) political power, to one country at war with a defiant government, an occupier or a marked offender that Africa is not fighting; it keeps `host_reserve` (1000) rifles, is closed while Africa is near capitulation, and cannot target the same government again for `cooldown_days` (180). The host receives the `.619` report.
+ 
