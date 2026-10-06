@@ -345,3 +345,12 @@ Testing text should focus on the physical work, restricted zones, technical unce
 Avoid generic staff-table scenes, empty declarations that history has changed, and final wording that calls an event a warning. Public reaction should mention concrete behavior such as evacuations, cancelled trains, embassy departures, unusual aircraft patrols, and foreign mobilization.
 
 Humour should be absent from accidents, contamination, and deaths. A dry bureaucratic tone can appear in internal cover-up options when it exposes the cruelty or absurdity of the policy.
+
+## Public demonstration acceptance
+
+Acceptance basis: the user?s finish-the-023 instruction assigns every remaining Round 3 source requirement and authorizes the bounded design choices recorded in [the takeover decisions](../../plans/023_sov_nuclear_bombs_plans/agent_decisions_2026-10-05.md).
+Disposition: implemented in source, with live behavior still awaiting orchestrator evidence.
+A prepared public demonstration gives a choice between observers, advance notice and announcement afterward.
+Observers give 16 credibility / 4 Integrity and multiply foreign alarm weights by 0.7, notice gives 12 credibility and a 1.5 guarantee factor, and announcement afterward gives 8 credibility and a 1.5 air-defence factor.
+Cancellation clears the choice, and the successful result retains it for reports.
+Only the first demonstration generates the campaign?s public-test headline.

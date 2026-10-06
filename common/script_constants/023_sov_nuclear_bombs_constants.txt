@@ -850,14 +850,6 @@ sov_nuclear_bombs_tuning = {
 
 	initial_readiness = 35
 	initial_integrity = 92
-	doctrine_party_readiness = 8
-	doctrine_party_integrity = -5
-	doctrine_military_readiness = 12
-	doctrine_military_integrity = -8
-	doctrine_scientific_readiness = -5
-	doctrine_scientific_integrity = 6
-	doctrine_dispersed_readiness = 5
-	doctrine_dispersed_integrity = -3
 	production_complete_readiness = 8
 	production_complete_integrity = 3
 	audit_integrity = 2
@@ -1280,6 +1272,58 @@ sov_nuclear_bombs_doctrine = {
 	military = 2
 	scientific_safety = 3
 	dispersed_commands = 4
+}
+
+# Custody doctrines (Part 1). The first four pairs change Readiness and
+# Integrity once, when a doctrine is chosen or reformed into, so that Readiness
+# runs Military > Dispersed > Party > Scientific and Integrity runs
+# Scientific > Party > Military > Dispersed. The other keys are each doctrine's
+# lasting effects. Day values are added to the base mission durations in
+# sov_nuclear_bombs_duration; negative values shorten them.
+sov_nuclear_bombs_doctrine_effect = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	party_readiness = 0
+	party_integrity = 4
+	military_readiness = 12
+	military_integrity = -8
+	scientific_readiness = -8
+	scientific_integrity = 6
+	dispersed_readiness = 8
+	dispersed_integrity = -14
+	# Party: slower release.
+	party_strike_days = 5
+	# Military: faster preparation and a stronger answer to an enemy strike.
+	military_strike_days = -3
+	military_crews_days = -30
+	military_enemy_strike_readiness = 8
+	# Scientific veto: the safest tests and slower production.
+	scientific_test_success_bonus = 10
+	scientific_test_accident_reduction = 4
+	scientific_assembly_days = 30
+	# Dispersed commands: a threat to the capital costs less, and a depot taken
+	# in a Soviet collapse can go missing (percent of certainty).
+	dispersed_transfer_missing_chance = 25
+	certainty = 100
+	# Every doctrine: the one-time cost when the capital first comes under
+	# threat. Dispersed commands pay the smaller pair instead.
+	capital_threat_readiness = -6
+	capital_threat_integrity = -8
+	dispersed_capital_threat_readiness = -2
+	dispersed_capital_threat_integrity = -3
+}
+
+sov_nuclear_bombs_doctrine_factor = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	# Party custody: each new exposure gain is multiplied by this factor.
+	party_exposure_gain = 0.70
 }
 
 sov_nuclear_bombs_achievement = {

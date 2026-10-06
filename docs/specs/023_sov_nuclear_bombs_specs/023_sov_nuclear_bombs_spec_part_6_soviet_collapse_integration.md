@@ -441,3 +441,12 @@ The event remains alternate history. Its 1930s or 1940s breakaways, state locati
 Collapse text should focus on guarded trains, sealed depots, missing officers, local commanders, technicians deciding whom to obey, foreign aircraft arriving with inspectors, and civilians living near contested sites.
 
 Avoid calling every breakaway a nuclear state. Text must distinguish possession, access, command, and operational use.
+
+## Successor announcement acceptance
+
+Acceptance basis: the user?s finish-the-023 instruction assigns every remaining Round 3 source requirement and authorizes the bounded design choices recorded in [the takeover decisions](../../plans/023_sov_nuclear_bombs_plans/agent_decisions_2026-10-05.md).
+Disposition: implemented in source, with live behavior still awaiting orchestrator evidence.
+The first completed delivery integration of each breakaway sends one world news naming its country and depot.
+Regular event targets carried from the holder?s own mission preserve those names without a shared overwriteable actor pointer.
+The Soviet actor loses 8 credibility and gains 15 exposure through existing helpers.
+An exact Soviet-to-breakaway transfer under Dispersed custody resolves one 25% missing-site risk through the existing device accounting, with no new ownership grant.

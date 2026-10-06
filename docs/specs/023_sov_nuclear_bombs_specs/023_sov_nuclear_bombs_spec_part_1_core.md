@@ -332,3 +332,10 @@ The central choices are:
 - Whether to stop an exchange while a negotiated off-ramp remains possible.
 
 The event should reward preparation and judgment. It should punish empty threats, careless testing, impossible target choices, weak custody, and rapid repeated use through direct strategic, political, and shared global consequences.
+
+## Custody doctrine acceptance
+
+Acceptance basis: the user?s finish-the-023 instruction assigns every remaining Round 3 source requirement and authorizes the bounded design choices recorded in [the takeover decisions](../../plans/023_sov_nuclear_bombs_plans/agent_decisions_2026-10-05.md).
+Disposition: implemented in source, with live behavior still awaiting orchestrator evidence.
+The baseline opening values are Party Readiness 35 / Integrity 96, Military 47 / 84, Scientific 27 / 98, and Dispersed 43 / 78.
+Lasting doctrine behavior and the paid command developments follow the current event doc?s command-development section.

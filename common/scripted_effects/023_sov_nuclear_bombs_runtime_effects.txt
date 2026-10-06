@@ -1142,6 +1142,14 @@ sov_nuclear_bombs_clear_action_context = {
 			clear_variable = sov_nuclear_bombs_action_nonce
 			clear_variable = sov_nuclear_bombs_action_state
 			clear_variable = sov_nuclear_bombs_action_state_id
+			# A transferred depot's doctrine risk waits for the reservation owner
+			# to close its exact request, never erasing an unresolved native receipt.
+			if = {
+				limit = { has_variable = sov_nuclear_bombs_action_source_state }
+				var:sov_nuclear_bombs_action_source_state = {
+					if = { limit = { has_state_flag = sov_nuclear_bombs_dispersed_transfer_risk_pending } sov_nuclear_bombs_apply_doctrine_transfer_risk = yes }
+				}
+			}
 			clear_variable = sov_nuclear_bombs_action_source_state
 			clear_variable = sov_nuclear_bombs_action_target
 			clear_variable = sov_nuclear_bombs_action_target_country_id
@@ -1202,6 +1210,7 @@ sov_nuclear_bombs_record_breakaway_actor_from_state = {
 sov_nuclear_bombs_operationalize_breakaway_site = {
 	if = {
 		limit = {
+			NOT = { has_state_flag = sov_nuclear_bombs_dispersed_transfer_risk_pending }
 			sov_nuclear_bombs_state_is_registered = yes
 			check_variable = { var = sov_nuclear_bombs_site_transferred value = constant:sov_nuclear_bombs_ledger.one compare = greater_than_or_equals }
 			NOT = { has_state_flag = sov_nuclear_bombs_breakaway_site_operationalized }
@@ -1858,6 +1867,7 @@ sov_nuclear_bombs_register_production_reactor_site = {
 		limit = { has_state_flag = sov_nuclear_bombs_reactor_event_owned nuclear_reactor > 0 is_owned_by = SOV is_controlled_by = SOV }
 		set_state_flag = sov_nuclear_bombs_production_reactor_site
 		set_variable = { sov_nuclear_bombs_production_reactor_owner = SOV }
+		sov_nuclear_bombs_reconcile_production_reactor_capacity = yes
 	}
 }
 
@@ -2324,6 +2334,8 @@ sov_nuclear_bombs_reconcile_dismantlement_state_change = {
 # Exact state scope. Territorial change marks existing roles contested but
 # never transfers command, institutional access, or delivery capability.
 sov_nuclear_bombs_reconcile_registry_state_change = {
+	if = { limit = { has_state_flag = sov_nuclear_bombs_dispersed_transfer_risk_pending } sov_nuclear_bombs_apply_doctrine_transfer_risk = yes }
+	sov_nuclear_bombs_reconcile_production_reactor_capacity = yes
 	if = {
 		limit = { has_state_flag = sov_nuclear_bombs_assembly_site NOT = { AND = { is_owned_by = SOV is_controlled_by = SOV } } }
 		set_state_flag = sov_nuclear_bombs_assembly_site_contested
@@ -3110,6 +3122,19 @@ sov_nuclear_bombs_reconcile_event5_state = {
 						NOT = { has_state_flag = sov_nuclear_bombs_site_missing }
 					}
 					sov_nuclear_bombs_rebind_event5_site_holder = yes
+				}
+				# Snapshot country pointers describe custody before this exact transfer.
+				# Only a Soviet departure can invoke the doctrine-owned missing risk.
+				if = {
+					limit = {
+						OR = {
+							AND = { has_variable = sov_nuclear_bombs_site_snapshot_owner check_variable = { var = sov_nuclear_bombs_site_snapshot_owner value = SOV compare = equals } }
+							AND = { has_variable = sov_nuclear_bombs_site_snapshot_controller check_variable = { var = sov_nuclear_bombs_site_snapshot_controller value = SOV compare = equals } }
+						}
+						NOT = { OR = { is_owned_by = SOV is_controlled_by = SOV } }
+						check_variable = { var = sov_nuclear_bombs_site_transferred value = constant:sov_nuclear_bombs_ledger.zero compare = greater_than }
+					}
+					sov_nuclear_bombs_apply_doctrine_transfer_risk = yes
 				}
 			}
 			if = { limit = { OWNER = { exists = yes } } set_variable = { sov_nuclear_bombs_site_recorded_owner = OWNER } else = { clear_variable = sov_nuclear_bombs_site_recorded_owner } }

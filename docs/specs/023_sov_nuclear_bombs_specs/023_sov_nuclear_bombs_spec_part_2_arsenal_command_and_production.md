@@ -511,3 +511,21 @@ The following are design anchors, not final constants:
 - No normal decision may spend more than four distinct resource types.
 - Command power costs must remain conservative and below the project maximum.
 - Political power may support a political decision, but it cannot be the main currency of the arsenal.
+
+## Command and production acceptance
+
+Acceptance basis: the user?s finish-the-023 instruction assigns every remaining Round 3 source requirement and authorizes the bounded design choices recorded in [the takeover decisions](../../plans/023_sov_nuclear_bombs_plans/agent_decisions_2026-10-05.md).
+Disposition: implemented in source, with live behavior still awaiting orchestrator evidence.
+Reactor capacity is the lower of registered Soviet-owned/controlled physical sites and the attained stage entitlement.
+Each loss episode costs 10 Readiness once, and recapture restores capacity without inflating it beyond entitlement.
+Assembly adds 2 devices per attained evolution and 3 at Readiness 75 or higher, subtracts 4 under local front pressure, then keeps the existing min/max.
+The custody phase offers one contextual doctrine development lasting 90 days with the existing security cost.
+Reform clears the old development.
+Over-capacity intact Soviet inventory can be serviced with logistics resources and an 8-Readiness stand-down.
+It takes 60 days, restores 8 Integrity, prevents overload wear during work and for 180 days afterward, and has a 360-day completion cooldown.
+Spent, dismantled and transferred devices do not count as Soviet maintenance inventory.
+
+A confirmed enemy nuclear strike interrupts service or command-development work before retaliation routing.
+Unfinished developments and stabilization are not granted, and spent supplies are consumed.
+Readiness held aside for service returns once when the work completes or ends, with other losses preserved.
+The AI requests these two optional projects only when their existing resource cost is affordable.

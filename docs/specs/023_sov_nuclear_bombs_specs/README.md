@@ -15,7 +15,7 @@ The package preserves the user-defined premise that Soviet scientists secretly c
 | Entry event | `chaosx.nr23.1` |
 | Type | Minor Fire-Once |
 | Planned chaos level | `2`, Gathering Storm, 200 or more Chaos |
-| Current catalog status | Unavailable, To Be Reworked |
+| Current catalog handoff | Needs Testing queued for the workbook owner, source implementation tracked in the 6 October takeover status |
 | Planned cluster identity | `Arms-race`, registration deferred until a verified stable cluster ID and at least one other reworked member exist |
 | World-end ownership | None, nuclear use may contribute to the shared Fallout route |
 | Primary actor | The Soviet Union, `SOV` |

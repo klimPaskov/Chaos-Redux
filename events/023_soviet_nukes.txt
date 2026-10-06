@@ -16,11 +16,13 @@ country_event = {
 
 	immediate = {
 		if = {
-			limit = { SOV = { sov_nuclear_bombs_event_opening_actor_is_valid = yes } }
+			limit = { SOV = { sov_nuclear_bombs_event_opening_actor_is_valid = yes NOT = { has_country_flag = sov_nuclear_bombs_opening_report_pending } } }
 			SOV = {
+				set_country_flag = sov_nuclear_bombs_opening_report_pending
 				country_event = { id = chaosx.nr23.2 days = constant:sov_nuclear_bombs_tuning.opening_delay_days }
 			}
 		}
+		else = { country_event = { id = chaosx.nr23.184 } }
 	}
 }
 
@@ -589,6 +591,7 @@ country_event = {
 		trigger = { sov_nuclear_bombs_event_target_response_is_valid = yes }
 		ai_chance = {
 			base = constant:sov_nuclear_bombs_response_ai.accept_base
+			modifier = { factor = constant:sov_nuclear_bombs_closure_factor.missile_compliance sov_nuclear_bombs_event_response_has_missile_backing = yes }
 			modifier = { factor = constant:sov_nuclear_bombs_response_ai.credible_accept sov_nuclear_bombs_event_response_threat_is_credible = yes }
 			modifier = { factor = constant:sov_nuclear_bombs_response_ai.doubted_accept sov_nuclear_bombs_event_response_threat_is_doubted = yes }
 			modifier = { factor = constant:sov_nuclear_bombs_response_ai.unproven_accept sov_nuclear_bombs_event_response_arsenal_is_unproven = yes }
@@ -1272,6 +1275,8 @@ country_event = {
 		name = sov_nuclear_bombs_foreign_air_defence_option
 		ai_chance = {
 			base = constant:sov_nuclear_bombs_foreign_ai.air_defence_base
+			modifier = { factor = constant:sov_nuclear_bombs_closure_factor.observers_alarm SOV = { check_variable = { var = sov_nuclear_bombs_last_test_presentation value = constant:sov_nuclear_bombs_closure.presentation_observers compare = equals } } }
+			modifier = { factor = constant:sov_nuclear_bombs_closure_factor.afterward_alarm SOV = { check_variable = { var = sov_nuclear_bombs_last_test_presentation value = constant:sov_nuclear_bombs_closure.presentation_afterward compare = equals } } }
 			modifier = { factor = constant:sov_nuclear_bombs_foreign_ai.demonstrated_stage_air_defence always = yes }
 			modifier = { factor = constant:sov_nuclear_bombs_foreign_ai.soviet_neighbour_air_defence is_neighbor_of = SOV }
 			modifier = { factor = constant:sov_nuclear_bombs_foreign_ai.soviet_war_air_defence has_war_with = SOV }
@@ -1283,6 +1288,8 @@ country_event = {
 		trigger = { sov_nuclear_bombs_event_major_can_guarantee_soviet_neighbour = yes }
 		ai_chance = {
 			base = constant:sov_nuclear_bombs_foreign_ai.guarantee_base
+			modifier = { factor = constant:sov_nuclear_bombs_closure_factor.observers_alarm SOV = { check_variable = { var = sov_nuclear_bombs_last_test_presentation value = constant:sov_nuclear_bombs_closure.presentation_observers compare = equals } } }
+			modifier = { factor = constant:sov_nuclear_bombs_closure_factor.notice_guarantee SOV = { check_variable = { var = sov_nuclear_bombs_last_test_presentation value = constant:sov_nuclear_bombs_closure.presentation_notice compare = equals } } }
 			modifier = { factor = constant:sov_nuclear_bombs_foreign_ai.demonstrated_stage_guarantee always = yes }
 			modifier = { factor = constant:sov_nuclear_bombs_foreign_ai.faction_leader_guarantee is_faction_leader = yes }
 			modifier = { factor = constant:sov_nuclear_bombs_foreign_ai.at_war_guarantee has_war = yes }

@@ -1005,6 +1005,22 @@ sov_nuclear_bombs_prepare_production_quote = {
 		add_to_temp_variable = { sov_nuclear_bombs_production_quote = sov_nuclear_bombs_production_quote_reactor_bonus }
 	}
 	add_to_temp_variable = { sov_nuclear_bombs_production_quote = constant:sov_nuclear_bombs_tuning.production_batch_base }
+	set_temp_variable = { sov_nuclear_bombs_production_stage_bonus = sov_nuclear_bombs_evolution_stage }
+	multiply_temp_variable = { sov_nuclear_bombs_production_stage_bonus = constant:sov_nuclear_bombs_closure.batch_per_stage }
+	add_to_temp_variable = { sov_nuclear_bombs_production_quote = sov_nuclear_bombs_production_stage_bonus }
+	if = {
+		limit = { check_variable = { var = sov_nuclear_bombs_readiness value = constant:sov_nuclear_bombs_closure.batch_readiness_floor compare = greater_than_or_equals } }
+		add_to_temp_variable = { sov_nuclear_bombs_production_quote = constant:sov_nuclear_bombs_closure.batch_high_readiness }
+	}
+	if = {
+		limit = {
+			OR = {
+				AND = { has_event_target = sov_nuclear_bombs_assembly_selection event_target:sov_nuclear_bombs_assembly_selection = { any_neighbor_state = { controller = { has_war_with = SOV } } } }
+				AND = { NOT = { has_event_target = sov_nuclear_bombs_assembly_selection } has_event_target = sov_nuclear_bombs_selected_state event_target:sov_nuclear_bombs_selected_state = { any_neighbor_state = { controller = { has_war_with = SOV } } } }
+			}
+		}
+		subtract_from_temp_variable = { sov_nuclear_bombs_production_quote = constant:sov_nuclear_bombs_closure.batch_front_pressure_loss }
+	}
 	clamp_temp_variable = { var = sov_nuclear_bombs_production_quote min = constant:sov_nuclear_bombs_tuning.production_batch_minimum max = constant:sov_nuclear_bombs_tuning.production_batch_maximum }
 	always = yes
 }
@@ -1336,6 +1352,7 @@ sov_nuclear_bombs_event_has_valid_prepared_strike = {
 }
 
 sov_nuclear_bombs_event_prepared_strike_chain_is_valid = {
+	sov_nuclear_bombs_event_technical_veto_allows_action = yes
 	sov_nuclear_bombs_event_actor_is_valid = yes
 	has_country_flag = sov_nuclear_bombs_limited_strike_prepared
 	has_country_flag = sov_nuclear_bombs_strike_preparation_complete
@@ -1412,6 +1429,8 @@ sov_nuclear_bombs_event_no_active_action = {
 }
 
 sov_nuclear_bombs_event_no_active_project = {
+	NOT = { has_country_flag = sov_nuclear_bombs_service_pending }
+	NOT = { has_country_flag = sov_nuclear_bombs_command_development_pending }
 	NOT = { has_country_flag = sov_nuclear_bombs_stockpile_audit_pending }
 	NOT = { has_country_flag = sov_nuclear_bombs_storage_hardening_pending }
 	NOT = { has_country_flag = sov_nuclear_bombs_reserve_dispersion_pending }
@@ -1792,11 +1811,13 @@ sov_nuclear_bombs_event_navigation_is_protected = {
 # authority is missing after enemy use, or an open exchange has not yet been
 # limited or suspended. A verified stand-down or a moratorium ends it.
 sov_nuclear_bombs_event_ai_has_retaliation_duty = {
+	OR = { has_country_flag = sov_nuclear_bombs_authority_centralized has_country_flag = sov_nuclear_bombs_retaliation_delegated sov_nuclear_bombs_event_delegated_command_is_ready = yes }
 	NOT = { has_country_flag = sov_nuclear_bombs_atomic_moratorium }
 	NOT = { has_country_flag = sov_nuclear_bombs_major_exchange_stood_down }
 	OR = {
 		AND = {
 			has_country_flag = sov_nuclear_bombs_confirmed_enemy_nuclear_use
+			sov_nuclear_bombs_event_delegated_command_is_ready = yes
 			NOT = { has_country_flag = sov_nuclear_bombs_authority_centralized }
 			NOT = { has_country_flag = sov_nuclear_bombs_retaliation_delegated }
 			check_variable = { var = sov_nuclear_bombs_integrity value = constant:sov_nuclear_bombs_tuning.minimum_strike_integrity compare = greater_than_or_equals }
@@ -1847,6 +1868,7 @@ sov_nuclear_bombs_event_ai_has_first_use_candidate = {
 # release authority once Evolution II makes a release-capable job possible.
 sov_nuclear_bombs_event_ai_has_custody_duty = {
 	OR = {
+		AND = { sov_nuclear_bombs_event_has_command_development_purpose = yes sov_nuclear_bombs_can_pay_security_cost = yes }
 		NOT = { has_country_flag = sov_nuclear_bombs_stockpile_audited }
 		sov_nuclear_bombs_event_ai_needs_counterintelligence = yes
 		AND = {
@@ -1905,6 +1927,7 @@ sov_nuclear_bombs_event_ai_has_production_duty = {
 	sov_nuclear_bombs_event_has_evolution_i = yes
 	NOT = { has_country_flag = sov_nuclear_bombs_atomic_moratorium }
 	OR = {
+		AND = { sov_nuclear_bombs_event_can_service_arsenal = yes sov_nuclear_bombs_can_pay_logistics_cost = yes }
 		AND = {
 			sov_nuclear_bombs_event_has_reactor_entitlement = yes
 			any_owned_state = { sov_nuclear_bombs_event_state_is_valid_reactor_site = yes }
@@ -2247,4 +2270,5 @@ sov_nuclear_bombs_event_delivery_force_is_missing = {
 	NOT = { has_country_flag = sov_nuclear_bombs_custody_doctrine_unselected }
 	has_country_flag = sov_nuclear_bombs_delivery_route_established
 	NOT = { sov_nuclear_bombs_event_has_delivery_route = yes }
+	NOT = { sov_nuclear_bombs_event_has_missile_delivery_capability = yes }
 }
