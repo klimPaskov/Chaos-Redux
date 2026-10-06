@@ -52,3 +52,33 @@ The default no-flags Refuge tab has a visible selected cue matching its body.
 Final focus geometry and post-asset GUI matrix remain open; the regex self-prerequisite alert was false and no guardians dependency was removed.
 The probability handoff records interrupted/no-result inspections and no completed evaluation or compare.
 See `release_qa_completion_20261006.md` for current dispositions, source evidence and review gates.
+
+## Parent presentation review, 2026-10-06
+
+The user's G4/G6 direction authorizes the existing five Mandala tabs to filter the main action list.
+All 47 existing actions remain present and preserve their costs, availability, effects and AI weights; the filters return true for AI countries independently of tab flags.
+The initial nine actions separate into Refuge 3, Arhats 2, Diplomacy 1, Doctrine 3 and Warnings 0, with Refuge selected by default.
+The closed-refuge-roads action is hidden from humans before its existing Bodhisattva unlock, while its existing active marker preserves its timer presentation.
+The complete mapping and source comparison are in `subagent_handoffs/mandala_tab_filtering_20261006.md`.
+
+Parent review accepted a position-only focus layout correction that separates optional military branches, the teaching side lane, the four Schism responses and the later supernatural and nuclear routes.
+All 111 focus definitions are identical outside their x/y fields; 62 focus positions changed.
+The reviewed reference and exact source receipt are in `subagent_handoffs/focus_release_20261006_evidence/parent_geometry_applied_20261006.json`.
+The independent straight-line source projection has no node intersections or same-row collisions and reduces crossing pairs from 33 to 12.
+These are reference-model results, not production MCP diagnostics, and the remaining projected crossings are unresolved.
+The post-change inspect and render both returned `Transport closed`, so the focus layout has no current production acceptance.
+
+Parent review authorized original portrait art for the anonymous fictional 1936 Bodhisattva incarnation and its stages because the legacy portrait source lineage is absent.
+This is an imagined supernatural character, not Siddhartha Gautama, Padmasambhava or another named historical person's substituted identity.
+The original Godly Figure and Refuge seeds were reviewed at native size and accepted; the whole static and real-frame animation package remains subject to parent review before installation.
+The existing Mandala animation package is a separate accepted consumer and does not establish portrait provenance.
+
+## Refuge resource correction, 2026-10-06
+
+Parent accepted removing only the five flat manpower grants from `THR_white_scarf_relief_caravans`, `THR_second_refuge_register`, `THR_open_refuge_roads`, `THR_bodhisattva_hold_teachings_for_refugees`, and `THR_bodhisattva_invite_foreign_pilgrims` under the user's G6 release-QA direction. These actions created recruits without a population or mobilization source, and some recur. Costs, availability, cooldowns, AI weights, and all non-manpower outcomes remain unchanged. `THR_open_refuge_roads` is now one-time because its existing memory flag blocks the alternative `THR_close_refuge_roads` route after selection; no other decision received a one-time gate.
+
+## Manpower resource correction, 2026-10-06
+
+Parent accepted removing only the five flat manpower grants from `THR_white_scarf_relief_caravans`, `THR_second_refuge_register`, `THR_open_refuge_roads`, `THR_bodhisattva_hold_teachings_for_refugees`, and `THR_bodhisattva_invite_foreign_pilgrims`. These actions created 25,000 to 180,000 recruits without a population or mobilization source; several recur. Their Political Power prices, route gates, timer behavior, AI weights, and all non-manpower outcomes remain intact.
+
+`THR_open_refuge_roads` is now one-time because its existing `holy_realm_memory_open_refuge_roads` choice permanently blocks the alternative `THR_close_refuge_roads`; repeating its purchase previously let the player reuse the completed one-way choice. No other decision was made one-time or otherwise rebalanced in this tranche.

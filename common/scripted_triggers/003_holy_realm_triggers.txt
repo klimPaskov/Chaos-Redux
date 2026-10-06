@@ -1,6 +1,7 @@
 # Overview:
 # - Scripted triggers for the Holy Realm formation route, stage gates, doctrine
-#   memory, foreign containment, and Final Silence world-end conditions.
+#   memory, foreign containment, Final Silence world-end conditions, and the
+#   human Mandala-tab decision filters that leave AI visibility unchanged.
 
 @HOLY_REALM_GREAT_MANDALA_MIN_FACTION_MEMBERS = 3
 @HOLY_REALM_SILENT_MANDALA_MIN_FACTION_MEMBERS = 1
@@ -80,6 +81,61 @@ holy_realm_bhumi_advancement_available = {
 			var = bodhisattva_bhumi
 			value = constant:holy_realm_buddhahood.bhumi_max
 			compare = less_than
+		}
+	}
+}
+
+# Country-scope presentation filters for the five existing Holy Mandala tabs.
+# AI keeps the complete source-visible decision set in every category.
+holy_realm_mandala_refuge_tab_actions_visible = {
+	OR = {
+		is_ai = yes
+		AND = {
+			is_ai = no
+			NOT = { has_country_flag = holy_realm_mandala_tab_arhats }
+			NOT = { has_country_flag = holy_realm_mandala_tab_diplomacy }
+			NOT = { has_country_flag = holy_realm_mandala_tab_doctrine }
+			NOT = { has_country_flag = holy_realm_mandala_tab_warnings }
+		}
+	}
+}
+
+holy_realm_mandala_arhats_tab_actions_visible = {
+	OR = {
+		is_ai = yes
+		AND = {
+			is_ai = no
+			has_country_flag = holy_realm_mandala_tab_arhats
+		}
+	}
+}
+
+holy_realm_mandala_diplomacy_tab_actions_visible = {
+	OR = {
+		is_ai = yes
+		AND = {
+			is_ai = no
+			has_country_flag = holy_realm_mandala_tab_diplomacy
+		}
+	}
+}
+
+holy_realm_mandala_doctrine_tab_actions_visible = {
+	OR = {
+		is_ai = yes
+		AND = {
+			is_ai = no
+			has_country_flag = holy_realm_mandala_tab_doctrine
+		}
+	}
+}
+
+holy_realm_mandala_warnings_tab_actions_visible = {
+	OR = {
+		is_ai = yes
+		AND = {
+			is_ai = no
+			has_country_flag = holy_realm_mandala_tab_warnings
 		}
 	}
 }

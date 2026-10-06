@@ -109,7 +109,10 @@ holy_realm_mandala_category = {
 				has_country_flag = holy_realm_focus_guard_high_passes
 			}
 		}
-		visible = { is_holy_realm_country = yes }
+		visible = {
+			is_holy_realm_country = yes
+			holy_realm_mandala_refuge_tab_actions_visible = yes
+		}
 		complete_effect = {
 			hidden_effect = { black_friday_credit_political_power_purchase = yes }
 			random_owned_state = {
@@ -140,6 +143,7 @@ holy_realm_mandala_category = {
 		visible = {
 			is_holy_realm_country = yes
 			holy_realm_bodhisattva_path_unlocked = yes
+			holy_realm_mandala_refuge_tab_actions_visible = yes
 		}
 		complete_effect = {
 			hidden_effect = { black_friday_credit_political_power_purchase = yes }
@@ -160,7 +164,6 @@ holy_realm_mandala_category = {
 					set_resistance = 5
 				}
 			}
-			add_manpower = 45000
 			add_stability = 0.01
 			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
 			holy_realm_add_spiritual_legitimacy = yes
@@ -186,6 +189,7 @@ holy_realm_mandala_category = {
 		visible = {
 			is_holy_realm_country = yes
 			has_country_flag = holy_realm_focus_rewrite_civil_register
+			holy_realm_mandala_arhats_tab_actions_visible = yes
 		}
 		complete_effect = {
 			hidden_effect = { black_friday_credit_political_power_purchase = yes }
@@ -212,6 +216,7 @@ holy_realm_mandala_category = {
 		visible = {
 			is_holy_realm_country = yes
 			has_country_flag = holy_realm_focus_guard_high_passes
+			holy_realm_mandala_refuge_tab_actions_visible = yes
 		}
 		complete_effect = {
 			hidden_effect = { black_friday_credit_political_power_purchase = yes }
@@ -238,10 +243,10 @@ holy_realm_mandala_category = {
 		visible = {
 			is_holy_realm_country = yes
 			holy_realm_bodhisattva_path_unlocked = yes
+			holy_realm_mandala_refuge_tab_actions_visible = yes
 		}
 		complete_effect = {
 			hidden_effect = { black_friday_credit_political_power_purchase = yes }
-			add_manpower = 70000
 			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.medium_gain }
 			holy_realm_add_spiritual_legitimacy = yes
 			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_loss }
@@ -253,6 +258,7 @@ holy_realm_mandala_category = {
 	THR_open_refuge_roads = {
 		icon = generic_welfare
 		cost = global.black_friday_price_holy_realm_decision_refuge_commitment_cost
+		fire_only_once = yes
 		days_remove = constant:holy_realm_decision.refuge_days
 		available = {
 			is_holy_realm_country = yes
@@ -260,10 +266,10 @@ holy_realm_mandala_category = {
 		}
 			visible = {
 				is_holy_realm_country = yes
+				holy_realm_mandala_refuge_tab_actions_visible = yes
 			}
 			complete_effect = {
 				hidden_effect = { black_friday_credit_political_power_purchase = yes }
-				add_manpower = 180000
 				add_stability = -0.02
 				set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.medium_gain }
 				holy_realm_add_spiritual_legitimacy = yes
@@ -291,6 +297,7 @@ holy_realm_mandala_category = {
 		}
 			visible = {
 				is_holy_realm_country = yes
+				holy_realm_mandala_refuge_tab_actions_visible = yes
 			}
 			complete_effect = {
 				hidden_effect = { black_friday_credit_political_power_purchase = yes }
@@ -318,10 +325,24 @@ holy_realm_mandala_category = {
 			holy_realm_bodhisattva_path_unlocked = yes
 			NOT = { has_country_flag = holy_realm_memory_open_refuge_roads }
 		}
-		visible = {
-			is_holy_realm_country = yes
-			NOT = { holy_realm_buddha_path_unlocked = yes }
-		}
+			visible = {
+				is_holy_realm_country = yes
+				NOT = { holy_realm_buddha_path_unlocked = yes }
+				OR = {
+					is_ai = yes
+					AND = {
+						is_ai = no
+						OR = {
+							holy_realm_bodhisattva_path_unlocked = yes
+							has_country_flag = holy_realm_memory_closed_refuge_roads
+						}
+					}
+				}
+				OR = {
+					holy_realm_mandala_refuge_tab_actions_visible = yes
+					has_country_flag = holy_realm_memory_closed_refuge_roads
+				}
+			}
 		complete_effect = {
 			hidden_effect = { black_friday_credit_political_power_purchase = yes }
 			set_country_flag = holy_realm_memory_closed_refuge_roads
@@ -351,6 +372,7 @@ holy_realm_mandala_category = {
 				is_holy_realm_country = yes
 				has_global_flag = holy_realm_mandala_of_nations_formed
 				NOT = { has_country_flag = holy_realm_mandala_kindness_refuge_completed }
+				holy_realm_mandala_refuge_tab_actions_visible = yes
 			}
 			complete_effect = {
 				hidden_effect = { black_friday_credit_political_power_purchase = yes }
@@ -384,6 +406,7 @@ holy_realm_mandala_category = {
 				is_holy_realm_country = yes
 				has_global_flag = holy_realm_mandala_of_nations_formed
 				NOT = { has_country_flag = holy_realm_mandala_kindness_congress_completed }
+				holy_realm_mandala_diplomacy_tab_actions_visible = yes
 			}
 			complete_effect = {
 				hidden_effect = { black_friday_credit_political_power_purchase = yes }
@@ -419,6 +442,7 @@ holy_realm_mandala_category = {
 				is_holy_realm_country = yes
 				has_global_flag = holy_realm_mandala_of_nations_formed
 				NOT = { has_country_flag = holy_realm_mandala_kindness_granaries_completed }
+				holy_realm_mandala_refuge_tab_actions_visible = yes
 			}
 			complete_effect = {
 				hidden_effect = { black_friday_credit_political_power_purchase = yes }
@@ -521,6 +545,7 @@ holy_realm_mandala_category = {
 				is_holy_realm_country = yes
 				has_global_flag = holy_realm_mandala_of_nations_formed
 				NOT = { has_country_flag = holy_realm_mandala_anti_puppet_clauses_enforced }
+				holy_realm_mandala_diplomacy_tab_actions_visible = yes
 			}
 			complete_effect = {
 				hidden_effect = { black_friday_credit_political_power_purchase = yes }
@@ -580,6 +605,7 @@ holy_realm_mandala_category = {
 				is_holy_realm_country = yes
 				has_global_flag = holy_realm_mandala_of_nations_formed
 				NOT = { has_country_flag = holy_realm_mandala_joint_defense_completed }
+				holy_realm_mandala_diplomacy_tab_actions_visible = yes
 			}
 			complete_effect = {
 				hidden_effect = { black_friday_credit_political_power_purchase = yes }
@@ -638,6 +664,7 @@ holy_realm_mandala_category = {
 				holy_realm_has_buddha_mandate = yes
 				NOT = { has_country_flag = holy_realm_great_mandala_formed }
 				NOT = { has_country_flag = holy_realm_silent_mandala_formed }
+				holy_realm_mandala_diplomacy_tab_actions_visible = yes
 			}
 			complete_effect = {
 				hidden_effect = { black_friday_credit_political_power_purchase = yes }
@@ -666,6 +693,7 @@ holy_realm_mandala_category = {
 				has_country_flag = holy_realm_final_silence_nonterminal_completed
 				has_country_flag = holy_realm_focus_empty_seat
 				NOT = { has_country_flag = holy_realm_silent_mandala_formed }
+				holy_realm_mandala_diplomacy_tab_actions_visible = yes
 			}
 			complete_effect = {
 				hidden_effect = { black_friday_credit_political_power_purchase = yes }
@@ -696,6 +724,7 @@ holy_realm_mandala_category = {
 			visible = {
 				is_holy_realm_country = yes
 				has_country_flag = holy_realm_post_formation_stabilization_unlocked
+				holy_realm_mandala_arhats_tab_actions_visible = yes
 			}
 			complete_effect = {
 				hidden_effect = { black_friday_credit_political_power_purchase = yes }
@@ -741,6 +770,7 @@ holy_realm_mandala_category = {
 				is_holy_realm_country = yes
 				has_country_flag = holy_realm_post_formation_stabilization_unlocked
 				has_global_flag = holy_realm_mandala_of_nations_formed
+				holy_realm_mandala_diplomacy_tab_actions_visible = yes
 			}
 			complete_effect = {
 				hidden_effect = { black_friday_credit_political_power_purchase = yes }
@@ -783,6 +813,7 @@ holy_realm_mandala_category = {
 			visible = {
 				is_holy_realm_country = yes
 				has_global_flag = holy_realm_mandala_of_nations_formed
+				holy_realm_mandala_diplomacy_tab_actions_visible = yes
 			}
 			complete_effect = {
 				hidden_effect = { black_friday_credit_political_power_purchase = yes }
@@ -829,6 +860,7 @@ holy_realm_mandala_category = {
 			visible = {
 				is_holy_realm_country = yes
 				has_global_flag = holy_realm_mandala_of_nations_formed
+				holy_realm_mandala_diplomacy_tab_actions_visible = yes
 			}
 			complete_effect = {
 				hidden_effect = { black_friday_credit_political_power_purchase = yes }
@@ -888,6 +920,7 @@ holy_realm_mandala_category = {
 			visible = {
 				is_holy_realm_country = yes
 				has_global_flag = holy_realm_mandala_of_nations_formed
+				holy_realm_mandala_diplomacy_tab_actions_visible = yes
 			}
 			complete_effect = {
 				hidden_effect = { black_friday_credit_political_power_purchase = yes }
@@ -955,6 +988,7 @@ holy_realm_mandala_category = {
 			visible = {
 				is_holy_realm_country = yes
 				has_country_flag = holy_realm_dharma_teachings_unlocked
+				holy_realm_mandala_refuge_tab_actions_visible = yes
 			}
 			complete_effect = {
 				hidden_effect = { black_friday_credit_political_power_purchase = yes }
@@ -989,6 +1023,7 @@ holy_realm_mandala_category = {
 			is_holy_realm_country = yes
 			holy_realm_bodhisattva_path_unlocked = yes
 			NOT = { has_country_flag = holy_realm_bodhisattva_mission_refuge_memory }
+			holy_realm_mandala_refuge_tab_actions_visible = yes
 		}
 		complete_effect = {
 			hidden_effect = { black_friday_credit_political_power_purchase = yes }
@@ -1026,6 +1061,7 @@ holy_realm_mandala_category = {
 			is_holy_realm_country = yes
 			holy_realm_buddha_path_unlocked = yes
 			NOT = { has_country_flag = holy_realm_bodhisattva_mission_envoys_memory }
+			holy_realm_mandala_diplomacy_tab_actions_visible = yes
 		}
 		complete_effect = {
 			hidden_effect = { black_friday_credit_political_power_purchase = yes }
@@ -1076,6 +1112,7 @@ holy_realm_mandala_category = {
 				has_war = yes
 				holy_realm_chaos_threatens_realm_or_compact = yes
 			}
+			holy_realm_mandala_diplomacy_tab_actions_visible = yes
 		}
 		complete_effect = {
 			hidden_effect = { black_friday_credit_political_power_purchase = yes }
@@ -1107,6 +1144,7 @@ holy_realm_mandala_category = {
 		}
 		visible = {
 			is_holy_realm_country = yes
+			holy_realm_mandala_arhats_tab_actions_visible = yes
 		}
 		complete_effect = {
 			hidden_effect = { black_friday_credit_political_power_purchase = yes }
@@ -1145,6 +1183,7 @@ holy_realm_mandala_category = {
 		visible = {
 			is_holy_realm_country = yes
 			holy_realm_arhat_path_unlocked = yes
+			holy_realm_mandala_arhats_tab_actions_visible = yes
 		}
 		complete_effect = {
 			hidden_effect = { black_friday_credit_political_power_purchase = yes }
@@ -1181,6 +1220,7 @@ holy_realm_mandala_category = {
 			is_holy_realm_country = yes
 			holy_realm_arhat_path_unlocked = yes
 			NOT = { has_country_flag = holy_realm_memory_arhat_army_commissars }
+			holy_realm_mandala_arhats_tab_actions_visible = yes
 		}
 		complete_effect = {
 			hidden_effect = { black_friday_credit_political_power_purchase = yes }
@@ -1210,6 +1250,7 @@ holy_realm_mandala_category = {
 		visible = {
 			is_holy_realm_country = yes
 			holy_realm_arhat_path_unlocked = yes
+			holy_realm_mandala_arhats_tab_actions_visible = yes
 		}
 		complete_effect = {
 			hidden_effect = { black_friday_credit_political_power_purchase = yes }
@@ -1228,6 +1269,7 @@ holy_realm_mandala_category = {
 		}
 		visible = {
 			is_holy_realm_country = yes
+			holy_realm_mandala_arhats_tab_actions_visible = yes
 		}
 		complete_effect = {
 			hidden_effect = { black_friday_credit_political_power_purchase = yes }
@@ -1260,6 +1302,7 @@ holy_realm_mandala_category = {
 		visible = {
 			is_holy_realm_country = yes
 			holy_realm_arhat_path_unlocked = yes
+			holy_realm_mandala_arhats_tab_actions_visible = yes
 		}
 		complete_effect = {
 			hidden_effect = { black_friday_credit_political_power_purchase = yes }
@@ -1290,6 +1333,7 @@ holy_realm_mandala_category = {
 		}
 		visible = {
 			is_holy_realm_country = yes
+			holy_realm_mandala_diplomacy_tab_actions_visible = yes
 		}
 		complete_effect = {
 			hidden_effect = { black_friday_credit_political_power_purchase = yes }
@@ -1329,6 +1373,7 @@ holy_realm_mandala_category = {
 		visible = {
 			is_holy_realm_country = yes
 			holy_realm_buddha_path_unlocked = yes
+			holy_realm_mandala_diplomacy_tab_actions_visible = yes
 		}
 		complete_effect = {
 			hidden_effect = { black_friday_credit_political_power_purchase = yes }
@@ -1364,6 +1409,7 @@ holy_realm_mandala_category = {
 		visible = {
 			is_holy_realm_country = yes
 			holy_realm_buddha_path_unlocked = yes
+			holy_realm_mandala_diplomacy_tab_actions_visible = yes
 		}
 		complete_effect = {
 			hidden_effect = { black_friday_credit_political_power_purchase = yes }
@@ -1424,6 +1470,7 @@ holy_realm_mandala_category = {
 				has_country_flag = holy_realm_doctrine_peacekeeping
 				has_country_flag = holy_realm_memory_mediation_offered
 			}
+			holy_realm_mandala_diplomacy_tab_actions_visible = yes
 		}
 		complete_effect = {
 			hidden_effect = { black_friday_credit_political_power_purchase = yes }
@@ -1482,6 +1529,7 @@ holy_realm_mandala_category = {
 		visible = {
 			is_holy_realm_country = yes
 			has_country_flag = holy_realm_doctrine_coercive_pacification
+			holy_realm_mandala_doctrine_tab_actions_visible = yes
 		}
 		complete_effect = {
 			hidden_effect = { black_friday_credit_political_power_purchase = yes }
@@ -1514,6 +1562,7 @@ holy_realm_mandala_category = {
 		visible = {
 			is_holy_realm_country = yes
 			has_country_flag = holy_realm_final_target_audits_unlocked
+			holy_realm_mandala_warnings_tab_actions_visible = yes
 		}
 		complete_effect = {
 			hidden_effect = { black_friday_credit_political_power_purchase = yes }
@@ -1546,6 +1595,7 @@ holy_realm_mandala_category = {
 		visible = {
 			is_holy_realm_country = yes
 			has_country_flag = holy_realm_internal_final_shelters_unlocked
+			holy_realm_mandala_warnings_tab_actions_visible = yes
 		}
 		complete_effect = {
 			hidden_effect = { black_friday_credit_political_power_purchase = yes }
@@ -1595,6 +1645,7 @@ holy_realm_mandala_category = {
 		visible = {
 			is_holy_realm_country = yes
 			has_country_flag = holy_realm_global_final_warning_actions_unlocked
+			holy_realm_mandala_warnings_tab_actions_visible = yes
 		}
 		complete_effect = {
 			hidden_effect = { black_friday_credit_political_power_purchase = yes }
@@ -1629,7 +1680,8 @@ holy_realm_mandala_category = {
 		visible = {
 			is_holy_realm_country = yes
 			has_country_flag = holy_realm_conquest_border_control_unlocked
-			}
+			holy_realm_mandala_refuge_tab_actions_visible = yes
+		}
 			complete_effect = {
 				hidden_effect = { black_friday_credit_political_power_purchase = yes }
 				set_country_flag = holy_realm_memory_outer_pass_road_controls
@@ -1663,6 +1715,7 @@ holy_realm_mandala_category = {
 		visible = {
 			is_holy_realm_country = yes
 			has_country_flag = holy_realm_outer_valleys_register_unlocked
+			holy_realm_mandala_arhats_tab_actions_visible = yes
 		}
 		complete_effect = {
 			hidden_effect = { black_friday_credit_political_power_purchase = yes }
@@ -1700,6 +1753,7 @@ holy_realm_mandala_category = {
 		visible = {
 			is_holy_realm_country = yes
 			has_country_flag = holy_realm_mandala_border_pressure_unlocked
+			holy_realm_mandala_diplomacy_tab_actions_visible = yes
 		}
 		complete_effect = {
 			hidden_effect = { black_friday_credit_political_power_purchase = yes }
@@ -1743,6 +1797,7 @@ holy_realm_mandala_category = {
 		}
 		visible = {
 			is_holy_realm_country = yes
+			holy_realm_mandala_doctrine_tab_actions_visible = yes
 		}
 		complete_effect = {
 			hidden_effect = { black_friday_credit_political_power_purchase = yes }
@@ -1782,6 +1837,7 @@ holy_realm_mandala_category = {
 		}
 		visible = {
 			is_holy_realm_country = yes
+			holy_realm_mandala_doctrine_tab_actions_visible = yes
 		}
 		complete_effect = {
 			hidden_effect = { black_friday_credit_political_power_purchase = yes }
@@ -1815,6 +1871,7 @@ holy_realm_mandala_category = {
 		}
 		visible = {
 			is_holy_realm_country = yes
+			holy_realm_mandala_doctrine_tab_actions_visible = yes
 		}
 		complete_effect = {
 			hidden_effect = { black_friday_credit_political_power_purchase = yes }
@@ -1877,6 +1934,7 @@ holy_realm_mandala_category = {
 				has_country_flag = holy_realm_doctrine_restraint
 				check_variable = { final_silence_pressure > 30 }
 			}
+			holy_realm_mandala_doctrine_tab_actions_visible = yes
 		}
 		complete_effect = {
 			hidden_effect = { black_friday_credit_political_power_purchase = yes }
@@ -1924,6 +1982,7 @@ holy_realm_mandala_category = {
 			has_country_flag = holy_realm_memory_ministry_of_release
 			NOT = { has_country_flag = holy_realm_final_doctrine_armed }
 			NOT = { has_country_flag = holy_realm_final_doctrine_renounced }
+			holy_realm_mandala_warnings_tab_actions_visible = yes
 		}
 		complete_effect = {
 			hidden_effect = { black_friday_credit_political_power_purchase = yes }
@@ -1964,6 +2023,7 @@ holy_realm_mandala_category = {
 		visible = {
 			is_holy_realm_country = yes
 			has_country_flag = holy_realm_final_doctrine_armed
+			holy_realm_mandala_warnings_tab_actions_visible = yes
 		}
 		complete_effect = {
 			hidden_effect = { black_friday_credit_political_power_purchase = yes }
@@ -2194,7 +2254,6 @@ holy_realm_bodhisattva_category = {
 			hidden_effect = { black_friday_credit_political_power_purchase = yes }
 			holy_realm_start_teaching_mission_slot = yes
 			add_stability = 0.02
-			add_manpower = 45000
 			holy_realm_advance_bodhisattva_bhumi = yes
 			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
 			holy_realm_add_spiritual_legitimacy = yes
@@ -2375,7 +2434,6 @@ holy_realm_bodhisattva_category = {
 			hidden_effect = { black_friday_credit_political_power_purchase = yes }
 			holy_realm_start_teaching_mission_slot = yes
 			add_stability = 0.01
-			add_manpower = 25000
 			set_country_flag = holy_realm_memory_foreign_pilgrims
 			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
 			holy_realm_add_spiritual_legitimacy = yes
