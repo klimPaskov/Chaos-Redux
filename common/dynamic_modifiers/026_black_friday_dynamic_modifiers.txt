@@ -9,8 +9,9 @@
 # so the sale multiplies each country's current price after its ordinary
 # discounts and surcharges instead of adding a flat percentage to them.
 # The ordinary factor excludes the sale's own applied contribution, so a
-# refresh never counts it twice. A free purchase stays free and a paid one is
-# never pushed to zero by the sale.
+# refresh never counts it twice. This compensation assumes unchanged ordinary
+# factors until the next explicit refresh. Changed factors and native rounding
+# remain completion blockers, as recorded in Event 026 decision D42.
 #
 # Each purchase is priced by exactly one key here. Overlapping keys that can
 # price the same purchase (advisor ledger factors, military_leader, officer
