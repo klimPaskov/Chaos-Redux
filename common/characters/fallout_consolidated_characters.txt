@@ -1,19 +1,95 @@
 # ============================================================================
-# CHAOS REDUX - FALLOUT_CONSOLIDATED_CHARACTERS.TXT
-# Consolidated Fallout and Air Cleanliness loader surface.
-# Source files are preserved in lexical order to retain existing load order.
+# CHAOS REDUX - FALLOUT NEW ZEALAND LIFEBOAT CHARACTERS
+# Static loader definitions recruited once when the sole NZL package activates.
+# Explicit tokens keep focus promotions and generated-successor recruitment valid.
+# Advisor costs retain the existing file-scoped integer fallback; AI weights are
+# unchanged from the former generated role definitions.
 # ============================================================================
 
-# ============================================================================
-# Consolidated source: common/characters/fallout_nzl_lifeboat_characters.txt
-# ============================================================================
-# ============================================================================
-# CHAOS REDUX - FALLOUT NEW ZEALAND LIFEBOAT STATE CHARACTERS
-# ============================================================================
-# The six NZL lifeboat characters are generated idempotently by
-# fallout_nzl_recruit_package_characters when the package activates. Keeping
-# their token_base, portraits, and role definitions beside that effect avoids
-# duplicate static and runtime character definitions.
+@CR_SC_FALLOUT_NZL_AI_NORMAL = 10
+@CR_SC_FALLOUT_NZL_COST_POLITICAL_POWER_LOW = 25
+@CR_SC_FALLOUT_NZL_COST_POLITICAL_POWER_MEDIUM = 45
 
 characters = {
+	NZL_fallout_lifeboat_parliament = {
+		name = NZL_fallout_lifeboat_parliament
+		portraits = { civilian = { large = GFX_portrait_NZL_fallout_lifeboat_parliament } }
+		country_leader = {
+			ideology = centrism
+			traits = { fallout_nzl_lifeboat_parliament_trait }
+			id = -1
+		}
+
+	}
+	NZL_fallout_relief_speaker = {
+		name = NZL_fallout_relief_speaker
+		portraits = { civilian = { large = GFX_portrait_NZL_fallout_relief_speaker } }
+		country_leader = {
+			ideology = centrism
+			traits = { fallout_nzl_relief_speaker_trait }
+			id = -1
+		}
+
+	}
+	NZL_fallout_harbor_constable = {
+		name = NZL_fallout_harbor_constable
+		portraits = { civilian = { large = GFX_portrait_NZL_fallout_harbor_constable } }
+		country_leader = {
+			ideology = despotism
+			traits = { fallout_nzl_harbor_constable_trait }
+			id = -1
+		}
+
+	}
+	NZL_fallout_dairy_relief_commissioner = {
+		name = NZL_fallout_dairy_relief_commissioner
+		portraits = { civilian = { small = GFX_portrait_NZL_fallout_dairy_relief_commissioner_small } }
+		advisor = {
+			slot = political_advisor
+			idea_token = NZL_fallout_dairy_relief_commissioner
+			allowed = { original_tag = NZL }
+			visible = { fallout_nzl_lifeboat_package_is_current = yes has_completed_focus = fallout_nzl_dairy_relief_fleet }
+			available = { check_variable = { fallout_nzl_food_security > constant:fallout_nzl_value.critical } }
+			traits = { fallout_nzl_dairy_relief_commissioner_trait }
+			cost = @CR_SC_FALLOUT_NZL_COST_POLITICAL_POWER_MEDIUM
+			ai_will_do = {
+				factor = @CR_SC_FALLOUT_NZL_AI_NORMAL
+				modifier = { factor = constant:fallout_nzl_ai.preferred fallout_nzl_food_is_critical = yes }
+			}
+		}
+
+	}
+	NZL_fallout_storm_port_engineer = {
+		name = NZL_fallout_storm_port_engineer
+		portraits = { civilian = { small = GFX_portrait_NZL_fallout_storm_port_engineer_small } }
+		advisor = {
+			slot = political_advisor
+			idea_token = NZL_fallout_storm_port_engineer
+			allowed = { original_tag = NZL }
+			visible = { fallout_nzl_lifeboat_package_is_current = yes has_completed_focus = fallout_nzl_storm_port_engineers }
+			available = { 284 = { is_owned_and_controlled_by = ROOT } }
+			traits = { fallout_nzl_storm_port_engineer_trait }
+			cost = @CR_SC_FALLOUT_NZL_COST_POLITICAL_POWER_MEDIUM
+			ai_will_do = {
+				factor = @CR_SC_FALLOUT_NZL_AI_NORMAL
+				modifier = { factor = constant:fallout_nzl_ai.preferred fallout_nzl_harbor_is_critical = yes }
+			}
+		}
+
+	}
+	NZL_fallout_radio_service_coordinator = {
+		name = NZL_fallout_radio_service_coordinator
+		portraits = { civilian = { small = GFX_portrait_NZL_fallout_radio_service_coordinator_small } }
+		advisor = {
+			slot = political_advisor
+			idea_token = NZL_fallout_radio_service_coordinator
+			allowed = { original_tag = NZL }
+			visible = { fallout_nzl_lifeboat_package_is_current = yes has_completed_focus = fallout_nzl_radio_weather_chain }
+			available = { check_variable = { fallout_nzl_sea_lane_security > constant:fallout_nzl_value.minimum } }
+			traits = { fallout_nzl_radio_service_coordinator_trait }
+			cost = @CR_SC_FALLOUT_NZL_COST_POLITICAL_POWER_LOW
+			ai_will_do = { factor = @CR_SC_FALLOUT_NZL_AI_NORMAL }
+		}
+
+	}
 }
