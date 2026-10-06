@@ -1,0 +1,42 @@
+# Campaign preparations exchange material and training for temporary strength.
+# Native idea modifiers require file-local constants rather than constant:.
+# These macros mirror event021_campaign_modifiers in the regional constants.
+@supply_relief = -0.12
+@supply_recovery = 0.10
+@supply_attack_cost = -0.05
+@defense_strength = 0.12
+@defense_entrenchment = 0.15
+@defense_speed_cost = -0.08
+@column_speed = 0.10
+@column_planning = 0.15
+@column_defense_cost = -0.06
+@mobilization_attack = 0.10
+@mobilization_org = 0.10
+@mobilization_recruits = 0.02
+@mobilization_stability_cost = -0.08
+@mobilization_consumer_cost = 0.05
+
+ideas = {
+	country = {
+		event021_campaign_supply = {
+			picture = idea_021_war_torn_administration
+			allowed_civil_war = { always = yes }
+			modifier = { supply_consumption_factor = @supply_relief army_morale_factor = @supply_recovery army_attack_factor = @supply_attack_cost }
+		}
+		event021_campaign_defense = {
+			picture = idea_021_fractured_command
+			allowed_civil_war = { always = yes }
+			modifier = { army_defence_factor = @defense_strength max_dig_in_factor = @defense_entrenchment army_speed_factor = @defense_speed_cost }
+		}
+		event021_campaign_columns = {
+			picture = idea_021_fractured_command
+			allowed_civil_war = { always = yes }
+			modifier = { army_speed_factor = @column_speed planning_speed = @column_planning army_defence_factor = @column_defense_cost }
+		}
+		event021_mass_regional_mobilization = {
+			picture = idea_021_fractured_command
+			allowed_civil_war = { always = yes }
+			modifier = { army_attack_factor = @mobilization_attack army_org_factor = @mobilization_org conscription = @mobilization_recruits stability_factor = @mobilization_stability_cost consumer_goods_factor = @mobilization_consumer_cost }
+		}
+	}
+}

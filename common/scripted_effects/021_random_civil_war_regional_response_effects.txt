@@ -1,0 +1,102 @@
+# COUNTRY scope helpers for containment, campaign adaptation and sponsor withdrawal.
+# No helper creates a country, changes Event 006 identity or adds a periodic hook.
+event021_emit_multifront_news_once = {
+	# The old country flag closes repeated review attempts, while the durable
+	# crisis-id array survives a government succession in the same war.
+	set_country_flag = random_civil_war_multifront_news_sent
+	if = {
+		limit = {
+			has_variable = random_civil_war_crisis_id
+			check_variable = { var = random_civil_war_crisis_id value = constant:random_civil_war_value.zero compare = greater_than }
+			NOT = { check_variable = { var = random_civil_war_origin_kind value = constant:random_civil_war_origin.scenario compare = equals } }
+			NOT = { is_in_array = { array = global.random_civil_war_scenario_crisis_ids value = random_civil_war_crisis_id } }
+			NOT = { is_in_array = { array = global.random_civil_war_news_reported_crisis_ids value = random_civil_war_crisis_id } }
+		}
+		add_to_array = { array = global.random_civil_war_news_reported_crisis_ids value = random_civil_war_crisis_id }
+		news_event = { id = chaosx.news.211 }
+	}
+}
+
+event021_contain_regional_exposure = {
+	if = {
+		limit = { has_variable = random_civil_war_exposure_stage }
+		subtract_from_variable = { random_civil_war_exposure_stage = constant:random_civil_war_value.one }
+		clamp_variable = { var = random_civil_war_exposure_stage min = constant:random_civil_war_exposure_stage.observed max = constant:random_civil_war_exposure_stage.mobilizing }
+	}
+}
+
+# Decision payment precedes this helper. The pending flag protects the report
+# against duplicate delivery, and selecting an option consumes it once.
+event021_begin_campaign_adaptation = {
+	if = {
+		limit = {
+			event021_country_can_adapt = yes
+			NOT = { has_country_flag = event021_campaign_adapted }
+		}
+		set_country_flag = event021_campaign_adapted
+		set_country_flag = event021_adaptation_report_pending
+		country_event = { id = chaosx.nr21_adaptation.1 }
+	}
+}
+
+event021_adapt_supply = {
+	if = {
+		limit = { has_country_flag = event021_adaptation_report_pending }
+		clr_country_flag = event021_adaptation_report_pending
+		add_timed_idea = { idea = event021_campaign_supply days = constant:event021_regional_response.adaptation_days }
+	}
+}
+
+event021_adapt_defense = {
+	if = {
+		limit = { has_country_flag = event021_adaptation_report_pending }
+		clr_country_flag = event021_adaptation_report_pending
+		add_timed_idea = { idea = event021_campaign_defense days = constant:event021_regional_response.adaptation_days }
+	}
+}
+
+event021_adapt_columns = {
+	if = {
+		limit = { has_country_flag = event021_adaptation_report_pending }
+		clr_country_flag = event021_adaptation_report_pending
+		add_timed_idea = { idea = event021_campaign_columns days = constant:event021_regional_response.adaptation_days }
+	}
+}
+
+event021_mass_mobilization = {
+	set_country_flag = event021_mass_mobilization_used
+	set_country_flag = event021_mass_mobilization_memory
+	if = {
+		limit = { has_country_flag = random_civil_war_opposition_side has_variable = random_civil_war_host_country_scope }
+		var:random_civil_war_host_country_scope = { set_country_flag = event021_mass_mobilization_memory }
+	}
+	add_timed_idea = { idea = event021_mass_regional_mobilization days = constant:event021_regional_response.mobilization_days }
+}
+
+# Incoming receipts already bind the exact sponsor to this government.
+# Exposure ends the paid commitment, with a diplomatic cost rather than a roll.
+event021_expose_foreign_intervention = {
+	if = {
+		limit = { event021_foreign_intervention_live = yes }
+		set_country_flag = event021_foreign_intervention_exposed
+		var:random_civil_war_foreign_sponsor_scope = {
+			add_opinion_modifier = { target = PREV modifier = event021_intervention_exposed }
+			event021_clear_sponsor_commitment_receipt = yes
+		}
+		clr_country_flag = random_civil_war_foreign_intervention_active
+		clear_variable = random_civil_war_foreign_sponsor_scope
+	}
+}
+
+event021_cleanup_campaign_adaptation = {
+	remove_ideas = event021_campaign_supply
+	remove_ideas = event021_campaign_defense
+	remove_ideas = event021_campaign_columns
+	remove_ideas = event021_mass_regional_mobilization
+	clr_country_flag = event021_campaign_adapted
+	clr_country_flag = event021_adaptation_report_pending
+	clr_country_flag = event021_mass_mobilization_used
+	clr_country_flag = event021_foreign_intervention_exposed
+	# Mobilization memory survives until recurrence is evaluated, like the
+	# tolerated strange-incident memory. New-role provenance clears both.
+}

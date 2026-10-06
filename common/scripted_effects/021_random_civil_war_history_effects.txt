@@ -1,0 +1,31 @@
+# Event 021 history selection joins immutable detail rows to the shared sequence.
+# Public history sorting and filtering never change this owner-side join key.
+event021_clear_history_selection = {
+	set_variable = { events_log_history_selected_event021_snapshot_index = constant:random_civil_war_value.zero }
+	set_variable = { events_log_history_selected_event021_snapshot_row = constant:random_civil_war_value.zero }
+}
+
+# COUNTRY scope on the viewer. The indicator is one-based, the array row zero-based.
+event021_resolve_history_selection = {
+	event021_clear_history_selection = yes
+	if = {
+		limit = {
+			check_variable = { var = events_log_history_selected_event_id value = constant:random_civil_war_event.id compare = equals }
+			check_variable = { var = events_log_history_selected_sequence value = constant:random_civil_war_value.zero compare = greater_than }
+		}
+		set_temp_variable = { event021_history_found = constant:random_civil_war_value.zero }
+		for_each_loop = {
+			array = global.random_civil_war_log_snapshot_history_sequence_entries
+			value = event021_history_sequence
+			index = event021_history_row
+			break = event021_history_found
+			if = {
+				limit = { check_variable = { var = event021_history_sequence value = events_log_history_selected_sequence compare = equals } }
+				set_variable = { events_log_history_selected_event021_snapshot_row = event021_history_row }
+				set_variable = { events_log_history_selected_event021_snapshot_index = event021_history_row }
+				add_to_variable = { events_log_history_selected_event021_snapshot_index = constant:random_civil_war_value.one }
+				set_temp_variable = { event021_history_found = constant:random_civil_war_value.one }
+			}
+		}
+	}
+}

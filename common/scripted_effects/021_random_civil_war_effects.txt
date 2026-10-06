@@ -123,6 +123,10 @@ event021_refresh_country_state = {
 		add_to_temp_variable = { event021_pressure_recalculated = constant:random_civil_war_pressure.nearby_conflict }
 	}
 	if = {
+		limit = { random_civil_war_exposure_is_mobilizing = yes }
+		add_to_temp_variable = { event021_pressure_recalculated = constant:event021_regional_response.mobilizing_pressure }
+	}
+	if = {
 		limit = { has_country_flag = random_civil_war_recent_civil_war_memory }
 		add_to_temp_variable = { event021_pressure_recalculated = constant:random_civil_war_pressure.event_memory }
 	}
@@ -1107,6 +1111,14 @@ event021_random_civil_war_commit_opening = {
 		limit = { random_civil_war_opening_plan_valid = yes }
 		set_country_flag = random_civil_war_active
 		event021_commit_opening_evolution_provenance = yes
+		if = {
+			limit = {
+				has_country_flag = random_civil_war_scenario_bypass_active
+				has_variable = random_civil_war_crisis_id
+				NOT = { is_in_array = { array = global.random_civil_war_scenario_crisis_ids value = random_civil_war_crisis_id } }
+			}
+			add_to_array = { array = global.random_civil_war_scenario_crisis_ids value = random_civil_war_crisis_id }
+		}
 		event021_parent_mark_treaty_recurrence = yes
 		event021_parent_commit_generation_history = yes
 		event021_begin_achievement_history = yes
@@ -1632,7 +1644,6 @@ event021_apply_regional_exposure = {
 			limit = { NOT = { has_variable = random_civil_war_exposure_stage } }
 			set_variable = { random_civil_war_exposure_stage = constant:random_civil_war_exposure_stage.observed }
 		}
-		else = { add_to_variable = { random_civil_war_exposure_stage = constant:random_civil_war_value.one } }
 		clamp_variable = {
 			var = random_civil_war_exposure_stage
 			min = constant:random_civil_war_exposure_stage.observed
@@ -1642,15 +1653,12 @@ event021_apply_regional_exposure = {
 		# Keep the presentation and decision surfaces aligned with the durable
 		# exposure marker used by cleanup and target scoring.
 		set_country_flag = random_civil_war_neighbor_exposure
+		set_country_flag = random_civil_war_nearby_conflict_exposure
 		if = {
 			limit = { NOT = { is_in_array = { array = global.random_civil_war_exposed_countries value = THIS } } }
 			add_to_array = { array = global.random_civil_war_exposed_countries value = THIS }
 		}
 		event021_register_global_country = yes
-		if = {
-			limit = { has_event_target = random_civil_war_exposure_source }
-			event_target:random_civil_war_exposure_source = { save_global_event_target_as = random_civil_war_exposure_source_country }
-		}
 	}
 }
 
@@ -1659,26 +1667,39 @@ event021_apply_regional_exposure = {
 # clear the exposure cooldown after its bounded action completes.
 event021_advance_regional_exposure = {
 	if = {
-		limit = { random_civil_war_neighbor_exposure_valid = yes }
-		event021_apply_regional_exposure = yes
+		limit = { event021_country_can_manage_exposure = yes }
+		if = {
+			limit = {
+				NOT = { has_country_flag = event021_border_monitoring_recent }
+				NOT = { has_country_flag = event021_mediation_recent }
+			}
+			add_to_variable = { random_civil_war_exposure_stage = constant:random_civil_war_value.one }
+		}
+		clamp_variable = { var = random_civil_war_exposure_stage min = constant:random_civil_war_exposure_stage.observed max = constant:random_civil_war_exposure_stage.mobilizing }
+		if = {
+			limit = {
+				NOT = { has_country_flag = random_civil_war_civilian_relief_active }
+				var:random_civil_war_exposure_source_country_scope = { has_country_flag = random_civil_war_contested_territory }
+			}
+			set_country_flag = random_civil_war_humanitarian_pressure
+		}
+		else = { clr_country_flag = random_civil_war_humanitarian_pressure }
 	}
 }
 
 # COUNTRY scope. Removes the current neighbor from the persistent exposure
 # registry while leaving the source war's civilian aftermath to settlement.
 event021_cleanup_regional_exposure = {
-	# A support receipt is a paired sponsor/recipient transaction. Clear the
-	# source-side receipt before dropping the pointer, then clear the current
-	# exposed neighbour's outbound receipt as well.
+	# Armed networks outlast their source war for a short, fixed period.
 	if = {
-		limit = { has_variable = random_civil_war_exposure_source_country_scope }
-		var:random_civil_war_exposure_source_country_scope = {
-			if = {
-				limit = { exists = yes }
-				event021_clear_sponsor_commitment_receipt = yes
-			}
-		}
+		limit = { has_country_flag = random_civil_war_neighbor_exposure }
+		set_temp_variable = { event021_exposure_decay_days = constant:event021_regional_response.exposure_decay_days }
+		clr_country_flag = random_civil_war_nearby_conflict_exposure
+		set_country_flag = { flag = random_civil_war_nearby_conflict_exposure days = event021_exposure_decay_days }
 	}
+	clr_country_flag = random_civil_war_humanitarian_pressure
+	# Clear this neighbour's paired commitment only. The source war may be
+	# receiving aid from another neighbour whose relationship must survive.
 	event021_clear_sponsor_commitment_receipt = yes
 	remove_from_array = { array = global.random_civil_war_exposed_countries value = THIS }
 	clr_country_flag = random_civil_war_exposure_active
@@ -1730,6 +1751,24 @@ event021_clear_received_sponsor_commitment_receipt = {
 # COUNTRY scope. Clears both ends of a temporary sponsor/recipient commitment
 # receipt. Durable settlement, recurrence, and achievement receipts remain.
 event021_clear_sponsor_commitment_receipt = {
+	# A recipient's teardown must also release its exact sponsor. Clear the
+	# incoming pointer before following it, preventing a reciprocal cycle.
+	if = {
+		limit = { has_country_flag = random_civil_war_sponsor_commitment_received has_variable = random_civil_war_sponsor_scope }
+		save_event_target_as = event021_closing_sponsor_recipient
+		var:random_civil_war_sponsor_scope = { save_event_target_as = event021_closing_sponsor }
+		event021_clear_received_sponsor_commitment_receipt = yes
+		event_target:event021_closing_sponsor = {
+			if = {
+				limit = {
+					exists = yes
+					has_variable = random_civil_war_sponsor_recipient_scope
+					var:random_civil_war_sponsor_recipient_scope = { tag = event_target:event021_closing_sponsor_recipient }
+				}
+				event021_clear_sponsor_commitment_receipt = yes
+			}
+		}
+	}
 	if = {
 		limit = { has_variable = random_civil_war_sponsor_recipient_scope }
 		var:random_civil_war_sponsor_recipient_scope = {
@@ -2077,6 +2116,7 @@ event021_review_current_country = {
 		if = {
 			limit = { random_civil_war_review_due = yes }
 			event021_decay_pressure_modifier = yes
+			event021_advance_regional_exposure = yes
 			event021_refresh_country_state = yes
 			if = {
 				limit = {
@@ -2453,6 +2493,10 @@ event021_prepare_recurrence = {
 	if = {
 		limit = { has_variable = random_civil_war_fracture_pressure }
 		set_variable = { random_civil_war_recurrence_score = random_civil_war_fracture_pressure }
+	}
+	if = {
+		limit = { has_country_flag = event021_mass_mobilization_memory }
+		add_to_variable = { random_civil_war_recurrence_score = constant:event021_regional_response.mobilization_recurrence }
 	}
 	if = {
 		limit = { has_country_flag = random_civil_war_recent_civil_war_memory }

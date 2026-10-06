@@ -1,0 +1,67 @@
+# Event 021 adds at most two campaign actions and one evidence-bound response.
+# Opening and front management remain in the original category.
+@event021_expose_pp_hint = 25
+event021_civil_war_crisis_category = {
+	event021_adapt_campaign = {
+		icon = GFX_decision_event021_priority_front
+		visible = { event021_adaptation_offered = yes }
+		available = { custom_trigger_tooltip = { tooltip = event021_adaptation_cost_tt event021_adaptation_affordable = yes } }
+		custom_cost_trigger = { event021_adaptation_affordable = yes }
+		custom_cost_text = event021_adaptation_cost
+		complete_effect = {
+			custom_effect_tooltip = event021_adapt_campaign_tt
+			hidden_effect = {
+				army_experience = constant:event021_regional_response.adaptation_xp_spend
+				add_equipment_to_stockpile = { type = infantry_equipment amount = constant:event021_regional_response.adaptation_rifles_spend }
+				event021_begin_campaign_adaptation = yes
+			}
+		}
+		ai_will_do = {
+			base = constant:event021_regional_response.ai_base
+			modifier = { factor = constant:event021_regional_response.ai_urgent random_civil_war_authority_is_failing = yes }
+		}
+	}
+
+	event021_mass_mobilization = {
+		icon = GFX_decision_event021_loyalty_review
+		visible = { event021_mass_mobilization_offered = yes }
+		available = { custom_trigger_tooltip = { tooltip = event021_mass_mobilization_cost_tt event021_mass_mobilization_affordable = yes } }
+		custom_cost_trigger = { event021_mass_mobilization_affordable = yes }
+		custom_cost_text = event021_mass_mobilization_cost
+		complete_effect = {
+			custom_effect_tooltip = event021_mass_mobilization_tt
+			hidden_effect = {
+				add_equipment_to_stockpile = { type = infantry_equipment amount = constant:event021_regional_response.mobilization_rifles_spend }
+				add_equipment_to_stockpile = { type = support_equipment amount = constant:event021_regional_response.mobilization_support_spend }
+				event021_mass_mobilization = yes
+			}
+		}
+		ai_will_do = {
+			base = constant:event021_regional_response.ai_base
+			modifier = { factor = constant:event021_regional_response.ai_preferred random_civil_war_authority_is_failing = yes }
+			modifier = { factor = constant:event021_regional_response.ai_urgent has_country_flag = random_civil_war_opposition_side }
+		}
+	}
+
+	event021_expose_intervention = {
+		icon = GFX_decision_event021_loyalty_review
+		ai_hint_pp_cost = @event021_expose_pp_hint
+		visible = { event021_expose_intervention_offered = yes }
+		available = { custom_trigger_tooltip = { tooltip = event021_expose_intervention_cost_tt event021_expose_intervention_affordable = yes } }
+		custom_cost_trigger = { event021_expose_intervention_affordable = yes }
+		custom_cost_text = event021_expose_intervention_cost
+		complete_effect = {
+			custom_effect_tooltip = event021_expose_intervention_tt
+			hidden_effect = {
+				add_political_power = constant:event021_regional_response.expose_political_spend
+				add_equipment_to_stockpile = { type = support_equipment amount = constant:event021_regional_response.expose_support_spend }
+				event021_expose_foreign_intervention = yes
+			}
+		}
+		ai_will_do = {
+			base = constant:event021_regional_response.ai_base
+			modifier = { factor = constant:event021_regional_response.ai_preferred random_civil_war_authority_is_failing = yes }
+			modifier = { factor = constant:event021_regional_response.ai_urgent var:random_civil_war_foreign_sponsor_scope = { is_major = yes } }
+		}
+	}
+}

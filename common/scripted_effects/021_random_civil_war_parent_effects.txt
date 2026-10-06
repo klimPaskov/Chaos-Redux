@@ -884,8 +884,7 @@ event021_parent_emit_multifront_news = {
 						NOT = { has_country_flag = random_civil_war_multifront_news_sent }
 						NOT = { has_global_flag = events_log_disabled_evolution_21_21_1 }
 					}
-					set_country_flag = random_civil_war_multifront_news_sent
-					news_event = { id = chaosx.news.211 }
+					event021_emit_multifront_news_once = yes
 				}
 			}
 		}
@@ -895,8 +894,7 @@ event021_parent_emit_multifront_news = {
 					NOT = { has_country_flag = random_civil_war_multifront_news_sent }
 					NOT = { has_global_flag = events_log_disabled_evolution_21_21_1 }
 				}
-				set_country_flag = random_civil_war_multifront_news_sent
-				news_event = { id = chaosx.news.211 }
+				event021_emit_multifront_news_once = yes
 			}
 		}
 	}
@@ -1380,10 +1378,17 @@ event021_parent_report_no_target = {
 			NOT = { has_country_flag = event_cluster_member_fire_context }
 			NOT = { has_global_flag = random_civil_war_manual_scenario_launch_in_progress }
 			NOT = { has_country_flag = random_civil_war_no_target_report_pending }
-			NOT = { has_country_flag = random_civil_war_active }
-			NOT = { has_country_flag = random_civil_war_critical_launch_pending }
+			OR = {
+				NOT = { has_country_flag = random_civil_war_critical_launch_pending }
+				check_variable = { var = event021_direct_entry value = constant:random_civil_war_value.one compare = equals }
+			}
 		}
 		set_country_flag = random_civil_war_no_target_report_pending
+		clr_country_flag = random_civil_war_no_dynamic_tags_report
+		if = {
+			limit = { check_variable = { var = event021_dynamic_tag_short value = constant:random_civil_war_value.one compare = equals } }
+			set_country_flag = random_civil_war_no_dynamic_tags_report
+		}
 		country_event = { id = chaosx.nr21.17 }
 	}
 }
@@ -3547,6 +3552,7 @@ event021_parent_record_system_log = {
 	}
 	event021_parent_append_events_log_snapshot = yes
 	record_events_log_system_history_entry = yes
+	add_to_array = { array = global.random_civil_war_log_snapshot_history_sequence_entries value = global.events_log_history_sequence }
 	refresh_events_log_system_history_views = yes
 	clear_variable = random_civil_war_parent_log_payload
 	set_temp_variable = { events_log_system_event_id = constant:random_civil_war_value.zero }
@@ -8234,6 +8240,13 @@ event021_parent_commit_critical_country = {
 # cluster-owned reservation is consumed without asking the ordinary target
 # predicate to re-reserve the same country.
 event021_parent_dispatch_opening = {
+	set_temp_variable = { event021_dynamic_tag_short = constant:random_civil_war_value.zero }
+	set_temp_variable = { event021_entry_was_active = constant:random_civil_war_value.zero }
+	set_temp_variable = { event021_entry_dispatched = constant:random_civil_war_value.zero }
+	if = {
+		limit = { has_country_flag = random_civil_war_active }
+		set_temp_variable = { event021_entry_was_active = constant:random_civil_war_value.one }
+	}
 	event021_parent_initialize_global_runtime = yes
 	if = {
 		limit = {
@@ -8307,6 +8320,7 @@ event021_parent_dispatch_opening = {
 					}
 				}
 				country_event = { id = chaosx.nr21.16 }
+				set_temp_variable = { event021_entry_dispatched = constant:random_civil_war_value.one }
 			}
 			else_if = {
 				limit = {
@@ -8319,10 +8333,12 @@ event021_parent_dispatch_opening = {
 					event021_parent_event6_dormant_candidate = yes
 				}
 				event021_parent_start_event6_front = yes
+				if = { limit = { has_country_flag = random_civil_war_active } set_temp_variable = { event021_entry_dispatched = constant:random_civil_war_value.one } }
 			}
 			else_if = {
 				limit = { has_country_flag = random_civil_war_parent_plan_valid }
 				event021_parent_start_ordinary_civil_war = yes
+				if = { limit = { has_country_flag = random_civil_war_active } set_temp_variable = { event021_entry_dispatched = constant:random_civil_war_value.one } }
 			}
 			else = {
 				# A full dynamic tag pool has already recorded its own capacity skip.
@@ -8357,6 +8373,20 @@ event021_parent_dispatch_opening = {
 		limit = { has_country_flag = random_civil_war_active }
 		event021_dequeue_critical_country = yes
 	}
+	if = {
+		limit = {
+			is_ai = no
+			OR = {
+				check_variable = { var = event021_entry_dispatched value = constant:random_civil_war_value.zero compare = equals }
+				AND = {
+					has_country_flag = force_trigger_mode_enabled
+					check_variable = { var = event021_entry_was_active value = constant:random_civil_war_value.one compare = equals }
+				}
+			}
+		}
+		event021_parent_report_no_target = yes
+	}
+	set_temp_variable = { event021_direct_entry = constant:random_civil_war_value.zero }
 	event021_refresh_target_pool_membership = yes
 }
 
@@ -8390,10 +8420,9 @@ event021_parent_expose_neighbor = {
 			individual_crisis_load_is_below_cap = yes
 			NOT = { has_country_flag = random_civil_war_active }
 		}
-		if = {
-			limit = { NOT = { has_event_target = random_civil_war_exposure_source } }
-			event_target:random_civil_war_exposure_source_country = { save_event_target_as = random_civil_war_exposure_source }
-		}
+		# Regular targets survive this effect chain. Rebind for every source war
+		# rather than carrying the first side's pointer into later reviews.
+		event_target:random_civil_war_exposure_source_country = { save_event_target_as = random_civil_war_exposure_source }
 		if = {
 			limit = { has_event_target = random_civil_war_exposure_source_country }
 			set_variable = { random_civil_war_exposure_source_country_scope = event_target:random_civil_war_exposure_source_country }
@@ -8416,11 +8445,24 @@ event021_parent_expose_neighbor = {
 		event021_record_neighbor_evidence = yes
 		event021_apply_regional_exposure = yes
 		event021_refresh_country_state = yes
+		set_temp_variable = { event021_exposure_report_crisis = constant:random_civil_war_value.zero }
+		if = {
+			limit = { has_variable = random_civil_war_exposure_source_country_scope }
+			var:random_civil_war_exposure_source_country_scope = {
+				if = {
+					limit = { has_variable = random_civil_war_crisis_id }
+					set_temp_variable = { event021_exposure_report_crisis = random_civil_war_crisis_id }
+				}
+			}
+		}
 		if = {
 			limit = {
 				has_country_flag = random_civil_war_exposure_active
-				NOT = { has_country_flag = random_civil_war_exposure_presentation_delivered }
+				check_variable = { var = event021_exposure_report_crisis value = constant:random_civil_war_value.zero compare = greater_than }
+				NOT = { is_in_array = { array = global.random_civil_war_scenario_crisis_ids value = event021_exposure_report_crisis } }
+				NOT = { is_in_array = { array = random_civil_war_exposure_reported_crisis_ids value = event021_exposure_report_crisis } }
 			}
+			add_to_array = { array = random_civil_war_exposure_reported_crisis_ids value = event021_exposure_report_crisis }
 			set_country_flag = random_civil_war_exposure_presentation_delivered
 			country_event = { id = chaosx.nr21.4 }
 		}

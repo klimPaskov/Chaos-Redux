@@ -1,0 +1,43 @@
+# Event 021 campaign specialization. One optional report per side per crisis.
+add_namespace = chaosx.nr21_adaptation
+
+country_event = {
+	id = chaosx.nr21_adaptation.1
+	title = chaosx.nr21_adaptation.1.t
+	desc = chaosx.nr21_adaptation.1.d
+	picture = GFX_report_event_021_random_civil_war_opening
+	is_triggered_only = yes
+	trigger = { has_country_flag = event021_adaptation_report_pending }
+	option = {
+		name = chaosx.nr21_adaptation.1.a
+		custom_effect_tooltip = event021_adapt_supply_tt
+		hidden_effect = { event021_adapt_supply = yes }
+		ai_chance = {
+			base = constant:event021_regional_response.ai_base
+			modifier = { factor = constant:event021_regional_response.ai_preferred has_country_flag = random_civil_war_government_side }
+			modifier = { factor = constant:event021_regional_response.ai_preferred event021_secure_rail_mission_target_valid = yes }
+		}
+	}
+	option = {
+		name = chaosx.nr21_adaptation.1.b
+		trigger = { OR = { has_terrain = mountain has_terrain = urban } }
+		custom_effect_tooltip = event021_adapt_defense_tt
+		hidden_effect = { event021_adapt_defense = yes }
+		ai_chance = {
+			base = constant:event021_regional_response.ai_base
+			modifier = { factor = constant:event021_regional_response.ai_preferred has_terrain = mountain }
+			modifier = { factor = constant:event021_regional_response.ai_urgent random_civil_war_authority_is_failing = yes }
+		}
+	}
+	option = {
+		name = chaosx.nr21_adaptation.1.c
+		custom_effect_tooltip = event021_adapt_columns_tt
+		hidden_effect = { event021_adapt_columns = yes }
+		ai_chance = {
+			base = constant:event021_regional_response.ai_base
+			modifier = { factor = constant:event021_regional_response.ai_preferred has_country_flag = random_civil_war_opposition_side }
+			modifier = { factor = constant:event021_regional_response.ai_preferred has_country_flag = random_civil_war_event6_adapter_complete }
+			modifier = { factor = constant:event021_regional_response.ai_urgent has_terrain = plains }
+		}
+	}
+}

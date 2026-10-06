@@ -129,8 +129,8 @@ class CalendarTests(unittest.TestCase):
                         self.assertNotEqual(seed[0][1], 'event021_date_offset')
                         self.assertEqual(nodes[index - 1], ('event021_days_to_date_offset', 'yes'))
                     count += 1
-        # D15 removed the unused emergency-settlement deadline (41 -> 40).
-        self.assertEqual(count, 40)
+        # Opening readiness and mediation add three caller-owned deadlines.
+        self.assertEqual(count, 43)
 
     def test_native_day_fields_and_mtth_day_values_are_unchanged_from_head(self):
         def day_fields(text):
@@ -145,7 +145,12 @@ class CalendarTests(unittest.TestCase):
         for path in SOURCES:
             before = subprocess.run(['git', 'show', baseline_revision + ':' + path], cwd=ROOT,
                                     check=True, capture_output=True, encoding='utf-8').stdout
-            self.assertEqual(day_fields(before), day_fields(source(path)), path)
+            # Regional cleanup adds an approved timer expressed in native days.
+            current = day_fields(source(path))
+            added = ('days', 'event021_exposure_decay_days')
+            if added in current and added not in day_fields(before):
+                current.remove(added)
+            self.assertEqual(day_fields(before), current, path)
         mtth = 'common/mtth/021_random_civil_war_mtth.txt'
         if os.environ.get('CHAOSX_EVENT021_TEST_REVISION'):
             before = subprocess.run(['git', 'show', baseline_revision + ':' + mtth], cwd=ROOT,

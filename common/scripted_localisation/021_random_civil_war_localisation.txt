@@ -516,6 +516,24 @@ defined_text = {
 
 # Event Log snapshot labels use the row selected by the shared history view.
 defined_text = {
+	name = event021_GetEntryFailureReason
+	text = { trigger = { has_country_flag = random_civil_war_active } localization_key = event021_entry_already_active }
+	text = { trigger = { event021_external_queue_blocks_new_crisis = yes } localization_key = event021_entry_external_pending }
+	text = { trigger = { NOT = { event021_parent_global_capacity_ready = yes } } localization_key = event021_entry_capacity_full }
+	text = { trigger = { has_country_flag = random_civil_war_no_dynamic_tags_report } localization_key = event021_entry_no_claimant_room }
+	text = { trigger = { NOT = { random_civil_war_is_normal_human_country = yes } } localization_key = event021_entry_wrong_country }
+	text = { localization_key = event021_entry_no_region }
+}
+
+defined_text = {
+	name = event021_GetExposureStage
+	text = { trigger = { check_variable = { var = random_civil_war_exposure_stage value = constant:random_civil_war_exposure_stage.mobilizing compare = equals } } localization_key = event021_exposure_mobilizing }
+	text = { trigger = { check_variable = { var = random_civil_war_exposure_stage value = constant:random_civil_war_exposure_stage.penetrated compare = equals } } localization_key = event021_exposure_penetrated }
+	text = { trigger = { check_variable = { var = random_civil_war_exposure_stage value = constant:random_civil_war_exposure_stage.pressured compare = equals } } localization_key = event021_exposure_pressured }
+	text = { localization_key = event021_exposure_observed }
+}
+
+defined_text = {
 	name = event021_GetHistorySnapshotSummary
 	text = {
 		trigger = { check_variable = { events_log_history_selected_event021_snapshot_index > 0 } }
