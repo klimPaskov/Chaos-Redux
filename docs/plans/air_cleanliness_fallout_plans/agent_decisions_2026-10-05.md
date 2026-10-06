@@ -104,6 +104,15 @@ Disposition: implemented in source; GUI render blocked.
 The existing monthly visual lifecycle applies the changed weather setting; phase ground and gameplay cues remain as defined by A22.
 Reason: Reset All Settings must reset this visual preference too.
 
+## F13. Fallout prose names the actual people, work and consequences
+
+Disposition: source prose cleanup; full visual wrapping remains unobserved.
+Literal implementation and bookkeeping language is rewritten in the owned localisation while internal identifiers and dynamic tokens remain stable.
+Descriptions name food, medical work, cargo, census papers, routes and public choices directly; short acknowledgments refer to the event instead of asking players to close a bookkeeping object.
+Reason: enforce G3 across the full owned text surface, including phrases the previous takeover retained as diegetic bookkeeping.
+This changes display wording, not resource amounts, selectors, flags, dates or event effects.
+The complete before/after key list and token/value invariance are recorded in the final prose handoff.
+
 ## Retained limits
 
 F11, recorded under the same G6 authority: the ordinary named fictional NZL radio coordinator is presented as the grounded institutional Radio Service Board, retaining its internal tokens, trait, role, and gameplay.
