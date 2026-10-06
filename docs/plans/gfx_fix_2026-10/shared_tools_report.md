@@ -10,7 +10,9 @@ Focus and decision margin defaults use the plan's 2–4 px range; those values r
 No event design, gameplay, weights, localisation, GUI layout or catalog wording changed in this tooling tranche.
 
 The independent Luna audit is recorded in `tools_audit.md`.
-All 18 focused regression tests passed, including exact installed-vanilla counter self-comparisons, frame-local edge processing, canonical DDS header/pixel checks, mixed-frame batch lists, report/input collisions, a competing output creator and exact spill-mask selection.
+All 20 focused regression tests passed, including exact installed-vanilla counter self-comparisons, frame-local edge processing, canonical DDS header/pixel checks, mixed-frame batch lists, report/input collisions, a competing output creator and exact spill-mask selection.
+The counter CLI defaults to two frames and exposes both frame diagnostics without an extra argument.
+Its field-density/footprint/aspect checks reject white-and-black speckle noise without treating it as a NATO box, and stock small-counter margins pass without inventing a border gap.
 The audit found and prompted fixes for report-path overwrites and concurrent output overwrites before the tools were committed.
 Parent contact-sheet review prompted a further safeguard that restricts opaque chroma recolouring to the original boundary band, preserving vivid green paint inside the subject.
 Explicit, reviewed coordinate masks remain available for confirmed internal key blobs; the mask never changes alpha and is protected from report overwrites.

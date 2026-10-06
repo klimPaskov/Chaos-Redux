@@ -1,6 +1,6 @@
 # Shared sprite QA and alpha repair
 
-Run from the mod root with Python 3.10 or later.
+Run from the mod root with Python 3.9 or later.
 Install dependencies with `python -m pip install -r .tools/gfx/requirements.txt`.
 These tools operate only on explicitly selected paths; there is no implicit repository-wide mutation.
 All repair and conversion outputs go to a separate directory for review before the asset owner installs them.
@@ -82,7 +82,7 @@ Profiles use the explicit October GFX repair plan's slot contract:
 | report | 210x176 | none |
 | news | 397x153 | none |
 | counter-large | 76x42 | 1 px |
-| counter-small | 30x12 | 1 px |
+| counter-small | 30x12 | none (vanilla fills the top/bottom) |
 | texticon | 18x18 | 1 px |
 
 `category` means the small category icon, not the separate 114x101 category illustration.
@@ -94,13 +94,15 @@ Icon span below 80% of its canvas raises an undersized-art finding; the review p
 There is no automatic rescaling or cropping, because that cannot recover a clipped subject.
 
 `counter` is a conservative automated triage check, not proof that the symbol depicts the right unit.
+Its default frame count is two, so the returned alpha diagnostics describe both frames separately.
 Large frame 1 must follow the muted flat vanilla-green silhouette palette sampled from the supplied reference.
 Small frame 1 must predominantly be light grey/white at full opacity.
 Frame 2 needs an opaque pale/white NATO field with a black line glyph, distinct from frame 1.
 The check catches empty/ghosted subjects, wrong canvases, broad palette mismatches, identical frames and missing white/black structure.
+It also compares the largest connected pale/black field's density, footprint and rectangular aspect to vanilla, flagging scattered white/black noise and unboxed glyphs.
 Counter opacity and colour-spread comparisons use the supplied reference, since actual vanilla antialiased infantry silhouettes themselves average below 200 alpha.
 The separate `alpha` command still reports the requested literal 200 threshold without that adjustment.
-It cannot establish a recognizable silhouette, complete box border, correct NATO glyph, line weight or readable support marker; those require native-size visual comparison to the exact vanilla family.
+It cannot establish a recognizable silhouette, a complete box border, the correct NATO glyph, line weight or a readable support marker; those require native-size visual comparison to the exact vanilla family.
 Do not apply this counter rule to unrelated 18x18 inline texticons or division-template emblems.
 
 ## DDS contract and shared-tree installation

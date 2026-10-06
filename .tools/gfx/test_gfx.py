@@ -274,6 +274,18 @@ class GfxHelpersTests(unittest.TestCase):
 
 
 class InstalledVanillaCounterTests(unittest.TestCase):
+    @unittest.skipUnless((VANILLA / "divisions_large" / "unit_infantry_icon.dds").is_file(),
+                         "Installed vanilla counter DDS unavailable")
+    def test_counter_cli_reports_both_frames_without_extra_frame_argument(self):
+        source = VANILLA / "divisions_large" / "unit_infantry_icon.dds"
+        with tempfile.TemporaryDirectory() as directory:
+            report = Path(directory) / "counter.json"
+            result = subprocess.run([sys.executable, "-B", str(Path(__file__).with_name("gfx.py")),
+                                     "counter", str(source), "--surface", "large", "--reference", str(source),
+                                     "--json", str(report)], capture_output=True, text=True, check=False)
+            self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+            self.assertEqual(len(json.loads(report.read_text(encoding="utf-8"))[0]["frames"]), 2)
+
     @unittest.skipUnless((VANILLA / "divisions_large" / "unit_infantry_icon.dds").is_file()
                          and (VANILLA / "divisions_small" / "onmap_unit_infantry_icon.dds").is_file(),
                          "Installed vanilla counter DDS files unavailable")
@@ -291,6 +303,20 @@ class InstalledVanillaCounterTests(unittest.TestCase):
         # The reference itself must not be presented as a defective candidate.
         self.assertEqual(large_findings, [])
         self.assertEqual(small_findings, [])
+        self.assertEqual(gfx.size_check(large, "counter-large", 2), [])
+        self.assertEqual(gfx.size_check(small, "counter-small", 2), [])
+
+    @unittest.skipUnless((VANILLA / "divisions_large" / "unit_infantry_icon.dds").is_file(),
+                         "Installed vanilla counter DDS unavailable")
+    def test_counter_rejects_white_and_black_speckles_without_a_nato_field(self):
+        reference = gfx.load(VANILLA / "divisions_large" / "unit_infantry_icon.dds")
+        candidate = reference.copy()
+        candidate.paste(Image.new("RGBA", (76, 42)), (76, 0))
+        for y in range(4, 38, 4):
+            for x in range(4, 72, 4):
+                candidate.putpixel((76 + x, y), (255, 255, 255, 255) if (x + y) % 8 else (0, 0, 0, 255))
+        findings = gfx.counter_check(candidate, "large", reference)
+        self.assertTrue(any("coherent rectangular NATO field" in finding for finding in findings))
 
 
 if __name__ == "__main__":

@@ -15,7 +15,7 @@ import tempfile
 
 import numpy as np
 from PIL import Image, ImageDraw, ImageFilter
-from scipy.ndimage import distance_transform_edt, binary_erosion
+from scipy.ndimage import distance_transform_edt, binary_erosion, label
 
 ROOT = Path(__file__).resolve().parents[2]
 CONVERTER = ROOT / '.agents/skills/chaos-redux-event-assets/tools/convert_to_dds.py'
@@ -23,7 +23,7 @@ PROFILES = {
     'focus': (94, 86, 2), 'decision': (34, 34, 2),
     'category': (52, 40, 3), 'idea': (64, 64, 2),
     'report': (210, 176, 0), 'news': (397, 153, 0),
-    'counter-large': (76, 42, 1), 'counter-small': (30, 12, 1),
+    'counter-large': (76, 42, 1), 'counter-small': (30, 12, 0),
     'texticon': (18, 18, 1),
 }
 
@@ -250,6 +250,23 @@ def counter_check(image, surface, reference):
     black = opaque & (alt[..., :3].max(axis=2) < 85)
     if white.sum() < 8 or black.sum() < 4:
         findings.append('alternate frame lacks opaque white NATO field or black line glyph')
+    def field_shape(frame):
+        pixels = np.asarray(frame)
+        mask = (pixels[..., 3] >= 200) & ((pixels[..., :3].min(axis=2) > 170)
+                                        | (pixels[..., :3].max(axis=2) < 85))
+        components, count = label(mask, np.ones((3, 3), dtype=bool))
+        if not count:
+            return 0, 0, 0
+        areas = np.bincount(components.ravel())
+        areas[0] = 0
+        component = components == int(areas.argmax())
+        ys, xs = np.where(component)
+        width, height = int(xs.max() - xs.min() + 1), int(ys.max() - ys.min() + 1)
+        return float(component.sum() / (width * height)), width / height, int(component.sum())
+    density, aspect, area = field_shape(alternate)
+    ref_density, ref_aspect, ref_area = field_shape(ref_alt)
+    if area < ref_area * .25 or density < ref_density * .70 or abs(aspect - ref_aspect) > .60:
+        findings.append('alternate frame lacks a coherent rectangular NATO field comparable to vanilla')
     if art.tobytes() == alternate.tobytes():
         findings.append('two frames are identical')
     return findings
@@ -357,7 +374,8 @@ def main():
         p.add_argument('inputs', nargs='*')
         p.add_argument('--list', help='JSON array of paths or objects with texture/path')
         p.add_argument('--json', help='Write full machine-readable results')
-        p.add_argument('--frames', type=int, help='Override horizontal frame count; otherwise use manifest frames or 1')
+        p.add_argument('--frames', type=int, default=2 if command == 'counter' else None,
+                       help='Override horizontal frame count; otherwise use manifest frames or 1 (counter: 2)')
         if command in ('defringe', 'dds'):
             p.add_argument('--out', required=True, help='Separate output directory')
             p.add_argument('--root', default='.', help='Preserve paths relative to this root under output')
@@ -378,6 +396,8 @@ def main():
     p.add_argument('--out', required=True)
     p.add_argument('--label', default='review')
     args = parser.parse_args()
+    if args.command == 'counter' and args.frames != 2:
+        parser.error('Counter convention checks require exactly two frames')
     if args.command == 'sheet':
         entries = [e for e in sprite_registry(Path(args.root)) if e['group'] in args.groups]
         if not entries:
