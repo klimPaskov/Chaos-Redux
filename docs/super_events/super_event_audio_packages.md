@@ -12,11 +12,11 @@ This file records sourced super-event audio provenance and the current sound-onl
 - Source title: `Scheherazade, Op. 35: I. The Sea and Sinbad's Ship`.
 - Composer / creator: Nikolai Rimsky-Korsakov.
 - Performer / recording: San Francisco Symphony conducted by Pierre Monteux, with Naoum Blinder as concertmaster.
-- Source URL: <https://commons.wikimedia.org/wiki/File:Rimsky-Korsakov,_Scheherazade,_Symphonic_Suite,_Op._35_-_01_The_Sea_and_Sinbads_Ship.ogg>
-- Source file: `docs/assets/002_zombie_outbreak/source_audio/duplicate_audio_replacements_2026-09-01/source/rimsky_korsakov_scheherazade_i.ogg`.
-- License: public-domain composition and CC0 1.0 worldwide recording dedication.
-- Duration: 1:45 final excerpt.
-- Conversion notes: the opening 105 seconds are rendered to stereo 44.1 kHz PCM16 with entry and exit fades. Runtime SHA-256: `753778951E4AB1FC6F72AE54A00C5BE8BDC1C8CCA527DE9E9F9BA0C1CF3ACEAC`.
+- Source URLs: [Internet Archive recording item](https://archive.org/details/Sheherazade); [Wikimedia Commons file and CC0 record](https://commons.wikimedia.org/wiki/File:Rimsky-Korsakov._Scheherazade,_Symphonic_Suite,_Op._35_-_01_The_Sea_And_Sinbads_Ship.ogg?oldid=628862047).
+- Source file: `docs/assets/002_zombie_outbreak/source_audio/rimsky_korsakov_scheherazade_i_archive_original.mp3` (19,953,265 bytes; SHA-256 `437AF712F594E92BB1ABAF863A8709C66894E93611A17C5C13B02EE1B4C71B1B`).
+- License: the 1888 composition is public domain (Rimsky-Korsakov died in 1908); Internet Archive marks the 1942 recording source Public Domain, and the Commons file page dedicates the recording file under CC0 1.0. License confidence: high for this archived recording. Attribution is not required; courtesy credit is recommended.
+- Duration: 498.817875 seconds original source; 105.000 seconds final excerpt.
+- Conversion notes: the opening `00:00.000-01:45.000` is rendered to stereo 44.1 kHz PCM16 with entry and exit fades; the retained notes do not specify fade lengths. Decoded-PCM comparison aligns at source offset `0.000 s` with normalized correlation `0.998199` at runtime `00:40` and `0.997459` at `01:15`. Runtime SHA-256: `753778951E4AB1FC6F72AE54A00C5BE8BDC1C8CCA527DE9E9F9BA0C1CF3ACEAC`.
 
 ### The Alliance of Man
 
@@ -54,11 +54,11 @@ This file records sourced super-event audio provenance and the current sound-onl
 - Source title: `Music for the Royal Fireworks, HWV 351: IV. La Réjouissance`.
 - Composer / creator: George Frideric Handel.
 - Performer / recording: St Matthew Concert Choir, conducted by Paul Ayres.
-- Source URL: <https://commons.wikimedia.org/wiki/File:Paul_Ayres_-_Handel%27s_Music_for_the_Royal_Fireworks,_HWV_351_-_IV._La_R%C3%A9jouissance.ogg>
-- Source file: `docs/assets/002_zombie_outbreak/source_audio/duplicate_audio_replacements_2026-09-01/source/paul_ayres_handel_la_rejouissance.ogg`.
-- License: public-domain composition and CC0 1.0 worldwide recording dedication.
-- Duration: 1:38.633741 final cue.
-- Conversion notes: the complete source is rendered to stereo 44.1 kHz PCM16 with fades. Runtime SHA-256: `20FB149DF2AEE1DE553E3080CE1B2070CEC080AC53F285EBF67DAEF56D662389`.
+- Source URLs: [Internet Archive recording item](https://archive.org/details/HandelMusicForTheRoyalFireworks2011) and [original `09TheRejoicing.mp3`](https://archive.org/download/HandelMusicForTheRoyalFireworks2011/09TheRejoicing.mp3); [Wikimedia Commons file and CC0 record](https://commons.wikimedia.org/wiki/File:Paul_Ayres_-_Handel%27s_Music_for_the_Royal_Fireworks,_HWV_351_-_IV._La_R%C3%A9jouissance.ogg?oldid=794973790).
+- Source file: `docs/assets/002_zombie_outbreak/source_audio/handel_royal_fireworks_rejoicing_archive_original.mp3` (3,216,864 bytes; SHA-256 `80E353C2A2AD1B1850B2D291444EC55A66EB0F306B993EED2F0FCC270F9184AA`).
+- License: Handel's composition is public domain; the Internet Archive item and Commons file page identify the Paul Ayres recording as CC0 1.0. License confidence: high for this archived recording. Attribution is not required; courtesy credit is recommended.
+- Duration: 98.742857 seconds original source; 98.633741 seconds final cue.
+- Conversion notes: the runtime aligns to source offset `0.000 s`, retaining the opening `00:00.000-01:38.634` with fades; the retained notes do not specify fade lengths. Decoded-PCM comparison has normalized correlation `0.997126` at runtime `00:08`, `0.996889` at `00:35`, and `0.997235` at `01:10`. Runtime SHA-256: `20FB149DF2AEE1DE553E3080CE1B2070CEC080AC53F285EBF67DAEF56D662389`.
 
 ### Wendigo
 

@@ -1,5 +1,10 @@
 # chaosx.nr2.1 Zombie Outbreak System
 
+## Release QA evidence, 2026-10-06
+
+The bounded source changes, current asset status and remaining release gates are recorded in the [release reconciliation](../../plans/002_zombie_outbreak_plans/release_qa_completion_20261006.md).
+Full release signoff remains incomplete; current source, accepted design, historical evidence and unresolved engine validation are distinguished in that report.
+
 ## Scope
 
 This is the full documentation file for the zombie outbreak chain rooted at `chaosx.nr2.1`.
@@ -666,7 +671,9 @@ When that happens:
 - those same countries join the `zombie_postwar_research_compact` tech-sharing group for engineering, construction, electronics, and biowarfare work
 - each country marked with `was_ever_at_war_with_zombies` receives `chaosx.nr2.12` once
 
-`chaosx.nr2.12` announces the survivor compact and shows the campaign's zombie-war dead.
+`chaosx.nr2.12` announces the survivor compact and shows the campaign's recorded dead.
+The three first-defeat totals are copied into country variables before the compact is queued; the compact and first-anniversary memorial read those snapshots even if another campaign changes global counters.
+Zombie war casualties are read through `casualties_k` and converted from thousands to people through `constant:zombie_postwar.people_per_thousand`, currently 1000.
 
 Acknowledging the compact schedules one `chaosx.nr2.13` memorial for the first anniversary, `365` days later. It grants `10` political power once to each country that took part in the zombie war. The defeat hook, country queue flag, and memorial completion flag prevent later defeat callbacks and duplicate callbacks from reopening the same chain; the memorial does not repeat in later years.
 
@@ -821,7 +828,16 @@ Dynamic rear-area outbreaks normally create standard zombie splinters. As chaos 
 
 These random special outbreaks receive random profile attributes and the relevant live special-type idea, but they do not receive a reviewable weaponization profile. Only country-designed weaponized outbreaks expose profile review decisions.
 
-Standard cure research appears when any live standard zombie outbreak exists, including dynamic scenario outbreaks. Special cure research uses the weaponized-zombie countermeasure category and advances the selected zombie type only. Cure sharing shares progress for that specific type, not all types at once.
+Standard cure research appears when any live standard zombie outbreak exists, including dynamic scenario outbreaks.
+Special cure research uses the weaponized-zombie countermeasure category and advances the selected zombie type only.
+Cure descriptions state that League membership and investment can shorten research rather than promising a fixed duration regardless of the current research modifiers.
+Both extreme martial-law descriptions explain prevention of new rear-area zombie outbreaks, exclude established zombie fronts and disclose the measures' population, economic, political and stability costs.
+These source descriptions are verified; mechanical scenario behavior and current GUI fit remain separate evidence gates.
+Cure sharing shares progress for that specific type, not all types at once.
+The category provides profile-review and counterstrain-research actions on live profile capital states through `state_target = yes` and `on_map_mode = map_only`.
+Research costs a base 45 PP, lasts 55 days and adds 34 progress toward the selected type; completed research provides the shared 240-day counterstrain duration.
+The selected profile must have exactly one type, unfinished progress and no locked Wendigo transformation.
+The timer retains the selected type, paid quote and target marker and refunds invalidated work.
 
 Anti-Zombie League membership keeps its direct targeted bonus against the literal `ZZZ` outbreak and also grants an outbreak-active army attack bonus so League members retain offensive value against dynamic special zombie countries.
 

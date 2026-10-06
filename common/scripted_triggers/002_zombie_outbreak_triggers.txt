@@ -281,6 +281,284 @@ is_zombie_counterstrain_system_active = {
 	}
 }
 
+# True only when a live profile has one recognized outbreak type flag.
+is_single_weaponized_zombie_profile_type = {
+	OR = {
+		AND = {
+			has_country_flag = weaponized_zombie_type_infected
+			NOT = {
+				OR = {
+					has_country_flag = weaponized_zombie_type_rabid
+					has_country_flag = weaponized_zombie_type_parasitic
+					has_country_flag = weaponized_zombie_type_mutant
+					has_country_flag = weaponized_zombie_type_undead
+					has_country_flag = weaponized_zombie_type_necrotic
+					has_country_flag = weaponized_zombie_type_demonic
+					has_country_flag = weaponized_zombie_type_wendigo
+				}
+			}
+		}
+		AND = {
+			has_country_flag = weaponized_zombie_type_rabid
+			NOT = {
+				OR = {
+					has_country_flag = weaponized_zombie_type_infected
+					has_country_flag = weaponized_zombie_type_parasitic
+					has_country_flag = weaponized_zombie_type_mutant
+					has_country_flag = weaponized_zombie_type_undead
+					has_country_flag = weaponized_zombie_type_necrotic
+					has_country_flag = weaponized_zombie_type_demonic
+					has_country_flag = weaponized_zombie_type_wendigo
+				}
+			}
+		}
+		AND = {
+			has_country_flag = weaponized_zombie_type_parasitic
+			NOT = {
+				OR = {
+					has_country_flag = weaponized_zombie_type_infected
+					has_country_flag = weaponized_zombie_type_rabid
+					has_country_flag = weaponized_zombie_type_mutant
+					has_country_flag = weaponized_zombie_type_undead
+					has_country_flag = weaponized_zombie_type_necrotic
+					has_country_flag = weaponized_zombie_type_demonic
+					has_country_flag = weaponized_zombie_type_wendigo
+				}
+			}
+		}
+		AND = {
+			has_country_flag = weaponized_zombie_type_mutant
+			NOT = {
+				OR = {
+					has_country_flag = weaponized_zombie_type_infected
+					has_country_flag = weaponized_zombie_type_rabid
+					has_country_flag = weaponized_zombie_type_parasitic
+					has_country_flag = weaponized_zombie_type_undead
+					has_country_flag = weaponized_zombie_type_necrotic
+					has_country_flag = weaponized_zombie_type_demonic
+					has_country_flag = weaponized_zombie_type_wendigo
+				}
+			}
+		}
+		AND = {
+			has_country_flag = weaponized_zombie_type_undead
+			NOT = {
+				OR = {
+					has_country_flag = weaponized_zombie_type_infected
+					has_country_flag = weaponized_zombie_type_rabid
+					has_country_flag = weaponized_zombie_type_parasitic
+					has_country_flag = weaponized_zombie_type_mutant
+					has_country_flag = weaponized_zombie_type_necrotic
+					has_country_flag = weaponized_zombie_type_demonic
+					has_country_flag = weaponized_zombie_type_wendigo
+				}
+			}
+		}
+		AND = {
+			has_country_flag = weaponized_zombie_type_necrotic
+			NOT = {
+				OR = {
+					has_country_flag = weaponized_zombie_type_infected
+					has_country_flag = weaponized_zombie_type_rabid
+					has_country_flag = weaponized_zombie_type_parasitic
+					has_country_flag = weaponized_zombie_type_mutant
+					has_country_flag = weaponized_zombie_type_undead
+					has_country_flag = weaponized_zombie_type_demonic
+					has_country_flag = weaponized_zombie_type_wendigo
+				}
+			}
+		}
+		AND = {
+			has_country_flag = weaponized_zombie_type_demonic
+			NOT = {
+				OR = {
+					has_country_flag = weaponized_zombie_type_infected
+					has_country_flag = weaponized_zombie_type_rabid
+					has_country_flag = weaponized_zombie_type_parasitic
+					has_country_flag = weaponized_zombie_type_mutant
+					has_country_flag = weaponized_zombie_type_undead
+					has_country_flag = weaponized_zombie_type_necrotic
+					has_country_flag = weaponized_zombie_type_wendigo
+				}
+			}
+		}
+		AND = {
+			has_country_flag = weaponized_zombie_type_wendigo
+			NOT = {
+				OR = {
+					has_country_flag = weaponized_zombie_type_infected
+					has_country_flag = weaponized_zombie_type_rabid
+					has_country_flag = weaponized_zombie_type_parasitic
+					has_country_flag = weaponized_zombie_type_mutant
+					has_country_flag = weaponized_zombie_type_undead
+					has_country_flag = weaponized_zombie_type_necrotic
+					has_country_flag = weaponized_zombie_type_demonic
+				}
+			}
+		}
+	}
+}
+
+# A profile is researchable until its selected local/shared progress reaches 100 or its ready flag is set.
+weaponized_zombie_counterstrain_progress_open_for_state_target = {
+	OR = {
+		AND = {
+			FROM = { owner = { has_country_flag = weaponized_zombie_type_infected } }
+			OR = {
+				AND = {
+					is_in_tech_sharing_group = cure_sharing
+					NOT = { has_global_flag = weaponized_zombie_infected_counterstrain_ready }
+				}
+				AND = {
+					NOT = { is_in_tech_sharing_group = cure_sharing }
+					NOT = { has_country_flag = weaponized_zombie_infected_counterstrain_ready }
+				}
+			}
+		}
+		AND = {
+			FROM = { owner = { has_country_flag = weaponized_zombie_type_rabid } }
+			OR = {
+				AND = {
+					is_in_tech_sharing_group = cure_sharing
+					NOT = { has_global_flag = weaponized_zombie_rabid_counterstrain_ready }
+				}
+				AND = {
+					NOT = { is_in_tech_sharing_group = cure_sharing }
+					NOT = { has_country_flag = weaponized_zombie_rabid_counterstrain_ready }
+				}
+			}
+		}
+		AND = {
+			FROM = { owner = { has_country_flag = weaponized_zombie_type_parasitic } }
+			OR = {
+				AND = {
+					is_in_tech_sharing_group = cure_sharing
+					NOT = { has_global_flag = weaponized_zombie_parasitic_counterstrain_ready }
+				}
+				AND = {
+					NOT = { is_in_tech_sharing_group = cure_sharing }
+					NOT = { has_country_flag = weaponized_zombie_parasitic_counterstrain_ready }
+				}
+			}
+		}
+		AND = {
+			FROM = { owner = { has_country_flag = weaponized_zombie_type_mutant } }
+			OR = {
+				AND = {
+					is_in_tech_sharing_group = cure_sharing
+					NOT = { has_global_flag = weaponized_zombie_mutant_counterstrain_ready }
+				}
+				AND = {
+					NOT = { is_in_tech_sharing_group = cure_sharing }
+					NOT = { has_country_flag = weaponized_zombie_mutant_counterstrain_ready }
+				}
+			}
+		}
+		AND = {
+			FROM = { owner = { has_country_flag = weaponized_zombie_type_undead } }
+			OR = {
+				AND = {
+					is_in_tech_sharing_group = cure_sharing
+					NOT = { has_global_flag = weaponized_zombie_undead_counterstrain_ready }
+				}
+				AND = {
+					NOT = { is_in_tech_sharing_group = cure_sharing }
+					NOT = { has_country_flag = weaponized_zombie_undead_counterstrain_ready }
+				}
+			}
+		}
+		AND = {
+			FROM = { owner = { has_country_flag = weaponized_zombie_type_necrotic } }
+			OR = {
+				AND = {
+					is_in_tech_sharing_group = cure_sharing
+					NOT = { has_global_flag = weaponized_zombie_necrotic_counterstrain_ready }
+				}
+				AND = {
+					NOT = { is_in_tech_sharing_group = cure_sharing }
+					NOT = { has_country_flag = weaponized_zombie_necrotic_counterstrain_ready }
+				}
+			}
+		}
+		AND = {
+			FROM = { owner = { has_country_flag = weaponized_zombie_type_demonic } }
+			OR = {
+				AND = {
+					is_in_tech_sharing_group = cure_sharing
+					NOT = { has_global_flag = weaponized_zombie_demonic_counterstrain_ready }
+				}
+				AND = {
+					NOT = { is_in_tech_sharing_group = cure_sharing }
+					NOT = { has_country_flag = weaponized_zombie_demonic_counterstrain_ready }
+				}
+			}
+		}
+		AND = {
+			FROM = {
+				owner = {
+					has_country_flag = weaponized_zombie_type_wendigo
+					NOT = { has_country_flag = cannibalism_wendigo_transformation_locked }
+				}
+			}
+			OR = {
+				AND = {
+					is_in_tech_sharing_group = cure_sharing
+					NOT = { has_global_flag = weaponized_zombie_wendigo_counterstrain_ready }
+				}
+				AND = {
+					NOT = { is_in_tech_sharing_group = cure_sharing }
+					NOT = { has_country_flag = weaponized_zombie_wendigo_counterstrain_ready }
+				}
+			}
+		}
+	}
+}
+
+# The selected state must still belong to a live profile with the exact researched type.
+weaponized_zombie_counterstrain_target_matches_selected_type = {
+	FROM = {
+		owner = {
+			is_live_weaponized_zombie_profile_country = yes
+			is_single_weaponized_zombie_profile_type = yes
+			has_country_flag = weaponized_counterstrain_owner_by_@ROOT
+			OR = {
+				AND = {
+					has_country_flag = weaponized_zombie_type_infected
+					ROOT = { check_variable = { var = weaponized_zombie_counterstrain_type value = constant:triggerable_scenario_zombie_type.single_standard compare = equals } }
+				}
+				AND = {
+					has_country_flag = weaponized_zombie_type_rabid
+					ROOT = { check_variable = { var = weaponized_zombie_counterstrain_type value = constant:triggerable_scenario_zombie_type.single_rabid compare = equals } }
+				}
+				AND = {
+					has_country_flag = weaponized_zombie_type_parasitic
+					ROOT = { check_variable = { var = weaponized_zombie_counterstrain_type value = constant:triggerable_scenario_zombie_type.single_parasitic compare = equals } }
+				}
+				AND = {
+					has_country_flag = weaponized_zombie_type_mutant
+					ROOT = { check_variable = { var = weaponized_zombie_counterstrain_type value = constant:triggerable_scenario_zombie_type.single_mutant compare = equals } }
+				}
+				AND = {
+					has_country_flag = weaponized_zombie_type_undead
+					ROOT = { check_variable = { var = weaponized_zombie_counterstrain_type value = constant:triggerable_scenario_zombie_type.single_undead compare = equals } }
+				}
+				AND = {
+					has_country_flag = weaponized_zombie_type_necrotic
+					ROOT = { check_variable = { var = weaponized_zombie_counterstrain_type value = constant:triggerable_scenario_zombie_type.single_necrotic compare = equals } }
+				}
+				AND = {
+					has_country_flag = weaponized_zombie_type_demonic
+					ROOT = { check_variable = { var = weaponized_zombie_counterstrain_type value = constant:triggerable_scenario_zombie_type.single_demonic compare = equals } }
+				}
+				AND = {
+					has_country_flag = weaponized_zombie_type_wendigo
+					ROOT = { check_variable = { var = weaponized_zombie_counterstrain_type value = constant:triggerable_scenario_zombie_type.single_wendigo compare = equals } }
+				}
+			}
+		}
+	}
+}
+
 # A League contribution must fit in the remaining investment cap before it can resolve.
 anti_zombie_league_investment_can_fit = {
 	NOT = { has_global_flag = azl_investment_maxed }

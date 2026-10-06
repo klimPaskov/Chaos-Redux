@@ -73,6 +73,74 @@ prepare_zombie_outbreak_initial_spawn = {
 	}
 }
 
+# COUNTRY scope (research actor). Reads the selected capital state from FROM.
+# Caller contract: FROM's owner has exactly one weaponized_zombie_type_* flag.
+# Output: stores the matching single_* type in the actor's weaponized_zombie_counterstrain_type.
+set_weaponized_zombie_counterstrain_type_from_selected_profile = {
+	clear_variable = weaponized_zombie_counterstrain_type
+	if = {
+		limit = { FROM = { owner = { is_single_weaponized_zombie_profile_type = yes has_country_flag = weaponized_zombie_type_infected } } }
+		set_variable = { weaponized_zombie_counterstrain_type = constant:triggerable_scenario_zombie_type.single_standard }
+	}
+	else_if = {
+		limit = { FROM = { owner = { is_single_weaponized_zombie_profile_type = yes has_country_flag = weaponized_zombie_type_rabid } } }
+		set_variable = { weaponized_zombie_counterstrain_type = constant:triggerable_scenario_zombie_type.single_rabid }
+	}
+	else_if = {
+		limit = { FROM = { owner = { is_single_weaponized_zombie_profile_type = yes has_country_flag = weaponized_zombie_type_parasitic } } }
+		set_variable = { weaponized_zombie_counterstrain_type = constant:triggerable_scenario_zombie_type.single_parasitic }
+	}
+	else_if = {
+		limit = { FROM = { owner = { is_single_weaponized_zombie_profile_type = yes has_country_flag = weaponized_zombie_type_mutant } } }
+		set_variable = { weaponized_zombie_counterstrain_type = constant:triggerable_scenario_zombie_type.single_mutant }
+	}
+	else_if = {
+		limit = { FROM = { owner = { is_single_weaponized_zombie_profile_type = yes has_country_flag = weaponized_zombie_type_undead } } }
+		set_variable = { weaponized_zombie_counterstrain_type = constant:triggerable_scenario_zombie_type.single_undead }
+	}
+	else_if = {
+		limit = { FROM = { owner = { is_single_weaponized_zombie_profile_type = yes has_country_flag = weaponized_zombie_type_necrotic } } }
+		set_variable = { weaponized_zombie_counterstrain_type = constant:triggerable_scenario_zombie_type.single_necrotic }
+	}
+	else_if = {
+		limit = { FROM = { owner = { is_single_weaponized_zombie_profile_type = yes has_country_flag = weaponized_zombie_type_demonic } } }
+		set_variable = { weaponized_zombie_counterstrain_type = constant:triggerable_scenario_zombie_type.single_demonic }
+	}
+	else_if = {
+		limit = { FROM = { owner = { is_single_weaponized_zombie_profile_type = yes has_country_flag = weaponized_zombie_type_wendigo } } }
+		set_variable = { weaponized_zombie_counterstrain_type = constant:triggerable_scenario_zombie_type.single_wendigo }
+	}
+}
+
+# COUNTRY scope (research actor), called from cancel_effect or a guarded remove_effect fallback.
+# Refunds the paid quote once and clears the targeted capital's per-actor activity receipt.
+refund_weaponized_zombie_counterstrain_research = {
+	if = {
+		limit = { has_variable = weaponized_zombie_counterstrain_paid_pp }
+		remove_ideas = searching_for_cure
+		add_political_power = weaponized_zombie_counterstrain_paid_pp
+		clear_variable = weaponized_zombie_counterstrain_paid_pp
+		clear_variable = weaponized_zombie_counterstrain_type
+		FROM = {
+			clr_state_flag = weaponized_counterstrain_target_by_@ROOT
+			owner = { clr_country_flag = weaponized_counterstrain_owner_by_@ROOT }
+		}
+		every_country = {
+			limit = { has_country_flag = weaponized_counterstrain_owner_by_@ROOT }
+			clr_country_flag = weaponized_counterstrain_owner_by_@ROOT
+		}
+		set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
+		set_temp_variable = { black_friday_political_power_receipt_sale_sequence = develop_weaponized_zombie_counterstrain_sale_sequence }
+		if = {
+			limit = { has_country_flag = develop_weaponized_zombie_counterstrain_sale_credit }
+			set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one }
+		}
+		black_friday_withdraw_political_power_purchase_with_receipt = yes
+		clr_country_flag = develop_weaponized_zombie_counterstrain_sale_credit
+		clear_variable = develop_weaponized_zombie_counterstrain_sale_sequence
+	}
+}
+
 # Calculate total zombie strength for threat checks shared across decisions and on_actions.
 calculate_total_zombie_strength = {
 	set_temp_variable = { total_zombie_divisions = 0 }
@@ -1227,9 +1295,11 @@ capture_zombie_campaign_memorial_totals = {
 				has_country_flag = zombie_outbreak_dynamic_country
 			}
 		}
+		set_temp_variable = { zombie_memorial_war_casualties = casualties_k }
+		multiply_temp_variable = { zombie_memorial_war_casualties = constant:zombie_postwar.people_per_thousand }
 		add_to_variable = {
 			var = global.zombie_campaign_zombie_dead
-			value = casualties
+			value = zombie_memorial_war_casualties
 		}
 	}
 
@@ -1303,6 +1373,9 @@ activate_zombie_postwar_order = {
 					NOT = { has_country_flag = zombie_postwar_compact_event_queued }
 				}
 				set_country_flag = zombie_postwar_compact_event_queued
+				set_variable = { zombie_postwar_zombie_dead = global.zombie_campaign_zombie_dead }
+				set_variable = { zombie_postwar_civilian_dead = global.zombie_campaign_civilian_dead }
+				set_variable = { zombie_postwar_total_dead = global.zombie_campaign_total_dead }
 				country_event = {
 					id = chaosx.nr2.12
 					days = constant:zombie_postwar.memorial_initial_delay_days
@@ -2035,6 +2108,7 @@ on_zombie_threat_defeated = {
 		add_chaos_meter_value = yes
 
 		capture_zombie_campaign_memorial_totals = yes
+		set_temp_variable = { zombie_postwar_order_should_activate = 0 }
 		evaluate_zombie_postwar_order_eligibility = yes
 
 		if = {

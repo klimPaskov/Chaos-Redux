@@ -1,0 +1,87 @@
+﻿{
+  "evidenceType": "declared scenario contract; not a completed MCP evaluation",
+  "source": "common/decisions/002_zombie_outbreak_decisions.txt",
+  "sourceSha256": "801e222166733aa43d43a523f6d3b950bcc54ebb36ed9539731ad4d47487cdd3",
+  "adapter": "mission_ai_will_do",
+  "scenarioSet": {
+    "id": "EVENT002_TYPED_COUNTERSTRAIN_BASELINE_20261006",
+    "scenarios": [
+      {
+        "id": "USA_AI_STANDALONE_INFECTED_ONLY",
+        "actor": "USA",
+        "date": "1936.7.1",
+        "state": {},
+        "flags": [],
+        "candidateOverrides": {
+          "develop_weaponized_zombie_demonic_counterstrain": false,
+          "develop_weaponized_zombie_infected_counterstrain": true,
+          "develop_weaponized_zombie_mutant_counterstrain": false,
+          "develop_weaponized_zombie_necrotic_counterstrain": false,
+          "develop_weaponized_zombie_parasitic_counterstrain": false,
+          "develop_weaponized_zombie_rabid_counterstrain": false,
+          "develop_weaponized_zombie_undead_counterstrain": false,
+          "develop_weaponized_zombie_wendigo_counterstrain": false
+        }
+      },
+      {
+        "id": "USA_AI_STANDALONE_ALL_EIGHT_TYPES",
+        "actor": "USA",
+        "date": "1936.7.1",
+        "state": {},
+        "flags": [],
+        "candidateOverrides": {
+          "develop_weaponized_zombie_demonic_counterstrain": true,
+          "develop_weaponized_zombie_infected_counterstrain": true,
+          "develop_weaponized_zombie_mutant_counterstrain": true,
+          "develop_weaponized_zombie_necrotic_counterstrain": true,
+          "develop_weaponized_zombie_parasitic_counterstrain": true,
+          "develop_weaponized_zombie_rabid_counterstrain": true,
+          "develop_weaponized_zombie_undead_counterstrain": true,
+          "develop_weaponized_zombie_wendigo_counterstrain": true
+        }
+      }
+    ]
+  },
+  "evaluateRequest": {
+    "candidatePool": [
+      "develop_weaponized_zombie_demonic_counterstrain",
+      "develop_weaponized_zombie_infected_counterstrain",
+      "develop_weaponized_zombie_mutant_counterstrain",
+      "develop_weaponized_zombie_necrotic_counterstrain",
+      "develop_weaponized_zombie_parasitic_counterstrain",
+      "develop_weaponized_zombie_rabid_counterstrain",
+      "develop_weaponized_zombie_undead_counterstrain",
+      "develop_weaponized_zombie_wendigo_counterstrain"
+    ],
+    "metrics": ["raw_value"],
+    "outputs": ["json", "ranking", "matrix", "unresolved"],
+    "refresh": false
+  },
+  "sourceFactsAssumedForTheScenarioNames": {
+    "actor": "USA is the AI decision actor; human control is not represented in the connected probability scenario schema and human clicks do not use ai_will_do.",
+    "outbreak": "The main global has_zombie_outbreak flag is absent; a live standalone weaponized zombie profile exists, so is_zombie_counterstrain_system_active can pass by its weaponized-profile branch.",
+    "infectedOnly": "One live infected profile target exists with weaponized_zombie_type_infected, at least one controlled state, and no capitulation.",
+    "allEight": "Eight live profile targets exist, one for each of infected, rabid, parasitic, mutant, undead, necrotic, demonic, and wendigo, each with at least one controlled state and no capitulation.",
+    "owner": "USA is the acting country; each profile carries the creator flag weaponized_zombie_created_by_USA for the review-action ownership case. The typed counterstrain decisions themselves do not source-filter profiles by creator.",
+    "researchLock": "searching_for_cure is absent for the baseline rows; the separate tier-0-busy boundary row sets it present and makes both cure families unavailable.",
+    "wendigo": "cannibalism_wendigo_transformation_locked is absent for the live wendigo profile."
+  },
+  "candidateCompleteness": {
+    "typedMissionPool": "All eight source-defined typed counterstrain mission candidates in chaosx_weaponized_zombie_cure_category are included.",
+    "combinedCategoryPool": "Unresolved. The eight zero-score review actions are exposed by decision_ai_will_do while the eight counterstrain actions are exposed by mission_ai_will_do; a combined engine selection race across both adapter types was not evaluated.",
+    "globalDecisionPool": "Not claimed complete. probability_inspect inventoried 25 mission candidates and 13 decision candidates in this source file, while this fixture isolates the eight typed counterstrain actions."
+  },
+  "schemaStatus": {
+    "scenarioSetEnvelope": "Unverified: probability_evaluate timed out before input validation or result generation.",
+    "candidateOverrides": "Unverified by probability_evaluate; the separate decision_inspect schema exposes candidateOverrides, but that inspection timed out after 600 seconds.",
+    "typedProfileScopes": "No concrete generated-country tag or target scope binding was supplied; target-country scope completeness remains unresolved.",
+    "humanControl": "No supported field was supplied or confirmed. The named rows are AI score scenarios only."
+  },
+  "mcpResult": {
+    "status": "unresolved",
+    "blocker": "tool call error: tool call failed for hoi4_agent_tools/hoi4.probability_evaluate; Caused by: timed out awaiting tools/call after 600s",
+    "analysisId": null,
+    "scenarioHash": null,
+    "artifactUri": null
+  }
+}

@@ -6,683 +6,145 @@
 #150 = 113  # 25% faster
 
 chaosx_weaponized_zombie_cure_category = {
-	review_weaponized_zombie_infected_outbreak_profile = {
-		icon = GFX_decision_generic_research
-		target_root_trigger = { any_country = { is_reviewable_weaponized_zombie_profile_country = yes } }
+	# Map markers are anchored on each live weaponized profile's capital.
+	review_weaponized_zombie_outbreak_profile = {
+		icon = GFX_decision_generic_operation
+		target_root_trigger = {
+			any_country = { is_reviewable_weaponized_zombie_profile_country = yes }
+		}
+		state_target = yes
 		target_trigger = {
-			any_country = {
-				is_live_weaponized_zombie_profile_country = yes
-				has_country_flag = weaponized_zombie_type_infected
-				has_country_flag = weaponized_zombie_created_by_@FROM
-				OR = {
-					has_country_flag = weaponized_zombie_profile_public
-					FROM = { tag = ROOT }
-				}
+			FROM = {
+				is_capital = yes
+				owner = { is_reviewable_weaponized_zombie_profile_country = yes }
 			}
 		}
+		on_map_mode = map_only
 		available = { always = yes }
 		cost = 0
 		days_re_enable = 1
 		fire_only_once = no
 		ai_will_do = { factor = 0 }
 		complete_effect = {
-			random_country = {
-				limit = {
-					is_live_weaponized_zombie_profile_country = yes
-					has_country_flag = weaponized_zombie_type_infected
-					has_country_flag = weaponized_zombie_created_by_@FROM
-					OR = {
-						has_country_flag = weaponized_zombie_profile_public
-						FROM = { tag = ROOT }
-					}
+			FROM = {
+				owner = {
+					ROOT = { country_event = { id = chaosx.weaponized_zombies.9 } }
 				}
-				ROOT = { country_event = { id = chaosx.weaponized_zombies.9 } }
 			}
 		}
 	}
-	develop_weaponized_zombie_infected_counterstrain = {
+	# Target a live profile's capital; keep only the active project's marker while its timer runs.
+	develop_weaponized_zombie_counterstrain = {
 		icon = GFX_decision_generic_research
-		visible = { any_country = { is_live_weaponized_zombie_profile_country = yes has_country_flag = weaponized_zombie_type_infected } }
-		available = { is_zombie_counterstrain_system_active = yes NOT = { has_idea = searching_for_cure } }
+		target_root_trigger = {
+			OR = {
+				has_idea = searching_for_cure
+				any_country = { is_live_weaponized_zombie_profile_country = yes }
+			}
+		}
+		state_target = yes
+		target_trigger = {
+			FROM = {
+				OR = {
+					has_state_flag = weaponized_counterstrain_target_by_@ROOT
+					AND = {
+						ROOT = { NOT = { has_idea = searching_for_cure } }
+						is_capital = yes
+						owner = { is_live_weaponized_zombie_profile_country = yes }
+						NOT = {
+							owner = {
+								has_country_flag = weaponized_zombie_type_wendigo
+								has_country_flag = cannibalism_wendigo_transformation_locked
+							}
+						}
+						OR = {
+							NOT = { owner = { is_single_weaponized_zombie_profile_type = yes } }
+						ROOT = { weaponized_zombie_counterstrain_progress_open_for_state_target = yes }
+						}
+					}
+				}
+			}
+		}
+		on_map_mode = map_only
+		available = {
+			is_zombie_counterstrain_system_active = yes
+			NOT = { has_idea = searching_for_cure }
+			custom_trigger_tooltip = {
+				tooltip = zombie_counterstrain_profile_type_required_tt
+				trigger = { FROM = { owner = { is_single_weaponized_zombie_profile_type = yes } } }
+			}
+			custom_trigger_tooltip = {
+				tooltip = zombie_counterstrain_research_available_tt
+				trigger = {
+					OR = {
+						FROM = { owner = { NOT = { is_single_weaponized_zombie_profile_type = yes } } }
+						weaponized_zombie_counterstrain_progress_open_for_state_target = yes
+					}
+				}
+			}
+		}
 		cost = global.black_friday_price_triggerable_scenario_cure_counterstrain_cost
 		days_remove = constant:triggerable_scenario_cure.counterstrain_days
 		fire_only_once = no
 		ai_will_do = { factor = 1 }
 		complete_effect = {
 			hidden_effect = {
-				clr_country_flag = develop_weaponized_zombie_infected_counterstrain_sale_credit
-				clear_variable = develop_weaponized_zombie_infected_counterstrain_sale_sequence
+				clr_country_flag = develop_weaponized_zombie_counterstrain_sale_credit
+				clear_variable = develop_weaponized_zombie_counterstrain_sale_sequence
 				set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
 				set_temp_variable = { black_friday_political_power_receipt_sale_sequence = constant:universal_cost_framework.zero }
 				black_friday_credit_political_power_purchase_with_receipt = yes
 				if = {
 					limit = { check_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one } }
-					set_country_flag = develop_weaponized_zombie_infected_counterstrain_sale_credit
-					set_variable = { develop_weaponized_zombie_infected_counterstrain_sale_sequence = black_friday_political_power_receipt_sale_sequence }
+					set_country_flag = develop_weaponized_zombie_counterstrain_sale_credit
+					set_variable = { develop_weaponized_zombie_counterstrain_sale_sequence = black_friday_political_power_receipt_sale_sequence }
 				}
 				set_variable = { weaponized_zombie_counterstrain_paid_pp = global.black_friday_price_triggerable_scenario_cure_counterstrain_cost }
+				set_weaponized_zombie_counterstrain_type_from_selected_profile = yes
+				FROM = {
+					set_state_flag = weaponized_counterstrain_target_by_@ROOT
+					owner = { set_country_flag = weaponized_counterstrain_owner_by_@ROOT }
+				}
 			}
 			add_timed_idea = { idea = searching_for_cure days = constant:triggerable_scenario_cure.counterstrain_days }
 		}
-		cancel_trigger = { NOT = { is_zombie_counterstrain_system_active = yes } }
-		cancel_effect = {
-			hidden_effect = {
-				remove_ideas = searching_for_cure
-				add_political_power = weaponized_zombie_counterstrain_paid_pp
-				clear_variable = weaponized_zombie_counterstrain_paid_pp
-				set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
-				set_temp_variable = { black_friday_political_power_receipt_sale_sequence = develop_weaponized_zombie_infected_counterstrain_sale_sequence }
-				if = {
-					limit = { has_country_flag = develop_weaponized_zombie_infected_counterstrain_sale_credit }
-					set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one }
-				}
-				black_friday_withdraw_political_power_purchase_with_receipt = yes
-				clr_country_flag = develop_weaponized_zombie_infected_counterstrain_sale_credit
-				clear_variable = develop_weaponized_zombie_infected_counterstrain_sale_sequence
+		cancel_trigger = {
+			OR = {
+				NOT = { is_zombie_counterstrain_system_active = yes }
+				NOT = { weaponized_zombie_counterstrain_target_matches_selected_type = yes }
+				NOT = { weaponized_zombie_counterstrain_progress_open_for_state_target = yes }
 			}
 		}
+		cancel_effect = { refund_weaponized_zombie_counterstrain_research = yes }
 		remove_effect = {
-			set_temp_variable = { weaponized_zombie_counterstrain_type = constant:triggerable_scenario_zombie_type.single_standard }
-			apply_weaponized_zombie_counterstrain_research = yes
-			clear_variable = weaponized_zombie_counterstrain_paid_pp
-			clr_country_flag = develop_weaponized_zombie_infected_counterstrain_sale_credit
-			clear_variable = develop_weaponized_zombie_infected_counterstrain_sale_sequence
+			if = {
+				limit = {
+					AND = {
+						weaponized_zombie_counterstrain_target_matches_selected_type = yes
+						weaponized_zombie_counterstrain_progress_open_for_state_target = yes
+					}
+				}
+				apply_weaponized_zombie_counterstrain_research = yes
+				clear_variable = weaponized_zombie_counterstrain_type
+				clear_variable = weaponized_zombie_counterstrain_paid_pp
+				FROM = {
+					clr_state_flag = weaponized_counterstrain_target_by_@ROOT
+					owner = { clr_country_flag = weaponized_counterstrain_owner_by_@ROOT }
+				}
+				clr_country_flag = develop_weaponized_zombie_counterstrain_sale_credit
+				clear_variable = develop_weaponized_zombie_counterstrain_sale_sequence
+			}
+			else = { refund_weaponized_zombie_counterstrain_research = yes }
 		}
 	}
 
-	review_weaponized_zombie_rabid_outbreak_profile = {
-		icon = GFX_decision_generic_research
-		target_root_trigger = { any_country = { is_reviewable_weaponized_zombie_profile_country = yes } }
-		target_trigger = {
-			any_country = {
-				is_live_weaponized_zombie_profile_country = yes
-				has_country_flag = weaponized_zombie_type_rabid
-				has_country_flag = weaponized_zombie_created_by_@FROM
-				OR = {
-					has_country_flag = weaponized_zombie_profile_public
-					FROM = { tag = ROOT }
-				}
-			}
-		}
-		available = { always = yes }
-		cost = 0
-		days_re_enable = 1
-		fire_only_once = no
-		ai_will_do = { factor = 0 }
-		complete_effect = {
-			random_country = {
-				limit = {
-					is_live_weaponized_zombie_profile_country = yes
-					has_country_flag = weaponized_zombie_type_rabid
-					has_country_flag = weaponized_zombie_created_by_@FROM
-					OR = {
-						has_country_flag = weaponized_zombie_profile_public
-						FROM = { tag = ROOT }
-					}
-				}
-				ROOT = { country_event = { id = chaosx.weaponized_zombies.9 } }
-			}
-		}
-	}
-	develop_weaponized_zombie_rabid_counterstrain = {
-		icon = GFX_decision_generic_research
-		visible = { any_country = { is_live_weaponized_zombie_profile_country = yes has_country_flag = weaponized_zombie_type_rabid } }
-		available = { is_zombie_counterstrain_system_active = yes NOT = { has_idea = searching_for_cure } }
-		cost = global.black_friday_price_triggerable_scenario_cure_counterstrain_cost
-		days_remove = constant:triggerable_scenario_cure.counterstrain_days
-		fire_only_once = no
-		ai_will_do = { factor = 1 }
-		complete_effect = {
-			hidden_effect = {
-				clr_country_flag = develop_weaponized_zombie_rabid_counterstrain_sale_credit
-				clear_variable = develop_weaponized_zombie_rabid_counterstrain_sale_sequence
-				set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
-				set_temp_variable = { black_friday_political_power_receipt_sale_sequence = constant:universal_cost_framework.zero }
-				black_friday_credit_political_power_purchase_with_receipt = yes
-				if = {
-					limit = { check_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one } }
-					set_country_flag = develop_weaponized_zombie_rabid_counterstrain_sale_credit
-					set_variable = { develop_weaponized_zombie_rabid_counterstrain_sale_sequence = black_friday_political_power_receipt_sale_sequence }
-				}
-				set_variable = { weaponized_zombie_counterstrain_paid_pp = global.black_friday_price_triggerable_scenario_cure_counterstrain_cost }
-			}
-			add_timed_idea = { idea = searching_for_cure days = constant:triggerable_scenario_cure.counterstrain_days }
-		}
-		cancel_trigger = { NOT = { is_zombie_counterstrain_system_active = yes } }
-		cancel_effect = {
-			hidden_effect = {
-				remove_ideas = searching_for_cure
-				add_political_power = weaponized_zombie_counterstrain_paid_pp
-				clear_variable = weaponized_zombie_counterstrain_paid_pp
-				set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
-				set_temp_variable = { black_friday_political_power_receipt_sale_sequence = develop_weaponized_zombie_rabid_counterstrain_sale_sequence }
-				if = {
-					limit = { has_country_flag = develop_weaponized_zombie_rabid_counterstrain_sale_credit }
-					set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one }
-				}
-				black_friday_withdraw_political_power_purchase_with_receipt = yes
-				clr_country_flag = develop_weaponized_zombie_rabid_counterstrain_sale_credit
-				clear_variable = develop_weaponized_zombie_rabid_counterstrain_sale_sequence
-			}
-		}
-		remove_effect = {
-			set_temp_variable = { weaponized_zombie_counterstrain_type = constant:triggerable_scenario_zombie_type.single_rabid }
-			apply_weaponized_zombie_counterstrain_research = yes
-			clear_variable = weaponized_zombie_counterstrain_paid_pp
-			clr_country_flag = develop_weaponized_zombie_rabid_counterstrain_sale_credit
-			clear_variable = develop_weaponized_zombie_rabid_counterstrain_sale_sequence
-		}
-	}
 
-	review_weaponized_zombie_parasitic_outbreak_profile = {
-		icon = GFX_decision_generic_research
-		target_root_trigger = { any_country = { is_reviewable_weaponized_zombie_profile_country = yes } }
-		target_trigger = {
-			any_country = {
-				is_live_weaponized_zombie_profile_country = yes
-				has_country_flag = weaponized_zombie_type_parasitic
-				has_country_flag = weaponized_zombie_created_by_@FROM
-				OR = {
-					has_country_flag = weaponized_zombie_profile_public
-					FROM = { tag = ROOT }
-				}
-			}
-		}
-		available = { always = yes }
-		cost = 0
-		days_re_enable = 1
-		fire_only_once = no
-		ai_will_do = { factor = 0 }
-		complete_effect = {
-			random_country = {
-				limit = {
-					is_live_weaponized_zombie_profile_country = yes
-					has_country_flag = weaponized_zombie_type_parasitic
-					has_country_flag = weaponized_zombie_created_by_@FROM
-					OR = {
-						has_country_flag = weaponized_zombie_profile_public
-						FROM = { tag = ROOT }
-					}
-				}
-				ROOT = { country_event = { id = chaosx.weaponized_zombies.9 } }
-			}
-		}
-	}
-	develop_weaponized_zombie_parasitic_counterstrain = {
-		icon = GFX_decision_generic_research
-		visible = { any_country = { is_live_weaponized_zombie_profile_country = yes has_country_flag = weaponized_zombie_type_parasitic } }
-		available = { is_zombie_counterstrain_system_active = yes NOT = { has_idea = searching_for_cure } }
-		cost = global.black_friday_price_triggerable_scenario_cure_counterstrain_cost
-		days_remove = constant:triggerable_scenario_cure.counterstrain_days
-		fire_only_once = no
-		ai_will_do = { factor = 1 }
-		complete_effect = {
-			hidden_effect = {
-				clr_country_flag = develop_weaponized_zombie_parasitic_counterstrain_sale_credit
-				clear_variable = develop_weaponized_zombie_parasitic_counterstrain_sale_sequence
-				set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
-				set_temp_variable = { black_friday_political_power_receipt_sale_sequence = constant:universal_cost_framework.zero }
-				black_friday_credit_political_power_purchase_with_receipt = yes
-				if = {
-					limit = { check_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one } }
-					set_country_flag = develop_weaponized_zombie_parasitic_counterstrain_sale_credit
-					set_variable = { develop_weaponized_zombie_parasitic_counterstrain_sale_sequence = black_friday_political_power_receipt_sale_sequence }
-				}
-				set_variable = { weaponized_zombie_counterstrain_paid_pp = global.black_friday_price_triggerable_scenario_cure_counterstrain_cost }
-			}
-			add_timed_idea = { idea = searching_for_cure days = constant:triggerable_scenario_cure.counterstrain_days }
-		}
-		cancel_trigger = { NOT = { is_zombie_counterstrain_system_active = yes } }
-		cancel_effect = {
-			hidden_effect = {
-				remove_ideas = searching_for_cure
-				add_political_power = weaponized_zombie_counterstrain_paid_pp
-				clear_variable = weaponized_zombie_counterstrain_paid_pp
-				set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
-				set_temp_variable = { black_friday_political_power_receipt_sale_sequence = develop_weaponized_zombie_parasitic_counterstrain_sale_sequence }
-				if = {
-					limit = { has_country_flag = develop_weaponized_zombie_parasitic_counterstrain_sale_credit }
-					set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one }
-				}
-				black_friday_withdraw_political_power_purchase_with_receipt = yes
-				clr_country_flag = develop_weaponized_zombie_parasitic_counterstrain_sale_credit
-				clear_variable = develop_weaponized_zombie_parasitic_counterstrain_sale_sequence
-			}
-		}
-		remove_effect = {
-			set_temp_variable = { weaponized_zombie_counterstrain_type = constant:triggerable_scenario_zombie_type.single_parasitic }
-			apply_weaponized_zombie_counterstrain_research = yes
-			clear_variable = weaponized_zombie_counterstrain_paid_pp
-			clr_country_flag = develop_weaponized_zombie_parasitic_counterstrain_sale_credit
-			clear_variable = develop_weaponized_zombie_parasitic_counterstrain_sale_sequence
-		}
-	}
 
-	review_weaponized_zombie_mutant_outbreak_profile = {
-		icon = GFX_decision_generic_research
-		target_root_trigger = { any_country = { is_reviewable_weaponized_zombie_profile_country = yes } }
-		target_trigger = {
-			any_country = {
-				is_live_weaponized_zombie_profile_country = yes
-				has_country_flag = weaponized_zombie_type_mutant
-				has_country_flag = weaponized_zombie_created_by_@FROM
-				OR = {
-					has_country_flag = weaponized_zombie_profile_public
-					FROM = { tag = ROOT }
-				}
-			}
-		}
-		available = { always = yes }
-		cost = 0
-		days_re_enable = 1
-		fire_only_once = no
-		ai_will_do = { factor = 0 }
-		complete_effect = {
-			random_country = {
-				limit = {
-					is_live_weaponized_zombie_profile_country = yes
-					has_country_flag = weaponized_zombie_type_mutant
-					has_country_flag = weaponized_zombie_created_by_@FROM
-					OR = {
-						has_country_flag = weaponized_zombie_profile_public
-						FROM = { tag = ROOT }
-					}
-				}
-				ROOT = { country_event = { id = chaosx.weaponized_zombies.9 } }
-			}
-		}
-	}
-	develop_weaponized_zombie_mutant_counterstrain = {
-		icon = GFX_decision_generic_research
-		visible = { any_country = { is_live_weaponized_zombie_profile_country = yes has_country_flag = weaponized_zombie_type_mutant } }
-		available = { is_zombie_counterstrain_system_active = yes NOT = { has_idea = searching_for_cure } }
-		cost = global.black_friday_price_triggerable_scenario_cure_counterstrain_cost
-		days_remove = constant:triggerable_scenario_cure.counterstrain_days
-		fire_only_once = no
-		ai_will_do = { factor = 1 }
-		complete_effect = {
-			hidden_effect = {
-				clr_country_flag = develop_weaponized_zombie_mutant_counterstrain_sale_credit
-				clear_variable = develop_weaponized_zombie_mutant_counterstrain_sale_sequence
-				set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
-				set_temp_variable = { black_friday_political_power_receipt_sale_sequence = constant:universal_cost_framework.zero }
-				black_friday_credit_political_power_purchase_with_receipt = yes
-				if = {
-					limit = { check_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one } }
-					set_country_flag = develop_weaponized_zombie_mutant_counterstrain_sale_credit
-					set_variable = { develop_weaponized_zombie_mutant_counterstrain_sale_sequence = black_friday_political_power_receipt_sale_sequence }
-				}
-				set_variable = { weaponized_zombie_counterstrain_paid_pp = global.black_friday_price_triggerable_scenario_cure_counterstrain_cost }
-			}
-			add_timed_idea = { idea = searching_for_cure days = constant:triggerable_scenario_cure.counterstrain_days }
-		}
-		cancel_trigger = { NOT = { is_zombie_counterstrain_system_active = yes } }
-		cancel_effect = {
-			hidden_effect = {
-				remove_ideas = searching_for_cure
-				add_political_power = weaponized_zombie_counterstrain_paid_pp
-				clear_variable = weaponized_zombie_counterstrain_paid_pp
-				set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
-				set_temp_variable = { black_friday_political_power_receipt_sale_sequence = develop_weaponized_zombie_mutant_counterstrain_sale_sequence }
-				if = {
-					limit = { has_country_flag = develop_weaponized_zombie_mutant_counterstrain_sale_credit }
-					set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one }
-				}
-				black_friday_withdraw_political_power_purchase_with_receipt = yes
-				clr_country_flag = develop_weaponized_zombie_mutant_counterstrain_sale_credit
-				clear_variable = develop_weaponized_zombie_mutant_counterstrain_sale_sequence
-			}
-		}
-		remove_effect = {
-			set_temp_variable = { weaponized_zombie_counterstrain_type = constant:triggerable_scenario_zombie_type.single_mutant }
-			apply_weaponized_zombie_counterstrain_research = yes
-			clear_variable = weaponized_zombie_counterstrain_paid_pp
-			clr_country_flag = develop_weaponized_zombie_mutant_counterstrain_sale_credit
-			clear_variable = develop_weaponized_zombie_mutant_counterstrain_sale_sequence
-		}
-	}
 
-	review_weaponized_zombie_undead_outbreak_profile = {
-		icon = GFX_decision_generic_research
-		target_root_trigger = { any_country = { is_reviewable_weaponized_zombie_profile_country = yes } }
-		target_trigger = {
-			any_country = {
-				is_live_weaponized_zombie_profile_country = yes
-				has_country_flag = weaponized_zombie_type_undead
-				has_country_flag = weaponized_zombie_created_by_@FROM
-				OR = {
-					has_country_flag = weaponized_zombie_profile_public
-					FROM = { tag = ROOT }
-				}
-			}
-		}
-		available = { always = yes }
-		cost = 0
-		days_re_enable = 1
-		fire_only_once = no
-		ai_will_do = { factor = 0 }
-		complete_effect = {
-			random_country = {
-				limit = {
-					is_live_weaponized_zombie_profile_country = yes
-					has_country_flag = weaponized_zombie_type_undead
-					has_country_flag = weaponized_zombie_created_by_@FROM
-					OR = {
-						has_country_flag = weaponized_zombie_profile_public
-						FROM = { tag = ROOT }
-					}
-				}
-				ROOT = { country_event = { id = chaosx.weaponized_zombies.9 } }
-			}
-		}
-	}
-	develop_weaponized_zombie_undead_counterstrain = {
-		icon = GFX_decision_generic_research
-		visible = { any_country = { is_live_weaponized_zombie_profile_country = yes has_country_flag = weaponized_zombie_type_undead } }
-		available = { is_zombie_counterstrain_system_active = yes NOT = { has_idea = searching_for_cure } }
-		cost = global.black_friday_price_triggerable_scenario_cure_counterstrain_cost
-		days_remove = constant:triggerable_scenario_cure.counterstrain_days
-		fire_only_once = no
-		ai_will_do = { factor = 1 }
-		complete_effect = {
-			hidden_effect = {
-				clr_country_flag = develop_weaponized_zombie_undead_counterstrain_sale_credit
-				clear_variable = develop_weaponized_zombie_undead_counterstrain_sale_sequence
-				set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
-				set_temp_variable = { black_friday_political_power_receipt_sale_sequence = constant:universal_cost_framework.zero }
-				black_friday_credit_political_power_purchase_with_receipt = yes
-				if = {
-					limit = { check_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one } }
-					set_country_flag = develop_weaponized_zombie_undead_counterstrain_sale_credit
-					set_variable = { develop_weaponized_zombie_undead_counterstrain_sale_sequence = black_friday_political_power_receipt_sale_sequence }
-				}
-				set_variable = { weaponized_zombie_counterstrain_paid_pp = global.black_friday_price_triggerable_scenario_cure_counterstrain_cost }
-			}
-			add_timed_idea = { idea = searching_for_cure days = constant:triggerable_scenario_cure.counterstrain_days }
-		}
-		cancel_trigger = { NOT = { is_zombie_counterstrain_system_active = yes } }
-		cancel_effect = {
-			hidden_effect = {
-				remove_ideas = searching_for_cure
-				add_political_power = weaponized_zombie_counterstrain_paid_pp
-				clear_variable = weaponized_zombie_counterstrain_paid_pp
-				set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
-				set_temp_variable = { black_friday_political_power_receipt_sale_sequence = develop_weaponized_zombie_undead_counterstrain_sale_sequence }
-				if = {
-					limit = { has_country_flag = develop_weaponized_zombie_undead_counterstrain_sale_credit }
-					set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one }
-				}
-				black_friday_withdraw_political_power_purchase_with_receipt = yes
-				clr_country_flag = develop_weaponized_zombie_undead_counterstrain_sale_credit
-				clear_variable = develop_weaponized_zombie_undead_counterstrain_sale_sequence
-			}
-		}
-		remove_effect = {
-			set_temp_variable = { weaponized_zombie_counterstrain_type = constant:triggerable_scenario_zombie_type.single_undead }
-			apply_weaponized_zombie_counterstrain_research = yes
-			clear_variable = weaponized_zombie_counterstrain_paid_pp
-			clr_country_flag = develop_weaponized_zombie_undead_counterstrain_sale_credit
-			clear_variable = develop_weaponized_zombie_undead_counterstrain_sale_sequence
-		}
-	}
 
-	review_weaponized_zombie_necrotic_outbreak_profile = {
-		icon = GFX_decision_generic_research
-		target_root_trigger = { any_country = { is_reviewable_weaponized_zombie_profile_country = yes } }
-		target_trigger = {
-			any_country = {
-				is_live_weaponized_zombie_profile_country = yes
-				has_country_flag = weaponized_zombie_type_necrotic
-				has_country_flag = weaponized_zombie_created_by_@FROM
-				OR = {
-					has_country_flag = weaponized_zombie_profile_public
-					FROM = { tag = ROOT }
-				}
-			}
-		}
-		available = { always = yes }
-		cost = 0
-		days_re_enable = 1
-		fire_only_once = no
-		ai_will_do = { factor = 0 }
-		complete_effect = {
-			random_country = {
-				limit = {
-					is_live_weaponized_zombie_profile_country = yes
-					has_country_flag = weaponized_zombie_type_necrotic
-					has_country_flag = weaponized_zombie_created_by_@FROM
-					OR = {
-						has_country_flag = weaponized_zombie_profile_public
-						FROM = { tag = ROOT }
-					}
-				}
-				ROOT = { country_event = { id = chaosx.weaponized_zombies.9 } }
-			}
-		}
-	}
-	develop_weaponized_zombie_necrotic_counterstrain = {
-		icon = GFX_decision_generic_research
-		visible = { any_country = { is_live_weaponized_zombie_profile_country = yes has_country_flag = weaponized_zombie_type_necrotic } }
-		available = { is_zombie_counterstrain_system_active = yes NOT = { has_idea = searching_for_cure } }
-		cost = global.black_friday_price_triggerable_scenario_cure_counterstrain_cost
-		days_remove = constant:triggerable_scenario_cure.counterstrain_days
-		fire_only_once = no
-		ai_will_do = { factor = 1 }
-		complete_effect = {
-			hidden_effect = {
-				clr_country_flag = develop_weaponized_zombie_necrotic_counterstrain_sale_credit
-				clear_variable = develop_weaponized_zombie_necrotic_counterstrain_sale_sequence
-				set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
-				set_temp_variable = { black_friday_political_power_receipt_sale_sequence = constant:universal_cost_framework.zero }
-				black_friday_credit_political_power_purchase_with_receipt = yes
-				if = {
-					limit = { check_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one } }
-					set_country_flag = develop_weaponized_zombie_necrotic_counterstrain_sale_credit
-					set_variable = { develop_weaponized_zombie_necrotic_counterstrain_sale_sequence = black_friday_political_power_receipt_sale_sequence }
-				}
-				set_variable = { weaponized_zombie_counterstrain_paid_pp = global.black_friday_price_triggerable_scenario_cure_counterstrain_cost }
-			}
-			add_timed_idea = { idea = searching_for_cure days = constant:triggerable_scenario_cure.counterstrain_days }
-		}
-		cancel_trigger = { NOT = { is_zombie_counterstrain_system_active = yes } }
-		cancel_effect = {
-			hidden_effect = {
-				remove_ideas = searching_for_cure
-				add_political_power = weaponized_zombie_counterstrain_paid_pp
-				clear_variable = weaponized_zombie_counterstrain_paid_pp
-				set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
-				set_temp_variable = { black_friday_political_power_receipt_sale_sequence = develop_weaponized_zombie_necrotic_counterstrain_sale_sequence }
-				if = {
-					limit = { has_country_flag = develop_weaponized_zombie_necrotic_counterstrain_sale_credit }
-					set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one }
-				}
-				black_friday_withdraw_political_power_purchase_with_receipt = yes
-				clr_country_flag = develop_weaponized_zombie_necrotic_counterstrain_sale_credit
-				clear_variable = develop_weaponized_zombie_necrotic_counterstrain_sale_sequence
-			}
-		}
-		remove_effect = {
-			set_temp_variable = { weaponized_zombie_counterstrain_type = constant:triggerable_scenario_zombie_type.single_necrotic }
-			apply_weaponized_zombie_counterstrain_research = yes
-			clear_variable = weaponized_zombie_counterstrain_paid_pp
-			clr_country_flag = develop_weaponized_zombie_necrotic_counterstrain_sale_credit
-			clear_variable = develop_weaponized_zombie_necrotic_counterstrain_sale_sequence
-		}
-	}
 
-	review_weaponized_zombie_demonic_outbreak_profile = {
-		icon = GFX_decision_generic_research
-		target_root_trigger = { any_country = { is_reviewable_weaponized_zombie_profile_country = yes } }
-		target_trigger = {
-			any_country = {
-				is_live_weaponized_zombie_profile_country = yes
-				has_country_flag = weaponized_zombie_type_demonic
-				has_country_flag = weaponized_zombie_created_by_@FROM
-				OR = {
-					has_country_flag = weaponized_zombie_profile_public
-					FROM = { tag = ROOT }
-				}
-			}
-		}
-		available = { always = yes }
-		cost = 0
-		days_re_enable = 1
-		fire_only_once = no
-		ai_will_do = { factor = 0 }
-		complete_effect = {
-			random_country = {
-				limit = {
-					is_live_weaponized_zombie_profile_country = yes
-					has_country_flag = weaponized_zombie_type_demonic
-					has_country_flag = weaponized_zombie_created_by_@FROM
-					OR = {
-						has_country_flag = weaponized_zombie_profile_public
-						FROM = { tag = ROOT }
-					}
-				}
-				ROOT = { country_event = { id = chaosx.weaponized_zombies.9 } }
-			}
-		}
-	}
-	develop_weaponized_zombie_demonic_counterstrain = {
-		icon = GFX_decision_generic_research
-		visible = { any_country = { is_live_weaponized_zombie_profile_country = yes has_country_flag = weaponized_zombie_type_demonic } }
-		available = { is_zombie_counterstrain_system_active = yes NOT = { has_idea = searching_for_cure } }
-		cost = global.black_friday_price_triggerable_scenario_cure_counterstrain_cost
-		days_remove = constant:triggerable_scenario_cure.counterstrain_days
-		fire_only_once = no
-		ai_will_do = { factor = 1 }
-		complete_effect = {
-			hidden_effect = {
-				clr_country_flag = develop_weaponized_zombie_demonic_counterstrain_sale_credit
-				clear_variable = develop_weaponized_zombie_demonic_counterstrain_sale_sequence
-				set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
-				set_temp_variable = { black_friday_political_power_receipt_sale_sequence = constant:universal_cost_framework.zero }
-				black_friday_credit_political_power_purchase_with_receipt = yes
-				if = {
-					limit = { check_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one } }
-					set_country_flag = develop_weaponized_zombie_demonic_counterstrain_sale_credit
-					set_variable = { develop_weaponized_zombie_demonic_counterstrain_sale_sequence = black_friday_political_power_receipt_sale_sequence }
-				}
-				set_variable = { weaponized_zombie_counterstrain_paid_pp = global.black_friday_price_triggerable_scenario_cure_counterstrain_cost }
-			}
-			add_timed_idea = { idea = searching_for_cure days = constant:triggerable_scenario_cure.counterstrain_days }
-		}
-		cancel_trigger = { NOT = { is_zombie_counterstrain_system_active = yes } }
-		cancel_effect = {
-			hidden_effect = {
-				remove_ideas = searching_for_cure
-				add_political_power = weaponized_zombie_counterstrain_paid_pp
-				clear_variable = weaponized_zombie_counterstrain_paid_pp
-				set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
-				set_temp_variable = { black_friday_political_power_receipt_sale_sequence = develop_weaponized_zombie_demonic_counterstrain_sale_sequence }
-				if = {
-					limit = { has_country_flag = develop_weaponized_zombie_demonic_counterstrain_sale_credit }
-					set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one }
-				}
-				black_friday_withdraw_political_power_purchase_with_receipt = yes
-				clr_country_flag = develop_weaponized_zombie_demonic_counterstrain_sale_credit
-				clear_variable = develop_weaponized_zombie_demonic_counterstrain_sale_sequence
-			}
-		}
-		remove_effect = {
-			set_temp_variable = { weaponized_zombie_counterstrain_type = constant:triggerable_scenario_zombie_type.single_demonic }
-			apply_weaponized_zombie_counterstrain_research = yes
-			clear_variable = weaponized_zombie_counterstrain_paid_pp
-			clr_country_flag = develop_weaponized_zombie_demonic_counterstrain_sale_credit
-			clear_variable = develop_weaponized_zombie_demonic_counterstrain_sale_sequence
-		}
-	}
 
-	review_weaponized_zombie_wendigo_outbreak_profile = {
-		icon = GFX_decision_generic_research
-		target_root_trigger = { any_country = { is_reviewable_weaponized_zombie_profile_country = yes } }
-		target_trigger = {
-			any_country = {
-				is_live_weaponized_zombie_profile_country = yes
-				has_country_flag = weaponized_zombie_type_wendigo
-				has_country_flag = weaponized_zombie_created_by_@FROM
-				OR = {
-					has_country_flag = weaponized_zombie_profile_public
-					FROM = { tag = ROOT }
-				}
-			}
-		}
-		available = { always = yes }
-		cost = 0
-		days_re_enable = 1
-		fire_only_once = no
-		ai_will_do = { factor = 0 }
-		complete_effect = {
-			random_country = {
-				limit = {
-					is_live_weaponized_zombie_profile_country = yes
-					has_country_flag = weaponized_zombie_type_wendigo
-					has_country_flag = weaponized_zombie_created_by_@FROM
-					OR = {
-						has_country_flag = weaponized_zombie_profile_public
-						FROM = { tag = ROOT }
-					}
-				}
-				ROOT = { country_event = { id = chaosx.weaponized_zombies.9 } }
-			}
-		}
-	}
-	develop_weaponized_zombie_wendigo_counterstrain = {
-		icon = GFX_decision_generic_research
-		visible = {
-			any_country = {
-				is_live_weaponized_zombie_profile_country = yes
-				has_country_flag = weaponized_zombie_type_wendigo
-				NOT = { has_country_flag = cannibalism_wendigo_transformation_locked }
-			}
-		}
-		available = { is_zombie_counterstrain_system_active = yes NOT = { has_idea = searching_for_cure } }
-		cost = global.black_friday_price_triggerable_scenario_cure_counterstrain_cost
-		days_remove = constant:triggerable_scenario_cure.counterstrain_days
-		fire_only_once = no
-		ai_will_do = { factor = 1 }
-		complete_effect = {
-			hidden_effect = {
-				clr_country_flag = develop_weaponized_zombie_wendigo_counterstrain_sale_credit
-				clear_variable = develop_weaponized_zombie_wendigo_counterstrain_sale_sequence
-				set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
-				set_temp_variable = { black_friday_political_power_receipt_sale_sequence = constant:universal_cost_framework.zero }
-				black_friday_credit_political_power_purchase_with_receipt = yes
-				if = {
-					limit = { check_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one } }
-					set_country_flag = develop_weaponized_zombie_wendigo_counterstrain_sale_credit
-					set_variable = { develop_weaponized_zombie_wendigo_counterstrain_sale_sequence = black_friday_political_power_receipt_sale_sequence }
-				}
-				set_variable = { weaponized_zombie_counterstrain_paid_pp = global.black_friday_price_triggerable_scenario_cure_counterstrain_cost }
-			}
-			add_timed_idea = { idea = searching_for_cure days = constant:triggerable_scenario_cure.counterstrain_days }
-		}
-		cancel_trigger = { NOT = { is_zombie_counterstrain_system_active = yes } }
-		cancel_effect = {
-			hidden_effect = {
-				remove_ideas = searching_for_cure
-				add_political_power = weaponized_zombie_counterstrain_paid_pp
-				clear_variable = weaponized_zombie_counterstrain_paid_pp
-				set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
-				set_temp_variable = { black_friday_political_power_receipt_sale_sequence = develop_weaponized_zombie_wendigo_counterstrain_sale_sequence }
-				if = {
-					limit = { has_country_flag = develop_weaponized_zombie_wendigo_counterstrain_sale_credit }
-					set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one }
-				}
-				black_friday_withdraw_political_power_purchase_with_receipt = yes
-				clr_country_flag = develop_weaponized_zombie_wendigo_counterstrain_sale_credit
-				clear_variable = develop_weaponized_zombie_wendigo_counterstrain_sale_sequence
-			}
-		}
-		remove_effect = {
-			set_temp_variable = { weaponized_zombie_counterstrain_type = constant:triggerable_scenario_zombie_type.single_wendigo }
-			apply_weaponized_zombie_counterstrain_research = yes
-			clear_variable = weaponized_zombie_counterstrain_paid_pp
-			clr_country_flag = develop_weaponized_zombie_wendigo_counterstrain_sale_credit
-			clear_variable = develop_weaponized_zombie_wendigo_counterstrain_sale_sequence
-		}
-	}
+
 }
 
 

@@ -1,0 +1,3946 @@
+
+# Faster research times for Anti Zombie League members
+#60 = 45   # 25% faster
+#90 = 68   # 25% faster
+#120 = 90   # 25% faster
+#150 = 113  # 25% faster
+
+chaosx_weaponized_zombie_cure_category = {
+	review_weaponized_zombie_infected_outbreak_profile = {
+		icon = GFX_decision_generic_research
+		target_root_trigger = { any_country = { is_reviewable_weaponized_zombie_profile_country = yes } }
+		target_trigger = {
+			any_country = {
+				is_live_weaponized_zombie_profile_country = yes
+				has_country_flag = weaponized_zombie_type_infected
+				has_country_flag = weaponized_zombie_created_by_@FROM
+				OR = {
+					has_country_flag = weaponized_zombie_profile_public
+					FROM = { tag = ROOT }
+				}
+			}
+		}
+		available = { always = yes }
+		cost = 0
+		days_re_enable = 1
+		fire_only_once = no
+		ai_will_do = { factor = 0 }
+		complete_effect = {
+			random_country = {
+				limit = {
+					is_live_weaponized_zombie_profile_country = yes
+					has_country_flag = weaponized_zombie_type_infected
+					has_country_flag = weaponized_zombie_created_by_@FROM
+					OR = {
+						has_country_flag = weaponized_zombie_profile_public
+						FROM = { tag = ROOT }
+					}
+				}
+				ROOT = { country_event = { id = chaosx.weaponized_zombies.9 } }
+			}
+		}
+	}
+	develop_weaponized_zombie_infected_counterstrain = {
+		icon = GFX_decision_generic_research
+		visible = { any_country = { is_live_weaponized_zombie_profile_country = yes has_country_flag = weaponized_zombie_type_infected } }
+		available = { is_zombie_counterstrain_system_active = yes NOT = { has_idea = searching_for_cure } }
+		cost = global.black_friday_price_triggerable_scenario_cure_counterstrain_cost
+		days_remove = constant:triggerable_scenario_cure.counterstrain_days
+		fire_only_once = no
+		ai_will_do = { factor = 1 }
+		complete_effect = {
+			hidden_effect = {
+				clr_country_flag = develop_weaponized_zombie_infected_counterstrain_sale_credit
+				clear_variable = develop_weaponized_zombie_infected_counterstrain_sale_sequence
+				set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
+				set_temp_variable = { black_friday_political_power_receipt_sale_sequence = constant:universal_cost_framework.zero }
+				black_friday_credit_political_power_purchase_with_receipt = yes
+				if = {
+					limit = { check_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one } }
+					set_country_flag = develop_weaponized_zombie_infected_counterstrain_sale_credit
+					set_variable = { develop_weaponized_zombie_infected_counterstrain_sale_sequence = black_friday_political_power_receipt_sale_sequence }
+				}
+				set_variable = { weaponized_zombie_counterstrain_paid_pp = global.black_friday_price_triggerable_scenario_cure_counterstrain_cost }
+			}
+			add_timed_idea = { idea = searching_for_cure days = constant:triggerable_scenario_cure.counterstrain_days }
+		}
+		cancel_trigger = { NOT = { is_zombie_counterstrain_system_active = yes } }
+		cancel_effect = {
+			hidden_effect = {
+				remove_ideas = searching_for_cure
+				add_political_power = weaponized_zombie_counterstrain_paid_pp
+				clear_variable = weaponized_zombie_counterstrain_paid_pp
+				set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
+				set_temp_variable = { black_friday_political_power_receipt_sale_sequence = develop_weaponized_zombie_infected_counterstrain_sale_sequence }
+				if = {
+					limit = { has_country_flag = develop_weaponized_zombie_infected_counterstrain_sale_credit }
+					set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one }
+				}
+				black_friday_withdraw_political_power_purchase_with_receipt = yes
+				clr_country_flag = develop_weaponized_zombie_infected_counterstrain_sale_credit
+				clear_variable = develop_weaponized_zombie_infected_counterstrain_sale_sequence
+			}
+		}
+		remove_effect = {
+			set_temp_variable = { weaponized_zombie_counterstrain_type = constant:triggerable_scenario_zombie_type.single_standard }
+			apply_weaponized_zombie_counterstrain_research = yes
+			clear_variable = weaponized_zombie_counterstrain_paid_pp
+			clr_country_flag = develop_weaponized_zombie_infected_counterstrain_sale_credit
+			clear_variable = develop_weaponized_zombie_infected_counterstrain_sale_sequence
+		}
+	}
+
+	review_weaponized_zombie_rabid_outbreak_profile = {
+		icon = GFX_decision_generic_research
+		target_root_trigger = { any_country = { is_reviewable_weaponized_zombie_profile_country = yes } }
+		target_trigger = {
+			any_country = {
+				is_live_weaponized_zombie_profile_country = yes
+				has_country_flag = weaponized_zombie_type_rabid
+				has_country_flag = weaponized_zombie_created_by_@FROM
+				OR = {
+					has_country_flag = weaponized_zombie_profile_public
+					FROM = { tag = ROOT }
+				}
+			}
+		}
+		available = { always = yes }
+		cost = 0
+		days_re_enable = 1
+		fire_only_once = no
+		ai_will_do = { factor = 0 }
+		complete_effect = {
+			random_country = {
+				limit = {
+					is_live_weaponized_zombie_profile_country = yes
+					has_country_flag = weaponized_zombie_type_rabid
+					has_country_flag = weaponized_zombie_created_by_@FROM
+					OR = {
+						has_country_flag = weaponized_zombie_profile_public
+						FROM = { tag = ROOT }
+					}
+				}
+				ROOT = { country_event = { id = chaosx.weaponized_zombies.9 } }
+			}
+		}
+	}
+	develop_weaponized_zombie_rabid_counterstrain = {
+		icon = GFX_decision_generic_research
+		visible = { any_country = { is_live_weaponized_zombie_profile_country = yes has_country_flag = weaponized_zombie_type_rabid } }
+		available = { is_zombie_counterstrain_system_active = yes NOT = { has_idea = searching_for_cure } }
+		cost = global.black_friday_price_triggerable_scenario_cure_counterstrain_cost
+		days_remove = constant:triggerable_scenario_cure.counterstrain_days
+		fire_only_once = no
+		ai_will_do = { factor = 1 }
+		complete_effect = {
+			hidden_effect = {
+				clr_country_flag = develop_weaponized_zombie_rabid_counterstrain_sale_credit
+				clear_variable = develop_weaponized_zombie_rabid_counterstrain_sale_sequence
+				set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
+				set_temp_variable = { black_friday_political_power_receipt_sale_sequence = constant:universal_cost_framework.zero }
+				black_friday_credit_political_power_purchase_with_receipt = yes
+				if = {
+					limit = { check_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one } }
+					set_country_flag = develop_weaponized_zombie_rabid_counterstrain_sale_credit
+					set_variable = { develop_weaponized_zombie_rabid_counterstrain_sale_sequence = black_friday_political_power_receipt_sale_sequence }
+				}
+				set_variable = { weaponized_zombie_counterstrain_paid_pp = global.black_friday_price_triggerable_scenario_cure_counterstrain_cost }
+			}
+			add_timed_idea = { idea = searching_for_cure days = constant:triggerable_scenario_cure.counterstrain_days }
+		}
+		cancel_trigger = { NOT = { is_zombie_counterstrain_system_active = yes } }
+		cancel_effect = {
+			hidden_effect = {
+				remove_ideas = searching_for_cure
+				add_political_power = weaponized_zombie_counterstrain_paid_pp
+				clear_variable = weaponized_zombie_counterstrain_paid_pp
+				set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
+				set_temp_variable = { black_friday_political_power_receipt_sale_sequence = develop_weaponized_zombie_rabid_counterstrain_sale_sequence }
+				if = {
+					limit = { has_country_flag = develop_weaponized_zombie_rabid_counterstrain_sale_credit }
+					set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one }
+				}
+				black_friday_withdraw_political_power_purchase_with_receipt = yes
+				clr_country_flag = develop_weaponized_zombie_rabid_counterstrain_sale_credit
+				clear_variable = develop_weaponized_zombie_rabid_counterstrain_sale_sequence
+			}
+		}
+		remove_effect = {
+			set_temp_variable = { weaponized_zombie_counterstrain_type = constant:triggerable_scenario_zombie_type.single_rabid }
+			apply_weaponized_zombie_counterstrain_research = yes
+			clear_variable = weaponized_zombie_counterstrain_paid_pp
+			clr_country_flag = develop_weaponized_zombie_rabid_counterstrain_sale_credit
+			clear_variable = develop_weaponized_zombie_rabid_counterstrain_sale_sequence
+		}
+	}
+
+	review_weaponized_zombie_parasitic_outbreak_profile = {
+		icon = GFX_decision_generic_research
+		target_root_trigger = { any_country = { is_reviewable_weaponized_zombie_profile_country = yes } }
+		target_trigger = {
+			any_country = {
+				is_live_weaponized_zombie_profile_country = yes
+				has_country_flag = weaponized_zombie_type_parasitic
+				has_country_flag = weaponized_zombie_created_by_@FROM
+				OR = {
+					has_country_flag = weaponized_zombie_profile_public
+					FROM = { tag = ROOT }
+				}
+			}
+		}
+		available = { always = yes }
+		cost = 0
+		days_re_enable = 1
+		fire_only_once = no
+		ai_will_do = { factor = 0 }
+		complete_effect = {
+			random_country = {
+				limit = {
+					is_live_weaponized_zombie_profile_country = yes
+					has_country_flag = weaponized_zombie_type_parasitic
+					has_country_flag = weaponized_zombie_created_by_@FROM
+					OR = {
+						has_country_flag = weaponized_zombie_profile_public
+						FROM = { tag = ROOT }
+					}
+				}
+				ROOT = { country_event = { id = chaosx.weaponized_zombies.9 } }
+			}
+		}
+	}
+	develop_weaponized_zombie_parasitic_counterstrain = {
+		icon = GFX_decision_generic_research
+		visible = { any_country = { is_live_weaponized_zombie_profile_country = yes has_country_flag = weaponized_zombie_type_parasitic } }
+		available = { is_zombie_counterstrain_system_active = yes NOT = { has_idea = searching_for_cure } }
+		cost = global.black_friday_price_triggerable_scenario_cure_counterstrain_cost
+		days_remove = constant:triggerable_scenario_cure.counterstrain_days
+		fire_only_once = no
+		ai_will_do = { factor = 1 }
+		complete_effect = {
+			hidden_effect = {
+				clr_country_flag = develop_weaponized_zombie_parasitic_counterstrain_sale_credit
+				clear_variable = develop_weaponized_zombie_parasitic_counterstrain_sale_sequence
+				set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
+				set_temp_variable = { black_friday_political_power_receipt_sale_sequence = constant:universal_cost_framework.zero }
+				black_friday_credit_political_power_purchase_with_receipt = yes
+				if = {
+					limit = { check_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one } }
+					set_country_flag = develop_weaponized_zombie_parasitic_counterstrain_sale_credit
+					set_variable = { develop_weaponized_zombie_parasitic_counterstrain_sale_sequence = black_friday_political_power_receipt_sale_sequence }
+				}
+				set_variable = { weaponized_zombie_counterstrain_paid_pp = global.black_friday_price_triggerable_scenario_cure_counterstrain_cost }
+			}
+			add_timed_idea = { idea = searching_for_cure days = constant:triggerable_scenario_cure.counterstrain_days }
+		}
+		cancel_trigger = { NOT = { is_zombie_counterstrain_system_active = yes } }
+		cancel_effect = {
+			hidden_effect = {
+				remove_ideas = searching_for_cure
+				add_political_power = weaponized_zombie_counterstrain_paid_pp
+				clear_variable = weaponized_zombie_counterstrain_paid_pp
+				set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
+				set_temp_variable = { black_friday_political_power_receipt_sale_sequence = develop_weaponized_zombie_parasitic_counterstrain_sale_sequence }
+				if = {
+					limit = { has_country_flag = develop_weaponized_zombie_parasitic_counterstrain_sale_credit }
+					set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one }
+				}
+				black_friday_withdraw_political_power_purchase_with_receipt = yes
+				clr_country_flag = develop_weaponized_zombie_parasitic_counterstrain_sale_credit
+				clear_variable = develop_weaponized_zombie_parasitic_counterstrain_sale_sequence
+			}
+		}
+		remove_effect = {
+			set_temp_variable = { weaponized_zombie_counterstrain_type = constant:triggerable_scenario_zombie_type.single_parasitic }
+			apply_weaponized_zombie_counterstrain_research = yes
+			clear_variable = weaponized_zombie_counterstrain_paid_pp
+			clr_country_flag = develop_weaponized_zombie_parasitic_counterstrain_sale_credit
+			clear_variable = develop_weaponized_zombie_parasitic_counterstrain_sale_sequence
+		}
+	}
+
+	review_weaponized_zombie_mutant_outbreak_profile = {
+		icon = GFX_decision_generic_research
+		target_root_trigger = { any_country = { is_reviewable_weaponized_zombie_profile_country = yes } }
+		target_trigger = {
+			any_country = {
+				is_live_weaponized_zombie_profile_country = yes
+				has_country_flag = weaponized_zombie_type_mutant
+				has_country_flag = weaponized_zombie_created_by_@FROM
+				OR = {
+					has_country_flag = weaponized_zombie_profile_public
+					FROM = { tag = ROOT }
+				}
+			}
+		}
+		available = { always = yes }
+		cost = 0
+		days_re_enable = 1
+		fire_only_once = no
+		ai_will_do = { factor = 0 }
+		complete_effect = {
+			random_country = {
+				limit = {
+					is_live_weaponized_zombie_profile_country = yes
+					has_country_flag = weaponized_zombie_type_mutant
+					has_country_flag = weaponized_zombie_created_by_@FROM
+					OR = {
+						has_country_flag = weaponized_zombie_profile_public
+						FROM = { tag = ROOT }
+					}
+				}
+				ROOT = { country_event = { id = chaosx.weaponized_zombies.9 } }
+			}
+		}
+	}
+	develop_weaponized_zombie_mutant_counterstrain = {
+		icon = GFX_decision_generic_research
+		visible = { any_country = { is_live_weaponized_zombie_profile_country = yes has_country_flag = weaponized_zombie_type_mutant } }
+		available = { is_zombie_counterstrain_system_active = yes NOT = { has_idea = searching_for_cure } }
+		cost = global.black_friday_price_triggerable_scenario_cure_counterstrain_cost
+		days_remove = constant:triggerable_scenario_cure.counterstrain_days
+		fire_only_once = no
+		ai_will_do = { factor = 1 }
+		complete_effect = {
+			hidden_effect = {
+				clr_country_flag = develop_weaponized_zombie_mutant_counterstrain_sale_credit
+				clear_variable = develop_weaponized_zombie_mutant_counterstrain_sale_sequence
+				set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
+				set_temp_variable = { black_friday_political_power_receipt_sale_sequence = constant:universal_cost_framework.zero }
+				black_friday_credit_political_power_purchase_with_receipt = yes
+				if = {
+					limit = { check_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one } }
+					set_country_flag = develop_weaponized_zombie_mutant_counterstrain_sale_credit
+					set_variable = { develop_weaponized_zombie_mutant_counterstrain_sale_sequence = black_friday_political_power_receipt_sale_sequence }
+				}
+				set_variable = { weaponized_zombie_counterstrain_paid_pp = global.black_friday_price_triggerable_scenario_cure_counterstrain_cost }
+			}
+			add_timed_idea = { idea = searching_for_cure days = constant:triggerable_scenario_cure.counterstrain_days }
+		}
+		cancel_trigger = { NOT = { is_zombie_counterstrain_system_active = yes } }
+		cancel_effect = {
+			hidden_effect = {
+				remove_ideas = searching_for_cure
+				add_political_power = weaponized_zombie_counterstrain_paid_pp
+				clear_variable = weaponized_zombie_counterstrain_paid_pp
+				set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
+				set_temp_variable = { black_friday_political_power_receipt_sale_sequence = develop_weaponized_zombie_mutant_counterstrain_sale_sequence }
+				if = {
+					limit = { has_country_flag = develop_weaponized_zombie_mutant_counterstrain_sale_credit }
+					set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one }
+				}
+				black_friday_withdraw_political_power_purchase_with_receipt = yes
+				clr_country_flag = develop_weaponized_zombie_mutant_counterstrain_sale_credit
+				clear_variable = develop_weaponized_zombie_mutant_counterstrain_sale_sequence
+			}
+		}
+		remove_effect = {
+			set_temp_variable = { weaponized_zombie_counterstrain_type = constant:triggerable_scenario_zombie_type.single_mutant }
+			apply_weaponized_zombie_counterstrain_research = yes
+			clear_variable = weaponized_zombie_counterstrain_paid_pp
+			clr_country_flag = develop_weaponized_zombie_mutant_counterstrain_sale_credit
+			clear_variable = develop_weaponized_zombie_mutant_counterstrain_sale_sequence
+		}
+	}
+
+	review_weaponized_zombie_undead_outbreak_profile = {
+		icon = GFX_decision_generic_research
+		target_root_trigger = { any_country = { is_reviewable_weaponized_zombie_profile_country = yes } }
+		target_trigger = {
+			any_country = {
+				is_live_weaponized_zombie_profile_country = yes
+				has_country_flag = weaponized_zombie_type_undead
+				has_country_flag = weaponized_zombie_created_by_@FROM
+				OR = {
+					has_country_flag = weaponized_zombie_profile_public
+					FROM = { tag = ROOT }
+				}
+			}
+		}
+		available = { always = yes }
+		cost = 0
+		days_re_enable = 1
+		fire_only_once = no
+		ai_will_do = { factor = 0 }
+		complete_effect = {
+			random_country = {
+				limit = {
+					is_live_weaponized_zombie_profile_country = yes
+					has_country_flag = weaponized_zombie_type_undead
+					has_country_flag = weaponized_zombie_created_by_@FROM
+					OR = {
+						has_country_flag = weaponized_zombie_profile_public
+						FROM = { tag = ROOT }
+					}
+				}
+				ROOT = { country_event = { id = chaosx.weaponized_zombies.9 } }
+			}
+		}
+	}
+	develop_weaponized_zombie_undead_counterstrain = {
+		icon = GFX_decision_generic_research
+		visible = { any_country = { is_live_weaponized_zombie_profile_country = yes has_country_flag = weaponized_zombie_type_undead } }
+		available = { is_zombie_counterstrain_system_active = yes NOT = { has_idea = searching_for_cure } }
+		cost = global.black_friday_price_triggerable_scenario_cure_counterstrain_cost
+		days_remove = constant:triggerable_scenario_cure.counterstrain_days
+		fire_only_once = no
+		ai_will_do = { factor = 1 }
+		complete_effect = {
+			hidden_effect = {
+				clr_country_flag = develop_weaponized_zombie_undead_counterstrain_sale_credit
+				clear_variable = develop_weaponized_zombie_undead_counterstrain_sale_sequence
+				set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
+				set_temp_variable = { black_friday_political_power_receipt_sale_sequence = constant:universal_cost_framework.zero }
+				black_friday_credit_political_power_purchase_with_receipt = yes
+				if = {
+					limit = { check_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one } }
+					set_country_flag = develop_weaponized_zombie_undead_counterstrain_sale_credit
+					set_variable = { develop_weaponized_zombie_undead_counterstrain_sale_sequence = black_friday_political_power_receipt_sale_sequence }
+				}
+				set_variable = { weaponized_zombie_counterstrain_paid_pp = global.black_friday_price_triggerable_scenario_cure_counterstrain_cost }
+			}
+			add_timed_idea = { idea = searching_for_cure days = constant:triggerable_scenario_cure.counterstrain_days }
+		}
+		cancel_trigger = { NOT = { is_zombie_counterstrain_system_active = yes } }
+		cancel_effect = {
+			hidden_effect = {
+				remove_ideas = searching_for_cure
+				add_political_power = weaponized_zombie_counterstrain_paid_pp
+				clear_variable = weaponized_zombie_counterstrain_paid_pp
+				set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
+				set_temp_variable = { black_friday_political_power_receipt_sale_sequence = develop_weaponized_zombie_undead_counterstrain_sale_sequence }
+				if = {
+					limit = { has_country_flag = develop_weaponized_zombie_undead_counterstrain_sale_credit }
+					set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one }
+				}
+				black_friday_withdraw_political_power_purchase_with_receipt = yes
+				clr_country_flag = develop_weaponized_zombie_undead_counterstrain_sale_credit
+				clear_variable = develop_weaponized_zombie_undead_counterstrain_sale_sequence
+			}
+		}
+		remove_effect = {
+			set_temp_variable = { weaponized_zombie_counterstrain_type = constant:triggerable_scenario_zombie_type.single_undead }
+			apply_weaponized_zombie_counterstrain_research = yes
+			clear_variable = weaponized_zombie_counterstrain_paid_pp
+			clr_country_flag = develop_weaponized_zombie_undead_counterstrain_sale_credit
+			clear_variable = develop_weaponized_zombie_undead_counterstrain_sale_sequence
+		}
+	}
+
+	review_weaponized_zombie_necrotic_outbreak_profile = {
+		icon = GFX_decision_generic_research
+		target_root_trigger = { any_country = { is_reviewable_weaponized_zombie_profile_country = yes } }
+		target_trigger = {
+			any_country = {
+				is_live_weaponized_zombie_profile_country = yes
+				has_country_flag = weaponized_zombie_type_necrotic
+				has_country_flag = weaponized_zombie_created_by_@FROM
+				OR = {
+					has_country_flag = weaponized_zombie_profile_public
+					FROM = { tag = ROOT }
+				}
+			}
+		}
+		available = { always = yes }
+		cost = 0
+		days_re_enable = 1
+		fire_only_once = no
+		ai_will_do = { factor = 0 }
+		complete_effect = {
+			random_country = {
+				limit = {
+					is_live_weaponized_zombie_profile_country = yes
+					has_country_flag = weaponized_zombie_type_necrotic
+					has_country_flag = weaponized_zombie_created_by_@FROM
+					OR = {
+						has_country_flag = weaponized_zombie_profile_public
+						FROM = { tag = ROOT }
+					}
+				}
+				ROOT = { country_event = { id = chaosx.weaponized_zombies.9 } }
+			}
+		}
+	}
+	develop_weaponized_zombie_necrotic_counterstrain = {
+		icon = GFX_decision_generic_research
+		visible = { any_country = { is_live_weaponized_zombie_profile_country = yes has_country_flag = weaponized_zombie_type_necrotic } }
+		available = { is_zombie_counterstrain_system_active = yes NOT = { has_idea = searching_for_cure } }
+		cost = global.black_friday_price_triggerable_scenario_cure_counterstrain_cost
+		days_remove = constant:triggerable_scenario_cure.counterstrain_days
+		fire_only_once = no
+		ai_will_do = { factor = 1 }
+		complete_effect = {
+			hidden_effect = {
+				clr_country_flag = develop_weaponized_zombie_necrotic_counterstrain_sale_credit
+				clear_variable = develop_weaponized_zombie_necrotic_counterstrain_sale_sequence
+				set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
+				set_temp_variable = { black_friday_political_power_receipt_sale_sequence = constant:universal_cost_framework.zero }
+				black_friday_credit_political_power_purchase_with_receipt = yes
+				if = {
+					limit = { check_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one } }
+					set_country_flag = develop_weaponized_zombie_necrotic_counterstrain_sale_credit
+					set_variable = { develop_weaponized_zombie_necrotic_counterstrain_sale_sequence = black_friday_political_power_receipt_sale_sequence }
+				}
+				set_variable = { weaponized_zombie_counterstrain_paid_pp = global.black_friday_price_triggerable_scenario_cure_counterstrain_cost }
+			}
+			add_timed_idea = { idea = searching_for_cure days = constant:triggerable_scenario_cure.counterstrain_days }
+		}
+		cancel_trigger = { NOT = { is_zombie_counterstrain_system_active = yes } }
+		cancel_effect = {
+			hidden_effect = {
+				remove_ideas = searching_for_cure
+				add_political_power = weaponized_zombie_counterstrain_paid_pp
+				clear_variable = weaponized_zombie_counterstrain_paid_pp
+				set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
+				set_temp_variable = { black_friday_political_power_receipt_sale_sequence = develop_weaponized_zombie_necrotic_counterstrain_sale_sequence }
+				if = {
+					limit = { has_country_flag = develop_weaponized_zombie_necrotic_counterstrain_sale_credit }
+					set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one }
+				}
+				black_friday_withdraw_political_power_purchase_with_receipt = yes
+				clr_country_flag = develop_weaponized_zombie_necrotic_counterstrain_sale_credit
+				clear_variable = develop_weaponized_zombie_necrotic_counterstrain_sale_sequence
+			}
+		}
+		remove_effect = {
+			set_temp_variable = { weaponized_zombie_counterstrain_type = constant:triggerable_scenario_zombie_type.single_necrotic }
+			apply_weaponized_zombie_counterstrain_research = yes
+			clear_variable = weaponized_zombie_counterstrain_paid_pp
+			clr_country_flag = develop_weaponized_zombie_necrotic_counterstrain_sale_credit
+			clear_variable = develop_weaponized_zombie_necrotic_counterstrain_sale_sequence
+		}
+	}
+
+	review_weaponized_zombie_demonic_outbreak_profile = {
+		icon = GFX_decision_generic_research
+		target_root_trigger = { any_country = { is_reviewable_weaponized_zombie_profile_country = yes } }
+		target_trigger = {
+			any_country = {
+				is_live_weaponized_zombie_profile_country = yes
+				has_country_flag = weaponized_zombie_type_demonic
+				has_country_flag = weaponized_zombie_created_by_@FROM
+				OR = {
+					has_country_flag = weaponized_zombie_profile_public
+					FROM = { tag = ROOT }
+				}
+			}
+		}
+		available = { always = yes }
+		cost = 0
+		days_re_enable = 1
+		fire_only_once = no
+		ai_will_do = { factor = 0 }
+		complete_effect = {
+			random_country = {
+				limit = {
+					is_live_weaponized_zombie_profile_country = yes
+					has_country_flag = weaponized_zombie_type_demonic
+					has_country_flag = weaponized_zombie_created_by_@FROM
+					OR = {
+						has_country_flag = weaponized_zombie_profile_public
+						FROM = { tag = ROOT }
+					}
+				}
+				ROOT = { country_event = { id = chaosx.weaponized_zombies.9 } }
+			}
+		}
+	}
+	develop_weaponized_zombie_demonic_counterstrain = {
+		icon = GFX_decision_generic_research
+		visible = { any_country = { is_live_weaponized_zombie_profile_country = yes has_country_flag = weaponized_zombie_type_demonic } }
+		available = { is_zombie_counterstrain_system_active = yes NOT = { has_idea = searching_for_cure } }
+		cost = global.black_friday_price_triggerable_scenario_cure_counterstrain_cost
+		days_remove = constant:triggerable_scenario_cure.counterstrain_days
+		fire_only_once = no
+		ai_will_do = { factor = 1 }
+		complete_effect = {
+			hidden_effect = {
+				clr_country_flag = develop_weaponized_zombie_demonic_counterstrain_sale_credit
+				clear_variable = develop_weaponized_zombie_demonic_counterstrain_sale_sequence
+				set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
+				set_temp_variable = { black_friday_political_power_receipt_sale_sequence = constant:universal_cost_framework.zero }
+				black_friday_credit_political_power_purchase_with_receipt = yes
+				if = {
+					limit = { check_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one } }
+					set_country_flag = develop_weaponized_zombie_demonic_counterstrain_sale_credit
+					set_variable = { develop_weaponized_zombie_demonic_counterstrain_sale_sequence = black_friday_political_power_receipt_sale_sequence }
+				}
+				set_variable = { weaponized_zombie_counterstrain_paid_pp = global.black_friday_price_triggerable_scenario_cure_counterstrain_cost }
+			}
+			add_timed_idea = { idea = searching_for_cure days = constant:triggerable_scenario_cure.counterstrain_days }
+		}
+		cancel_trigger = { NOT = { is_zombie_counterstrain_system_active = yes } }
+		cancel_effect = {
+			hidden_effect = {
+				remove_ideas = searching_for_cure
+				add_political_power = weaponized_zombie_counterstrain_paid_pp
+				clear_variable = weaponized_zombie_counterstrain_paid_pp
+				set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
+				set_temp_variable = { black_friday_political_power_receipt_sale_sequence = develop_weaponized_zombie_demonic_counterstrain_sale_sequence }
+				if = {
+					limit = { has_country_flag = develop_weaponized_zombie_demonic_counterstrain_sale_credit }
+					set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one }
+				}
+				black_friday_withdraw_political_power_purchase_with_receipt = yes
+				clr_country_flag = develop_weaponized_zombie_demonic_counterstrain_sale_credit
+				clear_variable = develop_weaponized_zombie_demonic_counterstrain_sale_sequence
+			}
+		}
+		remove_effect = {
+			set_temp_variable = { weaponized_zombie_counterstrain_type = constant:triggerable_scenario_zombie_type.single_demonic }
+			apply_weaponized_zombie_counterstrain_research = yes
+			clear_variable = weaponized_zombie_counterstrain_paid_pp
+			clr_country_flag = develop_weaponized_zombie_demonic_counterstrain_sale_credit
+			clear_variable = develop_weaponized_zombie_demonic_counterstrain_sale_sequence
+		}
+	}
+
+	review_weaponized_zombie_wendigo_outbreak_profile = {
+		icon = GFX_decision_generic_research
+		target_root_trigger = { any_country = { is_reviewable_weaponized_zombie_profile_country = yes } }
+		target_trigger = {
+			any_country = {
+				is_live_weaponized_zombie_profile_country = yes
+				has_country_flag = weaponized_zombie_type_wendigo
+				has_country_flag = weaponized_zombie_created_by_@FROM
+				OR = {
+					has_country_flag = weaponized_zombie_profile_public
+					FROM = { tag = ROOT }
+				}
+			}
+		}
+		available = { always = yes }
+		cost = 0
+		days_re_enable = 1
+		fire_only_once = no
+		ai_will_do = { factor = 0 }
+		complete_effect = {
+			random_country = {
+				limit = {
+					is_live_weaponized_zombie_profile_country = yes
+					has_country_flag = weaponized_zombie_type_wendigo
+					has_country_flag = weaponized_zombie_created_by_@FROM
+					OR = {
+						has_country_flag = weaponized_zombie_profile_public
+						FROM = { tag = ROOT }
+					}
+				}
+				ROOT = { country_event = { id = chaosx.weaponized_zombies.9 } }
+			}
+		}
+	}
+	develop_weaponized_zombie_wendigo_counterstrain = {
+		icon = GFX_decision_generic_research
+		visible = {
+			any_country = {
+				is_live_weaponized_zombie_profile_country = yes
+				has_country_flag = weaponized_zombie_type_wendigo
+				NOT = { has_country_flag = cannibalism_wendigo_transformation_locked }
+			}
+		}
+		available = { is_zombie_counterstrain_system_active = yes NOT = { has_idea = searching_for_cure } }
+		cost = global.black_friday_price_triggerable_scenario_cure_counterstrain_cost
+		days_remove = constant:triggerable_scenario_cure.counterstrain_days
+		fire_only_once = no
+		ai_will_do = { factor = 1 }
+		complete_effect = {
+			hidden_effect = {
+				clr_country_flag = develop_weaponized_zombie_wendigo_counterstrain_sale_credit
+				clear_variable = develop_weaponized_zombie_wendigo_counterstrain_sale_sequence
+				set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
+				set_temp_variable = { black_friday_political_power_receipt_sale_sequence = constant:universal_cost_framework.zero }
+				black_friday_credit_political_power_purchase_with_receipt = yes
+				if = {
+					limit = { check_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one } }
+					set_country_flag = develop_weaponized_zombie_wendigo_counterstrain_sale_credit
+					set_variable = { develop_weaponized_zombie_wendigo_counterstrain_sale_sequence = black_friday_political_power_receipt_sale_sequence }
+				}
+				set_variable = { weaponized_zombie_counterstrain_paid_pp = global.black_friday_price_triggerable_scenario_cure_counterstrain_cost }
+			}
+			add_timed_idea = { idea = searching_for_cure days = constant:triggerable_scenario_cure.counterstrain_days }
+		}
+		cancel_trigger = { NOT = { is_zombie_counterstrain_system_active = yes } }
+		cancel_effect = {
+			hidden_effect = {
+				remove_ideas = searching_for_cure
+				add_political_power = weaponized_zombie_counterstrain_paid_pp
+				clear_variable = weaponized_zombie_counterstrain_paid_pp
+				set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
+				set_temp_variable = { black_friday_political_power_receipt_sale_sequence = develop_weaponized_zombie_wendigo_counterstrain_sale_sequence }
+				if = {
+					limit = { has_country_flag = develop_weaponized_zombie_wendigo_counterstrain_sale_credit }
+					set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one }
+				}
+				black_friday_withdraw_political_power_purchase_with_receipt = yes
+				clr_country_flag = develop_weaponized_zombie_wendigo_counterstrain_sale_credit
+				clear_variable = develop_weaponized_zombie_wendigo_counterstrain_sale_sequence
+			}
+		}
+		remove_effect = {
+			set_temp_variable = { weaponized_zombie_counterstrain_type = constant:triggerable_scenario_zombie_type.single_wendigo }
+			apply_weaponized_zombie_counterstrain_research = yes
+			clear_variable = weaponized_zombie_counterstrain_paid_pp
+			clr_country_flag = develop_weaponized_zombie_wendigo_counterstrain_sale_credit
+			clear_variable = develop_weaponized_zombie_wendigo_counterstrain_sale_sequence
+		}
+	}
+}
+
+
+chaosx_zzz_cure_category = {
+	find_cure_tier_0 = {
+		visible = {
+			has_global_flag = has_zombie_outbreak
+			any_country = {
+				is_live_standard_zombie_outbreak_country = yes
+				has_country_flag = { flag = zombie_current_tier value = 0 }
+			}
+		}
+
+		available = {
+			NOT = { has_idea = cure_activated }
+			NOT = { has_idea = searching_for_cure }
+			check_variable = { zzz_cure < 100 }
+		}
+
+		cost = global.black_friday_price_pp_20
+		days_remove = var:cure_research_days_0?60
+		icon = GFX_decision_generic_research
+
+		ai_will_do = {
+			factor = 1
+			modifier = {
+				add = 4
+				has_war_with = ZZZ
+			}
+			modifier = {
+				add = 2
+				is_in_tech_sharing_group = cure_sharing
+			}
+			# Chaos tier modifiers - higher chaos = more urgent research
+			modifier = {
+				add = 1
+				has_global_flag = { flag = chaos_tier value = 1 }
+			}
+			modifier = {
+				add = 2
+				has_global_flag = { flag = chaos_tier value = 2 }
+			}
+			modifier = {
+				add = 3
+				has_global_flag = { flag = chaos_tier value = 3 }
+			}
+			modifier = {
+				add = 4
+				has_global_flag = { flag = chaos_tier value = 4 }
+			}
+			modifier = {
+				add = 5
+				has_global_flag = { flag = chaos_tier value = 5 }
+			}
+			# Zombie tier modifiers - higher zombie evolution = more urgent
+			modifier = {
+				add = 1
+				any_country = {
+					original_tag = ZZZ
+					has_country_flag = { flag = zombie_current_tier value > 0 }
+				}
+			}
+			modifier = {
+				add = 2
+				any_country = {
+					original_tag = ZZZ
+					has_country_flag = { flag = zombie_current_tier value > 1 }
+				}
+			}
+			modifier = {
+				add = 3
+				any_country = {
+					original_tag = ZZZ
+					has_country_flag = { flag = zombie_current_tier value = 3 }
+				}
+			}
+			# Multiple zombie outbreaks increase urgency
+			modifier = {
+				add = 2
+				any_country = {
+					has_country_flag = zombie_outbreak_dynamic_country
+					any_owned_state = {
+						any_neighbor_state = {
+							is_controlled_by = ZZZ
+						}
+					}
+				}
+			}
+			# Stability and war situation modifiers
+			modifier = {
+				add = 2
+				has_stability < 0.5
+			}
+			modifier = {
+				add = 1
+				has_war = yes
+				NOT = { has_war_with = ZZZ }
+			}
+			# Major powers prioritize research more
+			modifier = {
+				add = 2
+				is_major = yes
+			}
+			# Democratic countries are more cooperative
+			modifier = {
+				add = 1
+				has_government = democratic
+			}
+			# Resource availability modifiers
+
+			modifier = {
+				add = 1
+				num_of_civilian_factories > 20
+			}
+		}
+
+		complete_effect = {
+			hidden_effect = {
+				clr_country_flag = find_cure_tier_0_sale_credit
+				clear_variable = find_cure_tier_0_sale_sequence
+				set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
+				set_temp_variable = { black_friday_political_power_receipt_sale_sequence = constant:universal_cost_framework.zero }
+				black_friday_credit_political_power_purchase_with_receipt = yes
+				if = {
+					limit = { check_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one } }
+					set_country_flag = find_cure_tier_0_sale_credit
+					set_variable = { find_cure_tier_0_sale_sequence = black_friday_political_power_receipt_sale_sequence }
+				}
+			}
+			set_variable = { zombie_cure_tier_0_paid_pp = global.black_friday_price_pp_20 }
+			add_timed_idea = {
+				idea = searching_for_cure
+				days = 60
+			}
+		}
+
+		remove_effect = {
+			clear_variable = zombie_cure_tier_0_paid_pp
+			clr_country_flag = find_cure_tier_0_sale_credit
+			clear_variable = find_cure_tier_0_sale_sequence
+			# Calculate dynamic cure research value before applying
+			calculate_cure_research_value = yes
+
+			if = {
+				limit = { is_in_tech_sharing_group = cure_sharing }
+				add_to_variable = {
+					var = global.zzz_cure
+					value = cure_research_value
+					tooltip = zzz_cure_global_tt
+				}
+				if = {
+					limit = { check_variable = { global.zzz_cure > 99 } }
+					mark_first_zombie_cure_activation = yes
+					every_country = {
+						limit = { is_in_tech_sharing_group = cure_sharing }
+						activate_shared_zombie_cure_for_current_country = yes
+					}
+					every_country = {
+						limit = { original_tag = ZZZ }
+						add_timed_idea = {
+							idea = cure_sharing_bonus
+							days = 120
+						}
+					}
+					set_variable = { global.zzz_cure = 0 }
+				}
+			}
+			else = {
+				add_to_variable = {
+					var = zzz_cure
+					value = cure_research_value
+					tooltip = zzz_cure_tt
+				}
+			}
+		}
+		cancel_trigger = {
+			OR = {
+				has_idea = cure_activated
+				NOT = { has_global_flag = has_zombie_outbreak }
+			}
+		}
+		cancel_effect = {
+			hidden_effect = {
+				remove_ideas = searching_for_cure
+				add_political_power = zombie_cure_tier_0_paid_pp
+				clear_variable = zombie_cure_tier_0_paid_pp
+				set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
+				set_temp_variable = { black_friday_political_power_receipt_sale_sequence = find_cure_tier_0_sale_sequence }
+				if = {
+					limit = { has_country_flag = find_cure_tier_0_sale_credit }
+					set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one }
+				}
+				black_friday_withdraw_political_power_purchase_with_receipt = yes
+				clr_country_flag = find_cure_tier_0_sale_credit
+				clear_variable = find_cure_tier_0_sale_sequence
+			}
+		}
+	}
+
+	find_cure_tier_1 = {
+	    visible = {
+	        has_global_flag = has_zombie_outbreak
+	        any_country = {
+	            is_live_standard_zombie_outbreak_country = yes
+	            has_country_flag = { flag = zombie_current_tier value = 1 }
+	        }
+	    }
+
+		available = {
+			NOT = { has_idea = cure_activated }
+			check_variable = { zzz_cure < 100 }
+		}
+
+		cost = global.black_friday_price_pp_30
+		days_remove = var:cure_research_days_1?90
+		icon = GFX_decision_generic_research
+
+		ai_will_do = {
+			factor = 1
+			modifier = {
+				add = 4
+				has_war_with = ZZZ
+			}
+			modifier = {
+				add = 2
+				is_in_tech_sharing_group = cure_sharing
+			}
+			# Chaos tier modifiers - higher chaos = more urgent research
+			modifier = {
+				add = 1
+				has_global_flag = { flag = chaos_tier value = 1 }
+			}
+			modifier = {
+				add = 2
+				has_global_flag = { flag = chaos_tier value = 2 }
+			}
+			modifier = {
+				add = 3
+				has_global_flag = { flag = chaos_tier value = 3 }
+			}
+			modifier = {
+				add = 4
+				has_global_flag = { flag = chaos_tier value = 4 }
+			}
+			modifier = {
+				add = 5
+				has_global_flag = { flag = chaos_tier value = 5 }
+			}
+			# Zombie tier modifiers - higher zombie evolution = more urgent
+			modifier = {
+				add = 2
+				any_country = {
+					original_tag = ZZZ
+					has_country_flag = { flag = zombie_current_tier value > 1 }
+				}
+			}
+			modifier = {
+				add = 3
+				any_country = {
+					original_tag = ZZZ
+					has_country_flag = { flag = zombie_current_tier value = 3 }
+				}
+			}
+			# Multiple zombie outbreaks increase urgency
+			modifier = {
+				add = 3
+				any_country = {
+					has_country_flag = zombie_outbreak_dynamic_country
+					any_owned_state = {
+						any_neighbor_state = {
+							is_controlled_by = ZZZ
+						}
+					}
+				}
+			}
+			# Stability and war situation modifiers
+			modifier = {
+				add = 3
+				has_stability < 0.5
+			}
+			modifier = {
+				add = 2
+				has_war = yes
+				NOT = { has_war_with = ZZZ }
+			}
+			# Major powers prioritize research more
+			modifier = {
+				add = 3
+				is_major = yes
+			}
+			# Democratic countries are more cooperative
+			modifier = {
+				add = 2
+				has_government = democratic
+			}
+			# Resource availability modifiers
+
+			modifier = {
+				add = 2
+				num_of_civilian_factories > 30
+			}
+			# Tier 1 zombies require more advanced research
+			modifier = {
+				add = 2
+				has_tech = advanced_machine_tools
+			}
+		}
+
+		complete_effect = {
+			hidden_effect = {
+				clr_country_flag = find_cure_tier_1_sale_credit
+				clear_variable = find_cure_tier_1_sale_sequence
+				set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
+				set_temp_variable = { black_friday_political_power_receipt_sale_sequence = constant:universal_cost_framework.zero }
+				black_friday_credit_political_power_purchase_with_receipt = yes
+				if = {
+					limit = { check_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one } }
+					set_country_flag = find_cure_tier_1_sale_credit
+					set_variable = { find_cure_tier_1_sale_sequence = black_friday_political_power_receipt_sale_sequence }
+				}
+			}
+			set_variable = { zombie_cure_tier_1_paid_pp = global.black_friday_price_pp_30 }
+			add_timed_idea = {
+				idea = searching_for_cure_tier_1
+				days = 90
+			}
+		}
+
+		remove_effect = {
+			clear_variable = zombie_cure_tier_1_paid_pp
+			clr_country_flag = find_cure_tier_1_sale_credit
+			clear_variable = find_cure_tier_1_sale_sequence
+			# Calculate dynamic cure research value before applying
+			calculate_cure_research_value = yes
+
+			if = {
+				limit = { is_in_tech_sharing_group = cure_sharing }
+				add_to_variable = {
+					var = global.zzz_cure
+					value = cure_research_value
+					tooltip = zzz_cure_global_tt
+				}
+				if = { limit = { check_variable = { global.zzz_cure > 99 } }
+				mark_first_zombie_cure_activation = yes
+
+				every_country = {
+					limit = { is_in_tech_sharing_group = cure_sharing }
+					activate_shared_zombie_cure_for_current_country = yes
+				}
+				every_country = {
+					limit = { original_tag = ZZZ }
+					add_timed_idea = {
+						idea = cure_sharing_bonus
+						days = 120
+					}
+				}
+				set_variable = { global.zzz_cure = 0 }
+			}
+		} else = {
+			add_to_variable = {
+				var = zzz_cure
+				value = cure_research_value
+				tooltip = zzz_cure_tt
+			}
+		}
+	}
+	cancel_trigger = {
+		OR = {
+			has_idea = cure_activated
+			NOT = { has_global_flag = has_zombie_outbreak }
+		}
+	}
+	cancel_effect = {
+		hidden_effect = {
+			remove_ideas = searching_for_cure_tier_1
+			add_political_power = zombie_cure_tier_1_paid_pp
+			clear_variable = zombie_cure_tier_1_paid_pp
+			set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
+			set_temp_variable = { black_friday_political_power_receipt_sale_sequence = find_cure_tier_1_sale_sequence }
+			if = {
+				limit = { has_country_flag = find_cure_tier_1_sale_credit }
+				set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one }
+			}
+			black_friday_withdraw_political_power_purchase_with_receipt = yes
+			clr_country_flag = find_cure_tier_1_sale_credit
+			clear_variable = find_cure_tier_1_sale_sequence
+		}
+	}
+}
+
+find_cure_tier_2 = {
+	visible = {
+		has_global_flag = has_zombie_outbreak
+		any_country = {
+			is_live_standard_zombie_outbreak_country = yes
+			has_country_flag = { flag = zombie_current_tier value = 2 }
+		}
+	}
+
+	available = {
+		NOT = { has_idea = cure_activated }
+		check_variable = { zzz_cure < 100 }
+	}
+
+	cost = global.black_friday_price_pp_40
+	days_remove = var:cure_research_days_2?120
+	icon = GFX_decision_generic_research
+
+	ai_will_do = {
+		factor = 1
+		modifier = {
+			add = 4
+			has_war_with = ZZZ
+		}
+		modifier = {
+			add = 2
+			is_in_tech_sharing_group = cure_sharing
+		}
+		# Chaos tier modifiers - higher chaos = more urgent research
+		modifier = {
+			add = 2
+			has_global_flag = { flag = chaos_tier value = 1 }
+		}
+		modifier = {
+			add = 3
+			has_global_flag = { flag = chaos_tier value = 2 }
+		}
+		modifier = {
+			add = 4
+			has_global_flag = { flag = chaos_tier value = 3 }
+		}
+		modifier = {
+			add = 5
+			has_global_flag = { flag = chaos_tier value = 4 }
+		}
+		modifier = {
+			add = 6
+			has_global_flag = { flag = chaos_tier value = 5 }
+		}
+		# Tier 2 zombies are very dangerous
+		modifier = {
+			add = 4
+			any_country = {
+				original_tag = ZZZ
+				has_country_flag = { flag = zombie_current_tier value = 2 }
+			}
+		}
+		modifier = {
+			add = 5
+			any_country = {
+				original_tag = ZZZ
+				has_country_flag = { flag = zombie_current_tier value = 3 }
+			}
+		}
+		# Multiple zombie outbreaks increase urgency dramatically
+		modifier = {
+			add = 4
+			any_country = {
+				has_country_flag = zombie_outbreak_dynamic_country
+				any_owned_state = {
+					any_neighbor_state = {
+						is_controlled_by = ZZZ
+					}
+				}
+			}
+		}
+		# Stability and war situation modifiers
+		modifier = {
+			add = 4
+			has_stability < 0.5
+		}
+		modifier = {
+			add = 3
+			has_war = yes
+			NOT = { has_war_with = ZZZ }
+		}
+		# Major powers prioritize research more
+		modifier = {
+			add = 4
+			is_major = yes
+		}
+		# Democratic countries are more cooperative
+		modifier = {
+			add = 3
+			has_government = democratic
+		}
+		# Resource availability modifiers - tier 2 research is expensive
+
+		modifier = {
+			add = 3
+			num_of_civilian_factories > 40
+		}
+		# Advanced research requirements
+		modifier = {
+			add = 3
+			has_tech = computing_machine
+		}
+		modifier = {
+			add = 2
+			has_tech = radio
+		}
+		# Desperation modifiers
+		modifier = {
+			add = 5
+			any_owned_state = {
+				any_neighbor_state = {
+					is_controlled_by = ZZZ
+				}
+			}
+		}
+	}
+
+	complete_effect = {
+		hidden_effect = {
+			clr_country_flag = find_cure_tier_2_sale_credit
+			clear_variable = find_cure_tier_2_sale_sequence
+			set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
+			set_temp_variable = { black_friday_political_power_receipt_sale_sequence = constant:universal_cost_framework.zero }
+			black_friday_credit_political_power_purchase_with_receipt = yes
+			if = {
+				limit = { check_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one } }
+				set_country_flag = find_cure_tier_2_sale_credit
+				set_variable = { find_cure_tier_2_sale_sequence = black_friday_political_power_receipt_sale_sequence }
+			}
+		}
+		set_variable = { zombie_cure_tier_2_paid_pp = global.black_friday_price_pp_40 }
+		add_timed_idea = {
+			idea = searching_for_cure_tier_2
+			days = 120
+		}
+	}
+	remove_effect = {
+		clear_variable = zombie_cure_tier_2_paid_pp
+		clr_country_flag = find_cure_tier_2_sale_credit
+		clear_variable = find_cure_tier_2_sale_sequence
+		# Calculate dynamic cure research value before applying
+		calculate_cure_research_value = yes
+
+		if = {
+			limit = { is_in_tech_sharing_group = cure_sharing }
+			add_to_variable = {
+				var = global.zzz_cure
+				value = cure_research_value
+				tooltip = zzz_cure_global_tt
+			}
+			if = { limit = { check_variable = { global.zzz_cure > 99 } }
+			mark_first_zombie_cure_activation = yes
+
+			every_country = {
+				limit = { is_in_tech_sharing_group = cure_sharing }
+				activate_shared_zombie_cure_for_current_country = yes
+			}
+			every_country = {
+				limit = { original_tag = ZZZ }
+				add_timed_idea = {
+					idea = cure_sharing_bonus
+					days = 120
+				}
+			}
+			set_variable = { global.zzz_cure = 0 }
+		}
+	} else = {
+		add_to_variable = {
+			var = zzz_cure
+			value = cure_research_value
+			tooltip = zzz_cure_tt
+		}
+	}
+}
+cancel_trigger = {
+	OR = {
+		has_idea = cure_activated
+		NOT = { has_global_flag = has_zombie_outbreak }
+	}
+}
+cancel_effect = {
+	hidden_effect = {
+		remove_ideas = searching_for_cure_tier_2
+		add_political_power = zombie_cure_tier_2_paid_pp
+		clear_variable = zombie_cure_tier_2_paid_pp
+		set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
+		set_temp_variable = { black_friday_political_power_receipt_sale_sequence = find_cure_tier_2_sale_sequence }
+		if = {
+			limit = { has_country_flag = find_cure_tier_2_sale_credit }
+			set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one }
+		}
+		black_friday_withdraw_political_power_purchase_with_receipt = yes
+		clr_country_flag = find_cure_tier_2_sale_credit
+		clear_variable = find_cure_tier_2_sale_sequence
+	}
+}
+}
+
+find_cure_tier_3 = {
+	visible = {
+		has_global_flag = has_zombie_outbreak
+		any_country = {
+			is_live_standard_zombie_outbreak_country = yes
+			has_country_flag = { flag = zombie_current_tier value = 3 }
+		}
+	}
+
+	available = {
+		NOT = { has_idea = cure_activated }
+		check_variable = { zzz_cure < 100 }
+	}
+
+	cost = global.black_friday_price_pp_50
+	days_remove = var:cure_research_days_3?150
+	icon = GFX_decision_generic_research
+
+	ai_will_do = {
+		factor = 2  # Base factor higher for ultimate tier
+		modifier = {
+			add = 6
+			has_war_with = ZZZ
+		}
+		modifier = {
+			add = 4
+			is_in_tech_sharing_group = cure_sharing
+		}
+		# Chaos tier modifiers - at tier 3 zombies, all chaos is critical
+		modifier = {
+			add = 3
+			has_global_flag = { flag = chaos_tier value = 1 }
+		}
+		modifier = {
+			add = 5
+			has_global_flag = { flag = chaos_tier value = 2 }
+		}
+		modifier = {
+			add = 7
+			has_global_flag = { flag = chaos_tier value = 3 }
+		}
+		modifier = {
+			add = 9
+			has_global_flag = { flag = chaos_tier value = 4 }
+		}
+		modifier = {
+			add = 12
+			has_global_flag = { flag = chaos_tier value = 5 }
+		}
+		# Tier 3 zombies are apocalyptic
+		modifier = {
+			add = 8
+			any_country = {
+				original_tag = ZZZ
+				has_country_flag = { flag = zombie_current_tier value = 3 }
+			}
+		}
+		# Multiple zombie outbreaks at tier 3 = world ending
+		modifier = {
+			add = 10
+			any_country = {
+				has_country_flag = zombie_outbreak_dynamic_country
+				any_owned_state = {
+					any_neighbor_state = {
+						is_controlled_by = ZZZ
+					}
+				}
+			}
+		}
+		# Stability and war situation modifiers - desperation level
+		modifier = {
+			add = 8
+			has_stability < 0.5
+		}
+		modifier = {
+			add = 6
+			has_stability < 0.3
+		}
+		modifier = {
+			add = 5
+			has_war = yes
+			NOT = { has_war_with = ZZZ }
+		}
+		# Major powers absolutely must prioritize this
+		modifier = {
+			add = 8
+			is_major = yes
+		}
+		# All governments cooperate at this level
+		modifier = {
+			add = 4
+			has_government = democratic
+		}
+		modifier = {
+			add = 2
+			has_government = communism
+		}
+		modifier = {
+			add = 2
+			has_government = fascism
+		}
+		# Resource availability modifiers - tier 3 research is extremely expensive
+
+		modifier = {
+			add = 5
+			num_of_civilian_factories > 50
+		}
+		modifier = {
+			add = 3
+			num_of_military_factories > 30
+		}
+		# Advanced research requirements - need cutting edge tech
+		modifier = {
+			add = 5
+			has_tech = computing_machine
+		}
+		modifier = {
+			add = 4
+			has_tech = basic_machine_tools
+		}
+		modifier = {
+			add = 3
+			has_tech = radio
+		}
+		# Existential threat modifiers
+		modifier = {
+			add = 15
+			any_owned_state = {
+				any_neighbor_state = {
+					is_controlled_by = ZZZ
+				}
+			}
+		}
+		modifier = {
+			add = 10
+			capital_scope = {
+				any_neighbor_state = {
+					any_neighbor_state = {
+						is_controlled_by = ZZZ
+					}
+				}
+			}
+		}
+		# Manpower considerations - desperate times
+		modifier = {
+			add = 3
+			has_manpower < 100000
+		}
+	}
+
+	complete_effect = {
+		hidden_effect = {
+			clr_country_flag = find_cure_tier_3_sale_credit
+			clear_variable = find_cure_tier_3_sale_sequence
+			set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
+			set_temp_variable = { black_friday_political_power_receipt_sale_sequence = constant:universal_cost_framework.zero }
+			black_friday_credit_political_power_purchase_with_receipt = yes
+			if = {
+				limit = { check_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one } }
+				set_country_flag = find_cure_tier_3_sale_credit
+				set_variable = { find_cure_tier_3_sale_sequence = black_friday_political_power_receipt_sale_sequence }
+			}
+		}
+		set_variable = { zombie_cure_tier_3_paid_pp = global.black_friday_price_pp_50 }
+		add_timed_idea = {
+			idea = searching_for_cure_tier_3
+			days = 150
+		}
+	}
+	remove_effect = {
+		clear_variable = zombie_cure_tier_3_paid_pp
+		clr_country_flag = find_cure_tier_3_sale_credit
+		clear_variable = find_cure_tier_3_sale_sequence
+		# Calculate dynamic cure research value before applying
+		calculate_cure_research_value = yes
+
+		if = {
+			limit = { is_in_tech_sharing_group = cure_sharing }
+			add_to_variable = {
+				var = global.zzz_cure
+				value = cure_research_value
+				tooltip = zzz_cure_global_tt
+			}
+			if = { limit = { check_variable = { global.zzz_cure > 99 } }
+			mark_first_zombie_cure_activation = yes
+
+			every_country = {
+				limit = { is_in_tech_sharing_group = cure_sharing }
+				activate_shared_zombie_cure_for_current_country = yes
+			}
+			every_country = {
+				limit = { original_tag = ZZZ }
+				add_timed_idea = {
+					idea = cure_sharing_bonus
+					days = 120
+				}
+			}
+			set_variable = { global.zzz_cure = 0 }
+		}
+	} else = {
+		add_to_variable = {
+			var = zzz_cure
+			value = cure_research_value
+			tooltip = zzz_cure_tt
+		}
+	}
+}
+cancel_trigger = {
+	OR = {
+		has_idea = cure_activated
+		NOT = { has_global_flag = has_zombie_outbreak }
+	}
+}
+cancel_effect = {
+	hidden_effect = {
+		remove_ideas = searching_for_cure_tier_3
+		add_political_power = zombie_cure_tier_3_paid_pp
+		clear_variable = zombie_cure_tier_3_paid_pp
+		set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
+		set_temp_variable = { black_friday_political_power_receipt_sale_sequence = find_cure_tier_3_sale_sequence }
+		if = {
+			limit = { has_country_flag = find_cure_tier_3_sale_credit }
+			set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one }
+		}
+		black_friday_withdraw_political_power_purchase_with_receipt = yes
+		clr_country_flag = find_cure_tier_3_sale_credit
+		clear_variable = find_cure_tier_3_sale_sequence
+	}
+}
+}
+
+join_cure_sharing = {
+	visible = {
+		NOT = { is_in_tech_sharing_group = cure_sharing }
+	}
+
+	cost = global.black_friday_price_pp_10
+	icon = GFX_decision_eng_trade_unions_support
+
+	ai_will_do = {
+		factor = 1
+		modifier = {
+			factor = 3
+			has_war_with = ZZZ
+		}
+		modifier = {
+			add = 1
+			any_country = { is_in_tech_sharing_group = cure_sharing NOT = { has_war_with = ROOT } }
+		}
+		modifier = {
+			factor = 0.1
+			OR = {
+				has_government = fascism
+				has_government = communism
+			}
+		}
+		modifier = {
+			factor = 2
+			OR = {
+				has_government = democratic
+			}
+		}
+		# Chaos tier modifiers - higher chaos = more cooperation
+		modifier = {
+			add = 1
+			has_global_flag = { flag = chaos_tier value = 1 }
+		}
+		modifier = {
+			add = 2
+			has_global_flag = { flag = chaos_tier value = 2 }
+		}
+		modifier = {
+			add = 4
+			has_global_flag = { flag = chaos_tier value = 3 }
+		}
+		modifier = {
+			add = 6
+			has_global_flag = { flag = chaos_tier value = 4 }
+		}
+		modifier = {
+			add = 8
+			has_global_flag = { flag = chaos_tier value = 5 }
+		}
+		# Zombie tier modifiers - higher threat = more cooperation
+		modifier = {
+			add = 2
+			any_country = {
+				original_tag = ZZZ
+				has_country_flag = { flag = zombie_current_tier value > 0 }
+			}
+		}
+		modifier = {
+			add = 3
+			any_country = {
+				original_tag = ZZZ
+				has_country_flag = { flag = zombie_current_tier value > 1 }
+			}
+		}
+		modifier = {
+			add = 5
+			any_country = {
+				original_tag = ZZZ
+				has_country_flag = { flag = zombie_current_tier value = 3 }
+			}
+		}
+		# Multiple zombie outbreaks = urgent cooperation
+		modifier = {
+			add = 4
+			any_country = {
+				has_country_flag = zombie_outbreak_dynamic_country
+				any_owned_state = {
+					any_neighbor_state = {
+						is_controlled_by = ZZZ
+					}
+				}
+			}
+		}
+		# Proximity to threat increases cooperation
+		modifier = {
+			add = 5
+			any_owned_state = {
+				any_neighbor_state = {
+					is_controlled_by = ZZZ
+				}
+			}
+		}
+		# Stability considerations
+		modifier = {
+			add = 2
+			has_stability < 0.5
+		}
+		# Faction considerations
+		modifier = {
+			factor = 10
+			any_country = {
+				is_in_tech_sharing_group = cure_sharing
+				is_in_faction_with = ROOT
+			}
+		}
+		# Major powers more likely to lead cooperation
+		modifier = {
+			factor = 2
+			is_major = yes
+		}
+		# Democratic tradition of cooperation
+		modifier = {
+			add = 3
+			has_government = democratic
+			any_country = {
+				is_in_tech_sharing_group = cure_sharing
+				has_government = democratic
+			}
+		}
+		# Research capability modifiers
+		modifier = {
+			add = 1
+			num_of_civilian_factories > 15
+		}
+		modifier = {
+			add = 2
+			num_of_civilian_factories > 30
+		}
+
+	}
+
+	complete_effect = {
+		hidden_effect = { black_friday_credit_political_power_purchase = yes }
+		every_other_country = {
+			limit = { is_in_tech_sharing_group = cure_sharing }
+			add_opinion_modifier = {
+				target = ROOT
+				modifier = small_increase
+			}
+		}
+		add_to_variable = {
+			var = global.zzz_cure
+			value = zzz_cure
+			tooltip = join_cure_sharing_tt
+		}
+		add_to_tech_sharing_group = cure_sharing
+		set_variable = { zzz_cure = 0 }
+	}
+}
+leave_cure_sharing = {
+	visible = {
+		is_in_tech_sharing_group = cure_sharing
+	}
+
+	cost = global.black_friday_price_pp_20
+	icon = GFX_decision_oppression
+
+	ai_will_do = {
+		factor = 0
+		modifier = {
+			add = 2
+			any_country = { is_in_tech_sharing_group = cure_sharing has_war_with = ROOT }
+		}
+		modifier = {
+			add = 1
+			NOT = { has_war_with = ZZZ }
+		}
+		modifier = {
+			add = 1
+			is_major = yes
+		}
+		modifier = {
+			factor = 1.5
+			OR = {
+				has_government = fascism
+				has_government = communism
+			}
+		}
+		modifier = {
+			factor = 0
+			OR = {
+				has_government = democratic
+			}
+		}
+		# Chaos tier modifiers - higher chaos = less likely to leave
+		modifier = {
+			factor = 0.8
+			has_global_flag = { flag = chaos_tier value = 1 }
+		}
+		modifier = {
+			factor = 0.6
+			has_global_flag = { flag = chaos_tier value = 2 }
+		}
+		modifier = {
+			factor = 0.4
+			has_global_flag = { flag = chaos_tier value = 3 }
+		}
+		modifier = {
+			factor = 0.2
+			has_global_flag = { flag = chaos_tier value = 4 }
+		}
+		modifier = {
+			factor = 0.1
+			has_global_flag = { flag = chaos_tier value = 5 }
+		}
+		# Zombie tier modifiers - higher threat = less likely to leave
+		modifier = {
+			factor = 0.7
+			any_country = {
+				original_tag = ZZZ
+				has_country_flag = { flag = zombie_current_tier value > 0 }
+			}
+		}
+		modifier = {
+			factor = 0.5
+			any_country = {
+				original_tag = ZZZ
+				has_country_flag = { flag = zombie_current_tier value > 1 }
+			}
+		}
+		modifier = {
+			factor = 0.2
+			any_country = {
+				original_tag = ZZZ
+				has_country_flag = { flag = zombie_current_tier value = 3 }
+			}
+		}
+		# Multiple zombie outbreaks
+		modifier = {
+			factor = 0.5
+			any_country = {
+				has_country_flag = zombie_outbreak_dynamic_country
+				any_owned_state = {
+					any_neighbor_state = {
+						is_controlled_by = ZZZ
+					}
+				}
+			}
+		}
+		# Proximity to threat discourages leaving
+		modifier = {
+			factor = 0.1
+			any_owned_state = {
+				any_neighbor_state = {
+					is_controlled_by = ZZZ
+				}
+			}
+		}
+		# Stability considerations - desperate countries stay
+		modifier = {
+			factor = 0.3
+			has_stability < 0.5
+		}
+		# Major powers might go solo if they have resources
+		modifier = {
+			add = 2
+			is_major = yes
+			num_of_civilian_factories > 50
+			check_variable = { zzz_cure > 50 }
+		}
+		# Autocratic regimes more likely to leave
+		modifier = {
+			factor = 2
+			OR = {
+				has_government = fascism
+				has_government = communism
+			}
+			NOT = {
+				any_country = {
+					is_in_tech_sharing_group = cure_sharing
+					has_same_ideology = yes
+				}
+			}
+		}
+	}
+
+	complete_effect = {
+		hidden_effect = { black_friday_credit_political_power_purchase = yes }
+		every_other_country = {
+			limit = { is_in_tech_sharing_group = cure_sharing }
+			add_opinion_modifier = {
+				target = ROOT
+				modifier = medium_decrease
+			}
+		}
+		remove_from_tech_sharing_group = cure_sharing
+		set_variable = { zzz_cure = 0 }
+	}
+}
+
+activate_the_cure = {
+	available = {
+		check_variable = { zzz_cure > 99 }
+		NOT = { has_idea = cure_activated }
+	}
+	visible = {
+		NOT = { is_in_tech_sharing_group = cure_sharing }
+	}
+
+	cost = global.black_friday_price_pp_10
+	fire_only_once = yes
+	icon = GFX_decision_generic_research
+
+	ai_will_do = {
+		base = 5
+		modifier = {
+			factor = 2
+			has_war_with = ZZZ
+		}
+		modifier = {
+			factor = 0.2
+			OR = {
+				has_government = fascism
+				has_government = communism
+			}
+		}
+		# Chaos tier modifiers - all tiers urgently activate
+		modifier = {
+			add = 5
+			has_global_flag = { flag = chaos_tier value = 1 }
+		}
+		modifier = {
+			add = 8
+			has_global_flag = { flag = chaos_tier value = 2 }
+		}
+		modifier = {
+			add = 12
+			has_global_flag = { flag = chaos_tier value = 3 }
+		}
+		modifier = {
+			add = 15
+			has_global_flag = { flag = chaos_tier value = 4 }
+		}
+		modifier = {
+			add = 20
+			has_global_flag = { flag = chaos_tier value = 5 }
+		}
+		# Zombie tier modifiers - higher threat = immediate activation
+		modifier = {
+			add = 8
+			any_country = {
+				original_tag = ZZZ
+				has_country_flag = { flag = zombie_current_tier value > 0 }
+			}
+		}
+		modifier = {
+			add = 12
+			any_country = {
+				original_tag = ZZZ
+				has_country_flag = { flag = zombie_current_tier value > 1 }
+			}
+		}
+		modifier = {
+			add = 20
+			any_country = {
+				original_tag = ZZZ
+				has_country_flag = { flag = zombie_current_tier value = 3 }
+			}
+		}
+		# Multiple zombie outbreaks = activate immediately
+		modifier = {
+			add = 15
+			any_country = {
+				has_country_flag = zombie_outbreak_dynamic_country
+				any_owned_state = {
+					any_neighbor_state = {
+						is_controlled_by = ZZZ
+					}
+				}
+			}
+		}
+		# Proximity = urgent activation
+		modifier = {
+			add = 25
+			any_owned_state = {
+				any_neighbor_state = {
+					is_controlled_by = ZZZ
+				}
+			}
+		}
+		# Stability considerations
+		modifier = {
+			add = 10
+			has_stability < 0.5
+		}
+		# Major powers activate faster
+		modifier = {
+			add = 5
+			is_major = yes
+		}
+		# Democratic countries prioritize saving the world
+		modifier = {
+			add = 8
+			has_government = democratic
+		}
+		# Authoritarian regimes might hoard the cure initially
+		modifier = {
+			factor = 0.3
+			OR = {
+				has_government = fascism
+				has_government = communism
+			}
+			NOT = {
+				any_owned_state = {
+					any_neighbor_state = {
+						is_controlled_by = ZZZ
+					}
+				}
+			}
+		}
+	}
+
+	complete_effect = {
+		hidden_effect = { black_friday_credit_political_power_purchase = yes }
+		activate_zombie_cure_for_current_country = yes
+	}
+}
+}
+
+
+
+chaosx_outbreak_prevention_category = {
+
+	enforce_hygiene_measures = {
+		icon = GFX_decision_generic_research
+
+		visible = {
+			has_global_flag = has_zombie_outbreak
+			NOT = { has_country_flag = hygiene_measures_enforced }
+		}
+
+		available = {
+			hidden_trigger = {
+				has_global_flag = has_zombie_outbreak
+				NOT = { has_country_flag = hygiene_measures_enforced }
+			}
+		}
+
+		cost = global.black_friday_price_zombie_prevention_hygiene_pp_cost
+		complete_effect = {
+			hidden_effect = {
+				clr_country_flag = enforce_hygiene_measures_sale_credit
+				clear_variable = enforce_hygiene_measures_sale_sequence
+				set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
+				set_temp_variable = { black_friday_political_power_receipt_sale_sequence = constant:universal_cost_framework.zero }
+				black_friday_credit_political_power_purchase_with_receipt = yes
+				if = {
+					limit = { check_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one } }
+					set_country_flag = enforce_hygiene_measures_sale_credit
+					set_variable = { enforce_hygiene_measures_sale_sequence = black_friday_political_power_receipt_sale_sequence }
+				}
+				set_variable = { zombie_prevention_hygiene_paid_pp = global.black_friday_price_zombie_prevention_hygiene_pp_cost }
+			}
+		}
+		days_remove = 30
+		cancel_trigger = { NOT = { has_global_flag = has_zombie_outbreak } }
+		cancel_effect = {
+			hidden_effect = {
+				add_political_power = zombie_prevention_hygiene_paid_pp
+				clear_variable = zombie_prevention_hygiene_paid_pp
+				set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
+				set_temp_variable = { black_friday_political_power_receipt_sale_sequence = enforce_hygiene_measures_sale_sequence }
+				if = {
+					limit = { has_country_flag = enforce_hygiene_measures_sale_credit }
+					set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one }
+				}
+				black_friday_withdraw_political_power_purchase_with_receipt = yes
+				clr_country_flag = enforce_hygiene_measures_sale_credit
+				clear_variable = enforce_hygiene_measures_sale_sequence
+			}
+		}
+
+		ai_will_do = {
+			factor = 3
+			modifier = {
+				factor = 0
+				NOT = { should_ai_take_zombie_outbreak_prevention = yes }
+			}
+			modifier = {
+				factor = 2
+				has_war_with = ZZZ
+			}
+			# Chaos tier modifiers - higher chaos = more preparation
+			modifier = {
+				add = 1
+				has_global_flag = { flag = chaos_tier value = 1 }
+			}
+			modifier = {
+				add = 2
+				has_global_flag = { flag = chaos_tier value = 2 }
+			}
+			modifier = {
+				add = 3
+				has_global_flag = { flag = chaos_tier value = 3 }
+			}
+			modifier = {
+				add = 4
+				has_global_flag = { flag = chaos_tier value = 4 }
+			}
+			modifier = {
+				add = 5
+				has_global_flag = { flag = chaos_tier value = 5 }
+			}
+			# Zombie tier modifiers - higher zombie evolution = more precautions
+			modifier = {
+				add = 2
+				any_country = {
+					original_tag = ZZZ
+					has_country_flag = { flag = zombie_current_tier value > 0 }
+				}
+			}
+			modifier = {
+				add = 3
+				any_country = {
+					original_tag = ZZZ
+					has_country_flag = { flag = zombie_current_tier value > 1 }
+				}
+			}
+			modifier = {
+				add = 4
+				any_country = {
+					original_tag = ZZZ
+					has_country_flag = { flag = zombie_current_tier value = 3 }
+				}
+			}
+			# Multiple zombie outbreaks = immediate action
+			modifier = {
+				add = 4
+				any_country = {
+					has_country_flag = zombie_outbreak_dynamic_country
+					any_owned_state = {
+						any_neighbor_state = {
+							is_controlled_by = ZZZ
+						}
+					}
+				}
+			}
+			# Proximity to zombies
+			modifier = {
+				add = 6
+				any_owned_state = {
+					any_neighbor_state = {
+						is_controlled_by = ZZZ
+					}
+				}
+			}
+			modifier = {
+				add = 3
+				capital_scope = {
+					any_neighbor_state = {
+						any_neighbor_state = {
+							is_controlled_by = ZZZ
+						}
+					}
+				}
+			}
+			# Government type considerations
+			modifier = {
+				add = 2
+				has_government = democratic
+			}
+			modifier = {
+				add = 1
+				has_government = fascism  # Authoritarian efficiency
+			}
+			# Stability considerations
+			modifier = {
+				add = 2
+				has_stability > 0.7  # Stable countries can implement better
+			}
+			modifier = {
+				factor = 0.7
+				has_stability < 0.3  # Unstable countries struggle
+			}
+			modifier = {
+				add = 1
+				num_of_civilian_factories > 10
+			}
+			# Major powers lead prevention efforts
+			modifier = {
+				add = 2
+				is_major = yes
+			}
+			# Island nations are more cautious
+			modifier = {
+				add = 2
+				capital_scope = { is_island_state = yes }
+			}
+			# High population density = more concern
+			modifier = {
+				add = 1
+				any_owned_state = {
+					state_population_k > 2000
+				}
+			}
+		}
+
+		remove_effect = {
+			apply_shared_hygiene_measures = yes
+			clear_variable = zombie_prevention_hygiene_paid_pp
+			clr_country_flag = enforce_hygiene_measures_sale_credit
+			clear_variable = enforce_hygiene_measures_sale_sequence
+		}
+	}
+
+	restrict_migration = {
+		icon = GFX_decision_generic_industry
+
+		visible = {
+			has_global_flag = has_zombie_outbreak
+			NOT = { has_country_flag = migration_restricted }
+		}
+
+		available = {
+			hidden_trigger = {
+				has_global_flag = has_zombie_outbreak
+				NOT = { has_country_flag = migration_restricted }
+			}
+		}
+
+		cost = global.black_friday_price_zombie_prevention_migration_pp_cost
+		complete_effect = {
+			hidden_effect = {
+				clr_country_flag = restrict_migration_sale_credit
+				clear_variable = restrict_migration_sale_sequence
+				set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
+				set_temp_variable = { black_friday_political_power_receipt_sale_sequence = constant:universal_cost_framework.zero }
+				black_friday_credit_political_power_purchase_with_receipt = yes
+				if = {
+					limit = { check_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one } }
+					set_country_flag = restrict_migration_sale_credit
+					set_variable = { restrict_migration_sale_sequence = black_friday_political_power_receipt_sale_sequence }
+				}
+				set_variable = { zombie_prevention_migration_paid_pp = global.black_friday_price_zombie_prevention_migration_pp_cost }
+			}
+		}
+		days_remove = 45
+		cancel_trigger = { NOT = { has_global_flag = has_zombie_outbreak } }
+		cancel_effect = {
+			hidden_effect = {
+				add_political_power = zombie_prevention_migration_paid_pp
+				clear_variable = zombie_prevention_migration_paid_pp
+				set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
+				set_temp_variable = { black_friday_political_power_receipt_sale_sequence = restrict_migration_sale_sequence }
+				if = {
+					limit = { has_country_flag = restrict_migration_sale_credit }
+					set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one }
+				}
+				black_friday_withdraw_political_power_purchase_with_receipt = yes
+				clr_country_flag = restrict_migration_sale_credit
+				clear_variable = restrict_migration_sale_sequence
+			}
+		}
+
+		ai_will_do = {
+			factor = 2
+			modifier = {
+				factor = 0
+				NOT = { should_ai_take_zombie_outbreak_prevention = yes }
+			}
+			modifier = {
+				factor = 3
+				has_war_with = ZZZ
+			}
+			# Chaos tier modifiers - higher chaos = more restrictions
+			modifier = {
+				add = 1
+				has_global_flag = { flag = chaos_tier value = 1 }
+			}
+			modifier = {
+				add = 3
+				has_global_flag = { flag = chaos_tier value = 2 }
+			}
+			modifier = {
+				add = 5
+				has_global_flag = { flag = chaos_tier value = 3 }
+			}
+			modifier = {
+				add = 7
+				has_global_flag = { flag = chaos_tier value = 4 }
+			}
+			modifier = {
+				add = 9
+				has_global_flag = { flag = chaos_tier value = 5 }
+			}
+			# Zombie tier modifiers - higher zombie evolution = more restrictions
+			modifier = {
+				add = 3
+				any_country = {
+					original_tag = ZZZ
+					has_country_flag = { flag = zombie_current_tier value > 0 }
+				}
+			}
+			modifier = {
+				add = 5
+				any_country = {
+					original_tag = ZZZ
+					has_country_flag = { flag = zombie_current_tier value > 1 }
+				}
+			}
+			modifier = {
+				add = 7
+				any_country = {
+					original_tag = ZZZ
+					has_country_flag = { flag = zombie_current_tier value = 3 }
+				}
+			}
+			# Multiple zombie outbreaks = severe restrictions
+			modifier = {
+				add = 6
+				any_country = {
+					has_country_flag = zombie_outbreak_dynamic_country
+					any_owned_state = {
+						any_neighbor_state = {
+							is_controlled_by = ZZZ
+						}
+					}
+				}
+			}
+			# Proximity to zombies - increasingly urgent
+			modifier = {
+				add = 8
+				any_owned_state = {
+					any_neighbor_state = {
+						is_controlled_by = ZZZ
+					}
+				}
+			}
+			modifier = {
+				add = 4
+				capital_scope = {
+					any_neighbor_state = {
+						any_neighbor_state = {
+							is_controlled_by = ZZZ
+						}
+					}
+				}
+			}
+			# Government type considerations - authoritarians restrict more easily
+			modifier = {
+				add = 3
+				has_government = fascism
+			}
+			modifier = {
+				add = 2
+				has_government = communism
+			}
+			modifier = {
+				factor = 0.7
+				has_government = democratic  # Democratic hesitation about restrictions
+			}
+			# Stability and security considerations
+			modifier = {
+				add = 3
+				has_stability > 0.6  # Stable countries can implement restrictions
+			}
+			modifier = {
+				factor = 0.5
+				has_stability < 0.3  # Unstable countries can't enforce well
+			}
+
+			modifier = {
+				add = 2
+				num_of_civilian_factories > 20
+			}
+			# Major powers can afford restrictions
+			modifier = {
+				add = 3
+				is_major = yes
+			}
+			# Island nations naturally restrict anyway
+			modifier = {
+				add = 4
+				capital_scope = { is_island_state = yes }
+			}
+			# Countries with large borders are more concerned
+			modifier = {
+				add = 2
+				num_of_controlled_states > 10
+			}
+			# Already have basic hygiene measures
+			modifier = {
+				add = 2
+				has_country_flag = hygiene_measures_enforced
+			}
+		}
+
+		remove_effect = {
+			apply_shared_migration_restrictions = yes
+			clear_variable = zombie_prevention_migration_paid_pp
+			clr_country_flag = restrict_migration_sale_credit
+			clear_variable = restrict_migration_sale_sequence
+		}
+	}
+
+	quarantine_protocols = {
+		icon = GFX_decision_generic_operation
+
+		visible = {
+			has_global_flag = has_zombie_outbreak
+			NOT = { has_country_flag = quarantine_protocols_active }
+		}
+
+		available = {
+			hidden_trigger = {
+				has_global_flag = has_zombie_outbreak
+				NOT = { has_country_flag = quarantine_protocols_active }
+			}
+		}
+
+		cost = global.black_friday_price_zombie_prevention_quarantine_pp_cost
+		complete_effect = {
+			hidden_effect = {
+				clr_country_flag = quarantine_protocols_sale_credit
+				clear_variable = quarantine_protocols_sale_sequence
+				set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
+				set_temp_variable = { black_friday_political_power_receipt_sale_sequence = constant:universal_cost_framework.zero }
+				black_friday_credit_political_power_purchase_with_receipt = yes
+				if = {
+					limit = { check_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one } }
+					set_country_flag = quarantine_protocols_sale_credit
+					set_variable = { quarantine_protocols_sale_sequence = black_friday_political_power_receipt_sale_sequence }
+				}
+				set_variable = { zombie_prevention_quarantine_paid_pp = global.black_friday_price_zombie_prevention_quarantine_pp_cost }
+			}
+		}
+		days_remove = 60
+		cancel_trigger = { NOT = { has_global_flag = has_zombie_outbreak } }
+		cancel_effect = {
+			hidden_effect = {
+				add_political_power = zombie_prevention_quarantine_paid_pp
+				clear_variable = zombie_prevention_quarantine_paid_pp
+				set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
+				set_temp_variable = { black_friday_political_power_receipt_sale_sequence = quarantine_protocols_sale_sequence }
+				if = {
+					limit = { has_country_flag = quarantine_protocols_sale_credit }
+					set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one }
+				}
+				black_friday_withdraw_political_power_purchase_with_receipt = yes
+				clr_country_flag = quarantine_protocols_sale_credit
+				clear_variable = quarantine_protocols_sale_sequence
+			}
+		}
+
+		ai_will_do = {
+			factor = 2
+			modifier = {
+				factor = 0
+				NOT = { should_ai_take_zombie_outbreak_prevention = yes }
+			}
+			modifier = {
+				factor = 4
+				has_war_with = ZZZ
+			}
+			# Chaos tier modifiers - higher chaos = more quarantine
+			modifier = {
+				add = 2
+				has_global_flag = { flag = chaos_tier value = 1 }
+			}
+			modifier = {
+				add = 4
+				has_global_flag = { flag = chaos_tier value = 2 }
+			}
+			modifier = {
+				add = 6
+				has_global_flag = { flag = chaos_tier value = 3 }
+			}
+			modifier = {
+				add = 8
+				has_global_flag = { flag = chaos_tier value = 4 }
+			}
+			modifier = {
+				add = 10
+				has_global_flag = { flag = chaos_tier value = 5 }
+			}
+			# Zombie tier modifiers - advanced zombies require stronger measures
+			modifier = {
+				add = 4
+				any_country = {
+					original_tag = ZZZ
+					has_country_flag = { flag = zombie_current_tier value > 0 }
+				}
+			}
+			modifier = {
+				add = 6
+				any_country = {
+					original_tag = ZZZ
+					has_country_flag = { flag = zombie_current_tier value > 1 }
+				}
+			}
+			modifier = {
+				add = 8
+				any_country = {
+					original_tag = ZZZ
+					has_country_flag = { flag = zombie_current_tier value = 3 }
+				}
+			}
+			# Multiple zombie outbreaks = extensive quarantine
+			modifier = {
+				add = 7
+				any_country = {
+					has_country_flag = zombie_outbreak_dynamic_country
+					any_owned_state = {
+						any_neighbor_state = {
+							is_controlled_by = ZZZ
+						}
+					}
+				}
+			}
+			# Proximity to zombies - critical quarantine needs
+			modifier = {
+				add = 10
+				any_owned_state = {
+					any_neighbor_state = {
+						is_controlled_by = ZZZ
+					}
+				}
+			}
+			modifier = {
+				add = 6
+				capital_scope = {
+					any_neighbor_state = {
+						any_neighbor_state = {
+							is_controlled_by = ZZZ
+						}
+					}
+				}
+			}
+			# Government type considerations - authoritarians implement easier
+			modifier = {
+				add = 4
+				has_government = fascism
+			}
+			modifier = {
+				add = 3
+				has_government = communism
+			}
+			modifier = {
+				factor = 0.6
+				has_government = democratic  # Democratic resistance to quarantine
+			}
+			# Stability requirements - quarantine needs stable authority
+			modifier = {
+				add = 4
+				has_stability > 0.7
+			}
+			modifier = {
+				factor = 0.4
+				has_stability < 0.4
+			}
+
+			modifier = {
+				add = 3
+				num_of_civilian_factories > 30
+			}
+			modifier = {
+				add = 2
+				num_of_military_factories > 15  # Military helps enforce quarantine
+			}
+			# Major powers can implement comprehensive quarantine
+			modifier = {
+				add = 4
+				is_major = yes
+			}
+			# Island nations find quarantine easier
+			modifier = {
+				add = 5
+				capital_scope = { is_island_state = yes }
+			}
+			# Previous measures make quarantine more likely
+			modifier = {
+				add = 3
+				has_country_flag = hygiene_measures_enforced
+			}
+			modifier = {
+				add = 4
+				has_country_flag = migration_restricted
+			}
+			# High population areas need quarantine more
+			modifier = {
+				add = 2
+				any_owned_state = {
+					state_population_k > 3000
+				}
+			}
+			# Countries with good tech can implement better quarantine
+			modifier = {
+				add = 2
+				has_tech = radio
+			}
+		}
+
+		remove_effect = {
+			apply_shared_quarantine_protocols = yes
+			clear_variable = zombie_prevention_quarantine_paid_pp
+			clr_country_flag = quarantine_protocols_sale_credit
+			clear_variable = quarantine_protocols_sale_sequence
+		}
+	}
+
+	close_borders_completely = {
+		icon = GFX_decision_generic_nationalism
+
+		visible = {
+			has_global_flag = has_zombie_outbreak
+			NOT = { has_country_flag = borders_completely_closed }
+		}
+
+		available = {
+			hidden_trigger = {
+				has_global_flag = has_zombie_outbreak
+				NOT = { has_country_flag = borders_completely_closed }
+			}
+		}
+
+		cost = global.black_friday_price_zombie_prevention_border_closure_pp_cost
+		complete_effect = {
+			hidden_effect = {
+				clr_country_flag = close_borders_completely_sale_credit
+				clear_variable = close_borders_completely_sale_sequence
+				set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
+				set_temp_variable = { black_friday_political_power_receipt_sale_sequence = constant:universal_cost_framework.zero }
+				black_friday_credit_political_power_purchase_with_receipt = yes
+				if = {
+					limit = { check_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one } }
+					set_country_flag = close_borders_completely_sale_credit
+					set_variable = { close_borders_completely_sale_sequence = black_friday_political_power_receipt_sale_sequence }
+				}
+				set_variable = { zombie_prevention_borders_paid_pp = global.black_friday_price_zombie_prevention_border_closure_pp_cost }
+			}
+		}
+		days_remove = 90
+		cancel_trigger = { NOT = { has_global_flag = has_zombie_outbreak } }
+		cancel_effect = {
+			hidden_effect = {
+				add_political_power = zombie_prevention_borders_paid_pp
+				clear_variable = zombie_prevention_borders_paid_pp
+				set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
+				set_temp_variable = { black_friday_political_power_receipt_sale_sequence = close_borders_completely_sale_sequence }
+				if = {
+					limit = { has_country_flag = close_borders_completely_sale_credit }
+					set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one }
+				}
+				black_friday_withdraw_political_power_purchase_with_receipt = yes
+				clr_country_flag = close_borders_completely_sale_credit
+				clear_variable = close_borders_completely_sale_sequence
+			}
+		}
+
+		ai_will_do = {
+			factor = 1
+			modifier = {
+				factor = 0
+				NOT = { should_ai_take_zombie_outbreak_prevention = yes }
+			}
+			modifier = {
+				factor = 2
+				has_war_with = ZZZ
+			}
+			modifier = {
+				factor = 0.1
+				is_major = no
+			}
+			# Chaos tier modifiers - higher chaos = more border closure
+			modifier = {
+				add = 2
+				has_global_flag = { flag = chaos_tier value = 2 }
+			}
+			modifier = {
+				add = 4
+				has_global_flag = { flag = chaos_tier value = 3 }
+			}
+			modifier = {
+				add = 6
+				has_global_flag = { flag = chaos_tier value = 4 }
+			}
+			modifier = {
+				add = 8
+				has_global_flag = { flag = chaos_tier value = 5 }
+			}
+			# Zombie tier modifiers - advanced zombies force border closure
+			modifier = {
+				add = 3
+				any_country = {
+					original_tag = ZZZ
+					has_country_flag = { flag = zombie_current_tier value > 0 }
+				}
+			}
+			modifier = {
+				add = 6
+				any_country = {
+					original_tag = ZZZ
+					has_country_flag = { flag = zombie_current_tier value > 1 }
+				}
+			}
+			modifier = {
+				add = 10
+				any_country = {
+					original_tag = ZZZ
+					has_country_flag = { flag = zombie_current_tier value = 3 }
+				}
+			}
+			# Multiple zombie outbreaks = immediate border closure
+			modifier = {
+				add = 8
+				any_country = {
+					has_country_flag = zombie_outbreak_dynamic_country
+					any_owned_state = {
+						any_neighbor_state = {
+							is_controlled_by = ZZZ
+						}
+					}
+				}
+			}
+			# Proximity to zombies
+			modifier = {
+				add = 5
+				any_owned_state = {
+					any_neighbor_state = {
+						is_controlled_by = ZZZ
+					}
+				}
+			}
+			modifier = {
+				add = 8
+				capital_scope = {
+					any_neighbor_state = {
+						any_neighbor_state = {
+							is_controlled_by = ZZZ
+						}
+					}
+				}
+			}
+			# Government type considerations - authoritarians close borders easier
+			modifier = {
+				add = 5
+				has_government = fascism
+			}
+			modifier = {
+				add = 4
+				has_government = communism
+			}
+			modifier = {
+				factor = 0.5
+				has_government = democratic  # Democratic reluctance to close borders
+			}
+			# Stability requirements - need strong government to enforce
+			modifier = {
+				add = 2
+				has_stability > 0.8
+			}
+			modifier = {
+				factor = 0.3
+				has_stability < 0.5
+			}
+
+			modifier = {
+				add = 4
+				num_of_civilian_factories > 40
+			}
+			modifier = {
+				add = 3
+				num_of_military_factories > 20  # Military needed for border control
+			}
+			# Major powers can afford to close borders
+			modifier = {
+				factor = 2
+				is_major = yes
+			}
+			# Island nations already have natural borders
+			modifier = {
+				add = 8
+				capital_scope = { is_island_state = yes }
+			}
+			# Previous escalating measures make this more likely
+			modifier = {
+				add = 2
+				has_country_flag = hygiene_measures_enforced
+			}
+			modifier = {
+				add = 3
+				has_country_flag = migration_restricted
+			}
+			modifier = {
+				add = 4
+				has_country_flag = quarantine_protocols_active
+			}
+			# Countries with long borders are more hesitant (except in crisis)
+			modifier = {
+				factor = 0.7
+				num_of_controlled_states > 15
+				NOT = {
+					any_owned_state = {
+						any_neighbor_state = {
+							is_controlled_by = ZZZ
+						}
+					}
+				}
+			}
+
+			# War weariness makes countries more protective
+			modifier = {
+				add = 2
+				has_war_support < 0.5
+			}
+		}
+
+		remove_effect = {
+			apply_shared_closed_borders = yes
+			clear_variable = zombie_prevention_borders_paid_pp
+			clr_country_flag = close_borders_completely_sale_credit
+			clear_variable = close_borders_completely_sale_sequence
+		}
+	}
+
+	extreme_martial_law = {
+		icon = GFX_decision_generic_ignite_civil_war
+
+		visible = {
+			has_global_flag = has_zombie_outbreak
+			NOT = { has_country_flag = extreme_martial_law_active }
+		}
+
+		available = {
+			hidden_trigger = {
+				has_global_flag = has_zombie_outbreak
+				NOT = { has_country_flag = extreme_martial_law_active }
+			}
+			has_country_flag = hygiene_measures_enforced
+			has_country_flag = migration_restricted
+			has_country_flag = quarantine_protocols_active
+			has_country_flag = borders_completely_closed
+		}
+
+		cost = global.black_friday_price_zombie_prevention_martial_law_pp_cost
+		complete_effect = {
+			hidden_effect = {
+				clr_country_flag = extreme_martial_law_sale_credit
+				clear_variable = extreme_martial_law_sale_sequence
+				set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
+				set_temp_variable = { black_friday_political_power_receipt_sale_sequence = constant:universal_cost_framework.zero }
+				black_friday_credit_political_power_purchase_with_receipt = yes
+				if = {
+					limit = { check_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one } }
+					set_country_flag = extreme_martial_law_sale_credit
+					set_variable = { extreme_martial_law_sale_sequence = black_friday_political_power_receipt_sale_sequence }
+				}
+				set_variable = { zombie_prevention_martial_law_paid_pp = global.black_friday_price_zombie_prevention_martial_law_pp_cost }
+			}
+		}
+		days_remove = 120
+		cancel_trigger = { NOT = { has_global_flag = has_zombie_outbreak } }
+		cancel_effect = {
+			hidden_effect = {
+				add_political_power = zombie_prevention_martial_law_paid_pp
+				clear_variable = zombie_prevention_martial_law_paid_pp
+				set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
+				set_temp_variable = { black_friday_political_power_receipt_sale_sequence = extreme_martial_law_sale_sequence }
+				if = {
+					limit = { has_country_flag = extreme_martial_law_sale_credit }
+					set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one }
+				}
+				black_friday_withdraw_political_power_purchase_with_receipt = yes
+				clr_country_flag = extreme_martial_law_sale_credit
+				clear_variable = extreme_martial_law_sale_sequence
+			}
+		}
+
+		ai_will_do = {
+			factor = 0.5
+			modifier = {
+				factor = 0
+				NOT = { should_ai_take_zombie_outbreak_prevention = yes }
+			}
+			modifier = {
+				factor = 10
+				has_war_with = ZZZ
+				strength_ratio = { tag = ZZZ ratio < 0.5 }
+			}
+			# Chaos tier modifiers - higher chaos = more extreme measures
+			modifier = {
+				add = 1
+				has_global_flag = { flag = chaos_tier value = 2 }
+			}
+			modifier = {
+				add = 3
+				has_global_flag = { flag = chaos_tier value = 3 }
+			}
+			modifier = {
+				add = 6
+				has_global_flag = { flag = chaos_tier value = 4 }
+			}
+			modifier = {
+				add = 10
+				has_global_flag = { flag = chaos_tier value = 5 }
+			}
+			# Zombie tier modifiers - extreme zombies require extreme measures
+			modifier = {
+				add = 4
+				any_country = {
+					original_tag = ZZZ
+					has_country_flag = { flag = zombie_current_tier value > 1 }
+				}
+			}
+			modifier = {
+				add = 8
+				any_country = {
+					original_tag = ZZZ
+					has_country_flag = { flag = zombie_current_tier value = 3 }
+				}
+			}
+			# Multiple zombie outbreaks = martial law necessary
+			modifier = {
+				add = 10
+				any_country = {
+					has_country_flag = zombie_outbreak_dynamic_country
+					any_owned_state = {
+						any_neighbor_state = {
+							is_controlled_by = ZZZ
+						}
+					}
+				}
+			}
+			# Proximity to zombies - existential threat requires extreme response
+			modifier = {
+				add = 20
+				any_owned_state = {
+					any_neighbor_state = {
+						is_controlled_by = ZZZ
+					}
+				}
+			}
+			modifier = {
+				add = 12
+				capital_scope = {
+					any_neighbor_state = {
+						any_neighbor_state = {
+							is_controlled_by = ZZZ
+						}
+					}
+				}
+			}
+			# Government type considerations - authoritarians more likely to use martial law
+			modifier = {
+				add = 8
+				has_government = fascism
+			}
+			modifier = {
+				add = 6
+				has_government = communism
+			}
+			modifier = {
+				factor = 0.2
+				has_government = democratic  # Democratic strong reluctance
+			}
+			# Stability requirements - need very stable regime for martial law
+			modifier = {
+				factor = 0.1
+				has_stability < 0.6
+			}
+			modifier = {
+				add = 5
+				has_stability > 0.8
+			}
+			# Military and economic requirements - martial law is very expensive
+
+			modifier = {
+				add = 5
+				num_of_military_factories > 25
+			}
+			# Major powers more capable of martial law
+			modifier = {
+				add = 6
+				is_major = yes
+			}
+			# Desperation modifiers
+			modifier = {
+				add = 8
+				has_stability < 0.4  # Desperate times
+			}
+			modifier = {
+				add = 10
+				has_manpower < 50000  # Running out of people
+			}
+			modifier = {
+				add = 15
+				capital_scope = {
+					any_neighbor_state = {
+						is_controlled_by = ZZZ
+					}
+				}
+			}
+			# Military tradition and capability
+			modifier = {
+				add = 4
+				has_idea = general_staff
+			}
+			modifier = {
+				add = 3
+				has_tech = basic_machine_tools  # Industrial capacity for enforcement
+			}
+			# War situation
+			modifier = {
+				add = 5
+				has_war = yes
+				casualties > 100000
+			}
+			# Last resort - when other measures insufficient
+			modifier = {
+				add = 8
+				OR = {
+					any_owned_state = {
+						resistance > 50
+					}
+					has_civil_war = yes
+				}
+			}
+		}
+
+		remove_effect = {
+			apply_shared_extreme_martial_law = yes
+			clear_variable = zombie_prevention_martial_law_paid_pp
+			clr_country_flag = extreme_martial_law_sale_credit
+			clear_variable = extreme_martial_law_sale_sequence
+		}
+	}
+
+	revoke_hygiene_measures = {
+		icon = GFX_decision_generic_research
+
+		visible = {
+			has_country_flag = hygiene_measures_enforced
+		}
+
+		available = {
+			hidden_trigger = { has_country_flag = hygiene_measures_enforced }
+			OR = {
+				NOT = { has_global_flag = has_zombie_outbreak }
+				has_idea = cure_activated
+				custom_trigger_tooltip = {
+					tooltip = zombie_revoke_measures_war_tt
+					trigger = { NOT = { is_at_war_with_any_zombie_or_weaponized_country = yes } }
+				}
+			}
+		}
+
+		cost = global.black_friday_price_pp_10
+		complete_effect = {
+			hidden_effect = {
+				clr_country_flag = revoke_hygiene_measures_sale_credit
+				clear_variable = revoke_hygiene_measures_sale_sequence
+				set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
+				set_temp_variable = { black_friday_political_power_receipt_sale_sequence = constant:universal_cost_framework.zero }
+				black_friday_credit_political_power_purchase_with_receipt = yes
+				if = {
+					limit = { check_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one } }
+					set_country_flag = revoke_hygiene_measures_sale_credit
+					set_variable = { revoke_hygiene_measures_sale_sequence = black_friday_political_power_receipt_sale_sequence }
+				}
+				set_variable = { zombie_prevention_revoke_hygiene_paid_pp = global.black_friday_price_pp_10 }
+			}
+		}
+		days_remove = 15
+		cancel_trigger = { NOT = { has_global_flag = has_zombie_outbreak } }
+		cancel_effect = {
+			hidden_effect = {
+				clr_country_flag = hygiene_measures_enforced
+				remove_ideas = outbreak_prevention_hygiene_measures
+				add_political_power = zombie_prevention_revoke_hygiene_paid_pp
+				clear_variable = zombie_prevention_revoke_hygiene_paid_pp
+				set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
+				set_temp_variable = { black_friday_political_power_receipt_sale_sequence = revoke_hygiene_measures_sale_sequence }
+				if = {
+					limit = { has_country_flag = revoke_hygiene_measures_sale_credit }
+					set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one }
+				}
+				black_friday_withdraw_political_power_purchase_with_receipt = yes
+				clr_country_flag = revoke_hygiene_measures_sale_credit
+				clear_variable = revoke_hygiene_measures_sale_sequence
+			}
+		}
+
+		ai_will_do = {
+			factor = 1
+			modifier = {
+				factor = 3
+				NOT = { has_global_flag = has_zombie_outbreak }
+			}
+			modifier = {
+				factor = 0
+				has_war_with = ZZZ
+			}
+			# Chaos tier modifiers - less likely to revoke during high chaos
+			modifier = {
+				factor = 0.8
+				has_global_flag = { flag = chaos_tier value = 1 }
+			}
+			modifier = {
+				factor = 0.6
+				has_global_flag = { flag = chaos_tier value = 2 }
+			}
+			modifier = {
+				factor = 0.4
+				has_global_flag = { flag = chaos_tier value = 3 }
+			}
+			modifier = {
+				factor = 0.2
+				has_global_flag = { flag = chaos_tier value = 4 }
+			}
+			modifier = {
+				factor = 0.1
+				has_global_flag = { flag = chaos_tier value = 5 }
+			}
+			# Zombie tier modifiers - higher threats = keep measures
+			modifier = {
+				factor = 0.5
+				any_country = {
+					original_tag = ZZZ
+					has_country_flag = { flag = zombie_current_tier value > 1 }
+				}
+			}
+			modifier = {
+				factor = 0.2
+				any_country = {
+					original_tag = ZZZ
+					has_country_flag = { flag = zombie_current_tier value = 3 }
+				}
+			}
+			# Multiple outbreaks = never revoke
+			modifier = {
+				factor = 0.1
+				any_country = {
+					has_country_flag = zombie_outbreak_dynamic_country
+				}
+			}
+
+			# Democratic governments under public pressure
+			modifier = {
+				add = 1
+				has_government = democratic
+				has_stability > 0.7
+			}
+		}
+
+		remove_effect = {
+			revoke_shared_hygiene_measures = yes
+			clear_variable = zombie_prevention_revoke_hygiene_paid_pp
+			clr_country_flag = revoke_hygiene_measures_sale_credit
+			clear_variable = revoke_hygiene_measures_sale_sequence
+		}
+	}
+
+	revoke_migration_restrictions = {
+		icon = GFX_decision_zombie_lift_migration_restrictions
+
+		visible = {
+			has_country_flag = migration_restricted
+		}
+
+		available = {
+			hidden_trigger = { has_country_flag = migration_restricted }
+			OR = {
+				NOT = { has_global_flag = has_zombie_outbreak }
+				has_idea = cure_activated
+				custom_trigger_tooltip = {
+					tooltip = zombie_revoke_measures_war_tt
+					trigger = { NOT = { is_at_war_with_any_zombie_or_weaponized_country = yes } }
+				}
+			}
+		}
+
+		cost = global.black_friday_price_pp_10
+		complete_effect = {
+			hidden_effect = {
+				clr_country_flag = revoke_migration_restrictions_sale_credit
+				clear_variable = revoke_migration_restrictions_sale_sequence
+				set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
+				set_temp_variable = { black_friday_political_power_receipt_sale_sequence = constant:universal_cost_framework.zero }
+				black_friday_credit_political_power_purchase_with_receipt = yes
+				if = {
+					limit = { check_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one } }
+					set_country_flag = revoke_migration_restrictions_sale_credit
+					set_variable = { revoke_migration_restrictions_sale_sequence = black_friday_political_power_receipt_sale_sequence }
+				}
+				set_variable = { zombie_prevention_revoke_migration_paid_pp = global.black_friday_price_pp_10 }
+			}
+		}
+		days_remove = 20
+		cancel_trigger = { NOT = { has_global_flag = has_zombie_outbreak } }
+		cancel_effect = {
+			hidden_effect = {
+				clr_country_flag = migration_restricted
+				remove_ideas = outbreak_prevention_migration_restricted
+				add_political_power = zombie_prevention_revoke_migration_paid_pp
+				clear_variable = zombie_prevention_revoke_migration_paid_pp
+				set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
+				set_temp_variable = { black_friday_political_power_receipt_sale_sequence = revoke_migration_restrictions_sale_sequence }
+				if = {
+					limit = { has_country_flag = revoke_migration_restrictions_sale_credit }
+					set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one }
+				}
+				black_friday_withdraw_political_power_purchase_with_receipt = yes
+				clr_country_flag = revoke_migration_restrictions_sale_credit
+				clear_variable = revoke_migration_restrictions_sale_sequence
+			}
+		}
+
+		ai_will_do = {
+			factor = 1
+			modifier = {
+				factor = 3
+				NOT = { has_global_flag = has_zombie_outbreak }
+			}
+			modifier = {
+				factor = 0
+				has_war_with = ZZZ
+			}
+		}
+
+		remove_effect = {
+			revoke_shared_migration_restrictions = yes
+			clear_variable = zombie_prevention_revoke_migration_paid_pp
+			clr_country_flag = revoke_migration_restrictions_sale_credit
+			clear_variable = revoke_migration_restrictions_sale_sequence
+		}
+	}
+
+	revoke_quarantine_protocols = {
+		icon = GFX_decision_generic_prepare_civil_war
+
+		visible = {
+			has_country_flag = quarantine_protocols_active
+		}
+
+		available = {
+			hidden_trigger = { has_country_flag = quarantine_protocols_active }
+			OR = {
+				NOT = { has_global_flag = has_zombie_outbreak }
+				has_idea = cure_activated
+				custom_trigger_tooltip = {
+					tooltip = zombie_revoke_measures_war_tt
+					trigger = { NOT = { is_at_war_with_any_zombie_or_weaponized_country = yes } }
+				}
+			}
+		}
+
+		cost = global.black_friday_price_pp_10
+		complete_effect = {
+			hidden_effect = {
+				clr_country_flag = revoke_quarantine_protocols_sale_credit
+				clear_variable = revoke_quarantine_protocols_sale_sequence
+				set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
+				set_temp_variable = { black_friday_political_power_receipt_sale_sequence = constant:universal_cost_framework.zero }
+				black_friday_credit_political_power_purchase_with_receipt = yes
+				if = {
+					limit = { check_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one } }
+					set_country_flag = revoke_quarantine_protocols_sale_credit
+					set_variable = { revoke_quarantine_protocols_sale_sequence = black_friday_political_power_receipt_sale_sequence }
+				}
+				set_variable = { zombie_prevention_revoke_quarantine_paid_pp = global.black_friday_price_pp_10 }
+			}
+		}
+		days_remove = 30
+		cancel_trigger = { NOT = { has_global_flag = has_zombie_outbreak } }
+		cancel_effect = {
+			hidden_effect = {
+				clr_country_flag = quarantine_protocols_active
+				remove_ideas = outbreak_prevention_quarantine_protocols
+				add_political_power = zombie_prevention_revoke_quarantine_paid_pp
+				clear_variable = zombie_prevention_revoke_quarantine_paid_pp
+				set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
+				set_temp_variable = { black_friday_political_power_receipt_sale_sequence = revoke_quarantine_protocols_sale_sequence }
+				if = {
+					limit = { has_country_flag = revoke_quarantine_protocols_sale_credit }
+					set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one }
+				}
+				black_friday_withdraw_political_power_purchase_with_receipt = yes
+				clr_country_flag = revoke_quarantine_protocols_sale_credit
+				clear_variable = revoke_quarantine_protocols_sale_sequence
+			}
+		}
+
+		ai_will_do = {
+			factor = 1
+			modifier = {
+				factor = 3
+				NOT = { has_global_flag = has_zombie_outbreak }
+			}
+			modifier = {
+				factor = 0
+				has_war_with = ZZZ
+			}
+		}
+
+		remove_effect = {
+			revoke_shared_quarantine_protocols = yes
+			clear_variable = zombie_prevention_revoke_quarantine_paid_pp
+			clr_country_flag = revoke_quarantine_protocols_sale_credit
+			clear_variable = revoke_quarantine_protocols_sale_sequence
+		}
+	}
+
+	reopen_borders = {
+		icon = GFX_decision_generic_industry
+
+		visible = {
+			has_country_flag = borders_completely_closed
+		}
+
+		available = {
+			hidden_trigger = { has_country_flag = borders_completely_closed }
+			OR = {
+				NOT = { has_global_flag = has_zombie_outbreak }
+				has_idea = cure_activated
+				custom_trigger_tooltip = {
+					tooltip = zombie_revoke_measures_war_tt
+					trigger = { NOT = { is_at_war_with_any_zombie_or_weaponized_country = yes } }
+				}
+			}
+		}
+
+		cost = global.black_friday_price_pp_10
+		complete_effect = {
+			hidden_effect = {
+				clr_country_flag = reopen_borders_sale_credit
+				clear_variable = reopen_borders_sale_sequence
+				set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
+				set_temp_variable = { black_friday_political_power_receipt_sale_sequence = constant:universal_cost_framework.zero }
+				black_friday_credit_political_power_purchase_with_receipt = yes
+				if = {
+					limit = { check_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one } }
+					set_country_flag = reopen_borders_sale_credit
+					set_variable = { reopen_borders_sale_sequence = black_friday_political_power_receipt_sale_sequence }
+				}
+				set_variable = { zombie_prevention_revoke_borders_paid_pp = global.black_friday_price_pp_10 }
+			}
+		}
+		days_remove = 45
+		cancel_trigger = { NOT = { has_global_flag = has_zombie_outbreak } }
+		cancel_effect = {
+			hidden_effect = {
+				clr_country_flag = borders_completely_closed
+				remove_ideas = outbreak_prevention_borders_closed
+				add_political_power = zombie_prevention_revoke_borders_paid_pp
+				clear_variable = zombie_prevention_revoke_borders_paid_pp
+				set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
+				set_temp_variable = { black_friday_political_power_receipt_sale_sequence = reopen_borders_sale_sequence }
+				if = {
+					limit = { has_country_flag = reopen_borders_sale_credit }
+					set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one }
+				}
+				black_friday_withdraw_political_power_purchase_with_receipt = yes
+				clr_country_flag = reopen_borders_sale_credit
+				clear_variable = reopen_borders_sale_sequence
+			}
+		}
+
+		ai_will_do = {
+			factor = 1
+			modifier = {
+				factor = 3
+				NOT = { has_global_flag = has_zombie_outbreak }
+			}
+			modifier = {
+				factor = 0
+				has_war_with = ZZZ
+			}
+			modifier = {
+				factor = 2
+				is_major = yes
+			}
+		}
+
+		remove_effect = {
+			reopen_shared_borders = yes
+			clear_variable = zombie_prevention_revoke_borders_paid_pp
+			clr_country_flag = reopen_borders_sale_credit
+			clear_variable = reopen_borders_sale_sequence
+		}
+	}
+
+	revoke_extreme_martial_law = {
+		icon = GFX_decision_generic_political_discourse
+
+		visible = {
+			has_country_flag = extreme_martial_law_active
+		}
+
+		available = {
+			hidden_trigger = { has_country_flag = extreme_martial_law_active }
+			OR = {
+				NOT = { has_global_flag = has_zombie_outbreak }
+				has_idea = cure_activated
+				custom_trigger_tooltip = {
+					tooltip = zombie_revoke_measures_war_tt
+					trigger = { NOT = { is_at_war_with_any_zombie_or_weaponized_country = yes } }
+				}
+			}
+		}
+
+		cost = global.black_friday_price_pp_20
+		complete_effect = {
+			hidden_effect = {
+				clr_country_flag = revoke_extreme_martial_law_sale_credit
+				clear_variable = revoke_extreme_martial_law_sale_sequence
+				set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
+				set_temp_variable = { black_friday_political_power_receipt_sale_sequence = constant:universal_cost_framework.zero }
+				black_friday_credit_political_power_purchase_with_receipt = yes
+				if = {
+					limit = { check_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one } }
+					set_country_flag = revoke_extreme_martial_law_sale_credit
+					set_variable = { revoke_extreme_martial_law_sale_sequence = black_friday_political_power_receipt_sale_sequence }
+				}
+				set_variable = { zombie_prevention_revoke_martial_law_paid_pp = global.black_friday_price_pp_20 }
+			}
+		}
+		days_remove = 60
+		cancel_trigger = { NOT = { has_global_flag = has_zombie_outbreak } }
+		cancel_effect = {
+			hidden_effect = {
+				clr_country_flag = extreme_martial_law_active
+				remove_ideas = outbreak_prevention_extreme_martial_law
+				add_political_power = zombie_prevention_revoke_martial_law_paid_pp
+				clear_variable = zombie_prevention_revoke_martial_law_paid_pp
+				set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
+				set_temp_variable = { black_friday_political_power_receipt_sale_sequence = revoke_extreme_martial_law_sale_sequence }
+				if = {
+					limit = { has_country_flag = revoke_extreme_martial_law_sale_credit }
+					set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one }
+				}
+				black_friday_withdraw_political_power_purchase_with_receipt = yes
+				clr_country_flag = revoke_extreme_martial_law_sale_credit
+				clear_variable = revoke_extreme_martial_law_sale_sequence
+			}
+		}
+
+		ai_will_do = {
+			factor = 1
+			modifier = {
+				factor = 10
+				NOT = { has_global_flag = has_zombie_outbreak }
+			}
+			modifier = {
+				factor = 2
+				has_idea = cure_activated
+			}
+			modifier = {
+				factor = 0
+				has_war_with = ZZZ
+			}
+			modifier = {
+				factor = 2
+				has_government = democratic
+			}
+		}
+
+		remove_effect = {
+			revoke_shared_extreme_martial_law = yes
+			clear_variable = zombie_prevention_revoke_martial_law_paid_pp
+			clr_country_flag = revoke_extreme_martial_law_sale_credit
+			clear_variable = revoke_extreme_martial_law_sale_sequence
+		}
+	}
+}
+
+
+chaosx_anti_zombie_league_category = {
+
+	form_anti_zombie_league = {
+		icon = GFX_decision_generic_operation
+
+		visible = {
+			NOT = { has_global_flag = anti_zombie_league_formed }
+			has_global_flag = has_zombie_outbreak
+			date > 1936.7.1
+			can_lead_anti_zombie_league = yes
+			NOT = {
+				any_country = {
+					has_country_flag = azl_formation_in_progress
+				}
+			}
+			any_country = {
+				is_zombie_outbreak_country = yes
+				num_of_controlled_states > constant:anti_zombie_league.formation_controlled_states
+				num_divisions > constant:anti_zombie_league.formation_divisions
+			}
+			has_global_flag = { flag = chaos_tier value > 0 }
+		}
+
+		available = {
+			can_lead_anti_zombie_league = yes
+		}
+
+		cost = global.black_friday_price_anti_zombie_league_formation_pp_cost
+		days_remove = 10
+		fire_only_once = yes
+		cancel_trigger = {
+			OR = {
+				NOT = { has_global_flag = has_zombie_outbreak }
+				NOT = { can_lead_anti_zombie_league = yes }
+				has_global_flag = anti_zombie_league_formed
+				NOT = { has_global_flag = { flag = chaos_tier value > 0 } }
+				NOT = {
+					any_country = {
+						is_zombie_outbreak_country = yes
+						num_of_controlled_states > constant:anti_zombie_league.formation_controlled_states
+						num_divisions > constant:anti_zombie_league.formation_divisions
+					}
+				}
+			}
+		}
+
+		ai_will_do = {
+			factor = 10
+
+			modifier = {
+				factor = 3
+				is_at_war_with_any_zombie_country = yes
+			}
+
+			modifier = {
+				factor = 2
+				has_neighboring_zombie_front = yes
+			}
+
+			modifier = {
+				add = 5
+				has_global_flag = { flag = chaos_tier value > 1 }
+			}
+
+			modifier = {
+				factor = 2
+				has_government = democratic
+			}
+			modifier = {
+				factor = constant:anti_zombie_league.join_same_continent_factor
+				has_same_continent_zombie_presence = yes
+			}
+			modifier = {
+				factor = constant:anti_zombie_league.join_nearby_front_factor
+				has_nearby_zombie_front = yes
+			}
+			modifier = {
+				factor = constant:anti_zombie_league.form_no_regional_threat_factor
+				NOT = { has_regional_zombie_threat = yes }
+				NOT = { zombie_threat_is_global_emergency = yes }
+			}
+			modifier = {
+				factor = constant:anti_zombie_league.join_global_emergency_factor
+				zombie_threat_is_global_emergency = yes
+			}
+
+			modifier = {
+				factor = 0.4
+				NOT = { has_government = democratic }
+			}
+
+			modifier = {
+				factor = 0.25
+				zombie_threat_confined_to_americas = yes
+				is_outside_americas_country = yes
+			}
+
+			modifier = {
+				factor = constant:anti_zombie_league.form_low_threat_factor
+				zombie_threat_below_serious_join_threshold = yes
+			}
+		}
+
+		complete_effect = {
+			hidden_effect = {
+				clr_country_flag = form_anti_zombie_league_sale_credit
+				clear_variable = form_anti_zombie_league_sale_sequence
+				set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
+				set_temp_variable = { black_friday_political_power_receipt_sale_sequence = constant:universal_cost_framework.zero }
+				black_friday_credit_political_power_purchase_with_receipt = yes
+				if = {
+					limit = { check_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one } }
+					set_country_flag = form_anti_zombie_league_sale_credit
+					set_variable = { form_anti_zombie_league_sale_sequence = black_friday_political_power_receipt_sale_sequence }
+				}
+			}
+			set_country_flag = azl_formation_in_progress
+			set_variable = { anti_zombie_league_paid_pp = global.black_friday_price_anti_zombie_league_formation_pp_cost }
+		}
+
+		remove_effect = {
+			establish_anti_zombie_league = yes
+			clear_variable = anti_zombie_league_paid_pp
+			clr_country_flag = form_anti_zombie_league_sale_credit
+			clear_variable = form_anti_zombie_league_sale_sequence
+		}
+
+		cancel_effect = {
+			clr_country_flag = azl_formation_in_progress
+			add_political_power = anti_zombie_league_paid_pp
+			clear_variable = anti_zombie_league_paid_pp
+			hidden_effect = {
+				set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
+				set_temp_variable = { black_friday_political_power_receipt_sale_sequence = form_anti_zombie_league_sale_sequence }
+				if = {
+					limit = { has_country_flag = form_anti_zombie_league_sale_credit }
+					set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one }
+				}
+				black_friday_withdraw_political_power_purchase_with_receipt = yes
+				clr_country_flag = form_anti_zombie_league_sale_credit
+				clear_variable = form_anti_zombie_league_sale_sequence
+			}
+		}
+	}
+
+	join_anti_zombie_league = {
+		icon = GFX_decision_generic_prepare_civil_war
+
+		visible = {
+			has_global_flag = anti_zombie_league_formed
+			has_country_flag = azl_can_join_later
+			hidden_trigger = { should_actively_join_anti_zombie_league = yes }
+			hidden_trigger = { has_active_anti_zombie_league_leader = yes }
+		}
+
+		available = {
+			hidden_trigger = { has_country_flag = azl_can_join_later }
+			hidden_trigger = { should_actively_join_anti_zombie_league = yes }
+			hidden_trigger = { has_active_anti_zombie_league_leader = yes }
+		}
+
+		ai_will_do = {
+			factor = 0.05
+
+			modifier = {
+				factor = 4
+				is_at_war_with_any_zombie_country = yes
+			}
+
+			modifier = {
+				factor = 3
+				has_neighboring_zombie_front = yes
+			}
+			modifier = {
+				factor = constant:anti_zombie_league.join_nearby_front_factor
+				has_nearby_zombie_front = yes
+			}
+			modifier = {
+				factor = 1.50
+				has_government = democratic
+			}
+
+			modifier = {
+				factor = 1.05
+				is_major = yes
+			}
+
+			modifier = {
+				add = 2
+				is_in_tech_sharing_group = cure_sharing
+			}
+
+			modifier = {
+				add = 1
+				has_country_flag = hygiene_measures_enforced
+			}
+
+			modifier = {
+				add = 1
+				has_country_flag = quarantine_protocols_active
+			}
+
+			modifier = {
+				add = 1
+				has_global_flag = { flag = chaos_tier value = 2 }
+			}
+
+			modifier = {
+				add = 2
+				has_global_flag = { flag = chaos_tier value = 3 }
+			}
+
+			modifier = {
+				add = 3
+				has_global_flag = { flag = chaos_tier value = 4 }
+			}
+
+			modifier = {
+				add = 4
+				has_global_flag = { flag = chaos_tier value = 5 }
+			}
+
+			modifier = {
+				factor = 0.4
+				NOT = { has_government = democratic }
+			}
+
+			modifier = {
+				factor = 0.25
+				zombie_threat_confined_to_americas = yes
+				is_outside_americas_country = yes
+			}
+			modifier = {
+				factor = constant:anti_zombie_league.join_no_regional_threat_factor
+				NOT = { has_regional_zombie_threat = yes }
+				NOT = { zombie_threat_is_global_emergency = yes }
+			}
+			modifier = {
+				factor = 0.15
+				NOT = { has_regional_zombie_threat = yes }
+				NOT = { zombie_threat_is_global_emergency = yes }
+			}
+			modifier = {
+				factor = 0
+				NOT = { has_regional_zombie_threat = yes }
+				NOT = { has_same_continent_zombie_presence = yes }
+				NOT = { zombie_threat_is_global_emergency = yes }
+			}
+			modifier = {
+				factor = 0.05
+				NOT = { has_regional_zombie_threat = yes }
+				zombie_threat_below_serious_join_threshold = yes
+			}
+			modifier = {
+				factor = 0
+				NOT = { has_regional_zombie_threat = yes }
+				zombie_threat_below_serious_join_threshold = yes
+				NOT = { zombie_threat_is_global_emergency = yes }
+			}
+			modifier = {
+				factor = constant:anti_zombie_league.join_global_emergency_factor
+				zombie_threat_is_global_emergency = yes
+			}
+
+			modifier = {
+				factor = constant:anti_zombie_league.join_low_threat_factor
+				zombie_threat_below_serious_join_threshold = yes
+			}
+		}
+
+		complete_effect = {
+			join_anti_zombie_league_effect = yes
+		}
+	}
+
+	leave_anti_zombie_league = {
+		icon = GFX_decision_generic_nationalism
+
+		visible = {
+			hidden_trigger = { is_anti_zombie_league_member = yes }
+			is_in_faction = yes
+			NOT = { has_country_flag = azl_leader }
+		}
+
+		available = {
+			hidden_trigger = { is_anti_zombie_league_member = yes }
+			is_in_faction = yes
+			hidden_trigger = { NOT = { has_country_flag = azl_leader } }
+		}
+
+		cost = global.black_friday_price_pp_10
+
+		ai_will_do = {
+			factor = 0
+
+			modifier = {
+				add = 5
+				zombie_threat_below_leave_threshold = yes
+				has_idea = cure_activated
+			}
+
+			modifier = {
+				add = 10
+				zombie_threat_below_very_low_leave_threshold = yes
+			}
+
+			modifier = {
+				add = 8
+				NOT = { has_government = democratic }
+				zombie_threat_below_leave_threshold = yes
+			}
+
+			modifier = {
+				factor = 0
+				is_at_war_with_any_zombie_country = yes
+			}
+
+			modifier = {
+				factor = 0.5
+				check_variable = { global.azl_global_investment > 50 }
+			}
+		}
+
+		complete_effect = {
+			hidden_effect = { black_friday_credit_political_power_purchase = yes }
+			leave_faction = yes
+
+			hidden_effect = {
+				remove_anti_zombie_league_membership_package = yes
+			}
+		}
+	}
+
+	invest_in_league_research = {
+		icon = GFX_decision_generic_research
+
+		visible = {
+			has_global_flag = anti_zombie_league_formed
+			hidden_trigger = { is_anti_zombie_league_member = yes }
+		}
+
+		available = {
+			hidden_trigger = { is_anti_zombie_league_member = yes }
+			anti_zombie_league_investment_can_fit = yes
+			hidden_trigger = { has_political_power > 49 }
+			NOT = { has_idea = azl_investment_penalty }
+		}
+
+		cost = global.black_friday_price_pp_15
+		days_remove = 30
+
+		ai_will_do = {
+			factor = 5
+
+			modifier = {
+				factor = 2
+				is_at_war_with_any_zombie_country = yes
+			}
+
+			modifier = {
+				factor = 3
+				is_major = yes
+			}
+
+			modifier = {
+				factor = 2
+				has_global_flag = { flag = chaos_tier value > 2 }
+			}
+
+			modifier = {
+				factor = 0.3
+				num_of_civilian_factories < 10
+			}
+
+			modifier = {
+				factor = 0.75
+				check_variable = { global.azl_global_investment > 50 }
+			}
+		}
+
+		complete_effect = {
+			hidden_effect = {
+				clr_country_flag = invest_in_league_research_sale_credit
+				clear_variable = invest_in_league_research_sale_sequence
+				set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
+				set_temp_variable = { black_friday_political_power_receipt_sale_sequence = constant:universal_cost_framework.zero }
+				black_friday_credit_political_power_purchase_with_receipt = yes
+				if = {
+					limit = { check_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one } }
+					set_country_flag = invest_in_league_research_sale_credit
+					set_variable = { invest_in_league_research_sale_sequence = black_friday_political_power_receipt_sale_sequence }
+				}
+			}
+			add_timed_idea = {
+				idea = azl_investment_penalty
+				days = 30
+			}
+			set_variable = { anti_zombie_league_investment_paid_pp = global.black_friday_price_pp_15 }
+		}
+
+		cancel_trigger = {
+			OR = {
+				NOT = { has_global_flag = has_zombie_outbreak }
+				NOT = { has_global_flag = anti_zombie_league_formed }
+				NOT = { is_anti_zombie_league_member = yes }
+				NOT = { anti_zombie_league_investment_can_fit = yes }
+			}
+		}
+
+		cancel_effect = {
+			hidden_effect = {
+				remove_ideas = azl_investment_penalty
+				add_political_power = anti_zombie_league_investment_paid_pp
+				clear_variable = anti_zombie_league_investment_paid_pp
+				set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
+				set_temp_variable = { black_friday_political_power_receipt_sale_sequence = invest_in_league_research_sale_sequence }
+				if = {
+					limit = { has_country_flag = invest_in_league_research_sale_credit }
+					set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one }
+				}
+				black_friday_withdraw_political_power_purchase_with_receipt = yes
+				clr_country_flag = invest_in_league_research_sale_credit
+				clear_variable = invest_in_league_research_sale_sequence
+			}
+		}
+
+		remove_effect = {
+			hidden_effect = {
+				if = {
+					limit = { anti_zombie_league_investment_can_fit = yes }
+					if = {
+						limit = { is_major = yes }
+						add_to_variable = { global.azl_global_investment = constant:anti_zombie_league.investment_major }
+					}
+					else = {
+						add_to_variable = { global.azl_global_investment = constant:anti_zombie_league.investment_minor }
+					}
+
+					calculate_azl_target_level = yes
+
+					every_country = {
+						limit = { is_anti_zombie_league_member = yes }
+						grant_anti_zombie_league_membership_benefits = yes
+					}
+
+					if = {
+						limit = {
+							check_variable = {
+								var = global.azl_global_investment
+								value = constant:anti_zombie_league.max_investment
+								compare = greater_than_or_equals
+							}
+						}
+						set_global_flag = azl_investment_maxed
+					}
+					clear_variable = anti_zombie_league_investment_paid_pp
+					clr_country_flag = invest_in_league_research_sale_credit
+					clear_variable = invest_in_league_research_sale_sequence
+
+				}
+				else = {
+					remove_ideas = azl_investment_penalty
+					add_political_power = anti_zombie_league_investment_paid_pp
+					set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
+					set_temp_variable = { black_friday_political_power_receipt_sale_sequence = invest_in_league_research_sale_sequence }
+					if = {
+						limit = { has_country_flag = invest_in_league_research_sale_credit }
+						set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one }
+					}
+					black_friday_withdraw_political_power_purchase_with_receipt = yes
+					clr_country_flag = invest_in_league_research_sale_credit
+					clear_variable = invest_in_league_research_sale_sequence
+					clear_variable = anti_zombie_league_investment_paid_pp
+				}
+			}
+		}
+	}
+
+	disband_anti_zombie_league = {
+		icon = GFX_decision_generic_nationalism
+
+		visible = {
+			has_country_flag = azl_leader
+			is_faction_leader = yes
+			has_global_flag = anti_zombie_league_formed
+			zombie_threat_ready_for_anti_zombie_league_disband = yes
+		}
+
+		available = {
+			hidden_trigger = { has_country_flag = azl_leader }
+			is_faction_leader = yes
+			zombie_threat_ready_for_anti_zombie_league_disband = yes
+			NOT = {
+				has_global_flag = { flag = chaos_tier value > 1 }
+			}
+		}
+
+		cost = global.black_friday_price_pp_10
+		days_remove = 7
+		fire_only_once = yes
+
+		ai_will_do = {
+			factor = 10
+
+			modifier = {
+				factor = 0.5
+				is_at_war_with_any_zombie_country = yes
+			}
+
+			modifier = {
+				factor = 3
+				has_government = democratic
+			}
+		}
+
+		complete_effect = {
+			hidden_effect = {
+				clr_country_flag = disband_anti_zombie_league_sale_credit
+				clear_variable = disband_anti_zombie_league_sale_sequence
+				set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
+				set_temp_variable = { black_friday_political_power_receipt_sale_sequence = constant:universal_cost_framework.zero }
+				black_friday_credit_political_power_purchase_with_receipt = yes
+				if = {
+					limit = { check_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one } }
+					set_country_flag = disband_anti_zombie_league_sale_credit
+					set_variable = { disband_anti_zombie_league_sale_sequence = black_friday_political_power_receipt_sale_sequence }
+				}
+			}
+			set_country_flag = azl_disbanding_league
+			set_variable = { anti_zombie_league_disband_paid_pp = global.black_friday_price_pp_10 }
+		}
+
+		remove_effect = {
+			dismantle_anti_zombie_league = yes
+			clear_variable = anti_zombie_league_disband_paid_pp
+			clr_country_flag = disband_anti_zombie_league_sale_credit
+			clear_variable = disband_anti_zombie_league_sale_sequence
+		}
+
+		cancel_trigger = {
+			OR = {
+				NOT = { has_country_flag = azl_leader }
+				NOT = { is_faction_leader = yes }
+				NOT = { has_global_flag = anti_zombie_league_formed }
+				NOT = { has_global_flag = has_zombie_outbreak }
+				NOT = { zombie_threat_ready_for_anti_zombie_league_disband = yes }
+				has_global_flag = { flag = chaos_tier value > 1 }
+			}
+		}
+
+		cancel_effect = {
+			clr_country_flag = azl_disbanding_league
+			add_political_power = anti_zombie_league_disband_paid_pp
+			clear_variable = anti_zombie_league_disband_paid_pp
+			hidden_effect = {
+				set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.zero }
+				set_temp_variable = { black_friday_political_power_receipt_sale_sequence = disband_anti_zombie_league_sale_sequence }
+				if = {
+					limit = { has_country_flag = disband_anti_zombie_league_sale_credit }
+					set_temp_variable = { black_friday_political_power_receipt_credited = constant:universal_cost_framework.one }
+				}
+				black_friday_withdraw_political_power_purchase_with_receipt = yes
+				clr_country_flag = disband_anti_zombie_league_sale_credit
+				clear_variable = disband_anti_zombie_league_sale_sequence
+			}
+		}
+	}
+}

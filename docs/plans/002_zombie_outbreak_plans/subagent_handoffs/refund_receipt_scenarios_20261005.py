@@ -26,9 +26,14 @@ def load(path):
 
 
 EFFECTS = load('common/scripted_effects/026_black_friday_effects.txt')
+EFFECTS.update(load('common/scripted_effects/002_zombie_outbreak_effects.txt'))
+EFFECTS.update(load('common/scripted_effects/chaosx_triggerable_scenarios_effects.txt'))
+EVENT_EFFECTS = load('common/scripted_effects/002_zombie_outbreak_effects.txt')
 TRIGGERS = load('common/scripted_triggers/026_black_friday_triggers.txt')
+TRIGGERS.update(load('common/scripted_triggers/002_zombie_outbreak_triggers.txt'))
 CONSTANTS = load('common/script_constants/026_black_friday_constants.txt')
 CONSTANTS.update(load('common/script_constants/chaosx_universal_cost_constants.txt'))
+CONSTANTS.update(load('common/script_constants/chaosx_triggerable_scenarios_constants.txt'))
 DECISIONS = {k: dict(v) for category in load('common/decisions/002_zombie_outbreak_decisions.txt').values()
              for k, v in category if isinstance(v, list)}
 CREDIT = 'black_friday_credit_political_power_purchase_with_receipt'
@@ -51,8 +56,15 @@ class Runtime:
         self.values = {SEQ: 1, INDEX: 1}
         self.temps = {}
         self.flags = set()
+        self.state_flags = set()
+        self.profile_flags = set()
         self.global_flags = {'black_friday_active', 'black_friday_natural_activation'}
         self.ai = self.debug = self.special = False
+        self.cure_sharing = False
+        self.profile_owner = True
+        self.profile_live = True
+        self.profile_at_capital = True
+        self.target_valid = True
         self.fit = True
         self.pp = 63
         self.native_refunds = 0
@@ -79,7 +91,19 @@ class Runtime:
             if k == 'NOT': return not self.check(v)
             if k == 'has_variable': return self.name(v) in self.values or self.name(v) in self.temps
             if k == 'has_country_flag': return v in self.flags
+            if k == 'has_state_flag': return v in self.state_flags
             if k == 'has_global_flag': return v in self.global_flags
+            if k == 'FROM': return self.check(v)
+            if k == 'owner':
+                old = self.flags
+                self.flags = self.profile_flags
+                try: return self.check(v)
+                finally: self.flags = old
+            if k == 'is_in_tech_sharing_group': return self.cure_sharing == (v == 'cure_sharing')
+            if k == 'is_live_weaponized_zombie_profile_country': return self.profile_live == (v == 'yes')
+            if k == 'is_capital': return self.profile_at_capital == (v == 'yes')
+            if k in ('weaponized_zombie_counterstrain_target_matches_selected_type', 'weaponized_zombie_counterstrain_progress_open_for_state_target'):
+                return self.target_valid
             if k == 'exists': return v == 'yes'
             if k == 'is_ai': return self.ai == (v == 'yes')
             if k == 'is_debug': return self.debug == (v == 'yes')
@@ -127,6 +151,7 @@ class Runtime:
             elif k == 'clear_variable': self.values.pop(self.name(v), None)
             elif k == 'set_country_flag': self.flags.add(v)
             elif k == 'clr_country_flag': self.flags.discard(v)
+            elif k == 'set_global_flag': self.global_flags.add(v)
             elif k == 'add_political_power':
                 self.pp += self.value(v)
                 self.native_refunds += self.value(v) != 0
@@ -159,6 +184,8 @@ class Runtime:
         for k, v in nodes:
             if k in (CREDIT, WITHDRAW, 'add_political_power'):
                 result.append((k, v))
+            elif k == 'refund_weaponized_zombie_counterstrain_research':
+                result.extend(self.project(EVENT_EFFECTS[k]))
             elif k in ('if', 'else_if', 'else', 'hidden_effect'):
                 body = self.project([(a, b) for a, b in v if a != 'limit'])
                 if body:
@@ -187,7 +214,9 @@ def walk(nodes):
 
 class Receipts(unittest.TestCase):
     def test_all_owners_same_sale_cancel_once(self):
-        self.assertEqual(len(OWNERS), 25)
+        self.assertEqual(len(OWNERS), 18)
+        self.assertIn('develop_weaponized_zombie_counterstrain', OWNERS)
+        self.assertNotIn('develop_weaponized_zombie_infected_counterstrain', OWNERS)
         for owner in OWNERS:
             with self.subTest(owner=owner):
                 rt = Runtime(); rt.set_count(3)
@@ -253,6 +282,88 @@ class Receipts(unittest.TestCase):
     @staticmethod
     def name_generation(rt):
         return rt.name('black_friday_achievement_family_generation_@var:black_friday_purchase_family_id')
+
+
+class CounterstrainSourceScenarios(unittest.TestCase):
+    TYPES = (
+        ('infected', 'single_standard'),
+        ('rabid', 'single_rabid'),
+        ('parasitic', 'single_parasitic'),
+        ('mutant', 'single_mutant'),
+        ('undead', 'single_undead'),
+        ('necrotic', 'single_necrotic'),
+        ('demonic', 'single_demonic'),
+        ('wendigo', 'single_wendigo'),
+    )
+
+    def test_exactly_one_type_trigger_accepts_all_eight_and_rejects_bad_profiles(self):
+        trigger = TRIGGERS['is_single_weaponized_zombie_profile_type']
+        flags = [f'weaponized_zombie_type_{name}' for name, _ in self.TYPES]
+        for flag in flags:
+            with self.subTest(profile=flag):
+                rt = Runtime()
+                rt.flags = {flag}
+                self.assertTrue(rt.check(trigger))
+                rt.flags.add(next(candidate for candidate in flags if candidate != flag))
+                self.assertFalse(rt.check(trigger))
+        self.assertFalse(Runtime().check(trigger))
+
+    def test_selected_capital_resolves_to_each_existing_single_type_value(self):
+        effect = EFFECTS['set_weaponized_zombie_counterstrain_type_from_selected_profile']
+        for name, selected_type in self.TYPES:
+            type_value = float(dict(CONSTANTS['triggerable_scenario_zombie_type'])[selected_type])
+            with self.subTest(profile=name):
+                rt = Runtime()
+                rt.profile_flags = {f'weaponized_zombie_type_{name}'}
+                rt.run(effect)
+                self.assertEqual(rt.values.get('weaponized_zombie_counterstrain_type'), type_value)
+
+    def test_each_selected_type_advances_its_existing_local_and_shared_pool(self):
+        effect = EFFECTS['apply_weaponized_zombie_counterstrain_research']
+        increment = float(dict(CONSTANTS['triggerable_scenario_cure'])['counterstrain_progress'])
+        for name, selected_type in self.TYPES:
+            type_value = float(dict(CONSTANTS['triggerable_scenario_zombie_type'])[selected_type])
+            for shared in (False, True):
+                with self.subTest(profile=name, cure_sharing=shared):
+                    rt = Runtime()
+                    rt.profile_flags = {f'weaponized_zombie_type_{name}'}
+                    rt.cure_sharing = shared
+                    rt.values['weaponized_zombie_counterstrain_type'] = type_value
+                    rt.run(effect)
+                    scope = 'global.' if shared else ''
+                    target_progress = scope + f'weaponized_zombie_{name}_counterstrain'
+                    self.assertEqual(rt.values.get(target_progress), increment)
+                    for other, _ in self.TYPES:
+                        if other != name:
+                            self.assertNotIn(scope + f'weaponized_zombie_{other}_counterstrain', rt.values)
+
+    def test_ready_gate_hides_only_the_completed_type_and_scope(self):
+        trigger = TRIGGERS['weaponized_zombie_counterstrain_progress_open_for_state_target']
+        for name, _ in self.TYPES:
+            with self.subTest(profile=name, cure_sharing=False):
+                rt = Runtime()
+                rt.profile_flags = {f'weaponized_zombie_type_{name}'}
+                self.assertTrue(rt.check(trigger))
+                rt.flags.add(f'weaponized_zombie_{name}_counterstrain_ready')
+                self.assertFalse(rt.check(trigger))
+            with self.subTest(profile=name, cure_sharing=True):
+                rt = Runtime()
+                rt.profile_flags = {f'weaponized_zombie_type_{name}'}
+                rt.cure_sharing = True
+                self.assertTrue(rt.check(trigger))
+                rt.global_flags.add(f'weaponized_zombie_{name}_counterstrain_ready')
+                self.assertFalse(rt.check(trigger))
+
+    def test_wendigo_conversion_lock_hides_counterstrain_target(self):
+        trigger = TRIGGERS['weaponized_zombie_counterstrain_progress_open_for_state_target']
+        rt = Runtime()
+        rt.profile_flags = {
+            'weaponized_zombie_type_wendigo',
+            'cannibalism_wendigo_transformation_locked',
+        }
+        rt.flags = {'weaponized_zombie_type_wendigo'}
+        self.assertTrue(rt.check(TRIGGERS['is_single_weaponized_zombie_profile_type']))
+        self.assertFalse(rt.check(trigger))
 
 
 if __name__ == '__main__':
