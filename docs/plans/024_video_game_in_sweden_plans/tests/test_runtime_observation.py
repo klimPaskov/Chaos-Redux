@@ -17,6 +17,12 @@ spec.loader.exec_module(life)
 
 runtime = life.parse(life.REPO / "common/scripted_effects/024_video_game_in_sweden_runtime_effects.txt")
 life.APIS.update({n.key: n for n in runtime})
+feedback = life.parse(life.REPO / "common/scripted_effects/chaosx_forced_event_feedback_effects.txt")
+life.APIS.update({n.key: n for n in feedback})
+for group in life.parse(life.REPO / "common/script_constants/chaosx_forced_event_feedback_constants.txt"):
+    for item in group.body:
+        if item.key != "schema" and isinstance(item.body, str):
+            life.CONSTANTS[group.key + "." + item.key] = Decimal(item.body)
 life.CONSTANTS["video_game_in_sweden_timing.runtime_watch_days"] = Decimal(1)
 # The shared day-to-date converter and its unit constants run as written.
 dynamic = life.parse(life.REPO / "common/scripted_effects/chaosx_dynamic_effects.txt")
@@ -30,6 +36,8 @@ for group in life.parse(life.REPO / "common/script_constants/chaosx_date_units_c
 class ObserverModel(life.FrameModel):
     def __init__(self):
         super().__init__()
+        # Declared original-tag SWE roster for native iterator fixtures.
+        self.swedish_countries = ["SWE"]
         self.native_predicates = {
             "video_game_in_sweden_is_current_host": True,
             "video_game_in_sweden_is_valid_host": True,
@@ -74,7 +82,8 @@ class ObserverModel(life.FrameModel):
                          "every_unit_leader", "has_dynamic_modifier", "divide_temp_variable", "clamp_variable", "add_dynamic_modifier",
                          "clear_array", "force_update_dynamic_modifier", "clamp_temp_variable", "clear_variable",
                          "round_temp_variable",
-                         "random_enemy_country", "any_enemy_country", "save_global_event_target_as"):
+                         "random_enemy_country", "any_enemy_country", "any_country_with_original_tag",
+                         "save_global_event_target_as", "add_opinion_modifier"):
                 name = f"__native_{n.path}_{n.start}_{n.key}"
                 self.native_nodes[name] = n
                 life.APIS[name] = n
@@ -93,7 +102,7 @@ class ObserverModel(life.FrameModel):
                 self.flags.setdefault(self.actor, set()).discard(n.body)
                 return True
             if n.key == "country_event":
-                self.scheduled.append((life.field(n.body, "id"), self.number(life.field(n.body, "days"))))
+                self.scheduled.append((life.field(n.body, "id"), self.number(life.field(n.body, "days", "0"))))
                 return True
             if n.key == "FROM.FROM":
                 return self.scope("141", n.body)
@@ -155,6 +164,15 @@ class ObserverModel(life.FrameModel):
             if n.key == "save_global_event_target_as":
                 self.targets[n.body] = self.actor
                 return True
+            if n.key == "add_opinion_modifier":
+                self.called.append(n.key)
+                return True
+            if n.key == "any_country_with_original_tag":
+                self.asserted_original_tag = life.field(n.body, "original_tag_to_check")
+                if self.asserted_original_tag != "SWE":
+                    raise life.Unsupported("undeclared original-tag roster")
+                conditions = [c for c in n.body if c.key != "original_tag_to_check"]
+                return any(self.scope(actor, conditions) for actor in self.swedish_countries)
             if n.key == "any_enemy_country":
                 return any(self.scope(enemy, n.body) for enemy in self.enemies)
             if n.key == "random_enemy_country":
@@ -176,6 +194,7 @@ class ObservationSourceTests(unittest.TestCase):
     def model(self):
         model = ObserverModel()
         model.flags["SWE"] = {"video_game_in_sweden_host_selected", "video_game_in_sweden_program_active"}
+        model.facts.update({("SWE", "exists", "yes"): True, ("SWE", "is_ai", "no"): True})
         return model
 
     def test_daily_elapsed_is_one_not_monthly(self):
@@ -665,6 +684,138 @@ class ObservationSourceTests(unittest.TestCase):
             self.assertEqual("video_game_in_sweden_host" in model.targets, started)
             self.assertNotIn("video_game_in_sweden_prefire_opening_pending", model.flags["SWE"])
             self.assertNotIn("video_game_in_sweden_debug_invalid", model.flags["SWE"])
+
+    def test_manual_refusal_reports_one_reason_to_the_requester(self):
+        helper = life.APIS["video_game_in_sweden_prepare_random_event_fire"]
+        refusal = [n for n in helper.body if n.key == "if" and
+                   any(c.key == "chaosx_report_forced_event_failure" for c in n.body)]
+        self.assertEqual(len(refusal), 1)
+        for fired, active, reason in ((False, False, "no_country"), (False, False, "unavailable"),
+                                     (True, True, "already_active"), (True, False, "unavailable")):
+            model = self.model()
+            model.targets["chaosx_manual_event_requester"] = "GER"
+            model.flags["GER"] = {"chaosx_manual_event_requested"}
+            model.facts.update({("GER", "exists", "yes"): True, ("GER", "is_ai", "no"): True})
+            if active:
+                model.targets["video_game_in_sweden_host"] = "SWE"
+            model.arrays["global.fired_events"] = [Decimal(24)] if fired else []
+            model.temp.update({"video_game_in_sweden_prefire_ready": Decimal(0),
+                               "events_log_manual_event_detail_trigger": Decimal(1)})
+            model.swedish_countries = [] if reason == "no_country" else ["SWE"]
+            model.run(refusal)
+            model.run(refusal)
+            self.assertEqual(model.scheduled, [("chaosx_forced_event_feedback.1", Decimal(0))])
+            self.assertEqual(model.saved[("GER", "chaosx_manual_event_failure_reason")],
+                             model.number("constant:forced_event_feedback_reason." + reason))
+            self.assertNotIn("chaosx_manual_event_failure_shown", model.flags["SWE"])
+
+    def test_same_day_mission_reservation_blocks_a_second_action(self):
+        model = self.model()
+        del model.native_predicates["video_game_in_sweden_no_active_mission"]
+        for mission in ("video_game_field_validation_mission", "video_game_reality_audit_mission",
+                        "video_game_dual_track_verification", "video_game_restriction_enforcement"):
+            model.facts[("SWE", "has_active_mission", mission)] = False
+        self.assertTrue(model.call("video_game_in_sweden_no_active_mission"))
+        for active in ("field_validation", "reality_audit", "dual_track", "restriction"):
+            flag = "video_game_in_sweden_" + active + "_active"
+            model.flags["SWE"].add(flag)
+            self.assertFalse(model.call("video_game_in_sweden_no_active_mission"))
+            model.flags["SWE"].remove(flag)
+        for report in ("field_validation", "reality_audit", "dual_track", "restriction"):
+            flag = "video_game_in_sweden_" + report + "_report_pending"
+            model.flags["SWE"].add(flag)
+            self.assertFalse(model.call("video_game_in_sweden_no_active_mission"))
+            model.flags["SWE"].remove(flag)
+        self.assertTrue(model.call("video_game_in_sweden_no_active_mission"))
+
+    def test_foreign_summary_freezes_counts_and_fires_once(self):
+        model = self.model()
+        model.facts[("SWE", "exists", "yes")] = True
+        model.facts[("SWE", "is_ai", "no")] = True
+        for name, count in (("copy", 1), ("study", 1), ("ban", 0), ("ridicule", 1), ("ignored", 0)):
+            model.saved[("SWE", "video_game_in_sweden_foreign_" + name + "_count")] = Decimal(count)
+        model.saved[("SWE", "video_game_in_sweden_foreign_replied_count")] = Decimal(3)
+        model.call("video_game_in_sweden_publish_foreign_summary")
+        model.saved[("SWE", "video_game_in_sweden_foreign_copy_count")] = Decimal(2)
+        model.call("video_game_in_sweden_publish_foreign_summary")
+        self.assertEqual(model.scheduled, [("chaosx.nr24.41", Decimal(1))])
+        self.assertEqual(model.saved[("SWE", "video_game_in_sweden_foreign_summary_copy")], Decimal(1))
+        self.assertEqual(model.saved[("SWE", "video_game_in_sweden_foreign_summary_study")], Decimal(1))
+        self.assertIn("video_game_in_sweden_foreign_summary_queued", model.flags["SWE"])
+
+    def test_exhausted_incident_pool_stays_quiet(self):
+        model = self.model()
+        families = ("terrain", "supply", "enemy", "template", "diplomatic", "workplace", "party", "casualties",
+                    "counterplan", "bootleg", "production", "offensive")
+        seen = {"video_game_in_sweden_incident_" + name + "_seen" for name in families}
+        model.flags["SWE"].update(seen)
+        model.native_predicates.update({"video_game_in_sweden_has_live_program_package": True,
+                                        "video_game_in_sweden_is_incident_pause_crisis": False,
+                                        "video_game_in_sweden_has_unseen_incident_family": False})
+        model.saved[("SWE", "video_game_in_sweden_current_incident")] = Decimal(0)
+        model.saved[("SWE", "video_game_in_sweden_incident_ready_day")] = Decimal(0)
+        for day in (365, 730):
+            model.saved[("SWE", "video_game_in_sweden_program_days")] = Decimal(day)
+            model.call("video_game_in_sweden_roll_incident")
+        self.assertEqual(model.scheduled, [])
+        self.assertTrue(seen.issubset(model.flags["SWE"]))
+
+    def test_exhausted_opening_families_do_not_repeat_at_evolution_iii(self):
+        model = self.model()
+        for family in ("production", "diplomatic", "offensive", "casualties"):
+            model.flags["SWE"].add("video_game_in_sweden_incident_" + family + "_seen")
+        model.native_predicates["video_game_in_sweden_is_incident_pause_crisis"] = False
+        model.saved[("SWE", "video_game_in_sweden_current_incident")] = Decimal(0)
+        model.temp["video_game_in_sweden_opening_total_weight"] = Decimal(0)
+        model.facts.update({("SWE", "has_war", "yes"): True, ("SWE", "is_in_faction", "yes"): False,
+                            ("SWE", "is_subject", "yes"): False})
+        model.call("video_game_in_sweden_queue_opening_incident")
+        self.assertEqual(model.scheduled, [])
+        self.assertEqual(model.temp["video_game_in_sweden_opening_total_weight"], Decimal(0))
+        self.assertNotIn("video_game_in_sweden_opening_incident_queued", model.flags["SWE"])
+
+    def test_empty_foreign_round_has_no_summary(self):
+        model = self.model()
+        model.facts[("SWE", "exists", "yes")] = True
+        model.facts[("SWE", "is_ai", "no")] = True
+        model.saved[("SWE", "video_game_in_sweden_foreign_replied_count")] = Decimal(0)
+        model.call("video_game_in_sweden_publish_foreign_summary")
+        self.assertEqual(model.scheduled, [])
+
+    def test_three_foreign_answers_are_counted_once_and_summarized(self):
+        model = self.model()
+        model.targets["video_game_in_sweden_host"] = "SWE"
+        model.stubs.add("video_game_in_sweden_change_reliance")
+        for actor, answer in (("GER", "copy"), ("DEN", "study"), ("NOR", "no_action")):
+            model.root = model.actor = actor
+            model.targets["video_game_in_sweden_foreign_partner"] = actor
+            model.flags[actor] = {"video_game_in_sweden_foreign_response_pending"}
+            model.facts.update({(actor, "exists", "yes"): True, (actor, "has_capitulated", "yes"): False,
+                                (actor, "has_war_with", "event_target:video_game_in_sweden_host"): False})
+            model.call("video_game_in_sweden_resolve_foreign_" + answer)
+            model.call("video_game_in_sweden_resolve_foreign_" + answer)
+        self.assertEqual(model.saved[("SWE", "video_game_in_sweden_foreign_replied_count")], Decimal(3))
+        self.assertEqual(model.saved[("SWE", "video_game_in_sweden_foreign_summary_copy")], Decimal(1))
+        self.assertEqual(model.saved[("SWE", "video_game_in_sweden_foreign_summary_study")], Decimal(1))
+        self.assertEqual(model.saved[("SWE", "video_game_in_sweden_foreign_summary_ignored")], Decimal(1))
+        self.assertEqual(model.scheduled, [("chaosx.nr24.41", Decimal(1))])
+        self.assertEqual(len(model.modifier_grants), 2)
+
+    def test_stale_foreign_answers_grant_no_reward(self):
+        for name in ("copy", "study", "ban", "ridicule", "no_action"):
+            for pending, current, at_war in ((False, True, False), (True, False, False), (True, True, True)):
+                model = self.model()
+                model.root = model.actor = "GER"
+                model.targets.update({"video_game_in_sweden_host": "SWE", "video_game_in_sweden_foreign_partner": "DEN"})
+                model.flags["GER"] = {"video_game_in_sweden_foreign_response_pending"} if pending else set()
+                model.native_predicates["video_game_in_sweden_is_current_host"] = current
+                model.facts.update({("GER", "exists", "yes"): True, ("GER", "has_capitulated", "yes"): False,
+                                    ("GER", "has_war_with", "event_target:video_game_in_sweden_host"): at_war})
+                model.call("video_game_in_sweden_resolve_foreign_" + name)
+                self.assertEqual(model.modifier_grants, [])
+                self.assertEqual(model.scheduled, [])
+                self.assertNotIn(("SWE", "video_game_in_sweden_foreign_outcome"), model.saved)
+                self.assertEqual(model.targets["video_game_in_sweden_foreign_partner"], "DEN")
 
     def test_invalid_restriction_records_failure_without_a_backlash_reward(self):
         model = self.model()

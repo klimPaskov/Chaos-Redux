@@ -55,6 +55,17 @@ video_game_in_sweden_is_current_host = {
 	video_game_in_sweden_is_valid_host = yes
 }
 
+# COUNTRY scope, the responding foreign government. Boolean only, no inputs
+# or side effects. An offer survives only while its cabinet and diplomacy do.
+video_game_in_sweden_can_answer_foreign_offer = {
+	has_country_flag = video_game_in_sweden_foreign_response_pending
+	exists = yes
+	NOT = { has_capitulated = yes }
+	has_event_target = video_game_in_sweden_host
+	event_target:video_game_in_sweden_host = { video_game_in_sweden_is_current_host = yes }
+	NOT = { has_war_with = event_target:video_game_in_sweden_host }
+}
+
 video_game_in_sweden_can_pay_controlled_exercise = {
 	NOT = { has_army_experience < constant:video_game_in_sweden_cost.controlled_exercise_army_experience }
 	NOT = { has_equipment = { support_equipment < constant:video_game_in_sweden_cost.controlled_exercise_support_equipment } }
@@ -274,7 +285,25 @@ video_game_in_sweden_has_field_start_package = {
 	controls_state = constant:video_game_in_sweden_event.stockholm_state
 }
 
+# COUNTRY scope. The result stays owned by its report through acknowledgement.
+video_game_in_sweden_has_pending_mission_report = {
+	OR = {
+		has_country_flag = video_game_in_sweden_field_validation_report_pending
+		has_country_flag = video_game_in_sweden_reality_audit_report_pending
+		has_country_flag = video_game_in_sweden_dual_track_report_pending
+		has_country_flag = video_game_in_sweden_restriction_report_pending
+	}
+}
+
 video_game_in_sweden_no_active_mission = {
+	# Start effects reserve the mission immediately. Native activation may
+	# register it at the next daily check, so both forms must be absent.
+	NOT = { has_country_flag = video_game_in_sweden_field_validation_active }
+	NOT = { has_country_flag = video_game_in_sweden_reality_audit_active }
+	NOT = { has_country_flag = video_game_in_sweden_dual_track_active }
+	NOT = { has_country_flag = video_game_in_sweden_restriction_active }
+	# A result owns its flags until the player acknowledges the delayed report.
+	NOT = { video_game_in_sweden_has_pending_mission_report = yes }
 	NOT = { has_active_mission = video_game_field_validation_mission }
 	NOT = { has_active_mission = video_game_reality_audit_mission }
 	NOT = { has_active_mission = video_game_dual_track_verification }

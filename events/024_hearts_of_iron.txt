@@ -841,7 +841,29 @@ country_event = {
 
 country_event = {
 	id = chaosx.nr24.32
-	title = chaosx.nr24.32.t
+	title = {
+		trigger = { has_country_flag = video_game_in_sweden_narrow_reality_audit_started }
+		text = chaosx.nr24.32.narrow_t
+	}
+	title = { text = chaosx.nr24.32.t }
+	desc = {
+		trigger = {
+			has_country_flag = video_game_in_sweden_narrow_reality_audit_started
+			check_variable = { var = video_game_in_sweden_audit_result value = constant:video_game_in_sweden_value.result_full compare = equals }
+		}
+		text = chaosx.nr24.32.narrow_full_d
+	}
+	desc = {
+		trigger = {
+			has_country_flag = video_game_in_sweden_narrow_reality_audit_started
+			check_variable = { var = video_game_in_sweden_audit_result value = constant:video_game_in_sweden_value.result_partial compare = equals }
+		}
+		text = chaosx.nr24.32.narrow_partial_d
+	}
+	desc = {
+		trigger = { has_country_flag = video_game_in_sweden_narrow_reality_audit_started }
+		text = chaosx.nr24.32.narrow_failed_d
+	}
 	desc = {
 		trigger = { check_variable = { var = video_game_in_sweden_audit_result value = constant:video_game_in_sweden_value.result_full compare = equals } }
 		text = chaosx.nr24.32.full_d
@@ -870,7 +892,7 @@ country_event = {
 		name = chaosx.nr24.32.b
 		trigger = { check_variable = { var = video_game_in_sweden_audit_result value = constant:video_game_in_sweden_value.result_partial compare = equals } }
 		ai_chance = { base = 1 }
-		custom_effect_tooltip = video_game_audit_partial_result_tt
+		custom_effect_tooltip = video_game_audit_partial_result_display_tt
 		clr_country_flag = video_game_in_sweden_reality_audit_report_pending
 	}
 	option = {
@@ -880,7 +902,7 @@ country_event = {
 			NOT = { check_variable = { var = video_game_in_sweden_audit_result value = constant:video_game_in_sweden_value.result_partial compare = equals } }
 		}
 		ai_chance = { base = 1 }
-		custom_effect_tooltip = video_game_audit_failed_result_tt
+		custom_effect_tooltip = video_game_audit_failed_result_display_tt
 		clr_country_flag = video_game_in_sweden_reality_audit_report_pending
 	}
 }
@@ -1221,14 +1243,17 @@ country_event = {
 	desc = chaosx.nr24.41.d
 	picture = GFX_report_event_024_video_game_in_sweden_release
 	is_triggered_only = yes
+	trigger = {
+		has_country_flag = video_game_in_sweden_foreign_report_pending
+		NOT = { has_country_flag = video_game_in_sweden_foreign_summary_shown }
+	}
+	immediate = { set_country_flag = video_game_in_sweden_foreign_summary_shown }
 
 	option = {
 		name = chaosx.nr24.41.a
 		ai_chance = { base = 1 }
-		custom_effect_tooltip = video_game_foreign_report_effect_tt
 		hidden_effect = {
 			clr_country_flag = video_game_in_sweden_foreign_report_pending
-			clear_global_event_target = video_game_in_sweden_last_partner
 		}
 	}
 }

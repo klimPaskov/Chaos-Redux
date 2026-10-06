@@ -1,8 +1,8 @@
 # Event 24: Video Game in Sweden
 
-Implementation status is incomplete.
-The current acceptance ledger is [report 16](../../plans/024_video_game_in_sweden_plans/16_source_repairs_and_remaining_acceptance_2026-10-03.md), with the implemented continuity and restriction repair tranche recorded in [report 22](../../plans/024_video_game_in_sweden_plans/22_runtime_continuity_and_restriction_receipts_2026-10-03.md).
-Historical analysis below is not clearance for the current source revision or every accepted route.
+The current source, evidence, decisions, and live acceptance checklist are recorded in [the 6 October takeover status](../../plans/024_video_game_in_sweden_plans/takeover_status_2026-10-06.md).
+The full event remains below completion until the outstanding probability and native acceptance checks are resolved.
+The 3 October [source repair report](../../plans/024_video_game_in_sweden_plans/16_source_repairs_and_remaining_acceptance_2026-10-03.md) and [runtime repair report](../../plans/024_video_game_in_sweden_plans/22_runtime_continuity_and_restriction_receipts_2026-10-03.md) retain historical evidence for their own source revisions.
 
 The user's explicit 2026-09-20 instruction retires the Field-Validated Planner trait and reward. Field validation remains a mission with its other outcomes. Full field validation, Reality Audit, and event cleanup remove Rulebook Commander without awarding a replacement trait.
 
@@ -440,6 +440,16 @@ Every path into Evolution II requires broad public reach, including the step fro
 An officer or controlled programme that never widened civilian access stays in Evolution I and can conclude there.
 The officer route gains its reach by publishing its formal league tables through `video_game_expand_access`, which remains available during Evolution I after the league is formalised, so a high-Chaos officer opening that enters Evolution I at once can still reach the national craze.
 
+## Report frequency
+
+Each incident family is shown at most once during the cabinet's lifetime.
+Exhausting the currently valid families does not reset their seen flags, and later evolutions can admit additional unseen families.
+There are twelve distinct incident families and no world news broadcast.
+Opening, each evolution, National Final, schoolroom campaign, final review, containment review, and Trust reassessment each have their existing stage or shown guards.
+A failed player-ordered mission may be attempted again, but one completed attempt dispatches one result report.
+Foreign choices are capped at three recipients and one Swedish summary.
+A refused manual firing request produces one shared requester report without changing the Swedish programme.
+
 ## Commander lifecycle
 
 The Rulebook Commander is a rare result of competitive command culture, not a guaranteed reward.
@@ -466,7 +476,9 @@ Each selected partner receives one response event and one temporary opinion or i
 
 The public response choices are copy, study, ban, ridicule, and no action.
 
-The host receives no more than two visible foreign reports unless a human foreign office makes the choice directly, while the total validated response pool remains capped at three.
+Sweden receives one summary for the entire licence round after its third answer, or at programme closure if fewer replies arrived.
+The summary preserves the five outcome counts before dispatch, and every foreign player still receives at most one individual choice.
+Each resolver consumes its pending offer before rewards and rechecks the current host, respondent, war, and capitulation, so an expired popup cannot grant stale benefits or release a newer partner.
 
 Foreign countries do not receive Sweden's decision category, Reliance variable, staged ideas, missions, or evolution chain.
 
@@ -476,7 +488,7 @@ The AI licenses less as a subject (0.4) and when its sea lanes are closed in war
 Every government that ridiculed the cabinet is remembered, and if Sweden later ends a war with a favourable war score and no recent core loss during the programme, each receives Embarrassment over the Swedish Cabinet (political power gain -5% for 60 days) once.
 The four response opinion modifiers decay by one point a month.
 
-The foreign response is dispatched after the configured delay and rechecks the host, partner, pending flag, war state, and capitulation state before opening. The host receives a compact report event after the foreign response is resolved.
+The foreign response is dispatched after the configured delay and rechecks the host, partner, pending flag, war state, and capitulation state before opening. Accepted answers contribute to the single Swedish summary.
 The engine drops reply event `chaosx.nr24.40` if, in the day before it opens, its partner stops existing, capitulates or goes to war with Sweden. The 30-day maintenance therefore releases such a partner through `video_game_in_sweden_release_unreachable_foreign_partner`, which clears the partner's pending flag and the `video_game_in_sweden_foreign_partner` target with the same cleanup as the dispatch fallback (`video_game_in_sweden_release_foreign_partner`).
 Foreign Licenses then becomes available again while responses and partners remain. A response already sent stays counted, so the cap of three is never exceeded, and a released partner keeps `video_game_in_sweden_foreign_response_seen` and is not drawn again. A partner that can still answer is never touched.
 Each reply option clears the partner target through `video_game_in_sweden_clear_answering_partner`, which clears it only while it still names the answering government, so a late answer from a released partner cannot take the target from a newer partner whose reply is on its way.
@@ -495,13 +507,14 @@ The named probability scenarios are `P24-O1` through `P24-O4` in `P24_FINAL_OPEN
 
 The four scenarios cover a peaceful stable staff opening, a peaceful public opening, a wartime officer opening, and a severe emergency with supply and core-loss flags.
 
-The live HOI4 probability inspection resolved the three-option opening pool with no unresolved inputs.
+The archived probability inspection resolved the three-option opening pool at its recorded source revision.
+Those archived results do not certify subsequent route, incident, or AI changes.
 
 The named four-scenario evaluation produced bounded matrix evidence and reported 12 unresolved external or adapter inputs, so it is not presented as an exact normalized probability claim.
 
 The emergency source state makes controlled handling dominant and sets the commercial opening factor to zero, which is an intentional safety result rather than a hidden forced crisis.
 
-A bounded sweep across Chaos, stability, surrender progress, and army experience covers six additional safety points and preserves the same explicit uncertainty. The current-source control comparison reports zero comparison changes under the identical named matrix.
+A bounded sweep across Chaos, stability, surrender progress, and army experience covers six additional safety points and preserves the same explicit uncertainty. The historical current-source control comparison reports zero comparison changes under its identical named matrix.
 
 ## Achievements and persistence
 
@@ -548,11 +561,11 @@ Report `.50` is shown once per reassessment: the fixed one-year review and any e
 Restriction closes official leagues, removes score-based policy authority, and withdraws state-supported public facilities through distinct departmental receipts.
 The existing sixty-day proof period yields receipts at days twenty, forty, and sixty within the existing ninety-day mission.
 Its completion closes the category without granting Validated Wargaming Methods.
-Only a ninety-day Stability backlash remains, carried by an iconless finite modifier.
+Only a ninety-day Stability backlash remains, carried by a finite modifier with the national-craze icon.
 The closed host can still receive its final restriction report, and late callbacks cannot renew the result.
 
 Native civilian-office reservations use their actual action terms.
-Foreign licensing and establishment of the second ledger reserve an office for thirty days, separately from reply delivery and mission verification.
+Foreign licensing and establishment of an independent planning staff reserve an office for thirty days, separately from reply delivery and mission verification.
 National seasons begin with forty-five days and increase later reservations to sixty, seventy-five, then ninety days.
 Full and narrow audit rows select their respective regional and proof-period descriptions through one flag-based localisation getter.
 

@@ -160,6 +160,10 @@ defined_text = {
 defined_text = {
 	name = GetVideoGameActiveMission
 	text = {
+		trigger = { video_game_in_sweden_has_pending_mission_report = yes }
+		localization_key = video_game_mission_report_pending
+	}
+	text = {
 		trigger = { check_variable = { var = video_game_in_sweden_active_mission value = constant:video_game_in_sweden_value.mission_field_validation compare = equals } }
 		localization_key = video_game_mission_field_validation
 	}
@@ -644,4 +648,26 @@ defined_text = {
 		trigger = { always = yes }
 		localization_key = video_game_reassessment_victory_none
 	}
+}
+
+# Audit result text, scoped to the receiving Swedish country. A shorter
+# reassessment cannot offer another copy of the same one-time follow-up.
+defined_text = {
+	name = GetVideoGameAuditPartialResult
+	text = {
+		trigger = { has_country_flag = video_game_in_sweden_narrow_reality_audit_started }
+		localization_key = video_game_narrow_audit_partial_result_tt
+	}
+	text = { localization_key = video_game_audit_partial_result_tt }
+}
+
+# Audit result text, scoped to the receiving Swedish country. A shorter
+# reassessment cannot offer another copy of the same one-time follow-up.
+defined_text = {
+	name = GetVideoGameAuditFailedResult
+	text = {
+		trigger = { has_country_flag = video_game_in_sweden_narrow_reality_audit_started }
+		localization_key = video_game_narrow_audit_failed_result_tt
+	}
+	text = { localization_key = video_game_audit_failed_result_tt }
 }
