@@ -101,6 +101,14 @@ Record one mapping that covers both the reference and background:
 
 Compare full-window renders with the reference at corresponding aspect/scale and with the actual source background. Check composition, hierarchy, focal points, proportions, button placement, density, illustration clearance, borders, and intentional empty space. Generated gibberish, fake labels, impossible components, and non-HOI4 effects must be replaced with usable native design and recorded adaptations. No reference button, meter, list, selection, or dynamic label may survive merely as flattened art when it represents actual interaction/state.
 
+### State-piece visibility and qualification
+
+For a country-context state-piece map, qualify each piece by entering its exact state and then the owning country before checking package or identity conditions.
+Keep a conditional alternative's selection predicate separate from qualification: the stored founding anchor chooses which piece exists, while current ownership/control chooses its qualifying or unresolved appearance.
+A selected piece that loses control must remain visible as unresolved rather than disappear or switch to the alternative.
+When generating grouped controls from a manifest, emit every declared visibility helper regardless of whether the piece is marked required; required status controls the formation/count contract, not presentation visibility.
+Inspect the generated native `<element>_visible` binding as well as the manifest, since a correct manifest alone does not prove the runtime hook exists.
+
 ### Click regions, overlap, and state behavior
 
 - Match the effective hitbox to the visible intended control face after scaling and parent transforms; inspect edge and center coverage and separation between adjacent controls.
