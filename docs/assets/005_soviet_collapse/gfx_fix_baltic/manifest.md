@@ -1,6 +1,6 @@
-> Current parent status: 45 reviewed DDS textures installed and independently pixel-verified; all42 active focus canvases94x86. Legacy Warroom normal/shine aliases remain on Home Guard pending explicit exception to the user .gfx rule. Worker staging statements below are historical. Final MCP/live acceptance pending.
+> Current parent status: 50 reviewed DDS textures installed and independently pixel-verified; all42 active focus canvases94x86. Legacy Warroom normal/shine aliases remain on Home Guard pending explicit exception to the user .gfx rule. Worker staging statements below are historical. Final MCP/live acceptance pending.
 
-﻿# Event 005 Baltic Focus Icon Package Manifest
+# Event 005 Baltic Focus Icon Package Manifest
 
 **Status:** Assets are staged for parent review; runtime DDS, `.gfx`, focus, localisation, and gameplay files have not been modified.
 

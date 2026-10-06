@@ -1,6 +1,6 @@
-> Current parent status: 45 reviewed DDS textures installed and independently pixel-verified; all42 active focus canvases94x86. Legacy Warroom normal/shine aliases remain on Home Guard pending explicit exception to the user .gfx rule. Worker staging statements below are historical. Final MCP/live acceptance pending.
+> Current parent status: 50 reviewed DDS textures installed and independently pixel-verified; all42 active focus canvases94x86. Legacy Warroom normal/shine aliases remain on Home Guard pending explicit exception to the user .gfx rule. Worker staging statements below are historical. Final MCP/live acceptance pending.
 
-﻿# Baltic Event 005 GFX Handoff
+# Baltic Event 005 GFX Handoff
 
 The 45 final DDS candidates are staged under `docs/assets/005_soviet_collapse/gfx_fix_baltic/final_dds/gfx/interface/goals/005_soviet_collapse/`; they have not been copied into runtime `gfx/`. The source PNGs, processed PNGs, full DDS round trips, contact sheets, and row-level crosswalk remain in this package.
 
