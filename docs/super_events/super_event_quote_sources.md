@@ -70,3 +70,13 @@ This file records external quote sources used by Chaos Redux super-events when t
 - Verification source: <https://sacred-texts.com/bud/busc/busc24.htm> records the same verse in the public-domain `Buddhist Scriptures` selection.
 - Attribution confidence: High for the public-domain excerpt and its immediate verse context. Keep the visible attribution as `The Death of Buddha` because that is the source section title players can recognize, while this documentation records the Mahaparinibbana context.
 - Use note: Use this only for the terminal Final Silence branch. The flame image fits the world-end silence without turning the event into a spectacle.
+
+### Gods of Africa global credibility
+
+- Super-event ID: `118`.
+- Localisation key: `chaosx_super_event.118.q`.
+- Quote: "Princes shall come out of Egypt; Ethiopia shall soon stretch out her hands unto God."
+- Attribution: Psalm 68:31, King James Version (1611).
+- Verified wording: <https://www.biblegateway.com/passage/?search=Psalm%2068%3A31&version=KJV> and <https://www.blueletterbible.org/kjv/psa/68/31/>.
+- Archived public-domain source: Project Gutenberg #10, <http://web.archive.org/web/20260911033715/https://www.gutenberg.org/cache/epub/10/pg10.txt>.
+- Quote/remark research and Ethiopianist Pan-African context: `docs/super_events/012_africa/gods_global_credibility_research.md`.

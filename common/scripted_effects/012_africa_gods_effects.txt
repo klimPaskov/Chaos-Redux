@@ -797,6 +797,7 @@ gods_of_africa_refresh_strength = {
 		else = { set_variable = { gods_of_africa_strength_band = constant:gods_of_africa_band.extreme } }
 		set_variable = { global.gods_of_africa_strength = gods_of_africa_strength }
 		clr_country_flag = gods_of_africa_strength_immediate
+		gods_of_africa_emit_global_credibility_super_event = yes
 	}
 }
 
@@ -4752,6 +4753,7 @@ africa_gods_of_africa_commit_activation = {
 					news_event = { id = chaosx.nr12.617 }
 				}
 			}
+			gods_of_africa_emit_global_credibility_super_event = yes
 			set_temp_variable = { gods_of_africa_clock_kind = constant:gods_of_africa_recovery_clock.owner }
 			set_temp_variable = { gods_of_africa_clock_due = gods_of_africa_next_owner_tick_day }
 			set_temp_variable = { gods_of_africa_clock_days = constant:gods_of_africa_value.zero }
@@ -4768,12 +4770,8 @@ africa_gods_of_africa_commit_activation = {
 # Africa global-credibility super-event (agent decisions L17 and L37) fires once
 # per campaign while the Gods are active and the host is valid, when Strength
 # first reaches the global band, or at activation if Strength already does.
-# Slot 118 carries its title, quote, remark, description and image. It is not
-# called yet: its two call sites (the end of gods_of_africa_refresh_strength,
-# after the band is written, and the activation report in
-# africa_gods_of_africa_commit_activation) and the sound definition for audio id
-# 118 are added together once the licensed track is archived, so the
-# super-event never plays without its own music.
+# Slot 118 carries its complete title, quote, remark, image and licensed music.
+# Both Strength refresh and activation call this guarded owner effect.
 gods_of_africa_emit_global_credibility_super_event = {
 	if = {
 		limit = {

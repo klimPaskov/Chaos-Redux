@@ -1,6 +1,6 @@
-# Event 012 Gods of Africa global-credibility super-event: text and image record
+# Event 012 Gods of Africa global-credibility super-event
 
-Disposition: text, image, slot and trigger effect `implemented`; audio and the firing call `blocked` on the user's permission to download one licensed track (agent decisions L17, L31 and L37).
+Disposition: `implemented` in source, image and licensed audio wiring, with orchestrator playback and live firing checks pending.
 
 Prepared: 2026-10-05. All web sources were read on 2026-10-05. Rights notes are research findings, not legal advice.
 
@@ -14,7 +14,7 @@ It is a global-response role: the description shows several governments answerin
 | Field | Value |
 | --- | --- |
 | Display slot | `118` (`africa_world_super_event.gods_global_credibility_slot`), free in the 2026-10-05 scan of every `super_event_visible` getter and script-constant slot reservation (used or reserved: 1-3, 5-24, 49-53, 59-77, 82-87, 90-105, 108, 109, 111-117) |
-| Audio id | `118` (`africa_world_super_event.gods_global_credibility_audio`), free in the same scan of `sound/*.asset` (`chaosx_super_event_<id>_sound_*`); no sound definition exists yet |
+| Audio id | `118` (`africa_world_super_event.gods_global_credibility_audio`), free in the same scan of `sound/*.asset` (`chaosx_super_event_<id>_sound_*`); the base sound and six volume wrappers are installed in `sound/chaosx_sound.asset` |
 | Localisation | `chaosx_super_event.118.t`, `.q`, `.a`, `.d` in `localisation/english/012_africa_super_events_l_english.yml` |
 | Getters | slot 118 rows in `GetSuperEventImage`, `GetSuperEventTitle`, `GetSuperEventQuote`, `GetSuperEventRemark` and `GetSuperEventDesc` (`common/scripted_localisation/chaosx_scripted_localisation_super_events.txt`) |
 | Image sprite | `GFX_super_event_012_africa_gods_global_credibility` in `interface/012_africa_event_pictures.gfx`, texture `gfx/super_events/012_africa/super_event_012_africa_gods_global_credibility.dds` |
@@ -81,4 +81,23 @@ Prompt summary: a painted historical illustration in the style of the reference 
 
 ## Audio
 
-`blocked`. The candidate track, the checks required at archive time and the remaining wiring are recorded in `docs/plans/012_africa_plans/012_africa_gods_super_event_audio_candidate_2026-10-05.md`. No silent, duplicate, generated or synthesized cue is used, and nothing was downloaded.
+Selected: the complete 104.068481-second White House performance of *Nkosi Sikelel’ iAfrika* (Enoch Sontonga, 1897), performed by the United States military band and recorded by White House Television on 4 October 1994.
+The original FLAC is `docs/super_events/source_audio/012_africa/role_05_nkosi_sikelel_iafrika_white_house_1994_source.flac`, SHA-256 `469F76CBCF528EC9B01BA8F15BDEBE8EC5EB17C3C201EC0E1F570C61B291C2D7`.
+The runtime WAV is `sound/012_africa/super_event_118_gods_of_africa.wav`, SHA-256 `85D077D977C38D67159DE9B9663ABE4BA34A9451168DBFE16C203DF9C2F56F10`, stereo PCM16 44.1 kHz.
+It preserves the whole performance, applies -6.7 dB gain and 0.1/2-second qsin fades, and has -19 LUFS integrated loudness and -6.6 dBTP true peak.
+The cue's mean level (-22.6 dBFS) is within the existing Event 012 family (-22.4 to -19.9 dBFS), with a lower peak than those references.
+The complete 1:44 performance is an intentional duration choice within the skill's one to two minute range, replacing the earlier approximate 110 to 120-second target.
+
+The [audio-only source and rights record](https://commons.wikimedia.org/wiki/File:%22Nkosi_Sikelel%27_iAfrika%22_performed_at_the_White_House_in_1994.flac) separates the public-domain 1897 composition from the official U.S. government performance and recording.
+The [Clinton Presidential Library finding aid](https://www.clintonlibrary.gov/assets/Documents/Finding%20Aids/2009/2009-1401-F%20AV%20FA.pdf) states unrestricted access and use and public-domain government material.
+Required credit is: "Courtesy; William J. Clinton Presidential Library."
+The [NARA permissions guide](https://www.archives.gov/research/motion-pictures/permissions) explains the U.S. government-work status and possible foreign-jurisdiction rights.
+This record does not describe that federal status as a worldwide Creative Commons waiver.
+The primary source/rights, metadata, rejected candidates and edit details are preserved in `docs/plans/012_africa_plans/subagent_handoffs/takeover_super_audio_2026-10-06.md`.
+
+The unique base definition is `chaosx_super_event_118_gods_of_africa_track`.
+Its six settings-aware wrappers are `chaosx_super_event_118_sound_0_5`, `_1_0`, `_1_5`, `_2_0`, `_2_5` and `_3_0` in the Effects category.
+Both Strength refresh and activation call the one-time emitter.
+The Event 012 presenter selects audio ID 118 and uses `play_current_super_event_audio`, which calls the existing settings-aware sound helper and respects mute.
+The canonical catalogue row in `music/chaosx_music_track_list.html` records slot/audio ID 118, attribution, source and final hashes.
+No audible audition was performed by the agents, and the exact in-game playback check remains in the takeover status report.

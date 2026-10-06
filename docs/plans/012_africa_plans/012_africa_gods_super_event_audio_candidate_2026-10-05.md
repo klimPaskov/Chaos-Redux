@@ -1,6 +1,6 @@
 # Gods of Africa global-credibility super-event: audio candidate for user approval
 
-Disposition: `blocked` on the user's permission to download one track (agent decisions L5, L17 and L31).
+Disposition: `superseded` by `docs/super_events/012_africa/gods_global_credibility_research.md` and the 2026-10-06 audio handoff. The current finish assignment authorizes source acquisition, and the complete source/format package and both firing call sites are installed. Earlier permission and wiring statements below are retained historical research state.
 
 Prepared: 2026-10-05, by web research only. Nothing was downloaded, archived, converted or wired.
 
