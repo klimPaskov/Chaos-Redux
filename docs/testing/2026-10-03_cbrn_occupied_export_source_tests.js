@@ -2,7 +2,30 @@
 // Native stock/PP/scopes and named context fixtures are explicit model inputs.
 const fs = require('node:fs'), path = require('node:path'), assert = require('node:assert/strict'), crypto = require('node:crypto');
 const core = require('../plans/026_black_friday_plans/subagent_handoffs/exact_quote_source_tests.js');
-const { VM, root, S, ticks, parse, definitions, constants, helperOutputs } = core;
+const { VM, root, S, ticks, definitions, constants, helperOutputs } = core;
+// The owned protection file also contains native advisor-token lists. Accept
+// bare list members while preserving operator and block parsing for the VM.
+function parse(source) {
+  const tokens = [...source.matchAll(/#[^\r\n]*|"[^"\r\n]*"|[{}=<>]|[^\s{}=<>#]+/g)]
+    .filter(m => !m[0].startsWith('#')).map(m => m[0]);
+  let index = 0;
+  function body(nested = false) {
+    const nodes = [];
+    while (index < tokens.length && tokens[index] !== '}') {
+      const key = tokens[index++];
+      let op = null, value = null;
+      if (tokens[index] && ['=', '<', '>'].includes(tokens[index])) {
+        op = tokens[index++]; value = tokens[index++];
+        assert.notEqual(value, undefined, `missing value: ${key}`);
+        if (value === '{') value = body(true);
+      }
+      nodes.push({ key, op, value });
+    }
+    if (nested) assert.equal(tokens[index++], '}');
+    return nodes;
+  }
+  const result = body(); assert.equal(index, tokens.length); return result;
+}
 const sha = value => crypto.createHash('sha256').update(value).digest('hex');
 const sources = new Map(core.sources), selected = new Set(), inspected = new Set(), instances = [], localisations = new Map();
 const vmFile = 'docs/plans/026_black_friday_plans/subagent_handoffs/exact_quote_source_tests.js', vmHash = sha(fs.readFileSync(path.join(root, vmFile)));

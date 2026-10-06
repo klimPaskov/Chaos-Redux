@@ -122,7 +122,7 @@ The complete required families are:
 - designers: six mapped CBRN MIO families
 - UI: window/background/header, five tab-state families, meters, severity frames, attribution markers, operation cards, warning overlays
 - animation: readiness seal, Severe/Catastrophic warning border, operation-preparation indicator, each with real frames and static fallback
-- achievements: completed, grey, and ineligible 64x64 assets for the eleven supported achievements; four unsupported proposals remain archive-only and unregistered
+- achievements: thirteen active definitions with completed, grey, and ineligible 64x64 assets; No Wind Is Friendly and Unbroken Supply Corridor remain accepted requirements blocked by missing exact army outcomes
 
 Chemical special-project prototype rewards use the exact, already-registered agent project icons `GFX_sp_sarin_bomb`, `GFX_sp_soman_bomb`, `GFX_sp_malodor_bomb`, and `GFX_sp_aphrodisiac_bomb`. They remain on the special-project project-icon surface and do not replace the preserved raid icons under `gfx/interface/military_raids/`.
 

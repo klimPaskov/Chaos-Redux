@@ -2,7 +2,7 @@
 # CHAOS REDUX - CBRN ACHIEVEMENT RECEIPTS
 # ============================================================================
 # Overview:
-# - Records campaign-performance proof for the eleven supported Chaos Warfare
+# - Records campaign-performance proof for the thirteen supported Chaos Warfare
 #   achievements.
 # - Every helper is called by an existing exact action, state transition,
 #   headquarters commitment, protection refresh, facility transaction, or
@@ -40,6 +40,19 @@ cbrn_achievement_refresh_core_coverage_readiness = {
 # paths. The reserve ratio is measured against deployed mobilisation need, not
 # against a guessed national population.
 cbrn_achievement_record_country_protection_snapshot = {
+	# Existing bounded protection refreshes check the army throughout a
+	# chemical war. Dropping below the protection standard breaks the record.
+	if = {
+		limit = {
+			has_country_flag = cbrn_achievement_start_country_eligible
+			check_variable = { cbrn_military_respiratory_protection < constant:cbrn_achievement_threshold.high_military_protection }
+			any_enemy_country = {
+				is_major = yes
+				PREV = { has_country_flag = cbrn_achievement_chemical_war_@PREV }
+			}
+		}
+		set_country_flag = cbrn_achievement_unprotected_chemical_exposure_history
+	}
 	if = {
 		limit = { NOT = { has_variable = cbrn_achievement_max_military_protection } }
 		set_variable = { cbrn_achievement_max_military_protection = constant:cbrn_achievement_value.zero }
@@ -280,14 +293,6 @@ cbrn_achievement_record_chemical_action = {
 		set_country_flag = cbrn_achievement_covert_strategic_result_history
 	}
 	if = {
-		limit = { check_variable = { var = cbrn_action_delivery_route value = constant:cbrn_delivery_route.nerve_suppression compare = equals } }
-		set_country_flag = cbrn_achievement_nerve_attack_history
-		if = { limit = { NOT = { has_variable = cbrn_achievement_nerve_military_death_fraction } } set_variable = { cbrn_achievement_nerve_military_death_fraction = constant:cbrn_math.zero } }
-		add_to_variable = { cbrn_achievement_nerve_military_death_fraction = cbrn_action_military_death_fraction }
-		if = { limit = { NOT = { has_variable = cbrn_achievement_nerve_civilian_deaths } } set_variable = { cbrn_achievement_nerve_civilian_deaths = constant:cbrn_math.zero } }
-		add_to_variable = { cbrn_achievement_nerve_civilian_deaths = cbrn_action_civilian_deaths }
-	}
-	if = {
 		limit = { check_variable = { var = cbrn_action_severity value = constant:cbrn_operation_severity.doomsday compare = equals } }
 		set_country_flag = cbrn_achievement_doomsday_use_history
 		set_country_flag = cbrn_achievement_strategic_civilian_attack_history
@@ -339,6 +344,19 @@ cbrn_achievement_record_chemical_episode = {
 		}
 		event_target:cbrn_action_victim_country = {
 			set_country_flag = cbrn_achievement_enemy_confirmed_chemical_use
+			# Bind confirmed wartime exposure to the major opponents present
+			# in this war, so an earlier attack cannot count in a later war.
+			if = {
+				limit = {
+					has_country_flag = cbrn_achievement_start_country_eligible
+					check_variable = { var = cbrn_action_attribution_state value = constant:cbrn_attribution_state.confirmed compare = equals }
+					event_target:cbrn_action_actor = { has_war_with = PREV }
+				}
+				every_enemy_country = {
+					limit = { is_major = yes }
+					PREV = { set_country_flag = cbrn_achievement_chemical_war_@PREV }
+				}
+			}
 			if = {
 				limit = {
 					check_variable = {
@@ -384,23 +402,32 @@ cbrn_achievement_record_chemical_episode = {
 				}
 				set_country_flag = cbrn_achievement_chemical_attack_repelled_history
 			}
-		}
-	}
-	if = {
-		limit = { has_event_target = cbrn_action_actor }
-		event_target:cbrn_action_actor = {
+			# Every received release below the high military protection
+			# standard breaks the protected-army record for good.
 			if = {
 				limit = {
-					OR = {
-						check_variable = { var = cbrn_action_delivery_route value = constant:cbrn_delivery_route.chemical_air_raid compare = equals }
-						check_variable = { var = cbrn_action_delivery_route value = constant:cbrn_delivery_route.strategic_chemical_raid compare = equals }
+					has_country_flag = cbrn_achievement_start_country_eligible
+					check_variable = { var = cbrn_action_military_protection_proof value = constant:cbrn_proof.supplied compare = equals }
+					check_variable = {
+						var = cbrn_action_military_effective_protection
+						value = constant:cbrn_achievement_threshold.high_military_protection
+						compare = less_than
 					}
 				}
-				if = { limit = { NOT = { has_variable = cbrn_achievement_own_chemical_air_contribution } } set_variable = { cbrn_achievement_own_chemical_air_contribution = constant:cbrn_math.zero } }
-				add_to_variable = { cbrn_achievement_own_chemical_air_contribution = cbrn_action_contamination_points }
+				set_country_flag = cbrn_achievement_unprotected_chemical_exposure_history
 			}
 		}
 	}
+	# Every accepted release adds its contamination to the actor's own
+	# record, whatever the delivery route.
+	if = {
+		limit = { has_event_target = cbrn_action_actor }
+		event_target:cbrn_action_actor = {
+			if = { limit = { NOT = { has_variable = cbrn_achievement_own_chemical_air_contribution } } set_variable = { cbrn_achievement_own_chemical_air_contribution = constant:cbrn_math.zero } }
+			add_to_variable = { cbrn_achievement_own_chemical_air_contribution = cbrn_action_contamination_points }
+		}
+	}
+	cbrn_achievement_record_nerve_episode = yes
 }
 
 # Country scope. Called once for each actual deliberate biological seed, before
@@ -415,6 +442,10 @@ cbrn_achievement_record_biological_operation = {
 		limit = { check_variable = { var = bio_seed_route value = constant:bio_lifecycle_route.strategic_raid compare = equals } NOT = { has_country_flag = cbrn_achievement_operation_biological_raid_history } }
 		set_country_flag = cbrn_achievement_operation_biological_raid_history
 		add_to_variable = { cbrn_achievement_operation_type_count = constant:cbrn_achievement_value.one }
+	}
+	if = {
+		limit = { check_variable = { var = bio_seed_route value = constant:bio_lifecycle_route.strategic_raid compare = equals } }
+		set_country_flag = cbrn_achievement_strategic_civilian_attack_history
 	}
 	if = {
 		limit = { check_variable = { var = bio_seed_route value = constant:bio_lifecycle_route.battlefield_dissemination compare = equals } NOT = { has_country_flag = cbrn_achievement_operation_biological_battlefield_history } }
@@ -480,14 +511,6 @@ cbrn_achievement_record_hq_commitment = {
 			add_to_variable = { cbrn_achievement_hq_commitment_count = constant:cbrn_achievement_value.one }
 			set_country_flag = cbrn_achievement_prepared_hq_history
 		}
-	}
-	if = {
-		limit = { check_variable = { var = cbrn_hq_operation_code value = constant:cbrn_hq_operation.decontamination_corridor compare = equals } }
-		OWNER = { set_country_flag = cbrn_achievement_decon_corridor_prepared_history }
-	}
-	if = {
-		limit = { check_variable = { var = cbrn_hq_operation_code value = constant:cbrn_hq_operation.mass_antidote_response compare = equals } }
-		OWNER = { set_country_flag = cbrn_achievement_mass_antidote_response_history }
 	}
 }
 
@@ -669,53 +692,257 @@ cbrn_achievement_record_stockpile_destruction = {
 	set_country_flag = cbrn_achievement_program_dismantled_history
 }
 
-# State scope. Called by the accepted nerve-suppression state receipt.
-cbrn_achievement_record_nerve_response = {
-	set_state_flag = cbrn_achievement_nerve_attack_state_history
-	if = { limit = { OWNER = { exists = yes } } OWNER = { set_country_flag = cbrn_achievement_nerve_attack_history } }
+# ---------------------------------------------------------------------------
+# The Antidote Arrived: one nerve-agent containment episode per state
+# ---------------------------------------------------------------------------
+
+# State scope (the attacked state). Called from the victim-side chemical
+# episode record. A nerve-agent release opens a fresh containment episode
+# on a state the eligible victim controls opens an episode when military and
+# civilian protection both meet the high standard. Medical and decontamination
+# cover already in place when the agent lands is marked at once. Every later
+# nerve release on the same state must meet the same protection standard, and
+# its deaths are added to the episode, which fails at either loss limit.
+cbrn_achievement_record_nerve_episode = {
 	if = {
 		limit = {
-			OR = {
-				check_variable = { var = cbrn_action_military_effective_protection value = constant:cbrn_achievement_threshold.high_military_protection compare = greater_than_or_equals }
-				check_variable = { var = cbrn_action_civilian_effective_protection value = constant:cbrn_achievement_threshold.high_military_protection compare = greater_than_or_equals }
+			check_variable = { var = cbrn_action_agent_class value = constant:cbrn_agent_class.nerve compare = equals }
+			has_event_target = cbrn_action_victim_country
+			event_target:cbrn_action_victim_country = {
+				exists = yes
+				has_country_flag = cbrn_achievement_start_country_eligible
 			}
+			CONTROLLER = { tag = event_target:cbrn_action_victim_country }
 		}
-		set_state_flag = cbrn_achievement_nerve_advanced_protection_history
-		if = { limit = { OWNER = { exists = yes } } OWNER = { set_country_flag = cbrn_achievement_nerve_advanced_protection_history } }
-	}
-	if = {
-		limit = {
-			has_variable = cbrn_occupation_paid_decontamination_equipment
-			check_variable = {
-				var = cbrn_occupation_paid_decontamination_equipment
-				value = constant:cbrn_math.zero
-				compare = greater_than
+		if = {
+			limit = {
+				has_state_flag = cbrn_achievement_nerve_episode_open
+				var:cbrn_achievement_nerve_episode_country = { NOT = { tag = event_target:cbrn_action_victim_country } }
 			}
+			cbrn_achievement_clear_nerve_episode = yes
 		}
-		set_state_flag = cbrn_achievement_nerve_decontamination_history
-		if = { limit = { OWNER = { exists = yes } } OWNER = { set_country_flag = cbrn_achievement_nerve_decontamination_history } }
-	}
-	if = {
-		limit = { OWNER = { exists = yes } }
-		OWNER = {
+		set_temp_variable = { cbrn_achievement_nerve_meets_standard = constant:cbrn_achievement_value.zero }
+		if = {
+			limit = {
+				check_variable = { var = cbrn_action_military_protection_proof value = constant:cbrn_proof.supplied compare = equals }
+				check_variable = { var = cbrn_action_civilian_protection_proof value = constant:cbrn_proof.supplied compare = equals }
+				check_variable = {
+					var = cbrn_action_military_effective_protection
+					value = constant:cbrn_achievement_threshold.high_military_protection
+					compare = greater_than_or_equals
+				}
+				check_variable = {
+					var = cbrn_action_civilian_effective_protection
+					value = constant:cbrn_achievement_threshold.high_military_protection
+					compare = greater_than_or_equals
+				}
+			}
+			set_temp_variable = { cbrn_achievement_nerve_meets_standard = constant:cbrn_achievement_value.one }
+		}
+		if = {
+			limit = {
+				NOT = { has_state_flag = cbrn_achievement_nerve_episode_open }
+				check_variable = { var = cbrn_achievement_nerve_meets_standard value = constant:cbrn_achievement_value.one compare = equals }
+				NOT = { has_state_flag = cbrn_achievement_nerve_episode_failed }
+				NOT = { has_global_flag = settings_chaos_deaths_disabled }
+				event_target:cbrn_action_victim_country = {
+					has_tech = advanced_gas_masks
+					OR = {
+						check_variable = { cbrn_military_issued_mask_advanced > constant:cbrn_math.zero }
+						check_variable = { cbrn_military_issued_mask_sealed > constant:cbrn_math.zero }
+					}
+				}
+				OR = {
+					check_variable = { cbrn_civilian_mask_advanced_crates > constant:cbrn_math.zero }
+					check_variable = { cbrn_civilian_mask_sealed_crates > constant:cbrn_math.zero }
+				}
+				check_variable = { cbrn_action_contamination_points > constant:cbrn_math.zero }
+			}
+			set_state_flag = cbrn_achievement_nerve_episode_open
+			set_variable = { cbrn_achievement_nerve_episode_country = event_target:cbrn_action_victim_country }
+			set_variable = { cbrn_achievement_nerve_episode_day = global.num_days }
+			set_variable = { cbrn_achievement_nerve_episode_civilian_deaths = constant:cbrn_math.zero }
+			set_variable = { cbrn_achievement_nerve_episode_military_fraction = constant:cbrn_math.zero }
 			if = {
 				limit = {
 					OR = {
-						cbrn_designer_has_antidote_production = yes
-						has_tech = mobile_cbrn_hospitals
-						check_variable = { var = cbrn_medical_capacity value = constant:cbrn_achievement_threshold.minimum_medical_capacity compare = greater_than_or_equals }
+						has_state_flag = cbrn_hospitals_utilities_secured
+						event_target:cbrn_action_victim_country = { cbrn_achievement_country_has_active_antidote_response = yes }
 					}
 				}
-				set_country_flag = cbrn_achievement_nerve_medical_response_history
+				set_state_flag = cbrn_achievement_nerve_episode_medical
+			}
+			if = {
+				limit = {
+					OR = {
+						check_variable = {
+							var = cbrn_civilian_decontamination_protection
+							value = constant:cbrn_achievement_threshold.nerve_decontamination_cover
+							compare = greater_than_or_equals
+						}
+						event_target:cbrn_action_victim_country = {
+							check_variable = {
+								var = cbrn_military_decontamination_coverage
+								value = constant:cbrn_achievement_threshold.nerve_decontamination_cover
+								compare = greater_than_or_equals
+							}
+						}
+					}
+				}
+				set_state_flag = cbrn_achievement_nerve_episode_decontaminated
+			}
+		}
+		if = {
+			limit = {
+				has_state_flag = cbrn_achievement_nerve_episode_open
+				check_variable = { cbrn_chemical_contamination_class > constant:cbrn_contamination_class.serious }
+			}
+			set_state_flag = cbrn_achievement_nerve_episode_severe
+		}
+		if = {
+			limit = { has_state_flag = cbrn_achievement_nerve_episode_open }
+			if = {
+				limit = { check_variable = { var = cbrn_achievement_nerve_meets_standard value = constant:cbrn_achievement_value.zero compare = equals } }
+				set_state_flag = cbrn_achievement_nerve_episode_failed
+				cbrn_achievement_clear_nerve_episode = yes
 			}
 		}
 	}
+	# Every chemical release during this episode counts, including a later
+	# release of another agent. A failed episode cannot restart until clean.
+	if = {
+		limit = { has_state_flag = cbrn_achievement_nerve_episode_open }
+		add_to_variable = { cbrn_achievement_nerve_episode_civilian_deaths = cbrn_action_civilian_deaths }
+		add_to_variable = { cbrn_achievement_nerve_episode_military_fraction = cbrn_action_military_death_fraction }
+		cbrn_achievement_check_nerve_episode_losses = yes
+	}
+}
+
+# State scope. Fails an open episode once its civilian deaths or its summed
+# military loss fraction reaches the strict nerve-agent limit.
+cbrn_achievement_check_nerve_episode_losses = {
 	if = {
 		limit = {
-			check_variable = { var = cbrn_action_military_death_fraction value = constant:cbrn_achievement_threshold.low_nerve_military_loss_fraction compare = less_than }
-			check_variable = { var = cbrn_action_civilian_deaths value = constant:cbrn_achievement_threshold.low_nerve_civilian_deaths compare = less_than }
+			has_state_flag = cbrn_achievement_nerve_episode_open
+			OR = {
+				check_variable = {
+					var = cbrn_achievement_nerve_episode_civilian_deaths
+					value = constant:cbrn_achievement_threshold.low_nerve_civilian_deaths
+					compare = greater_than_or_equals
+				}
+				check_variable = {
+					var = cbrn_achievement_nerve_episode_military_fraction
+					value = constant:cbrn_achievement_threshold.low_nerve_military_loss_fraction
+					compare = greater_than_or_equals
+				}
+			}
 		}
-		set_state_flag = cbrn_achievement_nerve_low_death_history
-		if = { limit = { OWNER = { exists = yes } } OWNER = { set_country_flag = cbrn_achievement_nerve_low_death_history } }
+		set_state_flag = cbrn_achievement_nerve_episode_failed
+		cbrn_achievement_clear_nerve_episode = yes
 	}
+}
+
+# State scope. Called by the continuing-death event after it has registered
+# this period's civilian deaths in chaos_deaths_change.
+cbrn_achievement_record_nerve_episode_deaths = {
+	if = {
+		limit = {
+			has_state_flag = cbrn_achievement_nerve_episode_open
+			check_variable = { chaos_deaths_change > constant:cbrn_math.zero }
+		}
+		add_to_variable = { cbrn_achievement_nerve_episode_civilian_deaths = chaos_deaths_change }
+		cbrn_achievement_check_nerve_episode_losses = yes
+	}
+}
+
+# State scope. Called when Protect Hospitals and Utilities takes effect in the
+# state; it is the medical response of an open episode there.
+cbrn_achievement_record_state_medical_response = {
+	if = {
+		limit = { has_state_flag = cbrn_achievement_nerve_episode_open }
+		set_state_flag = cbrn_achievement_nerve_episode_medical
+	}
+}
+
+# State scope. Called after a corridor deployment or a sponsored cleanup has
+# removed contamination from the state; the caller leaves the remaining
+# contamination on the state itself. Cleaning the state to
+# zero contains the episode at once.
+cbrn_achievement_record_state_decontamination = {
+	if = {
+		limit = { has_state_flag = cbrn_achievement_nerve_episode_open }
+		set_state_flag = cbrn_achievement_nerve_episode_decontaminated
+		if = {
+			limit = { NOT = { check_variable = { cbrn_chemical_contamination > constant:cbrn_math.zero } } }
+			cbrn_achievement_try_contain_nerve_episode = yes
+		}
+	}
+}
+
+# Character scope. Called when a Mass Antidote Response order becomes active.
+cbrn_achievement_record_antidote_response_activation = {
+	OWNER = { set_variable = { cbrn_achievement_last_antidote_response_day = global.num_days } }
+}
+
+# State scope. Called when the state's chemical contamination is gone: at
+# contamination expiry, or when a cleanup removes the last of it. The episode
+# is contained only if the country that opened it still controls the state,
+# the state was decontaminated, and a medical response was in place at the
+# release or began before now. The episode closes either way.
+cbrn_achievement_try_contain_nerve_episode = {
+	if = {
+		limit = { NOT = { check_variable = { cbrn_chemical_contamination > constant:cbrn_math.zero } } }
+		clr_state_flag = cbrn_achievement_nerve_episode_failed
+	}
+	if = {
+		limit = {
+			has_state_flag = cbrn_achievement_nerve_episode_open
+			has_variable = cbrn_achievement_nerve_episode_country
+		}
+		var:cbrn_achievement_nerve_episode_country = { save_event_target_as = cbrn_achievement_nerve_episode_owner }
+		if = {
+			limit = {
+				event_target:cbrn_achievement_nerve_episode_owner = { exists = yes }
+				CONTROLLER = { tag = event_target:cbrn_achievement_nerve_episode_owner }
+				has_state_flag = cbrn_achievement_nerve_episode_decontaminated
+				has_state_flag = cbrn_achievement_nerve_episode_severe
+				NOT = { check_variable = { cbrn_chemical_contamination > constant:cbrn_math.zero } }
+			}
+			set_temp_variable = { cbrn_achievement_nerve_episode_day_local = cbrn_achievement_nerve_episode_day }
+			set_temp_variable = { cbrn_achievement_nerve_medical_ready = constant:cbrn_achievement_value.zero }
+			if = {
+				limit = { has_state_flag = cbrn_achievement_nerve_episode_medical }
+				set_temp_variable = { cbrn_achievement_nerve_medical_ready = constant:cbrn_achievement_value.one }
+			}
+			event_target:cbrn_achievement_nerve_episode_owner = {
+				if = {
+					limit = {
+						has_variable = cbrn_achievement_last_antidote_response_day
+						check_variable = {
+							var = cbrn_achievement_last_antidote_response_day
+							value = cbrn_achievement_nerve_episode_day_local
+							compare = greater_than_or_equals
+						}
+					}
+					set_temp_variable = { cbrn_achievement_nerve_medical_ready = constant:cbrn_achievement_value.one }
+				}
+				if = {
+					limit = { check_variable = { var = cbrn_achievement_nerve_medical_ready value = constant:cbrn_achievement_value.one compare = equals } }
+					set_country_flag = cbrn_achievement_nerve_attack_contained_history
+				}
+			}
+		}
+		cbrn_achievement_clear_nerve_episode = yes
+	}
+}
+
+cbrn_achievement_clear_nerve_episode = {
+	clr_state_flag = cbrn_achievement_nerve_episode_open
+	clr_state_flag = cbrn_achievement_nerve_episode_medical
+	clr_state_flag = cbrn_achievement_nerve_episode_severe
+	clr_state_flag = cbrn_achievement_nerve_episode_decontaminated
+	clear_variable = cbrn_achievement_nerve_episode_country
+	clear_variable = cbrn_achievement_nerve_episode_day
+	clear_variable = cbrn_achievement_nerve_episode_civilian_deaths
+	clear_variable = cbrn_achievement_nerve_episode_military_fraction
 }

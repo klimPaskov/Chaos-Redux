@@ -219,3 +219,39 @@ cbrn_achievement_first_user_pays_is_complete = {
 	NOT = { has_country_flag = cbrn_achievement_strategic_civilian_attack_history }
 	NOT = { has_country_flag = cbrn_achievement_doomsday_use_history }
 }
+
+# Country scope. True while any of the country's generals holds an active
+# Mass Antidote Response order.
+cbrn_achievement_country_has_active_antidote_response = {
+	any_army_leader = {
+		has_trait = cbrn_hq_active_antidote_response
+	}
+}
+
+cbrn_achievement_air_still_breathable_is_complete = {
+	cbrn_achievement_human_campaign_is_eligible = yes
+	has_country_flag = cbrn_achievement_survived_major_war_after_chemical_attack_history
+	NOT = { has_country_flag = cbrn_achievement_unprotected_chemical_exposure_history }
+	has_variable = cbrn_military_respiratory_protection
+	check_variable = {
+		var = cbrn_military_respiratory_protection
+		value = constant:cbrn_achievement_threshold.high_military_protection
+		compare = greater_than_or_equals
+	}
+	OR = {
+		NOT = { has_variable = cbrn_achievement_own_chemical_air_contribution }
+		check_variable = {
+			var = cbrn_achievement_own_chemical_air_contribution
+			value = constant:cbrn_achievement_threshold.strict_air_contribution_points
+			compare = less_than
+		}
+	}
+	NOT = { has_country_flag = cbrn_achievement_offensive_first_use_history }
+	NOT = { has_country_flag = cbrn_achievement_strategic_civilian_attack_history }
+	NOT = { has_country_flag = cbrn_achievement_doomsday_use_history }
+}
+
+cbrn_achievement_antidote_arrived_is_complete = {
+	cbrn_achievement_human_campaign_is_eligible = yes
+	has_country_flag = cbrn_achievement_nerve_attack_contained_history
+}

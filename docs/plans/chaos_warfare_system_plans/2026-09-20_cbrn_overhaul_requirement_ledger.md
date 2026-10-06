@@ -268,3 +268,15 @@ The final-source matching 27-scenario occupied comparison after the STATE correc
 Its partial 54 rows retain ten false/44 unresolved eligibility rows, 66 unresolved items, and 54 `UNRESOLVED_ANALYSIS_INTRODUCED` evaluation-coverage flags; returned comparison evidence does not resolve those inputs.
 Native exact payment/refund/shipment, decision-row presentation, full owner order, automatic quarantine recovery, and full-goal acceptance remain unresolved; no fresh clean error log or live completion is claimed.
 The [documentation reconciliation handoff](subagent_handoffs/2026-10-03_cbrn_occupied_export_documentation_reconciliation.md) records affected paragraphs, acceptance/evidence dispositions, and remaining contradictions for parent review.
+
+## 2026-10-06 achievement and unit-presentation reconciliation
+
+Disposition: implemented source with engine acceptance pending for The Air Is Still Breathable and The Antidote Arrived.
+The tracking and exact condition contract are in `docs/systems/cbrn_warfare/cbrn_achievements.md` and the takeover decision note.
+The current active achievement set has thirteen definitions, localisation families and sprite triplets.
+Disposition: blocked for No Wind Is Friendly and Unbroken Supply Corridor, because exact forecast failure/affected-army recovery and assigned-army supply/objective proof remain absent.
+The inherited No Wind candidate is explicitly rejected as a weaker proxy, preserved as evidence, and removed from loaded source.
+This is not an accepted removal or exception to either named achievement.
+The unit category names the three Armored Delivery Detachments, retaining all doctrine modifier values.
+Orphan non-support chemical-tank sprites and their unreferenced textures are retired with an exact inventory.
+The test-harness documentation states the current installed roster of 79 units, including 55 combat and 24 support definitions.

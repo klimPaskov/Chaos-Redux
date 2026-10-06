@@ -1,0 +1,100 @@
+# Rejected inherited candidate. Evidence only, never a loaded game script.
+# No exact forecast-failure or army-recovery proof. See agent_decisions_2026-10-05.md.
+# ---------------------------------------------------------------------------
+# No Wind Is Friendly: a prepared release drifting onto the actor's divisions
+# ---------------------------------------------------------------------------
+
+# Country scope (the actor). Called at the end of the accepted chemical action
+# record, after the shared dispatcher has applied the friendly share of the
+# release to the actor's and its faction's divisions in the target state.
+# The drift is recorded only for a verified native land raid launched while an
+# Operations Section is in the field, and only when the actor's own divisions
+# were in the state to take it. The action count stored with it lets the
+# capture check prove that no other chemical attack followed.
+cbrn_achievement_record_friendly_exposure = {
+	if = {
+		limit = {
+			has_country_flag = cbrn_achievement_start_country_eligible
+			cbrn_achievement_action_is_verified_native_land_raid = yes
+			cbrn_country_has_deployed_chemical_hq_section = yes
+			OR = {
+				check_variable = { cbrn_friendly_strength_damage > constant:cbrn_math.zero }
+				check_variable = { cbrn_friendly_org_damage > constant:cbrn_math.zero }
+			}
+			has_event_target = cbrn_action_actor
+			has_event_target = cbrn_action_target_state
+			event_target:cbrn_action_target_state = {
+				event_target:cbrn_action_actor = { divisions_in_state = { state = PREV size > 0 } }
+			}
+		}
+		set_temp_variable = { cbrn_achievement_exposure_action_count = cbrn_chemical_action_count }
+		event_target:cbrn_action_target_state = {
+			set_state_flag = cbrn_achievement_friendly_exposure_open
+			set_variable = { cbrn_achievement_friendly_exposure_actor = event_target:cbrn_action_actor }
+			set_variable = { cbrn_achievement_friendly_exposure_day = global.num_days }
+			set_variable = { cbrn_achievement_friendly_exposure_action_count = cbrn_achievement_exposure_action_count }
+		}
+	}
+}
+
+# State scope. Called from on_state_control_changed for the state that changed
+# hands; ROOT is the new controller. The country whose release drifted back
+# earns the recovery record when it takes the state itself within the
+# recovery window and its chemical action count has not moved since the
+# drift. Control passing to anyone not at war with that country closes the
+# record without credit.
+cbrn_achievement_resolve_friendly_exposure_capture = {
+	if = {
+		limit = {
+			has_state_flag = cbrn_achievement_friendly_exposure_open
+			has_variable = cbrn_achievement_friendly_exposure_actor
+		}
+		if = {
+			limit = {
+				var:cbrn_achievement_friendly_exposure_actor = {
+					exists = yes
+					tag = ROOT
+				}
+			}
+			set_temp_variable = { cbrn_achievement_exposure_action_count = cbrn_achievement_friendly_exposure_action_count }
+			set_temp_variable = { cbrn_achievement_exposure_deadline = cbrn_achievement_friendly_exposure_day }
+			add_to_temp_variable = { cbrn_achievement_exposure_deadline = constant:cbrn_achievement_threshold.no_wind_recovery_days }
+			ROOT = {
+				if = {
+					limit = {
+						has_variable = cbrn_chemical_action_count
+						check_variable = {
+							var = cbrn_chemical_action_count
+							value = cbrn_achievement_exposure_action_count
+							compare = equals
+						}
+						check_variable = {
+							var = cbrn_achievement_exposure_deadline
+							value = global.num_days
+							compare = greater_than_or_equals
+						}
+					}
+					set_country_flag = cbrn_achievement_friendly_exposure_recovered_history
+				}
+			}
+			cbrn_achievement_clear_friendly_exposure = yes
+		}
+		else_if = {
+			limit = {
+				OR = {
+					var:cbrn_achievement_friendly_exposure_actor = { exists = no }
+					var:cbrn_achievement_friendly_exposure_actor = { NOT = { has_war_with = ROOT } }
+				}
+			}
+			cbrn_achievement_clear_friendly_exposure = yes
+		}
+	}
+}
+
+cbrn_achievement_clear_friendly_exposure = {
+	clr_state_flag = cbrn_achievement_friendly_exposure_open
+	clear_variable = cbrn_achievement_friendly_exposure_actor
+	clear_variable = cbrn_achievement_friendly_exposure_day
+	clear_variable = cbrn_achievement_friendly_exposure_action_count
+}
+

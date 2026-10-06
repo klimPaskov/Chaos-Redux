@@ -1,9 +1,10 @@
 # ============================================================================
 # CHAOS REDUX - CBRN ACHIEVEMENT ON-ACTION RECEIPTS
 # ============================================================================
-# The only native world relation used here is capitulation. It records a major
-# war victory and the defeat of a recorded first user for the winning country,
-# while preserving an exact defeat disqualifier for compliance achievements.
+# Capitulation records a major war victory and the defeat of a recorded first
+# user for the winning country, a defeat disqualifier for compliance
+# achievements, and the survival of every eligible enemy of a capitulating
+# major that had suffered a confirmed chemical attack.
 # Government change preserves the corresponding exact regime-change receipt.
 # No periodic country, state, or aircraft scan is introduced.
 # ============================================================================
@@ -40,6 +41,56 @@ on_actions = {
 					FROM = { exists = yes }
 				}
 				FROM = { set_country_flag = cbrn_achievement_defeated_first_user_receipt }
+			}
+			# The Air Is Still Breathable: every eligible enemy still standing
+			# when a major power capitulates has survived that major war.
+			if = {
+				limit = {
+					ROOT = {
+						has_capitulated = yes
+						is_major = yes
+					}
+				}
+				ROOT = {
+					every_enemy_country = {
+						limit = {
+							has_country_flag = cbrn_achievement_start_country_eligible
+							has_country_flag = cbrn_achievement_chemical_war_@ROOT
+							has_capitulated = no
+						}
+						set_country_flag = cbrn_achievement_survived_major_war_after_chemical_attack_history
+					}
+				}
+				if = {
+					limit = {
+						FROM = {
+							exists = yes
+							has_country_flag = cbrn_achievement_start_country_eligible
+							has_country_flag = cbrn_achievement_chemical_war_@ROOT
+							has_capitulated = no
+						}
+					}
+					FROM = { set_country_flag = cbrn_achievement_survived_major_war_after_chemical_attack_history }
+				}
+			}
+		}
+	}
+
+
+	# ROOT and FROM are the countries whose war relation has just begun.
+	on_war_relation_added = {
+		effect = {
+			ROOT = { clr_country_flag = cbrn_achievement_chemical_war_@FROM }
+			FROM = { clr_country_flag = cbrn_achievement_chemical_war_@ROOT }
+		}
+	}
+
+	# A lost state cannot retain a containment success for its former controller.
+	on_state_control_changed = {
+		effect = {
+			if = {
+				limit = { FROM.FROM = { has_state_flag = cbrn_achievement_nerve_episode_open } }
+				FROM.FROM = { set_state_flag = cbrn_achievement_nerve_episode_failed cbrn_achievement_clear_nerve_episode = yes }
 			}
 		}
 	}
