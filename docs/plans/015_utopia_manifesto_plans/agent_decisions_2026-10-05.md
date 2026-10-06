@@ -137,3 +137,13 @@ The foreign-tree guard remains in place and all private completion flags clear o
 The explicit native ID inventory and API evidence are in `subagent_handoffs/final_generic_focus_return_reference_2026-10-06.md`.
 This supersedes the former limitation that completed generic focuses were not reconstructed; unfinished focus progress still cancels at adoption.
 Native focus inspection/render and the live return status remain unverified; no completion is claimed for those engine checks.
+
+
+## Graphics decisions accepted on 2026-10-06
+
+The current graphics brief expressly authorizes de-fringing the entire goal set, rebuilding nine 52x40 category icons and the Plural Compact roundel, and reframing all sixteen fictional advisor cards.
+The selected colour-only edge repair keeps every main silhouette; only three isolated export marks are removed.
+The active categories now use the original event-owned sprite names and their corrected images.
+The fictional portraits retain visible defining traits, use plain frames and larger faces, and omit all note writing; identity uncertainty from the absent high-resolution originals remains documented.
+The unconsumed Plural Compact emblem is corrected as a registered reserve pending the requested disposition.
+Evidence is docs/plans/gfx_fix_2026-10/015_report.md, alpha_independent_review.md and 015_portraits_handoff.md.

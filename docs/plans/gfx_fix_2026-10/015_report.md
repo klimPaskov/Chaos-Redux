@@ -1,5 +1,19 @@
 # 015 Utopia: shared edge repair
 
+## Current graphics disposition, 2026-10-06
+
+The historical shared pass below is superseded for current edge-repair status by the parent graphics pass and alpha_independent_review.md.
+All 111 goal textures are repaired under the current user directive to de-fringe the whole set; the selected RGB-only matte cleanup preserves every main silhouette and all alpha bytes in 108 files.
+Three isolated export marks were removed from auditors, granaries and measures, with no change to their main silhouettes.
+Independent native/4x review accepted all 111 outputs and verified the repaired harbour and storehouse tips.
+The nine new 52x40 category icons are installed and bound through their original event-owned sprite names in common/decisions/categories/015_utopia_manifesto_categories.txt.
+The Plural Compact roundel is corrected at 64x64 but has no current consumer and is retained as a registered reserve pending the requested disposition.
+All sixteen fictional advisor portraits are parent-approved and installed at 65x67, with plain frames, larger faces and no paper-note writing; source identity limits and the Chief Surveyor eyewear uncertainty remain documented in 015_portraits_handoff.md.
+Current proofs are alpha_independent_review.md, other_icons_handoff.md, 015_portraits_handoff.md and their linked packages.
+The parent Utopia focus inspector and two-focus raster each timed out at 600 seconds; source/native texture review is not claimed as equivalent engine evidence.
+
+## Historical shared edge pass
+
 Implemented chroma-edge cleanup on 95 inherited 94x86 focus textures, preserving the existing sprites, canvases, frame declarations and shader variants.
 The selected set contained 13,717 detected chroma edge pixels before processing and zero after DDS decoding.
 Every installed texture passes the literal subject-alpha mean of at least 200.
