@@ -30,12 +30,9 @@ If you have ideas for our mod or you have a bug to report, do not hesitate to op
 
 ## Events documentation
 
-Start with the [documentation index](docs/README.md) for event overviews, design packages, working plans, and shared systems.
-The [event catalog workbook](docs/spreadsheets/chaos_redux_events_catalog.xlsx) is the editable repository source for event, cluster, and scenario records.
-Its [source and export rules](docs/spreadsheets/README.md) explain how catalog updates are maintained.
+Curious about the chaos that awaits? Explore the [event guides](docs/README.md) to learn about the mod's events, how they unfold, and the choices they offer.
 
-The [public event sheet](https://docs.google.com/spreadsheets/d/1A-N5TvU9Ed_xDW4YFG75RvzTIhdA5Hc0f5YyO3qi0Ik/edit?usp=sharing) is a separate published reference.
-Its synchronization with the repository workbook must be checked before relying on it for a catalog update.
+Browse the [public event catalog](https://docs.google.com/spreadsheets/d/1A-N5TvU9Ed_xDW4YFG75RvzTIhdA5Hc0f5YyO3qi0Ik/edit?usp=sharing) to explore events and possible world-ending scenarios, or download the [event catalog spreadsheet](docs/spreadsheets/chaos_redux_events_catalog.xlsx).
 
 ## Contributing
 
