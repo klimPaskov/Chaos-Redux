@@ -26,6 +26,11 @@ Natural-disaster damage enters through a controller-validated, fail-closed bridg
 
 Special payloads require the existing technology, policy, real stockpile, and site custody. Event 032 consumes the selected payload and submits the validated delivery to the shared CBRN, Deaths, Air Cleanliness, evidence, Condemnation, and Fallout consequence owners. Event 032 does not own a world-end branch, and it preserves the Event 16 reaction helper while keeping Event 23 and Event 76 ownership separate.
 
+Chemical preparation uses a CBRN-owned measured receipt rather than leaving its payload in free stock until launch.
+The receipt retains its exact agent, source, target and operation identity through commitment, controlled recovery, sealed capture, integration or destruction.
+Shared inspections include reserved chemical stocks, while profile changes cannot relabel held material.
+See [Chemical payload reservations](../../systems/cbrn_warfare/chemical_payload_reservations.md) for the API and its source-versus-engine evidence limits.
+
 ## Evolutions
 
 The five separate evolution tracks are Saturation Arsenals, Unreliable Guidance, Special Warheads, Rogue Launch Commands, and Automatic Retaliation. Each track has its own eligibility gate, pacing entry, log row, AI factors, adoption state, interaction hooks, and disabled-safe behavior.

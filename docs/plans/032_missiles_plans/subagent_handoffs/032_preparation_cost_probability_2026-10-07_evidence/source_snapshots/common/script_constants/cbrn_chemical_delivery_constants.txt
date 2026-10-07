@@ -1,0 +1,242 @@
+# ============================================================================
+# CHAOS REDUX - CBRN CHEMICAL DELIVERY CONSTANTS
+# ============================================================================
+# Overview:
+# - Centralizes payload conversion, delivery expenditure, profile changes,
+#   exact-state consequence dispatch, first-use shock, raid outcomes, and AI
+#   tuning for the shared chemical-delivery system.
+# - Equipment database values remain file-scoped in the equipment definition;
+#   all scripted gameplay values live here.
+# - Conversion and outcome values are gameplay tuning. Historical confidence
+#   is low because the abstract "lot" represents handling, filling, transport,
+#   and mission preparation rather than a fixed historical mass.
+# ============================================================================
+
+cbrn_payload_math = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	negation_multiplier = -1
+}
+
+cbrn_payload_route_cost = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	cylinder_release = 40
+	projector_barrage = 70
+	artillery_fire_plan = 120
+	armored_delivery = 80
+	chemical_air_raid = 120
+	strategic_chemical_raid = 240
+	covert_operation = 20
+	nerve_suppression = 40
+	# The camp adapter replaces this route default with its exact tier cost.
+	restricted_chemical_site = 1
+}
+
+cbrn_restricted_site_chemical = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	readiness_divisor = 100
+}
+
+cbrn_payload_conversion = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	choking_to_shell_recovery = 0.85
+	blister_to_shell_recovery = 0.80
+	nerve_to_shell_recovery = 0.725
+	incapacitating_to_shell_recovery = 0.85
+	strategic_to_air_recovery = 0.825
+	legacy_stock_recovery = 1.00
+	shell_profile_switch_recovery = 0.75
+	air_profile_switch_recovery = 0.80
+	minimum_input = 1
+}
+
+cbrn_payload_profile_timing = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	shell_change_days = 21
+	air_change_days = 28
+}
+
+cbrn_chemical_raid_outcome = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	partial_dose_min = 0.50
+	partial_dose_max = 0.80
+	success_dose = 1.00
+	catastrophic_dose_min = 1.50
+	catastrophic_dose_max = 2.00
+	trace_friendly_risk_max = 0.05
+	aborted_evidence_points = 8
+	aborted_condemnation_base = 2
+	failed_evidence_points = 20
+	failed_condemnation_base = 8
+	crash_evidence_floor = 35
+	catastrophic_evidence_floor = 90
+}
+
+cbrn_chemical_raid_engine_outcome = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	failure = 1
+	limited_success = 2
+	success = 3
+	critical_success = 4
+}
+
+cbrn_chemical_raid_result = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	aborted = 1
+	failed = 2
+	partial = 3
+	success = 4
+	catastrophic = 5
+}
+
+cbrn_chemical_raid_resolution = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	random_minimum = 0
+	random_maximum = 1
+	aborted_failure_split = 0.50
+}
+
+cbrn_chemical_first_use = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	shock_days = 14
+	disruption_mult = 1.50
+	military_casualty_mult = 1.40
+	civilian_casualty_mult = 1.30
+	protected_disruption_mult = 1.15
+	protected_military_casualty_mult = 1.12
+	protected_civilian_casualty_mult = 1.10
+	high_protection_threshold = 75
+	global_awareness_disruption_mult = 1.25
+	global_awareness_military_casualty_mult = 1.18
+	global_awareness_civilian_casualty_mult = 1.15
+	shock_army_org_regain = -0.10
+	shock_planning_speed = -0.15
+}
+
+cbrn_chemical_dispatch = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	# The old state modifier used a negative strength scale. The canonical
+	# contamination ledger keeps 0 to 100 state points and derives that scale
+	# only for the existing presentation modifier.
+	legacy_contamination_strength_per_point = -0.008
+	effective_strength_minimum = -0.80
+	effective_strength_maximum = 0
+	state_medical_minimum = 0
+	state_medical_maximum = 100
+	state_evidence_minimum = 0
+	state_evidence_maximum = 100
+	friendly_org_damage_mult = 0.20
+	friendly_strength_damage_mult = 0.20
+	friendly_damage_max = 0.10
+	persistent_evidence_floor = 45
+	strategic_evidence_floor = 75
+	mass_casualty_evidence_floor = 90
+	medical_recovery_days = 30
+	medical_recovery_step = 20
+	evidence_decay_days = 180
+	evidence_decay_step = 20
+}
+
+# State-class contribution to the existing global Air Cleanliness total.
+# Trace is deliberately zero; later classes add only when a state crosses a
+# threshold and remove the same amount when it recovers.
+cbrn_chemical_air_cleanliness = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	trace = 0
+	local = 1
+	serious = 3
+	severe = 5
+	catastrophic = 10
+}
+
+# Continuing chemical deaths are one state-owned event stream per contaminated
+# state. Values are per scheduled operation period, not a daily world pulse.
+cbrn_chemical_continuing_death = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	# The class death fractions are stored multiplied by scale because
+	# variables keep only five decimals and the fractions need six.
+	# cbrn_delivery.4 hands scale to
+	# chaos_meter_register_state_civilian_deaths_percent as
+	# chaos_state_deaths_percent_divisor, which divides once the state
+	# population is counted in people.
+	scale = 1000
+	trace = 0
+	local = 0.001
+	serious = 0.003
+	severe = 0.006
+	catastrophic = 0.012
+	period_days = 30
+	cap_factor = 2.00
+	choking_mult = 0.75
+	blister_mult = 1.25
+	nerve_mult = 1.60
+	incapacitating_mult = 0.40
+}
+
+cbrn_chemical_delivery_ai = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	base_conversion = 1
+	low_payload_factor = 4
+	high_condemnation_factor = 0.20
+	retaliation_factor = 3
+	existential_factor = 4
+	aggressive_profile_factor = 2
+	defensive_first_use_factor = 0
+	payload_reserve_operations = 3
+}

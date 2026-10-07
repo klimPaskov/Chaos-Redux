@@ -1,0 +1,28 @@
+# Event 032 chemical receipt checks. COUNTRY actor ROOT owns the operation;
+# physical payment/model mappings remain inside the shared CBRN receipt API.
+
+missiles_operation_has_paid_chemical_receipt = {
+	has_country_flag = missiles_operation_chemical_receipt_active
+	has_variable = missiles_operation_chemical_receipt
+	has_variable = missiles_operation_chemical_agent
+	set_temp_variable = { cbrn_payload_lookup_handle = missiles_operation_chemical_receipt }
+	set_temp_variable = { cbrn_payload_lookup_consumer = constant:cbrn_payload_receipt_consumer.missiles }
+	set_temp_variable = { cbrn_payload_lookup_nonce = missiles_active_operation_id }
+	cbrn_payload_receipt_has_full_hold = yes
+	cbrn_payload_receipt_source_is_controlled = yes
+	cbrn_payload_receipt_technology_and_profile_are_ready = yes
+	check_variable = { var = cbrn_payload_receipt_agent_@var:cbrn_payload_lookup_handle value = missiles_operation_chemical_agent compare = equals }
+	check_variable = { var = cbrn_payload_receipt_site_id_@var:cbrn_payload_lookup_handle value = missiles_operation_launch_site_id compare = equals }
+	check_variable = { var = cbrn_payload_receipt_target_id_@var:cbrn_payload_lookup_handle value = missiles_operation_target_state_id compare = equals }
+}
+
+# STATE custody proof for a deliberate recovery, not just a control test.
+missiles_chemical_payload_can_be_recovered_from_site = {
+	is_controlled_by = ROOT
+	missiles_state_has_registered_site = yes
+	NOT = { has_state_flag = missiles_site_captured }
+	NOT = { has_state_flag = missiles_site_rogue }
+	NOT = { has_state_flag = missiles_site_scuttled }
+	NOT = { has_state_flag = missiles_site_isolated }
+	NOT = { has_state_flag = missiles_site_damaged_beyond_use }
+}

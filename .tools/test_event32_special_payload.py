@@ -18,6 +18,7 @@ def source(path):
 
 
 EFFECTS = source('common/scripted_effects/032_missiles_operations_effects.txt')
+RECEIPT_ADAPTER = source('common/scripted_effects/032_missiles_payload_receipt_effects.txt')
 TRIGGERS = source('common/scripted_triggers/032_missiles_operations_triggers.txt')
 DECISIONS = dict(source('common/decisions/032_missiles_decisions.txt')['missiles_program_management_category'])
 EVENTS = {value(body, 'id'): body for key, body in parse((ROOT / 'events/032_missile_crisis.txt').read_text(encoding='utf-8-sig')) if key == 'country_event'}
@@ -37,6 +38,23 @@ def options(event):
 
 
 class SpecialPayloadContract(unittest.TestCase):
+    def test_country_removal_does_not_inherit_an_outer_loop_break(self):
+        body = RECEIPT_ADAPTER['missiles_settle_chemical_payloads_on_removal']
+        iteration = value(body, 'for_each_scope_loop')
+        owned_break = value(iteration, 'break')
+        self.assertNotEqual(owned_break, 'break')
+        initializer = ('set_temp_variable', [(owned_break, 'constant:cbrn_math.zero')])
+        self.assertIn(initializer, body[:body.index(('for_each_scope_loop', iteration))])
+
+    def test_failed_commit_settles_receipts_and_retains_a_chemical_reason(self):
+        final_refusal = [body for key, body in EFFECTS['missiles_commit_operation'] if key == 'else_if'][-1]
+        calls = [key for key, _ in final_refusal]
+        self.assertLess(calls.index('missiles_record_preparation_failure'), calls.index('missiles_abort_operation'))
+        self.assertLess(calls.index('missiles_abort_operation'), calls.index('missiles_cleanup_operation'))
+        reason = next(body for key, body in EFFECTS['missiles_record_preparation_failure']
+                      if isinstance(body, list) and ('missiles_operation_has_paid_chemical_receipt', 'yes') in nodes(body))
+        self.assertIn(('set_variable', [('missiles_last_preparation_failure', 'constant:missiles_preparation_failure.chemical_agent')]), reason)
+
     def test_biological_debit_proof_survives_return_to_each_consuming_caller(self):
         for name in ('missiles_reserve_operation_payload', 'missiles_consume_special_payload'):
             branch = next(body for key, body in EFFECTS[name]
@@ -82,7 +100,7 @@ class SpecialPayloadContract(unittest.TestCase):
         payload = nodes(EFFECTS['missiles_reserve_operation_payload'])
         self.assertIn(('add_nuclear_bombs', 'constant:missiles_resolution.nuclear_payload_units_negative'), payload)
         self.assertIn(('missiles_debit_biological_payload', 'yes'), payload)
-        self.assertIn(('missiles_check_chemical_payload_stock', 'yes'), payload)
+        self.assertIn(('missiles_reserve_chemical_payload_receipt', 'yes'), payload)
         self.assertIn(('set_country_flag', 'missiles_operation_payload_escrow_active'), payload)
 
     def test_held_warhead_returns_once_or_is_consumed_once(self):
@@ -122,7 +140,7 @@ class ChemicalLaunchCheck(unittest.TestCase):
         check = commit[1][1]
         self.assertEqual(commit[1][0], 'if')
         self.assertIn(('check_variable', [('var', 'missiles_operation_payload'), ('value', 'constant:missiles_payload.chemical'), ('compare', 'equals')]), value(check, 'limit'))
-        self.assertIn(('missiles_check_chemical_payload_stock', 'yes'), check)
+        self.assertIn(('missiles_check_chemical_receipt_for_commit', 'yes'), check)
         # A failed check takes the invalidated path with an exact refund and no launch.
         refused = commit[2][1]
         self.assertEqual(commit[2][0], 'if')

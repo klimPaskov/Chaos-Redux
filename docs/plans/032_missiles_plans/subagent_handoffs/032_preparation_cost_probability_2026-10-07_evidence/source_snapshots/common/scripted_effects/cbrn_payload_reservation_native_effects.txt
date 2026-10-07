@@ -1,0 +1,128 @@
+# ============================================================================
+# CHAOS REDUX - CBRN PAYLOAD RESERVATION NATIVE PRIMITIVES
+# ============================================================================
+# Overview:
+# - Primitive layer only. Parent integration owns runtime completeness, receipt
+#   identity, authorization, profile guards, custody, recovery, and call sites.
+# - Resolves the four existing prepared-air models from the exact action agent.
+# - Reuses measured native equipment accounting without nominal success proof.
+# - Public outputs must be created by the caller before each zero-argument call.
+# - No consequence, confirmed-use history, durable receipt, or automatic refund.
+# API and testing handoff:
+# docs/plans/032_missiles_plans/subagent_handoffs/032_chemical_native_primitives_2026-10-07.md
+# ============================================================================
+
+# COUNTRY. Inputs: cbrn_action_agent and cbrn_action_delivery_route.
+# Caller-created outputs: cbrn_payload_native_model = cbrn_math.zero and
+# cbrn_payload_native_model_matched = cbrn_proof.missing before calling.
+# Derives class afresh through the shared helper, ignoring any supplied class.
+# Only chemical_air_raid/strategic_chemical_raid map. Unsupported input returns
+# zero model and missing proof. Mapping proof establishes no authorization.
+# Nested scratch: cbrn_action_agent_class. Caller must also precreate it if the
+# derived class is needed after return. No stock or persistent state mutation.
+cbrn_payload_resolve_air_model = {
+	set_temp_variable = { cbrn_payload_native_model = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_payload_native_model_matched = constant:cbrn_proof.missing }
+	set_temp_variable = { cbrn_action_agent_class = constant:cbrn_agent_class.none }
+	cbrn_chemical_air_raid_set_agent_class_internal = yes
+	if = {
+		limit = {
+			OR = {
+				check_variable = { cbrn_action_delivery_route = constant:cbrn_delivery_route.chemical_air_raid }
+				check_variable = { cbrn_action_delivery_route = constant:cbrn_delivery_route.strategic_chemical_raid }
+			}
+		}
+		if = {
+			limit = { check_variable = { cbrn_action_agent_class = constant:cbrn_agent_class.choking } }
+			set_temp_variable = { cbrn_payload_native_model = token:choking_chemical_air_payload_lot_1 }
+			set_temp_variable = { cbrn_payload_native_model_matched = constant:cbrn_proof.supplied }
+		}
+		else_if = {
+			limit = { check_variable = { cbrn_action_agent_class = constant:cbrn_agent_class.blister } }
+			set_temp_variable = { cbrn_payload_native_model = token:blister_chemical_air_payload_lot_1 }
+			set_temp_variable = { cbrn_payload_native_model_matched = constant:cbrn_proof.supplied }
+		}
+		else_if = {
+			limit = { check_variable = { cbrn_action_agent_class = constant:cbrn_agent_class.nerve } }
+			set_temp_variable = { cbrn_payload_native_model = token:nerve_chemical_air_payload_lot_1 }
+			set_temp_variable = { cbrn_payload_native_model_matched = constant:cbrn_proof.supplied }
+		}
+		else_if = {
+			limit = { check_variable = { cbrn_action_agent_class = constant:cbrn_agent_class.incapacitating } }
+			set_temp_variable = { cbrn_payload_native_model = token:incapacitating_chemical_air_payload_lot_1 }
+			set_temp_variable = { cbrn_payload_native_model_matched = constant:cbrn_proof.supplied }
+		}
+	}
+}
+
+# COUNTRY payer. Inputs: caller-created cbrn_payload_native_model token and
+# cbrn_payload_native_requested, a nonnegative whole equipment count.
+# Caller-created outputs: cbrn_payload_native_before/after/observed/valid, all
+# cbrn_math.zero initially. Request stays ORIGINAL, while nested request is
+# bounded to available stock. Valid means a sane measured delta, not full pay.
+# Unsupported model returns zero outputs/invalid without a stock write.
+# Side effects: one measured native debit at most, shared cbrn_mask_native_*
+# scratch overwritten. Wrapper initializes ALL scratch, including meta debit.
+cbrn_payload_measure_model_debit = {
+	set_temp_variable = { cbrn_payload_native_before = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_payload_native_after = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_payload_native_observed = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_payload_native_valid = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_mask_native_model = cbrn_payload_native_model }
+	set_temp_variable = { cbrn_mask_native_requested = cbrn_payload_native_requested }
+	set_temp_variable = { cbrn_mask_native_before = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_mask_native_after = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_mask_native_observed = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_mask_native_valid = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_mask_native_debit = constant:cbrn_math.zero }
+	if = {
+		limit = {
+			OR = {
+				check_variable = { cbrn_payload_native_model = token:choking_chemical_air_payload_lot_1 }
+				check_variable = { cbrn_payload_native_model = token:blister_chemical_air_payload_lot_1 }
+				check_variable = { cbrn_payload_native_model = token:nerve_chemical_air_payload_lot_1 }
+				check_variable = { cbrn_payload_native_model = token:incapacitating_chemical_air_payload_lot_1 }
+			}
+		}
+		cbrn_state_escrow_measure_model_debit = yes
+		set_temp_variable = { cbrn_payload_native_before = cbrn_mask_native_before }
+		set_temp_variable = { cbrn_payload_native_after = cbrn_mask_native_after }
+		set_temp_variable = { cbrn_payload_native_observed = cbrn_mask_native_observed }
+		set_temp_variable = { cbrn_payload_native_valid = cbrn_mask_native_valid }
+	}
+}
+
+# COUNTRY original payer receiving an EXPLICIT authorized refund.
+# Same inputs/output lifetime as debit. Public request remains original.
+# Side effects: one measured native credit at most and shared scratch writes.
+# Caller supplies the exact still-refundable held quantity and owns once-only
+# authorization, partial remainder, invalid observation quarantine, and retry.
+# Valid partial/zero gain is not a full refund. Never call as a setup/grant path.
+cbrn_payload_measure_model_credit = {
+	set_temp_variable = { cbrn_payload_native_before = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_payload_native_after = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_payload_native_observed = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_payload_native_valid = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_mask_native_model = cbrn_payload_native_model }
+	set_temp_variable = { cbrn_mask_native_requested = cbrn_payload_native_requested }
+	set_temp_variable = { cbrn_mask_native_before = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_mask_native_after = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_mask_native_observed = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_mask_native_valid = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_mask_native_debit = constant:cbrn_math.zero }
+	if = {
+		limit = {
+			OR = {
+				check_variable = { cbrn_payload_native_model = token:choking_chemical_air_payload_lot_1 }
+				check_variable = { cbrn_payload_native_model = token:blister_chemical_air_payload_lot_1 }
+				check_variable = { cbrn_payload_native_model = token:nerve_chemical_air_payload_lot_1 }
+				check_variable = { cbrn_payload_native_model = token:incapacitating_chemical_air_payload_lot_1 }
+			}
+		}
+		cbrn_state_escrow_measure_model_credit = yes
+		set_temp_variable = { cbrn_payload_native_before = cbrn_mask_native_before }
+		set_temp_variable = { cbrn_payload_native_after = cbrn_mask_native_after }
+		set_temp_variable = { cbrn_payload_native_observed = cbrn_mask_native_observed }
+		set_temp_variable = { cbrn_payload_native_valid = cbrn_mask_native_valid }
+	}
+}

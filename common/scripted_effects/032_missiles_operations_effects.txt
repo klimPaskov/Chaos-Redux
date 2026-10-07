@@ -1612,6 +1612,9 @@ missiles_finish_site_repair = {
 	set_variable = { missiles_site_current_controller = ROOT }
 	set_variable = { missiles_site_last_repair_complete = constant:missiles_program_value.one }
 	missiles_refresh_site_flags = yes
+	ROOT = { save_event_target_as = missiles_chemical_site_holder }
+	set_temp_variable = { missiles_payload_custody_action = constant:cbrn_payload_site_action.recover }
+	missiles_settle_chemical_payloads_at_site = yes
 }
 
 # STATE scope; ROOT is the program country. A cancelled or expired repair
@@ -1746,6 +1749,12 @@ missiles_recover_rogue_site = {
 		set_variable = { missiles_site_controller_id = ROOT.id }
 		set_variable = { missiles_site_current_controller = ROOT }
 		missiles_refresh_site_flags = yes
+		if = {
+			limit = { missiles_chemical_payload_can_be_recovered_from_site = yes }
+			ROOT = { save_event_target_as = missiles_chemical_site_holder }
+			set_temp_variable = { missiles_payload_custody_action = constant:cbrn_payload_site_action.recover }
+			missiles_settle_chemical_payloads_at_site = yes
+		}
 	}
 }
 
@@ -2045,7 +2054,10 @@ missiles_isolate_site = {
 	# site ends and its reservation is refunded.
 	save_event_target_as = missiles_lost_allocation_site
 	set_temp_variable = { missiles_allocation_loss_mode = constant:missiles_program_value.zero }
+	set_temp_variable = { missiles_payload_custody_action = constant:cbrn_payload_site_action.hold }
 	ROOT = { missiles_settle_lost_site_allocation = yes }
+	ROOT = { save_event_target_as = missiles_chemical_site_holder }
+	missiles_settle_chemical_payloads_at_site = yes
 	set_state_flag = missiles_site_isolated
 	clr_state_flag = missiles_site_active
 	clr_state_flag = missiles_site_hardened
@@ -2095,7 +2107,10 @@ missiles_scuttle_site = {
 	}
 	save_event_target_as = missiles_lost_allocation_site
 	set_temp_variable = { missiles_allocation_loss_mode = constant:missiles_program_value.one }
+	set_temp_variable = { missiles_payload_custody_action = constant:cbrn_payload_site_action.destroy }
 	ROOT = { missiles_settle_lost_site_allocation = yes }
+	ROOT = { save_event_target_as = missiles_chemical_site_holder }
+	missiles_settle_chemical_payloads_at_site = yes
 	if = {
 		limit = { has_variable = missiles_site_reserve }
 		set_temp_variable = { missiles_scuttle_loss = missiles_site_reserve }
@@ -2138,6 +2153,7 @@ missiles_scuttle_site_from_current_controller = {
 	controller = { save_event_target_as = missiles_site_scuttle_controller }
 	save_event_target_as = missiles_lost_allocation_site
 	set_temp_variable = { missiles_allocation_loss_mode = constant:missiles_program_value.one }
+	set_temp_variable = { missiles_payload_custody_action = constant:cbrn_payload_site_action.destroy }
 	if = {
 		limit = { has_event_target = missiles_site_scuttle_controller }
 			event_target:missiles_site_scuttle_controller = {
@@ -2180,6 +2196,11 @@ missiles_scuttle_site_from_current_controller = {
 				set_country_flag = missiles_refresh_close_rogue_requested
 			}
 		}
+	}
+	if = {
+		limit = { has_event_target = missiles_site_scuttle_controller }
+		event_target:missiles_site_scuttle_controller = { save_event_target_as = missiles_chemical_site_holder }
+		missiles_settle_chemical_payloads_at_site = yes
 	}
 	set_state_flag = missiles_site_scuttled
 	clr_state_flag = missiles_site_active
@@ -3549,6 +3570,13 @@ missiles_record_preparation_failure = {
 	else_if = { limit = { var:missiles_operation_target_state = { NOT = { missiles_operation_target_has_profile_value = yes } } } set_variable = { missiles_last_preparation_failure = constant:missiles_preparation_failure.objective } }
 	else_if = { limit = { NOT = { missiles_operation_sites_remain_valid = yes } } set_variable = { missiles_last_preparation_failure = constant:missiles_preparation_failure.site } }
 	else_if = { limit = { NOT = { missiles_operation_has_reliable_payload_custody = yes } } set_variable = { missiles_last_preparation_failure = constant:missiles_preparation_failure.payload } }
+	else_if = {
+		limit = {
+			check_variable = { missiles_operation_payload = constant:missiles_payload.chemical }
+			NOT = { missiles_operation_has_paid_chemical_receipt = yes }
+		}
+		set_variable = { missiles_last_preparation_failure = constant:missiles_preparation_failure.chemical_agent }
+	}
 	else_if = { limit = { check_variable = { var = missiles_command_control value = constant:missiles_tuning.operation_minimum_control compare = less_than } } set_variable = { missiles_last_preparation_failure = constant:missiles_preparation_failure.command } }
 	else_if = { limit = { NOT = { missiles_operation_command_is_operational = yes } } set_variable = { missiles_last_preparation_failure = constant:missiles_preparation_failure.readiness } }
 	else_if = { limit = { NOT = { missiles_operation_reserve_receipt_is_sufficient = yes } } set_variable = { missiles_last_preparation_failure = constant:missiles_preparation_failure.reserve } }
@@ -4222,16 +4250,13 @@ missiles_reserve_operation_payload = {
 	}
 	else_if = {
 		limit = { check_variable = { var = missiles_operation_payload value = constant:missiles_payload.chemical compare = equals } }
-		missiles_check_chemical_payload_stock = yes
-		if = {
-			limit = { check_variable = { var = missiles_chemical_stock_result value = constant:missiles_result.accepted compare = equals } }
-			set_variable = { missiles_operation_payload_reservation_result = constant:missiles_result.accepted }
-		}
+		missiles_reserve_chemical_payload_receipt = yes
 	}
 }
 
 # COUNTRY scope. Returns an unconsumed held warhead exactly once.
 missiles_release_operation_payload = {
+	missiles_release_chemical_payload_receipt = yes
 	if = {
 		limit = { has_country_flag = missiles_operation_payload_escrow_active }
 		if = {
@@ -4256,38 +4281,6 @@ missiles_release_operation_payload = {
 	clear_variable = missiles_operation_payload_escrow
 	clear_variable = missiles_operation_payload_escrow_type
 	clear_variable = missiles_operation_payload_escrow_agent
-}
-
-# COUNTRY scope. Read-only CBRN proof for the frozen target: the same context
-# the release-time debit uses, without debiting agent.
-missiles_check_chemical_payload_stock = {
-	set_variable = { missiles_chemical_stock_result = constant:missiles_result.rejected }
-	if = {
-		limit = { has_variable = missiles_operation_target_state }
-		cbrn_reset_action_context = yes
-		save_event_target_as = cbrn_action_actor
-		var:missiles_operation_target_state = {
-			save_event_target_as = cbrn_action_target_state
-			CONTROLLER = { save_event_target_as = cbrn_action_victim_country }
-		}
-		set_temp_variable = { cbrn_action_target_state_supplied = constant:cbrn_proof.supplied }
-		set_temp_variable = { cbrn_action_weapon_class = constant:cbrn_weapon_class.chemical }
-		set_temp_variable = { cbrn_action_agent = missiles_selected_chemical_agent }
-		set_temp_variable = { cbrn_action_delivery_route = constant:cbrn_delivery_route.strategic_chemical_raid }
-		set_temp_variable = { cbrn_action_severity = constant:cbrn_operation_severity.strategic }
-		set_temp_variable = { cbrn_action_late_agent_route_authorized = constant:cbrn_proof.supplied }
-		cbrn_chemical_air_raid_set_agent_class_internal = yes
-		cbrn_set_default_payload_requirement_for_action = yes
-		if = {
-			limit = {
-				cbrn_chemical_action_policy_allows_exact_target = yes
-				cbrn_action_agent_is_unlocked = yes
-				cbrn_action_payload_profile_is_ready = yes
-				cbrn_action_payload_stock_is_sufficient = yes
-			}
-			set_variable = { missiles_chemical_stock_result = constant:missiles_result.accepted }
-		}
-	}
 }
 
 missiles_debit_biological_payload = {
@@ -4332,37 +4325,9 @@ missiles_debit_biological_payload = {
 }
 
 missiles_consume_chemical_payload = {
-	# COUNTRY scope. The real CBRN debit is made against the frozen intended
-	# target before guidance and interception; impact dispatch reuses this proof.
-	set_variable = { missiles_operation_payload_consumed = constant:missiles_program_value.zero }
-	cbrn_reset_action_context = yes
-	save_event_target_as = cbrn_action_actor
-	var:missiles_operation_target_state = {
-		save_event_target_as = cbrn_action_target_state
-		CONTROLLER = { save_event_target_as = cbrn_action_victim_country }
-	}
-	set_temp_variable = { cbrn_action_target_state_supplied = constant:cbrn_proof.supplied }
-	set_temp_variable = { cbrn_action_weapon_class = constant:cbrn_weapon_class.chemical }
-	set_temp_variable = { cbrn_action_agent = missiles_selected_chemical_agent }
-	set_temp_variable = { cbrn_action_delivery_route = constant:cbrn_delivery_route.strategic_chemical_raid }
-	set_temp_variable = { cbrn_action_severity = constant:cbrn_operation_severity.strategic }
-	set_temp_variable = { cbrn_action_late_agent_route_authorized = constant:cbrn_proof.supplied }
-	cbrn_chemical_air_raid_set_agent_class_internal = yes
-	cbrn_set_default_payload_requirement_for_action = yes
-	if = {
-		limit = {
-			cbrn_chemical_action_policy_allows_exact_target = yes
-			cbrn_action_agent_is_unlocked = yes
-			cbrn_action_payload_profile_is_ready = yes
-			cbrn_action_payload_stock_is_sufficient = yes
-		}
-		cbrn_try_debit_action_payload = yes
-		if = {
-			limit = { check_variable = { var = cbrn_action_payload_consumed_proof value = constant:cbrn_proof.supplied compare = equals } }
-			set_variable = { missiles_operation_payload_consumed = cbrn_action_payload_consumed }
-			set_country_flag = missiles_operation_payload_debit_verified
-		}
-	}
+	# The preparation receipt owns the real debit. Release consumes that exact
+	# held quantity, with current authorization and without charging it twice.
+	missiles_consume_chemical_payload_receipt = yes
 }
 
 missiles_consume_special_payload = {
@@ -4413,6 +4378,46 @@ missiles_consume_special_payload = {
 
 missiles_dispatch_chemical_payload = {
 	set_variable = { missiles_operation_delivery_result = constant:missiles_result.rejected }
+	# Own every shared output that crosses a helper boundary into this caller
+	# or the later dispatcher. Reset helpers then update caller-owned storage.
+	set_temp_variable = { cbrn_action_agent_class = constant:cbrn_agent_class.none }
+	set_temp_variable = { cbrn_action_payload_required = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_action_payload_consumed = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_action_payload_consumed_proof = constant:cbrn_proof.missing }
+	set_temp_variable = { cbrn_action_dispatch_proof = constant:cbrn_proof.missing }
+	set_temp_variable = { cbrn_action_result = constant:cbrn_action_result.rejected }
+	set_temp_variable = { cbrn_action_reject_reason = constant:cbrn_action_reject_reason.none }
+	set_temp_variable = { cbrn_action_victim_country_supplied = constant:cbrn_proof.missing }
+	set_temp_variable = { cbrn_action_protection_resolved_proof = constant:cbrn_proof.missing }
+	set_temp_variable = { cbrn_action_military_effective_protection = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_action_military_casualty_mult = constant:cbrn_math.one }
+	set_temp_variable = { cbrn_action_military_mask_only_casualty_mult = constant:cbrn_math.one }
+	set_temp_variable = { cbrn_action_military_disruption_mult = constant:cbrn_math.one }
+	set_temp_variable = { cbrn_action_military_contamination_mult = constant:cbrn_math.one }
+	set_temp_variable = { cbrn_action_civilian_effective_protection = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_action_civilian_casualty_mult = constant:cbrn_math.one }
+	set_temp_variable = { cbrn_action_civilian_mask_only_casualty_mult = constant:cbrn_math.one }
+	set_temp_variable = { cbrn_action_civilian_disruption_mult = constant:cbrn_math.one }
+	set_temp_variable = { cbrn_action_civilian_contamination_mult = constant:cbrn_math.one }
+	set_temp_variable = { cbrn_action_doctrine_condemnation_mult = constant:cbrn_math.one }
+	set_temp_variable = { cbrn_action_payload_ratio = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_action_dose_mult = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_action_disruption = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_action_military_death_fraction = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_action_civilian_exposed_fraction = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_action_civilian_death_fraction = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_action_contamination_points = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_action_contamination_duration_days = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_action_medical_saturation_points = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_action_evidence_points = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_action_evidence_applied = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_action_attribution_state = constant:cbrn_attribution_state.unknown }
+	set_temp_variable = { cbrn_action_condemnation_base = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_action_friendly_exposure_risk = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_action_vehicle_sealing_applied = constant:cbrn_proof.missing }
+	set_temp_variable = { cbrn_action_armored_advance_receipt = constant:cbrn_proof.missing }
+	set_temp_variable = { cbrn_action_source_label = constant:cbrn_source_label.none }
+	set_temp_variable = { cbrn_action_civilian_deaths = constant:cbrn_math.zero }
 	cbrn_reset_action_context = yes
 	save_event_target_as = cbrn_action_actor
 	var:missiles_operation_impact_state = {
@@ -4421,7 +4426,7 @@ missiles_dispatch_chemical_payload = {
 	}
 	set_temp_variable = { cbrn_action_target_state_supplied = constant:cbrn_proof.supplied }
 	set_temp_variable = { cbrn_action_weapon_class = constant:cbrn_weapon_class.chemical }
-	set_temp_variable = { cbrn_action_agent = missiles_selected_chemical_agent }
+	set_temp_variable = { cbrn_action_agent = missiles_operation_chemical_agent }
 	set_temp_variable = { cbrn_action_delivery_route = constant:cbrn_delivery_route.strategic_chemical_raid }
 	set_temp_variable = { cbrn_action_severity = constant:cbrn_operation_severity.strategic }
 	set_temp_variable = { cbrn_action_late_agent_route_authorized = constant:cbrn_proof.supplied }
@@ -4447,9 +4452,13 @@ missiles_dispatch_chemical_payload = {
 		}
 		set_temp_variable = { cbrn_action_release_efficiency_mult = constant:missiles_resolution.chemical_release_accident_mult }
 	}
-	set_temp_variable = { cbrn_action_conditions_resolved_proof = constant:cbrn_proof.supplied }
+	# Guidance supplies the confirmed release efficiency, not the CBRN owner's
+	# separate weather/terrain/command-condition receipt. Match the native air
+	# bridge's missing-receipt semantics instead of fabricating that proof.
+	set_temp_variable = { cbrn_action_conditions_resolved_proof = constant:cbrn_proof.missing }
 	cbrn_chemical_air_raid_set_agent_class_internal = yes
-	cbrn_set_default_payload_requirement_for_action = yes
+	# The fully paid requirement was frozen at preparation, not repriced here.
+	set_temp_variable = { cbrn_action_payload_required = missiles_operation_payload_consumed }
 	set_temp_variable = { cbrn_action_payload_consumed = missiles_operation_payload_consumed }
 	set_temp_variable = { cbrn_action_payload_consumed_proof = constant:cbrn_proof.supplied }
 	if = {
@@ -4956,13 +4965,17 @@ missiles_apply_natural_disaster_site_damage = {
 			# hit cancels the order and returns them.
 			save_event_target_as = missiles_lost_allocation_site
 			set_temp_variable = { missiles_allocation_loss_mode = constant:missiles_program_value.zero }
+			set_temp_variable = { missiles_payload_custody_action = constant:cbrn_payload_site_action.hold }
 			set_temp_variable = { missiles_disaster_projected_damage = missiles_site_damage }
 			add_to_temp_variable = { missiles_disaster_projected_damage = missiles_disaster_site_damage }
 			if = {
 				limit = { check_variable = { var = missiles_disaster_projected_damage value = constant:missiles_reserve.site_destroyed_threshold compare = greater_than_or_equals } }
 				set_temp_variable = { missiles_allocation_loss_mode = constant:missiles_program_value.one }
+				set_temp_variable = { missiles_payload_custody_action = constant:cbrn_payload_site_action.destroy }
 			}
 			ROOT = { missiles_settle_lost_site_allocation = yes }
+			ROOT = { save_event_target_as = missiles_chemical_site_holder }
+			missiles_settle_chemical_payloads_at_site = yes
 			add_to_variable = { missiles_site_damage = missiles_disaster_site_damage }
 			clamp_variable = { var = missiles_site_damage min = constant:missiles_program_value.zero max = constant:missiles_tuning.site_damage_maximum }
 			set_variable = { missiles_site_last_damage_date = global.date }
@@ -6117,17 +6130,16 @@ missiles_resolve_operation = {
 }
 
 missiles_commit_operation = {
-	# Chemical agent stays in the CBRN stores until release, so it is proven
-	# again at launch. Agent spent since preparation ends the order through
-	# the invalidated path with its missiles returned, instead of a launch
-	# without its payload.
+	# Chemical payload is held by a typed CBRN receipt. Revalidate that hold,
+	# current technology, policy and source custody without asking for a second
+	# free stockpile. An invalid order closes through its custody disposition.
 	set_temp_variable = { missiles_commit_payload_ready = constant:missiles_program_value.one }
 	if = {
 		limit = {
 			missiles_operation_can_be_committed = yes
 			check_variable = { var = missiles_operation_payload value = constant:missiles_payload.chemical compare = equals }
 		}
-		missiles_check_chemical_payload_stock = yes
+		missiles_check_chemical_receipt_for_commit = yes
 		if = {
 			limit = { NOT = { check_variable = { var = missiles_chemical_stock_result value = constant:missiles_result.accepted compare = equals } } }
 			set_temp_variable = { missiles_commit_payload_ready = constant:missiles_program_value.zero }
@@ -6160,9 +6172,11 @@ missiles_commit_operation = {
 	}
 	else_if = {
 		limit = { missiles_operation_receipt_is_active = yes NOT = { has_country_flag = missiles_operation_committed } }
+		missiles_record_preparation_failure = yes
 		set_variable = { missiles_operation_result = constant:missiles_result.invalidated }
 		set_variable = { missiles_operation_state = constant:missiles_operation_state.invalidated }
 		missiles_abort_operation = yes
+		missiles_cleanup_operation = yes
 	}
 }
 
@@ -6211,6 +6225,7 @@ missiles_cleanup_operation = {
 		clear_variable = missiles_operation_strike_profile
 		clear_variable = missiles_operation_target_profile
 		clear_variable = missiles_operation_payload
+		clear_variable = missiles_operation_chemical_agent
 		clear_variable = missiles_operation_missile_cost
 		clear_variable = missiles_operation_site_capacity
 		clear_variable = missiles_operation_site_allocation
@@ -6518,7 +6533,10 @@ missiles_handle_site_control_changed = {
 		# former controller once; the rest of its order returns to reserve.
 		save_event_target_as = missiles_lost_allocation_site
 		set_temp_variable = { missiles_allocation_loss_mode = constant:missiles_program_value.one }
+		set_temp_variable = { missiles_payload_custody_action = constant:cbrn_payload_site_action.capture }
 		event_target:missiles_capture_former_controller = { missiles_settle_lost_site_allocation = yes }
+		event_target:missiles_capture_former_controller = { save_event_target_as = missiles_chemical_site_holder }
+		missiles_settle_chemical_payloads_at_site = yes
 		event_target:missiles_capture_former_controller = {
 			if = {
 				limit = { check_variable = { var = missiles_captured_reserve_amount value = constant:missiles_program_value.zero compare = greater_than } }
@@ -6728,6 +6746,9 @@ missiles_integrate_captured_site = {
 		set_variable = { missiles_site_current_controller = ROOT }
 		set_variable = { missiles_site_integration_date = global.date }
 		missiles_refresh_site_flags = yes
+		ROOT = { save_event_target_as = missiles_chemical_site_holder }
+		set_temp_variable = { missiles_payload_custody_action = constant:cbrn_payload_site_action.integrate }
+		missiles_settle_chemical_payloads_at_site = yes
 		ROOT = {
 			set_country_flag = missiles_captured_site_integrated
 			missiles_finish_captured_site_resolution = yes
@@ -7038,6 +7059,7 @@ missiles_cleanup_removed_country = {
 			NOT = { has_country_flag = missiles_program_cleanup_complete }
 		}
 		set_country_flag = missiles_program_cleanup_complete
+		missiles_settle_chemical_payloads_on_removal = yes
 		remove_from_array = { array = global.missiles_program_registry value = THIS }
 		# A removed evolution host hands its pending jobs to a living programme.
 		if = {

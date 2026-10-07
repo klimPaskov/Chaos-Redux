@@ -143,9 +143,15 @@ Lifecycle code that runs under another country's ROOT (the former controller in 
 
 `missiles_reserve_operation_resources` calls `missiles_reserve_operation_payload` once the missile escrow is accepted; a refused warhead returns the missile escrow through `missiles_refund_operation_reserve` and rejects the order.
 Nuclear and thermonuclear warheads are held with `add_nuclear_bombs`, biological warheads through `missiles_debit_biological_payload`; both record `missiles_operation_payload_escrow`, its type, the biological agent, and `missiles_operation_payload_escrow_active`.
-Chemical agent is only proven sufficient by `missiles_check_chemical_payload_stock`, which builds the same CBRN action context as the release-time debit without debiting.
-`missiles_commit_operation` reruns that check for a chemical operation before committing; a failed check takes the invalidated path (`missiles_abort_operation` with its exact reserve refund, then `missiles_cleanup_operation`), records `missiles_preparation_failure.chemical_agent` for the category context line, and launches nothing. Holding chemical agent at preparation stays queued for a CBRN refund route.
-`missiles_consume_special_payload` consumes a held warhead first and clears the escrow before any direct debit path; `missiles_release_operation_payload`, called once from `missiles_cleanup_operation`, returns any warhead still held after an abort, cancellation, invalidation, capture, or removed-country cleanup.
+Chemical preparation calls `missiles_reserve_chemical_payload_receipt`, which freezes the exact agent and obtains a CBRN-owned receipt for the measured stock debit, operation nonce, source site and target.
+`missiles_commit_operation` requires the same full receipt and current technology, policy, profile and physical custody; replacement free stock is neither required nor debited at launch.
+A refused commitment aborts without consequences, returns the missile allocation and records `missiles_preparation_failure.chemical_agent`.
+Chemical consumption closes the held receipt once and supplies its frozen agent and paid quantity to the shared consequence pipeline.
+Cancellation recovers chemical stock only at its intact controlled source; capture transfers sealed custody, proven destruction discards the held quantity, and isolation or uncertain recovery retains a pending CBRN receipt.
+Repair, captured-site integration and country-removal hooks settle the same exact-site records, including partial or orphaned receipts, without creating replacement payloads.
+Reserved chemical stock remains visible to shared stockpile inspections and proportional destruction, and unresolved native measurements cannot earn compliance rewards.
+The API and its evidence limits are documented in [Chemical payload reservations](../../docs/systems/cbrn_warfare/chemical_payload_reservations.md).
+Nuclear and biological escrow still use their separate owners; their physical loss and succession audit remains open and is not established by the chemical receipt tests.
 `.tools/test_event32_special_payload.py` pins the order decisions, event wiring, reservation, release, and consumption contract.
 
 ## Evolution pacing

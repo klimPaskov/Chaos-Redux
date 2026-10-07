@@ -1,0 +1,74 @@
+# Event 032 preparation component costs. Special preparations reserve their
+# exact payload instead of charging support equipment. Each inline row keeps
+# three values; the full tooltip also shows the operational missile escrow.
+# All quotes share their owner's constants and live affordability predicates.
+defined_text = {
+	name = GetMissilesPreparationLowComponentCost
+	text = { trigger = { missiles_preparation_has_special_payload = yes } localization_key = missiles_preparation_special_component }
+	text = { localization_key = missiles_preparation_low_component }
+}
+defined_text = {
+	name = GetMissilesPreparationStandardComponentCost
+	text = { trigger = { missiles_preparation_has_special_payload = yes } localization_key = missiles_preparation_special_component }
+	text = { localization_key = missiles_preparation_standard_component }
+}
+defined_text = {
+	name = GetMissilesPreparationHighComponentCost
+	text = { trigger = { missiles_preparation_has_special_payload = yes } localization_key = missiles_preparation_special_component }
+	text = { localization_key = missiles_preparation_high_component }
+}
+
+defined_text = {
+	name = GetMissilesPreparedPayloadCost
+	text = {
+		trigger = {
+			check_variable = { missiles_selected_payload = constant:missiles_payload.chemical }
+			set_temp_variable = { missiles_preparation_payload_display = constant:cbrn_payload_route_cost.strategic_chemical_raid }
+			missiles_selected_payload_can_be_reserved = yes
+		}
+		localization_key = missiles_preparation_chemical_payload
+	}
+	text = {
+		trigger = {
+			check_variable = { missiles_selected_payload = constant:missiles_payload.chemical }
+			set_temp_variable = { missiles_preparation_payload_display = constant:cbrn_payload_route_cost.strategic_chemical_raid }
+		}
+		localization_key = missiles_preparation_chemical_payload_blocked
+	}
+	text = {
+		trigger = {
+			check_variable = { missiles_selected_payload = constant:missiles_payload.biological }
+			set_temp_variable = { missiles_preparation_payload_display = constant:missiles_resolution.biological_payload_units }
+			missiles_selected_payload_can_be_reserved = yes
+		}
+		localization_key = missiles_preparation_biological_payload
+	}
+	text = {
+		trigger = {
+			check_variable = { missiles_selected_payload = constant:missiles_payload.biological }
+			set_temp_variable = { missiles_preparation_payload_display = constant:missiles_resolution.biological_payload_units }
+		}
+		localization_key = missiles_preparation_biological_payload_blocked
+	}
+	text = {
+		trigger = {
+			set_temp_variable = { missiles_preparation_payload_display = constant:missiles_resolution.nuclear_payload_units }
+			missiles_selected_payload_can_be_reserved = yes
+		}
+		localization_key = missiles_preparation_nuclear_payload
+	}
+	text = {
+		trigger = { set_temp_variable = { missiles_preparation_payload_display = constant:missiles_resolution.nuclear_payload_units } }
+		localization_key = missiles_preparation_nuclear_payload_blocked
+	}
+}
+
+defined_text = {
+	name = GetMissilesPreparationPaymentExplanation
+	text = {
+		trigger = { missiles_preparation_has_special_payload = yes check_variable = { missiles_selected_payload = constant:missiles_payload.chemical } }
+		localization_key = missiles_preparation_payment_chemical
+	}
+	text = { trigger = { missiles_preparation_has_special_payload = yes } localization_key = missiles_preparation_payment_special }
+	text = { localization_key = missiles_preparation_payment_conventional }
+}

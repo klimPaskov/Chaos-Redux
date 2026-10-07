@@ -38,8 +38,8 @@ def number(token):
     return Decimal(token)
 
 
-def afford(route, balances, special=False):
-    """Evaluate only the documented, read-only affordability helper's inputs."""
+def afford(route, balances, special=False, payload_ready=True):
+    """Evaluate fee gates; actual payload predicates execute in the CBRN suite."""
     parameters = {field: number(token) for k, body in COSTS[f'missiles_can_afford_{route}_preparation'] if k == 'set_temp_variable' for field, token in body}
 
     def operand(token):
@@ -56,6 +56,8 @@ def afford(route, balances, special=False):
             return not any(term(k, v) for k, v in body)
         if key == 'missiles_preparation_has_special_payload':
             return special
+        if key == 'missiles_selected_payload_can_be_reserved':
+            return payload_ready
         if key == 'check_variable':
             fields = dict(body)
             left, right = operand(fields['var']), operand(fields['value'])
@@ -82,8 +84,12 @@ class OrdinaryPreparationContract(unittest.TestCase):
                 with self.subTest(route=route, special=special):
                     self.assertTrue(afford(route, balances, special))
                     for field in balances:
+                        if special and field == 'num_equipment@support_equipment':
+                            self.assertTrue(afford(route, {**balances, field: 0}, special))
+                            continue
                         step = Decimal('.001') if field == 'fuel_k' else Decimal('1')
                         self.assertFalse(afford(route, {**balances, field: balances[field] - step}, special), field)
+                    self.assertEqual(afford(route, balances, special, payload_ready=False), not special)
         self.assertFalse(any('reserve_cost' in str(body) for _, body in descendants(COSTS['missiles_can_afford_preparation'])))
 
     def test_special_quotes_match_actual_operation_cost(self):
@@ -112,9 +118,19 @@ class OrdinaryPreparationContract(unittest.TestCase):
             accepted = value(outer, 'if')
             result = dict(value(value(accepted, 'limit'), 'check_variable'))
             self.assertEqual(result, {'var': 'missiles_operation_preflight_result', 'value': 'constant:missiles_result.accepted', 'compare': 'equals'})
-            for fee in ('add_command_power', 'add_fuel', 'add_equipment_to_stockpile'):
+            for fee in ('add_command_power', 'add_fuel'):
                 self.assertEqual(sum(k == fee for k, _ in accepted), 1)
                 self.assertEqual(sum(k == fee for k, _ in descendants(outer)), 1)
+            component = value(accepted, 'if')
+            self.assertEqual(value(component, 'limit'), [('NOT', [('missiles_operation_has_special_payload', 'yes')])])
+            self.assertEqual(sum(k == 'add_equipment_to_stockpile' for k, _ in descendants(outer)), 1)
+            self.assertIn('add_equipment_to_stockpile', dict(component))
+            # Frozen operation family selects support OR the real payload,
+            # never both, alongside CP, fuel and the missile reservation.
+            for special in (False, True):
+                types = {'command_power', 'fuel', 'operational_missiles'}
+                types.add('special_payload' if special else 'support_equipment')
+                self.assertEqual(len(types), 4)
             self.assertEqual(value(accepted, 'missiles_activate_preparation_mission'), 'yes')
             self.assertNotIn('days_re_enable', dict(decision))
             self.assertIn('set_country_flag', dict(accepted))

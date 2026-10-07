@@ -1,0 +1,640 @@
+# CBRN chemical payload reservations. COUNTRY-scoped requests bind a consumer,
+# operation nonce, exact agent, source state and intended target. Native stock
+# observations, not requested amounts, determine held/refunded quantities.
+# This owner creates no exposure or confirmed use during reserve/settlement.
+# Event 032 supplies current physical-custody proofs and owns its launch order.
+
+cbrn_payload_initialize_reservations = {
+	if = {
+		limit = {
+			OR = {
+				NOT = { has_variable = cbrn_payload_ledger_owner_id }
+				NOT = { check_variable = { var = cbrn_payload_ledger_owner_id value = id compare = equals } }
+			}
+		}
+		set_variable = { cbrn_payload_ledger_owner_id = id }
+		set_variable = { cbrn_payload_receipt_sequence = constant:cbrn_math.zero }
+		set_variable = { cbrn_payload_held_total = constant:cbrn_math.zero }
+		set_variable = { cbrn_payload_captured_total = constant:cbrn_math.zero }
+		set_variable = { cbrn_payload_profile_bound_count = constant:cbrn_math.zero }
+		set_variable = { cbrn_payload_quarantined_count = constant:cbrn_math.zero }
+		clear_array = cbrn_payload_open_receipts
+		set_temp_variable = { cbrn_payload_initial_consumer = constant:cbrn_payload_receipt_consumer.missiles }
+		clear_variable = cbrn_payload_consumer_handle_@var:cbrn_payload_initial_consumer
+		clear_variable = cbrn_payload_consumer_last_nonce_@var:cbrn_payload_initial_consumer
+	}
+}
+
+# Public result fields are normal COUNTRY variables so their values survive
+# nested helpers. Native measurement scratch is caller-initialized locally.
+cbrn_payload_reset_receipt_result = {
+	set_variable = { cbrn_payload_result = constant:cbrn_payload_receipt_result.rejected }
+	set_variable = { cbrn_payload_result_amount = constant:cbrn_math.zero }
+	set_variable = { cbrn_payload_consumed_agent = constant:cbrn_agent.none }
+	set_variable = { cbrn_payload_consumed_model = constant:cbrn_math.zero }
+	set_variable = { cbrn_payload_consumed_class = constant:cbrn_agent_class.none }
+}
+
+cbrn_payload_refresh_reservation_counts = {
+	# A receipt publishes its own delta. Country totals never require a scan of
+	# all captured arsenals or depend on the engine's 1,000-iteration loop limit.
+	if = {
+		limit = {
+			has_variable = cbrn_payload_receipt_holder_id_@var:cbrn_payload_handle
+			check_variable = { var = cbrn_payload_receipt_holder_id_@var:cbrn_payload_handle value = id compare = equals }
+		}
+		set_temp_variable = { cbrn_payload_count_phase = cbrn_payload_receipt_counted_phase_@var:cbrn_payload_handle }
+		subtract_from_variable = { cbrn_payload_held_total = cbrn_payload_receipt_counted_quantity_@var:cbrn_payload_handle }
+		if = { limit = { cbrn_payload_count_phase_is_captured = yes } subtract_from_variable = { cbrn_payload_captured_total = cbrn_payload_receipt_counted_quantity_@var:cbrn_payload_handle } }
+		if = { limit = { cbrn_payload_count_phase_is_bound = yes } subtract_from_variable = { cbrn_payload_profile_bound_count = constant:cbrn_math.one } }
+		if = { limit = { cbrn_payload_count_phase_is_quarantined = yes } subtract_from_variable = { cbrn_payload_quarantined_count = constant:cbrn_math.one } }
+		set_variable = { cbrn_payload_receipt_counted_quantity_@var:cbrn_payload_handle = constant:cbrn_math.zero }
+		set_temp_variable = { cbrn_payload_count_phase = cbrn_payload_receipt_phase_@var:cbrn_payload_handle }
+		if = {
+			limit = { OR = { cbrn_payload_count_phase_is_bound = yes cbrn_payload_count_phase_is_captured = yes } }
+			set_variable = { cbrn_payload_receipt_counted_quantity_@var:cbrn_payload_handle = cbrn_payload_receipt_held_@var:cbrn_payload_handle }
+			add_to_variable = { cbrn_payload_held_total = cbrn_payload_receipt_held_@var:cbrn_payload_handle }
+			if = { limit = { cbrn_payload_count_phase_is_captured = yes } add_to_variable = { cbrn_payload_captured_total = cbrn_payload_receipt_held_@var:cbrn_payload_handle } }
+			if = { limit = { cbrn_payload_count_phase_is_bound = yes } add_to_variable = { cbrn_payload_profile_bound_count = constant:cbrn_math.one } }
+			if = { limit = { cbrn_payload_count_phase_is_quarantined = yes } add_to_variable = { cbrn_payload_quarantined_count = constant:cbrn_math.one } }
+		}
+		set_variable = { cbrn_payload_receipt_counted_phase_@var:cbrn_payload_handle = cbrn_payload_receipt_phase_@var:cbrn_payload_handle }
+	}
+}
+
+# Rebuild action metadata entirely within its consuming helper. The shared
+# policy uses actor ROOT. Returns durable authorization/model/class/cost facts;
+# no caller relies on this helper exporting newly-created temporary variables.
+# cbrn_payload_check_free_stock selects new-preparation versus held validation.
+cbrn_payload_validate_request_authorization = {
+	clr_country_flag = cbrn_payload_request_authorized
+	set_variable = { cbrn_payload_validated_model = constant:cbrn_math.zero }
+	set_variable = { cbrn_payload_validated_class = constant:cbrn_agent_class.none }
+	set_variable = { cbrn_payload_validated_requirement = constant:cbrn_math.zero }
+	if = {
+		limit = {
+			exists = yes
+			ROOT = { tag = PREV }
+			has_variable = cbrn_payload_request_consumer
+			has_variable = cbrn_payload_request_nonce
+			check_variable = { cbrn_payload_request_consumer = constant:cbrn_payload_receipt_consumer.missiles }
+			check_variable = { cbrn_payload_request_nonce > constant:cbrn_math.zero }
+			has_variable = cbrn_payload_request_site
+			has_variable = cbrn_payload_request_target
+			var:cbrn_payload_request_site = { is_controlled_by = PREV }
+			var:cbrn_payload_request_target = { impassable = no CONTROLLER = { exists = yes } }
+			check_variable = { cbrn_payload_custody_proof = constant:cbrn_proof.supplied }
+		}
+		set_temp_variable = { cbrn_action_agent_class = constant:cbrn_agent_class.none }
+		set_temp_variable = { cbrn_action_payload_required = constant:cbrn_math.zero }
+		set_temp_variable = { cbrn_action_payload_consumed = constant:cbrn_math.zero }
+		set_temp_variable = { cbrn_action_payload_consumed_proof = constant:cbrn_proof.missing }
+		set_temp_variable = { cbrn_payload_native_model = constant:cbrn_math.zero }
+		set_temp_variable = { cbrn_payload_native_model_matched = constant:cbrn_proof.missing }
+		cbrn_reset_action_context = yes
+		save_event_target_as = cbrn_action_actor
+		var:cbrn_payload_request_target = {
+			save_event_target_as = cbrn_action_target_state
+			CONTROLLER = { save_event_target_as = cbrn_action_victim_country }
+		}
+		set_temp_variable = { cbrn_action_target_state_supplied = constant:cbrn_proof.supplied }
+		set_temp_variable = { cbrn_action_weapon_class = constant:cbrn_weapon_class.chemical }
+		set_temp_variable = { cbrn_action_agent = cbrn_payload_request_agent }
+		set_temp_variable = { cbrn_action_delivery_route = cbrn_payload_request_route }
+		set_temp_variable = { cbrn_action_severity = constant:cbrn_operation_severity.strategic }
+		set_temp_variable = { cbrn_action_late_agent_route_authorized = constant:cbrn_proof.supplied }
+		cbrn_payload_resolve_air_model = yes
+		cbrn_set_default_payload_requirement_for_action = yes
+		if = {
+			limit = {
+				check_variable = { cbrn_payload_native_model_matched = constant:cbrn_proof.supplied }
+				cbrn_chemical_action_static_metadata_is_valid = yes
+				cbrn_action_agent_is_unlocked = yes
+				cbrn_action_payload_profile_is_ready = yes
+				OR = {
+					NOT = { has_country_flag = cbrn_payload_check_free_stock }
+					cbrn_action_payload_stock_is_sufficient = yes
+				}
+			}
+			set_variable = { cbrn_payload_validated_model = cbrn_payload_native_model }
+			set_variable = { cbrn_payload_validated_class = cbrn_action_agent_class }
+			set_variable = { cbrn_payload_validated_requirement = cbrn_action_payload_required }
+			set_country_flag = cbrn_payload_request_authorized
+		}
+	}
+}
+
+# COUNTRY; selected handle is the durable cbrn_payload_handle field.
+# Metadata is frozen before touching stock, including the exact payer and sites.
+cbrn_payload_open_receipt = {
+	add_to_variable = { cbrn_payload_receipt_sequence = constant:cbrn_math.one }
+	set_variable = { cbrn_payload_handle = cbrn_payload_receipt_sequence }
+	set_variable = { cbrn_payload_receipt_holder_id_@var:cbrn_payload_handle = id }
+	set_variable = { cbrn_payload_receipt_origin_id_@var:cbrn_payload_handle = id }
+	set_variable = { cbrn_payload_receipt_consumer_@var:cbrn_payload_handle = cbrn_payload_request_consumer }
+	set_variable = { cbrn_payload_receipt_nonce_@var:cbrn_payload_handle = cbrn_payload_request_nonce }
+	set_variable = { cbrn_payload_receipt_site_@var:cbrn_payload_handle = cbrn_payload_request_site }
+	set_variable = { cbrn_payload_receipt_target_@var:cbrn_payload_handle = cbrn_payload_request_target }
+	var:cbrn_payload_request_site = { PREV = { set_variable = { cbrn_payload_receipt_site_id_@var:cbrn_payload_handle = PREV.id } } }
+	var:cbrn_payload_request_target = { PREV = { set_variable = { cbrn_payload_receipt_target_id_@var:cbrn_payload_handle = PREV.id } } }
+	set_variable = { cbrn_payload_receipt_agent_@var:cbrn_payload_handle = cbrn_payload_request_agent }
+	set_variable = { cbrn_payload_receipt_route_@var:cbrn_payload_handle = cbrn_payload_request_route }
+	set_variable = { cbrn_payload_receipt_model_@var:cbrn_payload_handle = cbrn_payload_validated_model }
+	set_variable = { cbrn_payload_receipt_class_@var:cbrn_payload_handle = cbrn_payload_validated_class }
+	set_variable = { cbrn_payload_receipt_required_@var:cbrn_payload_handle = cbrn_payload_validated_requirement }
+	set_variable = { cbrn_payload_receipt_held_@var:cbrn_payload_handle = constant:cbrn_math.zero }
+	set_variable = { cbrn_payload_receipt_reserved_@var:cbrn_payload_handle = constant:cbrn_math.zero }
+	set_variable = { cbrn_payload_receipt_received_@var:cbrn_payload_handle = constant:cbrn_math.zero }
+	set_variable = { cbrn_payload_receipt_returned_@var:cbrn_payload_handle = constant:cbrn_math.zero }
+	set_variable = { cbrn_payload_receipt_consumed_@var:cbrn_payload_handle = constant:cbrn_math.zero }
+	set_variable = { cbrn_payload_receipt_destroyed_@var:cbrn_payload_handle = constant:cbrn_math.zero }
+	set_variable = { cbrn_payload_receipt_transferred_@var:cbrn_payload_handle = constant:cbrn_math.zero }
+	set_variable = { cbrn_payload_receipt_counted_phase_@var:cbrn_payload_handle = constant:cbrn_math.zero }
+	set_variable = { cbrn_payload_receipt_counted_quantity_@var:cbrn_payload_handle = constant:cbrn_math.zero }
+	set_variable = { cbrn_payload_receipt_phase_@var:cbrn_payload_handle = constant:cbrn_payload_receipt_phase.quarantined }
+	set_variable = { cbrn_payload_consumer_handle_@var:cbrn_payload_request_consumer = cbrn_payload_handle }
+	set_variable = { cbrn_payload_consumer_last_nonce_@var:cbrn_payload_request_consumer = cbrn_payload_request_nonce }
+	add_to_array = { array = cbrn_payload_open_receipts value = cbrn_payload_handle }
+}
+
+# Repeated matching preparation returns the same hold. A consumer with an
+# unresolved earlier receipt cannot silently abandon it and allocate again.
+cbrn_reserve_action_payload = {
+	cbrn_payload_initialize_reservations = yes
+	cbrn_payload_reset_receipt_result = yes
+	set_country_flag = cbrn_payload_check_free_stock
+	if = {
+		limit = { has_variable = cbrn_payload_consumer_handle_@var:cbrn_payload_request_consumer }
+		set_variable = { cbrn_payload_handle = cbrn_payload_consumer_handle_@var:cbrn_payload_request_consumer }
+		set_temp_variable = { cbrn_payload_lookup_handle = cbrn_payload_handle }
+		set_temp_variable = { cbrn_payload_lookup_consumer = cbrn_payload_request_consumer }
+		set_temp_variable = { cbrn_payload_lookup_nonce = cbrn_payload_request_nonce }
+		if = {
+			limit = { cbrn_payload_receipt_has_full_hold = yes cbrn_payload_receipt_matches_requested_binding = yes }
+			clr_country_flag = cbrn_payload_check_free_stock
+			cbrn_payload_validate_request_authorization = yes
+			if = {
+				limit = { has_country_flag = cbrn_payload_request_authorized }
+				set_variable = { cbrn_payload_result = constant:cbrn_payload_receipt_result.accepted }
+				set_variable = { cbrn_payload_result_amount = cbrn_payload_receipt_held_@var:cbrn_payload_handle }
+			}
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				NOT = { has_variable = cbrn_payload_consumer_last_nonce_@var:cbrn_payload_request_consumer }
+				check_variable = { var = cbrn_payload_request_nonce value = cbrn_payload_consumer_last_nonce_@var:cbrn_payload_request_consumer compare = greater_than }
+			}
+		}
+		cbrn_payload_validate_request_authorization = yes
+		if = {
+			limit = { has_country_flag = cbrn_payload_request_authorized check_variable = { cbrn_payload_validated_requirement > constant:cbrn_math.zero } }
+			cbrn_payload_open_receipt = yes
+			cbrn_payload_refresh_reservation_counts = yes
+			set_temp_variable = { cbrn_payload_native_model = cbrn_payload_validated_model }
+			set_temp_variable = { cbrn_payload_native_requested = cbrn_payload_validated_requirement }
+			set_temp_variable = { cbrn_payload_native_before = constant:cbrn_math.zero }
+			set_temp_variable = { cbrn_payload_native_after = constant:cbrn_math.zero }
+			set_temp_variable = { cbrn_payload_native_observed = constant:cbrn_math.zero }
+			set_temp_variable = { cbrn_payload_native_valid = constant:cbrn_math.zero }
+			cbrn_payload_measure_model_debit = yes
+			set_variable = { cbrn_payload_receipt_native_before_@var:cbrn_payload_handle = cbrn_payload_native_before }
+			set_variable = { cbrn_payload_receipt_native_after_@var:cbrn_payload_handle = cbrn_payload_native_after }
+			set_variable = { cbrn_payload_receipt_native_observed_@var:cbrn_payload_handle = cbrn_payload_native_observed }
+			if = {
+				limit = { check_variable = { cbrn_payload_native_valid = constant:cbrn_math.one } }
+				set_variable = { cbrn_payload_receipt_held_@var:cbrn_payload_handle = cbrn_payload_native_observed }
+				set_variable = { cbrn_payload_receipt_reserved_@var:cbrn_payload_handle = cbrn_payload_native_observed }
+				set_variable = { cbrn_payload_result_amount = cbrn_payload_native_observed }
+				if = {
+					limit = { check_variable = { var = cbrn_payload_native_observed value = cbrn_payload_validated_requirement compare = equals } }
+					set_variable = { cbrn_payload_receipt_phase_@var:cbrn_payload_handle = constant:cbrn_payload_receipt_phase.held }
+					set_variable = { cbrn_payload_result = constant:cbrn_payload_receipt_result.accepted }
+				}
+				else = {
+					set_variable = { cbrn_payload_receipt_phase_@var:cbrn_payload_handle = constant:cbrn_payload_receipt_phase.return_pending }
+					set_variable = { cbrn_payload_result = constant:cbrn_payload_receipt_result.partial }
+				}
+			}
+			else = { set_variable = { cbrn_payload_result = constant:cbrn_payload_receipt_result.quarantined } }
+		}
+	}
+	clr_country_flag = cbrn_payload_check_free_stock
+	clr_country_flag = cbrn_payload_request_authorized
+	cbrn_payload_refresh_reservation_counts = yes
+}
+
+# Finish a zero-held receipt, keeping numeric identity/quantity tombstones for
+# late duplicate calls but releasing every live scope pointer and active slot.
+cbrn_payload_retire_receipt = {
+	if = {
+		limit = { check_variable = { cbrn_payload_receipt_held_@var:cbrn_payload_handle = constant:cbrn_math.zero } }
+		remove_from_array = { array = cbrn_payload_open_receipts value = cbrn_payload_handle }
+		set_temp_variable = { cbrn_payload_close_consumer = cbrn_payload_receipt_consumer_@var:cbrn_payload_handle }
+		if = {
+			limit = { check_variable = { var = cbrn_payload_consumer_handle_@var:cbrn_payload_close_consumer value = cbrn_payload_handle compare = equals } }
+			clear_variable = cbrn_payload_consumer_handle_@var:cbrn_payload_close_consumer
+		}
+		clear_variable = cbrn_payload_receipt_site_@var:cbrn_payload_handle
+		clear_variable = cbrn_payload_receipt_target_@var:cbrn_payload_handle
+	}
+}
+
+# Pure return accounting runs on the proven holder, including foreign-ROOT
+# cancellation. The owner must prove physical recovery before setting the
+# caller-owned cbrn_payload_recovery_proof. Lost launch eligibility is irrelevant.
+cbrn_return_payload_reservation = {
+	cbrn_payload_reset_receipt_result = yes
+	set_variable = { cbrn_payload_handle = cbrn_payload_request_handle }
+	set_temp_variable = { cbrn_payload_lookup_handle = cbrn_payload_handle }
+	set_temp_variable = { cbrn_payload_lookup_consumer = cbrn_payload_request_consumer }
+	set_temp_variable = { cbrn_payload_lookup_nonce = cbrn_payload_request_nonce }
+	if = {
+		limit = { cbrn_payload_receipt_identity_matches = yes }
+		if = {
+			limit = { cbrn_payload_receipt_is_settled = yes }
+			set_variable = { cbrn_payload_result = constant:cbrn_payload_receipt_result.already_settled }
+		}
+		else_if = {
+			limit = { cbrn_payload_receipt_can_return = yes }
+			if = {
+				limit = {
+					exists = yes
+					check_variable = { cbrn_payload_recovery_proof = constant:cbrn_proof.supplied }
+					cbrn_payload_receipt_source_is_controlled = yes
+					check_variable = { var = cbrn_air_payload_agent value = cbrn_payload_receipt_agent_@var:cbrn_payload_handle compare = equals }
+				}
+				set_temp_variable = { cbrn_payload_native_model = cbrn_payload_receipt_model_@var:cbrn_payload_handle }
+				set_temp_variable = { cbrn_payload_native_requested = cbrn_payload_receipt_held_@var:cbrn_payload_handle }
+				set_temp_variable = { cbrn_payload_native_before = constant:cbrn_math.zero }
+				set_temp_variable = { cbrn_payload_native_after = constant:cbrn_math.zero }
+				set_temp_variable = { cbrn_payload_native_observed = constant:cbrn_math.zero }
+				set_temp_variable = { cbrn_payload_native_valid = constant:cbrn_math.zero }
+				cbrn_payload_measure_model_credit = yes
+				set_variable = { cbrn_payload_receipt_native_before_@var:cbrn_payload_handle = cbrn_payload_native_before }
+				set_variable = { cbrn_payload_receipt_native_after_@var:cbrn_payload_handle = cbrn_payload_native_after }
+				set_variable = { cbrn_payload_receipt_native_observed_@var:cbrn_payload_handle = cbrn_payload_native_observed }
+				if = {
+					limit = { check_variable = { cbrn_payload_native_valid = constant:cbrn_math.one } }
+					subtract_from_variable = { cbrn_payload_receipt_held_@var:cbrn_payload_handle = cbrn_payload_native_observed }
+					add_to_variable = { cbrn_payload_receipt_returned_@var:cbrn_payload_handle = cbrn_payload_native_observed }
+					set_variable = { cbrn_payload_result_amount = cbrn_payload_native_observed }
+					if = {
+						limit = { check_variable = { cbrn_payload_receipt_held_@var:cbrn_payload_handle = constant:cbrn_math.zero } }
+						set_variable = { cbrn_payload_receipt_phase_@var:cbrn_payload_handle = constant:cbrn_payload_receipt_phase.returned }
+						set_variable = { cbrn_payload_result = constant:cbrn_payload_receipt_result.accepted }
+						cbrn_payload_retire_receipt = yes
+					}
+					else = {
+						set_variable = { cbrn_payload_receipt_phase_@var:cbrn_payload_handle = constant:cbrn_payload_receipt_phase.return_pending }
+						set_variable = { cbrn_payload_result = constant:cbrn_payload_receipt_result.partial }
+					}
+				}
+				else = {
+					set_variable = { cbrn_payload_receipt_phase_@var:cbrn_payload_handle = constant:cbrn_payload_receipt_phase.quarantined }
+					set_variable = { cbrn_payload_result = constant:cbrn_payload_receipt_result.quarantined }
+				}
+			}
+			else = {
+				set_variable = { cbrn_payload_receipt_phase_@var:cbrn_payload_handle = constant:cbrn_payload_receipt_phase.recovery_pending }
+			}
+		}
+		else = { set_variable = { cbrn_payload_result = constant:cbrn_payload_receipt_result.quarantined } }
+	}
+	cbrn_payload_refresh_reservation_counts = yes
+}
+
+# Validation is distinct from a fresh consumption receipt. It checks current
+# authorization against the frozen paid hold, without requiring free stock.
+cbrn_validate_payload_reservation = {
+	set_variable = { cbrn_payload_validation_result = constant:cbrn_payload_receipt_result.rejected }
+	set_variable = { cbrn_payload_handle = cbrn_payload_request_handle }
+	set_temp_variable = { cbrn_payload_lookup_handle = cbrn_payload_handle }
+	set_temp_variable = { cbrn_payload_lookup_consumer = cbrn_payload_request_consumer }
+	set_temp_variable = { cbrn_payload_lookup_nonce = cbrn_payload_request_nonce }
+	if = {
+		limit = {
+			cbrn_payload_receipt_has_full_hold = yes
+			cbrn_payload_receipt_matches_requested_binding = yes
+			cbrn_payload_receipt_source_is_controlled = yes
+		}
+		clr_country_flag = cbrn_payload_check_free_stock
+		cbrn_payload_validate_request_authorization = yes
+		if = {
+			limit = {
+				has_country_flag = cbrn_payload_request_authorized
+				check_variable = { var = cbrn_payload_validated_model value = cbrn_payload_receipt_model_@var:cbrn_payload_handle compare = equals }
+			}
+			set_variable = { cbrn_payload_validation_result = constant:cbrn_payload_receipt_result.accepted }
+		}
+	}
+	clr_country_flag = cbrn_payload_request_authorized
+}
+
+# Launch consumes the paid hold without another native debit. Clear the fresh
+# receipt first and repeat identity/state checks after authorization so an
+# already-consumed or changed row cannot reuse a previous validation result.
+cbrn_consume_payload_reservation = {
+	cbrn_payload_reset_receipt_result = yes
+	cbrn_validate_payload_reservation = yes
+	set_temp_variable = { cbrn_payload_lookup_handle = cbrn_payload_request_handle }
+	set_temp_variable = { cbrn_payload_lookup_consumer = cbrn_payload_request_consumer }
+	set_temp_variable = { cbrn_payload_lookup_nonce = cbrn_payload_request_nonce }
+	if = {
+		limit = {
+			check_variable = { cbrn_payload_validation_result = constant:cbrn_payload_receipt_result.accepted }
+			cbrn_payload_receipt_has_full_hold = yes
+			cbrn_payload_receipt_matches_requested_binding = yes
+			cbrn_payload_receipt_source_is_controlled = yes
+		}
+		set_variable = { cbrn_payload_handle = cbrn_payload_request_handle }
+		set_variable = { cbrn_payload_result_amount = cbrn_payload_receipt_held_@var:cbrn_payload_handle }
+		set_variable = { cbrn_payload_consumed_agent = cbrn_payload_receipt_agent_@var:cbrn_payload_handle }
+		set_variable = { cbrn_payload_consumed_model = cbrn_payload_receipt_model_@var:cbrn_payload_handle }
+		set_variable = { cbrn_payload_consumed_class = cbrn_payload_receipt_class_@var:cbrn_payload_handle }
+		add_to_variable = { cbrn_payload_receipt_consumed_@var:cbrn_payload_handle = cbrn_payload_result_amount }
+		set_variable = { cbrn_payload_receipt_held_@var:cbrn_payload_handle = constant:cbrn_math.zero }
+		set_variable = { cbrn_payload_receipt_phase_@var:cbrn_payload_handle = constant:cbrn_payload_receipt_phase.consumed }
+		set_variable = { cbrn_payload_result = constant:cbrn_payload_receipt_result.accepted }
+		cbrn_payload_retire_receipt = yes
+	}
+	cbrn_payload_refresh_reservation_counts = yes
+}
+
+# Explicit proven destruction/removal only. An invalid native observation is
+# never silently erased by this path, and disposal never records chemical use.
+cbrn_discard_payload_reservation = {
+	cbrn_payload_reset_receipt_result = yes
+	set_variable = { cbrn_payload_handle = cbrn_payload_request_handle }
+	set_temp_variable = { cbrn_payload_lookup_handle = cbrn_payload_handle }
+	set_temp_variable = { cbrn_payload_lookup_consumer = cbrn_payload_request_consumer }
+	set_temp_variable = { cbrn_payload_lookup_nonce = cbrn_payload_request_nonce }
+	if = {
+		limit = {
+			cbrn_payload_receipt_identity_matches = yes
+			check_variable = { cbrn_payload_loss_proof = constant:cbrn_proof.supplied }
+		}
+		if = {
+			limit = { cbrn_payload_receipt_is_settled = yes }
+			set_variable = { cbrn_payload_result = constant:cbrn_payload_receipt_result.already_settled }
+		}
+		else_if = {
+			limit = {
+				OR = {
+					cbrn_payload_receipt_can_return = yes
+					check_variable = { cbrn_payload_receipt_phase_@var:cbrn_payload_handle = constant:cbrn_payload_receipt_phase.captured }
+				}
+			}
+			set_variable = { cbrn_payload_result_amount = cbrn_payload_receipt_held_@var:cbrn_payload_handle }
+			add_to_variable = { cbrn_payload_receipt_destroyed_@var:cbrn_payload_handle = cbrn_payload_result_amount }
+			set_variable = { cbrn_payload_receipt_held_@var:cbrn_payload_handle = constant:cbrn_math.zero }
+			set_variable = { cbrn_payload_receipt_phase_@var:cbrn_payload_handle = constant:cbrn_payload_receipt_phase.destroyed }
+			set_variable = { cbrn_payload_result = constant:cbrn_payload_receipt_result.accepted }
+			cbrn_payload_retire_receipt = yes
+		}
+		else = { set_variable = { cbrn_payload_result = constant:cbrn_payload_receipt_result.quarantined } }
+	}
+	cbrn_payload_refresh_reservation_counts = yes
+}
+
+# Capture transfers known held equipment into a SEALED record on the state's
+# current controller, never into free native stock. The original debit and
+# exact agent survive; the new holder receives no technology or use authority.
+# Input: request_recipient COUNTRY pointer and caller-owned transfer proof.
+cbrn_transfer_payload_reservation = {
+	cbrn_payload_reset_receipt_result = yes
+	set_variable = { cbrn_payload_transferred_handle = constant:cbrn_math.zero }
+	set_variable = { cbrn_payload_handle = cbrn_payload_request_handle }
+	set_temp_variable = { cbrn_payload_lookup_handle = cbrn_payload_handle }
+	set_temp_variable = { cbrn_payload_lookup_consumer = cbrn_payload_request_consumer }
+	set_temp_variable = { cbrn_payload_lookup_nonce = cbrn_payload_request_nonce }
+	if = {
+		limit = {
+			cbrn_payload_receipt_identity_matches = yes
+			check_variable = { cbrn_payload_transfer_proof = constant:cbrn_proof.supplied }
+			has_variable = cbrn_payload_request_recipient
+			var:cbrn_payload_request_recipient = { exists = yes NOT = { tag = PREV } }
+			has_variable = cbrn_payload_receipt_site_@var:cbrn_payload_handle
+			check_variable = { cbrn_payload_receipt_held_@var:cbrn_payload_handle > constant:cbrn_math.zero }
+			OR = {
+				cbrn_payload_receipt_can_return = yes
+				check_variable = { cbrn_payload_receipt_phase_@var:cbrn_payload_handle = constant:cbrn_payload_receipt_phase.captured }
+			}
+		}
+		save_event_target_as = cbrn_payload_transfer_sender
+		var:cbrn_payload_request_recipient = { save_event_target_as = cbrn_payload_transfer_receiver }
+		if = {
+			limit = {
+				var:cbrn_payload_receipt_site_@var:cbrn_payload_handle = {
+					check_variable = { var = id value = PREV.cbrn_payload_receipt_site_id_@var:cbrn_payload_lookup_handle compare = equals }
+					CONTROLLER = { tag = event_target:cbrn_payload_transfer_receiver }
+				}
+			}
+			set_temp_variable = { cbrn_payload_transfer_source_handle = cbrn_payload_handle }
+			event_target:cbrn_payload_transfer_receiver = {
+				cbrn_payload_initialize_reservations = yes
+				add_to_variable = { cbrn_payload_receipt_sequence = constant:cbrn_math.one }
+				set_variable = { cbrn_payload_handle = cbrn_payload_receipt_sequence }
+				set_variable = { cbrn_payload_receipt_holder_id_@var:cbrn_payload_handle = id }
+				set_variable = { cbrn_payload_receipt_origin_id_@var:cbrn_payload_handle = event_target:cbrn_payload_transfer_sender.cbrn_payload_receipt_origin_id_@var:cbrn_payload_transfer_source_handle }
+				set_variable = { cbrn_payload_receipt_previous_holder_id_@var:cbrn_payload_handle = event_target:cbrn_payload_transfer_sender.id }
+				set_variable = { cbrn_payload_receipt_previous_handle_@var:cbrn_payload_handle = cbrn_payload_transfer_source_handle }
+				set_variable = { cbrn_payload_receipt_consumer_@var:cbrn_payload_handle = event_target:cbrn_payload_transfer_sender.cbrn_payload_receipt_consumer_@var:cbrn_payload_transfer_source_handle }
+				set_variable = { cbrn_payload_receipt_nonce_@var:cbrn_payload_handle = event_target:cbrn_payload_transfer_sender.cbrn_payload_receipt_nonce_@var:cbrn_payload_transfer_source_handle }
+				set_variable = { cbrn_payload_receipt_site_@var:cbrn_payload_handle = event_target:cbrn_payload_transfer_sender.cbrn_payload_receipt_site_@var:cbrn_payload_transfer_source_handle }
+				set_variable = { cbrn_payload_receipt_site_id_@var:cbrn_payload_handle = event_target:cbrn_payload_transfer_sender.cbrn_payload_receipt_site_id_@var:cbrn_payload_transfer_source_handle }
+				set_variable = { cbrn_payload_receipt_target_id_@var:cbrn_payload_handle = event_target:cbrn_payload_transfer_sender.cbrn_payload_receipt_target_id_@var:cbrn_payload_transfer_source_handle }
+				set_variable = { cbrn_payload_receipt_agent_@var:cbrn_payload_handle = event_target:cbrn_payload_transfer_sender.cbrn_payload_receipt_agent_@var:cbrn_payload_transfer_source_handle }
+				set_variable = { cbrn_payload_receipt_model_@var:cbrn_payload_handle = event_target:cbrn_payload_transfer_sender.cbrn_payload_receipt_model_@var:cbrn_payload_transfer_source_handle }
+				set_variable = { cbrn_payload_receipt_class_@var:cbrn_payload_handle = event_target:cbrn_payload_transfer_sender.cbrn_payload_receipt_class_@var:cbrn_payload_transfer_source_handle }
+				set_variable = { cbrn_payload_receipt_route_@var:cbrn_payload_handle = event_target:cbrn_payload_transfer_sender.cbrn_payload_receipt_route_@var:cbrn_payload_transfer_source_handle }
+				set_variable = { cbrn_payload_receipt_required_@var:cbrn_payload_handle = event_target:cbrn_payload_transfer_sender.cbrn_payload_receipt_required_@var:cbrn_payload_transfer_source_handle }
+				set_variable = { cbrn_payload_receipt_held_@var:cbrn_payload_handle = event_target:cbrn_payload_transfer_sender.cbrn_payload_receipt_held_@var:cbrn_payload_transfer_source_handle }
+				set_variable = { cbrn_payload_receipt_received_@var:cbrn_payload_handle = cbrn_payload_receipt_held_@var:cbrn_payload_handle }
+				set_variable = { cbrn_payload_receipt_reserved_@var:cbrn_payload_handle = constant:cbrn_math.zero }
+				set_variable = { cbrn_payload_receipt_returned_@var:cbrn_payload_handle = constant:cbrn_math.zero }
+				set_variable = { cbrn_payload_receipt_consumed_@var:cbrn_payload_handle = constant:cbrn_math.zero }
+				set_variable = { cbrn_payload_receipt_destroyed_@var:cbrn_payload_handle = constant:cbrn_math.zero }
+				set_variable = { cbrn_payload_receipt_transferred_@var:cbrn_payload_handle = constant:cbrn_math.zero }
+				set_variable = { cbrn_payload_receipt_counted_phase_@var:cbrn_payload_handle = constant:cbrn_math.zero }
+				set_variable = { cbrn_payload_receipt_counted_quantity_@var:cbrn_payload_handle = constant:cbrn_math.zero }
+				set_variable = { cbrn_payload_receipt_phase_@var:cbrn_payload_handle = constant:cbrn_payload_receipt_phase.captured }
+				add_to_array = { array = cbrn_payload_open_receipts value = cbrn_payload_handle }
+				event_target:cbrn_payload_transfer_sender = { set_variable = { cbrn_payload_transferred_handle = PREV.cbrn_payload_handle } }
+				cbrn_payload_refresh_reservation_counts = yes
+			}
+			set_variable = { cbrn_payload_result_amount = cbrn_payload_receipt_held_@var:cbrn_payload_handle }
+			add_to_variable = { cbrn_payload_receipt_transferred_@var:cbrn_payload_handle = cbrn_payload_result_amount }
+			set_variable = { cbrn_payload_receipt_held_@var:cbrn_payload_handle = constant:cbrn_math.zero }
+			set_variable = { cbrn_payload_receipt_phase_@var:cbrn_payload_handle = constant:cbrn_payload_receipt_phase.transferred }
+			set_variable = { cbrn_payload_result = constant:cbrn_payload_receipt_result.accepted }
+			cbrn_payload_retire_receipt = yes
+		}
+	}
+	cbrn_payload_refresh_reservation_counts = yes
+}
+
+# Sealed capture is integrated only by its actual holder, at its exact state,
+# with a matching current profile and technology. No profile is rewritten and
+# no free technology is supplied. The owner's recovery/integration proof is
+# independent of a launch authorization, which is required for a later shot.
+cbrn_integrate_captured_payload_reservation = {
+	cbrn_payload_reset_receipt_result = yes
+	set_variable = { cbrn_payload_handle = cbrn_payload_request_handle }
+	set_temp_variable = { cbrn_payload_lookup_handle = cbrn_payload_handle }
+	set_temp_variable = { cbrn_payload_lookup_consumer = cbrn_payload_request_consumer }
+	set_temp_variable = { cbrn_payload_lookup_nonce = cbrn_payload_request_nonce }
+	if = {
+		limit = {
+			cbrn_payload_receipt_identity_matches = yes
+			check_variable = { cbrn_payload_receipt_phase_@var:cbrn_payload_handle = constant:cbrn_payload_receipt_phase.captured }
+			cbrn_payload_receipt_source_is_controlled = yes
+			check_variable = { cbrn_payload_recovery_proof = constant:cbrn_proof.supplied }
+			cbrn_payload_receipt_technology_and_profile_are_ready = yes
+		}
+		set_variable = { cbrn_payload_receipt_phase_@var:cbrn_payload_handle = constant:cbrn_payload_receipt_phase.return_pending }
+		cbrn_payload_refresh_reservation_counts = yes
+		cbrn_return_payload_reservation = yes
+	}
+	cbrn_payload_refresh_reservation_counts = yes
+}
+
+# COUNTRY holder. Owner-supplied request_site and site_action describe an exact
+# physical mutation. Capture also supplies request_recipient. Freeze the finite
+# matching handle set before any public transaction removes an active handle.
+# This is called by a site transaction, never by a periodic country/world scan.
+cbrn_settle_site_payload_reservations = {
+	set_variable = { cbrn_payload_site_result = constant:cbrn_payload_receipt_result.rejected }
+	set_variable = { cbrn_payload_site_settled_amount = constant:cbrn_math.zero }
+	if = {
+		limit = { has_variable = cbrn_payload_request_site }
+		var:cbrn_payload_request_site = { PREV = { set_variable = { cbrn_payload_settlement_site_id = PREV.id } } }
+		clear_temp_array = cbrn_payload_site_handles
+		set_temp_variable = { cbrn_payload_site_collect_break = constant:cbrn_math.zero }
+		for_each_loop = {
+			array = cbrn_payload_open_receipts
+			value = cbrn_payload_site_handle
+			break = cbrn_payload_site_collect_break
+			if = {
+				limit = {
+					check_variable = { var = cbrn_payload_receipt_holder_id_@var:cbrn_payload_site_handle value = id compare = equals }
+					check_variable = { var = cbrn_payload_receipt_site_id_@var:cbrn_payload_site_handle value = cbrn_payload_settlement_site_id compare = equals }
+				}
+				add_to_temp_array = { array = cbrn_payload_site_handles value = cbrn_payload_site_handle }
+			}
+		}
+		set_variable = { cbrn_payload_site_result = constant:cbrn_payload_receipt_result.accepted }
+		set_temp_variable = { cbrn_payload_site_settle_break = constant:cbrn_math.zero }
+		for_each_loop = {
+			array = cbrn_payload_site_handles
+			value = cbrn_payload_site_handle
+			break = cbrn_payload_site_settle_break
+			set_variable = { cbrn_payload_request_handle = cbrn_payload_site_handle }
+			set_variable = { cbrn_payload_request_consumer = cbrn_payload_receipt_consumer_@var:cbrn_payload_site_handle }
+			set_variable = { cbrn_payload_request_nonce = cbrn_payload_receipt_nonce_@var:cbrn_payload_site_handle }
+			set_temp_variable = { cbrn_payload_recovery_proof = constant:cbrn_proof.missing }
+			set_temp_variable = { cbrn_payload_transfer_proof = constant:cbrn_proof.missing }
+			set_temp_variable = { cbrn_payload_loss_proof = constant:cbrn_proof.missing }
+			if = {
+				limit = { check_variable = { cbrn_payload_site_action = constant:cbrn_payload_site_action.recover } }
+				set_temp_variable = { cbrn_payload_recovery_proof = constant:cbrn_proof.supplied }
+				cbrn_return_payload_reservation = yes
+			}
+			else_if = {
+				limit = { check_variable = { cbrn_payload_site_action = constant:cbrn_payload_site_action.destroy } }
+				set_temp_variable = { cbrn_payload_loss_proof = constant:cbrn_proof.supplied }
+				cbrn_discard_payload_reservation = yes
+			}
+			else_if = {
+				limit = { check_variable = { cbrn_payload_site_action = constant:cbrn_payload_site_action.capture } }
+				set_temp_variable = { cbrn_payload_transfer_proof = constant:cbrn_proof.supplied }
+				cbrn_transfer_payload_reservation = yes
+			}
+			else_if = {
+				limit = { check_variable = { cbrn_payload_site_action = constant:cbrn_payload_site_action.integrate } }
+				set_temp_variable = { cbrn_payload_recovery_proof = constant:cbrn_proof.supplied }
+				cbrn_integrate_captured_payload_reservation = yes
+			}
+			else_if = {
+				limit = { check_variable = { cbrn_payload_site_action = constant:cbrn_payload_site_action.hold } }
+				set_variable = { cbrn_payload_handle = cbrn_payload_site_handle }
+				set_temp_variable = { cbrn_payload_lookup_handle = cbrn_payload_handle }
+				if = {
+					limit = { cbrn_payload_receipt_can_return = yes }
+					set_variable = { cbrn_payload_receipt_phase_@var:cbrn_payload_handle = constant:cbrn_payload_receipt_phase.recovery_pending }
+					cbrn_payload_refresh_reservation_counts = yes
+				}
+				set_variable = { cbrn_payload_result = constant:cbrn_payload_receipt_result.partial }
+				set_variable = { cbrn_payload_result_amount = constant:cbrn_math.zero }
+			}
+			else = { cbrn_payload_reset_receipt_result = yes }
+			add_to_variable = { cbrn_payload_site_settled_amount = cbrn_payload_result_amount }
+			if = {
+				limit = {
+					NOT = { check_variable = { cbrn_payload_result = constant:cbrn_payload_receipt_result.accepted } }
+					NOT = { check_variable = { cbrn_payload_result = constant:cbrn_payload_receipt_result.already_settled } }
+				}
+				set_variable = { cbrn_payload_site_result = constant:cbrn_payload_receipt_result.partial }
+			}
+		}
+		clear_variable = cbrn_payload_settlement_site_id
+	}
+}
+
+# COUNTRY compliance action. The owning sanctions system supplies its existing
+# destruction fraction. Already-debited holdings lose the same bounded share;
+# no second native removal and no later refund can recreate the destroyed part.
+cbrn_dispose_reserved_payload_fraction = {
+	cbrn_payload_reset_receipt_result = yes
+	set_variable = { cbrn_payload_result = constant:cbrn_payload_receipt_result.accepted }
+	clear_temp_array = cbrn_payload_disposal_handles
+	set_temp_variable = { cbrn_payload_disposal_collect_break = constant:cbrn_math.zero }
+	for_each_loop = {
+		array = cbrn_payload_open_receipts
+		value = cbrn_payload_disposal_handle
+		break = cbrn_payload_disposal_collect_break
+		add_to_temp_array = { array = cbrn_payload_disposal_handles value = cbrn_payload_disposal_handle }
+	}
+	set_temp_variable = { cbrn_payload_disposal_apply_break = constant:cbrn_math.zero }
+	for_each_loop = {
+		array = cbrn_payload_disposal_handles
+		value = cbrn_payload_disposal_handle
+		break = cbrn_payload_disposal_apply_break
+		set_variable = { cbrn_payload_handle = cbrn_payload_disposal_handle }
+		if = {
+			limit = {
+				has_variable = cbrn_payload_receipt_holder_id_@var:cbrn_payload_handle
+				check_variable = { var = cbrn_payload_receipt_holder_id_@var:cbrn_payload_handle value = id compare = equals }
+			}
+			if = {
+				limit = {
+					OR = {
+						check_variable = { cbrn_payload_receipt_phase_@var:cbrn_payload_handle = constant:cbrn_payload_receipt_phase.quarantined }
+						check_variable = { cbrn_payload_receipt_phase_@var:cbrn_payload_handle = constant:cbrn_payload_receipt_phase.captured_quarantined }
+					}
+				}
+				set_variable = { cbrn_payload_result = constant:cbrn_payload_receipt_result.quarantined }
+			}
+			else = {
+				set_temp_variable = { cbrn_payload_disposal_take = cbrn_payload_receipt_held_@var:cbrn_payload_handle }
+				multiply_temp_variable = { cbrn_payload_disposal_take = cbrn_payload_disposal_fraction }
+				round_temp_variable = cbrn_payload_disposal_take
+				clamp_temp_variable = { var = cbrn_payload_disposal_take min = constant:cbrn_math.zero max = cbrn_payload_receipt_held_@var:cbrn_payload_handle }
+				subtract_from_variable = { cbrn_payload_receipt_held_@var:cbrn_payload_handle = cbrn_payload_disposal_take }
+				add_to_variable = { cbrn_payload_receipt_destroyed_@var:cbrn_payload_handle = cbrn_payload_disposal_take }
+				add_to_variable = { cbrn_payload_result_amount = cbrn_payload_disposal_take }
+				if = {
+					limit = { check_variable = { cbrn_payload_receipt_held_@var:cbrn_payload_handle = constant:cbrn_math.zero } }
+					set_variable = { cbrn_payload_receipt_phase_@var:cbrn_payload_handle = constant:cbrn_payload_receipt_phase.destroyed }
+					cbrn_payload_retire_receipt = yes
+				}
+				else_if = {
+					limit = { NOT = { check_variable = { cbrn_payload_receipt_phase_@var:cbrn_payload_handle = constant:cbrn_payload_receipt_phase.captured } } }
+					set_variable = { cbrn_payload_receipt_phase_@var:cbrn_payload_handle = constant:cbrn_payload_receipt_phase.recovery_pending }
+				}
+				cbrn_payload_refresh_reservation_counts = yes
+			}
+		}
+	}
+}

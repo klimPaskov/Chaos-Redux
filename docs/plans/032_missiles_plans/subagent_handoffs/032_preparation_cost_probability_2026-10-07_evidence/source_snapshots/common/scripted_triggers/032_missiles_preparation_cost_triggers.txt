@@ -1,0 +1,67 @@
+# Event 032 ordinary preparation affordability.
+# COUNTRY scope; read-only inclusive stockpile gates shared by availability,
+# the custom cost row, and the final paid transaction. Display caches never
+# govern payment. Fuel is read through the documented fuel_k game variable.
+
+missiles_preparation_has_special_payload = {
+	missiles_special_warheads_active = yes
+	has_country_flag = missiles_special_payload_selected
+	has_variable = missiles_selected_payload
+	NOT = { check_variable = { var = missiles_selected_payload value = constant:missiles_payload.conventional compare = equals } }
+}
+
+missiles_can_afford_preparation = {
+	check_variable = { var = missiles_preparation_command_quote value = constant:missiles_program_value.zero compare = greater_than }
+	check_variable = { var = missiles_preparation_fuel_quote value = constant:missiles_program_value.zero compare = greater_than }
+	check_variable = { var = missiles_preparation_support_quote value = constant:missiles_program_value.zero compare = greater_than }
+	check_variable = { var = missiles_preparation_base_quote value = constant:missiles_program_value.zero compare = greater_than }
+	check_variable = { var = command_power value = missiles_preparation_command_quote compare = greater_than_or_equals }
+	check_variable = { var = fuel_k value = missiles_preparation_fuel_quote compare = greater_than_or_equals }
+	check_variable = { var = num_equipment@support_equipment value = missiles_preparation_support_quote compare = greater_than_or_equals }
+	OR = {
+		AND = {
+			NOT = { missiles_preparation_has_special_payload = yes }
+			check_variable = { var = missiles_operational_reserve value = missiles_preparation_base_quote compare = greater_than_or_equals }
+		}
+		AND = {
+			missiles_preparation_has_special_payload = yes
+			check_variable = { var = missiles_operational_reserve value = missiles_preparation_special_quote compare = greater_than_or_equals }
+		}
+	}
+}
+
+missiles_can_afford_precision_preparation = {
+	set_temp_variable = { missiles_preparation_command_quote = constant:missiles_preparation_cost.command_low }
+	set_temp_variable = { missiles_preparation_fuel_quote = constant:missiles_preparation_cost.fuel_low_k }
+	set_temp_variable = { missiles_preparation_support_quote = constant:missiles_preparation_cost.support_low }
+	set_temp_variable = { missiles_preparation_base_quote = constant:missiles_tuning.operation_precision_missiles }
+	set_temp_variable = { missiles_preparation_special_quote = constant:missiles_preparation_cost.precision_special_reserve }
+	missiles_can_afford_preparation = yes
+}
+
+missiles_can_afford_strategic_preparation = {
+	set_temp_variable = { missiles_preparation_command_quote = constant:missiles_preparation_cost.command_standard }
+	set_temp_variable = { missiles_preparation_fuel_quote = constant:missiles_preparation_cost.fuel_standard_k }
+	set_temp_variable = { missiles_preparation_support_quote = constant:missiles_preparation_cost.support_standard }
+	set_temp_variable = { missiles_preparation_base_quote = constant:missiles_tuning.operation_strategic_missiles }
+	set_temp_variable = { missiles_preparation_special_quote = constant:missiles_preparation_cost.strategic_special_reserve }
+	missiles_can_afford_preparation = yes
+}
+
+missiles_can_afford_saturation_preparation = {
+	set_temp_variable = { missiles_preparation_command_quote = constant:missiles_preparation_cost.command_high }
+	set_temp_variable = { missiles_preparation_fuel_quote = constant:missiles_preparation_cost.fuel_high_k }
+	set_temp_variable = { missiles_preparation_support_quote = constant:missiles_preparation_cost.support_high }
+	set_temp_variable = { missiles_preparation_base_quote = constant:missiles_tuning.operation_saturation_missiles }
+	set_temp_variable = { missiles_preparation_special_quote = constant:missiles_preparation_cost.saturation_special_reserve }
+	missiles_can_afford_preparation = yes
+}
+
+missiles_can_afford_counterforce_preparation = {
+	set_temp_variable = { missiles_preparation_command_quote = constant:missiles_preparation_cost.command_standard }
+	set_temp_variable = { missiles_preparation_fuel_quote = constant:missiles_preparation_cost.fuel_standard_k }
+	set_temp_variable = { missiles_preparation_support_quote = constant:missiles_preparation_cost.support_low }
+	set_temp_variable = { missiles_preparation_base_quote = constant:missiles_tuning.operation_counterforce_missiles }
+	set_temp_variable = { missiles_preparation_special_quote = constant:missiles_preparation_cost.counterforce_special_reserve }
+	missiles_can_afford_preparation = yes
+}

@@ -1034,6 +1034,13 @@ cbrn_refresh_state_civilian_mask_snapshot = {
 
 cbrn_resolve_action_target_protection = {
 	set_temp_variable = { cbrn_action_protection_resolved_proof = constant:cbrn_proof.missing }
+	# Both military and civilian passes consume this nested calculation's
+	# outputs. Preserve them across the scripted-helper return boundary.
+	set_temp_variable = { cbrn_action_effective_protection = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_action_casualty_mult = constant:cbrn_math.one }
+	set_temp_variable = { cbrn_action_mask_only_casualty_mult = constant:cbrn_math.one }
+	set_temp_variable = { cbrn_action_disruption_mult = constant:cbrn_math.one }
+	set_temp_variable = { cbrn_action_contamination_mult = constant:cbrn_math.one }
 	set_temp_variable = { cbrn_action_military_mask_only_casualty_mult = constant:cbrn_math.one }
 	set_temp_variable = { cbrn_action_civilian_mask_only_casualty_mult = constant:cbrn_math.one }
 

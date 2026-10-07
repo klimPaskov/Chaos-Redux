@@ -35,23 +35,29 @@ These are source ranking rules, not validated campaign probabilities.
 | Saturation | 25 | 700 | 140 | 4 |
 | Counterforce | 15 | 450 | 40 | 2 |
 
-A selected enabled special payload adds one missile through shared tuning.
-Physical special-payload reservation still requires its separate completed custody audit; this table does not assert that surface is complete.
-The inline row has three ordinary cost types; its full tooltip adds the fourth Operational Reserve amount with the registered texticon.
+A selected enabled special payload adds one missile through shared tuning and replaces the support-equipment fee with the exact real payload reservation.
+It does not add a fifth resource type.
+Chemical preparation holds `cbrn_payload_route_cost.strategic_chemical_raid` prepared payload lots through the CBRN receipt API; biological and nuclear preparations use their corresponding `missiles_resolution` payload quantities.
+The inline row shows command power, fuel and either support equipment or the selected payload; its full tooltip adds Operational Reserve with its registered texticon.
 Each amount has independent affordability coloring.
 
 `032_missiles_preparation_cost_triggers.txt` owns inclusive read-only affordability.
 Availability, the custom cost trigger, and the final effect call the same route predicate.
-Readers are `command_power`, `fuel_k`, and `num_equipment@support_equipment`.
+Readers are `command_power`, `fuel_k`, and, for conventional orders, `num_equipment@support_equipment`.
+Special orders instead call `missiles_selected_payload_can_be_reserved`, which checks the exact biological agent/model or nuclear inventory, or the shared CBRN exact-agent/profile/stock predicate and unresolved consumer slot.
+Chemical equipment-to-agent mapping remains with CBRN rather than being copied into the missile decision.
 The missile check reads live constants and the selected enabled payload, never a display cache.
 The regression verifies special total constants equal base cost plus surcharge.
 Disabled Special Warheads retains adoption/selection history but new ordinary orders select conventional payload and its base cost; an already-frozen special receipt invalidates rather than silently downgrading.
 
-The final effect checks affordability, runs preflight, and debits command/fuel/support only after an accepted receipt.
+The final effect checks affordability, runs preflight, and debits command/fuel and conventional-only support after an accepted receipt.
+That payment branch uses the frozen operation payload rather than a mutable UI selection.
 Only that branch activates the mission and sets a timed route cooldown.
 The original 70/120/120/120-day lengths use success-only flags, avoiding native cooldown consumption on a rejected click.
 An unaccepted preflight spends no fees and activates no mission or preparation cooldown.
 Accepted preparation spends its fees; a later uncommitted abort returns missile escrow, not those already-spent fees.
+Chemical cancellation recovers only held stock at its intact controlled source; capture, proven loss, isolation and integration follow the [shared chemical receipt contract](../../../systems/cbrn_warfare/chemical_payload_reservations.md).
+Nuclear and biological physical-custody settlement still need their separate audit and are not established by the chemical source tests.
 
 ## Native mission lifecycle
 
@@ -96,7 +102,8 @@ Six `missiles_selected_enemy_has_*_target` COUNTRY triggers validate their liter
 The category has three main values and one phase-dependent context, not nine simultaneous status fields.
 Selection/navigation reuse `GFX_decision_032_missiles_select_missile_target`; tactical/strategic families use their precision/strategic decision sprites; counterforce uses its counterforce sprite.
 Missions use `GFX_mission_032_missiles_strike_preparation`, and reserve uses `GFX_032_missiles_operational_reserve_texticon`.
-These are existing same-family assets in `interface/032_missiles.gfx`; this repair adds no pixels, asset families, or sprite identifiers.
+These selector and mission consumers reuse their existing same-family assets in `interface/032_missiles.gfx`.
+Special cost rows use the shared chemical and biological 30×12 texticons in `interface/cbrn_payload_texticons.gfx` and the exact installed vanilla nuclear texticon; the [asset review](../asset_audit.md) records their source, alpha and native/4× review.
 
 ## Validation and remaining work
 
@@ -104,7 +111,7 @@ The source suite checks nested accepted payment, exact affordability boundaries,
 It rejects undocumented named-argument helper calls and checks projected/retained site shares and non-operation cleanup isolation.
 Its page-coverage model is not native decision-refresh execution.
 Independent mission, localization, and matching probability handoffs require parent review.
-Full Event 32 acceptance, all probability scenarios, physical multi-site allocation, special payload reservation, dynamic evolution pacing, retaliation chain bounds, and user-owned live gameplay evidence remain required.
+Full Event 32 acceptance, all probability scenarios, native physical multi-site and payload-custody evidence, nuclear/biological loss settlement, dynamic evolution pacing, retaliation chain bounds and user-owned live gameplay evidence remain required.
 
 ## Future plans
 

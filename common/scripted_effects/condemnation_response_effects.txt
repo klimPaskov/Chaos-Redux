@@ -76,6 +76,8 @@ condemnation_accept_inspections = {
 }
 
 condemnation_destroy_chemical_stockpiles = {
+	set_temp_variable = { cbrn_payload_disposal_fraction = constant:condemnation_cost.chemical_stockpile_fraction }
+	cbrn_dispose_reserved_payload_fraction = yes
 	set_temp_variable = { condemnation_stockpile_remove = num_equipment@chlorine_agent_lot_1 }
 	multiply_temp_variable = { condemnation_stockpile_remove = constant:condemnation_cost.chemical_stockpile_fraction }
 	multiply_temp_variable = { condemnation_stockpile_remove = constant:cbrn_payload_math.negation_multiplier }
@@ -161,15 +163,18 @@ condemnation_destroy_chemical_stockpiles = {
 	multiply_temp_variable = { condemnation_stockpile_remove = constant:condemnation_cost.chemical_stockpile_fraction }
 	multiply_temp_variable = { condemnation_stockpile_remove = constant:cbrn_payload_math.negation_multiplier }
 	add_equipment_to_stockpile = { type = chemical_soman_payload_cylinder_1 amount = condemnation_stockpile_remove }
-	set_country_flag = condemnation_stockpiles_destroyed
-	set_country_flag = condemnation_chemical_stockpiles_destroyed
-	set_temp_variable = { condemnation_stockpile_restriction_days = constant:condemnation_duration_days.non_use_pledge }
-	set_country_flag = { flag = condemnation_chemical_stockpile_restriction days = var:condemnation_stockpile_restriction_days }
-	add_to_variable = { condemnation_decay_credit = constant:condemnation_compliance_credit.destroy_chemical_stockpile }
-	clamp_variable = { var = condemnation_decay_credit min = 0 max = constant:condemnation_compliance_credit.maximum }
-	set_variable = { condemnation_compliance_state = constant:condemnation_compliance_state.stockpile_destruction }
-	condemnation_apply_response_duration = yes
-	cbrn_achievement_record_stockpile_destruction = yes
+	if = {
+		limit = { NOT = { check_variable = { cbrn_payload_result = constant:cbrn_payload_receipt_result.quarantined } } }
+		set_country_flag = condemnation_stockpiles_destroyed
+		set_country_flag = condemnation_chemical_stockpiles_destroyed
+		set_temp_variable = { condemnation_stockpile_restriction_days = constant:condemnation_duration_days.non_use_pledge }
+		set_country_flag = { flag = condemnation_chemical_stockpile_restriction days = var:condemnation_stockpile_restriction_days }
+		add_to_variable = { condemnation_decay_credit = constant:condemnation_compliance_credit.destroy_chemical_stockpile }
+		clamp_variable = { var = condemnation_decay_credit min = 0 max = constant:condemnation_compliance_credit.maximum }
+		set_variable = { condemnation_compliance_state = constant:condemnation_compliance_state.stockpile_destruction }
+		condemnation_apply_response_duration = yes
+		cbrn_achievement_record_stockpile_destruction = yes
+	}
 }
 
 condemnation_destroy_biological_stockpiles = {

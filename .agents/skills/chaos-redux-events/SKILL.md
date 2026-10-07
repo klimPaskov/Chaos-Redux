@@ -968,3 +968,5 @@ Before closing an event task, verify:
 21. New fighting countries have dynamic starting forces, template assumptions, equipment and manpower handling, and reinforcement pathways.
 22. Every new land sub-unit or equipment-backed special family has an explicit provider, support-attachment, or parent-owned disposition, owner-side registration and callback coverage, CXT coverage, and full unit-inventory audit.
 23. Mapped event-owned Chaos changes are tied to concrete outcomes, guarded against repeat farming, and do not double count shared sources.
+
+For helpers that iterate records or scopes, read [Loop break isolation](references/loop-break-isolation.md).

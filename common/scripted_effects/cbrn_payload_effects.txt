@@ -371,6 +371,7 @@ cbrn_change_air_payload_profile = {
 	if = {
 		limit = {
 			NOT = { has_country_flag = cbrn_air_profile_change_in_progress }
+			cbrn_air_payload_profile_has_no_reserved_stock = yes
 			cbrn_requested_payload_agent_is_unlocked = yes
 			check_variable = { var = cbrn_air_payload_agent value = cbrn_requested_payload_agent compare = not_equals }
 		}
@@ -853,7 +854,7 @@ cbrn_migrate_legacy_payload_stockpiles = {
 		}
 
 		if = {
-			limit = { check_variable = { var = cbrn_air_payload_agent value = constant:cbrn_agent.none compare = equals } }
+			limit = { check_variable = { var = cbrn_air_payload_agent value = constant:cbrn_agent.none compare = equals } cbrn_air_payload_profile_has_no_reserved_stock = yes }
 			set_variable = { cbrn_air_payload_agent = cbrn_shell_filling_agent }
 		}
 		set_country_flag = cbrn_legacy_payload_stockpiles_migrated

@@ -10,6 +10,41 @@ missiles_preparation_has_special_payload = {
 	NOT = { check_variable = { var = missiles_selected_payload value = constant:missiles_payload.conventional compare = equals } }
 }
 
+# COUNTRY, read-only. The concrete selected payload is the fourth resource
+# alongside command power, fuel and operational missiles. It replaces the
+# conventional support-equipment fee and is revalidated by its payment owner.
+missiles_selected_payload_can_be_reserved = {
+	OR = {
+		AND = {
+			check_variable = { missiles_selected_payload = constant:missiles_payload.chemical }
+			has_variable = missiles_selected_chemical_agent
+			set_temp_variable = { cbrn_action_agent = missiles_selected_chemical_agent }
+			set_temp_variable = { cbrn_payload_lookup_consumer = constant:cbrn_payload_receipt_consumer.missiles }
+			cbrn_payload_consumer_has_no_open_receipt = yes
+			cbrn_air_payload_can_fund_strategic_action = yes
+		}
+		AND = {
+			check_variable = { missiles_selected_payload = constant:missiles_payload.biological }
+			OR = {
+				AND = { check_variable = { missiles_selected_biological_agent = constant:bio_lifecycle_agent.anthrax } has_tech = anthrax_bomb_delivery_systems check_variable = { var = num_equipment@anthrax_bomb_1 value = constant:missiles_resolution.biological_payload_units compare = greater_than_or_equals } }
+				AND = { check_variable = { missiles_selected_biological_agent = constant:bio_lifecycle_agent.plague } has_tech = plague_bomb_delivery_systems check_variable = { var = num_equipment@plague_bomb_1 value = constant:missiles_resolution.biological_payload_units compare = greater_than_or_equals } }
+				AND = { check_variable = { missiles_selected_biological_agent = constant:bio_lifecycle_agent.tularemia } has_tech = tularemia_bomb_delivery_systems check_variable = { var = num_equipment@tularemia_bomb_1 value = constant:missiles_resolution.biological_payload_units compare = greater_than_or_equals } }
+				AND = { check_variable = { missiles_selected_biological_agent = constant:bio_lifecycle_agent.smallpox } has_tech = smallpox_bomb_delivery_systems check_variable = { var = num_equipment@smallpox_bomb_1 value = constant:missiles_resolution.biological_payload_units compare = greater_than_or_equals } }
+			}
+		}
+		AND = {
+			check_variable = { missiles_selected_payload = constant:missiles_payload.nuclear }
+			missiles_country_has_nuclear_payload_candidate = yes
+			check_variable = { var = num_of_nukes value = constant:missiles_resolution.nuclear_payload_units compare = greater_than_or_equals }
+		}
+		AND = {
+			check_variable = { missiles_selected_payload = constant:missiles_payload.thermonuclear }
+			missiles_country_has_thermonuclear_payload_candidate = yes
+			check_variable = { var = num_of_nukes value = constant:missiles_resolution.nuclear_payload_units compare = greater_than_or_equals }
+		}
+	}
+}
+
 missiles_can_afford_preparation = {
 	check_variable = { var = missiles_preparation_command_quote value = constant:missiles_program_value.zero compare = greater_than }
 	check_variable = { var = missiles_preparation_fuel_quote value = constant:missiles_program_value.zero compare = greater_than }
@@ -17,14 +52,15 @@ missiles_can_afford_preparation = {
 	check_variable = { var = missiles_preparation_base_quote value = constant:missiles_program_value.zero compare = greater_than }
 	check_variable = { var = command_power value = missiles_preparation_command_quote compare = greater_than_or_equals }
 	check_variable = { var = fuel_k value = missiles_preparation_fuel_quote compare = greater_than_or_equals }
-	check_variable = { var = num_equipment@support_equipment value = missiles_preparation_support_quote compare = greater_than_or_equals }
 	OR = {
 		AND = {
 			NOT = { missiles_preparation_has_special_payload = yes }
+			check_variable = { var = num_equipment@support_equipment value = missiles_preparation_support_quote compare = greater_than_or_equals }
 			check_variable = { var = missiles_operational_reserve value = missiles_preparation_base_quote compare = greater_than_or_equals }
 		}
 		AND = {
 			missiles_preparation_has_special_payload = yes
+			missiles_selected_payload_can_be_reserved = yes
 			check_variable = { var = missiles_operational_reserve value = missiles_preparation_special_quote compare = greater_than_or_equals }
 		}
 	}

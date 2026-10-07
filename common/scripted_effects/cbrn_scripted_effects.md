@@ -4,6 +4,9 @@ This file documents reusable effects owned by the CBRN, protective-equipment, ch
 
 ## Placement rule
 
+The measured chemical payload reservation API is documented in [Chemical payload reservations](../../docs/systems/cbrn_warfare/chemical_payload_reservations.md).
+Its receipt and native-measurement effects live in `cbrn_payload_reservation_effects.txt` and `cbrn_payload_reservation_native_effects.txt`; Event 32 owns only the operation and physical-custody adapter.
+
 Keep a helper here when its inputs, ledgers, policy gates, equipment, consequences, or cleanup contract are CBRN-specific. Move a helper to the shared registry only after real call sites show frequent use by unrelated systems or event families. Do not add wrappers, aliases, estimators, proxies, or fallback implementations during a move.
 
 Biological lifecycle, biological raid, and biological operative-release helpers remain owned by and documented with the biological subsystem rather than in either shared dynamic registry. Their subsystem-private interfaces are indexed below only so CBRN maintainers can find the delivery boundary.

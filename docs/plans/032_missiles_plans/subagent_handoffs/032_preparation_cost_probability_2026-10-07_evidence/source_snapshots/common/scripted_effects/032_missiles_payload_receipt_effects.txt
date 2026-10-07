@@ -1,0 +1,175 @@
+# Event 032 adapter for CBRN-owned chemical payload receipts. All equipment
+# mapping, measured payment and durable held quantities remain in CBRN.
+# These COUNTRY helpers freeze operation identity and source custody; they
+# never apply contamination, deaths, evidence, Condemnation or confirmed use.
+
+# Caller owns cbrn_payload_custody_proof storage before entry.
+missiles_build_chemical_receipt_request = {
+	set_variable = { cbrn_payload_request_consumer = constant:cbrn_payload_receipt_consumer.missiles }
+	set_variable = { cbrn_payload_request_nonce = missiles_active_operation_id }
+	set_variable = { cbrn_payload_request_site = missiles_operation_launch_site }
+	set_variable = { cbrn_payload_request_target = missiles_operation_target_state }
+	set_variable = { cbrn_payload_request_agent = missiles_operation_chemical_agent }
+	set_variable = { cbrn_payload_request_route = constant:cbrn_delivery_route.strategic_chemical_raid }
+	set_variable = { cbrn_payload_request_handle = constant:missiles_program_value.zero }
+	if = { limit = { has_variable = missiles_operation_chemical_receipt } set_variable = { cbrn_payload_request_handle = missiles_operation_chemical_receipt } }
+	set_temp_variable = { cbrn_payload_custody_proof = constant:cbrn_proof.missing }
+	if = {
+		limit = { missiles_operation_has_reliable_payload_custody = yes }
+		set_temp_variable = { cbrn_payload_custody_proof = constant:cbrn_proof.supplied }
+	}
+}
+
+missiles_reserve_chemical_payload_receipt = {
+	set_variable = { missiles_operation_chemical_agent = missiles_selected_chemical_agent }
+	set_temp_variable = { cbrn_payload_custody_proof = constant:cbrn_proof.missing }
+	missiles_build_chemical_receipt_request = yes
+	cbrn_reserve_action_payload = yes
+	if = {
+		limit = {
+			OR = {
+				check_variable = { cbrn_payload_result = constant:cbrn_payload_receipt_result.accepted }
+				check_variable = { cbrn_payload_result = constant:cbrn_payload_receipt_result.partial }
+				check_variable = { cbrn_payload_result = constant:cbrn_payload_receipt_result.quarantined }
+			}
+		}
+		set_variable = { missiles_operation_chemical_receipt = cbrn_payload_handle }
+		set_country_flag = missiles_operation_chemical_receipt_active
+	}
+	if = {
+		limit = { check_variable = { cbrn_payload_result = constant:cbrn_payload_receipt_result.accepted } }
+		set_variable = { missiles_operation_payload_reservation_result = constant:missiles_result.accepted }
+	}
+}
+
+# Shared authorization is evaluated again against the held receipt. It must
+# not require another free stack of the equipment already removed at prepare.
+missiles_check_chemical_receipt_for_commit = {
+	set_variable = { missiles_chemical_stock_result = constant:missiles_result.rejected }
+	if = {
+		limit = { missiles_operation_has_paid_chemical_receipt = yes }
+		set_temp_variable = { cbrn_payload_custody_proof = constant:cbrn_proof.missing }
+		missiles_build_chemical_receipt_request = yes
+		cbrn_validate_payload_reservation = yes
+		if = {
+			limit = { check_variable = { cbrn_payload_validation_result = constant:cbrn_payload_receipt_result.accepted } }
+			set_variable = { missiles_chemical_stock_result = constant:missiles_result.accepted }
+		}
+	}
+}
+
+missiles_consume_chemical_payload_receipt = {
+	set_variable = { missiles_operation_payload_consumed = constant:missiles_program_value.zero }
+	clr_country_flag = missiles_operation_payload_debit_verified
+	if = {
+		limit = { missiles_operation_has_paid_chemical_receipt = yes }
+		set_temp_variable = { cbrn_payload_custody_proof = constant:cbrn_proof.missing }
+		missiles_build_chemical_receipt_request = yes
+		cbrn_consume_payload_reservation = yes
+		if = {
+			limit = {
+				check_variable = { cbrn_payload_result = constant:cbrn_payload_receipt_result.accepted }
+				check_variable = { cbrn_payload_result_amount > constant:cbrn_math.zero }
+			}
+			set_variable = { missiles_operation_payload_consumed = cbrn_payload_result_amount }
+			set_variable = { missiles_operation_chemical_agent = cbrn_payload_consumed_agent }
+			set_country_flag = missiles_operation_payload_debit_verified
+			clr_country_flag = missiles_operation_chemical_receipt_active
+		}
+	}
+}
+
+# COUNTRY holder, possibly under a foreign event ROOT during capture. A lost
+# participant is distinguished from the operation's exact payload-custody site.
+missiles_release_chemical_payload_receipt = {
+	if = {
+		limit = { has_country_flag = missiles_operation_chemical_receipt_active }
+		set_variable = { cbrn_payload_request_consumer = constant:cbrn_payload_receipt_consumer.missiles }
+		set_variable = { cbrn_payload_request_nonce = missiles_active_operation_id }
+		set_variable = { cbrn_payload_request_handle = missiles_operation_chemical_receipt }
+		set_temp_variable = { cbrn_payload_recovery_proof = constant:cbrn_proof.missing }
+		set_temp_variable = { cbrn_payload_transfer_proof = constant:cbrn_proof.missing }
+		set_temp_variable = { cbrn_payload_loss_proof = constant:cbrn_proof.missing }
+		if = {
+			limit = {
+				has_country_flag = missiles_site_settlement_in_progress
+				has_event_target = missiles_lost_allocation_site
+				event_target:missiles_lost_allocation_site = { check_variable = { var = id value = PREV.missiles_operation_launch_site_id compare = equals } }
+			}
+			if = {
+				limit = { check_variable = { missiles_payload_custody_action = constant:cbrn_payload_site_action.destroy } }
+				set_temp_variable = { cbrn_payload_loss_proof = constant:cbrn_proof.supplied }
+				cbrn_discard_payload_reservation = yes
+			}
+			else_if = {
+				limit = { check_variable = { missiles_payload_custody_action = constant:cbrn_payload_site_action.capture } }
+				event_target:missiles_lost_allocation_site = { CONTROLLER = { save_event_target_as = missiles_chemical_capture_holder } }
+				set_variable = { cbrn_payload_request_recipient = event_target:missiles_chemical_capture_holder }
+				set_temp_variable = { cbrn_payload_transfer_proof = constant:cbrn_proof.supplied }
+				cbrn_transfer_payload_reservation = yes
+			}
+			else = { cbrn_return_payload_reservation = yes }
+		}
+		else = {
+			if = {
+				limit = {
+					has_variable = missiles_operation_launch_site
+					var:missiles_operation_launch_site = {
+						is_controlled_by = PREV
+						missiles_state_has_registered_site = yes
+						NOT = { has_state_flag = missiles_site_captured }
+						NOT = { has_state_flag = missiles_site_rogue }
+						NOT = { has_state_flag = missiles_site_scuttled }
+						NOT = { has_state_flag = missiles_site_isolated }
+						NOT = { has_state_flag = missiles_site_damaged_beyond_use }
+					}
+				}
+				set_temp_variable = { cbrn_payload_recovery_proof = constant:cbrn_proof.supplied }
+			}
+			cbrn_return_payload_reservation = yes
+		}
+	}
+	# Pending or quarantined material stays in the CBRN-owned receipt registry;
+	# the closed missile order no longer owns or may spend that quantity.
+	clr_country_flag = missiles_operation_chemical_receipt_active
+	clear_variable = missiles_operation_chemical_receipt
+}
+
+# STATE source; caller freezes the actual COUNTRY holder as a regular target
+# and supplies the custody action before changing any physical flags. This
+# also reaches pending refunds and sealed stock without an active launch order.
+missiles_settle_chemical_payloads_at_site = {
+	if = {
+		limit = { has_event_target = missiles_chemical_site_holder }
+		save_event_target_as = missiles_chemical_payload_site
+		CONTROLLER = { save_event_target_as = missiles_chemical_site_controller }
+		event_target:missiles_chemical_site_holder = {
+			set_variable = { cbrn_payload_request_site = event_target:missiles_chemical_payload_site }
+			set_variable = { cbrn_payload_site_action = missiles_payload_custody_action }
+			if = {
+				limit = { check_variable = { missiles_payload_custody_action = constant:cbrn_payload_site_action.capture } }
+				set_variable = { cbrn_payload_request_recipient = event_target:missiles_chemical_site_controller }
+			}
+			cbrn_settle_site_payload_reservations = yes
+		}
+	}
+}
+
+# COUNTRY removal: settle surviving physical custody before the operation and
+# site registries are cleared. No payload is credited to the removed country.
+missiles_settle_chemical_payloads_on_removal = {
+	save_event_target_as = missiles_chemical_site_holder
+	for_each_scope_loop = {
+		array = missiles_launch_site_states
+		set_temp_variable = { missiles_payload_custody_action = constant:cbrn_payload_site_action.destroy }
+		if = {
+			limit = {
+				NOT = { has_state_flag = missiles_site_scuttled }
+				NOT = { has_state_flag = missiles_site_damaged_beyond_use }
+				CONTROLLER = { exists = yes NOT = { tag = event_target:missiles_chemical_site_holder } }
+			}
+			set_temp_variable = { missiles_payload_custody_action = constant:cbrn_payload_site_action.capture }
+		}
+		missiles_settle_chemical_payloads_at_site = yes
+	}
+}
