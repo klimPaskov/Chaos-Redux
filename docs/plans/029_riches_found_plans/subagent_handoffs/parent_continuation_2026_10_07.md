@@ -100,3 +100,39 @@ No unrelated localisation lines were replaced.
 
 Skills used: events, decisions-missions, subagents, MTTH, event-assets, shared-git-commit, repository xlsx and primary Spreadsheets.
 No new skill or fallback is claimed by this checkpoint.
+
+## Later verified tranches in this continuation
+
+The following isolated shared-tree commits are published, with unrelated real-index and working-tree content preserved:
+
+- `11e823223`: ten physical-cost profiles, exact discrete refunds, explicit durations and mission starts, and after-ceiling depth output commitments.
+- `d466beb00`: fourteen owned workbook cell edits remove every Event029 cluster membership and align its detail string, together with only the relevant exporter-generated rows.
+- `3d6c406ad`: seven controller idea `picture` suffixes resolve their existing sprites instead of nonexistent double-prefixed aliases.
+- `9751194b4`: five caller allocations preserve the shared Gold roll result for all six existing movement routes, with the actual same-scenario comparison request/result retained.
+- `9c3418607`: the asset skill records the generic idea lookup rule and decision-icon exception, without event-specific context in the skill.
+
+The catalog and Gold comparison pending statements above are superseded for these bounded tranches only.
+The full Gold comparison artifact from the replay was read by the parent and its comparison image inspected.
+It reports a complete two-entry pool and zero weight changes under the same typed `RF_GOLD_02` scenario, not downstream receiver or native helper execution proof.
+The seven current idea DDS files were individually opened through pixel-equal decoded views; their lookup repair does not establish the complete asset-family acceptance.
+
+The full decision-icon audit covers forty-seven aliases and ninety-seven consuming rows.
+It found widespread native-size density/readability defects, not a complete repaired package.
+Two simpler v2 subjects, sanitation and dividend, have passed the parent's source/native composition review, with four isolated alpha-one sanitation residue pixels identified for bounded exterior cleanup before promotion.
+No repaired decision DDS is in runtime yet at this checkpoint.
+The artist is continuing the remaining defects in small production batches, with immutable candidate lineage and parent promotion still required.
+
+The four initial policy scenarios now have actual individual typed MCP evaluations after the batch timeout.
+Their baseline finds acceptance-order gaps for authoritarian wartime, poor-minor and colonial-controller choices.
+The owner applied `policy_poor_concession_add = 160` in the working tree after the baseline and threshold sweep, raising the poor fixture's concession score from 215 to 295 while the other three fixture totals remain unchanged.
+Matching same-hash evaluations and the 19/20/21/30 capacity sweep exist, but the required formal source comparison remains unresolved because a frozen cross-file constant overlay has not been verified.
+That constant patch is not committed or claimed accepted.
+An explicitly documented one-symbol in-memory source projection is being checked as a potential supported comparison route, not as a runtime fallback or a fabricated raw-source snapshot.
+The strategic-war and occupation-sensitive policy findings remain queued, not waived.
+
+The foreign-score caller allocation remains uncommitted with its deterministic max-score adapter gap.
+The separate transport module remains unintegrated with original-payer callback-generation and native reservation proof unresolved.
+The installed `set_political_power` command is documented, but neither it nor `add_political_power` has documented cap-bypass behaviour in the inspected sections.
+Its mere existence is not proof of the exact 1,000 increment near the native cap, and no setter or global-cap workaround was introduced.
+The complete acceptance matrix, remaining mechanics and assets, full scenario suites and current clean error-log evidence remain outstanding.
+The goal remains active and incomplete.
