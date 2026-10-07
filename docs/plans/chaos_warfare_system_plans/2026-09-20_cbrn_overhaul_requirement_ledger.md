@@ -326,3 +326,13 @@ The getter, random distribution constants, callback IDs, duplicate checks and we
 The source-level zero-delay/future-due defect is repaired without another player action or world pulse.
 Native event delivery, wider lifecycle execution and recovery of an already stranded scheduled record remain unverified; the exact getter has no surfaced probability candidate and no pre-edit scan graph was captured for canonical event comparison.
 This is bounded source implementation, not full CBRN completion.
+
+## Chemical raid record lifetime
+
+The [caller-storage repair](2026-10-07_chemical_raid_service_integrity.md) retains the complete action packet in native land, air and exact-state doomsday owners, including their original dispatch guards.
+The parent reran eighteen independent source cases: repeated accepted dispatch and failed-attempt calls apply one captured record, rejected/unpaid/unbound records apply none, and protection, evidence, arsenal and bridge outputs survive their producing helpers.
+The patch adds 206 scalar declarations and one temporary-array initializer while preserving every original statement and its order.
+Twenty-six pre-existing neighboring allocations remain other working-tree content; the untracked reservation API and dirty dependency integration are not proved by this commit.
+Missile/camp callers, complete damage and doomsday allocation, native settlement/cardinality and unsurfaced RNG behavior remain open.
+Trace reports cannot serve as graph baselines, so future canonical event comparisons require retained scan graph artifacts.
+No gameplay simplification, new payment/refund or policy change is introduced, and CBRN-03 remains incomplete.

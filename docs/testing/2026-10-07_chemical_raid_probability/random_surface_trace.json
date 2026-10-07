@@ -1,0 +1,65 @@
+{
+  "exactSurface": "Scripted scalar random draws after native result dispatch; not AI score weights and not native raid success-level probabilities.",
+  "draws": [
+    {
+      "line": 65,
+      "helper": "cbrn_chemical_air_raid_select_failure_result_internal",
+      "getter": "cbrn_raid_failure_split_roll",
+      "minimum": "constant:cbrn_chemical_raid_resolution.random_minimum",
+      "maximum": "constant:cbrn_chemical_raid_resolution.random_maximum",
+      "outcomeThreshold": "constant:cbrn_chemical_raid_resolution.aborted_failure_split",
+      "reachedWhen": "native engine outcome equals failure",
+      "branches": [
+        "aborted",
+        "failed"
+      ]
+    },
+    {
+      "line": 113,
+      "helper": "cbrn_chemical_air_raid_set_consumption_and_dose_internal",
+      "getter": "cbrn_raid_intended_dose_ratio",
+      "minimum": "constant:cbrn_aerosol_designer_effect.controlled_partial_dose_min",
+      "maximum": "constant:cbrn_aerosol_designer_effect.controlled_partial_dose_max",
+      "reachedWhen": "native result partial and controlled dispersal is available",
+      "branches": [
+        "partial dose scalar"
+      ]
+    },
+    {
+      "line": 120,
+      "helper": "cbrn_chemical_air_raid_set_consumption_and_dose_internal",
+      "getter": "cbrn_raid_intended_dose_ratio",
+      "minimum": "constant:cbrn_chemical_raid_outcome.partial_dose_min",
+      "maximum": "constant:cbrn_chemical_raid_outcome.partial_dose_max",
+      "reachedWhen": "native result partial and controlled dispersal is unavailable",
+      "branches": [
+        "partial dose scalar"
+      ]
+    },
+    {
+      "line": 135,
+      "helper": "cbrn_chemical_air_raid_set_consumption_and_dose_internal",
+      "getter": "cbrn_raid_intended_dose_ratio",
+      "minimum": "constant:cbrn_aerosol_designer_effect.controlled_catastrophic_dose_min",
+      "maximum": "constant:cbrn_aerosol_designer_effect.controlled_catastrophic_dose_max",
+      "reachedWhen": "native result catastrophic and controlled dispersal is available",
+      "branches": [
+        "catastrophic dose scalar"
+      ]
+    },
+    {
+      "line": 142,
+      "helper": "cbrn_chemical_air_raid_set_consumption_and_dose_internal",
+      "getter": "cbrn_raid_intended_dose_ratio",
+      "minimum": "constant:cbrn_chemical_raid_outcome.catastrophic_dose_min",
+      "maximum": "constant:cbrn_chemical_raid_outcome.catastrophic_dose_max",
+      "reachedWhen": "native result catastrophic and controlled dispersal is unavailable",
+      "branches": [
+        "catastrophic dose scalar"
+      ]
+    }
+  ],
+  "effect": "All five set_temp_variable_to_random blocks, bounds, threshold test, and output variable names match across before, after, and current source at normalized lines 58-155.",
+  "normalizedSegmentSha256": "1308f2589f18812c954f258cd6278b9b3a24b6c5f0e250ee3ff8eb3e7f1e1ab3",
+  "directRandomCoverage": "No weighted candidates or required inputs surfaced for any of the five line-scoped requests. This is unresolved adapter coverage, not a zero-probability result."
+}

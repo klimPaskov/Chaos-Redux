@@ -1,0 +1,398 @@
+# ============================================================================
+# CHAOS REDUX - CHEMICAL DOOMSDAY RELEASE EFFECTS
+# ============================================================================
+# Overview:
+# - Resolves the successful native chemical doomsday raid through the shared
+#   cbrn_prepare_chemical_action_record and cbrn_dispatch_chemical_action_record
+#   pipeline for every exact controlled state that receives a real lot.
+# - Accounts for one of each cylinder reserved by the native raid, removes
+#   only the remaining stock once, then allocates the full committed lots
+#   across the exact target array. No direct state
+#   contamination, unit damage, death, or Condemnation formula remains here.
+# - Supplies a terminal raid condition receipt and target-specific
+#   protection resolution. The receipt is a committed release-order profile,
+#   not an aircraft, weather, terrain, or activity estimator.
+# - The batch Condemnation share is attached to the first accepted state record
+#   for each agent, so a multi-state release creates one bounded public source
+#   in the package matrix's 150 to 500 gameplay-tuning band.
+# - Missing target, policy, stock, protection, or shared-record proof fails
+#   closed. A partial dispatch is recorded as incomplete and does not invoke a
+#   fallback consequence path.
+# ============================================================================
+
+cbrn_chemical_doomsday_collect_target_states = {
+	clear_temp_array = cbrn_doomsday_target_states
+	every_controlled_state = {
+		limit = { cbrn_chemical_doomsday_raid_state_is_eligible = yes }
+		add_to_temp_array = { cbrn_doomsday_target_states = THIS }
+	}
+	set_temp_variable = { cbrn_doomsday_target_count = cbrn_doomsday_target_states^num }
+}
+
+cbrn_chemical_doomsday_capture_and_consume_arsenal = {
+	set_temp_variable = { cbrn_doomsday_stock_chlorine = num_equipment@chemical_chlorine_payload_cylinder_1 }
+	set_temp_variable = { cbrn_doomsday_stock_phosgene = num_equipment@chemical_phosgene_payload_cylinder_1 }
+	set_temp_variable = { cbrn_doomsday_stock_mustard = num_equipment@chemical_mustard_payload_cylinder_1 }
+	set_temp_variable = { cbrn_doomsday_stock_lewisite = num_equipment@chemical_lewisite_payload_cylinder_1 }
+
+	if = {
+		limit = { check_variable = { var = cbrn_doomsday_stock_chlorine value = constant:cbrn_math.zero compare = less_than } }
+		set_temp_variable = { cbrn_doomsday_stock_chlorine = constant:cbrn_math.zero }
+	}
+	if = {
+		limit = { check_variable = { var = cbrn_doomsday_stock_phosgene value = constant:cbrn_math.zero compare = less_than } }
+		set_temp_variable = { cbrn_doomsday_stock_phosgene = constant:cbrn_math.zero }
+	}
+	if = {
+		limit = { check_variable = { var = cbrn_doomsday_stock_mustard value = constant:cbrn_math.zero compare = less_than } }
+		set_temp_variable = { cbrn_doomsday_stock_mustard = constant:cbrn_math.zero }
+	}
+	if = {
+		limit = { check_variable = { var = cbrn_doomsday_stock_lewisite value = constant:cbrn_math.zero compare = less_than } }
+		set_temp_variable = { cbrn_doomsday_stock_lewisite = constant:cbrn_math.zero }
+	}
+
+	round_temp_variable = cbrn_doomsday_stock_chlorine
+	round_temp_variable = cbrn_doomsday_stock_phosgene
+	round_temp_variable = cbrn_doomsday_stock_mustard
+	round_temp_variable = cbrn_doomsday_stock_lewisite
+	set_temp_variable = { cbrn_doomsday_arsenal_consumed_total = cbrn_doomsday_stock_chlorine }
+	add_to_temp_variable = { cbrn_doomsday_arsenal_consumed_total = cbrn_doomsday_stock_phosgene }
+	add_to_temp_variable = { cbrn_doomsday_arsenal_consumed_total = cbrn_doomsday_stock_mustard }
+	add_to_temp_variable = { cbrn_doomsday_arsenal_consumed_total = cbrn_doomsday_stock_lewisite }
+	set_temp_variable = { cbrn_doomsday_stockpile_debit_proof = constant:cbrn_proof.missing }
+
+	if = {
+		limit = { check_variable = { cbrn_doomsday_arsenal_consumed_total > constant:cbrn_math.zero } }
+		set_temp_variable = { cbrn_doomsday_debit_chlorine = cbrn_doomsday_stock_chlorine }
+		set_temp_variable = { cbrn_doomsday_debit_phosgene = cbrn_doomsday_stock_phosgene }
+		set_temp_variable = { cbrn_doomsday_debit_mustard = cbrn_doomsday_stock_mustard }
+		set_temp_variable = { cbrn_doomsday_debit_lewisite = cbrn_doomsday_stock_lewisite }
+		multiply_temp_variable = { cbrn_doomsday_debit_chlorine = constant:cbrn_payload_math.negation_multiplier }
+		multiply_temp_variable = { cbrn_doomsday_debit_phosgene = constant:cbrn_payload_math.negation_multiplier }
+		multiply_temp_variable = { cbrn_doomsday_debit_mustard = constant:cbrn_payload_math.negation_multiplier }
+		multiply_temp_variable = { cbrn_doomsday_debit_lewisite = constant:cbrn_payload_math.negation_multiplier }
+		add_equipment_to_stockpile = { type = chemical_chlorine_payload_cylinder_1 amount = cbrn_doomsday_debit_chlorine }
+		add_equipment_to_stockpile = { type = chemical_phosgene_payload_cylinder_1 amount = cbrn_doomsday_debit_phosgene }
+		add_equipment_to_stockpile = { type = chemical_mustard_payload_cylinder_1 amount = cbrn_doomsday_debit_mustard }
+		add_equipment_to_stockpile = { type = chemical_lewisite_payload_cylinder_1 amount = cbrn_doomsday_debit_lewisite }
+	}
+	# The native raid already collected one of each of the four cylinder
+	# archetypes. They belong in the release record but are never debited again.
+	add_to_temp_variable = { cbrn_doomsday_stock_chlorine = constant:cbrn_chemical_doomsday_raid.reserved_per_agent }
+	add_to_temp_variable = { cbrn_doomsday_stock_phosgene = constant:cbrn_chemical_doomsday_raid.reserved_per_agent }
+	add_to_temp_variable = { cbrn_doomsday_stock_mustard = constant:cbrn_chemical_doomsday_raid.reserved_per_agent }
+	add_to_temp_variable = { cbrn_doomsday_stock_lewisite = constant:cbrn_chemical_doomsday_raid.reserved_per_agent }
+	set_temp_variable = { cbrn_doomsday_arsenal_consumed_total = cbrn_doomsday_stock_chlorine }
+	add_to_temp_variable = { cbrn_doomsday_arsenal_consumed_total = cbrn_doomsday_stock_phosgene }
+	add_to_temp_variable = { cbrn_doomsday_arsenal_consumed_total = cbrn_doomsday_stock_mustard }
+	add_to_temp_variable = { cbrn_doomsday_arsenal_consumed_total = cbrn_doomsday_stock_lewisite }
+	set_temp_variable = { cbrn_doomsday_stockpile_debit_proof = constant:cbrn_proof.supplied }
+}
+
+cbrn_chemical_doomsday_set_batch_condemnation = {
+	set_temp_variable = { cbrn_doomsday_condemnation_total = constant:cbrn_chemical_doomsday_consequence.condemnation_base }
+	set_temp_variable = { cbrn_doomsday_condemnation_stock_scale = cbrn_doomsday_arsenal_consumed_total }
+	divide_temp_variable = { cbrn_doomsday_condemnation_stock_scale = constant:cbrn_chemical_doomsday_consequence.condemnation_stock_divisor }
+	clamp_temp_variable = {
+		var = cbrn_doomsday_condemnation_stock_scale
+		min = constant:cbrn_math.zero
+		max = constant:cbrn_chemical_doomsday_consequence.condemnation_stock_cap
+	}
+	add_to_temp_variable = { cbrn_doomsday_condemnation_total = cbrn_doomsday_condemnation_stock_scale }
+	clamp_temp_variable = {
+		var = cbrn_doomsday_condemnation_total
+		min = constant:cbrn_chemical_doomsday_consequence.condemnation_base
+		max = constant:cbrn_chemical_doomsday_consequence.condemnation_total_cap
+	}
+}
+
+cbrn_chemical_doomsday_set_agent_condemnation_share = {
+	set_temp_variable = { cbrn_doomsday_agent_condemnation_share = cbrn_doomsday_condemnation_total }
+	multiply_temp_variable = { cbrn_doomsday_agent_condemnation_share = cbrn_doomsday_active_stock }
+	divide_temp_variable = { cbrn_doomsday_agent_condemnation_share = cbrn_doomsday_arsenal_consumed_total }
+	clamp_temp_variable = {
+		var = cbrn_doomsday_agent_condemnation_share
+		min = constant:cbrn_math.zero
+		max = cbrn_doomsday_condemnation_total
+	}
+}
+
+cbrn_chemical_doomsday_set_agent_class_from_action = {
+	set_temp_variable = { cbrn_action_agent_class = constant:cbrn_agent_class.none }
+	if = {
+		limit = {
+			OR = {
+				check_variable = { var = cbrn_action_agent value = constant:cbrn_agent.chlorine compare = equals }
+				check_variable = { var = cbrn_action_agent value = constant:cbrn_agent.phosgene compare = equals }
+			}
+		}
+		set_temp_variable = { cbrn_action_agent_class = constant:cbrn_agent_class.choking }
+	}
+	else_if = {
+		limit = {
+			OR = {
+				check_variable = { var = cbrn_action_agent value = constant:cbrn_agent.mustard compare = equals }
+				check_variable = { var = cbrn_action_agent value = constant:cbrn_agent.lewisite compare = equals }
+			}
+		}
+		set_temp_variable = { cbrn_action_agent_class = constant:cbrn_agent_class.blister }
+	}
+}
+
+cbrn_chemical_doomsday_set_release_receipt = {
+	set_temp_variable = { cbrn_action_release_efficiency_mult = constant:cbrn_chemical_doomsday_condition.release_efficiency }
+}
+
+# Country scope. The selected state and victim event targets are supplied by
+# cbrn_chemical_doomsday_dispatch_current_agent before this effect is called.
+cbrn_chemical_doomsday_resolve_current_state = {
+	# Caller-owned outputs consumed after the returning helper.
+	set_temp_variable = { cbrn_action_target_state_supplied = constant:cbrn_proof.missing }
+	set_temp_variable = { cbrn_action_weapon_class = constant:cbrn_weapon_class.none }
+	set_temp_variable = { cbrn_action_agent_class = constant:cbrn_agent_class.none }
+	set_temp_variable = { cbrn_action_agent = constant:cbrn_agent.none }
+	set_temp_variable = { cbrn_action_delivery_route = constant:cbrn_delivery_route.none }
+	set_temp_variable = { cbrn_action_severity = constant:cbrn_operation_severity.none }
+	set_temp_variable = { cbrn_action_retaliation_status = constant:cbrn_retaliation_status.none }
+	set_temp_variable = { cbrn_retaliation_action_proportionate_proof = constant:cbrn_proof.missing }
+	set_temp_variable = { cbrn_action_late_agent_route_authorized = constant:cbrn_proof.missing }
+	set_temp_variable = { cbrn_action_payload_required = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_action_payload_consumed = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_action_payload_consumed_proof = constant:cbrn_proof.missing }
+	set_temp_variable = { cbrn_action_legacy_cylinder_source_proof = constant:cbrn_proof.missing }
+	set_temp_variable = { cbrn_action_release_efficiency_mult = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_action_dispatch_proof = constant:cbrn_proof.missing }
+	set_temp_variable = { cbrn_action_evidence_floor_override = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_raid_attempt_dispatch_proof = constant:cbrn_proof.missing }
+	set_temp_variable = { cbrn_action_protection_resolved_proof = constant:cbrn_proof.missing }
+	set_temp_variable = { cbrn_action_military_effective_protection = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_action_military_casualty_mult = constant:cbrn_math.one }
+	set_temp_variable = { cbrn_action_military_disruption_mult = constant:cbrn_math.one }
+	set_temp_variable = { cbrn_action_military_contamination_mult = constant:cbrn_math.one }
+	set_temp_variable = { cbrn_action_civilian_effective_protection = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_action_civilian_casualty_mult = constant:cbrn_math.one }
+	set_temp_variable = { cbrn_action_civilian_disruption_mult = constant:cbrn_math.one }
+	set_temp_variable = { cbrn_action_civilian_contamination_mult = constant:cbrn_math.one }
+	set_temp_variable = { cbrn_action_conditions_resolved_proof = constant:cbrn_proof.missing }
+	set_temp_variable = { cbrn_action_weather_mult = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_action_terrain_mult = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_action_target_density_mult = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_action_command_mult = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_action_evidence_control_mult = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_action_context_condemnation_mult = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_action_doctrine_condemnation_mult = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_action_forecast_confidence = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_action_command_integration = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_action_base_friendly_risk = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_action_duration_override = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_action_result = constant:cbrn_action_result.rejected }
+	set_temp_variable = { cbrn_action_reject_reason = constant:cbrn_action_reject_reason.none }
+	set_temp_variable = { cbrn_action_victim_country_supplied = constant:cbrn_proof.missing }
+	set_temp_variable = { cbrn_action_payload_ratio = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_action_dose_mult = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_action_disruption = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_action_military_death_fraction = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_action_civilian_exposed_fraction = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_action_civilian_death_fraction = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_action_contamination_points = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_action_contamination_duration_days = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_action_medical_saturation_points = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_action_evidence_points = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_action_evidence_applied = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_action_attribution_state = constant:cbrn_attribution_state.unknown }
+	set_temp_variable = { cbrn_action_condemnation_base = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_action_friendly_exposure_risk = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_action_vehicle_sealing_applied = constant:cbrn_proof.missing }
+	set_temp_variable = { cbrn_action_armored_advance_receipt = constant:cbrn_proof.missing }
+	set_temp_variable = { cbrn_action_source_label = constant:cbrn_source_label.none }
+	set_temp_variable = { cbrn_action_military_mask_only_casualty_mult = constant:cbrn_math.one }
+	set_temp_variable = { cbrn_action_civilian_mask_only_casualty_mult = constant:cbrn_math.one }
+	cbrn_reset_action_context = yes
+	set_temp_variable = { cbrn_action_target_state_supplied = constant:cbrn_proof.supplied }
+	set_temp_variable = { cbrn_action_weapon_class = constant:cbrn_weapon_class.chemical }
+	set_temp_variable = { cbrn_action_agent = cbrn_doomsday_active_agent }
+	cbrn_chemical_doomsday_set_agent_class_from_action = yes
+	set_temp_variable = { cbrn_action_delivery_route = constant:cbrn_delivery_route.doomsday_release }
+	set_temp_variable = { cbrn_action_severity = constant:cbrn_operation_severity.doomsday }
+	set_temp_variable = { cbrn_action_payload_required = cbrn_doomsday_current_allocation }
+	set_temp_variable = { cbrn_action_payload_consumed = cbrn_doomsday_current_allocation }
+	set_temp_variable = { cbrn_action_payload_consumed_proof = cbrn_doomsday_stockpile_debit_proof }
+	set_temp_variable = { cbrn_doomsday_condemnation_base = constant:cbrn_math.zero }
+
+	if = {
+		limit = {
+			OR = {
+				NOT = { has_variable = cbrn_doomsday_current_agent_condemnation_paid }
+				NOT = {
+					check_variable = {
+						var = cbrn_doomsday_current_agent_condemnation_paid
+						value = constant:cbrn_proof.supplied
+						compare = equals
+					}
+				}
+			}
+		}
+		set_temp_variable = { cbrn_doomsday_condemnation_base = cbrn_doomsday_agent_condemnation_share }
+	}
+
+	cbrn_resolve_action_target_protection = yes
+	cbrn_chemical_doomsday_set_release_receipt = yes
+	cbrn_set_doctrine_condemnation_mult_from_country = yes
+	cbrn_prepare_chemical_action_record = yes
+	if = {
+		limit = { check_variable = { var = cbrn_action_result value = constant:cbrn_action_result.accepted compare = equals } }
+		cbrn_dispatch_chemical_action_record = yes
+		add_to_temp_variable = { cbrn_doomsday_resolved_payload_total = cbrn_doomsday_current_allocation }
+		add_to_temp_variable = { cbrn_doomsday_resolved_state_count = constant:cbrn_math.one }
+		if = {
+			limit = {
+				check_variable = { var = cbrn_doomsday_condemnation_base value = constant:cbrn_math.zero compare = greater_than }
+			}
+			set_temp_variable = { cbrn_doomsday_current_agent_condemnation_paid = constant:cbrn_proof.supplied }
+		}
+	}
+	else = {
+		set_temp_variable = { cbrn_doomsday_dispatch_failure = constant:cbrn_proof.supplied }
+		set_temp_variable = { cbrn_doomsday_last_reject_reason = cbrn_action_reject_reason }
+	}
+}
+
+# Country scope. One agent's exact debited stock is spread across the exact
+# controlled-state array. The same deterministic remainder distribution used
+# by the biological doomsday adapter prevents duplication or fabricated lots.
+cbrn_chemical_doomsday_dispatch_current_agent = {
+	set_temp_variable = { cbrn_doomsday_payload_remaining = cbrn_doomsday_active_stock }
+	set_temp_variable = { cbrn_doomsday_targets_remaining = cbrn_doomsday_target_states^num }
+	set_temp_variable = { cbrn_doomsday_current_agent_condemnation_paid = constant:cbrn_proof.missing }
+
+	if = {
+		limit = {
+			check_variable = { cbrn_doomsday_payload_remaining > constant:cbrn_math.zero }
+			check_variable = { cbrn_doomsday_targets_remaining > constant:cbrn_math.zero }
+		}
+		for_each_scope_loop = {
+			array = cbrn_doomsday_target_states
+			if = {
+				limit = {
+					check_variable = { cbrn_doomsday_payload_remaining > constant:cbrn_math.zero }
+					check_variable = { cbrn_doomsday_targets_remaining > constant:cbrn_math.zero }
+				}
+				set_temp_variable = { cbrn_doomsday_current_allocation = cbrn_doomsday_payload_remaining }
+				divide_temp_variable = { cbrn_doomsday_current_allocation = cbrn_doomsday_targets_remaining }
+				round_temp_variable = cbrn_doomsday_current_allocation
+				clamp_temp_variable = {
+					var = cbrn_doomsday_current_allocation
+					min = constant:cbrn_math.one
+					max = cbrn_doomsday_payload_remaining
+				}
+				set_variable = { cbrn_doomsday_state_allocation_receipt = cbrn_doomsday_current_allocation }
+				save_event_target_as = cbrn_doomsday_current_state
+				CONTROLLER = { save_event_target_as = cbrn_doomsday_current_victim }
+				event_target:cbrn_doomsday_raid_actor = {
+					set_temp_variable = { cbrn_doomsday_current_allocation = PREV.cbrn_doomsday_state_allocation_receipt }
+					event_target:cbrn_doomsday_current_state = { save_event_target_as = cbrn_action_target_state }
+					event_target:cbrn_doomsday_current_victim = { save_event_target_as = cbrn_action_victim_country }
+					cbrn_chemical_doomsday_resolve_current_state = yes
+				}
+				subtract_from_temp_variable = { cbrn_doomsday_payload_remaining = cbrn_doomsday_current_allocation }
+				subtract_from_temp_variable = { cbrn_doomsday_targets_remaining = constant:cbrn_math.one }
+				clear_variable = cbrn_doomsday_state_allocation_receipt
+			}
+		}
+	}
+}
+
+cbrn_chemical_doomsday_release = {
+	set_temp_variable = { cbrn_doomsday_release_status = constant:cbrn_proof.missing }
+	set_temp_variable = { cbrn_doomsday_full_resolution_status = constant:cbrn_proof.missing }
+	# Caller-owned outputs consumed after the returning helper.
+	set_temp_variable = { cbrn_doomsday_target_count = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_doomsday_stock_chlorine = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_doomsday_stock_phosgene = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_doomsday_stock_mustard = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_doomsday_stock_lewisite = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_doomsday_arsenal_consumed_total = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_doomsday_stockpile_debit_proof = constant:cbrn_proof.missing }
+	set_temp_variable = { cbrn_doomsday_condemnation_total = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_doomsday_agent_condemnation_share = constant:cbrn_math.zero }
+	clear_temp_array = cbrn_doomsday_target_states
+	cbrn_chemical_doomsday_collect_target_states = yes
+
+	if = {
+		limit = {
+			cbrn_policy_allows_extreme_use = yes
+			NOT = { has_country_flag = cbrn_chemical_doomsday_raid_committed }
+			has_government = fascism
+			has_war = yes
+			NOT = { has_capitulated = yes }
+			surrender_progress > constant:cbrn_chemical_doomsday_raid.surrender_threshold
+			has_event_target = cbrn_doomsday_raid_target
+			event_target:cbrn_doomsday_raid_target = { cbrn_chemical_doomsday_raid_state_is_eligible = yes }
+			check_variable = { cbrn_doomsday_target_count > constant:cbrn_math.zero }
+		}
+		# Commit the valid callback before any irreversible dispatch. A second
+		# simultaneously prepared raid can never repeat a partial release.
+		set_country_flag = cbrn_chemical_doomsday_raid_committed
+		cbrn_chemical_doomsday_capture_and_consume_arsenal = yes
+		if = {
+			limit = {
+				check_variable = { var = cbrn_doomsday_stockpile_debit_proof value = constant:cbrn_proof.supplied compare = equals }
+				check_variable = { cbrn_doomsday_arsenal_consumed_total > constant:cbrn_math.zero }
+			}
+			cbrn_chemical_doomsday_set_batch_condemnation = yes
+			set_temp_variable = { cbrn_doomsday_resolved_payload_total = constant:cbrn_math.zero }
+			set_temp_variable = { cbrn_doomsday_resolved_state_count = constant:cbrn_math.zero }
+			set_temp_variable = { cbrn_doomsday_dispatch_failure = constant:cbrn_proof.missing }
+
+			set_temp_variable = { cbrn_doomsday_active_agent = constant:cbrn_agent.chlorine }
+			set_temp_variable = { cbrn_doomsday_active_stock = cbrn_doomsday_stock_chlorine }
+			cbrn_chemical_doomsday_set_agent_condemnation_share = yes
+			cbrn_chemical_doomsday_dispatch_current_agent = yes
+			set_temp_variable = { cbrn_doomsday_active_agent = constant:cbrn_agent.phosgene }
+			set_temp_variable = { cbrn_doomsday_active_stock = cbrn_doomsday_stock_phosgene }
+			cbrn_chemical_doomsday_set_agent_condemnation_share = yes
+			cbrn_chemical_doomsday_dispatch_current_agent = yes
+			set_temp_variable = { cbrn_doomsday_active_agent = constant:cbrn_agent.mustard }
+			set_temp_variable = { cbrn_doomsday_active_stock = cbrn_doomsday_stock_mustard }
+			cbrn_chemical_doomsday_set_agent_condemnation_share = yes
+			cbrn_chemical_doomsday_dispatch_current_agent = yes
+			set_temp_variable = { cbrn_doomsday_active_agent = constant:cbrn_agent.lewisite }
+			set_temp_variable = { cbrn_doomsday_active_stock = cbrn_doomsday_stock_lewisite }
+			cbrn_chemical_doomsday_set_agent_condemnation_share = yes
+			cbrn_chemical_doomsday_dispatch_current_agent = yes
+
+			if = {
+				limit = {
+					NOT = { check_variable = { var = cbrn_doomsday_dispatch_failure value = constant:cbrn_proof.supplied compare = equals } }
+					check_variable = { var = cbrn_doomsday_resolved_payload_total value = cbrn_doomsday_arsenal_consumed_total compare = equals }
+				}
+				set_temp_variable = { cbrn_doomsday_release_status = constant:cbrn_proof.supplied }
+				set_temp_variable = { cbrn_doomsday_full_resolution_status = constant:cbrn_proof.supplied }
+				set_country_flag = cbrn_chemical_doomsday_release_history
+				set_global_flag = cbrn_world_confirmed_chemical_use
+				save_event_target_as = fallout_request_actor_input
+				set_temp_variable = { fallout_request_source_input = constant:fallout_request_source.chemical_saturation }
+				set_temp_variable = { fallout_request_intensity_input = constant:fallout_request_intensity.terminal }
+				fallout_request_aftermath = yes
+			}
+			else = {
+				set_country_flag = cbrn_chemical_doomsday_partial_resolution_history
+			}
+		}
+	}
+}
+
+# Raid-instance scope. The immediate hidden country event restores actor ROOT
+# before any nested policy, exposure, diplomacy, or fallout helper executes.
+cbrn_chemical_doomsday_native_raid_outcome = {
+	var:actor_country = { save_event_target_as = cbrn_doomsday_raid_actor }
+	var:target_state = { save_event_target_as = cbrn_doomsday_raid_target }
+	if = {
+		limit = {
+			has_event_target = cbrn_doomsday_raid_actor
+			has_event_target = cbrn_doomsday_raid_target
+		}
+		var:actor_country = { country_event = { id = chaosx_cbrn_doom_raid.1 } }
+	}
+}

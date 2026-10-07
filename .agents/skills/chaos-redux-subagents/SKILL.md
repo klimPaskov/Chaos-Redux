@@ -304,6 +304,11 @@ Record the separate connection and use only confirmed read-only domain calls; th
 
 On a confirmed route, use `mode = helper_expansion` with `hoi4.event_inspect` or `hoi4.tech_inspect` for bounded helper pages, and use `hoi4.job_inspect` and `hoi4.job_cancel` for persistent jobs. Request native MCP tasks only when the client negotiates support. Keep opaque job IDs and helper continuation URIs intact. A completed job can still contain a tool-level error, and cancellation is a request whose final outcome must be inspected. For paged helper evidence, retain the source revision, selected roots, bounds, `finished`/`complete` status, and unresolved findings; resume only with the returned continuation under the same revision and authorized principal. Jobs and helper pages are delivery and coverage tools; they do not replace the owning event, technology, focus, probability, GUI, or map workflow's inspect, render, compare, and scenario evidence. Keep task-specific mechanics and fixtures in their profiles and handoffs, not this routing skill.
 
+Before an event-source change that needs `hoi4.event_compare`, retain the `event-graph-<revision>.json` artifact from `hoi4.event_inspect(mode = scan)` as the graph baseline; bounded trace/report URIs and reported revisions alone do not establish a recoverable graph.
+Verify the connected version and live schema before comparison, and use its graph-reference shape (`{ artifactUri: ... }` where supported).
+If only archived source remains, `proposedSources` can compare current source to the archived overlay on the after side, so label it explicitly as a reverse structural comparison; the proposed graph does not become a reusable baseline.
+Never rewrite shared source to manufacture a baseline or present that reverse comparison as canonical pre-change-to-current evidence.
+
 For a focus raster rejected by the render budget, use a schema-supported smaller `reviewScale` for the full tree and `cropFocusIds` for problem areas.
 Confirm each successful render uses the intended source revision and layout; retain the rejected request as a limit, not visual proof.
 

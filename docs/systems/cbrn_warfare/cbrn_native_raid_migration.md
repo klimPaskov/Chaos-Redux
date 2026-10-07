@@ -40,6 +40,15 @@ The former global `bio_sabotage_operation_in_progress` flag cannot be set by a d
 Each has its own native payload and Command Power reservation, and each completed callback uses one event bridge and one dispatch path. Callback uniqueness and cancellation settlement remain engine-validation gaps.
 Facility recovery also uses the immediate country-event bridge, retaining its selected site as an exact event target and checking that the site is still controlled by the actor before any ledger transfer, destruction, or accidental release.
 
+## Chemical helper output ownership
+
+Each native land, air and exact-state doomsday owner allocates its complete existing action record before calling returning helpers.
+The same caller retains the dispatch proof through consequence application; only a fresh operation initializes that proof.
+Accepted dispatch requires a paid payload, valid bound targets and an undispatched record, and marks dispatch before applying its sinks.
+The air failed-attempt path follows its corresponding one-attempt guard and retains returned evidence/attribution fields.
+The exceptional release owns its target array/count, arsenal totals and condemnation share until its event bridge consumes the result.
+The [source-integrity report](../../plans/chaos_warfare_system_plans/2026-10-07_chemical_raid_service_integrity.md) distinguishes these repaired callers from pending missile/camp consumers, shared uncommitted dependencies and native settlement evidence.
+
 ## Biological helper output ownership
 
 The actor-country resolvers own temporary payload, selected-result, program and failed-attempt attribution outputs before calling their producing helpers.
