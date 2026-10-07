@@ -5,7 +5,7 @@ Parent acceptance: accepted and queued on 2026-10-03 under the user's complete-G
 Disposition (2026-10-04): `implemented` and `promoted into an accepted spec` (Part 3, section "2026-10-04 accepted design: Gods of Africa final grading and settlement support"); evidence commits `b9dc8d137`, `5789030a7`, `efd604218`, `ffa3c3120`; takeover decisions L3, L12, L13, L14 record the implementation choices. Live-game transfer deltas and probability evidence remain open.
 The parent adopts the unique-contract and measured-contribution ledger, twelve-factor deterministic standings, frozen capability-scaled material obligation, source-reserved proportional batches, and existing end-phase delivery control.
 Use the current installed native `equipment` transfer spelling corroborated by `USA_scripted_effects.txt:402–418` and `AAT_Finland.txt:3722–3735`; the older tooltip-only `type` example below is historical syntax evidence, not the selected implementation.
-Implementation remains queued while the owner integrates receipt hooks and the deferred transaction; this acceptance does not claim native or weighted validation.
+Receipt hooks and the deferred settlement transaction are implemented in the cited source. Native transfer acceptance and complete weighted evaluation remain validation work, separate from design approval.
 Owner: `chaosx_improvement_loop_planner`, design only.
 Workspace: `C:\Users\klimp\OneDrive\Documents\Paradox Interactive\Hearts of Iron IV\mod\chaos_redux`.
 Only this document was written.

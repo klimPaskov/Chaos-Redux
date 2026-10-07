@@ -1,10 +1,16 @@
-# Event 012 catalog changes pending
+# Event 012 catalog alignment and supporting notes
 
-The workbook `docs/spreadsheets/chaos_redux_events_catalog.xlsx` is edited only by its owner; this file lists the exact Event 012 changes the workbook needs.
+The workbook `docs/spreadsheets/chaos_redux_events_catalog.xlsx` is the sole editable catalog source; this file records the aligned Event 012 fields and supporting facts.
 After the workbook update, run `python .tools/export_event_catalog_csv.py` from the mod root; never edit the CSV exports directly.
 Every field must match the in-game wording quoted here.
 
-Disposition: `accepted and queued` (basis: the takeover's catalog-alignment item; the workbook is outside this owner's write scope).
+Disposition (2026-10-07): `implemented` for the existing Event 012 and SCN-011 catalog surfaces in commit `02ee33eb62f973ea7cca3c7166ed5ed87816d4b0`.
+Acceptance basis: the active full-Gods goal and the takeover catalog-alignment item.
+`Events!C13` matches the current event detail, `Events!I13` records the four actual World outcomes, and `Scenarios!C11` matches the two SCN-011 type descriptions.
+Evolution text, Needs Testing status, workbook structure, and the unassigned Event 070 row remain intact.
+The exporter ran after both workbook passes; the [catalog handoff](subagent_handoffs/012_gods_catalog_alignment_2026-10-07.md) records semantic comparisons and shared-tree isolation.
+The workbook has no per-event notes, achievement, news, or super-event table, so the conditional notes below remain mechanic documentation rather than instructions to invent catalog fields.
+Model installation is separate source evidence and does not imply native model/action acceptance.
 
 ## Event 012 row (ID 12, "Africa Is One")
 
@@ -25,9 +31,9 @@ Disposition: `accepted and queued` (basis: the takeover's catalog-alignment item
 
 | Item | Catalog surface | Status |
 | --- | --- | --- |
-| Four Gods achievements: Long Obedience, Survive Defiance, Continental Provision, The Careful Gambler | Achievement rows or notes for Event 012, using the names and descriptions in `localisation/english/012_africa_achievements_l_english.yml` (`africa_gods_*_NAME`, `_DESC`) | `implemented`; add the rows. |
-| Gods activation news event | Event 012 notes: "Africa Proclaims the Gods of Africa" (`chaosx.nr12.617.t`) | `implemented`; add the note. |
-| Gods global-credibility super-event | Super-event slot for Event 012 | `implemented` in source: slot 118, "THE WORLD TAKES AFRICA AT ITS WORD" (`chaosx_super_event.118.t`), with the complete 104-second White House performance of Nkosi Sikelel’ iAfrika. It fires once at active global reach, including an already qualified activation. Add the role, title, cue and source note. |
+| Four Gods achievements: Long Obedience, Survive Defiance, Continental Provision, The Careful Gambler | Names and descriptions in `localisation/english/012_africa_achievements_l_english.yml` (`africa_gods_*_NAME`, `_DESC`) | `implemented` in source; no achievement/notes table exists in the catalog. |
+| Gods activation news event | "Africa Proclaims the Gods of Africa" (`chaosx.nr12.617.t`) | `implemented` in source; no news/notes table exists in the catalog. |
+| Gods global-credibility super-event | Slot 118 for Event 012 | `implemented` in source: "THE WORLD TAKES AFRICA AT ITS WORD" (`chaosx_super_event.118.t`), with the complete 104-second White House performance of Nkosi Sikelel’ iAfrika. It fires once at active global reach, including an already qualified activation. No super-event/notes table exists in the catalog. |
 
 ## Gods of Africa diplomatic demands (agent decision L25)
 

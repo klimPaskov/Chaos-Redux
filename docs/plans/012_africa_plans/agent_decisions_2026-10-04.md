@@ -146,8 +146,9 @@ Decisions:
   The old flag-based `gods_of_africa_final_*_is_valid` triggers, the flat 2500/1000 packages and the political-power fallbacks are removed, together with their constants.
 - A broken accounting invariant leaves `gods_of_africa_settlement_grade_unresolved`, keeps the evidence, cleans live authority, and assigns no standing or obligation.
 - The end-phase delivery is a separate untargeted row, `gods_of_africa_deliver_settlement_support`, in the host category with the settlement icon.
-  The targeted commit row lists live participants, which are gone after the endpoint, and one fair batch cannot be expressed as a per-recipient target without giving the clicked target priority.
-  The commit row keeps its pre-endpoint behaviour and disappears at the endpoint, so the player sees the delivery row take its place.
+  The original targeted pre-endpoint commit row is superseded by the parent-reviewed activation repair in `b3af259674ee4b5d8c4aa049cfeb765b621f376f` on October 7.
+  One untargeted host action can commit the whole-census final settlement only after exact final security; subsequent material batches remain with the separate delivery row.
+  This correction implements the existing full-Gods endpoint requirement and preserves one-use grading and proportional delivery; the final source review is `subagent_handoffs/012_gods_activation_final_review_2026-10-07.md`.
 - The delivery row re-enables after 30 days, so each use moves one real batch and an AI host cannot drain its reserves every day.
 - A receiver at war with Africa keeps its balance and is skipped until peace; Africa does not arm a current enemy.
 - Distrusted standing records Africa's suspicion one way (the participant has no grievance to remember); Enemy standing records hostility both ways.

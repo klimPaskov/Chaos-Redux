@@ -1,14 +1,42 @@
-﻿# Gods of Africa
+# Gods of Africa
 
-Current documentation disposition (2026-09-26): The protection service call sites and focus capability gates are source-present, while the complete Gods of Africa feature and focus overlay remain unresolved against accepted design and validation. The user explicitly chose Arms Against Tyranny market access and enemy intelligence, and set the cost boundary: the four-type cap applies to Event 012 protection, while the Relief Convoy remains a separate choice at its existing price. Event 012 protection spends infantry equipment, fuel, and political power, with at most one conditional convoy or train transfer as a fourth type; the shared common-defence reserve must cover and is reduced by the infantry shipment. The Foreign Disaster Relief choice retains its five material costs plus stability and war-support losses, unchanged. Its protected and generic paths now recheck the donor and recipient, exclude unresolved-territory cards, and select a card before payment or inbound flags. The user accepted reuse of the response report image for `.611`–`.613` and the protection report image for `.614`; focus-route scope, source/runtime scenarios, focus visual review, image-content approval, game-scale appearance, and user-owned live-game validation remain open. The five Gods AI profiles use runtime `enable` gates without startup-only `allowed` predicates; their `pp_spend_priority` entries target vanilla decision spending, and all numeric strategy values are unchanged. The installed probability adapter still discovers no weighted candidates for this strategy file, so profile balance and the same-scenario comparison remain unresolved.
+Current contract (2026-10-07): Gods of Africa is implemented in Event 012 source through measured contributions, real diplomatic concessions, agreement and conduct receipts, twelve-factor grading, frozen material settlement obligations, proportional deferred delivery, continuing-support instalments, staged punishment, focus payoffs, four achievements, and the global-credibility super-event.
+The activation repair uses the same guarded consolidation initializer at Evolution I and continental formation, preserves SCN-011 chronology without rewards, distinguishes formation from final security, and exposes one host-wide final-settlement action.
+The user's full-Gods Event 012 goal remains active with no simplifications authorized; source implementation and the architect's accepted source cases do not establish native execution or overall completion.
 
-Parent visual review on 2026-09-25 found no visible material visual, artifact, or transparency issue in `docs/assets/012_africa_gods_icons/contact_sheet.png`, all 27 processed icons at native size, and `docs/assets/012_africa_gods_of_africa/review/contact_sheet.png`. Game-scale appearance, playback, user approval, and live-game validation remain unresolved.
+The acceptance basis is the current full-Gods/no-simplification instruction, the scoped L decisions in [the October 4 decision record](../../plans/012_africa_plans/agent_decisions_2026-10-04.md), and the later accepted fixes in [the October 5–6 decision record](../../plans/012_africa_plans/agent_decisions_2026-10-05.md).
+The [takeover status](../../plans/012_africa_plans/takeover_status_2026-10-06.md), [Gods source audit](../../plans/012_africa_plans/subagent_handoffs/takeover_gods_audit_2026-10-06.md), and [completion review](../../plans/012_africa_plans/subagent_handoffs/takeover_completion_review_2026-10-06.md) provide implementation evidence and their specific validation limits.
+Historical specs and handoffs establish only the design claims with a recorded acceptance basis; their filenames, dates, or status labels do not grant broader approval.
+
+Remaining acceptance concerns native stock and fuel movement, diplomatic and state effects, punishment and recovery timing, settlement and achievement execution, revealed focus states, decision-category appearance, and audible super-event playback.
+Gods weighted pools and real baseline comparisons remain incomplete; partial MCP projections and script checks do not close those limits.
+Elephant runtime binding, authored model/action/material acceptance, the grounded Buganda portrait, and other owner GUI work retain their separate ownership boundaries.
+Event 012/SCN-011 workbook alignment and matching exports are committed in `02ee33eb62f973ea7cca3c7166ed5ed87816d4b0`; the [catalog handoff](../../plans/012_africa_plans/subagent_handoffs/012_gods_catalog_alignment_2026-10-07.md) records the exact three cells and preserved shared-workbook changes.
+The activation repair is committed in `b3af259674ee4b5d8c4aa049cfeb765b621f376f`; the [final probability handoff](../../plans/012_africa_plans/subagent_handoffs/012_gods_activation_probability_final_2026-10-07.md) retains the unsuccessful evaluation/comparison retries and missing raw baseline payload as evidence gaps.
+The [reconciliation handoff](../../plans/012_africa_plans/subagent_handoffs/012_gods_documentation_reconciliation_2026-10-07.md) records the current source map, superseded claims, route evidence, and unresolved conflicts.
+
+The explicit protection decisions remain binding: Event 012 spends infantry equipment, fuel, and political power, with at most one conditional convoy or train transfer as a fourth cost type; its common-defence reserve must cover and is reduced by the infantry shipment.
+The separate Event 013 Foreign Disaster Relief choice retains its existing five material costs plus stability and war-support losses.
+Arms Against Tyranny market access and enemy intelligence remain the user's selected optional protection services, while the core mechanic requires no DLC.
+The accepted report mapping reuses response art for `.611`–`.613` and the dedicated protection image for `.614`.
+Gods has no separate Event 070 identity.
 
 ## Ownership and activation
 
-Gods of Africa is an Event 012 subsystem owned by the African unifier created by Africa Is One. It has no normal-event pool entry, no separate Event 070 identity, and no unrestricted recurring world scan. Evolution I starts a host-owned consolidation clock; after the 180-day consolidation interval, the activation effect rechecks the Event 012 host, generation, Africa Is One proof, and evolution gate before committing the system.
+Gods of Africa is an Event 012 subsystem owned by the African unifier created by Africa Is One, with no normal-event pool entry or unrestricted recurring world scan.
+Whichever occurs second of continental formation and Evolution I starts the same guarded, host-owned 180-day consolidation interval.
+Both owners call `africa_gods_of_africa_begin_consolidation`; the initializer rechecks authority, physical founding proof, host generation, and chronology, while the pending-clock receipt prevents repeated calls from restarting the interval.
+The activation callback rechecks those permissions and the elapsed due date before committing ordinary tribute.
 
-The `SCN-011` Africa Is One manual scenario seeds the Evolution I chronology receipt without replaying the ordinary Evolution I popup or reward package, then calls this same owner-local initializer so its 180-day delay, generation checks, and activation gates remain identical to the normal route. The `World Is One` scenario type intentionally prepares the separate terminal-campaign package and does not start the tribute loop.
+The `SCN-011` Africa Is One route seeds first-proof success and Evolution I chronology without replaying first-proof or Evolution I rewards, actions, achievements, or ordinary reports, then calls the same initializer.
+An applied `World Is One` scenario is a post-security starting package and cannot indirectly start Gods consolidation or tribute through a later Evolution I call.
+The applied scenario must have `africa_triggerable_scenario_type = constant:triggerable_scenario_africa_type.world_is_one`; the mere presence of `africa_triggerable_scenario_applied` is insufficient.
+
+`africa_continental_settlement_complete` records initial continental formation, not final security.
+Ordinary final security requires a successfully settled Scramble with no `africa_scramble_response_defeat`; a defeated Scramble's settled enum is insufficient.
+`gods_of_africa_continent_is_secured` also recognizes the exact applied World Is One type as its declared post-security exception.
+If an already authorized consolidation or active owner reaches final security, it settles retained enrollment history instead of opening or continuing ordinary demands.
+The source contract is in `012_africa_gods_epoch_binding_triggers.txt`, the formation/evolution/scenario callers, and `gods_of_africa_commit_final_settlement`; native activation timing and settlement execution remain unobserved.
 
 The committed host owns one bounded participant registry, the global Gods of Africa Strength value, the dispatch cursor, demand budget, doctrine, priority family, and ending lock. Participant countries own their personal Wrath, frozen demand contract, payment progress, defiance state, and hidden relationship history. A restoration generation prevents delayed work from resolving against a previous host.
 
@@ -106,7 +134,7 @@ A treaty breach is the breach of an agreement the participant actually made with
 | Accepted reconciliation | Africa accepted the participant's paid reconciliation (`gods_of_africa_reconciliation_agreement_live`); defiance replaces it | The participant attacks Africa |
 | Renewed recognition | Africa accepted a capitulation victor's renewal and the victor has not won another war against it | The participant attacks Africa |
 
-`gods_of_africa_record_treaty_breach` in `common/scripted_effects/012_africa_gods_contract_effects.txt` increments `gods_of_africa_treaty_break_count` once, sets `gods_of_africa_unresolved_treaty_break`, the permanent `gods_of_africa_prior_treaty_break`, and the `gods_of_africa_broken_treaty` Wrath floor cause (70), records a `treaty_break` history row, and applies `gods_of_africa_wrath.treaty_breach_magnitude` (20) in place of the ordinary refusal, failure, or war gain. The broken agreement ends: protection is withdrawn, the accepted reconciliation stops being live, and a renewed recognition is marked broken. "Attacks" means the participant is on the attacking side of a war with Africa (`has_offensive_war_with`, which also covers joining an attacker's war): `gods_of_africa_participant_is_aggressor_against_host`. One war breaks every live agreement at once but counts as one breach, and one war adds one Wrath gain: `gods_of_africa_cancel_demand_for_war` (daily owner pass) records the single breach gain when an agreed contract or any live agreement stands, or the ordinary war gain (10) when none does, and the shared per-war flag `gods_of_africa_agreement_war_breach_recorded` stops `gods_of_africa_observe_agreement_war` (owner review) from adding a second gain. Without an open contract, the owner review records the breach and reports it through `chaosx.nr12.616`.
+`gods_of_africa_record_treaty_breach` in `common/scripted_effects/012_africa_gods_contract_effects.txt` increments `gods_of_africa_treaty_break_count` once, sets `gods_of_africa_unresolved_treaty_break`, the permanent `gods_of_africa_prior_treaty_break`, and the `gods_of_africa_broken_treaty` Wrath floor cause (70), records a `treaty_break` history row, and applies `gods_of_africa_wrath.treaty_breach_magnitude` (20) in place of the ordinary refusal, failure, or war gain. The broken agreement ends: protection is withdrawn, the accepted reconciliation stops being live, and a renewed recognition is marked broken. "Attacks" means the participant is on the attacking side of a war with Africa (`has_offensive_war_with`, which also covers joining an attacker's war): `gods_of_africa_participant_is_aggressor_against_host`. One war breaks every live agreement at once but counts as one breach, and one war adds one Wrath gain: `gods_of_africa_cancel_demand_for_war` (bounded owner pass) records the single breach gain when an agreed contract or any live agreement stands, or the ordinary war gain (10) when none does, and the shared per-war flag `gods_of_africa_agreement_war_breach_recorded` stops `gods_of_africa_observe_agreement_war` (owner review) from adding a second gain. Without an open contract, the owner review records the breach and reports it through `chaosx.nr12.616`.
 
 When Africa is the aggressor (`gods_of_africa_host_is_aggressor_against_participant`), nothing is a breach: an open contract is retired neutrally with a `war_cancellation` history row and no Wrath gain, every live agreement ends through `gods_of_africa_end_agreements_for_host_war` (protection withdrawn by the existing helper, reconciliation no longer live, renewed recognition ended through `gods_of_africa_victor_renewal_ended_sequence`), the history records `agreement_ended_by_host`, and `.613` or the `.616` variant "Africa Breaks Its Word" names Africa as the party that broke the agreement. War and occupation conduct marks, the war Wrath floor and the outstanding-hostility mark are recorded as for any war (decision L20). The response report `.604` and the wartime report `.613` name the broken agreement, and the refusal and defiance decisions warn when the open contract carries agreed terms.
 
@@ -115,7 +143,7 @@ When Africa is the aggressor (`gods_of_africa_host_is_aggressor_against_particip
 The bounded owner review observes each participant once per review through `gods_of_africa_refresh_grading_conduct`, called from `gods_of_africa_refresh_participant_floors`; there is no world scan and no daily hook.
 It counts each new war episode against the current host once, records every African core state of the host that the participant controls (unique state IDs) and caches the current controlled and owned host-core counts.
 War, occupation, and defiance set the permanent prior-hostility records and the outstanding hostility mark `gods_of_africa_unresolved_major_offense`, which stays until Africa accepts a paid reconciliation.
-A territory payment returns one controlled host-core state; the return counts once per state, and only when Africa then owns and controls it.
+A territory payment returns the frozen named host-core states, up to the three-state contract limit; each return counts once per state, and only when Africa then owns and controls it.
 The Wrath floor is the highest floor among the current causes (war 50, territory 60, broken agreement 70, defiance 70, recent extreme punishment 80).
 
 An unresolved broken agreement keeps the participant's Wrath at or above 70 and makes it Enemy at the settlement. It opens the same paid reconciliation window as permanent defiance once the participant is at peace. Africa's acceptance clears only the unresolved breach and its floor; the breach count and the prior-breach record stay permanent, and the accepted reconciliation becomes a live agreement in its own right.
@@ -150,7 +178,10 @@ The accepted doctrine matrix changes only the hidden relationship rules and effe
 
 The separate visible values remain Strength and Wrath; the conduct and contribution records behind the final standing stay hidden.
 
-When Event 012 secures the continent, ordinary demands stop before settlement. The owner computes one hidden relationship result per surviving participant: Favored, Respected, Distrusted, or Enemy.
+When Event 012 reaches the final-security predicate, ordinary demands stop before settlement.
+`gods_of_africa_commit_settlement` is one untargeted host action, visible only to an active valid host at that secured endpoint with the corresponding council or settlement capability.
+It calls the idempotent census-wide final-settlement owner once; it is not a per-participant target action.
+The owner computes one hidden relationship result per surviving enrolled participant: Favored, Respected, Distrusted, or Enemy.
 
 ### Final standing
 
@@ -232,7 +263,12 @@ The host priority surface is phased to keep the five core material lanes plus on
 
 The aircraft family reads, checks and sends the light-airframe fighter type `small_plane_airframe`, which covers the legacy fighters and the By Blood Alone light-airframe designs alike, so Africa's aircraft need, the participant's capacity, substitute and partial checks, the payment and the measured credit all use one type. The Strength technology component counts Fighter III or, with By Blood Alone, the Advanced Light Airframe.
 
-The host AI strategy profiles follow the reciprocal, exaction, or ambiguity doctrine, while participant profiles distinguish ordinary compliance from defiance. They enter and leave through runtime flags and doctrine checks, so the startup-only eligibility filter is omitted. Each profile's `pp_spend_priority` targets the vanilla `decision` category; the five numeric priorities and three army-build values are unchanged. The installed probability adapter still discovers no candidates in this source, and its current evaluation returns `PROBABILITY_SURFACE_EMPTY`; profile balance and same-scenario comparison remain unresolved.
+The host AI strategy profiles follow doctrine; participant profiles distinguish compliance from defiance.
+Runtime flags and doctrine checks control eligibility.
+Each `pp_spend_priority` targets vanilla `decision` spending, with the recorded priorities and army-build values retained.
+The prior strategy adapter returned `PROBABILITY_SURFACE_EMPTY`; the fresh inspect delivered no result within its bounded observation.
+Profile balance and same-scenario comparison remain unresolved.
+The current decision and strategy calls yielded no fresh artifact; the scenario-specific handoff preserves previous partial evidence and their exact observation limits.
 
 The protection decision reuses the existing `GFX_decision_012_africa_gods_protect_partner` sprite, registered in `interface/012_africa.gfx` from `gfx/interface/decisions/012_africa/gods_of_africa/decision_012_africa_gods_protect_partner.dds`. Its code identifier and localisation key are both `gods_of_africa_protect_partner`; the owner-system protection extensions require no new icon assets. The host-side protection report conditionally lists active guarantees and access, successful intelligence sharing, transport deliveries, capital work, reception capacity, and doctrine-based stability or war-support effects, then clears per-action report flags while preserving compact receipts needed for withdrawal. When mutual market access is absent, the report identifies missing Arms Against Tyranny or the locked Sanctuary capability before giving a general unsuccessful-result note. When intelligence sharing is absent, it identifies the first failed gate among La Résistance, Security, host or participant agency, an African war, and an eligible enemy; omitted guarantees, military access, transport, reconstruction, and Migration reception retain grouped condition guidance.
 
@@ -263,7 +299,8 @@ Contract creation freezes the demand's burden (`gods_of_africa_freeze_demand_bur
 - Voluntary aid is mostly a loyal ally's act and doubles in an African emergency.
 - Africa protects partners with fulfilled demands or voluntary aid before merely reliable ones, marks and escalates against occupiers and enemies at war with it first, stops both while it is itself near capitulation (`africa_action_threshold.near_capitulation`), and spares a target that can no longer pay. Leniency and pardon rise for a participant on track for Favored, in hardship, or allied. Africa accepts a substitute only of a family it currently lacks (`gods_of_africa_host_needs_family`) and otherwise rejects it.
 
-Representative scores: a strong participant facing a heavy demand from a Regional Africa at low Wrath scores refuse 112, negotiate 60 and comply 7; a cheap demand from a Continental Africa scores comply 150 and refuse under 1; a loyal ally scores comply 90 and refuse about 1 even against a weak Africa; an occupier scores refuse 15 and defiance 16 where a peaceful neighbour scores 2.5 and 0.
+These are source preference rules, not verified normalized choices or observed AI frequencies.
+The named scenarios and exact score-only, incomplete-pool, and comparison limits are preserved in [the takeover probability handoff](../../plans/012_africa_plans/subagent_handoffs/takeover_probability_2026-10-06.md) and [the activation probability handoff](../../plans/012_africa_plans/subagent_handoffs/takeover_activation_probability_2026-10-06.md).
 
 ## Armoured tribute
 
@@ -276,7 +313,7 @@ Full, partial, and substitute capacity checks all recompute live spare armour, a
 The complete helper contract is in `common/scripted_effects/012_africa_gods_equipment_effects.md`, and the implementation and scenario evidence is in `docs/plans/012_africa_plans/subagent_handoffs/012_africa_gods_armored_tribute_2026-10-03.md`.
 Native stock movement, save/reload, and DLC execution remain unobserved in the supplied menu-load QA.
 
-## Remaining accepted-scope gaps
+## Implemented supporting contracts
 
 The mobile/artillery family chooses one fixed subtype from matching African need and sender spare stock: trucks or towed artillery.
 Native stock, army targets, and fielded equipment establish reinforcement shortfall and operating reserves separately for each subtype.
@@ -293,41 +330,80 @@ Owner-driven population loss captures the participant explicitly for exact-loss 
 The report contract and its review limits are recorded in `common/scripted_effects/012_africa_gods_report_effects.md` and `012_africa_gods_response_reports_2026-10-03.md`.
 The lifecycle retention and interrupted-review fixes are recorded in `012_africa_gods_lifecycle_fix_2026-10-03.md`; the survivor-settlement source repair is separately recorded with its audit and lineage/capacity limits.
 The victor recognition milestone is implemented over an already active committed host.
-Weighted scenario evidence and full native owner-loop acceptance remain live-game checks.
+Weighted evidence remains incomplete through the probability auditor; native owner-loop acceptance remains unobserved.
 The core Gods decision/trigger flag requirements and overlay entry flags have player-facing English text in `localisation/english/012_africa_requirement_flags_l_english.yml`, including named focus prerequisites and concrete tribute-offer conditions.
 The bounded key and semantic review is recorded in `012_africa_gods_requirement_text_2026-10-03.md`; native tooltip layout remains unobserved.
 The timer/text correction and its narrow MCP trace are recorded in `docs/plans/012_africa_plans/subagent_handoffs/012_africa_gods_timer_and_text_2026-10-03.md`.
 
-`gods_of_africa_focus_no_sanctuary` uses the existing `GFX_goal_012_africa_gods_protection` icon, matching its current guarantee and AAT market-access reward. The active goal accepts the current Event 012 overlay and requires doctrine consequences across demands, protection, retaliation, and settlement; that scoped matrix is implemented and recorded in Part 3. The historical focus ID and older Part 8 route promises remain unresolved outside this overlay scope.
+`gods_of_africa_focus_no_sanctuary` retains its accepted Sanctuary protection role and the existing `GFX_goal_012_africa_gods_protection` icon.
+The separate Evolution III `gods_of_africa_focus_no_sanctuary_for_occupiers` node and real coercion payoff are implemented under decision L27; the old claim that Sanctuary merely substitutes for the Occupiers payoff is superseded.
+The current overlay's doctrine consequences across demands, protection, retaliation, and settlement are implemented under their scoped acceptance in Part 3.
+This does not promote unrelated historical Part 8 proposals into accepted design.
 
-The protection overlay's source presence is not full route completion. The premature protection unlock tooltip was removed from `gods_of_africa_focus_continental_proclamation` and placed on `gods_of_africa_focus_rails_ports_fuel` and `gods_of_africa_focus_no_sanctuary`, which open their respective capabilities; reserve, security, and shelter retain their own unlock tooltips. The descriptions for `measure_needs`, `final_council`, and `reach_beyond_coast` now track current focus behavior. Stage reveal and reward tooltips are implemented (decision L22); the focus auditor's broader route-depth and raster-appearance questions remain open; no branch-level PNG review was obtained, and `hoi4_focus_raster` timed out at its documented 180-second wait without a retry.
+Protection unlock text belongs to `gods_of_africa_focus_rails_ports_fuel` and `gods_of_africa_focus_no_sanctuary`, while reserve, security, and shelter retain their own capability tooltips.
+The descriptions for `measure_needs`, `final_council`, and `reach_beyond_coast` track current focus behavior, and stage reveal and reward tooltips are implemented under L22.
+The [current focus handoff](../../plans/012_africa_plans/subagent_handoffs/takeover_focus_audit_2026-10-06.md), including its parent recovery appendix, supersedes the old no-after-raster claim.
+Its matching half-scale raster and terminal-branch crops were reviewed by the parent after moving Sanctuary, Last Sentence, and Occupiers; the Gods through-node defect was removed.
+Five retained long-convergence warnings and evolution-specific native reveal and execution remain unresolved; the reviewed raster does not prove full focus-route acceptance.
 
-The Migration caller now sets `gods_of_africa_protection_reception_created` only when `migration_install_gods_of_africa_reception_service` returns a successful result and the Migration owner flag is active. Withdrawal calls `migration_clear_gods_of_africa_reception_service` only when that Event 012 receipt exists, then clears it; the Migration owner still compares its stored state, amounts, and proofs before removing a service. This source check does not prove runtime execution or permit an unreceipted cleanup.
+The Migration caller sets `gods_of_africa_protection_reception_created` only when `migration_install_gods_of_africa_reception_service` returns success and the Migration owner flag is active.
+Withdrawal calls `migration_clear_gods_of_africa_reception_service` only when that Event 012 receipt exists, then clears it; the Migration owner compares its stored state, amounts, and proofs before removing a service.
+This source contract does not prove runtime execution or permit unreceipted cleanup.
 
-The accepted protection-family source design, four-type cap, art mapping, and separate Event 013 relief choice are implemented. Owner-system scenario acceptance remains unresolved. The focused Event 012 trace and options render remain partial. A fresh full `state_flow` report for `.610` and `.614` is complete as a report, but validation fails on 3,911 blocking diagnostics across the workspace; the diagnostics are not classified against the protected paths. The weighted-logic adapter has not evaluated its named scenarios successfully, and the Event 013 decision and mission bridge remains outside the focused trace coverage. These are validation limits, not passing balance or runtime evidence.
+The protection-family source design, four-type cap, report mapping, and separate Event 013 relief choice are implemented under the explicit user decisions preserved above.
+Native owner-system acceptance and the Event 013 decision/mission bridge remain outside the focused Gods trace coverage.
+The older `.610`/`.614` state-flow report carried 3,911 workspace blocking diagnostics without classifying them against the protected paths; that historical report is not a clean protection verdict or current-source validation.
+The latest source and MCP limitations are consolidated below rather than treating report generation as successful validation.
 
 Participant registration remains owned by the Event 012 activation effect. The preparation, proclamation, and registry witness flags identified during the focus audit had no consumers and are no longer emitted by focus rewards.
-
-The installed probability adapter remains score-only and incomplete for the Gods decision pool, the Event 012 event inspection is aggregate and partial, and no normalized comparison or live GUI or save acceptance is claimed. These are validation blockers rather than hidden completion assumptions.
 
 ## Visual and unit boundary
 
 Gods-of-Africa event reports, category art, icons, and focus/idea art use the registered Event 012 sprite names and period-appropriate, non-anime artwork. The 2026-09-05 generated-art handoffs record eight report cards, one category picture, and 27 mechanic, decision, idea, and focus icons with source, processed, and final DDS evidence. Current working-tree interface, event, category, decision, idea, and focus consumers contain the corresponding Event 012 aliases. Parent review on 2026-09-25 found no material issue in both contact sheets or the 27 processed icons at native size; game-scale appearance, playback, user approval, and promotion remain open.
 
 `common/units/012_africa_elephant_forces.txt` binds `chaosx_elephant` to `sprite = elephantry`, whose vanilla entity depends on the DLC supplying Elephantry.
-The mod has no shipped `chaosx_elephant_entity` fallback.
-The orchestrator's live CXT QA on 2026-10-03 at 19:15 recorded 24 missing-entity errors and placeholder boxes for every Africa elephant division in a no-DLC configuration.
-This is an open rendering blocker, documented with the exact error in [the strange-force unit runtime notes](strange_forces.md).
-The parent is commissioning a real shared `chaosx_elephant` model under row 18 of the system unit model rework plan; its production and runtime consumer acceptance remain pending.
-The approximately 340 MB `docs/assets/012_africa/models_3d/elephant_shared_base/` package is archival and non-promoted, so it does not satisfy that runtime dependency. Retention or deletion remains an owner decision.
+The 2026-10-07 exact consumer search, including ignored source files under `gfx/` and `interface/`, found no `chaosx_elephant_entity` definition or custom `elephantry` entity/mesh binding.
+`gfx/models/units/chaosx_elephants/` contains six `.anim` files and diffuse, normal, and specular DDS files, but no `.mesh` or `.asset` file at this snapshot.
+Those installed components are production evidence, not a usable no-DLC runtime binding or model/action/material acceptance.
+The October 3 CXT missing-entity observation remains historical evidence in [the strange-force unit runtime notes](strange_forces.md); no fresh native rendering result is claimed.
+The parent and model owner retain the shared-elephant installation and runtime-acceptance work.
+The archival `docs/assets/012_africa/models_3d/elephant_shared_base/` package remains non-promoted under decision L9; its contents, size, retention, and any later promotion were not independently audited here.
 
 The CXT fixture follows the same boundary: `common/scripted_effects/012_africa_gods_cxt_test_effects.txt` registers the existing elephant token and equipment through the shared idempotent extension bus, publishes only an inert readiness receipt after CXT initialization, and never starts Africa Is One or the Gods tribute loop.
 
 ## Source of truth and validation
 
-Gameplay identifiers live in the Event 012 event, scripted-effect, scripted-trigger, decision, focus, constant, and localisation files. The authoritative event catalog is `docs/spreadsheets/chaos_redux_events_catalog.xlsx`; its CSV exports are regenerated only by `.tools/export_event_catalog_csv.py`. The user's explicit Event 012 ownership goal makes Gods of Africa distinct from Event 070 and leaves Event 070 available for another idea. The former Event 070 Gods event, decision, category, localisation, and picture source files have deletion evidence in the current working tree, and no active Event 070 Gods namespace remains. The catalog update cleared only `Events!M71` from `Unavailable` to blank, preserving `A71 = 70` and blank `B71`; the exporter succeeded and returned `["70","","","","","","","","","","","",""]` for Event 070. The user goal is the acceptance basis, the workbook edit is implementation evidence, and the export validates catalog parity; runtime, MCP, visual-review, and probability limits remain separate.
+Current implementation evidence comes from the Event 012 event, effect, trigger, decision, focus, constant, and localisation owners, with accepted design recorded independently in the scoped decisions.
+The October 4 resume's pending contribution, conduct, agreement, classification, material-obligation, and deferred-delivery work is superseded by decisions L3–L4, L12–L14, L16–L30 and the October 6 source reviews.
+Its still-open native and weighted limits remain valid; its old music/download gate is superseded by the accepted October 6 global-credibility music decision and installed slot 118 package.
 
-The release audit uses the Event 012 event inspect/render surfaces, focus inspect/render, decision and localisation audits, and the named probability scenarios. The latest read-only MCP evidence is indexed in `docs/events/012_africa/overview.md`: Event 012 lint/render is partial with no blocking diagnostics in the focused response, focus inspect/render reports 300 nodes with no blocking diagnostics but layout warnings, technology inspection remains aggregate and validation-false, the focus and Gods decision probability inspections find no unresolved inputs but incomplete candidate pools, the custom-pool adapter finds zero candidates, and the shared scenario-window inspect/render retains two index-symbol collisions and aggregate overlap warnings. The dedicated `chaosx_ai_probability_auditor` post-change handoff exists but its scenario results remain partial and same-scenario compare failed; standalone Technology Tree Viewer availability remains unverified, so no normalized weighted-logic, technology, GUI, or live-scenario acceptance is claimed. Live in-game validation remains the user's responsibility.
+| Contract | Current source owner | Acceptance and validation boundary |
+| --- | --- | --- |
+| Formation/Evolution I consolidation, SCN-011 proof, final security | `012_africa_gods_effects.txt`, `012_africa_focus_route_effects.txt`, `012_africa_evolution_effects.txt`, `012_africa_triggerable_scenario_effects.txt`, `012_africa_gods_epoch_binding_triggers.txt` | Current parent activation instruction and accepted architect source cases; native timing, duplicate delivery, typed World exclusion, and final settlement remain unobserved. |
+| Measured deliveries, unique contracts, conduct and grading | `012_africa_gods_contribution_effects.txt`, `012_africa_gods_contract_effects.txt`, `012_africa_gods_grading_effects.txt` and matching triggers | L3–L4, L12–L13 and the explicitly accepted grading design; source hooks and deterministic standings exist, while native transfer deltas and lifecycle behavior remain unobserved. |
+| Frozen support, standing diplomacy, proportional batches | `012_africa_gods_settlement_effects.txt`, `012_africa_gods_effects.txt`, `012_africa_gods_decisions.txt` | L13–L14 and the current host-wide commit instruction; real donor reserves, recipient headroom, final reports and later delivery require native acceptance. |
+| Diplomatic families, punishment and focus payoffs | `012_africa_gods_effects.txt`, `012_africa_gods_punishment_effects.txt`, `012_africa_gods_focus_payoff_effects.txt`, matching triggers and `012_africa_continental_focus_tree.txt` | L25–L27 and scoped Part 3 acceptance; dynamic treaty/state/building/war effects and revealed focus execution remain unobserved. |
+| Continuing-support and cumulative closure reports | `012_africa_gods_instalment_effects.txt`, `012_africa_gods_report_effects.txt` and core payment owners | L28 and the October 6 reporting/prepayment corrections; routine progress stays in the mission, and native fuel/storage/timing/popup counts remain unobserved. |
+| Global-credibility presentation | Slot/audio 118, `gods_of_africa_emit_global_credibility_super_event`, shared getters and `sound/012_africa/super_event_118_gods_of_africa.wav` | L17 trigger contract and the October 6 accepted music/wiring decision; installed source/format/rights evidence does not prove firing, mute/volume behavior or audible playback. |
+
+Source helper contracts live under `common/scripted_effects/`, trigger owners under `common/scripted_triggers/`, decisions under `common/decisions/`, and tuning under `common/script_constants/`.
+The [Gods source audit](../../plans/012_africa_plans/subagent_handoffs/takeover_gods_audit_2026-10-06.md) and [completion review](../../plans/012_africa_plans/subagent_handoffs/takeover_completion_review_2026-10-06.md) retain exact native/reference citations and partial-validator limits.
+Their narrow `.604`, `.618`, and `.1211` event projections use cached revision `4969042f8122a553c30402d067b14cdc9c731bc3674b68dd419cb0813fb913a7`, with helpers disabled, validation false, one aggregate blocking diagnostic, 10,445 unresolved nodes, and a 64/403 inline source inventory.
+Those artifacts do not expand the latest helper lifecycle or validate the activation repair.
+The [focus recovery appendix](../../plans/012_africa_plans/subagent_handoffs/takeover_focus_audit_2026-10-06.md#parent-recovery-supersession-and-visual-review) records the successful matching half-scale raster and parent crop review; five long-convergence warnings and native reveal states remain open.
+
+The [takeover probability handoff](../../plans/012_africa_plans/subagent_handoffs/takeover_probability_2026-10-06.md) preserves exact conditional `.1211` and World invitation results only for its named fixtures.
+Gods doctrine/response/target pools remain incomplete because of missing scope-array, frozen-state and helper-local inputs; `PROBABILITY_SURFACE_EMPTY` gives no numeric baseline delta, and `EVENT_REVISION_NOT_CACHED` gives no event comparison.
+The [activation probability handoff](../../plans/012_africa_plans/subagent_handoffs/takeover_activation_probability_2026-10-06.md) separately preserves `012-GODS-ACTIVATION-ELIGIBILITY-2026-10-06`: `INITIAL_UNIFICATION_UNSETTLED`, `FINAL_SUCCESS`, `FINAL_DEFEAT`, and `LOST_CAPITAL`.
+Those fixtures lack bound authority/participant scopes, and `LOST_CAPITAL` lacks the actual capital state, owner and controller; the typed World correction also supersedes the intermediate source pass.
+They do not prove current activation eligibility or native behavior.
+The documentation reconciliation's current connected-route attempts and their exact results or blockers are recorded in its handoff.
+Tool exposure, verified service health, offline model output, standalone viewer availability, and native acceptance remain separate facts.
+Other-owner Charter, model, portrait, technology, and map evidence is not certified by this guide.
+
+The authoritative catalog is `docs/spreadsheets/chaos_redux_events_catalog.xlsx`, with CSV exports produced only by `.tools/export_event_catalog_csv.py`.
+The earlier Event 070 unassignment is historical workbook evidence, not proof of current Event 012/SCN-011 parity.
+The parent and `chaosx_spreadsheet_doc_worker` own the pending catalog alignment; this reconciliation reads or edits neither the workbook nor its exports.
 
 ## Unique tribute outcomes
 

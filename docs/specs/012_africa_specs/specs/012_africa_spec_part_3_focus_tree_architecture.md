@@ -1009,12 +1009,17 @@ The one-time census retains ordinary known country scopes from vanilla's `global
 Bounded engine callbacks remember new country scopes through an idempotent helper, including government changes on both civil-war sides.
 The private `.607` event is the sole 90-day registry clock and checks its due date before review or rescheduling.
 The 30-day owner tick no longer runs another registry review, and archival iterates a separate snapshot so it can safely remove live participant entries.
-The existing 640 cap remains above the 609 static tag definitions counted on 2026-10-03.
+The historical 640-entry limit and 609-tag count are superseded by the native country-object cardinality bound in commit `b609837d9`.
+Each registry holds unique country objects and compares its actual array size against `global.countries^num`, retaining the accepted bounded-enrollment contract for dynamically allocated countries as well.
 Source paths, reference citations, scenario boundaries, and validation limits are recorded in `docs/plans/012_africa_plans/subagent_handoffs/012_africa_gods_registry_review_2026-10-03.md`.
 
 ## 2026-09-26 parent implementation decision: participant roster capacity
 
-Acceptance basis: the active user goal requires independent enrollment of every valid major and player country while retaining a bounded registry. The current installed vanilla and Chaos Redux `country_tags` files contain 609 distinct country-tag definitions, so the parent set `gods_of_africa_timing.max_participants` to 640. The one-time census and later owner-local onboarding remain bounded; the larger ceiling fits every currently defined tag without introducing a recurring world scan. This does not prove maximum-roster decision-list readability or live enrollment behavior, which remain validation items.
+Acceptance basis: the active user goal requires independent enrollment of every valid major and player country while retaining a bounded registry.
+Historical implementation: the 609 static definitions counted at the time led to a 640-entry limit.
+Disposition: `superseded` by the native `global.countries^num` bound and exact registry sizes in `common/scripted_triggers/012_africa_gods_triggers.txt`, committed in `b609837d9` under the same accepted enrollment requirement.
+The one-time census and later owner-local onboarding remain bounded without a recurring world scan.
+Maximum-roster decision-list readability and live enrollment behavior remain validation items.
 
 ## 2026-10-04 accepted design: Gods of Africa final grading and settlement support
 
@@ -1037,4 +1042,7 @@ Acceptance basis: agent decision L27 in `docs/plans/012_africa_plans/agent_decis
 - A Place at the Final Council raises the settlement support owed to Favored and Respected governments by a constant multiplier, and lets each participant pledge a final shipment or speak for Africa before the settlement; World Is One reads that council voice in its invitation and acceptance weights.
 - Measure the Needs of the Continent makes the demand selector skip a material Africa holds in surplus and ask first for its largest measured shortfall among rifles, fuel, manpower and industry.
 - Raise the Continental Arsenals builds one arms factory and one level of infrastructure (an air base level where infrastructure is complete) in the capital state, or the first owned and controlled African state with room.
-- The new Evolution III judgment node No Sanctuary for Occupiers (`gods_of_africa_focus_no_sanctuary_for_occupiers`, x 90, y 27, after the Hand of Judgment) opens a host decision that claims the African core states a foreign government owns, creates a claimed-state war goal through the vanilla route, and arms the African claimant of that land. The narrow focus inspection after the change reports 301 focuses, 62 connector crossings and 53 node intersections, unchanged from the earlier overlay state, and no blocking diagnostic in this mod.
+- The Evolution III judgment node No Sanctuary for Occupiers (`gods_of_africa_focus_no_sanctuary_for_occupiers`, x 90, y 28, after the Hand of Judgment) opens a host decision that claims the African core states a foreign government owns, creates a claimed-state war goal through the vanilla route, and arms the African claimant of that land.
+
+The original y 27 coordinate and its initial diagnostic snapshot are superseded by the accepted October 6 connector repair in `7353ab5b8`.
+The parent recovery appendix in `docs/plans/012_africa_plans/subagent_handoffs/takeover_focus_audit_2026-10-06.md` records the matching reduced-scale raster and crop review; remaining convergence warnings and native reveal behavior remain separate acceptance items.
