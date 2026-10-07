@@ -44,6 +44,8 @@ Aftermath records per-type damage points for infrastructure, railways and factor
 
 Acid Rain registers humanitarian pressure through `famine_adapt_acid_rain_state`: each exact positive pulse loss, 0.5 percent of a state's population when its aftermath first reaches tier 2 and 1 percent at tier 3, and 2 percent when an evacuation of a state with at least 500,000 people finishes.
 Evacuation counts as disaster pressure, not as a migration cohort.
+This addition path reaches the famine owner's aggregate disaster-pressure channel.
+A source-33 reversible pressure ledger and supported recovery-retirement call are not established, so source-specific Humanitarian removal remains unresolved under the consequence repair acceptance.
 
 The dedicated Acid Rain Air source records actual lifetime contamination additions.
 Formation requests 75 bp, and from one week after formation, every seven days of the regional and global phases the rain requests Air from the weather on the map: 4, 8, 12 or 16 bp for an active world share below 2, 5 and 10 percent or above, 4 to 16 bp for the average intensity band of the open fronts (Standard under the global layer), 4 bp for two or more fronts, 10 bp for the global layer, and 3 bp per active severe cell or superstorm up to 9 bp, clamped to 8 to 45 bp; a week without acute rain requests nothing.
@@ -139,8 +141,16 @@ The row-level record of retired prototype art is [prototype presentation retirem
 ## Verification scope
 
 `.tools/validation/validate_033_acid_rain.py` checks the source contracts, coverage and movement model, Air caps and the exact-loss helper contract.
-Live-game confirmation covers executed population removal, save and reload, multiplayer presentation, decision AI behaviour, engine performance, the dashboard at 1920x1080 (the MCP render route accepts only smaller resolutions for this window), animation playback, and listening to the super-event audio and the severe forecast cue.
-`hoi4.probability_inspect` returns `INTERNAL_ERROR` for the Event 033 decision file, so decision AI weights have no probability-route baseline or comparison.
+The behavior described above records source contracts and implementation, with design authority recorded separately in `docs/plans/033_acid_rain_plans/agent_decisions_2026-10-04.md` and the accepted specs.
+For the 2026-10-07 reconciliation, the parent reports current-source exact-helper replay and synthetic movement, Air and lifecycle passes.
+Those fixtures do not execute HOI4, and no live-game evidence or clean error-log proof was furnished for this review.
+Executed population removal, save and reload, multiplayer presentation, decision AI behavior, engine performance, dashboard presentation, animation playback, and listening to the super-event audio and severe forecast cue remain separate verification gates.
+Earlier GUI renders recorded in D16/D17 were refused at 1920x1080 by the aggregate pixel budget and succeeded at 1366x768 for their named scenarios and source revisions.
+That historical limit does not establish current route health, resolution support or final UI acceptance.
+The 2026-10-04 decision-AI `hoi4.probability_inspect` attempts recorded in D13/D15 returned `INTERNAL_ERROR` and yielded no baseline or comparison.
+The current probability and UI audits retain their own scenario-specific handoffs for parent review, and their results are not inferred here.
+Humanitarian source-specific retirement remains unresolved even though the addition adapter exists in source.
+See [the current documentation reconciliation](../../plans/033_acid_rain_plans/subagent_handoffs/documentation_current_reconciliation_2026_10_07.md) for claim dispositions and evidence limits.
 
 ## Future extensions
 

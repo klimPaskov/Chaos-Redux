@@ -1,6 +1,9 @@
 # Event 033 Acid Rain improvement addendum, 2026-10-03
 
-Disposition: parent-reviewed; bounded consequence design promoted into an accepted repair spec, with implementation queued and the separately identified dependencies unresolved.
+Disposition: parent-reviewed bounded repair design promoted into an accepted spec, with current per-claim implementation and dependencies reconciled in that acceptance document.
+The source findings and proposal/queue labels below describe the October 3 planning snapshot.
+The October 7 reconciliation in `docs/specs/033_acid_rain_specs/specs/033_acid_rain_consequence_repair_acceptance_2026_10_03.md` records D2/D3/D8 acceptance of the nine-day forecasts and D6/D10 implementation of concurrent operations, superseding only their historical unresolved/queued assessments here.
+The named verification scenarios, source-specific Humanitarian retirement and remaining engine, probability, presentation and audio gates are not waived or marked complete by those later decisions.
 Role: `chaosx_improvement_loop_planner`, plan only.
 The parent explicitly requested this pass before near completion, required the existing first/second coverage rules, exact population gateway, Air caps, independent fronts, thirteen response choices and ten achievements, and identified the aftermath timing defect.
 The later parent instruction added episode-cap, damage-replay and shared population-helper commit-order review.
