@@ -103,12 +103,11 @@ It updates that row without scanning later entries or appending another row.
 
 The visual consumer trace, DDS dimensions, source/master provenance, repair record, aliases, rejected candidates, and limitations are maintained in `docs/assets/028_asteroid_incoming/asset_audit.md`, `manifest.md`, `coverage_crosswalk.md`, and `gfx_handoff.md`. The runtime sprite definitions are in `interface/028_asteroid_incoming.gfx`; achievement triplets remain in `interface/chaosx_achievements.gfx`.
 
-The impact map visual uses `launch_nuke`.
-The main visual plays in the single damage transaction; hidden `chaosx.nr28.9` callbacks play one fragment every four hours from a persistent queue.
+The impact map visuals create graphical entities without `launch_nuke`, a raid, nuclear callbacks, extra damage or temporary nuclear-handler suppression.
+The main visual plays in the single damage transaction, and hidden `chaosx.nr28.9` callbacks play one fragment every four hours from the persistent queue.
 The queue stores its callback host, and the existing monthly host resumes it if that country disappears.
-Timed state markers exclude the Chaos Meter, humanitarian, Event 016, and Event 023 nuclear handlers.
-The tracked Event 042 hook still lacks that exclusion and belongs to its own owner, so full nuclear-achievement separation is not yet established.
-Native nuclear side effects also remain to be observed.
+The [map-presentation contract](map_presentation.md) records the exact vanilla aliases, shared map anchors, private handles, one-shot receipts and bounded monthly retirement.
+Native clone playback, saved handle identity, pause/speed behavior and zero nuclear-side-effect observations remain open acceptance gates.
 
 The shared Air Cleanliness source registry reserves source 4 for asteroid dust and source 5 for Acid Rain. Event 028 writes only the asteroid slot, preserving distinct chemical, biological, fallout, aerosol, and Acid Rain histories.
 
@@ -141,7 +140,7 @@ Recovery missions could later grow a second tier for countries that complete the
 
 The six retained report, close-passage-news, and super-event scenes are accepted existing source packages.
 Historical missing masters remain provenance facts rather than a request to regenerate those scenes.
-Current native consumer acceptance, network and queue destruction, and the cross-owner nuclear hook are completion gates.
+Current native consumer acceptance, network and queue destruction, and measured nuclear-side-effect separation are completion gates.
 A separately commissioned rival-action icon family is a possible future expansion beyond the existing accepted reconnaissance alias.
 
 ## Presentation delivery and repair-price lifetime

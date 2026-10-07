@@ -1287,38 +1287,10 @@ asteroid_incoming_process_monthly_rescue_deaths = {
 	}
 }
 
-# STATE SCOPE, the main centre or a fragment centre just before its map visual.
-# The struck state carries a timed marker so every on_nuke_drop consumer can
-# skip this visual even if the callback is late. A timed flag's days take a
-# literal only, so the constant is injected as an integer.
-asteroid_incoming_mark_visual_strike_state = {
-	set_temp_variable = { asteroid_incoming_visual_strike_days = constant:asteroid_incoming_runtime.visual_strike_marker_days }
-	meta_effect = {
-		text = {
-			set_state_flag = { flag = asteroid_incoming_visual_strike_state days = [VISUAL_STRIKE_DAYS] }
-		}
-		VISUAL_STRIKE_DAYS = "[?asteroid_incoming_visual_strike_days|.0]"
-	}
-}
-
-# STATE SCOPE. Plays one fragment centre's presentation-only map visual. The
-# timed marker is set just before launch_nuke, so every on_nuke_drop consumer
-# skips it even when its callback runs late.
+# STATE SCOPE. Plays the ordinary-scale graphical blast without detonation,
+# damage, nuclear callbacks or a state marker suppressing subsequent strikes.
 asteroid_incoming_play_fragment_visual = {
-	asteroid_incoming_mark_visual_strike_state = yes
-	if = {
-		limit = { CONTROLLER = { exists = yes } }
-		CONTROLLER = {
-			set_global_flag = asteroid_incoming_visual_strike_active
-			launch_nuke = {
-				state = PREV
-				controller = THIS
-				use_nuke = no
-				nuke_type = nuclear_bomb
-			}
-			clr_global_flag = asteroid_incoming_visual_strike_active
-		}
-	}
+	asteroid_incoming_emit_fragment_visual = yes
 }
 
 # COUNTRY SCOPE. Queues the next fragment visual a few hours after the main
@@ -1507,21 +1479,8 @@ asteroid_incoming_apply_state_profile = {
 			add_dynamic_modifier = { modifier = asteroid_incoming_main_crater }
 			set_global_flag = asteroid_incoming_main_crater_registered
 			asteroid_incoming_assign_crater_site_profile = yes
-			# The struck state carries a timed marker so every on_nuke_drop
-			# consumer can skip this map visual even if the callback is late.
-			asteroid_incoming_mark_visual_strike_state = yes
-			CONTROLLER = {
-				# Presentation-only thermonuclear-scale impact. Shared nuclear
-				# callbacks are guarded so this cannot create nuclear ledgers.
-				set_global_flag = asteroid_incoming_visual_strike_active
-				launch_nuke = {
-					state = PREV
-					controller = THIS
-					use_nuke = no
-					nuke_type = thermonuclear_bomb
-				}
-				clr_global_flag = asteroid_incoming_visual_strike_active
-			}
+			# Reuse the large vanilla blast as a graphical entity only.
+			asteroid_incoming_emit_main_visual = yes
 		}
 		else = {
 			set_state_flag = asteroid_incoming_affected_state
@@ -2278,6 +2237,7 @@ asteroid_incoming_update_player_achievement_progress = {
 }
 
 asteroid_incoming_update_achievements = {
+	asteroid_incoming_cleanup_expired_visuals = yes
 	# The global host calls this once per month whether or not the Chaos Meter
 	# is enabled. Hold tracking starts only after a recorded impact and only
 	# visits human-controlled countries, so campaigns where Event 028 never

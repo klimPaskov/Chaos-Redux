@@ -1,0 +1,142 @@
+# Event 028 graphics-only map presentation and bounded entity retirement.
+# STATE entry points reuse the existing verified-map anchor ledger and native
+# reserved per-state entity IDs. No nuclear effect is executed.
+# COUNTRY monthly cleanup visits only the emitted-site registry, normally at
+# most the main site and six fragments, independently of dust/achievement work.
+
+# STATE. No caller-owned temporary outputs. Normal state variables retain the
+# reserved ID, emission transaction and cleanup date across scope changes.
+asteroid_incoming_emit_main_visual = {
+	set_temp_variable = { asteroid_incoming_visual_profile = constant:asteroid_incoming_profile.main_center }
+	asteroid_incoming_emit_site_visual = yes
+}
+
+# STATE. The existing four-hour fragment queue remains the sequencing owner.
+asteroid_incoming_emit_fragment_visual = {
+	set_temp_variable = { asteroid_incoming_visual_profile = constant:asteroid_incoming_profile.fragment_center }
+	asteroid_incoming_emit_site_visual = yes
+}
+
+# STATE. Input: asteroid_incoming_visual_profile, initialized by the entry
+# wrapper. Existing source-map anchors are shared data, not a new world scan.
+# Missing anchors leave a failed source receipt, without redirecting the site
+# or falling back to a detonation. IDs are known before native dispatch, so
+# cleanup does not depend on an opaque handle surviving an effect or reload.
+asteroid_incoming_emit_site_visual = {
+	if = {
+		limit = {
+			has_global_flag = asteroid_incoming_impact_recorded
+			has_state_flag = asteroid_incoming_state_transaction_applied
+			NOT = { has_state_flag = asteroid_incoming_visual_emitted }
+			OR = {
+				AND = {
+					has_state_flag = asteroid_incoming_main_crater
+					check_variable = { var = asteroid_incoming_visual_profile value = constant:asteroid_incoming_profile.main_center compare = equals }
+				}
+				AND = {
+					has_state_flag = asteroid_incoming_fragment_site
+					check_variable = { var = asteroid_incoming_visual_profile value = constant:asteroid_incoming_profile.fragment_center compare = equals }
+				}
+			}
+		}
+		if = {
+			limit = { NOT = { has_global_flag = asteroid_incoming_visual_anchors_initialized } }
+			# Reuse the installed-map anchor cache without invoking Air Winter's
+			# entity creation, effects, schema migration or climate mechanics.
+			air_winter_visual_seed_anchor_provinces = yes
+			set_global_flag = asteroid_incoming_visual_anchors_initialized
+		}
+		if = {
+			limit = { has_variable = air_winter_visual_anchor_province }
+			set_variable = { asteroid_incoming_visual_entity_id = constant:asteroid_incoming_visual.entity_id_base }
+			add_to_variable = { asteroid_incoming_visual_entity_id = THIS.id }
+			if = {
+				limit = { check_variable = { var = asteroid_incoming_visual_profile value = constant:asteroid_incoming_profile.main_center compare = equals } }
+				meta_effect = {
+					text = {
+						create_entity = {
+							entity = asteroid_incoming_main_visual_entity
+							id = [ENTITY_ID]
+							province = [PROVINCE_ID]
+						}
+					}
+					PROVINCE_ID = "[?air_winter_visual_anchor_province|.0]"
+					ENTITY_ID = "[?asteroid_incoming_visual_entity_id|.0]"
+				}
+			}
+			else = {
+				meta_effect = {
+					text = {
+						create_entity = {
+							entity = asteroid_incoming_fragment_visual_entity
+							id = [ENTITY_ID]
+							province = [PROVINCE_ID]
+						}
+					}
+					PROVINCE_ID = "[?air_winter_visual_anchor_province|.0]"
+					ENTITY_ID = "[?asteroid_incoming_visual_entity_id|.0]"
+				}
+			}
+			# This is a dispatch receipt, not an observed renderer result.
+			set_state_flag = asteroid_incoming_visual_emitted
+			set_state_flag = asteroid_incoming_visual_cleanup_pending
+			clr_state_flag = asteroid_incoming_visual_failed
+			set_variable = { asteroid_incoming_visual_transaction_id = global.asteroid_incoming_transaction_id }
+			set_variable = { asteroid_incoming_visual_cleanup_day = global.num_days }
+			add_to_variable = { asteroid_incoming_visual_cleanup_day = constant:asteroid_incoming_visual.cleanup_grace_days }
+			if = {
+				limit = { NOT = { is_in_array = { array = global.asteroid_incoming_visual_sites value = THIS } } }
+				add_to_array = { array = global.asteroid_incoming_visual_sites value = THIS }
+			}
+			set_global_flag = asteroid_incoming_visual_cleanup_active
+		}
+		else = { set_state_flag = asteroid_incoming_visual_failed }
+	}
+}
+
+# STATE. Destroy only this site's reserved ID from its private field.
+# Keep the emission receipt so cleanup and duplicate fragment deliveries cannot
+# replay the visual. Country ownership/control is irrelevant to retirement.
+asteroid_incoming_clear_site_visual = {
+	if = {
+		limit = { has_variable = asteroid_incoming_visual_entity_id }
+		meta_effect = {
+			text = { destroy_entity = [ENTITY_ID] }
+			ENTITY_ID = "[?asteroid_incoming_visual_entity_id|.0]"
+		}
+		clear_variable = asteroid_incoming_visual_entity_id
+	}
+	clr_state_flag = asteroid_incoming_visual_cleanup_pending
+	clear_variable = asteroid_incoming_visual_cleanup_day
+}
+
+# COUNTRY monthly host. Does not mutate the array during iteration, and never
+# depends on the original chooser, target country, current controller or dust.
+asteroid_incoming_cleanup_expired_visuals = {
+	if = {
+		limit = { has_global_flag = asteroid_incoming_visual_cleanup_active }
+		for_each_scope_loop = {
+			array = global.asteroid_incoming_visual_sites
+			if = {
+				limit = {
+					has_state_flag = asteroid_incoming_visual_cleanup_pending
+					has_variable = asteroid_incoming_visual_cleanup_day
+					check_variable = { var = global.num_days value = asteroid_incoming_visual_cleanup_day compare = greater_than_or_equals }
+				}
+				asteroid_incoming_clear_site_visual = yes
+			}
+		}
+		if = {
+			limit = {
+				NOT = {
+					any_of_scopes = {
+						array = global.asteroid_incoming_visual_sites
+						has_state_flag = asteroid_incoming_visual_cleanup_pending
+					}
+				}
+			}
+			clear_array = global.asteroid_incoming_visual_sites
+			clr_global_flag = asteroid_incoming_visual_cleanup_active
+		}
+	}
+}
