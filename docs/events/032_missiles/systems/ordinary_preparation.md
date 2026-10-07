@@ -69,6 +69,10 @@ Native timer behavior still needs engine evidence; arithmetic is not runtime pro
 Readiness and commitment share live receipt validation.
 Every participating site must exist, remain controlled/launchable, retain this operation ID and its positive unchanged allocation, and retain enough physical capacity for that allocation.
 Projected shares are checked before missile escrow is debited; rejection aborts any uncommitted escrow before cleanup.
+After reservation, free site custody uses only capacity left by the matching operation allocation.
+Available missiles outside that physical projection remain in the national unallocated reserve; they are not credited twice.
+Losing a participating site refunds the order and settles that site's assigned missiles before the outer loss transaction reads its unchanged free-stock receipt.
+Custody is redistributed only after capture, scuttling, damage or isolation has finished.
 The participating-site array cannot be empty.
 Ordinary readiness/control minima are 50/40, precision readiness is at least 60, and saturation preflight requires at least two sites and capacity six.
 Target, objective, evolution gates, payload custody, and missile escrow must remain valid.

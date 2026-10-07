@@ -24,7 +24,7 @@ STATE_ARRAYS = {'missiles_launch_site_states', 'missiles_operation_sites'}
 STATE_POINTERS = {'var:missiles_requested_launch_site', 'var:missiles_operation_launch_site', 'var:missiles_operation_impact_state'}
 
 
-def invalid_state_checks(nodes, scope='country', path=()):
+def invalid_state_checks(nodes, scope='country', path=(), previous_scope='country'):
     findings = []
     for key, body in nodes:
         current = (*path, key)
@@ -33,13 +33,20 @@ def invalid_state_checks(nodes, scope='country', path=()):
         if not isinstance(body, list):
             continue
         child_scope = scope
+        child_previous_scope = previous_scope
         if key.upper() in ('ROOT', 'CONTROLLER', 'OWNER') or key == 'event_target:missiles_disaster_controller':
             child_scope = 'country'
+            child_previous_scope = scope
+        elif key.upper() == 'PREV':
+            child_scope = previous_scope
+            child_previous_scope = scope
         elif key in STATE_POINTERS or key in ('every_owned_state', 'every_controlled_state', 'every_neighbor_state', 'capital_scope'):
             child_scope = 'state'
+            child_previous_scope = scope
         elif key in ('for_each_scope_loop', 'any_of_scopes') and dict(body).get('array') in STATE_ARRAYS:
             child_scope = 'state'
-        findings.extend(invalid_state_checks(body, child_scope, current))
+            child_previous_scope = scope
+        findings.extend(invalid_state_checks(body, child_scope, current, child_previous_scope))
     return findings
 
 

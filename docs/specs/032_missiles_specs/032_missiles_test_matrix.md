@@ -641,3 +641,17 @@ Observe:
 - shared-system duplication
 
 The final report should state the test duration, countries observed, evolutions active, launches, incidents, and unresolved limits.
+
+## Reserve custody regression cases
+
+These cases refine the existing physical-capacity, capture, cancellation and cleanup requirements; they do not authorize a smaller gameplay contract.
+The production-source ledger model is `.tools/test_event32_reserve_custody.py`; native callback and mission behavior remains a separate live evidence boundary.
+
+| ID | Setup | Required result |
+| --- | --- | --- |
+| `CUSTODY-01` | Two capacity-10 sites; 12 free missiles and 4 assigned at the first site | First site holds 6 free plus 4 assigned; second holds 6 free; no slot or missile is counted twice |
+| `CUSTODY-02` | Destroy the first `CUSTODY-01` site during preparation | The order closes; assigned loss 4 and original free loss 6 leave exactly 6; repeated settlement changes nothing |
+| `CUSTODY-03` | Recalculate a defender from a foreign event ROOT, with a stale foreign-controlled state in its registry | The defender receives its own counts/custody; neither the foreign country's counters nor its physical stock are changed |
+| `CUSTODY-04` | C recaptures a guarded/studied arsenal holding 8 sealed missiles from B | B's held ledger loses 8, C's held ledger gains 8, the state retains a receipt for 8, and a repeated same-controller callback changes nothing |
+| `CUSTODY-05` | Cancel preparation or isolate a participating site in refund mode | The full valid missile reservation returns once; physical mutation completes before custody redistribution; isolation restores the appropriate phase |
+| `CUSTODY-06` | A nonlethal foreign strike writes incoming facts on the target state | The defender records those state facts, receives its own network totals and repair incident, and reaches its final status through the controller-bound receiver |

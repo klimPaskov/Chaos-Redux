@@ -827,6 +827,8 @@ missiles_create_primary_site = {
 }
 
 missiles_recalculate_network = {
+	# COUNTRY scope; PREV inside each state is this country even when the
+	# originating event belongs to an attacker or another lifecycle actor.
 	set_variable = { missiles_active_site_count = constant:missiles_event.zero }
 	set_variable = { missiles_total_site_capacity = constant:missiles_event.zero }
 	clear_array = missiles_network_strategic_regions
@@ -843,7 +845,7 @@ missiles_recalculate_network = {
 		}
 		if = {
 			limit = { missiles_site_can_launch = yes }
-			ROOT = { add_to_variable = { missiles_active_site_count = constant:missiles_event.one } }
+			PREV = { add_to_variable = { missiles_active_site_count = constant:missiles_event.one } }
 		}
 		if = {
 			limit = {
@@ -857,7 +859,7 @@ missiles_recalculate_network = {
 		}
 		if = {
 			limit = { has_variable = missiles_site_capacity }
-			ROOT = { add_to_variable = { missiles_total_site_capacity = PREV.missiles_site_capacity } }
+			PREV = { add_to_variable = { missiles_total_site_capacity = PREV.missiles_site_capacity } }
 		}
 		if = {
 			limit = {
@@ -865,7 +867,7 @@ missiles_recalculate_network = {
 				has_variable = missiles_site_strategic_region
 				check_variable = { var = missiles_site_strategic_region value = constant:missiles_program_value.zero compare = greater_than }
 			}
-			ROOT = {
+			PREV = {
 				if = {
 					limit = { NOT = { is_in_array = { array = missiles_network_strategic_regions value = PREV.missiles_site_strategic_region } } }
 					add_to_array = { array = missiles_network_strategic_regions value = PREV.missiles_site_strategic_region }

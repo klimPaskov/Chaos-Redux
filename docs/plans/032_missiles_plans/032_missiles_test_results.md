@@ -149,3 +149,14 @@ This record remains partial/blocked until the recorded MCP, probability, native-
 - Needs live game: `CAP-04` and `CAP-05`.
 - Item 2 (Event Logs identity and wiring): `test_event32_evolution_gates` runs 19 tests; `EvolutionLogIdentity` pins type 32 with catalog stages, real tier ids from each track's minimum chaos, the shared context helper in record and commit, no old toggle spelling in Event 32 sources or the shared Event Logs files, the five-row Event Details preview, and the Event 32 key on every evolution, detail, summary, and history surface. All 12 modules pass.
 - Needs live game: `LOG-01` to `LOG-04`.
+
+## Reserve custody review (2026-10-07)
+
+All 13 Event 032 test modules passed (136 tests), including seven production-source ledger regressions and 231 stock/allocation combinations.
+The later biological-proof caller regression passed with the seven existing payload tests, bringing the verified total to 137.
+The pre-repair source reproduces a capacity-10 site holding 14 total missiles and a post-settlement projection of 16 free missiles against a national free reserve of 12; the repaired source produces 10 and 12 respectively.
+The reviewed architect findings for sealed recapture, foreign defender accounting and isolation-phase refresh are resolved in source.
+See `032_reserve_custody_repair_2026-10-07.md` for exact files, counterexamples, source revisions, MCP requests and validation limits.
+The event inspect retry returns the real `.7` receiver but omits its helper from the focused catalog; script validation leaves native argument blocks unchecked.
+`CUSTODY-01` through `CUSTODY-06` retain their native-execution evidence boundary.
+The broader contract reconciliation does not approve the previously deferred or rejected MTTH, chemical escrow, recovery parity, succession, refund, diplomacy and probability requirements.

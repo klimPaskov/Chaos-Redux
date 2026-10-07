@@ -1287,28 +1287,42 @@ missiles_apply_mature_program_package = {
 # -----------------------------------------------------------------------------
 
 missiles_rebalance_site_custody = {
+	# COUNTRY scope. Free reserve and a prepared operation are separate ledgers;
+	# a site's occupied launch slots cannot also hold free missiles. PREV binds
+	# the iterating country even when a foreign event originated this call.
 	set_variable = { missiles_custody_remaining = missiles_operational_reserve }
 	for_each_scope_loop = {
 		array = missiles_launch_site_states
 		if = {
-			limit = { has_variable = missiles_site_capacity }
+			limit = { is_controlled_by = PREV has_variable = missiles_site_capacity }
 			set_variable = { missiles_site_reserve = constant:missiles_program_value.zero }
 			if = {
 				limit = {
-					is_controlled_by = ROOT
-					missiles_site_can_receive_project = yes
-					check_variable = { var = ROOT.missiles_custody_remaining value = constant:missiles_program_value.zero compare = greater_than }
+					missiles_site_can_hold_program_reserve = yes
+					check_variable = { var = PREV.missiles_custody_remaining value = constant:missiles_program_value.zero compare = greater_than }
 				}
-				set_temp_variable = { missiles_custody_take = ROOT.missiles_custody_remaining }
+				set_temp_variable = { missiles_custody_room = missiles_site_capacity }
 				if = {
-					limit = { check_variable = { var = missiles_custody_take value = missiles_site_capacity compare = greater_than } }
-					set_temp_variable = { missiles_custody_take = missiles_site_capacity }
+					limit = {
+						PREV = { has_country_flag = missiles_operation_reserve_receipt_active has_variable = missiles_active_operation_id }
+						has_variable = missiles_site_operation_id
+						check_variable = { var = missiles_site_operation_id value = PREV.missiles_active_operation_id compare = equals }
+						has_variable = missiles_site_operation_allocation
+					}
+					subtract_from_temp_variable = { missiles_custody_room = missiles_site_operation_allocation }
+					clamp_temp_variable = { var = missiles_custody_room min = constant:missiles_program_value.zero }
+				}
+				set_temp_variable = { missiles_custody_take = PREV.missiles_custody_remaining }
+				if = {
+					limit = { check_variable = { var = missiles_custody_take value = missiles_custody_room compare = greater_than } }
+					set_temp_variable = { missiles_custody_take = missiles_custody_room }
 				}
 				set_variable = { missiles_site_reserve = missiles_custody_take }
-				ROOT = { subtract_from_variable = { missiles_custody_remaining = missiles_custody_take } }
+				PREV = { subtract_from_variable = { missiles_custody_remaining = missiles_custody_take } }
 			}
 		}
 	}
+	set_variable = { missiles_unallocated_reserve = missiles_custody_remaining }
 	clear_variable = missiles_custody_remaining
 }
 
@@ -2044,6 +2058,7 @@ missiles_isolate_site = {
 			limit = { check_variable = { var = missiles_isolation_closes_rogue value = constant:missiles_program_value.one compare = equals } }
 			missiles_close_rogue_incident = yes
 		}
+		missiles_set_program_phases = yes
 	}
 }
 
@@ -3311,8 +3326,11 @@ missiles_settle_lost_site_allocation = {
 		set_variable = { missiles_last_preparation_failure = constant:missiles_preparation_failure.site }
 		set_variable = { missiles_last_failed_preparation_id = missiles_active_operation_id }
 		set_country_flag = missiles_preparation_failure_unread
+		# Keep the physical site's free-stock snapshot intact until its caller
+		# finishes capture, damage, isolation or scuttling. That caller already
+		# performs the final controller-bound network/custody refresh.
+		set_country_flag = missiles_site_settlement_in_progress
 		missiles_abort_operation = yes
-		missiles_cleanup_operation = yes
 		if = {
 			limit = { check_variable = { var = missiles_lost_allocation value = constant:missiles_program_value.zero compare = greater_than } }
 			if = {
@@ -3323,6 +3341,8 @@ missiles_settle_lost_site_allocation = {
 			set_variable = { missiles_last_lost_allocation = missiles_lost_allocation }
 			missiles_clamp_program_values = yes
 		}
+		missiles_cleanup_operation = yes
+		clr_country_flag = missiles_site_settlement_in_progress
 	}
 }
 
@@ -3365,6 +3385,7 @@ missiles_reserve_operation_resources = {
 	if = {
 		limit = { check_variable = { var = missiles_operation_resource_result value = constant:missiles_result.accepted compare = equals } }
 		missiles_mark_operation_sites_reserved = yes
+		missiles_rebalance_site_custody = yes
 		set_variable = { missiles_operation_state = constant:missiles_operation_state.resources_reserved }
 	}
 }
@@ -4188,6 +4209,7 @@ missiles_reserve_operation_payload = {
 	}
 	else_if = {
 		limit = { check_variable = { var = missiles_operation_payload value = constant:missiles_payload.biological compare = equals } }
+		set_temp_variable = { missiles_biological_payload_debit_proof = constant:bio_lifecycle_proof.missing }
 		missiles_debit_biological_payload = yes
 		if = {
 			limit = { check_variable = { var = missiles_biological_payload_debit_proof value = constant:bio_lifecycle_proof.supplied compare = equals } }
@@ -4367,6 +4389,7 @@ missiles_consume_special_payload = {
 	}
 	else_if = {
 		limit = { check_variable = { var = missiles_operation_payload value = constant:missiles_payload.biological compare = equals } }
+		set_temp_variable = { missiles_biological_payload_debit_proof = constant:bio_lifecycle_proof.missing }
 		missiles_debit_biological_payload = yes
 		if = {
 			limit = { check_variable = { var = missiles_biological_payload_debit_proof value = constant:bio_lifecycle_proof.supplied compare = equals } }
@@ -4556,33 +4579,37 @@ missiles_record_site_network_achievement_snapshot = {
 # the defender owns the damaged-site lifecycle and the repair deadline.
 missiles_record_incoming_operation_site_damage = {
 	if = {
-		limit = { has_variable = missiles_incoming_damage_state has_country_flag = missiles_program_initialized }
+		limit = {
+			has_event_target = missiles_incoming_damage_state
+			has_country_flag = missiles_program_initialized
+			event_target:missiles_incoming_damage_state = { is_controlled_by = PREV }
+		}
 		if = { limit = { has_country_flag = missiles_incident_active } missiles_close_current_incident = yes }
 		missiles_allocate_incident_id = yes
 		set_variable = { missiles_active_incident_id = missiles_current_incident_id }
 		set_country_flag = missiles_incident_active
 		set_country_flag = missiles_program_phase_incident
 		set_country_flag = missiles_incident_history
-		set_variable = { missiles_current_incident_type = missiles_incoming_damage_type }
+		set_variable = { missiles_current_incident_type = event_target:missiles_incoming_damage_state.missiles_incoming_damage_type }
 		set_variable = { missiles_last_incident_id = missiles_current_incident_id }
-		set_variable = { missiles_last_incident_root_id = missiles_incoming_damage_root_id }
-		set_variable = { missiles_last_incident_parent_id = missiles_incoming_damage_parent_id }
-		set_variable = { missiles_last_incident_generation = missiles_incoming_damage_generation }
-		set_variable = { missiles_last_incident_type = missiles_incoming_damage_type }
+		set_variable = { missiles_last_incident_root_id = event_target:missiles_incoming_damage_state.missiles_incoming_damage_root_id }
+		set_variable = { missiles_last_incident_parent_id = event_target:missiles_incoming_damage_state.missiles_incoming_damage_parent_id }
+		set_variable = { missiles_last_incident_generation = event_target:missiles_incoming_damage_state.missiles_incoming_damage_generation }
+		set_variable = { missiles_last_incident_type = event_target:missiles_incoming_damage_state.missiles_incoming_damage_type }
 		set_variable = { missiles_last_incident_date = global.date }
-		set_variable = { missiles_last_incident_actor_id = missiles_incoming_damage_actor_id }
+		set_variable = { missiles_last_incident_actor_id = event_target:missiles_incoming_damage_state.missiles_incoming_damage_actor_id }
 		set_variable = { missiles_last_incident_victim_id = id }
 		set_variable = { missiles_last_incident_target_state_id = event_target:missiles_incoming_damage_state.id }
 		set_variable = { missiles_last_incident_intended_state_id = event_target:missiles_incoming_damage_state.id }
-		set_variable = { missiles_last_incident_payload = missiles_incoming_damage_payload }
-		set_variable = { missiles_last_incident_missiles = missiles_incoming_damage_launched }
-		set_variable = { missiles_last_incident_launched = missiles_incoming_damage_launched }
-		set_variable = { missiles_last_incident_intercepted = missiles_incoming_damage_intercepted }
-		set_variable = { missiles_last_incident_hits = missiles_incoming_damage_hits }
-		set_variable = { missiles_last_incident_attribution = missiles_incoming_damage_attribution }
-		set_variable = { missiles_last_incident_civilian_deaths = missiles_incoming_damage_civilian_deaths }
-		set_variable = { missiles_last_incident_military_deaths = missiles_incoming_damage_military_deaths }
-		set_variable = { missiles_last_incident_building_damage = missiles_incoming_damage_building_damage }
+		set_variable = { missiles_last_incident_payload = event_target:missiles_incoming_damage_state.missiles_incoming_damage_payload }
+		set_variable = { missiles_last_incident_missiles = event_target:missiles_incoming_damage_state.missiles_incoming_damage_launched }
+		set_variable = { missiles_last_incident_launched = event_target:missiles_incoming_damage_state.missiles_incoming_damage_launched }
+		set_variable = { missiles_last_incident_intercepted = event_target:missiles_incoming_damage_state.missiles_incoming_damage_intercepted }
+		set_variable = { missiles_last_incident_hits = event_target:missiles_incoming_damage_state.missiles_incoming_damage_hits }
+		set_variable = { missiles_last_incident_attribution = event_target:missiles_incoming_damage_state.missiles_incoming_damage_attribution }
+		set_variable = { missiles_last_incident_civilian_deaths = event_target:missiles_incoming_damage_state.missiles_incoming_damage_civilian_deaths }
+		set_variable = { missiles_last_incident_military_deaths = event_target:missiles_incoming_damage_state.missiles_incoming_damage_military_deaths }
+		set_variable = { missiles_last_incident_building_damage = event_target:missiles_incoming_damage_state.missiles_incoming_damage_building_damage }
 		set_variable = { missiles_last_incident_closed = constant:missiles_program_value.zero }
 		set_variable = { missiles_incident_state = event_target:missiles_incoming_damage_state }
 		if = {
@@ -4614,7 +4641,6 @@ missiles_record_incoming_operation_site_damage = {
 				clr_country_flag = missiles_site_repair_active
 				clr_country_flag = missiles_site_repair_started
 			}
-			missiles_set_program_phases = yes
 		}
 		else = {
 			missiles_recalculate_network = yes
@@ -4638,9 +4664,9 @@ missiles_record_incoming_operation_site_damage = {
 			if = { limit = { check_variable = { var = missiles_total_site_capacity value = constant:missiles_program_value.zero compare = equals } } set_variable = { chaosx_032_input_site_setup_invalid = constant:missiles_program_value.one } }
 			chaosx_032_achievement_record_site_damage = yes
 		}
-		missiles_recalculate_network = yes
-		missiles_rebalance_site_custody = yes
-		missiles_set_program_phases = yes
+		# The incident facts are copied above before the state scratch clears;
+		# the final presentation refresh binds ROOT to this defender.
+		country_event = { id = chaosx.nr32.7 }
 	}
 }
 
@@ -6232,9 +6258,12 @@ missiles_cleanup_operation = {
 		set_variable = { missiles_active_operation_id = constant:missiles_program_value.zero }
 		set_variable = { missiles_reserved_reserve = constant:missiles_program_value.zero }
 		clr_country_flag = missiles_operation_reserve_receipt_active
-		missiles_recalculate_network = yes
-		missiles_rebalance_site_custody = yes
-		missiles_set_program_phases = yes
+		if = {
+			limit = { NOT = { has_country_flag = missiles_site_settlement_in_progress } }
+			missiles_recalculate_network = yes
+			missiles_rebalance_site_custody = yes
+			missiles_set_program_phases = yes
+		}
 	}
 }
 
@@ -6463,11 +6492,26 @@ missiles_handle_site_control_changed = {
 		set_variable = { missiles_site_current_controller = ROOT }
 		set_variable = { missiles_site_former_controller_id = event_target:missiles_capture_former_controller.id }
 		set_variable = { missiles_site_controller_id = ROOT.id }
+		# The helper updates this caller-owned temporary; it must survive return.
+		set_temp_variable = { missiles_captured_reserve_amount = constant:missiles_program_value.zero }
+		set_temp_variable = { missiles_recaptured_reserve_amount = constant:missiles_program_value.zero }
 		missiles_transfer_captured_reserve = yes
 		event_target:missiles_capture_former_controller = {
 			if = {
 				limit = { check_variable = { var = missiles_captured_reserve_amount value = missiles_operational_reserve compare = greater_than } }
 				set_temp_variable = { missiles_captured_reserve_amount = missiles_operational_reserve }
+			}
+			# Guarded, studied and unresolved arsenals retain a sealed receipt.
+			# It follows the physical site and is debited from its former holder
+			# before that state's receipt is replaced by the new capture.
+			if = {
+				limit = {
+					has_variable = missiles_captured_reserve_held
+					PREV = { has_variable = missiles_site_captured_reserve }
+				}
+				set_temp_variable = { missiles_recaptured_reserve_amount = PREV.missiles_site_captured_reserve }
+				clamp_temp_variable = { var = missiles_recaptured_reserve_amount min = constant:missiles_program_value.zero max = missiles_captured_reserve_held }
+				subtract_from_variable = { missiles_captured_reserve_held = missiles_recaptured_reserve_amount }
 			}
 		}
 		# The missiles readied at a captured reserving site are lost to the
@@ -6490,6 +6534,7 @@ missiles_handle_site_control_changed = {
 			# refreshes through its own immediate receiver.
 			country_event = { id = chaosx.nr32.7 }
 		}
+		add_to_temp_variable = { missiles_captured_reserve_amount = missiles_recaptured_reserve_amount }
 		set_variable = { missiles_site_captured_reserve = missiles_captured_reserve_amount }
 		set_variable = { missiles_site_reserve = constant:missiles_program_value.zero }
 		set_variable = { missiles_site_operation_id = constant:missiles_program_value.zero }
@@ -7134,6 +7179,8 @@ missiles_cleanup_removed_country = {
 	}
 	clear_array = missiles_launch_site_states
 	clear_array = missiles_root_participants
+	clear_variable = missiles_unallocated_reserve
+	clr_country_flag = missiles_site_settlement_in_progress
 	clr_country_flag = missiles_operation_active
 	clr_country_flag = missiles_incident_active
 	# A rogue crisis open when the country is removed no longer counts toward

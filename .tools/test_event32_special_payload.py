@@ -37,6 +37,15 @@ def options(event):
 
 
 class SpecialPayloadContract(unittest.TestCase):
+    def test_biological_debit_proof_survives_return_to_each_consuming_caller(self):
+        for name in ('missiles_reserve_operation_payload', 'missiles_consume_special_payload'):
+            branch = next(body for key, body in EFFECTS[name]
+                          if isinstance(body, list) and ('missiles_debit_biological_payload', 'yes') in body)
+            debit_index = branch.index(('missiles_debit_biological_payload', 'yes'))
+            self.assertIn(('set_temp_variable', [('missiles_biological_payload_debit_proof', 'constant:bio_lifecycle_proof.missing')]), branch[:debit_index])
+            accepted = next(body for key, body in branch[debit_index + 1:] if key == 'if')
+            self.assertIn(('check_variable', [('var', 'missiles_biological_payload_debit_proof'), ('value', 'constant:bio_lifecycle_proof.supplied'), ('compare', 'equals')]), value(accepted, 'limit'))
+
     def test_three_costed_orders_open_their_choice_events(self):
         for name, event in ORDERS.items():
             decision = dict(DECISIONS[name])

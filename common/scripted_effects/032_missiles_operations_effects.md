@@ -2,14 +2,48 @@
 
 `032_missiles_operations_effects.txt` owns missile operation calculations, damage receipts, capture/inheritance transactions, and warning closure.
 
-Scratch temporaries are unscoped and live for the enclosing effect evaluation.
+Scratch temporaries are unscoped; a helper output must already be initialized by its consuming caller to survive that helper's return.
 The reach stage, reserve-after-operation and AI reserve floor, four guidance components, population cap, disaster reserve loss calculation, ally half threshold, warning schedule days, inherited/captured reserve amount, civil-war site pool and child reserve, and annex site receipt are initialized before their reads on each applicable execution path.
 Their consumers copy durable results into country/state variables before return; they are not presence sentinels.
 Training contribution is read only inside its initializing training branch.
-Capture amount is initialized in `missiles_transfer_captured_reserve` before the caller caps, debits, and credits it; the helper output must remain alive throughout that caller.
+The capture caller initializes `missiles_captured_reserve_amount` before `missiles_transfer_captured_reserve` calculates it, then caps, debits, and credits that exact result.
+The separate caller-owned `missiles_recaptured_reserve_amount` moves an existing sealed receipt from the former controller's held ledger before the new controller receives it.
+Both biological reservation and direct consumption initialize `missiles_biological_payload_debit_proof` before the debit helper, so a successful physical debit remains visible when the caller records escrow or consumption.
 Warning scheduling consumes its temporary duration when queuing `chaosx.nr32.82`; the delayed event uses stored warning dates and recomputes the duration on a later scheduling call.
 Nested helpers do not read any of these names after their terminal use without a fresh initializer; loop iterations recompute their scratch values.
 No manual temporary-clear effect exists.
+
+## Physical custody and site-loss transactions
+
+`missiles_rebalance_site_custody` runs in the programme COUNTRY and projects its available `missiles_operational_reserve` onto its controlled registered sites.
+Its STATE iterator uses `PREV` for the owning country, so a foreign event `ROOT` cannot receive the allocation or have its stock changed.
+Foreign-controlled stale entries are skipped without clearing that other controller's physical stock.
+`missiles_site_can_hold_program_reserve` is a STATE-only storage predicate for scuttled, captured, rogue and destroyed conditions; callers separately prove control.
+`missiles_site_can_receive_project` combines that same predicate with its existing `ROOT` control requirement.
+
+For a live matching operation receipt, each site's free storage room is `capacity - operation allocation`, floored at zero.
+Preparation writes the operation markers before projecting free custody.
+The durable country output `missiles_unallocated_reserve` records free missiles not assigned to any usable site; it is part of the aggregate reserve, not a second grant or spendable pool.
+For valid whole-number input ledgers, site free stock plus matching escrow fits capacity and site free stock plus unallocated reserve equals the country's available reserve.
+The helper grants and destroys nothing and clears its remaining-stock scratch variable before return.
+Removed-country cleanup clears the unallocated projection.
+
+`missiles_settle_lost_site_allocation` consumes the exact STATE target `missiles_lost_allocation_site` and caller-initialized temporary `missiles_allocation_loss_mode`.
+It validates the uncommitted operation/site identity, returns the operation reservation, debits the lost site's assigned missiles in loss mode, then clears the operation receipt.
+During that sequence `missiles_site_settlement_in_progress` suppresses cleanup's network/custody/phase refresh so the outer capture, scuttle, isolation or disaster transaction can still consume the site's original free-stock snapshot.
+The flag is cleared before return; every caller finishes the physical mutation before its final controller-bound refresh, and isolation explicitly restores its phase.
+Normal cancellation retains immediate cleanup refresh.
+This example starts with 12 free missiles and 4 assigned to a capacity-10 site: that site holds 6 free and 4 assigned, a second capacity-10 site holds the remaining 6 free, and destruction loses precisely the first site's 10 missiles while leaving 6.
+
+On recapture, sealed stock is bounded by both the physical site's held receipt and the former controller's `missiles_captured_reserve_held` ledger.
+That amount is debited from the former held ledger before the site receipt is replaced, then added to the new captured receipt after the ordinary-reserve debit.
+It never passes through the former controller's available reserve.
+The controller-id guard prevents repeat callbacks from transferring it twice.
+
+`missiles_recalculate_network` accumulates into the current country through `PREV` inside its controlled states, including when an attacker originated the event.
+Incoming site-damage recording validates `missiles_incoming_damage_state` as an event target controlled by the recipient and copies the damage facts directly from that state's receipt before its producer clears them.
+The final `chaosx.nr32.7` receiver refreshes the defender's status and phases under the defender's `ROOT`.
+No new asset, recurring scan, timer or world-end owner is introduced by these APIs.
 
 `missiles_initialize_scenario_package` consumes country-scoped `missiles_scenario_package_stage`, `reserve`, `readiness`, `control`, and `site_capacity` inputs from `missiles_scenario_apply_country_package`.
 Missing inputs retain the helper's existing defaults; a supplied zero readiness or control remains distinct from an absent input.
