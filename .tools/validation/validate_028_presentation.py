@@ -29,6 +29,20 @@ class TextSource:
         return self.text
 
 
+anchor_text = (ROOT / "common/scripted_effects/fallout_consolidated_effects.txt").read_text(encoding="utf-8-sig")
+start = re.search(r"(?m)^air_winter_visual_seed_anchor_provinces\s*=\s*\{", anchor_text)
+assert start
+depth = 1
+for end in range(start.end(), len(anchor_text)):
+    depth += (anchor_text[end] == "{") - (anchor_text[end] == "}")
+    if depth == 0:
+        break
+else:
+    raise AssertionError("Unclosed anchor definition")
+anchors = parse_source(TextSource(anchor_text[start.start():end + 1]))["air_winter_visual_seed_anchor_provinces"]
+ANCHOR_IDS = {int(key): int(rows[0][2][0][2]) for key, _, rows in anchors}
+
+
 class Model:
     def __init__(self, impact=True, anchor=True):
         self.global_flags = {"asteroid_incoming_impact_recorded"} if impact else set()
@@ -51,7 +65,7 @@ class Model:
         if token == "THIS":
             return sid
         if token == "THIS.id":
-            return sid
+            raise AssertionError("Typed scope reference must not be modeled as a numeric state ID")
         if token.startswith("constant:"):
             category, key = token[9:].split(".")
             return float(terms(CONSTANTS[category])[key])
@@ -115,8 +129,8 @@ class Model:
                 self.call(key, sid)
             elif key == "air_winter_visual_seed_anchor_provinces":
                 if self.anchor:
-                    for member in self.states.values():
-                        member["values"]["air_winter_visual_anchor_province"] = 6521
+                    for state_id, member in self.states.items():
+                        member["values"]["air_winter_visual_anchor_province"] = ANCHOR_IDS[state_id]
             elif key == "set_temp_variable":
                 name, _, value = val[0]
                 self.temp[name] = self.value(value, sid)
@@ -177,7 +191,7 @@ for main in (True, False):
         assert ("asteroid_incoming_visual_emitted" in model.states[sid]["flags"]) == expected
         assert model.temp == {}, "Helper-local temporaries leaked"
         if expected:
-            assert model.created[0][3] == 15064
+            assert model.created[0][3] == 15000 + ANCHOR_IDS[sid]
             model.call(entry, sid)
             assert len(model.created) == 1, "Duplicate emission"
         checks.append((main, impact, applied, anchor))
@@ -188,6 +202,7 @@ for sid in range(1, 8):
 for sid in range(1, 8):
     model.call("asteroid_incoming_emit_main_visual" if sid == 1 else "asteroid_incoming_emit_fragment_visual", sid)
 assert len(model.created) == 7
+assert len({row[3] for row in model.created}) == 7, "Distinct real anchors shared a visual ID"
 for day, expected in ((129, 0), (130, 7), (160, 7)):
     model.global_values["global.num_days"] = day
     model.call("asteroid_incoming_cleanup_expired_visuals")
@@ -209,17 +224,6 @@ assert not empty.created and not empty.destroyed and not empty.arrays
 
 # Graphics-only orchestration has no ledger/damage calls, including its one
 # borrowed helper. Map-anchor seeding consists exclusively of coordinate writes.
-anchor_text = (ROOT / "common/scripted_effects/fallout_consolidated_effects.txt").read_text(encoding="utf-8-sig")
-start = re.search(r"(?m)^air_winter_visual_seed_anchor_provinces\s*=\s*\{", anchor_text)
-assert start
-depth = 1
-for end in range(start.end(), len(anchor_text)):
-    depth += (anchor_text[end] == "{") - (anchor_text[end] == "}")
-    if depth == 0:
-        break
-else:
-    raise AssertionError("Unclosed anchor definition")
-anchors = parse_source(TextSource(anchor_text[start.start():end + 1]))["air_winter_visual_seed_anchor_provinces"]
 for _, _, rows in anchors:
     assert rows[0][0] == "set_variable" and len(rows) == 1
     assert rows[0][2][0][0] == "air_winter_visual_anchor_province"

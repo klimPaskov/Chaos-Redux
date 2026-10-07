@@ -49,7 +49,9 @@ asteroid_incoming_emit_site_visual = {
 		if = {
 			limit = { has_variable = air_winter_visual_anchor_province }
 			set_variable = { asteroid_incoming_visual_entity_id = constant:asteroid_incoming_visual.entity_id_base }
-			add_to_variable = { asteroid_incoming_visual_entity_id = THIS.id }
+			# The anchor is an explicit numeric province literal. THIS.id is a
+			# typed scope reference and must not be treated as a numeric state ID.
+			add_to_variable = { asteroid_incoming_visual_entity_id = air_winter_visual_anchor_province }
 			if = {
 				limit = { check_variable = { var = asteroid_incoming_visual_profile value = constant:asteroid_incoming_profile.main_center compare = equals } }
 				meta_effect = {

@@ -28,7 +28,9 @@ An absent anchor produces `asteroid_incoming_visual_failed` without redirecting 
 ## Private IDs, receipts and retirement
 
 `common/script_constants/028_asteroid_incoming_visual_constants.txt` centralizes the private ID base and retirement grace.
-The exact ID is `entity_id_base + THIS.id`, currently 15001 through 16081 for the installed map.
+The exact ID is `entity_id_base + air_winter_visual_anchor_province`, using the shared ledger's explicit numeric province literal rather than a typed state reference.
+The 1,081 anchors yield 1,081 distinct reserved IDs, currently 15036 through 28408, with no overlap against the 5,406 audited existing/proof IDs.
+Examples are state 64/province 6521/entity 21521 and state 506/province 12994/entity 27994.
 Only seven sites can be live under the event's existing maximum fragment plan.
 The ID is stored before `create_entity` and emitted as a literal through `meta_effect`, so retirement does not depend on an opaque auto-handle being captured or retaining the same identity after a reload.
 The reserved band is separate from the current Air Winter five per-state bands, 3001–4081, 5001–6081, 7001–8081, 9001–10081 and 11001–12081, and its proof entity 8600064.
@@ -68,6 +70,10 @@ The shared anchor closure is checked as 1,081 coordinate-only rows.
 The existing news-delivery module is checked against its immutable source baseline so a map-helper filename collision cannot silently replace the queue, deduplication, annexed-reader or super-event-wait helpers.
 The live `script_validate` check of STATE `create_entity` returned `SCRIPT_CHECK_PARTIAL`, `valid = null`, checking syntax, command kind and declared scope only, with native arguments unresolved.
 The proposed automatic-handle draft was replaced before commit by the reserved-ID design above, avoiding an unproved saved auto-handle identity assumption.
+The first reserved-ID implementation's numeric `THIS.id` assumption was subsequently removed after inspecting the already named `qa_evt028.hoi4` save.
+That save stores the original state-506 reference as `-10737.41318`, not plain integer 506, so it does not support arithmetic on that reference to allocate a graphical ID.
+The source model now rejects numeric use of `THIS.id` and seeds every simulated state's real distinct anchor from the actual shared source ledger.
+This corrects the model and source assumption without claiming that the earlier save executed either graphics-only implementation.
 
 The connected server's live status resource reports stdio version 3.10.0 for this client's PID 27936, with two concurrent and four shared tool slots, captured on 2026-10-07.
 The map request returned `MAP_LOOKUP_COMPLETED`, revision `f26a1d44c99dfcab52391b4d756f2dee2b881d72d94e2c5406bf0868b7fa3cea`, for states 16, 64 and 506 and province 6521, with no unknown province or missing geometry IDs.
