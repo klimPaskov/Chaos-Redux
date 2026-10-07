@@ -136,3 +136,30 @@ The installed `set_political_power` command is documented, but neither it nor `a
 Its mere existence is not proof of the exact 1,000 increment near the native cap, and no setter or global-cap workaround was introduced.
 The complete acceptance matrix, remaining mechanics and assets, full scenario suites and current clean error-log evidence remain outstanding.
 The goal remains active and incomplete.
+
+## Next goal continuation: policy comparison and two runtime art repairs
+
+The preceding goal turn is classified as progress, with six authoritative commits rather than a no-progress restatement.
+The current continuation revalidated the working tree and the live probability, artist and decision-audit handles.
+
+`51b452366` publishes the poor-minor capacity adjustment after the probability auditor completed the formal same-scenario comparison using the explicitly documented one-symbol source projection.
+The actual four returned comparisons have complete five-option pools and zero unresolved candidates, with no changes in cases 01, 02 and 04 and the intended +80 concession raw-score/rank improvement in case 03.
+The projection method and its source hashes are retained in the comparison JSON and `docs/events/029_riches_found/policy_capacity_ai.md`; this supersedes the earlier bounded cross-file comparison blocker, not the remaining wartime/colonial or full-suite findings.
+
+`f7a08ab4f` installs the parent-reviewed sanitation and dividend decision DDS repairs at their existing paths and aliases.
+Exact native ImageGen requests, source lineage, before/after hashes, the four-pixel exterior cleanup and parent runtime-byte checks are retained in `docs/events/029_riches_found/decision_asset_repair_2026_10_07.md` and its durable prompt folder.
+Only these two runtime decision icons changed; the artist continues the remaining forty-five defects/candidates in small production batches.
+An initial asset-commit proposal was rejected because another agent advanced HEAD, so it was rebuilt on the latest HEAD before successful publication.
+The failed proposal did not change the shared index.
+
+The railhead source repair is currently in progress, not committed or accepted complete.
+It introduces actual-capital-rail connection predicates, builds before verification, blocks stale/nonactive/wrong-kind resolution, rechecks damaged/progress/development conditions, and keeps unsuccessful construction out of full-success counters.
+The existing sea-route branch and uninterrupted supply proof remain unresolved.
+The explicit rail validation is partial with two unchecked argument blocks, while the bounded map lookup completed for state 64 without campaign-path or full-map proof.
+The decision/mission auditor's live handle `01a11765-00b0-7811-a4d5-6f73a0f73ba8` is running against the current patch, with handoff path `rail_connection_audit_2026_10_07.md`.
+Byte-revalidated atomic replacements changed only the railhead mission block and its conditional tooltip after direct writes failed, preserving other owners' decision content.
+Their exact backups are retained in `evidence/2026_10_07_rail_connection_before/`.
+
+The foreign-score allocation and transport module remain uncommitted with their previously recorded adapter/callback blockers.
+The complete mechanics, achievements, all asset families, full scenario contract and current clean error-log evidence remain outstanding.
+No fallback or implementation simplification is approved by this checkpoint, and the original goal remains active.
