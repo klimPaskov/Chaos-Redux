@@ -345,3 +345,12 @@ The seven captured dependencies remain byte-identical.
 The parent reran 292 actual-source cases with 275 baseline failures reproduced, including readiness boundaries, force bands, mixed-model debits, final paid/failed service receipts and planned cleanup.
 No gameplay simplification, price change, new player action, world pulse or asset replacement is introduced.
 MCP command validation is partial, the exact unit-leader event render selects no nodes, and event comparison returns `EVENT_REVISION_NOT_CACHED`; native payment/timing and the broader accepted goal remain incomplete.
+
+## Event 020 current board review
+
+The [event-owned GUI audit](../020_black_plague_plans/subagent_handoffs/2026-10-07_event020_gui_acceptance.md) provides reviewed current pixels for unorganized zero capacity and exhausted capacity at both required resolutions, plus organized capacity and maximum progress at 1920x1080.
+The empty meter, two-of-five and five-of-five fill states, mutually exclusive capacity labels and fully contained warning match the accepted reference.
+The parent reviewed the images and verified identical board pixels across the two resolutions for zero and exhausted states.
+No Event 020 source, asset, localisation, action or gameplay change was needed.
+Pre-outbreak/recovered category visibility and organized capacity at 2560x1440 remain unproved; helper-body scenario assumptions, incomplete artifact reads and the GUI-only historical baseline are explicit limits.
+This evidence does not complete the native category gate, ordinary decision-cost rows, or the overall CBRN goal.
