@@ -20,20 +20,21 @@ The helper never removes existing learned technology or entitlement to report fa
 
 The helper requires `brilliant_scientist_mengele_project_stage_provider_is_valid = yes`.
 Each selected family also requires both `mengele_event016_<family>_theory_completed` and `mengele_event016_<family>_prototype_completed`, plus the exact native completion below.
-For Cloning only, a guarded durable source=cloning and mode=fresh_output receipt also supplies exact completion provenance at the synchronous output boundary, before the country completed bit may be visible.
+For each of the seven custom operational families, a guarded durable exact-source and fresh_output receipt also supplies completion provenance at the synchronous output boundary, before the country completed bit may be visible.
+Each pure family predicate checks both provenance-array lengths before reading its fixed family slot and requires that family's exact source code and fresh mode.
 These checks read authentic history and do not create history.
 
 ## Exact mapping
 
 | Private Event 016 family | Required native completion | Neutral operational family |
 | --- | --- | --- |
-| `teleportation` | `sp:sp_brilliant_scientist_quantum_transit` | `chaosx_custom_technology_family.portal` |
+| `teleportation` | `sp:sp_brilliant_scientist_quantum_transit` or its guarded exact fresh receipt | `chaosx_custom_technology_family.portal` |
 | `cloning` | `sp:sp_brilliant_scientist_cloning` or the guarded exact fresh Cloning receipt | `chaosx_custom_technology_family.clone` |
-| `robotics` | `sp:sp_brilliant_scientist_autonomous_cognition` | `chaosx_custom_technology_family.robot` |
-| `paleogenetics` | `sp:sp_brilliant_scientist_paleogenetics` | `chaosx_custom_technology_family.paleogenetic` |
-| `xenobiological_synthesis` | `sp:sp_brilliant_scientist_xenobiological_synthesis` | `chaosx_custom_technology_family.xenobiological` |
-| `alien_arms` | `sp:sp_brilliant_scientist_alien_arms` | `chaosx_custom_technology_family.alien_infantry` |
-| `temporal` | `sp:sp_brilliant_scientist_temporal_mechanics` | `chaosx_custom_technology_family.temporal` |
+| `robotics` | `sp:sp_brilliant_scientist_autonomous_cognition` or its guarded exact fresh receipt | `chaosx_custom_technology_family.robot` |
+| `paleogenetics` | `sp:sp_brilliant_scientist_paleogenetics` or its guarded exact fresh receipt | `chaosx_custom_technology_family.paleogenetic` |
+| `xenobiological_synthesis` | `sp:sp_brilliant_scientist_xenobiological_synthesis` or its guarded exact fresh receipt | `chaosx_custom_technology_family.xenobiological` |
+| `alien_arms` | `sp:sp_brilliant_scientist_alien_arms` or its guarded exact fresh receipt | `chaosx_custom_technology_family.alien_infantry` |
+| `temporal` | `sp:sp_brilliant_scientist_temporal_mechanics` or its guarded exact fresh receipt | `chaosx_custom_technology_family.temporal` |
 
 The mapping preserves the seven existing bridge mappings.
 Conventional families, Biological Weapons, Singularity, zero, and unrelated family IDs are not custom operational grant candidates here.
@@ -43,6 +44,7 @@ Conventional families, Biological Weapons, Singularity, zero, and unrelated fami
 The chosen branch sets `chaosx_custom_technology_family`.
 Immediately before its single neutral API call, it sets `chaosx_custom_technology_source = constant:mengele_event016_project_stage.provenance_mengele`.
 The existing `chaosx_grant_custom_operational_technology` owns idempotent technology installation, neutral provenance, and runtime reconciliation.
+The bridge initializes the consumed `chaosx_custom_technology_grant_applied` temporary to zero before that nested API call.
 After an authenticated native Cloning grant succeeds, the bridge completes the dedicated Mengele cloning project once, including its clone equipment and revolt readiness effect.
 If the master-race claim exists and Aryan refinement technology is still absent, the same successful grant selects that refinement and its formation template.
 Repeated native callbacks cannot repeat the dedicated completion effect because its completed flag guards it.
@@ -61,10 +63,10 @@ The neutral grant result does not overwrite the bridge's native-record result.
 The bridge still clears `brilliant_scientist_project_family` and `chaosx_custom_technology_source` and refreshes dynamic modifiers at its established boundary.
 The separate Singularity-component bridge is unchanged.
 
-The parent-owned `brilliant_scientist_mengele_adopt_completed_native_after_theory` invokes the helper only after `mengele_event016_native_prototype_synced = 1`, using its saved `mengele_event016_adoption_outer_family`.
+The parent-owned `brilliant_scientist_mengele_adopt_completed_native_after_theory` invokes the helper only after its exact adoption adapter reports `adopted_settled`, using its saved `mengele_event016_adoption_outer_family`.
 The extracted helper does not depend on private stage selectors that the native sync just cleared.
 The parent preserves and restores the enclosing Theory callback's selectors and results.
-This worker did not edit `016_mengele_project_stage_effects.txt`.
+All fourteen ordinary families enter their exact source adapter and cannot settle through the generic family synchronizer.
 
 Example after successful native synchronization:
 
@@ -90,12 +92,13 @@ node .tools/audit_mengele_project_adapter_contract.mjs
 
 The maintained read-only check uses Node built-ins only and writes nothing.
 It protects the shared provider adapter contract consumed by the Mengele programme and Event 016 neutral native project API.
-Its authoritative inputs are the conventional decision triggers, project-stage effects, bridge effects, and four existing script-constant files.
+Its authoritative inputs include the conventional decision triggers, project-stage effects, bridge effects, native receipt and selection APIs, Cloning receipt gates, and their script constants.
 It prints assertion counts and hashes to standard output, with no generated gameplay or report files.
 It parses the actual bounded source blocks and fails on unsupported test syntax.
 
-The recorded run passed 216 conventional adapter checks, five uninitialized-receipt checks, 36 five-family publication checks, and 259 seven-family grant checks.
+The 2026-10-07 run passed 4,911 assertions, including 221 conventional adapter checks, five uninitialized-receipt checks, 36 publication checks, 308 completed-source grants, 168 fresh-receipt bridge checks, 60 ordinary adoption checks, 3,072 Singularity source scenarios, 320 weaponization checks, 630 funded completion checks and 91 Cloning maturation checks.
 The grant checks cover each exact mapping and provenance, missing owner/Theory/Prototype/native evidence, neutral grant failure, a non-custom family, input/custom-selector cleanup, private/shared-selector preservation, and unchanged history flags.
+Fresh bridge cases execute the actual receipt predicates with the native completed bit absent and cover wrong source, adopted mode, short source or mode arrays, invalid provider and missing Theory or Prototype.
 Neutral API success/failure and provider validity are explicit external stubs.
 Actual technology grant effects, real special-project UI, runtime source-counted entitlements, native payment settlement, and engine lifecycle are not executed by this source check.
 
@@ -106,5 +109,7 @@ No in-game execution or complete portfolio claim is made.
 
 
 The literal Cloning native output and explicit historical-adoption decision call this bridge after recording their private Prototype exactly once.
-The generic unrelated-completion recorder excludes Cloning and Rocketry, and the direct original CBRN consumer remains in its project output.
+The generic recorder cannot settle the fourteen ordinary families; exact literal outputs or exact historical adoption own their receipts, and the original host/neutral consumers remain in every project output.
+The nine fixed-source hooks preserve conventional Prototype modifier output and dispatch the six existing custom operational grants only after a changed fresh receipt.
+The legacy family adapter initializes its consumed recorded-result slot, so a skipped generic callback cannot reuse an earlier success value.
 Native start/cancel synchronization and release/reselection timing proof remain outside this completion-provenance check.

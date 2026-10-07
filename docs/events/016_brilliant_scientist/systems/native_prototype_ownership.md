@@ -69,7 +69,11 @@ Theory-time historical adoption queries the exact completed source and retains a
 A matching paid receipt continues unchanged when an output arrives, and repeated private Prototype outputs cannot grant another stage.
 The six biological hooks preserve the original project payloads, timing, resources, iteration rewards, native AI and facility effects.
 Existing provenance is not rewritten from later observations.
-The nine provider-exclusive Event 016 projects need no selection controls because their project outputs already call their literal family wrappers.
+The nine fixed Event 016 projects need no selection controls because each family maps to one exact native project.
+Their literal output wrappers record source codes 12 through 20 for Computation, Materials, Biomedical, Teleportation, Robotics, Paleogenetics, Xenobiological Synthesis, Alien Arms and Temporal Physics.
+Each fresh receipt requires its literal output witness, and each historical receipt queries only the matching completed project.
+The six custom operational packages are dispatched after changed private settlement, using exact fresh provenance if the country completed bit is not yet visible.
+The original host and CBRN project consumers remain after each hidden hook.
 Contracts are in `common/scripted_effects/016_mengele_native_prototype_effects.md`.
 
 ## Implementation surfaces
@@ -90,6 +94,7 @@ No artwork, model, entity, animation, project ID, or technology ID is created or
 The existing player-triggered native inventory console probe also calls chaosx_cxt_event016_probe_native_ownership.
 It snapshots all four sources' selection, observed-output and retired flags, and the Cloning, Rocketry and Electronics source/mode slots into CXT-only debug observations.
 It also snapshots the reactor and six biological source-observation flags and the High Energy and Biological Weapons source/mode slots.
+The nine fixed families expose their source/mode slots and exact output-observed flags through the same guarded CXT probe.
 Absent or short provenance arrays yield unrecorded observations without extending or changing provider receipts.
 The probe creates no stage, native completion, selection, resource grant, or timer.
 CXT's ordinary setup already completes native projects, so its completed-source path tests adoption and ambiguity, not native payment or a fresh research clock.
@@ -109,6 +114,8 @@ The parent independently reran the actual-source driver, including conservative 
 Engine queries, provider lifecycle, dynamic modifier refresh and full operational package payloads remain declared fixture inputs or stubs in those cases.
 Its installed Radar precedent retains every native field, equipment module, facility effect, technology grant and reward after removing only the two owned country hooks.
 That preservation comparison is source evidence, not native research or live-log acceptance.
+The nine fixed-source continuation is recorded in `016_fixed_native_provider_sources_2026-10-07.md` and its core and integration handoffs.
+Its source driver covers 10,953 scenarios, and the maintained adapter audit covers 4,911 assertions with their declared engine boundaries.
 
 ## Remaining lifecycle proof
 

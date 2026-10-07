@@ -14,6 +14,10 @@ const inputPaths = {
   bridge: "common/scripted_effects/016_mengele_project_bridge_effects.txt",
   hostGates: "common/scripted_triggers/016_brilliant_scientist_project_triggers.txt",
   stageTriggers: "common/scripted_triggers/016_mengele_project_stage_triggers.txt",
+  nativeTriggers: "common/scripted_triggers/016_mengele_native_prototype_triggers.txt",
+  nativeEffects: "common/scripted_effects/016_mengele_native_prototype_effects.txt",
+  nativeSelectionEffects: "common/scripted_effects/016_mengele_native_selection_decision_effects.txt",
+  cloneStageGates: "common/scripted_triggers/016_mengele_cloning_stage_decision_triggers.txt",
   incidents: "common/scripted_effects/016_mengele_conventional_incident_effects.txt",
   incidentTriggers: "common/scripted_triggers/016_mengele_conventional_incident_triggers.txt",
   cloneEffects: "common/scripted_effects/016_clone_maturation_effects.txt",
@@ -50,6 +54,7 @@ for(const p of [
   "common/script_constants/016_brilliant_scientist_constants.txt",
   "common/script_constants/016_brilliant_scientist_custom_technology_constants.txt",
   "common/script_constants/016_mengele_project_stage_constants.txt",
+  "common/script_constants/016_mengele_native_prototype_constants.txt",
   "common/script_constants/016_clone_maturation_constants.txt",
   "common/script_constants/016_brilliant_scientist_kruger_state_decision_constants.txt",
 ]) {
@@ -60,6 +65,8 @@ for(const p of [
   }
 }
 const ast=parse(source.gates), definitions=Object.fromEntries(ast.map(x=>[x.k,x.v]));
+for(const n of parse(source.nativeTriggers))definitions[n.k]=n.v;
+for(const n of parse(source.cloneStageGates))definitions[n.k]=n.v;
 const literals=Object.fromEntries(ast.filter(x=>x.k.startsWith("@")).map(x=>[x.k,Number(x.v)]));
 const cloneDecisionLiterals=Object.fromEntries(parse(source.cloneDecision).filter(x=>x.k.startsWith("@")).map(x=>[x.k,Number(x.v)]));
 function number(token,state,localLiterals=literals) {
@@ -67,7 +74,7 @@ function number(token,state,localLiterals=literals) {
   if(token in localLiterals) return localLiterals[token];
   if(token==="political_power")return state.pp;
   if(token.endsWith("^num"))return (state.arrays?.[token.slice(0,-4)]||[]).length;
-  if(token.includes("^")&&state.arrays?.[token.split("^")[0]]){
+  if(token.includes("^")&&Object.hasOwn(state.arrays||{},token.split("^")[0])){
     const [array,index]=token.split("^");return state.arrays[array][number(index,state,localLiterals)]||0;
   }
   if(token.startsWith("mengele_event016_active_project_stage_entries^"))
@@ -103,6 +110,7 @@ function test(n,s) {
     if(v.length===1){const x=v[0],a=number(x.k,s),b=number(x.v,s);return x.op==="<"?a<b:x.op===">"?a>b:a===b;}
     const d=Object.fromEntries(v.map(x=>[x.k,x.v])), a=number(d.var,s),b=number(d.value,s);
     if(d.compare==="equals")return a===b;
+    if(d.compare==="not_equals")return a!==b;
     if(d.compare==="less_than")return a<b;
     if(d.compare==="greater_than")return a>b;
     if(d.compare==="greater_than_or_equals")return a>=b;
@@ -118,7 +126,7 @@ function test(n,s) {
   throw Error("Unsupported trigger "+k);
 }
 const gate=(name,s)=>definitions[name].every(x=>test(x,s));
-let counts={adapter:0,initialization:0,publication:0,grant:0,adoption:0,singularity:0,weaponization:0,finish:0,maturation:0,maturationWrapper:0};
+let counts={adapter:0,initialization:0,publication:0,grant:0,freshGrant:0,adoption:0,singularity:0,weaponization:0,finish:0,maturation:0,maturationWrapper:0};
 function check(group,label,actual){counts[group]++;assert(actual,label);}
 const families=[
   ["electronics",1,["sp_air_radar"]],
@@ -171,6 +179,9 @@ for(const [f,index]of families)for(const stage of ["theory","deployment","weapon
 for(const[f]of families)check("initialization",f+" empty uninitialized",
   gate("brilliant_scientist_mengele_"+f+"_decision_receipt_is_empty",{flags:new Set(),active:{}}));
 const effectDefinitions={};
+for(const n of parse(source.nativeEffects))effectDefinitions[n.k]=n.v;
+for(const n of parse(source.nativeSelectionEffects))effectDefinitions[n.k]=n.v;
+for(const n of parse(source.stages))effectDefinitions[n.k]=n.v;
 function effects(seq,s) {
   let last=false;
   for(const n of seq){
@@ -273,6 +284,24 @@ for(const[f,custom,native]of mapping){
    check("grant",f+" "+mode+" dedicated clone completion",s.cloneCompletionCalls===(f==="cloning"&&mode==="valid"?1:0));
    if(expected)check("grant",f+" "+mode+" mapped provenance",s.calls[0][0]===constants["constant:chaosx_custom_technology_family."+custom]&&s.calls[0][1]===constants["constant:mengele_event016_project_stage.provenance_mengele"]);
  }
+ // Read the actual pure receipt predicates through the public bridge, with the
+ // native completed bit absent. Reject unrelated, adopted and truncated slots.
+ for(const mode of ["fresh","wrong_source","adopted","short_source","short_mode","invalid_owner","no_theory","no_prototype"]){
+   const s=make(),code=constants["constant:mengele_event016_native_prototype_source."+f];
+   s.projects.clear();s.arrays={mengele_event016_native_prototype_source_entries:Array(15).fill(0),
+     mengele_event016_native_prototype_mode_entries:Array(15).fill(0)};
+   s.arrays.mengele_event016_native_prototype_source_entries[id-1]=mode==="wrong_source"?code+1:code;
+   s.arrays.mengele_event016_native_prototype_mode_entries[id-1]=mode==="adopted"?2:1;
+   if(mode==="short_source")s.arrays.mengele_event016_native_prototype_source_entries.length=id-1;
+   if(mode==="short_mode")s.arrays.mengele_event016_native_prototype_mode_entries.length=id-1;
+   if(mode==="invalid_owner")s.valid=false;
+   if(mode==="no_theory")s.flags.delete(theory);
+   if(mode==="no_prototype")s.flags.delete(proto);
+   const receipts=JSON.stringify(s.arrays);effects(grant,s);
+   check("freshGrant",f+" "+mode+" exact fresh gate",s.calls.length===(mode==="fresh"?1:0));
+   check("freshGrant",f+" "+mode+" durable receipt unchanged",JSON.stringify(s.arrays)===receipts);
+   check("freshGrant",f+" "+mode+" input cleanup",s.temp.mengele_event016_native_grant_family===0&&s.temp.chaosx_custom_technology_family===0&&s.temp.chaosx_custom_technology_source===0);
+ }
 }
 // Evaluate current adoption, authentication, initialization, component recording,
 // selector cleanup and Prototype output source. Native completion/provider/neutral
@@ -281,7 +310,7 @@ for(const m of source.stageTriggers.matchAll(/^(brilliant_scientist_mengele_\w+)
   definitions[m[1]]=block(source.stageTriggers,m[1]);
 for(const name of ["adopt_completed_native_after_theory","record_singularity_component",
   "initialize_project_stage_receipts","clear_project_stage_selectors",
-  "sync_native_project_prototypes","apply_family_stage_output"])
+  "sync_native_project_prototypes","apply_family_stage_output","prepare_project_index"])
   effectDefinitions["brilliant_scientist_mengele_"+name]=block(source.stages,"brilliant_scientist_mengele_"+name);
 effectDefinitions.brilliant_scientist_mengele_grant_native_custom_operational_package=grant;
 const adopt=effectDefinitions.brilliant_scientist_mengele_adopt_completed_native_after_theory;

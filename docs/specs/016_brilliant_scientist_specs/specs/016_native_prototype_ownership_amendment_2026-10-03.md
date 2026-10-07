@@ -1,6 +1,7 @@
 # Event016 native Prototype commitment amendment
 
-Disposition: exact selection actions and separate completion/adoption modes are implemented in source for Cloning, Rocketry and Electronics, with the remaining family migration accepted and queued. Native start/cancel synchronization and persistence/reselection semantics remain unresolved.
+Disposition: exact selection actions are implemented in source for Cloning, Rocketry and Electronics, and exact source/mode receipts cover all fourteen ordinary families through the selected or fixed-source contracts below.
+Singularity's complete ownership proof remains queued, and native start/cancel synchronization and persistence/reselection semantics remain unresolved.
 Acceptance basis: the user directed on 2026-10-03 to continue without waiting for input and take the recommended option when a choice arises.
 The parent accepts the bounded recommendation in 016_native_prototype_ownership_architecture_2026-10-03.md within the existing fifteen-family provider closure scope.
 The accepted Cloning source remains sp_brilliant_scientist_cloning, and Rocketry retains sp_rockets_flying_bomb and sp_air_jet_engine.
@@ -52,7 +53,8 @@ Keep cleanup in the existing provider and terminal boundaries, with no daily/wor
 ## Queue reason and remaining proof
 
 The recommendation is accepted design and is not implementation evidence.
-Implementation remains queued for the remaining families' exact selection writers, source wrappers, historical adoption, matching consumption, release and cleanup, CXT cases, and source and weighted-action review.
+Implementation and acceptance remain queued for the outstanding Singularity ownership surfaces, native lifecycle seams, and incomplete domain or weighted-action evidence.
+The fixed-source dispositions below do not introduce selection controls and do not waive any stronger lifecycle requirement.
 The broader fifteen-family ownership migration remains required by the accepted closure plan and must receive its own reviewed source coverage.
 Native cancellation cleanup, same-project release/reselection, and delayed-output isolation remain unresolved runtime points.
 The complete existing lifecycle contract must be satisfied before completion, and the source recommendation alone cannot waive it.
@@ -77,3 +79,17 @@ The broader fifteen-family migration and full completion contract remain open.
 The Electronics continuation adds its fixed exact source, selection and withdrawal controls, output/adoption provenance, provider cleanup and CXT observations in the same existing Conventional Programs category.
 It preserves the no-DLC paid Prototype path and permits historical adoption only from the exact completed Radar project.
 Its source contracts and preservation comparison are recorded in the Electronics handoffs; live native cancellation, same-project reselection and AI/domain coverage remain separate acceptance requirements.
+
+## Fixed-source disposition and 2026-10-07 checkpoint
+
+The parent accepts D17's fixed-source policy within the user-authorized fifteen-family closure and the instruction to take the recommended option.
+High Energy retains the reactor, Biological Weapons retains its six mapped existing projects, and the nine remaining ordinary families each retain their single exact existing project.
+These families use literal country-output witnesses and exact historical adoption without an additional provider selection control.
+Source codes 5 through 11 retain the reactor and biological identities, and codes 12 through 20 identify Computation, Materials, Biomedical, Teleportation, Robotics, Paleogenetics, Xenobiological Synthesis, Alien Arms and Temporal Physics.
+The 2026-10-07 biological tranche removes completed-but-unobserved scanning, superseding that part of D17's historical implementation account.
+The nine fixed-source tranche records exact fresh/adopted provenance, preserves the original project payloads, blocks generic private settlement, and extends guarded CXT observations.
+Its six operational grant consumers accept the exact guarded fresh receipt when the native completed bit is not yet visible.
+The source map, parent evidence, core tests and independent audit are in `docs/plans/016_brilliant_scientist_plans/016_fixed_native_provider_sources_2026-10-07.md` and its linked handoffs.
+This is implemented source coverage with 10,953 source-model cases and 4,911 maintained adapter assertions, with declared engine and payload stubs.
+It does not establish native payment, cancellation, release/reselection generations, real grant payload execution or changed-helper MCP acceptance.
+No implementation simplification is accepted by this checkpoint, and the full Event016 completion contract remains open.

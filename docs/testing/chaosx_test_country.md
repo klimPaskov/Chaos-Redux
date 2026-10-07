@@ -252,6 +252,8 @@ It copies Cloning, Rocketry and Electronics exact source and settlement mode int
 Source codes are none0, Cloning1, FlyingBomb2, JetEngine3, Radar4, and mode codes are none0, freshOutput1, adoptedCompleted2.
 High Energy and Biological Weapons are also copied into chaosx_cxt_event016_high_energy_native_source/mode and chaosx_cxt_event016_biological_weapons_native_source/mode.
 Their source codes are Reactor5, Anthrax6, Plague7, Tularemia8, Smallpox9, WeaponizedZombies10 and BlackPlague11; chaosx_cxt_event016_observed_reused_* snapshots the seven source-observation flags.
+The fixed family source codes are Computation12, Materials13, Biomedical14, Teleportation15, Robotics16, Paleogenetics17, XenobiologicalSynthesis18, AlienArms19 and Temporal20.
+Each exposes chaosx_cxt_event016_<family>_native_source/mode and chaosx_cxt_event016_observed_output_<family>, retaining the existing family names and indices.
 These are debug observations and never authorize a stage, complete a project, select a source, refund a payment, or alter provider history.
 Missing or short arrays report none rather than creating receipts.
 The existing carrier/setup contract is unchanged and the probe adds no periodic registration or grant hook.

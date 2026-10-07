@@ -12,7 +12,7 @@ This layer cannot satisfy or waive those stronger lifecycle requirements.
 
 All effects and triggers execute in the owning country scope.
 The temporary inputs are unscoped engine temporaries and must never be qualified with `ROOT.` or `PREV.`.
-No event target or persistent numeric project pointer is needed for these four static identities.
+No event target or persistent numeric project pointer is needed for the static source identities in this API.
 
 | Source constant | Code | Exact native ID | Private family | Durable index | Fresh wrapper |
 | --- | --- | --- | --- | --- | --- |
@@ -34,14 +34,15 @@ The existing `brilliant_scientist_event.project_family_count` supplies the fifte
 
 | Category | Values |
 | --- | --- |
-| `mengele_event016_native_prototype_source` | none 0, cloning 1, flying_bomb 2, jet_engine 3, electronics_radar 4 |
+| `mengele_event016_native_prototype_source` | none 0, cloning 1, flying_bomb 2, jet_engine 3, electronics_radar 4, reactor 5, six Biological agents 6 to 11, nine fixed providers 12 to 20 |
 | `mengele_event016_native_prototype_mode` | none 0, fresh_output 1, adopted_completed 2 |
 | `mengele_event016_native_prototype_result` | none 0, selected 1, fresh_settled 2, adopted_settled 3, released 4, blocked 5 |
 
 The country arrays `mengele_event016_native_prototype_source_entries` and `mengele_event016_native_prototype_mode_entries` use family ID minus one.
 The initializer extends each array independently with its none code until it has at least fifteen slots.
 It never truncates an oversized array, clears history, or repairs contradictory existing metadata by guessing.
-Only indices 7, 3, and 1 are written on a successful changed private Prototype output.
+The selection core writes only indices 7, 3, and 1 on a successful changed private Prototype output.
+The unselected core writes the matching existing family index for sources 5 to 20, as enumerated below.
 The other families' surviving values are preserved.
 These arrays store the source and mode of the family's accepted Prototype receipt, while per-source observed flags preserve exact output observations independently.
 
@@ -307,7 +308,7 @@ Countries can complete these outside the provider, so neither family has selecti
 
 | Effect | Scope and inputs | Output | Callers |
 | --- | --- | --- | --- |
-| `brilliant_scientist_mengele_settle_reused_native_prototype` | COUNTRY; temporary family (High Energy or Biological Weapons), source code, mode, and matching output witness for fresh mode | `mengele_event016_native_prototype_result`: `fresh_settled`, `adopted_settled`, or `blocked`; caller initializes consumed result to none | The literal output wrappers and historical adoption adapter |
+| `brilliant_scientist_mengele_settle_reused_native_prototype` | COUNTRY; temporary whitelisted reused or fixed family, source code, mode, and matching output witness for fresh mode | `mengele_event016_native_prototype_result`: `fresh_settled`, `adopted_settled`, or `blocked`; caller initializes consumed result to none | The literal output wrappers and historical adoption adapter |
 | `brilliant_scientist_mengele_native_completion_sp_nuclear_reactor` | COUNTRY; none | Same result; marks the reactor observed | `sp_nuclear_reactor` project output in the Event 016 `nuclear_projects.txt` mirror |
 | Six `brilliant_scientist_mengele_native_completion_<project>` wrappers | COUNTRY; no caller selector input | Same result; marks only the exact agent observed and supplies its literal source/witness | Country outputs of the six existing biological projects |
 | `brilliant_scientist_mengele_adopt_reused_native_prototype` | COUNTRY; temporary family | Same result | `brilliant_scientist_mengele_adopt_completed_native_after_theory` |
@@ -329,3 +330,100 @@ The selector cleanup clears family, stage, index, source, witness, mode and outp
 Historical adoption retains the existing fixed agent order and can mark completed history observed; that observation is not a fresh output witness.
 Existing receipts are not retrospectively relabeled because their original completion boundary cannot be reconstructed.
 Native start/cancel synchronization and same-project callback-generation evidence remain outside this completion-identity correction and remain unresolved.
+
+## Nine fixed provider sources
+
+Disposition: bounded core extension implemented under the explicit 2026-10-07 parent delegation and D17's nine provider-exclusive fixed-project policy.
+Parent project output, after-Theory dispatch, generic path exclusions, bridge grant gates, CXT and broader documentation integration remain parent-owned.
+The existing helper name `settle_reused_native_prototype` is retained as a compatible unselected-source core for both reused and fixed projects.
+Cloning, Rocketry and Electronics remain in their original selection core with source codes 1 to 4.
+Reactor and Biological codes 5 to 11 retain exact output evidence and fixed historical policy.
+
+All helpers below execute in COUNTRY scope.
+Each literal wrapper takes no caller selector input and always sets `mengele_event016_native_observed_<family>`.
+It owns and overwrites family, source, output witness, mode and result before entering the nested settlement.
+Source codes are stable metadata, not new game project or technology IDs.
+
+| Family | Source code | Existing family ID | Provenance index | Exact native project and wrapper suffix |
+| --- | --- | --- | --- | --- |
+| computation | 12 | 1 | 0 | `sp_brilliant_scientist_computational_engine` |
+| materials | 13 | 3 | 2 | `sp_brilliant_scientist_advanced_materials` |
+| biomedical | 14 | 6 | 5 | `sp_brilliant_scientist_biomedical_acceleration` |
+| teleportation | 15 | 7 | 6 | `sp_brilliant_scientist_quantum_transit` |
+| robotics | 16 | 9 | 8 | `sp_brilliant_scientist_autonomous_cognition` |
+| paleogenetics | 17 | 10 | 9 | `sp_brilliant_scientist_paleogenetics` |
+| xenobiological_synthesis | 18 | 11 | 10 | `sp_brilliant_scientist_xenobiological_synthesis` |
+| alien_arms | 19 | 13 | 12 | `sp_brilliant_scientist_alien_arms` |
+| temporal | 20 | 14 | 13 | `sp_brilliant_scientist_temporal_mechanics` |
+
+The public wrapper name is `brilliant_scientist_mengele_native_completion_<exact native project ID>`, retaining the complete `sp_brilliant_scientist_...` suffix.
+The parent calls it from that project's existing `project_output.country_effects` before its original consumers.
+Fresh mode requires the exact source/family pair and synchronous literal witness, strict provider, completed Theory, incomplete Prototype and empty matching paid stage receipt.
+It never queries the completed bit at the fresh boundary.
+Only a changed output from `brilliant_scientist_mengele_apply_family_stage_output` permits source and mode writes.
+Blocked or repeated output preserves accepted history and every paid receipt slot.
+The wrapper adds no operational grant, native payload replay, payment, native clock, provider timer, event target, selection control or AI change.
+Computation, Materials and Biomedical keep their existing private Prototype modifiers.
+
+`brilliant_scientist_mengele_adopt_reused_native_prototype` also accepts each of these nine literal family IDs from the parent's after-Theory caller.
+It queries only the family's exact completed object, starts with source/witness/mode none, and submits adopted_completed with no fresh witness.
+A missing exact completion returns none without writing provenance.
+A present exact completion blocked by provider or stage gates returns blocked.
+Successful changed settlement returns adopted_settled and records the exact source/mode without setting a new fixed-family output observation.
+The reactor observation and Biological historical priority remain unchanged.
+The adapter clears selectors even when no historical source is found.
+
+| Pure trigger | Family/index | Bridge use |
+| --- | --- | --- |
+| `brilliant_scientist_mengele_native_teleportation_fresh_receipt_is_present` | teleportation/6 | OR with exact `sp_brilliant_scientist_quantum_transit` completion |
+| `brilliant_scientist_mengele_native_robotics_fresh_receipt_is_present` | robotics/8 | OR with exact `sp_brilliant_scientist_autonomous_cognition` completion |
+| `brilliant_scientist_mengele_native_paleogenetics_fresh_receipt_is_present` | paleogenetics/9 | OR with exact `sp_brilliant_scientist_paleogenetics` completion |
+| `brilliant_scientist_mengele_native_xenobiological_synthesis_fresh_receipt_is_present` | xenobiological_synthesis/10 | OR with exact `sp_brilliant_scientist_xenobiological_synthesis` completion |
+| `brilliant_scientist_mengele_native_alien_arms_fresh_receipt_is_present` | alien_arms/12 | OR with exact `sp_brilliant_scientist_alien_arms` completion |
+| `brilliant_scientist_mengele_native_temporal_fresh_receipt_is_present` | temporal/13 | OR with exact `sp_brilliant_scientist_temporal_mechanics` completion |
+
+These six predicates have no input selectors, defaults, or state writes.
+Each checks both provenance array lengths before the fixed indexed reads, then requires that family's exact source and fresh_output mode.
+Absent or short arrays, an incorrect source, fractional metadata or adopted mode fail.
+The surrounding parent bridge keeps its provider, Theory, Prototype and API-idempotence guards.
+Receipt proof is an authorization observation, not a grant or independent proof of native payment.
+
+A caller consuming `mengele_event016_native_prototype_result` after return must initialize that slot to none in its own frame before calling a literal wrapper or adoption adapter.
+The nested core owns stage/index/applied/package slots that it consumes after deeper helper calls.
+The adapter owns source/witness/mode before settlement, and its family input belongs to the consuming caller.
+The final epilogue clears source, witness, mode, family, stage, index, output authorization and later-stage selectors while preserving the caller-owned dedicated result.
+Parent bridge callers also initialize the public API's consumed `chaosx_custom_technology_grant_applied` output to zero before that nested call.
+
+Example of a parent-owned custom output seam:
+
+```txt
+hidden_effect = {
+	set_temp_variable = { mengele_event016_native_prototype_result = constant:mengele_event016_native_prototype_result.none }
+	brilliant_scientist_mengele_native_completion_sp_brilliant_scientist_quantum_transit = yes
+	if = {
+		limit = { check_variable = { var = mengele_event016_native_prototype_result value = constant:mengele_event016_native_prototype_result.fresh_settled compare = equals } }
+		set_temp_variable = { mengele_event016_native_grant_family = constant:brilliant_scientist_project_family.teleportation }
+		brilliant_scientist_mengele_grant_native_custom_operational_package = yes
+	}
+}
+```
+
+Migration uses the nine exact project calls, the extended adoption adapter, and the six parent bridge OR gates.
+The parent excludes these families from generic private synchronization and generic recording so an aggregate completed query cannot bypass exact provenance.
+Existing `record_mengele...` wrappers may remain for separate legacy or Singularity callers.
+The parent preserves each original country payload and native reward/facility outputs when replacing only its owned hidden block.
+There are no new tuning tables, cost values, duration bands, event targets or periodic hooks.
+Observed flags and accepted provenance are durable facts, and selector cleanup changes no paid stage.
+
+The bounded source driver and reviewed hashes are embedded in `docs/plans/016_brilliant_scientist_plans/subagent_handoffs/016_fixed_native_provider_core_2026-10-07.md`.
+Its 10,953 passing cases execute actual private Prototype output source under conservative nested temporary cleanup, including the nine-source matrix, pure bridge proofs, old-code parity and the inherited 2,264 Biological/reactor cases.
+Provider validity and current-host exclusion are explicit inputs, while native payloads, operational grants, availability reconciliation and modifier refresh remain declared stubs.
+No source simulation proves native clock/payment, native cancellation, same-project reselection or callback-generation isolation.
+Those unresolved lifecycle requirements remain unwaived.
+No implementation simplification is introduced by this core tranche.
+
+The final parent-wiring pass also executes all nine actual hidden output blocks, the actual nine-family after-Theory driver, and six actual bridge bodies with a declared stub for the neutral public grant payload.
+It preserves outer Theory state and verifies bridge-owned public grant-result storage under cold returns.
+
+The final CXT source pass adds 1,115 cases for nine guarded family snapshots, all 512 observed-output subsets, missing and independently sized arrays, initialized-CXT-only eligibility, and preservation of provider arrays, flags, variables, selectors and learned output.
+CXT source remains parent-owned and was read only.

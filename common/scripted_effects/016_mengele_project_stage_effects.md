@@ -150,20 +150,21 @@ High Energy and all six Biological Weapons sources settle through their literal 
 The country-level Mengele completion scan is removed because completed-but-unobserved history cannot identify the current completion.
 The existing Kruger synchronization and historical capture remain host-only.
 Fresh reused-source settlement requires the exact synchronous witness; historical adoption requires the exact completed query and records adopted mode.
-The generic `brilliant_scientist_mengele_sync_native_project_prototypes` excludes Cloning, Rocketry, Electronics, High Energy, and Biological Weapons; the reused-source contract is in `016_mengele_native_prototype_effects.md`.
+The generic `brilliant_scientist_mengele_sync_native_project_prototypes` excludes all fourteen ordinary families; their exact source and mode contract is in `016_mengele_native_prototype_effects.md`.
 Source inventory and scenario evidence are in `docs/plans/016_brilliant_scientist_plans/subagent_handoffs/016_mengele_native_callback_audit_2026-09-06.md` and the matching implementation handoff.
 
-`brilliant_scientist_mengele_sync_native_project_prototypes` accepts only `brilliant_scientist_mengele_project_native_output_is_authentic`, which requires the strict live owner, the matching Theory receipt, and the exact existing special-project completion.
-Rocketry accepts either Flying Bomb or Air Jet Engine completion, matching its native alternative-project gate; it does not require both.
-Biological Weapons authenticates its existing native-project alternatives.
+The legacy generic synchronizer remains a compatibility boundary and cannot create an ordinary-family receipt from a completed bit.
+The nine fixed provider projects use literal country-output witnesses and exact historical adoption, alongside the existing selection-owned and reused-source paths.
+The family-wide authentic-completion predicate remains an eligibility probe for Theory-time historical adoption, where the exact adapter then chooses and verifies the source.
 
-`brilliant_scientist_mengele_record_native_project_prototype` accepts a private family selector or copies the existing native family selector, then routes all ordinary families through the generic adapter.
+`brilliant_scientist_mengele_record_native_project_prototype` accepts a private family selector or copies the existing native family selector, while exact-source exclusions prevent it from settling ordinary families without provenance.
 `brilliant_scientist_mengele_record_singularity_component` authenticates the exact component selector and native special project, appends that component to the private array only when absent, derives the count from the array, sets its provider completion flag, and records the Singularity Prototype only after all six components are present.
 Its result marker stays false for an already recorded component; a duplicate callback cannot create another receipt.
 Initialization reconstructs the array once from durable provider component flags when migrating an earlier provider receipt schema.
 It does not call the Kruger component registry or create Kruger history.
 
-The bridge effect `brilliant_scientist_record_mengele_project_prototype` invokes the native adapter for Electronics, Rocketry, High Energy, Cloning, Biological Weapons, and all previously supported families. Custom native families then receive the existing custom operational API. `brilliant_scientist_record_mengele_singularity_component` is available for the parent Strategic Singularity output branch.
+The legacy bridge effect `brilliant_scientist_record_mengele_project_prototype` retains its result contract for existing callers; exact native outputs and the Theory-time adoption adapter own ordinary-family settlement and the success-only custom operational grants.
+`brilliant_scientist_record_mengele_singularity_component` remains available for the separate Strategic Singularity output branch.
 
 ## Cleanup and parent boundary
 
