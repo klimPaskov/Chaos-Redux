@@ -45,7 +45,7 @@ Persist pending choices, cards, option order, targets, evolution state, novelty 
 
 ## Provider contract
 
-Use `prompts/066_abundance_provider_contract_prompt.md` and route the reusable architecture to `chaosx_scripted_system_architect` with `fork_context=false`.
+Use `prompts/066_abundance_provider_contract_prompt.md` and route the reusable architecture to `chaosx_scripted_system_architect` with `fork_turns="none"`.
 
 Do not create a small central candidate list.
 Build an idempotent registry populated by core providers, dynamic family providers, DLC providers, country packages, event systems, and crisis owners.
@@ -120,7 +120,7 @@ Evolution state adds zero Chaos.
 ## Sudden Abundance cluster
 
 Register Event 66 as three ordered logical member rows, Low, Medium, and High, in the verified Sudden Abundance cluster.
-Treat cluster ID `9` as provisional until the authoritative workbook and runtime constants confirm it.
+Use parent-allocated Sudden Abundance cluster ID `15` and verify registry consistency before wiring.
 Reconcile Event 64 and every other accepted cluster member.
 
 Implement Low, Standard, Medium, and High strength profiles.
@@ -182,7 +182,7 @@ Never edit the three CSV exports directly.
 
 ## Required final passes
 
-After meaningful implementation, use `chaosx_improvement_loop_planner` with `fork_context=false`.
+After meaningful implementation, use `chaosx_improvement_loop_planner` with `fork_turns="none"`.
 Fold an accepted addendum into the source specs or record a closure handoff.
 Do not spawn another pass while an earlier addendum remains unresolved.
 

@@ -5,7 +5,7 @@
 
 Read every file in that folder. Treat the five files under `specs/` as source design and `prompts/058_random_buildings_coding_prompt.md` as the implementation brief. Use the other prompt files for their named passes. Resolve the acceptance matrix and probability scenarios.
 
-Read `AGENTS.md`, required skills, offline wiki pages, vanilla documentation, repository precedents, and all Event 58 plans. Run the supplied repo-explorer prompt first to map live dependencies.
+Read `AGENTS.md`, required skills, offline wiki pages, vanilla documentation, repository precedents, and all Event 58 plans. Use the repo-explorer prompt only for unresolved mapping work.
 
 Keep `chaosx.nr58.1` as the entry event. Register ID 58 as Minor Repeatable, Chaos level 1, and a Medium member of Positive Economy. Replace the stale `The Industrial Complex` identity on Event 58 surfaces.
 

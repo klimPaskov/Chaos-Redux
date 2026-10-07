@@ -16,6 +16,9 @@ Read:
 
 The auditor is read-only. It does not select balance targets and does not patch source.
 
+Before owner edits, preserve immutable before-source files, copied-byte hashes and exact scenario fixtures under the [current subagent probability contract](../../../../.agents/skills/chaos-redux-subagents/SKILL.md#mcp-evidence-in-handoffs).
+Use those real paths for comparison; an analysis artifact cannot replace before-source bytes.
+
 ## Mandatory workflow
 
 1. Run `hoi4.probability_inspect` for the exact surface.

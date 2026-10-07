@@ -1,10 +1,16 @@
 # Fallout Living World Completion Audit Prompt
 
-Run a read-only completion audit of the implemented Air Cleanliness and Fallout system against the complete accepted source design, corrected ownership rules, repository implementation plan, and living-world expansion.
+Run a read-only completion audit against recorded accepted design, corrected ownership rules, repository implementation plans, and living-world requirements.
+Read the scope map first and distinguish historical tranche receipts from current source evidence.
 
 Do not edit gameplay files. Write the audit under `docs/plans/air_cleanliness_fallout_plans/subagent_handoffs/`.
 
 ## Required inputs
+
+Use the [current audit routing and MCP evidence contract](../../../../.agents/skills/chaos-redux-subagents/SKILL.md).
+Require `chaosx_ai_probability_auditor` evidence for weighted surfaces and matching read-only domain routes for represented engine surfaces.
+Preserve inspect/render/compare outcomes, source revisions, explicit scenarios, and exact route blockers; exposed tool names alone prove neither health nor viewer availability.
+The user owns live-game observation; the agent does not launch the game.
 
 Read:
 
@@ -28,7 +34,7 @@ Confirm:
 - no Fallout asset points into another feature folder
 - no zombie event id, file, namespace, image, icon, portrait, flag, GUI texture, sound, music, or sprite path is reused
 - Fallout does not use the normal super-event system
-- the manual scenario id equals the previous live maximum plus one and did not renumber existing entries
+- the existing raw-id-14 reservation is unique, Fallout-owned, and preserved on continuation; initial maximum-plus-one provenance is historical
 
 Treat any failure as blocking.
 
@@ -222,7 +228,7 @@ Confirm:
 - source specs, plans, event docs, system docs, asset manifests, and handoffs agree
 - the event workbook and exported catalogs contain no Fallout rows or Fallout-specific fields
 - every accepted plan has a disposition
-- no stale event-numbered Fallout folder, fixed scenario id, zombie ownership, 1000-percent-only trigger, or super-event claim remains as current guidance
+- no stale event-numbered Fallout folder, repeated scenario allocation instruction, zombie ownership, 1000-percent-only trigger, or ordinary super-event claim remains as current guidance
 
 ## Output
 

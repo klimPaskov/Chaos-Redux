@@ -1,5 +1,9 @@
 # Implement Military Madness
 
+Before implementing authored additions or numerical tuning, record their explicit user decision or parent acceptance within the authorized scope.
+The package's location, delivery status and older parent review do not approve unresolved proposals.
+Retain unresolved choices in the event plans until that basis exists.
+
 Implement Chaos Redux Event 087, Military Madness, from the complete source-spec package at `docs/specs/087_military_madness_specs/`. Preserve the user's design. This is a full implementation assignment, not permission to ship a short whitelist or a fixed entrenchment substitute.
 
 ## Read before changing source

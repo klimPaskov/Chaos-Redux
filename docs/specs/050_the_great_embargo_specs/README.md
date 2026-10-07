@@ -1,8 +1,17 @@
 # Event 050: The Great Embargo specification pack
 
+## Authority and current workflow
+
+The [source conflict ledger](matrices/050_source_conflict_ledger.md) records user-design constraints and unresolved cluster data. Supplied-export observations are historical snapshots.
+Use current [planning](../../../.agents/skills/chaos-redux-event-planning/SKILL.md), [events](../../../.agents/skills/chaos-redux-events/SKILL.md), [assets](../../../.agents/skills/chaos-redux-event-assets/SKILL.md), and [routing](../../../.agents/skills/chaos-redux-subagents/SKILL.md) guidance.
+Unattributed design remains `unresolved`; rediscover current tools and source state before a separately authorized implementation task.
+
+
 This is the source design package for Chaos Redux Event 050, **The Great Embargo**.
 
-Extract the archive at the Chaos Redux repository root. It contains the complete `docs/specs/050_the_great_embargo_specs/` source pack and the related `docs/plans/050_the_great_embargo_plans/` review handoffs.
+The source pack lives at `docs/specs/050_the_great_embargo_specs/`.
+The [source conflict ledger](matrices/050_source_conflict_ledger.md) records the originating user-design constraints and unresolved catalog fields.
+Related working reviews belong under `docs/plans/050_the_great_embargo_plans/`.
 
 ## Accepted catalog identity
 

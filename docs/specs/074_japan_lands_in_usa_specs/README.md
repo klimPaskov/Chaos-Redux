@@ -4,13 +4,12 @@ A Japanese army suddenly establishes a real Pacific mainland front during an exi
 California is preferred, Japan does not need to be winning, and the opening includes actual combat-ready formations and finite logistical preparation.
 The war continues through normal fighting and peace rules.
 
-**Plan-only package. No gameplay, assets, catalogue workbook or repository files were modified by this delivery.**
+This is a planning package with proposed tuning and unresolved implementation gates.
+The original delivery's source-reading and execution claims below are historical evidence, not a current checkout audit or approval of every added design choice.
 
 ## Start here
 
-Extract the ZIP into `docs/specs/` so that this folder becomes:
-
-`docs/specs/074_japan_lands_in_usa_specs/`
+The installed source package is `docs/specs/074_japan_lands_in_usa_specs/`.
 
 Read the eight design parts in order, then use the coding prompt and its seven stage cards.
 The separate goal prompt is ready to copy into a `/goal` workflow.
@@ -59,7 +58,7 @@ The package includes four Japanese action families, five paid American response 
 It uses ordinary decision categories, existing countries and ordinary unit families.
 There is no new country, focus-tree replacement, separate resource wallet, unique 3D model or scripted peace.
 
-## What was read and what remains unverified
+## Original planning delivery: reading and execution limits
 
 **All 42 supplied text files were read in full, including all 20 supplied subagent definitions.**
 Three additional repository files were read in full: the existing Event 074, the Portal Raider API document and the MTTH skill.
@@ -97,7 +96,8 @@ Do not assume a historical map ID or the inspected default-branch file is unchan
 The supplied CSVs are source snapshots.
 The editable event catalog is `docs/spreadsheets/chaos_redux_events_catalog.xlsx`.
 Only after verified mechanics and final wording exist should the spreadsheet specialist update it and regenerate the CSV through `.tools/export_event_catalog_csv.py`.
-The event remains **Minor Fire-Once, Chaos level 1, Wars Medium, To Be Reworked** until implementation evidence supports a status change.
+The planned catalog assignment is **Minor Fire-Once, Chaos level 1, Wars Medium, To Be Reworked**.
+Inspect the authoritative workbook before editing its current row or status.
 
 ## Delivery boundary
 

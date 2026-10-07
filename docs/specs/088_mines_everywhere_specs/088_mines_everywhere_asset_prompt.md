@@ -29,17 +29,10 @@ Produce one original colored transparent subject for each proposed registration 
 
 No finished achievement titles, text or numbers belong in the icon. Do not copy a historical insignia or add a national flag merely to fill space. Inspect the native achievement family and its contact sheets before choosing silhouette, contrast, material treatment and visual scale.
 
-Each completed subject needs a coherent 64 × 64 completed, grey and not-eligible triplet. Inspect the actual skill-local template files rather than reconstructing them:
-
-`.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/achievements/template/achievement_template.png`
-
-`.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/achievements/template/achievement_template_grey.png`
-
-`.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/achievements/template/overlay.png`
-
-Resolve any path drift against the live skill and retain the inspected paths. Some older prose points to an overlay in a different location. Do not silently fabricate a replacement. The actual verified files and current processor determine the production contract.
-
-Generate the subject once, then use the verified `process_achievement_icons.py` workflow for the complete triplet. Grey and not-eligible are deterministic variants of the same accepted artwork. Use the fixed not-eligible overlay unchanged. Do not generate three unrelated images, redraw the overlay, or recolor it.
+Each subject needs a coherent 64 × 64 completed, grey and not-eligible triplet.
+Follow the current [achievement creation and processing contract](../../../.agents/skills/chaos-redux-event-assets/SKILL.md#achievement-icons), including its canonical `assets/gfx_references/icons/achievements/template/` inputs, immutable template hashes, complete source triplet and processor.
+Inspect the actual inputs and references before generation.
+Preserve one accepted subject across deterministic state variants and record any missing dependency as blocked.
 
 Final achievement DDS files must use the verified registered key under the existing root `gfx/achievements/`, with the normal `_grey` and `_not_eligible` suffixes. The parent owns the single root achievement registry and consumer wiring. Do not create a new per-event registry or claim that an icon proves the corresponding difficult achievement can be observed by the engine.
 

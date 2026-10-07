@@ -9,7 +9,9 @@ Read:
 - final Event 051 Event Details, evolution, cluster, and super-event localisation
 - `docs/specs/051_heat_wave_specs/23_catalog_and_documentation_alignment.md`
 
-## Required updates
+Resolve the classification acceptance recorded in the package README before changing the type.
+
+## Required updates after acceptance
 
 - Event 51 type becomes Minor Repeatable
 - Chaos level remains 1

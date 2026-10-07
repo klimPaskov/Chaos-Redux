@@ -218,7 +218,7 @@ Separate 32 by 32 art for:
 
 ## Achievement assets
 
-Fourteen completed 64 by 64 icons plus grey and not-eligible variants. Exact concepts are in the achievement matrix.
+Thirteen completed 64 by 64 icons plus grey and not-eligible variants. Exact concepts are in the achievement matrix.
 
 ## Super-event audio assets
 

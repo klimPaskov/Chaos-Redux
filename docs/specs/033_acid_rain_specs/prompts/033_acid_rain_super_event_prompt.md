@@ -2,6 +2,9 @@
 
 Complete the formation super-event for Chaos Redux Event 33 through the repository's existing super-event framework. Read Part 9, Part 10, the research files, the super-event skill, the asset skill, the frame-animation skill, and current super-event registries before editing. Use `chaosx_super_event_text_researcher`, `chaosx_super_event_audio_researcher`, `chaosx_asset_source_researcher`, and `chaosx_event_completion_auditor`.
 
+Agents perform source, audio-preview, and supported MCP checks; live-game checks remain user-owned.
+This imported production prompt does not invoke autonomous debug playtesting.
+
 ## Trigger contract
 
 The super-event fires once after the Event 33 formation transaction has committed its frozen eligible-state registry, first front, first active footprint, global phase, and decision-category availability. It must not fire from a failed or rolled-back initialization. Cluster and independent launches use the same once-only presentation receipt. Save reconciliation must not replay it.

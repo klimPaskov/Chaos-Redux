@@ -1,4 +1,8 @@
-# Package Validation Report
+# Historical Package Validation Report
+
+This receipt records the original planning package before the thirteenth specification and later corrections.
+Its counts, prompt length and checked items are retained as historical evidence, not results rerun on the current package.
+Current acceptance and implementation evidence belong to the [requirement ledger](../../../plans/chaos_warfare_system_plans/2026-09-20_cbrn_overhaul_requirement_ledger.md).
 
 Counts below exclude this report and the package manifest to avoid self-reference.
 

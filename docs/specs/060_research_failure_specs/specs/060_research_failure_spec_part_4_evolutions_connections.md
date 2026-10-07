@@ -407,8 +407,9 @@ The cluster owner should coordinate members through these rules:
 - Event 16 owner systems keep their own lifecycle and cannot be consumed as a generic bonus.
 - Cluster history records fired and skipped members with the normal reasons.
 
-The cluster's exact ID and membership must come from the authoritative workbook and implemented registry.
-The supplied CSV snapshot leaves the Scientific Research cluster ID unresolved, so implementation must not invent a conflicting ID from this planning pack.
+Scientific Research uses reserved cluster ID `21` from the [shared identifier registry](../../shared_identifier_registry.md), shared with the named proposals in Events 054 and 089.
+The reservation establishes identity only.
+Membership and activation still require accepted cluster design and implementation evidence.
 
 ## Chaos impact
 

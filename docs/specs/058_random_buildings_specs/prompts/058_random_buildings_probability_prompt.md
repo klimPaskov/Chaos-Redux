@@ -2,9 +2,9 @@
 
 Use this prompt with `chaosx_ai_probability_auditor`. The audit concerns random selection and cluster participation, not AI decision clicks.
 
-Spawn with `fork_context=false`.
+Spawn with `fork_turns="none"` in Codex.
 
-Read `AGENTS.md`, `chaos-redux-subagents`, `chaos-redux-events`, the full Event 58 specification package, `quality/058_random_buildings_probability_scenarios.md`, the repository explorer handoff, and the exact implemented weight, provider, fallback, cluster, and exceptional-budget source files.
+Read `AGENTS.md`, `chaos-redux-subagents`, `chaos-redux-events`, the full Event 58 specification package, `quality/058_random_buildings_probability_scenarios.md`, the parent source map or repository explorer handoff when one exists, and the exact implemented weight, provider, fallback, cluster, and exceptional-budget source files.
 
 ## Required workflow
 

@@ -1,5 +1,8 @@
 # Event 013 Natural Disasters, dependency order and subagent sequence
 
+> Superseded planning sequence: [the implementation resume prompt](../prompts/natural_disasters_implementation_resume_prompt.md) and [the disposition map](../docs_alignment/013_source_of_truth_and_disposition_map.md) replace this original fresh-build instruction.
+> Preserve the design traceability below and choose continuation work from the dated implementation handoffs.
+
 This file gives the implementation order that best preserves the expanded design while avoiding duplicate logic and late rewrites.
 
 ## Phase 0, live repository mapping

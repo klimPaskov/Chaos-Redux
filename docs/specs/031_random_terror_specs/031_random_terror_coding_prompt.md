@@ -6,7 +6,8 @@ Implement Event 31 Random Terror to the fullest extent defined by:
 
 `docs/specs/031_random_terror_specs/`
 
-Treat every specification part, matrix, research note, and prompt in that folder as accepted source design.
+Use the numbered specification parts and matrices as the design source, and record the user decision or parent acceptance for each claim before treating it as accepted.
+Research notes and prompts supply evidence and workflow guidance; their presence in this folder does not establish approval.
 
 Do not replace mapped content with a smaller prototype, generic fallback, placeholder, or partial chain.
 
@@ -41,7 +42,7 @@ Do not rely on memory when local documentation exists.
 
 ## Repository and tool preflight
 
-Use `chaosx_repo_explorer` with `fork_context=false` because this is a large cross-surface event and the live file map is not included in the planning package.
+Use `chaosx_repo_explorer` with `fork_turns="none"` because this is a large cross-surface event and the live file map is not included in the planning package.
 
 Map:
 
@@ -82,7 +83,9 @@ Preserve:
 - manual scenario name `Global Jihad`
 - public world-end name `The False Revelation`
 
-Verify proposed scenario ID `SCN-014` and proposed future cluster ID `9` against the authoritative workbook and live registries before reservation.
+Preserve Global Jihad's existing scenario identity `SCN-016`, raw scenario ID `16`, under [the shared identifier registry](../shared_identifier_registry.md) and [its JSON ledger](../shared_identifier_registry.json).
+The optional Internal Fracture proposal reserves raw `event_cluster_id` `22`.
+Preserve Event 031's current Domestic Unrest membership at raw cluster ID `16`; the reservation does not approve a membership change or cluster implementation.
 
 Do not register Internal Fracture until enough member events are reworked and the cluster is accepted.
 
@@ -225,7 +228,7 @@ Implement consent for every foreign resource or unit commitment.
 
 Write compact icon-first costs and exact blocked tooltips.
 
-Spawn `chaosx_scripted_system_architect` with `fork_context=false` for repeated Event 31 helpers, selected-target contracts, constants, targets, and cleanup.
+Spawn `chaosx_scripted_system_architect` with `fork_turns="none"` for repeated Event 31 helpers, selected-target contracts, constants, targets, and cleanup.
 
 Keep subsystem-private helpers in Event 31 files.
 
@@ -522,7 +525,7 @@ Use `chaosx_documentation_curator` during the long implementation when specs, pl
 
 ## Required subagent routing
 
-All project subagents use `fork_context=false` and context-complete prompts.
+All project subagents use `fork_turns="none"` and context-complete prompts.
 
 Use the routing file in this package.
 
@@ -555,7 +558,7 @@ The planning package already contains a closure review.
 
 After a meaningful implementation tranche, inspect whether implementation exposed a new broad design gap not covered by the specs.
 
-Near completion, spawn `chaosx_improvement_loop_planner` with `fork_context=false`.
+Near completion, spawn `chaosx_improvement_loop_planner` with `fork_turns="none"`.
 
 It should return a closure handoff unless implementation created a new material gap.
 

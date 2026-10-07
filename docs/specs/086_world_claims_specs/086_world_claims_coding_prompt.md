@@ -1,5 +1,9 @@
 # Implement Event 086: World Claims
 
+Before implementing authored additions or numerical tuning, record their explicit user decision or parent acceptance within the authorized scope.
+The package's location, delivery status and older parent review do not approve unresolved proposals.
+Retain unresolved choices in the event plans until that basis exists.
+
 Work in the existing Chaos Redux repository. Read `docs/specs/086_world_claims_specs/README.md`, every spec part 1–13 and every linked contract/matrix in full before editing. Read current AGENTS, full planning/events/decisions/scripted-GUI/assets/subagents/improvement-loop/MTTH requirements and required linked references. The source audit explicitly says some external must-reads and all independent reviews were not completed in the planning chat. Resolve them now rather than claiming the planning ZIP already satisfied them.
 
 Implement the full package, not a reduced prototype. Use `086_world_claims_implementation_handoff.md` for ownership and stages and `086_world_claims_engine_contracts.md` for gates G1–G8. Store working plans and proof under `docs/plans/086_world_claims_plans/` while preserving the accepted source specs.

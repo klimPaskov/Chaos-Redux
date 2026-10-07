@@ -7,6 +7,9 @@ The normalized baseline files establish the systems that destroy and rebuild the
 
 ## Main additions
 
+This is planning-pass history, not a current implementation ledger.
+Use [SOURCE_OF_TRUTH_AND_SCOPE.md](SOURCE_OF_TRUTH_AND_SCOPE.md) for later decision precedence and [SOURCE_SPEC_INDEX.md](SOURCE_SPEC_INDEX.md) for current navigation.
+
 - A catalogue target of roughly 660 to 910 unique Fallout event blocks across the full implementation.
 - A per-campaign target of roughly 90 to 180 meaningful visible events over ten years for a human country, with variation by region, government, cause memory, neighbors, and choices.
 - Global events that affect food, water, shelter, medicine, salvage, power, legitimacy, crime, refugees, war, and recovery.

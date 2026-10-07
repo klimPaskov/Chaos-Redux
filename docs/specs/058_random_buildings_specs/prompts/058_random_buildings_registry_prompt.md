@@ -1,10 +1,10 @@
 # Scripted-system architecture prompt for Event 58 Random Buildings
 
-Use this prompt with `chaosx_scripted_system_architect` after the repository exploration pass.
+Use this prompt with `chaosx_scripted_system_architect` after targeted parent inspection or a justified repository exploration pass.
 
-Spawn with `fork_context=false`.
+Spawn with `fork_turns="none"` in Codex.
 
-Read `AGENTS.md`, `chaos-redux-events`, `chaos-redux-subagents`, the complete Event 58 specification package, the repository explorer handoff, the offline wiki pages for data structures, triggers, effects, scopes, event targets, and on-actions, installed vanilla documentation, and the exact live Event 58, building, facility, camp, map, and event-log source files named by the parent.
+Read `AGENTS.md`, `chaos-redux-events`, `chaos-redux-subagents`, the complete Event 58 specification package, the parent source map or repository explorer handoff when one exists, the offline wiki pages for data structures, triggers, effects, scopes, event targets, and on-actions, installed vanilla documentation, and the exact live Event 58, building, facility, camp, map, and event-log source files named by the parent.
 
 ## Goal
 

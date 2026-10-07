@@ -1,5 +1,7 @@
 # Coding prompt: Gods of Africa under Event 012
 
+Disposition: superseded historical prompt; current guidance is [the Event 012 authority map](../../012_africa_specs/README.md).
+
 Implement the accepted Gods of Africa specification as a persistent subsystem owned by Event `012`, Africa Is One.
 
 ## Hard ownership rules

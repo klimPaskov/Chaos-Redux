@@ -33,7 +33,9 @@ Report source scenes are generated unframed, then processed to the documented co
 
 ## Alpha, conversion, and registration
 
-Decision and idea icons need clean subject silhouettes and true transparent backgrounds. Do not use checkerboard pixels or a flattened white rectangle to simulate alpha. An icon must remain distinct from the other action families at its actual 32-pixel display size.
+Decision and idea icons need clean subject silhouettes and native ImageGen transparency under [the current asset contract](../../../../.agents/skills/chaos-redux-event-assets/SKILL.md).
+Preserve the native alpha through processing and DDS conversion; background removal is a documented fallback.
+Do not use checkerboard pixels or a flattened white rectangle to simulate alpha. An icon must remain distinct from the other action families at its actual 32-pixel display size.
 
 Use the project's conversion tools and expected BGRA DDS contract. Validate width, height, channel order, alpha, and the 128-byte DDS header before runtime registration. Final filenames and case must match `.gfx` declarations. Placing a file under `gfx/` is not sufficient to register it.
 

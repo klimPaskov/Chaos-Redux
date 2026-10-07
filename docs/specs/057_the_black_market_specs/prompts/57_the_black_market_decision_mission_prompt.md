@@ -10,7 +10,7 @@ Implement the member and outsider decision systems from:
 Follow the current repository versions of `AGENTS.md`, `chaos-redux-decisions-missions`, `chaos-redux-events`, and the current vanilla decision documentation and precedents.
 
 
-Spawn every project subagent with a complete self-contained prompt and `fork_context=false`.
+Spawn every project subagent with a complete self-contained prompt and `fork_turns="none"` in Codex.
 
 ## Presentation
 

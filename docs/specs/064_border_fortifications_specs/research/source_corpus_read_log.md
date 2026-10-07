@@ -1,5 +1,7 @@
 # Event 064 Source Corpus Read Log
 
+Historical source-reading receipt for the original supplied corpus; its hashes identify those inputs rather than today’s repository.
+
 ## Completion statement
 
 Every supplied text source was read through its complete file boundary before the Event 064 specification was drafted. This includes all standalone Markdown files, all three CSV catalogs, the TOML configuration, and all twenty TOML subagent definitions extracted from the supplied archive.

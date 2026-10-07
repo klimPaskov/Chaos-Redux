@@ -2,7 +2,7 @@
 
 Use `chaos-redux-event-assets` for every asset in this prompt. Route production through the project subagents named in that skill: `chaosx_generated_event_art` for report, super-event, and category-picture art, and `chaosx_icon_artist` for decision, decision-category, idea, and achievement icons. Every subagent prompt must be self-contained and carry the paths, names, sizes, and rules below.
 
-Read the accepted design before producing anything:
+Read the [package authority and conflict table](../README.md) before selecting this nested variant for production, then read its design:
 
 - `docs/specs/097_collaboration_specs/specs/097_collaboration_spec_part_1_core.md`
 - `docs/specs/097_collaboration_specs/specs/097_collaboration_spec_part_2_evolutions.md`
@@ -12,7 +12,7 @@ Read the accepted design before producing anything:
 
 ## Global rules
 
-- Inspect the matching canonical reference family and its contact sheet before generating each family. The current skill places the library under `.agents/skills/chaos-redux-event-assets/assets/gfx_references/`, and this checkout still holds it under `assets/vanilla_reference/` in the same skill folder.
+- Inspect the matching canonical reference family and contact sheet under `.agents/skills/chaos-redux-event-assets/assets/gfx_references/`, following the current owner skill.
 - All art is fictional, period-documentary in feel for 1936 to 1945, and shows no real person, no real collaborator, no readable text, and no identifiable real national insignia of a foreign occupying army. Local flags may appear only as unreadable shapes.
 - The subject is ordinary people changing sides: officials, police, clerks, managers, local politicians. Do not make paperwork, archives, maps, or staff tables the main subject. Do not depict violence against civilians.
 - Icons use native ImageGen transparency, keep the alpha through processing and DDS conversion, and are each designed for their own consumer. Never resize one icon type into another.
@@ -61,7 +61,9 @@ The super-event image is coordinated with `docs/specs/097_collaboration_specs/pr
 | --- | --- | --- | --- |
 | `decision_category_097_collaboration_divided_loyalties_picture` | Divided Loyalties category picture | `GFX_decision_category_097_collaboration_divided_loyalties_picture` | A ministry corridor at night. A few officials work by lamplight. At the end of the corridor one figure waits by a half-open door. No buttons, meters, or text. |
 
-Inspect the decision-category picture reference family and its `contact_sheet.png` first. The current skill names it `assets/gfx_references/icons/decision_categories/pictures/`, and this checkout holds it at `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/decision_categories/pictures/`. Use whichever folder exists when the picture is produced. If the contact sheet is missing, create it, label each reference with filename and native dimensions, and update the reference README and catalog before producing the picture. The reference family uses `114x101`, but the final size follows the active category-picture consumer the implementation agent wires.
+Inspect `.agents/skills/chaos-redux-event-assets/assets/gfx_references/icons/decision_categories/pictures/` and its `contact_sheet.png` first.
+Follow the current asset skill's preflight if references need hydration or repair, and report any unresolved reference gap rather than selecting a legacy library by assumption.
+The reference family uses `114x101`, but the final size follows the active category-picture consumer the implementation agent wires.
 
 ## Decision category icons
 
@@ -123,4 +125,6 @@ Follow the achievement workflow in `chaos-redux-event-assets` exactly: one gener
 
 ## Manifest and coverage
 
-Before completion, build the requirement-to-runtime crosswalk from every row above: requirement, source package, final DDS, sprite, owning `.gfx`, live consumer, and state binding. Promote durable provenance into `docs/events/097_collaboration/` and delete the temporary workspace only when the event goal is complete.
+Before completion, build the requirement-to-runtime crosswalk from every row above: requirement, source package, final DDS, sprite, owning `.gfx`, live consumer, and state binding.
+Apply the current asset skill's workspace retention and durable provenance rules before cleanup.
+Retain active, blocked or review-pending material and every durable portrait source package.

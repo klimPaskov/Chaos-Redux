@@ -4,13 +4,14 @@
 
 This is the full authored design package for the supplied British Tax brief. It expands the persistent economic system, country permissions, long resistance route, British responses, both Evolutions, settlements, AI behaviour, achievements, presentation, and implementation handoffs. It contains design and planning material, not implemented HOI4 files or finished art.
 
-All 42 text files supplied in the archive were read in full before authoring: 22 project and skill sources, plus 20 subagent definitions. Not every referenced external must-read file was available. Installed-game documentation, complete relevant repository dependencies, visual reference binaries, the authoritative workbook, and the referenced MTTH skill remain among the missing inputs. No actual subagent or HOI4 MCP validation workflow was run in this session.
+The original planning-session record states that all 42 text files supplied in the archive were read in full before authoring: 22 project and skill sources, plus 20 subagent definitions. Not every referenced external must-read file was available. Installed-game documentation, complete relevant repository dependencies, visual reference binaries, the authoritative workbook, and the referenced MTTH skill were among that session's missing inputs. No actual subagent or HOI4 MCP validation workflow was run in that session.
+Current source coverage, tools, and implementation must be checked separately; this archive-era disclosure does not establish present capability.
 
 New structural names are working labels, not final localisation. User-supplied names are retained. Numerical anchors are proposed balance targets and are clearly separated from claims about supported engine syntax. The catalog status remains To Be Reworked.
 
 ## Placement and starting point
 
-Extract the `081_british_tax_specs` folder into `docs/specs/` in the repository.
+This package is installed at `docs/specs/081_british_tax_specs/`.
 
 Read the [core specification](081_british_tax_spec_part_1_core.md), then follow the numbered parts. For implementation, start with the [coding-agent prompt](081_british_tax_coding_prompt.md). The separate [goal prompt](081_british_tax_goal_prompt.md) is ready to copy into the capable coding runtime and points back to the full source package.
 
@@ -43,12 +44,14 @@ Britain's benefits come from actual foreign charges. The two trade directions ar
 
 ## Evidence companion
 
-The separate `081_british_tax_plans` package is intended for `docs/plans/`. It contains the 42-file reading ledger and hashes, all 20 role execution statuses, engine and integration gates, 40 native validation scenarios, the main-agent review and issue dispositions, and a reproducible deterministic arithmetic model with its results.
+The original delivery referenced `docs/plans/081_british_tax_plans/` for reading ledgers, role statuses, engine gates, 40 native scenarios, review dispositions, and an arithmetic suite.
+That companion directory is absent from this checkout, so these are historical delivery claims and blocked dependencies rather than runnable or reviewed local evidence.
 
-The companion is evidence and implementation planning, not a second conflicting source of gameplay rules. Accepted design corrections discovered during review have already been folded into the numbered source parts.
+The companion is evidence and implementation planning, not a second conflicting source of gameplay rules. The original author reported folding review corrections into the numbered parts; that same-author review does not establish user or parent acceptance of the expanded design.
 
 ## Boundaries before implementation can be called complete
 
 Native independent-country transfers, consumer-goods units and floors, dynamic two-direction bilateral trade, ownership-aware embargo and war-goal cleanup, expanded asset transfers, and current lifecycle hooks still need verification. The asset family references were not visually available, no art was generated, and no recording was licensed or produced. Final localisation remains deliberate later work under the supplied planning skill.
 
-The mandatory actual probability auditor, independent improvement-loop planner, applicable native validation, and the user's authorised live-testing workflow remain outstanding. These limits are not concealed by the depth of the written design or by the deterministic arithmetic checks. No core route was intentionally omitted to shorten the package.
+The original delivery did not perform the required probability audit, independent improvement-loop review, or native validation.
+Live-game validation belongs to the user; the debug-playtest skill applies only when explicitly invoked. These limits are not concealed by the depth of the written design or by the deterministic arithmetic checks. No core route was intentionally omitted to shorten the package.

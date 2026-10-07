@@ -1,6 +1,6 @@
 # Subagent Prompt: Event 021 Country-Package Auditor
 
-Spawn `chaosx_country_package_auditor` with `fork_context=false` after ordinary claimant and Event 006 integration exists.
+Spawn `chaosx_country_package_auditor` with `fork_turns="none"` after ordinary claimant and Event 006 integration exists.
 
 Read:
 

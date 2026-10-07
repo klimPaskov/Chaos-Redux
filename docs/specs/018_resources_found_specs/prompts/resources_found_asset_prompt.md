@@ -1,6 +1,6 @@
 # Asset Production Prompt for Event 018 Resources Found
 
-Produce the complete visual asset package for Chaos Redux Event 018, Resources Found. This is a generated fictional and alternate-history package. Use the narrow project asset workers by asset type. Use `chaosx_generated_event_art` for non-icon scenes, fictional portraits, flags, emblems, and super-event images. Use `chaosx_icon_artist` for focus, idea, decision, decision-category, achievement, warning, and mechanic icons. Use `chaos-redux-frame-animation` for every animated element.
+Produce the complete visual asset package for Chaos Redux Event 018, Resources Found. This is a generated fictional and alternate-history package. Use the narrow project asset workers by asset type. Use `chaosx_generated_event_art` for non-icon scenes, flags, emblems, and super-event images. Use `chaosx_icon_artist` for focus, idea, decision, decision-category, achievement, warning, and mechanic icons. Use `chaos-redux-frame-animation` for every animated element.
 
 All working labels in this prompt are internal design handles, not final localisation.
 
@@ -14,7 +14,8 @@ Read the relevant sections of:
 - the Event 018 source specs
 - the named reference folders for each asset type
 
-Do not edit gameplay, localisation, GUI, GFX, focus, idea, decision, event, country, history, or spreadsheet files. Produce source art, processed PNGs, final DDS or TGA files, manifests, contact sheets, and `gfx_handoff.md` only.
+Non-portrait workers do not edit gameplay, localisation, GUI, GFX, focus, idea, decision, event, country, history, or spreadsheets.
+The portrait owner retains its skill-defined narrow exception for portrait-specific GFX and existing character portrait references. Produce source art, processed PNGs, final DDS or TGA files, manifests, contact sheets, and `gfx_handoff.md` only.
 
 Do not use generated text, labels, watermarks, modern clothing, modern machinery, modern roads, modern safety gear, cinematic color grading, meme imagery, fake checkerboards, white halos, or opaque square backgrounds on transparent icons.
 
@@ -315,6 +316,8 @@ Direction:
 A final sealed chasm surrounded by damaged industrial ruins, multinational engineering teams, abandoned anti-armor weapons, and signs of immense loss. Reflect survival and cost rather than uncomplicated victory. Produce only if the global defeat super-event is implemented.
 
 ## Cave leader portrait
+
+Route the cave sovereign, authorized route portraits, commanders, portrait animation, processing, and portrait-specific wiring to `chaosx_portrait_creator` under [the asset owner skill](../../../../.agents/skills/chaos-redux-event-assets/SKILL.md).
 
 ### Static portrait
 
@@ -692,7 +695,8 @@ For every asset record:
 - ready-to-copy sprite snippets where useful
 - any naming that remains blocked by the final country tag or focus ID
 
-Do not wire GFX or gameplay files. The main implementation agent owns final wiring and must preserve the final registered names.
+The parent owns final non-portrait GFX and gameplay wiring and preserves the registered names.
+The portrait owner handles its narrow portrait wiring under the asset owner skill.
 
 ## Completion standard
 

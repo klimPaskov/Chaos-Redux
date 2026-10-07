@@ -1,5 +1,9 @@
 # Event 34 Industrial Boom repository cross-check
 
+Historical evidence: source names, hashes, repository observations, and tool/runtime limitations below belong to the original planning pass.
+They do not establish current local file availability, current service health, implementation status, or design approval.
+Use the package entry point and current owner skills for active guidance.
+
 ## Review scope
 
 The public `klimPaskov/Chaos-Redux` repository was inspected on 2026-08-27 after the supplied project-source pass. The repository default branch is `master`. GitHub code search returned revision `2d1653381c8f495bb587cc22941e428db810bc09` for the relevant indexed files.

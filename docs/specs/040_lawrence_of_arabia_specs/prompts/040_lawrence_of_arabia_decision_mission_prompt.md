@@ -27,6 +27,10 @@ Event-owned repeated logic belongs in Event 40 scripted effects and triggers. Us
 
 ## Presentation
 
+Resolve the picture-plus-meter conflict recorded in Part 5 under the current event presentation skill before implementing this category.
+Do not infer approval from the imported spec.
+
+
 Use ordinary decision categories with a static category picture. Do not create a dedicated scripted GUI.
 
 The active target category shows one persistent value:

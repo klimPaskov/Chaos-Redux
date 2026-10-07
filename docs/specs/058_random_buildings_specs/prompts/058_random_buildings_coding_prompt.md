@@ -4,11 +4,11 @@ Implement Event 58, Random Buildings, in the Chaos Redux repository as a complet
 
 ## Accepted source design
 
-Read and treat every file under `docs/specs/058_random_buildings_specs/` as acceptance criteria. Read all Event 58 plans and handoffs under `docs/plans/058_random_buildings_plans/` and record whether each is implemented, promoted, queued, rejected, superseded, or blocked.
+Read the README authority section and the five source design parts before mapping acceptance criteria. Historical reviews and prompt instructions are supporting material, and expanded design needs attributable acceptance. Read all Event 58 plans and handoffs under `docs/plans/058_random_buildings_plans/` and record whether each is implemented, promoted, queued, rejected, superseded, or blocked.
 
 Before editing, read `AGENTS.md`, the required offline Paradox wiki pages, relevant installed vanilla documentation, and the current project skills for events, event planning, decisions and missions, assets, subagents, improvement loops, achievements where documented, and any exact engine surface touched. Inspect at least one current Chaos Redux event pattern and one installed vanilla precedent for every nontrivial engine operation.
 
-Use `chaosx_repo_explorer` first because the live repository file map, existing building registries, map helpers, camp APIs, facility APIs, achievement patterns, and event-log identifiers are not known from the planning environment. Give it a context-complete prompt and keep it read-only.
+Use `chaosx_repo_explorer` only if file locations, owner APIs, existing patterns, or implementation order remain uncertain after targeted reads. Follow the [current routing gate](../../../../.agents/skills/chaos-redux-subagents/SKILL.md).
 
 ## Core event contract
 

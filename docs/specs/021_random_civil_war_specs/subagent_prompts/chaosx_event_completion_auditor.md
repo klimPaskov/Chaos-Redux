@@ -1,6 +1,6 @@
 # Subagent Prompt: Event 021 Completion Auditor
 
-Spawn `chaosx_event_completion_auditor` with `fork_context=false` after implementation, assets, docs, workbook work, probability comparison, and the improvement-loop disposition are complete.
+Spawn `chaosx_event_completion_auditor` with `fork_turns="none"` after implementation, assets, docs, workbook work, probability comparison, and the improvement-loop disposition are complete.
 
 This is read-only.
 

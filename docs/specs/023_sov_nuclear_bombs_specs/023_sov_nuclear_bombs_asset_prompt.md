@@ -1,5 +1,8 @@
 # Event 023 asset-production prompt
 
+Use the current [asset contract](../../../.agents/skills/chaos-redux-event-assets/SKILL.md) for source modes, native ImageGen transparency, alpha preservation, exact consumer dimensions, achievement states, and ownership.
+Reconcile this design inventory with current manifests and runtime consumers before producing another asset.
+
 Create the complete final visual asset package for Chaos Redux Event 23, `sov_nuclear_bombs`, using the accepted specification folder `docs/specs/023_sov_nuclear_bombs_specs/`.
 
 ## Required reading
@@ -48,7 +51,7 @@ Use `chaosx_icon_artist` for:
 
 Use `chaosx_asset_source_researcher` only when the parent deliberately selects a real archival image. Do not mix a sourced historical person or real event into a generated package without recording that source mode.
 
-Every project subagent uses `fork_context=false` and receives exact files, names, dimensions, references, and handoff paths.
+Every project subagent uses `fork_turns="none"` and receives exact files, names, dimensions, references, and handoff paths.
 
 ## Visual direction
 
@@ -171,18 +174,9 @@ The parent owns final non-portrait `.gfx`, `.gui`, gameplay, localisation, and s
 
 ## Quality gates
 
-- Inspect the exact reference family and contact sheet before every asset type.
-- Preserve source PNGs and prompts.
-- Produce true transparency where the verified family uses transparency.
-- No checkerboard remnants, white halos, opaque square backgrounds, or chroma outlines.
-- Icons remain readable at final size.
-- Separate icon types use separate source art.
-- DDS files use the repository conversion workflow and pass decoded review.
-- Contact sheets show native-size alignment and transparency.
-- Every final file has a manifest row.
-- `gfx_handoff.md` names final paths, sprites, sizes, source mode, and consumer.
-- The super-event image is distinct from Fallout and any Final Silence image.
-- No placeholder or primitive locally drawn final art is accepted.
+Apply the current asset contract linked above for ImageGen sources, consumer-specific transparency, separate icon families, decoded DDS review, manifests, and contact sheets.
+Keep the exchange image distinct from Fallout and Final Silence.
+Preserve the inventory and prohibition on absent asset families within their recorded acceptance scope.
 
 ## Handoff
 

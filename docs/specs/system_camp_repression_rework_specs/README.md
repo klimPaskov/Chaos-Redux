@@ -1,10 +1,14 @@
 # Camp, Repression, and Atrocity Consequences Rework Package
 
-This package is the accepted design source for the implemented Chaos Redux rework of the existing camp, forced-labor, gulag, atrocity, discovery, Deaths, condemnation, and Mengele-linked systems.
+This package preserves the original Chaos Redux camp, forced-labor, gulag, atrocity, discovery, Deaths, condemnation, and Mengele-linked design and its dated implementation evidence.
+Read [package_index.md](package_index.md) for the current acceptance map, source publication status and outstanding evidence.
+The accepted national-administration contract and October 6 takeover are the continuation entry points; the full workstream retains open acceptance gates.
 
 The package is written as a system rework rather than a single random-event spec because the requested scope crosses buildings, decisions, country AI, Germany's Mengele chain, Japan's biowarfare chain, Soviet paranoia and collapse mechanics, colonial country packages, the Chaos Meter Deaths tab, condemnation, discovery, assets, localisation direction, and implementation prompts.
 
-The current UI source of truth is `specs/system_camp_repression_rework_spec_part_6_scripted_gui_wireframe_value_display.md`; the parent implementation and final UI report are tracked at `../../plans/system_camp_repression_rework_plans/repression_ui_redesign_2026-09-05.md`. Dated implementation and asset paragraphs below may retain the former Ledger wording as historical evidence and do not override the current Part 6 presentation contract.
+Part 6 and the September UI report preserve the superseded five-view presentation contract and its original evidence.
+The current national-administration contract governs incompatible presentation and gameplay instructions.
+The dated paragraphs below retain July inventories and asset wording as historical evidence; they are not a current consumer audit or instruction to rebuild those assets.
 
 ## Safety and design boundary
 
@@ -24,14 +28,14 @@ Restricted contaminated-site escalation is implemented through abstract capabili
 - `specs/system_camp_repression_rework_spec_part_3_germany_japan_soviet_deepening.md` expands the deep Germany, Japan, and Soviet packages.
 - `specs/system_camp_repression_rework_spec_part_4_ui_ai_assets_acceptance.md` maps UI, AI, assets, achievements, and acceptance criteria.
 - `specs/system_camp_repression_rework_spec_part_5_country_decision_kits_focus_hooks.md` details U.K./Raj, U.S.A., France/Vichy/North Africa, Italy/Libya, Belgium/Congo, and generic decision kits with focus hooks.
-- `specs/system_camp_repression_rework_spec_part_6_scripted_gui_wireframe_value_display.md` defines the current Repression and Camps GUI layout and exact value display plan.
+- `specs/system_camp_repression_rework_spec_part_6_scripted_gui_wireframe_value_display.md` preserves the superseded September Repression and Camps GUI layout and exact value display plan.
 - `specs/system_camp_repression_rework_spec_part_7_implementation_checklist_validation.md` lists implementation surfaces, touched files, validation commands, and scenario checks.
 - `matrices/country_ai_matrix.md` gives an AI behavior matrix.
 - `matrices/decision_mission_matrix.md` gives a decision and mission family matrix.
 - `matrices/values_and_pressure_model.md` gives values, pressure models, and state pools.
 - `matrices/country_decision_kits_matrix.md` summarizes the Part 5 country kits, decision families, mission bands, and discovery routes.
 - `prompts/` contains goal, implementation, decision, GUI, validation, asset, super-event, and achievement prompts.
-- `continuation/continuation_prompt.md` preserves the final planning handoff and next implementation entry point.
+- `continuation/continuation_prompt.md` preserves the superseded July handoff; current continuation is linked from the package index.
 
 ## Dated implementation baseline, 2026-07-11
 
@@ -43,11 +47,11 @@ The monthly lifecycle runs through the connected active-country and active-state
 
 Restricted methods remain abstract strategic tiers. Chemical capacity covers chlorine, phosgene, mustard, lewisite, tabun, sarin, and soman; biological capacity covers anthrax, tularemia, plague, and smallpox. These tiers use capability, stockpile, Deaths, contamination or outbreak, evidence, discovery, instability, and tribunal outcomes without operational recipes or protected-class targeting.
 
-The dated runtime baseline recorded five Ledger tabs: Overview, State Pools, Active Sites, Country System, and Discovery & Reform. That dated layout is superseded by the current Repression and Camps presentation in Part 6; the shared action dispatcher and normal decision cooldown gates remain gameplay evidence.
+The dated runtime baseline recorded five Ledger tabs: Overview, State Pools, Active Sites, Country System, and Discovery & Reform. That dated layout was superseded by the September presentation in Part 6, which is itself superseded where incompatible by the accepted national-administration contract; the shared action dispatcher and normal decision cooldown gates remain gameplay evidence.
 
-The dated baseline also records a static ImageGen-based Ledger asset package and optional frame animation. Those assets and prompts remain historical evidence only; the current GUI uses native HOI4 tiled panels and buttons and requires no custom replacement panel, card, background, copied-texture, status-sprite, or animation art.
+The dated baseline also records a static ImageGen-based Ledger asset package and optional frame animation. Those assets and prompts remain historical evidence only; the September replacement contract used native HOI4 tiled panels and buttons and requires no custom replacement panel, card, background, copied-texture, status-sprite, or animation art.
 
-Super-event slots `12`, `74`, `75`, `76`, and `77` have final text, unique images, unique audio IDs `45`, `44`, `46`, `47`, and `48`, and live settings-aware playback. The dated baseline records static UI, icon, report, news, super-event, project, and achievement asset wiring. Current GUI asset decisions follow Part 6 and the parent final UI report.
+Super-event slots `12`, `74`, `75`, `76`, and `77` have final text, unique images, unique audio IDs `45`, `44`, `46`, `47`, and `48`, and live settings-aware playback. The dated baseline records static UI, icon, report, news, super-event, project, and achievement asset wiring. Current GUI asset decisions follow the accepted administration contract linked from the package index.
 
 Achievements `60` through `69` are live with localisation and their required icon variants. Germany's focus reward lifecycle is consolidated into at most three stable lane spirits before the capstone and exactly one final world-order spirit after convergence. The core final variant preserves the exact science-and-force totals; stage-specific variants preserve the exact additions from reclamation, continental dominance, the command spine, or full world dominance according to the highest completed optional territorial stage. No new command prerequisite was added.
 
@@ -55,7 +59,7 @@ The event catalog workbook remains `docs/spreadsheets/chaos_redux_events_catalog
 
 ## Dated completion status, 2026-07-11
 
-The dated reconciliation reported the shared runtime, all 84 player actions, 41 missions, four Ledger controls, country packages, presentation assets, achievements, super-events, audio, localisation, and workbook alignment as implemented. Its audit evidence remains historical; the current GUI redesign is implemented with evidence and limits in the parent report at `../../plans/system_camp_repression_rework_plans/repression_ui_redesign_2026-09-05.md`.
+The dated reconciliation reported the shared runtime, all 84 player actions, 41 missions, four Ledger controls, country packages, presentation assets, achievements, super-events, audio, localisation, and workbook alignment as implemented. Its audit evidence remains historical; the September GUI redesign was reported implemented with evidence and limits in the parent report at `../../plans/system_camp_repression_rework_plans/repression_ui_redesign_2026-09-05.md`.
 
 All 15 Part 7 and cross-cutting static scenario contracts were traced with zero failures. This was code-and-asset readback, not engine-runtime scenario execution. No in-game scenario run occurred in this environment, so runtime timing, rendered GUI behavior, AI choice, and numeric deltas remain an explicit validation gap for the parent completion review. The evidence and limitation are recorded in `docs/plans/system_camp_repression_rework_plans/scenario_contract_validation_report.md`.
 

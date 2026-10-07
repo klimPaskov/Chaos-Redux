@@ -1,8 +1,12 @@
 # Asset Prompt: Event 064 Border Fortifications
 
+The [asset skill](../../../../.agents/skills/chaos-redux-event-assets/SKILL.md) owns reference families, native ImageGen source evidence, consumer-dependent alpha, processing, and DDS validation.
+For alpha-backed families request real transparency in the first ImageGen call and preserve it through processing; opaque scene sources follow the final consumer’s report or panel treatment.
+For achievements use the skill’s [single-subject, deterministic-state pipeline](../../../../.agents/skills/chaos-redux-event-assets/SKILL.md#achievement-icons), including the completed, grey, and not-eligible source layers and exact supplied templates.
+
 Create and deliver the complete static visual asset package for Chaos Redux Event 064, Border Fortifications.
 
-Read the full source package under `docs/specs/064_border_fortifications_specs/` before producing art. Follow `AGENTS.md`, `chaos-redux-event-assets`, the generated-event-art and icon-artist subagent definitions, current repository asset conventions, and the exact active consumer files. Use `fork_context=false` for any spawned specialist.
+Read the full source package under `docs/specs/064_border_fortifications_specs/` before producing art. Follow `AGENTS.md`, `chaos-redux-event-assets`, the generated-event-art and icon-artist subagent definitions, current repository asset conventions, and the exact active consumer files. Use `fork_turns="none"` for any spawned specialist.
 
 Do not implement gameplay script. Produce final asset files, source files, previews, manifests, and a precise `.gfx` handoff. Do not stop at prompts or mockups.
 

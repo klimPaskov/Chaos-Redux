@@ -1,6 +1,6 @@
 # Event 025 super-event audio researcher prompt
 
-Spawn `chaosx_super_event_audio_researcher` with `fork_context=false`.
+Spawn `chaosx_super_event_audio_researcher` with `fork_turns="none"`.
 
 Read Part 010 and the super-event skill. Research a unique musical cue for the Event 025 opening super-event.
 

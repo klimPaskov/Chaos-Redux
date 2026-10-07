@@ -46,7 +46,8 @@ The improvement-loop planner should run after a meaningful implementation tranch
 
 ## Fork-context rule
 
-Every future subagent prompt must be self-contained and use no inherited parent-thread context. In the Codex runtime, use `fork_context=false`.
+Every future subagent prompt must be self-contained and use no inherited parent-thread context.
+In the Codex runtime, use `fork_turns="none"` under the current `chaos-redux-subagents` contract.
 
 ## Completion effect
 

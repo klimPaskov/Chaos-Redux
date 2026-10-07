@@ -163,7 +163,9 @@ For every accepted super-event:
 - add the track and super-event ID to the canonical HTML music catalogue
 - promote durable provenance before deleting the temporary workspace
 
-The supplied audio-researcher TOML still says OGG. The current super-event skill requires WAV and is authoritative for this package. The stale subagent definition should be corrected through the skill-maintenance workflow before or during implementation.
+The supplied planning-era audio-researcher TOML mentioned OGG.
+The current repository definition at `.codex/agents/chaosx_super_event_audio_researcher.toml` requires game-ready WAV, consistent with the [super-event owner skill](../../../.agents/skills/chaos-redux-super-events/SKILL.md).
+Keep the imported mismatch as historical provenance rather than a current repair task.
 
 Generated tones, oscillators, beeps, noise beds, generic ambience, unclear-license tracks, modern commercial recordings without permission, and placeholder audio are forbidden.
 

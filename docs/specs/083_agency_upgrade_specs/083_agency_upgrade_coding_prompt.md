@@ -4,7 +4,8 @@ Implement the design in `docs/specs/083_agency_upgrade_specs/` to its fullest ex
 
 ## Begin with the actual repository
 
-Follow current `AGENTS.md`, `chaos-redux-events`, `chaos-redux-event-assets`, `chaos-redux-subagents`, `chaos-redux-debug-playtest`, and `chaos-redux-improvement-loop`. Read any other skill that becomes applicable to a real implementation surface. Inspect the installed game documentation, vanilla agency upgrades, the vanilla scripted helper, current operative generation and recruitment, and the current project event, history, cluster, achievement, and modifier implementations.
+Follow current `AGENTS.md`, `chaos-redux-events`, `chaos-redux-event-assets`, `chaos-redux-subagents`, and `chaos-redux-improvement-loop`.
+Apply `chaos-redux-debug-playtest` only if the user explicitly invokes it. Read any other skill that becomes applicable to a real implementation surface. Inspect the installed game documentation, vanilla agency upgrades, the vanilla scripted helper, current operative generation and recruitment, and the current project event, history, cluster, achievement, and modifier implementations.
 
 The planning package read all 42 supplied text files but did not have complete external references or a game installation. Its pinned repository observations are evidence from one commit, not proof about your present working tree. Resolve the readiness report before implementing speculative syntax.
 
@@ -26,7 +27,9 @@ Permanent slots and unused recruit entitlements accumulate. Temporary grants add
 
 Reuse namespace `chaosx.nr83` and inspect the existing hidden root and recipient event before editing. Make recipient country context explicit. Freeze the package before history records it, and make award receipts display committed outcomes rather than rolling on display. Prove one grant per recipient per firing and one +5 Chaos contribution per successful worldwide firing. Evolution entry, individual recruits, overflow rolls, and acknowledgments add no separate Chaos. Shared wars, annexations, and other generic consequences retain their existing owners.
 
-Resolve catalog and runtime cluster identifiers by semantic identity. The supplied catalog associates Intelligence with ID 8, but the inspected runtime constants use 8 for Diseases. Do not connect Event 83 to numeric 8 blindly. Low is severity, not an implementation enum meaning required or optional. Preserve member-specific once and repeatable eligibility, existing timer accounting, configured frequency recovery, and cluster incident accounting.
+Use Intelligence cluster ID `20`, as recorded by the shared identifier registry linked in Part 1; Diseases retains ID `8`.
+The original supplied catalog's Intelligence ID 8 is historical evidence, not an active mapping.
+Low is severity, not an implementation enum meaning required or optional. Preserve member-specific once and repeatable eligibility, existing timer accounting, configured frequency recovery, and cluster incident accounting.
 
 Inspect current event-category initialization, allowlist gating, history, evolution controls, supported save migration, and manual-debug routes. Keep To Be Reworked until the real completion gates pass. Do not import historical timer or weight values over the current shared logic.
 

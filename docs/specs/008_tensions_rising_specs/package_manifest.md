@@ -7,6 +7,8 @@ The release audit records Event 8 as `Needs Testing` and outstanding gameplay, p
 Retained package files:
 
 - `README.md`
+- `package_manifest.md`
+- `research/goal_prompt_length.txt`
 - `matrices/008_tensions_rising_ai_matrix.md`
 - `matrices/008_tensions_rising_cluster_and_achievements.md`
 - `matrices/008_tensions_rising_constants_and_helpers.md`

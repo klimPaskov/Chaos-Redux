@@ -6,7 +6,7 @@ Produce exactly five severe portrait packages: clone, machine, temporal, xenobio
 
 Stage 0 is complete and registered. Stage I through IV static and animated sprite contracts are pre-registered, but their referenced assets remain missing. Treat those live names as fixed output contracts. The xenobiological-or-alien family has mutually exclusive evidence-gated xenobiological and alien-revealed outputs inside one package family.
 
-Use this prompt with `chaosx_generated_event_art` for portraits and `chaosx_icon_artist` for small UI animation. Spawn with `fork_context=false` and require the `chaos-redux-frame-animation` skill.
+Use this prompt with `chaosx_portrait_creator` for portraits and `chaosx_icon_artist` for small UI animation. Spawn with `fork_turns="none"` and require the `chaos-redux-frame-animation` skill.
 
 ## Source design
 
@@ -87,4 +87,5 @@ Keep ordinary lists, text panels, costs, and static project stages unanimated.
 
 Before wiring handoff, inspect the required offline wiki pages, vanilla files, and existing Chaos Redux examples for the target surface. Record the precedent. If the exact surface has no verified animated support, mark wiring `blocked` or `needs_user_review` while still preserving the static fallback.
 
-Do not edit gameplay, GFX, GUI, characters, localisation, or spreadsheets.
+Non-portrait animation workers do not edit gameplay, GFX, GUI, characters, localisation, or spreadsheets.
+The portrait owner retains its skill-defined narrow exception for portrait-specific GFX and existing character portrait references.

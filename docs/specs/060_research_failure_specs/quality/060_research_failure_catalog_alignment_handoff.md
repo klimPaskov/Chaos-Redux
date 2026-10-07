@@ -1,5 +1,11 @@
 # Event 60 catalog alignment handoff
 
+## Current identifier reservation
+
+Scientific Research reserves cluster ID `21` in the [shared identifier registry](../../shared_identifier_registry.md), shared with the named Event 054 and 089 proposals.
+This is an identity reservation only, and proposed membership, activation, tuning, and implementation still need their own acceptance and evidence.
+The snapshot findings and earlier ID-resolution instruction below are retained as original planning evidence and are superseded for identifier allocation by that ledger.
+
 ## Authority
 
 The editable source is `docs/spreadsheets/chaos_redux_events_catalog.xlsx`.

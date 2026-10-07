@@ -1,5 +1,8 @@
 # Coding prompt: Event 42 Equipment from Heavens
 
+Read the [package entry point](../README.md) for design authority and unresolved acceptance before executing this implementation prompt.
+Use existing user authorization and recorded parent acceptance; imported status labels alone do not approve expansion.
+
 Implement the complete Event 42 rework from `docs/specs/042_equipment_from_heavens_specs/`. Treat every mapped mechanic, evolution, AI rule, cluster rule, asset row, achievement, log surface, safety gate, and acceptance scenario as required unless a documented engine blocker makes it impossible. Do not replace blocked content with an unapproved fallback.
 
 ## Required source review
@@ -50,7 +53,9 @@ Centralize tuning in script constants or a documented event tuning file. Do not 
 
 ## Landing reports
 
-Create three to seven delayed report events across persisted owned and controlled states. Permit repeated states for small countries with different local themes.
+Follow the accepted 5 October presentation in Part 4: hidden canonical `.1`, visible discovery `.2`, three-to-seven sequential hidden recovery visits after discovery acknowledgment, and one final `.13`/`.16` summary or `.17` halt report.
+Permit repeated states for small countries with different local themes; an accident replaces one middle visit.
+Preserve six artwork roles without restoring per-visit popups.
 
 Reports may apply bounded temporary landing-zone state modifiers and rare visible recovery accidents. They do not grant more equipment or create more event history.
 

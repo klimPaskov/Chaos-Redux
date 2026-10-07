@@ -15,7 +15,7 @@ The implementation must remove the old concept from every active surface: event 
 | Event type | Minor Fire-Once |
 | Cluster | No cluster |
 | Primary country | `Death` |
-| Proposed tag | `DTH`, subject to final conflict check |
+| Registered tag | `DTH`; reuse and inspect the existing Death owner package under [the shared identifier registry](../../shared_identifier_registry.md). |
 | Leader | `Zol` |
 | Map color | Complete black, not dark grey |
 | First location | Random remote low-population ocean island state |

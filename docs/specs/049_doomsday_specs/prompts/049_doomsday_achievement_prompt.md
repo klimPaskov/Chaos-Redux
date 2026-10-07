@@ -312,8 +312,9 @@ Route icon production through `prompts/049_doomsday_asset_prompt.md`.
 Every achievement needs:
 
 - Completed `64x64` icon.
-- Grey state where required.
-- Not-eligible state where required.
+- Grey state.
+- Not-eligible state.
+- All three states follow the current [achievement icon contract](../../../../.agents/skills/chaos-redux-event-assets/SKILL.md#achievement-icons).
 - Native source art and manifest evidence.
 - Root-level `gfx/achievements/` filenames matching the final achievement ID.
 - No resized decision, idea, or focus icon substitute.

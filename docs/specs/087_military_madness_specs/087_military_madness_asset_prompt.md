@@ -12,7 +12,7 @@ Use native ImageGen through the required image-generation route. Do not replace 
 
 Use the one canonical reference root:
 
-`C:\Users\klimp\OneDrive\Documents\Paradox Interactive\Hearts of Iron IV\mod\chaos_redux\.agents\skills\chaos-redux-event-assets\assets\vanilla_reference`
+`C:\Users\klimp\OneDrive\Documents\Paradox Interactive\Hearts of Iron IV\mod\chaos_redux\.agents\skills\chaos-redux-event-assets\assets\gfx_references`
 
 Read its README, catalog, and matching contact sheets before production. Inspect `icons/ideas/`, `icons/achievements/`, and the exact report family specified by the catalog. These reference assets were not supplied to or visually reviewed by the planning chat. Missing references remain a blocker.
 
@@ -64,11 +64,8 @@ Read the exact objectives in Part 6 before composition. Produce one original tra
 
 Inspect the achievement contact sheet and matching references. Request no frame, square background, red cross, writing, or checkerboard in the generated subject.
 
-Preserve each native source and derive one centered 64x64 color subject layer. Create the grey subject deterministically while retaining its canvas, position, and alpha. Composite the supplied unchanged red-cross overlay over the grey subject to create the not-eligible source layer.
-
-Use the exact immutable `icons/achievements/template/achievement_template.png`, `achievement_template_grey.png`, and `overlay.png`. Verify their bytes against the current skill's stated hashes and inspect them. Do not redraw their borders, backgrounds, or overlay.
-
-Run `.agents/skills/chaos-redux-event-assets/tools/process_achievement_icons.py` on each complete three-state source set. It applies the supplied completed or grey background beneath the appropriate state. Do not independently use the generic converter to manufacture three unrelated achievement finals.
+Follow the current [achievement creation and processing contract](../../../.agents/skills/chaos-redux-event-assets/SKILL.md#achievement-icons) for the original transparent subject, immutable templates, complete three-state source set, canonical processor and native-size review.
+Keep source layers separate from outputs and retain the same subject and alignment in all three states.
 
 Final files belong directly under `gfx/achievements/` as `<exact_id>.dds`, `<exact_id>_grey.dds`, and `<exact_id>_not_eligible.dds`. These are the engine-facing root lookup exception. There is no event subfolder here.
 

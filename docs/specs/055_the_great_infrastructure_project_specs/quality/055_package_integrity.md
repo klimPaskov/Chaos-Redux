@@ -1,27 +1,21 @@
-# Package Integrity Report
+# Current package inventory
 
-- Package files including this report: `37`
+This inventory was refreshed on 2026-10-07 after the documentation cleanup.
+It records local file identity and does not validate engine behavior or design approval.
+Its own checksum is excluded because a self-checksum would change the file.
+
+- Package files including this inventory: `37`
 - Files inventoried below: `36`
-- Design and prompt Markdown words excluding this report: `37,447`
-- Design and prompt Markdown characters excluding this report: `257,981`
-- Goal prompt characters: `3981`
-- Em dash occurrences in package Markdown: `0`
-- Semicolon occurrences in package Markdown: `0`
-
-The report does not list its own checksum because rewriting that checksum would change the file.
-
-## File inventory
 
 | Path | Bytes | SHA-256 |
 | --- | ---: | --- |
-| `README.md` | 3176 | `4f55093e161dac9535663ba39c3d1d32f21228b91010d89bd6cd2b42f88f9696` |
 | `diagrams/055_candidate_generation_flow.md` | 1265 | `3cc61721d102d69fddfb76a305e9aaa4aa874ab63e7812e98f8d82b687a202ec` |
 | `diagrams/055_decision_category_visibility_map.md` | 883 | `2d29801b63ca945eb80427b7b29e4c31f3d9c84b9c810efbb5a0139aa977214d` |
 | `diagrams/055_international_corridor_state_machine.md` | 1581 | `e392b16efdd8af113cfcc5591d7a2be7625596769d9b6c9567d200e71499eabe` |
 | `diagrams/055_project_lifecycle_diagram.md` | 1739 | `95987e7317a189f9c2d04207333a72e24ba5bba80df701a66466f6ef7fc014bf` |
 | `handoffs/055_cross_system_adapter_contract.md` | 2014 | `94617e4d70abcadde80e9938f91a2cb179681ed650a9c782a4965f6d615f8dc8` |
 | `handoffs/055_implementation_sequence.md` | 3004 | `e9f5b6df86a46c935b434f98e9c2f0eb29a88f1d96216c176099ce2199b4a57b` |
-| `handoffs/055_source_of_truth_map.md` | 1643 | `2b1317826e306b5667562d856bfe1f1b81a72970a1c20fb3fa2e2e800c794faf` |
+| `handoffs/055_source_of_truth_map.md` | 1726 | `b223311e82c08402776adaefa0284cfb1544b81417a9b0375a33d14a98156890` |
 | `manifest.md` | 1620 | `9733fe7cc01b34a9c7ccc9d360f60cdd98a4d670efc40b3b4106152bc81c75be` |
 | `prompts/055_the_great_infrastructure_project_achievement_prompt.md` | 4804 | `39515535903984bade26becca66b0f3b293d9f03b05afecd05bad13e51c35f22` |
 | `prompts/055_the_great_infrastructure_project_ai_probability_audit_prompt.md` | 2660 | `2355b85c03f6b0a70cc498f5e8bc583c4de8fbe72b9bbb8bc777b9d4601ac36e` |
@@ -33,11 +27,12 @@ The report does not list its own checksum because rewriting that checksum would 
 | `prompts/055_the_great_infrastructure_project_scripted_system_prompt.md` | 3639 | `0e921a557b470fbf7c07355b95ed4488a416927d45fbee94834da8edb622b910` |
 | `quality/055_catalog_alignment.md` | 3432 | `8e243407516d194351636cbcbb48545f213eb8ba1fd1537a884a42ae387f2acf` |
 | `quality/055_improvement_loop_closure.md` | 1464 | `3011e01bdc03104026fe4ea78e8f1b5b28f8d255d0e5d6efd8e1d013572cfb27` |
-| `quality/055_planning_completion_audit.md` | 3397 | `6d1594c402923e3ded5fcb4a130e2314e840b2e6be42feec052a33ad991235f1` |
+| `quality/055_planning_completion_audit.md` | 3766 | `c6796117731be00a5f632b1cf5baef9df0801f842811b330536655b7be57bba3` |
 | `quality/055_role_based_review_matrix.md` | 4359 | `91966ad535b2ecadfea10d7731810a5864c73ba8a1749a039039ec07a86c7898` |
-| `quality/055_source_reading_ledger.md` | 6715 | `8fa99d52f4d952ef24d79c5fcc4d61b8ebb4cefda154da76eaf91198ea1eef3b` |
-| `quality/055_subagent_execution_log.md` | 1696 | `3bddc32b8dd504dd4d7a095503f1924bb51024ea7899ebbdc7ea7459dbb39f38` |
+| `quality/055_source_reading_ledger.md` | 7084 | `fcb992e0bda16c68114f71d52750656863c4819ddca23a19dba41555ccc0306f` |
+| `quality/055_subagent_execution_log.md` | 2065 | `e0f3f013416f09fe111bcf037f0b43fabc7fa0c7a175c0156bef42bbb15a4a16` |
 | `quality/055_the_great_infrastructure_project_probability_scenario_matrix.md` | 8142 | `718bebbbff145f3327eac255d5e69b89eaf013ce2d11becc2e0176d0f0b73c9c` |
+| `README.md` | 3978 | `7906283694803bcdce3bc659f7a231737fc00364ad5b832f81162fd0e67f8406` |
 | `research/055_historical_infrastructure_research.md` | 10550 | `965f0bf208c68c476d4135770a2ca98183b761d4b01f4937bed96ac2dba241bf` |
 | `research/055_research_bibliography.md` | 2432 | `b705b7335608bcac66ad7c2f0601fe5b4e21b2722b3090e58ed78b846639306f` |
 | `specs/055_the_great_infrastructure_project_spec_part_10_acceptance_criteria.md` | 14250 | `4b6eb121eed222a2fd892d31af7bdfe29b3b4142cdeaf63519a93151d48a7d38` |

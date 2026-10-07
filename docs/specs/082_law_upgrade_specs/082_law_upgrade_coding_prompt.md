@@ -6,13 +6,15 @@ This is a full rework, not a text update to the old economy-only popup.
 
 ## Required reading and verification
 
-Read current AGENTS, the event-planning, events, decisions/missions, event-assets, MTTH, subagents, improvement-loop, debug/playtest, and other genuinely relevant skills. Read every must-read source they name for the systems you touch, including current installed-game documentation and complete relevant offline wiki pages. Do not substitute memory, this package's summaries, or archive-completion claims for that external reading.
+Read current AGENTS, the event-planning, events, decisions/missions, event-assets, MTTH, subagents, improvement-loop, and other genuinely relevant skills. Read every must-read source they name for the systems you touch, including current installed-game documentation and the pertinent offline wiki sections. Do not substitute memory, this package's summaries, or archive-completion claims for that external reading.
 
 The research file identifies what this planning session did and did not inspect. The inspected repository revision is `879b3007d3b6bf75c726c11635473fccda45c569`, not an assertion about your current worktree. Reconcile against the actual worktree before editing.
 
 Inspect the real economy, manpower, and trade definitions, all loaded eligible country/DLC policy owners, existing effect helpers, cost framework and detailed contracts, dynamic modifier consumers, evolution framework, central dispatch, achievement owner, and catalog workbook/exporter.
 
-The supplemental `docs/plans/082_law_upgrade_plans/` package provides source coverage, same-author review, reference tests, and isolated role handoffs. None is a completed independent or live-game review.
+The original delivery cited supplemental records at `docs/plans/082_law_upgrade_plans/`, but that directory is absent from this checkout.
+Do not claim its source coverage, reviews, or reference tests are available or executed.
+Recover or explicitly replace missing evidence within a separately authorized implementation task.
 
 ## Fixed gameplay requirements
 
@@ -104,7 +106,9 @@ Update the authoritative workbook's Event 82 and Military Preparation relationsh
 
 Use the 80-case acceptance matrix, all provider fixtures, support endpoints and combined effects, native economics and population accounting, prices with discounts and rounding, settings, multiplayer, inheritance, migration, achievements, and actual visual consumers.
 
-Do not launch HOI4 without explicit user authorization. Build additive, idempotent fixtures using the current project's testing conventions and request user-controlled live evidence when necessary. Static parsing and Python arithmetic do not replace engine checks.
+Build additive, idempotent fixtures using the current project's testing conventions.
+Live-game validation belongs to the user; use the debug-playtest skill only if explicitly invoked.
+Static parsing and Python arithmetic do not replace engine evidence.
 
 Before claiming the goal is near complete, spawn `chaosx_improvement_loop_planner` using `fork_turns="none"` with all inputs explicitly listed. Resolve its addendum or closure handoff. Route bounded systems and decision reviews to the supplied specialists and obtain a completion audit.
 

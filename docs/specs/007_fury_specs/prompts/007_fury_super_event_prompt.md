@@ -1,5 +1,7 @@
 # Super-event prompt for Event 007 Fury
 
+Read the [accepted release corrections](../specs/007_fury_release_corrections_2026-10-05.md) first; they override conflicting older instructions within their recorded acceptance boundary.
+
 Use `chaos-redux-super-events` for this package. Use the repository web research workflow from `AGENTS.md` for quote, cultural remark, and audio research. Do not invent quotes. Do not use music without verified source and license.
 
 Event ID: `7`

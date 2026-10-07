@@ -1,6 +1,7 @@
 # Coding Prompt: Implement the Famine and Migration Mechanics
 
-> **Current design clarification (2026-08-25):** The user clarification and accepted split implementation supersede any shared mechanic, category, or runtime-namespace wording retained below as historical design context. The current implementation uses independent `famine_*` and `migration_*` mechanics, `famine_decision_category` and `migration_decision_category`, and `famine_state_map_mode` and `migration_state_map_mode`; no combined mechanic, category, runtime namespace, or mapmode is current. Use [source_of_truth_map.md](../../plans/famine_and_migration_system_plans/source_of_truth_map.md) and [completion_report.md](../../plans/famine_and_migration_system_plans/completion_report.md) for current status, including the incomplete blockers.
+> **Authority and status:** Read [README.md](README.md) for the accepted split, event-free presentation contract and current continuation record.
+> The source parts and matrices preserve design and historical planning; their presence does not establish approval or completion.
 
 Implement the separate Chaos Redux famine and migration mechanics to the fullest extent described in `docs/specs/famine_and_migration_system_specs/`, connecting them only through explicit causal adapters and neutral conservation primitives.
 
@@ -23,7 +24,8 @@ Read every file in the spec folder, including:
 - the achievement prompt
 - the subagent routing and context-complete subagent prompts
 
-Treat mapped content as acceptance criteria. Do not silently replace the system with flat modifiers, fixed population losses, generic refugee variables, or event-only approximations.
+Treat mapped content with a recorded user decision or parent acceptance as acceptance criteria.
+Reconcile unresolved or superseded rows against the current continuation record before assigning work. Do not silently replace the system with flat modifiers, fixed population losses, generic refugee variables, or event-only approximations.
 
 ## Mandatory project and engine reading
 
@@ -42,9 +44,10 @@ If a required local reference or MCP route is unavailable, record the exact bloc
 
 ## Repository exploration and architecture
 
-Spawn `chaosx_repo_explorer` with `fork_context=false` using the supplied prompt before editing because this is a broad cross-system change.
+Use `chaosx_repo_explorer` only when current file locations, contracts or edit order are unclear.
+For known-file continuation, inspect the named current files directly and reuse the existing source map.
 
-Then spawn `chaosx_scripted_system_architect` with `fork_context=false` using the supplied prompt. The architect should design and, where allowed, implement reusable shared contracts for:
+For an outstanding bounded architecture gap, use `chaosx_scripted_system_architect` with no inherited thread context (Codex `fork_turns="none"`; other runtimes follow the [subagent skill](../../../.agents/skills/chaos-redux-subagents/SKILL.md)) using the supplied prompt. The architect should design and, where allowed, implement reusable shared contracts for:
 
 - active-state and active-country registries
 - famine pressure requests
@@ -261,15 +264,15 @@ Implement the separate famine and migration decision-category lifecycles from Pa
 
 `famine_register_initial_incident` and `migration_register_initial_incident` are accounting and presentation seams only and must not create event objects, event IDs, event-pool entries, event-log rows, random events, or pacing pulses. The deleted incident event files and constants are deliberate.
 
-Implement all supported rows in `famine_and_migration_system_decision_map.csv`.
+Reconcile current coverage before implementing accepted supported rows in `famine_and_migration_system_decision_map.csv`.
 
 Follow the separate decision prompt for costs, clutter, state selection, missions, tooltips, and AI.
 
-Do not create a full shared scripted GUI. Use state modifiers, report events, decision category presentation, concise dynamic localisation, and map highlights. A compact attached header is allowed only if local inspection proves it is needed and cleaner than ordinary category text.
+Do not create a full shared scripted GUI. Use state modifiers, standing report-header context, decision category presentation, concise dynamic localisation, and map highlights. Preserve the separate compact category headers; do not create popup events or a combined UI.
 
 ## AI and probability
 
-Spawn `chaosx_ai_probability_auditor` with `fork_context=false` before changing weighted surfaces. Establish named baseline scenarios from the supplied probability matrix.
+Spawn `chaosx_ai_probability_auditor` with no inherited thread context (Codex `fork_turns="none"`; other runtimes follow the [subagent skill](../../../.agents/skills/chaos-redux-subagents/SKILL.md)) before changing weighted surfaces. Establish named baseline scenarios from the supplied probability matrix.
 
 Let the parent or owning patch agent implement the chosen design.
 
@@ -312,7 +315,7 @@ Prioritize current implemented systems and events. Do not implement unreworked c
 
 Required deep connections include Event 5, Event 6, Event 13, Event 14, Event 15, Event 20, Event 21, Event 28, Event 33, Event 50, Event 95, Event 118, Event 120, and Event 149 compatibility.
 
-Retire, disable, or convert Event 149 `Immigrations` so it no longer applies a competing flat population drain.
+Preserve the recorded Event 149 `Immigrations` retirement and do not recreate a competing population drain or incident-event layer.
 
 Cluster consequences must not count as extra pacing events.
 
@@ -346,7 +349,7 @@ Use the single root achievement registry, complete tracking, disqualifiers, loca
 
 ## Localisation
 
-Spawn `chaosx_localisation_auditor` with `fork_context=false` after broad visible text exists.
+Spawn `chaosx_localisation_auditor` with no inherited thread context (Codex `fork_turns="none"`; other runtimes follow the [subagent skill](../../../.agents/skills/chaos-redux-subagents/SKILL.md)) after broad visible text exists.
 
 Write final text from the direction in the specs.
 
@@ -388,7 +391,7 @@ After implementation:
 - run `chaosx_event_completion_auditor` as a shared-system completion audit
 - use country and focus auditors only for bounded downstream content that this implementation actually changes
 
-Near completion, spawn `chaosx_improvement_loop_planner` with `fork_context=false` using the supplied prompt. Fold accepted design into the specs or implementation. If it returns a closure handoff, complete the remaining small tasks before final audit.
+Near completion, spawn `chaosx_improvement_loop_planner` with no inherited thread context (Codex `fork_turns="none"`; other runtimes follow the [subagent skill](../../../.agents/skills/chaos-redux-subagents/SKILL.md)) using the supplied prompt. Fold accepted design into the specs or implementation. If it returns a closure handoff, complete the remaining small tasks before final audit.
 
 ## Validation
 

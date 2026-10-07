@@ -1,12 +1,15 @@
 # Asset Prompt: Event 24 Video Game in Sweden
 
+Use the current [asset contract](../../../.agents/skills/chaos-redux-event-assets/SKILL.md) for source modes, native ImageGen transparency, alpha preservation, exact consumer dimensions, achievement states, and ownership.
+Reconcile this design inventory with current manifests and runtime consumers before producing another asset.
+
 Create the complete visual asset package required by the Event 24 specifications under:
 
 `docs/specs/024_video_game_in_sweden_specs/`
 
 Read and follow `AGENTS.md`, `chaos-redux-event-assets`, and `chaos-redux-subagents`. Produce the complete authorized static asset inventory below.
 
-Use `fork_context=false` for every project asset subagent. Pass every constraint from this file explicitly.
+Use `fork_turns="none"` for every project asset subagent. Pass every constraint from this file explicitly.
 
 ## Event identity
 
@@ -34,7 +37,8 @@ For the decision category picture family, require:
 
 `C:\Users\klimp\OneDrive\Documents\Paradox Interactive\Hearts of Iron IV\mod\chaos_redux\.agents\skills\chaos-redux-event-assets\assets\gfx_references\icons\decision_categories\pictures`
 
-If `contact_sheet.png` is missing, create it from the reference images, label filenames and native dimensions, and update the reference README and catalog before production. Reference assets are review material and must not be shipped, recolored, traced, or wired.
+If `contact_sheet.png` is missing, report the reference-family gap to the parent before production.
+Do not expand this assignment into shared reference-library maintenance. Reference assets are review material and must not be shipped, recolored, traced, or wired.
 
 Follow each reference path to its installed-vanilla consumer when the active canvas or sprite behavior is uncertain.
 
@@ -369,38 +373,11 @@ Required files:
 - `024_video_game_in_sweden_according_to_plan_grey.dds`
 - `024_video_game_in_sweden_according_to_plan_not_eligible.dds`
 
-## ImageGen and processing requirements
+## Production evidence
 
-- Save every original ImageGen source and exact prompt.
-- Use real transparent backgrounds for transparent icon families.
-- Remove fake checkerboards, white halos, white outlines, opaque square backgrounds, and stray pixels.
-- Give small icons a restrained dark outline and subtle shadow when the matching reference family uses them.
-- Keep one clear centered subject at final size.
-- Preserve separate source art for each icon type.
-- Convert through the repository DDS workflow and validate decoded dimensions, format, alpha, and appearance.
-- Review icons at native size and enlarged nearest-neighbor scale.
-- Create contact sheets for report art, category art, idea icons, decision icons, trait icons, and achievement variants.
-- Do not mark an asset complete from a prompt or preview alone.
-
-## Manifest requirements
-
-Each entry records:
-
-- Asset id and working name
-- Event id and slug
-- Asset type
-- Intended consumer
-- Source mode
-- Exact ImageGen prompt
-- Reference family and inspected examples
-- Original source path and checksum
-- Processed PNG path and checksum
-- Final DDS path and checksum
-- Native dimensions and alpha behavior
-- Proposed sprite name
-- Review status
-- Any reuse decision and exact precedent
-- Any blocker or uncertainty
+Apply the current asset contract linked above for generation, native transparency, mechanical processing, DDS review, contact sheets, manifest fields, and achievement states.
+Group contact sheets by report, category, idea, decision, trait, and achievement families.
+Record conditional reuse against its exact consumer and preserve the Event 24 inventory and retired A17 boundary.
 
 ## Handoff requirements
 

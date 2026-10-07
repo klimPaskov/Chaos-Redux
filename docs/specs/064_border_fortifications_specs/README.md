@@ -1,5 +1,14 @@
 # Event 064 Border Fortifications Planning Package
 
+## Authority and disposition
+
+The introduction attributes Border Fortifications and the three evolution names to the original user brief.
+The five numbered parts and matrices also contain planner targeting, response, Chaos, achievement, and equivalent-proof proposals.
+Acceptance remains `unresolved` where the original user brief or attributable parent decision cannot be recovered; preserve those claims for review under [AGENTS.md](../../../AGENTS.md#specs-and-plans).
+The [design record](research/improvement_loop_review.md) and numbered specifications are the design map; [current event guidance](../../../.agents/skills/chaos-redux-events/SKILL.md) and [subagent routing](../../../.agents/skills/chaos-redux-subagents/SKILL.md) own implementation workflow.
+Original source-reading, repository-baseline, tooling-failure, and manual-review reports are historical planning evidence, not current source verification, service-health findings, or completed independent audits.
+
+
 This package is the accepted design handoff for Chaos Redux Event 064, Border Fortifications.
 
 All project-facing event-scoped folders, filenames, prompts, asset identifiers, achievement identifiers, and test scenario labels use the zero-padded form `064`. The established runtime namespace remains `chaosx.nr64.*`.
@@ -47,7 +56,7 @@ All names marked as working labels are internal design handles. They are not fin
 - `prompts/064_border_fortifications_coding_prompt.md`
 - `prompts/064_border_fortifications_goal_prompt.md`
 
-### Required blocked handoff
+### Historical improvement-loop handoff
 
 - `../../plans/064_border_fortifications_plans/subagent_handoffs/064_border_fortifications_improvement_loop_tooling_blocker.md`
 

@@ -1,6 +1,6 @@
 # Event 025 documentation curator prompt
 
-Spawn `chaosx_documentation_curator` with `fork_context=false` after implementation and subagent handoffs exist.
+Spawn `chaosx_documentation_curator` with `fork_turns="none"` after implementation and subagent handoffs exist.
 
 Read the Event 025 specs, plans, handoffs, event docs, system docs, super-event research, asset provenance, achievement docs, Event 016 helper docs, Event 036 integration docs, implementation report, and completion audit.
 
@@ -9,7 +9,7 @@ Patch documentation surfaces only.
 Create or update:
 
 - source-of-truth map
-- accepted, queued, rejected, superseded, and unresolved plan dispositions
+- plan dispositions with acceptance basis, implementation evidence, named replacement, or exact blocker under AGENTS.md
 - final route and requirement coverage
 - asset and runtime crosswalk
 - Event 016 and Event 036 integration summary

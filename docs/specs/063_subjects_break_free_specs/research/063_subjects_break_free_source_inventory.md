@@ -1,5 +1,7 @@
 # Event 063 source inventory
 
+Historical supplied-source inventory; original upload filenames and manual reading provenance remain intact.
+
 ## Reading status
 
 Every project file supplied with this task was read in full before the specification package was written. This includes all top-level Markdown files, the TOML configuration, the three CSV catalog exports, and every TOML subagent definition inside the supplied ZIP archive.

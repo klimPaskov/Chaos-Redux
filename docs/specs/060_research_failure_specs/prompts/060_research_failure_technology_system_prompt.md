@@ -6,7 +6,7 @@ Use `chaosx_scripted_system_architect` for bounded reusable helpers after the gr
 
 ## First evidence gate
 
-Before writing removal logic, use `hoi4.tech_inspect` and source inspection to answer:
+Before writing removal logic, use installed documentation and source review for supported syntax, then `hoi4.tech_inspect`, render, and compare for the offline graph and references. Record runtime-dependent questions separately:
 
 - whether researched technologies can be removed in the current engine
 - what occurs to researched descendants
@@ -85,5 +85,5 @@ Every call must be idempotent and carry sequence proof.
 
 ## Evidence and handoff
 
-Render every affected technology folder, compare source before and after, run every TECH scenario, and test save and reload.
+Render every affected technology folder, compare source before and after, and resolve every TECH scenario the offline tools can cover. Save-and-reload and consumer behavior require user-supplied runtime evidence and remain unverified until it exists.
 Report the final registry coverage, protected families, engine findings, helper names, constants, event targets, ledger layout, slot sources, callbacks, test evidence, and unresolved owners.

@@ -2,6 +2,9 @@
 
 Date: 5 October 2026.
 
+This is a historical reading receipt for the original supplied archive.
+The archive was removed at the user's request in commit `6a2ebc838`, so source hashes below are retained provenance rather than a current availability or reread claim.
+
 ## Verdict
 
 **All 46 text files supplied inside the outer ZIP and its nested subagent ZIP were fully read before specification drafting.**

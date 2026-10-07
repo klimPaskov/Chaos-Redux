@@ -2,9 +2,11 @@
 
 ## Event 033 Acid Rain full implementation prompt
 
+Read the package README's current authority order and accepted addenda first, then reconcile the present implementation and handoffs before scheduling any prototype migration or repeated production work.
+
 Use `hoi4.probability_inspect` as the first weighted-system tool call, before changing Event 33 weights. Rework the current prototype into the accepted Major hyperacid-weather system. Read every file in `033_acid_rain_specs/`, all repository must-read rules, and the current Event 33, event-system, cluster, Deaths, Air Cleanliness, humanitarian, CBRN, scripted GUI, super-event, achievement, asset, and debug files.
 
-Use the supplied specialist roles at their defined stages. Required reviews are `chaosx_repo_explorer`, `chaosx_scripted_system_architect`, `chaosx_decision_mission_auditor`, `chaosx_ai_probability_auditor`, `chaosx_event_ui_worker`, `chaosx_localisation_auditor`, `chaosx_super_event_text_researcher`, `chaosx_super_event_audio_researcher`, `chaosx_asset_source_researcher`, `chaosx_generated_event_art`, `chaosx_icon_artist`, `chaosx_spreadsheet_doc_worker`, `chaosx_documentation_curator`, and `chaosx_event_completion_auditor`. Near completion run `chaosx_improvement_loop_planner` with `fork_context=false`, resolve its accepted findings, and rerun affected checks.
+Use the supplied specialist roles at their defined stages. Required reviews are `chaosx_repo_explorer`, `chaosx_scripted_system_architect`, `chaosx_decision_mission_auditor`, `chaosx_ai_probability_auditor`, `chaosx_event_ui_worker`, `chaosx_localisation_auditor`, `chaosx_super_event_text_researcher`, `chaosx_super_event_audio_researcher`, `chaosx_asset_source_researcher`, `chaosx_generated_event_art`, `chaosx_icon_artist`, `chaosx_spreadsheet_doc_worker`, `chaosx_documentation_curator`, and `chaosx_event_completion_auditor`. Near completion run `chaosx_improvement_loop_planner` with `fork_turns="none"`, resolve its accepted findings, and rerun affected checks.
 
 ## Architecture
 
@@ -39,10 +41,17 @@ Route the final review through `chaosx_ai_probability_auditor`.
 - Use `hoi4.probability_sequence` for the complete declared movement and coverage pool, including cadence and state transitions.
 - Use `hoi4.probability_simulate` only where an input is explicitly uncertain and record that uncertainty.
 - Use `hoi4.probability_render` for the AI matrix, coverage timing, dissipation timing, and sensitivity views.
-- After implementation, use `hoi4.probability_compare` against the accepted planning distributions and explain every material difference.
+- Preserve the baseline source before any weighted patch and have `chaosx_ai_probability_auditor` run `hoi4.probability_compare` against the final source with the same named scenarios and candidate pools.
+- Treat planning distributions as design targets, independently of the source comparison, and report missing baseline inputs as unresolved.
 
 A final probability report must show raw and effective weights, candidate eligibility, starvation cases, dominance, timing bands, deterministic tie rules, and anti-farming guards. Sample anecdotes are not proof.
 
 ## Completion
+
+The dedicated Acid Rain window belongs to `chaosx_event_ui_worker` under [the scripted-GUI owner skill](../../../../.agents/skills/chaos-redux-scripted-gui/SKILL.md).
+Supply exact event-owned files, GUI identifiers, entry points, states, resolutions, and the acceptance basis in the context-free assignment.
+Create or review the intended reference image before construction, then retain baseline and final `hoi4.gui_inspect` and `hoi4.gui_render` evidence for matching scenarios and source revisions.
+Shared Event Details, event logs, settings, and super-event frameworks remain parent-owned.
+Visible render defects block visual acceptance; unavailable routes require exact blocker records.
 
 Run every Part 12 gate, including independent and cluster launches, active evolution transitions, old-save migration, reload, multiplayer determinism, disabled settings, terminal interruption, GUI resolutions, assets, audio, achievements, and a second generation. Update the source workbook before regenerated CSV exports. Keep iterating until every accepted requirement is implemented to its fullest extent. Do not claim completion while any coverage softlock, broad daily scan, death counter without matching state-population removal, modifier-only mortality, duplicate Deaths receipt, Air cap leak, free AI action, missing sprite, unverified audio right, stale catalog row, unresolved migration, or specialist review failure remains.

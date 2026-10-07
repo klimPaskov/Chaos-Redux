@@ -1,6 +1,6 @@
 # Prompt for `chaosx_super_event_audio_researcher`
 
-Use `fork_context=false`.
+Use `fork_turns="none"`.
 
 Event:
 

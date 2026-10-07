@@ -4,7 +4,10 @@ Version: COL-097-DESIGN-1. Date: 2026-10-05.
 
 ## Design authority
 
-The ten numbered parts are the source-of-truth written design for this task. They contain approximately 13,598 words. The current user brief controls the universal native-mechanic concept. Quantitative expansions were selected by the parent author within the user's request to develop the full idea. The decision register records that basis without claiming separate user approval of every number.
+This index navigates the imported ten-part variant, rather than a reconciled package-wide design.
+Read the [package authority and conflict table](README.md) first.
+Its unique requirements remain preserved, but conflicts with the nested variant are `unresolved` and must be resolved before dependent implementation or production.
+The [decision register](../../plans/097_collaboration_plans/097_collaboration_decision_register.md) records this variant's parent-authored acceptance basis without claiming separate user approval of every number.
 
 This is a full written design with open native-capability and execution gates. It is not an implemented event or a claim that independent agents, live-game tests, or asset production ran.
 
@@ -27,7 +30,8 @@ This is a full written design with open native-capability and execution gates. I
 
 [Implementation prompt](097_collaboration_coding_prompt.md) · [Asset-production prompt](097_collaboration_asset_prompt.md) · [Achievement prompt](097_collaboration_achievement_prompt.md) · [Goal prompt](097_collaboration_goal_prompt.md)
 
-These prompts were created after the ten specification parts. The goal prompt is 3,973 characters including its final newline.
+These prompts belong only to the imported ten-part variant and do not authorize executing its conflicting requirements before reconciliation.
+The goal prompt is bounded to 4,000 characters including its final newline.
 
 ## Evidence and working handoffs
 

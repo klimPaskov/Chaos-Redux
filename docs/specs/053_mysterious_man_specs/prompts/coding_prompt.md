@@ -1,6 +1,6 @@
 # Event 53 Implementation Prompt
 
-Implement Chaos Redux Event 53 from every file under `docs/specs/053_mysterious_man_specs/`. Treat the package as accepted source design.
+Implement Chaos Redux Event 53 from every file under `docs/specs/053_mysterious_man_specs/`. Apply the acceptance boundary in the package README before treating any elaboration as accepted design.
 
 ## Required preparation
 

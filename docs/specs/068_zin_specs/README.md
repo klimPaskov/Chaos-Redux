@@ -60,3 +60,8 @@ The mandatory Rush civil war requires real territorial camps. The design provide
 Country-carrier collisions, actual native creature restrictions, ship capture, mixed-species selection voices, castle placement, final focus layouts, DDS outputs, model animations, sound and in-game balance need the actual installed sources and runtime tests. The units' numeric indexes are design benchmarks, not ready native statistics.
 
 The accompanying reading and validation report is supplied separately from this source design. It records repository inspection, unread dependencies, unavailable subagents and the distinction between package consistency checks and game validation.
+
+## Reserved manual scenario identifiers
+
+The [shared identifier registry](../shared_identifier_registry.md) reserves First Colonies `SCN-025` / raw `25`, The Empty Throne `SCN-026` / raw `26`, Open Crossings `SCN-027` / raw `27`, and The Reckoning of ZIN `SCN-028` / raw `28`.
+These are user-authorized identifier reservations, not broader design approval or runtime registration.

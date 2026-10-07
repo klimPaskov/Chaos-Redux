@@ -1,11 +1,41 @@
 
 # Air Cleanliness and Fallout Living World Planning Pass
 
+## Current documentation authority
+
+The package contains design and historical tranche receipts, not a single current completion ledger.
+Acceptance requires a recorded user decision or parent acceptance within the authorized scope; an old `accepted`, `reviewed`, or `implemented` label alone is insufficient.
+The owner skills and `AGENTS.md` govern workflow; the specifications retain unique mechanics, identity, narrative direction, and acceptance criteria.
+Use [SOURCE_SPEC_INDEX.md](SOURCE_SPEC_INDEX.md) for the complete inventory and read the following precedence map before continuing an older prompt.
+
+| Surface | Disposition and evidence |
+| --- | --- |
+| Baseline and living-world design | Retained source design; acceptance is unresolved wherever no attributable decision is recorded. Explicit user directions reported by baseline 01, 07, and 08 cover the removal of the 1000-Chaos requirement, the dedicated blackout, and every-valid-province manual launch, respectively. These records do not establish blanket approval of every matrix row. |
+| Scheduler activation and ordinary-chain dormancy | The pre-October activation gate is superseded by the accepted A1 addendum in [spec 12](specs/12_event_content_budget_and_acceptance.md#agent-decision-addendum-2026-10-04), whose stated basis is the user's grant of design authority recorded in the [October 4 decision ledger](../../plans/air_cleanliness_fallout_plans/agent_decisions_2026-10-04.md). Earlier dormant-status and `0 of 660` statements in reviewed specs and matrices are tranche snapshots, not current activation instructions or current counts. The 660-block library quality target remains distinct from activation. |
+| Orientation and integration snapshots | The same decision ledger records A2 orientation integration, A3 capital repair, A11 USA/NZL allocation, A14 cell coverage, and A16 office installation. Earlier statements that those callers/setters are absent are superseded as current guidance by those named decisions. Current source and matching MCP evidence must be reconciled before certifying implementation; the documentation audit does not recertify these receipts. |
+| Reviewed chain specs 13 through 106 and matrices | Preserve ids, transactions, branch mechanics, timing, memory, cleanup, and unique design. Read their status and missing-producer paragraphs as historical review evidence where superseded above. A chain must not take coordinator-owned activation authority; that ownership rule remains valid. |
+| Manual scenario reservation | The recorded reservation is raw id `14`; the highest-live-id-plus-one rule describes its initial allocation. Continuations reconcile the existing reservation instead of allocating another row. A genuine collision requires an explicit ownership/remapping decision. Counts and sweep receipts in spec 68 are snapshot proof data, not current engine execution evidence. |
+| Consequence and technology receipts | [Spec 68](specs/68_fallout_consequence_boundary.md) and [spec 69](specs/69_fallout_tag_preservation_technology_and_fracture.md) preserve their static proof claims and exact live limitations. They do not prove campaign execution or every supported tree/target. The two spec filenames beginning with `69` are distinct contracts, not duplicate event ids. |
+| NZL pilot and achievements | Retain the pilot design and achievement obligations. A11 and A18 in the decision ledger record allocation/Samoa acceptance under the stated grant. Portrait source mode is unresolved against the current grounded-identity gate; the missing symbol ledger blocks an evidence-backed flag handoff. Old dormant-pilot labels are not current integration status. |
+| Hungry Battalion handoff | Superseded as an execution prompt by its named chain proof; retain the historical assignment, status, and identifiers instead of implementing the chain again. |
+| Asset and implementation prompts | Active templates only for independently authorized work. Follow the linked current owner skills for portraits, flags, alpha, GUI evidence, audit routing, and wiring boundaries. Embedded implementation tasks do not authorize execution during documentation cleanup. |
+| Research and original access report | Retained provenance and planning history. Prior access limitations and role-spawn failures do not establish current service health, current viewer availability, or current source coverage. |
+
+## Unresolved reconciliation items
+
+- The master matrix release-composition bullets require eight anchors per archetype, while spec 12's archetype quality gate requires ten. Preserve both as an unresolved floor-versus-full-quality distinction until the parent records the intended acceptance hierarchy; this audit changes no tuning or content quota.
+- Baseline acceptance still describes universal focus content and deferred bespoke expansion, while the living-world requirement calls for non-generic content for every survivor and B7/A11 record bespoke pilots. These are different tranche boundaries, not proof that the larger requirement is complete.
+- The NZL symbol ledger and six referenced report manifests are absent from the current checkout. Their paths and affected contracts are recorded in the [package audit handoff](../../plans/repo_cleanup/specification_package_audit_2026-10-07/handoffs/air_fallout.md). Retain their historical provenance claims without presenting the missing documents as accessible validation.
+- Current engine status remains unverified by this cleanup. Event, focus, GUI, map, and technology inspect routes were exposed, but the narrow requests returned no results within the bounded orchestration before it was terminated. No current inspect/render/compare or live-game validation claim follows from those requests. Weighted tuning was preserved and was not audited by this documentation-only pass.
+
 ## Status
 
-This package is a consolidated source-spec suite for the Air Cleanliness and Fallout design. It includes normalized copies of the accepted baseline specs and matrices, the corrected repository implementation architecture, and a new living-world expansion for event depth, social life, regional variation, campaign pacing, and visible climate presentation.
+This package is a consolidated source-spec suite for the Air Cleanliness and Fallout design.
+It includes normalized baseline specs and matrices, repository implementation architecture, and living-world design for event depth, social life, regional variation, campaign pacing, and visible climate presentation.
 
-The accepted core architecture remains in force. The normalized baseline files preserve the state winter system, blackout transition, deterministic world rewrite, successor matrix, focus overlay matrix, survival mechanics, manual scenario sequence, and dedicated Fallout ownership rules. The living-world files make those systems inhabited and reactive across a ten-year post-collapse campaign.
+The core architecture remains the design baseline, subject to the recorded corrections above and their acceptance basis.
+The normalized baseline files preserve the state winter system, blackout transition, deterministic world rewrite, successor matrix, focus overlay matrix, survival mechanics, manual scenario sequence, and dedicated Fallout ownership rules.
+The living-world files make those systems inhabited and reactive across a ten-year post-collapse campaign.
 
 ## Canonical folders
 
@@ -34,11 +64,20 @@ Air Contamination may request Fallout through the shared request helper. It does
 
 No Fallout event, image, icon, sound, music file, sprite, quote slot, or GUI element may reuse zombie-owned content. Fallout is not a normal super-event.
 
-Fallout itself is a consequence transition, not an ordinary Event Log row or evolution. It has no world-end selector registry row, ordinary Event Details mapping, or ordinary super-event registration. Its stable settings-ledger value is owned by `fallout_consequence_id` in `common/script_constants/fallout_consolidated_constants.txt`. The manual trigger is a Fallout-owned sandbox launch surface at raw id 14, one above the previous live maximum. Its exact native thermonuclear sweep and seven-day handoff are implemented and statically proven. Post-consequence survivor chains are ordinary Fallout-owned events and may have their own histories.
+Fallout itself is a consequence transition, not an ordinary Event Log row or evolution.
+It has no world-end selector registry row, ordinary Event Details mapping, or ordinary super-event registration.
+Its stable settings-ledger value is owned by `fallout_consequence_id` in `common/script_constants/fallout_consolidated_constants.txt`.
+The manual trigger is a Fallout-owned sandbox launch surface with the recorded raw-id-14 reservation.
+Spec 68 records its static sweep and seven-day handoff receipt separately from live execution evidence.
+Post-consequence survivor chains are ordinary Fallout-owned events and may have their own histories.
 
 ## Manual scenario numbering
 
-The manual Fallout trigger uses the next free live scenario id found after scanning the writable repository. Raw id 14 is one above the previous live maximum of 13, and existing scenarios keep their ids. The reservation is Fallout-owned and appears only in the manual sandbox scenario list. It never authorizes insertion into ordinary Event Log, ordinary Event Details, evolution, world-end selector, or ordinary super-event registries. The exact 10,154-province sweep, 41 batches, completion receipts, and seven-day handoff are active source surfaces.
+The initial manual allocation reserved raw id 14, one above the recorded previous maximum of 13.
+Existing scenarios keep their ids, and a continuation preserves the reservation after live collision checks.
+The reservation is Fallout-owned and appears only in the manual sandbox scenario list.
+It never authorizes insertion into ordinary Event Log, ordinary Event Details, evolution, world-end selector, or ordinary super-event registries.
+The 10,154-province sweep, 41 batches, completion receipts, and seven-day handoff are the snapshot substrate recorded by spec 68; verify current map and source revisions before repeating an implementation claim.
 
 ## What this pass adds
 

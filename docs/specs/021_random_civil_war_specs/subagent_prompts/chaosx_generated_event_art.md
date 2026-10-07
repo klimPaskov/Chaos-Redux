@@ -1,6 +1,6 @@
 # Subagent Prompt: Event 021 Generated Event Art
 
-Spawn `chaosx_generated_event_art` with `fork_context=false` after final runtime asset identifiers and consumers are known.
+Spawn `chaosx_generated_event_art` with `fork_turns="none"` after final runtime asset identifiers and consumers are known.
 
 Read:
 

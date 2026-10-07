@@ -36,7 +36,7 @@ The details above are catalog directions. The spreadsheet worker must match fina
 
 | Field | Intended value |
 | --- | --- |
-| Scenario ID | SCN-015 |
+| Scenario ID | SCN-022 / raw 22, reserved proposed design |
 | Scenario name | Monsters from the Deep |
 | Source event | 43 |
 | Type controls | Warring Titans, Pact of the Deep |

@@ -1,6 +1,8 @@
 # Independence Wave coding prompt
 
 Implement the full Chaos Redux Event 6 rework from the source specification package under `docs/specs/006_independence_wave_specs/`.
+Begin with [the package README](../README.md), the current takeover decisions and status, and the source-of-truth map.
+Resume only accepted outstanding requirements, preserving completed work and leaving missing acceptance unresolved.
 
 Event ID: `6`
 
@@ -30,7 +32,8 @@ Read and follow:
 - vanilla documentation and at least one vanilla precedent for every touched system
 - existing Chaos Redux event, country, focus, decision, event-log, cluster, scenario, super-event, and dynamic helper patterns
 
-Use `chaosx_repo_explorer` only if the touched-file map or precedent is unclear. Spawn every project subagent with `fork_context=false` and pass all needed paths and constraints explicitly.
+Use `chaosx_repo_explorer` only if the touched-file map or precedent is unclear.
+Spawn every project subagent without inherited context under `chaos-redux-subagents`, using `fork_turns="none"` in Codex and passing all needed paths, decisions, constraints, current status, and ownership explicitly.
 
 ## Core release system
 
@@ -197,7 +200,13 @@ Use the data-driven scenario UI, confirmation flow, type control, four-stop slid
 
 ## Super-events and achievements
 
-Implement the league formation and dangerous coordinated bloc super-events from the approved text and corrected audio research. Produce both images. Produce and wire the cleared `24` audio package, preserve attribution, and keep the `23` audio/wrapper/gameplay-firing surface absent unless permission or a waiver clears the exact accepted recording; existing researched image/text dispatch may remain documented separately. Reopening recording selection requires explicit user approval. Normal waves do not receive super-events.
+Implement outstanding accepted league-formation and dangerous-bloc super-event requirements from the current text, audio research, and production manifest.
+The user's 2026-09-20 slot-23 selection is *The Enola Foam March* by Peet Hudson / Peter Hudson under CC BY-SA 4.0, as recorded in [the audio research](../research/006_super_event_audio_research.md).
+Preserve the selected slot-23 package, attribution, license and source links, edit notice, and ShareAlike-compatible redistribution rather than reopening its excluded London Brass Players candidate.
+Preserve the cleared slot-24 production package and its source evidence.
+Check current files and handoffs before producing or rewiring either package.
+Any replacement recording needs a documented acceptance basis.
+Normal waves do not receive super-events.
 
 Implement every achievement in `matrices/006_achievement_matrix.csv`, including tracking, disqualifiers, localisation, icons, docs, origin checks, and scenario restrictions.
 
@@ -221,6 +230,9 @@ After meaningful tranches, use the appropriate active auditors and write handoff
 - spreadsheet update
 - event completion audit
 - mandatory improvement-loop pass, then resolve its addendum or closure handoff
+
+Route weighted surfaces through `chaosx_ai_probability_auditor` under `chaos-redux-subagents`.
+Its scenario-specific baseline and matching `hoi4.probability_compare` evidence are required when an owner changes weights, MTTH scores, random selection, or strategy factors.
 
 Provide route coverage, candidate coverage by region and depth, mechanics action map, formable coverage, AI scenario evidence, host-survival tests, Event 5 collision tests, scenario tests at every intensity, asset status, super-event research status, achievement status, docs and catalog alignment, and every simplification or blocker.
 

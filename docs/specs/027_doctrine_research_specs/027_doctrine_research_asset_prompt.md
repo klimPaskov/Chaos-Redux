@@ -10,7 +10,7 @@ Read first:
 - `docs/specs/027_doctrine_research_specs/027_doctrine_research_spec_part_4_presentation_assets_achievements.md`
 - the current event implementation and registered asset identities supplied by the parent
 
-Use the correct project subagent for each asset family. Spawn all project subagents with `fork_context=false` and pass every path and constraint explicitly.
+Use the correct project subagent for each asset family. Spawn all project subagents with `fork_turns="none"` and pass every path and constraint explicitly.
 
 ## Asset family 1: Doctrine Research report image
 

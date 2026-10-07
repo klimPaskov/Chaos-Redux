@@ -112,4 +112,4 @@ Wire the attached category header, Evolution II network window, cannibal command
 - remove pre-reveal uncertainty UI after reveal
 - block terminal actions below chaos 1000
 
-Spawn `chaosx_decision_mission_auditor` with `fork_context=false` after implementation. Resolve every task-specific finding before completion.
+Spawn `chaosx_decision_mission_auditor` with `fork_turns="none"` after implementation. Resolve every task-specific finding before completion.

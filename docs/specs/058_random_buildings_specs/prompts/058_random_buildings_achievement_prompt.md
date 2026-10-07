@@ -35,6 +35,6 @@ At `600+` Chaos, a natural or cluster-driven Evolution III result must place a p
 - Audit IDs, keys, paths, and icon collisions.
 - Add task-specific acceptance cases and report any weaker substitute as a blocker.
 
-Use `chaosx_icon_artist` for final icon production, `chaosx_localisation_auditor` for final wording and key coverage, and `chaosx_event_completion_auditor` for the final achievement surface. Every subagent is spawned with `fork_context=false` and receives the exact Event 58 paths and IDs.
+Use `chaosx_icon_artist` for final icon production, `chaosx_localisation_auditor` for final wording and key coverage, and `chaosx_event_completion_auditor` for the final achievement surface. Every subagent is spawned with `fork_turns="none"` in Codex and receives the exact Event 58 paths and IDs.
 
 Do not weaken the conditions to make random testing easier. Do not grant achievements merely for seeing the event.

@@ -1,11 +1,12 @@
 Implement Event 093, Treaty of Tordesillas Restoration, to the full design in docs/specs/093_treaty_of_tordesillas_restoration_specs/. Read README, the original brief, Parts 01-18, source register, reading report, coverage, role map, review, and validation. Companion files:
-093_treaty_of_tordesillas_restoration_coding_prompt.md
-093_treaty_of_tordesillas_restoration_asset_prompt.md
-093_treaty_of_tordesillas_restoration_super_event_prompt.md
-093_treaty_of_tordesillas_restoration_achievement_prompt.md
-093_treaty_of_tordesillas_restoration_decision_mission_prompt.md
 
-Fully read current Project Sources and applicable must-read skills afresh. Follow AGENTS.md, the source protocol if found, planning, events, subagents, decisions/missions, focus trees, state ledgers, assets, super-events, MTTH, save inspection, debug/playtest, and improvement-loop rules. Resolve missing sources and references. Use WSL and repo-relative paths. Keep work plans under docs/plans/093_treaty_of_tordesillas_restoration_plans/.
+- 093_treaty_of_tordesillas_restoration_coding_prompt.md
+- 093_treaty_of_tordesillas_restoration_asset_prompt.md
+- 093_treaty_of_tordesillas_restoration_super_event_prompt.md
+- 093_treaty_of_tordesillas_restoration_achievement_prompt.md
+- 093_treaty_of_tordesillas_restoration_decision_mission_prompt.md
+
+Fully read current Project Sources and applicable must-read skills afresh. Follow AGENTS.md, the source protocol if found, planning, events, subagents, decisions/missions, focus trees, state ledgers, assets, super-events, MTTH, save inspection, and improvement-loop rules. Resolve missing sources and references. Use Windows-native paths. The user owns live tests. Keep work plans under docs/plans/093_treaty_of_tordesillas_restoration_plans/.
 
 Preserve chaosx.nr93.1, Minor Fire-Once, Chaos level 1, and Formables Medium. Galicia must remain a complete baseline even at high Chaos. Replace the immediate core and forced-war refusal. Implement the live Spanish Civil War contract, actual useful aid, earning threshold, early victory, honor, repudiation, defeat, succession, and lasting reconciliation. No fixed Spanish winner, free deliveries, dead recipients, or erased betrayal.
 

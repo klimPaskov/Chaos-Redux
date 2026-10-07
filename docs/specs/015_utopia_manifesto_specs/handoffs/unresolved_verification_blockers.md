@@ -94,7 +94,7 @@ No custom subagent was executable in this environment.
 
 Required resolution:
 
-- run every relevant prompt in the orchestration order with `fork_context=false`
+- run every relevant prompt in the orchestration order with `fork_turns="none"`
 
 ## Completion status
 

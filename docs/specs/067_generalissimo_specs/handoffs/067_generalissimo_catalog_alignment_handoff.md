@@ -38,7 +38,9 @@ The supplied Clusters export does not contain a Military Preparation row.
 
 ### Scenario export
 
-The supplied Scenarios export contains IDs through `SCN-014`. It omits `SCN-004`, although the supplied mechanics guide still documents Final Silence under that ID. The workbook and runtime registry therefore need direct inspection before the new scenario is registered.
+The supplied Scenarios export contains IDs through `SCN-014`. It omits `SCN-004`, although the supplied mechanics guide still documents Final Silence under that ID. That original export is historical evidence.
+The user-authorized shared ledger reserves `SCN-024` / raw `24` for Generalissimo's Coup and supersedes the old allocation guess.
+Runtime registration and workbook updates remain separate implementation work.
 
 ## Accepted Event 067 catalog facts
 
@@ -49,7 +51,7 @@ The supplied Scenarios export contains IDs through `SCN-014`. It omits `SCN-004`
 - Cluster: Military Preparation
 - Member severity: High
 - Manual scenario: Generalissimo's Coup
-- Proposed scenario ID: `SCN-015`
+- Reserved scenario ID: `SCN-024`, raw integer `24`, from [the shared identifier registry](../../shared_identifier_registry.md)
 - Public world-end branch: The Generalissimos' World
 
 ## Events sheet update
@@ -102,7 +104,7 @@ If it does not exist:
 
 Register:
 
-- Scenario ID `SCN-015`, after confirming it is free
+- Reserved scenario ID `SCN-024`, raw `24`
 - Scenario Name Generalissimo's Coup
 - four type options
 - Low, Medium, High, and Maximum intensity descriptions
@@ -138,7 +140,7 @@ The spreadsheet worker should report:
 - workbook path
 - changed row and sheet names
 - exact Cluster ID used
-- `SCN-015` collision check
+- `SCN-024` / raw `24` matches the central reservation
 - exported CSV paths
 - exporter result
 - wording source keys

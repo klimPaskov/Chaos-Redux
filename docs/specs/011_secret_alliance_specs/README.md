@@ -1,6 +1,6 @@
 # Event 011 Secret Alliance Planning Package
 
-Status: implemented source-design archive. Final gameplay authority is commit `407b9a05`, with balance frozen at `1c87d923`. The canonical implementation summary is `docs/events/011_secret_alliance/overview.md`, and the holistic verdict is `docs/plans/011_secret_alliance_plans/subagent_handoffs/completion_audit.md`.
+Status: historical source-design archive. The retained reconciliation records gameplay at `407b9a05` and balance at `1c87d923`; those commits identify dated implementation evidence, not current-source, engine, or design approval. The canonical implementation summary is `docs/events/011_secret_alliance/overview.md`, and the holistic verdict is `docs/plans/011_secret_alliance_plans/subagent_handoffs/completion_audit.md`.
 
 This package is the retained source design handoff for Chaos Redux Event 011, **Secret Alliance**.
 
@@ -34,7 +34,9 @@ The reveal super-event title, descriptions, button wording, image, and audio are
 
 The source reading, design, historical research, architecture pass, decision and mission review, localisation review, asset routing review, improvement-loop review, and source-package completion review are represented in this package. Their planning-era pending instructions are fulfilled or superseded and must not be rerun as open work.
 
-The current environment did not expose the Chaos Redux custom subagent spawning interface. The supplied subagent TOML contracts were therefore read in full and applied as separate manual specialist passes. The corresponding handoffs state this limitation directly and do not claim that an external subagent process ran.
+The original planning environment did not expose the Chaos Redux custom subagent spawning interface. The supplied subagent TOML contracts were therefore read in full and applied as separate manual specialist passes. The corresponding handoffs state this limitation directly and do not claim that an external subagent process ran.
+Discover current capabilities under [chaos-redux-subagents](../../../.agents/skills/chaos-redux-subagents/SKILL.md).
+Acceptance statements must be checked against their named decisions independently of commits and status labels.
 
 ## Verification files
 

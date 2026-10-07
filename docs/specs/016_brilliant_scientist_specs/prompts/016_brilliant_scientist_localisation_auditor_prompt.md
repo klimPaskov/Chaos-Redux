@@ -2,7 +2,7 @@
 
 Use the binding origin-conclusion and visible-state contracts from `016_source_of_truth_map.md`.
 
-Spawn `chaosx_localisation_auditor` with `fork_context=false` after a substantial implementation tranche and again before completion.
+Spawn `chaosx_localisation_auditor` with `fork_turns="none"` after a substantial implementation tranche and again before completion.
 
 Read:
 

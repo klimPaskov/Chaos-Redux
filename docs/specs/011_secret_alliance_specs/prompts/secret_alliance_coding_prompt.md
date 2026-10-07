@@ -138,7 +138,7 @@ Event Details and spreadsheet Details describe the premise, not mechanical effec
 
 Use the scripted-system architect before duplicating helper logic. After implementation, run the decision and mission auditor, localisation auditor, and event completion auditor. Use the documentation curator after handoffs accumulate. The focus-tree and country-package auditors should record that no new trees or country packages are part of the accepted scope, then check that existing countries are not overwritten.
 
-Before near-completion, spawn the improvement-loop planner with `fork_context=false`. Resolve its addendum by implementing it, folding accepted design into specs, queuing it with a reason, rejecting it with a reason, or recording a closure handoff. Do not stack unresolved addenda.
+Before near-completion, spawn the improvement-loop planner with `fork_turns="none"`. Resolve its addendum by implementing it, folding accepted design into specs, queuing it with a reason, rejecting it with a reason, or recording a closure handoff. Do not stack unresolved addenda.
 
 ## Completion standard
 

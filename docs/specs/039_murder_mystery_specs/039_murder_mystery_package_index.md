@@ -2,26 +2,38 @@
 
 ## Source of truth
 
-This package is the accepted planning source for Event 039 Murder Mystery. It supersedes the current catalog snapshot where Event 39 is still described as a Minor Repeatable leader murder. The authoritative catalog workbook must be updated during implementation so the event is recorded as Minor Fire-Once, Chaos level 1, Intelligence cluster, Medium member, with five evolutions, the Assassin Network triggerable scenario, and the public World of Anarchy terminal branch.
+This package contains the imported Event 039 Murder Mystery design.
+The accepted label in the original handoff does not cite an independently attributable approval for each expansion; those acceptance claims remain `unresolved`.
+Record explicit user decisions or parent acceptance within authorization under the [repository acceptance rules](../../../AGENTS.md#specs-and-plans).
+The planning-era catalog snapshot described a Minor Repeatable leader murder, while this design proposes Minor Fire-Once, Chaos level 1, Intelligence cluster, Medium member, five evolutions, Assassin Network, and World of Anarchy.
+Apply workbook changes only after accepted design and final implementation facts are reconciled.
+Current [owner skills](../../../.agents/skills/chaos-redux-subagents/SKILL.md) govern workflow over duplicated package guidance.
 
 The package is intended to be extracted directly into `docs/specs/039_murder_mystery_specs/`.
 
 ## Event identity
 
-| Field | Accepted value |
+| Field | Planning value |
 | --- | --- |
 | Event ID | `39` |
 | Event name | Murder Mystery |
 | Event type | Minor Fire-Once |
 | Status before implementation | To Be Reworked |
 | Chaos level | `1` |
-| Cluster | Intelligence |
+| Cluster | Intelligence, ID `20` |
 | Cluster role | Medium member |
 | Normal host | One valid random major country or one valid player-controlled ordinary country |
 | Baseline conclusion | Permanent resolution when the original killer and core network are captured before international survival routes remain |
 | Country escalation | Dynamic Assassin State at Evolution III |
-| Manual scenario | Assassin Network |
+| Manual scenario | Assassin Network, `SCN-019` / raw `19` |
 | Public terminal branch | World of Anarchy |
+
+## Identifier ownership
+
+The parent’s 7 October central audit resolves Intelligence as cluster `20`, consistent with runtime constants and the canonical workbook.
+National Breakthroughs owns the original provisional `9`.
+Assassin Network retains `SCN-019` / raw `19`; Fallout owns the original provisional `SCN-014`.
+Follow the [shared identifier registry](../shared_identifier_registry.md); identifier ownership does not establish gameplay acceptance or completion.
 
 ## Design promise
 
@@ -31,7 +43,7 @@ The event supports two connected games. Ordinary governments investigate murders
 
 The opening remains intentionally ambiguous. The event never confirms a historical order, religion, nation, or real political doctrine as the source. The word assassin describes the event's fictional murder movement. It must not borrow the Nizari Ismailis, the hostile medieval legends attached to them, or generic depictions of anarchism as its identity.
 
-## Locked design decisions
+## Planning design decisions
 
 1. The event uses a normal decision category with a strong static or animated category picture and compact status text. It does not require a dedicated scripted GUI.
 2. Ordinary governments see two persistent public values, Case Progress and Network Reach. The Assassin State sees Network Reach and Brotherhood Cohesion. No actor manages more than two persistent Event 39 values at once.

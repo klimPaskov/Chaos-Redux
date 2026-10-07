@@ -55,7 +55,7 @@ National scale, war, field risk, safety, infrastructure, and contracts retain th
 Changes to those inputs hide priced actions until the existing refresh control rebuilds their quotes.
 Discovery, enrichment, cave setup, foreign-actor selection, and field cycling also refresh quotes without requiring an AI click.
 
-Human manual preparation with no suitable field produces `chaosx.nr18.90` instead of an unexplained failure.
+Human manual preparation with no suitable field produces `chaosx.nr18.33` instead of an unexplained failure.
 The discovery report explains the four ownership choices without promising immediate roads, machinery, or workers.
 The [2026-10-05 review](../../plans/018_resources_found_plans/agent_decisions_2026-10-05.md) records the cost profiles, four-value presentation, source checks, and blocked production renders.
 

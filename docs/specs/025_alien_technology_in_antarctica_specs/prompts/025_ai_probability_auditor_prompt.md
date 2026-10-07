@@ -1,6 +1,6 @@
 # Event 025 AI probability auditor prompt
 
-Spawn `chaosx_ai_probability_auditor` with `fork_context=false` before any weighted implementation patch and again after the owner patch.
+Spawn `chaosx_ai_probability_auditor` with `fork_turns="none"` before any weighted implementation patch and again after the owner patch.
 
 This is read-only.
 

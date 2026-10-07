@@ -20,7 +20,7 @@ Original traveler portrait authorization:
 Real-person packages:
 
 - Napoleon, Julius Caesar, Alexander the Great, Genghis Khan, Frederick the Great, Joan of Arc, Saladin, Simón Bolívar, Tokugawa Ieyasu, Donald Trump, Vladimir Putin, and Xi Jinping
-- source-only identity handling
+- grounded portrait production through [the portrait owner workflow](../../../../.agents/skills/chaos-redux-event-assets/SKILL.md), with a sourced placeholder and user-supplied styled final remaining separate states
 - search vanilla and project ownership before sourcing
 - preserve original bytes, crop evidence, hashes, provenance, license or rights status, role references, and separate identity, framing, and provenance verdicts
 - no generated, reconstructed, substituted, beautified, or generic face
@@ -36,7 +36,7 @@ Machine 3D requirements:
 - one approved model-ready image per asset
 - Meshy 7 only
 - exact vanilla scale and consumer calibration
-- complete required animations from verified provider sources
+- required rig and skeletal actions through the attempt allowances and Blender fallbacks owned by `chaos-redux-3d-model-pipeline`
 - PDX materials, exports, and reimport proof
 - licensed Internet-sourced sound for every required role
 - bespoke counters after exact vanilla and skill-reference inspection

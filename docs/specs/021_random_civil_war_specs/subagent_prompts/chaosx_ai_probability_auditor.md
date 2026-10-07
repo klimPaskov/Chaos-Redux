@@ -1,6 +1,6 @@
 # Subagent Prompt: Event 021 AI and Probability Auditor
 
-Spawn `chaosx_ai_probability_auditor` with `fork_context=false`.
+Spawn `chaosx_ai_probability_auditor` with `fork_turns="none"`.
 
 This agent is read-only.
 

@@ -228,7 +228,7 @@ Do not expose raw triggers. Do not reveal hidden cave formulas in ordinary field
 
 ## Required audit handoff
 
-After implementation, run `chaosx_decision_mission_auditor` with `fork_context=false`. The handoff must report:
+After implementation, run `chaosx_decision_mission_auditor` with `fork_turns="none"`. The handoff must report:
 
 - categories and decisions implemented
 - mission owners, targets, durations, success, failure, and duplicate risk

@@ -40,7 +40,14 @@ The event remains a Chaos level 1 Minor Repeatable event and a Low member of the
 - `prompts/041_disease_in_divisions_goal_prompt.md`
 - `handoffs/041_disease_in_divisions_subagent_routing.md`
 
-## Accepted design summary
+## Design summary and acceptance
+
+The picture-plus-meter conflict is recorded in [Part 3](specs/041_disease_in_divisions_spec_part_3_decisions_and_resolution.md#temporary-decision-category) and remains `unresolved`; current presentation rules do not permit that combination.
+
+
+The imported package preserves the disease design and historical source review.
+Its accepted labels do not cite independent approval for each expansion; missing claim-specific acceptance remains `unresolved` under the [repository acceptance rules](../../../AGENTS.md#specs-and-plans).
+Current [owner skills](../../../.agents/skills/chaos-redux-subagents/SKILL.md) govern implementation workflow over duplicated package instructions.
 
 The opening infects a bounded group of frontline formations. The event never deletes equipment because soldiers become sick. Affected formations lose effective manpower, organization, recovery, reinforcement capacity, and combat power. Recoverable sick soldiers enter a temporary convalescent ledger and return gradually. Fatal cases are registered once as military casualties in the shared Deaths system.
 

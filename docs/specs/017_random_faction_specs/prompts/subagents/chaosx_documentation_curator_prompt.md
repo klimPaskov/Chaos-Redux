@@ -1,6 +1,6 @@
 # Prompt for chaosx_documentation_curator
 
-Use `fork_context=false`. After several Event 17 implementation handoffs, reconcile documentation.
+Use `fork_turns="none"`. After several Event 17 implementation handoffs, reconcile documentation.
 
 Read `AGENTS.md`, `chaos-redux-subagents`, the Event 17 spec package, event docs, implementation handoffs, asset manifests, and audit reports provided by the parent.
 

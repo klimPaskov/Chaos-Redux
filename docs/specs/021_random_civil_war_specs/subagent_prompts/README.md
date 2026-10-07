@@ -2,7 +2,10 @@
 
 These prompts are implementation handoffs for the project custom Codex subagents.
 
-Every subagent must be spawned with `fork_context=false`.
+For Codex, spawn every project subagent with `fork_turns="none"` and a complete, self-contained prompt.
+Use the current [subagent skill](../../../../.agents/skills/chaos-redux-subagents/SKILL.md) for other runtimes and ownership boundaries.
+Before dispatch, add exact allowed files, current source and handoff paths, accepted decisions, and unresolved blockers to each template.
+These templates need bounded parent context and are not standalone authorizations.
 
 The parent must use the prompt text as the complete context for the subagent. Do not assume inherited conversation state.
 

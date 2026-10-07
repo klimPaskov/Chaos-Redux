@@ -2,7 +2,7 @@
 
 Use this prompt only when Event 021 implementation changes focus files, focus-tree loading, focus availability, route locks, or Event 006 focus assignment.
 
-Spawn `chaosx_focus_tree_auditor` with `fork_context=false`.
+Spawn `chaosx_focus_tree_auditor` with `fork_turns="none"`.
 
 Read:
 

@@ -1,6 +1,6 @@
 # Prompt for `chaosx_ai_probability_auditor`
 
-Spawn with `fork_context=false`.
+Spawn with `fork_turns="none"` (Codex).
 
 Perform a read-only Event 53 probability audit. Do not patch source.
 

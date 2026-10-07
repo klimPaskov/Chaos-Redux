@@ -1,6 +1,6 @@
 # Catalog and Core Contract
 
-## Accepted catalog entry
+## Proposed catalog entry
 
 | Field | Value |
 | --- | --- |
@@ -18,7 +18,9 @@
 
 The supplied exported event catalog contains an older row that labels Event 51 as Minor Fire-Once and gives only a one-sentence description. The attached rough brief defines a repeatable crisis with a complete cleanup gate and explicit inheritance of permanent damage between episodes. These concepts cannot coexist with Fire-Once classification.
 
-The current design ruling is therefore:
+The rough-brief proposal is listed below.
+Its classification conflict needs explicit acceptance under the [package authority boundary](README.md) before implementation; the supplied export does not settle design intent.
+
 
 - Event 51 is Minor Repeatable.
 - Its weight and cap follow the shared repeatable-event system.

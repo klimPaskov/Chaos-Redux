@@ -1,10 +1,11 @@
 # Subagent dispatch plan
 
-## Runtime status
+## Historical planning runtime status
 
 This planning environment did not expose the Chaos Redux project subagent runner or the repository MCP servers. No named project subagent was executed, no repository file was edited, and no MCP evidence was fabricated. The `prompts/` folder contains context-complete prompts for the parent implementation agent to dispatch in Codex, Qoder, or Cursor with the repository and configured tools available.
 
-Every project subagent must receive a self-contained prompt with no inherited thread context. In Codex, use `fork_context=false`. In Qoder and Cursor, use the generated hyphen-case agent definition and retain the same explicit prompt.
+Every project subagent must receive a self-contained prompt with no inherited thread context.
+Follow the current [subagent skill](../../../.agents/skills/chaos-redux-subagents/SKILL.md) for runtime dispatch; Codex uses `fork_turns="none"`.
 
 ## Dispatch order
 

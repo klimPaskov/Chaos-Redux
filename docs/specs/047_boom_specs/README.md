@@ -22,9 +22,9 @@ The event remains self-contained. It introduces no player-facing meter, decision
 
 ## Important reconciliations
 
-The current exported event catalog describes a random province and gives Event 47 no cluster assignment. The accepted design uses states because population, buildings, adjacency, and Deaths accounting are state-owned.
+The planning-source event catalog export describes a random province and gives Event 47 no cluster assignment. The planned design uses states because population, buildings, adjacency, and Deaths accounting are state-owned.
 
-The current cluster export contains an unavailable Various Anomalies row with no stable cluster ID. Event 47 can be planned as a prospective member, but runtime cluster wiring must wait until the cluster receives a stable registry identity.
+The planning-source cluster export contains an unavailable Various Anomalies row with no stable cluster ID. Event 47 can be planned as a prospective member, but runtime cluster wiring must wait until the cluster receives a stable registry identity.
 
 The submitted catalog entry labels Event 47 as a Low member. This package recommends Severe. A repeatable incident that can kill most of a state's population, destroy regional infrastructure, and strike several continents does not fit the Low severity label. The event type and Chaos level remain unchanged.
 

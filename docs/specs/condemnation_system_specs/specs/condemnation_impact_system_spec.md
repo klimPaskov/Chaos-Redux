@@ -4,6 +4,12 @@
 
 The user explicitly requested implementation of a 0–1000 Condemnation range, an equipment requirement multiplier of `1 + Condemnation / 500` rounded up to whole equipment, and an inspection burden of 5–15% consumer goods for 180 days. This accepted direction supersedes conflicting older tuning proposals in this document. Implementation remains pending final source, interface, and scenario evidence; the amendment is not a completion claim.
 
+## Authority boundary
+
+The tuning amendment above records explicit acceptance and takes precedence over older numeric proposals.
+The broader expansion below is source design. Its location and implementation-prompt wording do not establish acceptance of every proposed route.
+Keep unrecorded acceptance unresolved and review current owner evidence independently.
+
 ## Purpose
 
 Condemnation should become a practical diplomatic, economic, and military pressure system. A high condemnation score must change play. It should affect trade, resource access, foreign aid, volunteers, attachés, license production, research sharing, faction trust, and the way neutral countries treat the offender.
@@ -37,7 +43,7 @@ This spec keeps that foundation and expands it into source buckets, tiered sanct
 
 The Condemnation tab becomes a management and threat screen. At low values it explains why a country is being watched. At middle values it shows who is preparing restrictions. At high values it shows which countries are actively cutting trade, arms, fuel, and military access.
 
-So the condemned country entries should now be clickable and would show the details window. Don't change the ui of the tab. Only make the entries clickable.
+Preserve the Condemnation tab layout and make its country entries clickable to open the country details window.
 
 For the condemned country, the system should create real choices:
 
@@ -651,7 +657,7 @@ The Condemnation tab should become the main interface for the system.
 
 ### Country list
 
-The sortable country list should show:
+Preserve the existing country list layout. The additional information inventory below belongs in the selected country's detail window or tooltips wherever it is absent from the current list. It does not authorize redesigning the tab:
 
 - country name and flag
 - total condemnation
@@ -934,7 +940,7 @@ The implementation is complete only when all of these are true:
 3. Unsupported embargo behavior is reported clearly with evidence.
 4. Arms embargo, strategic embargo, total embargo, and pariah tiers change gameplay in visibly different ways.
 5. Chemical, biological, nuclear, thermonuclear, atrocity, restricted site, and coverup sources feed distinct source buckets.
-6. The Condemnation tab shows total, tier, source breakdown, active sanctions, participant count, next threshold, decay, and practical penalties.
+6. Clickable country entries preserve the Condemnation tab layout and open details showing total, tier, source breakdown, active sanctions, participant count, next threshold, decay and practical penalties.
 7. Target countries have compliance, defiance, and evasion choices with concrete costs.
 8. Participant countries have enforcement, abstention, carve-out, breach, and shielding logic with real costs or risks.
 9. AI can sanction, abstain, shield, comply, defy, or break sanctions for grounded reasons.

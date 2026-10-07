@@ -84,7 +84,8 @@ Run the focused country, focus, decision, localisation, and completion audits.
 Run the supplied improvement-loop planner near completion in its isolated context and resolve its accepted addendum or closure handoff before claiming completion.
 Keep the parent responsible for conflict resolution and shared-system edits.
 
-The user supplies or explicitly authorizes live-game validation according to the project's debug-playtest workflow.
+The user owns live-game validation.
+The debug-playtest skill applies only when explicitly invoked under its current authorization contract.
 Reading that skill is not permission to operate the user's desktop automatically.
 Record source checks, tool renders, and actual live-game results as separate evidence classes.
 Deliver a concrete completion report with remaining blockers, changed files, test outcomes, asset proofs, and a route coverage table.

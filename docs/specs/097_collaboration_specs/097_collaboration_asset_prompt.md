@@ -1,5 +1,7 @@
 # Event 097 asset-production prompt
 
+Use the [package authority and conflict table](README.md) to resolve this imported variant's inventory before production.
+
 Produce the visual assets for the accepted Collaboration specification in `docs/specs/097_collaboration_specs/`. Read all ten parts, especially presentation and achievements. This is a production assignment after the written design, not permission to change mechanics or add a new interface.
 
 ## Required reading and execution

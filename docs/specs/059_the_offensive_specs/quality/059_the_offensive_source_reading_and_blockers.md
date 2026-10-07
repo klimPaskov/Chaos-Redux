@@ -1,5 +1,10 @@
 # Event 059 source reading and blockers
 
+Disposition: retained historical planning evidence.
+The source inventory, environment failures, manual reviews, and validation claims below describe the original planning pass.
+They do not establish current tool health, independent specialist execution, design approval, or validation of the edited checkout.
+Use the package README for current authority and workflow.
+
 ## Reading completion
 
 All 22 project files explicitly mounted under `/mnt/data` were fully read before the specification was drafted. The supplied subagent archive was extracted and all 20 subagent definitions were fully read.

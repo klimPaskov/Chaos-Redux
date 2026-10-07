@@ -94,7 +94,10 @@ Its military simulation and training effects remain owned by Event 24. Event 54 
 
 Scientific Research represents a broad research wave in which useful breakthroughs, military theory, singular scientists, simulations, and institutional failures can appear together.
 
-The current catalog export contains an unfinished placeholder row. The accepted cluster should use the repository's stable Scientific Research ID. The planning proposal uses Cluster ID `9` when that ID is still free after implementation inspection.
+The originating catalog export contained an unfinished placeholder row.
+The distinct Scientific Research proposal uses reserved `event_cluster_id = 21`, shared with Event 089 in the [central identifier registry](../../shared_identifier_registry.md).
+The old provisional ID `9` is superseded because it belongs to National Breakthroughs.
+This allocation does not accept the proposed cluster behavior or membership and does not change runtime content.
 
 The cluster should be a Minor Repeatable cluster with a 200+ Chaos unlock. Its repeated identity fits Doctrine Research, Gift from Scientists, and Research Failure, while later campaigns retain different combinations after the Fire-Once members leave the pool.
 

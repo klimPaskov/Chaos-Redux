@@ -12,13 +12,27 @@
 - Cluster assignment: Various Anomalies
 - Cluster member severity: Low
 
+## Design authority
+
+Recorded accepted amendments are in [the 5–6 October owner decisions](../../plans/042_equipment_from_heavens_plans/agent_decisions_2026-10-05.md).
+The 5 October presentation decision cites parent G6 authority; the 6 October Borrowed Nightmare follow-up cites the director’s explicit approval.
+Those amendments supersede original popup allocation and combat-loss criteria; current source corroboration and validation limits are recorded in the [audit handoff](../../plans/repo_cleanup/specification_package_audit_2026-10-07/handoffs/037_042.md).
+Catalog edits remain `accepted and queued` under the [catalog owner handoff](../../plans/042_equipment_from_heavens_plans/catalog_changes_pending.md), which records the earlier spreadsheet prohibition.
+This documentation audit does not execute workbook updates.
+
+
+The imported package preserves its premise, proposed expansions and source-reading provenance.
+Claim-specific acceptance remains `unresolved` when an explicit user decision or parent acceptance within existing authorization is not cited.
+Use the [repository acceptance rules](../../../AGENTS.md#specs-and-plans) and current [event workflow](../../../.agents/skills/chaos-redux-events/SKILL.md) rather than treating the imported accepted labels as approval.
+
 ## Design summary
 
 Equipment from Heavens selects one uniformly random eligible ordinary country and gives it an enormous mixed military stockpile that falls across several owned states. Recipient size, manpower, industry, ideology, war status, and strategic need never reduce the reward. The equipment mix remains deliberately unoptimized. A tiny country can receive more armor, aircraft, artillery, trains, or convoys than it can crew, fuel, supply, or deploy.
 
 The event develops through three global evolutions. Evolution I widens the conventional equipment pool and raises the likely technology level. Evolution II permits the highest conventional equipment tiers and substantial nuclear stockpiles. Evolution III can add existing Chaos Redux equipment only after each exact token passes a repository-backed stockpile, fielding, AI, cleanup, and source-isolation audit.
 
-The event uses a main recipient popup, several delayed landing-zone reports, Event Log integration, three evolution records, three achievement routes, static report-event artwork, and the ordinary stockpile and military systems. The design avoids a separate mechanic window and persistent custom meter because the player can understand and use the incident through the manifest summary, stockpile, division designer, air interface, logistics, lend lease, and nuclear systems.
+The accepted presentation uses discovery followed by one final recovery summary or halt report, with three-to-seven hidden recovery visits.
+It preserves Event Log integration, three evolution records, three achievement routes, six report-art roles, and ordinary stockpile and military systems. The design avoids a separate mechanic window and persistent custom meter because the player can understand and use the incident through the manifest summary, stockpile, division designer, air interface, logistics, lend lease, and nuclear systems.
 
 ## File index
 
@@ -49,16 +63,20 @@ The event uses a main recipient popup, several delayed landing-zone reports, Eve
 - `quality/042_equipment_from_heavens_parent_improvement_review.md`
 - `quality/042_equipment_from_heavens_process_blockers.md`
 
-## Catalog reconciliation
+## Planning-era catalog reconciliation
 
 The current exported event catalog row identifies Event 42 as a Chaos level 1 Minor Repeatable event with status To Be Reworked, but it has no cluster assignment. The current cluster export contains an unavailable, unnumbered Various Anomalies row at Chaos level 4 with no members. The accepted design places Event 42 in Various Anomalies as a Low member.
 
 Implementation must reconcile the live cluster registry and the authoritative workbook before assigning any numeric cluster ID. The CSV files are export snapshots and must not be edited directly. Once implementation wording is final, update `docs/spreadsheets/chaos_redux_events_catalog.xlsx` and run `python .tools/export_event_catalog_csv.py`.
 
-## Source status
+The `MANIFEST.sha256` ledger describes current local package bytes and excludes itself.
+Original source-reading receipts retain their historical scope.
+
+## Historical source status
 
 Every supplied top-level Markdown file, TOML file, CSV row, and every subagent TOML inside `subagents(4).zip` was fully read before this package was written. Targeted current repository inspection was also completed through the connected GitHub repository for the existing special-equipment tokens and their owner contracts.
 
 Literal project subagents could not be launched in this interface because the only exposed tool-registry request failed with an MCP 429 response and no spawn function became available. The package therefore includes a parent-performed provisional improvement review and preserves the real `chaosx_improvement_loop_planner` pass as a required implementation-stage closure gate. No supplied source file was skipped.
 
-The local Windows repository, offline Paradox wiki snapshot, installed vanilla game files, and HOI4 MCP server were not mounted in this interface. Their required checks are therefore assigned to implementation and are not represented as completed evidence here.
+The local Windows repository, offline Paradox wiki snapshot, installed vanilla game files, and HOI4 MCP server were not mounted in this interface. Their required checks are assigned to implementation and are not represented as completed evidence here.
+These statements describe the original planning environment; discover current tool and source availability before reporting a present blocker.

@@ -1,6 +1,6 @@
 # Scripted-system architecture prompt for Event 016 Brilliant Scientist
 
-Spawn `chaosx_scripted_system_architect` with `fork_context=false`.
+Spawn `chaosx_scripted_system_architect` with `fork_turns="none"`.
 
 Read:
 

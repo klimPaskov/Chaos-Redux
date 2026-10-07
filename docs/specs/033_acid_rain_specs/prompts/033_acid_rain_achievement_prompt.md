@@ -2,6 +2,9 @@
 
 Implement the ten accepted Event 33 achievements. Read Part 10, the achievement framework, Event Details, Event 33 runtime and decisions, Deaths integration, controller-transfer rules, migration rules, asset manifest, and debug rules. Use `chaosx_repo_explorer`, `chaosx_scripted_system_architect`, `chaosx_icon_artist`, `chaosx_event_ui_worker`, and `chaosx_event_completion_auditor`.
 
+Use the repository explorer only when the current file or owner map is uncertain.
+The event UI worker's scope is the dedicated Acid Rain window; shared achievements, Event Details, event logs, and registries remain parent-owned under the subagent skill.
+
 All titles below are working directions. Write final localization from the requirement and tone. Do not treat identifier words as approved title text.
 
 ## `acid_rain_033_before_the_first_drop`

@@ -4,7 +4,10 @@
 
 This is a planning-time closure review performed against the complete Event 32 specification package.
 
-The accepted closure below remains the design source of truth. A `chaosx_improvement_loop_planner` worker was dispatched with `fork_context=false` on 2026-09-05 for a final implementation-time addendum review, but it produced no handoff after bounded waits and was shut down. No new design addendum is therefore promoted from that worker; the missing independent handoff is recorded in `docs/plans/032_missiles_plans/subagent_handoffs/032_improvement_loop_planner_handoff_2026-09-05.md`.
+The closure below remains planning evidence, with acceptance governed by the package README and attributable decisions.
+A `chaosx_improvement_loop_planner` worker was dispatched with the then-recorded `fork_context=false` instruction on 2026-09-05 for a final implementation-time addendum review, but it produced no handoff after bounded waits and was shut down.
+No new design addendum is promoted from that worker; the missing independent handoff is recorded in `docs/plans/032_missiles_plans/subagent_handoffs/032_improvement_loop_planner_handoff_2026-09-05.md`.
+This preserves the historical dispatch receipt; current Codex spawning uses `fork_turns="none"` under the owner skill.
 
 ## Playable promise
 

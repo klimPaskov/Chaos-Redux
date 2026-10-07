@@ -162,6 +162,10 @@ Oil agreements, embargoes, independence crises, colonial collapse, faction wars,
 
 ## UI presentation
 
+Presentation conflict remains `unresolved`: the static category picture below and the header meter are incompatible under the current [event presentation skill](../../../.agents/skills/chaos-redux-events/SKILL.md#scripted-gui-and-animated-event-presentation).
+The parent must record an accepted presentation choice before implementing that combination; preserve the one-value mechanic and existing design detail.
+
+
 ### Decision category picture
 
 Event 40 needs one static category picture for the intervention campaign.
@@ -197,11 +201,13 @@ A focus inlay is also not required unless implementation evidence shows that Fed
 - Asset type: country leader, adviser, commander, and operative source identity as required by one canonical character
 - Identity classification: grounded source only
 - Source mode: attributed archival photograph
-- Final runtime portrait: source-placeholder mode unless the user later supplies an approved styled final
+- Pending runtime portrait: sourced placeholder until the user supplies its HOI4-style replacement
 - Required ownership audit: exact and variant name search across vanilla and Chaos Redux
 - Forbidden sources: actor stills, reenactors, statues, illustrations as identity masters, generated faces, or reconstructed likenesses
 
-One portrait identity can serve the canonical character consumers when the engine and role framing permit it. Do not create several inconsistent faces for different roles.
+Keep one canonical Lawrence identity source.
+Follow the [portrait owner skill](../../../.agents/skills/chaos-redux-event-assets/SKILL.md#country-leader-commander-operative-and-named-officeholder-portraits) for distinct role-specific framing and independent review, including native advisor cards.
+Do not create inconsistent faces for different roles.
 
 ### Event and report images
 

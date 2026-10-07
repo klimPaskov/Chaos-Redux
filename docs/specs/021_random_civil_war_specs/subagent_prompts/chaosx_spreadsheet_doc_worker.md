@@ -1,6 +1,6 @@
 # Subagent Prompt: Event 021 Spreadsheet Worker
 
-Spawn `chaosx_spreadsheet_doc_worker` with `fork_context=false` only after final in-game wording and implementation facts exist.
+Spawn `chaosx_spreadsheet_doc_worker` with `fork_turns="none"` only after final in-game wording and implementation facts exist.
 
 Read only:
 

@@ -72,12 +72,12 @@ Use:
 
 Subject to repository inspection:
 
-- `event_cluster_id.randomizations = 9`
+- `event_cluster_id.randomizations = 14`
 - `event_cluster_randomizations.unlock_tier` mapped to the accepted Chaos level `1` behavior
 - `event_cluster_randomizations.cooldown_days = 120`
 - `event_cluster_member_participation.random_trait = 60`
 
-The numeric ID must change if the final collision audit finds a conflict.
+ID `14` was allocated by the parent on 2026-10-07 after workbook/runtime occupancy verification; report any later conflict to the parent.
 
 The cluster unlock must not add an unintended extra tier above Event 65's own eligibility.
 

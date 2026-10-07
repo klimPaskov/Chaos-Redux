@@ -16,7 +16,7 @@ Read:
 
 ## Role
 
-The super-event marks a proven world-order fracture caused by simultaneous collapse of several major alliances. It is an escalation and world-order announcement. It is not a world-end scenario.
+The super-event marks a proven world-order fracture caused by simultaneous collapse of several major alliances. It is an escalation and world-order announcement.
 
 It must not fire for a normal Event 62 purge or one internal faction war.
 

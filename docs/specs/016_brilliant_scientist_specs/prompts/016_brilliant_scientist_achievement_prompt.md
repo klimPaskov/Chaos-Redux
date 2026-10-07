@@ -76,6 +76,6 @@ Use the single Chaos Redux achievement registry and exact root achievement filen
 
 An achievement cannot unlock merely because Event 16 fired, Kruger was appointed, or a route focus was clicked. Verify the full campaign condition.
 
-Use `chaosx_icon_artist` with `fork_context=false` for the icon package. Icons must be distinct, readable at 64x64, and follow the approved completed, grey, and not-eligible workflow. Do not reuse Kruger's portrait as the default motif.
+Use `chaosx_icon_artist` with `fork_turns="none"` for the icon package. Icons must be distinct, readable at 64x64, and follow the approved completed, grey, and not-eligible workflow. Do not reuse Kruger's portrait as the default motif.
 
 Write a handoff under `docs/plans/016_brilliant_scientist_plans/subagent_handoffs/` listing changed IDs, tracking, assets, validation, unresolved dispositions, and any merged or rejected achievement.

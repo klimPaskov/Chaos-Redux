@@ -6,6 +6,9 @@
 
 This package is superseded by the accepted Event 012 specification package and current Event 012 subsystem documentation. Its internal prompts, quality gates, catalog handoff, and implementation map remain useful historical evidence, but they must not be used to reopen duplicate implementation work or to treat the former Event 070 catalog request as current approval.
 
+The replacement [Africa package](../012_africa_specs/README.md) and [Part 3 accepted appendices](../012_africa_specs/specs/012_africa_spec_part_3_focus_tree_architecture.md) explicitly cite original Gods focus and grading design.
+Supersession changes current navigation; it does not reject accepted historical clauses or erase their provenance.
+
 ## Package identity
 
 This package specifies **Gods of Africa** as a persistent subsystem owned by Event `012`, **Africa Is One**.

@@ -1,5 +1,9 @@
 # Source reading manifest
 
+This is the original planning pass's source-reading receipt for supplied local copies under `/mnt/data`.
+Those container paths and source versions are historical provenance, not current Windows repository locations or proof that current owner skills have been read.
+Resume from [the package README](../README.md) and the live repository skills.
+
 This planning pass fully read every project source file supplied with the task. No supplied source was skipped, summarized from a filename alone, or treated as unread because a preview was truncated.
 
 The files were read from their complete local copies under `/mnt/data`.

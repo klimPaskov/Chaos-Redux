@@ -8,7 +8,7 @@ This directory is the source design for Event 40.
 - Type: Minor Fire-Once
 - Minimum Chaos level: `1`
 - Cluster: none
-- Planning status: complete
+- Planning status: assembled historical handoff; required planner closure remains unresolved
 - Implementation status: not implemented by this package
 - Catalog status: keep To Be Reworked until implementation and validation
 
@@ -18,9 +18,10 @@ All 22 supplied top-level project files and all 20 subagent definitions inside `
 
 `quality/040_lawrence_of_arabia_source_read_manifest.md`
 
-The available tool registry did not expose project-subagent spawning or HOI4 MCP actions. No subagent or MCP audit was run. Context-complete future handoffs are included under:
-
-`docs/plans/040_lawrence_of_arabia_plans/subagent_handoffs/`
+The original planning environment did not expose project-subagent spawning or HOI4 MCP actions, and no such audit ran during package creation.
+This is historical evidence, not a current capability assessment.
+Current dispatch must discover the active tool schemas and follow the [subagent owner skill](../../../.agents/skills/chaos-redux-subagents/SKILL.md).
+The included dispatch prompts are under [prompts/](prompts/); future implementation handoffs belong under `docs/plans/040_lawrence_of_arabia_plans/subagent_handoffs/`.
 
 ## Design decisions
 
@@ -37,6 +38,9 @@ The specification preserves the user's core idea and makes these critical correc
 - The permanent federation alone receives a dedicated country and focus package.
 
 ## Deliberate limits
+
+The picture-plus-meter conflict is recorded in [Part 5](040_lawrence_of_arabia_spec_part_5_connections_assets_achievements.md#ui-presentation) and remains `unresolved`; current presentation rules do not permit that combination.
+
 
 These surfaces are intentionally absent because they would add maintenance without improving the event's core play:
 
@@ -94,18 +98,13 @@ These are design decisions, not shortcuts.
 - `prompts/040_lawrence_of_arabia_probability_audit_prompt.md`
 - `prompts/040_lawrence_of_arabia_catalog_spreadsheet_prompt.md`
 
-## Source-of-truth order
+## Source-of-truth and acceptance
 
-When files appear to conflict, use this order:
-
-1. current explicit user correction
-2. accepted Event 40 specification files in this directory
-3. repository rules and system skills
-4. final implemented gameplay and validated evidence
-5. permanent Event 40 documentation
-6. authoritative catalog workbook
-7. generated CSV exports
-8. older rough prompts and catalog descriptions
+Explicit user decisions and parent acceptance within authorized scope establish design authority under the [repository acceptance rules](../../../AGENTS.md#specs-and-plans).
+The imported pack preserves its premise and planning expansion, but its accepted labels do not independently establish approval.
+Claim-specific acceptance remains `unresolved` when that basis is missing.
+Current repository rules and owner skills govern workflow; implementation evidence describes what exists, and imported source/capability reports remain historical.
+The authoritative workbook is the editable catalog source, while CSVs remain export snapshots.
 
 ## Implementation handoff
 

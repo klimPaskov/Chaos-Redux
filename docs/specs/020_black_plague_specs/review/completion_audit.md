@@ -74,7 +74,7 @@ This audit compares the complete Event 20 request, including later corrections, 
 | country package matrix | Complete |
 | focus tree architecture | Complete |
 | starting forces and reinforcement | Complete |
-| achievements | Complete, fourteen ordinary progression achievements with scenario disqualification |
+| achievements | Complete, thirteen matrix-listed ordinary progression achievements with scenario disqualification |
 | asset coverage | Complete as production plan |
 | animation planning | Complete for selected surfaces |
 | super-event research gate | Complete |

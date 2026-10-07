@@ -10,11 +10,13 @@ Create a bounded reconciliation record: what is directly required by the user, w
 
 Resolve the one-state and lost-territory manifestation policy. A same-tag contest is not the brief's separate hostile country, and runtime map creation is not assumed. Establish a supported reusable portrait effect route with identity-preserving alignment across the required surfaces. Verify exact force-transfer behavior without healing damaged divisions. Verify mixed human/demon sound routing. Read the current full Wu, specialist, disease, research-loss, subject, and terminal contracts before implementing their hooks.
 
-Do not use a generic reward fallback to make an unsupported offer look complete. Disable or redesign that particular offer until its stated result is genuinely deliverable. Do not omit a required whole branch merely because one helper needs research.
+Do not use a generic reward fallback to make an unsupported offer look complete. Record the unsupported offer as blocked, preserve its requirement, and obtain an explicit accepted amendment before disabling or redesigning it. Do not omit a required whole branch merely because one helper needs research.
 
 ## Plan actual ownership and work packages
 
-Use the available specialist execution tool if one is genuinely available. Dispatch bounded tasks with exact source ranges, writable ownership, inputs, expected evidence, and return criteria. Do not claim that reading twenty role descriptions is equivalent to running twenty agents. Keep parent integration and independent review distinct.
+Follow the current [subagent ownership contract](../../../../.agents/skills/chaos-redux-subagents/SKILL.md).
+Dispatch named specialists with fully explicit, self-contained prompts and `fork_turns="none"` in Codex, exact source ranges, writable ownership, inputs, evidence and return criteria.
+A missing mandatory role or MCP route remains a recorded blocker. Do not claim that reading twenty role descriptions is equivalent to running twenty agents. Keep parent integration and independent review distinct.
 
 Separate work on the parent state machine, offer providers, investigation and breakaway, country setup and force plans, shared focus architecture, unit families and production, foreign/client relations, evolutions and terminal outcomes, presentation and assets, localisation, achievements, and QA. Shared code is changed by an explicit owner and reviewed against its other consumers.
 

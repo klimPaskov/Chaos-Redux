@@ -1,6 +1,6 @@
 # Event 025 super-event text researcher prompt
 
-Spawn `chaosx_super_event_text_researcher` with `fork_context=false`.
+Spawn `chaosx_super_event_text_researcher` with `fork_turns="none"`.
 
 Read the full Event 025 package, especially Parts 010 and 012 and the historical research note.
 

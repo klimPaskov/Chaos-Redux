@@ -4,7 +4,8 @@
 
 This is a routing handoff derived from the complete uploaded subagent definitions. No custom project subagent was executed in the current planning environment.
 
-All future subagents must receive a complete self-contained prompt with no inherited conversation context. In Codex that means `fork_context=false`.
+All future subagents must receive a complete self-contained prompt with no inherited conversation context.
+Follow the current [subagent skill](../../../../.agents/skills/chaos-redux-subagents/SKILL.md); Codex uses `fork_turns="none"`.
 
 ## Recommended sequence
 

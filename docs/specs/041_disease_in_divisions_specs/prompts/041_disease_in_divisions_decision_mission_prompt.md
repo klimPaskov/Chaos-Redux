@@ -8,6 +8,10 @@ Use `common/decisions/041_disease_in_divisions_decisions.txt` and `common/decisi
 
 ## Presentation contract
 
+Resolve the picture-plus-meter conflict recorded in Part 3 under the current event presentation skill before implementing this category.
+Do not infer approval from the imported spec.
+
+
 Use an ordinary temporary decision category with:
 
 - one static category picture
@@ -150,4 +154,6 @@ Do not show raw triggers, raw variables, future surprise branches, or hidden pro
 
 Remove decisions, missions, target flags, selected-sector state, posture commitments, and active category state after resolution, invalidation, annexation, transfer, or event disable handling.
 
-After implementation, spawn `chaosx_decision_mission_auditor` with a complete prompt and `fork_context=false`. Resolve every local patch or plan finding. Run the event completion audit before claiming the event is complete.
+After implementation, spawn `chaosx_decision_mission_auditor` with a complete prompt and Codex `fork_turns="none"`.
+Resolve every local patch or plan finding.
+Run the event completion audit before claiming the event is complete.

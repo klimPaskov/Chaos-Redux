@@ -1,5 +1,7 @@
 # Completion audit prompt
 
+Disposition: superseded historical prompt; current guidance is [the Event 012 authority map](../../012_africa_specs/README.md).
+
 Run a read-only completion audit of the Gods of Africa Event `012` subsystem.
 
 ## Sources

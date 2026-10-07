@@ -4,6 +4,9 @@ Work read-only with no inherited conversation context. Establish the named proba
 
 Read `AGENTS.md`, `chaos-redux-events`, `chaos-redux-focus-trees`, `chaos-redux-decisions-missions`, `chaos-redux-subagents`, and the complete Event 38 specs, especially `15_ai_probability_and_balance.md`, `23_acceptance_scenarios.md`, `25_decision_register.md`, `26_focus_route_matrix.md`, and `28_balance_tuning_tables.md`.
 
+Before owner edits, preserve immutable before-source files and exact scenario fixtures under the [current probability handoff contract](../../../../.agents/skills/chaos-redux-subagents/SKILL.md#mandatory-handoff-after-any-patch).
+Keep source paths and copied-byte hashes available for the compare pass.
+
 Start with `hoi4.probability_inspect` for every implemented weighted surface in scope. Then use the correct MCP tools based on the evidence contract. Do not patch source and do not choose balance targets.
 
 Audit at minimum:

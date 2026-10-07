@@ -515,8 +515,8 @@ GUI:
 
 - `hoi4.gui_inspect`
 - `hoi4.gui_render`
-- `hoi4.gui_rewrite`
-- post-change compare
+- reviewed direct source edits or optional `hoi4.gui_rewrite`
+- matching before-and-after inspection/render evidence under the GUI owner skill
 
 Technology:
 

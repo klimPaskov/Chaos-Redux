@@ -2,7 +2,7 @@
 
 ## Use
 
-Extract the `080_airship_specs/` folder into the repository's `docs/specs/` directory. The result is `docs/specs/080_airship_specs/`.
+This package is installed at `docs/specs/080_airship_specs/`.
 
 Read the numbered specifications in order. For implementation, use the coding prompt and its linked specialist prompts. The separate goal prompt is ready to copy as a `/goal` instruction and stays within the planning skill's 3,500 to 4,000 character range.
 
@@ -39,7 +39,11 @@ This is a detailed design proposal. New balance values, capacities, content situ
 
 [Research and source report](080_airship_research_and_source_report.md) records all reading, repository inspection, source conflicts, historical research leads, and outstanding gates. The [supplied-source reading ledger](080_airship_supplied_source_read_ledger.json) includes the exact file hashes and completed reading coverage.
 
-## Reading and execution limits
+## Original planning-session evidence
+
+The reading and execution claims below describe the original supplied-source planning session, not current tool availability or current implementation.
+The referenced companion `docs/plans/080_airship_plans/` is absent from this checkout; its external handoffs are blocked dependencies, not accessible evidence.
+Use the in-package handoff and matrices for the available design basis and record any recovery of the missing companion separately.
 
 All 42 supplied text files were read in full, including all twenty subagent definitions. They total 1,202,682 bytes and 14,072 lines. Externally referenced required resources were not all available or fully read. These include the original map files, exact state and stop bindings, installed vanilla sources, offline wiki, actual canonical visual references and processors, the dedicated MTTH skill, the authoritative workbook, and complete shared custody and fire implementation contracts.
 

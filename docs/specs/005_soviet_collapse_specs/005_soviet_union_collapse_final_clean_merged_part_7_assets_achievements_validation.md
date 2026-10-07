@@ -3,13 +3,18 @@
 
 ## Asset policy
 
-Active June 5 urgent playability constraint: do not edit `gfx/flags`, flag sprites, flag files, flag interface entries, route flags, ideology flag assets, or other asset files unless the user explicitly reopens that scope. The asset and flag requirements below remain final-validation requirements, not permission to touch flags during the current no-flag cleanup.
+Historical June 5 urgent-playability scope excluded asset and flag edits.
+The [source-of-truth map](../../plans/005_soviet_collapse_plans/source_of_truth_map.md) records later bounded asset handoffs and supersedes that blanket no-flag status.
+Current production scope must come from the active parent brief, while the asset requirements below remain design and validation requirements.
 
 Reuse existing assets only when they are valid, correctly placed, correctly sized, wired, documented, and suitable for the route identity.
 
 Create or source new assets when existing assets are missing, broken, generic, duplicated, wrongly oriented, wrong size, unwired, undocumented, or unsuitable.
 
-Historical flags and real leader portraits must be sourced. Fictional leaders, symbolic councils, high-chaos authorities, factory portraits, cult portraits, and invented icons may be generated.
+Historical flags and real leader portraits require attributed sources.
+Use [chaos-redux-event-assets](../../../.agents/skills/chaos-redux-event-assets/SKILL.md) for current source classification, historical-flag reconstruction, native transparency, portrait production, conversion, and manifests.
+Every character portrait belongs to `chaosx_portrait_creator`.
+A council, factory, cult, or high-chaos label does not by itself make a grounded person or institution fictional.
 
 ## Required asset coverage
 

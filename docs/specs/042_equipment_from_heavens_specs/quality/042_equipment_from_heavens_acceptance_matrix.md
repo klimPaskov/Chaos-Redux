@@ -66,8 +66,8 @@ Event 42 is complete only when every Required row passes or is explicitly remove
 | E42-058 | Special AI | Every allowlisted family has bounded AI use | Probability and AI test | Required |
 | E42-059 | Special quantity | Quantity follows real battalion or payload semantics | Registry math and stockpile evidence | Required |
 | E42-060 | Clone balance | Clone reserve manpower cannot create uncontrolled runaway gain | Longitudinal balance test | Required |
-| E42-061 | Landing report count | Three to seven reports are queued | Probability scenario E42_REPORT_01 | Required |
-| E42-062 | One-state chain | Seven reports can resolve safely in one state | Scenario E42_REPORT_02 | Required |
+| E42-061 | Recovery visit count | Three-to-seven hidden visits, discovery and one summary/halt popup | Probability scenario E42_REPORT_01 | Required |
+| E42-062 | One-state chain | Seven hidden visits resolve safely in one state without extra popups | Scenario E42_REPORT_02 | Required |
 | E42-063 | State persistence | Saved report targets do not reroll after reload | Save and reload evidence | Required |
 | E42-064 | State modifier merge | Repeated-state modifiers refresh or merge within cap | One-state test | Required |
 | E42-065 | Accident bounds | Recovery accident has visible cause and small bounded loss | Seeded rare outcome test | Required |
@@ -96,7 +96,7 @@ Event 42 is complete only when every Required row passes or is explicitly remove
 | E42-088 | Achievement assets | Three complete icon triplets are wired | Achievement UI review | Required |
 | E42-089 | Tiny Arsenal State | Eligibility, timing, division growth, capital, and major victory work | Achievement test | Required |
 | E42-090 | Nuclear Lottery | Receipt and pre-production nuclear strike work | Achievement test | Required |
-| E42-091 | Borrowed Nightmare | Exact special family is materially used before owner event fires | Owner callback test | Required |
+| E42-091 | Borrowed Nightmare | Equipped commander-army land victory within 1095 days of normal delivery, source event absent | Accepted 6 October callback and negative cases | Required |
 | E42-092 | Achievement safeguards | Tag switch, debug, duplicate grant, annexation, and overwrite exploits fail | Negative tests | Required |
 | E42-093 | Documentation | Permanent event, cluster, compatibility, achievement, and asset docs agree | Documentation audit | Required |
 | E42-094 | Workbook | Authoritative XLSX contains final player-facing wording and metadata | Workbook review | Required |

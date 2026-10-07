@@ -4,7 +4,9 @@
 
 ## CBRN Operations interface
 
-The main player-facing surface is a CBRN Operations category or custom window opened from decisions. It complements the Chaos Meter tabs rather than replacing them.
+The category/custom-window alternatives below are older presentation proposals.
+The [documentation state](../../../plans/chaos_warfare_system_plans/documentation_state.md) records native-category acceptance and rejection of window-only animation concepts, so the old window brief does not authorize a new GUI or asset assignment.
+Retain its information inventory as design context and use the current requirement ledger and owner handoffs to establish the accepted consumer.
 
 ## Tabs
 

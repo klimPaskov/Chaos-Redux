@@ -1,6 +1,6 @@
 # Event 066 Abundance Completion Audit Prompt
 
-Use `chaosx_event_completion_auditor` with `fork_context=false` after the implementation owner reports the event ready.
+Use `chaosx_event_completion_auditor` with `fork_turns="none"` after the implementation owner reports the event ready.
 This is a read-only audit.
 
 ## Sources

@@ -376,7 +376,7 @@ Recommended permanent documentation:
 - `docs/events/057_the_black_market/membership_and_secrecy.md`
 - `docs/events/057_the_black_market/routes_and_deliveries.md`
 - `docs/events/057_the_black_market/inventory_and_credit.md`
-- `docs/events/057_the_black_market/provider_api.md`
+- `docs/events/057_the_black_market/systems/provider_api.md`
 - `docs/events/057_the_black_market/ai_and_balance.md`
 - `docs/events/057_the_black_market/validation.md`
 

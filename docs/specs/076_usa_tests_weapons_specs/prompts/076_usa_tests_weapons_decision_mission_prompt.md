@@ -34,7 +34,10 @@ Native categories, decision icons and mission text must follow the actual layout
 
 ## Validation and handoff
 
-Use the actual decision-mission auditor and UI worker where available, with clean context and bounded ownership. Run the required MCP decision, mission, cost and UI analyses and the complete AI action checks. Inspect the rendered category in game with multiple jobs, long names, exact-cost resources and changing ownership.
+Use `chaosx_decision_mission_auditor` and the read-only probability auditor with self-contained tasks and bounded ownership under the current [subagent skill](../../../../.agents/skills/chaos-redux-subagents/SKILL.md).
+This design uses native categories and introduces no dedicated Event 076 window, so it does not qualify for `chaosx_event_ui_worker`.
+Use matching installed MCP routes for supported event, probability and GUI surfaces; record unavailable capabilities instead of inventing decision, mission or cost endpoints.
+The parent reviews supported native renders and user-supplied live evidence with multiple jobs, long names, exact-cost resources and changing ownership.
 
 Prove that accepted tests remain dangerous, no relief action creates a safe third response, and repeated callbacks cannot double-charge or double-complete objectives. Test save and reload, stale buttons, slot reuse, multiplayer, owner containment, mission failure and a new impact during reconstruction.
 

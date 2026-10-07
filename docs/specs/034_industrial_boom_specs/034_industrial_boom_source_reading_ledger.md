@@ -1,5 +1,9 @@
 # Event 34 Industrial Boom source-reading ledger
 
+Historical evidence: source names, hashes, repository observations, and tool/runtime limitations below belong to the original planning pass.
+They do not establish current local file availability, current service health, implementation status, or design approval.
+Use the package entry point and current owner skills for active guidance.
+
 ## Reading statement
 
 Every project source supplied with this request was opened and read in full before the specification was written. This includes all Markdown skills and project documents, all three CSV catalog exports, the runtime configuration, and every subagent definition inside the supplied archive. No supplied source was skipped, sampled, or truncated during the source pass.

@@ -1,5 +1,7 @@
 # Event 064 Catalog and Repository Reconciliation
 
+Historical catalog and repository findings from the planning snapshot; refresh source and MCP evidence before asserting current behavior.
+
 ## Accepted design source
 
 The user's current brief is authoritative for Event 064 identity. Project-facing package paths and identifiers use the zero-padded form `064`, while the established runtime namespace remains `chaosx.nr64.*`.

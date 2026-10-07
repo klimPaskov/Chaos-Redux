@@ -102,7 +102,7 @@ Each executed scenario must record game/repository revision, setup, observed beh
 | QA75 | Maximum launch from zeroChaos | Exactly1000 before other actual developments, no false strict-threshold activation |
 | QA76 | Scenario launch in high-Chaos campaign | Additive value and real population share shown, independent terminal conditions retained |
 | QA77 | Multiplayer setup | Each affected human's role and commitments honored, no involuntary hidden faction swap |
-| QA78 | Four custom unit models | Separate body/gun Meshy 7 provenance, direct Blender firearm route, correct scale and export/reimport |
+| QA78 | Four custom unit models | Separate body/gun Meshy 7 provenance, current 3D owner-skill rig/action and Blender evidence, correct scale and export/reimport |
 | QA79 | Six actions per model | Actual skeletal idle/move/attack/defend/support-attack/death, correct grip and sounds |
 | QA80 | Unit counters | Correct152×42 two-frame sheet, native template/small assets, actual map consumer proof |
 | QA81 | Voices and sound | Licensed sources, real tag/original-tag routing, no unsupported per-subunit voice promise |
@@ -116,7 +116,7 @@ Each executed scenario must record game/repository revision, setup, observed beh
 | QA89 | Technology audit | Inspect/render/compare covers unit unlocks, equipment, research, inherited country setup |
 | QA90 | Sixteen achievements | True and near-miss states, manual/debug restrictions, tag lineage, all 48 icon states |
 | QA91 | Callback performance | No unauthorized global periodic loop and no duplicate callback registration |
-| QA92 | Catalog and shared displays | Workbook-led identity, two clusters, scenario, evolutions, world-end toggle, history, details coherent |
+| QA92 | Catalog and shared displays | Workbook-led identity, two clusters, reserved SCN-031 / raw 31 scenario, evolutions, world-end toggle, history, details coherent |
 | QA93 | CXT and startup coverage | All four new subunits registered through the actual idempotent test-country pattern, no copied vanilla history for additive grants |
 | QA94 | Full save/reload cycle | Missions, cases, governments, formations, treaties, counters, and terminal ownership persist |
 | QA95 | Near-completion improvement loop | Actual configured planner and scoped follow-up review performed, accepted changes integrated throughout |

@@ -1,5 +1,7 @@
 # Asset prompt for Event 007 Fury
 
+Read the [accepted release corrections](../specs/007_fury_release_corrections_2026-10-05.md) first; they override conflicting older instructions within their recorded acceptance boundary.
+
 Use `chaos-redux-event-assets` for this package. If any animated asset is requested later, use `chaos-redux-frame-animation` as well. Inspect the relevant reference folders before creating or processing assets.
 
 Event ID: `7`
@@ -96,9 +98,9 @@ Direction: 1936 to 1945 documentary-style black and white news image. A small ca
 
 ### Shared Fury report image, 210x176
 
-Sprite: `GFX_report_event_random_war`
-
-Fury report events reuse the existing random-war report-card image. The separately processed `fury_war_office.dds` remains available under the Event 007 asset path, but it is not an active report-event consumer.
+The accepted October release correction requires the event-owned war-office card, preserved mobilisation image for opening news, and existing battle scene for conquest news.
+Read the release corrections and parent asset handoffs for final paths and sprites before production.
+The older random-war report reuse direction is superseded for this presentation tranche.
 
 ## Super-event images, 457x328
 
@@ -136,6 +138,7 @@ Suggested file: `leader_fury_war_directorate.dds`
 Sprite: `GFX_portrait_fury_war_directorate`
 
 Direction: fictional institutional council or impersonal war office leadership portrait. A table of officers partly in shadow with maps and files, no single real person, no generated text. Mark as fictional institutional leader. Do not use gendered personal-name pool.
+Route any authorized portrait, including an institutional portrait, to `chaosx_portrait_creator` under [chaos-redux-event-assets](../../../../.agents/skills/chaos-redux-event-assets/SKILL.md).
 
 ## Achievement icons, 64x64
 
@@ -164,4 +167,5 @@ Create:
 - `docs/assets/007_fury/manifest.md`.
 - `docs/assets/007_fury/gfx_handoff.md`.
 
-Every handoff entry must include final DDS path, sprite name, target `.gfx` file, and related idea, decision, focus, event, super-event, faction, leader, or achievement.
+Use [chaos-redux-event-assets](../../../../.agents/skills/chaos-redux-event-assets/SKILL.md) for current provenance, alpha, processing, manifest, durable-record, and parent-wiring requirements.
+Retain the package destinations above and asset-specific sprite/consumer mappings.

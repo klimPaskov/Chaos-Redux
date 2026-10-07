@@ -22,8 +22,8 @@ Fallout needs a new visual language. It should not reuse only old nuke icons and
 | Decision category icons | Icon artist | Survival ledger, state recovery, salvage, refugee policy, mutant policy, diplomacy, late ambition. |
 | Focus icon family | Icon artist | One family per archetype plus regional overlay icons. |
 | Achievement icons | Icon artist | Completed, grey, and not eligible variants. |
-| Cosmetic flags | Generated or sourced by identity | Many successor flags. Historical flags and real symbols must be sourced, fictional flags can be generated. |
-| Leaders and councils | Generated for fictional leaders, sourced for real people | Continuity councils, bunker directors, warlords, food boards, mutant courts, technates. |
+| Cosmetic flags | Flat ImageGen output after identity/symbol research | Many successor flags. Attested geometry and symbols require attributed research, then constrained flat production through the asset skill. |
+| Leaders and councils | Portrait creator; grounded sources or authorized high-chaos/impossible generation after classification | Continuity councils, bunker directors, warlords, food boards, mutant courts, technates. |
 | Report images | Generated documentary style unless real source is required | Winter flavour, black snow, greenhouses, shelter riots, dead-city salvage. |
 | News images | Generated or sourced | Treaty collapse, first dead city, post-Fallout recognition. |
 

@@ -1,5 +1,10 @@
 # Event 60 design review and blockers
 
+Disposition: retained historical planning evidence.
+The source inventory, environment failures, manual reviews, and validation claims below describe the original planning pass.
+They do not establish current tool health, independent specialist execution, design approval, or validation of the edited checkout.
+Use the package README for current authority and workflow.
+
 ## Review result
 
 The planning pack preserves the accepted event identity: Minor Repeatable, Chaos level 1, Scientific Research cluster, High member role, one valid major or player-controlled target, two-slot baseline, one-slot Knowledge Collapse, technology regression, reconstruction, and the Kruger slot-preservation exception.

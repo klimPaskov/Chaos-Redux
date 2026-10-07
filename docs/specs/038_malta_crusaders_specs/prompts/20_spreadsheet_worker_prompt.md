@@ -17,7 +17,8 @@ Update Event 38 with:
 - public world-end field for The Holy World only
 - no hidden Teutonic or Atlantis spoilers
 
-Register or update the manual **Believers vs Nonbelievers** scenario using the final collision-checked scenario ID, details, type controls, intensity wording, and status. Do not use the working `SCN-015` value unless the final registry confirms it.
+When catalog updates are separately authorized, use the centrally reserved `SCN-021` / raw `21` for **Believers vs Nonbelievers**, with final details, type controls, intensity wording and status.
+Follow the [shared identifier registry](../../shared_identifier_registry.md#triggerable-scenarios); identifier ownership does not approve gameplay or imply that the reserved scenario is already implemented.
 
 Preserve workbook structure, formats, formulas, filters, validation, and unrelated rows. Save the workbook, then run:
 

@@ -4,7 +4,7 @@ Keep `chaosx.nr42.1` as the entry event. Register Event 42 as Chaos level 1 Mino
 
 Create one persisted manifest and one stockpile transaction per firing. Generate Enormous, Colossal, or Impossible packages from a curated conventional registry with one anchor family, supporting families, and at least one strategically awkward family. Grant complete usable variants under every active DLC configuration. Never grant bare designer chassis or empty airframes. A tiny country must be able to receive the same arsenal as a major.
 
-Create three to seven delayed landing-zone reports across saved owned and controlled states. They never grant equipment again, create another Event 42 history row, advance pacing, or reduce repeatable weight. Persist the chain through save and reload, then clean all temporary state.
+Use the accepted Part 4 presentation: discovery, three-to-seven hidden recovery visits, then one summary or halt report. They never grant equipment again, create another Event 42 history row, advance pacing, or reduce repeatable weight. Persist the chain through save and reload, then clean all temporary state.
 
 Implement ordered paced evolutions at 200, 400, and 600 Chaos. Evolution I expands specialized and advanced conventional equipment. Evolution II adds highest-tier conventional arsenals and substantial nuclear caches. Prove that a recipient without nuclear research can launch the finite received stockpile through ordinary valid delivery rules without gaining production, research, facilities, missiles, thermonuclear access, or permanent launch rights.
 

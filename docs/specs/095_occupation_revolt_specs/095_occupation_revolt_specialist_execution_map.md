@@ -15,7 +15,7 @@ Text and audio researchers retain their explicit narrow-context restrictions and
 
 | Role | When required | Prepared assignment | Actual status |
 |---|---|---|---|
-| `chaosx_repo_explorer` | Required before implementation | [Assignment](agent_assignments/chaosx_repo_explorer.md) | NOT_EXECUTED |
+| `chaosx_repo_explorer` | Only when relevant locations, patterns or implementation order are unclear | [Assignment](agent_assignments/chaosx_repo_explorer.md) | NOT_EXECUTED |
 | `chaosx_scripted_system_architect` | Required before and during implementation | [Assignment](agent_assignments/chaosx_scripted_system_architect.md) | NOT_EXECUTED |
 | `chaosx_ai_probability_auditor` | Required for every actual weighted surface | [Assignment](agent_assignments/chaosx_ai_probability_auditor.md) | NOT_EXECUTED |
 | `chaosx_country_package_auditor` | Required for all activated claimant archetypes | [Assignment](agent_assignments/chaosx_country_package_auditor.md) | NOT_EXECUTED |

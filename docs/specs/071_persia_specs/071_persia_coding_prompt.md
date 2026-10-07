@@ -2,11 +2,11 @@
 
 Implement the complete design in `docs/specs/071_persia_specs/`. Begin with `071_persia_index.md`, then fully read all eighteen sequential specification parts and the companion country matrix, research notes, source receipt, parent review, and role handoffs. The six prompt files are separate handoffs. Do not treat this prompt as a substitute for the specifications.
 
-The work is Event 071, Persia, root `chaosx.nr71.1`, Minor Fire-Once, Chaos level 1, Formables Medium. The current catalog status is To Be Reworked. Use the normal status workflow only after evidence supports a change.
+The work is Event 071, Persia, root `chaosx.nr71.1`, Minor Fire-Once, Chaos level 1, Formables Medium. The reviewed catalog snapshot records To Be Reworked. Use the normal status workflow only after evidence supports a change.
 
 ## Read and inspect before editing
 
-Follow `AGENTS.md`, `README.md`, `CHAOS_REDUX_MECHANICS.md`, the supplied dynamic effects and triggers references, and all applicable skills. Required skills include event planning, events, focus trees, decisions and missions, scripted GUI, event assets, super-events, 3D model pipeline, frame animation when used, ComfyUI for the prescribed portrait route, debug and playtest, subagents, and the improvement loop.
+Follow `AGENTS.md`, `README.md`, `CHAOS_REDUX_MECHANICS.md`, the supplied dynamic effects and triggers references, and all applicable skills. Required skills include event planning, events, focus trees, decisions and missions, scripted GUI, event assets, super-events, 3D model pipeline, frame animation when used, the event-assets portrait-production reference, subagents, and the improvement loop.
 
 Read the actual repository sources, all mandatory offline wiki pages, installed vanilla files, current Iranian and DLC trees, existing Event 071 files, unit-family and cost APIs, catalog workbook, asset references, and existing relevant systems. The archive used for planning did not contain these. Do not claim the planning session verified them. Do not substitute the online Paradox Wiki for required offline sources.
 
@@ -54,7 +54,8 @@ Use `hoi4.probability_simulate` only for declared uncertain inputs and `hoi4.pro
 
 Follow the separate asset and super-event prompts. Produce every required final static asset and any later accepted animation with a static fallback. Inspect canonical references before production. Every flag uses flat reference-constrained ImageGen. Historical designs need evidence and faithful geometry. Fictional designs need explicit documentation. All portraits go to `chaosx_portrait_creator`, preserving grounded identity and using the prescribed RunPod styling route.
 
-Delegate required 3D and skeletal animation production to `chaosx_3d_model_pipeline` through Codex `collaboration.spawn_agent` with `fork_turns="none"` when that runtime is available. Use a self-contained handoff. Follow the dedicated 3D skill's separate Meshy 7 body and firearm generation rule, then the firearm-safe Blender route. Resolve the older gun-production wording conflict with the skill maintainer. Do not spend on external generation or recovery work without the required authorization.
+Delegate required 3D and skeletal animation production to `chaosx_3d_model_pipeline` through Codex `collaboration.spawn_agent` with `fork_turns="none"` when that runtime is available. Use a self-contained handoff. Follow the dedicated 3D skill's separate Meshy 7 body and firearm generation rule, then the firearm-safe Blender route. Use the current owner skill for route selection, attempt allowances, component completion and Blender fallbacks.
+Do not reopen the historical wording conflict as an extra production approval gate.
 
 Wire and validate final `.asset`, entity, `.gfx`, unit consumer, attachments, actions, scale, counters, and sound routing. Review available user-supplied live in-game evidence. A rendered model without a working unit consumer is incomplete.
 

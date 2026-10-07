@@ -1,4 +1,8 @@
-Implement the complete Chaos Redux Event 6 rework, Independence Wave, from `docs/specs/006_independence_wave_specs/`. Treat every spec part, matrix, diagram, research rule, and prompt there as accepted source design unless a later user decision changes it. Follow `AGENTS.md`, relevant repo skills, the offline Paradox wiki, vanilla documentation and examples, and existing Chaos Redux patterns.
+Resume accepted Chaos Redux Event 6 work, Independence Wave, from `docs/specs/006_independence_wave_specs/`.
+Read [the package README](../README.md), the current takeover decision records and status, and the source-of-truth map before selecting work.
+Determine acceptance per claim from recorded user direction or parent acceptance within that scope.
+The existence of a spec, matrix, diagram, research rule, or prompt does not independently approve it.
+Follow `AGENTS.md`, relevant repo skills, the offline Paradox wiki, vanilla documentation and examples, and existing Chaos Redux patterns.
 
 Keep Event 6 a Minor Repeatable member of the Liberations cluster. Automatic waves release exactly 3, 4, 5, 7, and 10 countries across rising chaos bands. World Collapse also releases 10 and increases strength, instability, rarity, and ambition while retaining the same country count. Build and lock the allocation before release. Reserve one surviving state for every host, prefer its capital, require unique anchors, trim optional territory before dropping a candidate, reroll living or invalid tags, and execute the plan as one synchronized incident. Before the public Event 006 report fires, expose no crisis, pressure, category, mission, cost, queue, history row, or other indication; after the report, use the shared allocator for the normal synchronized release path.
 
@@ -12,4 +16,8 @@ Build the shared focus framework with real survival, government, economy, milita
 
 Produce and wire final assets, including distinct icon types, sourced historical flags and real portraits, generated fictional art, manifests, and real frame-by-frame animation with static fallbacks. Write final localisation from the spec direction. Use approved research. Do not paste working labels as localisation. Align event registration, logs, evolutions, cluster details, Event Details, scenario UI, super-events, docs, achievements, and the catalog workbook.
 
-Use project subagents with `fork_context=false` where their role applies and resolve their handoffs. Before completion, run every required system, documentation, improvement-loop, catalog, and completion audit. Provide route and package coverage, mechanic and AI evidence, host-survival and Event 5 collision tests, all scenario intensities, asset and audio status, achievement status, documentation alignment, and every simplification or blocker. Do not claim completion while accepted content remains missing, generic, unwired, undocumented, unaudited, or replaced by a fallback.
+Use project subagents under [chaos-redux-subagents](../../../../.agents/skills/chaos-redux-subagents/SKILL.md), with fully explicit prompts and no inherited context.
+In Codex use `fork_turns="none"`.
+Resolve their handoffs and complete the skill-required system, documentation, improvement-loop, probability, catalog, and completion audits.
+Provide route and package coverage, mechanic and AI evidence, host-survival and Event 5 collision checks, all scenario intensities, asset and audio status, achievement status, documentation alignment, and every simplification or blocker.
+Do not claim completion while accepted content remains missing, generic, unwired, undocumented, unaudited, or replaced by a fallback.

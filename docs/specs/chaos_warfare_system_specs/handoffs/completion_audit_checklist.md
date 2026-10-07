@@ -1,6 +1,10 @@
-# Completion Audit Checklist
+# Historical Supported-Core Audit Checklist
 
-Status markers used in the reconciliation below: `[x]` means exact current source or bounded audit evidence exists; `[~]` means a bounded source tranche exists but final, engine-bound, or user-owned evidence remains; `[!]` means fail-closed or blocked; `[ ]` means queued or not evidenced. An unchecked legacy item is not a completion claim.
+Disposition: superseded as the overhaul completion checklist by the [2026-09-20 requirement ledger](../../../plans/chaos_warfare_system_plans/2026-09-20_cbrn_overhaul_requirement_ledger.md) and its current owner audits.
+The rows below preserve the earlier supported-core assessment, including omissions, and must not be replayed as current acceptance or completion proof.
+The later amendment requires named national MIOs and other scope that this earlier assessment skipped.
+
+Status markers used in the reconciliation below: `[x]` meant exact source or bounded audit evidence existed at that reconciliation; `[~]` means a bounded source tranche exists but final, engine-bound, or user-owned evidence remains; `[!]` means fail-closed or blocked; `[ ]` means queued or not evidenced. An unchecked legacy item is not a completion claim.
 
 ## Current reconciliation disposition
 

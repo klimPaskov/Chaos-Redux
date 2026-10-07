@@ -2,7 +2,11 @@
 
 ## Source-of-truth order
 
-Implementation should use this order when two sources differ:
+This order concerns design conflicts, subject to each claim's recorded acceptance basis.
+Current AGENTS.md and owner skills govern workflow and tool contracts independently of package wording.
+Unattributed or conflicting acceptance remains unresolved.
+
+Implementation should use this order when two design sources differ:
 
 1. User corrections in the current accepted task
 2. This revised Event 021 specification package
@@ -33,9 +37,9 @@ Before editing:
 - inspect existing Chaos Redux civil-war and dynamic-country precedents
 - inspect the live HOI4 MCP schemas
 - verify the authoritative workbook
-- verify a free scenario ID
+- verify existing `SCN-018` ownership, resolved in Part 8 and the source-read ledger on 2026-09-25
 - run tag and character ownership audits
-- spawn project subagents with `fork_context=false`
+- spawn project subagents with `fork_turns="none"`
 
 The implementation must not invent unavailable tool names or treat source review as equivalent to required MCP evidence.
 

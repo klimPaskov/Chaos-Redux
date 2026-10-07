@@ -2,11 +2,12 @@
 
 ## Shared production contract
 
-All four units are new firearm users. Follow the specific firearm route in the supplied `chaos-redux-3d-model-pipeline` skill: one approved weapon-free body image into Meshy 7, one separate gun-only image for each independently generated Meshy 7 firearm, then direct Blender assembly, rigging, skin weights, action creation, and export. The older profile's suggestion to create guns in Blender conflicts with this newer explicit route. The parent must pass the newer rule verbatim to the worker and verify the actual available required model, rather than claiming that a legacy model label in the profile satisfies it.
+Use [the current 3D owner skill](../../../.agents/skills/chaos-redux-3d-model-pipeline/SKILL.md) for the four firearm units: separate Meshy 7 weapon-free bodies and gun-only geometry, the current provider rig/action and receipt-verified ingestion route, and live Blender assembly, attachment, repair, and missing-component completion.
+The owner skill governs attempt limits and fallbacks; do not freeze an older provider prohibition or create rigs, weights, or actions through repository code.
 
-Do not call Meshy rigging or action generation for these units. Do not use a generated image with a gun attached to the body as the body input. Do not create a body mesh with a fused weapon or use a rigid attached rifle with no hand alignment. The body and gun must be distinct editable assets until correct assembly, and their separate provenance must survive into the manifest.
+Do not use a generated image with a gun attached to the body as the body input. Do not create a body mesh with a fused weapon or use a rigid attached rifle with no hand alignment. The body and gun must be distinct editable assets until correct assembly, and their separate provenance must survive into the manifest.
 
-Preflight the actual Meshy 7 tool schema, available authorized credentials without exposing them, licensed reference rights, Blender version, required worker model, exporter compatibility, `io_pdx_mesh` installation, and installed vanilla scale sample. Record actual versions rather than values copied from memory. No paid model generation or key setup happened during this planning turn.
+Preflight the actual Meshy 7 tool schema, available authorized credentials without exposing them, licensed reference rights, Blender version, actual routed worker configuration, exporter compatibility, `io_pdx_mesh` installation, and installed vanilla scale sample. Record actual versions rather than values copied from memory. No paid model generation or key setup happened during this planning turn.
 
 ## U84-RM · Rainbow Militias
 
@@ -51,7 +52,7 @@ Animations emphasize practiced weapon handling and stable footwork. All six acti
 | Support attack | A supported attacking behavior with its own correct assignment | Not an unrelated idle alias, action naming and engine consumer verified |
 | Death | Non-graphic collapse and supported end state | Weapon follows intended physics/animation, no stretching or resurrection |
 
-For every model, inspect front, side, back, close hand/weapon grip, and representative frames from each action. Export and reimport the complete model, skeleton, materials, and animations. Compare actual vanilla mesh geometry and entity scale once, then inspect the model beside that reference in the game. Document polygon budget and texture dimensions from the target pipeline rather than inventing universal limits here.
+For every model, inspect front, side, back, close hand/weapon grip, and representative frames from each action. Export and reimport the complete model, skeleton, materials, and animations. Compare actual vanilla mesh geometry and entity scale once, then have the parent review user-provided live consumer evidence beside that reference. Document polygon budget and texture dimensions from the target pipeline rather than inventing universal limits here.
 
 ## Sound, counters, and handoff
 

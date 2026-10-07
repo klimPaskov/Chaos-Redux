@@ -2,12 +2,10 @@
 
 ## Package
 
-**Main file:** `075_tannu_what_planning_package.zip`  
-**Top-level folder:** `075_tannu_what_specs/`  
-**Intended location:** `docs/specs/075_tannu_what_specs/`  
-**Catalog:** Minor Fire-Once, To Be Reworked, Chaos level 1, Diplomacy Low.
+**Source location:** `docs/specs/075_tannu_what_specs/`.
+**Original archive label:** `075_tannu_what_planning_package.zip`.
+**Planned catalog assignment:** Minor Fire-Once, To Be Reworked, Chaos level 1, Diplomacy Low.
 
-Extract the main ZIP into `docs/specs/`.
 This package contains the full source design, focus-path sketches, source research, 16 probability-evaluation scenarios, 72 implementation acceptance scenarios, six planned achievements and six separate production or implementation prompts.
 The meaningful subfolders separate aid, focus-tree paths, campaign systems, decisions, presentation and playtesting.
 
@@ -60,7 +58,7 @@ Other titles, copy, numerical tuning and achievement IDs are proposed directions
 | All six achievements | [Achievement prompt](075_tannu_what_achievement_prompt.md) |
 | Decisions and missions | [Decision and mission prompt](075_tannu_what_decision_mission_prompt.md) |
 
-The goal prompt is constrained to 3500-4000 characters including its heading and final newline.
+The goal prompt must remain within the current [event-planning skill](../../../.agents/skills/chaos-redux-event-planning/SKILL.md) limit.
 It points to the complete source package and does not replace its reading requirement.
 
 ## Important added design choices
@@ -74,7 +72,10 @@ Paid reserve custody, physical delivery, funded dense industrial capacity, three
 They are not attributed to the original brief as if every detail were supplied there.
 Numerical targets are provisional and have not been balanced through the required tools.
 
-## Read coverage and limits
+## Original planning delivery: read coverage and limits
+
+The following source-reading and execution record describes the authoring environment.
+It does not establish present tool availability or approval of the package's added design choices.
 
 All 43 supplied text files were read in full before drafting: 22 outer archive text files, 20 nested role TOMLs and the user brief.
 The nested ZIP was extracted.
@@ -94,8 +95,9 @@ Resolve final source-checked super-event text and item-level audio rights, then 
 Review user-owned live evidence for the runtime cases.
 A coherent source file or local arithmetic check is not a substitute for these results.
 
-The separate `075_tannu_what_review_handoff.zip` contains the source manifest, added-choice map, unresolved-capability review, 20 prepared UNRUN role handoffs and local package-check evidence under `075_tannu_what_plans/`.
-It is intended for `docs/plans/`.
+The original delivery described a separate `075_tannu_what_review_handoff.zip` containing the source manifest, added-choice map, unresolved-capability review, 20 prepared UNRUN role handoffs and local package-check evidence under `075_tannu_what_plans/`.
+Neither that ZIP nor `docs/plans/075_tannu_what_plans/` is present in the audited checkout on 2026-10-07.
+Those supplementary receipts remain unavailable; do not assume their contents were reviewed here.
 The main source package already states every essential design and production gate and can be read without that supplementary review archive.
 
 ## Catalog update

@@ -1,5 +1,7 @@
 # Event 097 Collaboration: Super-Event Research Prompt
 
+The required-super-event inventory conflicts with the imported variant, so resolve the [package authority and conflict table](../README.md) before production.
+
 Use `chaos-redux-super-events` for the complete Competing Orders super-event package. Spawn `chaosx_super_event_text_researcher` for the quote and button remark and `chaosx_super_event_audio_researcher` for the track, each with a self-contained prompt built from this file. Route the image to `chaos-redux-event-assets` through `chaosx_generated_event_art` using the direction in `097_collaboration_asset_prompt.md`.
 
 Read first:

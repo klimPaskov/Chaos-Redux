@@ -2,7 +2,9 @@
 
 Date: 5 October 2026.
 
-**Result: all 21 artifact-structure checks passed.**
+**Historical result, 5 October 2026: all 21 artifact-structure checks passed.**
+The source ZIP was removed at the user's request in commit `6a2ebc838`, and the package was subsequently edited.
+These results and their JSON counterpart are original-run receipts, not current integrity evidence.
 The validation script checks file counts, links, manifest hashes, preserved source bytes and truthful unexecuted-status fields.
 It does not validate HOI4 syntax, engine capabilities, balance, visual quality or independent review.
 
@@ -47,7 +49,7 @@ No authoritative catalog workbook or CSV was changed.
 
 ## Reproducing the artifact check
 
-Run `python validate_package.py` from this folder or provide its exact path.
-The validator only reads this package and writes its JSON result to standard output.
-Any later authorized edits require a new manifest and new artifact-validation result.
+The retained `validate_package.py` requires the removed source ZIP and is blocked for reproducing the original archive checks.
+Do not restore the archive to satisfy it or reuse the historical PASS results for the current package.
+The current package manifest is maintained separately through local file membership, size and hash checks.
 A passing artifact check never changes the event status from To Be Reworked.

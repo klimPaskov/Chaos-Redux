@@ -66,24 +66,14 @@ The matrices and prompts should be read after the sequential specification.
 The event has no terminal world-end outcome. The derivative countries are dangerous regional actors, not substitutes for the Zombie Outbreak, Death, golem, or future parent event endgames. No super-event is planned because the normal event, its evolutions, and its requested triggerable scenario do not meet the project threshold for a campaign-defining presentation moment. A later globally dominant derivative revolt could justify a separate improvement proposal, but it is outside this source design.
 
 The planning text distinguishes working labels from stable script identifiers.
-Final in-world English wording is owned by
-`localisation/english/019_infrantry_spawn_l_english.yml` and its aligned Event
-19 documentation and catalog fields.
+Final in-world English wording is owned by `localisation/english/019_infrantry_spawn_l_english.yml` and its aligned Event 19 documentation and catalog fields.
 
 ## Process disclosure
 
 All 30 supplied project files were read in full before this package was drafted.
 Their hashes and line counts are recorded in `review/source_reading_manifest.md`.
 
-The planning environment initially lacked the custom project-agent runtime, so
-its early role-equivalent reviews are preserved as historical design evidence.
-Implementation subsequently used project agents with no inherited parent
-context. A later required near-completion planner pass produced the routed
-addendum named above; its findings were implemented. Dated specialist handoffs
-live under `docs/plans/019_infantry_spawn_plans/`.
+The planning environment initially lacked the custom project-agent runtime, so its early role-equivalent reviews are preserved as historical design evidence.
+Implementation subsequently used project agents with no inherited parent context. A later required near-completion planner pass produced the routed addendum named above; its findings were implemented. Dated specialist handoffs live under `docs/plans/019_infantry_spawn_plans/`.
 
-Implementation also inspected the full local repository, required offline
-Paradox wiki snapshot, installed vanilla documentation and source precedents,
-and approved reference mods where needed. Current engine limitations,
-transaction invariants, and remaining audit gates are recorded in
-`review/blockers_and_uncertainty.md`.
+Implementation also inspected the full local repository, required offline Paradox wiki snapshot, installed vanilla documentation and source precedents, and approved reference mods where needed. Current engine limitations, transaction invariants, and remaining audit gates are recorded in `review/blockers_and_uncertainty.md`.

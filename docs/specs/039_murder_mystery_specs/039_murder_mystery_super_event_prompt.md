@@ -52,7 +52,8 @@ Preserve source PNG, processed preview, final DDS, prompt evidence, reference sh
 
 ## Audio research
 
-Route each role through `chaosx_super_event_audio_researcher` after correcting or overriding its stale OGG instruction. The current super-event skill requires final WAV and is authoritative.
+Route each role through `chaosx_super_event_audio_researcher` under the current [super-event skill](../../../.agents/skills/chaos-redux-super-events/SKILL.md).
+The imported audio definition mentioned OGG, but the current repository role already requires final WAV; no role repair is a prerequisite.
 
 For each role:
 

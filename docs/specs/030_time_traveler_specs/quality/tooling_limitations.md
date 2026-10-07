@@ -1,5 +1,8 @@
 # Tooling and Evidence Limitations
 
+This file records the original planning session.
+Rediscover current tools and source availability before treating its limits as present blockers.
+
 ## Available evidence
 
 This planning pass had access to every file supplied with the task, including all Markdown skills, the configuration file, three CSV exports, the event brief, and all twenty subagent TOML definitions unpacked from the ZIP.
@@ -32,6 +35,13 @@ This package cannot claim that:
 - any image, DDS, animation, model, sound, counter, or portrait was produced
 - any spreadsheet was edited or CSV export regenerated
 - the game was launched or tested
+
+## Identifier allocation follow-up
+
+The original search and availability limits above remain historical evidence.
+The [shared identifier registry](../../shared_identifier_registry.md) reserves All Times at Once as `SCN-020`, raw ID `20`, under the user's 7 October 2026 instruction.
+This covers identifier ownership only.
+Recheck the reservation and runtime/workbook occupancy before integration.
 
 ## Compensating work
 

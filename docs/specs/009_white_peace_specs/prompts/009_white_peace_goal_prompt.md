@@ -2,6 +2,8 @@
 
 Use `prompts/009_white_peace_coding_prompt.md`, `prompts/009_white_peace_asset_prompt.md`, and `prompts/009_white_peace_achievement_prompt.md` as implementation handoffs.
 
+Read `docs/plans/009_white_peace_plans/agent_decisions_2026-10-05.md` first and resume only selected remaining work. Use isolated one-on-one wars; settle before notification; report once per affected human or send one all-AI observer news. Branches obey evolution settings, and invalid human entry explains rejection.
+
 Non-negotiables: Event 9 is a repeatable Peace cluster ID 4 member; unavailable if no active war or no safe settlement pair; forced one-option settlement; base branch settles one safe minor-vs-minor pair; later stages can settle multiple minor pairs, rarely involve majors, and later quiet broader safe war clutter. Avoid civil conflicts, protected scripted wars, near-capitulation cases, recent pair repeats, unsafe subject/faction states, and special/nonhuman threat actors.
 
 Dynamic weight is required: usually below default 1000, rises with active wars and safe minor-war candidates, environment cap never above 1500, higher evolution stages reduce likelihood, and normal repeatable recovery/decay still applies.

@@ -1,6 +1,6 @@
 # Event 025 event UI worker prompt
 
-Spawn `chaosx_event_ui_worker` with `fork_context=false` only after the parent has implemented or stubbed the accepted Event 025 state and action helpers.
+Spawn `chaosx_event_ui_worker` with `fork_turns="none"` only after the parent has implemented or stubbed the accepted Event 025 state and action helpers.
 
 Event owner:
 
@@ -31,10 +31,12 @@ Allowed patch scope is the event-owned GUI, event-owned presentation-only script
 
 Mandatory workflow:
 
-1. `hoi4.gui_inspect`
-2. pre-change full-window, crop, state, hierarchy, click-region, and resolution renders
-3. in-scope `hoi4.gui_rewrite`
-4. post-change inspect and matching comparison renders
+Follow [the GUI owner skill](../../../../.agents/skills/chaos-redux-scripted-gui/SKILL.md).
+
+1. Create or inspect the intended reference before layout implementation and record its acceptance basis.
+2. Run `hoi4.gui_inspect` and retain pre-change full-window, crop, state, hierarchy, click-region, and resolution renders.
+3. Apply the authorized reviewed edit directly or optionally through `hoi4.gui_rewrite`.
+4. Retain post-change inspection and matching comparison renders.
 
 Review at `1920x1080`, `2560x1440`, and the current project low-resolution target. Verify scrolling, clipping, sector hitboxes, action hitboxes, decorative transparency, selected target, disabled reasons, warning states, and resolved states.
 

@@ -1,5 +1,9 @@
 # Event 050 package manifest
 
+Current working-file integrity refreshed on 2026-10-07.
+The rows index repository bytes, while supplied-source inventories and original validation reports retain their historical evidence scope.
+
+
 This manifest lists every file in the extractable source package except this manifest itself.
 
 | Path | Bytes | Words | SHA-256 |
@@ -7,7 +11,7 @@ This manifest lists every file in the extractable source package except this man
 | `docs/plans/050_the_great_embargo_plans/050_external_evidence_blockers.md` | 1076 | 154 | `d58ec99e65096077698eb081192e8798827b9b77551e4d3563ce2e8f45c6809b` |
 | `docs/plans/050_the_great_embargo_plans/050_manual_near_completion_review.md` | 1817 | 256 | `6c3985fe759f8331ef17b29da8e8696b99e8a3ffc998c146bb6b65ef66341ddb` |
 | `docs/plans/050_the_great_embargo_plans/subagent_handoffs/050_subagent_routing_handoff.md` | 2192 | 304 | `c9e71e2fb4d5e466fe2632c4a5c68f26af4e9796c5c610f422123c0ee4c116ac` |
-| `docs/specs/050_the_great_embargo_specs/README.md` | 4862 | 474 | `1dcd723f22afebbeb891f14895d08723779d785665f466da67279e8618ca109e` |
+| `docs/specs/050_the_great_embargo_specs/README.md` | 5603 | 522 | `6eb73f0512b0632cb96b5488fb4405f464a6c78db32fd49ec51dc2db840c5cc3` |
 | `docs/specs/050_the_great_embargo_specs/diagrams/050_the_great_embargo_lifecycle.md` | 1866 | 230 | `7c93cc4c4956d32b329555fa9afb8bfd2d479e5387e34459a2a9b8c3f8f6bcb6` |
 | `docs/specs/050_the_great_embargo_specs/matrices/050_acceptance_scenarios.md` | 6587 | 1045 | `4963d5ea7da88fbfbf8ace0d80d2d5acabc20bc777a1a2c3645bd6ca44d34740` |
 | `docs/specs/050_the_great_embargo_specs/matrices/050_achievement_matrix.md` | 1957 | 307 | `5d9ae39c4e3e6e901bd848aba3d8c01b406e9c75cc853d4150d68325f2d1ac1b` |
@@ -49,5 +53,5 @@ This manifest lists every file in the extractable source package except this man
 ## Totals
 
 - Files excluding this manifest: 41
-- Bytes excluding this manifest: 240119
-- Markdown words excluding this manifest: 34964
+- Bytes excluding this manifest: 240860
+- Markdown words excluding this manifest: 35012

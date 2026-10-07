@@ -100,7 +100,7 @@ Prove Evolution IV, 1000 or more Chaos, valid nuclear-major opponent, full sever
 
 ## Asset implementation
 
-Route the complete seven achievement triplets to `chaosx_icon_artist` with `fork_context=false`.
+Route the complete seven achievement triplets to `chaosx_icon_artist` with `fork_turns="none"`.
 
 For each achievement create:
 

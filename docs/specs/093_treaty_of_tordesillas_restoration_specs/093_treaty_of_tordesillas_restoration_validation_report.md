@@ -2,6 +2,10 @@
 
 Date: 2 October 2026.
 
+The test results and package checks below are historical evidence from 2 October 2026.
+They do not certify the imported package after documentation cleanup.
+The package inventory records current local membership and hashes, without a claim that archived-source or old package checks were rerun.
+
 ## Result and evidence boundary
 
 **The expanded design is written. The full specialist-driven implementation and validation workflow is not complete.** The supplied source set was read fully, the requested gameplay phases were developed in 18 specification parts, and selected proposed rules were checked with a standalone Python reference model. No HOI4 implementation, engine execution, specialist subagent execution, final media production, or independent completion audit took place.

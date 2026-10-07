@@ -4,6 +4,7 @@ This directory holds design specifications and their acceptance criteria.
 Each package must identify the explicit decision or accepted source that establishes its authority.
 Being listed here does not establish approval, implementation, or completed validation.
 Keep proposals and unresolved acceptance questions distinct from accepted design, and keep working plans in `docs/plans/`.
+Consult the [shared identifier registry](shared_identifier_registry.md) before allocating scenario, cluster, or other shared identifiers.
 
 ## Package navigation
 
@@ -86,13 +87,42 @@ It does not assert acceptance or current implementation status.
 | 065 Random Trait | [`065_random_trait_specs/README.md`](065_random_trait_specs/README.md) |
 | 066 Abundance | [`066_abundance_specs/README.md`](066_abundance_specs/README.md) |
 | 067 Generalissimo | [`067_generalissimo_specs/README.md`](067_generalissimo_specs/README.md) |
+| 068 Zin | [`068_zin_specs/README.md`](068_zin_specs/README.md) |
+| 069 Boxer Rebellion | [`069_boxer_rebellion_specs/README.md`](069_boxer_rebellion_specs/README.md) |
+| 070 Cookie Click | [`070_cookie_click_specs/README.md`](070_cookie_click_specs/README.md) |
+| 071 Persia | [`071_persia_specs/071_persia_index.md`](071_persia_specs/071_persia_index.md) |
+| 072 Ireland Reclaims North | [`072_ireland_reclaims_north_specs/README.md`](072_ireland_reclaims_north_specs/README.md) |
+| 073 Mongols Rise | [`073_mongols_rise_specs/README.md`](073_mongols_rise_specs/README.md) |
+| 074 Japan Lands in USA | [`074_japan_lands_in_usa_specs/README.md`](074_japan_lands_in_usa_specs/README.md) |
+| 075 Tannu What | [`075_tannu_what_specs/README.md`](075_tannu_what_specs/README.md) |
+| 076 USA Tests Weapons | [`076_usa_tests_weapons_specs/README.md`](076_usa_tests_weapons_specs/README.md) |
+| 077 Parliament of Fear | [`077_parliament_of_fear_specs/README.md`](077_parliament_of_fear_specs/README.md) |
+| 078 Border Conflict | [`078_border_conflict_specs/README.md`](078_border_conflict_specs/README.md) |
+| 079 The Master | [`079_the_master_specs/00_overview.md`](079_the_master_specs/00_overview.md) |
+| 080 Airship | [`080_airship_specs/README.md`](080_airship_specs/README.md) |
+| 081 British Tax | [`081_british_tax_specs/README.md`](081_british_tax_specs/README.md) |
+| 082 Law Upgrade | [`082_law_upgrade_specs/README.md`](082_law_upgrade_specs/README.md) |
+| 083 Agency Upgrade | [`083_agency_upgrade_specs/README.md`](083_agency_upgrade_specs/README.md) |
+| 084 The Peace Movement | [`084_the_peace_movement_specs/README.md`](084_the_peace_movement_specs/README.md) |
+| 085 Ten Plagues of Egypt | [`085_ten_plagues_of_egypt_specs/README.md`](085_ten_plagues_of_egypt_specs/README.md) |
+| 086 World Claims | [`086_world_claims_specs/README.md`](086_world_claims_specs/README.md) |
+| 087 Military Madness | [`087_military_madness_specs/README.md`](087_military_madness_specs/README.md) |
+| 088 Mines Everywhere | [`088_mines_everywhere_specs/README.md`](088_mines_everywhere_specs/README.md) |
+| 089 Doctor Wu | [`089_doctor_wu_specs/089_doctor_wu_index.md`](089_doctor_wu_specs/089_doctor_wu_index.md) |
+| 090 Deal with the Devil | [`090_deal_with_the_devil_specs/README.md`](090_deal_with_the_devil_specs/README.md) |
+| 092 Greenland Sale | [`092_greenland_sale_specs/092_greenland_sale_spec_index.md`](092_greenland_sale_specs/092_greenland_sale_spec_index.md) |
+| 093 Treaty of Tordesillas Restoration | [`093_treaty_of_tordesillas_restoration_specs/README.md`](093_treaty_of_tordesillas_restoration_specs/README.md) |
+| 094 Half Gone | [`094_half_gone_specs/README.md`](094_half_gone_specs/README.md) |
+| 095 Occupation Revolt | [`095_occupation_revolt_specs/README.md`](095_occupation_revolt_specs/README.md) |
+| 097 Collaboration | [`097_collaboration_specs/README.md`](097_collaboration_specs/README.md) |
+
+Events 091 and 096 have no specification package in this checkout.
 
 Shared and cross-event specification packages are indexed below.
 
 | Scope | Package entry point |
 | --- | --- |
 | Air Cleanliness and Fallout | [`air_cleanliness_fallout_specs/README.md`](air_cleanliness_fallout_specs/README.md) |
-| Chaos Redux 3D model workflow | [`chaos_redux_3d_model_workflow_planning_package/README.md`](chaos_redux_3d_model_workflow_planning_package/README.md) |
 | Chaos Warfare | [`chaos_warfare_system_specs/README.md`](chaos_warfare_system_specs/README.md) |
 | Condemnation | [`condemnation_system_specs/README.md`](condemnation_system_specs/README.md) |
 | Dynamic major event weights | [`dynamic_major_event_weights_specs/README.md`](dynamic_major_event_weights_specs/README.md) |
@@ -101,10 +131,9 @@ Shared and cross-event specification packages are indexed below.
 
 ## Package convention
 
-The nested [`docs/`](docs/README.md) tree retains 51 historical Event 046 and Event 047 documents that matched their normal-root counterparts exactly before this cleanup.
-Use the direct specification packages and the normal plans folders for current navigation.
-The retained-mirror notice records the comparison boundary, and package acceptance remains unresolved where no attributable decision is available.
-No retained source copy was removed.
+Use the direct specification packages and the normal `docs/plans/` folders for current navigation.
+The previously documented nested `docs/specs/docs/` mirror is absent from this checkout.
+The empty `chaos_redux_3d_model_workflow_planning_package/` directory contains no specification package; the current workflow is maintained in the [3D model pipeline skill](../../.agents/skills/chaos-redux-3d-model-pipeline/SKILL.md).
 
 - Event packages use `docs/specs/<event_id>_<slug>_specs/`.
 - System packages use a descriptive `<slug>_specs/` directory.

@@ -1,5 +1,9 @@
 # Asset Prompt: Event 008 Tensions Rising
 
+Disposition: unresolved historical production brief.
+The [owner documentation state](../../../plans/008_tensions_rising_plans/documentation_state_2026-10-05.md) records retained unused news art and unresolved durable provenance.
+Recover existing evidence before generating replacements; news and accent rows below require an accepted consumer assignment.
+
 You are producing visual asset handoffs for Chaos Redux Event 008 `Tensions Rising`.
 
 Read and follow:
@@ -76,7 +80,7 @@ Create or update:
 
 `docs/assets/008_tensions_rising/manifest.md`
 
-Every asset entry must include source mode, prompt or source URL, license/source notes for sourced assets, source PNG path, processed PNG path, final DDS path, target size, sprite name, suggested `.gfx` file, status, and uncertainty.
+Use [chaos-redux-event-assets](../../../../.agents/skills/chaos-redux-event-assets/SKILL.md) for current provenance, alpha, processing, manifest, durable-record, and parent-wiring requirements.
 
 Create:
 

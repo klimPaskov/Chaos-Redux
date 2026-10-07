@@ -2,7 +2,7 @@
 
 The user's explicit 2026-09-20 implementation request accepts [`specs/13_2026_09_20_accepted_cbrn_overhaul.md`](../specs/13_2026_09_20_accepted_cbrn_overhaul.md) as the controlling amendment for any conflict in the older surface map below. Acceptance applies to the design, while current implementation remains tracked in [`2026-09-20_cbrn_overhaul_requirement_ledger.md`](../../../plans/chaos_warfare_system_plans/2026-09-20_cbrn_overhaul_requirement_ledger.md) pending source and MCP evidence.
 
-| Surface | Source of truth after acceptance |
+| Surface | Older design locator, acceptance recorded separately |
 | --- | --- |
 | Core gameplay and values | `specs/01_core_system_and_gameplay_loop.md` |
 | Doctrine paths and technologies | `specs/02_doctrine_architecture.md` and `matrices/doctrine_and_tech_matrix.md` |
@@ -16,12 +16,15 @@ The user's explicit 2026-09-20 implementation request accepts [`specs/13_2026_09
 | AI, country profiles, designers | `specs/10_ai_country_programs_and_designers.md`, AI and country matrices |
 | Balance and consistency | `specs/11_balance_tuning_and_consistency_rework.md` |
 | UI, localisation, assets, achievements | `specs/12_ui_localisation_assets_achievements.md` and prompts |
-| Implementation order | `handoffs/staged_implementation_plan.md` |
-| Completion test | `handoffs/completion_audit_checklist.md` |
+| Implementation order | Current [requirement ledger](../../../plans/chaos_warfare_system_plans/2026-09-20_cbrn_overhaul_requirement_ledger.md); older `handoffs/staged_implementation_plan.md` only where consistent |
+| Completion test | Current requirement ledger and owner audits; `handoffs/completion_audit_checklist.md` is historical supported-core evidence |
 
-Existing repository docs are evidence of current behavior. Once this design is accepted, contradictory current documentation should be updated or marked superseded. Existing implementation is not automatic authority over the accepted rework.
+The table locates older design documents. It does not accept every row. The 2026-09-20 requirement ledger keeps older proposals unresolved where acceptance is absent and supersedes conflicts with the amendment. Existing implementation and repository docs are evidence to verify, not automatic design approval.
 
-## Current-state documentation authority
+## Implementation evidence and current owner ledgers
+
+Concrete counts and capability findings below are retained from the prior reconciliation, not a fresh source or MCP audit.
+Use the owner ledgers and source revisions to establish continuing applicability before changing an implementation status.
 
 The current native chemical land source `common/raids/cbrn_chemical_land_raids.txt` defines 55 raid types in the single `chemical_raids` category: nine cylinder, nine projector, nine artillery, 27 armored, and one Phantom Mist. This source count supersedes older 36-type inventories but does not prove native AI probability behavior or engine payment results; the accepted two-category rule and unresolved validation remain in the [overhaul ledger](../../../plans/chaos_warfare_system_plans/2026-09-20_cbrn_overhaul_requirement_ledger.md).
 

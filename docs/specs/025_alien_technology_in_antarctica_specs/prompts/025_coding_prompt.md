@@ -124,7 +124,7 @@ Required regions:
 
 Use a full background with safe text regions. Do not paint fake controls into it. Every sector and button state needs readable normal, hover, selected, disabled, warning, cooldown, active, and resolved treatment where applicable. Preserve multiplayer privacy.
 
-Route the accepted UI implementation to `chaosx_event_ui_worker` with `fork_context=false`. Require `hoi4.gui_inspect`, pre-change renders, `hoi4.gui_rewrite`, and matching post-change comparison at supported resolutions.
+Route the accepted UI implementation to `chaosx_event_ui_worker` with `fork_turns="none"`. Follow [the GUI owner skill](../../../../.agents/skills/chaos-redux-scripted-gui/SKILL.md): create the intended reference before layout implementation, require inspect and matching before-and-after renders, and apply the reviewed edit directly or optionally through `hoi4.gui_rewrite`.
 
 ## AI and probability
 
@@ -166,7 +166,7 @@ Update only `docs/spreadsheets/chaos_redux_events_catalog.xlsx`, then run `pytho
 
 ## Required subagents
 
-Use relevant project subagents with `fork_context=false` and the package prompts. The parent owns final integration and completion. Do not claim completion before the improvement planner, probability auditor, decision auditor, UI worker, localisation auditor, completion auditor, documentation curator, and spreadsheet worker have returned and their findings have been dispositioned.
+Use relevant project subagents with `fork_turns="none"` and the package prompts. The parent owns final integration and completion. Do not claim completion before the improvement planner, probability auditor, decision auditor, UI worker, localisation auditor, completion auditor, documentation curator, and spreadsheet worker have returned and their findings have been dispositioned.
 
 ## Completion standard
 

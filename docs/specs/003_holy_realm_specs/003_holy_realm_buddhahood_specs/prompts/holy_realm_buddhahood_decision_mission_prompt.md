@@ -1,6 +1,7 @@
 # Decision and Mission Prompt: Holy Realm Buddhahood
 
 Use `chaos-redux-decisions-missions` with the Holy Realm specs.
+Read [the package authority and resume rules](../README.md) and current implementation handoffs before selecting accepted outstanding requirements.
 
 Implement the decision and mission systems from:
 
@@ -11,7 +12,7 @@ Implement the decision and mission systems from:
 Core requirements:
 
 - Teaching missions must require real action, costs, route access, named targets, or timed objectives.
-- Meditation must gate Buddha powers through a three-minute channel if the engine supports it, or the accepted concentration sequence fallback if not.
+- Meditation must gate Buddha powers through a three-minute channel if the engine supports it, or the specified concentration sequence with its recorded acceptance basis if not.
 - Buddha powers must require Buddhahood and Meditation Charge.
 - Anti-chaos buffs must only apply against valid chaos countries.
 - Final Silence decisions must require Buddhahood and must not become terminal unless chaos is over 1000 and no world-end exists.

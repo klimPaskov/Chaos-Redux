@@ -10,7 +10,7 @@ Read relevant offline wiki pages, installed vanilla documentation and exact vani
 
 Use the five companion prompts for assets, super-events, achievements, decisions/missions and the goal. All names in specifications are working labels unless a current source establishes a stable runtime identifier. Write final localisation during implementation, with no em dashes, semicolons, generic crisis filler, copied planning instructions or hidden-route spoilers.
 
-D01 preserves legacy Event 089 technology sharing, queued callbacks and Kruger history. D02 adds only the intended Scientific Research High membership without renaming National Breakthroughs. D03 remains an unapproved finite cohort mode inside the shared clone owner. N-D11 remains an unapproved skipped-stage settings proposal. Obtain or record the required acceptance before implementing those owner changes. Do not treat the final ZIP as approval of every proposed value.
+D01 preserves legacy Event 089 technology sharing, queued callbacks and Kruger history. D02 uses reserved Scientific Research cluster ID `21`, shared with Event 054 under the [central ledger](../shared_identifier_registry.md), without renaming National Breakthroughs ID `9`. The reservation approves identity only. Implement the intended High membership only with its separate acceptance and runtime/catalog wiring. D03 remains an unapproved finite cohort mode inside the shared clone owner. N-D11 remains an unapproved skipped-stage settings proposal. Obtain or record the required acceptance before implementing those owner changes. Do not treat the final ZIP as approval of every proposed value.
 
 ## Non-negotiable behavior
 

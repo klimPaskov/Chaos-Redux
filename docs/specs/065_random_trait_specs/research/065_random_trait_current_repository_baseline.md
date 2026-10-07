@@ -1,5 +1,7 @@
 # Event 065 Current Repository Baseline
 
+Historical repository snapshot used for planning; statements headed current below refer to that snapshot and require fresh source and MCP inspection.
+
 ## Inspection snapshot
 
 - Repository: `klimPaskov/Chaos-Redux`

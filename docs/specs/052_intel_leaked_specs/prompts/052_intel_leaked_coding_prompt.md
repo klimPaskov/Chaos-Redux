@@ -68,7 +68,7 @@ Update only `docs/spreadsheets/chaos_redux_events_catalog.xlsx`. Align Event 52 
 
 Use `hoi4.event_inspect` before rewriting the chain. Use `hoi4.event_render` for target selection, baseline flow, evolutions, cluster path, deception, invalidation, and cleanup. Use `hoi4.event_compare` after implementation.
 
-For every weighted surface, spawn `chaosx_ai_probability_auditor` with a self-contained prompt and `fork_context=false`. Start with `hoi4.probability_inspect`, run the named evaluations and sweeps, then compare the final patch against the baseline scenarios.
+For every weighted surface, spawn `chaosx_ai_probability_auditor` with a self-contained prompt and `fork_turns="none"` (Codex). Start with `hoi4.probability_inspect`, run the named evaluations and sweeps, then compare the final patch against the baseline scenarios.
 
 Run the decision and mission audit, localisation audit, asset review, and Event 52 completion audit. Spawn `chaosx_improvement_loop_planner` near completion. Implement or fold in its accepted addendum, queue it with a reason, reject it with a reason, or use its closure handoff. Do not stack another improvement pass while one remains unresolved.
 

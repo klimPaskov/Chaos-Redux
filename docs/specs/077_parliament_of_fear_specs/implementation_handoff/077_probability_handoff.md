@@ -6,7 +6,9 @@ Use the read-only `chaosx_ai_probability_auditor` role. Begin with `hoi4.probabi
 
 Do not interpret `ai_will_do` as a literal click probability. Do not normalize a partial list while pretending it is the complete candidate pool. Country-selection weights, incident hazards, investigation outcomes, plot formation, arrest results, evolution timing, and AI choices are separate surfaces.
 
-The 18 scenario rows in `077_probability_scenarios.csv` require complete source or explicit manifests. Sequence analysis is permitted only after the manifest includes cadence, recovery, caps, cooldowns, removals, resets, timer changes, and terminal states. The JSON tuning anchors alone are not sufficient for a valid sequence call.
+The 18 scenario rows in [the scenario matrix](../supporting_material/077_probability_scenarios.csv) require complete source or explicit manifests.
+Sequence analysis is permitted only after the manifest includes cadence, recovery, caps, cooldowns, removals, resets, timer changes, and terminal states.
+The JSON tuning anchors alone are not sufficient for a valid sequence call.
 
 For comparisons, use actual before and after source objects or complete before and after manifests under the same scenario set. A cached analysis ID is not a valid replacement for a source identifier.
 

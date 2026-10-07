@@ -1,5 +1,7 @@
 # Focus integration prompt
 
+Disposition: superseded historical prompt; current guidance is [the Event 012 authority map](../../012_africa_specs/README.md).
+
 Implement the Gods of Africa overlay branch inside the existing Event `012` African unifier focus tree.
 
 Do not create a separate tree.

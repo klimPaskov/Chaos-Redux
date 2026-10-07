@@ -1,5 +1,9 @@
 # Asset production prompt: Event 061 Return to Peacetime
 
+The [asset skill](../../../../.agents/skills/chaos-redux-event-assets/SKILL.md) owns reference families, native ImageGen source evidence, consumer-dependent alpha, processing, and DDS validation.
+For alpha-backed families request real transparency in the first ImageGen call and preserve it through processing; opaque scene sources follow the final consumer’s report or panel treatment.
+For achievements use the skill’s [single-subject, deterministic-state pipeline](../../../../.agents/skills/chaos-redux-event-assets/SKILL.md#achievement-icons), including the completed, grey, and not-eligible source layers and exact supplied templates.
+
 Produce the complete final visual asset package defined in the Event 61 specification.
 
 Read Part 6, the asset requirements handoff, the event-asset skill, the generated-art subagent definition, and the icon-artist subagent definition before work.

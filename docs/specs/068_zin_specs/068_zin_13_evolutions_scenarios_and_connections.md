@@ -41,16 +41,17 @@ The soft active-colony limits of 15, 20, 25, 35 and 45 for baseline through Reck
 
 ## Four manual scenarios
 
-The source brief says three setup types but lists four named setups. This package retains all four. To fit the existing scenario interface without inventing an extra control hierarchy, register four related scenario entries with stable logical keys. Allocate actual numeric scenario IDs only after inspecting the current registry.
+The source brief says three setup types but lists four named setups. This package retains all four. To fit the existing scenario interface without inventing an extra control hierarchy, register four related scenario entries with stable logical keys. Use the user-authorized reservations in the [shared identifier registry](../shared_identifier_registry.md).
+These reserve identifiers only and do not approve the surrounding design or implement content.
 
 Every scenario uses the existing four-stop intensity control. The launch confirmation reads the current selected type and intensity at confirmation time. It does not reuse values from the first click.
 
-| Logical key | Scenario | Type control |
-| --- | --- | --- |
-| `zin_first_colonies` | First Colonies | Mixed common societies, human-led common societies, or a species-diverse common pool. |
-| `zin_empty_throne` | The Empty Throne | Einendil, Afrit, Golden Regency or Free Dominions opening bias. |
-| `zin_open_crossings` | Open Crossings | Balanced origins, dispersed settlements or concentrated regional rivalry. |
-| `zin_reckoning` | The Reckoning of ZIN | Unusurped Rush or Afrit-held Rush. Both create three real opposing blocs. |
+| Logical key | Scenario | Reserved ID / raw integer | Type control |
+| --- | --- | --- | --- |
+| `zin_first_colonies` | First Colonies | `SCN-025` / `25` | Mixed common societies, human-led common societies, or a species-diverse common pool. |
+| `zin_empty_throne` | The Empty Throne | `SCN-026` / `26` | Einendil, Afrit, Golden Regency or Free Dominions opening bias. |
+| `zin_open_crossings` | Open Crossings | `SCN-027` / `27` | Balanced origins, dispersed settlements or concentrated regional rivalry. |
+| `zin_reckoning` | The Reckoning of ZIN | `SCN-028` / `28` | Unusurped Rush or Afrit-held Rush. Both create three real opposing blocs. |
 
 Scenario labels listed in the brief remain intact. New subtype labels are writing directions pending localisation.
 

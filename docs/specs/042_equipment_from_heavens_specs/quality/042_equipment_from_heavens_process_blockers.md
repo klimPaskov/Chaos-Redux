@@ -1,5 +1,10 @@
 # Event 42 process blockers and evidence limits
 
+This is an original planning-environment limitations report.
+Its missing tools, unnumbered-cluster snapshot and source findings are historical, not a current capability or implementation audit.
+Current accepted amendments and queued catalog work are linked from the [package README](../README.md#design-authority).
+
+
 ## Supplied-source reading
 
 No supplied source file was skipped. All top-level Markdown, TOML, CSV, README, and ZIP content was fully read. The exact file and archive-member ledger is in `research/042_equipment_from_heavens_source_reading_ledger.md`.

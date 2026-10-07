@@ -1,6 +1,6 @@
 /goal Implement the Condemnation Impact System expansion to its fullest extent.
 
-Read and follow AGENTS.md, CHAOS_REDUX_MECHANICS.md, all repo skills, and all custom subagent TOMLs before editing. Use the full spec at docs/specs/condemnation_system_specs/specs/condemnation_impact_system_spec.md or the provided file condemnation_impact_system_spec.md as the source of truth.
+Read AGENTS.md, CHAOS_REDUX_MECHANICS.md and applicable owner skills. Use docs/specs/condemnation_system_specs/specs/condemnation_impact_system_spec.md and its recorded acceptance boundary. The 2026-09-20 tuning amendment controls conflicts. Keep unsupported broader acceptance unresolved.
 
 Treat this as a standalone system-level mechanic. Condemnation must stop being mainly an opinion modifier. High condemnation must create practical diplomatic, economic, military, and trade consequences, including real embargo relationships where HOI4 supports them.
 
@@ -8,14 +8,14 @@ Implement tiered condemnation sanctions: concern, formal censure, arms embargo, 
 
 Build real player and AI counterplay. Condemned targets need compliance, inspections, stockpile destruction, compensation, non-use pledges, observer access, defiance, autarky, black market procurement, sanction busting, and pledge-breaking consequences where supported by the spec. Sanction participants need enforcement, abstention, humanitarian carve-outs, quiet breach, exposure, shielding, sanction fatigue, and trade-dependency costs.
 
-Do not use political power or command power as the default cost. Use equipment, factories, convoys, fuel, stability, war support, intelligence exposure, trade dependency, stockpile destruction, production strain, timed non-use, route access, and other concrete costs where the spec calls for them. Command power may be used only for limited security or military coordination actions and must stay conservative.
+Use the spec's concrete costs and conservative coordination prices. Political power or command power must not become the default cost for every action. Preserve existing resource types where the accepted amendment requires them.
 
-Update the Condemnation tab or related UI so the player sees total score, tier, source breakdown, active sanctions, participant count, next threshold, decay state, compliance state, and current practical penalties. Add scripted localisation and clear tooltips. Avoid raw trigger spam and unreadable requirement blocks.
+Preserve the Condemnation tab layout. Make country entries clickable to open details containing total, tier, sources, sanctions, participants, thresholds, decay, compliance and practical penalties. Use scripted localisation, clear tooltips and the scripted-GUI skill with matching MCP evidence. Shared system UI remains parent-owned.
 
 Implement AI for condemned targets, sanction participants, faction leaders, neutral traders, subjects, and high-condemnation hypocrites. AI must be able to sanction, abstain, shield, comply, defy, or break sanctions based on ideology, faction, subject status, trade dependency, strategic resource dependency, war state, target strength, distance, recent source severity, own condemnation, sanction fatigue, and world tension.
 
 Keep affected docs aligned, including CHAOS_REDUX_MECHANICS.md, a dedicated condemnation sanctions system doc, and any chemical warfare, biological warfare, camps, genocide, restricted site, Chaos Warfare, UI, and asset docs touched by the implementation. Do not guess player-facing records that must mirror final localisation.
 
-Use chaosx_scripted_system_architect for reusable helper, trigger, constant, cleanup, and tuning design when needed. Use chaosx_decision_mission_auditor for the decision and mission layer. Use chaosx_localisation_auditor for broad visible text and dynamic tooltip work. Use the available read-only completion auditor for final spec-versus-implementation review. Spawn chaosx_improvement_loop_planner with fork_context=false near completion and resolve its addendum or closure handoff before final completion.
+Use chaosx_scripted_system_architect for reusable helper, trigger, constant, cleanup, and tuning design when needed. Use chaosx_decision_mission_auditor for the decision and mission layer. Use chaosx_localisation_auditor for broad visible text and dynamic tooltip work. Use chaosx_event_completion_auditor for final review. Follow chaos-redux-subagents with self-contained prompts and Codex fork_turns="none". Use chaosx_ai_probability_auditor for weighted baseline and matching comparison. Resolve the improvement-loop planner's previous addendum before another pass and its accepted findings before completion.
 
 Do not claim completion until actual sanctions, real embargoes where supported, AI, UI, localisation, cleanup, docs, and meaningful validation scenarios satisfy the spec. No fallbacks, placeholders, simplifications, or cosmetic-only substitutes are allowed without explicit user approval.

@@ -1,6 +1,6 @@
 # Goal: Complete Event 037 Mysterious People
 
-Implement Event 037 from `docs/specs/037_mysterious_people_specs/`. Read every file in the pack and treat it as acceptance criteria. Read `AGENTS.md`, owning skills, shared systems, offline wiki, vanilla documentation, and relevant precedents.
+Implement Event 037 from `docs/specs/037_mysterious_people_specs/`. Use its README to resolve acceptance before execution. Read `AGENTS.md`, owning skills, shared systems, offline wiki, vanilla documentation, and relevant precedents.
 
 The event is Minor Repeatable, Chaos level `1`, Various Anomalies, Low severity, with entry `chaosx.nr37.1`. One firing creates real civilian population in every valid inhabited state through one bounded global transaction. It applies once across normal, cluster, multiplayer, delayed-report, and reload paths. Use current real population for stage-scaled grants, update state provenance by the applied amount, maintain country and world totals, and prevent replay.
 

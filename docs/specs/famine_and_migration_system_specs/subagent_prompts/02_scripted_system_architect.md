@@ -1,6 +1,6 @@
 # Prompt for `chaosx_scripted_system_architect`
 
-Spawn with `fork_context=false`.
+Spawn with no inherited thread context (Codex `fork_turns="none"`; other runtimes follow the [subagent skill](../../../../.agents/skills/chaos-redux-subagents/SKILL.md)).
 
 Repository root: `<MOD_ROOT>`.
 

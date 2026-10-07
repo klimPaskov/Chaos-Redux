@@ -10,7 +10,11 @@ The Kruger State is a conditional event-created country. It exists only when Doc
 
 It is not a generic mad-scientist tag. Its territory, institutions, army, population model, foreign policy, and focus priorities are generated from the host's actual project history.
 
-`KRG` is a working placeholder tag. Implementation must check tag conflicts before registration.
+`KRG` is the existing Kruger owner identity registered in `common/country_tags/016_brilliant_scientist_country.txt`, line 8.
+Inspect and reuse its registration and country-package consumers.
+The [shared identifier registry](../../shared_identifier_registry.md) records its occupancy.
+Do not reserve it as a free candidate or create a duplicate Kruger identity.
+Genuine new-tag proposals still require the repository collision and identity-reuse checks.
 
 ## Public country identity
 

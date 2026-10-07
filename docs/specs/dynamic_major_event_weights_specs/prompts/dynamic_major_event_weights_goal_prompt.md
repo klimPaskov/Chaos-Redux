@@ -1,6 +1,6 @@
 /goal Implement dynamic major event weight gain for Chaos Redux.
 
-Read and follow AGENTS.md, chaos-redux-events, chaos-redux-subagents, and chaosx_scripted_system_architect guidance. Use the spec at docs/specs/dynamic_major_event_weights_specs/dynamic_major_event_weights_spec.md as the source design.
+Read AGENTS.md, chaos-redux-events and chaos-redux-subagents. Use docs/specs/dynamic_major_event_weights_specs/specs/dynamic_major_event_weights_spec.md as source design and its README for unresolved acceptance. Use chaosx_scripted_system_architect for bounded helper work where needed.
 
 Replace the fixed major-event weight gain with a dynamic formula:
 
@@ -24,4 +24,6 @@ Update relevant docs now, including CHAOS_REDUX_MECHANICS.md and every docs/syst
 
 Validate the mechanic with these cases: 90 non-major and 10 major gives 150, 91 non-major and 10 major gives about 152, 90 non-major and 11 major gives about 136, 91 non-major and 9 major gives about 169, 0 major does not divide by zero, disabled events do not affect the count, fired majors and fired fire-once minors do not affect the count, repeatables still count when active, and cluster firing applies gain once.
 
-Keep iterating until the implementation, UI, localisation, docs, and validation satisfy the spec. Do not claim completion while any fixed +150 application remains active except as the baseline setting. Report files changed, helper names, UI/docs changed, validation results, rounding choice, and any simplifications or blockers.
+Before changing weighted logic, use chaosx_ai_probability_auditor for named baseline scenarios, preserve immutable before sources and fixtures, then run matching hoi4.probability_compare after the owner patch. Follow chaos-redux-subagents for schemas and evidence limits. Calculator examples alone do not validate the live pool.
+
+Keep iterating until the implementation, UI, localisation, docs, and validation satisfy the accepted spec. Do not claim completion while any fixed +150 application remains active except as the baseline setting. Report files changed, helper names, UI/docs changed, validation results, rounding choice, and any simplifications or blockers.

@@ -1,6 +1,6 @@
 # Event 013 Natural Disasters goal prompt
 
-> Implementation disposition: active implementation goal. This remains the acceptance statement until the completion audits and validation ledger close every accepted surface.
+> Design acceptance checklist. Choose continuation work through `natural_disasters_implementation_resume_prompt.md`.
 
 Implement Event 013 Natural Disasters from `docs/specs/013_natural_disasters_specs/` as a fresh source design. Do not preserve old Natural Disasters logic. Do not reuse old Earth Earthquake logic. Event 046 stays an inactive unknown placeholder, while whole-earth rupture behavior belongs to Event 013 Evolution III. Event 099 Sandstorm becomes a placeholder or narrow bridge into the Event 013 dust and sandstorm family. Event 051 Heat Wave remains separate, and Event 013 heat must not stack with it.
 
@@ -16,4 +16,6 @@ Implement the abnormal disaster scripted GUI only for Evolution III and manual a
 
 Implement super-events only after the research workflow has produced sourced quote, cultural remark, image, and audio documentation. Do not turn working labels or research directions into final localisation. Keep achievements difficult, with tracking, disqualifiers, icons, localisation, docs, and hooks.
 
-Update event registration, event log details, evolution views, cluster behavior, Disaster Barrage, docs, spreadsheet fields, prompts, assets, localisation, scripted localisation, AI behavior, and validation notes. Report any missing asset, missing research, fallback, simplification, unresolved plan, or skipped meaningful validation clearly. Do not call the event complete until every accepted spec surface is implemented or explicitly queued with a reason.
+Update event registration, event log details, evolution views, cluster behavior, Disaster Barrage, docs, spreadsheet fields, prompts, assets, localisation, scripted localisation, AI behavior, and validation notes. Report any missing asset, missing research, fallback, simplification, unresolved plan, or skipped meaningful validation clearly.
+Queued requirements remain incomplete.
+Report their acceptance basis, reason, and remaining work.

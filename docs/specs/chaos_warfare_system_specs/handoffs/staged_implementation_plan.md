@@ -1,5 +1,8 @@
 # Staged Implementation Plan
 
+Disposition: historical implementation sequence, superseded where incompatible with the [accepted amendment](../specs/13_2026_09_20_accepted_cbrn_overhaul.md) and [requirement ledger](../../../plans/chaos_warfare_system_plans/2026-09-20_cbrn_overhaul_requirement_ledger.md).
+Resume only open accepted requirements from that ledger. These stages do not authorize repeating completed work or promoting older unresolved proposals.
+
 ## Stage 0: Local engine and source verification
 
 Read the required offline wiki pages and current vanilla documentation. Inspect exact 1.19 Army HQ, regimental support, essential equipment, ability, unit-modifier, MIO, raid, aircraft mission, and AI patterns.
@@ -10,7 +13,7 @@ Deliverable:
 - supported and unsupported feature list
 - no gameplay edit yet
 
-Stop if the continuous chemical-air mission hook cannot be verified. Record the explicit-raid path as supported and ask before retaining an estimator.
+Keep continuous chemical-air contamination fail-closed unless a verified current-version mission hook exists. The recorded user constraint forbids retaining an estimator or proxy. Inspect the explicit-raid path separately. Lack of the continuous hook does not establish raid support.
 
 ## Stage 1: Shared data model and constants
 

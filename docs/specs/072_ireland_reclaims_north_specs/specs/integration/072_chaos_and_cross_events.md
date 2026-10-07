@@ -67,6 +67,7 @@ No custom periodic Chaos loop is added.
 | Shared scenarios and global crisis systems | Government survival, territory, supply, and ordinary population systems may change | Update only the affected event-owned work. Do not override the shared scenario lifecycle to preserve an Irish mission. |
 
 These interactions are contracts against the supplied catalog and mechanics, not claims that every listed rework is already implemented.
-Current catalog statuses are retained in the research ledger.
+The reviewed catalog snapshot statuses are retained in the research ledger.
+Inspect the authoritative workbook before asserting current status.
 The event does not add chemical, biological, or supernatural military content solely because those systems exist in Chaos Redux.
 Their ordinary global effects continue through the shared systems.

@@ -1,6 +1,9 @@
 # Sources and reading register
 
-## Scope of the claim
+## Original planning delivery: scope of the claim
+
+This register preserves the original supplied-source and bounded-revision reading record.
+Discover current tools and sources independently; original environment gaps do not prove current service unavailability.
 
 All 42 supplied text files were read in full, including all 20 supplied subagent definitions.
 The remaining-content reading pass omitted only exact text already read elsewhere and was traversed completely.
@@ -12,7 +15,8 @@ The local installed game, every linked offline-wiki article, the full repository
 Those gaps remain explicit below.
 No independent subagent was executed and no live HOI4 or HOI4 MCP validation was performed.
 
-The user brief in this conversation is authoritative for the new Event 074 design.
+The register attributes the original Event 074 requirements to its authoring-session user brief.
+That attribution does not establish independent acceptance of every author-added design choice.
 The supplied project rules govern its packaging and integration.
 Repository excerpts establish limited existing-code facts and must not be promoted into evidence that a new engine behavior is tested.
 
@@ -160,12 +164,12 @@ Fictional campaign artwork must not be labeled an authentic photograph of the ev
 | Missing or incomplete dependency | Required next action |
 | --- | --- |
 | Installed vanilla game, current map and supported DLC files | Read exact unit, equipment, province, state, building, air and AI consumers before implementation |
-| Relevant full offline-wiki articles | Read complete Effects, AI modding, unit creation, supply, building, character and decision references that the chosen implementation actually uses |
+| Relevant offline-wiki and installed-documentation sections | Use the current AGENTS.md reference workflow for the exact rules and consumers involved |
 | Shared repository dispatcher, event log, settings, clusters and catalog workbook | Inspect exact current APIs and update only through their owners |
 | Native asset reference library and contact sheets | Read root indexes and each requested family before visual production |
 | Executable subagent interface | Run the supplied roles with context-complete prompts and no inherited-context assumption |
 | HOI4 event, map, technology and probability tools | Produce the specified inspection and comparison evidence where supported |
-| Live HOI4 testing | Run or request the precise reproducible cases according to the debug-playtest skill and current user authority |
+| Live HOI4 testing | User-owned evidence; review supplied results without launching the game or requesting logs |
 | Super-event text, quotation and audio rights | Complete specialist research and approval before final localisation and registration |
 
 The specifications were not intentionally shortened into a quick-output outline.

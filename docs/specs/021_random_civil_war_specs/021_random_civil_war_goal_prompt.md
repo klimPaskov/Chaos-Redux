@@ -2,9 +2,9 @@
 
 Implement `docs/specs/021_random_civil_war_specs/` in full.
 
-Read `AGENTS.md`, every Event 021 spec and prompt, Event 006 specs and implementation, relevant skills, the offline Paradox wiki, installed vanilla documentation, and current civil-war, cluster, scenario, AI, decision, and asset precedents. Use HOI4 MCP schemas. Spawn project subagents with `fork_context=false`.
+Read `AGENTS.md`, every Event 021 spec and prompt, Event 006 specs and implementation, relevant skills, the offline Paradox wiki, installed vanilla documentation, and current civil-war, cluster, scenario, AI, decision, and asset precedents. Use live MCP schemas and context-free project subagents under the current owner skill.
 
-Event 021 is Minor Repeatable, chaos level 1, with entry `chaosx.nr21.1`. Add it to Cluster 1, Wars, at Medium severity. Keep it unavailable until the rework is ready. When no valid target exists, show `N/A` and remove live weight.
+Event 021 is Minor Repeatable, chaos level 1, with entry `chaosx.nr21.1`. Add it to Cluster 1, Wars, at Medium severity. Use the README release boundary. When no valid target exists, show `N/A` and remove live weight.
 
 Build a reusable framework with hidden Fracture Pressure, visible State Authority, target weighting, severity, connected regions, viable capitals, protected remnants, dynamic force and stockpile allocation, actor adapters, front registry, decisions, missions, active and prefire evolutions, neighboring exposure, bounded global scheduling, settlements, recurrence, caps, scenario setup, and cleanup. Centralize tuning. Never blindly split half the army or territory.
 
@@ -16,7 +16,7 @@ Event 021 may initialize a human Event 006 package even if Independence Wave nev
 
 Evolution I adds viable multi-front wars, independence fronts, and reduced-weight major targeting. Evolution II adds Regional Exposure, neighbor actions, sponsors, stronger sides, and rare uncertain strange incidents. Separate civilian relief from armed support. Evolution III creates nonterminal Global Fracture through Stable, Exposed, Fractured, and Critical bands, due-country reviews, a Critical queue, tested theater caps, nested crises, successor grace, recurrence memory, and a generation cap. Do not add an unrestricted whole-world daily, weekly, or monthly loop.
 
-Integrate Events 004, 007, and 021 in the Wars cluster with target reservation, collision rules, skip reasons, and one pacing event. Add The Fracture Cascade manual scenario with a verified free ID, four types, and four intensities. Maximum commits every eligible normal human country. Immediate setup is preferred. Locked deterministic setup over no more than seven game days is allowed only after measured one-frame performance failure.
+Integrate Events 004, 007, and 021 in the Wars cluster with target reservation, collision rules, skip reasons, and one pacing event. Add The Fracture Cascade manual scenario as `SCN-018`, four types, and four intensities. Maximum commits every eligible normal human country. Immediate setup is preferred. Locked deterministic setup over no more than seven game days is allowed only after measured one-frame performance failure.
 
 Implement role-specific AI, Event Logs, Event Details, three evolution records, settlement, reconstruction, six achievements, static assets, documentation, and workbook alignment. Route weighted surfaces through the probability auditor before and after changes. Run the mapped MCP, acceptance, cleanup, edge-case, and performance checks.
 

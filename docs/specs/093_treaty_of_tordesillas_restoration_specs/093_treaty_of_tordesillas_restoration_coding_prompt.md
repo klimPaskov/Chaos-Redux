@@ -6,7 +6,8 @@ Implement the full design under `docs/specs/093_treaty_of_tordesillas_restoratio
 
 Fully read the current supplied Project Sources and applicable must-read skills before editing. Follow AGENTS.md and the source protocol if it can be located. Resolve the missing reference library, installed game documents, current country trees, map, shared world-end contracts, cost adapters, and authoritative workbook context. The report of the previous reading is not a substitute for your required current reads.
 
-Use the user's WSL repository and repo-relative paths. Do not execute the supplied configuration or copy stale Windows paths into new instructions. Do not change provider or model configuration to manufacture a subagent route. Keep working plans and actual specialist handoffs under `docs/plans/093_treaty_of_tordesillas_restoration_plans/`. Keep accepted source design in the spec folder.
+Work in the current Windows repository at C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux, using Windows-native paths and repository-relative source references.
+Do not execute the supplied historical configuration. Do not change provider or model configuration to manufacture a subagent route. Keep working plans under `docs/plans/093_treaty_of_tordesillas_restoration_plans/` and actual specialist handoffs in its `subagent_handoffs/` directory. Keep accepted source design in the spec folder.
 
 ## Preserve the core
 
@@ -46,7 +47,9 @@ Before adding any custom tag beyond this no-new-tag design, obtain an accepted d
 
 Use the five companion production prompts. Final super-event text, quotations, cultural remarks, and sound selection remain research-gated. Two inspected audio pages are not a final licensed cue or a listening report. Use the real templates, native consumers, approved conversion tools, and actual runtime proof for assets.
 
-Run the full acceptance journeys in Part 18, then targeted live games, save/reload and multiplayer tests, AI scenario evaluation, cost parity checks, actual map samples, the native Anarchist Spain comparison, and no-DLC coverage. The bundled Python tests are design arithmetic only, not a substitute.
+Run the source and MCP checks for Part 18, including AI scenario evaluation, cost parity, actual map samples, the native Anarchist Spain comparison, and no-DLC source coverage.
+The user owns live games, save/reload and multiplayer testing.
+Use supplied live evidence without launching HOI4, and use the debug-playtest skill only when the user explicitly invokes that separate workflow. The bundled Python tests are design arithmetic only, not a substitute.
 
 Near completion, spawn chaosx_improvement_loop_planner with an isolated self-contained handoff and resolve its actual addendum or closure report. Obtain the relevant completion, country, decision, focus, localization, and asset audits. Update accepted source design, docs, manifests, and the authoritative workbook only through its required workflow.
 

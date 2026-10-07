@@ -1,5 +1,7 @@
 # Asset production prompt
 
+Disposition: superseded historical prompt; current guidance is [the Event 012 authority map](../../012_africa_specs/README.md).
+
 Create the accepted Gods of Africa visual package for Event `012`.
 
 ## Cultural and visual rules

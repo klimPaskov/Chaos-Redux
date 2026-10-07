@@ -20,15 +20,20 @@ Read:
 
 Inspect the matching repository reference folder before creating each asset type.
 
-The asset matrix contains 239 release-ledger rows. The required Event 012 packages are installed, including nine 3D model packages, 18 full frame-animation packages, six promoted Tier A visual and runtime packages, 16 historical male sourced placeholder portraits, six fictional male portraits, and three no-person evolution images. Controlled-pool and optional rows retain explicit dispositions rather than representing missing required outputs.
+The asset matrix contains 239 release-ledger rows.
+Review selected rows against [the package reconciliation](../README.md) before production.
+Its September receipt distinguishes eight custom model handoffs from the archival elephant record, and source-placeholder portraits from pending visual review.
+Dated counts are not a current completion finding or approval to regenerate every row.
 
 ## Routing
 
 Split production by source mode.
 
-Use the sourced visual asset worker for real leaders, historical flags, attested symbols, real architecture-dependent imagery, and archival photographs that must depict real material.
-
-Use the generated event-art worker for fictional and alternate-history report, news, and super-event scenes, fictional leaders and councils, fictional flags, high-chaos actors, UI panel art, faction emblems, and portrait frames.
+Follow [chaos-redux-event-assets](../../../../.agents/skills/chaos-redux-event-assets/SKILL.md) for current source modes and ownership.
+Every grounded, fictional, nonhuman, or institutional character portrait belongs to `chaosx_portrait_creator`.
+`chaosx_asset_source_researcher` owns non-portrait historical flags, symbols, architecture, and archival images.
+`chaosx_generated_event_art` owns fictional non-portrait scenes, flags, high-chaos art, panels, emblems, and decorative frames.
+Custom 3D packages belong to `chaosx_3d_model_pipeline` under [chaos-redux-3d-model-pipeline](../../../../.agents/skills/chaos-redux-3d-model-pipeline/SKILL.md), including sound and counter handoffs.
 
 Use the icon artist for focus, idea, national spirit, decision, achievement, technology, strange-unit, and small animated GUI icons.
 
@@ -36,22 +41,9 @@ Do not ask one worker to cover mixed sourced and generated packages without a cl
 
 ## Required deliverables
 
-For every selected row from the asset matrix, produce or record:
-
-- source file
-- processed PNG preview
-- final DDS or final HOI4 flag triplet
-- target dimensions
-- stable filename and sprite name
-- final game folder
-- manifest entry
-- source, author, archive, date, and license notes when sourced
-- generation prompt and source-mode rationale when generated
-- GFX handoff with the target `.gfx` file and ready-to-review sprite information
-- contact sheet for large families
-- status as complete, blocked, or needs user review
-
-Do not mark an item complete when only a source image or prompt exists.
+Use [chaos-redux-event-assets](../../../../.agents/skills/chaos-redux-event-assets/SKILL.md) for the current production, provenance, native-alpha, processing, review, manifest, durable-record, and parent-wiring contract.
+For each selected matrix row, retain its exact asset key, source mode, dimensions, filename, sprite, consumer, final DDS or flag triplet, and explicit disposition.
+Return the row-to-file crosswalk and reviewable handoff; a prompt or source image alone does not finish an asset.
 
 ## Priority order
 
@@ -95,7 +87,8 @@ Focus, idea, decision, achievement, and technology icons are separate asset type
 
 The 78 route-payoff rows are focus roles, not necessarily 78 one-to-one focus icons. Assign icons to the final implemented focuses after the focus structure is fixed. The route capstone seals, route commitment values, and crisis icons remain separate UI and decision assets.
 
-Transparent icons need real transparency, no checkerboard, no white halo, no opaque square, and no generated text.
+Use native ImageGen transparency and preserve alpha under [chaos-redux-event-assets](../../../../.agents/skills/chaos-redux-event-assets/SKILL.md).
+Background removal is a recorded fallback, not the default production step.
 
 ## Animation rules
 
@@ -130,5 +123,5 @@ Return:
 - manifests and handoffs written
 - animations completed with frame evidence
 - blocked and needs-review items
-- controlled-pool or review items still open, with no required model, animation, portrait, or super-event media package missing
+- every controlled-pool, review, missing, or blocked item with its exact disposition and acceptance/evidence boundary
 - no claim of full Event 12 completion

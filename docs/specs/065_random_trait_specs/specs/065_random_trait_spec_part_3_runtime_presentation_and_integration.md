@@ -204,7 +204,7 @@ The runtime file remains:
 
 `gfx/event_pictures/065_random_trait/report_event_leader_trait.dds`
 
-The final image is an opaque `210x176` report-event picture.
+The report uses one opaque scene source processed to `210x176` with the alpha and card treatment required by the inspected consumer and current asset skill.
 
 The intended scene is a fictional mid-century political press or conference setting with several anonymous leaders showing visibly different temperaments and roles.
 
@@ -212,7 +212,8 @@ The image should suggest incompatible identities without using text, interface s
 
 The treatment should match the existing Chaos Redux report-event documentary style.
 
-The current repository asset must be validated before reuse because repository metadata reports an unusually small file size.
+The original planning metadata reported an unusually small asset file.
+Inspect the current asset and consumer before choosing reuse or replacement; the old byte count does not establish current validity.
 
 The asset prompt defines the full handoff.
 

@@ -4,11 +4,13 @@ Implement Event 074 from `docs/specs/074_japan_lands_in_usa_specs/`.
 Read its README, all eight files under `design/`, and all reference contracts before changing gameplay.
 Use the stage prompts in order, and keep implementation plans, specialist handoffs, unresolved evidence and audits under `docs/plans/074_japan_lands_in_usa_plans/`.
 The source package remains under `docs/specs/`.
-Do not create `docs/planning/` or mix temporary progress notes into the accepted design.
+Do not create `docs/planning/` or mix temporary progress notes into source design.
+Record user or authorized parent acceptance for added design choices before treating them as approved.
 
 ## Read and inspect first
 
-Read the current repository `AGENTS.md`, `README.md`, `CHAOS_REDUX_MECHANICS.md`, the event-planning, events, subagents, decisions-missions, improvement-loop, event-assets, super-events, debug-playtest and MTTH skills, and their applicable must-read references in full.
+Read current `AGENTS.md`, `README.md`, `CHAOS_REDUX_MECHANICS.md` and the applicable [event](../../../../.agents/skills/chaos-redux-events/SKILL.md), [planning](../../../../.agents/skills/chaos-redux-event-planning/SKILL.md), [subagent](../../../../.agents/skills/chaos-redux-subagents/SKILL.md), decision, asset, super-event, improvement-loop and MTTH owner skills.
+Use relevant offline-wiki and installed-documentation sections through the reference workflow in `AGENTS.md`, and read applicable required local contracts.
 The source register says exactly which references were not completed during planning.
 Resolve those gaps rather than treating its full supplied-file read as a complete vanilla or repository audit.
 Read other skills when their actual consumers are involved.
@@ -105,7 +107,8 @@ Then obtain the completion audit and document route coverage, unresolved gates a
 Do not grow the design with unrelated tags, trees, currencies or minigames merely to produce an addendum.
 
 Use the acceptance matrix for static, save, multiplayer, map, supply, AI, asset and live-game checks.
-Follow the debug-playtest skill and current user authority for game execution.
+Live-game validation belongs to the user.
+Do not launch HOI4 or invoke `chaos-redux-debug-playtest` unless the user separately invokes that explicit-only workflow.
 Never report an unrun test as passed.
 Keep iterating until the goal is accomplished to its fullest extent, without silent fallbacks, shortened substitutes or temporary versions presented as final.
 Do not claim completion until the implemented files satisfy the specification and the required evidence is available.

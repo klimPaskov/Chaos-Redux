@@ -2,7 +2,7 @@
 
 ## Routing rule
 
-Every project custom subagent must be spawned with `fork_context=false` and a context-complete prompt.
+Every project custom subagent must be spawned with `fork_turns="none"` and a context-complete prompt.
 
 The parent remains responsible for design authority, final source changes, integration, documentation alignment, validation, and completion claims.
 
@@ -10,7 +10,7 @@ The parent remains responsible for design authority, final source changes, integ
 
 | Order | Subagent | Mode | Purpose | Package prompt |
 | ---: | --- | --- | --- | --- |
-| 1 | `chaosx_repo_explorer` | Read-only | Map current Event 025, Event 016, Event 036, GUI, log, super-event, achievement, and helper surfaces | `prompts/025_repo_explorer_prompt.md` |
+| 1, if unresolved | `chaosx_repo_explorer` | Read-only | Map only unclear current paths, patterns, precedents, missing files, or edit order after direct inspection | `prompts/025_repo_explorer_prompt.md` |
 | 2 | `chaosx_improvement_loop_planner` | Plan-only | Independently confirm closure or write a focused accepted addendum | `prompts/025_improvement_loop_planner_prompt.md` |
 | 3 | `chaosx_scripted_system_architect` | Narrow patch-capable | Design and implement reusable registry, reward, and arbitration helpers | `prompts/025_scripted_system_architect_prompt.md` |
 | 4 | `chaosx_ai_probability_auditor` | Read-only | Establish named baseline weighted and timing evidence | `prompts/025_ai_probability_auditor_prompt.md` |

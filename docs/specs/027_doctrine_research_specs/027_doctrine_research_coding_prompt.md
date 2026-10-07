@@ -4,7 +4,7 @@ Implement the complete Event 027 rework from the source specification package at
 
 `docs/specs/027_doctrine_research_specs/`
 
-Treat every mapped rule, evolution, adapter, AI behavior, achievement, asset, log surface, documentation field, and catalog field as acceptance criteria. Do not replace the design with a smaller Army-only event, a flat military-experience grant, a fixed mastery-point dump, a fire-once event, or a one-country event.
+Use the README authority boundary to establish acceptance for mapped rules, evolutions, adapters, AI behavior, achievements, assets, log surfaces, documentation, and catalog fields. Do not replace the design with a smaller Army-only event, a flat military-experience grant, a fixed mastery-point dump, a fire-once event, or a one-country event.
 
 ## Required reading
 
@@ -51,7 +51,7 @@ If a required MCP route is unavailable, record the exact blocker. Do not treat s
 
 ## Subagent routing
 
-Spawn project subagents with `fork_context=false` and context-complete prompts.
+Spawn project subagents with `fork_turns="none"` and context-complete prompts.
 
 Use:
 

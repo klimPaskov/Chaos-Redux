@@ -1,6 +1,8 @@
 # Event 12 Africa expanded package manifest
 
-> Manifest provenance notice, 2026-08-10: this manifest is the frozen 2026-07-10 specification-package inventory and its byte counts and hashes are not the current runtime ledger. Use `docs/events/012_africa/overview.md`, the authoritative asset matrix, and `docs/plans/012_africa_plans/012_africa_acceptance_ledger.csv` for reconciled implementation status. The manifest remains a design-package integrity record, and only the explicitly changed README and Part 1 rows below were refreshed for the 2026-09-05 documentation reconciliation.
+> Manifest provenance notice, 2026-08-10: this manifest is the frozen 2026-07-10 specification-package inventory and its byte counts and hashes are not the current runtime ledger. Use `docs/events/012_africa/overview.md`, the authoritative asset matrix, and `docs/plans/012_africa_plans/012_africa_acceptance_ledger.csv` for reconciled implementation status. The recorded inventory includes dated partial refreshes from the September reconciliation; none of its hashes certify the October working documents.
+
+Current package inventory and documentation checks are recorded in [the October audit handoff](../../plans/repo_cleanup/specification_package_audit_2026-10-07/handoffs/007_012.md).
 
 > Current reconciliation pointer, 2026-08-11: the source-completion certification records 44/44 achievements, 64/64 AI profiles, 102/102 actions with six deliberate runtime gates, 16 implemented conditional priority packages, 16 matching implemented polity rows, 199 queued controlled-pool candidates, and 239 visual dispositions. Those dated certification handoffs remain historical provenance; current Event 012 ownership, `SCN-011`, Gods, elephant, Event 070, and MCP evidence boundaries are governed by `docs/plans/012_africa_plans/documentation_cleanup_handoff_2026-09-05.md`.
 
@@ -31,7 +33,7 @@
 - bounded prompts: 6
 - goal prompt character count: 3,998
 
-## Validation recorded
+## Historical validation recorded at packaging
 
 - all eight CSV matrices parse successfully
 - every CSV cell is populated

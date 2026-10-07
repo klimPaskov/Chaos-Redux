@@ -1,10 +1,13 @@
 # Famine and Migration Mechanics Improvement-Loop Closure Review
 
+> **Historical planning review:** This is the original parent-authored closure proposal.
+> Use [README.md](README.md) for current continuation and plan dispositions; the questions below are not a fresh finding that existing transfer or reserve contracts are unimplemented.
+
 ## Review status
 
 This is a parent-authored design review using the `chaos-redux-improvement-loop` standard.
 
-A callable `chaosx_improvement_loop_planner` runtime was not available in this environment. The implementation agent must still run that subagent near completion against the actual repository.
+A callable `chaosx_improvement_loop_planner` runtime was not available in this environment. For continuation, check existing planner handoffs and their dispositions before assigning a further pass against current source.
 
 ## Playable promise review
 

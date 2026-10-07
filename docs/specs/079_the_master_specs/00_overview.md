@@ -43,6 +43,6 @@ The ending announces the winner and the political means that mattered most. Losi
 
 ## Reading the specification
 
-Read Parts 01 through 08 for the full game rules. Part 09 contains worked campaign examples. The specialist folders define AI, interface, assets, achievements, integration, writing direction, and research. Implementation contracts, source coverage, unverified engine requirements, test cases, and ready handoff prompts live in the separate planning folder.
+Read Parts 01 through 08 for the full game rules. Part 09 contains worked campaign examples. The specialist folders define AI, interface, assets, achievements, integration, writing direction, and research. Implementation contracts, source coverage, unverified engine requirements, test cases, and ready handoff prompts live in the [implementation working records](../../plans/079_the_master_plans/).
 
 The five action-family names and two evolution names supplied in the user brief are preserved. Other action, incident, achievement, and interface names in these documents are **working labels, not final localisation**. Numeric values introduced here are initial design tuning. They are not claimed to be playtested or separately approved by the user.

@@ -11,7 +11,8 @@ Record the explicit user concept, adopted design additions, implementation evide
 
 ## Tranche 1: Complete the source and capability review
 
-Read every required core wiki page and applicable skill in full, including the portions not completed in this planning run.
+Read applicable skills and pertinent offline wiki and installed-game documentation sections through the current AGENTS.md reference workflow.
+The original source-review gaps remain historical evidence and do not require unrelated whole-page reads.
 Read the installed vanilla and relevant mod references required by those instructions.
 Inspect the current event, its localisation, news, registration, shared helpers, country registry, scenario framework, and the named connected event packages.
 

@@ -33,7 +33,7 @@ Read:
 
 ## Research routing
 
-Spawn with `fork_context=false`:
+Spawn with `fork_turns="none"`:
 
 - `chaosx_super_event_text_researcher` for verified quote candidates, button remark or plain reaction, exact attribution, source confidence, and copyright notes.
 - `chaosx_super_event_audio_researcher` for a unique licensed or public-domain musical recording, legitimate download, conversion, and audio handoff.

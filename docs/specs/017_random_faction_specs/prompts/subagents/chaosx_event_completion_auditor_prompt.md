@@ -1,6 +1,6 @@
 # Prompt for chaosx_event_completion_auditor
 
-Use `fork_context=false`. Perform a read-only completion audit for Event 17 `Random faction` against the full spec package under `docs/specs/017_random_faction_specs/`.
+Use `fork_turns="none"`. Perform a read-only completion audit for Event 17 `Random faction` against the full spec package under `docs/specs/017_random_faction_specs/`.
 
 Audit:
 

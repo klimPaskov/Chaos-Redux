@@ -14,6 +14,11 @@
 
 ## Reading and environment boundary
 
+The numbered parts and lifecycle/API maps are the canonical planning design.
+The source ledger, cross-check, and manual review below describe the original planning pass, not the capabilities or implementation state of the current checkout.
+Acceptance labels, including the Event 34 dependency, need attributable user or parent decisions under [AGENTS.md](../../../AGENTS.md); blanket acceptance remains `unresolved` where that record is absent.
+Use [the current subagent skill](../../../.agents/skills/chaos-redux-subagents/SKILL.md) for routing and current discovery for MCP availability.
+
 Every file supplied with this task was read in full, including the three catalog exports, all twenty subagent definitions, and every Markdown file in the accepted Event 34 planning package. The live public repository was inspected for Event 34 and Event 35 migration context.
 
 The Windows-only offline Paradox wiki snapshot, installed Hearts of Iron IV documentation, installed vanilla game files, and local HOI4 MCP server were not mounted in this ChatGPT environment. This package therefore does not claim engine-syntax validation, vanilla-precedent inspection, MCP event-chain evidence, or live-game validation. The coding prompt makes those checks mandatory before implementation.
@@ -75,8 +80,13 @@ The event remains playable at maximum Severity. Deep failure causes industrial p
 
 - `035_great_depression_full_spec.md`
 
-This file combines the index and all eleven source specification parts in their canonical order. Supporting maps, research, prompts, and ledgers remain separate to keep the design source readable.
+This file points to the index and eleven canonical parts, superseding the duplicated compilation.
+Supporting maps, research, prompts, and ledgers remain separate.
 
 ## Presentation choice
+
+Presentation conflict (`unresolved`): Part 10 and the asset prompt map category pictures plus a Severity meter, but [the current decision skill](../../../.agents/skills/chaos-redux-decisions-missions/SKILL.md#decision-category-presentation-hierarchy) permits pictures only for simple categories without meters or extra custom controls.
+The parent must record whether to use basic formatted values with an eligible picture or a reviewed meter/inlay without that picture.
+Preserve the original alternatives until this is resolved and do not produce both consumers by default.
 
 The main mechanic uses the ordinary decision interface with a strong category picture, one Depression Severity meter or compact progress display, a trend indicator, the next threshold, up to three material causes, and a phased action list. A separate event-owned scripted GUI is not the planned baseline because the player has one public value and no more than five primary actions in one phase. The implementation agent may escalate to a dedicated window only after direct inspection proves that the ordinary category cannot present the severity state, selected Depression Center, and active mission clearly. Such a change requires a recorded design exception and the event UI workflow.

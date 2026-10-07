@@ -48,9 +48,10 @@ Read all project rules, skills, this full specification, current Event 23 source
 
 Use the installed HOI4 MCP for event, probability, technology, focus, GUI, and map surfaces that are actually touched. Record exact blockers when a required route is unavailable.
 
-Spawn all project subagents with `fork_context=false`.
+Spawn all project subagents with `fork_turns="none"`.
 
-Start with `chaosx_repo_explorer` because the feature spans many systems and the exact live APIs are unknown.
+Use `chaosx_repo_explorer` only if live APIs, paths, or dependency order remain unclear under the owner skill.
+Reuse a current parent source map when those questions are already answered.
 
 Use `chaosx_scripted_system_architect` for shared nuclear action adapter verification or creation, custody ledger, event targets, script constants, dynamic helpers, and Event 5 bridge.
 

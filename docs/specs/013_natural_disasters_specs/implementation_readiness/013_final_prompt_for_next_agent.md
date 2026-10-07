@@ -1,5 +1,8 @@
 # Final resume prompt for the next Event 013 implementation agent
 
+> Superseded planning sequence: [the implementation resume prompt](../prompts/natural_disasters_implementation_resume_prompt.md) and [the disposition map](../docs_alignment/013_source_of_truth_and_disposition_map.md) replace this original fresh-build instruction.
+> Preserve the design traceability below and choose continuation work from the dated implementation handoffs.
+
 Continue from the expanded Event 013 Natural Disasters planning package in `docs/specs/013_natural_disasters_specs/`. Use the third-pass implementation-readiness files before editing.
 
 Current source files to read first:

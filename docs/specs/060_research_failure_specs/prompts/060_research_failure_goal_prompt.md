@@ -16,7 +16,7 @@ The Emergency Kruger Mandate preserves current slot capacity only when Event 16 
 
 Implement Lost Archives at 200+ Chaos, Scientific Dark Age at 400+, and Knowledge Collapse at 600+. Respect evolution toggles and MTTH pacing. A high-tier opening applies one highest-valid package. Later escalation applies only the additional difference. Evolution activation adds no Chaos.
 
-Implement all specified foreign reactions and event connections. Resolve the Scientific Research cluster's authoritative ID before registration. Keep cluster ordering coherent when regression and positive grants fire together.
+Implement the specified connections and foreign reactions. Use Scientific Research ID 21 from [the ledger](../../shared_identifier_registry.md). Preserve regression-before-grant ordering.
 
 Complete every event, gameplay, AI, localisation, Event Log, Event Details, evolution, Chaos, achievement, static asset, GFX, documentation, and workbook surface mapped by the pack. Export CSV snapshots with the repository script. Do not add unaccepted focus trees, countries, portraits, flags, animation, 3D models, super-events, or a custom window.
 

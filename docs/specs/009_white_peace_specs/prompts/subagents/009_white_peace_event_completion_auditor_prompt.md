@@ -1,6 +1,6 @@
 # Subagent Prompt — chaosx_event_completion_auditor — Event 009 White Peace
 
-Spawn with `fork_context=false`.
+Spawn with `fork_turns="none"`.
 
 Read:
 

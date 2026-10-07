@@ -19,7 +19,7 @@ Follow:
 - `chaos-redux-super-events` for super-event image coordination
 - `chaos-redux-subagents`
 
-Use the narrow asset subagents with `fork_context=false` and context-complete prompts.
+Use the narrow asset subagents with `fork_turns="none"` and context-complete prompts.
 
 Route every character portrait to `chaosx_portrait_creator`.
 

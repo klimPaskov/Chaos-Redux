@@ -1,5 +1,7 @@
 # Achievement implementation prompt for Event 007 Fury
 
+Read the [accepted release corrections](../specs/007_fury_release_corrections_2026-10-05.md) first; they override conflicting older instructions within their recorded acceptance boundary.
+
 Use the Fury achievement spec at `docs/specs/007_fury_specs/specs/007_fury_achievements_spec.md`.
 
 Implement achievements only after core Fury state flags, scenario flags, and defeat tracking exist.

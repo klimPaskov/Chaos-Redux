@@ -1,6 +1,10 @@
 # Asset Prompt — Event 009 White Peace
 
-Use `chaos-redux-event-assets` for all visual asset work. Route sourced real/archival images to `chaosx_asset_source_researcher`; route generated report/news images to `chaosx_generated_event_art`; route achievement icons to `chaosx_icon_artist`. Asset subagents must use `fork_context=false` if spawned by a parent agent.
+The [accepted delivery decision](../../../plans/009_white_peace_plans/agent_decisions_2026-10-05.md) requires one observer news for every successful all-AI chain, independent of Stage III.
+The dated [news-art handoff](../../../plans/009_white_peace_plans/subagent_handoffs/white_peace_news_art_handoff.md) records `news_event_009_white_peace.dds` and `GFX_news_event_009_white_peace`.
+Review existing art before replacement; the old Stage III-only optional direction is superseded.
+
+Use `chaos-redux-event-assets` for all visual asset work. Route sourced real/archival images to `chaosx_asset_source_researcher`; route generated report/news images to `chaosx_generated_event_art`; route achievement icons to `chaosx_icon_artist`. Asset subagents must use `fork_turns="none"` if spawned by a parent agent.
 
 ## Event identity
 
@@ -21,7 +25,7 @@ Use `chaos-redux-event-assets` for all visual asset work. Route sourced real/arc
 - Suggested final folder: follow existing report-event image folder pattern.
 - Source mode: generated period-documentary image unless a strong public-domain/source image is found.
 - Reference folder to inspect first: `.agents/skills/chaos-redux-event-assets/assets/gfx_references/event_art/report`
-- Required processing: report-event card treatment with `tools/process_report_event_image.py` if that tool exists in the repo.
+- Required processing: use the report-card workflow in [chaos-redux-event-assets](../../../../.agents/skills/chaos-redux-event-assets/SKILL.md) and discover its current processor.
 
 Visual direction:
 
@@ -36,9 +40,9 @@ Avoid:
 - flags that imply a specific real treaty unless sourced and intentional;
 - map-first composition.
 
-### 2. Optional Stage III news image
+### 2. Historical broad-settlement news direction
 
-Create only if implementation adds a news popup for the broad settlement branch.
+The following composition is retained as earlier planning direction; it does not authorize a second image or limit observer news to Stage III.
 
 - Asset type: news event image
 - Target size: `397x153`
@@ -107,18 +111,5 @@ Create or update:
 - `docs/assets/009_white_peace/manifest.md`
 - `docs/assets/009_white_peace/gfx_handoff.md`
 
-Each manifest entry must list:
-
-- asset name;
-- event ID;
-- source mode;
-- prompt or source URL;
-- source path;
-- processed PNG path;
-- final DDS path;
-- target size;
-- sprite name;
-- suggested `.gfx` file;
-- intended in-game use;
-- status;
-- uncertainty if source/license/date is unclear.
+Use [chaos-redux-event-assets](../../../../.agents/skills/chaos-redux-event-assets/SKILL.md) for current provenance, alpha, processing, manifest, durable-record, and parent-wiring requirements.
+Retain the package destinations above and asset-specific sprite/consumer mappings.

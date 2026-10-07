@@ -59,7 +59,10 @@ If keeping the slider creates confusion, set intensity to fixed and say the scen
 
 ## Event and catalog integration
 
-Scan the complete writable scenario registry, find the highest live integer, and reserve the Fallout-owned manual trigger at that integer plus one. Do not renumber existing scenarios and do not infer the id from an older snapshot. Record the reserved id and proof status in Fallout source documentation. The reservation may appear only as the Fallout-owned manual sandbox row. It is never inserted into the ordinary Event Log, ordinary Event Details, evolution, or ordinary super-event registries. The seven-day processing delay belongs to the Fallout-owned blackout and callback presentation, not to an ordinary event row.
+The original initial-allocation rule was to scan the complete writable registry and reserve the highest live integer plus one.
+The consolidated package records that reservation at raw id `14`.
+On continuation, reconcile and preserve the existing Fallout-owned reservation rather than allocating another row.
+Resolve a genuine live collision explicitly before remapping; do not renumber other scenarios. Record the reserved id and proof status in Fallout source documentation. The reservation may appear only as the Fallout-owned manual sandbox row. It is never inserted into the ordinary Event Log, ordinary Event Details, evolution, or ordinary super-event registries. The seven-day processing delay belongs to the Fallout-owned blackout and callback presentation, not to an ordinary event row.
 
 ## Compatibility with other world-end events
 

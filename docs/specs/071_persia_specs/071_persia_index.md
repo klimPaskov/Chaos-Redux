@@ -66,7 +66,14 @@ The diagrams are branch sketches, not exact engine prerequisites or native game 
 
 [Subagent handoffs](071_persia_subagent_handoffs.md) cover all twenty supplied roles. These are future prompts, not agent reports. [Parent review](071_persia_parent_review.md) records the design checks, corrected issues, and outstanding evidence gates. [Package validation](071_persia_package_validation.json) records automated file-level checks. [Package manifest](071_persia_package_manifest.json) records delivered files and hashes.
 
-## What was and was not done
+## Original planning record
+
+Availability and passed-check claims in the source receipts, parent review and package validation describe the 2026-09-20 authoring run.
+They do not certify the current checkout.
+Use [AGENTS.md](../../../AGENTS.md) and [the subagent skill](../../../.agents/skills/chaos-redux-subagents/SKILL.md) for current workflow and capability discovery.
+The original brief supplies user requirements, while expansion and tuning require attributable adoption before implementation.
+
+## What was and was not done during authoring
 
 All 42 supplied project texts and the attached brief were read. The archive did not include the actual script checkout, mandatory offline wiki, installed vanilla or DLC files, exact map, canonical asset references, or authoritative workbook. No actual subagent runner or HOI4 MCP validation was available in this session.
 

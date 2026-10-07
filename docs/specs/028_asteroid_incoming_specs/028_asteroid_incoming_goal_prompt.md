@@ -1,6 +1,6 @@
 # Goal prompt: Implement Event 028, Asteroid Incoming
 
-Implement Event 028 from every file under `docs/specs/028_asteroid_incoming_specs/`. Read the full package first and treat it as the source design and acceptance contract. Follow `AGENTS.md`, relevant Chaos Redux skills, required offline wiki pages, current vanilla documentation, and verified project precedents.
+Implement Event 028 from every file under `docs/specs/028_asteroid_incoming_specs/`. Read the full package first and apply its recorded accepted design contract. Follow `AGENTS.md`, relevant Chaos Redux skills, required offline wiki pages, current vanilla documentation, and verified project precedents.
 
 Deliver the global fire-once Major event. Build exactly three valid distinct country and state targets plus a genuine miss option. Show `N/A` when three pairs cannot exist. Lock chosen coordinates for two days, preserve them through state and tag changes, give the target one preparedness choice, and relocate a destroyed capital to a valid backup.
 
@@ -16,6 +16,6 @@ Reuse thermonuclear and nuclear-scale map effects only for presentation. Never r
 
 Complete Event History, Event Details, evolution rows, dynamic target snapshots, reports, news, super-event text and image, verified quote and remark, unique licensed music, final WAV, settings-aware playback, all accepted icons, documentation, and workbook alignment. Replace the stale minor-repeatable Event 28 row, then regenerate CSV exports from the XLSX.
 
-Use required HOI4 MCP event, map, and probability routes, plus other routes when their surface requires them. Spawn project subagents with `fork_context=false` and complete prompts for reusable systems, decisions, probability, assets, super-event research, localisation, spreadsheet alignment, and final audit. Record the exact blocker when a required route is unavailable. Source-only review is not equivalent evidence.
+Use required HOI4 MCP event, map, and probability routes, plus other routes when their surface requires them. Spawn project subagents with `fork_turns="none"` and complete prompts for reusable systems, decisions, probability, assets, super-event research, localisation, spreadsheet alignment, and final audit. Record the exact blocker when a required route is unavailable. Source-only review is not equivalent evidence.
 
 Run every scenario and acceptance item in Part 10, the tuning matrix, and the AI prompt. Keep iterating until the full package is satisfied. Do not claim completion because the visible impact works. Completion includes gameplay, AI, decisions, assets, audio, logs, achievements, docs, catalog, audits, transfer rules, and cleanup. Report every simplification, omission, fallback, placeholder, unresolved audit, and blocked asset. If none exist, say so with concrete task-specific evidence.

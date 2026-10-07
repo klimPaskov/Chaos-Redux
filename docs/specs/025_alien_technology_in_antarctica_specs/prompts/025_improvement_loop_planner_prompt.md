@@ -1,6 +1,6 @@
 # Event 025 improvement-loop planner prompt
 
-Spawn `chaosx_improvement_loop_planner` with `fork_context=false` before implementation begins or before the source package is promoted as final design.
+Spawn `chaosx_improvement_loop_planner` with `fork_turns="none"` before implementation begins or before the source package is promoted as final design.
 
 Read every file under `docs/specs/025_alien_technology_in_antarctica_specs/`, the source reading ledger, the parent improvement review, live relevant Event 016 and Event 036 sources, and any current Event 025 implementation.
 

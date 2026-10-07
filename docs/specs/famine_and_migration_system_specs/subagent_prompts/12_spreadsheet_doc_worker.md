@@ -1,6 +1,6 @@
 # Prompt for `chaosx_spreadsheet_doc_worker`
 
-Spawn with `fork_context=false` after implementation, localisation, and permanent docs are final.
+Spawn with no inherited thread context (Codex `fork_turns="none"`; other runtimes follow the [subagent skill](../../../../.agents/skills/chaos-redux-subagents/SKILL.md)) after implementation, localisation, and permanent docs are final.
 
 Repository root: `<MOD_ROOT>`.
 
@@ -31,7 +31,8 @@ Priority rows include:
 - Event 149 Immigrations
 - relevant cluster and scenario rows where behavior changed
 
-Event 149 must describe its retired or shared-system adapter role. It must not retain a flat random population-drain description.
+Event 149 must describe its recorded retired role.
+Do not reopen the original matrix's adapter alternative without a new accepted decision. It must not retain a flat random population-drain description.
 
 Preserve workbook structure, formatting, formulas, filters, and validation.
 

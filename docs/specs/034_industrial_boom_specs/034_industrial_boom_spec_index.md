@@ -12,6 +12,10 @@
 
 ## Design promise
 
+The numbered parts and handoff matrices are the canonical planning design; the research, source ledger, and manual review preserve historical evidence.
+Package approval labels have no independent attributable acceptance record in the material reviewed here, so their acceptance basis remains `unresolved` under [AGENTS.md](../../../AGENTS.md).
+Current workflow follows [the subagent skill](../../../.agents/skills/chaos-redux-subagents/SKILL.md), and dated cross-checks must not substitute for current source and MCP evidence.
+
 Industrial Boom gives one major or player-controlled country an economic acceleration strong enough to alter its production plan immediately. The player may exploit that acceleration, consolidate it into lasting development, or push it into collapse. The event is managed through one public value, `Overheating`, a compact decision category, a small set of state projects, and a controlled-landing objective. Failure hands the same country into Event 35 through one shared depression crisis package. The boom remains repeatable without becoming an uncapped source of permanent factories or building slots.
 
 ## Specification files
@@ -56,5 +60,9 @@ Industrial Boom gives one major or player-controlled country an economic acceler
 - `034_industrial_boom_goal_prompt.md`
 
 ## Presentation choice
+
+Presentation conflict (`unresolved`): Part 9 and the asset prompt request a meter alongside category pictures, while [the current decision skill](../../../.agents/skills/chaos-redux-decisions-missions/SKILL.md#decision-category-presentation-hierarchy) excludes category pictures when meters or custom controls are present.
+The parent must record either a simple category with basic formatted values and an eligible picture, or a reviewed meter/inlay surface without the additional category picture.
+Keep both original design requirements visible until that decision is recorded; do not produce both consumers by default.
 
 The main mechanic uses the ordinary decision interface with a strong static category picture, one Overheating meter or equivalent compact progress display, a trend indicator, and the next threshold. A separate scripted GUI is rejected at planning stage because the mechanic has one public value and at most five primary actions. The implementation agent should escalate to a dedicated event-owned window only when direct inspection proves that the normal category cannot present the meter and state selector clearly. Such a change requires a recorded design exception and the event UI workflow.

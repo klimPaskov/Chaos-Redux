@@ -1,6 +1,6 @@
 # Prompt for `chaosx_improvement_loop_planner`
 
-Spawn with `fork_context=false` after the main implementation and completion audit findings exist.
+Spawn with `fork_turns="none"` (Codex) after the main implementation and completion audit findings exist.
 
 Read `AGENTS.md`, `chaos-redux-improvement-loop`, `chaos-redux-event-planning`, `chaos-redux-events`, `chaos-redux-subagents`, the complete Event 53 specification, implementation state, adapter ledger, asset and localisation handoffs, probability audit, and completion audit.
 

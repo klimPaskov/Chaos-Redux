@@ -10,7 +10,7 @@
 
 The connected GitHub repository was used because the local mod root described in the project files is a Windows path outside this execution environment.
 
-## Current Event 52 source
+## Event 52 source at the inspected commit
 
 The repository contains:
 
@@ -25,7 +25,7 @@ Event 52 is already registered in `global.repeatable_events`.
 
 ## Legacy behavior that must be replaced
 
-The current chain contains two events.
+The inspected historical chain contains two events.
 
 `chaosx.nr52.1` is a hidden target selector. Its current candidate condition mixes major, human-control, and war checks in a broad structure.
 

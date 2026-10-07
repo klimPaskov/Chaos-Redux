@@ -146,7 +146,7 @@ A missing MCP route remains an explicit validation blocker for that surface.
 
 ## Required subagent handoffs during implementation
 
-Use project subagents with `fork_context=false` when the implementation environment exposes them.
+Use project subagents with `fork_turns="none"` when the implementation environment exposes them.
 
 Required or likely handoffs are:
 

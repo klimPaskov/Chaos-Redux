@@ -1,6 +1,7 @@
 # Original source-package manifest
 
-Status: historical packaging ledger. The byte counts and SHA-256 values below describe the original 33-file source package and are intentionally not presented as current checksums after implementation reconciliation. Final gameplay authority is `407b9a05`, balance remains frozen at `1c87d923`, and current runtime hashes are recorded in `handoffs/documentation_state.md` and the holistic completion audit.
+Status: historical packaging ledger. The byte counts and SHA-256 values below describe the original 33-file source package and are intentionally not presented as current checksums after implementation reconciliation. The historical reconciliation records `407b9a05` gameplay and `1c87d923` balance; its dated hashes are retained in `handoffs/documentation_state.md` and the owner completion audit.
+Those records do not certify the October working tree or current workbook status.
 
 - Event: 011 Secret Alliance
 - Package type: source specification and implementation handoff

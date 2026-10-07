@@ -83,7 +83,9 @@ When Union Unmade fires, all ordinary and internal Soviet republics must be rele
 
 Older asset notes allowed reuse when assets survived prior implementation. The final rule is reuse only if suitable. Reuse existing assets when they are valid, correctly sized, correctly wired, documented, and visually appropriate for the exact route identity. Every focus must have a unique icon assignment. Do not reuse one generic icon across many focuses unless the icon is intentionally part of a staged visual family and the variants are distinct enough to read as separate focuses.
 
-Historical flags, real historical symbols, and real leader portraits must be sourced. Fictional, symbolic, high-chaos, council, factory, or cult assets may be generated.
+Historical flags, real historical symbols, and real leader portraits require attributed source evidence.
+Current production follows [chaos-redux-event-assets](../../../.agents/skills/chaos-redux-event-assets/SKILL.md) and the specialist ownership in Part 7.
+A symbolic, high-chaos, council, factory, or cult label does not independently authorize a generated portrait for a grounded person or institution.
 
 ### Remove-idea tooltip spam
 

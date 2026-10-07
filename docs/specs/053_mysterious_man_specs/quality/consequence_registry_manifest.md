@@ -1,6 +1,7 @@
 # Event 53 Consequence Registry Manifest
 
-This manifest defines every accepted Event 53 package ballot. A package enters the live pool only after its validity trigger, apply adapter, receipt contract, attribution path, and cleanup path are implemented.
+This manifest defines the Event 53 design registry.
+Readiness labels record the original planning dependencies, not current adapter validation; apply the README acceptance boundary and inspect current owner contracts before activating a row. A package enters the live pool only after its validity trigger, apply adapter, receipt contract, attribution path, and cleanup path are implemented.
 
 Every valid live row appears exactly once in the pool.
 

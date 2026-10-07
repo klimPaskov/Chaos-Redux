@@ -1,5 +1,8 @@
 # Event 40 Full Implementation Prompt
 
+Read the [package entry point](../README.md) for design authority and unresolved acceptance before executing this implementation prompt.
+Use existing user authorization and recorded parent acceptance; imported status labels alone do not approve expansion.
+
 Implement Chaos Redux Event 40, Lawrence of Arabia, from the complete accepted specification pack under:
 
 `docs/specs/040_lawrence_of_arabia_specs/`
@@ -247,7 +250,9 @@ Implement:
 
 Run the asset prompt through the named asset workers.
 
-Grounded Lawrence portrait rules are strict. Source-placeholder mode is accepted. Do not generate or reconstruct his identity.
+Follow the [portrait owner skill](../../../../.agents/skills/chaos-redux-event-assets/SKILL.md#country-leader-commander-operative-and-named-officeholder-portraits).
+A sourced Lawrence placeholder remains explicitly pending until the user supplies its HOI4-style replacement.
+Do not generate or reconstruct his identity.
 
 No required asset may remain an unreported placeholder.
 
@@ -317,6 +322,12 @@ The parent retains final integration and completion responsibility.
 10. Align localisation, docs, Event Details, and workbook.
 11. Run probability, focus, decision, country, localisation, and completion audits.
 12. Validate every named acceptance scenario.
+
+## Improvement-loop closure
+
+Run `chaosx_improvement_loop_planner` near completion under the [planning owner skill](../../../../.agents/skills/chaos-redux-event-planning/SKILL.md#mandatory-near-completion-improvement-loop-pass).
+The imported parent-authored review is historical evidence; it does not establish that the required planner ran.
+Resolve its addendum or record its closure before completion.
 
 ## Completion standard
 

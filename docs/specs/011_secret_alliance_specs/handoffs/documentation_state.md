@@ -1,6 +1,10 @@
 # Event 011 documentation state
 
-## Current source-of-truth map
+Disposition: historical reconciliation at the named static freeze.
+The hashes, lifecycle findings, asset paths, and `Implemented` workbook cells below are dated evidence, not a refreshed catalog or current-source audit.
+Use [the implementation overview](../../../events/011_secret_alliance/overview.md), owner decisions, and [the catalog status contract](../../../../.agents/skills/chaos-redux-events/SKILL.md) before new status or completion claims.
+
+## Recorded source-of-truth map at the static freeze
 
 | Area | Current source |
 | --- | --- |
@@ -43,7 +47,7 @@ Early working labels are no longer current localisation authority. Stable identi
 | Achievement localisation | `6EE16E2B` |
 | Scripted GUI | `C07907E2` |
 
-## Current lifecycle notes
+## Recorded lifecycle notes at the static freeze
 
 - Automatic Event Log evolution and reveal history is stored on the normal target only. Scenario, forced, debug, and AI-test origins do not create that history.
 - Pending invitation, sponsor, `.4`, and `.5` content is bound to its exact target and phase. Counted `.50` delayed-call and `.51` through `.53` commitment callbacks plus pending `.190`, `.201`, and `.202` state must drain before automatic or scenario relaunch. Annexation releases a delayed-call owner's pending slot.

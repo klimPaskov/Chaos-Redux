@@ -1,5 +1,10 @@
 # Source Reading Ledger
 
+Disposition: retained historical planning evidence.
+The source inventory, environment failures, manual reviews, and validation claims below describe the original planning pass.
+They do not establish current tool health, independent specialist execution, design approval, or validation of the edited checkout.
+Use the package README for current authority and workflow.
+
 All supplied project sources were inspected before the final specification package was written. Every readable text file was read in full. The supplied ZIP archive was inspected, extracted, and all twenty contained subagent TOML files were read in full.
 
 | File | Bytes | Lines or entries | SHA-256 | Read status |

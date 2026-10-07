@@ -1,8 +1,9 @@
 # New Zealand Lifeboat State asset brief
 
-Status: ready for reviewed generated production after symbol research.
+Disposition: unresolved for portrait source mode; non-portrait directions remain a production brief subject to recorded acceptance and current consumer/reference review.
 
-The historical and cultural reference ledger is `docs/assets/fallout_world_end/nzl_lifeboat_state/source_references/nzl_lifeboat_symbol_manifest.json`. Every flag prompt must remain constrained by that ledger.
+The historical and cultural reference ledger is `docs/assets/fallout_world_end/nzl_lifeboat_state/source_references/nzl_lifeboat_symbol_manifest.json`. The named ledger is absent from this checkout at the documentation audit.
+Flag production is blocked on recovering or verifying attributed symbol research; do not invent its findings or treat this path as an accessible receipt.
 
 ## Reference sets
 
@@ -31,7 +32,10 @@ No flag may use an exact official New Zealand ensign, Union Jack, protected huma
 
 ## Character art
 
-Create six separate fictional source portraits. The leader outputs are `156x210`. Advisor outputs are designed independently at `65x67` and are not reductions of leader portraits.
+Route all six required portrait slots to `chaosx_portrait_creator` under the [current portrait source-mode gate](../../../.agents/skills/chaos-redux-event-assets/SKILL.md#portrait-source-mode-gate).
+The New Zealand successor is a grounded identity, so invented working names do not authorize generated faces or a fabricated parliament.
+Preserve the role/composition directions below while resolving authentic source identities and institutional material; no replacement source is selected by this audit.
+Leader textures use `156x210`; advisor cards use the portrait skill’s independent source and dossier workflow after source classification and acceptance are resolved.
 
 | Identifier | Asset type | Direction |
 | --- | --- | --- |
@@ -107,6 +111,7 @@ Create three completed `64x64` icons plus grey and not-eligible variants. Use th
 
 ## Package evidence
 
-The final package requires source PNGs, processed PNGs, runtime DDS or TGA files, prompt records, a manifest, contact sheets, flag size comparisons, portrait comparisons, and a `.gfx` handoff. Final `.gfx` edits remain parent-owned.
+The final package requires source PNGs, processed PNGs, runtime DDS or TGA files, prompt records, a manifest, contact sheets, flag size comparisons, portrait comparisons, and a `.gfx` handoff. Final non-portrait `.gfx` edits remain parent-owned; the portrait creator owns its narrow portrait-specific wiring.
+Native transparency, constrained flat flags, achievement triplets, source archives, and review follow [chaos-redux-event-assets](../../../.agents/skills/chaos-redux-event-assets/SKILL.md).
 
 No animation is required for this pilot. The four values change slowly and are presented as text bands. Static focus, decision, idea, achievement, portrait, report, and flag art gives clearer review evidence.

@@ -8,7 +8,7 @@ No design simplifications were made relative to the user's Event 24 brief. The b
 
 ## Capability boundary
 
-The current environment did not expose the project's custom Codex subagent invocation surface or the `hoi4-agent-tools` MCP functions. No subagent, event inspection, probability evaluation, or live HOI4 session was actually run.
+The original planning environment did not expose the project's custom Codex subagent invocation surface or the `hoi4-agent-tools` MCP functions. No subagent, event inspection, probability evaluation, or live HOI4 session was actually run.
 
 The package applies the relevant role contracts manually at the planning level, provides context-complete implementation prompts, defines named probability scenarios, and identifies every later audit that must be executed in the repository. This does not count as MCP or subagent evidence. The implementation agent must run those tools before completion.
 

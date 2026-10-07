@@ -9,7 +9,7 @@ Use these files in that folder:
 `085_ten_plagues_of_egypt_achievement_prompt.md`
 `085_ten_plagues_of_egypt_decision_mission_prompt.md`
 
-Follow AGENTS.md and the event, planning, decisions/missions, subagents, assets, super-events, scripted-GUI, MTTH, improvement-loop, and debug skills. Complete the required offline wiki, vanilla, and current owner-source reads; planning excerpts are not engine proof.
+Follow AGENTS.md and the event, planning, decisions/missions, subagents, assets, super-events, scripted-GUI, MTTH, and improvement-loop skills. Complete the required offline wiki, vanilla, and current owner-source reads; planning excerpts are not engine proof.
 
 Replace the conflicting old XP identity at 085 without renumbering unrelated events. Keep Major fire-once, Chaos level 3, Natural Disasters/Severe only. Implement one global root, the ten ordered plagues, real population loss, local manifestations, preparation, mourning, and reconstruction.
 
@@ -19,7 +19,7 @@ Darkness is a real global visual state lasting 72 hours. Passover covers reached
 
 Deaths, Famine, Migration, disease, and Natural Disasters retain their ownership. Settle actual population once, conserve transfers, and prevent manpower gains. Resolve the peaceful disease adapter, cohort metadata, composite Hail/Fire budget, capacity/cargo commitments, and Darkness consumer; Missing interfaces remain blockers.
 
-Implement the three Evolutions, Exodus, four scenario intensities, proposed bounded renewal, and separately gated endless branch. Preserve the strict Chaos >1000 condition, full-cycle escape, fixed responsibility weights, and lasting damage. Ending 085 cannot clear another terminal threat or shared history.
+Implement the three Evolutions, Exodus, four reserved SCN-032/raw32 intensities, proposed bounded renewal, and separately gated endless branch. Preserve the strict Chaos >1000 condition, full-cycle escape, fixed responsibility weights, and lasting damage. Ending 085 cannot clear another terminal threat or shared history.
 
 Implement every Chaos source, zero-source, reversal, scale, and anti-farming guard in Part 13 without duplicating shared deaths or physical consequences. Complete twelve achievements, 36 achievement states, all 93 known static outputs, and any additional proven Darkness assets. Research all four super-events' final text and real music, with text and recording rights. Unresearched copy and placeholder audio remain blocked.
 

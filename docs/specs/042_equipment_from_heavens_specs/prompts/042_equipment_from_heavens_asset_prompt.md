@@ -19,6 +19,10 @@ Inspect these reference families before production:
 
 ## Report-event image requirements
 
+Preserve the accepted discovery-plus-summary allocation in Part 4.
+All six scene roles remain required, but art production does not authorize per-visit popups.
+
+
 Create six distinct report-event scenes.
 
 ### 1. Crate fields

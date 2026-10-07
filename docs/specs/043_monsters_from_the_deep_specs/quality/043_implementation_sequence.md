@@ -9,7 +9,7 @@
 5. Resolve seventeen stable tags.
 6. Audit state pools and spawn provinces.
 7. Generate saltwater coast and inland-depth registries.
-8. Lock scenario and world-end numeric IDs.
+8. Use reserved manual scenario SCN-022 / raw 22 and separate world-end ID 17 from the shared identifier registry; preserve incumbents.
 9. Write the first source-to-runtime crosswalk.
 
 Exit gate: tags, state pools, numeric IDs, and map registries are proven.
@@ -106,7 +106,7 @@ Exit gate: every terminal transaction row has one disposition and rollback works
 
 ## Phase 8: Scenario and aftermath
 
-1. Register SCN-015.
+1. Register the reserved SCN-022 / raw 22 only after the scenario content meets implementation acceptance.
 2. Implement two types.
 3. Implement four intensities.
 4. Implement terminal-toggle behavior.

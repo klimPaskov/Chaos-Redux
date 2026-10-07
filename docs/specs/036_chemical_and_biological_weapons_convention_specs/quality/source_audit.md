@@ -1,5 +1,9 @@
 # Source audit
 
+Historical evidence: source names, hashes, repository observations, and tool/runtime limitations below belong to the original planning pass.
+They do not establish current local file availability, current service health, implementation status, or design approval.
+Use the package entry point and current owner skills for active guidance.
+
 ## Audit result
 
 Every project source file supplied with this task was read in full before the specification package was drafted.

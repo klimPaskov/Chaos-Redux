@@ -62,15 +62,17 @@ The package preserves the user-defined premise that Soviet scientists secretly c
 | `023_sov_nuclear_bombs_coding_prompt.md` | Implementation prompt for the complete event rework |
 | `023_sov_nuclear_bombs_goal_prompt.md` | Repository goal prompt, kept within the required character limit |
 
-## Extraction and use
+## Use
 
-Extract the top-level folder directly into `docs/specs/` so the resulting path is `docs/specs/023_sov_nuclear_bombs_specs/`.
+The package is installed at `docs/specs/023_sov_nuclear_bombs_specs/`.
+Resume from current Event 23 docs and [the 6 October takeover status](../../plans/023_sov_nuclear_bombs_plans/takeover_status_2026-10-06.md) before assigning implementation or production.
+Full-design prompts are requirements, not permission to duplicate completed work.
 
-The implementation agent must inspect the current repository, the existing Event 23 baseline, the installed vanilla nuclear systems, the offline wiki snapshot, current event-log and evolution helpers, the Event 5 implementation, shared nuclear consequence APIs, and current super-event registry before editing. The package defines accepted design. It does not claim that current file identifiers, event slots, sprite paths, or helper names have already been verified in the live repository.
+The implementation agent must inspect the current repository, the existing Event 23 baseline, the installed vanilla nuclear systems, the offline wiki snapshot, current event-log and evolution helpers, the Event 5 implementation, shared nuclear consequence APIs, and current super-event registry before editing. Accepted claims require an explicit user decision or parent acceptance within scope under [AGENTS.md](../../../AGENTS.md#specs-and-plans). It does not claim that current file identifiers, event slots, sprite paths, or helper names have already been verified in the live repository.
 
 ## Package verification
 
 - Markdown files in package: 23.
-- Goal prompt length: 3,912 characters.
+- Measure goal prompt size after edits rather than reusing the archive receipt.
 - No final implementation files, binary assets, or temporary continuation prompts are included.
 - The source and audit report records every provided file read, external research used, source discrepancy, tooling limit, and simplification statement.

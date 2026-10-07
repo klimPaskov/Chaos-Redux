@@ -1,5 +1,9 @@
 # Triggerable Boxer scenarios
 
+Use one reserved entry, `SCN-029` / raw `29`, from [the shared identifier registry](../shared_identifier_registry.md).
+The four types below share this entry and do not consume separate scenario IDs.
+This allocation reserves an identifier without approving broader design or registering runtime content.
+
 The shared scenario window provides a direct way to start a coherent Boxer challenge.
 It does not wait for the random timer, a particular Chaos level, a normal evolution delay, or an unused natural fire-once flag.
 The launch is blocked only when the requested setup is structurally impossible or conflicts with an active terminal state.

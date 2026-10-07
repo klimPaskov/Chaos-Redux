@@ -1,14 +1,18 @@
 # 097 Collaboration: full specification and planning handoff
 
-**Main design:** [Open the specification index](docs/specs/097_collaboration_specs/097_collaboration_spec_index.md).
+**Current package entry:** [Read the authority and conflict table](../README.md).
+**Imported variant:** [Open the ten-part specification index](../097_collaboration_spec_index.md).
+This metadata describes the originally supplied combined archive, whose flat design conflicts with the nested package already in the repository.
 
 The ten numbered parts contain approximately **13,598 words** of event design. They cover the universal native grant, repeats and evolutions, early administration, Fifth Column activity, native governments, connected events, AI and Chaos, presentation, six achievements, and behavior acceptance.
 
-The source folder also contains separate coding, asset, achievement, and **3,973-character goal prompts**.
+The imported source folder contains separate coding, asset, achievement and compact goal prompts.
 
-## Install location
+## Historical archive layout
 
-Extract this combined handoff at the repository root. It retains the canonical `docs/specs/097_collaboration_specs/` source-design path and `docs/plans/097_collaboration_plans/` audit and implementation-handoff path. This combined package includes blocked reports and future subagent tasks as well as the source spec, so it preserves both repository destinations rather than mixing technical audits into the numbered design parts.
+The combined archive originally used repository-root-relative `docs/specs/097_collaboration_specs/` and `docs/plans/097_collaboration_plans/` destinations.
+This README was moved into `package_metadata/` during import, so its links are relative to that current location.
+`PACKAGE_MANIFEST.json` is the original supplied archive receipt, and its paths, bytes and hashes describe that archive rather than current local membership.
 
 Only documentation, provenance, planned manifests, and a Python design-reference model are included. No gameplay scripts, runtime images, or edits to original project sources are included. Review any existing same-name documentation before merging.
 
@@ -20,7 +24,7 @@ All 46 supplied text files were fully read before drafting, including all 20 sub
 
 The Python reference model finished with **44 passing tests**, including 500 randomized clamp cases in one test. These are design arithmetic checks, not native-engine proof. The initial one-failure run and its correction are preserved.
 
-[Read the detailed reading report](docs/plans/097_collaboration_plans/097_collaboration_reading_report.md) and [native capability gates](docs/plans/097_collaboration_plans/097_collaboration_native_capability_matrix.md) before treating the package as an implementation assignment.
+[Read the detailed reading report](../../../plans/097_collaboration_plans/097_collaboration_reading_report.md) and [native capability gates](../../../plans/097_collaboration_plans/097_collaboration_native_capability_matrix.md) before treating the imported variant as an implementation assignment.
 
 ## Package map
 

@@ -1,6 +1,7 @@
 # Event 013 Natural Disasters planning package
 
-This package contains the expanded Event 013 Natural Disasters source design. It combines the first full source-spec pass, the second continuation pass, and a closure-ready follow-up that does not add new disaster mechanics. The third pass adds implementation-readiness support so the next agent can start coding from the closure handoff instead of reopening broad planning.
+This package contains the expanded Event 013 Natural Disasters source design. It combines the first full source-spec pass, the second continuation pass, and a closure-ready follow-up that does not add new disaster mechanics. The readiness material records the original coding-pass handoff.
+For continuation, read [the disposition map](docs_alignment/013_source_of_truth_and_disposition_map.md), [the implementation resume prompt](prompts/natural_disasters_implementation_resume_prompt.md), and the dated Event 013 plan handoffs referenced there before choosing new work.
 
 ## Source-spec parts
 
@@ -37,6 +38,9 @@ This package contains the expanded Event 013 Natural Disasters source design. It
 
 The prompt folder includes implementation, asset, super-event, decision and mission, achievement, goal, subagent routing, and implementation resume prompts. The old continuation prompt is superseded because the continuation work has been completed in this package.
 
-## Reading and tooling honesty
+## Historical planning environment
 
-The package was created from the uploaded project files and the existing expanded package in this environment. I did not inspect a live Chaos Redux repository checkout, offline `paradox_wiki/`, vanilla HOI4 files, or execute project subagents. The source reading logs state that limitation directly.
+The original planning run used uploaded project files and did not inspect a live checkout, offline wiki, vanilla files, or execute project subagents.
+Those source-reading limits are historical intake evidence.
+Discover current tools and routes through [the routing owner skill](../../../.agents/skills/chaos-redux-subagents/SKILL.md).
+The linked implementation receipts retain their own dates, acceptance bases, and validation limits.

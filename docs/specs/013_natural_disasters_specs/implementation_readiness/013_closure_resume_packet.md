@@ -1,5 +1,8 @@
 # Event 013 Natural Disasters, closure resume packet
 
+> Superseded planning sequence: [the implementation resume prompt](../prompts/natural_disasters_implementation_resume_prompt.md) and [the disposition map](../docs_alignment/013_source_of_truth_and_disposition_map.md) replace this original fresh-build instruction.
+> Preserve the design traceability below and choose continuation work from the dated implementation handoffs.
+
 This packet continues from `research/004_final_improvement_loop_anti_bloat_closure.md`. It does not add new disaster concepts, new countries, new focus trees, or new world-end branches. It converts the closure handoff into a practical source-of-truth and implementation-readiness map for the next coding pass.
 
 ## Current source of truth

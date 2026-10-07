@@ -46,7 +46,7 @@ Final DDS files must be placed in the event-scoped gameplay folders from the ass
 
 ## Event pictures
 
-Create seven generated period-documentary report images at source resolution, then process each through `tools/process_report_event_image.py` to 210x176 and convert to DDS:
+Create seven generated period-documentary report images at source resolution, then apply the report-card processing in [chaos-redux-event-assets](../../../../.agents/skills/chaos-redux-event-assets/SKILL.md) to 210x176 and convert to DDS:
 
 1. `report_event_first_pattern`
 2. `report_event_missing_courier`

@@ -1,5 +1,10 @@
 # Subagent Execution Log
 
+Disposition: retained historical planning evidence.
+The source inventory, environment failures, manual reviews, and validation claims below describe the original planning pass.
+They do not establish current tool health, independent specialist execution, design approval, or validation of the edited checkout.
+Use the package README for current authority and workflow.
+
 ## Supplied subagent definitions
 
 All twenty supplied subagent TOML definitions were extracted and read in full.

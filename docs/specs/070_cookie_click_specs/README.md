@@ -77,7 +77,10 @@ Four governing methods change how the Empire uses territory.
 Cookie subjects are explicitly exempt from external-neighbor aggression while they remain members of its domain.
 This interpretation permits the requested subject route without changing its aggression toward other neighbors.
 
-## Reading and execution status
+## Original planning reading and execution status
+
+The environment and capability statements below describe the supplied planning run.
+Use [current AGENTS.md](../../../AGENTS.md) and [the subagent skill](../../../.agents/skills/chaos-redux-subagents/SKILL.md) for current capability discovery and ownership.
 
 All 43 supplied text sources were read in full, including the planning skill, the other supplied skills, project documents, catalog snapshots, config, twenty subagent profiles and the brief.
 One additional referenced MTTH skill was retrieved from the connected repository and read in full.
@@ -112,3 +115,9 @@ Accepted later changes must be promoted back into these specifications.
 The package is a detailed design and implementation handoff.
 The feature is not complete until its runtime files, assets and evidence meet every mapped requirement.
 Do not use a static fallback, a generic replacement mechanic or an unrun test as proof of completion.
+
+## Reserved scenario identifier
+
+Cookie Monster Uprising is reserved as `SCN-030`, raw integer `30`, in the [shared identifier registry](../shared_identifier_registry.md).
+Its four presets share that entry.
+The user-authorized reservation does not approve broader design, implement content or update the workbook.

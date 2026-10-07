@@ -63,11 +63,7 @@ Initial requirements:
 
 Verify actual local unit and parent-system identifiers before writing call sites.
 
-Keep all Event 19-specific registry tables and provider callbacks in the sole
-consolidated Event 19 registry code file. Fold registry constants and triggers
-into the existing Event 19 constants and trigger files, and keep startup calls
-in existing parent on-actions. Do not create family-specific or additional
-Event 19 registry files.
+Keep all Event 19-specific registry tables and provider callbacks in the sole consolidated Event 19 registry code file. Fold registry constants and triggers into the existing Event 19 constants and trigger files, and keep startup calls in existing parent on-actions. Do not create family-specific or additional Event 19 registry files.
 
 ### Derivative countries
 
@@ -120,7 +116,7 @@ Update Event Log names and selectors, evolution catalog, Event Details, scenario
 
 ## Subagents and review
 
-Use project custom subagents with `fork_context=false` and explicit bounded prompts.
+Use project custom subagents with `fork_turns="none"` and explicit bounded prompts.
 
 At minimum, use the scripted-system architect, decision auditor, country auditor, focus auditor, localisation auditor, asset workers, spreadsheet worker, mandatory improvement-loop planner, documentation curator when needed, and final event completion auditor.
 

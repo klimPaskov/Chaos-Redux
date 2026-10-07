@@ -56,7 +56,10 @@ The opening government is the Lifeboat Parliament, represented by a fictional in
 | Storm-port engineer | `NZL_fallout_storm_port_engineer` | construction and repair advisor | shared |
 | Radio service coordinator | `NZL_fallout_radio_service_coordinator` | intelligence and sea-lane advisor | shared |
 
-All six characters are fictional and require generated, identity-stable portraits. The institutional portrait should show a real group of people in a parliamentary or harbor meeting setting. It must not be a people-free emblem presented as a leader.
+The six working character concepts and the collective parliament composition are retained.
+Their earlier generated-portrait direction conflicts with the current grounded-identity source gate because this is a New Zealand successor.
+Portrait source mode is unresolved: `chaosx_portrait_creator` must establish authentic attributed people or institutional material under [chaos-redux-event-assets](../../../.agents/skills/chaos-redux-event-assets/SKILL.md#portrait-source-mode-gate).
+This audit neither chooses replacement identities nor authorizes an invented grounded face or institution.
 
 The base government is democratic with emergency elections suspended until the domestic chain resolves. The humanitarian route restores scheduled elections and installs the relief speaker. The isolation route retains an emergency assembly under the harbor constable, reduces political openness, and accepts a trust cost in exchange for security.
 

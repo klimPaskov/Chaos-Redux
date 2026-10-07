@@ -152,4 +152,4 @@ The coding agent should still use the project routes that were unavailable here.
 - `chaosx_spreadsheet_doc_worker` after final player-facing wording exists
 - `chaosx_event_completion_auditor` before completion
 
-All project subagents must use `fork_context=false` and context-complete prompts.
+All project subagents must use `fork_turns="none"` and context-complete prompts.

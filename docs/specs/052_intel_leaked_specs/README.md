@@ -1,5 +1,12 @@
 # Event 052 Intel Leaked Specification Package
 
+## Authority and current workflow
+
+The [repository context](research/052_intel_leaked_repository_context.md) identifies the 2026-08-27 source commit. Original process receipts are historical evidence.
+Use current [planning](../../../.agents/skills/chaos-redux-event-planning/SKILL.md), [events](../../../.agents/skills/chaos-redux-events/SKILL.md), [assets](../../../.agents/skills/chaos-redux-event-assets/SKILL.md), and [routing](../../../.agents/skills/chaos-redux-subagents/SKILL.md) guidance.
+Unattributed design remains `unresolved`; rediscover current tools and source state before a separately authorized implementation task.
+
+
 This package is the source-design handoff for Chaos Redux Event 052, **Intel Leaked**.
 
 The event is a Minor Repeatable intelligence crisis available from Chaos level 1. Each ordinary firing compromises one valid player-controlled country or one valid major power. Foreign governments receive a temporary intelligence windfall, while the target races to change codes, withdraw endangered personnel, rewrite plans, rebuild networks, and decide whether to turn the breach into a deception channel.
@@ -8,19 +15,9 @@ The design keeps one persistent player-facing value, **Exposure**. Exposure meas
 
 Event 052 belongs to the Intelligence cluster as its low-severity repeatable member. Event 039 remains the cluster's medium-severity fire-once leadership and murder crisis. The two events can interact through bounded evidence and target-state hooks without sharing identities, escalation routes, or terminal content.
 
-## Intended extraction location
+## Repository location
 
-Extract the top-level `052_intel_leaked_specs/` folder into:
-
-```text
-docs/specs/
-```
-
-The resulting source folder should be:
-
-```text
-docs/specs/052_intel_leaked_specs/
-```
+The source package lives at `docs/specs/052_intel_leaked_specs/`.
 
 ## Recommended reading order
 
@@ -41,9 +38,9 @@ The design uses an ordinary decision category with a static category picture, ph
 
 The source specification gives direction for final player-facing text. Working labels identify mechanics, actions, missions, variants, and achievements. They are not finished localisation and should be rewritten during implementation in the established Chaos Redux voice.
 
-The existing `chaosx.nr52` namespace and Event 052 identity remain stable. The current repository source contains a legacy two-event implementation that gives every country permanent maximum base intelligence against the target. The replacement design requires temporary, scaled, reversible exposure with recovery, cleanup, decisions, deception, and evolution behavior.
+The existing `chaosx.nr52` namespace and Event 052 identity remain stable. The original repository-reading record describes a legacy two-event implementation that gives every country permanent maximum base intelligence against the target. The replacement design requires temporary, scaled, reversible exposure with recovery, cleanup, decisions, deception, and evolution behavior.
 
-## Source and process status
+## Original source and process record
 
 Every supplied project file was read fully, including all Markdown files, the TOML configuration, all three CSV catalog exports, the ZIP archive, and all twenty extracted subagent TOML definitions. `source_inventory.md` records byte counts, line counts, SHA-256 hashes, and reading status.
 

@@ -1,5 +1,7 @@
 # Event 061 subagent review matrix
 
+Historical manual role review; implementation routing follows the current package README and subagent skill.
+
 ## Runtime statement
 
 The active planning environment did not expose the project subagent spawn command.
@@ -25,7 +27,7 @@ The matrix does not claim that a runtime subagent invocation occurred.
 | `chaosx_spreadsheet_doc_worker` | High | Identified stale Event 61 row, cluster duplicate, required fields, and export-only CSV rule | Edit authoritative XLSX, export CSVs, and review generated diff |
 | `chaosx_improvement_loop_planner` | High | Manual near-completion design pass added the state ledger, derived Readiness, phased missions, repeat merge, extreme-law escape, AI stances, and anti-exploit coverage | Run once after a meaningful implementation tranche and return a bounded addendum |
 | `chaosx_event_completion_auditor` | High | Built a source acceptance matrix and completion boundary | Verify every implemented requirement with evidence before completion claim |
-| `chaosx_event_ui_worker` | Medium | Selected a normal decision category and static picture instead of a bespoke mechanic window | Audit actual category, Event Details, cluster details, crop, scrolling, hit boxes, and supported resolutions if defects exist |
+| `chaosx_event_ui_worker` | Conditional on accepted dedicated-window design | Selected a normal decision category and static picture | Current ordinary and shared surfaces remain parent-owned; route only an accepted dedicated Event 61 window under the current routing gate |
 | `chaosx_country_package_auditor` | Low but conditional | Defined release, annexation, subject independence, and state-ledger inheritance rules | Audit only when implementation touches new or restored country packages |
 | `chaosx_focus_tree_auditor` | Low but conditional | Confirmed Event 61 has no event-owned focus-tree requirement in the accepted design | Audit narrow hooks only if another country's focus tree is changed to integrate Event 61 |
 | `chaosx_asset_source_researcher` | Low but conditional | Chose generated fictional global scenes, so archival sourcing is not the default route | Use only if an approved asset changes to real historical material |

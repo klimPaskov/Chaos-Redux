@@ -1,6 +1,6 @@
 # Event 059 AI architecture subagent prompt
 
-Spawn `chaosx_scripted_system_architect` with `fork_context=false` after the parent has read the full Event 059 spec pack and inspected the actual repository.
+Spawn `chaosx_scripted_system_architect` with `fork_turns="none"` in Codex after the parent has read the full Event 059 spec pack and inspected the actual repository.
 
 ## Task
 

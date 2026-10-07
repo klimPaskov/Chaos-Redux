@@ -272,7 +272,9 @@ Before production, inspect the exact installed vanilla mesh and entity used for 
 - death sequence with articulated collapse, impact, and settling
 - any role-specific action only when the runtime consumer exists
 
-Every final skeletal action must retain primary motion from verified Meshy animation or another explicitly user-approved professional source. Transform-only, static aliases, whole-rig rotations, and locally improvised final animation are forbidden.
+Every final skeletal action follows the current [3D model owner skill](../../../.agents/skills/chaos-redux-3d-model-pipeline/SKILL.md), including authorized live Blender authoring when provider output fails or does not cover the model.
+Preserve role-specific motion, deformation review, and export/reimport evidence.
+Transform-only motion, static aliases, whole-rig rotations and unreviewed generated keyframes remain invalid.
 
 ### Required vehicle actions
 

@@ -132,7 +132,7 @@ Complete Rat King coronation, including its triggerable-scenario entry, and Rat 
 
 Produce every asset in the asset prompt with source evidence, processed previews, final DDS or TGA, exact dimensions, manifest, and GFX handoff. Animation requires real source frames, frame sheets, static fallbacks, and preview GIFs.
 
-Implement all fourteen achievements with exact conditions, disqualifiers, tracking, localisation, and icon triplets.
+Implement all thirteen matrix-listed achievements with exact conditions, disqualifiers, tracking, localisation, and icon triplets.
 
 ## AI, balance, and validation
 

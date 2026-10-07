@@ -4,13 +4,15 @@
 
 This is a proposed event specification package, not an implemented mod update.
 The requirement to read every required source fully and use the named project subagents was not met.
-Several supporting files remain partly read or unread, the installed vanilla and Workshop sources were unavailable, and no named subagent or HOI4 MCP validation ran.
+In the original 2026-09-19 planning run, several supporting files remained partly read or unread, installed vanilla and Workshop sources were unavailable, and no named subagent or HOI4 MCP validation ran.
+Discover current tools and local sources through [AGENTS.md](../../../AGENTS.md) and [the current subagent skill](../../../.agents/skills/chaos-redux-subagents/SKILL.md).
 The exact reading and execution record is in [Source review](research/source_review.md).
 
 The full planning skill and several major project sources were read through the end.
 The design preserves the supplied event concept and expands it into a local uprising, a foreign crisis, a possible intervention, and a continuing Chinese political game.
 All new tuning values and route details are proposals awaiting implementation review and balance evidence.
-The current catalog status remains **To Be Reworked**.
+The reviewed catalog snapshot records **To Be Reworked**.
+Read the authoritative workbook during implementation before asserting current status.
 
 ## Package contents
 
@@ -99,3 +101,9 @@ Review reference commit: `879b3007d3b6bf75c726c11635473fccda45c569`.
 Delivery date: 2026-09-19.
 The early discovery calls used the default branch, and subsequent reads used the pinned reference where available.
 Reconcile a newer checkout with this package before implementation.
+
+## Reserved scenario identifier
+
+The [shared identifier registry](../shared_identifier_registry.md) reserves one Boxer challenge entry as `SCN-029`, raw integer `29`.
+Its four types and sixteen intensity profiles share that entry.
+The reservation does not approve broader design or implement content.

@@ -1,9 +1,4 @@
 # Dynamic Major Event Weight Gain Spec
 
-The maintained source spec for this package is:
-
-```text
-docs/specs/dynamic_major_event_weights_specs/specs/dynamic_major_event_weights_spec.md
-```
-
-This forwarding file exists because the implementation prompt refers to this path directly.
+Compatibility forwarder to the [maintained source design](specs/dynamic_major_event_weights_spec.md).
+See the [package README](README.md) for authority and evidence limits.

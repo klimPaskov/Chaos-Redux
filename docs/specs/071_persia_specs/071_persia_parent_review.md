@@ -1,5 +1,9 @@
 # 071 Persia: parent-only planning review
 
+Historical authoring-run record.
+Its environment, file counts and passed-check statements do not certify the edited package or current runtime.
+Current documentation checks are recorded in the repository cleanup handoff for packages 067 through 072.
+
 ## Review scope
 
 This review concerns the authored planning package. It is not an independent subagent review and does not certify a working mod. The reviewer read the supplied brief, all 42 supplied project texts, the authored specification parts, and the rendered planning diagrams. Automated checks cover package structure and selected internal invariants only.

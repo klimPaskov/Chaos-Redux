@@ -62,13 +62,7 @@ The hashes below identify the exact supplied versions used for this planning pac
 
 ## Process limitation
 
-The files were available as supplied `/mnt/data` sources and were fully read in
-the original planning environment. The full local Chaos Redux repository,
-offline Paradox wiki snapshot, and installed vanilla documentation were not
-mounted during that planning pass. Implementation subsequently inspected all
-three local sources as required; the live-source evidence is recorded in
-`review/blockers_and_uncertainty.md` and the dated handoffs under
-`docs/plans/019_infantry_spawn_plans/`.
+The files were available as supplied `/mnt/data` sources and were fully read in the original planning environment. The full local Chaos Redux repository, offline Paradox wiki snapshot, and installed vanilla documentation were not mounted during that planning pass. Implementation subsequently inspected all three local sources as required; the live-source evidence is recorded in `review/blockers_and_uncertainty.md` and the dated handoffs under `docs/plans/019_infantry_spawn_plans/`.
 
 ## Supplementary system skill read
 

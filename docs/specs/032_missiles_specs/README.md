@@ -8,11 +8,15 @@ Extract this package so that the top-level folder becomes:
 
 ## Design status
 
-This package defines the accepted design target for reworking Event 32, Missiles.
+This package defines the planning design target for reworking Event 32, Missiles.
+The numbered parts, system connections, and matrices form the design source.
+Resolve acceptance through an attributable user decision or parent acceptance under [AGENTS.md](../../../AGENTS.md); imported approval labels alone leave the acceptance basis `unresolved`.
+The planning closure and source review remain evidence, with current routing governed by [the subagent skill](../../../.agents/skills/chaos-redux-subagents/SKILL.md).
 
 Event 32 remains a Minor Repeatable global event with no cluster assignment. Its baseline gives every valid existing country one missile technology step, an operational missile reserve, and a usable launch site. Repeat firings deepen national programs without placing a new site on every firing. Five parallel evolution tracks create saturation arsenals, unreliable guidance, special warheads, rogue launch commands, and automatic retaliation.
 
-The design replaces the current legacy implementation, which grants two early rocket technologies and two rocket-site levels to every country in one global loop.
+The planning source review described a legacy implementation that grants two early rocket technologies and two rocket-site levels to every country in one global loop.
+Reinspect current source and required MCP evidence before using that snapshot as migration state.
 
 ## Package map
 

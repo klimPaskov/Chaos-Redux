@@ -4,7 +4,8 @@ A full planning specification for a repeatable political crisis built around a c
 
 ## Start here
 
-Read the numbered design parts in order. They contain approximately 18,176 words of gameplay and presentation specification. For implementation, use the coding prompt and the specialist prompts after reading the source parts. The copy-ready goal prompt is 3,936 characters including its slash command and trailing newline.
+Read the numbered design parts in order, then the coding and specialist prompts.
+The [design decision register](supporting_material/077_design_decision_register.md) separates user direction, author-added proposals, and unresolved evidence.
 
 | Part | Design file |
 |---|---|
@@ -35,13 +36,17 @@ Read the numbered design parts in order. They contain approximately 18,176 words
 
 ## Package organization
 
-Extract this event folder into `docs/specs/`. The resulting source location is `docs/specs/077_parliament_of_fear_specs/`. Numbered specification parts remain the canonical event design. Prompts are separate files and do not become part of the event narrative.
+The installed source location is `docs/specs/077_parliament_of_fear_specs/`.
+Numbered specification parts hold source design; prompts hold implementation instructions.
+Their location does not establish approval of author-added choices.
 
 The `supporting_material/` directory holds the source record, research limits, proposed tuning, asset manifest, validation matrices, and standalone reference checks. These support the design and document its evidence status.
 
-The `implementation_handoff/` directory contains implementation contracts, future subagent work packets, catalog changes, country-outcome checks, and the parent's design review. Move that directory to `docs/plans/077_parliament_of_fear_plans/` for implementation work. Its contents are plans and audit instructions, not completed implementation evidence.
+The `implementation_handoff/` directory retains the original integration contracts, future subagent work packets, proposed catalog changes, country-outcome checks, and the author's design review.
+These are unresolved working templates and authoring history, not completed implementation evidence or independent acceptance.
+Keep these linked originals here; write new implementation plans under `docs/plans/077_parliament_of_fear_plans/` and actual specialist reports under its `subagent_handoffs/` directory.
 
-No original source file, source workbook, CSV export, live gameplay file, or shared project skill was edited.
+The original planning delivery reported no source-workbook, CSV-export, gameplay, or shared-skill edits.
 
 ## Important design decisions
 
@@ -83,9 +88,11 @@ The Great Purge has warnings, bounded waves, and containment opportunities. Perm
 | [Subagent packets](implementation_handoff/077_subagent_handoffs.md) | All 20 role definitions assessed with bounded future assignments |
 | [Parent review](implementation_handoff/077_parent_design_review.md) | Applied design corrections and remaining independent-review gate |
 
-These links are correct inside the delivered archive. After moving the handoff directory into `docs/plans/`, update the local handoff links or follow the new directory directly.
+The links above address the retained original templates.
 
-## Evidence status
+## Original planning delivery: evidence status
+
+The source receipts and package QA describe the original delivery, not this checkout's current bytes or service availability.
 
 All 42 supplied text files were read fully. Required external material was not all available in complete form. The full live repository, installed vanilla references, relevant complete offline wiki pages, actual workbook, and absent local tool resources remain reference gates.
 

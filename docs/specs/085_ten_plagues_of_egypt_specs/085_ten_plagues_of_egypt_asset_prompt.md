@@ -6,7 +6,7 @@ This is a major global event with one event-specific public value, Divine Wrath,
 The current package contains art directions, not finished approved art.
 
 Follow `AGENTS.md`, `chaos-redux-event-assets`, `chaos-redux-subagents`, and the frame-animation skill wherever motion is actually mapped.
-Read the canonical skill-local `assets/vanilla_reference/README.md`, `CATALOG.md`, matching category contact sheets, and owning native consumer definitions.
+Read the canonical skill-local `assets/gfx_references/README.md`, `CATALOG.md`, matching category contact sheets, and owning native consumer definitions.
 Resolve those reference paths relative to `.agents/skills/chaos-redux-event-assets/`.
 Do not use a project-root imitation of that reference library or ship its review PNGs.
 

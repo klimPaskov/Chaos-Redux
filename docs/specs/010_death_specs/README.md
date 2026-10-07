@@ -1,6 +1,15 @@
 # Event 010 Death Planning Package
 
-> Documentation reconciliation, 2026-07-29: this package remains the accepted design and provenance source for Event 010, while [`docs/events/010_death/overview.md`](../../events/010_death/overview.md) and [`event_completion_audit_latest_handoff.md`](../../plans/010_death_plans/subagent_handoffs/event_completion_audit_latest_handoff.md) describe the current static implementation baseline. Historical catalog and planning-stage status lines inside the package are retained as source-history and are not an active request to restore `Spirit of War/Peace`.
+## Resume and authority boundary
+
+The July reconciliation below is dated evidence rather than approval inferred from file location.
+The [source-processing record](research/010_death_source_processing_notes.md) separates user constraints from planner decisions and specialist choices.
+Use [the implementation overview](../../events/010_death/overview.md) and owner audit before selecting remaining work from historical prompts.
+`DTH` is Death's existing registered country identity in `common/country_tags/chaosx_countries.txt:5`, mapped to `countries/Death.txt`.
+Reuse and inspect that owner package under [the shared identifier registry](../shared_identifier_registry.md); it is not a free tag candidate.
+Current workflows belong to [chaos-redux-subagents](../../../.agents/skills/chaos-redux-subagents/SKILL.md) and [chaos-redux-event-assets](../../../.agents/skills/chaos-redux-event-assets/SKILL.md).
+
+> Documentation reconciliation, 2026-07-29: this package remains the retained design and provenance source for Event 010, while [`docs/events/010_death/overview.md`](../../events/010_death/overview.md) and [`event_completion_audit_latest_handoff.md`](../../plans/010_death_plans/subagent_handoffs/event_completion_audit_latest_handoff.md) describe the current static implementation baseline. Historical catalog and planning-stage status lines inside the package are retained as source-history and are not an active request to restore `Spirit of War/Peace`.
 
 This package is the source planning handoff for Event ID 10, `Death`. It replaces the obsolete `Spirit of War/Peace` event entirely.
 

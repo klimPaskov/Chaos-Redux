@@ -4,9 +4,9 @@
 
 Event identity: **093**, **Minor Fire-Once**, **Chaos level 1**, **Formables / Medium**. Original catalog name: **Portugal wants land**. Implementation status stays **To Be Reworked**.
 
-## Install the source package
+## Package location
 
-Extract the single top-level folder into `docs/specs/`. The intended destination is:
+This imported documentation package lives at:
 
 `docs/specs/093_treaty_of_tordesillas_restoration_specs/`
 
@@ -45,7 +45,8 @@ Regional coring works through coherent projects. The two powers keep their ident
 
 ## Production handoffs
 
-The following six prompts are separate from the source specification. The goal prompt contains **3956 characters** excluding its final newline and remains below 4000 including that newline.
+The six prompts are separate implementation handoffs.
+The goal prompt is bounded to 4,000 characters including its final newline.
 
 [Coding](093_treaty_of_tordesillas_restoration_coding_prompt.md)  
 [Asset](093_treaty_of_tordesillas_restoration_asset_prompt.md)  
@@ -70,6 +71,8 @@ The [machine-readable source manifest](093_treaty_of_tordesillas_restoration_sou
 
 ## What was and was not done
 
+The following facts describe the 2 October 2026 planning pass and its environment.
+Current tool and source availability must be rediscovered.
 All supplied text was read before drafting. Four relevant repository files were also read fully. Actual subagents could not be launched, and the HOI4 MCP, installed game, visual reference library, and several linked source files were unavailable. No live game, save, probability, focus, GUI, audio, or asset-production validation was performed.
 
 No requested gameplay phase was omitted for a shorter output. The inability to complete the full tool-driven workflow is reported directly in the reading and validation reports. Do not use this package to claim those missing passes succeeded or to mark the event implemented.

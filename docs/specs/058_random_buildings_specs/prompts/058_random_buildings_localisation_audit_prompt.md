@@ -1,6 +1,6 @@
 # Localisation audit prompt for Event 58 Random Buildings
 
-Use this prompt with `chaosx_localisation_auditor` after implementation text exists. Spawn with `fork_context=false`.
+Use this prompt with `chaosx_localisation_auditor` after implementation text exists. Spawn with `fork_turns="none"` in Codex.
 
 Read `AGENTS.md`, `chaos-redux-events`, the complete Event 58 specs, the Event 58 localisation and scripted-localisation files, Event Logs and Event Details source paths, achievement localisation, the authoritative in-game wording handed to the spreadsheet worker, and the relevant MCP event and GUI artifacts.
 

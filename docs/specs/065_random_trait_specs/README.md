@@ -1,5 +1,16 @@
 # Event 065 Random Trait Specification Package
 
+## Authority and disposition
+
+The design-resolution ledger separates reported user rules from planner resolutions.
+Duplicate rejection, the grant ledger, persistence interpretation, exact weights and Chaos, and optional cluster participation remain planning resolutions.
+Acceptance remains `unresolved` where the original user brief or attributable parent decision cannot be recovered; preserve those claims for review under [AGENTS.md](../../../AGENTS.md#specs-and-plans).
+The [design record](research/065_random_trait_design_resolution_ledger.md) and numbered specifications are the design map; [current event guidance](../../../.agents/skills/chaos-redux-events/SKILL.md) and [subagent routing](../../../.agents/skills/chaos-redux-subagents/SKILL.md) own implementation workflow.
+Original source-reading, repository-baseline, tooling-failure, and manual-review reports are historical planning evidence, not current source verification, service-health findings, or completed independent audits.
+The parent’s 2026-10-07 allocation sets Randomizations to cluster ID `14` after workbook/runtime occupancy verification; see the [shared identifier registry](../shared_identifier_registry.md).
+The user authorized unused identifier assignments; this numeric allocation does not approve the broader design.
+
+
 ## Catalog identity
 
 - Event ID: `65`
@@ -22,7 +33,7 @@ The design keeps the event simple for players and rigorous for implementation.
 
 Its main implementation work lies in exhaustive trait discovery, generated pool maintenance, exact duplicate handling, deterministic multiplayer execution, event-log integration, probability validation, and clear reporting.
 
-## Accepted design resolutions
+## Planning design resolutions
 
 1. The phrase **every trait available in Hearts of Iron IV and Chaos Redux** means every final loaded trait definition accepted by the country-leader trait system and usable by `add_country_leader_trait`.
 2. The pool includes political traits, advisor traits, theorist traits, high-command traits, manufacturer traits, country-specific traits, DLC traits, unusual character traits, Chaos Redux traits, and other entries in the same engine database.
@@ -34,8 +45,8 @@ Its main implementation work lies in exhaustive trait discovery, generated pool 
 8. Visible report events only present results and perform report cleanup.
 9. The event uses the existing repeatable-event framework and does not add a separate timer.
 10. The highest manifested enabled Evolution remains the event's persistent Evolution state.
-11. The current repository snapshot leaves cluster ID `9` free.
-12. The preferred cluster constant is therefore `event_cluster_id.randomizations = 9`, subject to a final collision check against the authoritative workbook and current source at implementation time.
+11. The original planning snapshot reported cluster ID `9` free.
+12. The allocated cluster constant is `event_cluster_id.randomizations = 14`; keep the workbook, runtime, and shared identifier registry aligned.
 13. Random Trait is an optional Randomizations member with Medium danger and a planned 60 percent participation value.
 14. The event creates direct Chaos only when a new intensity first produces a successful global mutation.
 
@@ -113,16 +124,7 @@ Self-contained prompts are included so the required agents can be run later in t
 
 The package does not claim that live subagent audits or HOI4 MCP validation have already occurred.
 
-## Extraction
+## Related historical plan record
 
-The ZIP is rooted at `docs/`.
-
-Extract it into the Chaos Redux repository root.
-
-The accepted source specification will then appear under:
-
-`docs/specs/065_random_trait_specs/`
-
-The recorded subagent tooling blocker will appear under:
-
-`docs/plans/065_random_trait_plans/blocked_reports/`
+The [2026-09-03 subagent execution blocker](../../plans/065_random_trait_plans/blocked_reports/065_random_trait_subagent_execution_blocker.md) records the original failed launch attempt.
+Use current route discovery and the active prompts for any later authorized implementation.

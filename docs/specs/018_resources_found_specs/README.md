@@ -15,10 +15,9 @@ All labels described as working labels are internal design handles, not final lo
 - 1 focus architecture map
 - 6 specialist implementation prompts
 - 4 research and review notes
-- More than 61,000 words before the final manifest
-- Goal prompt length: 3,998 characters
 
-The root `manifest.md` records file sizes, word counts, and SHA-256 checksums.
+The root `manifest.md` records current file sizes, word counts, and SHA-256 checksums.
+Current workflow ownership comes from [the routing owner skill](../../../.agents/skills/chaos-redux-subagents/SKILL.md), rather than dated runtime limitations.
 
 ## Package map
 

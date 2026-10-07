@@ -2,6 +2,14 @@
 
 This folder is the source-of-truth planning package for the rework of Event 059.
 
+## Design authority and current workflow
+
+The package attributes its premise to the supplied user brief.
+The original user message and claim-level acceptance record are not reproduced here, so approval of expanded mechanics remains unresolved until the implementation owner records the supporting user decision or parent acceptance.
+Historical planning reviews, catalog snapshots, and package status labels do not establish approval or current implementation.
+Use current [AGENTS.md](../../../AGENTS.md), [event guidance](../../../.agents/skills/chaos-redux-events/SKILL.md), [asset guidance](../../../.agents/skills/chaos-redux-event-assets/SKILL.md), and [subagent guidance](../../../.agents/skills/chaos-redux-subagents/SKILL.md) for execution.
+The source design remains in the files listed below.
+
 ## Accepted catalog identity
 
 | Field | Accepted value |

@@ -39,7 +39,9 @@ The floor is reached only when all of the following are true:
 
 All event blocks belong to `events/fallout_world_end_events.txt` under `add_namespace = chaosx.fallout`.
 
-No suffix range is reserved in this planning package. Implementation must scan the dedicated file, assign the next free suffix in each stable section, and record the allocation in a maintained event ledger.
+This master matrix does not allocate a new suffix range.
+Reviewed specs elsewhere already record orientation, pilot, and chain reservations, including `62` through `84`, the numerical reservation `100` through `126`, and NZL `127` through `152`.
+Preserve reviewed identities, scan current definitions and callers before allocating genuinely new suffixes, and record the result in the owner event ledger.
 
 The event file should be physically divided by clear comments into the same primary families used here. Large families may use helper files for scripted effects, triggers, constants, and scripted localisation, but Fallout event definitions remain in the dedicated event file unless local engine proof establishes a stronger event-file split that still uses the Fallout namespace and ownership.
 

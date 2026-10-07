@@ -1,10 +1,13 @@
 # System Camp Repression Rework Spec, Part 6: Scripted GUI Redesign Wireframe and Exact Value Display Plan
 
+> **Current authority:** Start at [package_index.md](../package_index.md).
+> The accepted national-administration contract and current takeover record supersede incompatible original implementation and presentation instructions; this file preserves the earlier design and evidence.
+
 Working feature id: `system_camp_repression_rework`
 
-All GUI labels in this file are player-facing design labels or compatibility implementation ids, not final localisation. Final GUI text must be written in localisation files after implementation choices are known. This part defines the current sparse presentation, the values and actions exposed by it, the native interface surfaces reused, and the visibility and cleanup rules.
+All GUI labels in this file are player-facing design labels or compatibility implementation ids, not final localisation. Final GUI text must be written in localisation files after implementation choices are known. This part preserves the September sparse presentation, the values and actions exposed by it, the native interface surfaces reused, and the visibility and cleanup rules.
 
-## Current presentation contract, 2026-09-04
+## Superseded presentation contract, 2026-09-04
 
 The accepted presentation is a full replacement of the former paper-ledger composition. `repression_ledger_window` remains the compatibility window id, but its player-facing surface is a 960x600 dark vanilla HOI4 framed window using native tiled panels and buttons. The title is `Repression and Camps`, and the left navigation labels are Situation, Territories, Sites, Policy, and Accountability. The previous 900x560 ledger wireframe, old tab labels, parchment treatment, detached action bar, and visible card or table requirements are superseded in this source only and remain historical evidence in older plan reports. The current parent implementation and final report are tracked at `docs/plans/system_camp_repression_rework_plans/repression_ui_redesign_2026-09-05.md`. Gameplay, effects, costs, AI paths, arrays, and retained window, panel, navigation-mark, and action identifiers remain unchanged unless parent implementation evidence says otherwise. The user explicitly requested a complete UI redesign, removal of the ledger appearance, and active MCP previews. The parent accepted this native 960x600 sidebar and adjacent order layout within that authorization; the user did not separately approve pixel geometry. The design disposition is `promoted into an accepted spec` on this parent acceptance basis. The implementation disposition is `implemented`, with current runtime files, final MCP read-preview evidence, and the transaction-writer limitation recorded in the linked final report; this does not claim in-game validation.
 

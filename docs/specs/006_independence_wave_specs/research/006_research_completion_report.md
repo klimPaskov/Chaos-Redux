@@ -6,7 +6,11 @@ Implementation reconciliation: 2026-07-14
 
 Tag architecture alignment: 2026-07-15
 
-## Completed scope
+The dated research and map counts below are planning provenance.
+Current admission, production, and outstanding implementation work follow [the package README](../README.md) and its takeover records.
+Research resolution does not independently establish design approval or runtime readiness.
+
+## Completed research scope
 
 The package identity, disposition, historical, and text research gates are closed. Slot 23 uses the user-approved creator-owned *The Enola Foam March* recording under CC BY-SA 4.0 with its attribution and ShareAlike obligations preserved; human audition and live firing remain unverified. Event 006 uses ordinary super-event identifiers 23 and 24.
 
@@ -49,9 +53,10 @@ The accepted identity, disposition, and reservation decisions in those files rem
 
 That layer records a binding or explicit unbound result for all 206 accepted packages on the installed 2026-07-14 map. Its original all-row ledger contains 149 bound packages, 57 unbound packages, 205 referenced states, all 111 accepted reservation groups, and 14 collision rows. The `149/57` split is superseded for country selection because it includes 13 overlay rows. Eleven overlays were bound and two were unbound. The current selectable country pool therefore contains 138 bound and 55 unbound packages. The state-binding evidence does not broaden an accepted disposition or supply fallback geography.
 
-## What remains implementation work
+## Historical implementation backlog (2026-07-15)
 
-The following work remains:
+The following list records the original implementation backlog.
+Use the current takeover records before assigning any item again.
 
 - add the explicit state-level exclusion required by the Trabzon automatic conflict
 - make the Himalayan confederation route consume or exclude the Kashmir reservation
@@ -60,13 +65,15 @@ The following work remains:
 - implement and validate the thirteen exact additive overlay hooks without adding them to the release pool
 - writing Clausewitz country, state, focus, decision, AI, GUI, event, and localisation files
 - sourcing or producing final flags, portraits, icons, super-event images, and other visual assets
-- obtain permission or a waiver for the accepted audio-23 recording, or ask the user before reopening selection
-- retain and re-audit the completed audio-24 derivative, checksum, registries,
-  slot-24 dispatch, and settings-aware FIFO wiring
+- preserve the selected slot-23 recording and license obligations documented in [the current audio research](006_super_event_audio_research.md), with the London Brass Players rights blocker retained only for that excluded candidate
+- retain and re-audit the completed audio-24 derivative, checksum, registries, slot-24 dispatch, and settings-aware FIFO wiring
 - live balance, map safety, AI, scenario, and UI validation
 - writing final localisation for ordinary event surfaces from the existing direction
 
-The map snapshot is complete for 2026-07-14 and the accepted tag architecture is locked for the 2026-07-15 scan universe. Identifier resolution does not mean that compatibility adapters or overlays are implemented. Those obligations, the two cross-group collision gates, and the audio-23 recording right are explicit blockers, not permission to simplify the package.
+The map snapshot covers 2026-07-14 and the tag architecture records the 2026-07-15 scan universe.
+Identifier resolution alone does not prove compatibility adapters, overlays, or package admission.
+The listed collision and adapter work is historical backlog whose later dispositions are recorded in the research acceptance checklist and takeover records.
+The excluded London Brass Players candidate's rights blocker does not apply to the selected slot-23 recording.
 
 ## Honest boundary
 

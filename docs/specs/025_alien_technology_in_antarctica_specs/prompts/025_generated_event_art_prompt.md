@@ -1,6 +1,6 @@
 # Event 025 generated event art prompt
 
-Spawn `chaosx_generated_event_art` with `fork_context=false` after the parent registers stable asset IDs and final runtime paths.
+Spawn `chaosx_generated_event_art` with `fork_turns="none"` after the parent registers stable asset IDs and final runtime paths.
 
 Read Part 010, the asset matrix, historical research, and the asset-source handoff.
 

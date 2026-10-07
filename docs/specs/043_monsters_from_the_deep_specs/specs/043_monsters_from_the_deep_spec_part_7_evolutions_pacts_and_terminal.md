@@ -405,16 +405,18 @@ Event 043 has one public world-end scenario: **Cthulhu's Dominion**.
 
 The five readiness paths are alternate campaign proofs for the same terminal outcome. Event Details should show one public row with one persistent toggle. It should not show five separate public terminal rows that all produce the same country.
 
-Provisional registry identity:
+Reserved registry identity under the user-authorized 2026-10-07 central allocation:
 
-- world-end scenario ID `15`
+- world-end scenario ID `17`
 - owner event `43`
 - visibility public
 - default enabled
 - dedicated super-event ID assigned at implementation
 - one world-end details row
 
-The numeric ID is an append-only planning proposal. Implementation must confirm that no newer source has claimed it.
+The parent reserves world-end ID `17` for this proposed design.
+This namespace is separate from triggerable scenario labels, including the held `SCN-017`.
+Consult `docs/specs/shared_identifier_registry.md` and preserve incumbent runtime identities; the reservation approves identity only.
 
 ## Shared terminal gates
 

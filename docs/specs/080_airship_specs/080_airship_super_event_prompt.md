@@ -22,7 +22,7 @@ Provide candidates with source excerpts kept within lawful quotation limits, acc
 
 ## Audio research
 
-Spawn `chaosx_super_event_audio_researcher` with the same actual context. Research a suitable one-to-three-minute presentation within the current skill and framework limits. Verify the composition rights and the particular recording rights separately. A work's age does not prove that a modern recording is free to redistribute.
+Spawn `chaosx_super_event_audio_researcher` with the same actual context. Follow [the current audio contract](../../../.agents/skills/chaos-redux-super-events/SKILL.md#13-audio-research-rules): prefer a one-to-two-minute excerpt and keep the final game file at two minutes or less unless the user explicitly approves a longer track. Verify the composition rights and the particular recording rights separately. A work's age does not prove that a modern recording is free to redistribute.
 
 Assess period orchestral, documentary, or archival material only after checking provenance and reuse permissions. Archive footage or a museum page is a research lead, not automatic audio clearance. Do not select a specific track from memory, generate a synthetic substitute, fabricate archive provenance, or include copyrighted lyrics without an appropriate permitted use.
 

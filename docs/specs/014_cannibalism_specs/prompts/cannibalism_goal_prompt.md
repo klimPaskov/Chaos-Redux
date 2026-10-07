@@ -1,4 +1,4 @@
-Implement Event 014 Cannibalism from `docs/specs/014_cannibalism_specs/`. Read the package. Follow `AGENTS.md`, repo skills, offline references, and Chaos Redux patterns.
+Implement Event 014 Cannibalism from `docs/specs/014_cannibalism_specs/`. Read the package. Follow `AGENTS.md` and the owner skills.
 
 Register Event 14 as Minor Fire-Once and keep it outside every cluster. Select a country at war through dynamic war duration, supply, casualties, stability, isolation, convoy, and occupation factors. Implement Field Hunger, Command Integrity, Cult Cohesion, Network Reach, Larder Stores, Frenzy, and Network Alignment. Build serious penalties, concrete containment, timed logistics and unit objectives, humane responses, concealment, terror exploitation, country spread, local victory, external reinfection, worldwide victory, and cleanup.
 
@@ -14,4 +14,4 @@ Implement both world-end branches only above chaos 1000. Give the reveal, both t
 
 Use generated fictional gore-heavy art. Produce every required icon, flag, portrait, report, news, super-event, unit, and GUI asset. Every animation needs real source frames, a sheet DDS, static fallback, preview GIF, manifest, and GFX handoff. No placeholder, reused icon type, default audio, or transform-only animation is acceptable.
 
-Spawn project subagents with `fork_context=false` and explicit paths. Run focus, decision, country, localisation, improvement-loop, documentation, spreadsheet, and completion audits. Resolve accepted addenda. Do not claim completion while any requirement, AI path, localisation key, asset, audio item, document, catalog field, scenario, or audit finding remains unresolved. Report every simplification, omission, fallback, and blocker.
+Use context-free project subagents under `chaos-redux-subagents`. Run focus, decision, country, localisation, improvement-loop, documentation, spreadsheet, and completion audits. Resolve accepted addenda. Do not claim completion while any requirement, AI path, localisation key, asset, audio item, document, catalog field, scenario, or audit finding remains unresolved. Report every simplification, omission, fallback, and blocker.

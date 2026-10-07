@@ -1,5 +1,8 @@
 # Event 35 Great Depression 2.0 coding-agent prompt
 
+Start with the specification index's acceptance rules and unresolved picture/meter conflict.
+Historical source reviews and planning environment limitations do not establish current implementation state or service availability.
+
 ## Goal
 
 Implement Event 35 Great Depression 2.0 as the complete Minor Repeatable economic crisis defined by the accepted package under `docs/specs/035_great_depression_specs/`. Preserve every mapped entry path, crisis phase, recovery philosophy, Depression Center rule, evolution, Event 34 inheritance field, AI behavior, asset, achievement, documentation surface, and acceptance scenario.

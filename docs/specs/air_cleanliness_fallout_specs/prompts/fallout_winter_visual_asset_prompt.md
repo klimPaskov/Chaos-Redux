@@ -4,6 +4,10 @@ Create the visual asset package for state-based Air Winter and the normal-map cl
 
 This prompt does not authorize guessing texture dimensions, atlas layout, shader channels, weather entity names, map particle hooks, or mapmode strip slots. The implementation agent must first provide the exact verified target files, sizes, frame ownership, and sprite names.
 
+Follow [chaos-redux-event-assets](../../../../.agents/skills/chaos-redux-event-assets/SKILL.md) for production and [chaos-redux-frame-animation](../../../../.agents/skills/chaos-redux-frame-animation/SKILL.md) for real frame sources.
+Alpha-backed overlays, icons, and markers request native transparency and preserve alpha; the inspected consumer governs background mode and dimensions.
+Use [chaos-redux-scripted-gui](../../../../.agents/skills/chaos-redux-scripted-gui/SKILL.md) for references, native layout, and mandatory MCP visual evidence.
+
 ## Visual promise
 
 The player must see that the world is colder without opening a tooltip.
@@ -149,22 +153,8 @@ The asset manifest must record every engine exception.
 
 ## Deliverables
 
-For every final asset:
-
-- source file
-- processed PNG preview
-- final DDS or required engine format
-- exact dimensions
-- source mode
-- visual class
-- phase or state
-- sprite or texture name
-- target game path
-- target GFX or map definition
-- static fallback where relevant
-- wiring notes
-- status
-- uncertainty
+Apply the [asset-owner deliverable and manifest contract](../../../../.agents/skills/chaos-redux-event-assets/SKILL.md#evidence-and-completion).
+The climate crosswalk must additionally retain visual class, phase/state, proven map or weather consumer, any engine-required path exception, and exact wiring/status limitations.
 
 Create contact sheets showing:
 

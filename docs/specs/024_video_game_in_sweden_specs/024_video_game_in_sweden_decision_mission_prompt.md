@@ -6,7 +6,7 @@ Implement the Event 24 decision category, decisions, missions, dynamic text, AI 
 
 Read and follow `AGENTS.md`, `chaos-redux-events`, `chaos-redux-decisions-missions`, `chaos-redux-event-assets`, `chaos-redux-subagents`, the offline Decision Modding, Triggers, Effects, Scopes, Localisation, Modifiers, and Data Structures pages, vanilla documentation, and relevant vanilla decision precedents.
 
-Use `fork_context=false` for project subagents. Spawn `chaosx_decision_mission_auditor` after the implementation pass. Route every weighted AI or probability surface through `chaosx_ai_probability_auditor` before and after changes.
+Use `fork_turns="none"` for project subagents. Spawn `chaosx_decision_mission_auditor` after the implementation pass. Route every weighted AI or probability surface through `chaosx_ai_probability_auditor` before and after changes.
 
 ## Category contract
 
@@ -167,7 +167,7 @@ Wire the static category picture and decision icons from `024_video_game_in_swed
 
 ## Required audit and handoff
 
-Spawn `chaosx_decision_mission_auditor` with `fork_context=false` after implementation. The audit must cover:
+Spawn `chaosx_decision_mission_auditor` with `fork_turns="none"` after implementation. The audit must cover:
 
 - Visible action count and category clarity.
 - Cost count and texticon coverage.

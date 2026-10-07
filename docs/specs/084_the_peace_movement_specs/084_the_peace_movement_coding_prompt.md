@@ -1,10 +1,11 @@
 # Implement Event 84 · The Peace Movement
 
-Work in the actual Chaos Redux repository. The source package is `docs/specs/084_the_peace_movement_specs/`. Implementation plans, scoped agent handoffs, audit evidence, and unresolved findings belong in `docs/plans/084_the_peace_movement_plans/`. Preserve unrelated worktree changes. This is an implementation assignment derived from the user's full planning request, not permission to invent missing tool output or mark a blocked workflow complete.
+Work in the actual Chaos Redux repository. The source package is `docs/specs/084_the_peace_movement_specs/`. Implementation plans, scoped agent handoffs, audit evidence, and unresolved findings belong in `docs/plans/084_the_peace_movement_plans/`. Preserve unrelated worktree changes. Invoke this prompt only under an implementation assignment that accepts the relevant design; the original planning request and this documentation audit do not authorize executing it.
 
 ## Read the complete basis before changing source
 
-Fully read AGENTS.md, README.md, CHAOS_REDUX_MECHANICS.md, the current planning, events, decisions/missions, focus-trees, scripted-GUI, super-events, event-assets, frame-animation, 3D-model, ComfyUI, MTTH, improvement-loop, subagent, and applicable debug-playtest skills. Read their must-read child references and matching provided agent profiles. Inspect the actual installed scripting documentation, offline Paradox references, current shared implementations, registries, catalog workbook, asset templates, and exact consumers needed for the selected implementation. The planning turn fully read the supplied 43 text files but did not finish every external dependency or run the mandatory independent agents. Its source ledger is an honest boundary, not a waiver of your required source inspection.
+Fully read AGENTS.md, README.md, CHAOS_REDUX_MECHANICS.md, the current planning, events, decisions/missions, focus-trees, scripted-GUI, super-events, event-assets, frame-animation, 3D-model, MTTH, improvement-loop, and subagent skills.
+Use debug-playtest only if explicitly invoked by the user. Read their must-read child references and matching provided agent profiles. Inspect the actual installed scripting documentation, offline Paradox references, current shared implementations, registries, catalog workbook, asset templates, and exact consumers needed for the selected implementation. The planning turn fully read the supplied 43 text files but did not finish every external dependency or run the mandatory independent agents. Its source ledger is an honest boundary, not a waiver of your required source inspection.
 
 Read all 13 sequential spec parts, the modifier-precedence file, original brief, decision/mission matrix, AI/probability/technology matrix, achievement matrix, asset register, four 3D briefs, super-event research register, source ledger, and acceptance scenarios. Read the five companion prompts, including the goal prompt. Working labels are not finished localisation. User requirements outrank legacy event content, and new numeric tuning remains subject to evidenced balancing without silently changing the design.
 
@@ -20,7 +21,8 @@ Train Rainbow Militias, Commune Guards, Lotus Ascendants, and Liberation Brigade
 
 Build both Internationals through valid sovereign congresses and charters. Use commitments and votes instead of a third cohesion meter. Respect existing factions and human players. World-end activation requires strictly more than 1000 Chaos, strictly more than 50% of authoritative living world population controlled by movement-led/dominated authorities, Rainbow International, meaningful organized territorial opposition, enabled branch, and valid terminal ownership. Count each state once by controller. Final victory requires the separate campaign and 180-day maintained settlement. No universal orientation change or extermination objective.
 
-War for the Soul has four intensities, explicit additive Chaos setup, mature institutions, materially honest force allocation, immediate crisis/war, neutral cells, and a clear player role. Previewing does not mutate the campaign. Seeded progress is not earned achievement progress.
+War for the Soul uses the planning reservation `SCN-031`, raw ID `31`, documented in Part 11; do not allocate a replacement ID or treat this reservation as runtime registration or broader design approval.
+It has four intensities, explicit additive Chaos setup, mature institutions, materially honest force allocation, immediate crisis/war, neutral cells, and a clear player role. Previewing does not mutate the campaign. Seeded progress is not earned achievement progress.
 
 ## Explore and partition work before implementation
 
@@ -42,11 +44,11 @@ Every spawn uses `collaboration.spawn_agent` with `fork_turns="none"` and a self
 | chaosx_focus_tree_auditor | All 71 focus nodes, nonlinear paths, existing-country preservation, complete new-authority tree, rendered route proof |
 | chaosx_country_package_auditor | Every created/transformed country surface, characters, flags, ideology names, startup forces, tech, diplomacy, succession |
 | chaosx_ai_probability_auditor | Required project probability evidence for named states and thresholds, no guessed probability semantics |
-| chaosx_asset_source_researcher | Licensed grounded scene/portrait/reference/sound sources within assigned scope, explicit rejected candidates and rights gaps |
+| chaosx_asset_source_researcher | Licensed non-portrait grounded scenes and model/reference candidates within assigned scope, explicit rejected candidates and rights gaps; portraits belong to chaosx_portrait_creator and unit audio to chaosx_3d_model_pipeline |
 | chaosx_generated_event_art | Fictional report/news/super-event/category scenes with exact native consumer and provenance |
-| chaosx_icon_artist | Separate native idea, focus, decision, technology, unit-counter, flag, and achievement requirements as assigned |
+| chaosx_icon_artist | Separate native idea, focus, decision, technology, unit-counter, and achievement requirements as assigned; flag production belongs to chaosx_generated_event_art |
 | chaosx_portrait_creator | Grounded source lifecycle, identity/crop review, portrait-specific wiring and fictional generation. The user alone performs the final RunPod workflow |
-| chaosx_3d_model_pipeline | Four complete firearm units under the newer separate Meshy 7 body/gun and direct Blender rigging/action rule |
+| chaosx_3d_model_pipeline | Four complete firearm units under the current 3D owner skill, preserving separate body/gun geometry, authored actions, sound, and counter handoffs |
 | chaosx_super_event_text_researcher | Verified final cultural text, quote attribution, context, and copyright-risk handoff for four global presentations |
 | chaosx_super_event_audio_researcher | Four unique actually licensed, listened-to, edited, game-ready cues, each≤120 seconds |
 | chaosx_localisation_auditor | Final text coverage, actor/role/case truth, native token correctness, no working labels or invented historical attributions |
@@ -55,13 +57,14 @@ Every spawn uses `collaboration.spawn_agent` with `fork_turns="none"` and a self
 | chaosx_improvement_loop_planner | Mandatory near-completion creative/playability review, concrete integrated addendum or justified closure |
 | chaosx_event_completion_auditor | Independent final spec-to-source coverage and evidence-based blockers |
 | chaosx_event_ui_worker | Conditional only if an accepted future change requires an event-owned custom window. Core design uses ordinary categories |
-| chaosx_skill_maintainer | Conditional scoped proposal for the identified outdated firearm/model instructions. Do not rewrite unrelated skills without authorization |
+| chaosx_skill_maintainer | Conditional maintenance for a verified reusable skill defect; compare current instructions before carrying forward an archive-era finding |
 
 The planning turn did not run these workers. An unavailable runtime is a blocker to report, not permission to write a fictitious agent report. Do not repeatedly spawn improvement planners while a previous addendum remains unprocessed.
 
 ## Asset and presentation completion
 
-Use the separate asset, super-event, achievement, and decision/mission prompts. Every new flag goes through ImageGen with an appropriate cited design basis where historical. All four firearm models require weapon-free body generation and separate gun generation in Meshy 7, then direct qualified Blender work. No Meshy rig/action call for these firearm units, no procedural Blender gun substitution, no static action aliases. Verify actual worker model, exporter, vanilla scale, sound routing, and native counters.
+Use the separate asset, super-event, achievement, and decision/mission prompts. Every new flag goes through ImageGen with an appropriate cited design basis where historical. Use the [four unit production briefs](084_the_peace_movement_3d_model_briefs.md) and their linked current 3D owner skill for geometry, rig/action routes, attempt limits, and component completion.
+Verify exporter compatibility, vanilla scale, sourced sound routing, native counters, and every required skeletal role.
 
 Grounded portraits remain sourced placeholders until the user supplies the final RunPod result. Do not operate or monitor RunPod. Fictional adults may be generated under the portrait workflow. Do not present unsupported real-person private identities as historical fact.
 

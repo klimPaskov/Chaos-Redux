@@ -32,7 +32,7 @@ Evolution activation itself changes Chaos by zero.
 Keep rituals local, temporary, supplied, and bounded.
 Preserve normal civilian, contamination, casualty, famine, and migration systems.
 
-Complete the four scenario types and all intensity profiles in the existing settings framework.
+Complete SCN-029 / raw 29 as one shared entry with four types and all intensity profiles.
 Manual launch bypasses normal progression gates, preserves structural validity, reuses active crisis state, and never duplicates grants or erases obligations.
 Implement all twelve achievements with persistent evidence and exploit protection.
 Complete required art, final localisation, earned super-events with unique licensed music, logs, details, settings, docs, and runtime consumers.

@@ -1,5 +1,8 @@
 # Event 097 coding-agent prompt
 
+This handoff belongs to the imported ten-part variant.
+Read the [package authority and conflict table](README.md) and resolve conflicting requirements before using it for implementation.
+
 Implement the accepted Collaboration design from `docs/specs/097_collaboration_specs/`. Begin with the specification index and read all ten numbered parts, this prompt, the asset prompt, and the achievement prompt. Planning is complete as written design, but capability, independent review, production, and runtime gates remain open. Do not treat this package as a claim that those gates passed.
 
 ## Required source gate
@@ -25,6 +28,7 @@ Evolution IV uses C >= 60 immediately before a qualifying defeat, preserving a v
 ## Shared systems and connections
 
 Correct Intelligence-cluster repeatability without making fire-once siblings repeatable or exhausting 097 after one firing. Use the current shared weight recovery and halved recovery caps, not a new scheduler. Keep status To Be Reworked until the implementation and approval criteria justify promotion.
+Use Intelligence cluster ID 20 and `constant:event_cluster_id.intelligence`, following the resolved identity in the package README and shared registry.
 
 Implement the complete Chaos impact map in Part 7. One material manifestation adds 5, with the defined possible additional 5 for distinct-target breadth. No-op and duplicate transactions add zero. Shared capitulation, annexation, puppet creation, peace, restoration, liberation, and independence own their existing consequences and reversals. Do not double count them or fabricate deaths, contamination, or condemnation.
 
@@ -50,9 +54,15 @@ Implement every achievement's original snapshots, positive outcomes, anti-farmin
 
 Discover the live HOI4 service and tool schemas before calls. Use required reference, source lookup, script validation, event inspection, probability inspection/evaluation/sweep/comparison and relevant render routes against the actual implemented surfaces. Treat omitted sources, unchecked arguments, unresolved values, score-only analyses, and sampled results as distinct limits.
 
-Use the self-contained named subagent handoffs in `docs/plans/097_collaboration_plans/handoffs/` with fresh context. The parent remains responsible for actual integration, final wiring, and review. Do not count prepared briefs as executed agents. The mandatory `chaosx_improvement_loop_planner` must return an addendum or closure report after the design and implementation are assembled. Resolve its findings explicitly before completion. If its execution route is unavailable, report that blocker.
+The imported prepared briefs live in `docs/plans/097_collaboration_plans/handoffs/` and are historical input prompts, not executed reviews.
+After resolving the design variant, the parent supplies current self-contained briefs with no inherited context and places actual role results in `docs/plans/097_collaboration_plans/subagent_handoffs/`.
+The parent owns integration and final review.
+Apply the improvement-loop timing and disposition rules in the current `chaos-redux-subagents` skill, and report an unavailable execution route explicitly.
 
-Run relevant static and scripted checks, then follow the debug-playtest and save-inspection workflow for user-run live evidence. Do not auto-launch a game or benchmark. The packaged Python tests are design arithmetic checks only.
+Run relevant source and MCP checks, and use save inspection for user-supplied saves.
+The user owns live evidence, and the debug-playtest skill applies only when explicitly invoked as a separate workflow.
+Do not auto-launch a game or benchmark.
+The packaged Python tests are design arithmetic checks only.
 
 Keep accepted source specs under `docs/specs/097_collaboration_specs/` and implementation plans, audits, blockers, and handoffs under `docs/plans/097_collaboration_plans/`. Update the authoritative workbook only after final localized text and implementation approval, never the supplied CSV exports as a shortcut.
 

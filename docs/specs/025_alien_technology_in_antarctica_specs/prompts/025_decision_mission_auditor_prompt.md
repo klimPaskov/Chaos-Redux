@@ -1,6 +1,6 @@
 # Event 025 decision and mission auditor prompt
 
-Spawn `chaosx_decision_mission_auditor` with `fork_context=false` after the Event 025 decision, mission, and action-helper implementation exists.
+Spawn `chaosx_decision_mission_auditor` with `fork_turns="none"` after the Event 025 decision, mission, and action-helper implementation exists.
 
 Read the full Event 025 spec package and live decision files. Audit and apply only small bounded fixes inside Event 025 for:
 

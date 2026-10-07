@@ -8,7 +8,7 @@
 | common/scripted_effects/chaosx_logic_effects.txt | Event classification | Remove Event 43 from repeatable registry and add to Major registry. | Major weight and timer reset rules must apply. |
 | events/070_africa_gods.txt | Direct calls to `chaosx.nr43.1` under Massive Flood meaning | Remove or replace with Event 013 flood gateway or another accepted Event 70 consequence. | Do not start the global invasion through an unrelated random list. |
 | docs/specs/013_natural_disasters_specs | Notes that reserve Event 43 as separate flood | Update cross-reference after Event 43 replacement. | Event 013 remains ordinary flood owner. |
-| Event catalog workbook | Old Massive Flood row | Replace with intended Event 43 row and add SCN-015 after implementation. | Export CSVs through tool. |
+| Event catalog workbook | Old Massive Flood row | Replace with intended Event 43 row and add reserved SCN-022 / raw 22 after implementation. | Export CSVs through tool. |
 | Event Details and log mappings | Old type, name, details, or default state | Register Major, Chaos 3, evolutions, and one world-end row. | No cluster registration. |
 | Event default-enable allowlist | Unreworked Event 43 may be disabled | Add only when implementation is ready for normal selection. | Planning alone does not enable it. |
 

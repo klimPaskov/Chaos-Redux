@@ -28,7 +28,7 @@ Every row is specified in this package. Implementation status remains pending un
 | machine units and equipment | Part 9 | asset inventory matrix | providers, CXT, tech graph, models, animations, sound, counters |
 | human emergency response | Part 9 | decision and integration matrices | decisions, missions, named targets, AI, faction and war behavior |
 | defeat aftermath | Part 9 | super-event matrix | qualifying scale, reconstruction, memory, treaty and super-event |
-| All Times at Once | Part 10 | event state machine | final ID, four intensities, confirmation, bypass cleanup, duplicate gate |
+| All Times at Once | Part 10 | event state machine and shared identifier registry | reserved `SCN-020` / raw ID `20`, pre-integration occupancy recheck, four intensities, confirmation, bypass cleanup, duplicate gate |
 | system integrations | Part 10 | system integration matrix | owner adapters, no duplicate ledgers, bounded calls |
 | AI strategy | Part 10 | AI strategy matrix | route weights, validity, same-scenario probability compare |
 | balance and exploit controls | Parts 2, 3, 7, 9, and 10 | value and AI matrices | constants, caps, cooldowns, repeated-action tests |

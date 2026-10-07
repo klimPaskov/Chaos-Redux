@@ -1,5 +1,7 @@
 # Event 097 Collaboration: Decision and Response Prompt
 
+Select this nested variant's decision system only after resolving the [package authority and conflict table](../README.md).
+
 Implement the two Event 097 decision categories and the Collaborators Unmasked event choice defined in `docs/specs/097_collaboration_specs/specs/097_collaboration_spec_part_4_decisions_and_responses.md`. Follow `chaos-redux-decisions-missions` for every surface. Event-owned decisions belong in `common/decisions/097_collaboration_decisions.txt` and their categories in `common/decisions/categories/097_collaboration_categories.txt`, unless an inspected engine constraint requires otherwise.
 
 The design audit in `docs/plans/097_collaboration_plans/subagent_handoffs/097_decision_mission_audit.md` shaped this part. Read it for the reasoning behind the rules below.

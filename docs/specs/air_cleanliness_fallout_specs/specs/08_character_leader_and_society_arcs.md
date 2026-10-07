@@ -133,7 +133,9 @@ For councils, committees, juntas, machine systems, crowds, and collective bodies
 - use an institutional portrait
 - do not assign a random personal name
 
-Real people require sourced portraits and historical research.
+Every portrait belongs to `chaosx_portrait_creator` and follows the [current portrait source-mode gate](../../../../.agents/skills/chaos-redux-event-assets/SKILL.md#portrait-source-mode-gate).
+Grounded successor people and institutions require authentic sources even when a working role is called fictional.
+Real people require historical research and an existing-subject ownership check; generation is limited to authorized truly fictional high-chaos or impossible identities.
 
 ## Family and generation
 

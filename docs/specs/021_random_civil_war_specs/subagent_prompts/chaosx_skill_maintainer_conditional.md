@@ -2,7 +2,7 @@
 
 Use this prompt only when Event 021 implementation reveals a reusable workflow, repeated mistake, or project-wide rule not already covered by the current skills.
 
-Spawn `chaosx_skill_maintainer` with `fork_context=false`.
+Spawn `chaosx_skill_maintainer` with `fork_turns="none"`.
 
 Read:
 

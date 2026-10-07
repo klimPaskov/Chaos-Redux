@@ -1,10 +1,7 @@
 # 068 ZIN asset prompt
 
-Work on Chaos Redux Event 068, ZIN. The source package is `docs/specs/068_zin_specs/`. Read its README, the applicable numbered specifications, registries and unchanged user brief before acting. Read current `AGENTS.md` and the owning skills completely, then inspect the relevant repository and installed game sources. Report unread dependencies, unavailable tools and unverified assumptions. This planning package was prepared against commit `d549536e869056a49890a08ff795fbc80659984e`, so inspect changes before relying on old paths or bindings.
-
-Preserve the user canon. The Golden King dies through Afrit and a real Rush succession war is mandatory. Einendil offers service, can be rejected, and becomes a non-royal chosen leader only through the good victory. Volgan already rules the Dead Lands and starts much stronger than Afrit. Afrit remains a distinct third power and can surpass Volgan through actual Rush acquisition. Normal Rush dominions are Selen, Hiloron, Kilinti, Huhun and the Rush Islands. Independent orcs, goblins, trolls and ogres are not ordinary Rush recruits or inherited subjects. Dragons have no country and are limited to eligible elven and Afrit military routes. Glo follows control of the state containing the one real Castle of Yeldenne. Edvoid belongs only to Event 010.
-
-Use the existing project subagent route only after discovering that it is actually callable. Spawn bounded workers with `fork_context=false` and a complete prompt containing owner, exact inputs, outputs, write boundaries, constraints and expected evidence. Reading a role description is not running that role. Never invent a successful audit or silently replace an unavailable engine workflow with a source-only completion claim.
+Use [the package README](../README.md) and [the shared worker contract](../068_zin_subagent_briefs.md#shared-worker-contract) for source authority, user canon, current capability discovery and isolated role ownership.
+The parent copies relevant canon, acceptance basis, exact inputs, allowed files and evidence requirements into each actual dispatch.
 
 Produce the accepted Event 068 visual and unit-asset package from `068_zin_02_atlas_and_history.md`, `068_zin_10_military_and_reinforcement.md`, `068_zin_14_narrative_and_super_events.md`, `068_zin_15_assets_and_visual_handoff.md` and the country, unit, map and asset requirement registries. Read current asset, portrait, frame-animation, 3D-pipeline and subagent skills. The requirement registry has 416 planned rows, not 416 completed files.
 
@@ -25,3 +22,6 @@ Sound is sourced, licensed recorded audio matched to the actual unit and consume
 Use native ImageGen for original 2D art and approved faithful preparation. Mechanical processing may crop, resize, assemble real frames and convert accepted outputs, but cannot author replacement art or fake animation. Keep optional static and animated choices explicit. Do not invent provider calls, licenses, native dimensions or parent approval.
 
 Keep active production evidence under the event-owned temporary workspace and permanent source maps under the spec sources. Deliver original and processed outputs, DDS or model files, previews, manifests, native-size and round-trip evidence, exact proposed consumers and a list of unresolved roles. The parent owns final runtime wiring and game validation. Promote durable provenance before cleaning a completed temporary workspace, and never remove the supplied maps.
+
+For consumers with transparent unused canvas, request native ImageGen transparency in the initial call and preserve alpha through processing and DDS conversion.
+Use [the current asset skill](../../../../.agents/skills/chaos-redux-event-assets/SKILL.md) for alpha, source preservation, processing and fallback evidence.

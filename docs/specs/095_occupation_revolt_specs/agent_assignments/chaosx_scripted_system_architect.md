@@ -21,7 +21,9 @@ Do not inherit historical execution claims from the planning package.
 
 ## Scope and required inputs
 
-Parts 01–08, 10–12, 14, implementation architecture, national-program registry, source/decision register and the completed current repository exploration. Read current events, decisions-missions, state-ledgers, MTTH and applicable native effect/scope documentation.
+Parts 01–08, 10–12, 14, implementation architecture, national-program registry, source/decision register and a parent-supplied current source map or relevant repository-exploration evidence.
+An explorer run is conditional on unresolved locations, patterns or implementation order, rather than a prerequisite when the parent already supplies the relevant files.
+Read current events, decisions-missions, state-ledgers, MTTH and applicable native effect/scope documentation.
 
 ## Concrete work
 

@@ -4,11 +4,11 @@
 
 This sequence keeps read-only review, gameplay ownership, asset work, probability validation, text work, documentation, and final acceptance separate.
 
-Every prompt is self-contained because project subagents should run with `fork_context=false` when required.
+Every prompt is self-contained because project subagents should run with `fork_turns="none"` when required.
 
 ## Sequence
 
-### 1. Repo explorer
+### 1. Repo explorer when mapping is unresolved
 
 Prompt:
 
@@ -170,7 +170,8 @@ The asset worker owns Event 65 visual files.
 
 The localisation auditor can patch assigned Event 65 text.
 
-The documentation and spreadsheet worker owns permanent docs and workbook alignment after implemented facts are stable.
+The documentation curator owns permanent docs after implemented facts are stable.
+The spreadsheet worker owns only the authoritative workbook and generated catalog exports after final localisation is available.
 
 ## Current planning-session limitation
 

@@ -11,7 +11,7 @@ Your authorized Event 38 work can include:
 - historically attested Order, Papal, crusader-state, and principality symbols
 - flat historical flag geometry research before ImageGen reconstruction
 - non-portrait archival report, news, or super-event sources when the final asset must depict real material
-- source research for authentic institutional portrait material only when coordinated with the portrait worker
+- historically attested institutional symbols for non-portrait art; portrait identity sourcing belongs entirely to `chaosx_portrait_creator`
 
 Do not produce character portraits. Do not generate art. Do not wire `.gfx`, localisation, events, GUI, focuses, decisions, flags, or spreadsheets. Do not use modern reenactments, film stills, tourist imagery, AI-looking reconstructions, or unverified heraldry as historical evidence.
 

@@ -28,27 +28,12 @@ Achievements involving a random division need a persistent division or lot ident
 
 ### Controlled combat trials
 
-The four exact-formation combat achievements use state-targeted controlled
-border trials. The selected attacker state must contain exactly one qualifying
-Event 19 division and no other formation. An empty adjacent state owned by a
-peaceful independent AI country receives exactly one locked temporary defender.
-The engine enforces a fourteen-day minimum engagement and leaves state ownership
-unchanged. The shared mission times out after forty-five days, and every started
-trial applies the same ninety-day cooldown.
+The four exact-formation combat achievements use state-targeted controlled border trials. The selected attacker state must contain exactly one qualifying Event 19 division and no other formation. An empty adjacent state owned by a peaceful independent AI country receives exactly one locked temporary defender.
+The engine enforces a fourteen-day minimum engagement and leaves state ownership unchanged. The shared mission times out after forty-five days, and every started trial applies the same ninety-day cooldown.
 
-Each trial revalidates immutable unit, generation, lot, template, composition,
-material-quality, coherence, readiness, and technology evidence before launch
-and before an attacker victory is recorded. The transaction pays its own Army
-Experience and Command Power cost, applies a shared cooldown after a started
-trial, and cleans up through a country-local nonce on victory, loss,
-cancellation, invalidation, or timeout. No casualty, enemy-strength ratio, or
-ordinary country-combat proxy is part of the contract.
+Each trial revalidates immutable unit, generation, lot, template, composition, material-quality, coherence, readiness, and technology evidence before launch and before an attacker victory is recorded. The transaction pays its own Army Experience and Command Power cost, applies a shared cooldown after a started trial, and cleans up through a country-local nonce on victory, loss, cancellation, invalidation, or timeout. No casualty, enemy-strength ratio, or ordinary country-combat proxy is part of the contract.
 
-Scenario host preflight rejects the active trial attacker, the temporary
-opponent, an opponent held by failed-cleanup quarantine, and any country whose
-same-tag scenario setup or rollback transaction is not idle. Successful cleanup
-releases the opponent lock only after proving that no nonce-marked defender and
-no temporary trial template remain.
+Scenario host preflight rejects the active trial attacker, the temporary opponent, an opponent held by failed-cleanup quarantine, and any country whose same-tag scenario setup or rollback transaction is not idle. Successful cleanup releases the opponent lock only after proving that no nonce-marked defender and no temporary trial template remain.
 
 ### Parent-isolation achievement
 

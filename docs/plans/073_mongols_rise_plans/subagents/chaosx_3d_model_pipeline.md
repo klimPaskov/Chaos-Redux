@@ -10,18 +10,27 @@ Event 073 Mongols Rise restores a cavalry empire with rapid conquest, persistent
 
 ## Required reading
 
-The full owning 3D skill and required local references, Event 073 mounted-model handoff and assigned source approvals. Follow the current installed profile’s reading limits and referenced-file requirements. Record unavailable files explicitly. Do not treat a search snippet or a truncated response as a full read.
+Read the current [3D pipeline skill](../../../../.agents/skills/chaos-redux-3d-model-pipeline/SKILL.md), its required references, the [asset skill](../../../../.agents/skills/chaos-redux-event-assets/SKILL.md), Event 073 mounted-model handoff and assigned source approvals.
+Current owner instructions govern provider, component, rigging, animation, recovery and delivery procedures.
+Record unavailable files explicitly; a search snippet or truncated response is not a full read.
 
 ## Assigned work
 
-Build fresh Meshy 7 weapon-free horse-and-rider geometry and separate Meshy 7 firearm geometry. Use direct Blender assembly, rigging, animation, materials and export. Prove scale, anatomy, rider contact, firing, effects, sound, export reimport, and every required runtime state.
+Build the complete weapon-free horse-and-rider body and required separate firearm geometry, preserving the approved concept identity and component inventory.
+Follow the current owner skill for provider eligibility, attempt allowances, component modeling, rigging, real skeletal actions and export.
+Prove scale, anatomy, rider contact, firing, effects, sourced sound, the bespoke counter handoff, export reimport and every required runtime state.
 
 ## Ownership
 
-Complete assigned mounted model package. No guessed tool routes, paid rig retry loop, or incomplete placeholder acceptance. Use a fresh role context and `fork_turns="none"` when the actual interface supports it. The parent owns shared integration and the disposition of proposals. If this is still a planning-only task, make no gameplay edits.
+Complete only the assigned mounted model production package and permitted sound/counter handoffs under the owner skills.
+Use a fresh self-contained role context and `fork_turns="none"` when the actual interface supports it.
+The parent owns runtime identifiers, source wiring, shared integration, final review and proposal dispositions.
+Source substitutions and redesign retain their explicit approval boundaries; existing authorization for required component completion and owner-defined recovery does not require renewed approval.
+Do not implement an embedded production assignment during a documentation-only review.
 
 ## Return contract
 
-Return source rights, task provenance, calibration, rig and animation review, final files and hashes, audio evidence, consumer mapping, and actual live proof when available.
+Return source rights, production provenance, calibration, component inventory, rig and animation review, final files and hashes, sourced-audio evidence, counter handoff and consumer mapping.
+The parent reviews user-supplied live proof when available; do not launch HOI4 or fabricate that evidence.
 
 Separate source-derived facts, authored proposals, verified implementation, and blocked work. Include actual paths and evidence for completion claims. Do not claim another role ran, a render passed, a model was generated, a recording was licensed, or a game test succeeded unless that action actually occurred.

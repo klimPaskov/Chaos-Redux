@@ -352,3 +352,16 @@ Verify:
 - icon and localisation
 
 Report every achievement that cannot be proven reliably as incomplete. Do not weaken a condition to make tracking easier.
+
+## Unresolved source differences
+
+Part 8 and this future prompt contain distinct achievement details.
+The parent must reconcile the following before adopting triggers, preserving both statements until an attributable decision resolves them.
+
+| Achievement | Part 8 | This prompt | Disposition |
+| --- | --- | --- | --- |
+| Barracks to Capital | Low-intensity scenario disqualifies | Lists foreign-intervention and debug disqualifiers without the Low-intensity exclusion | unresolved |
+| Guardian State | Maintain Cohesion at least 70 | Cohesion at least 70 at the end | unresolved, continuous versus endpoint proof |
+| No Second Shot | No earlier failed dismissal | No earlier failed ordinary dismissal | unresolved, dismissal scope |
+
+The definitions remain design proposals wherever acceptance evidence is missing.

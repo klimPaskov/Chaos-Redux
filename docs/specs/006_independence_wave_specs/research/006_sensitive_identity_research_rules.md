@@ -51,20 +51,11 @@ Use researched institution names and plain descriptive working labels until fina
 
 ## Leaders and portraits
 
-- every real, restored, regional, indigenous, dynastic, separatist, or otherwise
-  plausibly historical country requires sourced real male people or authentic
-  archival material for the actual institution
-- a council does not bypass sourcing: grounded collective institutions use
-  institutional names and sourced all-male collective or actual institutional
-  images
-- generated personal or institutional portraits are permitted only when the
-  country itself is truly fictional and high-chaos
-- permitted fictional leaders require male name/metadata alignment and a
-  distinctive, coherent invented cultural design rather than a generic face;
-  avoid stereotypes, caricature, mockery, gore, and meme aesthetics
-- if defensible source material cannot be established for a grounded package,
-  keep that package disabled instead of substituting a fictional person or
-  generic portrait
+- every real, restored, regional, indigenous, dynastic, separatist, or otherwise plausibly historical country requires sourced real male people or authentic archival material for the actual institution
+- a council does not bypass sourcing: grounded collective institutions use institutional names and sourced all-male collective or actual institutional images
+- generated personal or institutional portraits are permitted only when the country itself is truly fictional and high-chaos
+- permitted fictional leaders require male name/metadata alignment and a distinctive, coherent invented cultural design rather than a generic face; avoid stereotypes, caricature, mockery, gore, and meme aesthetics
+- if defensible source material cannot be established for a grounded package, keep that package disabled instead of substituting a fictional person or generic portrait
 
 ## Flags and symbols
 

@@ -1,6 +1,6 @@
 # Goal Prompt: Implement Event 24 Video Game in Sweden
 
-Implement the accepted package under `docs/specs/024_video_game_in_sweden_specs/`. Read every file first and treat it as binding design.
+Implement the accepted package under `docs/specs/024_video_game_in_sweden_specs/`. Read the package and use recorded user decisions and parent acceptance as each claim's authority.
 
 Keep Event 24 as an unclustered Chaos level 1 Minor Fire-Once event with entry `chaosx.nr24.1`. Select one principal Swedish host through the specified priority. Prevent duplicates after civil war, annexation, release, puppeting, or tag change. Show `N/A` without a valid host and preserve fire-once history.
 

@@ -24,6 +24,6 @@ Pass or fail requirements:
 
 9. Complete Event Logs, Event Details, evolution rows, cluster behavior, Chaos History, final localisation, permanent documentation, canonical XLSX updates, and CSV export. Keep player text aligned across all surfaces.
 
-Use context-complete `fork_context=false` prompts for the specialists in the handoff. Near completion, spawn `chaosx_improvement_loop_planner`, resolve its result, then run `chaosx_event_completion_auditor` on the final state.
+Use context-complete `fork_turns="none"` prompts for the specialists in the handoff. Near completion, spawn `chaosx_improvement_loop_planner`, resolve its result, then run `chaosx_event_completion_auditor` on the final state.
 
 Keep iterating until every acceptance criterion is satisfied. Do not use an unapproved fallback, omit a mapped surface, or claim completion from partial work. Finish with a concrete report covering evidence, assets, audits, catalog alignment, and every blocker or simplification.

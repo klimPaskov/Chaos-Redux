@@ -462,7 +462,7 @@ A country supporting several Wus keeps one country-wide accounting of Wu researc
 
 Kruger's international contest remains distinct. Its existing access, operation, evolution, and history rules are not a general Wu API. A cross-border rivalry can supply context to an already valid Kruger operation or a separate valid Wu case. It cannot initialize Kruger's Evolution II, move his canonical character, or award his project stages merely because Wu signed a treaty.
 
-D01's historical Event 089 sharing memberships and Kruger posture records retain their old meaning. New medical licences, clinical coalitions, and visiting programmes are not migrated old invitations. D02's proposed Scientific Research cluster remains a catalogue decision, with no ID reserved here. D03 remains an unapproved shared finite-cohort extension. D04 leaves biological use with native equipment and operation owners throughout every foreign route.
+D01's historical Event 089 sharing memberships and Kruger posture records retain their old meaning. New medical licences, clinical coalitions, and visiting programmes are not migrated old invitations. D02's proposed Scientific Research cluster uses reserved ID `21`, shared with Event 054 under the [central identifier ledger](../../shared_identifier_registry.md). The identifier allocation does not itself approve cluster design or membership, or register runtime/catalog content. D03 remains an unapproved shared finite-cohort extension. D04 leaves biological use with native equipment and operation owners throughout every foreign route.
 
 ## Changes of government and broken agreements
 

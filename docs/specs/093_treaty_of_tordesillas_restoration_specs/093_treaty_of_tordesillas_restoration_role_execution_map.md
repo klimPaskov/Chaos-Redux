@@ -1,10 +1,13 @@
 # Event 093 role execution map
 
-## Actual execution
+## Historical planning execution, 2 October 2026
+
+These entries record the original planning environment.
+Discover current routes and sources before dispatch, since these historical limitations do not establish present availability.
 
 All 20 provided role definitions were fully read. **No specialist subagent was launched.** This environment did not expose a callable subagent-launch tool or the required HOI4 MCP capabilities. Tool discovery and relevant plugin search did not produce a usable route. The supplied config was not executed.
 
-The following are task-specific handoff scopes, not fabricated transcripts or claimed completed subagent reports. A future authorized implementation run should create actual role outputs under `docs/plans/093_treaty_of_tordesillas_restoration_plans/`, while keeping accepted source design under `docs/specs/093_treaty_of_tordesillas_restoration_specs/`.
+The following are task-specific handoff scopes, not fabricated transcripts or claimed completed subagent reports. A future authorized implementation run should create actual role outputs under `docs/plans/093_treaty_of_tordesillas_restoration_plans/subagent_handoffs/`, while keeping accepted source design under `docs/specs/093_treaty_of_tordesillas_restoration_specs/`.
 
 | Role | Inputs | Task and expected evidence | Current status |
 | --- | --- | --- | --- |
@@ -18,7 +21,7 @@ The following are task-specific handoff scopes, not fabricated transcripts or cl
 | `chaosx_generated_event_art` | Part 16 and approved source/consumer inventory | Produce approved report, news and super-event art | Not run. Final visual asset production is outside this planning deliverable. |
 | `chaosx_icon_artist` | Parts 11-12 and 16-17 | Create action, focus, spirit and achievement role icons with actual templates | Not run. Required templates and reference library absent. |
 | `chaosx_portrait_creator` | Part 12 and scope exclusions | No portrait work is authorized or needed | Not applicable to accepted design. Definition fully read. |
-| `chaosx_event_ui_worker` | Parts 06, 11 and 16 | Implement only a justified native map/context presentation, validate any new panel | Blocked for any actual UI work. No GUI render or click proof. |
+| `chaosx_event_ui_worker` | Parts 06, 11 and 16 | Only implement a named Event 093-owned new window after the parent supplies accepted ownership, GUI ids, files, states, resolutions and reference/MCP evidence. Shared interfaces remain parent-owned | Blocked for any actual UI work. No GUI render or click proof. |
 | `chaosx_super_event_text_researcher` | Part 16 and H1-H3 | Verify quote, cultural direction, title and button wording before final localization | Blocked. One short primary quote candidate was verified by the main agent. |
 | `chaosx_super_event_audio_researcher` | Part 16 and A1-A2 | Compare at least three suitable sources, listen, verify rights, select excerpt and check reuse | Blocked. Two file pages inspected, no final audio selection or listening. |
 | `chaosx_localisation_auditor` | Parts 02-05, 11, 16-17 and R2 | Audit actor scopes, political identities, outcome wording and overflow | Blocked. Final localization intentionally not authored here. |
@@ -33,7 +36,7 @@ The following are task-specific handoff scopes, not fabricated transcripts or cl
 
 Launch only roles relevant to actual work, through the configured runtime's real spawning interface, with explicit self-contained prompts and no inherited conversation context, following the supplied subagent skill. Carry exact repository paths, the user brief, source priority, accepted decisions, current file ownership, relevant must-read skills, and the requested output location into each handoff.
 
-The parent remains responsible for reading outputs, checking claims against evidence, resolving contradictions, and integrating accepted changes. An unavailable role is reported as blocked. A parent self-review is not renamed as an independent audit. Do not change model/provider configuration or copy stale Windows paths to bypass the tool limitation.
+The parent remains responsible for reading outputs, checking claims against evidence, resolving contradictions, and integrating accepted changes. An unavailable role is reported as blocked. A parent self-review is not renamed as an independent audit. Follow the current runtime and Windows path guidance in chaos-redux-subagents, without changing provider configuration to manufacture a route.
 
 ## Final review ownership
 

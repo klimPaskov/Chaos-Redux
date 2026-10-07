@@ -12,9 +12,9 @@ Calculate revolt strength from Influence and hidden military power. Prefer a dyn
 
 Support peaceful submission without creating another country. After takeover, close Influence and open Command Cohesion from 0 to 100 as the only public post-takeover value. Keep the Generalissimo as ruler and commander. Preserve valid host technology, forces, territory, stockpiles, wars, and service assets. Apply the starting junta ideas and load the complete host-adaptive focus tree.
 
-Implement every focus route with route AI, idea lifecycles, filters, Focus Navigation, conditional service content, hidden world-end content, and the read-only inlay. Use the mandatory HOI4 MCP focus and GUI inspect, render, rewrite, and comparison workflow.
+Implement every focus route with route AI, idea lifecycles, filters, Focus Navigation, conditional service content, hidden world-end content, and the read-only inlay. Use the current focus and GUI skills for MCP evidence. GUI rewrite is optional.
 
-Implement Generalissimo's Coup as a triggerable scenario. Confirm proposed ID `SCN-015` against the workbook and runtime registry. Include every specified type and intensity. Launch bypasses normal timing and evolution prerequisites, consumes the unique character opportunity, clears bypass state, and does not count as a normal event firing or pacing transaction.
+Implement Generalissimo's Coup as a triggerable scenario. Use reserved `SCN-024`, raw `24`, from the shared identifier registry. Include every specified type and intensity. Launch bypasses normal timing and evolution prerequisites, consumes the unique character opportunity, clears bypass state, and does not count as a normal event firing or pacing transaction.
 
 Implement The Generalissimos' World as a public world-end branch. Require 1000 or higher Chaos, no active world end, an enabled branch toggle, and a living canonical Generalissimo who rules an active or victorious host. Use a bounded actor registry. Support every specified military, civilian, bloc, and civil-war outcome. Never add recurring whole-world scans.
 

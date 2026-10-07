@@ -55,31 +55,13 @@ The starting package depends on:
 - scenario overrides
 
 The first anomalous formation is a one-time country-level reception incident.
-The registry selects one currently eligible complete provider row, then freezes
-its index, family identity, provider identity, visual profile, and a monotonic
-transaction nonce before dispatch. The selected host-scene profile and provider
-package cannot be replaced by a same-tick eligibility change. Delayed execution
-requires those exact values, a positive nonce, the same aligned row, and contract
-version 4, but does not rerun current provider eligibility after the promise is
-issued. Partial, mismatched, or out-of-range frozen evidence fails visibly and
-never substitutes another family.
+The registry selects one currently eligible complete provider row, then freezes its index, family identity, provider identity, visual profile, and a monotonic transaction nonce before dispatch. The selected host-scene profile and provider package cannot be replaced by a same-tick eligibility change. Delayed execution requires those exact values, a positive nonce, the same aligned row, and contract version 4, but does not rerun current provider eligibility after the promise is issued. Partial, mismatched, or out-of-range frozen evidence fails visibly and never substitutes another family.
 
-The visible incident offers guarded cantonment, a negotiated command compact,
-and refusal. Either acceptance creates exactly one provider package through the
-existing snapshot, materialize, prove, and rollback transaction; it consumes no
-ordinary provider price, request overhead, cooldown, or request counter.
-Cantonment increases control and relieves anomalous pressure. Negotiation grants
-more immediate military value while conceding control and accepting pressure.
-Refusal creates no family formation and pays political and command costs for a
-stronger containment position.
+The visible incident offers guarded cantonment, a negotiated command compact, and refusal. Either acceptance creates exactly one provider package through the existing snapshot, materialize, prove, and rollback transaction; it consumes no ordinary provider price, request overhead, cooldown, or request counter.
+Cantonment increases control and relieves anomalous pressure. Negotiation grants more immediate military value while conceding control and accepting pressure.
+Refusal creates no family formation and pays political and command costs for a stronger containment position.
 
-Outcome flags and Event Log history are written only after the selected effects
-prove. A proved rollback produces a visible failed-reception consequence; an
-unproved rollback locks and quarantines the management surface. If no provider
-is eligible on entry, the country retains one pending state and retries only on
-its country-local Event 19 pulse. A normal active Evolution IV transition, a
-scenario actor, or a derivative country never receives or consumes this
-pre-fire incident.
+Outcome flags and Event Log history are written only after the selected effects prove. A proved rollback produces a visible failed-reception consequence; an unproved rollback locks and quarantines the management surface. If no provider is eligible on entry, the country retains one pending state and retries only on its country-local Event 19 pulse. A normal active Evolution IV transition, a scenario actor, or a derivative country never receives or consumes this pre-fire incident.
 
 ## Chaos unit family registry
 
@@ -112,42 +94,12 @@ Each family entry needs the following design fields.
 | Cleanup profile and callback | Which cleanup contract applies and how provider-owned public additions are removed before shared teardown |
 | Migration note | What happens when the family definition changes in a later mod version |
 
-Contract version 4 makes the parent-isolation rule executable. Parent event
-actors carry `chaos_unit_family_parent_actor`. Before derivative creation, the
-shared `infantry_spawn_parent_event_identity_is_absent` boundary rejects that
-marker together with provider-specific parent tags, original tags, country flags,
-stages, counts, evolutions, super-events, and terminal progression. Event 19
-clears `infantry_spawn_derivative_provider_parent_isolation_proved` before setup.
-The provider sets a positive proof only after every shared and parent-specific
-check passes, then calls the shared derivative initializer. Missing proof fails
-closed. The provider owns these family-specific checks beside its one registration
-entry, so a future family does not require an Event 19 list, map, or registry-file
-edit.
+Contract version 4 makes the parent-isolation rule executable. Parent event actors carry `chaos_unit_family_parent_actor`. Before derivative creation, the shared `infantry_spawn_parent_event_identity_is_absent` boundary rejects that marker together with provider-specific parent tags, original tags, country flags, stages, counts, evolutions, super-events, and terminal progression. Event 19 clears `infantry_spawn_derivative_provider_parent_isolation_proved` before setup.
+The provider sets a positive proof only after every shared and parent-specific check passes, then calls the shared derivative initializer. Missing proof fails closed. The provider owns these family-specific checks beside its one registration entry, so a future family does not require an Event 19 list, map, or registry-file edit.
 
-The shared initializer owns only the private ledger, isolation boundary, generic
-opening burdens, and lifecycle locks. Provider setup owns its public identity,
-leadership or council, family ideas, route package or adapted equivalent, and
-release report. Event 19 clears
-`infantry_spawn_derivative_provider_public_package_proved` before dispatch, and
-the provider sets that positive proof only after its complete public surface
-succeeds. Future-family public identity must not be implemented as another switch
-inside Event 19. A nonhuman derivative with either proof missing cannot classify,
-materialize, enter a scenario roster, or unlock.
+The shared initializer owns only the private ledger, isolation boundary, generic opening burdens, and lifecycle locks. Provider setup owns its public identity, leadership or council, family ideas, route package or adapted equivalent, and release report. Event 19 clears `infantry_spawn_derivative_provider_public_package_proved` before dispatch, and the provider sets that positive proof only after its complete public surface succeeds. Future-family public identity must not be implemented as another switch inside Event 19. A nonhuman derivative with either proof missing cannot classify, materialize, enter a scenario roster, or unlock.
 
-For defeat and final teardown, Event 19 clears the cleanup proof and dispatches
-`chaos_unit_family_provider_[provider]_event19_cleanup_derivative`. The provider
-must remove every provider-owned public addition before setting
-`infantry_spawn_derivative_provider_cleanup_proved` for the requested phase. Event
-19 owns exact tracked-formation proofs, private ledgers, common derivative ideas
-and missions, common state markers, common flags and variables, and the remaining
-shared cleanup surfaces. Cleanup selects the immutable lifecycle owner by the
-actor's exact stored family/provider pair rather than current generation policy,
-so a disabled or spawn-forbidden row cannot strand a derivative. Initial-provider
-authority is retired only while its provider-leadership receipt remains; claimant
-promotion clears that receipt. Provider 501 must also revoke its trainable-family
-entry and lock every recorded family-501 template, including templates with no
-remaining live divisions. Missing provider proof fails closed and blocks the
-shared commit.
+For defeat and final teardown, Event 19 clears the cleanup proof and dispatches `chaos_unit_family_provider_[provider]_event19_cleanup_derivative`. The provider must remove every provider-owned public addition before setting `infantry_spawn_derivative_provider_cleanup_proved` for the requested phase. Event 19 owns exact tracked-formation proofs, private ledgers, common derivative ideas and missions, common state markers, common flags and variables, and the remaining shared cleanup surfaces. Cleanup selects the immutable lifecycle owner by the actor's exact stored family/provider pair rather than current generation policy, so a disabled or spawn-forbidden row cannot strand a derivative. Initial-provider authority is retired only while its provider-leadership receipt remains; claimant promotion clears that receipt. Provider 501 must also revoke its trainable-family entry and lock every recorded family-501 template, including templates with no remaining live divisions. Missing provider proof fails closed and blocks the shared commit.
 
 ### Explicit opt-in and visual profile rule
 
@@ -168,15 +120,7 @@ The runtime provider contract contains thirteen callbacks: eligibility evaluatio
 
 Ordinary resource profiles 100-129 remain Event 19-owned. Custom profiles 130-148 are stable constants in the owning provider packages and are resolved together with the recorded family/provider identity; the live publishers expose 20 custom equipment-token identifiers because providers 504 and 522 share profile 142. A future owner allocates its stable profile values in its own constants, publishes exact obligation rows from `event19_reconcile_sustainment`, and implements the two equipment callbacks in the same owner package. Event 19 does not gain a new custom-equipment switch or family-list row.
 
-The initial visual profiles are exact owned bindings. Profile 1 belongs only to
-family 501 and provider 501, profile 2 only to family 502 and provider 502, and
-profile 3 only to family 503 and provider 503. An external future provider must
-explicitly register `constant:chaos_unit_family_visual_profile.provider_neutral_army`,
-value 999, unless a later supported provider-owned profile exists. Profile 999
-uses only the identity-neutral Event 19 army or massed-host presentation and
-rejects the family and provider IDs reserved by the three initial bindings. An
-unknown positive profile fails registration, and every Event 19 consumer rejects
-an unsupported or mismatched runtime row.
+The initial visual profiles are exact owned bindings. Profile 1 belongs only to family 501 and provider 501, profile 2 only to family 502 and provider 502, and profile 3 only to family 503 and provider 503. An external future provider must explicitly register `constant:chaos_unit_family_visual_profile.provider_neutral_army`, value 999, unless a later supported provider-owned profile exists. Profile 999 uses only the identity-neutral Event 19 army or massed-host presentation and rejects the family and provider IDs reserved by the three initial bindings. An unknown positive profile fails registration, and every Event 19 consumer rejects an unsupported or mismatched runtime row.
 
 ### Registry compatibility audit
 
@@ -304,10 +248,7 @@ The installed golem identifier is verified locally as `coal_golem`. It remains p
 
 ### Family reception incident
 
-The pre-fire Evolution IV opening uses the one-time frozen-row reception
-transaction above. Later first contact with another family can use a
-family-specific report direction, but it must not reopen or duplicate the
-initial provider package.
+The pre-fire Evolution IV opening uses the one-time frozen-row reception transaction above. Later first contact with another family can use a family-specific report direction, but it must not reopen or duplicate the initial provider package.
 
 The report should show what soldiers and civilians can observe:
 
@@ -452,10 +393,7 @@ Assigning anomalous formations to a claimant raises both Claimant Influence and 
 
 A claimant revolt with anomalous units can form a derivative state when the registry profile permits it.
 
-The release router records an anomalous-claimant mode for that union. Its exact
-transfer set contains only claimant-loyal rows and exact rows belonging to the
-selected family. Claimant identity remains the political cause, while the
-provider profile supplies the host identity and derivative family package.
+The release router records an anomalous-claimant mode for that union. Its exact transfer set contains only claimant-loyal rows and exact rows belonging to the selected family. Claimant identity remains the political cause, while the provider profile supplies the host identity and derivative family package.
 
 ## Derivative revolt trigger
 
@@ -475,19 +413,10 @@ Natural Evolution IV release has two distinct family-capable modes:
 - An anomalous claimant release requires a valid claimant plus a complete
   eligible provider row and transfers the exact union described above.
 - A claimant-independent family breach requires no claimant. It requires exact
-  claimant-free formations of one eligible registered family, sufficient family
-  presence, the centralized pressure and saturation gates, and weak central
-  control. It transfers only those family rows and installs the provider's
-  commander or council identity.
+  claimant-free formations of one eligible registered family, sufficient family presence, the centralized pressure and saturation gates, and weak central control. It transfers only those family rows and installs the provider's commander or council identity.
 
-Both modes freeze the selected row and release mode before actor creation and
-use the shared exact recreate, prove, delete transaction. A pre-commit family
-failure restores the source and exposes a visible deferred-containment outcome.
-For a one-state source, a claimant-independent family breach can use the same
-tag only after proving that the country has exactly one controlled state, every
-live Event 19 formation belongs to the selected claimant-free family set, and
-all private ledgers align. Only then does the provider takeover replace the
-ordinary package; it never creates a zero-state actor or a self-war.
+Both modes freeze the selected row and release mode before actor creation and use the shared exact recreate, prove, delete transaction. A pre-commit family failure restores the source and exposes a visible deferred-containment outcome.
+For a one-state source, a claimant-independent family breach can use the same tag only after proving that the country has exactly one controlled state, every live Event 19 formation belongs to the selected claimant-free family set, and all private ledgers align. Only then does the provider takeover replace the ordinary package; it never creates a zero-state actor or a self-war.
 
 ## Derivative country strength principle
 
@@ -512,12 +441,7 @@ They do not begin with:
 - parent boss units
 - free reinforcement beyond their family profile
 
-Paid reinforcement materialization is atomic. The post-payment snapshot owns
-all provisional engine templates and divisions, aligned generation, lot, unit,
-obligation, and auxiliary tails, and affected aggregates. Provider failure must
-prove exact rollback before any payment refund. An unproved rollback remains
-quarantined and unrefunded so a surviving partial formation cannot be obtained
-for free.
+Paid reinforcement materialization is atomic. The post-payment snapshot owns all provisional engine templates and divisions, aligned generation, lot, unit, obligation, and auxiliary tails, and affected aggregates. Provider failure must prove exact rollback before any payment refund. An unproved rollback remains quarantined and unrefunded so a surviving partial formation cannot be obtained for free.
 
 Their danger comes from surprise, local force concentration, unusual units, and a hostile regional plan.
 
@@ -687,11 +611,7 @@ A profile defines:
 - focus overlay modules
 - assets
 
-Its provider implementation also owns the exact positive parent-isolation and
-public-package proofs required by the shared derivative classifier. It owns the
-defeat and final cleanup callback for its public additions as well. Profile
-metadata without those executable proofs is not sufficient to release or cleanly
-retire a derivative.
+Its provider implementation also owns the exact positive parent-isolation and public-package proofs required by the shared derivative classifier. It owns the defeat and final cleanup callback for its public additions as well. Profile metadata without those executable proofs is not sufficient to release or cleanly retire a derivative.
 
 The Event 19 implementation should be modular enough that future families reuse profile logic rather than copy the entire country package.
 

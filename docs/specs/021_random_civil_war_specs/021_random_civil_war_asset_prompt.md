@@ -1,5 +1,8 @@
 # Asset Prompt: Event 021 Random Civil War
 
+Use the current [asset contract](../../../.agents/skills/chaos-redux-event-assets/SKILL.md) for source modes, native ImageGen transparency, alpha preservation, exact consumer dimensions, achievement states, and ownership.
+Reconcile this design inventory with current manifests and runtime consumers before producing another asset.
+
 Create the complete authorized visual asset package for Event 021 under `docs/specs/021_random_civil_war_specs/`.
 
 Read:
@@ -11,7 +14,7 @@ Read:
 - `021_random_civil_war_spec_part_9_presentation_assets_achievements.md`
 - the final implemented decision, mission, idea, event, news, and achievement identifiers
 
-Use `chaosx_generated_event_art` for generated non-icon scenes and `chaosx_icon_artist` for icons. Spawn every project subagent with `fork_context=false`.
+Use `chaosx_generated_event_art` for generated non-icon scenes and `chaosx_icon_artist` for icons. Spawn every project subagent with `fork_turns="none"`.
 
 ## Authorization boundary
 

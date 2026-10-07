@@ -1,6 +1,6 @@
 # Conditional Prompt for `chaosx_asset_source_researcher`
 
-Spawn with `fork_context=false` only when the parent requires a real archival image. Use the generated-art route for a generic report scene.
+Spawn with no inherited thread context (Codex `fork_turns="none"`; other runtimes follow the [subagent skill](../../../../.agents/skills/chaos-redux-subagents/SKILL.md)) only when the parent requires a real archival image. Use the generated-art route for a generic report scene.
 
 Repository root: `<MOD_ROOT>`.
 

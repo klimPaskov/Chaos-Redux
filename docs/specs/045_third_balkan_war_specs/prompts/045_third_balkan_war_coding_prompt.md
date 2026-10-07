@@ -1,6 +1,6 @@
 # Coding-agent implementation prompt for Event 045
 
-Implement Event 045, Third Balkan War, from the complete accepted package under `docs/specs/045_third_balkan_war_specs/`. Treat every mapped requirement as acceptance criteria. Do not replace dynamic camp construction, linked wars, claims, intervention, Evolutions, AI, achievements, assets, or settlement logic with smaller substitutes.
+Implement Event 045, Third Balkan War, from the source design package under `docs/specs/045_third_balkan_war_specs/`. Treat every mapped requirement as acceptance criteria. Do not replace dynamic camp construction, linked wars, claims, intervention, Evolutions, AI, achievements, assets, or settlement logic with smaller substitutes.
 
 ## Mandatory preparation
 

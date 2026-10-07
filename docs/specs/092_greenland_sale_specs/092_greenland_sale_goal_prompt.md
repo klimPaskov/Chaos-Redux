@@ -2,7 +2,7 @@ Implement Chaos Redux Event 092, Greenland Sale, from docs/specs/092_greenland_s
 Read 092_greenland_sale_spec_index.md and all 13 sequential specification parts in full.
 
 Also read: 092_greenland_sale_coding_prompt.md, 092_greenland_sale_asset_prompt.md, 092_greenland_sale_achievement_prompt.md, and 092_greenland_sale_decision_mission_prompt.md.
-Read docs/plans/092_greenland_sale_plans/, including the original brief, source archive, reading report, source/decision register, coverage, execution map, validation scenarios, parent review, and resume packet.
+Read docs/plans/092_greenland_sale_plans/, including the original brief, source inventory, reading report, source/decision register, coverage, execution map, validation scenarios, parent review, and resume packet.
 
 Fully read current required Project Sources and applicable skills before editing.
 Follow CHAOS_REDUX_PROJECT_SOURCE_PROTOCOL.md if available.

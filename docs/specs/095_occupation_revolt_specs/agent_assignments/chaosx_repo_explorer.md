@@ -2,7 +2,7 @@
 
 Status: **NOT EXECUTED**.
 This file is a future isolated specialist prompt, not an agent result or completion certificate.
-Role timing: Required before implementation.
+Role timing: Conditional when locations, patterns or implementation order are unclear.
 
 ## Assignment context
 

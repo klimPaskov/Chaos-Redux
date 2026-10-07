@@ -4,7 +4,7 @@
 
 | Surface | Design requirement |
 | --- | --- |
-| Proposed tag | `DTH`, final implementation must conflict-check against vanilla, Chaos Redux, and common mod tags. |
+| Registered tag | `DTH`, mapped to `countries/Death.txt` by `common/country_tags/chaosx_countries.txt:5`; reuse and inspect the existing owner package under [the shared identifier registry](../../shared_identifier_registry.md). |
 | Country name | `Death` |
 | Adjective | `Death` or `Deathly`. Use the shorter player-facing form unless localisation requires adjective distinction. |
 | Leader | `Zol` |
@@ -26,6 +26,9 @@
 | State resistance | None inside Death-controlled states because they are Death cores and have zero population. |
 | Classification | Register as `is_special_chaos_country`. Also register as `is_actual_nonhuman_country`. |
 | Playability | AI-controlled by default. If debug/manual play exposes it, use the fixed-purpose focus tree below. |
+
+Genuinely new country-tag proposals still require the installed vanilla, local-mod, and Workshop collision audit required by the owner skills.
+Death's existing `DTH` registration is not a tag-allocation request.
 
 ## Leader: Zol
 

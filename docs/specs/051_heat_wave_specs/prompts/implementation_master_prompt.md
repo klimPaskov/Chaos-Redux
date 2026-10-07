@@ -1,6 +1,6 @@
 # Master Implementation Prompt
 
-Implement Chaos Redux Event 051, Heat Wave, from the accepted specification package at:
+Implement Chaos Redux Event 051, Heat Wave, from the source-design package below after resolving the acceptance and animation dispositions in its README:
 
 `docs/specs/051_heat_wave_specs/`
 
@@ -37,7 +37,9 @@ Read the required offline Paradox wiki pages and installed vanilla documentation
 - Member severity: High
 - Entry event: `chaosx.nr51.1`
 
-The older CSV export says Fire-Once. The accepted specs supersede that snapshot. Update only the authoritative XLSX after implementation and regenerate CSV exports.
+The originating CSV says Fire-Once, while the rough-brief proposal says Minor Repeatable.
+Record explicit acceptance of that proposal before changing classification.
+Update only the authoritative XLSX after authorized implementation and regenerate CSV exports.
 
 ## Core behavior
 

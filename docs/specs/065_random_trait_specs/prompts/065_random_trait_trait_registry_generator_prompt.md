@@ -4,7 +4,7 @@
 
 Implement the Event 65 generated trait registry as a bounded event-owned build tool.
 
-Read `AGENTS.md`, the Event 65 specification package, the repo explorer handoff, the scripted-system architecture handoff, the offline country-leader trait documentation, and:
+Read `AGENTS.md`, the Event 65 specification package, the parent’s current source map or repo explorer handoff, the scripted-system architecture handoff, the offline country-leader trait documentation, and:
 
 `handoffs/065_random_trait_trait_registry_schema.md`
 

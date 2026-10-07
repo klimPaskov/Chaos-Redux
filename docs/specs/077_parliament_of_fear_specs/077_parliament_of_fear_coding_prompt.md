@@ -4,7 +4,9 @@ Read every numbered specification part in `docs/specs/077_parliament_of_fear_spe
 
 ## Read before editing
 
-Fully read `AGENTS.md`, `CHAOS_REDUX_MECHANICS.md`, the complete applicable planning, events, decisions/missions, scripted GUI, subagents, dynamic helper, assets, frame-animation, super-event, improvement-loop, and validation skills. Read the relevant complete offline wiki pages and installed vanilla references. Use the repository's offline Paradox Wiki, not a live web replacement.
+Read current `AGENTS.md`, `CHAOS_REDUX_MECHANICS.md`, applicable owner skills, and required local contracts.
+Use the current reference workflow for pertinent offline-wiki and installed-documentation sections.
+The [decision register](supporting_material/077_design_decision_register.md) distinguishes user direction and author-added choices; record explicit user or authorized parent acceptance before treating the latter as approved.
 
 The planning author read all 42 supplied text files, but did not fully retrieve the live repository or installed references. Do not inherit those missing checks as if they passed. Inspect the exact native Soviet paranoia system, character-removal ownership, scripted GUI documentation, universal cost framework, shared crisis hooks, achievement persistence, event log, event details, and super-event integration.
 
@@ -52,7 +54,8 @@ Use the supplied subagents through the real collaboration runtime with isolated 
 
 Spawn `chaosx_ai_probability_auditor`. Inspect the complete real pools before evaluating the 18 scenario families. Use full sequence manifests only when cadence, recovery, caps, cooldowns, removals, resets, timer changes, and terminal states are explicitly represented. Distinguish actual probabilities from decision scores and sampled results.
 
-Run the complete event-flow and scope audit, the 93 implementation scenarios, localisation checks, native asset reviews, achievement checks, and authorized runtime tests. The included 22 Python reference tests are planning-invariant checks and cannot replace those gates.
+Run the complete event-flow and scope audit, applicable offline checks from the 93 implementation scenarios, localisation checks, native asset reviews and achievement checks.
+Live-game cases belong to the user; review supplied evidence without launching HOI4. The included 22 Python reference tests are planning-invariant checks and cannot replace those gates.
 
 Near completion, spawn `chaosx_improvement_loop_planner` with `fork_turns="none"`. Resolve its actual addendum or closure handoff, then complete the read-only event completion audit. The parent's design review is not an independent review.
 

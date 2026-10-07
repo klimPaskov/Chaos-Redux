@@ -1,6 +1,6 @@
 # Event 025 animation asset prompt
 
-Route this prompt to the assigned generated-event-art or icon subagent with `fork_context=false`.
+Route this prompt to the assigned generated-event-art or icon subagent with `fork_turns="none"`.
 
 Create only the animation families accepted after GUI precedent inspection:
 

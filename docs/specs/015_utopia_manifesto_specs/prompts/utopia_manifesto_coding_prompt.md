@@ -18,7 +18,7 @@ Implement Chaos Redux Event 15 from the complete source package in `docs/specs/0
 
 Read `AGENTS.md`, all relevant repository skills, the full source-spec package, current Event 15 files and mappings, current event log, focus loading, decision, country, GUI, GFX, achievement, documentation, and catalog patterns.
 
-Consult the required offline Paradox wiki pages, vanilla documentation, and vanilla examples. Use `chaosx_repo_explorer` with `fork_context=false` before editing because the event spans many systems and exact live touchpoints are unknown.
+Consult the required offline Paradox wiki pages, vanilla documentation, and vanilla examples. Use `chaosx_repo_explorer` with `fork_turns="none"` only when exact files, precedents, or implementation order remain unclear, following [the routing owner skill](../../../../.agents/skills/chaos-redux-subagents/SKILL.md).
 
 Do not use a shallow additive branch as a fallback for protected unique trees. Exclude unsafe targets instead.
 
@@ -135,7 +135,7 @@ Implement every achievement in the achievement matrix with tracking, disqualifie
 
 ## Subagents and review order
 
-Spawn all project subagents with `fork_context=false` and explicit paths.
+Spawn all project subagents with `fork_turns="none"` and explicit paths.
 
 Use:
 

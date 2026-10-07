@@ -16,4 +16,4 @@ World end requires verified control of every eligible origin-continent state, ch
 
 Produce and wire assets, animations, fallbacks, super-events, achievements, final localisation, logs, docs, music records, and catalog fields. Research unique licensed music and sourced quotes for emergence and world end.
 
-Use project subagents with `fork_context=false`. Before near completion, run `chaosx_improvement_loop_planner` and resolve its addendum or closure handoff. Run the acceptance scenarios. Report every simplification, omission, fallback, blocker, and skipped task-specific validation. Do not claim completion while any mapped surface, AI behavior, asset, text key, plan disposition, or validation scenario remains unresolved.
+Use project subagents with `fork_turns="none"`. Respect the recorded improvement-loop closure. Reopen planning only for a new scoped finding. Run the acceptance scenarios. Report every simplification, omission, fallback, blocker, and skipped task-specific validation. Do not claim completion while any mapped surface, AI behavior, asset, text key, plan disposition, or validation scenario remains unresolved.

@@ -1,5 +1,11 @@
 # Event 22 Concentration Camps Specification Pack
 
+This design handoff is not a current implementation or catalog-status certificate.
+The development label and supplied-source/tool availability statements below belong to the original planning environment.
+Acceptance requires an explicit user decision or parent acceptance under [AGENTS.md](../../../AGENTS.md#specs-and-plans).
+Discover current tool schemas and capabilities before implementation.
+`SHA256SUMS.txt` covers current local Markdown and is refreshed after this documentation audit.
+
 ## Package identity
 
 - Event ID: `22`

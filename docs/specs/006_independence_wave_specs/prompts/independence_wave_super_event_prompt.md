@@ -12,7 +12,12 @@ Read and apply:
 - `research/006_super_event_text_research.md`
 - `research/006_super_event_audio_research.md`
 
-Create or update the final super-event research and implementation note under `docs/super_events/`. The text choices and musical selections are complete. The exact `23` recording is blocked for United States redistribution, while the `24` source is verified and preserved. Produce only cleared assets and hand the main agent exact wiring data. Do not silently substitute a different title, quote, button, or recording.
+Create or update the final super-event research and implementation note under `docs/super_events/` within the assigned scope.
+The selected slot-23 source is the user's 2026-09-20 *The Enola Foam March* recording by Peet Hudson / Peter Hudson under CC BY-SA 4.0.
+The former London Brass Players recording remains excluded.
+The slot-24 source is the preserved United States Marine Band recording.
+Read the current audio research and production manifest before producing anything, preserve existing cleared work and attribution, and hand the main agent exact outstanding wiring data.
+Do not silently substitute a different title, quote, button, or recording.
 
 ## Super-event 1: League formation
 

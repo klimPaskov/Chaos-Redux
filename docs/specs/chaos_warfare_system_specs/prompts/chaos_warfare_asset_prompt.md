@@ -4,9 +4,14 @@ Before reusing this prompt, apply the user's accepted 2026-09-20 CBRN amendment 
 
 The older Prepare Chemical Offensive and Combined CBRN Overmatch icon requests below are superseded by the core integration removal of those paid abilities; five protective HQ orders remain. Check active consumers before creating or wiring any HQ asset.
 
+The production contract is [chaos-redux-event-assets](../../../../.agents/skills/chaos-redux-event-assets/SKILL.md), with [chaos-redux-frame-animation](../../../../.agents/skills/chaos-redux-frame-animation/SKILL.md) for real frame sequences.
+Reconcile the lists below against recorded accepted requirements, active consumers and existing owner manifests before producing anything.
+The older six-HQ, larger support/MIO and custom-window inventories are subordinate planning context, not a fresh production assignment.
+Window-only animation concepts retain their recorded rejected disposition unless a later accepted consumer is documented.
+
 ## Task
 
-Produce the complete visual asset package for the accepted Chaos Warfare CBRN rework. Read the accepted specification files and the relevant sections of the Chaos Redux event-assets and frame-animation skills. Use the project asset subagent split. Icons belong to `chaosx_icon_artist`. Fictional UI panel art belongs to `chaosx_generated_event_art`. Real company logos, historical symbols, or archival scenes belong to `chaosx_asset_source_researcher` only after the implementation agent confirms they are required.
+Produce the remaining accepted visual assets using the specialist split in the asset skill. Every character portrait belongs to `chaosx_portrait_creator`, including the accepted CXT portrait repair. The user alone supplies grounded styled finals. Inspect the exact reference family and consumer, request native transparency for alpha-backed art and preserve it through processing and DDS conversion. Follow the owner skill for reviewed sources, manifests and runtime handoffs.
 
 Do not edit gameplay, localisation, GFX, GUI, doctrine, technology, decision, unit, or spreadsheet files. Produce source art, processed PNGs, final DDS files, contact sheets, manifest entries, and `gfx_handoff.md`.
 
@@ -273,22 +278,8 @@ Follow `chaos-redux-frame-animation` for brief, frame plan, source frames, sheet
 
 Create completed, grey, and not-eligible 64x64 assets for every achievement in `chaos_warfare_achievement_prompt.md`. Use the required achievement overlay workflow. Final DDS files belong directly under `gfx/achievements/` with exact achievement IDs.
 
-## Manifest
+## Manifest and handoff
 
-Every asset entry must record:
-
-- asset type
-- working and final identifiers
-- source mode
-- prompt or source URL
-- target size
-- source PNG
-- processed PNG
-- final DDS
-- sprite name
-- intended GFX file
-- related gameplay ID
-- status
-- uncertainty
-
-No asset is complete without final DDS and handoff. No placeholder is acceptable.
+Use the asset skill's manifest and handoff contract, including exact consumer identifiers, source provenance, processing evidence, final runtime files and unresolved review limits.
+Grounded source placeholders remain explicitly pending until the user supplies the styled final. They do not satisfy final asset completion.
+The parent owns final integration and completion claims.

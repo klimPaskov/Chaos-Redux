@@ -125,8 +125,7 @@ Required production:
 - the eight unsuffixed runtime paths serve as the European variants and are independently regenerated with the rest of the matrix
 - every submitted warlord retains his exact slot-region portrait after unification
 
-States outside those seven supported HOI4 continent scopes cannot form a
-warlord country. There is no generic portrait fallback.
+States outside those seven supported HOI4 continent scopes cannot form a warlord country. There is no generic portrait fallback.
 
 Every portrait:
 

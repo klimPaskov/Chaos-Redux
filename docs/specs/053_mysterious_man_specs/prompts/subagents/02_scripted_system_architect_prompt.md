@@ -1,6 +1,6 @@
 # Prompt for `chaosx_scripted_system_architect`
 
-Spawn with `fork_context=false`.
+Spawn with `fork_turns="none"` (Codex).
 
 Event ID: `53`.
 Event slug: `mysterious_man`.
@@ -9,7 +9,9 @@ Handoff path: `docs/plans/053_mysterious_man_plans/subagent_handoffs/scripted_sy
 
 Read `AGENTS.md`, `chaos-redux-events`, `chaos-redux-decisions-missions`, `chaos-redux-subagents`, the complete Event 53 specification, the repo explorer handoff, relevant offline wiki pages, installed vanilla script documentation, and the exact existing Event 53 and helper files.
 
-Own only the Event 53 scripted-system layer. Inspect first, then implement bounded owner-side logic where safe:
+Review the Event 53 scripted-system layer.
+The parent owns full system implementation; this role may apply only narrow helpers and directly related call sites explicitly assigned in a self-contained parent prompt under the current subagent skill.
+Treat the list below as review surfaces, not authorization to build the whole mechanic:
 
 - `common/script_constants/053_mysterious_man_constants.txt`
 - `common/scripted_triggers/053_mysterious_man_triggers.txt`

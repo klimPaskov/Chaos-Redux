@@ -1,5 +1,8 @@
 # Source Read Manifest
 
+> **Historical supplied-source and package receipt:** These sizes, hashes, paths and read claims describe the original planning and continuation snapshots.
+> They are preserved provenance, not current local-file integrity or fresh implementation validation.
+
 I read every uploaded project source file visible in `/mnt/data` for this conversation before writing and continuing the package. I did not access a full live Chaos Redux repository beyond the uploaded files in the sandbox, so this manifest is complete for the provided source bundle and not a claim that every repository file outside the upload set was available.
 
 ## Uploaded source bundle

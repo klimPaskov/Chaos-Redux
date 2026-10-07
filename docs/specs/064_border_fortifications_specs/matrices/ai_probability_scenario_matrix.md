@@ -19,7 +19,7 @@ The implementation-stage `chaosx_ai_probability_auditor` pass must inspect:
 - special actor contracts
 - repeated-wave and active-project state
 
-The audit must use `fork_context=false` and receive the complete source paths, scenario definitions, and required rankings.
+The audit must use `fork_turns="none"` and receive the complete source paths, scenario definitions, and required rankings.
 
 ## Posture scenarios
 

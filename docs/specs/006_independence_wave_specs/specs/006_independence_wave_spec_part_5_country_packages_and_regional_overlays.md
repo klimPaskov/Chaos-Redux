@@ -180,13 +180,10 @@ Requirements:
 - male portrait presentation matched to name and metadata
 - plausible personal name rather than generic office title
 - route-specific traits and background
-- memorable, internally coherent high-chaos design using extraordinary invented
-  ceremonial dress, regalia, body adornment, ritual objects, altered uniforms, or similarly distinctive fictional cultural motifs
-- reject normal-looking, conventionally dressed, or interchangeable generated
-  officeholders; the visual absurdity must be specific to the invented polity
+- memorable, internally coherent high-chaos design using extraordinary invented ceremonial dress, regalia, body adornment, ritual objects, altered uniforms, or similarly distinctive fictional cultural motifs
+- reject normal-looking, conventionally dressed, or interchangeable generated officeholders; the visual absurdity must be specific to the invented polity
 - do not borrow or exaggerate sacred objects or cultural traits of a real people
-- no generic face, modern prop, meme treatment, gore, or stereotype or
-  caricature of a real culture
+- no generic face, modern prop, meme treatment, gore, or stereotype or caricature of a real culture
 
 For Event 6, the 2026-07-16 user direction supersedes the earlier mixed-gender pool: no female leader, commander, collective portrait subject, or character metadata is used.
 
@@ -198,10 +195,8 @@ Generated institutional art is limited to truly fictional high-chaos countries.
 Requirements:
 
 - institutional name
-- sourced all-male collective portrait or real institutional image for a
-  historically grounded package
-- distinctive generated institutional art only for a truly fictional
-  high-chaos package
+- sourced all-male collective portrait or real institutional image for a historically grounded package
+- distinctive generated institutional art only for a truly fictional high-chaos package
 - no personal random name
 - route that can later preserve the institution or replace it with a personal leader
 

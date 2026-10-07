@@ -225,9 +225,9 @@ These are report and decision directions. They should not create dozens of one-l
 
 ### Registry
 
-Provisional scenario identity:
+Reserved scenario identity under the user-authorized 2026-10-07 central allocation:
 
-- `SCN-015`
+- `SCN-022` / raw `22`
 - Monsters from the Deep
 - four intensity stops
 - two setup types
@@ -238,7 +238,8 @@ Provisional scenario identity:
 - no normal Chaos-level requirement
 - no prior Event 043 requirement
 
-Implementation must confirm that scenario ID `15` remains free.
+Use the parent-reserved raw scenario ID `22` from `docs/specs/shared_identifier_registry.md`.
+The reservation approves identity only and does not register or approve the scenario content.
 
 ## Scenario type 1: Warring Titans
 

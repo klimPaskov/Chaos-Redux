@@ -123,9 +123,10 @@ Event 66 occupies three ordered logical member slots in Sudden Abundance:
 The entries use one event identity and one provider system.
 They are not three cloned events.
 
-The current cluster export does not yet contain Sudden Abundance.
-Cluster ID `9` is the first visible unused numeric ID in the supplied export and is the provisional planning ID.
-The authoritative workbook and runtime registry must be checked before it is locked.
+The original supplied export omitted Sudden Abundance and suggested provisional ID `9`.
+The parent’s 2026-10-07 workbook/runtime occupancy review allocates Sudden Abundance ID `15`; Randomizations `14` and Intelligence `20` remain distinct.
+This user-authorized identifier allocation supersedes the old provisional choice without approving the broader design.
+Verify the shared identifier registry and current source/workbook consistency before wiring.
 
 Event 64 Border Fortifications is already planned elsewhere as a Medium Sudden Abundance member.
 The final cluster membership pass must reconcile that accepted design and any other approved members.

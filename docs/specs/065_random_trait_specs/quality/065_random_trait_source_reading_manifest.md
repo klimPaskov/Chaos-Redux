@@ -1,4 +1,6 @@
 # Event 065 Source Reading Manifest
+
+Historical supplied-source manifest; keep the original upload hashes and failed registry probe as planning provenance.
 ## Completion statement
 Every source file supplied for this task was opened and read in full before the Event 65 specification was written.
 The three catalog CSV exports were parsed as CSV records and also reviewed as complete source text.

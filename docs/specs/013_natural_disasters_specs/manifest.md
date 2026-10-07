@@ -61,8 +61,9 @@ The continuation prompt work is complete inside this package. Files cover deep p
 
 The third pass did not add new disaster mechanics. It added a source-of-truth and disposition map, implementation readiness ledger, implementation resume prompt, final readiness note, and package validation note. The closure recommendation remains active: broad planning should stop unless the user asks for a specific extra design surface or implementation finds a concrete blocker.
 
-## Known limitations
+## Historical planning-run limitations
 
 - This is a planning package, not a gameplay implementation patch.
 - Project subagents were represented through the provided TOML instructions and prompt routing, but were not actually executed in this environment.
-- The live Chaos Redux repository, offline Paradox wiki, vanilla HOI4 files, and in-game validation were not available here.
+- The live checkout, offline wiki, vanilla files, and game validation were unavailable in the original planning run.
+- Current continuation and evidence boundaries are indexed by `docs_alignment/013_source_of_truth_and_disposition_map.md` and `prompts/natural_disasters_implementation_resume_prompt.md`.

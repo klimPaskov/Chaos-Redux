@@ -1,5 +1,9 @@
 # Event 062 asset production prompt
 
+The [asset skill](../../../../.agents/skills/chaos-redux-event-assets/SKILL.md) owns reference families, native ImageGen source evidence, consumer-dependent alpha, processing, and DDS validation.
+For alpha-backed families request real transparency in the first ImageGen call and preserve it through processing; opaque scene sources follow the final consumer’s report or panel treatment.
+For achievements use the skill’s [single-subject, deterministic-state pipeline](../../../../.agents/skills/chaos-redux-event-assets/SKILL.md#achievement-icons), including the completed, grey, and not-eligible source layers and exact supplied templates.
+
 Work on Chaos Redux Event 62, Allies Backstab.
 
 Read these source files first:
@@ -9,10 +13,9 @@ Read these source files first:
 - `docs/specs/062_allies_backstab_specs/quality/062_allies_backstab_acceptance_scenarios.md`
 - `AGENTS.md`
 - `chaos-redux-event-assets`
-- `chaos-redux-frame-animation` only to confirm that no animation is authorized
 - `chaos-redux-subagents`
 
-Use project subagents with no inherited parent context. In Codex, set `fork_context=false`.
+Use project subagents with no inherited parent context. In Codex, set `fork_turns="none"`.
 
 ## Accepted asset boundary
 
@@ -59,7 +62,7 @@ Use the consumer inspection to lock sizes and DDS formats. The planning sizes be
 - physical evidence: a gate being sealed, insignia coming down, liaison officers escorted out, documents and access passes surrendered
 - composition: one clear betrayal scene with readable people and military setting
 - avoid: maps as the main subject, generic conference tables, modern uniforms, modern weapons, cinematic color grading, readable generated text, flags that require exact historical reconstruction, gore, caricature
-- full-canvas opaque treatment
+- opaque scene source processed through the current report-card workflow, preserving the consumer’s required alpha
 
 ### Decision category picture
 

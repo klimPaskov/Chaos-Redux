@@ -1,6 +1,6 @@
 # Event 025 localisation auditor prompt
 
-Spawn `chaosx_localisation_auditor` with `fork_context=false` after broad Event 025 text exists.
+Spawn `chaosx_localisation_auditor` with `fork_turns="none"` after broad Event 025 text exists.
 
 Read Part 012 and every live Event 025 visible surface.
 

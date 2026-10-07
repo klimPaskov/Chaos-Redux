@@ -1,8 +1,8 @@
 # /goal Event 046: The Great Shuffle
 
-Implement Event 046 to the fullest extent of `docs/specs/046_the_great_shuffle_specs/`. Read every spec and matrix. Use `prompts/046_the_great_shuffle_coding_prompt.md` as the main handoff and the separate registry, probability, asset, achievement, localisation, and catalog prompts for those surfaces.
+Implement Event 046 from `docs/specs/046_the_great_shuffle_specs/`. Read every spec and matrix. Follow `prompts/046_the_great_shuffle_coding_prompt.md` and its specialist handoffs.
 
-Follow `AGENTS.md`, the relevant project skills, the mechanics guide, the shared registries, the offline wiki, vanilla documentation. Use `chaosx_repo_explorer` with `fork_turns="none"` only when file locations, patterns, dependencies, vanilla precedents, or edit order remain unclear. Use the required HOI4 MCP event inspect, render, lint, and compare workflow.
+Follow `AGENTS.md`, current owner skills, shared registries, the offline wiki, and vanilla documentation. Use `chaosx_repo_explorer` with `fork_turns="none"` only when mapping or precedents remain unclear. Use the required HOI4 MCP event workflow.
 
 Keep Event 46 a Chaos level 1 Minor Repeatable event. One firing is one global transaction. Generate independent new values for each valid scope. Never swap values, conserve totals, compensate earlier results, preserve rankings, restore the old world, or let previous firings alter later selection or ranges. Human countries stay eligible. Special actors use shared classifiers and owner adapters.
 

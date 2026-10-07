@@ -1,5 +1,7 @@
 # Event 066 Specialist Role Review
 
+Historical parent-applied role review; it is not an executed specialist audit.
+
 ## Tooling status
 
 Every supplied subagent TOML definition was read in full.

@@ -1,6 +1,6 @@
 # Event 066 Abundance Spreadsheet Alignment Prompt
 
-Use `chaosx_spreadsheet_doc_worker` with `fork_context=false` only after the Event 66 implementation and final player-facing localisation are available.
+Use `chaosx_spreadsheet_doc_worker` with `fork_turns="none"` only after the Event 66 implementation and final player-facing localisation are available.
 
 ## Required reading
 
@@ -39,7 +39,7 @@ Keep player-facing cells free of implementation terms, raw weights, provider IDs
 ## Clusters sheet
 
 Create or update Sudden Abundance using the verified cluster ID.
-ID `9` is only a provisional planning value until the runtime registry and workbook prove it is free.
+Use Sudden Abundance ID `15`, allocated by the parent on 2026-10-07 after workbook/runtime occupancy verification.
 
 The member list must contain three ordered Event 66 entries for Low, Medium, and High.
 It must also include Event 64 Border Fortifications and every other accepted member supplied by the parent.

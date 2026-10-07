@@ -1,5 +1,14 @@
 # Event 062: Allies Backstab
 
+## Authority and disposition
+
+The original source review records supplied planning inputs and limitations.
+The seven numbered parts, quality matrices, and specialist prompts preserve the planner’s selection, war, crisis, evolution, super-event, and achievement proposals.
+Acceptance remains `unresolved` where the original user brief or attributable parent decision cannot be recovered; preserve those claims for review under [AGENTS.md](../../../AGENTS.md#specs-and-plans).
+The [design record](research/062_allies_backstab_source_review.md) and numbered specifications are the design map; [current event guidance](../../../.agents/skills/chaos-redux-events/SKILL.md) and [subagent routing](../../../.agents/skills/chaos-redux-subagents/SKILL.md) own implementation workflow.
+Original source-reading, repository-baseline, tooling-failure, and manual-review reports are historical planning evidence, not current source verification, service-health findings, or completed independent audits.
+
+
 This folder is the source specification pack for Event 62, Allies Backstab.
 
 ## Catalog identity
@@ -57,7 +66,7 @@ The player-facing system stays compact. Participants receive role-specific event
 
 ## Specification authority
 
-The files under `specs/` define the accepted event design. The files under `quality/` define proof requirements, audit scenarios, and implementation boundaries. The files under `prompts/` are context-complete handoffs for implementation and specialist work.
+The files under `specs/` hold the event design for review. The files under `quality/` define proof requirements, audit scenarios, and implementation boundaries. The files under `prompts/` are context-complete handoffs for implementation and specialist work.
 
 Final localisation must be written during implementation. Working labels in this pack describe functions and should not be copied into player-facing text without a localisation pass.
 

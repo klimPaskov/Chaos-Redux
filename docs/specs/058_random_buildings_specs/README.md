@@ -1,8 +1,16 @@
 # Event 58 Random Buildings specification package
 
-This package contains the accepted planning handoff for Event 58, Random Buildings.
+This package contains the source planning handoff for Event 58, Random Buildings.
 
-Extract the top-level `058_random_buildings_specs` folder into `docs/specs/`.
+The installed package is `docs/specs/058_random_buildings_specs/`.
+
+## Design authority and current workflow
+
+The package attributes its premise to the supplied user brief.
+The original user message and claim-level acceptance record are not reproduced here, so approval of expanded mechanics remains unresolved until the implementation owner records the supporting user decision or parent acceptance.
+Historical planning reviews, catalog snapshots, and package status labels do not establish approval or current implementation.
+Use current [AGENTS.md](../../../AGENTS.md), [event guidance](../../../.agents/skills/chaos-redux-events/SKILL.md), [asset guidance](../../../.agents/skills/chaos-redux-event-assets/SKILL.md), and [subagent guidance](../../../.agents/skills/chaos-redux-subagents/SKILL.md) for execution.
+The source design remains in the files listed below.
 
 ## Package map
 
@@ -30,4 +38,4 @@ The event owns selection, placement dispatch, transaction reporting, event-log c
 
 ## Planning status
 
-The specification is complete as a design package. It is not an implementation claim. Exact Clausewitz syntax, live registry identifiers, vanilla building database behavior, railway graph operations, supply-hub placement, facility APIs, and final weights remain implementation evidence gates because the live repository, offline Paradox wiki snapshot, installed vanilla files, and HOI4 MCP server were not mounted in this environment.
+The specification is complete as a design package. It is not an implementation claim. Exact Clausewitz syntax, live registry identifiers, vanilla building database behavior, railway graph operations, supply-hub placement, facility APIs, and final weights remain implementation evidence gates because those references were unavailable in the original planning environment. Current routes and sources must be discovered again during implementation.

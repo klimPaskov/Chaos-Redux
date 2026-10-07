@@ -1,5 +1,9 @@
 # Event 35 subagent-role review
 
+Historical evidence: source names, hashes, repository observations, and tool/runtime limitations below belong to the original planning pass.
+They do not establish current local file availability, current service health, implementation status, or design approval.
+Use the package entry point and current owner skills for active guidance.
+
 ## Execution status
 
 All 20 supplied subagent definitions were read in full. The current session did not expose the project custom-subagent runtime, and no local Codex, Qoder, or Cursor executable was available in the active container. No subagent was executed.

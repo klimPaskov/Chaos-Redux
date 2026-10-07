@@ -68,7 +68,9 @@ The supplied export conflict names Event 43 Massive flood while the accepted ass
 
 Do not guess.
 
-When final source confirms Monsters from the Deep, align Event 43 as a Severe Alien Invasions member.
+A matching event name does not resolve cluster membership.
+Event 043's package specifies no cluster, while this package proposes Severe Alien Invasions membership.
+Require the parent's explicit resolved membership decision and acceptance basis before editing that relationship.
 
 Otherwise report the conflict and leave the unresolved row unchanged.
 

@@ -44,7 +44,7 @@ Centralize every threshold, cap, duration, chance anchor, influence movement, ar
 Required stable identities include:
 
 - Event `067`
-- entry event `chaosx.nr067.1`
+- entry event `chaosx.nr67.1`
 - one canonical Generalissimo character token
 - one original-host reference
 - one current Generalissimo country reference
@@ -54,7 +54,7 @@ Required stable identities include:
 - three evolution milestones
 - removal resolution states
 - junta civil-war identity markers
-- manual scenario `SCN-015`, subject to authoritative collision confirmation
+- manual scenario `SCN-024`, raw `24`, reserved in `docs/specs/shared_identifier_registry.md`
 - public world-end branch identity
 - bounded world-end actor registry
 
@@ -340,7 +340,7 @@ Implement the source logic needed by Generalissimo's Coup.
 
 Proposed ID:
 
-- `SCN-015`
+- `SCN-024`
 
 Confirm the ID against the authoritative workbook and runtime registry before use.
 

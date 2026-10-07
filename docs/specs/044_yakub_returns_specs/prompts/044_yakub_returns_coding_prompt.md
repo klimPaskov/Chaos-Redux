@@ -157,7 +157,8 @@ Wire slots, image selectors, audio IDs, base sounds, volume wrappers, `global.cu
 
 ## Scenario
 
-Implement Yakubite Uprising under the verified available ID, proposed as `SCN-015`.
+Implement Yakubite Uprising under reserved `SCN-023` / raw `23` from `docs/specs/shared_identifier_registry.md`.
+The user-authorized central allocation approves identity only; preserve incumbent runtime IDs and the separate scenario-content acceptance requirements.
 
 Support Movement and World Order types at Low, Medium, High, and Maximum intensity. Use one shared confirmation flow. Movement never sets world end during setup. World Order creates a valid terminal conflict. Clear every scenario-only bypass after setup and prevent duplicates.
 

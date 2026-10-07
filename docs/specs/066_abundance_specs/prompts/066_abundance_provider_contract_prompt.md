@@ -1,6 +1,6 @@
 # Event 066 Abundance Provider Contract Prompt
 
-Use `chaosx_scripted_system_architect` with `fork_context=false` for the reusable scripted architecture and bounded implementation work described here.
+Use `chaosx_scripted_system_architect` with `fork_turns="none"` for the reusable scripted architecture and bounded implementation work described here.
 
 ## Task
 

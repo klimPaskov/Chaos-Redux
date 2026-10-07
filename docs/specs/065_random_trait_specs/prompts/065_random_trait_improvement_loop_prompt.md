@@ -2,12 +2,12 @@
 
 ## Invocation
 
-Run `chaosx_improvement_loop_planner` with `fork_context=false`.
+Run `chaosx_improvement_loop_planner` with `fork_turns="none"`.
 
 ## Event context
 
 - Event ID: `65`
-- Event slug: `065_random_trait`
+- Event slug: `random_trait`
 - Event name: `Random Trait`
 - Type: Minor Repeatable
 - Chaos level: `1`

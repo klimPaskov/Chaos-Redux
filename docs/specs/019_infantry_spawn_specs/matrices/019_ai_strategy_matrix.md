@@ -57,8 +57,7 @@
 
 ## Evolution II prototype disposition
 
-AI prototype handling evaluates every active unmanaged advanced lot through the
-same exact-ledger gates used by the selected-lot player actions.
+AI prototype handling evaluates every active unmanaged advanced lot through the same exact-ledger gates used by the selected-lot player actions.
 
 | Condition | Preservation weight | Cannibalization weight | Guard |
 | --- | ---: | ---: | --- |
@@ -70,9 +69,7 @@ same exact-ledger gates used by the selected-lot player actions.
 | Capital-adjacent wartime threat | situational | zero | AI does not dismantle an advanced formation during immediate capital defense |
 | Preserved prototype later becomes unsustainable | none | medium to high | preserved disposition remains cannibalizable through the same exact teardown |
 
-Successful preservation adds a restricted-reinforcement national burden and one
-finite profile-specific research insight. Cannibalization never counts as
-supervised demobilization and never receives its achievement credit.
+Successful preservation adds a restricted-reinforcement national burden and one finite profile-specific research insight. Cannibalization never counts as supervised demobilization and never receives its achievement credit.
 
 ## Claimant AI reactions
 
@@ -102,9 +99,7 @@ supervised demobilization and never receives its achievement credit.
 | Species Realm below the stability threshold or at peace | Ratify the District Compacts | garrisoning, infrastructure, and moderate war restraint |
 | Species Realm at war with adequate stability | Proclaim the Family's Primacy | army growth, family force bias, and aggressive war release once the outward campaign opens |
 
-All four policies use the same payment triggers as the player decisions and a
-shared governance cooldown. Their AI weights read stability and war state; the
-resulting flags activate self-removing AI strategy profiles.
+All four policies use the same payment triggers as the player decisions and a shared governance cooldown. Their AI weights read stability and war state; the resulting flags activate self-removing AI strategy profiles.
 
 ## Derivative target selection
 
@@ -118,11 +113,7 @@ resulting flags activate self-removing AI strategy profiles.
 | Golem district integration | owned, controlled industrial or rail-served non-core state | industry/rail and open foundries | war, active integration, infrastructure cap, missing coal-golem/trains payment |
 | Local submission demand | neighboring ordinary country | species route, family primacy, small target | active demand/cooldown, war, invalid or protected target, no expansion readiness |
 
-The Regional Predator capstone is not granted from a route label alone. AI and
-players must prove a consolidated hierarchy, completed family transformation,
-sustainable reinforcement, resolved former-state pressure, at least one
-integrated district, the centralized controlled-state threshold, and the
-centralized recorded-war-victory threshold.
+The Regional Predator capstone is not granted from a route label alone. AI and players must prove a consolidated hierarchy, completed family transformation, sustainable reinforcement, resolved former-state pressure, at least one integrated district, the centralized controlled-state threshold, and the centralized recorded-war-victory threshold.
 
 ## AI blockers
 

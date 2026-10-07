@@ -4,7 +4,7 @@ Create the complete visual asset package for Chaos Redux Event 029, Riches Found
 
 Read the repository `AGENTS.md`, `chaos-redux-event-assets`, the complete `docs/specs/029_riches_found_specs/` package, and the current installed-vanilla and Chaos Redux references for every requested asset type before production.
 
-Use context-free project subagents with `fork_context=false`.
+Use context-free project subagents with `fork_turns="none"`.
 
 Route generated non-icon art to `chaosx_generated_event_art`.
 

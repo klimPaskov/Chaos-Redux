@@ -1,5 +1,7 @@
 # Event 063 role reviews
 
+Historical manual planning review; recorded launcher failures do not establish current service availability or independent audit completion.
+
 ## Review method
 
 Every supplied subagent definition was read in full before this package was drafted. The definitions were then used as separate review lenses over the design. Each review below records the role's applicability, the main question it tested, and the resulting disposition.

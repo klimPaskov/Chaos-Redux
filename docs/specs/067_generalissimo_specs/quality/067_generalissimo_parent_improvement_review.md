@@ -1,5 +1,8 @@
 # Event 067 Parent Improvement Review
 
+The original `SCN-015` proposal and its pending collision check are historical and superseded by Generalissimo's Coup `SCN-024` / raw `24` in [the shared identifier registry](../../shared_identifier_registry.md).
+The original receipt below remains unchanged.
+
 ## Review status
 
 This is a parent-authored depth and anti-bloat review. It is not an independent `chaosx_improvement_loop_planner` result.

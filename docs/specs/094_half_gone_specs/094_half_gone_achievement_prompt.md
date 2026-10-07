@@ -1,8 +1,8 @@
 # Event 094 achievement implementation and icon prompt
 
-Read all ten numbered specification parts in `docs/specs/094_half_gone_specs/`, the relevant separate prompt files, and the source/decision, coverage, and blocker reports in `docs/plans/094_half_gone_plans/`. Read the current original user brief before changing design. Fully reread current supplied policy and applicable must-read skills. Source-file placement does not convert an unreviewed proposal into user approval.
-
-This package's author read all 46 supplied sources and seven selected live repository files. No supplied subagent was executed, no native HOI4 MCP audit ran, and no game or production asset was completed. Preserve that status until real evidence changes it. Spawn actual named roles with fully self-contained bounded prompts and `fork_turns="none"` where the current Codex collaboration tool supports it. Never relabel parent inspection or a Python model as an independent agent or engine result.
+Read the [package README](README.md) for design authority and historical planning evidence, and the current original brief and relevant parts before using this specialist handoff.
+Apply current AGENTS.md and the owner skills named below.
+The parent must pass this event context, accepted requirements, current paths and bounded ownership explicitly to every context-free specialist.
 
 Implement all four Part 9 concepts using the actual existing achievement registry. Keep their supplied labels as design labels until localization review. Read `chaos-redux-events`, `chaos-redux-event-assets`, the current achievement owner patterns, and any native reference sections needed for the exact conditions.
 

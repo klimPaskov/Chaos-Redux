@@ -2,11 +2,16 @@
 
 ## Triggerable scenario
 
-Working scenario ID: `SCN-015`
+Reserved scenario ID: `SCN-020`
+
+Raw triggerable ID: `20`
 
 Working scenario name: All Times at Once
 
-The ID is available in the supplied CSV export and no indexed repository match was found. Implementation must still confirm the authoritative XLSX and live registry before reserving it.
+The [shared identifier registry](../../shared_identifier_registry.md) reserves this identity for Event 030 under the user's 7 October 2026 allocation instruction.
+The former `SCN-015` proposal is superseded, and that identity belongs to Missile Age.
+This allocation approves identifier ownership only, not the surrounding design or runtime implementation.
+Recheck the central reservation and current runtime/workbook occupancy before integration.
 
 The scenario has one type. It uses the shared Low, Medium, High, and Maximum intensity slider.
 

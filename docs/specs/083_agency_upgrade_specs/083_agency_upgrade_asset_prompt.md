@@ -4,7 +4,7 @@ Implement the visual handoff in specification Parts 4 and 5 using `chaos-redux-e
 
 ## Reference and source pass
 
-Read the actual vanilla-reference README, catalog, matching contact sheets, and relevant source examples before production. The required reference library was not supplied in the planning archive and has not been visually inspected in this package. Do not claim style matching on that basis.
+Read the canonical [reference README](../../../.agents/skills/chaos-redux-event-assets/assets/gfx_references/README.md), catalog, matching contact sheets, and relevant source examples before production. The required reference library was not supplied in the planning archive and has not been visually inspected in this package. Do not claim style matching on that basis.
 
 Use the research notes for period boundaries and occupational variety. Produce fictional period-grounded event art, not an invented archival attribution. Reuse existing country agency cosmetics through their native consumers. Real-person portraits and country flags are not required assets for this design.
 
@@ -31,7 +31,8 @@ Use the project report-image processor at `.agents/skills/chaos-redux-event-asse
 
 ## Icon composition and processing
 
-Give the consolidated modifier icon a single clear intelligence-institution silhouette. Keep it distinguishable from the two achievement silhouettes. Use the project's icon-worker process and a transparent source where required by the matching reference type.
+Give the consolidated modifier icon a single clear intelligence-institution silhouette. Keep it distinguishable from the two achievement silhouettes. Use the project's icon-worker process and request native ImageGen transparency for alpha-backed icon sources under [the current asset skill](../../../.agents/skills/chaos-redux-event-assets/SKILL.md).
+Preserve the native alpha through processing and conversion; background removal is a documented fallback.
 
 Achievement sources are separate transparent foreground compositions. Produce the completed, grey, and not-eligible triplets through `process_achievement_icons.py`, using the immutable project templates and their required placement rules. Do not draw a fake replacement border or approximate the template overlay manually.
 

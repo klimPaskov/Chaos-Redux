@@ -2,7 +2,7 @@
 
 ## Handoff
 
-This is the full design specification and production-prompt package for Military Madness. Extract the ZIP into `docs/specs/` so that this folder becomes `docs/specs/087_military_madness_specs/`.
+This is the design specification and production-prompt package at `docs/specs/087_military_madness_specs/`.
 
 Start with Parts 1–6, then use the coding prompt for implementation. The goal prompt is a shorter task entry point. Asset and achievement production have separate complete assignments.
 
@@ -43,7 +43,7 @@ There is no super-event, focus-tree, portrait, or new military-unit assignment b
 | [Research and source notes](087_military_madness_research_and_source_notes.md) | Source precedence, legacy mismatch, exact partial-reading boundaries, and verification blockers |
 | [Source-reading manifest](087_military_madness_source_reading_manifest.json) | All 42 supplied text files, full-read line ranges, sizes and hashes |
 | [Asset manifest](087_military_madness_asset_manifest.json) | Fourteen proposed runtime textures, all marked as not produced |
-| [Document checks](087_military_madness_document_checks.md) | Executed package-integrity checks and their limited scope |
+| [Document checks](087_military_madness_document_checks.md) | Historical delivery checks and their limited scope |
 | [Package manifest](087_military_madness_package_manifest.json) | File inventory, hashes, measured counts, and validation status |
 
 ## Important limits

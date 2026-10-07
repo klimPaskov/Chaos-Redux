@@ -18,7 +18,7 @@ Consult the required offline Paradox Wiki pages, installed vanilla documentation
 - Implement the three institutional settlements and the Event 16-controlled Directorate settlement.
 - Implement evolutions Lost Archives, Scientific Dark Age, and Knowledge Collapse with correct Chaos thresholds, MTTH pacing, enable controls, logging, and difference-only active escalation.
 - Implement foreign aid, specialist sanctuary, exploitation, replacement contracts, and accepted event connections.
-- Register Event 60 with the resolved Scientific Research cluster as a High member only after the authoritative registry is verified.
+- Use reserved Scientific Research cluster ID `21` from the [shared identifier registry](../../shared_identifier_registry.md). Retain the proposed High membership subject to accepted design and implementation evidence.
 - Apply Event 60 Chaos changes only to concrete bounded outcomes in the Chaos impact matrix.
 
 ## Technology and slot hard gate

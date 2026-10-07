@@ -2,7 +2,8 @@
 
 A repeatable American weapons-testing program that leaves foreign minor countries with damaged towns, lost people, and another request arriving before reconstruction is finished.
 
-**Extract this folder into `docs/specs/`.** The resulting source location is `docs/specs/076_usa_tests_weapons_specs/`. Implementation work and actual specialist handoffs belong in `docs/plans/076_usa_tests_weapons_plans/`.
+The installed source location is `docs/specs/076_usa_tests_weapons_specs/`.
+Implementation plans belong in `docs/plans/076_usa_tests_weapons_plans/`; actual specialist handoffs belong in its `subagent_handoffs/` directory.
 
 The supplied brief fixes the event identity, coercive choice, wave structure, real damage, delayed rewards, three evolutions, and Military Preparation / Low membership. This package expands those requirements into a proposed implementation design. Its numerical calibration, recovery actions, achievements, and presentation choices are new design decisions within the requested expansion. They have not been playtested or separately approved by the user.
 
@@ -40,7 +41,10 @@ Start with the [coding prompt](prompts/076_usa_tests_weapons_coding_prompt.md) a
 
 All player-facing wording remains direction-only. The supplied event and evolution names are retained as source labels. Working mechanic labels, asset labels and achievement IDs are not finished localisation.
 
-## Evidence boundary
+## Original planning delivery: evidence boundary
+
+The following record describes the authoring environment and supplied snapshots.
+It does not establish present service health, current implementation status, or approval of the package's added design choices.
 
 Every text file supplied in the archive, including all 20 subagent definitions, was read. The original event brief was also read. A bounded read-only inspection of the repository used commit `879b3007d3b6bf75c726c11635473fccda45c569`. The full live repository, all linked reference files, installed vanilla files and offline wiki set were not read. The source-limit document identifies the actual inspected material and remaining requirements.
 

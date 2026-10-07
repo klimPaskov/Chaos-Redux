@@ -1,5 +1,9 @@
 # Package-level review
 
+Historical authoring-run record.
+Its environment, file counts and passed-check statements do not certify the edited package or current runtime.
+Current documentation checks are recorded in the repository cleanup handoff for packages 067 through 072.
+
 ## What this review is
 
 This is the authoring agent's review of the specification files.

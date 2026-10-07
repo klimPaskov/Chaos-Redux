@@ -2,10 +2,7 @@
 
 > **Planning-only and superseded for live status (2026-08-22):** This audit proves specification coverage, not current runtime completion. Its 2026-07-18 audit, catalog, and regional-asset assertions remain historical evidence for their bounded tranche. The current Event 19 runtime is decisions-only with no scripted GUI, the live scenario is SCN-013, and the later provider-coverage extension remains open under the current source-of-truth map and provider handoffs. The restored asset package preserves the historical raw/master/runtime provenance, but those records do not close the provider-extension or whole-event gate.
 
-This is the planning-package audit. Live implementation status and evidence are
-owned by `review/blockers_and_uncertainty.md` and the consolidated parent audit
-packet. The later improvement-loop addendum supersedes the first closure-only
-planner disposition.
+This is the planning-package audit. Live implementation status and evidence are owned by `review/blockers_and_uncertainty.md` and the consolidated parent audit packet. The later improvement-loop addendum supersedes the first closure-only planner disposition.
 
 ## User requirement coverage
 
@@ -61,9 +58,7 @@ planner disposition.
 
 ## Accepted plans and disposition
 
-This planning package originally contained no separate unresolved improvement
-addendum. The later dated near-completion addendum is now implemented and is the
-authoritative disposition for its three findings.
+This planning package originally contained no separate unresolved improvement addendum. The later dated near-completion addendum is now implemented and is the authoritative disposition for its three findings.
 
 Future implementation plans and subagent handoffs must receive one of these dispositions:
 
@@ -100,15 +95,7 @@ Future implementation plans and subagent handoffs must receive one of these disp
 
 ## Completion recommendation
 
-The event planning package was accepted for implementation. The named
-improvement-loop planner's findings are implemented, and exactly two
-engine-constrained substitutes were approved: exact recorded-formation
-recreate/prove/delete and controlled one-formation combat trials. The 27 fixed
-identity scenes are wired. The 7/18 regional candidate contains the accepted
-raw-to-spot-master-to-native-PNG/runtime-TGA chain, with visual/runtime rows
-passing. The independent remediation re-audit handoff
-`docs/plans/019_infantry_spawn_plans/subagent_handoffs/019_regional_full_flag_postprocess_remediation_reaudit_2026_07_18.md`
-is PASS and clears the regional asset gate for parent-owned package promotion.
+The event planning package was accepted for implementation. The named improvement-loop planner's findings are implemented, and exactly two engine-constrained substitutes were approved: exact recorded-formation recreate/prove/delete and controlled one-formation combat trials. The 27 fixed identity scenes are wired. The 7/18 regional candidate contains the accepted raw-to-spot-master-to-native-PNG/runtime-TGA chain, with visual/runtime rows passing. The independent remediation re-audit handoff `docs/plans/019_infantry_spawn_plans/subagent_handoffs/019_regional_full_flag_postprocess_remediation_reaudit_2026_07_18.md` is PASS and clears the regional asset gate for parent-owned package promotion.
 The historical catalog snapshot records Event 19 and SCN-013 as `Fully Functional` after its bounded final completion audit authorized promotion.
 
 Live status is owned by `docs/plans/019_infantry_spawn_plans/source_of_truth_map.md` and `review/blockers_and_uncertainty.md`. The historical workbook/catalog reconciliation, 33/33 package inventory, and 2026-07-18 final completion audit remain bounded evidence; they do not certify the later provider-522/provider-523 and expanded unit-coverage extension. The current provider-extension, normalized dynamic-provider odds, and final documentation gates remain open, and no current “no closure gate remains” claim is made here.

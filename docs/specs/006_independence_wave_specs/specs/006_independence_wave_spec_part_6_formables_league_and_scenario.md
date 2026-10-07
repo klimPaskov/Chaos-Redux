@@ -63,35 +63,15 @@ The category attachment crosswalk and current MCP GUI evidence are retained in `
 
 The source-implemented CHU/ASY package tranche remains a separate fail-closed design surface rather than part of the current 32-package runtime attestation set across 29 compatible reservation groups. IW-043 on vanilla carrier `CHU` and IW-058 on vanilla carrier `ASY` remain HOLD / fail-closed until their sourced identity, rights, package, and runtime gates are independently accepted. IW-023 TRA is admitted to the runtime and SCN-008 dispatch sets by the dated reconciliation handoff, but FORM-08 remains a separate fail-closed Vojvodina/Slavonia member, consent, and anchor gate. Their signature formable surfaces remain separate gates:
 
-- FORM-12 and FORM-13 must use the IW-043 member, anchor, rights, consent,
-  integration, and cleanup contract.
-- FORM-18 and the sovereign Mesopotamian autonomy settlement must use the
-  IW-058 guarantee, anchor, consent, integration, and cleanup contract.
-- The exact compatibility adapter for vanilla `form_idel_uralic_republic`,
-  `neo_assyrian_empire_decision`, and `neo_mesopotamia_decision` passed its
-  parent re-audit. It suppresses those shortcuts only for active Event 006
-  IW-043/IW-058 carriers and preserves ordinary and Event 005 behavior.
+- FORM-12 and FORM-13 must use the IW-043 member, anchor, rights, consent, integration, and cleanup contract.
+- FORM-18 and the sovereign Mesopotamian autonomy settlement must use the IW-058 guarantee, anchor, consent, integration, and cleanup contract.
+- The exact compatibility adapter for vanilla `form_idel_uralic_republic`, `neo_assyrian_empire_decision`, and `neo_mesopotamia_decision` passed its parent re-audit. It suppresses those shortcuts only for active Event 006 IW-043/IW-058 carriers and preserves ordinary and Event 005 behavior.
 
-The CHU/ASY package surfaces remain source-implemented but unadmitted. The exact package setup may write the FORM-12/13/18 adapter and achievement-writer attestations only after the matching carrier passes the current package gate. FORM-12 and FORM-13 require three external consenting members with
-three distinct controlled anchors. FORM-18 requires two external consenting
-members with two distinct controlled anchors. All three use a paid 180-day
-congress, a frozen invitation ledger, explicit human replies or scored AI
-consent, an immutable terminal recount, and a bounded retry cooldown.
+The CHU/ASY package surfaces remain source-implemented but unadmitted. The exact package setup may write the FORM-12/13/18 adapter and achievement-writer attestations only after the matching carrier passes the current package gate. FORM-12 and FORM-13 require three external consenting members with three distinct controlled anchors. FORM-18 requires two external consenting members with two distinct controlled anchors. All three use a paid 180-day congress, a frozen invitation ledger, explicit human replies or scored AI consent, an immutable terminal recount, and a bounded retry cooldown.
 
-Successful formation applies only a carrier cosmetic identity and then runs
-two sovereignty-preserving integration stages. Member countries retain their
-tags, sovereignty, Event 006 origin, territory, focus content, and units. No
-member annexation, subject creation, blanket core grant, or origin-ending
-shortcut is available. FORM-18's military method requires the tracked defensive
-former-host, sovereign-anchor, and corridor-control receipts before payment and
-rejects an offensive pretext. Its sovereign-autonomy compact is a mutually
-exclusive bilateral alternative with boundary, protection, jurisdiction,
-transit, property, and security terms. The two IW-043 route proofs and the
-three IW-058 proof writers are sole, exact-contract call sites.
+Successful formation applies only a carrier cosmetic identity and then runs two sovereignty-preserving integration stages. Member countries retain their tags, sovereignty, Event 006 origin, territory, focus content, and units. No member annexation, subject creation, blanket core grant, or origin-ending shortcut is available. FORM-18's military method requires the tracked defensive former-host, sovereign-anchor, and corridor-control receipts before payment and rejects an offensive pretext. Its sovereign-autonomy compact is a mutually exclusive bilateral alternative with boundary, protection, jurisdiction, transit, property, and security terms. The two IW-043 route proofs and the three IW-058 proof writers are sole, exact-contract call sites.
 
-These adapters are operational only for the exact Event 006 carriers and do
-not promote the wider formable registry. They must not use a fallback or broad
-core grant.
+These adapters are operational only for the exact Event 006 carriers and do not promote the wider formable registry. They must not use a fallback or broad core grant.
 
 ## Formation methods
 
@@ -570,9 +550,7 @@ The formal league can use a faction when military cooperation becomes real. Its 
 
 ## League formation super-event
 
-Event 006 uses the ordinary project-wide super-event numbers 23 (league
-formation) and 24 (dangerous coordinated revisionism) for display slots, audio
-IDs, and Event Log payloads.
+Event 006 uses the ordinary project-wide super-event numbers 23 (league formation) and 24 (dangerous coordinated revisionism) for display slots, audio IDs, and Event Log payloads.
 
 A super-event fires when the first durable formal league is proclaimed.
 

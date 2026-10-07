@@ -2,7 +2,9 @@
 
 This ledger records conflicts found across the supplied task brief, mechanics guide, and catalog exports.
 
-The current Event 46 attachment is the accepted design source for this specification.
+This ledger preserves the supplied Event 046 planning direction.
+Its acceptance labels remain unresolved where no attributable original decision is retained, as stated in the README.
+Historical availability findings do not describe the current workspace.
 
 Implementation still must inspect the authoritative repository and workbook before editing.
 
@@ -15,8 +17,8 @@ Implementation still must inspect the authoritative repository and workbook befo
 | Domestic Unrest cluster | Current task creates it, Clusters CSV does not contain it | New accepted cluster | Add Events 1, 21, and 31 with accepted severities |
 | Event 21 cluster membership | Task keeps Wars and adds Domestic Unrest, current event catalog has one Cluster ID field | Multiple membership is accepted | Use or create a safe multi-membership representation, preserve relationship-specific severity |
 | Event 2 Diseases severity | Task says Severe, Events CSV already says Cluster 8 Severe and Diseases row lists member 2 | Already aligned in supplied export | Verify authoritative workbook and runtime, do not duplicate |
-| Alien Invasions cluster | Task says existing, Clusters CSV does not show it | Accepted cluster identity, numeric ID unresolved | Inspect runtime and workbook before adding or recovering the row |
-| Event 43 identity | Task says Monsters from the Deep, Events CSV says Massive flood | Task assignment is accepted for the intended reworked event, current export is stale or conflicting | Inspect Event 43 specs, source, and localisation, then align or report blocked conflict |
+| Alien Invasions cluster | Supplied Event 046 direction says existing; planning export omits it; Event 043 README specifies no cluster | Membership and acceptance remain unresolved across packages | Require explicit parent resolution before editing membership or allocating an ID |
+| Event 43 identity | Supplied Event 046 direction says Monsters from the Deep; planning Events CSV says Massive flood | Identity direction does not settle the separate no-cluster versus Alien Invasions conflict | Inspect current evidence and obtain the parent's explicit membership resolution before workbook changes |
 | Evolution V threshold | Task requires 1000+, mechanics guide says automatic events freeze at World Collapse | Evolution V must remain reachable | Audit live freeze order and implement normal or bounded pre-freeze route |
 | Atomic application | Task requests all results before application, script engine does not promise general rollback | Logical family atomicity is accepted | Preplan every result, resume partial commit idempotently, never reroll or claim unsupported rollback |
 | Population rewrite | Task allows new absolute state population, shared helpers are loss and Deaths oriented | Event 46 needs an owner-specific absolute rewrite | Bypass Deaths and migration, reconcile recruitable manpower for increases and decreases |

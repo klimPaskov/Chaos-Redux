@@ -1,5 +1,16 @@
 # Event 066 Abundance Specification Pack
 
+## Authority and disposition
+
+The user-brief coverage matrix records reported user requirements; the decision log records planner choices.
+Provider architecture, deduplication, pending-choice handling, Chaos, and achievements require acceptance independently of that coverage label.
+Acceptance remains `unresolved` where the original user brief or attributable parent decision cannot be recovered; preserve those claims for review under [AGENTS.md](../../../AGENTS.md#specs-and-plans).
+The [design record](quality/066_abundance_design_decision_log.md) and numbered specifications are the design map; [current event guidance](../../../.agents/skills/chaos-redux-events/SKILL.md) and [subagent routing](../../../.agents/skills/chaos-redux-subagents/SKILL.md) own implementation workflow.
+Original source-reading, repository-baseline, tooling-failure, and manual-review reports are historical planning evidence, not current source verification, service-health findings, or completed independent audits.
+The parent’s 2026-10-07 allocation sets Sudden Abundance to cluster ID `15` after workbook/runtime occupancy verification; see the [shared identifier registry](../shared_identifier_registry.md).
+The user authorized unused identifier assignments; this numeric allocation does not approve the broader design.
+
+
 ## Catalog identity
 
 - Event ID: `66`
@@ -10,7 +21,7 @@
 - Logical cluster slots: Low, Medium, High
 - Specification folder: `docs/specs/066_abundance_specs/`
 
-## Accepted design
+## Design summary
 
 Every valid country receives four independently generated choices.
 Each choice names one value at baseline, while later evolutions can combine two or three values.

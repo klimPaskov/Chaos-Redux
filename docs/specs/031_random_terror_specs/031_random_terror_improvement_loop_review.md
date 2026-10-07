@@ -327,8 +327,8 @@ Further additions would likely create duplicate decisions, more visible values, 
 
 The following are implementation gates, not missing design depth.
 
-1. Verify `SCN-014` in the authoritative workbook and live registry.
-2. Verify the proposed Cluster `9` identity before future registration.
+1. Preserve Global Jihad's existing `SCN-016` identity under the authoritative workbook, runtime and shared identifier registry.
+2. Preserve the optional Internal Fracture reservation at raw `event_cluster_id` `22` under the shared identifier registry and obtain separate design acceptance before future registration; retain current Domestic Unrest membership `16` unless an accepted change specifies otherwise.
 3. Audit the protected country-carrier pool and simultaneous actor limit.
 4. Inspect the current Event 31 placeholder and pre-fire actor pipeline.
 5. Choose the exact event-owned state map-mode implementation from live precedents.

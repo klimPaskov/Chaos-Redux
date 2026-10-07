@@ -2,7 +2,7 @@
 
 Implement Chaos Redux Event 095 from docs/specs/095_occupation_revolt_specs/. Read README, original brief, all 14 parts, six prompts and every supporting matrix, source record, validation case and specialist assignment listed in the index. Resolve accepted corrections in the canonical specs.
 
-Before coding, fully read every current supplied Project Source and applicable must-read skill. Follow CHAOS_REDUX_PROJECT_SOURCE_PROTOCOL.md when available. Extract nested archives and read full files, including subagent definitions. The planning task read all 46 supplied text files but did not complete external/native reference reads, isolated agents, HOI4 MCP validation or implementation. Resolve those gaps. Do not substitute hashes, excerpts or historical reports for current reading and execution.
+Before coding, fully read every current supplied Project Source and applicable must-read skill. Follow CHAOS_REDUX_PROJECT_SOURCE_PROTOCOL.md when available. Read current sources and role definitions. The removed ZIP is not required. The planning task read all 46 supplied text files but did not complete external/native reference reads, isolated agents, HOI4 MCP validation or implementation. Resolve those gaps. Do not substitute hashes, excerpts or historical reports for current reading and execution.
 
 Preserve 095, Occupation revolt, Minor Repeatable, Chaos 1, Liberations/Medium and the existing root identity. Restore the actual displaced country: exile government, survivor elsewhere or annexed national identity. Use a real dormant claimant only when no suitable primary exists. Never invent a replacement nation. Derive authentic homeland, coherent territory and forces from actual geography, population, local support, resources and occupation weakness.
 

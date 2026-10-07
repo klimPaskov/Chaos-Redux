@@ -2,7 +2,7 @@
 
 Start with 071_persia_index.md and read all eighteen 071_persia_spec_part_* files, in sequence. Follow 071_persia_coding_prompt.md, 071_persia_asset_prompt.md, 071_persia_super_event_prompt.md, 071_persia_achievement_prompt.md, and 071_persia_decision_mission_prompt.md there. Read the country matrix, research notes, source receipt, parent review, and subagent handoffs. Planning labels are not final localisation.
 
-Follow AGENTS.md, mechanics, dynamic-helper references, and the event, planning, focus-tree, decision/mission, GUI, asset, super-event, 3D, portrait/ComfyUI, debug, subagent, and improvement-loop skills. Read actual repository sources, mandatory offline wiki, installed vanilla/DLC, map data, unit/cost APIs, asset references, and workbook. Preserve unrelated changes.
+Follow AGENTS.md, mechanics, dynamic-helper references, and the event, planning, focus-tree, decision/mission, GUI, asset, super-event, 3D, portrait-production, subagent, and improvement-loop skills. Read actual repository sources, mandatory offline wiki, installed vanilla/DLC, map data, unit/cost APIs, asset references, and workbook. Preserve unrelated changes.
 
 Keep chaosx.nr71.1 Minor Fire-Once, Chaos level 1, Formables Medium. Reuse Iran, preserve government and assets, block an equivalent completed restoration, and resolve meaningful tree carryover. Audit vanilla, Chaos Redux, Workshop, and local-mod tags before any new identity. Implement all country packages, registration, actor history, evolutions, event details, and workbook-led catalog updates.
 

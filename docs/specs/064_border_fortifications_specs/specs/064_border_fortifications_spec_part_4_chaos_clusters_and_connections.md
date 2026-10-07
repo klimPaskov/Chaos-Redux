@@ -116,7 +116,8 @@ Event 064 belongs to two clusters.
 
 The event remains a Minor Repeatable member in both contexts. Its own Chaos level remains 1.
 
-The cluster catalog and current repository cluster runtime are not yet aligned with the accepted Events 001 to 064 map. Implementation must create or reconcile both cluster definitions, register the member rows, update cluster details, and preserve Event 064 as a normal standalone event.
+The [original planning reconciliation](../research/catalog_and_repo_reconciliation.md) reported a mismatch between its catalog and repository snapshots and the proposed Events 001 to 064 map.
+Inspect the current registry and workbook before reconciling the two design memberships, member rows, cluster details, and standalone Event 064 path.
 
 ## Multi-cluster arbitration
 

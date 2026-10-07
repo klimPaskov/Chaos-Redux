@@ -30,6 +30,12 @@ Use those sources to understand how Chaos Redux already works, then expand creat
 
 Inspecting the repo is mandatory, but the specification should not read like a technical audit. Use repo findings to prevent mistakes and match patterns. Keep proof of inspection in the final response checklist, not in admin sections inside the spec.
 
+### Source authority and shared identifiers
+
+Identify the authoritative design parts and their acceptance basis before extending a package; use combined reading copies as navigation when they duplicate those parts. Original archive manifests, source snapshots, and dated QA receipts establish historical evidence, not current checkout integrity or tool availability. Link mutable workflow instructions to the current owner skill and discover current capabilities when the handoff depends on them.
+
+Before proposing a shared scenario or cluster ID, check all active spec packages and reservations, implemented registry definitions and constants including hidden entries, and the canonical workbook `docs/spreadsheets/chaos_redux_events_catalog.xlsx`. CSV exports can orient research but do not establish current occupancy. Distinguish event IDs, manual triggerable-scenario IDs, world-end registry IDs, cluster IDs, and display/sort values explicitly; equal numbers in different namespaces do not establish a collision. Record proposed reservations centrally in `docs/specs/shared_identifier_registry.md` with namespace, owner, status, and source evidence before other packages consume them; a reservation does not prove design acceptance or runtime registration. Preserve implemented IDs and remap colliding proposals with their package references instead of renumbering live content to fit a plan.
+
 ## Specification folder convention
 
 Event source specifications should live in event-specific subfolders under `docs/specs/`.

@@ -1,6 +1,6 @@
 # Prompt for `chaosx_skill_maintainer`
 
-Use `fork_context=false` only after Event 15 implementation reveals a reusable workflow gap.
+Use `fork_turns="none"` only after Event 15 implementation reveals a reusable workflow gap.
 
 Repository: `C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux`
 

@@ -1,12 +1,17 @@
 ﻿# Independence Wave research and implementation-reconciliation package manifest
 
+## Documentation continuation guidance (2026-10-07)
+
+Read [the finishing status](../../../plans/006_independence_wave_plans/takeover_status_2026-10-06.md) and [D35 onward](../../../plans/006_independence_wave_plans/agent_decisions_2026-10-05.md) before treating an earlier missing-work list as an outstanding assignment.
+Those owner records control the disposition of the forty-four Level 2 focus groups, three signature modules, and four ready-member formable contracts.
+
 Generated: 2026-07-14
 
 Architecture aligned: 2026-07-15
 
-## Current architecture
+## Historical architecture and reconciliation receipts
 
-## Current reconciliation (2026-09-20)
+## Historical reconciliation (2026-09-20)
 
 The 2026-09-20 IW-136 Sindh symbol/provenance re-audit at `../../../plans/006_independence_wave_plans/subagent_handoffs/006_event6_iw136_sindh_symbol_source_reaudit_2026-09-20.md` finds no candidate that clears the accepted 1936 identity, source, community, and rights gates. No flag, emblem, processed asset, runtime consumer, or central package admission follows; IW-136 remains fail-closed.
 
@@ -178,7 +183,7 @@ The accepted IW-033/IW-041, IW-026 Macedonia, IW-029 Bosnia, IW-024 Banat, IW-02
 - Current accepted custom-tag collisions: **0**
 - Blocked exact recording runtime slot/audio ID: **23** (ordinary project-wide identifier)
 
-## Current research dispositions
+## Research-registry dispositions (2026-07-15 baseline)
 
 - `automatic_pool_ready`: **9**
 - `automatic_pool_ready_if_not_living`: **44**

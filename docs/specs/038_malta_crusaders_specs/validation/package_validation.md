@@ -1,6 +1,13 @@
 # Package validation
 
-## Validation result
+## Historical validation result
+
+The metrics and ZIP checks below record the original planning-stage package.
+They are retained as dated provenance, not a validator result for the edited checkout.
+The current file ledger is `package_inventory.csv`, excluding itself; the 7 October documentation checks are in `docs/plans/repo_cleanup/specification_package_audit_2026-10-07/handoffs/037_042.md`.
+Current goal length is below the 4000-character owner-skill limit.
+
+## Original result
 
 The Event 38 specification package passed the structural checks available in this planning environment.
 

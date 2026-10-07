@@ -40,7 +40,9 @@ Implement negotiated limits, public settlement, controlled compact, unrestricted
 
 ## Kruger State
 
-Create a viable country only from valid event outcomes. Conflict-check the working tag `KRG`. Derive territory from actual laboratory sites and preserve host viability. Implement public names, route cosmetics, flags, parties, leaders, advisors, ideas with lifecycle, economy, technology, supply, conventional forces, project forces, diplomacy, special-chaos classification, route-specific nonhuman classification, AI, and cleanup.
+Create a viable country only from valid event outcomes. Inspect and reuse the existing `KRG` owner registration in `common/country_tags/016_brilliant_scientist_country.txt`, line 8, and its country-package consumers.
+Check the shared identifier registry before any genuine new-tag proposal.
+Derive territory from actual laboratory sites and preserve host viability. Implement public names, route cosmetics, flags, parties, leaders, advisors, ideas with lifecycle, economy, technology, supply, conventional forces, project forces, diplomacy, special-chaos classification, route-specific nonhuman classification, AI, and cleanup.
 
 Build the 85 to 115 focus tree from the architecture. Include survival, politics, human technocracy, clone, machine, temporal, synthesis, economy, conventional security, project military, diplomacy, intelligence, expansion, integration, world conquest, singularity, crisis, and failure content. Project branches remain invalid without inherited stages. Use varied rewards and route-aware AI.
 
@@ -64,6 +66,6 @@ Update Event 16 docs, event log, evolution views, Event Details, catalog wording
 
 ## Process
 
-Use narrow subagents with `fork_context=false` according to the package routing plan. Every patch receives a handoff. The improvement-loop result is already dispositioned; do not rerun it until its accepted addendum is implemented or a new implementation finding justifies another pass. Run focus, decision, country, localisation, documentation, spreadsheet, and completion audits. Do not claim completion while any accepted plan, route, AI path, asset, audio package, localisation surface, documentation surface, workbook field, or validation blocker remains.
+Use narrow subagents with `fork_turns="none"` according to the package routing plan. Every patch receives a handoff. The improvement-loop result is already dispositioned; do not rerun it until its accepted addendum is implemented or a new implementation finding justifies another pass. Run focus, decision, country, localisation, documentation, spreadsheet, and completion audits. Do not claim completion while any accepted plan, route, AI path, asset, audio package, localisation surface, documentation surface, workbook field, or validation blocker remains.
 
 Report every simplification, omission, fallback, and blocker. Fallbacks require user approval.

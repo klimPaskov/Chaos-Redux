@@ -1,6 +1,9 @@
 # Independence Wave asset production prompt
 
-> Current portrait-routing notice (2026-09-19): The portrait production and blanket regeneration instructions later in this historical prompt are superseded by `AGENTS.md`, and the `chaos-redux-event-assets` portrait-production reference. Every character portrait belongs to `chaosx_portrait_creator`. Grounded subjects use sourced, rights-reviewed placeholders and receive a HOI4-style final only when the user supplies one for validation; do not automatically regenerate existing portraits or use ImageGen to repaint a grounded person. The thirteen candidates in `docs/plans/006_independence_wave_plans/subagent_handoffs/006_event6_portrait_rights_closure_2026-09-19.md` remain held until their exact role, rights, and consumer gates close.
+Read [the package README](../README.md), current takeover status, and exact asset handoffs before assigning outstanding production.
+Portrait ownership and source classification follow [chaos-redux-event-assets](../../../../.agents/skills/chaos-redux-event-assets/SKILL.md), with every character portrait assigned to `chaosx_portrait_creator`.
+Preserve accepted existing portrait bytes and consumers, and use the user's supplied HOI4-style result for any grounded final-style replacement.
+The 2026-09-19 thirteen-candidate rights ledger is dated evidence whose current dispositions must be checked against the takeover records.
 
 Create the complete visual asset package for Chaos Redux Event 6, Independence Wave.
 
@@ -55,7 +58,8 @@ Create the complete visual family for the Event 6 decision category and scripted
 - selected, inactive, locked, warning, active, and completed states where needed
 - clear static fallback for every animated element
 
-Functional layout remains the main agent's responsibility. Generated UI art must not determine exact interactive geometry.
+Functional layout follows `chaos-redux-scripted-gui` and the accepted event-owned `chaosx_event_ui_worker` brief, while the parent retains gameplay and final integration.
+Generated UI art must not determine exact interactive geometry.
 
 ## Animated assets
 
@@ -139,47 +143,26 @@ The candidate registry contains 206 initial packages. Do not bulk-generate all f
 For every package selected for implementation:
 
 - preserve an existing registered base flag when appropriate
-- research historical flags and historically attested symbols, then use
-  ImageGen to reconstruct the accepted design as clean flat flag geometry
-- use ImageGen for every newly produced Event 6 flag, including sourced
-  historical designs, but never turn a flag into an artwork, scene, waving
-  fabric, painterly illustration, gradient composition, or invented historical
-  design
-- generate invented flag geometry only for explicitly fictional,
-  alternate-history, ideology, route, or high-chaos variants
+- research historical flags and historically attested symbols, then use ImageGen to reconstruct the accepted design as clean flat flag geometry
+- use ImageGen for every newly produced Event 6 flag, including sourced historical designs, but never turn a flag into an artwork, scene, waving fabric, painterly illustration, gradient composition, or invented historical design
+- generate invented flag geometry only for explicitly fictional, alternate-history, ideology, route, or high-chaos variants
 - produce normal, medium, and small HOI4 flag files
 - validate orientation and TGA headers
-- use sourced real-person portraits or authentic archival images of the actual
-  institution for every real, restored, regional, indigenous, dynastic,
-  separatist, or otherwise plausibly historical country
-- do not invent or generate an officeholder, commander, route leader, council,
-  or committee portrait for a grounded country; if suitable source material
-  cannot be established, block that country package
-- generate a fictional personal or institutional portrait only when the
-  country itself is truly fictional and high-chaos
-- treat all current 206 candidate-registry rows as grounded and sourced; no
-  current row becomes fictional merely because it is Layer D/E,
-  `high_chaos_only`, uses a new `X` tag, or has alternate-history borders
-- require an explicit accepted source-design classification before generating
-  any later truly fictional high-chaos leader or institution
+- use sourced real-person portraits or authentic archival images of the actual institution for every real, restored, regional, indigenous, dynastic, separatist, or otherwise plausibly historical country
+- do not invent or generate an officeholder, commander, route leader, council, or committee portrait for a grounded country; if suitable source material cannot be established, block that country package
+- generate a fictional personal or institutional portrait only when the country itself is truly fictional and high-chaos
+- treat all current 206 candidate-registry rows as grounded and sourced; no current row becomes fictional merely because it is Layer D/E, `high_chaos_only`, uses a new `X` tag, or has alternate-history borders
+- require an explicit accepted source-design classification before generating any later truly fictional high-chaos leader or institution
 - use only male subjects and male character metadata for Event 6 portraits
-- require matching male name pools and metadata only for permitted truly
-  fictional high-chaos leaders
-- make permitted fictional high-chaos leaders memorable through coherent
-  invented ceremonial dress, extraordinary regalia, body adornment, ritual
-  objects, altered uniforms, or other absurd cultural features; avoid generic
-  faces, contemporary props, meme aesthetics, gore, caricature, mockery, and
-  real-world stereotypes
-- use institutional names and sourced all-male collective or actual
-  institutional images for grounded councils and committees
-- match the canonical vanilla HOI4 painterly portrait treatment, framing, tonal
-  range, period clothing, and background language rather than a generic modern
-  portrait finish
+- require matching male name pools and metadata only for permitted truly fictional high-chaos leaders
+- make permitted fictional high-chaos leaders memorable through coherent invented ceremonial dress, extraordinary regalia, body adornment, ritual objects, altered uniforms, or other absurd cultural features; avoid generic faces, contemporary props, meme aesthetics, gore, caricature, mockery, and real-world stereotypes
+- use institutional names and sourced all-male collective or actual institutional images for grounded councils and committees
+- match the canonical vanilla HOI4 painterly portrait treatment, framing, tonal range, period clothing, and background language rather than a generic modern portrait finish
 - preserve approved existing portrait bytes and their exact consumers unless a later accepted portrait-specific handoff authorizes a replacement; do not run blanket regeneration
-- do not create or register custom Event 6 advisor portrait icons; advisor
-  offices retain their gameplay roles without Event 6 portrait sprites
+- do not create or register custom Event 6 advisor portrait icons; advisor offices retain their gameplay roles without Event 6 portrait sprites
 
-All newly registered Event 6 country, formable, cosmetic, and route tags end in `X`.
+Newly reserved Event 6 country templates, formable, cosmetic, and route identifiers end in `X`.
+Live dynamically materialized country tags follow the current executor contract and are not renamed to their absent static templates by an asset task.
 
 ## Achievement icons
 

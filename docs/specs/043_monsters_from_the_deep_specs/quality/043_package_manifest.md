@@ -1,5 +1,10 @@
 # Event 043 package manifest
 
+This is the historical package-generation receipt.
+Recorded counts, hashes, and validation statements describe the supplied archive, not the maintained local package after documentation cleanup.
+Original rows are preserved as provenance, including subsequently removed duplicate files.
+Use the package README for current navigation and the 2026-10-07 cleanup handoff for changes.
+
 ## Package summary
 
 - Planning date: `2026-09-02`

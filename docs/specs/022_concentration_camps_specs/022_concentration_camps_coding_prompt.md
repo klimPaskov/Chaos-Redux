@@ -28,7 +28,7 @@ Preserve unrelated working-tree changes. Do not use destructive Git reset, check
 
 ## Specification package
 
-Treat these as the accepted source design:
+Read these design sources and resolve their recorded acceptance basis before implementation:
 
 ```text
 022_concentration_camps_index.md
@@ -47,11 +47,7 @@ Treat these as the accepted source design:
 022_concentration_camps_acceptance_criteria.md
 ```
 
-Copy or install the accepted package under:
-
-```text
-docs/specs/022_concentration_camps_specs/
-```
+The package is installed at `docs/specs/022_concentration_camps_specs/`.
 
 Use:
 
@@ -63,7 +59,7 @@ for implementation plans, audits, and handoffs.
 
 ## Initial repository exploration
 
-If exact file locations or ownership remain unclear, spawn `chaosx_repo_explorer` once with `fork_context=false`.
+If exact file locations or ownership remain unclear, spawn `chaosx_repo_explorer` once with `fork_turns="none"`.
 
 Its bounded task is to map:
 
@@ -196,7 +192,7 @@ Requirements:
 
 Country-specific German, Japanese, and Soviet packages replace generic duplicates through adapters.
 
-After first complete pass, spawn `chaosx_decision_mission_auditor` with `fork_context=false`. Allow local safe patches. Review its handoff.
+After first complete pass, spawn `chaosx_decision_mission_auditor` with `fork_turns="none"`. Allow local safe patches. Review its handoff.
 
 ### Phase 5: ongoing mortality and workforce
 
@@ -433,9 +429,12 @@ Required final tests:
 - save and reload during delayed jobs
 - multiplayer information and targets
 - old Spain-specific key and file search
-- fresh error-log delta
+- supplied runtime error evidence, when the user provides it
 
-Use dedicated live-QA saves and the project testing folder structure. Do not use Force Trigger Mode to prove normal eligibility or probabilities.
+Source and MCP checks belong to implementation agents.
+The user owns live-game, multiplayer, and save/reload validation.
+The [debug-playtest skill](../../../.agents/skills/chaos-redux-debug-playtest/SKILL.md) applies only when explicitly invoked.
+Do not launch the game, request logs, or treat Force Trigger Mode as proof of normal eligibility or probabilities.
 
 ## Completion report
 
@@ -452,7 +451,7 @@ Return:
 - achievement status
 - workbook and CSV status
 - validation commands and results
-- live-QA saves, screenshots, logs, and findings
+- any user-supplied live-game observations, with unobserved cases unresolved
 - subagent handoffs
 - remaining blockers
 

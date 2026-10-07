@@ -1,5 +1,14 @@
 # Event 061: Return to Peacetime
 
+## Authority and disposition
+
+The Source authority section attributes the event identity, baseline, category premise, and evolution names and thresholds to the original user brief.
+The seven numbered parts and acceptance matrix also contain planner expansions, including ledger, Readiness, recovery, AI, and achievement rules.
+Acceptance remains `unresolved` where the original user brief or attributable parent decision cannot be recovered; preserve those claims for review under [AGENTS.md](../../../AGENTS.md#specs-and-plans).
+The [design record](quality/061_return_to_peacetime_source_of_truth_map.md) and numbered specifications are the design map; [current event guidance](../../../.agents/skills/chaos-redux-events/SKILL.md) and [subagent routing](../../../.agents/skills/chaos-redux-subagents/SKILL.md) own implementation workflow.
+Original source-reading, repository-baseline, tooling-failure, and manual-review reports are historical planning evidence, not current source verification, service-health findings, or completed independent audits.
+
+
 ## Specification status
 
 This directory is the source design package for Event 61, **Return to Peacetime**.

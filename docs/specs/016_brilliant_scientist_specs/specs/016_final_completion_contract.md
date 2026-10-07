@@ -12,7 +12,8 @@ This contract records the accepted Event 016 closure plan and supersedes earlier
 
 The authority order for closure work is:
 
-1. The user's accepted Event 016 Final Completion Plan, amended by the explicit 2026-09-08 instruction to use the new weapon-free regeneration workflow for firearm-bearing units.
+1. The user's accepted Event 016 Final Completion Plan and later explicit amendments, including the 2026-09-25 no-model-work instruction recorded under Existing-model runtime contract.
+   The 2026-09-08 regeneration direction remains historical for this task.
 2. This contract.
 3. The ten-part Event 016 specification and the D'Rhondan addendum, except where this contract explicitly changes a disposition.
 4. Current implementation evidence, MCP artifacts, audit handoffs, and model manifests.

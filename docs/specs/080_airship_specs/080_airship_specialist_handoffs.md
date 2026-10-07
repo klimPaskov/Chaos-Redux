@@ -1,6 +1,7 @@
 # Event 080: Specialist handoffs
 
-All twenty supplied role definitions were read. None was executed in this session. A configuration file listing a role, a thread limit, or an MCP server does not make that capability callable here. The handoffs below are ready for the project's actual agent environment. They do not represent completed independent review.
+The original planning session read all twenty supplied role definitions and executed none.
+Discover current roles and capabilities through [the current subagent skill](../../../.agents/skills/chaos-redux-subagents/SKILL.md); the dated record below is not a current service-health report. A configuration file listing a role, a thread limit, or an MCP server does not make that capability callable here. The handoffs below are ready for the project's actual agent environment. They do not represent completed independent review.
 
 When the configured Codex launcher is available, use `collaboration.spawn_agent` with `fork_turns="none"` and provide the context bundle explicitly. Each assignment must include the repository root, the seven numbered spec paths, its relevant evidence paths, the owner's allowed files, the remaining blockers, and a concrete handoff destination. Never assume a no-history worker can infer the user brief from this conversation.
 
@@ -40,10 +41,12 @@ Resolve route and shared-owner contracts first. Then the main implementation age
 
 `chaosx_skill_maintainer` becomes relevant only if implementation proves a reusable skill defect. Any such change is a separate bounded maintenance task with evidence. It is not required to rewrite the skill library for this event.
 
-The ComfyUI skill is relevant only when an approved asset workflow needs that provider. The debug-playtest skill applies when the user explicitly invokes a live playtest and the environment is present. Neither was executed here.
+Production routes follow [the current asset skill](../../../.agents/skills/chaos-redux-event-assets/SKILL.md).
+The debug-playtest skill applies only when explicitly invoked by the user; the original planning session did not execute it.
 
 ## Handoff destination and acceptance
 
-Use event-specific implementation working records under `docs/plans/080_airship_plans/` and the existing project conventions for specialist handoffs. Keep approved runtime assets out of documentation-only paths. Do not place temporary continuation prompts in this source-spec folder.
+New implementation records belong under `docs/plans/080_airship_plans/`, with specialist handoffs in its `subagent_handoffs/` subdirectory.
+This target directory is absent from the audited checkout; do not claim earlier companion records are present. Keep approved runtime assets out of documentation-only paths. Do not place temporary continuation prompts in this source-spec folder.
 
 Each worker reports inspected files, changes within its authority, evidence produced, unresolved blockers, and exactly what it did not perform. The parent merges accepted results and reruns affected checks. A successful worker summary does not close another owner's missing contract.

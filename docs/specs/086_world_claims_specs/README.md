@@ -2,7 +2,8 @@
 
 **Full specification draft and implementation handoff.** Catalog: Minor Repeatable, Chaos level 1, Formables Low only, To Be Reworked. This is a planning package, not installed runtime content or a completed engine-validation report.
 
-Extract the top-level `086_world_claims_specs/` folder into the repository's `docs/specs/` directory. Implementation working notes and specialist evidence belong under `docs/plans/086_world_claims_plans/`.
+This repository package lives at `docs/specs/086_world_claims_specs/`.
+Implementation working notes and specialist evidence belong under `docs/plans/086_world_claims_plans/`.
 
 ## Main specification
 
@@ -38,12 +39,12 @@ Actual specialist assignments are supplied in [bounded subagent handoffs](086_wo
 
 ## Review and validation status
 
-[All 60 engine acceptance scenarios](validation/acceptance_matrix.md) remain explicitly marked pending. [The parent review](validation/parent_design_review.md) records design interpretations and unresolved gates. [Forty executable abstract tests](validation/abstract_contract_tests.py) pass in Python, with [machine-readable results](validation/abstract_test_results.json). They test a limited logical model and do not prove native Compliance isolation, hooks, exact continuity, GUI behavior or multiplayer support.
+[All 60 engine acceptance scenarios](validation/acceptance_matrix.md) remain explicitly marked pending. [The parent review](validation/parent_design_review.md) records design interpretations and unresolved gates. The original planning delivery records forty passing [abstract tests](validation/abstract_contract_tests.py) in its [dated results](validation/abstract_test_results.json). They test a limited logical model and do not prove native Compliance isolation, hooks, exact continuity, GUI behavior or multiplayer support.
 
-Run the abstract examples with:
+Run the abstract examples from the repository root with:
 
 ```text
-python validation/abstract_contract_tests.py
+python docs/specs/086_world_claims_specs/validation/abstract_contract_tests.py
 ```
 
 The most important engine gates are claimant-specific Compliance, exact uninterrupted control/Compliance history, sparse persistence and country epochs, native-provider compatibility, and prepared exact-state display coverage. Runtime files, final assets, UI reference images, exact installed-state mappings, the complete geographic identity inventory, and in-game validation are not produced by this package.

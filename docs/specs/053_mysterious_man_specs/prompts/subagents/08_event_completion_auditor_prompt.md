@@ -1,6 +1,6 @@
 # Prompt for `chaosx_event_completion_auditor`
 
-Spawn with `fork_context=false` after implementation, assets, localisation, docs, probability evidence, and workbook alignment are complete.
+Spawn with `fork_turns="none"` (Codex) after implementation, assets, localisation, docs, probability evidence, and workbook alignment are complete.
 
 Read `AGENTS.md`, `chaos-redux-events`, `chaos-redux-improvement-loop`, `chaos-redux-subagents`, `chaos-redux-event-planning`, `chaos-redux-event-assets`, the complete Event 53 specification, all Event 53 plans and handoffs, implementation files, Event 53 docs, asset manifests, MCP artifacts, probability audit, and workbook export.
 

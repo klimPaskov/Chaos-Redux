@@ -1,8 +1,21 @@
 # Event 54: Gift from Scientists Specification Pack
 
-This pack defines the accepted planning handoff for Event 54, Gift from Scientists.
+## Authority and current workflow
+
+The [source manifest](quality/054_gift_from_scientists_source_review_manifest.md) retains original planning evidence. It does not establish approval of every provider, cluster, or achievement elaboration.
+Use current [planning](../../../.agents/skills/chaos-redux-event-planning/SKILL.md), [events](../../../.agents/skills/chaos-redux-events/SKILL.md), [assets](../../../.agents/skills/chaos-redux-event-assets/SKILL.md), and [routing](../../../.agents/skills/chaos-redux-subagents/SKILL.md) guidance.
+Unattributed design remains `unresolved`; rediscover current tools and source state before a separately authorized implementation task.
+
+
+This pack defines the source-design planning handoff for Event 54, Gift from Scientists.
 
 The event is a Minor Repeatable global research incident at Chaos level 1. Every valid research participant receives an independently selected technology from its own safe missing-technology pool. The active grant target rises from one technology to three, five, and ten across the three evolutions. Registered Chaos Redux technologies enter only through an owner-approved contract from Evolution II onward.
+
+## Shared cluster identifier
+
+Scientific Research uses reserved `event_cluster_id = 21` under the [shared identifier registry](../shared_identifier_registry.md).
+The reservation is shared with Event 089 and prevents the old provisional ID `9` from colliding with National Breakthroughs.
+It approves only the identifier allocation; cluster design, membership and implementation retain their separate acceptance requirements.
 
 ## Design decisions
 
@@ -56,9 +69,9 @@ The event is a Minor Repeatable global research incident at Chaos level 1. Every
 - `handoffs/054_gift_from_scientists_catalog_handoff.md`
 - `handoffs/054_gift_from_scientists_subagent_routing_review.md`
 
-## Extraction target
+## Repository location
 
-The ZIP preserves the repository-relative path `docs/specs/054_gift_from_scientists_specs/`. Extract it at the repository root.
+The source package lives at `docs/specs/054_gift_from_scientists_specs/`.
 
 ## Status boundary
 

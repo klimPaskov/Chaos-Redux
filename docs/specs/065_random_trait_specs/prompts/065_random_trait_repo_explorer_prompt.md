@@ -2,7 +2,7 @@
 
 ## Role
 
-Run `chaosx_repo_explorer` with `fork_context=false`.
+Run `chaosx_repo_explorer` with `fork_turns="none"`.
 
 Read `AGENTS.md`, all files under `docs/specs/065_random_trait_specs/`, and the relevant event, cluster, asset, debug, and documentation skills.
 
@@ -57,8 +57,8 @@ Verify the planning snapshot instead of trusting it.
 
 - current cluster IDs
 - Randomizations references
-- ID `9` use
-- Intelligence ID `10` use
+- allocated Randomizations ID `14` use
+- allocated Intelligence ID `20` use
 - member loading
 - optional participation
 - danger severity

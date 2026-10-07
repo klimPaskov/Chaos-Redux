@@ -1,6 +1,6 @@
 # Conditional Prompt for `chaosx_country_package_auditor`
 
-Spawn with `fork_context=false` only when implementation changes a concrete country's package through a historical profile or downstream event.
+Spawn with no inherited thread context (Codex `fork_turns="none"`; other runtimes follow the [subagent skill](../../../../.agents/skills/chaos-redux-subagents/SKILL.md)) only when implementation changes a concrete country's package through a historical profile or downstream event.
 
 Audit the named country only. Check starting state modifiers, historical memory, laws, decisions, AI, capital and route validity, party and ideology effects, units if changed, localisation, and cleanup.
 

@@ -1,5 +1,10 @@
 # Source of Truth and Plan Disposition
 
+Original promotion labels below describe planning incorporation and need their recorded user or parent acceptance basis before use as current approval.
+Unattributed base-design acceptance remains unresolved.
+Read `corrections/` before historical prompts, including September cost/lifecycle corrections and the dashboard's recorded 2026-10-05 parent decision.
+Current workflow dispositions follow [AGENTS.md](../../../../AGENTS.md#specs-and-plans).
+
 ## Source-of-truth status
 
 After user acceptance, the files under this `020_black_plague_specs` folder should become the Event 20 design source of truth.
@@ -51,7 +56,7 @@ The current static runtime ledger records 52 RTA focus nodes and 71 RTX focus no
 | Source-frame Rat King portrait and Royal Burrows seal | promoted and wired through their manifests and GFX entries; static fallbacks remain registered where documented |
 | Severe/Collapsed crisis seal and Rat King terminal-readiness seal packages | promoted and wired through `interface/020_black_plague_rat_identity.gfx`; the crisis pair is gated by the shared-board Severe/Collapsed trigger and tooltip, while the terminal pair is consumed by the RTX final-order decision; no separate terminal-readiness scripted-GUI panel is present |
 | Event 020 audio | three promoted WAVs (IDs 101, 102, and 103) are 44.1 kHz stereo; release attribution and live playback remain open |
-| Shared rat ground-unit model package | promoted from `rat_ground_unit_shared_3d_model_brief.md` and the 2026-08-05 worker handoff; one `black_plague_rat_mesh`/`black_plague_rat_entity` package serves six RTA/RTX subunits and five locked templates, while per-subtype and separate Rat King models remain rejected | Parent-owned sound-definition wiring, counter visual review, and live in-game consumer validation remain open |
+| Shared rat ground-unit model package | promoted from `rat_ground_unit_shared_3d_model_brief.md` and the 2026-08-05 worker handoff; one `black_plague_rat_mesh`/`black_plague_rat_entity` package serves six RTA/RTX subunits and five locked templates, while per-subtype and separate Rat King models remain rejected. Parent-owned sound-definition wiring, counter visual review, and live in-game consumer validation remain open |
 
 ## Future addenda
 

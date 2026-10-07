@@ -1,6 +1,6 @@
 # Event 014 Cannibalism Super-Event Research Prompt
 
-Read the full Event 014 spec pack, the super-event matrix, `AGENTS.md`, and the super-event skill. Spawn text and audio research subagents with `fork_context=false` and pass every needed path explicitly.
+Read the full Event 014 spec pack, the super-event matrix, `AGENTS.md`, and the super-event skill. Spawn text and audio research subagents with `fork_turns="none"` and pass every needed path explicitly.
 
 Use `chaosx_super_event_text_researcher` for verified title, quote, button remark, attribution, source, and copyright-risk research. Use `chaosx_super_event_audio_researcher` for licensed music research, download, editing, conversion, and documentation. Use `chaosx_generated_event_art` for all four fictional super-event images.
 

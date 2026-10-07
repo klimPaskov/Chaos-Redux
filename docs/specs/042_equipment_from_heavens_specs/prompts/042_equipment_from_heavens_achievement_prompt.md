@@ -51,11 +51,12 @@ At receipt, require and snapshot:
 - owner event ID and pre-delivery fired state
 - compatibility receipt ID
 
-Complete when the recipient materially fields or uses that exact family in a valid combat, raid, payload, or unit action while the owner event remains unfired.
-
-Passive stockpile ownership, reserve modifiers, opening a template, or moving a division without combat is insufficient. Each special family needs an owner-approved completion callback that proves real use without firing the owner event.
-
-If a special family has no safe completion callback, it cannot qualify for this achievement and should not enter the achievement-capable allowlist.
+Follow the explicitly approved 6 October follow-up in [the owner decisions](../../../plans/042_equipment_from_heavens_plans/agent_decisions_2026-10-05.md#borrowed-nightmare-follow-up-6-october-2026).
+Complete only on a land-battle victory by a commander whose army contains the snapshotted delivered equipment, within 1095 days and before the owner event fires.
+Normal-delivery and player eligibility are required; forced deliveries cannot open or complete the route.
+Passive stockpile ownership, attrition or transfers without victory, a loss, an unequipped commander’s victory, and an expired window must not qualify.
+The accepted scope is the winning commander’s army, not the particular division fighting in that battle.
+Preserve the existing `equipment_from_heavens_achievement_on_battle_victory` callback and do not restore a stock-loss or payload-use proxy.
 
 ## Multiple challenges
 

@@ -26,7 +26,7 @@ Every achievement needs:
 
 Force-trigger, debug setup, and triggerable scenario launch normally disqualify all six achievements.
 
-Use `chaosx_icon_artist` with `fork_context=false` for the icon triplets.
+Use `chaosx_icon_artist` with `fork_turns="none"` for the icon triplets.
 
 ## Achievement set
 

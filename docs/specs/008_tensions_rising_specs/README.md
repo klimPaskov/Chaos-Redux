@@ -1,5 +1,14 @@
 # Event 008 Tensions Rising: Planning Package
 
+## Authority and current navigation
+
+This is retained source design with unresolved expanded acceptance.
+The [owner documentation state](../../plans/008_tensions_rising_plans/documentation_state_2026-10-05.md) distinguishes accepted bounded fixes, existing implementation, superseded prose, unresolved cluster intent, and blocked validation.
+Read that ledger before reusing prompts that may duplicate installed work.
+The single-member Low Diplomatic Panic direction is historical, superseded as a catalog claim by [the cluster matrix](matrices/008_tensions_rising_cluster_and_achievements.md).
+Cluster source and design acceptance remain unresolved; this cleanup selects no replacement.
+Current workflows belong to [chaos-redux-events](../../../.agents/skills/chaos-redux-events/SKILL.md), [chaos-redux-event-assets](../../../.agents/skills/chaos-redux-event-assets/SKILL.md), and [chaos-redux-subagents](../../../.agents/skills/chaos-redux-subagents/SKILL.md).
+
 This package contains the source specification and implementation handoff prompts for the Event 008 `Tensions Rising` rework.
 
 ## Main files

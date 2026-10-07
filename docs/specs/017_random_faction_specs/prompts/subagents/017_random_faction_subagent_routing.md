@@ -1,6 +1,9 @@
 # Subagent routing plan for Event 17
 
-This chat environment cannot spawn the custom Codex subagents directly. These prompts are ready for a Codex implementation agent to use with `fork_context=false`.
+The original planning environment lacked custom subagent execution.
+Use [the routing owner skill](../../../../../.agents/skills/chaos-redux-subagents/SKILL.md) for current roles and runtime discovery.
+The table preserves Event 17 task boundaries and does not authorize repeating completed tranches.
+Codex bounded passes use `fork_turns="none"` with explicit inputs.
 
 | Subagent | Use for Event 17 | Timing |
 | --- | --- | --- |

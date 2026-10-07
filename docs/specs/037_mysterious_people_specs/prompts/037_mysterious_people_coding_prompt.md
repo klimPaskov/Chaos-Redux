@@ -1,12 +1,15 @@
 # Coding prompt: Implement Event 037 Mysterious People
 
+Read the [package entry point](../README.md) for design authority and unresolved acceptance before executing this implementation prompt.
+Use existing user authorization and recorded parent acceptance; imported status labels alone do not approve expansion.
+
 Implement Chaos Redux Event 037 from the complete source specification at:
 
 ```text
 docs/specs/037_mysterious_people_specs/
 ```
 
-Read every specification part, quality file, diagram, handoff, and prompt before editing. Treat the source specs as acceptance criteria. Read `AGENTS.md`, all relevant repository skills, current Famine, Migration, Deaths, Camp and Repression, Condemnation, Event Logs, achievements, civilian classifiers, dynamic effects and triggers, event system, assets, and workbook sources. Consult required offline wiki pages, installed vanilla documentation, installed vanilla precedents, and existing Chaos Redux patterns.
+Read every specification part, quality file, diagram, handoff, and prompt before editing. Use the source specs as design criteria within the acceptance recorded under the package README. Read `AGENTS.md`, all relevant repository skills, current Famine, Migration, Deaths, Camp and Repression, Condemnation, Event Logs, achievements, civilian classifiers, dynamic effects and triggers, event system, assets, and workbook sources. Consult required offline wiki pages, installed vanilla documentation, installed vanilla precedents, and existing Chaos Redux patterns.
 
 Do not silently simplify, merge, omit, or replace an accepted mechanic. Report every blocker and deviation.
 

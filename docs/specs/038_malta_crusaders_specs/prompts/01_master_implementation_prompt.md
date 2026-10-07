@@ -1,5 +1,8 @@
 # Master implementation prompt
 
+Read the [package entry point](../00_README.md) for design authority and unresolved acceptance before executing this implementation prompt.
+Use existing user authorization and recorded parent acceptance; imported status labels alone do not approve expansion.
+
 You are the parent implementation agent for Chaos Redux Event 38, **Malta Crusaders**.
 
 ## Repository and source design
@@ -26,7 +29,10 @@ Consult every required offline Paradox wiki page and current installed-vanilla d
 
 ## Objective
 
-Implement the entire accepted Event 38 specification without silent reduction. Preserve its classification, regional opening, three evolutions, custom unit families, Malta campaign, government routes, principalities, comeback route, hidden Teutonic and Atlantis routes, public Holy World ending, and manual Believers vs Nonbelievers scenario.
+Implement the Event 38 specification within the acceptance recorded under the entry point without silent reduction. Preserve its classification, regional opening, three evolutions, custom unit families, Malta campaign, government routes, principalities, comeback route, hidden Teutonic and Atlantis routes, public Holy World ending, and manual Believers vs Nonbelievers scenario.
+
+Use the centrally reserved Believers vs Nonbelievers `SCN-021` / raw `21` from the [shared identifier registry](../../shared_identifier_registry.md#triggerable-scenarios).
+This resolves identifier ownership without approving or implementing the surrounding gameplay design.
 
 ## Mandatory first pass
 

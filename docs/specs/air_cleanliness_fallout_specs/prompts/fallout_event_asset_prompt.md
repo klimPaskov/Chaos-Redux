@@ -4,6 +4,14 @@ Create the visual asset packages for the Fallout living-world event library afte
 
 Use the accepted successor asset matrix together with the living-world event matrices. This prompt expands event and society coverage. It does not replace the existing flag, focus, idea, decision, portrait, GUI, or country-package obligations.
 
+## Production owners
+
+Follow [chaos-redux-event-assets](../../../../.agents/skills/chaos-redux-event-assets/SKILL.md) and [chaos-redux-subagents](../../../../.agents/skills/chaos-redux-subagents/SKILL.md) for source classification, exact consumers, native transparency, flag production, review, manifests, and wiring.
+Every portrait belongs to `chaosx_portrait_creator`; non-portrait archival research, generated scenes/flags, and icons use separate specialists.
+Alpha-backed icons, emblems, overlays, and other consumers with transparent unused canvas request native transparency and preserve alpha; full-canvas scenes and flags follow their consumer treatment.
+Use [chaos-redux-frame-animation](../../../../.agents/skills/chaos-redux-frame-animation/SKILL.md) for real frame sources and sheets.
+Non-portrait wiring remains parent-owned; the portrait creator retains its narrow wiring exception.
+
 ## Ownership
 
 Use dedicated Fallout folders and manifests.
@@ -105,7 +113,10 @@ Priority roles include:
 - altered-community representative
 - first post-collapse generation leader
 
-Real historical people require sourced portraits. Fictional people use generated portraits. Record apparent gender presentation and require matching name pools and metadata. Councils, committees, and offices use institutional names and collective portraits.
+Classify each portrait under the current identity gate before production.
+Grounded successor people and institutions require authentic attributed sources even when working names are invented.
+Native generation is reserved for authorized truly fictional high-chaos or impossible identities.
+Record gender presentation, name/role metadata, source evidence, and blocked classifications through `chaosx_portrait_creator`.
 
 Produce route variants only when the character's role, allegiance, injury, altered condition, or leadership status changes visibly.
 
@@ -195,28 +206,11 @@ Use generated material for:
 
 Generated World War II-era scenes must use period clothing, vehicles, tools, architecture, photographic technology, and composition. Avoid modern tactical equipment, modern survival clothing, modern roads, modern vehicles, readable generated text, film stills, and cinematic color grading.
 
-## Required processing
+## Processing and provenance
 
-Report images use the established report-card treatment and final 210 by 176 format.
-
-News images use the established 397 by 153 black-and-white format.
-
-Leader portraits normally use 156 by 210.
-
-Use exact established sizes for icons and flags from the asset skill.
-
-For every asset, preserve:
-
-- source
-- processed PNG
-- final DDS or TGA
-- source URL and license where sourced
-- prompt and source-mode rationale where generated
-- target event family, country, route, idea, focus, decision, or character
-- sprite name
-- final path
-- status
-- uncertainty
+Use the [current asset-family processing, manifest, and review contract](../../../../.agents/skills/chaos-redux-event-assets/SKILL.md) instead of maintaining a second conversion checklist here.
+Report cards target `210x176`, black-and-white news art `397x153`, and country-leader textures `156x210`; the inspected consumer governs other families.
+Retain family, region, country, route, character, and runtime-slot coverage alongside the skill-required provenance and exact prompt records.
 
 ## Contact sheets
 
@@ -240,7 +234,7 @@ The asset pass fails when:
 - regions look interchangeable
 - fictional societies lack ordinary civilian life
 - every image is bleak and no competence, affection, ritual, recovery, or celebration appears
-- a real person or flag was generated
+- a grounded face was invented, or an attested flag design was fabricated without cited geometry and symbols
 - a fictional altered society is presented as a scientific prediction
 - icon types are satisfied by resizing one master image
 - a candidate successor remains spawnable with missing visible identity assets

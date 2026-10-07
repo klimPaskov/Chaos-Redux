@@ -1,10 +1,13 @@
 # /goal: Implement the Famine and Migration Mechanics
 
-> **Current design clarification (2026-08-25):** The user clarification and accepted split implementation supersede any shared mechanic, category, or runtime-namespace wording retained below as historical design context. The current implementation uses independent `famine_*` and `migration_*` mechanics, `famine_decision_category` and `migration_decision_category`, and `famine_state_map_mode` and `migration_state_map_mode`; no combined mechanic, category, runtime namespace, or mapmode is current. Use [source_of_truth_map.md](../../plans/famine_and_migration_system_plans/source_of_truth_map.md) and [completion_report.md](../../plans/famine_and_migration_system_plans/completion_report.md) for current status, including the incomplete blockers.
+> **Authority and status:** Read [README.md](README.md) for the accepted split, event-free presentation contract and current continuation record.
+> The source parts and matrices preserve design and historical planning; their presence does not establish approval or completion.
 
 Implement the separate famine and migration mechanics from `docs/specs/famine_and_migration_system_specs/`. These are systems, not random events. Connect them only through explicit causal adapters and neutral conservation primitives. Do not assign an event ID, create an event object, register either mechanic in the event pool, or count their state/accounting pulses as event pacing. The separate register helpers are presentation seams only.
 
-Read the eight spec parts and every supporting matrix, prompt, routing file, bibliography, and closure review. Treat the implementation prompts as binding guidance.
+Read the current continuation record linked from README before the eight spec parts and supporting design records.
+These prompts are reusable task templates, not new authorization or proof that every original matrix row is accepted.
+Assign only the remaining accepted work within the current user scope and preserve current system-owner boundaries.
 
 Before editing, read `AGENTS.md`, relevant Chaos Redux skills, offline wiki pages, vanilla documentation and precedents, and current code. Use mandatory HOI4 MCP routes for supported event, probability, GUI, and map surfaces. Record exact blockers for unavailable sources or tools.
 
@@ -22,10 +25,10 @@ Completion requires:
 - Separate famine and migration categories hidden until their own mechanic has a genuine problem. Reveal migration only after repeated or large displacement evidence creates a sustained issue. Use exactly three canonical player-facing values per mechanic, phased actions, and no shared full scripted GUI.
 - AI access to the same valid responses. Complete named probability scenarios through baseline audit, owner patch, and comparison.
 - Active registries, scoped hooks, and scheduled jobs. Do not add a whole-world daily, weekly, or monthly scan.
-- Absorption, retirement, disabling, or conversion of Event 149 `Immigrations` so no competing flat population drain remains.
+- Preserve the recorded Event 149 `Immigrations` retirement and the event-free contract; original matrix alternatives are historical planning choices.
 - All eight achievements, required static assets, final DDS files, sprite consumers, localisation, permanent documentation, and catalog workbook alignment.
 
-Spawn project subagents with `fork_context=false` using the prepared prompts. Required routes cover repo exploration, system architecture, pre-change and post-change probability audits, decisions, localisation, assets, documentation, improvement review, completion audit, and spreadsheet alignment. Use conditional routes only when their gate is met. Review every handoff and record its disposition.
+Spawn project subagents with no inherited thread context (Codex `fork_turns="none"`; other runtimes follow the [subagent skill](../../../.agents/skills/chaos-redux-subagents/SKILL.md)) using the prepared prompts. Templates cover system architecture, pre-change and post-change probability audits, decisions, localisation, assets, documentation, improvement review, completion audit, and spreadsheet alignment. Use conditional routes only when their gate is met. Review every handoff and record its disposition.
 
 Keep iterating until the accepted design is implemented. Do not use fixed historical death totals, placeholder art, duplicated population, fake route logic, shallow flat modifiers, undocumented hardcoded values, or unapproved simplifications. Do not claim completion while any accepted mechanic, adapter, AI path, asset, achievement, localisation, audit, cleanup, documentation, or catalog requirement is missing.
 

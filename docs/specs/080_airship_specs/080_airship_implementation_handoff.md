@@ -78,7 +78,8 @@ When no United States or no foreign territorial controller exists, follow the ex
 
 The event-owned GUI entry is `airship_scripted_gui`, using a decision-category context. The inspected existing property points `placeholder_airship_map` to the `GFX_airship_trail_` family. Preserve that event-owned surface and original route assets where valid.
 
-The UI worker may change Event 80's GUI, its directly required bindings, event-owned visuals, and its local decisions. It may not redesign the shared event log, event-details framework, settings, super-event framework, or unrelated country interfaces. A discovered shared defect requires an owner handoff.
+The UI worker owns Event 80's accepted bounded GUI layout, presentation-only scripted-GUI bindings, event-owned visuals, and GUI localisation under [the current routing contract](../../../.agents/skills/chaos-redux-subagents/SKILL.md).
+The parent and decision owner retain local decision gameplay, costs, outcomes, AI, and balance. It may not redesign the shared event log, event-details framework, settings, super-event framework, or unrelated country interfaces. A discovered shared defect requires an owner handoff.
 
 Resource removal helpers documented in the supplied registry include support equipment, motorized equipment, convoys, trains, infantry equipment, and fuel. Their temporary amount inputs require careful resetting for every separate debit because helpers can negate them internally. Use only the resource types actually called for by the chosen service. Verify affordability inclusively and debit one payer once.
 

@@ -1,5 +1,9 @@
 # Gods of Africa package validation
 
+Disposition: historical checked-fixture receipt.
+The results and prompt count below describe the original fixture; this audit did not rerun its validator or certify the edited package against it.
+Current navigation belongs to [the replacement package](../../012_africa_specs/README.md).
+
 ## Scope
 
 This report validates the completed planning package as a document set. It does not claim repository implementation, HOI4 engine validation, MCP evidence, asset production, workbook editing, or live playtesting.

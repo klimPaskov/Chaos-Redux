@@ -2,7 +2,11 @@
 
 This event requires a full asset package. It uses leader portrait evolution, animated mandala GUI, decision icons, focus icons, idea icons, super-event art, report images, flags, formable identity assets, and achievement icons.
 
-All final game assets must be processed into DDS and placed in the correct mod folders. Asset workers must create source PNGs, processed PNG previews, final DDS files, manifests, and `gfx_handoff.md` notes. Animated assets must follow the frame animation workflow and must deliver frame sheets, not GIFs.
+Texture consumers use the DDS treatment required by their inspected family, while country flags use the installed flag format and three-size family.
+Production, references, native transparency, conversion, specialist ownership, and manifests follow [chaos-redux-event-assets](../../../../../.agents/skills/chaos-redux-event-assets/SKILL.md).
+Frame packages follow [chaos-redux-frame-animation](../../../../../.agents/skills/chaos-redux-frame-animation/SKILL.md).
+Every character portrait belongs to `chaosx_portrait_creator`, including fictional, symbolic, and animated portrait variants.
+The source modes below describe design classification and do not authorize non-portrait workers to produce portraits or agents to operate RunPod.
 
 ## Reference folders to inspect before asset work
 

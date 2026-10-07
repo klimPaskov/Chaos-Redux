@@ -1,6 +1,6 @@
 # Prompt for chaosx_spreadsheet_doc_worker
 
-Use `fork_context=false`. After Event 17 implementation and final localisation are complete, update `docs/spreadsheets/chaos_redux_events_catalog.xlsx` for event ID 17.
+Use `fork_turns="none"`. After Event 17 implementation and final localisation are complete, update `docs/spreadsheets/chaos_redux_events_catalog.xlsx` for event ID 17.
 
 Use the spreadsheet skill. Read only the workbook, the parent prompt, and final in-game localisation or scripted localisation needed to mirror event log, event detail, evolution detail, and cluster wording.
 

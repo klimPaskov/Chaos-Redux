@@ -1,5 +1,10 @@
 # Improvement Loop Self-Review
 
+Disposition: retained historical planning evidence.
+The source inventory, environment failures, manual reviews, and validation claims below describe the original planning pass.
+They do not establish current tool health, independent specialist execution, design approval, or validation of the edited checkout.
+Use the package README for current authority and workflow.
+
 ## Review status
 
 The required project improvement-planner subagent could not be executed because the available Codex connector route returned an MCP tunnel error. The parent performed this bounded review directly from the complete `chaos-redux-improvement-loop` skill and the full `chaosx_improvement_loop_planner` definition.

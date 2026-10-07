@@ -1,6 +1,6 @@
 # Subagent Prompt: Event 021 Decision and Mission Auditor
 
-Spawn `chaosx_decision_mission_auditor` with `fork_context=false` after the Event 021 decision system is implemented.
+Spawn `chaosx_decision_mission_auditor` with `fork_turns="none"` after the Event 021 decision system is implemented.
 
 Read:
 

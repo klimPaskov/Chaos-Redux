@@ -4,9 +4,7 @@
 
 ## Process status
 
-This file preserves the planning-stage manual review that shaped the source
-specification. The first required planner run returned a dated closure handoff;
-the later planner pass and addendum named above supersede that process status.
+This file preserves the planning-stage manual review that shaped the source specification. The first required planner run returned a dated closure handoff; the later planner pass and addendum named above supersede that process status.
 
 ## Feature promise
 
@@ -117,11 +115,6 @@ Dynamic support means one registry entry is enough. It does not mean every new u
 
 The planning design is deep enough to hand to implementation. Another broad planning expansion is not recommended now. The remaining work is implementation, local identifier verification, asset production, balance testing, specialist audits, final localisation, documentation, and catalog alignment.
 
-The planning-stage closure recommendation was superseded by the required
-project-agent planner after a meaningful implementation tranche. That pass did
-produce the accepted near-completion addendum named above. Its natural-release,
-first-family reception, fixed identity-scene, and documentation findings were
-promoted into implementation and are closed at addendum level; another broad
-expansion pass is not warranted unless a current audit finds a concrete gap.
+The planning-stage closure recommendation was superseded by the required project-agent planner after a meaningful implementation tranche. That pass did produce the accepted near-completion addendum named above. Its natural-release, first-family reception, fixed identity-scene, and documentation findings were promoted into implementation and are closed at addendum level; another broad expansion pass is not warranted unless a current audit finds a concrete gap.
 
 Exactly two engine-constrained substitutes are owner-approved and implemented for the historical tranche: exact recorded-formation recreate/prove/delete and controlled one-formation combat trials. The owner-approved deterministic spot-colour route is also implemented for the 7/18 regional candidate. The independent remediation re-audit handoff `docs/plans/019_infantry_spawn_plans/subagent_handoffs/019_regional_full_flag_postprocess_remediation_reaudit_2026_07_18.md` is PASS for that bounded asset gate. Workbook/catalog reconciliation, export, the 33-file package inventory, and the final completion audit are historical tranche evidence. Event 19 and SCN-013 are not currently certified by that historical `Fully Functional` status; the current disposition is tracked in `docs/plans/019_infantry_spawn_plans/source_of_truth_map.md` and `review/blockers_and_uncertainty.md`, where provider-extension and documentation gates remain open.

@@ -90,7 +90,8 @@ Each pilot has three manually selected candidates. Slots use the already accepte
 - slot 2 is security or extraction and costs Fuel 5 plus Scrap 5
 - slot 3 is a regional institution and costs Power 4 plus Shelter capacity 4 plus Scrap 4
 
-The first two candidates are mandatory. Slot 3 is exposed only when its exact institution and local asset evidence are current. A registry with fewer than two current affordable candidates remains blocked. Every character below is fictional and needs a generated portrait through the approved Fallout asset workflow. Every institution needs a dedicated Fallout icon. Names remain working labels until country and subregional review is complete.
+The first two candidates are mandatory. Slot 3 is exposed only when its exact institution and local asset evidence are current. A registry with fewer than two current affordable candidates remains blocked. The rows are working character concepts, not blanket portrait-generation authorization.
+Each portrait requires `chaosx_portrait_creator` classification under the [current source-mode gate](../../../../.agents/skills/chaos-redux-event-assets/SKILL.md#portrait-source-mode-gate); grounded identities need authentic sources, and only the authorized high-chaos or impossible class uses native generation. Every institution needs a dedicated Fallout icon. Names remain working labels until country and subregional review is complete.
 
 Candidate ids are reserved in the listed order for a future `fallout_orientation_candidate_id` script-constant table. Reserving an id does not implement its install effect.
 
@@ -198,11 +199,12 @@ All three candidates are fictional station roles or institutions. The protocol r
 
 ## Runtime and asset boundary
 
-Runtime status (agent decision A16, round 2): the candidate package installer, the character install approval and the step 5 events are implemented for every registry country. These pilot rows take precedence; every other country receives the three candidates of its region and archetype cell. Candidates are installed as offices named after the candidate, without a named holder or portrait, using vanilla generic idea art. The dedicated portraits and institution icons below remain a later addition. The paragraphs that follow describe the dormant period before that change.
+Recorded integration status (agent decision A16, round 2; not recertified by this documentation audit): the candidate package installer, the character install approval and the step 5 events are implemented for every registry country. These pilot rows take precedence; every other country receives the three candidates of its region and archetype cell. Candidates are installed as offices named after the candidate, without a named holder or portrait, using vanilla generic idea art. The dedicated portraits and institution icons below remain a later addition. The paragraphs that follow describe the dormant period before that change.
 
 The future runtime producer must validate the exact country-memory id, region, archetype, transition generation, assignment row, country package, candidate eligibility, and asset installation surface before publishing a candidate. It must copy candidate ids and types into a country-owned current-generation registry. It may not derive candidates from a tag name alone.
 
-The future asset package needs twenty-four fictional character portraits and twelve dedicated institution icons. Each character requires a source image, processed PNG, final DDS, manifest, and portrait handoff. Each institution requires a generated source, processed PNG, final DDS, manifest, and stable sprite registration. No zombie portrait, icon, directory, sprite, or asset path may be reused.
+The future asset package needs twenty-four character portrait slots and twelve dedicated institution icons.
+Resolve each portrait source classification independently of the fictional working role label. Each character requires a source image, processed PNG, final DDS, manifest, and portrait handoff. Each institution requires a generated source, processed PNG, final DDS, manifest, and stable sprite registration. No zombie portrait, icon, directory, sprite, or asset path may be reused.
 
 The typed candidate ids, exact twelve-memory candidate mapper, country-owned candidate fields, and candidate request authenticator are implemented. The immediate resource pilot has an idempotent twelve-memory mapper, exact supporting-resource and AI-preference fields, country-specific text, and events `70` through `73`. The government pilot has an idempotent twelve-memory mapper, exact material-effect and AI-preference fields, country-specific text, and events `74` through `77`. None of these mappers has a caller. No candidate package receipt setter or resource capital-asset receipt setter exists.
 

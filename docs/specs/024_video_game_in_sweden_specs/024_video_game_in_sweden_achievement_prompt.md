@@ -163,7 +163,7 @@ Icon direction:
 - Add task-specific validation for actor identity, continuous timers, opponent qualification, save and reload, civil war, annexation, and debug disqualification.
 - Do not convert either achievement into an automatic evolution or decision-click unlock.
 - Do not add a third easy achievement to inflate the set.
-- Route icon creation through the Event 24 asset prompt and `chaosx_icon_artist` with `fork_context=false`.
+- Route icon creation through the Event 24 asset prompt and `chaosx_icon_artist` with `fork_turns="none"`.
 - Before completion, use `chaosx_event_completion_auditor` to compare the achievement requirements against the final implementation.
 
 ## Completion handoff

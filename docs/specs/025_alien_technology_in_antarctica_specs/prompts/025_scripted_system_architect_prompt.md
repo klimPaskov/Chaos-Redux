@@ -1,6 +1,6 @@
 # Event 025 scripted-system architect prompt
 
-Spawn `chaosx_scripted_system_architect` with `fork_context=false` after the repository explorer has mapped the live owner files.
+Spawn `chaosx_scripted_system_architect` with `fork_turns="none"` after the parent or a justified repository explorer has mapped the live owner files.
 
 Read the full Event 025 spec package, Event 016 external technology implementation, Event 036 current state, and live repository patterns.
 

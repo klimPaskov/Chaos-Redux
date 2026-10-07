@@ -291,7 +291,7 @@ Centralize shared tuning in script constants or a documented event-owned tuning 
 
 Use existing dynamic effects and stockpile-debit helpers where their contract fits.
 
-Use `chaosx_scripted_system_architect` with `fork_context=false` when repeated logic needs reusable effects, triggers, targets, constants, or selected-target helpers.
+Use `chaosx_scripted_system_architect` with `fork_turns="none"` when repeated logic needs reusable effects, triggers, targets, constants, or selected-target helpers.
 
 Keep event-private helpers with Event 31.
 
@@ -473,7 +473,7 @@ Use:
 - `chaosx_localisation_auditor` for visible text
 - `chaosx_event_completion_auditor` during final event completion
 
-Every patch-capable subagent must use `fork_context=false` and write a handoff under:
+Every patch-capable subagent must use `fork_turns="none"` and write a handoff under:
 
 `docs/plans/031_random_terror_plans/subagent_handoffs/`
 

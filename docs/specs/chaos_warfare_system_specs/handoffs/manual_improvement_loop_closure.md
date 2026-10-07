@@ -1,4 +1,7 @@
-# Manual Improvement-Loop Review
+# Historical Manual Improvement-Loop Review
+
+Disposition: retained original planning review, superseded as a current closure handoff by the [accepted amendment](../specs/13_2026_09_20_accepted_cbrn_overhaul.md) and [requirement ledger](../../../plans/chaos_warfare_system_plans/2026-09-20_cbrn_overhaul_requirement_ledger.md).
+The manual review did not execute the named planner and does not resolve the accepted overhaul or newer owner findings.
 
 ## Review method
 

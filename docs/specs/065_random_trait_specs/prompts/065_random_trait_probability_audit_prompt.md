@@ -1,10 +1,14 @@
 # Event 065 Random Trait Probability Audit Prompt
 
+Follow the [current probability audit-patch-compare contract](../../../../.agents/skills/chaos-redux-subagents/SKILL.md#active-small-patch-agents).
+Before an owner changes weights, preserve immutable pre-edit source bytes at a real path with SHA-256 and the exact named scenario fixture; compare that source with the owner’s final source under the same scenarios.
+Never substitute the current file for both sides or treat an analysis artifact as the before-source file.
+
 ## Role
 
 Run `chaosx_ai_probability_auditor` after the generated registry and runtime pool exist.
 
-Use `fork_context=false`.
+Use `fork_turns="none"`.
 
 Read `AGENTS.md`, all Event 65 specification files, the trait registry summary, the generated probability input manifest, the scripted-system architecture handoff, and:
 

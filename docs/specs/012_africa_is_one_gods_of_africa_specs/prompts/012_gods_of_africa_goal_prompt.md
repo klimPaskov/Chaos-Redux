@@ -1,5 +1,7 @@
 # Goal: Implement Gods of Africa for Event 012
 
+Disposition: superseded historical prompt; current guidance is [the Event 012 authority map](../../012_africa_specs/README.md).
+
 Implement the complete `Gods of Africa` subsystem under Event 012, `Africa Is One`, from the accepted specification package. This is not Event 070. Remove that catalog assignment and leave Event 070 available for another idea.
 
 Activate it only after Africa Is One has fired, the unifier exists, Evolution I is active, and the consolidation delay has passed. Keep it Event 012 owned. Use a bounded participant registry and owner-managed delays. Do not add a separate random event or unrestricted whole-world scan.

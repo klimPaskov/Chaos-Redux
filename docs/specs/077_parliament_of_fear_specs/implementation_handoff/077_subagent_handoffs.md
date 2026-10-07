@@ -4,7 +4,16 @@ All 20 supplied role definitions were read. None was spawned or executed. These 
 
 Use the actual collaboration runtime with `fork_turns="none"` where required by the supplied skill. Each packet must include its task, paths, relevant source parts, allowed writes, constraints, and expected evidence because the agent does not inherit the parent conversation.
 
-The parent retains design decisions, shared integration ownership, and final acceptance. Specialist findings do not silently authorize a broader task.
+The parent retains design decisions, shared integration ownership, and final acceptance.
+Specialist findings do not silently authorize a broader task.
+
+## Common invocation envelope
+
+Use the current [subagent skill](../../../../.agents/skills/chaos-redux-subagents/SKILL.md) for role boundaries and runtime selection, rather than the original supplied TOML snapshots.
+Copy this common envelope and the selected role card into each self-contained invocation.
+The parent supplies Event 077, Parliament of Fear, the current implementation state and acceptance basis, exact relevant numbered parts, applicable owner skills, current source paths and revisions, allowed writes, prior findings, and an output path under `docs/plans/077_parliament_of_fear_plans/subagent_handoffs/`.
+Each return must identify files and scopes, evidence, authorized changes, and unresolved blockers.
+The spreadsheet worker receives only the workbook, final localisation keys and required implementation facts under its workbook-only contract; do not make it read the complete specification or engine references.
 
 ## chaosx_repo_explorer
 
@@ -16,10 +25,6 @@ The parent retains design decisions, shared integration ownership, and final acc
 
 **Disposition:** Required before implementation.
 
-**Packet sources:** The relevant numbered specification parts, this role's full TOML, the applicable full skills, and verified live paths discovered by the repository audit. Include current revision and exact input files.
-
-**Required return:** Findings with exact file and scope references, evidence status, proposed bounded changes where authorized, and unresolved blockers. Never claim a tool run or asset review without the actual output.
-
 ## chaosx_scripted_system_architect
 
 **Role:** Bounded implementation design and code patch.
@@ -29,10 +34,6 @@ The parent retains design decisions, shared integration ownership, and final acc
 **Allowed work:** Only reviewed event-owned script plus authorized shared hooks.
 
 **Disposition:** Required during implementation.
-
-**Packet sources:** The relevant numbered specification parts, this role's full TOML, the applicable full skills, and verified live paths discovered by the repository audit. Include current revision and exact input files.
-
-**Required return:** Findings with exact file and scope references, evidence status, proposed bounded changes where authorized, and unresolved blockers. Never claim a tool run or asset review without the actual output.
 
 ## chaosx_decision_mission_auditor
 
@@ -44,10 +45,6 @@ The parent retains design decisions, shared integration ownership, and final acc
 
 **Disposition:** Required.
 
-**Packet sources:** The relevant numbered specification parts, this role's full TOML, the applicable full skills, and verified live paths discovered by the repository audit. Include current revision and exact input files.
-
-**Required return:** Findings with exact file and scope references, evidence status, proposed bounded changes where authorized, and unresolved blockers. Never claim a tool run or asset review without the actual output.
-
 ## chaosx_event_ui_worker
 
 **Role:** Event-owned UI implementation and render review.
@@ -57,10 +54,6 @@ The parent retains design decisions, shared integration ownership, and final acc
 **Allowed work:** Only Event 077 chamber GUI and event-owned visual consumers.
 
 **Disposition:** Required, excludes shared UI.
-
-**Packet sources:** The relevant numbered specification parts, this role's full TOML, the applicable full skills, and verified live paths discovered by the repository audit. Include current revision and exact input files.
-
-**Required return:** Findings with exact file and scope references, evidence status, proposed bounded changes where authorized, and unresolved blockers. Never claim a tool run or asset review without the actual output.
 
 ## chaosx_ai_probability_auditor
 
@@ -72,10 +65,6 @@ The parent retains design decisions, shared integration ownership, and final acc
 
 **Disposition:** Required.
 
-**Packet sources:** The relevant numbered specification parts, this role's full TOML, the applicable full skills, and verified live paths discovered by the repository audit. Include current revision and exact input files.
-
-**Required return:** Findings with exact file and scope references, evidence status, proposed bounded changes where authorized, and unresolved blockers. Never claim a tool run or asset review without the actual output.
-
 ## chaosx_asset_source_researcher
 
 **Role:** Bounded source research.
@@ -85,10 +74,6 @@ The parent retains design decisions, shared integration ownership, and final acc
 **Allowed work:** Research records and approved source assets only.
 
 **Disposition:** Required where grounded material is used.
-
-**Packet sources:** The relevant numbered specification parts, this role's full TOML, the applicable full skills, and verified live paths discovered by the repository audit. Include current revision and exact input files.
-
-**Required return:** Findings with exact file and scope references, evidence status, proposed bounded changes where authorized, and unresolved blockers. Never claim a tool run or asset review without the actual output.
 
 ## chaosx_generated_event_art
 
@@ -100,10 +85,6 @@ The parent retains design decisions, shared integration ownership, and final acc
 
 **Disposition:** Required for commissioned generated art.
 
-**Packet sources:** The relevant numbered specification parts, this role's full TOML, the applicable full skills, and verified live paths discovered by the repository audit. Include current revision and exact input files.
-
-**Required return:** Findings with exact file and scope references, evidence status, proposed bounded changes where authorized, and unresolved blockers. Never claim a tool run or asset review without the actual output.
-
 ## chaosx_icon_artist
 
 **Role:** Native icon production.
@@ -114,23 +95,15 @@ The parent retains design decisions, shared integration ownership, and final acc
 
 **Disposition:** Required.
 
-**Packet sources:** The relevant numbered specification parts, this role's full TOML, the applicable full skills, and verified live paths discovered by the repository audit. Include current revision and exact input files.
-
-**Required return:** Findings with exact file and scope references, evidence status, proposed bounded changes where authorized, and unresolved blockers. Never claim a tool run or asset review without the actual output.
-
 ## chaosx_portrait_creator
 
 **Role:** Grounded portrait production.
 
 **Task:** Actual missing named figure with verified identity and portrait sources.
 
-**Allowed work:** Only specifically approved portraits.
+**Allowed work:** Only authorized portrait packages, including the portrait owner's standing narrow portrait-specific wiring exception under the asset skill.
 
 **Disposition:** Conditional, existing portraits preferred.
-
-**Packet sources:** The relevant numbered specification parts, this role's full TOML, the applicable full skills, and verified live paths discovered by the repository audit. Include current revision and exact input files.
-
-**Required return:** Findings with exact file and scope references, evidence status, proposed bounded changes where authorized, and unresolved blockers. Never claim a tool run or asset review without the actual output.
 
 ## chaosx_super_event_text_researcher
 
@@ -142,10 +115,6 @@ The parent retains design decisions, shared integration ownership, and final acc
 
 **Disposition:** Required for the severe-outcome super-event.
 
-**Packet sources:** The relevant numbered specification parts, this role's full TOML, the applicable full skills, and verified live paths discovered by the repository audit. Include current revision and exact input files.
-
-**Required return:** Findings with exact file and scope references, evidence status, proposed bounded changes where authorized, and unresolved blockers. Never claim a tool run or asset review without the actual output.
-
 ## chaosx_super_event_audio_researcher
 
 **Role:** Source-checked audio research.
@@ -155,10 +124,6 @@ The parent retains design decisions, shared integration ownership, and final acc
 **Allowed work:** Audio research and approved audio outputs only.
 
 **Disposition:** Required.
-
-**Packet sources:** The relevant numbered specification parts, this role's full TOML, the applicable full skills, and verified live paths discovered by the repository audit. Include current revision and exact input files.
-
-**Required return:** Findings with exact file and scope references, evidence status, proposed bounded changes where authorized, and unresolved blockers. Never claim a tool run or asset review without the actual output.
 
 ## chaosx_country_package_auditor
 
@@ -170,10 +135,6 @@ The parent retains design decisions, shared integration ownership, and final acc
 
 **Disposition:** Required for civil-war outcome.
 
-**Packet sources:** The relevant numbered specification parts, this role's full TOML, the applicable full skills, and verified live paths discovered by the repository audit. Include current revision and exact input files.
-
-**Required return:** Findings with exact file and scope references, evidence status, proposed bounded changes where authorized, and unresolved blockers. Never claim a tool run or asset review without the actual output.
-
 ## chaosx_focus_tree_auditor
 
 **Role:** Conditional inherited focus compatibility audit.
@@ -183,10 +144,6 @@ The parent retains design decisions, shared integration ownership, and final acc
 **Allowed work:** No new filler tree or unrelated focus overhaul.
 
 **Disposition:** Conditional when inherited content is affected.
-
-**Packet sources:** The relevant numbered specification parts, this role's full TOML, the applicable full skills, and verified live paths discovered by the repository audit. Include current revision and exact input files.
-
-**Required return:** Findings with exact file and scope references, evidence status, proposed bounded changes where authorized, and unresolved blockers. Never claim a tool run or asset review without the actual output.
 
 ## chaosx_localisation_auditor
 
@@ -198,10 +155,6 @@ The parent retains design decisions, shared integration ownership, and final acc
 
 **Disposition:** Required.
 
-**Packet sources:** The relevant numbered specification parts, this role's full TOML, the applicable full skills, and verified live paths discovered by the repository audit. Include current revision and exact input files.
-
-**Required return:** Findings with exact file and scope references, evidence status, proposed bounded changes where authorized, and unresolved blockers. Never claim a tool run or asset review without the actual output.
-
 ## chaosx_spreadsheet_doc_worker
 
 **Role:** Workbook-only authorized catalog edit.
@@ -210,11 +163,7 @@ The parent retains design decisions, shared integration ownership, and final acc
 
 **Allowed work:** Source workbook authorized cells and its normal exports only.
 
-**Disposition:** Blocked until actual workbook and exporter available.
-
-**Packet sources:** The relevant numbered specification parts, this role's full TOML, the applicable full skills, and verified live paths discovered by the repository audit. Include current revision and exact input files.
-
-**Required return:** Findings with exact file and scope references, evidence status, proposed bounded changes where authorized, and unresolved blockers. Never claim a tool run or asset review without the actual output.
+**Disposition:** Unresolved until implementation facts and final wording are available; verify the actual workbook and exporter in the active checkout.
 
 ## chaosx_documentation_curator
 
@@ -226,10 +175,6 @@ The parent retains design decisions, shared integration ownership, and final acc
 
 **Disposition:** Required for final integration.
 
-**Packet sources:** The relevant numbered specification parts, this role's full TOML, the applicable full skills, and verified live paths discovered by the repository audit. Include current revision and exact input files.
-
-**Required return:** Findings with exact file and scope references, evidence status, proposed bounded changes where authorized, and unresolved blockers. Never claim a tool run or asset review without the actual output.
-
 ## chaosx_event_completion_auditor
 
 **Role:** Read-only completion audit.
@@ -239,10 +184,6 @@ The parent retains design decisions, shared integration ownership, and final acc
 **Allowed work:** No source changes.
 
 **Disposition:** Required.
-
-**Packet sources:** The relevant numbered specification parts, this role's full TOML, the applicable full skills, and verified live paths discovered by the repository audit. Include current revision and exact input files.
-
-**Required return:** Findings with exact file and scope references, evidence status, proposed bounded changes where authorized, and unresolved blockers. Never claim a tool run or asset review without the actual output.
 
 ## chaosx_improvement_loop_planner
 
@@ -254,10 +195,6 @@ The parent retains design decisions, shared integration ownership, and final acc
 
 **Disposition:** Required, cannot be replaced by parent self-review.
 
-**Packet sources:** The relevant numbered specification parts, this role's full TOML, the applicable full skills, and verified live paths discovered by the repository audit. Include current revision and exact input files.
-
-**Required return:** Findings with exact file and scope references, evidence status, proposed bounded changes where authorized, and unresolved blockers. Never claim a tool run or asset review without the actual output.
-
 ## chaosx_3d_model_pipeline
 
 **Role:** 3D production role assessed.
@@ -267,10 +204,6 @@ The parent retains design decisions, shared integration ownership, and final acc
 **Allowed work:** No 3D asset work requested by this source design.
 
 **Disposition:** Not applicable to the planned surfaces.
-
-**Packet sources:** The relevant numbered specification parts, this role's full TOML, the applicable full skills, and verified live paths discovered by the repository audit. Include current revision and exact input files.
-
-**Required return:** Findings with exact file and scope references, evidence status, proposed bounded changes where authorized, and unresolved blockers. Never claim a tool run or asset review without the actual output.
 
 ## chaosx_skill_maintainer
 
@@ -282,12 +215,10 @@ The parent retains design decisions, shared integration ownership, and final acc
 
 **Disposition:** Not assigned.
 
-**Packet sources:** The relevant numbered specification parts, this role's full TOML, the applicable full skills, and verified live paths discovered by the repository audit. Include current revision and exact input files.
+## Original planning environment limitation
 
-**Required return:** Findings with exact file and scope references, evidence status, proposed bounded changes where authorized, and unresolved blockers. Never claim a tool run or asset review without the actual output.
+The available Codex_Native2 discovery exposed tools that require a turn token which was not supplied. No usable collaboration spawn function was available in that authoring environment. A plugin-directory search for `hoi4_agent_tools collaboration subagents` did not provide the required runtime. Role TOMLs and configuration files are not themselves executable subagents.
 
-## Runtime blocker
-
-The available Codex_Native2 discovery exposed tools that require a turn token which was not supplied. No usable collaboration spawn function was available in the current tool set. A plugin-directory search for `hoi4_agent_tools collaboration subagents` did not provide the required runtime. Role TOMLs and configuration files are not themselves executable subagents.
-
-No independent review result is invented. The required improvement-loop and completion audits remain open for an environment that actually exposes the configured runtime.
+This historical limitation does not establish current tool availability.
+Discover the active runtime under the owner skill before commissioning the outstanding reviews.
+The original role reading is not an independent review result.

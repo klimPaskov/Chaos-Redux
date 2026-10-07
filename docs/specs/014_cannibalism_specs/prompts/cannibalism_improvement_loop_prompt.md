@@ -1,6 +1,6 @@
 # Event 014 Mandatory Improvement-Loop Prompt
 
-Spawn `chaosx_improvement_loop_planner` with `fork_context=false` after the Event 14 source pack or a meaningful implementation tranche is assembled.
+Spawn `chaosx_improvement_loop_planner` with `fork_turns="none"` after the Event 14 source pack or a meaningful implementation tranche is assembled.
 
 Pass these explicit inputs:
 

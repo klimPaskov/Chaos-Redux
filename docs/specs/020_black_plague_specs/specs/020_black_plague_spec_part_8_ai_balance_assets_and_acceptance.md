@@ -609,7 +609,7 @@ The full asset inventory is in the asset matrix and prompt. The core package inc
 
 ### Achievements
 
-- fourteen completed 64 by 64 icons
+- thirteen completed 64 by 64 icons
 - grey variants
 - not-eligible variants using the approved overlay workflow
 

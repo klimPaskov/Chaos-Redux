@@ -238,7 +238,8 @@ For every implemented event, provide:
 - character and institution names
 - dynamic scripted-localisation support
 
-Also cover connected decisions, missions, focuses, ideas, GUI labels, mapmode text, country names, party names, and catalog mirror fields.
+Also cover connected decisions, missions, focuses, ideas, GUI labels, mapmode text, country names, party names, and survivor-history text.
+Fallout remains excluded from ordinary workbook and catalog rows under the package ownership contract.
 
 ## Audit output
 

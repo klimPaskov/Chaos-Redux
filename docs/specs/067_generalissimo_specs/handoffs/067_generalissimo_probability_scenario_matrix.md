@@ -30,7 +30,7 @@ This matrix defines the named scenarios required for every Event 067 weighted su
 | `G67-T07` | A major is in an active civil war. | Exact target weight is zero. |
 | `G67-T08` | A player controls one state and cannot sustain two sides. | Normal Event 067 target weight is zero. Scenario non-war types can remain available if supported. |
 | `G67-T09` | A major is capitulated but still exists. | Exact target weight is zero. |
-| `G67-T10` | Event 067 already fired or SCN-015 launched. | Every target receives zero because the event is unique. |
+| `G67-T10` | Event 067 already fired or SCN-024 launched. | Every target receives zero because the event is unique. |
 
 ## Evolution pacing scenarios
 

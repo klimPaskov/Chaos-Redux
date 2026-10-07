@@ -1,13 +1,7 @@
 # Event 069 super-event research and completion prompt
 
-Work on Chaos Redux Event 069, Boxer Rebellion, using the current repository instructions and `docs/specs/069_boxer_rebellion_specs/`.
-Read `README.md`, `research/source_review.md`, the relevant specification parts, and all mandatory current source and skill files in full before editing your assigned surface.
-The package is a proposed design with explicitly incomplete source review, no executed project subagents, and no HOI4 MCP validation from its authoring run.
-Do not treat its expected results as evidence.
-Preserve `chaosx.nr69.1`, use three-digit event filenames, keep the event Minor Fire-Once with Chaos level 1, and preserve Domestic Unrest Severe plus Diplomacy Medium membership.
-Record adopted design, implementation, and validation separately.
-Do not silently omit, merge, simplify, replace, or defer a requirement.
-Report any unavailable source, tool, identity, asset, or engine capability honestly.
+Use [the package README](../README.md), [source review](../research/source_review.md) and [shared dispatch context](069_boxer_rebellion_subagent_handoffs.md#context-that-every-assignment-must-carry) for authority, historical limits, canon and ownership.
+The parent copies the applicable context, acceptance basis, exact files, exclusions and evidence outputs into every actual assignment.
 
 
 Complete the three earned super-event candidates in Part 13 through the current `chaos-redux-super-events` and asset skills.

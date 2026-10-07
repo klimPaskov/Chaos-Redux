@@ -1,6 +1,8 @@
 # Independence Wave subagent routing and bounded briefs
 
-Every project subagent must be spawned with `fork_context=false`.
+Project role ownership, runtime spawning, context isolation, audit evidence, and workflow details are defined by [chaos-redux-subagents](../../../../.agents/skills/chaos-redux-subagents/SKILL.md).
+In Codex spawn every project subagent with `fork_turns="none"` and a fully explicit, self-contained prompt.
+Before using these bounded briefs, read [the package README](../README.md), current takeover decisions and status, and the source-of-truth map so completed work is not assigned again.
 
 The parent remains responsible for integration, validation, source-of-truth decisions, and completion claims.
 
@@ -97,6 +99,8 @@ Use for focus, idea, decision, category, achievement, scripted GUI, formable, wa
 ### Prompt
 
 Read only the Event 6 asset prompt, `matrices/006_asset_family_registry.csv`, the parent-provided icon list, relevant asset and animation skill sections, and matching reference folders. Preserve parent filenames and sprite names. Generate distinct source art for each icon type. Do not resize focus art into idea or decision icons. For animated seals and warnings, create real source frames, static fallback, processed frames, sheet PNG and DDS, preview GIF, contact sheet, manifest, and GFX handoff. Do not edit gameplay or GFX files.
+Request native transparent backgrounds for alpha-backed icons, seals, overlays, and source frames, preserving alpha through processing and conversion under the current asset skill.
+Record background removal only as a validated fallback for failed native alpha or an inherited opaque source.
 
 ## 11. Super-event text researcher
 
@@ -112,7 +116,12 @@ Run after the super-event roles are fixed.
 
 ### Prompt
 
-Read only the Event 6 super-event prompt, relevant audio rules, named existing track lists, and output paths. Use the two approved recordings and segment plans in `research/006_super_event_audio_research.md`. Reverify the source pages and rights, preserve source downloads, edit and convert to a 44.1 kHz stereo WAV, place final files under the Event 6 music folder, and document checksums, audio IDs, and wiring. Do not edit sound definitions or gameplay files. Reject uncertain licenses and placeholders.
+Read only the Event 6 super-event prompt, relevant audio rules, named existing track lists, output paths, and current production manifest.
+Use the current slot-23 and slot-24 selections and segment plans in `research/006_super_event_audio_research.md`, preserving already produced derivatives and source evidence.
+The excluded London Brass Players candidate is historical evidence.
+For an outstanding assigned audio item, verify source and rights, preserve source downloads, edit and convert to a 44.1 kHz stereo WAV, use the exact runtime `sound/006_independence_wave/` path from the production manifest, and document checksums and wiring IDs.
+Do not edit sound definitions or gameplay files.
+Reject uncertain licenses and placeholders.
 
 ## 13. Documentation curator
 
@@ -120,7 +129,10 @@ Run after several implementation tranches and subagent handoffs.
 
 ### Prompt
 
-Read `AGENTS.md`, `chaos-redux-subagents`, all Event 6 source specs, plans, handoffs, audit reports, asset manifests, super-event notes, implementation docs, and prompt files named by the parent. Build a source-of-truth map. Mark every plan as implemented, promoted, queued with reason, rejected with reason, superseded, or blocked. Reconcile contradictions and stale descriptions. Update the canonical `docs/plans/006_independence_wave_plans/006_source_of_truth_map.md` and `docs/plans/006_independence_wave_plans/006_independence_wave_resume_packet.md`; do not create unprefixed duplicate map or resume files. Do not edit gameplay, localisation, assets, or spreadsheets.
+Read `AGENTS.md`, `chaos-redux-subagents`, and the Event 6 sources named by the parent.
+Build or reconcile the source-of-truth map using the AGENTS.md dispositions and evidence requirements, keeping missing acceptance `unresolved`.
+Update the canonical `docs/plans/006_independence_wave_plans/006_source_of_truth_map.md` and `docs/plans/006_independence_wave_plans/006_independence_wave_resume_packet.md` only when those files are in the granted scope.
+Do not create unprefixed duplicates or edit gameplay, localisation, assets, or spreadsheets.
 
 ## 14. Spreadsheet worker
 
@@ -136,7 +148,23 @@ Run only after approved source localisation and the reconciled documentation exi
 
 ### Prompt
 
-Read the parent prompt, the spreadsheet skill, the Event 6 workbook row, and only the approved Event 6 Event Details, event log, evolution, cluster, and scenario localisation needed for mirroring. Update `docs/spreadsheets/chaos_redux_events_catalog.xlsx` in place only when the current workbook still differs from the accepted wording or status. If the workbook already matches the approved source wording and status, report no change and preserve the existing exports. Replace the stale 4 to 6, 5 to 7, 6 to 9, 8 to 12, and 10 to 16 wave ranges only when they remain present, using approved source wording based on the active 3, 4, 5, 7, and 10 ladder, with World Collapse also at 10. Preserve workbook structure and formatting. Report changed cells and any blocked fields. Do not edit gameplay or localisation.
+Read the parent prompt, the spreadsheet skill, the Event 6 workbook row, and only the approved Event 6 Event Details, event log, evolution, cluster, and scenario localisation needed for mirroring.
+Update `docs/spreadsheets/chaos_redux_events_catalog.xlsx` in place only when it differs from accepted wording or status, using the current owner-skill workbook and export workflow.
+After every successful workbook update, run `python .tools/export_event_catalog_csv.py` from the mod root.
+Never edit the three export-only catalog CSVs directly.
+If no workbook change is needed, preserve the existing exports and report no change.
+Check wave wording against the accepted 3/4/5/7/10 ladder, with World Collapse at 10, without introducing mechanic details into premise-only public fields.
+Preserve workbook structure and formatting, report changed cells and blockers, and do not edit gameplay or localisation.
+
+## 17. AI probability auditor and event-owned GUI worker
+
+Route weighted AI, MTTH, event-option chances, random selection, focus/research selection, decision/mission scores, strategy factors, and declared weighted pools to the read-only `chaosx_ai_probability_auditor` under the current subagent skill.
+Give it exact source paths, explicit named scenarios, frozen baseline sources, outstanding questions, and a scenario-specific handoff path.
+The owner applies any accepted balance change, then the auditor compares the same scenarios against the final source.
+
+Use `chaosx_event_ui_worker` only for an accepted dedicated Event 006 window with exact identifiers, source files, entry point, reference and acceptance record, states, resolutions, assets, exclusions, and handoff path.
+Follow `chaos-redux-scripted-gui` for mandatory MCP inspect, render, and matching before-and-after visual evidence.
+Shared event log, details, settings, and super-event framework remain parent-owned.
 
 ## 15. Completion auditor
 

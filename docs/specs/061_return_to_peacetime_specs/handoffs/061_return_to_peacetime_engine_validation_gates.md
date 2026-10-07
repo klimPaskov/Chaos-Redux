@@ -65,7 +65,8 @@ Confirm that the intended modifier roles exist and behave as expected:
 - army experience gain
 - mobilization speed
 
-Replace unsupported modifiers with the nearest clear mechanic and record the deviation.
+Record unsupported modifiers as blockers.
+An equivalent mechanic requires an accepted design amendment with its user or parent acceptance basis recorded before implementation.
 
 ## Gate 5: Safe conventional division disband
 
@@ -95,7 +96,8 @@ Confirm available script access for:
 - template age or unit creation date
 - owner markers for special unit families
 
-When a desired input is unavailable, use a documented simpler selector and preserve hard exclusions.
+When a desired input is unavailable, record the missing input and propose an equivalent selector that preserves hard exclusions.
+Do not apply the substitution without a recorded acceptance basis.
 
 ## Gate 7: Stockpile inspection and exact debit
 

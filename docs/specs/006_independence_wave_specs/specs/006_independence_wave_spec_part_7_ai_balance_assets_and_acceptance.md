@@ -530,85 +530,45 @@ Source rules:
 
 ### Portraits
 
-- every country leader, route leader, commander, and named officeholder for a
-  real, historical, restored, regional, indigenous, dynastic, separatist, or
-  otherwise plausibly historical country uses a sourced real portrait
-- a historical collective authority uses sourced archival material for its
-  real institution or a sourced real period representative
-- fictional one-person leaders use generated portraits only when the country
-  is truly fictional and high-chaos
-- a country that existed in whole or in part, claims continuity from a real
-  polity or institution, represents a real community, or remains plausibly
-  historical is grounded and cannot receive a generated person
-- generated high-chaos leaders use distinctive invented ceremonial dress,
-  regalia, body adornment, ritual objects, altered uniforms, or other coherent
-  fictional cultural motifs instead of generic portrait design
-- generated high-chaos leaders must look intentionally extraordinary; reject
-  ordinary, conventionally dressed, or interchangeable fictional officeholders
-- strange details must belong to the fictional polity's designed culture and
-  must not borrow or exaggerate sacred objects or traits of a real people
-- generated portraits do not use modern props, meme treatment, gore, or
-  stereotypes or caricatures of real cultures
+- every country leader, route leader, commander, and named officeholder for a real, historical, restored, regional, indigenous, dynastic, separatist, or otherwise plausibly historical country uses a sourced real portrait
+- a historical collective authority uses sourced archival material for its real institution or a sourced real period representative
+- fictional one-person leaders use generated portraits only when the country is truly fictional and high-chaos
+- a country that existed in whole or in part, claims continuity from a real polity or institution, represents a real community, or remains plausibly historical is grounded and cannot receive a generated person
+- generated high-chaos leaders use distinctive invented ceremonial dress, regalia, body adornment, ritual objects, altered uniforms, or other coherent fictional cultural motifs instead of generic portrait design
+- generated high-chaos leaders must look intentionally extraordinary; reject ordinary, conventionally dressed, or interchangeable fictional officeholders
+- strange details must belong to the fictional polity's designed culture and must not borrow or exaggerate sacred objects or traits of a real people
+- generated portraits do not use modern props, meme treatment, gore, or stereotypes or caricatures of real cultures
 - signature country routes receive priority portrait depth
-- ordinary framework countries can begin with a sourced historical council or
-  sourced period representative and later select a sourced leader
+- ordinary framework countries can begin with a sourced historical council or sourced period representative and later select a sourced leader
 
-Accepted user direction dated 2026-07-16 narrows the Event 6 portrait roster:
+The following roster direction records the user's 2026-07-16 decision.
+Its blanket replacement instruction is historical and must be reconciled with the later exact-consumer portrait handoffs and current takeover decisions before production.
+The current [asset skill](../../../../.agents/skills/chaos-redux-event-assets/SKILL.md) and `chaosx_portrait_creator` own source placeholders, user-supplied grounded finals, reference checks, conversion, and portrait wiring.
+Preserve approved current portrait bytes and do not assign blanket regeneration from this dated list.
 
 - every Event 6 personal, command, and collective portrait depicts men only;
 - no Event 6 character carries female gender metadata;
-- every fictional portrait master is generated against the canonical vanilla
-  leader or commander references and finished in the recognisable HOI4
-  painterly-realistic style;
-- sourced real portraits are cropped to head and shoulders and receive an
-  identity-preserving HOI4 treatment;
-- a newly defined Event 6 character may not duplicate a person already defined
-  and recruited, or otherwise owned by a live vanilla or Chaos Redux character
-  roster. Reuse of an existing registered character requires an explicit guarded
-  transfer/availability contract that prevents simultaneous ownership; creating a
-  second token with the same person and a new portrait is not reuse;
-- incidental text such as a ship, production line, street, or equipment name is
-  not character ownership by itself; ownership requires an actual character,
-  portrait, leader, commander, operative, or named officeholder consumer;
-- a historical or plausibly historical package with no defensible sourced
-  candidate and usable portrait remains blocked instead of receiving a
-  generated officeholder;
-- `portrait_BAY_rupprecht_of_bavaria.dds` and
-  `portrait_RHI_josef_friedrich_matthes.dds` are approved and remain untouched;
-  every other current Event 6 leader or commander portrait must be replaced
-  through its compliant source mode; grounded packages use sourced real people
-  or real archival institutional material, never generated substitutes;
-- Event 6 gameplay advisor offices use no custom advisor portrait icons or
-  `GFX_portrait_advisor_*` registrations.
+- every fictional portrait master is generated against the canonical vanilla leader or commander references and finished in the recognisable HOI4 painterly-realistic style;
+- sourced real portraits are cropped to head and shoulders and receive an identity-preserving HOI4 treatment;
+- a newly defined Event 6 character may not duplicate a person already defined and recruited, or otherwise owned by a live vanilla or Chaos Redux character roster. Reuse of an existing registered character requires an explicit guarded transfer/availability contract that prevents simultaneous ownership; creating a second token with the same person and a new portrait is not reuse;
+- incidental text such as a ship, production line, street, or equipment name is not character ownership by itself; ownership requires an actual character, portrait, leader, commander, operative, or named officeholder consumer;
+- a historical or plausibly historical package with no defensible sourced candidate and usable portrait remains blocked instead of receiving a generated officeholder;
+- `portrait_BAY_rupprecht_of_bavaria.dds` and `portrait_RHI_josef_friedrich_matthes.dds` are approved and remain untouched; every other current Event 6 leader or commander portrait must be replaced through its compliant source mode; grounded packages use sourced real people or real archival institutional material, never generated substitutes;
+- Event 6 gameplay advisor offices use no custom advisor portrait icons or `GFX_portrait_advisor_*` registrations.
 
-The absence of custom advisor icons is a selected presentation rule, not
-permission to omit advisor mechanics, traits, costs, availability, or AI.
+The absence of custom advisor icons is a selected presentation rule, not permission to omit advisor mechanics, traits, costs, availability, or AI.
 
 ## IW-043/IW-058 reviewed asset tranche
 
 The bounded package asset authorities are:
 
-- `docs/assets/006_independence_wave/iw043_iw058_generated_visuals_2026_07_18/manifest.md`
-  for eight all-male institutional portraits, ten flat flags, and two report
-  images;
-- `docs/assets/006_independence_wave/iw043_iw058_static_icons_2026_07_18/manifest.md`
-  for two decision categories, sixteen decisions, six idea families, and the
-  three-state Assyria survival achievement triplet.
+- `docs/assets/006_independence_wave/iw043_iw058_generated_visuals_2026_07_18/manifest.md` for eight all-male institutional portraits, ten flat flags, and two report images;
+- `docs/assets/006_independence_wave/iw043_iw058_static_icons_2026_07_18/manifest.md` for two decision categories, sixteen decisions, six idea families, and the three-state Assyria survival achievement triplet.
 
 The final files are reviewed and runtime-installed for the bounded base package.
-The later sourced-leader rule supersedes the source-mode acceptance of the eight
-generated IW-043/IW-058 institutional portraits. Those portraits cannot satisfy
-package visual readiness and require sourced real replacements before the
-packages can retain final portrait attestation.
-The Assyria triplet's provenance record explicitly excludes the post-1968/1973
-modern Assyrian flag from the 1936 baseline. The exact CHU/ASY setup now writes
-the FORM-12/13/18 adapter and signature-achievement-writer attestations only
-after package identity, politics, institutional leader, force, and visual
-receipts pass. Art completion and attestation do not bypass the hidden
-achievement trigger contracts. The two IW-043/IW-058 signature achievements
-remain hidden until their exact route and survival proof conditions are met.
-No custom Event 006 advisor, adviser, dossier, or portrait asset is permitted;
-all eight institutional characters remain male.
+The later sourced-leader rule supersedes the source-mode acceptance of the eight generated IW-043/IW-058 institutional portraits. Those portraits cannot satisfy package visual readiness and require sourced real replacements before the packages can retain final portrait attestation.
+The Assyria triplet's provenance record explicitly excludes the post-1968/1973 modern Assyrian flag from the 1936 baseline. The exact CHU/ASY setup now writes the FORM-12/13/18 adapter and signature-achievement-writer attestations only after package identity, politics, institutional leader, force, and visual receipts pass. Art completion and attestation do not bypass the hidden achievement trigger contracts. The two IW-043/IW-058 signature achievements remain hidden until their exact route and survival proof conditions are met.
+No custom Event 006 advisor, adviser, dossier, or portrait asset is permitted; all eight institutional characters remain male.
 
 ## Asset source modes
 

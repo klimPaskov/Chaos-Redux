@@ -1,8 +1,14 @@
 # Event 029: Riches Found specification package
 
+Current workflow owners: [event integration](../../../.agents/skills/chaos-redux-events/SKILL.md), [subagent routing](../../../.agents/skills/chaos-redux-subagents/SKILL.md), and [asset production](../../../.agents/skills/chaos-redux-event-assets/SKILL.md).
+The source parts preserve the proposed expanded design.
+Explicit user requirements retain their cited basis, while broader claims labelled accepted require an attributable user decision or parent acceptance before implementation.
+Package location and manual closure reports do not establish that acceptance.
+
+
 This package expands Event 029 into a repeatable state-bound wealth crisis for Chaos Redux.
 
-Extract the folder `029_riches_found_specs` directly into `docs/specs/`.
+The repository package location is `docs/specs/029_riches_found_specs/`.
 
 The package is planning material only.
 
@@ -57,14 +63,17 @@ The empty Evolution IV and Evolution V placeholders are therefore developed as l
 
 This is a compliance decision, not a reduction of the event's late-game content.
 
-## Source and tool limits
+## Original planning evidence limits
 
 Every file supplied with the task was read in full, including the three CSV catalogs and every TOML file inside `subagents.zip`.
 
-The active environment did not expose the Chaos Redux repository, the offline Paradox wiki snapshot, the installed vanilla game files, the authoritative XLSX catalog workbook, the custom Codex subagent spawning interface, or the HOI4 MCP tools.
+The original package-authoring environment did not expose the Chaos Redux repository, the offline Paradox wiki snapshot, the installed vanilla game files, the authoritative XLSX catalog workbook, the custom Codex subagent spawning interface, or the HOI4 MCP tools.
 
-The package therefore applies the supplied project rules and source snapshots directly, but it is not repository-inspected or MCP-validated.
+That planning pass applied supplied rules and source snapshots without live repository or MCP validation.
 
 Those missing checks are mandatory during implementation and are named in the prompts and acceptance criteria.
 
 No section was shortened or omitted to produce a quicker response.
+
+Continuation must inspect current sources and capabilities.
+The original session's missing routes do not establish a current outage.

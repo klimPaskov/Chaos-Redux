@@ -1,5 +1,8 @@
 # 23 · Checks on this planning package
 
+This file preserves checks reported for the original planning delivery.
+Its character counts, link counts and archive checks do not certify the edited checkout; current documentation checks are recorded in the 2026-10-07 cleanup handoff.
+
 ## Document checks
 
 The delivered package contains 30 Markdown files in one top-level `076_usa_tests_weapons_specs/` folder. It contains a README, 23 numbered design and reference documents, and six separate implementation prompts. Gameplay, weapons, integration, presentation, prompts and reference material have their own subfolders.

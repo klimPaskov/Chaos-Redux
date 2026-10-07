@@ -12,7 +12,7 @@ Do not create a new achievement database with another `unique_id`.
 
 Every achievement requires route tracking, disqualifiers, localisation, completed icon, grey icon, not-eligible icon, documentation, and test coverage.
 
-Use `chaosx_icon_artist` with `fork_context=false` for final icon triplets after the exact IDs and runtime filenames are locked.
+Use `chaosx_icon_artist` with `fork_turns="none"` for final icon triplets after the exact IDs and runtime filenames are locked.
 
 The parent owns final registry, localisation, event and decision hooks, docs, catalog references, and live validation.
 

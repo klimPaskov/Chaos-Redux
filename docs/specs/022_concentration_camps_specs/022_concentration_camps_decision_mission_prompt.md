@@ -308,7 +308,7 @@ Cleanup must preserve:
 
 After the first complete implementation:
 
-1. Spawn `chaosx_decision_mission_auditor` with `fork_context=false`.
+1. Spawn `chaosx_decision_mission_auditor` with `fork_turns="none"`.
 2. Give it the exact touched files, accepted decisions, and handoff path.
 3. Allow local patches to decisions, missions, tooltips, AI, cleanup, costs, and visibility.
 4. Route every complex weight to `chaosx_ai_probability_auditor`.
@@ -336,9 +336,11 @@ Run:
 - civil-war and tag-change tests
 - multiplayer target-isolation test
 - live UI review at normal resolution
-- fresh error-log delta review
+- review runtime error evidence only when supplied by the user
 
-Use dedicated saves for baseline, each evolution, liberation, retreat, and successor paths.
+Record source/MCP results separately from user-owned live-game, save/reload, and multiplayer observations.
+Unobserved native cases remain open.
+Do not launch the game or request logs unless the debug-playtest skill is explicitly invoked.
 
 ## Completion report
 

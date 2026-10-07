@@ -51,7 +51,7 @@ Magnitude is never reduced by recipient size. Higher evolutions and wider global
 
 ## Physical landing sequence
 
-Each package creates three to seven landing-zone reports. The number rises with magnitude and can rise modestly at later evolutions. Reports are distributed across random owned and controlled states. When the recipient has fewer valid states than the report count, the chain may revisit a state with a different local site and report theme.
+Under the accepted 5 October disposition in [Part 4](042_equipment_from_heavens_spec_part_4_ai_presentation_and_acceptance.md#accepted-presentation-disposition-5-october-2026), each package creates three-to-seven hidden recovery visits, presented as discovery and one final summary or halt report. The number rises with magnitude and can rise modestly at later evolutions. Reports are distributed across random owned and controlled states. When the recipient has fewer valid states than the report count, the chain may revisit a state with a different local site and report theme.
 
 Reports arrive over one to fourteen days. Their order is randomized within these roles:
 
@@ -73,7 +73,7 @@ Possible state conditions include blocked roads, crowded depots, improvised airf
 
 A landing can also create a small temporary local benefit when the cargo itself helps recovery, such as trucks improving transport, engineering equipment repairing access routes, or intact trains clearing a rail backlog. The event should prefer clear combined state modifiers over many tiny modifiers.
 
-No landing report permanently destroys buildings or population during ordinary operation. Rare accidents may damage a small amount of infrastructure or equipment if the package contains hazardous evolved cargo, but those accidents need visible cause, bounded severity, and a separate report.
+No landing report permanently destroys buildings or population during ordinary operation. Rare accidents may damage a small amount of infrastructure or equipment if the package contains hazardous evolved cargo, but those accidents need visible cause, bounded severity, and disclosure in the final recovery summary; an accident replaces one middle visit rather than adding a popup or an eighth visit.
 
 ## Provenance signatures
 
@@ -121,7 +121,7 @@ The event does not copy a country's technology tree. It grants physical equipmen
 
 ## Multiplayer behavior
 
-The recipient player receives the main popup and its landing reports. Other players can inspect the Event Log entry and Event Details actor context through the shared global log. The package and reports are resolved once globally, so multiplayer ghost copies cannot duplicate the stockpile.
+The recipient player receives discovery and one final recovery summary or halt report. Other players can inspect the Event Log entry and Event Details actor context through the shared global log. The package and reports are resolved once globally, so multiplayer ghost copies cannot duplicate the stockpile.
 
 When the recipient is AI-controlled, the event resolves without forcing all human players through repeated popups. The shared Event Log remains the stable record. Cluster presentation follows the normal cluster-history rules.
 

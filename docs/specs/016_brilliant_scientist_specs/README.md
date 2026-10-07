@@ -8,7 +8,7 @@
 
 > Explicit current runtime boundary: no supported authored Alien Infantry muzzle locator/effect binding is available, the registered particle/light definitions remain unbound, strict selection/acknowledgement/impact/special audio roles remain unresolved, and positional playback plus parent/live consumer acceptance remain open. The rejected Portal Raider model has no accepted recovery package, and the Portal beachhead lifecycle remains unowned.
 
-## Current completion boundary, 2026-08-03
+## Historical completion checkpoint, 2026-08-03
 
 - Static implementation: the core runtime, finite ten-country settlement layer, portal-calibration consumer, high-speed-materials trial, KRG country/focus/project/decision surfaces, Event 019 provider adapters, and registered presentation/localisation surfaces are present in source.
 - Validation pending: targeted transfer and cleanup, probability and affordability, quantitative balance, Event 019 provider isolation, live GUI/audio/presentation, and user-owned campaign scenarios remain open.
@@ -18,7 +18,7 @@
 - 3D status: the installed clone infantry model/entity package is reusable by generic consumers, and the accepted Meshy V13 Alien Infantry model has seven genuine provider-authored actions with promoted static runtime registrations. Its supported muzzle/effect locator, particle/light binding, strict audio roles, positional playback, and live acceptance remain open. The Portal Raider runtime model/entity remains rejected and unwired after the failed semantic generation task, and the other route-specific model packages remain queued outside the current scope. No model or final GUI/full Event 016 completion claim is made.
 - Broader country chains: the non-model closure handoff closes chains beyond the finite ten-country layer as filler. Reopen only through a new accepted design decision.
 
-Use the final audit and non-model closure handoff for the current evidence and plan dispositions: [`016_final_completion_audit_2026-08-03.md`](../../plans/016_brilliant_scientist_plans/subagent_handoffs/016_final_completion_audit_2026-08-03.md) and [`016_nonmodel_content_closure_handoff_2026-08-03.md`](../../plans/016_brilliant_scientist_plans/016_nonmodel_content_closure_handoff_2026-08-03.md).
+These August receipts preserve their frozen scope and are subordinate to the later final completion contract and user amendments: [`016_final_completion_audit_2026-08-03.md`](../../plans/016_brilliant_scientist_plans/subagent_handoffs/016_final_completion_audit_2026-08-03.md) and [`016_nonmodel_content_closure_handoff_2026-08-03.md`](../../plans/016_brilliant_scientist_plans/016_nonmodel_content_closure_handoff_2026-08-03.md).
 
 This package expands Event ID `16`, `Brilliant Scientist`, into a full source specification for Chaos Redux.
 
@@ -32,7 +32,9 @@ The event can remain a powerful scientific success story. It can become a secret
 - `docs/plans/016_brilliant_scientist_plans/016_core_runtime_handoff_map.md` records current implementation, validation, blocked-dependency, and deferred-scope boundaries.
 - `docs/plans/016_brilliant_scientist_plans/016_brilliant_scientist_resume_packet.md` records the exact continuation point.
 - `docs/events/016_brilliant_scientist/overview.md` records the current core runtime and its deferred-content boundary.
-- `docs/assets/016_brilliant_scientist/manifest.md` records visual and audio production status.
+- `docs/assets/016_brilliant_scientist/manifest.md` is a missing historical aggregate pointer.
+  Available package evidence includes [the GFX handoff](../../assets/016_brilliant_scientist/gfx_handoff.md) and family manifests.
+  The missing aggregate prevents relying on this pointer as current full asset coverage.
 - `docs/super_events/016_brilliant_scientist/text_research.md` contains the completed six-package text research.
 - `docs/super_events/016_brilliant_scientist/audio_research.md` contains the completed six-package audio research and final WAV manifest.
 - `docs/plans/016_brilliant_scientist_plans/subagent_handoffs/016_base_portrait_source_handoff.md` records the completed stage-0 source and runtime package.
@@ -79,7 +81,7 @@ The event can remain a powerful scientific success story. It can become a secret
 | `prompts/016_brilliant_scientist_documentation_curator_prompt.md` | Documentation reconciliation, source-of-truth, and plan-disposition handoff |
 | `prompts/016_brilliant_scientist_spreadsheet_prompt.md` | Final event-catalog workbook alignment handoff |
 | `prompts/016_brilliant_scientist_coding_prompt.md` | Main implementation prompt |
-| `prompts/016_brilliant_scientist_goal_prompt.md` | Compact goal prompt between 3,500 and 4,000 characters |
+| `prompts/016_brilliant_scientist_goal_prompt.md` | Compact continuation goal linked to the final completion contract |
 | `handoffs/016_subagent_routing_plan.md` | Ordered subagent deployment and ownership map |
 | `handoffs/016_mandatory_continuation_prompt.md` | Exact stopping point and continuation prompt required by the user |
 | `handoffs/016_completion_status.md` | Completed package surfaces, process blockers, and remaining closure work |

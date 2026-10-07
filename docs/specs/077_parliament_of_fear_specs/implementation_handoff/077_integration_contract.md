@@ -1,6 +1,8 @@
 # Event 077 implementation contract
 
-This is an implementation handoff derived from the source specification, not a report of completed mod changes. Move this `implementation_handoff/` directory to `docs/plans/077_parliament_of_fear_plans/` when installing the source package. Keep the numbered specification parts as the design source in `docs/specs/077_parliament_of_fear_specs/`.
+This is an unresolved implementation template derived from source design, not a completed handoff or acceptance record.
+Keep the linked original here and the numbered design parts under `docs/specs/077_parliament_of_fear_specs/`.
+Write new plans under `docs/plans/077_parliament_of_fear_plans/` and actual specialist reports under its `subagent_handoffs/` directory.
 
 ## Identity and migration
 

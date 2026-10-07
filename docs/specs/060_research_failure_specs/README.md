@@ -1,5 +1,13 @@
 # Event 60 Research Failure specification pack
 
+## Design authority and current workflow
+
+The package attributes its premise to the supplied user brief.
+The original user message and claim-level acceptance record are not reproduced here, so approval of expanded mechanics remains unresolved until the implementation owner records the supporting user decision or parent acceptance.
+Historical planning reviews, catalog snapshots, and package status labels do not establish approval or current implementation.
+Use current [AGENTS.md](../../../AGENTS.md), [event guidance](../../../.agents/skills/chaos-redux-events/SKILL.md), [asset guidance](../../../.agents/skills/chaos-redux-event-assets/SKILL.md), and [subagent guidance](../../../.agents/skills/chaos-redux-subagents/SKILL.md) for execution.
+The source design remains in the files listed below.
+
 ## Package identity
 
 - Event ID: `60`
@@ -9,6 +17,7 @@
 - Event type: Minor Repeatable
 - Chaos level: 1
 - Cluster: Scientific Research
+- Reserved cluster ID: `21`, from the [shared identifier registry](../shared_identifier_registry.md). This reserves identity only and does not approve membership or activation.
 - Cluster role: High member
 - Source status at planning time: To Be Reworked
 
@@ -71,20 +80,20 @@ The exemption does not prevent research-speed damage, active-project loss, or te
 The accepted event brief in the user request is the primary design authority for Event 60.
 The supplied Chaos Redux mechanics, skills, catalogs, registries, configuration, README, and every extracted subagent definition were fully read before this pack was written.
 
-The live Chaos Redux repository, the offline Paradox Wiki snapshot, the installed Hearts of Iron IV documentation, and the installed vanilla game files were not mounted in this environment.
+The live Chaos Redux repository, the offline Paradox Wiki snapshot, the installed Hearts of Iron IV documentation, and the installed vanilla game files were not mounted in the original planning environment.
 That prevented direct inspection of the current technology graph, exact research-state effects, production-line behavior after technology removal, and the live Event 16 Kruger API.
 The specification therefore defines the required behavior and evidence gates without inventing exact engine syntax or technology identifiers.
 Implementation may not replace real technology regression with a flat research penalty merely because those checks remain outstanding.
 Unsafe technology families must fail closed until their graph and runtime behavior are verified.
 
-The configured Codex subagent bridge was also unreachable in this session and returned an HTTP 404 response during discovery.
+The configured Codex subagent bridge was also unreachable during the original planning session and returned an HTTP 404 response during discovery.
 No live specialist subagent is claimed to have run.
 The parent planning pass applied the written review contracts of the improvement-loop planner, scripted-system architect, decision and mission auditor, probability auditor, asset rules, localisation rules, and event completion auditor directly.
 The failed subagent route is recorded in the quality report.
 
-## Extraction
+## Package location
 
-Extract the ZIP at the repository root so that this folder lands at:
+The installed source folder is:
 
 ```text
 docs/specs/060_research_failure_specs/

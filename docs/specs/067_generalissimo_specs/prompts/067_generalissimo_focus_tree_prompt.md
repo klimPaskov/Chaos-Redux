@@ -330,7 +330,7 @@ Use:
 - `hoi4.focus_rewrite` for bounded structural and layout changes
 - post-change focus comparison
 - `hoi4.gui_inspect` and `hoi4.gui_render` for the focus inlay
-- `hoi4.gui_rewrite` only through the accepted Event 067 GUI scope
+- optional `hoi4.gui_rewrite` only through the accepted Event 067 GUI scope, or a direct reviewed edit
 
 Review the final render at normal zoom without source annotations. A route that cannot be identified from the render is not complete.
 

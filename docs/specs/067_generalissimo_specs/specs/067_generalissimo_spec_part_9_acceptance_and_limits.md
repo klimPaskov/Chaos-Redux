@@ -31,7 +31,7 @@ The implementation must use the installed HOI4 MCP routes for event, probability
 
 ## Event identity acceptance
 
-- Entry event uses `chaosx.nr067.1`.
+- Entry event uses `chaosx.nr67.1`.
 - Event type is Minor Fire-Once.
 - Minimum Chaos level is 1.
 - Event ID is displayed as `067` where padded IDs are used.
@@ -242,7 +242,7 @@ The implementation must use the installed HOI4 MCP routes for event, probability
 
 ## Manual scenario acceptance
 
-- Scenario ID `SCN-015` is confirmed free before registration.
+- Scenario registration uses the central `SCN-024` / raw `24` reservation.
 - Scenario name is Generalissimo's Coup.
 - Four scenario types exist.
 - Low, Medium, High, and Maximum intensity work for every type.
@@ -357,7 +357,7 @@ Required cluster changes:
 
 Required scenario changes:
 
-- `SCN-015` Generalissimo's Coup
+- `SCN-024` Generalissimo's Coup
 - four type descriptions
 - four intensity descriptions
 - status aligned with testing evidence

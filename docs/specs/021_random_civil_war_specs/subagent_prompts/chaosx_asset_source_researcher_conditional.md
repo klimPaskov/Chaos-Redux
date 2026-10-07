@@ -2,7 +2,7 @@
 
 Use this prompt only when a final authorized Event 021 report or news image must depict a specific real historical scene, artifact, photograph, poster, symbol, or document.
 
-Spawn `chaosx_asset_source_researcher` with `fork_context=false`.
+Spawn `chaosx_asset_source_researcher` with `fork_turns="none"`.
 
 Read:
 

@@ -3,11 +3,13 @@
 ## Manual scenario identity
 
 - Scenario name: Generalissimo's Coup
-- Proposed scenario ID: `SCN-015`
+- Reserved scenario ID: `SCN-024`, raw integer `24`
 - Owner event: `067`
 - Core purpose: place the current player or another valid major country into a mature Generalissimo crisis without waiting for normal event selection, Chaos thresholds, or evolution pacing
 
-The supplied scenario export ends at `SCN-014`, so `SCN-015` is the required proposed ID. The implementation must verify the authoritative workbook and runtime registry before registration. A collision is a blocker and must not be resolved by silently replacing another scenario.
+Use the user-authorized `SCN-024` / raw `24` reservation in the [shared identifier registry](../../shared_identifier_registry.md).
+The original `SCN-015` proposal is superseded, while original export receipts remain historical.
+The reservation does not approve broader design or implement scenario content.
 
 ## Scenario launch rules
 

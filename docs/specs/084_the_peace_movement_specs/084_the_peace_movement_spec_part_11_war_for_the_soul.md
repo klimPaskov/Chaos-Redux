@@ -3,7 +3,8 @@
 
 ### Purpose and entry
 
-War for the Soul starts the mature ideological conflict immediately. It is selected through the shared manual-scenario controls and registered as its own scenario entry. No exact registry ID is reserved here because the complete live registry and collision audit were not supplied. The scenario name and Event 84 linkage are fixed.
+War for the Soul starts the mature ideological conflict immediately. It is selected through the shared manual-scenario controls and uses the user-authorized planning reservation `SCN-031`, raw ID `31`, for Event 84 under the [shared identifier registry](../shared_identifier_registry.md).
+The reservation fixes identity only; runtime registration, map validity, broader design acceptance, and implementation remain separate requirements.
 
 The manual setup bypasses ordinary opening, transmission, and evolution waiting requirements. It declares a mature political starting history and initializes both blocs, movement cells in neutral countries, divided officials, Rainbow Militias, and Lotus Ascendants. It also starts an immediate diplomatic crisis or an explicitly configured war. It does not bypass structural map validity, player consent to their assigned government, compatible terminal ownership, or real country-package requirements.
 

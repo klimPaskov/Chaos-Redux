@@ -14,7 +14,8 @@ Route grounded period-source research through chaosx_asset_source_researcher. Re
 
 The twentieth-century setting matters. The old treaty can be a document or symbol in a modern diplomatic and military scene. It is not a reason to dress the current governments as sixteenth-century rulers. Preserve the distinction between the initial local crisis and the later global claim.
 
-Study the exact canonical report, news, super-event, focus, decision, spirit, category-picture, and achievement families. Match native dimensions, alpha, framing, scale, and visual language. Use the visual-component catalog only within its allowed source roles.
+Study the exact canonical report, news, super-event, focus, decision, spirit, category-picture, and achievement families. Match native dimensions, alpha, framing, scale, and visual language.
+Request native ImageGen transparency initially for every alpha-backed icon or emblem, preserve alpha through processing and DDS conversion, and record any fallback background removal and edge review under the current asset skill. Use the visual-component catalog only within its allowed source roles.
 
 ## Exact geography
 

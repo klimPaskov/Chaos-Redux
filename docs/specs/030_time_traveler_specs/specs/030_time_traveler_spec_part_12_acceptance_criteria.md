@@ -132,7 +132,7 @@ A parser-clean entry event is not completion.
 
 ## Triggerable scenario
 
-- The authoritative workbook and registry confirm the final scenario ID.
+- The shared identifier registry reserves All Times at Once as `SCN-020`, raw ID `20`, and that ownership is rechecked against runtime/workbook occupancy before integration.
 - The dynamic scenario list, details, confirmation flow, and four intensity stops are wired.
 - Low, Medium, High, and Maximum create materially different setups.
 - Maximum activates every temporal category, not every possible named figure.

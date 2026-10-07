@@ -5,15 +5,16 @@
 
 This package preserves the user's worldwide one-step law progression, War Support grants, evolution thresholds, two 99% extreme laws, and doubled manual reversal costs. It expands them into complete authored design, balance proposals, compatibility and AI contracts, presentation, achievements, and implementation handoffs.
 
-**Status:** specification authored. Gameplay, native engine validation, final assets, authoritative workbook changes, and required independent specialist reviews are not complete.
+**Original delivery status:** specification authored, without completed gameplay, native validation, final assets, workbook changes, or independent specialist reviews.
+This status describes the planning delivery; current implementation requires source and matching read-only MCP inspection.
 
-## Install the planning files
+## Repository entry point
 
-Extract `082_law_upgrade_specs.zip` into the repository's `docs/specs/` directory. The ZIP already contains the top-level `082_law_upgrade_specs/` folder.
+This package is installed at `docs/specs/082_law_upgrade_specs/`.
+The original delivery referenced `docs/plans/082_law_upgrade_plans/` for source coverage, same-author review, an arithmetic suite, and six isolated-review prompts.
+That companion directory is absent from this checkout; its tests and handoffs are blocked dependencies, not accessible implementation evidence.
 
-Extract the separate `082_law_upgrade_plans.zip` into `docs/plans/`. It contains source coverage, same-author review, the executed arithmetic suite, and six ready isolated-review prompts. These are planning records, not gameplay files.
-
-Start the implementation agent with [the goal prompt](082_law_upgrade_goal_prompt.md). It points to the detailed specification and companion prompts. It is 3,997 characters including its final newline.
+Start the implementation agent with [the goal prompt](082_law_upgrade_goal_prompt.md). It points to the detailed specification and companion prompts. Use the current prompt text rather than an archive-era character count.
 
 ## Specification parts
 
@@ -64,7 +65,10 @@ The two authoritative manual reversal actions return to the immediate vanilla pr
 
 The 99% recruitment law is not an instant manpower grant. The economy's legal allocation is distinguished from actual consumer-goods results. Both require exact installed-game evidence.
 
-## Reading and capability disclosure
+## Original planning-session evidence
+
+The following reading and test counts are retained as historical delivery claims.
+They do not establish current source closure, service health, implementation status, or the availability of the missing companion suite.
 
 All 42 supplied text files were read end to end before drafting, including every supplied skill and all 20 agent definitions. Four additional repository documents or source files were fully read. Some other external references were only partially inspected or were unavailable.
 
@@ -72,6 +76,6 @@ Not every transitive must-read source was completed. In particular, the current 
 
 No supplied subagent was actually spawned, and no HOI4 probability or live-game tool ran. The independent improvement-loop and probability reviews remain open.
 
-The supplied abstract suite has 18 passing test methods. It checks arithmetic and ordinal rules only. It does not pass any of the 80 HOI4 integration cases.
+The original delivery reported 18 passing methods in the abstract companion suite. It checks arithmetic and ordinal rules only. It does not pass any of the 80 HOI4 integration cases.
 
 No supplied text was intentionally abbreviated for speed. The complete authored specification does not claim that its proposed balance or engine-sensitive mappings have already been validated.

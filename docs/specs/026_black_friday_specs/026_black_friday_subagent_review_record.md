@@ -4,7 +4,7 @@
 
 The supplied project defines custom Codex subagents, but this ChatGPT environment did not expose a subagent-spawn tool. No project subagent process was started.
 
-Every supplied subagent TOML was fully read. The relevant review roles were performed directly while building this package. The lack of a subagent runtime did not reduce the specification scope. Future implementation should use the named project subagents with `fork_context=false` as required by the repository.
+Every supplied subagent TOML was fully read. The relevant review roles were performed directly while building this package. The lack of a subagent runtime did not reduce the specification scope. Future implementation should use the named project subagents with `fork_turns="none"` as required by the repository.
 
 ## Role-based review results
 
@@ -40,4 +40,4 @@ Their absence from the active implementation route is a scope decision. Event 26
 
 ## Future implementation handoff rule
 
-Every subagent used during coding must receive a complete prompt and use `fork_context=false`. Patch-capable subagents must write handoffs under `docs/plans/026_black_friday_plans/subagent_handoffs/`. The parent implementation agent remains responsible for integration, final validation, and completion claims.
+Every subagent used during coding must receive a complete prompt and use `fork_turns="none"`. Patch-capable subagents must write handoffs under `docs/plans/026_black_friday_plans/subagent_handoffs/`. The parent implementation agent remains responsible for integration, final validation, and completion claims.

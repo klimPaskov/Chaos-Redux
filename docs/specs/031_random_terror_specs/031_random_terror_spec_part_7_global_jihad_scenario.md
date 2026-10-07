@@ -5,15 +5,16 @@
 ## Scenario identity
 
 - Scenario name: `Global Jihad`
-- Proposed scenario ID: `SCN-014`
+- Current scenario identity: `SCN-016`, raw scenario ID `16`
 - Owner event: Event 31 Random Terror
 - Scenario role: manual advanced crisis setup
 - Intensity stops: Low, Medium, High, Maximum
 - Type selector: scenario-specific deployment pattern
 
-`SCN-014` is the next visible candidate after the supplied scenario export.
-
-The implementation must verify the authoritative workbook and live registry before reserving it.
+Global Jihad already owns `SCN-016` in the runtime and shared registry.
+The parent authorized correcting stale planning identities on 2026-10-07; `SCN-014` belongs to Fallout.
+See [the shared identifier registry](../shared_identifier_registry.md) and [its JSON ledger](../shared_identifier_registry.json).
+Preserving the incumbent ID does not approve or prove implementation of every planned scenario requirement.
 
 ## Scenario purpose
 

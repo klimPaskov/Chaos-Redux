@@ -4,9 +4,11 @@ Full planning handoff, authored 22 September 2026.
 
 ## Repository placement
 
-Move this `083_agency_upgrade_specs` folder to `docs/specs/083_agency_upgrade_specs/` and the companion `083_agency_upgrade_plans` folder to `docs/plans/083_agency_upgrade_plans/`.
+This package is installed at `docs/specs/083_agency_upgrade_specs/`; its [companion planning records](../../plans/083_agency_upgrade_plans/) are already present.
 
-Event ID: 83. Slug: `agency_upgrade`. Catalog status remains To Be Reworked. Intended cluster: Intelligence, Low severity. Runtime cluster identity requires the reconciliation described in the readiness report.
+Event ID: 83. Slug: `agency_upgrade`. Catalog status remains To Be Reworked. Intended cluster: Intelligence, ID `20`, Low severity, under the central ledger linked in Part 1.
+The [readiness report](../../plans/083_agency_upgrade_plans/083_agency_upgrade_readiness_report.md) preserves the original ID conflict as historical evidence; that conflict no longer defers the current identity mapping.
+Low severity, required/optional member policy, and absent-agency feature compatibility remain distinct questions; this identity alignment changes no membership or behavior.
 
 ## Read the design
 
@@ -34,10 +36,13 @@ The user's four package sizes, thresholds, worldwide agency creation, permanent 
 
 These additions are part of the delivered source draft, not claims about an earlier user approval or a pre-existing game implementation. The companion improvement review records their disposition. The technical readiness report does not authorize replacing a fixed reward with a weaker substitute.
 
-## Evidence boundary
+## Original planning-session evidence
+
+The following reading, capability, and test claims describe the 22 September 2026 delivery, not the current checkout or connected services.
 
 All 42 supplied text files were fully read, including 20 subagent profiles. Not every required external project or installed-game reference was fully read or available. No independent subagents, HOI4 MCP tools, native recruitment UI, asset-generation workers, or live game tests were executed in this session.
 
 Thirty abstract Python checks passed. They exercise authored counting, threshold, ownership, and lifetime rules on synthetic data. They do not validate engine modifier keys, the actual upgrade database, native recruitment usability, native save compatibility, or multiplayer execution.
 
-The source design is delivered. The event itself remains unimplemented and must not be treated as ready to enable until the documented source, adapter, production, independent-review, and live-acceptance gates pass.
+The original delivery contains source design and does not establish that the expanded event has been implemented or is ready to enable.
+Current implementation status requires source inspection and the matching read-only MCP evidence; the documented adapter, production, independent-review, and acceptance gates remain requirements.

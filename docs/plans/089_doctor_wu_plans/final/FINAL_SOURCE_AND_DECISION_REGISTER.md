@@ -6,7 +6,12 @@ Package identity: **DW-089-FINAL**. Date: 3 October 2026. Baseline: the actual c
 
 The original brief and the user's later continuation instructions establish the event's identity and preservation constraints. The latest user message explicitly authorized completion without another exhaustive fresh reading pass after the assistant asked for that exception. The user's instruction was to deliver a final ZIP covering the complete package. This authorization changes the reading procedure for this delivery. It does not prove that unread sources were read, approve every new numerical proposal, or establish game-engine feasibility.
 
-The supplied protocol permits proceeding after explicit authorization despite incomplete source access or reading. Its ordinary full-reading rule remains the default for future implementation. The original brief is retained byte-for-byte in `source_inputs/2026-09-24_doctor_wu_user_brief.txt`. The original source archive and protocol are also retained as inputs. Their inclusion is preservation, not a claim of fresh semantic review.
+The supplied protocol permits proceeding after explicit authorization despite incomplete source access or reading.
+Its ordinary full-reading rule remains the default for future implementation.
+The [original brief](../source_inputs/2026-09-24_doctor_wu_user_brief.txt) and [protocol](../source_inputs/CHAOS_REDUX_PROJECT_SOURCE_PROTOCOL.md) remain available, with the brief preserved byte-for-byte.
+The bundled `docs/plans/089_doctor_wu_plans/source_inputs/all-project-sources.zip` was retained in the original planning delivery and removed at the user's request in commit `6a2ebc838`.
+Its dated identity manifests and reading receipts preserve historical evidence, not current local availability or a fresh semantic review.
+Use current repository sources for implementation and do not restore a bundled source snapshot.
 
 Parts 1–12 are carried forward unchanged. The complete original brief was read during this pass. Current control documents and selected inherited sections were inspected as recorded in the [reading report](FINAL_READING_REPORT.md). All inherited stage reports remain historical evidence with their original dates. No earlier tool-use or reading claim is promoted into a claim about this pass.
 
@@ -15,7 +20,7 @@ Parts 1–12 are carried forward unchanged. The complete original brief was read
 | ID | Decision or constraint | Basis and disposition | Implementation consequence |
 | --- | --- | --- | --- |
 | D01 | Preserve legacy Event 089 technology-sharing memberships, callbacks, queued meanings, and Kruger history | Inherited explicit preservation requirement. Migration design retained, not implemented | Identify every old entry and callback before replacing the event. A queued sharing popup must not become a Wu appointment. |
-| D02 | Scientific Research is a distinct proposed cluster with Event 089 as High member | User specifies the cluster and role. Its new registry allocation remains unresolved | Do not rename National Breakthroughs or move unrelated members. Reserve identity through the authoritative workbook and registry workflow. |
+| D02 | Scientific Research is a distinct proposed cluster with Event 089 as High member | Cluster ID `21` is reserved jointly for the Event 054 and Event 089 named proposal under the user's 7 October 2026 identifier-only allocation and [central ledger](../../../specs/shared_identifier_registry.md). This does not itself approve cluster design or membership. | Preserve National Breakthroughs ID `9` and unrelated members. Runtime registry and authoritative workbook wiring remain implementation work. |
 | D03 | Finite medical-replacement cohort mode inside the shared clone owner | User explicitly says the extension remains unapproved | Obtain owner acceptance and implement a causally distinct finite mode. Preserve Kruger, Mengele, and neutral legacy recurring stock economies. No second manpower stream. |
 | D04 | Native biological transactions and actual equipment remain authoritative | User preservation requirement and inspected completed resolver | No retired payload ledger, staging directive, secondary debit, or invented scripted native refund. |
 | N-D11 | Earlier never-delivered stage stays bypassed after a later milestone | Inherited proposal, explicitly unapproved | Review shared settings policy before implementing. Do not silently encode permanent skip behavior as established law. |

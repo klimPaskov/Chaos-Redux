@@ -1,10 +1,13 @@
 # System Camp Repression Rework Spec, Part 7: Implementation Checklist, Touched Files, and Validation Commands
 
+> **Current authority:** Start at [package_index.md](../package_index.md).
+> The accepted national-administration contract and current takeover record supersede incompatible original implementation and presentation instructions; this file preserves the earlier design and evidence.
+
 Working feature id: `system_camp_repression_rework`
 
 This checklist is for the implementation agent. It should be used after Parts 1 through 6 are accepted as the source design. It names the likely files, helper families, integration order, validation commands, and scenario checks. It does not claim that the live repository has these exact paths available in the sandbox. The implementer must verify paths in the real Chaos Redux repository before editing.
 
-## Live implementation reconciliation, 2026-07-11
+## Dated implementation reconciliation, 2026-07-11
 
 The package has moved beyond the preimplementation checklist below. The current runtime is split across `common/decisions/camp_repression_major_country_decisions.txt`, `common/decisions/camp_repression_colonial_country_decisions.txt`, `common/decisions/camp_repression_generic_decisions.txt`, the matching country effects and ideas, `common/scripted_effects/camp_repression_action_dispatcher_effects.txt`, and the shared camp-rework trigger/effect layer.
 

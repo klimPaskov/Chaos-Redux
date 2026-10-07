@@ -30,14 +30,14 @@ The main parts describe the intended game experience and its concrete contracts 
 
 ## Specialist production prompts
 
-[Goal prompt](092_greenland_sale_goal_prompt.md) provides a 3,968-character entry prompt.
+[Goal prompt](092_greenland_sale_goal_prompt.md) provides the compact implementation entry prompt.
 [Coding prompt](092_greenland_sale_coding_prompt.md) owns implementation sequencing, compatibility, source gates and proof requirements.
 [Decision and mission prompt](092_greenland_sale_decision_mission_prompt.md) owns player actions, timing, feedback and native presentation.
 [Asset prompt](092_greenland_sale_asset_prompt.md) owns the production inventory, source references and consumer verification.
 [Achievement prompt](092_greenland_sale_achievement_prompt.md) owns four receipt-backed mastery conditions and canonical icon production.
 
 These prompts are handoffs, not claims that their work has already run.
-The goal prompt's character count includes its final newline.
+The goal prompt remains bounded to 4,000 characters including its final newline.
 
 ## Authority and proposals
 
@@ -49,15 +49,15 @@ Do not silently replace the selected reserve with political power or free credit
 
 ## Package placement
 
-Place this entire `092_greenland_sale_specs` folder under `docs/specs/`.
-Place the accompanying `092_greenland_sale_plans` folder under `docs/plans/`.
-The ZIP keeps these as separate top-level event folders so the design remains separate from source reports and implementation evidence.
+This package lives in `docs/specs/092_greenland_sale_specs/`, with working evidence in `docs/plans/092_greenland_sale_plans/`.
+The supplied-source ZIP was removed at the user's request in commit `6a2ebc838`.
+Its reading ledger and source hashes remain historical receipts, and no current task should require or restore that archive.
 Open `docs/plans/092_greenland_sale_plans/092_greenland_sale_plans_index.md` for the reading ledger, coverage, execution map, role handoffs, reviews and validation status.
-No existing repository file is overwritten by this package's creation.
 
 ## Completion boundary
 
-This is a complete parent-authored specification draft and production handoff.
+This is the 2 October 2026 parent-authored specification draft and production handoff.
+The following reading and execution statements describe that planning pass, rather than current tool availability or implementation status.
 All 46 supplied text files were fully read before drafting, including all 20 role definitions.
 Some required external references remain unread or partly read, including the current repository MTTH file and installed-game evidence.
 The source-reading protocol was not found in the searched locations.

@@ -1,12 +1,17 @@
 # Black Plague Asset Production Prompt
 
+Use the current [asset contract](../../../../.agents/skills/chaos-redux-event-assets/SKILL.md) for source modes, native ImageGen transparency, alpha preservation, exact consumer dimensions, achievement states, and ownership.
+Reconcile this design inventory with current manifests and runtime consumers before producing another asset.
+
 Create the complete visual asset package for Chaos Redux Event 20 Black Plague. Read the accepted Event 20 spec pack, `AGENTS.md`, `chaos-redux-event-assets`, and `chaos-redux-frame-animation` before production. Inspect the matching Chaos Redux reference folders before creating any asset.
 
 ## Event identity
 
 - Event ID: `020`
 - Slug: `black_plague`
-- Source mode: generated for all fictional plague, rat, Rat King, UI, flag, portrait, report, news, and super-event art unless a later accepted handoff identifies a real historical source requirement
+- Source mode: generated for fictional non-portrait art, with later historical-source requirements recorded separately
+- Portrait owner: `chaosx_portrait_creator` for all Rat Nation institutional portraits and the Rat King static and animated portrait
+- Other owners: generated-event-art worker for non-portrait scenes, flags and panels, and icon artist for icons and small non-portrait animation
 - Final working package: `docs/assets/020_black_plague/`
 - Final gameplay assets must live in event-scoped folders under their normal asset categories
 - No placeholder, primitive-shape, recolor-only, resized-cross-type, or transform-only animation output is acceptable
@@ -121,7 +126,7 @@ The triggerable scenario reuses the disease, Rat Nation, Rat King, report, and c
 
 ### Report images, 210 by 176
 
-Generate period-authentic documentary source scenes, then use `tools/process_report_event_image.py` for the final report-card treatment.
+Generate period-authentic documentary source scenes, then use `.agents/skills/chaos-redux-event-assets/tools/process_report_event_image.py` for the final report-card treatment.
 
 1. origin outbreak in a neglected crowded mainland district
 2. Severe Crisis with overwhelmed care and blocked streets
@@ -311,7 +316,7 @@ Create a settings-aware animated scripted-GUI seal for world-end readiness.
 
 ## Achievement icons
 
-Create the 14 completed 64 by 64 icons described in `matrices/achievement_matrix.md`, then produce:
+Create the 13 completed 64 by 64 icons described in `matrices/achievement_matrix.md`, then produce:
 
 - grey variant through black-and-white conversion
 - not-eligible variant by compositing the approved achievement overlay
@@ -320,29 +325,9 @@ Final achievement DDS files stay directly under `gfx/achievements/` and use exac
 
 ## Required package outputs
 
-For every asset:
+Use the current asset contract linked above for source lineage, previews, final DDS/TGA, per-consumer manifests, sprite mapping, and contact sheets.
+For animation, retain the owner skill's real-frame plan, sources, sheet, static fallback, frame count, FPS, loop, anchor, and verified wiring precedent.
+Portrait production and portrait-specific wiring stay with the portrait worker.
 
-- source PNG
-- processed PNG at exact target size
-- final DDS or TGA
-- manifest entry
-- proposed or preserved sprite name
-- final path
-- target GFX file
-- related event, focus, idea, decision, leader, flag, achievement, or UI key
-- status and uncertainty
-
-For animation:
-
-- brief
-- frame plan
-- source frames
-- processed frames
-- static fallback PNG and DDS
-- horizontal sheet PNG and DDS
-- preview GIF
-- contact sheet
-- frame count, FPS, loop, anchor, play-on-show expectation
-- verified local wiring precedent
-
-Create `docs/assets/020_black_plague/gfx_handoff.md` with ready-to-review sprite snippets. Do not edit GFX or gameplay files unless the parent explicitly expands scope.
+Create `docs/assets/020_black_plague/gfx_handoff.md` with ready-to-review sprite snippets. Final non-portrait GFX and gameplay wiring remain parent-owned.
+The portrait worker retains the standing narrow exception for portrait-specific GFX and existing character portrait references.

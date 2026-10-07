@@ -1,6 +1,6 @@
 # Event 067 Generalissimo Full Implementation Prompt
 
-Implement Event `067` Generalissimo to the fullest extent described by the accepted specification pack.
+Implement the adopted Event `067` Generalissimo requirements after reconciling the acceptance record in the package README.
 
 ## Source of truth
 
@@ -8,7 +8,7 @@ Read every file under:
 
 `docs/specs/067_generalissimo_specs/`
 
-Treat the nine specification parts as acceptance criteria. Use the diagrams, research, probability matrix, surface map, catalog handoff, and specialist prompts as supporting implementation contracts.
+Use the nine specification parts as design, with acceptance established by explicit user decisions or parent adoption within the authorized scope. Use the diagrams, research, probability matrix, surface map, catalog handoff, and specialist prompts as supporting implementation contracts.
 
 Also read all required repository skills and references named by those files, including:
 
@@ -31,7 +31,7 @@ Do not implement from this prompt alone. The full pack defines the event.
 
 Deliver one complete Minor Fire-Once event with:
 
-- entry event `chaosx.nr067.1`
+- entry event `chaosx.nr67.1`
 - Chaos level 1
 - Military Preparation cluster membership as a High member
 - one valid major or player-controlled host
@@ -76,7 +76,7 @@ No full-screen event mechanic window belongs to this event. Use the accepted ord
 
 - inspect the current Event 067 placeholders and registrations
 - confirm current commander, character, civil-war, focus-loading, scenario, world-end, cluster, Event Logs, and Event Details patterns
-- confirm whether `SCN-015` is free in the authoritative workbook and runtime registry
+- use reserved `SCN-024`, raw `24`, from [the central identifier registry](../../shared_identifier_registry.md)
 - confirm the current Military Preparation cluster identity or resolve its missing registry row
 - inspect Event 019 claimant commander integration
 - inspect Event 065 trait-provider integration
@@ -168,7 +168,8 @@ Use `067_generalissimo_focus_tree_prompt.md`, `chaosx_focus_tree_auditor`, and t
 
 Implement every political, military, economic, internal-rule, foreign-policy, integration, conditional service, and hidden world-end route. Include search filters, Focus Navigation, route AI, idea lifecycles, and the accepted focus inlay.
 
-Use `chaosx_event_ui_worker` only for the Event 067 inlay and compact display. Require the complete GUI inspect, render, rewrite, and comparison sequence over relevant states and resolutions.
+Use `chaosx_event_ui_worker` only for the Event 067 inlay and compact display. Follow [the scripted GUI skill](../../../../.agents/skills/chaos-redux-scripted-gui/SKILL.md) for reference acceptance, inspect/render and matching before-and-after evidence over relevant states and resolutions.
+GUI rewrite is optional.
 
 ### 7. AI and probability
 
@@ -220,7 +221,7 @@ Implement all eight achievements with exact eligibility, disqualifiers, tracking
 
 ### 11. Scenario and world-end
 
-Confirm the stable scenario ID before writing the authoritative workbook or registry. Implement all four scenario types and four intensity stops. The launch must bypass normal timing and evolution prerequisites without counting as a normal event firing or pacing transaction.
+Use the central `SCN-024` / raw `24` reservation when adopted content is registered in the authoritative workbook and runtime registry. Implement all four scenario types and four intensity stops. The launch must bypass normal timing and evolution prerequisites without counting as a normal event firing or pacing transaction.
 
 Implement the public world-end branch with its independent Event Details toggle, 1000 or higher Chaos gate, active canonical Generalissimo requirement, bounded actor registry, military-government outcomes, rival blocs, International Command, Civil Authority Compact, and normal world-end event freeze.
 

@@ -12,6 +12,7 @@ python 077_reference_model_tests.py
 
 The source package's static checks verify document structure, required prompt names, goal length, source-manifest hashes, links, and the presence of all achievement IDs and test rows. These are packaging checks.
 
-After implementation, use the full project event, probability, GUI, localisation, asset, achievement, and completion workflows. Live testing requires the appropriate runtime and user-authorized access. The debug-playtest skill was read, but autonomous desktop playtesting was not invoked by this planning request.
+After implementation, use the full project event, probability, GUI, localisation, asset, achievement, and completion workflows. Live testing belongs to the user; the implementation agent reviews supplied evidence without launching HOI4.
+The original author read debug-playtest guidance, but that explicit-only workflow requires a separate user invocation.
 
 Expected evidence includes exact tool inputs and outputs, before and after scope or GUI comparisons, native-size asset reviews, save and reload checks, multiplayer behavior, and a completed independent improvement-loop handoff. A screenshot alone does not prove that an irreversible action is safe.

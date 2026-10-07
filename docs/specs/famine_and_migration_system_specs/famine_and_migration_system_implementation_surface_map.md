@@ -1,6 +1,7 @@
 # Famine and Migration Mechanics Implementation Surface Map
 
-This is a repository exploration guide. The implementation agent must verify exact paths and identifiers locally before editing.
+This is the original planning exploration guide, not the current runtime file map.
+Use [README.md](README.md) for current continuation and owner boundaries, then verify the assigned paths before editing.
 
 ## Likely shared script surfaces
 
@@ -8,7 +9,7 @@ This is a repository exploration guide. The implementation agent must verify exa
 - shared scripted effects for famine requests, flight requests, exact transfers, route resolution, reception, return, integration, and cleanup
 - shared scripted triggers for state eligibility, route safety, island blockade proof, destination safety, origin safety, cohort validity, border policy, and special-country exclusion
 - dynamic state modifiers for famine and displacement states
-- shared decisions and categories for active management
+- separate famine and migration decisions and categories for active management
 - accounting/presentation seams and report context without an incident-event layer
 - scoped on-action adapters
 - AI strategies, decision weights, and complete weighted pools

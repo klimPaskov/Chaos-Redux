@@ -1,27 +1,43 @@
-Implement the complete Chaos Redux Event 12 Africa package. Read all specs, matrices, diagrams, research, handoffs, and prompts. Matrix rows are acceptance criteria.
+Implement selected remaining work for Chaos Redux Event 12 Africa from `docs/specs/012_africa_specs/`.
+Read the [authority map](../README.md), [coding brief](africa_coding_agent_prompt.md), specs, applicable matrices, diagrams, research, and owner handoffs.
+Preserve accepted design and record every applicable matrix disposition.
 
-Current reconciliation boundary: Gods of Africa is owned by Event 012, the manual scenario is `SCN-011`, `chaosx_elephant` reuses vanilla `elephantry`, generated Gods art remains subject to parent/user review, and Event 070's unassigned catalog row is available for a future idea.
+Gods belongs to Event 012, the scenario is SCN-011, and Event 070 remains available for another idea.
+The September reconciliation records vanilla `elephantry` reuse for `chaosx_elephant` and pending Gods visual review.
+Use current owner ledgers rather than regenerating installed packages from dated counts.
+Grounded portraits keep explicit source-placeholder status under [chaos-redux-event-assets](../../../../.agents/skills/chaos-redux-event-assets/SKILL.md).
 
-The current release-candidate has eight custom model-package handoffs plus a non-promoted historical elephant package record, 18 full frame-animation packages, six promoted Tier A visual and runtime packages on existing carriers, 16 priority-member packages, 16 historical male source-locked portrait placeholders, six fictional male portraits, three no-person evolution images, four super-event roles, all 102 actions with 96 implemented and six explicitly runtime-gated families, RSA Allied civil-war handling, W4/W5 source certification, the Charter GUI, and world-order packages installed. Remaining work is limited to real source or engine gates recorded in the current ledger, such as AI probability evidence, six gated action families, final localisation/event completion review, and the parent-owned semantic follow-ups. The three niche hosts are source-implemented conditional Event 006-origin carriers, and the source-cropped historical portrait placeholders are accepted deliverables whose transparent status is not an Event 012 blocker; user-owned live validation is not a reason to retain a source-complete row as partially available.
+Keep Event 12 a severe Fire-Once Formables member.
+Select a valid African-capital host, preserve its origin, and use its 22-full/29-compact playbook with weakness, proof mission, leverage, rivals, and promotion conditions.
+Open with protection, aid, and recognition before integration.
+League members can negotiate clauses, refuse integration, leave, form rivals, or fight.
+No instant annexation, continent-wide cores, or integration through opinion alone.
 
-Keep Event 12 a severe Fire-Once Formables member. Select one valid African-capital country, preserve the original host, and apply one of 22 full or 29 compact playbooks. Each opening needs its mapped weakness, proof mission, leverage, and rival risk. Promote compact hosts only when documented conditions are met.
+Preserve visible values, councils, selected targets, obligations, dossiers, living-core projects, congresses, clauses, warnings, and action caps.
+Implement or explicitly dispose all 102 action concepts with dynamic costs, partial outcomes, AI equivalents, tooltips, and cleanup.
+Parameterise shared actions rather than duplicating stores.
 
-Open with protection before integration. The host defends African states, sends aid, recognises liberation movements, and invites governments into the Charter League. No instant annexation or continent-wide cores. Members can negotiate clauses, refuse integration, leave, form rivals, or fight. Opinion alone cannot cause integration.
+Use a non-linear focus tree with nine regional overlays, seven constitutional routes, and the 78-row payoff matrix.
+Representation, executive power, resources, command, withdrawal, crises, and post-unification rule must differ by constitution and change shared lanes.
+Preserve the 215-entry controlled polity pool and 16 priority packages with distinct politics, mechanics, forces, League roles, refusal, and post-settlement play.
+Tier A promotion requires full treatment; resolve overlaps through congresses, consent, autonomy, and rivalry.
 
-Build the League around visible values, councils, selected targets, obligations, dossiers, living-core projects, congresses, clauses, warnings, and action caps. Use dynamic costs, partial outcomes, AI equivalents, tooltips, and cleanup. Implement all 102 action concepts or record every disposition. Parameterise shared actions instead of creating duplicate stores.
+Handle Allied South Africa through its specified civil war and peace settlement.
+Diaspora return is voluntary, rights-based, and locally accepted.
+Use Baseline and Evolutions I-III for the tier-4 event; preserve requested Evolution IV as post-unification world order unless the framework expands.
+High-chaos actors, strange formations, ecological bargains, disasters, disease, and containment must not caricature human identities.
 
-Create a non-linear focus tree with nine regional overlays and seven constitutional routes. Use the 78-row payoff matrix so every constitution differs in representation, executive power, resources, command, withdrawal, crises, and post-unification rule. Shared lanes must change by constitution. Avoid reward dust, generic idea stacks, passive stores, isolated branches, and flat AI.
+After unification, retain the Scramble recognition, sanctions, ultimatums, expeditions, wars, negotiations, and aftermath.
+Other continents need unique packages before world-order use.
+Preserve sponsorship, rivalry, readable unions, continental wars, and terminal The World.
 
-Use the 215-entry polity catalog as a controlled pool, not a tag checklist. Implement the 16 priority member packages with distinct politics, mechanics, forces, League roles, refusal behaviour, and post-settlement play. Promoted Tier A candidates need full treatment. Keep lower tiers focused until a route justifies expansion. Resolve overlaps through congresses, consent, autonomy, and rivalry.
+Align 44 achievements, 64 AI profiles, and 239 asset rows with owner audits.
+Animations require real source frames, static fallback, frame sheet, DDS, and review evidence.
+Four super-event roles require researched text, images, licensed unique audio, slots, and source records.
+Use direct public country names.
+Keep the two required Afaan Oromoo strings untranslated as fictional flavour and outside technical identifiers; further obscene strings need full verification and native-speaker review.
 
-Handle South Africa in the Allies through the specified civil war and peace settlement. Make diaspora return voluntary through citizenship, skills, investment, and locally accepted development. Never frame forced relocation as return.
-
-Use Baseline and Evolutions I to III as logged layers for an event starting at tier 4. Preserve requested Evolution IV content as post-unification world-order play unless the framework expands. High-chaos content may add nonhuman or supernatural actors, strange formations, ecological bargains, disasters, disease, and containment without caricaturing human African identities.
-
-After Africa is one, trigger the Scramble response with recognition, sanctions, ultimatums, expedition plans, war, negotiation, and aftermath. Require unique packages for every other continent before world-order use. Support sponsorship, rivalry, readable unions, continental wars, and the rare terminal The World identity.
-
-Keep the installed 44 achievement definitions and visual records, 64 AI profiles, and 239-row asset and animation ledger aligned with their owner audits. Every installed animation retains source frames, static fallback, frame sheet, DDS, and review GIF evidence. Keep four super-event roles with installed researched text, images, licensed music, slots, and unique audio IDs, and require that evidence for any future change.
-
-Use direct public country names. Keep the two required Afaan Oromoo strings untranslated as fictional ruler or court flavour. Never use them in technical identifiers. Add no further obscene source-language names without full-string verification and native-speaker review.
-
-Finish registration, logs, details, evolutions, cluster data, focus loading, decisions, country packages, UI, localisation, manifests, docs, music records, and the event catalog workbook. Run all required focus, decision, country, text, documentation, improvement-loop, and completion audits. Resolve accepted plans. Report coverage, validation, assets, blockers, and every simplification. Do not claim completion while a requested surface is missing or incomplete.
+Follow current owner skills and specialist routing for gameplay, focus, decision, GUI, assets, models, and weighted-logic evidence.
+Align registration, logs, details, evolutions, cluster, country setup, localisation, manifests, docs, music, and the authoritative catalog workbook with exporter output.
+Run required owner audits, resolve accepted plans, and report coverage, validation, review limits, blockers, and every simplification.
+Do not claim completion while a requested surface is incomplete.

@@ -8,7 +8,7 @@ Use visible super-event reservations 90 through 95 in this order: recognition, f
 
 Text and audio research are complete for all six packages. The final Event 016-owned WAVs are exactly `115.000000` seconds, PCM, `44,100 Hz`, stereo, and use the role-preserving filenames under `sound/016_brilliant_scientist/` for IDs 90 through 95. Do not repeat audio selection, download, rights research, mastering, or conversion unless a concrete evidence defect is found. Super-event images, final descriptions, localisation, shared sound definitions, settings-aware playback, event triggers, and presentation wiring remain incomplete.
 
-Use `chaosx_super_event_text_researcher`, `chaosx_super_event_audio_researcher`, and the appropriate image subagent. Spawn each with `fork_context=false` and pass only the narrow brief it needs.
+Use `chaosx_super_event_text_researcher`, `chaosx_super_event_audio_researcher`, and the appropriate image subagent. Spawn each with `fork_turns="none"` and pass only the narrow brief it needs.
 
 ## Source design
 

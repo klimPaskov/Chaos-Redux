@@ -140,7 +140,7 @@ Mandatory event UI worker evidence:
 
 - `hoi4.gui_inspect`
 - pre-change `hoi4.gui_render`
-- bounded `hoi4.gui_rewrite`
+- optional bounded `hoi4.gui_rewrite` for an authorized edit, with direct reviewed edits also permitted
 - post-change inspect and render comparison
 - relevant states and resolutions
 
@@ -197,7 +197,7 @@ Shared surfaces to inspect:
 
 Responsibilities:
 
-- `SCN-015`
+- `SCN-024`
 - four types
 - four intensities
 - target resolution

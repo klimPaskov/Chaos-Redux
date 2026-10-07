@@ -50,6 +50,6 @@ Update event script, registration, on-actions, helpers, triggers, constants, ide
 
 ## Subagents and completion
 
-Use bounded custom subagents with `fork_context=false` according to the supplied prompts. Run focus, decision, country, localisation, and completion audits. Run the mandatory improvement-loop planner after a meaningful implementation tranche and again only after resolving the previous addendum. Fold accepted design into the source spec or record a clear disposition.
+Use bounded custom subagents with `fork_turns="none"` according to the supplied prompts. Run focus, decision, country, localisation, and completion audits. Run the mandatory improvement-loop planner after a meaningful implementation tranche and again only after resolving the previous addendum. Fold accepted design into the source spec or record a clear disposition.
 
 Do not claim completion while any route, country, decision, mission, achievement, AI behavior, localisation, asset, animation, super-event, audio package, documentation surface, spreadsheet row, audit finding, or accepted addendum remains missing. Report every simplification, omission, fallback, and blocker.

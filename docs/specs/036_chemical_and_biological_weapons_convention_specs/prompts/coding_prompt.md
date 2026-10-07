@@ -2,6 +2,8 @@
 
 Implement Chaos Redux Event 036, Chemical and Biological Weapons Convention, from the complete source specification folder at `docs/specs/036_chemical_and_biological_weapons_convention_specs/`.
 
+Apply the README's acceptance rules and resolve acceptance bases and current catalog state before treating mapped proposals as approved changes.
+
 Treat every mapped mechanic, posture, treaty family, evolution, achievement, asset, AI surface, catalog field, and acceptance scenario as required unless the source spec explicitly marks it conditional on live repository support.
 
 ## Required preparation

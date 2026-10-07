@@ -1,5 +1,14 @@
 # Event 063: Subjects Break Free
 
+## Authority and disposition
+
+The source inventory records the original supplied corpus and manual review inputs.
+The six numbered parts preserve settlement, shared-origin, Pact, decision, and achievement proposals; the role-review report is a manual planning review.
+Acceptance remains `unresolved` where the original user brief or attributable parent decision cannot be recovered; preserve those claims for review under [AGENTS.md](../../../AGENTS.md#specs-and-plans).
+The [design record](research/063_subjects_break_free_source_inventory.md) and numbered specifications are the design map; [current event guidance](../../../.agents/skills/chaos-redux-events/SKILL.md) and [subagent routing](../../../.agents/skills/chaos-redux-subagents/SKILL.md) own implementation workflow.
+Original source-reading, repository-baseline, tooling-failure, and manual-review reports are historical planning evidence, not current source verification, service-health findings, or completed independent audits.
+
+
 This folder is the source specification package for Chaos Redux Event 063.
 
 ## Catalog identity
@@ -61,4 +70,4 @@ Event 063 releases countries that already exist as subjects. It does not create 
 
 ## Planning status
 
-The package contains the complete accepted design handoff. Final player-facing localisation remains an implementation task guided by the tone and information rules in the specification. Working labels in this package identify systems and assets. They are not final in-game text.
+The package contains the planning design handoff. Final player-facing localisation remains an implementation task guided by the tone and information rules in the specification. Working labels in this package identify systems and assets. They are not final in-game text.

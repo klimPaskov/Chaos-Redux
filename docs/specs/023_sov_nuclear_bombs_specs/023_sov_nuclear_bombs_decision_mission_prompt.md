@@ -80,7 +80,7 @@ The decision system supplies validated context to the shared nuclear adapter. It
 
 ## AI and probability
 
-Before patching complex weights, use `chaosx_ai_probability_auditor` with `fork_context=false` and the named scenarios.
+Before patching complex weights, use `chaosx_ai_probability_auditor` with `fork_turns="none"` and the named scenarios.
 
 After the owner applies the accepted balance change, rerun the same scenarios through `hoi4.probability_compare`.
 

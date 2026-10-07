@@ -35,9 +35,9 @@ Requirements:
 - use an unchanged attributed archival photograph of Lawrence as the identity master
 - reject actors, film stills, reenactors, statues, illustrations, generated faces, and reconstructed likenesses
 - create the exact lossless head-and-shoulders crop and crop evidence required by the portrait workflow
-- use `source_placeholder` mode as the accepted final mode for this task
+- use `source_placeholder` for the sourced pending portrait; it remains incomplete until the user supplies its HOI4-style replacement
 - produce deterministic `156x210` PNG and DDS output
-- retain one stable runtime basename across adviser, commander, operative, or leader consumers when the engine framing permits it
+- retain one canonical identity source, with separate role-specific runtime assets under the [portrait workflow](../../../../.agents/skills/chaos-redux-event-assets/SKILL.md#country-leader-commander-operative-and-named-officeholder-portraits); advisor cards are independently composed native `65x67` assets
 - do not create several inconsistent Lawrence faces
 - record source URL, archive, creator when known, license or rights status, retrieval date, hashes, crop coordinates, review, runtime path, and proposed sprite
 

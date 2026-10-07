@@ -16,6 +16,8 @@
 | `specs/033_acid_rain_spec_part_10_assets_animation_and_achievements.md` | Asset inventory, exact dimensions, frame requirements, achievement definitions, and GFX wiring |
 | `specs/033_acid_rain_spec_part_11_integrations_migration_and_save_safety.md` | Deaths, Air Cleanliness, CBRN, Humanitarian, cluster, event system, old-save migration, and cleanup |
 | `specs/033_acid_rain_spec_part_12_validation_and_acceptance.md` | Functional, balance, UI, save, multiplayer, performance, and documentation gates |
+| `specs/033_acid_rain_achievement_threshold_and_launch_acceptance.md` | Explicit parent acceptance for per-state achievement thresholds and durable launch origin; source implementation and evidence limits remain separate |
+| `specs/033_acid_rain_consequence_repair_acceptance_2026_10_03.md` | Accepted consequence repairs and current dispositions, including named replacements for superseded timing and operation-queue claims |
 
 ## Matrices
 

@@ -1,5 +1,11 @@
 # Event 030 Time Traveler Source Specification
 
+Current workflow owners: [event integration](../../../.agents/skills/chaos-redux-events/SKILL.md), [subagent routing](../../../.agents/skills/chaos-redux-subagents/SKILL.md), and [asset production](../../../.agents/skills/chaos-redux-event-assets/SKILL.md).
+The source parts preserve the proposed expanded design.
+Explicit user requirements retain their cited basis, while broader claims labelled accepted require an attributable user decision or parent acceptance before implementation.
+Package location and manual closure reports do not establish that acceptance.
+
+
 This package expands Event 030, Time Traveler, into a complete major-event design. The event begins with one verified traveler and a contest over future knowledge. Later evolutions can produce a political struggle around the traveler, returned figures from the past, visitors from later eras, uncontrolled temporal incidents, a war among possible futures, and the Machine Extinction War.
 
 All names marked as working labels are structural design labels. Implementation must write final localisation after the relevant research and source checks.
@@ -19,7 +25,7 @@ All names marked as working labels are structural design labels. Implementation 
 - Evolution IV threshold: Totalen Chaos, `800+` Chaos
 - Evolution V threshold: World Collapse, `1000+` Chaos
 - Public world-end branch: Machine Extinction War
-- Triggerable scenario: proposed `SCN-015`, All Times at Once, pending authoritative workbook collision review
+- Triggerable scenario: All Times at Once, reserved `SCN-020`, raw triggerable ID `20`, under the [shared identifier registry](../shared_identifier_registry.md). Recheck the central ledger and runtime/workbook occupancy before integration.
 
 ## Central design decisions
 
@@ -41,11 +47,14 @@ Existing major-country focus trees remain intact. The traveler, returned figures
 - `research/` records historical sources, source-to-design connections, supplied-file reading, and connected-repository inspection.
 - `prompts/` contains bounded implementation and audit prompts for the parent agent and project subagents.
 - `quality/` records the manual improvement-loop pass, acceptance matrix, anti-bloat review, package status, validation, and tooling limits.
-- `030_time_traveler_full_spec.md` concatenates the twelve specification parts for convenient reading.
+- `030_time_traveler_full_spec.md` links the twelve specification parts without maintaining a duplicate specification.
 - `PACKAGE_MANIFEST.md` records byte counts, line counts, and SHA-256 hashes.
 
-## Source and validation boundary
+## Original planning evidence boundary
 
-Every supplied Markdown source, catalog CSV, configuration file, and subagent definition was read in full. The connected GitHub repository was searched for Event 30 identifiers and the proposed scenario ID. No indexed implementation was found. The repository was not mounted as a writable local checkout, the offline Paradox wiki and installed vanilla game files were not accessible, and the project-specific HOI4 MCP and custom subagent execution routes were not available in this environment. This package therefore defines design and implementation acceptance criteria. It does not claim source implementation, MCP evidence, asset production, spreadsheet edits, or live-game validation.
+Every supplied Markdown source, catalog CSV, configuration file, and subagent definition was read in full. The connected GitHub repository was searched for Event 30 identifiers and the proposed scenario ID. No indexed implementation was found. During original package authoring, the repository was not mounted as a writable local checkout, the offline Paradox wiki and installed vanilla game files were not accessible, and the project-specific HOI4 MCP and custom subagent execution routes were not available in this environment. This package therefore defines design and implementation acceptance criteria. It does not claim source implementation, MCP evidence, asset production, spreadsheet edits, or live-game validation.
 
 No design surface was shortened to save time. Several tempting additions were deliberately rejected because they would create clutter or duplicate existing systems. Those rejections are recorded in `quality/anti_bloat_and_clarity_audit.md`.
+
+The limits above describe the original planning session.
+Current repository, scenario-ID, source, and tool availability must be checked independently before continuation.

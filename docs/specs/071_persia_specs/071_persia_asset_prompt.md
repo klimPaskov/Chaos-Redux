@@ -16,7 +16,8 @@ Create the opening imperial identity and the three routes' required ideology and
 
 Every flag uses ImageGen. Historical designs first require a reliable design reference and a faithful flat reconstruction. Alternate-history flags must be documented as fictional. No cloth, scenery, perspective, gradients, fake writing, or improvised heraldry presented as historical. Compare geometry, color, orientation, and symbols before generating the 82 by 52, 41 by 26, and 10 by 7 ladder.
 
-All portraits are owned by the portrait worker. Grounded subjects require identity-preserving sourced head-and-shoulders material. Produce 156 by 210 leader output and separate 65 by 67 adviser output only for actual adviser consumers. Final styling follows the user's RunPod workflow. Institutional art must be visibly institutional, not a fake portrait of an invented historical person.
+All portraits are owned by the portrait worker. Grounded subjects require identity-preserving sourced head-and-shoulders material. Produce 156 by 210 leader output and separate 65 by 67 adviser output only for actual adviser consumers. For grounded subjects, the portrait worker archives the source and wires an explicitly pending placeholder, and the user alone runs RunPod and supplies the styled final.
+Wholly fictional portraits use native ImageGen through the portrait worker. Institutional art must be visibly institutional, not a fake portrait of an invented historical person.
 
 ## Required 2D families
 
@@ -46,7 +47,8 @@ Static assets are sufficient for this plan. Do not add animation to increase the
 
 ## Immortals 3D and sound
 
-Delegate the actual body, firearm, rig, weights, animations, textures, and export work to `chaosx_3d_model_pipeline` through the supported runtime. Read the dedicated 3D pipeline fully. Follow its separate fresh Meshy 7 weapon-free body and firearm tasks, then the firearm-safe Blender rigging and action route. Resolve the older contradictory gun-production wording with the skill maintainer. No unauthorized paid generation or retry.
+Delegate the actual body, firearm, rig, weights, animations, textures, and export work to `chaosx_3d_model_pipeline` through the supported runtime. Read the dedicated 3D pipeline fully. Follow its separate fresh Meshy 7 weapon-free body and firearm tasks, then the firearm-safe Blender rigging and action route. Use [the current 3D pipeline](../../../.agents/skills/chaos-redux-3d-model-pipeline/SKILL.md) for route selection, attempt allowances, component completion and Blender fallbacks.
+Do not reopen the historical wording conflict as an extra production approval gate.
 
 Use allowed modern professional, game, tabletop, or concept-art references with documented rights. Do not use a prohibited historical photo or museum object as direct 3D input. Respect NoAI and no-derivative restrictions. A reference refinement uses the permitted single-source process.
 
@@ -59,3 +61,6 @@ Audio comes from licensed external material or an appropriate documented existin
 For every asset record its consumer, family, dimensions, source or generation method, rights, source path, processed path, final path, review state, conversion evidence, and wiring status. Mark missing assets blocked or planned. A placeholder never counts as a final asset.
 
 Coordinate ownership with the icon artist, generated-event-art worker, portrait creator, 3D worker, and super-event researchers. Return the manifest, contact sheets, final files, and evidence under the repository's accepted paths. Report exact unresolved blockers. Do not call the asset package complete until every required consumer has a reviewed final asset and the prescribed validation evidence.
+
+For consumers with transparent unused canvas, request native ImageGen transparency in the initial call and preserve alpha through processing and DDS conversion.
+Use [the current asset skill](../../../.agents/skills/chaos-redux-event-assets/SKILL.md) for alpha, source preservation, processing and fallback evidence.

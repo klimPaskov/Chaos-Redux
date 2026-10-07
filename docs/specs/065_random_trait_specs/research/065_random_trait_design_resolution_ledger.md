@@ -143,7 +143,8 @@ An optional role prevents a world-scale leader mutation from becoming mandatory 
 
 **Resolution**
 
-Prefer ID `9` after a fresh collision check.
+Use Randomizations ID `14`, allocated by the parent on 2026-10-07 under the user’s unused-identifier authorization.
+The original provisional ID `9` is superseded for current planning; this allocation does not approve the other resolutions.
 
 **Reason**
 
@@ -175,7 +176,7 @@ A full world assignment list would be too large.
 
 **Resolution**
 
-Use one opaque `210x176` generated report-event image.
+Use one opaque generated scene source for a `210x176` report-event asset, processed with the current asset skill and inspected consumer’s alpha treatment.
 
 **Reason**
 
@@ -188,7 +189,7 @@ A focused documentary image is sufficient.
 | Question | Required evidence |
 | --- | --- |
 | Exact vanilla trait roots | Offline documentation, source inspection, generator discovery report |
-| Whether every database entry accepts direct application | `hoi4.event_inspect`, targeted test event, error log |
+| Whether every database entry accepts direct application | `hoi4.event_inspect`, targeted test fixture, supplied runtime evidence |
 | Whether trait ownership is character-local or role-local | Character and leader-role inspection across leave and return cases |
 | Best ledger scope | Save and load test, leader replacement test, shared-character test |
 | Exact conditional random-list support | Offline effect documentation and `hoi4.probability_inspect` |
@@ -198,7 +199,7 @@ A focused documentary image is sufficient.
 | Current event-log actor fallback for global events | Existing global event history patterns |
 | Existing DDS validity | Image metadata inspection and in-game render |
 | High-tag performance | Profiler or reproducible execution comparison |
-| Multiplayer determinism | Two-client synchronized firing and error-log review |
+| Multiplayer determinism | Supplied two-client synchronized-firing evidence |
 
 ## Decisions that must not be changed silently
 

@@ -14,7 +14,16 @@
 | Cluster role | Severe optional member |
 | Ordinary endpoint | Dissipation after complete valid-state coverage |
 
-This package is the implementation-ready planning source for the Event 33 rework. It replaces the old minor-repeatable interpretation and the existing prototype that paints one continent, scans every country each day, and ends after seven continent identifiers have been recorded.
+This package is the planning source for the Event 33 Major-event design.
+Its historical migration material describes the earlier continent-based prototype and is not a current implementation ledger.
+
+## Current reading authority
+
+Read the twelve numbered parts with the matrices, then apply the recorded parent decisions in [the achievement and launch addendum](specs/033_acid_rain_achievement_threshold_and_launch_acceptance.md) and [the consequence repair addendum](specs/033_acid_rain_consequence_repair_acceptance_2026_10_03.md) where they refine earlier requirements.
+Those addenda separate explicit acceptance from source implementation and outstanding engine evidence.
+Their recorded later decisions supersede the identified timing and queue claims, while unrelated original design remains intact.
+Prompts provide reusable workflow guidance, not proof that a rework still needs to start from the prototype.
+Resume implementation from the current source and handoffs before scheduling duplicate work.
 
 ## Accepted event concept
 

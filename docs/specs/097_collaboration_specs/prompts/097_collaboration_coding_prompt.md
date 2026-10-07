@@ -1,5 +1,8 @@
 # Event 097 Collaboration: Coding-Agent Prompt
 
+This handoff belongs to the nested six-part variant.
+Read the [package authority and conflict table](../README.md) and resolve conflicting requirements before using it for implementation.
+
 Implement Chaos Redux Event 097 Collaboration from the specification package in `docs/specs/097_collaboration_specs/`. Keep the existing namespace and the entry event `chaosx.nr97.1`. Replace the current stub in `events/097_collaboration.txt` and its localisation completely.
 
 The event's identity comes from the user brief and must survive every implementation choice: every country gains collaboration against every other country, global and symmetrical, through the native collaboration mechanic. There is no Collaboration currency, no new meter, and no large management system. The normal collaboration mechanic is the event.
@@ -50,7 +53,10 @@ Then bring these decisions to the user and implement only what the user chooses:
 - whether A2 may set the value to the current reading minus the points, if fact 1 shows negative changes do not stop at zero
 - the Event 039 type conflict, before the Intelligence cluster rows are written
 
-An engine fact that blocks a mapped feature is a blocker to report. Do not replace the feature with a substitute without user approval. If Open Gates or Turned Regime is blocked, remove every surface that depends on it together and report one blocker, as Part 6 states.
+An engine fact that blocks a mapped feature is a blocker to report.
+Do not replace or remove the feature without a recorded accepted design amendment.
+Part 6's conditional-removal proposal must be reconciled with that approval requirement before omitting Open Gates, Turned Regime or their dependent surfaces.
+Record the complete dependent surface set under one blocker while the decision is unresolved.
 
 ## Step 2: implement
 
@@ -72,7 +78,7 @@ Follow the architecture plan for file layout, helper names, and hooks, and keep 
 - Assets through `097_collaboration_asset_prompt.md`, super-event through `097_collaboration_super_event_prompt.md`, achievements through `097_collaboration_achievement_prompt.md`.
 - Final localisation written from the localisation direction. No working label becomes final text, and no unresearched super-event text ships.
 - A package-owned CXT test fixture under the dynamic extension contract in `docs/testing/chaosx_test_country.md`: a modifier-free hidden-idea carrier, an idempotent `_apply` setup effect that prepares Event 097 records for inspection without firing the event or adding collaboration, a startup registration, and a registration-only `on_daily_CXT` fallback.
-- Intelligence cluster integration per Part 5, building the cluster if it does not exist yet, or reporting it as an open item.
+- Intelligence cluster integration per Part 5 using ID 20 and `constant:event_cluster_id.intelligence`. Inspect and extend current owner surfaces rather than reallocating the identifier. Report unresolved membership or Event 039 type requirements separately.
 
 Do not add `on_daily`, `on_weekly`, or `on_monthly` world iteration without explicit user permission.
 

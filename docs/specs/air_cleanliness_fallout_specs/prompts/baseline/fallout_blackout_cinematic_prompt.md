@@ -4,7 +4,10 @@ Canonical status: accepted baseline prompt, subject to the corrected ownership a
 
 This replaces the normal Fallout super-event presentation. Do not build a super-event package for Fallout unless the user later reverses the rule.
 
-Task: design and implement the Fallout black-screen cinematic sequence as a scripted GUI or equivalent UI overlay.
+Task: design and implement the Fallout black-screen cinematic sequence as the accepted native scripted GUI.
+Follow [chaos-redux-scripted-gui](../../../../../.agents/skills/chaos-redux-scripted-gui/SKILL.md) for reference acceptance, native mapping, explicit states/resolutions, and mandatory MCP visual evidence.
+The cross-event consequence window remains parent-owned under [chaos-redux-subagents](../../../../../.agents/skills/chaos-redux-subagents/SKILL.md); event UI worker routing requires separate proof of one named event’s ownership.
+Record an unsupported presentation channel as a blocker rather than silently substituting another overlay route.
 
 Presentation rules:
 

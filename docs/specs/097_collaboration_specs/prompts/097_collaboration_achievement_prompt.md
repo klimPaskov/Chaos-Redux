@@ -1,5 +1,7 @@
 # Event 097 Collaboration: Achievement Prompt
 
+Select this nested variant's achievement set only after resolving the [package authority and conflict table](../README.md).
+
 Implement the six Event 097 achievements defined in `docs/specs/097_collaboration_specs/specs/097_collaboration_spec_part_6_ai_presentation_achievements.md`. Inspect the existing Chaos Redux achievement registry, its event sections, its forced-setup disqualifiers, its localisation file, and its `.gfx` registration before writing anything. Keep Event 097 achievements in their own section of the single root achievement registry. The keys below follow the repository convention `<id>_<slug>_<name>` used by other event-owned achievements, such as the Event 008 section, and are the proposed final ids. Confirm that no id collides with an existing entry before writing.
 
 Titles and descriptions are direction only. Write final localisation in the Chaos Redux voice. Descriptions state the requirement clearly in the achievement UI. Event text, decision text, and reports must never mention achievements or achievement routes.

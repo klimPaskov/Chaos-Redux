@@ -1,6 +1,6 @@
 # Subagent Prompt: Event 021 Localisation Auditor
 
-Spawn `chaosx_localisation_auditor` with `fork_context=false` after broad Event 021 text exists.
+Spawn `chaosx_localisation_auditor` with `fork_turns="none"` after broad Event 021 text exists.
 
 Read:
 

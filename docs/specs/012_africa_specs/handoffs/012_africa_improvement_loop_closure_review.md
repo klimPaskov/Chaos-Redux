@@ -2,7 +2,9 @@
 
 ## Tooling status
 
-The project requires a near-completion pass by `chaosx_improvement_loop_planner`. Its contract and the improvement-loop skill were read in full, but the custom subagent was not available as an invokable tool in this environment. The review below was performed directly. A fresh external pass remains required after a meaningful implementation tranche.
+This is the historical second-edition direct review; its environment did not expose the improvement planner.
+The accepted August 1 tranche disposition is recorded in [the package reconciliation](../README.md).
+Further planner work requires a meaningful new tranche or depth finding under [chaos-redux-subagents](../../../../.agents/skills/chaos-redux-subagents/SKILL.md); this old limitation does not reopen resolved work.
 
 ## Why the second edition was justified
 

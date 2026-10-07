@@ -1,6 +1,6 @@
 # Goal prompt
 
-Implement Chaos Redux Event 38, **Malta Crusaders**, from `docs/specs/038_malta_crusaders_specs/`. Treat the attached premise and this pack as binding acceptance criteria. Event 38 remains a Chaos level 1 Minor Fire-Once event in the Formables cluster with High severity. Its opening stays a regional Mediterranean crisis even when pre-fire evolutions strengthen Malta.
+Implement Chaos Redux Event 38, **Malta Crusaders**, from `docs/specs/038_malta_crusaders_specs/`. Resolve design acceptance through `00_README.md` before execution. Event 38 remains a Chaos level 1 Minor Fire-Once event in the Formables cluster with High severity. Its opening stays a regional Mediterranean crisis even when pre-fire evolutions strengthen Malta.
 
 Before editing, read `AGENTS.md`, relevant repository skills, the complete Event 38 pack, current source, required offline wiki pages, vanilla documentation, and local precedents. Use mandatory HOI4 MCP routes for event chains, maps, focuses, technologies, weighted logic, and the Event 38 Crusade Council GUI. Record unavailable routes as blockers.
 
@@ -14,7 +14,7 @@ Implement the full focus architecture, decision register, order politics, logist
 
 Implement the hidden Teutonic Order only through exact cross-event proof. Present Nazi racial and Atlantean claims as fabricated ideology. Implement Atlantis with exclusive leader ownership, twenty exceptional initial Supreme formations, expensive replacements, staged claim integration, immediate war with Malta or the Holy See and the Holy Realm, and full use of existing atrocity, Deaths, evidence, resistance, migration, and Condemnation systems.
 
-Implement The Holy World as Event 38's public terminal route. Preparation begins at 800 Chaos under Papal rule. Normal activation requires 1000 Chaos, one approved complete continent held through direct rule or valid Papal subjects, its public toggle, and the shared world-end gate. Use staged regional war pulses and one terminal runtime. The Believers vs Nonbelievers manual scenario raises Chaos into World Collapse during setup, uses a temporary bypass, supports four intensity levels, preserves strong opposition at Maximum, and calls the same runtime.
+Implement The Holy World as Event 38's public terminal route. Preparation begins at 800 Chaos under Papal rule. Normal activation requires 1000 Chaos, one approved complete continent held through direct rule or valid Papal subjects, its public toggle, and the shared world-end gate. Use staged regional war pulses and one terminal runtime. Believers vs Nonbelievers (SCN-021) raises Chaos into World Collapse during setup, uses a temporary bypass, supports four intensity levels, preserves strong opposition at Maximum, and calls the same runtime.
 
 Complete every public UI, log, super-event, asset, audio, localisation, achievement, compatibility, cleanup, documentation, workbook, and export surface. Keep hidden routes out of public catalog surfaces. Never edit CSV exports directly.
 

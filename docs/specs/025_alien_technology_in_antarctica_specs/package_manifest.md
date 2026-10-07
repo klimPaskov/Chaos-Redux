@@ -1,36 +1,38 @@
-# Event 025 planning package manifest
+# Event 025 working-tree documentation manifest
+
+The package was authored on `2026-08-18`.
+This inventory and its checksum ledger describe repository documentation bytes refreshed on `2026-10-07`, including preserved pre-audit edits.
+They provide file integrity evidence only.
+Original uploaded-source receipts remain in `research/025_source_reading_ledger.md`.
 
 | Field | Value |
 | --- | --- |
 | Event | `025 Alien Technology in Antarctica` |
-| Package type | Source specification and implementation handoff |
-| Package date | `2026-08-18` |
-| Parent source root | `docs/specs/025_alien_technology_in_antarctica_specs/` |
+| Source design root | `docs/specs/025_alien_technology_in_antarctica_specs/` |
 | Working plan root | `docs/plans/025_alien_technology_in_antarctica_plans/` |
-| Runtime implementation | Not included |
-| Independent subagent review | Awaiting a subagent-capable interface |
-| MCP evidence | Not available in this interface |
-| Goal prompt length | `3971` characters, excluding the final line break |
+| Reported implementation and open gates | [Completion status](handoffs/025_completion_status.md) and [process limitations](handoffs/025_process_limitations.md), subject to parent review |
+| Current capability status | Not established by this documentation manifest |
+| Goal prompt length | `3980` characters, excluding trailing whitespace |
 
 ## File counts
 
 | Area | Files |
 | --- | ---: |
-| `handoffs` | 3 |
+| `handoffs` | 4 |
 | `matrices` | 8 |
 | `prompts` | 18 |
 | `research` | 4 |
 | `root` | 1 |
 | `specs` | 14 |
 
-Total files before manifest and checksum ledger: `48`.
+Files before manifest and checksum ledger: `49`.
 
 ## Included files
 
-- `README.md`
 - `handoffs/025_completion_status.md`
 - `handoffs/025_process_limitations.md`
 - `handoffs/025_subagent_routing_plan.md`
+- `handoffs/025_super_event_audio_research.md`
 - `matrices/025_ai_probability_scenarios.md`
 - `matrices/025_asset_inventory.md`
 - `matrices/025_event_chain_map.md`
@@ -57,6 +59,7 @@ Total files before manifest and checksum ledger: `48`.
 - `prompts/025_spreadsheet_prompt.md`
 - `prompts/025_super_event_audio_researcher_prompt.md`
 - `prompts/025_super_event_text_researcher_prompt.md`
+- `README.md`
 - `research/025_catalog_and_cross_event_audit.md`
 - `research/025_historical_scientific_research.md`
 - `research/025_improvement_loop_closure.md`
@@ -78,8 +81,11 @@ Total files before manifest and checksum ledger: `48`.
 
 ## Integrity
 
-The final archive includes `package_checksums.sha256` with a SHA-256 entry for every package file except the checksum ledger itself.
+`package_checksums.sha256` records SHA-256 for every local package file except the checksum ledger itself.
+Post-edit receipts must be regenerated from the actual final file bytes.
 
 ## Authority
 
-The files under `specs/` are the parent-authored source design. The files under `prompts/` and `handoffs/` define continuation work. Independent planner findings must be accepted and folded into `specs/` before they change the source design.
+The specification parts preserve parent-authored source design.
+The README distinguishes recorded acceptance from unresolved expanded design and reported implementation evidence.
+Independent planner findings require parent acceptance and disposition before they alter the source design.

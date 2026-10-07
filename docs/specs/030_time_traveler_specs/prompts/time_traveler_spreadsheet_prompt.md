@@ -14,7 +14,7 @@ Replace the legacy Event 30 row with final player-facing fields for:
 - no cluster
 - final implementation status
 
-Add or update the final All Times at Once scenario row under the collision-checked scenario ID with its one type, four intensity descriptions, and final status.
+Add or update the final All Times at Once scenario row under reserved `SCN-020`, raw ID `20`, after checking the central reservation and runtime/workbook occupancy before integration with its one type, four intensity descriptions, and final status.
 
 Match Event Details, evolution detail, world-end detail, scenario detail, and in-game wording. Do not paste mechanics tables, hidden thresholds, raw effects, working labels, or implementation notes into the workbook.
 

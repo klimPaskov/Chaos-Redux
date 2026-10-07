@@ -9,8 +9,11 @@
 | Type | Minor Repeatable |
 | Status | To Be Reworked |
 | Chaos level | 1 |
-| Cluster | Intelligence |
+| Cluster | Intelligence, ID 20 |
 | Cluster severity | Low member |
+
+Cluster identity follows the [shared identifier registry](../shared_identifier_registry.md#event-clusters): Intelligence is `20`, while Diseases retains `8`.
+Low remains member severity; required/optional role, repetition and incident policy are separate contracts.
 
 ## The intelligence arms race
 

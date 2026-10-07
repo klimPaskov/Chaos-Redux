@@ -4,7 +4,7 @@ Implement every accepted file under `docs/specs/031_random_terror_specs/`. Read 
 
 Follow `AGENTS.md` and named Chaos Redux skills. Consult required local wiki, vanilla, and Chaos Redux precedents. Use mandatory HOI4 MCP event, focus, probability, technology, GUI, and map routes wherever supported. Record the exact blocker when a route is unavailable.
 
-Preserve Event ID `31`, `chaosx.nr31.1`, Minor Repeatable classification, Chaos level `1`, the five evolution names, Global Jihad, and The False Revelation. Verify proposed `SCN-014`, carrier capacity, and live registry collisions. Do not register Internal Fracture until its member package is accepted.
+Preserve Event ID `31`, `chaosx.nr31.1`, Minor Repeatable, Chaos level `1`, evolution names, Global Jihad `SCN-016`, and The False Revelation. Keep Domestic Unrest `16`; Internal Fracture `22` is an optional reservation without design approval. Audit carrier and live registry collisions.
 
 Implement one global firing that affects several valid countries and exact states while counting as one pacing event. Build Terror Pressure, Response Legitimacy, state activity, later network values, territorial actor values, and hidden world-end readiness. Baseline must support containment, spread, coups, civil war, partition, takeover, surrender, territorial countries, and defeat. Evolutions change coordination and scale. Disabled evolutions must leave a safe baseline route.
 
@@ -16,6 +16,6 @@ Build the actor-specific focus architecture with clean layout, varied rewards, i
 
 Complete every final asset through the dedicated prompts. The entity animation needs a verified consumer, real source frames, and a static fallback. Research final super-event text, quotes, licensed or public-domain music, rights records, WAV files, and settings-aware wiring. Placeholders are blocked.
 
-Use project subagents with `fork_context=false` for exploration, architecture, audits, assets, research, workbook alignment, documentation, probability comparison, improvement closure, and completion review. Do not invoke the event UI worker or 3D pipeline under the accepted design.
+Use project subagents with `fork_turns="none"` for exploration, architecture, audits, assets, research, workbook alignment, documentation, probability comparison, improvement closure, and completion review. Do not invoke the event UI worker or 3D pipeline under the accepted design.
 
 Update Event 31 docs and only the authoritative XLSX, then run the catalog exporter. Resolve every accepted plan or record its disposition. Keep iterating until every spec, matrix, route, scenario, evolution, asset, achievement, AI and log surface, world-end component, audit, and documentation row is complete. Do not claim completion from parsing or partial visible content. End with a concrete completion report covering evidence, blockers, and all simplifications and fallbacks.

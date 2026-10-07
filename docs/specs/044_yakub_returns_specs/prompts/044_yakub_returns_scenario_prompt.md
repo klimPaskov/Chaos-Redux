@@ -10,11 +10,12 @@ Scenario working name:
 
 Yakubite Uprising
 
-Proposed ID:
+Reserved ID:
 
-`SCN-015`
+`SCN-023` / raw `23`
 
-The current export reaches `SCN-014` and leaves `SCN-004` absent. Confirm the authoritative workbook and live scenario registry before locking `SCN-015`. Do not reuse a reserved or conflicting ID.
+Use the user-authorized 2026-10-07 central reservation in `docs/specs/shared_identifier_registry.md`.
+Preserve incumbent and held runtime IDs; the allocation approves identity only and does not approve or implement this scenario content.
 
 Register the scenario in the data-driven triggerable-scenario framework with stable sort order, localized row, details, confirmation flow, type control, intensity control, and launch eligibility.
 

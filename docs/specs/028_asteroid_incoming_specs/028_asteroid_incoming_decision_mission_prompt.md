@@ -111,4 +111,4 @@ Any probability-bearing AI change requires the audit, patch, and comparison cycl
 
 Use the static Event 028 category picture and separate 32x32 icons from the asset prompt. Do not paint controls or dynamic values into the picture.
 
-After implementation, spawn `chaosx_decision_mission_auditor` with `fork_context=false`. Require a handoff listing every decision and mission ID, target model, cost types, dynamic cost source, AI behavior, success and failure, cleanup, exploit protection, localisation keys, and meaningful validation. Broad design changes return as a plan instead of an unreviewed patch.
+After implementation, spawn `chaosx_decision_mission_auditor` with `fork_turns="none"`. Require a handoff listing every decision and mission ID, target model, cost types, dynamic cost source, AI behavior, success and failure, cleanup, exploit protection, localisation keys, and meaningful validation. Broad design changes return as a plan instead of an unreviewed patch.

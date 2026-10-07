@@ -1,6 +1,7 @@
 # Produce the Event 077 visual assets
 
-Read all presentation and relevant gameplay parts in `docs/specs/077_parliament_of_fear_specs/`, especially Parts 2, 6, 7, 9, 10, and 12. Read the complete event-assets, frame-animation, scripted-GUI, portrait/ComfyUI, and relevant country-flag skills. Follow `supporting_material/077_asset_manifest.csv` and its notes.
+Read all presentation and relevant gameplay parts in `docs/specs/077_parliament_of_fear_specs/`, especially Parts 2, 6, 7, 9, 10, and 12. Read the current [asset](../../../.agents/skills/chaos-redux-event-assets/SKILL.md), frame-animation and scripted-GUI owner skills.
+Route every authorized character portrait to `chaosx_portrait_creator`; its standing narrow portrait-wiring exception follows the asset skill. Follow `supporting_material/077_asset_manifest.csv` and its notes.
 
 The manifest has 48 production records covering ten report compositions, two news compositions, four action icons, three idea icons, chamber state and overlay art, warning animation and static state, the severe-outcome super-event image, eight achievement triplets, and conditional real-portrait and successor-flag roles. Conditional roles are not a request to invent people or countries.
 
@@ -14,7 +15,8 @@ The warning sequence needs actual authored frames, a documented sheet layout, an
 
 Reports use fictional neutral institutional scenes unless a grounded country-specific source is necessary and verified. Avoid modern items, inaccurate national insignia, invented readable documents, and misleading depictions of actual historical arrests. Serious purge imagery should communicate absence and disruption without celebratory or sensational treatment.
 
-Reuse existing real portraits first. New portraits require a named actual figure, verified relevant role, and source likeness. Never generate a face and present it as an unidentified historical minister. Abstract groups use institutional symbols. Leader and adviser consumers receive separate appropriate preparation.
+Reuse existing real portraits first. New portraits require a named actual figure, verified relevant role, and source likeness. Never generate a face and present it as an unidentified historical minister. Abstract groups use institutional symbols. Do not infer adviser portrait families from a character or role; produce one only when its accepted requirement explicitly requests it.
+Grounded source portraits remain pending placeholders until the user supplies the styled final, under the portrait owner's workflow.
 
 Each achievement has one original native icon and the dedicated pipeline's grey and exact not-eligible variants. Use flat `gfx/achievements/<achievement_id>.dds`, `<achievement_id>_grey.dds`, and `<achievement_id>_not_eligible.dds` paths. Inspect the actual processor and overlay templates before conversion. Do not make three independent generated images.
 

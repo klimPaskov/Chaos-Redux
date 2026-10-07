@@ -170,6 +170,10 @@ The world-end campaign cannot reactivate from an old saved focus completion.
 
 ## Manual scenario setup
 
+Cookie Monster Uprising uses reserved `SCN-030` / raw `30` from [the shared identifier registry](../shared_identifier_registry.md).
+All four presets share that entry.
+The identifier reservation does not approve broader design or implement content.
+
 The manual Cookie Monster Uprising starts the revolt immediately.
 It does not require prior clicks, Level, hunger, Chaos, evolutions, elapsed days, event-picker availability, a prior pet or a completed focus.
 The selected host, valid uprising territory and unused country identity remain structural requirements.

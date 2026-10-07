@@ -1,6 +1,6 @@
 # Subagent Prompt: Event 021 Documentation Curator
 
-Spawn `chaosx_documentation_curator` with `fork_context=false` after several Event 021 handoffs exist and before the final completion audit.
+Spawn `chaosx_documentation_curator` with `fork_turns="none"` after several Event 021 handoffs exist and before the final completion audit.
 
 Read:
 

@@ -419,9 +419,14 @@ Examples:
 
 Working cluster identity:
 
-- proposed ID: `9`
+- reserved proposal ID: raw `event_cluster_id` `22`
 - working name: `Internal Fracture`
 - Event 31 role: severe member
+
+The parent authorized the identifier reservation on 2026-10-07 after runtime, catalog and specification occupancy scans.
+See [the shared identifier registry](../shared_identifier_registry.md) and [its JSON ledger](../shared_identifier_registry.json).
+This remains a separate optional proposal without design acceptance or runtime registration.
+Event 031's current catalog membership remains Domestic Unrest `16`; raw cluster `9` belongs to National Breakthroughs.
 
 Potential future members:
 

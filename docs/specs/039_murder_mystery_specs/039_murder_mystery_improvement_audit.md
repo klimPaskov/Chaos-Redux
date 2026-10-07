@@ -1,5 +1,13 @@
 # Event 039 Murder Mystery Improvement and Specialist Review
 
+This is the original parent-performed planning review, retained as historical evidence.
+Its acceptance labels and unavailable-runtime statements do not establish current approval or capability; use the [package index](039_murder_mystery_package_index.md).
+The OGG maintenance recommendations below are superseded by the current `.codex/agents/chaosx_super_event_audio_researcher.toml`, which already requires WAV.
+Current 3D route and action guidance belongs to the [model owner skill](../../../.agents/skills/chaos-redux-3d-model-pipeline/SKILL.md).
+
+Current identifier guidance supersedes the historical placeholders below: Intelligence cluster `20` and Assassin Network `SCN-019` / raw `19`, as recorded in the [shared identifier registry](../shared_identifier_registry.md).
+The original `9` and `SCN-014` entries remain historical evidence; do not allocate them to Event 039.
+
 ## Review purpose
 
 This review tests the finished specification pack against the event-planning, improvement-loop, event, decision, focus, asset, animation, super-event, 3D, country, AI, localisation, documentation, and completion contracts supplied with the project.

@@ -1,6 +1,6 @@
 # Spreadsheet update prompt for Event 58 Random Buildings
 
-Use this prompt with `chaosx_spreadsheet_doc_worker` only after Event 58 implementation and final in-game wording are available. Spawn with `fork_context=false`.
+Use this prompt with `chaosx_spreadsheet_doc_worker` only after Event 58 implementation and final in-game wording are available. Spawn with `fork_turns="none"` in Codex.
 
 Read the spreadsheet skill, the authoritative workbook, the final Event 58 localisation and scripted localisation needed for mirrored fields, and the final Positive Economy cluster wording. Do not read broad repository files.
 

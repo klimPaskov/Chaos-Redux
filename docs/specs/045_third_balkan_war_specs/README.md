@@ -1,6 +1,6 @@
 # Event 045: Third Balkan War specification pack
 
-This package is the accepted planning handoff for Chaos Redux Event 045, **Third Balkan War**.
+This package is the source planning handoff for Chaos Redux Event 045, **Third Balkan War**.
 
 Extract the top-level folder to:
 
@@ -14,7 +14,7 @@ The package defines the complete event design, the dynamic opening war builder, 
 
 | Folder | Purpose |
 | --- | --- |
-| `specs/` | Accepted source design split by gameplay surface |
+| `specs/` | Proposed source design split by gameplay surface |
 | `diagrams/` | Lifecycle, decision, claim, and escalation maps |
 | `research/` | Historical design research, bibliography, and source manifest |
 | `prompts/` | Bounded implementation handoffs for assets, super-events, achievements, decisions, coding, and the final goal |
@@ -35,5 +35,10 @@ The package defines the complete event design, the dynamic opening war builder, 
 - The implementation must remain dynamic across changed borders, successor states, player countries, and alternate-history faction maps.
 
 ## Source status
+
+Package-generation source, review, validation, and tooling reports are historical evidence.
+Their PASS labels and transport errors do not establish current package validation, implementation, service health, or design approval.
+The package does not retain an attributable original user or parent acceptance record for all expanded requirements, so unsupported acceptance claims remain unresolved.
+The six parts under `specs/` and their linked supporting documents are the maintained reading set; the redundant combined copy was removed after proving all 26 included bodies matched their siblings.
 
 Every supplied project source file and every archived subagent definition was read in full before this package was written. The stored specialist contracts were applied during the design review. Actual specialist invocation through the outer Codex tunnel was attempted and failed with transport errors. The exact blocker is recorded in `quality/045_third_balkan_war_subagent_blocker.md`.

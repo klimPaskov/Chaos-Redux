@@ -25,7 +25,13 @@ Part 10, Part 13, implementation architecture and an explicit bounded UI task fr
 
 ## Concrete work
 
-The accepted design uses native decisions/missions, native focuses where appropriate and existing shared event details. It does not call for a custom dashboard or new independent country meters. Return NOT_APPLICABLE when native surfaces fully convey the two custom values, actual region status, aid, obligations and outcomes. If a later authorized problem requires UI work, limit changes to the exact consumer and ownership boundary, verify ROOT/selected-state semantics, native scale and other-country isolation, and preserve all shared event/settings/detail contracts. Do not edit a shared interface globally to fix one claimant or expose hidden deterministic selection scores as public meters.
+The design uses native decisions/missions, native focuses where appropriate and existing shared event details.
+It does not call for a custom dashboard or new independent country meters.
+Return NOT_APPLICABLE when no accepted Event 095-owned window exists.
+Dispatch this worker only after an accepted design specifically introduces a new Event 095-owned window and the parent names its GUI ids, files, entry point, states, resolutions, references and mandatory MCP evidence.
+Shared event details, settings and existing framework interfaces remain parent-owned.
+For that bounded window, verify ROOT/selected-state semantics, native scale and other-country isolation.
+Do not expose hidden deterministic selection scores as public meters.
 
 ## Required handoff
 

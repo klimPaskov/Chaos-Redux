@@ -1,5 +1,9 @@
 # Package Contents Manifest
 
+Historical planning receipt.
+Counts, line spans, byte sizes, goal length, and hashes below describe the original generated files.
+Preserve them as provenance rather than a current integrity certificate.
+
 - **Generated files before this manifest:** 33
 - **Goal prompt character count:** 4342
 

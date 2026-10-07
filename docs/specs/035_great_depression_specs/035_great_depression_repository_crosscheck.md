@@ -1,5 +1,9 @@
 # Event 35 Great Depression 2.0 live repository cross-check
 
+Historical evidence: source names, hashes, repository observations, and tool/runtime limitations below belong to the original planning pass.
+They do not establish current local file availability, current service health, implementation status, or design approval.
+Use the package entry point and current owner skills for active guidance.
+
 ## Repository inspected
 
 - Repository: `klimPaskov/Chaos-Redux`

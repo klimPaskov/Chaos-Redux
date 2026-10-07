@@ -1,12 +1,12 @@
 # Event 53 Subagent Routing
 
-Every project subagent must be invoked with `fork_context=false` and a complete prompt.
+Every project subagent must be invoked with `fork_turns="none"` (Codex) and a complete prompt.
 
 ## Relevant implementation agents
 
 | Order | Agent | Role |
 | ---: | --- | --- |
-| 1 | `chaosx_repo_explorer` | Map the existing Event 53 namespace, owner APIs, source-event bookkeeping, vanilla precedents, and implementation order |
+| 1, when locations or owner patterns are unclear | `chaosx_repo_explorer` | Map the uncertain Event 53 source and dependency surfaces under the current explorer gate |
 | 2 | `chaosx_scripted_system_architect` | Implement or review the Event 53 owner-side constants, triggers, effects, transaction state, demand engine, registry, and receipts |
 | 3 | `chaosx_generated_event_art` | Produce the five report-event scenes |
 | 4 | `chaosx_ai_probability_auditor` | Audit target, demand, package, interval, and affordability selection through the mandatory MCP workflow |

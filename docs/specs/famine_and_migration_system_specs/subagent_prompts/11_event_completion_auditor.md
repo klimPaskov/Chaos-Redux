@@ -1,6 +1,6 @@
 # Prompt for `chaosx_event_completion_auditor`
 
-Spawn with `fork_context=false` and treat this as a shared-system completion audit.
+Spawn with no inherited thread context (Codex `fork_turns="none"`; other runtimes follow the [subagent skill](../../../../.agents/skills/chaos-redux-subagents/SKILL.md)) and treat this as a shared-system completion audit.
 
 Repository root: `<MOD_ROOT>`.
 
@@ -17,7 +17,7 @@ Audit:
 - border policy and trapped populations
 - internal displacement, refugee flight, evacuation, deportation, return, integration, and resettlement
 - occupation, camps, gulags, forced labor, genocide, bombing, nuclear, outbreak, disaster, war, peace, and event adapters
-- Event 149 retirement or adapter conversion
+- recorded Event 149 retirement and event-free presentation
 - special and nonhuman exclusions
 - category lifecycle, decisions, missions, costs, clutter, and AI
 - probability compare evidence

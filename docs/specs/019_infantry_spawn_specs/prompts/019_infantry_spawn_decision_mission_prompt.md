@@ -181,4 +181,4 @@ Write final in-world text from the specification direction. Do not copy working 
 
 ## Audit
 
-After implementation, run `chaosx_decision_mission_auditor` with `fork_context=false` and pass the complete Event 19 scope. Resolve or explicitly disposition every finding before completion.
+After implementation, run `chaosx_decision_mission_auditor` with `fork_turns="none"` and pass the complete Event 19 scope. Resolve or explicitly disposition every finding before completion.

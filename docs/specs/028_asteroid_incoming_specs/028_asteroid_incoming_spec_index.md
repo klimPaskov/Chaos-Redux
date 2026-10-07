@@ -1,12 +1,18 @@
 # Event 028: Asteroid Incoming
 
+Current workflow owners: [event integration](../../../.agents/skills/chaos-redux-events/SKILL.md), [subagent routing](../../../.agents/skills/chaos-redux-subagents/SKILL.md), and [asset production](../../../.agents/skills/chaos-redux-event-assets/SKILL.md).
+The source parts preserve the proposed expanded design.
+Explicit user requirements retain their cited basis, while broader claims labelled accepted require an attributable user decision or parent acceptance before implementation.
+Package location and manual closure reports do not establish that acceptance.
+
+
 ## Specification package index
 
 This folder is the source design package for Event 028, Asteroid Incoming.
 
 The event is a global fire-once major event. A player-controlled chooser receives three dynamically selected country and state targets plus a genuine miss option. A selected impact resolves after a two-day trajectory lock, destroys the chosen state, damages three land-adjacency rings, records civilian deaths, creates a permanent asteroid crater, produces a global dust aftermath, and presents a dynamic super-event. At higher Chaos, fragments strike additional regions and crater controllers gain transferable armour bonuses from extraordinary material.
 
-The package treats the supplied Event 028 brief as authoritative. The current catalog export still describes an older minor repeatable prediction event. The implementation must replace that stale row in the authoritative workbook and regenerate the CSV exports.
+The package treats the supplied Event 028 brief as authoritative. The supplied catalog snapshot described an older minor repeatable prediction event. The implementation must replace that stale row in the authoritative workbook and regenerate the CSV exports.
 
 ## Files
 

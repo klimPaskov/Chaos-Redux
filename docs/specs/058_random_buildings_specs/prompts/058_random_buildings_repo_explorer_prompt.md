@@ -1,6 +1,6 @@
 # Repository exploration prompt for Event 58 Random Buildings
 
-Use this prompt with `chaosx_repo_explorer` before implementation. Spawn with `fork_context=false`.
+Use this prompt with `chaosx_repo_explorer` only when repository locations, existing patterns, owner APIs, or implementation order remain uncertain. Spawn with `fork_turns="none"` in Codex.
 
 The accepted source specs are under `docs/specs/058_random_buildings_specs/`.
 

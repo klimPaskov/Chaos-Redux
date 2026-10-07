@@ -1,12 +1,6 @@
 # Event 19 Derivative Country Route Map
 
-This is the live implementation map for
-`common/national_focus/019_infantry_spawn_derivative_focus.txt`. The tree has
-45 focus nodes: 30 shared nodes and five family nodes for each of zombie,
-ghost, and golem derivatives. A single derivative sees the 30 shared nodes plus
-its five family nodes, for a 35-focus adapted route. Coordinates,
-prerequisites, mutual exclusions, AI weights, icons, and completion effects are
-implemented in that source file.
+This is the live implementation map for `common/national_focus/019_infantry_spawn_derivative_focus.txt`. The tree has 45 focus nodes: 30 shared nodes and five family nodes for each of zombie, ghost, and golem derivatives. A single derivative sees the 30 shared nodes plus its five family nodes, for a 35-focus adapted route. Coordinates, prerequisites, mutual exclusions, AI weights, icons, and completion effects are implemented in that source file.
 
 ```text
                                SURVIVE THE SEPARATION
@@ -167,10 +161,7 @@ The expansion lane should not fully open until the derivative has either:
 - outlived a defined opening crisis period
 
 This prevents the AI from abandoning the revolt war for unrelated expansion.
-Resolving that gate replaces the route-specific former-parent idea with *The
-Outward Muster*, preserving the fourth live idea track while the host builds
-the districts, victories, and sustainment needed for the capstone. *Regional
-Predator* then replaces the bridge instead of stacking with it.
+Resolving that gate replaces the route-specific former-parent idea with *The Outward Muster*, preserving the fourth live idea track while the host builds the districts, victories, and sustainment needed for the capstone. *Regional Predator* then replaces the bridge instead of stacking with it.
 
 ## Family transformation modules
 
@@ -199,10 +190,4 @@ Predator* then replaces the bridge instead of stacking with it.
 
 The Regional Predator capstone marks a derivative country that has become a sustainable regional threat. It can unlock stronger claims, reinforcement, a final identity, and an achievement route. It does not unlock a world-end mechanic or parent-event endgame.
 
-The live availability gate requires hierarchy consolidation, completed family
-transformation, sustainable reinforcement, resolved former-state pressure, at
-least one integrated family district or, for a claimant breakaway using the
-adapted shared route, one established sustainment district, the centralized
-controlled-state threshold, and the centralized recorded-war-victory threshold. Local submission demands
-use a warning mission and a bounded annexation war goal; they do not bypass
-those route gates or resolve the former parent automatically.
+The live availability gate requires hierarchy consolidation, completed family transformation, sustainable reinforcement, resolved former-state pressure, at least one integrated family district or, for a claimant breakaway using the adapted shared route, one established sustainment district, the centralized controlled-state threshold, and the centralized recorded-war-victory threshold. Local submission demands use a warning mission and a bounded annexation war goal; they do not bypass those route gates or resolve the former parent automatically.

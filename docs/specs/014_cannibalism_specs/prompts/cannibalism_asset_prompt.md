@@ -11,13 +11,18 @@ Read:
 - `matrices/asset_inventory_matrix.md`
 - `specs/014_cannibalism_spec_part_10_assets_animation_and_localisation.md`
 
-All custom subagents must be spawned with `fork_context=false`. Pass this prompt, the event ID, event slug, exact output paths, and every relevant spec path directly.
+All custom subagents must be spawned with `fork_turns="none"`. Pass this prompt, the event ID, event slug, exact output paths, and every relevant spec path directly.
 
 ## Routing
 
+Use [the asset owner skill](../../../../.agents/skills/chaos-redux-event-assets/SKILL.md) for current production and transparency requirements.
+Route all warlord, Hannibal, and Wendigo Hannibal portrait packages, including genuine-frame animation and portrait wiring, to `chaosx_portrait_creator`.
+Preserve the accepted supplied Hannibal statics and existing 56-final regional package.
+The inventory below defines design coverage and does not authorize repeating completed production.
+
 Do not use one broad worker for the mixed package.
 
-- Use `chaosx_generated_event_art` for report images, news images, super-event images, fictional flags, generic warlord portraits, Hannibal portraits, Wendigo Hannibal portraits, GUI background art, faction emblems, and non-icon fictional presentation art.
+- Use `chaosx_generated_event_art` for report images, news images, super-event images, fictional flags, GUI background art, faction emblems, and non-icon fictional presentation art.
 - Use `chaosx_icon_artist` for focus icons, idea icons, national spirit icons, decision icons, category icons, achievement icons, unit or technology icons, route seals, warning frames, and small animated sprites.
 - Use `chaosx_asset_source_researcher` only if a final asset genuinely needs real archival material. The default core event art is generated. Do not use real atrocity photographs as final fictional event art.
 

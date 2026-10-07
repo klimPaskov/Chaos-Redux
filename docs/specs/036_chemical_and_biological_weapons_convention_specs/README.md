@@ -25,6 +25,11 @@ It does not grant free weapons on entry.
 
 ## Source-of-truth order
 
+This order identifies design documents, not acceptance evidence.
+Approval claims in the imported package require an attributable user decision or parent acceptance under [AGENTS.md](../../../AGENTS.md); the blanket package acceptance basis remains `unresolved` without that record.
+Research, source audits, and the manual closure retain their historical evidence role.
+Current workflow and role ownership follow [the subagent skill](../../../.agents/skills/chaos-redux-subagents/SKILL.md).
+
 Use the files in this order when implementing the event:
 
 1. `00_master_spec.md`
@@ -80,10 +85,11 @@ Shared registries may expose neutral provider contracts, but they must not own E
 
 ## Catalog alignment warning
 
-The supplied event catalog still describes Event 036 as Alien Spacecraft and classifies it as Minor Repeatable.
+The catalog supplied to the original planning pass described Event 036 as Alien Spacecraft and classified it as Minor Repeatable.
 
-The supplied cluster export contains no current cluster row named Diplomacy.
+That supplied cluster export contained no row named Diplomacy.
 
-Implementation must update the authoritative workbook and create or reconcile the approved Diplomacy cluster registration before exporting the three CSV snapshots.
+Reinspect the authoritative workbook and live registries before applying the proposed event and Diplomacy cluster changes, and record acceptance before creating a cluster registration.
+Export the three CSV snapshots only from the updated workbook.
 
 Do not silently remap Event 036 to the existing Diplomatic Panic cluster.

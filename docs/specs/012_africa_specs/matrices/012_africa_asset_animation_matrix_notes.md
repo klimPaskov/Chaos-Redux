@@ -1,5 +1,13 @@
 # Event 12 Africa asset and animation matrix notes
 
+## Production authority
+
+Use [chaos-redux-event-assets](../../../../.agents/skills/chaos-redux-event-assets/SKILL.md) for current portrait classification, source modes, subject ownership, native alpha, flag production, and manifest rules.
+A matrix phrase such as fictional leader does not approve a generated face for a grounded or plausibly historical polity.
+Missing classification stays unresolved until the portrait owner supplies its acceptance basis.
+Advisor, commander, and high-command families below require an explicit accepted requirement; an exposed role or consumer alone does not authorize them.
+Custom models belong to [chaos-redux-3d-model-pipeline](../../../../.agents/skills/chaos-redux-3d-model-pipeline/SKILL.md).
+
 ## Purpose
 
 `012_africa_asset_animation_matrix.csv` records 239 visual work items with explicit release-candidate dispositions. It covers presentation images, the Charter interface, animation, idea icons, decision icons, focus icon families, constitutional identities, portrait frames, Tier A restored polities, strange units, and continent-unifier packages.

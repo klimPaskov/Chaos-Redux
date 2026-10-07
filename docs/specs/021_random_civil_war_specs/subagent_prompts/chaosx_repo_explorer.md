@@ -1,6 +1,7 @@
 # Subagent Prompt: Event 021 Repository Explorer
 
-Spawn `chaosx_repo_explorer` with `fork_context=false`.
+Use this prompt only when paths, live APIs, precedents, or dependency order remain unclear under the [repo-explorer gate](../../../../.agents/skills/chaos-redux-subagents/SKILL.md#repo-explorer-use-gate).
+For Codex, spawn `chaosx_repo_explorer` with `fork_turns="none"` and bounded parent questions.
 
 Read:
 
@@ -14,10 +15,10 @@ This is read-only exploration.
 
 Map:
 
-- current Event 021 stub, registration, enable state, name mapping, Event Details, and event-log surfaces
+- current Event 021 implementation, registration, enable state, name mapping, Event Details, and event-log surfaces
 - repeatable-event registration and no-target `N/A` precedent
 - Wars cluster registry, member order, collision handling, skip reasons, and logging
-- triggerable scenario registry and next verified free scenario ID
+- triggerable scenario registry and existing `SCN-018` ownership, resolved in the source-read ledger on 2026-09-25
 - existing civil-war, dynamic-country, same-tag takeover, state allocation, unit allocation, stockpile, capital, faction, subject, and cleanup precedents
 - Event 006 country collections, package registry, tag mapping, origin logic, initialization, forces, focus assignment, formables, decisions, AI, assets, and idempotence
 - shared `is_actual_nonhuman_country` and `is_special_chaos_country` use

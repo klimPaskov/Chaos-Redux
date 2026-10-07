@@ -596,28 +596,15 @@ Failure can open derivative revolt eligibility.
 
 ## Decision-only Formation Ledger surface
 
-The accepted 2026-08-05 surface uses ordinary decisions rather than a custom
-scripted GUI. `infantry_spawn_review_formation_ledger` rebuilds the shared lot,
-generation, claimant, family, and request-cost caches without changing the
-country. Existing lot, request, integration, demobilization, claimant, and
-family decisions remain the substantive controls; every one carries its own
-requirements, cost text, effect tooltip, and AI weight.
+The accepted 2026-08-05 surface uses ordinary decisions rather than a custom scripted GUI. `infantry_spawn_review_formation_ledger` rebuilds the shared lot, generation, claimant, family, and request-cost caches without changing the country. Existing lot, request, integration, demobilization, claimant, and family decisions remain the substantive controls; every one carries its own requirements, cost text, effect tooltip, and AI weight.
 
-Evolution IV countries with more than one eligible registry family expose
-`infantry_spawn_cycle_anomalous_family_decision`. Countries with more than one
-live claimant file expose `infantry_spawn_cycle_claimant_file`. These are cursor
-decisions only. They call the same revalidated selection helpers used by the
-country AI, while AI selects the highest-pressure family and immutable pending
-demand owner directly.
+Evolution IV countries with more than one eligible registry family expose `infantry_spawn_cycle_anomalous_family_decision`. Countries with more than one live claimant file expose `infantry_spawn_cycle_claimant_file`. These are cursor decisions only. They call the same revalidated selection helpers used by the country AI, while AI selects the highest-pressure family and immutable pending demand owner directly.
 
-The category lifecycle, scenario isolation, civil-war safety, lot accounting,
-and cleanup contracts are unchanged. The historical `muster_gui` variable names
-are retained only for save compatibility and shared selection-cache code.
+The category lifecycle, scenario isolation, civil-war safety, lot accounting, and cleanup contracts are unchanged. The historical `muster_gui` variable names are retained only for save compatibility and shared selection-cache code.
 
 ## Archived scripted-GUI design (superseded)
 
-The following design notes document the former GUI proposal for provenance. They
-are not runtime requirements after the accepted decision-only conversion.
+The following design notes document the former GUI proposal for provenance. They are not runtime requirements after the accepted decision-only conversion.
 
 ## Entry point
 

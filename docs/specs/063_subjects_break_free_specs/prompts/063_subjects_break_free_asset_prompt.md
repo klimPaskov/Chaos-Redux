@@ -1,5 +1,9 @@
 # Asset prompt: Event 063 Subjects Break Free
 
+The [asset skill](../../../../.agents/skills/chaos-redux-event-assets/SKILL.md) owns reference families, native ImageGen source evidence, consumer-dependent alpha, processing, and DDS validation.
+For alpha-backed families request real transparency in the first ImageGen call and preserve it through processing; opaque scene sources follow the final consumer’s report or panel treatment.
+For achievements use the skill’s [single-subject, deterministic-state pipeline](../../../../.agents/skills/chaos-redux-event-assets/SKILL.md#achievement-icons), including the completed, grey, and not-eligible source layers and exact supplied templates.
+
 Use `chaos-redux-event-assets` for the complete Event 063 visual package. Use `chaosx_generated_event_art` for fictional period documentary scenes and `chaosx_icon_artist` for icons. Follow `AGENTS.md`, the event specs in this folder, and the permanent asset coverage rules.
 
 ## Read first
@@ -10,7 +14,7 @@ Use `chaos-redux-event-assets` for the complete Event 063 visual package. Use `c
 - `chaos-redux-event-assets`
 - the `chaosx_generated_event_art` and `chaosx_icon_artist` role definitions
 
-Inspect the matching canonical reference catalogs, contact sheets, and live consumers before production. If a required contact sheet is missing, create it, label filenames and native dimensions, and update the reference README and catalog before making the new asset family.
+Inspect the matching canonical reference catalogs, contact sheets, and live consumers before production. If a required reference family or contact sheet is missing, record the gap and ask the parent to route shared-library maintenance through `chaosx_skill_maintainer` before production.
 
 For decision-category pictures, inspect:
 

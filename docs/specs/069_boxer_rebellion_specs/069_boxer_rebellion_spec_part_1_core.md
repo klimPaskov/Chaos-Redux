@@ -17,7 +17,7 @@ Those outcomes emerge from the campaign's actual governments, territory, militar
 | Existing runtime entry | `chaosx.nr69.1`, retained unless a separately reviewed migration proves necessary |
 | Event name | Boxer Rebellion |
 | Type | Minor Fire-Once |
-| Current catalog status | To Be Reworked |
+| Reviewed catalog snapshot status | To Be Reworked |
 | Chaos level | 1 |
 | Primary cluster | Domestic Unrest |
 | Primary member severity | Severe |

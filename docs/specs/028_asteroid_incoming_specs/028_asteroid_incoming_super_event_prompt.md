@@ -1,6 +1,6 @@
 # Super-event research prompt for Event 028: Asteroid Incoming
 
-Use `chaos-redux-super-events`, `chaos-redux-event-assets`, the Event 028 specification pack, and the project web-research rules. Spawn the text and audio research workers with `fork_context=false` when the project subagent route is available. Do not edit event, localisation, GFX, GUI, sound-definition, or spreadsheet files during the research pass.
+Use `chaos-redux-super-events`, `chaos-redux-event-assets`, the Event 028 specification pack, and the project web-research rules. Spawn the text and audio research workers with `fork_turns="none"` when the project subagent route is available. Do not edit event, localisation, GFX, GUI, sound-definition, or spreadsheet files during the research pass.
 
 ## Super-event role
 

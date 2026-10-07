@@ -4,7 +4,7 @@
 
 ## Status
 
-The custom subagent runtime was unavailable during this planning run. None of the subagents below were executed. The package provides explicit prompts so the implementation parent can spawn them with `fork_context=false` and reproducible inputs.
+The custom subagent runtime was unavailable during this planning run. None of the subagents below were executed. The package provides explicit prompts so the implementation parent can spawn them with `fork_turns="none"` and reproducible inputs.
 
 Repository root for implementation prompts:
 
@@ -22,7 +22,7 @@ Working plan and handoff folder:
 
 ### 1. Repository exploration
 
-Spawn `chaosx_repo_explorer` before editing.
+Use `chaosx_repo_explorer` only when exact files, precedents, or implementation order remain unclear, following [the routing owner skill](../../../../.agents/skills/chaos-redux-subagents/SKILL.md).
 
 Purpose:
 
@@ -71,9 +71,10 @@ Do not run the improvement planner yet. It needs a meaningful implemented tranch
 
 Run in bounded parallel work after filenames and sprite names are stable.
 
-- `chaosx_generated_event_art` for fictional report, news, super-event, UI, flags, emblems, and institutional portraits
+- `chaosx_generated_event_art` for fictional report, news, super-event, UI, flags, emblems
 - `chaosx_icon_artist` for focus, idea, decision, category, achievement, and animated icon assets
-- `chaosx_asset_source_researcher` only for a real edition, real portrait, real historical photograph, or attested symbol chosen by implementation
+- `chaosx_asset_source_researcher` only for a real edition, real historical photograph, or attested symbol chosen by implementation
+- `chaosx_portrait_creator` for all institutional leader and advisor portraits, and any Thomas More source-portrait brief
 - `chaosx_super_event_text_researcher` for final title, description direction support, quote, and cultural remark
 - `chaosx_super_event_audio_researcher` for final licensed music and conversion
 

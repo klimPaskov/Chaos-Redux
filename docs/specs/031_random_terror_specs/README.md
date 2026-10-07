@@ -8,6 +8,14 @@ It expands the supplied event brief into a complete event system with a compact 
 
 The package plans design and implementation requirements. It does not contain Clausewitz code or final player-facing localisation.
 
+## Reading authority
+
+The numbered parts are the canonical design documents, with the matrices supplying detailed requirements.
+Acceptance claims in this imported package require the attributable user decision or parent acceptance demanded by [AGENTS.md](../../../AGENTS.md).
+The cleanup has no independent acceptance record for the blanket package approval claim, so that basis remains `unresolved`; preserve the design while resolving it.
+Research, source audits, and the manual improvement review retain their planning-time evidence role.
+Workflow and role boundaries follow [the current subagent skill](../../../.agents/skills/chaos-redux-subagents/SKILL.md).
+
 ## Core design decision
 
 Event 31 begins as a global repeatable security crisis that can affect several countries in one firing.
@@ -46,7 +54,7 @@ No asset may depict Allah, use Quranic calligraphy as villain branding, use a re
 4. `031_random_terror_spec_part_4_evolutions_and_escalation.md` defines the five evolution tracks, active-event pacing, evolved opening behavior, and log requirements.
 5. `031_random_terror_spec_part_5_territorial_insurgency_and_country_packages.md` defines territorial seizure, country creation, force packages, technology, economy, leaders, flags, and defeat outcomes.
 6. `031_random_terror_spec_part_6_focus_tree_and_political_routes.md` defines the shared extremist-country focus architecture, idea lifecycles, route interaction, AI, and branch payoffs.
-7. `031_random_terror_spec_part_7_global_jihad_scenario.md` defines the proposed `SCN-014` manual scenario, deployment types, four intensities, setup isolation, and acceptance cases.
+7. `031_random_terror_spec_part_7_global_jihad_scenario.md` defines the Global Jihad manual scenario at its current identity `SCN-016`, deployment types, four intensities, setup isolation, and acceptance cases.
 8. `031_random_terror_spec_part_8_false_revelation_world_end.md` defines the public terminal branch, readiness, unification, campaign phases, counterplay, presentation, and defeat aftermath.
 9. `031_random_terror_spec_part_9_ai_balance_probability.md` defines government AI, extremist AI, target priorities, evolution pacing, probability scenarios, and balance constraints.
 10. `031_random_terror_spec_part_10_cross_event_system_interactions.md` defines interactions with Cannibalism, Random Civil War, world threats, Deaths, Condemnation, disasters, disease, and country registries.
@@ -66,7 +74,7 @@ No asset may depict Allah, use Quranic calligraphy as villain branding, use a re
 24. `031_random_terror_subagent_routing_prompts.md` contains bounded prompts for the project subagents.
 25. `031_random_terror_coding_prompt.md` is the full implementation prompt.
 26. `031_random_terror_goal_prompt.md` is the compact implementation goal prompt.
-27. `031_random_terror_complete_spec.md` compiles the thirteen canonical specification parts into one reading copy.
+27. `031_random_terror_complete_spec.md` is a navigation pointer to the thirteen canonical parts, superseding the duplicated compilation.
 28. `031_random_terror_manifest.json` lists final package files, statistics, and hashes.
 
 ## Stable accepted terms
@@ -83,11 +91,15 @@ The accepted manual scenario name is `Global Jihad`.
 
 The accepted public world-end branch name is `The False Revelation`.
 
-The proposed next manual scenario ID is `SCN-014`.
+Global Jihad keeps its existing runtime identity `SCN-016`, raw scenario ID `16`, under [the shared identifier registry](../shared_identifier_registry.md) and [its JSON ledger](../shared_identifier_registry.json).
+This incumbent identity correction does not approve the surrounding planned content.
 
-The proposed future cluster is Cluster `9`, working name `Internal Fracture`.
+The separate optional Internal Fracture proposal reserves raw `event_cluster_id` `22` under the shared registry.
+The parent authorized this identity correction on 2026-10-07 after runtime, catalog and specification occupancy scans found `22` unoccupied; it does not approve or register the proposal.
+Raw cluster ID `9` belongs to National Breakthroughs.
+Event 031's current catalog membership remains Domestic Unrest, raw cluster ID `16`; reserving Internal Fracture does not replace that membership.
 
-The scenario and cluster IDs require an authoritative workbook and live registry collision check before implementation.
+Preserve these centrally assigned identities and check the authoritative workbook, live registries and shared reservations before adding or changing registrations.
 
 ## Scope boundaries
 

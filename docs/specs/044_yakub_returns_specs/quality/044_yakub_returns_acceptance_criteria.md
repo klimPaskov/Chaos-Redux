@@ -237,7 +237,7 @@ This document defines the evidence needed before Event 044 can be called impleme
 
 ## Triggerable scenario
 
-- Scenario ID is `SCN-015` unless the authoritative workbook or live registry proves a collision.
+- Scenario ID uses reserved `SCN-023` / raw `23` from the shared identifier registry; identity allocation does not approve scenario content.
 - The scenario name is Yakubite Uprising.
 - Movement and World Order types are selectable.
 - Low, Medium, High, and Maximum intensities produce distinct setups.

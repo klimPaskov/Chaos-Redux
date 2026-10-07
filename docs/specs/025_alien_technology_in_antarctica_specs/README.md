@@ -1,14 +1,19 @@
 # Event 025 Alien Technology in Antarctica planning package
 
+Current workflow owners: [event integration](../../../.agents/skills/chaos-redux-events/SKILL.md), [subagent routing](../../../.agents/skills/chaos-redux-subagents/SKILL.md), and [asset production](../../../.agents/skills/chaos-redux-event-assets/SKILL.md).
+Design requirements and implementation evidence are separate.
+Use [completion status](handoffs/025_completion_status.md), [process limitations](handoffs/025_process_limitations.md), and [requirement coverage](matrices/025_requirement_coverage.md) as reported implementation evidence, subject to parent review and their open validation gates.
+
+
 This package expands Event ID `25`, Alien Technology in Antarctica, into a complete source specification for Chaos Redux.
 
 A damaged craft falls somewhere on the Antarctic continent. Its descent is detected through scattered radio reports, unusual weather observations, interrupted magnetic instruments, and a brief light seen over the ice. Major powers and every human-controlled country can enter a bounded expedition race. Participants must build a viable route south, establish an outpost, narrow the search area, protect personnel and supplies, contest rival expeditions, and complete a final recovery operation. The ordinary race can be won without any evolution.
 
 The winner receives one random advanced technology from the existing Event 016 custom operational technology system. Player-facing text treats the discovery as alien-derived knowledge and never identifies it as Kruger technology. Event 016 remains the owner of the technology runtime package. Event 025 owns expedition state, recovery proof, winner selection, fragment rewards, and the shared alien-recovery ledger used to prevent duplicate rewards with Event 036 Alien Spacecraft.
 
-## Accepted design summary
+## Source design summary
 
-| Field | Accepted design |
+| Field | Source design |
 | --- | --- |
 | Event ID | `25` |
 | Display name | Alien Technology in Antarctica |
@@ -80,10 +85,12 @@ The winner receives one random advanced technology from the existing Event 016 c
 13. Evolution III militarisation may cause Antarctic clashes and diplomatic incidents. It must not force ordinary countries into a global war.
 14. No new country, focus tree, combat unit, character portrait, or required 3D model is part of this event.
 
-## Process status
+## Original planning environment
 
 The design was written from the complete supplied project source set, the extracted subagent configuration files, the three catalog CSV snapshots, and focused external research from official Antarctic institutions.
 
-This interface did not expose the project custom Codex subagent launcher, the installed `hoi4-agent-tools` MCP routes, the live Chaos Redux repository, the offline Paradox wiki snapshot, the installed vanilla game files, or the authoritative event-catalog XLSX. The package therefore includes context-complete prompts and exact evidence requirements for those later passes. It does not claim source implementation, MCP validation, live repository inspection, workbook editing, Git commits, or in-game testing.
+The original package-authoring interface did not expose the project custom Codex subagent launcher, the installed `hoi4-agent-tools` MCP routes, the live Chaos Redux repository, the offline Paradox wiki snapshot, the installed vanilla game files, or the authoritative event-catalog XLSX. The package therefore includes context-complete prompts and exact evidence requirements for those later passes. It does not claim source implementation, MCP validation, live repository inspection, workbook editing, Git commits, or in-game testing.
 
-No event-design route was shortened into a fallback. The tooling limitations above remain explicit process blockers for implementation validation and independent subagent closure.
+The original planning report records no shortened design route.
+Its environment limits are historical evidence.
+Continuation must discover current capabilities and use the linked implementation handoffs rather than infer current service health or completion from the original interface.

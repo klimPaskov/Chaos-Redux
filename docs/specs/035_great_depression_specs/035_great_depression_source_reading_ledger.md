@@ -1,5 +1,9 @@
 # Event 35 source-reading ledger
 
+Historical evidence: source names, hashes, repository observations, and tool/runtime limitations below belong to the original planning pass.
+They do not establish current local file availability, current service health, implementation status, or design approval.
+Use the package entry point and current owner skills for active guidance.
+
 ## Reading declaration
 
 Every source listed below was read in full before the Event 35 specification was completed. Large files were divided into deterministic contiguous chunks for reading, then reconciled against the original file size and SHA-256 hash. CSV files were read as complete exports. Every TOML file inside the supplied subagent archive was extracted and read in full. Every Markdown file in the accepted Event 34 planning package was read because Event 35 consumes its collapse handoff.

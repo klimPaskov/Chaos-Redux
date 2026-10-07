@@ -109,7 +109,7 @@ Export the CSV snapshots from the workbook.
 
 ### 9. Improvement loop
 
-Run the mandatory Event 65 improvement-loop prompt with `fork_context=false`.
+Run the mandatory Event 65 improvement-loop prompt with `fork_turns="none"`.
 
 The loop should test whether the event is still shallow, disconnected, bloated, or missing a meaningful consequence.
 
@@ -156,7 +156,7 @@ The final implementation report must include:
 - workbook row and export evidence
 - subagent handoff paths
 - unresolved limitations
-- user test steps
+- runtime scenario matrix and available user-owned evidence
 
 ## Blocking defects
 
@@ -209,9 +209,9 @@ The completion auditor reports pass, fail, blocked, or needs user review.
 
 No read-only auditor should edit gameplay source.
 
-## Planned user test
+## User-owned runtime scenarios
 
-The final handoff should ask the user to verify at least:
+Preserve these cases in the validation matrix without asking the user to run them or launching the game:
 
 1. A baseline firing below raw Chaos `200`.
 2. The exact boundary at `200`.
@@ -226,7 +226,8 @@ The final handoff should ask the user to verify at least:
 11. The Event Log and Event Details entry.
 12. The Randomizations cluster entry path.
 
-The user should record screenshots and the error log for any mismatch.
+Use supplied runtime evidence when available and keep unobserved cases unresolved.
+Do not request or search for logs.
 
 ## Planning package status
 

@@ -1,6 +1,6 @@
 # Asset production prompt for Event 028: Asteroid Incoming
 
-Read `AGENTS.md`, `chaos-redux-event-assets`, the matching canonical reference folders, and all Event 028 specification parts before creating files. Use context-complete project subagents with `fork_context=false`. Character portrait work is outside this package.
+Read `AGENTS.md`, `chaos-redux-event-assets`, the matching canonical reference folders, and all Event 028 specification parts before creating files. Use context-complete project subagents with `fork_turns="none"`. Character portrait work is outside this package.
 
 ## Owner and workspace
 

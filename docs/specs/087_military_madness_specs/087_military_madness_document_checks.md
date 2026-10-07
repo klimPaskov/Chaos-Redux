@@ -2,7 +2,9 @@
 
 ## Scope
 
-These checks were executed on the generated planning package. They validate document structure and recorded source identity. They do not validate the game implementation or convert future acceptance scenarios into passed tests.
+These are historical results from the original planning delivery.
+They were executed on its generated package and extracted source fixture, and have not been rerun against the imported repository package.
+Current paths and file hashes are maintained separately in the package manifest. They validate document structure and recorded source identity. They do not validate the game implementation or convert future acceptance scenarios into passed tests.
 
 ## Results
 

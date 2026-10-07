@@ -1,6 +1,7 @@
 # Event 095 coding and integration prompt
 
-Implement Occupation revolt from every file in `docs/specs/095_occupation_revolt_specs/`, starting with the index, original user brief, the 14 sequential specification parts, the source/decision register and the reading and validation reports.
+Implement Occupation revolt from the design in `docs/specs/095_occupation_revolt_specs/`, starting with README, the original user brief, the 14 sequential specification parts, the source/decision register and the reading and validation reports.
+The archive-dependent validator and original integrity receipts are historical evidence, not current execution gates.
 The package is a complete gameplay-design draft and implementation handoff, not an implemented event or proof that the full mandatory execution workflow has passed.
 Do not treat the preparation reports or assignment prompts as completed specialist reviews.
 

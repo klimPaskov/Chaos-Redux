@@ -1,5 +1,9 @@
 # Event 016 package manifest
 
+> The implementation and asset rows below preserve their dated reconciliation checkpoint.
+> Later user amendments in [the final completion contract](specs/016_final_completion_contract.md) control accepted scope, including the 2026-09-25 model-work prohibition.
+> These rows are not fresh source, engine, or asset validation.
+
 | Field | Value |
 | --- | --- |
 | Event ID | `16` |
@@ -40,7 +44,7 @@
 7. The project-wide skills and `AGENTS.md`.
 8. Current implementation files as evidence of existing behavior, not as permission to shrink the design.
 
-## Current evidence pointers, 2026-08-26
+## Historical evidence pointers, 2026-08-26
 
 The V13 revalidation handoff `docs/plans/016_brilliant_scientist_plans/subagent_handoffs/016_alien_infantry_meshy_firearm_revalidation_2026-08-26.md` and final manifest record seven successful provider task states, restored source artifacts, and fresh actual-byte reimports without regeneration or a paid reattempt. They do not close the unsupported muzzle locator/effect binding, strict selection/acknowledgement/impact/special audio roles, positional playback, or parent/live consumer gates.
 
@@ -89,4 +93,7 @@ The named GUI worker attestation is `docs/plans/016_brilliant_scientist_plans/su
 - Severe portrait animation families: `6`.
 - Integrity ledger: `package_checksums.sha256`.
 
-The checksum ledger preserves the established reconciled Event 016 documentation source set named in its header. It uses repository-relative paths in the existing order and excludes the ledger itself. No ZIP or implementation-readiness claim is made.
+The checksum ledger preserves the established Event 016 source set and order.
+Package-owned entries are refreshed against current bytes, while external entries remain historical receipts and may be stale or missing.
+The absent `docs/assets/016_brilliant_scientist/manifest.md` remains an explicit navigation gap.
+The ledger excludes itself and is not a whole-package integrity or implementation-readiness verdict.

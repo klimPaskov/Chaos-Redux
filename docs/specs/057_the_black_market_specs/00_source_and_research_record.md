@@ -1,5 +1,10 @@
 # Source and Research Record
 
+Disposition: retained historical planning evidence.
+The source inventory, environment failures, manual reviews, and validation claims below describe the original planning pass.
+They do not establish current tool health, independent specialist execution, design approval, or validation of the edited checkout.
+Use the package README for current authority and workflow.
+
 ## Reading declaration
 
 Every top-level file listed below was read in full before the final specification was written. The three catalog CSV files were read in full. The subagent ZIP was extracted, and every TOML definition listed below was read in full.

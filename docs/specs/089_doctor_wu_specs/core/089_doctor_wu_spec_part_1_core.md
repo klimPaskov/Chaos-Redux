@@ -9,8 +9,12 @@
 | Type | Minor Fire-Once |
 | Status | To Be Reworked |
 | Chaos level | 1 |
-| Cluster | Scientific Research |
+| Cluster | Scientific Research, reserved ID `21` |
 | Cluster role | High member |
+
+Scientific Research reserves cluster ID `21`, shared by the named Event 054 and Event 089 proposal, under the [central identifier ledger](../../shared_identifier_registry.md) and its [machine-readable counterpart](../../shared_identifier_registry.json).
+The user's 7 October 2026 identifier-allocation instruction approves the reservation only, leaving cluster design, membership acceptance and runtime/catalog registration separate.
+National Breakthroughs retains ID `9`.
 
 ## The doctor and the opportunity
 

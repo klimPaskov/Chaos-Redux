@@ -25,4 +25,4 @@ The original planning environment did not expose a project custom-subagent spawn
 
 ## Parent integration note
 
-The coding agent remains responsible for spawning real project subagents with `fork_context=false` during implementation, reviewing their patches and files, wiring cross-surface behavior, running task-specific checks, and reporting blockers. These planning handoffs are not claims that gameplay files or final assets were produced.
+The coding agent remains responsible for spawning real project subagents with `fork_turns="none"` during implementation, reviewing their patches and files, wiring cross-surface behavior, running task-specific checks, and reporting blockers. These planning handoffs are not claims that gameplay files or final assets were produced.

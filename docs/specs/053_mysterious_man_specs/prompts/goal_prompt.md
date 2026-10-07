@@ -19,6 +19,6 @@ Use normal event popups and produce the five generated report-event scenes in th
 
 Wire event registration, default enabled state after rework, Event History, Event Details, actor mapping, evolution logs, docs, assets, and final localisation. Update only the authoritative event catalog workbook after final in-game wording exists, then run the exporter. Never edit catalog CSV files directly.
 
-Run every named validation and probability scenario with the MCP event and probability tools. Use relevant subagents with `fork_context=false` and complete prompts. Finish with localisation and completion audits.
+Run every named validation and probability scenario with the MCP event and probability tools. Use relevant subagents with `fork_turns="none"` (Codex) and complete prompts. Finish with localisation and completion audits.
 
-Do not use placeholders, silent fallbacks, simplified packages, hidden weighting, scattered hardcoded tuning, duplicate population losses, fabricated attacker attribution, or source-event bookkeeping. Report every blocker or omission. Mark completion only when every accepted package is implemented or explicitly blocked, all active adapters have evidence, and every required log, asset, document, and catalog surface is aligned.
+Do not use placeholders, silent fallbacks, simplified packages, hidden weighting, scattered hardcoded tuning, duplicate population losses, fabricated attacker attribution, or source-event bookkeeping. Report every blocker or omission. Completion requires every accepted package, adapter, log, asset, document, catalog surface, and required evidence. Blocked requirements keep the goal incomplete.

@@ -2,13 +2,19 @@
 
 All project subagent definitions supplied in `subagents.zip` were fully read before this routing plan was written.
 
-Every project subagent must be spawned with `fork_context=false`. The parent prompt must point to the extracted source spec folder and include every needed constraint.
+Every project subagent must be spawned with no inherited thread context (Codex `fork_turns="none"`; other runtimes follow the [subagent skill](../../../.agents/skills/chaos-redux-subagents/SKILL.md)). The parent prompt must point to the extracted source spec folder and include every needed constraint.
 
-## Mandatory implementation and audit route
+## Routing contract
+
+Follow [chaos-redux-subagents](../../../.agents/skills/chaos-redux-subagents/SKILL.md) for current roles, ownership, runtime arguments and parent review.
+This table describes the original implementation route; reconcile existing handoffs and current status before scheduling a pass.
+Asset production and workbook work run only for remaining authorized requirements.
+
+## Implementation and audit route
 
 | Subagent | Route | Timing | Main output |
 | --- | --- | --- | --- |
-| `chaosx_repo_explorer` | Required | Before implementation edits | Complete repository, wiki, vanilla, MCP, and touched-file map |
+| `chaosx_repo_explorer` | Conditional | Only when file locations, contracts or edit order remain unclear | Complete repository, wiki, vanilla, MCP, and touched-file map |
 | `chaosx_scripted_system_architect` | Required | After exploration and before broad helper implementation | Shared adapter, registry, variable, constant, and exact-transfer architecture plus bounded patches |
 | `chaosx_ai_probability_auditor` | Required | Before weighted patches and again after patches | Named baseline scenarios, probability evidence, and mandatory comparisons |
 | `chaosx_decision_mission_auditor` | Required | After decision and mission implementation | Category lifecycle, cost, mission, AI, cleanup, clutter, and exploit audit plus bounded fixes |

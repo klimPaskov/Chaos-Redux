@@ -10,7 +10,7 @@ A working opening event does not count as a completed rework. A functional Assas
 
 ### Tranche 1: Registry and ownership preflight
 
-- reserve event IDs, tag carriers, cosmetic identities, scenario ID, cluster ID, super-event slots, audio IDs, provider ID, equipment profile IDs, and achievement IDs
+- preserve Intelligence cluster `20` and Assassin Network `SCN-019` / raw `19` under the shared identifier registry; reserve only unresolved event IDs, tag carriers, cosmetic identities, super-event slots, audio IDs, provider ID, equipment profile IDs and achievement IDs
 - audit every candidate character and successor
 - audit country carrier collisions and dynamic-country ownership
 - inspect live event, focus, decision, tech, asset, counter, 3D, and super-event precedents

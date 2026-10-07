@@ -1,5 +1,8 @@
 # Decision and Mission Prompt
 
+Read [package index](../package_index.md) and the current accepted contract and continuation before assigning this template.
+Original inventories and candidate labels below require reconciliation with that scope; they do not authorize redoing delivered work.
+
 Use this prompt for a decision or mission implementation subagent.
 
 Audit and implement the decision layer for the accepted `system_camp_repression_rework` package.
@@ -7,9 +10,9 @@ Audit and implement the decision layer for the accepted `system_camp_repression_
 
 Primary design sources for this pass:
 
-- `specs/system_camp_repression_rework_spec_part_5_country_decision_kits_focus_hooks.md` for country decisions, mission timing, costs, AI weights, reform routes, and discovery routes.
-- `specs/system_camp_repression_rework_spec_part_6_scripted_gui_wireframe_value_display.md` for category header values and GUI button equivalence.
-- `specs/system_camp_repression_rework_spec_part_7_implementation_checklist_validation.md` for touched files and validation commands.
+- `../specs/system_camp_repression_rework_spec_part_5_country_decision_kits_focus_hooks.md` for country decisions, mission timing, costs, AI weights, reform routes, and discovery routes.
+- `../specs/system_camp_repression_rework_spec_part_6_scripted_gui_wireframe_value_display.md` as the superseded September GUI design; current GUI equivalence follows the accepted administration contract.
+- `../specs/system_camp_repression_rework_spec_part_7_implementation_checklist_validation.md` for touched files and validation commands.
 
 Focus on:
 
@@ -31,7 +34,7 @@ Do not expose raw triggers. Use custom trigger tooltips and scripted localisatio
 
 Do not create recurring minor flavor events from decision cooldowns or monthly processing.
 
-Add chemical and biological killing-efficiency decisions.
+Retain restricted-method evidence and consequences under the accepted contract; do not add killing-efficiency optimization decisions.
 
 
-Use Part 5 as the detailed source for U.K./Raj, U.S.A., France/Vichy/North Africa, Italy/Libya, Belgium/Congo, and generic decision families, costs, timing, AI weights, dismantlement routes, discovery routes, and asset ids. Use Part 6 for GUI-button equivalence and display-helper requirements.
+Use Part 5 as the detailed source for U.K./Raj, U.S.A., France/Vichy/North Africa, Italy/Libya, Belgium/Congo, and generic decision families, costs, timing, AI weights, dismantlement routes, discovery routes, and asset ids. Use the current accepted administration contract and owned helper documentation for GUI-button equivalence and display requirements; Part 6 preserves superseded layout evidence.

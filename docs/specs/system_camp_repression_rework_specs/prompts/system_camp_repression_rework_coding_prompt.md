@@ -1,22 +1,25 @@
 # Implementation Prompt: System Camp Repression Rework
 
+Read [package index](../package_index.md) and the current accepted contract and continuation before assigning this template.
+Original inventories and candidate labels below require reconciliation with that scope; they do not authorize redoing delivered work.
+
 Read the full package before editing:
 
-- `specs/system_camp_repression_rework_spec_part_1_core_loop.md`
-- `specs/system_camp_repression_rework_spec_part_2_country_systems_major_powers.md`
-- `specs/system_camp_repression_rework_spec_part_3_germany_japan_soviet_deepening.md`
-- `specs/system_camp_repression_rework_spec_part_4_ui_ai_assets_acceptance.md`
-- `specs/system_camp_repression_rework_spec_part_5_country_decision_kits_focus_hooks.md`
-- `specs/system_camp_repression_rework_spec_part_6_scripted_gui_wireframe_value_display.md`
-- `specs/system_camp_repression_rework_spec_part_7_implementation_checklist_validation.md`
+- `../specs/system_camp_repression_rework_spec_part_1_core_loop.md`
+- `../specs/system_camp_repression_rework_spec_part_2_country_systems_major_powers.md`
+- `../specs/system_camp_repression_rework_spec_part_3_germany_japan_soviet_deepening.md`
+- `../specs/system_camp_repression_rework_spec_part_4_ui_ai_assets_acceptance.md`
+- `../specs/system_camp_repression_rework_spec_part_5_country_decision_kits_focus_hooks.md`
+- `../specs/system_camp_repression_rework_spec_part_6_scripted_gui_wireframe_value_display.md`
+- `../specs/system_camp_repression_rework_spec_part_7_implementation_checklist_validation.md`
 - all matrices under `matrices/`
-- `research/historical_anchor_notes.md`
+- `../research/historical_anchor_notes.md`
 
 Use the existing Chaos Redux implementation as the base. Do not create a parallel camp system.
 
-## Required implementation surfaces
+## Original implementation surface map
 
-Inspect and patch as needed:
+Verify the current assigned paths and source revisions before selecting from this original map:
 
 - `common/script_constants/genocide_crisis_constants.txt`
 - `common/buildings/chaosx_buildings.txt`
@@ -34,7 +37,7 @@ Inspect and patch as needed:
 - `common/scripted_triggers/germany_mengele_triggers.txt`
 - `common/decisions/germany_mengele_decisions.txt`
 - country-specific decision, idea, AI, focus-hook, localisation, and docs files for Japan, Soviet Union, U.K., U.S.A., France, Italy, Belgium, and generic users.
-- optional scripted GUI and interface files from Part 6 if the ledger window is implemented.
+- existing repression GUI and interface files only within the current accepted national-administration scope.
 
 ## Core rules
 
@@ -46,14 +49,15 @@ Inspect and patch as needed:
 - Add AI caps and country-specific weights.
 - Update documentation and localisation in the same implementation pass.
 - Implement the Part 5 country kits with state-pool logic, costs, mission timing, AI weights, idea lifecycle, focus hooks, dismantlement, discovery, and asset ids.
-- Implement the Part 6 decision-category header values, and implement the full scripted GUI only after the values and decisions are stable.
+- Follow the current accepted administration presentation and its reference/MCP evidence; Part 6 preserves the superseded September design.
 - Use Part 7 as the touched-file and validation checklist.
 
 ## Boundaries
 
 Use state pools by occupation, core status, colonial status, periphery/borderland scripts, and political repression context.
 
-Add chemical and biological killing optimization.
+Preserve the abstract restricted-method consequence boundary in the package README and accepted contract.
+Do not introduce a killing-efficiency optimization objective or controls.
 
 ## Validation to report
 
@@ -68,4 +72,4 @@ Report only meaningful task-specific validation:
 - AI does not use invalid targets;
 - decision categories hide when no action exists;
 - no recurring minor camp leak events fire from monthly processing.
-- Repression Ledger or the header fallback displays the same values that decisions use.
+- The accepted administration interface and decisions use the same current contracts, with mandatory matching MCP evidence.

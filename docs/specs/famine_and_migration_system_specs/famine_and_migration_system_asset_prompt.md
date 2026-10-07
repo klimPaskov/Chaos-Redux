@@ -1,6 +1,7 @@
 # Asset Prompt: Famine and Migration Mechanics
 
-> **Current design clarification (2026-08-25):** The user clarification and accepted split implementation supersede any shared mechanic, category, or runtime-namespace wording retained below as historical design context. The current implementation uses independent `famine_*` and `migration_*` mechanics, separate famine and migration asset consumers, `famine_decision_category` and `migration_decision_category`, and `famine_state_map_mode` and `migration_state_map_mode`; no combined mechanic, category, runtime namespace, or mapmode is current. Use [source_of_truth_map.md](../../plans/famine_and_migration_system_plans/source_of_truth_map.md) and [completion_report.md](../../plans/famine_and_migration_system_plans/completion_report.md) for current status, including the incomplete blockers.
+> **Authority and status:** Read [README.md](README.md) for the accepted split, event-free presentation contract and current continuation record.
+> The source parts and matrices preserve design and historical planning; their presence does not establish approval or completion.
 
 Use `chaos-redux-event-assets` for all final visual work. Use `chaos-redux-frame-animation` only if later implementation evidence proves that a changing state needs motion. The accepted design uses static assets.
 
@@ -12,17 +13,18 @@ Before production:
 
 - read `AGENTS.md`
 - read `chaos-redux-event-assets`
-- inspect `assets/gfx_references/README.md` and `CATALOG.md`
+- inspect `.agents/skills/chaos-redux-event-assets/assets/gfx_references/README.md` and its `CATALOG.md`
 - inspect the matching contact sheet for every asset type
 - inspect the active vanilla or Chaos Redux sprite and GUI consumer
-- inspect the decision category picture family at `assets/gfx_references/icons/decision_categories/pictures`
+- inspect the decision category picture family at `.agents/skills/chaos-redux-event-assets/assets/gfx_references/icons/decision_categories/pictures/`
 - create or update the picture-family contact sheet and catalog only if the local library is missing required reference evidence
 
 Do not wire reference PNGs into runtime files.
 
 ## Asset inventory
 
-Use `famine_and_migration_system_asset_matrix.csv` as the complete accepted inventory.
+Use `famine_and_migration_system_asset_matrix.csv` as the original logical inventory.
+Reconcile it against current consumer and asset handoffs before production; an original row alone does not establish new production authorization.
 
 The package includes these families, with separate famine and migration category consumers:
 
@@ -71,7 +73,7 @@ The picture is presentation only.
 
 ### Report images
 
-Use generated period-documentary imagery for generic dynamic incidents unless a real historical photograph is required by the final text and has clear rights.
+Use generated period-documentary imagery for standing report-header context unless a real historical photograph is required by the final text and has clear rights.
 
 Requirements:
 
@@ -89,12 +91,15 @@ The nuclear evacuation image can use alternate-history documentary imagery with 
 
 Lock stable lowercase snake_case basenames before generation.
 
-Recommended shared paths after verifying the active consumer:
+Separate runtime paths after verifying the active consumer:
 
 ```text
-gfx/interface/decisions/famine_and_migration_system/
-gfx/interface/state_modifiers/famine_and_migration_system/
-gfx/event_pictures/famine_and_migration_system/
+gfx/interface/decisions/famine/
+gfx/interface/decisions/migration/
+gfx/interface/state_modifiers/famine/
+gfx/interface/state_modifiers/migration/
+gfx/event_pictures/famine/
+gfx/event_pictures/migration/
 ```
 
 Do not create an event-number folder.

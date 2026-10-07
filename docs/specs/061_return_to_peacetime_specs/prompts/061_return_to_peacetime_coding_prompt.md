@@ -16,7 +16,7 @@ Before editing:
 4. Read the event, decisions and missions, event assets, improvement loop, subagents, and achievement rules.
 5. Inspect relevant offline Paradox wiki pages and installed Hearts of Iron IV documentation.
 6. Inspect vanilla and Chaos Redux precedents for law definitions, adjacent law movement, state building conversion, decision state targets, timed missions, safe scripted division disband, equipment stockpile debits, event scheduling, Event Logs, cluster members, and achievements.
-7. Inspect `chaosx_dynamic_effects.md` and `chaosx_dynamic_triggers.md` before adding shared helpers.
+7. Inspect `common/scripted_effects/chaosx_dynamic_effects.md` and `common/scripted_triggers/chaosx_dynamic_triggers.md` before adding shared helpers.
 8. Inspect the authoritative event workbook. Do not edit CSV exports directly.
 
 Record the local references used.
@@ -25,7 +25,7 @@ If a required local reference or MCP route is unavailable, record the exact bloc
 
 ## Repository exploration and architecture
 
-Spawn `chaosx_repo_explorer` with `fork_context=false` when current Event 61 file locations or cross-file ownership are uncertain.
+Spawn `chaosx_repo_explorer` with `fork_turns="none"` when current Event 61 file locations or cross-file ownership are uncertain.
 
 Spawn `chaosx_scripted_system_architect` before duplicating law-rank, atomic factory conversion, stockpile debit, or safe-disband logic.
 

@@ -139,7 +139,8 @@ Do not edit the export CSV directly.
 
 ## Manual scenario catalog
 
-The scenario working ID is SCN-015. The final ID requires a workbook collision check.
+Use the centrally reserved `SCN-021` / raw `21` for Believers vs Nonbelievers under the [shared identifier registry](../shared_identifier_registry.md#triggerable-scenarios).
+The original `SCN-015` proposal is superseded by Missile Age’s incumbent ownership; identifier allocation alone does not approve or implement the gameplay design.
 
 Workbook fields need:
 

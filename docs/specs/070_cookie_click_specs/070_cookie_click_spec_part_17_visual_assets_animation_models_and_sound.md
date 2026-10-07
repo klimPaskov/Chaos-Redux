@@ -130,8 +130,8 @@ Such an addition would require its own model profile and cannot be represented a
 
 Cookie Infantry, Chocolate Guard and any firearm-equipped Monster Guard use separate body and firearm generation jobs.
 The dedicated 3D pipeline is the operative source for that separation.
-Some other supplied profiles contain older conflicting firearm shorthand.
-Resolve their task instructions before execution.
+The original source profiles contained conflicting firearm shorthand.
+Use [the current 3D pipeline](../../../.agents/skills/chaos-redux-3d-model-pipeline/SKILL.md) for route selection, attempt allowances, component completion and Blender fallbacks.
 Do not generate a weapon fused into a body's hands and then call it a separate-weapon pipeline.
 
 Each paid geometry job uses one clean approved reference image showing the intended object.
@@ -142,7 +142,7 @@ The provider model and capabilities must be verified at execution, with the dedi
 For firearms, perform the manual Blender fitting, arms, aiming, recoil and firing animation work required by the dedicated pipeline.
 Do not send the armed character through a generic provider auto-animation flow.
 For other supported profiles, follow the stated single permitted provider rig or action attempt before the specified Blender fallback.
-Conflicting retry authorization in older profiles is resolved before paid work.
+Do not add production approval gates from the historical profile conflict.
 No paid work was performed by this planning package.
 
 ## Scale, actions and export

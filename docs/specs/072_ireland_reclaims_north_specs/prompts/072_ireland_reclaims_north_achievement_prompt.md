@@ -34,7 +34,6 @@ Disqualifiers: Any failed attempt, console or debug intervention, unsupported fo
 Description direction: explain the linked accomplishments and the constraint that makes them difficult, with no undisclosed condition that contradicts the visible route.
 
 Icon direction: A compact infantry standard beside a northern objective seal.
-Create an independent 64 by 64 completed icon plus the approved locked-grey and not-eligible states.
 
 Tracking: Track launch date, tier, grant ledger, participation and army transition.
 
@@ -51,7 +50,6 @@ Disqualifiers: A recorded promise breach or central-rule coercion in the qualify
 Description direction: explain the linked accomplishments and the constraint that makes them difficult, with no undisclosed condition that contradicts the visible route.
 
 Icon direction: A public-service seal joined to a repaired civic building.
-Create an independent 64 by 64 completed icon plus the approved locked-grey and not-eligible states.
 
 Tracking: Track the post-U08 interval and discrete promise breaches, not a final stability snapshot.
 
@@ -68,7 +66,6 @@ Disqualifiers: Subject control cannot substitute for owned territory, and cores 
 Description direction: explain the linked accomplishments and the constraint that makes them difficult, with no undisclosed condition that contradicts the visible route.
 
 Icon direction: Two distinct homeland motifs supporting an imperial charter.
-Create an independent 64 by 64 completed icon plus the approved locked-grey and not-eligible states.
 
 Tracking: Track formation and Scottish integration completion plus continuous low-Strain interval.
 
@@ -85,7 +82,6 @@ Disqualifiers: A failed opening, duplicate emergency grant, unsupported overseas
 Description direction: explain the linked accomplishments and the constraint that makes them difficult, with no undisclosed condition that contradicts the visible route.
 
 Icon direction: An imperial standard above a maintained port with a compact supply motif.
-Create an independent 64 by 64 completed icon plus the approved locked-grey and not-eligible states.
 
 Tracking: Track completed paid commitments and continuous domestic conditions.
 
@@ -102,7 +98,6 @@ Disqualifiers: Forced annexation, human consent bypass, unaccepted member contri
 Description direction: explain the linked accomplishments and the constraint that makes them difficult, with no undisclosed condition that contradicts the visible route.
 
 Icon direction: Four separate emblems held within one common charter frame.
-Create an independent 64 by 64 completed icon plus the approved locked-grey and not-eligible states.
 
 Tracking: Use accepted charter provenance and actual member retention.
 
@@ -119,7 +114,6 @@ Disqualifiers: A domestic long-range substitute does not meet the foreign-base r
 Description direction: explain the linked accomplishments and the constraint that makes them difficult, with no undisclosed condition that contradicts the visible route.
 
 Icon direction: An escort, aircraft silhouette, and merchant convoy in a simple Atlantic composition.
-Create an independent 64 by 64 completed icon plus the approved locked-grey and not-eligible states.
 
 Tracking: Requires verified native family-count queries or conservative documented tracking, otherwise leave this achievement unimplemented.
 
@@ -136,7 +130,6 @@ Disqualifiers: Irish annexation, forced human acceptance, duplicate contribution
 Description direction: explain the linked accomplishments and the constraint that makes them difficult, with no undisclosed condition that contradicts the visible route.
 
 Icon direction: A Scottish civic emblem beside a small shipbuilding motif.
-Create an independent 64 by 64 completed icon plus the approved locked-grey and not-eligible states.
 
 Tracking: Track player eligibility at the event-supported Scottish entry and distinct fulfilled contract IDs.
 
@@ -153,7 +146,6 @@ Disqualifiers: Forced union, an invented dispute marker without a real obligatio
 Description direction: explain the linked accomplishments and the constraint that makes them difficult, with no undisclosed condition that contradicts the visible route.
 
 Icon direction: A Welsh institution and industrial wheel joined by an arbitration seal.
-Create an independent 64 by 64 completed icon plus the approved locked-grey and not-eligible states.
 
 Tracking: Track the accepted dispute settlement and actual contribution, not only current faction.
 
@@ -170,7 +162,6 @@ Disqualifiers: Any Event 072 tree unlock after the failed attempt, a second star
 Description direction: explain the linked accomplishments and the constraint that makes them difficult, with no undisclosed condition that contradicts the visible route.
 
 Icon direction: A repaired military standard with a second campaign ribbon.
-Create an independent 64 by 64 completed icon plus the approved locked-grey and not-eligible states.
 
 Tracking: The failure marker must remain permanent and this achievement must never invoke the success callback.
 
@@ -187,7 +178,6 @@ Disqualifiers: Voluntary scripted give-away and immediate return, debug state tr
 Description direction: explain the linked accomplishments and the constraint that makes them difficult, with no undisclosed condition that contradicts the visible route.
 
 Icon direction: A restored northern civic landmark with a visibly repaired frame.
-Create an independent 64 by 64 completed icon plus the approved locked-grey and not-eligible states.
 
 Tracking: Track hostile loss, actual war provenance, subsequent recovery, and one completed repair mission.
 

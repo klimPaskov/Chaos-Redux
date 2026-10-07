@@ -1,5 +1,8 @@
 # Design acceptance
 
+These are proposed production acceptance criteria.
+The supplied premise is summarized in `../source/048_user_brief_summary.md`; the original acceptance record is not retained, and this checklist is not evidence that every expanded criterion was approved.
+
 ## Accepted event contract
 
 - ID 048 remains Minor Fire-Once.

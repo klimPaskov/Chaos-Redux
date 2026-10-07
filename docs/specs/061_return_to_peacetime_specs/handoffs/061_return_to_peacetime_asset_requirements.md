@@ -163,4 +163,5 @@ Reject any package with:
 | Achievement icons | 3 |
 | Total | 41 |
 
-The final consumer audit can add assets. It should not silently remove distinct required concepts.
+The final consumer audit can identify additional requirements for parent review.
+Produce an additional asset only after its requirement and acceptance basis are recorded; preserve the existing distinct required concepts.

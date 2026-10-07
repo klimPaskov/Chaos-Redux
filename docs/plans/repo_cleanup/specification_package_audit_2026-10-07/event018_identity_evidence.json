@@ -1,0 +1,390 @@
+{
+  "scope": "Event 018 survey ID collision repair only",
+  "sourceReferences": [
+    {
+      "route": "event18_id_doc",
+      "evidence": {
+        "id": "c92128941ca8b1a467b486ba6b9c7a8d166ebcfa4d52a0c91c9a809988b10ddc",
+        "revision": "96327b896298420d84058394a44ed08be7eb518726b8f207b392fea71f05d43d",
+        "source": "wiki",
+        "title": "Event modding",
+        "heading": "ID rules",
+        "path": "C:\\Users\\klimp\\OneDrive\\Documents\\Paradox Interactive\\Hearts of Iron IV\\mod\\chaos_redux\\paradox_wiki\\Event modding - Hearts of Iron 4 Wiki.md",
+        "startLine": 41,
+        "endLine": 48,
+        "excerpt": "### ID rules <a id=\"ID_rules\"></a> Within an event file, all events have to have an ID in the format of `<namespace>.<integer ID>`. For example, in an event `my_event.123`, the namespace will be \"my_event\", while the ID is \"123\".",
+        "authority": "Offline Paradox Wiki snapshot",
+        "sectionStartLine": 41,
+        "sectionEndLine": 48,
+        "startColumn": 1,
+        "text": "### ID rules <a id=\"ID_rules\"></a>\n\nWithin an event file, all events have to have an ID in the format of `<namespace>.<integer ID>`. For example, in an event `my_event.123`, the namespace will be \"my_event\", while the ID is \"123\".\n\n**A namespace must be first created** before defining any events that use it. This is done with the line `add_namespace = my_event` **which must be outside of any event**. If a namespace is not defined, then the event ID will be considered a malformed token, leading it to not working in-game. The event namespace consists of word characters (e.g. letters of the English alphabet or underscores). This includes dots: `add_namespace = my_event.subtopic` can be used for events of the type of `id = my_event.subtopic.1`. The numeric ID will be taken to be everything after the last dot converted to an integer, or 0 if the conversion fails.\n\nInternal IDs are defined for events by assigning an ID to each namespace (IDs are assigned in the order in the code, files being loaded by filename in the character order), with the first-defined namespace being assigned an ID of 10, incrementing it by 1 for each next created namespace, multiplying it by 100000, and adding the integer ID. If the ID after the namespace fails conversion to an integer, then it'll default to 0. For this reason, every event with a non-integer ID will be considered the same event, so **the ID of the event after the namespace must be an integer**.\n",
+        "nextLine": null,
+        "nextColumn": null
+      }
+    },
+    {
+      "route": "event18_effect_doc",
+      "evidence": {
+        "id": "1f4546bec1afc40d54e3560aed92b5add03afd3efe6fc0b5aee7a58a323baf61",
+        "revision": "2cdc93d26775990468eed167442f7a416b13059fb8fe07d139b54250b79209af",
+        "source": "game_doc",
+        "title": "effects documentation",
+        "heading": "country_event",
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Hearts of Iron IV\\documentation\\effects_documentation.md",
+        "startLine": 2943,
+        "endLine": 2967,
+        "excerpt": "## country_event * Supported Scopes: COUNTRY",
+        "authority": "Installed game documentation",
+        "sectionStartLine": 2943,
+        "sectionEndLine": 2967,
+        "startColumn": 1,
+        "text": "## country_event\n\n* Supported Scopes: COUNTRY\n* Supported Targets: none\n\n```\nFires a country event.\nExample:\ncountry_event = {\n\tid = germany.75 # The event to fire.\n\t# Optional Fields:\n\thours = 12 # The number of hours to wait before firing the event.\n\tdays = 5 # The number of days to wait before firing the event.\n\tmonths = 1 # The number of months to wait before firing the event, where a month is treated as 30 days.\n\t# Note:  hours, days, and months can all be used and will simply be added together.\n\trandom_hours = 18 # A random amount of hours to be added to the delay before firing, from 0 up to but not including random_hours.\n\trandom_days = 2 # A random amount of days to be added to the delay before firing, from 0 up to but one hour less than random_days.\n\t# Note:  random_hours and random_days can both be used and will simply be added together.\n\trandom = 6 # Equivalent to random_hours; preserverd for backwards compatibility.\n\trandom = { chance = 50 ... } # Specify a set of child effects to execute as part of this effect, with a percentage chance of randomly happening or not (as a group, not individually).\n\ttooltip = germany.75.t # Manually specify which tooltip to use for this effect.\n}\n\n```\n",
+        "nextLine": null,
+        "nextColumn": null
+      }
+    },
+    {
+      "route": "event18_vanilla",
+      "evidence": {
+        "sourceScope": "workspace_index",
+        "revision": "6d6ce1ab3b89f5eda36162bf205ed0a916427b3004afbe7233c91f4884335d11",
+        "complete": true,
+        "skippedSourceCount": 0,
+        "definitionCount": 1,
+        "definitionsTruncated": false,
+        "definitions": [
+          {
+            "kind": "event",
+            "id": "political.1",
+            "path": "game:events/PoliticalEvents.txt",
+            "rootKind": "game",
+            "loadOrder": 0,
+            "overridden": false,
+            "sourceShadowed": false,
+            "startLine": 8,
+            "endLine": 156,
+            "fromLine": 8,
+            "toLine": 31,
+            "nextLine": 32,
+            "nextColumn": 1,
+            "text": "country_event = {\n\tid = political.1\n\ttitle = political.1.t\n\tdesc = political.1.d\n\tpicture = GFX_report_event_worker_protests\n\n\ttrigger = {\n\t\tNOT = { has_government = communism }\n\t\tcommunism > 0.6\n\t\tNOT = { communism > 0.7 }\n\t\tcheck_has_focus_tree_to_switch_to_communism = yes\n\t\tNOT = {\n\t\t\tAND = {\n\t\t\t\toriginal_tag = SPR\n\t\t\t\thas_dlc = \"La Resistance\"\n\t\t\t}\n\t\t}\n\t\tNOT = {\n\t\t\tAND = {\n\t\t\t\thas_dlc = \"No Step Back\"\n\t\t\t\tOR = {\n\t\t\t\t\toriginal_tag = POL\n\t\t\t\t\toriginal_tag = EST\n\t\t\t\t\toriginal_tag = LAT"
+          }
+        ],
+        "references": [],
+        "referencesIncluded": false,
+        "referenceCount": 0,
+        "referencesTruncated": false,
+        "referencesComplete": false,
+        "unresolvedReferenceCount": 0
+      }
+    }
+  ],
+  "localisationReference": {
+    "path": "paradox_wiki/Event modding - Hearts of Iron 4 Wiki.md",
+    "lines": "49-75",
+    "revision": "96327b896298420d84058394a44ed08be7eb518726b8f207b392fea71f05d43d"
+  },
+  "mcp": {
+    "event18_before": {
+      "status": "ok",
+      "code": "EVENT_INSPECTED_PARTIAL",
+      "data": {
+        "analysisMode": "focused",
+        "boundary": {
+          "direction": "both",
+          "expandHelpers": false,
+          "maxDepth": 1,
+          "maxEdges": 8,
+          "maxNodes": 6,
+          "refresh": false
+        },
+        "counts": {
+          "artifacts": 1,
+          "blockingDiagnostics": 1,
+          "derivedEdges": 0,
+          "diagnostics": 2285,
+          "edges": 41116,
+          "entries": 1202,
+          "events": 10376,
+          "helpers": 0,
+          "issues": 2284,
+          "options": 15995,
+          "skippedSources": 0,
+          "stateAccesses": 33023,
+          "terminals": 7950,
+          "unresolvedNodes": 10447
+        },
+        "graphHash": "00e4d808f71a4ba38c1b7c88a3482a47248c8290431fa7f4e87e945c8970d491",
+        "mode": "trace",
+        "revision": "4495e77851dc0c9ee60d7951092c239a04924d4bac48bc4bf83047d20eb0d1da"
+      },
+      "validation": {
+        "checks": [
+          {
+            "id": "event-analysis",
+            "message": "1 blocking event-chain diagnostics; full evidence is linked",
+            "passed": false
+          }
+        ],
+        "passed": false
+      },
+      "artifacts": [
+        {
+          "description": "Authoritative Event Chain Viewer trace report",
+          "mimeType": "application/json",
+          "name": "event-trace-4495e77851dc.json",
+          "sha256": "3a3aab3c1ca2e76ae64643dc9ec508db0efbee8a9c889bbe3305b108312aa8a5",
+          "size": 1084293,
+          "uri": "hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/3a3aab3c1ca2e76ae64643dc9ec508db0efbee8a9c889bbe3305b108312aa8a5/349adbb079f0f0c1c0f8bf253c28a0433909049129edda3613cc909a179238fe/event-trace-4495e77851dc.json"
+        }
+      ],
+      "blockers": []
+    },
+    "event18_after": {
+      "status": "ok",
+      "code": "EVENT_INSPECTED_PARTIAL",
+      "data": {
+        "analysisMode": "focused",
+        "boundary": {
+          "direction": "both",
+          "expandHelpers": false,
+          "maxDepth": 1,
+          "maxEdges": 8,
+          "maxNodes": 6,
+          "refresh": true
+        },
+        "counts": {
+          "artifacts": 1,
+          "blockingDiagnostics": 0,
+          "derivedEdges": 0,
+          "diagnostics": 2284,
+          "edges": 41116,
+          "entries": 1202,
+          "events": 10376,
+          "helpers": 0,
+          "issues": 2284,
+          "options": 15995,
+          "skippedSources": 0,
+          "stateAccesses": 33023,
+          "terminals": 7950,
+          "unresolvedNodes": 10447
+        },
+        "graphHash": "0997806f144fa4388a25221761a9c6f5339e7ced88e8d7677bd0ef0ab5d49ee7",
+        "mode": "trace",
+        "revision": "3c38803347d1f19442342fda0bfb3f88c4990c503d8ad25cb418cd0226caf472"
+      },
+      "validation": {
+        "checks": [
+          {
+            "id": "event-analysis",
+            "message": "Whole-workspace helper projections and lifecycle passes were deferred; the requested event analysis retains direct source evidence",
+            "passed": true
+          }
+        ],
+        "passed": true
+      },
+      "artifacts": [
+        {
+          "description": "Authoritative Event Chain Viewer trace report",
+          "mimeType": "application/json",
+          "name": "event-trace-3c38803347d1.json",
+          "sha256": "86a72501b7c8a09568fbdbd9811e403a783d8702b2e8ef0e3d29a5ea7177230c",
+          "size": 1080743,
+          "uri": "hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/86a72501b7c8a09568fbdbd9811e403a783d8702b2e8ef0e3d29a5ea7177230c/77077873d945031c862ad0df9a8c07f8f07a7106c43f9c8afc3bd23f2d6e1834/event-trace-3c38803347d1.json"
+        }
+      ],
+      "blockers": []
+    },
+    "event18_before_render": {
+      "status": "ok",
+      "code": "EVENT_RENDERED_PARTIAL",
+      "data": {
+        "analysisMode": "focused",
+        "boundary": {
+          "direction": "both",
+          "expandHelpers": false,
+          "includeHtml": false,
+          "maxDepth": 1,
+          "maxNodes": 6,
+          "refresh": false
+        },
+        "counts": {
+          "artifacts": 4,
+          "blockingDiagnostics": 1,
+          "branchRenders": 0,
+          "derivedEdges": 0,
+          "diagnostics": 2285,
+          "edges": 41116,
+          "entries": 1202,
+          "events": 10376,
+          "helpers": 0,
+          "issues": 2284,
+          "omittedNodes": 45964,
+          "options": 15995,
+          "selectedNodes": 6,
+          "skippedSources": 0,
+          "stateAccesses": 33023,
+          "terminals": 7950,
+          "unresolvedNodes": 10447
+        },
+        "graphHash": "00e4d808f71a4ba38c1b7c88a3482a47248c8290431fa7f4e87e945c8970d491",
+        "hashes": {
+          "json": "8da96a45caba3291431e381243d839080ad362cecb4a87039a2f90dffa0766b3",
+          "png": "c438d85e4341b41f09c052a4d98a824f8fb2b3abded5e8ddf357bba8c356b71c",
+          "svg": "92d3ae8f011f31da4f2e9b60d39ad3d59200e946100fb884aef1e8a7106f1dc6"
+        },
+        "layoutHash": "0bec247ae88e3f10c009f84fe2c4692613e007696dbccf7bca364a734ac16598",
+        "revision": "4495e77851dc0c9ee60d7951092c239a04924d4bac48bc4bf83047d20eb0d1da",
+        "view": "overview"
+      },
+      "validation": {
+        "checks": [
+          {
+            "id": "event-analysis",
+            "message": "1 blocking event-chain diagnostics; full evidence is linked",
+            "passed": false
+          }
+        ],
+        "passed": false
+      },
+      "artifacts": [
+        {
+          "description": "Event-chain overview render and bounded branch manifest",
+          "mimeType": "application/json",
+          "name": "event-overview-4495e77851dc-manifest.json",
+          "sha256": "b06f4e5f1ac28138fdd0ebf3fd580feaf5a5446e882b991304ef0610f3029a8a",
+          "size": 47439,
+          "uri": "hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/b06f4e5f1ac28138fdd0ebf3fd580feaf5a5446e882b991304ef0610f3029a8a/3baaf00d716d0e806b84c4726ef5e6b75203d37b63d4e3d38e7f54596b7eb1b7/event-overview-4495e77851dc-manifest.json"
+        },
+        {
+          "description": "Authoritative overview event-chain render data",
+          "mimeType": "application/json",
+          "name": "event-overview-4495e77851dc.json",
+          "sha256": "8da96a45caba3291431e381243d839080ad362cecb4a87039a2f90dffa0766b3",
+          "size": 54190,
+          "uri": "hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/8da96a45caba3291431e381243d839080ad362cecb4a87039a2f90dffa0766b3/0c63b8eb2ce5b164836c61da1f0adbcc109e956c239bc892d692c3badac66452/event-overview-4495e77851dc.json"
+        },
+        {
+          "description": "Source-linked overview event-chain diagram",
+          "mimeType": "image/svg+xml",
+          "name": "event-overview-4495e77851dc.svg",
+          "sha256": "92d3ae8f011f31da4f2e9b60d39ad3d59200e946100fb884aef1e8a7106f1dc6",
+          "size": 42235,
+          "uri": "hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/92d3ae8f011f31da4f2e9b60d39ad3d59200e946100fb884aef1e8a7106f1dc6/e28d9ae2408005a00d148ac2fcc37b42f5143bb5cf8846bd18e3f9607cc42eaf/event-overview-4495e77851dc.svg"
+        },
+        {
+          "description": "overview event-chain image",
+          "mimeType": "image/png",
+          "name": "event-overview-4495e77851dc.png",
+          "sha256": "c438d85e4341b41f09c052a4d98a824f8fb2b3abded5e8ddf357bba8c356b71c",
+          "size": 22870,
+          "uri": "hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/c438d85e4341b41f09c052a4d98a824f8fb2b3abded5e8ddf357bba8c356b71c/17b17157b448fa92bbb3811687f8bfc8c7a045243735bf51a676a6f0af3d38da/event-overview-4495e77851dc.png"
+        }
+      ],
+      "blockers": []
+    },
+    "event18_after_render": {
+      "status": "ok",
+      "code": "EVENT_RENDERED_PARTIAL",
+      "data": {
+        "analysisMode": "focused",
+        "boundary": {
+          "direction": "both",
+          "expandHelpers": false,
+          "includeHtml": false,
+          "maxDepth": 1,
+          "maxNodes": 6,
+          "refresh": false
+        },
+        "counts": {
+          "artifacts": 4,
+          "blockingDiagnostics": 0,
+          "branchRenders": 0,
+          "derivedEdges": 0,
+          "diagnostics": 2284,
+          "edges": 41116,
+          "entries": 1202,
+          "events": 10376,
+          "helpers": 0,
+          "issues": 2284,
+          "omittedNodes": 45967,
+          "options": 15995,
+          "selectedNodes": 3,
+          "skippedSources": 0,
+          "stateAccesses": 33023,
+          "terminals": 7950,
+          "unresolvedNodes": 10447
+        },
+        "graphHash": "0997806f144fa4388a25221761a9c6f5339e7ced88e8d7677bd0ef0ab5d49ee7",
+        "hashes": {
+          "json": "96c62917734f4788078f7d04fa7c1ecbb024869c0e622cdd8eeebc1e484247c7",
+          "png": "8f71dd9a7330fe89b2a8b835ef092fdd32657f9a7ffeb164f9310535a5b8e744",
+          "svg": "2b46a1058fa27986a621ad7e323be6771367a636c1c22876267059e1dc39cc30"
+        },
+        "layoutHash": "b86be6defe26449aedf08e713b884a1f88575b071c2742e7ff22f0d7d3fa8aa7",
+        "revision": "3c38803347d1f19442342fda0bfb3f88c4990c503d8ad25cb418cd0226caf472",
+        "view": "overview"
+      },
+      "validation": {
+        "checks": [
+          {
+            "id": "event-analysis",
+            "message": "Whole-workspace helper projections and lifecycle passes were deferred; the requested event analysis retains direct source evidence",
+            "passed": true
+          }
+        ],
+        "passed": true
+      },
+      "artifacts": [
+        {
+          "description": "Event-chain overview render and bounded branch manifest",
+          "mimeType": "application/json",
+          "name": "event-overview-3c38803347d1-manifest.json",
+          "sha256": "358b54080b40c5f38caf302af6a7b1908e3094c5c30bae0fd28cfccbfdeb4726",
+          "size": 46818,
+          "uri": "hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/358b54080b40c5f38caf302af6a7b1908e3094c5c30bae0fd28cfccbfdeb4726/d187f17a8fd0a048a51e3f1a9279cea31885ca931ba3de17b144ab5bdf749932/event-overview-3c38803347d1-manifest.json"
+        },
+        {
+          "description": "Authoritative overview event-chain render data",
+          "mimeType": "application/json",
+          "name": "event-overview-3c38803347d1.json",
+          "sha256": "96c62917734f4788078f7d04fa7c1ecbb024869c0e622cdd8eeebc1e484247c7",
+          "size": 48560,
+          "uri": "hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/96c62917734f4788078f7d04fa7c1ecbb024869c0e622cdd8eeebc1e484247c7/15009b3b3a36faaf70f586a75cbbce0732cd9682f64d9b71eacd30175b859f74/event-overview-3c38803347d1.json"
+        },
+        {
+          "description": "Source-linked overview event-chain diagram",
+          "mimeType": "image/svg+xml",
+          "name": "event-overview-3c38803347d1.svg",
+          "sha256": "2b46a1058fa27986a621ad7e323be6771367a636c1c22876267059e1dc39cc30",
+          "size": 31177,
+          "uri": "hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/2b46a1058fa27986a621ad7e323be6771367a636c1c22876267059e1dc39cc30/cda7b0cb2b8c88a05110069e0a6f0a6cf45669e7dc7c72eef3f10b2f56864557/event-overview-3c38803347d1.svg"
+        },
+        {
+          "description": "overview event-chain image",
+          "mimeType": "image/png",
+          "name": "event-overview-3c38803347d1.png",
+          "sha256": "8f71dd9a7330fe89b2a8b835ef092fdd32657f9a7ffeb164f9310535a5b8e744",
+          "size": 17398,
+          "uri": "hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/8f71dd9a7330fe89b2a8b835ef092fdd32657f9a7ffeb164f9310535a5b8e744/2c03ab09e9c0bbfc3653e1bded9efa4e1395c1d591d078baed35abde30b27226/event-overview-3c38803347d1.png"
+        }
+      ],
+      "blockers": []
+    },
+    "event18_reverse_compare_final": {
+      "content": [
+        {
+          "type": "text",
+          "text": "tool call error: tool call failed for `hoi4_agent_tools/hoi4.event_compare`\n\nCaused by:\n    timed out awaiting tools/call after 600s"
+        }
+      ],
+      "isError": true
+    }
+  },
+  "limitations": [
+    "Focused event analysis excludes helper projections and lifecycle passes.",
+    "Cached-revision compare was unavailable; the valid current-versus-original-source overlay compare timed out after 600 seconds.",
+    "The linked after-trace header was read and declares complete=false. No complete graph or in-game validation is claimed.",
+    "A later attempt to read the complete baseline trace failed with Artifact provenance manifest is unavailable. The baseline source snapshot and inspector summary are preserved; the unavailable full report is not claimed as reviewed."
+  ]
+}

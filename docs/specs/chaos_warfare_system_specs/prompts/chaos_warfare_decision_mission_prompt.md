@@ -4,7 +4,7 @@ Before reusing this prompt, apply the user's accepted 2026-09-20 CBRN amendment 
 
 ## Task
 
-Implement the decision, mission, and optional scripted-GUI layer for the accepted CBRN rework. Read `chaos-redux-decisions-missions`, the full spec pack, current chemical and biological decisions, current scripted GUI patterns, and verified vanilla 1.19 examples. Use dynamic costs, named targets, AI behavior, cleanup, and custom tooltips. Do not create a political-power store.
+Implement remaining accepted decisions and missions under [chaos-redux-decisions-missions](../../../../.agents/skills/chaos-redux-decisions-missions/SKILL.md). Reconcile older action lists below with the accepted amendment and current owner ledger before replaying them. Preserve recorded native-category presentation. An optional window sketch does not authorize a new shared system GUI. Shared interfaces remain parent-owned and require the scripted-GUI skill and matching MCP evidence when changed. Use dynamic costs, named targets, AI behavior, cleanup and custom tooltips.
 
 ## Categories
 
@@ -171,4 +171,4 @@ Clear selected state, selected order, operation payload reservation, temporary e
 
 ## Audit
 
-After implementation, run the decision and mission auditor. Resolve cost clarity, duplicate missions, passive checklist objectives, AI validity, cleanup, exploit, and route integration findings before completion.
+After implementation, run the decision and mission auditor. Route weights, weighted targets and MTTH to `chaosx_ai_probability_auditor` for the baseline and matching comparison required by [the subagent skill](../../../../.agents/skills/chaos-redux-subagents/SKILL.md). Resolve cost clarity, duplicate missions, passive checklist objectives, AI validity, cleanup, exploit and route integration findings before completion.

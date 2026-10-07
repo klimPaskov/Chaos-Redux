@@ -2,7 +2,7 @@
 
 ## Use rules
 
-Every subagent invocation uses `fork_context=false` and a complete explicit prompt.
+Every subagent invocation uses `fork_turns="none"` and a complete explicit prompt.
 
 The parent agent owns integration, review, validation, and the final completion claim.
 
@@ -18,7 +18,7 @@ Read repository `AGENTS.md`, every Event 61 source specification, and the curren
 
 ## chaosx_scripted_system_architect
 
-Read repository `AGENTS.md`, Event 61 Parts 1 through 5 and Part 7, `chaosx_dynamic_effects.md`, `chaosx_dynamic_triggers.md`, current shared helper files, and local vanilla documentation. Design or audit the smallest reusable helper contracts for validated adjacent economy and conscription law movement, atomic military-to-civilian conversion with a caller-owned state ledger, reverse restoration, exact positive stockpile debit for unsupported ordinary families, and safe scripted conventional division disband. Keep Event 61 orchestration and Readiness private. Identify which helpers are truly cross-event, exact input and output variables, failure codes, idempotence rules, call-site audits, documentation changes, and engine blockers. Do not patch event orchestration unless the parent explicitly requests it.
+Read repository `AGENTS.md`, Event 61 Parts 1 through 5 and Part 7, `common/scripted_effects/chaosx_dynamic_effects.md`, `common/scripted_triggers/chaosx_dynamic_triggers.md`, current shared helper files, and local vanilla documentation. Design or audit the smallest reusable helper contracts for validated adjacent economy and conscription law movement, atomic military-to-civilian conversion with a caller-owned state ledger, reverse restoration, exact positive stockpile debit for unsupported ordinary families, and safe scripted conventional division disband. Keep Event 61 orchestration and Readiness private. Identify which helpers are truly cross-event, exact input and output variables, failure codes, idempotence rules, call-site audits, documentation changes, and engine blockers. Do not patch event orchestration unless the parent explicitly requests it.
 
 ## chaosx_decision_mission_auditor
 
@@ -58,7 +58,9 @@ Read repository `AGENTS.md`, every Event 61 source spec, all implementation file
 
 ## chaosx_event_ui_worker
 
-Use only when actual Event 61 decision or Event Logs surfaces have a confirmed layout defect. Read repository `AGENTS.md`, the Event 61 presentation rules, exact GUI files, and local vanilla references. Audit category picture crop, decision rows, dynamic text, Event Details, cluster detail, scroll bounds, click regions, and supported resolutions. Make bounded fixes only. Do not create a bespoke Event 61 mechanic window.
+The current design uses ordinary decisions and shared Event Logs, Event Details, and cluster views.
+Those surfaces remain parent-owned and are outside `chaosx_event_ui_worker` scope.
+Route that worker only after an accepted amendment introduces a dedicated Event 61 window and the parent supplies the exact ownership, files, entry point, states, resolutions, reference brief, and MCP evidence contract required by the [routing skill](../../../../.agents/skills/chaos-redux-subagents/SKILL.md#event-ui-worker-gate).
 
 ## chaosx_country_package_auditor
 

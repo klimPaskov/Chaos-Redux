@@ -6,6 +6,9 @@ Implement Event 34 Industrial Boom as the complete Minor Repeatable economic sys
 
 ## Source of truth
 
+Use the index's acceptance rules and resolve its picture/meter conflict before producing presentation assets.
+The legacy migration section below records the planning snapshot; confirm current source and required MCP evidence before assuming those stubs remain.
+
 Read the full package before editing:
 
 - `034_industrial_boom_spec_index.md`

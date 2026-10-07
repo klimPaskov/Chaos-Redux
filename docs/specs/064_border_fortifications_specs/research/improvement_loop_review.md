@@ -1,5 +1,7 @@
 # Event 064 Parent-Led Improvement Review
 
+Historical parent-led design review; it does not satisfy the independent improvement-loop pass required during authorized implementation.
+
 ## Review status
 
 The mandatory independent `chaosx_improvement_loop_planner` could not be spawned because the available tool registry exposed no subagent execution function. The full planner definition was read and used as a review contract. This parent-led pass is recorded for design quality, but it is not a substitute for the required independent implementation-stage run.

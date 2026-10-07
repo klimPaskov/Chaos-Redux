@@ -1,5 +1,8 @@
 # Coding prompt for Event 41: Disease in Divisions
 
+Read the [package entry point](../README.md) for design authority and unresolved acceptance before executing this implementation prompt.
+Use existing user authorization and recorded parent acceptance; imported status labels alone do not approve expansion.
+
 Implement Event 41 to the full specification under:
 
 `docs/specs/041_disease_in_divisions_specs/`
@@ -98,7 +101,7 @@ Use the full AI strategy and named scenario matrix. Spawn `chaosx_ai_probability
 
 ## Required subagents
 
-Use context-complete prompts with `fork_context=false` for:
+Use context-complete prompts with Codex `fork_turns="none"` for:
 
 - `chaosx_scripted_system_architect`
 - `chaosx_decision_mission_auditor`

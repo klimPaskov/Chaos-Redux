@@ -8,7 +8,9 @@ They are not separate picker events or cluster members.
 
 Use a stable instance identifier, an explicit owner country and a separate resulting Empire identity.
 Do not infer the owner from whichever country happened to open a GUI or receive a news report.
-The final tag, scenario registry ID, super-event IDs and exact file-level runtime names require an inventory before assignment.
+Cookie Monster Uprising uses reserved `SCN-030`, raw integer `30`, from [the shared identifier registry](../shared_identifier_registry.md).
+The final tag, super-event IDs and exact file-level runtime names still require an inventory before assignment.
+The scenario reservation does not approve broader design or register gameplay content.
 A planning token is never passed to the engine as a real tag.
 
 ROOT and inherited event scopes retain their actual engine meaning.

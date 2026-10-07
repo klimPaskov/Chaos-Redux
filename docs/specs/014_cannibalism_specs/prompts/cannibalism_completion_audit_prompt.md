@@ -1,6 +1,6 @@
 # Event 014 Completion Audit Prompt
 
-Spawn `chaosx_event_completion_auditor` with `fork_context=false` after implementation, focused audits, asset production, documentation, and spreadsheet alignment are complete.
+Spawn `chaosx_event_completion_auditor` with `fork_turns="none"` after implementation, focused audits, asset production, documentation, and spreadsheet alignment are complete.
 
 Read:
 

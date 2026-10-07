@@ -1,10 +1,14 @@
 # Package Manifest
 
+Current working-file integrity refreshed on 2026-10-07.
+The rows index repository bytes, while supplied-source inventories and original validation reports retain their historical evidence scope.
+
+
 This manifest records every package file except this manifest itself. Hashes use SHA-256.
 
 | Path | Bytes | Lines | SHA-256 |
 | --- | ---: | ---: | --- |
-| `00_catalog_and_core_contract.md` | 6370 | 126 | `674de417528204b108ba2d7cd5ff96ad6071dccf5bc2bad89d292167e6c6c3b6` |
+| `00_catalog_and_core_contract.md` | 6551 | 128 | `871e3453e4eea45af3a63c3ff1e46c94e986427ebea87f44380159c958279fa3` |
 | `01_player_experience_and_design_pillars.md` | 7979 | 147 | `661cb3e7bf6b561597993df90ea10d21f621346b86c8dc730946bd524db784b4` |
 | `02_lifecycle_and_episode_state_machine.md` | 10865 | 242 | `1156d38c0188e4258283929382ea7df231540b96a4df5b76c069be746a46c410` |
 | `03_global_heat_wave_intensity.md` | 7934 | 196 | `aafa4887141b2758ff32d4b93064190b7848d53613a7a92a41856c9d81346d5b` |
@@ -29,17 +33,17 @@ This manifest records every package file except this manifest itself. Hashes use
 | `22_validation_and_acceptance_scenarios.md` | 12070 | 359 | `55b27b6917f3d1e3dc4b03a3bbc8b50d0f0eb303e0205d7c79f295d9261d3033` |
 | `23_catalog_and_documentation_alignment.md` | 4737 | 170 | `01faa44567ec86925c881a30b03d11bc5fcbc4e746dce2d9f04c642e341cc47f` |
 | `24_scope_closure_and_anti_bloat_ruling.md` | 3956 | 87 | `6f0540ad638a08e621bfd6fea9b992d9e93b1d9c1a96a904280531a1f11cbabe` |
-| `README.md` | 6925 | 106 | `e130f1616fe5cc2aeb58adf949fa983c185ad8ccffdde825cdb83cfb2ff35de8` |
+| `README.md` | 8159 | 121 | `4a5aaa45741151b5aea9bbe7b9d545dc79af0bdc6b07acd2afadc46835a79e57` |
 | `prompts/ai_probability_audit_prompt.md` | 1826 | 48 | `1e419887976264ae645400fff5ee03ebd620654f371a021389932f68c6077fbd` |
 | `prompts/asset_production_prompt.md` | 2326 | 52 | `2ac899a9759ae2e725907b417ea704f41a7b84ba6970aa60295c7f9c06c25aaa` |
-| `prompts/catalog_workbook_update_prompt.md` | 1135 | 31 | `c83649420775aa74402d68e5114ddde73039d4bd2cc52b449dff756282a287d6` |
+| `prompts/catalog_workbook_update_prompt.md` | 1248 | 33 | `20f786bef79765cf9541e11e9e46b37bb62325595531a84af300ef5b9eb603eb` |
 | `prompts/completion_audit_prompt.md` | 2063 | 49 | `d297d491ed253a1a44566d323891186a9b148175a5351a45279039cde557bf26` |
 | `prompts/decision_mission_audit_prompt.md` | 1901 | 52 | `e6a538492f7ceca617ce3c89ba1769dac15c3e66c201737496626a6346873497` |
-| `prompts/goal_prompt.txt` | 3965 | 15 | `5bf31bb18cf45542bba2ff30fdeeac09e2a8c676a44c492bf2d3d914b1b1a917` |
-| `prompts/implementation_master_prompt.md` | 7107 | 155 | `b64794078df458d24261a65c78e82b0bf02c83c26de5ee805709929dd1015ae8` |
+| `prompts/goal_prompt.txt` | 3996 | 15 | `dbe41381ccae6385f756f033db6917a87ca0d758ad4b4a2936cee0b7fc095d6a` |
+| `prompts/implementation_master_prompt.md` | 7269 | 157 | `10ef4403cb6081ca670314640a9feb4c925efd7b9e88dd535cf48e6530a740ec` |
 | `prompts/scripted_system_architect_prompt.md` | 2161 | 58 | `408be07be2f4dd345c067370a540da121bd3cd14223b265cf782ad45ff8fa7bd` |
 | `prompts/super_event_research_prompt.md` | 2087 | 44 | `76c0aa049775ac2f3c005077dce821c87ef843302a6e8777d7be7a91a30010f5` |
-| `quality/package_validation.md` | 1386 | 36 | `8d380ec8df97d85b90f085bfdc6317e05b2a64ac4f5bd54bc56d20f6511b3359` |
+| `quality/package_validation.md` | 1643 | 40 | `3ed23a1d4cdcb5c989d9185eeb5f8bff58fbdd62e70a410259eff8537c8961f8` |
 | `quality/research_evidence.md` | 10820 | 266 | `0d346cc2ed595769334239e7c5b561e62711a7e9cc7c6bd0dc1f6070a37cbea6` |
 | `quality/simplifications_omissions_and_blockers.md` | 3911 | 120 | `6f937c36ce625a89cac684e6537198e9699a262f686130abeef4444144beb0db` |
 | `quality/source_reading_ledger.md` | 7644 | 70 | `28237e72dd365d20ebcd52f69d232087d3f1f8522c6881f3815963ee1d069f5f` |

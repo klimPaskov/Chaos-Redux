@@ -6,7 +6,7 @@ Use the three-digit `064` prefix for every project-facing event-scoped folder, f
 
 Read every specification, matrix, diagram, research note, and specialist prompt before editing. Follow `AGENTS.md`, `chaos-redux-events`, `chaos-redux-decisions-missions`, `chaos-redux-event-assets`, `chaos-redux-improvement-loop`, the dynamic trigger and effect references, current event-log and Event Details documentation, current achievement conventions, and current cluster system ownership.
 
-Use project subagents with `fork_context=false`. Pass self-contained tasks and exact paths. Do not rely on inherited chat context.
+Use project subagents with `fork_turns="none"`. Pass self-contained tasks and exact paths. Do not rely on inherited chat context.
 
 ## Repository starting point
 
@@ -23,7 +23,7 @@ Preserve the stable identity where compatible:
 
 Replace the current thin two-level border-fort option. Do not create a second Event 064 path that leaves the old effect active.
 
-Spawn `chaosx_repo_explorer` first with the full Event 064 goal, accepted identities, spec paths, current known files, and questions about registry ownership, building and province helpers, evolution integration, history, Event Details, decisions, modifiers, achievements, assets, workbook ownership, and cluster multi-membership. Record its map under `docs/plans/064_border_fortifications_plans/subagent_handoffs/`.
+When source locations, registry ownership, helper precedents, or implementation order remain unclear, spawn `chaosx_repo_explorer` with the full Event 064 goal, accepted identities, spec paths, current known files, and questions about registry ownership, building and province helpers, evolution integration, history, Event Details, decisions, modifiers, achievements, assets, workbook ownership, and cluster multi-membership. Record its map under `docs/plans/064_border_fortifications_plans/subagent_handoffs/`.
 
 Spawn `chaosx_scripted_system_architect` for the one-token global transaction, bounded targeting, cleanup, persistence, and multi-cluster integration. Resolve its handoff before completing runtime script.
 
@@ -110,7 +110,7 @@ Starting caps:
 
 One direct frontier province can receive its baseline level and one evolved bonus. A depth position receives one level.
 
-Use threat, capital, victory point, supply, railway, terrain, river, corridor, industry, port, and geographic-spread factors. Do not fortify random interior provinces. When exact province features are unavailable, use a documented bounded state or maintained-map-role approximation.
+Use threat, capital, victory point, supply, railway, terrain, river, corridor, industry, port, and geographic-spread factors. Do not fortify random interior provinces. When exact province features are unavailable, record the blocker and propose a bounded state or maintained-map-role equivalent for an accepted design amendment before applying it.
 
 ### Fortress States
 
@@ -207,7 +207,7 @@ AI posture and project behavior must react to:
 
 Invalid choices receive zero probability. AI can skip a project.
 
-Spawn `chaosx_ai_probability_auditor` with `fork_context=false`. Use the configured probability inspection, evaluation, sweep, comparison, rendering, simulation, and sequence tools. Save full effective-weight, normalized probability, target-pool, and cluster-arbitration evidence. Do not close AI probability through source inspection alone.
+Spawn `chaosx_ai_probability_auditor` with `fork_turns="none"`. Use the configured probability inspection, evaluation, sweep, comparison, rendering, simulation, and sequence tools. Save full effective-weight, normalized probability, target-pool, and cluster-arbitration evidence. Do not close AI probability through source inspection alone.
 
 ## Chaos impact map
 
@@ -280,7 +280,7 @@ Required families:
 
 Use the existing HOI4 map building visuals for the fortified provinces and state buildings.
 
-Spawn the appropriate generated-event-art and icon specialists with `fork_context=false`. Complete sources, previews, final DDS files, provenance, manifest, hashes, and `.gfx` handoff. Do not use placeholders or temporary runtime paths.
+Spawn the appropriate generated-event-art and icon specialists with `fork_turns="none"`. Complete sources, previews, final DDS files, provenance, manifest, hashes, and `.gfx` handoff. Do not use placeholders or temporary runtime paths.
 
 ## Final localisation
 
@@ -353,7 +353,7 @@ Prove there is one world pass per incident, bounded candidates, no duplicate pro
 
 ## Mandatory near-completion review
 
-Before claiming the goal near complete, spawn `chaosx_improvement_loop_planner` with `fork_context=false` using the task preserved in:
+Before claiming the goal near complete, spawn `chaosx_improvement_loop_planner` with `fork_turns="none"` using the task preserved in:
 
 `docs/plans/064_border_fortifications_plans/subagent_handoffs/064_border_fortifications_improvement_loop_tooling_blocker.md`
 

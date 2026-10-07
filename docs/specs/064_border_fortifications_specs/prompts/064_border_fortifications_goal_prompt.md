@@ -1,6 +1,6 @@
 # Goal Prompt: Implement Event 064 Border Fortifications
 
-Implement Event 064 from `docs/specs/064_border_fortifications_specs/`. Read the full package, its matrices and prompts, and the improvement-loop blocker. Follow `AGENTS.md`, the named Chaos Redux skills, and current shared-system conventions. Use project subagents with `fork_context=false`.
+Implement Event 064 from `docs/specs/064_border_fortifications_specs/`. Read the full package, its matrices and prompts, and the improvement-loop blocker. Follow `AGENTS.md`, the named Chaos Redux skills, and current shared-system conventions. Use project subagents with `fork_turns="none"`.
 
 Keep Event 064 Minor Repeatable, Chaos Level 1, with canonical entry `chaosx.nr64.1`. Replace the current flat two-level option with one hidden global transaction. Snapshot current control, process each valid country once, and give one land-fort level to every valid passable direct foreign land-frontier province below the active cap. Apply the exact inclusive land-boundary and non-land exclusion rules in Part 1. Deduplicate provinces, finish construction before reports, leave new borders for a later wave, and preserve buildings after transfer.
 

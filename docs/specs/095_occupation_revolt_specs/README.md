@@ -12,7 +12,8 @@ The original brief is retained unchanged as a separate source.
 ## Reading and execution status
 
 All 46 supplied text files were fully read before drafting, including all 17 skills and all 20 subagent definitions.
-The archive contains 26 top-level text files and a nested archive containing 20 agent definitions.
+The original archive contained 26 top-level text files and a nested archive containing 20 agent definitions.
+These reading and execution counts describe the 5 October 2026 planning pass, not the current checkout or tool availability.
 External transitive references were not all read, and the external MTTH file was read only through line 170.
 The named source protocol was not located in the supplied archive or the scoped searches, so its unknown requirements are not claimed as fulfilled.
 Actual isolated agents executed: **0**.
@@ -28,7 +29,8 @@ The [package-integrity report](095_occupation_revolt_package_integrity_report.md
 The ZIP has one top-level folder, `095_occupation_revolt_specs/`.
 Extract that folder under `docs/specs/` in the intended repository.
 This is documentation, not runtime mod code.
-Do not install the archived source snapshot as active configuration or overwrite current skills from it.
+The bundled source snapshot was removed at the user's request in commit `6a2ebc838`.
+Read current named repository sources and skills rather than restoring or requiring that archive.
 Future actual specialist results belong under `docs/plans/095_occupation_revolt_plans/subagent_handoffs/`, as specified in each assignment.
 
 ## Specification index
@@ -56,7 +58,7 @@ These six prompts are complete handoffs, not evidence of production or execution
 
 | Prompt | Role |
 |---|---|
-| [Goal](095_occupation_revolt_goal_prompt.md) | Compact implementation goal, 3,998 characters including heading and final newline |
+| [Goal](095_occupation_revolt_goal_prompt.md) | Compact implementation goal, bounded to 4,000 characters including heading and final newline |
 | [Coding](095_occupation_revolt_coding_prompt.md) | Full source, implementation, specialist, native capability and completion contract |
 | [Decision Mission](095_occupation_revolt_decision_mission_prompt.md) | Exact actions, costs, missions, counterpart access and lifecycle |
 | [Asset](095_occupation_revolt_asset_prompt.md) | Source-checked visual production and country-identity workflow |
@@ -67,7 +69,7 @@ These six prompts are complete handoffs, not evidence of production or execution
 
 | File | Purpose |
 |---|---|
-| [Source Decision Register](095_occupation_revolt_source_decision_register.md) | Separates original user requirements, accepted expansion and current-source facts |
+| [Source Decision Register](095_occupation_revolt_source_decision_register.md) | Separates original user requirements, authored expansions and historical source observations |
 | [Implementation Architecture](095_occupation_revolt_implementation_architecture.md) | Proposed current-source ownership, logical contracts and native proof gates |
 | [Country Package Matrix](095_occupation_revolt_country_package_matrix.md) | Country activation fields and 11 claimant archetypes |
 | [National Program Registry](095_occupation_revolt_national_program_registry.md) | 23 meaningful program variants and complete focus/decision payoff parity |
@@ -81,15 +83,16 @@ These six prompts are complete handoffs, not evidence of production or execution
 | [Source Reading Report](095_occupation_revolt_source_reading_report.md) | Full supplied-source inventory, recovered reads, external gaps and actual execution status |
 
 Machine-readable counterparts are included for requirement coverage, validation scenarios, asset coverage, specialist status and source inventory.
-[Package manifest](095_occupation_revolt_package_manifest.json) records output hashes.
-Run `python validate_package.py` to check package structure and unchanged manifest entries.
-This validator does not execute HOI4, prove a source was understood or replace the required specialists.
+[Package manifest](095_occupation_revolt_package_manifest.json) records current local documentation membership and hashes.
+`validate_package.py` is retained as the historical archive-dependent validator.
+It requires the user-removed ZIP, so it cannot certify this checkout and must not be run as a current completion gate.
+The original integrity JSON remains a dated receipt, and no native validation is implied by a manifest.
 
 ## Preserved inputs
 
 [Original user brief](095_occupation_revolt_original_user_brief.md) is the current design authority.
-The supplied outer archive is preserved byte-for-byte in `source_snapshot/` for provenance.
-Its SHA-256 is `0f13352a0bbf4c657fcb82ac6ec549a1ac208f2624b23489c25dc9bd85105d3e`.
+The supplied outer archive is absent from this checkout by explicit user request.
+Its historical SHA-256 is `0f13352a0bbf4c657fcb82ac6ec549a1ac208f2624b23489c25dc9bd85105d3e`.
 The archived catalog CSVs remain untouched snapshots and do not override the current Liberations/Medium assignment.
 
 ## Completion boundary

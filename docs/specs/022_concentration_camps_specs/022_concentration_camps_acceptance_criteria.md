@@ -646,14 +646,17 @@ Missing required routes must be reported as blockers. Source review is not equiv
 
 ## Live test evidence
 
-Use the project live-QA folder structure and record:
+The user owns live-game evidence.
+Agents record supplied observations and leave unobserved cases open.
+Autonomous desktop QA requires separate invocation of the debug-playtest skill.
+When invoked, that workflow's evidence record may include:
 
 - run manifest
 - dedicated save
 - setup commands
 - event and evolution settings
 - screenshots
-- fresh error-log delta
+- supplied runtime error evidence
 - coverage table
 - repair ledger
 - skipped tests and reasons

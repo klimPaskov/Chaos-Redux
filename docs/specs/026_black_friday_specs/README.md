@@ -1,8 +1,14 @@
 # Event 26: Black Friday specification package
 
-This folder is the source specification package for Event 26, **Black Friday**. It is intended to be placed at `docs/specs/026_black_friday_specs/` in the Chaos Redux repository.
+Current workflow owners: [event integration](../../../.agents/skills/chaos-redux-events/SKILL.md), [subagent routing](../../../.agents/skills/chaos-redux-subagents/SKILL.md), and [asset production](../../../.agents/skills/chaos-redux-event-assets/SKILL.md).
+The source parts preserve the proposed expanded design.
+Explicit user requirements retain their cited basis, while broader claims labelled accepted require an attributable user decision or parent acceptance before implementation.
+Package location and manual closure reports do not establish that acceptance.
 
-The package replaces the existing Event 26 concept and script that move industry into desert states. Event ID `26` remains a Minor Fire-Once event. Its player-facing identity, implementation contract, event-log wiring, assets, catalog entry, and localisation must all change together.
+
+This folder is the source specification package for Event 26, **Black Friday**. Its repository location is `docs/specs/026_black_friday_specs/`.
+
+The package maps replacement of the desert-industry concept from the supplied pre-implementation snapshot, as recorded in Part 9. Event ID `26` remains a Minor Fire-Once event. Its player-facing identity, implementation contract, event-log wiring, assets, catalog entry, and localisation must all change together.
 
 ## Design result
 
@@ -31,7 +37,9 @@ The central implementation goal is a reusable cost quotation and payment framewo
 
 ## Authority and implementation state
 
-The specification files in this folder are the accepted design source when implementation begins. Working audits and implementation handoffs should go under `docs/plans/026_black_friday_plans/`.
+The specification files in this folder are source design.
+Particular accepted amendments retain their recorded user decision, including the 2026-09-25 native-raid achievement rule.
+The remaining expanded design requires the acceptance basis described above. Working audits and implementation handoffs should go under `docs/plans/026_black_friday_plans/`.
 
 This package contains design and implementation requirements. It does not claim that Event 26 has been implemented, tested in game, or entered into the authoritative catalog workbook.
 

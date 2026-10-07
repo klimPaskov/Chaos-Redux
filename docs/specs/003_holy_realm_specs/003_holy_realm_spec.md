@@ -1,6 +1,8 @@
 # Chaos Redux Event Specification: The Holy Realm
 
-This is a living event specification built in parts. This file currently consists of 7 parts.
+This seven-part legacy specification is retained as historical design provenance.
+The current design reference is [the nested Buddhahood package](003_holy_realm_buddhahood_specs/README.md), with claim-level acceptance and unresolved terminal differences recorded in [the release reconciliation](../../plans/003_holy_realm_plans/release_qa_completion_20261006.md).
+Embedded Photoshop prompts, fallback suggestions, and planning instructions below are historical material and must not be executed as current task instructions.
 
 ## Part 1: Core Design Foundation
 

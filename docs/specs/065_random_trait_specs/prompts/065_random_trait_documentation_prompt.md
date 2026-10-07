@@ -29,7 +29,7 @@ Cover:
 - debug controls
 - validation results
 - known evidence-backed limitations
-- user test steps
+- runtime scenario matrix and available user-owned evidence
 
 Install the generated trait registry CSV and its summary when those files are part of the accepted implementation.
 

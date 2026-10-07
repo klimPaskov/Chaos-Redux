@@ -78,7 +78,9 @@ The canonical entry is hidden `.1`, discovery is `.2`, and one final summary `.1
 Three-to-seven physical recovery visits, cargo quantities, accident odds and state burdens remain implemented.
 Discovery selects among crate, vehicle, aircraft, atomic and sealed-cargo artwork from the actual manifest; summaries use the depot image.
 The old report definitions remain dormant compatibility surfaces.
-The Borrowed Nightmare exact combat-loss criterion remains unresolved, and no gameplay proxy has been promoted into accepted design.
+The 6 October follow-up in the same owner decision note explicitly approves Borrowed Nightmare completion from a battle victory by a commander whose army contains the delivered equipment.
+That accepted criterion supersedes the earlier unresolved combat-loss request; it does not prove which individual division fought.
+Source-event absence, normal-delivery eligibility and the 1095-day window remain required, with engine and live acceptance evidence open.
 Live and required MCP acceptance gates remain open.
 
 ## Delivery report presentation
@@ -100,7 +102,8 @@ A report should not show a visible sender, modern cargo aircraft, readable gener
 
 ## Report allocation
 
-The main popup can use a general crate-field image. Landing reports select an image based on manifest family and report theme.
+Discovery uses the actual manifest to select sealed special cargo, atomic cargo, aircraft, armor or crate-field art.
+The final recovery summary uses depot art; recovery visits do not create individual popups under the accepted 5 October disposition.
 
 Nuclear art appears only when the nuclear slot succeeded. The high-chaos sealed-container art appears only when Evolution III added a verified special family. A conventional package never uses those images merely because current Chaos is high.
 
@@ -199,9 +202,11 @@ Completion requires the recipient to conduct a normal nuclear strike before gain
 
 Eligibility requires an Evolution III special-equipment delivery before the owner event has fired in the campaign.
 
-Completion requires the recipient to field or use that exact special family in a valid combat or payload action while the owner event remains unfired. The action must consume, deploy, or materially use the equipment. Passive stockpile ownership is insufficient.
-
-This achievement is available only for families whose compatibility registry can prove source-event isolation and actual field use.
+The accepted 6 October criterion requires a land-battle victory by a commander whose army contains the snapshotted delivered equipment, within 1095 days of a normal delivery and before the source event fires.
+Forced deliveries cannot open or complete the route.
+Passive stockpile ownership, equipment loss without victory and a victory by an unequipped commander do not qualify.
+This criterion checks the commander’s army rather than proving participation of a particular equipped division; the owner note records explicit approval of that scope.
+Current source contains the victory callback, while MCP and live acceptance remain unverified.
 
 ## Achievement safeguards
 

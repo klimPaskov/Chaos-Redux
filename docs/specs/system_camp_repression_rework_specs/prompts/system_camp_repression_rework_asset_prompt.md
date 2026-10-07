@@ -1,8 +1,13 @@
 # Asset Prompt: System Camp Repression Rework
 
+Read [package index](../package_index.md) and the current accepted contract and continuation before assigning this template.
+Original inventories and candidate labels below require reconciliation with that scope; they do not authorize redoing delivered work.
+
 Create final assets only after the implementation agent registers stable sprite names and final paths.
 
-For the current GUI presentation, read `../specs/system_camp_repression_rework_spec_part_6_scripted_gui_wireframe_value_display.md` and track the parent implementation and final UI report at `../../../plans/system_camp_repression_rework_plans/repression_ui_redesign_2026-09-05.md`. The current window uses native HOI4 frame, tiled panel, and button surfaces and does not request custom Ledger art.
+For current GUI presentation, follow the accepted administration contract linked from the package index.
+Part 6 and the September UI report preserve superseded layout evidence.
+Do not regenerate their Ledger assets or infer a new art family from the old inventory.
 
 Use `chaos-redux-event-assets` and the appropriate asset subagent split.
 
@@ -60,18 +65,21 @@ Super-event images, only if implemented:
 
 ## Source mode
 
-- Real historical leaders, real flags, and well-attested real symbols must be sourced and documented.
+- Every portrait belongs to `chaosx_portrait_creator` under the asset skill; grounded finals are user-supplied and agents never operate RunPod.
+- Historical flags and attested symbols require cited source research before their strict ImageGen reconstruction.
 - Fictional UI, idea, decision, and symbolic super-event assets can be generated.
 - Report/news images can be sourced when they depict real historical material. Generated period-documentary images are acceptable for alternate-history or composite discovery scenes.
 - No generated readable text.
-- Every final asset needs source PNG, processed PNG, final DDS, manifest, and GFX handoff.
+- Follow [the asset skill](../../../../.agents/skills/chaos-redux-event-assets/SKILL.md) for family-specific source, native alpha, PNG/DDS, review, manifest and wiring evidence.
 
 
-Use Part 5 for country-specific idea, decision, and report-image asset ids. Use Part 6 for parent-verified GUI panel, navigation-mark, and action identifiers; do not create custom replacement panel, card, background, copied-texture, status-sprite, or animation art for the current window.
+Use Part 5 for original country-specific asset roles, then verify remaining current consumers and requirements before assigning production.
+GUI identifiers and approved native surfaces come from the accepted administration contract and current parent-owned source, not the superseded Part 6 layout.
 
-## Part 5 and Part 6 asset families
+## Original country asset roles
 
-Use the country-specific asset id families named in Part 5 and the GUI sprite families named in Part 6. Create separate asset briefs for:
+Reconcile the country-specific families below with the current contract and consumer inventory.
+Create separate asset briefs only for outstanding authorized requirements:
 
 - U.K./Raj detention, burden, dominion oversight, and discovery icons;
 - U.S.A. emergency authority, court review, termination, and redress icons;
@@ -80,6 +88,6 @@ Use the country-specific asset id families named in Part 5 and the GUI sprite fa
 - Belgium/Congo concession, resource quota, inspection, and reform icons;
 - generic activation, labor output, guard allocation, dismantlement, evidence, and discovery icons;
 - parent-verified native HOI4 GUI frame, tiled panels, navigation marks, and button states only;
-- optional animated warning or reform assets only when the parent explicitly wires real frame sheets and records them in the final UI report.
+- no animation production from this template; a separately accepted requirement follows the frame-animation owner skill.
 
 Do not derive decision icons from focus icons by resizing. Do not request generated Ledger background, card, copied-texture, or status-sprite art for the current GUI.

@@ -1,6 +1,6 @@
 # Event 025 icon artist prompt
 
-Spawn `chaosx_icon_artist` with `fork_context=false` after stable icon IDs, consumers, sizes, and runtime paths are registered.
+Spawn `chaosx_icon_artist` with `fork_turns="none"` after stable icon IDs, consumers, sizes, and runtime paths are registered.
 
 Read Part 010, Part 011, and the asset matrix. Inspect the exact matching vanilla and Chaos Redux reference families before production.
 

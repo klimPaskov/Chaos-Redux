@@ -3,7 +3,8 @@
 Every case below is an acceptance requirement, not a passed result.
 All runtime and independent-review statuses are **Not run** in this planning package.
 Create reproducible setup notes, version information, observations, screenshots or logs, and pass/fail outcomes under the plans folder during implementation.
-Use the debug-playtest skill and current user authority before launching the game or making runtime changes.
+Live-game observations belong to the user; the implementation agent reviews supplied evidence.
+The explicit-only debug-playtest workflow requires a separate user invocation.
 Static checks do not stand in for live supply, movement, defender safety, or AI evidence.
 
 | ID | Area | Setup or action | Expected result | Current evidence |

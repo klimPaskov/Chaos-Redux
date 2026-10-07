@@ -1,12 +1,20 @@
 # Event 056: The Navy
 
-This package is the accepted planning handoff for Chaos Redux Event 56.
+This package is the source planning handoff for Chaos Redux Event 56.
 
-The package is organized for direct extraction into:
+The installed package path is:
 
 ```text
 docs/specs/056_the_navy_specs/
 ```
+
+## Design authority and current workflow
+
+The package attributes its premise to the supplied user brief.
+The original user message and claim-level acceptance record are not reproduced here, so approval of expanded mechanics remains unresolved until the implementation owner records the supporting user decision or parent acceptance.
+Historical planning reviews, catalog snapshots, and package status labels do not establish approval or current implementation.
+Use current [AGENTS.md](../../../AGENTS.md), [event guidance](../../../.agents/skills/chaos-redux-events/SKILL.md), [asset guidance](../../../.agents/skills/chaos-redux-event-assets/SKILL.md), and [subagent guidance](../../../.agents/skills/chaos-redux-subagents/SKILL.md) for execution.
+The source design remains in the files listed below.
 
 ## Specification order
 
@@ -40,7 +48,7 @@ docs/specs/056_the_navy_specs/
 
 The user-provided Event 56 brief is the event-design authority for this pack. The supplied project mechanics, skills, catalogs, configuration, and subagent definitions govern compatibility and quality.
 
-The supplied CSV catalogs are export snapshots. They are evidence for current catalog state and must not be edited as source files. Event and cluster catalog changes belong in the authoritative XLSX workbook during implementation, followed by the repository exporter.
+The supplied CSV catalogs are export snapshots. They are historical evidence for catalog state during the original planning pass and must not be edited as source files. Event and cluster catalog changes belong in the authoritative XLSX workbook during implementation, followed by the repository exporter.
 
 ## Planning boundary
 

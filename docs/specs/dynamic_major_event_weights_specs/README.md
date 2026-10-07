@@ -1,23 +1,9 @@
 # Dynamic Major Event Weights Package
 
-This package contains a small implementation handoff for replacing fixed major event weight gain with dynamic ratio-based gain.
+The maintained source design is [specs/dynamic_major_event_weights_spec.md](specs/dynamic_major_event_weights_spec.md).
+The [goal prompt](prompts/dynamic_major_event_weights_goal_prompt.md) is the implementation handoff.
+The [root forwarder](dynamic_major_event_weights_spec.md) preserves the older prompt path without duplicating the design.
 
-Files:
-
-- `specs/dynamic_major_event_weights_spec.md`
-- `dynamic_major_event_weights_spec.md` (forwarder to the maintained source spec)
-- `prompts/dynamic_major_event_weights_goal_prompt.md`
-
-Suggested repo destination:
-
-```text
-docs/specs/dynamic_major_event_weights_specs/
-```
-
-The goal prompt expects the spec to be placed at:
-
-```text
-docs/specs/dynamic_major_event_weights_specs/dynamic_major_event_weights_spec.md
-```
-
-That path is kept as a forwarding file so implementation agents can follow the prompt while the detailed source remains in `specs/dynamic_major_event_weights_spec.md`.
+Disposition: unresolved for acceptance and current implementation evidence.
+No attributable acceptance record or current source/MCP audit is included in this package. The formula examples are design targets, not measured behavior.
+Use [chaos-redux-subagents](../../../.agents/skills/chaos-redux-subagents/SKILL.md) and its dedicated probability auditor for any weighted implementation audit or change.

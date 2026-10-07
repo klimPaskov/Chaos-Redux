@@ -1,6 +1,8 @@
 # Unresolved implementation evidence gates
 
-These items remain intentionally unresolved because this package is a design deliverable and does not have the live Chaos Redux repository, installed vanilla files, Workshop mods, user desktop, or configured HOI4 MCP servers.
+These are planning-stage evidence gates.
+The original planning environment lacked the local repository, installed game and configured MCP service; that historical limitation does not describe the current checkout.
+Discover current capabilities before recording an implementation blocker.
 
 ## Map and state gates
 
@@ -24,7 +26,7 @@ These items remain intentionally unresolved because this package is a design del
 - Inspect Event 3 Holy Realm flags and route identities.
 - Inspect Event 40 Malta exclusion and replace any broad classifier misuse with narrow routing.
 - Inspect Event 126 Heroic Crusade and preserve Event 38 ownership without duplicate routes.
-- Confirm a collision-free triggerable scenario ID. `SCN-015` is only a working candidate.
+- Preserve the central reservation `SCN-021` / raw `21` for Believers vs Nonbelievers under the [shared identifier registry](../../shared_identifier_registry.md#triggerable-scenarios); confirm eventual runtime/workbook registration uses that owner ID.
 - Confirm public Holy World scenario registry ID and toggle behavior.
 
 ## Unit and technology gates
@@ -39,7 +41,8 @@ These items remain intentionally unresolved because this package is a design del
 
 - Lock exact Event 38 Crusade Council `.gui`, `.gfx`, scripted GUI, localisation, entry point, states, and supported resolutions.
 - Inspect and render the focus tree together with any focus inlay.
-- Complete the required GUI rewrite and before-and-after comparison through the MCP route.
+- Complete reference acceptance, mandatory inspection/rendering, iterative visual review, and matched before-and-after evidence under the [scripted GUI skill](../../../../.agents/skills/chaos-redux-scripted-gui/SKILL.md).
+- Reviewed edits may be applied directly; `gui_rewrite` is optional.
 
 ## Probability gates
 

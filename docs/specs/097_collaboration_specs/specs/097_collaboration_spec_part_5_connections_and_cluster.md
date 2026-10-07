@@ -110,11 +110,16 @@ A cluster burst still counts as one pacing event. Event 097 applies its own firi
 
 The cluster type is not changed by adding a repeatable member. The cluster runtime treats Event 097's global firing as having no actor.
 
-### Building the Intelligence cluster
+### Intelligence cluster identity and integration
 
-The Intelligence cluster is described in the catalog but has not been built in the runtime cluster system, and its numeric id differs between the catalog, the cluster documentation, and the Event 052 package. This specification does not fix a numeric id. The integration follows these rules:
+The current Intelligence cluster ID is **20**, using `constant:event_cluster_id.intelligence` from `common/script_constants/event_cluster_constants.txt`, line 31.
+The parent's [current identifier audit](../../../plans/repo_cleanup/specification_package_audit_2026-10-07/handoffs/identifier_overlaps.md) confirms 20 in the canonical event-catalog XLSX `Clusters` sheet as well.
+ID 9 belongs to National Breakthroughs, and ID 8 belongs to Diseases.
+The [shared identifier registry](../../shared_identifier_registry.md) records the cross-package identity contract.
+This identifier resolution applies to both Event 097 variants and does not settle their conflicting gameplay or approve integration changes.
+Inspect current shared cluster surfaces before extending them, and follow these integration requirements:
 
-- The cluster is built once, by whichever of Events 039, 052, or 097 is implemented first with its cluster integration, with every cluster surface the shared cluster system requires. The catalog id and the runtime id are reconciled in the same change through the workbook worker, and the catalog alignment handoff records the result.
+- Reuse Intelligence cluster 20 and its current owner surfaces, rather than allocating another ID or creating a duplicate cluster. Add only the accepted missing integration surfaces after current-source review. The catalog alignment handoff preserves the same ID in the event and cluster rows.
 - Event 097's member row is Medium severity. The shared severity floor means Event 097 joins cluster activations only from 200 Chaos, even though the event alone is available from Chaos level 1.
 - The cluster is a Fire-Once cluster with repeatable members. A consumed cluster does not stop Event 097 from firing alone later.
 - Event 039's own specification treats it as Fire-Once while its registration treats it as repeatable. That conflict belongs to Event 039 and must be settled before the shared cluster row is written.

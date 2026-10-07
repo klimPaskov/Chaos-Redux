@@ -78,4 +78,4 @@ Clean:
 - Project actions after death, annexation, or world end.
 - Singularity construction after disarmament or terminal firing.
 
-After implementation, spawn `chaosx_decision_mission_auditor` with `fork_context=false`. It may patch small cost, tooltip, AI, cooldown, visibility, and cleanup issues. Write its handoff under `docs/plans/016_brilliant_scientist_plans/subagent_handoffs/`.
+After implementation, spawn `chaosx_decision_mission_auditor` with `fork_turns="none"`. It may patch small cost, tooltip, AI, cooldown, visibility, and cleanup issues. Write its handoff under `docs/plans/016_brilliant_scientist_plans/subagent_handoffs/`.

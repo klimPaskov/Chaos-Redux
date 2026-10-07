@@ -1,5 +1,9 @@
 # Coding Prompt: Implement Event 021 Random Civil War
 
+Resume from [the package implementation boundary](README.md#implementation-boundary) and current event docs and plan evidence before assigning work.
+This full-design prompt does not authorize restarting completed tranches or reverting the recorded test release.
+Record each requested change's acceptance basis under the [event skill](../../../.agents/skills/chaos-redux-events/SKILL.md#spec-and-plan-locations).
+
 Implement the complete source specification under `docs/specs/021_random_civil_war_specs/`.
 
 This is a large event framework. Do not reduce it to one `start_civil_war` call, a fixed territory split, a fixed half-army split, one popup, or a political-power store.
@@ -17,7 +21,7 @@ Before editing:
 7. Inspect Event 004, Event 007, and every specialized civil-war event named in the overlap reconciliation.
 8. Verify the current authoritative XLSX workbook and live scenario registry.
 9. Run the current HOI4 MCP schemas. Do not invent tool names.
-10. Spawn every project subagent with `fork_context=false`.
+10. Spawn every project subagent with `fork_turns="none"`.
 
 Use the context-complete prompts in `subagent_prompts/`.
 
@@ -30,7 +34,9 @@ Use the context-complete prompts in `subagent_prompts/`.
 - Cluster 1, Wars
 - Medium member severity
 
-Keep the event unavailable by default until the full rework is ready.
+The original pre-release design kept the event unavailable until ready.
+Use the current release disposition in README.md and the parent ledger.
+Do not disable the recorded test release solely because this original prompt used an unavailable opening state.
 
 When no valid target exists:
 

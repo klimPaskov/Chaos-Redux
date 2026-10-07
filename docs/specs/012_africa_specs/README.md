@@ -1,8 +1,17 @@
 # Event 12 Africa planning package, expanded second edition
 
-> Documentation reconciliation, 2026-08-10: this package remains the accepted Event 012 design source and its matrices remain acceptance criteria. The current release-candidate status, installed runtime packages, controlled-pool dispositions, and open owner decisions are recorded in [`docs/events/012_africa/overview.md`](../../events/012_africa/overview.md), the current acceptance ledger, and the final reconciliation handoff. The package's planning-only wording is provenance, not a claim that no implementation exists.
+## Authority and resume navigation
 
-> Current Event 012 reconciliation, updated 2026-09-25: Gods of Africa is owned by Event 012 and the manual scenario remains `SCN-011` with `Africa Is One` and `World Is One` types. `chaosx_elephant` intentionally reuses vanilla `elephantry`; the accepted nine-package model count below retains historical elephant-package provenance rather than asserting a custom elephant runtime consumer. The approximately 340 MB `docs/assets/012_africa/models_3d/elephant_shared_base/` package is classified as archival and non-promoted, with retention or deletion left as an explicit owner decision outside this documentation-only pass. The generated Gods report, category, and icon handoffs have source and final-DDS evidence, while parent/user visual review remains open. The user's explicit Event 012 ownership goal leaves Event 070 available for another idea; former Event 070 Gods runtime files have deletion evidence, authoritative workbook `Events!M71` is blank after the catalog update, and the successful exporter emitted an Event 070 row with only ID `70` populated. The standalone `012_africa_is_one_gods_of_africa_specs/` package is retained historical planning material and is superseded by this accepted package plus `docs/events/012_africa/gods_of_africa.md`.
+The [source-reading record](handoffs/012_africa_source_of_truth_and_reading_record.md) identifies the original user brief and planning evidence.
+Accepted September/October appendices in [Part 3](specs/012_africa_spec_part_3_focus_tree_architecture.md) cite their individual user instructions and [October parent decisions](../../plans/012_africa_plans/agent_decisions_2026-10-04.md).
+These acceptances take precedence within their scope; a package title or implementation receipt does not approve every historical row.
+The release summaries below preserve dated evidence.
+Resume from [the overview](../../events/012_africa/overview.md), [Gods documentation](../../events/012_africa/gods_of_africa.md), and linked owner handoffs instead of repeating full production prompts.
+Use [chaos-redux-subagents](../../../.agents/skills/chaos-redux-subagents/SKILL.md), [chaos-redux-event-assets](../../../.agents/skills/chaos-redux-event-assets/SKILL.md), and [chaos-redux-3d-model-pipeline](../../../.agents/skills/chaos-redux-3d-model-pipeline/SKILL.md) for current workflows.
+
+> The August/September reconciliation below is retained implementation history; current navigation and acceptance boundaries are above.
+
+> Archival receipt, 2026-09-25: the approximately 340 MB `docs/assets/012_africa/models_3d/elephant_shared_base/` package is classified as non-promoted historical evidence. Retention or deletion remains an owner decision. The standalone Gods package is historical planning, superseded for current navigation by this package and `docs/events/012_africa/gods_of_africa.md`.
 
 ## Purpose
 

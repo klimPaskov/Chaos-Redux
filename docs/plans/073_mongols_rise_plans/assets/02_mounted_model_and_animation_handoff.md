@@ -2,21 +2,30 @@
 
 ## Ownership and readiness
 
-The mounted model is a required custom-unit deliverable. The 3D pipeline role owns the complete asset, and the main agent owns integration and final acceptance. No Meshy or Blender tools were connected or invoked during this planning session. No paid task or runtime asset was created.
+The mounted model is a required custom-unit deliverable.
+`chaosx_3d_model_pipeline` owns its production package under the current [3D pipeline skill](../../../../.agents/skills/chaos-redux-3d-model-pipeline/SKILL.md); the parent owns runtime wiring, integration and final acceptance.
+The original planning delivery reported no connected or invoked Meshy/Blender tools, paid task or runtime asset.
+That historical record does not establish current tool availability.
 
-Before production, read the current owning 3D skill and its referenced local files. Resolve the profile conflict noted in the conflict register. The owning skill's separate Meshy firearm geometry rule takes precedence over a shorter profile description that suggests making the gun directly in Blender.
+Read the current owner skill and its required references before production.
+It owns provider selection, attempt allowances, component modeling, rigging, skeletal actions and recovery; this event handoff does not redefine those procedures or elevate an old profile-conflict report above current instructions.
+The [asset skill](../../../../.agents/skills/chaos-redux-event-assets/SKILL.md) owns source provenance, texture delivery and the bounded counter-art handoff.
 
 ## Source gate
 
 Select one eligible modern professional game or tabletop concept-art image for the weapon-free horse-and-rider body. The image must support the accepted identity without unauthorized redesign. Confirm rights for the intended use. Archival, museum, and historical-plate material can support research but does not satisfy this geometry-source requirement.
 
-Select a separate eligible image for each required firearm geometry task. Exactly one image is used per geometry task. Do not submit a multi-angle board as a shortcut. If suitable rights-cleared sources cannot be found, return the source blocker and seek the required explicit alternative approval. Do not claim source approval because an image looks useful.
+Preserve a rights-cleared reference for each required firearm's identity, proportions and materials.
+Use exactly one prepared image for each provider geometry task required by the current owner skill; do not submit a multi-angle board as a shortcut.
+If suitable rights-cleared sources cannot be found, return the source blocker and seek the required explicit alternative approval.
+Do not claim source approval because an image looks useful.
 
 ## Geometry and assembly
 
-Use fresh Meshy 7 geometry for the weapon-free body and separate Meshy 7 geometry for each firearm. Verify the actual model selector and API schema before submission. Do not guess an endpoint or silently use another model.
-
-The firearm route proceeds to direct Blender assembly, rigging, manual animation, attachments, and export. Do not use paid Meshy auto-rigging or animation as a substitute for this required route. Failed rig or action work is handled through the owning skill's Blender recovery workflow rather than repeated paid retries.
+Produce the weapon-free horse-and-rider body and every required separate weapon, held object and attachment through the current owner workflow.
+Preserve the complete source-informed component inventory and period identity.
+The owner skill determines provider eligibility, rigging/action allowances and Blender authoring or recovery; do not infer them from this older event handoff.
+Verify live tool schemas and record missing capabilities without omitting required components or substituting an unapproved model.
 
 Horse and rider require a compatible nonhumanoid rig. Validate body separation, saddle contact, stirrups, hands, reins, weapon grip, and ground contact. A humanoid auto-rig cannot be assumed to support the combined anatomy.
 
@@ -42,7 +51,9 @@ Check quaternion continuity, transitions, and the reimported exported asset. A s
 
 ## Sound and selection
 
-Use real licensed online sources for weapon, movement, and selection sound. No generated or self-recorded substitutes are allowed under the supplied skill. Preserve original files, source evidence, license terms, and hashes. Mechanical derivatives are allowed only where the license permits them.
+Use real licensed online sources for weapon, movement and selection sound under the current 3D owner's sound-design contract.
+Preserve original files, source evidence, license terms and hashes.
+Mechanical derivatives are allowed only where the license permits them; generated or self-recorded substitutes remain prohibited.
 
 Inspect the actual selection-voice consumer. The profile notes country or original-tag infantry idle consumers as a relevant pattern. Do not overwrite all ordinary infantry voices to make one custom cavalry unit speak. If the engine cannot separate the consumer, return that conflict with a narrowly reviewed alternative.
 
@@ -50,6 +61,8 @@ Where the existing workflow requires PCM16 mono 44.1 kHz, verify the actual fina
 
 ## Final proof
 
-Required evidence includes source approval, geometry task provenance, calibration, Blender assembly, material-channel review, all animation states, exported mesh and animation reimport, effects and sound consumers, correct model selection, and live-game behavior. Record the runtime file hashes used for review.
+Required evidence includes source approval, production provenance, calibration, assembly, material-channel review, all animation states, exported mesh and animation reimport, effects and sound consumers, correct model selection, and the required bespoke counter handoff.
+Record the runtime file hashes used for review.
+Live-game consumer evidence belongs to the user and is reviewed by the parent; the production worker does not launch HOI4.
 
 The event cannot claim its custom mounted unit is complete while a placeholder model, missing state, absent sound, or unverified runtime consumer remains.

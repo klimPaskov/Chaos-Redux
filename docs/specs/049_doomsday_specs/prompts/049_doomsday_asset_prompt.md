@@ -244,7 +244,7 @@ Create transparent PNG and DDS variants for the actual consumers, with preserved
 
 Route all portrait production to `chaosx_portrait_creator`.
 
-Create five fictional people-free or clearly collective institutional portrait packages only if the implementation needs them:
+The following five institutional portrait subjects are conditional proposals, requiring an authorized consumer and a recorded source-mode classification under the current portrait contract:
 
 1. `doomsday_civic_relief_council`
 2. `doomsday_religious_civic_synod`
@@ -252,7 +252,10 @@ Create five fictional people-free or clearly collective institutional portrait p
 4. `doomsday_defensive_service_committee`
 5. `doomsday_revolutionary_witness_assembly`
 
-These are institutional identities. They must not present one invented person as a grounded national leader.
+These are institutional identities.
+The portrait worker must resolve whether each is grounded or truly fictional before production.
+Grounded institutions require authentic attributed institutional material, and missing classification remains blocked.
+People-free framing alone does not authorize generated art for a grounded institution.
 
 Use full HOI4 leader framing if the consumer is a country leader portrait. Confirm the exact consumer, basename, role, and dimensions before production.
 
@@ -289,15 +292,11 @@ Use `chaosx_portrait_creator` for all institutional portraits and any grounded p
 
 Use `chaosx_asset_source_researcher` only when a final asset must depict real historical material or use an attested symbol.
 
-## Transparency
+## Production contract
 
-Request genuine native transparency in the first ImageGen call for every alpha-backed icon, emblem, overlay, and portrait layer whose consumer uses transparent unused canvas.
-
-Preserve alpha through processing and DDS conversion.
-
-Validate unused corners, silhouette edges, internal opacity, and absence of white matte, halo, checkerboard, or opaque square background.
-
-Background removal is fallback-only after native transparency fails or when an inherited source begins opaque. Preserve the original and document the fallback.
+Follow the current [event-assets skill](../../../../.agents/skills/chaos-redux-event-assets/SKILL.md) for native alpha, verified consumers, portrait classification, processing, DDS, provenance, contact sheets, manifests, and wiring boundaries.
+Use its [achievement icon contract](../../../../.agents/skills/chaos-redux-event-assets/SKILL.md#achievement-icons) for all three states of every achievement.
+The event-specific inventories and destinations below remain the production brief.
 
 ## Final placement
 
@@ -314,46 +313,9 @@ Use event-scoped runtime folders where the consumer accepts explicit paths:
 
 Confirm every path against the active consumer and project convention before final placement.
 
-## Working evidence and cleanup
+## Evidence and handoff
 
-Use `docs/assets/049_doomsday/` as the temporary evidence workspace while production is active.
-
-Preserve:
-
-- Source PNGs.
-- Prompts and source-mode notes.
-- Processed previews.
-- DDS files before runtime copy.
-- Contact sheets.
-- Provenance and licensing.
-- Dimension and alpha checks.
-- Manifest rows.
-- GFX handoff notes.
-- Portrait-specific evidence under the durable portrait archive where required.
-
-Before the Event 049 goal is declared complete:
-
-- Move final runtime assets into engine-facing folders.
-- Verify no runtime reference points into `docs/assets/`.
-- Promote durable provenance, coverage, and review facts into permanent event or super-event documentation.
-- Delete the completed temporary event workspace.
-- Retain the workspace when any asset remains blocked or awaiting review.
-
-## Handoff
-
-Return a handoff that lists:
-
-- Every required asset and status.
-- Source mode and producer.
-- Source and final paths.
-- Native dimensions and final dimensions.
-- Sprite names or proposed stable names.
-- Alpha and edge verdict.
-- Contact sheets.
-- Source and final checksums.
-- Grounded portrait provenance where applicable.
-- Assets blocked or awaiting parent lock.
-- Files the parent must wire.
-- Any asset that was merged or removed because implementation changed the consumer list.
-
-Do not claim the event asset package complete while any required visible asset is placeholder, missing, unwired, unreviewed, or undocumented.
+Use `docs/assets/049_doomsday/` for active event-asset evidence and the portrait skill's durable archive for portrait sources.
+Follow the current event-assets skill for provenance retention, temporary-workspace cleanup, runtime crosswalks, and handoff evidence.
+Report every listed asset as produced, blocked, awaiting review, or proposed for an accepted disposition, and name all remaining parent wiring tasks.
+Missing or unreviewed required assets keep the package incomplete.

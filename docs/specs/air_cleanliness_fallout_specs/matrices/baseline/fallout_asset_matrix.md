@@ -4,7 +4,9 @@ Canonical status: accepted baseline matrix. Use with the living-world event matr
 
 Working labels are not final localisation. This matrix tells asset agents what each visible identity state needs and which source mode applies.
 
-The implementation should not request all assets at once. It should first select spawned successors, then request the matching asset rows in regional batches. Historical or real symbols and real leader portraits require sourced assets. Fictional flags, mutant identities, council portraits, icons, UI panels, and impossible scenes use generated assets through the Chaos Redux asset workflow.
+The implementation should not request all assets at once. It should first select spawned successors, then request the matching asset rows in regional batches. Historical or real symbols and real leader portraits require sourced assets. Flags, icons, UI panels, and impossible scenes follow the current asset-owner workflow.
+Portrait directions in the rows are historical concepts, not source-mode authorization: every portrait requires `chaosx_portrait_creator` and the [current grounded-identity gate](../../../../../.agents/skills/chaos-redux-event-assets/SKILL.md#portrait-source-mode-gate).
+Grounded successor people and institutions require authentic sources; generation requires authorized truly fictional high-chaos or impossible classification.
 
 ## Shared asset rules
 

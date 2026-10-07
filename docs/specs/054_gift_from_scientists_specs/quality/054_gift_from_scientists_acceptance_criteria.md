@@ -98,7 +98,8 @@
 
 ## Scientific Research cluster
 
-- The stable Scientific Research cluster ID is confirmed before implementation.
+- Scientific Research uses reserved `event_cluster_id = 21` from the [shared identifier registry](../../shared_identifier_registry.md), shared with Event 089.
+- The identifier reservation is not acceptance of cluster behavior or membership, which requires its own acceptance basis before implementation.
 - The cluster is Minor Repeatable and unlocks at 200+.
 - Members are 16, 24, 27, 54, and 60.
 - Severities are Severe, High, Medium, Medium, and High.

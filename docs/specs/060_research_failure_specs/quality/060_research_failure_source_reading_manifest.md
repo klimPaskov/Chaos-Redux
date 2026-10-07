@@ -1,5 +1,10 @@
 # Event 60 source reading manifest
 
+Disposition: retained historical planning evidence.
+The source inventory, environment failures, manual reviews, and validation claims below describe the original planning pass.
+They do not establish current tool health, independent specialist execution, design approval, or validation of the edited checkout.
+Use the package README for current authority and workflow.
+
 ## Scope and result
 
 Every project file supplied in the task was read in full before the final specification pack was completed. The three CSV catalogs were read in full. The supplied subagent ZIP was extracted and every contained TOML definition was read in full.

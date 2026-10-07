@@ -1036,7 +1036,7 @@ Disposition: `implemented`. Evidence: commits `f25db7e0d` (owned-agreement breac
 
 ## 2026-10-05 accepted design: Gods of Africa focus payoffs and No Sanctuary for Occupiers
 
-Acceptance basis: agent decision L27 in `docs/plans/012_africa_plans/agent_decisions_2026-10-04.md`, taken under the user's full-authority grant for the Event 012 takeover, implementing the unresolved items of the Gods focus integration spec (`012_gods_of_africa_focus_integration.md`) and the 2026-09-25 Gods focus audit. The user's 2026-09-25 acceptance of the Sanctuary node's protection and Arms Against Tyranny role stands; occupier coercion is therefore a separate node.
+Acceptance basis: agent decision L27 in `docs/plans/012_africa_plans/agent_decisions_2026-10-04.md`, taken under the user's full-authority grant for the Event 012 takeover, implementing the unresolved items of the [retained Gods focus integration spec](../../012_africa_is_one_gods_of_africa_specs/specs/012_gods_of_africa_focus_integration.md) and the 2026-09-25 Gods focus audit. The user's 2026-09-25 acceptance of the Sanctuary node's protection and Arms Against Tyranny role stands; occupier coercion is therefore a separate node.
 
 - The African Expedition opens a host decision that sends a partner on track for Favored, fighting a country whose capital lies outside Africa, a package of infantry equipment, support equipment and manpower from Africa's own forces, at a political-power cost and with a cooldown.
 - A Place at the Final Council raises the settlement support owed to Favored and Respected governments by a constant multiplier, and lets each participant pledge a final shipment or speak for Africa before the settlement; World Is One reads that council voice in its invitation and acceptance weights.
@@ -1046,3 +1046,23 @@ Acceptance basis: agent decision L27 in `docs/plans/012_africa_plans/agent_decis
 
 The original y 27 coordinate and its initial diagnostic snapshot are superseded by the accepted October 6 connector repair in `7353ab5b8`.
 The parent recovery appendix in `docs/plans/012_africa_plans/subagent_handoffs/takeover_focus_audit_2026-10-06.md` records the matching reduced-scale raster and crop review; remaining convergence warnings and native reveal behavior remain separate acceptance items.
+
+## 2026-10-07 accepted correction: measured Final Council pledge
+
+Acceptance basis: the active complete-Gods goal, L27's 1,000-rifle Council offering with a 500-rifle retained reserve, and the accepted L3 measured-contribution policy.
+The parent adopts the shipment correction identified in the October 7 decision audit; this preserves both Council choices and their existing prices.
+The political speech remains 25 political power.
+
+The pledge freezes its price, reserve and exact participant/host/origin/generation/epoch identity at the first affordable attempt.
+Every shipment uses the existing native contribution receipt: actual donor loss enters the total and voluntary ledgers, with late-campaign credit when its existing proof passes, while Africa's reserve follows only bounded measured receiver gain.
+Partial payment leaves the same unpaid balance, and an empty shipment earns no voice or coarse aid credit and uses the existing undelivered retry interval.
+Only full payment publishes the one-time Council voice and aid-history result.
+An uncharged quote can be replaced by the political speech only with clear native accounting; a partly paid pledge cannot be discharged at that alternative price.
+
+Both Council choices wait while an ordinary demand, negotiation, reconciliation or final ultimatum is open.
+This is the accepted Council portion of the October 7 phase proposal; it neither pauses those obligations nor postpones continental settlement.
+Defiance, authority loss, archival, rejected grading and successful final settlement clear live pledge terms while retaining measured contributions and unresolved native receipts.
+The other host/defiance phase proposals retain their separate unresolved dispositions.
+
+Implementation and validation evidence: `docs/plans/012_africa_plans/subagent_handoffs/012_gods_council_receipts_implementation_2026-10-07.md`, the matching independent review, source-model test and probability handoff.
+Source-model cases do not establish native stock movement, actual expiry, save/reload behavior, UI appearance or complete AI eligibility.

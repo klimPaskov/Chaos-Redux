@@ -55,9 +55,7 @@ Decision, idea, and focus icons require separate source artwork designed for the
 
 Every frame must be a real generated or edited source frame. Local transform-only motion is forbidden.
 
-These former-GUI assets remain production provenance only. The accepted
-2026-08-05 surface uses ordinary Event 019 decisions and does not register a
-scripted GUI, background, frame-sheet animation, or static fallback at runtime.
+These former-GUI assets remain production provenance only. The accepted 2026-08-05 surface uses ordinary Event 019 decisions and does not register a scripted GUI, background, frame-sheet animation, or static fallback at runtime.
 
 ## Claimant army/muster identity scenes
 
@@ -94,8 +92,7 @@ Each focus tree route needs icon coverage. The exact final focus count belongs t
 - family transformation
 - late regional predator payoff
 
-Focus icons are 100 by 88, matching the current vanilla focus-icon canvas, and
-need focus-specific source art.
+Focus icons are 100 by 88, matching the current vanilla focus-icon canvas, and need focus-specific source art.
 
 ## Achievement assets
 

@@ -2,6 +2,10 @@
 
 ## Temporary decision category
 
+Presentation conflict remains `unresolved`: this design combines a static category picture with a meter/staged bar, while the current [event presentation skill](../../../../.agents/skills/chaos-redux-events/SKILL.md#scripted-gui-and-animated-event-presentation) restricts category pictures to simple categories without meters or complex GUI controls.
+The parent must record an accepted presentation choice before implementing that combination; preserve Army Infection Pressure and the action/mission design.
+
+
 The affected country receives one temporary category for the duration of the episode. The category should appear only while the country has an active Event 41 outbreak or a short unresolved recovery tail that still requires player action.
 
 The category uses the least complex presentation that can communicate the crisis:

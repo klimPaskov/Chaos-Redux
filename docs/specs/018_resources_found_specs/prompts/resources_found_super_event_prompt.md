@@ -1,6 +1,6 @@
 # Super-Event Research and Implementation Prompt for Event 018 Resources Found
 
-Create the complete super-event research packages for Chaos Redux Event 018, Resources Found. Use `chaos-redux-super-events` and the narrow research subagents with `fork_context=false`.
+Create the complete super-event research packages for Chaos Redux Event 018, Resources Found. Use `chaos-redux-super-events` and the narrow research subagents with `fork_turns="none"`.
 
 Use:
 

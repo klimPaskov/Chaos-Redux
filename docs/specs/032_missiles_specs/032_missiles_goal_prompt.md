@@ -16,12 +16,12 @@ Special payload delivery requires the relevant existing technology, policy, stoc
 
 Implement the phased decision category, target selection, missions, crisis actions, and collision-audited `SCN-015`. Use one ordinary category with a static picture. Do not add a dedicated scripted GUI. Respect the action, mission, cost, AI parity, and cleanup limits.
 
-Use `hoi4.event_inspect`, `hoi4.event_render`, and `hoi4.event_compare`. Use `hoi4.tech_inspect`, `hoi4.tech_render`, and `hoi4.tech_compare`. Implement every named probability scenario. Spawn `chaosx_ai_probability_auditor` with `fork_context=false` before weighted changes, then run the same-scenario `hoi4.probability_compare` pass. Record exact blockers when a mandatory route is unavailable.
+Use `hoi4.event_inspect`, `hoi4.event_render`, and `hoi4.event_compare`. Use `hoi4.tech_inspect`, `hoi4.tech_render`, and `hoi4.tech_compare`. Implement every named probability scenario. Spawn `chaosx_ai_probability_auditor` with `fork_turns="none"` before weighted changes, then run the same-scenario `hoi4.probability_compare` pass. Record exact blockers when a mandatory route is unavailable.
 
 Create and wire every authorized static asset. Implement all eight achievements with full tracking and icon triplets. Do not add excluded asset or content families.
 
 Update Event Logs, Event Details, affected docs, tests, assets, achievements, scenarios, and `docs/spreadsheets/chaos_redux_events_catalog.xlsx`. Regenerate the CSV exports with the repository exporter and never edit them directly.
 
-Use required project subagents with `fork_context=false` and review every handoff. Near completion, spawn `chaosx_improvement_loop_planner`, resolve its addendum or closure, then run the event completion auditor. Do not invoke autonomous desktop testing unless the user explicitly requests it.
+Use required project subagents with `fork_turns="none"` and review every handoff. Near completion, spawn `chaosx_improvement_loop_planner`, resolve its addendum or closure, then run the event completion auditor. Do not invoke autonomous desktop testing unless the user explicitly requests it.
 
 Keep iterating until every acceptance item is satisfied. Do not claim completion while any accepted surface or meaningful validation remains missing. Report every blocker, fallback, simplification, rejected requirement, and skipped meaningful check.

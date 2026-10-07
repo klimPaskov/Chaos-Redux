@@ -6,9 +6,9 @@ Implement the complete Chaos Warfare CBRN rework from this planning package in t
 
 Before editing, read `AGENTS.md`, every relevant repo skill, the current chemical and biological docs and implementation, the condemnation impact spec, the offline Paradox wiki pages required by AGENTS.md, and current Hearts of Iron IV 1.19 documentation and vanilla examples. Inspect exact Army Headquarters, regimental support, essential equipment, company-gated ability, `unit_modifiers`, raid, air mission, MIO, AI, unit, equipment, and scripted GUI patterns. If a planned engine surface is unsupported, stop that surface and report the blocker. Do not silently substitute an approximation.
 
-Promote the accepted package into `docs/specs/chaos_warfare_system_specs/` or the approved system-spec path. Put working handoffs and audit reports in `docs/plans/chaos_warfare_system_plans/`. Record a source-of-truth map and disposition every old plan or conflicting doc.
+The package already lives at `docs/specs/chaos_warfare_system_specs/`. Resume from `docs/plans/chaos_warfare_system_plans/2026-09-20_cbrn_overhaul_requirement_ledger.md` and linked owner handoffs before scheduling work. Put working reports in `docs/plans/chaos_warfare_system_plans/`, using `subagent_handoffs/` for specialist outputs. Preserve recorded acceptance and disposition unresolved or conflicting older proposals rather than promoting them automatically.
 
-Implement in the staged order from the handoff:
+Use the stages below only for requirements still open in the current ledger. Verify existing source and owner evidence before repeating a stage:
 
 1. Verify engine syntax and current vanilla balance.
 2. Create shared constants, readiness, policy, protection, exposure, evidence, attribution, operation records, and cleanup.
@@ -25,9 +25,9 @@ Implement in the staged order from the handoff:
 
 Use shared scripted effects and triggers. Centralize tuning in script constants. Do not add a broad all-country daily, weekly, or monthly pass without user permission. Use targeted operation, combat, state, and existing approved pulse hooks. Register every new equipment bonus type in `common/script_enums.txt`. Document every reusable dynamic helper with scope, inputs, outputs, defaults, side effects, and example.
 
-Keep final player-facing text in-world. Do not paste working labels from the plan as final localisation. Do not use placeholders. Every visible asset needs final source, PNG, DDS, manifest, and GFX wiring. Animated assets require real source frames, frame sheet, preview, static fallback, and verified GUI precedent.
+Keep final player-facing text in-world. Do not paste working labels from the plan as final localisation. Follow [the asset skill](../../../../.agents/skills/chaos-redux-event-assets/SKILL.md) and [the animation skill](../../../../.agents/skills/chaos-redux-frame-animation/SKILL.md) for accepted consumers, source art, processing, manifests and runtime handoffs. Grounded portraits belong to `chaosx_portrait_creator`. Sourced placeholders remain pending until the user supplies the styled final. A pending placeholder does not satisfy final asset completion.
 
-Use patch-capable subagents for bounded focus, decision, country, localisation, and scripted helper work when available. Every patch needs a handoff. Use the improvement-loop planner near completion and resolve its addendum or closure. Run decision, country, localisation, focus if touched, and final completion audits.
+Use patch-capable subagents for bounded focus, decision, country, localisation, and scripted helper work when available. Every patch needs a handoff. Use the improvement-loop planner near completion and resolve its addendum or closure. Run decision, country, localisation, focus if touched, and final completion audits. Route every weighted surface to `chaosx_ai_probability_auditor` for the baseline, owner patch and matching-scenario comparison required by [the subagent skill](../../../../.agents/skills/chaos-redux-subagents/SKILL.md).
 
 Balance against current 1.19 regimental support and doctrine values. Strong effects must depend on equipment, preparation, counterplay, and aftermath rather than permanent stat bloat. Run every validation scenario in the balance spec at weak, normal, and high-chaos conditions. Record casualties, contamination, cleanup, stock use, command cost, AI action, evidence, Condemnation, and sanctions.
 

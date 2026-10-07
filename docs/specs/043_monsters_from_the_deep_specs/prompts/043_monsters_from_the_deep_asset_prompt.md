@@ -10,7 +10,9 @@ Use no inherited conversation context.
 
 ## Read first
 
-Read `AGENTS.md`, the complete Event 043 package, event-assets skill, frame-animation skill, portrait skill, 3D skill, super-event skill, subagent skill, matching vanilla reference catalogs, and current runtime consumers.
+Read `AGENTS.md`, the Event 043 asset crosswalk and model briefs, and the current `chaos-redux-event-assets`, `chaos-redux-frame-animation`, `chaos-redux-3d-model-pipeline`, `chaos-redux-super-events`, and `chaos-redux-subagents` skills.
+Portrait production follows `chaos-redux-event-assets/references/portrait-production.md`.
+Read the matching vanilla reference catalogs and current runtime consumers for each assigned asset family.
 
 ## Route by asset type
 
@@ -21,7 +23,7 @@ Read `AGENTS.md`, the complete Event 043 package, event-assets skill, frame-anim
 - every unit model, skeletal action, sourced unit sound, and counter brief: `chaosx_3d_model_pipeline`
 - final super-event text and music research: their dedicated research agents
 
-Every subagent runs with a complete prompt and `fork_context=false`.
+Every subagent receives a complete self-contained prompt with no inherited context; Codex spawns use `fork_turns="none"` as defined by `chaos-redux-subagents`.
 
 ## Source of truth
 
@@ -51,7 +53,9 @@ Use `docs/assets/043_monsters_from_the_deep/` during active work. Preserve sourc
 
 ## Parent responsibility
 
-The parent registers sprite and entity IDs, wires GFX, GUI, events, focuses, decisions, characters, sound definitions, and gameplay, then verifies live consumers.
+The parent owns non-portrait runtime wiring, entity IDs, gameplay integration, and final review.
+The portrait worker owns portrait-specific GFX and existing character portrait references under the owner skill's narrow exception.
+The user supplies live-game evidence.
 
 ## Completion
 

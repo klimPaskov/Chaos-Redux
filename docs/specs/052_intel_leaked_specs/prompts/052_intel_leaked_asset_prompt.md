@@ -8,14 +8,14 @@ Use the event's established runtime source slug `052_intelligence_leak` for engi
 
 ## Mandatory preflight
 
-The repository already contains:
+The originating source audit identified the following paths and sprites; confirm their current definitions before production:
 
 - `gfx/event_pictures/052_intelligence_leak/report_event_intel_leak.dds`
 - `gfx/event_pictures/052_intelligence_leak/news_intel_leak.dds`
 - `GFX_report_event_intel_leak`
 - `GFX_news_intel_leak`
 
-GitHub reported both DDS paths as 130 bytes. Do not classify them from size alone.
+The originating GitHub inspection reported both DDS paths as 130 bytes. Do not classify them from size alone.
 
 Inspect the exact Git LFS pointer signature, index OIDs, local LFS object availability, and working-file hashes. Run scoped `git lfs checkout` for these two paths when the matching objects are available. Decode and visually inspect the hydrated DDS files before deciding whether they satisfy the new specification.
 
@@ -169,7 +169,7 @@ Create completed, grey, and not-eligible variants for:
 
 Achievement DDS files remain in `gfx/achievements/` and match the full achievement IDs.
 
-Use separate source art for each achievement. Apply the repository achievement-state workflow and the verified not-eligible overlay where appropriate.
+Use separate source art for each achievement. Apply the current [achievement icon contract](../../../../.agents/skills/chaos-redux-event-assets/SKILL.md#achievement-icons) for every required triplet, including its supplied backgrounds, unchanged not-eligible overlay, processor, and evidence.
 
 Icon directions:
 

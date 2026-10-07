@@ -1,8 +1,11 @@
 # System Camp Repression Rework Spec, Part 2: Country Systems and Major Powers
 
+> **Current authority:** Start at [package_index.md](../package_index.md).
+> The accepted national-administration contract and current takeover record supersede incompatible original implementation and presentation instructions; this file preserves the earlier design and evidence.
+
 This part maps country packages. The working labels are not final localisation.
 
-## Live implementation reconciliation
+## Dated implementation reconciliation, 2026-07-11
 
 The live package implements the country systems through three decision files and one unified action bus:
 

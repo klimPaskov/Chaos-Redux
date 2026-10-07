@@ -5,7 +5,7 @@ Create the complete visual asset package for Chaos Redux Event 57, The Black Mar
 Follow the current repository versions of `AGENTS.md`, `chaos-redux-event-assets`, `chaos-redux-frame-animation` when an inherited consumer proves animation is required, and `chaos-redux-subagents`.
 
 
-Spawn every project subagent with a complete self-contained prompt and `fork_context=false`.
+Spawn every project subagent with a complete self-contained prompt and `fork_turns="none"` in Codex.
 
 ## Required reference inspection
 

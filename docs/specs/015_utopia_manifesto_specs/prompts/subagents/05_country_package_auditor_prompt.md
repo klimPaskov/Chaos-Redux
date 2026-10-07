@@ -1,6 +1,6 @@
 # Prompt for `chaosx_country_package_auditor`
 
-Use `fork_context=false`.
+Use `fork_turns="none"`.
 
 Repository: `C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux`
 

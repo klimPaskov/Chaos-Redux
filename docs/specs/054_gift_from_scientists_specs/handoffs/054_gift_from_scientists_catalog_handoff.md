@@ -29,13 +29,15 @@ The details should describe the worldwide wave of independent random technology 
 
 ## Scientific Research cluster row
 
-The current cluster export contains an empty Scientific Research placeholder with a Fire-Once classification and Chaos level 2. The final implementation should replace that placeholder with the actual cluster contract.
+The originating cluster export contained an empty Scientific Research placeholder with a Fire-Once classification and Chaos level 2.
+Use the [central reservation](../../shared_identifier_registry.md) for the distinct Scientific Research proposal, without treating that original export row as a free runtime identity.
+Identifier allocation alone does not accept cluster behavior or membership and does not authorize a workbook change.
 
 Required cluster fields:
 
 | Field | Required value or source |
 | --- | --- |
-| Stable ID | Use the existing repository ID if already reserved. Use proposed ID `9` only after collision inspection confirms it |
+| Stable ID | Reserved `event_cluster_id = 21` for Scientific Research, shared with Event 089 under the central registry |
 | Name | `Scientific Research` |
 | Type | `Minor Repeatable` |
 | Chaos level | `2` |

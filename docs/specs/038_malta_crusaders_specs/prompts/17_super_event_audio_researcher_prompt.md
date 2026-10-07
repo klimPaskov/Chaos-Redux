@@ -2,7 +2,9 @@
 
 Work with no inherited conversation context. Research and prepare one licensed or public-domain musical cue for one named Event 38 super-event.
 
-Read `AGENTS.md`, `chaos-redux-super-events`, `chaos-redux-event-assets`, `chaos-redux-subagents`, `18_super_events.md`, `29_asset_requirement_matrix.md`, and the parent audio brief. The parent must provide the exact super-event role, ID or planned ID, tone, intended duration, final basename, final sound folder, and existing-repository candidates to inspect first.
+Read only the parent audio brief, relevant audio sections of the [super-event skill](../../../../.agents/skills/chaos-redux-super-events/SKILL.md), and named audio manifests or notes needed for reuse and licensing.
+The parent must extract the exact role and requirements from `18_super_events.md` and `29_asset_requirement_matrix.md`, supplying role, ID or planned ID, tone, intended duration, final basename, final sound folder and named repository candidates.
+Keep the audio researcher out of gameplay, broad source review and engine documentation under the current role contract.
 
 Check approved repository audio and canonical documentation before searching externally. Use an existing cue only when its title, creator or composer, performer or recording source, source, license, duration, intended use, and exact approved reuse are documented. Otherwise research a unique cue.
 

@@ -46,11 +46,13 @@ Read route branches, institutions, decision map, achievements, and asset prompt.
 
 ## 10. chaosx_portrait_creator
 
-Read the country matrix, actual roster, source researcher results, and portrait skill requirements. Own every real, fictional, and institutional portrait. Preserve a real subject's sourced identity and valid chronology. Use explicit head-and-shoulders framing, 156 by 210 leader output, and 65 by 67 adviser output only for an actual need. Follow the user's RunPod final styling route. Return sources, identity checks, crop and output evidence, and missing research. Do not invent biographies to fill a list.
+Read the country matrix, actual roster, source researcher results, and portrait skill requirements. Own every real, fictional, and institutional portrait. Preserve a real subject's sourced identity and valid chronology. Use explicit head-and-shoulders framing, 156 by 210 leader output, and 65 by 67 adviser output only for an actual need. For grounded subjects, wire an explicitly pending source placeholder and install the user-supplied styled final.
+The user alone operates RunPod.
+Wholly fictional portraits use native ImageGen through the portrait worker. Return sources, identity checks, crop and output evidence, and missing research. Do not invent biographies to fill a list.
 
 ## 11. chaosx_3d_model_pipeline
 
-Read part 9, the full part 16 unit brief, the dedicated 3D skill, actual unit consumer, and allowed source references. Produce the required Immortals body and separate firearm through the current Meshy 7 and Blender pipeline. Follow the dedicated firearm rule despite older contradictory wording, and coordinate that discrepancy with the skill maintainer. Respect paid-work authorization and recovery limits. Validate scale, rig, attachments, actions, textures, export, entity, counters, sound, and unit wiring. Return source tasks, intermediate files, final assets, and actual consumer evidence. A rendered model alone is incomplete.
+Read part 9, the full part 16 unit brief, the dedicated 3D skill, actual unit consumer, and allowed source references. Produce the required Immortals body and separate firearm through the current Meshy 7 and Blender pipeline. Follow [the current 3D pipeline](../../../.agents/skills/chaos-redux-3d-model-pipeline/SKILL.md) for route selection, attempt allowances, component completion and Blender fallbacks. Validate scale, rig, attachments, actions, textures, export, entity, counters, sound, and unit wiring. Return source tasks, intermediate files, final assets, and actual consumer evidence. A rendered model alone is incomplete.
 
 ## 12. chaosx_event_ui_worker
 
@@ -78,7 +80,8 @@ Read the index, source receipt, accepted implementation reports, and actual docu
 
 ## 18. chaosx_skill_maintainer
 
-Read the supplied dedicated 3D skill, planning skill, role TOMLs, config, and the conflicts in the source receipt. Resolve contradictory firearm-generation and paid-recovery wording against the current intended workflow. Also review event-managed human-country classification and any newly exposed unit or cost API gaps. Propose narrowly scoped skill corrections with sources and affected roles. Do not silently broaden paid permissions or alter unrelated project policy.
+Read the supplied dedicated 3D skill, planning skill, role TOMLs, config, and the conflicts in the source receipt. Treat those supplied-profile conflicts as dated source history.
+Inspect current owner guidance and propose corrections only if the contradiction still exists in the current files. Also review event-managed human-country classification and any newly exposed unit or cost API gaps. Propose narrowly scoped skill corrections with sources and affected roles. Do not silently broaden paid permissions or alter unrelated project policy.
 
 ## 19. chaosx_improvement_loop_planner
 

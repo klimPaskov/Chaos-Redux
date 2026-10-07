@@ -1,6 +1,8 @@
 # Gods of Africa package manifest
 
-> Superseded-package notice, 2026-09-05: this manifest preserves the historical standalone Event 012 planning inventory and is not the current runtime or acceptance ledger. The replacement sources are `docs/specs/012_africa_specs/`, `docs/events/012_africa/gods_of_africa.md`, and the dated Event 012 art and vanilla-elephantry handoffs. Its inventory statistics are refreshed only for this notice and README reconciliation; no package files are deleted.
+> Superseded-package notice, 2026-09-05: this manifest preserves the historical standalone Event 012 planning inventory and is not the current runtime or acceptance ledger. The replacement sources are `docs/specs/012_africa_specs/`, `docs/events/012_africa/gods_of_africa.md`, and the dated Event 012 art and vanilla-elephantry handoffs. Its recorded statistics include the prior notice/README refresh and are retained as historical evidence; they do not certify the October working documents.
+
+The October audit handoff records current inventory and documentation changes without rewriting historical hashes.
 
 ## Package summary
 - Generated files listed: `23`

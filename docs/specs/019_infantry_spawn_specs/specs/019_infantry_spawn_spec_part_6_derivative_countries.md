@@ -11,16 +11,11 @@ The package should support dynamic regional creation rather than require one per
 
 ## Shared creation flow
 
-Natural creation freezes one of three centralized release modes before any
-actor is created: ordinary claimant, anomalous claimant, or
-claimant-independent family breach. The transaction nonce owns at most one
-active release for the source country. Scenario creation remains a separate
-direct context and does not inherit these natural prerequisites.
+Natural creation freezes one of three centralized release modes before any actor is created: ordinary claimant, anomalous claimant, or claimant-independent family breach. The transaction nonce owns at most one active release for the source country. Scenario creation remains a separate direct context and does not inherit these natural prerequisites.
 
 ### 1. Determine revolt family
 
-For a family-capable mode, the system selects the complete registry row with the
-strongest valid derivative pressure based on:
+For a family-capable mode, the system selects the complete registry row with the strongest valid derivative pressure based on:
 
 - family presence
 - family-controlled divisions
@@ -29,11 +24,7 @@ strongest valid derivative pressure based on:
 - saturation
 - registry derivative eligibility
 
-An ordinary claimant release carries no family row. It needs only Evolution III,
-a valid claimant, and at least one exact loyal Event 19 formation. An anomalous
-claimant release carries both claimant UID and provider row. A
-claimant-independent breach carries the provider row and explicitly proves that
-its transfer set contains no claimant-linked rows.
+An ordinary claimant release carries no family row. It needs only Evolution III, a valid claimant, and at least one exact loyal Event 19 formation. An anomalous claimant release carries both claimant UID and provider row. A claimant-independent breach carries the provider row and explicitly proves that its transfer set contains no claimant-linked rows.
 
 ### 2. Determine territory
 
@@ -45,14 +36,7 @@ The revolt territory should form a coherent region around:
 - states containing loyal event formations
 - weak central control
 
-The system avoids isolated single-state islands whenever a controlled, passable,
-non-capital mainland state exists. If no such mainland base exists, a controlled,
-passable, non-capital island may anchor the same connected-region and exact-
-formation transaction. A protected parent capital is never transferred; when a
-claimant headquarters is the parent capital or otherwise unsafe, an exact loyal
-formation origin becomes the breakaway headquarters. This is the only-viable-
-base branch of the normal geography contract, not a fixed-tag or random-state
-fallback.
+The system avoids isolated single-state islands whenever a controlled, passable, non-capital mainland state exists. If no such mainland base exists, a controlled, passable, non-capital island may anchor the same connected-region and exact- formation transaction. A protected parent capital is never transferred; when a claimant headquarters is the parent capital or otherwise unsafe, an exact loyal formation origin becomes the breakaway headquarters. This is the only-viable- base branch of the normal geography contract, not a fixed-tag or random-state fallback.
 
 ### 3. Determine leader
 
@@ -79,34 +63,11 @@ The derivative receives:
 
 Ordinary national divisions remain with the parent unless a severe command-collapse event explicitly defects them.
 
-All natural releases implement this force transfer as one mode-aware exact locked
-transaction because HOI4 exposes no documented division-scoped ownership
-effect. The source freezes every selected Event 19 UID, delete cohort, ledger
-identity, template/component manifest, obligation, auxiliary membership, and
-starting factor. Ordinary claimant mode freezes and proves claimant-loyal rows
-without demanding a family. Anomalous claimant mode freezes and proves the exact
-union of claimant-loyal and selected-family rows. Claimant-independent mode
-freezes and proves only claimant-free rows of the selected family. A dynamic
-actor recreates only the mode-selected set and must prove its territory, private
-ledgers, applicable claimant or provider identity, and complete replacement army
-before any source cohort is deleted. Deletion uses the exact frozen cohort with
-no refund.
+All natural releases implement this force transfer as one mode-aware exact locked transaction because HOI4 exposes no documented division-scoped ownership effect. The source freezes every selected Event 19 UID, delete cohort, ledger identity, template/component manifest, obligation, auxiliary membership, and starting factor. Ordinary claimant mode freezes and proves claimant-loyal rows without demanding a family. Anomalous claimant mode freezes and proves the exact union of claimant-loyal and selected-family rows. Claimant-independent mode freezes and proves only claimant-free rows of the selected family. A dynamic actor recreates only the mode-selected set and must prove its territory, private ledgers, applicable claimant or provider identity, and complete replacement army before any source cohort is deleted. Deletion uses the exact frozen cohort with no refund.
 
-If any pre-commit proof fails, the actor's exact replacements are removed and
-proved absent, its provisional cores are removed, it is annexed with troop
-transfer disabled, selected territory is proved returned, and only missing
-frozen source UIDs are recreated and rebound. Both sides remain locked until the
-full source set and unchanged global Event 19 accounting are proved. Once source
-accounting commits, later failure is terminal and locked; it must not invoke the
-pre-commit rollback.
+If any pre-commit proof fails, the actor's exact replacements are removed and proved absent, its provisional cores are removed, it is annexed with troop transfer disabled, selected territory is proved returned, and only missing frozen source UIDs are recreated and rebound. Both sides remain locked until the full source set and unchanged global Event 19 accounting are proved. Once source accounting commits, later failure is terminal and locked; it must not invoke the pre-commit rollback.
 
-The transfer cannot preserve live-only organization, veterancy, decorations,
-officer history, army assignment, orders, exact current manpower fill, or exact
-per-equipment composition because those properties are not exposed to this
-script path. It instead preserves the immutable Event 19 issue manifest,
-identities, recorded starting factors, and liabilities. A two-sided strength
-gate rejects a source below the larger recorded starting factor and rejects a
-replacement above it, preventing the transaction from repairing damage.
+The transfer cannot preserve live-only organization, veterancy, decorations, officer history, army assignment, orders, exact current manpower fill, or exact per-equipment composition because those properties are not exposed to this script path. It instead preserves the immutable Event 19 issue manifest, identities, recorded starting factors, and liabilities. A two-sided strength gate rejects a source below the larger recorded starting factor and rejects a replacement above it, preventing the transaction from repairing damage.
 
 ### 5. Establish identity
 
@@ -128,9 +89,7 @@ The country receives:
 
 The derivative normally begins at war with its former parent.
 
-A verified one-state claimant-independent family breach instead converts the
-same tag to the provider identity after exact family and ledger proof. That path
-clears former-parent war surfaces and does not declare war on itself.
+A verified one-state claimant-independent family breach instead converts the same tag to the provider identity after exact family and ledger proof. That path clears former-parent war surfaces and does not declare war on itself.
 
 It can also receive immediate hostility toward:
 

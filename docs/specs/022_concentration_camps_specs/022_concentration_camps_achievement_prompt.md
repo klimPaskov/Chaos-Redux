@@ -233,7 +233,7 @@ After implementation:
 - run `chaosx_localisation_auditor`
 - run the event completion auditor against achievement requirements
 - use the decision or scripted-system auditor if proof helpers touch shared event state
-- run live QA with dedicated saves
+- record user-owned live-game proof and leave unobserved paths unresolved
 
 Patch-capable agents may fix small local trigger, localisation, cleanup, or icon-reference defects. Broad changes to Event 22 state architecture return to the parent.
 

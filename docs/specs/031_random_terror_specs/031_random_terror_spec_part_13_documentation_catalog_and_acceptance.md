@@ -43,8 +43,8 @@ Event 31 should contain player-facing fields aligned with final in-game wording.
 - Type: `Minor Repeatable`
 - Status after completion: the repository's accepted implemented or playable status
 - Chaos level: `1` where the workbook exposes it
-- Cluster ID: blank until Internal Fracture is formally registered, then the verified cluster ID
-- Member severity: severe after cluster registration
+- Current Cluster ID: Domestic Unrest, raw `event_cluster_id` `16`; preserve it unless a separate accepted membership change is recorded
+- Member severity: preserve the current catalog value; the proposed severe role belongs to the optional Internal Fracture design
 
 ### Details direction
 
@@ -82,7 +82,7 @@ Global Jihad needs one authoritative Scenarios-sheet row after its ID is verifie
 
 Required fields include:
 
-- stable ID, proposed `SCN-014`
+- stable incumbent ID, `SCN-016`, raw scenario ID `16`
 - scenario name
 - owner Event 31
 - public details
@@ -103,7 +103,7 @@ The proposed Internal Fracture cluster should not be added until its members are
 
 When approved, the authoritative Clusters sheet should include:
 
-- verified ID, proposed `9`
+- reserved proposal ID, raw `event_cluster_id` `22`
 - name
 - public premise
 - minimum Chaos tier
@@ -112,7 +112,9 @@ When approved, the authoritative Clusters sheet should include:
 - member availability and skip behavior
 - cluster firing and history behavior
 
-Until then, Event 31's Cluster ID remains blank.
+The reservation is recorded in [the shared identifier registry](../shared_identifier_registry.md) and [its JSON ledger](../shared_identifier_registry.json).
+It does not approve or register Internal Fracture or replace Event 031's current Domestic Unrest membership `16`.
+Raw cluster `9` belongs to National Breakthroughs.
 
 ## Event registration and status
 
@@ -279,8 +281,8 @@ The following identifiers are accepted working identities and need collision ver
 - takeover marker: `random_terror_takeover_country`
 - ordinary crisis marker: `random_terror_crisis_active`
 - world-threat source: `world_threat_source_random_terror`
-- scenario ID: `SCN-014`
-- future cluster ID: `9`
+- current scenario ID: `SCN-016`, raw scenario ID `16`
+- optional future cluster reservation: raw `event_cluster_id` `22`
 - world-end flag family: Event 31 False Revelation specific
 - state map mode: Event 31 active-state map mode
 

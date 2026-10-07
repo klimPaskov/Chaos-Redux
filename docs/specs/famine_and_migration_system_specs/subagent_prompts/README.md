@@ -1,12 +1,15 @@
 # Subagent Prompts
 
-These prompts are implementation handoffs. Spawn every project subagent with `fork_context=false`.
+These prompts are implementation handoffs. Spawn every project subagent with no inherited thread context (Codex `fork_turns="none"`; other runtimes follow the [subagent skill](../../../../.agents/skills/chaos-redux-subagents/SKILL.md)).
 
 Replace `<MOD_ROOT>` only after resolving the real Chaos Redux repository root.
 
-Required prompts:
+Read [package README](../README.md) and the current continuation record before selecting a template.
+The parent must replace placeholders and add exact owned files, accepted remaining work, prior handoff status, source revisions, scenario requirements and output path.
+These templates do not authorize rerunning completed production or expanding another system owner's files.
 
-- `01_repo_explorer.md`
+Implementation and audit templates:
+
 - `02_scripted_system_architect.md`
 - `03_ai_probability_auditor_baseline.md`
 - `04_decision_mission_auditor.md`
@@ -19,6 +22,8 @@ Required prompts:
 - `12_spreadsheet_doc_worker.md`
 
 Conditional prompts:
+
+- `01_repo_explorer.md` when paths, contracts or edit order are unclear
 
 - `08_asset_source_researcher.md`
 - `13_skill_maintainer.md`

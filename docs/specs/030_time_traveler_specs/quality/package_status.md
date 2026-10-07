@@ -1,6 +1,6 @@
 # Event 030 Package Status
 
-## Current status
+## Original planning-session status
 
 - Design package: complete for implementation handoff
 - Source implementation: not performed in this environment
@@ -30,7 +30,10 @@ The package defines:
 
 The attached Event 030 brief is the idea source. This package expands it and supersedes the older catalog shorthand for planning purposes. The authoritative catalog must still be updated through the XLSX workflow after implementation wording is final.
 
-The proposed scenario ID is `SCN-015` because the supplied export ends at `SCN-014`. That ID remains a working reservation until the live workbook and registry are checked for concurrent changes.
+The original planning pass proposed `SCN-015` from its supplied export.
+That proposal is superseded by the 7 October 2026 user-authorized reservation of `SCN-020`, raw ID `20`, in the [shared identifier registry](../../shared_identifier_registry.md).
+Only identifier ownership is approved.
+Recheck the central ledger and runtime/workbook occupancy before integration.
 
 ## No speed simplification
 
@@ -52,7 +55,8 @@ The following were unavailable here and remain required before implementation ca
 
 ## Plan disposition
 
-No earlier Event 030 improvement addendum was found in the connected repository search. This package contains one manual improvement-loop closure review. A later implementation agent should either adopt the package as the source spec or record any rejected section with a reason before coding a smaller design.
+No earlier Event 030 improvement addendum was found in the connected repository search. This package contains one manual improvement-loop closure review. A later implementation agent must record user or parent acceptance before treating expanded sections as accepted design.
+Any rejected or queued section needs its disposition and reason.
 
 ## Broad expansion stop condition
 

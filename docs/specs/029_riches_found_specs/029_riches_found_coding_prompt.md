@@ -1,6 +1,6 @@
 # Event 029 full implementation prompt
 
-Implement the complete Chaos Redux Event 029, Riches Found, from the accepted specification package under `docs/specs/029_riches_found_specs/`.
+Implement the complete Chaos Redux Event 029, Riches Found, from the source specification package under `docs/specs/029_riches_found_specs/`.
 
 Do not implement a reduced prototype.
 
@@ -19,7 +19,7 @@ Before editing:
 5. Inspect the current Event 029 source, its registration, log mappings, details, assets, docs, and catalog state.
 6. Inspect Event 018 Resources Found and preserve strict separation.
 7. Inspect current persistent-state registries, controller-transfer hooks, dynamic modifiers, selected-target decisions, Deaths, Condemnation, repeatable-event logic, Event Details, evolution logs, asset folders, achievements, and workbook exporter.
-8. Use `chaosx_repo_explorer` with `fork_context=false` only if file locations, patterns, or edit order remain unclear after direct inspection.
+8. Use `chaosx_repo_explorer` with `fork_turns="none"` only if file locations, patterns, or edit order remain unclear after direct inspection.
 9. Use `hoi4.event_inspect`, `hoi4.event_render`, and `hoi4.event_compare` for the event chain.
 10. Use the specialized probability workflow for every weighted or timed surface.
 

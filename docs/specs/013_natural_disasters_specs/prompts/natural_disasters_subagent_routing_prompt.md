@@ -2,7 +2,8 @@
 
 > Implementation disposition: superseded by the executed handoffs under `docs/plans/013_natural_disasters_plans/subagent_handoffs/`. Retain these prompts only as routing history; do not repeat a completed tranche without a new blocker.
 
-The actual subagent execution tool was not available in this chat environment. This file preserves bounded prompts for a later Codex run with `fork_context=false`.
+The original planning environment lacked the execution tool.
+For any new bounded pass, follow [the routing owner skill](../../../../.agents/skills/chaos-redux-subagents/SKILL.md) and use `fork_turns="none"` with explicit inputs in Codex.
 
 ## Repo explorer
 

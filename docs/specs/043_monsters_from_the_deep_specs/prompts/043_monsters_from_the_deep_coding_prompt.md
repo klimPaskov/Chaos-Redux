@@ -72,7 +72,7 @@ Before implementation work, prove:
 1. seventeen collision-free stable tags against vanilla, Chaos Redux, installed Workshop mods, and sibling local mods
 2. exact state and spawn-province pools for all sixteen identities
 3. a generated saltwater-coast and inland-depth registry
-4. current free append-only IDs for the manual scenario and public world-end row
+4. centrally reserved manual scenario SCN-022 / raw 22 and separate Cthulhu world-end ID 17 from `docs/specs/shared_identifier_registry.md`
 5. an enforceable way to block apex training, duplication, template conversion, splitting, voluntary deletion, and recreation
 6. one reliable apex-death and terminal-transfer identity system
 7. complete package-readiness gating so unfinished identities never enter selection
@@ -146,7 +146,8 @@ Cthulhu transfer must snapshot and dispose of every full monster country, living
 
 ## Manual scenario
 
-Register the next verified free scenario ID. Add Warring Titans and Pact of the Deep types.
+Use reserved manual scenario `SCN-022` / raw `22`. Add Warring Titans and Pact of the Deep types.
+The separate Cthulhu world-end ID is `17`; preserve incumbent runtime IDs and treat allocation as identity approval only.
 
 Low creates 2, Medium 5, High 10, Maximum 16. A requested count must be exact or the launch reports a blocker. Clear every scenario bypass after setup.
 

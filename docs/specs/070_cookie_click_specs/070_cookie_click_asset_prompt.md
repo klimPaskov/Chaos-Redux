@@ -36,7 +36,8 @@ The normal and reduced-motion modes both need readable state and exact click beh
 
 Use one clean approved image per geometry job.
 Follow the dedicated skill's Meshy-7 and separate-body/separate-firearm requirement.
-Resolve conflicting older firearm and retry instructions before paid work.
+Use [the current 3D pipeline](../../../.agents/skills/chaos-redux-3d-model-pipeline/SKILL.md) for route selection, attempt allowances, component completion and Blender fallbacks.
+The source-profile conflict is retained as history and is not an extra production approval gate.
 Do not generate fused guns or send firearm characters through forbidden auto-animation.
 Record provider request, model, paid-job authorization, outputs and recovery.
 No API key, paid capability or credit balance is assumed from this prompt.
@@ -45,7 +46,7 @@ Measure installed-vanilla source geometry and effective scale for each class.
 Include weapons, mounts, crew, machinery and every attachment in performance and scale checks.
 Complete idle, movement, combat and death actions.
 Fit and animate firearm hands, recoil and muzzle locators correctly.
-Export, reimport the actual output and capture live moving, fighting and dying consumers.
+Export and reimport the actual output, then retain user-provided evidence of moving, fighting and dying consumers.
 A static 3D render is not completion.
 
 Create bespoke large and small native counters for all eight military families.
@@ -73,3 +74,6 @@ Remove unused files after preserving required provenance.
 
 Return a complete manifest, missing-capability report, consumer coverage, previews, before-and-after GUI evidence, scale and animation evidence, licensing records, final paths and an explicit list of unvalidated assets.
 Do not report a static fallback as the completed ordinary animation.
+
+For consumers with transparent unused canvas, request native ImageGen transparency in the initial call and preserve alpha through processing and DDS conversion.
+Use [the current asset skill](../../../.agents/skills/chaos-redux-event-assets/SKILL.md) for alpha, source preservation, processing and fallback evidence.

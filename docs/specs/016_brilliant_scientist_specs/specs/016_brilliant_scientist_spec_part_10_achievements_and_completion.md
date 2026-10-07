@@ -722,7 +722,10 @@ The specification does not lock:
 - Final event IDs beyond the stable `chaosx.nr16` namespace.
 - Final localisation text.
 - Final super-event titles, quotes, button remarks, and audio.
-- Final country tag if `KRG` conflicts.
 - Exact numerical constants.
 
 Those details belong to implementation and tuning. They must preserve the route architecture, effects, costs, identities, and acceptance criteria in this package.
+
+The former open tag-selection item is superseded by the existing `KRG` owner registration at `common/country_tags/016_brilliant_scientist_country.txt`, line 8.
+Inspect and reuse that identity under the [shared identifier registry](../../shared_identifier_registry.md).
+A genuine external collision remains an audit finding to resolve, without treating `KRG` as unallocated or creating a duplicate Kruger country.

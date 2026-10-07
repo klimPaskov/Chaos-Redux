@@ -6,7 +6,7 @@ This package is the source design for Event 048, Old Great Bulgaria.
 
 It expands the supplied rough concept into a complete planning handoff for event flow, evolutions, focus-tree architecture, decisions, integration, formables, politics, diplomacy, AI behavior, regional reactions, assets, achievements, super-events, Chaos effects, event-cluster behavior, cleanup, implementation order, and acceptance evidence.
 
-The pack preserves the accepted event promise:
+The pack preserves the supplied event promise summarized in `source/048_user_brief_summary.md`:
 
 - Bulgaria receives an immediate and extreme military, industrial, logistical, and political surge.
 - Bulgaria gains a large event-owned focus tree whose opening becomes playable within weeks.
@@ -19,6 +19,12 @@ The pack preserves the accepted event promise:
 - Bulgaria remains an ordinary human country and keeps access to normal civilian systems.
 
 ## Source hierarchy
+
+`source/048_user_brief_summary.md` records the supplied premise and evolution thresholds.
+The original brief is not retained here, and that normalized summary does not establish acceptance of every planner expansion.
+Claims lacking an attributable original user or parent decision remain unresolved.
+Package-generation source reports, the independent structural audit, and improvement closure are historical evidence, not current implementation, tool health, or final approval.
+`quality/package_file_manifest.csv` describes current local package files; its bytes and hashes are refreshed after documentation cleanup.
 
 Use the sources in this order:
 
@@ -43,7 +49,7 @@ When a later implementation detail conflicts with the event promise above, the e
 - `specs/048_old_great_bulgaria_spec_part_5_politics_diplomacy_ai.md`
 - `specs/048_old_great_bulgaria_spec_part_6_assets_super_events_achievements.md`
 - `specs/048_old_great_bulgaria_spec_part_7_chaos_cluster_cleanup_validation.md`
-- `048_old_great_bulgaria_full_spec.md`
+The seven maintained parts replace the removed combined copy, whose body exactly duplicated those parts.
 
 ### Research and geography
 

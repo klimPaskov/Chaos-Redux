@@ -66,7 +66,7 @@ Fictional officials are suitable for unsupported private-life cases and caretake
 
 ### 3D pipeline commitment
 
-All four custom firearm formations use the most specific supplied 3D pipeline. Generate a weapon-free body through Meshy 7 from one approved body image. Generate each gun separately through Meshy 7 from its own single gun-only image. Assemble, rig, weight, and animate directly in Blender through the required qualified worker. Do not request Meshy rigging or action generation for these firearm units. Do not model their guns procedurally in Blender as a silent substitute for the newer separate-generation rule.
+The four firearm formations follow the [unit production briefs](084_the_peace_movement_3d_model_briefs.md) and [current 3D owner skill](../../../.agents/skills/chaos-redux-3d-model-pipeline/SKILL.md), preserving separate body/item provenance, real skeletal actions, complete modeled components, and exporter/reimport evidence.
 
 Use modern professionally designed artwork with documented rights suitable for the intended generation reference. Archival photographs, museum displays, reenactment photos, and documentary material are not the body/gun generation references under this skill, even though some are appropriate sources for other asset categories. No such production-ready licensed reference was verified during this planning turn. That remains an explicit production gate.
 

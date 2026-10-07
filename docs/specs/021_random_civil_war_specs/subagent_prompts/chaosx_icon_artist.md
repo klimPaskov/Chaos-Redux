@@ -1,6 +1,6 @@
 # Subagent Prompt: Event 021 Icon Artist
 
-Spawn `chaosx_icon_artist` with `fork_context=false` after final decision, mission, idea, category, and achievement identifiers are known.
+Spawn `chaosx_icon_artist` with `fork_turns="none"` after final decision, mission, idea, category, and achievement identifiers are known.
 
 Read:
 

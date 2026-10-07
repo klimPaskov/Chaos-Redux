@@ -4,6 +4,14 @@ This package defines the full planning specification for Chaos Redux Event 57, *
 
 The event is a `Minor Fire-Once` event at Chaos level `1`. Its first firing creates a persistent, invitation-only international smuggling network. The random event itself never repeats. Later membership growth, inventory rotations, route failures, investigations, transactions, and evolutions belong to the event-owned runtime.
 
+## Design authority and current workflow
+
+The package attributes its premise to the supplied user brief.
+The original user message and claim-level acceptance record are not reproduced here, so approval of expanded mechanics remains unresolved until the implementation owner records the supporting user decision or parent acceptance.
+Historical planning reviews, catalog snapshots, and package status labels do not establish approval or current implementation.
+Use current [AGENTS.md](../../../AGENTS.md), [event guidance](../../../.agents/skills/chaos-redux-events/SKILL.md), [asset guidance](../../../.agents/skills/chaos-redux-event-assets/SKILL.md), and [subagent guidance](../../../.agents/skills/chaos-redux-subagents/SKILL.md) for execution.
+The source design remains in the files listed below.
+
 ## Accepted catalog identity
 
 | Field | Accepted value |
@@ -40,7 +48,7 @@ The supplied event catalog export still assigns Event 57 to an older Radar entry
 | `research/bibliography.md` | Web sources used for the historical design pass |
 | `prompts/` | Bounded implementation, asset, achievement, decision, scripted-system, AI, localisation, catalog, and completion prompts |
 
-`057_the_black_market_full_specs.md` is a combined reading copy generated from the source files in this package. The separate files remain authoritative because they allow implementation agents and specialist auditors to work from bounded scopes.
+[The former combined reading copy](057_the_black_market_full_specs.md) is superseded by the separate files in the package map. The separate files hold the editable design and bounded specialist inputs.
 
 ## Design summary
 
@@ -56,8 +64,8 @@ The system uses one hidden member-only decision category with a static picture t
 
 The event has three paced evolutions at `200+`, `400+`, and `600+` Chaos. Evolution activation itself changes no Chaos. Event-owned Chaos changes come from concrete milestones such as the first interregional route, a successful embargo breach, a transaction between active enemies, or the delivery of an approved experimental package.
 
-## Source status
+## Original planning source status
 
-Every top-level source file supplied for this task was read in full. The three CSV catalogs were read in full. The subagent ZIP was extracted, and all twenty current subagent TOML definitions were read in full. No source file was knowingly truncated during the final design pass.
+Every top-level source file supplied for this task was read in full. The three CSV catalogs were read in full. The subagent ZIP was extracted, and all twenty subagent TOML definitions supplied to that planning pass were read in full. No source file was knowingly truncated during the final design pass.
 
 The supplied Codex subagent runtime could not be invoked because its MCP tunnel returned an HTTP `404`. The package therefore records internal role-based passes that apply the provided subagent contracts. It does not claim that project subagents were successfully spawned.

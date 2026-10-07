@@ -1,5 +1,8 @@
 # System Camp Repression Rework Spec, Part 1: Shared Core Loop
 
+> **Current authority:** Start at [package_index.md](../package_index.md).
+> The accepted national-administration contract and current takeover record supersede incompatible original implementation and presentation instructions; this file preserves the earlier design and evidence.
+
 Working feature id: `system_camp_repression_rework`
 
 Working feature name: Camp, Repression, and Atrocity Consequences Rework

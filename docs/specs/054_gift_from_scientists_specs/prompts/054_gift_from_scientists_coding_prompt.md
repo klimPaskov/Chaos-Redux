@@ -44,7 +44,8 @@ Do not duplicate Chaos from wars, deaths, contamination, or other shared systems
 
 ## Scientific Research cluster
 
-Replace the incomplete Scientific Research placeholder after confirming its stable ID. The cluster is Minor Repeatable, unlocks at Chaos level 2, and contains Events 16, 24, 27, 54, and 60 with the accepted per-member severities.
+For any separately accepted Scientific Research implementation, use reserved `event_cluster_id = 21` from the [shared identifier registry](../../shared_identifier_registry.md).
+The reservation is shared with Event 089 and does not accept the wider cluster design or membership. The cluster is Minor Repeatable, unlocks at Chaos level 2, and contains Events 16, 24, 27, 54, and 60 with the accepted per-member severities.
 
 Preserve mixed event types and Event 27's separate Medium membership in Military Preparation. Each member checks its own enable state, event level, fire-once state, evolution state, and event-specific eligibility. One cluster firing creates one pacing commitment while participating members retain their own effects, history, and event-state changes.
 

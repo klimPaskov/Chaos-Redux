@@ -25,9 +25,10 @@ Never send Meshy a turnaround, collage, multi-view board, contact sheet, side-pr
 
 ## Provider route
 
-Use Meshy 7 through the verified provider workflow. Before every paid tranche, inspect live balance, cost, route, and schema. Preserve every task ID, attempt, source download, checksum, and rejection. Do not retry an unchanged failed task without a recorded recovery rationale.
-
-Normal generation, remesh or retexture, rigging, conversion, required animation credit use, and bounded failure recovery are pre-authorized only while the provider capability and balance permit them. Fail closed on insufficient credits, provider refusal, or schema mismatch.
+Follow the current [3D model owner skill](../../../.agents/skills/chaos-redux-3d-model-pipeline/SKILL.md) for gates, source eligibility, provider attempt limits, separated item-free body and held-item inputs, component completion, and Blender transitions.
+Try rigging once per eligible model and animation once per required action; failed or unusable output moves to real Blender-authored rigs, weights and actions without paid retries or renewed approval.
+Firearm-bearing bodies use weapon-free Meshy input and direct Blender rig, weapon, held-item and action work.
+Preserve provider lineage, rejected candidates, modeled components, live authoring and review evidence.
 
 ## Vanilla crosswalk
 
@@ -46,7 +47,8 @@ Required skeletal actions:
 
 Record action name, semantic role, FPS, frame range, loop policy, root motion or in-place policy, ground contact, retarget route, static fallback, runtime binding, and evidence.
 
-Final primary skeletal motion must come from verified Meshy animation or another professional source explicitly approved by the user. Transform-only, static aliases, whole-rig rotations, and locally improvised final motion are forbidden.
+Final motion follows the provider or authorized live Blender route in the owner skill, with real role-specific articulated actions and deformation review.
+Transform-only motion, static aliases, whole-rig rotations and unreviewed generated keyframes remain invalid.
 
 ## Vehicle actions
 

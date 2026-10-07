@@ -12,7 +12,8 @@ Do not simplify the complete trait-pool promise.
 
 ## Required prework
 
-Run the repo explorer prompt and scripted-system architect prompt with `fork_context=false`.
+Run the scripted-system architect prompt with `fork_turns="none"`.
+Use the repo explorer prompt only when trait roots, exact source locations, integration ownership, or precedents remain unclear.
 
 Resolve the exact country-leader trait source roots, load-order behavior, recipient ledger scope, weighted selection method, report storage, global actor pattern, and cluster ID before coding around them.
 
@@ -161,7 +162,7 @@ A zero-result firing grants no Event 65 direct Chaos.
 
 Inspect the authoritative workbook and current source for the final cluster ID.
 
-Prefer `event_cluster_id.randomizations = 9` only when it remains unused.
+Use the parent-allocated `event_cluster_id.randomizations = 14` and verify registry consistency before wiring.
 
 Register Randomizations as a Minor Repeatable Chaos level 1 cluster.
 
@@ -187,7 +188,7 @@ Run the Event 65 asset prompt.
 
 Inspect the existing DDS before reuse.
 
-Install one valid opaque `210x176` report image.
+Install one valid `210x176` report image with the inspected consumer’s alpha and card treatment.
 
 The asset worker owns production and manifest evidence.
 
@@ -260,14 +261,14 @@ Run:
 2. localisation auditor
 3. documentation curator
 4. spreadsheet alignment worker
-5. mandatory improvement-loop planner with `fork_context=false`
+5. mandatory improvement-loop planner with `fork_turns="none"`
 6. read-only completion auditor
 
 Integrate every accepted improvement addendum.
 
 Resolve every source blocker.
 
-Provide user test steps and leave status at `Needs Testing`.
+Preserve the runtime scenario matrix and leave status at `Needs Testing`.
 
 Do not set `Available` before user acceptance.
 
@@ -294,7 +295,7 @@ Include:
 - subagent handoffs
 - skipped validation
 - unresolved items
-- focused user test steps
+- runtime scenarios and unresolved user-owned evidence
 
 Keep iterating until every implementation-owned acceptance row passes.
 

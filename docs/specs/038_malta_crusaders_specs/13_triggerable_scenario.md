@@ -4,14 +4,16 @@
 
 | Field | Working value |
 | --- | --- |
-| Scenario ID | `SCN-015`, provisional pending workbook collision check |
+| Scenario ID | `SCN-021`, raw integer `21`, reserved for Event 038 |
 | Scenario name | Believers vs Nonbelievers |
 | Owning event | Event 38 |
 | Type control | Holy World actor setup mode, if final design retains useful variants |
 | Intensity | Low, Medium, High, Maximum |
 | Terminal runtime | Shared Event 38 Holy World runtime |
 
-The current supplied scenario catalog ends at SCN-014. Implementation must inspect the authoritative workbook before assigning SCN-015 permanently.
+The [shared identifier registry](../shared_identifier_registry.md#triggerable-scenarios) reserves `SCN-021` / raw `21` for Believers vs Nonbelievers under the user’s 7 October identifier-allocation instruction.
+The original `SCN-015` proposal is superseded because Missile Age owns that slot.
+This reservation approves identifier ownership only; it does not implement or approve the scenario’s gameplay design.
 
 ## Purpose
 

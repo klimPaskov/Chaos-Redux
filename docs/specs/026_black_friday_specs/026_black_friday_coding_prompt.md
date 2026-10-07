@@ -16,7 +16,7 @@ Use the existing bounded global daily event pulse. Do not add a new daily all-co
 
 ## Build the reusable cost framework
 
-Use `chaosx_scripted_system_architect` with `fork_context=false` for the universal source, quotation, rounding, affordability, payment, refund, display, and cleanup contracts. Black Friday multiplies the ordinary current payable cost. Apply deterministic upward rounding and keep every positive cost at one quantum or more. Zero stays zero. Rewards and penalties are not discounted.
+Use `chaosx_scripted_system_architect` with `fork_turns="none"` for the universal source, quotation, rounding, affordability, payment, refund, display, and cleanup contracts. Black Friday multiplies the ordinary current payable cost. Apply deterministic upward rounding and keep every positive cost at one quantum or more. Zero stays zero. Rewards and penalties are not discounted.
 
 Build the complete cost surface registry against the final implementation commit. Cover every reachable Vanilla and Chaos Redux purchase surface through native composition, shared scripted payment, or complete normal, 50 percent, and 75 percent static variants. Record exact evidence for every engine-inaccessible surface. A sample list is not accepted.
 

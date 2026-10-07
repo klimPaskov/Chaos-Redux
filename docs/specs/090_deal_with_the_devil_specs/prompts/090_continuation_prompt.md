@@ -1,6 +1,8 @@
 # Continue Event 090 from the 2026-10-02 specification draft
 
-Use `090_deal_with_the_devil_specification_draft.zip`, the original user brief, and the latest supplied `all-project-sources.zip`. The ZIP contains twelve developed source parts and working plans. It is a design draft, not a completed implementation or a source-reconciled acceptance claim.
+Use the [imported package](../README.md), its [original user brief](../../../plans/090_deal_with_the_devil_plans/sources/090_original_user_brief.txt), and current repository sources.
+The original archive name `090_deal_with_the_devil_specification_draft.zip` is delivery provenance, not a required local input.
+The package contains twelve developed source parts and working plans. It is a design draft, not a completed implementation or a source-reconciled acceptance claim.
 
 Read the current `CHAOS_REDUX_PROJECT_SOURCE_PROTOCOL.md` when present, every current supplied Project Source in full, the current project rules, applicable skills, and all relevant specialist definitions. Read the package README, original brief, source/decision register, reading report, parent review, requirement coverage, route map, ownership map, and acceptance scenarios. Do not substitute byte inventory or a previous “fully read” statement for actual reading. The interrupted attempt's reported read has not been independently certified in the retained handoff.
 

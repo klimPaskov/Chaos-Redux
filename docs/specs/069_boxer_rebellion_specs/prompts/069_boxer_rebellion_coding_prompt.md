@@ -35,13 +35,13 @@ Use real scoped consumers for ritual effects and preserve ordinary logistics and
 Implement the Chinese pact without fake ceasefires or automatic national reunification.
 
 Complete all shared-system connections from Part 12 after inspecting their actual runtime interfaces.
-Implement the four manual scenario types and sixteen intensity profiles in the shared framework, including prior-fire compatibility, active-crisis reuse, finite setup grants, and cleanup of launch bypasses.
+Implement one reserved `SCN-029` / raw `29` entry from [the central identifier registry](../../shared_identifier_registry.md), with four manual types and sixteen intensity profiles in the shared framework, including prior-fire compatibility, active-crisis reuse, finite setup grants, and cleanup of launch bypasses.
 Implement achievements through persistent historical evidence and the root registry.
 
 Use the separate asset, super-event, achievement, and decision-mission prompts for their bounded work.
 Give workers exact files, inputs, exclusions, and evidence outputs.
 Keep shared event-log, settings, registries, and integrated runtime placement parent-owned unless an explicit coordinated grant says otherwise.
-Use narrow worktrees and honor the user's existing merge policy.
+Use [the current subagent skill](../../../../.agents/skills/chaos-redux-subagents/SKILL.md) for shared-workspace and optional worktree coordination, respecting the user's recorded policy.
 
 Use actual event, focus, GUI, technology, map, and probability inspections where relevant.
 Inspect rendered artifacts at their intended size and retain matched source and scenario identities.

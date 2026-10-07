@@ -4,10 +4,7 @@ Research completed: 2026-07-10
 
 Rights verification reconciled: 2026-07-14
 
-Current identifier policy: the league package uses ordinary audio ID 23 and
-the dangerous package uses ordinary audio ID 24. Display slots and Event Log
-payloads use the matching numbers. Older four-digit references belong to dated
-research evidence only.
+Current identifier policy: the league package uses ordinary audio ID 23 and the dangerous package uses ordinary audio ID 24. Display slots and Event Log payloads use the matching numbers. Older four-digit references belong to dated research evidence only.
 
 The original 2026-07-14 research baseline preserved two candidate selections with unequal recording-rights status. The exact `23` London Brass Players recording remains excluded because its United States redistribution basis was not verified. The `24` United States Marine Band source is verified on its stated United States federal public-domain basis and preserved locally.
 
@@ -23,7 +20,10 @@ The production manifest at `../../../assets/006_independence_wave/super_events/a
 
 Human perceptual audition and live-game firing remain unverified, and the former London Brass Players recording is not a runtime fallback.
 
-## Super-event 1, league formation
+## Historical excluded league-formation candidate (2026-07-14)
+
+Disposition: superseded for slot-23 production by the user's 2026-09-20 *The Enola Foam March* selection and the production manifest linked above.
+The following source, segment, path, and blocker describe the excluded London Brass Players candidate, preserving its original research evidence.
 
 **Track:** A Trumpet Voluntary
 
@@ -82,10 +82,9 @@ Human perceptual audition and live-game firing remain unverified, and the former
 ## Production handoff status
 
 The cleared `24` derivative has been produced from the preserved source, post-encode verified, and registered through the unique sound wrapper family. Its exact measurements and checksums are recorded in `../../../assets/006_independence_wave/super_events/audio/production_manifest.md`.
-The dangerous-bloc firing effect submits audio ID `24` and display slot 24 to
-the shared settings-aware FIFO; the dispatcher assigns the ID when the entry
-becomes visible and calls the playback helper. `23` remains unwired until its
-blocker is cleared. A different recording is not authorized without explicit
-user approval.
+The slot-24 delivery record and the selected slot-23 package are documented in the production manifest.
+The earlier statement that slot 23 must remain unwired belongs to the excluded London Brass Players candidate and is superseded by the user's 2026-09-20 selection.
+Preserve the current selection and its license obligations.
+Any replacement needs a recorded acceptance basis.
 
 Full evidence and production details are in `../../../plans/006_independence_wave_plans/super_event_research/006_super_event_audio_verification.md`.

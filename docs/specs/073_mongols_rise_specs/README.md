@@ -6,6 +6,9 @@ The package preserves the user’s normal cavalry army, rapid opening, offensive
 
 [Planning, execution, source records, prompts and honest limits](../../plans/073_mongols_rise_plans/README.md) are kept separately. The detailed path-level design is not an implemented focus graph. Its Mermaid route guide is conceptual and is not native layout proof.
 
+Use current [event](../../../.agents/skills/chaos-redux-events/SKILL.md), [planning](../../../.agents/skills/chaos-redux-event-planning/SKILL.md) and [subagent](../../../.agents/skills/chaos-redux-subagents/SKILL.md) guidance when implementing from those prompts.
+Retain the recorded user requirements; separately record acceptance of author-added design before treating it as approved.
+
 ## Campaign
 
 - [Opening and sovereignty](campaign/01_opening_and_sovereignty.md)

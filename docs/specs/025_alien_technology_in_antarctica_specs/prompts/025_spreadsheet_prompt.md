@@ -1,6 +1,6 @@
 # Event 025 spreadsheet prompt
 
-Spawn `chaosx_spreadsheet_doc_worker` with `fork_context=false` after final in-game wording and implementation facts are stable.
+Spawn `chaosx_spreadsheet_doc_worker` with `fork_turns="none"` after final in-game wording and implementation facts are stable.
 
 Edit only:
 

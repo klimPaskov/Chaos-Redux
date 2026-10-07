@@ -384,7 +384,10 @@ Working portrait roles:
 - Defensive service committee.
 - Revolutionary witness assembly.
 
-These are fictional institutional compositions, not substitutes for a real person. They should use institutional names and people-free or clearly collective framing.
+These are proposed institutional compositions, not substitutes for a real person.
+Use institutional names and the framing authorized for the actual consumer.
+Before production, `chaosx_portrait_creator` must classify each identity under the current [portrait source-mode gate](../../../../.agents/skills/chaos-redux-event-assets/SKILL.md#portrait-source-mode-gate).
+Grounded institutions require authentic attributed source material; people-free or collective framing alone does not authorize a generated grounded identity.
 
 If implementation chooses a specific grounded individual for a country, the portrait must use attributed source material through the portrait workflow.
 

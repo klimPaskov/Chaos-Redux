@@ -1,6 +1,6 @@
 # Event 025 asset source researcher prompt
 
-Spawn `chaosx_asset_source_researcher` with `fork_context=false` for non-portrait historical reference research only.
+Spawn `chaosx_asset_source_researcher` with `fork_turns="none"` for non-portrait historical reference research only.
 
 Read the Event 025 research and asset specifications. Find attributed, period-appropriate sources that can guide generated art for:
 

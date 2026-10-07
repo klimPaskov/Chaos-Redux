@@ -15,7 +15,7 @@
 - Evolution I working label: The Rising Tide
 - Evolution II working label: Every Sea Opens
 - Public world-end working label: Cthulhu's Dominion
-- Triggerable scenario proposal: `SCN-015`
+- Reserved triggerable scenario ID: `SCN-022` / raw `22`
 
 Working labels in this specification describe roles and routes. They are not final localisation.
 

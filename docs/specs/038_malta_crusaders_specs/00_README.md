@@ -8,7 +8,12 @@ The event remains a **Minor Fire-Once** event at **Chaos level 1** because its o
 
 The pack is planning only. It does not claim that gameplay script, localisation, assets, models, audio, workbook rows, or MCP evidence have been implemented.
 
-## Binding design decisions
+## Design decisions and acceptance
+
+The supplied premise is recorded in `validation/source_manifest.csv` as an attached planning-era brief.
+That receipt preserves provenance but does not independently verify acceptance of each expansion in the current repository.
+Expansion acceptance remains `unresolved` where an explicit user decision or parent acceptance within authorization is not cited.
+Record that basis under the [repository acceptance rules](../../../AGENTS.md#specs-and-plans) before treating the following design as an implementation commitment.
 
 1. Malta is released immediately. The crusade is already active when the event fires.
 2. The opening remains regional. High-Chaos pre-fire scaling increases strength and footprint without turning the first day into a global war.
@@ -65,16 +70,11 @@ The pack is planning only. It does not claim that gameplay script, localisation,
 
 ## Source priority
 
-Use this order when implementation sources disagree:
-
-1. Explicit user corrections and the attached Event 38 brief
-2. This specification pack
-3. Current accepted Chaos Redux system specifications
-4. Current repository implementation where it does not conflict with accepted design
-5. Current installed vanilla documentation and local vanilla precedents
-6. Offline Paradox wiki snapshot
-7. Approved reference mods when vanilla is insufficient
-8. Historical research for names, institutions, and visual grounding
+Explicit user decisions and recorded parent acceptance within authorized scope establish design authority.
+Use the current [repository rules](../../../AGENTS.md) and owner skills for workflow and engine-reference requirements.
+This pack supplies event design; its placement and status labels do not override current workflows or prove approval.
+Current implementation proves what exists, and historical receipts prove what the original author inspected.
+Preserve conflicting claims as unresolved rather than selecting a design from a priority list.
 
 ## Required implementation sequence
 
@@ -93,6 +93,12 @@ Use this order when implementation sources disagree:
 13. Complete event logs, Event Details, cluster data, workbook data, and documentation.
 14. Run focus, decision, country, localisation, probability, UI, technology, map, and completion audits.
 15. Resolve every audit gap before changing the event status from `To Be Reworked`.
+
+## Identifier ownership
+
+Believers vs Nonbelievers uses centrally reserved `SCN-021` / raw `21` under the [shared identifier registry](../shared_identifier_registry.md#triggerable-scenarios).
+The user’s 7 October allocation instruction resolves this identifier, while gameplay acceptance and implementation remain separate.
+Planning-era source receipts preserve the superseded `SCN-015` candidate as history.
 
 ## Planning status
 

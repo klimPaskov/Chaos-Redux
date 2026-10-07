@@ -1,4 +1,9 @@
-# Hungry Battalion Implementation Handoff
+# Hungry Battalion Historical Implementation Handoff
+
+Disposition: superseded as an execution prompt by the [recorded chain proof](../../plans/air_cleanliness_fallout_plans/FALLOUT_HUNGRY_BATTALION_CHAIN_PROOF.md).
+Inspect the existing chain and current owner decisions before any continuation; do not reserve these ids or implement this tranche again.
+The assignment and status below are retained historical evidence, including their original zero-credit and dormant claims.
+Later scheduler activation precedence is recorded in [SOURCE_OF_TRUTH_AND_SCOPE.md](SOURCE_OF_TRUTH_AND_SCOPE.md).
 
 Implement the reviewed Food Compact chain in `events/fallout_world_end_events.txt` under `add_namespace = chaosx.fallout`.
 

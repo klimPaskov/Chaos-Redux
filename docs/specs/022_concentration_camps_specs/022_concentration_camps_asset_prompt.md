@@ -1,5 +1,8 @@
 # Asset Production Prompt for Event 22 Concentration Camps
 
+Use the current [asset contract](../../../.agents/skills/chaos-redux-event-assets/SKILL.md) for source modes, native ImageGen transparency, alpha preservation, exact consumer dimensions, achievement states, and ownership.
+Reconcile this design inventory with current manifests and runtime consumers before producing another asset.
+
 ## Task
 
 Create, source, process, convert, review, and document the accepted visual assets for Event 22, `Concentration Camps`.
@@ -9,7 +12,7 @@ This task uses two bounded subagents:
 1. `chaosx_asset_source_researcher` for archival event, news, and decision-category pictures
 2. `chaosx_icon_artist` for decision, mission, category, idea, state-modifier, and achievement icons
 
-Use `fork_context=false`. Each subagent prompt must repeat its exact scope, inputs, outputs, exclusions, and handoff path.
+Use `fork_turns="none"`. Each subagent prompt must repeat its exact scope, inputs, outputs, exclusions, and handoff path.
 
 Do not generate or edit gameplay, localisation, event, decision, GUI, focus, country, spreadsheet, or shared registry files. Final `.gfx` wiring remains with the parent implementation agent unless the parent explicitly grants one named entry.
 
@@ -80,7 +83,8 @@ Inspect:
 .agents/skills/chaos-redux-event-assets/assets/gfx_references/icons/decision_categories/pictures/
 ```
 
-The decision-category-picture folder must contain `contact_sheet.png` labelled with filenames and native dimensions. If missing, create it and update the reference README and catalog before selecting the Event 22 size.
+The decision-category-picture folder must contain `contact_sheet.png` labelled with filenames and native dimensions. If missing, report the reference-family gap to the parent and do not guess the Event 22 size.
+Reference-library maintenance requires a separate bounded assignment.
 
 Inspect one live Chaos Redux decision category that uses a picture. Record the exact native dimensions and layout. Do not guess.
 

@@ -1,5 +1,14 @@
 # Event 007 Fury planning package
 
+## Authority and resume boundary
+
+Read [accepted release corrections](specs/007_fury_release_corrections_2026-10-05.md) before older core, scenario, focus, decision, acceptance, and production briefs.
+They cite the user's 5 October G1-G7 instruction and parent acceptance and take precedence only for their bounded claims.
+[Parent decisions](../../plans/007_fury_plans/agent_decisions_2026-10-05.md) retain implementation and validation dispositions.
+Older Internal Fury player assignment and ordinary per-country defeat news remain unresolved.
+Package prompts are retained implementation briefs; select remaining work from the owner ledger before reusing them.
+Use [chaos-redux-subagents](../../../.agents/skills/chaos-redux-subagents/SKILL.md) for current ownership and evidence rules.
+
 This package turns Event ID `7`, `Fury`, into a source specification pack for Chaos Redux.
 
 Fury replaces the old expansionism placeholder with a dynamic repeatable war event. A small AI country is taken by a fast expansion system, receives an initial army and finite hidden reinforcement reserve capped at 100 scripted divisions per actor, attacks weaker eligible neighbors, absorbs territory through compliance and coring work, and either burns out or grows into a continental threat.

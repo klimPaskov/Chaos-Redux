@@ -1,5 +1,12 @@
 # Event 53: Mysterious Man
 
+## Authority and current workflow
+
+The [scope review](quality/design_scope_and_closure.md) preserves the no-counterplay premise. Its accepted label does not independently approve every elaborated adapter or package.
+Use current [planning](../../../.agents/skills/chaos-redux-event-planning/SKILL.md), [events](../../../.agents/skills/chaos-redux-events/SKILL.md), [assets](../../../.agents/skills/chaos-redux-event-assets/SKILL.md), and [routing](../../../.agents/skills/chaos-redux-subagents/SKILL.md) guidance.
+Unattributed design remains `unresolved`; rediscover current tools and source state before a separately authorized implementation task.
+
+
 This package is the source specification for Chaos Redux Event 53.
 
 ## Catalog identity

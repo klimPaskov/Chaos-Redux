@@ -29,7 +29,7 @@ The user's Event 094 identity, one-country targeting class, dynamic reserve-equi
 
 [Main coding prompt](094_half_gone_coding_prompt.md), [asset prompt](094_half_gone_asset_prompt.md), [super-event prompt](094_half_gone_super_event_prompt.md), [achievement prompt](094_half_gone_achievement_prompt.md), [decision prompt](094_half_gone_decision_mission_prompt.md), and [goal prompt](094_half_gone_goal_prompt.md).
 
-The goal prompt is 3,965 characters including its final newline. It is separate from the design, and no temporary conversation-continuation prompt is included.
+The goal prompt is bounded to 4,000 characters including its final newline. It is separate from the design, and no temporary conversation-continuation prompt is included.
 
 ## Install locations
 
@@ -37,7 +37,10 @@ Place the archive's `094_half_gone_specs/` folder in `docs/specs/` and its `094_
 
 No gameplay source, workbook, settings, repository branch, or account was modified. These files do not enable Event 094 or alter its To Be Reworked status.
 
-## Reading and execution facts
+## Historical reading and execution facts, 5 October 2026
+
+These statements describe the planning pass and its environment.
+Discover current sources and tools before execution rather than inheriting these absence findings as current blockers.
 
 All 46 supplied files were read in full before specification authoring, including 17 skill guides and 20 subagent definitions. The 122 required reading chunks are covered in the journal. Truncated output was repaired through rereading. Seven selected live repository files were also fully read at the pinned commit recorded in the evidence report.
 

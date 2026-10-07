@@ -1,6 +1,6 @@
 # Subagent Prompt: Event 021 Improvement-Loop Planner
 
-Spawn `chaosx_improvement_loop_planner` with `fork_context=false` once near completion.
+Spawn `chaosx_improvement_loop_planner` with `fork_turns="none"` once near completion.
 
 Do not spawn it while an earlier Event 021 improvement addendum remains unresolved.
 

@@ -1,6 +1,7 @@
 # Achievement Prompt: Famine and Migration Mechanics
 
-> **Current design clarification (2026-08-25):** The user clarification and accepted split implementation supersede any shared mechanic, category, or runtime-namespace wording retained below as historical design context. The current implementation uses independent `famine_*` and `migration_*` mechanics, separate famine and migration achievement namespaces where applicable, `famine_decision_category` and `migration_decision_category`, and `famine_state_map_mode` and `migration_state_map_mode`; no combined mechanic, category, runtime namespace, or mapmode is current. Use [source_of_truth_map.md](../../plans/famine_and_migration_system_plans/source_of_truth_map.md) and [completion_report.md](../../plans/famine_and_migration_system_plans/completion_report.md) for current status, including the incomplete blockers.
+> **Authority and status:** Read [README.md](README.md) for the accepted split, event-free presentation contract and current continuation record.
+> The source parts and matrices preserve design and historical planning; their presence does not establish approval or completion.
 
 Use the existing Chaos Redux achievement registry and `chaos-redux-event-assets` for icon production.
 

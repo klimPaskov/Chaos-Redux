@@ -1,6 +1,6 @@
 # Event 025 repository explorer prompt
 
-Spawn `chaosx_repo_explorer` with `fork_context=false`.
+Spawn `chaosx_repo_explorer` with `fork_turns="none"` only when current paths, patterns, precedents, missing-file recovery, or edit order remain unclear after direct inspection.
 
 Read the full Event 025 spec package and live `AGENTS.md`. Perform a read-only map of the current repository for Event 025 implementation.
 

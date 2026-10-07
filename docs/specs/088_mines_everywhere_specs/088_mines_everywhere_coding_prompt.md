@@ -1,10 +1,16 @@
 # Coding prompt: Event 088, Mines everywhere
 
+Before implementing authored additions or numerical tuning, record their explicit user decision or parent acceptance within the authorized scope.
+The package's location, delivery status and older parent review do not approve unresolved proposals.
+Retain unresolved choices in the event plans until that basis exists.
+
 Implement the full Event 088 rework in the current Chaos Redux checkout. Read this package as a source specification, not as evidence that any part has already been implemented. Preserve unrelated changes. Resolve repository paths from the actual checkout rather than assuming the Windows paths from the supplied configuration.
 
 ## Required inputs and workflow
 
-Read `AGENTS.md`, the complete current event-planning, events, event-assets, subagents and improvement-loop skills, the applicable shared mechanics documentation, the live workbook and its read-only exports, and the five sequential specification files in `docs/specs/088_mines_everywhere_specs/`. Read the companion files in `docs/plans/088_mines_everywhere_plans/implementation/`, `research/`, `validation/` and `review/`. Read applicable offline wiki pages and installed vanilla documentation completely before implementing their interfaces. The planning package read all 42 supplied texts but did not complete every external dependency.
+Read `AGENTS.md`, the complete current event-planning, events, event-assets, subagents and improvement-loop skills, the applicable shared mechanics documentation, the live workbook and its read-only exports, and the five sequential specification files in `docs/specs/088_mines_everywhere_specs/`. Read the companion files in `docs/plans/088_mines_everywhere_plans/implementation/`, `research/`, `validation/` and `review/`.
+Read the pertinent sections of the applicable offline wiki and installed vanilla documentation before implementing their interfaces, retaining exact paths, line spans and revisions under the current reference-tool contract.
+The planning package read all 42 supplied texts but did not complete every external dependency.
 
 Read these handoffs as part of the task: `088_mines_everywhere_asset_prompt.md`, `088_mines_everywhere_achievement_prompt.md`, and `088_mines_everywhere_goal_prompt.md`. The source ledger and blocker register describe real gaps. Do not inherit a false assumption that custom subagents, HOI4 MCP, game validation, visual references, or the workbook were already checked.
 

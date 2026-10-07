@@ -30,7 +30,7 @@ Apply bundle items independently, retain successful items in partial results, an
 A later wave cannot overwrite a pending choice.
 
 Register Event 66 as Low, Medium, and High logical slots in Sudden Abundance.
-Verify provisional cluster ID `9`, reconcile Event 64 and other accepted members, and coalesce every Event 66 slot hit in one cluster transaction into one wave.
+Use allocated cluster ID `15`, reconcile Event 64 and other accepted members, and coalesce every Event 66 slot hit in one cluster transaction into one wave.
 Use the highest severity and bounded slot-count pressure, with one card set per country, one log row, one cap change, and one pacing result.
 Cluster severity cannot bypass evolutions.
 
@@ -43,7 +43,7 @@ Never edit catalog CSV exports directly.
 
 Use HOI4 MCP event inspect, render, lint, and compare.
 Run the named probability baseline, tuning, and `hoi4.probability_compare` cycle.
-Use the correct project subagents with `fork_context=false` for architecture, assets, localisation, probability, completion, and spreadsheet work.
+Use the correct project subagents with `fork_turns="none"` for architecture, assets, localisation, probability, completion, and spreadsheet work.
 Run and resolve `chaosx_improvement_loop_planner` after a meaningful implementation tranche.
 
 Keep iterating until `specs/066_abundance_spec_part_9_acceptance_criteria.md` passes in full.

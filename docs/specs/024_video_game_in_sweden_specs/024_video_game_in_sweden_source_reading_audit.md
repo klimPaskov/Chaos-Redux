@@ -22,9 +22,9 @@ Archive evidence:
 
 ## Capability boundary
 
-The supplied materials did not include the complete Chaos Redux repository, the offline Paradox wiki snapshot, or the installed vanilla Hearts of Iron IV documentation and game files. Those external local sources could not be read in this environment. The package therefore records them as mandatory implementation-phase reading and does not claim a repository, syntax, vanilla precedent, or live runtime audit.
+The supplied materials did not include the complete Chaos Redux repository, the offline Paradox wiki snapshot, or the installed vanilla Hearts of Iron IV documentation and game files. Those external local sources could not be read in the original planning environment. The package therefore records them as mandatory implementation-phase reading and does not claim a repository, syntax, vanilla precedent, or live runtime audit.
 
-The current environment also lacked the project custom subagent invocation surface and the `hoi4-agent-tools` MCP functions. Subagent role contracts were read and applied to the planning review, but no actual subagent or MCP run occurred.
+The original planning environment also lacked the project custom subagent invocation surface and the `hoi4-agent-tools` MCP functions. Subagent role contracts were read and applied to the planning review, but no actual subagent or MCP run occurred.
 
 ## Complete file ledger
 

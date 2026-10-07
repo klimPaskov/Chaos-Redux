@@ -1,5 +1,9 @@
 # Planning-package verification
 
+Historical authoring-run record.
+Its environment, file counts and passed-check statements do not certify the edited package or current runtime.
+Current documentation checks are recorded in the repository cleanup handoff for packages 067 through 072.
+
 The final package is checked by the included validate_package.py tool and by a ZIP integrity check.
 The checks are structural and local.
 They do not launch HOI4, spawn project subagents, perform probability analysis, generate runtime art or establish gameplay balance.

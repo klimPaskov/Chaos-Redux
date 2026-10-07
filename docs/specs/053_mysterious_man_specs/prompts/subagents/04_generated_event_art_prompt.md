@@ -1,6 +1,6 @@
 # Prompt for `chaosx_generated_event_art`
 
-Spawn with `fork_context=false`.
+Spawn with `fork_turns="none"` (Codex).
 
 Use the complete bounded brief at:
 

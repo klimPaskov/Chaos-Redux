@@ -1,6 +1,6 @@
 # Prompt for `chaosx_icon_artist`
 
-Spawn with `fork_context=false`.
+Spawn with no inherited thread context (Codex `fork_turns="none"`; other runtimes follow the [subagent skill](../../../../.agents/skills/chaos-redux-subagents/SKILL.md)).
 
 Repository root: `<MOD_ROOT>`.
 
@@ -13,7 +13,7 @@ Read:
 
 Create the accepted icon families:
 
-- decision category icon
+- two separate decision category icons and their verified consumers
 - four famine-stage state modifier icons
 - five displacement and reception state modifier icons
 - decision icons for relief, convoy, airlift, evacuation, border policy, controlled medical reception, distribution, integration, and return
@@ -24,6 +24,8 @@ Use ImageGen source evidence for every generated icon.
 
 Each asset type needs separate source art and its own native-size brief. Do not resize one icon type to satisfy another.
 
+Request native ImageGen transparency for alpha-backed families and preserve alpha through processing and DDS conversion.
+Follow the owner skill for fallback-only alpha repair and record any fallback.
 Require real transparency, centered silhouettes, matching reference style, no white matte, no checkerboard, no opaque square, no generated text, and clear native-size readability.
 
 Create source PNGs, processed PNGs, final DDS files, contact sheets, manifest rows, and `gfx_handoff.md`.

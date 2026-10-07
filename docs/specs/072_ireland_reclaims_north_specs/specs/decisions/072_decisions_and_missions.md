@@ -60,7 +60,8 @@ The system does not secretly increase the acceptance probability after repeated 
 
 A civilian-factory commitment is capacity reserved for a finite project, not a permanent factory deletion.
 Implementation must use an existing verified repository mechanism or another documented engine-supported representation.
-If that mechanism is unavailable, replace the project with a disclosed finite construction-resource cost before shipping and update every display and helper.
+If that mechanism is unavailable, retain the exact blocker and propose a disclosed finite construction-resource alternative for explicit adoption before implementation.
+An adopted alternative must update every display and helper.
 Do not invent a Clausewitz effect that directly subtracts factory-days.
 
 The stated design commitment is one or two available civilian factories for the recorded number of days.

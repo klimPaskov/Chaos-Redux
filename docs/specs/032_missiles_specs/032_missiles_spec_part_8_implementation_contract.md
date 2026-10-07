@@ -683,7 +683,7 @@ Recommended sequence:
 13. event completion auditor compares full specs to implementation
 14. parent writes concrete completion report
 
-All project subagents use `fork_context=false`.
+All project subagents use `fork_turns="none"`.
 
 ## Explicit implementation boundaries
 

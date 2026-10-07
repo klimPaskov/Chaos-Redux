@@ -104,7 +104,11 @@ The page identifies the composition and U.S. Navy Band performance separately an
 
 Searches also surfaced museum descriptions, secondary treaty explanations, and literary or audio leads. Only the sources above are used as load-bearing research. A Camões translation was searched but no verified final literary quote was selected, and the complete book was not read. The actual historical documents' dates must not be confused with the date of this fictional twentieth-century restoration.
 
-## Accepted design decisions for this draft
+## Parent-authored design decisions for this draft
+
+The table separates original user requirements from authored expansions and source-based rationale.
+Its heading does not establish approval of an expansion.
+The numerical and behavioral additions remain proposed, as stated in the authority section, until an implementation parent records acceptance within the user's authorized scope.
 
 | ID | Decision | Basis and consequence |
 | --- | --- | --- |

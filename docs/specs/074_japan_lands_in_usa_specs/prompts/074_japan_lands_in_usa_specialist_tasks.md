@@ -25,7 +25,7 @@ Do not treat missing information as a passed test.
 
 ## chaosx_repo_explorer
 
-Read-only source exploration unless separately authorized.
+Read-only source exploration under the current subagent ownership contract.
 Resolve current event dispatch, root/history order, profile data, unit creation, local supply, AI strategies, technology grants, shared settings, evolution log, achievements and catalog owners.
 Return exact file paths and line references, known supported consumers, conflicts with the legacy event, and the smallest proof cases for G01 through G11.
 Do not write gameplay from guessed IDs or summarized wiki snippets.
@@ -51,7 +51,7 @@ Read Part 6 and P01 through P12 in the capability file.
 Evaluate named states, sweep thresholds, simulate only declared uncertain inputs, compare revisions and render or sequence where required.
 Keep exact, bounded, sampled and unresolved results distinct.
 An unavailable verified game-version MTTH adapter is a blocker for timing claims.
-Do not choose the intended design or modify source unless the parent grants that scope.
+The probability auditor remains read-only; the owner applies design or balance changes and obtains the mandatory same-scenario comparison.
 
 ## chaosx_country_package_auditor
 

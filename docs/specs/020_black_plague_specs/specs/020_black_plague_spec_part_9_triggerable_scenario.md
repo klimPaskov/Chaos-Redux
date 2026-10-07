@@ -412,7 +412,7 @@ Permanent state after launch includes only the event, scenario, disease, evoluti
 
 ## Achievement handling
 
-The permanent scenario-launched flag disqualifies the fourteen ordinary Event 20 achievements unless the live achievement framework explicitly classifies an achievement as scenario-eligible. This prevents instant Evolution III and IV setup from awarding achievements intended for natural campaign play.
+The permanent scenario-launched flag disqualifies the thirteen matrix-listed ordinary Event 20 achievements unless the live achievement framework explicitly classifies an achievement as scenario-eligible. This prevents instant Evolution III and IV setup from awarding achievements intended for natural campaign play.
 
 No automatic achievement is granted for launching the scenario.
 

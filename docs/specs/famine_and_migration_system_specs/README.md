@@ -5,7 +5,8 @@
 > Use [takeover_status_2026-10-06.md](../../plans/famine_and_migration_system_plans/takeover_status_2026-10-06.md) for current status, published corrections, and remaining evidence gates.
 > The inherited round-3 gameplay drafts are published, and the older checkpoint reports remain explicitly historical evidence.
 
-This folder is the source design package for a shared Chaos Redux system. It is not an event and it has no event ID.
+This folder preserves source design for the separate famine and migration mechanics connected by neutral conservation primitives.
+Neither mechanic has a random-event identity.
 
 > **Superseded incident-layer note (2026-08-25):** Any historical wording in this package about incident events, event-option probability, `famine_incident.1`, `migration_incident.1`, `fm_*`, or combined `famine_migration_*` planning IDs is superseded. The two register helpers are accounting/presentation seams only, the incident event files and constants were deliberately deleted, and current runtime names are separate `famine_*`, `migration_*`, or narrow neutral primitives.
 
@@ -18,15 +19,21 @@ The design joins four related gameplay layers:
 
 The central design rule is that famine and migration remain dynamic. Historical cases provide pressure profiles, triggers, policy patterns, and regional memory. They never impose a fixed death total or a fixed migration total.
 
-## Intended extraction path
+## Current authority and continuation
 
-Extract this top-level folder into:
+Begin with [takeover status, 6 October](../../plans/famine_and_migration_system_plans/takeover_status_2026-10-06.md) and [the continuation decision log](../../plans/famine_and_migration_system_plans/agent_decisions_2026-10-05.md).
+The takeover status supersedes the older source-of-truth map, completion report and stopped-thread checkpoints for current implementation status.
+The workstream remains incomplete under that record; publication of reviewed source fixes is distinct from native, visual, probability and external-owner acceptance.
+The August 25 split and event-free clarification above is retained recorded design; [the dated source map](../../plans/famine_and_migration_system_plans/source_of_truth_map.md) preserves its earlier acceptance and source evidence.
+Further matrix or source-part claims need their own attributable acceptance; neither a spec location nor a prompt establishes it.
+Original matrix terms such as shared system, combined adapters or Event 149 conversion alternatives are historical planning labels; they do not override independent owners, the current event-free contract or recorded retirement.
+Current source repairs and parent choices are evidenced by the takeover record and decision log, with scope and limits carried forward.
+Do not modify other system owners or restart completed work from these original prompts.
 
-```text
-docs/specs/famine_and_migration_system_specs/
-```
+Use [the subagent skill](../../../.agents/skills/chaos-redux-subagents/SKILL.md) for routing, [the event skill](../../../.agents/skills/chaos-redux-events/SKILL.md) for accepted adapters, [the state-ledger skill](../../../.agents/skills/chaos-redux-state-ledgers/SKILL.md) for transfer contracts, and [the GUI skill](../../../.agents/skills/chaos-redux-scripted-gui/SKILL.md) for mandatory current-source visual evidence.
+Subagent templates require a self-contained parent prompt with exact remaining scope and no inherited context.
 
-The implementation agent should place working subagent plans and audit handoffs under:
+Working plans and audit handoffs belong under:
 
 ```text
 docs/plans/famine_and_migration_system_plans/
@@ -83,10 +90,17 @@ Context-complete prompts for the relevant project subagents are under `subagent_
 - The famine and migration decision categories are separate and independently hidden until their own mechanic has a genuine problem. Register helpers record accounting/presentation context only; no incident event layer exists. Migration becomes available only after displacement becomes a sustained national issue.
 - AI receives the same usable response paths as the player.
 - The system uses event-driven and active-registry processing. It does not require a whole-world daily, weekly, or monthly scan.
-- Event 149 `Immigrations` is absorbed or retired so the mod has one migration model.
+- Preserve the recorded Event 149 `Immigrations` retirement so the mod has one migration model.
 
-## Reading proof and limitations
+## Historical manifests and reading limits
+
+The input manifest is a receipt for the original supplied planning sources, including external `/mnt/data/` paths.
+The output manifest is the original package-generation receipt, not a validator for the current repository files; its recorded hashes and sizes are preserved rather than rewritten as historical evidence.
+Use the current checkout and audit handoff for current file coverage.
+No package-integrity validator or gameplay completion is asserted by these receipts.
+
+## Original planning-environment reading proof and limitations
 
 The input manifest records every supplied project file and every extracted subagent definition with size and SHA-256. All listed files were fully read before this package was written.
 
-This environment did not expose the Windows Chaos Redux repository, the offline Paradox wiki snapshot, installed vanilla game files, the HOI4 MCP server, or a callable custom-subagent runtime. The package therefore contains repository-ready design, research, matrices, and context-complete subagent prompts. The coding prompt requires the implementation agent to perform the mandatory local source, wiki, vanilla, MCP, and probability passes before editing or claiming completion.
+The original planning environment did not expose the Windows Chaos Redux repository, the offline Paradox wiki snapshot, installed vanilla game files, the HOI4 MCP server, or a callable custom-subagent runtime. The package therefore contains repository-ready design, research, matrices, and context-complete subagent prompts. The coding prompt requires the implementation agent to perform the mandatory local source, wiki, vanilla, MCP, and probability passes before editing or claiming completion.

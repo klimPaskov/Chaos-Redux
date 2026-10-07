@@ -1,6 +1,6 @@
 # Event 030 Subagent Orchestration Plan
 
-Every project subagent receives a fully explicit prompt with `fork_context=false` in Codex or the equivalent isolated context in Qoder and Cursor.
+Every project subagent receives a fully explicit prompt with `fork_turns="none"` in Codex or the equivalent isolated context in Qoder and Cursor.
 
 ## Planning and exploration
 

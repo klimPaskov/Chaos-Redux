@@ -4,7 +4,8 @@ Implement the complete design in `docs/specs/076_usa_tests_weapons_specs/`. Read
 
 ## Establish the real starting point
 
-Read current `AGENTS.md`, the full event-planning skill, the events, decisions and missions, assets, super-events, improvement-loop and subagent skills, the shared mechanics and dynamic-effect/trigger documentation, and all additional must-read references required for the surfaces you touch. Read the dedicated MTTH skill before implementing evolution timing. Inspect installed vanilla and the relevant complete offline wiki pages. Do not treat the planning package's partial repository inspection as a completed runtime audit.
+Read current `AGENTS.md`, the full event-planning skill, the events, decisions and missions, assets, super-events, improvement-loop and subagent skills, the shared mechanics and dynamic-effect/trigger documentation, and all additional must-read references required for the surfaces you touch. Read the dedicated MTTH skill before implementing evolution timing. Use the current `AGENTS.md` reference workflow for pertinent installed-documentation and offline-wiki sections.
+Record explicit user or authorized parent acceptance for the package's added design choices. Do not treat the planning package's partial repository inspection as a completed runtime audit.
 
 Inspect the working tree and preserve unrelated changes. Find every caller of `chaosx.nr76.1`, the current event registry and cluster hooks, legacy `USA_testing_denied`, current localisation and all relevant shared owners. Verify the current Convention owner. The supplied catalog calls Event 036 Alien Spacecraft while newer references use that number for a Convention spec. Resolve the actual repository identity before wiring any numeric cross-event call.
 
@@ -46,7 +47,8 @@ Update the canonical workbook `docs/spreadsheets/chaos_redux_events_catalog.xlsx
 
 ## Prove completion
 
-Execute the relevant required HOI4 MCP analyses, complete-pool probability and MTTH audits, script checks, live acceptance scenarios, visual checks and audio checks. Test all required cases in `integration/19_acceptance_scenarios.md`, including duplicates, slot reuse, owner changes, missing DLC, settings, late callbacks, multiple human players and long-tail mortality.
+Execute the relevant required HOI4 MCP analyses, complete-pool probability and MTTH audits, script checks, visual checks and audio checks.
+Live acceptance scenarios belong to the user; review supplied evidence without launching HOI4. Test all required cases in `integration/19_acceptance_scenarios.md`, including duplicates, slot reuse, owner changes, missing DLC, settings, late callbacks, multiple human players and long-tail mortality.
 
 Run the supplied event-completion auditor and the independent near-completion improvement-loop planner against the actual implementation and evidence. Apply useful findings and repeat the affected checks. Do not roleplay those agents or present your own review as their output. Record unavailable tools and blocked checks explicitly.
 

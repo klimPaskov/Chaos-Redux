@@ -341,12 +341,7 @@ Each evolution is recorded once globally with the correct Event 19 ID, type, sta
 
 ### Country follow-up history
 
-Claimant appearance, takeover, military revolt, derivative release, derivative
-defeat, and the four first-family reception outcomes are normal follow-up history
-events. They are not additional evolution stages. First-family cantonment,
-negotiated reception, refusal, and failed reception use stable Event 19 payloads
-while the visible reception event uses the frozen provider's identity and host
-scene.
+Claimant appearance, takeover, military revolt, derivative release, derivative defeat, and the four first-family reception outcomes are normal follow-up history events. They are not additional evolution stages. First-family cantonment, negotiated reception, refusal, and failed reception use stable Event 19 payloads while the visible reception event uses the frozen provider's identity and host scene.
 
 ### Event Details evolution catalog
 

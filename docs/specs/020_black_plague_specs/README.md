@@ -18,7 +18,7 @@ The later correction in `corrections/2026-08-21_dedicated_response_scripted_gui.
 
 ## Read order
 
-1. `corrections/2026-07-29_two_rat_tags.md`, `corrections/2026-08-09_dedicated_response_category.md`, and `corrections/2026-08-21_dedicated_response_scripted_gui.md`
+1. All applicable files in `corrections/`, beginning with the two-tag, dedicated-category, and dedicated-dashboard decisions, then September response cost, duration, language, and cancellation corrections
 2. `specs/020_black_plague_spec_part_1_core_crisis.md`
 3. `specs/020_black_plague_spec_part_2_crisis_board_and_containment.md`
 4. `specs/020_black_plague_spec_part_3_cure_spread_and_biowarfare.md`
@@ -32,6 +32,10 @@ The later correction in `corrections/2026-08-21_dedicated_response_scripted_gui.
 12. production prompts
 13. research notes
 14. review and limitation files
+
+Correction files retain dated source and MCP receipts.
+Past tool-availability statements do not describe the current environment.
+Their unresolved visual, probability, and runtime gates remain open until separately reviewed.
 
 ## Folder map
 

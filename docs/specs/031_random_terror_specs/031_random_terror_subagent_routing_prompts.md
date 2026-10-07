@@ -2,7 +2,8 @@
 
 ## Shared rule
 
-Every project subagent must be spawned with `fork_context=false`.
+Follow [the current subagent owner skill](../../../.agents/skills/chaos-redux-subagents/SKILL.md) for runtime selection and role boundaries.
+For Codex, spawn every project subagent with `fork_turns="none"`.
 
 The parent prompt must provide every required path, accepted constraint, current implementation state, prior handoff disposition, and allowed file scope.
 
@@ -12,7 +13,8 @@ Patch-capable subagents write handoffs under:
 
 `docs/plans/031_random_terror_plans/subagent_handoffs/`
 
-Read-only audit reports and planning addenda belong under:
+Read-only subagent audit handoffs belong under the same `subagent_handoffs/` directory.
+Planning addenda belong under:
 
 `docs/plans/031_random_terror_plans/`
 
@@ -45,7 +47,7 @@ Use before editing because Event 31 spans many live systems and the planning pac
 ```text
 You are the read-only repository explorer for Event 31 Random Terror.
 
-Use fork_context=false.
+Use fork_turns="none".
 
 Repository root: <MOD_ROOT>
 
@@ -57,7 +59,7 @@ Inspect current Chaos Redux precedents and exact vanilla precedents. Use mandato
 
 Do not patch files.
 
-Write docs/plans/031_random_terror_plans/031_random_terror_repo_map.md with relevant files, identifiers, precedents, collision risks, edit order, and meaningful validation plan. Include the live status of proposed SCN-014, proposed Cluster 9, available carriers, Event 31 entry identity, super-event slots, and state-map presentation options.
+Write docs/plans/031_random_terror_plans/031_random_terror_repo_map.md with relevant files, identifiers, precedents, collision risks, edit order, and meaningful validation plan. Include Global Jihad's existing SCN-016 identity, the separate optional Internal Fracture reservation at raw event_cluster_id 22 under docs/specs/shared_identifier_registry.md and .json, current Domestic Unrest membership 16, available carriers, Event 31 entry identity, super-event slots, and state-map presentation options. The cluster reservation does not approve its design or replace current membership.
 ```
 
 ## 2. `chaosx_scripted_system_architect`
@@ -71,7 +73,7 @@ Allowed patch scope should be limited to Event 31 helpers, event-owned constants
 ```text
 You are the scripted-system architect for Event 31 Random Terror.
 
-Use fork_context=false.
+Use fork_turns="none".
 
 Repository root: <MOD_ROOT>
 
@@ -99,7 +101,7 @@ Run once before weighted patches and once after the owning patch.
 ```text
 You are the read-only AI and probability auditor for Event 31 Random Terror.
 
-Use fork_context=false.
+Use fork_turns="none".
 
 Repository root: <MOD_ROOT>
 
@@ -133,7 +135,7 @@ Use after the full government and actor decision categories exist.
 ```text
 You are the active decision and mission auditor for Event 31 Random Terror.
 
-Use fork_context=false.
+Use fork_turns="none".
 
 Repository root: <MOD_ROOT>
 
@@ -159,7 +161,7 @@ Use after territorial creation, takeover, merger, split, scenario actors, and fi
 ```text
 You are the active country-package auditor for Event 31 Random Terror.
 
-Use fork_context=false.
+Use fork_turns="none".
 
 Repository root: <MOD_ROOT>
 
@@ -185,7 +187,7 @@ Use after the final shared actor tree and terminal branch are built.
 ```text
 You are the active focus-tree auditor for Event 31 Random Terror.
 
-Use fork_context=false.
+Use fork_turns="none".
 
 Repository root: <MOD_ROOT>
 
@@ -211,7 +213,7 @@ Use after broad player-facing text exists and again if later asset or route iden
 ```text
 You are the active localisation auditor for Event 31 Random Terror.
 
-Use fork_context=false.
+Use fork_turns="none".
 
 Repository root: <MOD_ROOT>
 
@@ -235,7 +237,7 @@ Use for every Event 31 leader, council, authorized advisor, commander, and the e
 ```text
 You own complete Event 31 Random Terror portrait production.
 
-Use fork_context=false.
+Use fork_turns="none".
 
 Repository root: <MOD_ROOT>
 
@@ -261,7 +263,7 @@ Use for report, news, decision-category, flag, faction-emblem, and super-event a
 ```text
 You are the generated non-icon art worker for Event 31 Random Terror.
 
-Use fork_context=false.
+Use fork_turns="none".
 
 Repository root: <MOD_ROOT>
 
@@ -285,7 +287,7 @@ Use for focus, idea, decision, mission, state, map-mode, faction-surface, and ac
 ```text
 You are the icon artist for Event 31 Random Terror.
 
-Use fork_context=false.
+Use fork_turns="none".
 
 Repository root: <MOD_ROOT>
 
@@ -311,7 +313,7 @@ Spawn this worker only when the final implementation deliberately needs a real h
 ```text
 You are the non-portrait source researcher for one bounded Event 31 historical visual need.
 
-Use fork_context=false.
+Use fork_turns="none".
 
 Repository root: <MOD_ROOT>
 
@@ -336,7 +338,7 @@ Use for both super-event text packages.
 ```text
 You are the super-event text researcher for Event 31 Random Terror.
 
-Use fork_context=false.
+Use fork_turns="none".
 
 Repository root: <MOD_ROOT>
 
@@ -358,7 +360,7 @@ Use for the reveal and defeat tracks.
 ```text
 You are the super-event audio researcher for Event 31 Random Terror.
 
-Use fork_context=false.
+Use fork_turns="none".
 
 Repository root: <MOD_ROOT>
 
@@ -382,7 +384,7 @@ Use only after final in-game-facing wording and implementation facts are stable.
 ```text
 You are the spreadsheet worker for Event 31 Random Terror.
 
-Use fork_context=false.
+Use fork_turns="none".
 
 Repository root: <MOD_ROOT>
 
@@ -404,7 +406,7 @@ Use during long implementation after several handoffs or before final audit.
 ```text
 You are the documentation curator for Event 31 Random Terror.
 
-Use fork_context=false.
+Use fork_turns="none".
 
 Repository root: <MOD_ROOT>
 
@@ -428,7 +430,7 @@ Do not spawn a second pass while a previous Event 31 addendum is unresolved.
 ```text
 You are the plan-only improvement-loop planner for Event 31 Random Terror.
 
-Use fork_context=false.
+Use fork_turns="none".
 
 Repository root: <MOD_ROOT>
 
@@ -448,7 +450,7 @@ Use after every implementation, asset, audio, localisation, workbook, and docume
 ```text
 You are the read-only completion auditor for Event 31 Random Terror.
 
-Use fork_context=false.
+Use fork_turns="none".
 
 Repository root: <MOD_ROOT>
 
@@ -472,7 +474,7 @@ Do not put Event 31-specific design into a skill.
 ```text
 You are the skill maintainer for one reusable workflow discovered during Event 31 implementation.
 
-Use fork_context=false.
+Use fork_turns="none".
 
 Repository root: <MOD_ROOT>
 
@@ -511,7 +513,7 @@ Adding a custom unit would activate Event 19 provider, model, skeletal animation
 
 Before relying on a subagent output, the parent must confirm:
 
-- prompt used `fork_context=false`
+- prompt used `fork_turns="none"`
 - allowed files and identifiers were explicit
 - output stayed inside scope
 - patch handoff lists files and IDs

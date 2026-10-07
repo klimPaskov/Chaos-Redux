@@ -1,12 +1,15 @@
 # System Camp Repression Rework Spec, Part 5: Detailed Country Decision Kits and Focus Hooks
 
+> **Current authority:** Start at [package_index.md](../package_index.md).
+> The accepted national-administration contract and current takeover record supersede incompatible original implementation and presentation instructions; this file preserves the earlier design and evidence.
+
 Working feature id: `system_camp_repression_rework`
 
 All names in this file are working labels and implementation ids, not final localisation. Final event, focus, decision, GUI, achievement, and super-event prose must be written later through the normal localisation pass. Keep localisation direction-only when using this file as source design.
 
 This part turns the broad country packages from Part 2 into implementation-ready country kits. It covers the U.K. and Raj, U.S.A., France and Vichy, Italy and Libya, Belgium and Congo, and generic users. Germany, Japan, and the Soviet Union remain governed by Part 3 for their deepest country-specific logic.
 
-## Live implementation reconciliation
+## Dated implementation reconciliation, 2026-07-11
 
 The accepted country kits are live in `common/decisions/camp_repression_colonial_country_decisions.txt`, `common/scripted_effects/camp_repression_colonial_country_effects.txt`, and `common/ideas/camp_repression_colonial_country_ideas.txt`. The verified final inventory is 43 colonial player actions: U.K./Raj 10, U.S.A. 8, France/Vichy 9, Italy 8, and Belgium/Congo 8. The two closing actions are live as `fr_support_refugee_and_rescue_networks` and `bel_negotiate_colonial_strike_settlement`. The generic package contains 12 actions in `common/decisions/camp_repression_generic_decisions.txt`, including `generic_inspect_active_site`.
 

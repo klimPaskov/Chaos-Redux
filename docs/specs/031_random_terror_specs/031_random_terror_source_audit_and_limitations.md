@@ -1,5 +1,9 @@
 # Event 31 supplied-source audit and limitations
 
+Historical evidence: source names, hashes, repository observations, and tool/runtime limitations below belong to the original planning pass.
+They do not establish current local file availability, current service health, implementation status, or design approval.
+Use the package entry point and current owner skills for active guidance.
+
 ## Supplied source coverage
 
 The complete supplied bundle was accessed and processed before the specification was written.
@@ -45,7 +49,10 @@ The highest visible scenario ID was `SCN-013`, which supports `SCN-014` as the p
 
 The cluster export contained active numeric IDs through `8`, which supports `9` as the proposed future Internal Fracture cluster ID.
 
-These ID proposals remain subject to the authoritative workbook and live registry.
+Those planning-time allocation directions are `superseded` by the parent's 2026-10-07 occupancy-based identity correction.
+Global Jihad keeps its existing `SCN-016` identity; `SCN-014` belongs to Fallout.
+Internal Fracture reserves raw `event_cluster_id` `22` as a separate optional proposal; raw cluster `9` belongs to National Breakthroughs, and Event 031's current catalog membership remains Domestic Unrest `16`.
+See [the shared identifier registry](../shared_identifier_registry.md) and [its JSON ledger](../shared_identifier_registry.json); the reservation does not approve the cluster design or change current membership.
 
 ## Project contracts applied
 
@@ -93,7 +100,7 @@ The implementation agent must inspect the offline wiki, current vanilla document
 
 The implementation agent must use `hoi4.event_inspect`, event render and compare tools, focus inspect and render tools, probability tools, GUI tools when applicable, and map tools when applicable.
 
-The implementation agent must run the relevant project subagents with `fork_context=false` and context-complete prompts.
+The implementation agent must run the relevant project subagents with `fork_turns="none"` and context-complete prompts.
 
 The implementation agent must update only the authoritative XLSX workbook, then run the repository CSV exporter.
 
@@ -113,7 +120,7 @@ Before code can be called complete, the implementation pass must clear these blo
 
 1. Confirm the Event 31 current source, namespace, registration state, and default disabled state.
 2. Confirm an available event-owned country carrier collection large enough for maximum scenario coverage.
-3. Confirm the proposed `SCN-014` ID and proposed Cluster `9` ID against the authoritative workbook and live registries.
+3. Preserve Global Jihad `SCN-016`, the optional Internal Fracture reservation `22`, and current Domestic Unrest membership `16` under the authoritative workbook, runtime and shared identifier registry.
 4. Confirm the Event 31 world-threat source flag name and register it in the shared aggregate.
 5. Confirm the special chaos country classifier update and keep all Event 31 actors outside the actual nonhuman classifier.
 6. Confirm the event-owned state map mode pattern and exact update transaction.

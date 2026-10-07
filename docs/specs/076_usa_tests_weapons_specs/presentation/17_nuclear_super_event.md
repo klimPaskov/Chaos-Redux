@@ -22,7 +22,9 @@ The title should identify the first American nuclear proving ground in foreign t
 
 The final title, quote, attribution and button text are deliberately not supplied in this planning file. The text researcher must locate and verify a suitable primary source for any real quotation. Preserve exact attribution, publication context and date. A paraphrase must be identified as a paraphrase and cannot be put in quotation marks as historical speech.
 
-If no verified quotation fits, use newly written in-universe prose approved by the localisation workflow, with no false attribution. Do not attach a famous scientist or politician's name to an invented line merely to make the announcement sound period-appropriate.
+The author proposed an original in-universe prose alternative when no verified quotation fits.
+That alternative remains unresolved without explicit acceptance; the current [super-event skill](../../../../.agents/skills/chaos-redux-super-events/SKILL.md) requires continued source research instead of inventing a quotation.
+Do not attach a famous scientist or politician's name to an invented line merely to make the announcement sound period-appropriate.
 
 ## Audio direction
 
@@ -32,7 +34,9 @@ Plan a segment in the 60 to 120 second range, with the default maximum of 120 se
 
 Composition rights and recording rights are separate. Record both, the exact source, allowed use, required credit, edition or performance, selected timestamps and any modifications. A public-domain composition does not automatically make a recent recording reusable. No track or rights status was approved in this task.
 
-The supplied audio researcher must investigate a small set of fitting candidates and return actual source and permission evidence. The asset worker then processes the selected source through the required pipeline. A search result title alone is not enough to approve a recording.
+The audio researcher investigates fitting candidates, verifies source and permission evidence, and delivers the final game-ready WAV under the current super-event skill.
+The parent accepts and places that final file and owns sound-definition wiring.
+A search result title alone is not enough to approve a recording.
 
 ## Runtime ownership
 

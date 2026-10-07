@@ -42,7 +42,7 @@ These are implementation acceptance conditions. The accompanying model report st
 | C05 | Idempotence | Duplicate recipient, history, expiry, and acknowledgment callbacks do not duplicate or subtract rewards twice |
 | C06 | Save and reload | Claims, package identity, expiry dates, achievement state, and once-per-firing guards preserved |
 | C07 | Unsupported capabilities | Preflight failure does not silently award substitutes or consume the incident |
-| C08 | Cluster identity | Intelligence semantic registration, no collision with runtime Diseases ID 8 |
+| C08 | Cluster identity | Intelligence uses ID 20 from the central ledger linked in Part 1; Diseases retains ID 8, with no membership or behavior change implied by identity alignment |
 | C09 | Cluster lifecycle | Incident counted once, member-specific once/repeatable rules preserved |
 | C10 | Chaos ownership | +5 once per committed worldwide firing, no per-country or per-operative multiplication |
 | C11 | Cross-event integration | Uses actual current capability, no free leak, purge, or stale expired-bonus contribution |

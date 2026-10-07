@@ -1,5 +1,7 @@
 # Event 065 Manual Design Review
 
+Historical manual design review; current probability and independent subagent evidence remain separate implementation requirements.
+
 ## Review basis
 
 The full project skill bundle and all 20 supplied subagent definitions were read before the specification was written.

@@ -1,5 +1,9 @@
 # Event 32 source review
 
+Historical evidence: source names, hashes, repository observations, and tool/runtime limitations below belong to the original planning pass.
+They do not establish current local file availability, current service health, implementation status, or design approval.
+Use the package entry point and current owner skills for active guidance.
+
 ## Review scope
 
 The following uploaded project files were read in full before the specification was written.

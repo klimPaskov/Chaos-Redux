@@ -1,5 +1,8 @@
 # Event 045 package validation
 
+Historical package-generation validation report.
+The recorded PASS results and combined-specification statistics were not rerun for the maintained package; the duplicate combined file has been removed in favor of its sibling sources.
+
 ## Result
 
 `PASS`

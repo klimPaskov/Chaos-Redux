@@ -168,7 +168,7 @@ Use the project writing rules. Keep each title distinct from the official Doctri
 
 ## Asset routing
 
-Route icon production through the accepted Event 027 asset prompt and `chaosx_icon_artist` with `fork_context=false`.
+Route icon production through the accepted Event 027 asset prompt and `chaosx_icon_artist` with `fork_turns="none"`.
 
 Each achievement requires:
 

@@ -1,5 +1,11 @@
 # Event 049 Doomsday Specification Package
 
+## Authority and current workflow
+
+The [source brief](research/049_doomsday_source_brief.md) records originating Doomsday constraints. Later elaborations need their own explicit acceptance basis.
+Use current [planning](../../../.agents/skills/chaos-redux-event-planning/SKILL.md), [events](../../../.agents/skills/chaos-redux-events/SKILL.md), [assets](../../../.agents/skills/chaos-redux-event-assets/SKILL.md), and [routing](../../../.agents/skills/chaos-redux-subagents/SKILL.md) guidance.
+Unattributed design remains `unresolved`; rediscover current tools and source state before a separately authorized implementation task.
+
 ## Purpose
 
 This package defines the complete planning handoff for Event 049, **Doomsday**, which replaces the unreworked catalog concept **Mass Panic**.
@@ -8,13 +14,10 @@ The event is a Major global crisis at Chaos level 4. It creates a dynamic predic
 
 The design keeps the player-facing mechanic within the accepted value budget. The player tracks only **Doomsday Conviction** and **Time Until the End**. Country belief, movement composition, organization, suppression backlash, institutional resilience, peace pressure, and terminal readiness remain hidden or appear as short qualitative statuses.
 
-## Extraction
+## Repository location
 
-The ZIP is intended to be extracted at the repository root. Its content lands under:
-
-```text
-docs/specs/049_doomsday_specs/
-```
+The package lives at `docs/specs/049_doomsday_specs/`.
+The normalized originating brief is [research/049_doomsday_source_brief.md](research/049_doomsday_source_brief.md); its recorded brief constraints do not automatically approve later elaborations.
 
 ## Package map
 
@@ -70,7 +73,7 @@ Player interaction uses phased decisions, a compact status header, and a strong 
 
 The terminal route is public and event-owned. It follows the shared world-end contract, has its own Event Details row and persistent toggle, requires 1000 or more Chaos, and remains separate from the ordinary arrival of the predicted date.
 
-## Status
+## Original planning status
 
 The design package is complete as a planning handoff. Every supplied project Markdown, TOML, catalog CSV, and extracted subagent definition was read in full.
 

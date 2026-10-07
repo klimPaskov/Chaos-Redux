@@ -2,7 +2,7 @@
 
 Audit against the binding R1 through R7 dispositions in `016_source_of_truth_map.md`, not the rejected historical recommendations.
 
-Spawn `chaosx_event_completion_auditor` with `fork_context=false` after implementation, asset wiring, documentation, workbook alignment, and all accepted addenda are resolved.
+Spawn `chaosx_event_completion_auditor` with `fork_turns="none"` after implementation, asset wiring, documentation, workbook alignment, and all accepted addenda are resolved.
 
 Read:
 

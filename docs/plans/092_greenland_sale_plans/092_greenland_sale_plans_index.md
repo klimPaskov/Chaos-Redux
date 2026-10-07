@@ -1,8 +1,8 @@
 # Greenland Sale: planning evidence index
 
 Checkpoint: `GS-092-D1`.
-Place this folder at `docs/plans/092_greenland_sale_plans/`.
-The accompanying design folder belongs at `docs/specs/092_greenland_sale_specs/`.
+This folder is installed at `docs/plans/092_greenland_sale_plans/`.
+The accompanying design is in `docs/specs/092_greenland_sale_specs/`.
 
 ## Authority and source reading
 
@@ -10,7 +10,8 @@ The accompanying design folder belongs at `docs/specs/092_greenland_sale_specs/`
 [Reading report](092_greenland_sale_reading_report.md) distinguishes all 46 fully read supplied text files from missing and partial external references.
 [Source ledger](092_greenland_sale_supplied_source_read_ledger.json) records supplied-file hashes and exact reading coverage.
 [Read ranges](092_greenland_sale_supplied_source_read_ranges.json) records the 109 full-text chunk ranges.
-[Original supplied archive](092_greenland_sale_supplied_sources_original.zip) is the unchanged uploaded ZIP, including its nested role archive.
+The original supplied ZIP was removed from this checkout at the user's request.
+The source ledger and reading report retain its historical provenance; they do not make the archive locally available.
 [Source and decision register](092_greenland_sale_source_and_decision_register.md) separates user requirements, parent proposals, repository evidence and corrections.
 [Research notes](092_greenland_sale_research_notes.md) records bounded primary-source historical context without claiming that an actual Greenland auction occurred.
 
@@ -25,10 +26,12 @@ The accompanying design folder belongs at `docs/specs/092_greenland_sale_specs/`
 
 ## Executed checks and their boundaries
 
+The linked results below describe the original package-delivery checks.
+The document-check program assumes that original package layout and source ZIP; it is not a current checkout validation command.
 [Validation report](092_greenland_sale_validation_report.md) gives actual document and abstract-check outcomes.
 [Abstract design check program](092_greenland_sale_design_checks.py) is a small standalone Python reference test, not game code.
 [Abstract results](092_greenland_sale_design_check_results.json) records the 32 executed cases.
 [Document check program](092_greenland_sale_document_checks.py) validates this package's artifacts and preserved source bytes.
 [Document results](092_greenland_sale_document_check_results.json) records its executed checks.
-The package manifest records hashes for integrity and excludes itself to avoid a self-referential hash.
-Hashes are delivery checks, not evidence of source reading or gameplay correctness.
+The package manifest preserves original delivery hashes, including the removed ZIP, and excludes itself to avoid a self-referential hash.
+It is a historical receipt, not an inventory or validation result for the current checkout.

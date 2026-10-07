@@ -20,7 +20,9 @@ Read:
 
 Create the Kruger State only from a peaceful charter, violent laboratory rebellion, partial enclave, multi-site split, or valid host takeover.
 
-`KRG` is a working tag. Check conflicts before registration.
+`KRG` is already registered as the Kruger owner identity in `common/country_tags/016_brilliant_scientist_country.txt`, line 8.
+Inspect and reuse its country package and consumers under the [shared identifier registry](../../shared_identifier_registry.md).
+Collision checks remain required for genuine new-tag proposals, not as an instruction to reserve a second Kruger tag.
 
 Implement:
 
@@ -73,8 +75,8 @@ Create final focus names, descriptions, coordinates, prerequisites, mutual exclu
 
 After implementation:
 
-- Spawn `chaosx_country_package_auditor` with `fork_context=false`.
-- Spawn `chaosx_focus_tree_auditor` with `fork_context=false`.
+- Spawn `chaosx_country_package_auditor` with `fork_turns="none"`.
+- Spawn `chaosx_focus_tree_auditor` with `fork_turns="none"`.
 
 They may patch small local defects. Broad redesign becomes a plan. Each writes a handoff under `docs/plans/016_brilliant_scientist_plans/subagent_handoffs/`.
 

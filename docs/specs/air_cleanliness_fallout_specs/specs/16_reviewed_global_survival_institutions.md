@@ -2,10 +2,9 @@
 
 ## Ownership
 
-The Empty Ward is a Fallout-owned country-level Year 2 institution chain. It
-follows a completed generation memory and a resolved Fever Dormitory memory.
-The chain remains dormant until the accepted scheduler contract authorizes its
-human and hidden-AI review lanes.
+The Empty Ward is a Fallout-owned country-level Year 2 institution chain.
+It follows a completed generation memory and a resolved Fever Dormitory memory.
+The chain remains dormant until the accepted scheduler contract authorizes its human and hidden-AI review lanes.
 
 | Surface | Contract |
 | --- | --- |
@@ -24,20 +23,15 @@ human and hidden-AI review lanes.
 
 ## Eligibility and grading
 
-The candidate requires the current Fallout country registry, durable survival
-identity and resource rows, the closed School in the Vent Room memory, one
-Fever Dormitory outcome memory, campaign day 500 through 1199, Cohesion at
-least 30, Medicine at least 15, Shelter at least 30, and one affordable ward
-policy. Candidate severity is recorded civilian Deaths multiplied by 0.0004
-and clamped to the scheduler score range. Mechanic pressure is zero. Medicine
-supplies the state value and the survival-resource pressure source.
+The candidate requires the current Fallout country registry, durable survival identity and resource rows, the closed School in the Vent Room memory, one Fever Dormitory outcome memory, campaign day 500 through 1199, Cohesion at least 30, Medicine at least 15, Shelter at least 30, and one affordable ward policy.
+Candidate severity is recorded civilian Deaths multiplied by 0.0004 and clamped to the scheduler score range.
+Mechanic pressure is zero.
+Medicine supplies the state value and the survival-resource pressure source.
 
-The delayed result freezes Medicine, Shelter, Cohesion, Recognition, generation
-count, ward capacity, research, institutional trust, and the ward's durable
-exposure ledger. Viability weights are
-Cohesion 25, Medicine 35, Shelter 25, and generation count 15. Each policy has
-its own success and partial threshold. Failure is deterministic and has no
-random or MTTH branch.
+The delayed result freezes Medicine, Shelter, Cohesion, Recognition, generation count, ward capacity, research, institutional trust, and the ward's durable exposure ledger.
+Viability weights are Cohesion 25, Medicine 35, Shelter 25, and generation count 15.
+Each policy has its own success and partial threshold.
+Failure is deterministic and has no random or MTTH branch.
 
 ## Policies and consequences
 
@@ -50,18 +44,14 @@ random or MTTH branch.
 4. Reserved empty ward keeps emergency capacity available without pretending
    that an unused room is already a public institution.
 
-Every policy has success, partial, and failure results. Results update Food,
-Medicine, Power, Recognition, Cohesion, stability, war support, manpower,
-capacity, research, trust, durable exposure, policy memory, timed modifiers, and the
-Event Log. Failure routes population loss through the shared Deaths contract at
-0.1 percent of each owned state's population. The callback uses 0.05 percent
-on failure and records a maintained or failed institution memory.
+Every policy has success, partial, and failure results.
+Results update Food, Medicine, Power, Recognition, Cohesion, stability, war support, manpower, capacity, research, trust, durable exposure, policy memory, timed modifiers, and the Event Log.
+Failure routes population loss through the shared Deaths contract at 0.1 percent of each owned state's population.
+The callback uses 0.05 percent on failure and records a maintained or failed institution memory.
 
 ## Cleanup and boundaries
 
-The result and callback use exact issued ticket wrappers. Callback cleanup
-prepares result cleanup only after its own ticket is released. Cleanup retains
-ward capacity, research, trust, durable exposure, and policy memory while clearing registry,
-frozen ledgers, branch, result, callback, and transient flags. It does not
-activate the Fallout scheduler, host authority, save recovery, or multiplayer
-behavior.
+The result and callback use exact issued ticket wrappers.
+Callback cleanup prepares result cleanup only after its own ticket is released.
+Cleanup retains ward capacity, research, trust, durable exposure, and policy memory while clearing registry, frozen ledgers, branch, result, callback, and transient flags.
+It does not activate the Fallout scheduler, host authority, save recovery, or multiplayer behavior.

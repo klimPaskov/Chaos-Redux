@@ -1,6 +1,6 @@
 # Event 059 AI probability audit prompt
 
-Spawn `chaosx_ai_probability_auditor` with `fork_context=false` for every complex weighted AI surface used by Event 059. The auditor is read-only.
+Spawn `chaosx_ai_probability_auditor` with `fork_turns="none"` in Codex for every complex weighted AI surface used by Event 059. The auditor is read-only.
 
 ## Inputs
 

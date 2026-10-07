@@ -154,6 +154,12 @@ The parent should use this planner after a meaningful implementation tranche, no
 
 Use it after long implementation tranches, after several subagent handoffs, before a major resume, or whenever docs may be stale, contradictory, duplicated, or too numerous. It should distinguish explicit user decisions, accepted design with its acceptance basis, current implementation evidence, and proposals. Apply the AGENTS.md Specs and Plans dispositions: `unresolved`, `accepted and queued` with acceptance basis and reason, `implemented` with evidence and validation limits, `promoted into an accepted spec` with acceptance basis and destination, `rejected` with recorded reason, `superseded` with a named replacement, or `blocked` with the exact limitation.
 
+For package cleanup, apply these evidence rules:
+
+- Identify whether a manifest or QA receipt describes an original archive, an earlier review, or the current checkout before changing it. Preserve historical bytes, hashes, and results with their scope and date; refresh a current inventory from the edited files and report only checks actually rerun.
+- Consolidate a combined spec copy only after comparing its bodies with the authoritative parts, checking incoming references, and preserving any unique design, acceptance evidence, or provenance. Repair callers and leave a successor pointer where needed; a matching title alone does not prove duplication.
+- Link mutable production and routing rules to their current owner skill instead of repeating them in each prompt. Check active tool arguments against the connected schema; the Codex no-inheritance argument is `fork_turns="none"`. Keep dated capability failures as history and rediscover current exposure, schemas, and health before making a present-tense capability claim.
+
 It must not edit gameplay files, localisation, scripted localisation, GUI, GFX, events, focuses, decisions, ideas, scripted effects, scripted triggers, on_actions, country setup, history, AI files, assets, audio, binary files, or the event catalog workbook. It does not replace `chaosx_event_completion_auditor`, `chaosx_localisation_auditor`, `chaosx_spreadsheet_doc_worker`, or `chaosx_repo_explorer`.
 
 ### Skill maintenance agents

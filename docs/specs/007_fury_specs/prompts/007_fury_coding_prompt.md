@@ -1,5 +1,7 @@
 # Coding prompt for Event 007 Fury
 
+Read the [accepted release corrections](../specs/007_fury_release_corrections_2026-10-05.md) first; they override conflicting older instructions within their recorded acceptance boundary.
+
 Implement Event ID `7`, Fury, according to this planning package.
 
 Source folder:

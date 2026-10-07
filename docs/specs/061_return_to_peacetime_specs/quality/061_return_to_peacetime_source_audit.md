@@ -1,5 +1,7 @@
 # Event 061 source audit
 
+Historical supplied-source receipt: original upload names, hashes, and reading claims are preserved; they do not attest to current repository files.
+
 ## Audit result
 
 Every text source supplied in the project bundle was read in full before the Event 61 specification was written.

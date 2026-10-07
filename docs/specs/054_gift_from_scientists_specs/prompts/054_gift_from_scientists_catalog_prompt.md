@@ -20,7 +20,9 @@ Remove the stale infrastructure-boom description.
 
 ## Scientific Research cluster row
 
-Use the stable runtime ID confirmed by implementation. Do not assign proposed ID 9 when the repository already reserves another identity.
+Use reserved `event_cluster_id = 21` from the [shared identifier registry](../../shared_identifier_registry.md) for any separately accepted Scientific Research implementation.
+The reservation is shared with Event 089 and does not approve membership, design or a workbook edit.
+Preserve National Breakthroughs at ID `9`.
 
 Set:
 

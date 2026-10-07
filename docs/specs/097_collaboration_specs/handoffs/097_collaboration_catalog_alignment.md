@@ -4,7 +4,7 @@ This handoff tells `chaosx_spreadsheet_doc_worker` what to change in the event c
 
 The worker starts only after implementation facts exist, because the spreadsheet fields must match the final in-game localisation word for word.
 
-## Current row
+## Historical planning row
 
 The CSV export at planning time shows row 97 as: name Collaboration, Details "Countries establish collaboration networks against one another.", empty evolution fields, empty world-end field, type Minor Repeatable, Chaos level 1, empty cluster id, status To Be Reworked. The workbook itself is stored through Git LFS in this checkout and could not be opened during planning, so the worker must read the real workbook row before writing.
 
@@ -22,12 +22,17 @@ The CSV export at planning time shows row 97 as: name Collaboration, Details "Co
 | World-End Scenario | Empty |
 | Type | Minor Repeatable |
 | Chaos level | 1 |
-| Cluster ID | The Intelligence cluster id chosen when the cluster is built at runtime |
+| Cluster ID | 20, the current Intelligence identifier, matching `constant:event_cluster_id.intelligence` |
 | Status | Set by the user after live validation |
 
 ## Cluster catalog row
 
-The cluster catalog row for Intelligence lists members 39 and 52 with severities Medium and Low. Add 97 with severity Medium, so the members read 39, 52, 97 and the severities read Medium, Low, Medium. The cluster id in this row must match the runtime id. The catalog, the cluster documentation, and the Event 052 package currently disagree on that id, and runtime id 8 belongs to Diseases, so the worker records the final id and the reason for it in its handoff.
+The nested design proposes members 39, 52 and 97 with severities Medium, Low and Medium.
+Inspect current workbook membership and accepted integration requirements before changing a row.
+Intelligence uses ID **20**, confirmed by the parent's [current identifier audit](../../../plans/repo_cleanup/specification_package_audit_2026-10-07/handoffs/identifier_overlaps.md) in both runtime constants and the canonical XLSX `Clusters` sheet.
+ID 9 belongs to National Breakthroughs, and ID 8 belongs to Diseases.
+Preserve identifier 20 in both the event and cluster rows, and record any authorized membership change separately from this resolved identity.
+The Event 039 type question and the Event 097 variant conflict remain separate decisions.
 
 ## Checks
 

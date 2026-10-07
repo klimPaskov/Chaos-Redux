@@ -30,9 +30,8 @@ Create all eight achievement subjects listed in Part 6 and the achievement promp
 
 Country reports use the 210 by 176 slanted monochrome or sepia card with the prescribed transparent-corner processing. Use the actual `.agents/skills/chaos-redux-event-assets/tools/process_report_event_image.py` workflow. News images use 397 by 153 monochrome output. Super-event art uses 457 by 328. Decision icons are 32 by 32 and idea icons 64 by 64. The original map and its ship panels use their inspected native consumer dimensions, which were not verified by the planning session.
 
-For achievements, inspect `icons/achievements/contact_sheet.png` and the actual template folder. Preserve `achievement_template.png`, `achievement_template_grey.png`, and `overlay.png` byte-for-byte, at their exact 64 by 64 alignment. Verify their full SHA-256 values from the current skill before use.
-
-Generate one genuinely transparent colour subject per new achievement through image generation, without an achievement frame, text, square background, fake transparency checkerboard, or red cross. Derive the grey and not-eligible source layers deterministically according to the skill. Use `.agents/skills/chaos-redux-event-assets/tools/process_achievement_icons.py` with the complete three-state input. Validate exact decoded compositing against the immutable backgrounds and overlay.
+Use [the current achievement asset contract](../../../.agents/skills/chaos-redux-event-assets/SKILL.md#achievement-icons) for the exact contact sheet, immutable templates, native transparent ImageGen subjects, deterministic three-state derivation, processor, and decoded compositing checks.
+Keep all eight subjects and 24 final states; do not copy archive-era template hashes or processing commands into this prompt.
 
 All three achievement DDS files go directly under `gfx/achievements/`, named from the exact registered achievement ID with base, `_grey`, and `_not_eligible` suffixes. Do not create `gfx/achievements/080_airship/`. Keep the shared registry's single-root structure and update its owner-approved sections, localisation, GFX, and manifest consistently.
 

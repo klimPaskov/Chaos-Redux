@@ -1,5 +1,7 @@
 # Decision and mission implementation prompt
 
+Disposition: superseded historical prompt; current guidance is [the Event 012 authority map](../../012_africa_specs/README.md).
+
 Audit and implement the Gods of Africa decision layer under Event `012` using the accepted full specification.
 
 ## Participant surface

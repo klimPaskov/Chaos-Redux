@@ -1,6 +1,6 @@
 # Prompt for chaosx_scripted_system_architect
 
-Use `fork_context=false`. Implement or plan reusable scripted logic for Event 17 `Random faction` from `docs/specs/017_random_faction_specs/`, especially `matrices/017_random_faction_scripted_system_architecture.md`.
+Use `fork_turns="none"`. Implement or plan reusable scripted logic for Event 17 `Random faction` from `docs/specs/017_random_faction_specs/`, especially `matrices/017_random_faction_scripted_system_architecture.md`.
 
 Create a helper map for:
 

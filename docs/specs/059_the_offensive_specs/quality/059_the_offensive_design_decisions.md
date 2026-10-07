@@ -1,6 +1,10 @@
 # Event 059 design decisions
 
-## Accepted decisions
+## Recorded planning decisions
+
+The table preserves the original planning choices and reasons.
+The source-reading report records the cluster instruction retrieval and its completeness limit.
+Acceptance of expanded design remains unresolved where the original user decision or parent acceptance cannot be cited, as described in the package README.
 
 | Question | Decision | Reason |
 | --- | --- | --- |

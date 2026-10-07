@@ -1,4 +1,7 @@
-# Existing System Reconciliation
+# Historical Existing-System Reconciliation
+
+This preserves the original planning diagnosis and migration proposals, not a current source audit.
+Use the [accepted amendment](../specs/13_2026_09_20_accepted_cbrn_overhaul.md) and [requirement ledger](../../../plans/chaos_warfare_system_plans/2026-09-20_cbrn_overhaul_requirement_ledger.md) for later decisions and owner evidence.
 
 ## Existing foundation retained
 
@@ -54,7 +57,7 @@ The redesign separates three layers:
 
 1. Aircraft design eligibility and ordinary combat stats.
 2. Reliable chemical raid and operation completion hooks that consume payloads and apply exact state results.
-3. A lower-confidence continuous mission estimator that is disabled by default unless the implementation agent confirms a reliable 1.19 hook.
+3. The former continuous-mission estimator proposal is superseded by the recorded user constraint: no estimator or proxy is permitted, and continuous contamination remains fail-closed without a verified current-version hook.
 
 ### Chemical tank companies are duplicated by chassis and agent
 

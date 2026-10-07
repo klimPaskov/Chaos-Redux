@@ -1,6 +1,7 @@
-# Camp repression rework final handoff
+# Camp repression rework historical handoff, 2026-07-11
 
-Resume the Chaos Redux `system_camp_repression_rework` package in the live repository.
+> **Superseded active handoff:** Resume from [package index](../package_index.md), the October 6 takeover and the accepted administration contract.
+> The body below is the July implementation receipt, including then-current assets, counts and validation limits; its instructions and no-work-queued conclusion do not govern current continuation.
 
 ## Read first
 
@@ -13,7 +14,7 @@ Resume the Chaos Redux `system_camp_repression_rework` package in the live repos
 - `docs/specs/system_camp_repression_rework_specs/specs/system_camp_repression_rework_spec_part_7_implementation_checklist_validation.md`
 - the relevant validation skill if engine-runtime scenario execution becomes available
 
-## Current live state
+## Recorded July source state
 
 - The shared lifecycle, registered-state monthly processing, Deaths integration, responsibility, discovery, cleanup, and Ledger display cache are implemented.
 - Player actions route through `camp_rework_route_country_specific_action` and use `camp_rework_action_state_id` for state targets.
@@ -34,7 +35,7 @@ Resume the Chaos Redux `system_camp_repression_rework` package in the live repos
 - The event catalog workbook is aligned through the existing Soviet Collapse row. This system rework does not create a standalone ChaosX event identity.
 - All 15 Part 7 and cross-cutting scenario contracts passed static trace with zero failures. No engine-runtime scenario execution occurred in this environment.
 
-## Remaining handoff gates
+## Historical July handoff gates
 
 1. If an engine-runtime environment becomes available, execute the 15 recorded scenarios and append runtime results to `scenario_contract_validation_report.md`. Until then, preserve the explicit gap and do not relabel static trace as in-game execution.
 2. The parent reviews the final combined repository state, including the decision/mission PASS handoff, then decides whether the documented runtime-validation gap permits the final completion claim.

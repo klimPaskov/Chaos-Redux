@@ -1,5 +1,11 @@
 # 12. Triggerable Scenario: The Ten Plagues
 
+## Planning reservation
+
+The Ten Plagues reserves `SCN-032`, raw integer `32`, for Event 085 in the [shared identifier registry](../shared_identifier_registry.md) and its [machine-readable counterpart](../shared_identifier_registry.json).
+The basis is the user's 7 October 2026 identifier-allocation instruction and the parent reservation after the cross-package/runtime/catalog occupancy audit.
+This allocation approves the identity only, not the surrounding proposed design, runtime registration or playability.
+
 ## Starting the catastrophe
 
 The manual scenario begins Event 085 immediately.
@@ -90,7 +96,7 @@ Low clearly warns that careful preparation reduces harm but does not guarantee a
 
 The action is available through the existing scenario interface.
 No separate launcher GUI is justified by this event alone.
-Its identifiers and registry allocation must be established from the actual scenario owner during implementation.
+Use reserved `SCN-032` / raw `32` for the shared scenario owner's future registration, eligibility, dispatcher, sortable views, localisation and catalog wiring.
 
 ## Achievement and restart integrity
 

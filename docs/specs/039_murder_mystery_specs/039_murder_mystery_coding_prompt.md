@@ -1,6 +1,9 @@
 # Coding Agent Prompt: Event 039 Murder Mystery
 
-Implement the complete Event 039 Murder Mystery rework from every file in `docs/specs/039_murder_mystery_specs/`. Treat the package as the accepted source of truth. Do not reduce, replace, or postpone a specified system without explicit user approval.
+Read the [package entry point](039_murder_mystery_package_index.md) for design authority and unresolved acceptance before executing this implementation prompt.
+Use existing user authorization and recorded parent acceptance; imported status labels alone do not approve expansion.
+
+Implement the complete Event 039 Murder Mystery rework from every file in `docs/specs/039_murder_mystery_specs/`. Treat the package as the event design input, with claim-specific acceptance recorded under the entry point. Do not reduce, replace, or postpone a specified system without explicit user approval.
 
 ## Required reading and repository discipline
 
@@ -12,25 +15,28 @@ The autonomous debug-playtest skill remains out of scope unless the user explici
 
 ## Preimplementation gates
 
-Before gameplay work, reserve and document:
+Before gameplay work, verify and document existing identifiers, reserving only unresolved surfaces:
 
 - Event 39 event-ID range
 - safe country carrier and derivative capacity
 - character disposition and succession registry rows
-- Intelligence cluster ID
-- Assassin Network scenario ID
+- Intelligence cluster ID `20`, preserving central runtime/workbook ownership
+- Assassin Network scenario ID `SCN-019` / raw `19`, preserving current ownership
 - super-event slots and audio IDs
 - custom unit provider ID and equipment profile IDs
 - achievement IDs
 - country, faction, ideology, focus, decision, unit, equipment, technology, sprite, sound, and localisation identifiers
 
-Audit collisions across vanilla, Chaos Redux, approved reference mods, and dynamic carrier systems. Do not invent or assume a free identifier.
+Audit collisions across vanilla, Chaos Redux, approved reference mods, and dynamic carrier systems.
+Preserve the [shared identifier registry](../shared_identifier_registry.md) allocations rather than selecting another cluster/scenario slot.
+Do not invent or assume a free identifier; identifier approval does not independently approve gameplay design.
 
 ## Required behavior
 
 Implement Event 39 as Minor Fire-Once, Chaos level 1, Intelligence cluster Medium member. Select one valid major or player-controlled ordinary host with safe succession and viable event ownership. Murder the sitting leader only through the protected character transaction, install the verified successor, open the investigation, and record the event.
 
-Implement Case Progress and Network Reach for governments, plus Brotherhood Cohesion for Assassin actors. Keep all other simulation values hidden or summarized. Build the six-phase investigation, target protection, intelligence scaling with and without La Résistance, dynamic costs, real missions, character-safe incidents, final capture routes, complete and partial outcomes, and permanent resolution.
+Implement Case Progress and Network Reach for governments.
+Assassin actors see Network Reach and Brotherhood Cohesion, preserving the two-value budget. Keep all other simulation values hidden or summarized. Build the six-phase investigation, target protection, intelligence scaling with and without La Résistance, dynamic costs, real missions, character-safe incidents, final capture routes, complete and partial outcomes, and permanent resolution.
 
 Implement all five evolutions with dynamic pacing and separate history. Evolution I creates the national Murder Cult. Evolution II creates a bounded international cell registry and easier foreign investigations. Evolution III creates the Assassin State through a validated connected territorial split and explicit war. Evolution IV permits bounded foreign revolts, reduced derivative country packages, subjects, and the Veiled Compact. Evolution V unlocks advanced units, command settlement, and the terminal branch without activating it automatically.
 
@@ -57,5 +63,7 @@ Use shared civilian, deaths, Condemnation, special-country, nonhuman, event log,
 Implement AI for every country, route, decision, mission, unit, cell, revolt, inheritance, and terminal sector. Run the mandatory probability workflow for every complex weight and the named scenarios in Part 13. Use event, focus, technology, GUI, probability, render, rewrite, and comparison MCP tools where required. Fix semantic and visual findings, then rerun.
 
 Update authoritative XLSX workbooks through the spreadsheet worker and regenerate CSV exports. Update Event 39, scenario, cluster, super-event, unit provider, CXT, 3D, achievement, asset, audio, and permanent system documentation. Promote durable provenance and remove temporary evidence only after no runtime reference depends on it.
+
+Run the mandatory near-completion `chaosx_improvement_loop_planner` pass under the [planning skill](../../../.agents/skills/chaos-redux-event-planning/SKILL.md#mandatory-near-completion-improvement-loop-pass), and resolve its addendum or record its closure.
 
 Completion requires every acceptance case in Part 18, save and reload, idempotent setup and cleanup, no stale targets or carriers, no unsafe character deletion, no missing assets or audio, and an honest final report listing evidence, files, tests, blockers, and any explicitly approved fallback.

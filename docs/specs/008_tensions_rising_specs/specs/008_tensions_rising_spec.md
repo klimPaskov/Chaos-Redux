@@ -1,5 +1,9 @@
 # Event 008: Tensions Rising  -  Source Specification
 
+Disposition: unresolved historical design direction.
+Single-member Low Diplomatic Panic claims below are superseded as catalog facts by [the cluster reconciliation](../matrices/008_tensions_rising_cluster_and_achievements.md); source intent still needs an owner decision.
+Use [the owner state map](../../../plans/008_tensions_rising_plans/documentation_state_2026-10-05.md) before treating any helper or follow-up proposal as remaining implementation work.
+
 > Documentation reconciliation, 2026-07-29: `docs/events/008_tensions_rising/overview.md` is the current implementation-facing record for Event 008. The planning-era `To Be Reworked` label and open implementation decisions below are retained as historical intake context; they are not an active rework queue unless the parent explicitly reopens Event 008.
 
 ## Event identity

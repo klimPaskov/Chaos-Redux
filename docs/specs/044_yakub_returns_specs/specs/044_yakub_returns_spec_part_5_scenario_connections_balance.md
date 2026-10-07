@@ -4,9 +4,10 @@
 
 Scenario name: Yakubite Uprising
 
-Proposed scenario ID: `SCN-015`
+Reserved scenario ID: `SCN-023` / raw `23`
 
-The current scenario export reaches `SCN-014`. The missing `SCN-004` identity should remain reserved. Implementation should confirm the authoritative workbook before assigning `SCN-015`.
+Use the user-authorized 2026-10-07 central reservation in `docs/specs/shared_identifier_registry.md`.
+Preserve incumbent runtime and held identities; the allocation approves identity only, not this proposed scenario content.
 
 The scenario launches Event 44 without the normal timer, event Chaos level, evolution thresholds, date, prior movement history, or ordinary source-event prerequisites.
 

@@ -4,7 +4,7 @@ Work with no inherited conversation context. This is an Event 38 owned GUI task,
 
 Event: `038_malta_crusaders`
 
-Read `AGENTS.md`, `chaos-redux-decisions-missions`, `chaos-redux-event-assets`, `chaos-redux-frame-animation`, `chaos-redux-subagents`, and these Event 38 specs:
+Read `AGENTS.md`, `chaos-redux-scripted-gui`, `chaos-redux-decisions-missions`, `chaos-redux-event-assets`, `chaos-redux-frame-animation`, `chaos-redux-subagents`, and these Event 38 specs:
 
 - `04_crusade_council_mechanic.md`
 - `06_focus_tree_architecture.md`
@@ -16,7 +16,8 @@ Read `AGENTS.md`, `chaos-redux-decisions-missions`, `chaos-redux-event-assets`, 
 - `23_acceptance_scenarios.md`
 - `29_asset_requirement_matrix.md`
 
-The parent must append the locked GUI identifiers, exact owning `.gui`, `.gfx`, scripted GUI and localisation files, entry point, gameplay helper IDs, approved asset paths, supported resolutions, and allowed file list before dispatch. Stop and return a blocker when any required identifier or asset contract is missing.
+The parent must append the accepted layout brief and acceptance basis, reference-image paths or bounded reference-production assignment, image-to-native mapping, locked GUI identifiers, exact owning `.gui`, `.gfx`, scripted GUI and localisation files, entry point, gameplay helper IDs, approved asset paths, supported resolutions, and allowed file list before dispatch.
+Stop and return a blocker when any required identifier or asset contract is missing.
 
 Implement or improve only the dedicated **Crusade Council** mechanic window introduced by Event 38. It presents:
 
@@ -31,11 +32,13 @@ Implement or improve only the dedicated **Crusade Council** mechanic window intr
 
 The window must not expose hidden route conditions, raw variables, debug histories, full probability breakdowns, or more than the three persistent public values. It must not modify the shared Event Log, Event Details, settings, super-event framework, or unrelated interfaces.
 
-Use the mandatory MCP sequence:
+Follow the current [scripted GUI owner skill](../../../../.agents/skills/chaos-redux-scripted-gui/SKILL.md) for reference selection, iterative previews, application, and matched comparison evidence.
+The optional rewrite transaction is not a completion gate.
+Use the mandatory evidence sequence:
 
 1. `hoi4.gui_inspect`
 2. pre-change `hoi4.gui_render` for full window, key crops, hierarchy, click regions, all relevant states, and all supported resolutions
-3. an in-scope `hoi4.gui_rewrite`
+3. review the intended reference and apply the authorized edit directly, or optionally through `hoi4.gui_rewrite`
 4. post-change inspect and render over the same states and resolutions
 5. comparison evidence
 

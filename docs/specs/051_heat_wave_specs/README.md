@@ -1,5 +1,12 @@
 # Event 051 Heat Wave Specification Package
 
+## Authority and current workflow
+
+The repeatability proposal and category-animation scope require the dispositions below. Recency and a planning completion label do not establish acceptance.
+Use current [planning](../../../.agents/skills/chaos-redux-event-planning/SKILL.md), [events](../../../.agents/skills/chaos-redux-events/SKILL.md), [assets](../../../.agents/skills/chaos-redux-event-assets/SKILL.md), and [routing](../../../.agents/skills/chaos-redux-subagents/SKILL.md) guidance.
+Unattributed design remains `unresolved`; rediscover current tools and source state before a separately authorized implementation task.
+
+
 ## Status
 
 This package is the source design for the rework of Event 051, Heat Wave.
@@ -18,7 +25,9 @@ It expands the attached rough brief into a full implementation specification. It
 | Member severity | High |
 | Current design status | To Be Reworked |
 
-The supplied event catalog CSV still identifies Event 51 as Minor Fire-Once. The attached rough brief is newer and more detailed, so this package treats Minor Repeatable as the accepted type. The authoritative workbook must be corrected during implementation and the CSV exports must then be regenerated.
+The originating catalog export labels Event 51 Minor Fire-Once, while the recorded rough-brief design proposes repeatable episodes.
+The proposal remains Minor Repeatable throughout the design, but recency and added detail do not establish acceptance.
+Record the explicit acceptance basis for this conflict before changing classification or the authoritative workbook; regenerate CSV exports after any authorized workbook update.
 
 ## Design summary
 
@@ -101,6 +110,12 @@ The safest implementation order is:
 10. Add presentation, assets, super-event research, achievements, and catalog wording.
 11. Run event-chain, probability, map, decision, localisation, completion, and live user validation passes required by the repository rules.
 
-## Reading limitation
+## Original planning reading limitation
 
 All supplied project files, all three supplied CSV exports, and every TOML definition inside the supplied subagent archive were read in full. The live Windows repository, offline Paradox wiki snapshot, installed vanilla Hearts of Iron IV files, approved reference mods, and HOI4 MCP server were not mounted in this environment. This package therefore specifies the required inspections and evidence gates but does not pretend those repository and engine checks occurred.
+
+## Unresolved presentation disposition
+
+Category animation is `unresolved`: the master prompt calls it optional, while the asset and goal prompts request a frame package and the asset specification supplies a frame plan.
+The implementation parent must record the acceptance basis and whether it is required before producing or omitting it.
+Retain the static category picture and the unique frame plan; this audit does not approve an animation fallback or removal.

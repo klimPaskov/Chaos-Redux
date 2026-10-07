@@ -1,6 +1,6 @@
 # Produce the complete Event 072 asset package
 
-Read the current AGENTS.md, chaos-redux-event-assets, relevant ComfyUI and flag guidance, scripted-GUI and exact-state registry guidance, supplied asset-worker profiles, and their required reference files.
+Read the current AGENTS.md, chaos-redux-event-assets, the event-assets portrait-production reference and flag guidance, scripted-GUI and exact-state registry guidance, supplied asset-worker profiles, and their required reference files.
 Use docs/specs/072_ireland_reclaims_north_specs/specs/presentation/072_asset_manifest.json as the planning inventory.
 Read the accompanying asset, event-writing, achievement, GUI and super-event specifications.
 Every row is a production requirement, not an already completed file.
@@ -55,3 +55,6 @@ Historical source research, generated event scenes, icons and any genuinely need
 The shared settings and event-log UI remain parent-owned.
 Do not claim a rendered reference image is an implemented GUI or that an asset manifest proves runtime wiring.
 The final delivery must identify every produced file, unresolved source or consumer, and remaining evidence gate.
+
+For consumers with transparent unused canvas, request native ImageGen transparency in the initial call and preserve alpha through processing and DDS conversion.
+Use [the current asset skill](../../../../.agents/skills/chaos-redux-event-assets/SKILL.md) for alpha, source preservation, processing and fallback evidence.

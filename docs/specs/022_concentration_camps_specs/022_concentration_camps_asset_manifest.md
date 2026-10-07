@@ -12,7 +12,7 @@ The package excludes graphic bodies, gore, staged victim scenes, generated docum
 - `chaosx_icon_artist` owns decision, mission, category, idea, state-modifier, and achievement icons.
 - `chaosx_generated_event_art` may produce a people-free symbolic panel only when archival sourcing fails and the parent accepts that source-mode change.
 
-Every asset agent must use `fork_context=false` and receive a context-complete prompt.
+Every asset agent must use `fork_turns="none"` and receive a context-complete prompt.
 
 ## Reference folders
 

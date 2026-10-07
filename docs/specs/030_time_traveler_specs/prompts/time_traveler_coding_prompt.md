@@ -18,7 +18,7 @@ Core contract:
 - Implement the eight Epoch Breakdown incident families with sparse registries and owner-system adapters.
 - Implement Continuity Directorate, Horizon Compact, Restoration Concord, alternate-state incidents, strategic portal nodes, and the original Closed Future machine actor.
 - Implement Machine Extinction War as an independently toggleable public world-end branch with `1000+` Chaos, Evolution V, machine footprint, low stability, no active world end, complete super-event, human response, machine country, military package, victory, defeat, and aftermath.
-- Implement the All Times at Once scenario under the final collision-checked scenario ID with four distinct intensities and no setup-time automatic world-end activation.
+- Implement the All Times at Once scenario under reserved `SCN-020`, raw ID `20`, rechecked against the central ledger and runtime/workbook occupancy before integration with four distinct intensities and no setup-time automatic world-end activation.
 
 Do not create a separate full Event 030 mechanic window. Use the normal decision category, static category picture, compact attached display, selected-target pattern, map highlights, and ordinary event surfaces. Do not add a fourth meter. Do not create full trees for every returned figure. Do not create dinosaur countries. Do not grant unrestricted future technology.
 
@@ -26,7 +26,7 @@ Use existing owner APIs and shared helpers. Do not duplicate famine, migration, 
 
 Keep values in script constants or documented tuning. Use one-shot Chaos milestones. Do not double count generic wars, annexations, deaths, contamination, or nuclear use.
 
-Route portraits, icons, art, flags, super-event text, audio, machine models, sounds, counters, and animations through the named project subagents with context-complete prompts and `fork_context=false`. Real people use source-only portrait handling. The original traveler and fictional machine identity may use native ImageGen.
+Route portraits, icons, art, flags, super-event text, audio, machine models, sounds, counters, and animations through the named project subagents with context-complete prompts and `fork_turns="none"`. Real-person portraits follow the portrait owner skill, with sourced placeholders and user-supplied styled finals documented separately. The original traveler and fictional machine identity may use native ImageGen.
 
 Update event registration, default enable state, entry events, runtime hooks, decisions, ideas, characters, AI, scripted effects and triggers, classifications, CXT provider registration, event logs, evolutions, Event Details, world-end registry, scenario registry, super-events, assets, localisation, docs, achievements, and the authoritative catalog XLSX. Run the CSV exporter. Do not edit the CSVs directly.
 

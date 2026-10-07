@@ -1,5 +1,7 @@
 /goal Implement Chaos Redux Event 008 “Tensions Rising” to the fullest extent, using the source spec pack at `docs/specs/008_tensions_rising_specs/`.
 
+Read `docs/plans/008_tensions_rising_plans/documentation_state_2026-10-05.md` first and select only the remaining accepted scope; this historical goal does not reopen installed content or unresolved cluster design.
+
 Read first: `AGENTS.md`, `chaos-redux-events`, `chaos-redux-subagents`, `chaos-redux-event-assets`, and the relevant offline HOI4 wiki/vanilla docs for touched systems.
 
 Spec files:

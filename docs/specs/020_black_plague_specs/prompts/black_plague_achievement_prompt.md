@@ -4,7 +4,7 @@ Implement the Event 20 achievement set from `matrices/achievement_matrix.md`. Re
 
 ## Achievement set
 
-Implement all fourteen planned achievements unless the parent explicitly records a rejection or merge.
+Implement all thirteen matrix-listed achievements unless the parent explicitly records a rejection or merge.
 
 1. The First Cordon
 2. Forty Days

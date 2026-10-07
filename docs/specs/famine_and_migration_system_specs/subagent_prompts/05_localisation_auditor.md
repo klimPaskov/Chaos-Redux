@@ -1,13 +1,13 @@
 # Prompt for `chaosx_localisation_auditor`
 
-Spawn with `fork_context=false`.
+Spawn with no inherited thread context (Codex `fork_turns="none"`; other runtimes follow the [subagent skill](../../../../.agents/skills/chaos-redux-subagents/SKILL.md)).
 
 Repository root: `<MOD_ROOT>`.
 
 Audit every player-facing famine and migration text surface:
 
 - state modifiers
-- incident and report events
+- standing famine and migration report-header context; no owned incident or report-popup event layer
 - decision category header
 - decisions and missions
 - costs and blocked requirements

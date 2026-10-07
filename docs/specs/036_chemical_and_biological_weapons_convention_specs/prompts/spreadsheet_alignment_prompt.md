@@ -2,6 +2,9 @@
 
 Update the authoritative Chaos Redux event catalog workbook after Event 036 gameplay and final localisation are complete.
 
+Apply the package README's acceptance and catalog-snapshot rules first.
+The proposed event and Diplomacy cluster changes require recorded acceptance, rather than approval inferred from this prompt.
+
 Use `chaosx_spreadsheet_doc_worker` with a complete context-free prompt and the spreadsheet skill.
 
 Edit only:
@@ -31,7 +34,7 @@ Do not retain the old alien technology description or Minor Repeatable classific
 
 ## Cluster alignment
 
-The supplied cluster export has no current cluster named Diplomacy.
+The cluster export supplied to the original planning pass had no row named Diplomacy.
 
 Inspect the authoritative workbook and runtime cluster registry.
 

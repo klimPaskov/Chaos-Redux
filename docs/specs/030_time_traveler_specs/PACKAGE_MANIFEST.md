@@ -1,11 +1,14 @@
 # Package Manifest
 
+The local receipt was refreshed on `2026-10-07` after documentation cleanup.
+It excludes this manifest and does not renew the historical results in `quality/package_validation.md`.
+
 Line counts use the number of LF bytes plus one. Hashes are SHA-256 over the current file bytes.
 
 | Path | Bytes | Lines | SHA-256 |
 | --- | ---: | ---: | --- |
-| `030_time_traveler_full_spec.md` | 152557 | 2888 | `5fbe3a83ba95d3cf2631d4df216e6ffd28bfc6ee9f0e0ce567455d16dd0b4f1a` |
-| `README.md` | 4693 | 52 | `a96275c4db902af5d532e666f8afb0578add5edd2c8cd71e5e37d26b090f6055` |
+| `030_time_traveler_full_spec.md` | 2132 | 19 | `0fceea855a576cae3fc9a1d23590cd116dfd5a6fd3920c4c016e7d9534aa011a` |
+| `README.md` | 5618 | 61 | `5a748d97e5692a33e069c16086559c499c41a8eab5975b1c9961faad41e077fd` |
 | `focus_graphs/closed_future_focus_architecture.mmd` | 915 | 31 | `32c6d2d404d92d5d09ed48612260049e6340464a55526e30cbc2e089cea4069e` |
 | `focus_graphs/event_escalation_flow.mmd` | 1511 | 33 | `c44504eec4fd1695a9e3ead14bdbd2969ec216340481567b13ee148ee03cbb73` |
 | `focus_graphs/traveler_ambition_flow.mmd` | 1196 | 33 | `3f5510b753a020b4d7b28af06a936989fd961849e0a591111e98b6a3fa70e1da` |
@@ -23,30 +26,30 @@ Line counts use the number of LF bytes plus one. Hashes are SHA-256 over the cur
 | `matrices/public_values_and_thresholds.md` | 2357 | 48 | `83c604016d9b1ef4403b4a58fa4ca72bb5feb47277b2c3e182d7e7a9d7fac2b2` |
 | `matrices/super_event_matrix.md` | 1549 | 12 | `b2575747c24515d67b0635bf28f384da353687faeabcddf9fa8d4bc822099dc7` |
 | `matrices/system_integration_matrix.md` | 2843 | 24 | `11f0bae1ff981872b8aaeb53416eb854c007d55e83f70b12f8713dfc96188f02` |
-| `prompts/subagent_orchestration_plan.md` | 2792 | 46 | `64e1e95c8fe9a51839ce5c9c4681f11783cc9f0bd699ce235276706fee21fe5e` |
+| `prompts/subagent_orchestration_plan.md` | 2791 | 46 | `9b141916acf0d870c628e583b3a2fd920d68033b51990079ead66747da1f60ba` |
 | `prompts/time_traveler_achievement_prompt.md` | 1360 | 24 | `fa3f2002b9c3d20581cdfd669bfa953ef54553672418991d3f70b67c476591bb` |
-| `prompts/time_traveler_asset_prompt.md` | 3465 | 46 | `37fb7054724f0e053290fa5b889712102b64d33cf0d1add3057ef748854ab64b` |
-| `prompts/time_traveler_coding_prompt.md` | 4576 | 34 | `8c161c14e5e813b43b08e6481ad31e926de76b4c6c73468f08ef134d1df5ab65` |
+| `prompts/time_traveler_asset_prompt.md` | 3733 | 46 | `c373aa9f67a7a41a17fc92d805e988a9899a90d1cb816e3cfd1b8578388471a1` |
+| `prompts/time_traveler_coding_prompt.md` | 4744 | 34 | `14c3972c56e68aba595d1b2dfb353c6c057805887107103abd69d682b1aad109` |
 | `prompts/time_traveler_completion_audit_prompt.md` | 1789 | 25 | `d33cf94467b80a4bb8b9ff51f2791dfbf39334bc7d9edc14e47c421aad1fdb9e` |
 | `prompts/time_traveler_country_focus_prompt.md` | 2369 | 30 | `44bffbb6eb66bb389803d340c0df38700ed089af98309ab9c4559c49662d06b3` |
 | `prompts/time_traveler_decision_mission_prompt.md` | 2330 | 30 | `f07b031712758a539764959d98c4d863f6a81c504086fe77b33ac4e4840404d9` |
-| `prompts/time_traveler_goal_prompt.md` | 3556 | 26 | `8773ac821705feeb9c65a24e9eb6101dd707eff0b5901a7e45cb69893b59cfaf` |
+| `prompts/time_traveler_goal_prompt.md` | 3586 | 26 | `92500f1cd774f93128d6dbc483bbad0ce2163bf39e4d434c0c9c4e2beef9522a` |
 | `prompts/time_traveler_improvement_loop_prompt.md` | 1768 | 30 | `0d479785394bd734da67aaa52af1cb79495b598b37c4046d0ce95bf780580e80` |
-| `prompts/time_traveler_spreadsheet_prompt.md` | 1291 | 22 | `37ecfce0b354981c013786a3cc9d966aa41fdb3d7a70638131daf45c788c1af8` |
+| `prompts/time_traveler_spreadsheet_prompt.md` | 1379 | 22 | `5b3e509ac8fd30282a2aeefd68a75f9935fdfc97e6df477fdc67a80b62efc48e` |
 | `prompts/time_traveler_super_event_prompt.md` | 2526 | 43 | `c9d5536b2d9eb16f2b2649496dbd498811691d1cf6d28638f4ded2dddb03662a` |
-| `quality/acceptance_matrix.md` | 5150 | 47 | `d326f778d45b50d67d77c131bc69f8452468f124faeb1d932ecb7e72245e8f37` |
+| `quality/acceptance_matrix.md` | 5240 | 47 | `cce93bc01e9b1cff9ad8ef3d1edb9c4e0dd480b7704dfcef9bac431352dd3876` |
 | `quality/anti_bloat_and_clarity_audit.md` | 7281 | 113 | `f0b03bf300c9ab9c2ac7d990941f5b7c8e4212569be91dac91da90c053bc8fb0` |
-| `quality/manual_improvement_loop_review.md` | 8306 | 98 | `d203ede19a3f4375085d576016a35b6be24ada799fe572d59814180e9663fd7d` |
-| `quality/package_status.md` | 3305 | 60 | `b0463660185575f288bdc4bcdfd5b1f76e89a70d5b490933c6bc75f47d9d0221` |
-| `quality/package_validation.md` | 2273 | 55 | `3ed97d0060c88b45800e6881c206e62637c233c3cbd862f0783c861b28028729` |
-| `quality/tooling_limitations.md` | 2215 | 41 | `01024becaeacea9ddc3d6e46e7eb1981b9ffc080bf0592c2f66874d88888f1c3` |
+| `quality/manual_improvement_loop_review.md` | 8338 | 98 | `4f63eca54037a2bc69cc4d578cc6e51276564e21819a8c26f7d65b28acd2ab55` |
+| `quality/package_status.md` | 3524 | 64 | `3f2864d00dc39db5233772f1dc749032067ab746c3aa60d7300d9192252c677c` |
+| `quality/package_validation.md` | 2916 | 64 | `61a4bbf403c496a3ce84c3e88dc2abf500236f035e8798cb4a559a80fcf3057e` |
+| `quality/tooling_limitations.md` | 2760 | 51 | `c19e3575cedb73acb95b2f8c5e55ececea9dfb0b7736a9489338279c9e70b570` |
 | `research/historical_and_contemporary_research.md` | 8323 | 173 | `5deef812a072e094595ac6906ec510372194616646c7eb83a5d06011f7b9cc51` |
-| `research/repo_inspection_notes.md` | 1306 | 34 | `99be0a3d9a7ccd5faf6b0e0c19cc819808fafb150092fbafe31765cccb606a1a` |
+| `research/repo_inspection_notes.md` | 1643 | 39 | `80018ae8534d4c6accf2ce295e5e96f031fe033770ec651c8ba55cc639533ad7` |
 | `research/research_to_design_connections.md` | 2256 | 17 | `933db7286232fc3a137b9b651863b51dbf12b27a6ac007901e924fe54596e23c` |
 | `research/source_reading_manifest.md` | 4787 | 58 | `74b26fca0fc1042757c7bcd2af24fd55a445ab92705336396b529ac32cd89c34` |
-| `specs/030_time_traveler_spec_part_10_scenario_integrations_ai_balance.md` | 15204 | 289 | `aabe2b0b93a044011a58d20e41fb6a75fa736290aeb33fee165a6ddb4067e8b5` |
+| `specs/030_time_traveler_spec_part_10_scenario_integrations_ai_balance.md` | 15492 | 294 | `7bfaa8d9791ff95c66e161d38b9cc74cb9ccb2fd343f54fbcccb828bacf647fd` |
 | `specs/030_time_traveler_spec_part_11_assets_text_achievements.md` | 12819 | 278 | `f2bb571d9e732d8ae929a2e9bf466602db74c0a14a9ad00b7e922efa68e6e960` |
-| `specs/030_time_traveler_spec_part_12_acceptance_criteria.md` | 11299 | 201 | `51544124e8de05598cbdea09f881a87ab192f910e30a03542392be02abb3d95e` |
+| `specs/030_time_traveler_spec_part_12_acceptance_criteria.md` | 11400 | 201 | `eedaa840e2b7b49b7e2877ec39bb8cdd026a312c9ab52995127f4d5a90f0de98` |
 | `specs/030_time_traveler_spec_part_1_core.md` | 10569 | 141 | `02c22196f016ac4f26e06cc4614cd8bc4e55cee95ff343586a442bfe46b876f2` |
 | `specs/030_time_traveler_spec_part_2_baseline_and_values.md` | 11939 | 210 | `a09e413d000c8f41bc4a4efbb551557f14854b6b04c7c3e0dfe4a5308f7122c9` |
 | `specs/030_time_traveler_spec_part_3_consultations_and_intelligence_war.md` | 12895 | 201 | `40c2cf63595a7411b72a45a60fd030f9bb4fed8c2cf80c947705853d6eba2b39` |
@@ -58,4 +61,4 @@ Line counts use the number of LF bytes plus one. Hashes are SHA-256 over the cur
 | `specs/030_time_traveler_spec_part_9_world_end_machine_extinction.md` | 12484 | 231 | `352543e6c060432b165433966bf47303ae4fb6d1ea04cd3510fff618b9e4dcd4` |
 
 Total files before this manifest: 52
-Total bytes before this manifest: 421493
+Total bytes before this manifest: 274801

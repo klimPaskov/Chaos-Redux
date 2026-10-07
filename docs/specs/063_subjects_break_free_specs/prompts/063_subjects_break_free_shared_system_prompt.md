@@ -1,6 +1,7 @@
 # Shared system prompt: Event 063 Subjects Break Free
 
-Use `chaosx_scripted_system_architect` and `chaosx_repo_explorer` to design and implement the neutral liberation-origin contract and the Event 063 release transaction. Follow `AGENTS.md`, `chaos-redux-events`, `CHAOS_REDUX_MECHANICS`, `chaosx_dynamic_triggers`, and `chaosx_dynamic_effects`.
+Use `chaosx_scripted_system_architect` for the neutral liberation-origin contract and Event 063 release transaction.
+Use `chaosx_repo_explorer` only when exact source locations, owner boundaries, or precedents remain unclear. Follow `AGENTS.md`, `chaos-redux-events`, `CHAOS_REDUX_MECHANICS`, `chaosx_dynamic_triggers`, and `chaosx_dynamic_effects`.
 
 Read:
 

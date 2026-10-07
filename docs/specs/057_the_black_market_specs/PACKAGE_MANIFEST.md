@@ -1,6 +1,10 @@
 # Package Manifest
 
-This manifest records the generated specification files included in the ZIP.
+Disposition: retained historical receipt of the original supplied ZIP.
+
+The table records original archive bytes, word counts, and hashes.
+It does not describe the edited checkout or certify current package integrity.
+The combined reading copy is superseded by the separate sources indexed in [README.md](README.md).
 
 | File | Bytes | Words | SHA-256 |
 | --- | ---: | ---: | --- |

@@ -1,8 +1,12 @@
 # Coding Prompt: Holy Realm Buddhahood
 
-Implement `holy_realm_buddhahood` from the spec package under `docs/specs/003_holy_realm_buddhahood_specs/`.
+Implement the accepted bounded `holy_realm_buddhahood` requirements from `docs/specs/003_holy_realm_specs/003_holy_realm_buddhahood_specs/`.
+Read [the package authority and resume rules](../README.md) and the current release reconciliation before selecting work, preserving already implemented surfaces and unresolved acceptance.
 
 Follow `AGENTS.md`, `chaos-redux-events`, `chaos-redux-super-events`, `chaos-redux-decisions-missions`, `chaos-redux-focus-trees`, `chaos-redux-event-assets`, `chaos-redux-frame-animation`, and related Chaos Redux skills.
+Use `chaos-redux-scripted-gui` and `chaosx_event_ui_worker` for the dedicated mandala layout, with a recorded reference, exact window and source identifiers, scenarios, and mandatory MCP before-and-after evidence.
+Shared event details, event logs, settings, and super-event framework remain parent-owned.
+Route all character portraits to `chaosx_portrait_creator` and all weighted surfaces to the read-only `chaosx_ai_probability_auditor`.
 
 Implement all mapped surfaces:
 
@@ -23,6 +27,8 @@ Do not simplify the three core rules:
 2. Buddha powers require meditation and are strongest against valid chaos countries.
 3. The portrait, mandala, country identity, and super-event presentation must change when the Bodhisattva becomes the Buddha.
 
-If literal mouse holding for three real minutes is unsupported by HOI4 GUI, implement the accepted concentration sequence fallback and document the engine limitation. Do not replace it with a plain instant button.
+If literal mouse holding for three real minutes is unsupported by HOI4 GUI, use the specified concentration sequence only with its recorded user or parent acceptance basis and document the engine limitation.
+If that basis is missing, retain the fallback as unresolved rather than inferring approval from this prompt.
+Do not replace it with a plain instant button.
 
 Do not claim completion until the implementation satisfies the route coverage matrix and reports every simplification, fallback, blocker, validation, and asset status.

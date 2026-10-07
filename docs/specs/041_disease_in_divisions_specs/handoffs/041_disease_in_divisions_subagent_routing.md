@@ -1,6 +1,7 @@
 # Event 41 implementation subagent routing
 
-Every project subagent must receive a complete self-contained prompt and no inherited thread context. In the Codex runtime, use `fork_context=false`.
+Every project subagent must receive a complete self-contained prompt and no inherited thread context.
+Follow the current [subagent skill](../../../../.agents/skills/chaos-redux-subagents/SKILL.md); Codex uses `fork_turns="none"`.
 
 ## Required implementation specialists
 

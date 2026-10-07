@@ -2,6 +2,7 @@
 Implement Event 007 Fury from `docs/specs/007_fury_specs/`.
 
 Read:
+- `specs/007_fury_release_corrections_2026-10-05.md`
 - `prompts/007_fury_coding_prompt.md`
 - `prompts/007_fury_asset_prompt.md`
 - `prompts/007_fury_super_event_prompt.md`
@@ -29,4 +30,4 @@ Pass or fail requirements:
 - Maximum creates up to sixteen dispersed Fury actors when enough safe AI minors exist.
 - World-end branch spreads Fury to other continents and joins them to the main Fury faction.
 - Assets, achievements, AI, docs, event log, event details, and spreadsheet row are aligned.
-- Keep iterating until the goal is implemented to the fullest extent. Do not claim completion until the implementation satisfies the spec or every blocker is reported clearly.
+- Keep iterating until the goal is implemented to the fullest extent. Do not claim completion while a requested requirement is incomplete; report every blocker clearly.

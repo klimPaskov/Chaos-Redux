@@ -52,7 +52,7 @@ Each row must end as `pass`, `blocked`, `needs_user_review`, or `not_applicable`
 | Achievement art | Completed achievement icon family is readable and wired | Asset manifest and UI screenshot |
 | Probability audit | Complete pools, scenarios, sweeps, comparisons, and renders are reviewed | Auditor handoff and tool evidence |
 | AI outcome quality | No plan dominates every scenario and no essential recovery or defense plan starves | Probability report and bounded time pass |
-| Performance | No event-owned log spam, repeated reapplication, or material time-step regression | Fresh logs, profiler or bounded comparative observation |
+| Performance | No event-owned log spam, repeated reapplication, or material time-step regression | User-supplied runtime observation or profiler evidence, with source and MCP checks recorded separately |
 | Documentation | Event docs, authoritative workbook, CSV exports, AI notes, asset records, and achievement docs agree | Diff and export validation |
 | Final audit | Event completion auditor maps every spec requirement to implementation evidence | Completion table with unresolved blockers |
 

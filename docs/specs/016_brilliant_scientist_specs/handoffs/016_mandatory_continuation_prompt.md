@@ -81,7 +81,7 @@ At this historical stopping point, the previous interface had no project-subagen
 
 1. Read `AGENTS.md`, the project subagent and improvement-loop skills, and the complete Event 16 package.
 2. Check `docs/plans/016_brilliant_scientist_plans/` for any unresolved prior addendum or handoff. Do not create a new planner layer over an unresolved one.
-3. Spawn `chaosx_improvement_loop_planner` with `fork_context=false` using the exact prompt in `prompts/016_brilliant_scientist_improvement_loop_planner_prompt.md`.
+3. Spawn `chaosx_improvement_loop_planner` with `fork_turns="none"` using the exact prompt in `prompts/016_brilliant_scientist_improvement_loop_planner_prompt.md`.
 4. Require the planner to return either a focused addendum or a closure handoff.
 5. Give every planner recommendation an explicit disposition. Promote accepted source design into the relevant spec files. Queue, reject, or block other recommendations with a reason.
 6. Run `chaosx_documentation_curator` with the included prompt to record the source-of-truth map and plan dispositions.
@@ -132,7 +132,7 @@ Do not claim the planning process closed until these steps are complete.
 - Do not create free-unit loops, instant universal cores, unbounded reinforcements, or focus reward ladders full of repeated ideas.
 - Do not expose hidden rebellion thresholds, alien truth, or terminal routes in early player-facing text.
 - Keep final localisation free of em dashes, semicolons, staccato fragments, dialectical contrast formulas, generic crisis filler, and process language.
-- All project custom subagents use `fork_context=false` and receive explicit paths and constraints.
+- All project custom subagents use `fork_turns="none"` and receive explicit paths and constraints.
 - Every plan, addendum, and patch receives a disposition or handoff.
 - Every simplification, fallback, omission, blocker, placeholder, and skipped meaningful validation must be reported.
 

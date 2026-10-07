@@ -6,13 +6,13 @@
 - Event slug: `generalissimo`
 - Event name: Generalissimo
 - Intended repository location: `docs/specs/067_generalissimo_specs/`
-- Primary source: the accepted Event 067 rough specification supplied with this task
+- Primary source: the supplied rough specification recorded in `quality/067_generalissimo_source_reading_manifest.md`
 - Event type: Minor Fire-Once
 - Minimum Chaos level: 1
 - Accepted cluster: Military Preparation
 - Accepted cluster role: High member
 - Manual scenario: Generalissimo's Coup
-- Proposed scenario ID: `SCN-015`
+- Reserved scenario ID: `SCN-024`, raw integer `24`
 - Public world-end branch: The Generalissimos' World
 
 ## Purpose
@@ -99,13 +99,23 @@ The event is about command, loyalty, and military government. It uses existing d
 
 ### Scenario ID status
 
-`SCN-015` is the required proposed ID because the supplied scenario export reaches `SCN-014`. The implementation must confirm that `SCN-015` is free in the authoritative workbook and runtime registry. A collision blocks registration until the source-of-truth ID is reconciled.
+Generalissimo's Coup is reserved as `SCN-024`, raw integer `24`, by the [shared identifier registry](../shared_identifier_registry.md) under the user's 7 October 2026 allocation instruction.
+The original `SCN-015` proposal is superseded because Missile Age occupies that slot.
+This reserves the identifier without approving broader design, registering gameplay or updating the workbook.
 
 ### Catalog mismatch
 
 The accepted source assigns Event 067 to Military Preparation as a High member. The supplied event export leaves both cluster fields blank, and the supplied cluster export does not contain a Military Preparation row. The specification follows the accepted source. The workbook and runtime cluster registry must be aligned during implementation.
 
-## Reading and process status
+## Acceptance and current workflow
+
+The source-reading and parent-review records describe the original planning run.
+They record a supplied rough brief as accepted, but the package does not retain an independent acceptance record for every expansion.
+Preserve the design while keeping unattributed expansion claims unresolved until the parent records adoption within the authorized scope.
+Use [AGENTS.md](../../../AGENTS.md) and [the current subagent skill](../../../.agents/skills/chaos-redux-subagents/SKILL.md) for workflow, ownership and capability discovery.
+Runtime event IDs use `chaosx.nr67.*` and filenames retain `067`.
+
+## Original planning reading and process status
 
 Every supplied project source file, every extracted subagent definition, and all three supplied catalog CSV exports were read in full. The source reading manifest records their sizes, line counts, and hashes.
 

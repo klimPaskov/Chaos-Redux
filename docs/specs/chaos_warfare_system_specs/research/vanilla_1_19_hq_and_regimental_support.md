@@ -1,6 +1,10 @@
 # Vanilla 1.19 Headquarters and Regimental Support Research
 
-## Verified current mechanics
+## Historical planning reference findings
+
+These findings were compiled from the official announcement and patch-note sources in the [bibliography](bibliography.md), before local engine documentation was mounted.
+They are retained research context rather than current installed-schema verification.
+Read the pertinent offline wiki and installed documentation through the current reference workflow before relying on a script rule.
 
 Official Hearts of Iron IV 1.19 material introduced Army Headquarters that assign a general and staff to specific orders. Headquarters can receive dedicated support companies. Five commander abilities are unlocked by headquarters companies. The free update also introduced a separate regimental support row with twelve company types.
 

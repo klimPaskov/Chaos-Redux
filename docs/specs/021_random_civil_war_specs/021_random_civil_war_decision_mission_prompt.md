@@ -10,7 +10,7 @@ Implement the Event 021 decision and mission system from:
 
 Read `AGENTS.md`, `chaos-redux-events`, `chaos-redux-decisions-missions`, `chaos-redux-event-assets`, and current Chaos Redux decision precedents.
 
-Use `chaosx_decision_mission_auditor` after implementation. Spawn it with `fork_context=false`.
+Use `chaosx_decision_mission_auditor` after implementation. Spawn it with `fork_turns="none"`.
 
 ## Presentation
 

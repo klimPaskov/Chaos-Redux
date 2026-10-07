@@ -64,7 +64,7 @@ Source priority:
 - museums and archives
 - academic presses and university repositories
 - Holocaust documentation for Nazi pseudo-science
-- current HOI4 public wiki only as a provisional map aid
+- offline Paradox wiki snapshot, with installed vanilla and map MCP evidence required for exact state facts
 
 Exact implementation still requires local vanilla, offline wiki, and MCP evidence.
 

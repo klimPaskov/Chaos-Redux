@@ -6,13 +6,17 @@ Implement the complete Event 12 Africa rework from this package. Treat `specs/` 
 
 ## Required reading
 
-Read all nine spec parts, every matrix and note, every diagram, all three research notes, all prompt handoffs, and the source-of-truth record. Then read repository `AGENTS.md`, event, focus, decision, asset, animation, super-event, improvement, and subagent skills plus the required offline wiki and vanilla documentation for every touched system.
+Read `AGENTS.md` and applicable owner skills first.
+Then read the authority map, all nine spec parts, relevant matrices/notes and diagrams, research, prompt handoffs, and source-of-truth record.
+Read the required offline wiki and installed documentation for every engine-facing system touched.
 
 ## Core result
 
 Event ID 12 remains a severe Fire-Once event in the Formables cluster. Select a valid country whose capital is in Africa. Give it a country-aware host overlay, direct public identity, a large non-linear continental focus tree, Charter League system, protection and intervention tools, regional congresses, staged integration, restored polities, resource and corridor development, diaspora return, military growth, rival blocs, RSA civil-war handling, post-unification Scramble crisis, optional high-chaos content, other continent unifiers, and the rare terminal The World route.
 
-The current release-candidate already has eight custom model-package handoffs plus a non-promoted historical elephant package record, 18 full frame-animation packages, six promoted Tier A visual and runtime packages on existing carriers, 16 priority-member packages, 16 historical male source-locked portrait placeholders, six fictional male portraits, three no-person evolution images, four super-event roles, all 102 actions with 96 implemented and six explicitly runtime-gated families, RSA Allied civil-war handling, W4/W5 source certification, the Charter GUI, and world-order packages installed. Remaining work is limited to real source or engine gates recorded in the current ledger, such as AI probability evidence, six gated action families, final localisation/event completion review, and the parent-owned semantic follow-ups. The three niche hosts are source-implemented conditional Event 006-origin carriers, and the source-cropped historical portrait placeholders are accepted deliverables whose transparent status is not an Event 012 blocker; user-owned live validation is not a reason to retain a source-complete row as partially available.
+Read the [authority and resume map](../README.md) and owner ledgers before selecting remaining work.
+September release counts are dated evidence, not instructions to regenerate installed assets or limit later findings.
+Grounded portraits keep explicit source-placeholder status under [chaos-redux-event-assets](../../../../.agents/skills/chaos-redux-event-assets/SKILL.md); completion and catalog status need their own acceptance basis.
 
 Do not begin with instant conquest or instant continent-wide cores. African states retain agency. They can accept protection, negotiate clauses, refuse integration, leave, form rival blocs, or fight.
 
@@ -30,7 +34,8 @@ The six grounded constitutions must have distinct representation, executive, fis
 
 ## Country packages
 
-Use the 215-entry polity catalog as a candidate pool. The first 16 priority packages from part 9 and the priority-member matrix are installed as complete playable packages on approved existing carriers. Each retains safe territory, a starting problem, staged ideas, focus modules, a distinct decision family, forces, reinforcement, League relationships, refusal behaviour, AI, localisation, assets, and post-settlement play, with final scenario and audit evidence still open.
+Use the 215-entry polity catalog as a candidate pool. The dated release ledger records source implementations for the first 16 priority packages from part 9 and the priority-member matrix on existing carriers.
+This receipt does not establish catalog status `Playable` or replace current acceptance review. Each retains safe territory, a starting problem, staged ideas, focus modules, a distinct decision family, forces, reinforcement, League relationships, refusal behaviour, AI, localisation, assets, and post-settlement play, with final scenario and audit evidence still open.
 
 Other candidates remain compact countries, autonomous regions, cultural bodies, associated councils, or dormant candidates until promoted. Do not activate overlapping maximum borders at once.
 
@@ -63,6 +68,8 @@ Use direct map names. Administrative institutions can be mechanics, not public c
 
 Do not use fallback trees, placeholder assets, generic copied country packages, flat AI weights, instant annexation, reward dust, passive decision stores, or unreported simplifications.
 
-Use project subagents with explicit prompts and `fork_context=false` when available. The parent agent owns integration, review, validation, docs, spreadsheet updates, and completion claims.
+Use project subagents with explicit prompts and `fork_turns="none"` when available. The parent agent owns integration, review, validation, docs, spreadsheet updates, and completion claims.
 
-Before completion, run focus, decision, country, localisation, documentation, and event-completion audits. Run the mandatory improvement-loop pass after a meaningful implementation tranche and resolve every accepted addendum. Return route coverage, matrix dispositions, files changed, task-specific validation, assets completed, docs aligned, and a clear list of blockers or simplifications.
+Accepted Event 012-owned Charter layout changes require `chaosx_event_ui_worker` with the exact identifiers, bounded scope, and inspect/render/comparison evidence defined by [chaos-redux-subagents](../../../../.agents/skills/chaos-redux-subagents/SKILL.md) and `chaos-redux-scripted-gui`.
+Shared Event Log, Details, Settings, and super-event framework surfaces remain parent-owned.
+Before completion, run focus, decision, country, localisation, documentation, event-completion, and scenario-specific `chaosx_ai_probability_auditor` audits. Run the mandatory improvement-loop pass after a meaningful implementation tranche and resolve every accepted addendum. Return route coverage, matrix dispositions, files changed, task-specific validation, assets completed, docs aligned, and a clear list of blockers or simplifications.

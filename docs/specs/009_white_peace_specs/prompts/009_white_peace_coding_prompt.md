@@ -1,10 +1,13 @@
 # Coding Prompt — Implement Event 009 White Peace
 
+Read [accepted decisions](../../../plans/009_white_peace_plans/agent_decisions_2026-10-05.md) and [the authority map](../README.md) before selecting remaining work.
+This retained brief does not authorize rebuilding existing settlement, delivery, achievement, or evolution-setting fixes.
+
 Implement Event ID `9`, **White Peace**, from the spec package at:
 
 `docs/specs/009_white_peace_specs/`
 
-Follow `AGENTS.md`, `chaos-redux-events`, `chaos-redux-improvement-loop`, `chaos-redux-event-assets`, `chaos-redux-subagents`, and relevant HOI4 wiki/vanilla documentation before editing. Do not use fallbacks or simplifications without reporting them clearly.
+Follow `AGENTS.md`, `chaos-redux-events`, `chaos-redux-improvement-loop`, `chaos-redux-event-assets`, `chaos-redux-subagents`, and relevant HOI4 wiki/vanilla documentation before editing. Fallbacks or design simplifications require explicit user approval; report every omission and blocker.
 
 ## Core requirements
 
@@ -20,6 +23,10 @@ Follow `AGENTS.md`, `chaos-redux-events`, `chaos-redux-improvement-loop`, `chaos
 - Implement stage I: repeated minor settlements from one firing, capped.
 - Implement stage II: rare major-country settlement with strict safety gates.
 - Implement stage III: broad diplomatic settlement, capped and protected-war safe.
+- Settle before notification using isolated one-on-one wars; Stages I and III can settle several separate isolated wars.
+- Send one aggregate acknowledgement to each affected human, or one observer news when every settled participant is AI.
+- Actual branches obey matching evolution settings plus existing progression and war-pressure gates.
+- Invalid forced/manual human entry must find a valid candidate or explain rejection without settlement or success history.
 - Popup must have one acknowledgement option only; no continue-war option.
 - Avoid civil conflicts, near-capitulation cases, protected scripted wars, recent pair repeats, nonhuman/special threat actors, and unsafe subject/faction cases.
 - Record event log, event detail, evolution detail, and Peace cluster detail.
@@ -60,6 +67,7 @@ Validate these cases and report real evidence:
 ## Audit and subagent routing
 
 Use `chaosx_scripted_system_architect` for dynamic helper design/patching if repeated logic is needed. Use `chaosx_localisation_auditor` before completion. Use `chaosx_event_completion_auditor` before claiming the event complete. Use `chaosx_spreadsheet_doc_worker` after final player-facing wording exists. Route visual work through the asset prompt and the correct asset subagents.
+Weighted surfaces require `chaosx_ai_probability_auditor` under [chaos-redux-subagents](../../../../.agents/skills/chaos-redux-subagents/SKILL.md); inspection is not numerical balance approval.
 
 ## Completion report
 

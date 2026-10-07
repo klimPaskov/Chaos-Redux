@@ -25,7 +25,7 @@ Before editing, read:
 - relevant vanilla documentation and precedents
 - current Chaos Redux event, log, evolution, cluster, country, decision, focus, dynamic helper, super-event, audio, achievement, and spreadsheet patterns
 
-Use `chaosx_repo_explorer` with `fork_context=false` if exact files, IDs, slots, tags, or precedents are unclear. The explorer is useful here because the task spans many systems. Pass it every path and constraint explicitly.
+Use `chaosx_repo_explorer` with `fork_turns="none"` if exact files, IDs, slots, tags, or precedents are unclear. The explorer is useful here because the task spans many systems. Pass it every path and constraint explicitly.
 
 ## Core implementation contract
 
@@ -229,42 +229,19 @@ Update:
 - asset and super-event manifests
 - catalog workbook through `chaosx_spreadsheet_doc_worker`
 
-## Required subagent passes
+## Specialist ownership and resolved planning
 
-All project subagents use `fork_context=false` and receive explicit paths, IDs, constraints, and current status.
+Use [the routing owner skill](../../../../.agents/skills/chaos-redux-subagents/SKILL.md) for context-free briefs, patch boundaries, required audit cadence, and handoff paths.
+Event 018 responsibilities remain the exact resource ledger and helper lifecycle, field and cave decisions, cave country and focus tree, localisation, portraits, non-portrait assets, super-event research, docs, catalog, and final completion review.
+The read-only `chaosx_ai_probability_auditor` owns scenario-specific weighted evidence.
+Use the recorded [improvement-loop closure](../../../plans/018_resources_found_plans/improvement_loop_closure_handoff.md) before scheduling any new depth pass.
+Do not repeat its closed RF-018-01 through RF-018-08 work without a new scoped finding or accepted design request.
 
-Use as appropriate:
+## Writing direction
 
-- repo explorer before broad editing
-- scripted system architect for helpers and tuning
-- decision and mission auditor after categories are built
-- focus tree auditor after the cave tree is built
-- country package auditor after the cave tag is complete
-- localisation auditor after broad text is written
-- generated event art and icon artist for assets
-- super-event text and audio researchers
-- documentation curator after several handoffs
-- spreadsheet worker after final in-game wording exists
-- event completion auditor before completion claim
-
-Before near completion, run `chaosx_improvement_loop_planner`. Resolve its addendum or closure handoff. Do not stack another unresolved plan.
-
-## Writing rules
-
-Final player-facing text must:
-
-- use no em dash
-- use no semicolon in sentences
-- avoid staccato drama
-- avoid dialectical hedging and staged contrast formulas
-- avoid generic disaster filler
-- describe observed actors, work, fear, violence, and consequences
-- keep ordinary discovery positive and practical
-- keep early horror uncertain
-- avoid cheap humor around sickness and deaths
-- keep cave-country language original and readable
-- avoid achievement language outside achievement UI
-- keep Event Details free of mechanical effects and hidden spoilers
+Follow [the event writing owner skill](../../../../.agents/skills/chaos-redux-events/SKILL.md) for final wording and Event Details boundaries.
+Keep ordinary discovery positive and practical, early horror uncertain, and cave-country language original and readable.
+Describe observed actors, work, fear, violence, and consequences without cheap humor around sickness and deaths.
 
 ## Balance and meaningful validation
 

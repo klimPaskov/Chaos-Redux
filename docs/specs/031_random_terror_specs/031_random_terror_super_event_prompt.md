@@ -29,7 +29,7 @@ Follow:
 - `chaos-redux-frame-animation` for the optional entity portrait animation
 - `chaos-redux-subagents`
 
-Use `chaosx_super_event_text_researcher` and `chaosx_super_event_audio_researcher` with `fork_context=false` and complete prompts.
+Use `chaosx_super_event_text_researcher` and `chaosx_super_event_audio_researcher` with `fork_turns="none"` and complete prompts.
 
 Use `chaosx_generated_event_art` for the fictional super-event images through the asset workflow.
 

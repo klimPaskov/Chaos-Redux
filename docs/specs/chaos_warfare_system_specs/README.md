@@ -10,6 +10,11 @@ The design integrates the existing Chaos Redux chemical warfare, biological warf
 
 The user's explicit 2026-09-20 implementation request is recorded in [`specs/13_2026_09_20_accepted_cbrn_overhaul.md`](specs/13_2026_09_20_accepted_cbrn_overhaul.md). That accepted amendment takes precedence over conflicting older proposals, and its [requirement ledger](../../plans/chaos_warfare_system_plans/2026-09-20_cbrn_overhaul_requirement_ledger.md) keeps implementation evidence separate from design acceptance.
 
+Older numbered specifications and matrices remain design context unless a requirement has recorded acceptance in the amendment or owner ledger.
+The original validation report, manual review and source-reading ledger are historical package receipts, while the staged plan is subordinate to the current requirement ledger.
+The `corrections/` folder preserves dated user decisions, parent-selected corrections and their evidence limits. Check the matching owner handoff before replaying an older instruction.
+Current repository workflows belong to `AGENTS.md` and the owner skills, rather than the imported source-reading receipts.
+
 ### Specifications
 
 1. `specs/01_core_system_and_gameplay_loop.md`
@@ -36,7 +41,7 @@ The `research/` folder records the existing-system audit, current vanilla mechan
 
 ### Prompts
 
-The `prompts/` folder contains bounded handoffs for assets, achievements, decisions and missions, coding, and the final goal. The goal prompt is intentionally kept within the planning skill's required length band.
+The `prompts/` folder contains bounded handoffs for assets, achievements, decisions and missions, coding, and the final goal. The compact goal prompt points to the detailed coding brief and current acceptance ledger.
 
 ### Handoffs
 
@@ -48,7 +53,7 @@ Chaos Warfare becomes a high-power doctrine with real logistics and counterplay.
 
 The doctrine no longer grants broad, stacked attack bonuses as its main identity. It changes what the player can build, assign, prepare, deliver, defend against, conceal, clean up, and politically survive.
 
-## Source-reading statement
+## Historical planning source-reading statement
 
 Every project file supplied with this task was read in full, including the skill markdown files, subagent TOML files, three catalog CSV files, the mechanics guide, AGENTS.md, and every markdown file in `biological_warfare.zip`.
 

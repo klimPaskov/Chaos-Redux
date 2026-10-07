@@ -1,5 +1,9 @@
 # Event 34 Industrial Boom specialist review
 
+Historical evidence: source names, hashes, repository observations, and tool/runtime limitations below belong to the original planning pass.
+They do not establish current local file availability, current service health, implementation status, or design approval.
+Use the package entry point and current owner skills for active guidance.
+
 ## Review method
 
 The configured subagent runtime was unavailable during this planning session. Each relevant subagent definition was still read in full and converted into a manual review lens. This file records the questions applied, the findings, and the design changes made before the source specification was closed.

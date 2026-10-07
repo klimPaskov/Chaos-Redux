@@ -35,10 +35,11 @@ The asset inventory likewise contains planned requirements, not generated files 
 
 ## Put the files in the repository
 
-From the extracted folder, run the optional local installer with the repository path:
+This package is already present in the repository.
+For a separate extracted copy, inspect the optional installer and preview its documentation-only changes with the repository path:
 
-```bash
-python3 install_spec_package.py /path/to/Chaos-Redux
+```powershell
+python .\install_spec_package.py "C:\Users\klimp\OneDrive\Documents\Paradox Interactive\Hearts of Iron IV\mod\chaos_redux" --dry-run
 ```
 
 The installer copies only this documentation package into the two locations above.
@@ -68,7 +69,12 @@ All baseline routes remain complete with Evolutions disabled.
 Only Northern Settlement and External Strain are public custom numerical values.
 The national spirit budget is three owned families, including temporary variants.
 
-## Read record and limits
+## Original planning read record and limits
+
+The source-reading and environment statements below describe the authoring run.
+Use [current AGENTS.md](../../../AGENTS.md) and [the subagent skill](../../../.agents/skills/chaos-redux-subagents/SKILL.md) for current capabilities and ownership.
+The bundled handoff folder is an unexecuted dispatch template, while actual implementation reports belong under `docs/plans/072_ireland_reclaims_north_plans/`.
+Retain original user requirements and keep authored expansion unresolved until attributable adoption is recorded.
 
 All 42 supplied text files were fully read, including all 20 provided subagent profiles.
 The reading ledger verifies contiguous coverage across 102 recorded packets and stores file hashes.
@@ -88,7 +94,7 @@ See [the full blocker record](handoff/072_ireland_reclaims_north_plans/validatio
 
 ## Package verification
 
-From the original extracted archive folder, run `python3 validate_package.py` to check the archive's structural contracts and SHA-256 manifest.
+From this package folder, run `python .\validate_package.py` to check the archive's structural contracts and SHA-256 manifest.
 Those checks cover files, internal links, focus-group and action coverage, asset inventory, source-reading records, cost-type limits and prompt length.
 They do not execute HOI4 or establish live balance.
 The [verification report](handoff/072_ireland_reclaims_north_plans/validation/072_package_verification.md) records that distinction.

@@ -16,7 +16,7 @@ Implement the full baseline, six consultation families, seven foreign operations
 
 Implement Machine Extinction War as an independently toggleable public world-end branch. Require 1000+ Chaos, Evolution V, low stability, substantial machine footprint, hostile intent, enabled branch, and no active world end. Build the full Closed Future country, focus tree, units, provider APIs, equipment, models, licensed sourced sound, counters, industrial conversion, AI, human response, victory, defeat, and qualifying aftermath.
 
-Implement All Times at Once under the final collision-checked scenario ID with distinct Low, Medium, High, and Maximum setups. Maximum may prepare every temporal category and raise Chaos above 1000, but setup must not set `world_end`.
+Implement All Times at Once under reserved `SCN-020`, raw ID `20`, rechecked before runtime integration with distinct Low, Medium, High, and Maximum setups. Maximum may prepare every temporal category and raise Chaos above 1000, but setup must not set `world_end`.
 
 Use normal decision categories, a static category picture, compact three-value display, selected-target decisions, and map highlights. Do not build a full Event 030 window. Do not create full focus trees for every figure, dinosaur countries, unbounded registries, or unrestricted future technology.
 

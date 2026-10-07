@@ -46,7 +46,11 @@ Where the engine cannot prove the origin of an old queued callback, that callbac
 
 ### D02. Scientific Research
 
-The user-specified identity is Scientific Research with Event 089 as a High member. National Breakthroughs is not silently renamed and unrelated events are not moved. The proposed distinct cluster still needs a current registry allocation and authoritative workbook update. No numeric cluster ID is reserved in this package.
+The user-specified identity is Scientific Research with Event 089 as a High member.
+National Breakthroughs retains cluster ID `9` and is not silently renamed, and unrelated events are not moved.
+Scientific Research reserves ID `21`, shared by the Event 054 and Event 089 named proposal, under the [central identifier ledger](../../shared_identifier_registry.md) and its [machine-readable counterpart](../../shared_identifier_registry.json).
+The user's 7 October 2026 allocation instruction approves this identity only, not cluster design, membership acceptance or runtime/catalog implementation.
+Authoritative workbook and registry wiring remain implementation work.
 
 The event catalogue workbook remains the editable source. Exported CSV files are not edited directly. After implementation facts and final player-facing wording exist, the documentation worker updates the workbook and runs its existing exporter. The shared cluster still counts as one pacing development, and ordinary member availability and fire-once state remain separate.
 

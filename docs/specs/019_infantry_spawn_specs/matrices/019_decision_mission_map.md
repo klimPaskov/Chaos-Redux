@@ -1,8 +1,6 @@
 # Event 19 Decision and Mission Map
 
-The live package contains 68 decisions and 14 timed missions. The tables below
-group those objects by gameplay purpose; the exact source inventory at the end
-is the count authority.
+The live package contains 68 decisions and 14 timed missions. The tables below group those objects by gameplay purpose; the exact source inventory at the end is the count authority.
 
 ## Decision families
 
@@ -91,8 +89,7 @@ is the count authority.
 
 ## Exact source inventory
 
-The 68 decision objects are the 39 ordinary management/request/trial objects, six
-claimant objects, and 23 derivative-government objects defined in:
+The 68 decision objects are the 39 ordinary management/request/trial objects, six claimant objects, and 23 derivative-government objects defined in:
 
 - `common/decisions/019_infantry_spawn_decisions.txt`;
 - `common/decisions/019_infantry_spawn_claimant_decisions.txt`;

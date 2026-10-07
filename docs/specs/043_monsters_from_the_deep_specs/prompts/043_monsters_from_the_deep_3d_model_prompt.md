@@ -17,9 +17,12 @@ Read:
 
 ## Hard first gate
 
-Before path discovery or source inspection, verify non-blank `MESHY_API_KEY`. If absent, stop with the exact command required by the 3D skill.
+Apply the provider-dependent key gate in `chaos-redux-3d-model-pipeline` before provider route discovery, balance checks, or calls.
+Existing-model Blender-only repair follows that skill's separate route and does not require a provider key.
 
-Use only the verified Meshy 7 route. Run dependency bootstrap and compatibility proof. Record all versions, checksums, tool names, balance checks, tasks, and downloads.
+Use the verified Meshy 7 generation route and the owner skill's locked dependency and compatibility checks.
+There is no repository bootstrap installation command; missing or incompatible dependencies require the parent or toolchain maintainer to resolve and verify them.
+Record versions, checksums, actual tool names, balance checks, tasks, and downloads.
 
 ## Event 043 jobs
 
@@ -72,7 +75,10 @@ Every unit needs substantive:
 
 Attack needs readable preparation, strike, impact, and recovery. Death needs collapse or settling. Whole-rig movement, static pose, transform-only motion, and semantic action aliases are forbidden.
 
-Use Meshy rig and `meshy_animate` first. Blender may retarget, clean, ground, scale, bake, synchronize sounds, export, and reimport. Blender cannot author missing final motion.
+Follow `chaos-redux-3d-model-pipeline` for anatomy-based route selection and attempt allowances.
+Provider-eligible bipeds use one provider rig attempt and one attempt per required provider action; failed or unusable results receive live Blender repair or authoring without renewed approval.
+Non-bipedal creature anatomy uses live Blender skeleton, skinning, and action authoring directly.
+Model missing required components in Blender, and retain deformation, substantive-role, export, and reimport evidence.
 
 ## Sound
 
@@ -113,6 +119,9 @@ The parent owns runtime wiring and completion.
 
 ## Failure handling
 
-Continue through pre-authorised normal provider work while balance and capability permit. When a required role cannot be produced after allowed recovery, mark it blocked. Do not substitute a still model or local fake action.
+Continue through the owner skill's authorized generation and repair routes while verified capability permits.
+Do not repeat paid rig or animation attempts.
+If the authorized Blender route cannot deliver a required role, record the exact capability blocker.
+Do not substitute a still model or transform-only action.
 
 Write the handoff under the exact Event 043 job and plans paths supplied by the parent.

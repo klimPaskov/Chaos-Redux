@@ -67,18 +67,9 @@ They are not automatically radical, mystical, primitive, anti-modern, or militar
 
 ### Layer E: High-chaos political inventions
 
-This layer contains plausible alternate-history unions, emergency republics,
-cross-border leagues, strange restorations, and highly ambitious local regimes.
-These countries still need regional grounding. Layer E does not authorize a
-fictional or generated leader for a real community, regional movement,
-restoration, or otherwise plausibly historical polity; those packages require
-sourced real male people or archival material for the actual institution. A
-generated personal or institutional portrait is reserved for a later country
-that the accepted source design explicitly classifies as both truly fictional
-and high-chaos. None of the current 206 registry rows has that classification.
-Fictional route structures and ImageGen-authored flat flag variants remain
-permitted when clearly documented as alternate history rather than authentic
-historical designs.
+This layer contains plausible alternate-history unions, emergency republics, cross-border leagues, strange restorations, and highly ambitious local regimes.
+These countries still need regional grounding. Layer E does not authorize a fictional or generated leader for a real community, regional movement, restoration, or otherwise plausibly historical polity; those packages require sourced real male people or archival material for the actual institution. A generated personal or institutional portrait is reserved for a later country that the accepted source design explicitly classifies as both truly fictional and high-chaos. None of the current 206 registry rows has that classification.
+Fictional route structures and ImageGen-authored flat flag variants remain permitted when clearly documented as alternate history rather than authentic historical designs.
 
 Layer E should never replace the researched country pool. It is a late-game supplement that makes high-chaos waves surprising.
 
@@ -216,12 +207,7 @@ This rule applies to:
 
 Existing vanilla tags and already registered Chaos Redux tags may be reused without renaming. Reuse must preserve the registered country's vanilla files and behavior whenever the Event 6 package flag is absent.
 
-New Chaos Redux country tags may use ordinary country-history files named
-`TAG - Country Name.txt`. Their native country setup may live in those history
-files when that setup belongs to the new tag in every origin. The prohibition
-on replacement history applies only to existing vanilla or previously
-registered carriers. Those carriers keep their registered history unchanged
-and receive origin-gated Event content through additive setup effects.
+New Chaos Redux country tags may use ordinary country-history files named `TAG - Country Name.txt`. Their native country setup may live in those history files when that setup belongs to the new tag in every origin. The prohibition on replacement history applies only to existing vanilla or previously registered carriers. Those carriers keep their registered history unchanged and receive origin-gated Event content through additive setup effects.
 
 The 102 accepted custom `X` tags are locked by the 2026-07-15 installed-registry audit. A later migration still requires a new complete scan of country tags, aliases, cosmetic identities, and other event plans before assignment. Retired values are not recycled.
 

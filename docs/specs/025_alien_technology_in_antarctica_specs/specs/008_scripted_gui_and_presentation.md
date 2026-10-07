@@ -130,7 +130,8 @@ The tray must not display obsolete actions from previous phases.
 
 The UI worker should begin from a reference canvas around `1024x640` and validate against the supported in-game resolutions.
 
-The exact final size depends on current Chaos Redux window conventions and the installed GUI framework. The implementation must use `hoi4.gui_inspect`, `hoi4.gui_render`, and `hoi4.gui_rewrite` before accepting coordinates.
+The exact final size depends on current Chaos Redux window conventions and the installed GUI framework. Coordinate acceptance follows [the GUI owner skill](../../../../.agents/skills/chaos-redux-scripted-gui/SKILL.md), including the intended reference and mandatory inspect/render evidence.
+Reviewed edits may be applied directly or optionally through `hoi4.gui_rewrite`.
 
 Required review resolutions should include at least:
 

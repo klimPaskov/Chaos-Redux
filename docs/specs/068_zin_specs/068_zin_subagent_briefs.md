@@ -1,6 +1,6 @@
 # 068 ZIN: bounded subagent briefs
 
-These are handoff briefs for a future environment with the actual project runtime. No worker listed here was executed during this planning run. Discover real callable tools and read the current subagent skill before using them. Every worker is started with `fork_context=false`, receives the shared contract below and a concrete role block, and reports actual evidence without inheriting unstated conversation context.
+These are handoff briefs for a future environment with the actual project runtime. No worker listed here was executed during this planning run. Discover real callable tools and read the current subagent skill before using them. Every worker is started with `fork_turns="none"`, receives the shared contract below and a concrete role block, and reports actual evidence without inheriting unstated conversation context.
 
 ## Shared worker contract
 
@@ -18,7 +18,7 @@ Inputs: documents 01, 03, 04, 07, 10, 11, 12 and 13, the country and action regi
 
 Task: define and implement only the parent-assigned Event 068 lifecycle contract. Prove the arrival identity, carrier and state reservation, external civilian and military receipts, typed reinforcement, actual bilateral peace demands, one arrival coordinator, unique ruler continuity, succession partition and castle-state control. Treat lower-Chaos terminal eligibility as an unresolved policy gate until approval.
 
-Boundary: event-owned helpers and directly authorized adapters only. No visual production, final localization or unrelated global scans. Handoff: `docs/plans/068_zin_plans/system_contract_handoff.md`.
+Boundary: event-owned helpers and directly authorized adapters only. No visual production, final localization or unrelated global scans. Handoff: `docs/plans/068_zin_plans/subagent_handoffs/system_contract_handoff.md`.
 
 ## Focus-tree auditor
 
@@ -26,9 +26,10 @@ Role: `chaosx_focus_tree_auditor`.
 
 Inputs: documents 03 through 09 and 18, the 534-node logical blueprint, the actual native trees, country identities, action and mission consumers and current focus skill.
 
-Task: verify every actual final focus, dependency, route lock, political gate, icon, tooltip, reward, AI strategy and complete route outcome. Check the compulsory death cannot be deferred by focus choice. Ensure all four Rush outcomes work and no rare creature is granted without physical eligibility. Render the actual trees when supported and distinguish graph-source checks from native render evidence.
+Task: verify every actual final focus, dependency, route lock, political gate, icon, tooltip, reward, AI strategy and complete route outcome. Check the compulsory death cannot be deferred by focus choice. Ensure all four Rush outcomes work and no rare creature is granted without physical eligibility. Use the mandatory focus inspect/render workflow from the current focus skill.
+If a required route is unavailable, retain the exact blocker and distinguish graph-source checks from native render evidence.
 
-Boundary: bounded event-owned tree fixes and direct local dependencies assigned by the parent. Handoff: `docs/plans/068_zin_plans/focus_audit_handoff.md`.
+Boundary: bounded event-owned tree fixes and direct local dependencies assigned by the parent. Handoff: `docs/plans/068_zin_plans/subagent_handoffs/focus_audit_handoff.md`.
 
 ## Decision and mission auditor
 
@@ -38,7 +39,7 @@ Inputs: document 11, country signature missions, action registry, actual decisio
 
 Task: test cost parity, active visibility, exact target proof, repeated commitments, cancellation, ownership change, partial delivery, factory release, mission failure and no-farming. Verify ordinary decision, AI and custom GUI share one effect. Keep the visible action and mission limits and do not add public currencies.
 
-Boundary: assigned Event 068 decision and mission surfaces. The parent owns unrelated shared GUI. Handoff: `docs/plans/068_zin_plans/decision_mission_audit_handoff.md`.
+Boundary: assigned Event 068 decision and mission surfaces. The parent owns unrelated shared GUI. Handoff: `docs/plans/068_zin_plans/subagent_handoffs/decision_mission_audit_handoff.md`.
 
 ## Country-package auditor
 
@@ -48,7 +49,7 @@ Inputs: all country documents, country, unit and asset registries, actual collis
 
 Task: compare every admitted society and dominion against its whole playable promise. Inspect actual starting territory, supply, force, economy, research, leader, flag, institutions, decisions, routes and AI. Check the three-power military hierarchy, independent monster boundary and no duplicate unique rulers. Do not treat a tag with a generic tree as a complete package.
 
-Boundary: bounded country-owned fixes and directly assigned dependencies. Handoff: `docs/plans/068_zin_plans/country_package_audit_handoff.md`.
+Boundary: bounded country-owned fixes and directly assigned dependencies. Handoff: `docs/plans/068_zin_plans/subagent_handoffs/country_package_audit_handoff.md`.
 
 ## Probability auditor
 
@@ -58,7 +59,8 @@ Inputs: document 16's named audit worlds, actual implemented MTTH entries, AI op
 
 Task: begin with actual probability inspection, then evaluate named worlds, sweep thresholds, simulate only declared uncertain inputs and compare before and after corrections. Report exact, bounded, sampled and unresolved results separately. Test timing and ordering, not merely normalized weights. A focus race is not a simple sum of decision weights.
 
-Boundary: read-only evidence unless the current owning skill and parent explicitly assign a bounded patch. Handoff: `docs/plans/068_zin_plans/probability_audit_handoff.md`.
+Boundary: read-only evidence.
+The owning implementation agent applies adopted weight changes and the probability auditor compares identical named baseline and post-patch scenarios. Handoff: `docs/plans/068_zin_plans/subagent_handoffs/probability_audit_handoff.md`.
 
 ## Localisation auditor
 
@@ -68,7 +70,7 @@ Inputs: narrative directions, country and scenario identity, actual final locali
 
 Task: verify public knowledge, correct homeland spelling status, full Einendil lineage, distinct Volgan and Afrit rule, real choice costs and no dead target strings. Check all text keys against actual consumers and inspect long text at native display sizes. Do not convert uncertain map labels or new proposed biographies into claimed user canon.
 
-Boundary: assigned Event 068 localization and its direct consumer corrections. Handoff: `docs/plans/068_zin_plans/localisation_audit_handoff.md`.
+Boundary: assigned Event 068 localization and its direct consumer corrections. Handoff: `docs/plans/068_zin_plans/subagent_handoffs/localisation_audit_handoff.md`.
 
 ## Event-owned UI worker
 
@@ -78,7 +80,7 @@ Inputs: document 11's compact panel requirements, document 15's style and native
 
 Task: build only accepted Rush and known-colony interfaces. Use two public Rush meters, five dominion cards, phase, deadline and the selected-target decision filter. Show known public colony information, not unexposed agents. Prove real hitboxes, disabled states, tooltip expansions and input routing through the supported native inspect/render workflow.
 
-Boundary: Event 068-owned GUI and direct asset references only. Shared settings, Event Log, Event Details and the scenario framework remain parent-owned. Handoff: `docs/plans/068_zin_plans/event_ui_handoff.md`.
+Boundary: Event 068-owned GUI and direct asset references only. Shared settings, Event Log, Event Details and the scenario framework remain parent-owned. Handoff: `docs/plans/068_zin_plans/subagent_handoffs/event_ui_handoff.md`.
 
 ## Portrait and icon workers
 

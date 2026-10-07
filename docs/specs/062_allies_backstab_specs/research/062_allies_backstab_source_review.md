@@ -1,5 +1,7 @@
 # Event 062 source review
 
+Historical planning-source review: preserve its original hashes and environment limits without treating them as current source or capability evidence.
+
 ## Review statement
 
 Every file supplied with the planning request was read in full before the Event 62 specification was drafted.

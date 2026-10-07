@@ -8,6 +8,9 @@ Initial oversized tool displays were truncated. Their omitted material was rerea
 
 ## Source precedence
 
+The archive reading, source hashes, capability findings, and original author decisions in this ledger are historical planning evidence.
+Current production workflow follows the repository owner skills; current tool exposure and service health require fresh discovery.
+
 The newly uploaded Event 84 concept controls its identity, movement, evolutions, military families, blocs, world end, and manual scenario. The provided project skills control planning and production workflow. The shared mechanics and dynamic-helper documents establish integration contracts within their stated coverage. Legacy catalog and code are evidence of what needs replacement, not authority to turn this rework back into Political Power.
 
 Numeric tuning, precise timers, route rewards, country thresholds, recruitment ceilings, focus architecture, achievements, and explicit victory operationalizations are authored expansions under the request to develop the idea. They are not claimed to have been individually approved by the user or validated in the game. Final implementation should preserve the source requirements and audit the authored tuning rather than silently replacing them with remembered vanilla behavior.
@@ -42,9 +45,9 @@ The historical and presentation research sources and their individual reading li
 | Uploaded84 is a Major Peace Movement, while the legacy catalog saysPP/Minor Repeatable and has a military-experience description | Uploaded concept wins. Request a workbook-led correction and regenerate exports, preserving a record of the mismatch |
 | Old84 script gives every country100 PP | Replace the old payload and dispatcher integration, not merely its localisation |
 | Peace and Domestic Unrest exports do not contain84 | Add84 as High in both through the catalog owner, with one shared root and pacing transaction |
-| Manual scenario is absent from the supplied registry export | Register War for the Soul after actual ID and map-validity audit, do not invent an already-approved registry slot |
-| New firearm pipeline requires separately generated Meshy 7guns while an older profile suggests Blender-created guns | The newer specific firearm rule controls this handoff. The implementation parent must explicitly pass it and resolve the outdated profile rather than silently use the old route |
-| Supplied profiles/configuration may name a different model from a newer role-specific model requirement | Verify the actual runtime capability and required model. A profile label is not proof that the requested worker ran |
+| Manual scenario was absent from the supplied registry export | Historical gap retained. The central occupancy audit and user-authorized allocation now reserve SCN-031 / raw 31 for War for the Soul, as documented in Part 11; runtime registration and map validity remain implementation requirements |
+| Original delivery reported a conflict between its firearm pipeline and older profile | Historical finding retained. Active production now follows the current 3D owner skill linked in the four model briefs, including its rig/action, component, and fallback routes |
+| Supplied profiles/configuration may differ from the current routed role | Verify actual runtime configuration through the current subagent skill. An archive profile label is not proof that the requested worker ran |
 | Source wants only two public values while an international bloc often invites another cohesion meter | Use treaty commitments, reservations, contributions, and congress disputes without a third public Event 84 meter |
 | Stability benefit coexists with powerful Reaction | Separate movement benefits from Reaction and actual polarization penalties inside three replacing spirit families |
 | Pacifism coexists with armed defense and a final world-order campaign | Keep nonviolent refusal playable, gate armed stages on actual repression, and build material defense capacity instead of instantly removing all antiwar penalties |

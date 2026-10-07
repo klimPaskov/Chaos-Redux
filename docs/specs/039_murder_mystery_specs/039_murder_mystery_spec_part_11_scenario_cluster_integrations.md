@@ -4,7 +4,9 @@
 
 The manual scenario is named `Assassin Network`. It starts Event 39 as a sandbox or challenge setup without requiring the normal event, Chaos threshold, evolution history, or investigation progression.
 
-The authoritative scenario workbook must reserve the next available stable scenario ID. `SCN-014` is a provisional suggestion only because the supplied export contains active IDs through `SCN-013` and retains earlier gaps for known scenarios. The implementation must confirm the workbook and registry before assigning the ID.
+Preserve Assassin Network’s `SCN-019` / raw `19` identity from the [shared identifier registry](../shared_identifier_registry.md#triggerable-scenarios) and `common/script_constants/chaosx_triggerable_scenarios_constants.txt`.
+The original `SCN-014` suggestion is superseded because Fallout owns that slot.
+Identifier ownership does not independently approve the surrounding gameplay design or establish playability.
 
 The scenario uses one scenario type unless later design adds a clearly distinct mode. Host selection and intensity are enough for the accepted version.
 
@@ -134,7 +136,10 @@ The scenario becomes unavailable while any Event 39 network, Assassin State, der
 
 ## Intelligence cluster
 
-The supplied cluster catalog lists Intelligence as unavailable, without a cluster ID or members. Implementation must reserve the next authoritative cluster ID in the XLSX workbook and shared registry. `9` is a provisional expectation because active cluster IDs in the supplied export run from 1 through 8. Do not hardcode the provisional ID before workbook confirmation.
+Use Intelligence cluster ID `20`, following `event_cluster_id.intelligence` in `common/script_constants/event_cluster_constants.txt` and the parent’s central canonical-workbook audit.
+The user explicitly authorized identifier-overlap corrections on 7 October; that approval resolves this identifier without approving gameplay design.
+The original provisional `9` is superseded because National Breakthroughs owns `9`.
+The [shared identifier registry](../shared_identifier_registry.md) records central ownership; preserve historical source-export receipts separately.
 
 ### Cluster identity
 

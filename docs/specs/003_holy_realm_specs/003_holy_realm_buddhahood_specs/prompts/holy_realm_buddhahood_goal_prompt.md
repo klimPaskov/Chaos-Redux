@@ -1,4 +1,4 @@
-/goal Implement the Holy Realm Buddhahood spec package at `docs/specs/003_holy_realm_buddhahood_specs/`. Read the coding prompt, asset prompt, super-event prompt, decision prompt, achievement prompt, route coverage matrix, and all spec files in that package.
+/goal Resume accepted Holy Realm Buddhahood work from `docs/specs/003_holy_realm_specs/003_holy_realm_buddhahood_specs/`. Read the package README and current release reconciliation before the coding prompt, asset prompt, super-event prompt, decision prompt, achievement prompt, route coverage matrix, and all spec files in that package.
 
 Follow `AGENTS.md`, `chaos-redux-events`, `chaos-redux-super-events`, `chaos-redux-decisions-missions`, `chaos-redux-focus-trees`, `chaos-redux-event-assets`, and `chaos-redux-frame-animation`.
 
@@ -6,6 +6,8 @@ Non-negotiables: the Bodhisattva must progress toward Buddhahood through teachin
 
 Implement the event chain, registration, event log, evolutions, country package or origin-aware transformation, focus tree or overlay branch, decisions, missions, scripted GUI mandala panel, animated or static fallback assets, leader portraits, super-events with researched quote and licensed audio, achievements, AI behavior, docs, and spreadsheet alignment.
 
-If literal three-minute mouse holding is unsupported by the HOI4 GUI, implement the specified concentration-sequence fallback and document the limitation. Do not replace it with an instant purchase button.
+If literal three-minute mouse holding is unsupported by the HOI4 GUI, use the specified concentration sequence only with its recorded acceptance basis and document the limitation.
+Keep missing acceptance unresolved.
+Do not replace it with an instant purchase button.
 
 Keep iterating until the implementation satisfies the route coverage matrix. Do not claim completion while any accepted spec feature, required asset, required super-event audio, achievement, decision family, focus route, GUI fallback, docs update, or validation gate is missing. Provide a concrete completion report with changed files, implemented ids, validation, simplifications, blockers, and route coverage.

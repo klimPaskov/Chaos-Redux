@@ -1,5 +1,10 @@
 # Event 059 subagent routing review
 
+Disposition: retained historical planning evidence.
+The source inventory, environment failures, manual reviews, and validation claims below describe the original planning pass.
+They do not establish current tool health, independent specialist execution, design approval, or validation of the edited checkout.
+Use the package README for current authority and workflow.
+
 ## Runtime status
 
 The supplied subagent contracts were read in full. The available outer Codex route failed during both tool inventory and command invocation with an MCP 404 response. The reviews below are manual applications of the supplied role contracts. They are not claimed as executed subagent handoffs.
@@ -14,7 +19,7 @@ The supplied subagent contracts were read in full. The available outer Codex rou
 | `chaosx_generated_event_art` | Create the nationality-neutral report image | During asset production | Routed through asset prompt |
 | `chaosx_icon_artist` | Create the achievement icon family | During asset production | Routed through asset prompt |
 | `chaosx_localisation_auditor` | Review event reports, evolution text, Event Details, tooltips, cluster text, and achievement text | After broad visible text exists | Required in coding prompt |
-| `chaosx_spreadsheet_doc_worker` | Align the authoritative workbook, exported CSVs, event docs, manifests, and implementation records | After gameplay facts are verified | Required in coding prompt |
+| `chaosx_spreadsheet_doc_worker` | Align the authoritative workbook and regenerate CSV exports. The parent or documentation curator owns event docs, manifests, and implementation records | After gameplay facts are verified | Required in coding prompt |
 | `chaosx_improvement_loop_planner` | Final depth and anti-bloat review | Near completion | Manual closure included now, fresh implementation pass still required |
 | `chaosx_event_completion_auditor` | Map every acceptance row to code and evidence | Before completion claim | Required in coding prompt |
 

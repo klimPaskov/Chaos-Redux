@@ -26,19 +26,10 @@ The cluster must not add a stricter hidden gate than the supplied Chaos level.
 
 ## Cluster ID
 
-The current cluster constant registry assigns IDs `1` through `8`.
-
-The supplied cluster CSV also uses ID `10` for Intelligence and leaves ID `9` open.
-
-The preferred new assignment is:
-
-`event_cluster_id.randomizations = 9`
-
-This assignment is conditional on a fresh collision audit at implementation time.
-
-The authoritative XLSX and current source constants are the final authority.
-
-If ID `9` has been assigned by then, the implementation agent must choose one unused ID and update every registry, selector, log mapping, setting, detail view, documentation page, and export together.
+The original planning snapshot assigned IDs `1` through `8`; its supplied CSV used `10` for Intelligence and left `9` open.
+The parent’s 2026-10-07 workbook/runtime occupancy review supersedes that provisional reservation: use `event_cluster_id.randomizations = 14`, with Sudden Abundance `15` and Intelligence `20` kept distinct.
+The user authorized unused identifier allocation, which does not approve the broader event design.
+Verify consistency with the shared identifier registry before wiring; report a later conflict to the parent rather than assigning another ID locally.
 
 ## Cluster execution
 

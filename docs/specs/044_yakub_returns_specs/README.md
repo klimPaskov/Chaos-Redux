@@ -11,7 +11,7 @@
 - Normal event type: Minor Fire-Once
 - Minimum Chaos level: 2
 - Cluster: None
-- Proposed manual scenario ID: `SCN-015`
+- Reserved manual scenario ID: `SCN-023` / raw `23`
 - Proposed manual scenario name: Yakubite Uprising
 
 The event replaces the old Event 44 Space Race concept. The source catalog export still contains the old row and must remain untouched because the CSV files are export-only snapshots. Implementation should update the authoritative workbook and regenerate the CSV exports.
@@ -51,7 +51,7 @@ The event replaces the old Event 44 Space Race concept. The source catalog expor
 - `prompts/044_yakub_returns_coding_prompt.md`
 - `prompts/044_yakub_returns_goal_prompt.md`
 
-## Locked planning decisions
+## Package design decisions
 
 The crisis exposes one persistent public value, `Yakubite Influence`. Hidden state scores, chapter strength, institutional reach, faction strength, intelligence penetration, grievance pressure, and regional suitability may remain numerous. They feed the public value and qualitative state statuses.
 
@@ -67,4 +67,10 @@ The design keeps the event outside the cluster system. Its domestic, separatist,
 
 ## Planning status
 
-This package is a source design handoff. It does not claim repository implementation, MCP evidence, asset production, spreadsheet updates, or live-game testing.
+This package is a source design handoff.
+It does not claim repository implementation, MCP evidence, asset production, spreadsheet updates, or live-game testing.
+The source-processing and planning-review files retain package-generation evidence, not current tooling health or a record of attributable acceptance for every expanded requirement.
+Acceptance claims lacking an explicit original user or parent decision remain unresolved.
+The user-authorized 2026-10-07 central allocation reserves `SCN-023` / raw `23` for Yakubite Uprising, superseding the original `SCN-015` proposal.
+The [shared identifier registry](../shared_identifier_registry.md) records this identity reservation; it does not approve scenario content or register gameplay.
+Historical processing and planning-review records retain their original proposal as evidence.

@@ -1,5 +1,8 @@
 # Connected Repository Inspection Notes
 
+This file preserves the original planning-session search receipt.
+Its negative indexed-search result does not establish current identifier availability.
+
 ## Searches performed
 
 The connected public repository `klimPaskov/Chaos-Redux` was searched for:
@@ -30,4 +33,6 @@ The `docs/specs/` directory was inspected. Existing complete event specification
 
 This package is a source specification and implementation handoff. It does not claim that identifiers, files, GUI consumers, vanilla syntax, tag availability, scenario registration, or assets have been validated in the live repository.
 
-The proposed `SCN-015` remains a working reservation until the authoritative workbook and current registry confirm it.
+The original `SCN-015` proposal is superseded by reserved `SCN-020`, raw ID `20`, under the [shared identifier registry](../../shared_identifier_registry.md).
+The user-authorized allocation covers identifier ownership only.
+Recheck the central ledger and runtime/workbook occupancy before integration.

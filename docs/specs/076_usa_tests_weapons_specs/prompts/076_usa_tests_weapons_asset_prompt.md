@@ -1,6 +1,6 @@
 # Produce Event 076 visual assets
 
-Use `docs/specs/076_usa_tests_weapons_specs/presentation/16_presentation_and_assets.md`, the actual implemented consumers, the gameplay documents and the separate super-event and achievement designs. Read the complete current event-assets skill and every applicable must-read reference before production. Use the current frame-animation or ComfyUI skill only where the chosen actual pipeline needs it. Do not produce unrelated focus, portrait or model assets.
+Use `docs/specs/076_usa_tests_weapons_specs/presentation/16_presentation_and_assets.md`, the actual implemented consumers, the gameplay documents and the separate super-event and achievement designs. Read the complete current event-assets skill and every applicable must-read reference before production. Use the current [asset skill](../../../../.agents/skills/chaos-redux-event-assets/SKILL.md) for production and routing, with the frame-animation skill only for authorized animation. Do not produce unrelated focus, portrait or model assets.
 
 Keep the source design in `docs/specs/076_usa_tests_weapons_specs/`. Temporary source and production evidence belongs in `docs/assets/076_usa_tests_weapons/`. Put the real working plan, asset manifest and handoff in `docs/plans/076_usa_tests_weapons_plans/`. Preserve durable provenance before cleanup. Do not delete active or unapproved sources.
 
@@ -24,7 +24,8 @@ The imagery should support a foreign victim's concrete losses and the American p
 
 Create independent masters appropriate to each family. Do not obtain decision icons by shrinking report scenes or resizing focus art. Follow the supplied ImageGen and processing rules, and use actual supported generation tools. Never present a prompt, placeholder or converted source reference as a generated finished asset.
 
-Use event-scoped runtime category folders without an extra Chaos Redux nesting layer. Confirm current category spellings and register each sprite in the actual owning GFX file. The separate achievement prompt controls its root-level DDS exception and locked three-state compositor.
+Use event-scoped runtime category folders without an extra Chaos Redux nesting layer.
+Confirm current category spellings and provide sprite mappings for the parent to register in the owning GFX file. The separate achievement prompt controls its root-level DDS exception and locked three-state compositor.
 
 Convert through the current `.agents/skills/chaos-redux-event-assets/tools/convert_to_dds.py` workflow with verified arguments and required legacy BGRA output. Reopen every final DDS, verify its canvas and alpha, and compare it against the expected processed image. Record checksums and the exact actual consumer.
 
@@ -32,8 +33,9 @@ Use available supplied asset researchers, generated-art and icon agents with exp
 
 ## Deliver and review
 
-Return final runtime files, registered sprites, original masters, necessary provenance and an asset manifest covering source, prompt, processing, dimensions, alpha, checksum, consumer and approval state. Keep durable source and rights evidence outside any workspace scheduled for cleanup.
+Return final runtime files, proposed sprite mappings, original masters, necessary provenance and an asset manifest covering source, prompt, processing, dimensions, alpha, checksum, consumer and approval state. Keep durable source and rights evidence outside any workspace scheduled for cleanup.
 
-Inspect ordinary reports, news, ideas, decisions and the super-event inside the real game. Check long titles and dynamic labels, correct state and country context, color treatment, frames, clipping and small-size readability. A successful conversion or GFX parse does not replace visual review.
+The parent reviews native consumers and user-supplied live evidence for ordinary reports, news, ideas, decisions and the super-event.
+Do not launch HOI4 for visual testing. Check long titles and dynamic labels, correct state and country context, color treatment, frames, clipping and small-size readability. A successful conversion or GFX parse does not replace visual review.
 
 List every unfinished image, unsupported tool, missing template or unverified consumer. No visual asset was produced by the planning task, so begin from real source inspection and production.

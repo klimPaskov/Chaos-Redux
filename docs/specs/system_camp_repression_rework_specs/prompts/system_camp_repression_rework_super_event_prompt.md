@@ -1,5 +1,8 @@
 # Super-Event Prompt: System Camp Repression Rework
 
+Read [package index](../package_index.md) and the current accepted contract and continuation before assigning this template.
+Original inventories and candidate labels below require reconciliation with that scope; they do not authorize redoing delivered work.
+
 Use this only if the implementation confirms a super-event is warranted.
 
 Research quote, cultural remark, audio, and image direction separately. Do not invent quotes or final button text.

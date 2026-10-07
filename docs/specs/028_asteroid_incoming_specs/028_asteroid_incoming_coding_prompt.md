@@ -2,7 +2,7 @@
 
 Implement the complete Event 028 specification under `docs/specs/028_asteroid_incoming_specs/`. Read every file in the package before editing. Also read `AGENTS.md`, the event, decision, asset, super-event, improvement-loop, subagent, and relevant shared-system skills, the required offline wiki pages, current vanilla documentation, installed vanilla precedents, and existing Chaos Redux patterns.
 
-Treat the supplied specification as acceptance criteria. Do not replace a mapped mechanic, percentage, armour value, decision phase, achievement, asset, report, or log surface with a smaller fallback. Report any blocker before claiming completion.
+Treat recorded user requirements and parent-accepted design as acceptance criteria under the package index authority boundary. Do not replace a mapped mechanic, percentage, armour value, decision phase, achievement, asset, report, or log surface with a smaller fallback. Report any blocker before claiming completion.
 
 ## Required implementation result
 
@@ -22,7 +22,7 @@ Treat the supplied specification as acceptance criteria. Do not replace a mapped
 
 Use the HOI4 MCP event inspection, render, and comparison route for the event chain. Use map inspection for adjacency and state behavior. Use probability tools through `chaosx_ai_probability_auditor` for every weighted surface. If a required route is unavailable, record the exact blocker and do not treat source-only review as equivalent.
 
-Spawn project subagents with `fork_context=false` and complete prompts when their route is relevant.
+Spawn project subagents with `fork_turns="none"` and complete prompts when their route is relevant.
 
 - Repo explorer for uncertain file and precedent mapping
 - Scripted-system architect for reusable transaction, ring, aggregation, dust, and crater-control helpers

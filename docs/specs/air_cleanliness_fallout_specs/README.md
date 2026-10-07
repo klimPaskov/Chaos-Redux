@@ -1,6 +1,8 @@
 # Air Cleanliness and Fallout specifications
 
-This is a cross-event system package. [`SOURCE_OF_TRUTH_AND_SCOPE.md`](SOURCE_OF_TRUTH_AND_SCOPE.md) defines its boundary, and [`SOURCE_SPEC_INDEX.md`](SOURCE_SPEC_INDEX.md) lists the accepted source documents.
+This is a cross-event system package.
+[`SOURCE_OF_TRUTH_AND_SCOPE.md`](SOURCE_OF_TRUTH_AND_SCOPE.md) defines acceptance, ownership, and historical-status precedence; [`SOURCE_SPEC_INDEX.md`](SOURCE_SPEC_INDEX.md) indexes its design, tranche contracts, prompts, and research.
+Inclusion in this package does not establish approval or current implementation status.
 
 Use [`READING_AND_ACCESS_STATUS.md`](READING_AND_ACCESS_STATUS.md) for source-access status and [`README_PLANNING_PASS_STATUS.md`](README_PLANNING_PASS_STATUS.md) for planning-pass history.
 

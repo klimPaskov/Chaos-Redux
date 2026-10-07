@@ -1,12 +1,16 @@
 # Event 085 — Full Implementation Prompt
 
+Before implementing authored additions or numerical tuning, record their explicit user decision or parent acceptance within the authorized scope.
+The package's location, delivery status and older parent review do not approve unresolved proposals.
+Retain unresolved choices in the event plans until that basis exists.
+
 Implement Ten Plagues of Egypt from `docs/specs/085_ten_plagues_of_egypt_specs/`.
 Read the README, all eighteen specification parts, the narrative-source notes, every specialist prompt, and the companion planning/source report before editing.
 Read the supplied original brief as the explicit user direction.
 Treat newly proposed numerical tuning and the bounded non-terminal renewal interpretation according to their recorded acceptance disposition.
 A document location or old completion claim does not itself establish acceptance.
 
-Follow `AGENTS.md`, `chaos-redux-events`, `chaos-redux-event-planning`, `chaos-redux-decisions-missions`, `chaos-redux-subagents`, `chaos-redux-event-assets`, `chaos-redux-super-events`, `chaos-redux-scripted-gui`, `chaos-redux-mtth`, `chaos-redux-improvement-loop`, and the debug/playtest skill.
+Follow `AGENTS.md`, `chaos-redux-events`, `chaos-redux-event-planning`, `chaos-redux-decisions-missions`, `chaos-redux-subagents`, `chaos-redux-event-assets`, `chaos-redux-super-events`, `chaos-redux-scripted-gui`, `chaos-redux-mtth`, and `chaos-redux-improvement-loop`.
 Apply the frame-animation, focus-tree, or 3D pipeline skills only to genuinely mapped or subsequently accepted work.
 No new country, focus tree, formable, doctrine, technology, portrait, or 3D unit is part of this specification.
 
@@ -16,7 +20,7 @@ The planning pass fully read the uploaded archive, not every transitive required
 It read the live Famine and Migration owner documents at commit `33b6946dd923b9fc90fbf29bc5798dce3c76a76f` and bounded other references.
 Complete the missing reads against the actual implementation revision.
 
-Before changing files, open all eleven required core offline `paradox_wiki/` pages: Data structures, Triggers, Effects, Modifiers, Localisation, Scopes, On actions, Event modding, Decision modding, Idea modding, and AI modding.
+Use the current reference-tool workflow to identify and read the pertinent sections of these core offline `paradox_wiki/` topics: Data structures, Triggers, Effects, Modifiers, Localisation, Scopes, On actions, Event modding, Decision modding, Idea modding, and AI modding.
 Read the relevant local vanilla documentation and source files, including interface and scripted-GUI references if the Darkness presentation requires them.
 Use the offline snapshot rather than browsing the Paradox wiki.
 Read the complete current owner contracts and implementation for Deaths, Famine, Migration, disease, Natural Disasters, Evolution timing, scenarios, world-end state, event history, and achievements.
@@ -97,7 +101,7 @@ Implement the full-cycle escape requirement, recurrence intensification, survivo
 Ending this threat cannot clear another terminal source or rewrite the shared world-end history.
 Do not automatically restore ordinary event pacing contrary to the shared terminal policy.
 
-Implement Low, Medium, High, and Maximum scenario profiles without fabricated history or artificial Chaos inflation.
+Use the reserved manual identity `SCN-032` / raw `32` from `docs/specs/shared_identifier_registry.md` and `.json`, with Low, Medium, High and Maximum profiles under that one identity. The user-authorized reservation does not itself approve the proposed profiles or implement registration. Implement accepted profiles without fabricated history or artificial Chaos inflation.
 The stronger applicable profile overrides rather than multiplies an identical natural capability.
 Maximum does not waive terminal gates.
 

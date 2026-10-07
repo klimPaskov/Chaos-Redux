@@ -1,6 +1,9 @@
 # Event 037: Mysterious People specification pack
 
-This folder is the accepted planning handoff for Chaos Redux Event 037, **Mysterious People**.
+This folder contains the imported planning handoff for Chaos Redux Event 037, **Mysterious People**.
+Its design and provenance are preserved; the imported accepted label does not supply a claim-specific approval record.
+Acceptance of planning expansion remains `unresolved` until the parent records the explicit user decision or acceptance within existing authorization.
+Use the [repository acceptance rules](../../../AGENTS.md#specs-and-plans) and [current event workflow](../../../.agents/skills/chaos-redux-events/SKILL.md) independently of the historical package checks.
 
 Place the folder at:
 

@@ -2,7 +2,9 @@
 
 Implement **Event 075: Tannu What?** to the full source specification in `docs/specs/075_tannu_what_specs/`.
 Read the README, all 21 specification parts, the research notes and the five other prompt files in full before implementation.
-Read `AGENTS.md`, the full planning and events skills, every applicable supplied skill, every required linked reference and the actual current implementation.
+Read current `AGENTS.md`, the [planning](../../../.agents/skills/chaos-redux-event-planning/SKILL.md) and [events](../../../.agents/skills/chaos-redux-events/SKILL.md) skills, applicable owner skills and required contracts, and the actual current implementation.
+Use relevant offline-wiki and installed-documentation sections through the current reference workflow.
+Record explicit user or authorized parent acceptance before treating added design choices as approved.
 Do not claim full reading when a required source is unavailable or only a truncated excerpt was read.
 
 The current source design is a proposed expansion of the supplied user brief.
@@ -134,7 +136,8 @@ Never present raw weights as acceptance probabilities.
 Inspect and render actual events, decisions, focus structure and interfaces, and execute relevant T01-T72 checks with reproducible evidence.
 Local reference arithmetic is not engine, probability, asset or runtime proof.
 Do not launch HOI4.
-Review actual user-supplied live evidence under the debug/playtest workflow when available.
+Review actual user-supplied live evidence when available.
+The explicit-only debug-playtest workflow requires a separate user invocation.
 
 Before claiming near completion, invoke `chaosx_improvement_loop_planner` independently with no inherited context and resolve its real addendum or closure.
 Obtain independent completion, country, focus, decision and localisation review as applicable.

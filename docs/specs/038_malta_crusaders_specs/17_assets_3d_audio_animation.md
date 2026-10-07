@@ -329,26 +329,9 @@ Use texture, emblem, and entity variants when sufficient. Create new geometry on
 
 ## 3D source and provider rules
 
-Every 3D job requires:
-
-- nonblank `MESHY_API_KEY` before any path discovery or work
-- repository dependency bootstrap and lock
-- Meshy 7 only
-- live balance check before paid work
-- one approved ImageGen-prepared source image
-- Internet-sourced modern designed artwork with rights review
-- hard non-anime gate
-- period-fit review
-- complete firearm relationship for firing units
-- immediate provider download and checksum
-- Blender checkpoints
-- local vanilla calibration
-- PDX material processing
-- Meshy rig and `meshy_animate` actions
-- export and reimport proof
-- runtime handoff
-
-No model job can use archival photographs or historical paintings as the direct modern-designed-artwork source candidate under the current 3D skill.
+Use the current [3D model owner skill](../../../.agents/skills/chaos-redux-3d-model-pipeline/SKILL.md) for source eligibility, separated body/item inputs, provider gates and attempt limits, authorized Blender completion, calibration, actions, export/reimport, and handoff evidence.
+Each model retains the event-specific silhouette, component inventory, period fit, runtime consumer, action roles, sourced audio, and counter requirements above.
+The per-model dispatch brief is `prompts/15_3d_model_pipeline_prompt.md`; replace all job fields before dispatch.
 
 ## Custom unit audio
 

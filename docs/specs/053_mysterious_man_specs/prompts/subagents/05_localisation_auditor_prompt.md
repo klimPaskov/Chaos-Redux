@@ -1,6 +1,6 @@
 # Prompt for `chaosx_localisation_auditor`
 
-Spawn with `fork_context=false` after Event 53 gameplay and Event Details text are implemented.
+Spawn with `fork_turns="none"` (Codex) after Event 53 gameplay and Event Details text are implemented.
 
 Read `AGENTS.md`, `chaos-redux-events`, `chaos-redux-subagents`, the complete Event 53 source specification, every Event 53 localisation and scripted-localisation file, Event Details and evolution selectors, event-log mappings, and the relevant event MCP artifacts.
 

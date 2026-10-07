@@ -82,6 +82,9 @@ The research must confirm that the music is not already assigned to another Chao
 
 ### Asset acceptance
 
-Every asset has an actual consumer, correct native family, source or generation record, final filename, and review evidence. Opaque reports fill the native canvas. Icons preserve the required transparency. Runtime files do not point into documentation folders.
+Every asset has an actual consumer, correct native family, source or generation record, final filename, and review evidence.
+Reports follow the current [asset skill](../../../.agents/skills/chaos-redux-event-assets/SKILL.md) report-card treatment, including its corner alpha.
+Icons use native transparent source generation and preserve the required alpha through processing.
+Runtime files do not point into documentation folders.
 
 DDS files must be decoded and checked after conversion. Achievement variants follow their dedicated processor and exact overlay templates. The full manifest and the asset prompt define the production handoff. This planning package contains briefs and requirements, not finished raster art or audio.

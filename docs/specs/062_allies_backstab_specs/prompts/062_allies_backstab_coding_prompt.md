@@ -139,7 +139,7 @@ AI must understand faction selection, victim choice, side choice, conflict inten
 
 Follow the separate asset and super-event prompts. Produce real final DDS and WAV files, manifests, and handoffs. Do not use placeholders or unapproved reuse.
 
-The Evolution III super-event is not a world-end scenario. It fires once only under the strict proof.
+The Evolution III super-event fires once only under the strict proof.
 
 ## Achievements
 

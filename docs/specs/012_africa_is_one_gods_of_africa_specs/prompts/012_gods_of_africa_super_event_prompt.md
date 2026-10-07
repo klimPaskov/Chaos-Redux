@@ -1,5 +1,7 @@
 # Super-event research and implementation prompt
 
+Disposition: superseded historical prompt; current guidance is [the Event 012 authority map](../../012_africa_specs/README.md).
+
 Research and implement one Gods of Africa credibility super-event under Event `012` if the live Event 012 presentation audit confirms that the campaign threshold deserves it.
 
 ## Role

@@ -27,11 +27,12 @@ Read `AGENTS.md`, `chaos-redux-3d-model-pipeline`, `chaos-redux-event-assets`, `
 - baseline paid operations and live stop conditions: `[PAID_PLAN]`
 - dependency lock path and expected route: `[LOCK]`
 
-The first action is the nonblank `MESHY_API_KEY` hard gate from the 3D skill. If it fails, stop before path discovery and print the exact required PowerShell command. After it passes, perform repository bootstrap, dependency and checksum verification, live schema inspection, bridge reachability, Meshy 7 exposure, two consecutive and concurrent tool-list probes, process cleanup proof, and live balance preflight exactly as required by the skill.
-
-Use Meshy 7 exclusively. Meshy receives exactly one approved prepared image. Do not use a multi-view board, direct REST fallback, model alias, unverified tool, archival photograph, historical painting, anime-derived source, cropped subject, invalid weapon pose, grayscale input, or source-free image unless the documented fallback has separate user approval.
-
-Create and preserve provider lineage, immediate downloads, checksums, Blender checkpoints, vanilla calibration, topology and material work, PDX packed textures, verified rig and Meshy action sources, retargeting and non-destructive cleanup, export, reimport, and QA evidence. Every required action needs substantive role-specific motion. Static, transform-only, aliased, procedural, or manually keyed replacement motion is forbidden.
+Follow the current [3D model owner skill](../../../../.agents/skills/chaos-redux-3d-model-pipeline/SKILL.md) for route selection, provider hard gates, exact-one-image input, attempt limits, component completion, live Blender authoring, export/reimport, and evidence.
+The locked job data above supplies event-specific requirements and does not override that workflow.
+Try Meshy rigging once per eligible model and animation once per required action; failed or unusable results move to real Blender-authored rigs, weights, and actions without paid retries or renewed approval.
+Firearm-bearing bodies use weapon-free Meshy input and direct Blender rig, weapon, held-item, and action work.
+Required missing components are modeled in Blender within the authorized job.
+Preserve real role-specific motion and deformation evidence; static or transform-only substitutes remain invalid.
 
 Research only legally usable Internet-sourced unit audio. Preserve originals, license evidence, checksums, derived files, role mapping, and sync points. Generated, synthesized, recorded-by-agent, placeholder, test-tone, and unclear-license audio are forbidden. Inspect exact vanilla counter consumers and pass the bounded counter brief to the icon artist. Do not produce or reuse an unverified counter.
 

@@ -88,7 +88,7 @@ Implementation should now focus on exact source review, script ownership, portra
 
 The remaining planning tasks are narrow:
 
-- confirm the final scenario ID in the authoritative workbook and registry
+- recheck centrally reserved `SCN-020`, raw ID `20`, against runtime/workbook occupancy before integration
 - inspect the offline wiki, vanilla files, and local Chaos Redux precedents for each touched engine surface
 - complete balanced independent research for the three named modern visitors
 - select final quotes, cultural remarks, and licensed music through the required research workers

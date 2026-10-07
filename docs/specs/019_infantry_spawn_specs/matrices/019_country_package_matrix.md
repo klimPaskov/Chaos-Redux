@@ -45,13 +45,7 @@
 | Golem burden | Broken Pattern | Master-Bound Constructs | Distributed Binding | Living Pattern | Crumbling Host |
 | Former parent and expansion | Pursued by Former State | Decisive War Plan | Defensive Compact | Extinction of Old Rule | Encircled Remnant |
 
-These are the live in-world idea names. Each country carries four simultaneous
-tracks: one government form, one territory/logistics or later doctrine form,
-one family-command form, and one former-parent/expansion form. Route swaps are
-mutually exclusive inside a track. Once the former state's pressure is
-resolved, its route-specific form becomes *The Outward Muster*; the late
-capstone replaces that bridge with *Regional Predator*. Defeat replaces all
-four live tracks with the matching remnant forms.
+These are the live in-world idea names. Each country carries four simultaneous tracks: one government form, one territory/logistics or later doctrine form, one family-command form, and one former-parent/expansion form. Route swaps are mutually exclusive inside a track. Once the former state's pressure is resolved, its route-specific form becomes *The Outward Muster*; the late capstone replaces that bridge with *Regional Predator*. Defeat replaces all four live tracks with the matching remnant forms.
 
 ## Starting force scaling
 
@@ -84,10 +78,7 @@ four live tracks with the matching remnant forms.
 | Postwar integration | Integrate Conquered Districts | family-specific costs and effects | staged integration |
 | Late payoff | Regional Predator | distinct final flag or identity | serious regional threat, no world end |
 
-The live capstone requires hierarchy consolidation, family transformation,
-sustainable reinforcement, former-parent resolution, at least one integrated
-district, the controlled-state threshold, and the recorded-war-victory
-threshold. It cannot be obtained by selecting an aggressive hierarchy alone.
+The live capstone requires hierarchy consolidation, family transformation, sustainable reinforcement, former-parent resolution, at least one integrated district, the controlled-state threshold, and the recorded-war-victory threshold. It cannot be obtained by selecting an aggressive hierarchy alone.
 
 ## Live governance, diplomacy, and integration
 

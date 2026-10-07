@@ -4,7 +4,7 @@ Implement the complete decision and mission system for Chaos Redux Event 029, Ri
 
 Read repository `AGENTS.md`, `chaos-redux-events`, `chaos-redux-decisions-missions`, `chaos-redux-event-assets`, `chaos-redux-subagents`, the current Event 029 source, every file under `docs/specs/029_riches_found_specs/`, the relevant offline Paradox wiki pages, installed vanilla decision documentation, and current Chaos Redux decision precedents before editing.
 
-Use `chaosx_decision_mission_auditor` with `fork_context=false` after implementation and before completion.
+Use `chaosx_decision_mission_auditor` with `fork_turns="none"` after implementation and before completion.
 
 Route every complex AI weight and mission timing surface through `chaosx_ai_probability_auditor` using the named scenarios in `029_riches_found_ai_probability_scenarios.md`.
 

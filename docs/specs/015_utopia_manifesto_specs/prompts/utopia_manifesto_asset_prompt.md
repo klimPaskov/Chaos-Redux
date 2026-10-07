@@ -1,6 +1,7 @@
 # Asset Production Prompt: Event 15 Utopia Manifesto
 
-Use the Chaos Redux event-assets skill and the frame-animation skill. Work from the accepted source specs in this package. Do not edit gameplay, localisation, GUI, GFX, or spreadsheet files unless the parent explicitly expands scope.
+Use the Chaos Redux event-assets skill and the frame-animation skill. Work from the accepted source specs in this package. Non-portrait workers do not edit gameplay, localisation, GUI, GFX, or spreadsheets unless the parent expands scope.
+The portrait owner retains its skill-defined narrow exception for portrait-specific GFX and existing character portrait references.
 
 ## Event identity
 
@@ -479,6 +480,8 @@ Every active flag must begin as a built-in ImageGen heraldic design. Flags are i
 
 ## Institutional leader tableaux
 
+Route these leader portraits to `chaosx_portrait_creator` under [the asset owner skill](../../../../.agents/skills/chaos-redux-event-assets/SKILL.md).
+
 Create only the bodies the implementation actually uses.
 
 Candidates:
@@ -495,6 +498,9 @@ Final size:
 These are people-free institutional leader images. Use institutional names, not random personal names. Depict each establishment through an empty chamber, council table, ledger, standards apparatus, stores, seals, tools, empty seats, and route emblems. Do not depict people, faces, heads, bodies, hands, crowds, silhouettes, statues, busts, mannequins, framed portraits, photographs, or human shadows.
 
 ## Advisor dossier icons
+
+`chaosx_portrait_creator` owns authorized advisor masters, card processing, final portraits, and portrait wiring.
+An icon or art worker may supply separately generated overlay layers through a bounded handoff.
 
 Create a distinct fictional ImageGen portrait master for every implemented advisor and record the matching regional name and apparent gender presentation. Generate the dossier frame as a separate ImageGen overlay and generate paper, paperclip, illegible-note, and wax-seal elements as another ImageGen overlay where needed. The processing script may only crop, grade, angle, derive alpha shadows, composite generated layers, resize, validate, and export. It must not draw the visible card, border, paper, seal, emblem, or overlay art. Final advisor icons are `65x67`, not square, and must not be resized leader images.
 

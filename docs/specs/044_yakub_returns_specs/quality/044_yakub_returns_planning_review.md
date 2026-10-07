@@ -1,5 +1,8 @@
 # Event 044 Yakub Returns planning review
 
+Historical planning review.
+Its SCN-015 recommendation is superseded by the user-authorized 2026-10-07 central reservation of SCN-023 / raw 23; original review wording remains preserved as evidence.
+
 ## Review scope
 
 This review checks the finished design against the supplied Chaos Redux event-planning, events, decisions and missions, focus-tree, asset, super-event, frame-animation, 3D, improvement-loop, subagent, mechanics, shared API, catalog, repository, and subagent-definition files.

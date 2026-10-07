@@ -16,7 +16,9 @@ Use the actual supplied super-event text researcher with clean context and a con
 
 The final title should identify the foreign American proving-ground event without borrowing a real operation name that misrepresents the game. Button and perspective text can distinguish USA, victim and observer. Follow the direction in the specs and produce finished localisation only after the actual fields and supported perspectives are known.
 
-If no suitable verified quotation exists, use newly written in-universe prose without false attribution. Record that choice. The planning task verified no quote and supplies no final title, quote or button strings.
+Follow the current [super-event skill](../../../../.agents/skills/chaos-redux-super-events/SKILL.md) quotation research contract.
+The original-prose alternative proposed in the source design remains unresolved and requires explicit acceptance before use; a missing verified quotation remains a research gate.
+The planning task verified no quote and supplies no final title, quote or button strings.
 
 ## Image and audio
 

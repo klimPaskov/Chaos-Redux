@@ -47,7 +47,8 @@ Implementation reconciliation: 2026-07-14
 - [x] Dangerous bloc title, description, button, quote, and attribution are approved.
 - [x] Two distinct musical selections, segment plans, final paths, and suggested audio IDs are documented.
 - [x] The `24` United States Marine Band source, rights basis, checksum, and exact segment are verified.
-- [ ] The exact `23` London Brass Players recording has United States redistribution clearance.
+- [x] The user's 2026-09-20 slot-23 selection is recorded in [the current audio research](../research/006_super_event_audio_research.md) and [production manifest](../../../assets/006_independence_wave/super_events/audio/production_manifest.md).
+- The excluded London Brass Players recording retains its historical rights blocker and is not a remaining gate for the selected slot-23 package.
 
 ## Remaining implementation checks
 
@@ -58,8 +59,9 @@ Implementation reconciliation: 2026-07-14
 - [x] Implement and validate the thirteen exact additive overlay hooks without adding standalone countries. The hooks remain outside the release selector and do not constitute standalone package admission.
 - [x] Resolve the Trabzon automatic cross-group collision and the Kashmir route exclusion without broadening the accepted package dispositions.
 - [ ] Produce and document all final visual assets.
-- [ ] Obtain permission or a waiver for `23`, or obtain user approval before reopening its recording selection.
+- [x] Record the approved replacement selection for slot 23 and its attribution, license, edit-notice, and ShareAlike requirements in the production manifest.
 - [x] Trim, convert, checksum, and wire the verified `24` source.
 - [ ] Validate release safety, AI, focus, decision, scenario, and super-event behavior in the implemented mod.
 
-The remaining unchecked items are production, explicit rights, and full runtime-validation gates. No replacement recording or fallback package is authorized by this checklist.
+The remaining unchecked items concern outstanding visual production and full runtime validation.
+This checklist records the documented slot-23 decision and does not authorize another recording replacement or a fallback package.

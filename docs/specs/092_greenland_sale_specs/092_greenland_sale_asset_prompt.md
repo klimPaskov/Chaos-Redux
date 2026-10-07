@@ -1,6 +1,6 @@
 # Asset handoff: Event 092, Greenland Sale
 
-Create the visual assets required by Parts 12 and 13 of `docs/specs/092_greenland_sale_specs/` after reading the full specification index, relevant gameplay parts, the original brief, and the current supplied source pack.
+Create the visual assets required by Parts 12 and 13 of `docs/specs/092_greenland_sale_specs/` after reading the full specification index, relevant gameplay parts, the preserved original brief, and current relevant repository sources.
 Follow AGENTS, `chaos-redux-event-assets`, and the applicable icon and generated-art subagent definitions.
 This is a production handoff, not evidence that art was generated during planning.
 The package's reading report identifies external reference files that were not available or visually inspected.
@@ -13,6 +13,8 @@ Their appearance and licensing were not audited in this planning pass.
 Do not treat a filename or a search result as approval to reuse its image.
 
 Use the project's original-source and processing rules.
+For every alpha-backed icon or emblem, request native ImageGen transparency initially and preserve alpha through processing and DDS conversion, following the current asset skill.
+Background removal is fallback-only and requires recorded edge review.
 For fictional auction scenes, create original period-compatible art through the designated native image-generation route.
 A genuine archival image may illustrate a generic harbor or construction scene only with relevant provenance, rights, and a clear distinction from a claim that the fictional sale occurred historically.
 Do not assume a Danish seller or an American winner.

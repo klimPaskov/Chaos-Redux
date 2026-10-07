@@ -2,7 +2,7 @@
 
 Use this prompt with `chaos-redux-event-assets`, `chaosx_generated_event_art`, and `chaosx_icon_artist`.
 
-Read `AGENTS.md`, the Event 58 specification package under `docs/specs/058_random_buildings_specs/`, the event-assets skill, and only the matching canonical vanilla reference families. Spawn every project subagent with `fork_context=false` and include the exact paths and identifiers below.
+Read `AGENTS.md`, the Event 58 specification package under `docs/specs/058_random_buildings_specs/`, the event-assets skill, and only the matching canonical vanilla reference families. Spawn every project subagent with `fork_turns="none"` in Codex and include the exact paths and identifiers below.
 
 ## Event report image
 

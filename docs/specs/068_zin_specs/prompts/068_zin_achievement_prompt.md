@@ -1,10 +1,7 @@
 # 068 ZIN achievement prompt
 
-Work on Chaos Redux Event 068, ZIN. The source package is `docs/specs/068_zin_specs/`. Read its README, the applicable numbered specifications, registries and unchanged user brief before acting. Read current `AGENTS.md` and the owning skills completely, then inspect the relevant repository and installed game sources. Report unread dependencies, unavailable tools and unverified assumptions. This planning package was prepared against commit `d549536e869056a49890a08ff795fbc80659984e`, so inspect changes before relying on old paths or bindings.
-
-Preserve the user canon. The Golden King dies through Afrit and a real Rush succession war is mandatory. Einendil offers service, can be rejected, and becomes a non-royal chosen leader only through the good victory. Volgan already rules the Dead Lands and starts much stronger than Afrit. Afrit remains a distinct third power and can surpass Volgan through actual Rush acquisition. Normal Rush dominions are Selen, Hiloron, Kilinti, Huhun and the Rush Islands. Independent orcs, goblins, trolls and ogres are not ordinary Rush recruits or inherited subjects. Dragons have no country and are limited to eligible elven and Afrit military routes. Glo follows control of the state containing the one real Castle of Yeldenne. Edvoid belongs only to Event 010.
-
-Use the existing project subagent route only after discovering that it is actually callable. Spawn bounded workers with `fork_context=false` and a complete prompt containing owner, exact inputs, outputs, write boundaries, constraints and expected evidence. Reading a role description is not running that role. Never invent a successful audit or silently replace an unavailable engine workflow with a source-only completion claim.
+Use [the package README](../README.md) and [the shared worker contract](../068_zin_subagent_briefs.md#shared-worker-contract) for source authority, user canon, current capability discovery and isolated role ownership.
+The parent copies relevant canon, acceptance basis, exact inputs, allowed files and evidence requirements into each actual dispatch.
 
 Implement the thirty accepted achievement designs in `068_zin_17_achievements.md` and `registries/068_zin_achievements.json`. Read the current achievement source documentation, owning registry, applicable event and asset skills, and exact installed achievement icon consumer. Preserve the one root-only Chaos Redux achievement set.
 

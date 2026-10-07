@@ -1,5 +1,12 @@
 # Event 067 Generalissimo Planning Completion Report
 
+The original `SCN-015` proposal and its pending collision check are historical and superseded by Generalissimo's Coup `SCN-024` / raw `24` in [the shared identifier registry](../../shared_identifier_registry.md).
+The original receipt below remains unchanged.
+
+Historical report of the original parent-authored planning pack.
+Its acceptance, capability, counts and passed-check statements describe that run and do not certify the edited package or current implementation.
+Use [the package README](../README.md#acceptance-and-current-workflow) for current workflow and unresolved acceptance boundaries.
+
 ## Final status
 
 The Event `067` Generalissimo planning specification is complete as a parent-authored design pack.

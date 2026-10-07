@@ -1,5 +1,10 @@
 # Event 023 source and audit report
 
+Historical planning-source and capability receipt.
+Unavailable tools and supplied snapshots below describe the original session.
+Use the [current subagent skill](../../../.agents/skills/chaos-redux-subagents/SKILL.md#mcp-evidence-in-handoffs) and live schemas for active work.
+The current GUI contract uses paired inspect/render evidence and has no separately exposed GUI comparison tool.
+
 ## Reading completion statement
 
 Every project file supplied with this task was read in full from the local filesystem before the specification package was completed.
@@ -70,7 +75,7 @@ The complete subagent configurations were read and their ownership, audit, and h
 - The acceptance scenarios.
 - The source and simplification report.
 
-Implementation in the real repository should still spawn the required project subagents with `fork_context=false` and complete prompts.
+Implementation in the real repository should spawn required project subagents under the current skill with complete context-free prompts and complete prompts.
 
 ## External research completed
 
@@ -240,7 +245,7 @@ The implementation agent should use the repo explorer only because the current t
 14. `chaosx_improvement_loop_planner` near completion, followed by explicit implementation, promotion, queue, rejection, or closure handling.
 15. `chaosx_event_completion_auditor` before completion.
 
-Every spawned subagent must use `fork_context=false` and receive the complete relevant constraints in its prompt.
+Every active delegation must follow the current subagent skill and carry the complete relevant constraints.
 
 ## Final planning status
 

@@ -1,6 +1,6 @@
 # Event-catalog spreadsheet prompt for Event 016 Brilliant Scientist
 
-Use `chaosx_spreadsheet_doc_worker` only after final in-game Event Details, evolution details, event-log wording, and world-end wording exist. Spawn with `fork_context=false`.
+Use `chaosx_spreadsheet_doc_worker` only after final in-game Event Details, evolution details, event-log wording, and world-end wording exist. Spawn with `fork_turns="none"`.
 
 Read:
 

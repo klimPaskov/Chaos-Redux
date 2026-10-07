@@ -1,5 +1,8 @@
 # Coding Prompt: Implement Event 008 Tensions Rising
 
+Disposition: unresolved historical implementation brief.
+Read [the owner documentation state](../../../plans/008_tensions_rising_plans/documentation_state_2026-10-05.md) and select remaining accepted scope before reuse; finished prose, batching, and follow-ups must not be recreated from this prompt.
+
 Implement the Event 008 `Tensions Rising` rework according to the source spec package:
 
 - `docs/specs/008_tensions_rising_specs/specs/008_tensions_rising_spec.md`
@@ -28,7 +31,7 @@ Implement or cleanly plan:
 - capped temporary Tension Pulse integrated with existing event timer logic, no new global daily/weekly/monthly loop
 - relation-pair selection with timed opinion modifiers and cooldowns
 - delayed follow-up report/news events
-- optional `Diplomatic Panic` cluster if it can be fully registered and logged with the current member note: for now one member, Event 8, required, low severity
+- cluster integration only after the owner resolves competing catalog/source records in `matrices/008_tensions_rising_cluster_and_achievements.md`; the single-member Low Diplomatic Panic catalog instruction is superseded
 - AI posture pressure via valid existing routes only, no direct forced normal war declarations
 - Stage III+ follow-up incidents may start rare safe non-transfer border wars only through strict adjacent-pair checks and cooldowns
 
@@ -43,4 +46,4 @@ Implement or cleanly plan:
 
 Use task-specific validation, not boilerplate claims. Verify stage gating, WT=100 behavior, pulse replacement/cap, timed opinion cooldowns, delayed incident non-recursion, border-war safety gates, event log/evolution details, and absence of super-event, world-end, or direct war-goal behavior.
 
-Before claiming completion, run a completion audit or equivalent review. Report files changed, systems touched, implemented vs queued pieces, asset status, spreadsheet status, validation evidence, and every simplification or blocker. Do not claim completion with missing localisation, unwired assets, skipped achievements, unlogged evolutions, or unreported queued cluster work.
+Before a completion claim, use `chaosx_event_completion_auditor` and the weighted-surface `chaosx_ai_probability_auditor` workflow in [chaos-redux-subagents](../../../../.agents/skills/chaos-redux-subagents/SKILL.md). Report files changed, systems touched, implemented vs queued pieces, asset status, spreadsheet status, validation evidence, and every simplification or blocker. Do not claim completion with missing localisation, unwired assets, skipped achievements, unlogged evolutions, or unreported queued cluster work.

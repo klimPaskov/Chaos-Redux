@@ -2,7 +2,7 @@
 
 Implement the full Greenland Sale design in `docs/specs/092_greenland_sale_specs/`, beginning with its specification index and all 13 sequential parts.
 Read the separate asset, achievement, decision-mission, and goal prompts.
-Read `docs/plans/092_greenland_sale_plans/`, including the preserved original brief, supplied source archive, reading report, source and decision register, requirement coverage, execution map, role handoffs, parent review, validation report, and resume packet.
+Read `docs/plans/092_greenland_sale_plans/`, including the preserved original brief, historical source inventory, reading report, source and decision register, requirement coverage, execution map, role handoffs, parent review, validation report, and resume packet.
 This package is a completed design draft, not a claim that the native economy or independent audits have already passed.
 
 ## Establish the actual source and tool state
@@ -10,7 +10,9 @@ This package is a completed design draft, not a claim that the native economy or
 Fully read the current required Project Sources and applicable must-read skills again before changing behavior.
 Follow `CHAOS_REDUX_PROJECT_SOURCE_PROTOCOL.md` if it is available, and report its absence directly if it remains missing.
 Do not substitute this package's reading report, hashes, extraction, search snippets, or prior agent summaries for required reading.
-The supplied snapshot and user brief override stale legacy catalog or implementation assumptions, but any newer explicit user instruction must be resolved and recorded before proceeding.
+The preserved user brief controls design within its recorded scope, and current AGENTS.md and owner skills control workflow.
+The supplied-source inventory is historical evidence.
+The accompanying source ZIP was removed at the user's request in commit `6a2ebc838`, so read current named sources and do not restore or require that archive.
 
 Inspect the actual repository and installed game version.
 The parent used read-only evidence pinned at commit `5212636eef9f9607691ddc1348bddade1bafe0dd`, which is evidence of that snapshot rather than a claim that your checkout is unchanged.

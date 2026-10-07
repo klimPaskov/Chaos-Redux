@@ -1,4 +1,4 @@
-Implement Chaos Redux Event 097 Collaboration (`chaosx.nr97`, Minor Repeatable, Chaos level 1, Intelligence cluster Medium member) exactly as specified in `docs/specs/097_collaboration_specs/`.
+Resolve ../README.md's variant conflict table first. This goal uses the nested six-part Event 097 design (`chaosx.nr97`, Minor Repeatable, Chaos 1, Intelligence cluster 20 Medium).
 
 Read before editing: the six spec parts in `specs/`, the three matrices in `matrices/`, `research/097_collaboration_research_notes.md`, both files in `handoffs/`, `quality/097_collaboration_acceptance_criteria.md`, and every file in `prompts/`, starting with `097_collaboration_coding_prompt.md`. Also read `docs/plans/097_collaboration_plans/` for the repo explorer handoff, the scripted architecture plan, the audit handoffs, and the plan dispositions. Follow `AGENTS.md` and the skills `chaos-redux-events`, `chaos-redux-decisions-missions`, `chaos-redux-mtth`, `chaos-redux-event-assets`, `chaos-redux-super-events`, `chaos-redux-subagents`, and `chaos-redux-improvement-loop`.
 

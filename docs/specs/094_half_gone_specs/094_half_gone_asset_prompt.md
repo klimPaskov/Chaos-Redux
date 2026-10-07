@@ -2,9 +2,9 @@
 
 Create the mapped visual assets for Half gone only after canonical reference and consumer checks. This is production work for the accepted design when implementation is authorized, not a request to generate unrelated surfaces.
 
-Read all ten numbered specification parts in `docs/specs/094_half_gone_specs/`, the relevant separate prompt files, and the source/decision, coverage, and blocker reports in `docs/plans/094_half_gone_plans/`. Read the current original user brief before changing design. Fully reread current supplied policy and applicable must-read skills. Source-file placement does not convert an unreviewed proposal into user approval.
-
-This package's author read all 46 supplied sources and seven selected live repository files. No supplied subagent was executed, no native HOI4 MCP audit ran, and no game or production asset was completed. Preserve that status until real evidence changes it. Spawn actual named roles with fully self-contained bounded prompts and `fork_turns="none"` where the current Codex collaboration tool supports it. Never relabel parent inspection or a Python model as an independent agent or engine result.
+Read the [package README](README.md) for design authority and historical planning evidence, and the current original brief and relevant parts before using this specialist handoff.
+Apply current AGENTS.md and the owner skills named below.
+The parent must pass this event context, accepted requirements, current paths and bounded ownership explicitly to every context-free specialist.
 
 ## Production scope
 
@@ -16,7 +16,8 @@ Use `chaosx_generated_event_art` for the fictional report, news, and super-event
 
 Read `chaos-redux-event-assets`, `.agents/skills/chaos-redux-event-assets/assets/gfx_references/README.md`, its `CATALOG.md`, the relevant canonical contact sheets, individual examples, and exact existing consumer definitions. Read `assets/visual_components/CATALOG.md` when a component is used and respect its reference-only or permitted-background role. These actual assets were not inspected during planning.
 
-Use the proper photo processing, alpha, size, DDS format, header validation, and source retention requirements for each consumer. Do not infer a final asset from an inventory label. Preserve separate original sources, generated source layers, processed previews, final DDS files, manifest records, and reviewed consumer evidence under the event's asset workspace.
+Use the proper photo processing, alpha, size, DDS format, header validation, and source retention requirements for each consumer.
+Request native ImageGen transparency initially for alpha-backed icons, preserve alpha through processing and DDS conversion, and record any fallback background removal and edge review under the current asset skill. Do not infer a final asset from an inventory label. Preserve separate original sources, generated source layers, processed previews, final DDS files, manifest records, and reviewed consumer evidence under the event's asset workspace.
 
 ## Scene constraints
 

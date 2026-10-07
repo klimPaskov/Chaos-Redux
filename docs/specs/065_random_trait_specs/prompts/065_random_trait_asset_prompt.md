@@ -1,5 +1,9 @@
 # Event 065 Random Trait Asset Prompt
 
+The [asset skill](../../../../.agents/skills/chaos-redux-event-assets/SKILL.md) owns reference families, native ImageGen source evidence, consumer-dependent alpha, processing, and DDS validation.
+For alpha-backed families request real transparency in the first ImageGen call and preserve it through processing; opaque scene sources follow the final consumer’s report or panel treatment.
+For achievements use the skill’s [single-subject, deterministic-state pipeline](../../../../.agents/skills/chaos-redux-event-assets/SKILL.md#achievement-icons), including the completed, grey, and not-eligible source layers and exact supplied templates.
+
 ## Role
 
 Use `chaos-redux-event-assets` and the relevant generated event-art worker.
@@ -14,7 +18,8 @@ Work only inside the Event 65 asset scope.
 - Sprite: `GFX_report_event_leader_trait`
 - Runtime file: `gfx/event_pictures/065_random_trait/report_event_leader_trait.dds`
 - Final dimensions: `210x176`
-- Canvas: opaque
+- Source scene: opaque
+- Processed canvas and alpha: follow the inspected report-event consumer and asset-skill card treatment
 - Animation state: static
 - Source mode: generated fictional documentary scene
 
@@ -68,7 +73,7 @@ Inspect the canonical vanilla-reference root named by the event-asset skill.
 
 Open the event-art catalog, report-event references, contact sheet, and native dimensions.
 
-If the required contact sheet or reference documentation is missing, create and document it before producing the final asset.
+If the required reference family or contact sheet is missing, report the gap to the parent for `chaosx_skill_maintainer`; do not edit shared skill references from this asset assignment.
 
 Record the exact references used for composition, crop density, contrast, and card treatment.
 

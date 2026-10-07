@@ -4,15 +4,10 @@
 
 ## Process status
 
-The custom Chaos Redux subagent runtime was not available in the original
-planning environment. No project subagent was spawned for this historical
-planning review, so the package received the role-equivalent perspectives below.
-Implementation later ran the required no-inherited-context project-agent
-planner and specialists; their dated handoffs under
-`docs/plans/019_infantry_spawn_plans/` supersede this file as live-source audit
-evidence.
+The custom Chaos Redux subagent runtime was not available in the original planning environment. No project subagent was spawned for this historical planning review, so the package received the role-equivalent perspectives below.
+Implementation later ran the required no-inherited-context project-agent planner and specialists; their dated handoffs under `docs/plans/019_infantry_spawn_plans/` supersede this file as live-source audit evidence.
 
-These reviews are planning evidence, not substitutes for the real implementation-time agents. The implementation prompt requires the actual subagents with `fork_context=false` when the runtime is available.
+These reviews are planning evidence, not substitutes for the real implementation-time agents. The implementation prompt requires the actual subagents with `fork_turns="none"` when the runtime is available.
 
 ## Repo Explorer role
 
@@ -227,8 +222,7 @@ Event 19 needs one source-of-truth spec pack, one canonical event doc after impl
 
 - this folder is the source spec area
 - at the original planning stage there was no loose unresolved improvement
-  addendum; the later accepted near-completion addendum now owns its implemented
-  findings and closure disposition
+  addendum; the later accepted near-completion addendum now owns its implemented findings and closure disposition
 - future implementation handoffs belong under `docs/plans/019_infantry_spawn_plans/`
 - accepted implementation changes should be reconciled back into the spec if they alter design
 
@@ -250,7 +244,4 @@ The specification covers the user’s requested baseline, four evolutions, gener
 
 ### Disposition
 
-A planning completion audit appears in `spec_completion_audit.md`. Current live
-status belongs to `blockers_and_uncertainty.md`: the named gameplay specialist
-scopes are clean, while regional 91-source flag regeneration and the fresh
-AI/balance/performance audit remain before parent completion reconciliation.
+A planning completion audit appears in `spec_completion_audit.md`. Current live status belongs to `blockers_and_uncertainty.md`: the named gameplay specialist scopes are clean, while regional 91-source flag regeneration and the fresh AI/balance/performance audit remain before parent completion reconciliation.

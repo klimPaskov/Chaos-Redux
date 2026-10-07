@@ -1,5 +1,7 @@
 # Event 061 package validation
 
+Historical package-validation report from creation; its counts and checks are not a validation pass for the edited package.
+
 ## Validation scope
 
 This report validates the internal structure and consistency of the Return to Peacetime source specification package.

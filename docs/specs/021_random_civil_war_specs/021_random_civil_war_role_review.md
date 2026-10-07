@@ -85,7 +85,7 @@ This note records how the supplied project skills and custom subagent contracts 
 
 `chaos-redux-subagents` established:
 
-- every project subagent must use `fork_context=false`
+- every project subagent must use `fork_turns="none"`
 - context-complete prompts are required
 - broad design work belongs to the improvement planner
 - narrow reusable script belongs to the scripted-system architect
@@ -146,4 +146,4 @@ The 3D and portrait skills were reviewed and produced negative design results.
 
 The custom subagent contracts were read in full, but the planning environment did not expose the Codex subagent runtime. No subagent was actually spawned.
 
-The package includes context-complete prompts so the implementation agent can route the required work with `fork_context=false`.
+The package includes context-complete prompts so the implementation agent can route the required work with `fork_turns="none"`.

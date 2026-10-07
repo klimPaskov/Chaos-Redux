@@ -19,15 +19,16 @@ Do not claim completion until the implemented files satisfy the specification an
 ## Required reading
 
 Read `AGENTS.md`, `CHAOS_REDUX_MECHANICS.md`, the documented dynamic effects and triggers, canonical catalog guidance, and all applicable current repo skills in full.
-Use event planning, events, focus trees, decisions and missions, scripted GUI, assets, frame animation, 3D model pipeline, super-events, ComfyUI, MTTH, subagents, improvement loop, and the debug skill when a debug task is authorized.
-Read the required offline `paradox_wiki/` core pages and the additional country, interface, unit, equipment, focus and technology pages.
+Use event planning, events, focus trees, decisions and missions, scripted GUI, assets, frame animation, 3D model pipeline, super-events, the event-assets portrait-production reference, MTTH, subagents, improvement loop, and the debug skill when a debug task is authorized.
+Read the pertinent offline `paradox_wiki/` and installed-game documentation sections through the current AGENTS.md reference workflow.
 Read current installed-vanilla documentation and relevant real examples.
 The archive did not include those complete external references.
 Do not use an online Paradox wiki as a shortcut around the repository rule.
 
 The supplied config and some prose profiles disagree about models and firearm production.
 Confirm actual tool availability and model configuration.
-For firearms, the dedicated 3D skill's separated body and firearm pipeline governs until the conflict is explicitly resolved.
+Use [the current 3D pipeline](../../../.agents/skills/chaos-redux-3d-model-pipeline/SKILL.md) for firearm route selection and fallback rules.
+The supplied-profile disagreement is historical evidence, not an extra approval gate.
 No planning report represents those worker calls as completed.
 
 ## Stage 1: establish current source and contracts
@@ -87,7 +88,7 @@ Show a small relevant action set, valid target previews, no more than four spend
 
 Implement host and external-neighbor wars, real Cookie-domain exemptions, bounded border updates, subjects and the global-war queue.
 Implement The Final Bite's qualification, irreversible commitment, late formations, method-specific consumption and actual terminal proof.
-Implement all four manual presets without progression prerequisites.
+Implement all four manual presets under reserved `SCN-030` / raw `30` from [the central identifier registry](../shared_identifier_registry.md), without progression prerequisites.
 Structural identity, territory, capital and engine validity still apply.
 Synthetic manual history must not create fake deaths, rewards or normal achievements.
 

@@ -1,12 +1,12 @@
 # Subagent Prompt: Event 021 Scripted-System Architect
 
-Spawn `chaosx_scripted_system_architect` with `fork_context=false` after the repository explorer handoff exists.
+Spawn `chaosx_scripted_system_architect` with `fork_turns="none"` after the parent provides a current source map, using an explorer handoff only when its gate was met.
 
 Read:
 
 - repository `AGENTS.md`
 - full Event 021 source-spec folder
-- repository explorer handoff
+- current parent source map and any applicable explorer handoff
 - Event 006 package and country-collection implementation
 - current dynamic effect and trigger registries
 - current event, decision, cluster, scenario, and cleanup helpers

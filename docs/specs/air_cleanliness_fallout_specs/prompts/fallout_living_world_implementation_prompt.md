@@ -1,13 +1,15 @@
 # Fallout Living World Implementation Prompt
 
-Implement the accepted Air Cleanliness and Fallout source design together with this living-world expansion. Work in the writable Chaos Redux repository and treat `docs/specs/air_cleanliness_fallout_specs/` as the canonical source-spec area.
+Implement requirements with recorded acceptance under `docs/specs/air_cleanliness_fallout_specs/SOURCE_OF_TRUTH_AND_SCOPE.md`.
+Resolve proposed or conflicting requirements independently of old status labels.
+Work in the writable Chaos Redux repository.
 
 ## Required reading before edits
 
 Read:
 
 - `AGENTS.md`
-- the complete Air Cleanliness and Fallout source-spec package
+- the source index and scope map, then the specifications and matrices for the authorized implementation tranche
 - the corrected Fallout event and asset ownership rules
 - the corrected manual scenario plan
 - the existing implementation-tranche plan
@@ -28,6 +30,13 @@ The generic manual-scenario framework may dispatch to a Fallout-owned entry even
 
 Fallout is not a normal super-event. Remove stale super-event image, quote, reaction, slot, and audio wiring.
 
+## Workflow owners
+
+Use [chaos-redux-events](../../../../.agents/skills/chaos-redux-events/SKILL.md), [chaos-redux-subagents](../../../../.agents/skills/chaos-redux-subagents/SKILL.md), and the applicable [focus](../../../../.agents/skills/chaos-redux-focus-trees/SKILL.md), [decision](../../../../.agents/skills/chaos-redux-decisions-missions/SKILL.md), [GUI](../../../../.agents/skills/chaos-redux-scripted-gui/SKILL.md), and [asset](../../../../.agents/skills/chaos-redux-event-assets/SKILL.md) workflows.
+Route weighted surfaces to `chaosx_ai_probability_auditor` with explicit scenarios; preserve its read-only MCP evidence and compare the same scenarios after any owner-applied weight change.
+The owner skills govern source retrieval, MCP evidence, production, routing, and handoffs.
+The cross-event Fallout consequence interface remains parent-owned; an event UI worker requires separately proven ownership by one named event.
+
 ## Local proof gates
 
 Before content implementation:
@@ -35,7 +44,7 @@ Before content implementation:
 1. prove the exact normal-map climate presentation route
 2. inspect the live mapmode strips, frames, and available slot
 3. prove the exact thermonuclear effect for every valid province
-4. allocate the manual Fallout scenario as highest live scenario id plus one
+4. reconcile the existing raw-id-14 manual reservation against the live registry and owner constants; preserve it on continuation and resolve a genuine collision explicitly before remapping
 5. prove full-screen blackout drawing order and input blocking
 6. build the live tag and country-package conflict ledger
 7. scan all Fallout event definitions, callers, suffixes, flags, variables, assets, and old ownership
@@ -156,7 +165,7 @@ Do not use a copied generic country chain with renamed nouns.
 - interregional blocs and wars
 - Year 10 ambitions
 - defeat, annexation, migration, and integration cleanup
-- all documentation, event log, catalog, assets, and audit closure
+- documentation, survivor Event Log, catalog-exclusion verification, assets, and audit closure
 
 ## Choices and AI
 
@@ -184,7 +193,10 @@ Do not invent quotes, lyrics, slogans, or cultural references. Route them throug
 
 ## Assets
 
-Use dedicated Fallout asset folders and manifests. Historical people, flags, and attested symbols require sourced material. Fictional successors, altered societies, councils, event scenes, and icons may use generated art through the correct asset workflow.
+Use dedicated Fallout asset folders and manifests.
+Historical people and attested symbols require sourced provenance.
+Every portrait follows the grounded-versus-fictional identity gate and belongs to `chaosx_portrait_creator`; an invented character in a grounded successor does not authorize a generated face.
+Flags, event scenes, icons, alpha-backed assets, animation, and final wiring follow the current asset-owner skill.
 
 Do not create climate art before the local engine route and texture requirements are proven.
 

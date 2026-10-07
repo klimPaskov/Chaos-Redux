@@ -1,6 +1,6 @@
 # Conditional Prompt for `chaosx_skill_maintainer`
 
-Spawn with `fork_context=false` only if implementation reveals a reusable workflow that is not already covered.
+Spawn with no inherited thread context (Codex `fork_turns="none"`; other runtimes follow the [subagent skill](../../../../.agents/skills/chaos-redux-subagents/SKILL.md)) only if implementation reveals a reusable workflow that is not already covered.
 
 Potential reusable topics:
 

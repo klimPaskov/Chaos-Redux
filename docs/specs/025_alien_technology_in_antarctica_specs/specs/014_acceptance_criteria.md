@@ -321,7 +321,7 @@ Before final completion:
 - documentation curator
 - spreadsheet worker
 
-All project subagents use `fork_context=false` and receive context-complete prompts.
+All project subagents use `fork_turns="none"` and receive context-complete prompts.
 
 ## 23. Meaningful validation scenarios
 

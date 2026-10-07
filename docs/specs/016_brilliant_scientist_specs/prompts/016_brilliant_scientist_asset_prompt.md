@@ -4,7 +4,7 @@
 
 The original planning inventory listed six super-event images, seventeen achievement icon triplets, and five severe portrait animation package families as required production. That inventory statement is historical; current production counts and wiring are controlled by `docs/assets/016_brilliant_scientist/manifest.md` and the current runtime map above.
 
-Use this prompt with the correct narrow Chaos Redux asset subagents. Spawn every project subagent with `fork_context=false`.
+Use this prompt with the correct narrow Chaos Redux asset subagents. Spawn every project subagent with `fork_turns="none"`.
 
 ## Source design
 
@@ -21,11 +21,14 @@ Read:
 
 ## Routing
 
-Use `chaosx_generated_event_art` for fictional Kruger portraits, fictional report and news scenes, super-event art, Kruger State flags, faction emblems, and UI thematic art.
+Route every Kruger portrait, advisor card, staged transformation, and portrait animation to `chaosx_portrait_creator` under [the asset owner skill](../../../../.agents/skills/chaos-redux-event-assets/SKILL.md).
+Preserve Stage 0 and the accepted supplied identity source.
+
+Use `chaosx_generated_event_art` for fictional report and news scenes, super-event art, Kruger State flags, faction emblems, and UI thematic art.
 
 Use `chaosx_icon_artist` for focus, idea, national spirit, decision, decision category, achievement, tech, special-project, focus-filter, and animated small UI icons.
 
-Use `chaosx_asset_source_researcher` only when an asset must depict real historical material or when locating the approved base portrait source. Doctor Warren Kruger is fictional and must not be presented as a real historical person.
+Use `chaosx_asset_source_researcher` only when an asset must depict real historical material. Doctor Warren Kruger is fictional and must not be presented as a real historical person.
 
 ## Base Kruger portrait
 
@@ -94,6 +97,7 @@ Every asset entry must include:
 - Related event, project, focus, idea, decision, achievement, country identity, or UI state.
 - Status and uncertainty.
 
-Create contact sheets for each large family. Create `gfx_handoff.md` with ready-to-review paths and sprite names. Do not edit gameplay, GFX, GUI, localisation, focus, decision, country, event, or spreadsheet files.
+Create contact sheets for each large family. Create `gfx_handoff.md` with ready-to-review paths and sprite names. Non-portrait workers do not edit gameplay, GFX, GUI, localisation, focus, decision, country, event, or spreadsheets.
+The portrait owner retains its skill-defined narrow exception for portrait-specific GFX and existing character portrait references.
 
 Mark every requested asset `complete`, `blocked`, or `needs_user_review`. Do not substitute placeholders.

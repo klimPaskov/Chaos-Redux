@@ -31,4 +31,4 @@ Do not hardcode Axis or Comintern. Do not leave placeholder assets or unwired lo
 
 Unresearched final prose is not provided by the spec. Write final localisation from the direction files, and treat any final source-dependent quote, song, slogan, or cultural reference as blocked until researched.
 
-Use relevant subagents through explicit prompts with `fork_context=false` when working in Codex. At minimum use scripted-system, decision, localisation, asset/icon, spreadsheet, documentation, and completion audit handoffs.
+Use relevant subagents through explicit prompts with `fork_turns="none"` when working in Codex. At minimum use scripted-system, decision, localisation, asset/icon, spreadsheet, documentation, and completion audit handoffs.

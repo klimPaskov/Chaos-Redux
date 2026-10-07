@@ -1,0 +1,379 @@
+{
+  "schema_version": 1,
+  "audit_date": "2026-10-07",
+  "role": "read-only cross-package identifier audit",
+  "scope": {
+    "baseline_specs_path": "C:/Users/klimp/AppData/Local/Temp/chaos-redux-specs-audit-yijvocg9/before/docs/specs",
+    "baseline_package_directories": 102,
+    "baseline_files": 3141,
+    "current_package_directories": 103,
+    "current_files": 3141,
+    "added_empty_package": "docs/specs/chaos_redux_3d_model_workflow_planning_package",
+    "read_only": true,
+    "scenario_id_scope": "SCN occupancy belongs to the separately assigned scenario auditor"
+  },
+  "runtime_reservations": {
+    "event_cluster_id": {
+      "source": "common/script_constants/event_cluster_constants.txt",
+      "assignments": {
+        "1": "Wars",
+        "2": "Liberations",
+        "3": "Diplomatic Panic",
+        "4": "Peace",
+        "5": "Natural Disasters",
+        "6": "Formables",
+        "7": "Positive Economy",
+        "8": "Diseases",
+        "9": "National Breakthroughs",
+        "10": "Negative Economy",
+        "11": "Various Anomalies",
+        "12": "Random Stuff",
+        "20": "Intelligence"
+      }
+    },
+    "canonical_workbook_clusters": {
+      "source": "docs/spreadsheets/chaos_redux_events_catalog.xlsx",
+      "sheet": "Clusters",
+      "current_assignments": {
+        "1": "Wars",
+        "2": "Liberations",
+        "3": "Diplomacy",
+        "4": "Peace",
+        "5": "Natural Disasters",
+        "6": "Formables",
+        "7": "Positive Economy",
+        "9": "National Breakthroughs",
+        "10": "Negative Economy",
+        "11": "Various Anomalies",
+        "12": "Pacts",
+        "13": "Diseases",
+        "14": "Randomizations",
+        "15": "Sudden Abundance",
+        "16": "Domestic Unrest",
+        "17": "Alien Invasions",
+        "18": "Military Preparation",
+        "19": "Random Stuff",
+        "20": "Intelligence"
+      },
+      "missing_id": 8,
+      "maximum_id": 20
+    },
+    "candidate_v2_cluster_document": {
+      "source": "docs/systems/event_system/event_clusters.md",
+      "status": "candidate registry with acceptance record pending",
+      "historical_source_csv_was_absent": true,
+      "proposed_assignments": {
+        "8": "Intelligence",
+        "9": "Scientific Research",
+        "10": "Negative Economy",
+        "11": "Various Anomalies",
+        "12": "Pacts",
+        "13": "Diseases",
+        "14": "Randomizations",
+        "15": "Sudden Abundance",
+        "16": "Domestic Unrest",
+        "17": "Alien Invasions",
+        "18": "Military Preparation",
+        "19": "Random Stuff"
+      }
+    },
+    "recommended_preserving_runtime_alignment": {
+      "retain_live": {
+        "8": "Diseases",
+        "9": "National Breakthroughs",
+        "10": "Negative Economy",
+        "11": "Various Anomalies",
+        "12": "Random Stuff",
+        "20": "Intelligence"
+      },
+      "catalog_reconciliation": {
+        "8": "Diseases",
+        "12": "Random Stuff",
+        "13": "Pacts",
+        "14": "Randomizations",
+        "15": "Sudden Abundance",
+        "16": "Domestic Unrest",
+        "17": "Alien Invasions",
+        "18": "Military Preparation",
+        "20": "Intelligence"
+      },
+      "conditional_new_clusters": {
+        "21": "Scientific Research if accepted as a distinct cluster from National Breakthroughs",
+        "22": "Internal Fracture if separately accepted after Scientific Research; otherwise use 21 only if no prior new cluster takes it"
+      },
+      "note": "The recommended catalog reconciliation is not applied. It preserves current runtime IDs and prevents duplicate Diseases and Random Stuff identities."
+    }
+  },
+  "collisions": [
+    {
+      "namespace": "event_cluster_id",
+      "value": 9,
+      "current_owner": "National Breakthroughs",
+      "evidence": [
+        "common/script_constants/event_cluster_constants.txt:23",
+        "docs/spreadsheets/chaos_redux_events_catalog.xlsx, Clusters row 9"
+      ],
+      "competing_claims": [
+        {
+          "claim": "Randomizations",
+          "package": "docs/specs/065_random_trait_specs",
+          "evidence": "specs/065_random_trait_spec_part_4_cluster_chaos_and_persistence.md:35",
+          "recommended_value": 14
+        },
+        {
+          "claim": "Sudden Abundance",
+          "package": "docs/specs/066_abundance_specs",
+          "evidence": "specs/066_abundance_spec_part_5_evolutions_and_cluster.md:127",
+          "recommended_value": 15
+        },
+        {
+          "claim": "Intelligence",
+          "package": "docs/specs/039_murder_mystery_specs",
+          "evidence": "manifest.json:39-41",
+          "recommended_value": 20
+        },
+        {
+          "claim": "Scientific Research",
+          "packages": [
+            "docs/specs/054_gift_from_scientists_specs",
+            "docs/systems/event_system/event_clusters.md"
+          ],
+          "evidence": [
+            "docs/specs/054_gift_from_scientists_specs/specs/054_gift_from_scientists_spec_part_5_connections_and_cluster.md:97",
+            "docs/systems/event_system/event_clusters.md:348"
+          ],
+          "status": "candidate distinct cluster; requires acceptance and allocation above current registry"
+        },
+        {
+          "claim": "Internal Fracture",
+          "package": "docs/specs/031_random_terror_specs",
+          "evidence": "031_random_terror_manifest.json:12",
+          "status": "future proposal; Event 031 is already in workbook Domestic Unrest ID 16"
+        }
+      ],
+      "resolution": "Keep 9 for National Breakthroughs. Use current workbook reservations 14, 15, and 20 for Randomizations, Sudden Abundance, and Intelligence respectively."
+    },
+    {
+      "namespace": "event_cluster_id",
+      "value": 12,
+      "runtime_owner": "Random Stuff",
+      "workbook_owner": "Pacts",
+      "evidence": [
+        "common/script_constants/event_cluster_constants.txt:27",
+        "docs/spreadsheets/chaos_redux_events_catalog.xlsx, Clusters rows 12 and 19"
+      ],
+      "resolution": "Preserve Random Stuff=12. Reconcile the workbook so Diseases=8 and Random Stuff=12, then use Pacts=13. Do not mutate live numeric IDs."
+    },
+    {
+      "namespace": "event_cluster_id",
+      "value": 13,
+      "runtime_owner": null,
+      "workbook_owner": "Diseases",
+      "evidence": [
+        "common/script_constants/event_cluster_constants.txt:22 assigns Diseases=8",
+        "docs/spreadsheets/chaos_redux_events_catalog.xlsx, Clusters row 13"
+      ],
+      "resolution": "The workbook Diseases row duplicates a live identity at ID 8. Reconcile to 8 before assigning the new Pacts row 13."
+    },
+    {
+      "namespace": "event_cluster_id",
+      "value": 19,
+      "runtime_owner": "Random Stuff uses ID 12",
+      "workbook_owner": "Random Stuff",
+      "candidate_document_owner": "Random Stuff in unaccepted v2 mapping",
+      "evidence": [
+        "common/script_constants/event_cluster_constants.txt:27",
+        "docs/spreadsheets/chaos_redux_events_catalog.xlsx, Clusters row 19",
+        "docs/systems/event_system/event_clusters.md:159 and 271"
+      ],
+      "resolution": "Do not register the same live cluster at both 12 and 19. Preserve runtime ID 12 and reconcile catalog/docs before reusing 19."
+    },
+    {
+      "namespace": "world_end_scenario_id",
+      "value": 15,
+      "runtime_owner": "Global Jihad",
+      "owner_event_id": 31,
+      "competing_claim": "Cthulhu",
+      "competing_package": "docs/specs/043_monsters_from_the_deep_specs",
+      "evidence": [
+        "common/script_constants/world_end_scenario_registry_constants.txt:34 and 77",
+        "docs/specs/043_monsters_from_the_deep_specs/specs/043_monsters_from_the_deep_spec_part_7_evolutions_pacts_and_terminal.md:410"
+      ],
+      "recommended_value": 17
+    },
+    {
+      "namespace": "events/HOI4 event definition ID",
+      "value": "chaosx.nr18.90",
+      "definitions": [
+        {
+          "meaning": "No Ground for a Survey",
+          "path": "events/018_random_resource.txt",
+          "line": 18,
+          "dispatch": "common/scripted_effects/018_resources_found_prefire_effects.txt:166",
+          "localisation": "localisation/english/018_random_resource_l_english.yml:14-16"
+        },
+        {
+          "meaning": "A Quarter of the Continent",
+          "path": "events/018_random_resource.txt",
+          "line": 3166,
+          "dispatch": "common/scripted_effects/018_resources_found_cave_effects.txt:1928",
+          "localisation": "localisation/english/018_random_resource_l_english.yml:593-596"
+        }
+      ],
+      "recommended_repair": {
+        "preserve": "A Quarter of the Continent at chaosx.nr18.90",
+        "move": "No Ground for a Survey to chaosx.nr18.33",
+        "unused_sub_id_search": "No chaosx.nr18.33 or nr18.33 references were found in repository text."
+      },
+      "mcp_status": "source collision observed; event MCP inspect/render evidence unavailable"
+    }
+  ],
+  "package_provenance": [
+    {
+      "package_roots": [
+        "012_africa_specs",
+        "012_africa_is_one_gods_of_africa_specs"
+      ],
+      "status": "not a duplicate runtime event assignment",
+      "evidence": [
+        "docs/specs/012_africa_specs/README.md",
+        "docs/specs/012_africa_is_one_gods_of_africa_specs/README.md"
+      ],
+      "resolution": "The standalone Gods package is explicitly superseded; Event 12 remains the sole namespace owner."
+    },
+    {
+      "package_root": "097_collaboration_specs",
+      "runtime_event_root": "chaosx.nr97.1",
+      "status": "not a duplicate runtime event assignment; unresolved design provenance conflict",
+      "evidence": [
+        "events/097_collaboration.txt:1 and 24",
+        "docs/specs/097_collaboration_specs/README.md"
+      ],
+      "resolution": "Retain the root ID and reconcile the two package design variants before dependent identifier allocation."
+    }
+  ],
+  "other_identifier_checks": {
+    "custom_country_tags": {
+      "definitions": 171,
+      "unique_definitions": 171,
+      "duplicate_keys": [],
+      "stale_conflict_check_notes": [
+        {
+          "tag": "DTH",
+          "runtime_definition": "common/country_tags/chaosx_countries.txt:5",
+          "spec_notes": "docs/specs/010_death_specs still says proposed/tag-conflict check"
+        },
+        {
+          "tag": "KRG",
+          "runtime_definition": "common/country_tags/016_brilliant_scientist_country.txt:8",
+          "spec_notes": "docs/specs/016_brilliant_scientist_specs still calls KRG a working placeholder/tag-conflict check"
+        }
+      ]
+    },
+    "event_roots": {
+      "source_root_numbers": "1-69,71-100",
+      "multi_file_shared_roots": [
+        6,
+        12,
+        16,
+        19,
+        23
+      ],
+      "duplicate_top_level_namespaced_definitions": [
+        {
+          "id": "chaosx.nr18.90",
+          "count": 2
+        }
+      ]
+    },
+    "global_helpers_sprites_entities": {
+      "cross_package_exact_collisions_found": [],
+      "coverage_limit": "No central proposal registry exists; targeted package search does not prove uniqueness of every global helper, sprite, or entity name."
+    }
+  },
+  "out_of_scope_reservations": [
+    {
+      "namespace": "triggerable_scenario_id",
+      "value": 17,
+      "status": "reserved in a separate namespace; owned by scenario auditor"
+    },
+    {
+      "namespace": "SCN",
+      "value": "SCN-015",
+      "status": "Event 043 proposal is owned by the separate scenario-occupancy auditor; no assignment made here"
+    }
+  ],
+  "mcp_evidence": {
+    "exposed_event_routes": [
+      "mcp__hoi4_agent_tools__hoi4_event_inspect",
+      "mcp__hoi4_agent_tools__hoi4_event_render"
+    ],
+    "full_scan": {
+      "request": {
+        "mode": "scan",
+        "refresh": true,
+        "maxNodes": 2000,
+        "maxEdges": 4000
+      },
+      "status": "error",
+      "blocker": {
+        "code": "INTERNAL_ERROR",
+        "message": "Unexpected internal error"
+      },
+      "artifacts": [],
+      "diagnostics": []
+    },
+    "targeted_roots": {
+      "selectors": [
+        "chaosx.nr12.1",
+        "chaosx.nr18.90"
+      ],
+      "status": "remained pending across repeated waits; client calls canceled",
+      "artifacts": []
+    },
+    "event_render": {
+      "status": "not called because matching inspect calls did not complete",
+      "artifact_uris": []
+    }
+  },
+  "technology_tree_viewer_check": {
+    "installed_package_check": "docs/testing/runtime_repairs/20260913_cxt_history_followup/standalone_technology_viewer_package_check.json",
+    "installed_hoi4_agent_tools_version": "3.0.7",
+    "standalone_viewer_in_package": false,
+    "independent_external_installations": "not inventoried",
+    "exposed_routes": [
+      "hoi4_tech_inspect",
+      "hoi4_tech_render",
+      "hoi4_tech_compare"
+    ],
+    "scope": "No technology surface was included in this identifier map."
+  },
+  "recommended_values": {
+    "event_065_cluster": 14,
+    "event_066_cluster": 15,
+    "event_039_intelligence_cluster": 20,
+    "event_097_intelligence_cluster": 20,
+    "event_043_world_end": 17,
+    "event_018_survey_rejection": "chaosx.nr18.33",
+    "conditional_catalog_alignment": {
+      "diseases": 8,
+      "random_stuff": 12,
+      "pacts": 13,
+      "scientific_research_if_distinct_and_accepted": 21,
+      "internal_fracture_if_distinct_and_accepted_after_scientific_research": 22
+    }
+  },
+  "limitations": [
+    "The event MCP service did not return inspection or render artifacts, so source scans are not engine-level event evidence.",
+    "The v2 cluster migration has no attributable acceptance record in the inspected implementation-facing document.",
+    "The SCN namespace was explicitly delegated to another auditor.",
+    "Shared helper, sprite, and entity reservation uniqueness is bounded by explicit assignments found in package documents; no central proposal registry was found."
+  ],
+  "writes_performed": [
+    "docs/plans/repo_cleanup/specification_package_audit_2026-10-07/handoffs/identifier_overlaps.md",
+    "docs/plans/repo_cleanup/specification_package_audit_2026-10-07/handoffs/identifier_overlaps.json"
+  ],
+  "source_or_package_edits_performed": [],
+  "evidence_phase": "pre-allocation read-only snapshot",
+  "current_assignments": "docs/specs/shared_identifier_registry.json"
+}

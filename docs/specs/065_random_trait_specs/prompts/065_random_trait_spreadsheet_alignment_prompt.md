@@ -40,7 +40,7 @@ Do not add unrelated consequence text.
 
 Inspect the current workbook and source constants for an existing row and ID collision.
 
-Prefer ID `9` only when it remains unused.
+Use the parent-allocated Randomizations ID `14`.
 
 Record:
 
@@ -51,7 +51,7 @@ Record:
 - Chaos level `1`
 - evidence-backed status
 
-If ID `9` is occupied, select one unused ID with the owning agent and update every linked source and document before export.
+If the current registry contradicts allocated ID `14`, report the conflict to the parent before changing linked sources or exporting.
 
 ## Export
 

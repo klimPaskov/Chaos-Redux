@@ -1,8 +1,14 @@
 # Event 027: Doctrine Research specification package
 
-This folder is the source specification package for Event 027, Doctrine Research. It is intended to be copied to `docs/specs/027_doctrine_research_specs/` in the Chaos Redux repository.
+Current workflow owners: [event integration](../../../.agents/skills/chaos-redux-events/SKILL.md), [subagent routing](../../../.agents/skills/chaos-redux-subagents/SKILL.md), and [asset production](../../../.agents/skills/chaos-redux-event-assets/SKILL.md).
+The source parts preserve the proposed expanded design.
+Explicit user requirements retain their cited basis, while broader claims labelled accepted require an attributable user decision or parent acceptance before implementation.
+Package location and manual closure reports do not establish that acceptance.
 
-The package replaces the stale catalog concept in the supplied CSV snapshot. That row describes one major country receiving a complete doctrine through a fire-once event. The accepted design in this package is a global Minor Repeatable event. Every valid country receives a doctrine-development batch, and the size of that batch rises from one choice at baseline to five choices at Evolution IV.
+
+This folder is the source specification package for Event 027, Doctrine Research. Its repository location is `docs/specs/027_doctrine_research_specs/`.
+
+The package replaces the stale catalog concept in the supplied CSV snapshot. That row describes one major country receiving a complete doctrine through a fire-once event. The expanded design in this package is a global Minor Repeatable event. Every valid country receives a doctrine-development batch, and the size of that batch rises from one choice at baseline to five choices at Evolution IV.
 
 ## Reading order
 
@@ -24,7 +30,7 @@ The package replaces the stale catalog concept in the supplied CSV snapshot. Tha
 | `027_doctrine_research_coding_prompt.md` | Full implementation prompt for the coding agent. |
 | `027_doctrine_research_goal_prompt.md` | Compact goal prompt for a Codex implementation thread. |
 
-## Accepted design in one page
+## Source design in one page
 
 Event 027 is a global positive breakthrough. One random-event firing creates one doctrine-development batch for every country that exists at the firing snapshot and has at least one valid registered doctrine option.
 
@@ -44,10 +50,13 @@ The event records one global history entry per random-event firing. Country choi
 
 ## Scope decision
 
-The accepted design uses ordinary country events, doctrine adapters, dynamic text, AI logic, event-log integration, one report image, and three achievements. The event already has a complete playable loop through the chained choices. A separate decision category or custom mechanic window would duplicate the same interaction and add avoidable maintenance.
+The expanded design uses ordinary country events, doctrine adapters, dynamic text, AI logic, event-log integration, one report image, and three achievements. The proposed chained choices define the playable loop. A separate decision category or custom mechanic window would duplicate the same interaction and add avoidable maintenance.
 
-## Tooling status
+## Original planning evidence limits
 
-Every uploaded Markdown, CSV, TOML, configuration file, and every TOML contained in `subagents.zip` was read in full for this package. The actual Chaos Redux repository, its offline Paradox wiki snapshot, the installed vanilla game files, the authoritative catalog XLSX, the configured Codex subagent runner, and the HOI4 MCP server were not present in this runtime. Their required inspections are carried as explicit implementation gates in the research notes, prompts, review file, and acceptance criteria.
+Every uploaded Markdown, CSV, TOML, configuration file, and every TOML contained in `subagents.zip` was read in full for this package. During original package authoring, the actual Chaos Redux repository, its offline Paradox wiki snapshot, the installed vanilla game files, the authoritative catalog XLSX, the configured Codex subagent runner, and the HOI4 MCP server were not present in this runtime. Their required inspections are carried as explicit implementation gates in the research notes, prompts, review file, and acceptance criteria.
 
 The design was not shortened into a fallback version. Engine-specific doctrine operations, exact file paths, current vanilla graph identities, current DLC gates, and numeric AI weights remain deliberately unresolved until the required repository, vanilla, wiki, and MCP evidence is available.
+
+These availability statements describe the original planning session.
+A continuation must discover current tools, sources, and workbook state before carrying an old blocker forward.

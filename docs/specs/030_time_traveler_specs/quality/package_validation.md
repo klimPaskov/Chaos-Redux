@@ -1,6 +1,8 @@
 # Event 030 Package Validation
 
-This report records planning-package checks. It does not represent Clausewitz parsing, MCP evidence, asset validation, spreadsheet validation, or in-game testing.
+This report preserves checks reported by the original planning pass.
+Its pass labels and counts are historical results and are not a validation receipt for later edits.
+Current documentation audit evidence belongs to `docs/plans/repo_cleanup/specification_package_audit_2026-10-07/handoffs/025_030.md`. It does not represent Clausewitz parsing, MCP evidence, asset validation, spreadsheet validation, or in-game testing.
 
 ## Package checks
 
@@ -40,6 +42,13 @@ This report records planning-package checks. It does not represent Clausewitz pa
 - `SCN-015` remains explicitly provisional until the authoritative workbook and registry are checked.
 - The Closed Future is the only automatically required full new country package.
 - Full custom Event 030 GUI work remains outside the accepted design.
+
+## Identifier allocation follow-up
+
+The historical provisional `SCN-015` check above is superseded by centrally reserved `SCN-020`, raw ID `20`, on 7 October 2026.
+See the [shared identifier registry](../../shared_identifier_registry.md).
+The reservation approves identifier ownership only and must be rechecked before runtime integration.
+Original fixture results remain historical.
 
 ## Evidence not produced
 

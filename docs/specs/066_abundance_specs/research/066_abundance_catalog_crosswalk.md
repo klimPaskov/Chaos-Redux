@@ -55,13 +55,13 @@ If the workbook uses one event row per event, the cell should carry all three va
 
 The supplied cluster export has numeric IDs `1` through `8`, then `10`.
 There is no Sudden Abundance row.
-Numeric ID `9` is therefore the provisional planning choice, but it is not locked until the authoritative workbook and runtime constants are inspected.
+The original planning choice was ID `9`; it is superseded by the parent’s 2026-10-07 allocation of Sudden Abundance ID `15` under the user’s unused-identifier authorization.
 
 The cluster row needs:
 
 | Field | Required direction |
 | --- | --- |
-| Cluster ID | Provisional `9`, verify before implementation |
+| Cluster ID | Allocated `15`; verify workbook/runtime consistency before implementation |
 | Cluster Name | `Sudden Abundance` |
 | Details | Explain that abundance incidents create excess across military, economic, political, resource, construction, and mechanic values, with member severity controlling breadth or persistence |
 | Members | Include Event 66 three times in Low, Medium, High order, plus every other accepted member from the shared cluster plan |

@@ -1,5 +1,11 @@
 # Event 021 Random Civil War Master Specification
 
+Historical compiled snapshot, superseded for active implementation by the ten numbered source-spec parts and their recorded acceptance decisions.
+Later accepted Evolution I review and settlement aftermath additions appear only in the numbered parts.
+The body remains unchanged for historical handoffs that cite its original hash and line spans.
+Use [README.md](README.md) for current reading order and the external-war successor addendum.
+This notice shifts displayed lines and changes the file hash, so old references describe the pre-notice snapshot.
+
 This convenience copy compiles the ten numbered source-spec parts in reading order.
 
 The numbered files remain the source-of-truth units for review and implementation. When this compiled file and a numbered part differ, the numbered part controls.

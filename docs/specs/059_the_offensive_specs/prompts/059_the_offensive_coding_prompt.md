@@ -14,14 +14,14 @@ Do not implement a new unbounded daily, weekly, or monthly whole-world scan. Pre
 
 ## Required specialist routing
 
-- Spawn `chaosx_repo_explorer` with `fork_context=false` before editing if locations or existing AI architecture are uncertain.
-- Spawn `chaosx_scripted_system_architect` with `fork_context=false` using `prompts/059_the_offensive_ai_architecture_prompt.md` before creating new AI plumbing.
-- Spawn `chaosx_ai_probability_auditor` with `fork_context=false` using `prompts/059_the_offensive_probability_audit_prompt.md` for every weighted AI surface and any weighted Diplomacy cluster member metadata.
+- Spawn `chaosx_repo_explorer` with `fork_turns="none"` in Codex before editing if locations or existing AI architecture are uncertain.
+- Spawn `chaosx_scripted_system_architect` with `fork_turns="none"` in Codex using `prompts/059_the_offensive_ai_architecture_prompt.md` before creating new AI plumbing.
+- Spawn `chaosx_ai_probability_auditor` with `fork_turns="none"` in Codex using `prompts/059_the_offensive_probability_audit_prompt.md` for every weighted AI surface and any weighted Diplomacy cluster member metadata.
 - Route the report image through `chaos-redux-event-assets` and `chaosx_generated_event_art`.
 - Route the achievement icon through `chaos-redux-event-assets` and `chaosx_icon_artist`.
 - Spawn `chaosx_localisation_auditor` after broad visible text is written.
 - Spawn `chaosx_event_completion_auditor` before claiming completion.
-- Spawn `chaosx_spreadsheet_doc_worker` after implementation when the authoritative workbook, generated CSV exports, event docs, and route records need alignment.
+- Spawn `chaosx_spreadsheet_doc_worker` after implementation to update the authoritative workbook and regenerate CSV exports. The parent or documentation curator owns event docs and route records.
 - Spawn `chaosx_improvement_loop_planner` near completion. Resolve its addendum, queue each item with a reason, reject it with a reason, or obtain a closure handoff before final completion.
 
 ## AI behavior
@@ -77,7 +77,7 @@ Implement the achievement with guarded qualification, 180-day survival, stronger
 
 Use `hoi4.event_inspect`, `hoi4.event_render`, and `hoi4.event_compare` for the event chain. Use the probability workflow in the AI scenario matrix. Verify exact AI strategy names and fields against the installed game and documentation. Do not invent unsupported keys.
 
-Run repository validation, targeted script checks, asset checks, localisation checks, event-log checks, save migration checks, and all named acceptance scenarios. Perform live tests for control transition, new-country coverage, severe supply failure, viable and inviable invasions, valid and invalid Evolution II targets, Total Offensive risk, pre-fire catch-up, cluster firing, save reload, and achievement unlock and disqualifiers.
+Run repository validation, targeted script checks, asset checks, localisation checks, event-log checks, save migration checks, and all named acceptance scenarios. Prepare the named runtime cases for control transition, new-country coverage, supply failure, invasion viability, Evolution II targets, Total Offensive risk, pre-fire catch-up, cluster firing, reload, and achievement qualifications. The user owns live-game validation. Keep those results unverified until evidence is supplied, and inspect supplied saves with chaos-redux-save-inspection.
 
 Update the authoritative event catalog workbook, then regenerate all CSV snapshots with the repository export tool. Do not edit export CSV files directly.
 

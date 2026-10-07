@@ -1,5 +1,9 @@
 # Event 008: Scripted Systems, Constants, and Helper Handoff
 
+Disposition: unresolved historical design direction.
+Single-member Low Diplomatic Panic claims below are superseded as catalog facts by [the cluster reconciliation](../matrices/008_tensions_rising_cluster_and_achievements.md); source intent still needs an owner decision.
+Use [the owner state map](../../../plans/008_tensions_rising_plans/documentation_state_2026-10-05.md) before treating any helper or follow-up proposal as remaining implementation work.
+
 This is a design handoff for the scripted-system architecture pass. It is not final Clausewitz code.
 
 ## Helper map

@@ -1,21 +1,38 @@
 # Package Index
 
-Status: accepted design package with a dated implementation reconciliation on 2026-07-11. That inventory counted 84 player actions, 41 missions, and four compatibility-named Repression Ledger controls. Fifteen static scenario contracts passed code-and-asset trace; engine-runtime scenario execution was not performed in this environment. The active administration rework remains incomplete in the current completion report linked below.
+## Current authority and continuation
 
-Current UI source of truth: `specs/system_camp_repression_rework_spec_part_6_scripted_gui_wireframe_value_display.md`. Parent implementation and final UI report: `../../plans/system_camp_repression_rework_plans/repression_ui_redesign_2026-09-05.md`.
+This source package preserves the original camp/repression design, historical research and dated implementation receipts.
+Resume from [the 6 October takeover](../../plans/system_camp_repression_rework_plans/takeover_status_2026-10-06.md), then [the current decision log](../../plans/system_camp_repression_rework_plans/agent_decisions_2026-10-05.md), [the accepted national-administration contract](../../plans/system_camp_repression_rework_plans/administration_redesign_2026-09-06/accepted_implementation.md) and the [administration resume packet](../../plans/system_camp_repression_rework_plans/administration_redesign_2026-09-06/resume_packet.md).
+The October 6 record reports reviewed source publication and retains open GUI, weighted eligibility and live-engine acceptance; it does not establish full completion.
+Older no-package-commit wording is scoped to its earlier tranche and does not override that dated publication record.
 
-Current implementation truth and completion tracking live outside this source package in:
+| Document group | Disposition and evidence boundary |
+| --- | --- |
+| Accepted national-administration contract | Accepted and in implementation; records the user's September 6 implementation request and later explicit choices, plus parent-adopted choices with their basis. Its behavior and ownership contract supersedes incompatible original package instructions. |
+| Current takeover and decision log | Current continuation evidence for the October 6 repairs; source publication is separate from missing visual, complete weighted eligibility and live-engine acceptance. |
+| Administration resume packet and completion report | Detailed earlier tranche evidence and unresolved gates; current publication status is taken from the October 6 takeover. |
+| Parts 1–5, 7 and matrices | Original design and dated reconciliation, retained for unique country kits and provenance. Claims not covered by recorded current acceptance remain unresolved; old inventory counts are not current validation. |
+| Part 6 and September UI report | Superseded by the accepted national-administration contract for incompatible geometry, navigation, action presentation and value layout. Original parent acceptance and bounded MCP evidence remain historical. |
+| Original continuation prompt | Superseded as an active resume instruction by the current takeover and administration resume packet; July body preserved as dated evidence. |
+| Implementation and specialist prompts | Templates only, used after the parent identifies outstanding accepted work and exact owned files. Do not restart completed work or expand another system owner. |
+| Research and supplied-source manifest | Historical provenance; original hashes, source availability and read claims do not prove current package integrity or acceptance. |
 
-- `../../plans/system_camp_repression_rework_plans/administration_redesign_2026-09-06/completion.md`
-- `../../plans/system_camp_repression_rework_plans/administration_redesign_2026-09-06/resume_packet.md`
-- `../../plans/system_camp_repression_rework_plans/repression_ui_redesign_2026-09-05.md`
-- `../../plans/system_camp_repression_rework_plans/source_of_truth_and_completion_tracker.md`
-- `../../plans/system_camp_repression_rework_plans/completion_report.md`
-- `../../plans/system_camp_repression_rework_plans/scenario_contract_validation_report.md`
-- `../../systems/cbrn_warfare/genocide/genocide_crisis_system.md`
-- `../../super_events/system_camp_repression_rework_super_event_research.md`
+The shared repression interface remains parent-owned.
+Use [chaos-redux-subagents](../../../.agents/skills/chaos-redux-subagents/SKILL.md) for current specialist routing and context isolation, [chaos-redux-scripted-gui](../../../.agents/skills/chaos-redux-scripted-gui/SKILL.md) for reference-first layout and mandatory MCP evidence, [chaos-redux-decisions-missions](../../../.agents/skills/chaos-redux-decisions-missions/SKILL.md) for decisions, and [chaos-redux-event-assets](../../../.agents/skills/chaos-redux-event-assets/SKILL.md) for authorized asset production.
+Keep probability evidence in the scenario-specific `chaosx_ai_probability_auditor` handoffs; source scores and partial adapter results do not establish eligibility or choice probability.
+The parent owns final integration and acceptance review; documentation cleanup grants no gameplay authorization or completion.
 
-The source files below remain the accepted design and provenance package. Part 6 controls the current UI presentation, while gameplay and implementation reconciliation remains in the named tracking reports. Where a planning label differs from a live identifier, the reconciliation sections in Parts 2, 5, and 7 and the source-of-truth tracker control. Archived pending checkboxes and earlier 81-action snapshots are retained only as dated planning evidence and do not describe the final implementation.
+## Earlier tracking and permanent documentation
+
+- [July source-of-truth tracker](../../plans/system_camp_repression_rework_plans/source_of_truth_and_completion_tracker.md)
+- [Earlier completion report](../../plans/system_camp_repression_rework_plans/completion_report.md)
+- [Static scenario-contract report](../../plans/system_camp_repression_rework_plans/scenario_contract_validation_report.md)
+- [September UI report](../../plans/system_camp_repression_rework_plans/repression_ui_redesign_2026-09-05.md)
+- [System documentation](../../systems/cbrn_warfare/genocide/genocide_crisis_system.md)
+- [Super-event research](../../super_events/system_camp_repression_rework_super_event_research.md)
+
+## Package files
 
 - `README.md`
 - `continuation/continuation_prompt.md`

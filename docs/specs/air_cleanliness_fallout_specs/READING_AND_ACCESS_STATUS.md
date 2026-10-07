@@ -3,6 +3,10 @@
 
 ## Fully processed inputs
 
+This file preserves the original planning environment and its reported reading coverage.
+Its access restrictions, CSV inputs, and manual role application are historical evidence, not current capability discovery or an editable catalog source.
+Current work must discover connected schemas and service health, read local references where available, and follow `AGENTS.md` and the owner skills.
+
 This planning pass processed the uploaded Chaos Redux source set and prior Fallout packages, including:
 
 - `AGENTS.md`
@@ -35,4 +39,5 @@ The custom Chaos Redux subagents could not be spawned in this environment. Their
 
 ## Honest limitation
 
-This pass is extensive, but it is still design. It does not assign final event suffixes, exact state ids, exact tags, final localisation, final assets, or verified engine syntax. Those require the writable repository and local game references.
+The original pass was a design deliverable.
+Later reviewed tranche contracts record suffixes, state and tag obligations, and static receipts; see the scope map for their evidence boundaries.

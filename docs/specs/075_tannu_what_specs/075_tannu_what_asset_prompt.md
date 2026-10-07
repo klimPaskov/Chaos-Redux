@@ -2,7 +2,7 @@
 
 Implement the complete visual-asset scope for Chaos Redux Event 075, **Tannu What?**, from `docs/specs/075_tannu_what_specs/`.
 Read the source README, all relevant specification parts, the research notes, `AGENTS.md`, `chaos-redux-event-assets`, and every required linked asset reference before production.
-The accepted design is a worldwide aid operation that funds a paid military reveal, continental conquest, and a later overseas world-end campaign.
+The proposed expanded design is a worldwide aid operation that funds a paid military reveal, continental conquest, and a later overseas world-end campaign.
 Do not redesign it into fantasy units or a generic country reskin.
 
 ## Scope and ownership
@@ -16,7 +16,8 @@ Do not create any merely to demonstrate that a tool was used.
 Route source research, generic scenes, icons, and any genuinely newly required portrait work to their proper supplied roles through the actual runtime.
 Use explicit self-contained prompts with no inherited context, including `fork_turns="none"` where the documented Codex spawning tool exists.
 If delegation is unavailable, say so and do not fabricate role reviews.
-Final .gfx and gameplay consumer wiring remain with the main implementation owner unless specifically assigned.
+Final non-portrait `.gfx` and gameplay consumer wiring remain with the main implementation owner unless specifically assigned.
+Any authorized portrait package belongs entirely to `chaosx_portrait_creator` under the current [asset skill](../../../.agents/skills/chaos-redux-event-assets/SKILL.md), including its standing narrow portrait-wiring exception.
 
 ## Production requirements
 

@@ -8,7 +8,7 @@ This map prevents the source specification, implementation, documentation, workb
 
 | Question | Authoritative source after implementation |
 | --- | --- |
-| Event identity and accepted design | Event 61 source specifications in this directory, updated only through an accepted design change |
+| Event identity and accepted design | Explicit user decision or attributable parent acceptance, mapped to the relevant Event 61 specification claim; unresolved when that basis is absent |
 | Actual gameplay behavior | Final event-owned and shared scripted source files |
 | Exact tuning constants | Event 61 script constants and verified implementation documentation |
 | Current event status and catalog metadata | Authoritative event XLSX workbook |
@@ -24,7 +24,8 @@ This map prevents the source specification, implementation, documentation, workb
 
 ## Source specification role
 
-The source specification defines required behavior and acceptance boundaries.
+The source specification records design and proof requirements.
+Apply the README authority and disposition rule before treating a requirement as accepted; current implementation shows what exists and does not approve the design.
 
 Implementation may adjust exact balance values only when:
 

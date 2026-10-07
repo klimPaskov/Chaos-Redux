@@ -1,6 +1,6 @@
 # Event 025 completion auditor prompt
 
-Spawn `chaosx_event_completion_auditor` with `fork_context=false` after implementation, assets, localisation, docs, catalog, and all accepted plans are in their final state.
+Spawn `chaosx_event_completion_auditor` with `fork_turns="none"` after implementation, assets, localisation, docs, catalog, and all accepted plans are in their final state.
 
 This is read-only.
 

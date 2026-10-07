@@ -1,8 +1,11 @@
 # System Camp Repression Rework Spec, Part 4: UI, AI, Assets, Achievements, and Acceptance Criteria
 
-## Current presentation contract, 2026-09-04
+> **Current authority:** Start at [package_index.md](../package_index.md).
+> The accepted national-administration contract and current takeover record supersede incompatible original implementation and presentation instructions; this file preserves the earlier design and evidence.
 
-The current UI design is defined by [Part 6](system_camp_repression_rework_spec_part_6_scripted_gui_wireframe_value_display.md). The former 900x560 paper-ledger composition, visible card or table requirements, and old tab labels are superseded in this source only; historical completion reports remain dated implementation evidence and are not current UI acceptance criteria. The parent owns GUI and localisation implementation, active MCP previews, and the final completion report at `docs/plans/system_camp_repression_rework_plans/repression_ui_redesign_2026-09-05.md`.
+## Superseded presentation contract, 2026-09-04
+
+The September UI design was defined by [Part 6](system_camp_repression_rework_spec_part_6_scripted_gui_wireframe_value_display.md). The former 900x560 paper-ledger composition, visible card or table requirements, and old tab labels are superseded in this source only; historical completion reports remain dated implementation evidence and are not current UI acceptance criteria. The parent owns GUI and localisation implementation, active MCP previews, and the final completion report at `docs/plans/system_camp_repression_rework_plans/repression_ui_redesign_2026-09-05.md`.
 
 ## UI and presentation
 

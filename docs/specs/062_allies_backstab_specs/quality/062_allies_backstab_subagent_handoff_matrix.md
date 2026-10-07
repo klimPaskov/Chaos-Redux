@@ -1,5 +1,7 @@
 # Event 062 subagent handoff matrix
 
+The runtime statement records the original planning environment; the implementation handoff sequence follows current subagent routing.
+
 ## Invocation status
 
 The supplied archive contained twenty project subagent definitions, and every definition was read in full. The current environment did not expose a working project subagent spawn route. A tool registry probe returned HTTP 429.
@@ -44,7 +46,7 @@ Event 62 has no focus tree, country package, portrait, 3D model, or dedicated sc
 
 ## Context rule
 
-Every project subagent prompt must be self-contained and must not rely on inherited parent-thread context. In the Codex runtime, use `fork_context=false`.
+Every project subagent prompt must be self-contained and must not rely on inherited parent-thread context. In the Codex runtime, use `fork_turns="none"`.
 
 Each prompt should include:
 

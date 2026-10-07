@@ -8,6 +8,7 @@
 - Status before implementation: To Be Reworked
 - Chaos level: 1
 - Cluster: Scientific Research
+- Reserved cluster ID: `21`, from the [shared identifier registry](../../shared_identifier_registry.md)
 - Cluster role: High member
 
 ## Event promise

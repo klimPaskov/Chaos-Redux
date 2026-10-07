@@ -8,6 +8,8 @@ Treat every accepted specification, prompt, matrix, acceptance item, and test ca
 
 ## Required reading and evidence
 
+Start with the package README's design and acceptance rules, and distinguish historical migration findings from the current source before applying this prompt.
+
 Read `AGENTS.md`, `chaos-redux-events`, `chaos-redux-decisions-missions`, `chaos-redux-event-assets`, `chaos-redux-improvement-loop`, and `chaos-redux-subagents` before editing.
 
 Read the required offline Paradox wiki pages and the installed vanilla documentation for events, scopes, effects, triggers, modifiers, localisation, decisions, ideas, AI, technologies, raids, buildings, and on actions. Inspect current Chaos Redux and installed vanilla precedents.
@@ -64,7 +66,7 @@ Implement the full decision and mission contract from `032_missiles_decision_mis
 
 Implement `SCN-015` only after a fresh collision audit. Reuse the shared scenario window and make launch setup atomic and idempotent.
 
-Implement every AI doctrine profile and weighted surface in part 6. Spawn `chaosx_ai_probability_auditor` with `fork_context=false` before weighted patches and again for the required compare pass.
+Implement every AI doctrine profile and weighted surface in part 6. Spawn `chaosx_ai_probability_auditor` with `fork_turns="none"` before weighted patches and again for the required compare pass.
 
 Implement all eight achievements from `032_missiles_achievement_prompt.md`, including tracking, disqualifiers, localisation, icon triplets, docs, and tests.
 
@@ -84,7 +86,7 @@ Do not absorb another event's political route, source event, evolution, history,
 
 Update the event doc, shared system docs, scenario docs, asset documentation, achievement documentation, probability evidence, and the authoritative event catalog workbook. Run the catalog exporter and never edit the three CSV exports directly.
 
-Use the project subagents with `fork_context=false` according to the spec and skill contracts. Every patching subagent writes a handoff under `docs/plans/032_missiles_plans/subagent_handoffs/`.
+Use the project subagents with `fork_turns="none"` according to the spec and skill contracts. Every patching subagent writes a handoff under `docs/plans/032_missiles_plans/subagent_handoffs/`.
 
 Near completion, spawn `chaosx_improvement_loop_planner`. Resolve its addendum, fold accepted design into the specs, queue it with a reason, reject it with a reason, or accept a closure handoff. Then run the event completion auditor.
 

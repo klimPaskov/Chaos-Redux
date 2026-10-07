@@ -4,9 +4,9 @@ Implement Event 65 to the fullest extent of the accepted specification.
 
 Read `AGENTS.md` and every file under `docs/specs/065_random_trait_specs/`.
 
-Use every implementation and audit prompt in that folder.
+Use the implementation and audit prompts for their applicable surfaces.
 
-Run the repo explorer and scripted-system architect prompts before editing.
+Run architecture prework; use the explorer only for unresolved source mapping.
 
 Keep Event ID `65`, namespace `chaosx.nr65`, root `chaosx.nr65.1`, Minor Repeatable registration, sprite `GFX_report_event_leader_trait`, and the current runtime image path.
 
@@ -63,7 +63,7 @@ A first higher-form firing grants only that form's milestone and bypasses missed
 
 Integrate Randomizations through the same executor.
 
-Prefer cluster ID `9` only after a fresh workbook and source collision check.
+Use allocated cluster ID `14` and verify workbook/source consistency.
 
 Use optional membership, Medium danger, and named 60 percent participation.
 
@@ -81,7 +81,7 @@ Use `hoi4.event_inspect`, `hoi4.event_render`, and `hoi4.event_compare` before a
 
 Provide route coverage for direct and cluster firing, all forms, human reports, AI mutation, debug paths, save and load, and multiplayer.
 
-Near completion, run the probability auditor, localisation auditor, documentation curator, spreadsheet worker, mandatory improvement-loop planner with `fork_context=false`, and read-only completion auditor.
+Near completion, run the probability auditor, localisation auditor, documentation curator, spreadsheet worker, mandatory improvement-loop planner with `fork_turns="none"`, and read-only completion auditor.
 
 Move status to `Needs Testing` only after implementation validation.
 

@@ -40,8 +40,9 @@ The assigned probability inspection timed out after 600 seconds, so numerical sc
 
 ## Supporting material
 
-`research/009_white_peace_diplomatic_design_notes.md`, `prompts/009_white_peace_asset_prompt.md`, `prompts/009_white_peace_achievement_prompt.md`, `prompts/009_white_peace_coding_prompt.md`, `prompts/009_white_peace_goal_prompt.md`, and `prompts/subagents/` are outside this bounded reconciliation.
-Their existence does not establish acceptance, and their instructions must be checked against the 2026-10-05 decisions before reuse.
+Research and prompts remain supporting briefs subordinate to the accepted decisions above.
+Their workflow/navigation instructions were reconciled in the October 7 package audit; this does not approve every historical design claim or certify implementation.
+Use [chaos-redux-subagents](../../../.agents/skills/chaos-redux-subagents/SKILL.md) for current routing and evidence requirements.
 The three legacy handoffs retain their original bodies beneath superseded notices.
 
 The source package excludes broad focus trees, country packages, formables, dedicated scripted GUI windows, and high-spectacle presentation.

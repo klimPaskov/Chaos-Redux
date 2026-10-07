@@ -8,7 +8,7 @@ The package replaces the old Event 043 **Massive Flood** concept. It defines the
 
 This package does not claim that the event is implemented. It does not contain gameplay script, final localisation, final art, final audio, or live-engine proof.
 
-## Accepted catalog identity
+## Intended catalog identity
 
 | Field | Value |
 | --- | --- |
@@ -23,7 +23,7 @@ This package does not claim that the event is implemented. It does not contain g
 | Evolution I | The Rising Tide |
 | Evolution II | Every Sea Opens |
 | Public world-end scenario | Cthulhu's Dominion |
-| Manual scenario proposal | `SCN-015` Monsters from the Deep |
+| Reserved manual scenario ID | `SCN-022` / raw `22`, Monsters from the Deep |
 
 The cluster field is intentionally empty. The original brief contains an early `Alien Invasions` cluster label and a later direct statement that the event belongs to no cluster. The later event-specific rule controls this package because no `Alien Invasions` cluster exists in the supplied cluster catalog.
 
@@ -42,7 +42,7 @@ Inland depth, reinforcement receipts, pact readiness, target scoring, regional c
 
 ## Roster
 
-The accepted roster contains sixteen full monster countries:
+The planned roster contains sixteen full monster countries:
 
 - Titanus Kraken
 - Titanus Scylla
@@ -147,6 +147,17 @@ Implementation must stop and report a blocker when any of these gates cannot be 
 - final super-event quote, music, image, and audio rights evidence
 
 No static unit, renamed counter, generic focus tree, copied portrait loop, placeholder audio, or ordinary manpower division may be accepted as a silent substitute.
+
+## Evidence and acceptance boundary
+
+The source review and tooling reports describe the package-generation session, not current repository behavior or service health.
+This package records design direction but does not retain an attributable original user or parent acceptance record for every expanded requirement.
+Preserve the design while recording those acceptance claims as unresolved; package location, status labels, and source inspection do not establish approval.
+The user-authorized 2026-10-07 central allocation reserves manual scenario `SCN-022` / raw `22` for Monsters from the Deep and separate world-end ID `17` for Cthulhu's Dominion.
+The [shared identifier registry](../shared_identifier_registry.md) records the allocation; identity approval does not approve scenario content or implement it.
+The original `SCN-015` proposal and world-end `15` proposal are superseded, while historical source receipts retain their original evidence.
+Event 046 also proposes Alien Invasions membership for Event 043, conflicting with this package's no-cluster direction.
+Resolve that conflict from explicit acceptance evidence before changing membership.
 
 ## Planning completeness statement
 

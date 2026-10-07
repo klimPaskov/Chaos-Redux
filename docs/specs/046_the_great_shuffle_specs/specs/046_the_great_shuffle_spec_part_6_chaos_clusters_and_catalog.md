@@ -211,9 +211,10 @@ No design change is needed when those sources agree.
 
 ## Alien Invasions alignment
 
-**Alien Invasions** is an accepted existing cluster.
+The supplied Event 046 direction proposes **Alien Invasions** and Severe membership for Event 43, **Monsters from the Deep**.
 
-Event 43, **Monsters from the Deep**, is a Severe member.
+Event 043's package instead specifies no cluster.
+This cross-package conflict remains unresolved until an explicit user or parent acceptance basis settles membership.
 
 The supplied cluster export does not show Alien Invasions.
 
@@ -223,7 +224,8 @@ This is a source conflict, not permission to invent a new cluster ID or overwrit
 
 Before catalog editing, implementation must inspect Event 43's accepted spec, current event localisation, runtime registration, and authoritative workbook.
 
-When those sources confirm Monsters from the Deep, the workbook and cluster registry must be aligned to the accepted Severe membership.
+A matching Monsters from the Deep identity alone does not prove cluster membership.
+The parent must record the resolved membership decision and its acceptance basis before aligning the workbook or registry.
 
 When implementation still contains the old flood event, the conflict remains blocked and must be reported instead of presenting stale and new identities as the same completed event.
 

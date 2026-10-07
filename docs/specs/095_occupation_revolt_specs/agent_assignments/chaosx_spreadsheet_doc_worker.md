@@ -37,5 +37,6 @@ Record inspected source revisions, actual tool calls and returned artifacts, cha
 Use NOT_RUN for a check not executed, and distinguish not applicable from blocked.
 Do not edit unrelated files, the archived source snapshot, shared configuration or the catalog simply to make the report look complete.
 
-Follow the current role definition and mandatory project source protocol when available.
-A missing required source must be named explicitly, not replaced by a search snippet or a prior summary.
+Follow the current spreadsheet role's narrow reading contract: use the parent prompt, xlsx skill, authoritative workbook and named final localisation or completion inputs.
+The parent supplies gameplay facts and design decisions, so no broad project-source or native-reference gate is delegated to this worker.
+Name any missing required input explicitly.

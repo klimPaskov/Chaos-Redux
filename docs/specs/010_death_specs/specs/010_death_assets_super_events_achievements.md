@@ -275,6 +275,6 @@ The rework is not complete unless all of these are true:
 - Exact island-state filters depend on available state metadata and existing state-group helpers.
 - Some state building or map-visual fields may not support direct deletion/visual effects. Implementation must document exact supported representation.
 - The best way to apply ticking strength loss should be chosen from existing Chaos Redux helper patterns to avoid broad daily world scans.
-- The country tag `DTH` must be conflict-checked.
+- Reuse and inspect the existing Death `DTH` owner package, registered in `common/country_tags/chaosx_countries.txt:5`; see [the shared identifier registry](../../shared_identifier_registry.md). Genuinely new tag proposals still require the installed-mod collision audit.
 - The optional animated Zol portrait uses a real eight-frame source package, a static fallback, and registered `interface/chaosx_characters.gfx` sprite names. World-end leader gameplay uses the static fallback.
 - Super-event audio and quote research require dedicated research subagents before final wiring.

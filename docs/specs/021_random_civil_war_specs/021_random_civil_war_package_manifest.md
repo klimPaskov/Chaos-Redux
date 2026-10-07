@@ -1,5 +1,10 @@
 # Event 021 Random Civil War Package Manifest
 
+Historical planning receipt: counts, byte sizes, and goal length below describe the original package.
+`MANIFEST.sha256` preserves that original receipt and is not a current integrity certificate.
+The directory has 43 files at this audit, including the later external-war successor addendum.
+The compiled master is historical, and numbered parts plus recorded user or parent acceptance control current design.
+
 ## Package identity
 
 - Event ID: `21`

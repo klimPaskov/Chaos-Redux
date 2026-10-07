@@ -1,6 +1,8 @@
 # Event 55 Source-of-Truth Map
 
-## Accepted design
+## Source design
+
+Follow the authority and acceptance boundary in [the package README](../README.md).
 
 The ten files under `specs/` are the source design for Event 55.
 

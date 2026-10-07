@@ -237,7 +237,11 @@ Doctrine cannot create, reveal, authorize, or unlock camps, extermination sites,
 
 Specification 08 contains the later accepted camp-specific correction. Gas-Chamber Saturation Drills may reduce new forensic-evidence generation for that one existing-camp nerve method while preserving evidence and every other record. The exception does not apply to biological operations or any other CBRN route.
 
-## Current implementation boundary
+## Dated implementation evidence
+
+The source tranches below have different dates and do not form a fresh current-source audit.
+In particular, the Japan campaign and doomsday decision descriptions preserve the earlier decision implementation, while the [overhaul ledger's Japan and doomsday section](../../../plans/chaos_warfare_system_plans/2026-09-20_cbrn_overhaul_requirement_ledger.md#historical-japan-and-doomsday-raid-source-contracts) records the later native-raid migration and its owner handoffs.
+Do not replay those decision instructions as current work, or treat either snapshot as completed native validation.
 
 The strategic biological raid tranche uses the native selected state, exact agent payload reservation and debit, six biological outcomes, and state-owned incubation and lifecycle ticks. All four ordinary agents use identical native base success, critical-success, and disaster factors. Verified aircraft, formation, intelligence, interception, anti-air, radar, reliability, and operational conditions may modify those factors, but agent identity does not. It does not seed contamination from continuous air activity or infer a launch state.
 

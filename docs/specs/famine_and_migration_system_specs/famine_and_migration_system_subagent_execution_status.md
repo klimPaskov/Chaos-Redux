@@ -20,6 +20,6 @@ The package does not claim otherwise.
 
 ## Required implementation follow-up
 
-The implementation agent must run the required subagents with `fork_context=false` using the prompts in `subagent_prompts/` and write their outputs under `docs/plans/famine_and_migration_system_plans/`.
+For an authorized continuation, the implementation agent selects only outstanding required passes from current status and existing handoffs, then runs the relevant subagents with no inherited thread context (Codex `fork_turns="none"`; other runtimes follow the [subagent skill](../../../.agents/skills/chaos-redux-subagents/SKILL.md)) using the prompts in `subagent_prompts/` and write their outputs under `docs/plans/famine_and_migration_system_plans/`.
 
-The parent must review every handoff and record whether it was implemented, promoted to source specs, queued with a reason, rejected with a reason, or left blocked.
+The parent reviews every handoff using the AGENTS.md dispositions, retaining acceptance basis, source evidence and validation limits independently.

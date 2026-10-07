@@ -13,6 +13,7 @@ Follow `chaos-redux-event-assets` and `chaos-redux-frame-animation`. Inspect the
 - super-event images: `.agents/skills/chaos-redux-event-assets/assets/gfx_references/event_art/super_event`
 - flags: `.agents/skills/chaos-redux-event-assets/assets/gfx_references/flags/normal`
 
+Route every Zol portrait, including authorized animation, to `chaosx_portrait_creator` under [chaos-redux-event-assets](../../../../.agents/skills/chaos-redux-event-assets/SKILL.md).
 Use generated art for fictional, symbolic, supernatural, and alternate-history assets. Do not use real historical leader sourcing for Zol because Zol is fictional/nonhuman. Do not use a generated portrait for any real person if future implementation adds real advisers.
 
 ## Required country assets

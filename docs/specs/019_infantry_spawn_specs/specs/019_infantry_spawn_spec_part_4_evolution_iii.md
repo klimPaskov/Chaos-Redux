@@ -587,16 +587,14 @@ This is slower but can end the crisis peacefully.
 The state builds loyal command networks, reassigns units, and isolates depots.
 
 This costs army experience, equipment, and time. Failure can accelerate revolt.
-The shared response effect starts a dedicated officer-search lock consumed by
-the decision, Muster Board, and AI paths alike.
+The shared response effect starts a dedicated officer-search lock consumed by the decision, Muster Board, and AI paths alike.
 
 ### Public Discrediting
 
 The state uses military failure, exposed fraud, or political opposition to lower influence.
 
 It is more effective against Field Prophets and Hollow Marshals than a claimant whose troops are winning battles.
-Its shared response effect starts an independent political-staff lock consumed
-by the decision, Muster Board, and AI paths alike.
+Its shared response effect starts an independent political-staff lock consumed by the decision, Muster Board, and AI paths alike.
 
 ### Arrest or Removal
 
@@ -628,22 +626,11 @@ Regular divisions can defect only through a separate, explicit effect tied to se
 
 ### Ordinary claimant release mode
 
-An ordinary claimant release is an Evolution III outcome. It does not require
-Evolution IV, an anomalous family, a registry row, or a provider callback. A
-multi-state country must have a valid male claimant and at least one exact,
-active Event 19 formation whose recorded claimant loyalty belongs to that
-claimant.
+An ordinary claimant release is an Evolution III outcome. It does not require Evolution IV, an anomalous family, a registry row, or a provider callback. A multi-state country must have a valid male claimant and at least one exact, active Event 19 formation whose recorded claimant loyalty belongs to that claimant.
 
-The release freezes the ordinary-claimant mode, claimant UID, transaction nonce,
-loyal source rows, and a connected region built from the claimant headquarters
-and the recorded origins of those formations. The dynamic claimant breakaway
-recreates and proves exactly that frozen loyal set before deleting any source
-cohort. It receives the claimant's fixed identity and scene mapping, and it does
-not receive an unrelated family or substitute formation.
+The release freezes the ordinary-claimant mode, claimant UID, transaction nonce, loyal source rows, and a connected region built from the claimant headquarters and the recorded origins of those formations. The dynamic claimant breakaway recreates and proves exactly that frozen loyal set before deleting any source cohort. It receives the claimant's fixed identity and scene mapping, and it does not receive an unrelated family or substitute formation.
 
-If no exact loyal formation can be proved, the crisis resolves through the
-visible failed-coup outcome and its existing cleanup or cooldown. The release
-router never keeps a mature claimant crisis silently waiting for Evolution IV.
+If no exact loyal formation can be proved, the crisis resolves through the visible failed-coup outcome and its existing cleanup or cooldown. The release router never keeps a mature claimant crisis silently waiting for Evolution IV.
 
 ### Territorial base
 

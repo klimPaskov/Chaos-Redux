@@ -21,7 +21,7 @@ Implement Event ID 10 as `Death`, fully replacing the obsolete `Spirit of War/Pe
 - Delete, disable, or supersede all active `Spirit of War/Peace` content. ID 10 must resolve to Death everywhere.
 - Event type: Minor Fire-Once. No cluster.
 - Entry event root: `chaosx.nr10.1`.
-- Create Death (`DTH` or conflict-free final tag), leader Zol, complete black map color, no starting units, remote island origin.
+- Reuse and inspect the existing Death owner package at registered tag `DTH`, mapped to `countries/Death.txt` in `common/country_tags/chaosx_countries.txt:5`; see [the shared identifier registry](../../shared_identifier_registry.md). Preserve leader Zol, complete black map color, no starting units, and remote island origin; do not allocate a replacement tag from this prompt.
 - Origin selection must choose valid remote low-pop island states only. Show N/A if no valid island exists.
 - No initial world notification. Use delayed marine-office packets months later without revealing Death.
 - Implement one shared state-consumption effect used by origin, island spread, withering, coastal jumps, world-end footholds, and scenarios.
@@ -49,13 +49,16 @@ Implement Event ID 10 as `Death`, fully replacing the obsolete `Spirit of War/Pe
 
 ## Subagents to use during implementation
 
-Use project subagents with `fork_context=false` and explicit prompts:
+Use project subagents with `fork_turns="none"` and explicit prompts:
 
 - `chaosx_repo_explorer` if touched files/patterns are uncertain.
 - `chaosx_scripted_system_architect` before duplicating consumption, spread, wither, ghost, scenario, or compact logic.
-- `chaosx_generated_event_art`, `chaosx_icon_artist`, and possibly `chaosx_asset_source_researcher` for assets.
+- `chaosx_portrait_creator` for every portrait; the event-art, icon, and source workers own their non-portrait families.
+- `chaosx_ai_probability_auditor` for weighted surfaces under `chaos-redux-subagents`.
 - `chaosx_super_event_text_researcher` and `chaosx_super_event_audio_researcher` for quotes/remarks/audio.
 - `chaosx_decision_mission_auditor`, `chaosx_country_package_auditor`, `chaosx_localisation_auditor`, and `chaosx_event_completion_auditor` before completion.
+- `chaosx_focus_tree_auditor` for any implemented Death focus tree.
+- `chaosx_event_ui_worker` for accepted event-owned Black Atlas layout work under the exact-ID and evidence gates of `chaos-redux-subagents` and `chaos-redux-scripted-gui`; shared interfaces remain parent-owned.
 - `chaosx_spreadsheet_doc_worker` after in-game wording exists.
 
 ## Completion standard
