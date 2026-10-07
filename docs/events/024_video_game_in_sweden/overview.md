@@ -1,6 +1,6 @@
 # Event 24: Video Game in Sweden
 
-The current source, evidence, decisions, and live acceptance checklist are recorded in [the 6 October takeover status](../../plans/024_video_game_in_sweden_plans/takeover_status_2026-10-06.md).
+The current acceptance findings are recorded in [the 7 October acceptance status](../../plans/024_video_game_in_sweden_plans/acceptance_status_2026-10-07.md), with the implementation inventory and native acceptance checklist in [the 6 October takeover status](../../plans/024_video_game_in_sweden_plans/takeover_status_2026-10-06.md).
 The full event remains below completion until the outstanding probability and native acceptance checks are resolved.
 The 3 October [source repair report](../../plans/024_video_game_in_sweden_plans/16_source_repairs_and_remaining_acceptance_2026-10-03.md) and [runtime repair report](../../plans/024_video_game_in_sweden_plans/22_runtime_continuity_and_restriction_receipts_2026-10-03.md) retain historical evidence for their own source revisions.
 
@@ -196,7 +196,9 @@ All factors are `video_game_in_sweden_pace` constants.
 | II | Commercial route 1.3, each of the first two league seasons 1.2, high war support under high tension 1.2, apparent prediction 1.2, foreign licences 1.15, a public officer league 1.2 | Protected shifts 0.7, separate policy 0.7, low stability 0.75, red team 0.8, auxiliary doctrine 0.85, field validation 0.8, admitted mismatch 0.8 |
 | III | Officer competition 1.25, a state-backed league 1.2, no field validation 1.15, apparent prediction 1.2, Totalen Chaos 2.0 | Red team 0.7, protected shifts 0.8, admitted mismatch 0.75, and separate policy adds 90 days |
 
-In source terms the scenario pairs order as required: P24-E1A paces at about 0.53 against 1.96 for P24-E1B, P24-E2A at about 0.64 against about 2.0 for P24-E2B, and P24-E3A at 0.7 with the 90-day separate-policy addition against about 4.1 for P24-E3B. Because progress is added monthly, real timings round up to whole 30-day steps.
+The monthly accumulator and its factors are source facts, not verified timing distributions or complete scenario results.
+The named P24-E1A through P24-E3B comparisons remain unresolved because their campaign inputs are not fully bound and the probability route has not returned the required analysis.
+In particular, P24-E3B's unspecified Chaos tier must not be treated as Totalen to obtain the extra factor.
 
 ## Evolution I: The Staff College Takes the Board
 
@@ -220,7 +222,9 @@ The primary actions are:
 
 Field validation checks the configured Swedish training regions, southern state 138, central state 141 and northern state 666, along with committed field resources and review conditions.
 
-The installed engine has no division-supply reader, so a training region counts as supplied through a native proxy: Sweden fully controls the state, keeps at least two Swedish divisions there with one above 50% organisation, and keeps a railway from it to Stockholm (Stockholm's own region is exempt from the railway check).
+No exact division-supply reader has been established in the inspected documentation and precedents.
+Current source uses D16's proxy: Sweden fully controls the state, keeps at least two Swedish divisions there with one above 50% organisation, and keeps a railway from it to Stockholm (Stockholm's own region is exempt from the railway check).
+This cannot prove local supply delivery, and explicit approval of the departure remains unresolved against the accepted supplied-division requirement.
 At war, an active front is the equivalent: a Swedish-held state facing enemy-controlled ground with an organised Swedish division, more than three divisions in the field, surrender progress below 25%, no core lost in the last 60 days and no supply gap.
 Field validation and the narrow reassessment need one supplied region or an active front, and the full Reality Audit needs all three regions or an active front with the Stockholm region supplied, together with Stockholm itself.
 
@@ -598,9 +602,10 @@ Shared registration is implemented in the Chaos settings, event log, event detai
 
 The package-owned CXT extension registers an inert hidden carrier through one bounded startup scope and a tag-scoped daily registration fallback. When the daily fallback finds new content, it sets the shared pending-sync flag and does not apply the fixture. The fixture exposes only readiness and public Reliance bounds when setup or the player-triggered apply control consumes it, so CXT does not fire Event24 or receive Sweden-specific gameplay state.
 
-The authoritative Event Catalog workbook contains the last aligned Event Details and three evolution title and body pairs, is marked Needs Testing, and retains the unclustered Minor Fire-Once metadata.
-Final catalogue alignment remains queued until the full in-game wording and implementation are finished.
-
-The exporter regenerates the three CSV snapshots after the workbook update.
+The authoritative Event Catalog workbook's row 25 contains Event 24's name, Event Details and three evolution descriptions, is marked Needs Testing, and retains the unclustered Minor Fire-Once metadata.
+The 7 October check found exact matches between cells C25-F25 and their final in-game localisation, with no baseline stages in the unused evolution columns and no world-end, cluster or scenario membership.
+Needs Testing follows the accepted package's implemented-but-not-live-tested status flow and does not establish full acceptance.
+All three current CSV snapshots exactly match an independent run of the repository exporter against that workbook.
+The workbook and exports contained other agents' changes and were not overwritten or included in this documentation change.
 
 Future depth can add more period-specific staff personalities, additional Swedish front templates, and more foreign institutional histories while preserving the one-host, one-mission, one-idea, finite-program contract.

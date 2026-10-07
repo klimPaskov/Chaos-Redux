@@ -23,7 +23,7 @@ No weight, probability, duration, route, or gameplay effect was changed in this 
 
 The catalogue note was corrected in commit `28fa4056d` because `Implemented` is not a valid Event Catalog status.
 No workbook or CSV export was edited.
-Final catalogue alignment must use the current event-skill status contract and workbook Legend, with explicit user approval for `Playable`.
+The subsequent catalogue check below resolves alignment for the current wording without editing the shared workbook.
 
 ## Current MCP evidence
 
@@ -57,9 +57,32 @@ No unsupported supplied-unit getter or weaker replacement was introduced in this
 
 Numerical AI and pacing acceptance remains incomplete because the current probability route returned no analysis artifacts and the complete campaign inputs are not bound.
 Native A1-A14 acceptance, callback ordering, timed expiry, real supplied-region equivalence, commander transfer, human foreign replies, save persistence, achievements, consumer presentation, and campaign balance remain outstanding under the current takeover ledger.
-Final workbook alignment, generated exports, and active asset-workspace cleanup remain due at their required acceptance point.
+Catalogue alignment and export equivalence for the current wording are verified below.
+Active asset-workspace cleanup remains due at its required acceptance point.
 The current source tests and reviewed asset work are preserved without claiming full goal completion or a clean live error log.
 Hearts of Iron IV was not launched, no external tool dependencies were edited, and other agents' gameplay and staged work were preserved.
 
-Skills used in this review are events, decisions/missions, MTTH, subagents, and the shared-tree commit workflow.
+## Continuation evidence
+
+The previous goal turn made progress through the catalogue-note correction and committed current acceptance and weighted-baseline evidence, rather than an unexecuted plan.
+The old reference-call handles 32 and 42 are absent, so no live wait or restarted observation is claimed.
+
+`Events!C25:F25` exactly match the final in-game Event Details and all three evolution bodies.
+The name and unclustered Chaos 1 Minor Fire-Once metadata agree, unused evolution and world-end fields are empty, and Cluster Memberships and Scenarios contain no Event 24 row.
+An independent repository-exporter run into a temporary directory produced byte-identical copies of all three current exports without changing the authoritative workbook.
+`catalog_changes_pending.md` retains the exact checked hashes and the accepted specification's Needs Testing status basis.
+No workbook or export edit is necessary for the current wording, and the other agents' modified files remain preserved.
+
+The live reference route read installed `unit_organization` at `documentation/triggers_documentation.md:7686-7694`, revision `7d27ed77dadaf3a213a4b3e2c624bf9c02dae495317abe8eee833b27c2d1de29`, and the offline Triggers section at line 2224, revision `abc51ad18a2c46e46d47baa795c5a840ebaf7c4ae3e777426c64a9f4c0c0ce06`.
+Both define organisation, not supply delivery.
+Installed `supply_units` at `documentation/effects_documentation.md:8219-8228`, revision `2cdc93d26775990468eed167442f7a416b13059fb8fe07d139b54250b79209af`, and the offline Effects section at line 4142, revision `997ddb09bfd63efb41a425149c46bd812d5f8953217a403386b2f6c85196aa0c`, define a leader-scoped grant of supply hours, not a getter.
+The exact `supply_ratio` search returned no result across 50 installed-documentation files and 54 offline wiki files, with no omitted results.
+That bounded search does not establish that no engine accessor could exist, and no unsupported accessor or automatic supply grant was introduced.
+D16 approval remains unresolved.
+
+The earlier probability auditor handle is absent.
+A new read-only opening audit was dispatched to `chaosx_ai_probability_auditor` for the complete `chaosx.nr24.1` option pool and P24-O1 through P24-O4, with no gameplay or weighted edits authorized.
+Its final result remains separate from the previously unresolved pacing audit.
+
+Skills used in this review are events, decisions/missions, MTTH, subagents, XLSX, Spreadsheets, and the shared-tree commit workflow.
 No skill was changed.
