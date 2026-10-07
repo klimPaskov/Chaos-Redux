@@ -49,7 +49,8 @@ References: installed `documentation/effects_documentation.md:2695?2712` explain
 Source cases and independent review belong to `docs/plans/012_africa_plans/subagent_handoffs/012_africa_gods_contract_audit_2026-10-03.md`.
 Native execution and full grading/material payout remain separate acceptance work.
 
-Future work: consume this exact denominator and recovery streak in the accepted twelve-factor final grader, and combine genuine paid-quantity receipts with the frozen material obligation.
+The twelve-factor final grader consumes this exact denominator and recovery streak, together with measured paid quantities and the frozen material obligation.
+The accepted implementation and native acceptance limits are recorded in `docs/plans/012_africa_plans/subagent_handoffs/012_africa_gods_full_grading_rewards_design_2026-10-03.md`.
 No additional icons or visual assets are required by these private records.
 
 ## Audit corrections and slot ownership
@@ -78,13 +79,29 @@ The agreement kinds are `gods_of_africa_agreement` in `012_africa_gods_contract_
 | Helper | Scope and inputs | Behaviour |
 | --- | --- | --- |
 | `gods_of_africa_mark_contract_agreed` | Participant with an open contract ledger | Sets `gods_of_africa_contract_agreed` and binds `gods_of_africa_contract_agreed_id` to the ledger ID. Called when a partial payment succeeds, when an extension is granted, and when Africa accepts a substitute. |
-| `gods_of_africa_clear_contract_agreement` | Participant | Clears the agreed-terms receipt; called when a contract ledger opens and in `gods_of_africa_clear_demand`. |
+| `gods_of_africa_clear_contract_agreement` | Participant | Clears the agreed-terms receipt; called when a contract ledger opens, in `gods_of_africa_clear_demand`, and in participant cancellation after terminal retirement. |
 | `gods_of_africa_record_treaty_breach` | Participant; temporary `gods_of_africa_treaty_breach_kind` (agreement kind) and `gods_of_africa_treaty_breach_war` (one when war broke it) | Increments `gods_of_africa_treaty_break_count` once, sets `gods_of_africa_unresolved_treaty_break`, `gods_of_africa_prior_treaty_break`, and the `gods_of_africa_broken_treaty` floor cause, stores `gods_of_africa_last_treaty_breach_kind` and `_day`, ends the broken agreement (a war ends all of them), writes one `treaty_break` history row, and applies `gods_of_africa_wrath.treaty_breach_magnitude`. Both temporary inputs are reset to zero. |
 | `gods_of_africa_observe_agreement_war` | Participant, from `gods_of_africa_refresh_participant_floors` | Clears the per-war dedupe flag at peace; at war with Africa with a live compact, reconciliation, or renewal and no Wrath gain yet recorded for this war, records one war breach when the participant attacked (`gods_of_africa_participant_is_aggressor_against_host`), otherwise ends the agreements through `gods_of_africa_end_agreements_for_host_war`, and fires `chaosx.nr12.616` (host variant when Africa attacked). |
 | `gods_of_africa_select_live_agreement_kind` | Participant | Sets temporary `gods_of_africa_live_agreement_kind` to the live compact, reconciliation or renewal (that priority), or zero. |
 | `gods_of_africa_end_agreements_for_host_war` | Participant; caller sets temporary `gods_of_africa_ended_agreement_kind` | Africa attacked: withdraws protection, ends the reconciliation and renewal without a breach, clears agreed contract terms, sets the per-war dedupe flag, records `agreement_ended_by_host` history and `gods_of_africa_last_ended_agreement_kind`. |
 
 Triggers in `012_africa_gods_contract_triggers.txt`: `gods_of_africa_contract_is_agreed`, `gods_of_africa_victor_renewal_agreement_is_live`, `gods_of_africa_participant_has_live_agreement`, and `gods_of_africa_participant_needs_reconciliation` (defiance or an unresolved breach).
+
+## Cancellation of temporary terms
+
+`gods_of_africa_cancel_participant` executes on the cancelled participant through the historical-receipt wrapper during host loss or residual original-host recovery cleanup.
+Participant archival and participant capitulation have separate cleanup owners; this helper is not their entry point.
+It first retires the interrupted contract and releases its frozen original-host slot through their one-use receipts.
+It then calls the existing agreement, diplomatic-term and instalment-term cleanup helpers.
+This removes the signed instalment schedule and amount, named-state demand array, named enemy and support-kind flags, and agreed-terms marker without changing contribution totals or historical contract outcomes.
+Private ease/burden flags, armour quotes, payment credit and affordability requirements are cleared with the cancelled demand.
+The native demand mission is removed when `has_active_mission` confirms it exists, even if its private active flag is already absent; installed `remove_mission` does not run completion or timeout effects.
+Cancellation schedules no next-demand cooldown and never transfers material or applies punishment.
+The recovery wrapper retains its existing historical settlement and victor receipts independently of these temporary terms.
+Calling cleanup again cannot close another contract or debit another host slot.
+
+No new inputs, defaults, constants, icons, localisation or public fields are introduced.
+Usage remains `gods_of_africa_cancel_participant = yes` in the existing bounded owner cleanup; do not call the normal demand cooldown owner to cancel authority.
 
 The refusal, failure, wartime-cancellation, and defiance owners read `gods_of_africa_contract_is_agreed` before closing the ledger, then call the breach recorder instead of applying their ordinary Wrath gain.
 `gods_of_africa_mark_offender` keeps its offense and punishment-priority behaviour and never sets `gods_of_africa_broken_treaty`.

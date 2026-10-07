@@ -924,7 +924,10 @@ When the crisis, war, target, or country state ends:
 - convert pre-crisis decisions into aftermath decisions only when designed
 - close categories that no longer make sense
 
-Do not leave stale missions active after the system they refer to has ended.
+Compare normal resolution and exceptional cancellation against the same temporary-term inventory, including instalment schedules, diplomatic target arrays, and agreed terms.
+Reuse the appropriate existing cleanup helpers after one-use retirement and slot accounting.
+Remove obsolete native missions independently of stale private active flags, using actual mission state or documented idempotent removal; `remove_mission` skips completion and timeout effects.
+Preserve durable history and refund, settlement, and report receipts, and do not invoke normal cooldown, reward, or failure logic on authority-loss cancellation.
 
 ### Setup-receipt lifecycle invariant
 
