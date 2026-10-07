@@ -99,6 +99,18 @@ The held triggerable ID SCN-017 does not conflict with this world-end reservatio
 Existing world-end keys and occupied numbers are recorded in the machine-readable registry and their runtime constants.
 Lower gaps are not allocated by this audit.
 
+## Super-event presentations
+
+| Slot | Presentation | Owner | Disposition |
+| --- | --- | --- | --- |
+| 119 | Super-Alloy operational breakthrough | Event 098 | Reserved for proposed design |
+
+The presentation namespace uses the value of `super_event_visible`, separately from triggerable and world-end scenario IDs.
+Slot 117 belongs to Acid Rain and slot 118 belongs to the Gods of Africa global-credibility presentation; both use constant-based selectors and must be included when checking occupancy.
+Slot 119 was checked against current selectors, constants, localisation keys, and planning reservations before allocation.
+The reservation does not implement the presentation or approve final text, image, audio, or an audio ID.
+Allocate the final audio ID independently and keep its unique recording and sound-registration requirements.
+
 ## Event and country identities
 
 `chaosx.nr18.33` is assigned to No Ground for a Survey, separating it from A Quarter of the Continent at `chaosx.nr18.90`.

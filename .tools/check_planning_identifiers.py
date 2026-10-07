@@ -138,6 +138,40 @@ def main():
             if not any(p.is_file() and row["label"] in p.read_text(encoding="utf-8-sig") for p in paths):
                 errors.append(f"{row['label']} is missing from its declared package evidence")
 
+    presentations = registry.get("super_event_reservations", [])
+    if len({row["id"] for row in presentations}) != len(presentations):
+        errors.append("Duplicate reserved super-event presentation slot")
+    if presentations:
+        selector = (ROOT / "common/scripted_localisation/chaosx_scripted_localisation_super_events.txt").read_text(encoding="utf-8-sig")
+        occupied = set()
+        constants = {}
+        for token in set(re.findall(r"flag\s*=\s*super_event_visible\s+value\s*=\s*([^\s}]+)", selector)):
+            if token.isdecimal():
+                occupied.add(int(token))
+                continue
+            match = re.fullmatch(r"constant:([a-z0-9_]+)\.([a-z0-9_]+)", token)
+            if not match:
+                errors.append(f"Unresolved super-event selector identity: {token}")
+                continue
+            category, key = match.groups()
+            if category not in constants:
+                values = []
+                for path in (ROOT / "common/script_constants").glob("*.txt"):
+                    if re.search(r"^" + re.escape(category) + r"\s*=\s*\{", path.read_text(encoding="utf-8-sig"), re.M):
+                        values.append(numeric_block(path.relative_to(ROOT), category))
+                constants[category] = values
+            candidates = [values[key] for values in constants[category] if key in values]
+            if len(set(candidates)) != 1:
+                errors.append(f"Unresolved or ambiguous super-event constant: {token}")
+            else:
+                occupied.add(candidates[0])
+        for path in (ROOT / "localisation/english").rglob("*.yml"):
+            occupied.update(int(value) for value in re.findall(r"^\s*chaosx_super_event\.(\d+)\.[tdqa]\s*:", path.read_text(encoding="utf-8-sig"), re.M))
+        for row in presentations:
+            if row["state"] == "reserved_proposed_design" and row["id"] in occupied:
+                errors.append(f"Reserved super-event slot {row['id']} already has a runtime selector or text identity")
+        counts["super_event_presentations"] = {"planning_reservations": len(presentations), "occupied_selector_or_text_slots": len(occupied)}
+
     events = event_definitions()
     for identifier, locations in events.items():
         if len(locations) > 1:
@@ -170,7 +204,7 @@ def main():
             errors.append(f"Workbook cluster {value} ({row[name_column]}) conflicts with ledger")
     counts["catalog_cluster_rows"] = len(seen)
     result = {"passed": not errors, "counts": counts, "errors": errors,
-              "scope": "Declared numeric reservations, their package evidence, runtime event definitions and country tags, and canonical workbook cluster identities. Historical prose and undeclared future identifiers are not inferred as definitions."}
+              "scope": "Declared numeric reservations, their package evidence, runtime event definitions and country tags, canonical workbook cluster identities, and reserved super-event slots against literal/constant selectors and text identities. Audio IDs, historical prose and undeclared future identifiers are not inferred as presentation-slot definitions."}
     print(json.dumps(result, ensure_ascii=False, indent=2))
     return 1 if errors else 0
 
