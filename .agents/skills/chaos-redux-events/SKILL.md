@@ -889,6 +889,12 @@ For a spawned unit, validate that `create_unit` is executed in a country or othe
 
 For a building or map entity, validate that the building has an entity, the entity key resolves in the `.gfx`/`.asset` chain, the province belongs to the specified state, the building command has the correct argument count, and the test province is visible at the intended zoom without an existing building hiding it.
 
+For map-entity allocation, distinguish typed country/state scope references from documented plain numeric IDs, and do not assume `THIS.id` is a displayed state number or country ordinal.
+Host fixtures must preserve that distinction and reject undocumented pointer arithmetic instead of seeding scope references with ordinary integers.
+Allocate entity IDs from a proven numeric getter or an existing verified literal map ledger, then audit uniqueness and collisions against every existing and proof allocation because `create_entity` replaces an entity with the same ID.
+Preserve scope pointers separately for identity and durable target links.
+Source/model and collision checks do not prove native playback or save/restore entity identity, and do not establish that every native arithmetic conversion is impossible.
+
 The main event agent owns the gameplay and runtime source wiring, final runtime copy synchronization, province/state placement, and review of live-consumer and in-game evidence supplied by the user. The user performs live-consumer and in-game validation. The 3D worker owns the bounded model package and must not claim event or in-game completion.
 
 ## Generated asset handling

@@ -41,6 +41,13 @@ ARG, BOL, BRA, CHL, PRU and PAR each carry `asteroid_incoming_report_seen = 1`, 
 Those receipts do not alone establish visible popup multiplicity or ordering.
 CHL also stores `condemnation_nuclear = 38.15625`, while its nuclear-strike Deaths cause is zero.
 No causal attribution to a particular earlier event or visual is inferred from that one value, and it is not zero-nuclear proof for the new graphics-only path.
+
+An independent read-only bitmap audit compared the saved ring assignments to shortest four-connected land adjacency from the installed `map/provinces.bmp`, `definition.csv` and all state province memberships, including x-wrap and excluding sea/strait links.
+The radius-three graph contains exactly the 31 saved planned states, with no missing bitmap member and no distance mismatch: main 506, five Ring 1 states, nine Ring 2 and sixteen Ring 3 graph carriers.
+The two empty Deep Amazonas carriers 963 and 964 account for the difference between 31 graph members and 29 population receipts.
+This is an installed-map/source comparison against saved assignments for one episode, not a guarantee for every target or special adjacency configuration.
+The mandatory MCP lookup independently returned `MAP_LOOKUP_COMPLETED` for 506, 302, 508, 951, 952, 959, 963 and 964 at revision `dc6c8af6725cfdba304569ba5b55555df936e9abdf40e4b3d59d52bf03fd6050`, with lookup-only coverage.
+Its linked bulk report is not enumerated by the exposed resource inventory, so no unread full-map validation is claimed.
 The snapshot contains no evidence of the graphics-only patch, its reserved entity IDs or retirement, and cannot validate those newer source changes.
 
 ## Corrected source assumption
