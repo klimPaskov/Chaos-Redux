@@ -148,7 +148,7 @@ No live game was launched. No dedicated scripted GUI was introduced. The decisio
 - Review the probability worker's final blocker and rerun `probability_inspect`, named scenario evaluations/sweeps, and same-scenario comparison when the service responds.
 - Confirm whether the 29.99/24.99 terminal command-power quote gates versus 30/25 normal debits are acceptable with the game’s exact resource precision; no engine decision inspection returned.
 - Resolve whether active Black Friday discounts may debit less than the fixed reserve-share transfer payload.
-- Add the private `fury_cost_display_quote_component` caller contract to the shared scripted-effects documentation before another subsystem adopts this cost-display helper.
+- Consult the private `fury_cost_display_quote_component` [caller contract](cost_display_audit_2026-10-05.md#helper-contract) before another subsystem adopts this cost-display helper.
 - Review the cost-display handoff's seven superseded numeric getter candidates before deleting any shared references.
 - Remove now-unused `fury_anti_response` pressure constants from `007_fury_constants.txt` after eliminating all readers and writers.
 - Give the remaining `fury_reach` value a visible threshold/consequence or retire its remaining focus writes in a broader accepted design pass.

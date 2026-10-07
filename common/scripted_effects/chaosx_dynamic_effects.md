@@ -1,6 +1,6 @@
 # chaosx_dynamic_effects
 
-This registry documents the public scripted effects declared in `common/scripted_effects/chaosx_dynamic_effects.txt`. It is intentionally limited to neutral helpers with callers across multiple systems or event families.
+This registry documents the public helpers declared in `common/scripted_effects/chaosx_dynamic_effects.txt` and the shared gateways identified below. It is limited to reusable contracts with callers across multiple systems or event families.
 
 Event-owned orchestration, validation, adapters, and lifecycle helpers belong in their owning source file and reference document. The owner index below keeps those APIs discoverable without copying their contracts into this registry.
 
@@ -20,6 +20,7 @@ Event-owned orchestration, validation, adapters, and lifecycle helpers belong in
 - [cbrn_debit_motorized_stockpile_oldest_first](#cbrn_debit_motorized_stockpile_oldest_first)
 - [chaosx_convert_days_to_date_offset](#chaosx_convert_days_to_date_offset)
 - [chaosx_convert_date_offset_to_days](#chaosx_convert_date_offset_to_days)
+- [chaosx_report_forced_event_failure](#chaosx_report_forced_event_failure)
 - [owner_owned_apis](#owner_owned_apis)
 - [maintenance_notes](#maintenance_notes)
 
@@ -64,7 +65,7 @@ The amount can be initialized once before a bounded group of calls when no inter
 An unset input is a caller error, and zero is an explicit amount rather than an absence sentinel.
 The helper applies no explicit arithmetic rounding, clamp, scaling, repair modifier, or replacement amount.
 Numeric interpolation uses the engine default formatter, matching the existing shared damage helper.
-The current Acid Rain amount of one is preserved, while exact serialization of arbitrary fractional or large amounts requires separate runtime validation.
+Exact serialization of arbitrary fractional or large amounts requires runtime validation.
 
 Side effects: building damage only.
 The native effect retains its state-building lookup and, for province buildings, its search for the first matching province building in the current state.
@@ -75,14 +76,14 @@ Callers must overwrite inputs before an independent operation that requires diff
 Example, inside the state already selected by the caller:
 
 ```txt
-set_temp_variable = { dynamic_building_damage_amount = acid_rain_damage_one }
+set_temp_variable = { dynamic_building_damage_amount = constant:my_system_tuning.building_damage }
 set_temp_variable = { dynamic_building_damage_type = token:infrastructure }
 damage_state_building_dynamic = yes
 set_temp_variable = { dynamic_building_damage_type = token:arms_factory }
 damage_state_building_dynamic = yes
 ```
 
-Call sites: the building-damage loop in `common/scripted_effects/033_acid_rain_effects.txt` and the transport, depot, port, and arms-theft incident branches in `common/scripted_effects/031_random_terror_effects.txt`.
+Call sites: `common/scripted_effects/033_acid_rain_effects.txt` and `common/scripted_effects/031_random_terror_effects.txt`.
 Building selection, damage tuning, and eligibility remain caller-owned.
 
 References: vanilla `documentation/effects_documentation.md` sections `damage_building` and `meta_effect`, vanilla `common/scripted_effects/00_scripted_effects.txt` effect `SF_PARA_sabotage_effect`, and the building-token interpolation in `natural_disaster_damage_selected_building` in `common/scripted_effects/013_natural_disasters_effects.txt`.
@@ -291,7 +292,7 @@ Example:
 ```txt
 set_temp_variable = { state_civilian_population_loss_requested = 25000 }
 set_temp_variable = { state_civilian_population_loss_minimum_remaining = 10000 }
-set_temp_variable = { state_civilian_population_loss_reason = constant:chaos_meter_deaths_reason.cannibalism_consumption }
+set_temp_variable = { state_civilian_population_loss_reason = constant:chaos_meter_deaths_reason.unknown }
 set_temp_variable = { state_civilian_population_loss_log_deaths = 1 }
 set_temp_variable = { state_civilian_population_loss_target_country = OWNER }
 set_temp_variable = { state_civilian_population_loss_has_target_country = 1 }
@@ -342,9 +343,9 @@ Side effects: removes up to the requested number of `motorized_equipment_0` and 
 Example, inside the paying country scope after the caller has calculated and displayed the same integer cost:
 
 ```txt
-set_temp_variable = { cbrn_motorized_stock_debit_requested = cbrn_hq_motorized_debit }
+set_temp_variable = { cbrn_motorized_stock_debit_requested = my_system_motorized_cost }
 cbrn_debit_motorized_stockpile_oldest_first = yes
-add_to_variable = { cbrn_hq_motorized_losses_total = cbrn_motorized_stock_debit_completed }
+add_to_variable = { my_system_motorized_paid = cbrn_motorized_stock_debit_completed }
 ```
 
 The separate `remove_motorized_equipment_from_stockpile` helper is a legacy archetype debit and has no actual-payment output. CBRN callers that need exact payment should use this model-specific helper.
@@ -414,73 +415,11 @@ chaosx_convert_date_offset_to_days = yes
 set_temp_variable = { my_system_wake_days = chaosx_date_days }
 ```
 
-Pass the returned day count to a field that accepts a variable, such as the `days` of a delayed `country_event` in the Event 013 job queue, or through `meta_effect` where a native field accepts only literal text.
+Pass the returned day count to a field that accepts a variable, such as the `days` of a delayed `country_event`, or through `meta_effect` where a native field accepts only literal text.
 Calling this helper overwrites `chaosx_date_days`, so copy a day input that another consumer still needs before the call.
 
 References: the offline Data structures page, Game variables table, `date` row, documents one game hour as 0.00001 and the zero point of the encoding, and its Variables section documents the five-decimal variable precision and the scripted-effect temporary variable lifetime rule.
 Installed `documentation/dynamic_variables_documentation.md` describes `date` as a comparable date value, and `documentation/script_concept_documentation.md` and `common/script_constants/documentation.md` define the schema-first constant groups and `constant:` access in variable operations.
-Both helpers generalize the Event 013 `natural_disaster_convert_days_to_date_offset` and `natural_disaster_convert_date_offset_to_days` converters and the Event 021 `event021_days_to_date_offset` hour-rounding converter, which remain owner-private.
-
-## owner_owned_apis
-
-The following APIs are useful to other systems but are not declared in this registry. Use the named owner source and documentation for their contracts. This index is deliberately not a second copy of those event or subsystem implementations.
-
-| capability | authoritative_source | reference |
-| --- | --- | --- |
-| `ordinary_biological_incubation` | [`biological_lifecycle_effects.txt`](biological_lifecycle_effects.txt) | [incubation scheduling API](../../docs/systems/cbrn_warfare/biological_warfare/biowarfare_system.md#incubation-scheduling-api), exact-state guard, caller-owned selector, one computed delay and late literal event construction |
-| `event021_calendar_conversion` | [`021_random_civil_war_date_effects.txt`](021_random_civil_war_date_effects.txt) | [`date_effects`](021_random_civil_war_date_effects.md), Event 021's ANY-scope wrapper over `chaosx_convert_days_to_date_offset` with a caller-owned day input/encoded-date output in `event021_date_offset` |
-| `event021_exact_front_ledger` | [`021_random_civil_war_front_ledger_effects.txt`](021_random_civil_war_front_ledger_effects.txt) | [`front_ledger_effects`](021_random_civil_war_front_ledger_effects.md), including ANY-scope validation, exact secondary source receipts, retained membership, defaults, side effects, and usage examples |
-| `cbrn_state_mask_escrow` | [`cbrn_state_escrow_native_effects.txt`](cbrn_state_escrow_native_effects.txt) and [`cbrn_protection_effects.txt`](cbrn_protection_effects.txt) | [measured concrete-model reservation/refund API](cbrn_scripted_effects.md#measured-native-state-escrow-primitives), including COUNTRY stock observations, STATE original-donor receipts, caller-owned outputs, partial refunds, exact mismatch quarantine, and cleanup |
-| `test_country_facilities_and_projects` | [`chaosx_test_country_effects.txt`](chaosx_test_country_effects.txt), [`chaosx_test_country_special_project_effects.txt`](chaosx_test_country_special_project_effects.txt), and [`chaosx_test_country_triggers.txt`](../scripted_triggers/chaosx_test_country_triggers.txt) | [`chaosx_test_country`](../../docs/testing/chaosx_test_country.md), including the temporary building-token and `sp:` object inputs, construction legality, idempotence, and cleanup contracts |
-| `independence_wave_ledger` | [`006_independence_wave_iberian_package_effects.txt`](006_independence_wave_iberian_package_effects.txt) | [`independence_wave_effects`](006_independence_wave_effects.md) |
-| `custom_technology_grants` | [`016_brilliant_scientist_custom_technology_api_effects.txt`](016_brilliant_scientist_custom_technology_api_effects.txt) | [`custom_technology_api`](016_brilliant_scientist_custom_technology_api_effects.md), including the country-scope `chaosx_custom_technology_source_is_valid` provenance query and usage example |
-| `conventional_technology_packages` | [`016_conventional_technology_api_effects.txt`](016_conventional_technology_api_effects.txt) and [`016_conventional_technology_api_triggers.txt`](../scripted_triggers/016_conventional_technology_api_triggers.txt) | [`conventional_technology_api_effects`](016_conventional_technology_api_effects.md), including six package families, Deployment/Weaponization tiers, and one shared computation-slot owner |
-| `biological_operations` | [`016_brilliant_scientist_biological_operations_effects.txt`](016_brilliant_scientist_biological_operations_effects.txt) and [`016_brilliant_scientist_biological_operations_triggers.txt`](../scripted_triggers/016_brilliant_scientist_biological_operations_triggers.txt) | [`biological_operations`](../../docs/events/016_brilliant_scientist/systems/biological_operations.md) |
-| `portal_beachhead_lifecycle` | [`016_brilliant_scientist_raid_effects.txt`](016_brilliant_scientist_raid_effects.txt) and [`016_brilliant_scientist_raid_triggers.txt`](../scripted_triggers/016_brilliant_scientist_raid_triggers.txt) | [`portal_raider_api`](../../docs/events/016_brilliant_scientist/systems/portal_raider_api.md) |
-| `clone_system` | [`clone_system_effects.txt`](clone_system_effects.txt) | [`clone_equipment_and_infantry`](../../docs/systems/3d_model_pipeline/clone_equipment_and_infantry.md) |
-| `alien_infantry` | [`016_alien_infantry_api_effects.txt`](016_alien_infantry_api_effects.txt) and [`016_alien_infantry_api_triggers.txt`](../scripted_triggers/016_alien_infantry_api_triggers.txt) | [`alien_infantry_api_effects`](016_alien_infantry_api_effects.md) |
-| `project_bridge` | [`016_mengele_project_bridge_effects.txt`](016_mengele_project_bridge_effects.txt) and [`016_mengele_project_bridge_triggers.txt`](../scripted_triggers/016_mengele_project_bridge_triggers.txt) | [`project_system`](../../docs/events/016_brilliant_scientist/systems/projects.md) |
-| `universal_cost_framework` | [`chaosx_universal_cost_effects.txt`](chaosx_universal_cost_effects.txt), [`chaosx_universal_cost_triggers.txt`](../scripted_triggers/chaosx_universal_cost_triggers.txt), and [`chaosx_universal_cost_exact_triggers.txt`](../scripted_triggers/chaosx_universal_cost_exact_triggers.txt) | [`universal_cost_modifier`](../../docs/systems/universal_cost_modifier.md) and [exact quotation contracts](../scripted_triggers/chaosx_universal_cost_exact_triggers.md) |
-| `black_friday_sale_prices` | [`026_black_friday_price_table_effects.txt`](026_black_friday_price_table_effects.txt) | [`sale price table`](026_black_friday_price_table_effects.md): one global political power price per registered ordinary amount for native decision `cost =`, ANY-scope quote/apply/restore/versioned initialize, caller-owned output, ceiling with a minimum of 1, zero kept, registration steps, and example |
-| `black_friday_simple_costs` | [`026_black_friday_triggers.txt`](../scripted_triggers/026_black_friday_triggers.txt), [`026_black_friday_effects.txt`](026_black_friday_effects.txt), and [`026_black_friday_scripted_localisation.txt`](../scripted_localisation/026_black_friday_scripted_localisation.txt) | [`simple custom-cost API`](026_black_friday_simple_cost_api.md): COUNTRY-scope quote, affordability trigger, one-shot payment with achievement credit, and price display for an immediate single-resource custom cost, with no receipt or refund path, plus a conversion example |
-| `unit_family_registry` | [`019_infantry_spawn_unit_registry_effects.txt`](019_infantry_spawn_unit_registry_effects.txt) | [`chaos_unit_family_registry`](../../docs/systems/cbrn_warfare/chaos_unit_family_registry.md) |
-| `famine_runtime` | [`famine_core_effects.txt`](famine_core_effects.txt) and [`famine_adapter_effects.txt`](famine_adapter_effects.txt) | [`famine_system`](../../docs/systems/famine_system.md) |
-| `asteroid_mineral_control` | [`028_asteroid_incoming_mineral_effects.txt`](028_asteroid_incoming_mineral_effects.txt) and [`028_asteroid_incoming_mineral_triggers.txt`](../scripted_triggers/028_asteroid_incoming_mineral_triggers.txt) | [current-controller mineral API](028_asteroid_incoming_mineral_effects.md), unique processed fragment counts, uncapped armour, caller scopes, normal outputs, annex/release cleanup, legacy identities, icons and native acceptance limits |
-| `migration_runtime` | [`migration_core_effects.txt`](migration_core_effects.txt), [`migration_adapter_effects.txt`](migration_adapter_effects.txt), and [`migration_reception_preparation_effects.txt`](migration_reception_preparation_effects.txt) | [`migration_system`](../../docs/systems/migration_system.md) and the [exact paid preparation contract](migration_reception_preparation_effects.md), including scope, saved state target, inputs/results, real service improvement, centralized payment/refund, rollback, and no movement before acceptance |
-| `humanitarian_validation` | [`humanitarian_validation_triggers.txt`](../scripted_triggers/humanitarian_validation_triggers.txt) | [`famine_system`](../../docs/systems/famine_system.md) and [`migration_system`](../../docs/systems/migration_system.md) |
-| `humanitarian_legacy_decision_costs` | [`humanitarian_legacy_cost_effects.txt`](humanitarian_legacy_cost_effects.txt) and [`humanitarian_legacy_cost_triggers.txt`](../scripted_triggers/humanitarian_legacy_cost_triggers.txt) | [display-only country quote contract](humanitarian_legacy_cost_effects.md) and [inclusive component/profile predicates](../scripted_triggers/humanitarian_legacy_cost_triggers.md), including central fee authority, scopes, outputs, defaults, side effects and exact 25-action mapping; paid work and gameplay remain with the separate decision owners |
-| `great_depression_start_or_deepen` | [`035_great_depression_effects.txt`](035_great_depression_effects.txt) and [`035_great_depression_triggers.txt`](../scripted_triggers/035_great_depression_triggers.txt) | [`gateway contract`](035_great_depression_effects.md) and [`great_depression`](../../docs/events/035_great_depression.md), exact receiver, frozen caller/source pointers, fail-closed receipts, evolution inheritance, synchronous outputs, examples, and cleanup |
-| `great_depression_register_inherited_region` | [`035_great_depression_region_effects.txt`](035_great_depression_region_effects.txt) | [`regional companion`](035_great_depression_region_effects.md), exact state/episode proof, frozen source metadata, bounded aligned receipts, disposition/index outputs, caps, idempotence, and cleanup |
-
-## maintenance_notes
-
-Add a helper here only when its contract is neutral and its callers cross subsystem or event-family boundaries. Give it a descriptive name based on its behavior, not the event that first needed it.
-
-Keep one-event orchestration, event-specific selectors, lifecycle state, and private adapters in the owning source file. A cross-event public gateway may remain in this registry while delegating its owner-specific runtime to the owning source file.
-
-When a shared helper changes, update its contract here and audit every call site. When an owner API changes, update the owner documentation and change only the corresponding index row here.
-
-The Event 012 owner API [`012_africa_gods_equipment_effects`](012_africa_gods_equipment_effects.md) documents its COUNTRY-scoped armoured and typed truck/artillery quotes, protected native capacity, integer amounts, native transfers, and payment-type binding in `012_africa_gods_mobile_contract_effects.txt`, including caller-set inputs, temporary outputs, cleanup, defaults, side effects, and boolean-helper usage.
-
-The private Event 012 [`Gods report receipts`](012_africa_gods_report_effects.md) document response capture, frozen equipment subtype, cleanup, and whole-equipment classification, including explicit caller-set inputs, outputs, lifecycle owners, side effects, and boolean-helper usage.
-
-The Event 012 [`Gods survivor settlement`](012_africa_gods_settlement_effects.md) contract documents exact history lineage, one-time grading and native reciprocal transfers, independent frozen-host receipt proof, cleanup, defaults, and boolean-helper usage.
-
-The Event 012 [`Gods victor authority`](012_africa_gods_victor_effects.md) contract documents native capitulation-winner capture, permanent exemption, frozen episode/host renewal consent, withdrawal/decline, separate paid defiance, report receipts, cleanup, and boolean-helper usage.
-
-The Event 012 [`Gods demand repetition`](012_africa_gods_repetition_effects.md) contract documents caller-set type/family inputs, recent actual-contract receipts, identity replay protection, percentage scaling, cleanup, and boolean-helper usage.
-
-The private Event 012 [unique tribute contract ledger](012_africa_gods_contract_effects.md) documents caller-set closure input, immutable identity, replay consumption, issuance and outcome counts, neutral retirement, streaks, accepted reconciliation, lifecycle owners, and boolean-helper usage.
-
-The Event014 owner API [Larder logistics](../../docs/events/014_cannibalism/larder_logistics.md) documents country effective-capacity calculation, post-transaction clamp/publication, caller-owned exact distance quotes from frozen regular capital targets, one-shot dispatch/receipt commit, opening inheritance, generation guards, cleanup and the fifty-flag administrative development mapping.
-
-The Event014 owner API [Network ledger dossier records](../../docs/events/014_cannibalism/gui_data_contract.md) documents the STATE/COUNTRY subject records (`cannibalism_ui_*`), their writers in reports, route screening and the six counteraction missions, caller-set temporary inputs, certainty rules, cleanup on node and actor retirement, and the row and dossier getters.
-
-The private Event 012 [Gods original-owner recovery](012_africa_gods_recovery_effects.md) and [live epoch bindings](012_africa_gods_epoch_binding_effects.md) document exact host/consent proof, initial grant and revocation, current-due wake handling and bounded repair, native loss cleanup, historical report preservation, caller inputs, defaults, side effects, and boolean-helper usage.
-
-The private [Gods permanent-defiance confirmation](012_africa_gods_confirmation_effects.md) documents the human request, frozen authority receipt, current-epoch confirmation, cancellation without gameplay changes, and unchanged direct AI action.
-
-The private [Gods Final Council shipment](012_africa_gods_council_effects.md) documents the frozen pledge, shared measured contribution receipt, unpaid balance, exact stock floor, speech-switch restriction, lifecycle cleanup, dynamic cost getters and boolean-helper usage.
 
 ## chaosx_report_forced_event_failure
 
@@ -529,57 +468,42 @@ Settings supplies the request context, and its dispatcher or an owner event call
 No icon or additional visual asset is required for this native text report.
 Detailed reference evidence and integration limits are recorded in `docs/plans/shared_interface_plans/subagent_handoffs/forced_feedback_hook_20261005.md`.
 
-### Event 007 read-only cost component display
+## owner_owned_apis
 
-`fury_cost_display_quote_component` is a country-scoped display producer in `common/scripted_triggers/007_fury_cost_display_triggers.txt`.
-It changes no persistent state and makes no payment.
-Its caller supplies positive `fury_cost_display_ordinary_cost`, `fury_cost_display_family_mask`, and the exact `fury_cost_display_resource_kind` from the universal-cost enum.
-A zero family mask makes the component fixed-price, including the manpower and support equipment used by Fury depot deployment.
-A nonzero family receives a fresh composed Black Friday quote while that source is active.
-Before invoking the producer, the caller must allocate `fury_cost_display_quoted_amount` with its ordinary amount, `fury_cost_display_quote_valid = 0`, and `fury_cost_display_affordable = 0`.
-The producer returns true as an output writer, copies the actual quote into the first output, and tests the quoted positive amount with the shared native-resource affordability component.
-An invalid active-sale quote preserves the ordinary amount only as an invalid diagnostic and leaves affordability false.
-Literal `_1` and `_0` localisation keys show each component's normal or blocked state independently.
-The event-owned getters illustrate this contract and the full tooltip shows all four resources where an inline row displays three.
+The following APIs are useful to other systems but are not declared in this registry. Use the named owner source and documentation for their contracts. This index is deliberately not a second copy of those event or subsystem implementations.
 
-```
-set_temp_variable = { fury_cost_display_ordinary_cost = constant:fury_decision_cost.target_cp }
-set_temp_variable = { fury_cost_display_family_mask = constant:universal_cost_family.command_power }
-set_temp_variable = { fury_cost_display_resource_kind = constant:universal_cost_resource_kind.command_power }
-set_temp_variable = { fury_cost_display_quoted_amount = fury_cost_display_ordinary_cost }
-set_temp_variable = { fury_cost_display_quote_valid = 0 }
-set_temp_variable = { fury_cost_display_affordable = 0 }
-fury_cost_display_quote_component = yes
-```
+| capability | authoritative_source | reference |
+| --- | --- | --- |
+| `ordinary_biological_incubation` | [`biological_lifecycle_effects.txt`](biological_lifecycle_effects.txt) | [incubation scheduling API](../../docs/systems/cbrn_warfare/biological_warfare/biowarfare_system.md#incubation-scheduling-api) |
+| `event021_calendar_conversion` | [`021_random_civil_war_date_effects.txt`](021_random_civil_war_date_effects.txt) | [`date_effects`](021_random_civil_war_date_effects.md) |
+| `event021_exact_front_ledger` | [`021_random_civil_war_front_ledger_effects.txt`](021_random_civil_war_front_ledger_effects.txt) | [`front_ledger_effects`](021_random_civil_war_front_ledger_effects.md) |
+| `cbrn_state_mask_escrow` | [`cbrn_state_escrow_native_effects.txt`](cbrn_state_escrow_native_effects.txt) and [`cbrn_protection_effects.txt`](cbrn_protection_effects.txt) | [measured concrete-model reservation/refund API](cbrn_scripted_effects.md#measured-native-state-escrow-primitives) |
+| `test_country_facilities_and_projects` | [`chaosx_test_country_effects.txt`](chaosx_test_country_effects.txt), [`chaosx_test_country_special_project_effects.txt`](chaosx_test_country_special_project_effects.txt), and [`chaosx_test_country_triggers.txt`](../scripted_triggers/chaosx_test_country_triggers.txt) | [`chaosx_test_country`](../../docs/testing/chaosx_test_country.md) |
+| `independence_wave_ledger` | [`006_independence_wave_iberian_package_effects.txt`](006_independence_wave_iberian_package_effects.txt) | [`independence_wave_effects`](006_independence_wave_effects.md) |
+| `custom_technology_grants` | [`016_brilliant_scientist_custom_technology_api_effects.txt`](016_brilliant_scientist_custom_technology_api_effects.txt) | [`custom_technology_api`](016_brilliant_scientist_custom_technology_api_effects.md) |
+| `conventional_technology_packages` | [`016_conventional_technology_api_effects.txt`](016_conventional_technology_api_effects.txt) and [`016_conventional_technology_api_triggers.txt`](../scripted_triggers/016_conventional_technology_api_triggers.txt) | [`conventional_technology_api_effects`](016_conventional_technology_api_effects.md) |
+| `biological_operations` | [`016_brilliant_scientist_biological_operations_effects.txt`](016_brilliant_scientist_biological_operations_effects.txt) and [`016_brilliant_scientist_biological_operations_triggers.txt`](../scripted_triggers/016_brilliant_scientist_biological_operations_triggers.txt) | [`biological_operations`](../../docs/events/016_brilliant_scientist/systems/biological_operations.md) |
+| `portal_beachhead_lifecycle` | [`016_brilliant_scientist_raid_effects.txt`](016_brilliant_scientist_raid_effects.txt) and [`016_brilliant_scientist_raid_triggers.txt`](../scripted_triggers/016_brilliant_scientist_raid_triggers.txt) | [`portal_raider_api`](../../docs/events/016_brilliant_scientist/systems/portal_raider_api.md) |
+| `clone_system` | [`clone_system_effects.txt`](clone_system_effects.txt) | [`clone_equipment_and_infantry`](../../docs/systems/3d_model_pipeline/clone_equipment_and_infantry.md) |
+| `alien_infantry` | [`016_alien_infantry_api_effects.txt`](016_alien_infantry_api_effects.txt) and [`016_alien_infantry_api_triggers.txt`](../scripted_triggers/016_alien_infantry_api_triggers.txt) | [`alien_infantry_api_effects`](016_alien_infantry_api_effects.md) |
+| `project_bridge` | [`016_mengele_project_bridge_effects.txt`](016_mengele_project_bridge_effects.txt) and [`016_mengele_project_bridge_triggers.txt`](../scripted_triggers/016_mengele_project_bridge_triggers.txt) | [`project_system`](../../docs/events/016_brilliant_scientist/systems/projects.md) |
+| `universal_cost_framework` | [`chaosx_universal_cost_effects.txt`](chaosx_universal_cost_effects.txt), [`chaosx_universal_cost_triggers.txt`](../scripted_triggers/chaosx_universal_cost_triggers.txt), and [`chaosx_universal_cost_exact_triggers.txt`](../scripted_triggers/chaosx_universal_cost_exact_triggers.txt) | [`universal_cost_modifier`](../../docs/systems/universal_cost_modifier.md) and [exact quotation contracts](../scripted_triggers/chaosx_universal_cost_exact_triggers.md) |
+| `black_friday_sale_prices` | [`026_black_friday_price_table_effects.txt`](026_black_friday_price_table_effects.txt) | [`sale price table`](026_black_friday_price_table_effects.md) |
+| `black_friday_simple_costs` | [`026_black_friday_triggers.txt`](../scripted_triggers/026_black_friday_triggers.txt), [`026_black_friday_effects.txt`](026_black_friday_effects.txt), and [`026_black_friday_scripted_localisation.txt`](../scripted_localisation/026_black_friday_scripted_localisation.txt) | [`simple custom-cost API`](026_black_friday_simple_cost_api.md) |
+| `unit_family_registry` | [`019_infantry_spawn_unit_registry_effects.txt`](019_infantry_spawn_unit_registry_effects.txt) | [`chaos_unit_family_registry`](../../docs/systems/cbrn_warfare/chaos_unit_family_registry.md) |
+| `famine_runtime` | [`famine_core_effects.txt`](famine_core_effects.txt) and [`famine_adapter_effects.txt`](famine_adapter_effects.txt) | [`famine_system`](../../docs/systems/famine_system.md) |
+| `asteroid_mineral_control` | [`028_asteroid_incoming_mineral_effects.txt`](028_asteroid_incoming_mineral_effects.txt) and [`028_asteroid_incoming_mineral_triggers.txt`](../scripted_triggers/028_asteroid_incoming_mineral_triggers.txt) | [current-controller mineral API](028_asteroid_incoming_mineral_effects.md) |
+| `riches_found_capital_rail_endpoints` | [riches_found_state_has_capital_rail_connection and riches_found_state_can_connect_capital_rail](../scripted_triggers/029_riches_found_rail_triggers.txt) | [Parameter-free, read-only STATE predicates](../../docs/events/029_riches_found/railhead_connection_contract.md) |
+| `migration_runtime` | [`migration_core_effects.txt`](migration_core_effects.txt), [`migration_adapter_effects.txt`](migration_adapter_effects.txt), and [`migration_reception_preparation_effects.txt`](migration_reception_preparation_effects.txt) | [`migration_system`](../../docs/systems/migration_system.md) and [exact paid preparation contract](migration_reception_preparation_effects.md) |
+| `humanitarian_validation` | [`humanitarian_validation_triggers.txt`](../scripted_triggers/humanitarian_validation_triggers.txt) | [`famine_system`](../../docs/systems/famine_system.md) and [`migration_system`](../../docs/systems/migration_system.md) |
+| `humanitarian_legacy_decision_costs` | [`humanitarian_legacy_cost_effects.txt`](humanitarian_legacy_cost_effects.txt) and [`humanitarian_legacy_cost_triggers.txt`](../scripted_triggers/humanitarian_legacy_cost_triggers.txt) | [display-only country quote contract](humanitarian_legacy_cost_effects.md) and [inclusive component/profile predicates](../scripted_triggers/humanitarian_legacy_cost_triggers.md) |
+| `great_depression_start_or_deepen` | [`035_great_depression_effects.txt`](035_great_depression_effects.txt) and [`035_great_depression_triggers.txt`](../scripted_triggers/035_great_depression_triggers.txt) | [`gateway contract`](035_great_depression_effects.md) and [`great_depression`](../../docs/events/035_great_depression.md) |
+| `great_depression_register_inherited_region` | [`035_great_depression_region_effects.txt`](035_great_depression_region_effects.txt) | [`regional companion`](035_great_depression_region_effects.md) |
 
-### Deferred Fury physical-supply transfer billing
+## maintenance_notes
 
-The existing Event 026 Fury bundle accepts optional caller-owned temporary `black_friday_fury_defer_settlement = 1` for a transfer whose delivery still needs validation.
-Absent or zero input retains ordinary settlement and achievement recording.
-The outer caller must allocate the forwarded component resource-kind and final-cost arrays, transaction id, primary paid/ordinary amounts, and primary family fields consumed after nested payer returns.
-The Event 007 reserve-sharing effect reads its shipment from the actual paid resource vector, validates that vector, settles only after successful delivery, and records the primary purchase achievement after settlement.
-A malformed vector refunds the still-pending transaction, while a rejected settlement first retracts delivery and then refunds the sender.
-Every exit resets the opt-in input to zero.
-The API is limited to the existing Fury owner adapter and grants no periodic country content.
+Add a helper here only when its contract is neutral and its callers cross subsystem or event-family boundaries. Give it a descriptive name based on its behavior, not the event that first needed it.
 
-## Event 021 active-front integer receipt check
+Keep one-event orchestration, event-specific selectors, lifecycle state, and private adapters in the owning source file. A cross-event public gateway may remain in this registry while delegating its owner-specific runtime to the owning source file.
 
-`event021_parent_validate_active_front_row_integers` lives in `021_random_civil_war_active_evolution_effects.txt` and is a COUNTRY-scoped helper for one aligned government-owned front row.
-Inputs are the country's `random_civil_war_active_front_*` arrays and caller-owned temporary `event021_active_receipt_row`.
-Its only output is the caller-preinitialized temporary `event021_active_receipt_valid`: fractional IDs, enumeration fields, division counts, offsets, or counts set it to zero; integer fields leave its prior value unchanged.
-There are no default row values, receipt repairs, numeric caps, actors, or persistent side effects.
-The private temporary values array is cleared before return, and the helper does not change any country receipt field or fractional asset share.
-Usage inside the existing aligned row loop is `event021_parent_validate_active_front_row_integers = yes`; the enclosing validator initializes validity to `constant:random_civil_war_value.one` before that loop.
-The complete contract and readiness consumer are documented in `021_random_civil_war_active_evolution_effects.md`.
-
-## Event 021 live commit and transaction isolation APIs
-
-`event021_parent_validate_active_source_remnant_now` is a COUNTRY-scoped receipt check on the reviewing government with the recorded source target, current row/generation, original source division count and marker-stage input described in `021_random_civil_war_active_evolution_effects.md`.
-Its caller initializes temporary `event021_active_commit_remnant_valid` to zero; the helper publishes one only after the current capital-connected remainder and original division reserve survive the attempted row.
-It has no resource payment, persistent ownership change or default inferred receipt, and clears its working remnant markers and arrays.
-Use it before row marking with `event021_active_commit_markers_expected` at zero and at the final ordinary mutation gate with that input at one after current-row markers are verified.
-`event021_parent_clear_active_secondary_pending` is ANY-scoped cleanup of only the active ordinary row's secondary serial inputs, with no input/output contract beyond that scratch; it leaves the primary template and an unrelated preplanned anchor's state markers untouched.
-`event021_parent_save_active_transaction_bridge` and `event021_parent_restore_active_transaction_bridge` are COUNTRY-scoped synchronous frame helpers on the same reviewing government, documented fully in `021_random_civil_war_active_bridge_effects.md`.
-They preserve thirty scalar presences/values, seven global pointers and eight flag presences in normal country storage, leave durable registry publications untouched, and consume private copies after restoration.
-Save takes no inferred defaults and runs before guard/owner overwrites; restore without a saved copy is a no-op.
-The active commit's existing save/restore wrappers are the usage example, keeping the active lock until the original lock presence is restored after the scalar/pointer frame.
+When a shared helper changes, update its contract here and audit every call site. When an owner API changes, update the owner documentation and keep its index row limited to source and reference links.
