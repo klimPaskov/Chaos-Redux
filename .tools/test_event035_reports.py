@@ -253,6 +253,59 @@ class SupplierQuoteTests(unittest.TestCase):
         self.assertEqual(r.global_arrays["great_depression_conference_participant_weights"], [100])
 
 
+class LateBoomSupplierEntryTests(unittest.TestCase):
+    def activation_slice(self):
+        from test_event035_center_projects import ROOT, lex, uncomment, parse_nodes
+        path = ROOT / "events/034_industrial_boom.txt"
+        nodes, _ = parse_nodes(lex(uncomment(path.read_text(encoding="utf-8-sig"))), 0, str(path))
+        event = next(n.value for n in nodes if isinstance(n.value, list) and first(n.value, "id") == "chaosx.nr34.1")
+        selected_country = next(n.value for n in first(event, "immediate") if n.key == "random_country")
+        active_index = next(i for i, n in enumerate(selected_country) if n.key == "set_country_flag" and n.value == "industrial_boom_active")
+        guard = selected_country[active_index + 1]
+        self.assertEqual(guard.key, "if")
+        self.assertEqual(first(first(guard.value, "limit"), "has_global_flag"), "great_depression_worldwide_episode_active")
+        return selected_country[active_index:active_index + 2]
+
+    def run_activation(self, runtime, supplier, host):
+        runtime.root = host
+        runtime.scope_stack = [supplier]
+        runtime._effects(self.activation_slice(), supplier)
+
+    def supplier(self):
+        runtime, supplier, host = ReportRuntime(), country("SUP"), country("HOST")
+        supplier.resources["civilian_factories_available"] = 12
+        supplier.values.update({"num_of_civilian_factories": 12, "num_of_military_factories": 6, "num_of_naval_factories": 2})
+        return runtime, supplier, host
+
+    def test_late_boom_initializes_real_quote_on_selected_country_under_foreign_root(self):
+        runtime, supplier, host = self.supplier()
+        runtime.global_flags.add("great_depression_worldwide_episode_active")
+        self.assertFalse(runtime.test_trigger("great_depression_costs_are_ready", supplier))
+        self.run_activation(runtime, supplier, host)
+        self.assertTrue(runtime.test_trigger("great_depression_costs_are_ready", supplier))
+        self.assertFalse(runtime.test_trigger("great_depression_costs_are_ready", host))
+        self.assertIn("great_depression_event34_supplier_pressure", supplier.flags)
+        self.assertEqual(runtime.resource_writes, [])
+        self.assertNotIn(supplier, runtime.global_arrays.get("great_depression_global_supplier_risk_countries", []))
+
+    def test_ordinary_boom_does_not_open_worldwide_supplier_quote(self):
+        runtime, supplier, host = self.supplier()
+        self.run_activation(runtime, supplier, host)
+        self.assertIn("industrial_boom_active", supplier.flags)
+        self.assertFalse(runtime.test_trigger("great_depression_costs_are_ready", supplier))
+        self.assertNotIn("great_depression_event34_supplier_pressure", supplier.flags)
+
+    def test_actual_adapter_risk_replay_adds_one_supplier_and_one_risk_unit(self):
+        runtime, supplier, host = self.supplier()
+        runtime.global_flags.add("great_depression_worldwide_episode_active")
+        supplier.flags.add("industrial_boom_supplier_contract_at_risk")
+        self.run_activation(runtime, supplier, host)
+        self.run_activation(runtime, supplier, host)
+        self.assertEqual(runtime.global_arrays["great_depression_global_supplier_risk_countries"], [supplier])
+        self.assertEqual(runtime.globals["great_depression_global_supplier_risk"], 1)
+        self.assertEqual(runtime.resource_writes, [])
+
+
 class CxtRegistrationTests(unittest.TestCase):
     def test_daily_discovery_marks_pending_without_applying_then_replay_is_inert(self):
         from test_event035_center_projects import ROOT, lex, uncomment, parse_nodes

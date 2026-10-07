@@ -4,6 +4,11 @@
 
 Event 35 source, presentation, assets, achievements, documentation, and catalog surfaces exist, but their presence is not full requirement coverage.
 
+The current requirement and evidence ledger is [current_requirement_state_2026-10-07.md](current_requirement_state_2026-10-07.md).
+The active user requirement is full implementation of `docs/specs/035_great_depression_specs/`, without simplifications and with every mapped surface and acceptance scenario required before completion.
+The dated October 3 and September evidence below remains historical wherever October 4 to 6 repairs supersede it.
+Recorded G6 design-authority claims and plan status labels do not independently authorize removing requirements from this active goal.
+
 Source review found additional cross-country ROOT-context defects after the earlier completion audit.
 The normal weighted entry and active-country maintenance now use recipient-root receivers `.9` and `.8`, respectively.
 The reviewed transaction repair covers exact-country conversion and relapse inputs, recipient-owned frozen source pointers, and Event 34 regional precommit.
@@ -21,20 +26,24 @@ The implementation goal is not certifiable as complete because current event lif
 The upstream Event 34 source also lacks the full per-state project, protection, fragility, corridor, legacy, and exhaustion histories described by the package.
 The companion preserves supplied fields and marks absent optional metadata unavailable, without inventing source history or extra state identities.
 
-Two in-app map inspections returned `Transport closed`, and a direct read-only startup of the installed production server emitted no MCP response within its configured startup window.
+At the historical October 3 boundary, two in-app map inspections returned `Transport closed`, and a direct read-only startup of the installed production server emitted no MCP response within its configured startup window.
 
-The initial isolated decision/mission auditor timed out during GUI inspection and has no final handoff. A replacement was dispatched with an isolated source-only fallback, but the task-wait service did not return a retrievable final handoff.
+At that boundary, the initial isolated decision/mission auditor timed out during GUI inspection and had no final handoff.
+A replacement was dispatched with an isolated source-only fallback, but the task-wait service did not return a retrievable final handoff then.
+The later October 6 decision handoff and its parent dispositions are retained in the current ledger.
 
 The earlier isolated event-completion audit returned `Incomplete` with missing engine evidence.
-The subsequent [inherited-consumer audit](subagent_handoffs/inherited_consumer_completion_audit_2026-10-03.md) also found gameplay gaps: supplied regional metadata has no ongoing liability, salvage, or corridor-resolution consumer; historical completed work locks follow-on projects and newly reclosed centers; and three declared project types have no authorizing producer.
-Those findings supersede the earlier no-source-defect assessment within that scope.
+The subsequent [inherited-consumer audit](subagent_handoffs/inherited_consumer_completion_audit_2026-10-03.md) found historical gameplay gaps in liability consumption, salvage, corridor resolution, reclosure, and project producers.
+The adopted `c398021a9` tranche adds ongoing inherited liabilities and exact visible-state disposition hooks, and D6 supplies finance restoration, transport integration, and international reconstruction producers.
+Hidden-row paid paths, complete corridor outcomes, secured-value salvage, and multi-region inherited priority remain unclosed requirements.
+These later source repairs supersede the earlier missing-liability and missing-producer findings within their bounded scope.
 They are accepted implementation work under the user's full package requirement, not optional future extensions.
 
 The scoped availability repair and its immutable audit inputs were published as commit `37c6b472a9cb44c54fcea9214309fdf87facf00d` through an isolated index and guarded reference update.
 Its real-index reconciliation initially encountered `.git/index.lock` while other Git processes were live, then completed without changing the working-tree files or unrelated index paths.
 This transaction does not claim that the full Event 35 goal or probability comparison is complete.
 
-No source requirement was intentionally reduced to a popup, fixed timed idea, generic factory deletion, one modifier, or political-power shop.
+Full fidelity remains unresolved, including fixed project work targets, immediate bank-audit completion, Public Works map results, conditional reserved-resource accounting, and inherited requirements previously described as closed under D4.
 
 The presentation tranche is committed as `75967b75fcabe80aaca1f0648ee022e8de4b93fd` with its five index paths reconciled.
 The two reusable scope-frame and first-valid-selector skill rules are committed as `c3c91450ca9d9c37bd386c3f560160991410ba1a`.
@@ -48,7 +57,8 @@ The project reclosure repair separates current authorization from historical wor
 Ten actual-source project/payment/transfer scenarios pass in `.tools/test_event035_center_projects.py`.
 The [source execution handoff](subagent_handoffs/center_project_source_execution_2026-10-03.md), [repair disposition](subagent_handoffs/center_project_reclosure_repair_2026-10-03.md), and [same-scenario comparison](subagent_handoffs/reclosure_probability_compare_2026-10-03.md) distinguish those checks from the unproved native and campaign behavior.
 The documented MCP comparison returned `PROBABILITY_SURFACE_EMPTY`, while focused event inspect/render returned partial evidence with zero helper coverage.
-These repairs do not close the inherited consumers, missing project producers, upstream data, full API acceptance, assets/live-consumer, or complete probability requirements listed below.
+These October 3 repairs did not close inherited consumers or missing project producers at that date.
+Later D4 and D6 integration closes their bounded source changes, while upstream data, hidden-row consumers, full API acceptance, assets/live-consumer, and complete probability requirements remain unresolved.
 
 The October cost-contract repair shortens 22 inline rows to the three-value display limit, gives all seventeen cost tooltips their full dynamic quote, and corrects the unresolved War Support texticon to the installed vanilla sprite.
 Nine resource-specific scripted-localisation selectors give each amount its own affordability color across all 51 normal, blocked, and tooltip rows.
@@ -66,13 +76,15 @@ An immutable pre-edit decisions source and six boundary fixtures are preserved u
 The isolated baseline returned a source-reviewed recommendation with an incomplete MCP result.
 The owner inserted the identical affordability predicate in all 74 ordinary paid decisions, while the fifteen missions were already aligned.
 All 89 custom-cost entries now have the same predicate in both availability and custom-cost display, and all 75 AI score blocks remain byte-identical.
-The distinct post-patch comparison is delegated under the same named boundary cases, but the connected tool list currently exposes no HOI4 MCP routes, so no numeric comparison is claimed.
+The distinct post-patch comparison was delegated under the same named boundary cases, but that October 3 session exposed no HOI4 MCP routes, so no numeric comparison is claimed from it.
+The October 7 ledger records current exposed and successfully called routes separately from those historical failures.
 The owner handoff is `subagent_handoffs/affordability_gate_repair_2026-10-03.md`.
 
 The October decision/mission auditor terminated with `workspace routing discovery timed out` before returning findings.
 The bounded map lookup and focused event trace lost their execution handles without final artifacts.
 Live reference-context and reference-search routes succeeded, but reference-read handles disappeared, so the relevant cited sections were read locally.
-The current shared `chaosx_test_country_sync_registered_content` only marks `chaosx_test_country_registered_sync_pending`, confirming that Event 35's daily CXT call does not grant content.
+The October 3 note's shared CXT assessment is superseded by D39 and the October 6 source repair.
+Event 35's own daily fallback registers the carrier and marks pending, with player-triggered application separately checked by `.tools/test_event035_reports.py`.
 
 The cause display now returns one to three distinct causes without duplicated opening shock or repeated fallback text.
 All 32 Boolean cause combinations passed the source-selector truth table, recorded in `subagent_handoffs/cause_display_repair_2026-10-03.md`.
@@ -121,7 +133,9 @@ The K-09 handoff is `docs/plans/035_great_depression_plans/subagent_handoffs/k09
 
 An additional same-scenario compare attempt used `EVENT35_AI_FINAL_2026_09_04` against the repository `HEAD` Event 35 source. The first request was rejected for missing per-scenario `state` records; the corrected request returned `PROBABILITY_SURFACE_EMPTY`, so it produced no comparison artifact and no before/after result is claimed.
 
-The current asset audit is `docs/assets/035_great_depression/audit/asset_audit.md`; it records 68 decoded runtime package image DDS files, zero missing runtime texture paths, zero runtime DDS orphans, and the final 60x68 idea-canvas repair.
+The historical asset audit inventory had 68 runtime DDS files.
+The October 6 takeover and event documentation record 80 after twelve bespoke spirit icons were added, with generation-route and live-consumer limitations retained.
+This documentation pass did not inspect binary assets or independently recertify that inventory.
 
 The achievement localisation audit corrected the seven registry contracts to expose their engine-facing `_NAME` and `_DESC` keys and removed the unreferenced lower-case direct title/description aliases.
 
@@ -147,7 +161,8 @@ The follow-up achievement audit corrected the registry to the single root `uniqu
 ### Public model and lifecycle
 
 - `great_depression_depression_severity` is the only persistent Event 35 number managed by the player.
-- The category displays Severity from 0 to 100, qualitative band, trend, next threshold, phase, leading causes, doctrine, selected center, active objective, and relapse state.
+- The crisis surfaces distribute Severity, trend, phase, doctrine, center, causes, threshold, objectives, and relapse information across the category, spirit hover, and mission/action text.
+- D41 records a three-line category header with Severity/direction, phase/doctrine, and selected center, with native visual proof still unresolved.
 - Hidden component variables drive qualitative credit, freight, employment, relief, confidence, exposure, center, and shock states.
 - Central constants, bounded registries, threshold hysteresis, episode receipts, and one-shot maximum consequences are present.
 - The four phases are Panic and Contraction, Depression, Stabilization, and Recovery.
@@ -155,21 +170,22 @@ The follow-up achievement audit corrected the registry to the single root `uniqu
 ### Decisions, missions, centers, and recovery
 
 - Six doctrines are present: Emergency Public Works, Rescue Strategic Industry, Stabilize Finance and Trade, Austerity and Retrenchment, Direct State Planning, and Let the Market Clear.
-- The ordinary decision surface contains 75 decisions and 15 non-selectable missions.
-- The category contains 90 children and every ordinary action has an explicit `ai_will_do` block.
-- Eighty-nine actions or missions expose paired custom-cost trigger/text contracts.
+- The October 6 documentation records 79 decisions and 15 missions, and the October 7 source inventory finds 94 direct category children.
+- Earlier 75-decision, 90-child, and 89-custom-cost counts describe historical source and must not be used as the final surface inventory.
 - The one uncosted child is the selected-center selector.
 - Every displayed action cost uses no more than four resource types and affordability includes every nonzero component.
 - Missions activate without an entry debit, require affordability on completion, debit exactly once on success, and do not refund an unspent cost on cancellation or timeout.
 - One to three normal Depression Centers use aligned bounded state, stage, project, baseline, loss, owner, and timing ledgers.
-- Mapped center statuses, projects, transfer reconciliation, occupation handling, delayed severe-failure loss, deliberate liquidation, baseline-capped restoration, repeat legacies, relapse, and diminishing returns are implemented.
+- Center statuses, delayed projects, transfer reconciliation, occupation handling, loss limits, restoration, repeat legacies, relapse, and diminishing returns have source implementations and bounded evidence.
+- This does not certify every mapped requirement, including part 3's condition-scaled duration, bank-audit lifecycle, conditional unspent-resource accounting, and real Public Works map improvement.
 - Baseline National Breakdown uses warning, prevention mission, proof, and the bounded `chaosx.nr35.6` resolution event.
 - National Breakdown always permits emergency settlement or cabinet replacement and permits civil conflict only when every strict adapter gate passes.
 
 ### Event 34 inheritance
 
 - Event 34 freezes its collapse snapshot before removing boom-only bonuses and calls Event 35 for the same country.
-- The snapshot carries evolution, final and peak Overheating, landing result, reserves, projects, inherited regions, shocks, repeat history, and a collapse receipt.
+- The snapshot carries national evolution, Overheating, landing, reserves, aggregate project history, a legacy primary region, shocks, repeat history, and collapse identity.
+- Supplied regional metadata is preserved, while absent project, protection, fragility, corridor, secured-value, and exhaustion facts remain unavailable and are not certified as upstream-produced histories.
 - Baseline maps to baseline.
 - Evolution I maps to Financial Contagion.
 - Evolution II adds Social Collapse.
@@ -291,9 +307,8 @@ The detailed scenario records in this section retain earlier bounded projections
 
 ## Asset and achievement coverage
 
-- Runtime visual package: 68 DDS files, consisting of 65 Event 35 files and three inherited Event 34 Long Fall achievement states.
-- Event 35 files comprise 18 achievement files, 40 interface files, six report/news files, and one super-event file.
-- The 40 interface files comprise the seven decision-family icons, category icon and picture, eight mission-family icons, twelve 60x68 idea or national-spirit icons, eight state-status icons, and three evolution icons.
+- Runtime visual package: 80 DDS files according to the October 6 takeover and event documentation, including twelve later bespoke spirit icons.
+- The earlier 68-file and 40-interface-file breakdowns are historical inventories superseded by those records.
 - Registered Event 35-related GFX texture references have no missing runtime textures.
 - The seven achievement registry blocks are grouped in `common/achievements/chaos_redux_achievements.txt` under the existing `unique_id = chaos_redux_achievements`; all seven have engine-facing `_NAME`, `_DESC`, and tooltip keys, and their happened clauses read the durable proof country flags.
 - The durable per-file asset crosswalk and visual review status is `docs/assets/035_great_depression/audit/asset_audit.md`.
@@ -317,18 +332,20 @@ The detailed scenario records in this section retain earlier bounded projections
 - Scenarios CSV SHA-256: `96D076700CD9DA866CA13C2DA9EAA89DDC738613E80D5986C5680E4856183602`.
 - The three CSV files were regenerated from the workbook after the final Event 35 alignment pass.
 - The canonical mechanic document is `docs/events/035_great_depression.md`.
-- The accepted recovery-depth addendum is implemented.
-- Its pre-implementation gap table remains historical rationale and no gameplay requirement from that addendum remains queued.
+- The recovery-depth addendum contains implemented structural work, unresolved acceptance conflicts, and unproved completion gates.
+- Its pre-implementation table remains historical rationale, but its staged bank-audit requirement and completion evidence cannot be declared closed from its status label.
 - Original architect, decision/mission, and asset handoffs are historical or superseded where parent integration completed their pending work.
 
 ## Task-specific validation
 
-- Decision surface: 90 children, 75 decisions, 15 missions, 75 explicit `ai_will_do` blocks, and 89 custom-cost pairs.
-- Decision and mission localisation contains 90 names and 90 descriptions.
+- Historical decision inventory: 90 children, 75 decisions, 15 missions, 75 AI blocks, and 89 custom-cost pairs.
+- Current direct-child source count is 94, matching the documented 79 decisions plus 15 missions.
+- A current complete per-action cost, localisation, AI, and visibility acceptance inventory remains required.
 - Decision icon references have matching GFX definitions and runtime textures.
 - Achievement registry coverage: six Event 35 contracts plus inherited Event 34 Long Fall, with 21 decoded state DDS files and no duplicate registry IDs.
 - Event 35 script files have balanced blocks and no unsupported comparison operators.
-- Event IDs `chaosx.nr35.1` through `chaosx.nr35.9` are unique, with `.7` for private external-commitment cleanup, `.8` for recipient-root maintenance, and `.9` for exact-country independent entry.
+- The historical `.1` through `.9` inventory predates `.10` through `.22` history, report, and world-news additions described by the October decisions and event document.
+- `.7`, `.8`, and `.9` retain their private cleanup, recipient-root maintenance, and exact-country entry roles.
 - Event 35 localisation has no duplicate keys and retains UTF-8 BOM.
 - No legacy 365-day depression expiry is present.
 - The super-event audio format and checksum match the documented runtime contract.
@@ -376,11 +393,13 @@ The detailed scenario records in this section retain earlier bounded projections
 
 ## Plan disposition
 
-- The recovery-depth addendum is implemented and promoted into the source and mechanic documentation.
+- The recovery-depth addendum has implemented structural portions, but its wholesale implementation and accepted-spec promotion claims remain unresolved because bank-audit staging, completion gates, and duration/refund conflicts are not closed.
 - Architect and decision/mission implementation handoffs are superseded by parent-integrated source.
 - Asset handoffs and manifests are implemented and retained as provenance and wiring evidence.
 - The inherited-liability consumer tranche is implemented and parent-adopted with a corrected national inheritance rule; see D4 in `agent_decisions_2026-10-04.md` and the adoption section of `subagent_handoffs/inherited_liability_consumer_implementation_2026-10-03.md`.
-- Hidden-row paid paths, corridor restoration, breakup and scar, secured-value salvage, and multi-region inherited priority are blocked on Event 34, which has no per-region project or corridor system; they are closed for Event 35 rather than queued.
+- Hidden-row paid paths, corridor restoration, breakup and scar, secured-value salvage, and multi-region inherited priority remain accepted requirements under the active full-package instruction.
+- Authentic upstream histories and salvage payloads are blocked on missing Event 34 producer/proof data, while correctly supplied-field Event 35 consumer and acceptance work remains accepted and queued.
+- D4's closure wording does not establish completed consumers or authorize dropping acceptance.
 - The missing mapped project producers are implemented: finance restoration, transport integration, and international reconstruction all have producers, and Rescue Strategic Industry has its Stabilization closers; see D6 in `agent_decisions_2026-10-04.md`.
 - Exact Event 34 multi-state producer history and secured-value payload remain blocked on that owner's missing source data; Event 35 must not manufacture them from aggregate counts.
 
@@ -393,7 +412,8 @@ The detailed scenario records in this section retain earlier bounded projections
 
 ## Simplifications, omissions, fallbacks, and blockers
 
-- No gameplay route, doctrine, mapped decision, mapped mission, evolution, achievement, or runtime asset was intentionally simplified or omitted.
+- The full implementation remains incomplete, with duration, staged audit, real Public Works map results, reserved/unspent accounting, and inherited consumer/proof requirements detailed in the October 7 ledger.
+- This report does not certify absence of simplifications or omissions.
 - Regular icon alpha used the documented per-cell rembg/U2Net repair only after native-alpha generation failed.
 - Whole-sheet fallback was rejected and repaired edges were reviewed.
 - Long Fall grey and not-eligible source layers used targeted ImageGen transparency repair after opaque checkerboard outputs were rejected.
@@ -404,15 +424,17 @@ The detailed scenario records in this section retain earlier bounded projections
 - No final post-change `hoi4.event_compare` exists for the complete Event 34 to Event 35 chain.
 - The native source adapter cannot infer Event 35's custom incident pool from Clausewitz random-list effects; the complete K-09 result is therefore an audit-only declared projection, not a runtime execution or normalized gameplay probability receipt.
 - K-09 now has complete declared candidate, band, evolution, and fail-closed gate coverage through `event35.k09.incident_pools`; the two dominance diagnostics are expected no-target and no-partner gate outcomes, not an unguarded incident.
-- The replacement decision and mission auditor produced no final handoff.
+- The October 3 replacement decision auditor produced no final handoff at that time.
+- `subagent_handoffs/decision_audit_2026-10-06.md` is a later handoff, with bounded parent dispositions recorded in the takeover note.
 - The decision AI source adapter cannot execute Event 35's custom dynamic-cost and target scopes.
 - The installed probability service did not support the `mission_ai_will_do` adapter for this source, so the 15-mission AI result is structural source evidence rather than an engine probability receipt.
 - ACT, CTG, SOC, and GLB therefore use explicit bounded declared projections tied to the source ledgers and gates rather than normalized runtime click probabilities.
 - The two source-specific idea replacements `legacy_public_works` and `post_depression_recovery` completed the bounded icon-worker readability pass. Their 60x68 DDS round trips, native/enlarged/contrast reviews, and fallback transparency provenance are recorded in `docs/plans/035_great_depression_plans/subagent_handoffs/icon_artist_idea_readability_repair.md`; only the final live national-spirit consumer review remains outside the agent boundary.
 - The cause-display repair passes all 32 source flag combinations, but a current native report/category render is not claimed.
-- Generic `great_depression_can_*` permission wording remains source-preserved because runtime failure-specific consumption was not proven through the available MCP route.
+- D14, D37, D40, D42, and D44 record later permission and requirement-text repairs, with native rendering still unresolved.
 - All seventeen cost tooltips have complete quoted amounts and per-resource affordability colors after the October repair, but native row/hover rendering remains unverified.
-- The 74 ordinary paid decisions have explicit shared affordability gates after the owner repair, but the mandatory same-scenario numerical comparison remains unavailable through the currently absent MCP routes.
+- The historical 74-decision affordability repair has source evidence, while current whole-surface same-scenario probability comparison remains unproved.
+- Current MCP routes are exposed and some return results, as recorded in the October 7 ledger, so historical absent-route notes must not be used as current service diagnoses.
 - The external-commitment callback and lifecycle repair have source review but no final current MCP event inspect/render/compare or executed delivery evidence.
 - Recipient-root repairs address normal selection and active maintenance, but the remaining cross-country public-API callers have not been certified against the exact-target and synchronous-output contracts.
 - The ID-aligned Event 34 Long Fall aliases in `interface/035_great_depression_achievement_aliases.gfx` are now the only Event 34 achievement sprite names; the former unprefixed names were removed from `interface/035_great_depression.gfx`.

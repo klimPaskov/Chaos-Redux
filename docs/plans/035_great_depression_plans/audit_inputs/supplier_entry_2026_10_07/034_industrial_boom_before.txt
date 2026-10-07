@@ -1,0 +1,176 @@
+add_namespace = chaosx.nr34
+
+# Event 34 owns the boom, its frozen snapshot, and the delayed landing.
+# Event 35 owns the depression that follows. The landing never lets a boom
+# bonus expire silently and never creates a second crisis beside the first.
+
+country_event = {
+	id = chaosx.nr34.1
+	title = chaosx.nr34.1.t
+
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = {
+		random_country = {
+			limit = {
+				great_depression_has_viable_economy = yes
+				OR = { is_major = yes is_ai = no }
+				NOT = { has_country_flag = industrial_boom_active }
+				NOT = { has_country_flag = industrial_boom_snapshot_frozen }
+				NOT = { has_country_flag = industrial_boom_collapse_delivery_pending }
+				NOT = { has_country_flag = great_depression_active }
+				NOT = { has_country_flag = great_depression_incompatible_economic_state }
+			}
+			great_depression_allocate_receipt = yes
+			set_variable = { industrial_boom_episode_id = great_depression_last_receipt_id }
+			set_country_flag = industrial_boom_active
+			clear_variable = industrial_boom_inherited_region_state
+			clear_variable = industrial_boom_collapse_receipt_id
+			clr_country_flag = industrial_boom_collapse_retry_exhausted
+			if = {
+				limit = { NOT = { has_variable = industrial_boom_evolution } }
+				set_variable = { industrial_boom_evolution = constant:industrial_boom_event.baseline_evolution }
+			}
+		set_variable = { industrial_boom_snapshot_evolution = industrial_boom_evolution }
+		set_temp_variable = { industrial_boom_civilian_factory_count = num_of_civilian_factories }
+		set_temp_variable = { industrial_boom_military_factory_count = num_of_military_factories }
+		set_variable = { industrial_boom_snapshot_civilian_factories = industrial_boom_civilian_factory_count }
+		set_variable = { industrial_boom_snapshot_military_factories = industrial_boom_military_factory_count }
+		set_variable = { industrial_boom_snapshot_final_overheating = constant:industrial_boom_event.baseline_overheating }
+		set_temp_variable = { industrial_boom_factory_pressure = industrial_boom_civilian_factory_count }
+		multiply_temp_variable = { industrial_boom_factory_pressure = constant:industrial_boom_event.overheating_factory_weight }
+		add_to_variable = { industrial_boom_snapshot_final_overheating = industrial_boom_factory_pressure }
+		if = {
+			limit = {
+				check_variable = { var = industrial_boom_snapshot_final_overheating value = constant:great_depression_event.public_value_maximum compare = greater_than }
+			}
+			set_variable = { industrial_boom_snapshot_final_overheating = constant:great_depression_event.public_value_maximum }
+		}
+		set_variable = { industrial_boom_snapshot_peak_overheating = industrial_boom_snapshot_final_overheating }
+		add_to_variable = { industrial_boom_snapshot_peak_overheating = constant:industrial_boom_event.overheating_peak_delta }
+		if = {
+			limit = {
+				check_variable = { var = industrial_boom_snapshot_peak_overheating value = constant:great_depression_event.public_value_maximum compare = greater_than }
+			}
+			set_variable = { industrial_boom_snapshot_peak_overheating = constant:great_depression_event.public_value_maximum }
+		}
+		set_variable = { industrial_boom_overheating = industrial_boom_snapshot_final_overheating }
+		set_variable = { industrial_boom_peak_overheating = industrial_boom_snapshot_peak_overheating }
+		# These are frozen handoff fields, not live Event 35 state. Optional
+		# variables are read only when a future boom extension supplies them;
+		# the current boom still records a deterministic baseline for every field.
+		set_variable = { industrial_boom_snapshot_landing_state = constant:industrial_boom_event.landing_state }
+		if = {
+			limit = { has_country_flag = industrial_boom_landing_failed }
+			set_variable = { industrial_boom_snapshot_landing_state = constant:great_depression_event34_snapshot_state.failed }
+		}
+		set_variable = { industrial_boom_snapshot_reserve_units = constant:industrial_boom_event.reserve_units }
+		if = {
+			limit = { has_variable = industrial_boom_reserve_units }
+			set_variable = { industrial_boom_snapshot_reserve_units = industrial_boom_reserve_units }
+		}
+		if = {
+			limit = { has_country_flag = industrial_boom_reserves_depleted }
+			set_variable = { industrial_boom_snapshot_reserve_units = constant:great_depression_api.zero }
+		}
+		set_variable = { industrial_boom_snapshot_project_units = constant:industrial_boom_event.project_units }
+		if = {
+			limit = { has_variable = industrial_boom_project_units }
+			set_variable = { industrial_boom_snapshot_project_units = industrial_boom_project_units }
+		}
+		set_variable = { industrial_boom_snapshot_region_units = constant:industrial_boom_event.region_units }
+		if = {
+			limit = { has_variable = industrial_boom_inherited_region_count }
+			set_variable = { industrial_boom_snapshot_region_units = industrial_boom_inherited_region_count }
+		}
+		set_variable = { industrial_boom_snapshot_shock_units = constant:great_depression_api.zero }
+		if = {
+			limit = { has_variable = industrial_boom_recent_shock_count }
+			set_variable = { industrial_boom_snapshot_shock_units = industrial_boom_recent_shock_count }
+		}
+		if = {
+			limit = { has_variable = industrial_boom_dangerous_days }
+			set_variable = { industrial_boom_snapshot_dangerous_days = industrial_boom_dangerous_days }
+		}
+		else = {
+			set_variable = { industrial_boom_snapshot_dangerous_days = constant:great_depression_api.zero }
+		}
+		if = {
+			limit = { has_variable = industrial_boom_completed_count }
+			set_variable = { industrial_boom_snapshot_repeat_history_count = industrial_boom_completed_count }
+		}
+		else = {
+			set_variable = { industrial_boom_snapshot_repeat_history_count = constant:industrial_boom_event.repeat_history_units }
+		}
+		random_owned_controlled_state = {
+			limit = {
+				state_population_k > constant:great_depression_api.minimum_viable_state_population_k
+				OR = { industrial_complex > 0 arms_factory > 0 dockyard > 0 }
+			}
+			PREV = {
+				set_variable = { industrial_boom_inherited_region_state = PREV }
+			}
+		}
+		add_ideas = industrial_boom
+		country_event = { id = chaosx.nr34.2 days = 1 }
+		country_event = { id = chaosx.nr34.3 days = constant:industrial_boom_event.active_days }
+	}
+}
+}
+
+country_event = {
+	id = chaosx.nr34.2
+	title = chaosx.nr34.2.t
+	desc = chaosx.nr34.2.d
+	picture = GFX_report_event_airplane_factory
+
+	is_triggered_only = yes
+
+	option = {
+		ai_chance = { base = 100 }
+		name = chaosx.nr34.2.a
+		news_event = { id = chaosx.news.39 days = 2 }
+		show_ideas_tooltip = industrial_boom
+	}
+}
+
+# The delayed landing freezes live owner fields before removing boom bonuses.
+# Rejected requests retain the actor's frozen input for a bounded private retry.
+
+country_event = {
+	id = chaosx.nr34.3
+	title = chaosx.nr34.3.t
+
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = {
+		if = {
+			limit = {
+				has_country_flag = industrial_boom_active
+				NOT = { has_country_flag = industrial_boom_snapshot_frozen }
+			}
+			industrial_boom_freeze_collapse_snapshot = yes
+			remove_ideas = industrial_boom
+			clr_country_flag = industrial_boom_active
+		}
+		industrial_boom_deliver_collapse_snapshot = yes
+	}
+}
+
+# Private delivery clears its scheduling flag before synchronous receiver work.
+country_event = {
+	id = chaosx.nr34.4
+
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = {
+		if = {
+			limit = { has_country_flag = industrial_boom_collapse_delivery_pending }
+			clr_country_flag = industrial_boom_collapse_delivery_pending
+			industrial_boom_deliver_collapse_snapshot = yes
+		}
+	}
+}
