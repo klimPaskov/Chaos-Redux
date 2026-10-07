@@ -72,7 +72,8 @@ The first oversized artifact reads contained truncated base64 and failed integri
 The exact `.7` scope render timed out after 600 seconds at the one-node boundary.
 The more limited entry-view retry also timed out after 600 seconds; a depth-zero request was rejected by the live schema and corrected to its minimum depth of one before that retry.
 No new render is claimed.
-The cached-revision event comparison timed out after 600 seconds; an artifact-backed one-node retry is pending at this source checkpoint.
+The cached-revision event comparison timed out after 600 seconds; the artifact-backed one-node retry also timed out after 600 seconds.
+Both returned terminal tool errors rather than a comparison result, so no before/after graph proof is claimed.
 These focused event graphs omit the changed helper bodies, so even a structural comparison would not establish the accounting patch's before/after semantics.
 
 ## Remaining full-goal work and limits
@@ -83,9 +84,10 @@ This turn introduces no gameplay simplification; it does not approve or conceal 
 The native duplicate-ID investigation remains open, and its temporary allocation markers remain pending attribution.
 Live custody/callback behavior, a clean game error log, and final event/technology/probability coverage are not claimed.
 
-The workbook was read directly: Events row 33 remains `To Be Reworked`, with the older Evo I/V wording.
-The workbook and all three exports contain concurrent changes from other work, so this accounting commit does not take ownership of them.
-Their final exact wording/export update remains required; CSV files were not edited.
+The workbook was first read directly with older Evo I/V wording, then the catalog worker applied only the two accepted wording changes and regenerated exports.
+Events row 33 remains `To Be Reworked`.
+The parent verified an isolated HEAD-based workbook and exporter projection containing only those two fields, while the working workbook retains the other owners' changes.
+The catalog handoff documents that separate shared-tree contribution; CSV files were not edited directly.
 No asset or icon changes are needed for these existing mechanics.
 
 Skills used: `chaos-redux-events`, `chaos-redux-subagents`, `chaos-redux-shared-git-commit`, and `xlsx` for the catalog inspection.
