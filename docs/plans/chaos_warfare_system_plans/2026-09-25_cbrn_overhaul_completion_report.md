@@ -319,3 +319,13 @@ It contains 54 rows, ten false/44 unresolved eligibility rows, 66 unresolved ite
 Native exact transactions, native rows, complete owner order, automatic quarantine recovery, final parent integration review, and full-goal acceptance remain unresolved.
 No fresh clean error log or live completion is claimed; this tranche remains uncommitted at this reconciliation, while the separately reviewed aid and immediate-payment tranches retain their own commits/evidence.
 The [documentation handoff](subagent_handoffs/2026-10-03_cbrn_occupied_export_documentation_reconciliation.md) provides the source-of-truth map, document dispositions, corrected stale helper instructions, and remaining risks.
+
+## October 7 doctrine rewards and mastery
+
+The [accepted correction](../../specs/chaos_warfare_system_specs/corrections/2026-10-07_doctrine_reward_mastery.md) responds to the user's weak-reward and narrow-contributor objections.
+The [implementation report](2026-10-07_doctrine_reward_mastery_implementation.md) records meaningful concentrated payoffs, role lists covering thirteen retained units and the corrected armored organization recipient.
+The actual-source audit passes 137 checks and all sixty-five revised role/stat rows in pooling and independent-layer models; its maximum is Chaos Battalion breakthrough +34.849%.
+Source budgets include the possible Cadres and extra defense-skill effects without claiming their engine interpretation.
+The exact main flaming-skull emblem is restored by 7b27f8e8899659c38a77d859bbbef6eec88ab06b.
+MCP native-doctrine inspection/rendering and same-scenario AI comparison remain subject to the explicitly recorded route failures/timeouts; all five AI bodies are source-identical.
+Actual mastery accrual, native division statistics and the broader CBRN accepted requirements remain incomplete.

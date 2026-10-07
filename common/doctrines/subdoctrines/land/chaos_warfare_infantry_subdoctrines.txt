@@ -14,17 +14,14 @@
 @CBRN_HAZARD_ASSAULT_AI_COMMITTED = 2.00
 @CBRN_HAZARD_ASSAULT_MASTERY_MULT = 12.00
 @CBRN_HAZARD_ASSAULT_REWARD_THRESHOLD = 100
-@CBRN_HAZARD_ASSAULT_ADOPTION_BREAKTHROUGH = 0.03
-@CBRN_HAZARD_ASSAULT_M1_RELIABILITY = 0.10
+@CBRN_HAZARD_ASSAULT_ADOPTION_PROTECTION_RELIABILITY = 0.10
+@CBRN_HAZARD_ASSAULT_M3_ASSAULT_BREAKTHROUGH = 0.15
 @CBRN_HAZARD_ASSAULT_M1_NIGHT_ATTACK = 0.05
 @CBRN_HAZARD_ASSAULT_M1_ARMY_ORG_FACTOR = 0.01
 @CBRN_HAZARD_ASSAULT_M2_SUPPLY = -0.05
 @CBRN_HAZARD_ASSAULT_M2_REINFORCE_RATE = 0.01
-@CBRN_HAZARD_ASSAULT_M4_BREAKTHROUGH = 0.03
 @CBRN_HAZARD_ASSAULT_M4_ARMY_ATTACK_FACTOR = 0.015
-@CBRN_HAZARD_ASSAULT_M5_BREAKTHROUGH = 0.04
 @CBRN_HAZARD_ASSAULT_M5_CHAOS_SOFT_ATTACK = 0.05
-@CBRN_HAZARD_ASSAULT_M5_CHAOS_BREAKTHROUGH = 0.05
 
 extermination_columns = {
 	track = infantry
@@ -59,12 +56,14 @@ extermination_columns = {
 		sub_units = {
 			cbrn_gas_mask_decon_detachment
 			cbrn_chemical_recon_detachment
+			cbrn_medical_countermeasure_detachment
+			cbrn_biosecurity_assault_detachment
 			chaos_battalion
 		}
 	}
 
-	category_cbrn_assault_battalions = {
-		breakthrough = @CBRN_HAZARD_ASSAULT_ADOPTION_BREAKTHROUGH
+	category_cbrn_primary_protection = {
+		reliability = @CBRN_HAZARD_ASSAULT_ADOPTION_PROTECTION_RELIABILITY
 	}
 
 	effect = { cbrn_record_hazard_assault_adoption = yes }
@@ -72,9 +71,6 @@ extermination_columns = {
 	rewards = {
 		contagion_assault_drills = {
 			mastery = @CBRN_HAZARD_ASSAULT_REWARD_THRESHOLD
-			category_cbrn_primary_protection = {
-				reliability = @CBRN_HAZARD_ASSAULT_M1_RELIABILITY
-			}
 			land_night_attack = @CBRN_HAZARD_ASSAULT_M1_NIGHT_ATTACK
 			army_org_factor = @CBRN_HAZARD_ASSAULT_M1_ARMY_ORG_FACTOR
 			effect = {
@@ -97,6 +93,9 @@ extermination_columns = {
 
 		unlock_chaos_battalion = {
 			mastery = @CBRN_HAZARD_ASSAULT_REWARD_THRESHOLD
+			category_cbrn_assault_battalions = {
+				breakthrough = @CBRN_HAZARD_ASSAULT_M3_ASSAULT_BREAKTHROUGH
+			}
 			effect = {
 				cbrn_record_infantry_mastery_three = yes
 				custom_effect_tooltip = extermination_columns_chaos_battalion_unlocked_tt
@@ -105,9 +104,6 @@ extermination_columns = {
 
 		ruinwave_battlecells = {
 			mastery = @CBRN_HAZARD_ASSAULT_REWARD_THRESHOLD
-			category_cbrn_assault_battalions = {
-				breakthrough = @CBRN_HAZARD_ASSAULT_M4_BREAKTHROUGH
-			}
 			army_attack_factor = @CBRN_HAZARD_ASSAULT_M4_ARMY_ATTACK_FACTOR
 			effect = {
 				set_country_flag = cbrn_shock_exploitation_unlocked
@@ -117,12 +113,8 @@ extermination_columns = {
 
 		terminal_contagion_offensive = {
 			mastery = @CBRN_HAZARD_ASSAULT_REWARD_THRESHOLD
-			category_cbrn_assault_battalions = {
-				breakthrough = @CBRN_HAZARD_ASSAULT_M5_BREAKTHROUGH
-			}
 			chaos_battalion = {
 				soft_attack = @CBRN_HAZARD_ASSAULT_M5_CHAOS_SOFT_ATTACK
-				breakthrough = @CBRN_HAZARD_ASSAULT_M5_CHAOS_BREAKTHROUGH
 			}
 			effect = {
 				set_country_flag = cbrn_terminal_hazard_operation_unlocked

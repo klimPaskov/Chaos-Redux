@@ -134,19 +134,22 @@ Current source files `common/military_industrial_organization/organizations/cbrn
 
 The parent and technology owner retuned current doctrine, spirit, High Command, and technology source after the first completion audit. The auditor's latest strict all-independent products use separate country- and spirit-slot-legal scenarios; they do not prove the final engine stat formula. Controlled Retaliation, Theater Contamination, and Terminal Hazard share one army-spirit slot, while Mask Discipline and Hazard Assault Cadres share one division-command slot.
 
-| Endpoint | Strict all-independent legal source upper bound | Accepted cap |
+| Endpoint | Current independent-source budget bound | Accepted cap |
 | --- | ---: | ---: |
 | Army attack / organisation / planning / coordination | +4.0375% / +4.5807% / +14.7368% / +7.7496% | +5% / +5% / +15% / +8% |
-| Reinforcement | +2 percentage points in source | +2 percentage points |
-| Line artillery doctrine soft attack; with legal global attack | +9.7980%; +14.2311% combined | +10% doctrine; +15% conventional |
-| Support artillery doctrine soft attack; with legal global attack | +9.8246%; +14.2588% combined | +10% doctrine; +15% conventional |
-| Projector soft/hard/defense/breakthrough/organisation | +32.8602% / +32.8455% / +31.4692% / +33.7780% / +33.6309% before commander skill; +34.7559% defense with the earned Biological Operations Veteran | +35% dedicated static each |
-| Armored delivery soft/hard/defense/breakthrough/organisation | +26.4582% / +4.0375% / +21.5506% / +21.6201% / +26.3683% | +35% dedicated static each |
-| Chaos Battalion soft/defense/breakthrough/organisation | +20.1633% / +10% / +33.2278% / +33.3404% | +35% dedicated static each |
-| Protection Company attack/defense | +14.4413% / +10% | +35% dedicated static each |
-| CBRN reconnaissance utility | +30% on base 4 | +35% dedicated static |
+| Reinforcement | +2 percentage points | +2 percentage points |
+| Line/support artillery doctrine soft attack; with global attack | +9.5000%; +13.9211% | +10% doctrine; +15% conventional |
+| Projector soft/hard/defense/breakthrough/organisation | +32.8602% / +32.8455% / +34.7559% / +34.5832% / +33.6309% | +35% each |
+| Armored delivery soft/hard/defense/breakthrough/organisation | +26.4582% / +4.0375% / +24.5894% / +24.5894% / +26.3683% | +35% each |
+| Chaos Battalion soft/defense/breakthrough/organisation | +20.1633% / +12.7500% / +34.8490% / +33.3404% | +35% each |
+| Protection Company nominal attack/defense | +14.4413% / +12.7500% | +35% each |
 
-The strict army-attack stack is Protected Assault mastery IV 1.5% × Terminal Hazard 2.5%; organisation is four compatible 1% sources × Biological Security Director 0.5%; Theater planning uses 1% × 1% × 3% × 4% × 5%. `common/technologies/chaosx_technologies.txt` now gives each projector tier 2.5% soft attack, 13% hard attack, 5% defense, and 7.5% breakthrough, 1942 Battalion breakthrough 15% and flat organisation 11 on base 40, and three reconnaissance grants of 0.2, 0.4, and 0.6 flat on base 4. The parent's conservative +35% dedicated-static interpretation includes reconnaissance utility. Installed vanilla technology examples support fractional `recon`, but the offline Character Modding reference attributes 2.5% army defense to one Defense skill level, yielding a conservative +34.7559% projector defense stack after the two projector tiers are set to 4%; final engine aggregation remains unverified. The pre-change projector technology trace and card render are linked in the correction; post-change bonus coverage returned a tool error, focused inspect/render timed out after 180 seconds, and tech_compare returned TECH_REVISION_NOT_CACHED. No matched technology evidence is claimed.
+The [accepted October 7 correction](../../specs/chaos_warfare_system_specs/corrections/2026-10-07_doctrine_reward_mastery.md) concentrates weak reward fragments, covers all thirteen retained mastery roles and removes the armored organization overlap.
+The [137-case actual-source audit](subagent_handoffs/2026-10-07_doctrine_reward_budget_source_checks.md) supplies both pooling and independent-layer interpretations, with sixty-five revised role/stat rows inside the ceilings.
+The highest revised bound is Chaos Battalion breakthrough +34.849%, including the possible Cadres and CBRN-earned defense-skill layers.
+Projector has two upgrade grants and its own five-point Fire Support organization benefit; armor retains only its separate five-point reward.
+Native stat accumulation, effective division results, mastery speed and supported matching MCP doctrine coverage remain unproved.
+The implementation is recorded in [2026-10-07_doctrine_reward_mastery_implementation.md](2026-10-07_doctrine_reward_mastery_implementation.md); no conditional hazard factor or authorization changes.
 
 The eight country- and spirit-slot-legal conditional hazard source products remain separately bounded: 1.204843 choking artillery dose, 1.193145 chemical-air dose, 1.342896 choking contamination, 1.329858 blister contamination, 1.476242 air/blister duration, 1.391594 SOV toxicological casualty pressure, 1.400795 biological seed potency, and 1.454750 exact-state cleanup. GER's chemical theorist and SOV's toxicological director cannot coexist; JAP or USA has at most two compatible biological potency advisors. Terminal hazard and Theater cleanup are separate army-spirit scenarios. The older pooled products in `subagent_handoffs/2026-09-20_doctrine_balance_handoff.md` are historical, and current details are in `docs/systems/cbrn_warfare/chaos_warfare_doctrine.md` and the completion auditor handoff. CBRN-07 remains accepted and queued for final MCP, engine, and combined-scenario evidence; the commander-skill source bound is recorded in the [projector-defense correction](../../specs/chaos_warfare_system_specs/corrections/2026-09-26_projector_defense_commander_budget.md). Chemical Operations Academy's +3% army-experience source and the service-earned commander trait remain separate from these cap products.
 

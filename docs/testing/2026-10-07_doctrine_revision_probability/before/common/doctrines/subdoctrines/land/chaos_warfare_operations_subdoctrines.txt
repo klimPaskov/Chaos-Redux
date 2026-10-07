@@ -1,0 +1,148 @@
+# ============================================================================
+# CHAOS REDUX - INTEGRATED CBRN COMMAND
+# ============================================================================
+# The compatibility ID integrated_chemical_operations now represents Army HQ
+# intelligence, protection, decontamination, medical, and biosecurity command.
+# Its doctrine multiplier can reduce Condemnation only and remains clamped by
+# the shared public-harm floors.
+# ============================================================================
+
+# Static doctrine fields use file-local parser values. They mirror the
+# corresponding cbrn_doctrine_cost, mastery, modifier, and AI constants.
+@CBRN_INTEGRATED_COMMAND_XP_COST = 100
+@CBRN_INTEGRATED_COMMAND_AI_BASE = 1.00
+@CBRN_INTEGRATED_COMMAND_AI_UNAVAILABLE = 0
+@CBRN_INTEGRATED_COMMAND_AI_COMMITTED = 2.00
+@CBRN_INTEGRATED_COMMAND_MASTERY_MULT = 14.00
+@CBRN_INTEGRATED_COMMAND_REWARD_THRESHOLD = 100
+@CBRN_INTEGRATED_COMMAND_ACTIVATION_PLANNING = 0.01
+@CBRN_INTEGRATED_COMMAND_ACTIVATION_RECON = 0.10
+@CBRN_INTEGRATED_COMMAND_ACTIVATION_COORDINATION = 0.01
+@CBRN_INTEGRATED_COMMAND_ACTIVATION_CHEMICAL_DEFENSE = 0.05
+@CBRN_INTEGRATED_COMMAND_M1_RECON = 0.10
+@CBRN_INTEGRATED_COMMAND_M2_REINFORCE = 0.01
+@CBRN_INTEGRATED_COMMAND_M2_CHEMICAL_RELIABILITY = 0.05
+@CBRN_INTEGRATED_COMMAND_M2_ARMY_INTEL = 0.05
+@CBRN_INTEGRATED_COMMAND_M2_INTEL_FROM_COMBAT = 0.10
+@CBRN_INTEGRATED_COMMAND_M3_CHEMICAL_SUPPLY = -0.05
+@CBRN_INTEGRATED_COMMAND_M3_CHEMICAL_TANK_SUPPLY = -0.05
+@CBRN_INTEGRATED_COMMAND_M3_CHEMICAL_TANK_RELIABILITY = 0.05
+@CBRN_INTEGRATED_COMMAND_M3_ATTRITION = -0.05
+@CBRN_INTEGRATED_COMMAND_M4_COORDINATION = 0.01
+@CBRN_INTEGRATED_COMMAND_M4_CHEMICAL_SOFT_ATTACK = 0.05
+@CBRN_INTEGRATED_COMMAND_M5_ORG = 0.01
+@CBRN_INTEGRATED_COMMAND_M5_RECON = 0.05
+@CBRN_INTEGRATED_COMMAND_M5_COORDINATION = 0.01
+
+integrated_chemical_operations = {
+	track = operations
+	name = SUBDOCTRINE_INTEGRATED_CHEMICAL_OPERATIONS
+	description = CBRN_BALANCED_INTEGRATED_COMMAND_DESC
+	icon = GFX_doctrine_integrated_chemical_operations_medium
+	reward_gfx = GFX_cbrn_doctrine_integrated_command_reward_strip
+
+	xp_cost = @CBRN_INTEGRATED_COMMAND_XP_COST
+	xp_type = army
+
+	available = { has_doctrine = chaos_warfare }
+	visible = { always = yes }
+
+	ai_will_do = {
+		base = @CBRN_INTEGRATED_COMMAND_AI_BASE
+		modifier = {
+			factor = @CBRN_INTEGRATED_COMMAND_AI_UNAVAILABLE
+			NOT = { has_doctrine = chaos_warfare }
+		}
+		modifier = {
+			factor = @CBRN_INTEGRATED_COMMAND_AI_COMMITTED
+			OR = {
+				cbrn_profile_is_prepared_power = yes
+				cbrn_profile_is_mass_civil_defence = yes
+				has_enemy_used_chemical_weapons = yes
+			}
+		}
+	}
+
+	mastery = {
+		multiplier = @CBRN_INTEGRATED_COMMAND_MASTERY_MULT
+		sub_units = {
+			cbrn_hq_operations_section
+			cbrn_hq_protective_logistics_section
+			cbrn_hq_medical_countermeasure_directorate
+		}
+	}
+
+	planning_speed = @CBRN_INTEGRATED_COMMAND_ACTIVATION_PLANNING
+	recon_factor = @CBRN_INTEGRATED_COMMAND_ACTIVATION_RECON
+	coordination_bonus = @CBRN_INTEGRATED_COMMAND_ACTIVATION_COORDINATION
+
+	category_chemical_support_companies = {
+		defense = @CBRN_INTEGRATED_COMMAND_ACTIVATION_CHEMICAL_DEFENSE
+	}
+
+	effect = { cbrn_record_integrated_command_adoption = yes }
+
+	rewards = {
+		operational_recon_grids = {
+			mastery = @CBRN_INTEGRATED_COMMAND_REWARD_THRESHOLD
+			recon_factor = @CBRN_INTEGRATED_COMMAND_M1_RECON
+			effect = {
+				cbrn_record_operations_mastery_one = yes
+				custom_effect_tooltip = integrated_chemical_operations_operational_recon_grids_tt
+			}
+		}
+
+		signal_intelligence_fusion = {
+			mastery = @CBRN_INTEGRATED_COMMAND_REWARD_THRESHOLD
+			land_reinforce_rate = @CBRN_INTEGRATED_COMMAND_M2_REINFORCE
+			category_cbrn_armored_delivery_support = {
+				reliability = @CBRN_INTEGRATED_COMMAND_M2_CHEMICAL_RELIABILITY
+			}
+			army_intel_factor = @CBRN_INTEGRATED_COMMAND_M2_ARMY_INTEL
+			intel_from_combat_factor = @CBRN_INTEGRATED_COMMAND_M2_INTEL_FROM_COMBAT
+			effect = {
+				cbrn_record_operations_mastery_two = yes
+				custom_effect_tooltip = integrated_chemical_operations_signal_intelligence_fusion_tt
+			}
+		}
+
+		countercontamination_routing = {
+			mastery = @CBRN_INTEGRATED_COMMAND_REWARD_THRESHOLD
+			category_cbrn_hq = {
+				supply_consumption = @CBRN_INTEGRATED_COMMAND_M3_CHEMICAL_SUPPLY
+			}
+			category_cbrn_armored_delivery_support = {
+				supply_consumption = @CBRN_INTEGRATED_COMMAND_M3_CHEMICAL_TANK_SUPPLY
+				reliability = @CBRN_INTEGRATED_COMMAND_M3_CHEMICAL_TANK_RELIABILITY
+			}
+			attrition = @CBRN_INTEGRATED_COMMAND_M3_ATTRITION
+			effect = {
+				cbrn_record_operations_mastery_three = yes
+				custom_effect_tooltip = integrated_chemical_operations_countercontamination_routing_tt
+			}
+		}
+
+		air_surface_chemical_link = {
+			mastery = @CBRN_INTEGRATED_COMMAND_REWARD_THRESHOLD
+			coordination_bonus = @CBRN_INTEGRATED_COMMAND_M4_COORDINATION
+			category_chemical_support_companies = {
+				soft_attack = @CBRN_INTEGRATED_COMMAND_M4_CHEMICAL_SOFT_ATTACK
+			}
+			effect = {
+				cbrn_record_operations_mastery_four = yes
+				custom_effect_tooltip = integrated_chemical_operations_air_surface_chemical_link_tt
+			}
+		}
+
+		theater_intelligence_overmatch = {
+			mastery = @CBRN_INTEGRATED_COMMAND_REWARD_THRESHOLD
+			army_org_factor = @CBRN_INTEGRATED_COMMAND_M5_ORG
+			coordination_bonus = @CBRN_INTEGRATED_COMMAND_M5_COORDINATION
+			recon_factor = @CBRN_INTEGRATED_COMMAND_M5_RECON
+			effect = {
+				cbrn_record_operations_mastery_five = yes
+				custom_effect_tooltip = integrated_chemical_operations_theater_intelligence_overmatch_tt
+			}
+		}
+	}
+}

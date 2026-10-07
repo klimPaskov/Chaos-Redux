@@ -6,23 +6,30 @@
 
 The accepted 2026-09-20 ceilings apply to combined legal sources, not to each trait independently. The parent and technology owner retuned doctrine, spirits, High Command, and technology after the first audit. The completion auditor then recomputed strict all-independent upper bounds for separately legal scenarios; the table gives source arithmetic, not the engine's final stat formula. Controlled Retaliation, Theater Contamination, and Terminal Hazard share one `army_spirit` slot; Mask Discipline and Hazard Assault Cadres share one `division_command_spirit` slot. No effective-cap or engine acceptance is claimed here.
 
-| Endpoint and legal posture | Strict all-independent source bound | Accepted ceiling |
+| Endpoint and legal posture | Independent-source budget bound | Accepted ceiling |
 | --- | ---: | ---: |
 | Army attack with Terminal | +4.0375% | +5% |
 | Army organisation with Controlled Retaliation and Mask Discipline | +4.5807% | +5% |
 | Planning with Theater | +14.7368% | +15% |
 | Coordination with Terminal | +7.7496% | +8% |
-| Reinforcement | +2 percentage points in source | +2 percentage points |
-| Line artillery doctrine soft attack; with legal global attack | +9.7980%; +14.2311% combined | +10% doctrine; +15% conventional |
-| Support artillery doctrine soft attack; with legal global attack | +9.8246%; +14.2588% combined | +10% doctrine; +15% conventional |
-| Two-tech projector soft/hard/defense/breakthrough | +32.8602% / +32.8455% / +31.4692% / +33.7780% | +35% dedicated static each |
-| Projector organisation | +33.6309% | +35% dedicated static |
-| Armored delivery soft/hard/defense/breakthrough/organisation | +26.4582% / +4.0375% / +21.5506% / +21.6201% / +26.3683% | +35% dedicated static each |
-| Chaos Battalion soft/defense/breakthrough/organisation | +20.1633% / +10% / +33.2278% / +33.3404% | +35% dedicated static each |
-| Protection Company attack/defense | +14.4413% / +10% | +35% dedicated static each |
-| CBRN reconnaissance utility from three hidden weather technologies | +30% on base 4 | +35% dedicated static |
+| Reinforcement | +2 percentage points | +2 percentage points |
+| Line/support artillery doctrine soft attack; with legal global attack | +9.5000%; +13.9211% | +10% doctrine; +15% conventional |
+| Projector soft/hard/defense/breakthrough/organisation | +32.8602% / +32.8455% / +34.7559% / +34.5832% / +33.6309% | +35% dedicated static each |
+| Armored delivery soft/hard/defense/breakthrough/organisation | +26.4582% / +4.0375% / +24.5894% / +24.5894% / +26.3683% | +35% dedicated static each |
+| Chaos Battalion soft/defense/breakthrough/organisation | +20.1633% / +12.7500% / +34.8490% / +33.3404% | +35% dedicated static each |
+| Protection Company nominal attack/defense | +14.4413% / +12.7500% | +35% dedicated static each |
+| CBRN reconnaissance utility from hidden weather technologies | +30% on base 4 | +35% dedicated static |
 
-The strict source products include 1.5% Protected Assault mastery IV × 2.5% Terminal army attack for +4.0375%, four separate +1% organisation sources × the 0.5% Biological Security Director source for +4.5807%, and legal Theater planning sources 1% × 1% × 3% × 4% × 5% for +14.7368%. Terminal, Theater, and Controlled Retaliation are distinct scenarios. The 1942 Battalion technology adds 11 flat organisation on base 40; its strict combination with legal organisation sources is +33.3404%, not a flat 11% grant. `common/technologies/chaosx_technologies.txt` now gives each projector tier 2.5% soft attack, 13% hard attack, 4% defense, and 7.5% breakthrough, and the three hidden reconnaissance technologies add 0.2, 0.4, and 0.6 flat to base 4. The accepted ceilings are source-bounded under this conservative all-independent model, but engine aggregation and the earned `biological_operations_veteran` skill conversion remain unverified; the conservative defense product including its source-informed 2.5% contribution is +34.7559%.
+The [October 7 source audit](../../plans/chaos_warfare_system_plans/subagent_handoffs/2026-10-07_doctrine_reward_budget_source_checks.md) resolves actual category membership and tests all thirteen retained roles under pooled identical-stat and independent-layer models.
+Its 137 checks reproduce the overlapping armored organization and conservative breakthrough failures in the captured baseline, then place all sixty-five revised role/stat rows within their source budgets.
+Chaos Battalion receives one 15% mastery III breakthrough grant, four percent from its advanced doctrine technology, and eleven flat organization points on base forty.
+The conservative breakthrough bound reserves the possible 10% Cadres defense/breakthrough factor and 2.5% CBRN-earned defense skill, reaching +34.849%.
+Each of the two projector upgrades grants 2.5% soft attack, 13% hard attack, 4% defense and 6.5% breakthrough.
+Only Projector and the three armored delivery variants belong to the retained chemical-support category; Protection Company and HQs are not members.
+Projector receives Fire Support's five organization points, while armor receives only its own five, avoiding the ten-point overlap on base twenty-four.
+The generic radio/radar and ordinary vanilla progression are equal-baseline sources, not selectively removed from one side.
+These source bounds include the possible commander defense-skill layer but do not prove native modifier accumulation, actual division statistics or campaign mastery pacing.
+The unchanged conditional hazard endpoint scenarios below retain their separate country and spirit-slot limits.
 
 | Conditional endpoint | Largest source stack in a separate country- and spirit-slot-legal scenario | Source arithmetic |
 | --- | --- | ---: |
@@ -69,6 +76,26 @@ Chaos Warfare is visible to every country but available only when at least one a
 Adoption costs 100 Army Experience. `cbrn_chaos_warfare_adopt` initializes country data, records program, command, adoption, and establishment-complete flags, clears the retired pending/failure/closed-authority flags and obsolete occupation-law unlock, stores a mask-production baseline and peak use policy, unlocks the Operations and Intelligence HQ section plus the Gas Mask and Decontamination Detachment, and reconciles eligible doctrine capabilities. The source neither starts an establishment mission nor buys or sets a readiness amount; `cbrn_doctrine_raise_readiness_to_minimum` currently refreshes the country mask snapshot.
 
 `cbrn_chaos_warfare_establishment_requirements_met` remains a compatibility-named trigger for Event 027 selectors, but it now means doctrine-held research capability. It does not test an equipment reserve or fielded formation. No establishment timeout, paid remediation, or readiness purchase appears in the current doctrine decision file.
+
+## Reward timing and mastery contributors
+
+The [accepted reward correction](../../specs/chaos_warfare_system_specs/corrections/2026-10-07_doctrine_reward_mastery.md) supplies immediate Protection Company reliability and a substantial fifteen-percent assault breakthrough reward alongside the existing conditional battalion unlock.
+Armored delivery receives its five-percent breakthrough allowance on adoption and fifteen-percent track reliability at mastery I.
+Line/support artillery receive their nine-and-a-half-percent doctrine soft-attack allowance on fire-support adoption, and Integrated Command receives its twenty-five-percent reconnaissance allowance on adoption.
+Relocated fragments are removed rather than added a second time.
+The existing reward IDs, costs, thresholds, multipliers, effect calls and deployment prerequisites remain intact.
+
+| Track | Contributor roster |
+| --- | --- |
+| Protected assault | Protection Company, chemical reconnaissance, Field Medical, Biosecurity Assault, Chaos Battalion |
+| Sustained fire support | Projector Battery, ammunition train, Field Medical |
+| Specialized armored delivery | Light, medium and heavy armored delivery |
+| Integrated command | Operations HQ, Protection HQ, Medical HQ, Protection Company, chemical reconnaissance, Field Medical |
+
+The native lists cover all thirteen retained roles; a unit appears once within each track.
+The three armored entries are its retained chassis variants, not an engine-wide contributor cap.
+Additional eligible manpower can increase mastery gain, with the original multiplier retained so existing formations keep their rate.
+Compatibility flags with no runtime consumer do not create an independent movement, mask-use or exploitation reward.
 
 ## Institutional milestones
 

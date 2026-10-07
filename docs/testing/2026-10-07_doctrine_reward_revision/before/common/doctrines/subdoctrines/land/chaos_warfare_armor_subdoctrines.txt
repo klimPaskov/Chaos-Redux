@@ -1,0 +1,140 @@
+# ============================================================================
+# CHAOS REDUX - TOXIC ARMORED WARFARE
+# ============================================================================
+# The compatibility ID chemical_suppression represents sealed crews, close
+# armored delivery, and doctrine-backed nerve-agent killing methods in camps.
+# The third mastery unlocks the method; a researched nerve agent and real
+# payload stock remain required by the camp pipeline.
+# ============================================================================
+
+# Static doctrine fields use file-local parser values. They mirror the
+# corresponding cbrn_doctrine_cost, mastery, modifier, and AI constants.
+@CBRN_TOXIC_ARMOR_XP_COST = 100
+@CBRN_TOXIC_ARMOR_AI_BASE = 1.00
+@CBRN_TOXIC_ARMOR_AI_UNAVAILABLE = 0
+@CBRN_TOXIC_ARMOR_AI_COMMITTED = 2.00
+@CBRN_TOXIC_ARMOR_MASTERY_MULT = 14.00
+@CBRN_TOXIC_ARMOR_REWARD_THRESHOLD = 100
+@CBRN_TOXIC_ARMOR_ADOPTION_BREAKTHROUGH = 0.02
+@CBRN_TOXIC_ARMOR_M1_RELIABILITY = 0.05
+@CBRN_TOXIC_ARMOR_M1_CHEMICAL_SUPPRESSION = 0.10
+@CBRN_TOXIC_ARMOR_M2_CHEMICAL_ORGANISATION = 5
+@CBRN_TOXIC_ARMOR_M2_CHEMICAL_MORALE = 0.05
+@CBRN_TOXIC_ARMOR_M2_COORDINATION = 0.01
+@CBRN_TOXIC_ARMOR_M3_CHEMICAL_SUPPRESSION = 0.20
+@CBRN_TOXIC_ARMOR_M4_CHEMICAL_SUPPLY = -0.05
+@CBRN_TOXIC_ARMOR_M4_CHEMICAL_RELIABILITY = 0.05
+@CBRN_TOXIC_ARMOR_M4_CHEMICAL_BREAKTHROUGH = 0.03
+@CBRN_TOXIC_ARMOR_M5_COORDINATION = 0.01
+@CBRN_TOXIC_ARMOR_M5_CHEMICAL_INITIATIVE = 0.05
+@CBRN_TOXIC_ARMOR_M5_CHEMICAL_RELIABILITY = 0.05
+
+chemical_suppression = {
+	track = armor
+	name = SUBDOCTRINE_CHEMICAL_SUPPRESSION
+	description = CBRN_BALANCED_TOXIC_ARMOR_DESC
+	icon = GFX_doctrine_chemical_suppression_medium
+	reward_gfx = GFX_cbrn_doctrine_toxic_armor_reward_strip
+
+	xp_cost = @CBRN_TOXIC_ARMOR_XP_COST
+	xp_type = army
+
+	available = { has_doctrine = chaos_warfare }
+	visible = { always = yes }
+
+	ai_will_do = {
+		base = @CBRN_TOXIC_ARMOR_AI_BASE
+		modifier = {
+			factor = @CBRN_TOXIC_ARMOR_AI_UNAVAILABLE
+			NOT = { has_doctrine = chaos_warfare }
+		}
+		modifier = {
+			factor = @CBRN_TOXIC_ARMOR_AI_COMMITTED
+			OR = {
+				cbrn_profile_is_military_first = yes
+				cbrn_ai_route_allows_first_use = yes
+			}
+		}
+	}
+
+	mastery = {
+		multiplier = @CBRN_TOXIC_ARMOR_MASTERY_MULT
+		sub_units = {
+			cbrn_light_armored_delivery_detachment
+			cbrn_medium_armored_delivery_detachment
+			cbrn_heavy_armored_delivery_detachment
+		}
+	}
+
+	category_cbrn_armored_delivery_support = {
+		breakthrough = @CBRN_TOXIC_ARMOR_ADOPTION_BREAKTHROUGH
+	}
+
+	effect = { cbrn_record_toxic_armored_adoption = yes }
+
+	rewards = {
+		adamsite_emission_cells = {
+			mastery = @CBRN_TOXIC_ARMOR_REWARD_THRESHOLD
+			category_cbrn_armored_delivery_support = {
+				reliability = @CBRN_TOXIC_ARMOR_M1_RELIABILITY
+				suppression = @CBRN_TOXIC_ARMOR_M1_CHEMICAL_SUPPRESSION
+			}
+			effect = {
+				set_country_flag = cbrn_sealed_crew_compartments_unlocked
+				cbrn_record_armor_mastery_one = yes
+			}
+		}
+
+		armored_chemical_support_liaison = {
+			mastery = @CBRN_TOXIC_ARMOR_REWARD_THRESHOLD
+			category_cbrn_armored_delivery_support = {
+				max_organisation = @CBRN_TOXIC_ARMOR_M2_CHEMICAL_ORGANISATION
+				default_morale = @CBRN_TOXIC_ARMOR_M2_CHEMICAL_MORALE
+			}
+			coordination_bonus = @CBRN_TOXIC_ARMOR_M2_COORDINATION
+			effect = {
+				set_country_flag = cbrn_armored_agent_delivery_operations_unlocked
+				cbrn_record_armor_mastery_two = yes
+			}
+		}
+
+		zyklon_b_saturation_drills = {
+			mastery = @CBRN_TOXIC_ARMOR_REWARD_THRESHOLD
+			category_cbrn_armored_delivery_support = {
+				suppression = @CBRN_TOXIC_ARMOR_M3_CHEMICAL_SUPPRESSION
+			}
+			effect = {
+				set_country_flag = cbrn_camp_nerve_killing_mastery_unlocked
+				set_country_flag = cbrn_mobile_nerve_suppression_operations_unlocked
+				cbrn_record_armor_mastery_three = yes
+				custom_effect_tooltip = chemical_suppression_camp_nerve_methods_unlocked_tt
+			}
+		}
+
+		sealed_pressure_logistics = {
+			mastery = @CBRN_TOXIC_ARMOR_REWARD_THRESHOLD
+			category_cbrn_armored_delivery_support = {
+				supply_consumption = @CBRN_TOXIC_ARMOR_M4_CHEMICAL_SUPPLY
+				reliability = @CBRN_TOXIC_ARMOR_M4_CHEMICAL_RELIABILITY
+				breakthrough = @CBRN_TOXIC_ARMOR_M4_CHEMICAL_BREAKTHROUGH
+			}
+			effect = {
+				set_country_flag = cbrn_protected_breakthrough_logistics_unlocked
+				cbrn_record_armor_mastery_four = yes
+			}
+		}
+
+		catastrophic_shock_breakthrough = {
+			mastery = @CBRN_TOXIC_ARMOR_REWARD_THRESHOLD
+			coordination_bonus = @CBRN_TOXIC_ARMOR_M5_COORDINATION
+			category_cbrn_armored_delivery_support = {
+				initiative = @CBRN_TOXIC_ARMOR_M5_CHEMICAL_INITIATIVE
+				reliability = @CBRN_TOXIC_ARMOR_M5_CHEMICAL_RELIABILITY
+			}
+			effect = {
+				set_country_flag = cbrn_catastrophic_shock_operation_unlocked
+				cbrn_record_armor_mastery_five = yes
+			}
+		}
+	}
+}

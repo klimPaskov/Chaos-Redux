@@ -1,0 +1,172 @@
+# ============================================================================
+# CHAOS REDUX - CONTAMINANT FIRE SUPPORT
+# ============================================================================
+# The compatibility ID contaminant_firebases now represents projector control,
+# ammunition logistics, and prepared persistent fire plans. Doctrine rewards
+# only unlock adapters; payload and consequences remain in the shared pipeline.
+# ============================================================================
+
+# Static doctrine fields use file-local parser values. They mirror the
+# corresponding cbrn_doctrine_cost, mastery, modifier, and AI constants.
+@CBRN_CONTAMINANT_FIRE_XP_COST = 100
+@CBRN_CONTAMINANT_FIRE_AI_BASE = 1.00
+@CBRN_CONTAMINANT_FIRE_AI_UNAVAILABLE = 0
+@CBRN_CONTAMINANT_FIRE_AI_COMMITTED = 2.00
+@CBRN_CONTAMINANT_FIRE_MASTERY_MULT = 16.00
+@CBRN_CONTAMINANT_FIRE_REWARD_THRESHOLD = 100
+@CBRN_CONTAMINANT_FIRE_ADOPTION_RELIABILITY = 0.05
+@CBRN_CONTAMINANT_FIRE_ADOPTION_CHEMICAL_SOFT_ATTACK = 0.05
+@CBRN_CONTAMINANT_FIRE_ADOPTION_CHEMICAL_BREAKTHROUGH = 0.05
+@CBRN_CONTAMINANT_FIRE_ADOPTION_CHEMICAL_DEFENSE = 0.05
+@CBRN_CONTAMINANT_FIRE_ADOPTION_LINE_ARTILLERY_SOFT_ATTACK = 0.04
+@CBRN_CONTAMINANT_FIRE_ADOPTION_SUPPORT_ARTILLERY_SOFT_ATTACK = 0.04
+@CBRN_CONTAMINANT_FIRE_ADOPTION_SUPPORT_ARTILLERY_BREAKTHROUGH = 0.03
+@CBRN_CONTAMINANT_FIRE_M1_RELIABILITY = 0.05
+@CBRN_CONTAMINANT_FIRE_M1_CHEMICAL_ORGANISATION = 5
+@CBRN_CONTAMINANT_FIRE_M1_SUPPORT_ARTILLERY_SOFT_ATTACK = 0.02
+@CBRN_CONTAMINANT_FIRE_M2_COORDINATION = 0.01
+@CBRN_CONTAMINANT_FIRE_M2_LINE_ARTILLERY_SOFT_ATTACK = 0.03
+@CBRN_CONTAMINANT_FIRE_M2_LINE_ARTILLERY_BREAKTHROUGH = 0.03
+@CBRN_CONTAMINANT_FIRE_M2_SUPPORT_ARTILLERY_SOFT_ATTACK = 0.02
+@CBRN_CONTAMINANT_FIRE_M2_CHEMICAL_DEFENSE = 0.05
+@CBRN_CONTAMINANT_FIRE_M3_COORDINATION = 0.01
+@CBRN_CONTAMINANT_FIRE_M4_RELIABILITY = 0.05
+@CBRN_CONTAMINANT_FIRE_M4_LINE_ARTILLERY_SOFT_ATTACK = 0.025
+@CBRN_CONTAMINANT_FIRE_M5_CHEMICAL_SOFT_ATTACK = 0.05
+@CBRN_CONTAMINANT_FIRE_M5_CHEMICAL_BREAKTHROUGH = 0.05
+@CBRN_CONTAMINANT_FIRE_M5_SUPPORT_ARTILLERY_SOFT_ATTACK = 0.015
+
+contaminant_firebases = {
+	track = combat_support
+	name = SUBDOCTRINE_CONTAMINANT_FIREBASES
+	description = CBRN_BALANCED_CONTAMINANT_FIRE_DESC
+	icon = GFX_doctrine_contaminant_firebases_medium
+	reward_gfx = GFX_cbrn_doctrine_contaminant_fire_reward_strip
+
+	xp_cost = @CBRN_CONTAMINANT_FIRE_XP_COST
+	xp_type = army
+
+	available = { has_doctrine = chaos_warfare }
+	visible = { always = yes }
+
+	ai_will_do = {
+		base = @CBRN_CONTAMINANT_FIRE_AI_BASE
+		modifier = {
+			factor = @CBRN_CONTAMINANT_FIRE_AI_UNAVAILABLE
+			NOT = { has_doctrine = chaos_warfare }
+		}
+		modifier = {
+			factor = @CBRN_CONTAMINANT_FIRE_AI_COMMITTED
+			OR = {
+				cbrn_profile_is_military_first = yes
+				cbrn_profile_is_industrial_reserve = yes
+			}
+		}
+	}
+
+	mastery = {
+		multiplier = @CBRN_CONTAMINANT_FIRE_MASTERY_MULT
+		sub_units = {
+			cbrn_chemical_projector_battery
+			cbrn_chemical_ammunition_train
+		}
+	}
+
+	category_cbrn_artillery_logistics = {
+		reliability = @CBRN_CONTAMINANT_FIRE_ADOPTION_RELIABILITY
+	}
+
+	category_chemical_support_companies = {
+		soft_attack = @CBRN_CONTAMINANT_FIRE_ADOPTION_CHEMICAL_SOFT_ATTACK
+		breakthrough = @CBRN_CONTAMINANT_FIRE_ADOPTION_CHEMICAL_BREAKTHROUGH
+		defense = @CBRN_CONTAMINANT_FIRE_ADOPTION_CHEMICAL_DEFENSE
+	}
+
+	category_line_artillery = {
+		soft_attack = @CBRN_CONTAMINANT_FIRE_ADOPTION_LINE_ARTILLERY_SOFT_ATTACK
+	}
+
+	category_support_artillery = {
+		soft_attack = @CBRN_CONTAMINANT_FIRE_ADOPTION_SUPPORT_ARTILLERY_SOFT_ATTACK
+		breakthrough = @CBRN_CONTAMINANT_FIRE_ADOPTION_SUPPORT_ARTILLERY_BREAKTHROUGH
+	}
+
+	effect = { cbrn_record_contaminant_fire_support_adoption = yes }
+
+	rewards = {
+		livens_fire_control_cells = {
+			mastery = @CBRN_CONTAMINANT_FIRE_REWARD_THRESHOLD
+			category_cbrn_offensive_delivery = {
+				reliability = @CBRN_CONTAMINANT_FIRE_M1_RELIABILITY
+			}
+			category_chemical_support_companies = {
+				max_organisation = @CBRN_CONTAMINANT_FIRE_M1_CHEMICAL_ORGANISATION
+			}
+			category_support_artillery = {
+				soft_attack = @CBRN_CONTAMINANT_FIRE_M1_SUPPORT_ARTILLERY_SOFT_ATTACK
+			}
+			effect = {
+				set_country_flag = cbrn_projector_fire_control_unlocked
+				cbrn_record_combat_support_mastery_one = yes
+			}
+		}
+
+		counterbattery_gas_synchronization = {
+			mastery = @CBRN_CONTAMINANT_FIRE_REWARD_THRESHOLD
+			coordination_bonus = @CBRN_CONTAMINANT_FIRE_M2_COORDINATION
+			category_line_artillery = {
+				soft_attack = @CBRN_CONTAMINANT_FIRE_M2_LINE_ARTILLERY_SOFT_ATTACK
+				breakthrough = @CBRN_CONTAMINANT_FIRE_M2_LINE_ARTILLERY_BREAKTHROUGH
+			}
+			category_support_artillery = {
+				soft_attack = @CBRN_CONTAMINANT_FIRE_M2_SUPPORT_ARTILLERY_SOFT_ATTACK
+			}
+			category_chemical_support_companies = {
+				defense = @CBRN_CONTAMINANT_FIRE_M2_CHEMICAL_DEFENSE
+			}
+			effect = {
+				set_country_flag = cbrn_counterbattery_chemical_fire_unlocked
+				cbrn_record_combat_support_mastery_two = yes
+			}
+		}
+
+		raid_targeting_teams = {
+			mastery = @CBRN_CONTAMINANT_FIRE_REWARD_THRESHOLD
+			coordination_bonus = @CBRN_CONTAMINANT_FIRE_M3_COORDINATION
+			effect = {
+				set_country_flag = cbrn_chemical_shell_logistics_unlocked
+				cbrn_record_combat_support_mastery_three = yes
+				custom_effect_tooltip = contaminant_firebases_raid_targeting_teams_tt
+			}
+		}
+
+		persistent_agent_distribution = {
+			mastery = @CBRN_CONTAMINANT_FIRE_REWARD_THRESHOLD
+			category_cbrn_artillery_logistics = {
+				reliability = @CBRN_CONTAMINANT_FIRE_M4_RELIABILITY
+			}
+			category_line_artillery = {
+				soft_attack = @CBRN_CONTAMINANT_FIRE_M4_LINE_ARTILLERY_SOFT_ATTACK
+			}
+			effect = {
+				cbrn_record_combat_support_mastery_four = yes
+				custom_effect_tooltip = contaminant_firebases_persistent_agent_distribution_tt
+			}
+		}
+
+		deep_contamination_fireplans = {
+			mastery = @CBRN_CONTAMINANT_FIRE_REWARD_THRESHOLD
+			category_chemical_support_companies = {
+				soft_attack = @CBRN_CONTAMINANT_FIRE_M5_CHEMICAL_SOFT_ATTACK
+				breakthrough = @CBRN_CONTAMINANT_FIRE_M5_CHEMICAL_BREAKTHROUGH
+			}
+			category_support_artillery = {
+				soft_attack = @CBRN_CONTAMINANT_FIRE_M5_SUPPORT_ARTILLERY_SOFT_ATTACK
+			}
+			effect = {
+				cbrn_record_combat_support_mastery_five = yes
+				custom_effect_tooltip = contaminant_firebases_deep_contamination_fireplans_tt
+			}
+		}
+	}
+}
