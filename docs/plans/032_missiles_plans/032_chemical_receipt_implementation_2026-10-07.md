@@ -4,6 +4,13 @@ Disposition: `implemented` for the chemical reservation and custody source; fina
 Acceptance basis: the user requires real special-payload preparation, once-only payment, exact site custody, physical capture/loss settlement and shared CBRN consequences under the complete accepted Event 032 specification.
 This is not a completion claim for the event or the supplied three-error live QA report.
 
+Published implementation commit: `5793df4345a413dcf7cadf5aeae99597a859020a`, containing 103 owned paths, including exact before-source snapshots and permanent icon provenance.
+The 43-test chemical receipt suite also passed against a 28-file read-only export of the isolated proposed tree, independently of the other agents' uncommitted split changes.
+All 19 indexed probability snapshots were checked as raw Git blobs against their recorded SHA-256 hashes, with path-local attributes preserving their bytes.
+The first post-publication index reconciliation used a PowerShell text pipe that Git silently ignored; it was repaired with raw UTF-8/NUL input, rehearsed from the parent tree and verified against all 103 expected entries before handoff.
+No working files were reset, no lock was removed and unrelated staged/unstaged ownership was preserved.
+The shared-commit skill records that reusable transport pitfall.
+
 ## Gameplay changes
 
 Chemical preparation debits the exact prepared-air equipment through the CBRN-owned measured reservation API.

@@ -27,6 +27,11 @@ For example, when one Markdown file contains your edited paragraph and another a
 
 Never use `git add -A`, a broad pathspec, a normal `git commit` against the shared index, or `git reset --hard` for this workflow. If the ref update succeeded but index reconciliation cannot be completed safely, report the new commit and exact remaining index state; do not rewrite or reset the commit automatically.
 
+Do not feed `git update-index --index-info` through a PowerShell text pipeline: CRLF conversion can make Git ignore every supplied path while returning success.
+Prefer the path-specific commands above; if batching is needed, send raw UTF-8, NUL-delimited entries to `git update-index -z --index-info` through redirected process stdin.
+Rehearse reconciliation from the captured pre-change index or parent tree, not from the proposed tree, because an ignored no-op would leave a proposed-tree rehearsal deceptively unchanged.
+After publication, compare the affected real-index entries with the reviewed expected entries; exit status alone does not establish reconciliation.
+
 This checkout lives under OneDrive, and the reconciliation step can fail with `Unable to create .git/index.lock: File exists` right after `update-ref`. Never hide that step's errors (no `|| true` or `2>/dev/null`): a silent failure leaves the committed paths staged as deletions or reversions against the new `HEAD`.
 Always confirm no `git` process is running, then wait and retry reconciliation before considering lock removal.
 Recheck the lock's identity and age across the wait/retry and remove only a provably stale lock; no observed `git` process alone is insufficient proof, and an active actor's lock must never be removed.
