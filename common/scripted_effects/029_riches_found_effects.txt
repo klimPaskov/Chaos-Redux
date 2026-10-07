@@ -1120,10 +1120,6 @@ riches_found_refresh_mine_contribution = {
 		add_to_variable = { riches_found_pressure_factor = riches_found_pressure_factor_gain }
 		multiply_variable = { riches_found_mine_contribution_score = riches_found_pressure_factor }
 		if = {
-			limit = { has_state_flag = riches_found_deep_project_active }
-			multiply_variable = { riches_found_mine_contribution_score = constant:riches_found_exposure.deep_output_loss_factor }
-		}
-		if = {
 			limit = { has_state_flag = riches_found_mine_damaged }
 			multiply_variable = { riches_found_mine_contribution_score = constant:riches_found_closure.damaged_output_factor }
 		}
@@ -1190,6 +1186,24 @@ riches_found_refresh_mine_contribution = {
 		}
 		if = { limit = { check_variable = { var = riches_found_concession_exposure value = constant:riches_found_threshold.concession_exposure_gate compare = greater_than_or_equals } } multiply_variable = { riches_found_mine_contribution_score = constant:riches_found_scaling.controller_evolution_penalty_factor } }
 		if = { limit = { check_variable = { riches_found_mine_contribution_score > constant:riches_found_event.public_value_maximum } } set_variable = { riches_found_mine_contribution_score = constant:riches_found_event.public_value_maximum } }
+		# The project withholds its share of actual output, including a mine
+		# whose uncommitted calculation would otherwise exceed the ceiling.
+		if = {
+			limit = { has_state_flag = riches_found_deep_project_active }
+			multiply_variable = { riches_found_mine_contribution_score = constant:riches_found_exposure.deep_output_loss_factor }
+		}
+		# Sealed deep sections remove part of the workable deposit permanently.
+		# Apply after the ordinary ceiling so later development cannot recover
+		# that lost capacity. A full partial seal already has its own lower
+		# operating factor and does not pay this reduction a second time.
+		if = {
+			limit = {
+				has_state_flag = riches_found_depths_sealed
+				NOT = { has_state_flag = riches_found_mine_partial_seal }
+				NOT = { has_state_flag = riches_found_account_terms_bound }
+			}
+			multiply_variable = { riches_found_mine_contribution_score = constant:riches_found_exposure.sealed_depth_output_factor }
+		}
 		if = {
 			limit = {
 				check_variable = { var = riches_found_mine_development value = constant:riches_found_threshold.mature_development compare = greater_than_or_equals }
