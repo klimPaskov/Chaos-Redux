@@ -657,6 +657,19 @@ bio_lifecycle_prepare_incubation_delay = {
 	clamp_temp_variable = { var = bio_incubation_days min = constant:bio_lifecycle_schedule.minimum_event_delay_days }
 }
 
+# State scope. Queues the already-computed delay after its caller records the
+# exact agent due day. Inputs: caller-owned bio_active_agent/bio_incubation_days.
+# No output or additional random draw; the caller owns schedule eligibility.
+bio_lifecycle_queue_incubation_event_internal = {
+	meta_effect = {
+		text = {
+			state_event = { id = cbrn_bio_lifecycle.[BIO_AGENT] days = [BIO_INCUBATION_DAYS] }
+		}
+		BIO_AGENT = "[?bio_active_agent|.0]"
+		BIO_INCUBATION_DAYS = "[?bio_incubation_days|.0]"
+	}
+}
+
 bio_lifecycle_schedule_incubation_for_current_agent = {
 	set_temp_variable = { bio_incubation_days = constant:bio_lifecycle_math.zero }
 	set_temp_variable = { bio_incubation_random_days = constant:bio_lifecycle_math.zero }
@@ -672,11 +685,10 @@ bio_lifecycle_schedule_incubation_for_current_agent = {
 				bio_lifecycle_prepare_incubation_delay = yes
 				set_variable = { bio_agent_[BIO_AGENT]_incubation_due_day = global.num_days }
 				add_to_variable = { bio_agent_[BIO_AGENT]_incubation_due_day = bio_incubation_days }
-				state_event = { id = cbrn_bio_lifecycle.[BIO_AGENT] days = [BIO_INCUBATION_DAYS] }
+				bio_lifecycle_queue_incubation_event_internal = yes
 			}
 		}
 		BIO_AGENT = "[?bio_active_agent|.0]"
-		BIO_INCUBATION_DAYS = "[?bio_incubation_days|.0]"
 	}
 }
 

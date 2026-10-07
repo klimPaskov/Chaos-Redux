@@ -46,7 +46,8 @@ No native battle, planner, callback cardinality, equipment disposition, complete
 1. **Incubation timing:** `bio_lifecycle_schedule_incubation_for_current_agent` in `common/scripted_effects/biological_lifecycle_effects.txt:660-680` initializes delay to zero, supplies it as a meta argument and computes the delay inside the expanded text.
    The eager source model captures an event delay of zero while the real getter returns five and the stored due day becomes fifteen from fixture day ten.
    This is an explicit source-order concern, not an omitted profile fixture or another demonstrated unowned getter return.
-   Resolve the native meta-argument timing contract and the downstream due-day handler before claiming incubation timing; any repair must preserve one scheduling flag, the agent-specific delay and its randomized extension.
+   The [incubation timing contract](2026-10-07_biological_incubation_timing.md) constructs the native event after calculation and preserves the scheduler guard, single draw, due day and activation checks.
+   Source-model coverage is available there; native queue execution and stranded-schedule recovery remain open.
 2. **Other consumers:** eleven paired reset/dispatch callers remain untouched: Africa disease/laboratory paths, Brilliant Scientist release, missiles, doomsday, facility capture, field tests, connected spread, operative release, stockpile accidents and Japan campaign release.
    Their exact owners and locations are in the [caller map](subagent_handoffs/2026-10-07_biological_raid_lifetime_caller_map.json).
    The shared dispatcher changes preserve their existing accepted inputs and rejected cursors by source reasoning, but their full transactions require separate caller-ownership checks.
@@ -64,7 +65,8 @@ The audit records offline Data structures lines 435-443 for temporary lifetime a
 Source paths and revisions are preserved in the audit and test results.
 The [MCP receipt](../../testing/2026-10-07_biological_raid_lifetime/mcp_receipt.json) retains the exact before-event revision, selector and parent requests/results.
 The before `biological_native_raid_bridge.1` trace is partial and its complete artifact has not been read; its broad-inventory diagnostic cannot be assigned to this bridge from the summary.
-The matching narrow comparison returned `EVENT_REVISION_NOT_CACHED`, so no matched event graph/render comparison is available.
+The matching narrow comparison returned `EVENT_REVISION_NOT_CACHED`; the [installed route review](subagent_handoffs/2026-10-07_mcp_event_comparison_route_review.md) identifies the missing scan-graph baseline rather than a supported trace-to-graph conversion.
+No matched event graph/render comparison is available from that trace.
 Whole-file sabotage validation checked 153 commands and reported zero findings, but returned `valid=null` with five unknown-scope roots and 82 unchecked argument blocks; parameter semantics and helper execution remain uncovered.
 
 The [read-only probability handoff](subagent_handoffs/2026-10-07_biological_raid_lifetime_probability.md) retains the discovered complete two-entry battlefield blowback pool and the named unbound-input scenario.

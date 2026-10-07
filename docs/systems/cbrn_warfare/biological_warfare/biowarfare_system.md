@@ -167,3 +167,24 @@ Captured facilities are secured or destroyed through native land raids and never
 The doomsday route remains an explicitly authorized native raid exception whose selected state authenticates the wider batch release.
 
 Package scenario validation, balance recording, and the mapped specialist completion audits remain part of the wider CBRN completion stages and are not claimed by this guide.
+
+## Incubation scheduling API
+
+`bio_lifecycle_schedule_incubation_for_current_agent` in `common/scripted_effects/biological_lifecycle_effects.txt` operates on the exact affected state.
+Its input is the caller-owned temporary `bio_active_agent`, identifying one of the four ordinary agents; it has no returned output and invents no default agent.
+An incubating record without a scheduled activation marks its schedule, draws its delay once, rounds and clamps it using `bio_lifecycle_schedule`, and stores the exact due day before queuing its activation event.
+An absent or already scheduled incubation neither draws again nor overwrites its due day.
+Usage after selecting the current agent in the affected state is `bio_lifecycle_schedule_incubation_for_current_agent = yes`.
+
+The private `bio_lifecycle_queue_incubation_event_internal` reads the caller-owned selector and completed `bio_incubation_days` after that calculation.
+It has no output, default, additional random draw, receipt mutation or independent eligibility check.
+Its only side effect is one `cbrn_bio_lifecycle.<agent>` state event, with the ID and integer delay inserted into a literal native event statement when the helper executes.
+It is called only by the guarded scheduler after recording the due day.
+
+Activation requires the matching incubating and scheduled flags and the due day to have arrived.
+An accepted callback clears incubation scheduling, marks the agent active, performs existing detection, and schedules the agent's ordinary weekly tick.
+An early or repeated callback cannot activate the record a second time.
+Per-agent flags and due dates allow several agents to incubate independently in the same state.
+No worldwide polling hook is used.
+
+The [timing evidence](../../../plans/chaos_warfare_system_plans/2026-10-07_biological_incubation_timing.md) distinguishes the source-tested delay/guard contract from native queue execution and recovery of stranded schedules, which remain unverified.

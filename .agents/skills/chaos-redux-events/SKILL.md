@@ -708,6 +708,11 @@ Scripted effects and scripted triggers do not expand `$PARAMETER$` placeholders 
 Pass inputs through documented variables or tokens and invoke the helper with `= yes`.
 For literal-only fields, use `[PARAMETER]` inside `meta_effect` or `meta_trigger` `text` with a matching replacement declared on that meta block; consult installed documentation and a vanilla precedent before relying on a substitution.
 
+Meta replacements are captured while the `text` is built, before its effects execute, so compute a delay or amount before invoking the meta block that consumes it.
+If that computation belongs behind a dynamic meta guard, call a small owner helper after the computation inside the guarded text, and let that helper build the literal-consuming meta block.
+Preserve eligibility, exactly one random draw, due-record ordering, and duplicate checks; do not move RNG ahead of the guard to resolve capture timing.
+Verify dynamic support for the specific effect field against installed documentation, the offline wiki, and vanilla; a `country_event` variable-delay precedent does not establish `state_event` support.
+
 ### 8. Super-event integration
 
 If the event shows or drives a super event, wire the whole package:

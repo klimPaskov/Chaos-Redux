@@ -361,6 +361,16 @@ The [parent-reviewed repair](2026-10-07_biological_raid_service_integrity.md) ad
 The parent reran 150 source-model cases covering ordinary battlefield, strategic and sabotage outcomes, nested parameter/results, failed-attempt evidence, reset defaults, retaliation, exact marker bridges and accepted/rejected storage.
 The model reproduces 68 baseline value/branch failures and five reset-ownership failures.
 These results do not prove full outbreak potency, native reservations, cancellation or callback uniqueness; accepted repeated battlefield seeds still strengthen the existing episode under its source contract.
-Eleven other consumers remain queued, and the scheduler can capture a zero-day meta argument before calculating its actual delay under the eager model; native timing remains unresolved.
+Eleven other consumers remain queued.
+The [incubation timing contract](2026-10-07_biological_incubation_timing.md) constructs the callback after the delay calculation; native timing remains unverified.
 Partial command validation, missing event revision and unresolved/surface-empty probability comparison remain explicit evidence gaps.
 The native raid guide documents the storage API and existing cure-bomb reservation, with no workbook, public text or asset change.
+
+## Biological incubation callback timing
+
+The [timing repair](2026-10-07_biological_incubation_timing.md) builds the literal state-event delay after the existing guarded calculation and due-day write.
+The parent reran 20 independent source-model cases, covering all four agents, minimum/midpoint/near-maximum draws, early/exact/duplicate activation and independent records in one state.
+The getter, random distribution constants, callback IDs, duplicate checks and weekly scheduler are unchanged.
+The source-level zero-delay/future-due defect is repaired without another player action or world pulse.
+Native event delivery, wider lifecycle execution and recovery of an already stranded scheduled record remain unverified; the exact getter has no surfaced probability candidate and no pre-edit scan graph was captured for canonical event comparison.
+This is bounded source implementation, not full CBRN completion.

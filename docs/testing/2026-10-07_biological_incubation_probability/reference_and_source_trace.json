@@ -1,0 +1,30 @@
+{
+  "installedDocument": {
+    "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Hearts of Iron IV\\documentation\\effects_documentation.md",
+    "section": "set_variable_to_random, lines 7910-7926",
+    "sourceRevision": "2cdc93d26775990468eed167442f7a416b13059fb8fe07d139b54250b79209af",
+    "rule": "The default random value is in [0,1); explicit min/max values use [min,max)."
+  },
+  "offlineWiki": {
+    "path": "paradox_wiki/Effects - Hearts of Iron 4 Wiki.md",
+    "section": "set_variable_to_random row, line 707",
+    "reusedFrom": "Previously read offline reference manifest docs/testing/2026-10-07_biological_raid_probability/reference_manifest.json"
+  },
+  "sourceExpression": {
+    "base": "bio_lifecycle_schedule.incubation_anthrax_days",
+    "randomSpan": "bio_lifecycle_schedule.incubation_anthrax_random_days",
+    "otherAgentPairs": [
+      "bio_lifecycle_schedule.incubation_plague_days / incubation_plague_random_days",
+      "bio_lifecycle_schedule.incubation_tularemia_days / incubation_tularemia_random_days",
+      "bio_lifecycle_schedule.incubation_smallpox_days / incubation_smallpox_random_days"
+    ],
+    "operations": [
+      "random draw into bio_incubation_random_roll",
+      "multiply by bio_incubation_random_days",
+      "add to bio_incubation_days",
+      "round",
+      "clamp by bio_lifecycle_schedule.minimum_event_delay_days"
+    ],
+    "numericConstantsRead": false
+  }
+}

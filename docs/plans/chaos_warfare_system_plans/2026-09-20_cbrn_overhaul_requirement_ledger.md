@@ -314,6 +314,15 @@ The [handoff and exact matrix](../020_black_plague_plans/subagent_handoffs/2026-
 The [bounded repair](2026-10-07_biological_raid_service_integrity.md) owns returning payload, selected-result, attribution, reset-default and acceptance fields across the three ordinary biological resolver families and five release adapters.
 The parent reviewed all 63 declarations and reran 150 actual-source cases, reproducing 68 baseline value/branch failures and five reset-ownership failures.
 The original payment, target, policy, tuning, weighted bodies and statement order remain intact.
-CBRN-03 remains incomplete: eleven other paired consumers need equivalent review, native callback/cancellation settlement remains unproved, and the incubation scheduler's zero-before-meta delay creates an unresolved timing concern.
+CBRN-03 remains incomplete: eleven other paired consumers need equivalent review, and native callback/cancellation settlement and incubation-queue execution remain unproved.
 MCP event comparison lacks its retained revision; the complete discovered blowback pool has unresolved computed weights and its snapshot comparison returns no weighted surface.
 No gameplay simplification or new replay mechanism is introduced.
+
+## Biological incubation callback timing
+
+The [timing repair](2026-10-07_biological_incubation_timing.md) builds the literal state-event delay after the existing guarded calculation and due-day write.
+The parent reran 20 independent source-model cases, covering all four agents, minimum/midpoint/near-maximum draws, early/exact/duplicate activation and independent records in one state.
+The getter, random distribution constants, callback IDs, duplicate checks and weekly scheduler are unchanged.
+The source-level zero-delay/future-due defect is repaired without another player action or world pulse.
+Native event delivery, wider lifecycle execution and recovery of an already stranded scheduled record remain unverified; the exact getter has no surfaced probability candidate and no pre-edit scan graph was captured for canonical event comparison.
+This is bounded source implementation, not full CBRN completion.
