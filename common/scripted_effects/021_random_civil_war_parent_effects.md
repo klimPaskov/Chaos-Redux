@@ -237,3 +237,14 @@ The exact 2,005-entry arithmetic fixture retains FRA's 999 and BRA's 1,002 ticke
 This is a source/arithmetic uniqueness check, not engine execution or a numeric campaign probability certificate.
 The flag is cleared after the loop and the regular target expires with the event chain.
 No delayed event reads the draw flag.
+
+## Candidate output ownership
+
+`event021_parent_build_front_plan` directly initializes the seventeen aligned optional candidate arrays and their validity/count scalars before either fresh collection or frozen replay.
+Frozen candidates are loaded from the exact durable country receipt at this consumption point, without rerolling, rather than depending on temporary outputs forwarded by the earlier connected-state planner.
+`event021_parent_freeze_scenario_plan` directly owns the same outputs before it collects and freezes optional rows.
+`event021_parent_apply_frozen_scenario_plan` owns replay outputs for its immediate validity check; the later builder independently replays the receipt for consumption.
+The array suffixes, scopes, initial values and nested helper contracts are listed in `021_random_civil_war_dynamic_front_candidate_effects.md`.
+The normal opening and scenario primary-anchor selectors create `event021_anchor_state_score` before every scorer call whose result they consume.
+The normal front builder owns its route/goal mapper outputs, and the same-tag builder owns its route mapper output.
+These initialization and exact-replay requirements change no scoring formula, route mapping, shared capacity, scenario timing or numeric tuning.

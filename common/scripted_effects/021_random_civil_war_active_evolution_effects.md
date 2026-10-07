@@ -60,6 +60,10 @@ When no source is deferred the review finishes and `event021_parent_finish_activ
 ### Candidates
 
 `event021_parent_collect_active_front_candidates` fills the same aligned candidate scratch as the opening collector, with `event021_parent_dynamic_active_mode` set to one for the shared region grower.
+The source-review caller directly initializes all seventeen forwarded `event021_parent_dynamic_optional_front_*` arrays before collection: archetypes, routes, anchors, sources, actor scopes, actor types, relationships, goals, packages, package regions, package depths, package archetypes, state weights, state counts, state offsets, selected routes and selected states.
+The collector directly initializes the full reset helper's twenty-seven scratch arrays before entering reset, grower or appender helpers; the nested outputs must survive into the collector as well as into its caller.
+The collector initializes `event021_anchor_state_score` before each state-score call whose result enters its anchor score pool.
+These are temporary-output ownership requirements, not extra candidates, caps, route substitutions or score changes.
 Its pool is the source's own held states that pass `event021_parent_active_source_state_candidate`: populated, with infrastructure, not the source capital, not another front's capital, and not reserved, marked, or held by a scenario.
 Routes come from the source's own route evidence flags.
 The detachable state budget is `maximum_detach_share` of that pool, never cutting the source below `minimum_remnant_states`.
@@ -71,6 +75,8 @@ When the source is the government itself and the crisis is neither an Event 006 
 
 `event021_parent_build_active_front_rows` keeps a candidate only when the source capital's connected region, measured by `event021_parent_measure_active_source_remnant`, loses exactly the candidate's own states and stays at or above `minimum_remnant_states`.
 The flood fill uses the temporary state flag `event021_active_remnant_reach` and clears it before returning.
+Before the first measurement, the builder directly initializes the output array `event021_active_remnant_reach` together with the existing scalar outputs `event021_active_remnant_reached` and `event021_active_remnant_growth`.
+All three outputs are caller-owned across repeated measurements; this preserves the baseline membership needed to detect a region that would disconnect retained states.
 Kept ordinary rows split the child budget by region weight with whole divisions; a row below `minimum_child_divisions` is dropped rather than borrowing from a sibling.
 `event021_parent_append_active_front_row` writes each kept row to the government's own `random_civil_war_active_front_*` arrays with a fresh front ID, the source front ID and generation, the exact state span, its stockpile share (its divisions over the source's, clamped between `minimum_child_stockpile_share` and `event021_parent_tuning.maximum_actor_size`), and navy and air shares only when its span holds a naval base or an airfield.
 `event021_parent_validate_active_front_receipt` publishes `random_civil_war_active_front_transaction_ready` only for aligned rows, unique positive IDs, positive contiguous exhaustive spans, unique states, anchors inside their own spans, every state still held by the source, and enough spare fronts.
@@ -116,7 +122,9 @@ Ruritania's own review finds no route, so its result is no side, and the review 
 
 ## Validation limits
 
-The review, candidate, remnant, and commit paths are source-reviewed only.
+The review, candidate, remnant, and commit paths have source review; bounded actual-source fixtures additionally execute receipt validation, complete remnant measurement and the builder's state-retention phase with conservative helper-return storage cleanup.
+The connected-leaf fixture is rejected by the pre-repair committed builder and admitted after caller-owned membership is established; the articulation-region fixture remains rejected and leaves no state markers.
+These fixtures do not execute the builder's force-allocation phase or native commit adapters.
 Native civil-war rounding, stockpile and manpower transfer on rollback, and live campaign behavior remain `needs_live_game` evidence for the user.
 No MCP lifecycle or probability certificate is claimed.
 A narrow `hoi4.event_inspect` lint of `chaosx.nr21.20` (depth 2, helpers not expanded) returned `EVENT_INSPECTED_PARTIAL` with zero lint issues and zero blocking diagnostics at source revision `862e183c2c76633803bdee1163396a2ff44a2ede00700dcbe238e41fa3e090ab`; the server deferred helper projection, so the scripted helpers behind the callback are not covered by that result.
