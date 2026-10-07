@@ -1,0 +1,613 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 028 ASTEROID INCOMING CONSTANTS
+# ============================================================================
+# Event-owned identifiers and tuning for the target lock, bounded land-state
+# planner, physical receipts, dust ledger, and mineral-site adapter. The main
+# event, decisions, and presentation layers own their own identifiers; these
+# values are the narrow contracts consumed by 028 helper files.
+# ============================================================================
+
+asteroid_incoming_presentation = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+	poll_days = 1
+	poll_hours = 24
+	news_opening = 29
+	news_forecast = 30
+	news_impact = 32
+	news_winter_easing = 92
+	news_residual_haze = 93
+	news_clear_sky = 94
+	news_miss = 96
+	news_unavailable = 97
+}
+
+asteroid_incoming_runtime = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	zero = 0
+	one = 1
+	first_array_index = 0
+	loop_increment = 1
+	lock_duration_days = 2
+	maximum_footprint_ring = 3
+	maximum_fragment_ring = 2
+	# Largest ordinary province cap in installed 00_buildings.txt: ports/forts.
+	# Railways are network objects and do not use this adapter.
+	maximum_province_building_level = 10
+	minimum_fragment_sites = 3
+	minimum_fragment_centers_to_apply = 2
+	maximum_fragment_sites = 6
+	fragment_slot_one = 1
+	fragment_slot_two = 2
+	fragment_slot_three = 3
+	fragment_slot_four = 4
+	fragment_slot_five = 5
+	fragment_slot_six = 6
+	minimum_target_pair_count = 3
+	target_country_minimum_usable_states = 2
+	maximum_fragment_selection_attempts = 100
+	secondary_disaster_maximum = 4
+	secondary_dust_per_event = 2
+	super_event_visible_days = 14
+	# Hours between the main strike's map visual and each fragment centre's
+	# visual, independently of the single physical damage transaction.
+	fragment_visual_interval_hours = 4
+	fragment_site_goal_at_600 = 3
+	fragment_site_goal_at_700 = 4
+	fragment_site_goal_at_800 = 5
+	fragment_site_goal_at_900 = 6
+	recovery_month_days = 30
+	collector_hold_days = 180
+	global_achievement_deadline_days = 1095
+	main_capture_hold_days = 30
+	fragmentation_chaos_threshold = 600
+	minerals_chaos_threshold = 800
+	fragment_site_threshold_700 = 700
+	fragment_site_threshold_800 = 800
+	fragment_site_threshold_900 = 900
+	collector_minimum_controlled_fragments = 3
+	planner_main = 1
+	planner_fragment = 2
+	ring_one = 1
+	ring_two = 2
+	ring_three = 3
+	target_score_base = 100
+	target_score_capital = 40
+	target_score_victory_point = 25
+	target_score_population_large = 30
+	target_score_population_medium = 15
+	target_score_industry = 15
+	target_score_supply = 15
+	target_score_rail = 10
+	target_score_infrastructure = 10
+	target_score_air_base = 12
+	target_score_naval_base = 12
+	target_score_neighbor = 10
+	target_score_frontline_penalty = -30
+	target_score_reachable_state = 8
+	target_score_isolation_threshold = 6
+	main_ring_one_modifier_days = 720
+	main_ring_two_modifier_days = 405
+	main_ring_three_modifier_days = 180
+	fragment_ring_one_modifier_days = 270
+	fragment_ring_two_modifier_days = 120
+	fragment_center_recovery_days = 540
+	preimpact_preparedness_days = 3
+	medical_mobilization_days = 180
+	government_dislocation_capital_days = 180
+	government_dislocation_noncapital_days = 90
+	government_dislocation_prepared_capital_days = 100
+	government_dislocation_prepared_noncapital_days = 50
+	opening_air_residual_bp = 50
+	opening_air_veil_bp = 100
+	opening_air_impact_winter_bp = 200
+	opening_air_severe_bp = 350
+	monthly_air_residual_bp = 1
+	monthly_air_veil_bp = 2
+	monthly_air_impact_winter_bp = 4
+	monthly_air_severe_bp = 6
+	decision_civilian_factory_days = 30
+	emergency_mission_days = 150
+	transport_mission_days = 180
+	outer_ring_mission_days = 270
+	economy_mission_days = 365
+}
+
+asteroid_incoming_recovery = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	decision_civilian_factory_use = 1
+	decision_support_equipment = 80
+	decision_motorized_equipment = 60
+	decision_manpower = 800
+	decision_train_equipment = 2
+	decision_fuel = 300
+	decision_convoys = 20
+	decision_command_power = 5
+	decision_support_equipment_negative = -80
+	decision_manpower_negative = -800
+	decision_train_equipment_negative = -2
+	decision_fuel_negative = -300
+	decision_command_power_negative = -5
+	prepared_decision_support_equipment = 60
+	prepared_decision_motorized_equipment = 45
+	prepared_decision_manpower = 600
+	prepared_decision_train_equipment = 1
+	prepared_decision_fuel = 225
+
+	minimum_command_power_reserve = 10
+	minimum_convoy_reserve = 20
+	# Crater-operation availability thresholds include the listed payment, so
+	# the protected reserve remains after the cost is manually subtracted.
+	# State and dust projects use the asteroid_incoming_cost reserves instead.
+	decision_manpower_after_reserve = 1800
+	decision_support_equipment_after_reserve = 180
+	decision_train_equipment_after_reserve = 4
+	decision_fuel_after_reserve = 800
+	decision_command_power_after_reserve = 15
+
+	mission_route_days = 150
+	mission_network_days = 180
+	mission_outer_ring_days = 270
+	mission_economy_days = 365
+	mission_failure_pressure_days = 90
+	# An expired mission brings back the named state's ended impact damage for
+	# this many days. Damage that is still running keeps its own timer.
+	mission_failure_recovery_days = 90
+	mission_rescue_route_days = 150
+	mission_stabilize_zone_days = 120
+	# AI logistics thresholds read by the target-weight and preparedness choices.
+	mission_railway_floor = 1
+	mission_supply_node_floor = 0
+	# Each objective can be met once its hold period has run. The hold period is
+	# the native timeout minus this grace window, so success is always possible
+	# before the deadline. The grace window spans at least one monthly recovery
+	# pass, which measures the regional economy.
+	mission_grace_days = 45
+	# Missions ask for this share of the levels a state had before the impact,
+	# rounded to whole levels. A building the state never had is never required.
+	mission_repair_share = 0.60
+	# Rebuild the Regional Economy compares totals across the surviving damaged
+	# states with the same totals before the impact.
+	regional_capacity_share = 0.75
+	# No more than this many recovery missions run at once (spec Part 6).
+	active_mission_limit = 2
+	# Stabilize the Damaged Zone ranks states by impact profile first. Profiles
+	# step by 10, so this weight keeps any infrastructure and railway gap from
+	# lifting a lighter profile above a heavier one.
+	stabilize_profile_rank_weight = 100
+
+	phase_emergency = 1
+	phase_reconstruction = 2
+	phase_dust = 3
+	phase_crater = 4
+
+	protection_unprepared = 0
+	protection_basic = 1
+	protection_organized = 2
+	protection_hardened = 3
+	observation_contribution_limit = 3
+	ai_low = 1
+	ai_medium = 4
+	ai_high = 8
+	ai_urgent = 14
+	ai_war_priority_factor = 2
+	ai_peace_priority_factor = 2
+	ai_impact_winter_priority_factor = 2
+	ai_major_priority_factor = 2
+	ai_rescue_priority_factor = 3
+	ai_disconnected_route_factor = 3
+	ai_severe_dust_factor = 3
+	ai_main_crater_priority_factor = 3
+	ai_losing_war_optional_factor = 0.25
+}
+
+# Crater-control and rival crater action outcomes. Counts, levels and days are
+# whole numbers; the remaining values are modifier magnitudes.
+asteroid_incoming_crater = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	operation_days = 90
+	access_state_limit = 2
+	access_building_levels = 1
+	bunker_level_cap = 10
+	infrastructure_level_cap = 5
+	recon_army_intel = 5
+	survey_research_bonus = 0.20
+	survey_research_uses = 1
+	security_defence = 0.10
+	security_attrition = -0.10
+	access_supply_disruption = -0.20
+	offensive_attack = 0.10
+}
+
+# Persistent scientific profile of each crater site, rolled once when the main
+# crater or a fragment centre is registered. The ids are stored on the state;
+# the weights are the random_list odds. A profile never changes armour.
+asteroid_incoming_site_profile = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	dense_metallic = 1
+	fused_silicate = 2
+	shock_crystal = 3
+	dense_metallic_weight = 1
+	fused_silicate_weight = 1
+	shock_crystal_weight = 1
+}
+
+asteroid_incoming_preparedness = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	local_burden_duration_multiplier = 0.75
+	medical_response_restore_fraction = 0.30
+	transport_response_restore_fraction = 0.30
+}
+
+asteroid_incoming_ai = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	preparedness_base = 20
+	preparedness_high_add = 60
+	preparedness_medium_add = 35
+	preparedness_low_add = 15
+	strike_base = 1
+	strike_enemy_add = 400
+	strike_major_add = 150
+	strike_faction_leader_add = 200
+	strike_capital_add = 200
+	strike_logistics_add = 75
+	strike_fascist_factor = 2
+	strike_desperate_factor = 3
+	strike_democratic_factor = 0.25
+	strike_fragment_risk_factor = 0.75
+	strike_mineral_holder_factor = 0.50
+	strike_near_capitulation_target_factor = 0.25
+	strike_high_chaos_factor = 1.25
+	# The target state or a state within two land steps is held by the chooser,
+	# a faction partner or a co-belligerent.
+	strike_friendly_ground_factor = 0.25
+	# Applied last in each strike option, so nothing lifts a protected target.
+	protected_target_factor = 0
+	miss_base = 1000
+	miss_democratic_add = 500
+	miss_peace_add = 250
+	miss_stable_add = 250
+	miss_fragmentation_add = 400
+	miss_mineral_holder_add = 300
+	miss_desperate_factor = 0.35
+	miss_fascist_war_factor = 0.65
+	miss_high_chaos_factor = 0.75
+	desperate_surrender_threshold = 0.65
+	desperate_stability_threshold = 0.35
+	desperate_war_support_threshold = 0.35
+	stable_stability_threshold = 0.50
+	# Command Continuity gains weight at or below this stability.
+	preparedness_unstable_stability_threshold = 0.45
+	target_near_capitulation_threshold = 0.80
+}
+
+# Recovery prices. A state project costs its base amount times the state's
+# multiplier: one, plus the impact profile and the people the state lost,
+# raised while a recent mission-failure surcharge runs, and kept within bounds.
+# Dust-protection projects scale with the global dust stage instead. Reserves
+# are the stock each project must leave behind after payment.
+asteroid_incoming_cost = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	base_multiplier = 1.00
+	# Per profile point: the catastrophic ring (60) adds 0.60, the outer shock
+	# ring (20) adds 0.20.
+	profile_weight = 0.01
+	# Per thousand people the state lost, up to the cap.
+	population_loss_weight_per_k = 0.0005
+	population_loss_cap = 0.50
+	failure_surcharge = 0.25
+	failure_surcharge_days = 180
+	minimum_multiplier = 1.00
+	maximum_multiplier = 2.50
+	dust_residual = 1.00
+	dust_veil = 1.25
+	dust_impact_winter = 1.50
+	dust_severe = 1.75
+	reserve_manpower = 1000
+	reserve_support_equipment = 100
+	reserve_motorized_equipment = 100
+	reserve_train_equipment = 2
+	reserve_fuel = 500
+	reserve_convoys = 20
+	# Manpower and fuel are reported in thousands.
+	per_thousand = 1000
+	negative_one = -1
+	# Impact transport losses for the original target: this share of its
+	# trains, trucks and fuel per footprint state it controls, up to the cap.
+	# Dispersed transport keeps the preserved share of that loss.
+	transport_loss_per_state = 0.02
+	transport_loss_cap = 0.20
+	transport_dispersion_preserved_share = 0.60
+}
+
+asteroid_incoming_recovery_fraction = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	emergency = 0.20
+	reconstruction = 0.35
+	industry = 0.25
+	network = 0.40
+	crater_access = 0.15
+	hardening = 0.10
+	rehousing = 0.15
+	minimum_supply_ratio = 0.50
+	rescue_death_fraction = 0.01
+	rescue_death_fraction_heavy = 0.02
+	rescue_death_cap_people = 25000.00
+}
+
+asteroid_incoming_target = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	minimum_population_k = 1.00
+	medium_population_k = 25.00
+	large_population_k = 100.00
+	minimum_victory_points = 0.00
+	minimum_building_level = 0.00
+	minimum_strategic_value = 0.00
+	isolation_multiplier = 0.60
+}
+
+asteroid_incoming_profile = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	fragment_ring_two = 10
+	main_ring_three = 20
+	fragment_ring_one = 30
+	main_ring_two = 40
+	fragment_center = 50
+	main_ring_one = 60
+	main_center = 70
+}
+
+asteroid_incoming_population_loss = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	minimum_remaining_people = 0.00
+	main_center = 1.00
+	main_ring_one = 0.50
+	main_ring_two = 0.25
+	main_ring_three = 0.05
+	fragment_center = 0.50
+	fragment_ring_one = 0.25
+	fragment_ring_two = 0.05
+
+	rescue_main_ring_one = 0.0004
+	rescue_main_ring_two = 0.0002
+	rescue_fragment_center = 0.0003
+	rescue_fragment_ring_one = 0.00015
+	rescue_medical_preparation_multiplier = 0.50
+	rescue_minimum_remaining_people = 1000.00
+	rescue_monthly_death_cap_people = 25000.00
+	rescue_main_ring_one_months = 6.00
+	rescue_main_ring_two_months = 4.00
+	rescue_fragment_center_months = 6.00
+	rescue_fragment_ring_one_months = 3.00
+}
+
+# The matrix uses ranges for non-population damage. These defaults are the
+# midpoint of each accepted range and remain replaceable by a parent-owned
+# tuning layer before the physical receipt helper is called.
+asteroid_incoming_building_loss = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	main_center_industry = 1.00
+	main_center_logistics = 1.00
+	main_center_strategic = 1.00
+
+	main_ring_one_industry = 0.70
+	main_ring_one_logistics = 0.80
+	main_ring_one_strategic = 0.75
+	main_ring_two_industry = 0.45
+	main_ring_two_logistics = 0.55
+	main_ring_two_strategic = 0.50
+	main_ring_three_industry = 0.15
+	main_ring_three_logistics = 0.225
+	main_ring_three_strategic = 0.225
+
+	fragment_center_industry = 0.50
+	fragment_center_logistics = 0.625
+	fragment_center_strategic = 0.60
+	fragment_ring_one_industry = 0.325
+	fragment_ring_one_logistics = 0.425
+	fragment_ring_one_strategic = 0.40
+	fragment_ring_two_industry = 0.10
+	fragment_ring_two_logistics = 0.15
+	fragment_ring_two_strategic = 0.15
+}
+
+# Share of each unit's own strength and organisation lost by every army in a
+# struck state, by the state's strongest profile. Ships are struck in the main
+# centre and the catastrophic ring. No value removes a unit outright: the main
+# crater leaves survivors broken and disorganised, and fragments hit lighter
+# than the main body.
+asteroid_incoming_unit_damage = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	main_center_strength = 0.75
+	main_center_organisation = 0.95
+	main_ring_one_strength = 0.45
+	main_ring_one_organisation = 0.75
+	main_ring_two_strength = 0.25
+	main_ring_two_organisation = 0.50
+	main_ring_three_strength = 0.08
+	main_ring_three_organisation = 0.25
+	fragment_center_strength = 0.35
+	fragment_center_organisation = 0.65
+	fragment_ring_one_strength = 0.20
+	fragment_ring_one_organisation = 0.40
+	fragment_ring_two_strength = 0.05
+	fragment_ring_two_organisation = 0.20
+}
+
+asteroid_incoming_dust = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	minimum = 0.00
+	maximum = 100.00
+	main_crater_base = 25.00
+	deaths_per_point = 500000.00
+	industry_levels_per_point = 4.00
+	logistics_levels_per_point = 6.00
+	main_state_point_cap = 10.00
+	death_point_cap = 25.00
+	industry_point_cap = 20.00
+	logistics_point_cap = 15.00
+	fragment_center_point = 3.00
+	fragment_point_cap = 20.00
+	secondary_disaster_point_cap = 10.00
+
+	main_center_state_weight = 2.00
+	main_ring_one_state_weight = 1.50
+	main_ring_two_state_weight = 1.00
+	main_ring_three_state_weight = 0.50
+	fragment_center_state_weight = 1.50
+	fragment_ring_one_state_weight = 1.00
+	fragment_ring_two_state_weight = 0.50
+
+	stage_none = 0
+	stage_residual = 1
+	stage_veil = 2
+	stage_impact_winter = 3
+	stage_severe = 4
+	veil_threshold = 25.00
+	impact_winter_threshold = 50.00
+	severe_threshold = 75.00
+
+	air_injection_residual = 0.50
+	air_injection_veil = 1.00
+	air_injection_impact_winter = 2.00
+	air_injection_severe = 3.50
+	monthly_decay_residual = 3.00
+	monthly_decay_veil = 4.00
+	monthly_decay_impact_winter = 5.00
+	monthly_decay_severe = 6.00
+	maximum_mitigation_decay = 3.00
+	opening_stage_hold_days = 30
+}
+
+asteroid_incoming_mineral = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	main_crater_armour_factor = 1.00
+	fragment_site_armour_factor = 0.20
+}
+
+# Positive magnitudes mirror the country dust ideas. Protection compensates
+# only the current Event 028 stage, never unrelated national penalties.
+asteroid_incoming_dust_protection = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+	basic_fraction = 0.15
+	organized_fraction = 0.30
+	hardened_fraction = 0.45
+	reservoir_mitigation_per_point = 0.15
+	reservoir_mitigation_maximum = 0.45
+	# Joining the observation network adds this share of the current stage's
+	# air-mission and weather penalties to the country's compensation, on top
+	# of its protection tier. The total share never exceeds maximum_fraction.
+	observation_sky_fraction = 0.15
+	maximum_fraction = 1.00
+	residual_factory = 0.03
+	residual_construction = 0.02
+	residual_efficiency = 0.00
+	residual_supply = 0.02
+	residual_air = 0.01
+	residual_weather = 0.00
+	veil_factory = 0.07
+	veil_construction = 0.05
+	veil_efficiency = 0.03
+	veil_supply = 0.05
+	veil_air = 0.03
+	veil_weather = 0.03
+	winter_factory = 0.12
+	winter_construction = 0.10
+	winter_efficiency = 0.08
+	winter_supply = 0.10
+	winter_air = 0.05
+	winter_weather = 0.05
+	severe_factory = 0.20
+	severe_construction = 0.15
+	severe_efficiency = 0.12
+	severe_supply = 0.15
+	severe_air = 0.10
+	severe_weather = 0.10
+}
+
+asteroid_incoming_event = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	id = 28
+	evolution_i_type = 2801
+	evolution_ii_type = 2802
+	evolution_i_stage = 1
+	evolution_ii_stage = 1
+	evolution_i_tier = 3
+	evolution_ii_tier = 4
+	super_event_id = 116
+	super_event_audio_id = 116
+	history_payload_opening = 280
+	history_payload_miss = 281
+	history_payload_impact = 282
+	history_payload_fail_closed = 283
+}
