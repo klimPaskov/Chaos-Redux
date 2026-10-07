@@ -1,6 +1,18 @@
 # Event 006 resume packet
 
-## Current continuation checkpoint (2026-10-03)
+## Current continuation checkpoint (2026-10-06)
+
+The dated snapshots below are historical evidence and do not state the current admission boundary.
+D1-D34 in [the takeover decision record](agent_decisions_2026-10-04.md) and D35 onward in the 2026-10-05 record supersede their conflicting source-status claims.
+The current allocator crosswalk has 109 content-attested packages, 78 reservation groups and 112 adapters; IW-076, IW-131 and IW-179 remain adapter-only and fail closed.
+The automatic ladder remains 3/4/5/7/10, and there is no pre-event surface.
+The general foreign-reaction and remnant-petition source is implemented; native behavior and complete typed probability evidence remain separate gates.
+The current bounded completion receipt is `docs/plans/006_independence_wave_plans/subagent_handoffs/completion_takeover_20261006.md`.
+It identifies forty-four missing Level 2 focus groups, three signature modules and four ready-member formable contracts as feasible source work; the ongoing pass records their final dispositions in `docs/plans/006_independence_wave_plans/takeover_status_2026-10-06.md`.
+No whole-event completion follows from the historical checkmarks or the current admission count.
+
+
+## Historical continuation checkpoint (2026-10-03)
 
 The orchestrator confirmed on 2026-10-03 that the Event 006 startup findings repaired by `f23bf79542e371c67b2035785abffa85d3803c18` no longer appear at HEAD `d51bba41f`.
 The [startup repair handoff](subagent_handoffs/006_live_startup_error_repair_2026-10-03.md) records their source changes and references.
