@@ -262,7 +262,15 @@ bio_battlefield_apply_failed_attempt_condemnation_internal = {
 
 # Raid-instance scope. The selected state is the only primary release state.
 bio_battlefield_dispatch_primary_release_internal = {
+	set_temp_variable = { bio_battlefield_lifecycle_result = constant:bio_lifecycle_math.zero }
 	bio_battlefield_map_engine_result_internal = yes
+	set_temp_variable = { bio_seed_batch_condemnation_proof = constant:bio_lifecycle_proof.missing }
+	set_temp_variable = { bio_seed_intensity_override = constant:bio_lifecycle_math.zero }
+	set_temp_variable = { bio_seed_exposed_share_override = constant:bio_lifecycle_math.zero }
+	set_temp_variable = { bio_seed_evidence_override = constant:bio_lifecycle_math.zero }
+	set_temp_variable = { bio_seed_condemnation_override = constant:bio_lifecycle_math.zero }
+	set_temp_variable = { bio_seed_concealment = constant:bio_lifecycle_math.zero }
+	set_temp_variable = { bio_seed_force_detection_on_activation = constant:bio_lifecycle_proof.missing }
 	bio_lifecycle_reset_seed_record = yes
 	set_temp_variable = { bio_seed_agent = bio_battlefield_agent }
 	set_temp_variable = { bio_seed_route = constant:bio_lifecycle_route.battlefield_dissemination }
@@ -298,6 +306,7 @@ bio_battlefield_dispatch_primary_release_internal = {
 	}
 
 	event_target:bio_battlefield_actor = { set_country_flag = bio_native_raid_dispatch_in_progress }
+	set_temp_variable = { bio_seed_dispatch_status = constant:bio_lifecycle_proof.missing }
 	event_target:bio_battlefield_target_state = { bio_lifecycle_dispatch_seed = yes }
 	event_target:bio_battlefield_actor = { clr_country_flag = bio_native_raid_dispatch_in_progress }
 	set_temp_variable = { bio_battlefield_dispatch_status = bio_seed_dispatch_status }
@@ -367,6 +376,15 @@ bio_battlefield_attempt_friendly_blowback_internal = {
 		multiply_temp_variable = { bio_battlefield_friendly_exposed_share = constant:bio_battlefield_blowback.exposed_share_mult }
 
 		event_target:bio_battlefield_friendly_state = {
+			set_temp_variable = { bio_seed_batch_condemnation_proof = constant:bio_lifecycle_proof.missing }
+			set_temp_variable = { bio_seed_payload_debit_proof = constant:bio_lifecycle_proof.missing }
+			set_temp_variable = { bio_seed_use_history_proof = constant:bio_lifecycle_proof.missing }
+			set_temp_variable = { bio_seed_payload_required = constant:bio_lifecycle_math.zero }
+			set_temp_variable = { bio_seed_payload_consumed = constant:bio_lifecycle_math.zero }
+			set_temp_variable = { bio_seed_condemnation_override = constant:bio_lifecycle_math.zero }
+			set_temp_variable = { bio_seed_concealment = constant:bio_lifecycle_math.zero }
+			set_temp_variable = { bio_seed_weaponization_mult = constant:bio_lifecycle_math.one }
+			set_temp_variable = { bio_seed_force_detection_on_activation = constant:bio_lifecycle_proof.missing }
 			bio_lifecycle_reset_seed_record = yes
 			set_temp_variable = { bio_seed_agent = bio_battlefield_agent }
 			set_temp_variable = { bio_seed_route = constant:bio_lifecycle_route.connected_spread }
@@ -381,6 +399,7 @@ bio_battlefield_attempt_friendly_blowback_internal = {
 				save_event_target_as = bio_seed_actor
 				save_event_target_as = bio_seed_victim
 			}
+			set_temp_variable = { bio_seed_dispatch_status = constant:bio_lifecycle_proof.missing }
 			bio_lifecycle_dispatch_seed = yes
 			if = {
 				limit = { check_variable = { var = bio_seed_dispatch_status value = constant:bio_lifecycle_proof.supplied compare = equals } }
@@ -447,6 +466,8 @@ bio_battlefield_record_dispatch_failure_internal = {
 # Raid-instance scope. Context rejection occurs after native reservation and
 # therefore records full physical loss without fabricating a biological event.
 bio_battlefield_record_rejected_reservation_internal = {
+	set_temp_variable = { bio_battlefield_payload_required = constant:bio_lifecycle_math.zero }
+	set_temp_variable = { bio_battlefield_payload_consumed = constant:bio_lifecycle_math.zero }
 	bio_battlefield_set_payload_internal = yes
 	if = {
 		limit = { has_event_target = bio_battlefield_actor }
@@ -474,6 +495,10 @@ bio_battlefield_record_rejected_reservation_internal = {
 # native actor, victim, and state; this event reconstructs the immutable agent
 # and result before calling the shared lifecycle under actor-country ROOT.
 bio_resolve_battlefield_dissemination = {
+	set_temp_variable = { bio_battlefield_payload_required = constant:bio_lifecycle_math.zero }
+	set_temp_variable = { bio_battlefield_payload_consumed = constant:bio_lifecycle_math.zero }
+	set_temp_variable = { bio_battlefield_weaponization_mult = constant:bio_lifecycle_math.zero }
+	set_temp_variable = { bio_battlefield_attempt_lead_matches_actor = constant:bio_lifecycle_proof.missing }
 	set_temp_variable = { bio_battlefield_resolution_status = constant:bio_lifecycle_proof.missing }
 	set_temp_variable = { bio_battlefield_dispatch_status = constant:bio_lifecycle_proof.missing }
 

@@ -4,7 +4,10 @@ Chemical and biological attacks use the native raid planner under `chemical_raid
 Chemical air attacks retain their existing native air raids; chemical ground attacks use state targets, an assigned land division, a supply-node origin, a native preparation timer, and one agent-specific payload reservation.
 Biological strategic air attacks, battlefield dissemination, supply-chain sabotage, and captured-facility recovery appear under `biological_raids`.
 The unrelated Brilliant Scientist portal raid keeps its own category.
-A source census of `common/raids/` on 2026-09-27 found 146 package raid-type definitions assigned to `chemical_raids` or `biological_raids`, with those two category IDs defined in `common/raids/categories/chaosx_raid_categories.txt`. The added one-payload Event 020 Black Plague raid belongs to `biological_raids`; the separate two-type Brilliant Scientist portal file uses `brilliant_scientist_raids`. All 145 chemical, biological-weapon, recovery, sabotage, Japan, doomsday, and weaponized-zombie definitions outside the anti-zombie cure strike declare native `essential_equipment`; the cure strike instead uses 10 Command Power and aircraft requirements, with no concrete cure-bomb archetype in the mod. This is a source-definition count, not proof that every type is reachable or that the native planner renders only two visible categories in game.
+The source census contains 146 raid-type definitions assigned to `chemical_raids` or `biological_raids`, whose category IDs are defined in `common/raids/categories/chaosx_raid_categories.txt`.
+The one-payload Event 020 Black Plague raid belongs to `biological_raids`; the separate two-type Brilliant Scientist portal file uses `brilliant_scientist_raids`.
+The anti-zombie cure strike reserves its concrete `zombie_cure_bomb_equipment` through native `essential_equipment`, alongside its Command Power and aircraft requirements.
+The count describes source definitions rather than native reachability or the number of categories visible in the planner.
 Ordinary battlefield biological raids require Pathogen Handling Protocols, full equipment-derived protection readiness, battlefield-use authority, and the matching completed agent project. Theater CBRN Headquarters remains a Chaos Warfare specialization rather than a basic raid gate.
 Their fixed 21-day native preparation is the whole attack preparation; an active Combined CBRN Overmatch headquarters order is not required.
 
@@ -36,6 +39,16 @@ Strategic and battlefield biological raids no longer gain AI weight or success b
 The former global `bio_sabotage_operation_in_progress` flag cannot be set by a documented native raid-creation effect, so separate native variants may prepare simultaneously.
 Each has its own native payload and Command Power reservation, and each completed callback uses one event bridge and one dispatch path. Callback uniqueness and cancellation settlement remain engine-validation gaps.
 Facility recovery also uses the immediate country-event bridge, retaining its selected site as an exact event target and checking that the site is still controlled by the actor before any ledger transfer, destruction, or accidental release.
+
+## Biological helper output ownership
+
+The actor-country resolvers own temporary payload, selected-result, program and failed-attempt attribution outputs before calling their producing helpers.
+The battlefield primary and friendly-blowback adapters, strategic target and handling-accident adapters, and native supply-chain adapter own the residual seed defaults and returned `bio_seed_dispatch_status` used by their consumers.
+The shared seed dispatcher owns retaliation classification and `bio_active_agent` inside its accepted branch; rejected seeds preserve any surrounding spread selector.
+`bio_seed_dispatch_status` reports acceptance and does not suppress a repeated valid callback.
+Actual storage allows another accepted battlefield seed to strengthen the same-agent episode, while sabotage retains its existing active-episode guard.
+Native callback cardinality, reservation collection, cancellation settlement and later outbreak timing remain separate acceptance requirements.
+The [implementation and evidence report](../../plans/chaos_warfare_system_plans/2026-10-07_biological_raid_service_integrity.md) records the five audited raid owners, eleven other consumers awaiting equivalent caller review, exact before sources and bounded test assumptions.
 
 ## Chemical ground payment and balance
 
@@ -75,7 +88,8 @@ The attacker-accident branch therefore selects an internal handling location at 
 This is a stockpile-handling representation, not a claim that the accident occurred at the engine-selected airbase.
 If no valid handling state remains at outcome, the operation records a rejected reservation and creates neither an attacker accident nor a target release.
 The player-facing staging-complex decision has been removed.
-Completed strategic outcomes consume the full native payload reservation; the old ratio-based payload and Command Power refund helpers no longer run.
+The scripted completed-outcome record accounts for the full native payload reservation and runs no ratio-based payload or Command Power refund helper.
+Native cancellation settlement and final equipment disposition remain unverified.
 
 ## Icons and UI wiring
 

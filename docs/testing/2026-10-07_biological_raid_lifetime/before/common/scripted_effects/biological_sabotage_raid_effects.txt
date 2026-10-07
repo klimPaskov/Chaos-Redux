@@ -1,0 +1,188 @@
+# ============================================================================
+# CHAOS REDUX - NATIVE BIOLOGICAL SUPPLY-CHAIN RAID OUTCOMES
+# ============================================================================
+# Overview:
+# - Adapts the four native land-raid results to the existing ordinary
+#   food/water/medical sabotage lifecycle on the exact selected state.
+# - Native essential_equipment collects one agent-specific payload and support
+#   reservation during preparation. This file never debits either again.
+# - Failed delivery records evidence and Condemnation without a release.
+# - Target loss, lost authority, or an already active agent episode fails closed
+#   after the native reservation is spent; no substitute state is selected.
+# ============================================================================
+
+bio_sabotage_raid_set_agent_parameters = {
+	if = {
+		limit = { check_variable = { var = bio_raid_agent value = constant:bio_lifecycle_agent.anthrax compare = equals } }
+		bio_sabotage_prepare_anthrax_parameters = yes
+	}
+	else_if = {
+		limit = { check_variable = { var = bio_raid_agent value = constant:bio_lifecycle_agent.plague compare = equals } }
+		bio_sabotage_prepare_plague_parameters = yes
+	}
+	else_if = {
+		limit = { check_variable = { var = bio_raid_agent value = constant:bio_lifecycle_agent.tularemia compare = equals } }
+		bio_sabotage_prepare_tularemia_parameters = yes
+	}
+	else_if = {
+		limit = { check_variable = { var = bio_raid_agent value = constant:bio_lifecycle_agent.smallpox compare = equals } }
+		bio_sabotage_prepare_smallpox_parameters = yes
+	}
+	set_temp_variable = { bio_sabotage_payload_consumed = bio_sabotage_payload_required }
+	set_temp_variable = { bio_sabotage_support_consumed = bio_sabotage_support_required }
+}
+
+bio_sabotage_raid_select_result = {
+	set_temp_variable = { bio_sabotage_result = constant:bio_sabotage_result.rejected }
+	if = {
+		limit = { check_variable = { var = bio_raid_engine_outcome value = constant:bio_strategic_raid_engine_outcome.failure compare = equals } }
+		set_temp_variable = { bio_sabotage_result = constant:bio_sabotage_result.failed }
+	}
+	else_if = {
+		limit = { check_variable = { var = bio_raid_engine_outcome value = constant:bio_strategic_raid_engine_outcome.limited_success compare = equals } }
+		set_temp_variable = { bio_sabotage_result = constant:bio_sabotage_result.partial }
+	}
+	else_if = {
+		limit = {
+			OR = {
+				check_variable = { var = bio_raid_engine_outcome value = constant:bio_strategic_raid_engine_outcome.success compare = equals }
+				check_variable = { var = bio_raid_engine_outcome value = constant:bio_strategic_raid_engine_outcome.critical_success compare = equals }
+			}
+		}
+		set_temp_variable = { bio_sabotage_result = constant:bio_sabotage_result.success }
+	}
+}
+
+# Actor-country event scope. Regular event targets survive the nested lifecycle
+# dispatch and point at the native raid's actor, victim, and exact target.
+bio_sabotage_raid_dispatch_release = {
+	event_target:bio_sabotage_state_target = {
+		bio_lifecycle_reset_seed_record = yes
+		set_temp_variable = { bio_seed_agent = bio_sabotage_agent }
+		set_temp_variable = { bio_seed_route = constant:bio_lifecycle_route.food_water_medical_sabotage }
+		set_temp_variable = { bio_seed_source = constant:bio_lifecycle_source.deliberate }
+		set_temp_variable = { bio_seed_actor_proof = constant:bio_lifecycle_proof.supplied }
+		set_temp_variable = { bio_seed_victim_proof = constant:bio_lifecycle_proof.supplied }
+		set_temp_variable = { bio_seed_payload_debit_proof = constant:bio_lifecycle_proof.supplied }
+		set_temp_variable = { bio_seed_use_history_proof = constant:bio_lifecycle_proof.supplied }
+		set_temp_variable = { bio_seed_payload_required = bio_sabotage_payload_required }
+		set_temp_variable = { bio_seed_payload_consumed = bio_sabotage_payload_consumed }
+		set_temp_variable = { bio_seed_weaponization_mult = bio_sabotage_weaponization_mult }
+		set_temp_variable = { bio_seed_concealment = bio_sabotage_concealment }
+		set_temp_variable = { bio_seed_result = constant:bio_lifecycle_result.success }
+		if = {
+			limit = { check_variable = { var = bio_sabotage_result value = constant:bio_sabotage_result.partial compare = equals } }
+			set_temp_variable = { bio_seed_result = constant:bio_lifecycle_result.partial }
+		}
+		else_if = {
+			limit = { check_variable = { var = bio_raid_engine_outcome value = constant:bio_strategic_raid_engine_outcome.critical_success compare = equals } }
+			set_temp_variable = { bio_seed_result = constant:bio_lifecycle_result.catastrophic }
+		}
+		event_target:bio_sabotage_actor_target = { save_event_target_as = bio_seed_actor }
+		event_target:bio_sabotage_victim_target = { save_event_target_as = bio_seed_victim }
+		event_target:bio_sabotage_actor_target = { set_country_flag = bio_native_raid_dispatch_in_progress }
+		bio_lifecycle_dispatch_seed = yes
+		event_target:bio_sabotage_actor_target = { clr_country_flag = bio_native_raid_dispatch_in_progress }
+		set_temp_variable = { bio_sabotage_dispatch_status = bio_seed_dispatch_status }
+		if = {
+			limit = { check_variable = { var = bio_sabotage_dispatch_status value = constant:bio_lifecycle_proof.supplied compare = equals } }
+			set_state_flag = bio_sabotage_release_history
+			set_variable = { bio_last_sabotage_release_date = global.num_days }
+			set_variable = { bio_last_sabotage_release_actor = event_target:bio_sabotage_actor_target }
+			set_variable = { bio_last_sabotage_release_victim = event_target:bio_sabotage_victim_target }
+			set_variable = { bio_last_sabotage_release_agent = bio_sabotage_agent }
+			set_variable = { bio_last_sabotage_release_result = bio_sabotage_result }
+			set_temp_variable = { bio_active_agent = bio_sabotage_agent }
+			meta_effect = {
+				text = { set_state_flag = bio_agent_[BIO_AGENT]_sabotage_release_history }
+				BIO_AGENT = "[?bio_active_agent|.0]"
+			}
+		}
+	}
+}
+
+bio_sabotage_raid_record_actor_history = {
+	if = {
+		limit = { NOT = { has_variable = bio_sabotage_attempt_started_count } }
+		set_variable = { bio_sabotage_attempt_started_count = constant:bio_lifecycle_math.zero }
+	}
+	if = {
+		limit = { NOT = { has_variable = bio_sabotage_payload_consumed_total } }
+		set_variable = { bio_sabotage_payload_consumed_total = constant:bio_lifecycle_math.zero }
+	}
+	if = {
+		limit = { NOT = { has_variable = bio_sabotage_support_consumed_total } }
+		set_variable = { bio_sabotage_support_consumed_total = constant:bio_lifecycle_math.zero }
+	}
+	if = {
+		limit = { NOT = { has_variable = bio_sabotage_resolution_count } }
+		set_variable = { bio_sabotage_resolution_count = constant:bio_lifecycle_math.zero }
+	}
+	add_to_variable = { bio_sabotage_attempt_started_count = constant:bio_sabotage_history.one_attempt }
+	add_to_variable = { bio_sabotage_payload_consumed_total = bio_sabotage_payload_required }
+	add_to_variable = { bio_sabotage_support_consumed_total = bio_sabotage_support_required }
+	add_to_variable = { bio_sabotage_resolution_count = constant:bio_sabotage_history.one_attempt }
+	set_variable = { bio_last_sabotage_resolution_date = global.num_days }
+	set_variable = { bio_last_sabotage_resolution_state = event_target:bio_sabotage_state_target }
+	set_variable = { bio_last_sabotage_resolution_victim = event_target:bio_sabotage_victim_target }
+	set_variable = { bio_last_sabotage_resolution_agent = bio_sabotage_agent }
+	set_variable = { bio_last_sabotage_resolution_result = bio_sabotage_result }
+	if = {
+		limit = { check_variable = { var = bio_sabotage_result value = constant:bio_sabotage_result.failed compare = equals } }
+		set_country_flag = bio_sabotage_failed_attempt_history
+	}
+	else_if = {
+		limit = { check_variable = { var = bio_sabotage_dispatch_status value = constant:bio_lifecycle_proof.supplied compare = equals } }
+		set_country_flag = bio_sabotage_release_history
+	}
+	else = { set_country_flag = bio_sabotage_dispatch_failure_history }
+	set_variable = { bio_sabotage_next_allowed_day = global.num_days }
+	if = {
+		limit = { has_idea = cbrn_terminal_hazard_doctrine_spirit }
+		add_to_variable = { bio_sabotage_next_allowed_day = constant:bio_sabotage_doctrine.terminal_cooldown_days }
+	}
+	else_if = {
+		limit = { has_idea = cbrn_theater_contamination_doctrine_spirit }
+		add_to_variable = { bio_sabotage_next_allowed_day = constant:bio_sabotage_doctrine.theater_cooldown_days }
+	}
+	else = { add_to_variable = { bio_sabotage_next_allowed_day = constant:bio_sabotage_doctrine.base_cooldown_days } }
+}
+
+bio_resolve_supply_chain_raid_outcome = {
+	set_temp_variable = { bio_sabotage_dispatch_status = constant:bio_lifecycle_proof.missing }
+	bio_sabotage_raid_set_agent_parameters = yes
+	bio_sabotage_raid_select_result = yes
+	if = {
+		limit = {
+			bio_sabotage_raid_native_context_is_valid = yes
+			bio_sabotage_raid_target_agent_is_uninfected = yes
+		}
+		event_target:bio_sabotage_actor_target = { bio_sabotage_prepare_program_values_internal = yes }
+		if = {
+			limit = { check_variable = { var = bio_sabotage_result value = constant:bio_sabotage_result.failed compare = equals } }
+			event_target:bio_sabotage_state_target = { bio_sabotage_record_failed_attempt_evidence_internal = yes }
+			event_target:bio_sabotage_actor_target = { bio_sabotage_apply_failed_attempt_condemnation_internal = yes }
+		}
+		else = {
+			bio_sabotage_raid_dispatch_release = yes
+			if = {
+				limit = { NOT = { check_variable = { var = bio_sabotage_dispatch_status value = constant:bio_lifecycle_proof.supplied compare = equals } } }
+				set_temp_variable = { bio_sabotage_result = constant:bio_sabotage_result.rejected }
+			}
+			else = {
+				event_target:bio_sabotage_actor_target = { save_event_target_as = humanitarian_corridor_exact_attacker }
+				event_target:bio_sabotage_state_target = { humanitarian_corridor_handle_exact_state_attack = yes }
+				if = {
+					limit = { event_target:bio_sabotage_actor_target = { tag = UWR } }
+					event_target:bio_sabotage_actor_target = { save_event_target_as = soviet_collapse_uwr_contamination_actor }
+					event_target:bio_sabotage_state_target = { soviet_collapse_mark_uwr_contaminated_state_for_aftermath = yes }
+				}
+			}
+		}
+	}
+	else = { set_temp_variable = { bio_sabotage_result = constant:bio_sabotage_result.rejected } }
+	if = {
+		limit = { has_event_target = bio_sabotage_actor_target has_event_target = bio_sabotage_state_target has_event_target = bio_sabotage_victim_target }
+		event_target:bio_sabotage_actor_target = { bio_sabotage_raid_record_actor_history = yes }
+	}
+}

@@ -12,6 +12,9 @@
 # ============================================================================
 
 bio_sabotage_raid_set_agent_parameters = {
+	set_temp_variable = { bio_sabotage_agent = constant:bio_lifecycle_agent.none }
+	set_temp_variable = { bio_sabotage_payload_required = constant:bio_lifecycle_math.zero }
+	set_temp_variable = { bio_sabotage_support_required = constant:bio_lifecycle_math.zero }
 	if = {
 		limit = { check_variable = { var = bio_raid_agent value = constant:bio_lifecycle_agent.anthrax compare = equals } }
 		bio_sabotage_prepare_anthrax_parameters = yes
@@ -57,6 +60,12 @@ bio_sabotage_raid_select_result = {
 # dispatch and point at the native raid's actor, victim, and exact target.
 bio_sabotage_raid_dispatch_release = {
 	event_target:bio_sabotage_state_target = {
+		set_temp_variable = { bio_seed_batch_condemnation_proof = constant:bio_lifecycle_proof.missing }
+		set_temp_variable = { bio_seed_intensity_override = constant:bio_lifecycle_math.zero }
+		set_temp_variable = { bio_seed_exposed_share_override = constant:bio_lifecycle_math.zero }
+		set_temp_variable = { bio_seed_evidence_override = constant:bio_lifecycle_math.zero }
+		set_temp_variable = { bio_seed_condemnation_override = constant:bio_lifecycle_math.zero }
+		set_temp_variable = { bio_seed_force_detection_on_activation = constant:bio_lifecycle_proof.missing }
 		bio_lifecycle_reset_seed_record = yes
 		set_temp_variable = { bio_seed_agent = bio_sabotage_agent }
 		set_temp_variable = { bio_seed_route = constant:bio_lifecycle_route.food_water_medical_sabotage }
@@ -81,6 +90,7 @@ bio_sabotage_raid_dispatch_release = {
 		event_target:bio_sabotage_actor_target = { save_event_target_as = bio_seed_actor }
 		event_target:bio_sabotage_victim_target = { save_event_target_as = bio_seed_victim }
 		event_target:bio_sabotage_actor_target = { set_country_flag = bio_native_raid_dispatch_in_progress }
+		set_temp_variable = { bio_seed_dispatch_status = constant:bio_lifecycle_proof.missing }
 		bio_lifecycle_dispatch_seed = yes
 		event_target:bio_sabotage_actor_target = { clr_country_flag = bio_native_raid_dispatch_in_progress }
 		set_temp_variable = { bio_sabotage_dispatch_status = bio_seed_dispatch_status }
@@ -149,6 +159,15 @@ bio_sabotage_raid_record_actor_history = {
 }
 
 bio_resolve_supply_chain_raid_outcome = {
+	set_temp_variable = { bio_sabotage_agent = constant:bio_lifecycle_agent.none }
+	set_temp_variable = { bio_sabotage_payload_required = constant:bio_lifecycle_math.zero }
+	set_temp_variable = { bio_sabotage_support_required = constant:bio_lifecycle_math.zero }
+	set_temp_variable = { bio_sabotage_payload_consumed = constant:bio_lifecycle_math.zero }
+	set_temp_variable = { bio_sabotage_support_consumed = constant:bio_lifecycle_math.zero }
+	set_temp_variable = { bio_sabotage_result = constant:bio_sabotage_result.rejected }
+	set_temp_variable = { bio_sabotage_weaponization_mult = constant:bio_lifecycle_math.zero }
+	set_temp_variable = { bio_sabotage_concealment = constant:bio_lifecycle_math.zero }
+	set_temp_variable = { bio_sabotage_attempt_lead_matches_actor = constant:bio_lifecycle_proof.missing }
 	set_temp_variable = { bio_sabotage_dispatch_status = constant:bio_lifecycle_proof.missing }
 	bio_sabotage_raid_set_agent_parameters = yes
 	bio_sabotage_raid_select_result = yes

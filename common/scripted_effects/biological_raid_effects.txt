@@ -329,6 +329,12 @@ bio_strategic_raid_apply_failed_attempt_condemnation_internal = {
 }
 
 bio_strategic_raid_dispatch_target_release_internal = {
+	set_temp_variable = { bio_seed_batch_condemnation_proof = constant:bio_lifecycle_proof.missing }
+	set_temp_variable = { bio_seed_intensity_override = constant:bio_lifecycle_math.zero }
+	set_temp_variable = { bio_seed_exposed_share_override = constant:bio_lifecycle_math.zero }
+	set_temp_variable = { bio_seed_evidence_override = constant:bio_lifecycle_math.zero }
+	set_temp_variable = { bio_seed_condemnation_override = constant:bio_lifecycle_math.zero }
+	set_temp_variable = { bio_seed_force_detection_on_activation = constant:bio_lifecycle_proof.missing }
 	bio_lifecycle_reset_seed_record = yes
 	set_temp_variable = { bio_seed_agent = bio_raid_agent }
 	set_temp_variable = { bio_seed_route = constant:bio_lifecycle_route.strategic_raid }
@@ -369,12 +375,20 @@ bio_strategic_raid_dispatch_target_release_internal = {
 	}
 
 	event_target:bio_raid_actor = { set_country_flag = bio_native_raid_dispatch_in_progress }
+	set_temp_variable = { bio_seed_dispatch_status = constant:bio_lifecycle_proof.missing }
 	event_target:bio_raid_target_state = { bio_lifecycle_dispatch_seed = yes }
 	event_target:bio_raid_actor = { clr_country_flag = bio_native_raid_dispatch_in_progress }
 	set_temp_variable = { bio_raid_release_dispatch_status = bio_seed_dispatch_status }
 }
 
 bio_strategic_raid_dispatch_attacker_accident_internal = {
+	set_temp_variable = { bio_seed_batch_condemnation_proof = constant:bio_lifecycle_proof.missing }
+	set_temp_variable = { bio_seed_intensity_override = constant:bio_lifecycle_math.zero }
+	set_temp_variable = { bio_seed_exposed_share_override = constant:bio_lifecycle_math.zero }
+	set_temp_variable = { bio_seed_evidence_override = constant:bio_lifecycle_math.zero }
+	set_temp_variable = { bio_seed_condemnation_override = constant:bio_lifecycle_math.zero }
+	set_temp_variable = { bio_seed_use_history_proof = constant:bio_lifecycle_proof.missing }
+	set_temp_variable = { bio_seed_concealment = constant:bio_lifecycle_math.zero }
 	bio_lifecycle_reset_seed_record = yes
 	set_temp_variable = { bio_seed_agent = bio_raid_agent }
 	set_temp_variable = { bio_seed_route = constant:bio_lifecycle_route.strategic_raid_attacker_accident }
@@ -391,6 +405,7 @@ bio_strategic_raid_dispatch_attacker_accident_internal = {
 		save_event_target_as = bio_seed_actor
 		save_event_target_as = bio_seed_victim
 	}
+	set_temp_variable = { bio_seed_dispatch_status = constant:bio_lifecycle_proof.missing }
 	event_target:bio_raid_staging_state = { bio_lifecycle_dispatch_seed = yes }
 	set_temp_variable = { bio_raid_release_dispatch_status = bio_seed_dispatch_status }
 }
@@ -571,6 +586,7 @@ bio_resolve_strategic_raid_outcome = {
 		bio_strategic_raid_set_reservation_internal = yes
 		set_temp_variable = { bio_raid_reservation_proof = constant:bio_lifecycle_proof.supplied }
 		event_target:bio_raid_actor = { bio_strategic_raid_prepare_weaponization_internal = yes }
+		set_temp_variable = { bio_raid_outcome = constant:bio_strategic_raid_outcome.rejected }
 		bio_strategic_raid_select_outcome_internal = yes
 		# Native essential equipment was reserved at creation. Every completed
 		# outcome consumes the full reservation; there is no script-side refund.

@@ -1,0 +1,680 @@
+{
+  "status": "read_only_architecture_map_parent_review_required",
+  "source_drift": "032 missile consumption changed during audit; do not restore it. Some core private allocations already appeared during audit. Check fresh source and skip already-owned outputs.",
+  "instructions": [
+    "Instantiate declarations literally in the named consuming owner frame, not in a returning initializer helper.",
+    "Reuse an existing literal declaration when it already precedes the producing helper and owns the same output.",
+    "Never reset dispatch_proof inside the dispatcher. Reset it only at fresh action-owner initialization.",
+    "These are storage allocations, not new receipts, payments, target selection, profiles, probabilities, or authorization."
+  ],
+  "field_sets": {
+    "action_inputs": [
+      {
+        "field": "cbrn_action_target_state_supplied",
+        "default": "constant:cbrn_proof.missing"
+      },
+      {
+        "field": "cbrn_action_weapon_class",
+        "default": "constant:cbrn_weapon_class.none"
+      },
+      {
+        "field": "cbrn_action_agent_class",
+        "default": "constant:cbrn_agent_class.none"
+      },
+      {
+        "field": "cbrn_action_agent",
+        "default": "constant:cbrn_agent.none"
+      },
+      {
+        "field": "cbrn_action_delivery_route",
+        "default": "constant:cbrn_delivery_route.none"
+      },
+      {
+        "field": "cbrn_action_severity",
+        "default": "constant:cbrn_operation_severity.none"
+      },
+      {
+        "field": "cbrn_action_retaliation_status",
+        "default": "constant:cbrn_retaliation_status.none"
+      },
+      {
+        "field": "cbrn_retaliation_action_proportionate_proof",
+        "default": "constant:cbrn_proof.missing"
+      },
+      {
+        "field": "cbrn_action_late_agent_route_authorized",
+        "default": "constant:cbrn_proof.missing"
+      },
+      {
+        "field": "cbrn_action_payload_required",
+        "default": "constant:cbrn_math.zero"
+      },
+      {
+        "field": "cbrn_action_payload_consumed",
+        "default": "constant:cbrn_math.zero"
+      },
+      {
+        "field": "cbrn_action_payload_consumed_proof",
+        "default": "constant:cbrn_proof.missing"
+      },
+      {
+        "field": "cbrn_action_legacy_cylinder_source_proof",
+        "default": "constant:cbrn_proof.missing"
+      },
+      {
+        "field": "cbrn_action_release_efficiency_mult",
+        "default": "constant:cbrn_math.zero"
+      },
+      {
+        "field": "cbrn_action_dispatch_proof",
+        "default": "constant:cbrn_proof.missing"
+      },
+      {
+        "field": "cbrn_action_evidence_floor_override",
+        "default": "constant:cbrn_math.zero"
+      },
+      {
+        "field": "cbrn_raid_attempt_dispatch_proof",
+        "default": "constant:cbrn_proof.missing"
+      },
+      {
+        "field": "cbrn_action_protection_resolved_proof",
+        "default": "constant:cbrn_proof.missing"
+      },
+      {
+        "field": "cbrn_action_military_effective_protection",
+        "default": "constant:cbrn_math.zero"
+      },
+      {
+        "field": "cbrn_action_military_casualty_mult",
+        "default": "constant:cbrn_math.one"
+      },
+      {
+        "field": "cbrn_action_military_disruption_mult",
+        "default": "constant:cbrn_math.one"
+      },
+      {
+        "field": "cbrn_action_military_contamination_mult",
+        "default": "constant:cbrn_math.one"
+      },
+      {
+        "field": "cbrn_action_civilian_effective_protection",
+        "default": "constant:cbrn_math.zero"
+      },
+      {
+        "field": "cbrn_action_civilian_casualty_mult",
+        "default": "constant:cbrn_math.one"
+      },
+      {
+        "field": "cbrn_action_civilian_disruption_mult",
+        "default": "constant:cbrn_math.one"
+      },
+      {
+        "field": "cbrn_action_civilian_contamination_mult",
+        "default": "constant:cbrn_math.one"
+      },
+      {
+        "field": "cbrn_action_conditions_resolved_proof",
+        "default": "constant:cbrn_proof.missing"
+      },
+      {
+        "field": "cbrn_action_weather_mult",
+        "default": "constant:cbrn_math.zero"
+      },
+      {
+        "field": "cbrn_action_terrain_mult",
+        "default": "constant:cbrn_math.zero"
+      },
+      {
+        "field": "cbrn_action_target_density_mult",
+        "default": "constant:cbrn_math.zero"
+      },
+      {
+        "field": "cbrn_action_command_mult",
+        "default": "constant:cbrn_math.zero"
+      },
+      {
+        "field": "cbrn_action_evidence_control_mult",
+        "default": "constant:cbrn_math.zero"
+      },
+      {
+        "field": "cbrn_action_context_condemnation_mult",
+        "default": "constant:cbrn_math.zero"
+      },
+      {
+        "field": "cbrn_action_doctrine_condemnation_mult",
+        "default": "constant:cbrn_math.zero"
+      },
+      {
+        "field": "cbrn_action_forecast_confidence",
+        "default": "constant:cbrn_math.zero"
+      },
+      {
+        "field": "cbrn_action_command_integration",
+        "default": "constant:cbrn_math.zero"
+      },
+      {
+        "field": "cbrn_action_base_friendly_risk",
+        "default": "constant:cbrn_math.zero"
+      },
+      {
+        "field": "cbrn_action_duration_override",
+        "default": "constant:cbrn_math.zero"
+      }
+    ],
+    "action_outputs": [
+      {
+        "field": "cbrn_action_result",
+        "default": "constant:cbrn_action_result.rejected"
+      },
+      {
+        "field": "cbrn_action_reject_reason",
+        "default": "constant:cbrn_action_reject_reason.none"
+      },
+      {
+        "field": "cbrn_action_victim_country_supplied",
+        "default": "constant:cbrn_proof.missing"
+      },
+      {
+        "field": "cbrn_action_payload_ratio",
+        "default": "constant:cbrn_math.zero"
+      },
+      {
+        "field": "cbrn_action_dose_mult",
+        "default": "constant:cbrn_math.zero"
+      },
+      {
+        "field": "cbrn_action_disruption",
+        "default": "constant:cbrn_math.zero"
+      },
+      {
+        "field": "cbrn_action_military_death_fraction",
+        "default": "constant:cbrn_math.zero"
+      },
+      {
+        "field": "cbrn_action_civilian_exposed_fraction",
+        "default": "constant:cbrn_math.zero"
+      },
+      {
+        "field": "cbrn_action_civilian_death_fraction",
+        "default": "constant:cbrn_math.zero"
+      },
+      {
+        "field": "cbrn_action_contamination_points",
+        "default": "constant:cbrn_math.zero"
+      },
+      {
+        "field": "cbrn_action_contamination_duration_days",
+        "default": "constant:cbrn_math.zero"
+      },
+      {
+        "field": "cbrn_action_medical_saturation_points",
+        "default": "constant:cbrn_math.zero"
+      },
+      {
+        "field": "cbrn_action_evidence_points",
+        "default": "constant:cbrn_math.zero"
+      },
+      {
+        "field": "cbrn_action_evidence_applied",
+        "default": "constant:cbrn_math.zero"
+      },
+      {
+        "field": "cbrn_action_attribution_state",
+        "default": "constant:cbrn_attribution_state.unknown"
+      },
+      {
+        "field": "cbrn_action_condemnation_base",
+        "default": "constant:cbrn_math.zero"
+      },
+      {
+        "field": "cbrn_action_friendly_exposure_risk",
+        "default": "constant:cbrn_math.zero"
+      },
+      {
+        "field": "cbrn_action_vehicle_sealing_applied",
+        "default": "constant:cbrn_proof.missing"
+      },
+      {
+        "field": "cbrn_action_armored_advance_receipt",
+        "default": "constant:cbrn_proof.missing"
+      },
+      {
+        "field": "cbrn_action_source_label",
+        "default": "constant:cbrn_source_label.none"
+      }
+    ],
+    "mask_baselines": [
+      {
+        "field": "cbrn_action_military_mask_only_casualty_mult",
+        "default": "constant:cbrn_math.one"
+      },
+      {
+        "field": "cbrn_action_civilian_mask_only_casualty_mult",
+        "default": "constant:cbrn_math.one"
+      }
+    ],
+    "calculation_profiles": [
+      {
+        "field": "cbrn_route_base_disruption",
+        "default": "constant:cbrn_math.zero"
+      },
+      {
+        "field": "cbrn_route_civilian_exposed_fraction",
+        "default": "constant:cbrn_math.zero"
+      },
+      {
+        "field": "cbrn_route_contamination_points",
+        "default": "constant:cbrn_math.zero"
+      },
+      {
+        "field": "cbrn_route_medical_points",
+        "default": "constant:cbrn_math.zero"
+      },
+      {
+        "field": "cbrn_route_evidence_points",
+        "default": "constant:cbrn_math.zero"
+      },
+      {
+        "field": "cbrn_route_condemnation_base",
+        "default": "constant:cbrn_math.zero"
+      },
+      {
+        "field": "cbrn_route_duration_days",
+        "default": "constant:cbrn_math.zero"
+      },
+      {
+        "field": "cbrn_class_disruption_mult",
+        "default": "constant:cbrn_math.zero"
+      },
+      {
+        "field": "cbrn_class_contamination_mult",
+        "default": "constant:cbrn_math.zero"
+      },
+      {
+        "field": "cbrn_class_medical_mult",
+        "default": "constant:cbrn_math.zero"
+      },
+      {
+        "field": "cbrn_class_evidence_mult",
+        "default": "constant:cbrn_math.zero"
+      },
+      {
+        "field": "cbrn_class_condemnation_mult",
+        "default": "constant:cbrn_math.zero"
+      },
+      {
+        "field": "cbrn_class_duration_mult",
+        "default": "constant:cbrn_math.zero"
+      },
+      {
+        "field": "cbrn_class_tactical_lethality",
+        "default": "constant:cbrn_math.zero"
+      },
+      {
+        "field": "cbrn_class_strategic_lethality",
+        "default": "constant:cbrn_math.zero"
+      },
+      {
+        "field": "cbrn_agent_potency_mult",
+        "default": "constant:cbrn_math.zero"
+      },
+      {
+        "field": "cbrn_agent_persistence_mult",
+        "default": "constant:cbrn_math.zero"
+      },
+      {
+        "field": "cbrn_agent_evidence_mult",
+        "default": "constant:cbrn_math.zero"
+      }
+    ],
+    "generic_protection": [
+      {
+        "field": "cbrn_action_effective_protection",
+        "default": "constant:cbrn_math.zero"
+      },
+      {
+        "field": "cbrn_action_casualty_mult",
+        "default": "constant:cbrn_math.one"
+      },
+      {
+        "field": "cbrn_action_mask_only_casualty_mult",
+        "default": "constant:cbrn_math.one"
+      },
+      {
+        "field": "cbrn_action_disruption_mult",
+        "default": "constant:cbrn_math.one"
+      },
+      {
+        "field": "cbrn_action_contamination_mult",
+        "default": "constant:cbrn_math.one"
+      },
+      {
+        "field": "cbrn_action_protection_resolved_proof",
+        "default": "constant:cbrn_proof.missing"
+      }
+    ],
+    "protection_weights": [
+      {
+        "field": "cbrn_protection_weight_respiratory",
+        "default": "constant:cbrn_math.zero"
+      },
+      {
+        "field": "cbrn_protection_weight_skin",
+        "default": "constant:cbrn_math.zero"
+      },
+      {
+        "field": "cbrn_protection_weight_antidote",
+        "default": "constant:cbrn_math.zero"
+      },
+      {
+        "field": "cbrn_protection_weight_decontamination",
+        "default": "constant:cbrn_math.zero"
+      },
+      {
+        "field": "cbrn_protection_weight_medical",
+        "default": "constant:cbrn_math.zero"
+      },
+      {
+        "field": "cbrn_protection_weight_warning",
+        "default": "constant:cbrn_math.zero"
+      }
+    ],
+    "dispatch_private": [
+      {
+        "field": "cbrn_action_condemnation_context",
+        "default": "constant:cbrn_math.zero"
+      },
+      {
+        "field": "cbrn_action_evidence_floor",
+        "default": "constant:cbrn_math.zero"
+      },
+      {
+        "field": "cbrn_action_civilian_deaths",
+        "default": "constant:cbrn_math.zero"
+      }
+    ],
+    "air_forwarded": [
+      {
+        "field": "cbrn_raid_result",
+        "default": "constant:cbrn_chemical_raid_result.none"
+      },
+      {
+        "field": "cbrn_raid_release_proof",
+        "default": "constant:cbrn_proof.missing"
+      },
+      {
+        "field": "cbrn_raid_reservation_proof",
+        "default": "constant:cbrn_proof.missing"
+      }
+    ],
+    "attempt_private": [
+      {
+        "field": "cbrn_raid_attempt_evidence_points",
+        "default": "constant:cbrn_math.zero"
+      },
+      {
+        "field": "cbrn_raid_attempt_evidence_floor",
+        "default": "constant:cbrn_math.zero"
+      },
+      {
+        "field": "cbrn_raid_attempt_condemnation_base",
+        "default": "constant:cbrn_math.zero"
+      }
+    ],
+    "validation_minimum": [
+      {
+        "field": "cbrn_action_agent_class",
+        "default": "constant:cbrn_agent_class.none"
+      },
+      {
+        "field": "cbrn_action_payload_required",
+        "default": "constant:cbrn_math.zero"
+      }
+    ],
+    "doomsday_forwarded": [
+      {
+        "field": "cbrn_doomsday_target_count",
+        "default": "constant:cbrn_math.zero"
+      },
+      {
+        "field": "cbrn_doomsday_stock_chlorine",
+        "default": "constant:cbrn_math.zero"
+      },
+      {
+        "field": "cbrn_doomsday_stock_phosgene",
+        "default": "constant:cbrn_math.zero"
+      },
+      {
+        "field": "cbrn_doomsday_stock_mustard",
+        "default": "constant:cbrn_math.zero"
+      },
+      {
+        "field": "cbrn_doomsday_stock_lewisite",
+        "default": "constant:cbrn_math.zero"
+      },
+      {
+        "field": "cbrn_doomsday_arsenal_consumed_total",
+        "default": "constant:cbrn_math.zero"
+      },
+      {
+        "field": "cbrn_doomsday_stockpile_debit_proof",
+        "default": "constant:cbrn_proof.missing"
+      },
+      {
+        "field": "cbrn_doomsday_condemnation_total",
+        "default": "constant:cbrn_math.zero"
+      },
+      {
+        "field": "cbrn_doomsday_agent_condemnation_share",
+        "default": "constant:cbrn_math.zero"
+      }
+    ],
+    "camp_method_forwarded": [
+      {
+        "field": "camp_rework_method_death_factor",
+        "default": "constant:cbrn_math.one"
+      },
+      {
+        "field": "camp_method_evidence_gain",
+        "default": "constant:cbrn_math.zero"
+      },
+      {
+        "field": "camp_method_accident_pressure",
+        "default": "constant:cbrn_math.zero"
+      },
+      {
+        "field": "camp_method_stockpile_cost",
+        "default": "constant:cbrn_math.zero"
+      },
+      {
+        "field": "cbrn_camp_action_duration_days",
+        "default": "constant:camp_rework_chemical_contamination.chlorine_days"
+      }
+    ]
+  },
+  "insertions": [
+    {
+      "file": "common/scripted_effects/cbrn_chemical_land_raid_effects.txt",
+      "owner": "cbrn_resolve_chemical_land_raid_country_outcome",
+      "placement": "Immediately before its cbrn_reset_action_context call in the actor-valid branch",
+      "field_sets": [
+        "action_inputs",
+        "action_outputs",
+        "mask_baselines"
+      ],
+      "rationale": "Complete original reset defaults survive; optional condition fields and one-dispatch proof cannot leak across another action."
+    },
+    {
+      "file": "common/scripted_effects/cbrn_chemical_raid_effects.txt",
+      "owner": "cbrn_resolve_chemical_air_raid_outcome",
+      "placement": "Before cbrn_resolve_chemical_air_raid_reservation",
+      "field_sets": [
+        "action_inputs",
+        "action_outputs",
+        "mask_baselines",
+        "air_forwarded"
+      ],
+      "rationale": "Reservation is a returning producer; declarations only inside it cannot protect outer consumers."
+    },
+    {
+      "file": "common/scripted_effects/cbrn_chemical_doomsday_effects.txt",
+      "owner": "cbrn_chemical_doomsday_resolve_current_state",
+      "placement": "Before cbrn_reset_action_context for each exact state record",
+      "field_sets": [
+        "action_inputs",
+        "action_outputs",
+        "mask_baselines"
+      ]
+    },
+    {
+      "file": "common/scripted_effects/032_missiles_operations_effects.txt",
+      "owner": "missiles_dispatch_chemical_payload",
+      "placement": "Before cbrn_reset_action_context",
+      "field_sets": [
+        "action_inputs",
+        "action_outputs",
+        "mask_baselines"
+      ],
+      "fields": [
+        {
+          "field": "cbrn_action_civilian_deaths",
+          "default": "constant:cbrn_math.zero"
+        }
+      ],
+      "ownership": "ACTIVE_SHARED_OWNER_REVIEW_REQUIRED"
+    },
+    {
+      "file": "common/scripted_effects/camp_repression_rework_effects.txt",
+      "owner": "camp_rework_apply_chemical_escalation_in_action_state",
+      "placement": "Before camp_rework_prepare_chemical_method_outcome, preserving its original call before cbrn_reset_action_context",
+      "field_sets": [
+        "action_inputs",
+        "action_outputs",
+        "mask_baselines",
+        "camp_method_forwarded"
+      ],
+      "ownership": "ACTIVE_SHARED_OWNER_REVIEW_REQUIRED"
+    },
+    {
+      "file": "common/scripted_effects/cbrn_exposure_effects.txt",
+      "owner": "cbrn_calculate_chemical_action_outputs",
+      "placement": "Before its first route/class/agent profile call",
+      "field_sets": [
+        "calculation_profiles"
+      ],
+      "observed_status": "Already present at later audit read; do not duplicate"
+    },
+    {
+      "file": "common/scripted_effects/cbrn_protection_effects.txt",
+      "owner": "cbrn_resolve_action_target_protection",
+      "placement": "Before first cbrn_calculate_action_protection",
+      "field_sets": [
+        "generic_protection"
+      ],
+      "observed_status": "All six owned outputs present at later audit read; do not duplicate existing proof or five added outputs"
+    },
+    {
+      "file": "common/scripted_effects/cbrn_protection_effects.txt",
+      "owner": "cbrn_calculate_action_protection",
+      "placement": "Within the valid-input branch, immediately before cbrn_set_protection_weights_from_agent_class",
+      "field_sets": [
+        "protection_weights"
+      ],
+      "observed_status": "Verify fresh source; declaration must precede the producing weight helper"
+    },
+    {
+      "file": "common/scripted_effects/cbrn_consequence_effects.txt",
+      "owner": "cbrn_dispatch_chemical_action_record",
+      "placement": "Inside the accepted/undispatched branch, before cbrn_dispatch_set_source_and_context",
+      "field_sets": [
+        "dispatch_private"
+      ],
+      "never_include": [
+        "cbrn_action_dispatch_proof"
+      ],
+      "rationale": "Duplicate/rejected dispatch must not clear the fresh-proof guard or overwrite a prior completed receipt."
+    },
+    {
+      "file": "common/scripted_effects/cbrn_chemical_raid_effects.txt",
+      "owner": "cbrn_dispatch_failed_chemical_air_raid_attempt",
+      "placement": "Inside its existing accepted no-release and undispatched branch, before set_attempt_consequences_internal",
+      "field_sets": [
+        "attempt_private"
+      ],
+      "never_include": [
+        "cbrn_raid_attempt_dispatch_proof"
+      ]
+    },
+    {
+      "file": "common/scripted_effects/cbrn_chemical_raid_effects.txt",
+      "owner": "cbrn_chemical_air_raid_apply_attempt_evidence_internal",
+      "placement": "Before cbrn_apply_state_evidence_delta_internal",
+      "fields": [
+        {
+          "field": "cbrn_state_attribution_output",
+          "default": "constant:cbrn_attribution_state.unknown"
+        }
+      ]
+    },
+    {
+      "file": "common/scripted_effects/cbrn_payload_reservation_effects.txt",
+      "owner": "cbrn_payload_validate_request_authorization",
+      "placement": "In its existing valid-binding branch before cbrn_reset_action_context",
+      "field_sets": [
+        "validation_minimum"
+      ],
+      "rationale": "Native model/matched and consumed/proof already have local storage; no full record is consumed here."
+    },
+    {
+      "file": "common/scripted_effects/032_missiles_operations_effects.txt",
+      "owner": "missiles_check_chemical_payload_stock",
+      "placement": "Before its existing cbrn_reset_action_context if retained in the owner's current source",
+      "field_sets": [
+        "validation_minimum"
+      ],
+      "ownership": "ACTIVE_SHARED_OWNER_REVIEW_REQUIRED",
+      "rationale": "Do not apply to replaced receipt-consuming wrapper."
+    },
+    {
+      "file": "common/scripted_effects/cbrn_chemical_doomsday_effects.txt",
+      "owner": "cbrn_chemical_doomsday_release",
+      "placement": "Before cbrn_chemical_doomsday_collect_target_states",
+      "field_sets": [
+        "doomsday_forwarded"
+      ],
+      "arrays": [
+        {
+          "field": "cbrn_doomsday_target_states",
+          "initializer": "clear_temp_array"
+        }
+      ],
+      "rationale": "Target collection, captured arsenal and batch/share outputs are consumed after producer return."
+    },
+    {
+      "file": "events/cbrn_doomsday_raid_bridge.txt",
+      "owner": "chaosx_cbrn_doom_raid.1 immediate.hidden_effect",
+      "placement": "Immediately before cbrn_chemical_doomsday_release",
+      "fields": [
+        {
+          "field": "cbrn_doomsday_release_status",
+          "default": "constant:cbrn_proof.missing"
+        }
+      ]
+    }
+  ],
+  "verified_existing_storage": [
+    {
+      "file": "common/scripted_effects/JAP_chemical_campaign_effects.txt",
+      "owner": "japan_resolve_chemical_campaign_raid_outcome",
+      "field": "cbrn_raid_release_accepted",
+      "note": "Existing caller declaration before land resolver preserves returned release receipt; do not add a redundant reset after the call."
+    },
+    {
+      "file": "common/scripted_effects/cbrn_payload_effects.txt",
+      "owner": "cbrn_try_debit_action_payload",
+      "field": "cbrn_payload_debit_model_matched",
+      "note": "Existing zero declaration precedes each producing debit branch; native land/air raid outcome adapters must not invoke this payment helper."
+    }
+  ]
+}

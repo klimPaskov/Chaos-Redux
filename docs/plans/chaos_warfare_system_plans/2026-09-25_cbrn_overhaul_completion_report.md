@@ -354,3 +354,13 @@ The parent reviewed the images and verified identical board pixels across the tw
 No Event 020 source, asset, localisation, action or gameplay change was needed.
 Pre-outbreak/recovered category visibility and organized capacity at 2560x1440 remain unproved; helper-body scenario assumptions, incomplete artifact reads and the GUI-only historical baseline are explicit limits.
 This evidence does not complete the native category gate, ordinary decision-cost rows, or the overall CBRN goal.
+
+## Biological raid caller integrity
+
+The [parent-reviewed repair](2026-10-07_biological_raid_service_integrity.md) adds 63 caller-owned temporary declarations across five source files without changing any original statement or its order.
+The parent reran 150 source-model cases covering ordinary battlefield, strategic and sabotage outcomes, nested parameter/results, failed-attempt evidence, reset defaults, retaliation, exact marker bridges and accepted/rejected storage.
+The model reproduces 68 baseline value/branch failures and five reset-ownership failures.
+These results do not prove full outbreak potency, native reservations, cancellation or callback uniqueness; accepted repeated battlefield seeds still strengthen the existing episode under its source contract.
+Eleven other consumers remain queued, and the scheduler can capture a zero-day meta argument before calculating its actual delay under the eager model; native timing remains unresolved.
+Partial command validation, missing event revision and unresolved/surface-empty probability comparison remain explicit evidence gaps.
+The native raid guide documents the storage API and existing cure-bomb reservation, with no workbook, public text or asset change.

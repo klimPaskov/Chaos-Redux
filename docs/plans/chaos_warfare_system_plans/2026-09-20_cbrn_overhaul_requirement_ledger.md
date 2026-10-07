@@ -308,3 +308,12 @@ Organized capacity at 2560x1440 remains unverified after two bounded attempts.
 Some fixtures declare helper-body assumptions for a normal human host; no category-visibility result was injected.
 The historical comparison supplies only an earlier GUI file and current linked source, so it is not whole-historical-engine evidence.
 The [handoff and exact matrix](../020_black_plague_plans/subagent_handoffs/2026-10-07_event020_gui_acceptance.md) retain all of these limits; CBRN-14 is not complete.
+
+## Biological raid output ownership
+
+The [bounded repair](2026-10-07_biological_raid_service_integrity.md) owns returning payload, selected-result, attribution, reset-default and acceptance fields across the three ordinary biological resolver families and five release adapters.
+The parent reviewed all 63 declarations and reran 150 actual-source cases, reproducing 68 baseline value/branch failures and five reset-ownership failures.
+The original payment, target, policy, tuning, weighted bodies and statement order remain intact.
+CBRN-03 remains incomplete: eleven other paired consumers need equivalent review, native callback/cancellation settlement remains unproved, and the incubation scheduler's zero-before-meta delay creates an unresolved timing concern.
+MCP event comparison lacks its retained revision; the complete discovered blowback pool has unresolved computed weights and its snapshot comparison returns no weighted surface.
+No gameplay simplification or new replay mechanism is introduced.
