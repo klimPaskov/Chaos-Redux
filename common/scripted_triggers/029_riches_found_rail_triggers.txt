@@ -1,0 +1,31 @@
+# Event 029 railhead endpoint predicates. STATE is the mine and CONTROLLER
+# owns the evaluated rail network. A capital-state mine is already at the
+# destination; every other mine needs an actual allied-ground rail connection.
+
+riches_found_state_has_capital_rail_connection = {
+	CONTROLLER = {
+		exists = yes
+		OR = {
+			check_variable = { var = capital value = PREV compare = equals }
+			has_railway_connection = {
+				start_state = PREV
+				target_state = THIS.capital
+				build_only_on_allied = yes
+			}
+		}
+	}
+}
+
+riches_found_state_can_connect_capital_rail = {
+	CONTROLLER = { exists = yes }
+	OR = {
+		riches_found_state_has_capital_rail_connection = yes
+		CONTROLLER = {
+			can_build_railway = {
+				start_state = PREV
+				target_state = THIS.capital
+				build_only_on_allied = yes
+			}
+		}
+	}
+}

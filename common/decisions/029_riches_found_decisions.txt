@@ -9234,8 +9234,14 @@ mission_riches_found_open_railhead = {
 		any_controlled_state = {
 			has_state_flag = riches_found_mission_open_railhead_subject
 			has_state_flag = riches_found_mine_state
+			riches_found_mission_is_active = yes
+			check_variable = { riches_found_mission_kind = constant:riches_found_mission_kind.open_railhead }
 			has_state_flag = riches_found_mission_open_railhead_progress
 			riches_found_state_has_route_capacity = yes
+			OR = {
+				AND = { has_state_flag = riches_found_rail_route riches_found_state_can_connect_capital_rail = yes }
+				AND = { has_state_flag = riches_found_port_route naval_base > constant:riches_found_value.zero }
+			}
 			NOT = { has_state_flag = riches_found_mine_damaged }
 			check_variable = { var = riches_found_mine_development value = constant:riches_found_decision_threshold.development_ready compare = greater_than }
 		}
@@ -9265,15 +9271,41 @@ mission_riches_found_open_railhead = {
 	complete_effect = {
 		custom_effect_tooltip = mission_riches_found_open_railhead_complete_tt
 		every_controlled_state = {
-			limit = { has_state_flag = riches_found_mission_open_railhead_subject }
-			riches_found_complete_mission = yes
+			limit = {
+				has_state_flag = riches_found_mission_open_railhead_subject
+				riches_found_mission_is_active = yes
+				check_variable = { riches_found_mission_kind = constant:riches_found_mission_kind.open_railhead }
+			}
+			riches_found_lay_mine_railway = yes
+			if = {
+				limit = {
+					has_state_flag = riches_found_mission_open_railhead_progress
+					riches_found_state_has_route_capacity = yes
+					NOT = { has_state_flag = riches_found_mine_damaged }
+					check_variable = { var = riches_found_mine_development value = constant:riches_found_decision_threshold.development_ready compare = greater_than }
+					OR = {
+						AND = { has_state_flag = riches_found_rail_route riches_found_state_has_capital_rail_connection = yes }
+						AND = { has_state_flag = riches_found_port_route naval_base > constant:riches_found_value.zero }
+					}
+				}
+				riches_found_complete_mission = yes
 				add_to_variable = { riches_found_mine_development = constant:riches_found_action_delta.positive_8 }
 				add_to_variable = { riches_found_local_order = constant:riches_found_action_delta.positive_4 }
-			set_state_flag = riches_found_mission_open_railhead_success
-			riches_found_lay_mine_railway = yes
+				set_state_flag = riches_found_mission_open_railhead_success
+			}
+			else = {
+				add_to_variable = { riches_found_mine_development = constant:riches_found_action_delta.positive_3 }
+				add_to_variable = { riches_found_extraction_pressure = constant:riches_found_action_delta.positive_6 }
+				set_state_flag = riches_found_mission_open_railhead_partial
+				set_variable = { riches_found_last_mission_result = constant:riches_found_mission_stage.partial }
+				set_variable = { riches_found_mission_stage = constant:riches_found_mission_stage.partial }
+				clr_state_flag = riches_found_mission_active
+				clr_state_flag = riches_found_mission_cleanup_pending
+				clear_variable = riches_found_mission_target
+			}
 			set_temp_variable = { riches_found_mission_cooldown_days = constant:riches_found_duration.mission_cooldown_days }
 			set_state_flag = { flag = riches_found_mission_open_railhead_cooldown days = riches_found_mission_cooldown_days }
-		clr_state_flag = riches_found_mission_open_railhead_subject
+			clr_state_flag = riches_found_mission_open_railhead_subject
 			clr_state_flag = riches_found_mission_open_railhead_progress
 		}
 		riches_found_reconcile_controller = yes
@@ -9285,15 +9317,26 @@ mission_riches_found_open_railhead = {
 			limit = {
 				any_controlled_state = {
 					has_state_flag = riches_found_mission_open_railhead_subject
+					riches_found_mission_is_active = yes
+					check_variable = { riches_found_mission_kind = constant:riches_found_mission_kind.open_railhead }
 					OR = { has_state_flag = riches_found_rail_route has_state_flag = riches_found_port_route }
 				}
 			}
 			custom_effect_tooltip = mission_riches_found_open_railhead_partial_tt
 			every_controlled_state = {
-				limit = { has_state_flag = riches_found_mission_open_railhead_subject }
+				limit = {
+					has_state_flag = riches_found_mission_open_railhead_subject
+					riches_found_mission_is_active = yes
+					check_variable = { riches_found_mission_kind = constant:riches_found_mission_kind.open_railhead }
+				}
 					add_to_variable = { riches_found_mine_development = constant:riches_found_action_delta.positive_3 }
 					add_to_variable = { riches_found_extraction_pressure = constant:riches_found_action_delta.positive_6 }
 					set_state_flag = riches_found_mission_open_railhead_partial
+				set_variable = { riches_found_last_mission_result = constant:riches_found_mission_stage.partial }
+				set_variable = { riches_found_mission_stage = constant:riches_found_mission_stage.partial }
+				clr_state_flag = riches_found_mission_active
+				clr_state_flag = riches_found_mission_cleanup_pending
+				clear_variable = riches_found_mission_target
 					set_temp_variable = { riches_found_mission_cooldown_days = constant:riches_found_duration.mission_cooldown_days }
 					set_state_flag = { flag = riches_found_mission_open_railhead_cooldown days = riches_found_mission_cooldown_days }
 					clr_state_flag = riches_found_mission_open_railhead_subject
@@ -9303,10 +9346,19 @@ mission_riches_found_open_railhead = {
 		else = {
 			custom_effect_tooltip = mission_riches_found_open_railhead_failure_tt
 			every_controlled_state = {
-				limit = { has_state_flag = riches_found_mission_open_railhead_subject }
+				limit = {
+					has_state_flag = riches_found_mission_open_railhead_subject
+					riches_found_mission_is_active = yes
+					check_variable = { riches_found_mission_kind = constant:riches_found_mission_kind.open_railhead }
+				}
 					add_to_variable = { riches_found_mine_development = constant:riches_found_action_delta.negative_8 }
 					add_to_variable = { riches_found_extraction_pressure = constant:riches_found_action_delta.positive_10 }
 			set_state_flag = riches_found_mission_open_railhead_failure
+				set_variable = { riches_found_last_mission_result = constant:riches_found_mission_stage.failure }
+				set_variable = { riches_found_mission_stage = constant:riches_found_mission_stage.failure }
+				clr_state_flag = riches_found_mission_active
+				clr_state_flag = riches_found_mission_cleanup_pending
+				clear_variable = riches_found_mission_target
 			set_temp_variable = { riches_found_mission_cooldown_days = constant:riches_found_duration.mission_cooldown_days }
 			set_state_flag = { flag = riches_found_mission_open_railhead_cooldown days = riches_found_mission_cooldown_days }
 			clr_state_flag = riches_found_mission_open_railhead_subject
