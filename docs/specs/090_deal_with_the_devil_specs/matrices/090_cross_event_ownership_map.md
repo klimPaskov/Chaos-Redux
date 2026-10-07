@@ -1,0 +1,20 @@
+# Cross-event ownership map
+
+| Owner or source | Event 090 may use | Event 090 must not do | Evidence status |
+| --- | --- | --- | --- |
+| Shared random-event scheduler | One parent firing, normal evolution scheduling and catalog identity | Create a second parent, invent root accounting from “Chaos level 1,” or duplicate roll history | Project source reconciliation required before implementation |
+| Event 016 Brilliant Scientist | Actual specialist access, verified project outcomes, shared research and force contracts | Duplicate Kruger, seize exclusive authority silently, or grant every project from a portrait check | Pinned documentation inspected in prior attempt; exact current consumer API still to verify |
+| Shared clone providers | Legitimate owned clone cohorts and exact material obligations | Rebrand unique or restricted clones as generic infernal stock | Pinned Event 019/016 registry evidence retained |
+| Native biological raids | Existing reservations, preparation, delivery, cancellation, outcome, and history | Add a parallel attack decision, second debit, or scripted refund to native-paid outcomes | Pinned Event 016 biological-operations document inspected |
+| Disease lifecycle, Zombie Outbreak, Black Plague | Supported named treatment, containment, and exposure outcomes | Create parallel infection state, erase active military actors through civilian cure, or reinfect cured people as an automatic refund | Exact treatment interfaces must be inspected |
+| Famine, migration, deaths | Supported relief and living-person recovery | Count demonic bodies as human civilian deaths or subtract people already dead | Current shared contracts required |
+| Event 019 registry v4 at inspected revision | Owner-side family discovery, exact costs and presentation, neutral derivative | Add a second registry/list; copy parent identity, tree, bargains, or terminal state into a derivative | Full registry document read in prior attempt at pinned revision |
+| Event 021 fracture framework | Connected territory, reservations, host survival, actual force-plan lessons | Treat its same-tag fallback as approval for a separate-country 090 requirement; call its parent progression by shortcut | Pinned overview first 130 source lines inspected; full current integration still required |
+| Event 060 Research Failure | Real capacity, archive, slot, current-work, and eligible technology recovery | Promise universal restoration through a flat research bonus or duplicate surviving buildings | Pinned package README inspected; full current owner implementation not claimed |
+| Event 030 Time Traveler | Actual traveler's knowledge, custody, copy and reliability conditions | Create another unique traveler or promise infallible future evidence | Pinned package README inspected |
+| Event 089 Doctor Wu | Proposed detection, personal protection, medical transition, and joint research | Declare an automatic cure or overwrite Wu's institutions and strain ownership | Full current Wu package not inspected in retained handoff; explicit gate |
+| Sanctions, embargoes, convention/condemnation, ordinary diplomacy | Specific supported restriction relief and consenting negotiations | Erase unrelated sanctions, force human consent, or equate accepting a cure with offensive biological use | Specific owners to inspect before enabling each offer |
+| Other supernatural and manipulative actors | Evidence, a negotiated overlap, or an explicit rivalry | Clear exclusive control or copy their countries, leaders, methods, and endings | Current packages to inspect; hooks remain proposed |
+| Shared world-end arbitration | Eligibility, exclusive terminal authority, and supported completion | Invent a universal ranking or a post-ending reversal system | Exact shared contract is a release gate |
+
+The pinned repository revision used in the retained inspection is `5212636eef9f9607691ddc1348bddade1bafe0dd`. It is evidence about that revision, not a claim that the current repository remains unchanged.

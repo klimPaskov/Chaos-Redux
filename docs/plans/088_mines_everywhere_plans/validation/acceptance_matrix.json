@@ -1,0 +1,488 @@
+[
+  {
+    "id": "T01",
+    "family": "Coverage",
+    "scenario": "Empty ordinary map",
+    "setup": "Several eligible countries and every valid sea, all fields empty",
+    "expected": "Every pair reaches the verified ordinary cap with one 1,000 addition",
+    "required_evidence": "Native field inventory before/after and full map coverage receipt",
+    "engine_status": "NOT RUN"
+  },
+  {
+    "id": "T02",
+    "family": "Coverage",
+    "scenario": "Existing partial fields",
+    "setup": "Mix 0, 250, 995 and 1,000 for multiple owners",
+    "expected": "Additive results preserve all existing ownership and respect the native cap",
+    "required_evidence": "Per-owner/per-region before/after inventory",
+    "engine_status": "NOT RUN"
+  },
+  {
+    "id": "T03",
+    "family": "Coverage",
+    "scenario": "Raised cap",
+    "setup": "Cap 2,000 and existing amount 250",
+    "expected": "Result is 1,250, not 2,000 and not 1,000",
+    "required_evidence": "Installed define and actual effect result",
+    "engine_status": "NOT RUN"
+  },
+  {
+    "id": "T04",
+    "family": "Coverage",
+    "scenario": "Lower cap",
+    "setup": "Cap 750 with existing 250",
+    "expected": "Result respects 750 and does not change the define",
+    "required_evidence": "Installed define and actual effect result",
+    "engine_status": "NOT RUN"
+  },
+  {
+    "id": "T05",
+    "family": "Coverage",
+    "scenario": "Over-cap existing data",
+    "setup": "A native field already exceeds current cap",
+    "expected": "No reduction. Unsupported additive behavior rejects before any writes",
+    "required_evidence": "Preflight and exceptional-state proof",
+    "engine_status": "NOT RUN"
+  },
+  {
+    "id": "T06",
+    "family": "Coverage",
+    "scenario": "Two enemies same sea",
+    "setup": "Opposing owners share a region",
+    "expected": "Both independent fields remain present after their additions",
+    "required_evidence": "Owner-resolved state and hostile view",
+    "engine_status": "NOT RUN"
+  },
+  {
+    "id": "T07",
+    "family": "Coverage",
+    "scenario": "Many owners same sea",
+    "setup": "Several enemies plus friendly and neutral owners",
+    "expected": "All eligible ownership is present, with native combat aggregation rather than assumed linear scaling",
+    "required_evidence": "Multi-owner state and actual combat/tooltip behavior",
+    "engine_status": "NOT RUN"
+  },
+  {
+    "id": "T08",
+    "family": "Map",
+    "scenario": "Sparse and unusual IDs",
+    "setup": "Valid regions use sparse IDs and zero where supported",
+    "expected": "Every valid ID is included once, with no arbitrary ceiling or zero exclusion",
+    "required_evidence": "Effective map inventory and application coverage",
+    "engine_status": "NOT RUN"
+  },
+  {
+    "id": "T09",
+    "family": "Map",
+    "scenario": "Added ocean region",
+    "setup": "Compatible map adds a valid remote region",
+    "expected": "New region receives every eligible contribution",
+    "required_evidence": "Map provenance and native field inspection",
+    "engine_status": "NOT RUN"
+  },
+  {
+    "id": "T10",
+    "family": "Map",
+    "scenario": "Overridden classification",
+    "setup": "Map changes a region from land to naval or naval to land",
+    "expected": "Effective classification wins and invalid land receives no call",
+    "required_evidence": "Resolved overlay data and call inventory",
+    "engine_status": "NOT RUN"
+  },
+  {
+    "id": "T11",
+    "family": "Map",
+    "scenario": "Enclosed accessible sea",
+    "setup": "Valid sea behind a restricted approach",
+    "expected": "Region covered without opening access or moving fleets",
+    "required_evidence": "Region field state and unchanged access",
+    "engine_status": "NOT RUN"
+  },
+  {
+    "id": "T12",
+    "family": "Map",
+    "scenario": "Unsupported lake or land",
+    "setup": "Non-naval lake or land-only strategic region",
+    "expected": "No native mine call to an invalid target",
+    "required_evidence": "Validity predicate and exclusion proof",
+    "engine_status": "NOT RUN"
+  },
+  {
+    "id": "T13",
+    "family": "Map",
+    "scenario": "Load-order change",
+    "setup": "Provider registry was built for different active overrides",
+    "expected": "Stale coverage rejects before consumption rather than skipping regions",
+    "required_evidence": "Configuration fingerprint failure receipt",
+    "engine_status": "NOT RUN"
+  },
+  {
+    "id": "T14",
+    "family": "Map",
+    "scenario": "Incomplete registry",
+    "setup": "Known active sea omitted from registry",
+    "expected": "Normal dispatch remains ineligible and no partial success is logged",
+    "required_evidence": "Prefire and history/field comparison",
+    "engine_status": "NOT RUN"
+  },
+  {
+    "id": "T15",
+    "family": "Owners",
+    "scenario": "Landlocked country",
+    "setup": "Compare legally supported and invalid mine ownership cases",
+    "expected": "Native legality determines inclusion without reducing region set",
+    "required_evidence": "Owner eligibility evidence and complete region set",
+    "engine_status": "NOT RUN"
+  },
+  {
+    "id": "T16",
+    "family": "Owners",
+    "scenario": "No ships or mine technology",
+    "setup": "Existing country lacks ordinary minelaying tools",
+    "expected": "No exclusion unless native effect legality actually requires it",
+    "required_evidence": "Current effect/trigger documentation and result",
+    "engine_status": "NOT RUN"
+  },
+  {
+    "id": "T17",
+    "family": "Owners",
+    "scenario": "Subjects and minor AI",
+    "setup": "Subject, small AI and human share legal capability",
+    "expected": "Same placement eligibility and amount",
+    "required_evidence": "Owner-resolved before/after data",
+    "engine_status": "NOT RUN"
+  },
+  {
+    "id": "T18",
+    "family": "Owners",
+    "scenario": "Dynamic current country",
+    "setup": "Existing dynamic tag absent from initial historical map",
+    "expected": "Included under the same native legality rule",
+    "required_evidence": "Current tag identity and contribution receipt",
+    "engine_status": "NOT RUN"
+  },
+  {
+    "id": "T19",
+    "family": "Owners",
+    "scenario": "Exile or capitulation",
+    "setup": "Compare valid and invalid ownership states",
+    "expected": "Verified native rule applied consistently",
+    "required_evidence": "Engine behavior and eligibility explanation",
+    "engine_status": "NOT RUN"
+  },
+  {
+    "id": "T20",
+    "family": "Owners",
+    "scenario": "No eligible recipients",
+    "setup": "Valid seas but C is empty",
+    "expected": "No successful incident, Chaos or mine writes",
+    "required_evidence": "Dispatch/history/state comparison",
+    "engine_status": "NOT RUN"
+  },
+  {
+    "id": "T21",
+    "family": "Owners",
+    "scenario": "No valid naval regions",
+    "setup": "Map has no valid seas",
+    "expected": "No successful incident and no invalid calls",
+    "required_evidence": "Map and dispatch evidence",
+    "engine_status": "NOT RUN"
+  },
+  {
+    "id": "T22",
+    "family": "Lifecycle",
+    "scenario": "Acknowledgment order",
+    "setup": "Human leaves report open while other viewers acknowledge",
+    "expected": "Placement completed independently and is never repeated",
+    "required_evidence": "Event ordering and field comparison",
+    "engine_status": "NOT RUN"
+  },
+  {
+    "id": "T23",
+    "family": "Lifecycle",
+    "scenario": "Duplicate direct call",
+    "setup": "Reenter after complete firing under a raised cap",
+    "expected": "No extra 1,000, history entry, Chaos or timer outcome",
+    "required_evidence": "Before/after and state-flow evidence",
+    "engine_status": "NOT RUN"
+  },
+  {
+    "id": "T24",
+    "family": "Lifecycle",
+    "scenario": "Duplicate after clearance",
+    "setup": "Clear a hostile field, then call event again",
+    "expected": "Cleared field remains cleared",
+    "required_evidence": "Native clearance result and duplicate-call comparison",
+    "engine_status": "NOT RUN"
+  },
+  {
+    "id": "T25",
+    "family": "Lifecycle",
+    "scenario": "Shared timer cluster",
+    "setup": "Cluster fires with multiple valid members",
+    "expected": "One logical timer/weight outcome, Event 088 applied once",
+    "required_evidence": "Complete picker/cluster state trace",
+    "engine_status": "NOT RUN"
+  },
+  {
+    "id": "T26",
+    "family": "Lifecycle",
+    "scenario": "Independent timers",
+    "setup": "Another country later reaches Event 088 eligibility",
+    "expected": "Global consumed state prevents another pass without resetting all recipient timers",
+    "required_evidence": "Multi-country timer and fired-state trace",
+    "engine_status": "NOT RUN"
+  },
+  {
+    "id": "T27",
+    "family": "Lifecycle",
+    "scenario": "Later cluster firing",
+    "setup": "Repeatable Sudden Abundance selected after 088 consumption",
+    "expected": "Other valid members remain eligible and 088 stays consumed",
+    "required_evidence": "Aligned member arrays and actual pool evidence",
+    "engine_status": "NOT RUN"
+  },
+  {
+    "id": "T28",
+    "family": "Lifecycle",
+    "scenario": "Save/load and reentry",
+    "setup": "Load committed state and later invoke another caller",
+    "expected": "No deposition or duplicate historical award",
+    "required_evidence": "Native save-state and caller trace",
+    "engine_status": "NOT RUN"
+  },
+  {
+    "id": "T29",
+    "family": "Lifecycle",
+    "scenario": "Legacy fired save",
+    "setup": "Old single-region version already consumed Event 088",
+    "expected": "No automatic global refill and no invented achievement provenance",
+    "required_evidence": "Migration and original field comparison",
+    "engine_status": "NOT RUN"
+  },
+  {
+    "id": "T30",
+    "family": "Lifecycle",
+    "scenario": "Late-created owner",
+    "setup": "New legal country appears after commit",
+    "expected": "No automatic mine grant",
+    "required_evidence": "Creation hook audit and field comparison",
+    "engine_status": "NOT RUN"
+  },
+  {
+    "id": "T31",
+    "family": "Lifecycle",
+    "scenario": "Partial execution failure",
+    "setup": "Inject or reproduce failure after some pair writes",
+    "expected": "No destructive rollback, no success claim, no blind retry",
+    "required_evidence": "Exact partial state and progress evidence",
+    "engine_status": "NOT RUN"
+  },
+  {
+    "id": "T32",
+    "family": "Lifecycle",
+    "scenario": "Peace and decay",
+    "setup": "Change war status and advance under native rules",
+    "expected": "Native removal/decay is not compensated by event refill",
+    "required_evidence": "Controlled native lifecycle comparison",
+    "engine_status": "NOT RUN"
+  },
+  {
+    "id": "T33",
+    "family": "Lifecycle",
+    "scenario": "Annexation and civil war",
+    "setup": "Ownership changes after original firing",
+    "expected": "Native ownership behavior preserved without invented redistribution",
+    "required_evidence": "Owner lifecycle and field inspection",
+    "engine_status": "NOT RUN"
+  },
+  {
+    "id": "T34",
+    "family": "Performance",
+    "scenario": "Large supported configuration",
+    "setup": "Many current countries and large modded sea set",
+    "expected": "Complete synchronous coverage without omitted pairs or delayed-world advantage",
+    "required_evidence": "Pair count, engine limits and measured execution evidence",
+    "engine_status": "NOT RUN"
+  },
+  {
+    "id": "T35",
+    "family": "Chaos",
+    "scenario": "Material pass",
+    "setup": "At least one native field actually increases",
+    "expected": "Exactly +20 proposed manifestation Chaos once",
+    "required_evidence": "Native increase proof and shared meter trace",
+    "engine_status": "NOT RUN"
+  },
+  {
+    "id": "T36",
+    "family": "Chaos",
+    "scenario": "All fields already full",
+    "setup": "Complete pass produces zero increase",
+    "expected": "Consumes once with zero Chaos and honest historical result",
+    "required_evidence": "Before/after full inventory and meter trace",
+    "engine_status": "NOT RUN"
+  },
+  {
+    "id": "T37",
+    "family": "Chaos",
+    "scenario": "Subsequent sinking or war",
+    "setup": "Native loss or new war after commit",
+    "expected": "No additional Event 088 award duplicating shared systems",
+    "required_evidence": "Chaos source ownership and trace",
+    "engine_status": "NOT RUN"
+  },
+  {
+    "id": "T38",
+    "family": "Clearance",
+    "scenario": "Single owner swept",
+    "setup": "Another hostile field remains",
+    "expected": "Route not reported as fully clear for that country",
+    "required_evidence": "Country-relative hostility and field view",
+    "engine_status": "NOT RUN"
+  },
+  {
+    "id": "T39",
+    "family": "Clearance",
+    "scenario": "All relevant hostile fields swept",
+    "setup": "Qualifying native clearing under stable hostility",
+    "expected": "Operational route stays reopened against Event 088 with no refill",
+    "required_evidence": "Mission outcome and native field history",
+    "engine_status": "NOT RUN"
+  },
+  {
+    "id": "T40",
+    "family": "Achievement",
+    "scenario": "Five real clearances",
+    "setup": "Five distinct regions, two qualifying owners each, positive player removal",
+    "expected": "First achievement unlocks once with full evidence",
+    "required_evidence": "Native attribution and framework unlock receipt",
+    "engine_status": "NOT RUN"
+  },
+  {
+    "id": "T41",
+    "family": "Achievement",
+    "scenario": "Same region repeated",
+    "setup": "Repeated clear/re-lay loop in one region",
+    "expected": "Counts as one distinct region",
+    "required_evidence": "Progress identity history",
+    "engine_status": "NOT RUN"
+  },
+  {
+    "id": "T42",
+    "family": "Achievement",
+    "scenario": "Passive reduction",
+    "setup": "Mines disappear from decay, peace or owner removal",
+    "expected": "No clearance achievement progress",
+    "required_evidence": "Causal negative test",
+    "engine_status": "NOT RUN"
+  },
+  {
+    "id": "T43",
+    "family": "Achievement",
+    "scenario": "Allied-only sweeping",
+    "setup": "Player present but allies remove all mines",
+    "expected": "No player clearance credit",
+    "required_evidence": "Removal attribution negative test",
+    "engine_status": "NOT RUN"
+  },
+  {
+    "id": "T44",
+    "family": "Achievement",
+    "scenario": "Qualifying offensive",
+    "setup": "Three cleared regions, actual player landing through one, target defeat with retained beachhead",
+    "expected": "Offensive achievement unlocks once",
+    "required_evidence": "Native operation route/attacker/target and defeat evidence",
+    "engine_status": "NOT RUN"
+  },
+  {
+    "id": "T45",
+    "family": "Achievement",
+    "scenario": "Coastal land conquest",
+    "setup": "Player takes coast through land attack or peace transfer",
+    "expected": "No landing credit",
+    "required_evidence": "Operation attribution negative test",
+    "engine_status": "NOT RUN"
+  },
+  {
+    "id": "T46",
+    "family": "Achievement",
+    "scenario": "Prior landing or unrelated annexation",
+    "setup": "Landing predates clearance or target removed by other event",
+    "expected": "No offensive unlock",
+    "required_evidence": "Ordered provenance and defeat-source evidence",
+    "engine_status": "NOT RUN"
+  },
+  {
+    "id": "T47",
+    "family": "Achievement",
+    "scenario": "Test or legacy provenance",
+    "setup": "Debug placement or legacy one-region incident",
+    "expected": "No new global achievement provenance",
+    "required_evidence": "Framework eligibility and event identity proof",
+    "engine_status": "NOT RUN"
+  },
+  {
+    "id": "T48",
+    "family": "Text",
+    "scenario": "Observer country",
+    "setup": "Ineligible mine owner sees report",
+    "expected": "No claim of personal mines, fleet loss or immunity",
+    "required_evidence": "Reviewed actual localisation and rendering",
+    "engine_status": "NOT RUN"
+  },
+  {
+    "id": "T49",
+    "family": "Text",
+    "scenario": "Historical versus live detail",
+    "setup": "Months pass and fields are swept",
+    "expected": "Detail snapshot does not masquerade as current mine count",
+    "required_evidence": "Native state and rendered shared detail",
+    "engine_status": "NOT RUN"
+  },
+  {
+    "id": "T50",
+    "family": "Assets",
+    "scenario": "Report consumer",
+    "setup": "Final 210 by 176 processed report DDS",
+    "expected": "Readable mine, period fit, correct alpha and active sprite",
+    "required_evidence": "Decoded DDS/native-size contact sheet and parent review",
+    "engine_status": "NOT RUN"
+  },
+  {
+    "id": "T51",
+    "family": "Assets",
+    "scenario": "Achievement triplets",
+    "setup": "Two final 64 by 64 three-state sets",
+    "expected": "Correct same-subject completed, grey and unchanged-overlay variants",
+    "required_evidence": "Template inspection, decoded six DDS files and registry linkage",
+    "engine_status": "NOT RUN"
+  },
+  {
+    "id": "T52",
+    "family": "Catalog",
+    "scenario": "Workbook/export alignment",
+    "setup": "Current XLSX differs from old CSV and connected cluster doc",
+    "expected": "Only authorized 088 changes plus verified runtime mirror, unrelated entries preserved",
+    "required_evidence": "Workbook diff, export diff and source text crosswalk",
+    "engine_status": "NOT RUN"
+  },
+  {
+    "id": "T53",
+    "family": "Audit",
+    "scenario": "Probability and completion",
+    "setup": "Inspect full active picker/cluster pool and all changed files",
+    "expected": "Actual classified probability evidence and independent completion findings",
+    "required_evidence": "Real tool and custom-agent receipts",
+    "engine_status": "NOT RUN"
+  },
+  {
+    "id": "T54",
+    "family": "Audit",
+    "scenario": "Near-completion improvement pass",
+    "setup": "All implemented and planned surfaces compared",
+    "expected": "Actual custom planner disposition, no forced extra subsystems",
+    "required_evidence": "Real planner output and parent disposition",
+    "engine_status": "NOT RUN"
+  }
+]

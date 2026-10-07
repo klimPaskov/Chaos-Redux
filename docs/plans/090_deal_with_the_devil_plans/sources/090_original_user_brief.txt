@@ -1,0 +1,1391 @@
+# Deal with the Devil
+
+## Catalog entry
+
+- Event ID: `090`
+- Event name: Deal with the Devil
+- Type: Minor Fire-Once
+- Status: To Be Reworked
+- Chaos level: 1
+
+## Concept replacement
+
+Event 090 completely replaces the old Suicide Craft idea.
+
+Event 090 remains outside every event cluster.
+
+The current catalog also contains an unavailable placeholder under Event 161 with the same name. Event 090 becomes the authoritative event for this concept, so the duplicate placeholder should be retired or given another idea before implementation.
+
+All route, country, focus, decision, unit, achievement, evolution, and super-event names in this document are working design labels. Final player-facing wording belongs to the later full specification and implementation pass.
+
+## Core idea
+
+> A random major country or player-controlled country is approached by a mysterious stranger who can solve a serious national problem. His offers are generous, immediate, and difficult to reject. The country is not told that every accepted deal gives him more control over its government, armed forces, and leader.
+
+The stranger initially appears as a persuasive adviser, financier, diplomat, physician, industrial patron, or private representative. His role changes to fit the problem he promises to solve.
+
+He does not introduce himself as a demon. He does not explain the long-term consequences of accepting his help. The first deals should look unusually fortunate, but still plausible enough that a desperate government might accept them.
+
+His true identity is **Mephistopheles**.
+
+Every accepted deal gives the host a major reward. It also advances a hidden process that the player cannot directly inspect. The effects become visible only through delayed events, unusual appointments, political changes, diplomatic isolation, ministerial behavior, and gradual changes to the country leader's portrait.
+
+A country that rejects every offer eventually forces Mephistopheles to abandon persuasion and appear openly with his own country and army.
+
+A country that accepts every main offer is taken over without an opening civil war. The existing leader remains the public face of the government while Mephistopheles controls the state through possession and loyal institutions.
+
+## Design rules
+
+The event should follow these rules:
+
+- There is no public corruption meter.
+- There is no contract-management window.
+- There is no dedicated scripted GUI during the secret phase.
+- The player does not receive a tooltip stating that a deal increases demonic influence.
+- The player sees the immediate reward and the stated visible concession only.
+- Hidden consequences are delayed and should not be listed in the acceptance option.
+- The first refusal causes no punishment.
+- Early clean refusals can make the next offer more attractive.
+- Refusals become dangerous only after the country has already accepted several deals or has rejected every attempt at persuasion.
+- Every accepted reward must be strong enough to tempt a rational player.
+- Accepting all main deals produces a peaceful takeover route.
+- Refusing all main offers produces an open Mephistophelean revolt.
+- Partial acceptance produces a stronger and more complicated confrontation than clean refusal.
+- The ordinary deal chain, revolt, possession, focus tree, foreign bargains, and client-state system are baseline progression.
+- Evolutions change the behavior and danger of the event. They do not unlock the basic content.
+
+## Host selection
+
+One valid country receives the opening event.
+
+The candidate pool contains:
+
+- every valid player-controlled country
+- every valid current major country
+
+A player-controlled major appears only once in the pool.
+
+The target should be a functioning human state. Existing nonhuman countries, terminal actors, open Mephistophelean countries, and countries already under complete control by another event should be excluded.
+
+Ordinary instability does not make a country invalid. War, famine, disease, economic collapse, political crisis, sanctions, research failure, leader illness, and military defeat all make the first offer more relevant.
+
+## The first visit
+
+The opening event should be restrained.
+
+A well-informed stranger requests a private meeting with the head of government or a small group of senior officials. He knows confidential information about the country and offers a solution to one current problem.
+
+The opening should establish that:
+
+- he understands the country's immediate need
+- he can provide proof that his solution works
+- the reward is concrete and useful
+- the price appears limited and manageable
+- he is calm when questioned
+- he is willing to leave after the first refusal
+- nothing openly supernatural happens during the meeting
+
+The first popup should not use Mephistopheles' name. It should not call the proposal a demonic pact. The visitor can use an ordinary name, title, or professional identity appropriate to the offer.
+
+The country should be able to accept or refuse.
+
+## What the player sees
+
+During the secret phase, the player sees a sequence of ordinary event popups rather than a separate mechanic screen.
+
+Each offer shows:
+
+- the national problem being addressed
+- the promised reward
+- the immediate visible condition or appointment requested by the stranger
+- an acceptance option
+- a refusal option
+
+The acceptance tooltip should describe the visible reward accurately. It should not reveal the hidden takeover process or future revolt strength.
+
+The visible condition should look believable and limited. Examples include:
+
+- appointing a recommended minister
+- granting the stranger a private advisory office
+- protecting a charitable foundation
+- allowing access to state archives
+- giving one industrial concern preferred contracts
+- creating a special military liaison office
+- accepting a private medical programme
+- granting immunity to a small group of advisers
+- signing a secrecy order
+- allowing the stranger to nominate a successor to one administrative position
+
+These concessions should not be presented as obviously disastrous. They can even provide additional visible benefits at first.
+
+## Hidden internal progression
+
+The implementation should keep the secret phase simple.
+
+The main hidden state only needs to track:
+
+- number of main deals accepted
+- number of offers refused before any acceptance
+- number of refusals after acceptance
+- which reward categories were accepted
+- whether Mephistopheles has been revealed
+- whether the host has entered peaceful possession
+- whether an open revolt has begun
+
+There should be no public number called Demonic Influence, Corruption, Possession, or anything similar.
+
+Accepted-deal count is an implementation value. It is not printed in normal tooltips, decision category text, Event Details, or the event log before the reveal.
+
+The player should learn what has happened through consequences rather than a progress bar.
+
+## Dynamic offer selection
+
+Every main offer should respond to the host's current situation.
+
+The system should look for the country's most urgent problem and choose a reward that matters now.
+
+A country that is losing a war should not receive a minor economic bonus while its capital is collapsing. A country suffering a plague should not be offered a naval construction bonus. A stable and powerful country can receive an offer based on ambition rather than survival.
+
+Main offer categories include:
+
+- military salvation
+- economic recovery
+- political order
+- scientific advancement
+- medical rescue
+- diplomatic escape
+- personal protection for the leader
+
+The same category should not repeat until several other categories have been used, unless the country's crisis makes repetition necessary.
+
+Each new offer should be stronger than a normal event reward. Later offers can be even more attractive because the stranger has learned what the government values.
+
+## Military salvation offers
+
+These offers appear when the host is losing a war, lacks equipment, faces invasion, or is preparing to attack a stronger enemy.
+
+Possible rewards include:
+
+- immediate delivery of large equipment stockpiles
+- rapid reinforcement and recovery for damaged divisions
+- a powerful temporary planning and combat advantage
+- emergency manpower or trained formations
+- enemy supply disruption
+- sudden recovery of fuel, trucks, trains, or aircraft
+- protection of the capital or a threatened defensive line
+- an unexpected breakthrough against a stronger enemy
+
+The visible concession can involve a military liaison, a new security office, access to command records, protection for a group of foreign volunteers, or appointment of a recommended general.
+
+Accepting a military offer should later make Mephistopheles stronger if he revolts. It can provide defecting units, compromised commanders, military intelligence, equipment, or prepared bases.
+
+## Economic recovery offers
+
+These offers appear during industrial collapse, debt pressure, low production, severe shortages, or reconstruction.
+
+Possible rewards include:
+
+- a major construction surge
+- immediate repair of damaged industry
+- large temporary production gains
+- recovery of production efficiency
+- new factories or building slots
+- relief from an economic crisis
+- restored access to scarce resources
+- a sudden increase in civilian and military output
+
+The visible concession can involve a preferred contractor, a private financial office, a protected trust, exclusive access to one industry, or a long-term procurement agreement.
+
+Accepting an economic offer should later strengthen Mephistopheles through factories, industrial supporters, supply stockpiles, transport access, or control over strategic companies.
+
+## Political order offers
+
+These offers appear during low stability, civil conflict, government paralysis, resistance, or an approaching leadership crisis.
+
+Possible rewards include:
+
+- a large stability recovery
+- restoration of war support
+- temporary suppression of unrest
+- removal of a severe political penalty
+- prevention of an immediate civil conflict
+- stronger government authority
+- rapid recovery of political power
+- temporary unity between hostile factions
+
+The visible concession can involve appointing one adviser, creating an emergency office, granting legal protection to a small organization, expanding executive powers, or accepting a mediator chosen by the stranger.
+
+Accepting a political offer should later provide compromised ministers, judges, party officials, police leaders, propagandists, or civil servants.
+
+## Scientific advancement offers
+
+These offers appear after Research Failure, during technological inferiority, or when a major project is stalled.
+
+Possible rewards include:
+
+- restoration of lost research capacity
+- rapid progress in several current technologies
+- one powerful technology breakthrough
+- a temporary research surge
+- recovery of lost specialists
+- access to an unusual special project
+- a large reduction in project time
+- repair of a damaged scientific institution
+
+The visible concession can involve a private research foundation, access to restricted archives, appointment of a scientific coordinator, secrecy around a laboratory, or control over one project board.
+
+Accepting a scientific offer should later provide laboratories, unusual weapons, technical staff, research secrets, or collaboration with other strange events.
+
+## Medical rescue offers
+
+These offers appear during an epidemic, biological attack, zombie outbreak, Black Plague crisis, famine mortality, or severe manpower loss.
+
+Possible rewards include:
+
+- immediate suppression of an outbreak
+- powerful resistance to disease spread
+- rapid treatment of infected states
+- recovery of military manpower
+- lower attrition and better casualty recovery
+- emergency food and medical distribution
+- protection from one Chaos Redux disease
+- a temporary universal treatment effect
+
+The visible concession can involve a private hospital network, access to medical records, permission to run a protected treatment programme, appointment of a physician, or immunity for a research team.
+
+Accepting a medical offer should later give Mephistopheles access to hospitals, records, vulnerable populations, medical supply, altered soldiers, or links with Doctor Wu and biological systems.
+
+## Diplomatic escape offers
+
+These offers appear during sanctions, isolation, faction abandonment, encirclement, or imminent diplomatic defeat.
+
+Possible rewards include:
+
+- removal or weakening of sanctions
+- rapid improvement of foreign relations
+- a new guarantee or alliance opportunity
+- temporary protection from hostile war goals
+- collapse of an enemy diplomatic coalition
+- restored trade access
+- a negotiated peace opportunity
+- foreign recognition for a disputed government
+
+The visible concession can involve a private envoy, immunity for a diplomatic mission, acceptance of a foreign intermediary, access to diplomatic correspondence, or recognition of a small organization.
+
+Accepting a diplomatic offer should later help Mephistopheles isolate the host, manipulate foreign policy, compromise embassies, or spread offers abroad.
+
+## Personal offers to the leader
+
+These offers appear when the leader faces death, removal, assassination, humiliation, or political decline.
+
+Possible rewards include:
+
+- survival from illness or assassination
+- extended life
+- restoration of public popularity
+- protection against replacement
+- recovery from a damaging scandal
+- stronger personal authority
+- removal of a hostile rival
+- a temporary personal trait with major benefits
+
+The visible concession can involve a private secretary, a protected physician, a confidential adviser, a succession promise, or a personal oath of discretion.
+
+Personal offers should advance possession more directly than other categories. They should also accelerate portrait changes.
+
+## Number of main deals
+
+The baseline chain should use **five main accepted deals** before peaceful possession is complete.
+
+Five is enough to create a clear escalation without turning the event into a long list of repetitive popups.
+
+The host does not need to receive the same five categories in every campaign. The offers should be selected from current needs and previous choices.
+
+Side events can provide small additional bargains, but side bargains do not count toward the five main deals and cannot complete the takeover by themselves.
+
+## First refusal
+
+The first refusal before any acceptance causes no direct punishment.
+
+The stranger leaves politely.
+
+After a meaningful delay, he returns with a better offer. The second offer should either solve the same problem more completely or target a more urgent problem that has appeared since the first meeting.
+
+The player should be able to refuse because the proposal feels suspicious, but the game should not confirm that refusal was the correct choice.
+
+## Repeated clean refusal
+
+A country that has accepted no deals can refuse several times without immediate damage.
+
+The pattern should be:
+
+1. The first refusal causes nothing.
+2. The second proposal is more attractive.
+3. A second refusal still causes no direct punishment.
+4. The third proposal is tailored very closely to the country's current weakness or ambition.
+5. Refusing again produces one final, less patient visit.
+6. The final proposal remains useful, but its visible terms are less generous and the deadline is shorter.
+7. Refusing the final proposal causes Mephistopheles to reveal himself and create an open hostile state.
+
+The final open conflict is the consequence of rejecting every attempt at persuasion.
+
+The all-refusal manifestation begins weaker than a manifestation supported by accepted deals. Chaos tier still increases its initial strength.
+
+## Refusal after accepting deals
+
+Once the country has accepted one deal, the stranger no longer treats refusal as a clean end to the relationship.
+
+After one accepted deal, refusing the next offer can cause a limited consequence. The reward from the earlier deal may weaken, a protected adviser may disappear, or one institution may suffer disruption.
+
+After two or three accepted deals, refusal can cause serious retaliation. Possible consequences include:
+
+- sudden loss of part of an earlier reward
+- industrial accidents in facilities connected to a deal
+- unexplained military disobedience
+- disappearance or possession of a minister
+- exposure of government secrets
+- a diplomatic incident that isolates the host
+- sabotage by an appointed adviser
+- illness or behavioral change in the leader
+- defections inside the army or security services
+- a short crisis followed by another offer
+
+The retaliation should not always happen immediately after the refusal. A delay makes the connection uncertain during the earlier stages.
+
+After the retaliation, Mephistopheles can return with a punitive offer. The new offer is worse than the one that was rejected, but still valuable enough to consider.
+
+A punitive offer can have:
+
+- a smaller reward
+- a shorter reward duration
+- a more intrusive visible condition
+- a harsher visible cost
+- a shorter decision deadline
+- a threat to remove an earlier gift if refused
+
+After four accepted deals, refusal should become extremely dangerous. It can trigger an immediate takeover attempt, a large internal revolt, or a final chance to submit.
+
+## Accepted-deal progression
+
+The player does not see named stages, but the internal progression should follow a clear pattern.
+
+### One accepted deal
+
+The stranger has one protected contact inside the state.
+
+The reward works as promised.
+
+The host receives only very subtle signs that something is unusual.
+
+Possible signs include a new adviser who knows too much, a strange change in the leader's expression, missing records, or an official who becomes unusually loyal to the visitor.
+
+The country can still break away with limited damage if it chooses to investigate and surrender the reward.
+
+### Two accepted deals
+
+The stranger has access to more than one institution.
+
+Recommended officials begin supporting each other. One ministry may defend another appointment. An adviser can appear in meetings where he was never invited.
+
+The rewards remain strong.
+
+Small foreign opinion penalties or diplomatic misunderstandings can begin, but they should look like consequences of the host's new policies rather than an openly supernatural effect.
+
+Breaking away now requires removing several appointments and accepting a significant loss of benefits.
+
+### Three accepted deals
+
+The stranger can influence policy through ministers, officers, media, police, intelligence, or major industries.
+
+Government choices begin producing outcomes that seem slightly different from what was ordered.
+
+The leader portrait changes become clearly noticeable at close inspection.
+
+A refusal can trigger serious retaliation.
+
+A successful revolt by Mephistopheles now begins with meaningful internal support and military defections.
+
+### Four accepted deals
+
+The government still appears independent, but several key institutions already obey the stranger.
+
+The leader can suffer periods of missing memory, strange public statements, or unexplained decisions.
+
+The portrait overlay becomes strong.
+
+Attempts to remove one compromised minister are no longer enough. Influence can move through another official, commander, or adviser.
+
+Refusing the fifth deal can cause a major internal war or immediate seizure of power.
+
+### Five accepted deals
+
+The country enters peaceful possession.
+
+There is no opening civil war because the government, military, and administration have already been prepared.
+
+The existing leader remains visible, but the leader is fully possessed.
+
+The country receives the Mephistophelean cosmetic identity and the shared Mephistophelean focus tree.
+
+Ordinary independent political routes and decisions are replaced by Mephistopheles-controlled content. The player keeps normal control of the country as a game actor, including its army, production, construction, and strategic choices.
+
+## Hidden signs before the reveal
+
+The secret phase should rely on indirect signs rather than a public explanation.
+
+Possible signs include:
+
+- a minister repeating the stranger's exact words
+- a senior official appearing in two places at once
+- a document signed before the meeting occurred
+- a foreign ambassador refusing to meet one newly appointed adviser
+- a general obeying an order that the leader does not remember giving
+- government photographs showing a faint change in the leader's eyes
+- an aide found smiling after a national disaster
+- blood on a document that no one remembers signing
+- a medical examination with impossible results
+- clocks stopping during cabinet meetings
+- a protected office that no ordinary authority can search
+- a previous reward continuing after its stated source disappears
+
+These events should remain rare at first.
+
+The game should not immediately confirm that the stranger caused them.
+
+## Leader portrait transformation
+
+The leader portrait should gradually change as main deals are accepted.
+
+The changes should use overlays rather than replacing every historical portrait with a separate edited file.
+
+The overlay follows the currently possessed country leader. If the leader changes during the secret phase, the hidden process should determine whether the effect transfers to the successor, remains with the previous leader, or splits between them.
+
+### After one accepted deal
+
+- almost invisible red tint in the eyes
+- slightly sharper smile
+- no blood
+- no tooltip explaining the change
+
+### After two accepted deals
+
+- faint red glow visible when the portrait is viewed closely
+- smile becomes a little wider
+- small shadowing around the eyes
+
+### After three accepted deals
+
+- clear red eyes
+- visibly unnatural smile
+- darker facial shadows
+- occasional subtle animated flicker if animation is used
+
+### After four accepted deals
+
+- strong red glow
+- crooked smile that no longer matches the original expression
+- deepened shadows
+- slight blood trace or dark mark near the mouth or collar
+
+### After five accepted deals
+
+- maximum red eye glow
+- fixed and unmistakably unnatural smile
+- visible blood detail kept restrained enough to fit HOI4 portrait presentation
+- stronger shadowing and infernal light
+- optional slow animation across the politics and diplomacy portrait surfaces
+
+The early stages should be easy to miss. The later stages should be impossible to dismiss.
+
+The overlay should also appear in important event portraits and other leader displays where the same leader is shown, provided the implementation can do so without duplicating portrait ownership.
+
+## Discovering the danger
+
+The host should not receive anti-demon decisions immediately after the first deal.
+
+Resistance content becomes available only after the government discovers enough unusual evidence.
+
+Discovery can occur through:
+
+- repeated strange incidents
+- a minister resisting possession
+- intelligence investigation
+- a religious or occult specialist
+- the Brilliant Scientist
+- Doctor Wu
+- a Time Traveler
+- captured correspondence
+- a failed assassination or medical examination
+- a foreign warning from a country that has seen similar activity
+- Mephistopheles openly threatening the host after a refusal
+
+Before discovery, the player cannot simply click a button to remove an invisible mechanic.
+
+After discovery, a small normal decision category can appear. It should focus on concrete actions rather than showing a hidden-value breakdown.
+
+## Breaking away
+
+Breaking away should always require sacrifice.
+
+The country benefited from real rewards, so ending the relationship should cost something meaningful.
+
+Possible actions include:
+
+- dismissing the recommended advisers
+- closing protected offices
+- surrendering or destroying the benefit gained from one deal
+- removing a compromised minister
+- changing the leader
+- exposing the agreement publicly
+- asking a foreign or religious authority for help
+- accepting severe temporary instability
+- purging compromised military commands
+- destroying a special laboratory or industrial concern
+- returning territory, money, equipment, or political power gained through an offer
+- fighting an internal revolt
+
+An early break after one deal should be difficult but manageable.
+
+A break after two or three deals should cause a national crisis and may create a limited revolt.
+
+A break after four deals should usually provoke a large revolt or direct takeover attempt.
+
+Breaking away after peaceful possession should become a hidden liberation route inside the shared focus tree rather than a simple decision.
+
+## Loopholes and counterplay
+
+Mephistopheles should be powerful, but the player should have rare ways to exploit his exact wording.
+
+Loophole routes can depend on:
+
+- the visible wording of a particular agreement
+- a false title or disputed legal authority
+- a leader who was not legally able to bind the state
+- a contract signed under a government that no longer exists
+- a disagreement between two copies
+- a succession crisis
+- destruction of the institution named in the agreement
+- return of the exact reward that was granted
+- proof that Mephistopheles failed to deliver the promised result
+- assistance from another supernatural or scientific event
+
+Loopholes should not be shown as guaranteed solutions in the first event.
+
+The player must discover them through later events, investigations, or special characters.
+
+## Open manifestation after total refusal
+
+If the host refuses every courtship offer, Mephistopheles reveals himself and forms a hostile country inside the host's territory.
+
+This is the clean-defiance route.
+
+Because no deal was accepted, Mephistopheles has fewer internal supporters and weaker access to the host's army and economy.
+
+He still receives enough territory, units, equipment, supply, and industry to create a real war.
+
+The initial state package should select a coherent and defensible group of host states. It should avoid scattered enclaves unless the campaign map leaves no alternative.
+
+The open country is led directly by Mephistopheles.
+
+The host receives emergency tools to defend itself. Refusing every offer should be the morally safest path, but it should not be a free reward. The cost is an open war against a supernatural enemy.
+
+## Manifestation after partial acceptance
+
+If the host accepted some deals and later breaks away or refuses too often, Mephistopheles can revolt with support built from those earlier agreements.
+
+His strength should scale from:
+
+- number of main deals accepted
+- current Chaos tier
+- host industry
+- host military strength
+- types of deals accepted
+- number of compromised ministers and commanders still active
+- whether the leader is partially possessed
+- whether the host discovered the danger early
+
+Accepted deal categories affect the revolt package:
+
+- military deals provide more defecting units, equipment, commanders, and planning
+- economic deals provide factories, supply, trains, resources, and industrial states
+- political deals provide officials, police, party support, and lower resistance in the revolt territory
+- scientific deals provide technologies, special projects, or unusual equipment
+- medical deals provide manpower recovery, low attrition, altered troops, or biological support
+- diplomatic deals provide foreign clients, recognition, intelligence, or faction disruption
+- personal deals provide stronger possession of the leader or succession network
+
+A host that accepted four deals should face a far more dangerous revolt than a host that rejected everything.
+
+## Peaceful possession
+
+If all five main deals are accepted, Mephistopheles takes control without an opening civil war.
+
+The country keeps its current territory, army, industry, and international position.
+
+The existing human leader remains visually in office with the maximum possession overlay.
+
+The country changes to the same Mephistophelean cosmetic identity used by the revolt outcome.
+
+The same shared focus tree is loaded, but a different opening branch is active.
+
+The possessed host should feel powerful. It receives the full benefit of its earlier deals, faster access to foreign bargains, and a large existing state from which to expand.
+
+The price is the loss of ordinary political independence. Previous political routes close and new content serves Mephistopheles' strategy.
+
+The player is not removed from the campaign. The player continues controlling the possessed country through the new route.
+
+## Mephistophelean country identity
+
+The open revolt and peaceful possession outcomes should share one country package.
+
+Working identity:
+
+- **The Mephistophelean Dominion**
+
+The final name can vary by origin, ideology of the host, or whether Mephistopheles rules openly.
+
+The country package needs:
+
+- a stable country or carrier identity
+- normal, medium, and small flags
+- cosmetic variants for human-mask and open-rule stages
+- a map color distinct from nearby countries
+- a generated Mephistopheles leader portrait for open rule
+- possessed overlays for human leaders
+- party names and ideology treatment
+- starting ideas with clear lifecycles
+- starting units and equipment
+- supply and industrial setup
+- focus-tree loading rules
+- AI plans
+- annexation and defeat cleanup
+
+A possessed client remains a human society under supernatural rule. The open infernal state can use special-country routing where required by shared civilian systems.
+
+## Mephistopheles as a character
+
+Mephistopheles should be persuasive, patient, precise, and cruel.
+
+He should understand the language of the host's ideology and government. He can present the same offer as national salvation, revolutionary necessity, royal duty, military realism, scientific progress, humanitarian rescue, or democratic emergency.
+
+He rarely needs to make a direct false statement. He can leave out context, define a word narrowly, fulfill the exact promise while changing who controls the result, or create a later situation that makes another offer useful.
+
+His open form should feel powerful and intelligent rather than animalistic.
+
+When he becomes an open country leader, he can use a humanlike but unmistakably infernal appearance. The visual should support a calm negotiator who no longer needs to hide.
+
+## Shared focus tree
+
+The revolt country and peacefully possessed host should use the same full focus tree.
+
+Only the opening branch changes according to origin.
+
+### Opening path: Rejected at Every Door
+
+Used when every offer was refused.
+
+This path establishes an open supernatural state with limited internal support.
+
+Its early focuses should:
+
+- secure the initial territory
+- create a basic demon army
+- seize supply and industry
+- survive the host's counterattack
+- recruit discontented people and collaborators
+- turn open war into a lasting state
+
+This is the weakest initial origin, but it has the clearest internal identity because Mephistopheles rules openly from the beginning.
+
+### Opening path: Collect What Was Promised
+
+Used after partial acceptance followed by revolt.
+
+This path converts earlier deals into military, political, economic, and scientific assets.
+
+Its early focuses should:
+
+- activate compromised institutions
+- rally pledged commanders and officials
+- claim facilities connected to earlier rewards
+- seize the leader if possible
+- turn the host's previous advantages against it
+- decide whether to destroy or absorb the remaining host government
+
+Its exact bonuses and starting options depend on the kinds of deals accepted.
+
+### Opening path: Rule Through the Leader
+
+Used after peaceful possession.
+
+This path begins without a civil war.
+
+Its early focuses should:
+
+- preserve the human leader as a public mask
+- replace independent political institutions
+- secure military obedience
+- centralize the advisers introduced by earlier deals
+- prepare foreign offers
+- decide when open supernatural rule becomes useful
+
+This origin has the greatest initial resources and the fastest access to international influence.
+
+## Common political branch
+
+The shared political branch should decide how Mephistopheles rules.
+
+Possible routes include:
+
+### Keep the human mask
+
+- retain the possessed leader
+- strengthen the portrait transformation
+- hide open supernatural rule from foreign governments
+- use familiar institutions as cover
+- improve foreign acceptance of deals
+- reduce resistance caused by sudden regime change
+
+### Reveal Mephistopheles
+
+- replace the human leader with Mephistopheles
+- adopt the open infernal flag and country name
+- gain stronger direct control and demon recruitment
+- lose some diplomatic concealment
+- unlock more aggressive foreign pressure
+
+### Spread possession through the government
+
+- keep several ministers and commanders as interchangeable hosts
+- make leadership removal less effective
+- improve internal control
+- increase the risk of rival possessed factions
+- create a route where the state no longer depends on one body
+
+### Hidden liberation route
+
+A possessed host can retain a rare internal resistance route if enough uncorrupted institutions survived.
+
+This route should be difficult and partly hidden.
+
+It can lead to:
+
+- removal of the possessed leader
+- a civil war against Mephistophelean loyalists
+- restoration of the original country
+- permanent national scars and lost benefits
+- captured infernal knowledge
+- a final attempt to destroy Mephistopheles
+
+## Demon army branch
+
+The military branch should support both human collaborators and genuine demonic forces.
+
+Possible unit families include:
+
+- Pactbound infantry
+- possessed elite troops
+- infernal shock infantry
+- demon heavy infantry
+- fast raiding creatures
+- possessed commanders
+- summoned support units
+- client-state auxiliaries
+
+The branch should include distinct approaches:
+
+### Use human armies
+
+- preserve existing divisions
+- possess officers and political commanders
+- improve obedience and recovery
+- convert selected units into Pactbound formations
+- hide supernatural control longer
+
+### Raise an open demon army
+
+- recruit custom demon units
+- open summoning sites
+- create stronger but expensive formations
+- rely less on ordinary manpower
+- reveal the regime more clearly
+
+### Combine both forces
+
+- use human logistics and demon assault troops
+- attach infernal support to ordinary divisions
+- create mixed armies for occupation and expansion
+- risk conflict between human officers and demonic commanders
+
+Custom demon units require full 3D models, skeletal animations, sourced unit audio, and bespoke counters. Renamed vanilla infantry cannot satisfy the final presentation.
+
+## Economy and research branch
+
+Mephistopheles should build power from promises already made.
+
+This branch can:
+
+- convert earlier economic deals into permanent industry
+- exploit protected companies and trusts
+- recover factories after revolt
+- build supply for demon armies
+- use scientific bargains to unlock unusual projects
+- cooperate or compete with the Brilliant Scientist
+- exploit Doctor Wu's biological work
+- turn foreign client obligations into resources and production
+- improve summoning infrastructure and special facilities
+
+The branch should have visible costs. Infernal production can damage normal civilian life, increase unrest, consume resources, or make foreign concealment harder.
+
+## Foreign bargains branch
+
+Once Mephistopheles controls an open state or a fully possessed host, he can offer deals to other countries.
+
+Foreign bargains should be faster than the original host chain because Mephistopheles is stronger and has institutions that can deliver rewards immediately.
+
+Targets should be chosen from countries facing real needs:
+
+- losing wars
+- economic collapse
+- disease
+- political crisis
+- research failure
+- diplomatic isolation
+- leader danger
+- territorial ambition
+
+Each foreign country receives its own offer based on its current situation.
+
+The target should still be able to refuse.
+
+Foreign influence should remain simpler than the original host chain. A target can move through a few broad conditions:
+
+- accepted one bargain
+- accepted several bargains
+- controlled client government
+- openly possessed client
+
+The player controlling Mephistopheles should not manage a large list of hidden numbers. The foreign decision surface can show only current target status after Mephistopheles has been revealed.
+
+## Client states
+
+Countries that accept enough foreign bargains can become client states.
+
+A client state keeps its local leader or government at first, but gains possession overlays, altered political content, and obligations to Mephistopheles.
+
+Client obligations can depend on the deals accepted:
+
+- military clients provide divisions and access
+- economic clients provide factories, resources, or payments
+- scientific clients provide research and projects
+- medical clients provide manpower, hospitals, or modified troops
+- diplomatic clients support foreign isolation and recognition
+- political clients spread possession into neighboring states
+
+Client states should have ways to resist, defect, or be liberated.
+
+Mephistopheles can install client governments after wars, but conquest should not be the only route.
+
+## Infernal faction
+
+Mephistopheles can create a faction after gaining enough clients or open allies.
+
+Working label:
+
+- **The Infernal Compact**
+
+The faction should not form from one country alone.
+
+It should require a meaningful combination of possessed clients, open allies, or countries that accepted binding foreign bargains.
+
+The faction can provide:
+
+- shared military access
+- coordinated wars
+- client obligations
+- joint demon or Pactbound formations
+- protection for compromised governments
+- faster spread of foreign bargains
+- internal conflicts when clients try to escape
+
+## Baseline progression
+
+The following content belongs to baseline progression and must not be locked behind event evolutions:
+
+- all five main deals
+- dynamic reward selection
+- clean refusal sequence
+- punitive offers after accepted deals
+- hidden government influence
+- portrait transformation
+- discovery and investigation
+- breaking away
+- loophole routes
+- open manifestation after total refusal
+- stronger revolt after partial acceptance
+- peaceful possession after full acceptance
+- Mephistophelean country package
+- shared focus tree
+- demon army development
+- foreign bargains
+- client states
+- faction creation
+- hidden liberation route
+- Mephistopheles becoming the visible leader
+- the global end-state route
+
+Chaos tier can change pacing, risk, strength, and the opening situation. It must not replace ordinary progression or grant completed deals for free.
+
+## Evolution I: The Offer Learns
+
+- Chaos requirement: `200+`
+
+Accepted bargains begin adapting to later conditions.
+
+A reward that solved one problem can change when the country's situation changes. A military gift can demand a new target. An economic benefit can shift toward an industry Mephistopheles wants. A medical programme can begin selecting its own patients.
+
+The country still does not receive a public influence meter.
+
+This evolution makes earlier bargains less stable and more useful to Mephistopheles without unlocking new deal categories.
+
+If this evolution is active before the event first fires, the opening offer should be unusually well matched to the host and harder to dismiss as coincidence.
+
+## Evolution II: Possession Moves
+
+- Chaos requirement: `400+`
+
+The hidden influence no longer depends on one minister, adviser, or leader.
+
+When a compromised official is removed, the influence can move to another person connected to an accepted deal.
+
+A leader change may transfer the portrait effect to the successor, leave the previous leader as a possessed rival, or create two competing centers of control.
+
+Breaking away becomes harder because replacing one person is no longer enough.
+
+If this evolution is active before the first offer, one ordinary official may already have unexplained contact with the stranger, but the country begins with zero accepted deals.
+
+## Evolution III: Offers Across Borders
+
+- Chaos requirement: `600+`
+
+Mephistopheles begins testing small offers in other countries before the original host is fully possessed or an open infernal state exists.
+
+These foreign offers are limited and slower than the later foreign-bargain system.
+
+They can produce sympathizers, compromised diplomats, safe houses, and possible allies for a future revolt.
+
+The original host remains the main event target.
+
+If this evolution is active before the first offer, one or two foreign governments may already know the visitor under another identity.
+
+## Evolution IV: The Hidden Army
+
+- Chaos requirement: `800+`
+
+Accepted deals begin creating physical preparations for revolt before the government discovers them.
+
+Possible preparations include:
+
+- hidden weapons
+- compromised barracks
+- protected compounds
+- prepared summoning sites
+- secret supply depots
+- possessed officers
+- altered soldiers
+- foreign volunteers
+- underground command posts
+
+A later revolt can begin faster, with more coherent territory and stronger forces.
+
+Peaceful possession also gains immediate access to prepared units and facilities.
+
+If this evolution is active before the first offer, a small hidden network can exist in the host, but it should not count as an accepted deal or grant free political control.
+
+## Evolution pacing
+
+Evolutions should use the normal Chaos Redux evolution system and MTTH-style pacing.
+
+Reaching a Chaos threshold only makes an evolution eligible. It should not activate instantly unless the event has not fired yet and the evolution changes the opening variant.
+
+Evolution state itself gives no Chaos.
+
+Chaos changes should come from concrete outcomes such as revolt, possession, wars, deaths, major expansion, or a global end state.
+
+## World-end route
+
+A hidden terminal route can exist once Chaos is above `1000` and Mephistopheles has built a genuine global order.
+
+Working label:
+
+- **The Last Signature**
+
+This route should require more than one possessed country.
+
+Possible requirements include:
+
+- several major countries under possession or client control
+- a large Infernal Compact
+- control of major industry and military power
+- foreign bargains active across several continents
+- no stronger rival world-end state already active
+
+The final state keeps many familiar governments and leaders in place. Their portraits, policies, and foreign behavior show that the same power stands behind them.
+
+Because the early event depends on secrecy, this world-end route should remain hidden from ordinary Event Details before its reveal.
+
+## Interaction with Brilliant Scientist
+
+If the Brilliant Scientist exists in the host, he can notice impossible features in the stranger's rewards.
+
+He can:
+
+- verify that a scientific gift has no plausible source
+- detect contradictions in records
+- build tools to observe possession
+- attempt to exploit the stranger's methods
+- compete for control of unusual projects
+- help create a loophole
+- become compromised himself
+
+A possessed host with both figures can develop joint infernal technologies or a severe rivalry between human genius and supernatural control.
+
+## Interaction with Doctor Wu
+
+Doctor Wu can detect changes in blood, organs, memory, and behavior that ordinary physicians miss.
+
+He can:
+
+- identify possession symptoms
+- slow physical transformation
+- protect selected officials
+- create a temporary treatment for altered soldiers
+- help separate a human leader from the possessing entity
+- attempt to study or weaponize infernal biology
+- become tempted by an offer that advances his own research
+
+Doctor Wu should not automatically cure possession. His involvement creates a strong resistance route and dangerous experimental options.
+
+## Interaction with Time Traveler
+
+A Time Traveler may recognize the stranger, know one future outcome, or carry knowledge of a failed bargain.
+
+The traveler can provide:
+
+- an early warning without full proof
+- one possible loophole
+- knowledge of a future revolt location
+- a method for hiding a leader or contract
+- false information if the traveler's own timeline was manipulated
+
+## Interaction with disease and biological events
+
+Mephistopheles can offer cures, containment, manpower recovery, or disease immunity during biological crises.
+
+His gift can interact with:
+
+- ordinary biological weapons
+- smallpox
+- tularemia
+- zombie infection
+- Black Plague
+- modified diseases
+- Doctor Wu strains
+- famine mortality
+- contaminated states
+
+A medical deal should work. Its hidden consequence comes from access to institutions and people, not from making the promised cure fake.
+
+## Interaction with Research Failure
+
+Research Failure creates one of the strongest possible scientific offers.
+
+Mephistopheles can restore research slots, progress, specialists, or lost technology.
+
+Accepting can place his agents inside the reconstructed scientific establishment and provide special assets during a later revolt.
+
+## Interaction with economic and military crises
+
+Industrial Boom collapse, Great Depression effects, blockade, equipment loss, major offensives, fortification crises, alliance betrayal, and similar events can all influence which offer is selected.
+
+The system should reuse current world state rather than create an unrelated generic reward.
+
+## Interaction with other supernatural events
+
+Afrit, The Master, Secret Society Influence, Parliament of Fear, and other supernatural or manipulative actors can recognize Mephistopheles.
+
+They can cooperate, compete, expose each other, or attempt to claim the same host.
+
+These interactions should preserve clear ownership:
+
+- Mephistopheles owns tailored bargains, hidden institutional control, possession through accepted rewards, and the eventual infernal state.
+- Other events retain their own methods, countries, leaders, and progression.
+
+## AI behavior
+
+AI countries should evaluate the visible reward against their current crisis.
+
+They should not evaluate hidden influence directly.
+
+AI acceptance should rise when:
+
+- the country is losing a war
+- the capital is threatened
+- stability is collapsing
+- a disease is spreading
+- research capacity has failed
+- severe sanctions or isolation are active
+- manpower or equipment is critically low
+- the leader faces removal or death
+- the reward directly solves a major national problem
+
+AI refusal should rise when:
+
+- the country is stable and secure
+- it has strong religious, scientific, intelligence, or supernatural resistance
+- the Brilliant Scientist or Doctor Wu has discovered contradictions
+- another event has already exposed Mephistopheles
+- the visible concession conflicts sharply with the government's route
+- the country previously suffered from a similar bargain
+
+AI should not automatically accept every offer because the reward is large.
+
+It should also avoid irrational refusal when facing immediate defeat.
+
+After peaceful possession, AI should use the shared focus tree, foreign bargains, client-state system, and military branches according to its origin and strategic situation.
+
+## Balance rules
+
+- Main rewards must be large and immediately useful.
+- The first refusal before any acceptance causes no direct punishment.
+- A later clean offer should become more attractive before the final punitive stage.
+- Hidden consequences must not appear in acceptance tooltips.
+- The player must receive enough indirect evidence to understand the situation before the final takeover.
+- The event should not depend on a visible custom meter.
+- At most one main offer should be active at a time.
+- Main offers need meaningful delays so the event develops over years rather than weeks.
+- Side bargains cannot complete possession.
+- Early breakaway must remove or weaken benefits gained from accepted deals.
+- Deal rewards cannot create repeatable factory, equipment, manpower, technology, or unit exploits.
+- Revolt strength scales from accepted deals and Chaos tier.
+- Total refusal creates the weakest manifestation, not a trivial one.
+- Full acceptance produces the strongest political position because no initial civil war occurs.
+- The player remains able to play the possessed country.
+- Foreign bargains must use bounded target selection and cannot spam every country.
+- Client states need resistance and liberation routes.
+- The global end state requires broad international control.
+
+## Presentation
+
+The secret phase should use normal event popups, occasional report events, minister changes, national spirits with neutral public names, and portrait overlays.
+
+It should not use:
+
+- a dedicated contract window
+- a public deal counter
+- a public corruption meter
+- a row of seals or progress stages
+- tooltips that disclose the hidden takeover
+
+After Mephistopheles is revealed, normal decision categories and the shared focus tree can present open military, political, foreign-bargain, and client-state actions.
+
+The opening event art should show a private meeting with a composed stranger whose identity remains uncertain.
+
+Later art can become more overt as the portrait changes and the revolt or possession route begins.
+
+## Visual assets
+
+The event may require:
+
+- opening event image with the mysterious visitor
+- later reveal event image
+- Mephistopheles leader portrait
+- five possession overlay strengths for country leaders
+- static fallbacks for every animated overlay
+- possessed government flag variants
+- open infernal state flags
+- country map color and emblem
+- focus icons for the shared tree
+- idea icons for possession stages and resistance
+- decision icons for investigation, breakaway, foreign offers, and client control
+- report images for revolt, peaceful possession, and foreign spread
+- super-event image for the open reveal if used
+- hidden world-end super-event image if the terminal route is implemented
+- custom demon unit models
+- demon unit animations
+- sourced and licensed unit audio
+- bespoke vanilla-style counters
+
+Early possession overlays should remain subtle. The final overlay should visibly show red eyes, the crooked smile, dark facial changes, and restrained blood detail requested for the fully possessed leader.
+
+## Focus-tree layout direction
+
+The shared focus tree should have a clean central structure.
+
+A suggested lane arrangement is:
+
+1. Origin branch on the upper center
+2. Political control on the center-left
+3. Demon army on the left
+4. Economy and research on the lower-left
+5. Foreign bargains on the center-right
+6. Clients and faction building on the right
+7. Open-rule or human-mask outcomes near the center
+8. Hidden liberation route placed separately and revealed only when valid
+9. Global end-state route at the lower center or far end of the foreign branch
+
+The three origin branches should converge quickly into the shared tree.
+
+The layout should not use long crossing lines or fake complexity.
+
+## Starting military package
+
+An open Mephistophelean country must be capable of fighting immediately.
+
+Its starting force should scale dynamically from the origin.
+
+### Total-refusal origin
+
+- smallest territory package
+- basic demon infantry
+- limited captured equipment
+- enough supply to survive
+- no large historical defections
+- strong defensive bonuses during the opening war
+
+### Partial-acceptance origin
+
+- territory influenced by accepted deal categories
+- some defecting host formations
+- compromised commanders where valid
+- equipment and industry taken from earlier gifts
+- stronger intelligence and sabotage
+- more coherent supply
+
+### Peaceful-possession origin
+
+- retains the full host army and production base
+- gains Pactbound conversion options
+- can raise demon units through focuses and decisions
+- begins with the highest foreign influence
+- avoids the opening civil war
+
+The package should include later reinforcement routes so the country does not depend on one initial unit grant.
+
+## Defeat and aftermath
+
+Defeating the open Mephistophelean state should not automatically erase every accepted deal in every country.
+
+Possible aftermath includes:
+
+- surviving possessed ministers
+- client governments trying to break free
+- captured infernal research
+- damaged national institutions
+- former hosts recovering their original identity
+- permanent leader or portrait consequences
+- disputes over equipment and territory created by bargains
+- a final attempt by Mephistopheles to move into another host
+
+A clean final defeat should require resolving the active host, open country, and foreign clients.
+
+A short and weak manifestation does not need a large postwar world order. A global war against many clients can justify a defeat super-event and longer reconstruction content.
+
+## Rare variants
+
+### The unsigned gift
+
+A reward appears before the country formally accepts.
+
+The government must decide whether using it counts as acceptance.
+
+### The false name
+
+The leader signs under a false title or disputed office.
+
+This can weaken the claim, transfer it to the office, or bind the wrong person.
+
+### The resistant minister
+
+One official notices the pattern and cannot be possessed easily.
+
+The minister can become a witness, resistance leader, or target.
+
+### The willing government
+
+A government accepts several offers rapidly because it sees the stranger as a useful patron.
+
+This accelerates peaceful possession and weakens early resistance.
+
+### The divided cabinet
+
+The leader refuses, but ministers try to accept through emergency authority.
+
+The question of who can bind the state creates a political crisis.
+
+### The rival tempter
+
+Another supernatural event interferes with the offer.
+
+The host can be caught between competing promises.
+
+### The leader who bargains back
+
+A rare leader tries to offer Mephistopheles a deal in return.
+
+Success requires unusual knowledge and favorable wording. Failure creates a stronger personal claim.
+
+### The contract survives annexation
+
+The host disappears before the chain resolves.
+
+The hidden process can follow the leader in exile, legal successor, named institution, or territory connected to an accepted deal.
+
+## Failure handling and cleanup
+
+The implementation must handle:
+
+- host annexation
+- host losing major status
+- player switching countries
+- leader death or replacement
+- civil war and tag splits
+- minister removal
+- capital relocation
+- accepted-deal facilities captured by another country
+- partial possession during government change
+- Mephistopheles defeated while clients remain
+- client annexation or liberation
+- faction dissolution
+- another world-end state activating
+- disabled evolutions during an active chain
+- multiplayer control changes
+
+Cleanup must remove obsolete portrait overlays, invalid possessed traits, stale event targets, dead client status, unused decisions, and duplicate character ownership.
+
+Accepted history should remain meaningful when the chain transfers to a legal successor or an active client.
+
+## Research direction for the full specification
+
+The full planning pass should use the Faust and Mephistopheles traditions as inspiration for:
+
+- tailored temptation
+- written or spoken bargains
+- exact wording
+- blood or personal marks
+- rewards based on knowledge, wealth, power, victory, health, youth, and protection
+- delayed collection
+- threats after attempted withdrawal
+- disputed authority to sign
+- attempts to exploit loopholes
+- Mephistopheles as a cultured and persuasive negotiator
+
+Primary literary starting points include Christopher Marlowe's *Doctor Faustus* and Goethe's *Faust*.
+
+Research into historical accusations of demonic contracts should be treated as research into belief, literature, and trial culture. It must not be presented as evidence that supernatural pacts existed.
+
+Final quotes, cultural references, religious material, symbols, and super-event audio require separate verification before use.
+
+## Your Task
+
+Create the full specs and expand the idea thoroughly using the full planning skill, all the other skills, and provided subagents. Before writing the specs, fully and thoroughly read and process all required project source files and must-read skill files. If you are unable to fully read every file, then say so directly and be honest in your final output. If you simplified or truncated things for a quicker output then also be honest about it. If you feel like you can't get a fully complete package done in one output due to limited tokens, then create a continuation prompt for yourself as explained in the planning skill.

@@ -1,0 +1,83 @@
+# 84 · The Peace Movement
+## Part 12 · Shared systems, Chaos impact, and event connections
+
+### Event identity and cluster accounting
+
+Event 84 is a Major and is globally fire-once as an episode origin. Its internal spread, decisions, evolutions, wars, and later government transfers are continuations of that episode. They are not additional root firings. The uploaded catalog identity replaces the supplied legacy row and old Political Power implementation through the proper catalog ownership workflow.
+
+The event belongs to Peace as a High member and Domestic Unrest as a High member. A selection through either cluster must mark the same Event 84 root identity consumed. Membership in both clusters does not create two copies, two major resets, or two independent evolution histories. A cluster activation counts as one development for timer and weight accounting under the shared cluster rules. Event 84's Major identity must remain visible even when a cluster owns that activation's shared pacing transaction.
+
+The complete selection and cluster implementation must be inspected before coding the precise major-versus-cluster accounting call. The supplied source documents establish the design rule, but the actual dispatchers were not fully provided. A root that starts no valid country must not consume rewards or partially reset the global system.
+
+### Chaos impact ownership
+
+The following values are authored event-specific contributions for concrete political escalation. They are distinct from the shared effects of war, annexation, civilian loss, and other crisis systems. The user's Chaos level 1 catalog field is preserved and does not automatically mean each later incident adds 1 Chaos.
+
+| Development | Event-specific Chaos | Ownership and recurrence |
+|---|---:|---|
+| Successful first public manifestation | +5 | Once for the episode, unless the validated root framework already owns an equivalent opening award |
+| First durable spread to five distinct countries | +10 | Once globally, counts actual surviving organizations rather than five repeated contacts |
+| First durable spread to fifteen distinct countries | +15 | Once globally, separate scale milestone |
+| Peaceful legal reform or voluntary coming out | 0 | Never treated as disorder merely because it protects queer people |
+| Evolution stage becomes available or is recorded | 0 | Its later concrete consequences own their own effects |
+| Founding a formal rival International that establishes a polarized two-bloc order | +20 | Once when both blocs actually exist, not once per congress delegate |
+| Failed eradication creates an actual institutional rupture | +15 | Once per country for that distinct campaign, with a 360-day same-cause guard |
+| Civil war begins | 0 additional here | The shared war and actual casualty systems own their normal contributions |
+| Foreign intervention begins a new war | 0 additional here | The shared war owner records it once |
+| A verified distinct political assassination destabilizes an established national authority | +10 | Once per genuine case, with actual deaths passed separately to the death system |
+| Durable negotiated domestic settlement | −5 | Once per country after 180 days of maintained terms, no repeated posture cycling |
+| Durable international settlement dissolves the active restoration conflict | −20 | Once for the actual international settlement, not for each signing member |
+| Terminal activation or cinematic playback | 0 | World-end state change is not a second escalation charge |
+| Manual setup | +200/+400/+600/+1,000 | The selected setup addition owns all seeded escalation, with no retrospective root or congress bonuses |
+
+If a generic helper already assigns Chaos to the same manifestation, choose one owner and preserve the intended total. Do not combine a generic opening award with this +5 by accident. Subsequent religious debates, family-policy decisions, festivals, and character disclosures usually have no direct Chaos award. Their importance is domestic political change rather than global catastrophe points.
+
+The project records one Chaos per million actual deaths. Event 84 must not add that contribution a second time. A failed policy that reduces future growth records no deaths. A copied incident report records no new victims. A war's military casualties and a separate civilian atrocity remain different factual events with their own proper accounting.
+
+### Deaths, repression, famine, and migration
+
+All affected countries remain ordinary human civilian polities. Commune life, spirituality, sexuality, or unusual uniforms do not exempt them from food, migration, civilian protection, or demography. Use the shared civilian-system eligibility predicate and its actual inverse exclusions. Do not add the movement to nonhuman exemptions.
+
+An actual repression incident may cause civilian casualties or displacement when the associated shared system and campaign evidence support it. Keep these consequences abstract and event-level. Suppression of an organization does not necessarily imply deaths. Political arrests do not delete a state's population. Exile and asylum move actual survivors through supported migration or character relocation mechanisms.
+
+Relief projects should use the existing famine and reception systems rather than create another food meter. A communal kitchen can contribute to a real relief objective. An asylum program can consume reception capacity. Border closure can leave people trapped through the migration system. Event 84's two public values remain its only new public country meters, even when shared systems already expose their own established values.
+
+### Air cleanliness and unconventional-war connections
+
+Pollution, civilian losses, and a documented unconventional attack can intensify war weariness or motivate a relief project. The political event should consume an existing recorded incident, not recreate the weapon effect, toxicity model, or pathogen mechanics. No new biological or chemical weapon development is part of this package.
+
+A ceasefire or disarmament campaign can interact with an established convention through its actual participation and compliance data. Do not automatically treat the movement as the owner of every peace treaty, or override a separate convention's legal obligations with a flavour event. A supported disarmament agreement may reduce offensive readiness while improving political trust.
+
+### Meaningful cross-event links
+
+| Existing concept or system | Connection | Boundary |
+|---|---|---|
+| Event 61, military factories becoming civilian capacity | Converts an antiwar production demand into a concrete existing industrial transition | Never convert the same building twice or add a second conversion refund |
+| Law Upgrade, Event 82, as supplied project concept | Harsher mobilization laws can generate actual service disputes and war-weariness contribution | Read the implemented law state and rule out double counting the same conscription grievance |
+| Agency Upgrade, Event 83, as supplied project concept | More capable agencies can affect a valid infiltration or foreign-funding case | No automatic creation of a real character's private orientation, no invented intelligence capability without a supported agency system |
+| A random civil-war event or another uprising | Existing command rupture can shape local support or block duplicate civil-war creation | Never nest two independent partitions of the same country on the same tick |
+| Famine and displacement | Relief, reception, and a real civilian grievance | No new food or migration meters, no population duplication |
+| Religious or spiritual country events | Diplomacy, theological disagreement, asylum, or coexistence where actual content exists | The Lotus order is not treated as the spokesman for a real religion or every supernatural event |
+| Unavailable Pacifism or Gandhi catalog concepts | Potential future overlap in antiwar content | No dependency, call, guaranteed character, or active cross-event trigger while those entries remain unavailable |
+| Commune references in unrelated dark or cannibalism events | Only a specific organization with documented involvement can connect | Ordinary communes and queer culture are never classified as inherently violent or cannibalistic |
+| Existing wars and White Peace | Service bargains, demobilization, and mediation can use actual war outcomes | Do not force a universal White Peace because one movement government asks for it |
+
+Event 82 and 83 connections are design integration directions from project context, not proof that their full new implementations were present in this archive. Their live files must be inspected before binding a dependency. Event 84 must still function without their reworks.
+
+### Timing and performance contract
+
+One root selection initializes one country. Affected-country callbacks drive their own 30-day political reviews, with shorter bounded checks only for active urgent missions. Foreign contacts are bounded. A newly affected country registers its own callback once. A dormant country removes unnecessary work until a concrete activation signal returns.
+
+Do not add a new all-country daily, weekly, or monthly loop without the user's explicit approval. Reuse an existing shared service only after confirming its scope, schedule, and ownership. Full-world work is limited to necessary bounded initialization, an authoritative terminal recount, or an already established shared cache update. Queued callbacks must not multiply after reload, government transfer, or tag replacement.
+
+### Data and lifecycle boundaries
+
+Country values, organization state, character cases, policy terms, route identity, and mission commitments survive save and reload. Temporary candidates, preview selections, and display scratch values do not become persistent authoritative state. A transfer from a dead controller to a successor must preserve the episode's actual organization and case history without copying its effects twice.
+
+A country ceasing to exist ends or transfers its institutions according to the actual territorial and political outcome. An exile committee can survive with a sponsor. A nonexistent country cannot receive delayed material rewards that suddenly pay out when it is released years later. A case tied to a dead character closes or becomes historical evidence, not an active appointment bonus.
+
+### Documentation and ownership
+
+The workbook remains the catalog source of truth. This package supplies a catalog change request, not an edited workbook or modified CSV export. Update the live workbook through its owner, then regenerate the corresponding event, cluster, and scenario exports. Record the mismatch between the old PP row, its unrelated military-experience description, and the old +100 PP script rather than silently rewriting unrelated neighboring entries.
+
+Mirror accepted implementation details in the event documentation, Event Details, history/evolution records, cluster displays, world-end registry, manual scenario registry, testing catalog, and asset/audio manifests. Reports and intermediate reviews belong under `docs/plans/084_the_peace_movement_plans/`. Source specs and the six handoff prompts belong under `docs/specs/084_the_peace_movement_specs/`.
