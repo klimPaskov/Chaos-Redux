@@ -24,9 +24,24 @@ Doctrine and operation capabilities such as Chaos Assault Battalion, chemical sh
 
 ## Direct unit-stat balance
 
-The two Livens Projector researches each give the Chemical Projector Battery +2.5% soft attack, +13% hard attack, +5% defense, and +7.5% breakthrough. These are fractional subunit bonuses, not flat stat points. With both researches, the legally cumulative CBRN doctrine categories give four separate +5% soft-attack rewards, four +5% defense rewards, and three +5% breakthrough rewards; the largest compatible CBRN-wide army attack sources add another +1.5% and +2.5% to soft and hard attack. The raw source sums are +29% soft attack, +30% hard attack, +30% defense, and +30% breakthrough. If every source applied as an independent factor, the corresponding upper products would be +32.860%, +32.845%, +34.010%, and +33.778%; the exact engine combination across technology, doctrine category, and country modifier layers has not been established. The hard-attack fraction is larger because the battery's native hard-attack base is 4, compared with 12 soft attack; one technology gives 0.30 native soft-attack points and 0.52 hard-attack points before equipment and other modifiers. The 1942 Chaos Assault Battalion grant gives +15% breakthrough, yielding a +30% raw sum alongside its +10% category and +5% direct doctrine rewards; even an all-independent product of those sources is +33.228%.
+The two Livens Projector researches each give the Chemical Projector Battery +2.5% soft attack, +13% hard attack, +4% defense and +6.5% breakthrough.
+These are fractional subunit bonus fields rather than flat attack or defense points.
+The [actual-source budget audit](../../plans/chaos_warfare_system_plans/subagent_handoffs/2026-10-07_doctrine_reward_budget_source_checks.md) resolves the applicable doctrine categories and country sources against each retained unit.
+Its conservative independent-layer bounds for Projector are +32.8602% soft attack, +32.8455% hard attack, +34.7559% defense and +34.5832% breakthrough, including the possible extra commander defense-skill contribution where applicable.
+The hard-attack fraction is larger because the battery's authored hard-attack base is 4, compared with 12 soft attack; the nominal one-technology increments are 0.52 and 0.30 points respectively before equipment and other modifiers.
+The hidden 1942 Chaos Assault Battalion technology grants 4% breakthrough, alongside one 15% mastery III doctrine grant.
+Reserving the possible Cadres and CBRN-earned defense-skill layers gives a conservative +34.849% breakthrough bound.
+Native combination of technology, unit/category, commander and country layers remains unproved.
 
-`max_organisation = 11` on the 1942 Battalion technology is a flat organization-point bonus, following the installed vanilla infantry-technology pattern. On the Battalion's base 40, this is a +27.5% relative gain. The compatible CBRN organization factors are +1% each from Controlled Retaliation, Mask Discipline, Hazard Assault M1, and Integrated Command M5, plus +0.5% from the Biological Security Director high-command trait. An all-independent upper product gives `(1 + 11/40) × 1.01^4 × 1.005 − 1 = 33.340%`; the previous flat 12 with five +1% factors would have reached 36.631%. The hidden weather technologies grant flat reconnaissance points of 0.2, 0.4, and 0.6, awarded cumulatively by the three visible detection tiers. The CBRN Recon Detachment starts at 4, so the full +1.2 points is a +30% relative gain; the earlier 2/3/5 grant would have been +250%. Installed vanilla `infantry.txt` uses fractional `recon = 0.10` in a hidden technology, confirming this syntax. These sums describe source values under a legal CBRN stack, not an observed engine combat result.
+`max_organisation = 11` on the 1942 Battalion technology is a flat organization-point bonus, following the installed vanilla infantry-technology pattern.
+On the Battalion's base forty, this is a +27.5% relative gain, with a conservative +33.3404% source bound after the applicable country factors.
+The three hidden weather technologies grant `recon` values of 0.01, 0.02 and 0.03 through the three visible instrument tiers.
+Under the existing flat-point interpretation, their total is 0.06 points on the Recon Detachment's base four, or +1.5% before country and leader factors.
+The [accepted combined reconnaissance correction](../../specs/chaos_warfare_system_specs/corrections/2026-10-07_reconnaissance_combined_budget.md) reserves the doctrine and both HQ contributions in the same source budget.
+
+Integrated Command grants 25% reconnaissance at adoption; Operations and Medical HQs grant 4% and 2% respectively.
+The independent-layer source bound is +34.589% with the point grants pooled, or +34.59813% when each point grant is normalized independently against base four.
+Native flat-point semantics, HQ accumulation and actual division values remain unverified; the [source review](../../plans/chaos_warfare_system_plans/subagent_handoffs/2026-10-07_reconnaissance_budget_review.md) states the conflicting generic wiki wording and the exact limitations.
 
 ## Folder layout and presentation
 

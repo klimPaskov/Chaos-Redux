@@ -18,7 +18,7 @@ The accepted 2026-09-20 ceilings apply to combined legal sources, not to each tr
 | Armored delivery soft/hard/defense/breakthrough/organisation | +26.4582% / +4.0375% / +24.5894% / +24.5894% / +26.3683% | +35% dedicated static each |
 | Chaos Battalion soft/defense/breakthrough/organisation | +20.1633% / +12.7500% / +34.8490% / +33.3404% | +35% dedicated static each |
 | Protection Company nominal attack/defense | +14.4413% / +12.7500% | +35% dedicated static each |
-| CBRN reconnaissance utility from hidden weather technologies | +30% on base 4 | +35% dedicated static |
+| Reconnaissance with Operations/Medical HQs and weather technologies | +34.59813% under the flat-point source model | +35% utility interpretation; native semantics unresolved |
 
 The [October 7 source audit](../../plans/chaos_warfare_system_plans/subagent_handoffs/2026-10-07_doctrine_reward_budget_source_checks.md) resolves actual category membership and tests all thirteen retained roles under pooled identical-stat and independent-layer models.
 Its 137 checks reproduce the overlapping armored organization and conservative breakthrough failures in the captured baseline, then place all sixty-five revised role/stat rows within their source budgets.
@@ -195,9 +195,16 @@ The three mutually exclusive Army Command postures are Controlled Retaliation, T
 
 The historical Gas-Chamber Saturation Drills numerical example is superseded by the accepted combined-cap retune; the current legal authored nerve-camp mortality specialization reaches 1.495 times base according to the doctrine owner's source arithmetic. The hook runs only inside the camp system's state death calculation and uses its stored responsible-country pointer. It does not create, reveal, authorize, or unlock a camp, extermination building, experiment site, restricted chemical site, or occupation law, and it does not alter camp evidence, discovery, resistance, trauma, Condemnation, or responsibility records. Unrestricted Authorization remains the governing national use policy.
 
-The earlier flat-stat explanation for Chemical Projector Batteries and the Chaos Battalion is superseded because technology subunit bonus fields are multiplicative toward the unit. Current `common/technologies/chaosx_technologies.txt` gives each projector tier 2.5% soft attack, 13% hard attack, 4% defense, and 7.5% breakthrough; the 1942 Battalion technology grants 15% breakthrough and 11 flat organisation. The strict legal all-independent upper bounds are in the current source table above, while exact engine aggregation remains unresolved.
+The technology subunit attack and defense fields are fractional bonuses; organization retains its documented flat-point interpretation.
+Current `common/technologies/chaosx_technologies.txt` gives each Projector tier 2.5% soft attack, 13% hard attack, 4% defense and 6.5% breakthrough.
+The hidden 1942 Battalion technology grants 4% breakthrough and eleven flat organization points, alongside the doctrine's single 15% mastery III breakthrough reward.
+The current budget table and [actual-source audit](../../plans/chaos_warfare_system_plans/subagent_handoffs/2026-10-07_doctrine_reward_budget_source_checks.md) retain the applicable category, spirit and commander reservations; precise native accumulation remains unverified.
 
-The auditor found that the earlier reconnaissance technology values added flat `recon` values of 2, 3, and 5 to a base of 4, or +250%. The parent resolved the accepted +35% dedicated-static ceiling to include this reconnaissance utility. The technology owner verified fractional `recon` syntax against installed vanilla `common/technologies/infantry.txt` and changed the three grants in `common/technologies/chaosx_technologies.txt` to 0.2, 0.4, and 0.6. Their +1.2 sum on base 4 is +30% in source arithmetic; the engine result remains unverified.
+The [accepted reconnaissance allocation](../../specs/chaos_warfare_system_specs/corrections/2026-10-07_reconnaissance_combined_budget.md) includes the 25% adoption reward, Operations HQ 4%, Medical HQ 2%, and all three hidden weather grants in the interpreted 35% combined utility budget.
+The weather fields are 0.01, 0.02 and 0.03, totaling 0.06 points under the existing flat-point reading.
+Pooling those points and reserving the three percentage sources independently yields +34.589%; independently normalizing each point grant against base four yields +34.59813%.
+The [reconnaissance review](../../plans/chaos_warfare_system_plans/subagent_handoffs/2026-10-07_reconnaissance_budget_review.md) states the earlier source excess, explicit secondary reductions, same-command eligibility and unresolved native semantics.
+Operations planning, Medical wound/sickness protection, HQ abilities and their equipment bills remain intact.
 
 Chemical Operations Commander is earned from completed qualifying Headquarters service. Chemical Operations Academy grants +3 percent army experience gain and does not award the trait. The two paid offensive HQ preparation orders are retired; five protective orders remain. A country's first confirmed chemical exposure applies a defender-side command shock without an attacker buff.
 

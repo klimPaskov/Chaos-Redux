@@ -14,7 +14,7 @@ Armored delivery gets its existing total 5% breakthrough at adoption and total 1
 Fire support gives line/support artillery their existing 9.5% doctrine soft-attack allowance at adoption.
 Fire support's five organization points belong to Projector Batteries; armor's five belong to the three armored delivery variants, avoiding a ten-point overlap on armored companies.
 Integrated Command grants its existing 25% reconnaissance allowance at adoption.
-All other stats and milestone effects remain as authored.
+All other stats and milestone effects remain as authored except the explicit secondary reconnaissance allocation in the [combined reconnaissance correction](2026-10-07_reconnaissance_combined_budget.md).
 
 Native mastery uses exact retained role lists: infantry five, combat support three, armor three, operations six.
 Field Medical and Biosecurity Assault contribute to the roles they actually support; all thirteen retained CBRN unit types occur in at least one track.

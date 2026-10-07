@@ -9,6 +9,10 @@ const grand = 'common/doctrines/grand_doctrines/chaos_warfare_grand_doctrine.txt
 const grandBaseline = 'docs/testing/2026-10-07_doctrine_revision_probability/before/' + grand;
 const shared = 'common/script_constants/cbrn_doctrine_constants.txt';
 const tech = 'common/technologies/chaosx_technologies.txt';
+const reconBaseline = 'docs/testing/2026-10-07_reconnaissance_budget_review/before/';
+const hqFile = 'common/units/cbrn_hq_support.txt';
+const weatherAllocation = {'@CBRN_WEATHER_RECON_BASIC': '0.01', '@CBRN_WEATHER_RECON_IMPROVED': '0.02', '@CBRN_WEATHER_RECON_ADVANCED': '0.03'};
+const hqReconAllocation = {'@CBRN_HQ_OPERATIONS_RECON': '0.04', '@CBRN_HQ_MEDICAL_RECON': '0.02'};
 const tracks = [
  ['infantry', 'extermination_columns', 12, ['cbrn_gas_mask_decon_detachment', 'cbrn_chemical_recon_detachment', 'cbrn_medical_countermeasure_detachment', 'cbrn_biosecurity_assault_detachment', 'chaos_battalion']],
  ['combat_support', 'contaminant_firebases', 16, ['cbrn_chemical_projector_battery', 'cbrn_chemical_ammunition_train', 'cbrn_medical_countermeasure_detachment']],
@@ -110,12 +114,13 @@ for (const t of tracks) {
 }
 test('all 13 retained roles occur in mastery with no retired contributor', () => assert.deepEqual([...new Set(tracks.flatMap(t => t.roster))].sort(), retained.slice().sort()));
 test('grand doctrine AST unchanged against separately captured probability baseline', () => assert.deepEqual(document(grand).nodes, document(grandBaseline).nodes));
-test('technology AST unchanged except two numerical tuning mirrors', () => {
+test('technology AST unchanged except original two BT and secondary three weather tuning mirrors', () => {
  const old = document(baseline + tech), current = document(tech);
  const patchedRaw = structuredClone(old.raw);
  for (const n of walk(patchedRaw)) {
   if (n.key === '@CHAOS_ASSAULT_IMPROVED_BREAKTHROUGH') n.value = '0.04';
   if (n.key === '@CBRN_PROJECTOR_TECH_BREAKTHROUGH') n.value = '0.065';
+  if (Object.hasOwn(weatherAllocation, n.key)) n.value = weatherAllocation[n.key];
  }
  assert.deepEqual(patchedRaw, current.raw);
 });
@@ -286,6 +291,109 @@ const pacingCases = [
 ].map(([id, components]) => ({id, components, perTrack: rosterEvidence.map(t => ({track: t.track, beforeWeightedManpower: sum(components.filter(u => t.before.includes(u)).map(u => units.get(u).manpower)) * t.multiplier, afterWeightedManpower: sum(components.filter(u => t.after.includes(u)).map(u => units.get(u).manpower)) * t.multiplier}))}));
 test('wider contributor rosters never reduce pre-existing example mastery numerator', () => { for (const c of pacingCases) for (const t of c.perTrack) assert(t.afterWeightedManpower >= t.beforeWeightedManpower); });
 
+// Secondary reconnaissance correction. Preserve the original 137-check surface,
+// expanding only the technology AST whitelist by the accepted three constants.
+const mainRevisionChecksBeforeFinalHash = tests.length;
+const reconManifestPath = 'docs/testing/2026-10-07_reconnaissance_budget_review/baseline_manifest.json';
+const reconManifest = JSON.parse(read(reconManifestPath));
+const reconSharedKeys = ['weather_recon_basic','weather_recon_improved','weather_recon_advanced','hq_operations_recon_factor','hq_medical_recon_factor'];
+test('secondary baseline files match every manifest hash', () => { for (const entry of reconManifest.files) assert.equal(hash(Buffer.from(read(entry.beforePath), 'utf8')), entry.sha256, entry.beforePath); });
+test('137-check main revision coverage retained including final hash check', () => assert.equal(mainRevisionChecksBeforeFinalHash + 1, 137));
+function retunedRaw(file, allocation) {
+ const raw = structuredClone(document(file).raw);
+ for (const key of Object.keys(allocation)) {
+  const matches = walk(raw).filter(n => n.key === key); assert.equal(matches.length, 1, key);
+  matches[0].value = allocation[key];
+ }
+ return raw;
+}
+test('secondary HQ AST changes only the two reconnaissance constants', () => assert.deepEqual(document(hqFile).raw, retunedRaw(reconBaseline + hqFile, hqReconAllocation)));
+test('secondary technology AST changes only the three weather constants', () => assert.deepEqual(document(tech).raw, retunedRaw(reconBaseline + tech, weatherAllocation)));
+test('secondary shared table only adds the five accepted reconstruction mirrors', () => {
+ const current = document(shared).nodes.map(n => n.key === 'cbrn_doctrine_modifier' ? {...n, value: n.value.filter(v => !reconSharedKeys.includes(v.key))} : n);
+ assert.deepEqual(current, document(reconBaseline + shared).nodes);
+ const keys = modifierTable.map(n => n.key); for (const key of reconSharedKeys) assert.equal(keys.filter(k => k === key).length, 1);
+});
+for (const [file, local, key] of [
+ [tech, '@CBRN_WEATHER_RECON_BASIC', 'weather_recon_basic'],
+ [tech, '@CBRN_WEATHER_RECON_IMPROVED', 'weather_recon_improved'],
+ [tech, '@CBRN_WEATHER_RECON_ADVANCED', 'weather_recon_advanced'],
+ [hqFile, '@CBRN_HQ_OPERATIONS_RECON', 'hq_operations_recon_factor'],
+ [hqFile, '@CBRN_HQ_MEDICAL_RECON', 'hq_medical_recon_factor'],
+]) mirror(file, local, key);
+const reconUnit = 'cbrn_chemical_recon_detachment', medicalUnit = 'cbrn_medical_countermeasure_detachment';
+const hqIds = ['cbrn_hq_operations_section', 'cbrn_hq_medical_countermeasure_directorate'];
+const weatherIds = ['portable_anemometer','meteorological_stations','upper_air_soundings'];
+const reconMembers = retained.filter(id => units.get(id).categories.includes('category_cbrn_reconnaissance'));
+test('Recon Detachment alone receives weather, base recon remains 4', () => { assert.deepEqual(reconMembers, [reconUnit]); assert.equal(get(units.get(reconUnit).body,'recon'),4); assert(units.get(reconUnit).categories.includes('category_recon')); });
+test('Field Medical retains base 2 and has neither weather nor ordinary recon category', () => { assert.equal(get(units.get(medicalUnit).body,'recon'),2); assert(!units.get(medicalUnit).categories.includes('category_cbrn_reconnaissance')); assert(!units.get(medicalUnit).categories.includes('category_recon')); });
+test('Operations HQ planning 5% and Medical HQ wounds/sickness minus 30% retained', () => {
+ const ops = get(units.get(hqIds[0]).body,'deployed_leader_modifiers'), med = get(units.get(hqIds[1]).body,'deployed_leader_modifiers');
+ approx(get(ops,'planning_speed'),0.05); approx(get(med,'wounded_chance_factor'),-0.30); approx(get(med,'sickness_chance'),-0.30);
+});
+test('HQ-only role identity remains compatible with one instance of both sections', () => {
+ for (const id of hqIds) { const body = units.get(id).body; assert.equal(get(body,'allow_in_army_hq'),'yes'); assert.equal(get(body,'allow_in_non_army_hq'),'no'); assert(!optional(body,'same_support_type')); assert(!optional(body,'xor')); }
+ const all = get(document('common/scripted_triggers/cbrn_hq_triggers.txt').nodes,'cbrn_hq_has_all_three_sections');
+ for (const key of ['cbrn_hq_has_operations_section','cbrn_hq_has_protective_logistics_section','cbrn_hq_has_medical_countermeasure_directorate']) assert(all.some(n=>n.key===key),key);
+ read('common/scripted_effects/cbrn_achievement_effects.txt');
+});
+function reconSources(stage) {
+ const file = stage === 'before' ? reconBaseline + tech : tech, hq = stage === 'before' ? reconBaseline + hqFile : hqFile;
+ const weather = get(document(file).nodes,'technologies').flatMap(n => Array.isArray(n.value) ? n.value.filter(v => v.key === 'category_cbrn_reconnaissance').flatMap(v => v.value.filter(s => s.key === 'recon').map(s => ({file,technology:n.key,recipient:v.key,value:num(s.value)}))) : []);
+ const factors = hqIds.map(id => ({file:hq,unit:id,value:num(get(get(get(get(document(hq).nodes,'sub_units'),id),'deployed_leader_modifiers'),'recon_factor'))}));
+ const doctrine = afterGrants.country.filter(g=>g.cbrnControlled && g.stat==='recon_factor');
+ return {weather,hq:factors,doctrine};
+}
+const reconSourceSets = {before:reconSources('before'),after:reconSources('after')};
+test('weather sources are exactly three cumulative hidden grant nodes', () => {
+ const actual = reconSourceSets.after.weather; assert.deepEqual(actual.map(g=>g.technology),weatherIds);
+ actual.forEach((g,i)=>approx(g.value,[0.01,0.02,0.03][i]));
+ const technologies = get(document(tech).nodes,'technologies');
+ for (const [owner, grant] of [['chemical_detection_paper','portable_anemometer'],['mobile_sampling_laboratories','meteorological_stations'],['theater_cbrn_command_set','upper_air_soundings']]) {
+  const body = get(technologies,owner); assert(walk(body).some(n=>n.key===grant && n.value===1),`${owner} grant ${grant}`);
+ }
+});
+test('Operations adoption remains the single 25% country reconnaissance factor', () => { const d=reconSourceSets.after.doctrine; assert.equal(d.length,1); approx(d[0].value,0.25); assert.equal(d[0].step,'integrated_chemical_operations/adoption'); });
+const reconScenarios = [];
+for (let weatherMask=0;weatherMask<8;weatherMask++) for(let adoption=0;adoption<2;adoption++) for(let hqMask=0;hqMask<4;hqMask++) {
+ const id=`weather-${weatherMask}_adoption-${adoption}_hq-${hqMask}`;
+ const versions={};
+ for (const stage of ['before','after']) {
+  const source=reconSourceSets[stage],weather=source.weather.filter((_,i)=>weatherMask & (1<<i)),hq=source.hq.filter((_,i)=>hqMask & (1<<i));
+  const country=adoption ? source.doctrine.map(g=>g.value) : [], hqValues=hq.map(g=>g.value);
+  const utilityIndependent=product(country)*product(hqValues),utilityPooled=product(country)*(1+sum(hqValues));
+  versions[stage]={weather:weather.map(g=>g.technology),adoption:Boolean(adoption),hq:hq.map(g=>g.unit),utilityPooled,utilityIndependent,companies:[reconUnit,medicalUnit].map(unit=>{
+   const base=num(get(units.get(unit).body,'recon')),points=units.get(unit).categories.includes('category_cbrn_reconnaissance') ? weather.map(g=>g.value) : [];
+   return {unit,base,pointGrants:points,pooledWeatherPooledHQ:(1+sum(points)/base)*utilityPooled,pooledWeatherIndependentHQ:(1+sum(points)/base)*utilityIndependent,independentNormalizedPoints:product(points.map(p=>p/base))*utilityIndependent};
+  })};
+ }
+ reconScenarios.push({id,weatherMask,adoption,hqMask,...versions});
+ test('reconnaissance source subset bound: '+id,()=>{ assert(versions.after.utilityIndependent<=1.35+1e-10); for(const c of versions.after.companies) for(const key of ['pooledWeatherPooledHQ','pooledWeatherIndependentHQ','independentNormalizedPoints']) assert(c[key]<=1.35+1e-10,`${c.unit}: ${key}=${c[key]}`); });
+}
+const reconFull=reconScenarios.find(s=>s.weatherMask===7 && s.adoption===1 && s.hqMask===3);
+const fullCompany=(stage,unit)=>reconFull[stage].companies.find(c=>c.unit===unit);
+test('baseline full reconnaissance and Field Medical failures reproduced',()=>{
+ approx(fullCompany('before',reconUnit).pooledWeatherPooledHQ,2.03125); approx(fullCompany('before',reconUnit).pooledWeatherIndependentHQ,2.055625);
+ approx(fullCompany('before',medicalUnit).pooledWeatherIndependentHQ,1.58125);
+ for(const s of reconScenarios.filter(s=>s.adoption===1 && s.weatherMask===0 && [1,2,3].includes(s.hqMask))) assert(s.before.utilityIndependent>1.35,s.id);
+});
+test('accepted revised flat-point full bound and independent point guard match source allocation',()=>{
+ approx(fullCompany('after',reconUnit).pooledWeatherIndependentHQ,1.34589); approx(fullCompany('after',reconUnit).independentNormalizedPoints,1.3459812868125);
+ approx(fullCompany('after',medicalUnit).pooledWeatherIndependentHQ,1.326);
+});
+const fractionalWeatherCountermodel=(1+sum(reconSourceSets.after.weather.map(g=>g.value)))*reconFull.after.utilityIndependent;
+test('fractional weather countermodel remains over cap and is not presented as native pass',()=>{approx(fractionalWeatherCountermodel,1.40556);assert(fractionalWeatherCountermodel>1.35);});
+const reconUtilityRecipients=retained.map(unit=>({unit,authoredBaseRecon:optional(units.get(unit).body,'recon')??0,weatherCategory:units.get(unit).categories.includes('category_cbrn_reconnaissance'),countryPlusHQUpperFactor:reconFull.after.utilityIndependent,nominalOnlyWhenBaseZero:!optional(units.get(unit).body,'recon')}));
+test('all retained utility recipients keep country/HQ-only guard below 35%',()=>{for(const row of reconUtilityRecipients) assert(row.countryPlusHQUpperFactor<=1.35+1e-10);});
+const reconnaissanceEvidence={baselineManifest:reconManifestPath,baselineCommit:reconManifest.baselineCommit,sourceSets:reconSourceSets,scenarios:reconScenarios,fullCombination:reconFull,utilityRecipients:reconUtilityRecipients,fractionalWeatherCountermodel,mainRevisionCheckCount:137,limitations:[
+ 'Flat weather points follow the accepted parent interpretation and vanilla precedent. Generic technology documentation calls unit modifiers multiplicative without identifying a recon exception.',
+ 'The fractional weather countermodel fails 35% at 1.40556. Source-model passes do not resolve that native semantic ambiguity.',
+ 'One equipped instance each of Operations and Medical HQ is permitted by current owner predicates. Native deployed-leader accumulation, duplicate HQ scaling, field-marshal propagation, division recon aggregation and tactic advantage remain unproved.',
+ 'Each of 64 subsets tests both real reconnaissance company bases. Utility percentages for retained units with zero authored recon are nominal, with no invented combat effect.',
+ 'Ordinary vanilla recon research, vanilla HQ recon, commanders, and other event bonuses remain equal baseline on both sides. No non-CBRN modifier was patched or assumed absent.',
+ 'Parent owns exact reconnaissance MCP inspection, render, comparison and their partial findings. This worker performed no MCP call, game launch or log search for the follow-up.',
+]};
+
 const referenceSections = [
  ['game_doc', path.join(game, 'common/doctrines/subdoctrines/_documentation.md'), 3, 57],
  ['game_doc', path.join(game, 'common/doctrines/grand_doctrines/_documentation.md'), 58, 110],
@@ -294,11 +402,18 @@ const referenceSections = [
  ['wiki', path.join(root, 'paradox_wiki/Modifiers - Hearts of Iron 4 Wiki.md'), 946, 950],
  ['wiki', path.join(root, 'paradox_wiki/Character modding - Hearts of Iron 4 Wiki.md'), 256, 264],
 ].map(([kind, file, startLine, endLine]) => ({kind, path: file, startLine, endLine, sha256: hash(fs.readFileSync(file))}));
+for(const [kind,file,startLine,endLine] of [
+ ['game_doc',path.join(game,'documentation/modifiers_documentation.md'),4537,4541],
+ ['wiki',path.join(root,'paradox_wiki/Modifiers - Hearts of Iron 4 Wiki.md'),971,974],
+ ['wiki',path.join(root,'paradox_wiki/Unit modding - Hearts of Iron 4 Wiki.md'),308,318],
+ ['vanilla_precedent',path.join(game,'common/units/hq_support.txt'),112,146],
+ ['vanilla_precedent',path.join(game,'common/technologies/support.txt'),536,544],
+]) referenceSections.push({kind,path:file,startLine,endLine,sha256:hash(fs.readFileSync(file))});
 referenceSections.push({kind: 'installed_skill_data', path: defensePath, startLine: 124, endLine: 204, sha256: hash(defenseBytes), perPoint: defensePerPoint, corpsCommanderTable: skillTable});
 test('source hashes remain stable during the bounded audit', () => { for (const [file, bytes] of inputs) assert.equal(hash(fs.readFileSync(path.join(root, file))), hash(bytes), file); });
 const result = {
  status: tests.some(t => t.status === 'failed') ? 'failed' : 'passed_with_native_semantics_unresolved', scenario: 'FullLegalSourceBudget: controlled CBRN benefit upper bound over an equal conventional baseline', command: 'node docs/testing/2026-10-07_doctrine_reward_budget_source_tests.js', timestamp: new Date().toISOString(),
- tests, sourceHashes: Object.fromEntries([...inputs].map(([f,b]) => [f,hash(b)])), referenceSections,
+ tests, sourceHashes: Object.fromEntries([...inputs].map(([f,b]) => [f,hash(b)])), referenceSections, reconnaissanceEvidence,
  baselineProvenance: {rewardRevision: baseline, grandDoctrine: grandBaseline, dependenciesWithoutBeforeSnapshot: 'Current dependency files are hashed. Their bodies are not claimed equal to a captured baseline. Before budget overlays only the captured tracks/constants/technology and separate grand baseline onto the same current dependency sources.'},
  rosterEvidence, retainedRoster: retained, chemicalMembershipAmongRetained: chemical,
  otherDefinedChemicalMembersOutsideRetainedRoster: [...units].filter(([id,u]) => !retained.includes(id) && u.categories.includes('category_chemical_support_companies')).map(([id,u]) => ({unit: id, file: u.file, active: optional(u.body,'active')})),

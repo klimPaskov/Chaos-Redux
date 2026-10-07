@@ -69,3 +69,21 @@ No stronger unapproved weapon route, policy escalation or substitute milestone i
 The parent reran the actual-source suite: 137 checks pass, with five captured baseline failures reproduced and all sixty-five revised retained-role/stat rows passing both budget models.
 The [audit handoff](subagent_handoffs/2026-10-07_doctrine_reward_budget_source_checks.md) distinguishes source AST/constant/recipient proof from native execution and preserves the assumptions.
 The highest bound is +34.849% Chaos breakthrough; Projector breakthrough is +34.5832%, Projector defense +34.7559% and armored organization +26.3683% under the independent model.
+
+These sixty-five rows cover soft attack, hard attack, breakthrough, defense and organization.
+The neighboring system-guide review found that its reconnaissance technology-only figure omitted the doctrine country factor and two HQ deployed-leader factors.
+The [reconnaissance review](subagent_handoffs/2026-10-07_reconnaissance_budget_review.md) owns that separate combination; the passing five-stat audit does not close reconnaissance or whole-package balance acceptance.
+
+The parent applied the [accepted secondary allocation](../../specs/chaos_warfare_system_specs/corrections/2026-10-07_reconnaissance_combined_budget.md) while preserving 25% Operations adoption.
+Operations and Medical HQ reconnaissance are 4% and 2%; weather technology fields are 0.01, 0.02 and 0.03.
+The parent reran the extended actual-source suite: 221 checks pass, retaining the original 137-check coverage and testing sixty-four reconnaissance subsets for both real company bases.
+The [secondary source audit](subagent_handoffs/2026-10-07_reconnaissance_budget_source_checks.md) reproduces forty-one baseline failing subsets and gives a +34.59813% maximum under the flat-point model.
+It explicitly retains the alternate fractional-field model's +40.556% result as unresolved native semantics, not a passing cap.
+HQ planning, medical reductions, abilities, bills and unlocks remain equal to the captured baseline except the two reconnaissance constants.
+
+The narrow `portable_anemometer` MCP explain and matching 1940 researched-state renders returned partial results, whose complete artifacts were read.
+The before and after renders are generated dependency views with `sourceAccurate=false`, zero focused native-folder views and identical PNG bytes; their heading is clipped and they expose no numeric stat delta.
+They are not native layout or bonus proof.
+The valid comparison request returned `TECH_REVISION_NOT_CACHED`; an earlier request containing unsupported `after.current` was rejected before analysis and was corrected by omitting that field.
+Exact revisions, resource URIs, source snapshots and scenario data are retained in [mcp_receipt.json](../../testing/2026-10-07_reconnaissance_budget_review/mcp_receipt.json).
+The secondary reductions affect reconnaissance used by combat and native raid success factors; this source audit does not establish their resulting battle or raid outcomes.

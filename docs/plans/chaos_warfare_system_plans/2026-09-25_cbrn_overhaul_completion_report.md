@@ -329,3 +329,10 @@ Source budgets include the possible Cadres and extra defense-skill effects witho
 The exact main flaming-skull emblem is restored by 7b27f8e8899659c38a77d859bbbef6eec88ab06b.
 MCP native-doctrine inspection/rendering and same-scenario AI comparison remain subject to the explicitly recorded route failures/timeouts; all five AI bodies are source-identical.
 Actual mastery accrual, native division statistics and the broader CBRN accepted requirements remain incomplete.
+
+The [secondary reconnaissance correction](../../specs/chaos_warfare_system_specs/corrections/2026-10-07_reconnaissance_combined_budget.md) includes doctrine and both deployed HQ factors in the same source budget.
+The 25% adoption reward is retained; explicit secondary reductions set HQ factors to 4%/2% and weather fields to 0.01/0.02/0.03.
+The parent reran 221 actual-source checks, including sixty-four reconnaissance subsets and the unchanged original combat/organization coverage.
+The point-model maximum is +34.59813%; the fractional-field countermodel is +40.556%, so native semantics remain a material blocker.
+Matching partial MCP dependency views were read and retain identical PNG bytes but no source-accurate native layout or numerical bonus coverage; the comparison returned `TECH_REVISION_NOT_CACHED`.
+The three current system guides use the implemented breakthrough and reconnaissance values and retain those evidence limits.
