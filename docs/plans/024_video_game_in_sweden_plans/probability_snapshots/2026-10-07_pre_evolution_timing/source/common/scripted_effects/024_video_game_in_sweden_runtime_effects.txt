@@ -1,0 +1,363 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 024 BOUNDED RUNTIME OBSERVATION
+# ============================================================================
+# One hidden event observes only the selected Swedish country. It records
+# daily mission interruptions and achievement continuity without a world-wide
+# periodic on_action. State-transfer callbacks record losses at the transaction.
+# No helper exports temporary outputs or selects a new host.
+# ============================================================================
+
+video_game_in_sweden_start_runtime_watch = {
+	if = {
+		limit = { NOT = { has_country_flag = video_game_in_sweden_runtime_watch_pending } }
+		set_country_flag = video_game_in_sweden_runtime_watch_pending
+		country_event = { id = chaosx.nr24.91 days = constant:video_game_in_sweden_timing.runtime_watch_days }
+	}
+}
+
+video_game_in_sweden_observe_runtime = {
+	if = {
+		limit = {
+			has_country_flag = video_game_in_sweden_program_active
+			OR = {
+				NOT = { video_game_in_sweden_is_current_host = yes }
+				video_game_in_sweden_is_disabled = yes
+			}
+		}
+		# Switching the event off ends the qualification; a lost host ends it
+		# only after the full report.
+		if = {
+			limit = {
+				OR = {
+					video_game_in_sweden_is_disabled = yes
+					has_country_flag = video_game_in_sweden_reality_audit_full_success
+				}
+			}
+			set_country_flag = video_game_in_sweden_reality_check_disqualified
+		}
+		set_country_flag = video_game_in_sweden_according_to_plan_disqualified
+		video_game_in_sweden_close_program = yes
+	}
+	if = {
+		limit = { video_game_in_sweden_is_current_host = yes }
+		video_game_in_sweden_refresh_crisis_state = yes
+		video_game_in_sweden_tick_program_package = yes
+		# A treaty transfer can move Stockholm without a control callback.
+		if = {
+			limit = {
+				video_game_in_sweden_has_field_mission_running = yes
+				OR = {
+					NOT = { owns_state = constant:video_game_in_sweden_event.stockholm_state }
+					NOT = { controls_state = constant:video_game_in_sweden_event.stockholm_state }
+				}
+			}
+			set_country_flag = video_game_in_sweden_mission_capital_lost
+		}
+		if = {
+			limit = { NOT = { video_game_in_sweden_no_active_mission = yes } }
+			add_to_variable = { video_game_in_sweden_mission_elapsed_days = constant:video_game_in_sweden_timing.runtime_watch_days }
+		}
+		if = {
+			limit = { has_country_flag = video_game_in_sweden_restriction_active }
+			video_game_in_sweden_register_restriction_enforcement = yes
+		}
+		if = {
+			limit = {
+				has_country_flag = video_game_in_sweden_field_validation_active
+				OR = {
+					NOT = { video_game_in_sweden_has_committed_field_resources = yes }
+					video_game_in_sweden_has_campaign_supply_gap = yes
+				}
+			}
+			set_country_flag = video_game_in_sweden_field_validation_resource_interrupted
+		}
+		if = {
+			limit = {
+				has_country_flag = video_game_in_sweden_field_validation_active
+				NOT = { video_game_in_sweden_has_front_presence = yes }
+			}
+			set_country_flag = video_game_in_sweden_field_validation_region_interrupted
+		}
+		if = {
+			limit = {
+				has_country_flag = video_game_in_sweden_reality_audit_active
+				OR = {
+					NOT = { video_game_in_sweden_has_committed_field_resources = yes }
+					video_game_in_sweden_has_campaign_supply_gap = yes
+				}
+			}
+			set_country_flag = video_game_in_sweden_reality_audit_supply_interrupted
+		}
+		if = {
+			limit = {
+				has_country_flag = video_game_in_sweden_reality_audit_active
+				NOT = { has_country_flag = video_game_in_sweden_narrow_reality_audit_started }
+				NOT = { video_game_in_sweden_has_full_reality_audit_field_package = yes }
+			}
+			set_country_flag = video_game_in_sweden_reality_audit_region_interrupted
+		}
+		if = {
+			limit = {
+				has_event_target = video_game_in_sweden_rulebook_commander
+				event_target:video_game_in_sweden_rulebook_commander = {
+					OR = {
+						NOT = { tag = PREV }
+						NOT = { is_unit_leader = yes }
+					}
+				}
+			}
+			video_game_in_sweden_validate_commander = yes
+		}
+		# A surging Sweden at war is watched daily, so a meaningful war that
+		# starts and ends between maintenance checks still has its opponent,
+		# war score and result recorded. Only the host's own enemies are read.
+		if = {
+			limit = {
+				has_country_flag = video_game_in_sweden_trust_model_active
+				has_war = yes
+			}
+			video_game_in_sweden_update_trust_model_progress = yes
+		}
+		if = {
+			limit = {
+				has_country_flag = video_game_in_sweden_trust_model_active
+				NOT = { has_country_flag = video_game_in_sweden_mandatory_reassessment_pending }
+				OR = {
+					video_game_in_sweden_is_severe_campaign_crisis = yes
+					video_game_in_sweden_has_campaign_supply_gap = yes
+					has_country_flag = video_game_in_sweden_trust_model_major_mismatch
+					AND = {
+						has_country_flag = video_game_in_sweden_trust_model_meaningful_war
+						has_war = no
+					}
+				}
+			}
+			video_game_in_sweden_update_trust_model_progress = yes
+			video_game_in_sweden_open_trust_reassessment = yes
+			country_event = { id = chaosx.nr24.50 days = constant:video_game_in_sweden_timing.runtime_watch_days }
+		}
+	}
+	video_game_in_sweden_update_achievement_tracking = yes
+	if = {
+		limit = {
+			OR = {
+				has_country_flag = video_game_in_sweden_program_active
+				AND = {
+					has_country_flag = video_game_in_sweden_reality_audit_full_success
+					NOT = { has_country_flag = video_game_in_sweden_reality_check_disqualified }
+					# The watch runs until the proof year ends; on its last day
+					# the date reaches the stored end and the watch stops.
+					OR = {
+						NOT = { has_country_flag = video_game_in_sweden_reality_check_reliance_timer }
+						NOT = { has_variable = video_game_in_sweden_reality_check_proof_end_date }
+						check_variable = {
+							var = global.date
+							value = video_game_in_sweden_reality_check_proof_end_date
+							compare = less_than
+						}
+					}
+				}
+			}
+		}
+		video_game_in_sweden_start_runtime_watch = yes
+	}
+}
+
+# COUNTRY scope. Deterministic departmental work with no additional charges.
+# The three receipts arrive at one, two and three thirds of the proof period.
+video_game_in_sweden_register_restriction_enforcement = {
+	set_temp_variable = { video_game_in_sweden_enforcement_step = constant:video_game_in_sweden_timing.restriction_proof_days }
+	divide_temp_variable = { video_game_in_sweden_enforcement_step = constant:video_game_in_sweden_value.three }
+	if = {
+		limit = { check_variable = { var = video_game_in_sweden_mission_elapsed_days value = video_game_in_sweden_enforcement_step compare = greater_than_or_equals } }
+		set_country_flag = video_game_in_sweden_official_leagues_closed
+	}
+	multiply_temp_variable = { video_game_in_sweden_enforcement_step = constant:video_game_in_sweden_value.two }
+	if = {
+		limit = { check_variable = { var = video_game_in_sweden_mission_elapsed_days value = video_game_in_sweden_enforcement_step compare = greater_than_or_equals } }
+		set_country_flag = video_game_in_sweden_policy_exclusions_enforced
+	}
+	if = {
+		limit = {
+			check_variable = {
+				var = video_game_in_sweden_mission_elapsed_days
+				value = constant:video_game_in_sweden_timing.restriction_proof_days
+				compare = greater_than_or_equals
+			}
+		}
+		set_country_flag = video_game_in_sweden_public_facilities_withdrawn
+	}
+}
+
+video_game_in_sweden_issue_restriction_orders = {
+	set_country_flag = video_game_in_sweden_restriction_orders_issued
+	clr_country_flag = video_game_in_sweden_official_leagues_closed
+	clr_country_flag = video_game_in_sweden_policy_exclusions_enforced
+	clr_country_flag = video_game_in_sweden_public_facilities_withdrawn
+	clr_country_flag = video_game_in_sweden_officer_league_complete
+	clr_country_flag = video_game_in_sweden_competitive_command_culture
+	clr_country_flag = video_game_in_sweden_formal_auxiliary_doctrine
+	clr_country_flag = video_game_in_sweden_public_exhibition_program
+	clr_country_flag = video_game_in_sweden_public_response_available
+	clr_country_flag = video_game_in_sweden_broad_public_reach
+	clr_country_flag = video_game_in_sweden_civic_copy_network
+	set_variable = { video_game_in_sweden_civilian_burden_days = constant:video_game_in_sweden_value.zero }
+	remove_decision = video_game_officer_league
+	remove_decision = video_game_national_league
+	remove_decision = video_game_foreign_licenses
+	video_game_in_sweden_validate_commander = yes
+}
+
+# COUNTRY scope. Rebuilds the two crisis flags from the current situation:
+# Stockholm missing, an owned Swedish core held by someone else, or a loss
+# inside the finite memory window. Recovered ground stops counting once the
+# window has passed, so a brief occupation cannot lock later missions.
+video_game_in_sweden_refresh_crisis_state = {
+	if = {
+		limit = {
+			OR = {
+				NOT = { owns_state = constant:video_game_in_sweden_event.stockholm_state }
+				NOT = { controls_state = constant:video_game_in_sweden_event.stockholm_state }
+				has_country_flag = video_game_in_sweden_capital_loss_recent
+			}
+		}
+		set_country_flag = video_game_in_sweden_capital_threat
+	}
+	else = {
+		clr_country_flag = video_game_in_sweden_capital_threat
+	}
+	if = {
+		limit = {
+			OR = {
+				has_country_flag = video_game_in_sweden_capital_threat
+				has_country_flag = video_game_in_sweden_core_loss_recent
+				any_owned_state = {
+					is_core_of = SWE
+					NOT = { is_controlled_by = OWNER }
+				}
+			}
+		}
+		set_country_flag = video_game_in_sweden_core_loss_crisis
+	}
+	else = {
+		clr_country_flag = video_game_in_sweden_core_loss_crisis
+	}
+}
+
+# COUNTRY scope. Clears the interruption record owned by one field, audit or
+# dual-track mission. Every mission start calls it before the work begins.
+video_game_in_sweden_reset_mission_interruptions = {
+	clr_country_flag = video_game_in_sweden_mission_core_lost
+	clr_country_flag = video_game_in_sweden_mission_capital_lost
+	set_variable = { video_game_in_sweden_mission_core_loss_count = constant:video_game_in_sweden_value.zero }
+}
+
+# COUNTRY scope, called for the old controller at a state-control transaction.
+video_game_in_sweden_record_control_loss = {
+	if = {
+		limit = {
+			has_country_flag = video_game_in_sweden_host_selected
+			FROM.FROM = { state = constant:video_game_in_sweden_event.stockholm_state }
+		}
+		# Before the full report a lost capital is a finding against the
+		# cabinet; after it, the Reality Check proof year ends.
+		if = {
+			limit = { has_country_flag = video_game_in_sweden_reality_audit_full_success }
+			set_country_flag = video_game_in_sweden_reality_check_disqualified
+		}
+		set_country_flag = video_game_in_sweden_cabinet_found_wanting
+		set_country_flag = video_game_in_sweden_according_to_plan_disqualified
+		video_game_in_sweden_clear_reality_check_proof = yes
+		clr_country_flag = video_game_in_sweden_reality_check_stockholm_held
+		clr_country_flag = video_game_in_sweden_trust_model_stockholm_continuous
+		set_variable = { video_game_in_sweden_flag_days = constant:video_game_in_sweden_timing.crisis_memory_days }
+		set_country_flag = {
+			flag = video_game_in_sweden_capital_loss_recent
+			days = var:video_game_in_sweden_flag_days
+		}
+		set_country_flag = video_game_in_sweden_capital_threat
+		if = {
+			limit = { video_game_in_sweden_has_field_mission_running = yes }
+			set_country_flag = video_game_in_sweden_mission_capital_lost
+		}
+	}
+	if = {
+		limit = {
+			video_game_in_sweden_is_current_host = yes
+			FROM.FROM = { is_core_of = SWE }
+		}
+		set_variable = { video_game_in_sweden_flag_days = constant:video_game_in_sweden_timing.crisis_memory_days }
+		set_country_flag = {
+			flag = video_game_in_sweden_core_loss_recent
+			days = var:video_game_in_sweden_flag_days
+		}
+		set_country_flag = video_game_in_sweden_core_loss_crisis
+		if = {
+			limit = { video_game_in_sweden_has_field_mission_running = yes }
+			set_country_flag = video_game_in_sweden_mission_core_lost
+			add_to_variable = { video_game_in_sweden_mission_core_loss_count = constant:video_game_in_sweden_value.one }
+		}
+		if = {
+			limit = {
+				has_country_flag = video_game_in_sweden_trust_model_active
+				NOT = { has_country_flag = video_game_in_sweden_mandatory_reassessment_pending }
+			}
+			video_game_in_sweden_open_trust_reassessment = yes
+			country_event = { id = chaosx.nr24.50 days = constant:video_game_in_sweden_timing.runtime_watch_days }
+		}
+	}
+}
+
+# COUNTRY scope, the capitulating country at the capitulation transaction
+# (on_capitulation ROOT). When the stored Trust the Model opponent capitulates
+# while still at war with the surging host, the victory is recorded at once, so
+# a quick peace conference that annexes the opponent before the next check
+# cannot hide it. Only the stored opponent and host pointers are read.
+video_game_in_sweden_record_opponent_capitulation = {
+	if = {
+		limit = {
+			has_event_target = video_game_in_sweden_trust_model_opponent
+			has_event_target = video_game_in_sweden_host
+			event_target:video_game_in_sweden_trust_model_opponent = { tag = PREV }
+			event_target:video_game_in_sweden_host = { has_war_with = PREV }
+		}
+		event_target:video_game_in_sweden_host = {
+			if = {
+				limit = {
+					video_game_in_sweden_is_current_host = yes
+					has_country_flag = video_game_in_sweden_trust_model_active
+					NOT = { has_country_flag = video_game_in_sweden_trust_model_opponent_victory }
+					owns_state = constant:video_game_in_sweden_event.stockholm_state
+					controls_state = constant:video_game_in_sweden_event.stockholm_state
+					has_variable = video_game_in_sweden_trust_model_reassessment_deadline
+					check_variable = {
+						var = global.date
+						value = video_game_in_sweden_trust_model_reassessment_deadline
+						compare = less_than_or_equals
+					}
+				}
+				set_country_flag = video_game_in_sweden_trust_model_war_seen
+				set_country_flag = video_game_in_sweden_trust_model_opponent_victory
+				set_variable = { video_game_in_sweden_trust_model_victory_date = global.date }
+			}
+		}
+	}
+}
+
+video_game_in_sweden_record_actor_loss = {
+	if = {
+		limit = {
+			has_country_flag = video_game_in_sweden_host_selected
+			has_event_target = video_game_in_sweden_host
+			event_target:video_game_in_sweden_host = { tag = PREV }
+		}
+		if = {
+			limit = { has_country_flag = video_game_in_sweden_reality_audit_full_success }
+			set_country_flag = video_game_in_sweden_reality_check_disqualified
+		}
+		set_country_flag = video_game_in_sweden_according_to_plan_disqualified
+		video_game_in_sweden_clear_reality_check_proof = yes
+		clr_country_flag = video_game_in_sweden_trust_model_stockholm_continuous
+		video_game_in_sweden_close_program = yes
+	}
+}
