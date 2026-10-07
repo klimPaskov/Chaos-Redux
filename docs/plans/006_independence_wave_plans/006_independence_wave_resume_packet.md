@@ -1,6 +1,21 @@
 # Event 006 resume packet
 
-## Current continuation checkpoint (2026-10-06)
+## Current source checkpoint (2026-10-07)
+
+The previous goal turn made concrete progress through two reviewed source commits.
+`e00eeb6a1715f7de1831264846d5b664fefe45db` fixes duplicate bilateral progress and caller-owned temporary outputs, with nine bounded callback regression cases and independent source/tooltip review.
+`416688b8963ea0b1a47e3c8682b8125455cfca40` integrates the 44 Level 2 regional groups, 220 shared focuses, reciprocal project locks and cleanup, including corrected receipt labels and the Yoruba icon.
+The source coverage and separate layout/AI limits are recorded in [the integration report](subagent_handoffs/regional_focus_source_commit_20261007.md).
+Imported layout artifacts and complete campaign AI evidence remain unresolved, so these commits do not certify the full tree or whole event.
+
+Continue by reviewing and integrating the existing Oyo/Aceh/Mon signature drafts and FORM-17/32/36/37 contract drafts against their returned handoffs.
+The working tree retains the 31 signature imports excluded from the regional commit, alongside their uncommitted source, localisation and formable/puzzle integration.
+Do not discard those inherited drafts or treat them as completed source plans.
+Admission remains at the 109-package checkpoint until a new admission audit proves a change.
+Keep the broader native, asset, catalog and completion gates from the October 6 takeover audit open.
+The full accepted Event 006 objective remains active and incomplete.
+
+## Historical continuation checkpoint (2026-10-06)
 
 The dated snapshots below are historical evidence and do not state the current admission boundary.
 D1-D34 in [the takeover decision record](agent_decisions_2026-10-04.md) and D35 onward in the 2026-10-05 record supersede their conflicting source-status claims.
