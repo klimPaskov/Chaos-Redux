@@ -34,7 +34,8 @@ Current reference/search/read, source lookup with path/line/view/keyPath, and sc
 Reference/source reads succeed, while script validation remains partial.
 `adf77c6d2043edb65fbb66fec93faf58229cad80` records the exact one-node graph comparison timeout after 600 seconds, without a comparison artifact.
 The exact component-recorder helper-impact request and its narrower one-node/one-edge retry each returned a client timeout after 600 seconds, with no changed-helper graph artifact or targeted render/comparison acceptance.
-The dedicated four-decision Rocketry AI auditor is running with no available pass or scenario comparison.
+The dedicated four-decision Rocketry AI audit returned partial source/score evidence in [its handoff](subagent_handoffs/016_native_selection_current_ai_2026-10-07.md).
+Native-project/provider/paid-state inputs and the prepatch comparison remain unresolved, and the nine identical forced-candidate rows do not establish distinct scenario coverage.
 Tool exposure is distinct from verified service health and standalone viewer availability.
 
 Native start/cancel synchronization, resumption, release/reselection, delayed callbacks, real payload/native timer execution, full terminal acceptance, domain/UI/catalog/full-event coverage and clean live `error.log` evidence remain incomplete.

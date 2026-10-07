@@ -73,8 +73,9 @@ Baseline SHA-256 is `f42d53e42f302ef970ab318751c98014247e628435fc30261846834abf6
 At the curator checkpoint the exact helper-impact request had no supplied outcome and was not retried or represented as a success or failure by the curator.
 Parent follow-up: the valid helper query with four nodes/eight edges and the narrower one-node/one-edge retry both returned a client tools/call timeout after 600 seconds.
 Their exact requests and responses are retained in the Singularity parent evidence, with no changed-helper graph, render or comparison acceptance inferred.
-The dedicated four-decision Rocketry `chaosx_ai_probability_auditor` is running according to the parent prompt.
-Its scenario-specific handoff and comparison remain unresolved and no pass is available.
+The Rocketry auditor was running at the curator checkpoint.
+Parent follow-up is retained in [the partial audit record](016_native_selection_current_ai_2026-10-07.md).
+Inspect/evaluate returned partial score evidence, while unresolved native-project/provider/paid-state inputs, identical forced-candidate rows and an unperformed prepatch comparison prevent a scenario or balance pass.
 Historical focus, technology, GUI and map evidence stays dated and unchanged.
 Those unrelated surfaces were not reconciled or re-audited.
 
@@ -85,7 +86,7 @@ Those unrelated surfaces were not reconciled or re-audited.
 | Resume packet's 2026-09-05 Mengele callback-wiring queue | Superseded only for completed exact receipt wiring by its 2026-10-07 checkpoint and the two linked current receipt reports. Full portfolio integration/acceptance is still open. |
 | Closure plan's dated fifteen-family matrix gap column and absence-of-provider-branches paragraph | Superseded only for exact output/adoption source paths by its 2026-10-07 checkpoint. Later-stage and terminal requirements were not inferred complete. |
 | Older broad fifteen-family migration and Singularity receipt queue language | Exact receipt source coverage is implemented for all fifteen families, with six separate Singularity modes. Complete ownership/lifecycle acceptance remains accepted and queued under the amendment. |
-| Resume packet's older unavailable probability-auditor statement | Historical availability evidence only. The parent reports the Rocketry auditor running, with its exact scenarios, result and handoff still pending. |
+| Resume packet's older unavailable probability-auditor statement | Historical availability evidence only. The returned partial Rocketry source/score record is retained in 016_native_selection_current_ai_2026-10-07.md, with native-state eligibility and comparison still unresolved. |
 | Fixed report/amendment's dated 4,911 maintained count versus current 5,487 | Historical count retained in read-only evidence documents. Both edited checkpoints use the latest Singularity parent evidence and identify the dated count where useful. |
 | Singularity gap's former generic-initializer allegation | Current core/integration/report evidence already records the correction: generic initialization existed. Only the separate bridge initializer was missing. No new gameplay defect or queue item was created. |
 | Native selection persistence versus stronger cancellation/resumption contract | Unresolved. The parent must close the lifecycle evidence or obtain an explicit design decision, without treating selection, withdrawal or source tests as a weaker accepted substitute. |
@@ -114,7 +115,8 @@ No probability pass was duplicated while the dedicated auditor is running, and n
 No domain/UI/catalog/full-event audit, log review, live-game test or prohibited package inspection was performed because this assignment authorizes only the named documentation continuation.
 Native start/cancel synchronization, resumption, same-project release/reselection, delayed-output isolation, real payload/native timer execution, full terminal acceptance, domain/UI/catalog/full-event coverage and clean live `error.log` evidence remain incomplete.
 No simplification, fallback or acceptance waiver was introduced.
-The parent reviewed these checkpoints and must retain the scenario-specific Rocketry auditor handoff when available, resolve the remaining helper and lifecycle/acceptance gaps, and commit the three bounded documents.
+The parent reviewed these checkpoints and retained the returned partial Rocketry record, with its repeated fixtures rejected as distinct native-state scenarios.
+The remaining helper, eligibility, comparison and lifecycle acceptance gaps stay open.
 
 Skills used: chaos-redux-subagents, chaos-redux-events for event documentation acceptance/ownership, and chaos-redux-decisions-missions for the narrow read-only Synod decision-cost verification.
 No skill was created or updated.
