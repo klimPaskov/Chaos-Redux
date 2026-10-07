@@ -955,6 +955,7 @@ acid_rain_initialize_operation_rows = {
 
 # COUNTRY SCOPE. Maps acid_rain_selected_action to its national family.
 # Output: temporary acid_rain_op_family, zero for evacuations and recovery.
+# The consuming caller declares its output before this helper returns.
 acid_rain_resolve_operation_family = {
 	set_temp_variable = { acid_rain_op_family = constant:acid_rain_runtime.zero }
 	if = { limit = { check_variable = { var = acid_rain_selected_action value = constant:acid_rain_action.urgent_shelter compare = equals } } set_temp_variable = { acid_rain_op_family = constant:acid_rain_action.family_shelter } }
@@ -1026,6 +1027,7 @@ acid_rain_load_operation_achievement_view = {
 # just paid. Inputs: acid_rain_selected_action, the loaded acid_rain_quote_*
 # temporaries and, for state operations, var:acid_rain_selected_action_state.
 acid_rain_open_operation = {
+	set_temp_variable = { acid_rain_op_family = constant:acid_rain_runtime.zero }
 	acid_rain_resolve_operation_family = yes
 	acid_rain_033_achievement_capture_action_start = yes
 	set_temp_variable = { acid_rain_op_end_day = global.date }
