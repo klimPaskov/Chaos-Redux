@@ -5,6 +5,9 @@
 Event 35 source, presentation, assets, achievements, documentation, and catalog surfaces exist, but their presence is not full requirement coverage.
 
 The current requirement and evidence ledger is [current_requirement_state_2026-10-07.md](current_requirement_state_2026-10-07.md).
+The later [bank-program source tranche](subagent_handoffs/bank_lifecycle_implementation_2026-10-07.md) replaces instantaneous audit and recapitalization with staged funded missions, exact episode proof and guarded renewed panic.
+Its fifteen bank tests and 128 support-pool subsets pass; native and current same-scenario probability acceptance remain separate.
+The current category is 79 decisions and 17 missions, 96 children, and the earlier counts below retain their dated evidence boundary.
 The active user requirement is full implementation of `docs/specs/035_great_depression_specs/`, without simplifications and with every mapped surface and acceptance scenario required before completion.
 The dated October 3 and September evidence below remains historical wherever October 4 to 6 repairs supersede it.
 Recorded G6 design-authority claims and plan status labels do not independently authorize removing requirements from this active goal.

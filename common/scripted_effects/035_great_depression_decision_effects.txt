@@ -97,6 +97,8 @@ great_depression_refresh_mission_capacity_ledger = {
 	if = { limit = { has_active_mission = great_depression_complete_national_recovery_plan } add_to_variable = { great_depression_active_support_mission_count = constant:great_depression_api.one } }
 	if = { limit = { has_active_mission = great_depression_certify_cleared_economy } add_to_variable = { great_depression_active_support_mission_count = constant:great_depression_api.one } }
 	if = { limit = { has_active_mission = great_depression_restore_essential_production } add_to_variable = { great_depression_active_support_mission_count = constant:great_depression_api.one } }
+	if = { limit = { OR = { has_active_mission = great_depression_audit_viable_banks great_depression_bank_audit_receipt_is_current = yes } } add_to_variable = { great_depression_active_support_mission_count = constant:great_depression_api.one } }
+	if = { limit = { OR = { has_active_mission = great_depression_certify_bank_recapitalization great_depression_bank_recapitalization_receipt_is_current = yes } } add_to_variable = { great_depression_active_support_mission_count = constant:great_depression_api.one } }
 	add_to_variable = { great_depression_active_mission_count = great_depression_active_main_mission_count }
 	add_to_variable = { great_depression_active_mission_count = great_depression_active_support_mission_count }
 	if = {
@@ -115,6 +117,7 @@ great_depression_refresh_mission_capacity_ledger = {
 }
 
 great_depression_cancel_all_missions = {
+	great_depression_clear_bank_program_runtime = yes
 	remove_mission = great_depression_halt_the_panic
 	remove_mission = great_depression_keep_essential_freight_moving
 	remove_mission = great_depression_reopen_depression_center
@@ -173,6 +176,10 @@ great_depression_commit_external_action = {
 # These fields affect no payment, relief or pressure calculation. Relief is
 # displayed positive so text can say "lower". Pressure stays positive.
 great_depression_prepare_action_tooltip_values = {
+	set_variable = { great_depression_tt_bank_audit_days = constant:great_depression_event.bank_audit_days }
+	set_variable = { great_depression_tt_bank_recapitalization_days = constant:great_depression_event.bank_recapitalization_days }
+	set_variable = { great_depression_tt_bank_holiday_output = constant:great_depression_bank_modifier.holiday_output }
+	multiply_variable = { great_depression_tt_bank_holiday_output = constant:great_depression_api.negative_one }
 	set_variable = { great_depression_tt_base_drift = constant:great_depression_api.one }
 	set_variable = { great_depression_tt_panic_drift = constant:great_depression_action.panic_pulse_delta }
 	set_variable = { great_depression_tt_credit_relief = constant:great_depression_hidden_component.credit_audit_relief }
@@ -446,6 +453,7 @@ great_depression_choose_let_the_market_clear = {
 }
 
 great_depression_cabinet_review = {
+	great_depression_withdraw_bank_program = yes
 	set_variable = { great_depression_cost_family = constant:great_depression_cost_family.policy_review }
 	set_temp_variable = { great_depression_action_delta = constant:great_depression_action.light_relief }
 	great_depression_commit_country_action = yes
@@ -459,6 +467,7 @@ great_depression_cabinet_review = {
 }
 
 great_depression_emergency_policy_review = {
+	great_depression_withdraw_bank_program = yes
 	set_variable = { great_depression_cost_family = constant:great_depression_cost_family.policy_review }
 	set_temp_variable = { great_depression_action_delta = constant:great_depression_action.moderate_pressure }
 	great_depression_commit_country_action = yes
@@ -516,26 +525,42 @@ great_depression_retain_bounded_arsenal_institution = {
 }
 
 great_depression_declare_temporary_bank_holiday_and_audit = {
-	set_variable = { great_depression_cost_family = constant:great_depression_cost_family.finance_trade }
-	set_temp_variable = { great_depression_action_delta = constant:great_depression_action.moderate_pressure }
-	great_depression_commit_country_action = yes
-	set_country_flag = great_depression_bank_audit_active
-	set_country_flag = great_depression_bank_audit_complete
+	if = {
+		limit = {
+			great_depression_can_start_bank_holiday_and_audit = yes
+			great_depression_can_pay_finance_trade = yes
+		}
+		set_variable = { great_depression_cost_family = constant:great_depression_cost_family.finance_trade }
+		set_temp_variable = { great_depression_action_delta = constant:great_depression_action.moderate_pressure }
+		great_depression_commit_country_action = yes
+		great_depression_authorize_bank_audit = yes
+	}
 }
 
 great_depression_recapitalize_viable_institutions = {
-	set_variable = { great_depression_cost_family = constant:great_depression_cost_family.finance_trade }
-	set_temp_variable = { great_depression_action_delta = constant:great_depression_action.strong_relief }
-	great_depression_commit_country_action = yes
-	set_country_flag = great_depression_bank_audit_complete
-	set_country_flag = great_depression_viable_institutions_recapitalized
+	if = {
+		limit = {
+			great_depression_can_start_recapitalization = yes
+			great_depression_can_pay_finance_trade = yes
+		}
+		set_variable = { great_depression_cost_family = constant:great_depression_cost_family.finance_trade }
+		set_temp_variable = { great_depression_action_delta = constant:great_depression_action.no_change }
+		great_depression_commit_country_action = yes
+		great_depression_authorize_bank_recapitalization = yes
+	}
 }
 
 great_depression_establish_durable_credit_guarantee = {
-	set_variable = { great_depression_cost_family = constant:great_depression_cost_family.finance_trade }
-	set_temp_variable = { great_depression_action_delta = constant:great_depression_action.strong_relief }
-	great_depression_commit_country_action = yes
-	set_country_flag = great_depression_durable_credit_guarantee
+	if = {
+		limit = {
+			great_depression_can_start_durable_credit_guarantee = yes
+			great_depression_can_pay_finance_trade = yes
+		}
+		set_variable = { great_depression_cost_family = constant:great_depression_cost_family.finance_trade }
+		set_temp_variable = { great_depression_action_delta = constant:great_depression_action.strong_relief }
+		great_depression_commit_country_action = yes
+		set_country_flag = great_depression_durable_credit_guarantee
+	}
 }
 
 great_depression_balance_emergency_budget = {

@@ -74,10 +74,24 @@ The six recovery doctrines are Emergency Public Works, Rescue Strategic Industry
 
 Each doctrine has its own mapped actions, AI preference profile, crisis legacy, and recovery tradeoffs.
 
-The decision category contains 79 decisions and 15 missions.
+The decision category contains 79 decisions and 17 missions.
 
 Every doctrine has a state project and a Stabilization closer.
 Stabilize Finance and Trade restores a selected Distressed, Idled, or Shuttered center through Restore Local Credit and Trade Connection, which needs a completed bank audit and runs the finance restoration project; the center reopens as restructured.
+
+Bank Holiday and Audit funds a 21-day national examination, briefly restricts factory output and slows credit deterioration.
+The non-selectable Audit and Reopen Viable Banks mission certifies a functioning productive base, Stability of at least the central audit threshold, and a country that has not capitulated.
+It allows seven days beyond the examination interval to meet that viability proof; a failed audit renews panic rather than recording financial recovery.
+Recapitalize Viable Institutions requires the successful audit from the same depression and funds a separate 42-day follow-up, with seven days of certification grace.
+Durable credit relief begins only after this follow-up succeeds; the audit's completion alone grants no lasting credit treatment.
+The durable guarantee requires audit and recapitalization proof during Stabilization.
+Each funded program reserves one of the two supporting objective slots, even if its native mission needs restoration.
+Native timers are synchronized to the original absolute deadline immediately after activation and during the existing bounded active-country receiver, so restoring a mission never restarts the work interval.
+Cabinet Review and Emergency Policy Review withdraw unfinished financial work, reopen withdrawals prematurely and produce one renewed-panic consequence.
+Completion, timeout and owner reconciliation share current-episode active markers; repeated or stale callbacks cannot grant another certification or pressure consequence.
+Retirement and actor invalidation close active work without rewarding or punishing another episode.
+The funding is charged once by the authorization action, with no second mission-completion charge.
+Audit uses `GFX_decision_mission_great_depression_halt_the_panic`, recapitalization uses `GFX_decision_mission_great_depression_prevent_a_relapse`, and the temporary holiday uses the existing finance-legacy spirit icon; these are existing purpose-matched asset families, not resized cross-family art.
 Rescue Strategic Industry closes its route in Stabilization or Recovery with exactly one of two decisions: End Rescue Dependence withdraws the essential orders for a lasting fiscal relief, while Retain a Bounded Arsenal Institution keeps them as a standing institution with a lasting fiscal upkeep and wartime supply relief.
 Either closer counts as the durable recovery measure that Prevent a Relapse requires.
 
@@ -109,13 +123,15 @@ Selection and project proof require the state's exact registered episode; physic
 
 Every paid decision and mission uses the same affordability predicate in its ordinary availability and custom-cost display.
 
-Missions activate without an entry debit, require affordability at completion, and debit their displayed mapped action cost exactly once on successful completion. Cancellation and timeout do not create a second charge or refund an unspent cost.
+Ordinary response missions activate without an entry debit, require affordability at completion, and debit their displayed mapped action cost exactly once on successful completion.
+The bank audit and recapitalization missions instead certify work prepaid by their authorization actions; their mission rows state that no further payment is required.
+Cancellation and timeout never create a second charge, and these funded bank programs have no separate unspent stockpile balance to refund.
 
 The National Employment Guarantee cannot be started again while its automatic mission is active, and its bounded partial-timeout result is terminal for that episode so the partial relief cannot be farmed through repeated activation.
 
 ### Decision and mission tooltips
 
-Every complete, timeout and cancel effect of the 79 decisions and 15 missions carries a custom effect tooltip.
+Every complete, timeout and cancel effect of the 79 decisions and 17 missions carries a custom effect tooltip.
 The Severity change comes from `great_depression_apply_public_action_delta`, which prints `great_depression_severity_change_tt` from the same temporary value it adds; a partner's own Severity change appears under the partner.
 `great_depression_prepare_action_tooltip_values` fills the numbers each tooltip prints from the same script constants the effect or the hidden pressure rebuild uses: hidden relief and pressure per Severity update, project and protection days, the project failure penalty, the whiplash and mandate durations, and the Policy Fatigue switch count.
 A tooltip names each lasting consequence in plain words: pressure eased or added for each later Severity update and for how long, a project started with its length and failure penalty, a center written off, a mission requirement met, a partner affected, a worldwide contribution, or a recovery scar or political settlement the recovery can leave.
@@ -147,7 +163,9 @@ Finance restoration starts from Restore Local Credit and Trade Connection.
 A successful Keep Essential Freight Moving mission restores basic transport and supply for the selected center: it starts transport integration on a closed center with no running project, or moves the project already running there several weeks closer to completion, once per project.
 Coordinated Public Works and Reconstruction starts international reconstruction on the selected closed center, including an abandoned one that was not liquidated, when no other center project is running.
 The AI, which does not keep a selected center, uses one valid center of its own for both producers.
-The inherited-liability consumer adds ongoing hidden pressure for inherited regions; hidden-row paid paths, corridor outcomes, secured-value salvage, and multi-region inherited priority need a per-region Event 34 project system that does not exist and are closed for Event 35.
+The inherited-liability consumer adds ongoing hidden pressure for inherited regions.
+Hidden-row paid paths, corridor outcomes, secured-value salvage and multi-region inherited priority remain required consumer work under the full specification.
+Authentic Event 34 delivery depends on its absent per-region producer facts; supplied-field Event 35 consumer and acceptance work remains queued separately, without manufacturing missing source history.
 
 Factory loss is delayed until sustained severe failure or a deliberate liquidation action.
 A center written off by Abandon Depression Center or Auction or Reorganize Failed Assets carries the `great_depression_center_liquidated` flag and adds only `demand_liquidated_center` (1) to hidden demand pressure on each update, instead of the full abandoned and hollowed weight that a center lost to sustained failure keeps.

@@ -346,10 +346,13 @@ class TooltipLifetimeTests(unittest.TestCase):
         actor.resources["civilian_factories_available"] = 12
         r.run_effect("great_depression_refresh_costs", actor, root=sender)
         fields = {k: v for k, v in actor.values.items() if k.startswith("great_depression_tt_")}
-        self.assertEqual(len(fields), 37)
+        self.assertEqual(len(fields), 40)
         self.assertTrue(all(isinstance(value, (int, float)) for value in fields.values()))
         self.assertEqual(fields["great_depression_tt_freight_relief"], 3)
         self.assertEqual(fields["great_depression_tt_whiplash_pressure"], 3)
+        self.assertEqual(fields["great_depression_tt_bank_audit_days"], 21)
+        self.assertEqual(fields["great_depression_tt_bank_recapitalization_days"], 42)
+        self.assertEqual(fields["great_depression_tt_bank_holiday_output"], 0.03)
         self.assertFalse(any(k.startswith("great_depression_tt_") for k in sender.values))
         self.assertEqual(r.temp_frames, [{}])
         site = state(1, actor)

@@ -43,3 +43,11 @@ Disposition: accepted and queued for the catalog owner because this workstream m
 Routine conversions use country reports, and one secondary-depression news covers a financial contagion chain.
 The local exposure report summarizes simultaneous independent origins and does not repeat for descendants of the same chain.
 The Event Details premise and the three evolution titles are unchanged.
+
+## 7 October bank-program lifecycle
+
+Disposition: accepted and queued for workbook-owner reconciliation after the source and localisation review.
+The category has 79 decisions and 17 missions, including Audit and Reopen Viable Banks and Certify Viable Bank Recapitalization.
+The bank audit and follow-up are staged funded work with current-episode proof, supporting-objective capacity and guarded renewed panic on failure or early withdrawal.
+No Event Details, evolution title/body, classification or cluster-row text is changed by this tranche; Negative Economy remains cluster 10 and Event 35 remains Low.
+Any catalog decision/mission listing must use the exact current localisation names above.

@@ -19,11 +19,13 @@ EFFECT_FILES = (
     r"common\scripted_effects\035_great_depression_decision_effects.txt",
     r"common\scripted_effects\035_great_depression_region_effects.txt",
     r"common\scripted_effects\035_great_depression_inherited_liability_effects.txt",
+    r"common\scripted_effects\035_great_depression_bank_effects.txt",
 )
 TRIGGER_FILES = (
     r"common\scripted_triggers\035_great_depression_triggers.txt",
     r"common\scripted_triggers\035_great_depression_decision_triggers.txt",
     r"common\scripted_triggers\035_great_depression_decision_surface_triggers.txt",
+    r"common\scripted_triggers\035_great_depression_bank_triggers.txt",
 )
 CONSTANTS_FILE = r"common\script_constants\035_great_depression_constants.txt"
 REGION_CONSTANTS_FILE = r"common\script_constants\035_great_depression_region_constants.txt"
@@ -165,6 +167,7 @@ class Event35Runtime:
         "remove_dynamic_modifier", "add_ideas", "remove_ideas", "country_event",
         "news_event", "add_equipment_to_stockpile", "add_political_power",
         "add_manpower", "add_fuel", "add_stability", "add_war_support",
+        "activate_mission", "remove_mission",
     }
 
     def __init__(self):
@@ -370,6 +373,8 @@ class Event35Runtime:
     def _numeric_builtin(self, key, scope):
         if key == "state_population_k" and scope.kind == "state":
             return scope.population_k
+        if key == "num_of_factories" and scope.kind == "country":
+            return scope.values.get("num_of_factories", 0)
         if key in ("industrial_complex", "arms_factory", "dockyard") and scope.kind == "state":
             return scope.buildings.get(key, 0)
         if key == "num_of_civilian_factories_available_for_projects" and scope.kind == "country":
@@ -433,6 +438,11 @@ class Event35Runtime:
             return any(self._conditions([child], scope) for child in value)
         if key == "AND":
             return self._conditions(value, scope)
+        if key == "count_triggers":
+            amount = first(value, "amount")
+            if amount is None:
+                raise SourceContractError("count_triggers requires an amount")
+            return sum(self._condition(child, scope) for child in value if child.key != "amount") >= self._value(amount)
         if key in ("hidden_trigger", "custom_trigger_tooltip"):
             predicate = first(value, "trigger", None)
             if predicate is None:
@@ -499,6 +509,8 @@ class Event35Runtime:
             return scope.kind == "country" and scope.ai == (value == "yes")
         if key == "has_active_mission":
             return value in scope.values.get("active_missions", set())
+        if key == "has_capitulated":
+            return scope.values.get("capitulated", False) == (value == "yes")
         if key in self.trigger_defs and value == "yes":
             return self._run_trigger(key, scope)
         if key in ("has_fuel", "has_manpower", "has_political_power", "has_stability", "has_war_support", "state_population_k", "industrial_complex", "arms_factory", "dockyard", "num_of_civilian_factories_available_for_projects"):
@@ -701,6 +713,10 @@ class Event35Runtime:
             (scope.modifiers.add if key == "add_dynamic_modifier" else scope.modifiers.discard)(modifier)
         elif key in ("add_ideas", "remove_ideas"):
             (scope.ideas.add if key == "add_ideas" else scope.ideas.discard)(self._value(value))
+        elif key in ("activate_mission", "remove_mission"):
+            self._require_scope(scope, "country", key, line)
+            missions = scope.values.setdefault("active_missions", set())
+            (missions.add if key == "activate_mission" else missions.discard)(value)
         elif key == "country_event":
             args = {child.key: child.value for child in value}
             self.events.append((scope.id, self._value(args["id"]), self._value(args.get("days", "0"))))
@@ -1232,6 +1248,7 @@ class DoctrineProjectProducerTests(unittest.TestCase):
         owner.values["great_depression_doctrine"] = 3
         self.assertFalse(runtime.test_trigger("great_depression_can_start_finance_restoration", site, root=owner))
         owner.flags.add("great_depression_bank_audit_complete")
+        owner.values["great_depression_bank_audit_episode_id"] = owner.values["great_depression_active_episode_id"]
         self.assertTrue(pay_action(runtime, owner, site, "great_depression_restore_local_credit_and_trade_connection",
                                    "great_depression_can_start_finance_restoration", "great_depression_can_pay_finance_trade"))
         self.assertEqual(site.values["great_depression_center_project_type"], self.project(runtime, "finance_restoration"))

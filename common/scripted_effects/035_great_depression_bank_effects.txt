@@ -1,0 +1,217 @@
+# ============================================================================
+# EVENT 035 - COUNTRY-SCOPE BANK AUDIT AND RECAPITALIZATION
+# ============================================================================
+# Paid authorizations open episode-bound missions. A successful audit proves
+# viability; a separate funded recapitalization proves durable credit relief.
+# Failed or prematurely withdrawn work renews panic once. Crisis retirement
+# discards temporary work without rewarding or punishing a successor episode.
+# No global iterator, partner mutation, new public meter or pacing charge.
+# ============================================================================
+
+great_depression_authorize_bank_audit = {
+	set_country_flag = great_depression_bank_audit_active
+	clr_country_flag = great_depression_bank_audit_failed
+	set_variable = { great_depression_bank_audit_episode_id = great_depression_active_episode_id }
+	set_variable = { great_depression_bank_audit_due_day = global.num_days }
+	add_to_variable = { great_depression_bank_audit_due_day = constant:great_depression_event.bank_audit_days }
+	set_variable = { great_depression_bank_audit_deadline_day = global.num_days }
+	add_to_variable = { great_depression_bank_audit_deadline_day = constant:great_depression_event.bank_audit_timeout_days }
+	add_dynamic_modifier = { modifier = great_depression_bank_holiday }
+	activate_mission = great_depression_audit_viable_banks
+	great_depression_sync_bank_audit_timer = yes
+	great_depression_refresh_mission_capacity_ledger = yes
+}
+
+great_depression_authorize_bank_recapitalization = {
+	set_country_flag = great_depression_bank_recapitalization_active
+	clr_country_flag = great_depression_bank_recapitalization_failed
+	set_variable = { great_depression_bank_recapitalization_episode_id = great_depression_active_episode_id }
+	set_variable = { great_depression_bank_recapitalization_due_day = global.num_days }
+	add_to_variable = { great_depression_bank_recapitalization_due_day = constant:great_depression_event.bank_recapitalization_days }
+	set_variable = { great_depression_bank_recapitalization_deadline_day = global.num_days }
+	add_to_variable = { great_depression_bank_recapitalization_deadline_day = constant:great_depression_event.bank_recapitalization_timeout_days }
+	activate_mission = great_depression_certify_bank_recapitalization
+	great_depression_sync_bank_recapitalization_timer = yes
+	great_depression_refresh_mission_capacity_ledger = yes
+}
+
+great_depression_complete_bank_audit = {
+	if = {
+		limit = { great_depression_bank_audit_objective_is_met = yes }
+		clr_country_flag = great_depression_bank_audit_active
+		set_country_flag = great_depression_bank_audit_complete
+		clear_variable = great_depression_bank_audit_due_day
+		clear_variable = great_depression_bank_audit_deadline_day
+		remove_dynamic_modifier = { modifier = great_depression_bank_holiday }
+		set_temp_variable = { great_depression_action_delta = constant:great_depression_action.light_relief }
+		great_depression_apply_public_action_delta = yes
+	}
+}
+
+great_depression_complete_bank_recapitalization = {
+	if = {
+		limit = { great_depression_bank_recapitalization_objective_is_met = yes }
+		clr_country_flag = great_depression_bank_recapitalization_active
+		set_country_flag = great_depression_viable_institutions_recapitalized
+		clear_variable = great_depression_bank_recapitalization_due_day
+		clear_variable = great_depression_bank_recapitalization_deadline_day
+		set_temp_variable = { great_depression_action_delta = constant:great_depression_action.strong_relief }
+		great_depression_apply_public_action_delta = yes
+	}
+}
+
+# Only a current, live authorization may write a failure. Clear its active
+# marker before any nested lifecycle effects so a repeated callback is inert.
+great_depression_fail_bank_program = {
+	if = {
+		limit = {
+			great_depression_active_country_is_valid = yes
+			OR = {
+				great_depression_bank_audit_receipt_is_current = yes
+				great_depression_bank_recapitalization_receipt_is_current = yes
+			}
+		}
+		if = {
+			limit = { great_depression_bank_audit_receipt_is_current = yes }
+			clr_country_flag = great_depression_bank_audit_active
+			set_country_flag = great_depression_bank_audit_failed
+			clear_variable = great_depression_bank_audit_due_day
+			clear_variable = great_depression_bank_audit_deadline_day
+			remove_dynamic_modifier = { modifier = great_depression_bank_holiday }
+		}
+		if = {
+			limit = { great_depression_bank_recapitalization_receipt_is_current = yes }
+			clr_country_flag = great_depression_bank_recapitalization_active
+			set_country_flag = great_depression_bank_recapitalization_failed
+			clear_variable = great_depression_bank_recapitalization_due_day
+			clear_variable = great_depression_bank_recapitalization_deadline_day
+		}
+		set_temp_variable = { great_depression_bank_panic_days = constant:great_depression_event.shock_memory_days }
+		set_country_flag = { flag = great_depression_renewed_bank_panic days = great_depression_bank_panic_days }
+		set_temp_variable = { great_depression_action_delta = constant:great_depression_action.mission_failure }
+		great_depression_apply_public_action_delta = yes
+	}
+}
+
+# Policy withdrawal opens withdrawals before certification. This is called by
+# both existing doctrine-review actions, including a review during stabilization.
+great_depression_withdraw_bank_program = {
+	if = {
+		limit = {
+			OR = {
+				great_depression_bank_audit_receipt_is_current = yes
+				great_depression_bank_recapitalization_receipt_is_current = yes
+			}
+		}
+		great_depression_fail_bank_program = yes
+		remove_mission = great_depression_audit_viable_banks
+		remove_mission = great_depression_certify_bank_recapitalization
+		great_depression_refresh_mission_capacity_ledger = yes
+	}
+}
+
+# Retirement closes active markers before removing missions and their identity.
+# Cancellation callbacks therefore cannot turn deliberate cleanup into panic.
+# This helper is
+# also used by the existing all-mission cleanup on reset and actor invalidation.
+great_depression_clear_bank_program_runtime = {
+	clr_country_flag = great_depression_bank_audit_active
+	clr_country_flag = great_depression_bank_recapitalization_active
+	clr_country_flag = great_depression_bank_audit_complete
+	clr_country_flag = great_depression_viable_institutions_recapitalized
+	clr_country_flag = great_depression_bank_audit_failed
+	clr_country_flag = great_depression_bank_recapitalization_failed
+	clr_country_flag = great_depression_renewed_bank_panic
+	remove_mission = great_depression_audit_viable_banks
+	remove_mission = great_depression_certify_bank_recapitalization
+	remove_dynamic_modifier = { modifier = great_depression_bank_holiday }
+	clear_variable = great_depression_bank_audit_due_day
+	clear_variable = great_depression_bank_recapitalization_due_day
+	clear_variable = great_depression_bank_audit_deadline_day
+	clear_variable = great_depression_bank_recapitalization_deadline_day
+	clear_variable = great_depression_bank_audit_episode_id
+	clear_variable = great_depression_bank_recapitalization_episode_id
+}
+
+# Country-owned absolute deadlines also synchronize a restored native mission.
+# The signed adjustment is idempotent and never restarts an elapsed interval.
+great_depression_sync_bank_audit_timer = {
+	if = {
+		limit = {
+			great_depression_bank_audit_context_is_valid = yes
+			has_variable = great_depression_bank_audit_deadline_day
+			has_active_mission = great_depression_audit_viable_banks
+		}
+		set_temp_variable = { great_depression_bank_timeout_delta = great_depression_bank_audit_deadline_day }
+		subtract_from_temp_variable = { great_depression_bank_timeout_delta = global.num_days }
+		subtract_from_temp_variable = { great_depression_bank_timeout_delta = days_mission_timeout@great_depression_audit_viable_banks }
+		add_days_mission_timeout = { mission = great_depression_audit_viable_banks days = var:great_depression_bank_timeout_delta }
+	}
+}
+
+great_depression_sync_bank_recapitalization_timer = {
+	if = {
+		limit = {
+			great_depression_bank_recapitalization_context_is_valid = yes
+			has_variable = great_depression_bank_recapitalization_deadline_day
+			has_active_mission = great_depression_certify_bank_recapitalization
+		}
+		set_temp_variable = { great_depression_bank_timeout_delta = great_depression_bank_recapitalization_deadline_day }
+		subtract_from_temp_variable = { great_depression_bank_timeout_delta = global.num_days }
+		subtract_from_temp_variable = { great_depression_bank_timeout_delta = days_mission_timeout@great_depression_certify_bank_recapitalization }
+		add_days_mission_timeout = { mission = great_depression_certify_bank_recapitalization days = var:great_depression_bank_timeout_delta }
+	}
+}
+
+# Called only by the existing bounded active-country receiver. Native callbacks
+# and this reconciliation share the same exact episode/active proof guards.
+great_depression_process_bank_program = {
+	if = {
+		limit = { great_depression_active_crisis_is_coherent = yes }
+		if = {
+			limit = { great_depression_bank_audit_receipt_is_current = yes }
+			if = {
+				limit = { great_depression_bank_audit_objective_is_met = yes }
+				great_depression_complete_bank_audit = yes
+				remove_mission = great_depression_audit_viable_banks
+			}
+			else_if = {
+				limit = {
+					OR = {
+						NOT = { great_depression_bank_audit_context_is_valid = yes }
+						NOT = { has_variable = great_depression_bank_audit_deadline_day }
+						check_variable = { var = global.num_days value = great_depression_bank_audit_deadline_day compare = greater_than_or_equals }
+					}
+				}
+				great_depression_withdraw_bank_program = yes
+			}
+			else = {
+				if = { limit = { NOT = { has_active_mission = great_depression_audit_viable_banks } } activate_mission = great_depression_audit_viable_banks }
+				great_depression_sync_bank_audit_timer = yes
+			}
+		}
+		if = {
+			limit = { great_depression_bank_recapitalization_receipt_is_current = yes }
+			if = {
+				limit = { great_depression_bank_recapitalization_objective_is_met = yes }
+				great_depression_complete_bank_recapitalization = yes
+				remove_mission = great_depression_certify_bank_recapitalization
+			}
+			else_if = {
+				limit = {
+					OR = {
+						NOT = { great_depression_bank_recapitalization_context_is_valid = yes }
+						NOT = { has_variable = great_depression_bank_recapitalization_deadline_day }
+						check_variable = { var = global.num_days value = great_depression_bank_recapitalization_deadline_day compare = greater_than_or_equals }
+					}
+				}
+				great_depression_withdraw_bank_program = yes
+			}
+			else = {
+				if = { limit = { NOT = { has_active_mission = great_depression_certify_bank_recapitalization } } activate_mission = great_depression_certify_bank_recapitalization }
+				great_depression_sync_bank_recapitalization_timer = yes
+			}
+		}
+		great_depression_refresh_mission_capacity_ledger = yes
+	}
+}

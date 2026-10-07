@@ -241,6 +241,7 @@ great_depression_should_show_coordinated_public_works_and_reconstruction = {
 great_depression_should_show_declare_temporary_bank_holiday_and_audit = {
 	great_depression_decision_surface_is_ready = yes
 	NOT = { has_country_flag = great_depression_bank_audit_complete }
+	NOT = { has_country_flag = great_depression_bank_audit_active }
 }
 
 great_depression_should_show_deploy_security_forces = {
@@ -381,6 +382,8 @@ great_depression_should_show_ration_strategic_inputs = {
 
 great_depression_should_show_recapitalize_viable_institutions = {
 	great_depression_decision_surface_is_ready = yes
+	great_depression_bank_audit_has_current_viability_proof = yes
+	NOT = { has_country_flag = great_depression_bank_recapitalization_active }
 	NOT = { has_country_flag = great_depression_viable_institutions_recapitalized }
 }
 
@@ -1349,7 +1352,7 @@ great_depression_ai_reserves_are_reserved = {
 }
 
 great_depression_ai_bank_audit_has_succeeded = {
-	has_country_flag = great_depression_bank_audit_complete
+	great_depression_bank_audit_has_current_viability_proof = yes
 }
 great_depression_ai_settlement_is_viable = {
 	NOT = { has_country_flag = great_depression_social_incident_open }
@@ -1628,6 +1631,13 @@ great_depression_can_start_balance_emergency_budget = {
 
 great_depression_can_start_bank_holiday_and_audit = {
 	great_depression_action_slot_is_open = yes
+	great_depression_doctrine_is_stabilize_finance_and_trade = yes
+	NOT = { has_country_flag = great_depression_bank_audit_active }
+	NOT = { has_country_flag = great_depression_bank_audit_complete }
+	custom_trigger_tooltip = {
+		tooltip = great_depression_financial_program_slot_is_open_tt
+		great_depression_support_mission_slot_is_open = yes
+	}
 }
 
 great_depression_can_start_cabinet_review = {
@@ -1659,6 +1669,14 @@ great_depression_can_start_deploy_security_forces = {
 
 great_depression_can_start_durable_credit_guarantee = {
 	great_depression_action_slot_is_open = yes
+	custom_trigger_tooltip = {
+		tooltip = great_depression_bank_recapitalization_proven_tt
+		great_depression_bank_audit_has_current_viability_proof = yes
+		has_country_flag = great_depression_viable_institutions_recapitalized
+		has_variable = great_depression_bank_recapitalization_episode_id
+		check_variable = { var = great_depression_bank_recapitalization_episode_id value = great_depression_active_episode_id compare = equals }
+	}
+	great_depression_ai_action_is_stabilization = yes
 }
 
 great_depression_can_start_emergency_government = {
@@ -1856,6 +1874,17 @@ great_depression_can_start_ration_strategic_inputs = {
 
 great_depression_can_start_recapitalization = {
 	great_depression_action_slot_is_open = yes
+	great_depression_doctrine_is_stabilize_finance_and_trade = yes
+	custom_trigger_tooltip = {
+		tooltip = great_depression_finance_restoration_needs_audit_tt
+		great_depression_bank_audit_has_current_viability_proof = yes
+	}
+	NOT = { has_country_flag = great_depression_bank_recapitalization_active }
+	NOT = { has_country_flag = great_depression_viable_institutions_recapitalized }
+	custom_trigger_tooltip = {
+		tooltip = great_depression_financial_program_slot_is_open_tt
+		great_depression_support_mission_slot_is_open = yes
+	}
 }
 
 great_depression_can_start_recognize_workplace_or_regional_councils = {
@@ -1951,7 +1980,7 @@ great_depression_can_start_finance_restoration = {
 	great_depression_center_finance_restoration_target_is_valid = yes
 	custom_trigger_tooltip = {
 		tooltip = great_depression_finance_restoration_needs_audit_tt
-		ROOT = { has_country_flag = great_depression_bank_audit_complete }
+		ROOT = { great_depression_bank_audit_has_current_viability_proof = yes }
 	}
 }
 
@@ -2143,57 +2172,15 @@ great_depression_main_mission_slot_is_open = {
 
 great_depression_support_mission_slot_is_open = {
 	NOT = {
-		OR = {
-			AND = {
-				has_active_mission = great_depression_keep_essential_freight_moving
-				has_active_mission = great_depression_national_employment_guarantee
-				has_active_mission = great_depression_complete_national_recovery_plan
-			}
-			AND = {
-				has_active_mission = great_depression_keep_essential_freight_moving
-				has_active_mission = great_depression_national_employment_guarantee
-				has_active_mission = great_depression_certify_cleared_economy
-			}
-			AND = {
-				has_active_mission = great_depression_keep_essential_freight_moving
-				has_active_mission = great_depression_national_employment_guarantee
-				has_active_mission = great_depression_restore_essential_production
-			}
-			AND = {
-				has_active_mission = great_depression_keep_essential_freight_moving
-				has_active_mission = great_depression_complete_national_recovery_plan
-				has_active_mission = great_depression_certify_cleared_economy
-			}
-			AND = {
-				has_active_mission = great_depression_keep_essential_freight_moving
-				has_active_mission = great_depression_complete_national_recovery_plan
-				has_active_mission = great_depression_restore_essential_production
-			}
-			AND = {
-				has_active_mission = great_depression_keep_essential_freight_moving
-				has_active_mission = great_depression_certify_cleared_economy
-				has_active_mission = great_depression_restore_essential_production
-			}
-			AND = {
-				has_active_mission = great_depression_national_employment_guarantee
-				has_active_mission = great_depression_complete_national_recovery_plan
-				has_active_mission = great_depression_certify_cleared_economy
-			}
-			AND = {
-				has_active_mission = great_depression_national_employment_guarantee
-				has_active_mission = great_depression_complete_national_recovery_plan
-				has_active_mission = great_depression_restore_essential_production
-			}
-			AND = {
-				has_active_mission = great_depression_national_employment_guarantee
-				has_active_mission = great_depression_certify_cleared_economy
-				has_active_mission = great_depression_restore_essential_production
-			}
-			AND = {
-				has_active_mission = great_depression_complete_national_recovery_plan
-				has_active_mission = great_depression_certify_cleared_economy
-				has_active_mission = great_depression_restore_essential_production
-			}
+		count_triggers = {
+			amount = constant:great_depression_event.maximum_support_missions
+			has_active_mission = great_depression_keep_essential_freight_moving
+			has_active_mission = great_depression_national_employment_guarantee
+			has_active_mission = great_depression_complete_national_recovery_plan
+			has_active_mission = great_depression_certify_cleared_economy
+			has_active_mission = great_depression_restore_essential_production
+			OR = { has_active_mission = great_depression_audit_viable_banks great_depression_bank_audit_receipt_is_current = yes }
+			OR = { has_active_mission = great_depression_certify_bank_recapitalization great_depression_bank_recapitalization_receipt_is_current = yes }
 		}
 	}
 }

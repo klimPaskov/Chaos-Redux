@@ -2,6 +2,12 @@
 
 ## Scope and authority
 
+Parent implementation update: the October 7 bank-program source tranche is documented in `subagent_handoffs/bank_lifecycle_implementation_2026-10-07.md`.
+Its fifteen actual-source bank tests, including 128 supporting-pool subsets, cover staged 21-day audit and 42-day recapitalization, current-episode proof, funded objective reservation, timer restoration, premature withdrawal, actor eligibility and guarded outcomes.
+The category is consequently 79 decisions and 17 missions, 96 children; the observed source hashes below remain the earlier boundary rather than identities for this later change.
+The earlier instantaneous-audit finding is superseded at the source level, with final native, probability and presentation acceptance still unresolved.
+All other required gaps and the full-package completion boundary remain unchanged.
+
 Event 035 Great Depression reconciliation is documentation work with read-only gameplay evidence.
 The only authorized writes are this ledger and surgical corrections to `035_great_depression_completion_report_2026-08-31.md`.
 No gameplay, localisation, spec, other document, asset, workbook, export, index, or commit is changed by this curator.

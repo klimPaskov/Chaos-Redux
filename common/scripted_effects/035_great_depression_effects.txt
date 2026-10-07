@@ -2301,6 +2301,7 @@ great_depression_clear_civilian_commitment = {
 }
 
 great_depression_clear_dynamic_state = {
+	great_depression_clear_bank_program_runtime = yes
 	great_depression_incident_clear_episode_state = yes
 	great_depression_clear_market_exit_state = yes
 	great_depression_clear_episode_action_flags = yes
@@ -3215,6 +3216,9 @@ great_depression_reset_episode_policy_state = {
 	clr_country_flag = great_depression_essential_orders_guaranteed
 	clr_country_flag = great_depression_bank_audit_active
 	clr_country_flag = great_depression_bank_audit_complete
+	clr_country_flag = great_depression_bank_audit_failed
+	clr_country_flag = great_depression_bank_recapitalization_failed
+	clr_country_flag = great_depression_renewed_bank_panic
 	clr_country_flag = great_depression_viable_institutions_recapitalized
 	clr_country_flag = great_depression_durable_credit_guarantee
 	clr_country_flag = great_depression_emergency_budget_balanced
@@ -4483,9 +4487,16 @@ great_depression_rebuild_hidden_components = {
 		add_to_variable = { great_depression_hidden_credit_stress = constant:great_depression_hidden_component.credit_policy_whiplash }
 	}
 	if = {
+		limit = { great_depression_bank_audit_context_is_valid = yes }
+		add_to_variable = { great_depression_hidden_credit_stress = constant:great_depression_hidden_component.credit_bank_holiday_relief }
+	}
+	if = {
+		limit = { has_country_flag = great_depression_renewed_bank_panic }
+		add_to_variable = { great_depression_hidden_credit_stress = constant:great_depression_hidden_component.credit_renewed_bank_panic }
+	}
+	if = {
 		limit = {
 			OR = {
-				has_country_flag = great_depression_bank_audit_complete
 				has_country_flag = great_depression_viable_institutions_recapitalized
 				has_country_flag = great_depression_durable_credit_guarantee
 			}
@@ -4855,6 +4866,7 @@ great_depression_set_pulse_interval = {
 great_depression_weekly_pulse = {
 	if = {
 		limit = { great_depression_active_crisis_is_coherent = yes }
+		great_depression_process_bank_program = yes
 		great_depression_refresh_public_thresholds = yes
 		great_depression_set_pulse_interval = yes
 		if = {

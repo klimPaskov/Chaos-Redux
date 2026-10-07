@@ -1103,6 +1103,7 @@ great_depression_category = {
 			great_depression_can_pay_finance_trade = yes
 		}
 		custom_cost_text = great_depression_cost_finance_trade
+		ai_hint_pp_cost = @great_depression_ai_hint_pp_cost
 		days_re_enable = constant:great_depression_event.shock_memory_days
 		complete_effect = {
 			great_depression_prepare_action_tooltip_values = yes
@@ -3278,6 +3279,60 @@ great_depression_category = {
 	# Baseline and evolution missions. Parent-owned activation gates enforce the
 	# shared objective cap and store the episode or selected-center context.
 	# --------------------------------------------------------------------------
+	# Paid finance authorizations reserve a supporting objective immediately.
+	# Completion is automatic only after the full interval and viable-bank proof.
+	great_depression_audit_viable_banks = {
+		icon = GFX_decision_mission_great_depression_halt_the_panic
+		priority = constant:great_depression_event.bank_support_mission_priority
+		activation = { great_depression_bank_audit_context_is_valid = yes }
+		available = { great_depression_bank_audit_objective_is_met = yes }
+		custom_cost_trigger = { always = yes }
+		custom_cost_text = great_depression_financial_program_prepaid
+		cancel_trigger = { NOT = { great_depression_bank_audit_context_is_valid = yes } }
+		cancel_effect = {
+			custom_effect_tooltip = great_depression_bank_program_cancel_tt
+			great_depression_fail_bank_program = yes
+		}
+		complete_effect = {
+			custom_effect_tooltip = great_depression_bank_audit_success_tt
+			great_depression_complete_bank_audit = yes
+		}
+		timeout_effect = {
+			custom_effect_tooltip = great_depression_bank_program_failure_tt
+			great_depression_fail_bank_program = yes
+		}
+		days_mission_timeout = constant:great_depression_event.bank_audit_timeout_days
+		selectable_mission = no
+		is_good = no
+		fire_only_once = no
+	}
+
+	great_depression_certify_bank_recapitalization = {
+		icon = GFX_decision_mission_great_depression_prevent_a_relapse
+		priority = constant:great_depression_event.bank_support_mission_priority
+		activation = { great_depression_bank_recapitalization_context_is_valid = yes }
+		available = { great_depression_bank_recapitalization_objective_is_met = yes }
+		custom_cost_trigger = { always = yes }
+		custom_cost_text = great_depression_financial_program_prepaid
+		cancel_trigger = { NOT = { great_depression_bank_recapitalization_context_is_valid = yes } }
+		cancel_effect = {
+			custom_effect_tooltip = great_depression_bank_program_cancel_tt
+			great_depression_fail_bank_program = yes
+		}
+		complete_effect = {
+			custom_effect_tooltip = great_depression_bank_recapitalization_success_tt
+			great_depression_complete_bank_recapitalization = yes
+		}
+		timeout_effect = {
+			custom_effect_tooltip = great_depression_bank_program_failure_tt
+			great_depression_fail_bank_program = yes
+		}
+		days_mission_timeout = constant:great_depression_event.bank_recapitalization_timeout_days
+		selectable_mission = no
+		is_good = no
+		fire_only_once = no
+	}
+
 	great_depression_halt_the_panic = {
 		icon = GFX_decision_mission_great_depression_halt_the_panic
 		priority = 108
