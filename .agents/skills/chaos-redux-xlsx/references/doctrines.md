@@ -1,31 +1,15 @@
-# Doctrine workbook and other repository spreadsheets
+# Doctrine workbook and other spreadsheets
 
-`docs/spreadsheets/doctrines.xlsx` is independent of the event catalog.
-Do not apply event statuses, Legend colors, event columns, or the catalog exporter to it.
-Its established structure includes an `Overview`, per-doctrine sheets, and `vanilla_land_officer_spirits`.
-Treat these as discovery hints rather than a fixed list of required sheets.
+`docs/spreadsheets/doctrines.xlsx` is independent of the catalog and its exporter.
+Inspect the current sheets; `Overview`, doctrine sheets, and `vanilla_land_officer_spirits` are discovery hints, not a mandatory fixed sheet list.
 
-## Preserve the document architecture
+| Surface | Locate by | Preserve/reconcile |
+| --- | --- | --- |
+| Overview | Doctrine key and named summary headers | Description, track keys, subdoctrine count against detailed sections |
+| Doctrine sheet | Actual section heading, track key, or script identifier | Section order, merged headings, prose, wrapped multiline script text |
+| Officer spirits | Spirit Key and named headers | Category, name/description, script source, localisation key/file provenance |
 
-The Overview has named columns for doctrine key, doctrine name, description, track keys, and subdoctrine count.
-Doctrine sheets contain section headings, descriptive prose, script-effect text, track sections, and merged presentation rows.
-They are not flat tables with the same header in row 1.
-The officer-spirit sheet has Category, Spirit Key, Name, Description, Script Source, and name/description localisation key/file columns.
-
-- Match a doctrine by its key and a section by its actual heading or script identifier.
-  Do not use the current row count, repeated spacing, or freeze-pane position as a schema contract.
-- Preserve section order, merges, wrapped multiline script content, fonts, widths, row heights, freeze panes, and source/localisation provenance columns.
-  Edit only the anchor of a merged range.
-- If approved content additions change an Overview count or track list, reconcile those summary fields with the detailed sections.
-  Do not convert established literal counts to formulas unless the requested workbook design calls for that change.
-- For another workbook, derive its identities and presentation from its own headers, sections, and template.
-  Avoid replacing it with a generic dataframe export or borrowing the event-catalog schema.
-
-## Git LFS source bytes
-
-An XLSX path can contain a Git LFS text pointer rather than ZIP bytes.
-For read-only inspection, locate the object via the repository's actual Git common directory and `lfs/objects/<first two hash characters>/<next two>/<full oid>`.
-Verify its SHA-256 and declared size against the pointer, then read from bytes without changing the working tree.
-Do not assume `.git` is a directory in a worktree.
-If the object is absent, report that inspection is blocked on the real workbook bytes or use an authorized normal LFS retrieval route.
-Never manufacture a substitute workbook to make the path load successfully.
+Discover header rows and section boundaries rather than using remembered row positions, blank spacing, or freeze panes as a schema.
+Edit only merged-range anchors; retain widths, heights, fonts, wrapping, merges, and freeze panes through the [preservation comparison](preservation.md#comparison-evidence).
+Keep literal summary counts literal unless calculation design is part of the requested change.
+For another workbook, derive keys, sections, and presentation from its own template using the same candidate workflow; do not impose catalog columns, statuses, or Legend colors.

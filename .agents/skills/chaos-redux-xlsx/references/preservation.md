@@ -1,134 +1,165 @@
 # Preservation and calculation
 
-## Choose the smallest reliable write
+## Source bytes
 
-Read ZIP member names, content types, worksheet relationships, and load warnings before deciding whether `openpyxl` can preserve the actual workbook.
-Use it for ordinary supported workbook features with an editable load:
+For any workbook, check that the source is a ZIP, not a Git LFS text pointer.
+For read-only pointer inspection, resolve the repository's actual Git common directory and `lfs/objects/<oid first two>/<oid next two>/<full oid>`; do not assume `.git` is a directory.
+Verify object SHA-256 and size against the pointer before reading its bytes.
+If bytes are unavailable, report the gap or use an authorized LFS retrieval route; never manufacture a replacement workbook.
+
+Inspect ZIP members, content types, relationships, and load warnings before choosing a writer.
+Charts/drawings, controls, pivots/slicers, external links, embedded objects, custom XML, extensions, and signatures need feature-specific preservation checks; their presence alone does not establish support or loss.
+Warning-free loading is not proof of preservation.
+`openpyxl` retains ordinary comment text/author but can lose comment formatting, position, and dimensions.
+For actual macro-enabled files use `keep_vba=True` and the original extension; this does not prove preservation of every feature.
+Read-only loading is for inspection, not a complete feature audit.
+
+## Existing literal cell recipe
+
+Use this for an ordinary supported workbook after inspecting its features.
+Parameters are the sheet, a dictionary of stable key headers/values (including composite keys), target header, expected old value, and replacement text.
+The header can be below a title row and columns can move.
+An empty replacement string intentionally clears the cell to `None` while retaining its style.
+This creates and verifies a candidate only; perform the comparison below and source-hash check before replacing the authority.
+
+```python
+from pathlib import Path
+from openpyxl import load_workbook
+
+def edit_literal(source, candidate, sheet_name, key, header, expected, text):
+    source, candidate = Path(source), Path(candidate)
+    if source.resolve() == candidate.resolve() or not key or not isinstance(text, str):
+        raise ValueError("Use a separate candidate, nonempty key, and literal text")
+    wb = load_workbook(source, data_only=False, keep_links=True, rich_text=True)
+    try:
+        ws = wb[sheet_name]
+        needed = set(key) | {header}
+        header_rows = []
+        for row in ws.iter_rows():
+            labels = [cell.value for cell in row]
+            if all(name in labels for name in needed):
+                header_rows.append(row)
+        if len(header_rows) != 1:
+            raise ValueError("Missing or ambiguous header row")
+        row = header_rows[0]
+        cols = {}
+        for name in needed:
+            matches = [cell.column for cell in row if cell.value == name]
+            if len(matches) != 1:
+                raise ValueError(f"Duplicate header: {name}")
+            cols[name] = matches[0]
+        matches = [r[0].row for r in ws.iter_rows(min_row=row[0].row + 1)
+                   if all(r[cols[name] - 1].value == value for name, value in key.items())]
+        if len(matches) != 1:
+            raise ValueError(f"Expected one row for {key}, found {len(matches)}")
+        cell = ws.cell(matches[0], cols[header])
+        if cell.value != expected or cell.data_type in {"f", "e"}:
+            raise ValueError(f"Old value/type conflict at {cell.coordinate}")
+        coordinate = cell.coordinate
+        cell.value = text or None
+        if text:
+            cell.data_type = "s"  # Keep '=...' and '#N/A' prose literal.
+        wb.save(candidate)
+    finally:
+        wb.close()
+    check = load_workbook(candidate, data_only=False, keep_links=True, rich_text=True)
+    try:
+        cell = check[sheet_name][coordinate]
+        if cell.value != (text or None) or (text and cell.data_type != "s"):
+            raise ValueError("Candidate does not contain the intended literal")
+    finally:
+        check.close()
+    return coordinate
+```
+
+This example requires an `openpyxl` version supporting `rich_text=True` and is not a formula/structure editor or a full preservation audit.
+For new presentation rows, copy individual style components with `copy.copy` from a matching row; style copying does not extend validation or conditional-formatting coverage.
+
+## Narrow OOXML or structure edits
+
+If a full round trip loses features during a bounded edit, patch only declared cell nodes in a candidate ZIP:
+
+- Resolve the sheet through `xl/workbook.xml` and relationships, not a guessed `sheet1.xml`.
+- Check cell reference, expected value/type, and style; decode shared strings for matching without changing an entry used by unrelated cells.
+  Replacement literal text can use `inlineStr`; preserve attributes, namespaces, whitespace/newlines (`xml:space="preserve"`), and unrelated subtrees.
+- Copy untouched member payloads and metadata; avoid broad regex or XML serialization that loses extension content.
+  Compare every undeclared member's bytes and unaffected content within each edited part.
+
+`insert_rows`, `delete_cols`, and `move_range` do not repair all dependencies.
+For scoped structure changes, explicitly reconcile formulas/names, table/filter ranges, validation and conditional-formatting coverage, merges, print areas, charts, and consumers affected by the change.
+Shared, array, spill, and data-table formulas have range semantics; do not treat their cells as independent scalar formulas.
+Formula/dependency edits also require cache invalidation and appropriate calculation-chain handling.
+Report signature invalidation when editing a signed package.
+
+## Formulas and caches
+
+Formula text (`<f>`) and cached output (`<v>`) are separate.
+`openpyxl` stores formulas without evaluating them and commonly clears caches on save; calculation-on-open flags are requests, not results.
+Recalculate when formulas/dependencies change or the writer removes caches a consumer needs.
+Literal-only workbooks need no engine; a narrow unrelated XML edit can preserve unaffected caches.
+Never save a `data_only=True` workbook or resave calculated output with `openpyxl` when caches must survive.
+
+Scan formula and cached views with aligned streaming rows, without reparsing a read-only sheet for each cell:
 
 ```python
 from openpyxl import load_workbook
 
-wb = load_workbook(source, data_only=False, keep_links=True, rich_text=True)
-# Locate the approved row by ID and column by discovered header.
-# Change values on the existing cells so their styles remain attached.
-wb.save(candidate)
-wb.close()
-```
-
-`rich_text=True` needs a supporting library version.
-For an actual macro-enabled workbook use `keep_vba=True` and preserve its extension, but this does not establish support for every package feature.
-Never save an inspection opened with `data_only=True`, which exposes cached values instead of formula expressions.
-A read-only load omits some workbook features and is not a preservation audit.
-Pandas replacement writes and `write_only=True` regeneration discard template architecture.
-
-Charts, images, VML drawings, threaded/rich comments, controls, pivots, slicers, external links, embedded objects, custom XML, extension lists, and signatures require feature-specific inspection.
-Their presence is not proof that all are unsupported, nor does a warning-free load prove preservation.
-Ordinary comment text/author can survive `openpyxl`, while original comment formatting, position, and dimensions do not reliably survive.
-Do not silently remove these features or relax preservation because the edit is small.
-
-For a bounded cell edit where a full round trip loses unrelated features, change only the needed worksheet XML cell nodes inside a candidate ZIP and copy all other member payloads unchanged.
-Use a task-sized edit rather than a general workbook rewriter.
-
-- Resolve sheet names through `xl/workbook.xml` and its relationships.
-  Do not assume a sheet title maps to `sheet1.xml`.
-- Assert the expected old value, exact cell reference, data type, and style before changing it.
-  Decode shared strings for matching, but avoid modifying a shared-string entry used by unrelated cells.
-  A new `inlineStr` can represent replacement literal text without rewriting the shared-string table.
-- Preserve the cell's style and unrelated attributes.
-  Escape XML text and retain whitespace/newlines with `xml:space="preserve"` where needed.
-  Literal text beginning with `=` must remain a string, not become an unintended formula.
-- Do not use a broad regex or XML reserialization that drops namespace declarations, extension content, or unrelated nodes.
-  Respect inherited namespaces and preserve untouched subtrees.
-- Copy member metadata and verify every undeclared member payload is identical after the ZIP rewrite.
-  Reopen the candidate and compare semantic values and workbook features as well.
-- Formula/dependency changes need cache invalidation and appropriate calculation-chain handling.
-  Shared, array, spill, and data-table formulas require their own range semantics, so do not overwrite one cell as though it were an independent scalar formula.
-  Editing a signed package also affects signature validity and must be reported.
-
-## Structural edits
-
-`insert_rows`, `delete_cols`, and `move_range` do not maintain every dependent formula, table, chart, or defined name.
-For an approved structure change, map the dependencies and update table/filter ranges, validation and conditional-formatting coverage, formulas/names, print areas, merges, and consumers explicitly.
-Copy style components with `copy.copy` from the matching reference row/cell rather than assigning a generic palette.
-Do not rely on copying a style to extend validation or conditional formatting.
-Reopen and verify new rows have the intended presentation and coverage.
-
-## Formula results and recalculation
-
-An OOXML formula (`<f>`) and its cached result (`<v>`) are separate.
-`openpyxl` writes formulas but never evaluates them and commonly removes cached formula results when saving.
-Setting `fullCalcOnLoad`, `forceFullCalc`, or automatic calculation requests a future calculation, not a result.
-Existing cached values can also be stale even when nonempty.
-
-Recalculate when formulas or their dependencies change, or when needed caches are invalidated by the writer.
-A literal-only catalog with no formulas does not need an engine.
-An unrelated narrow XML text/style edit can preserve unaffected valid formula caches without forcing recalculation.
-Do not insert formulas into prose catalogs merely to satisfy a generic spreadsheet rule.
-
-No bundled calculation engine is provided.
-Use an installed application's supported calculation operation on a candidate copy:
-
-- With Excel automation, create a separate application instance, disable macro execution and external-link updates, open only the candidate, call `Application.CalculateFullRebuild`, wait for completed calculation, save, close, and quit that instance.
-  It recalculates all open workbooks in the instance, so do not attach to the user's active instance.
-- With LibreOffice Calc, use its **Data > Calculate > Recalculate Hard** operation, then save the candidate as XLSX and verify preservation and compatibility.
-  Headless automation needs an installed working route that explicitly calculates, such as UNO `calculateAll`; `--convert-to` alone is not proof of a full recalculation.
-  Use a temporary isolated profile with `-env:UserInstallation=<temporary directory file URI>` rather than changing user macros or settings.
-
-For any automated engine route, enforce a finite timeout, verify completion and a readable saved output, and close only the instance/process tree created by the task.
-On timeout or failure, keep the authoritative workbook unchanged and report failure, never success from the existence of the original file.
-If no usable engine is installed, preserve the formula candidate and state that calculated output is blocked.
-Do not install an engine, change global profiles, refresh remote links, or substitute guessed numeric caches as part of routine workbook editing.
-
-Verify using both formula and cached-value views, or direct worksheet XML for empty-string results:
-
-1. Check expected formula coordinates/text, including shared/array ranges where applicable.
-2. Check relevant cached results against independently expected outcomes, including at least the changed dependency path.
-3. Detect real error-typed cells (`data_type == "e"` or XML `t="e"`), including newly introduced errors.
-   A prose cell mentioning `#N/A` is not a formula error.
-4. Treat `None` in a cached-value view conservatively.
-   It can indicate an absent cache or a legitimate empty result, so inspect formula semantics and XML cache representation before claiming success.
-   The catalog exporter rejects formula cells returning `None` in its cached-value view, so such a formula must be resolved compatibly before export.
-5. Do not save with `openpyxl` after calculation if the consumer needs those caches, as that can remove them again.
-
-This read-only check identifies formula caches that need investigation and actual cached error cells without changing the saved output:
-
-```python
 formulas = load_workbook(candidate, read_only=True, data_only=False)
-values = load_workbook(candidate, read_only=True, data_only=True)
 try:
-    for sheet in formulas:
-        cached = values[sheet.title]
-        for row in sheet:
-            for cell in row:
-                result = cached[cell.coordinate]
-                if result.data_type == "e":
-                    print("error", sheet.title, cell.coordinate, result.value)
-                if cell.data_type == "f" and result.value is None:
-                    print("cache needs inspection", sheet.title, cell.coordinate)
+    values = load_workbook(candidate, read_only=True, data_only=True)
+    try:
+        for sheet in formulas:
+            bounds = dict(min_row=1, max_row=sheet.max_row,
+                          min_col=1, max_col=sheet.max_column)
+            for row, cached_row in zip(sheet.iter_rows(**bounds),
+                                       values[sheet.title].iter_rows(**bounds)):
+                for cell, result in zip(row, cached_row):
+                    if result.data_type == "e":
+                        print("error", sheet.title, result.coordinate, result.value)
+                    if cell.data_type == "f" and result.value is None:
+                        print("cache needs inspection", sheet.title, cell.coordinate)
+    finally:
+        values.close()
 finally:
     formulas.close()
-    values.close()
 ```
 
-An empty findings list does not establish freshness or correctness.
-Compare the expected outcomes of the edited dependency path separately.
+Only error-typed cells are errors; literal prose mentioning `#N/A` is not.
+`None` can mean a missing cache or a legitimate empty result; inspect formula semantics and XML before deciding.
+The catalog exporter rejects that cached view as unresolved.
+Nonempty caches and no scan findings do not prove freshness: compare formula coordinates/text and relevant cached results with independently expected outcomes along the changed dependency path.
+
+Use an installed engine on a candidate if needed:
+
+- Excel: a separate instance, macros/link updates disabled, candidate only, `Application.CalculateFullRebuild`, wait for calculation completion, save/close/quit.
+- LibreOffice: Recalculate Hard or a working UNO `calculateAll` route, then save XLSX; `--convert-to` alone is not calculation proof.
+  Use an isolated temporary `-env:UserInstallation=<directory file URI>` profile.
+
+Use a finite timeout and verify a readable saved output; close only the instance/processes created by the task.
+Failure or no usable engine leaves calculated output blocked and the authority untouched.
+Do not install engines, alter global profiles, refresh remote links, or invent caches for routine edits.
 
 ## Comparison evidence
 
-For bounded content edits, compare every changed cell against the requested delta and ensure unrelated values/formulas remain unchanged.
-Compare sheet order/visibility, table and filter definitions, merged ranges, validation/conditional-formatting rules and coverage, hyperlinks, comments, defined names, dimensions, styles, freeze panes, and print settings relevant to the source.
-A ZIP member inventory catches missing parts but not changed payloads, and matching styles alone does not prove preservation.
-When a schema or layout actually changes, use an available spreadsheet renderer or application to inspect affected sheets and report the scope of that inspection.
-Do not claim visual QA from a successful parse.
+A content edit passes when reopened changed values/types equal the declared delta, unrelated values/formulas remain unchanged, and relevant source features below match.
+Compare semantic properties rather than just style IDs or file hashes:
+
+- Sheet order/visibility; tables/filter definitions; merges; defined names; validation and conditional-formatting rules and covered ranges.
+- Cell fonts/fills/borders/alignment/number formats/protection; widths/heights; freeze panes; print settings; hyperlink targets and supported comment content.
+- Source-specific package features identified during inspection, including relationships and drawing/extension parts.
+
+ZIP member names detect missing parts, not silent changes; inspect affected features and, for narrow OOXML, unchanged payloads too.
+For intentional structure/layout changes, identify expected differences, verify updated coverage, and inspect affected sheets with a renderer/application if available.
+A parse proves readability, not visual appearance or formula correctness; report any unverified feature, appearance, or calculation requirement explicitly.
 
 ## Primary references
 
-- [openpyxl loading and saving](https://openpyxl.readthedocs.io/en/stable/tutorial.html#loading-from-a-file): data-only, rich-text, VBA, links, and shape preservation limits.
-- [openpyxl formulas](https://openpyxl.readthedocs.io/en/stable/simple_formulae.html): formulas are stored, not evaluated, and special formulas have range semantics.
-- [openpyxl structural edits](https://openpyxl.readthedocs.io/en/stable/editing_worksheets.html): dependency management limits for insertion, deletion, and movement.
-- [openpyxl comments](https://openpyxl.readthedocs.io/en/stable/comments.html): text/author support and loss of original formatting and dimensions.
-- [Microsoft SpreadsheetML formulas](https://learn.microsoft.com/en-us/office/open-xml/spreadsheet/working-with-formulas): formula expressions and cached values.
-- [Excel CalculateFullRebuild](https://learn.microsoft.com/en-us/office/vba/api/excel.application.calculatefullrebuild): full calculation and dependency rebuild for all open workbooks.
-- [LibreOffice Recalculate Hard](https://help.libreoffice.org/latest/en-US/text/scalc/01/recalculate_hard.html): recalculation of all formula cells.
-- [LibreOffice XCalculatable](https://api.libreoffice.org/docs/idl/ref/XCalculatable_8idl_source.html): UNO `calculateAll` recalculates all cells.
-- [LibreOffice startup parameters](https://help.libreoffice.org/latest/en-US/text/shared/guide/start_parameters.html): Windows console executable, isolated profile, and conversion parameters.
+- [openpyxl loading and saving](https://openpyxl.readthedocs.io/en/stable/tutorial.html#loading-from-a-file): rich text, VBA, links, and shape limits.
+- [openpyxl formulas](https://openpyxl.readthedocs.io/en/stable/simple_formulae.html): evaluation and special formulas.
+- [openpyxl structural edits](https://openpyxl.readthedocs.io/en/stable/editing_worksheets.html): dependency limits.
+- [openpyxl comments](https://openpyxl.readthedocs.io/en/stable/comments.html): appearance loss.
+- [Microsoft SpreadsheetML formulas](https://learn.microsoft.com/en-us/office/open-xml/spreadsheet/working-with-formulas): expressions and caches.
+- [Excel CalculateFullRebuild](https://learn.microsoft.com/en-us/office/vba/api/excel.application.calculatefullrebuild).
+- [LibreOffice Recalculate Hard](https://help.libreoffice.org/latest/en-US/text/scalc/01/recalculate_hard.html).
+- [LibreOffice XCalculatable](https://api.libreoffice.org/docs/idl/ref/XCalculatable_8idl_source.html): UNO `calculateAll`.
+- [LibreOffice startup parameters](https://help.libreoffice.org/latest/en-US/text/shared/guide/start_parameters.html): isolated profiles.
