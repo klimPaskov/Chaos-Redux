@@ -1,11 +1,14 @@
-# Event 039 catalog changes pending
+# Event 039 catalog reconciliation
 
-The event catalog workbook (`docs/spreadsheets/chaos_redux_events_catalog.xlsx`) is the only editable catalog source, and this workstream may not edit it or its exported CSVs.
-The changes below record where the workbook no longer matches the runtime, so the catalog owner can apply them and rerun `python .tools/export_event_catalog_csv.py`.
+The event catalog workbook (`docs/spreadsheets/chaos_redux_events_catalog.xlsx`) is the only editable catalog source.
+The active user goal authorizes its Event 039 updates and export regeneration.
+The eight cell corrections below were implemented on 2026-10-07, with evidence in `subagent_handoffs/catalog_reconciliation_2026_10_07.md`.
+The tables retain the pre-correction values as reconciliation history, and their listed changes are no longer pending.
 
 ## Clusters sheet: Intelligence cluster ID
 
-Disposition: accepted and queued (agent decision D18 in `agent_decisions_2026-10-04.md`); waiting for the catalog owner.
+Disposition: implemented under the active user's catalog-alignment requirement.
+Intelligence and its member cross-links use ID 20, preserving the established runtime identities of unrelated clusters.
 
 | Field | Current workbook value | Runtime value | Required change |
 | --- | --- | --- | --- |
@@ -17,12 +20,15 @@ Disposition: accepted and queued (agent decision D18 in `agent_decisions_2026-10
 
 Runtime cluster 8 is Diseases, which the workbook lists as cluster 13, so the workbook ID 8 cannot be used at runtime without moving Diseases.
 The same drift exists for Random Stuff (runtime 12, workbook 19); the catalog owner should decide whether the runtime or the workbook numbering is authoritative before more clusters are added.
-ID 20 is free in both the runtime registry and the workbook.
+ID 20 had no other workbook owner and remains the runtime Intelligence identity.
+Earlier runtime code used ID 20 before the workbook reservation was corrected, so the original required reservation order was not met.
+This reconciliation records that deviation and introduces no further runtime identifier.
 
 ## Scenarios sheet: row 14, SCN-019 Assassin Network
 
-Disposition: accepted and queued; the workbook must copy the in-game localisation from `localisation/english/039_murder_mystery_l_english.yml`, which is the player-facing source.
-The `§R` and `§!` colour codes in E14 are stored in the workbook as the replacement character U+FFFD, which is why the registration check fails on E14; the required value uses the real section sign.
+Disposition: implemented by copying the current in-game localisation from `localisation/english/039_murder_mystery_l_english.yml`.
+The `§R` and `§!` colour codes in E14 were stored as the replacement character U+FFFD, which caused the registration check to fail.
+The corrected value uses the real section sign.
 
 | Cell | Current workbook value | Required value (runtime key) |
 | --- | --- | --- |
@@ -37,7 +43,7 @@ E14 keeps its four paragraphs separated by one blank line, in the order Low, Med
 
 ## Events sheet: row 40, Event 39 Murder Mystery
 
-Disposition: accepted and queued.
+Disposition: implemented.
 
 | Cell | Current workbook value | Runtime value | Required change |
 | --- | --- | --- | --- |
@@ -46,4 +52,4 @@ Disposition: accepted and queued.
 | K40 Chaos level | 1 | 1 | No change |
 | C40 Details, D40 to H40 evolution names, I40 World-End Scenario | Match the runtime localisation | `murder_mystery.event_log.detail`, `murder_mystery.evolution.<i..v>.title`, `chaosx.events_log.world_end.murder_mystery_world_of_anarchy.details` | No change |
 
-The Cluster Memberships sheet rows 42 and 43 (cluster 8, members 39 Medium and 52 Low) need the same cluster ID change as L40.
+The Cluster Memberships sheet rows 42 and 43 and both member-event cross-links (`Events!L40` and `L53`) use cluster ID 20.

@@ -88,10 +88,10 @@ manual_gate = block(read("common/scripted_triggers/039_murder_mystery_integratio
 assert "world_end_disabled" not in manual_gate and "murder_mystery_event_is_available" not in manual_gate
 for flag in ["world_end", "murder_mystery_runtime_active", "murder_mystery_runtime_resolved", "murder_mystery_scenario_launch_in_progress", "murder_mystery_scenario_launched"]:
     assert "NOT = { has_global_flag = " + flag + " }" in manual_gate
-assert "murder_mystery_has_any_eligible_host = yes" in manual_gate
+assert "murder_mystery_has_any_scenario_host = yes" in manual_gate
 terminal_gate = block(read("common/scripted_triggers/039_murder_mystery_integration_triggers.txt"), "murder_mystery_world_branch_is_enabled")
 assert "NOT = { has_global_flag = world_end_disabled }" in terminal_gate
-assert "NOT = { has_global_flag = murder_mystery_world_branch_disabled }" in terminal_gate
+assert "world_end_murder_mystery_world_of_anarchy_scenario_enabled = yes" in terminal_gate
 dispatch = block(effects, "trigger_selected_chaosx_scenario")
 assert "triggerable_scenario_id.assassin_network" in dispatch
 assert "murder_mystery_triggerable_scenario_launch = yes" in dispatch
@@ -104,17 +104,21 @@ integration = read("common/scripted_effects/039_murder_mystery_integration_effec
 launch = block(integration, "murder_mystery_triggerable_scenario_launch")
 assert "limit = { murder_mystery_triggerable_scenario_can_launch = yes }" in launch
 assert "global.murder_mystery_scenario_launch_intensity = triggerable_scenarios_intensity" in launch
-assert "id = chaosx.nr39.1" in launch
+assert "murder_mystery_run_opening = yes" in launch
 setup = block(integration, "murder_mystery_apply_scenario_setup")
 assert re.search(r"else\s*=\s*\{\s*set_variable\s*=\s*\{\s*murder_mystery_scenario_stage_input\s*=\s*constant:murder_mystery_evolution.stage_i", setup)
 root = read("events/039_murder_mystery.txt").split("country_event =", 2)[1]
-assert "clr_global_flag = murder_mystery_scenario_launch_in_progress" in root
-assert "clear_variable = global.murder_mystery_scenario_launch_intensity" in root
+assert "murder_mystery_run_opening = yes" in root
+for cleanup in ["clr_global_flag = murder_mystery_scenario_launch_in_progress",
+                "clear_variable = global.murder_mystery_scenario_launch_intensity"]:
+    assert cleanup in launch
+    assert cleanup in block(integration, "murder_mystery_run_opening")
 
 workbook = load_workbook(ROOT / "docs/spreadsheets/chaos_redux_events_catalog.xlsx")
 sheet = workbook["Scenarios"]
 assert sheet["B14"].value == "Assassin Network" and sheet["A14"].value == "SCN-019"
-assert sheet["D14"].value == "Clandestine network"
+assert sheet["C14"].value == re.search(r'(?m)^chaosx\.scenarios\.assassin_network\.desc: "(.*)"$', localisation)[1]
+assert sheet["D14"].value == re.search(r'(?m)^chaosx\.scenarios\.type\.assassin_network: "(.*)"$', localisation)[1]
 expected_warnings = "\n\n".join(re.search(
     r'(?m)^chaosx\.scenarios\.assassin_network\.impact\.' + level + r': "(.*)"$', localisation)[1]
     for level in ["low", "medium", "high", "maximum"])
@@ -125,6 +129,21 @@ with (ROOT / "docs/spreadsheets/chaos_redux_scenarios_catalog.csv").open(encodin
 assert exported[0] == sheet["A14"].value and exported[3] == sheet["D14"].value
 assert exported[4] == sheet["E14"].value
 
+cluster_constants = read("common/script_constants/event_cluster_constants.txt")
+cluster_ids = dict(re.findall(r"(\w+)\s*=\s*(\d+)", block(cluster_constants, "event_cluster_id")))
+assert cluster_ids["intelligence"] == "20"
+cluster_row = next(row for row in workbook["Clusters"].iter_rows(values_only=True) if row[1] == "Intelligence")
+assert cluster_row[0] == 20
+for event_id in [39, 52]:
+    event_row = next(row for row in workbook["Events"].iter_rows(values_only=True) if row[0] == event_id)
+    assert str(event_row[11]) == "20"
+assert workbook["Cluster Memberships"]["A42"].value == 20
+assert workbook["Cluster Memberships"]["A43"].value == 20
+for name in ["Events", "Clusters", "Scenarios"]:
+    ids = [row[0] for row in workbook[name].iter_rows(min_row=2, values_only=True) if row[0] is not None]
+    assert len(ids) == len(set(ids)), name
+
 print("PASS: 17 unique shared rows, four aligned 17-row views, preserved prior order/IDs, seven getters, four warnings, gate/dispatch/root linkage, Low fallback and launch-cache cleanup.")
 print("PASS: workbook ID, single type, four intensity descriptions and regenerated scenario export match their runtime presentation.")
+print("PASS: Intelligence ID 20, both member cross-links and workbook identity uniqueness agree.")
 print("LIMIT: static source contracts only; country transactions, render, live launch and persistence remain separate evidence.")
