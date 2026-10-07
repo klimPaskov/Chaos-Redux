@@ -128,4 +128,4 @@ After workbook update:
 2. parse them with the repository spreadsheet validation workflow
 3. verify exactly one Event 33 row
 4. verify Event 33 Type, Chaos, Cluster ID, Severity, and Status
-5. verify Cluster 5 member list has six entries in accepted order
+5. verify the first five Cluster 5 slots remain Event 13 and slot 6 is optional Severe Event 33, preserving the accepted optional High Event 51 slot 7 and aligned severity lists

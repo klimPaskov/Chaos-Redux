@@ -906,8 +906,27 @@ def catalog_cluster_contract(repo_root: Path) -> dict[str, object]:
         workbook.close()
 
     assert len(event_rows) == 1
-    assert event_rows[0][9:13] == ["Major", 2, "5", "To Be Reworked"]
+    assert event_rows[0][9:13] == ["Major", 2, "5", "Needs Testing"]
+
+    def localisation_text(path: Path, key: str) -> str:
+        match = re.search(r"^" + re.escape(key) + r':\s*("(?:[^"\\]|\\.)*")\s*$', path.read_text(encoding="utf-8-sig"), re.MULTILINE)
+        assert match is not None, f"Missing current localisation: {key}"
+        return json.loads(match.group(1))
+
+    event_localisation = repo_root / "localisation/english/033_acid_rain_l_english.yml"
+    details = localisation_text(event_localisation, "acid_rain.event_details.description")
+    dynamic_suffix = "[This.GetAcidRainEventDetailsStatus][This.GetAcidRainEventDetailsAchievements]"
+    assert details.endswith(dynamic_suffix)
+    assert event_rows[0][2] == details.removesuffix(dynamic_suffix)
+    for stage in range(1, 4):
+        title = localisation_text(event_localisation, f"acid_rain.evolution.stage_{stage}.title")
+        body = localisation_text(event_localisation, f"acid_rain.evolution.stage_{stage}.body")
+        assert event_rows[0][stage + 2] == title + ": " + body
     assert len(cluster_rows) == 1
+    assert cluster_rows[0][2] == localisation_text(
+        repo_root / "localisation/english/chaosx_gui_l_english.yml",
+        "chaosx.events_log.window.cluster_details.description.natural_disasters",
+    )
     assert cluster_rows[0][3] == "13, 13, 13, 13, 13, 33, 51"
     assert cluster_rows[0][4] == "Low, Low, Low, Low, Medium, Severe, High"
     expected_memberships = [
@@ -930,7 +949,9 @@ def catalog_cluster_contract(repo_root: Path) -> dict[str, object]:
 
     exported_event = csv_row(events_csv_path, "33")
     exported_cluster = csv_row(clusters_csv_path, "5")
-    assert exported_event[9:13] == ["Major", "2", "5", "To Be Reworked"]
+    assert exported_event[9:13] == ["Major", "2", "5", "Needs Testing"]
+    assert exported_event[2:6] == event_rows[0][2:6]
+    assert exported_cluster[2] == cluster_rows[0][2]
     assert exported_cluster[3] == cluster_rows[0][3]
     assert exported_cluster[4] == cluster_rows[0][4]
 
