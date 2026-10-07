@@ -30,3 +30,8 @@ The field names follow the installed 3.10.0 `docs/probability.md` scenario contr
 The connected route must still validate the actual request and its supported alternative enumeration.
 The audit must begin with `hoi4.probability_inspect`, then evaluate these exact named scenarios and preserve candidate traces, branch bounds, revisions, scenario hashes and artifact limits.
 No manual probability calculation, synthetic helper override or self-comparison may substitute for the required MCP evidence.
+
+`P24_OPENING_BENCHMARKS_EXPLICIT.json` is the mechanically expanded form of the same alternatives.
+It preserves all fourteen combinations, all state values, flag packets and host targets, with no prevalence weights or averaging.
+The four accepted base IDs remain, and suffixes identify the ten additional government or Chaos variants.
+This representation is used to investigate the comparator's zero-change report for changed bounded intervals, not to omit uncertain branches or lower the acceptance scope.

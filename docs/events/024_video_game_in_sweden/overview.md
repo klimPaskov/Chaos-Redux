@@ -503,22 +503,35 @@ Opening AI is route-specific and uses the campaign factors in `video_game_in_swe
 
 Opening factors distinguish peace, war, stability, Chaos, public crisis, and the disabled-safe case.
 
+Above 799 Chaos, the controlled trial and officer league each receive a 2.0 opening-score factor.
+The controlled trial is not penalised for high Chaos while Sweden faces supply failure or lost cores.
+The commercial opening still has zero AI weight during the declared severe crisis, and all three choices remain visible to the player.
+`opening_totalen_controlled_safe` is the active controlled-trial tuning field.
+The old 0.5 `opening_totalen_controlled` field is retained only so the frozen before-event source can be compared against its original dependency value.
+The required same-scenario MCP comparison returned changed current-side bounds but no trustworthy delta for bounded rows.
+Its equivalent fourteen-case comparison timed out, so numerical balance acceptance remains unresolved.
+
 Every baseline, evolution, recovery, foreign, and conclusion action has route-specific factors in `video_game_in_sweden_ai_route`.
 
 Near capitulation, broken supply, and severe instability suppress the maximum-risk route and favor controlled handling or restriction.
 
-The named probability scenarios are `P24-O1` through `P24-O4` in `P24_FINAL_OPENING_MATRIX`.
+The named probability scenarios are `P24-O1` through `P24-O4`.
+Their current declared benchmark fixture is `P24_OPENING_BENCHMARKS_20261007`, with explicit government and Chaos alternatives, numeric stability and experience, and crisis receipts.
 
 The four scenarios cover a peaceful stable staff opening, a peaceful public opening, a wartime officer opening, and a severe emergency with supply and core-loss flags.
 
 The archived probability inspection resolved the three-option opening pool at its recorded source revision.
 Those archived results do not certify subsequent route, incident, or AI changes.
 
-The named four-scenario evaluation produced bounded matrix evidence and reported 12 unresolved external or adapter inputs, so it is not presented as an exact normalized probability claim.
+The earlier four-scenario evaluation with twelve unresolved inputs is historical evidence, not acceptance of the current opening factors.
+The 7 October benchmark evaluation and sweep reduced the reported unresolved items to two `compare_autonomy_state` records.
+The returned row bounds and summary rank lists disagree for bounded scenarios, so no complete campaign-ranking signoff is claimed.
 
 The emergency source state makes controlled handling dominant and sets the commercial opening factor to zero, which is an intentional safety result rather than a hidden forced crisis.
 
-A bounded sweep across Chaos, stability, surrender progress, and army experience covers six additional safety points and preserves the same explicit uncertainty. The historical current-source control comparison reports zero comparison changes under its identical named matrix.
+The historical six-point sweep remains preserved for its own source revision.
+The current benchmark sweep reports fifteen points over Chaos, stability and army experience, but its exact point coverage still needs review.
+The old current-source control comparison is not evidence of a before-and-after balance repair.
 
 ## Achievements and persistence
 

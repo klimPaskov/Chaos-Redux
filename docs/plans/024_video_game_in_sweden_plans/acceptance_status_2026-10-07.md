@@ -109,5 +109,42 @@ The advertised server-status resource was read successfully and reports version 
 Resource discovery exposes an artifact template with byte-range selectors but lists only the server-status resource.
 No native task negotiation, helper-expansion job or dependency modification was attempted.
 
+## Bound opening benchmark and repair
+
+Commit `03e28c3bd135a381e70273259f7f977707feee8a` declares numeric, government and crisis-receipt fixtures for P24-O1 through P24-O4.
+These are hypothetical benchmarks within the accepted qualitative conditions, not observed campaign state.
+The fixture includes fourteen logical combinations and preserves the complete three-option pool.
+The fresh broad inspection timed out after 600 seconds, while the narrower `.2` identifier returned complete source-pool discovery.
+Evaluation and sensitivity sweep then returned partial results with two unresolved `compare_autonomy_state` records, down from the earlier twenty unbound items.
+Handoff 28 retains the inspected source identity, twelve bounded rows, fifteen reported sweep points, diagnostic details and artifact limits.
+
+The returned crisis bounds allowed Officer League up to `0.43859649122807015` while Controlled Staff Trial could fall to `0.5614035087719298`.
+The owner repaired the single Totalen controlled-opening modifier to use `opening_totalen_controlled_safe = 2.0`.
+Officer Totalen remains 2.0, all other weights and gameplay effects remain unchanged, and the old controlled factor 0.5 is retained only as the frozen before-source dependency.
+This allows the actual byte-frozen event source to resolve its original value during comparison rather than comparing the new constant to itself.
+The changed gameplay files are `events/024_hearts_of_iron.txt` and `common/script_constants/024_video_game_in_sweden_constants.txt`, with matching overview documentation.
+No Event Details, evolution wording, assets, workbook or CSV changed in this repair.
+
+The required same-scenario comparison returned `PROBABILITY_ANALYZED_PARTIAL`.
+Its current-side crisis rows bound Controlled at `0.8366013071895425` or more and Officer at `0.16339869281045752` or less, while Commercial remains zero in the declared crisis.
+These are tool-returned conditional model bounds, not exact engine or campaign selection rates.
+The comparator nevertheless reports zero scenario changes for changed bounded rows, so no numerical delta signoff follows from that result.
+Handoff 29 records the actual before/after selectors, hashes, dependency boundary, rows and the discrepancy.
+
+The owner mechanically expanded the same alternatives into fourteen explicit cases and verified equality of every actor, state, flag packet and host target, with all four accepted base IDs retained.
+The explicit comparison is intended to resolve the bounded-delta discrepancy without dropping any alternative or inventing prevalence weights.
+The explicit fourteen-case comparison returned a 600-second tools/call timeout without a structured payload, operation handle or artifact URI.
+Local recovery found no identified comparison artifact, and remote completion remains unknown rather than canceled or proven failed.
+No matching numerical delta, per-branch signoff or render is claimed from that retry.
+The source repair is retained as an implemented bounded change with these mandatory comparison limits reported, not as full balance or Event 24 acceptance.
+
+All 33 runtime-observation and six temporary-output lifetime source cases pass after the opening repair.
+They do not establish AI selection, native expiry, actual supply delivery, save persistence or consumer rendering.
+Post-change `.2` lint returned `EVENT_INSPECTED_PARTIAL`, revision `4495e77851dc0c9ee60d7951092c239a04924d4bac48bc4bf83047d20eb0d1da`, graph hash `00e4d808f71a4ba38c1b7c88a3482a47248c8290431fa7f4e87e945c8970d491`, no expanded helpers and workspace-wide unresolved findings.
+Its complete lint artifact was absent from the configured default local path, so those global findings are not assigned to Event 24 or treated as lifecycle clearance.
+
+D16 remains unapproved, and all other native, full weighted-surface, asset-cleanup and acceptance gaps above remain in force.
+No game was launched and no clean live error log is claimed.
+
 Skills used in this review are events, decisions/missions, MTTH, subagents, XLSX, Spreadsheets, and the shared-tree commit workflow.
 No skill was changed.
