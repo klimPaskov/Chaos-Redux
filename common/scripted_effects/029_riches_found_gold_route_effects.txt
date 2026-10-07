@@ -22,7 +22,7 @@
 
 # STATE scope. Shared roll. Input: temporary riches_found_gold_route_kind
 # (an incident-kind id). Output: temporary riches_found_gold_route_spreads
-# (one when the route spreads the fever).
+# (one on spread). The caller allocates it so the result survives return.
 riches_found_roll_gold_route = {
 	set_temp_variable = { riches_found_gold_route_spreads = constant:riches_found_value.zero }
 	if = {
@@ -76,6 +76,7 @@ riches_found_apply_country_gold_fever = {
 # STATE scope. Worker transfer route, called by Replace the Workforce.
 riches_found_move_gold_through_workforce = {
 	set_temp_variable = { riches_found_gold_route_kind = constant:riches_found_incident_kind.gold_route_workers }
+	set_temp_variable = { riches_found_gold_route_spreads = constant:riches_found_value.zero }
 	riches_found_roll_gold_route = yes
 	if = {
 		limit = { check_variable = { riches_found_gold_route_spreads = constant:riches_found_value.one } }
@@ -134,6 +135,7 @@ riches_found_move_gold_through_pay_transport = {
 # The rotated soldiers carry it into the army rather than the civil service.
 riches_found_move_gold_through_rotation = {
 	set_temp_variable = { riches_found_gold_route_kind = constant:riches_found_incident_kind.gold_route_rotation }
+	set_temp_variable = { riches_found_gold_route_spreads = constant:riches_found_value.zero }
 	riches_found_roll_gold_route = yes
 	if = {
 		limit = {
@@ -153,6 +155,7 @@ riches_found_move_gold_through_rotation = {
 # mine state's own neighbours are considered.
 riches_found_move_gold_through_smuggling = {
 	set_temp_variable = { riches_found_gold_route_kind = constant:riches_found_incident_kind.gold_route_smuggling }
+	set_temp_variable = { riches_found_gold_route_spreads = constant:riches_found_value.zero }
 	riches_found_roll_gold_route = yes
 	if = {
 		limit = {
@@ -198,6 +201,7 @@ riches_found_move_gold_through_sponsor = {
 			}
 		}
 		set_temp_variable = { riches_found_gold_route_kind = constant:riches_found_incident_kind.gold_route_sponsor }
+		set_temp_variable = { riches_found_gold_route_spreads = constant:riches_found_value.zero }
 		riches_found_roll_gold_route = yes
 		if = {
 			limit = { check_variable = { riches_found_gold_route_spreads = constant:riches_found_value.one } }
@@ -213,6 +217,7 @@ riches_found_move_gold_through_sponsor = {
 # STATE scope. Shared capital delivery used by the shipment and pay routes.
 # Input: temporary riches_found_gold_route_kind.
 riches_found_spread_gold_to_controller = {
+	set_temp_variable = { riches_found_gold_route_spreads = constant:riches_found_value.zero }
 	riches_found_roll_gold_route = yes
 	if = {
 		limit = {
