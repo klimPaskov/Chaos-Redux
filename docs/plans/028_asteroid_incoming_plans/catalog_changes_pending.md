@@ -1,5 +1,13 @@
 # Event 028 catalog changes pending
 
+## Current text alignment, 2026-10-07
+
+Disposition: implemented for `Events!C29`, `D29` and `E29`, with the exported Event 028 row matching the final localisation.
+The [catalog handoff](subagent_handoffs/catalog_alignment_20261007.md) records exact before/after text, preserved cell styles, formula absence, full exporter parity and the original shared-workbook changes preserved by the worker.
+Type and Status were not changed by this text-only tranche, and `Needs Testing` is not a full-feature or native acceptance claim.
+The October 4 queued table below is retained as its accepted historical instruction and is superseded only for these three text updates.
+The parent isolates those three cells and their generated export row from later unrelated shared-workbook edits for its scoped commit.
+
 The event catalog workbook is edited only by its owner, and the CSV files are export-only.
 These are the Event 028 row changes the catalog owner should apply to `docs/spreadsheets/chaos_redux_events_catalog.xlsx`, then export with `python .tools/export_event_catalog_csv.py`.
 
