@@ -539,25 +539,29 @@ The lifecycle and presentation paths are source-implemented for `BF-T01` through
 
 The arithmetic helper has source-level coverage for the boundary cases in `BF-R01` through `BF-R13` and `BF-C01` through `BF-C06`, while owner payment/refund evidence remains blocked by BF-ADP-001 and the engine-owned rows.
 
-No live game launch was performed. Event 26 is on the default-enabled event list under agent decision D8 (2026-10-04); live acceptance remains pending.
+No live game launch was performed.
+Event 26 is default-disabled while the complete registry and acceptance gates remain unresolved.
+The original user goal explicitly requires every cost row, asset, localisation surface, log, document, audit, catalog field, and test to be complete before re-enabling.
+The 2026-10-04 D8 enabling decision is superseded by that requirement and the 2026-10-07 continuation correction.
 
 ## Sign-off questions
 
 1. Does every discovered voluntary payment have one row? No, the 2,342 active mod and 368 active Vanilla custom-cost declarations are inventoried by owner but not yet completely decomposed into final logical-action and component rows.
-2. Do displayed and paid values share one source or one verified static variant? Native rows do; blocked owner rows do not yet.
+2. Do displayed and paid values share one source or one verified static variant? Not established universally. Native rows retain composition, rounding, changing-modifier, and live UI/debit blockers, and uncovered owner rows remain incomplete.
 3. Does every positive cost retain one quantum? The shared quote helper does; owner call-site proof is pending.
 4. Does each refundable action return the paid amount? The shared receipt does; external owner adapters are pending.
-5. Does each static logical action expose one variant to the player and AI? No static variant set is currently installed.
+5. Does each static logical action expose one variant to the player and AI? Static variants exist for the documented Japan raid and CBRN factory actions, but complete logical-action and native player/AI candidate proof remains unresolved.
 6. Does every multi-resource action have one row per cost component and one primary achievement family? Not yet; Appendix A identifies the owners requiring decomposition.
 7. Does source expiry remove only its own modifier? Yes in the implemented Event 026 source and cleanup path.
 8. Does every changed AI weight have a probability comparison? Final probability audit and comparison are pending.
-9. Does every engine-inaccessible row have exact evidence? Yes for the flat leader, preferred-tactic, equipment-upgrade, guarantee, operation, license-purchase, MIO, special-project, and assignable-trait findings: agent decision D24 accepts strategy D for them, and the report and Event Details name each of these purchases as keeping its normal price. Script-accessible native decision definitions and custom owners are owner-adapter work, and their absent generic modifier is not proof of engine inaccessibility.
-10. Were the registry and tests updated after the final code change? The current inventories reflect the 2026-09-02 worktree snapshot, but the registry is pending its final implementation commit hash, live consumer evidence, and owner closure.
+9. Does every engine-inaccessible row have exact evidence? Not yet. D24 records inspected native limitations and player-facing disclosures, but these do not establish exhaustive per-surface impossibility through all native, shared-adapter, and static-variant routes. Every reachable definition still needs its own exact route evidence, and the absent generic modifier does not establish engine inaccessibility for script-accessible costs.
+10. Were the registry and tests updated after the final code change? The declaration inventories record the 2026-10-03 worktree snapshot. Later owner edits require fresh semantic reconciliation, and no final implementation commit freeze or complete live acceptance exists.
 11. Did the completion auditor find any unregistered cost surface? The final completion audit found the owner-adapter gap and the remaining engine-inaccessible and owner-bound surfaces; the current registry records those blockers explicitly, while native design-factor families remain enumerated in the native inventory.
 
 ## Freeze rule
 
-This document must be updated after every owner adapter or static variant change, exported only as part of the authoritative documentation change, and frozen against the exact implementation commit when the live acceptance closes; Event 26 is already on the default-enabled list under agent decision D8.
+This document must be updated after every owner adapter or static variant change and frozen against the exact final implementation commit.
+Event 26 must remain default-disabled until every required coverage and acceptance gate is complete.
 
 Any remaining `blocked_pending_evidence` row is a completion blocker and must be reported explicitly.
 

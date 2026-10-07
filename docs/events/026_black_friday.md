@@ -90,6 +90,13 @@ A rejected manual or forced entry sends one captured-reason report, `chaosx.nr26
 
 Exact native pricing remains incomplete. Some appointments with overlapping discounts receive smaller savings under D36, which the report and sale tooltip disclose. The stored contribution can also become stale if another cost modifier changes during the sale: adding an ordinary -25% factor after a 75% contribution was calculated can produce a zero multiplier before an explicit refresh. The source regression retains that counterexample as a completion blocker. No whole-world recurring refresh or engine behavior is inferred as a remedy.
 
+## Implementation acceptance gate
+
+Black Friday remains default-disabled until every requested cost row, asset, localisation surface, log, document, audit, catalog field, and test is complete.
+The October 4 D8 enablement is superseded by the original user goal and the October 7 continuation correction.
+The source framework and bounded adapters are implemented, but the complete final-commit semantic registry, exact inaccessible-surface evidence, native composition and minimum-payment proof, multiplayer and persistence acceptance, and live Part 8 scenarios remain unresolved.
+The catalog must remain `Needs Testing` until live validation passes.
+
 ## Future extension
 
 A later native cost key enters the sale by adding it to `black_friday_native_sale` and to the store and clear lists in `026_black_friday_native_sale_effects.txt`; a key that shares its purchase with a carried key joins that carrier's linked ordinary instead of carrying a second sale value.

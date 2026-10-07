@@ -117,6 +117,11 @@ Disposition: implemented.
 
 ## D8. Black Friday joins the default-enabled event list
 
+Current disposition: superseded by the original user completion gate, restored on 2026-10-07.
+The user requires all cost rows, assets, localisation, logs, docs, audits, catalog fields, and tests to be complete before re-enabling Event 26.
+The remaining owner, native-composition, exact inaccessible-surface, final-registry, and live acceptance gaps do not meet that condition.
+The historical reasoning below is retained as provenance and does not authorize current enablement or partial universal coverage.
+
 Decision: `event_log_event_is_reworked_default_enabled` in `common/scripted_triggers/chaosx_settings_triggers.txt` lists `constant:black_friday_event.id`, so `initialize_default_disabled_events_for_rework_queue` no longer disables Event 26 in a new campaign.
 The catalog status stays `Needs Testing` until live verification, as queued in `catalog_changes_pending.md`.
 
