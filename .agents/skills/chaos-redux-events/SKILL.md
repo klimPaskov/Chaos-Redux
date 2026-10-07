@@ -200,6 +200,13 @@ Actual-source fixtures must enforce the native loop ceiling and verify more than
 - triggerable scenario launch variants when the event has a manual sandbox or challenge setup
 - connection with other events (meaning that events are not standalone and actually interact with each other)
 
+For confirmations before irreversible gameplay, put an always-available, consequence-free Cancel option first because native timeout selects the first option (13 days by default), and never treat silence as affirmation.
+Native option triggers are evaluated when the event fires, not dynamically while its popup remains open.
+Keep the option-availability guard separate from a click-time effect guard that rechecks permission, the current request and context against the immutable pending receipt before applying consequences.
+Duplicate requests must not overwrite that receipt.
+Treat controller changes or loss of authority as no consent.
+Existing affirmative-first event patterns are not general precedents for safe confirmations.
+
 ## Chaos source handling
 
 Implement event-owned Chaos changes only on concrete outcomes defined by the spec, using the shared Chaos Meter and history path. Common hooks include meaningful movement success, special Chaos-country growth, spread, failed containment, actual use of dangerous capabilities, and durable containment or defeat.

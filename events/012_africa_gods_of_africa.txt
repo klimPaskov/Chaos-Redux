@@ -539,3 +539,32 @@ country_event = {
 		name = chaosx.nr12.621.a
 	}
 }
+
+# Human confirmation of permanent defiance. Normal AI uses its direct owner;
+# confirmation rejects AI control both at firing and again when selected.
+country_event = {
+	id = chaosx.nr12.622
+	title = chaosx.nr12.622.t
+	desc = chaosx.nr12.622.d
+	picture = GFX_report_event_012_africa_gods_defiance
+	is_triggered_only = yes
+	trigger = { has_country_flag = gods_of_africa_defiance_confirmation_pending }
+	# Native timeout picks the first option: silence must cancel, never defy.
+	option = {
+		name = chaosx.nr12.622.cancel
+		hidden_effect = { gods_of_africa_clear_defiance_confirmation = yes }
+	}
+	option = {
+		name = chaosx.nr12.622.confirm
+		trigger = {
+			is_ai = no
+			gods_of_africa_defiance_confirmation_is_current = yes
+		}
+		custom_effect_tooltip = gods_of_africa_permanent_defiance_effect_tt
+		if = {
+			limit = { gods_of_africa_contract_is_agreed = yes }
+			custom_effect_tooltip = gods_of_africa_refuse_agreed_terms_tt
+		}
+		hidden_effect = { gods_of_africa_confirm_permanent_defiance = yes }
+	}
+}

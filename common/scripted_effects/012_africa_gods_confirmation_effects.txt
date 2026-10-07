@@ -1,0 +1,46 @@
+# Event 012 Gods permanent-defiance confirmation.
+# COUNTRY scope on the participant. Human requests open one confirmation;
+# AI decisions retain the existing direct action. The request itself never
+# changes tribute, Wrath, protection, payments, history or a running deadline.
+# API and receipt lifetime: 012_africa_gods_confirmation_effects.md.
+
+gods_of_africa_clear_defiance_confirmation = {
+	clr_country_flag = gods_of_africa_defiance_confirmation_pending
+	clear_variable = gods_of_africa_defiance_confirmation_host_id
+	clear_variable = gods_of_africa_defiance_confirmation_origin_id
+	clear_variable = gods_of_africa_defiance_confirmation_generation
+	clear_variable = gods_of_africa_defiance_confirmation_epoch
+}
+
+gods_of_africa_request_defiance_confirmation = {
+	if = {
+		limit = { gods_of_africa_defiance_request_is_available = yes }
+		if = {
+			limit = { is_ai = yes }
+			gods_of_africa_clear_defiance_confirmation = yes
+			gods_of_africa_permanent_defiance = yes
+		}
+		else = {
+			set_country_flag = gods_of_africa_defiance_confirmation_pending
+			set_variable = { gods_of_africa_defiance_confirmation_host_id = event_target:africa_host.id }
+			set_variable = { gods_of_africa_defiance_confirmation_origin_id = event_target:africa_host.africa_origin_host_id }
+			set_variable = { gods_of_africa_defiance_confirmation_generation = event_target:africa_host.africa_host_generation }
+			set_variable = { gods_of_africa_defiance_confirmation_epoch = event_target:africa_host.gods_of_africa_authority_epoch }
+			event_target:africa_host = { save_event_target_as = gods_of_africa_confirmation_host }
+			country_event = { id = chaosx.nr12.622 }
+		}
+	}
+}
+
+gods_of_africa_confirm_permanent_defiance = {
+	if = {
+		limit = {
+			is_ai = no
+			gods_of_africa_defiance_confirmation_is_current = yes
+		}
+		# Consume the confirmation before committing its existing one-way action.
+		gods_of_africa_clear_defiance_confirmation = yes
+		gods_of_africa_permanent_defiance = yes
+	}
+	else = { gods_of_africa_clear_defiance_confirmation = yes }
+}

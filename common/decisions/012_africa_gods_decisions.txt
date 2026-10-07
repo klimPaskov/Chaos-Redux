@@ -832,16 +832,34 @@ gods_of_africa_participant_category = {
 			NOT = { has_country_flag = gods_of_africa_reconciliation_pending }
 			NOT = { has_country_flag = gods_of_africa_negotiation_open }
 		}
-		available = { gods_of_africa_participant_can_defy = yes }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = gods_of_africa_defiance_can_be_declared_tt
+				hidden_trigger = { gods_of_africa_defiance_action_is_valid = yes }
+			}
+			custom_trigger_tooltip = {
+				tooltip = gods_of_africa_defiance_confirmation_ready_tt
+				hidden_trigger = {
+					OR = {
+						is_ai = yes
+						NOT = { has_country_flag = gods_of_africa_defiance_confirmation_pending }
+					}
+				}
+			}
+		}
 		cost = 0
 		fire_only_once = no
 		complete_effect = {
+			if = {
+				limit = { is_ai = no }
+				custom_effect_tooltip = gods_of_africa_request_defiance_confirmation_tt
+			}
 			custom_effect_tooltip = gods_of_africa_permanent_defiance_effect_tt
 			if = {
 				limit = { gods_of_africa_contract_is_agreed = yes }
 				custom_effect_tooltip = gods_of_africa_refuse_agreed_terms_tt
 			}
-			hidden_effect = { gods_of_africa_permanent_defiance = yes }
+			hidden_effect = { gods_of_africa_request_defiance_confirmation = yes }
 		}
 		ai_will_do = {
 			# Defiance needs a reason in the current state: a rival posture, an

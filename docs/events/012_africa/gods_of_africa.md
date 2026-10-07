@@ -4,6 +4,10 @@ Current contract (2026-10-07): Gods of Africa is implemented in Event 012 source
 The activation repair uses the same guarded consolidation initializer at Evolution I and continental formation, preserves SCN-011 chronology without rewards, distinguishes formation from final security, and exposes one host-wide final-settlement action.
 The user's full-Gods Event 012 goal remains active with no simplifications authorized; source implementation and the architect's accepted source cases do not establish native execution or overall completion.
 
+The October 7 [decision audit](../../plans/012_africa_plans/subagent_handoffs/012_gods_decision_surface_review_2026-10-07.md) also identifies remaining implementation work, tracked in [the decision repair record](../../plans/012_africa_plans/subagent_handoffs/012_gods_decision_repairs_2026-10-07.md).
+This includes measured contribution credit for the Final Council shipment, overlapping action phases, the redundant generic substitute shortcut, and fixed-cost AI budgeting hints.
+The extraordinary ultimatum payment still requires its separate transaction review; its existing native shipment is not evidence of a simulated transfer.
+
 The acceptance basis is the current full-Gods/no-simplification instruction, the scoped L decisions in [the October 4 decision record](../../plans/012_africa_plans/agent_decisions_2026-10-04.md), and the later accepted fixes in [the October 5–6 decision record](../../plans/012_africa_plans/agent_decisions_2026-10-05.md).
 The [takeover status](../../plans/012_africa_plans/takeover_status_2026-10-06.md), [Gods source audit](../../plans/012_africa_plans/subagent_handoffs/takeover_gods_audit_2026-10-06.md), and [completion review](../../plans/012_africa_plans/subagent_handoffs/takeover_completion_review_2026-10-06.md) provide implementation evidence and their specific validation limits.
 Historical specs and handoffs establish only the design claims with a recorded acceptance basis; their filenames, dates, or status labels do not grant broader approval.
@@ -63,6 +67,17 @@ These are source findings within the user's bounded-enrollment goal, while runti
 During host succession, `africa_host_transfer_stage_scalar_ledger` stages the old host's generation, Gods candidate count, census flag, and candidate array alongside the wider Event 012 ledger. `africa_host_transfer_restore_world_order_state` rebuilds the successor's candidate array and census state before the successor closes staging, while generation guards prevent delayed callbacks from resolving against the old host. A suspended transfer intentionally retains its inspectable staging docket until the transfer is resolved; this persistence is source evidence and remains bounded by the transfer lifecycle.
 
 On annexation, the Event 012 world-order `on_annex` bridge calls `africa_begin_host_transfer` for the current host while the annexed country remains available as `FROM`; that effect invokes `gods_of_africa_cancel_on_unifier_loss` before changing the shared host pointer. The unifier's `on_capitulation` callback invokes the same cleanup. It removes live participant and contract state, removes their missions, withdraws owned protection services, closes the scheduled-clock receipts, clears the active registry, and sets public Strength to zero. Host-transfer staging carries the bounded candidate census for a successor but does not move the active Gods participant registry or public Strength. The initializer and activation trigger reject the old generation's loss receipt, so a delayed `.600` cannot restart its former authority. Returning participants retain Wrath, conduct counters, and aligned kind/day history; first enrollment initializes that ledger once. Permanent opt-out survives the cancellation of live authority and is restored to live defiance on re-entry.
+
+## Permanent-defiance confirmation
+
+For a human participant, Defy the Gods first opens `.622` with a named African government and the consequences of rejection.
+The request changes no tribute balance, Wrath, protection, history or deadline.
+Confirmation requires the same host object, origin, generation and authority epoch and repeats the current contract-permission check when clicked.
+Cancel is always available and is the first option, so the native event timeout also cancels an unanswered request.
+The pending dialog cannot be overwritten by another human request; a loss or change of authority makes it incapable of declaring defiance.
+An AI country retains the existing direct action, and a country that becomes AI while the dialog is open cannot confirm through that dialog.
+The ordinary aftermath remains `.609`; both reports use the existing defiance artwork.
+The [private helper contract](../../../common/scripted_effects/012_africa_gods_confirmation_effects.md) and [independent review](../../plans/012_africa_plans/subagent_handoffs/012_gods_defiance_confirmation_review_2026-10-07.md) retain scope, receipt lifetime and validation limits.
 
 ## Public values
 

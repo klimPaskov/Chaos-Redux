@@ -477,6 +477,8 @@ The Event014 owner API [Network ledger dossier records](../../docs/events/014_ca
 
 The private Event 012 [Gods original-owner recovery](012_africa_gods_recovery_effects.md) and [live epoch bindings](012_africa_gods_epoch_binding_effects.md) document exact host/consent proof, initial grant and revocation, current-due wake handling and bounded repair, native loss cleanup, historical report preservation, caller inputs, defaults, side effects, and boolean-helper usage.
 
+The private [Gods permanent-defiance confirmation](012_africa_gods_confirmation_effects.md) documents the human request, frozen authority receipt, current-epoch confirmation, cancellation without gameplay changes, and unchanged direct AI action.
+
 ## chaosx_report_forced_event_failure
 
 Purpose: send one plain-text country report to the player who requested an event through Settings when the owning event cannot apply.

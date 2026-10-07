@@ -1,0 +1,89 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 012 GODS OF AFRICA FOCUS PAYOFFS
+# ============================================================================
+# Gates for the actions the Gods overlay focuses open (decision L27): the
+# African Expedition, the Final Council voices, and No Sanctuary for
+# Occupiers. Every amount is a constant in 012_africa_gods_constants.txt.
+# ============================================================================
+
+# COUNTRY scope on the host. Africa can send an expedition now.
+gods_of_africa_host_can_send_expedition = {
+	gods_of_africa_active_host_is_valid = yes
+	has_country_flag = gods_of_africa_focus_expedition_unlocked
+	NOT = { gods_of_africa_ai_africa_is_collapsing = yes }
+	NOT = { has_political_power < constant:gods_of_africa_expedition.pp_cost }
+	set_temp_variable = { gods_of_africa_expedition_needed = constant:gods_of_africa_expedition.infantry_equipment }
+	add_to_temp_variable = { gods_of_africa_expedition_needed = constant:gods_of_africa_expedition.infantry_reserve }
+	NOT = { has_equipment = { infantry_equipment < gods_of_africa_expedition_needed } }
+	set_temp_variable = { gods_of_africa_expedition_needed = constant:gods_of_africa_expedition.support_equipment }
+	add_to_temp_variable = { gods_of_africa_expedition_needed = constant:gods_of_africa_expedition.support_reserve }
+	NOT = { has_equipment = { support_equipment < gods_of_africa_expedition_needed } }
+	set_temp_variable = { gods_of_africa_expedition_needed = constant:gods_of_africa_expedition.manpower }
+	add_to_temp_variable = { gods_of_africa_expedition_needed = constant:gods_of_africa_expedition.manpower_reserve }
+	NOT = { has_manpower < gods_of_africa_expedition_needed }
+}
+
+# COUNTRY scope on a participant (FROM of the expedition decision). A partner
+# on track for Favored, at peace with Africa, fighting a country whose capital
+# lies outside Africa, and not helped within the cooldown.
+gods_of_africa_expedition_target_is_valid = {
+	gods_of_africa_participant_generation_is_current = yes
+	gods_of_africa_ai_is_on_track_for_favored = yes
+	NOT = { has_war_with = event_target:africa_host }
+	any_enemy_country = {
+		exists = yes
+		NOT = { has_capitulated = yes }
+		capital_scope = { NOT = { is_on_continent = africa } }
+	}
+	OR = {
+		NOT = { has_variable = gods_of_africa_expedition_due_day }
+		check_variable = { var = global.num_days value = gods_of_africa_expedition_due_day compare = greater_than_or_equals }
+	}
+}
+
+# COUNTRY scope on a participant. The Final Council is sitting and this
+# government has not yet spoken.
+gods_of_africa_council_is_open = {
+	gods_of_africa_participant_host_is_active = yes
+	gods_of_africa_participant_generation_is_current = yes
+	event_target:africa_host = { has_country_flag = gods_of_africa_focus_final_council_unlocked }
+	NOT = { has_country_flag = gods_of_africa_defiant }
+	NOT = { has_country_flag = gods_of_africa_final_outcome_committed }
+	NOT = { has_country_flag = gods_of_africa_council_voice }
+	NOT = { has_war_with = event_target:africa_host }
+}
+
+gods_of_africa_council_pledge_is_affordable = {
+	set_temp_variable = { gods_of_africa_council_pledge_needed = constant:gods_of_africa_council.pledge_equipment }
+	add_to_temp_variable = { gods_of_africa_council_pledge_needed = constant:gods_of_africa_council.pledge_equipment_reserve }
+	NOT = { has_equipment = { infantry_equipment < gods_of_africa_council_pledge_needed } }
+}
+
+gods_of_africa_council_speech_is_affordable = {
+	NOT = { has_political_power < constant:gods_of_africa_council.speech_pp }
+}
+
+# COUNTRY scope on the host. No Sanctuary for Occupiers can be used now.
+gods_of_africa_host_can_coerce_occupier = {
+	gods_of_africa_active_host_is_valid = yes
+	has_country_flag = gods_of_africa_focus_occupier_coercion_unlocked
+	NOT = { has_political_power < constant:gods_of_africa_occupier_coercion.pp_cost }
+}
+
+# COUNTRY scope on a participant (FROM of the coercion decision). It owns an
+# African core state of the host and is neither at war with Africa nor bound
+# to it, and has not been coerced within the cooldown.
+gods_of_africa_occupier_coercion_target_is_valid = {
+	gods_of_africa_participant_generation_is_current = yes
+	any_owned_state = {
+		is_on_continent = africa
+		is_core_of = event_target:africa_host
+	}
+	NOT = { has_war_with = event_target:africa_host }
+	NOT = { is_in_faction_with = event_target:africa_host }
+	NOT = { is_subject_of = event_target:africa_host }
+	OR = {
+		NOT = { has_variable = gods_of_africa_coercion_due_day }
+		check_variable = { var = global.num_days value = gods_of_africa_coercion_due_day compare = greater_than_or_equals }
+	}
+}

@@ -1,0 +1,541 @@
+add_namespace = chaosx.nr12
+
+# ============================================================================
+# CHAOS REDUX - EVENT 012 GODS OF AFRICA
+# ============================================================================
+# These are Event 012-owned private clocks, reports, and relationship notices.
+# Gods of Africa has no normal-event pool entry and never uses Event 070.
+# ============================================================================
+
+# Private consolidation clock. The effect validates all gates again before it
+# commits the system, so a delayed job cannot activate after a defeat or a
+# terminal Event 012 settlement.
+country_event = {
+	id = chaosx.nr12.600
+	hidden = yes
+	is_triggered_only = yes
+	immediate = {
+		africa_gods_of_africa_commit_activation = yes
+	}
+}
+
+# Proclamation is shown once to the African unifier after the delayed commit.
+country_event = {
+	id = chaosx.nr12.601
+	title = chaosx.nr12.601.t
+	desc = chaosx.nr12.601.d
+	picture = GFX_report_event_012_africa_gods_proclamation
+	is_triggered_only = yes
+	trigger = {
+		africa_gods_of_africa_host_is_active = yes
+		has_country_flag = gods_of_africa_activation_report_pending
+	}
+	option = {
+		name = chaosx.nr12.601.a
+		custom_effect_tooltip = gods_of_africa_activation_effect_tt
+		clr_country_flag = gods_of_africa_activation_report_pending
+	}
+}
+
+# One introduction per enrolled participant. It exposes exactly the two public
+# values while keeping capacity, conduct, and punishment formulae hidden.
+country_event = {
+	id = chaosx.nr12.602
+	title = chaosx.nr12.602.t
+	desc = chaosx.nr12.602.d
+	picture = GFX_report_event_012_africa_gods_introduction
+	is_triggered_only = yes
+	trigger = {
+		africa_gods_of_africa_participant_is_current = yes
+		has_country_flag = gods_of_africa_intro_pending
+	}
+	option = {
+		name = chaosx.nr12.602.a
+		custom_effect_tooltip = gods_of_africa_introduction_effect_tt
+		clr_country_flag = gods_of_africa_intro_pending
+	}
+}
+
+# A demand notice is deliberately short. Resolution remains in the ordinary
+# decision category and mission, which keeps AI and human response paths equal.
+country_event = {
+	id = chaosx.nr12.603
+	title = chaosx.nr12.603.t
+	desc = chaosx.nr12.603.d
+	picture = GFX_report_event_012_africa_gods_demand
+	is_triggered_only = yes
+	trigger = {
+		africa_gods_of_africa_participant_is_current = yes
+		has_country_flag = gods_of_africa_demand_active
+	}
+	option = {
+		name = chaosx.nr12.603.a
+		custom_effect_tooltip = gods_of_africa_demand_effect_tt
+	}
+}
+
+# Response receipt. The participant is told what changed, while the detailed
+# transaction record remains hidden and available to the Africa-side ledger.
+country_event = {
+	id = chaosx.nr12.604
+	title = chaosx.nr12.604.t
+	desc = chaosx.nr12.604.d
+	picture = GFX_report_event_012_africa_gods_response
+	is_triggered_only = yes
+	trigger = {
+		africa_gods_of_africa_participant_is_current = yes
+		has_country_flag = gods_of_africa_outcome_report_pending
+	}
+	option = {
+		name = chaosx.nr12.604.a
+		custom_effect_tooltip = gods_of_africa_response_effect_tt
+		clr_country_flag = gods_of_africa_outcome_report_pending
+	}
+}
+
+# Punishment report. A failed manifestation is still a meaningful outcome; the
+# event does not imply that every threat becomes a catastrophe.
+country_event = {
+	id = chaosx.nr12.605
+	title = chaosx.nr12.605.t
+	desc = chaosx.nr12.605.d
+	picture = GFX_report_event_012_africa_gods_punishment
+	is_triggered_only = yes
+	trigger = {
+		africa_gods_of_africa_participant_is_current = yes
+		has_country_flag = gods_of_africa_punishment_report_pending
+	}
+	option = {
+		name = chaosx.nr12.605.a
+		custom_effect_tooltip = gods_of_africa_punishment_effect_tt
+		clr_country_flag = gods_of_africa_punishment_report_pending
+	}
+}
+
+# Owner-local monthly scheduler. It is never attached to a world on_action.
+country_event = {
+	id = chaosx.nr12.606
+	hidden = yes
+	is_triggered_only = yes
+	immediate = {
+		africa_gods_of_africa_owner_tick = yes
+	}
+}
+
+# Owner-local quarterly onboarding review. The effect performs one bounded
+# major/player pass and removes invalid records from the maintained registry.
+country_event = {
+	id = chaosx.nr12.607
+	hidden = yes
+	is_triggered_only = yes
+	immediate = {
+		africa_gods_of_africa_registry_review = yes
+	}
+}
+
+# Final settlement receipt. It is fired per participant after ordinary demands
+# are stopped and the hidden relationship result has been committed.
+country_event = {
+	id = chaosx.nr12.608
+	title = chaosx.nr12.608.t
+	desc = chaosx.nr12.608.d
+	picture = GFX_report_event_012_africa_gods_settlement
+	is_triggered_only = yes
+	trigger = {
+		gods_of_africa_settlement_receipt_is_current = yes
+	}
+	option = {
+		name = chaosx.nr12.608.a
+		custom_effect_tooltip = gods_of_africa_settlement_effect_tt
+		hidden_effect = { gods_of_africa_acknowledge_settlement = yes }
+	}
+}
+
+# Defiance is separate from a single refusal and therefore receives its own
+# report and retaliation memory.
+country_event = {
+	id = chaosx.nr12.609
+	title = chaosx.nr12.609.t
+	desc = chaosx.nr12.609.d
+	picture = GFX_report_event_012_africa_gods_defiance
+	is_triggered_only = yes
+	trigger = {
+		africa_gods_of_africa_participant_is_current = yes
+		has_country_flag = gods_of_africa_defiance_report_pending
+	}
+	option = {
+		name = chaosx.nr12.609.a
+		custom_effect_tooltip = gods_of_africa_defiance_effect_tt
+		clr_country_flag = gods_of_africa_defiance_report_pending
+	}
+}
+
+# Africa-side protection receipt, shown only when a paid protection action
+# actually changes the selected participant's record.
+country_event = {
+	id = chaosx.nr12.610
+	title = chaosx.nr12.610.t
+	desc = chaosx.nr12.610.d
+	picture = GFX_report_event_012_africa_gods_protection
+	is_triggered_only = yes
+	trigger = {
+		africa_gods_of_africa_host_is_active = yes
+		has_country_flag = gods_of_africa_protection_report_pending
+	}
+	option = {
+		name = chaosx.nr12.610.a
+		custom_effect_tooltip = gods_of_africa_protection_effect_tt
+		if = {
+			limit = { has_guaranteed = event_target:gods_of_africa_protected_participant }
+			custom_effect_tooltip = gods_of_africa_protection_service_guarantee_tt
+		}
+		if = {
+			limit = { event_target:gods_of_africa_protected_participant = { has_military_access_to = event_target:africa_host } }
+			custom_effect_tooltip = gods_of_africa_protection_service_military_access_tt
+		}
+		if = {
+			limit = { event_target:gods_of_africa_protected_participant = { has_market_access_with = event_target:africa_host } }
+			custom_effect_tooltip = gods_of_africa_protection_service_market_access_tt
+		}
+		if = {
+			limit = {
+				NOT = {
+					event_target:gods_of_africa_protected_participant = {
+						has_market_access_with = event_target:africa_host
+					}
+				}
+			}
+			if = {
+				limit = { NOT = { has_dlc = "Arms Against Tyranny" } }
+				custom_effect_tooltip = gods_of_africa_protection_service_market_missing_dlc_tt
+			}
+			else_if = {
+				limit = { NOT = { has_country_flag = gods_of_africa_focus_sanctuary_unlocked } }
+				custom_effect_tooltip = gods_of_africa_protection_service_market_capability_locked_tt
+			}
+			else = {
+				custom_effect_tooltip = gods_of_africa_protection_service_market_unconfirmed_tt
+			}
+		}
+		if = {
+			limit = { event_target:gods_of_africa_protected_participant = { has_country_flag = gods_of_africa_protection_intelligence_shared } }
+			custom_effect_tooltip = gods_of_africa_protection_service_intelligence_tt
+		}
+		if = {
+			limit = {
+				NOT = {
+					event_target:gods_of_africa_protected_participant = {
+						has_country_flag = gods_of_africa_protection_intelligence_shared
+					}
+				}
+			}
+			if = {
+				limit = { NOT = { has_dlc = "La Resistance" } }
+				custom_effect_tooltip = gods_of_africa_protection_service_intelligence_missing_dlc_tt
+			}
+			else_if = {
+				limit = { NOT = { has_country_flag = gods_of_africa_focus_security_unlocked } }
+				custom_effect_tooltip = gods_of_africa_protection_service_intelligence_capability_locked_tt
+			}
+			else_if = {
+				limit = {
+					event_target:africa_host = {
+						NOT = { has_intelligence_agency = yes }
+					}
+				}
+				custom_effect_tooltip = gods_of_africa_protection_service_intelligence_host_agency_missing_tt
+			}
+			else_if = {
+				limit = {
+					event_target:gods_of_africa_protected_participant = {
+						NOT = { has_intelligence_agency = yes }
+					}
+				}
+				custom_effect_tooltip = gods_of_africa_protection_service_intelligence_participant_agency_missing_tt
+			}
+			else_if = {
+				limit = { event_target:africa_host = { NOT = { has_war = yes } } }
+				custom_effect_tooltip = gods_of_africa_protection_service_intelligence_no_war_tt
+			}
+			else_if = {
+				limit = {
+					event_target:africa_host = {
+						NOT = {
+							any_enemy_country = {
+								exists = yes
+								NOT = { has_capitulated = yes }
+								event_target:gods_of_africa_protected_participant = {
+									NOT = { has_war_with = PREV }
+								}
+							}
+						}
+					}
+				}
+				custom_effect_tooltip = gods_of_africa_protection_service_intelligence_no_eligible_enemy_tt
+			}
+			else = {
+				custom_effect_tooltip = gods_of_africa_protection_service_intelligence_unconfirmed_tt
+			}
+		}
+		if = {
+			limit = { event_target:gods_of_africa_protected_participant = { has_country_flag = gods_of_africa_protection_convoys_delivered } }
+			custom_effect_tooltip = gods_of_africa_protection_service_convoys_tt
+		}
+		if = {
+			limit = { event_target:gods_of_africa_protected_participant = { has_country_flag = gods_of_africa_protection_trains_delivered } }
+			custom_effect_tooltip = gods_of_africa_protection_service_trains_tt
+		}
+		if = {
+			limit = { event_target:gods_of_africa_protected_participant = { has_country_flag = gods_of_africa_protection_capital_rebuilt } }
+			custom_effect_tooltip = gods_of_africa_protection_service_capital_tt
+		}
+		if = {
+			limit = { event_target:gods_of_africa_protected_participant = { has_country_flag = gods_of_africa_protection_reception_created } }
+			custom_effect_tooltip = gods_of_africa_protection_service_reception_tt
+		}
+		if = {
+			limit = { has_country_flag = gods_of_africa_focus_relief_unlocked }
+			custom_effect_tooltip = gods_of_africa_protection_service_stability_tt
+		}
+		if = {
+			limit = { has_country_flag = gods_of_africa_focus_expedition_unlocked }
+			custom_effect_tooltip = gods_of_africa_protection_service_war_support_tt
+		}
+		custom_effect_tooltip = gods_of_africa_protection_service_conditions_tt
+		hidden_effect = {
+			event_target:gods_of_africa_protected_participant = { gods_of_africa_clear_protection_report_outcomes = yes }
+		}
+		clr_country_flag = gods_of_africa_protection_report_pending
+	}
+}
+
+# Reconciliation timeout receipt. It keeps a missed window visible without
+# creating a second punishment or changing the defiance cleanup contract.
+country_event = {
+	id = chaosx.nr12.611
+	title = chaosx.nr12.611.t
+	desc = chaosx.nr12.611.d
+	picture = GFX_report_event_012_africa_gods_response
+	is_triggered_only = yes
+	trigger = {
+		africa_gods_of_africa_participant_is_current = yes
+		has_country_flag = gods_of_africa_reconciliation_failure_report_pending
+	}
+	option = {
+		name = chaosx.nr12.611.a
+		custom_effect_tooltip = gods_of_africa_reconciliation_failure_effect_tt
+		clr_country_flag = gods_of_africa_reconciliation_failure_report_pending
+	}
+}
+
+# A host rejection is visible to the participant but does not convert the
+# negotiated offer into a refusal or a second demand failure.
+country_event = {
+	id = chaosx.nr12.612
+	title = chaosx.nr12.612.t
+	desc = chaosx.nr12.612.d
+	picture = GFX_report_event_012_africa_gods_response
+	is_triggered_only = yes
+	trigger = {
+		OR = {
+			gods_of_africa_victor_rejection_report_is_current = yes
+			AND = {
+				africa_gods_of_africa_participant_is_current = yes
+				has_country_flag = gods_of_africa_substitute_rejection_report_pending
+			}
+		}
+	}
+	option = {
+		name = chaosx.nr12.612.a
+		custom_effect_tooltip = gods_of_africa_reject_substitute_effect_tt
+		hidden_effect = { gods_of_africa_acknowledge_negotiation_rejection = yes }
+	}
+}
+
+# A wartime contract is cancelled once by the owner-local ledger. The report
+# keeps the pause visible without turning the cancellation into a second
+# ordinary demand failure.
+country_event = {
+	id = chaosx.nr12.613
+	title = chaosx.nr12.613.t
+	desc = chaosx.nr12.613.d
+	picture = GFX_report_event_012_africa_gods_response
+	is_triggered_only = yes
+	trigger = {
+		africa_gods_of_africa_participant_is_current = yes
+		has_country_flag = gods_of_africa_wartime_demand_report_pending
+	}
+	option = {
+		name = chaosx.nr12.613.a
+		custom_effect_tooltip = gods_of_africa_wartime_demand_cancelled_effect_tt
+		clr_country_flag = gods_of_africa_wartime_demand_report_pending
+		clr_country_flag = gods_of_africa_wartime_breach_reported
+		clr_country_flag = gods_of_africa_wartime_host_aggression_reported
+	}
+}
+
+# A participant-side voluntary shipment is acknowledged separately from a
+# demanded transfer. The material receipt and Wrath change are already
+# committed by the submit effect before this presentation event opens.
+country_event = {
+	id = chaosx.nr12.614
+	title = chaosx.nr12.614.t
+	desc = chaosx.nr12.614.d
+	picture = GFX_report_event_012_africa_gods_protection
+	is_triggered_only = yes
+	trigger = {
+		africa_gods_of_africa_participant_is_current = yes
+		has_country_flag = gods_of_africa_aid_report_pending
+	}
+	option = {
+		name = chaosx.nr12.614.a
+		custom_effect_tooltip = gods_of_africa_voluntary_aid_effect_tt
+		clr_country_flag = gods_of_africa_aid_report_pending
+	}
+}
+
+# Actual capitulation-winner receipt. This survives the cancelled host's live
+# authority and never grants, pardons, or restores a relationship on acknowledgement.
+country_event = {
+	id = chaosx.nr12.615
+	title = chaosx.nr12.615.t
+	desc = chaosx.nr12.615.d
+	picture = GFX_report_event_012_africa_gods_defiance
+	is_triggered_only = yes
+	trigger = { gods_of_africa_victor_report_is_current = yes }
+	option = {
+		name = chaosx.nr12.615.a
+		custom_effect_tooltip = gods_of_africa_victor_result_effect_tt
+		hidden_effect = { gods_of_africa_acknowledge_victor_report = yes }
+	}
+}
+
+# War with Africa ended a live protection compact, accepted reconciliation or
+# renewed recognition. When this government attacked, the owner review already
+# recorded the broken agreement; when Africa attacked, the agreement ended
+# without a breach and the report names Africa as the party that broke it.
+country_event = {
+	id = chaosx.nr12.616
+	title = {
+		trigger = { NOT = { has_country_flag = gods_of_africa_agreement_ended_by_host } }
+		text = chaosx.nr12.616.t
+	}
+	title = {
+		trigger = { has_country_flag = gods_of_africa_agreement_ended_by_host }
+		text = chaosx.nr12.616.t_host
+	}
+	desc = {
+		trigger = { NOT = { has_country_flag = gods_of_africa_agreement_ended_by_host } }
+		text = chaosx.nr12.616.d
+	}
+	desc = {
+		trigger = { has_country_flag = gods_of_africa_agreement_ended_by_host }
+		text = chaosx.nr12.616.d_host
+	}
+	picture = GFX_report_event_012_africa_gods_defiance
+	is_triggered_only = yes
+	trigger = {
+		africa_gods_of_africa_participant_is_current = yes
+		has_country_flag = gods_of_africa_agreement_breach_report_pending
+	}
+	option = {
+		name = chaosx.nr12.616.a
+		trigger = { NOT = { has_country_flag = gods_of_africa_agreement_ended_by_host } }
+		custom_effect_tooltip = gods_of_africa_agreement_breach_effect_tt
+		clr_country_flag = gods_of_africa_agreement_breach_report_pending
+	}
+	option = {
+		name = chaosx.nr12.616.b
+		trigger = { has_country_flag = gods_of_africa_agreement_ended_by_host }
+		custom_effect_tooltip = gods_of_africa_agreement_ended_by_host_effect_tt
+		clr_country_flag = gods_of_africa_agreement_breach_report_pending
+		clr_country_flag = gods_of_africa_agreement_ended_by_host
+	}
+}
+
+# The proclamation of the Gods of Africa is world news. Sent once, to every
+# country, by the activation owner (a major news event reaches everyone).
+news_event = {
+	id = chaosx.nr12.617
+	title = chaosx.nr12.617.t
+	desc = chaosx.nr12.617.d
+	picture = GFX_news_event_012_africa_gods_proclaimed
+	is_triggered_only = yes
+	major = yes
+
+	option = {
+		name = chaosx.nr12.617.a
+		trigger = { NOT = { tag = event_target:africa_host } }
+		ai_chance = { base = 100 }
+	}
+	option = {
+		name = chaosx.nr12.617.b
+		trigger = { tag = event_target:africa_host }
+		ai_chance = { base = 100 }
+	}
+}
+
+# Africa's final ultimatum before a catastrophe (decision L26). The answers
+# are the participant decisions under the ultimatum mission.
+country_event = {
+	id = chaosx.nr12.618
+	title = chaosx.nr12.618.t
+	desc = chaosx.nr12.618.d
+	picture = GFX_report_event_012_africa_gods_punishment
+	is_triggered_only = yes
+	trigger = {
+		africa_gods_of_africa_participant_is_current = yes
+		has_country_flag = gods_of_africa_final_ultimatum_pending
+	}
+	option = {
+		name = chaosx.nr12.618.a
+		custom_effect_tooltip = gods_of_africa_final_ultimatum_effect_tt
+	}
+}
+
+# Africa armed a country fighting an offender (Let the World Answer).
+country_event = {
+	id = chaosx.nr12.619
+	title = chaosx.nr12.619.t
+	desc = chaosx.nr12.619.d
+	picture = GFX_report_event_012_africa_gods_protection
+	is_triggered_only = yes
+	trigger = {
+		africa_gods_of_africa_host_is_active = yes
+		has_variable = gods_of_africa_coalition_last_recipient
+		has_variable = gods_of_africa_coalition_last_offender
+	}
+	option = {
+		name = chaosx.nr12.619.a
+	}
+}
+
+# The African Expedition reaches a partner (decision L27).
+country_event = {
+	id = chaosx.nr12.620
+	title = chaosx.nr12.620.t
+	desc = chaosx.nr12.620.d
+	picture = GFX_report_event_012_africa_gods_protection
+	is_triggered_only = yes
+	trigger = {
+		africa_gods_of_africa_participant_is_current = yes
+	}
+	option = {
+		name = chaosx.nr12.620.a
+	}
+}
+
+# Africa claims its land from a foreign government (decision L27).
+country_event = {
+	id = chaosx.nr12.621
+	title = chaosx.nr12.621.t
+	desc = chaosx.nr12.621.d
+	picture = GFX_report_event_012_africa_gods_punishment
+	is_triggered_only = yes
+	trigger = {
+		africa_gods_of_africa_participant_is_current = yes
+	}
+	option = {
+		name = chaosx.nr12.621.a
+	}
+}
