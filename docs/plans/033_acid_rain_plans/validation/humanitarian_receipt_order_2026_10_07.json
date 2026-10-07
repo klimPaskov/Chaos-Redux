@@ -1,0 +1,113 @@
+{
+  "date": "2026-10-07",
+  "before_source_sha256": "c7d2be98f646c934b92d023f7fa474ff1420fa261eb0a88fb66aa718aedec0b5",
+  "regression": {
+    "status": "pass",
+    "source_sha256": "2805a9af30ac54e332fb0ec09136c62c232f1b57083df9bee2cedebd6fcae09c",
+    "helpers": [
+      "acid_rain_register_humanitarian_pressure",
+      "acid_rain_register_aftermath_humanitarian_pressure"
+    ],
+    "cases": 8,
+    "negative_controls": [
+      "removed caller output declaration loses nested receipt"
+    ],
+    "limits": [
+      "Famine owner acceptance and native arithmetic/scopes are explicit mocks",
+      "No native pressure, retirement, migration or save/reload proof"
+    ]
+  },
+  "source_lookup": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\"artifactCount\":0,\"code\":\"OK\",\"status\":\"ok\",\"workspaceId\":\"mod_chaos_redux_ea3b2d67c2c0\"}"
+      }
+    ],
+    "structuredContent": {
+      "status": "ok",
+      "code": "OK",
+      "workspaceId": "mod_chaos_redux_ea3b2d67c2c0",
+      "filesScanned": [],
+      "proposedFiles": [],
+      "changedFiles": [],
+      "diagnostics": [],
+      "artifacts": [],
+      "validation": {
+        "passed": true,
+        "checks": []
+      },
+      "blockers": [],
+      "data": {
+        "sourceScope": "helper_definitions",
+        "revision": "5001e6aea42d6217737f434a1f4221e9e6339bb5e60558405614e8c0d93aac90",
+        "complete": true,
+        "skippedSourceCount": 0,
+        "definitionCount": 1,
+        "definitionsTruncated": false,
+        "definitions": [
+          {
+            "kind": "scripted_effect",
+            "id": "acid_rain_register_aftermath_humanitarian_pressure",
+            "path": "mod:common/scripted_effects/033_acid_rain_aftermath_effects.txt",
+            "rootKind": "mod",
+            "loadOrder": 15,
+            "overridden": false,
+            "sourceShadowed": false,
+            "startLine": 653,
+            "endLine": 679,
+            "fromLine": 653,
+            "toLine": 679,
+            "nextLine": null,
+            "nextColumn": null,
+            "text": "acid_rain_register_aftermath_humanitarian_pressure = {\n\tif = {\n\t\tlimit = {\n\t\t\tcheck_variable = { var = acid_rain_state_aftermath_tier value = constant:acid_rain_runtime.two compare = greater_than_or_equals }\n\t\t\tOR = {\n\t\t\t\tNOT = { has_variable = acid_rain_humanitarian_tier_registered }\n\t\t\t\tcheck_variable = { var = acid_rain_humanitarian_tier_registered value = acid_rain_state_aftermath_tier compare = less_than }\n\t\t\t}\n\t\t}\n\t\tset_temp_variable = { acid_rain_humanitarian_amount = state_population_k }\n\t\tmultiply_temp_variable = { acid_rain_humanitarian_amount = constant:acid_rain_humanitarian.people_per_k }\n\t\tif = {\n\t\t\tlimit = { check_variable = { var = acid_rain_state_aftermath_tier value = constant:acid_rain_aftermath.tier_max compare = greater_than_or_equals } }\n\t\t\tmultiply_temp_variable = { acid_rain_humanitarian_amount = constant:acid_rain_humanitarian.aftermath_tier_three_share }\n\t\t}\n\t\telse = { multiply_temp_variable = { acid_rain_humanitarian_amount = constant:acid_rain_humanitarian.aftermath_tier_two_share } }\n\t\tround_temp_variable = acid_rain_humanitarian_amount\n\t\tset_temp_variable = { acid_rain_humanitarian_kind = constant:acid_rain_humanitarian.kind_aftermath }\n\t\tset_temp_variable = { acid_rain_humanitarian_revision = acid_rain_state_aftermath_tier }\n\t\tset_temp_variable = { acid_rain_humanitarian_result = constant:acid_rain_aftermath.zero }\n\t\tacid_rain_register_humanitarian_pressure = yes\n\t\tif = {\n\t\t\tlimit = { check_variable = { var = acid_rain_humanitarian_result value = constant:humanitarian_runtime.one compare = equals } }\n\t\t\tset_variable = { acid_rain_humanitarian_tier_registered = acid_rain_state_aftermath_tier }\n\t\t}\n\t}\n}"
+          }
+        ],
+        "references": [],
+        "referencesIncluded": false,
+        "referenceCount": 0,
+        "referencesTruncated": false,
+        "referencesComplete": false,
+        "unresolvedReferenceCount": 0
+      }
+    }
+  },
+  "event_inspection": {
+    "initialRequest": {
+      "mode": "lint",
+      "selector": {
+        "kind": "event",
+        "eventId": "chaosx.nr33.20"
+      },
+      "expandHelpers": false,
+      "maxNodes": 1,
+      "maxEdges": 1,
+      "maxDepth": 1
+    },
+    "initialResult": {
+      "content": [
+        {
+          "type": "text",
+          "text": "tool call error: tool call failed for `hoi4_agent_tools/hoi4.event_inspect`\n\nCaused by:\n    timed out awaiting tools/call after 600s"
+        }
+      ],
+      "isError": true
+    },
+    "narrowerRetry": {
+      "mode": "lint",
+      "selector": {
+        "kind": "event",
+        "eventId": "chaosx.nr33.47"
+      },
+      "expandHelpers": false,
+      "maxNodes": 1,
+      "maxEdges": 1,
+      "maxDepth": 1
+    },
+    "retryDelivery": "active, no result recorded at this checkpoint"
+  },
+  "limits": [
+    "Source lookup proves indexed current helper linkage, not native owner transaction execution",
+    "Initial worker-event lint timed out after 600s; the narrower state-operation callback retry is pending, not completed evidence"
+  ]
+}

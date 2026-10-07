@@ -609,7 +609,10 @@ acid_rain_reconcile_state_consequences = {
 # acid_rain_humanitarian_kind (acid_rain_humanitarian.kind_*) and
 # acid_rain_humanitarian_revision (unique per source transaction). Callers
 # submit each accepted loss, tier or evacuation once.
+# Output: temporary acid_rain_humanitarian_result, the famine owner's receipt.
+# A caller that reads the output declares it before invoking this helper.
 acid_rain_register_humanitarian_pressure = {
+	set_temp_variable = { acid_rain_humanitarian_result = constant:acid_rain_aftermath.zero }
 	if = {
 		limit = {
 			acid_rain_state_is_frozen_valid = yes
@@ -640,6 +643,7 @@ acid_rain_register_humanitarian_pressure = {
 		set_temp_variable = { famine_adapter_request_id = global.date }
 		set_temp_variable = { famine_adapter_result = constant:acid_rain_aftermath.zero }
 		famine_adapt_acid_rain_state = yes
+		set_temp_variable = { acid_rain_humanitarian_result = famine_adapter_result }
 	}
 	set_temp_variable = { acid_rain_humanitarian_amount = constant:acid_rain_aftermath.zero }
 }
@@ -655,7 +659,6 @@ acid_rain_register_aftermath_humanitarian_pressure = {
 				check_variable = { var = acid_rain_humanitarian_tier_registered value = acid_rain_state_aftermath_tier compare = less_than }
 			}
 		}
-		set_variable = { acid_rain_humanitarian_tier_registered = acid_rain_state_aftermath_tier }
 		set_temp_variable = { acid_rain_humanitarian_amount = state_population_k }
 		multiply_temp_variable = { acid_rain_humanitarian_amount = constant:acid_rain_humanitarian.people_per_k }
 		if = {
@@ -666,6 +669,11 @@ acid_rain_register_aftermath_humanitarian_pressure = {
 		round_temp_variable = acid_rain_humanitarian_amount
 		set_temp_variable = { acid_rain_humanitarian_kind = constant:acid_rain_humanitarian.kind_aftermath }
 		set_temp_variable = { acid_rain_humanitarian_revision = acid_rain_state_aftermath_tier }
+		set_temp_variable = { acid_rain_humanitarian_result = constant:acid_rain_aftermath.zero }
 		acid_rain_register_humanitarian_pressure = yes
+		if = {
+			limit = { check_variable = { var = acid_rain_humanitarian_result value = constant:humanitarian_runtime.one compare = equals } }
+			set_variable = { acid_rain_humanitarian_tier_registered = acid_rain_state_aftermath_tier }
+		}
 	}
 }

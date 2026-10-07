@@ -44,6 +44,7 @@ Aftermath records per-type damage points for infrastructure, railways and factor
 
 Acid Rain registers humanitarian pressure through `famine_adapt_acid_rain_state`: each exact positive pulse loss, 0.5 percent of a state's population when its aftermath first reaches tier 2 and 1 percent at tier 3, and 2 percent when an evacuation of a state with at least 500,000 people finishes.
 Evacuation counts as disaster pressure, not as a migration cohort.
+A tier's submission is marked registered only after the famine owner accepts it, so a rejected or rounded-zero request cannot suppress a later valid retry.
 This addition path reaches the famine owner's aggregate disaster-pressure channel.
 A source-33 reversible pressure ledger and supported recovery-retirement call are not established, so source-specific Humanitarian removal remains unresolved under the consequence repair acceptance.
 
