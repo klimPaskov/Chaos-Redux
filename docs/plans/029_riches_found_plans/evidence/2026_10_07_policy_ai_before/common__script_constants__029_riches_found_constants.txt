@@ -1,0 +1,1572 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 029 RICHES FOUND SCRIPT CONSTANTS
+# ============================================================================
+# Shared ids, thresholds, duration bands, public-value scaling, presentation
+# factors, controller diminishing returns, and AI tuning for the state-bound
+# mine record. Effects and triggers consume these values instead of embedding
+# tuning numbers in lifecycle code.
+# ============================================================================
+
+riches_found_event = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	id = 29
+	evolution_type = 29
+	evolution_i_stage = 1
+	evolution_ii_stage = 2
+	evolution_iii_stage = 3
+	evolution_i_tier = 3
+	evolution_ii_tier = 4
+	evolution_iii_tier = 5
+	discovery_political_power = 1000
+	public_value_minimum = 0
+	public_value_maximum = 100
+	registry_version = 1
+	registry_cap = 64
+}
+
+riches_found_report = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	rush = 10
+	concession = 20
+	raid = 30
+	collapse = 40
+	resource_curse = 101
+	gold_disease = 102
+	opened_depths = 103
+	gilded_sovereignty = 111
+	bottomless_account = 112
+	gold_incident = 120
+	curse_contained = 121
+	gold_contained = 122
+	demons_contained = 123
+	supernatural_incident = 130
+}
+
+# Report texts that do not come from an incident candidate. The report slot
+# stores either an incident id or one of these ids, so they never overlap the
+# incident range.
+riches_found_report_text = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	concession_limited = 2001
+	concession_exclusive = 2002
+	concession_offtake = 2003
+	concession_infrastructure = 2004
+	collapse_neglect = 2011
+	collapse_account_default = 2012
+	gilded_revoke_succeeded = 2021
+	gilded_revoke_closed = 2022
+	gilded_revoke_resisted = 2023
+	inspection_exposed = 2031
+	inspection_blocked = 2032
+}
+
+# Candidate-pool identifiers are stored on the mine so Event 029 report text,
+# probability inspection, and repeat-memory all read the same state-owned fact.
+riches_found_incident_pool = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	claims = 1
+	rush = 2
+	development = 3
+	corruption = 4
+	foreign_interference = 5
+	raid = 6
+	collapse = 7
+	gold_disease = 8
+	supernatural = 9
+	contract_outcome = 10
+}
+
+riches_found_incident_kind = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	claims_rich_strike = 101
+	claims_fraudulent_assay = 102
+	claims_duplicate_documents = 103
+	claims_jumpers = 104
+	claims_landowner_refusal = 105
+	claims_local_recognition = 106
+	claims_boundary_crossing = 107
+	claims_soldier_stakes = 108
+	claims_old_foreign_rights = 109
+	claims_bribed_court = 110
+	claims_miners_assembly = 111
+	claims_violent_eviction = 112
+	claims_easement_dispute = 113
+	claims_false_discovery = 114
+	claims_missing_specimen = 115
+
+	rush_housing_inflation = 201
+	rush_food_shortage = 202
+	rush_sanitation_failure = 203
+	rush_fire = 204
+	rush_theft = 205
+	rush_labor_exploitation = 206
+	rush_displacement = 207
+	rush_wage_dispute = 208
+	rush_gambling_debt = 209
+	rush_gang_violence = 210
+	rush_price_gouging = 211
+	rush_outsider_resentment = 212
+	rush_police_corruption = 213
+	rush_smuggling = 214
+
+	development_route_washout = 301
+	development_pump_failure = 302
+	development_ventilation_failure = 303
+	development_magazine_fire = 304
+	development_sabotage = 305
+	development_material_shortage = 306
+	development_engineer_strike = 307
+	development_false_invoice = 308
+
+	corruption_missing_shipments = 401
+	corruption_local_share_demand = 402
+	corruption_royalty_change = 403
+	corruption_bonus_strike = 404
+	corruption_false_dividend_names = 405
+	corruption_visible_public_work = 406
+	corruption_diverted_central_fund = 407
+	corruption_theft_accusation = 408
+	corruption_missing_official = 409
+	corruption_assay_substitution = 410
+	corruption_party_machine = 411
+	corruption_payroll_dependence = 412
+	corruption_worker_drain = 413
+
+	foreign_fund_claimant = 501
+	foreign_bribe_officials = 502
+	foreign_steal_survey = 503
+	foreign_recruit_engineers = 504
+	foreign_sabotage_transport = 505
+	foreign_support_armed_group = 506
+	foreign_expose_contract = 507
+	foreign_demand_inspection = 508
+	foreign_threaten_sanctions = 509
+	foreign_prepare_seizure = 510
+	foreign_recognize_local_claim = 511
+	foreign_offer_assistance = 512
+
+	raid_assay_office = 601
+	raid_payroll = 602
+	raid_rail_route = 603
+	raid_port_route = 604
+	raid_processing_works = 605
+	raid_storage_compound = 606
+	raid_contract_records = 607
+	raid_shaft_entrance = 608
+
+	collapse_warning_shift = 701
+	collapse_local_cave_in = 702
+	collapse_major_failure = 703
+	collapse_catastrophic = 704
+
+	gold_hidden_samples = 801
+	gold_altered_records = 802
+	gold_endless_shift = 803
+	gold_guard_theft = 804
+	gold_gang_control = 805
+	gold_false_permits = 806
+	gold_shipment_fight = 807
+	gold_unsafe_digging = 808
+	gold_route_workers = 811
+	gold_route_capital_workers = 812
+	gold_route_shipment = 813
+	gold_route_pay = 814
+	gold_route_rotation = 815
+	gold_route_smuggling = 816
+	gold_route_sponsor = 817
+
+	supernatural_answering_knocks = 901
+	supernatural_counting_voices = 902
+	supernatural_returned_tools = 903
+	supernatural_patterned_lamps = 904
+	supernatural_balanced_payroll = 905
+	supernatural_ore_after_violence = 906
+	supernatural_accounting_marks = 907
+	supernatural_open_sealed_tunnel = 908
+
+	contract_clean_renewal = 1001
+	contract_larger_share = 1002
+	contract_infrastructure_offer = 1003
+	contract_security_rights = 1004
+	contract_local_intermediary = 1005
+	contract_withdrawal = 1006
+	contract_rival_claimant = 1007
+	contract_breach_pressure = 1008
+}
+
+riches_found_raid_actor = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	criminal_group = 1
+	rival_claimants = 2
+	private_guards = 3
+	foreign_agents = 4
+	hostile_neighbor = 5
+	resistance = 6
+	retreating_forces = 7
+	corrupt_unit = 8
+	smugglers = 9
+	worker_barricade = 10
+}
+
+riches_found_raid_severity = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	contained = 1
+	disruptive = 2
+	destructive = 3
+	lethal = 4
+}
+
+riches_found_incident_weight = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	common = 100
+	uncommon = 60
+	rare = 25
+	major = 12
+	catastrophic = 3
+	no_incident = 20
+	ordinary_pool = 100
+	foreign_pool = 35
+	raid_pool = 40
+	collapse_pool = 25
+	evolution_pool = 65
+	contract_pool = 45
+}
+
+riches_found_incident_factor = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	disabled = 0
+	low = 0.50
+	high = 1.50
+	severe = 2.00
+}
+
+riches_found_incident_delta = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	minor = 2
+	standard = 5
+	major = 10
+	severe = 15
+	catastrophic = 25
+	negative_minor = -2
+	negative_standard = -5
+	negative_major = -10
+	negative_severe = -15
+	negative_catastrophic = -25
+}
+
+riches_found_state_selection = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	strong_weight = 80
+	broad_weight = 20
+}
+
+riches_found_value = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	zero = 0
+	one = 1
+	two = 2
+	three = 3
+	four = 4
+	percent = 100
+	negative_one = -1
+	one_half = 0.50
+
+	public_initial_pressure = 20
+	public_initial_development = 10
+	public_initial_order = 55
+	public_initial_legitimacy = 45
+	public_initial_concession_exposure = 10
+	public_initial_illicit_capture = 5
+	public_initial_deep_excavation = 0
+	public_initial_security_autonomy = 10
+	public_initial_foreign_claim_pressure = 0
+	public_initial_gold_disease = 0
+	public_initial_supernatural_pressure = 0
+	public_initial_sealed_integrity = 100
+	public_initial_collapse_pressure = 0
+	public_initial_chaos_exposure = 0
+}
+
+riches_found_profile = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	alluvial = 1
+	deep_vein = 2
+	gemstone = 3
+	platinum = 4
+}
+
+riches_found_profile_weight = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	alluvial = 40
+	deep_vein = 30
+	gemstone = 20
+	platinum = 10
+}
+
+riches_found_operating_state = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	discovery = 1
+	open_expanding = 2
+	open_regulated = 3
+	open_concession = 4
+	open_military = 5
+	open_predatory = 6
+	contested = 7
+	temporarily_closed = 8
+	quarantined = 9
+	partially_sealed = 10
+	permanently_sealed = 11
+	collapsed = 12
+	exhausted = 13
+}
+
+riches_found_phase = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	discovery_claims = 1
+	rush = 2
+	physical_development = 3
+	revenue_settlement = 4
+	foreign_concessions = 5
+	security_raids = 6
+	closure_control_crisis = 7
+}
+
+riches_found_policy = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	unassigned = 0
+	open_claims = 1
+	state_reserve = 2
+	local_claims = 3
+	emergency_concession = 4
+	minimal_interference = 5
+	public_development = 6
+	state_extraction = 7
+	concession_economy = 8
+	militarized = 9
+	predatory = 10
+}
+
+# Ordered controller-stage priorities. The aggregate selects the highest stage
+# represented among its controlled mines, so a transferred or additional mine
+# can replace but never stack the visible country idea.
+riches_found_controller_stage = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	windfall_receipts = 1
+	managed_revenue = 2
+	resource_dependence = 4
+	captured_revenue_state = 5
+	gold_sick_administration = 6
+	infernal_accounts = 7
+	reformed_settlement = 8
+}
+
+riches_found_contract_stage = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	negotiating = 1
+	active = 2
+	suspended = 3
+	expired = 4
+	bought_out = 5
+	nationalized = 6
+	voided = 7
+	exposed = 8
+}
+
+riches_found_contract_type = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	limited_concession = 1
+	exclusive_concession = 2
+	offtake = 3
+	infrastructure_access = 4
+}
+
+riches_found_mission_stage = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	active = 1
+	partial = 2
+	success = 3
+	failure = 4
+	cancelled = 5
+}
+
+riches_found_mission_kind = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	secure_rush = 1
+	open_railhead = 2
+	protect_pay_train = 3
+	break_claim_war = 4
+	restore_shaft = 5
+	hold_mine = 6
+	public_settlement = 7
+	audit_concession = 8
+	evacuate_workforce = 9
+}
+
+riches_found_threshold = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	minimum_state_population_thousands = 10
+	preferred_state_population_thousands = 50
+	minimum_infrastructure = 2
+	minimum_railway = 1
+	preferred_infrastructure = 4
+	preferred_railway = 2
+	minimum_development = 20
+	mature_development = 80
+	minimum_operating_development = 35
+	minimum_order_for_evolution = 30
+	minimum_legitimacy_for_evolution = 30
+	pressure_warning = 60
+	pressure_severe = 80
+	pressure_emergency = 95
+	order_crisis = 30
+	order_stable = 60
+	order_high = 80
+	legitimacy_crisis = 30
+	legitimacy_stable = 60
+	legitimacy_high = 80
+	deep_excavation_gate = 60
+	sealed_integrity_gate = 40
+	concession_exposure_gate = 60
+	illicit_capture_gate = 60
+	private_security_gate = 60
+	gold_disease_gate = 60
+	supernatural_pressure_gate = 60
+	closure_recovery_gate = 60
+	collapse_risk_gate = 60
+	aggregate_second_mine = 2
+	aggregate_third_mine = 3
+	aggregate_later_mines = 4
+	maximum_active_missions = 3
+}
+
+riches_found_decision_threshold = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	order_floor = 45
+	order_low = 35
+	order_high = 70
+	legitimacy_floor = 40
+	development_ready = 35
+	development_high = 65
+	pressure_high = 65
+	pressure_severe = 85
+}
+
+riches_found_decision_cost = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	pp_light = 10
+	pp_light_negative = -10
+	pp_standard = 25
+	pp_standard_negative = -25
+	pp_heavy = 40
+	pp_heavy_negative = -40
+	pp_emergency = 60
+	pp_emergency_negative = -60
+	manpower_light = 100
+	manpower_light_negative = -100
+	manpower_standard = 300
+	manpower_standard_negative = -300
+	manpower_heavy = 600
+	manpower_heavy_negative = -600
+	manpower_emergency = 1000
+	manpower_emergency_negative = -1000
+	command_light = 5
+	command_light_negative = -5
+	command_standard = 10
+	command_standard_negative = -10
+	command_heavy = 15
+	command_heavy_negative = -15
+	command_emergency = 20
+	command_emergency_negative = -20
+	fuel_light = 100
+	fuel_light_negative = -100
+	fuel_standard = 300
+	fuel_standard_negative = -300
+	fuel_heavy = 600
+	fuel_heavy_negative = -600
+	fuel_emergency = 1000
+	fuel_emergency_negative = -1000
+	infantry_light = 100
+	infantry_light_negative = -100
+	infantry_standard = 300
+	infantry_standard_negative = -300
+	infantry_heavy = 600
+	infantry_heavy_negative = -600
+	infantry_emergency = 1000
+	infantry_emergency_negative = -1000
+	support_light = 25
+	support_light_negative = -25
+	support_standard = 75
+	support_standard_negative = -75
+	support_heavy = 150
+	support_heavy_negative = -150
+	support_emergency = 250
+	support_emergency_negative = -250
+	motorized_light = 25
+	motorized_light_negative = -25
+	motorized_standard = 75
+	motorized_standard_negative = -75
+	motorized_heavy = 150
+	motorized_heavy_negative = -150
+	motorized_emergency = 250
+	motorized_emergency_negative = -250
+	train_light = 1
+	train_light_negative = -1
+	train_standard = 3
+	train_standard_negative = -3
+	train_heavy = 6
+	train_heavy_negative = -6
+	train_emergency = 10
+	train_emergency_negative = -10
+	convoy_light = 5
+	convoy_light_negative = -5
+	convoy_standard = 15
+	convoy_standard_negative = -15
+	convoy_heavy = 30
+	convoy_heavy_negative = -30
+	convoy_emergency = 60
+	convoy_emergency_negative = -60
+	civ_standard = 2
+	civ_heavy = 3
+	civ_standard_gate = 1
+	civ_heavy_gate = 2
+}
+
+riches_found_decision_duration = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	quick = 1
+	admin = 30
+	project = 60
+	long_project = 90
+	emergency = 15
+	cooldown = 30
+}
+
+riches_found_decision_ai = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	never = 0
+	very_low = 0.25
+	low = 1
+	medium = 3
+	high = 7
+	very_high = 12
+	low_factor = 0.50
+	high_factor = 2
+	urgent_factor = 4
+	never_factor = 0
+	policy_favored_factor = 2.5
+	policy_disfavored_factor = 0.4
+	# War state (spec part 5): peace favours development, settlement and
+	# governance; a war away from the mine favours central revenue and
+	# transport; a front beside the mine favours holding, the cordon, route
+	# defence, evacuation and denial and holds back dividends, local revenue,
+	# housing and the development fund; a civil war holds back expensive
+	# development.
+	peace_factor = 1.5
+	distant_war_factor = 1.5
+	front_factor = 4
+	front_suppress_factor = 0.25
+	civil_war_factor = 0.4
+	# Low Local Order: one primary order response gains weight while none is
+	# working, and expensive development loses weight.
+	low_order_response_factor = 2.5
+	low_order_development_factor = 0.5
+	# Capacity: majors favour audits, rail, processing, shaft safety and
+	# nationalization and avoid exclusive foreign concessions; weak minors
+	# favour foreign finance and infrastructure-for-access.
+	major_factor = 1.5
+	major_exclusive_factor = 0.25
+	weak_minor_factor = 2
+	# Evolutions: desperation, authoritarian rule and treasury dependence each
+	# raise a bargain's weight; a permanent seal stays rare until a lesser
+	# containment step has been tried.
+	desperation_factor = 2
+	untried_containment_factor = 0.1
+}
+
+# Shared action deltas. Decision outcomes use this table instead of embedding
+# numeric changes, keeping every pressure, development, order, legitimacy,
+# authority, and stock adjustment tunable from one file.
+riches_found_action_delta = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	positive_2 = 2
+	positive_3 = 3
+	positive_4 = 4
+	positive_5 = 5
+	positive_6 = 6
+	positive_7 = 7
+	positive_8 = 8
+	positive_10 = 10
+	positive_12 = 12
+	positive_14 = 14
+	positive_15 = 15
+	positive_18 = 18
+	positive_20 = 20
+	negative_2 = -2
+	negative_3 = -3
+	negative_4 = -4
+	negative_5 = -5
+	negative_6 = -6
+	negative_8 = -8
+	negative_10 = -10
+	negative_12 = -12
+	negative_15 = -15
+	negative_16 = -16
+	negative_18 = -18
+	negative_20 = -20
+	negative_22 = -22
+	negative_25 = -25
+	negative_30 = -30
+}
+
+riches_found_scaling = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	quality_alluvial = 0.80
+	quality_deep_vein = 1.00
+	quality_gemstone = 1.15
+	quality_platinum = 1.30
+	operating_discovery = 0.30
+	operating_open_expanding = 0.70
+	operating_open_regulated = 0.85
+	operating_open_concession = 0.90
+	operating_open_military = 0.65
+	operating_open_predatory = 0.95
+	operating_contested = 0.25
+	operating_temporarily_closed = 0.10
+	operating_quarantined = 0.15
+	operating_partially_sealed = 0.30
+	operating_permanently_sealed = 0
+	operating_collapsed = 0.05
+	operating_exhausted = 0
+	control_owned = 1.00
+	control_occupied = 0.65
+	control_uncontrolled = 0.10
+	public_factor_floor = 0.50
+	public_factor_slope = 0.005
+	pressure_factor_slope = 0.003
+	pressure_factor_floor = 1.00
+	quality_score_base = 1.00
+	policy_unassigned = 0.60
+	policy_open_claims = 0.85
+	policy_state_reserve = 0.95
+	policy_local_claims = 0.90
+	policy_emergency_concession = 0.75
+	policy_minimal_interference = 0.80
+	policy_public_development = 1.05
+	policy_state_extraction = 1.00
+	policy_concession_economy = 0.95
+	policy_militarized = 0.80
+	policy_predatory = 1.10
+	evolution_baseline_factor = 1.00
+	evolution_resource_curse_factor = 0.90
+	evolution_gold_disease_factor = 0.75
+	evolution_demons_factor = 0.50
+	state_modifier_active_slots = 0.05
+	state_modifier_regulated_slots = 0.10
+	state_modifier_concession_slots = 0.15
+	state_modifier_military_slots = 0.08
+	state_modifier_predatory_slots = 0.18
+	state_modifier_closed_slots = -0.10
+	state_modifier_terminal_slots = -0.05
+	state_modifier_active_supplies = 0.05
+	state_modifier_regulated_supplies = 0.10
+	state_modifier_concession_supplies = 0.12
+	state_modifier_military_supplies = -0.05
+	state_modifier_predatory_supplies = -0.12
+	state_modifier_closed_supplies = -0.10
+	state_modifier_terminal_supplies = -0.05
+	state_modifier_active_build_speed = 0.05
+	state_modifier_regulated_build_speed = 0.10
+	state_modifier_concession_build_speed = 0.12
+	state_modifier_military_build_speed = 0.02
+	state_modifier_predatory_build_speed = -0.10
+	state_modifier_closed_build_speed = -0.15
+	state_modifier_terminal_build_speed = -0.10
+	state_modifier_contested_slots = -0.10
+	state_modifier_contested_supplies = -0.15
+	state_modifier_contested_build_speed = -0.20
+	state_modifier_collapse_factories = -0.15
+	state_modifier_collapse_manpower = -0.10
+	state_modifier_collapse_supplies = -0.10
+	controller_first_mine = 1.00
+	controller_second_mine = 0.60
+	controller_third_mine = 0.25
+	controller_later_mine = 0.10
+	controller_pp_per_score = 0.003
+	controller_construction_per_score = 0.0015
+	controller_efficiency_per_score = 0.001
+	controller_factory_output_per_score = 0.0012
+	controller_consumer_goods_relief_per_score = 0.0008
+	controller_pp_cap = 0.30
+	controller_construction_cap = 0.18
+	controller_efficiency_cap = 0.10
+	controller_factory_output_cap = 0.12
+	controller_consumer_goods_relief_cap = 0.08
+	controller_evolution_penalty_factor = 0.10
+	partial_seal_integrity_loss = -25
+	collapse_integrity_loss = -35
+	recovery_integrity_gain = 35
+	temporary_closure_pressure_add = 8
+	partial_seal_pressure_add = 12
+	collapse_pressure_add = 18
+	resource_curse_pressure_add = 10
+	gold_disease_pressure_add = 15
+	demons_pressure_add = 20
+	resource_curse_illicit_capture_add = 15
+	gold_disease_illicit_capture_add = 20
+	demons_supernatural_pressure_add = 30
+	pulse_pressure_add = 2
+	pulse_war_pressure_add = 2
+	pulse_severe_pressure_add = 1
+	pulse_collapse_pressure_add = 2
+	pulse_low_order_collapse_add = 2
+	pulse_low_integrity_collapse_add = 3
+	pulse_chaos_collapse_add = 1
+	pulse_deep_vein_collapse_add = 1
+	permanent_seal_pressure_reduction = -35
+	permanent_seal_development_loss = -20
+	demons_permanent_seal_supernatural_reduction = -35
+	demons_permanent_seal_pressure_reduction = -30
+	contract_renewal_pressure_add = 3
+	contract_renewal_legitimacy_add = 5
+	contract_expiry_pressure_add = 8
+	contract_expiry_legitimacy_add = -8
+	contract_dispute_claim_pressure_add = 10
+}
+
+riches_found_duration = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	discovery_receipt_days = 1
+	secure_rush_days = 105
+	secure_rush_min_days = 90
+	secure_rush_max_days = 120
+	open_railhead_days = 150
+	open_railhead_min_days = 120
+	open_railhead_max_days = 180
+	protect_pay_train_days = 105
+	protect_pay_train_min_days = 90
+	protect_pay_train_max_days = 120
+	break_claim_war_days = 120
+	break_claim_war_min_days = 90
+	break_claim_war_max_days = 150
+	restore_shaft_days = 180
+	restore_shaft_min_days = 120
+	restore_shaft_max_days = 240
+	hold_mine_during_war_days = 180
+	hold_mine_min_days = 120
+	hold_mine_max_days = 240
+	public_settlement_days = 270
+	public_settlement_min_days = 180
+	public_settlement_max_days = 365
+	audit_concession_days = 135
+	audit_concession_min_days = 90
+	audit_concession_max_days = 180
+	temporary_closure_days = 90
+	partial_seal_days = 120
+	permanent_seal_days = 180
+	collapse_recovery_days = 210
+	recovery_review_days = 60
+	contract_review_days = 365
+	contract_renewal_grace_days = 180
+	mission_cleanup_days = 1
+	mission_cooldown_days = 90
+	evacuation_preparation_days = 30
+	evacuation_mission_days = 270
+	evacuation_mission_min_days = 180
+	evacuation_mission_max_days = 365
+	evacuation_mission_hold_days = 240
+	decision_cooldown_days = 30
+	controller_pulse_days = 30
+	incident_interval_days = 90
+	incident_interval_managed_days = 150
+	incident_interval_crisis_days = 45
+	incident_candidate_cooldown_days = 365
+	foreign_operation_memory_days = 180
+	raid_memory_days = 180
+	smuggling_route_memory_days = 180
+	evolution_review_floor_days = 45
+	evolution_review_ceiling_days = 240
+	late_outcome_review_days = 120
+	late_outcome_review_floor_days = 60
+	late_outcome_review_ceiling_days = 240
+	incident_review_days = 30
+	mission_population_delay_days = 15
+	mission_disorder_delay_days = 15
+	mission_damage_delay_days = 30
+	mission_route_reduction_days = -15
+	mission_supply_reduction_days = -15
+	mission_progress_margin_days = -30
+}
+
+riches_found_mtth = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	evolution_i_days = 90
+	evolution_ii_days = 90
+	evolution_iii_days = 90
+	incident_days = 30
+}
+
+riches_found_achievement_duration = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	public_fortune_hold_days = 730
+	claim_jumper_hold_days = 365
+	all_that_glitters_hold_days = 180
+	gilded_reform_hold_days = 120
+	account_closure_verify_days = 30
+	last_shift_verify_days = 30
+}
+
+riches_found_achievement_limit = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	pay_train_successes_required = 3
+	account_containment_death_ceiling = 199
+}
+
+riches_found_achievement_threshold = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	account_stability_floor = 0.50
+}
+
+riches_found_mtth_factor = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	pressure_high = 0.70
+	pressure_severe = 0.45
+	low_order = 0.70
+	low_legitimacy = 0.75
+	deep_excavation = 0.70
+	war = 0.80
+	multiple_mines = 0.85
+	managed_legitimacy = 1.25
+	controlled_closure = 1.35
+	foreign_capture = 0.75
+	failed_audit = 0.70
+	gold_disease_pressure = 0.65
+	sealed_integrity_low = 0.60
+}
+
+riches_found_ai_weight = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	base = 100
+	minimum = 0
+	maximum = 1000
+	claims = 110
+	rush = 125
+	development = 115
+	revenue = 105
+	concession = 90
+	security = 120
+	emergency = 140
+	closure = 100
+	recovery = 95
+	pressure_add = 4
+	order_crisis_add = 180
+	legitimacy_crisis_add = 120
+	deep_excavation_add = 100
+	contract_add = 80
+	war_add = 100
+	strong_country_add = 120
+	policy_public_development = 150
+	policy_state_extraction = 125
+	policy_concession_economy = 115
+	policy_militarized = 90
+	policy_predatory = 15
+	policy_democratic_public_add = 100
+	policy_authoritarian_state_add = 80
+	policy_major_state_add = 40
+	policy_war_state_add = 60
+	policy_poor_concession_add = 80
+	policy_minor_concession_add = 20
+	policy_war_militarized_add = 100
+	policy_authoritarian_militarized_add = 50
+	policy_desperate_predatory_add = 40
+	policy_authoritarian_predatory_add = 20
+}
+
+riches_found_foreign_interest = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	minimum = 1
+	base = 20
+	major = 35
+	large_industry = 25
+	medium_industry = 10
+	neighbor = 45
+	same_faction = 30
+	positive_relations = 20
+	hostile_relations = -20
+	wartime_need = 15
+	controller_weakness = 20
+	contract_network = 20
+	rival_involvement = 15
+	overseas_access = 10
+	severe_crisis = -35
+	exclusive_conflict = -80
+	platinum_profile = 25
+	gemstone_profile = 10
+}
+
+riches_found_foreign_interest_threshold = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	large_industry = 80
+	medium_industry = 30
+	positive_opinion = 25
+	hostile_opinion = -25
+	weak_factory_count = 20
+	minimum_convoys = 20
+}
+
+riches_found_evolution = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	resource_curse_chaos = 600
+	gold_disease_chaos = 800
+	demons_beneath_mine_chaos = 1000
+	resource_curse_pressure = 60
+	gold_disease_pressure = 80
+	demons_beneath_mine_pressure = 90
+	resource_curse_development = 40
+	gold_disease_development = 60
+	demons_beneath_mine_deep_excavation = 60
+	resource_curse_stage = 1
+	gold_disease_stage = 2
+	demons_beneath_mine_stage = 3
+}
+
+riches_found_achievement = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	discovery = 1
+	first_settlement = 2
+	pay_train = 3
+	transfer = 4
+	resource_curse = 5
+	gold_disease = 6
+	demons_beneath_mine = 7
+	gilded_sovereignty = 8
+	bottomless_account = 9
+}
+
+riches_found_idea = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	minor_penalty = -0.02
+	standard_penalty = -0.04
+	large_penalty = -0.08
+	small_benefit = 0.02
+	standard_benefit = 0.04
+}
+
+riches_found_harm = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	collapse_civilian_deaths = 120
+	barricade_civilian_deaths = 80
+	workforce_replacement_civilian_deaths = 60
+	military_purge_civilian_deaths = 250
+	violent_nationalization_civilian_deaths = 180
+	predatory_prosperity_civilian_deaths = 100
+	raid_lethal_civilian_deaths = 40
+	gold_violence_civilian_deaths = 75
+	supernatural_incident_civilian_deaths = 25
+	mass_death_gate = 200
+	collapse_condemnation = 10
+	barricade_condemnation = 8
+	workforce_replacement_condemnation = 6
+	military_purge_condemnation = 18
+	violent_nationalization_condemnation = 14
+	predatory_prosperity_condemnation = 10
+	raid_lethal_condemnation = 5
+	gold_violence_condemnation = 8
+	supernatural_incident_condemnation = 4
+	# Forced entombment: a mine sealed for good during a severe collapse or a
+	# supernatural crisis without a completed evacuation.
+	entombment_civilian_deaths = 220
+	entombment_condemnation = 16
+	entombment_order_loss = -15
+	entombment_legitimacy_loss = -20
+}
+
+# Selection priorities are independent of the stable controller-stage ids.
+# A reformed mine cannot mask an unresolved crisis on another controlled mine.
+riches_found_controller_stage_priority = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	windfall_receipts = 1
+	managed_revenue = 2
+	reformed_settlement = 3
+	resource_dependence = 4
+	captured_revenue_state = 5
+	gold_sick_administration = 6
+	infernal_accounts = 7
+}
+
+# Original controller-idea terms, applied once inside the capped aggregate.
+# Consumer-goods relief is positive here and negated by aggregate publication.
+riches_found_controller_stage_terms = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	managed_consumer_goods_relief = 0.02
+	managed_stability = 0.02
+	dependence_consumer_goods_relief = 0.04
+	dependence_stability = -0.02
+	captured_consumer_goods_relief = 0.04
+	captured_stability = -0.04
+	captured_political_power = -0.04
+	gold_consumer_goods_relief = 0.04
+	gold_stability = -0.04
+	gold_efficiency = -0.02
+	infernal_consumer_goods_relief = 0.08
+	infernal_stability = -0.08
+	infernal_political_power = -0.04
+	reformed_political_power = 0.02
+	reformed_stability = 0.02
+}
+
+riches_found_late_outcome = {
+	schema = { any_key = yes data = fixed_point }
+	legitimacy_very_low = 20
+	supernatural_pressure_very_high = 85
+	receipt_dependence_entry_share = 0.05
+	receipt_dependence_exit_share = 0.03
+	nonmine_daily_pp_floor = 0.50
+	repeated_post_contact_excavation = 20
+}
+
+riches_found_late_duration = {
+	schema = { any_key = yes data = int }
+	private_dominance_hold_days = 120
+	receipt_dependence_hold_days = 90
+	receipt_dependence_exit_days = 90
+	reform_protection_days = 120
+}
+
+riches_found_account_obligation = {
+	schema = { any_key = yes data = int }
+	material = 1
+	authority = 2
+	public_trust = 3
+	industrial_sacrifice = 4
+	human_crisis = 5
+}
+
+riches_found_account_payment_choice = {
+	schema = { any_key = yes data = int }
+	material = 1
+	authority = 2
+	predatory = 3
+}
+
+riches_found_account_resolution_choice = {
+	schema = { any_key = yes data = int }
+	close = 1
+	bind = 2
+}
+
+riches_found_account_limit = {
+	schema = { any_key = yes data = int }
+	maximum_paid_terms = 5
+	maximum_breaches = 2
+	obligation_days = 120
+	payment_cooldown_days = 30
+}
+
+riches_found_account_terms = {
+	schema = { any_key = yes data = fixed_point }
+	material_output_factor = 1.10
+	authority_output_factor = 1.20
+	trust_output_factor = 1.30
+	industrial_output_factor = 1.45
+	human_output_factor = 1.60
+	authority_stability_loss = -0.02
+	trust_stability_loss = -0.05
+	minimum_stability_for_payment = 0.10
+	industrial_development_cost = 15
+	# The same 100 marked workers as harm.predatory_prosperity_civilian_deaths,
+	# expressed in the engine population getter's thousands unit.
+	human_worker_minimum_k = 0.100
+	breach_development_loss = -10
+	breach_order_loss = -10
+	breach_supernatural_pressure = 15
+	bound_integrity = 60
+	bound_pressure = 60
+}
+
+riches_found_exposure = {
+	schema = { any_key = yes data = fixed_point }
+	gold_ordinary_extraction = 4
+	gold_high_pressure = 6
+	gold_gemstone = 3
+	gold_private_guards = 3
+	gold_theft_or_smuggling = 3
+	gold_managed_containment = -3
+	supernatural_extraction = 6
+	deep_disturbance_gate = 40
+	supernatural_signs_gate = 40
+	prefire_investigation_gate = 60
+	deep_integrity_loss = -20
+	deep_output_loss_factor = 0.75
+	sealed_depth_output_factor = 0.75
+}
+
+# Temporary closure, collapse neglect, restoration and reopening. The pulse
+# values apply once per controller pulse interval while the condition holds.
+riches_found_closure = {
+	schema = { any_key = yes data = fixed_point }
+	pressure_decay_per_pulse = -4
+	collapse_decay_per_pulse = -3
+	unsupported_legitimacy_per_pulse = -1
+	unmaintained_collapse_per_pulse = 2
+	collapse_neglect_development_per_pulse = -2
+	restoration_collapse_relief = -20
+	partial_restoration_development = 3
+	reopen_order_minimum = 45
+	reopen_pressure_maximum = 60
+	reopen_legitimacy_add = 3
+	reopen_cooldown_days = 180
+	damaged_output_factor = 0.75
+}
+
+# Evolution containment. Each active evolution keeps a per-mine progress value
+# that the controller pulse raises while enough of the specification's reform
+# or containment conditions hold, and lowers when they break.
+riches_found_containment = {
+	schema = { any_key = yes data = fixed_point }
+	progress_complete = 100
+	step_gain = 3
+	decay = -10
+	break_decay = -20
+	curse_minimum_conditions = 5
+	gold_minimum_conditions = 4
+	demons_minimum_conditions = 4
+	measure_days = 180
+	assistance_days = 365
+	workforce_cycle_days = 365
+	revenue_cycle_days = 365
+	revenue_cooldown_days = 180
+	gold_active_pressure_growth = 4
+	gold_contained_pressure_relief = -20
+	gold_susceptibility_exposure = 3
+	curse_contained_legitimacy = 10
+	curse_contained_capture_relief = -15
+	demons_contained_supernatural_relief = -20
+	destroy_material_supernatural_add = 5
+}
+
+# Containment track and next-step identifiers read by the category header.
+riches_found_containment_step = {
+	schema = { any_key = yes data = int }
+	none = 0
+	curse_audit = 11
+	curse_public_terms = 12
+	curse_disclosure = 13
+	curse_revenue = 14
+	curse_fund = 15
+	curse_pressure = 16
+	curse_security = 17
+	curse_administration = 18
+	gold_pressure = 21
+	gold_movement = 22
+	gold_payment = 23
+	gold_teams = 24
+	gold_material = 25
+	gold_repair = 26
+	demons_pressure = 31
+	demons_sealing = 32
+	demons_evacuation = 33
+	demons_assistance = 34
+	demons_extraction = 35
+	demons_guard = 36
+	demons_integrity = 37
+	maintain = 90
+	curse_breaker = 91
+	gold_breaker = 92
+	demons_breaker = 93
+}
+
+# Demons Beneath the Mine containment end states.
+riches_found_demons_end_state = {
+	schema = { any_key = yes data = int }
+	none = 0
+	strict_limits = 1
+	guarded_district = 2
+	monitored_closure = 3
+	protected_closure = 4
+}
+
+# Gold Disease movement routes. A route spreads on a weighted roll that a
+# quarantine, rationed access or closure multiplies by restricted_factor.
+riches_found_gold_route = {
+	schema = { any_key = yes data = fixed_point }
+	spread_weight = 40
+	contained_weight = 60
+	restricted_factor = 0.25
+	pressure_transfer = 15
+	source_relief = -5
+	country_effect_days = 180
+}
+
+# Physical construction delivered by projects and damage dealt by severe raids
+# and collapses. Building caps follow the vanilla building definitions.
+riches_found_build = {
+	schema = { any_key = yes data = fixed_point }
+	infrastructure_max = 5
+	naval_base_max = 10
+	route_level = 1
+}
+
+# Concession partner consequences.
+riches_found_concession = {
+	schema = { any_key = yes data = fixed_point }
+	compensation_political_power = 40
+	grievance_days = 730
+}
+
+# Decision-layer overlays. A raid crisis ends once
+# riches_found_duration.raid_memory_days pass without a new raid; an occupier
+# on the front whose surrender progress passes retreat_surrender_progress, or
+# that keeps no supplied force in the district, is about to lose the mine.
+riches_found_overlay = {
+	schema = { any_key = yes data = fixed_point }
+	retreat_surrender_progress = 0.2
+}
+
+# Chaos Meter sources. Each source changes the Chaos Meter at most once per
+# mine; the mine's output never adds chaos. Ids select the source, changes are
+# the Chaos Meter points it adds (negative values lower it).
+riches_found_chaos_source = {
+	schema = { any_key = yes data = int }
+	none = 0
+	public_settlement = 1
+	claim_war = 2
+	major_raid = 3
+	corrupt_seizure = 4
+	massacre = 5
+	foreign_intervention = 6
+	catastrophic_collapse = 7
+	demonic_bargain = 8
+}
+
+riches_found_chaos_change = {
+	schema = { any_key = yes data = fixed_point }
+	public_settlement = -4
+	claim_war = 3
+	major_raid = 3
+	corrupt_seizure = 4
+	massacre = 10
+	foreign_intervention = 8
+	catastrophic_collapse = 10
+	demonic_bargain = 12
+}
+
+# Opening conditions read once at discovery. Each band adds its deltas to the
+# riches_found_value public_initial_* baseline before the values are clamped.
+# Stability is the owner's stability (0 to 1); resistance and chaos use their
+# own scales.
+riches_found_starting_value = {
+	schema = { any_key = yes data = fixed_point }
+	low_stability_band = 0.4
+	high_stability_band = 0.7
+	low_stability_order = -10
+	low_stability_legitimacy = -8
+	high_stability_order = 5
+	high_stability_legitimacy = 5
+	core_legitimacy = 8
+	non_core_legitimacy = -8
+	non_core_order = -5
+	development_per_infrastructure = 2
+	war_or_resistance_order = -8
+	resistance_band = 25
+	high_chaos_band = 400
+	high_chaos_pressure = 10
+	democratic_legitimacy = 5
+	democratic_illicit_capture = -3
+	alluvial_order = -5
+	alluvial_illicit_capture = 8
+	deep_vein_development = -5
+	gemstone_illicit_capture = 5
+	platinum_foreign_claim_pressure = 10
+}
+
+# Output of an occupied mine. Resistance lowers it and compliance raises it
+# (both 0 to 100 per state), a damaged route and a non-core state cut it, and
+# the result never falls below the floor or rises above the cap.
+riches_found_occupied_output = {
+	schema = { any_key = yes data = fixed_point }
+	resistance_slope = 0.006
+	compliance_slope = 0.004
+	damaged_route_factor = 0.8
+	non_core_factor = 0.85
+	floor = 0.25
+	cap = 1.2
+}
+
+# Occupation choices: changes to the occupied state's engine resistance and
+# compliance (0 to 100) and the extra occupied output a requisition takes while
+# its flag holds (riches_found_refresh_mine_contribution).
+riches_found_occupation_choice = {
+	schema = { any_key = yes data = fixed_point }
+	share_revenue_resistance = -10
+	share_revenue_compliance = 8
+	keep_administration_compliance = 10
+	requisition_resistance = 10
+	requisition_output_bonus = 0.25
+	strip_resistance = 15
+}
+
+# Standing revenue route. The contribution helper multiplies an owner-held
+# mine's score by one plus central_receipts_bonus minus each share the route
+# holds back, clamped between factor_floor and factor_cap. The drift terms
+# apply once per controller pulse interval while the mine yields to its owner
+# (riches_found_apply_revenue_route_drift); dividend and local capture relief
+# stop at riches_found_threshold.illicit_capture_gate, where capture is
+# entrenched and needs an audit, an independent authority or a new
+# administration.
+riches_found_revenue_route = {
+	schema = { any_key = yes data = fixed_point }
+	central_receipts_bonus = 0.20
+	dividend_share = 0.10
+	local_revenue_share = 0.08
+	stabilization_fund_share = 0.06
+	development_fund_share = 0.05
+	housing_share = 0.04
+	participation_share = 0.04
+	patronage_leak = 0.12
+	factor_floor = 0.6
+	factor_cap = 1.25
+	central_capture_drift = 2
+	dividend_capture_drift = -2
+	dividend_order_drift = 1
+	local_capture_drift = -1
+	local_order_drift = 2
+	patronage_capture_drift = 2
+}
+
+# Foreign partner list. The scored pass keeps at most this many interested
+# actors per mine, ranked by interest; the controller may court any of them.
+riches_found_partner_list = {
+	schema = { any_key = yes data = int }
+	size = 4
+}
+
+# The Gilded Sovereignty answers and the authority's behaviour on transfer.
+# Revoke the Charter rolls success against failure (weights scaled by a
+# supplied force and by guards past the private-security gate); a failure
+# either shuts the works or brings armed claimants and outside backing.
+# Shared and governing districts cost their controller through the
+# riches_found_country_mine_authority modifier, per district.
+riches_found_gilded = {
+	schema = { any_key = yes data = fixed_point }
+	revoke_success_weight = 60
+	revoke_failure_weight = 40
+	revoke_force_success_factor = 1.5
+	revoke_autonomy_failure_factor = 2
+	revoke_closure_weight = 50
+	revoke_resistance_weight = 50
+	revoke_development_loss = -12
+	revoke_closure_autonomy = 10
+	revoke_resistance_autonomy = 15
+	revoke_resistance_foreign_claim = 15
+	revoke_retry_days = 365
+	buy_back_autonomy_ceiling = 80
+	buy_back_civilian_factories = 20
+	buy_back_political_power = 150
+	board_captured_capture = 15
+	board_captured_autonomy = 5
+	board_captured_legitimacy = 3
+	shared_political_power = -0.10
+	governing_stability = -0.02
+	governing_opinion_gain = -0.15
+	governing_law_cost = 0.15
+	continuity_order = 5
+	confront_autonomy = 10
+	confront_order = -8
+	occupier_autonomy = 15
+	transfer_offer_delay_days = 1
+	ai_recognize_base = 50
+	ai_confront_base = 50
+	ai_profile_factor = 2
+	ai_force_factor = 2
+}
+
+# Hidden abuses at a mine: the base Condemnation gain of each kind before the
+# framework's visibility and severity factors. Each kind is recorded once per
+# mine and brought to light once.
+riches_found_hidden_abuse = {
+	schema = { any_key = yes data = int }
+	security_gain = 8
+	records_gain = 6
+	corruption_gain = 5
+	gold_control_gain = 7
+	# A blocked foreign inspection of a mine holding hidden abuses (public).
+	blocked_inspection_gain = 8
+}
