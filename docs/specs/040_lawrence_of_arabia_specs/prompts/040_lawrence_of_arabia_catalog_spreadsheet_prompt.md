@@ -6,7 +6,7 @@ Update the Chaos Redux event catalog only after Event 40 implementation wording 
 
 Read:
 
-- `/home/oai/skills/spreadsheets/SKILL.md` or the active spreadsheet skill
+- the repository [chaos-redux-xlsx skill](../../../../.agents/skills/chaos-redux-xlsx/SKILL.md) and current spreadsheet-worker contract
 - `AGENTS.md` spreadsheet rules
 - `docs/specs/040_lawrence_of_arabia_specs/catalog/040_lawrence_of_arabia_catalog_alignment.md`
 - final Event 40 Event Details and evolution localisation

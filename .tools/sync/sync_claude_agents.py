@@ -19,7 +19,7 @@ also produces the four Claude Code entry points that need it:
   3. `.mcp.json` at the repo root     — the project-scoped MCP servers.
   4. `CLAUDE.md` at the repo root     — a byte-identical copy of `AGENTS.md`,
                                         written only by this generator and
-                                        gitignored. `AGENTS.md` stays canonical,
+                                        versioned. `AGENTS.md` stays canonical,
                                         so edit it and rerun this command.
 
 Run it whenever a `.codex/agents/*.toml` definition or a `.agents/skills/` skill

@@ -35,7 +35,7 @@ The goal is to keep subagents narrow, reproducible, and grounded in explicit inp
 
 ## Available project subagents
 
-Identifiers below are the canonical snake_case Codex names. The Qoder, Cursor, opencode, and Claude Code runtimes use the generated hyphen-case equivalents (for example `chaosx_repo_explorer` becomes `chaosx-repo-explorer`). Qoder mappings are written by `python .tools/sync/sync_qoder_agents.py` to the generated `.qoder/agents/README.md`. Cursor mappings are written by `python .tools/sync/sync_cursor_agents.py` to the generated `.cursor/agent-map.md`. opencode mappings are written by `python .tools/sync/sync_opencode_agents.py` to the generated `.opencode/agent-map.md`. Claude Code mappings are written by `python .tools/sync/sync_claude_agents.py` to the generated `.claude/agent-map.md`, and that same command mirrors each repo skill into `.claude/skills/` because Claude Code cannot be pointed at `.agents/skills/` directly. Every generated map file appears only after its command runs, and the generated runtime directories are gitignored, so a reader in a clean checkout has this section as the canonical mapping. Cursor agent files must stay Task-tool compatible, and Claude Code agent files must stay `Agent`-tool compatible: one Markdown file per agent in the runtime's `agents/` folder, YAML frontmatter, then the prompt body, with no non-agent Markdown in that folder.
+Identifiers below are the canonical snake_case Codex names. The Qoder, Cursor, opencode, and Claude Code runtimes use the generated hyphen-case equivalents (for example `chaosx_repo_explorer` becomes `chaosx-repo-explorer`). Qoder mappings are written by `python .tools/sync/sync_qoder_agents.py` to the generated `.qoder/agents/README.md`. Cursor mappings are written by `python .tools/sync/sync_cursor_agents.py` to the generated `.cursor/agent-map.md`. opencode mappings are written by `python .tools/sync/sync_opencode_agents.py` to the generated `.opencode/agent-map.md`. Claude Code mappings are written by `python .tools/sync/sync_claude_agents.py` to the generated `.claude/agent-map.md`, and that same command mirrors each repo skill into `.claude/skills/` because Claude Code cannot be pointed at `.agents/skills/` directly. Claude Code generated agent files, `.claude/agent-map.md`, and the root `CLAUDE.md` are versioned for clean-checkout discovery. Claude Code skill mirrors remain local, while generated Qoder, Cursor, and opencode runtime directories remain gitignored; their map files appear after the corresponding sync command runs. This section remains the canonical cross-runtime mapping. Cursor agent files must stay Task-tool compatible, and Claude Code agent files must stay `Agent`-tool compatible: one Markdown file per agent in the runtime's `agents/` folder, YAML frontmatter, then the prompt body, with no non-agent Markdown in that folder.
 
 DSH composes subagents at runtime through its delegation tool and loads no agent definition files, so there is no DSH agent map and no DSH generator. DSH also does not read `.codex/agents/*.toml`, so a named role does not arrive with the model its TOML names. Treat the canonical snake_case identifiers below as the named roles a DSH parent instantiates by writing the role boundaries into a fully explicit, self-contained delegation prompt.
 
@@ -79,7 +79,7 @@ Use `chaosx_event_completion_auditor` for read-only spec-versus-implementation a
 
 Use `chaosx_ai_probability_auditor` for read-only audits of AI weights, MTTH, event `ai_chance`, random lists, focus and research selection, decision and mission scores, AI strategy factors, and declared custom weighted pools. It must use the HOI4 MCP probability workflow and return scenario-specific evidence; do not treat a focus, decision, country, or completion audit as a substitute for this specialized pass.
 
-Use `chaosx_spreadsheet_doc_worker` only for the event catalog workbook at `docs/spreadsheets/chaos_redux_events_catalog.xlsx`. It uses the xlsx/spreadsheet skill, keeps the workbook player-facing, and matches event log, event detail, evolution detail, and cluster detail fields to the in-game wording.
+Use `chaosx_spreadsheet_doc_worker` only for the event catalog workbook at `docs/spreadsheets/chaos_redux_events_catalog.xlsx`. It uses the `chaos-redux-xlsx` skill, keeps the workbook player-facing, and matches event log, event detail, evolution detail, and cluster detail fields to the in-game wording.
 
 Use `chaosx_skill_maintainer` for skill creation, skill cleanup, routing updates, and multi-skill consistency work when a task reveals a reusable workflow, repeated mistake, repo-specific convention, validation pattern, asset or prompt pattern, or implementation rule that belongs in a repo skill. The role is runtime-neutral: it owns the skill files themselves, so it behaves the same in every runtime and is spawned by the same canonical snake_case identifier that the Qoder, Cursor, opencode, and Claude Code runtimes map to their hyphen-case equivalents.
 
@@ -390,7 +390,8 @@ The parent prompt should provide event ids, row targets, source localisation key
 The worker should read only:
 
 - the parent prompt
-- the xlsx/spreadsheet skill
+- the `chaos-redux-xlsx` skill
+- `docs/spreadsheets/README.md` for the catalog authority and schema contract
 - the event catalog workbook
 - the localisation or scripted localisation needed to mirror player-facing event log, event detail, evolution detail, or cluster wording
 - named source files explicitly provided by the parent

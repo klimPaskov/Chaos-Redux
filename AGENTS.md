@@ -80,6 +80,7 @@ Use repo skills as required implementation guidance.
 - Use `chaosx_event_ui_worker` when a named event specifically introduces a dedicated scripted GUI or mechanic window. It follows the reference-image and layout rules in `chaos-redux-scripted-gui`, and must use the HOI4 MCP GUI inspect, render, and post-change comparison workflow. Never route the shared event log, event-details framework, settings UI, super-event framework, shared registries, or unrelated existing UIs to this worker.
 - Use `chaos-redux-mtth` when MTTH logic or weighted timing would reduce clutter or make AI and release logic clearer.
 - Use `chaos-redux-subagents` when coordinating project custom subagents, routing bounded work, or defining parent/subagent ownership boundaries.
+- Use `chaos-redux-xlsx` for Chaos Redux spreadsheet work, including the event catalog, doctrine workbook, formatting, formulas, and catalog exports.
 - Use `chaos-redux-improvement-loop` when an implemented or planned mechanic needs recursive depth expansion, spec addenda, improvement handoffs, or checks for shallow, duplicated, generic, disconnected, or low-impact content.
 - Use `chaos-redux-save-inspection` whenever the user supplies a save, and when runtime state would settle a question that source reading cannot: why a decision or focus is unavailable, what an action changed, whether state survives save and reload, what the AI did, whether script state leaks, or how an engine rule behaves.
 

@@ -24,7 +24,7 @@ DSH is documented in [`docs/runtimes.md`](../docs/runtimes.md), which covers its
 The Codex agent TOMLs in `.codex/agents/` are the single authoring source for every custom subagent.
 Qoder, Cursor, opencode, and Claude Code definitions are generated files.
 Never hand-edit a generated `.qoder/agents/*.md`, `.cursor/agents/*.md`, `.opencode/agent/*.md`, or `.claude/agents/*.md` file.
-Never edit the generated repo-root `CLAUDE.md`: it is a copy of `AGENTS.md` and is gitignored.
+Never hand-edit the generated repo-root `CLAUDE.md`: it is a versioned copy of `AGENTS.md`.
 Edit the TOML source or the canonical `.agents/skills/<name>/SKILL.md`, then regenerate the affected runtimes:
 
 ```text
@@ -52,11 +52,11 @@ Do not treat `.codex/agents/*.toml` as Cursor subagent prompts.
 
 Claude Code reads `CLAUDE.md`, not `AGENTS.md`, so `sync_claude_agents.py` writes the repo-root `CLAUDE.md` as a byte-identical copy of `AGENTS.md`.
 Rerun that generator after any `AGENTS.md` change.
-`AGENTS.md` stays canonical and `CLAUDE.md` is gitignored, so the copy is never edited or committed.
+`AGENTS.md` stays canonical; regenerate and commit `CLAUDE.md` with its source changes.
 Claude Code also has no option to point at an external skills folder, so `.tools/sync/sync_claude_agents.py` mirrors each `.agents/skills/<name>` into `.claude/skills/<name>` as a Windows junction.
 The junction is transparent, so a skill's bundled `assets/` and `tools/` stay readable and the skill content stays single-sourced.
 Run the generator with `--mode copy` on a machine or archive where junctions are unavailable.
-`.claude/agents/*.md` uses `description`, `model: inherit`, and the prompt body, and no `tools:` allowlist, so the prompt body is the scope contract just as it is for Cursor and opencode.
+`.claude/agents/*.md` uses `description`, the role's fixed `opus` or `sonnet` tier from the generator, and the prompt body, and no `tools:` allowlist, so the prompt body is the scope contract just as it is for Cursor and opencode.
 
 opencode has no Codex-style tool allowlist either, and it reads skills through the `skills.paths` entry in `.opencode/opencode.json` instead of a mirrored folder.
 
@@ -75,7 +75,7 @@ Codex-only keys such as approval modes and tool allowlists have no equivalent in
 ### Anti-interference and instruction changes
 
 During a Qoder, Cursor, opencode, Claude Code, or DSH session, treat `.codex/**` as read-only reference.
-During a Codex session, leave `.qoder/**`, generated `.cursor/agents/**`, `.opencode/agent/**`, and `.claude/**` untouched.
+During a Codex session, leave `.qoder/**`, generated `.cursor/agents/**`, `.opencode/agent/**`, and `.claude/**` untouched unless the user's request authorizes changes or synchronization for that runtime.
 Any subagent instruction change lands in the TOML first, then propagates through the sync scripts.
-An `AGENTS.md` change propagates to `CLAUDE.md` the same way, by rerunning `python .tools/sync/sync_claude_agents.py`; the generated copy is never committed.
+An `AGENTS.md` change propagates to `CLAUDE.md` the same way, by rerunning `python .tools/sync/sync_claude_agents.py`; commit the generated copy with the source change.
 The same rule applies to skill changes: edit `.agents/skills/<name>/SKILL.md` and let the generators re-link it.

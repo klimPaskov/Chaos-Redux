@@ -811,7 +811,7 @@ Maintain the gameplay-facing event table in:
 
 Rules:
 
-- use the `xlsx` skill
+- use the `chaos-redux-xlsx` skill
 - `docs/spreadsheets/chaos_redux_events_catalog.xlsx` is the only editable catalog source
 - after every successful workbook save, run `python .tools/export_event_catalog_csv.py` from the mod root
 - the exporter overwrites `chaos_redux_events_catalog.csv`, `chaos_redux_clusters_catalog.csv`, and `chaos_redux_scenarios_catalog.csv`
