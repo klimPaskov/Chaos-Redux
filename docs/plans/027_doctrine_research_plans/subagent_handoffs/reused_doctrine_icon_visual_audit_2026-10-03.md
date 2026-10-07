@@ -2,6 +2,13 @@
 
 Audit date: 2026-10-03.
 
+Current asset exception: the user's October 7 instruction restores `GFX_doctrine_chaos_warfare_medium` at `gfx/interface/doctrines/icons/doctrine_chaos_warfare.dds` to the exact historical flaming-skull texture.
+The restored SHA-256 is `af90fd785c56719867f84ddb7f011bd05811f1c0e2a8fddaabc43aa0dd7908ad`, 64x64 with seven preserved mip levels.
+The October 3 row, one-level-container census and generated/processed PNG links below remain evidence for that audit snapshot; they do not describe this restored main-emblem exception.
+Its current source and decoded before/after evidence are in `docs/plans/chaos_warfare_system_plans/subagent_handoffs/2026-10-07_restore_main_doctrine_emblem.md` and `docs/testing/2026-10-07_main_doctrine_emblem/evidence.json`.
+Sprite identity, Event 027 alias and all other doctrine art are unchanged.
+
+
 Disposition: source-level asset and visual audit complete for the current Event 027 English text-icon references. Native Event 027 option rendering remains `needs_user_review` because no current HOI4 render artifact was returned.
 
 Scope: only the reused native doctrine icons referenced by `localisation/english/027_doctrine_research_l_english.yml`. The separate achievement repair package and its nine achievement DDS files were excluded. No runtime, GFX, doctrine, technology, localization, index, or gameplay files were edited. No new art was generated and no Vanilla icon was changed.
