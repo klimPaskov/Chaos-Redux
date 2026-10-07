@@ -185,6 +185,11 @@ When a source audit or fixture cannot model this call-frame lifetime, report it 
 For shared dispatchers, locate the matching authorization gate and recursively inspect its body and invoked helpers for actual dispatch and accounting, including package-specific nested branches.
 A flat block-shape assertion or literal marker match does not establish that execution coverage.
 
+Native effect loops stop after 1,000 iterations, so pending-queue recovery must preserve the unvisited suffix and every unacknowledged receipt rather than clear the whole queue and rebuild only visited rows.
+Process a bounded batch by popping each selected row before recovery and appending unresolved rows behind the unvisited suffix, without adding a world scan.
+Clear a receipt only after its matching recovery is acknowledged.
+Actual-source fixtures must enforce the native loop ceiling and verify more than 1,000 queued rows across repeated invocations, unresolved-row rotation, and receipt preservation.
+
 ## Event anatomy
 
 - entry event: the canonical `chaosx.nr<ID>.1` start

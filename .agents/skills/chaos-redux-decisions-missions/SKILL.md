@@ -239,6 +239,9 @@ Each resource's cost colour/display selector must call the same authoritative in
 Do not copy strict, deprecated, or inexact reserve/equipment predicates into display logic.
 Check agreement just below, exactly at, and just above the quoted cost.
 
+For pending-payment actions, use one authoritative pure preflight for cost display, hover text, and availability that requires a positive record ID, matching actor and target, the correct transaction phase, and an existing positive actual-paid field.
+A pointer's presence alone must neither expose a pending-payment quote nor authorize fresh payment when the referenced record is malformed.
+
 When accepted design requires emergency resolution to remain available while every other recovery is unaffordable, do not gate it on full nominal reserves. Bound each actual fee by its nominal fee and the nonnegative current reserve, show the actual quote with matching texticons, and recompute all fees together before any debit, then charge that coherent quote once. Avoid hidden partial payments and threshold fee-waiver cliffs. For variable-fee emergency actions, use an `ai_hint_pp_cost` matching the actual quote only if that input form is verified as supported, otherwise omit the fixed nominal hint so a zero quote remains available to AI at zero political power. Never assume `ai_hint_pp_cost` accepts dynamic values. Verify exact numeric reader tokens in installed dynamic-variable documentation rather than assuming a display or stat name: `has_political_power`, `has_stability`, and `has_war_support` are documented readers, while raw `war_support` is not a documented built-in reader. This does not forbid a custom normal variable named `war_support`. Make final resolution and cleanup idempotent with a closed-state guard, and require queued work and late timed callbacks to match the active context before invoking cleanup. Preserve earned finite aftermath until its intended expiry and retain achievement receipts when removing active-crisis state.
 
 ### Refundable native political-power credit receipts
@@ -988,6 +991,7 @@ When source contract tests cover a paid action, execute the real selector, actio
 Restrict mocks to native primitives or explicitly out-of-scope consumers, and record those boundaries in the evidence.
 Assert the actual native flag identifier, requested cooldown duration, and write count on success, rejection, refund, and repeated invocation where applicable; a mocked success counter does not prove that the production mapper has the required branch.
 Do not replace a required production helper with a no-op solely to pass a loader error; fix the test loader or report the uncovered path.
+Exercise the production pending-payment preflight and display/gate consumers with valid records, presence-only pointers, nonpositive IDs, actor/target or phase mismatches, and missing or nonpositive actual-paid fields, asserting display/gate agreement, no fabricated quote or fresh debit on rejection, and no durable-state mutation by the preflight.
 These source tests do not establish native engine execution or timed expiry.
 
 ## Improvement addenda for decisions and mechanic windows
