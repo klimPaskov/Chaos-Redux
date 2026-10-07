@@ -48,13 +48,19 @@ gods_of_africa_victor_request_epoch_is_current = {
 	check_variable = { gods_of_africa_victor_request_epoch = event_target:africa_host.gods_of_africa_authority_epoch }
 }
 
-# A defeated Scramble also uses the settled enum; it is not continental victory.
+# Initial continental formation precedes the Scramble and its final settlement.
+# A defeated Scramble also uses the settled enum; it is not secured victory.
+# The applied World scenario declares a post-security starting phase separately.
 gods_of_africa_continent_is_secured = {
 	OR = {
-		has_country_flag = africa_continental_settlement_complete
 		AND = {
 			africa_scramble_phase_is_settled = yes
 			NOT = { has_global_flag = africa_scramble_response_defeat }
+		}
+		AND = {
+			has_country_flag = africa_triggerable_scenario_applied
+			has_variable = africa_triggerable_scenario_type
+			check_variable = { africa_triggerable_scenario_type = constant:triggerable_scenario_africa_type.world_is_one }
 		}
 	}
 }

@@ -223,6 +223,13 @@ africa_triggerable_scenario_apply_continental_opening = {
 # boundary used by the normal Evolution-I path.
 africa_triggerable_scenario_apply_africa_is_one_opening = {
 	africa_triggerable_scenario_apply_continental_opening = yes
+	# This scenario begins after the founding proof. Seed its chronology only,
+	# without replaying the proof reward, action, achievement or report owners.
+	if = {
+		limit = { NOT = { africa_focus_first_proof_satisfied = yes } }
+		set_country_flag = africa_first_proof_succeeded
+		clr_country_flag = africa_first_proof_pending
+	}
 	# The manual scenario intentionally bypasses the ordinary Evolution-I
 	# readiness checks, but Gods still requires the chronology receipt. Seed that
 	# receipt without replaying the normal Evolution-I popup/reward package, then

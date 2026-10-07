@@ -29,7 +29,10 @@ That callback appends victory history before exemption and captures its latest d
 No faction member, annexer, or generic war relation substitutes for the native winner.
 
 `gods_of_africa_continent_is_secured` distinguishes actual continental settlement from a defeated Scramble's settled enum.
-It requires either the explicit continental-settlement receipt or a settled Scramble without its defeat response.
+It requires a settled Scramble without its defeat response, or the explicit applied World Is One scenario type.
+Initial continental formation does not prove security; the normal formation and Evolution I owners both call the same idempotent initializer, so whichever occurs second can begin the existing consolidation interval.
+The Africa Is One scenario seeds first-proof and Evolution I chronology without replaying their rewards.
+An applied World Is One scenario is a separate post-security starting phase and cannot start new tribute through a later Evolution I callback.
 The owner finalizes retained history when the continent is secured during consolidation and does not begin ordinary tribute in that case.
 
 Both ownership and actual control of an African host-core state block ordinary pardon and personal victor renewal.

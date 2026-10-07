@@ -14,7 +14,8 @@ The physical-return helper checks uncapitulated status, current capital ownershi
 The latter's definition in `common/scripted_triggers/012_africa_triggers.txt` reads only the current country's succeeded/recovered flags and has no ROOT dependency.
 Action gates for start, invite, finish, resume, and the trusted scheduler additionally require `tag = ROOT`.
 
-The parent supplies `gods_of_africa_continent_is_secured`: explicit `africa_continental_settlement_complete` or settled Scramble phase without `africa_scramble_response_defeat`.
+`gods_of_africa_continent_is_secured` requires a settled Scramble without `africa_scramble_response_defeat`, or the explicit applied World Is One scenario type.
+The initial `africa_continental_settlement_complete` flag records formation and does not prove final security.
 The generic owner validator and an already authorized epoch deliberately permit the new secured witness so the parent's one-use final-settlement endpoint remains reachable.
 Initial epoch authorization and original-host recovery exclude the exact secured witness.
 The final-settlement receipt excludes subsequent operation.

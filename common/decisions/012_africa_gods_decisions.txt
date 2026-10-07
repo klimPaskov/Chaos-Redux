@@ -1631,57 +1631,32 @@ gods_of_africa_host_category = {
 		}
 	}
 
+	# One owner action closes and grades the whole census; target rows would
+	# repeat the same batch and could appear before its secured endpoint.
 	gods_of_africa_commit_settlement = {
 		name = gods_of_africa_commit_settlement
 		desc = gods_of_africa_commit_settlement_desc
 		icon = GFX_goal_012_africa_gods_continental_settlement
-		target_array = gods_of_africa_participants
-		activation = {
-			gods_of_africa_active_host_is_valid = yes
-		}
-		target_root_trigger = {
-			gods_of_africa_active_host_is_valid = yes
-			OR = {
-				has_country_flag = gods_of_africa_focus_final_council_unlocked
-				has_country_flag = gods_of_africa_focus_settlement_complete
-			}
-		}
-		target_trigger = {
-			FROM = {
-				exists = yes
-				has_country_flag = gods_of_africa_participant
-				gods_of_africa_participant_generation_is_current = yes
-				has_event_target = africa_host
-				event_target:africa_host = {
-					has_country_flag = africa_continental_settlement_complete
-				}
-				NOT = { has_country_flag = gods_of_africa_final_outcome_committed }
-			}
-		}
 		visible = {
 			gods_of_africa_active_host_is_valid = yes
+			gods_of_africa_continent_is_secured = yes
 			OR = {
 				has_country_flag = gods_of_africa_focus_final_council_unlocked
 				has_country_flag = gods_of_africa_focus_settlement_complete
 			}
 		}
 		available = {
-			FROM = {
-				exists = yes
-				has_country_flag = gods_of_africa_participant
-				gods_of_africa_participant_generation_is_current = yes
-				has_event_target = africa_host
-				event_target:africa_host = {
-					has_country_flag = africa_continental_settlement_complete
-				}
-				NOT = { has_country_flag = gods_of_africa_final_outcome_committed }
+			hidden_trigger = { gods_of_africa_active_host_is_valid = yes }
+			custom_trigger_tooltip = {
+				tooltip = gods_of_africa_secured_settlement_required_tt
+				hidden_trigger = { gods_of_africa_continent_is_secured = yes }
 			}
 		}
 		cost = 0
 		fire_only_once = no
 		complete_effect = {
 			custom_effect_tooltip = gods_of_africa_commit_settlement_effect_tt
-			hidden_effect = { FROM = { gods_of_africa_commit_settlement = yes } }
+			hidden_effect = { gods_of_africa_commit_final_settlement = yes }
 		}
 		ai_will_do = { base = 1 }
 	}
