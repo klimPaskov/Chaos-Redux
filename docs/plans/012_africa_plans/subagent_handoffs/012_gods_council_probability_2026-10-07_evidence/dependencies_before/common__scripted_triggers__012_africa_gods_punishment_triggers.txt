@@ -1,0 +1,142 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 012 GODS OF AFRICA PUNISHMENT FAMILIES AND ULTIMATUM
+# ============================================================================
+# Validity checks for the punishment families chosen by
+# gods_of_africa_select_punishment_family, the staged final ultimatum, and the
+# Let the World Answer coalition shipment (decision L26). The tier is decided
+# first by intent and Africa's Strength in gods_of_africa_evaluate_punishment;
+# nothing here can raise it.
+# ============================================================================
+
+# COUNTRY scope on a participant during a punishment; the caller sets the
+# temporary gods_of_africa_punishment_family_to_check and the participant holds
+# gods_of_africa_pending_punishment_tier.
+gods_of_africa_punishment_family_is_valid = {
+	has_event_target = africa_host
+	OR = {
+		check_variable = { gods_of_africa_punishment_family_to_check = constant:gods_of_africa_punishment_family.pressure }
+		check_variable = { gods_of_africa_punishment_family_to_check = constant:gods_of_africa_punishment_family.diplomatic }
+		check_variable = { gods_of_africa_punishment_family_to_check = constant:gods_of_africa_punishment_family.stockpile }
+		# Resistance exists only in occupied territory.
+		AND = {
+			check_variable = { gods_of_africa_punishment_family_to_check = constant:gods_of_africa_punishment_family.unrest }
+			any_controlled_state = { NOT = { is_owned_by = PREV } }
+		}
+		AND = {
+			check_variable = { gods_of_africa_punishment_family_to_check = constant:gods_of_africa_punishment_family.infrastructure }
+			NOT = { check_variable = { gods_of_africa_pending_punishment_tier < constant:gods_of_africa_punishment.disruption } }
+		}
+		# Reach Beyond the Coast opens covert and logistical retaliation.
+		AND = {
+			OR = {
+				check_variable = { gods_of_africa_punishment_family_to_check = constant:gods_of_africa_punishment_family.covert }
+				check_variable = { gods_of_africa_punishment_family_to_check = constant:gods_of_africa_punishment_family.logistical }
+			}
+			NOT = { check_variable = { gods_of_africa_pending_punishment_tier < constant:gods_of_africa_punishment.disruption } }
+			event_target:africa_host = { has_country_flag = gods_of_africa_focus_judgment_reach_unlocked }
+		}
+		# The Hand of Judgment opens military losses and, from Crisis, disaster.
+		AND = {
+			check_variable = { gods_of_africa_punishment_family_to_check = constant:gods_of_africa_punishment_family.military }
+			NOT = { check_variable = { gods_of_africa_pending_punishment_tier < constant:gods_of_africa_punishment.disruption } }
+			event_target:africa_host = { has_country_flag = gods_of_africa_focus_judgment_unlocked }
+		}
+		AND = {
+			check_variable = { gods_of_africa_punishment_family_to_check = constant:gods_of_africa_punishment_family.disaster }
+			NOT = { check_variable = { gods_of_africa_pending_punishment_tier < constant:gods_of_africa_punishment.crisis } }
+			event_target:africa_host = { has_country_flag = gods_of_africa_focus_judgment_unlocked }
+		}
+	}
+}
+
+# COUNTRY scope on a participant. The family was used against it within the
+# repeat window (spec PUN-12).
+gods_of_africa_punishment_family_is_recent = {
+	has_variable = gods_of_africa_last_punishment_family
+	check_variable = { gods_of_africa_last_punishment_family = gods_of_africa_punishment_family_to_check }
+	has_variable = gods_of_africa_last_punishment_family_day
+	set_temp_variable = { gods_of_africa_punishment_repeat_until = gods_of_africa_last_punishment_family_day }
+	add_to_temp_variable = { gods_of_africa_punishment_repeat_until = constant:gods_of_africa_punishment_scope.repeat_window_days }
+	check_variable = { var = global.num_days value = gods_of_africa_punishment_repeat_until compare = less_than }
+}
+
+# Temporary gods_of_africa_punishment_family_to_check strikes named states.
+gods_of_africa_punishment_family_targets_states = {
+	OR = {
+		check_variable = { gods_of_africa_punishment_family_to_check = constant:gods_of_africa_punishment_family.unrest }
+		check_variable = { gods_of_africa_punishment_family_to_check = constant:gods_of_africa_punishment_family.infrastructure }
+		check_variable = { gods_of_africa_punishment_family_to_check = constant:gods_of_africa_punishment_family.covert }
+		check_variable = { gods_of_africa_punishment_family_to_check = constant:gods_of_africa_punishment_family.logistical }
+	}
+}
+
+# COUNTRY scope on a participant. Its latest answer refused or failed a demand
+# for material: equipment, fuel, or manpower.
+gods_of_africa_last_answer_withheld_material = {
+	has_variable = gods_of_africa_last_response_kind
+	OR = {
+		check_variable = { gods_of_africa_last_response_kind = constant:gods_of_africa_history_kind.refusal }
+		check_variable = { gods_of_africa_last_response_kind = constant:gods_of_africa_history_kind.failure }
+	}
+	has_variable = gods_of_africa_last_response_family
+	set_temp_variable = { gods_of_africa_family_to_check = gods_of_africa_last_response_family }
+	gods_of_africa_family_needs_measured_transfer = yes
+}
+
+# COUNTRY scope on a participant. Africa's final ultimatum is waiting for an
+# answer.
+gods_of_africa_final_ultimatum_is_open = {
+	gods_of_africa_participant_generation_is_current = yes
+	has_country_flag = gods_of_africa_final_ultimatum_pending
+	has_variable = gods_of_africa_final_ultimatum_due_day
+	check_variable = { var = global.num_days value = gods_of_africa_final_ultimatum_due_day compare = less_than }
+}
+
+# COUNTRY scope on a participant. There is African land to hand back or a war
+# with Africa to end.
+gods_of_africa_ultimatum_has_land_or_war = {
+	OR = {
+		gods_of_africa_ai_holds_african_core = yes
+		has_war_with = event_target:africa_host
+	}
+}
+
+gods_of_africa_ultimatum_settlement_is_affordable = {
+	NOT = { has_political_power < constant:gods_of_africa_ultimatum.settlement_pp }
+	set_temp_variable = { gods_of_africa_ultimatum_equipment_needed = constant:gods_of_africa_ultimatum.settlement_equipment }
+	add_to_temp_variable = { gods_of_africa_ultimatum_equipment_needed = constant:gods_of_africa_ultimatum.settlement_equipment_reserve }
+	NOT = { has_equipment = { infantry_equipment < gods_of_africa_ultimatum_equipment_needed } }
+}
+
+# COUNTRY scope on the host. Let the World Answer can send a shipment now.
+gods_of_africa_host_can_arm_coalition = {
+	gods_of_africa_active_host_is_valid = yes
+	has_country_flag = gods_of_africa_focus_sanctions_unlocked
+	NOT = { gods_of_africa_ai_africa_is_collapsing = yes }
+	NOT = { has_political_power < constant:gods_of_africa_coalition.pp_cost }
+	set_temp_variable = { gods_of_africa_coalition_stock_needed = constant:gods_of_africa_coalition.equipment }
+	add_to_temp_variable = { gods_of_africa_coalition_stock_needed = constant:gods_of_africa_coalition.host_reserve }
+	NOT = { has_equipment = { infantry_equipment < gods_of_africa_coalition_stock_needed } }
+}
+
+# COUNTRY scope on a participant (FROM of the coalition decision). A defiant
+# government or proven offender fighting someone Africa is not fighting, and
+# not armed against within the cooldown.
+gods_of_africa_coalition_target_is_valid = {
+	gods_of_africa_participant_generation_is_current = yes
+	OR = {
+		has_country_flag = gods_of_africa_defiant
+		has_country_flag = gods_of_africa_offender
+		gods_of_africa_ai_holds_african_core = yes
+	}
+	any_enemy_country = {
+		exists = yes
+		NOT = { has_capitulated = yes }
+		NOT = { tag = event_target:africa_host }
+		NOT = { has_war_with = event_target:africa_host }
+	}
+	OR = {
+		NOT = { has_variable = gods_of_africa_coalition_due_day }
+		check_variable = { var = global.num_days value = gods_of_africa_coalition_due_day compare = greater_than_or_equals }
+	}
+}

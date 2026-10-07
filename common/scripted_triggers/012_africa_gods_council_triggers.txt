@@ -1,0 +1,97 @@
+# Event 012 Final Council shipment contracts.
+# COUNTRY scope on the participant. Price and reserve remain the existing
+# Council constants; a partly paid pledge retains its exact unpaid balance.
+
+gods_of_africa_council_response_phase_is_open = {
+	gods_of_africa_council_is_open = yes
+	NOR = {
+		has_country_flag = gods_of_africa_demand_active
+		has_country_flag = gods_of_africa_negotiation_open
+		has_country_flag = gods_of_africa_reconciliation_pending
+		has_country_flag = gods_of_africa_final_ultimatum_pending
+	}
+}
+
+gods_of_africa_council_pledge_context_is_current = {
+	has_country_flag = gods_of_africa_council_pledge_pending
+	gods_of_africa_participant_epoch_is_current = yes
+	has_variable = gods_of_africa_council_pledge_participant_id
+	has_variable = gods_of_africa_council_pledge_host
+	has_variable = gods_of_africa_council_pledge_host_id
+	has_variable = gods_of_africa_council_pledge_origin_id
+	has_variable = gods_of_africa_council_pledge_generation
+	has_variable = gods_of_africa_council_pledge_epoch
+	has_variable = gods_of_africa_council_pledge_total
+	has_variable = gods_of_africa_council_pledge_remaining
+	has_variable = gods_of_africa_council_pledge_reserve
+	check_variable = { gods_of_africa_council_pledge_participant_id = THIS.id }
+	check_variable = { gods_of_africa_council_pledge_host = event_target:africa_host }
+	check_variable = { gods_of_africa_council_pledge_host_id = event_target:africa_host.id }
+	check_variable = { gods_of_africa_council_pledge_origin_id = event_target:africa_host.africa_origin_host_id }
+	check_variable = { gods_of_africa_council_pledge_generation = event_target:africa_host.africa_host_generation }
+	check_variable = { gods_of_africa_council_pledge_epoch = event_target:africa_host.gods_of_africa_authority_epoch }
+	check_variable = { gods_of_africa_council_pledge_total > constant:gods_of_africa_value.zero }
+	check_variable = { var = gods_of_africa_council_pledge_remaining value = constant:gods_of_africa_value.zero compare = greater_than_or_equals }
+	check_variable = { var = gods_of_africa_council_pledge_remaining value = gods_of_africa_council_pledge_total compare = less_than_or_equals }
+	check_variable = { var = gods_of_africa_council_pledge_reserve value = constant:gods_of_africa_value.zero compare = greater_than_or_equals }
+	var:gods_of_africa_council_pledge_host = { exists = yes }
+}
+
+gods_of_africa_council_material_is_accounted = {
+	NOR = {
+		has_country_flag = gods_of_africa_material_transaction_unresolved
+		has_country_flag = gods_of_africa_material_transfer_prepared
+		has_country_flag = gods_of_africa_material_transfer_receipt_pending
+	}
+}
+
+gods_of_africa_council_pledge_retry_is_ready = {
+	OR = {
+		NOT = { has_variable = gods_of_africa_council_pledge_retry_day }
+		check_variable = { var = global.num_days value = gods_of_africa_council_pledge_retry_day compare = greater_than_or_equals }
+	}
+}
+
+gods_of_africa_council_pledge_can_be_paid = {
+	gods_of_africa_council_response_phase_is_open = yes
+	gods_of_africa_contribution_sender_is_current = yes
+	gods_of_africa_council_material_is_accounted = yes
+	gods_of_africa_council_pledge_retry_is_ready = yes
+	gods_of_africa_council_pledge_is_affordable = yes
+	OR = {
+		NOT = { gods_of_africa_council_pledge_context_is_current = yes }
+		check_variable = { gods_of_africa_council_pledge_remaining > constant:gods_of_africa_value.zero }
+	}
+}
+
+# A zero-delivery quote is still reversible. A paid portion or an unresolved
+# shipment cannot be abandoned by buying the alternative political speech.
+gods_of_africa_council_speech_can_replace_pledge = {
+	# Missing live terms must not bypass a retained native-accounting hold.
+	gods_of_africa_council_material_is_accounted = yes
+	OR = {
+		NOT = { gods_of_africa_council_pledge_context_is_current = yes }
+		AND = {
+			gods_of_africa_council_pledge_context_is_current = yes
+			check_variable = { gods_of_africa_council_pledge_remaining = gods_of_africa_council_pledge_total }
+		}
+	}
+}
+
+gods_of_africa_council_speech_can_be_made = {
+	gods_of_africa_council_response_phase_is_open = yes
+	gods_of_africa_council_speech_can_replace_pledge = yes
+	gods_of_africa_council_speech_is_affordable = yes
+}
+
+# Only the synchronous Council shipment owner sets this purpose flag.
+# The ordinary voluntary-aid lane explicitly excludes it.
+gods_of_africa_contribution_council_context_is_current = {
+	has_country_flag = gods_of_africa_council_pledge_transfer
+	gods_of_africa_council_response_phase_is_open = yes
+	gods_of_africa_council_pledge_context_is_current = yes
+	check_variable = { gods_of_africa_contribution_kind = constant:gods_of_africa_contribution_kind.infantry }
+	check_variable = { gods_of_africa_contribution_requested = gods_of_africa_council_pledge_remaining }
+	check_variable = { gods_of_africa_contribution_requested > constant:gods_of_africa_value.zero }
+	gods_of_africa_council_pledge_is_affordable = yes
+}

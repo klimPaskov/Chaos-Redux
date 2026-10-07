@@ -1,0 +1,321 @@
+# Event 012 Gods original-owner congress and local authority epochs.
+# Country-object validators are independent of native ROOT. Action gates alone
+# require host ROOT. Temporary recount outputs are unscoped and caller-owned.
+
+gods_of_africa_authority_owner_object_is_current = {
+	exists = yes
+	has_event_target = africa_host
+	tag = event_target:africa_host
+	has_country_flag = africa_unifier_host
+	has_country_flag = africa_host_commit_completed
+	has_variable = africa_host_generation
+	has_variable = africa_origin_host_id
+	has_global_flag = africa_event_active
+	has_global_flag = africa_is_one
+	has_global_flag = africa_evolution_i_logged
+	NOT = { has_global_flag = africa_event_resolved }
+	NOT = { has_global_flag = world_end }
+	NOT = { has_global_flag = world_end_africa_the_world }
+	NOT = { has_global_flag = africa_host_transfer_pending }
+	NOT = { has_global_flag = africa_host_transfer_suspended }
+	NOT = { has_country_flag = africa_terminal_world_actor }
+	NOT = { has_country_flag = event_012_incompatible_terminal_actor }
+	NOT = { has_country_flag = gods_of_africa_final_settlement_committed }
+	# A live authorized epoch must still reach its one-use final settlement.
+	# Secured-continent proof is excluded at new-grant gates, not here.
+}
+
+gods_of_africa_authority_owner_has_physical_return = {
+	NOT = { has_capitulated = yes }
+	capital_scope = {
+		is_owned_by = PREV
+		is_controlled_by = PREV
+	}
+	africa_focus_first_proof_satisfied = yes
+}
+
+gods_of_africa_epoch_permission_is_current = {
+	gods_of_africa_authority_owner_object_is_current = yes
+	gods_of_africa_authority_owner_has_physical_return = yes
+	has_country_flag = gods_of_africa_epoch_authorized
+	NOT = { has_country_flag = gods_of_africa_cancelled_on_unifier_loss }
+	has_variable = gods_of_africa_authority_epoch
+	check_variable = { gods_of_africa_authority_epoch > constant:gods_of_africa_value.zero }
+	has_variable = gods_of_africa_authority_host_id
+	has_variable = gods_of_africa_authority_origin_host_id
+	has_variable = gods_of_africa_authority_host_generation
+	check_variable = { var = gods_of_africa_authority_host_id value = THIS.id compare = equals }
+	check_variable = { var = gods_of_africa_authority_origin_host_id value = africa_origin_host_id compare = equals }
+	check_variable = { var = gods_of_africa_authority_host_generation value = africa_host_generation compare = equals }
+}
+
+gods_of_africa_original_host_recovery_is_open = {
+	NOT = { has_country_flag = gods_of_africa_original_owner_annexed }
+	gods_of_africa_authority_owner_object_is_current = yes
+	# Final security is a successful Scramble or the exact applied World scenario.
+	NOT = { gods_of_africa_continent_is_secured = yes }
+	NOT = { has_global_flag = africa_host_successor_consumed }
+	check_variable = { var = THIS.id value = africa_origin_host_id compare = equals }
+	has_country_flag = gods_of_africa_cancelled_on_unifier_loss
+	NOT = { has_country_flag = gods_of_africa_epoch_authorized }
+	has_variable = gods_of_africa_authority_epoch
+	has_variable = gods_of_africa_authority_host_id
+	has_variable = gods_of_africa_authority_origin_host_id
+	has_variable = gods_of_africa_authority_host_generation
+	check_variable = { var = gods_of_africa_authority_host_id value = THIS.id compare = equals }
+	check_variable = { var = gods_of_africa_authority_origin_host_id value = africa_origin_host_id compare = equals }
+	check_variable = { var = gods_of_africa_authority_host_generation value = africa_host_generation compare = equals }
+	has_variable = gods_of_africa_loss_sequence
+	has_variable = gods_of_africa_loss_epoch
+	check_variable = { gods_of_africa_loss_sequence > constant:gods_of_africa_value.zero }
+	check_variable = { var = gods_of_africa_loss_epoch value = gods_of_africa_authority_epoch compare = equals }
+	NOT = {
+		AND = {
+			has_variable = gods_of_africa_mandate_loss_sequence
+			check_variable = { var = gods_of_africa_mandate_loss_sequence value = gods_of_africa_loss_sequence compare = equals }
+		}
+	}
+}
+
+# Member COUNTRY, safe under a host loop, a member ROOT, or a target FROM.
+gods_of_africa_recovery_member_is_eligible = {
+	exists = yes
+	NOT = { has_capitulated = yes }
+	NOT = { is_actual_nonhuman_country = yes }
+	NOT = { is_special_chaos_country = yes }
+	NOT = { has_country_flag = africa_unifier_host }
+	NOT = { has_country_flag = africa_terminal_world_actor }
+	NOT = { has_country_flag = event_012_incompatible_terminal_actor }
+	NOT = { has_country_flag = gods_of_africa_victor_exempt }
+	has_event_target = africa_host
+	NOT = { tag = event_target:africa_host }
+	NOT = { has_war_with = event_target:africa_host }
+	africa_member_host_generation_is_current = yes
+	OR = {
+		africa_relationship_is_chartered = yes
+		africa_relationship_is_autonomous_federal = yes
+		africa_relationship_is_integrated_region = yes
+	}
+	event_target:africa_host = {
+		gods_of_africa_authority_owner_object_is_current = yes
+		is_in_array = { array = africa_relationship_countries value = PREV }
+	}
+}
+
+gods_of_africa_original_host_recovery_can_start = {
+	tag = ROOT
+	gods_of_africa_original_host_recovery_is_open = yes
+	gods_of_africa_authority_owner_has_physical_return = yes
+	NOT = { has_country_flag = gods_of_africa_recovery_open }
+	# A short political pool stays visible but cannot start a congress.
+	set_temp_variable = { gods_of_africa_recovery_eligible_count = constant:gods_of_africa_value.zero }
+	set_temp_variable = { gods_of_africa_recovery_approved_count = constant:gods_of_africa_value.zero }
+	set_temp_variable = { gods_of_africa_recovery_majority_count = constant:gods_of_africa_value.zero }
+	gods_of_africa_recount_recovery_mandate = yes
+	check_variable = { var = gods_of_africa_recovery_eligible_count value = constant:gods_of_africa_recovery.minimum_approvals compare = greater_than_or_equals }
+}
+
+# Host object, deliberately ROOT independent for member-side validation.
+gods_of_africa_recovery_congress_identity_is_current = {
+	gods_of_africa_original_host_recovery_is_open = yes
+	has_country_flag = gods_of_africa_recovery_open
+	has_variable = gods_of_africa_recovery_host_id
+	has_variable = gods_of_africa_recovery_origin_host_id
+	has_variable = gods_of_africa_recovery_host_generation
+	has_variable = gods_of_africa_recovery_loss_sequence
+	has_variable = gods_of_africa_recovery_cancelled_epoch
+	check_variable = { var = gods_of_africa_recovery_host_id value = THIS.id compare = equals }
+	check_variable = { var = gods_of_africa_recovery_origin_host_id value = africa_origin_host_id compare = equals }
+	check_variable = { var = gods_of_africa_recovery_host_generation value = africa_host_generation compare = equals }
+	check_variable = { var = gods_of_africa_recovery_loss_sequence value = gods_of_africa_loss_sequence compare = equals }
+	check_variable = { var = gods_of_africa_recovery_cancelled_epoch value = gods_of_africa_loss_epoch compare = equals }
+}
+
+gods_of_africa_recovery_committed_identity_is_current = {
+	gods_of_africa_epoch_permission_is_current = yes
+	NOT = { has_global_flag = africa_host_successor_consumed }
+	check_variable = { var = THIS.id value = africa_origin_host_id compare = equals }
+	has_country_flag = gods_of_africa_recovery_epoch
+	has_country_flag = gods_of_africa_original_mandate_restored
+	has_variable = gods_of_africa_mandate_host_id
+	has_variable = gods_of_africa_mandate_origin_host_id
+	has_variable = gods_of_africa_mandate_host_generation
+	has_variable = gods_of_africa_mandate_loss_sequence
+	has_variable = gods_of_africa_mandate_cancelled_epoch
+	has_variable = gods_of_africa_mandate_authority_epoch
+	check_variable = { var = gods_of_africa_mandate_host_id value = THIS.id compare = equals }
+	check_variable = { var = gods_of_africa_mandate_origin_host_id value = africa_origin_host_id compare = equals }
+	check_variable = { var = gods_of_africa_mandate_host_generation value = africa_host_generation compare = equals }
+	check_variable = { var = gods_of_africa_mandate_loss_sequence value = gods_of_africa_loss_sequence compare = equals }
+	check_variable = { var = gods_of_africa_mandate_cancelled_epoch value = gods_of_africa_loss_epoch compare = equals }
+	check_variable = { var = gods_of_africa_mandate_authority_epoch value = gods_of_africa_authority_epoch compare = equals }
+}
+
+# Normal object reference must exist and be the exact current target.
+# No host ROOT predicate is entered from member ROOT.
+gods_of_africa_recovery_member_receipt_is_current = {
+	gods_of_africa_recovery_member_is_eligible = yes
+	has_country_flag = gods_of_africa_recovery_invited
+	has_variable = gods_of_africa_recovery_request_host
+	has_variable = gods_of_africa_recovery_request_host_id
+	has_variable = gods_of_africa_recovery_request_origin_host_id
+	has_variable = gods_of_africa_recovery_request_host_generation
+	has_variable = gods_of_africa_recovery_request_loss_sequence
+	has_variable = gods_of_africa_recovery_request_cancelled_epoch
+	var:gods_of_africa_recovery_request_host = {
+		exists = yes
+		tag = event_target:africa_host
+		gods_of_africa_authority_owner_object_is_current = yes
+		OR = {
+			gods_of_africa_recovery_congress_identity_is_current = yes
+			gods_of_africa_recovery_committed_identity_is_current = yes
+		}
+	}
+	check_variable = { var = gods_of_africa_recovery_request_host_id value = event_target:africa_host.id compare = equals }
+	check_variable = { var = gods_of_africa_recovery_request_host value = event_target:africa_host.id compare = equals }
+	check_variable = { var = gods_of_africa_recovery_request_origin_host_id value = event_target:africa_host.africa_origin_host_id compare = equals }
+	check_variable = { var = gods_of_africa_recovery_request_host_generation value = event_target:africa_host.africa_host_generation compare = equals }
+	check_variable = { var = gods_of_africa_recovery_request_loss_sequence value = event_target:africa_host.gods_of_africa_loss_sequence compare = equals }
+	check_variable = { var = gods_of_africa_recovery_request_cancelled_epoch value = event_target:africa_host.gods_of_africa_loss_epoch compare = equals }
+}
+
+gods_of_africa_recovery_member_request_is_current = {
+	gods_of_africa_recovery_member_receipt_is_current = yes
+	event_target:africa_host = {
+		OR = {
+			gods_of_africa_recovery_congress_identity_is_current = yes
+			AND = {
+				gods_of_africa_recovery_committed_identity_is_current = yes
+				has_country_flag = gods_of_africa_consolidation_pending
+			}
+		}
+	}
+	# Consent responses do not compete with a live tribute response.
+	NOT = { has_country_flag = gods_of_africa_demand_active }
+	NOT = { has_country_flag = gods_of_africa_negotiation_open }
+	NOT = { has_country_flag = gods_of_africa_reconciliation_pending }
+}
+
+gods_of_africa_recovery_member_approval_is_current = {
+	gods_of_africa_recovery_member_receipt_is_current = yes
+	has_country_flag = gods_of_africa_recovery_approved
+	NOT = { has_country_flag = gods_of_africa_recovery_declined }
+	event_target:africa_host = {
+		OR = {
+			AND = {
+				has_country_flag = gods_of_africa_recovery_open
+				is_in_array = { array = gods_of_africa_recovery_approved_members value = PREV }
+			}
+			AND = {
+				has_country_flag = gods_of_africa_recovery_epoch
+				is_in_array = { array = gods_of_africa_mandate_approved_members value = PREV }
+			}
+		}
+	}
+}
+
+# Always true; initialized output storage is required when values escape.
+# The source relationship registry is unique by its existing registration API.
+# OR fallthrough ensures ineligible members do not stop all_of_scopes early.
+gods_of_africa_recount_recovery_mandate = {
+	set_temp_variable = { gods_of_africa_recovery_eligible_count = constant:gods_of_africa_value.zero }
+	set_temp_variable = { gods_of_africa_recovery_approved_count = constant:gods_of_africa_value.zero }
+	set_temp_variable = { gods_of_africa_recovery_majority_count = constant:gods_of_africa_value.zero }
+	all_of_scopes = {
+		array = africa_relationship_countries
+		OR = {
+			AND = {
+				gods_of_africa_recovery_member_is_eligible = yes
+				add_to_temp_variable = { gods_of_africa_recovery_eligible_count = constant:gods_of_africa_value.one }
+				OR = {
+					AND = {
+						gods_of_africa_recovery_member_approval_is_current = yes
+						add_to_temp_variable = { gods_of_africa_recovery_approved_count = constant:gods_of_africa_value.one }
+					}
+					always = yes
+				}
+			}
+			always = yes
+		}
+	}
+	set_temp_variable = { gods_of_africa_recovery_majority_count = gods_of_africa_recovery_approved_count }
+	multiply_temp_variable = { gods_of_africa_recovery_majority_count = constant:gods_of_africa_recovery.majority_multiplier }
+}
+
+gods_of_africa_recovery_quorum_is_satisfied = {
+	set_temp_variable = { gods_of_africa_recovery_eligible_count = constant:gods_of_africa_value.zero }
+	set_temp_variable = { gods_of_africa_recovery_approved_count = constant:gods_of_africa_value.zero }
+	set_temp_variable = { gods_of_africa_recovery_majority_count = constant:gods_of_africa_value.zero }
+	gods_of_africa_recount_recovery_mandate = yes
+	check_variable = { var = gods_of_africa_recovery_approved_count value = constant:gods_of_africa_recovery.minimum_approvals compare = greater_than_or_equals }
+	check_variable = { var = gods_of_africa_recovery_majority_count value = gods_of_africa_recovery_eligible_count compare = greater_than }
+}
+
+gods_of_africa_recovery_mandate_is_current = {
+	gods_of_africa_recovery_committed_identity_is_current = yes
+	gods_of_africa_recovery_quorum_is_satisfied = yes
+}
+
+gods_of_africa_recovery_can_finish = {
+	tag = ROOT
+	gods_of_africa_recovery_congress_identity_is_current = yes
+	gods_of_africa_authority_owner_has_physical_return = yes
+	gods_of_africa_recovery_quorum_is_satisfied = yes
+}
+
+gods_of_africa_recovery_can_invite = {
+	tag = ROOT
+	gods_of_africa_authority_owner_has_physical_return = yes
+	OR = {
+		gods_of_africa_recovery_congress_identity_is_current = yes
+		AND = {
+			gods_of_africa_recovery_committed_identity_is_current = yes
+			has_country_flag = gods_of_africa_consolidation_pending
+		}
+	}
+}
+
+gods_of_africa_activation_wake_is_due = {
+	gods_of_africa_epoch_permission_is_current = yes
+	has_country_flag = gods_of_africa_consolidation_pending
+	has_country_flag = gods_of_africa_activation_clock_scheduled
+	NOT = { has_country_flag = gods_of_africa_active }
+	NOT = { has_country_flag = gods_of_africa_activation_committed }
+	has_variable = gods_of_africa_consolidation_due_day
+	check_variable = { var = global.num_days value = gods_of_africa_consolidation_due_day compare = greater_than_or_equals }
+	OR = {
+		NOT = { has_country_flag = gods_of_africa_recovery_epoch }
+		gods_of_africa_recovery_mandate_is_current = yes
+	}
+}
+
+gods_of_africa_owner_wake_is_due = {
+	gods_of_africa_epoch_permission_is_current = yes
+	has_country_flag = gods_of_africa_active
+	has_country_flag = gods_of_africa_activation_committed
+	has_country_flag = gods_of_africa_owner_clock_scheduled
+	has_variable = gods_of_africa_next_owner_tick_day
+	check_variable = { var = global.num_days value = gods_of_africa_next_owner_tick_day compare = greater_than_or_equals }
+}
+
+gods_of_africa_registry_wake_is_due = {
+	gods_of_africa_epoch_permission_is_current = yes
+	has_country_flag = gods_of_africa_active
+	has_country_flag = gods_of_africa_activation_committed
+	has_country_flag = gods_of_africa_registry_clock_scheduled
+	has_variable = gods_of_africa_next_registry_review_day
+	check_variable = { var = global.num_days value = gods_of_africa_next_registry_review_day compare = greater_than_or_equals }
+}
+
+gods_of_africa_recovery_can_resume = {
+	tag = ROOT
+	OR = {
+		gods_of_africa_activation_wake_is_due = yes
+		gods_of_africa_owner_wake_is_due = yes
+		gods_of_africa_registry_wake_is_due = yes
+	}
+	OR = {
+		NOT = { has_variable = gods_of_africa_last_clock_repair_day }
+		check_variable = { var = global.num_days value = gods_of_africa_last_clock_repair_day compare = greater_than }
+	}
+}

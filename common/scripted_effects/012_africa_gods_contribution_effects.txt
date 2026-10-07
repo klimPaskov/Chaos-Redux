@@ -437,11 +437,16 @@ gods_of_africa_begin_material_transfer = {
 			}
 		}
 		clr_country_flag = gods_of_africa_material_receipt_voluntary
+		clr_country_flag = gods_of_africa_material_receipt_council
 		clr_country_flag = gods_of_africa_material_receipt_emergency
 		clr_country_flag = gods_of_africa_material_receipt_campaign
 		if = {
 			limit = { check_variable = { gods_of_africa_contribution_voluntary = constant:gods_of_africa_value.one } }
 			set_country_flag = gods_of_africa_material_receipt_voluntary
+			if = {
+				limit = { has_country_flag = gods_of_africa_council_pledge_transfer }
+				set_country_flag = gods_of_africa_material_receipt_council
+			}
 		}
 		else = {
 			set_variable = { gods_of_africa_material_transfer_receipt_contract_id = gods_of_africa_contract_ledger_id }
@@ -464,7 +469,14 @@ gods_of_africa_begin_material_transfer = {
 				has_country_flag = gods_of_africa_material_receipt_voluntary
 				check_variable = { gods_of_africa_material_transfer_receipt_kind = constant:gods_of_africa_contribution_kind.infantry }
 			}
-			set_temp_variable = { gods_of_africa_native_source_minimum = constant:gods_of_africa_contribution_voluntary.infantry_capacity }
+			if = {
+				limit = { has_country_flag = gods_of_africa_material_receipt_council }
+				set_temp_variable = { gods_of_africa_native_source_minimum = gods_of_africa_council_pledge_remaining }
+				add_to_temp_variable = { gods_of_africa_native_source_minimum = gods_of_africa_council_pledge_reserve }
+			}
+			else = {
+				set_temp_variable = { gods_of_africa_native_source_minimum = constant:gods_of_africa_contribution_voluntary.infantry_capacity }
+			}
 		}
 		gods_of_africa_capture_contribution_armor_before = yes
 		if = {
@@ -841,6 +853,7 @@ gods_of_africa_clear_material_transfer_work = {
 		clr_country_flag = gods_of_africa_material_transfer_measured
 		clr_country_flag = gods_of_africa_material_transfer_receipt_pending
 		clr_country_flag = gods_of_africa_material_receipt_voluntary
+		clr_country_flag = gods_of_africa_material_receipt_council
 		clr_country_flag = gods_of_africa_material_receipt_campaign
 		clr_country_flag = gods_of_africa_material_receipt_emergency
 		clear_variable = gods_of_africa_material_transfer_receipt_id

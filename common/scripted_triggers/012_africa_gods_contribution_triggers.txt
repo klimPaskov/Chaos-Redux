@@ -103,6 +103,7 @@ gods_of_africa_contribution_campaign_is_proven = {
 # Explicit participant-root voluntary guard; the existing aid guard nests a host ROOT check.
 gods_of_africa_contribution_voluntary_context_is_current = {
 	gods_of_africa_contribution_sender_is_current = yes
+	NOT = { has_country_flag = gods_of_africa_council_pledge_transfer }
 	NOR = {
 		has_country_flag = gods_of_africa_demand_active
 		has_country_flag = gods_of_africa_defiant
@@ -139,7 +140,10 @@ gods_of_africa_contribution_inputs_are_owned = {
 	OR = {
 		AND = {
 			check_variable = { gods_of_africa_contribution_voluntary = constant:gods_of_africa_value.one }
-			gods_of_africa_contribution_voluntary_context_is_current = yes
+			OR = {
+				gods_of_africa_contribution_voluntary_context_is_current = yes
+				gods_of_africa_contribution_council_context_is_current = yes
+			}
 			OR = {
 				check_variable = { gods_of_africa_contribution_kind = constant:gods_of_africa_contribution_kind.infantry }
 				check_variable = { gods_of_africa_contribution_kind = constant:gods_of_africa_contribution_kind.fuel }

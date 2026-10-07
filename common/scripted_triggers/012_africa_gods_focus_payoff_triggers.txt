@@ -54,9 +54,20 @@ gods_of_africa_council_is_open = {
 }
 
 gods_of_africa_council_pledge_is_affordable = {
-	set_temp_variable = { gods_of_africa_council_pledge_needed = constant:gods_of_africa_council.pledge_equipment }
-	add_to_temp_variable = { gods_of_africa_council_pledge_needed = constant:gods_of_africa_council.pledge_equipment_reserve }
-	NOT = { has_equipment = { infantry_equipment < gods_of_africa_council_pledge_needed } }
+	OR = {
+		AND = {
+			gods_of_africa_council_pledge_context_is_current = yes
+			set_temp_variable = { gods_of_africa_council_pending_stock_needed = gods_of_africa_council_pledge_remaining }
+			add_to_temp_variable = { gods_of_africa_council_pending_stock_needed = gods_of_africa_council_pledge_reserve }
+			NOT = { has_equipment = { infantry_equipment < gods_of_africa_council_pending_stock_needed } }
+		}
+		AND = {
+			NOT = { gods_of_africa_council_pledge_context_is_current = yes }
+			set_temp_variable = { gods_of_africa_council_new_stock_needed = constant:gods_of_africa_council.pledge_equipment }
+			add_to_temp_variable = { gods_of_africa_council_new_stock_needed = constant:gods_of_africa_council.pledge_equipment_reserve }
+			NOT = { has_equipment = { infantry_equipment < gods_of_africa_council_new_stock_needed } }
+		}
+	}
 }
 
 gods_of_africa_council_speech_is_affordable = {

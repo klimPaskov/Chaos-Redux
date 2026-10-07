@@ -1,0 +1,237 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 012 GODS OF AFRICA FOCUS PAYOFFS
+# ============================================================================
+# Decision L27. The actions and one-off rewards the Gods overlay focuses
+# deliver beyond unlock flags:
+# - The African Expedition: Africa sends rifles, support equipment and men
+#   from its own forces to a partner on track for Favored that is fighting
+#   outside Africa.
+# - A Place at the Final Council: a participant can pledge a final shipment
+#   or speak for Africa before the settlement; World Is One remembers it, and
+#   the settlement support owed to Favored and Respected governments rises
+#   (gods_of_africa_calculate_settlement_entitlement).
+# - Raise the Continental Arsenals: one arms factory and one level of
+#   infrastructure, or an air base level, in a host-owned arsenal state.
+# - No Sanctuary for Occupiers: claims and a war goal against a government that
+#   owns African core states of the host, and rifles for the African claimant
+#   of that land.
+# Gates live in 012_africa_gods_focus_payoff_triggers.txt and every amount in
+# 012_africa_gods_constants.txt.
+# ============================================================================
+
+# COUNTRY scope on the host; event target gods_of_africa_expedition_partner
+# is the receiving participant.
+gods_of_africa_send_expedition = {
+	if = {
+		limit = {
+			gods_of_africa_host_can_send_expedition = yes
+			has_event_target = gods_of_africa_expedition_partner
+			event_target:gods_of_africa_expedition_partner = { gods_of_africa_expedition_target_is_valid = yes }
+		}
+		set_temp_variable = { gods_of_africa_expedition_negative = constant:gods_of_africa_expedition.pp_cost }
+		multiply_temp_variable = { gods_of_africa_expedition_negative = -1 }
+		add_political_power = var:gods_of_africa_expedition_negative
+		send_equipment = { equipment = infantry_equipment amount = constant:gods_of_africa_expedition.infantry_equipment target = event_target:gods_of_africa_expedition_partner }
+		send_equipment = { equipment = support_equipment amount = constant:gods_of_africa_expedition.support_equipment target = event_target:gods_of_africa_expedition_partner }
+		set_temp_variable = { gods_of_africa_expedition_negative = constant:gods_of_africa_expedition.manpower }
+		multiply_temp_variable = { gods_of_africa_expedition_negative = -1 }
+		add_manpower = var:gods_of_africa_expedition_negative
+		event_target:gods_of_africa_expedition_partner = { add_manpower = constant:gods_of_africa_expedition.manpower }
+		# The rifles leave the common-defence reserve Africa keeps.
+		if = {
+			limit = { has_variable = africa_common_defence_stockpile }
+			subtract_from_variable = { africa_common_defence_stockpile = constant:gods_of_africa_expedition.infantry_equipment }
+			clamp_variable = { var = africa_common_defence_stockpile min = constant:gods_of_africa_value.zero }
+		}
+		event_target:gods_of_africa_expedition_partner = {
+			set_variable = { gods_of_africa_expedition_due_day = global.num_days }
+			add_to_variable = { gods_of_africa_expedition_due_day = constant:gods_of_africa_expedition.cooldown_days }
+			country_event = { id = chaosx.nr12.620 }
+		}
+	}
+}
+
+# COUNTRY scope on a participant. A final shipment pledged to the council.
+gods_of_africa_council_pledge = {
+	if = {
+		limit = {
+			gods_of_africa_council_is_open = yes
+			gods_of_africa_council_pledge_is_affordable = yes
+		}
+		send_equipment = { equipment = infantry_equipment amount = constant:gods_of_africa_council.pledge_equipment target = event_target:africa_host }
+		event_target:africa_host = {
+			if = {
+				limit = { has_variable = africa_common_defence_stockpile }
+				add_to_variable = { africa_common_defence_stockpile = constant:gods_of_africa_council.pledge_equipment }
+			}
+		}
+		set_country_flag = gods_of_africa_council_voice
+		set_country_flag = gods_of_africa_council_voice_pledge
+		set_variable = { gods_of_africa_history_kind_request = constant:gods_of_africa_history_kind.aid }
+		gods_of_africa_record_history = yes
+		gods_of_africa_sync_world_history = yes
+	}
+}
+
+# COUNTRY scope on a participant. Political capital spent speaking for Africa
+# before the council.
+gods_of_africa_council_speech = {
+	if = {
+		limit = {
+			gods_of_africa_council_is_open = yes
+			gods_of_africa_council_speech_is_affordable = yes
+		}
+		set_temp_variable = { gods_of_africa_council_negative = constant:gods_of_africa_council.speech_pp }
+		multiply_temp_variable = { gods_of_africa_council_negative = -1 }
+		add_political_power = var:gods_of_africa_council_negative
+		set_country_flag = gods_of_africa_council_voice
+		set_country_flag = gods_of_africa_council_voice_speech
+		save_event_target_as = gods_of_africa_council_speaker
+		add_opinion_modifier = { target = event_target:africa_host modifier = gods_of_africa_council_voice }
+		event_target:africa_host = { add_opinion_modifier = { target = event_target:gods_of_africa_council_speaker modifier = gods_of_africa_council_voice } }
+		gods_of_africa_sync_world_history = yes
+	}
+}
+
+# COUNTRY scope on the host. Raise the Continental Arsenals: the capital state
+# when Africa owns and controls it and it has room for an arms factory,
+# otherwise the first such African state in the game's state order.
+@GODS_OF_AFRICA_ARSENAL_FACTORY_LEVELS = 1
+@GODS_OF_AFRICA_ARSENAL_SUPPORT_LEVELS = 1
+@GODS_OF_AFRICA_ARSENAL_INFRASTRUCTURE_CAP = 5
+
+gods_of_africa_build_continental_arsenal = {
+	if = {
+		limit = { NOT = { has_country_flag = gods_of_africa_arsenal_built } }
+		save_event_target_as = gods_of_africa_arsenal_host
+		set_variable = { gods_of_africa_arsenal_pending = constant:gods_of_africa_value.one }
+		capital_scope = {
+			if = {
+				limit = {
+					is_owned_and_controlled_by = event_target:gods_of_africa_arsenal_host
+					free_building_slots = { building = arms_factory size > 0 include_locked = no }
+				}
+				gods_of_africa_build_arsenal_state = yes
+			}
+		}
+		every_owned_state = {
+			limit = {
+				is_controlled_by = event_target:gods_of_africa_arsenal_host
+				is_on_continent = africa
+				free_building_slots = { building = arms_factory size > 0 include_locked = no }
+			}
+			if = {
+				limit = {
+					event_target:gods_of_africa_arsenal_host = {
+						check_variable = { gods_of_africa_arsenal_pending = constant:gods_of_africa_value.one }
+					}
+				}
+				gods_of_africa_build_arsenal_state = yes
+			}
+		}
+		clear_variable = gods_of_africa_arsenal_pending
+	}
+}
+
+# STATE scope during gods_of_africa_build_continental_arsenal.
+gods_of_africa_build_arsenal_state = {
+	add_building_construction = { type = arms_factory level = @GODS_OF_AFRICA_ARSENAL_FACTORY_LEVELS instant_build = yes }
+	if = {
+		limit = { infrastructure < @GODS_OF_AFRICA_ARSENAL_INFRASTRUCTURE_CAP }
+		add_building_construction = { type = infrastructure level = @GODS_OF_AFRICA_ARSENAL_SUPPORT_LEVELS instant_build = yes }
+	}
+	else = {
+		add_building_construction = { type = air_base level = @GODS_OF_AFRICA_ARSENAL_SUPPORT_LEVELS instant_build = yes }
+	}
+	event_target:gods_of_africa_arsenal_host = {
+		set_variable = { gods_of_africa_arsenal_state = PREV }
+		set_variable = { gods_of_africa_arsenal_pending = constant:gods_of_africa_value.zero }
+		set_country_flag = gods_of_africa_arsenal_built
+	}
+}
+
+# COUNTRY scope on the host; event target gods_of_africa_coerced_occupier is
+# the participant that owns African core states of the host.
+gods_of_africa_coerce_occupier = {
+	if = {
+		limit = {
+			gods_of_africa_host_can_coerce_occupier = yes
+			has_event_target = gods_of_africa_coerced_occupier
+			event_target:gods_of_africa_coerced_occupier = { gods_of_africa_occupier_coercion_target_is_valid = yes }
+		}
+		set_temp_variable = { gods_of_africa_coercion_negative = constant:gods_of_africa_occupier_coercion.pp_cost }
+		multiply_temp_variable = { gods_of_africa_coercion_negative = -1 }
+		add_political_power = var:gods_of_africa_coercion_negative
+		set_variable = { gods_of_africa_coercion_claimant_found = constant:gods_of_africa_value.zero }
+		clear_variable = gods_of_africa_coercion_last_claimant
+		event_target:gods_of_africa_coerced_occupier = {
+			clr_country_flag = gods_of_africa_coercion_liberation_sent
+			clear_variable = gods_of_africa_coercion_claimant
+			every_owned_state = {
+				limit = {
+					is_on_continent = africa
+					is_core_of = event_target:africa_host
+				}
+				# Claims and a war goal through the vanilla claimed-state route.
+				add_claim_by = event_target:africa_host
+				event_target:africa_host = {
+					create_wargoal = {
+						target = PREV.OWNER
+						type = take_claimed_state
+						generator = owned_states
+					}
+				}
+				# The first African claimant of this land Africa already deals with.
+				save_event_target_as = gods_of_africa_coercion_state
+				event_target:africa_host = {
+					for_each_scope_loop = {
+						array = africa_relationship_countries
+						if = {
+							limit = {
+								exists = yes
+								NOT = { tag = event_target:africa_host }
+								NOT = { tag = event_target:gods_of_africa_coerced_occupier }
+								NOT = { has_war_with = event_target:africa_host }
+								event_target:gods_of_africa_coercion_state = { is_core_of = PREV }
+								event_target:africa_host = { check_variable = { gods_of_africa_coercion_claimant_found = constant:gods_of_africa_value.zero } }
+							}
+							save_event_target_as = gods_of_africa_coercion_claimant
+							event_target:africa_host = {
+								set_variable = { gods_of_africa_coercion_claimant_found = constant:gods_of_africa_value.one }
+								set_variable = { gods_of_africa_coercion_last_claimant = PREV }
+							}
+						}
+					}
+				}
+			}
+		}
+		# Liberation support: rifles for that claimant from Africa's own stocks.
+		if = {
+			limit = {
+				has_event_target = gods_of_africa_coercion_claimant
+				check_variable = { gods_of_africa_coercion_claimant_found = constant:gods_of_africa_value.one }
+			}
+			set_temp_variable = { gods_of_africa_coercion_stock_needed = constant:gods_of_africa_occupier_coercion.liberation_equipment }
+			add_to_temp_variable = { gods_of_africa_coercion_stock_needed = constant:gods_of_africa_occupier_coercion.liberation_reserve }
+			if = {
+				limit = { NOT = { has_equipment = { infantry_equipment < gods_of_africa_coercion_stock_needed } } }
+				send_equipment = { equipment = infantry_equipment amount = constant:gods_of_africa_occupier_coercion.liberation_equipment target = event_target:gods_of_africa_coercion_claimant }
+				if = {
+					limit = { has_variable = africa_common_defence_stockpile }
+					subtract_from_variable = { africa_common_defence_stockpile = constant:gods_of_africa_occupier_coercion.liberation_equipment }
+					clamp_variable = { var = africa_common_defence_stockpile min = constant:gods_of_africa_value.zero }
+				}
+				event_target:gods_of_africa_coerced_occupier = {
+					set_country_flag = gods_of_africa_coercion_liberation_sent
+					set_variable = { gods_of_africa_coercion_claimant = event_target:gods_of_africa_coercion_claimant }
+				}
+			}
+		}
+		event_target:gods_of_africa_coerced_occupier = {
+			set_variable = { gods_of_africa_coercion_due_day = global.num_days }
+			add_to_variable = { gods_of_africa_coercion_due_day = constant:gods_of_africa_occupier_coercion.cooldown_days }
+			country_event = { id = chaosx.nr12.621 }
+		}
+		clear_variable = gods_of_africa_coercion_claimant_found
+	}
+}

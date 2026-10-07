@@ -53,24 +53,7 @@ gods_of_africa_send_expedition = {
 
 # COUNTRY scope on a participant. A final shipment pledged to the council.
 gods_of_africa_council_pledge = {
-	if = {
-		limit = {
-			gods_of_africa_council_is_open = yes
-			gods_of_africa_council_pledge_is_affordable = yes
-		}
-		send_equipment = { equipment = infantry_equipment amount = constant:gods_of_africa_council.pledge_equipment target = event_target:africa_host }
-		event_target:africa_host = {
-			if = {
-				limit = { has_variable = africa_common_defence_stockpile }
-				add_to_variable = { africa_common_defence_stockpile = constant:gods_of_africa_council.pledge_equipment }
-			}
-		}
-		set_country_flag = gods_of_africa_council_voice
-		set_country_flag = gods_of_africa_council_voice_pledge
-		set_variable = { gods_of_africa_history_kind_request = constant:gods_of_africa_history_kind.aid }
-		gods_of_africa_record_history = yes
-		gods_of_africa_sync_world_history = yes
-	}
+	gods_of_africa_pay_council_pledge = yes
 }
 
 # COUNTRY scope on a participant. Political capital spent speaking for Africa
@@ -78,12 +61,12 @@ gods_of_africa_council_pledge = {
 gods_of_africa_council_speech = {
 	if = {
 		limit = {
-			gods_of_africa_council_is_open = yes
-			gods_of_africa_council_speech_is_affordable = yes
+			gods_of_africa_council_speech_can_be_made = yes
 		}
 		set_temp_variable = { gods_of_africa_council_negative = constant:gods_of_africa_council.speech_pp }
 		multiply_temp_variable = { gods_of_africa_council_negative = -1 }
 		add_political_power = var:gods_of_africa_council_negative
+		gods_of_africa_clear_council_pledge = yes
 		set_country_flag = gods_of_africa_council_voice
 		set_country_flag = gods_of_africa_council_voice_speech
 		save_event_target_as = gods_of_africa_council_speaker

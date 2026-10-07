@@ -479,6 +479,8 @@ The private Event 012 [Gods original-owner recovery](012_africa_gods_recovery_ef
 
 The private [Gods permanent-defiance confirmation](012_africa_gods_confirmation_effects.md) documents the human request, frozen authority receipt, current-epoch confirmation, cancellation without gameplay changes, and unchanged direct AI action.
 
+The private [Gods Final Council shipment](012_africa_gods_council_effects.md) documents the frozen pledge, shared measured contribution receipt, unpaid balance, exact stock floor, speech-switch restriction, lifecycle cleanup, dynamic cost getters and boolean-helper usage.
+
 ## chaosx_report_forced_event_failure
 
 Purpose: send one plain-text country report to the player who requested an event through Settings when the owning event cannot apply.

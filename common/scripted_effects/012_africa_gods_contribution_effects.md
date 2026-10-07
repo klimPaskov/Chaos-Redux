@@ -1,6 +1,6 @@
 # Event 012 Gods contribution and conduct helper API
 
-Status: implemented and wired into every Gods payment owner (2026-10-04 takeover, agent decision L3 in `docs/plans/012_africa_plans/agent_decisions_2026-10-04.md`).
+Contribution receipts are wired to the ordinary tribute, voluntary-aid and Final Council shipment owners listed below.
 The conservative source-audit model is not a claim about native getter or variable limits.
 See [the arithmetic repair evidence](../../docs/plans/012_africa_plans/subagent_handoffs/012_africa_gods_contribution_arithmetic_repair_2026-10-04.md).
 Acceptance basis: the contribution/conduct section of [the full grading design](../../docs/plans/012_africa_plans/subagent_handoffs/012_africa_gods_full_grading_rewards_design_2026-10-03.md), lines 61-240, accepted by the parent on 2026-10-03 and adopted without a rewrite under agent decision L3.
@@ -10,6 +10,7 @@ These helpers contain no contract closure, clocks, events, country scans, GUI, a
 
 | Owner | Call |
 | --- | --- |
+| `gods_of_africa_pay_council_pledge` | Freezes the existing Council price/reserve and exact authority, sets the exclusive Council purpose flag, and uses shared begin/native send/complete. Measured donor loss credits total/voluntary/campaign quantities and reduces only the unpaid pledge; host reserve follows bounded receiver gain. Voice and coarse aid publish only after full payment. The [Council API](012_africa_gods_council_effects.md) records retry, speech-switch and cleanup ownership. |
 | `gods_of_africa_transfer_payment` | Every material branch sets the bare temp `gods_of_africa_payment_receipt_kind` to the branch it emits, calls `gods_of_africa_begin_payment_receipt`, emits the native transfer only when `gods_of_africa_material_transfer_begin_ready` is set, then calls `gods_of_africa_complete_payment_receipt`. The measured amount is published in the normal participant field `gods_of_africa_payment_delivered`. Fuel is first limited to the receiver's free tank space. Family 13 under a frozen, still-current emergency opens a kind-11 receipt around the existing political-power transfer; other political families deliver their paid political power without material credit. |
 | `gods_of_africa_resolve_full_compliance` | Closes the contract only when `gods_of_africa_payment_delivered` covers the remaining balance; a short delivery goes through `gods_of_africa_apply_partial_delivery` and the remainder stays owed, without turning the contract into agreed terms. |
 | `gods_of_africa_resolve_partial_compliance` | Requests at most the remaining balance, marks the contract as agreed terms once something arrives, and reduces the balance only by the measured delivery. |

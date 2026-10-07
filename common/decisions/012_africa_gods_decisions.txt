@@ -215,16 +215,28 @@ gods_of_africa_participant_category = {
 		name = gods_of_africa_council_pledge
 		desc = gods_of_africa_council_pledge_desc
 		icon = GFX_decision_012_africa_gods_fulfill_demand
-		visible = { gods_of_africa_council_is_open = yes }
+		visible = { gods_of_africa_council_response_phase_is_open = yes }
 		available = {
 			custom_trigger_tooltip = {
 				tooltip = gods_of_africa_council_open_tt
-				gods_of_africa_council_is_open = yes
+				hidden_trigger = { gods_of_africa_council_response_phase_is_open = yes }
 			}
 			custom_trigger_tooltip = {
 				tooltip = gods_of_africa_council_pledge_stock_tt
 				gods_of_africa_council_pledge_is_affordable = yes
 			}
+			custom_trigger_tooltip = {
+				tooltip = gods_of_africa_transfer_accounted_tt
+				hidden_trigger = {
+					gods_of_africa_contribution_sender_is_current = yes
+					gods_of_africa_council_material_is_accounted = yes
+				}
+			}
+			custom_trigger_tooltip = {
+				tooltip = gods_of_africa_council_pledge_retry_tt
+				hidden_trigger = { gods_of_africa_council_pledge_retry_is_ready = yes }
+			}
+			hidden_trigger = { gods_of_africa_council_pledge_can_be_paid = yes }
 		}
 		custom_cost_trigger = { gods_of_africa_council_pledge_is_affordable = yes }
 		custom_cost_text = gods_of_africa_council_pledge_cost
@@ -238,10 +250,7 @@ gods_of_africa_participant_category = {
 			base = constant:gods_of_africa_ai_response.council_pledge_base
 			modifier = {
 				factor = 0
-				OR = {
-					NOT = { gods_of_africa_council_is_open = yes }
-					NOT = { gods_of_africa_council_pledge_is_affordable = yes }
-				}
+				NOT = { gods_of_africa_council_pledge_can_be_paid = yes }
 			}
 			modifier = { factor = constant:gods_of_africa_ai_response.council_pledge_loyal gods_of_africa_ai_is_loyal_ally = yes }
 			modifier = { factor = constant:gods_of_africa_ai_response.council_pledge_rival gods_of_africa_ai_is_defiant_rival = yes }
@@ -252,11 +261,15 @@ gods_of_africa_participant_category = {
 		name = gods_of_africa_council_speech
 		desc = gods_of_africa_council_speech_desc
 		icon = GFX_decision_012_africa_gods_public_pardon
-		visible = { gods_of_africa_council_is_open = yes }
+		visible = { gods_of_africa_council_response_phase_is_open = yes }
 		available = {
 			custom_trigger_tooltip = {
 				tooltip = gods_of_africa_council_open_tt
-				gods_of_africa_council_is_open = yes
+				hidden_trigger = { gods_of_africa_council_response_phase_is_open = yes }
+			}
+			custom_trigger_tooltip = {
+				tooltip = gods_of_africa_council_pledge_obligation_tt
+				hidden_trigger = { gods_of_africa_council_speech_can_replace_pledge = yes }
 			}
 			custom_trigger_tooltip = {
 				tooltip = gods_of_africa_council_speech_stock_tt
@@ -275,10 +288,7 @@ gods_of_africa_participant_category = {
 			base = constant:gods_of_africa_ai_response.council_speech_base
 			modifier = {
 				factor = 0
-				OR = {
-					NOT = { gods_of_africa_council_is_open = yes }
-					NOT = { gods_of_africa_council_speech_is_affordable = yes }
-				}
+				NOT = { gods_of_africa_council_speech_can_be_made = yes }
 			}
 			modifier = { factor = constant:gods_of_africa_ai_response.council_speech_friendly gods_of_africa_ai_is_friendly_to_africa = yes }
 			modifier = { factor = constant:gods_of_africa_ai_response.council_speech_rival gods_of_africa_ai_is_defiant_rival = yes }
