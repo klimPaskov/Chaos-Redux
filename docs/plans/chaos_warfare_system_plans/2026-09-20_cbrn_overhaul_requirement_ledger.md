@@ -288,3 +288,11 @@ This is not an accepted removal or exception to either named achievement.
 The unit category names the three Armored Delivery Detachments, retaining all doctrine modifier values.
 Orphan non-support chemical-tank sprites and their unreferenced textures are retired with an exact inventory.
 The test-harness documentation states the current installed roster of 79 units, including 55 combat and 24 support definitions.
+
+## HQ paid-service output contract
+
+The [HQ service-integrity repair](2026-10-07_hq_service_integrity.md) establishes caller-owned temporary package, preparation and completed-debit outputs for all five protective orders.
+It narrows CBRN-05, CBRN-13 and CBRN-15 source risks without changing prices, callbacks, policy, native abilities, equipment order or the existing completion guard.
+The parent reran 292 actual-source cases, reproducing 275 baseline missing-output failures under conservative helper-frame cleanup.
+Native resource execution and scheduling remain unproved; the exact MCP event selector returns no selected nodes and the comparison revision is not retained.
+The personal raid-to-commander bridge and the two blocked achievement requirements remain open.

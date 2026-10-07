@@ -1,0 +1,732 @@
+# ============================================================================
+# CHAOS REDUX - CBRN ARMY HEADQUARTERS TRIGGERS
+# ============================================================================
+# Overview:
+# - Detects exact Army HQ company composition from HQ-only subunit counts.
+# - Gates abilities by affected-battalion command-power bands, policy, context,
+#   and real national operating stock without estimating deployed-HQ fill.
+# - Gates weekly upkeep and baseline AI HQ templates with fail-closed checks.
+# - Contains no persistent effects and never selects or changes a state.
+# ============================================================================
+
+cbrn_hq_force_is_light = {
+	check_variable = {
+		var = num_battalions
+		value = constant:cbrn_hq_force.standard_battalion_threshold
+		compare = less_than
+	}
+}
+
+cbrn_hq_force_is_standard = {
+	check_variable = {
+		var = num_battalions
+		value = constant:cbrn_hq_force.standard_battalion_threshold
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = num_battalions
+		value = constant:cbrn_hq_force.mass_battalion_threshold
+		compare = less_than
+	}
+}
+
+cbrn_hq_force_is_mass = {
+	check_variable = {
+		var = num_battalions
+		value = constant:cbrn_hq_force.mass_battalion_threshold
+		compare = greater_than_or_equals
+	}
+}
+
+cbrn_hq_committed_force_is_light = {
+	check_variable = {
+		var = cbrn_hq_committed_force_band
+		value = constant:cbrn_hq_force.light_band
+		compare = equals
+	}
+}
+
+cbrn_hq_committed_force_is_standard = {
+	check_variable = {
+		var = cbrn_hq_committed_force_band
+		value = constant:cbrn_hq_force.standard_band
+		compare = equals
+	}
+}
+
+cbrn_hq_committed_force_is_mass = {
+	check_variable = {
+		var = cbrn_hq_committed_force_band
+		value = constant:cbrn_hq_force.mass_band
+		compare = equals
+	}
+}
+
+cbrn_hq_has_operations_section = {
+	check_variable = { num_battalions_with_type@cbrn_hq_operations_section > 0 }
+}
+
+cbrn_hq_has_intelligence_weather_cell = {
+	cbrn_hq_has_operations_section = yes
+}
+
+cbrn_hq_has_protective_logistics_section = {
+	check_variable = { num_battalions_with_type@cbrn_hq_protective_logistics_section > 0 }
+}
+
+cbrn_hq_has_mobile_decontamination_column = {
+	cbrn_hq_has_protective_logistics_section = yes
+}
+
+cbrn_hq_has_medical_countermeasure_directorate = {
+	check_variable = { num_battalions_with_type@cbrn_hq_medical_countermeasure_directorate > 0 }
+}
+
+cbrn_hq_has_biological_security_section = {
+	cbrn_hq_has_medical_countermeasure_directorate = yes
+}
+
+cbrn_hq_has_all_three_sections = {
+	cbrn_hq_has_operations_section = yes
+	cbrn_hq_has_protective_logistics_section = yes
+	cbrn_hq_has_medical_countermeasure_directorate = yes
+}
+
+cbrn_hq_has_no_preparation_or_active_posture = {
+	NOT = {
+		OR = {
+			has_variable = cbrn_hq_operation_code
+			has_trait = cbrn_hq_preparing_operation
+			has_trait = cbrn_hq_active_protective_posture
+			has_trait = cbrn_hq_active_low_resistance_protective_posture
+			has_trait = cbrn_hq_active_decontamination_corridor
+			has_trait = cbrn_hq_active_sealed_operational_area
+			has_trait = cbrn_hq_active_antidote_response
+			has_trait = cbrn_hq_active_infection_corridor
+		}
+	}
+}
+
+
+cbrn_hq_owner_has_protective_context = {
+	OWNER = {
+		cbrn_country_has_program = yes
+		cbrn_country_has_any_mask_stock = yes
+	}
+}
+
+cbrn_hq_owner_has_decontamination_context = {
+	OWNER = { cbrn_country_controls_chemical_contamination = yes }
+}
+
+cbrn_hq_owner_has_sealed_area_context = {
+	OWNER = {
+		OR = {
+			cbrn_country_controls_chemical_contamination = yes
+			has_active_biowarfare_outbreak = yes
+		}
+	}
+}
+
+cbrn_hq_owner_has_antidote_context = {
+	OWNER = {
+		OR = {
+			cbrn_country_has_public_chemical_emergency = yes
+			cbrn_country_controls_chemical_contamination = yes
+			cbrn_country_faces_enemy_chemical_capability = yes
+			has_active_biowarfare_outbreak = yes
+		}
+	}
+}
+
+cbrn_hq_owner_has_infection_context = {
+	OWNER = { has_active_biowarfare_outbreak = yes }
+}
+
+
+cbrn_hq_command_is_deployed = {
+	is_leading_army_group = no
+	is_border_war = no
+	check_variable = { num_units > 0 }
+}
+
+
+cbrn_hq_protective_command_is_valid = {
+	cbrn_hq_command_is_deployed = yes
+	cbrn_hq_has_protective_logistics_section = yes
+	cbrn_hq_owner_has_protective_context = yes
+}
+
+cbrn_hq_decon_command_is_valid = {
+	cbrn_hq_command_is_deployed = yes
+	cbrn_hq_has_protective_logistics_section = yes
+	cbrn_hq_owner_has_decontamination_context = yes
+}
+
+cbrn_hq_seal_area_command_is_valid = {
+	cbrn_hq_command_is_deployed = yes
+	OR = {
+		cbrn_hq_has_operations_section = yes
+		cbrn_hq_has_medical_countermeasure_directorate = yes
+	}
+	cbrn_hq_owner_has_sealed_area_context = yes
+}
+
+cbrn_hq_antidote_command_is_valid = {
+	cbrn_hq_command_is_deployed = yes
+	cbrn_hq_has_medical_countermeasure_directorate = yes
+	cbrn_hq_owner_has_antidote_context = yes
+}
+
+cbrn_hq_infection_command_is_valid = {
+	cbrn_hq_command_is_deployed = yes
+	cbrn_hq_has_medical_countermeasure_directorate = yes
+	cbrn_hq_owner_has_infection_context = yes
+}
+
+
+cbrn_hq_country_has_issued_filter_ledger = {
+	has_variable = cbrn_military_mask_crates
+	check_variable = {
+		var = cbrn_military_mask_crates
+		value = constant:cbrn_math.zero
+		compare = greater_than
+	}
+	has_variable = cbrn_military_mask_filter_condition
+}
+
+
+
+
+cbrn_hq_country_can_pay_protective_light_filters = {
+	cbrn_hq_country_has_issued_filter_ledger = yes
+	OR = {
+		AND = {
+			has_tech = military_filter_standardization
+			check_variable = { var = cbrn_military_mask_filter_condition value = constant:cbrn_hq_filter_cost.protective_light_standardized compare = greater_than_or_equals }
+		}
+		AND = {
+			NOT = { has_tech = military_filter_standardization }
+			check_variable = { var = cbrn_military_mask_filter_condition value = constant:cbrn_hq_filter_cost.protective_light compare = greater_than_or_equals }
+		}
+	}
+}
+
+cbrn_hq_country_can_pay_protective_standard_filters = {
+	cbrn_hq_country_has_issued_filter_ledger = yes
+	OR = {
+		AND = {
+			has_tech = military_filter_standardization
+			check_variable = { var = cbrn_military_mask_filter_condition value = constant:cbrn_hq_filter_cost.protective_standard_standardized compare = greater_than_or_equals }
+		}
+		AND = {
+			NOT = { has_tech = military_filter_standardization }
+			check_variable = { var = cbrn_military_mask_filter_condition value = constant:cbrn_hq_filter_cost.protective_standard compare = greater_than_or_equals }
+		}
+	}
+}
+
+cbrn_hq_country_can_pay_protective_mass_filters = {
+	cbrn_hq_country_has_issued_filter_ledger = yes
+	OR = {
+		AND = {
+			has_tech = military_filter_standardization
+			check_variable = { var = cbrn_military_mask_filter_condition value = constant:cbrn_hq_filter_cost.protective_mass_standardized compare = greater_than_or_equals }
+		}
+		AND = {
+			NOT = { has_tech = military_filter_standardization }
+			check_variable = { var = cbrn_military_mask_filter_condition value = constant:cbrn_hq_filter_cost.protective_mass compare = greater_than_or_equals }
+		}
+	}
+}
+
+
+
+
+
+
+cbrn_hq_can_pay_protective_activation = {
+	OR = {
+		AND = {
+			cbrn_hq_force_is_light = yes
+			OWNER = {
+				NOT = { command_power < constant:cbrn_hq_command_power.protective_light }
+				cbrn_hq_country_can_pay_protective_light_filters = yes
+				NOT = { has_equipment = { gas_mask_equipment < constant:cbrn_hq_protective_cost.light_masks } }
+				NOT = { has_equipment = { support_equipment < constant:cbrn_hq_protective_cost.light_support } }
+			}
+		}
+		AND = {
+			cbrn_hq_force_is_standard = yes
+			OWNER = {
+				NOT = { command_power < constant:cbrn_hq_command_power.protective_standard }
+				cbrn_hq_country_can_pay_protective_standard_filters = yes
+				NOT = { has_equipment = { gas_mask_equipment < constant:cbrn_hq_protective_cost.standard_masks } }
+				NOT = { has_equipment = { support_equipment < constant:cbrn_hq_protective_cost.standard_support } }
+			}
+		}
+		AND = {
+			cbrn_hq_force_is_mass = yes
+			OWNER = {
+				NOT = { command_power < constant:cbrn_hq_command_power.protective_mass }
+				cbrn_hq_country_can_pay_protective_mass_filters = yes
+				NOT = { has_equipment = { gas_mask_equipment < constant:cbrn_hq_protective_cost.mass_masks } }
+				NOT = { has_equipment = { support_equipment < constant:cbrn_hq_protective_cost.mass_support } }
+			}
+		}
+	}
+}
+
+cbrn_hq_can_pay_protective_upkeep = {
+	OR = {
+		AND = {
+			cbrn_hq_committed_force_is_light = yes
+			OWNER = {
+				cbrn_hq_country_can_pay_protective_light_filters = yes
+				NOT = { has_equipment = { gas_mask_equipment < constant:cbrn_hq_protective_cost.weekly_light_masks } }
+				NOT = { has_equipment = { support_equipment < constant:cbrn_hq_protective_cost.weekly_light_support } }
+			}
+		}
+		AND = {
+			cbrn_hq_committed_force_is_standard = yes
+			OWNER = {
+				cbrn_hq_country_can_pay_protective_standard_filters = yes
+				NOT = { has_equipment = { gas_mask_equipment < constant:cbrn_hq_protective_cost.weekly_standard_masks } }
+				NOT = { has_equipment = { support_equipment < constant:cbrn_hq_protective_cost.weekly_standard_support } }
+			}
+		}
+		AND = {
+			cbrn_hq_committed_force_is_mass = yes
+			OWNER = {
+				cbrn_hq_country_can_pay_protective_mass_filters = yes
+				NOT = { has_equipment = { gas_mask_equipment < constant:cbrn_hq_protective_cost.weekly_mass_masks } }
+				NOT = { has_equipment = { support_equipment < constant:cbrn_hq_protective_cost.weekly_mass_support } }
+			}
+		}
+	}
+}
+
+cbrn_hq_country_can_pay_decon_light_activation = {
+	OR = {
+		AND = {
+			cbrn_designer_has_truck_mounted_wash_systems = yes
+			NOT = { has_equipment = { decontamination_equipment < constant:cbrn_hq_decon_designer_cost.light_decon } }
+		}
+		AND = {
+			NOT = { cbrn_designer_has_truck_mounted_wash_systems = yes }
+			NOT = { has_equipment = { decontamination_equipment < constant:cbrn_hq_decon_cost.light_decon } }
+		}
+	}
+	NOT = { has_equipment = { motorized_equipment < constant:cbrn_hq_decon_cost.light_trucks } }
+	NOT = { has_equipment = { gas_mask_equipment < constant:cbrn_hq_decon_cost.light_masks } }
+	NOT = { has_equipment = { support_equipment < constant:cbrn_hq_decon_cost.light_support } }
+	NOT = { has_fuel < constant:cbrn_hq_decon_cost.light_fuel }
+}
+
+cbrn_hq_country_can_pay_decon_standard_activation = {
+	OR = {
+		AND = {
+			cbrn_designer_has_truck_mounted_wash_systems = yes
+			NOT = { has_equipment = { decontamination_equipment < constant:cbrn_hq_decon_designer_cost.standard_decon } }
+		}
+		AND = {
+			NOT = { cbrn_designer_has_truck_mounted_wash_systems = yes }
+			NOT = { has_equipment = { decontamination_equipment < constant:cbrn_hq_decon_cost.standard_decon } }
+		}
+	}
+	NOT = { has_equipment = { motorized_equipment < constant:cbrn_hq_decon_cost.standard_trucks } }
+	NOT = { has_equipment = { gas_mask_equipment < constant:cbrn_hq_decon_cost.standard_masks } }
+	NOT = { has_equipment = { support_equipment < constant:cbrn_hq_decon_cost.standard_support } }
+	NOT = { has_fuel < constant:cbrn_hq_decon_cost.standard_fuel }
+}
+
+cbrn_hq_country_can_pay_decon_mass_activation = {
+	OR = {
+		AND = {
+			cbrn_designer_has_truck_mounted_wash_systems = yes
+			NOT = { has_equipment = { decontamination_equipment < constant:cbrn_hq_decon_designer_cost.mass_decon } }
+		}
+		AND = {
+			NOT = { cbrn_designer_has_truck_mounted_wash_systems = yes }
+			NOT = { has_equipment = { decontamination_equipment < constant:cbrn_hq_decon_cost.mass_decon } }
+		}
+	}
+	NOT = { has_equipment = { motorized_equipment < constant:cbrn_hq_decon_cost.mass_trucks } }
+	NOT = { has_equipment = { gas_mask_equipment < constant:cbrn_hq_decon_cost.mass_masks } }
+	NOT = { has_equipment = { support_equipment < constant:cbrn_hq_decon_cost.mass_support } }
+	NOT = { has_fuel < constant:cbrn_hq_decon_cost.mass_fuel }
+}
+
+cbrn_hq_country_can_pay_decon_light_upkeep = {
+	OR = {
+		AND = {
+			cbrn_designer_has_truck_mounted_wash_systems = yes
+			NOT = { has_equipment = { decontamination_equipment < constant:cbrn_hq_decon_designer_cost.weekly_light_decon } }
+		}
+		AND = {
+			NOT = { cbrn_designer_has_truck_mounted_wash_systems = yes }
+			NOT = { has_equipment = { decontamination_equipment < constant:cbrn_hq_decon_cost.weekly_light_decon } }
+		}
+	}
+	NOT = { has_equipment = { motorized_equipment < constant:cbrn_hq_decon_cost.weekly_light_trucks } }
+	NOT = { has_equipment = { gas_mask_equipment < constant:cbrn_hq_decon_cost.weekly_light_masks } }
+	NOT = { has_equipment = { support_equipment < constant:cbrn_hq_decon_cost.weekly_light_support } }
+	NOT = { has_fuel < constant:cbrn_hq_decon_cost.weekly_light_fuel }
+}
+
+cbrn_hq_country_can_pay_decon_standard_upkeep = {
+	OR = {
+		AND = {
+			cbrn_designer_has_truck_mounted_wash_systems = yes
+			NOT = { has_equipment = { decontamination_equipment < constant:cbrn_hq_decon_designer_cost.weekly_standard_decon } }
+		}
+		AND = {
+			NOT = { cbrn_designer_has_truck_mounted_wash_systems = yes }
+			NOT = { has_equipment = { decontamination_equipment < constant:cbrn_hq_decon_cost.weekly_standard_decon } }
+		}
+	}
+	NOT = { has_equipment = { motorized_equipment < constant:cbrn_hq_decon_cost.weekly_standard_trucks } }
+	NOT = { has_equipment = { gas_mask_equipment < constant:cbrn_hq_decon_cost.weekly_standard_masks } }
+	NOT = { has_equipment = { support_equipment < constant:cbrn_hq_decon_cost.weekly_standard_support } }
+	NOT = { has_fuel < constant:cbrn_hq_decon_cost.weekly_standard_fuel }
+}
+
+cbrn_hq_country_can_pay_decon_mass_upkeep = {
+	OR = {
+		AND = {
+			cbrn_designer_has_truck_mounted_wash_systems = yes
+			NOT = { has_equipment = { decontamination_equipment < constant:cbrn_hq_decon_designer_cost.weekly_mass_decon } }
+		}
+		AND = {
+			NOT = { cbrn_designer_has_truck_mounted_wash_systems = yes }
+			NOT = { has_equipment = { decontamination_equipment < constant:cbrn_hq_decon_cost.weekly_mass_decon } }
+		}
+	}
+	NOT = { has_equipment = { motorized_equipment < constant:cbrn_hq_decon_cost.weekly_mass_trucks } }
+	NOT = { has_equipment = { gas_mask_equipment < constant:cbrn_hq_decon_cost.weekly_mass_masks } }
+	NOT = { has_equipment = { support_equipment < constant:cbrn_hq_decon_cost.weekly_mass_support } }
+	NOT = { has_fuel < constant:cbrn_hq_decon_cost.weekly_mass_fuel }
+}
+
+cbrn_hq_can_pay_decon_activation = {
+	OR = {
+		AND = {
+			cbrn_hq_force_is_light = yes
+			OWNER = {
+				NOT = { command_power < constant:cbrn_hq_command_power.decon_light }
+				cbrn_hq_country_can_pay_decon_light_activation = yes
+			}
+		}
+		AND = {
+			cbrn_hq_force_is_standard = yes
+			OWNER = {
+				NOT = { command_power < constant:cbrn_hq_command_power.decon_standard }
+				cbrn_hq_country_can_pay_decon_standard_activation = yes
+			}
+		}
+		AND = {
+			cbrn_hq_force_is_mass = yes
+			OWNER = {
+				NOT = { command_power < constant:cbrn_hq_command_power.decon_mass }
+				cbrn_hq_country_can_pay_decon_mass_activation = yes
+			}
+		}
+	}
+}
+
+cbrn_hq_can_pay_decon_upkeep = {
+	OR = {
+		AND = {
+			cbrn_hq_committed_force_is_light = yes
+			OWNER = { cbrn_hq_country_can_pay_decon_light_upkeep = yes }
+		}
+		AND = {
+			cbrn_hq_committed_force_is_standard = yes
+			OWNER = { cbrn_hq_country_can_pay_decon_standard_upkeep = yes }
+		}
+		AND = {
+			cbrn_hq_committed_force_is_mass = yes
+			OWNER = { cbrn_hq_country_can_pay_decon_mass_upkeep = yes }
+		}
+	}
+}
+
+cbrn_hq_can_pay_seal_area_activation = {
+	OR = {
+		AND = {
+			cbrn_hq_force_is_light = yes
+			OWNER = {
+				NOT = { command_power < constant:cbrn_hq_command_power.seal_area_light }
+				NOT = { has_equipment = { support_equipment < constant:cbrn_hq_seal_area_cost.light_support } }
+				NOT = { has_manpower < constant:cbrn_hq_commitment.light_manpower }
+			}
+		}
+		AND = {
+			cbrn_hq_force_is_standard = yes
+			OWNER = {
+				NOT = { command_power < constant:cbrn_hq_command_power.seal_area_standard }
+				NOT = { has_equipment = { support_equipment < constant:cbrn_hq_seal_area_cost.standard_support } }
+				NOT = { has_manpower < constant:cbrn_hq_commitment.standard_manpower }
+			}
+		}
+		AND = {
+			cbrn_hq_force_is_mass = yes
+			OWNER = {
+				NOT = { command_power < constant:cbrn_hq_command_power.seal_area_mass }
+				NOT = { has_equipment = { support_equipment < constant:cbrn_hq_seal_area_cost.mass_support } }
+				NOT = { has_manpower < constant:cbrn_hq_commitment.mass_manpower }
+			}
+		}
+	}
+}
+
+cbrn_hq_can_pay_seal_area_upkeep = {
+	OR = {
+		AND = {
+			cbrn_hq_committed_force_is_light = yes
+			OWNER = { NOT = { has_equipment = { support_equipment < constant:cbrn_hq_seal_area_cost.weekly_light_support } } }
+		}
+		AND = {
+			cbrn_hq_committed_force_is_standard = yes
+			OWNER = { NOT = { has_equipment = { support_equipment < constant:cbrn_hq_seal_area_cost.weekly_standard_support } } }
+		}
+		AND = {
+			cbrn_hq_committed_force_is_mass = yes
+			OWNER = { NOT = { has_equipment = { support_equipment < constant:cbrn_hq_seal_area_cost.weekly_mass_support } } }
+		}
+	}
+}
+
+cbrn_hq_can_pay_antidote_activation = {
+	OR = {
+		AND = {
+			cbrn_hq_force_is_light = yes
+			OWNER = {
+				NOT = { command_power < constant:cbrn_hq_command_power.antidote_light }
+				NOT = { has_equipment = { support_equipment < constant:cbrn_hq_antidote_cost.light_support } }
+				NOT = { has_equipment = { gas_mask_equipment < constant:cbrn_hq_antidote_cost.light_masks } }
+				check_variable = { var = cbrn_medical_capacity value = constant:cbrn_hq_commitment.light_medical compare = greater_than_or_equals }
+			}
+		}
+		AND = {
+			cbrn_hq_force_is_standard = yes
+			OWNER = {
+				NOT = { command_power < constant:cbrn_hq_command_power.antidote_standard }
+				NOT = { has_equipment = { support_equipment < constant:cbrn_hq_antidote_cost.standard_support } }
+				NOT = { has_equipment = { gas_mask_equipment < constant:cbrn_hq_antidote_cost.standard_masks } }
+				check_variable = { var = cbrn_medical_capacity value = constant:cbrn_hq_commitment.standard_medical compare = greater_than_or_equals }
+			}
+		}
+		AND = {
+			cbrn_hq_force_is_mass = yes
+			OWNER = {
+				NOT = { command_power < constant:cbrn_hq_command_power.antidote_mass }
+				NOT = { has_equipment = { support_equipment < constant:cbrn_hq_antidote_cost.mass_support } }
+				NOT = { has_equipment = { gas_mask_equipment < constant:cbrn_hq_antidote_cost.mass_masks } }
+				check_variable = { var = cbrn_medical_capacity value = constant:cbrn_hq_commitment.mass_medical compare = greater_than_or_equals }
+			}
+		}
+	}
+}
+
+cbrn_hq_can_pay_antidote_upkeep = {
+	OR = {
+		AND = {
+			cbrn_hq_committed_force_is_light = yes
+			OWNER = {
+				NOT = { has_equipment = { support_equipment < constant:cbrn_hq_antidote_cost.weekly_light_support } }
+				NOT = { has_equipment = { gas_mask_equipment < constant:cbrn_hq_antidote_cost.weekly_light_masks } }
+			}
+		}
+		AND = {
+			cbrn_hq_committed_force_is_standard = yes
+			OWNER = {
+				NOT = { has_equipment = { support_equipment < constant:cbrn_hq_antidote_cost.weekly_standard_support } }
+				NOT = { has_equipment = { gas_mask_equipment < constant:cbrn_hq_antidote_cost.weekly_standard_masks } }
+			}
+		}
+		AND = {
+			cbrn_hq_committed_force_is_mass = yes
+			OWNER = {
+				NOT = { has_equipment = { support_equipment < constant:cbrn_hq_antidote_cost.weekly_mass_support } }
+				NOT = { has_equipment = { gas_mask_equipment < constant:cbrn_hq_antidote_cost.weekly_mass_masks } }
+			}
+		}
+	}
+}
+
+cbrn_hq_can_pay_infection_activation = {
+	OR = {
+		AND = {
+			cbrn_hq_force_is_light = yes
+			OWNER = {
+				NOT = { command_power < constant:cbrn_hq_command_power.infection_light }
+				NOT = { has_equipment = { support_equipment < constant:cbrn_hq_infection_cost.light_support } }
+				NOT = { has_equipment = { decontamination_equipment < constant:cbrn_hq_infection_cost.light_decon } }
+				NOT = { has_equipment = { cbrn_instrument_equipment < constant:cbrn_hq_infection_cost.light_instruments } }
+				NOT = { has_equipment = { gas_mask_equipment < constant:cbrn_hq_infection_cost.light_masks } }
+				NOT = { has_manpower < constant:cbrn_hq_commitment.light_manpower }
+				check_variable = { var = cbrn_medical_capacity value = constant:cbrn_hq_commitment.light_medical compare = greater_than_or_equals }
+			}
+		}
+		AND = {
+			cbrn_hq_force_is_standard = yes
+			OWNER = {
+				NOT = { command_power < constant:cbrn_hq_command_power.infection_standard }
+				NOT = { has_equipment = { support_equipment < constant:cbrn_hq_infection_cost.standard_support } }
+				NOT = { has_equipment = { decontamination_equipment < constant:cbrn_hq_infection_cost.standard_decon } }
+				NOT = { has_equipment = { cbrn_instrument_equipment < constant:cbrn_hq_infection_cost.standard_instruments } }
+				NOT = { has_equipment = { gas_mask_equipment < constant:cbrn_hq_infection_cost.standard_masks } }
+				NOT = { has_manpower < constant:cbrn_hq_commitment.standard_manpower }
+				check_variable = { var = cbrn_medical_capacity value = constant:cbrn_hq_commitment.standard_medical compare = greater_than_or_equals }
+			}
+		}
+		AND = {
+			cbrn_hq_force_is_mass = yes
+			OWNER = {
+				NOT = { command_power < constant:cbrn_hq_command_power.infection_mass }
+				NOT = { has_equipment = { support_equipment < constant:cbrn_hq_infection_cost.mass_support } }
+				NOT = { has_equipment = { decontamination_equipment < constant:cbrn_hq_infection_cost.mass_decon } }
+				NOT = { has_equipment = { cbrn_instrument_equipment < constant:cbrn_hq_infection_cost.mass_instruments } }
+				NOT = { has_equipment = { gas_mask_equipment < constant:cbrn_hq_infection_cost.mass_masks } }
+				NOT = { has_manpower < constant:cbrn_hq_commitment.mass_manpower }
+				check_variable = { var = cbrn_medical_capacity value = constant:cbrn_hq_commitment.mass_medical compare = greater_than_or_equals }
+			}
+		}
+	}
+}
+
+cbrn_hq_can_pay_infection_upkeep = {
+	OR = {
+		AND = {
+			cbrn_hq_committed_force_is_light = yes
+			OWNER = {
+				NOT = { has_equipment = { support_equipment < constant:cbrn_hq_infection_cost.weekly_light_support } }
+				NOT = { has_equipment = { decontamination_equipment < constant:cbrn_hq_infection_cost.weekly_light_decon } }
+				NOT = { has_equipment = { cbrn_instrument_equipment < constant:cbrn_hq_infection_cost.weekly_light_instruments } }
+				NOT = { has_equipment = { gas_mask_equipment < constant:cbrn_hq_infection_cost.weekly_light_masks } }
+			}
+		}
+		AND = {
+			cbrn_hq_committed_force_is_standard = yes
+			OWNER = {
+				NOT = { has_equipment = { support_equipment < constant:cbrn_hq_infection_cost.weekly_standard_support } }
+				NOT = { has_equipment = { decontamination_equipment < constant:cbrn_hq_infection_cost.weekly_standard_decon } }
+				NOT = { has_equipment = { cbrn_instrument_equipment < constant:cbrn_hq_infection_cost.weekly_standard_instruments } }
+				NOT = { has_equipment = { gas_mask_equipment < constant:cbrn_hq_infection_cost.weekly_standard_masks } }
+			}
+		}
+		AND = {
+			cbrn_hq_committed_force_is_mass = yes
+			OWNER = {
+				NOT = { has_equipment = { support_equipment < constant:cbrn_hq_infection_cost.weekly_mass_support } }
+				NOT = { has_equipment = { decontamination_equipment < constant:cbrn_hq_infection_cost.weekly_mass_decon } }
+				NOT = { has_equipment = { cbrn_instrument_equipment < constant:cbrn_hq_infection_cost.weekly_mass_instruments } }
+				NOT = { has_equipment = { gas_mask_equipment < constant:cbrn_hq_infection_cost.weekly_mass_masks } }
+			}
+		}
+	}
+}
+
+
+
+
+cbrn_hq_can_activate_theater_protective_posture = {
+	OWNER = { has_country_flag = cbrn_milestone_protective_foundation }
+	cbrn_hq_protective_command_is_valid = yes
+	cbrn_hq_has_no_preparation_or_active_posture = yes
+	cbrn_hq_can_pay_protective_activation = yes
+}
+
+cbrn_hq_can_activate_decontamination_corridor = {
+	OWNER = { has_country_flag = cbrn_milestone_theater_exploitation }
+	cbrn_hq_decon_command_is_valid = yes
+	cbrn_hq_has_no_preparation_or_active_posture = yes
+	cbrn_hq_can_pay_decon_activation = yes
+}
+
+cbrn_hq_can_activate_seal_operational_area = {
+	OWNER = { has_country_flag = cbrn_milestone_theater_exploitation }
+	cbrn_hq_seal_area_command_is_valid = yes
+	cbrn_hq_has_no_preparation_or_active_posture = yes
+	cbrn_hq_can_pay_seal_area_activation = yes
+}
+
+cbrn_hq_can_activate_mass_antidote_response = {
+	OWNER = { has_country_flag = cbrn_milestone_protective_foundation }
+	cbrn_hq_antidote_command_is_valid = yes
+	cbrn_hq_has_no_preparation_or_active_posture = yes
+	cbrn_hq_can_pay_antidote_activation = yes
+}
+
+cbrn_hq_can_activate_seal_infection_corridor = {
+	OWNER = {
+		has_country_flag = cbrn_milestone_theater_exploitation
+		has_country_flag = cbrn_operations_mastery_four
+	}
+	cbrn_hq_infection_command_is_valid = yes
+	cbrn_hq_has_no_preparation_or_active_posture = yes
+	cbrn_hq_can_pay_infection_activation = yes
+}
+
+
+cbrn_country_can_field_protected_hq = {
+	has_country_flag = integrated_chemical_operations_signal_intelligence_fusion_unlocked
+	NOT = { has_equipment = { infantry_equipment < constant:cbrn_hq_template_cost.base_infantry } }
+	NOT = { has_equipment = { gas_mask_equipment < constant:cbrn_hq_template_cost.protected_masks } }
+	NOT = { has_equipment = { support_equipment < constant:cbrn_hq_template_cost.protected_support } }
+	NOT = { has_equipment = { decontamination_equipment < constant:cbrn_hq_template_cost.protected_decon } }
+	NOT = { has_equipment = { motorized_equipment < constant:cbrn_hq_template_cost.protected_trucks } }
+}
+
+cbrn_country_can_field_chemical_fireplan_hq = {
+	has_country_flag = integrated_chemical_operations_operational_recon_grids_unlocked
+	cbrn_country_has_operational_readiness = yes
+	cbrn_policy_allows_battlefield_use = yes
+	cbrn_country_has_any_chemical_payload_stock = yes
+	NOT = { has_equipment = { infantry_equipment < constant:cbrn_hq_template_cost.base_infantry } }
+	NOT = { has_equipment = { gas_mask_equipment < constant:cbrn_hq_template_cost.fireplan_masks } }
+	NOT = { has_equipment = { cbrn_instrument_equipment < constant:cbrn_hq_template_cost.fireplan_instruments } }
+	NOT = { has_equipment = { support_equipment < constant:cbrn_hq_template_cost.fireplan_support } }
+	NOT = { has_equipment = { decontamination_equipment < constant:cbrn_hq_template_cost.fireplan_decon } }
+	NOT = { has_equipment = { motorized_equipment < constant:cbrn_hq_template_cost.fireplan_trucks } }
+}
+
+cbrn_country_can_field_contaminated_theater_hq = {
+	has_country_flag = integrated_chemical_operations_countercontamination_routing_unlocked
+	cbrn_country_controls_chemical_contamination = yes
+	NOT = { has_equipment = { infantry_equipment < constant:cbrn_hq_template_cost.base_infantry } }
+	NOT = { has_equipment = { gas_mask_equipment < constant:cbrn_hq_template_cost.contaminated_masks } }
+	NOT = { has_equipment = { decontamination_equipment < constant:cbrn_hq_template_cost.contaminated_decon } }
+	NOT = { has_equipment = { cbrn_instrument_equipment < constant:cbrn_hq_template_cost.contaminated_instruments } }
+	NOT = { has_equipment = { support_equipment < constant:cbrn_hq_template_cost.contaminated_support } }
+	NOT = { has_equipment = { motorized_equipment < constant:cbrn_hq_template_cost.contaminated_trucks } }
+}
+
+cbrn_country_can_field_biological_containment_hq = {
+	has_country_flag = integrated_chemical_operations_air_surface_chemical_link_unlocked
+	has_tech = mobile_cbrn_hospitals
+	has_active_biowarfare_outbreak = yes
+	NOT = { has_equipment = { infantry_equipment < constant:cbrn_hq_template_cost.base_infantry } }
+	NOT = { has_equipment = { gas_mask_equipment < constant:cbrn_hq_template_cost.biological_masks } }
+	NOT = { has_equipment = { decontamination_equipment < constant:cbrn_hq_template_cost.biological_decon } }
+	NOT = { has_equipment = { cbrn_instrument_equipment < constant:cbrn_hq_template_cost.biological_instruments } }
+	NOT = { has_equipment = { support_equipment < constant:cbrn_hq_template_cost.biological_support } }
+	NOT = { has_equipment = { motorized_equipment < constant:cbrn_hq_template_cost.biological_trucks } }
+}
+
+cbrn_country_can_field_overmatch_hq = {
+	has_tech = theater_cbrn_headquarters
+	cbrn_country_has_full_readiness = yes
+	cbrn_policy_allows_battlefield_use = yes
+	OR = {
+		cbrn_country_has_any_chemical_payload_stock = yes
+		bio_battlefield_country_has_any_agent_reserve = yes
+	}
+	NOT = { has_equipment = { infantry_equipment < constant:cbrn_hq_template_cost.base_infantry } }
+	NOT = { has_equipment = { gas_mask_equipment < constant:cbrn_hq_template_cost.overmatch_masks } }
+	NOT = { has_equipment = { decontamination_equipment < constant:cbrn_hq_template_cost.overmatch_decon } }
+	NOT = { has_equipment = { cbrn_instrument_equipment < constant:cbrn_hq_template_cost.overmatch_instruments } }
+	NOT = { has_equipment = { support_equipment < constant:cbrn_hq_template_cost.overmatch_support } }
+	NOT = { has_equipment = { motorized_equipment < constant:cbrn_hq_template_cost.overmatch_trucks } }
+}

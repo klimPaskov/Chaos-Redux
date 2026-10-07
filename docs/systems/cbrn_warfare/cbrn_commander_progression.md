@@ -10,6 +10,9 @@ Two chemical receipts earn Chemical Operations Commander, two biological receipt
 Preparations, canceled orders, and failed upkeep do not count.
 One completed order is credited at most once, and later completed orders can count after the next valid commitment clears the receipt guard.
 
+The [HQ helper-output contract](cbrn_hq_command.md#temporary-output-contract) preserves actual package and preparation values through payment and scheduling.
+Its source regression exercises final paid and failed upkeep, one-time receipts and planned cleanup; it does not prove native event timing or raid-to-commander attribution.
+
 Two won combats while the general commands a fielded protected CBRN detachment satisfy Protected Assault Expert's service prerequisite; the player still assigns that general trait through the native trait menu.
 Two completed containment orders plus Hazard Warfare Veteran satisfy Theatre Containment Organizer's field marshal trait prerequisite.
 The battle callback proves that the named commander won combat and had a protected detachment under command; it does not identify which division participated in that battle.

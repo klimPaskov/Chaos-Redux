@@ -336,3 +336,12 @@ The parent reran 221 actual-source checks, including sixty-four reconnaissance s
 The point-model maximum is +34.59813%; the fractional-field countermodel is +40.556%, so native semantics remain a material blocker.
 Matching partial MCP dependency views were read and retain identical PNG bytes but no source-accurate native layout or numerical bonus coverage; the comparison returned `TECH_REVISION_NOT_CACHED`.
 The three current system guides use the implemented breakthrough and reconnaissance values and retain those evidence limits.
+
+## HQ paid-service integrity
+
+The [bounded repair](2026-10-07_hq_service_integrity.md) keeps package, preparation and completed-equipment outputs alive until their consumers finish.
+It adds caller-owned storage at the five starter, five upkeep and four nested debit boundaries; removing only those declarations restores the original effect statements and order.
+The seven captured dependencies remain byte-identical.
+The parent reran 292 actual-source cases with 275 baseline failures reproduced, including readiness boundaries, force bands, mixed-model debits, final paid/failed service receipts and planned cleanup.
+No gameplay simplification, price change, new player action, world pulse or asset replacement is introduced.
+MCP command validation is partial, the exact unit-leader event render selects no nodes, and event comparison returns `EVENT_REVISION_NOT_CACHED`; native payment/timing and the broader accepted goal remain incomplete.

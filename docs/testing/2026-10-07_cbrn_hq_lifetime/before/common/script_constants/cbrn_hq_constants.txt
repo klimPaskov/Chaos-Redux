@@ -1,0 +1,343 @@
+# ============================================================================
+# CHAOS REDUX - CBRN ARMY HEADQUARTERS TUNING
+# ============================================================================
+# Overview:
+# - Centralizes force bands, protective preparation, active duration, command power,
+#   activation stores, weekly upkeep, and temporary capacity commitments.
+# - Costs are gameplay tuning values, not historical stockpile claims.
+# - Payload costs are deliberately absent: Stage 6 owns the exact selected
+#   agent and delivery-lot debit before any exposure can be dispatched.
+# ============================================================================
+
+cbrn_hq_force = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	standard_battalion_threshold = 100
+	mass_battalion_threshold = 200
+	weekly_tick_days = 7
+	light_band = 1
+	standard_band = 2
+	mass_band = 3
+}
+
+cbrn_hq_operation = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	theater_protective_posture = 2
+	decontamination_corridor = 3
+	seal_operational_area = 4
+	mass_antidote_response = 5
+	seal_infection_corridor = 6
+}
+
+cbrn_hq_event_id = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	preparation_complete = 1
+	upkeep_tick = 2
+	recovery_complete = 3
+}
+
+cbrn_hq_readiness = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	limited_threshold = 40
+	integrated_threshold = 60
+	full_threshold = 80
+	limited_preparation_mult = 1.50
+	standard_preparation_mult = 1.00
+	integrated_preparation_mult = 0.85
+	full_preparation_mult = 0.75
+}
+
+cbrn_hq_timing = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	protective_base = 2
+	protective_min = 1
+	protective_max = 3
+	protective_active = 28
+	protective_upkeep_ticks = 3
+	decon_base = 4
+	decon_min = 3
+	decon_max = 7
+	decon_active = 28
+	decon_upkeep_ticks = 3
+	seal_area_base = 4
+	seal_area_min = 2
+	seal_area_max = 7
+	seal_area_active = 30
+	seal_area_upkeep_ticks = 4
+	antidote_base = 1
+	antidote_min = 1
+	antidote_max = 1
+	antidote_active = 14
+	antidote_upkeep_ticks = 1
+	infection_base = 3
+	infection_min = 2
+	infection_max = 5
+	infection_active = 60
+	infection_upkeep_ticks = 8
+}
+
+cbrn_hq_command_power = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	protective_native = 10
+	protective_light = 10
+	protective_standard = 22
+	protective_mass = 35
+	decon_native = 10
+	decon_light = 10
+	decon_standard = 28
+	decon_mass = 45
+	seal_area_native = 10
+	seal_area_light = 10
+	seal_area_standard = 22
+	seal_area_mass = 35
+	antidote_native = 10
+	antidote_light = 10
+	antidote_standard = 25
+	antidote_mass = 40
+	infection_native = 15
+	infection_light = 15
+	infection_standard = 30
+	infection_mass = 45
+}
+
+cbrn_hq_commitment = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	light_medical = 5
+	standard_medical = 10
+	mass_medical = 15
+	light_manpower = 500
+	standard_manpower = 1000
+	mass_manpower = 1500
+}
+
+cbrn_hq_filter_cost = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	# Protective posture pays once at activation and three weekly installments.
+	# The standard-band total is 12 condition points, matching the shared
+	# active-posture tuning while preserving exact force-band scaling.
+	# The standardized leaves are the exact products of the base values and
+	# cbrn_protection_technology_effect.filter_standardization_consumption_mult.
+	# Script constants cannot derive one leaf from another, so both gate values
+	# are centralized here beside their matching debit values.
+	protective_light = 2
+	protective_standard = 3
+	protective_mass = 4
+	protective_light_standardized = 1.70
+	protective_standard_standardized = 2.55
+	protective_mass_standardized = 3.40
+}
+
+
+cbrn_hq_protective_cost = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	light_masks = 500
+	light_support = 20
+	standard_masks = 1000
+	standard_support = 40
+	mass_masks = 2000
+	mass_support = 60
+	weekly_light_masks = 250
+	weekly_light_support = 10
+	weekly_standard_masks = 500
+	weekly_standard_support = 20
+	weekly_mass_masks = 1000
+	weekly_mass_support = 30
+}
+
+cbrn_hq_decon_cost = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	light_decon = 40
+	light_trucks = 2
+	light_masks = 100
+	light_support = 20
+	light_fuel = 300
+	standard_decon = 80
+	standard_trucks = 4
+	standard_masks = 200
+	standard_support = 40
+	standard_fuel = 600
+	mass_decon = 120
+	mass_trucks = 6
+	mass_masks = 400
+	mass_support = 60
+	mass_fuel = 900
+	weekly_light_decon = 20
+	weekly_light_trucks = 1
+	weekly_light_masks = 50
+	weekly_light_support = 10
+	weekly_light_fuel = 150
+	weekly_standard_decon = 40
+	weekly_standard_trucks = 2
+	weekly_standard_masks = 100
+	weekly_standard_support = 20
+	weekly_standard_fuel = 300
+	weekly_mass_decon = 60
+	weekly_mass_trucks = 3
+	weekly_mass_masks = 200
+	weekly_mass_support = 30
+	weekly_mass_fuel = 450
+}
+
+cbrn_hq_decon_designer_cost = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	light_decon = 28
+	standard_decon = 56
+	mass_decon = 84
+	weekly_light_decon = 14
+	weekly_standard_decon = 28
+	weekly_mass_decon = 42
+}
+
+cbrn_hq_seal_area_cost = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	light_support = 30
+	standard_support = 60
+	mass_support = 90
+	weekly_light_support = 15
+	weekly_standard_support = 30
+	weekly_mass_support = 45
+}
+
+cbrn_hq_antidote_cost = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	light_support = 30
+	light_masks = 100
+	standard_support = 60
+	standard_masks = 200
+	mass_support = 90
+	mass_masks = 400
+	weekly_light_support = 15
+	weekly_light_masks = 50
+	weekly_standard_support = 30
+	weekly_standard_masks = 100
+	weekly_mass_support = 45
+	weekly_mass_masks = 200
+}
+
+cbrn_hq_infection_cost = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	light_support = 40
+	light_decon = 30
+	light_instruments = 20
+	light_masks = 200
+	standard_support = 80
+	standard_decon = 60
+	standard_instruments = 40
+	standard_masks = 400
+	mass_support = 120
+	mass_decon = 90
+	mass_instruments = 60
+	mass_masks = 800
+	weekly_light_support = 20
+	weekly_light_decon = 15
+	weekly_light_instruments = 10
+	weekly_light_masks = 100
+	weekly_standard_support = 40
+	weekly_standard_decon = 30
+	weekly_standard_instruments = 20
+	weekly_standard_masks = 200
+	weekly_mass_support = 60
+	weekly_mass_decon = 45
+	weekly_mass_instruments = 30
+	weekly_mass_masks = 400
+}
+
+
+cbrn_hq_template_cost = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	base_infantry = 420
+	protected_masks = 80
+	protected_support = 100
+	protected_decon = 100
+	protected_trucks = 60
+	fireplan_masks = 110
+	fireplan_instruments = 50
+	fireplan_support = 180
+	fireplan_decon = 100
+	fireplan_trucks = 70
+	contaminated_masks = 110
+	contaminated_decon = 100
+	contaminated_instruments = 50
+	contaminated_support = 180
+	contaminated_trucks = 70
+	biological_masks = 110
+	biological_decon = 140
+	biological_instruments = 40
+	biological_support = 190
+	biological_trucks = 85
+	overmatch_masks = 140
+	overmatch_decon = 140
+	overmatch_instruments = 90
+	overmatch_support = 270
+	overmatch_trucks = 95
+}
+
+cbrn_hq_ai = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	disabled = -1
+	valid_context_add = 2
+	urgent_context_add = 2
+}

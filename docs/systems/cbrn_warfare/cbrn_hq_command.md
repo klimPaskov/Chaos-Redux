@@ -62,6 +62,18 @@ The active section sprites are registered in `interface/chaosx_subuniticons.gfx`
 
 The current package manifest and review sheets are under `docs/assets/chaos_warfare_cbrn/icon_package/`. Retired offensive ability icons are listed as removals in that manifest.
 
+## Temporary output contract
+
+The public `cbrn_hq_start_*` helpers consume their calculated temporary outputs before returning; native ability callers do not read a temporary result from them.
+Each starter therefore owns sixteen zero-initialized output slots in its own frame: mask, filter-condition, decontamination, instrument, support, motorized, fuel, medical and manpower debits; preparation base/minimum/maximum; active duration; native/total Command Power; and calculated preparation days.
+The operation's package setter and preparation helpers modify those slots before payment and scheduling consume them.
+Each `cbrn_hq_debit_*_upkeep` wrapper owns the nine package slots before invoking its returning package setter.
+
+Within `cbrn_hq_debit_operating_package`, the owner-country consumer initializes `cbrn_mask_stock_debit_completed`, `cbrn_hq_family_debit_completed` before each family call, and `cbrn_motorized_stock_debit_completed` before consuming those helper results.
+Those initial values are zero; the helpers replace them with actual completed amounts, which are then recorded in separate country consumption totals.
+The declarations must remain in the consuming caller frame; a runtime initializer helper cannot provide the same lifetime guarantee.
+The [source repair and regression](../../plans/chaos_warfare_system_plans/2026-10-07_hq_service_integrity.md) records the exact contract, preservation checks and native validation limits.
+
 ## Main files
 
 - `common/units/cbrn_hq_support.txt`
@@ -76,4 +88,7 @@ The current package manifest and review sheets are under `docs/assets/chaos_warf
 
 ## Validation limits
 
-Source review proves three active HQ sections, five active commander orders, finite targeted event chains, real stock debits, and removal of the separate offensive-preparation path. MCP event traces cover bounded HQ and protection chains but the full workspace event graph still reports unresolved diagnostics. Exact native reservation behavior on cancellation and the assigned-division-to-HQ association remain outside the documented script interface and require consumer evidence.
+The source defines three HQ sections, five protective orders, finite targeted event chains and real stock-debit calls.
+The 292-case helper-frame regression checks delivered payment/timing inputs, mixed-stock completion totals and bounded paid-service receipts while retaining explicit native-effect and gate fixtures.
+MCP validation remains partial, and its exact unit-leader event selector does not produce a usable chain view.
+Native transaction execution, scheduling, cancellation and the assigned-division-to-HQ association remain unproved.
