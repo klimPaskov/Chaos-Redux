@@ -1,0 +1,884 @@
+{
+  "workspaceId": "mod_chaos_redux_ea3b2d67c2c0",
+  "helper_sha256": "d91856d0fdc0ef7c91e0d14c4738356b012596c1701a399da50c8f367aeb6256",
+  "helper_excerpt": "apply_exact_state_civilian_population_loss = {\r\n\tset_temp_variable = { state_civilian_population_loss_applied = constant:chaos_meter_deaths.zero }\r\n\tset_temp_variable = { state_civilian_population_loss_result = constant:chaos_meter_deaths.zero }\r\n\r\n\tif = {\r\n\t\tlimit = {\r\n\t\t\tOR = {\r\n\t\t\t\tNOT = { has_variable = state_civilian_population_loss_contract_supplied }\r\n\t\t\t\tNOT = { check_variable = { state_civilian_population_loss_contract_supplied > constant:chaos_meter_deaths.zero } }\r\n\t\t\t\tNOT = { has_variable = state_civilian_population_loss_requested }\r\n\t\t\t\tNOT = { has_variable = state_civilian_population_loss_minimum_remaining }\r\n\t\t\t\tNOT = { has_variable = state_civilian_population_loss_reason }\r\n\t\t\t\tNOT = { has_variable = state_civilian_population_loss_log_deaths }\r\n\t\t\t\tNOT = { has_variable = state_civilian_population_loss_target_country }\r\n\t\t\t\tNOT = { has_variable = state_civilian_population_loss_has_target_country }\r\n\t\t\t}\r\n\t\t}\r\n\t\tset_temp_variable = { state_civilian_population_loss_requested = constant:chaos_meter_deaths.zero }\r\n\t\tset_temp_variable = { state_civilian_population_loss_minimum_remaining = constant:chaos_meter_deaths.zero }\r\n\t\tset_temp_variable = { state_civilian_population_loss_reason = constant:chaos_meter_deaths_reason.unknown }\r\n\t\tset_temp_variable = { state_civilian_population_loss_log_deaths = constant:chaos_meter_deaths.zero }\r\n\t\tset_temp_variable = { state_civilian_population_loss_target_country = OWNER }\r\n\t\tset_temp_variable = { state_civilian_population_loss_has_target_country = constant:chaos_meter_deaths.zero }\r\n\t}\r\n\tclamp_temp_variable = {\r\n\t\tvar = state_civilian_population_loss_minimum_remaining\r\n\t\tmin = constant:chaos_meter_deaths.zero\r\n\t}\r\n\tset_temp_variable = { state_civilian_population_loss_minimum_unrounded = state_civilian_population_loss_minimum_remaining }\r\n\tround_temp_variable = state_civilian_population_loss_minimum_remaining\r\n\tif = {\r\n\t\tlimit = { check_variable = { var = state_civilian_population_loss_minimum_remaining value = state_civilian_population_loss_minimum_unrounded compare = less_than } }\r\n\t\tadd_to_temp_variable = { state_civilian_population_loss_minimum_remaining = constant:chaos_meter_deaths.one }\r\n\t}\r\n\r\n\tset_temp_variable = { state_civilian_population_loss_before_people = state_population_k }\r\n\tmultiply_temp_variable = { state_civilian_population_loss_before_people = constant:chaos_meter_deaths.people_per_k }\r\n\tset_temp_variable = { state_civilian_population_loss_available = state_civilian_population_loss_before_people }\r\n\tsubtract_from_temp_variable = {\r\n\t\tstate_civilian_population_loss_available = state_civilian_population_loss_minimum_remaining\r\n\t}\r\n\tclamp_temp_variable = {\r\n\t\tvar = state_civilian_population_loss_available\r\n\t\tmin = constant:chaos_meter_deaths.zero\r\n\t}\r\n\t# Only whole civilians above the protected floor may be requested.\r\n\tset_temp_variable = { state_civilian_population_loss_available_unrounded = state_civilian_population_loss_available }\r\n\tround_temp_variable = state_civilian_population_loss_available\r\n\tif = {\r\n\t\tlimit = { check_variable = { var = state_civilian_population_loss_available value = state_civilian_population_loss_available_unrounded compare = greater_than } }\r\n\t\tsubtract_from_temp_variable = { state_civilian_population_loss_available = constant:chaos_meter_deaths.one }\r\n\t}\r\n\r\n\tset_temp_variable = { state_civilian_population_loss_applied = state_civilian_population_loss_requested }\r\n\tround_temp_variable = state_civilian_population_loss_applied\r\n\tclamp_temp_variable = {\r\n\t\tvar = state_civilian_population_loss_applied\r\n\t\tmin = constant:chaos_meter_deaths.zero\r\n\t\tmax = state_civilian_population_loss_available\r\n\t}\r\n\tif = {\r\n\t\tlimit = { check_variable = { state_civilian_population_loss_applied > constant:chaos_meter_deaths.zero } }\r\n\t\t# Mutate population once, then derive the public result from the state.\r\n\t\t# The Deaths call below records this observed loss without removing it again.\r\n\t\tset_temp_variable = { state_population_transaction_loss = state_civilian_population_loss_applied }\r\n\t\tset_temp_variable = { state_population_transaction_reconciled_gain = constant:chaos_meter_deaths.zero }\r\n\t\tset_temp_variable = { state_population_transaction_contract_supplied = constant:chaos_meter_deaths.one }\r\n\t\tapply_state_population_loss_without_recruitable_manpower_gain = yes\r\n\t\tset_temp_variable = { state_civilian_population_loss_after_people = state_population_k }\r\n\t\tmultiply_temp_variable = { state_civilian_population_loss_after_people = constant:chaos_meter_deaths.people_per_k }\r\n\t\tset_temp_variable = { state_civilian_population_loss_applied = state_civilian_population_loss_before_people }\r\n\t\tsubtract_from_temp_variable = { state_civilian_population_loss_applied = state_civilian_population_loss_after_people }\r\n\t\tclamp_temp_variable = { var = state_civilian_population_loss_applied min = constant:chaos_meter_deaths.zero }\r\n\t}\r\n\r\n\tif = {\r\n\t\tlimit = { check_variable = { state_civilian_population_loss_applied > constant:chaos_meter_deaths.zero } }\r\n\t\tset_temp_variable = { state_civilian_population_loss_result = constant:chaos_meter_deaths.one }\r\n\t\tif = {\r\n\t\t\tlimit = {\r\n\t\t\t\tOR = {\r\n\t\t\t\t\tNOT = { has_global_flag = settings_chaos_deaths_disabled }\r\n\t\t\t\t\thas_global_flag = fallout_air_cleanliness_disabled\r\n\t\t\t\t\thas_global_flag = fallout_transition_active\r\n\t\t\t\t\thas_global_flag = fallout_active\r\n\t\t\t\t\thas_global_flag = fallout_manual_scenario_active\r\n\t\t\t\t\thas_global_flag = fallout_manual_sweep_active\r\n\t\t\t\t\thas_global_flag = fallout_manual_countdown_active\r\n\t\t\t\t}\r\n\t\t\t\tcheck_variable = { state_civilian_population_loss_log_deaths > constant:chaos_meter_deaths.zero }\r\n\t\t\t}\r\n\t\t\tset_temp_variable = { chaos_deaths_change = state_civilian_population_loss_applied }\r\n\t\t\tset_temp_variable = { chaos_deaths_reason = state_civilian_population_loss_reason }\r\n\t\t\tset_temp_variable = { chaos_deaths_is_civilian = constant:chaos_meter_deaths.one }\r\n\t\t\tset_temp_variable = { chaos_deaths_apply_state_pop = constant:chaos_meter_deaths.zero }\r\n\t\t\tset_temp_variable = { chaos_deaths_record_state_ledger = constant:chaos_meter_deaths.one }\r\n\t\t\tset_temp_variable = { chaos_deaths_target_country = state_civilian_population_loss_target_country }\r\n\t\t\tset_temp_variable = { chaos_deaths_has_target_country = state_civilian_population_loss_has_target_country }\r\n\t\t\tchaos_meter_register_deaths = yes\r\n\t\t}\r\n\t}\r\n\r\n\tset_temp_variable = { state_civilian_population_loss_contract_supplied = constant:chaos_meter_deaths.zero }\r\n\tset_temp_variable = { state_civilian_population_loss_requested = constant:chaos_meter_deaths.zero }\r\n\tset_temp_variable = { state_civilian_population_loss_minimum_remaining = constant:chaos_meter_deaths.zero }\r\n\tset_temp_variable = { state_civilian_population_loss_reason = constant:chaos_meter_deaths_reason.unknown }\r\n\tset_temp_variable = { state_civilian_population_loss_log_deaths = constant:chaos_meter_deaths.zero }\r\n\tset_temp_variable = { state_civilian_population_loss_target_country = OWNER }\r\n\tset_temp_variable = { state_civilian_population_loss_has_target_country = constant:chaos_meter_deaths.zero }\r\n\tset_temp_variable = { state_civilian_population_loss_available = constant:chaos_meter_deaths.zero }\r\n\tset_temp_variable = { state_population_transaction_loss = constant:chaos_meter_deaths.zero }\r\n}\r\n",
+  "request": {
+    "tool": "hoi4.script_validate",
+    "scope": "state",
+    "kind": "effect",
+    "documentation": "game_doc",
+    "limit": 30
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\"artifactCount\":0,\"code\":\"SCRIPT_CHECK_PARTIAL\",\"status\":\"ok\",\"workspaceId\":\"mod_chaos_redux_ea3b2d67c2c0\"}"
+      }
+    ],
+    "structuredContent": {
+      "status": "ok",
+      "code": "SCRIPT_CHECK_PARTIAL",
+      "workspaceId": "mod_chaos_redux_ea3b2d67c2c0",
+      "filesScanned": [],
+      "proposedFiles": [],
+      "changedFiles": [],
+      "diagnostics": [
+        {
+          "code": "SCRIPT_ARGUMENT_BLOCK_UNCHECKED",
+          "severity": "warning",
+          "category": "validation",
+          "message": "Native argument block is not validated from prose documentation; read the cited syntax before use",
+          "details": {
+            "command": "set_temp_variable",
+            "kind": "effect",
+            "scope": "state",
+            "line": 2,
+            "column": 2
+          }
+        },
+        {
+          "code": "SCRIPT_ARGUMENT_BLOCK_UNCHECKED",
+          "severity": "warning",
+          "category": "validation",
+          "message": "Native argument block is not validated from prose documentation; read the cited syntax before use",
+          "details": {
+            "command": "set_temp_variable",
+            "kind": "effect",
+            "scope": "state",
+            "line": 3,
+            "column": 2
+          }
+        },
+        {
+          "code": "SCRIPT_ARGUMENT_BLOCK_UNCHECKED",
+          "severity": "warning",
+          "category": "validation",
+          "message": "Native argument block is not validated from prose documentation; read the cited syntax before use",
+          "details": {
+            "command": "check_variable",
+            "kind": "trigger",
+            "scope": "state",
+            "line": 9,
+            "column": 13
+          }
+        },
+        {
+          "code": "SCRIPT_ARGUMENT_BLOCK_UNCHECKED",
+          "severity": "warning",
+          "category": "validation",
+          "message": "Native argument block is not validated from prose documentation; read the cited syntax before use",
+          "details": {
+            "command": "set_temp_variable",
+            "kind": "effect",
+            "scope": "state",
+            "line": 18,
+            "column": 3
+          }
+        },
+        {
+          "code": "SCRIPT_ARGUMENT_BLOCK_UNCHECKED",
+          "severity": "warning",
+          "category": "validation",
+          "message": "Native argument block is not validated from prose documentation; read the cited syntax before use",
+          "details": {
+            "command": "set_temp_variable",
+            "kind": "effect",
+            "scope": "state",
+            "line": 19,
+            "column": 3
+          }
+        },
+        {
+          "code": "SCRIPT_ARGUMENT_BLOCK_UNCHECKED",
+          "severity": "warning",
+          "category": "validation",
+          "message": "Native argument block is not validated from prose documentation; read the cited syntax before use",
+          "details": {
+            "command": "set_temp_variable",
+            "kind": "effect",
+            "scope": "state",
+            "line": 20,
+            "column": 3
+          }
+        },
+        {
+          "code": "SCRIPT_ARGUMENT_BLOCK_UNCHECKED",
+          "severity": "warning",
+          "category": "validation",
+          "message": "Native argument block is not validated from prose documentation; read the cited syntax before use",
+          "details": {
+            "command": "set_temp_variable",
+            "kind": "effect",
+            "scope": "state",
+            "line": 21,
+            "column": 3
+          }
+        },
+        {
+          "code": "SCRIPT_ARGUMENT_BLOCK_UNCHECKED",
+          "severity": "warning",
+          "category": "validation",
+          "message": "Native argument block is not validated from prose documentation; read the cited syntax before use",
+          "details": {
+            "command": "set_temp_variable",
+            "kind": "effect",
+            "scope": "state",
+            "line": 22,
+            "column": 3
+          }
+        },
+        {
+          "code": "SCRIPT_ARGUMENT_BLOCK_UNCHECKED",
+          "severity": "warning",
+          "category": "validation",
+          "message": "Native argument block is not validated from prose documentation; read the cited syntax before use",
+          "details": {
+            "command": "set_temp_variable",
+            "kind": "effect",
+            "scope": "state",
+            "line": 23,
+            "column": 3
+          }
+        },
+        {
+          "code": "SCRIPT_ARGUMENT_BLOCK_UNCHECKED",
+          "severity": "warning",
+          "category": "validation",
+          "message": "Native argument block is not validated from prose documentation; read the cited syntax before use",
+          "details": {
+            "command": "clamp_temp_variable",
+            "kind": "effect",
+            "scope": "state",
+            "line": 25,
+            "column": 2
+          }
+        },
+        {
+          "code": "SCRIPT_ARGUMENT_BLOCK_UNCHECKED",
+          "severity": "warning",
+          "category": "validation",
+          "message": "Native argument block is not validated from prose documentation; read the cited syntax before use",
+          "details": {
+            "command": "set_temp_variable",
+            "kind": "effect",
+            "scope": "state",
+            "line": 29,
+            "column": 2
+          }
+        },
+        {
+          "code": "SCRIPT_ARGUMENT_BLOCK_UNCHECKED",
+          "severity": "warning",
+          "category": "validation",
+          "message": "Native argument block is not validated from prose documentation; read the cited syntax before use",
+          "details": {
+            "command": "check_variable",
+            "kind": "trigger",
+            "scope": "state",
+            "line": 32,
+            "column": 13
+          }
+        },
+        {
+          "code": "SCRIPT_ARGUMENT_BLOCK_UNCHECKED",
+          "severity": "warning",
+          "category": "validation",
+          "message": "Native argument block is not validated from prose documentation; read the cited syntax before use",
+          "details": {
+            "command": "add_to_temp_variable",
+            "kind": "effect",
+            "scope": "state",
+            "line": 33,
+            "column": 3
+          }
+        }
+      ],
+      "artifacts": [],
+      "validation": {
+        "passed": false,
+        "checks": [
+          {
+            "id": "script-command-checks",
+            "passed": false,
+            "message": "Script checks have unresolved coverage"
+          }
+        ]
+      },
+      "blockers": [],
+      "data": {
+        "valid": null,
+        "checksPerformed": [
+          "syntax",
+          "command_kind",
+          "declared_scope"
+        ],
+        "parametersChecked": false,
+        "documentation": {
+          "source": "game_doc",
+          "revision": "9227e238bce49345e9c358598b4dd4940c733d906b72324e8a02a57ecb42093b",
+          "effectCount": 544,
+          "triggerCount": 656,
+          "skippedSources": 0
+        },
+        "findings": [
+          {
+            "code": "SCRIPT_ARGUMENT_BLOCK_UNCHECKED",
+            "status": "unresolved",
+            "message": "Native argument block is not validated from prose documentation; read the cited syntax before use",
+            "suggestions": [],
+            "reference": {
+              "id": "36a1da49ada7cbbbc2e6f6945a02701b9ecbba08b10d02beb4bee699da5f1003",
+              "revision": "2cdc93d26775990468eed167442f7a416b13059fb8fe07d139b54250b79209af",
+              "source": "game_doc",
+              "title": "effects documentation",
+              "heading": "set_temp_variable",
+              "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Hearts of Iron IV\\documentation\\effects_documentation.md",
+              "startLine": 7820,
+              "endLine": 7827,
+              "excerpt": "## set_temp_variable * Supported Scopes: any",
+              "authority": "Installed game documentation"
+            },
+            "command": "set_temp_variable",
+            "kind": "effect",
+            "scope": "state",
+            "line": 2,
+            "column": 2
+          },
+          {
+            "code": "SCRIPT_ARGUMENT_BLOCK_UNCHECKED",
+            "status": "unresolved",
+            "message": "Native argument block is not validated from prose documentation; read the cited syntax before use",
+            "suggestions": [],
+            "reference": {
+              "id": "36a1da49ada7cbbbc2e6f6945a02701b9ecbba08b10d02beb4bee699da5f1003",
+              "revision": "2cdc93d26775990468eed167442f7a416b13059fb8fe07d139b54250b79209af",
+              "source": "game_doc",
+              "title": "effects documentation",
+              "heading": "set_temp_variable",
+              "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Hearts of Iron IV\\documentation\\effects_documentation.md",
+              "startLine": 7820,
+              "endLine": 7827,
+              "excerpt": "## set_temp_variable * Supported Scopes: any",
+              "authority": "Installed game documentation"
+            },
+            "command": "set_temp_variable",
+            "kind": "effect",
+            "scope": "state",
+            "line": 3,
+            "column": 2
+          },
+          {
+            "code": "SCRIPT_ARGUMENT_BLOCK_UNCHECKED",
+            "status": "unresolved",
+            "message": "Native argument block is not validated from prose documentation; read the cited syntax before use",
+            "suggestions": [],
+            "reference": {
+              "id": "eba1cc3a7863a60b1ffcb1293508be9a3228770609e2e9569a2cec95215f8a2c",
+              "revision": "7d27ed77dadaf3a213a4b3e2c624bf9c02dae495317abe8eee833b27c2d1de29",
+              "source": "game_doc",
+              "title": "triggers documentation",
+              "heading": "check_variable",
+              "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Hearts of Iron IV\\documentation\\triggers_documentation.md",
+              "startLine": 2110,
+              "endLine": 2135,
+              "excerpt": "## check_variable * Supported Scopes: any",
+              "authority": "Installed game documentation"
+            },
+            "command": "check_variable",
+            "kind": "trigger",
+            "scope": "state",
+            "line": 9,
+            "column": 13
+          },
+          {
+            "code": "SCRIPT_ARGUMENT_BLOCK_UNCHECKED",
+            "status": "unresolved",
+            "message": "Native argument block is not validated from prose documentation; read the cited syntax before use",
+            "suggestions": [],
+            "reference": {
+              "id": "36a1da49ada7cbbbc2e6f6945a02701b9ecbba08b10d02beb4bee699da5f1003",
+              "revision": "2cdc93d26775990468eed167442f7a416b13059fb8fe07d139b54250b79209af",
+              "source": "game_doc",
+              "title": "effects documentation",
+              "heading": "set_temp_variable",
+              "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Hearts of Iron IV\\documentation\\effects_documentation.md",
+              "startLine": 7820,
+              "endLine": 7827,
+              "excerpt": "## set_temp_variable * Supported Scopes: any",
+              "authority": "Installed game documentation"
+            },
+            "command": "set_temp_variable",
+            "kind": "effect",
+            "scope": "state",
+            "line": 18,
+            "column": 3
+          },
+          {
+            "code": "SCRIPT_ARGUMENT_BLOCK_UNCHECKED",
+            "status": "unresolved",
+            "message": "Native argument block is not validated from prose documentation; read the cited syntax before use",
+            "suggestions": [],
+            "reference": {
+              "id": "36a1da49ada7cbbbc2e6f6945a02701b9ecbba08b10d02beb4bee699da5f1003",
+              "revision": "2cdc93d26775990468eed167442f7a416b13059fb8fe07d139b54250b79209af",
+              "source": "game_doc",
+              "title": "effects documentation",
+              "heading": "set_temp_variable",
+              "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Hearts of Iron IV\\documentation\\effects_documentation.md",
+              "startLine": 7820,
+              "endLine": 7827,
+              "excerpt": "## set_temp_variable * Supported Scopes: any",
+              "authority": "Installed game documentation"
+            },
+            "command": "set_temp_variable",
+            "kind": "effect",
+            "scope": "state",
+            "line": 19,
+            "column": 3
+          },
+          {
+            "code": "SCRIPT_ARGUMENT_BLOCK_UNCHECKED",
+            "status": "unresolved",
+            "message": "Native argument block is not validated from prose documentation; read the cited syntax before use",
+            "suggestions": [],
+            "reference": {
+              "id": "36a1da49ada7cbbbc2e6f6945a02701b9ecbba08b10d02beb4bee699da5f1003",
+              "revision": "2cdc93d26775990468eed167442f7a416b13059fb8fe07d139b54250b79209af",
+              "source": "game_doc",
+              "title": "effects documentation",
+              "heading": "set_temp_variable",
+              "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Hearts of Iron IV\\documentation\\effects_documentation.md",
+              "startLine": 7820,
+              "endLine": 7827,
+              "excerpt": "## set_temp_variable * Supported Scopes: any",
+              "authority": "Installed game documentation"
+            },
+            "command": "set_temp_variable",
+            "kind": "effect",
+            "scope": "state",
+            "line": 20,
+            "column": 3
+          },
+          {
+            "code": "SCRIPT_ARGUMENT_BLOCK_UNCHECKED",
+            "status": "unresolved",
+            "message": "Native argument block is not validated from prose documentation; read the cited syntax before use",
+            "suggestions": [],
+            "reference": {
+              "id": "36a1da49ada7cbbbc2e6f6945a02701b9ecbba08b10d02beb4bee699da5f1003",
+              "revision": "2cdc93d26775990468eed167442f7a416b13059fb8fe07d139b54250b79209af",
+              "source": "game_doc",
+              "title": "effects documentation",
+              "heading": "set_temp_variable",
+              "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Hearts of Iron IV\\documentation\\effects_documentation.md",
+              "startLine": 7820,
+              "endLine": 7827,
+              "excerpt": "## set_temp_variable * Supported Scopes: any",
+              "authority": "Installed game documentation"
+            },
+            "command": "set_temp_variable",
+            "kind": "effect",
+            "scope": "state",
+            "line": 21,
+            "column": 3
+          },
+          {
+            "code": "SCRIPT_ARGUMENT_BLOCK_UNCHECKED",
+            "status": "unresolved",
+            "message": "Native argument block is not validated from prose documentation; read the cited syntax before use",
+            "suggestions": [],
+            "reference": {
+              "id": "36a1da49ada7cbbbc2e6f6945a02701b9ecbba08b10d02beb4bee699da5f1003",
+              "revision": "2cdc93d26775990468eed167442f7a416b13059fb8fe07d139b54250b79209af",
+              "source": "game_doc",
+              "title": "effects documentation",
+              "heading": "set_temp_variable",
+              "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Hearts of Iron IV\\documentation\\effects_documentation.md",
+              "startLine": 7820,
+              "endLine": 7827,
+              "excerpt": "## set_temp_variable * Supported Scopes: any",
+              "authority": "Installed game documentation"
+            },
+            "command": "set_temp_variable",
+            "kind": "effect",
+            "scope": "state",
+            "line": 22,
+            "column": 3
+          },
+          {
+            "code": "SCRIPT_ARGUMENT_BLOCK_UNCHECKED",
+            "status": "unresolved",
+            "message": "Native argument block is not validated from prose documentation; read the cited syntax before use",
+            "suggestions": [],
+            "reference": {
+              "id": "36a1da49ada7cbbbc2e6f6945a02701b9ecbba08b10d02beb4bee699da5f1003",
+              "revision": "2cdc93d26775990468eed167442f7a416b13059fb8fe07d139b54250b79209af",
+              "source": "game_doc",
+              "title": "effects documentation",
+              "heading": "set_temp_variable",
+              "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Hearts of Iron IV\\documentation\\effects_documentation.md",
+              "startLine": 7820,
+              "endLine": 7827,
+              "excerpt": "## set_temp_variable * Supported Scopes: any",
+              "authority": "Installed game documentation"
+            },
+            "command": "set_temp_variable",
+            "kind": "effect",
+            "scope": "state",
+            "line": 23,
+            "column": 3
+          },
+          {
+            "code": "SCRIPT_ARGUMENT_BLOCK_UNCHECKED",
+            "status": "unresolved",
+            "message": "Native argument block is not validated from prose documentation; read the cited syntax before use",
+            "suggestions": [],
+            "reference": {
+              "id": "6789583b685dbcc6c230eb70d204504a152416f9bfdf4ff7c35c923b8fd52b93",
+              "revision": "2cdc93d26775990468eed167442f7a416b13059fb8fe07d139b54250b79209af",
+              "source": "game_doc",
+              "title": "effects documentation",
+              "heading": "clamp_temp_variable",
+              "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Hearts of Iron IV\\documentation\\effects_documentation.md",
+              "startLine": 2681,
+              "endLine": 2694,
+              "excerpt": "## clamp_temp_variable * Supported Scopes: any",
+              "authority": "Installed game documentation"
+            },
+            "command": "clamp_temp_variable",
+            "kind": "effect",
+            "scope": "state",
+            "line": 25,
+            "column": 2
+          },
+          {
+            "code": "SCRIPT_ARGUMENT_BLOCK_UNCHECKED",
+            "status": "unresolved",
+            "message": "Native argument block is not validated from prose documentation; read the cited syntax before use",
+            "suggestions": [],
+            "reference": {
+              "id": "36a1da49ada7cbbbc2e6f6945a02701b9ecbba08b10d02beb4bee699da5f1003",
+              "revision": "2cdc93d26775990468eed167442f7a416b13059fb8fe07d139b54250b79209af",
+              "source": "game_doc",
+              "title": "effects documentation",
+              "heading": "set_temp_variable",
+              "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Hearts of Iron IV\\documentation\\effects_documentation.md",
+              "startLine": 7820,
+              "endLine": 7827,
+              "excerpt": "## set_temp_variable * Supported Scopes: any",
+              "authority": "Installed game documentation"
+            },
+            "command": "set_temp_variable",
+            "kind": "effect",
+            "scope": "state",
+            "line": 29,
+            "column": 2
+          },
+          {
+            "code": "SCRIPT_ARGUMENT_BLOCK_UNCHECKED",
+            "status": "unresolved",
+            "message": "Native argument block is not validated from prose documentation; read the cited syntax before use",
+            "suggestions": [],
+            "reference": {
+              "id": "eba1cc3a7863a60b1ffcb1293508be9a3228770609e2e9569a2cec95215f8a2c",
+              "revision": "7d27ed77dadaf3a213a4b3e2c624bf9c02dae495317abe8eee833b27c2d1de29",
+              "source": "game_doc",
+              "title": "triggers documentation",
+              "heading": "check_variable",
+              "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Hearts of Iron IV\\documentation\\triggers_documentation.md",
+              "startLine": 2110,
+              "endLine": 2135,
+              "excerpt": "## check_variable * Supported Scopes: any",
+              "authority": "Installed game documentation"
+            },
+            "command": "check_variable",
+            "kind": "trigger",
+            "scope": "state",
+            "line": 32,
+            "column": 13
+          },
+          {
+            "code": "SCRIPT_ARGUMENT_BLOCK_UNCHECKED",
+            "status": "unresolved",
+            "message": "Native argument block is not validated from prose documentation; read the cited syntax before use",
+            "suggestions": [],
+            "reference": {
+              "id": "62fba0f5ff3e19d7d739c1d5d92b74bc1248636a4296ec7d9f0d71d9e7785c5b",
+              "revision": "2cdc93d26775990468eed167442f7a416b13059fb8fe07d139b54250b79209af",
+              "source": "game_doc",
+              "title": "effects documentation",
+              "heading": "add_to_temp_variable",
+              "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Hearts of Iron IV\\documentation\\effects_documentation.md",
+              "startLine": 2327,
+              "endLine": 2333,
+              "excerpt": "## add_to_temp_variable * Supported Scopes: any",
+              "authority": "Installed game documentation"
+            },
+            "command": "add_to_temp_variable",
+            "kind": "effect",
+            "scope": "state",
+            "line": 33,
+            "column": 3
+          },
+          {
+            "code": "SCRIPT_ARGUMENT_BLOCK_UNCHECKED",
+            "status": "unresolved",
+            "message": "Native argument block is not validated from prose documentation; read the cited syntax before use",
+            "suggestions": [],
+            "reference": {
+              "id": "36a1da49ada7cbbbc2e6f6945a02701b9ecbba08b10d02beb4bee699da5f1003",
+              "revision": "2cdc93d26775990468eed167442f7a416b13059fb8fe07d139b54250b79209af",
+              "source": "game_doc",
+              "title": "effects documentation",
+              "heading": "set_temp_variable",
+              "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Hearts of Iron IV\\documentation\\effects_documentation.md",
+              "startLine": 7820,
+              "endLine": 7827,
+              "excerpt": "## set_temp_variable * Supported Scopes: any",
+              "authority": "Installed game documentation"
+            },
+            "command": "set_temp_variable",
+            "kind": "effect",
+            "scope": "state",
+            "line": 36,
+            "column": 2
+          },
+          {
+            "code": "SCRIPT_ARGUMENT_BLOCK_UNCHECKED",
+            "status": "unresolved",
+            "message": "Native argument block is not validated from prose documentation; read the cited syntax before use",
+            "suggestions": [],
+            "reference": {
+              "id": "9d96cdc695031689479a49ee97cf92cbffd4fba3991dadcc516299fecd1f07c4",
+              "revision": "2cdc93d26775990468eed167442f7a416b13059fb8fe07d139b54250b79209af",
+              "source": "game_doc",
+              "title": "effects documentation",
+              "heading": "multiply_temp_variable",
+              "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Hearts of Iron IV\\documentation\\effects_documentation.md",
+              "startLine": 5012,
+              "endLine": 5018,
+              "excerpt": "## multiply_temp_variable * Supported Scopes: any",
+              "authority": "Installed game documentation"
+            },
+            "command": "multiply_temp_variable",
+            "kind": "effect",
+            "scope": "state",
+            "line": 37,
+            "column": 2
+          },
+          {
+            "code": "SCRIPT_ARGUMENT_BLOCK_UNCHECKED",
+            "status": "unresolved",
+            "message": "Native argument block is not validated from prose documentation; read the cited syntax before use",
+            "suggestions": [],
+            "reference": {
+              "id": "36a1da49ada7cbbbc2e6f6945a02701b9ecbba08b10d02beb4bee699da5f1003",
+              "revision": "2cdc93d26775990468eed167442f7a416b13059fb8fe07d139b54250b79209af",
+              "source": "game_doc",
+              "title": "effects documentation",
+              "heading": "set_temp_variable",
+              "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Hearts of Iron IV\\documentation\\effects_documentation.md",
+              "startLine": 7820,
+              "endLine": 7827,
+              "excerpt": "## set_temp_variable * Supported Scopes: any",
+              "authority": "Installed game documentation"
+            },
+            "command": "set_temp_variable",
+            "kind": "effect",
+            "scope": "state",
+            "line": 38,
+            "column": 2
+          },
+          {
+            "code": "SCRIPT_ARGUMENT_BLOCK_UNCHECKED",
+            "status": "unresolved",
+            "message": "Native argument block is not validated from prose documentation; read the cited syntax before use",
+            "suggestions": [],
+            "reference": {
+              "id": "ea61480a356ee6c667ad1cc560808bb0ebbf7715eefe74be2b2132f26a1cd1a0",
+              "revision": "2cdc93d26775990468eed167442f7a416b13059fb8fe07d139b54250b79209af",
+              "source": "game_doc",
+              "title": "effects documentation",
+              "heading": "subtract_from_temp_variable",
+              "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Hearts of Iron IV\\documentation\\effects_documentation.md",
+              "startLine": 8187,
+              "endLine": 8193,
+              "excerpt": "## subtract_from_temp_variable * Supported Scopes: any",
+              "authority": "Installed game documentation"
+            },
+            "command": "subtract_from_temp_variable",
+            "kind": "effect",
+            "scope": "state",
+            "line": 39,
+            "column": 2
+          },
+          {
+            "code": "SCRIPT_ARGUMENT_BLOCK_UNCHECKED",
+            "status": "unresolved",
+            "message": "Native argument block is not validated from prose documentation; read the cited syntax before use",
+            "suggestions": [],
+            "reference": {
+              "id": "6789583b685dbcc6c230eb70d204504a152416f9bfdf4ff7c35c923b8fd52b93",
+              "revision": "2cdc93d26775990468eed167442f7a416b13059fb8fe07d139b54250b79209af",
+              "source": "game_doc",
+              "title": "effects documentation",
+              "heading": "clamp_temp_variable",
+              "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Hearts of Iron IV\\documentation\\effects_documentation.md",
+              "startLine": 2681,
+              "endLine": 2694,
+              "excerpt": "## clamp_temp_variable * Supported Scopes: any",
+              "authority": "Installed game documentation"
+            },
+            "command": "clamp_temp_variable",
+            "kind": "effect",
+            "scope": "state",
+            "line": 42,
+            "column": 2
+          },
+          {
+            "code": "SCRIPT_ARGUMENT_BLOCK_UNCHECKED",
+            "status": "unresolved",
+            "message": "Native argument block is not validated from prose documentation; read the cited syntax before use",
+            "suggestions": [],
+            "reference": {
+              "id": "36a1da49ada7cbbbc2e6f6945a02701b9ecbba08b10d02beb4bee699da5f1003",
+              "revision": "2cdc93d26775990468eed167442f7a416b13059fb8fe07d139b54250b79209af",
+              "source": "game_doc",
+              "title": "effects documentation",
+              "heading": "set_temp_variable",
+              "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Hearts of Iron IV\\documentation\\effects_documentation.md",
+              "startLine": 7820,
+              "endLine": 7827,
+              "excerpt": "## set_temp_variable * Supported Scopes: any",
+              "authority": "Installed game documentation"
+            },
+            "command": "set_temp_variable",
+            "kind": "effect",
+            "scope": "state",
+            "line": 47,
+            "column": 2
+          },
+          {
+            "code": "SCRIPT_ARGUMENT_BLOCK_UNCHECKED",
+            "status": "unresolved",
+            "message": "Native argument block is not validated from prose documentation; read the cited syntax before use",
+            "suggestions": [],
+            "reference": {
+              "id": "eba1cc3a7863a60b1ffcb1293508be9a3228770609e2e9569a2cec95215f8a2c",
+              "revision": "7d27ed77dadaf3a213a4b3e2c624bf9c02dae495317abe8eee833b27c2d1de29",
+              "source": "game_doc",
+              "title": "triggers documentation",
+              "heading": "check_variable",
+              "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Hearts of Iron IV\\documentation\\triggers_documentation.md",
+              "startLine": 2110,
+              "endLine": 2135,
+              "excerpt": "## check_variable * Supported Scopes: any",
+              "authority": "Installed game documentation"
+            },
+            "command": "check_variable",
+            "kind": "trigger",
+            "scope": "state",
+            "line": 50,
+            "column": 13
+          }
+        ],
+        "totalFindings": 138,
+        "omittedFindings": 118,
+        "checkedCommands": 85,
+        "unresolvedCount": 53,
+        "truncated": false,
+        "argumentBlocksUnchecked": 51
+      }
+    }
+  },
+  "referenceSearch": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\"artifactCount\":0,\"code\":\"OK\",\"status\":\"ok\",\"workspaceId\":\"mod_chaos_redux_ea3b2d67c2c0\"}"
+      }
+    ],
+    "structuredContent": {
+      "status": "ok",
+      "code": "OK",
+      "workspaceId": "mod_chaos_redux_ea3b2d67c2c0",
+      "filesScanned": [],
+      "proposedFiles": [],
+      "changedFiles": [],
+      "diagnostics": [],
+      "artifacts": [],
+      "validation": {
+        "passed": true,
+        "checks": []
+      },
+      "blockers": [],
+      "data": {
+        "results": [
+          {
+            "id": "138ba70b49b5d445953f7b2260dfddb40cc17cb93664857074e981c4e5437970",
+            "revision": "2cdc93d26775990468eed167442f7a416b13059fb8fe07d139b54250b79209af",
+            "source": "game_doc",
+            "title": "effects documentation",
+            "heading": "add_manpower",
+            "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Hearts of Iron IV\\documentation\\effects_documentation.md",
+            "startLine": 1468,
+            "endLine": 1476,
+            "excerpt": "## add_manpower * Supported Scopes: STATE, COUNTRY",
+            "authority": "Installed game documentation",
+            "score": 1001.514,
+            "matchLine": 1468
+          },
+          {
+            "id": "d94f6f654a21a7e4436696be8a2baca68eebebadba603517bd4880bb6b45b319",
+            "revision": "997ddb09bfd63efb41a425149c46bd812d5f8953217a403386b2f6c85196aa0c",
+            "source": "wiki",
+            "title": "Effects",
+            "heading": "add_manpower",
+            "path": "C:\\Users\\klimp\\OneDrive\\Documents\\Paradox Interactive\\Hearts of Iron IV\\mod\\chaos_redux\\paradox_wiki\\Effects - Hearts of Iron 4 Wiki.md",
+            "startLine": 1075,
+            "endLine": 1075,
+            "excerpt": "| add_manpower | `<int> / <variable>`<br>The amount to add. | `add_manpower = 100000``add_manpower = var:my_var` | Adds the specified amount of manpower to the current scope. |  | 1.0 |",
+            "authority": "Offline Paradox Wiki snapshot",
+            "score": 1001.514,
+            "matchLine": 1075
+          },
+          {
+            "id": "d0ff2151fffcc82d2890d13fa8bef053a16c1b6927a10145fb5e96f11a04b922",
+            "revision": "997ddb09bfd63efb41a425149c46bd812d5f8953217a403386b2f6c85196aa0c",
+            "source": "wiki",
+            "title": "Effects",
+            "heading": "add_manpower",
+            "path": "C:\\Users\\klimp\\OneDrive\\Documents\\Paradox Interactive\\Hearts of Iron IV\\mod\\chaos_redux\\paradox_wiki\\Effects - Hearts of Iron 4 Wiki.md",
+            "startLine": 3363,
+            "endLine": 3363,
+            "excerpt": "| add_manpower | `<int> / <variable>`<br>The amount to add. | `add_manpower = 10000` | Adds the specified amount of total population to the current state. | Note that when using negative manpower it will, besides reducing the population, also add directly to the recruitable manpower of the state. Wh",
+            "authority": "Offline Paradox Wiki snapshot",
+            "score": 1001.514,
+            "matchLine": 3363
+          },
+          {
+            "id": "86394a37361bd0cc6156f2c56a05f102678e1b43db46df156403945cf3eea043",
+            "revision": "997ddb09bfd63efb41a425149c46bd812d5f8953217a403386b2f6c85196aa0c",
+            "source": "wiki",
+            "title": "Effects",
+            "heading": "Random effects",
+            "path": "C:\\Users\\klimp\\OneDrive\\Documents\\Paradox Interactive\\Hearts of Iron IV\\mod\\chaos_redux\\paradox_wiki\\Effects - Hearts of Iron 4 Wiki.md",
+            "startLine": 4504,
+            "endLine": 4571,
+            "excerpt": "add_manpower = 10000 } 10 = {",
+            "authority": "Offline Paradox Wiki snapshot",
+            "score": 11.159,
+            "matchLine": 4526
+          }
+        ],
+        "total": 11,
+        "omitted": 7,
+        "limitedByBytes": false,
+        "coverage": {
+          "game_doc": {
+            "files": 50,
+            "sections": 3281,
+            "unavailable": false,
+            "included": true
+          },
+          "wiki": {
+            "files": 54,
+            "sections": 8359,
+            "unavailable": false,
+            "included": true
+          },
+          "script_doc": {
+            "files": 0,
+            "sections": 0,
+            "unavailable": true,
+            "included": false
+          }
+        },
+        "skipped": 0
+      }
+    }
+  },
+  "installedReference": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\"artifactCount\":0,\"code\":\"OK\",\"status\":\"ok\",\"workspaceId\":\"mod_chaos_redux_ea3b2d67c2c0\"}"
+      }
+    ],
+    "structuredContent": {
+      "status": "ok",
+      "code": "OK",
+      "workspaceId": "mod_chaos_redux_ea3b2d67c2c0",
+      "filesScanned": [],
+      "proposedFiles": [],
+      "changedFiles": [],
+      "diagnostics": [],
+      "artifacts": [],
+      "validation": {
+        "passed": true,
+        "checks": []
+      },
+      "blockers": [],
+      "data": {
+        "id": "138ba70b49b5d445953f7b2260dfddb40cc17cb93664857074e981c4e5437970",
+        "revision": "2cdc93d26775990468eed167442f7a416b13059fb8fe07d139b54250b79209af",
+        "source": "game_doc",
+        "title": "effects documentation",
+        "heading": "add_manpower",
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Hearts of Iron IV\\documentation\\effects_documentation.md",
+        "startLine": 1468,
+        "endLine": 1476,
+        "excerpt": "## add_manpower * Supported Scopes: STATE, COUNTRY",
+        "authority": "Installed game documentation",
+        "sectionStartLine": 1468,
+        "sectionEndLine": 1476,
+        "startColumn": 1,
+        "text": "## add_manpower\n\n* Supported Scopes: STATE, COUNTRY\n* Supported Targets: none\n\n```\nAdds manpower to the country in scope or locally on a state if in state scope\n```\n",
+        "nextLine": null,
+        "nextColumn": null
+      }
+    }
+  },
+  "offlineWikiReference": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\"artifactCount\":0,\"code\":\"OK\",\"status\":\"ok\",\"workspaceId\":\"mod_chaos_redux_ea3b2d67c2c0\"}"
+      }
+    ],
+    "structuredContent": {
+      "status": "ok",
+      "code": "OK",
+      "workspaceId": "mod_chaos_redux_ea3b2d67c2c0",
+      "filesScanned": [],
+      "proposedFiles": [],
+      "changedFiles": [],
+      "diagnostics": [],
+      "artifacts": [],
+      "validation": {
+        "passed": true,
+        "checks": []
+      },
+      "blockers": [],
+      "data": {
+        "id": "d0ff2151fffcc82d2890d13fa8bef053a16c1b6927a10145fb5e96f11a04b922",
+        "revision": "997ddb09bfd63efb41a425149c46bd812d5f8953217a403386b2f6c85196aa0c",
+        "source": "wiki",
+        "title": "Effects",
+        "heading": "add_manpower",
+        "path": "C:\\Users\\klimp\\OneDrive\\Documents\\Paradox Interactive\\Hearts of Iron IV\\mod\\chaos_redux\\paradox_wiki\\Effects - Hearts of Iron 4 Wiki.md",
+        "startLine": 3363,
+        "endLine": 3363,
+        "excerpt": "| add_manpower | `<int> / <variable>`<br>The amount to add. | `add_manpower = 10000` | Adds the specified amount of total population to the current state. | Note that when using negative manpower it will, besides reducing the population, also add directly to the recruitable manpower of the state. Wh",
+        "authority": "Offline Paradox Wiki snapshot",
+        "sectionStartLine": 3363,
+        "sectionEndLine": 3363,
+        "startColumn": 1,
+        "text": "| add_manpower | `<int> / <variable>`<br>The amount to add. | `add_manpower = 10000` | Adds the specified amount of total population to the current state. | Note that when using negative manpower it will, besides reducing the population, also add directly to the recruitable manpower of the state. Which will increase your manpower | 1.0 |",
+        "nextLine": null,
+        "nextColumn": null
+      }
+    }
+  }
+}
