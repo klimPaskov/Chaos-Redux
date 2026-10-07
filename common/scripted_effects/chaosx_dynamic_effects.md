@@ -566,3 +566,15 @@ There are no default row values, receipt repairs, numeric caps, actors, or persi
 The private temporary values array is cleared before return, and the helper does not change any country receipt field or fractional asset share.
 Usage inside the existing aligned row loop is `event021_parent_validate_active_front_row_integers = yes`; the enclosing validator initializes validity to `constant:random_civil_war_value.one` before that loop.
 The complete contract and readiness consumer are documented in `021_random_civil_war_active_evolution_effects.md`.
+
+## Event 021 live commit and transaction isolation APIs
+
+`event021_parent_validate_active_source_remnant_now` is a COUNTRY-scoped receipt check on the reviewing government with the recorded source target, current row/generation, original source division count and marker-stage input described in `021_random_civil_war_active_evolution_effects.md`.
+Its caller initializes temporary `event021_active_commit_remnant_valid` to zero; the helper publishes one only after the current capital-connected remainder and original division reserve survive the attempted row.
+It has no resource payment, persistent ownership change or default inferred receipt, and clears its working remnant markers and arrays.
+Use it before row marking with `event021_active_commit_markers_expected` at zero and at the final ordinary mutation gate with that input at one after current-row markers are verified.
+`event021_parent_clear_active_secondary_pending` is ANY-scoped cleanup of only the active ordinary row's secondary serial inputs, with no input/output contract beyond that scratch; it leaves the primary template and an unrelated preplanned anchor's state markers untouched.
+`event021_parent_save_active_transaction_bridge` and `event021_parent_restore_active_transaction_bridge` are COUNTRY-scoped synchronous frame helpers on the same reviewing government, documented fully in `021_random_civil_war_active_bridge_effects.md`.
+They preserve thirty scalar presences/values, seven global pointers and eight flag presences in normal country storage, leave durable registry publications untouched, and consume private copies after restoration.
+Save takes no inferred defaults and runs before guard/owner overwrites; restore without a saved copy is a no-op.
+The active commit's existing save/restore wrappers are the usage example, keeping the active lock until the original lock presence is restored after the scalar/pointer frame.

@@ -1,0 +1,525 @@
+# Event 021 active-front serial transaction bridge.
+# COUNTRY scope on the reviewing government under the synchronous commit lock.
+# Save before overwriting the borrowed owner target and recursion guard.
+# Only native boolean helper calls are used. All copies are country-owned normal
+# variables or flags and survive helper return. No temporary outputs are created.
+# This is one snapshot per government, not a nested transaction stack.
+
+event021_parent_save_active_transaction_bridge = {
+	clr_country_flag = event021_active_transaction_bridge_saved
+	clear_variable = event021_active_transaction_value_pending_generation
+	clear_variable = event021_active_transaction_value_pending_severity
+	clear_variable = event021_active_transaction_value_pending_crisis_id
+	clear_variable = event021_active_transaction_value_pending_archetype
+	clear_variable = event021_active_transaction_value_pending_opposition_front_id
+	clear_variable = event021_active_transaction_value_pending_opening_size
+	clear_variable = event021_active_transaction_value_pending_army_ratio
+	clear_variable = event021_active_transaction_value_pending_navy_ratio
+	clear_variable = event021_active_transaction_value_pending_air_ratio
+	clear_variable = event021_active_transaction_value_pending_secondary_front_id
+	clear_variable = event021_active_transaction_value_pending_secondary_anchor_state_id
+	clear_variable = event021_active_transaction_value_pending_secondary_opening_size
+	clear_variable = event021_active_transaction_value_pending_secondary_opening_state_count
+	clear_variable = event021_active_transaction_value_pending_secondary_army_ratio
+	clear_variable = event021_active_transaction_value_pending_secondary_navy_ratio
+	clear_variable = event021_active_transaction_value_pending_secondary_air_ratio
+	clear_variable = event021_active_transaction_value_pending_secondary_archetype
+	clear_variable = event021_active_transaction_value_pending_secondary_front_goal
+	clear_variable = event021_active_transaction_value_planned_secondary_archetype
+	clear_variable = event021_active_transaction_value_planned_secondary_front_goal
+	clear_variable = event021_active_transaction_value_event6_pending_package_id
+	clear_variable = event021_active_transaction_value_event6_pending_region
+	clear_variable = event021_active_transaction_value_event6_pending_depth
+	clear_variable = event021_active_transaction_value_event6_pending_archetype
+	clear_variable = event021_active_transaction_value_event6_pending_opening_state_count
+	clear_variable = event021_active_transaction_value_pending_event6_secondary_front_id
+	clear_variable = event021_active_transaction_value_event6_secondary_planned_package_id
+	clear_variable = event021_active_transaction_value_event6_secondary_planned_region
+	clear_variable = event021_active_transaction_value_event6_secondary_planned_depth
+	clear_variable = event021_active_transaction_value_event6_secondary_planned_archetype
+	clear_variable = event021_active_transaction_target_global_host_country
+	clear_variable = event021_active_transaction_target_secondary_anchor_state
+	clear_variable = event021_active_transaction_target_secondary_source_country
+	clear_variable = event021_active_transaction_target_preplanned_secondary_anchor_state
+	clear_variable = event021_active_transaction_target_event6_secondary_planned_anchor
+	clear_variable = event021_active_transaction_target_event6_secondary_planned_actor
+	clear_variable = event021_active_transaction_target_active_front_commit_owner
+	clr_country_flag = event021_active_transaction_flag_secondary_front_pending
+	clr_country_flag = event021_active_transaction_flag_secondary_route_prepared
+	clr_country_flag = event021_active_transaction_flag_secondary_front_preplanned
+	clr_country_flag = event021_active_transaction_flag_event6_secondary_search_active
+	clr_country_flag = event021_active_transaction_flag_event6_secondary_front_pending
+	clr_country_flag = event021_active_transaction_flag_event6_secondary_front_preplanned
+	clr_country_flag = event021_active_transaction_flag_dynamic_front_activation_active
+	clr_country_flag = event021_active_transaction_flag_active_front_commit_in_progress
+
+	# Scalar presence is represented by the normal copy's own existence.
+	if = {
+		limit = { has_variable = global.random_civil_war_pending_generation }
+		set_variable = { event021_active_transaction_value_pending_generation = global.random_civil_war_pending_generation }
+	}
+	if = {
+		limit = { has_variable = global.random_civil_war_pending_severity }
+		set_variable = { event021_active_transaction_value_pending_severity = global.random_civil_war_pending_severity }
+	}
+	if = {
+		limit = { has_variable = global.random_civil_war_pending_crisis_id }
+		set_variable = { event021_active_transaction_value_pending_crisis_id = global.random_civil_war_pending_crisis_id }
+	}
+	if = {
+		limit = { has_variable = global.random_civil_war_pending_archetype }
+		set_variable = { event021_active_transaction_value_pending_archetype = global.random_civil_war_pending_archetype }
+	}
+	if = {
+		limit = { has_variable = global.random_civil_war_pending_opposition_front_id }
+		set_variable = { event021_active_transaction_value_pending_opposition_front_id = global.random_civil_war_pending_opposition_front_id }
+	}
+	if = {
+		limit = { has_variable = global.random_civil_war_pending_opening_size }
+		set_variable = { event021_active_transaction_value_pending_opening_size = global.random_civil_war_pending_opening_size }
+	}
+	if = {
+		limit = { has_variable = global.random_civil_war_pending_army_ratio }
+		set_variable = { event021_active_transaction_value_pending_army_ratio = global.random_civil_war_pending_army_ratio }
+	}
+	if = {
+		limit = { has_variable = global.random_civil_war_pending_navy_ratio }
+		set_variable = { event021_active_transaction_value_pending_navy_ratio = global.random_civil_war_pending_navy_ratio }
+	}
+	if = {
+		limit = { has_variable = global.random_civil_war_pending_air_ratio }
+		set_variable = { event021_active_transaction_value_pending_air_ratio = global.random_civil_war_pending_air_ratio }
+	}
+	if = {
+		limit = { has_variable = global.random_civil_war_pending_secondary_front_id }
+		set_variable = { event021_active_transaction_value_pending_secondary_front_id = global.random_civil_war_pending_secondary_front_id }
+	}
+	if = {
+		limit = { has_variable = global.random_civil_war_pending_secondary_anchor_state_id }
+		set_variable = { event021_active_transaction_value_pending_secondary_anchor_state_id = global.random_civil_war_pending_secondary_anchor_state_id }
+	}
+	if = {
+		limit = { has_variable = global.random_civil_war_pending_secondary_opening_size }
+		set_variable = { event021_active_transaction_value_pending_secondary_opening_size = global.random_civil_war_pending_secondary_opening_size }
+	}
+	if = {
+		limit = { has_variable = global.random_civil_war_pending_secondary_opening_state_count }
+		set_variable = { event021_active_transaction_value_pending_secondary_opening_state_count = global.random_civil_war_pending_secondary_opening_state_count }
+	}
+	if = {
+		limit = { has_variable = global.random_civil_war_pending_secondary_army_ratio }
+		set_variable = { event021_active_transaction_value_pending_secondary_army_ratio = global.random_civil_war_pending_secondary_army_ratio }
+	}
+	if = {
+		limit = { has_variable = global.random_civil_war_pending_secondary_navy_ratio }
+		set_variable = { event021_active_transaction_value_pending_secondary_navy_ratio = global.random_civil_war_pending_secondary_navy_ratio }
+	}
+	if = {
+		limit = { has_variable = global.random_civil_war_pending_secondary_air_ratio }
+		set_variable = { event021_active_transaction_value_pending_secondary_air_ratio = global.random_civil_war_pending_secondary_air_ratio }
+	}
+	if = {
+		limit = { has_variable = global.random_civil_war_pending_secondary_archetype }
+		set_variable = { event021_active_transaction_value_pending_secondary_archetype = global.random_civil_war_pending_secondary_archetype }
+	}
+	if = {
+		limit = { has_variable = global.random_civil_war_pending_secondary_front_goal }
+		set_variable = { event021_active_transaction_value_pending_secondary_front_goal = global.random_civil_war_pending_secondary_front_goal }
+	}
+	if = {
+		limit = { has_variable = global.random_civil_war_planned_secondary_archetype }
+		set_variable = { event021_active_transaction_value_planned_secondary_archetype = global.random_civil_war_planned_secondary_archetype }
+	}
+	if = {
+		limit = { has_variable = global.random_civil_war_planned_secondary_front_goal }
+		set_variable = { event021_active_transaction_value_planned_secondary_front_goal = global.random_civil_war_planned_secondary_front_goal }
+	}
+	if = {
+		limit = { has_variable = global.random_civil_war_event6_pending_package_id }
+		set_variable = { event021_active_transaction_value_event6_pending_package_id = global.random_civil_war_event6_pending_package_id }
+	}
+	if = {
+		limit = { has_variable = global.random_civil_war_event6_pending_region }
+		set_variable = { event021_active_transaction_value_event6_pending_region = global.random_civil_war_event6_pending_region }
+	}
+	if = {
+		limit = { has_variable = global.random_civil_war_event6_pending_depth }
+		set_variable = { event021_active_transaction_value_event6_pending_depth = global.random_civil_war_event6_pending_depth }
+	}
+	if = {
+		limit = { has_variable = global.random_civil_war_event6_pending_archetype }
+		set_variable = { event021_active_transaction_value_event6_pending_archetype = global.random_civil_war_event6_pending_archetype }
+	}
+	if = {
+		limit = { has_variable = global.random_civil_war_event6_pending_opening_state_count }
+		set_variable = { event021_active_transaction_value_event6_pending_opening_state_count = global.random_civil_war_event6_pending_opening_state_count }
+	}
+	if = {
+		limit = { has_variable = global.random_civil_war_pending_event6_secondary_front_id }
+		set_variable = { event021_active_transaction_value_pending_event6_secondary_front_id = global.random_civil_war_pending_event6_secondary_front_id }
+	}
+	if = {
+		limit = { has_variable = global.random_civil_war_event6_secondary_planned_package_id }
+		set_variable = { event021_active_transaction_value_event6_secondary_planned_package_id = global.random_civil_war_event6_secondary_planned_package_id }
+	}
+	if = {
+		limit = { has_variable = global.random_civil_war_event6_secondary_planned_region }
+		set_variable = { event021_active_transaction_value_event6_secondary_planned_region = global.random_civil_war_event6_secondary_planned_region }
+	}
+	if = {
+		limit = { has_variable = global.random_civil_war_event6_secondary_planned_depth }
+		set_variable = { event021_active_transaction_value_event6_secondary_planned_depth = global.random_civil_war_event6_secondary_planned_depth }
+	}
+	if = {
+		limit = { has_variable = global.random_civil_war_event6_secondary_planned_archetype }
+		set_variable = { event021_active_transaction_value_event6_secondary_planned_archetype = global.random_civil_war_event6_secondary_planned_archetype }
+	}
+
+	# Frozen country/state pointers do not depend on ROOT or PREV after capture.
+	if = {
+		limit = { has_event_target = random_civil_war_global_host_country }
+		set_variable = { event021_active_transaction_target_global_host_country = event_target:random_civil_war_global_host_country }
+	}
+	if = {
+		limit = { has_event_target = random_civil_war_secondary_anchor_state }
+		set_variable = { event021_active_transaction_target_secondary_anchor_state = event_target:random_civil_war_secondary_anchor_state }
+	}
+	if = {
+		limit = { has_event_target = random_civil_war_secondary_source_country }
+		set_variable = { event021_active_transaction_target_secondary_source_country = event_target:random_civil_war_secondary_source_country }
+	}
+	if = {
+		limit = { has_event_target = random_civil_war_preplanned_secondary_anchor_state }
+		set_variable = { event021_active_transaction_target_preplanned_secondary_anchor_state = event_target:random_civil_war_preplanned_secondary_anchor_state }
+	}
+	if = {
+		limit = { has_event_target = random_civil_war_event6_secondary_planned_anchor }
+		set_variable = { event021_active_transaction_target_event6_secondary_planned_anchor = event_target:random_civil_war_event6_secondary_planned_anchor }
+	}
+	if = {
+		limit = { has_event_target = random_civil_war_event6_secondary_planned_actor }
+		set_variable = { event021_active_transaction_target_event6_secondary_planned_actor = event_target:random_civil_war_event6_secondary_planned_actor }
+	}
+	if = {
+		limit = { has_event_target = random_civil_war_active_front_commit_owner }
+		set_variable = { event021_active_transaction_target_active_front_commit_owner = event_target:random_civil_war_active_front_commit_owner }
+	}
+
+	# These serial guard flags require presence only, not timed flag metadata.
+	if = {
+		limit = { has_global_flag = random_civil_war_secondary_front_pending }
+		set_country_flag = event021_active_transaction_flag_secondary_front_pending
+	}
+	if = {
+		limit = { has_global_flag = random_civil_war_secondary_route_prepared }
+		set_country_flag = event021_active_transaction_flag_secondary_route_prepared
+	}
+	if = {
+		limit = { has_global_flag = random_civil_war_secondary_front_preplanned }
+		set_country_flag = event021_active_transaction_flag_secondary_front_preplanned
+	}
+	if = {
+		limit = { has_global_flag = random_civil_war_event6_secondary_search_active }
+		set_country_flag = event021_active_transaction_flag_event6_secondary_search_active
+	}
+	if = {
+		limit = { has_global_flag = random_civil_war_event6_secondary_front_pending }
+		set_country_flag = event021_active_transaction_flag_event6_secondary_front_pending
+	}
+	if = {
+		limit = { has_global_flag = random_civil_war_event6_secondary_front_preplanned }
+		set_country_flag = event021_active_transaction_flag_event6_secondary_front_preplanned
+	}
+	if = {
+		limit = { has_global_flag = random_civil_war_dynamic_front_activation_active }
+		set_country_flag = event021_active_transaction_flag_dynamic_front_activation_active
+	}
+	if = {
+		limit = { has_global_flag = random_civil_war_active_front_commit_in_progress }
+		set_country_flag = event021_active_transaction_flag_active_front_commit_in_progress
+	}
+	set_country_flag = event021_active_transaction_bridge_saved
+}
+
+# COUNTRY scope on the same government after every row's adapter cleanup.
+# A missing snapshot is a no-op. Restore consumes every private copy.
+event021_parent_restore_active_transaction_bridge = {
+	if = {
+		limit = { has_country_flag = event021_active_transaction_bridge_saved }
+		if = {
+			limit = { has_variable = event021_active_transaction_value_pending_generation }
+			set_variable = { global.random_civil_war_pending_generation = event021_active_transaction_value_pending_generation }
+		}
+		else = { clear_variable = global.random_civil_war_pending_generation }
+		if = {
+			limit = { has_variable = event021_active_transaction_value_pending_severity }
+			set_variable = { global.random_civil_war_pending_severity = event021_active_transaction_value_pending_severity }
+		}
+		else = { clear_variable = global.random_civil_war_pending_severity }
+		if = {
+			limit = { has_variable = event021_active_transaction_value_pending_crisis_id }
+			set_variable = { global.random_civil_war_pending_crisis_id = event021_active_transaction_value_pending_crisis_id }
+		}
+		else = { clear_variable = global.random_civil_war_pending_crisis_id }
+		if = {
+			limit = { has_variable = event021_active_transaction_value_pending_archetype }
+			set_variable = { global.random_civil_war_pending_archetype = event021_active_transaction_value_pending_archetype }
+		}
+		else = { clear_variable = global.random_civil_war_pending_archetype }
+		if = {
+			limit = { has_variable = event021_active_transaction_value_pending_opposition_front_id }
+			set_variable = { global.random_civil_war_pending_opposition_front_id = event021_active_transaction_value_pending_opposition_front_id }
+		}
+		else = { clear_variable = global.random_civil_war_pending_opposition_front_id }
+		if = {
+			limit = { has_variable = event021_active_transaction_value_pending_opening_size }
+			set_variable = { global.random_civil_war_pending_opening_size = event021_active_transaction_value_pending_opening_size }
+		}
+		else = { clear_variable = global.random_civil_war_pending_opening_size }
+		if = {
+			limit = { has_variable = event021_active_transaction_value_pending_army_ratio }
+			set_variable = { global.random_civil_war_pending_army_ratio = event021_active_transaction_value_pending_army_ratio }
+		}
+		else = { clear_variable = global.random_civil_war_pending_army_ratio }
+		if = {
+			limit = { has_variable = event021_active_transaction_value_pending_navy_ratio }
+			set_variable = { global.random_civil_war_pending_navy_ratio = event021_active_transaction_value_pending_navy_ratio }
+		}
+		else = { clear_variable = global.random_civil_war_pending_navy_ratio }
+		if = {
+			limit = { has_variable = event021_active_transaction_value_pending_air_ratio }
+			set_variable = { global.random_civil_war_pending_air_ratio = event021_active_transaction_value_pending_air_ratio }
+		}
+		else = { clear_variable = global.random_civil_war_pending_air_ratio }
+		if = {
+			limit = { has_variable = event021_active_transaction_value_pending_secondary_front_id }
+			set_variable = { global.random_civil_war_pending_secondary_front_id = event021_active_transaction_value_pending_secondary_front_id }
+		}
+		else = { clear_variable = global.random_civil_war_pending_secondary_front_id }
+		if = {
+			limit = { has_variable = event021_active_transaction_value_pending_secondary_anchor_state_id }
+			set_variable = { global.random_civil_war_pending_secondary_anchor_state_id = event021_active_transaction_value_pending_secondary_anchor_state_id }
+		}
+		else = { clear_variable = global.random_civil_war_pending_secondary_anchor_state_id }
+		if = {
+			limit = { has_variable = event021_active_transaction_value_pending_secondary_opening_size }
+			set_variable = { global.random_civil_war_pending_secondary_opening_size = event021_active_transaction_value_pending_secondary_opening_size }
+		}
+		else = { clear_variable = global.random_civil_war_pending_secondary_opening_size }
+		if = {
+			limit = { has_variable = event021_active_transaction_value_pending_secondary_opening_state_count }
+			set_variable = { global.random_civil_war_pending_secondary_opening_state_count = event021_active_transaction_value_pending_secondary_opening_state_count }
+		}
+		else = { clear_variable = global.random_civil_war_pending_secondary_opening_state_count }
+		if = {
+			limit = { has_variable = event021_active_transaction_value_pending_secondary_army_ratio }
+			set_variable = { global.random_civil_war_pending_secondary_army_ratio = event021_active_transaction_value_pending_secondary_army_ratio }
+		}
+		else = { clear_variable = global.random_civil_war_pending_secondary_army_ratio }
+		if = {
+			limit = { has_variable = event021_active_transaction_value_pending_secondary_navy_ratio }
+			set_variable = { global.random_civil_war_pending_secondary_navy_ratio = event021_active_transaction_value_pending_secondary_navy_ratio }
+		}
+		else = { clear_variable = global.random_civil_war_pending_secondary_navy_ratio }
+		if = {
+			limit = { has_variable = event021_active_transaction_value_pending_secondary_air_ratio }
+			set_variable = { global.random_civil_war_pending_secondary_air_ratio = event021_active_transaction_value_pending_secondary_air_ratio }
+		}
+		else = { clear_variable = global.random_civil_war_pending_secondary_air_ratio }
+		if = {
+			limit = { has_variable = event021_active_transaction_value_pending_secondary_archetype }
+			set_variable = { global.random_civil_war_pending_secondary_archetype = event021_active_transaction_value_pending_secondary_archetype }
+		}
+		else = { clear_variable = global.random_civil_war_pending_secondary_archetype }
+		if = {
+			limit = { has_variable = event021_active_transaction_value_pending_secondary_front_goal }
+			set_variable = { global.random_civil_war_pending_secondary_front_goal = event021_active_transaction_value_pending_secondary_front_goal }
+		}
+		else = { clear_variable = global.random_civil_war_pending_secondary_front_goal }
+		if = {
+			limit = { has_variable = event021_active_transaction_value_planned_secondary_archetype }
+			set_variable = { global.random_civil_war_planned_secondary_archetype = event021_active_transaction_value_planned_secondary_archetype }
+		}
+		else = { clear_variable = global.random_civil_war_planned_secondary_archetype }
+		if = {
+			limit = { has_variable = event021_active_transaction_value_planned_secondary_front_goal }
+			set_variable = { global.random_civil_war_planned_secondary_front_goal = event021_active_transaction_value_planned_secondary_front_goal }
+		}
+		else = { clear_variable = global.random_civil_war_planned_secondary_front_goal }
+		if = {
+			limit = { has_variable = event021_active_transaction_value_event6_pending_package_id }
+			set_variable = { global.random_civil_war_event6_pending_package_id = event021_active_transaction_value_event6_pending_package_id }
+		}
+		else = { clear_variable = global.random_civil_war_event6_pending_package_id }
+		if = {
+			limit = { has_variable = event021_active_transaction_value_event6_pending_region }
+			set_variable = { global.random_civil_war_event6_pending_region = event021_active_transaction_value_event6_pending_region }
+		}
+		else = { clear_variable = global.random_civil_war_event6_pending_region }
+		if = {
+			limit = { has_variable = event021_active_transaction_value_event6_pending_depth }
+			set_variable = { global.random_civil_war_event6_pending_depth = event021_active_transaction_value_event6_pending_depth }
+		}
+		else = { clear_variable = global.random_civil_war_event6_pending_depth }
+		if = {
+			limit = { has_variable = event021_active_transaction_value_event6_pending_archetype }
+			set_variable = { global.random_civil_war_event6_pending_archetype = event021_active_transaction_value_event6_pending_archetype }
+		}
+		else = { clear_variable = global.random_civil_war_event6_pending_archetype }
+		if = {
+			limit = { has_variable = event021_active_transaction_value_event6_pending_opening_state_count }
+			set_variable = { global.random_civil_war_event6_pending_opening_state_count = event021_active_transaction_value_event6_pending_opening_state_count }
+		}
+		else = { clear_variable = global.random_civil_war_event6_pending_opening_state_count }
+		if = {
+			limit = { has_variable = event021_active_transaction_value_pending_event6_secondary_front_id }
+			set_variable = { global.random_civil_war_pending_event6_secondary_front_id = event021_active_transaction_value_pending_event6_secondary_front_id }
+		}
+		else = { clear_variable = global.random_civil_war_pending_event6_secondary_front_id }
+		if = {
+			limit = { has_variable = event021_active_transaction_value_event6_secondary_planned_package_id }
+			set_variable = { global.random_civil_war_event6_secondary_planned_package_id = event021_active_transaction_value_event6_secondary_planned_package_id }
+		}
+		else = { clear_variable = global.random_civil_war_event6_secondary_planned_package_id }
+		if = {
+			limit = { has_variable = event021_active_transaction_value_event6_secondary_planned_region }
+			set_variable = { global.random_civil_war_event6_secondary_planned_region = event021_active_transaction_value_event6_secondary_planned_region }
+		}
+		else = { clear_variable = global.random_civil_war_event6_secondary_planned_region }
+		if = {
+			limit = { has_variable = event021_active_transaction_value_event6_secondary_planned_depth }
+			set_variable = { global.random_civil_war_event6_secondary_planned_depth = event021_active_transaction_value_event6_secondary_planned_depth }
+		}
+		else = { clear_variable = global.random_civil_war_event6_secondary_planned_depth }
+		if = {
+			limit = { has_variable = event021_active_transaction_value_event6_secondary_planned_archetype }
+			set_variable = { global.random_civil_war_event6_secondary_planned_archetype = event021_active_transaction_value_event6_secondary_planned_archetype }
+		}
+		else = { clear_variable = global.random_civil_war_event6_secondary_planned_archetype }
+
+		if = {
+			limit = { has_variable = event021_active_transaction_target_global_host_country }
+			var:event021_active_transaction_target_global_host_country = { save_global_event_target_as = random_civil_war_global_host_country }
+		}
+		else = { clear_global_event_target = random_civil_war_global_host_country }
+		if = {
+			limit = { has_variable = event021_active_transaction_target_secondary_anchor_state }
+			var:event021_active_transaction_target_secondary_anchor_state = { save_global_event_target_as = random_civil_war_secondary_anchor_state }
+		}
+		else = { clear_global_event_target = random_civil_war_secondary_anchor_state }
+		if = {
+			limit = { has_variable = event021_active_transaction_target_secondary_source_country }
+			var:event021_active_transaction_target_secondary_source_country = { save_global_event_target_as = random_civil_war_secondary_source_country }
+		}
+		else = { clear_global_event_target = random_civil_war_secondary_source_country }
+		if = {
+			limit = { has_variable = event021_active_transaction_target_preplanned_secondary_anchor_state }
+			var:event021_active_transaction_target_preplanned_secondary_anchor_state = { save_global_event_target_as = random_civil_war_preplanned_secondary_anchor_state }
+		}
+		else = { clear_global_event_target = random_civil_war_preplanned_secondary_anchor_state }
+		if = {
+			limit = { has_variable = event021_active_transaction_target_event6_secondary_planned_anchor }
+			var:event021_active_transaction_target_event6_secondary_planned_anchor = { save_global_event_target_as = random_civil_war_event6_secondary_planned_anchor }
+		}
+		else = { clear_global_event_target = random_civil_war_event6_secondary_planned_anchor }
+		if = {
+			limit = { has_variable = event021_active_transaction_target_event6_secondary_planned_actor }
+			var:event021_active_transaction_target_event6_secondary_planned_actor = { save_global_event_target_as = random_civil_war_event6_secondary_planned_actor }
+		}
+		else = { clear_global_event_target = random_civil_war_event6_secondary_planned_actor }
+		if = {
+			limit = { has_variable = event021_active_transaction_target_active_front_commit_owner }
+			var:event021_active_transaction_target_active_front_commit_owner = { save_global_event_target_as = random_civil_war_active_front_commit_owner }
+		}
+		else = { clear_global_event_target = random_civil_war_active_front_commit_owner }
+
+		if = {
+			limit = { has_country_flag = event021_active_transaction_flag_secondary_front_pending }
+			set_global_flag = random_civil_war_secondary_front_pending
+		}
+		else = { clr_global_flag = random_civil_war_secondary_front_pending }
+		if = {
+			limit = { has_country_flag = event021_active_transaction_flag_secondary_route_prepared }
+			set_global_flag = random_civil_war_secondary_route_prepared
+		}
+		else = { clr_global_flag = random_civil_war_secondary_route_prepared }
+		if = {
+			limit = { has_country_flag = event021_active_transaction_flag_secondary_front_preplanned }
+			set_global_flag = random_civil_war_secondary_front_preplanned
+		}
+		else = { clr_global_flag = random_civil_war_secondary_front_preplanned }
+		if = {
+			limit = { has_country_flag = event021_active_transaction_flag_event6_secondary_search_active }
+			set_global_flag = random_civil_war_event6_secondary_search_active
+		}
+		else = { clr_global_flag = random_civil_war_event6_secondary_search_active }
+		if = {
+			limit = { has_country_flag = event021_active_transaction_flag_event6_secondary_front_pending }
+			set_global_flag = random_civil_war_event6_secondary_front_pending
+		}
+		else = { clr_global_flag = random_civil_war_event6_secondary_front_pending }
+		if = {
+			limit = { has_country_flag = event021_active_transaction_flag_event6_secondary_front_preplanned }
+			set_global_flag = random_civil_war_event6_secondary_front_preplanned
+		}
+		else = { clr_global_flag = random_civil_war_event6_secondary_front_preplanned }
+		if = {
+			limit = { has_country_flag = event021_active_transaction_flag_dynamic_front_activation_active }
+			set_global_flag = random_civil_war_dynamic_front_activation_active
+		}
+		else = { clr_global_flag = random_civil_war_dynamic_front_activation_active }
+		if = {
+			limit = { has_country_flag = event021_active_transaction_flag_active_front_commit_in_progress }
+			set_global_flag = random_civil_war_active_front_commit_in_progress
+		}
+		else = { clr_global_flag = random_civil_war_active_front_commit_in_progress }
+
+		clr_country_flag = event021_active_transaction_bridge_saved
+		clear_variable = event021_active_transaction_value_pending_generation
+		clear_variable = event021_active_transaction_value_pending_severity
+		clear_variable = event021_active_transaction_value_pending_crisis_id
+		clear_variable = event021_active_transaction_value_pending_archetype
+		clear_variable = event021_active_transaction_value_pending_opposition_front_id
+		clear_variable = event021_active_transaction_value_pending_opening_size
+		clear_variable = event021_active_transaction_value_pending_army_ratio
+		clear_variable = event021_active_transaction_value_pending_navy_ratio
+		clear_variable = event021_active_transaction_value_pending_air_ratio
+		clear_variable = event021_active_transaction_value_pending_secondary_front_id
+		clear_variable = event021_active_transaction_value_pending_secondary_anchor_state_id
+		clear_variable = event021_active_transaction_value_pending_secondary_opening_size
+		clear_variable = event021_active_transaction_value_pending_secondary_opening_state_count
+		clear_variable = event021_active_transaction_value_pending_secondary_army_ratio
+		clear_variable = event021_active_transaction_value_pending_secondary_navy_ratio
+		clear_variable = event021_active_transaction_value_pending_secondary_air_ratio
+		clear_variable = event021_active_transaction_value_pending_secondary_archetype
+		clear_variable = event021_active_transaction_value_pending_secondary_front_goal
+		clear_variable = event021_active_transaction_value_planned_secondary_archetype
+		clear_variable = event021_active_transaction_value_planned_secondary_front_goal
+		clear_variable = event021_active_transaction_value_event6_pending_package_id
+		clear_variable = event021_active_transaction_value_event6_pending_region
+		clear_variable = event021_active_transaction_value_event6_pending_depth
+		clear_variable = event021_active_transaction_value_event6_pending_archetype
+		clear_variable = event021_active_transaction_value_event6_pending_opening_state_count
+		clear_variable = event021_active_transaction_value_pending_event6_secondary_front_id
+		clear_variable = event021_active_transaction_value_event6_secondary_planned_package_id
+		clear_variable = event021_active_transaction_value_event6_secondary_planned_region
+		clear_variable = event021_active_transaction_value_event6_secondary_planned_depth
+		clear_variable = event021_active_transaction_value_event6_secondary_planned_archetype
+		clear_variable = event021_active_transaction_target_global_host_country
+		clear_variable = event021_active_transaction_target_secondary_anchor_state
+		clear_variable = event021_active_transaction_target_secondary_source_country
+		clear_variable = event021_active_transaction_target_preplanned_secondary_anchor_state
+		clear_variable = event021_active_transaction_target_event6_secondary_planned_anchor
+		clear_variable = event021_active_transaction_target_event6_secondary_planned_actor
+		clear_variable = event021_active_transaction_target_active_front_commit_owner
+		clr_country_flag = event021_active_transaction_flag_secondary_front_pending
+		clr_country_flag = event021_active_transaction_flag_secondary_route_prepared
+		clr_country_flag = event021_active_transaction_flag_secondary_front_preplanned
+		clr_country_flag = event021_active_transaction_flag_event6_secondary_search_active
+		clr_country_flag = event021_active_transaction_flag_event6_secondary_front_pending
+		clr_country_flag = event021_active_transaction_flag_event6_secondary_front_preplanned
+		clr_country_flag = event021_active_transaction_flag_dynamic_front_activation_active
+		clr_country_flag = event021_active_transaction_flag_active_front_commit_in_progress
+	}
+}
+

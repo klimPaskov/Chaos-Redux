@@ -128,3 +128,12 @@ The explicit manual scenario request may enumerate eligible countries once to bu
 An ordinary parent call prepares a target, reserves it, plans connected states, calls `event021_prepare_force_package`, validates the plan, and then calls the appropriate parent commit adapter.
 
 The parent passes `random_civil_war_opening_size`, `random_civil_war_opening_army_ratio`, `random_civil_war_opening_navy_ratio`, and `random_civil_war_opening_air_ratio` to the vanilla civil-war adapter.
+
+## Active receipt routing
+
+`event021_bind_front_plan_row` and `event021_reject_pending_front_plan_row` remain COUNTRY-scoped consumers of caller-owned `event021_planned_front_id_to_mark`; binding also consumes `event021_planned_front_status_to_mark`.
+While the active commit lock is held, they use only the reviewing government's receipt through the proved global owner target.
+A missing active owner fails closed without falling through to a global opening plan.
+Outside an active commit the existing global opening-row behavior remains unchanged.
+Binding writes the taker's normal bound-row metadata and the matching owner row status; rejection changes only that owner row's status and creates no actor or resource effect.
+The routing fixtures prove a ready outer opening plan with the same row ID remains untouched by active binding and rejection.

@@ -92,8 +92,23 @@ It never sets `random_civil_war_front_plan_ready` and never touches the global o
 ### Commit
 
 `event021_parent_commit_active_front_rows` holds `random_civil_war_active_front_commit_in_progress`, the existing `random_civil_war_dynamic_front_activation_active` recursion guard, and the global target `random_civil_war_active_front_commit_owner` for one synchronous pass.
-`event021_parent_save_active_commit_bridge` and `event021_parent_restore_active_commit_bridge` preserve the existing host target and pending generation, severity, crisis, archetype, and opposition front globals, including their absence.
+`event021_parent_save_active_commit_bridge` and `event021_parent_restore_active_commit_bridge` delegate to the country-owned transaction bridge in `021_random_civil_war_active_bridge_effects.txt`.
+They preserve thirty borrowed scalar presences/values, seven global scope pointers and eight flag presences, save before taking guards and overwriting the owner target, and restore the old lock only after restoring the scalar/pointer frame.
+`event021_parent_clear_active_secondary_pending` is ANY-scoped narrow cleanup of the nine ordinary secondary fields, two targets and two transient flags written by the active row; it never clears the primary force template or an old preplanned anchor's state marker.
+That cleanup has no inputs or outputs beyond the current serial secondary scratch and does not restore the prior frame; the outer bridge owns restoration after every row.
+The primary four force inputs are also protected inside the shared force cleanup while the active lock is held.
+Current-actor package cleanup requires selection ownership, validity and matching package ID, and active binding/rejection never mutates a ready outer opening row.
 `event021_parent_commit_active_front_row` resolves the source again by ID and generation, then:
+
+Before either adapter, `event021_parent_validate_active_source_remnant_now` remeasures the live source capital's connected component, excludes only the attempted row, and requires the remainder to lose exactly those currently connected row states without isolating additional retained territory.
+It requires a held capital, an existing source, matching live/registered/receipt generation within the existing cap, exact current row ownership and control, the connected state minimum, and the original constant-backed protected division reserve after subtracting this row's planned divisions.
+The reserve is calculated from the original source division count, rounded up and bounded by the existing minimum, not rebased downward after earlier splits.
+The reviewing government owns the row arrays; the recorded source target owns the live map and division inputs.
+The caller must initialize the temporary output `event021_active_commit_remnant_valid` to zero and supply `event021_active_commit_row`, `event021_active_commit_generation`, `event021_active_review_row_generation`, and `event021_active_source_divisions`.
+`event021_active_commit_markers_expected` starts at zero before row marking, so a preexisting transfer marker rejects the attempt without deleting that marker; it is one only at the ordinary final gate after the exact current row markers have been proved.
+The ordinary transfer validator repeats this proof at its final native-mutation gate after adapter preparation.
+The helper does not allocate forces, rewrite rows, spend resources, or mutate persistent state; its remnant markers and private arrays are cleared.
+This proof covers the attempted row, not undocumented additional states transferred by a country release; the outstanding Event 006 native-release footprint gap is recorded in `docs/plans/021_random_civil_war_plans/event021_native_release_footprint_gap_2026-10-07.md`.
 
 - for an ordinary row, marks the source-held span with `event021_parent_mark_active_front_row_states`, publishes the existing secondary pending inputs, and calls `event021_parent_start_secondary_civil_war` on the source;
 - for an Event 006 row, publishes the existing planned-package inputs and calls `event021_parent_try_event6_secondary_front` on the government.

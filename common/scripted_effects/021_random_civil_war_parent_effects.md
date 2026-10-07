@@ -248,3 +248,13 @@ The array suffixes, scopes, initial values and nested helper contracts are liste
 The normal opening and scenario primary-anchor selectors create `event021_anchor_state_score` before every scorer call whose result they consume.
 The normal front builder owns its route/goal mapper outputs, and the same-tag builder owns its route mapper output.
 These initialization and exact-replay requirements change no scoring formula, route mapping, shared capacity, scenario timing or numeric tuning.
+
+## Active transaction cleanup
+
+`event021_parent_clear_pending_force_transaction` remains ANY-scoped cleanup but does not clear the primary opening size/army/navy/air inputs while the active commit lock is held.
+It still clears the secondary inputs owned by the active adapter; the outer bridge restores their prior presence and values after the synchronous pass.
+`event021_parent_clear_event6_package_transaction` remains COUNTRY-scoped host cleanup with no forwarded outputs.
+Its actor-specific setup/previous-generation cleanup now requires the calling host to be the current selection owner, that owner's actor-validity flag, and matching positive host/actor package IDs.
+The package ID is copied to private temporary storage before entering the actor scope, so cleanup does not read the originating event ROOT as a substitute for the actual caller.
+Unrelated or stale regular selected-actor pointers cannot mutate a different package's actor.
+The remaining host/global package scratch is cleared as before; live package identity remains owned by its separate save/restore contract.

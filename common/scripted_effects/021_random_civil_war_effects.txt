@@ -1372,6 +1372,13 @@ event021_bind_front_plan_row = {
 	# The bound receipt is replaced only by a published row; a later call with
 	# no published plan, such as a priority-front decision, keeps it intact.
 	if = {
+		limit = { has_global_flag = random_civil_war_active_front_commit_in_progress }
+		if = {
+			limit = { has_event_target = random_civil_war_active_front_commit_owner }
+			event021_bind_active_front_row = yes
+		}
+	}
+	else_if = {
 		limit = {
 			has_global_flag = random_civil_war_front_plan_ready
 		}
@@ -1408,15 +1415,6 @@ event021_bind_front_plan_row = {
 			}
 		}
 	}
-	# Sides opened by an Evolution I review bind to the reviewing government's
-	# own receipt rows.
-	else_if = {
-		limit = {
-			has_global_flag = random_civil_war_active_front_commit_in_progress
-			has_event_target = random_civil_war_active_front_commit_owner
-		}
-		event021_bind_active_front_row = yes
-	}
 }
 
 # COUNTRY scope. Registration and priority binding use the same immutable row
@@ -1437,15 +1435,36 @@ event021_reject_pending_front_plan_row = {
 	set_temp_variable = { event021_front_plan_reject_break = constant:random_civil_war_value.zero }
 	set_temp_variable = { event021_planned_front_status_to_mark = constant:random_civil_war_planned_front_status.rejected }
 	set_temp_variable = { event021_front_plan_reject_index = constant:random_civil_war_value.zero }
-	for_each_loop = {
-		array = global.random_civil_war_planned_front_ids
-		value = event021_front_plan_reject_id
-		break = event021_front_plan_reject_break
+	if = {
+		limit = { has_global_flag = random_civil_war_active_front_commit_in_progress }
 		if = {
-			limit = { check_variable = { var = event021_front_plan_reject_id value = event021_planned_front_id_to_mark compare = equals } }
-			set_variable = { global.random_civil_war_planned_front_status_entries^event021_front_plan_reject_index = event021_planned_front_status_to_mark }
+			limit = { has_event_target = random_civil_war_active_front_commit_owner }
+			event_target:random_civil_war_active_front_commit_owner = {
+				for_each_loop = {
+					array = random_civil_war_active_front_ids
+					value = event021_front_plan_reject_id
+					index = event021_front_plan_reject_index
+					break = event021_front_plan_reject_break
+					if = {
+						limit = { check_variable = { var = event021_front_plan_reject_id value = event021_planned_front_id_to_mark compare = equals } }
+						set_variable = { random_civil_war_active_front_statuses^event021_front_plan_reject_index = event021_planned_front_status_to_mark }
+						set_temp_variable = { event021_front_plan_reject_break = constant:random_civil_war_value.one }
+					}
+				}
+			}
 		}
-		add_to_temp_variable = { event021_front_plan_reject_index = constant:random_civil_war_value.one }
+	}
+	else = {
+		for_each_loop = {
+			array = global.random_civil_war_planned_front_ids
+			value = event021_front_plan_reject_id
+			break = event021_front_plan_reject_break
+			if = {
+				limit = { check_variable = { var = event021_front_plan_reject_id value = event021_planned_front_id_to_mark compare = equals } }
+				set_variable = { global.random_civil_war_planned_front_status_entries^event021_front_plan_reject_index = event021_planned_front_status_to_mark }
+			}
+			add_to_temp_variable = { event021_front_plan_reject_index = constant:random_civil_war_value.one }
+		}
 	}
 }
 
