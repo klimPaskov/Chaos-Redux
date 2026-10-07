@@ -1,5 +1,31 @@
 # Event 021 dynamic repair resume packet
 
+## 2026-10-07 authoritative checkpoint
+
+The current source supersedes the historical uncommitted-work descriptions below.
+The goal is active and incomplete; Event 021 and SCN-018 remain `Needs Testing`.
+
+- `545c509bf4531d48ebece6d9c0bfcc4f211d19c0` rejects fractional active-front fields and expands the calendar audit to all 44 current deadline additions.
+- `ce8d2e825f64a653e3b269380e79a6b2c63f566b` repairs candidate/remnant output ownership and frozen receipt replay at consumption.
+- `223eaa2f7e7ee0ef8f44611b200b86c0f2273b77` adds live row remnant/original division-reserve proofs, snapshots thirty scalar values/presences, seven pointers and eight flag presences, narrows cleanup and routes active row binding/rejection away from outer plans.
+
+The current source has 64 bounded test groups across integer receipts, candidate execution, parent dispatch prefixes, remnant measurement/live proof, transaction restoration, row routing, calendar conversion, evolution logging, front ledger and sponsor cleanup.
+Those fixtures declare engine/map/package boundaries and do not prove native war allocation or full package release safety.
+No game was launched and no clean live error log is claimed.
+
+Next implementation is the registered native release footprint, not further broad expansion.
+Read `event021_registered_release_footprint_addendum_2026-10-07.md` and `event021_native_release_footprint_gap_2026-10-07.md`; the helper/receipt design is proposed for parent review while the complete-footprint requirement is accepted under the full goal.
+The current native crosswalk has 32 release branches, not 29; native release transfers every source-owned carrier core, including uncontrolled states, and removes source cores.
+Current optional rows still record only the anchor, so the row-only remnant proof is not sufficient for the real Event 006 transaction.
+Implement complete native/explicit memberships, existing/original-tag carrier reuse, current-world equality, protected remnants, resource accounting, state/core/controller provenance, registration and rollback in primary, optional, active and frozen scenario paths.
+Do not substitute anchor-only materialization, omit multi-state packages or create a duplicate living identity.
+
+Also resolve `event021_claimant_missile_split_scope_gap_2026-10-07.md`: the source-scoped missile preflight still reads the government's ROOT for claimant site receipts/capacity; review abort, cleanup and child allocation callbacks before changing the shared Event 032 helper.
+Its last narrow working-tree check was clean, not proof that it will remain unowned at the next edit.
+The numerical probability recovery, final MCP rendering/comparison, catalog workbook alignment, styled KUB portrait dependency, native performance and live acceptance remain open.
+No new gameplay fallback was used; the previously approved relation-only external-war fallback is unchanged.
+The OneDrive atomic sibling file-edit workaround is recorded in `event021_active_commit_safety_repair_2026-10-07.md`; task-only sibling/backup/patch files were removed after commit.
+
 ## 2026-10-04 takeover status
 
 The Claude takeover engineer adopted and committed every uncommitted tranche described below: `de3f7de71` (external-war successor prompt), `4c041ead2` (dynamic front ledger, candidate traversal, MTTH actor predicates, Maximum scenario envelope, opening provenance), `00fe90801` (mission continuity, sponsor gating, routed fixes 1(a) and 1(b)), `628a50c32` (KUB Ivanis placeholder, orphan DDS removal) and `cdd75094b` (mission timers run as their own non-selectable missions).
