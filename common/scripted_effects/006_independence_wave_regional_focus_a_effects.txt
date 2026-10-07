@@ -1,0 +1,278 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 006 REGIONAL FOCUS A SUPPORT EFFECTS
+# ============================================================================
+# Overview:
+# - Completes the paid, country-specific host-support focus for regional
+#   framework Level 2 packages in tranche A.
+# - The selected, completed former-host policy determines which existing
+#   bilateral helper is reinforced. If the former host has collapsed, a
+#   package-specific domestic settlement delta is applied without scoping a
+#   dead country.
+# - The diplomatic-standard payment and all rewards share one guarded effect.
+#   A per-generation receipt prevents replay, and the cleanup helper below
+#   clears that receipt when the regional package generation ends.
+# - Every branch requires the live framework generation, exact original tag,
+#   exact package id, controlled capital, a completed host outcome, and enough
+#   command power plus either the convoy or train payment.
+# - No effect iterates countries or states, declares war, or creates claims.
+# ============================================================================
+
+independence_wave_regional_focus_a_set_live_host_deltas = {
+	independence_wave_regional_framework_reset_deltas = yes
+	if = {
+		limit = { original_tag = CUX }
+		set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_standard }
+		set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_decision_effect.value_minor }
+	}
+	else_if = {
+		limit = { original_tag = PAL }
+		set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_standard }
+		set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_decision_effect.value_minor }
+	}
+	else_if = {
+		limit = { original_tag = UGA }
+		set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_standard }
+		set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_minor }
+	}
+	else_if = {
+		limit = { original_tag = RWA }
+		set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_standard }
+		set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_minor }
+	}
+	else_if = {
+		limit = { original_tag = BRD }
+		set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_decision_effect.value_standard }
+		set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_decision_effect.value_minor }
+	}
+	else_if = {
+		limit = { original_tag = HAR }
+		set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_standard }
+		set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_decision_effect.value_minor }
+	}
+	else_if = {
+		limit = { original_tag = SOM }
+		set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_standard }
+		set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_minor_loss }
+	}
+	else_if = {
+		limit = { original_tag = TIG }
+		set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_decision_effect.value_standard }
+		set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_minor }
+	}
+	else_if = {
+		limit = { original_tag = DUX }
+		set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_standard }
+		set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_decision_effect.value_minor }
+	}
+	else_if = {
+		limit = { original_tag = BAR }
+		set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_standard }
+		set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_minor }
+	}
+	else_if = {
+		limit = { original_tag = MAD }
+		set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_standard }
+		set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_decision_effect.value_minor }
+	}
+	else_if = {
+		limit = { original_tag = FDX }
+		set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_decision_effect.value_standard }
+		set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_minor }
+	}
+	else_if = {
+		limit = { original_tag = SIN }
+		set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_standard }
+		set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_decision_effect.value_minor }
+	}
+	else_if = {
+		limit = { original_tag = BLC }
+		set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_decision_effect.value_standard }
+		set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_minor }
+	}
+	else_if = {
+		limit = { original_tag = PSH }
+		set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_standard }
+		set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_decision_effect.value_minor }
+	}
+	else_if = {
+		limit = { original_tag = KAS }
+		set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_standard }
+		set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_decision_effect.value_minor }
+	}
+	else_if = {
+		limit = { original_tag = HYD }
+		set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_standard }
+		set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_minor }
+	}
+	else_if = {
+		limit = { original_tag = MYS }
+		set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_standard }
+		set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_decision_effect.value_minor }
+	}
+	independence_wave_decision_apply_country_deltas = yes
+}
+
+independence_wave_regional_focus_a_set_domestic_boundary_deltas = {
+	independence_wave_regional_framework_reset_deltas = yes
+	if = {
+		limit = { original_tag = CUX }
+		set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_standard }
+		set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_minor }
+	}
+	else_if = {
+		limit = { original_tag = PAL }
+		set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_standard }
+		set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_minor_loss }
+	}
+	else_if = {
+		limit = { original_tag = UGA }
+		set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_standard }
+		set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_minor }
+	}
+	else_if = {
+		limit = { original_tag = RWA }
+		set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_standard }
+		set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_minor_loss }
+	}
+	else_if = {
+		limit = { original_tag = BRD }
+		set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_standard }
+		set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_decision_effect.value_minor }
+	}
+	else_if = {
+		limit = { original_tag = HAR }
+		set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_standard }
+		set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_minor }
+	}
+	else_if = {
+		limit = { original_tag = SOM }
+		set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_standard }
+		set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_decision_effect.value_minor }
+	}
+	else_if = {
+		limit = { original_tag = TIG }
+		set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_standard }
+		set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_decision_effect.value_minor }
+	}
+	else_if = {
+		limit = { original_tag = DUX }
+		set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_standard }
+		set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_minor }
+	}
+	else_if = {
+		limit = { original_tag = BAR }
+		set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_standard }
+		set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_minor_loss }
+	}
+	else_if = {
+		limit = { original_tag = MAD }
+		set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_standard }
+		set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_minor }
+	}
+	else_if = {
+		limit = { original_tag = FDX }
+		set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_decision_effect.value_standard }
+		set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_minor_loss }
+	}
+	else_if = {
+		limit = { original_tag = SIN }
+		set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_standard }
+		set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_minor_loss }
+	}
+	else_if = {
+		limit = { original_tag = BLC }
+		set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_decision_effect.value_standard }
+		set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_minor }
+	}
+	else_if = {
+		limit = { original_tag = PSH }
+		set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_standard }
+		set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_minor_loss }
+	}
+	else_if = {
+		limit = { original_tag = KAS }
+		set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_standard }
+		set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_minor }
+	}
+	else_if = {
+		limit = { original_tag = HYD }
+		set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_standard }
+		set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_minor_loss }
+	}
+	else_if = {
+		limit = { original_tag = MYS }
+		set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_standard }
+		set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_decision_effect.value_minor }
+	}
+	independence_wave_decision_apply_country_deltas = yes
+}
+
+independence_wave_regional_focus_a_complete_host_support = {
+	if = {
+		limit = {
+			is_independence_wave_regional_framework_live = yes
+			is_independence_wave_regional_framework_project_ready = yes
+			can_pay_independence_wave_diplomatic_standard_cost = yes
+			has_country_flag = independence_wave_host_policy_complete
+			NOT = { has_country_flag = independence_wave_regional_focus_a_host_support_completed }
+			OR = {
+				AND = { original_tag = CUX check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_073 } }
+				AND = { original_tag = PAL check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_082 } }
+				AND = { original_tag = UGA check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_108 } }
+				AND = { original_tag = RWA check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_110 } }
+				AND = { original_tag = BRD check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_111 } }
+				AND = { original_tag = HAR check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_113 } }
+				AND = { original_tag = SOM check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_115 } }
+				AND = { original_tag = TIG check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_119 } }
+				AND = { original_tag = DUX check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_099 } }
+				AND = { original_tag = BAR check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_126 } }
+				AND = { original_tag = MAD check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_130 } }
+				AND = { original_tag = FDX check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_134 } }
+				AND = { original_tag = SIN check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_136 } }
+				AND = { original_tag = BLC check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_137 } }
+				AND = { original_tag = PSH check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_138 } }
+				AND = { original_tag = KAS check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_139 } }
+				AND = { original_tag = HYD check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_140 } }
+				AND = { original_tag = MYS check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_141 } }
+			}
+			OR = {
+				has_country_flag = independence_wave_host_negotiation_route_selected
+				has_country_flag = independence_wave_host_guarded_route_selected
+				has_country_flag = independence_wave_host_association_route_selected
+				has_country_flag = independence_wave_host_reclamation_route_selected
+				has_country_flag = independence_wave_host_collapse_route_selected
+			}
+		}
+		independence_wave_decision_pay_diplomatic_standard = yes
+		if = {
+			limit = { has_independence_wave_living_former_host = yes }
+			if = {
+				limit = { has_country_flag = independence_wave_host_negotiation_route_selected }
+				independence_wave_focus_progress_host_negotiations = yes
+			}
+			else_if = {
+				limit = { has_country_flag = independence_wave_host_guarded_route_selected }
+				independence_wave_focus_progress_guarded_frontier = yes
+			}
+			else_if = {
+				limit = { has_country_flag = independence_wave_host_association_route_selected }
+				independence_wave_focus_progress_association = yes
+			}
+			else_if = {
+				limit = { has_country_flag = independence_wave_host_reclamation_route_selected }
+				independence_wave_focus_progress_reclamation = yes
+			}
+			independence_wave_regional_focus_a_set_live_host_deltas = yes
+		}
+		else = {
+			independence_wave_regional_focus_a_set_domestic_boundary_deltas = yes
+		}
+		set_country_flag = independence_wave_regional_focus_a_host_support_completed
+	}
+}
+
+# Call from the existing Event 006 package-generation cleanup while the
+# released country is still in scope. The parent owns that integration point.
+independence_wave_regional_focus_a_clear_support_receipt = {
+	clr_country_flag = independence_wave_regional_focus_a_host_support_completed
+}

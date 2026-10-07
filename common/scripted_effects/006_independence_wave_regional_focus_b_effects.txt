@@ -1,0 +1,182 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 006 REGIONAL FOCUS TRANCHE B EFFECTS
+# Scope: country. This file owns the paid post-policy host reinforcement for
+# the Level 2 regional framework focus groups. Cost and reward are guarded
+# together by can_complete_independence_wave_regional_focus_b_host_reinforcement.
+# A living former host receives one continuation through the selected common
+# route. A collapsed former host instead triggers a package-specific domestic
+# boundary settlement through the shared five-value transaction.
+# The parent framework setup/reset and cleanup must call
+# independence_wave_regional_focus_b_clear_generation_markers.
+# ============================================================================
+
+independence_wave_regional_focus_b_clear_generation_markers = {
+	clr_country_flag = independence_wave_regional_focus_b_host_support_paid
+	clear_variable = independence_wave_regional_focus_b_host_support_generation
+}
+
+independence_wave_regional_focus_b_apply_host_reinforcement = {
+	if = {
+		limit = { can_complete_independence_wave_regional_focus_b_host_reinforcement = yes }
+		independence_wave_decision_pay_diplomatic_standard = yes
+		if = {
+			limit = { has_independence_wave_living_former_host = yes }
+			if = {
+				limit = { has_country_flag = independence_wave_host_negotiation_route_selected }
+				independence_wave_focus_progress_host_negotiations = yes
+			}
+			else_if = {
+				limit = { has_country_flag = independence_wave_host_guarded_route_selected }
+				independence_wave_focus_progress_guarded_frontier = yes
+			}
+			else_if = {
+				limit = { has_country_flag = independence_wave_host_association_route_selected }
+				independence_wave_focus_progress_association = yes
+			}
+			else_if = {
+				limit = { has_country_flag = independence_wave_host_reclamation_route_selected }
+				independence_wave_focus_progress_reclamation = yes
+			}
+		}
+		else = {
+			independence_wave_regional_framework_reset_deltas = yes
+		if = {
+			limit = { is_independence_wave_ras_package = yes }
+			set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_standard }
+			set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_minor_loss }
+		}
+		else_if = {
+			limit = { is_independence_wave_fox_package = yes }
+			set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_minor }
+			set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_minor }
+			set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_minor_loss }
+		}
+		else_if = {
+			limit = { is_independence_wave_mpu_package = yes }
+			set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_standard }
+			set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_decision_effect.value_minor }
+			set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_minor_loss }
+		}
+		else_if = {
+			limit = { is_independence_wave_atj_package = yes }
+			set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_standard }
+			set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_decision_effect.value_minor }
+			set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_minor_loss }
+		}
+		else_if = {
+			limit = { is_independence_wave_fux_package = yes }
+			set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_minor }
+			set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_standard }
+			set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_minor_loss }
+		}
+		else_if = {
+			limit = { is_independence_wave_bli_package = yes }
+			set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_standard }
+			set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_minor }
+			set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_minor_loss }
+		}
+		else_if = {
+			limit = { is_independence_wave_gcx_package = yes }
+			set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_standard }
+			set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_decision_effect.value_minor }
+			set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_minor_loss }
+		}
+		else_if = {
+			limit = { is_independence_wave_iax_package = yes }
+			set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_standard }
+			set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_decision_effect.value_minor }
+			set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_minor_loss }
+		}
+		else_if = {
+			limit = { is_independence_wave_ibx_package = yes }
+			set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_minor }
+			set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_decision_effect.value_standard }
+			set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_minor_loss }
+		}
+		else_if = {
+			limit = { is_independence_wave_lao_package = yes }
+			set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_standard }
+			set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_minor }
+			set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_minor_loss }
+		}
+		else_if = {
+			limit = { is_independence_wave_gmx_package = yes }
+			set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_decision_effect.value_minor }
+			set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_minor }
+			set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_decision_effect.value_standard }
+			set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_minor_loss }
+		}
+		else_if = {
+			limit = { is_independence_wave_men_package = yes }
+			set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_minor }
+			set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_decision_effect.value_standard }
+			set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_minor_loss }
+		}
+		else_if = {
+			limit = { is_independence_wave_okn_package = yes }
+			set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_decision_effect.value_minor }
+			set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_standard }
+			set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_minor_loss }
+		}
+		else_if = {
+			limit = { is_independence_wave_sam_package = yes }
+			set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_standard }
+			set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_minor }
+			set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_minor_loss }
+		}
+		else_if = {
+			limit = { is_independence_wave_que_package = yes }
+			set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_standard }
+			set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_standard }
+			set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_minor_loss }
+		}
+		else_if = {
+			limit = { is_independence_wave_gzx_package = yes }
+			set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_minor }
+			set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_decision_effect.value_standard }
+			set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_minor_loss }
+			set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_minor_loss }
+		}
+		else_if = {
+			limit = { is_independence_wave_hcx_package = yes }
+			set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_standard }
+			set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_decision_effect.value_minor }
+			set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_minor_loss }
+		}
+		else_if = {
+			limit = { is_independence_wave_yuc_package = yes }
+			set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_standard }
+			set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_minor_loss }
+			set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_minor }
+		}
+		else_if = {
+			limit = { is_independence_wave_atx_package = yes }
+			set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_minor }
+			set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_minor }
+			set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_decision_effect.value_minor }
+			set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_minor_loss }
+		}
+		else_if = {
+			limit = { is_independence_wave_clx_package = yes }
+			set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_minor }
+			set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_decision_effect.value_standard }
+			set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_minor_loss }
+		}
+		else_if = {
+			limit = { is_independence_wave_cin_package = yes }
+			set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_minor }
+			set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_decision_effect.value_standard }
+			set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_minor_loss }
+		}
+		else_if = {
+			limit = { is_independence_wave_dag_package = yes }
+			set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_standard }
+			set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_decision_effect.value_minor }
+			set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_minor_loss }
+		}
+			independence_wave_decision_apply_country_deltas = yes
+		}
+		set_country_flag = independence_wave_regional_focus_b_host_support_paid
+		set_variable = { independence_wave_regional_focus_b_host_support_generation = independence_wave_generation_id }
+	}
+}

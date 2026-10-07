@@ -11,7 +11,10 @@ Most rows of the Event 006 candidate registry have a planner gate, a loader, a r
 - its mapped dynamic starting force;
 - complete flag and localisation coverage, from the tag's existing assets.
 
-Level 2 rows add their own layer on top: a starting problem, a decision family and two incidents.
+Level 2 rows add their own layer on top: a starting problem, a decision family, two incidents and a country-specific five-node shared focus group.
+The 44 reviewed groups reuse their country projects, link to the selected former-host policy and culminate in regional authority.
+The focus and paid-decision paths share completion receipts and reciprocal active/completed locks.
+The source integration and its separate layout/AI evidence limits are recorded in [the regional focus handoff](../../plans/006_independence_wave_plans/subagent_handoffs/regional_focus_source_commit_20261007.md).
 
 ## Admitted rows
 
@@ -47,7 +50,7 @@ A reserved X-ending tag has no historical cores, so `release` cannot create it. 
 3. Add its identity block. Decide the leadership on the record: a vanilla roster, a sourced character, or the appointed leader of an institutional government.
 4. For an X-tag, add the release branch and the baseline-law entry.
 5. Add the id to the adapter list, the content attestation, both preflights, the runtime-ready and capacity triggers, the planner gate, the Join probe order and the contact registry, and update `.tools/audit_event6_allocator.py`.
-6. For a Level 2 row, add its layer, decision category, ideas, two incidents and localisation.
+6. For a Level 2 row, add its layer, decision category, ideas, two incidents, country-specific focus group, inverse project locks and localisation.
 
 ## Interaction with other systems
 
@@ -62,5 +65,5 @@ Framework rows reuse existing assets: registered vanilla or Event 006 flags and 
 ## Future plans
 
 - A sourced leader for each institutional X-tag row, added as a character through the portrait pipeline when a rights-cleared source exists.
-- A five-node focus group for each Level 2 row, following the accepted TAT/KUB pattern.
+- Review assembled imported-node layouts and campaign AI selection for the 44 source-integrated groups through the supported evidence routes.
 - Bind the unbound rows whose anchor now exists on the map (for example IW-075 Jabal Shammar at state 857, Ha'il) with a planner gate, loader and reservation, then admit them through the framework.
