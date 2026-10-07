@@ -375,6 +375,11 @@ The idea and national spirit, focus, and decision icon families below all apply 
 
 Use compact HOI4 symbolic art with aged texture, strong contrast, a clear silhouette, and readable meaning at `64x64`, usually without a full focus frame. Use `idea_` and inspect `icons/ideas/` plus its catalog row.
 
+Trace the consumer's actual prefix contract and default override before wiring: idea `picture = my_icon` resolves to `GFX_idea_my_icon`, while an existing `GFX_idea_<idea_id>` takes precedence even over explicit `picture`.
+Do not pass `GFX_idea_my_icon` as the picture value; it requests `GFX_idea_GFX_idea_my_icon`.
+Verify the exact expected alias, any automatic idea-id override, and its texture path across mod and vanilla definitions, and record the resolved consumer-to-alias mapping in the handoff while preserving stable identifiers unless a lookup correction requires a change.
+Check each consumer independently: decision and category `icon` fields accept both suffixes and full `GFX_decision_`/`GFX_decision_category_` names, so never apply blanket `GFX_` stripping.
+
 Inspect `assets/visual_components/national_spirit_backgrounds/contact_sheet.png` for matching background treatment. A catalog `background_template` may sit beneath original ImageGen subject art when the exact idea or national-spirit consumer fits; keep the template source as a separate layer.
 
 ### Focus icons
