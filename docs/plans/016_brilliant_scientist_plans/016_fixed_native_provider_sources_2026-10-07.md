@@ -78,7 +78,10 @@ It checks 106 and 270 commands respectively, leaving 42 and 113 argument blocks 
 These results do not establish argument semantics or engine behavior.
 The root event inspect/render artifacts select two nodes with zero expanded helpers, so they do not cover the changed helper graph.
 The integration auditor's four-node comparison received no observed final result.
-The parent retries that comparison with one chain/render node and retains its exact outcome in the parent evidence.
+The parent's narrower retry used one chain/render node, the same exact event selector and the real baseline bridge as an in-memory overlay.
+It returned `timed out awaiting tools/call after 600s`, with no comparison artifact.
+The parent evidence retains the exact request bounds, baseline hash and tool error.
+Changed-helper comparison coverage remains blocked, and no engine acceptance is inferred.
 
 Native start/cancel synchronization, same-project release/reselection and delayed-output isolation remain unresolved under the full accepted contract.
 Singularity's complete ownership and six-component provenance coverage remain separate work.
