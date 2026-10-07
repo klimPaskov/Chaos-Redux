@@ -117,6 +117,24 @@ That preservation comparison is source evidence, not native research or live-log
 The nine fixed-source continuation is recorded in `016_fixed_native_provider_sources_2026-10-07.md` and its core and integration handoffs.
 Its source driver covers 10,953 scenarios, and the maintained adapter audit covers 4,911 assertions with their declared engine boundaries.
 
+## Singularity component contract
+
+The six existing Singularity component projects use their existing component enums as exact source identities.
+Each country output has a literal witness wrapper, and the bounded after-Theory loop enters a separate exact historical adapter.
+The sparse `mengele_event016_singularity_component_entries` registry retains accepted component identity and derives the component count.
+The dense `mengele_event016_singularity_component_mode_entries` array stores first-acceptance mode at component ID minus one, independently of completion order.
+Fresh mode uses the synchronous literal witness, and adopted mode requires that component's exact completed project with an empty witness.
+Missing historical modes remain none, and a later output cannot relabel an existing private receipt.
+
+Private component acceptance and final Prototype settlement both require a valid provider, completed Theory and an empty matching paid family receipt.
+An output during an active paid stage retains its observed-output flag and leaves private components, modes, Prototype and payment state unchanged.
+Prototype settlement requires the existing complete six-component chain and cannot arm the device, advance a later stage or enter Fallout.
+Repeated exact output preserves accepted mode and de-duplicated history.
+The original host callback remains in each project output, while no-mode provider compatibility calls cannot create private acceptance.
+
+The CXT probe observes the six component modes and exact output flags without extending the component arrays or accepting work.
+Native cancellation, delayed callbacks and real paid-timer behavior retain the limits below.
+
 ## Remaining lifecycle proof
 
 Native start/cancel synchronization, automatic matching-cancellation cleanup, and immutable release/reselection callback generations remain unresolved under the full completion contract.

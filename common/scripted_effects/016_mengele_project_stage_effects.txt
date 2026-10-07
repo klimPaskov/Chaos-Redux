@@ -1521,7 +1521,7 @@ brilliant_scientist_mengele_adopt_completed_native_after_theory = {
 				add_to_temp_variable = { mengele_event016_adoption_component_index = constant:brilliant_scientist_value.one }
 				set_temp_variable = { mengele_event016_project_family = constant:brilliant_scientist_project_family.singularity }
 				set_temp_variable = { brilliant_scientist_singularity_component = mengele_event016_adoption_component_index }
-				brilliant_scientist_mengele_record_singularity_component = yes
+				brilliant_scientist_mengele_adopt_exact_completed_singularity_component = yes
 			}
 		}
 		else_if = {
@@ -1658,18 +1658,74 @@ brilliant_scientist_mengele_record_native_project_prototype = {
 		if = { limit = { check_variable = { var = mengele_event016_native_prototype_synced value = constant:brilliant_scientist_value.one compare = equals } } set_temp_variable = { mengele_event016_native_prototype_recorded = constant:brilliant_scientist_value.one } }
 	}
 	if = {
-		limit = { check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.singularity compare = equals } }
+		limit = { check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.singularity compare = equals } brilliant_scientist_mengele_singularity_component_evidence_is_valid = yes }
 		brilliant_scientist_mengele_record_singularity_component = yes
 		if = { limit = { check_variable = { var = mengele_event016_native_component_recorded value = constant:brilliant_scientist_value.one compare = equals } } set_temp_variable = { mengele_event016_native_prototype_recorded = constant:brilliant_scientist_value.one } }
 	}
-	brilliant_scientist_mengele_clear_project_stage_selectors = yes
+	if = {
+		limit = { check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.singularity compare = equals } }
+		brilliant_scientist_mengele_clear_singularity_component_selectors = yes
+	}
+	else = { brilliant_scientist_mengele_clear_project_stage_selectors = yes }
 }
 
+# COUNTRY scope. First-acceptance component modes use dense enum-minus-one
+# indices. Extend independently, preserve oversized arrays and unknown history.
+brilliant_scientist_mengele_initialize_singularity_component_provenance = {
+	while_loop_effect = {
+		limit = { check_variable = { mengele_event016_singularity_component_mode_entries^num < constant:brilliant_scientist_singularity.component_count } }
+		add_to_array = { array = mengele_event016_singularity_component_mode_entries value = constant:mengele_event016_native_prototype_mode.none }
+	}
+}
+
+brilliant_scientist_mengele_clear_singularity_component_selectors = {
+	set_temp_variable = { brilliant_scientist_singularity_component = constant:brilliant_scientist_singularity_component.none }
+	set_temp_variable = { mengele_event016_native_component_output_source = constant:brilliant_scientist_singularity_component.none }
+	set_temp_variable = { mengele_event016_native_component_mode = constant:mengele_event016_native_prototype_mode.none }
+	set_temp_variable = { mengele_event016_native_component_index = constant:brilliant_scientist_value.zero }
+	set_temp_variable = { mengele_event016_project_output_authorized = constant:brilliant_scientist_value.zero }
+	brilliant_scientist_mengele_clear_project_stage_selectors = yes
+	# Preserve the caller-owned changed-component result.
+}
+
+# COUNTRY, no source inputs. Native completion never overrides a paid family
+# receipt. The private stage output still owns predecessor and idempotence.
+brilliant_scientist_mengele_try_settle_singularity_native_prototype = {
+	set_temp_variable = { mengele_event016_project_family = constant:brilliant_scientist_project_family.singularity }
+	set_temp_variable = { mengele_event016_requested_stage = constant:brilliant_scientist_project_stage.prototype }
+	set_temp_variable = { mengele_event016_project_index = constant:brilliant_scientist_value.zero }
+	set_temp_variable = { mengele_event016_project_output_authorized = constant:brilliant_scientist_value.zero }
+	set_temp_variable = { mengele_event016_project_output_applied = constant:brilliant_scientist_value.zero }
+	set_temp_variable = { mengele_event016_stage_package_applied = constant:brilliant_scientist_value.zero }
+	if = {
+		limit = {
+			brilliant_scientist_mengele_project_stage_provider_is_valid = yes
+			has_country_flag = mengele_event016_singularity_theory_completed
+			brilliant_scientist_mengele_singularity_components_are_complete = yes
+			NOT = { has_country_flag = mengele_event016_singularity_prototype_completed }
+			brilliant_scientist_mengele_project_stage_predecessor_is_valid = yes
+			brilliant_scientist_mengele_project_stage_receipt_is_empty = yes
+		}
+		brilliant_scientist_mengele_prepare_project_index = yes
+		set_temp_variable = { mengele_event016_project_output_authorized = constant:brilliant_scientist_value.one }
+		brilliant_scientist_mengele_apply_family_stage_output = yes
+	}
+	brilliant_scientist_mengele_clear_singularity_component_selectors = yes
+}
+
+# COUNTRY, explicit family/component/mode/witness. No-mode compatibility calls
+# cannot accept history. Paid guard precedes every schema/receipt write.
 brilliant_scientist_mengele_record_singularity_component = {
 	set_temp_variable = { mengele_event016_native_component_recorded = constant:brilliant_scientist_value.zero }
+	set_temp_variable = { mengele_event016_requested_stage = constant:brilliant_scientist_project_stage.prototype }
+	set_temp_variable = { mengele_event016_native_component_index = constant:brilliant_scientist_value.zero }
 	if = {
-		limit = { brilliant_scientist_mengele_singularity_component_native_output_is_authentic = yes }
+		limit = {
+			brilliant_scientist_mengele_singularity_component_native_output_is_authentic = yes
+			brilliant_scientist_mengele_project_stage_receipt_is_empty = yes
+		}
 		brilliant_scientist_mengele_initialize_project_stage_receipts = yes
+		brilliant_scientist_mengele_initialize_singularity_component_provenance = yes
 		if = {
 			limit = { NOT = { is_in_array = { array = mengele_event016_singularity_component_entries value = brilliant_scientist_singularity_component } } }
 			add_to_array = { array = mengele_event016_singularity_component_entries value = brilliant_scientist_singularity_component }
@@ -1680,21 +1736,93 @@ brilliant_scientist_mengele_record_singularity_component = {
 			else_if = { limit = { check_variable = { var = brilliant_scientist_singularity_component value = constant:brilliant_scientist_singularity_component.temporal_authenticator compare = equals } } set_country_flag = mengele_event016_singularity_temporal_authenticator_completed }
 			else_if = { limit = { check_variable = { var = brilliant_scientist_singularity_component value = constant:brilliant_scientist_singularity_component.delivery_architecture compare = equals } } set_country_flag = mengele_event016_singularity_delivery_architecture_completed }
 			else_if = { limit = { check_variable = { var = brilliant_scientist_singularity_component value = constant:brilliant_scientist_singularity_component.fail_deadly_governor compare = equals } } set_country_flag = mengele_event016_singularity_fail_deadly_governor_completed }
+			set_temp_variable = { mengele_event016_native_component_index = brilliant_scientist_singularity_component }
+			subtract_from_temp_variable = { mengele_event016_native_component_index = constant:brilliant_scientist_value.one }
+			set_variable = { mengele_event016_singularity_component_mode_entries^mengele_event016_native_component_index = mengele_event016_native_component_mode }
 			set_temp_variable = { mengele_event016_native_component_recorded = constant:brilliant_scientist_value.one }
 		}
-		if = {
-			limit = {
-				brilliant_scientist_mengele_singularity_components_are_complete = yes
-				NOT = { has_country_flag = mengele_event016_singularity_prototype_completed }
-			}
-			set_temp_variable = { mengele_event016_project_output_authorized = constant:brilliant_scientist_value.one }
-			set_temp_variable = { mengele_event016_project_family = constant:brilliant_scientist_project_family.singularity }
-			set_temp_variable = { mengele_event016_requested_stage = constant:brilliant_scientist_project_stage.prototype }
-			brilliant_scientist_mengele_apply_family_stage_output = yes
-		}
+		# An exact duplicate may retry missing Prototype, preserving first mode.
+		brilliant_scientist_mengele_try_settle_singularity_native_prototype = yes
 	}
-	set_temp_variable = { brilliant_scientist_singularity_component = constant:brilliant_scientist_singularity_component.none }
-	brilliant_scientist_mengele_clear_project_stage_selectors = yes
+	brilliant_scientist_mengele_clear_singularity_component_selectors = yes
+}
+
+# COUNTRY, caller-owned exact family/component. History never fabricates an
+# output observation. A consuming caller must own the changed-result slot.
+brilliant_scientist_mengele_adopt_exact_completed_singularity_component = {
+	set_temp_variable = { mengele_event016_native_component_recorded = constant:brilliant_scientist_value.zero }
+	set_temp_variable = { mengele_event016_native_component_output_source = constant:brilliant_scientist_singularity_component.none }
+	set_temp_variable = { mengele_event016_native_component_mode = constant:mengele_event016_native_prototype_mode.adopted_completed }
+	brilliant_scientist_mengele_record_singularity_component = yes
+	brilliant_scientist_mengele_clear_singularity_component_selectors = yes
+}
+
+# COUNTRY, no input selectors. Called only by these exact synchronous project
+# country outputs. Observed facts persist even if private settlement is blocked.
+brilliant_scientist_mengele_native_completion_sp_brilliant_scientist_singularity_command_core = {
+	set_country_flag = mengele_event016_native_observed_singularity_command_core
+	set_temp_variable = { mengele_event016_native_component_recorded = constant:brilliant_scientist_value.zero }
+	set_temp_variable = { mengele_event016_project_family = constant:brilliant_scientist_project_family.singularity }
+	set_temp_variable = { brilliant_scientist_singularity_component = constant:brilliant_scientist_singularity_component.command_core }
+	set_temp_variable = { mengele_event016_native_component_output_source = constant:brilliant_scientist_singularity_component.command_core }
+	set_temp_variable = { mengele_event016_native_component_mode = constant:mengele_event016_native_prototype_mode.fresh_output }
+	brilliant_scientist_mengele_record_singularity_component = yes
+	brilliant_scientist_mengele_clear_singularity_component_selectors = yes
+}
+
+brilliant_scientist_mengele_native_completion_sp_brilliant_scientist_singularity_power_link = {
+	set_country_flag = mengele_event016_native_observed_singularity_power_link
+	set_temp_variable = { mengele_event016_native_component_recorded = constant:brilliant_scientist_value.zero }
+	set_temp_variable = { mengele_event016_project_family = constant:brilliant_scientist_project_family.singularity }
+	set_temp_variable = { brilliant_scientist_singularity_component = constant:brilliant_scientist_singularity_component.power_link }
+	set_temp_variable = { mengele_event016_native_component_output_source = constant:brilliant_scientist_singularity_component.power_link }
+	set_temp_variable = { mengele_event016_native_component_mode = constant:mengele_event016_native_prototype_mode.fresh_output }
+	brilliant_scientist_mengele_record_singularity_component = yes
+	brilliant_scientist_mengele_clear_singularity_component_selectors = yes
+}
+
+brilliant_scientist_mengele_native_completion_sp_brilliant_scientist_singularity_containment_lattice = {
+	set_country_flag = mengele_event016_native_observed_singularity_containment_lattice
+	set_temp_variable = { mengele_event016_native_component_recorded = constant:brilliant_scientist_value.zero }
+	set_temp_variable = { mengele_event016_project_family = constant:brilliant_scientist_project_family.singularity }
+	set_temp_variable = { brilliant_scientist_singularity_component = constant:brilliant_scientist_singularity_component.containment_lattice }
+	set_temp_variable = { mengele_event016_native_component_output_source = constant:brilliant_scientist_singularity_component.containment_lattice }
+	set_temp_variable = { mengele_event016_native_component_mode = constant:mengele_event016_native_prototype_mode.fresh_output }
+	brilliant_scientist_mengele_record_singularity_component = yes
+	brilliant_scientist_mengele_clear_singularity_component_selectors = yes
+}
+
+brilliant_scientist_mengele_native_completion_sp_brilliant_scientist_singularity_temporal_authenticator = {
+	set_country_flag = mengele_event016_native_observed_singularity_temporal_authenticator
+	set_temp_variable = { mengele_event016_native_component_recorded = constant:brilliant_scientist_value.zero }
+	set_temp_variable = { mengele_event016_project_family = constant:brilliant_scientist_project_family.singularity }
+	set_temp_variable = { brilliant_scientist_singularity_component = constant:brilliant_scientist_singularity_component.temporal_authenticator }
+	set_temp_variable = { mengele_event016_native_component_output_source = constant:brilliant_scientist_singularity_component.temporal_authenticator }
+	set_temp_variable = { mengele_event016_native_component_mode = constant:mengele_event016_native_prototype_mode.fresh_output }
+	brilliant_scientist_mengele_record_singularity_component = yes
+	brilliant_scientist_mengele_clear_singularity_component_selectors = yes
+}
+
+brilliant_scientist_mengele_native_completion_sp_brilliant_scientist_singularity_delivery_architecture = {
+	set_country_flag = mengele_event016_native_observed_singularity_delivery_architecture
+	set_temp_variable = { mengele_event016_native_component_recorded = constant:brilliant_scientist_value.zero }
+	set_temp_variable = { mengele_event016_project_family = constant:brilliant_scientist_project_family.singularity }
+	set_temp_variable = { brilliant_scientist_singularity_component = constant:brilliant_scientist_singularity_component.delivery_architecture }
+	set_temp_variable = { mengele_event016_native_component_output_source = constant:brilliant_scientist_singularity_component.delivery_architecture }
+	set_temp_variable = { mengele_event016_native_component_mode = constant:mengele_event016_native_prototype_mode.fresh_output }
+	brilliant_scientist_mengele_record_singularity_component = yes
+	brilliant_scientist_mengele_clear_singularity_component_selectors = yes
+}
+
+brilliant_scientist_mengele_native_completion_sp_brilliant_scientist_singularity_fail_deadly_governor = {
+	set_country_flag = mengele_event016_native_observed_singularity_fail_deadly_governor
+	set_temp_variable = { mengele_event016_native_component_recorded = constant:brilliant_scientist_value.zero }
+	set_temp_variable = { mengele_event016_project_family = constant:brilliant_scientist_project_family.singularity }
+	set_temp_variable = { brilliant_scientist_singularity_component = constant:brilliant_scientist_singularity_component.fail_deadly_governor }
+	set_temp_variable = { mengele_event016_native_component_output_source = constant:brilliant_scientist_singularity_component.fail_deadly_governor }
+	set_temp_variable = { mengele_event016_native_component_mode = constant:mengele_event016_native_prototype_mode.fresh_output }
+	brilliant_scientist_mengele_record_singularity_component = yes
+	brilliant_scientist_mengele_clear_singularity_component_selectors = yes
 }
 
 # COUNTRY scope. Restore only missing early modifiers authenticated by the

@@ -254,6 +254,8 @@ High Energy and Biological Weapons are also copied into chaosx_cxt_event016_high
 Their source codes are Reactor5, Anthrax6, Plague7, Tularemia8, Smallpox9, WeaponizedZombies10 and BlackPlague11; chaosx_cxt_event016_observed_reused_* snapshots the seven source-observation flags.
 The fixed family source codes are Computation12, Materials13, Biomedical14, Teleportation15, Robotics16, Paleogenetics17, XenobiologicalSynthesis18, AlienArms19 and Temporal20.
 Each exposes chaosx_cxt_event016_<family>_native_source/mode and chaosx_cxt_event016_observed_output_<family>, retaining the existing family names and indices.
+Singularity exposes chaosx_cxt_event016_singularity_<component>_native_mode and chaosx_cxt_event016_observed_output_singularity_<component> for all six existing component names.
+Its dense mode slots use component ID minus one, independently of sparse receipt order, and an absent mode remains none without inventing historical provenance.
 These are debug observations and never authorize a stage, complete a project, select a source, refund a payment, or alter provider history.
 Missing or short arrays report none rather than creating receipts.
 The existing carrier/setup contract is unchanged and the probe adds no periodic registration or grant hook.

@@ -126,7 +126,7 @@ function test(n,s) {
   throw Error("Unsupported trigger "+k);
 }
 const gate=(name,s)=>definitions[name].every(x=>test(x,s));
-let counts={adapter:0,initialization:0,publication:0,grant:0,freshGrant:0,adoption:0,singularity:0,weaponization:0,finish:0,maturation:0,maturationWrapper:0};
+let counts={adapter:0,initialization:0,publication:0,grant:0,freshGrant:0,adoption:0,singularity:0,singularityFresh:0,weaponization:0,finish:0,maturation:0,maturationWrapper:0};
 function check(group,label,actual){counts[group]++;assert(actual,label);}
 const families=[
   ["electronics",1,["sp_air_radar"]],
@@ -333,14 +333,43 @@ for(let mask=0;mask<64;mask++)for(const mode of ["valid","invalid_owner","no_the
  for(let repeat=0;repeat<2;repeat++){
   effects(adopt,s);const label=`mask ${mask} ${mode} repeat ${repeat}`;
   check("singularity",label+" exact private components",components.every(c=>s.flags.has("mengele_event016_singularity_"+c+"_completed")===expected.includes(c)));
+  check("singularity",label+" historical modes follow component identity",components.every((c,i)=>(s.arrays.mengele_event016_singularity_component_mode_entries?.[i]||0)===(expected.includes(c)?2:0)));
   check("singularity",label+" unique count",s.vars.mengele_event016_singularity_component_count===expected.length);
   check("singularity",label+" Prototype iff six",s.flags.has("mengele_event016_singularity_prototype_completed")===(expected.length===6));
   check("singularity",label+" Prototype modifier once",s.modifiers.filter(x=>x==="brilliant_scientist_singularity_prototype").length===(expected.length===6?1:0));
   check("singularity",label+" nine outer values restored",equal(saved(s),before));
   check("singularity",label+" native read only and no custom grant",equal([...s.projects],nativeBefore)&&s.calls.length===0);
-  check("singularity",label+" no payment mutation",Object.keys(s.vars).every(k=>k==="mengele_event016_singularity_component_count")&&Object.entries(s.arrays).every(([k,a])=>k==="mengele_event016_singularity_component_entries"||a.every(x=>x===0)));
+  check("singularity",label+" no payment mutation",Object.keys(s.vars).every(k=>k==="mengele_event016_singularity_component_count")&&Object.entries(s.arrays).every(([k,a])=>["mengele_event016_singularity_component_entries","mengele_event016_singularity_component_mode_entries"].includes(k)||a.every(x=>x===0)));
   check("singularity",label+" no terminal or foreign history",[...s.flags].every(x=>x.startsWith("mengele_event016_singularity_")||x==="mengele_event016_provider_receipts_initialized"));
  }
+}
+// Six cyclic orders make every component the sixth accepted output. A native
+// completed bit is absent throughout, and each literal callback is repeated.
+for(let shift=0;shift<components.length;shift++){
+ const s=makeAdoption("singularity");s.temp={};const order=[...components.slice(shift),...components.slice(0,shift)];
+ for(const [step,c]of order.entries()){
+  const hook=effectDefinitions["brilliant_scientist_mengele_native_completion_sp_brilliant_scientist_singularity_"+c];
+  assert(hook,"Missing exact Singularity wrapper "+c);effects(hook,s);
+  const expected=order.slice(0,step+1),label=`order ${shift} component ${c}`;
+  check("singularityFresh",label+" accepts exact fresh source before completed bit",s.vars.mengele_event016_singularity_component_count===step+1&&s.projects.size===0);
+  check("singularityFresh",label+" dense modes follow identity",components.every((x,i)=>(s.arrays.mengele_event016_singularity_component_mode_entries?.[i]||0)===(expected.includes(x)?1:0)));
+  check("singularityFresh",label+" Prototype requires six",s.flags.has("mengele_event016_singularity_prototype_completed")===(step===5));
+  const state=JSON.stringify([s.arrays,s.vars,[...s.flags],s.modifiers]);effects(hook,s);
+  check("singularityFresh",label+" duplicate preserves receipt and modifier",JSON.stringify([s.arrays,s.vars,[...s.flags],s.modifiers])===state);
+ }
+}
+// An output observed during a paid family stage may not accept a component or
+// settle Prototype. The fixtures contain five genuine historical components.
+for(let last=0;last<components.length;last++)for(const paidStage of [1,2,3,4]){
+ const s=makeAdoption("singularity"),old=components.filter((_,i)=>i!==last);
+ s.projects=new Set(old.map(c=>"sp:sp_brilliant_scientist_singularity_"+c));effects(adopt,s);
+ const paidKeys=["mengele_event016_active_project_stage_entries","mengele_event016_active_cost_political_power_entries","mengele_event016_active_cost_support_equipment_entries","mengele_event016_active_cost_fuel_entries","mengele_event016_active_cost_civilian_factory_commitment_entries"];
+ paidKeys.forEach((key,i)=>s.arrays[key][14]=i===0?paidStage:701+i);
+ const before=JSON.stringify([s.arrays,s.vars,s.modifiers]);s.temp={};
+ effects(effectDefinitions["brilliant_scientist_mengele_native_completion_sp_brilliant_scientist_singularity_"+components[last]],s);
+ const label=`paid ${paidStage} sixth ${components[last]}`;
+ check("singularityFresh",label+" observation retained",s.flags.has("mengele_event016_native_observed_singularity_"+components[last]));
+ check("singularityFresh",label+" accepted and paid state unchanged",JSON.stringify([s.arrays,s.vars,s.modifiers])===before&&!s.flags.has("mengele_event016_singularity_"+components[last]+"_completed")&&!s.flags.has("mengele_event016_singularity_prototype_completed"));
 }
 // Ordinary fourteen-family native adoption remains routed through the actual
 // source sync/output helper; this includes either authentic Rocketry project.

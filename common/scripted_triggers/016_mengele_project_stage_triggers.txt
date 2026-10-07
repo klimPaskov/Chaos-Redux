@@ -1560,12 +1560,23 @@ brilliant_scientist_mengele_temporal_native_output_is_authentic = {
 	}
 }
 
-# COUNTRY scope. Exact Singularity component callbacks are authenticated by
-# their selector and the matching existing native special project.
-brilliant_scientist_mengele_singularity_component_native_output_is_authentic = {
-	brilliant_scientist_mengele_project_stage_provider_is_valid = yes
+# COUNTRY scope. Exact Singularity receipts require explicit fresh witnesses
+# or exact historical completion, with a separate mode for each accepted source.
+# COUNTRY, pure six-component exact identity and mode evidence.
+brilliant_scientist_mengele_singularity_component_source_is_supported = {
 	check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.singularity compare = equals }
-	has_country_flag = mengele_event016_singularity_theory_completed
+	OR = {
+		check_variable = { var = brilliant_scientist_singularity_component value = constant:brilliant_scientist_singularity_component.command_core compare = equals }
+		check_variable = { var = brilliant_scientist_singularity_component value = constant:brilliant_scientist_singularity_component.power_link compare = equals }
+		check_variable = { var = brilliant_scientist_singularity_component value = constant:brilliant_scientist_singularity_component.containment_lattice compare = equals }
+		check_variable = { var = brilliant_scientist_singularity_component value = constant:brilliant_scientist_singularity_component.temporal_authenticator compare = equals }
+		check_variable = { var = brilliant_scientist_singularity_component value = constant:brilliant_scientist_singularity_component.delivery_architecture compare = equals }
+		check_variable = { var = brilliant_scientist_singularity_component value = constant:brilliant_scientist_singularity_component.fail_deadly_governor compare = equals }
+	}
+}
+
+brilliant_scientist_mengele_singularity_component_exact_source_is_completed = {
+	brilliant_scientist_mengele_singularity_component_source_is_supported = yes
 	OR = {
 		AND = {
 			check_variable = { var = brilliant_scientist_singularity_component value = constant:brilliant_scientist_singularity_component.command_core compare = equals }
@@ -1592,6 +1603,29 @@ brilliant_scientist_mengele_singularity_component_native_output_is_authentic = {
 			is_special_project_completed = sp:sp_brilliant_scientist_singularity_fail_deadly_governor
 		}
 	}
+}
+
+brilliant_scientist_mengele_singularity_component_evidence_is_valid = {
+	brilliant_scientist_mengele_singularity_component_source_is_supported = yes
+	OR = {
+		AND = {
+			check_variable = { var = mengele_event016_native_component_mode value = constant:mengele_event016_native_prototype_mode.fresh_output compare = equals }
+			check_variable = { var = mengele_event016_native_component_output_source value = brilliant_scientist_singularity_component compare = equals }
+		}
+		AND = {
+			check_variable = { var = mengele_event016_native_component_mode value = constant:mengele_event016_native_prototype_mode.adopted_completed compare = equals }
+			check_variable = { var = mengele_event016_native_component_output_source value = constant:brilliant_scientist_singularity_component.none compare = equals }
+			brilliant_scientist_mengele_singularity_component_exact_source_is_completed = yes
+		}
+	}
+}
+
+# Compatibility name retains strict provider/Theory but accepts only explicit
+# fresh witness or exact historical evidence. A no-mode legacy call is inert.
+brilliant_scientist_mengele_singularity_component_native_output_is_authentic = {
+	brilliant_scientist_mengele_project_stage_provider_is_valid = yes
+	has_country_flag = mengele_event016_singularity_theory_completed
+	brilliant_scientist_mengele_singularity_component_evidence_is_valid = yes
 }
 
 # COUNTRY scope. Generic native callback authentication for all source-proven

@@ -61,7 +61,9 @@ Its existing public `brilliant_scientist_mengele_project_result_applied` remains
 Only a successful private native record invokes the extracted helper with the original shared family value copied into the dedicated private input.
 The neutral grant result does not overwrite the bridge's native-record result.
 The bridge still clears `brilliant_scientist_project_family` and `chaosx_custom_technology_source` and refreshes dynamic modifiers at its established boundary.
-The separate Singularity-component bridge is unchanged.
+The separate Singularity-component bridge initializes `mengele_event016_native_component_recorded` before consuming the private recorder's result.
+It accepts no component without the explicit source/mode/witness contract enforced by that recorder.
+The six literal native hooks and the explicit after-Theory adapter own the valid entries, so the preserved original provider callback with no mode is inert.
 
 The parent-owned `brilliant_scientist_mengele_adopt_completed_native_after_theory` invokes the helper only after its exact adoption adapter reports `adopted_settled`, using its saved `mengele_event016_adoption_outer_family`.
 The extracted helper does not depend on private stage selectors that the native sync just cleared.

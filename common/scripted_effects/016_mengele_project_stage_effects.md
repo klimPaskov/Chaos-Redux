@@ -158,7 +158,9 @@ The nine fixed provider projects use literal country-output witnesses and exact 
 The family-wide authentic-completion predicate remains an eligibility probe for Theory-time historical adoption, where the exact adapter then chooses and verifies the source.
 
 `brilliant_scientist_mengele_record_native_project_prototype` accepts a private family selector or copies the existing native family selector, while exact-source exclusions prevent it from settling ordinary families without provenance.
-`brilliant_scientist_mengele_record_singularity_component` authenticates the exact component selector and native special project, appends that component to the private array only when absent, derives the count from the array, sets its provider completion flag, and records the Singularity Prototype only after all six components are present.
+`brilliant_scientist_mengele_record_singularity_component` requires an exact component and explicit fresh witness or historical mode, strict provider, Theory and empty matching paid receipt.
+It appends that component only when absent, derives count from the sparse array, sets its provider flag, and records first-acceptance mode in a dense component array.
+A separate guarded helper records Singularity Prototype only after all six components are present and the matching paid receipt is empty.
 Its result marker stays false for an already recorded component; a duplicate callback cannot create another receipt.
 Initialization reconstructs the array once from durable provider component flags when migrating an earlier provider receipt schema.
 It does not call the Kruger component registry or create Kruger history.
@@ -238,3 +240,83 @@ The exact later-stage settlement core initializes its own index, output-applied 
 This permits the radar marker and named technology completion callback to record the correct Electronics provenance slot even when they enter with no inherited temporary fields.
 The caller must initialize mengele_event016_native_later_stage_settled before calling if it consumes that temporary result after return.
 Live callback ordering remains part of Event 016 acceptance.
+
+## Exact Singularity native component core
+
+Disposition: implemented under the parent's explicit 2026-10-07 acceptance of the bounded Singularity gap contract.
+Acceptance basis is the approved literal output markers, unchanged matching paid timer, and recommended-choice mandate.
+The parent owns the six native project hidden hooks, legacy bridge result initializer, CXT probe and documentation, maintained audit script, system/spec reconciliation and isolated commit.
+The source contract and reproducible driver are retained in `docs/plans/016_brilliant_scientist_plans/subagent_handoffs/016_singularity_native_receipt_core_2026-10-07.md`.
+All helpers execute in COUNTRY scope and add no project ID, technology, component enum, native Prototype source code, timer, payment, operational grant, weight or terminal behavior.
+
+| Existing component | Enum | Dense mode index | Literal wrapper suffix |
+| --- | --- | --- | --- |
+| command_core | 1 | 0 | sp_brilliant_scientist_singularity_command_core |
+| power_link | 2 | 1 | sp_brilliant_scientist_singularity_power_link |
+| containment_lattice | 3 | 2 | sp_brilliant_scientist_singularity_containment_lattice |
+| temporal_authenticator | 4 | 3 | sp_brilliant_scientist_singularity_temporal_authenticator |
+| delivery_architecture | 5 | 4 | sp_brilliant_scientist_singularity_delivery_architecture |
+| fail_deadly_governor | 6 | 5 | sp_brilliant_scientist_singularity_fail_deadly_governor |
+
+The wrapper name is `brilliant_scientist_mengele_native_completion_<full project ID>`.
+Each wrapper takes no caller selectors, owns the exact family/component/witness/mode and changed-result storage, and always sets `mengele_event016_native_observed_singularity_<component>` before attempting acceptance.
+Its fresh evidence uses `mengele_event016_native_component_output_source` equal to its exact existing `brilliant_scientist_singularity_component` enum, with `mengele_event016_native_component_mode = constant:mengele_event016_native_prototype_mode.fresh_output`.
+No fresh completed-project query occurs.
+The parent's hidden project hooks do not consume the result, so no outer result initializer is required there.
+The original host/native payload runs separately after the marker hook.
+
+| Helper | Inputs/defaults | Output and side effects | Direct consumers |
+| --- | --- | --- | --- |
+| `brilliant_scientist_mengele_singularity_component_source_is_supported` | Temporary family/component, defaults none | Pure exact Singularity/six-enum whitelist, rejects fractional and unsupported codes | Evidence gate |
+| `brilliant_scientist_mengele_singularity_component_exact_source_is_completed` | Supported exact component | Pure exact matching completed query | Adopted evidence only |
+| `brilliant_scientist_mengele_singularity_component_evidence_is_valid` | Component, family, mode and witness, defaults none | Pure fresh witness or adopted completed query with witness none, rejects every other tuple | Strict authenticity and generic compatibility gate |
+| `brilliant_scientist_mengele_initialize_singularity_component_provenance` | No inputs | Independently extends dense mode array to six with mode none, never truncates or rewrites existing slots | Accepted recorder after paid guard |
+| `brilliant_scientist_mengele_record_singularity_component` | Exact family/component/mode/witness, strict provider and Theory | Changed marker zero/one, exact private flag, sparse de-duplication, derived count and first mode, attempts guarded Prototype | Six literal wrappers and explicit adoption |
+| `brilliant_scientist_mengele_adopt_exact_completed_singularity_component` | Caller-owned exact family/component | Owns adopted mode and witness none, accepts only the exact completed object, does not create an observed-output flag | Six-entry after-Theory loop |
+| `brilliant_scientist_mengele_try_settle_singularity_native_prototype` | No source inputs | Owns family/stage/index/output/authorization slots, applies existing private Prototype once through strict provider/Theory/full-chain/missing-Prototype/empty-paid guards | Recorder, including an accepted duplicate retry |
+| `brilliant_scientist_mengele_clear_singularity_component_selectors` | No inputs | Clears component, witness, mode, dense scratch index, authorization and private stage selectors, preserves caller-owned changed marker | Every component epilogue and rejected generic Singularity call |
+
+`mengele_event016_native_component_recorded` starts at zero and becomes one only when the sparse array gains a new accepted component.
+A duplicate leaves this changed marker zero and preserves the component's first mode, while it may retry a missing native Prototype under the final helper's strict guards.
+A caller consuming the changed marker after return must preinitialize it in its own frame.
+The generic recorder owns that output before its guarded nested call, and the parent legacy bridge owns it before consumption.
+Helpers create and own any deeper outputs they consume after nested returns.
+All temporaries remain unscoped.
+The after-Theory adapter preserves and restores its original nine outer selectors/results and iterates only the six fixed component enums.
+It calls explicit adoption for each enum, never infers fresh output from completed history or a country-wide callback.
+
+Accepted source modes use the existing none/fresh_output/adopted_completed constants.
+`mengele_event016_singularity_component_mode_entries` is dense at enum minus one, independently of the sparse completion array's append order.
+Only first acceptance writes a slot, and old accepted receipts with unknown provenance remain none.
+Legacy component-array reconstruction from durable private flags retains its established schema behavior.
+No new constants or tuning table are added.
+No event target or persistent project pointer is required.
+
+Both component acceptance and final Prototype settlement test the empty matching Singularity paid receipt before writes.
+Any active paid stage preserves every accepted component array/count/flag/mode and Prototype, while a genuine literal output still records observation.
+The source neither changes a decision timer nor clears, refunds, debits or replaces a paid receipt.
+A later authorized historical attempt can adopt the exact completed source, but this core adds no timer callback, retry scheduler or cancellation-time adoption policy.
+Paid begin/finish/cancel, native payloads, all stage weights, and terminal/Fallout helpers remain unchanged.
+
+The existing `brilliant_scientist_mengele_singularity_component_native_output_is_authentic` name is retained as a strict compatibility alias to explicit mode evidence.
+A no-mode original generic callback is inert after the literal marker clears its selectors.
+The generic recorder additionally gates its Singularity branch on explicit evidence and clears component selectors when rejecting that branch.
+Ordinary generic paths retain their previous stage-selector epilogue.
+The preserved shared host registration helper is not edited by this core.
+
+Example of historical entry from the bounded after-Theory caller:
+
+```txt
+set_temp_variable = { mengele_event016_project_family = constant:brilliant_scientist_project_family.singularity }
+set_temp_variable = { brilliant_scientist_singularity_component = constant:brilliant_scientist_singularity_component.command_core }
+brilliant_scientist_mengele_adopt_exact_completed_singularity_component = yes
+```
+
+For a caller that consumes the changed marker, initialize `mengele_event016_native_component_recorded = constant:brilliant_scientist_value.zero` before that call.
+The six literal native wrappers instead take no caller inputs.
+The parent CXT probe observes dense modes and observed-output flags without accepting or initializing private receipts.
+Source-model validation covers all historical subsets, every six-component order in fresh and mixed modes, all active paid stages, cold consumers, nine-slot outer restoration, migration lengths, literal hooks, the preserved legacy bridge, CXT and ordinary-family parity.
+The detailed final count and reviewed hashes belong to the handoff.
+Strict provider/non-host state is a declared fixture input, and engine/native payloads, clocks, payment, actual decision timers, grant payloads, availability reconciliation and modifier refresh remain outside that model.
+Native completed-bit timing, cancellation/reselection and callback-generation isolation remain unresolved without waiver.
+No implementation simplifications are introduced by this core.

@@ -16,7 +16,7 @@ The source fix removes the two standalone native marker override files.
 | common/special_projects/projects/radar_projects.txt | sp_air_radar |
 | common/special_projects/projects/air_projects.txt | sp_air_jet_engine Prototype, sp_air_axial_jet_engine, sp_air_supersonic_jet |
 | common/special_projects/projects/rocket_projects.txt | sp_rockets_flying_bomb Prototype, sp_rockets_ballistic_missile, sp_rockets_long_range_ballistic_missile |
-| common/special_projects/projects/nuclear_projects.txt | sp_commercial_nuclear_reactor, sp_nuclear_bomb, sp_thermo_nuclear_bomb, sp_nuclear_warheads |
+| common/special_projects/projects/nuclear_projects.txt | sp_nuclear_reactor Prototype, sp_commercial_nuclear_reactor, sp_nuclear_bomb, sp_thermo_nuclear_bomb, sp_nuclear_warheads |
 | common/technologies/electronic_mechanical_engineering.txt | radio_detection, centimetric_radar, phased_array |
 
 The existing helper functions, tuning, native availability, costs, research, reward selection, equipment, modules, and folder placements retain their existing definitions.
@@ -67,9 +67,9 @@ That review records the earlier retry boundary; the current exact-source continu
 ## Remaining completion work and future maintenance
 
 Current technology MCP coverage and a later live QA cycle remain outstanding for the correction.
-After the app reset, the connected desktop tool inventory omitted the HOI4 routes.
-A direct installed-service check with a single-workspace configuration completed initialize, ping, and tools/list for version3.6.0.
-Its live source_lookup schema has no view or keyPath fields, and script_validate is not exposed.
+The 2026-10-03 app-reset checkpoint recorded an omitted HOI4 desktop route inventory.
+At that checkpoint, a direct installed-service check with a single-workspace configuration completed initialize, ping, and tools/list for version3.6.0.
+That older live source_lookup schema had no view or keyPath fields, and script_validate was not exposed.
 The narrower helper query used maxDefinitions1, includeReferences false, maxReferences0, and maxLines36.
 That query and the event reference context request each timed out after120 seconds, so they delivered no domain evidence.
 The previous in-flight desktop technology request lost its execution handle during the app reset.
@@ -77,3 +77,15 @@ No inspection or render success is inferred from service initialization or sourc
 Exact provider Prototype ownership, runtime acceptance of the Radar handoff, and the full provider lifecycle matrix remain in the accepted Event 016 completion contract.
 After an installed game update, compare the five replacements against their source files and reapply only the approved hooks to any changed native definitions.
 Do not treat a previous source hash as proof that the current native file is still preserved.
+
+The 2026-10-07 connected routes expose reference context/search/read, structured source lookup and script validation.
+Current narrow reference reads succeed, and path/line lookup locates the project output chain even when exact project symbol lookup yields no indexed definition.
+Current bridge and CXT validation remains partial because argument blocks and root scopes are not fully checked.
+The root event inspection and render expand no changed helper, and a one-node comparison retry times out after 600 seconds.
+Exact receipts and remaining limits are retained in `docs/plans/016_brilliant_scientist_plans/016_fixed_native_provider_sources_2026-10-07.md` and its parent evidence.
+
+Installed project documentation lines 6 through 21 describes native cancellation and resumption by phase, at revision `16879504bc72aa357f1d3c0f1093e94a3946f8c35e7942f65ac9a5d3bcd6c643`.
+The establishing phase restarts, initial research retains its completed or partial progress, and prototyping retains partial progress.
+Offline On actions line 621 documents `on_project_completion` with country ROOT and project FROM, at revision `6822adc85a374a1c1364f2def6f32c6d66da9fb0280319ddd6af4b84b33d882a`.
+These consulted sections provide no start/cancel effect callback and do not prove a matching cancellation adapter.
+They do not authorize replacing native research or imposing a second research clock.

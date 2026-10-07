@@ -1,7 +1,7 @@
 # Event016 native Prototype commitment amendment
 
 Disposition: exact selection actions are implemented in source for Cloning, Rocketry and Electronics, and exact source/mode receipts cover all fourteen ordinary families through the selected or fixed-source contracts below.
-Singularity's complete ownership proof remains queued, and native start/cancel synchronization and persistence/reselection semantics remain unresolved.
+Singularity's six exact component output/adoption receipts are implemented in source, while complete ownership proof, native start/cancel synchronization and persistence/reselection semantics remain unresolved.
 Acceptance basis: the user directed on 2026-10-03 to continue without waiting for input and take the recommended option when a choice arises.
 The parent accepts the bounded recommendation in 016_native_prototype_ownership_architecture_2026-10-03.md within the existing fifteen-family provider closure scope.
 The accepted Cloning source remains sp_brilliant_scientist_cloning, and Rocketry retains sp_rockets_flying_bomb and sp_air_jet_engine.
@@ -93,3 +93,16 @@ The source map, parent evidence, core tests and independent audit are in `docs/p
 This is implemented source coverage with 10,953 source-model cases and 4,911 maintained adapter assertions, with declared engine and payload stubs.
 It does not establish native payment, cancellation, release/reselection generations, real grant payload execution or changed-helper MCP acceptance.
 No implementation simplification is accepted by this checkpoint, and the full Event016 completion contract remains open.
+
+## Singularity component receipt acceptance
+
+The parent accepts the recommended six-component contract in `016_singularity_native_receipt_gap_2026-10-07.md` under the user's exact-marker approval and unchanged-paid-timer decision.
+Each existing component enum identifies one existing native project, and six literal country-output hooks supply fresh witnesses without requiring completed-bit visibility.
+The bounded after-Theory loop uses separate exact historical adoption, with mode stored densely at component ID minus one and exact membership retained in the sparse component registry.
+First-acceptance modes are durable, missing historical modes remain none and later observations cannot relabel an existing receipt.
+Provider, Theory, exact source evidence and an empty matching paid family receipt gate component acceptance, and the final Prototype adapter independently repeats the paid guard and full-chain requirement.
+An output during paid work may record its observed fact but accepts no component and does not settle Prototype.
+The original host outputs, research, costs, rewards, AI and terminal pipeline remain authoritative.
+The current source checks are 7,721 component/integration cases and 5,487 maintained adapter assertions, with native payment, timer and payload behavior explicitly outside the fixtures.
+Implementation and evidence are recorded in `docs/plans/016_brilliant_scientist_plans/016_singularity_native_receipts_2026-10-07.md` and its handoffs.
+This source checkpoint preserves all stronger lifecycle, domain and full-event acceptance requirements.
