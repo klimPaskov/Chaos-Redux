@@ -1,0 +1,160 @@
+# ============================================================================
+# EVENT 035 - CONDITION-SCALED CENTER PROJECT WORK AND NATIVE DEADLINES
+# ============================================================================
+# STATE quote: ROOT is the validated country funding this registered center.
+# Caller initializes temp great_depression_duration_quote_days = 0 and supplies
+# temp great_depression_duration_quote_type. The quote writes only caller-owned
+# scratch storage. Caller supplies great_depression_duration_preview_delta = 0
+# for accepted work, or the mapped immediate action change for its tooltip.
+# Authorization freezes it as state required work days.
+# Damage, poor infrastructure, Severity, war and earlier failures change work.
+# A protection treatment has its own short central interval.
+# ============================================================================
+
+great_depression_quote_center_project_duration = {
+	set_temp_variable = { great_depression_duration_quote_days = constant:great_depression_api.zero }
+	if = {
+		limit = {
+			has_state_flag = great_depression_center
+			great_depression_center_has_current_registration = yes
+			is_owned_by = ROOT
+			is_controlled_by = ROOT
+			ROOT = { great_depression_active_crisis_is_coherent = yes }
+			check_variable = { var = great_depression_duration_quote_type value = constant:great_depression_center_project.none compare = greater_than }
+			check_variable = { var = great_depression_duration_quote_type value = constant:great_depression_center_project.protection compare = less_than_or_equals }
+		}
+		set_temp_variable = { great_depression_duration_quote_days = constant:great_depression_event.center_project_total_days }
+		if = {
+			limit = { check_variable = { var = great_depression_duration_quote_type value = constant:great_depression_center_project.protection compare = equals } }
+			set_temp_variable = { great_depression_duration_quote_days = constant:great_depression_event.center_protection_days }
+		}
+		else = {
+			# Bound each getter before summing, retaining fractional building damage.
+			set_temp_variable = { great_depression_duration_damage = damaged_building_level@infrastructure }
+			clamp_temp_variable = { var = great_depression_duration_damage min = constant:great_depression_api.zero max = constant:great_depression_project_duration.damage_level_cap }
+			set_temp_variable = { great_depression_duration_damage_component = damaged_building_level@industrial_complex }
+			clamp_temp_variable = { var = great_depression_duration_damage_component min = constant:great_depression_api.zero max = constant:great_depression_project_duration.damage_level_cap }
+			add_to_temp_variable = { great_depression_duration_damage = great_depression_duration_damage_component }
+			set_temp_variable = { great_depression_duration_damage_component = damaged_building_level@arms_factory }
+			clamp_temp_variable = { var = great_depression_duration_damage_component min = constant:great_depression_api.zero max = constant:great_depression_project_duration.damage_level_cap }
+			add_to_temp_variable = { great_depression_duration_damage = great_depression_duration_damage_component }
+			clamp_temp_variable = { var = great_depression_duration_damage min = constant:great_depression_api.zero max = constant:great_depression_project_duration.damage_level_cap }
+			multiply_temp_variable = { great_depression_duration_damage = constant:great_depression_project_duration.damage_days_per_level }
+			add_to_temp_variable = { great_depression_duration_quote_days = great_depression_duration_damage }
+
+			set_temp_variable = { great_depression_duration_severity = ROOT.great_depression_depression_severity }
+			add_to_temp_variable = { great_depression_duration_severity = great_depression_duration_preview_delta }
+			clamp_temp_variable = { var = great_depression_duration_severity min = constant:great_depression_event.public_value_minimum max = constant:great_depression_event.public_value_maximum }
+			subtract_from_temp_variable = { great_depression_duration_severity = constant:great_depression_event.stabilization_floor }
+			clamp_temp_variable = { var = great_depression_duration_severity min = constant:great_depression_api.zero max = constant:great_depression_project_duration.severity_points_cap }
+			multiply_temp_variable = { great_depression_duration_severity = constant:great_depression_project_duration.severity_days_per_point }
+			add_to_temp_variable = { great_depression_duration_quote_days = great_depression_duration_severity }
+
+			set_temp_variable = { great_depression_duration_infrastructure = infrastructure_level }
+			clamp_temp_variable = { var = great_depression_duration_infrastructure min = constant:great_depression_api.zero max = constant:great_depression_project_duration.infrastructure_reference }
+			multiply_temp_variable = { great_depression_duration_infrastructure = constant:great_depression_api.negative_one }
+			add_to_temp_variable = { great_depression_duration_infrastructure = constant:great_depression_project_duration.infrastructure_reference }
+			multiply_temp_variable = { great_depression_duration_infrastructure = constant:great_depression_project_duration.infrastructure_days_per_missing_level }
+			add_to_temp_variable = { great_depression_duration_quote_days = great_depression_duration_infrastructure }
+
+			if = {
+				limit = { ROOT = { has_war = yes } }
+				add_to_temp_variable = { great_depression_duration_quote_days = constant:great_depression_project_duration.war_days }
+			}
+			set_temp_variable = { great_depression_duration_failures = ROOT.great_depression_project_failure_count }
+			clamp_temp_variable = { var = great_depression_duration_failures min = constant:great_depression_api.zero max = constant:great_depression_project_duration.failure_count_cap }
+			multiply_temp_variable = { great_depression_duration_failures = constant:great_depression_project_duration.failure_days }
+			add_to_temp_variable = { great_depression_duration_quote_days = great_depression_duration_failures }
+			clamp_temp_variable = { var = great_depression_duration_quote_days min = constant:great_depression_event.center_project_total_days max = constant:great_depression_project_duration.maximum_work_days }
+			round_temp_variable = great_depression_duration_quote_days
+		}
+	}
+}
+
+# COUNTRY tooltip in a state-targeted decision. The forecast cannot resize
+# already accepted work. Call immediately after the generic tooltip cache.
+great_depression_prepare_center_duration_tooltip = {
+	set_temp_variable = { great_depression_duration_quote_days = constant:great_depression_api.zero }
+	FROM = { great_depression_quote_center_project_duration = yes }
+	if = {
+		limit = { check_variable = { great_depression_duration_quote_days > constant:great_depression_api.zero } }
+		set_variable = { great_depression_tt_project_days = great_depression_duration_quote_days }
+	}
+}
+
+# COUNTRY owns the native mission. STATE proof binds one paid authorization,
+# preserves its absolute date across replay, and rejects a different site/work.
+great_depression_sync_center_project_mission = {
+	if = {
+		limit = {
+			has_active_mission = great_depression_reopen_depression_center
+			great_depression_reopen_depression_center_context_is_valid = yes
+		}
+		var:great_depression_mission_reopen_center_state_id = {
+			if = {
+				limit = {
+					great_depression_center_has_current_registration = yes
+					is_owned_by = ROOT
+					is_controlled_by = ROOT
+					has_variable = great_depression_center_project_due_day
+					has_variable = great_depression_center_project_authorization_id
+					has_variable = great_depression_center_project_required_work_days
+					check_variable = { great_depression_center_project_required_work_days > constant:great_depression_api.zero }
+					great_depression_center_project_duration_is_coherent = yes
+					NOT = { check_variable = { var = great_depression_center_project_type value = constant:great_depression_center_project.protection compare = equals } }
+					check_variable = { var = great_depression_center_project_episode_id value = ROOT.great_depression_active_episode_id compare = equals }
+					great_depression_center_project_has_unspent_authorization = yes
+				}
+				ROOT = {
+					if = {
+						limit = { NOT = { has_variable = great_depression_mission_reopen_center_authorization_id } }
+						set_variable = { great_depression_mission_reopen_center_authorization_id = PREV.great_depression_center_project_authorization_id }
+					}
+					if = {
+						limit = { check_variable = { var = great_depression_mission_reopen_center_authorization_id value = PREV.great_depression_center_project_authorization_id compare = equals } }
+						set_variable = { great_depression_mission_reopen_center_deadline_day = PREV.great_depression_center_project_due_day }
+						add_to_variable = { great_depression_mission_reopen_center_deadline_day = constant:great_depression_project_duration.mission_grace_days }
+						if = {
+							limit = { check_variable = { var = global.num_days value = great_depression_mission_reopen_center_deadline_day compare = greater_than_or_equals } }
+							great_depression_timeout_reopen_depression_center = yes
+							remove_mission = great_depression_reopen_depression_center
+						}
+						else = {
+							set_temp_variable = { great_depression_center_mission_timeout_delta = great_depression_mission_reopen_center_deadline_day }
+							subtract_from_temp_variable = { great_depression_center_mission_timeout_delta = global.num_days }
+							subtract_from_temp_variable = { great_depression_center_mission_timeout_delta = days_mission_timeout@great_depression_reopen_depression_center }
+							add_days_mission_timeout = { mission = great_depression_reopen_depression_center days = var:great_depression_center_mission_timeout_delta }
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+# Own the activation step in the existing recipient receiver so every native
+# activation immediately captures the site and synchronizes accepted work.
+great_depression_process_center_mission = {
+	if = {
+		limit = { great_depression_active_country_is_valid = yes }
+		if = {
+			limit = {
+				has_active_mission = great_depression_reopen_depression_center
+				NOT = { great_depression_reopen_depression_center_context_is_valid = yes }
+			}
+			great_depression_cancel_reopen_depression_center = yes
+			remove_mission = great_depression_reopen_depression_center
+		}
+		if = {
+			limit = {
+				NOT = { has_active_mission = great_depression_reopen_depression_center }
+				great_depression_should_activate_reopen_depression_center = yes
+			}
+			activate_mission = great_depression_reopen_depression_center
+			set_variable = { great_depression_mission_reopen_center_deadline_day = global.num_days }
+			add_to_variable = { great_depression_mission_reopen_center_deadline_day = constant:great_depression_event.center_mission_days }
+			great_depression_refresh_mission_capacity_ledger = yes
+		}
+		great_depression_sync_center_project_mission = yes
+	}
+}

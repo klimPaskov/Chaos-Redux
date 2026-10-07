@@ -2,6 +2,11 @@
 
 ## Scope and authority
 
+Later source update: `subagent_handoffs/condition_duration_implementation_2026-10-07.md` records the five-factor work formula, frozen certification, exact native mission binding, protection exclusion and transfer preservation.
+Fourteen duration tests and the architect's targeted row/retirement probes pass at that boundary.
+The former fixed-work-target source finding is superseded, while mandatory current native comparison, full-event balance and live execution remain unresolved.
+Public Works map results, resource refunds and inherited consumer requirements remain required.
+
 Parent implementation update: the October 7 bank-program source tranche is documented in `subagent_handoffs/bank_lifecycle_implementation_2026-10-07.md`.
 Its fifteen actual-source bank tests, including 128 supporting-pool subsets, cover staged 21-day audit and 42-day recapitalization, current-episode proof, funded objective reservation, timer restoration, premature withdrawal, actor eligibility and guarded outcomes.
 The category is consequently 79 decisions and 17 missions, 96 children; the observed source hashes below remain the earlier boundary rather than identities for this later change.

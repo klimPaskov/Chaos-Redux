@@ -158,6 +158,19 @@ Mapped center statuses include distressed, idled, shuttered, abandoned works, pr
 
 Mapped projects include emergency public works, strategic-industry rescue, credit clearing, austerity administration, state coordination, controlled liquidation, freight restoration, reopening, and center protection where their doctrine and state gates permit them.
 
+Structural projects freeze their required work at authorization from the central 133-day anchor and bounded contributions from actual building damage, Severity, infrastructure, war and earlier failed projects.
+Required work is limited to the central 245-day maximum, with certification beginning 42 work days short of completion.
+Protection remains a separate 42-day treatment and supplies no reopening proof or shortened reopening deadline.
+Action forecasts include the action's immediate Severity change, matching the work accepted after payment.
+Later improvements do not erase already accepted work, while interrupted control extends the stored calendar due date without advancing work.
+The owner activates the selected-center mission through the existing objective gates, captures its exact site and episode, binds a paid structural authorization and synchronizes the native timer immediately.
+The bound deadline is the project's due date plus the central grace interval.
+Historical or unbound completion flags cannot complete the objective, and premature, repeated or stale timeout callbacks add no pressure.
+Losing authority cancels the mission without a failure consequence while the local transfer contract retains accepted work.
+Returning centers reuse their exact existing row, including at full capacity, without duplicating arrays or increasing the cap.
+Source retirement preserves only an exact, still-open transfer to a different owner, leaving the local work and receipts available for successor adoption.
+Malformed active work with missing required duration or an inconsistent certification cut cannot reserve a successor's active project slot.
+
 Every mapped project type has a producer.
 Finance restoration starts from Restore Local Credit and Trade Connection.
 A successful Keep Essential Freight Moving mission restores basic transport and supply for the selected center: it starts transport integration on a closed center with no running project, or moves the project already running there several weeks closer to completion, once per project.

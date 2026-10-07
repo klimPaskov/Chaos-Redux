@@ -775,7 +775,10 @@ great_depression_center_is_valid_selector_target = {
 				has_state_flag = great_depression_center_transfer_contract_open
 				ROOT = {
 					great_depression_active_crisis_is_coherent = yes
-					check_variable = { var = great_depression_center_count value = constant:great_depression_event.center_registry_cap compare = less_than }
+					OR = {
+						is_in_array = { array = great_depression_center_state_ids value = PREV }
+						check_variable = { var = great_depression_center_count value = constant:great_depression_event.center_registry_cap compare = less_than }
+					}
 				}
 			}
 		}
@@ -2254,6 +2257,7 @@ great_depression_should_activate_reopen_depression_center = {
 
 great_depression_reopen_depression_center_context_is_valid = {
 	great_depression_decision_surface_is_ready = yes
+	great_depression_active_country_is_valid = yes
 	has_variable = great_depression_mission_reopen_center_state_id
 	has_variable = great_depression_mission_reopen_center_episode_id
 	check_variable = {
@@ -2261,13 +2265,33 @@ great_depression_reopen_depression_center_context_is_valid = {
 		value = great_depression_active_episode_id
 		compare = equals
 	}
+	var:great_depression_mission_reopen_center_state_id = {
+		has_state_flag = great_depression_center
+		is_owned_by = ROOT
+		is_controlled_by = ROOT
+		check_variable = { var = great_depression_center_episode_id value = ROOT.great_depression_active_episode_id compare = equals }
+		OR = {
+			ROOT = { NOT = { has_variable = great_depression_mission_reopen_center_authorization_id } }
+			AND = {
+				great_depression_center_project_duration_is_coherent = yes
+				NOT = { check_variable = { var = great_depression_center_project_type value = constant:great_depression_center_project.protection compare = equals } }
+				check_variable = { var = great_depression_center_project_authorization_id value = ROOT.great_depression_mission_reopen_center_authorization_id compare = equals }
+			}
+		}
+	}
 }
 
 great_depression_reopen_depression_center_objective_is_met = {
 	great_depression_reopen_depression_center_context_is_valid = yes
+	has_variable = great_depression_mission_reopen_center_authorization_id
+	check_variable = { great_depression_mission_reopen_center_authorization_id > constant:great_depression_api.zero }
+	has_variable = great_depression_mission_reopen_center_deadline_day
+	check_variable = { var = global.num_days value = great_depression_mission_reopen_center_deadline_day compare = less_than }
 	var:great_depression_mission_reopen_center_state_id = {
 		has_state_flag = great_depression_center_reopened
 		has_state_flag = great_depression_center_project_completed_receipt
+		has_variable = great_depression_center_project_completed_authorization_id
+		check_variable = { var = great_depression_center_project_completed_authorization_id value = ROOT.great_depression_mission_reopen_center_authorization_id compare = equals }
 		check_variable = {
 			var = great_depression_center_episode_id
 			value = ROOT.great_depression_mission_reopen_center_episode_id

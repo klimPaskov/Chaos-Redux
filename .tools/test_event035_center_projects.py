@@ -20,12 +20,14 @@ EFFECT_FILES = (
     r"common\scripted_effects\035_great_depression_region_effects.txt",
     r"common\scripted_effects\035_great_depression_inherited_liability_effects.txt",
     r"common\scripted_effects\035_great_depression_bank_effects.txt",
+    r"common\scripted_effects\035_great_depression_project_duration_effects.txt",
 )
 TRIGGER_FILES = (
     r"common\scripted_triggers\035_great_depression_triggers.txt",
     r"common\scripted_triggers\035_great_depression_decision_triggers.txt",
     r"common\scripted_triggers\035_great_depression_decision_surface_triggers.txt",
     r"common\scripted_triggers\035_great_depression_bank_triggers.txt",
+    r"common\scripted_triggers\035_great_depression_project_duration_triggers.txt",
 )
 CONSTANTS_FILE = r"common\script_constants\035_great_depression_constants.txt"
 REGION_CONSTANTS_FILE = r"common\script_constants\035_great_depression_region_constants.txt"
@@ -168,6 +170,8 @@ class Event35Runtime:
         "news_event", "add_equipment_to_stockpile", "add_political_power",
         "add_manpower", "add_fuel", "add_stability", "add_war_support",
         "activate_mission", "remove_mission",
+        "clamp_temp_variable",
+        "add_days_mission_timeout",
     }
 
     def __init__(self):
@@ -279,6 +283,17 @@ class Event35Runtime:
         return rest in container.values
 
     def _value(self, token):
+        if isinstance(token, str) and token.startswith("days_mission_timeout@"):
+            mission = token.split("@", 1)[1]
+            return max(0, self.current.values["native_mission_deadlines"][mission] - self.globals["num_days"])
+        # Documented native state getters are declared fixture data.
+        if isinstance(token, str) and (token == "infrastructure_level" or token.startswith("damaged_building_level@")):
+            scope = self.scope_stack[-1]
+            if scope.kind != "state":
+                raise SourceContractError(f"native state getter {token} in {scope.kind}")
+            if token == "infrastructure_level":
+                return scope.buildings.get("infrastructure", 0)
+            return scope.values.get(token, 0)
         if isinstance(token, Scope) or isinstance(token, (float, int, bool)):
             return token
         if not isinstance(token, str):
@@ -427,6 +442,20 @@ class Event35Runtime:
 
     def _condition(self, node, scope):
         key, op, value = node.key, node.op, node.value
+        if key in ("set_temp_variable", "subtract_from_temp_variable", "modulo_temp_variable"):
+            args = {n.key: n.value for n in value}
+            if "var" in args:
+                name, rhs = args["var"], self._value(args["value"])
+            else:
+                field = next(iter(value))
+                name, rhs = field.key, self._value(field.value)
+            if key == "set_temp_variable":
+                self._set_temp(name, rhs)
+            elif key == "subtract_from_temp_variable":
+                self._set_temp(name, self._variable(name) - rhs)
+            else:
+                self._set_temp(name, self._variable(name) % rhs)
+            return True
         if op != "=":
             if key in ("has_equipment", "has_fuel", "has_manpower", "has_political_power", "has_stability", "has_war_support") or key == "num_of_civilian_factories_available_for_projects":
                 return self._compare(self._numeric_builtin(key, scope), op, self._value(value))
@@ -511,6 +540,8 @@ class Event35Runtime:
             return value in scope.values.get("active_missions", set())
         if key == "has_capitulated":
             return scope.values.get("capitulated", False) == (value == "yes")
+        if key == "has_war":
+            return scope.values.get("war", False) == (value == "yes")
         if key in self.trigger_defs and value == "yes":
             return self._run_trigger(key, scope)
         if key in ("has_fuel", "has_manpower", "has_political_power", "has_stability", "has_war_support", "state_population_k", "industrial_complex", "arms_factory", "dockyard", "num_of_civilian_factories_available_for_projects"):
@@ -691,7 +722,10 @@ class Event35Runtime:
 
     def _native_effect(self, key, value, scope, line):
         self.native_calls.append((key, scope.id))
-        if key in ("add_political_power", "add_manpower", "add_fuel", "add_stability", "add_war_support"):
+        if key == "clamp_temp_variable":
+            args = {n.key: n.value for n in value}
+            self._set_temp(args["var"], max(self._value(args["min"]), min(self._variable(args["var"]), self._value(args["max"]))))
+        elif key in ("add_political_power", "add_manpower", "add_fuel", "add_stability", "add_war_support"):
             self._require_scope(scope, "country", key, line)
             resource = {
                 "add_political_power": "political_power", "add_manpower": "manpower",
@@ -716,7 +750,17 @@ class Event35Runtime:
         elif key in ("activate_mission", "remove_mission"):
             self._require_scope(scope, "country", key, line)
             missions = scope.values.setdefault("active_missions", set())
+            if key == "activate_mission" and value not in missions:
+                definition = read_definitions("common/decisions/035_great_depression_decisions.txt")["great_depression_category"]
+                mission = next(n.value for n in definition.body if n.key == value)
+                scope.values.setdefault("native_mission_deadlines", {})[value] = self.globals["num_days"] + self._value(first(mission, "days_mission_timeout"))
             (missions.add if key == "activate_mission" else missions.discard)(value)
+        elif key == "add_days_mission_timeout":
+            mission = first(value, "mission")
+            days = first(value, "days")
+            # Native days is numeric even when var: selects its variable.
+            days = days[4:] if isinstance(days, str) and days.startswith("var:") else days
+            scope.values["native_mission_deadlines"][mission] += self._value(days)
         elif key == "country_event":
             args = {child.key: child.value for child in value}
             self.events.append((scope.id, self._value(args["id"]), self._value(args.get("days", "0"))))
@@ -903,7 +947,7 @@ class CenterProjectSourceTests(unittest.TestCase):
         return runtime, owner, site
 
     def complete_by_processing(self, runtime, owner, site):
-        total = runtime.constants["constant:great_depression_event.center_project_total_days"]
+        total = site.values["great_depression_center_project_required_work_days"]
         runtime.advance(int(total))
         runtime.run_effect("great_depression_process_center_project", site, root=owner)
 
@@ -1055,7 +1099,7 @@ class CenterProjectSourceTests(unittest.TestCase):
         owner.values["great_depression_pending_center_project"] = runtime.constants["constant:great_depression_center_project.protection"]
         runtime.run_effect("great_depression_authorize_center_project", site, root=owner)
         self.assertIn("great_depression_center_project_authorized", site.flags)
-        runtime.advance(int(runtime.constants["constant:great_depression_event.center_project_total_days"]) - 1)
+        runtime.advance(int(site.values["great_depression_center_project_required_work_days"]) - 1)
         runtime.run_effect("great_depression_process_center_project", site, root=owner)
         self.assertNotIn("great_depression_center_project_completed_receipt", site.flags)
         runtime.advance(1)
@@ -1128,6 +1172,8 @@ class CenterProjectSourceTests(unittest.TestCase):
             "great_depression_center_project_failed_authorization_id": 3,
             "great_depression_center_project_episode_id": 61,
             "great_depression_center_project_type": runtime.constants["constant:great_depression_center_project.public_works"],
+            "great_depression_center_project_required_work_days": runtime.constants["constant:great_depression_event.center_project_total_days"],
+            "great_depression_center_project_certification_start_work_days": runtime.constants["constant:great_depression_event.center_project_certification_start_days"],
             "great_depression_center_project_stage": runtime.constants["constant:great_depression_center_project_stage.active_work"],
             "great_depression_center_project_start_day": 280,
             "great_depression_center_project_stage_day": 300,

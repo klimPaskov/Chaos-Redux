@@ -135,6 +135,8 @@ great_depression_cancel_all_missions = {
 	remove_mission = great_depression_emergency_government_mandate
 	clear_variable = great_depression_mission_reopen_center_state_id
 	clear_variable = great_depression_mission_reopen_center_episode_id
+	clear_variable = great_depression_mission_reopen_center_authorization_id
+	clear_variable = great_depression_mission_reopen_center_deadline_day
 	clear_variable = great_depression_employment_guarantee_due_day
 	clear_variable = great_depression_active_main_mission_count
 	clear_variable = great_depression_active_support_mission_count
@@ -2534,12 +2536,22 @@ great_depression_complete_keep_essential_freight_moving = {
 }
 
 great_depression_complete_reopen_depression_center = {
-	if = { limit = { NOT = { has_country_flag = great_depression_mission_reopen_depression_center_complete } } set_country_flag = great_depression_mission_reopen_depression_center_complete }
-	set_country_flag = great_depression_center_mission_complete
-	set_variable = { great_depression_mission_cost_family = constant:great_depression_cost_family.center_reopen }
-	great_depression_mission_complete = yes
-	clear_variable = great_depression_mission_reopen_center_state_id
-	clear_variable = great_depression_mission_reopen_center_episode_id
+	if = {
+		limit = {
+			great_depression_reopen_depression_center_objective_is_met = yes
+			great_depression_can_pay_center_reopen = yes
+			NOT = { has_country_flag = great_depression_mission_reopen_depression_center_complete }
+			NOT = { has_country_flag = great_depression_mission_reopen_depression_center_failed }
+		}
+		set_country_flag = great_depression_mission_reopen_depression_center_complete
+		set_country_flag = great_depression_center_mission_complete
+		set_variable = { great_depression_mission_cost_family = constant:great_depression_cost_family.center_reopen }
+		great_depression_mission_complete = yes
+		clear_variable = great_depression_mission_reopen_center_state_id
+		clear_variable = great_depression_mission_reopen_center_episode_id
+		clear_variable = great_depression_mission_reopen_center_authorization_id
+		clear_variable = great_depression_mission_reopen_center_deadline_day
+	}
 }
 
 great_depression_complete_prevent_a_relapse = {
@@ -2669,10 +2681,21 @@ great_depression_timeout_keep_essential_freight_moving = {
 }
 
 great_depression_timeout_reopen_depression_center = {
-	set_country_flag = great_depression_mission_reopen_depression_center_failed
-	great_depression_mission_timeout = yes
-	clear_variable = great_depression_mission_reopen_center_state_id
-	clear_variable = great_depression_mission_reopen_center_episode_id
+	if = {
+		limit = {
+			great_depression_reopen_depression_center_context_is_valid = yes
+			has_variable = great_depression_mission_reopen_center_deadline_day
+			check_variable = { var = global.num_days value = great_depression_mission_reopen_center_deadline_day compare = greater_than_or_equals }
+			NOT = { has_country_flag = great_depression_mission_reopen_depression_center_failed }
+			NOT = { has_country_flag = great_depression_mission_reopen_depression_center_complete }
+		}
+		set_country_flag = great_depression_mission_reopen_depression_center_failed
+		great_depression_mission_timeout = yes
+		clear_variable = great_depression_mission_reopen_center_state_id
+		clear_variable = great_depression_mission_reopen_center_episode_id
+		clear_variable = great_depression_mission_reopen_center_authorization_id
+		clear_variable = great_depression_mission_reopen_center_deadline_day
+	}
 }
 
 great_depression_timeout_prevent_a_relapse = {
@@ -2791,6 +2814,8 @@ great_depression_cancel_reopen_depression_center = {
 	great_depression_mission_cancel = yes
 	clear_variable = great_depression_mission_reopen_center_state_id
 	clear_variable = great_depression_mission_reopen_center_episode_id
+	clear_variable = great_depression_mission_reopen_center_authorization_id
+	clear_variable = great_depression_mission_reopen_center_deadline_day
 }
 
 great_depression_cancel_prevent_a_relapse = {

@@ -782,14 +782,29 @@ great_depression_authorize_center_project = {
 	set_variable = { great_depression_center_project_start_day = global.num_days }
 	set_variable = { great_depression_center_project_stage_day = global.num_days }
 	set_variable = { great_depression_center_project_last_process_day = global.num_days }
+	set_temp_variable = { great_depression_duration_quote_type = great_depression_center_project_type }
+	set_temp_variable = { great_depression_duration_preview_delta = constant:great_depression_api.zero }
+	set_temp_variable = { great_depression_duration_quote_days = constant:great_depression_api.zero }
+	great_depression_quote_center_project_duration = yes
+	set_variable = { great_depression_center_project_required_work_days = great_depression_duration_quote_days }
+	set_variable = { great_depression_center_project_certification_start_work_days = great_depression_center_project_required_work_days }
+	subtract_from_variable = { great_depression_center_project_certification_start_work_days = constant:great_depression_event.center_project_certification_days }
+	if = {
+		limit = { check_variable = { great_depression_center_project_certification_start_work_days < constant:great_depression_api.zero } }
+		set_variable = { great_depression_center_project_certification_start_work_days = constant:great_depression_api.zero }
+	}
 	set_variable = { great_depression_center_project_due_day = global.num_days }
-	add_to_variable = { great_depression_center_project_due_day = constant:great_depression_event.center_project_total_days }
+	add_to_variable = { great_depression_center_project_due_day = great_depression_center_project_required_work_days }
 	set_variable = { great_depression_center_project_pause_day = constant:great_depression_api.zero }
 	set_variable = { great_depression_center_project_pause_days = constant:great_depression_api.zero }
 	set_variable = { great_depression_center_project_work_days = constant:great_depression_api.zero }
 	set_variable = { great_depression_center_project_paralysis_days = constant:great_depression_api.zero }
 	set_variable = { great_depression_next_center_project_stage = constant:great_depression_center_project_stage.authorized }
 	great_depression_set_center_project_stage = yes
+	ROOT = {
+		great_depression_refresh_mission_capacity_ledger = yes
+		great_depression_process_center_mission = yes
+	}
 	}
 }
 
@@ -849,7 +864,8 @@ great_depression_complete_center_project = {
 			is_owned_by = ROOT
 			is_controlled_by = ROOT
 			great_depression_center_project_has_unspent_authorization = yes
-			check_variable = { var = great_depression_center_project_work_days value = constant:great_depression_event.center_project_total_days compare = greater_than_or_equals }
+			great_depression_center_project_duration_is_coherent = yes
+			check_variable = { var = great_depression_center_project_work_days value = great_depression_center_project_required_work_days compare = greater_than_or_equals }
 			check_variable = {
 				var = great_depression_center_project_type
 				value = constant:great_depression_center_project.none
@@ -1040,6 +1056,7 @@ great_depression_process_center_project = {
 		limit = {
 			has_state_flag = great_depression_center
 			great_depression_center_project_has_unspent_authorization = yes
+			great_depression_center_project_duration_is_coherent = yes
 			OR = {
 				has_state_flag = great_depression_center_project_authorized
 				has_state_flag = great_depression_center_project_active_work
@@ -1097,10 +1114,10 @@ great_depression_process_center_project = {
 				limit = {
 					OR = {
 						check_variable = { var = great_depression_center_project_paralysis_days value = constant:great_depression_event.center_project_pause_fail_days compare = greater_than_or_equals }
-						check_variable = { var = great_depression_center_project_work_days value = constant:great_depression_event.center_project_total_days compare = greater_than_or_equals }
+						check_variable = { var = great_depression_center_project_work_days value = great_depression_center_project_required_work_days compare = greater_than_or_equals }
 					}
 				}
-				if = { limit = { check_variable = { var = great_depression_center_project_work_days value = constant:great_depression_event.center_project_total_days compare = greater_than_or_equals } } great_depression_complete_center_project = yes }
+				if = { limit = { check_variable = { var = great_depression_center_project_work_days value = great_depression_center_project_required_work_days compare = greater_than_or_equals } } great_depression_complete_center_project = yes }
 				else = { great_depression_fail_center_project = yes }
 			}
 			else = {
@@ -1114,13 +1131,13 @@ great_depression_process_center_project = {
 				}
 				if = {
 					limit = {
-						check_variable = { var = great_depression_center_project_work_days value = constant:great_depression_event.center_project_total_days compare = greater_than_or_equals }
+						check_variable = { var = great_depression_center_project_work_days value = great_depression_center_project_required_work_days compare = greater_than_or_equals }
 					}
 					great_depression_complete_center_project = yes
 				}
 				else_if = {
 					limit = {
-						check_variable = { var = great_depression_center_project_work_days value = constant:great_depression_event.center_project_certification_start_days compare = greater_than_or_equals }
+						check_variable = { var = great_depression_center_project_work_days value = great_depression_center_project_certification_start_work_days compare = greater_than_or_equals }
 						NOT = { has_state_flag = great_depression_center_project_certification }
 					}
 					set_variable = { great_depression_next_center_project_stage = constant:great_depression_center_project_stage.certification }
@@ -1237,12 +1254,16 @@ great_depression_adopt_transferred_center = {
 		limit = {
 			has_state_flag = great_depression_center_transfer_receipt
 			has_state_flag = great_depression_center_transfer_contract_open
+			great_depression_center_transfer_has_coherent_work = yes
 			NOT = { has_state_flag = great_depression_center_transfer_adopted_receipt }
 			is_owned_by = ROOT
 			is_controlled_by = ROOT
 			ROOT = {
 				great_depression_active_crisis_is_coherent = yes
-				check_variable = { var = great_depression_center_count value = constant:great_depression_event.center_registry_cap compare = less_than }
+				OR = {
+					is_in_array = { array = great_depression_center_state_ids value = PREV }
+					check_variable = { var = great_depression_center_count value = constant:great_depression_event.center_registry_cap compare = less_than }
+				}
 			}
 			OR = {
 				NOT = {
@@ -1319,7 +1340,23 @@ great_depression_adopt_transferred_center = {
 			limit = { has_variable = great_depression_center_project_pause_day }
 		set_variable = { great_depression_transfer_adopted_project_pause_day = great_depression_center_project_pause_day }
 		}
-		set_variable = { great_depression_center_registry_index = ROOT.great_depression_center_count }
+		set_variable = { great_depression_center_registry_index = ROOT.great_depression_center_state_ids^num }
+		ROOT = {
+			if = {
+				limit = { is_in_array = { array = great_depression_center_state_ids value = event_target:great_depression_transfer_adoption_state } }
+				for_loop_effect = {
+					start = 0
+					end = great_depression_center_state_ids^num
+					value = great_depression_transfer_existing_row_index
+					if = {
+						limit = { check_variable = { var = great_depression_center_state_ids^great_depression_transfer_existing_row_index value = event_target:great_depression_transfer_adoption_state compare = equals } }
+						event_target:great_depression_transfer_adoption_state = {
+							set_variable = { great_depression_center_registry_index = great_depression_transfer_existing_row_index }
+						}
+					}
+				}
+			}
+		}
 		set_variable = { great_depression_center_episode_id = ROOT.great_depression_active_episode_id }
 		if = {
 			limit = {
@@ -1369,6 +1406,7 @@ great_depression_adopt_transferred_center = {
 			}
 		}
 		great_depression_write_center_stage_ledger = yes
+		great_depression_write_center_project_ledger = yes
 		set_state_flag = great_depression_center_transfer_adopted_receipt
 		clr_state_flag = great_depression_center_transfer_contract_open
 		clear_variable = great_depression_transfer_adopted_stage
@@ -3145,6 +3183,14 @@ great_depression_clear_registered_center_runtime = {
 				if = {
 					limit = {
 						check_variable = { var = great_depression_center_episode_id value = PREV.great_depression_active_episode_id compare = equals }
+						NOT = {
+							AND = {
+								has_state_flag = great_depression_center_transfer_receipt
+								has_state_flag = great_depression_center_transfer_contract_open
+								check_variable = { var = great_depression_center_transfer_episode_id value = PREV.great_depression_active_episode_id compare = equals }
+								NOT = { is_owned_by = PREV }
+							}
+						}
 					}
 				great_depression_clear_center_state_flags = yes
 				clear_variable = great_depression_center_episode_id
@@ -3171,6 +3217,8 @@ great_depression_clear_registered_center_runtime = {
 				clear_variable = great_depression_center_project_start_day
 				clear_variable = great_depression_center_project_stage_day
 				clear_variable = great_depression_center_project_due_day
+				clear_variable = great_depression_center_project_required_work_days
+				clear_variable = great_depression_center_project_certification_start_work_days
 				clear_variable = great_depression_center_project_pause_day
 				clear_variable = great_depression_center_project_pause_days
 				clear_variable = great_depression_center_project_work_days
@@ -4867,6 +4915,7 @@ great_depression_weekly_pulse = {
 	if = {
 		limit = { great_depression_active_crisis_is_coherent = yes }
 		great_depression_process_bank_program = yes
+		great_depression_process_center_mission = yes
 		great_depression_refresh_public_thresholds = yes
 		great_depression_set_pulse_interval = yes
 		if = {
@@ -5005,6 +5054,7 @@ great_depression_weekly_pulse = {
 			great_depression_update_phase_hysteresis = yes
 			great_depression_process_center_transfers = yes
 			great_depression_process_center_projects = yes
+			great_depression_sync_center_project_mission = yes
 			great_depression_update_registered_centers = yes
 			great_depression_update_center_resolution_count = yes
 			great_depression_activate_social_collapse = yes

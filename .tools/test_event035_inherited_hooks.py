@@ -11,7 +11,13 @@ REPO = Path(__file__).resolve().parents[1]
 HANDOFF = REPO / "docs/plans/035_great_depression_plans/subagent_handoffs/inherited_liability_consumer_implementation_2026-10-03.md"
 code = re.search(r"```python\s*\n(.*?)\n```", HANDOFF.read_text(encoding="utf-8-sig"), re.S).group(1)
 namespace = {}
-exec(compile(code.split("done = []", 1)[0], str(HANDOFF), "exec"), namespace)
+fixture_code = code.split("done = []", 1)[0]
+# Preserve the historical handoff bytes while letting its paid-action fixture
+# wait for the current production authorization's frozen work, not 133 days.
+old_wait = 'r.globals["num_days"] += r.constants["constant:great_depression_event.center_project_total_days"]'
+assert fixture_code.count(old_wait) == 1
+fixture_code = fixture_code.replace(old_wait, 'r.globals["num_days"] += s.values["great_depression_center_project_required_work_days"]')
+exec(compile(fixture_code, str(HANDOFF), "exec"), namespace)
 e35, BaseRuntime = namespace["e35"], namespace["Runtime"]
 H, L, O = namespace["H"], namespace["L"], namespace["O"]
 

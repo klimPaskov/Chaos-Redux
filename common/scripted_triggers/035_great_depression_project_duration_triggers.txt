@@ -1,0 +1,47 @@
+# ============================================================================
+# EVENT 035 - FROZEN CENTER WORK CONTRACT
+# ============================================================================
+# STATE arithmetic is read-only. Transferred work must retain an integer work
+# target and the exact certification cut. Missing facts are never re-quoted.
+# ============================================================================
+
+great_depression_center_project_duration_is_coherent = {
+	has_variable = great_depression_center_project_required_work_days
+	has_variable = great_depression_center_project_certification_start_work_days
+	has_variable = great_depression_center_project_type
+	check_variable = { var = great_depression_center_project_type value = constant:great_depression_center_project.none compare = greater_than }
+	check_variable = { var = great_depression_center_project_type value = constant:great_depression_center_project.protection compare = less_than_or_equals }
+	check_variable = { var = great_depression_center_project_required_work_days value = constant:great_depression_event.center_protection_days compare = greater_than_or_equals }
+	check_variable = { var = great_depression_center_project_required_work_days value = constant:great_depression_project_duration.maximum_work_days compare = less_than_or_equals }
+	set_temp_variable = { great_depression_duration_fraction = great_depression_center_project_required_work_days }
+	modulo_temp_variable = { var = great_depression_duration_fraction value = constant:great_depression_api.one }
+	check_variable = { var = great_depression_duration_fraction value = constant:great_depression_api.zero compare = equals }
+	OR = {
+		AND = {
+			check_variable = { var = great_depression_center_project_type value = constant:great_depression_center_project.protection compare = equals }
+			check_variable = { var = great_depression_center_project_required_work_days value = constant:great_depression_event.center_protection_days compare = equals }
+			check_variable = { var = great_depression_center_project_certification_start_work_days value = constant:great_depression_api.zero compare = equals }
+		}
+		AND = {
+			NOT = { check_variable = { var = great_depression_center_project_type value = constant:great_depression_center_project.protection compare = equals } }
+			check_variable = { var = great_depression_center_project_required_work_days value = constant:great_depression_event.center_project_total_days compare = greater_than_or_equals }
+			set_temp_variable = { great_depression_duration_expected_certification = great_depression_center_project_required_work_days }
+			subtract_from_temp_variable = { great_depression_duration_expected_certification = constant:great_depression_event.center_project_certification_days }
+			check_variable = { var = great_depression_center_project_certification_start_work_days value = great_depression_duration_expected_certification compare = equals }
+		}
+	}
+}
+
+great_depression_center_transfer_has_coherent_work = {
+	OR = {
+		NOT = {
+			OR = {
+				has_state_flag = great_depression_center_project_authorized
+				has_state_flag = great_depression_center_project_active_work
+				has_state_flag = great_depression_center_project_paused
+				has_state_flag = great_depression_center_project_certification
+			}
+		}
+		great_depression_center_project_duration_is_coherent = yes
+	}
+}
