@@ -1,0 +1,545 @@
+{
+  "workspaceId": "mod_chaos_redux_ea3b2d67c2c0",
+  "reads": {
+    "shared_refs": {
+      "status": "ok",
+      "code": "OK",
+      "workspaceId": "mod_chaos_redux_ea3b2d67c2c0",
+      "filesScanned": [],
+      "proposedFiles": [],
+      "changedFiles": [],
+      "diagnostics": [],
+      "artifacts": [],
+      "validation": {
+        "passed": true,
+        "checks": []
+      },
+      "blockers": [],
+      "data": {
+        "id": "c7ccb8eae5d5102b2ce0775dd82f3b2ff74094715e00a96fa7b530d91600b576",
+        "revision": "bd989a13237c464f140a0aa671cc42c30a48e84a27dae791b8914654fb9c6203",
+        "source": "wiki",
+        "title": "National focus modding",
+        "heading": "Shared focuses",
+        "path": "C:\\Users\\klimp\\OneDrive\\Documents\\Paradox Interactive\\Hearts of Iron IV\\mod\\chaos_redux\\paradox_wiki\\National focus modding - Hearts of Iron 4 Wiki.md",
+        "startLine": 824,
+        "endLine": 838,
+        "excerpt": "## Shared focuses <a id=\"Shared_focuses\"></a> Shared focuses are those that can be used in multiple national focus trees. Examples of these include the \"Invite foreign investors\" branch present in focus trees for ![Flag of China](media/national-focus-modding-hearts-of-iron-4-wiki_b6347a9782__img144.",
+        "authority": "Offline Paradox Wiki snapshot",
+        "sectionStartLine": 818,
+        "sectionEndLine": 838,
+        "startColumn": 1,
+        "text": "A shared focus is added to a focus tree by adding the `shared_focus = my_shared_focus` argument within that focus tree. This will add the specified shared focus **and every shared focus that's connected to it via prerequisites**, assuming that allow_branch is true. Even if the shared focus has a different focus as a prerequisite that's not loaded in this focus tree, it will appear as visible. **Setting this to a non-existing focus causes a game crash when loading into the main menu.** In addition, having no non-shared focuses in your tree while your shared focus is added will result in a crash.\n\nIn addition, the [load_focus_tree effect](<Effects - Hearts of Iron 4 Wiki.md>) can be used with kept completed focuses as such in order to have shared focuses be kept as complete when switching to a different tree:\n\n```text\nload_focus_tree = {\n    tree = my_focus_tree\n    keep_completed = yes\n}\n```\n\nThis can serve as an alternative to using `allow_branch = { ... }` in order to swap out focus tree branches for the same country from being visible or not.\n\nShared focuses can be defined in any `/Hearts of Iron IV/common/national_focus/*.txt` file. Usually they're kept in different files from the focus trees using them, but that's not necessary.\n",
+        "nextLine": null,
+        "nextColumn": null
+      }
+    },
+    "focus_visibility_refs": {
+      "status": "ok",
+      "code": "OK",
+      "workspaceId": "mod_chaos_redux_ea3b2d67c2c0",
+      "filesScanned": [],
+      "proposedFiles": [],
+      "changedFiles": [],
+      "diagnostics": [],
+      "artifacts": [],
+      "validation": {
+        "passed": true,
+        "checks": []
+      },
+      "blockers": [],
+      "data": {
+        "id": "41665dabe070649f2c763f44b6500e2a41f64cb64dc1a41d528c97cc456d59b6",
+        "revision": "bd989a13237c464f140a0aa671cc42c30a48e84a27dae791b8914654fb9c6203",
+        "source": "wiki",
+        "title": "National focus modding",
+        "heading": "Triggers",
+        "path": "C:\\Users\\klimp\\OneDrive\\Documents\\Paradox Interactive\\Hearts of Iron IV\\mod\\chaos_redux\\paradox_wiki\\National focus modding - Hearts of Iron 4 Wiki.md",
+        "startLine": 405,
+        "endLine": 429,
+        "excerpt": "### Triggers <a id=\"Triggers\"></a> *See also: [Triggers](<Triggers - Hearts of Iron 4 Wiki.md>)*",
+        "authority": "Offline Paradox Wiki snapshot",
+        "sectionStartLine": 405,
+        "sectionEndLine": 429,
+        "startColumn": 1,
+        "text": "### Triggers <a id=\"Triggers\"></a>\n\n*See also: [Triggers](<Triggers - Hearts of Iron 4 Wiki.md>)*\n\nIn order to take the focus, aside from the focus prerequisites, the conditions within the `available = { ... }` block must be met. This functions as an [AND block](<Scopes - Hearts of Iron 4 Wiki.md>), so each of the triggers must be true to fulfilled. [Scopes](<Scopes - Hearts of Iron 4 Wiki.md>) can be used to check for conditions for other countries or within states. By default, the scope is of the country doing the focus. For example, this example requires the country to have more than 10% ![Stability](media/country-creation-hearts-of-iron-4-wiki_1d4220f262__img10.png)Stability and for the state 294 to be owned by the ![Flag of Republic of Qatar](media/national-focus-modding-hearts-of-iron-4-wiki_b6347a9782__img11.png) Republic of Qatar:\n\n```text\navailable = {\n    stability > 0.1\n    294 = { is_owned_by = QAT }\n}\n```\n\n`bypass = { ... }` is similar, but for bypassing the focus. Bypassing a focus marks the focus as complete, but does not grant its effects within the completion reward, instead focus can have `bypass_effect = { ... }`, focus can have `enable_automatic_bypass = no` to prevent bypassing focus automaticly. The exact same applies as to `available`: it's an AND block that assumes the country doing the focus by default. `bypass_if_unavailable = yes` can be used to make the focus automatically bypass as soon as the `available = { ... }` block is not met without needing to port over the triggers.\n\n`allow_branch = { ... }` is used to tell when the focus should be visible. **This is only checked when the focus tree is first loaded**. However, this check also can be refreshed mid-session with the [mark_focus_tree_layout_dirty effect](<Effects - Hearts of Iron 4 Wiki.md>)`[d]`, making the focus visible or invisible depending on if it's true or not. By default, a focus will also be disallowed if either of the parent focuses (as set by prerequisites) is disallowed. However, a focus containing `allow_branch` within its definition will only check its own allowed status, still showing up if it has disallowed parents. This means that if a branch is set to be disallowed under certain conditions, the first focus in any sub-branch that has its own conditions for being allowed must also contain the parent branch's condition within of itself, while other focuses may not have any `allow_branch` defined at all due to it being inherited from parents.\n\n`available_if_capitulated = yes` sets the focus to be possible to complete while being capitulated. By default, this is set to false.\n\n`cancel_if_invalid = no` and `continue_if_invalid = yes` decide how to treat the focus if the `available = { ... }` block becomes false while doing it. By default, these are true and false respectively. If both are set to false, the focus would pause when the `available = { ... }` block is false. This will not remove the gain_focus [static modifier](<Modifiers - Hearts of Iron 4 Wiki.md>), which by default results in costing 1 ![Political Power](media/building-modding-hearts-of-iron-4-wiki_811161eae8__img1.png)Political Power per day when doing the focus.\n\n`cancel = { ... }` decides additional conditions which would cancel the focus if met. This is usually paired with `cancel_if_invalid = no`.\n\n`historical_ai = { ... }` decides when the AI is able to pick this focus with the historical focus turned on. This does not ensure it picks this focus, rather prevents it from picking it when false. This takes priority over the order of focuses granted within [AI strategy plans](#AI_strategy_plans): if the AI were to do this focus next by the plan, yet `historical_ai = { ... }` is false and historical focus is turned on, then it won't be able to.\n",
+        "nextLine": null,
+        "nextColumn": null
+      }
+    },
+    "foreign_context": {
+      "status": "ok",
+      "code": "OK",
+      "workspaceId": "mod_chaos_redux_ea3b2d67c2c0",
+      "filesScanned": [],
+      "proposedFiles": [],
+      "changedFiles": [],
+      "diagnostics": [],
+      "artifacts": [],
+      "validation": {
+        "passed": true,
+        "checks": []
+      },
+      "blockers": [],
+      "data": {
+        "surface": "event",
+        "sections": [
+          {
+            "id": "335a5802a96de7aa7e32fb8068e81a78135186b67c6633b363f807c65a68e2dd",
+            "revision": "2cdc93d26775990468eed167442f7a416b13059fb8fe07d139b54250b79209af",
+            "source": "game_doc",
+            "title": "effects documentation",
+            "heading": "Effects for scope COUNTRY",
+            "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Hearts of Iron IV\\documentation\\effects_documentation.md",
+            "startLine": 87,
+            "endLine": 412,
+            "excerpt": "* [state_event](#state_event) * [steal_random_tech_bonus](#steal_random_tech_bonus) * [swap_ideas](#swap_ideas)",
+            "authority": "Installed game documentation",
+            "matchLine": 393
+          },
+          {
+            "id": "2ec072c4d64f4179b7eda480ce7c2ffbab0cd151fab4b78f2602ff245c293712",
+            "revision": "62273f37ed30e5479acb331a8973f48dadc1867c4913c8a940e3e790e7af32d4",
+            "source": "wiki",
+            "title": "Data structures",
+            "heading": "Usage examples",
+            "path": "C:\\Users\\klimp\\OneDrive\\Documents\\Paradox Interactive\\Hearts of Iron IV\\mod\\chaos_redux\\paradox_wiki\\Data structures - Hearts of Iron 4 Wiki.md",
+            "startLine": 797,
+            "endLine": 886,
+            "excerpt": "A common usage for variables is to grant a more 'complex' effect or a trigger. This is best done with temporary variables, as they can be set in either triggers or effects and they're not bound to scopes making operations on them more simple. For example, the following can take 0.1% of every control",
+            "authority": "Offline Paradox Wiki snapshot",
+            "matchLine": 799
+          },
+          {
+            "id": "c0376eecba6ff9d269543661538e9ab9bb76503c7cef06e217169e85e36f0f5b",
+            "revision": "7d27ed77dadaf3a213a4b3e2c624bf9c02dae495317abe8eee833b27c2d1de29",
+            "source": "game_doc",
+            "title": "triggers documentation",
+            "heading": "Triggers",
+            "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Hearts of Iron IV\\documentation\\triggers_documentation.md",
+            "startLine": 1,
+            "endLine": 2,
+            "excerpt": "# Triggers",
+            "authority": "Installed game documentation"
+          },
+          {
+            "id": "cc01c75553fd91cdeb1f7c5b37dc73fa536c9e572b77578ca5fd27c7a46b20bf",
+            "revision": "876be96cab02a3eaa9a133891bea5f963f8980aa4a794f759c1b30f87d2663c4",
+            "source": "game_doc",
+            "title": " documentation",
+            "heading": "List of possible on-actions",
+            "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Hearts of Iron IV\\common\\on_actions\\_documentation.md",
+            "startLine": 1,
+            "endLine": 6,
+            "excerpt": "# List of possible on-actions Try to keep this reasonably up-to-date, please.",
+            "authority": "Installed game documentation"
+          },
+          {
+            "id": "3de608520d827cdb197c4685cf57d142c1e640641ac884dcf049e0fb8c741e2d",
+            "revision": "abc51ad18a2c46e46d47baa795c5a840ebaf7c4ae3e777426c64a9f4c0c0ce06",
+            "source": "wiki",
+            "title": "Triggers",
+            "heading": "General",
+            "path": "C:\\Users\\klimp\\OneDrive\\Documents\\Paradox Interactive\\Hearts of Iron IV\\mod\\chaos_redux\\paradox_wiki\\Triggers - Hearts of Iron 4 Wiki.md",
+            "startLine": 632,
+            "endLine": 695,
+            "excerpt": "| is_dynamic_country | `<bool>`<br>Boolean. | `is_dynamic_country = yes` | Checks if the current scope is a dynamic country. | Dynamic countries include those generated in civil wars as well as those generated with the create_dynamic_country effect, such as collaboration governments. | 1.11 | | num_",
+            "authority": "Offline Paradox Wiki snapshot",
+            "matchLine": 652
+          },
+          {
+            "id": "aa80d1fb09d34bc976ba0f5c9446c9a686d2907e86fb885dd921edefe1dc74c4",
+            "revision": "1a8f72362a34b4bb653186746b9fae0b98e463205cb02f12ccf2c3d9ccd3a064",
+            "source": "wiki",
+            "title": "Localisation",
+            "heading": "Namespaces",
+            "path": "C:\\Users\\klimp\\OneDrive\\Documents\\Paradox Interactive\\Hearts of Iron IV\\mod\\chaos_redux\\paradox_wiki\\Localisation - Hearts of Iron 4 Wiki.md",
+            "startLine": 531,
+            "endLine": 555,
+            "excerpt": "Variables and event targets can be used within namespaces as well. For example, this grants the name of the capital state of OMA using the 'capital' variable:  `my_localisation_key: \"[OMA.capital.GetName]\"`. A list of built-in variables that can be used can be seen in [the respective wiki page](<Dat",
+            "authority": "Offline Paradox Wiki snapshot",
+            "matchLine": 536
+          },
+          {
+            "id": "9073474cf321e25b0df3eac325e0f2e40fcdb9c056784696fb7812b5e9faf6eb",
+            "revision": "18ef5249e4991f5427eca9ec4a2f66dd47f51e26a491c730adc622f1f5db1b49",
+            "source": "wiki",
+            "title": "Scopes",
+            "heading": "Flow control tools",
+            "path": "C:\\Users\\klimp\\OneDrive\\Documents\\Paradox Interactive\\Hearts of Iron IV\\mod\\chaos_redux\\paradox_wiki\\Scopes - Hearts of Iron 4 Wiki.md",
+            "startLine": 873,
+            "endLine": 1070,
+            "excerpt": "| effect_tooltip | Within effects | *(example below)* | Shows the tooltips of the contained effects, but does not execute them. | Most often useful with event chains, where the actual effect is done in a follow-up event. | | if | Always usable | *(example below)* | If statements allow to conditional",
+            "authority": "Offline Paradox Wiki snapshot",
+            "matchLine": 889
+          },
+          {
+            "id": "917d9d18ecc613b8b23c08a2e65433a0808fce5ba4fc936340dacfc222c51863",
+            "revision": "997ddb09bfd63efb41a425149c46bd812d5f8953217a403386b2f6c85196aa0c",
+            "source": "wiki",
+            "title": "Effects",
+            "heading": "General",
+            "path": "C:\\Users\\klimp\\OneDrive\\Documents\\Paradox Interactive\\Hearts of Iron IV\\mod\\chaos_redux\\paradox_wiki\\Effects - Hearts of Iron 4 Wiki.md",
+            "startLine": 891,
+            "endLine": 1030,
+            "excerpt": "| country_event | `id = <event>`<br>The event to fire. `days = <int> / <variable>`<br>Fires the event in the specified number of days. Optional.<br>`hours = <int> / <variable>`<br>Fires the event in the specified number of hours. Optional.<br>`random_hours = <int> / <variable>`<br>Adds a random numb",
+            "authority": "Offline Paradox Wiki snapshot",
+            "matchLine": 900
+          },
+          {
+            "id": "87ca2a8fd962ed3fc006a494765fbcc448461c45b32e153472858b3b799cc97f",
+            "revision": "96327b896298420d84058394a44ed08be7eb518726b8f207b392fea71f05d43d",
+            "source": "wiki",
+            "title": "Event modding",
+            "heading": "Event modding",
+            "path": "C:\\Users\\klimp\\OneDrive\\Documents\\Paradox Interactive\\Hearts of Iron IV\\mod\\chaos_redux\\paradox_wiki\\Event modding - Hearts of Iron 4 Wiki.md",
+            "startLine": 1,
+            "endLine": 4,
+            "excerpt": "# Event modding *Offline snapshot of the Hearts of Iron IV Wiki page \"Event modding\", captured 2026-09-19.*",
+            "authority": "Offline Paradox Wiki snapshot"
+          },
+          {
+            "id": "96154f0f8ba2fe795824ac445a7ff080dd3dde3f1aae507f6e1f5bf2f3ed3735",
+            "revision": "6822adc85a374a1c1364f2def6f32c6d66da9fb0280319ddd6af4b84b33d882a",
+            "source": "wiki",
+            "title": "On actions",
+            "heading": "On actions",
+            "path": "C:\\Users\\klimp\\OneDrive\\Documents\\Paradox Interactive\\Hearts of Iron IV\\mod\\chaos_redux\\paradox_wiki\\On actions - Hearts of Iron 4 Wiki.md",
+            "startLine": 1,
+            "endLine": 4,
+            "excerpt": "# On actions *Offline snapshot of the Hearts of Iron IV Wiki page \"On actions\", captured 2026-09-19.*",
+            "authority": "Offline Paradox Wiki snapshot"
+          }
+        ],
+        "omitted": 1,
+        "limitedByBytes": false,
+        "omittedSources": [],
+        "missing": [],
+        "coverage": {
+          "game_doc": {
+            "files": 50,
+            "sections": 3281,
+            "unavailable": false,
+            "included": true
+          },
+          "wiki": {
+            "files": 54,
+            "sections": 8359,
+            "unavailable": false,
+            "included": true
+          },
+          "script_doc": {
+            "files": 0,
+            "sections": 0,
+            "unavailable": true,
+            "included": true
+          }
+        },
+        "skipped": 0
+      }
+    },
+    "dm16_locate": {
+      "status": "ok",
+      "code": "OK",
+      "workspaceId": "mod_chaos_redux_ea3b2d67c2c0",
+      "filesScanned": [],
+      "proposedFiles": [],
+      "changedFiles": [],
+      "diagnostics": [],
+      "artifacts": [],
+      "validation": {
+        "passed": true,
+        "checks": []
+      },
+      "blockers": [],
+      "data": {
+        "sourceScope": "source_location",
+        "revision": "923e002b903fa4cc90fb4a4f07fd1835795f3d325dd68397b9aa4aa40c319b35",
+        "complete": true,
+        "skippedSourceCount": 0,
+        "definitionCount": 0,
+        "definitionsTruncated": false,
+        "referencesIncluded": false,
+        "referenceCount": 0,
+        "referencesTruncated": false,
+        "referencesComplete": false,
+        "unresolvedReferenceCount": 0,
+        "location": {
+          "path": "mod:common/decisions/006_independence_wave_decisions.txt",
+          "rootKind": "mod",
+          "loadOrder": 15,
+          "shadowed": false,
+          "line": 996,
+          "column": 7,
+          "text": "\t\t\t\t\t\tset_temp_variable = { independence_wave_value_delta = constant:independence_wave_decision_effect.value_major }",
+          "owners": [
+            {
+              "kind": "decision",
+              "id": "independence_wave_coordinate_recognition_campaign",
+              "startLine": 952,
+              "endLine": 1028,
+              "overridden": false
+            },
+            {
+              "kind": "decision_category",
+              "id": "independence_wave_recognition_category",
+              "startLine": 599,
+              "endLine": 1029,
+              "overridden": false
+            }
+          ],
+          "chain": [
+            {
+              "key": "independence_wave_recognition_category",
+              "occurrence": 0,
+              "index": 9,
+              "startLine": 599,
+              "endLine": 1029
+            },
+            {
+              "key": "independence_wave_coordinate_recognition_campaign",
+              "occurrence": 0,
+              "index": 5,
+              "startLine": 952,
+              "endLine": 1028
+            },
+            {
+              "key": "remove_effect",
+              "occurrence": 0,
+              "index": 15,
+              "startLine": 983,
+              "endLine": 1013
+            },
+            {
+              "key": "hidden_effect",
+              "occurrence": 0,
+              "index": 1,
+              "startLine": 985,
+              "endLine": 1012
+            },
+            {
+              "key": "if",
+              "occurrence": 0,
+              "index": 0,
+              "startLine": 989,
+              "endLine": 1010
+            },
+            {
+              "key": "var:independence_wave_diplomatic_counterpart",
+              "occurrence": 0,
+              "index": 2,
+              "startLine": 995,
+              "endLine": 1001
+            },
+            {
+              "key": "set_temp_variable",
+              "occurrence": 0,
+              "index": 0,
+              "startLine": 996,
+              "endLine": 996
+            }
+          ],
+          "chainTruncated": false,
+          "keyPath": [
+            {
+              "key": "remove_effect",
+              "occurrence": 0
+            },
+            {
+              "key": "hidden_effect",
+              "occurrence": 0
+            },
+            {
+              "key": "if",
+              "occurrence": 0
+            },
+            {
+              "key": "var:independence_wave_diplomatic_counterpart",
+              "occurrence": 0
+            },
+            {
+              "key": "set_temp_variable",
+              "occurrence": 0
+            }
+          ],
+          "structureAvailable": true
+        },
+        "definitions": [],
+        "references": []
+      }
+    },
+    "dm16_source": {
+      "status": "ok",
+      "code": "OK",
+      "workspaceId": "mod_chaos_redux_ea3b2d67c2c0",
+      "filesScanned": [],
+      "proposedFiles": [],
+      "changedFiles": [],
+      "diagnostics": [],
+      "artifacts": [],
+      "validation": {
+        "passed": true,
+        "checks": []
+      },
+      "blockers": [],
+      "data": {
+        "sourceScope": "workspace_index",
+        "revision": "8bdc38e96c1b991e9659c2237830dbaeaecab096f2cb50bbb2a192502b3097a7",
+        "complete": true,
+        "skippedSourceCount": 0,
+        "definitionCount": 1,
+        "definitionsTruncated": false,
+        "definitions": [
+          {
+            "kind": "decision",
+            "id": "independence_wave_coordinate_recognition_campaign",
+            "path": "mod:common/decisions/006_independence_wave_decisions.txt",
+            "rootKind": "mod",
+            "loadOrder": 15,
+            "overridden": false,
+            "sourceShadowed": false,
+            "startLine": 952,
+            "endLine": 1028,
+            "fromLine": 995,
+            "toLine": 1001,
+            "nextLine": null,
+            "nextColumn": null,
+            "text": "var:independence_wave_diplomatic_counterpart = {\n\t\t\t\t\t\tset_temp_variable = { independence_wave_value_delta = constant:independence_wave_decision_effect.value_major }\n\t\t\t\t\t\tindependence_wave_change_recognition = yes\n\t\t\t\t\t\tset_temp_variable = { independence_wave_network_delta = constant:independence_wave_decision_effect.network_standard }\n\t\t\t\t\t\tindependence_wave_change_network_standing = yes\n\t\t\t\t\t\tindependence_wave_record_recognition_receipt = yes\n\t\t\t\t\t}",
+            "navigation": {
+              "keyPath": [
+                {
+                  "key": "remove_effect",
+                  "occurrence": 0
+                },
+                {
+                  "key": "hidden_effect",
+                  "occurrence": 0
+                },
+                {
+                  "key": "if",
+                  "occurrence": 0
+                },
+                {
+                  "key": "var:independence_wave_diplomatic_counterpart",
+                  "occurrence": 0
+                }
+              ],
+              "startLine": 995,
+              "startColumn": 6,
+              "endLine": 1001,
+              "endColumn": 7,
+              "children": [],
+              "omittedChildren": 0,
+              "nextChildOffset": null
+            }
+          }
+        ],
+        "references": [],
+        "referencesIncluded": false,
+        "referenceCount": 0,
+        "referencesTruncated": false,
+        "referencesComplete": false,
+        "unresolvedReferenceCount": 0
+      }
+    },
+    "temps_native": {
+      "status": "ok",
+      "code": "OK",
+      "workspaceId": "mod_chaos_redux_ea3b2d67c2c0",
+      "filesScanned": [],
+      "proposedFiles": [],
+      "changedFiles": [],
+      "diagnostics": [],
+      "artifacts": [],
+      "validation": {
+        "passed": true,
+        "checks": []
+      },
+      "blockers": [],
+      "data": {
+        "id": "36a1da49ada7cbbbc2e6f6945a02701b9ecbba08b10d02beb4bee699da5f1003",
+        "revision": "2cdc93d26775990468eed167442f7a416b13059fb8fe07d139b54250b79209af",
+        "source": "game_doc",
+        "title": "effects documentation",
+        "heading": "set_temp_variable",
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Hearts of Iron IV\\documentation\\effects_documentation.md",
+        "startLine": 7820,
+        "endLine": 7827,
+        "excerpt": "## set_temp_variable * Supported Scopes: any",
+        "authority": "Installed game documentation",
+        "sectionStartLine": 7820,
+        "sectionEndLine": 7827,
+        "startColumn": 1,
+        "text": "## set_temp_variable\n\n* Supported Scopes: any\n* Supported Targets: none\n\nSets a temp variable to a value, another variable, or a [math expression](script_math_expression.md).\n`tooltip` can be used to override tooltip title with LEFT and RIGHT tokens.\n",
+        "nextLine": null,
+        "nextColumn": null
+      }
+    },
+    "temps_caveat": {
+      "status": "ok",
+      "code": "OK",
+      "workspaceId": "mod_chaos_redux_ea3b2d67c2c0",
+      "filesScanned": [],
+      "proposedFiles": [],
+      "changedFiles": [],
+      "diagnostics": [],
+      "artifacts": [],
+      "validation": {
+        "passed": true,
+        "checks": []
+      },
+      "blockers": [],
+      "data": {
+        "id": "7c98827e29ab6d79424162520137942ff8f324ea3fe2d00f13d0b2c02e7b2add",
+        "revision": "997ddb09bfd63efb41a425149c46bd812d5f8953217a403386b2f6c85196aa0c",
+        "source": "wiki",
+        "title": "Effects",
+        "heading": "Scripted effects",
+        "path": "C:\\Users\\klimp\\OneDrive\\Documents\\Paradox Interactive\\Hearts of Iron IV\\mod\\chaos_redux\\paradox_wiki\\Effects - Hearts of Iron 4 Wiki.md",
+        "startLine": 4683,
+        "endLine": 4714,
+        "excerpt": "## Scripted effects <a id=\"Scripted_effects\"></a> Scripted effects serve a similar purpose to functions in that they can be defined in `/Hearts of Iron IV/common/scripted_effects/*.txt` and then used elsewhere as a shortened version. **A scripted effect will never run by itself** and requires being ",
+        "authority": "Offline Paradox Wiki snapshot",
+        "sectionStartLine": 4683,
+        "sectionEndLine": 4714,
+        "startColumn": 1,
+        "text": "## Scripted effects <a id=\"Scripted_effects\"></a>\n\nScripted effects serve a similar purpose to functions in that they can be defined in `/Hearts of Iron IV/common/scripted_effects/*.txt` and then used elsewhere as a shortened version. **A scripted effect will never run by itself** and requires being used as an effect elsewhere to be executed. Alongside that, the game allows the creation of custom console commands, which are scripted effects.\n\nA scripted effect is defined simply as\n\n```text\nscripted_effect_name = {\n\t<effects>\n}\n```\n\nThis example can be used as an effect in regular code as `scripted_effect_name = yes`.\n\nScripted effects can be accessed in console by typing `e scripted_effect_name` to run them.\n\nTo create a custom console command, the scripted effect's name should begin with `d_`. The console command itself does not include `d_`, so `d_test_command` would be run in console as `test_command`\nIn custom console commands, the country running the command is FROM, while ROOT is the selected country, state, or character. Anything entered after the console command, separated by spaces like `test_command 123 321 GER` is added to the 'args' temp [array](<Data structures - Hearts of Iron 4 Wiki.md>). An example of a scripted effect which will transfer every state entered as an argument to the country that runs the console command is\n\n```text\nd_transfer_states = {\n\tfor_each_scope_loop = {\n\t\tarray = args\n\t\tFROM = {\n\t\t\ttransfer_state = PREV\n\t\t}\n\t}\n}\n```\n\nused like `transfer_states 123 321`\n",
+        "nextLine": null,
+        "nextColumn": null
+      }
+    },
+    "guarantee_native": {
+      "status": "ok",
+      "code": "OK",
+      "workspaceId": "mod_chaos_redux_ea3b2d67c2c0",
+      "filesScanned": [],
+      "proposedFiles": [],
+      "changedFiles": [],
+      "diagnostics": [],
+      "artifacts": [],
+      "validation": {
+        "passed": true,
+        "checks": []
+      },
+      "blockers": [],
+      "data": {
+        "id": "0cebe6632584a8e41ce0b320c8cf119bc5120f44a1ccb32a70f794a0afb2b466",
+        "revision": "2cdc93d26775990468eed167442f7a416b13059fb8fe07d139b54250b79209af",
+        "source": "game_doc",
+        "title": "effects documentation",
+        "heading": "give_guarantee",
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Hearts of Iron IV\\documentation\\effects_documentation.md",
+        "startLine": 4565,
+        "endLine": 4573,
+        "excerpt": "## give_guarantee * Supported Scopes: COUNTRY",
+        "authority": "Installed game documentation",
+        "sectionStartLine": 4565,
+        "sectionEndLine": 4573,
+        "startColumn": 1,
+        "text": "## give_guarantee\n\n* Supported Scopes: COUNTRY\n* Supported Targets: THIS, ROOT, PREV, FROM, OWNER, CONTROLLER, OCCUPIED, CAPITAL\n\n```\nguarantees specified country\n```\n",
+        "nextLine": null,
+        "nextColumn": null
+      }
+    }
+  }
+}

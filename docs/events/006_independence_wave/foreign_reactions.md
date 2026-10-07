@@ -61,6 +61,10 @@ A stance that stops qualifying between the popup and the click resolves as the n
 ### Shared bilateral receipts
 
 Recognition and guarantees use the generation-matched receipts introduced for the paid diplomatic decisions (`independence_wave_record_recognition_receipt`, `independence_wave_apply_bilateral_guarantee`), so a foreign answer and a decision for the same pair never award Statehood progress twice.
+Callers initialize the temporary new-receipt result before invoking either helper, then award the corresponding progress only when that call creates the receipt or guarantee.
+Former-host acceptance still settles the host outcome and its separate Legitimacy and Instability effects after an earlier endorsement, while the bilateral Recognition gain remains once per pair and released-country generation.
+Network campaigns retain their Network and League work when the selected member is already recognized, and record the endorsement before applying any Recognition gain.
+Base and transit treaties retain Capacity, patron influence and aid, concessions, and their political tradeoffs when protection already exists, while their Recognition and Security gain requires a new guarantee.
 When the released country already paid for a recognition mission or a guarantee request to the same government, the foreign answer settles that mission at no further cost and the decision later awards nothing.
 An earlier-wave state with a recognition campaign running for the same member waits for that campaign instead of offering recognition again.
 

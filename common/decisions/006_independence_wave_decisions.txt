@@ -733,11 +733,16 @@ independence_wave_recognition_category = {
 							}
 						}
 						var:independence_wave_diplomatic_counterpart = { save_event_target_as = independence_wave_bilateral_actor }
+						set_temp_variable = { independence_wave_bilateral_receipt_new = constant:independence_wave_value.minimum }
 						independence_wave_record_recognition_receipt = yes
 						set_temp_variable = { independence_wave_host_outcome_input = constant:independence_wave_host_outcome.recognized_separation }
 						independence_wave_set_host_outcome = yes
 						set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_standard }
-						set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_decision_effect.value_decisive }
+						set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_value.minimum }
+						if = {
+							limit = { check_variable = { independence_wave_bilateral_receipt_new = constant:independence_wave_plan.loop_increment } }
+							set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_decision_effect.value_decisive }
+						}
 						set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_value.minimum }
 						set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_value.minimum }
 						set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_standard_loss }
@@ -823,6 +828,7 @@ independence_wave_recognition_category = {
 					}
 					else_if = {
 						limit = { var:independence_wave_diplomatic_counterpart = { has_opinion = { target = ROOT value > @CR_SC_INDEPENDENCE_WAVE_DECISION_GATE_DIPLOMATIC_ACCEPTANCE_OPINION } } }
+						set_temp_variable = { independence_wave_bilateral_receipt_new = constant:independence_wave_value.minimum }
 						independence_wave_apply_bilateral_guarantee = yes
 						if = {
 							limit = { check_variable = { independence_wave_bilateral_receipt_new = constant:independence_wave_plan.loop_increment } }
@@ -993,11 +999,15 @@ independence_wave_recognition_category = {
 					}
 					save_event_target_as = independence_wave_bilateral_actor
 					var:independence_wave_diplomatic_counterpart = {
-						set_temp_variable = { independence_wave_value_delta = constant:independence_wave_decision_effect.value_major }
-						independence_wave_change_recognition = yes
+						set_temp_variable = { independence_wave_bilateral_receipt_new = constant:independence_wave_value.minimum }
+						independence_wave_record_recognition_receipt = yes
+						if = {
+							limit = { check_variable = { independence_wave_bilateral_receipt_new = constant:independence_wave_plan.loop_increment } }
+							set_temp_variable = { independence_wave_value_delta = constant:independence_wave_decision_effect.value_major }
+							independence_wave_change_recognition = yes
+						}
 						set_temp_variable = { independence_wave_network_delta = constant:independence_wave_decision_effect.network_standard }
 						independence_wave_change_network_standing = yes
-						independence_wave_record_recognition_receipt = yes
 					}
 					set_temp_variable = { independence_wave_network_delta = constant:independence_wave_decision_effect.network_standard }
 					independence_wave_change_network_standing = yes
@@ -2039,15 +2049,22 @@ independence_wave_patron_category = {
 					set_country_flag = independence_wave_concession_active
 					set_country_flag = independence_wave_foreign_interference_evidence
 					var:independence_wave_diplomatic_counterpart = { save_event_target_as = independence_wave_bilateral_actor }
+					set_temp_variable = { independence_wave_bilateral_receipt_new = constant:independence_wave_value.minimum }
 					independence_wave_apply_bilateral_guarantee = yes
+					set_temp_variable = { independence_wave_dm34_guarantee_new = independence_wave_bilateral_receipt_new }
 					set_temp_variable = { independence_wave_decision_patron_channel = constant:independence_wave_patron_channel.base_transit }
 					set_temp_variable = { independence_wave_decision_patron_influence_delta = constant:independence_wave_decision_effect.patron_influence_major }
 					set_temp_variable = { independence_wave_decision_patron_aid_delta = constant:independence_wave_decision_effect.patron_aid_major }
 					independence_wave_decision_register_counterpart_patron_channel = yes
 					set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_major_loss }
-					set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_decision_effect.value_standard }
+					set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_value.minimum }
 					set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_minor }
-					set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_decision_effect.value_major }
+					set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_value.minimum }
+					if = {
+						limit = { check_variable = { independence_wave_dm34_guarantee_new = constant:independence_wave_plan.loop_increment } }
+						set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_decision_effect.value_standard }
+						set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_decision_effect.value_major }
+					}
 					set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_standard }
 					independence_wave_decision_apply_country_deltas = yes
 					set_temp_variable = { independence_wave_decision_host_claim_delta = constant:independence_wave_decision_effect.bilateral_minor }

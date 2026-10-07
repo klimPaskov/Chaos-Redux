@@ -71,6 +71,8 @@ Mechanic overview: `docs/events/006_independence_wave/foreign_reactions.md`.
 ## Stance effects
 
 All stance effects run in actor scope with ROOT as the actor and the receipt targets loaded. `independence_wave_foreign_reaction_apply_action` re-checks each stance's availability trigger; a stance that no longer qualifies resolves as noncommittal.
+The recognition and guarantee stances create caller-owned storage for `independence_wave_bilateral_receipt_new` with `constant:independence_wave_value.minimum` before calling the shared transaction helper.
+The helper may modify that storage, and the stance consumes the result only after return.
 
 | Effect | Cost | Result |
 | --- | --- | --- |

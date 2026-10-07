@@ -2088,6 +2088,8 @@ independence_wave_decision_register_counterpart_patron_channel = {
 # `independence_wave_bilateral_receipt_new` equals the loop increment only
 # when this call created the receipt; callers award Statehood progress only
 # on that value.
+# Callers that read this output must initialize it before invoking the helper
+# so the temporary value survives the scripted-effect boundary.
 independence_wave_record_recognition_receipt = {
 	set_temp_variable = { independence_wave_bilateral_receipt_new = constant:independence_wave_value.minimum }
 	if = {
@@ -2147,6 +2149,7 @@ independence_wave_record_guarantee_receipt = {
 # then records the receipt. Output: temporary
 # `independence_wave_bilateral_receipt_new` equals the loop increment only
 # when this call created the guarantee.
+# Callers that read this output must initialize it before invoking the helper.
 independence_wave_apply_bilateral_guarantee = {
 	set_temp_variable = { independence_wave_bilateral_receipt_new = constant:independence_wave_value.minimum }
 	if = {
