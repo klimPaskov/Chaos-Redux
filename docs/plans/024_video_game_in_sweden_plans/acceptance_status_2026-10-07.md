@@ -55,7 +55,7 @@ An asynchronous question asks the user either to retain the exact requirement as
 Until the user answers, the original exact requirement remains in force.
 No unsupported supplied-unit getter or weaker replacement was introduced in this review.
 
-Numerical AI and pacing acceptance remains incomplete because the current probability route returned no analysis artifacts and the complete campaign inputs are not bound.
+Numerical AI and pacing acceptance remains incomplete because the opening analysis is partial, the pacing analysis remains unavailable, and the complete campaign inputs are not bound.
 Native A1-A14 acceptance, callback ordering, timed expiry, real supplied-region equivalence, commander transfer, human foreign replies, save persistence, achievements, consumer presentation, and campaign balance remain outstanding under the current takeover ledger.
 Catalogue alignment and export equivalence for the current wording are verified below.
 Active asset-workspace cleanup remains due at its required acceptance point.
@@ -82,7 +82,32 @@ D16 approval remains unresolved.
 
 The earlier probability auditor handle is absent.
 A new read-only opening audit was dispatched to `chaosx_ai_probability_auditor` for the complete `chaosx.nr24.1` option pool and P24-O1 through P24-O4, with no gameplay or weighted edits authorized.
-Its final result remains separate from the previously unresolved pacing audit.
+The auditor identified the visible opening as `chaosx.nr24.2`, with `.1` as its hidden dispatcher, and used the actual three-option pool.
+Handoff `subagent_handoffs/27_opening_probability_retry_2026-10-07.md` reports `PROBABILITY_SOURCE_INSPECTED`, three candidates, `poolComplete = true`, nine required input paths and zero inspect-stage unresolved items.
+The inspect source revision is `2be9734ce2e357333ed5a81b7d2d0e5b3d62cccf9329be32befe3b2650329332` and its analysis-source hash is `2d2c31c4c1053d4b3006a116a88430f86350d5b247f44b961bbbaca49426224a`, which is not represented as a raw-file hash.
+P24-O1 through P24-O4 returned `PROBABILITY_ANALYZED_PARTIAL`, analysis ID `probability-1a818ceb83bebae965d677cf`, twelve scenario-candidate rows and twenty unresolved items.
+The handoff retains its incomplete bindings, source-level modifier traces and scenario-level limits, and no complete opening ranking is accepted.
+Its JSON retrieval retries at 1,048,576 and 8,192 bytes both returned `Mcp error: -32603: Artifact provenance manifest is unavailable`.
+The explicit probability render returned `PROBABILITY_ANALYSIS_NOT_CACHED`.
+Neither per-row numeric values nor the twenty individual unresolved entries were available in the structured summary, and none are inferred from the reported counts.
+The parent checked the opening dispatcher, all three source weight blocks and the severe-crisis helper against that handoff.
+No weighted edit or before/after numerical comparison was made.
+The auditor's initial physical AGENTS and subagent-skill reads were truncated, and its follow-up completed both files through EOF in bounded, nonoverlapping slices before final parent review.
+This repairs the reading gap without presenting the earlier probes as having followed complete physical-file reading.
+The audit is terminal and has no active MCP request.
+Its result remains separate from the previously unresolved pacing audit.
+
+The parent's reassessment `chaosx.nr24.50` state-flow request used depth three, thirty nodes, sixty edges and helper expansion and returned a 600-second tools/call timeout.
+The retry narrowed to a downstream trace with depth one, two nodes, two edges and helper expansion disabled and returned `EVENT_INSPECTED_PARTIAL` in about ten seconds.
+Its cached graph revision is `8f4a82aa5d847df22b40a90e209f8bd0e27f3d6ebe79d13e4fb3dbaf45dc33b0` and graph hash is `d494c41cf68a6eb896650d0f95ea38572ce93b8c83273a07a92d60c74eb41ceb`.
+The response reports no expanded helpers, 2,285 workspace diagnostics, 10,444 unresolved nodes and one blocking event-chain diagnostic, with only 64 of 403 source paths in its inline inventory.
+Those workspace counts are not assigned to Event 24 without reading the linked source-linked report.
+The complete trace artifact is `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/e0d4fd623669806d60f3a17bace1fc569074a7648ada79b02c178211d35e0d67/093eeb6447810c7c3b8e1c8e8475e7d5a11fe322dd83e3ef7d1a77a3b16a7053/event-trace-8f4a82aa5d84.json`.
+Its full contents are not reviewed, so this result does not clear lifecycle, deadline or native delivery acceptance.
+
+The advertised server-status resource was read successfully and reports version 3.10.0 over stdio, with maximum concurrent tools two and maximum shared tools four.
+Resource discovery exposes an artifact template with byte-range selectors but lists only the server-status resource.
+No native task negotiation, helper-expansion job or dependency modification was attempted.
 
 Skills used in this review are events, decisions/missions, MTTH, subagents, XLSX, Spreadsheets, and the shared-tree commit workflow.
 No skill was changed.
