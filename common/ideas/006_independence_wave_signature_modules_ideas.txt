@@ -1,0 +1,170 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 006 SIGNATURE INSTITUTION IDEAS
+# Overview:
+# - Route ideas for the Oyo authority and city settlements, Aceh's school and
+#   port programs, and Mon's federal and river institutions.
+# - Ideas are applied by their package focus or decision and removed by the
+#   matching signature cleanup effect.
+# - Idea modifier fields use file-local constants because static idea modifiers
+#   do not accept constant: tokens.
+# ============================================================================
+
+@dsx_signature_cavalry_attack = 0.05
+@dsx_signature_cavalry_defence = 0.05
+@dsx_signature_council_stability = 0.05
+@dsx_signature_guard_defence = 0.05
+@dsx_signature_town_stability = 0.05
+@atj_signature_district_stability = 0.03
+@atj_signature_school_research = 0.02
+@atj_signature_shared_stability = 0.02
+@atj_signature_network_research = 0.02
+@atj_signature_port_trade = 0.05
+@atj_signature_credit_consumer_goods = 0.03
+@atj_signature_trust_consumer_goods = -0.02
+@atj_signature_pusa_research = 0.02
+@iax_signature_local_stability = 0.03
+@iax_signature_river_political_power = 0.03
+@iax_signature_school_research = 0.02
+@iax_river_service_political_power = 0.05
+@iax_river_service_infrastructure = 0.10
+
+ideas = {
+	country = {
+		independence_wave_dsx_alaafin_charter = {
+			picture = generic_infantry_bonus
+			allowed = { always = yes }
+			allowed_civil_war = { always = yes }
+			modifier = {
+				cavalry_attack_factor = @dsx_signature_cavalry_attack
+				cavalry_defence_factor = @dsx_signature_cavalry_defence
+			}
+		}
+
+		independence_wave_dsx_mesi_mandate = {
+			picture = generic_constitutional_guarantees
+			allowed = { always = yes }
+			allowed_civil_war = { always = yes }
+			modifier = {
+				stability_factor = @dsx_signature_council_stability
+				army_defence_factor = @dsx_signature_guard_defence
+			}
+		}
+
+		independence_wave_dsx_town_federation = {
+			picture = independence_wave_founding_identity
+			allowed = { always = yes }
+			allowed_civil_war = { always = yes }
+			modifier = {
+				stability_factor = @dsx_signature_town_stability
+			}
+		}
+
+		independence_wave_atj_district_terms = {
+			picture = independence_wave_fragmented_command
+			allowed = { always = yes }
+			allowed_civil_war = { always = yes }
+			modifier = {
+				stability_factor = @atj_signature_district_stability
+			}
+		}
+
+		independence_wave_atj_ulama_school_board = {
+			picture = independence_wave_founding_identity
+			allowed = { always = yes }
+			allowed_civil_war = { always = yes }
+			modifier = {
+				research_speed_factor = @atj_signature_school_research
+			}
+		}
+
+		independence_wave_atj_shared_council = {
+			picture = generic_constitutional_guarantees
+			allowed = { always = yes }
+			allowed_civil_war = { always = yes }
+			modifier = {
+				stability_factor = @atj_signature_shared_stability
+			}
+		}
+
+		independence_wave_atj_school_network = {
+			picture = independence_wave_founding_identity
+			allowed = { always = yes }
+			allowed_civil_war = { always = yes }
+			modifier = {
+				research_speed_factor = @atj_signature_network_research
+			}
+		}
+
+		independence_wave_atj_pusa_school_network = {
+			picture = independence_wave_founding_identity
+			allowed = { always = yes }
+			allowed_civil_war = { always = yes }
+			modifier = {
+				research_speed_factor = @atj_signature_pusa_research
+			}
+		}
+
+		independence_wave_atj_penang_port_credit = {
+			picture = generic_coastal_navy
+			allowed = { always = yes }
+			allowed_civil_war = { always = yes }
+			modifier = {
+				trade_opinion_factor = @atj_signature_port_trade
+				consumer_goods_factor = @atj_signature_credit_consumer_goods
+			}
+		}
+
+		independence_wave_atj_aceh_port_trust = {
+			picture = generic_coastal_navy
+			allowed = { always = yes }
+			allowed_civil_war = { always = yes }
+			modifier = {
+				trade_opinion_factor = @atj_signature_port_trade
+				consumer_goods_factor = @atj_signature_trust_consumer_goods
+			}
+		}
+
+		independence_wave_iax_local_council_terms = {
+			picture = generic_constitutional_guarantees
+			allowed = { always = yes }
+			allowed_civil_war = { always = yes }
+			modifier = {
+				stability_factor = @iax_signature_local_stability
+			}
+		}
+
+		independence_wave_iax_river_office_terms = {
+			picture = independence_wave_founding_identity
+			allowed = { always = yes }
+			allowed_civil_war = { always = yes }
+			modifier = {
+				political_power_factor = @iax_signature_river_political_power
+			}
+		}
+
+		independence_wave_iax_river_service_administration = {
+			picture = independence_wave_founding_identity
+			allowed = { always = yes }
+			allowed_civil_war = { always = yes }
+			modifier = {
+				political_power_factor = @iax_river_service_political_power
+				production_speed_infrastructure_factor = @iax_river_service_infrastructure
+			}
+		}
+
+		independence_wave_iax_mon_school_trust = {
+			picture = independence_wave_founding_identity
+			allowed = { always = yes }
+			allowed_civil_war = { always = yes }
+			modifier = {
+				research_speed_factor = @iax_signature_school_research
+			}
+		}
+	}
+	hidden_ideas = {
+		# Modifier-free carrier. Its matching `_apply` effect registers only exact
+		# active Event 006 packages through CXT's bounded extension dispatcher.
+		independence_wave_signature_modules_cxt_extension = {
+		}
+	}
+}

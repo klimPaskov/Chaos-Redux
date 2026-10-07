@@ -688,6 +688,7 @@ independence_wave_formable_clear_member_ledgers = {
 # Country scope. Clears only founding-invitation response state. The separate
 # post-formation autonomous-carrier pointer is intentionally untouched.
 independence_wave_formable_clear_founding_invitation_state = {
+	independence_wave_ready_formable_invalidate_human_invitation_delivery = yes
 	clr_country_flag = independence_wave_formable_invitation_pending
 	clr_country_flag = independence_wave_formable_invitation_accepted
 	clr_country_flag = independence_wave_formable_invitation_withheld
@@ -2350,6 +2351,22 @@ independence_wave_formable_issue_founding_invitations = {
 									ROOT = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.balkan_federation } }
 									has_independence_wave_form09_member_candidate = yes
 								}
+								AND = {
+									ROOT = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.north_caucasian_federation } }
+									has_independence_wave_ready_formable_member_for_root = yes
+								}
+								AND = {
+									ROOT = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.indus_federation } }
+									has_independence_wave_ready_formable_member_for_root = yes
+								}
+								AND = {
+									ROOT = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.maritime_federation } }
+									has_independence_wave_ready_formable_member_for_root = yes
+								}
+								AND = {
+									ROOT = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.mainland_southeast_asian_federation } }
+									has_independence_wave_ready_formable_member_for_root = yes
+								}
 							}
 						}
 						independence_wave_formable_store_founding_invitation_from_root = yes
@@ -2357,6 +2374,8 @@ independence_wave_formable_issue_founding_invitations = {
 						independence_wave_form39_resolve_ai_invitation_from_root = yes
 						independence_wave_form16_resolve_ai_invitation_from_root = yes
 						independence_wave_form09_resolve_ai_invitation_from_root = yes
+						independence_wave_ready_formable_resolve_ai_invitation_from_root = yes
+						independence_wave_ready_formable_deliver_human_invitation_from_root = yes
 						# Reviewed-family human members receive the exact reply event
 						# after their invitation snapshot is stored. AI members never
 						# receive a human event; each family adapter resolves them to
@@ -2505,6 +2524,7 @@ independence_wave_formable_evaluate_candidate_consent = {
 				check_variable = { ROOT.independence_wave_formable_profile_family = constant:independence_wave_formable_family.pacific_regional_federation }
 				check_variable = { ROOT.independence_wave_formable_profile_family = constant:independence_wave_formable_family.melanesian_federation }
 				check_variable = { ROOT.independence_wave_formable_profile_family = constant:independence_wave_formable_family.balkan_federation }
+				ROOT = { is_independence_wave_ready_formable_family = yes }
 			}
 			NOT = { has_war_with = ROOT }
 		}
@@ -2623,11 +2643,28 @@ independence_wave_formable_build_member_and_anchor_ledgers = {
 								ROOT = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.balkan_federation } }
 								is_independence_wave_form09_member = yes
 							}
+							AND = {
+								ROOT = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.north_caucasian_federation } }
+								has_independence_wave_ready_formable_member_for_root = yes
+							}
+							AND = {
+								ROOT = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.indus_federation } }
+								has_independence_wave_ready_formable_member_for_root = yes
+							}
+							AND = {
+								ROOT = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.maritime_federation } }
+								has_independence_wave_ready_formable_member_for_root = yes
+							}
+							AND = {
+								ROOT = { check_variable = { independence_wave_formable_profile_family = constant:independence_wave_formable_family.mainland_southeast_asian_federation } }
+								has_independence_wave_ready_formable_member_for_root = yes
+							}
 						}
 					}
 					save_event_target_as = independence_wave_formable_candidate_country
 					set_temp_variable = { independence_wave_formable_candidate_anchor = independence_wave_anchor_state }
 					independence_wave_formable_clear_frozen_consent_snapshot = yes
+					set_temp_variable = { independence_wave_formable_candidate_consent = constant:independence_wave_formable_consent.observer }
 					independence_wave_formable_evaluate_candidate_consent = yes
 					if = {
 						limit = {
@@ -2871,6 +2908,10 @@ independence_wave_formable_fail_transaction = {
 		independence_wave_form16_rollback_transaction = yes
 	}
 	if = {
+		limit = { is_independence_wave_ready_formable_family = yes }
+		independence_wave_ready_formable_rollback_identity = yes
+	}
+	if = {
 		limit = { NOT = { has_country_flag = independence_wave_formable_transaction_failed } }
 		set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_decisive_loss }
 		set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_decision_effect.value_major_loss }
@@ -3001,6 +3042,10 @@ independence_wave_formable_dispatch_integration_adapter = {
 
 independence_wave_formable_commit_selected_family = {
 	if = {
+		limit = { is_independence_wave_ready_formable_family = yes }
+		independence_wave_formable_build_member_and_anchor_ledgers = yes
+	}
+	if = {
 		limit = { can_independence_wave_commit_selected_formable = yes }
 		set_country_flag = independence_wave_formable_mutation_prevalidated
 		set_country_flag = independence_wave_formable_commit_pending
@@ -3122,6 +3167,7 @@ independence_wave_formable_end_consenting_member_origin = {
 }
 
 independence_wave_formable_cleanup_runtime = {
+	independence_wave_ready_formable_cleanup_runtime = yes
 	remove_mission = independence_wave_convene_formation_congress
 	if = {
 		limit = { is_independence_wave_formable_signature_family = yes }

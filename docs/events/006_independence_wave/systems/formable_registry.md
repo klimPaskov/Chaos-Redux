@@ -14,15 +14,19 @@
 
 The Event 006 formable registry is the shared discovery and transaction framework for FORM-01 through FORM-48. It replaces family-by-family copied decisions with one profile table, one method and consent surface, and one bounded member and anchor ledger.
 
-All 48 accepted family rows have stable discovery metadata, but the shared
-framework does not declare a family operational by metadata alone. FORM-01
-through FORM-05 remain promoted from their owning adapters. FORM-48 has a
-framework-readiness attestation and a complete carrier/member contract, but it
-remains operationally unreachable until an admitted HBX/HAW/FSM member set
-exists. FORM-07 now
-has a bounded Iberian adapter surface for CAT/NAV/GLC, but remains fail-closed
-until its researched X identity, flag package, and identity contract are
-approved. FORM-06, FORM-10 through FORM-15, and FORM-17 through FORM-47 remain fail-closed, including FORM-42. FORM-08 now has a reviewed Danubian adapter and framework readiness, but the current geography guard exposes only the TRA 84/76 and AXX 82 selectable anchors. Vojvodina remains the vanilla HUN-origin dynamic overlay, Slavonia remains unbound without an installed-map anchor, and MAC state 106 is a separate Event 006 package anchor rather than a current FORM-08 member. The family therefore remains runtime-inadmissible until a third in-scope member and anchor are explicitly researched and admitted in one generation. FORM-09 is operational for a researched BBX or BAX carrier through the BLX cosmetic identity and exact Balkan member ledger. FORM-16 has its separately documented Transcaucasian adapter. No formable or cosmetic tag is assigned by registry metadata alone; a family still requires its owning package's audited territory, collision-safe X-ending identity, complete flag package, identity adapter, and reviewed integration policy.
+All 48 family rows have stable discovery metadata, but metadata alone does not authorize formation.
+The source contracts cover FORM-01 through FORM-05, FORM-07 through FORM-09, FORM-11 through FORM-13, FORM-16 through FORM-18, FORM-32, FORM-36, FORM-37, FORM-39 and FORM-48.
+FORM-07 uses the IFX identity, FORM-08 uses TRA at 84 and AXX at 82 with the DCX identity, and FORM-11 uses the two admitted Cossack hosts with the CHX identity.
+FORM-17, FORM-32, FORM-36 and FORM-37 use the exact current package owners of their accepted anchors and the NCX, IDX, MRX and MSX cosmetic identities respectively.
+Their members remain sovereign, answer one proposal-specific invitation, and retain their own territorial ownership.
+Two paid integration projects evolve each compact after its shared formation cost and consent checks succeed.
+FORM-32 accepts either Punjab anchor 440 or 986 only when that is the live FDX package's stored loader anchor; its four-member requirement never counts both Punjab states.
+The Event 006 state-puzzle assets cover nineteen families and sixty-six candidate state rows, with one hundred and thirty-two unresolved/qualifying DDS pieces.
+The four new contract families remain subject to the source and MCP coverage limits in their current handoffs and to native acceptance in the takeover status.
+FORM-48 has a carrier/member source contract but remains operationally unreachable until an admitted HBX/HAW/FSM member set exists.
+Other families remain fail-closed until their exact members, identity, flags, territory and integration contract are accepted and wired.
+Historical readiness notes above describe the state before the 6 October contract implementation.
+No identity is assigned by discovery metadata alone.
 
 The design authority remains docs/specs/006_independence_wave_specs/specs/006_independence_wave_spec_part_6_formables_league_and_scenario.md and docs/specs/006_independence_wave_specs/matrices/006_formable_family_registry.csv.
 

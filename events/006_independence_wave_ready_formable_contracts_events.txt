@@ -1,0 +1,83 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 006 READY FORMABLE MEMBER INVITATION
+# ============================================================================
+# Overview:
+# - Delivers one sequence-bound human popup to each invited member in FORM-17,
+#   FORM-32, FORM-36, or FORM-37.
+# - The immediate effect consumes the family-specific delivery receipt before
+#   the popup appears, while the founding invitation remains pending until a
+#   reply or the thirteen-day refusal timeout.
+# - Refusal is the first option so timeout can never imply consent. Acceptance
+#   joins only as a sovereign member; it does not transfer a tag or territory.
+# ============================================================================
+
+# Event constants are file-scoped; keep this equal to the public report's
+# @CR_SC_INDEPENDENCE_WAVE_PUBLIC_REPORT_TIMEOUT_DAYS in 006_independence_wave.txt.
+@CR_SC_INDEPENDENCE_WAVE_READY_FORMABLE_INVITATION_TIMEOUT_DAYS = 13
+add_namespace = chaosx.nr6
+
+country_event = {
+	id = chaosx.nr6.8617
+	title = chaosx.nr6.8617.t
+	desc = chaosx.nr6.8617.desc
+	picture = GFX_report_event_006_asset_001_wave_summary
+	is_triggered_only = yes
+	timeout_days = @CR_SC_INDEPENDENCE_WAVE_READY_FORMABLE_INVITATION_TIMEOUT_DAYS
+	trigger = {
+		has_independence_wave_ready_formable_valid_delivery_request = yes
+	}
+	immediate = {
+		hidden_effect = { independence_wave_ready_formable_consume_human_invitation_delivery = yes }
+	}
+
+	option = {
+		name = chaosx.nr6.8617.a
+		if = {
+			limit = { has_independence_wave_ready_formable_human_invitation_reply = yes }
+			custom_effect_tooltip = chaosx.nr6.8617.a.tt
+		}
+		else = { custom_effect_tooltip = chaosx.nr6.8617.stale.tt }
+		hidden_effect = { independence_wave_ready_formable_human_refuse_invitation = yes }
+	}
+	option = {
+		name = chaosx.nr6.8617.b
+		trigger = { has_independence_wave_ready_formable_human_invitation_reply = yes }
+		hidden_effect = { independence_wave_ready_formable_human_accept_invitation = yes }
+		custom_effect_tooltip = chaosx.nr6.8617.b.tt
+	}
+	after = {
+		independence_wave_ready_formable_clear_human_invitation_popup = yes
+		independence_wave_ready_formable_queue_current_human_invitation = yes
+	}
+}
+
+# Country-owned relay for the manually requested CXT readiness repair.
+country_event = {
+	id = chaosx.nr6.8618
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { has_country_flag = independence_wave_ready_formable_cxt_refresh_pending }
+	immediate = { independence_wave_ready_formable_apply_cxt_readiness_refresh = yes }
+}
+
+# The event target is carried from the closed recipient popup. ROOT is now the
+# live carrier, so normal invitation delivery uses its original scope contract.
+country_event = {
+	id = chaosx.nr6.8619
+	hidden = yes
+	is_triggered_only = yes
+	trigger = {
+		has_event_target = independence_wave_ready_formable_relay_member
+		event_target:independence_wave_ready_formable_relay_member = {
+			exists = yes
+			has_pending_independence_wave_formable_founding_invitation = yes
+			has_independence_wave_ready_formable_invited_member = yes
+			var:independence_wave_formable_inviting_carrier = { tag = ROOT }
+		}
+	}
+	immediate = {
+		event_target:independence_wave_ready_formable_relay_member = {
+			independence_wave_ready_formable_deliver_human_invitation_from_root = yes
+		}
+	}
+}

@@ -1,0 +1,981 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 006 OYO, ACEH AND MON LEVEL 3 SIGNATURE FOCI
+# Overview:
+# - Adds 10 Oyo, 10 Aceh and 11 Mon shared focuses to the parent-owned Event
+#   006 tree, gated by each package's existing signature-depth contract.
+# - Institutional choices reuse the existing internal power balance and the
+#   package ideas evolve through focus rewards and cleanup.
+# - Regional compact routes reuse the existing congress and formable contracts
+#   without transferring territory or replacing game-appointed leaders.
+# ============================================================================
+
+@independence_wave_signature_focus_short = 5
+@independence_wave_signature_focus_standard = 7
+@independence_wave_signature_focus_long = 10
+
+shared_focus = {
+	id = independence_wave_dsx_focus_table_the_power_centers
+	icon = GFX_goal_independence_wave_founding_administration
+	prerequisite = { focus = independence_wave_open_signature_extension }
+	relative_position_id = independence_wave_open_signature_extension
+	x = 0
+	y = 1
+	cost = @independence_wave_signature_focus_short
+	search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+	allow_branch = {
+		can_open_independence_wave_signature_module = yes
+		is_independence_wave_dsx_package = yes
+	}
+	available = {
+		custom_trigger_tooltip = {
+			tooltip = independence_wave_dsx_signature_l2_projects_complete_tt
+			can_start_independence_wave_dsx_signature = yes
+		}
+	}
+	completion_reward = {
+		custom_effect_tooltip = independence_wave_dsx_focus_table_the_power_centers_effect_tt
+	}
+	ai_will_do = { base = constant:independence_wave_focus_ai.urgent }
+}
+
+shared_focus = {
+	id = independence_wave_dsx_focus_renew_the_alaafins_charter
+	icon = GFX_goal_independence_wave_traditional_restoration
+	prerequisite = { focus = independence_wave_dsx_focus_table_the_power_centers }
+	relative_position_id = independence_wave_dsx_focus_table_the_power_centers
+	x = -1
+	y = 1
+	cost = @independence_wave_signature_focus_standard
+	search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+	mutually_exclusive = { focus = independence_wave_dsx_focus_empower_the_oyo_mesi }
+	mutually_exclusive = { focus = independence_wave_dsx_focus_federate_the_yoruba_towns }
+	bypass = {
+		can_start_independence_wave_dsx_signature = yes
+		has_completed_focus = independence_wave_dsx_focus_table_the_power_centers
+		hidden_trigger = {
+			has_country_flag = independence_wave_internal_power_struggle_settled
+			has_country_flag = independence_wave_power_balance_first_center
+		}
+	}
+	bypass_effect = { independence_wave_dsx_signature_choose_alaafin_charter = yes }
+	allow_branch = {
+		can_open_independence_wave_signature_module = yes
+		is_independence_wave_dsx_package = yes
+	}
+	available = {
+		custom_trigger_tooltip = {
+			tooltip = independence_wave_dsx_signature_route_choice_tt
+			can_start_independence_wave_dsx_signature = yes
+			OR = {
+				NOT = { has_country_flag = independence_wave_internal_power_struggle_settled }
+				has_country_flag = independence_wave_power_balance_first_center
+			}
+			NOT = { has_independence_wave_dsx_signature_settlement = yes }
+		}
+	}
+	completion_reward = {
+		custom_effect_tooltip = independence_wave_dsx_focus_renew_the_alaafins_charter_effect_tt
+		hidden_effect = { independence_wave_dsx_signature_choose_alaafin_charter = yes }
+	}
+	ai_will_do = { base = constant:independence_wave_focus_ai.standard }
+}
+
+shared_focus = {
+	id = independence_wave_dsx_focus_empower_the_oyo_mesi
+	icon = GFX_goal_independence_wave_popular_councils
+	prerequisite = { focus = independence_wave_dsx_focus_table_the_power_centers }
+	relative_position_id = independence_wave_dsx_focus_table_the_power_centers
+	x = 0
+	y = 1
+	cost = @independence_wave_signature_focus_standard
+	search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+	mutually_exclusive = { focus = independence_wave_dsx_focus_renew_the_alaafins_charter }
+	mutually_exclusive = { focus = independence_wave_dsx_focus_federate_the_yoruba_towns }
+	bypass = {
+		can_start_independence_wave_dsx_signature = yes
+		has_completed_focus = independence_wave_dsx_focus_table_the_power_centers
+		hidden_trigger = {
+			has_country_flag = independence_wave_internal_power_struggle_settled
+			has_country_flag = independence_wave_power_balance_second_center
+		}
+	}
+	bypass_effect = { independence_wave_dsx_signature_choose_mesi_mandate = yes }
+	allow_branch = {
+		can_open_independence_wave_signature_module = yes
+		is_independence_wave_dsx_package = yes
+	}
+	available = {
+		custom_trigger_tooltip = {
+			tooltip = independence_wave_dsx_signature_route_choice_tt
+			can_start_independence_wave_dsx_signature = yes
+			OR = {
+				NOT = { has_country_flag = independence_wave_internal_power_struggle_settled }
+				has_country_flag = independence_wave_power_balance_second_center
+			}
+			NOT = { has_independence_wave_dsx_signature_settlement = yes }
+		}
+	}
+	completion_reward = {
+		custom_effect_tooltip = independence_wave_dsx_focus_empower_the_oyo_mesi_effect_tt
+		hidden_effect = { independence_wave_dsx_signature_choose_mesi_mandate = yes }
+	}
+	ai_will_do = { base = constant:independence_wave_focus_ai.standard }
+}
+
+shared_focus = {
+	id = independence_wave_dsx_focus_federate_the_yoruba_towns
+	icon = GFX_goal_independence_wave_league_congress
+	prerequisite = { focus = independence_wave_dsx_focus_table_the_power_centers }
+	relative_position_id = independence_wave_dsx_focus_table_the_power_centers
+	x = 1
+	y = 1
+	cost = @independence_wave_signature_focus_standard
+	search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+	mutually_exclusive = { focus = independence_wave_dsx_focus_renew_the_alaafins_charter }
+	mutually_exclusive = { focus = independence_wave_dsx_focus_empower_the_oyo_mesi }
+	bypass = {
+		can_start_independence_wave_dsx_signature = yes
+		has_completed_focus = independence_wave_dsx_focus_table_the_power_centers
+		hidden_trigger = {
+			has_country_flag = independence_wave_internal_power_struggle_settled
+			has_country_flag = independence_wave_power_balance_compromise
+		}
+	}
+	bypass_effect = { independence_wave_dsx_signature_choose_town_federation = yes }
+	allow_branch = {
+		can_open_independence_wave_signature_module = yes
+		is_independence_wave_dsx_package = yes
+	}
+	available = {
+		custom_trigger_tooltip = {
+			tooltip = independence_wave_dsx_signature_route_choice_tt
+			can_start_independence_wave_dsx_signature = yes
+			OR = {
+				NOT = { has_country_flag = independence_wave_internal_power_struggle_settled }
+				has_country_flag = independence_wave_power_balance_compromise
+			}
+			NOT = { has_independence_wave_dsx_signature_settlement = yes }
+		}
+	}
+	completion_reward = {
+		custom_effect_tooltip = independence_wave_dsx_focus_federate_the_yoruba_towns_effect_tt
+		hidden_effect = { independence_wave_dsx_signature_choose_town_federation = yes }
+	}
+	ai_will_do = { base = constant:independence_wave_focus_ai.standard }
+}
+
+shared_focus = {
+	id = independence_wave_dsx_focus_bind_the_horse_guard_to_the_charter
+	icon = GFX_goal_independence_wave_army_integration
+	prerequisite = { focus = independence_wave_dsx_focus_renew_the_alaafins_charter }
+	relative_position_id = independence_wave_dsx_focus_renew_the_alaafins_charter
+	x = -1
+	y = 1
+	cost = @independence_wave_signature_focus_standard
+	search_filters = { FOCUS_FILTER_WAR_SUPPORT FOCUS_FILTER_POLITICAL }
+	allow_branch = {
+		can_open_independence_wave_signature_module = yes
+		is_independence_wave_dsx_package = yes
+	}
+	available = {
+		custom_trigger_tooltip = {
+			tooltip = independence_wave_dsx_signature_alaafin_route_tt
+			can_start_independence_wave_dsx_signature = yes
+			has_country_flag = independence_wave_dsx_signature_alaafin_charter
+			NOT = { has_country_flag = independence_wave_dsx_signature_cavalry_commissioned }
+		}
+	}
+	completion_reward = {
+		custom_effect_tooltip = independence_wave_dsx_focus_bind_the_horse_guard_to_the_charter_effect_tt
+		hidden_effect = { independence_wave_dsx_signature_complete_cavalry_charter = yes }
+	}
+	ai_will_do = { base = constant:independence_wave_focus_ai.high }
+}
+
+shared_focus = {
+	id = independence_wave_dsx_focus_register_the_town_guard
+	icon = GFX_goal_independence_wave_popular_councils
+	prerequisite = { focus = independence_wave_dsx_focus_empower_the_oyo_mesi }
+	relative_position_id = independence_wave_dsx_focus_empower_the_oyo_mesi
+	x = 0
+	y = 1
+	cost = @independence_wave_signature_focus_standard
+	search_filters = { FOCUS_FILTER_WAR_SUPPORT FOCUS_FILTER_POLITICAL }
+	allow_branch = {
+		can_open_independence_wave_signature_module = yes
+		is_independence_wave_dsx_package = yes
+	}
+	available = {
+		custom_trigger_tooltip = {
+			tooltip = independence_wave_dsx_signature_mesi_route_tt
+			can_start_independence_wave_dsx_signature = yes
+			has_country_flag = independence_wave_dsx_signature_mesi_mandate
+			NOT = { has_country_flag = independence_wave_dsx_signature_town_guard_registered }
+		}
+	}
+	completion_reward = {
+		custom_effect_tooltip = independence_wave_dsx_focus_register_the_town_guard_effect_tt
+		hidden_effect = { independence_wave_dsx_signature_complete_town_guard = yes }
+	}
+	ai_will_do = { base = constant:independence_wave_focus_ai.high }
+}
+
+shared_focus = {
+	id = independence_wave_dsx_focus_guarantee_ibadans_place
+	icon = GFX_goal_independence_wave_popular_councils
+	prerequisite = { focus = independence_wave_dsx_focus_federate_the_yoruba_towns }
+	relative_position_id = independence_wave_dsx_focus_federate_the_yoruba_towns
+	x = 1
+	y = 1
+	cost = @independence_wave_signature_focus_standard
+	search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+	allow_branch = {
+		can_open_independence_wave_signature_module = yes
+		is_independence_wave_dsx_package = yes
+	}
+	available = {
+		custom_trigger_tooltip = {
+			tooltip = independence_wave_dsx_signature_town_route_tt
+			can_start_independence_wave_dsx_signature = yes
+			has_country_flag = independence_wave_dsx_signature_town_federation
+			has_country_flag = independence_wave_dsx_ibadan_reconciled
+			NOT = { has_country_flag = independence_wave_dsx_signature_ibadan_terms_guaranteed }
+		}
+	}
+	completion_reward = {
+		custom_effect_tooltip = independence_wave_dsx_focus_guarantee_ibadans_place_effect_tt
+		hidden_effect = { independence_wave_dsx_signature_complete_city_terms = yes }
+	}
+	ai_will_do = { base = constant:independence_wave_focus_ai.high }
+}
+
+shared_focus = {
+	id = independence_wave_dsx_focus_survey_oyo_market_roads
+	icon = GFX_goal_independence_wave_infrastructure_authority
+	prerequisite = { focus = independence_wave_dsx_focus_table_the_power_centers }
+	relative_position_id = independence_wave_dsx_focus_table_the_power_centers
+	x = -1
+	y = 2
+	cost = @independence_wave_signature_focus_standard
+	search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_POLITICAL }
+	allow_branch = {
+		can_open_independence_wave_signature_module = yes
+		is_independence_wave_dsx_package = yes
+	}
+	available = {
+		custom_trigger_tooltip = {
+			tooltip = independence_wave_dsx_signature_settlement_complete_tt
+			can_start_independence_wave_dsx_signature = yes
+			has_independence_wave_dsx_signature_settlement_complete = yes
+			NOT = { has_country_flag = independence_wave_dsx_signature_roads_authorized }
+		}
+	}
+	completion_reward = {
+		custom_effect_tooltip = independence_wave_dsx_focus_survey_oyo_market_roads_effect_tt
+		hidden_effect = { independence_wave_dsx_signature_authorize_roads = yes }
+	}
+	ai_will_do = { base = constant:independence_wave_focus_ai.high }
+}
+
+shared_focus = {
+	id = independence_wave_dsx_focus_authorize_the_yoruba_congress
+	icon = GFX_goal_independence_wave_league_congress
+	prerequisite = { focus = independence_wave_dsx_focus_table_the_power_centers }
+	relative_position_id = independence_wave_dsx_focus_table_the_power_centers
+	x = 1
+	y = 2
+	cost = @independence_wave_signature_focus_long
+	search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+	allow_branch = {
+		can_open_independence_wave_signature_module = yes
+		is_independence_wave_dsx_package = yes
+	}
+	available = {
+		custom_trigger_tooltip = {
+			tooltip = independence_wave_dsx_signature_congress_ready_tt
+			can_start_independence_wave_dsx_signature = yes
+			has_independence_wave_dsx_signature_settlement_complete = yes
+			can_open_independence_wave_regional_ambition = yes
+			NOT = { has_country_flag = independence_wave_dsx_signature_congress_authorized }
+		}
+	}
+	completion_reward = {
+		custom_effect_tooltip = independence_wave_dsx_focus_authorize_the_yoruba_congress_effect_tt
+		hidden_effect = { independence_wave_dsx_signature_authorize_yoruba_congress = yes }
+	}
+	ai_will_do = { base = constant:independence_wave_focus_ai.high }
+}
+
+shared_focus = {
+	id = independence_wave_dsx_focus_publish_the_oyo_compact
+	icon = GFX_goal_independence_wave_regional_formable
+	prerequisite = { focus = independence_wave_dsx_focus_survey_oyo_market_roads }
+	prerequisite = { focus = independence_wave_dsx_focus_authorize_the_yoruba_congress }
+	relative_position_id = independence_wave_dsx_focus_table_the_power_centers
+	x = 0
+	y = 4
+	cost = @independence_wave_signature_focus_long
+	search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+	allow_branch = {
+		can_open_independence_wave_signature_module = yes
+		is_independence_wave_dsx_package = yes
+	}
+	available = {
+		custom_trigger_tooltip = {
+			tooltip = independence_wave_dsx_signature_compact_ready_tt
+			can_start_independence_wave_dsx_signature = yes
+			has_independence_wave_dsx_signature_settlement_complete = yes
+			has_country_flag = independence_wave_dsx_signature_roads_complete
+			has_country_flag = independence_wave_dsx_signature_congress_authorized
+		}
+	}
+	completion_reward = {
+		custom_effect_tooltip = independence_wave_dsx_focus_publish_the_oyo_compact_effect_tt
+		hidden_effect = { independence_wave_dsx_signature_publish_compact = yes }
+	}
+	ai_will_do = { base = constant:independence_wave_focus_ai.urgent }
+}
+
+shared_focus = {
+	id = independence_wave_atj_focus_reconcile_district_and_school_authority
+	icon = GFX_goal_independence_wave_founding_administration
+	prerequisite = { focus = independence_wave_open_signature_extension }
+	relative_position_id = independence_wave_open_signature_extension
+	x = 0
+	y = 1
+	cost = @independence_wave_signature_focus_short
+	search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+	allow_branch = {
+		can_open_independence_wave_signature_module = yes
+		is_independence_wave_atj_package = yes
+	}
+	available = {
+		custom_trigger_tooltip = {
+			tooltip = independence_wave_atj_signature_l2_projects_complete_tt
+			can_start_independence_wave_atj_signature = yes
+		}
+	}
+	completion_reward = {
+		custom_effect_tooltip = independence_wave_atj_focus_reconcile_district_and_school_authority_effect_tt
+	}
+	ai_will_do = { base = constant:independence_wave_focus_ai.urgent }
+}
+
+shared_focus = {
+	id = independence_wave_atj_focus_protect_uleebalang_districts
+	icon = GFX_goal_independence_wave_traditional_restoration
+	prerequisite = { focus = independence_wave_atj_focus_reconcile_district_and_school_authority }
+	relative_position_id = independence_wave_atj_focus_reconcile_district_and_school_authority
+	x = -1
+	y = 1
+	cost = @independence_wave_signature_focus_standard
+	search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+	mutually_exclusive = { focus = independence_wave_atj_focus_give_ulama_a_school_board }
+	mutually_exclusive = { focus = independence_wave_atj_focus_keep_a_shared_council }
+	bypass = {
+		can_start_independence_wave_atj_signature = yes
+		has_completed_focus = independence_wave_atj_focus_reconcile_district_and_school_authority
+		hidden_trigger = {
+			has_country_flag = independence_wave_internal_power_struggle_settled
+			has_country_flag = independence_wave_power_balance_first_center
+		}
+	}
+	bypass_effect = { independence_wave_atj_signature_choose_district_guarantees = yes }
+	allow_branch = {
+		can_open_independence_wave_signature_module = yes
+		is_independence_wave_atj_package = yes
+	}
+	available = {
+		custom_trigger_tooltip = {
+			tooltip = independence_wave_atj_signature_route_choice_tt
+			can_start_independence_wave_atj_signature = yes
+			OR = {
+				NOT = { has_country_flag = independence_wave_internal_power_struggle_settled }
+				has_country_flag = independence_wave_power_balance_first_center
+			}
+			NOT = { has_independence_wave_atj_signature_settlement = yes }
+		}
+	}
+	completion_reward = {
+		custom_effect_tooltip = independence_wave_atj_focus_protect_uleebalang_districts_effect_tt
+		hidden_effect = { independence_wave_atj_signature_choose_district_guarantees = yes }
+	}
+	ai_will_do = { base = constant:independence_wave_focus_ai.standard }
+}
+
+shared_focus = {
+	id = independence_wave_atj_focus_give_ulama_a_school_board
+	icon = GFX_goal_independence_wave_popular_councils
+	prerequisite = { focus = independence_wave_atj_focus_reconcile_district_and_school_authority }
+	relative_position_id = independence_wave_atj_focus_reconcile_district_and_school_authority
+	x = 0
+	y = 1
+	cost = @independence_wave_signature_focus_standard
+	search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+	mutually_exclusive = { focus = independence_wave_atj_focus_protect_uleebalang_districts }
+	mutually_exclusive = { focus = independence_wave_atj_focus_keep_a_shared_council }
+	bypass = {
+		can_start_independence_wave_atj_signature = yes
+		has_completed_focus = independence_wave_atj_focus_reconcile_district_and_school_authority
+		hidden_trigger = {
+			has_country_flag = independence_wave_internal_power_struggle_settled
+			has_country_flag = independence_wave_power_balance_second_center
+		}
+	}
+	bypass_effect = { independence_wave_atj_signature_choose_ulama_school_board = yes }
+	allow_branch = {
+		can_open_independence_wave_signature_module = yes
+		is_independence_wave_atj_package = yes
+	}
+	available = {
+		custom_trigger_tooltip = {
+			tooltip = independence_wave_atj_signature_route_choice_tt
+			can_start_independence_wave_atj_signature = yes
+			OR = {
+				NOT = { has_country_flag = independence_wave_internal_power_struggle_settled }
+				has_country_flag = independence_wave_power_balance_second_center
+			}
+			NOT = { has_independence_wave_atj_signature_settlement = yes }
+		}
+	}
+	completion_reward = {
+		custom_effect_tooltip = independence_wave_atj_focus_give_ulama_a_school_board_effect_tt
+		hidden_effect = { independence_wave_atj_signature_choose_ulama_school_board = yes }
+	}
+	ai_will_do = { base = constant:independence_wave_focus_ai.standard }
+}
+
+shared_focus = {
+	id = independence_wave_atj_focus_keep_a_shared_council
+	icon = GFX_goal_independence_wave_league_congress
+	prerequisite = { focus = independence_wave_atj_focus_reconcile_district_and_school_authority }
+	relative_position_id = independence_wave_atj_focus_reconcile_district_and_school_authority
+	x = 1
+	y = 1
+	cost = @independence_wave_signature_focus_standard
+	search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+	mutually_exclusive = { focus = independence_wave_atj_focus_protect_uleebalang_districts }
+	mutually_exclusive = { focus = independence_wave_atj_focus_give_ulama_a_school_board }
+	bypass = {
+		can_start_independence_wave_atj_signature = yes
+		has_completed_focus = independence_wave_atj_focus_reconcile_district_and_school_authority
+		hidden_trigger = {
+			has_country_flag = independence_wave_internal_power_struggle_settled
+			has_country_flag = independence_wave_power_balance_compromise
+		}
+	}
+	bypass_effect = { independence_wave_atj_signature_choose_shared_council = yes }
+	allow_branch = {
+		can_open_independence_wave_signature_module = yes
+		is_independence_wave_atj_package = yes
+	}
+	available = {
+		custom_trigger_tooltip = {
+			tooltip = independence_wave_atj_signature_route_choice_tt
+			can_start_independence_wave_atj_signature = yes
+			OR = {
+				NOT = { has_country_flag = independence_wave_internal_power_struggle_settled }
+				has_country_flag = independence_wave_power_balance_compromise
+			}
+			NOT = { has_independence_wave_atj_signature_settlement = yes }
+		}
+	}
+	completion_reward = {
+		custom_effect_tooltip = independence_wave_atj_focus_keep_a_shared_council_effect_tt
+		hidden_effect = { independence_wave_atj_signature_choose_shared_council = yes }
+	}
+	ai_will_do = { base = constant:independence_wave_focus_ai.standard }
+}
+
+shared_focus = {
+	id = independence_wave_atj_focus_confirm_district_guarantees
+	icon = GFX_goal_independence_wave_traditional_restoration
+	prerequisite = { focus = independence_wave_atj_focus_protect_uleebalang_districts }
+	relative_position_id = independence_wave_atj_focus_protect_uleebalang_districts
+	x = -1
+	y = 1
+	cost = @independence_wave_signature_focus_standard
+	search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+	allow_branch = {
+		can_open_independence_wave_signature_module = yes
+		is_independence_wave_atj_package = yes
+	}
+	available = {
+		custom_trigger_tooltip = {
+			tooltip = independence_wave_atj_signature_district_terms_ready_tt
+			can_start_independence_wave_atj_signature = yes
+			has_country_flag = independence_wave_atj_signature_district_guarantees
+			NOT = { has_country_flag = independence_wave_atj_signature_district_terms_complete }
+		}
+	}
+	completion_reward = {
+		custom_effect_tooltip = independence_wave_atj_focus_confirm_district_guarantees_effect_tt
+		hidden_effect = { independence_wave_atj_signature_complete_district_terms = yes }
+	}
+	ai_will_do = { base = constant:independence_wave_focus_ai.high }
+}
+
+shared_focus = {
+	id = independence_wave_atj_focus_seat_the_school_board
+	icon = GFX_goal_independence_wave_popular_councils
+	prerequisite = { focus = independence_wave_atj_focus_give_ulama_a_school_board }
+	relative_position_id = independence_wave_atj_focus_give_ulama_a_school_board
+	x = 0
+	y = 1
+	cost = @independence_wave_signature_focus_standard
+	search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+	allow_branch = {
+		can_open_independence_wave_signature_module = yes
+		is_independence_wave_atj_package = yes
+	}
+	available = {
+		custom_trigger_tooltip = {
+			tooltip = independence_wave_atj_signature_school_board_ready_tt
+			can_start_independence_wave_atj_signature = yes
+			has_country_flag = independence_wave_atj_signature_ulama_school_board
+			NOT = { has_country_flag = independence_wave_atj_signature_school_board_complete }
+		}
+	}
+	completion_reward = {
+		custom_effect_tooltip = independence_wave_atj_focus_seat_the_school_board_effect_tt
+		hidden_effect = { independence_wave_atj_signature_complete_school_board = yes }
+	}
+	ai_will_do = { base = constant:independence_wave_focus_ai.high }
+}
+
+shared_focus = {
+	id = independence_wave_atj_focus_ratify_the_shared_council
+	icon = GFX_goal_independence_wave_league_congress
+	prerequisite = { focus = independence_wave_atj_focus_keep_a_shared_council }
+	relative_position_id = independence_wave_atj_focus_keep_a_shared_council
+	x = 0
+	y = 1
+	cost = @independence_wave_signature_focus_standard
+	search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+	allow_branch = {
+		can_open_independence_wave_signature_module = yes
+		is_independence_wave_atj_package = yes
+	}
+	available = {
+		custom_trigger_tooltip = {
+			tooltip = independence_wave_atj_signature_shared_council_ready_tt
+			can_start_independence_wave_atj_signature = yes
+			has_country_flag = independence_wave_atj_signature_shared_council
+			NOT = { has_country_flag = independence_wave_atj_signature_shared_council_complete }
+		}
+	}
+	completion_reward = {
+		custom_effect_tooltip = independence_wave_atj_focus_ratify_the_shared_council_effect_tt
+		hidden_effect = { independence_wave_atj_signature_complete_shared_council = yes }
+	}
+	ai_will_do = { base = constant:independence_wave_focus_ai.high }
+}
+
+shared_focus = {
+	id = independence_wave_atj_focus_extend_the_school_network
+	icon = GFX_goal_independence_wave_popular_councils
+	prerequisite = { focus = independence_wave_atj_focus_reconcile_district_and_school_authority }
+	relative_position_id = independence_wave_atj_focus_reconcile_district_and_school_authority
+	x = -1
+	y = 2
+	cost = @independence_wave_signature_focus_standard
+	search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_POLITICAL }
+	allow_branch = {
+		can_open_independence_wave_signature_module = yes
+		is_independence_wave_atj_package = yes
+	}
+	available = {
+		custom_trigger_tooltip = {
+			tooltip = independence_wave_atj_signature_settlement_complete_tt
+			can_start_independence_wave_atj_signature = yes
+			has_independence_wave_atj_signature_settlement_complete = yes
+			NOT = { has_country_flag = independence_wave_atj_signature_school_network_extended }
+		}
+	}
+	completion_reward = {
+		custom_effect_tooltip = independence_wave_atj_focus_extend_the_school_network_effect_tt
+		hidden_effect = { independence_wave_atj_signature_extend_school_network = yes }
+	}
+	ai_will_do = { base = constant:independence_wave_focus_ai.high }
+}
+
+shared_focus = {
+	id = independence_wave_atj_focus_charter_the_port_board
+	icon = GFX_goal_independence_wave_infrastructure_authority
+	prerequisite = { focus = independence_wave_atj_focus_extend_the_school_network }
+	relative_position_id = independence_wave_atj_focus_extend_the_school_network
+	x = 0
+	y = 1
+	cost = @independence_wave_signature_focus_standard
+	search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_POLITICAL }
+	allow_branch = {
+		can_open_independence_wave_signature_module = yes
+		is_independence_wave_atj_package = yes
+	}
+	available = {
+		custom_trigger_tooltip = {
+			tooltip = independence_wave_atj_signature_school_network_ready_tt
+			can_start_independence_wave_atj_signature = yes
+			has_country_flag = independence_wave_atj_signature_school_network_extended
+			NOT = { has_country_flag = independence_wave_atj_signature_port_board_chartered }
+		}
+	}
+	completion_reward = {
+		custom_effect_tooltip = independence_wave_atj_focus_charter_the_port_board_effect_tt
+		hidden_effect = { independence_wave_atj_signature_charter_port_board = yes }
+	}
+	ai_will_do = { base = constant:independence_wave_focus_ai.high }
+}
+
+shared_focus = {
+	id = independence_wave_atj_focus_convene_the_maritime_congress
+	icon = GFX_goal_independence_wave_regional_formable
+	prerequisite = { focus = independence_wave_atj_focus_charter_the_port_board }
+	relative_position_id = independence_wave_atj_focus_extend_the_school_network
+	x = 1
+	y = 2
+	cost = @independence_wave_signature_focus_long
+	search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+	allow_branch = {
+		can_open_independence_wave_signature_module = yes
+		is_independence_wave_atj_package = yes
+	}
+	available = {
+		custom_trigger_tooltip = {
+			tooltip = independence_wave_atj_signature_form36_available_tt
+			can_independence_wave_atj_signature_join_form36 = yes
+		}
+	}
+	completion_reward = {
+		custom_effect_tooltip = independence_wave_atj_focus_convene_the_maritime_congress_effect_tt
+		hidden_effect = { independence_wave_atj_signature_join_form36 = yes }
+	}
+	ai_will_do = { base = constant:independence_wave_focus_ai.urgent }
+}
+
+shared_focus = {
+	id = independence_wave_iax_focus_choose_the_mon_government
+	icon = GFX_goal_independence_wave_founding_administration
+	prerequisite = { focus = independence_wave_open_signature_extension }
+	relative_position_id = independence_wave_open_signature_extension
+	x = 0
+	y = 1
+	cost = @independence_wave_signature_focus_short
+	search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+	allow_branch = {
+		can_open_independence_wave_signature_module = yes
+		is_independence_wave_iax_package = yes
+	}
+	available = {
+		custom_trigger_tooltip = {
+			tooltip = independence_wave_iax_signature_l2_projects_complete_tt
+			can_start_independence_wave_iax_signature = yes
+		}
+	}
+	completion_reward = {
+		custom_effect_tooltip = independence_wave_iax_focus_choose_the_mon_government_effect_tt
+	}
+	ai_will_do = { base = constant:independence_wave_focus_ai.urgent }
+}
+
+shared_focus = {
+	id = independence_wave_iax_focus_trust_local_mon_councils
+	icon = GFX_goal_independence_wave_popular_councils
+	prerequisite = { focus = independence_wave_iax_focus_choose_the_mon_government }
+	relative_position_id = independence_wave_iax_focus_choose_the_mon_government
+	x = -1
+	y = 1
+	cost = @independence_wave_signature_focus_standard
+	search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+	mutually_exclusive = { focus = independence_wave_iax_focus_direct_the_river_office }
+	bypass = {
+		can_start_independence_wave_iax_signature = yes
+		has_completed_focus = independence_wave_iax_focus_choose_the_mon_government
+		hidden_trigger = {
+			has_country_flag = independence_wave_internal_power_struggle_settled
+			OR = {
+				has_country_flag = independence_wave_power_balance_second_center
+				has_country_flag = independence_wave_power_balance_compromise
+			}
+		}
+	}
+	bypass_effect = { independence_wave_iax_signature_choose_local_council = yes }
+	allow_branch = {
+		can_open_independence_wave_signature_module = yes
+		is_independence_wave_iax_package = yes
+	}
+	available = {
+		custom_trigger_tooltip = {
+			tooltip = independence_wave_iax_signature_route_choice_tt
+			can_start_independence_wave_iax_signature = yes
+			OR = {
+				NOT = { has_country_flag = independence_wave_internal_power_struggle_settled }
+				has_country_flag = independence_wave_power_balance_second_center
+				has_country_flag = independence_wave_power_balance_compromise
+			}
+			NOT = { has_independence_wave_iax_signature_settlement = yes }
+		}
+	}
+	completion_reward = {
+		custom_effect_tooltip = independence_wave_iax_focus_trust_local_mon_councils_effect_tt
+		hidden_effect = { independence_wave_iax_signature_choose_local_council = yes }
+	}
+	ai_will_do = { base = constant:independence_wave_focus_ai.standard }
+}
+
+shared_focus = {
+	id = independence_wave_iax_focus_direct_the_river_office
+	icon = GFX_goal_independence_wave_infrastructure_authority
+	prerequisite = { focus = independence_wave_iax_focus_choose_the_mon_government }
+	relative_position_id = independence_wave_iax_focus_choose_the_mon_government
+	x = 1
+	y = 1
+	cost = @independence_wave_signature_focus_standard
+	search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
+	mutually_exclusive = { focus = independence_wave_iax_focus_trust_local_mon_councils }
+	bypass = {
+		can_start_independence_wave_iax_signature = yes
+		has_completed_focus = independence_wave_iax_focus_choose_the_mon_government
+		hidden_trigger = {
+			has_country_flag = independence_wave_internal_power_struggle_settled
+			has_country_flag = independence_wave_power_balance_first_center
+		}
+	}
+	bypass_effect = { independence_wave_iax_signature_choose_river_office = yes }
+	allow_branch = {
+		can_open_independence_wave_signature_module = yes
+		is_independence_wave_iax_package = yes
+	}
+	available = {
+		custom_trigger_tooltip = {
+			tooltip = independence_wave_iax_signature_route_choice_tt
+			can_start_independence_wave_iax_signature = yes
+			OR = {
+				NOT = { has_country_flag = independence_wave_internal_power_struggle_settled }
+				has_country_flag = independence_wave_power_balance_first_center
+			}
+			NOT = { has_independence_wave_iax_signature_settlement = yes }
+		}
+	}
+	completion_reward = {
+		custom_effect_tooltip = independence_wave_iax_focus_direct_the_river_office_effect_tt
+		hidden_effect = { independence_wave_iax_signature_choose_river_office = yes }
+	}
+	ai_will_do = { base = constant:independence_wave_focus_ai.standard }
+}
+
+shared_focus = {
+	id = independence_wave_iax_focus_guarantee_the_local_charter
+	icon = GFX_goal_independence_wave_popular_councils
+	prerequisite = { focus = independence_wave_iax_focus_trust_local_mon_councils }
+	relative_position_id = independence_wave_iax_focus_trust_local_mon_councils
+	x = 0
+	y = 1
+	cost = @independence_wave_signature_focus_standard
+	search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+	allow_branch = {
+		can_open_independence_wave_signature_module = yes
+		is_independence_wave_iax_package = yes
+	}
+	available = {
+		custom_trigger_tooltip = {
+			tooltip = independence_wave_iax_signature_local_route_required_tt
+			can_start_independence_wave_iax_signature = yes
+			has_country_flag = independence_wave_iax_signature_local_council_route
+			NOT = { has_country_flag = independence_wave_iax_signature_local_charter_complete }
+		}
+	}
+	completion_reward = {
+		custom_effect_tooltip = independence_wave_iax_focus_guarantee_the_local_charter_effect_tt
+		hidden_effect = { independence_wave_iax_signature_complete_local_charter = yes }
+	}
+	ai_will_do = { base = constant:independence_wave_focus_ai.high }
+}
+
+shared_focus = {
+	id = independence_wave_iax_focus_place_river_works_under_the_office
+	icon = GFX_goal_independence_wave_infrastructure_authority
+	prerequisite = { focus = independence_wave_iax_focus_direct_the_river_office }
+	relative_position_id = independence_wave_iax_focus_direct_the_river_office
+	x = 0
+	y = 1
+	cost = @independence_wave_signature_focus_standard
+	search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_POLITICAL }
+	allow_branch = {
+		can_open_independence_wave_signature_module = yes
+		is_independence_wave_iax_package = yes
+	}
+	available = {
+		custom_trigger_tooltip = {
+			tooltip = independence_wave_iax_signature_river_route_required_tt
+			can_start_independence_wave_iax_signature = yes
+			has_country_flag = independence_wave_iax_signature_river_office_route
+			NOT = { has_country_flag = independence_wave_iax_signature_river_charter_complete }
+		}
+	}
+	completion_reward = {
+		custom_effect_tooltip = independence_wave_iax_focus_place_river_works_under_the_office_effect_tt
+		hidden_effect = { independence_wave_iax_signature_complete_river_charter = yes }
+	}
+	ai_will_do = { base = constant:independence_wave_focus_ai.high }
+}
+
+shared_focus = {
+	id = independence_wave_iax_focus_expand_mon_language_schools
+	icon = GFX_goal_independence_wave_popular_councils
+	prerequisite = { focus = independence_wave_iax_focus_choose_the_mon_government }
+	relative_position_id = independence_wave_iax_focus_choose_the_mon_government
+	x = 0
+	y = 2
+	cost = @independence_wave_signature_focus_standard
+	search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_POLITICAL }
+	allow_branch = {
+		can_open_independence_wave_signature_module = yes
+		is_independence_wave_iax_package = yes
+	}
+	available = {
+		custom_trigger_tooltip = {
+			tooltip = independence_wave_iax_signature_settlement_complete_tt
+			can_start_independence_wave_iax_signature = yes
+			has_independence_wave_iax_signature_settlement_complete = yes
+			NOT = { has_idea = independence_wave_iax_mon_school_trust }
+		}
+	}
+	completion_reward = {
+		custom_effect_tooltip = independence_wave_iax_focus_expand_mon_language_schools_effect_tt
+		hidden_effect = { independence_wave_iax_signature_extend_mon_schools = yes }
+	}
+	ai_will_do = { base = constant:independence_wave_focus_ai.high }
+}
+
+shared_focus = {
+	id = independence_wave_iax_focus_authorize_salween_transport
+	icon = GFX_goal_independence_wave_infrastructure_authority
+	prerequisite = { focus = independence_wave_iax_focus_expand_mon_language_schools }
+	relative_position_id = independence_wave_iax_focus_expand_mon_language_schools
+	x = -1
+	y = 1
+	cost = @independence_wave_signature_focus_standard
+	search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_POLITICAL }
+	allow_branch = {
+		can_open_independence_wave_signature_module = yes
+		is_independence_wave_iax_package = yes
+	}
+	available = {
+		custom_trigger_tooltip = {
+			tooltip = independence_wave_iax_signature_projects_ready_tt
+			can_independence_wave_iax_signature_authorize_transport = yes
+		}
+	}
+	completion_reward = {
+		custom_effect_tooltip = independence_wave_iax_focus_authorize_salween_transport_effect_tt
+		hidden_effect = { independence_wave_iax_signature_authorize_transport = yes }
+	}
+	ai_will_do = { base = constant:independence_wave_focus_ai.high }
+}
+
+shared_focus = {
+	id = independence_wave_iax_focus_prepare_tenasserim_border_watch
+	icon = GFX_goal_independence_wave_army_integration
+	prerequisite = { focus = independence_wave_iax_focus_expand_mon_language_schools }
+	relative_position_id = independence_wave_iax_focus_expand_mon_language_schools
+	x = 1
+	y = 1
+	cost = @independence_wave_signature_focus_standard
+	search_filters = { FOCUS_FILTER_WAR_SUPPORT FOCUS_FILTER_POLITICAL }
+	allow_branch = {
+		can_open_independence_wave_signature_module = yes
+		is_independence_wave_iax_package = yes
+	}
+	available = {
+		custom_trigger_tooltip = {
+			tooltip = independence_wave_iax_signature_projects_ready_tt
+			can_independence_wave_iax_signature_authorize_border_watch = yes
+		}
+	}
+	completion_reward = {
+		custom_effect_tooltip = independence_wave_iax_focus_prepare_tenasserim_border_watch_effect_tt
+		hidden_effect = { independence_wave_iax_signature_authorize_border_watch = yes }
+	}
+	ai_will_do = { base = constant:independence_wave_focus_ai.high }
+}
+
+shared_focus = {
+	id = independence_wave_iax_focus_exchange_school_delegates
+	icon = GFX_goal_independence_wave_recognition_diplomacy
+	prerequisite = { focus = independence_wave_iax_focus_expand_mon_language_schools }
+	relative_position_id = independence_wave_iax_focus_expand_mon_language_schools
+	x = 0
+	y = 1
+	cost = @independence_wave_signature_focus_standard
+	search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+	allow_branch = {
+		can_open_independence_wave_signature_module = yes
+		is_independence_wave_iax_package = yes
+	}
+	available = {
+		custom_trigger_tooltip = {
+			tooltip = independence_wave_iax_signature_delegates_ready_tt
+			can_independence_wave_iax_signature_authorize_delegates = yes
+		}
+	}
+	completion_reward = {
+		custom_effect_tooltip = independence_wave_iax_focus_exchange_school_delegates_effect_tt
+		hidden_effect = { independence_wave_iax_signature_authorize_delegates = yes }
+	}
+	ai_will_do = { base = constant:independence_wave_focus_ai.high }
+}
+
+shared_focus = {
+	id = independence_wave_iax_focus_publish_mon_federal_autonomy
+	icon = GFX_goal_independence_wave_popular_councils
+	prerequisite = { focus = independence_wave_iax_focus_guarantee_the_local_charter }
+	prerequisite = { focus = independence_wave_iax_focus_authorize_salween_transport }
+	prerequisite = { focus = independence_wave_iax_focus_prepare_tenasserim_border_watch }
+	relative_position_id = independence_wave_iax_focus_expand_mon_language_schools
+	x = 0
+	y = 2
+	cost = @independence_wave_signature_focus_long
+	search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+	allow_branch = {
+		can_open_independence_wave_signature_module = yes
+		is_independence_wave_iax_package = yes
+	}
+	available = {
+		custom_trigger_tooltip = {
+			tooltip = independence_wave_iax_signature_autonomy_ready_tt
+			can_independence_wave_iax_signature_publish_autonomy = yes
+		}
+	}
+	completion_reward = {
+		custom_effect_tooltip = independence_wave_iax_focus_publish_mon_federal_autonomy_effect_tt
+		hidden_effect = { independence_wave_iax_signature_publish_autonomy = yes }
+	}
+	ai_will_do = { base = constant:independence_wave_focus_ai.urgent }
+}
+
+shared_focus = {
+	id = independence_wave_iax_focus_offer_the_mainland_federal_compact
+	icon = GFX_goal_independence_wave_regional_formable
+	prerequisite = { focus = independence_wave_iax_focus_publish_mon_federal_autonomy }
+	relative_position_id = independence_wave_iax_focus_expand_mon_language_schools
+	x = 0
+	y = 3
+	cost = @independence_wave_signature_focus_long
+	search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+	allow_branch = {
+		can_open_independence_wave_signature_module = yes
+		is_independence_wave_iax_package = yes
+	}
+	available = {
+		custom_trigger_tooltip = {
+			tooltip = independence_wave_iax_signature_form37_available_tt
+			can_independence_wave_iax_signature_join_form37 = yes
+		}
+	}
+	completion_reward = {
+		custom_effect_tooltip = independence_wave_iax_focus_offer_the_mainland_federal_compact_effect_tt
+		hidden_effect = { independence_wave_iax_signature_join_form37 = yes }
+	}
+	ai_will_do = { base = constant:independence_wave_focus_ai.urgent }
+}

@@ -48,8 +48,12 @@ FORM-24 West African Federation and FORM-25 Sahel Confederation remain closed: t
 
 The rows reuse their registered or vanilla flags and names, shared Event 006 and vanilla idea pictures, the shared decision icons and the vanilla report pictures `GFX_report_event_generic_read_write`, `worker_protests` and `merchant_ship_01`. No new sprite is registered.
 
+## Level 3 signature module
+
+IW-097 Oyo joins its Alaafin and Oyo Mesi settlement to an optional Yoruba town compact, a costed market-road project in the controlled anchor state, and the existing regional congress and leadership actions. The module preserves local sovereignty and does not claim all Yoruba communities. Its full focus, decision, balance, cleanup and reward contract is in [the Event 006 signature modules](signature_modules.md).
+
 ## Future plans
 
-- The Oyo signature module: the Alaafin Siyanbola Ladigbolu I with a sourced portrait, the Oyo Mesi balance as a power-struggle layer and city-state relations.
-- Sourced leaders or institutional characters for the Bornu, Aro and Oyo councils.
+- A rights-cleared source and portrait for historical Alaafin Siyanbola Ladigbolu I, following the [portrait research handoff](../../plans/006_independence_wave_plans/subagent_handoffs/signature_portraits_20261006.md). The package keeps the game-appointed chair until that work is complete; Event 012's anonymous Oyo sovereign is not reused.
+- Sourced leaders or institutional characters for the Bornu and Aro councils.
 - FORM-24 and FORM-25 carrier contracts once their member rows exist.

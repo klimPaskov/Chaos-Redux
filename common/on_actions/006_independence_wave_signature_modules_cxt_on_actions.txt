@@ -1,0 +1,41 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 006 SIGNATURE MODULE CXT REGISTRATION
+# Overview:
+# - Startup adds this modifier-free system carrier through one bounded existing
+#   country scope, so the extension is registered before any signature package
+#   is released and without requiring CXT to exist in the 1936 setup.
+# - The CXT-tagged fallback only registers the carrier and marks new content
+#   pending for the player's existing Apply Registered Systems action.
+# - Neither hook grants resources, country ideas, buildings or focus progress.
+# ============================================================================
+
+on_actions = {
+	on_startup = {
+		effect = {
+			random_country = {
+				limit = { exists = yes }
+				independence_wave_signature_modules_register_cxt_test_content = yes
+			}
+		}
+	}
+
+	on_daily_CXT = {
+		effect = {
+			if = {
+				limit = { has_country_flag = chaosx_test_country_initialized }
+				set_temp_variable = { chaosx_test_country_extension_registration_added = constant:independence_wave_signature_cxt.registration_none }
+				independence_wave_signature_modules_register_cxt_test_content = yes
+				if = {
+					limit = {
+						check_variable = {
+							var = chaosx_test_country_extension_registration_added
+							value = constant:independence_wave_signature_cxt.registration_added
+							compare = equals
+						}
+					}
+					chaosx_test_country_sync_registered_content = yes
+				}
+			}
+		}
+	}
+}

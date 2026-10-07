@@ -1,0 +1,309 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 006 READY FORMABLE CHARTERS
+# ============================================================================
+# Overview:
+# - Replaces a matching live package institution with a carrier charter or
+#   sovereign-member compact; it never adds a fourth idea to a full package.
+# - Stage-specific ideas replace the previous version after each paid,
+#   one-time post-formation integration project.
+# - If the matching institution is absent, the contract relies on its live
+#   member and relation receipts and does not add a substitute spirit.
+# - Existing vanilla idea sprites are reused; no new DDS art is introduced.
+# ============================================================================
+
+@CR_IW_READY_FORM17_CARRIER_DEFENCE = 0.10
+@CR_IW_READY_FORM17_CARRIER_ORG = 0.04
+@CR_IW_READY_FORM17_CARRIER_STABILITY = 0.03
+@CR_IW_READY_FORM17_MEMBER_DEFENCE = 0.04
+@CR_IW_READY_FORM32_CARRIER_SUPPLY = -0.07
+@CR_IW_READY_FORM32_CARRIER_ORG = 0.04
+@CR_IW_READY_FORM32_CARRIER_PP = 0.04
+@CR_IW_READY_FORM32_MEMBER_SUPPLY = -0.03
+@CR_IW_READY_FORM32_MEMBER_ORG = 0.02
+@CR_IW_READY_FORM36_CARRIER_TRADE = 0.08
+@CR_IW_READY_FORM36_CARRIER_CONVOY = 0.10
+@CR_IW_READY_FORM36_CARRIER_SUPPLY = -0.05
+@CR_IW_READY_FORM36_MEMBER_TRADE = 0.03
+@CR_IW_READY_FORM36_MEMBER_CONVOY = 0.04
+@CR_IW_READY_FORM37_CARRIER_ORG = 0.06
+@CR_IW_READY_FORM37_CARRIER_DEFENCE = 0.05
+@CR_IW_READY_FORM37_CARRIER_SUPPLY = -0.05
+@CR_IW_READY_FORM37_MEMBER_ORG = 0.03
+@CR_IW_READY_FORM37_MEMBER_SUPPLY = -0.03
+
+@CR_IW_READY_FORM17_CARRIER_STAGE1_DEFENCE = 0.12
+@CR_IW_READY_FORM17_CARRIER_STAGE1_ORG = 0.06
+@CR_IW_READY_FORM17_CARRIER_STAGE1_STABILITY = 0.04
+@CR_IW_READY_FORM17_CARRIER_STAGE2_DEFENCE = 0.15
+@CR_IW_READY_FORM17_CARRIER_STAGE2_ORG = 0.08
+@CR_IW_READY_FORM17_CARRIER_STAGE2_STABILITY = 0.05
+@CR_IW_READY_FORM17_MEMBER_STAGE1_DEFENCE = 0.05
+@CR_IW_READY_FORM17_MEMBER_STAGE2_DEFENCE = 0.07
+@CR_IW_READY_FORM17_MEMBER_STAGE2_ORG = 0.02
+
+@CR_IW_READY_FORM32_CARRIER_STAGE1_SUPPLY = -0.09
+@CR_IW_READY_FORM32_CARRIER_STAGE1_ORG = 0.05
+@CR_IW_READY_FORM32_CARRIER_STAGE1_PP = 0.05
+@CR_IW_READY_FORM32_CARRIER_STAGE2_SUPPLY = -0.11
+@CR_IW_READY_FORM32_CARRIER_STAGE2_ORG = 0.07
+@CR_IW_READY_FORM32_CARRIER_STAGE2_PP = 0.07
+@CR_IW_READY_FORM32_MEMBER_STAGE1_SUPPLY = -0.04
+@CR_IW_READY_FORM32_MEMBER_STAGE1_ORG = 0.03
+@CR_IW_READY_FORM32_MEMBER_STAGE2_SUPPLY = -0.05
+@CR_IW_READY_FORM32_MEMBER_STAGE2_ORG = 0.05
+
+@CR_IW_READY_FORM36_CARRIER_STAGE1_TRADE = 0.10
+@CR_IW_READY_FORM36_CARRIER_STAGE1_CONVOY = 0.12
+@CR_IW_READY_FORM36_CARRIER_STAGE1_SUPPLY = -0.06
+@CR_IW_READY_FORM36_CARRIER_STAGE2_TRADE = 0.12
+@CR_IW_READY_FORM36_CARRIER_STAGE2_CONVOY = 0.15
+@CR_IW_READY_FORM36_CARRIER_STAGE2_SUPPLY = -0.08
+@CR_IW_READY_FORM36_MEMBER_STAGE1_TRADE = 0.04
+@CR_IW_READY_FORM36_MEMBER_STAGE1_CONVOY = 0.05
+@CR_IW_READY_FORM36_MEMBER_STAGE2_TRADE = 0.05
+@CR_IW_READY_FORM36_MEMBER_STAGE2_CONVOY = 0.07
+
+@CR_IW_READY_FORM37_CARRIER_STAGE1_ORG = 0.07
+@CR_IW_READY_FORM37_CARRIER_STAGE1_DEFENCE = 0.06
+@CR_IW_READY_FORM37_CARRIER_STAGE1_SUPPLY = -0.06
+@CR_IW_READY_FORM37_CARRIER_STAGE2_ORG = 0.09
+@CR_IW_READY_FORM37_CARRIER_STAGE2_DEFENCE = 0.08
+@CR_IW_READY_FORM37_CARRIER_STAGE2_SUPPLY = -0.08
+@CR_IW_READY_FORM37_MEMBER_STAGE1_ORG = 0.04
+@CR_IW_READY_FORM37_MEMBER_STAGE1_SUPPLY = -0.04
+@CR_IW_READY_FORM37_MEMBER_STAGE2_ORG = 0.06
+@CR_IW_READY_FORM37_MEMBER_STAGE2_SUPPLY = -0.05
+
+ideas = {
+	country = {
+		independence_wave_form17_charter = {
+			picture = generic_infantry_bonus
+			allowed = { has_country_flag = independence_wave_form17_carrier }
+			allowed_civil_war = { always = yes }
+			modifier = {
+				army_defence_factor = @CR_IW_READY_FORM17_CARRIER_DEFENCE
+				army_org_factor = @CR_IW_READY_FORM17_CARRIER_ORG
+				stability_factor = @CR_IW_READY_FORM17_CARRIER_STABILITY
+			}
+		}
+		independence_wave_form17_autonomous_member = {
+			picture = generic_constitutional_guarantees
+			allowed = { has_country_flag = independence_wave_form17_autonomous_member }
+			allowed_civil_war = { always = yes }
+			modifier = { army_defence_factor = @CR_IW_READY_FORM17_MEMBER_DEFENCE }
+		}
+
+		independence_wave_form32_charter = {
+			picture = generic_political_support
+			allowed = { has_country_flag = independence_wave_form32_carrier }
+			allowed_civil_war = { always = yes }
+			modifier = {
+				supply_consumption_factor = @CR_IW_READY_FORM32_CARRIER_SUPPLY
+				army_org_factor = @CR_IW_READY_FORM32_CARRIER_ORG
+				political_power_factor = @CR_IW_READY_FORM32_CARRIER_PP
+			}
+		}
+		independence_wave_form32_autonomous_member = {
+			picture = generic_constitutional_guarantees
+			allowed = { has_country_flag = independence_wave_form32_autonomous_member }
+			allowed_civil_war = { always = yes }
+			modifier = {
+				supply_consumption_factor = @CR_IW_READY_FORM32_MEMBER_SUPPLY
+				army_org_factor = @CR_IW_READY_FORM32_MEMBER_ORG
+			}
+		}
+
+		independence_wave_form36_charter = {
+			picture = generic_flexible_foreign_policy
+			allowed = { has_country_flag = independence_wave_form36_carrier }
+			allowed_civil_war = { always = yes }
+			modifier = {
+				trade_opinion_factor = @CR_IW_READY_FORM36_CARRIER_TRADE
+				convoy_escort_efficiency = @CR_IW_READY_FORM36_CARRIER_CONVOY
+				supply_consumption_factor = @CR_IW_READY_FORM36_CARRIER_SUPPLY
+			}
+		}
+		independence_wave_form36_autonomous_member = {
+			picture = generic_constitutional_guarantees
+			allowed = { has_country_flag = independence_wave_form36_autonomous_member }
+			allowed_civil_war = { always = yes }
+			modifier = {
+				trade_opinion_factor = @CR_IW_READY_FORM36_MEMBER_TRADE
+				convoy_escort_efficiency = @CR_IW_READY_FORM36_MEMBER_CONVOY
+			}
+		}
+
+		independence_wave_form37_charter = {
+			picture = generic_constitutional_guarantees
+			allowed = { has_country_flag = independence_wave_form37_carrier }
+			allowed_civil_war = { always = yes }
+			modifier = {
+				army_org_factor = @CR_IW_READY_FORM37_CARRIER_ORG
+				army_defence_factor = @CR_IW_READY_FORM37_CARRIER_DEFENCE
+				supply_consumption_factor = @CR_IW_READY_FORM37_CARRIER_SUPPLY
+			}
+		}
+		independence_wave_form37_autonomous_member = {
+			picture = generic_infantry_bonus
+			allowed = { has_country_flag = independence_wave_form37_autonomous_member }
+			allowed_civil_war = { always = yes }
+			modifier = {
+				army_org_factor = @CR_IW_READY_FORM37_MEMBER_ORG
+				supply_consumption_factor = @CR_IW_READY_FORM37_MEMBER_SUPPLY
+			}
+		}
+
+		independence_wave_form17_charter_stage1 = {
+			picture = generic_infantry_bonus
+			allowed = { has_country_flag = independence_wave_form17_carrier }
+			allowed_civil_war = { always = yes }
+			modifier = {
+				army_defence_factor = @CR_IW_READY_FORM17_CARRIER_STAGE1_DEFENCE
+				army_org_factor = @CR_IW_READY_FORM17_CARRIER_STAGE1_ORG
+				stability_factor = @CR_IW_READY_FORM17_CARRIER_STAGE1_STABILITY
+			}
+		}
+		independence_wave_form17_charter_stage2 = {
+			picture = generic_infantry_bonus
+			allowed = { has_country_flag = independence_wave_form17_carrier }
+			allowed_civil_war = { always = yes }
+			modifier = {
+				army_defence_factor = @CR_IW_READY_FORM17_CARRIER_STAGE2_DEFENCE
+				army_org_factor = @CR_IW_READY_FORM17_CARRIER_STAGE2_ORG
+				stability_factor = @CR_IW_READY_FORM17_CARRIER_STAGE2_STABILITY
+			}
+		}
+		independence_wave_form17_autonomous_member_stage1 = {
+			picture = generic_constitutional_guarantees
+			allowed = { has_country_flag = independence_wave_form17_autonomous_member }
+			allowed_civil_war = { always = yes }
+			modifier = { army_defence_factor = @CR_IW_READY_FORM17_MEMBER_STAGE1_DEFENCE }
+		}
+		independence_wave_form17_autonomous_member_stage2 = {
+			picture = generic_constitutional_guarantees
+			allowed = { has_country_flag = independence_wave_form17_autonomous_member }
+			allowed_civil_war = { always = yes }
+			modifier = {
+				army_defence_factor = @CR_IW_READY_FORM17_MEMBER_STAGE2_DEFENCE
+				army_org_factor = @CR_IW_READY_FORM17_MEMBER_STAGE2_ORG
+			}
+		}
+
+		independence_wave_form32_charter_stage1 = {
+			picture = generic_political_support
+			allowed = { has_country_flag = independence_wave_form32_carrier }
+			allowed_civil_war = { always = yes }
+			modifier = {
+				supply_consumption_factor = @CR_IW_READY_FORM32_CARRIER_STAGE1_SUPPLY
+				army_org_factor = @CR_IW_READY_FORM32_CARRIER_STAGE1_ORG
+				political_power_factor = @CR_IW_READY_FORM32_CARRIER_STAGE1_PP
+			}
+		}
+		independence_wave_form32_charter_stage2 = {
+			picture = generic_political_support
+			allowed = { has_country_flag = independence_wave_form32_carrier }
+			allowed_civil_war = { always = yes }
+			modifier = {
+				supply_consumption_factor = @CR_IW_READY_FORM32_CARRIER_STAGE2_SUPPLY
+				army_org_factor = @CR_IW_READY_FORM32_CARRIER_STAGE2_ORG
+				political_power_factor = @CR_IW_READY_FORM32_CARRIER_STAGE2_PP
+			}
+		}
+		independence_wave_form32_autonomous_member_stage1 = {
+			picture = generic_constitutional_guarantees
+			allowed = { has_country_flag = independence_wave_form32_autonomous_member }
+			allowed_civil_war = { always = yes }
+			modifier = {
+				supply_consumption_factor = @CR_IW_READY_FORM32_MEMBER_STAGE1_SUPPLY
+				army_org_factor = @CR_IW_READY_FORM32_MEMBER_STAGE1_ORG
+			}
+		}
+		independence_wave_form32_autonomous_member_stage2 = {
+			picture = generic_constitutional_guarantees
+			allowed = { has_country_flag = independence_wave_form32_autonomous_member }
+			allowed_civil_war = { always = yes }
+			modifier = {
+				supply_consumption_factor = @CR_IW_READY_FORM32_MEMBER_STAGE2_SUPPLY
+				army_org_factor = @CR_IW_READY_FORM32_MEMBER_STAGE2_ORG
+			}
+		}
+
+		independence_wave_form36_charter_stage1 = {
+			picture = generic_flexible_foreign_policy
+			allowed = { has_country_flag = independence_wave_form36_carrier }
+			allowed_civil_war = { always = yes }
+			modifier = {
+				trade_opinion_factor = @CR_IW_READY_FORM36_CARRIER_STAGE1_TRADE
+				convoy_escort_efficiency = @CR_IW_READY_FORM36_CARRIER_STAGE1_CONVOY
+				supply_consumption_factor = @CR_IW_READY_FORM36_CARRIER_STAGE1_SUPPLY
+			}
+		}
+		independence_wave_form36_charter_stage2 = {
+			picture = generic_flexible_foreign_policy
+			allowed = { has_country_flag = independence_wave_form36_carrier }
+			allowed_civil_war = { always = yes }
+			modifier = {
+				trade_opinion_factor = @CR_IW_READY_FORM36_CARRIER_STAGE2_TRADE
+				convoy_escort_efficiency = @CR_IW_READY_FORM36_CARRIER_STAGE2_CONVOY
+				supply_consumption_factor = @CR_IW_READY_FORM36_CARRIER_STAGE2_SUPPLY
+			}
+		}
+		independence_wave_form36_autonomous_member_stage1 = {
+			picture = generic_constitutional_guarantees
+			allowed = { has_country_flag = independence_wave_form36_autonomous_member }
+			allowed_civil_war = { always = yes }
+			modifier = {
+				trade_opinion_factor = @CR_IW_READY_FORM36_MEMBER_STAGE1_TRADE
+				convoy_escort_efficiency = @CR_IW_READY_FORM36_MEMBER_STAGE1_CONVOY
+			}
+		}
+		independence_wave_form36_autonomous_member_stage2 = {
+			picture = generic_constitutional_guarantees
+			allowed = { has_country_flag = independence_wave_form36_autonomous_member }
+			allowed_civil_war = { always = yes }
+			modifier = {
+				trade_opinion_factor = @CR_IW_READY_FORM36_MEMBER_STAGE2_TRADE
+				convoy_escort_efficiency = @CR_IW_READY_FORM36_MEMBER_STAGE2_CONVOY
+			}
+		}
+
+		independence_wave_form37_charter_stage1 = {
+			picture = generic_constitutional_guarantees
+			allowed = { has_country_flag = independence_wave_form37_carrier }
+			allowed_civil_war = { always = yes }
+			modifier = {
+				army_org_factor = @CR_IW_READY_FORM37_CARRIER_STAGE1_ORG
+				army_defence_factor = @CR_IW_READY_FORM37_CARRIER_STAGE1_DEFENCE
+				supply_consumption_factor = @CR_IW_READY_FORM37_CARRIER_STAGE1_SUPPLY
+			}
+		}
+		independence_wave_form37_charter_stage2 = {
+			picture = generic_constitutional_guarantees
+			allowed = { has_country_flag = independence_wave_form37_carrier }
+			allowed_civil_war = { always = yes }
+			modifier = {
+				army_org_factor = @CR_IW_READY_FORM37_CARRIER_STAGE2_ORG
+				army_defence_factor = @CR_IW_READY_FORM37_CARRIER_STAGE2_DEFENCE
+				supply_consumption_factor = @CR_IW_READY_FORM37_CARRIER_STAGE2_SUPPLY
+			}
+		}
+		independence_wave_form37_autonomous_member_stage1 = {
+			picture = generic_infantry_bonus
+			allowed = { has_country_flag = independence_wave_form37_autonomous_member }
+			allowed_civil_war = { always = yes }
+			modifier = {
+				army_org_factor = @CR_IW_READY_FORM37_MEMBER_STAGE1_ORG
+				supply_consumption_factor = @CR_IW_READY_FORM37_MEMBER_STAGE1_SUPPLY
+			}
+		}
+		independence_wave_form37_autonomous_member_stage2 = {
+			picture = generic_infantry_bonus
+			allowed = { has_country_flag = independence_wave_form37_autonomous_member }
+			allowed_civil_war = { always = yes }
+			modifier = {
+				army_org_factor = @CR_IW_READY_FORM37_MEMBER_STAGE2_ORG
+				supply_consumption_factor = @CR_IW_READY_FORM37_MEMBER_STAGE2_SUPPLY
+			}
+		}
+	}
+}

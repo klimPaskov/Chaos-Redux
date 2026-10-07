@@ -22,7 +22,7 @@ Agent decision D31 admits thirteen Southeast Asia, East Asia and Oceania rows th
 
 Radical sovereignty is excluded for all thirteen. Aceh, Bali, Laos, Champa, Inner Mongolia, Ryukyu and Samoa are vanilla tags released by `release` from their vanilla cores. Minangkabau, the Bugis state, the Shan federation, Mon State, the Kachin state and East Turkestan are created as dynamic countries from their reserved tags and open under a named council chaired by the leader the game appoints: the Minangkabau Council of the Nagari, the Hadat Council of South Celebes, the Federal Council of Shan Chiefs (the federation's council from 1922), the Provisional Mon Federal Council, the Council of the Kachin Duwas and the Provisional Council of East Turkestan.
 
-Aceh, Bali, Laos, Inner Mongolia and Ryukyu keep their vanilla leaders: Sultan Alauddin Muhammad Da'ud Syah II, the Dewa Agung of Klungkung, King Sisavang Vong, Prince Demchugdongrub and Hiroshi Sho. Vanilla CHM and SAM have no characters, so the game appoints the leader of their opening governments. Aceh and Mon State are registry Level 3 rows admitted with a Level 2 layer; their signature modules are queued.
+Aceh, Bali, Laos, Inner Mongolia and Ryukyu keep their vanilla leaders: Sultan Alauddin Muhammad Da'ud Syah II, the Dewa Agung of Klungkung, King Sisavang Vong, Prince Demchugdongrub and Hiroshi Sho. Vanilla CHM and SAM have no characters, so the game appoints the leader of their opening governments. Aceh and Mon State are registry Level 3 rows admitted with a Level 2 layer; their signature routes are described in [the Event 006 signature modules](signature_modules.md).
 
 Aceh and Minangkabau share RG-SUMATRA, the Bugis state and Bali share RG-EAST-INDONESIA, the Shan, Mon and Kachin rows share RG-MAINLAND-SE-ASIA-COARSE, Laos and Champa share RG-LAOS-VIETNAM-HIGHLANDS, East Turkestan and Inner Mongolia share RG-INNER-ASIA, and Samoa shares RG-PACIFIC-ISLANDS with Fiji, so a wave releases at most one country from each group. East Turkestan's anchor 617 is Sinkiang's capital, which the planner protects, so it is chosen only after Urumqi has passed to a country whose capital is elsewhere. Inner Mongolia and Samoa need their vanilla tags to be absent, as Mengkukuo exists at the 1936 start.
 
@@ -131,13 +131,17 @@ The Bugis state and Champa are Level 1 rows with no regional layer.
 
 FORM-36 Maritime Federation has Aceh, the Bugis state and Bali (Riau is blocked and the Moluccan row is a vanilla overlay). FORM-37 Mainland Southeast Asian Federation has Mon State, the Shan federation and the Kachin state (Karen, Chin and Arakan are blocked). FORM-38 Polynesian League State has Hawaii and Samoa (Tonga and Aotearoa are blocked). All three remain closed: none has a carrier tag, member contract, consent rule, territory proof or flag, and none is in the shared commit allowlist. The three FORM-37 members share RG-MAINLAND-SE-ASIA-COARSE, and the Bugis state and Bali share RG-EAST-INDONESIA, so those members arrive in different waves.
 
+## Level 3 signature modules
+
+Aceh builds its school and port institutions, forms PUSA only after 5 May 1939, retires its merchant credit before opening the FORM-36 route, and preserves the vanilla roster. Mon can choose local federal councils or a central river office, then fund its Salween transport and border watch before offering a sovereign FORM-37 compact. A costed Mon school-delegate program is optional and does not gate FORM-37. See [the Event 006 signature modules](signature_modules.md) for the full focus, decision, formable and cleanup contract.
+
 ## Assets
 
 The rows reuse their registered or vanilla flags, names and leader portraits, shared Event 006 and vanilla idea pictures, the shared decision icons and vanilla report event pictures. No new sprite is registered.
 
 ## Future plans
 
-- Signature modules for Aceh and Mon State.
+- Rights-cleared character or portrait work for the Aceh education route remains pending in the [portrait research handoff](../../plans/006_independence_wave_plans/subagent_handoffs/signature_portraits_20261006.md); the signature mechanics do not assign a new named character.
 - Five-node focus groups for the eleven Level 2 rows.
 - Sourced institutional leaders for the six custom councils.
 - Named community packages for the Dayak, Karen, Chin, Hmong, Papuan and Maori rows, and sourced claimants for Riau and Pattani.
