@@ -45,6 +45,60 @@
       ]
     }
   },
+  "helperImpact": {
+    "firstValidRequest": {
+      "mode": "impact",
+      "impactSubject": {
+        "kind": "helper",
+        "name": "brilliant_scientist_mengele_record_singularity_component"
+      },
+      "maxDepth": 1,
+      "maxNodes": 4,
+      "maxEdges": 8,
+      "expandHelpers": false,
+      "refresh": false
+    },
+    "firstValidResult": {
+      "content": [
+        {
+          "type": "text",
+          "text": "tool call error: tool call failed for `hoi4_agent_tools/hoi4.event_inspect`\n\nCaused by:\n    timed out awaiting tools/call after 600s"
+        }
+      ],
+      "isError": true
+    },
+    "narrowerRequest": {
+      "mode": "impact",
+      "impactSubject": {
+        "kind": "helper",
+        "name": "brilliant_scientist_mengele_record_singularity_component"
+      },
+      "maxDepth": 1,
+      "maxNodes": 1,
+      "maxEdges": 1,
+      "expandHelpers": false,
+      "refresh": false
+    },
+    "narrowerResult": {
+      "content": [
+        {
+          "type": "text",
+          "text": "tool call error: tool call failed for `hoi4_agent_tools/hoi4.event_inspect`\n\nCaused by:\n    timed out awaiting tools/call after 600s"
+        }
+      ],
+      "isError": true
+    },
+    "initialArgumentCorrection": {
+      "content": [
+        {
+          "type": "text",
+          "text": "MCP error -32602: Input validation error: Invalid arguments for tool hoi4.event_inspect: Invalid option: expected one of \"event\"|\"helper\"|\"flag\"|\"variable\"|\"array\"|\"event_target\"|\"saved_scope\" at impactSubject.kind\nInvalid input: expected string, received undefined at impactSubject.name\nUnrecognized key: \"symbol\" at impactSubject"
+        }
+      ],
+      "isError": true
+    },
+    "coverage": "Both valid helper-impact calls returned client tools/call timeout after600s. No current changed-helper graph artifact or baseline was delivered, so dependent targeted render/compare acceptance remains unavailable. Source lookup and script validation retain their distinct partial coverage."
+  },
   "currentHelperMcp": {
     "validatedSource": {
       "source": "\n\tset_temp_variable = { mengele_event016_native_component_recorded = constant:brilliant_scientist_value.zero }\n\tset_temp_variable = { mengele_event016_requested_stage = constant:brilliant_scientist_project_stage.prototype }\n\tset_temp_variable = { mengele_event016_native_component_index = constant:brilliant_scientist_value.zero }\n\tif = {\n\t\tlimit = {\n\t\t\tbrilliant_scientist_mengele_singularity_component_native_output_is_authentic = yes\n\t\t\tbrilliant_scientist_mengele_project_stage_receipt_is_empty = yes\n\t\t}\n\t\tbrilliant_scientist_mengele_initialize_project_stage_receipts = yes\n\t\tbrilliant_scientist_mengele_initialize_singularity_component_provenance = yes\n\t\tif = {\n\t\t\tlimit = { NOT = { is_in_array = { array = mengele_event016_singularity_component_entries value = brilliant_scientist_singularity_component } } }\n\t\t\tadd_to_array = { array = mengele_event016_singularity_component_entries value = brilliant_scientist_singularity_component }\n\t\t\tset_variable = { mengele_event016_singularity_component_count = mengele_event016_singularity_component_entries^num }\n\t\t\tif = { limit = { check_variable = { var = brilliant_scientist_singularity_component value = constant:brilliant_scientist_singularity_component.command_core compare = equals } } set_country_flag = mengele_event016_singularity_command_core_completed }\n\t\t\telse_if = { limit = { check_variable = { var = brilliant_scientist_singularity_component value = constant:brilliant_scientist_singularity_component.power_link compare = equals } } set_country_flag = mengele_event016_singularity_power_link_completed }\n\t\t\telse_if = { limit = { check_variable = { var = brilliant_scientist_singularity_component value = constant:brilliant_scientist_singularity_component.containment_lattice compare = equals } } set_country_flag = mengele_event016_singularity_containment_lattice_completed }\n\t\t\telse_if = { limit = { check_variable = { var = brilliant_scientist_singularity_component value = constant:brilliant_scientist_singularity_component.temporal_authenticator compare = equals } } set_country_flag = mengele_event016_singularity_temporal_authenticator_completed }\n\t\t\telse_if = { limit = { check_variable = { var = brilliant_scientist_singularity_component value = constant:brilliant_scientist_singularity_component.delivery_architecture compare = equals } } set_country_flag = mengele_event016_singularity_delivery_architecture_completed }\n\t\t\telse_if = { limit = { check_variable = { var = brilliant_scientist_singularity_component value = constant:brilliant_scientist_singularity_component.fail_deadly_governor compare = equals } } set_country_flag = mengele_event016_singularity_fail_deadly_governor_completed }\n\t\t\tset_temp_variable = { mengele_event016_native_component_index = brilliant_scientist_singularity_component }\n\t\t\tsubtract_from_temp_variable = { mengele_event016_native_component_index = constant:brilliant_scientist_value.one }\n\t\t\tset_variable = { mengele_event016_singularity_component_mode_entries^mengele_event016_native_component_index = mengele_event016_native_component_mode }\n\t\t\tset_temp_variable = { mengele_event016_native_component_recorded = constant:brilliant_scientist_value.one }\n\t\t}\n\t\t# An exact duplicate may retry missing Prototype, preserving first mode.\n\t\tbrilliant_scientist_mengele_try_settle_singularity_native_prototype = yes\n\t}\n\tbrilliant_scientist_mengele_clear_singularity_component_selectors = yes\n",

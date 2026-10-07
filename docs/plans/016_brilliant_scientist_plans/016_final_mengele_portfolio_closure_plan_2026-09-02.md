@@ -14,6 +14,36 @@ Revision note: this revision resolves the DLC-state and timed-decision receipt c
 
 The implementation target is a provider-neutral Mengele closure for all fifteen existing Event 016 project families through the existing Mengele program. It must reuse the existing special-project objects, the existing seven-family custom technology API, the existing six-family conventional technology API, and the existing Fallout/world-end pipeline. It must not add a project family, hidden technology, country, focus, public meter, GUI, super-event, achievement, or random pool.
 
+## Current native-receipt checkpoint, 2026-10-07
+
+Disposition: the demonstrated exact native receipt tranche is implemented in source.
+The full accepted portfolio closure remains accepted and queued for unresolved lifecycle and acceptance work.
+Acceptance basis: the existing fifteen-family portfolio, the user's exact output marker and unchanged-paid-timer approvals, and the parent's recommended-option acceptance in the [native ownership amendment](../../specs/016_brilliant_scientist_specs/specs/016_native_prototype_ownership_amendment_2026-10-03.md), including D17's fixed-source policy and the accepted Singularity gap recommendation.
+This checkpoint supersedes the older absence-of-provider-branches claim, receipt-wiring queue and fifteen-family matrix gap column only for demonstrated exact output/adoption source coverage.
+Historical design and unrelated implementation requirements are retained.
+
+`4b1eeba2b2cf36ebbcb49e3573035dfb022ec0b5` supplies the exact reactor/six Biological output hooks and retires completed-but-unobserved Biological scanning.
+`9a80334164a5d6c6e84c89065247c0d8f81fbe8f` supplies the nine fixed ordinary sources and guarded fresh bridge paths, recorded in the [fixed-source report](016_fixed_native_provider_sources_2026-10-07.md) and its core/integration/parent evidence.
+`f95e912d7026dfff47379f48c0f98b4240e6ab61` supplies six literal Singularity fresh hooks, separate exact historical adoption, durable first-acceptance component modes, and paid guards at both component acceptance and final Prototype, recorded in the [Singularity report](016_singularity_native_receipts_2026-10-07.md) and its core/integration/parent evidence.
+Together with Cloning, Rocketry and Electronics, all fifteen families have exact output/adoption source paths.
+Singularity's six component modes remain separate.
+The parent independently reran 10,953 fixed-source cases and 7,721 Singularity cases, and the current maintained adapter count is 5,487 assertions.
+Declared provider, native/operational payload, payment, timer, availability and modifier fixtures or stubs prevent these tests from establishing engine acceptance.
+
+Current reference/search/read, source lookup with path/line/view/keyPath, and script validation routes are exposed.
+Reference/source reads succeed, while script validation remains partial.
+`adf77c6d2043edb65fbb66fec93faf58229cad80` records the exact one-node graph comparison timeout after 600 seconds, without a comparison artifact.
+The exact component-recorder helper-impact request and its narrower one-node/one-edge retry each returned a client timeout after 600 seconds, with no changed-helper graph artifact or targeted render/comparison acceptance.
+The dedicated four-decision Rocketry AI auditor is running with no available pass or scenario comparison.
+Tool exposure is distinct from verified service health and standalone viewer availability.
+
+Native start/cancel synchronization, resumption, release/reselection, delayed callbacks, real payload/native timer execution, full terminal acceptance, domain/UI/catalog/full-event coverage and clean live `error.log` evidence remain incomplete.
+The three user-approved provider categories, exact marker hooks and unchanged matching paid timer remain binding.
+The user-approved no-DLC Synod reciprocal military access after explicit partner consent at 75 PP is retained.
+Source commit `c50fff6fae24e1de193bca70264d384dafa735a3` was verified read-only, without expanding this reconciliation into diplomatic acceptance work.
+No stronger lifecycle requirement is waived, no simplification is introduced, and the full Event016 goal remains incomplete.
+Parent review and commit follow the [bounded documentation handoff](subagent_handoffs/016_native_receipt_resume_reconcile_2026-10-07.md).
+
 ## Decision summary
 
 The smallest complete architecture is a private Mengele provider layer with its own family-stage receipts and one active program receipt per family. It is deliberately separate from Kruger’s Event 016 board ledger, capacity, facilities, event targets, evolution state, terminal commitment, and achievements.

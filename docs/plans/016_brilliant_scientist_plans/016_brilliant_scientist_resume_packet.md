@@ -4,6 +4,42 @@
 
 Date: 2026-07-14
 
+## Current native-receipt checkpoint, 2026-10-07
+
+This checkpoint supersedes only older current queue statements for the demonstrated native receipt work below.
+The dated history and broader accepted completion requirements remain in force.
+Acceptance comes from the user-approved exact output marker hooks and unchanged matching paid timer, the accepted fifteen-family portfolio, and the parent's recommended-option acceptance recorded in the [native ownership amendment](../../specs/016_brilliant_scientist_specs/specs/016_native_prototype_ownership_amendment_2026-10-03.md).
+
+| Receipt surface | Current source evidence | Disposition and limits |
+| --- | --- | --- |
+| High Energy reactor and six Biological sources | `4b1eeba2b2cf36ebbcb49e3573035dfb022ec0b5` binds exact native output identities. Completed-but-unobserved Biological scanning is retired. | Implemented source hooks. Native lifecycle and payload acceptance remain open. |
+| Nine fixed ordinary sources | `9a80334164a5d6c6e84c89065247c0d8f81fbe8f` and the [fixed-source report](016_fixed_native_provider_sources_2026-10-07.md), including core, integration and parent evidence. | Implemented exact fresh/adopted source receipts and guarded fresh bridge paths. Full operational payload execution is unproven. |
+| Six Singularity components | `f95e912d7026dfff47379f48c0f98b4240e6ab61` and the [Singularity report](016_singularity_native_receipts_2026-10-07.md), including core, integration and parent evidence. | Implemented literal fresh witnesses, separate exact historical adoption and first-acceptance modes. Component and final Prototype acceptance both reject matching paid work. |
+
+Together with the retained Cloning, Rocketry and Electronics source checkpoints, all fifteen families have exact output/adoption source paths.
+Singularity keeps six separate component modes.
+The parent independently reran 10,953 fixed-source cases and 7,721 Singularity cases.
+The current maintained adapter total is 5,487 assertions, superseding the fixed tranche's dated 4,911 total.
+Provider validity and native/operational payload, payment, timer, availability and modifier behavior retain their declared fixture or stub limits.
+These source tests are not engine acceptance.
+
+Current reference/search/read, source lookup with path/line/view/keyPath, and script validation routes are exposed.
+Parent reference/source reads succeeded, and this curator's bounded reference/source reads also succeeded.
+Script validation remains partial, and `adf77c6d2043edb65fbb66fec93faf58229cad80` retains the exact one-node comparison error `timed out awaiting tools/call after 600s`, with no comparison artifact.
+The exact component-recorder helper-impact request and its narrower one-node/one-edge retry each returned a client timeout after 600 seconds.
+No changed-helper graph artifact or targeted render/comparison acceptance was delivered, as recorded in the Singularity parent evidence.
+The dedicated four-decision Rocketry `chaosx_ai_probability_auditor` is running according to the parent.
+No pass or scenario comparison is available yet, and the older auditor-availability statement is dated evidence only.
+Exposed tools and successful bounded reads do not establish overall service health or standalone viewer availability.
+Historical focus, technology, GUI and map findings below were not re-audited by this reconciliation.
+
+Native start/cancel synchronization, resumption, same-project release/reselection and delayed callbacks remain unresolved, as do real payload/native timer execution, full terminal acceptance, domain/UI/catalog/full-event coverage and clean live `error.log` evidence.
+Retain the user approvals for three provider categories, exact output marker hooks, and leaving a matching paid timer unchanged on native completion.
+The approved no-DLC Synod accord remains reciprocal military access after explicit partner consent at 75 PP.
+`c50fff6fae24e1de193bca70264d384dafa735a3` was verified read-only for that source contract, without renewed runtime or balance acceptance.
+The [reconciliation handoff](subagent_handoffs/016_native_receipt_resume_reconcile_2026-10-07.md) records document dispositions, exact evidence and remaining limits for parent review.
+No requirement is simplified or waived, and full Event016 completion remains incomplete.
+
 ## Current curator checkpoint, 2026-09-05
 
 This 2026-09-05 checkpoint is historical for the biological route; the 2026-09-20 native-raid amendment and current biological operations guide supersede its decision-production and staging statements.

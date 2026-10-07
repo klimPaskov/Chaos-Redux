@@ -78,6 +78,9 @@ MCP source lookup resolves the current component recorder and its nested mode-in
 A concurrent workspace-index revision invalidated one paged continuation, and the parent recovered the exact location through a narrower path/line query.
 Explicit COUNTRY script validation remains partial, with unchecked native argument blocks and scripted-helper calls that require source review.
 Current inspect/compare limitations are retained in the parent evidence and are not replaced by source scenarios.
+The exact component-recorder helper-impact request returned a client timeout after 600 seconds with bounds of four nodes and eight edges.
+The required narrower retry, with one node and one edge, returned the same client timeout after 600 seconds.
+No changed-helper graph artifact or baseline was delivered, so targeted render/comparison acceptance remains open.
 
 Native callback timing, native cancellation/resumption, same-project reselection and delayed-output isolation remain unresolved.
 The complete terminal/Fallout chain, full real payload acceptance, remaining UI/domain/catalog requirements and clean live error.log evidence remain outside this tranche's completion claim.
