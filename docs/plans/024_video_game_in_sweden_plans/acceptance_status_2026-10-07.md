@@ -146,5 +146,26 @@ Its complete lint artifact was absent from the configured default local path, so
 D16 remains unapproved, and all other native, full weighted-surface, asset-cleanup and acceptance gaps above remain in force.
 No game was launched and no clean live error log is claimed.
 
+## Evolution III candidate discovery
+
+Handoff 30 and its three hash-verified inspect artifacts reconcile the earlier four-of-twenty-three discovery limitation.
+The tool assigns four ordinary actions to `decision_ai_will_do` and nineteen timed actions to `mission_ai_will_do`.
+These are analyzer classifications, not nineteen native missions or a change to the accepted decision map.
+The union contains all twenty-three implemented action IDs, and the matching timed-action adapter finds all four initial Evolution III response actions with `poolComplete = true`.
+The adapter provides scores and eligibility only, with no normalized selection probability.
+
+The parent checked the actual maximum-risk gate and its current constants.
+Trust the Model requires the current Swedish host, no disabled Evolution III, its payment package, no severe campaign crisis, no campaign supply gap or recorded major mismatch, and surrender progress below 0.75.
+At war it also requires stability above 0.35, and at peace above 0.50.
+Its payment gate requires 25 command power, 70 political power and 0.04 war support.
+The campaign supply-gap predicate is wartime trains below three, trucks below twenty or fuel below one hundred.
+The willingness factors for severe crisis and low stability are zero.
+These are source facts and do not prove an observed AI choice or exact supply delivery.
+
+The matched inspect returned no required input paths despite linked helper references, so absence of reported inputs is not accepted as a complete scenario binding.
+P24-C5, P24-C6 and P24-C7 score rankings and eligibility remain unevaluated until actor, host, resources, territory and native helper inputs are bound.
+In particular, the source implication that surrender 0.90 excludes Trust is not presented as an MCP-evaluated exclusion.
+No source, weight, route, asset, workbook or CSV changed in this discovery pass.
+
 Skills used in this review are events, decisions/missions, MTTH, subagents, XLSX, Spreadsheets, and the shared-tree commit workflow.
 No skill was changed.
