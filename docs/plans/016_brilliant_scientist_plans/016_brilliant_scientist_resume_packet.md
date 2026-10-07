@@ -28,9 +28,11 @@ Parent reference/source reads succeeded, and this curator's bounded reference/so
 Script validation remains partial, and `adf77c6d2043edb65fbb66fec93faf58229cad80` retains the exact one-node comparison error `timed out awaiting tools/call after 600s`, with no comparison artifact.
 The exact component-recorder helper-impact request and its narrower one-node/one-edge retry each returned a client timeout after 600 seconds.
 No changed-helper graph artifact or targeted render/comparison acceptance was delivered, as recorded in the Singularity parent evidence.
-The dedicated four-decision Rocketry audit returned partial source and score evidence, retained in [its handoff](subagent_handoffs/016_native_selection_current_ai_2026-10-07.md).
-The supplied fixtures leave native-project/provider/paid-state inputs unresolved, and the nine identical forced-candidate rows are rejected as distinct scenario evidence.
-No eligibility, ranking or before/after comparison pass is available, and the older auditor-availability statement remains dated evidence only.
+The earlier Rocketry audit and its nine repeated forced-candidate rows remain historical partial evidence.
+The [immutable-source follow-up](016_rocketry_native_ai_evidence_2026-10-07.md) compares fifteen different declared scalar states without eligibility overrides and records five withdrawal score increases from zero to ten.
+Four are stale selections, while the fifth is hidden by the closed-programme visibility guard.
+The parent verified the recovered MCP bytes and separately checked zero-cost affordability, provider visibility and paid-receipt blocking.
+Joint project/technology/DLC states, state-88 diagnostics and wider campaign/native-lifecycle proof remain unresolved, so this bounded comparison is not full balance acceptance.
 Exposed tools and successful bounded reads do not establish overall service health or standalone viewer availability.
 Historical focus, technology, GUI and map findings below were not re-audited by this reconciliation.
 

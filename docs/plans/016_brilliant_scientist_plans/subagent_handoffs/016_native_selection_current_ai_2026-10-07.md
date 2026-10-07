@@ -1,5 +1,9 @@
 # Event016 Rocketry native selection AI partial audit
 
+Current follow-up: [the immutable-source comparison](../016_rocketry_native_ai_evidence_2026-10-07.md) supersedes this record's missing-baseline and unperformed-comparison status for fifteen declared scalar cases.
+The nine repeated-state rows below remain rejected as distinct scenario evidence, and joint native-state, scope-88 and engine limits remain open.
+This original audit record is preserved as dated evidence.
+
 Date: 2026-10-07.
 Authoring: parent record of the bounded `chaosx_ai_probability_auditor` return, with parent source review.
 Auditor ID: `01a116da-4d33-7960-b114-3277205d2277`.
