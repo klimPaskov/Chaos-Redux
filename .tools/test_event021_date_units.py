@@ -33,6 +33,19 @@ def blocks(nodes):
             yield from blocks(data)
 
 
+def calendar_surfaces():
+    """Include every Event 021 engine file, including later added adapters."""
+    revision = os.environ.get('CHAOSX_EVENT021_TEST_REVISION')
+    if revision:
+        paths = subprocess.run(['git', 'ls-tree', '-r', '--name-only', revision,
+                                '--', 'common', 'events'], cwd=ROOT, check=True,
+                               capture_output=True, encoding='utf-8').stdout.splitlines()
+        return [path for path in paths if Path(path).name.startswith('021') and path.endswith('.txt')]
+    return sorted(str(path.relative_to(ROOT)).replace('\\', '/')
+                  for folder in ('common', 'events')
+                  for path in (ROOT / folder).rglob('021*.txt'))
+
+
 class Clock:
     def __init__(self, days):
         self.temporary = {'event021_date_offset': Decimal(str(days))}
@@ -112,7 +125,7 @@ class CalendarTests(unittest.TestCase):
 
     def test_every_deadline_addition_uses_caller_owned_converted_days(self):
         count = 0
-        for path in SOURCES:
+        for path in calendar_surfaces():
             for nodes in blocks(parse(source(path))):
                 for index, (key, data) in enumerate(nodes):
                     if key not in ('add_to_variable', 'add_to_temp_variable'):
@@ -129,8 +142,8 @@ class CalendarTests(unittest.TestCase):
                         self.assertNotEqual(seed[0][1], 'event021_date_offset')
                         self.assertEqual(nodes[index - 1], ('event021_days_to_date_offset', 'yes'))
                     count += 1
-        # Opening readiness and mediation add three caller-owned deadlines.
-        self.assertEqual(count, 43)
+        # Includes the active-war Evolution I retry added after the first audit.
+        self.assertEqual(count, 44)
 
     def test_native_day_fields_and_mtth_day_values_are_unchanged_from_head(self):
         def day_fields(text):

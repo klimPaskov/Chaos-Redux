@@ -74,6 +74,13 @@ The flood fill uses the temporary state flag `event021_active_remnant_reach` and
 Kept ordinary rows split the child budget by region weight with whole divisions; a row below `minimum_child_divisions` is dropped rather than borrowing from a sibling.
 `event021_parent_append_active_front_row` writes each kept row to the government's own `random_civil_war_active_front_*` arrays with a fresh front ID, the source front ID and generation, the exact state span, its stockpile share (its divisions over the source's, clamped between `minimum_child_stockpile_share` and `event021_parent_tuning.maximum_actor_size`), and navy and air shares only when its span holds a naval base or an airfield.
 `event021_parent_validate_active_front_receipt` publishes `random_civil_war_active_front_transaction_ready` only for aligned rows, unique positive IDs, positive contiguous exhaustive spans, unique states, anchors inside their own spans, every state still held by the source, and enough spare fronts.
+Every row also passes `event021_parent_validate_active_front_row_integers` before readiness is published.
+That helper accepts COUNTRY scope on the reviewing government and reads the caller's current `event021_active_receipt_row` from the government's aligned receipt arrays.
+The caller must initialize its in/out `event021_active_receipt_valid` to one before the first call; a failing field changes it to zero, and a later successful field or row never resets it.
+It checks the sixteen numeric identity, enumeration, force-count, and span fields by taking a private scratch remainder modulo one, without rounding, changing saved fields, or imposing an additional numeric cap.
+Scope pointers and stockpile, navy, and air ratios are excluded from integer testing because their native contracts are different.
+The integer helper neither publishes readiness nor creates actors; its temporary array is cleared on return.
+For example, the validator initializes validity, enters its `random_civil_war_active_front_ids` row loop, and calls `event021_parent_validate_active_front_row_integers = yes` with the current row index already assigned.
 It never sets `random_civil_war_front_plan_ready` and never touches the global opening template.
 
 ### Commit

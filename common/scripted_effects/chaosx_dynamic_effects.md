@@ -556,3 +556,13 @@ The Event 007 reserve-sharing effect reads its shipment from the actual paid res
 A malformed vector refunds the still-pending transaction, while a rejected settlement first retracts delivery and then refunds the sender.
 Every exit resets the opt-in input to zero.
 The API is limited to the existing Fury owner adapter and grants no periodic country content.
+
+## Event 021 active-front integer receipt check
+
+`event021_parent_validate_active_front_row_integers` lives in `021_random_civil_war_active_evolution_effects.txt` and is a COUNTRY-scoped helper for one aligned government-owned front row.
+Inputs are the country's `random_civil_war_active_front_*` arrays and caller-owned temporary `event021_active_receipt_row`.
+Its only output is the caller-preinitialized temporary `event021_active_receipt_valid`: fractional IDs, enumeration fields, division counts, offsets, or counts set it to zero; integer fields leave its prior value unchanged.
+There are no default row values, receipt repairs, numeric caps, actors, or persistent side effects.
+The private temporary values array is cleared before return, and the helper does not change any country receipt field or fractional asset share.
+Usage inside the existing aligned row loop is `event021_parent_validate_active_front_row_integers = yes`; the enclosing validator initializes validity to `constant:random_civil_war_value.one` before that loop.
+The complete contract and readiness consumer are documented in `021_random_civil_war_active_evolution_effects.md`.

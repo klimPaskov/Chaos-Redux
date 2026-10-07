@@ -874,6 +874,45 @@ event021_parent_append_active_front_row = {
 	add_to_array = { array = random_civil_war_active_front_air_ratios value = event021_active_row_air }
 }
 
+# COUNTRY scope on the reviewing government. Input: the current receipt row
+# in `event021_active_receipt_row`. Caller-owned in/out:
+# `event021_active_receipt_valid`, initialized before this helper is called.
+# Reject fractional identity, enum, force, and span fields without rounding
+# or changing the receipt. Scope pointers and fractional asset ratios are
+# deliberately not numeric integer fields.
+event021_parent_validate_active_front_row_integers = {
+	clear_temp_array = event021_active_receipt_integer_values
+	set_temp_variable = { event021_active_receipt_integer_break = constant:random_civil_war_value.zero }
+	add_to_temp_array = { array = event021_active_receipt_integer_values value = random_civil_war_active_front_ids^event021_active_receipt_row }
+	add_to_temp_array = { array = event021_active_receipt_integer_values value = random_civil_war_active_front_source_ids^event021_active_receipt_row }
+	add_to_temp_array = { array = event021_active_receipt_integer_values value = random_civil_war_active_front_generations^event021_active_receipt_row }
+	add_to_temp_array = { array = event021_active_receipt_integer_values value = random_civil_war_active_front_actor_types^event021_active_receipt_row }
+	add_to_temp_array = { array = event021_active_receipt_integer_values value = random_civil_war_active_front_archetypes^event021_active_receipt_row }
+	add_to_temp_array = { array = event021_active_receipt_integer_values value = random_civil_war_active_front_goals^event021_active_receipt_row }
+	add_to_temp_array = { array = event021_active_receipt_integer_values value = random_civil_war_active_front_routes^event021_active_receipt_row }
+	add_to_temp_array = { array = event021_active_receipt_integer_values value = random_civil_war_active_front_relationships^event021_active_receipt_row }
+	add_to_temp_array = { array = event021_active_receipt_integer_values value = random_civil_war_active_front_package_ids^event021_active_receipt_row }
+	add_to_temp_array = { array = event021_active_receipt_integer_values value = random_civil_war_active_front_package_regions^event021_active_receipt_row }
+	add_to_temp_array = { array = event021_active_receipt_integer_values value = random_civil_war_active_front_package_depths^event021_active_receipt_row }
+	add_to_temp_array = { array = event021_active_receipt_integer_values value = random_civil_war_active_front_package_archetypes^event021_active_receipt_row }
+	add_to_temp_array = { array = event021_active_receipt_integer_values value = random_civil_war_active_front_statuses^event021_active_receipt_row }
+	add_to_temp_array = { array = event021_active_receipt_integer_values value = random_civil_war_active_front_force_divisions^event021_active_receipt_row }
+	add_to_temp_array = { array = event021_active_receipt_integer_values value = random_civil_war_active_front_state_offsets^event021_active_receipt_row }
+	add_to_temp_array = { array = event021_active_receipt_integer_values value = random_civil_war_active_front_state_counts^event021_active_receipt_row }
+	for_each_loop = {
+		array = event021_active_receipt_integer_values
+		value = event021_active_receipt_integer_remainder
+		index = event021_active_receipt_integer_index
+		break = event021_active_receipt_integer_break
+		modulo_temp_variable = { var = event021_active_receipt_integer_remainder value = constant:random_civil_war_value.one }
+		if = {
+			limit = { NOT = { check_variable = { var = event021_active_receipt_integer_remainder value = constant:random_civil_war_value.zero compare = equals } } }
+			set_temp_variable = { event021_active_receipt_valid = constant:random_civil_war_value.zero }
+		}
+	}
+	clear_temp_array = event021_active_receipt_integer_values
+}
+
 # COUNTRY scope on the reviewing government. Proves the government-owned
 # receipt before any mutation: aligned rows, unique positive IDs, positive
 # contiguous exhaustive spans, unique states, each anchor inside its own span,
@@ -943,6 +982,7 @@ event021_parent_validate_active_front_receipt = {
 			array = random_civil_war_active_front_ids
 			value = event021_active_receipt_row_id
 			index = event021_active_receipt_row
+			event021_parent_validate_active_front_row_integers = yes
 			if = {
 				limit = {
 					OR = {
