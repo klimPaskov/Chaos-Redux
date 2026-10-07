@@ -146,9 +146,10 @@ The mod-side project and technology files mirror nine existing installed vanilla
 The mirrors preserve their current vanilla definitions and add only hidden Event 016 completion calls; review them against the installed vanilla sources after game updates.
 No project or technology IDs are added.
 
-`brilliant_scientist_mengele_reconcile_reused_native_project_prototypes` is a country-scope, no-argument completion adapter called by the strict-Mengele branch of `on_project_completion`; the existing Kruger synchronization and historical capture remain host-only.
-It only runs `brilliant_scientist_mengele_observe_reused_biological_sources`, which observes newly completed Biological Weapons agent projects and settles the first one as fresh output with exact provenance.
-High Energy settles through the literal `sp_nuclear_reactor` output wrapper, and Electronics and Rocketry through their exact output wrappers, so an unrelated completion settles nothing.
+High Energy and all six Biological Weapons sources settle through their literal project-output wrappers, alongside the exact Electronics and Rocketry wrappers.
+The country-level Mengele completion scan is removed because completed-but-unobserved history cannot identify the current completion.
+The existing Kruger synchronization and historical capture remain host-only.
+Fresh reused-source settlement requires the exact synchronous witness; historical adoption requires the exact completed query and records adopted mode.
 The generic `brilliant_scientist_mengele_sync_native_project_prototypes` excludes Cloning, Rocketry, Electronics, High Energy, and Biological Weapons; the reused-source contract is in `016_mengele_native_prototype_effects.md`.
 Source inventory and scenario evidence are in `docs/plans/016_brilliant_scientist_plans/subagent_handoffs/016_mengele_native_callback_audit_2026-09-06.md` and the matching implementation handoff.
 

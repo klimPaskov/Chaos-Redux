@@ -62,8 +62,13 @@ This removes a dependency on helper-created temporary values surviving return, a
 ## Reused vanilla and CBRN sources
 
 High Energy (`sp_nuclear_reactor`) and Biological Weapons (six mapped agent projects) record exact provenance without selection controls, because those projects can be completed outside the provider.
-The reactor settles through a literal wrapper in its project output; the agents are observed once each from `on_project_completion`, and the first newly completed agent settles the family.
-A source completed after the private Theory is recorded as fresh output; a source completed earlier is adopted when the Theory settles.
+The reactor and each agent settle through literal wrappers in their own project country output.
+Fresh output requires the exact source witness at that boundary and does not depend on completed-bit visibility there.
+The country-level Mengele completion scan is removed, so old unobserved completions cannot be relabeled as fresh when another project finishes.
+Theory-time historical adoption queries the exact completed source and retains adopted mode and the existing fixed agent order.
+A matching paid receipt continues unchanged when an output arrives, and repeated private Prototype outputs cannot grant another stage.
+The six biological hooks preserve the original project payloads, timing, resources, iteration rewards, native AI and facility effects.
+Existing provenance is not rewritten from later observations.
 The nine provider-exclusive Event 016 projects need no selection controls because their project outputs already call their literal family wrappers.
 Contracts are in `common/scripted_effects/016_mengele_native_prototype_effects.md`.
 
@@ -84,6 +89,7 @@ No artwork, model, entity, animation, project ID, or technology ID is created or
 
 The existing player-triggered native inventory console probe also calls chaosx_cxt_event016_probe_native_ownership.
 It snapshots all four sources' selection, observed-output and retired flags, and the Cloning, Rocketry and Electronics source/mode slots into CXT-only debug observations.
+It also snapshots the reactor and six biological source-observation flags and the High Energy and Biological Weapons source/mode slots.
 Absent or short provenance arrays yield unrecorded observations without extending or changing provider receipts.
 The probe creates no stage, native completion, selection, resource grant, or timer.
 CXT's ordinary setup already completes native projects, so its completed-source path tests adoption and ambiguity, not native payment or a fresh research clock.

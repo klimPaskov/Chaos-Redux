@@ -307,15 +307,25 @@ Countries can complete these outside the provider, so neither family has selecti
 
 | Effect | Scope and inputs | Output | Callers |
 | --- | --- | --- | --- |
-| `brilliant_scientist_mengele_settle_reused_native_prototype` | COUNTRY; temporary family (High Energy or Biological Weapons), source code, and mode | `mengele_event016_native_prototype_result`: `fresh_settled`, `adopted_settled`, or `blocked` | The three helpers below |
+| `brilliant_scientist_mengele_settle_reused_native_prototype` | COUNTRY; temporary family (High Energy or Biological Weapons), source code, mode, and matching output witness for fresh mode | `mengele_event016_native_prototype_result`: `fresh_settled`, `adopted_settled`, or `blocked`; caller initializes consumed result to none | The literal output wrappers and historical adoption adapter |
 | `brilliant_scientist_mengele_native_completion_sp_nuclear_reactor` | COUNTRY; none | Same result; marks the reactor observed | `sp_nuclear_reactor` project output in the Event 016 `nuclear_projects.txt` mirror |
-| `brilliant_scientist_mengele_observe_reused_biological_sources` | COUNTRY; none | Same result when a new agent settles | `brilliant_scientist_mengele_reconcile_reused_native_project_prototypes` from `on_project_completion` |
+| Six `brilliant_scientist_mengele_native_completion_<project>` wrappers | COUNTRY; no caller selector input | Same result; marks only the exact agent observed and supplies its literal source/witness | Country outputs of the six existing biological projects |
 | `brilliant_scientist_mengele_adopt_reused_native_prototype` | COUNTRY; temporary family | Same result | `brilliant_scientist_mengele_adopt_completed_native_after_theory` |
 
-Settlement requires the strict provider, the completed private Theory, an empty paid receipt (an active paid Prototype timer is never replaced), and the mapped completed source; the shared output core applies the Prototype once.
-A source that completes after the Theory settles as `fresh_output`.
+Settlement requires the strict provider, completed private Theory, an incomplete Prototype, an empty paid family receipt, and exact source evidence; the shared output core applies the Prototype once.
+Fresh mode requires a supported source/family pair and its matching synchronous output witness, without reading the completed bit inside that output.
+Adopted mode requires the same supported source/family pair and the exact source's completed query; a different completed project in the family cannot authorize it.
+Unsupported source, family or mode values and mismatched witnesses are rejected before receipt initialization.
 A source completed before the Theory is adopted as `adopted_completed` when the Theory settles; Biological Weapons adopts the first completed agent in the fixed order anthrax, plague, tularemia, smallpox, weaponized zombies, black plague.
-The CBRN agent projects carry no Event 016 output hook, so the completing agent is identified as the mapped source that is completed but not yet observed; every agent is observed once through `mengele_event016_reused_source_observed_*` flags.
+Each biological country output invokes its literal wrapper before its original payload.
+The wrapper always records its observed fact, including when provider or stage gates block private settlement.
+The country-level completion scan is removed; an unrelated completion cannot turn previously unobserved history into fresh provenance.
 Source codes 5 to 11 in `mengele_event016_native_prototype_source` name the reactor and the six agents.
 
-Limit: an agent completed while the provider was invalid and observed later after the Theory is recorded as fresh output; it is still the exact agent that completed.
+The wrapper suffixes are `anthrax_bomb`, `plague_bomb`, `tularemia_bomb`, `smallpox_bomb`, `weaponize_the_zombies`, and `black_plague_weaponization_program`.
+The pure predicates `brilliant_scientist_mengele_reused_native_source_matches_family`, `brilliant_scientist_mengele_reused_native_exact_source_is_completed`, and `brilliant_scientist_mengele_reused_native_prototype_evidence_is_valid` consume these temporary selectors without writing state.
+The settlement frame owns its index and output storage; the wrapper/adoption caller owns its inputs and any result consumed after return.
+The selector cleanup clears family, stage, index, source, witness, mode and output authorization while preserving the dedicated result and durable receipt.
+Historical adoption retains the existing fixed agent order and can mark completed history observed; that observation is not a fresh output witness.
+Existing receipts are not retrospectively relabeled because their original completion boundary cannot be reconstructed.
+Native start/cancel synchronization and same-project callback-generation evidence remain outside this completion-identity correction and remain unresolved.

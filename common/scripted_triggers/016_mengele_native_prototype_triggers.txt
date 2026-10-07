@@ -2,6 +2,7 @@
 # CHAOS REDUX - EVENT 016 EXACT NATIVE PROTOTYPE TRIGGERS
 # ============================================================================
 # COUNTRY scope, read-only. Literal UI wrappers need no temporary selector state.
+# Reused-source evidence predicates at the end also bind exact output/adoption.
 # Generic predicates read only mengele_event016_native_prototype_source, except
 # the mapped private settlement gate which uses the existing family/stage API.
 # No native payment, clock, start/cancel hook, or persistent trigger writes.
@@ -301,6 +302,91 @@ brilliant_scientist_mengele_can_auto_adopt_exact_completed_native_prototype = {
 			NOT = { has_country_flag = mengele_event016_native_selected_flying_bomb }
 			NOT = { has_country_flag = mengele_event016_native_retired_flying_bomb }
 			NOT = { has_country_flag = mengele_event016_native_retired_jet_engine }
+		}
+	}
+}
+
+# Reused native sources have literal output hooks rather than selection controls.
+# COUNTRY, read-only. Fresh evidence is the synchronous source witness; historical
+# adoption requires the exact selected source's completed query. Neither accepts
+# another completed source from the same family as proof.
+brilliant_scientist_mengele_reused_native_source_matches_family = {
+	OR = {
+		AND = {
+			check_variable = { var = mengele_event016_native_prototype_source value = constant:mengele_event016_native_prototype_source.high_energy_nuclear_reactor compare = equals }
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.high_energy compare = equals }
+		}
+		AND = {
+			check_variable = { var = mengele_event016_native_prototype_source value = constant:mengele_event016_native_prototype_source.biological_anthrax compare = equals }
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.biological_weapons compare = equals }
+		}
+		AND = {
+			check_variable = { var = mengele_event016_native_prototype_source value = constant:mengele_event016_native_prototype_source.biological_plague compare = equals }
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.biological_weapons compare = equals }
+		}
+		AND = {
+			check_variable = { var = mengele_event016_native_prototype_source value = constant:mengele_event016_native_prototype_source.biological_tularemia compare = equals }
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.biological_weapons compare = equals }
+		}
+		AND = {
+			check_variable = { var = mengele_event016_native_prototype_source value = constant:mengele_event016_native_prototype_source.biological_smallpox compare = equals }
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.biological_weapons compare = equals }
+		}
+		AND = {
+			check_variable = { var = mengele_event016_native_prototype_source value = constant:mengele_event016_native_prototype_source.biological_weaponized_zombies compare = equals }
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.biological_weapons compare = equals }
+		}
+		AND = {
+			check_variable = { var = mengele_event016_native_prototype_source value = constant:mengele_event016_native_prototype_source.biological_black_plague compare = equals }
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.biological_weapons compare = equals }
+		}
+	}
+}
+
+brilliant_scientist_mengele_reused_native_exact_source_is_completed = {
+	OR = {
+		AND = {
+			check_variable = { var = mengele_event016_native_prototype_source value = constant:mengele_event016_native_prototype_source.high_energy_nuclear_reactor compare = equals }
+			is_special_project_completed = sp:sp_nuclear_reactor
+		}
+		AND = {
+			check_variable = { var = mengele_event016_native_prototype_source value = constant:mengele_event016_native_prototype_source.biological_anthrax compare = equals }
+			is_special_project_completed = sp:anthrax_bomb
+		}
+		AND = {
+			check_variable = { var = mengele_event016_native_prototype_source value = constant:mengele_event016_native_prototype_source.biological_plague compare = equals }
+			is_special_project_completed = sp:plague_bomb
+		}
+		AND = {
+			check_variable = { var = mengele_event016_native_prototype_source value = constant:mengele_event016_native_prototype_source.biological_tularemia compare = equals }
+			is_special_project_completed = sp:tularemia_bomb
+		}
+		AND = {
+			check_variable = { var = mengele_event016_native_prototype_source value = constant:mengele_event016_native_prototype_source.biological_smallpox compare = equals }
+			is_special_project_completed = sp:smallpox_bomb
+		}
+		AND = {
+			check_variable = { var = mengele_event016_native_prototype_source value = constant:mengele_event016_native_prototype_source.biological_weaponized_zombies compare = equals }
+			is_special_project_completed = sp:weaponize_the_zombies
+		}
+		AND = {
+			check_variable = { var = mengele_event016_native_prototype_source value = constant:mengele_event016_native_prototype_source.biological_black_plague compare = equals }
+			is_special_project_completed = sp:black_plague_weaponization_program
+		}
+	}
+}
+
+brilliant_scientist_mengele_reused_native_prototype_evidence_is_valid = {
+	brilliant_scientist_mengele_reused_native_source_matches_family = yes
+	OR = {
+		AND = {
+			check_variable = { var = mengele_event016_native_prototype_mode value = constant:mengele_event016_native_prototype_mode.fresh_output compare = equals }
+			check_variable = { var = mengele_event016_native_prototype_output_source value = mengele_event016_native_prototype_source compare = equals }
+		}
+		AND = {
+			check_variable = { var = mengele_event016_native_prototype_mode value = constant:mengele_event016_native_prototype_mode.adopted_completed compare = equals }
+			check_variable = { var = mengele_event016_native_prototype_output_source value = constant:mengele_event016_native_prototype_source.none compare = equals }
+			brilliant_scientist_mengele_reused_native_exact_source_is_completed = yes
 		}
 	}
 }

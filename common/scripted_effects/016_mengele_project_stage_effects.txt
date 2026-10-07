@@ -1552,6 +1552,7 @@ brilliant_scientist_mengele_adopt_completed_native_after_theory = {
 			}
 			# Reused sources record exact source and adoption mode.
 			set_temp_variable = { mengele_event016_project_family = mengele_event016_adoption_outer_family }
+			set_temp_variable = { mengele_event016_native_prototype_result = constant:mengele_event016_native_prototype_result.none }
 			brilliant_scientist_mengele_adopt_reused_native_prototype = yes
 			if = {
 				limit = { check_variable = { var = mengele_event016_native_prototype_result value = constant:mengele_event016_native_prototype_result.adopted_settled compare = equals } }
@@ -1635,17 +1636,6 @@ brilliant_scientist_mengele_record_native_project_prototype = {
 		if = { limit = { check_variable = { var = mengele_event016_native_component_recorded value = constant:brilliant_scientist_value.one compare = equals } } set_temp_variable = { mengele_event016_native_prototype_recorded = constant:brilliant_scientist_value.one } }
 	}
 	brilliant_scientist_mengele_clear_project_stage_selectors = yes
-}
-
-# COUNTRY scope, called from the completion hook for a valid provider. High
-# Energy settles through the literal sp_nuclear_reactor output wrapper and no
-# longer rescans here. Biological Weapons observes only newly completed mapped
-# agents; unrelated completions settle nothing.
-brilliant_scientist_mengele_reconcile_reused_native_project_prototypes = {
-	if = {
-		limit = { brilliant_scientist_mengele_project_stage_provider_is_valid = yes }
-		brilliant_scientist_mengele_observe_reused_biological_sources = yes
-	}
 }
 
 brilliant_scientist_mengele_record_singularity_component = {
