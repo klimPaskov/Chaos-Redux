@@ -1,0 +1,160 @@
+# ============================================================================
+# EVENT 006 - FORM-48 LIVE LEDGER DISPLAY
+# ============================================================================
+# COUNTRY scope. Display-only predicates; no gameplay flags, variables, arrays,
+# relations, weights or availability are changed. GetIndependenceWaveForm48Ledger
+# owns the seven temporary outputs before capture is called. Capture owns and
+# freezes viewer/binding inputs and initializes the member-row temporaries before
+# calling the nested carrier proof. See the FORM-48 display owner API index.
+# ============================================================================
+
+# Carrier COUNTRY scope. Inputs are capture's frozen viewer/carrier ids,
+# generations and viewer anchor. The caller owns the two member-row temporaries.
+# This predicate never selects another carrier or writes public display outputs.
+has_independence_wave_form48_display_carrier_for_viewer = {
+	is_independence_wave_active_country = yes
+	original_tag = HBX
+	has_variable = independence_wave_generation_id
+	has_variable = independence_wave_package_id
+	has_variable = independence_wave_anchor_state
+	check_variable = { independence_wave_generation_id > constant:independence_wave_value.minimum }
+	check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_184 }
+	check_variable = { var = independence_wave_form48_display_requested_carrier value = THIS compare = equals }
+	check_variable = { var = independence_wave_generation_id value = independence_wave_form48_display_requested_generation compare = equals }
+	check_variable = { var = global.independence_wave_active_country_generation_entries^independence_wave_form48_display_registry_carrier_index value = independence_wave_form48_display_requested_generation compare = equals }
+	check_variable = { var = global.independence_wave_active_countries^independence_wave_form48_display_registry_viewer_index value = independence_wave_form48_display_viewer compare = equals }
+	check_variable = { var = global.independence_wave_active_country_generation_entries^independence_wave_form48_display_registry_viewer_index value = independence_wave_form48_display_viewer_generation compare = equals }
+	is_independence_wave_form48_postformation_carrier = yes
+	has_global_flag = independence_wave_form48_pfx_identity_in_use
+	has_variable = independence_wave_form48_shipping_coordination
+	has_variable = independence_wave_form48_industrial_specialization
+	has_variable = independence_wave_form48_defense_readiness
+	has_variable = independence_wave_form48_member_autonomy
+	has_variable = independence_wave_form48_compact_strain
+	has_variable = independence_wave_form48_program_cycles_completed
+	independence_wave_formable_member_arrays_are_aligned = yes
+	# The ledger must still belong to this carrier generation, not only contain
+	# a matching member copied from another government's ledger.
+	any_of = {
+		array = independence_wave_formable_member_country_entries
+		value = independence_wave_form48_display_member_country
+		index = independence_wave_form48_display_member_index
+		check_variable = { var = independence_wave_form48_display_member_country value = THIS compare = equals }
+		check_variable = { var = independence_wave_formable_member_generation_entries^independence_wave_form48_display_member_index value = independence_wave_generation_id compare = equals }
+		check_variable = { var = independence_wave_formable_member_anchor_entries^independence_wave_form48_display_member_index value = independence_wave_anchor_state compare = equals }
+	}
+	any_of = {
+		array = independence_wave_formable_member_country_entries
+		value = independence_wave_form48_display_member_country
+		index = independence_wave_form48_display_member_index
+		check_variable = { var = independence_wave_form48_display_member_country value = independence_wave_form48_display_viewer compare = equals }
+		check_variable = { var = independence_wave_formable_member_generation_entries^independence_wave_form48_display_member_index value = independence_wave_form48_display_viewer_generation compare = equals }
+		check_variable = { var = independence_wave_formable_member_anchor_entries^independence_wave_form48_display_member_index value = independence_wave_form48_display_viewer_anchor compare = equals }
+		check_variable = { var = independence_wave_formable_member_consent_entries^independence_wave_form48_display_member_index value = constant:independence_wave_formable_consent.consenting_member compare = equals }
+	}
+	var:independence_wave_form48_display_viewer = {
+		is_independence_wave_active_country = yes
+		has_variable = independence_wave_generation_id
+		check_variable = { var = independence_wave_generation_id value = independence_wave_form48_display_viewer_generation compare = equals }
+		check_variable = { var = independence_wave_anchor_state value = independence_wave_form48_display_viewer_anchor compare = equals }
+		OR = {
+			AND = {
+				check_variable = { var = independence_wave_form48_display_viewer value = independence_wave_form48_display_requested_carrier compare = equals }
+				is_independence_wave_form48_postformation_carrier = yes
+			}
+			AND = {
+				is_independence_wave_form48_active_autonomous_member = yes
+				check_variable = { var = independence_wave_form48_autonomous_carrier value = independence_wave_form48_display_requested_carrier compare = equals }
+				check_variable = { var = independence_wave_form48_autonomous_carrier_generation value = independence_wave_form48_display_requested_generation compare = equals }
+				OR = {
+					NOT = { has_country_flag = independence_wave_form48_member_granted_access_to_carrier }
+					gives_military_access_to = PREV
+				}
+				OR = {
+					NOT = { has_country_flag = independence_wave_form48_member_guaranteed_carrier }
+					has_guaranteed = PREV
+				}
+				OR = {
+					NOT = { has_country_flag = independence_wave_form48_carrier_granted_access_to_member }
+					var:independence_wave_form48_display_requested_carrier = { gives_military_access_to = PREV }
+				}
+				OR = {
+					NOT = { has_country_flag = independence_wave_form48_carrier_guaranteed_member }
+					var:independence_wave_form48_display_requested_carrier = { has_guaranteed = PREV }
+				}
+			}
+		}
+	}
+}
+
+# Viewer COUNTRY scope. Native boolean result plus seven caller-owned outputs.
+# Failure leaves them zero, so the scripted-localisation caller chooses N/A.
+# Only the viewer's own or frozen-bound carrier can be captured from the aligned
+# active-country registry; a different HBX origin never supplies this display.
+capture_independence_wave_form48_display = {
+	set_temp_variable = { independence_wave_form48_display_carrier = constant:independence_wave_value.minimum }
+	set_temp_variable = { independence_wave_form48_display_shipping = constant:independence_wave_value.minimum }
+	set_temp_variable = { independence_wave_form48_display_industry = constant:independence_wave_value.minimum }
+	set_temp_variable = { independence_wave_form48_display_defense = constant:independence_wave_value.minimum }
+	set_temp_variable = { independence_wave_form48_display_autonomy = constant:independence_wave_value.minimum }
+	set_temp_variable = { independence_wave_form48_display_strain = constant:independence_wave_value.minimum }
+	set_temp_variable = { independence_wave_form48_display_cycles = constant:independence_wave_value.minimum }
+	set_temp_variable = { independence_wave_form48_display_viewer = THIS }
+	set_temp_variable = { independence_wave_form48_display_viewer_generation = independence_wave_generation_id }
+	set_temp_variable = { independence_wave_form48_display_viewer_anchor = independence_wave_anchor_state }
+	set_temp_variable = { independence_wave_form48_display_requested_carrier = constant:independence_wave_value.minimum }
+	set_temp_variable = { independence_wave_form48_display_requested_generation = constant:independence_wave_value.minimum }
+	set_temp_variable = { independence_wave_form48_display_registry_viewer = constant:independence_wave_value.minimum }
+	set_temp_variable = { independence_wave_form48_display_registry_viewer_index = constant:independence_wave_formable_tuning.first_array_index }
+	set_temp_variable = { independence_wave_form48_display_registry_carrier = constant:independence_wave_value.minimum }
+	set_temp_variable = { independence_wave_form48_display_registry_carrier_index = constant:independence_wave_formable_tuning.first_array_index }
+	is_independence_wave_active_country = yes
+	has_variable = independence_wave_generation_id
+	has_variable = independence_wave_anchor_state
+	check_variable = { independence_wave_generation_id > constant:independence_wave_value.minimum }
+	independence_wave_active_country_arrays_are_aligned = yes
+	any_of = {
+		array = global.independence_wave_active_countries
+		value = independence_wave_form48_display_registry_viewer
+		index = independence_wave_form48_display_registry_viewer_index
+		check_variable = { var = independence_wave_form48_display_registry_viewer value = independence_wave_form48_display_viewer compare = equals }
+		check_variable = { var = global.independence_wave_active_country_generation_entries^independence_wave_form48_display_registry_viewer_index value = independence_wave_form48_display_viewer_generation compare = equals }
+	}
+	if = {
+		limit = { is_independence_wave_form48_postformation_carrier = yes }
+		set_temp_variable = { independence_wave_form48_display_requested_carrier = THIS }
+		set_temp_variable = { independence_wave_form48_display_requested_generation = independence_wave_generation_id }
+	}
+	else_if = {
+		limit = { is_independence_wave_form48_active_autonomous_member = yes }
+		set_temp_variable = { independence_wave_form48_display_requested_carrier = independence_wave_form48_autonomous_carrier }
+		set_temp_variable = { independence_wave_form48_display_requested_generation = independence_wave_form48_autonomous_carrier_generation }
+	}
+	check_variable = { independence_wave_form48_display_requested_generation > constant:independence_wave_value.minimum }
+	any_of = {
+		array = global.independence_wave_active_countries
+		value = independence_wave_form48_display_registry_carrier
+		index = independence_wave_form48_display_registry_carrier_index
+		check_variable = { var = independence_wave_form48_display_registry_carrier value = independence_wave_form48_display_requested_carrier compare = equals }
+		check_variable = { var = global.independence_wave_active_country_generation_entries^independence_wave_form48_display_registry_carrier_index value = independence_wave_form48_display_requested_generation compare = equals }
+		var:independence_wave_form48_display_registry_carrier = {
+			set_temp_variable = { independence_wave_form48_display_member_country = constant:independence_wave_value.minimum }
+			set_temp_variable = { independence_wave_form48_display_member_index = constant:independence_wave_formable_tuning.first_array_index }
+			if = {
+				limit = { has_independence_wave_form48_display_carrier_for_viewer = yes }
+				set_temp_variable = { independence_wave_form48_display_carrier = THIS }
+				set_temp_variable = { independence_wave_form48_display_shipping = independence_wave_form48_shipping_coordination }
+				set_temp_variable = { independence_wave_form48_display_industry = independence_wave_form48_industrial_specialization }
+				set_temp_variable = { independence_wave_form48_display_defense = independence_wave_form48_defense_readiness }
+				set_temp_variable = { independence_wave_form48_display_autonomy = independence_wave_form48_member_autonomy }
+				set_temp_variable = { independence_wave_form48_display_strain = independence_wave_form48_compact_strain }
+				set_temp_variable = { independence_wave_form48_display_cycles = independence_wave_form48_program_cycles_completed }
+			}
+			# Return the proof's native boolean, with fresh caller-owned scratch at
+			# this second nested boundary. There is no numeric validity marker.
+			set_temp_variable = { independence_wave_form48_display_member_country = constant:independence_wave_value.minimum }
+			set_temp_variable = { independence_wave_form48_display_member_index = constant:independence_wave_formable_tuning.first_array_index }
+			has_independence_wave_form48_display_carrier_for_viewer = yes
+		}
+	}
+}
