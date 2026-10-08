@@ -50,6 +50,14 @@ brilliant_scientist_record_biological_deployment_exposure = {
 }
 
 brilliant_scientist_dispatch_standard_biological_release = {
+	set_temp_variable = { bio_seed_batch_condemnation_proof = constant:bio_lifecycle_proof.missing }
+	set_temp_variable = { bio_seed_intensity_override = constant:bio_lifecycle_math.zero }
+	set_temp_variable = { bio_seed_exposed_share_override = constant:bio_lifecycle_math.zero }
+	set_temp_variable = { bio_seed_evidence_override = constant:bio_lifecycle_math.zero }
+	set_temp_variable = { bio_seed_condemnation_override = constant:bio_lifecycle_math.zero }
+	set_temp_variable = { bio_seed_concealment = constant:bio_lifecycle_math.zero }
+	set_temp_variable = { bio_seed_force_detection_on_activation = constant:bio_lifecycle_proof.missing }
+	set_temp_variable = { bio_seed_weaponization_mult = constant:bio_lifecycle_math.one }
 	bio_lifecycle_reset_seed_record = yes
 	if = {
 		limit = { check_variable = { brilliant_scientist_biological_deployment_agent = constant:brilliant_scientist_biological_agent.anthrax } }
@@ -94,6 +102,7 @@ brilliant_scientist_dispatch_standard_biological_release = {
 	}
 	var:brilliant_scientist_biological_release_target_state = {
 		CONTROLLER = { save_event_target_as = bio_seed_victim }
+		set_temp_variable = { bio_seed_dispatch_status = constant:bio_lifecycle_proof.missing }
 		bio_lifecycle_dispatch_seed = yes
 	}
 	if = {
@@ -139,6 +148,7 @@ brilliant_scientist_dispatch_black_plague_release = {
 			else = { set_temp_variable = { black_plague_exposure_amount = constant:brilliant_scientist_biological_deployment.black_plague_covert_exposure } }
 			set_temp_variable = { black_plague_exposure_route = constant:black_plague_route.biological_strike }
 			set_temp_variable = { black_plague_exposure_provenance = constant:black_plague_provenance.weaponized }
+			set_temp_variable = { black_plague_weaponized_runtime_bridge_result = constant:black_plague_value.zero }
 			black_plague_apply_weaponized_exposure_runtime = yes
 			if = {
 				limit = {
@@ -209,11 +219,13 @@ brilliant_scientist_resolve_native_biological_raid = {
 		else = {
 			set_temp_variable = { brilliant_scientist_biological_payload_multiplier = constant:brilliant_scientist_biological_deployment.battlefield_payload_multiplier }
 		}
+		set_temp_variable = { brilliant_scientist_biological_payload_required = constant:brilliant_scientist_value.zero }
 		brilliant_scientist_calculate_biological_payload_requirement = yes
 		set_temp_variable = { brilliant_scientist_biological_deployment_payload_amount = brilliant_scientist_biological_payload_required }
 		if = {
 			limit = { check_variable = { brilliant_scientist_biological_raid_outcome = constant:brilliant_scientist_biological_raid_outcome.success } }
 			set_temp_variable = { brilliant_scientist_biological_release_is_accident = constant:brilliant_scientist_value.zero }
+			set_temp_variable = { brilliant_scientist_biological_release_dispatched = constant:bio_lifecycle_proof.missing }
 			brilliant_scientist_apply_selected_biological_release = yes
 			if = {
 				limit = { check_variable = { brilliant_scientist_biological_release_dispatched = constant:bio_lifecycle_proof.supplied } }
@@ -231,6 +243,7 @@ brilliant_scientist_resolve_native_biological_raid = {
 			limit = { check_variable = { brilliant_scientist_biological_raid_outcome = constant:brilliant_scientist_biological_raid_outcome.accident } }
 			capital_scope = { PREV = { set_temp_variable = { brilliant_scientist_biological_release_target_state = PREV } } }
 			set_temp_variable = { brilliant_scientist_biological_release_is_accident = constant:brilliant_scientist_value.one }
+			set_temp_variable = { brilliant_scientist_biological_release_dispatched = constant:bio_lifecycle_proof.missing }
 			brilliant_scientist_apply_selected_biological_release = yes
 			set_temp_variable = { brilliant_scientist_biological_deployment_exposure_gain = constant:brilliant_scientist_biological_deployment.accident_exposure_gain }
 			brilliant_scientist_record_biological_deployment_exposure = yes

@@ -361,7 +361,10 @@ The [parent-reviewed repair](2026-10-07_biological_raid_service_integrity.md) ad
 The parent reran 150 source-model cases covering ordinary battlefield, strategic and sabotage outcomes, nested parameter/results, failed-attempt evidence, reset defaults, retaliation, exact marker bridges and accepted/rejected storage.
 The model reproduces 68 baseline value/branch failures and five reset-ownership failures.
 These results do not prove full outbreak potency, native reservations, cancellation or callback uniqueness; accepted repeated battlefield seeds still strengthen the existing episode under its source contract.
-Eleven other consumers remain queued.
+The original eleven-consumer follow-up inventory is historical; the [biological release tranche](2026-10-08_biological_release_integrity.md) records ten lifetime-repaired consumers and the unpatched `bio_operative_release_dispatch_seed_internal`.
+Four ordinary intelligence attacks and the separate weaponized-zombie intelligence attack still conflict with the accepted raid-only loop; migration/removal is accepted and queued, preserving shared covert/lifecycle/achievement capabilities and explicitly retiring operation-only preparation, phases, capture handlers and Command Power refunds with their public attacks.
+Native zombie authorization parity and the shared biological covert-count defect remain required follow-up, with no fabricated native capture proxy or passed-continuity claim.
+This tranche does not close native execution, payment, protection or full balance, and CBRN-03 remains incomplete.
 The [incubation timing contract](2026-10-07_biological_incubation_timing.md) constructs the callback after the delay calculation; native timing remains unverified.
 Partial command validation, missing event revision and unresolved/surface-empty probability comparison remain explicit evidence gaps.
 The native raid guide documents the storage API and existing cure-bomb reservation, with no workbook, public text or asset change.
@@ -381,10 +384,10 @@ The [caller-storage repair](2026-10-07_chemical_raid_service_integrity.md) retai
 The parent reran eighteen independent source cases: repeated accepted dispatch and failed-attempt calls apply one captured record, rejected/unpaid/unbound records apply none, and protection, evidence, arsenal and bridge outputs survive their producing helpers.
 The patch adds 206 scalar declarations and one temporary-array initializer while preserving every original statement and its order.
 The twenty-six neighboring allocations were outside the raid patch's ownership; peer commits `5793df434` and `0dc5df3f11`, verified in current HEAD, publish the exposure/generic-protection outputs and reservation API while retaining `611cbb63`'s six private protection weights.
-The [remaining-caller report](2026-10-08_remaining_chemical_callers.md) records the frozen source implementation of 66 Camp declarations and one missile retaliation-status declaration, pending parent integration, with 46 independently reviewed passing cases.
+Reviewed commit `3e90486dad8ab2a2ad374d12fca3d9213d3276e1` integrates the [remaining chemical caller tranche](2026-10-08_remaining_chemical_callers.md): 66 Camp declarations, one missile retaliation-status declaration and 46 independently reviewed passing cases; earlier reports retain the pre-integration provenance.
 Camp retains the original 60 action fields, five method outputs and returned civilian deaths; the strategic missile caller retains its justified partial packet and none/authorized history, and the removed stock-check helper's old insertion-map entry is superseded.
 Same-record shared dispatch deduplication does not prevent a fresh Camp invocation from paying again; the separate proportionate classifier probe is not a missile route.
-Full sinks, actual eligibility/protection, custody, complete damage and doomsday allocation, native settlement/cardinality, balance and eleven biological caller reviews remain unresolved.
+Full sinks, actual eligibility/protection, custody, complete damage and doomsday allocation, native settlement/cardinality and balance remain unresolved; the biological follow-up inventory has the current disposition in the [biological release ledger](2026-10-08_biological_release_integrity.md).
 The bounded Camp scan is partial with zero helpers and deferred lifecycle projections; its correctly shaped graph-artifact comparison fails with `ARTIFACT_NOT_FOUND` because the provenance manifest is unavailable, distinct from the earlier trace/report-as-graph mistake.
 No complete graph read or successful comparison/render is established.
 No gameplay simplification, new payment/refund or policy change is introduced, and CBRN-03 remains incomplete.

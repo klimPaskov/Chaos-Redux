@@ -1,0 +1,367 @@
+{
+  "scope": "Remaining biological caller lifetimes; narrow source checks are not native lifecycle execution.",
+  "reference_context_gaps": "Context bundle omitted other event sources; only temporary lifetime and setter rules used in this insertion patch are read below.",
+  "wiki": {
+    "status": "ok",
+    "code": "OK",
+    "workspaceId": "mod_chaos_redux_ea3b2d67c2c0",
+    "filesScanned": [],
+    "proposedFiles": [],
+    "changedFiles": [],
+    "diagnostics": [],
+    "artifacts": [],
+    "validation": {
+      "passed": true,
+      "checks": []
+    },
+    "blockers": [],
+    "data": {
+      "id": "93a8a69289bba58764f83d5e14f30b8ecd53bf302360aa6db24d21dcb7c17578",
+      "revision": "62273f37ed30e5479acb331a8973f48dadc1867c4913c8a940e3e790e7af32d4",
+      "source": "wiki",
+      "title": "Data structures",
+      "heading": "Variable types",
+      "path": "C:\\Users\\klimp\\OneDrive\\Documents\\Paradox Interactive\\Hearts of Iron IV\\mod\\chaos_redux\\paradox_wiki\\Data structures - Hearts of Iron 4 Wiki.md",
+      "startLine": 435,
+      "endLine": 443,
+      "excerpt": "### Variable types <a id=\"Variable_types\"></a> There are two types of variables: regular and temporary. There are the following differences between the two:",
+      "authority": "Offline Paradox Wiki snapshot",
+      "sectionStartLine": 435,
+      "sectionEndLine": 443,
+      "startColumn": 1,
+      "text": "### Variable types <a id=\"Variable_types\"></a>\n\nThere are two types of variables: regular and temporary. There are the following differences between the two:\n\n- Different effects are used to set and modify regular and temporary variables. Typically, the difference is just in changing `variable` to `temp_variable`.\n- Temporary variables only exist within the effect or trigger block where they're defined, similarly to regular event targets (although without carrying over to events). This does not mean they don't survive outside of the scope where they're defined, but the '*entire* effect block, such as a focus reward or an event option. Meanwhile, regular variables exist forever. Note that this, however, does not always function properly in regards to scripted effects or triggers: temporary variables defined within of them may not still exist outside of them within the same effect/trigger block. However, a temporary variable defined before the scripted effect or trigger's usage will always carry on into it and get modified properly within.\n- Due to the previous point, **temporary variables can be defined and modified in trigger blocks** as well as in effect blocks. This enables them to be computed as-needed in scripted triggers called from the `trigger` block of scripted localizations. Meanwhile, regular variables are restricted to only being defined in effect blocks.\n- Temporary variables are unscoped: they will remain the same regardless of in which scope they're defined and where they're checked. Meanwhile, regular variables are restricted to scopes, so that the variable has different values depending on which scope it's checked in, such as how different countries may have different stability values.\n",
+      "nextLine": null,
+      "nextColumn": null
+    }
+  },
+  "installed": {
+    "status": "ok",
+    "code": "OK",
+    "workspaceId": "mod_chaos_redux_ea3b2d67c2c0",
+    "filesScanned": [],
+    "proposedFiles": [],
+    "changedFiles": [],
+    "diagnostics": [],
+    "artifacts": [],
+    "validation": {
+      "passed": true,
+      "checks": []
+    },
+    "blockers": [],
+    "data": {
+      "id": "36a1da49ada7cbbbc2e6f6945a02701b9ecbba08b10d02beb4bee699da5f1003",
+      "revision": "2cdc93d26775990468eed167442f7a416b13059fb8fe07d139b54250b79209af",
+      "source": "game_doc",
+      "title": "effects documentation",
+      "heading": "set_temp_variable",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Hearts of Iron IV\\documentation\\effects_documentation.md",
+      "startLine": 7820,
+      "endLine": 7827,
+      "excerpt": "## set_temp_variable * Supported Scopes: any",
+      "authority": "Installed game documentation",
+      "sectionStartLine": 7820,
+      "sectionEndLine": 7827,
+      "startColumn": 1,
+      "text": "## set_temp_variable\n\n* Supported Scopes: any\n* Supported Targets: none\n\nSets a temp variable to a value, another variable, or a [math expression](script_math_expression.md).\n`tooltip` can be used to override tooltip title with LEFT and RIGHT tokens.\n",
+      "nextLine": null,
+      "nextColumn": null
+    }
+  },
+  "operative_source_discovery": {
+    "status": "ok",
+    "code": "OK",
+    "workspaceId": "mod_chaos_redux_ea3b2d67c2c0",
+    "filesScanned": [],
+    "proposedFiles": [],
+    "changedFiles": [],
+    "diagnostics": [],
+    "artifacts": [],
+    "validation": {
+      "passed": true,
+      "checks": []
+    },
+    "blockers": [],
+    "data": {
+      "sourceScope": "helper_definitions",
+      "revision": "2a84de127ae903db0e58f3e12477cee4b627c247523bc80dc504a554d2f781bb",
+      "complete": true,
+      "skippedSourceCount": 0,
+      "definitionCount": 1,
+      "definitionsTruncated": false,
+      "definitions": [
+        {
+          "kind": "scripted_effect",
+          "id": "bio_operative_release_dispatch_seed_internal",
+          "path": "mod:common/scripted_effects/biological_operation_effects.txt",
+          "rootKind": "mod",
+          "loadOrder": 15,
+          "overridden": false,
+          "sourceShadowed": false,
+          "startLine": 105,
+          "endLine": 119,
+          "fromLine": 105,
+          "toLine": 119,
+          "nextLine": null,
+          "nextColumn": null,
+          "text": "bio_operative_release_dispatch_seed_internal = {\n\tbio_lifecycle_reset_seed_record = yes\n\tset_temp_variable = { bio_seed_agent = bio_operation_agent }\n\tset_temp_variable = { bio_seed_route = constant:bio_lifecycle_route.operative_release }\n\tset_temp_variable = { bio_seed_source = constant:bio_lifecycle_source.deliberate }\n\tset_temp_variable = { bio_seed_result = bio_operation_result }\n\tset_temp_variable = { bio_seed_actor_proof = constant:bio_lifecycle_proof.supplied }\n\tset_temp_variable = { bio_seed_victim_proof = constant:bio_lifecycle_proof.supplied }\n\tset_temp_variable = { bio_seed_use_history_proof = constant:bio_lifecycle_proof.supplied }\n\tset_temp_variable = { bio_seed_weaponization_mult = bio_operation_weaponization_mult }\n\tset_temp_variable = { bio_seed_concealment = bio_operation_concealment }\n\tevent_target:bio_operation_actor = { save_event_target_as = bio_seed_actor }\n\tevent_target:bio_operation_victim = { save_event_target_as = bio_seed_victim }\n\tbio_lifecycle_dispatch_seed = yes\n}"
+        }
+      ],
+      "references": [],
+      "referencesIncluded": false,
+      "referenceCount": 0,
+      "referencesTruncated": false,
+      "referencesComplete": false,
+      "unresolvedReferenceCount": 0
+    }
+  },
+  "setter_check": {
+    "status": "ok",
+    "code": "SCRIPT_CHECK_PARTIAL",
+    "workspaceId": "mod_chaos_redux_ea3b2d67c2c0",
+    "filesScanned": [],
+    "proposedFiles": [],
+    "changedFiles": [],
+    "diagnostics": [
+      {
+        "code": "SCRIPT_ARGUMENT_BLOCK_UNCHECKED",
+        "severity": "warning",
+        "category": "validation",
+        "message": "Native argument block is not validated from prose documentation; read the cited syntax before use",
+        "details": {
+          "command": "set_temp_variable",
+          "kind": "effect",
+          "scope": "country",
+          "line": 1,
+          "column": 1
+        }
+      }
+    ],
+    "artifacts": [],
+    "validation": {
+      "passed": false,
+      "checks": [
+        {
+          "id": "script-command-checks",
+          "passed": false,
+          "message": "Script checks have unresolved coverage"
+        }
+      ]
+    },
+    "blockers": [],
+    "data": {
+      "valid": null,
+      "checksPerformed": [
+        "syntax",
+        "command_kind",
+        "declared_scope"
+      ],
+      "parametersChecked": false,
+      "documentation": {
+        "source": "game_doc",
+        "revision": "9227e238bce49345e9c358598b4dd4940c733d906b72324e8a02a57ecb42093b",
+        "effectCount": 544,
+        "triggerCount": 656,
+        "skippedSources": 0
+      },
+      "findings": [
+        {
+          "code": "SCRIPT_ARGUMENT_BLOCK_UNCHECKED",
+          "status": "unresolved",
+          "message": "Native argument block is not validated from prose documentation; read the cited syntax before use",
+          "suggestions": [],
+          "reference": {
+            "id": "36a1da49ada7cbbbc2e6f6945a02701b9ecbba08b10d02beb4bee699da5f1003",
+            "revision": "2cdc93d26775990468eed167442f7a416b13059fb8fe07d139b54250b79209af",
+            "source": "game_doc",
+            "title": "effects documentation",
+            "heading": "set_temp_variable",
+            "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Hearts of Iron IV\\documentation\\effects_documentation.md",
+            "startLine": 7820,
+            "endLine": 7827,
+            "excerpt": "## set_temp_variable * Supported Scopes: any",
+            "authority": "Installed game documentation"
+          },
+          "command": "set_temp_variable",
+          "kind": "effect",
+          "scope": "country",
+          "line": 1,
+          "column": 1
+        },
+        {
+          "code": "SCRIPT_COMMAND_SUPPORTED",
+          "status": "supported",
+          "suggestions": [],
+          "reference": {
+            "id": "36a1da49ada7cbbbc2e6f6945a02701b9ecbba08b10d02beb4bee699da5f1003",
+            "revision": "2cdc93d26775990468eed167442f7a416b13059fb8fe07d139b54250b79209af",
+            "source": "game_doc",
+            "title": "effects documentation",
+            "heading": "set_temp_variable",
+            "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Hearts of Iron IV\\documentation\\effects_documentation.md",
+            "startLine": 7820,
+            "endLine": 7827,
+            "excerpt": "## set_temp_variable * Supported Scopes: any",
+            "authority": "Installed game documentation"
+          },
+          "message": "Command kind and declared scope match the selected documentation",
+          "command": "set_temp_variable",
+          "kind": "effect",
+          "scope": "country",
+          "line": 1,
+          "column": 1
+        }
+      ],
+      "totalFindings": 2,
+      "omittedFindings": 0,
+      "checkedCommands": 1,
+      "unresolvedCount": 1,
+      "truncated": false,
+      "argumentBlocksUnchecked": 1
+    }
+  },
+  "event_scan": {
+    "artifacts": [
+      {
+        "description": "Authoritative Event Chain Viewer scan report",
+        "mimeType": "application/json",
+        "name": "event-scan-10aaec8852ad.json",
+        "sha256": "db617503790cd37597f273375b809cea09d60c6c617e1ea36b8198cf71d1923e",
+        "size": 171870,
+        "uri": "hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/db617503790cd37597f273375b809cea09d60c6c617e1ea36b8198cf71d1923e/438e42521f1b77d1e13cde8b3111a1eba12adda49b7bee8aaef6e148cdd897c5/event-scan-10aaec8852ad.json"
+      },
+      {
+        "description": "Revision-addressed Event Chain Viewer graph snapshot",
+        "mimeType": "application/json",
+        "name": "event-graph-10aaec8852ad155188b9418a96fec3a0d1d9c7f07eaa5bd47c57cb3bc29062e8.json",
+        "sha256": "ff6cbbbe728c7b7a3f2e7332a90f8e589fb518a032cb9414a5ddd949d8b9657e",
+        "size": 96802897,
+        "uri": "hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/ff6cbbbe728c7b7a3f2e7332a90f8e589fb518a032cb9414a5ddd949d8b9657e/9120106405d1fb46a59e4a10526118e6de1890b855f9ba056611e01b8600cf34/event-graph-10aaec8852ad155188b9418a96fec3a0d1d9c7f07eaa5bd47c57cb3bc29062e8.json"
+      }
+    ],
+    "blockers": [],
+    "changedFiles": [],
+    "code": "EVENT_INSPECTED_PARTIAL",
+    "data": {
+      "analysisMode": "focused",
+      "boundary": {
+        "direction": "both",
+        "expandHelpers": false,
+        "maxDepth": 1,
+        "maxEdges": 1,
+        "maxNodes": 1,
+        "refresh": false
+      },
+      "counts": {
+        "artifacts": 2,
+        "blockingDiagnostics": 0,
+        "derivedEdges": 0,
+        "diagnostics": 2284,
+        "edges": 41393,
+        "entries": 1207,
+        "events": 10384,
+        "helpers": 0,
+        "issues": 2284,
+        "options": 15995,
+        "skippedSources": 0,
+        "stateAccesses": 32919,
+        "terminals": 7950,
+        "unresolvedNodes": 10719
+      },
+      "graphHash": "b6ef4b766c513d4ad47c25fe366da3681cc3a6fde7fa10bda73796e2eb012935",
+      "mode": "scan",
+      "revision": "10aaec8852ad155188b9418a96fec3a0d1d9c7f07eaa5bd47c57cb3bc29062e8"
+    },
+    "diagnostics": [
+      {
+        "category": "configuration",
+        "code": "MCP_INLINE_FILES_TRUNCATED",
+        "details": {
+          "returned": 64,
+          "total": 404
+        },
+        "message": "Inline source inventory is limited to 64 paths; use the linked resource for the complete inventory",
+        "severity": "info"
+      }
+    ],
+    "filesScanned": [
+      "game:common/on_actions/00_on_actions.txt",
+      "game:common/on_actions/00_testing_on_actions.txt",
+      "game:common/on_actions/01_tfv_on_actions.txt",
+      "game:common/on_actions/02_dod_on_actions.txt",
+      "game:common/on_actions/03_wtt_on_actions.txt",
+      "game:common/on_actions/04_mtg_on_actions.txt",
+      "game:common/on_actions/05_lar_on_actions.txt",
+      "game:common/on_actions/06_bftb_on_actions.txt",
+      "game:common/on_actions/07_nsb_on_actions.txt",
+      "game:common/on_actions/08_bba_on_actions.txt",
+      "game:common/on_actions/09_aat_on_actions.txt",
+      "game:common/on_actions/10_toa_on_actions.txt",
+      "game:common/on_actions/12_wuw_on_actions.txt",
+      "game:common/on_actions/13_goe_on_actions.txt",
+      "game:common/on_actions/14_sea_on_actions.txt",
+      "game:common/on_actions/15_mun_on_actions.txt",
+      "game:common/on_actions/16_taog_on_actions.txt",
+      "game:events/AAT_Denmark.txt",
+      "game:events/AAT_Finland.txt",
+      "game:events/AAT_Generic_Events.txt",
+      "game:events/AAT_Iceland.txt",
+      "game:events/AAT_NewsEvents.txt",
+      "game:events/AAT_Norway.txt",
+      "game:events/AAT_Sweden.txt",
+      "game:events/AAT_nordic.txt",
+      "game:events/ABDA_events.txt",
+      "game:events/AcePilots.txt",
+      "game:events/BBA_AfricanUnion_events.txt",
+      "game:events/BBA_Ethiopia.txt",
+      "game:events/BBA_ItaloEthiopianWar.txt",
+      "game:events/BBA_Italy.txt",
+      "game:events/BBA_NewsEvents.txt",
+      "game:events/BBA_Switzerland.txt",
+      "game:events/BFTB_Bulgaria.txt",
+      "game:events/BFTB_Greece.txt",
+      "game:events/BFTB_NewsEvents.txt",
+      "game:events/BFTB_Turkey.txt",
+      "game:events/Baltic.txt",
+      "game:events/Britain.txt",
+      "game:events/Bulgaria.txt",
+      "game:events/CapitulationEvents.txt",
+      "game:events/China.txt",
+      "game:events/DOD_Czechoslovakia.txt",
+      "game:events/DOD_Hungary.txt",
+      "game:events/DOD_NewsEvents.txt",
+      "game:events/DOD_Romania.txt",
+      "game:events/DOD_Yugoslavia.txt",
+      "game:events/Decisions_Events.txt",
+      "game:events/ElectionEvents.txt",
+      "game:events/Ethiopia.txt",
+      "game:events/Finland.txt",
+      "game:events/France.txt",
+      "game:events/GOE_Afghanistan.txt",
+      "game:events/GOE_Iraq.txt",
+      "game:events/GOE_Persia.txt",
+      "game:events/GOE_Raj.txt",
+      "game:events/GOE_generic_events.txt",
+      "game:events/GOT_Generic_Events.txt",
+      "game:events/Generic.txt",
+      "game:events/Germany.txt",
+      "game:events/Greece.txt",
+      "game:events/Hungary.txt",
+      "game:events/Italy.txt",
+      "game:events/Japan.txt"
+    ],
+    "proposedFiles": [],
+    "status": "ok",
+    "validation": {
+      "checks": [
+        {
+          "id": "event-analysis",
+          "message": "Whole-workspace helper projections and lifecycle passes were deferred; the requested event analysis retains direct source evidence",
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    "workspaceId": "mod_chaos_redux_ea3b2d67c2c0"
+  },
+  "artifact_read_coverage": "Scan/graph metadata only. Full 96,802,897-byte graph is not read, helpers are zero; this is not helper or state-flow validation."
+}

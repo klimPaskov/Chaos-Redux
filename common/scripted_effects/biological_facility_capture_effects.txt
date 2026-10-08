@@ -480,6 +480,7 @@ bio_facility_capture_select_release_agent = {
 # State scope. Caller supplies bio_facility_capture_release_fraction. Debits one
 # selected state-ledger agent exactly once and returns the positive amount.
 bio_facility_capture_debit_selected_release = {
+	set_temp_variable = { bio_facility_capture_selected_agent = constant:bio_lifecycle_agent.none }
 	bio_facility_capture_select_release_agent = yes
 	set_temp_variable = { bio_facility_capture_selected_stock = constant:bio_facility_capture_math.zero }
 	if = {
@@ -501,6 +502,8 @@ bio_facility_capture_debit_selected_release = {
 
 	set_temp_variable = { bio_facility_capture_fraction_source = bio_facility_capture_selected_stock }
 	set_temp_variable = { bio_facility_capture_fraction = bio_facility_capture_release_fraction }
+	set_temp_variable = { bio_facility_capture_fraction_amount = constant:bio_facility_capture_math.zero }
+	set_temp_variable = { bio_facility_capture_fraction_amount_negative = constant:bio_facility_capture_math.zero }
 	bio_facility_capture_prepare_fraction_amount = yes
 	bio_facility_capture_enforce_release_minimum = yes
 
@@ -552,6 +555,8 @@ bio_facility_capture_dispatch_accidental_release = {
 			}
 			multiply_temp_variable = { bio_facility_capture_release_fraction = constant:cbrn_biosecurity_designer_effect.sealed_sample_capture_risk_mult }
 		}
+		set_temp_variable = { bio_facility_capture_selected_agent = constant:bio_lifecycle_agent.none }
+		set_temp_variable = { bio_facility_capture_fraction_amount = constant:bio_facility_capture_math.zero }
 		bio_facility_capture_debit_selected_release = yes
 		if = {
 			limit = { check_variable = { bio_facility_capture_fraction_amount > constant:bio_facility_capture_math.zero } }
@@ -561,6 +566,14 @@ bio_facility_capture_dispatch_accidental_release = {
 			set_state_flag = bio_captured_facility_release_history
 			save_event_target_as = bio_facility_notice_state
 
+			set_temp_variable = { bio_seed_use_history_proof = constant:bio_lifecycle_proof.missing }
+			set_temp_variable = { bio_seed_batch_condemnation_proof = constant:bio_lifecycle_proof.missing }
+			set_temp_variable = { bio_seed_concealment = constant:bio_lifecycle_math.zero }
+			set_temp_variable = { bio_seed_intensity_override = constant:bio_lifecycle_math.zero }
+			set_temp_variable = { bio_seed_exposed_share_override = constant:bio_lifecycle_math.zero }
+			set_temp_variable = { bio_seed_evidence_override = constant:bio_lifecycle_math.zero }
+			set_temp_variable = { bio_seed_condemnation_override = constant:bio_lifecycle_math.zero }
+			set_temp_variable = { bio_seed_weaponization_mult = constant:bio_lifecycle_math.one }
 			bio_lifecycle_reset_seed_record = yes
 			set_temp_variable = { bio_seed_actor_proof = constant:bio_lifecycle_proof.missing }
 			if = {

@@ -1,0 +1,250 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 016 NATIVE BIOLOGICAL RAID OUTCOMES
+# ============================================================================
+# Native raids reserve and consume their explicit equipment and command power.
+# These callbacks only resolve agent-specific consequences and record history.
+# Inputs are temporary raid outcome, agent, route, victim, target, and whether
+# the portal variant was used. No receipt or second stockpile debit exists.
+# ============================================================================
+
+brilliant_scientist_calculate_biological_payload_requirement = {
+	set_temp_variable = { brilliant_scientist_biological_payload_required = 0 }
+	if = {
+		limit = { check_variable = { brilliant_scientist_biological_agent_request = constant:brilliant_scientist_biological_agent.anthrax } }
+		set_temp_variable = { brilliant_scientist_biological_payload_required = constant:brilliant_scientist_biological_payload.anthrax }
+	}
+	else_if = {
+		limit = { check_variable = { brilliant_scientist_biological_agent_request = constant:brilliant_scientist_biological_agent.plague } }
+		set_temp_variable = { brilliant_scientist_biological_payload_required = constant:brilliant_scientist_biological_payload.plague }
+	}
+	else_if = {
+		limit = { check_variable = { brilliant_scientist_biological_agent_request = constant:brilliant_scientist_biological_agent.tularemia } }
+		set_temp_variable = { brilliant_scientist_biological_payload_required = constant:brilliant_scientist_biological_payload.tularemia }
+	}
+	else_if = {
+		limit = { check_variable = { brilliant_scientist_biological_agent_request = constant:brilliant_scientist_biological_agent.smallpox } }
+		set_temp_variable = { brilliant_scientist_biological_payload_required = constant:brilliant_scientist_biological_payload.smallpox }
+	}
+	else_if = {
+		limit = { check_variable = { brilliant_scientist_biological_agent_request = constant:brilliant_scientist_biological_agent.weaponized_zombies } }
+		set_temp_variable = { brilliant_scientist_biological_payload_required = constant:brilliant_scientist_biological_payload.weaponized_zombies }
+	}
+	else_if = {
+		limit = { check_variable = { brilliant_scientist_biological_agent_request = constant:brilliant_scientist_biological_agent.black_plague } }
+		set_temp_variable = { brilliant_scientist_biological_payload_required = constant:brilliant_scientist_biological_payload.black_plague }
+	}
+	if = {
+		limit = { check_variable = { brilliant_scientist_biological_payload_multiplier > 0 } }
+		multiply_temp_variable = { brilliant_scientist_biological_payload_required = brilliant_scientist_biological_payload_multiplier }
+	}
+}
+
+brilliant_scientist_record_biological_deployment_exposure = {
+	if = {
+		limit = {
+			OR = { brilliant_scientist_is_current_host = yes brilliant_scientist_is_active_kruger_state = yes }
+		}
+		set_temp_variable = { brilliant_scientist_value_delta = brilliant_scientist_biological_deployment_exposure_gain }
+		brilliant_scientist_change_exposure = yes
+	}
+}
+
+brilliant_scientist_dispatch_standard_biological_release = {
+	bio_lifecycle_reset_seed_record = yes
+	if = {
+		limit = { check_variable = { brilliant_scientist_biological_deployment_agent = constant:brilliant_scientist_biological_agent.anthrax } }
+		set_temp_variable = { bio_seed_agent = constant:bio_lifecycle_agent.anthrax }
+	}
+	else_if = {
+		limit = { check_variable = { brilliant_scientist_biological_deployment_agent = constant:brilliant_scientist_biological_agent.tularemia } }
+		set_temp_variable = { bio_seed_agent = constant:bio_lifecycle_agent.tularemia }
+	}
+	else_if = {
+		limit = { check_variable = { brilliant_scientist_biological_deployment_agent = constant:brilliant_scientist_biological_agent.smallpox } }
+		set_temp_variable = { bio_seed_agent = constant:bio_lifecycle_agent.smallpox }
+	}
+	else = { set_temp_variable = { bio_seed_agent = constant:bio_lifecycle_agent.plague } }
+	if = {
+		limit = { check_variable = { brilliant_scientist_biological_release_is_accident > 0 } }
+		set_temp_variable = { bio_seed_route = constant:bio_lifecycle_route.laboratory_accident }
+		set_temp_variable = { bio_seed_source = constant:bio_lifecycle_source.accident }
+		set_temp_variable = { bio_seed_result = constant:bio_lifecycle_result.accident }
+	}
+	else_if = {
+		limit = { check_variable = { brilliant_scientist_biological_deployment_route = constant:brilliant_scientist_biological_route.battlefield } }
+		set_temp_variable = { bio_seed_route = constant:bio_lifecycle_route.battlefield_dissemination }
+		set_temp_variable = { bio_seed_source = constant:bio_lifecycle_source.deliberate }
+		set_temp_variable = { bio_seed_result = constant:bio_lifecycle_result.success }
+	}
+	else = {
+		set_temp_variable = { bio_seed_route = constant:bio_lifecycle_route.operative_release }
+		set_temp_variable = { bio_seed_source = constant:bio_lifecycle_source.deliberate }
+		set_temp_variable = { bio_seed_result = constant:bio_lifecycle_result.catastrophic }
+	}
+	set_temp_variable = { bio_seed_actor_proof = constant:bio_lifecycle_proof.supplied }
+	set_temp_variable = { bio_seed_victim_proof = constant:bio_lifecycle_proof.supplied }
+	set_temp_variable = { bio_seed_payload_debit_proof = constant:bio_lifecycle_proof.supplied }
+	set_temp_variable = { bio_seed_use_history_proof = constant:bio_lifecycle_proof.supplied }
+	set_temp_variable = { bio_seed_payload_required = brilliant_scientist_biological_deployment_payload_amount }
+	set_temp_variable = { bio_seed_payload_consumed = brilliant_scientist_biological_deployment_payload_amount }
+	save_event_target_as = bio_seed_actor
+	if = {
+		limit = { check_variable = { brilliant_scientist_biological_release_is_accident = constant:brilliant_scientist_value.zero } }
+		set_country_flag = bio_native_raid_dispatch_in_progress
+	}
+	var:brilliant_scientist_biological_release_target_state = {
+		CONTROLLER = { save_event_target_as = bio_seed_victim }
+		bio_lifecycle_dispatch_seed = yes
+	}
+	if = {
+		limit = { check_variable = { brilliant_scientist_biological_release_is_accident = constant:brilliant_scientist_value.zero } }
+		clr_country_flag = bio_native_raid_dispatch_in_progress
+	}
+	set_temp_variable = { brilliant_scientist_biological_release_dispatched = bio_seed_dispatch_status }
+}
+
+brilliant_scientist_dispatch_weaponized_zombie_release = {
+	set_temp_variable = { actor_country = THIS }
+	set_temp_variable = { target_state = var:brilliant_scientist_biological_release_target_state }
+	if = {
+		limit = { check_variable = { brilliant_scientist_biological_release_is_accident > constant:brilliant_scientist_value.zero } }
+		set_temp_variable = { victim_country = THIS }
+	}
+	else = { set_temp_variable = { victim_country = var:brilliant_scientist_biological_deployment_victim } }
+	var:brilliant_scientist_biological_release_target_state = {
+		PREV = { spawn_weaponized_zombie_outbreak_from_creator = yes }
+		if = {
+			limit = { OWNER = { tag = var:weaponized_zombie_new_country } }
+			set_temp_variable = { brilliant_scientist_biological_release_dispatched = constant:bio_lifecycle_proof.supplied }
+		}
+	}
+	if = {
+		limit = {
+			check_variable = { brilliant_scientist_biological_release_dispatched = constant:bio_lifecycle_proof.supplied }
+			check_variable = { brilliant_scientist_biological_release_is_accident = constant:brilliant_scientist_value.zero }
+		}
+		apply_weaponized_zombie_strike_consequences = yes
+	}
+}
+
+brilliant_scientist_dispatch_black_plague_release = {
+	brilliant_scientist_dispatch_standard_biological_release = yes
+	if = {
+		limit = { check_variable = { brilliant_scientist_biological_release_dispatched = constant:bio_lifecycle_proof.supplied } }
+		var:brilliant_scientist_biological_release_target_state = {
+			if = {
+				limit = { check_variable = { brilliant_scientist_biological_deployment_route = constant:brilliant_scientist_biological_route.battlefield } }
+				set_temp_variable = { black_plague_exposure_amount = constant:brilliant_scientist_biological_deployment.black_plague_battlefield_exposure }
+			}
+			else = { set_temp_variable = { black_plague_exposure_amount = constant:brilliant_scientist_biological_deployment.black_plague_covert_exposure } }
+			set_temp_variable = { black_plague_exposure_route = constant:black_plague_route.biological_strike }
+			set_temp_variable = { black_plague_exposure_provenance = constant:black_plague_provenance.weaponized }
+			black_plague_apply_weaponized_exposure_runtime = yes
+			if = {
+				limit = {
+					check_variable = {
+						var = black_plague_weaponized_runtime_bridge_result
+						value = constant:black_plague_value.one
+						compare = equals
+					}
+				}
+				set_state_flag = black_plague_weaponized_provenance
+			}
+		}
+		if = {
+			limit = {
+				check_variable = {
+					var = black_plague_weaponized_runtime_bridge_result
+					value = constant:black_plague_value.one
+					compare = equals
+				}
+			}
+			set_country_flag = black_plague_weaponization_delivery_history
+		}
+	}
+}
+
+brilliant_scientist_apply_selected_biological_release = {
+	set_temp_variable = { brilliant_scientist_biological_release_dispatched = constant:bio_lifecycle_proof.missing }
+	if = {
+		limit = { check_variable = { brilliant_scientist_biological_deployment_agent = constant:brilliant_scientist_biological_agent.weaponized_zombies } }
+		brilliant_scientist_dispatch_weaponized_zombie_release = yes
+	}
+	else_if = {
+		limit = { check_variable = { brilliant_scientist_biological_deployment_agent = constant:brilliant_scientist_biological_agent.black_plague } }
+		brilliant_scientist_dispatch_black_plague_release = yes
+	}
+	else = { brilliant_scientist_dispatch_standard_biological_release = yes }
+}
+
+# COUNTRY scope with actor-country ROOT, entered only through a hidden native
+# raid outcome event. The event ID fixes agent, route, result, and transport;
+# chain-local event targets fix the actor, original state, and original victim.
+brilliant_scientist_dispatch_native_biological_raid_event = {
+	if = {
+		limit = { brilliant_scientist_native_biological_raid_receipt_is_valid = yes }
+		set_temp_variable = { brilliant_scientist_biological_deployment_target_state = event_target:brilliant_scientist_native_raid_target_state }
+		set_temp_variable = { brilliant_scientist_biological_release_target_state = event_target:brilliant_scientist_native_raid_target_state }
+		set_temp_variable = { brilliant_scientist_biological_deployment_victim = event_target:brilliant_scientist_native_raid_victim }
+		brilliant_scientist_resolve_native_biological_raid = yes
+	}
+}
+
+# COUNTRY scope. Called exactly once by a completed native raid outcome.
+# Inputs: brilliant_scientist_biological_raid_outcome (0 failure, 1 success,
+# 2 home accident), agent, route, target state, victim country, portal amount.
+brilliant_scientist_resolve_native_biological_raid = {
+	if = {
+		limit = {
+			brilliant_scientist_biological_raid_actor_is_ready = yes
+			has_variable = brilliant_scientist_biological_deployment_agent
+			has_variable = brilliant_scientist_biological_release_target_state
+			has_variable = brilliant_scientist_biological_deployment_victim
+		}
+		set_temp_variable = { brilliant_scientist_biological_agent_request = brilliant_scientist_biological_deployment_agent }
+		if = {
+			limit = { check_variable = { brilliant_scientist_biological_deployment_route = constant:brilliant_scientist_biological_route.covert } }
+			set_temp_variable = { brilliant_scientist_biological_payload_multiplier = constant:brilliant_scientist_biological_deployment.covert_payload_multiplier }
+		}
+		else = {
+			set_temp_variable = { brilliant_scientist_biological_payload_multiplier = constant:brilliant_scientist_biological_deployment.battlefield_payload_multiplier }
+		}
+		brilliant_scientist_calculate_biological_payload_requirement = yes
+		set_temp_variable = { brilliant_scientist_biological_deployment_payload_amount = brilliant_scientist_biological_payload_required }
+		if = {
+			limit = { check_variable = { brilliant_scientist_biological_raid_outcome = constant:brilliant_scientist_biological_raid_outcome.success } }
+			set_temp_variable = { brilliant_scientist_biological_release_is_accident = constant:brilliant_scientist_value.zero }
+			brilliant_scientist_apply_selected_biological_release = yes
+			if = {
+				limit = { check_variable = { brilliant_scientist_biological_release_dispatched = constant:bio_lifecycle_proof.supplied } }
+				if = {
+					limit = { check_variable = { brilliant_scientist_biological_deployment_route = constant:brilliant_scientist_biological_route.battlefield } }
+					set_temp_variable = { brilliant_scientist_biological_deployment_exposure_gain = constant:brilliant_scientist_biological_deployment.battlefield_exposure_gain }
+				}
+				else = { set_temp_variable = { brilliant_scientist_biological_deployment_exposure_gain = constant:brilliant_scientist_biological_deployment.covert_exposure_gain } }
+				brilliant_scientist_record_biological_deployment_exposure = yes
+				set_country_flag = brilliant_scientist_biological_deployment_success_history
+			}
+			else = { set_country_flag = brilliant_scientist_biological_deployment_failure_history }
+		}
+		else_if = {
+			limit = { check_variable = { brilliant_scientist_biological_raid_outcome = constant:brilliant_scientist_biological_raid_outcome.accident } }
+			capital_scope = { PREV = { set_temp_variable = { brilliant_scientist_biological_release_target_state = PREV } } }
+			set_temp_variable = { brilliant_scientist_biological_release_is_accident = constant:brilliant_scientist_value.one }
+			brilliant_scientist_apply_selected_biological_release = yes
+			set_temp_variable = { brilliant_scientist_biological_deployment_exposure_gain = constant:brilliant_scientist_biological_deployment.accident_exposure_gain }
+			brilliant_scientist_record_biological_deployment_exposure = yes
+			set_country_flag = brilliant_scientist_biological_deployment_accident_history
+		}
+		else = { set_country_flag = brilliant_scientist_biological_deployment_failure_history }
+		set_country_flag = brilliant_scientist_biological_deployment_history
+		set_variable = { brilliant_scientist_biological_last_deployment_agent = brilliant_scientist_biological_deployment_agent }
+		set_variable = { brilliant_scientist_biological_last_deployment_route = brilliant_scientist_biological_deployment_route }
+		add_to_variable = { brilliant_scientist_biological_deployment_count = constant:brilliant_scientist_value.one }
+		if = {
+			limit = { check_variable = { brilliant_scientist_biological_deployment_transport_amount > constant:brilliant_scientist_value.zero } }
+			set_country_flag = brilliant_scientist_biological_portal_deployment_history
+			var:brilliant_scientist_biological_deployment_target_state = { set_state_flag = brilliant_scientist_biological_portal_target_history }
+		}
+	}
+}

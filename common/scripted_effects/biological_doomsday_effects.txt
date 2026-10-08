@@ -133,6 +133,14 @@ bio_doomsday_mark_current_seed = {
 # target array. When stock is smaller than the target count, the deterministic
 # first stock-count states receive one unit; no unit is duplicated or fabricated.
 bio_doomsday_dispatch_current_agent = {
+	# Own the receipt and reset-only inputs across returning seed helpers.
+	set_temp_variable = { bio_seed_dispatch_status = constant:bio_lifecycle_proof.missing }
+	set_temp_variable = { bio_seed_concealment = constant:bio_lifecycle_math.zero }
+	set_temp_variable = { bio_seed_intensity_override = constant:bio_lifecycle_math.zero }
+	set_temp_variable = { bio_seed_exposed_share_override = constant:bio_lifecycle_math.zero }
+	set_temp_variable = { bio_seed_evidence_override = constant:bio_lifecycle_math.zero }
+	set_temp_variable = { bio_seed_condemnation_override = constant:bio_lifecycle_math.zero }
+	set_temp_variable = { bio_seed_weaponization_mult = constant:bio_lifecycle_math.one }
 	set_temp_variable = { bio_doomsday_payload_remaining = bio_doomsday_active_stock }
 	set_temp_variable = { bio_doomsday_targets_remaining = bio_doomsday_target_states^num }
 	set_temp_variable = { bio_doomsday_active_seeded_payload = constant:bio_lifecycle_math.zero }
@@ -142,8 +150,10 @@ bio_doomsday_dispatch_current_agent = {
 		set_temp_variable = { bio_doomsday_active_result = constant:bio_lifecycle_result.severe }
 	}
 
+	set_temp_variable = { bio_doomsday_dispatch_break = constant:bio_lifecycle_math.zero }
 	for_each_scope_loop = {
 		array = bio_doomsday_target_states
+		break = bio_doomsday_dispatch_break
 		if = {
 			limit = { check_variable = { bio_doomsday_payload_remaining > constant:bio_lifecycle_math.zero } }
 			set_temp_variable = { bio_doomsday_current_allocation = bio_doomsday_payload_remaining }
@@ -311,6 +321,8 @@ bio_doomsday_register_batch_consequence = {
 
 	event_target:bio_doomsday_actor = { save_event_target_as = bio_seed_actor }
 	set_temp_variable = { bio_seed_actor_proof = constant:bio_lifecycle_proof.supplied }
+	# Retain the returned doctrine multiplier for the batch consequence.
+	set_temp_variable = { bio_seed_doctrine_condemnation_mult = constant:bio_lifecycle_math.one }
 	bio_lifecycle_prepare_actor_doctrine_snapshot = yes
 	set_temp_variable = { condemnation_source_type = constant:condemnation_source.biological }
 	set_temp_variable = { condemnation_base_gain = constant:bio_lifecycle_route_profile.doomsday_release.condemnation }
@@ -343,6 +355,14 @@ bio_doomsday_register_batch_consequence = {
 
 # Country-scoped resolver entered only from the native raid outcome.
 bio_doomsday_resolve_release = {
+	# Own the collected targets and captured stocks consumed after helper return.
+	clear_temp_array = bio_doomsday_target_states
+	set_temp_variable = { bio_doomsday_target_count = constant:bio_lifecycle_math.zero }
+	set_temp_variable = { bio_doomsday_stock_anthrax = constant:bio_lifecycle_math.zero }
+	set_temp_variable = { bio_doomsday_stock_plague = constant:bio_lifecycle_math.zero }
+	set_temp_variable = { bio_doomsday_stock_tularemia = constant:bio_lifecycle_math.zero }
+	set_temp_variable = { bio_doomsday_stock_smallpox = constant:bio_lifecycle_math.zero }
+	set_temp_variable = { bio_doomsday_arsenal_consumed_total = constant:bio_lifecycle_math.zero }
 	set_temp_variable = { bio_doomsday_release_status = constant:bio_lifecycle_proof.missing }
 	set_temp_variable = { bio_doomsday_full_resolution_status = constant:bio_lifecycle_proof.missing }
 	set_temp_variable = { bio_doomsday_seeded_payload_total = constant:bio_lifecycle_math.zero }

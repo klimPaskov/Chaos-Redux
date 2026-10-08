@@ -115,9 +115,17 @@ japan_bio_campaign_record_state_history_internal = {
 }
 
 japan_bio_campaign_dispatch_native_release = {
+	set_temp_variable = { bio_sabotage_weaponization_mult = constant:bio_sabotage_resolution.weaponization_operational }
+	set_temp_variable = { bio_sabotage_concealment = constant:bio_lifecycle_math.zero }
 	event_target:japan_bio_campaign_actor_target = { bio_sabotage_prepare_program_values_internal = yes }
 	event_target:japan_bio_campaign_actor_target = { set_country_flag = bio_native_raid_dispatch_in_progress }
 	event_target:japan_bio_campaign_state_target = {
+		set_temp_variable = { bio_seed_batch_condemnation_proof = constant:bio_lifecycle_proof.missing }
+		set_temp_variable = { bio_seed_intensity_override = constant:bio_lifecycle_math.zero }
+		set_temp_variable = { bio_seed_exposed_share_override = constant:bio_lifecycle_math.zero }
+		set_temp_variable = { bio_seed_evidence_override = constant:bio_lifecycle_math.zero }
+		set_temp_variable = { bio_seed_condemnation_override = constant:bio_lifecycle_math.zero }
+		set_temp_variable = { bio_seed_force_detection_on_activation = constant:bio_lifecycle_proof.missing }
 		bio_lifecycle_reset_seed_record = yes
 		set_temp_variable = { bio_seed_agent = japan_bio_campaign_agent }
 		set_temp_variable = { bio_seed_route = constant:bio_lifecycle_route.japan_china_campaign }
@@ -141,6 +149,7 @@ japan_bio_campaign_dispatch_native_release = {
 		}
 		event_target:japan_bio_campaign_actor_target = { save_event_target_as = bio_seed_actor }
 		event_target:japan_bio_campaign_victim_target = { save_event_target_as = bio_seed_victim }
+		set_temp_variable = { bio_seed_dispatch_status = constant:bio_lifecycle_proof.missing }
 		bio_lifecycle_dispatch_seed = yes
 		event_target:japan_bio_campaign_actor_target = { clr_country_flag = bio_native_raid_dispatch_in_progress }
 		set_temp_variable = { japan_bio_campaign_dispatch_status = bio_seed_dispatch_status }
@@ -172,6 +181,7 @@ japan_bio_campaign_resolve_native_raid_outcome = {
 		save_event_target_as = bio_sabotage_state_target
 	}
 	set_temp_variable = { bio_sabotage_agent = japan_bio_campaign_agent }
+	set_temp_variable = { japan_bio_campaign_result = constant:bio_sabotage_result.rejected }
 	japan_bio_campaign_select_native_result = yes
 	set_temp_variable = { bio_sabotage_result = japan_bio_campaign_result }
 	# Resolve the exact victim id before the policy trigger, independent of
@@ -184,6 +194,7 @@ japan_bio_campaign_resolve_native_raid_outcome = {
 		limit = { japan_bio_campaign_native_context_is_valid = yes }
 		if = {
 			limit = { check_variable = { var = japan_bio_campaign_result value = constant:bio_sabotage_result.failed compare = equals } }
+			set_temp_variable = { bio_sabotage_attempt_lead_matches_actor = constant:bio_lifecycle_proof.missing }
 			event_target:japan_bio_campaign_state_target = { bio_sabotage_record_failed_attempt_evidence_internal = yes }
 			event_target:japan_bio_campaign_actor_target = { bio_sabotage_apply_failed_attempt_condemnation_internal = yes }
 		}
@@ -192,6 +203,7 @@ japan_bio_campaign_resolve_native_raid_outcome = {
 	if = {
 		limit = { has_event_target = japan_bio_campaign_actor_target }
 		event_target:japan_bio_campaign_actor_target = {
+			set_temp_variable = { japan_bio_campaign_actor_cooldown_days = constant:japan_bio_campaign_timing.base_actor_cooldown_days }
 			japan_bio_campaign_prepare_doctrine_parameters = yes
 			set_variable = { japan_bio_campaign_next_allowed_day = global.num_days }
 			add_to_variable = { japan_bio_campaign_next_allowed_day = japan_bio_campaign_actor_cooldown_days }

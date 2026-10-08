@@ -51,7 +51,7 @@ The restricted-site Camp caller owns the 60 action fields, five method outputs a
 The strategic missile caller owns its existing specialized outputs and direct inputs, including returned retaliation status initialized to none before reset; optional condition inputs remain gated by its explicit missing-condition receipt.
 Its removed stock-check helper has no current caller contract, and no universal 60-field missile allocation is required by this route.
 The shared dispatch proof guards repeated dispatch of one prepared record; a fresh Camp invocation prepares another record and may debit again.
-The [source-integrity report](../../plans/chaos_warfare_system_plans/2026-10-07_chemical_raid_service_integrity.md) and [remaining-caller evidence](../../plans/chaos_warfare_system_plans/2026-10-08_remaining_chemical_callers.md) distinguish frozen Camp/missile source repairs awaiting parent integration from committed peer dependencies and unresolved native settlement, full sink and balance evidence.
+Reviewed commit `3e90486dad8ab2a2ad374d12fca3d9213d3276e1` integrates the 67 Camp/missile declarations and 46 bounded cases; the [source-integrity report](../../plans/chaos_warfare_system_plans/2026-10-07_chemical_raid_service_integrity.md) and [remaining-caller evidence](../../plans/chaos_warfare_system_plans/2026-10-08_remaining_chemical_callers.md) retain historical pre-integration provenance and unresolved native settlement, full sink and balance limits.
 
 ## Biological helper output ownership
 
@@ -61,7 +61,15 @@ The shared seed dispatcher owns retaliation classification and `bio_active_agent
 `bio_seed_dispatch_status` reports acceptance and does not suppress a repeated valid callback.
 Actual storage allows another accepted battlefield seed to strengthen the same-agent episode, while sabotage retains its existing active-episode guard.
 Native callback cardinality, reservation collection, cancellation settlement and later outbreak timing remain separate acceptance requirements.
-The [implementation and evidence report](../../plans/chaos_warfare_system_plans/2026-10-07_biological_raid_service_integrity.md) records the five audited raid owners, eleven other consumers awaiting equivalent caller review, exact before sources and bounded test assumptions.
+The [raid-owner report](../../plans/chaos_warfare_system_plans/2026-10-07_biological_raid_service_integrity.md) preserves the original five-file repair and eleven-consumer follow-up inventory.
+The [biological release ledger](../../plans/chaos_warfare_system_plans/2026-10-08_biological_release_integrity.md) records ten lifetime-repaired follow-up consumers across facility, event, doomsday, missile and connected-spread owners.
+Each owner allocates only its consumed defaults and returned outputs; these acceptance receipts do not create a generic replay guard.
+The doomsday owner retains target array/count, stocks, seed acceptance and doctrine outputs, while its private break binding isolates the existing ordered traversal from an unrelated inherited temporary.
+The remaining `bio_operative_release_dispatch_seed_internal` is unpatched, and four ordinary attacks in `common/operations/chaosx_bioweapon_operations.txt` still compete with the accepted raid-only loop.
+Migration/removal of those four attacks and the separate public weaponized-zombie intelligence attack is accepted and queued under the raid-only direction.
+Shared covert/lifecycle/achievement capabilities remain, while operation-only network/operative preparation, phases, capture handlers and Command Power refunds retire with their public attacks; no native captured-character proxy is introduced.
+Native zombie authorization parity and the shared covert-count defect remain unresolved continuity work.
+Source-model receipt checks do not establish complete helper flow, native payment/refunds, callback cardinality, protection, outbreak progression or balance.
 
 ## Chemical ground payment and balance
 

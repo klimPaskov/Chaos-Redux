@@ -4486,6 +4486,14 @@ missiles_dispatch_biological_payload = {
 	set_variable = { missiles_operation_delivery_result = constant:missiles_result.rejected }
 	if = {
 		limit = { has_country_flag = missiles_operation_payload_debit_verified check_variable = { var = missiles_operation_payload_consumed value = constant:missiles_program_value.zero compare = greater_than } }
+		set_temp_variable = { bio_seed_batch_condemnation_proof = constant:bio_lifecycle_proof.missing }
+		set_temp_variable = { bio_seed_intensity_override = constant:bio_lifecycle_math.zero }
+		set_temp_variable = { bio_seed_exposed_share_override = constant:bio_lifecycle_math.zero }
+		set_temp_variable = { bio_seed_evidence_override = constant:bio_lifecycle_math.zero }
+		set_temp_variable = { bio_seed_condemnation_override = constant:bio_lifecycle_math.zero }
+		set_temp_variable = { bio_seed_concealment = constant:bio_lifecycle_math.zero }
+		set_temp_variable = { bio_seed_weaponization_mult = constant:bio_lifecycle_math.one }
+		set_temp_variable = { bio_seed_force_detection_on_activation = constant:bio_lifecycle_proof.missing }
 		bio_lifecycle_reset_seed_record = yes
 		set_temp_variable = { bio_seed_agent = missiles_selected_biological_agent }
 		set_temp_variable = { bio_seed_route = constant:bio_lifecycle_route.strategic_raid }
@@ -4501,6 +4509,7 @@ missiles_dispatch_biological_payload = {
 		set_temp_variable = { bio_seed_payload_consumed = missiles_operation_payload_consumed }
 		save_event_target_as = bio_seed_actor
 		var:missiles_operation_impact_country = { save_event_target_as = bio_seed_victim }
+		set_temp_variable = { bio_seed_dispatch_status = constant:bio_lifecycle_proof.missing }
 		var:missiles_operation_impact_state = { bio_lifecycle_dispatch_seed = yes }
 		if = {
 			limit = { check_variable = { var = bio_seed_dispatch_status value = constant:bio_lifecycle_proof.supplied compare = equals } }
