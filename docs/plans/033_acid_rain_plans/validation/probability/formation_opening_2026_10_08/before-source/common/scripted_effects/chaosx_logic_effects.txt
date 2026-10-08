@@ -1,0 +1,1737 @@
+# ============================================================================
+# CHAOS REDUX - SMART EVENT FIRING SYSTEM
+# ============================================================================
+# This file contains the complete logic for the dynamic event firing system
+#
+# SYSTEM FEATURES:
+# - Dynamic timer system with daily checks and adaptive intervals
+# - Weight-based event selection with recovery mechanics
+# - Per-event Chaos-level eligibility with preserved stored weights
+# - Major/minor event classification with different behaviors
+# - Per-event cap management with X% reduction per firing
+# - Comprehensive debug logging and monitoring
+#
+# ============================================================================
+
+# ============================================================================
+# CONSTANTS
+# ============================================================================
+# Centralized in `common/script_constants/event_system_constants.txt`.
+
+
+# ============================================================================
+# SECTION 1: SYSTEM INITIALIZATION
+# ============================================================================
+
+# Initialize the complete event system
+initialize_event_system = {
+	set_global_flag = event_system_initializing
+
+	clear_array = global.fired_events
+	clear_array = global.event_weights
+	clear_array = global.major_events
+	clear_array = global.fire_once_events
+	clear_array = global.repeatable_events
+	clear_array = global.all_events
+	clear_array = global.events_log_history_sequence_entries
+	clear_array = global.events_log_history_date_entries
+	clear_array = global.events_log_history_event_id_entries
+	clear_array = global.events_log_history_event_type_entries
+	clear_array = global.events_log_history_payload_entries
+	clear_array = global.events_log_history_actor_entries
+	clear_array = global.events_log_history_has_actor_entries
+	clear_array = global.events_log_history_secondary_actor_entries
+	clear_array = global.events_log_history_has_secondary_actor_entries
+	clear_array = global.events_log_history_minor_since_major_entries
+	clear_array = global.events_log_history_unique_left_entries
+	clear_array = global.events_log_history_total_fired_entries
+	clear_array = global.events_log_view_sequence_entries
+	clear_array = global.events_log_view_date_entries
+	clear_array = global.events_log_view_event_id_entries
+	clear_array = global.events_log_view_event_type_entries
+	clear_array = global.events_log_view_actor_entries
+	clear_array = global.events_log_view_has_actor_entries
+	clear_array = global.events_log_view_secondary_actor_entries
+	clear_array = global.events_log_view_has_secondary_actor_entries
+	clear_array = global.events_log_view_cluster_id_entries
+	clear_array = global.events_log_view_cluster_sequence_entries
+	clear_array = global.events_log_events_view_fired_entries
+	clear_array = global.events_log_events_view_enabled_entries
+	clear_array = global.events_log_events_view_unique_entries
+	clear_array = global.events_log_events_view_weight_entries
+	clear_array = global.events_log_events_view_chaos_level_entries
+	clear_array = global.events_log_events_view_unavailability_reason_entries
+	clear_array = global.events_log_open_event_detail_entries
+	clear_array = global.events_log_open_event_detail_chaos_level_entries
+	clear_array = global.events_log_open_event_detail_secondary_actor_entries
+	clear_array = global.events_log_open_event_detail_has_secondary_actor_entries
+	clear_array = global.events_log_event_detail_evolution_type_entries
+	clear_array = global.events_log_event_detail_evolution_tier_entries
+	clear_array = global.events_log_event_detail_evolution_stage_entries
+	clear_array = global.events_log_event_detail_evolution_enabled_entries
+	clear_array = global.events_log_event_detail_world_end_scenario_id_entries
+	clear_array = global.events_log_event_detail_world_end_owner_event_id_entries
+	clear_array = global.events_log_event_detail_world_end_sort_order_entries
+	clear_array = global.events_log_event_detail_world_end_enabled_entries
+	clear_array = global.events_log_event_detail_world_end_active_entries
+	clear_array = global.events_log_event_detail_world_end_available_entries
+	clear_array = global.events_log_event_detail_world_end_scenario_flag_entries
+	clear_array = global.events_log_event_detail_world_end_super_event_id_entries
+	clear_array = global.events_log_event_detail_world_end_title_key_entries
+	clear_array = global.events_log_event_detail_world_end_details_key_entries
+	clear_array = global.events_log_event_detail_world_end_availability_helper_entries
+	clear_array = global.events_log_history_detail_evolution_sequence_entries
+	clear_array = global.events_log_history_detail_evolution_date_entries
+	clear_array = global.events_log_history_detail_evolution_type_entries
+	clear_array = global.events_log_history_detail_evolution_tier_entries
+	clear_array = global.events_log_history_detail_evolution_stage_entries
+	clear_array = global.events_log_history_detail_evolution_actor_entries
+	clear_array = global.events_log_history_detail_evolution_has_actor_entries
+	clear_array = global.events_log_history_detail_evolution_enabled_entries
+	clear_array = global.events_log_evolution_sequence_entries
+	clear_array = global.events_log_evolution_date_entries
+	clear_array = global.events_log_evolution_type_entries
+	clear_array = global.events_log_evolution_event_id_entries
+	clear_array = global.events_log_evolution_event_type_entries
+	clear_array = global.events_log_evolution_tier_entries
+	clear_array = global.events_log_evolution_stage_entries
+	clear_array = global.events_log_evolution_actor_entries
+	clear_array = global.events_log_evolution_has_actor_entries
+	clear_array = global.events_log_evolution_view_sequence_entries
+	clear_array = global.events_log_evolution_view_date_entries
+	clear_array = global.events_log_evolution_view_type_entries
+	clear_array = global.events_log_evolution_view_event_id_entries
+	clear_array = global.events_log_evolution_view_event_type_entries
+	clear_array = global.events_log_evolution_view_tier_entries
+	clear_array = global.events_log_evolution_view_stage_entries
+	clear_array = global.events_log_evolution_view_actor_entries
+	clear_array = global.events_log_evolution_view_has_actor_entries
+	clear_array = global.events_log_evolution_view_enabled_entries
+	clear_array = global.crisis_rescue_countries
+	clear_array = global.crisis_rescue_event_ids
+
+	set_variable = { global.default_event_weight = constant:event_system_defaults.event_weight }
+	set_variable = { global.minor_event_recovery_rate = constant:event_system_defaults.recovery_rate }
+	set_variable = { global.major_event_weight_per_minor = constant:event_system_defaults.major_event_weight_per_minor }
+	set_variable = { global.current_dynamic_major_weight_gain = 0 }
+	set_variable = { global.current_dynamic_major_active_major_count = 0 }
+	set_variable = { global.current_dynamic_major_active_non_major_count = 0 }
+	set_variable = { global.reduce_cap_factor = constant:event_system_defaults.reduce_cap_factor }
+
+	set_variable = { global.minor_events_since_major = 0 }
+	set_variable = { global.last_fired_event_id = -1 }
+	set_variable = { global.total_events_fired = 0 }
+	set_variable = { global.debug_log_count = 0 }
+	set_variable = { global.total_events = 0 }
+	set_variable = { global.events_log_history_sequence = 0 }
+	set_variable = { global.events_log_evolution_sequence = 0 }
+	set_variable = { global.current_major_event_weight = 0 }
+
+	set_variable = { global.chaos_timer_modifier_calm = constant:event_system_timer_modifier_default.calm }
+	set_variable = { global.chaos_timer_modifier_gathering = constant:event_system_timer_modifier_default.gathering }
+	set_variable = { global.chaos_timer_modifier_rising = constant:event_system_timer_modifier_default.rising }
+	set_variable = { global.chaos_timer_modifier_chaos = constant:event_system_timer_modifier_default.chaos }
+	set_variable = { global.chaos_timer_modifier_critical = constant:event_system_timer_modifier_default.critical }
+	set_variable = { global.chaos_timer_modifier_collapse = constant:event_system_timer_modifier_default.collapse }
+	set_variable = { global.chaos_timer_modifier = constant:event_system_timer_modifier_default.calm }
+
+	initialize_event_categories = yes
+	initialize_all_events_array = yes
+	initialize_event_chaos_level_registry = yes
+	initialize_world_end_scenario_registry = yes
+	initialize_default_disabled_events_for_rework_queue = yes
+	count_total_events_plus_one = yes
+	initialize_event_weights = yes
+	calculate_dynamic_major_weight_gain = yes
+	initialize_crisis_rescue_registry = yes
+	initialize_event_cluster_system = yes
+
+	log = "CHAOS REDUX EVENT SYSTEM: System initialized successfully"
+	log = "CHAOS REDUX EVENT SYSTEM: Successfully loaded [?global.all_events^num] events"
+
+	set_global_flag = event_system_initialized
+	clr_global_flag = event_system_initializing
+}
+
+# Build one required Chaos-tier row for every registered normal event.
+# Player-facing Chaos levels are one-based; stored tier IDs use the existing
+# zero-based chaos_meter_tier_id constants.
+initialize_event_chaos_level_registry = {
+	clear_array = global.event_chaos_level_entries
+	for_loop_effect = {
+		start = 0
+		end = global.all_events^num
+		value = event_chaos_level_registry_index
+		set_temp_variable = { event_chaos_level_registry_event_id = global.all_events^event_chaos_level_registry_index }
+		set_temp_variable = { event_chaos_level_registry_required_tier = constant:chaos_meter_tier_id.tier_0 }
+		if = {
+			limit = { check_variable = { event_chaos_level_registry_event_id = constant:white_peace_event_log.event_id } }
+			set_temp_variable = { event_chaos_level_registry_required_tier = constant:chaos_meter_tier_id.tier_1 }
+		}
+		else_if = {
+			limit = { check_variable = { event_chaos_level_registry_event_id = constant:acid_rain_event.id } }
+			set_temp_variable = { event_chaos_level_registry_required_tier = constant:chaos_meter_tier_id.tier_1 }
+		}
+		else_if = {
+			limit = { check_variable = { event_chaos_level_registry_event_id = constant:black_friday_event.id } }
+			set_temp_variable = { event_chaos_level_registry_required_tier = constant:chaos_meter_tier_id.tier_1 }
+		}
+		add_to_array = {
+			array = global.event_chaos_level_entries
+			value = event_chaos_level_registry_required_tier
+		}
+	}
+}
+
+# Resolve the required internal Chaos tier for event_id.
+# Input: event_id. Output: event_required_chaos_level.
+get_event_required_chaos_level = {
+	set_temp_variable = { event_required_chaos_level = constant:chaos_meter_tier_id.tier_0 }
+	set_temp_variable = { event_chaos_level_resolver_found = 0 }
+	set_temp_variable = { event_chaos_level_resolver_index = 0 }
+	while_loop_effect = {
+		limit = {
+			check_variable = { event_chaos_level_resolver_found = 0 }
+			check_variable = { event_chaos_level_resolver_index < global.all_events^num }
+		}
+		if = {
+			limit = {
+				check_variable = {
+					var = global.all_events^event_chaos_level_resolver_index
+					value = event_id
+					compare = equals
+				}
+			}
+			set_temp_variable = { event_required_chaos_level = global.event_chaos_level_entries^event_chaos_level_resolver_index }
+			set_temp_variable = { event_chaos_level_resolver_found = 1 }
+		}
+		add_to_temp_variable = { event_chaos_level_resolver_index = 1 }
+	}
+}
+
+# Evaluate the central Chaos-level gate after get_event_required_chaos_level.
+# Output: event_required_chaos_level_is_met_value.
+evaluate_event_required_chaos_level = {
+	set_temp_variable = { event_required_chaos_level_is_met_value = 0 }
+	if = {
+		limit = { event_required_chaos_level_is_met = yes }
+		set_temp_variable = { event_required_chaos_level_is_met_value = 1 }
+	}
+}
+
+initialize_dynamic_timer = {
+	set_variable = { timer_min_days = constant:event_system_timer_defaults.min_days }
+	set_variable = { timer_max_days = constant:event_system_timer_defaults.max_days }
+	set_variable = { timer_min_decrement_cap = constant:event_system_timer_defaults.min_decrement_cap }
+	set_variable = { timer_max_decrement_cap = constant:event_system_timer_defaults.max_decrement_cap }
+	set_variable = { timer_day_decrement = 0 }
+	set_variable = { timer_max_cap_reduction = 0 }
+}
+
+# Define event categories for the system
+initialize_event_categories = {
+	# Major events (fire once, start at weight 0, triggered by minor events)
+	add_to_array = { global.major_events = 2 }   # ZZZ
+	add_to_array = { global.major_events = 25 }  # ALIENS ANTARCTICA UFO RACE
+	add_to_array = { global.major_events = 30 }  # TIME TRAVELER
+	add_to_array = { global.major_events = constant:acid_rain_event.id }  # ACID RAIN
+	add_to_array = { global.major_events = 44 }  # SPACE RACE
+	add_to_array = { global.major_events = 49 }  # MASS PANIC
+	add_to_array = { global.major_events = 80 }  # AIRSHIP
+	add_to_array = { global.major_events = 91 }  # THE REVOLUTION
+	add_to_array = { global.major_events = constant:asteroid_incoming_event.id }  # ASTEROID INCOMING
+
+	# Fire-once events (start at weight 1000, become 0 permanently when fired)
+	add_to_array = { global.fire_once_events = 1 }   # COMMUNISM SPREAD
+	add_to_array = { global.fire_once_events = 3 }   # THR
+	add_to_array = { global.fire_once_events = 5 }   # SOV COLLAPSE
+	add_to_array = { global.fire_once_events = 10 }  # DEATH
+	add_to_array = { global.fire_once_events = 11 }  # SECRET ALLIANCE
+	add_to_array = { global.fire_once_events = constant:africa_event.id }  # AFRICA
+	add_to_array = { global.fire_once_events = constant:cannibalism_event.id }  # CANNIBALISM
+	add_to_array = { global.fire_once_events = constant:utopia_manifesto_event.id }  # UTOPIA MANIFESTO
+	add_to_array = { global.fire_once_events = constant:brilliant_scientist_event.id }  # BRILLIANT SCIENTIST
+	add_to_array = { global.fire_once_events = constant:black_plague_identity.event_id }  # BLACK PLAGUE
+	add_to_array = { global.fire_once_events = 22 }  # 1391 (JEWS MASSACRE)
+	add_to_array = { global.fire_once_events = 23 }  # SOV NUKES
+	add_to_array = { global.fire_once_events = 24 }  # HOI
+	add_to_array = { global.fire_once_events = 26 }
+	add_to_array = { global.fire_once_events = 38 }  # MALTA CRUSADERS
+	add_to_array = { global.fire_once_events = constant:murder_mystery_identity.event_id }  # MURDER MYSTERY
+	add_to_array = { global.fire_once_events = 45 }  # THIRD BALKAN WAR
+	add_to_array = { global.fire_once_events = 48 }  # BUL AMBITIONS
+	add_to_array = { global.fire_once_events = 51 }  # HEAT WAVE
+	add_to_array = { global.fire_once_events = 59 }  # AI FOCUS AGGRESSIVE
+	add_to_array = { global.fire_once_events = 67 }  # GENERALISSIMO
+	add_to_array = { global.fire_once_events = 68 }  # ZIN
+	add_to_array = { global.fire_once_events = 69 }  # BOXER REBELLION
+	add_to_array = { global.fire_once_events = 71 }  # PERSIAN EMPIRE
+	add_to_array = { global.fire_once_events = 72 }  # IRE RECLAIMS NORTH
+	add_to_array = { global.fire_once_events = 73 }  # MONGOLS RISE
+	add_to_array = { global.fire_once_events = 74 }  # JAP CA
+	add_to_array = { global.fire_once_events = 75 }  # TAN JOINS ALLIES
+	add_to_array = { global.fire_once_events = 81 }  # ENG TAX
+	add_to_array = { global.fire_once_events = 86 }  # WORLD CLAIMS
+	add_to_array = { global.fire_once_events = 88 }  # MINES
+	add_to_array = { global.fire_once_events = 89 }  # TECH SHARING GROUP
+	add_to_array = { global.fire_once_events = 90 }  # KAMIKAZE
+	add_to_array = { global.fire_once_events = 92 }  # GRN SALE
+	add_to_array = { global.fire_once_events = 93 }  # PORTUGAL GALICIA
+	add_to_array = { global.fire_once_events = 96 }  # DIVISIONS LOCK
+	add_to_array = { global.fire_once_events = 98 }  # NEW ORE
+
+	# Repeatable events (start at weight 1000, recover over time with diminishing caps)
+	add_to_array = { global.repeatable_events = 4 }   # RAND WAR
+	add_to_array = { global.repeatable_events = 6 }   # INDP WAVE
+	add_to_array = { global.repeatable_events = 7 }   # FURY
+	add_to_array = { global.repeatable_events = 8 }   # +WORLD TENSION
+	add_to_array = { global.repeatable_events = 9 }   # WHITE PEACE
+	add_to_array = { global.repeatable_events = constant:natural_disaster_event.id }  # NATURAL DISASTERS
+	add_to_array = { global.repeatable_events = constant:random_faction_event.id }  # RANDOM FACTION
+	add_to_array = { global.repeatable_events = constant:resources_found_event.id }  # RESOURCES FOUND
+	add_to_array = { global.repeatable_events = constant:infantry_spawn_event.id }  # INF SPAWN
+	add_to_array = { global.repeatable_events = 21 }  # RAND CW
+	add_to_array = { global.repeatable_events = 27 }  # DOCTRINE RESEARCH
+	add_to_array = { global.repeatable_events = constant:riches_found_event.id }  # RICHES FOUND
+	add_to_array = { global.repeatable_events = 31 }  # TERRORISTS
+	add_to_array = { global.repeatable_events = 32 }  # MISSILES
+	add_to_array = { global.repeatable_events = 34 }  # INDUSTRY BOOM
+	add_to_array = { global.repeatable_events = 35 }  # GREAT DEPRESSION
+	add_to_array = { global.repeatable_events = 36 }  # ALIEN SPACECRAFT
+	add_to_array = { global.repeatable_events = 37 }  # MYSTERIOUS POPULATION
+	add_to_array = { global.repeatable_events = 40 }  # LAWRENCE OF ARABIA
+	add_to_array = { global.repeatable_events = 41 }  # DISEASE IN DIVISIONS
+	add_to_array = { global.repeatable_events = constant:equipment_from_heavens_event.id }  # EQUIPMENT FROM HEAVENS
+	add_to_array = { global.repeatable_events = 43 }  # MASSIVE FLOOD
+	add_to_array = { global.repeatable_events = 47 }  # BOOM!
+	add_to_array = { global.repeatable_events = 50 }  # GREAT EMBARGO
+	add_to_array = { global.repeatable_events = 52 }  # INTELLIGENCE LEAK
+	add_to_array = { global.repeatable_events = 53 }  # MYSTERIOUS MAN
+	add_to_array = { global.repeatable_events = 54 }  # RAND TECH
+	add_to_array = { global.repeatable_events = 55 }  # GREAT INFR PROJECT
+	add_to_array = { global.repeatable_events = 56 }  # CREATE NAVY
+	add_to_array = { global.repeatable_events = 57 }  # RADARS
+	add_to_array = { global.repeatable_events = 58 }  # INDUSTRIAL COMPLEXES
+	add_to_array = { global.repeatable_events = 60 }  # RESEARCH FAILURE
+	add_to_array = { global.repeatable_events = 61 }  # 1/2 MILS INTO CIVS
+	add_to_array = { global.repeatable_events = 62 }  # ALLIES BACKSTAB
+	add_to_array = { global.repeatable_events = 63 }  # END SUBJECT STATUS
+	add_to_array = { global.repeatable_events = 64 }  # BORDER FORTS
+	add_to_array = { global.repeatable_events = 65 }  # RAND LEADER TRAIT
+	add_to_array = { global.repeatable_events = 66 }  # CIC
+	add_to_array = { global.repeatable_events = 76 }  # USA TESTS WEAPONS
+	add_to_array = { global.repeatable_events = 77 }  # FREE EQ FROM MAJOR TO MINOR
+	add_to_array = { global.repeatable_events = 78 }  # BORDER CONFLICT
+	add_to_array = { global.repeatable_events = 79 }  # MANIPULATE MINOR
+	add_to_array = { global.repeatable_events = 82 }  # UPGRADE LAW
+	add_to_array = { global.repeatable_events = 83 }  # AGENCY UPGRADE
+	add_to_array = { global.repeatable_events = 84 }  # PP
+	add_to_array = { global.repeatable_events = 85 }  # XP
+	add_to_array = { global.repeatable_events = 87 }  # IT'S WW1
+	add_to_array = { global.repeatable_events = 94 }  # HALF GONE
+	add_to_array = { global.repeatable_events = 95 }  # OCCUPATION REVOLT
+	add_to_array = { global.repeatable_events = 97 }  # COLLABORATION
+}
+initialize_all_events_array = {
+	for_loop_effect = {
+		start = 0
+		end = global.major_events^num
+		value = i
+		add_to_array = { global.all_events = global.major_events^i }
+	}
+	for_loop_effect = {
+		start = 0
+		end = global.fire_once_events^num
+		value = i
+		add_to_array = { global.all_events = global.fire_once_events^i }
+	}
+	for_loop_effect = {
+		start = 0
+		end = global.repeatable_events^num
+		value = i
+		add_to_array = { global.all_events = global.repeatable_events^i }
+	}
+}
+
+initialize_default_disabled_events_for_rework_queue = {
+	for_loop_effect = {
+		start = 0
+		end = global.all_events^num
+		value = i
+		set_temp_variable = { event_id = global.all_events^i }
+		if = {
+			limit = {
+				NOT = { event_log_event_is_reworked_default_enabled = yes }
+				NOT = { is_in_array = { global.disabled_events = event_id } }
+			}
+			add_to_array = { global.disabled_events = event_id }
+		}
+	}
+}
+
+# Initialize event weights and caps arrays
+initialize_event_weights = {
+	# Clear and rebuild arrays
+	clear_array = global.event_weights
+	clear_array = global.event_max_caps
+
+	for_loop_effect = {
+		start = 0
+		end = global.total_events
+		value = i
+		add_to_array = { global.event_weights = global.default_event_weight }
+		add_to_array = { global.event_max_caps = global.default_event_weight }
+	}
+
+	# Set major events to weight 0 (inactive until triggered by minor events)
+	for_loop_effect = {
+		start = 0
+		end = global.major_events^num
+		value = i
+		set_temp_variable = { event_id = global.major_events^i }
+		if = {
+			limit = { check_variable = { event_id < global.event_weights^num } }
+			set_variable = { global.event_weights^event_id = 0 }
+		}
+	}
+
+	if = {
+		limit = {
+			NOT = { has_global_flag = communism_spread_world_revolution_unlocked }
+			check_variable = { 91 < global.event_weights^num }
+		}
+		set_variable = { global.event_weights^91 = 0 }
+	}
+}
+# ============================================================================
+# SECTION 2: DYNAMIC TIMER SYSTEM
+# ============================================================================
+
+# Check and update the daily event timer
+check_event_timer = {
+	if = {
+		limit = { check_variable = { event_timer_days > 0 } }
+		subtract_from_variable = { event_timer_days = 1 }
+	}
+	apply_crisis_rescue_event_weight_adjustments = yes
+}
+
+# Calculate next timer value based on current modifiers and chaos
+calculate_next_timer_value = {
+	set_temp_variable = { temp_min_timer = timer_min_days }
+	set_temp_variable = { temp_max_timer = timer_max_days }
+	subtract_from_temp_variable = { temp_max_timer = timer_max_cap_reduction }
+
+	# Update chaos timer modifier based on current tier
+	set_variable = { global.chaos_timer_modifier = global.chaos_timer_modifier_calm }
+	if = {
+		limit = { has_global_flag = { flag = chaos_tier value = 1 } }
+		set_variable = { global.chaos_timer_modifier = global.chaos_timer_modifier_gathering }
+	}
+	else_if = {
+		limit = { has_global_flag = { flag = chaos_tier value = 2 } }
+		set_variable = { global.chaos_timer_modifier = global.chaos_timer_modifier_rising }
+	}
+	else_if = {
+		limit = { has_global_flag = { flag = chaos_tier value = 3 } }
+		set_variable = { global.chaos_timer_modifier = global.chaos_timer_modifier_chaos }
+	}
+	else_if = {
+		limit = { has_global_flag = { flag = chaos_tier value = 4 } }
+		set_variable = { global.chaos_timer_modifier = global.chaos_timer_modifier_critical }
+	}
+	else_if = {
+		limit = { has_global_flag = { flag = chaos_tier value = 5 } }
+		set_variable = { global.chaos_timer_modifier = global.chaos_timer_modifier_collapse }
+	}
+
+	clamp_temp_variable = {
+		var = temp_min_timer
+		min = constant:settings_timer_limit.min_min_value
+		max = temp_max_timer
+	}
+
+	round_temp_variable = temp_min_timer
+	round_temp_variable = temp_max_timer
+
+	set_variable_to_random = {
+		var = event_timer_days
+		min = temp_min_timer
+		max = temp_max_timer
+		integer = yes
+	}
+
+	subtract_from_variable = { event_timer_days = timer_day_decrement }
+	apply_tensions_rising_timer_pressure_to_next_timer = yes
+	multiply_variable = { event_timer_days = global.chaos_timer_modifier }
+	round_variable = event_timer_days
+
+	clamp_variable = {
+		var = event_timer_days
+		min = constant:event_system_timer_defaults.minimum_days
+	}
+}
+
+# Update timer when minor event fires
+on_minor_event_timer_update = {
+	add_to_variable = { timer_day_decrement = constant:event_system_timer_defaults.minor_event_decrement_step }
+	clamp_variable = {
+		var = timer_day_decrement
+		max = timer_min_decrement_cap
+	}
+
+	set_temp_variable = { temp_check = global.minor_events_since_major }
+	modulo_temp_variable = { temp_check = constant:event_system_timer_defaults.minor_event_timer_increment }
+
+	if = {
+		limit = {
+			check_variable = { temp_check = 0 }
+			check_variable = { timer_max_cap_reduction < timer_max_decrement_cap }
+		}
+		add_to_variable = { timer_max_cap_reduction = constant:event_system_timer_defaults.minor_event_compression_step }
+	}
+	else_if = {
+		limit = { check_variable = { timer_max_cap_reduction > timer_max_decrement_cap } }
+		set_variable = { timer_max_cap_reduction = timer_max_decrement_cap }
+	}
+
+	calculate_next_timer_value = yes
+}
+
+# Update timer when major event fires
+on_major_event_timer_update = {
+	# Reset all timer modifiers
+	set_variable = { timer_day_decrement = 0 }
+	set_variable = { timer_max_cap_reduction = 0 }
+
+	# Reset timer with default values
+	calculate_next_timer_value = yes
+}
+
+# ============================================================================
+# SECTION 3: WEIGHT MANAGEMENT
+# ============================================================================
+
+# Get weight for a specific event ID
+get_event_weight = {
+	# Input: temp variable event_id
+	# Output: temp variable event_weight
+	set_temp_variable = { event_weight = 0 }
+	if = {
+		limit = {
+			check_variable = { event_id > 0 }
+			check_variable = { event_id < global.event_weights^num }
+		}
+		set_temp_variable = { event_weight = global.event_weights^event_id }
+		if = {
+			limit = {
+				check_variable = {
+					var = event_id
+					value = constant:white_peace_event_log.event_id
+					compare = equals
+				}
+			}
+			calculate_white_peace_dynamic_cap = yes
+			if = {
+				limit = { check_variable = { global.white_peace_available < 1 } }
+				set_temp_variable = { event_weight = 0 }
+			}
+			else_if = {
+				limit = {
+					check_variable = {
+						var = event_weight
+						value = global.white_peace_effective_dynamic_cap
+						compare = greater_than
+					}
+				}
+				set_temp_variable = { event_weight = global.white_peace_effective_dynamic_cap }
+			}
+		}
+	}
+}
+
+# Set weight for a specific event ID
+set_event_weight = {
+	# Input: temp variables event_id and new_weight
+	if = {
+		limit = {
+			check_variable = { event_id > 0 }
+			check_variable = { event_id < global.event_weights^num }
+		}
+		set_variable = { global.event_weights^event_id = new_weight }
+	}
+}
+
+# Get maximum cap for a specific event ID
+get_event_cap = {
+	# Input: temp variable event_id
+	# Output: temp variable event_cap
+	set_temp_variable = { event_cap = global.default_event_weight }
+	if = {
+		limit = {
+			check_variable = { event_id > 0 }
+			check_variable = { event_id < global.event_max_caps^num }
+		}
+		set_temp_variable = { event_cap = global.event_max_caps^event_id }
+	}
+}
+
+# Resolve the first dynamic reason an event cannot enter the automatic pool.
+# Input: temp variables event_id, event_required_chaos_level, and
+# event_required_chaos_level_is_met_value. The caller resolves the event
+# metadata first.
+# Output: event_pool_candidate_unavailability_reason and
+# event_required_chaos_level_is_met_value.
+# Disabled and already-fired unique events are resolved by the shared pool
+# wrapper because the Events tab represents them as numeric zero states while
+# cluster history needs their canonical rejection reason.
+evaluate_event_pool_candidate_unavailability = {
+	set_temp_variable = { event_pool_candidate_unavailability_reason = constant:event_system_event_unavailability_reason.none }
+	set_temp_variable = { event_pool_candidate_independence_context_injected = 0 }
+	set_temp_variable = { event_pool_candidate_independence_capacity_registry_prepared = 0 }
+	if = {
+		limit = {
+			check_variable = { event_id = constant:independence_wave_event.id }
+			NOT = { check_variable = { event_cluster_liberations_member_availability_context > 0 } }
+		}
+		set_temp_variable = { event_pool_candidate_saved_cluster_id = event_cluster_id }
+		set_temp_variable = { event_pool_candidate_saved_member_id = event_cluster_member_event_id }
+		set_temp_variable = { event_cluster_id = constant:event_cluster_id.liberations }
+		set_temp_variable = { event_cluster_member_event_id = constant:independence_wave_event.id }
+		set_temp_variable = { event_cluster_liberations_member_availability_context = 1 }
+		set_temp_variable = { event_pool_candidate_independence_context_injected = 1 }
+	}
+	# The automatic pool asks the Liberations capacity trigger before the Event
+	# 006 allocator opens its plan. Seed the durable absent-country-safe registry
+	# here so the same package readiness wrappers can resolve both live tags and
+	# not-yet-created carriers during that pre-selection probe and the later live
+	# allocation pass.
+	if = {
+		limit = {
+			check_variable = { event_id = constant:independence_wave_event.id }
+			check_variable = { event_required_chaos_level_is_met_value > 0 }
+			can_liberation_release_reset_plan = yes
+		}
+		independence_wave_prepare_runtime_possible_country_registry = yes
+		set_temp_variable = { event_pool_candidate_independence_capacity_registry_prepared = 1 }
+	}
+	if = {
+		limit = { check_variable = { event_required_chaos_level_is_met_value = 0 } }
+		set_temp_variable = { event_pool_candidate_unavailability_reason = constant:event_system_event_unavailability_reason.chaos_level }
+	}
+	else_if = {
+		limit = { check_variable = { event_id = constant:zombie_outbreak_event.id } }
+		if = {
+			limit = { has_global_flag = has_zombie_outbreak }
+			set_temp_variable = { event_pool_candidate_unavailability_reason = constant:event_system_event_unavailability_reason.zombie_outbreak_started }
+		}
+		else_if = {
+			limit = { has_global_flag = zombie_system_disabled }
+			set_temp_variable = { event_pool_candidate_unavailability_reason = constant:event_system_event_unavailability_reason.zombie_outbreak_disabled }
+		}
+	}
+	else_if = {
+		limit = {
+			check_variable = { event_id = constant:communism_spread_event_log.event_id }
+			NOT = { has_global_flag = communism_spread_world_revolution_unlocked }
+		}
+		set_temp_variable = { event_pool_candidate_unavailability_reason = constant:event_system_event_unavailability_reason.world_revolution }
+	}
+	else_if = {
+		limit = {
+			check_variable = { event_id = constant:holy_realm_event_log.event_id }
+			NOT = { holy_realm_has_valid_refuge_host = yes }
+		}
+		set_temp_variable = { event_pool_candidate_unavailability_reason = constant:event_system_event_unavailability_reason.holy_realm_refuge }
+	}
+	else_if = {
+		limit = {
+			check_variable = { event_id = constant:fury_event_log.event_id }
+			NOT = { any_country = { fury_can_be_selected = yes } }
+		}
+		set_temp_variable = { event_pool_candidate_unavailability_reason = constant:event_system_event_unavailability_reason.fury_target }
+	}
+	else_if = {
+		limit = {
+			check_variable = { event_id = constant:tensions_rising_event_log.event_id }
+			NOT = { is_tensions_rising_automatic_event_available = yes }
+		}
+		set_temp_variable = { event_pool_candidate_unavailability_reason = constant:event_system_event_unavailability_reason.tensions_world_tension }
+	}
+	else_if = {
+		limit = {
+			check_variable = { event_id = constant:white_peace_event_log.event_id }
+			NOT = { is_white_peace_automatic_event_available = yes }
+		}
+		set_temp_variable = { event_pool_candidate_unavailability_reason = constant:event_system_event_unavailability_reason.white_peace_pair }
+	}
+	else_if = {
+		limit = {
+			check_variable = { event_id = constant:utopia_manifesto_event.id }
+			NOT = { utopia_manifesto_automatic_event_is_available = yes }
+		}
+		set_temp_variable = { event_pool_candidate_unavailability_reason = constant:event_system_event_unavailability_reason.utopia_host }
+	}
+	else_if = {
+		limit = { check_variable = { event_id = constant:brilliant_scientist_event.id } }
+		if = {
+			limit = { has_global_flag = brilliant_scientist_event_resolved }
+			set_temp_variable = { event_pool_candidate_unavailability_reason = constant:event_system_event_unavailability_reason.brilliant_scientist_resolved }
+		}
+		else_if = {
+			limit = { has_global_flag = world_end }
+			set_temp_variable = { event_pool_candidate_unavailability_reason = constant:event_system_event_unavailability_reason.brilliant_scientist_world_end }
+		}
+		else_if = {
+			limit = { brilliant_scientist_has_non_dormant_kruger_holder = yes }
+			set_temp_variable = { event_pool_candidate_unavailability_reason = constant:event_system_event_unavailability_reason.brilliant_scientist_kruger_holder }
+		}
+		else_if = {
+			limit = { brilliant_scientist_has_pending_opening_transaction = yes }
+			set_temp_variable = { event_pool_candidate_unavailability_reason = constant:event_system_event_unavailability_reason.brilliant_scientist_opening_pending }
+		}
+		else_if = {
+			limit = { NOT = { brilliant_scientist_has_any_eligible_host = yes } }
+			set_temp_variable = { event_pool_candidate_unavailability_reason = constant:event_system_event_unavailability_reason.brilliant_scientist_host }
+		}
+	}
+	else_if = {
+		limit = { check_variable = { event_id = constant:secret_alliance_event.id } }
+		if = {
+			limit = { NOT = { secret_alliance_target_is_valid = yes } }
+			set_temp_variable = { event_pool_candidate_unavailability_reason = constant:event_system_event_unavailability_reason.secret_alliance_target }
+		}
+		else_if = {
+			limit = { has_global_flag = secret_alliance_active }
+			set_temp_variable = { event_pool_candidate_unavailability_reason = constant:event_system_event_unavailability_reason.secret_alliance_active }
+		}
+		else_if = {
+			limit = { has_global_flag = secret_alliance_postwar_bloc_active }
+			set_temp_variable = { event_pool_candidate_unavailability_reason = constant:event_system_event_unavailability_reason.secret_alliance_postwar }
+		}
+		else_if = {
+			limit = { has_global_flag = secret_alliance_scenario_launch_in_progress }
+			set_temp_variable = { event_pool_candidate_unavailability_reason = constant:event_system_event_unavailability_reason.secret_alliance_launch }
+		}
+		else_if = {
+			limit = { NOT = { secret_alliance_scheduled_callbacks_are_drained = yes } }
+			set_temp_variable = { event_pool_candidate_unavailability_reason = constant:event_system_event_unavailability_reason.secret_alliance_callbacks }
+		}
+		else_if = {
+			limit = { NOT = { secret_alliance_has_founder_pool_for_root = yes } }
+			set_temp_variable = { event_pool_candidate_unavailability_reason = constant:event_system_event_unavailability_reason.secret_alliance_founders }
+		}
+	}
+	else_if = {
+		limit = { check_variable = { event_id = constant:cannibalism_event.id } }
+		if = {
+			limit = { has_global_flag = cannibalism_system_started }
+			set_temp_variable = { event_pool_candidate_unavailability_reason = constant:event_system_event_unavailability_reason.cannibalism_started }
+		}
+		else_if = {
+			limit = { has_global_flag = cannibalism_global_victory }
+			set_temp_variable = { event_pool_candidate_unavailability_reason = constant:event_system_event_unavailability_reason.cannibalism_victory }
+		}
+		else_if = {
+			limit = { has_global_flag = cannibalism_cleanup_complete }
+			set_temp_variable = { event_pool_candidate_unavailability_reason = constant:event_system_event_unavailability_reason.cannibalism_cleanup }
+		}
+		else_if = {
+			limit = { has_global_flag = world_end }
+			set_temp_variable = { event_pool_candidate_unavailability_reason = constant:event_system_event_unavailability_reason.cannibalism_world_end }
+		}
+		else_if = {
+			limit = { NOT = { cannibalism_has_valid_origin_available = yes } }
+			set_temp_variable = { event_pool_candidate_unavailability_reason = constant:event_system_event_unavailability_reason.cannibalism_origin }
+		}
+	}
+	else_if = {
+		limit = {
+			check_variable = { event_id = constant:random_faction_event.id }
+			NOT = { random_faction_has_dispatchable_context = yes }
+		}
+		set_temp_variable = { event_pool_candidate_unavailability_reason = constant:event_system_event_unavailability_reason.random_faction_context }
+	}
+	else_if = {
+		limit = {
+			check_variable = { event_id = constant:resources_found_event.id }
+			NOT = { resources_found_is_eligible_discovery_owner = yes }
+		}
+		if = {
+			limit = { has_global_flag = world_end }
+			set_temp_variable = { event_pool_candidate_unavailability_reason = constant:event_system_event_unavailability_reason.resources_found_world_end }
+		}
+		else = {
+			set_temp_variable = { event_pool_candidate_unavailability_reason = constant:event_system_event_unavailability_reason.resources_found_field }
+		}
+	}
+	else_if = {
+		limit = {
+			check_variable = { event_id = constant:random_civil_war_event.id }
+			NOT = { random_civil_war_event_pool_available = yes }
+		}
+		set_temp_variable = { event_pool_candidate_unavailability_reason = constant:event_system_event_unavailability_reason.zero_weight }
+	}
+	else_if = {
+		limit = {
+			check_variable = { event_id = constant:independence_wave_event.id }
+			NOT = { is_independence_wave_liberations_cluster_member_capacity_available = yes }
+		}
+		set_temp_variable = { event_pool_candidate_unavailability_reason = constant:event_system_event_unavailability_reason.independence_wave_capacity }
+	}
+	else_if = {
+		limit = { check_variable = { event_id = constant:africa_event.id } }
+		if = {
+			limit = { has_global_flag = africa_event_active }
+			set_temp_variable = { event_pool_candidate_unavailability_reason = constant:event_system_event_unavailability_reason.africa_active }
+		}
+		else_if = {
+			limit = { has_global_flag = africa_event_resolved }
+			set_temp_variable = { event_pool_candidate_unavailability_reason = constant:event_system_event_unavailability_reason.africa_resolved }
+		}
+		else_if = {
+			limit = { has_global_flag = world_end }
+			set_temp_variable = { event_pool_candidate_unavailability_reason = constant:event_system_event_unavailability_reason.africa_world_end }
+		}
+		else_if = {
+			limit = { NOT = { africa_has_any_eligible_host = yes } }
+			set_temp_variable = { event_pool_candidate_unavailability_reason = constant:event_system_event_unavailability_reason.africa_host }
+		}
+	}
+	else_if = {
+		limit = {
+			check_variable = { event_id = constant:video_game_in_sweden_event.id }
+			NOT = { video_game_in_sweden_has_any_valid_host = yes }
+		}
+		set_temp_variable = { event_pool_candidate_unavailability_reason = constant:event_system_event_unavailability_reason.video_game_in_sweden_host }
+	}
+	else_if = {
+		limit = { check_variable = { event_id = constant:black_plague_identity.event_id } }
+		if = {
+			limit = { black_plague_outbreak_has_begun = yes }
+			set_temp_variable = { event_pool_candidate_unavailability_reason = constant:event_system_event_unavailability_reason.black_plague_started }
+		}
+		else_if = {
+			limit = { has_global_flag = black_plague_terminal_takeover_complete }
+			set_temp_variable = { event_pool_candidate_unavailability_reason = constant:event_system_event_unavailability_reason.black_plague_terminal }
+		}
+		else_if = {
+			limit = { has_global_flag = world_end }
+			set_temp_variable = { event_pool_candidate_unavailability_reason = constant:event_system_event_unavailability_reason.black_plague_world_end }
+		}
+		else_if = {
+			limit = { NOT = { black_plague_has_valid_origin = yes } }
+			set_temp_variable = { event_pool_candidate_unavailability_reason = constant:event_system_event_unavailability_reason.black_plague_origin }
+		}
+	}
+	else_if = {
+		limit = {
+			check_variable = { event_id = constant:doctrine_research_event.id }
+			NOT = { any_country = { doctrine_research_country_has_valid_action = yes } }
+		}
+		set_temp_variable = { event_pool_candidate_unavailability_reason = constant:event_system_event_unavailability_reason.doctrine_research_no_valid_participant }
+	}
+	else_if = {
+		limit = {
+			check_variable = { event_id = constant:equipment_from_heavens_event.id }
+			NOT = { equipment_from_heavens_has_any_valid_recipient = yes }
+		}
+		set_temp_variable = { event_pool_candidate_unavailability_reason = constant:event_system_event_unavailability_reason.equipment_from_heavens_recipient }
+	}
+	else_if = {
+		limit = {
+			check_variable = { event_id = constant:asteroid_incoming_event.id }
+			NOT = { asteroid_incoming_automatic_event_is_available = yes }
+		}
+		if = {
+			limit = {
+				OR = {
+					has_global_flag = asteroid_incoming_transaction_active
+					has_global_flag = asteroid_incoming_transaction_resolved
+					has_global_flag = asteroid_incoming_opening_presented
+				}
+			}
+			set_temp_variable = { event_pool_candidate_unavailability_reason = constant:event_system_event_unavailability_reason.asteroid_transaction }
+		}
+		else = {
+			set_temp_variable = { event_pool_candidate_unavailability_reason = constant:event_system_event_unavailability_reason.asteroid_target_pool }
+		}
+	}
+	else_if = {
+		limit = { check_variable = { event_id = constant:murder_mystery_identity.event_id } }
+		murder_mystery_evaluate_event_pool_unavailability = yes
+	}
+	else_if = {
+		limit = {
+			check_variable = { event_id = constant:great_depression_event.id }
+			NOT = { great_depression_has_any_independent_target = yes }
+		}
+		set_temp_variable = { event_pool_candidate_unavailability_reason = constant:event_system_event_unavailability_reason.great_depression_target }
+	}
+
+	if = {
+		limit = { check_variable = { event_pool_candidate_independence_capacity_registry_prepared > 0 } }
+		clear_array = global.independence_wave_plan_possible_countries
+		clear_temp_array = independence_wave_runtime_possible_countries
+	}
+
+	if = {
+		limit = { check_variable = { event_pool_candidate_independence_context_injected > 0 } }
+		set_temp_variable = { event_cluster_id = event_pool_candidate_saved_cluster_id }
+		set_temp_variable = { event_cluster_member_event_id = event_pool_candidate_saved_member_id }
+		set_temp_variable = { event_cluster_liberations_member_availability_context = 0 }
+	}
+}
+
+# Check whether event_id is part of the current automatic random-event pool.
+evaluate_random_event_active_pool_candidate = {
+	# Input: temp variable event_id
+	# Output: event_active_pool_candidate_is_valid and the canonical
+	# event_pool_candidate_unavailability_reason.
+	set_temp_variable = { event_active_pool_candidate_is_valid = 1 }
+	set_temp_variable = { event_pool_candidate_unavailability_reason = constant:event_system_event_unavailability_reason.none }
+	set_temp_variable = { event_type = constant:event_system_event_type.unknown }
+	get_event_type = yes
+	get_event_required_chaos_level = yes
+	evaluate_event_required_chaos_level = yes
+	if = {
+		limit = {
+			NOT = { is_in_array = { global.disabled_events = event_id } }
+			NOT = {
+				AND = {
+					is_in_array = { global.fired_events = event_id }
+					NOT = { check_variable = { event_type = constant:event_system_event_type.repeatable } }
+				}
+			}
+		}
+		evaluate_event_pool_candidate_unavailability = yes
+	}
+
+	if = {
+		limit = {
+			OR = {
+				check_variable = { event_pool_candidate_unavailability_reason > constant:event_system_event_unavailability_reason.none }
+				is_in_array = { global.disabled_events = event_id }
+				AND = {
+					is_in_array = { global.fired_events = event_id }
+					NOT = { check_variable = { event_type = constant:event_system_event_type.repeatable } }
+				}
+			}
+		}
+		set_temp_variable = { event_active_pool_candidate_is_valid = 0 }
+	}
+	if = {
+		limit = {
+			check_variable = { var = event_id value = constant:black_friday_event.id compare = equals }
+			black_friday_is_reserved = yes
+		}
+		set_temp_variable = { event_active_pool_candidate_is_valid = 0 }
+		set_temp_variable = { event_pool_candidate_unavailability_reason = constant:event_system_event_unavailability_reason.black_friday_reserved }
+	}
+	if = {
+		limit = { is_in_array = { global.disabled_events = event_id } }
+		set_temp_variable = { event_pool_candidate_unavailability_reason = constant:event_system_event_unavailability_reason.disabled }
+	}
+	else_if = {
+		limit = {
+			is_in_array = { global.fired_events = event_id }
+			NOT = { check_variable = { event_type = constant:event_system_event_type.repeatable } }
+		}
+		set_temp_variable = { event_pool_candidate_unavailability_reason = constant:event_system_event_unavailability_reason.already_fired }
+	}
+}
+
+# Count current active random-pool entries used by dynamic major gain.
+count_dynamic_major_weight_pool_events = {
+	set_temp_variable = { dynamic_major_active_major_count = 0 }
+	set_temp_variable = { dynamic_major_active_non_major_count = 0 }
+
+	for_loop_effect = {
+		start = 0
+		end = global.major_events^num
+		value = i
+		set_temp_variable = { event_id = global.major_events^i }
+		evaluate_random_event_active_pool_candidate = yes
+		if = {
+			limit = { check_variable = { event_active_pool_candidate_is_valid > 0 } }
+			add_to_temp_variable = { dynamic_major_active_major_count = 1 }
+		}
+	}
+
+	for_loop_effect = {
+		start = 0
+		end = global.fire_once_events^num
+		value = i
+		set_temp_variable = { event_id = global.fire_once_events^i }
+		evaluate_random_event_active_pool_candidate = yes
+		if = {
+			limit = { check_variable = { event_active_pool_candidate_is_valid > 0 } }
+			add_to_temp_variable = { dynamic_major_active_non_major_count = 1 }
+		}
+	}
+
+	for_loop_effect = {
+		start = 0
+		end = global.repeatable_events^num
+		value = i
+		set_temp_variable = { event_id = global.repeatable_events^i }
+		evaluate_random_event_active_pool_candidate = yes
+		if = {
+			limit = { check_variable = { event_active_pool_candidate_is_valid > 0 } }
+			add_to_temp_variable = { dynamic_major_active_non_major_count = 1 }
+		}
+	}
+
+	set_variable = { global.current_dynamic_major_active_major_count = dynamic_major_active_major_count }
+	set_variable = { global.current_dynamic_major_active_non_major_count = dynamic_major_active_non_major_count }
+}
+
+calculate_dynamic_major_weight_gain = {
+	count_dynamic_major_weight_pool_events = yes
+	set_variable = { global.current_dynamic_major_weight_gain = 0 }
+
+	if = {
+		limit = { check_variable = { global.current_dynamic_major_active_major_count < 1 } }
+		set_variable = { global.current_major_event_weight = 0 }
+	}
+
+	if = {
+		limit = {
+			check_variable = { global.current_dynamic_major_active_major_count > 0 }
+			check_variable = { global.current_dynamic_major_active_non_major_count > 0 }
+		}
+		set_temp_variable = { dynamic_major_gain = global.major_event_weight_per_minor }
+		multiply_temp_variable = { dynamic_major_gain = global.current_dynamic_major_active_non_major_count }
+		divide_temp_variable = { dynamic_major_gain = global.current_dynamic_major_active_major_count }
+		multiply_temp_variable = { dynamic_major_gain = constant:event_system_dynamic_major_gain.baseline_major_events }
+		divide_temp_variable = { dynamic_major_gain = constant:event_system_dynamic_major_gain.baseline_non_major_events }
+		round_temp_variable = dynamic_major_gain
+		clamp_temp_variable = {
+			var = dynamic_major_gain
+			min = constant:settings_advanced_bounds.major_weight_per_minor.min
+			max = constant:settings_advanced_bounds.major_weight_per_minor.max
+		}
+		set_variable = { global.current_dynamic_major_weight_gain = dynamic_major_gain }
+	}
+}
+
+apply_dynamic_major_weight_gain_after_minor = {
+	calculate_dynamic_major_weight_gain = yes
+
+	if = {
+		limit = { check_variable = { global.current_dynamic_major_weight_gain > 0 } }
+		for_loop_effect = {
+			start = 0
+			end = global.major_events^num
+			value = i
+			set_temp_variable = { event_id = global.major_events^i }
+			evaluate_random_event_active_pool_candidate = yes
+			if = {
+				limit = { check_variable = { event_active_pool_candidate_is_valid > 0 } }
+				get_event_weight = yes
+				if = {
+					limit = { check_variable = { event_weight < 2 } }
+					set_temp_variable = { event_weight = 0 }
+				}
+				add_to_temp_variable = { event_weight = global.current_dynamic_major_weight_gain }
+				round_temp_variable = event_weight
+				set_temp_variable = { new_weight = event_weight }
+				set_event_weight = yes
+				set_variable = { global.current_major_event_weight = event_weight }
+			}
+			else_if = {
+				limit = {
+					check_variable = { event_id = constant:communism_spread_event_log.event_id }
+					NOT = { has_global_flag = communism_spread_world_revolution_unlocked }
+				}
+				set_temp_variable = { new_weight = 0 }
+				set_event_weight = yes
+			}
+		}
+	}
+}
+
+# Apply dynamic major gain after a minor pacing event
+update_major_event_weights = {
+	apply_dynamic_major_weight_gain_after_minor = yes
+}
+
+# Update for repeatable event weights
+update_repeatable_event_weights = {
+	# Update each repeatable event weight using the array
+	for_loop_effect = {
+		start = 0
+		end = global.repeatable_events^num
+		value = i
+
+		set_temp_variable = { event_id = global.repeatable_events^i }
+		get_event_required_chaos_level = yes
+		evaluate_event_required_chaos_level = yes
+		set_temp_variable = { event_weight = 0 }
+		if = {
+			limit = {
+				check_variable = { event_id > 0 }
+				check_variable = { event_id < global.event_weights^num }
+			}
+			set_temp_variable = { event_weight = global.event_weights^event_id }
+		}
+
+		# Get the current cap for this event
+		set_temp_variable = { event_cap = global.default_event_weight } # Default fallback
+		if = {
+			limit = { check_variable = { event_id < global.event_max_caps^num } }
+			set_temp_variable = { event_cap = global.event_max_caps^event_id }
+		}
+
+		# If weight is less than the event's cap, increase by the configured recovery rate (capped at the event's individual cap)
+		if = {
+			limit = {
+				check_variable = { event_required_chaos_level_is_met_value > 0 }
+				check_variable = { event_weight < event_cap }
+			}
+			# If weight is 0, set to 1
+			if = {
+				limit = { OR = { check_variable = { event_weight = 0 } } }
+				set_temp_variable = { event_weight = 1 } # Not 0, so that it still has 'some' chance to fire. Safer that way.
+			}
+			# Replace the inactive floor with one recovery step; otherwise add one step to the active weight.
+			else_if = {
+				limit = { check_variable = { event_weight = 1 } }
+				set_temp_variable = { event_weight = global.minor_event_recovery_rate } # Replace the inactive floor with one recovery step
+			}
+			else = {
+				# For active weights, add one configured recovery step
+				add_to_temp_variable = { event_weight = global.minor_event_recovery_rate }
+			}
+
+			# Ensure we don't exceed the individual event's cap
+			if = {
+				limit = { check_variable = { event_weight > event_cap } }
+				set_temp_variable = { event_weight = event_cap }
+			}
+			set_temp_variable = { new_weight = event_weight }
+			set_event_weight = yes
+		}
+	}
+}
+
+# ============================================================================
+# SECTION 4: EVENT FIRING HANDLERS
+# ============================================================================
+
+on_minor_event_global_pacing_update = {
+	add_to_variable = { global.total_events_fired = 1 }
+	add_to_variable = { global.minor_events_since_major = 1 }
+	update_repeatable_event_weights = yes
+	update_major_event_weights = yes
+	on_minor_event_timer_update = yes
+}
+
+on_major_event_global_pacing_update = {
+	add_to_variable = { global.total_events_fired = 1 }
+	update_repeatable_event_weights = yes
+	reset_major_event_pacing_state = yes
+}
+
+# The major-only state transition can also follow a delayed cluster member or
+# Random Stuff draw without adding another global event count or recovery step.
+reset_major_event_pacing_state = {
+	set_variable = { global.minor_events_since_major = 0 }
+	reset_unfired_major_event_weights = yes
+	on_major_event_timer_update = yes
+	set_variable = { global.current_major_event_weight = 0 }
+	calculate_dynamic_major_weight_gain = yes
+}
+
+on_event_cluster_global_pacing_update = {
+	set_temp_variable = { event_cluster_effective_pacing_type = constant:event_cluster_type.repeatable }
+	set_temp_variable = { event_cluster_acid_rain_pacing_row_index = constant:acid_rain_runtime.negative_one }
+	event_cluster_get_effective_pacing_type = yes
+	# A delayed Acid Rain row retains a country/batch receipt across reloads.
+	# An already committed batch never redraws the shared timer a second time.
+	if = {
+		limit = {
+			NOT = {
+				AND = {
+					has_variable = acid_rain_cluster_pacing_type_@var:event_cluster_pending_batch_id
+					check_variable = { var = acid_rain_cluster_pacing_type_@var:event_cluster_pending_batch_id value = constant:event_cluster_type.major compare = equals }
+				}
+			}
+		}
+		if = {
+			limit = {
+				OR = {
+					has_country_flag = event_cluster_initial_major_dispatched
+					check_variable = { var = event_cluster_effective_pacing_type value = constant:event_cluster_type.major compare = equals }
+				}
+			}
+			on_major_event_global_pacing_update = yes
+			if = {
+				limit = { check_variable = { var = event_cluster_acid_rain_pacing_row_index value = constant:acid_rain_runtime.first_array_index compare = greater_than } }
+				set_variable = { acid_rain_cluster_pacing_type_@var:event_cluster_pending_batch_id = constant:event_cluster_type.major }
+			}
+		}
+		else = {
+			on_minor_event_global_pacing_update = yes
+		}
+	}
+	clr_country_flag = event_cluster_initial_major_dispatched
+}
+
+# Handler for fire-once events
+on_fire_once_event_fired = {
+	# Input: temp variable event_id
+
+	# Update tracking variables
+	set_variable = { global.last_fired_event_id = event_id }
+
+	# Add to fired events array (first time only)
+	if = {
+		limit = { NOT = { is_in_array = { global.fired_events = event_id } } }
+		add_to_array = { global.fired_events = event_id }
+	}
+	# Set weight to 0 permanently
+	set_temp_variable = { new_weight = 1 }
+	set_event_weight = yes
+
+	# Update system state
+	if = {
+		limit = { NOT = { has_country_flag = event_cluster_member_fire_context } }
+		on_minor_event_global_pacing_update = yes
+	}
+
+	# Update unfired events counts for GUI button logic
+	update_unfired_events_counts = yes
+	record_events_log_history_entry = yes
+	log_event_fired_summary = yes
+	if = {
+		limit = { NOT = { has_country_flag = event_cluster_member_fire_context } }
+		# Record the opening minor first so a synchronous Random Stuff draw retains
+		# the true dispatch order in history and as the latest displayed event.
+		random_stuff_cluster_try_after_minor_event = yes
+	}
+}
+
+# Handler for repeatable events
+on_repeatable_event_fired = {
+	# Input: temp variable event_id
+
+	# Update tracking variables
+	set_variable = { global.last_fired_event_id = event_id }
+
+	# Add to fired events array (first time only)
+	if = {
+		limit = { NOT = { is_in_array = { global.fired_events = event_id } } }
+		add_to_array = { global.fired_events = event_id }
+	}
+
+	# Reduce maximum cap by 50%
+	if = {
+		limit = { check_variable = { event_id < global.event_max_caps^num } }
+		set_temp_variable = { current_cap = global.event_max_caps^event_id }
+		multiply_temp_variable = { current_cap = global.reduce_cap_factor }
+		round_temp_variable = current_cap
+		set_variable = { global.event_max_caps^event_id = current_cap }
+	}
+	# Clear the weight for this event and later set it to 1
+	set_temp_variable = { new_weight = 0 }
+	set_event_weight = yes
+
+	# Update system state
+	if = {
+		limit = { has_country_flag = event_cluster_member_fire_context }
+		set_temp_variable = { new_weight = 1 }
+		set_event_weight = yes
+	}
+	else = {
+		on_minor_event_global_pacing_update = yes
+	}
+
+	# Update unfired events counts for GUI button logic
+	update_unfired_events_counts = yes
+	record_events_log_history_entry = yes
+	log_event_fired_summary = yes
+	if = {
+		limit = { NOT = { has_country_flag = event_cluster_member_fire_context } }
+		random_stuff_cluster_try_after_minor_event = yes
+	}
+}
+
+# Handler for major events
+on_major_event_fired = {
+	# Input: temp variable event_id
+
+	# Update tracking variables
+	set_variable = { global.last_fired_event_id = event_id }
+
+	# Add to fired events array (first time only)
+	if = {
+		limit = { NOT = { is_in_array = { global.fired_events = event_id } } }
+		add_to_array = { global.fired_events = event_id }
+	}
+
+	# Set fired event weight to 0 permanently
+	set_temp_variable = { new_weight = 1 } # Can't set to zero, because cause undefined 'event_weight' error.
+	set_event_weight = yes
+
+	# Reset system state
+	if = {
+		limit = { has_country_flag = event_cluster_member_fire_context }
+		if = {
+			limit = { has_country_flag = event_cluster_initial_trigger_dispatch }
+			set_country_flag = event_cluster_initial_major_dispatched
+		}
+		else = {
+			if = {
+				limit = {
+					NOT = {
+						AND = {
+							check_variable = { event_id = constant:acid_rain_event.id }
+							has_variable = acid_rain_cluster_pacing_type_@var:event_cluster_pending_batch_id
+							check_variable = { var = acid_rain_cluster_pacing_type_@var:event_cluster_pending_batch_id value = constant:event_cluster_type.major compare = equals }
+						}
+					}
+				}
+				reset_major_event_pacing_state = yes
+			}
+		}
+	}
+	else = {
+		on_major_event_global_pacing_update = yes
+	}
+
+	# Update unfired events counts for GUI button logic
+	update_unfired_events_counts = yes
+	record_events_log_history_entry = yes
+	log_event_fired_summary = yes
+}
+
+# Reset all unfired major event weights to the engine-safe inactive floor.
+reset_unfired_major_event_weights = {
+	for_loop_effect = {
+		start = 0
+		end = global.major_events^num
+		value = i
+		set_temp_variable = { check_event_id = global.major_events^i }
+
+		# Only reset if event hasn't been fired yet
+		if = {
+			limit = { NOT = { is_in_array = { global.fired_events = check_event_id } } }
+			set_temp_variable = { event_id = check_event_id }
+			set_temp_variable = { new_weight = 1 }
+			set_event_weight = yes
+		}
+	}
+}
+
+# ============================================================================
+# SECTION 5: EVENT COUNTING AND CLASSIFICATION
+# ============================================================================
+
+# Count fired minor events (excluding majors)
+count_fired_minor_events = {
+	set_temp_variable = { minor_events_count = 0 }
+
+	for_loop_effect = {
+		start = 0
+		end = global.fired_events^num
+		value = i
+		set_temp_variable = { current_event_id = global.fired_events^i }
+
+		# Check if it's not a major event
+		set_temp_variable = { is_major = 0 }
+		for_loop_effect = {
+			start = 0
+			end = global.major_events^num
+			value = j
+			if = {
+				limit = { check_variable = { current_event_id = global.major_events^j } }
+				set_temp_variable = { is_major = 1 }
+			}
+		}
+
+		if = {
+			limit = { check_variable = { is_major = 0 } }
+			add_to_temp_variable = { minor_events_count = 1 }
+		}
+	}
+}
+
+# Count fired major events
+count_fired_major_events = {
+	set_temp_variable = { major_events_count = 0 }
+
+	for_loop_effect = {
+		start = 0
+		end = global.fired_events^num
+		value = i
+		set_temp_variable = { current_event_id = global.fired_events^i }
+
+		# Check if it's a major event
+		set_temp_variable = { is_major = 0 }
+		for_loop_effect = {
+			start = 0
+			end = global.major_events^num
+			value = j
+			if = {
+				limit = { check_variable = { current_event_id = global.major_events^j } }
+				set_temp_variable = { is_major = 1 }
+			}
+		}
+
+		if = {
+			limit = { check_variable = { is_major = 1 } }
+			add_to_temp_variable = { major_events_count = 1 }
+		}
+	}
+}
+
+# Count fired minor repeatable events
+count_fired_minor_repeatable_events = {
+	set_temp_variable = { minor_repeatable_events_fired = 0 }
+
+	for_loop_effect = {
+		start = 0
+		end = global.fired_events^num
+		value = i
+		set_temp_variable = { current_event_id = global.fired_events^i }
+
+		# Check if it's in the repeatable events array
+		for_loop_effect = {
+			start = 0
+			end = global.repeatable_events^num
+			value = j
+			if = {
+				limit = { check_variable = { current_event_id = global.repeatable_events^j } }
+				add_to_temp_variable = { minor_repeatable_events_fired = 1 }
+			}
+		}
+	}
+}
+
+# Count fired minor fire-once events
+count_fired_minor_fire_once_events = {
+	set_temp_variable = { minor_fire_once_events_fired = 0 }
+
+	for_loop_effect = {
+		start = 0
+		end = global.fired_events^num
+		value = i
+		set_temp_variable = { current_event_id = global.fired_events^i }
+
+		# Check if it's in the fire-once events array
+		for_loop_effect = {
+			start = 0
+			end = global.fire_once_events^num
+			value = j
+			if = {
+				limit = { check_variable = { current_event_id = global.fire_once_events^j } }
+				add_to_temp_variable = { minor_fire_once_events_fired = 1 }
+			}
+		}
+	}
+}
+
+# Count unfired major events
+count_unfired_major_events = {
+	set_temp_variable = { unfired_major_events = 0 }
+
+	for_loop_effect = {
+		start = 0
+		end = global.major_events^num
+		value = i
+		set_temp_variable = { check_event_id = global.major_events^i }
+		if = {
+			limit = { NOT = { is_in_array = { global.fired_events = check_event_id } } }
+			add_to_temp_variable = { unfired_major_events = 1 }
+		}
+	}
+}
+
+# Count unfired fire-once events
+count_unfired_fire_once_events = {
+	set_temp_variable = { unfired_fire_once_events = 0 }
+
+	for_loop_effect = {
+		start = 0
+		end = global.fire_once_events^num
+		value = i
+		set_temp_variable = { check_event_id = global.fire_once_events^i }
+		if = {
+			limit = { NOT = { is_in_array = { global.fired_events = check_event_id } } }
+			add_to_temp_variable = { unfired_fire_once_events = 1 }
+		}
+	}
+}
+
+# Count unfired repeatable events
+count_unfired_repeatable_events = {
+	set_temp_variable = { unfired_repeatable_events = 0 }
+
+	for_loop_effect = {
+		start = 0
+		end = global.repeatable_events^num
+		value = i
+		set_temp_variable = { check_event_id = global.repeatable_events^i }
+
+		# Check if this repeatable event has ever been fired
+		set_temp_variable = { event_ever_fired = 0 }
+		for_loop_effect = {
+			start = 0
+			end = global.fired_events^num
+			value = j
+			if = {
+				limit = { check_variable = { global.fired_events^j = check_event_id } }
+				set_temp_variable = { event_ever_fired = 1 }
+			}
+		}
+
+		if = {
+			limit = { check_variable = { event_ever_fired = 0 } }
+			add_to_temp_variable = { unfired_repeatable_events = 1 }
+		}
+	}
+}
+
+# Count total unique events available
+count_total_events_plus_one = {
+	set_variable = { global.total_events = 0 }
+	for_loop_effect = {
+		start = 0
+		end = global.all_events^num
+		value = i
+		set_temp_variable = { event_system_registered_id = global.all_events^i }
+		if = {
+			limit = { check_variable = { event_system_registered_id > global.total_events } }
+			set_variable = { global.total_events = event_system_registered_id }
+		}
+	}
+	add_to_variable = { global.total_events = 1 }
+}
+
+# ============================================================================
+# SECTION 6: EVENT TYPE UTILITY
+# ============================================================================
+
+# Get event type by ID
+get_event_type = {
+	# Input: temp variable event_id
+	# Output: temp variable event_type (0=unknown, 1=major, 2=minor_repeatable, 3=minor_fire_once)
+	set_temp_variable = { event_type = constant:event_system_event_type.unknown }
+
+	for_loop_effect = {
+		start = 0
+		end = global.major_events^num
+		value = i
+		if = {
+			limit = { check_variable = { event_id = global.major_events^i } }
+			set_temp_variable = { event_type = constant:event_system_event_type.major }
+		}
+	}
+
+	if = {
+		limit = { check_variable = { event_type = constant:event_system_event_type.unknown } }
+		for_loop_effect = {
+			start = 0
+			end = global.repeatable_events^num
+			value = i
+			if = {
+				limit = { check_variable = { event_id = global.repeatable_events^i } }
+				set_temp_variable = { event_type = constant:event_system_event_type.repeatable }
+			}
+		}
+	}
+
+	if = {
+		limit = { check_variable = { event_type = constant:event_system_event_type.unknown } }
+		for_loop_effect = {
+			start = 0
+			end = global.fire_once_events^num
+			value = i
+			if = {
+				limit = { check_variable = { event_id = global.fire_once_events^i } }
+				set_temp_variable = { event_type = constant:event_system_event_type.fire_once }
+			}
+		}
+	}
+}
+
+# ============================================================================
+# SECTION 7: EVENTS LOG HISTORY
+# ============================================================================
+
+
+
+
+
+# ============================================================================
+# SECTION 8: DEBUG AND MONITORING
+# ============================================================================
+log_event_fired_summary = {
+	if = {
+		limit = {
+			OR = {
+				has_global_flag = settings_logic_log_lines_enabled
+				has_variable = temp_force_logic_log
+			}
+		}
+
+		get_event_type = yes
+		count_unfired_major_events = yes
+		count_unfired_fire_once_events = yes
+		count_unfired_repeatable_events = yes
+
+		set_temp_variable = { total_unfired_events = unfired_major_events }
+		add_to_temp_variable = { total_unfired_events = unfired_fire_once_events }
+		add_to_temp_variable = { total_unfired_events = unfired_repeatable_events }
+
+		log = "CHAOS REDUX EVENT FIRED:"
+		log = "ID: [?event_id], Name: [GetEventName], Type: [GetEventType]"
+		log = "Stats: unique_left=[?total_unfired_events], minor_since_major=[?global.minor_events_since_major], total_fired=[?global.total_events_fired]"
+		log = "Remaining: major=[?unfired_major_events], fire_once=[?unfired_fire_once_events], repeatable=[?unfired_repeatable_events]"
+	}
+}
+
+# Comprehensive debug logging for the event system
+log_event_system_debug = {
+	# Increment debug counter
+	add_to_variable = { global.debug_log_count = 1 }
+
+	log = " "
+	log = "CHAOS_REDUX_SEPARATOR"
+	log = "CHAOS REDUX EVENT SYSTEM DEBUG START NR [?global.debug_log_count]"
+	log = "DATE: [GetDateText]"
+	log = "CHAOS_REDUX_SEPARATOR"
+	log = " "
+
+	# Gather all statistics
+	count_fired_minor_events = yes
+	count_fired_major_events = yes
+	count_fired_minor_repeatable_events = yes
+	count_fired_minor_fire_once_events = yes
+	count_unfired_major_events = yes
+	count_unfired_fire_once_events = yes
+	count_unfired_repeatable_events = yes
+	calculate_dynamic_major_weight_gain = yes
+
+	# Calculate derived values
+	set_temp_variable = { current_major_weight = global.current_major_event_weight }
+	set_temp_variable = { total_unfired_events = unfired_major_events }
+	add_to_temp_variable = { total_unfired_events = unfired_fire_once_events }
+	add_to_temp_variable = { total_unfired_events = unfired_repeatable_events }
+
+	# Event firing statistics
+	log = "EVENTS FIRED:"
+	log = "Total events fired: [?global.total_events_fired]"
+	log = "Major events fired: [?major_events_count]"
+	log = "Minor events fired: [?minor_events_count]"
+	log = "  - Minor repeatable events fired: [?minor_repeatable_events_fired]"
+	log = "  - Minor fire-once events fired: [?minor_fire_once_events_fired]"
+	log = "CHAOS_REDUX_SUBSECTION"
+
+	# Event availability statistics
+	log = "UNIQUE EVENTS:"
+	log = "Total events in system: [?global.all_events^num]"
+	log = "Total unique events yet to be fired: [?total_unfired_events]"
+	log = "  - Major events unfired: [?unfired_major_events] / [?global.major_events^num]"
+	log = "  - Minor fire-once events unfired: [?unfired_fire_once_events] / [?global.fire_once_events^num]"
+	log = "  - Minor repeatable events unfired: [?unfired_repeatable_events] / [?global.repeatable_events^num]"
+	log = "CHAOS_REDUX_SUBSECTION"
+
+	# Major event weight information
+	log = "MAJOR EVENT WEIGHTS:"
+	log = "Minor events fired since last major: [?global.minor_events_since_major]"
+	log = "Current accumulated major event weight: [?current_major_weight]"
+	log = "Current calculated major gain: [?global.current_dynamic_major_weight_gain]"
+	log = "Active pool counts: major=[?global.current_dynamic_major_active_major_count], non_major=[?global.current_dynamic_major_active_non_major_count]"
+	log = "CHAOS_REDUX_SUBSECTION"
+
+	# System configuration
+	log = "SYSTEM INFO:"
+	log = "Minor event weight: [?global.default_event_weight]"
+	log = "Minor event recovery rate: [?global.minor_event_recovery_rate]"
+	log = "Minor repeatable event cap reduction: [?global.reduce_cap_factor]"
+	log = "Configured baseline major gain: [?global.major_event_weight_per_minor]"
+	log = "CHAOS_REDUX_SUBSECTION"
+
+	# Dynamic timer system status
+	log = "DYNAMIC TIMER SYSTEM:"
+	log = "Timer range: [?timer_min_days] - [?timer_max_days] days"
+	log = "Timer day decrement: [?timer_day_decrement] / [?timer_min_decrement_cap] days"
+	log = "Max cap reduction: [?timer_max_cap_reduction] / [?timer_max_decrement_cap] days"
+
+	set_temp_variable = { temp_new_min_timer = timer_min_days }
+	subtract_from_temp_variable = { temp_new_min_timer = timer_day_decrement }
+	set_temp_variable = { temp_new_max_timer = timer_max_days }
+	subtract_from_temp_variable = { temp_new_max_timer = timer_day_decrement }
+	subtract_from_temp_variable = { temp_new_max_timer = timer_max_cap_reduction }
+
+	log = "Current timer range after decrements: [?temp_new_min_timer] - [?temp_new_max_timer] days"
+	log = "Current chaos tier: [GetChaosTierName]"
+	log = "Current chaos timer modifier: [?global.chaos_timer_modifier]x"
+	log = "Current timer: [?event_timer_days] days"
+	log = "CHAOS_REDUX_SUBSECTION"
+
+	# Last fired event details
+	if = {
+		limit = { check_variable = { global.last_fired_event_id > 0 } }
+		set_temp_variable = { event_id = global.last_fired_event_id }
+		get_event_type = yes
+		log = "Last fired event: ID: [?global.last_fired_event_id]"
+		log = "Name: [GetEventName], Type: [GetEventType]"
+	}
+	else = {
+		log = "Last fired event: None"
+	}
+	log = "CHAOS_REDUX_SUBSECTION"
+
+	# Major events detail
+	log = "MAJOR EVENTS DETAIL:"
+	for_loop_effect = {
+		start = 0
+		end = global.major_events^num
+		value = i
+		set_temp_variable = { event_id = global.major_events^i }
+		get_event_weight = yes
+		if = {
+			limit = { is_in_array = { global.fired_events = event_id } }
+			set_temp_variable = { event_weight = 0 } # For cosmetic purposes
+		}
+		log = "ID: [?event_id], Name: [GetEventName], Weight: [?event_weight]"
+	}
+	log = "CHAOS_REDUX_SUBSECTION"
+
+	# Fire-once events detail
+	log = "FIRE-ONCE EVENTS DETAIL:"
+	for_loop_effect = {
+		start = 0
+		end = global.fire_once_events^num
+		value = i
+		set_temp_variable = { event_id = global.fire_once_events^i }
+		get_event_weight = yes
+		if = {
+			limit = { is_in_array = { global.fired_events = event_id } }
+			set_temp_variable = { event_weight = 0 } # For cosmetic purposes
+		}
+		log = "ID: [?event_id], Name: [GetEventName], Weight: [?event_weight]"
+	}
+	log = "CHAOS_REDUX_SUBSECTION"
+
+	# Repeatable events detail
+	log = "REPEATABLE EVENTS DETAIL:"
+	for_loop_effect = {
+		start = 0
+		end = global.repeatable_events^num
+		value = i
+		set_temp_variable = { event_id = global.repeatable_events^i }
+		get_event_weight = yes
+		get_event_cap = yes
+		log = "ID: [?event_id], Name: [GetEventName], Weight: [?event_weight], Cap: [?event_cap]"
+	}
+
+	log = " "
+	log = "CHAOS_REDUX_SEPARATOR"
+	log = "CHAOS REDUX EVENT SYSTEM DEBUG END NR [?global.debug_log_count]"
+	log = "CHAOS_REDUX_SEPARATOR"
+	log = " "
+}

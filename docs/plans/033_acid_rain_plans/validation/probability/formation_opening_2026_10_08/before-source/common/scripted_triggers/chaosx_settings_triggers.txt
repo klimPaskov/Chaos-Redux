@@ -1,0 +1,434 @@
+event_log_event_is_reworked_default_enabled = {
+	OR = {
+		check_variable = { event_id = 1 }
+		check_variable = { event_id = 2 }
+		check_variable = { event_id = 3 }
+		check_variable = { event_id = 4 }
+		check_variable = { event_id = 5 }
+		check_variable = { event_id = constant:independence_wave_evolution.event_id }
+		check_variable = { event_id = 7 }
+		check_variable = { event_id = 8 }
+		check_variable = { event_id = 9 }
+		check_variable = { event_id = 10 }
+		check_variable = { event_id = 11 }
+		check_variable = { event_id = constant:africa_event.id }
+		check_variable = { event_id = 13 }
+		check_variable = { event_id = 14 }
+		check_variable = { event_id = constant:utopia_manifesto_event.id }
+		check_variable = { event_id = constant:brilliant_scientist_event.id }
+		check_variable = { event_id = 17 }
+		check_variable = { event_id = constant:resources_found_event.id }
+		check_variable = { event_id = constant:infantry_spawn_event.id }
+		check_variable = { event_id = constant:black_plague_identity.event_id }
+		check_variable = { event_id = constant:random_civil_war_event.id }
+		check_variable = { event_id = constant:video_game_in_sweden_event.id }
+		check_variable = { event_id = constant:sov_nuclear_bombs_event.id }
+		check_variable = { event_id = constant:chaosx_nr25_identity.event_id }
+		check_variable = { event_id = 27 }
+		check_variable = { event_id = constant:asteroid_incoming_event.id }
+		check_variable = { event_id = constant:riches_found_event.id }
+		check_variable = { event_id = constant:random_terror_identity.event_id }
+		check_variable = { event_id = constant:missiles_event.id }
+		check_variable = { event_id = constant:murder_mystery_identity.event_id }
+		check_variable = { event_id = constant:equipment_from_heavens_event.id }
+	}
+}
+
+has_disabled_current_evolution = {
+	meta_trigger = {
+		text = {
+			has_global_flag = {
+				flag = events_log_disabled_evolution_[EVOLUTION_EVENT_ID]_[EVOLUTION_TYPE]_[EVOLUTION_STAGE]
+			}
+		}
+		EVOLUTION_EVENT_ID = "[?events_log_evolution_event_id|0]"
+		EVOLUTION_TYPE = "[?events_log_evolution_type|0]"
+		EVOLUTION_STAGE = "[?events_log_evolution_stage|0]"
+	}
+}
+
+is_current_evolution_enabled = {
+	NOT = { has_disabled_current_evolution = yes }
+	has_reached_current_evolution_tier = yes
+}
+
+has_reached_current_evolution_tier = {
+	OR = {
+		NOT = { has_variable = events_log_evolution_tier }
+		check_variable = {
+			var = events_log_evolution_tier
+			value = 1
+			compare = less_than
+		}
+		AND = {
+			check_variable = { var = events_log_evolution_tier value = 1 compare = equals }
+			check_variable = {
+				var = global.chaos_meter_value
+				value = constant:chaos_meter_tier_range.tier_1.min
+				compare = greater_than_or_equals
+			}
+		}
+		AND = {
+			check_variable = { var = events_log_evolution_tier value = 2 compare = equals }
+			check_variable = {
+				var = global.chaos_meter_value
+				value = constant:chaos_meter_tier_range.tier_2.min
+				compare = greater_than_or_equals
+			}
+		}
+		AND = {
+			check_variable = { var = events_log_evolution_tier value = 3 compare = equals }
+			check_variable = {
+				var = global.chaos_meter_value
+				value = constant:chaos_meter_tier_range.tier_3.min
+				compare = greater_than_or_equals
+			}
+		}
+		AND = {
+			check_variable = { var = events_log_evolution_tier value = 4 compare = equals }
+			check_variable = {
+				var = global.chaos_meter_value
+				value = constant:chaos_meter_tier_range.tier_4.min
+				compare = greater_than_or_equals
+			}
+		}
+		AND = {
+			check_variable = { var = events_log_evolution_tier value = 5 compare = equals }
+			check_variable = {
+				var = global.chaos_meter_value
+				value = constant:chaos_meter_tier_range.tier_final.min
+				compare = greater_than_or_equals
+			}
+		}
+	}
+}
+
+has_events_log_selected_fury_evolution = {
+	check_variable = {
+		var = events_log_selected_evolution_event_id
+		value = constant:fury_event_log.event_id
+		compare = equals
+	}
+	check_variable = {
+		var = events_log_selected_evolution_type
+		value = constant:fury_event_log.evolution_type
+		compare = equals
+	}
+	OR = {
+		check_variable = {
+			var = events_log_selected_evolution_stage
+			value = constant:fury_event_log.hardened_stage
+			compare = equals
+		}
+		check_variable = {
+			var = events_log_selected_evolution_stage
+			value = constant:fury_event_log.two_fires_stage
+			compare = equals
+		}
+		check_variable = {
+			var = events_log_selected_evolution_stage
+			value = constant:fury_event_log.all_borders_stage
+			compare = equals
+		}
+	}
+}
+
+has_events_log_selected_soviet_collapse_evolution = {
+	check_variable = {
+		var = events_log_selected_evolution_event_id
+		value = constant:soviet_collapse_event_log.event_id
+		compare = equals
+	}
+	OR = {
+		AND = {
+			check_variable = {
+				var = events_log_selected_evolution_type
+				value = constant:soviet_collapse_event_log.secession_evolution_type
+				compare = equals
+			}
+			check_variable = {
+				var = events_log_selected_evolution_stage
+				value = 0
+				compare = greater_than
+			}
+			check_variable = {
+				var = events_log_selected_evolution_stage
+				value = constant:soviet_collapse_event_log.world_collapse_stage
+				compare = less_than_or_equals
+			}
+		}
+		AND = {
+			check_variable = {
+				var = events_log_selected_evolution_type
+				value = constant:soviet_collapse_high_chaos_event_log.evolution_type
+				compare = equals
+			}
+			check_variable = {
+				var = events_log_selected_evolution_stage
+				value = 0
+				compare = greater_than
+			}
+		}
+	}
+}
+
+# Input: variable `events_log_fire_candidate_id` holding an event ID.
+# Mirrors the availability rules of the single event-detail trigger button:
+# the event must be selected (enabled), unique events must not have fired yet,
+# and special events need a valid manual fire context.
+events_log_fire_candidate_is_available = {
+	NOT = { is_in_array = { global.disabled_events = events_log_fire_candidate_id } }
+	OR = {
+		has_country_flag = force_trigger_mode_enabled
+		events_log_fire_candidate_chaos_level_is_met = yes
+	}
+	OR = {
+		AND = {
+			check_variable = { events_log_fire_candidate_id = constant:africa_event.id }
+			africa_manual_event_is_available = yes
+		}
+		AND = {
+			check_variable = { events_log_fire_candidate_id = constant:random_faction_event.id }
+			random_faction_has_manual_dispatchable_context = yes
+		}
+		AND = {
+			NOT = { check_variable = { events_log_fire_candidate_id = constant:africa_event.id } }
+			NOT = { check_variable = { events_log_fire_candidate_id = constant:random_faction_event.id } }
+			OR = {
+				NOT = { is_in_array = { global.fired_events = events_log_fire_candidate_id } }
+				NOT = {
+					OR = {
+						is_in_array = { global.major_events = events_log_fire_candidate_id }
+						is_in_array = { global.fire_once_events = events_log_fire_candidate_id }
+					}
+				}
+			}
+		}
+	}
+}
+
+# True when at least one selected (enabled) event in the Event Logs events
+# view can currently be fired manually.
+events_log_any_selected_event_is_fireable = {
+	any_of = {
+		array = global.all_events
+		value = events_log_fire_candidate_id
+		index = events_log_fire_candidate_index
+		events_log_fire_candidate_is_available = yes
+	}
+}
+
+chaosx_is_non_ai_crisis_pressure_active = {
+	is_ai = no
+	has_country_flag = chaosx_setting_non_ai_crisis_pressure_enabled
+}
+
+has_events_log_selected_evolution_authored_portrait = {
+	OR = {
+		has_events_log_selected_fury_evolution = yes
+		has_events_log_selected_soviet_collapse_evolution = yes
+		AND = {
+			resources_found_selected_evolution_is_public = yes
+			check_variable = {
+				var = events_log_selected_evolution_stage
+				value = constant:resources_found_event.evolution_iv_stage
+				compare = equals
+			}
+		}
+		AND = {
+			check_variable = {
+				var = events_log_selected_evolution_event_id
+				value = constant:black_plague_identity.event_id
+				compare = equals
+			}
+			check_variable = {
+				var = events_log_selected_evolution_type
+				value = constant:black_plague_identity.evolution_type
+				compare = equals
+			}
+			check_variable = {
+				var = events_log_selected_evolution_stage
+				value = constant:black_plague_evolution_runtime.evolution_iv_stage
+				compare = equals
+			}
+		}
+		AND = {
+			check_variable = {
+				var = events_log_selected_evolution_event_id
+				value = 2
+				compare = equals
+			}
+			check_variable = {
+				var = events_log_selected_evolution_type
+				value = 1
+				compare = equals
+			}
+			check_variable = {
+				var = events_log_selected_evolution_stage
+				value = 0
+				compare = greater_than
+			}
+			check_variable = {
+				var = events_log_selected_evolution_stage
+				value = 4
+				compare = less_than
+			}
+		}
+		AND = {
+			check_variable = {
+				var = events_log_selected_evolution_event_id
+				value = 1
+				compare = equals
+			}
+			check_variable = {
+				var = events_log_selected_evolution_type
+				value = 2
+				compare = equals
+			}
+			check_variable = {
+				var = events_log_selected_evolution_stage
+				value = 0
+				compare = greater_than
+			}
+			check_variable = {
+				var = events_log_selected_evolution_stage
+				value = 4
+				compare = less_than
+			}
+		}
+		AND = {
+			check_variable = {
+				var = events_log_selected_evolution_event_id
+				value = 3
+				compare = equals
+			}
+			check_variable = {
+				var = events_log_selected_evolution_type
+				value = 3
+				compare = equals
+			}
+			check_variable = {
+				var = events_log_selected_evolution_stage
+				value = 0
+				compare = greater_than
+			}
+			check_variable = {
+				var = events_log_selected_evolution_stage
+				value = 7
+				compare = less_than
+			}
+		}
+		AND = {
+			check_variable = {
+				var = events_log_selected_evolution_event_id
+				value = constant:death_event.id
+				compare = equals
+			}
+			check_variable = {
+				var = events_log_selected_evolution_type
+				value = constant:death_event.evolution_type
+				compare = equals
+			}
+			check_variable = {
+				var = events_log_selected_evolution_stage
+				value = 1
+				compare = greater_than
+			}
+			check_variable = {
+				var = events_log_selected_evolution_stage
+				value = 6
+				compare = less_than
+			}
+		}
+	}
+}
+
+# Central normal-event Chaos gate.
+# Input: event_required_chaos_level using zero-based chaos_meter_tier_id values.
+event_required_chaos_level_is_met = {
+	OR = {
+		check_variable = { event_required_chaos_level = constant:chaos_meter_tier_id.tier_0 }
+		AND = {
+			check_variable = { event_required_chaos_level = constant:chaos_meter_tier_id.tier_1 }
+			OR = {
+				has_global_flag = { flag = chaos_tier value = 1 }
+				has_global_flag = { flag = chaos_tier value = 2 }
+				has_global_flag = { flag = chaos_tier value = 3 }
+				has_global_flag = { flag = chaos_tier value = 4 }
+				has_global_flag = { flag = chaos_tier value = 5 }
+			}
+		}
+		AND = {
+			check_variable = { event_required_chaos_level = constant:chaos_meter_tier_id.tier_2 }
+			OR = {
+				has_global_flag = { flag = chaos_tier value = 2 }
+				has_global_flag = { flag = chaos_tier value = 3 }
+				has_global_flag = { flag = chaos_tier value = 4 }
+				has_global_flag = { flag = chaos_tier value = 5 }
+			}
+		}
+		AND = {
+			check_variable = { event_required_chaos_level = constant:chaos_meter_tier_id.tier_3 }
+			OR = {
+				has_global_flag = { flag = chaos_tier value = 3 }
+				has_global_flag = { flag = chaos_tier value = 4 }
+				has_global_flag = { flag = chaos_tier value = 5 }
+			}
+		}
+		AND = {
+			check_variable = { event_required_chaos_level = constant:chaos_meter_tier_id.tier_4 }
+			OR = {
+				has_global_flag = { flag = chaos_tier value = 4 }
+				has_global_flag = { flag = chaos_tier value = 5 }
+			}
+		}
+		AND = {
+			check_variable = { event_required_chaos_level = constant:chaos_meter_tier_id.tier_final }
+			has_global_flag = { flag = chaos_tier value = 5 }
+		}
+	}
+}
+
+settings_selected_event_chaos_level_is_met = {
+	OR = {
+		check_variable = { settings_selected_event_required_chaos_level = constant:chaos_meter_tier_id.tier_0 }
+		AND = { check_variable = { settings_selected_event_required_chaos_level = constant:chaos_meter_tier_id.tier_1 } check_variable = { var = global.chaos_meter_value value = constant:chaos_meter_tier_range.tier_1.min compare = greater_than_or_equals } }
+		AND = { check_variable = { settings_selected_event_required_chaos_level = constant:chaos_meter_tier_id.tier_2 } check_variable = { var = global.chaos_meter_value value = constant:chaos_meter_tier_range.tier_2.min compare = greater_than_or_equals } }
+		AND = { check_variable = { settings_selected_event_required_chaos_level = constant:chaos_meter_tier_id.tier_3 } check_variable = { var = global.chaos_meter_value value = constant:chaos_meter_tier_range.tier_3.min compare = greater_than_or_equals } }
+		AND = { check_variable = { settings_selected_event_required_chaos_level = constant:chaos_meter_tier_id.tier_4 } check_variable = { var = global.chaos_meter_value value = constant:chaos_meter_tier_range.tier_4.min compare = greater_than_or_equals } }
+		AND = { check_variable = { settings_selected_event_required_chaos_level = constant:chaos_meter_tier_id.tier_final } check_variable = { var = global.chaos_meter_value value = constant:chaos_meter_tier_range.tier_final.min compare = greater_than_or_equals } }
+	}
+}
+
+events_log_open_detail_chaos_level_is_met = {
+	OR = {
+		check_variable = { var = global.events_log_open_event_detail_chaos_level_entries^events_log_open_event_detail_index value = constant:chaos_meter_tier_id.tier_0 compare = equals }
+		AND = { check_variable = { var = global.events_log_open_event_detail_chaos_level_entries^events_log_open_event_detail_index value = constant:chaos_meter_tier_id.tier_1 compare = equals } check_variable = { var = global.chaos_meter_value value = constant:chaos_meter_tier_range.tier_1.min compare = greater_than_or_equals } }
+		AND = { check_variable = { var = global.events_log_open_event_detail_chaos_level_entries^events_log_open_event_detail_index value = constant:chaos_meter_tier_id.tier_2 compare = equals } check_variable = { var = global.chaos_meter_value value = constant:chaos_meter_tier_range.tier_2.min compare = greater_than_or_equals } }
+		AND = { check_variable = { var = global.events_log_open_event_detail_chaos_level_entries^events_log_open_event_detail_index value = constant:chaos_meter_tier_id.tier_3 compare = equals } check_variable = { var = global.chaos_meter_value value = constant:chaos_meter_tier_range.tier_3.min compare = greater_than_or_equals } }
+		AND = { check_variable = { var = global.events_log_open_event_detail_chaos_level_entries^events_log_open_event_detail_index value = constant:chaos_meter_tier_id.tier_4 compare = equals } check_variable = { var = global.chaos_meter_value value = constant:chaos_meter_tier_range.tier_4.min compare = greater_than_or_equals } }
+		AND = { check_variable = { var = global.events_log_open_event_detail_chaos_level_entries^events_log_open_event_detail_index value = constant:chaos_meter_tier_id.tier_final compare = equals } check_variable = { var = global.chaos_meter_value value = constant:chaos_meter_tier_range.tier_final.min compare = greater_than_or_equals } }
+	}
+}
+
+events_log_events_view_chaos_level_is_met = {
+	OR = {
+		check_variable = { var = global.events_log_events_view_chaos_level_entries^events_log_history_index value = constant:chaos_meter_tier_id.tier_0 compare = equals }
+		AND = { check_variable = { var = global.events_log_events_view_chaos_level_entries^events_log_history_index value = constant:chaos_meter_tier_id.tier_1 compare = equals } check_variable = { var = global.chaos_meter_value value = constant:chaos_meter_tier_range.tier_1.min compare = greater_than_or_equals } }
+		AND = { check_variable = { var = global.events_log_events_view_chaos_level_entries^events_log_history_index value = constant:chaos_meter_tier_id.tier_2 compare = equals } check_variable = { var = global.chaos_meter_value value = constant:chaos_meter_tier_range.tier_2.min compare = greater_than_or_equals } }
+		AND = { check_variable = { var = global.events_log_events_view_chaos_level_entries^events_log_history_index value = constant:chaos_meter_tier_id.tier_3 compare = equals } check_variable = { var = global.chaos_meter_value value = constant:chaos_meter_tier_range.tier_3.min compare = greater_than_or_equals } }
+		AND = { check_variable = { var = global.events_log_events_view_chaos_level_entries^events_log_history_index value = constant:chaos_meter_tier_id.tier_4 compare = equals } check_variable = { var = global.chaos_meter_value value = constant:chaos_meter_tier_range.tier_4.min compare = greater_than_or_equals } }
+		AND = { check_variable = { var = global.events_log_events_view_chaos_level_entries^events_log_history_index value = constant:chaos_meter_tier_id.tier_final compare = equals } check_variable = { var = global.chaos_meter_value value = constant:chaos_meter_tier_range.tier_final.min compare = greater_than_or_equals } }
+	}
+}
+
+events_log_fire_candidate_chaos_level_is_met = {
+	OR = {
+		check_variable = { var = global.event_chaos_level_entries^events_log_fire_candidate_index value = constant:chaos_meter_tier_id.tier_0 compare = equals }
+		AND = { check_variable = { var = global.event_chaos_level_entries^events_log_fire_candidate_index value = constant:chaos_meter_tier_id.tier_1 compare = equals } check_variable = { var = global.chaos_meter_value value = constant:chaos_meter_tier_range.tier_1.min compare = greater_than_or_equals } }
+		AND = { check_variable = { var = global.event_chaos_level_entries^events_log_fire_candidate_index value = constant:chaos_meter_tier_id.tier_2 compare = equals } check_variable = { var = global.chaos_meter_value value = constant:chaos_meter_tier_range.tier_2.min compare = greater_than_or_equals } }
+		AND = { check_variable = { var = global.event_chaos_level_entries^events_log_fire_candidate_index value = constant:chaos_meter_tier_id.tier_3 compare = equals } check_variable = { var = global.chaos_meter_value value = constant:chaos_meter_tier_range.tier_3.min compare = greater_than_or_equals } }
+		AND = { check_variable = { var = global.event_chaos_level_entries^events_log_fire_candidate_index value = constant:chaos_meter_tier_id.tier_4 compare = equals } check_variable = { var = global.chaos_meter_value value = constant:chaos_meter_tier_range.tier_4.min compare = greater_than_or_equals } }
+		AND = { check_variable = { var = global.event_chaos_level_entries^events_log_fire_candidate_index value = constant:chaos_meter_tier_id.tier_final compare = equals } check_variable = { var = global.chaos_meter_value value = constant:chaos_meter_tier_range.tier_final.min compare = greater_than_or_equals } }
+	}
+}

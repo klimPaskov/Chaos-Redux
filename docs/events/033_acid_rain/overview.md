@@ -8,6 +8,9 @@ Its delayed Acid Rain member uses the stored batch receipt to record its own fir
 ## Player loop
 
 The runtime freezes the valid state set at formation, divides it into seven geographic regions, creates bounded front records, and schedules all future work through the event host.
+A regional front has its first footprint when it forms, including an additional front whose split notice has elapsed.
+It grows through reachable untouched neighbours before seeding a disconnected island component, without applying a mortality pulse at birth.
+An eligible global opening skips ordinary region selection and regional footprints and retains its three-day global transition.
 A front announces its next region roughly one week ahead, visits 60 to 85 percent of the region's eligible states on its first pass, and clears the remainder on its second pass.
 Target selection favours states that no front has touched, with an explicit island path and a deterministic endpoint after full frozen-set coverage.
 The rain ordinarily disperses only after it has crossed every eligible state.

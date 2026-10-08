@@ -3,7 +3,25 @@
 Disposition: implemented source checkpoints with explicitly incomplete overall acceptance.
 The user's Event 033 goal remains active and no event-completion claim is made.
 
-## Current F5 checkpoint
+## Current F6 source checkpoint
+
+The formation-opening runtime is `e5c34d8bd73971609e26b7aef2d4a01cdd4f3f795c2856d83189dfcd546f5def`, with triggers `ae069680a185d0a0aa24d301fe62d158edab09a1a8d7d4ca0a36752dfa974f86`.
+Constants and root remain the F5 identities below.
+Regional births have an immediate first footprint and no synthetic future warning, while later regional destinations and the preceding live split notice retain seven days.
+An eligible global opening bypasses ordinary region draws and keeps its independent three-day transition proof.
+The original source replay exposed a real order-dependent connected-growth failure in both 71F0 and D717; the E5 repair exhausts reachable untouched neighbors and permits only one disconnected seed per real stall.
+Sealed runner `dfa292394df926bb191fcf2352aa5c5b71afd82e07277a22ef056b3bdf886bb4` independently reproduces seventy-seven source cases, including unsorted graph regressions and twelve-plus-eight unique two-visit coverage.
+Fresh conditional comparison `probability-4f40c3e316563e92404d319a` covers thirty-one identical named cases and 217 rows with no changes or unresolved candidates, and the parent independently verifies its actual JSON bytes and numeric rows.
+See `validation/formation_opening_owner_2026_10_08.md` and the dated opening evidence for scopes, historical failures and remaining limits.
+None of this establishes actual population loss, native performance, migration, reload, multiplayer, visuals or audio acceptance.
+The numeric region cursors still need explicit greater-than-one-thousand-states-per-region review.
+
+F7 per-country episode report receipts and physical report facts, F8 useful AI windows, Humanitarian source retirement and the remaining Part 12 native/asset/audio gates remain implementation work.
+The broader helper trace returned a client timeout; existing narrow retry cell 118 completed with `EVENT_INSPECTED_PARTIAL`, helper expansion disabled and one-node/edge/depth bounds.
+Its descriptor is retained, with actual artifact bytes unverified; it is not a complete event graph baseline or lifecycle comparison.
+No game was launched and no log search or new live acceptance evidence was obtained.
+
+## Historical F5 checkpoint
 
 `4a592fd0c4a9e284f5bf78d09fe49717ddcb41bb` implements per-stage evolution controls, safe notice cancellation, due-clock/current-state-generation proof at global commitment and correct tier/log mapping.
 The current runtime is `71f0be97b23c2818ee2302009b6fc98c6a6b1a1b43f5588dd05bf1ae35914d89`, triggers are `0602105374350841e579279eb17b5cc627cded074c2b0503d2def361d1585c60` and constants are `900491e8c605450abc7c3057033276fdd00e52d0b709bff29be3bb42dbb15db7`.

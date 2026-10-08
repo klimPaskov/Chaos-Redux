@@ -19,7 +19,8 @@ function walk(nodes, helper) {
 	}
 }
 for (const n of parse(bytes.toString('utf8'))) if (Array.isArray(n.value)) walk(n.value, n.key);
-assert.equal(loops.length, 77);
+// The original 77 envelopes remain, with one bounded connected-growth loop.
+assert.equal(loops.length, 78);
 assert.equal(new Set(loops.map(x => x.binding)).size, loops.length, 'break names collide across helper boundaries');
 function traverse(kind, count, temps, binding, reset, body, earlyAt) {
 	if (reset) temps.set(binding, 0);

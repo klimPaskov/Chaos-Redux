@@ -1262,22 +1262,33 @@ acid_rain_start_runtime = {
 					acid_rain_033_achievement_register_runtime_state = yes
 				}
 				set_variable = { global.acid_rain_phase = constant:acid_rain_phase.regional }
-				set_variable = { global.acid_rain_front_count = constant:acid_rain_runtime.one }
 				set_variable = { global.acid_rain_front_active_generation = global.acid_rain_generation_id }
-				set_variable = { global.acid_rain_front_state_entries^1 = constant:acid_rain_front_state.warning }
-				set_variable = { global.acid_rain_front_generation_entries^1 = global.acid_rain_generation_id }
-				set_variable = { global.acid_rain_front_created_day_entries^1 = global.date }
 				set_temp_variable = { acid_rain_front_id = constant:acid_rain_runtime.one }
 				set_temp_variable = { acid_rain_front_region_result = constant:acid_rain_runtime.zero }
-				acid_rain_assign_next_front_region = yes
+				if = {
+					limit = { NOT = { acid_rain_formation_has_global_opening = yes } }
+					set_variable = { global.acid_rain_front_count = constant:acid_rain_runtime.one }
+					set_variable = { global.acid_rain_front_state_entries^1 = constant:acid_rain_front_state.warning }
+					set_variable = { global.acid_rain_front_generation_entries^1 = global.acid_rain_generation_id }
+					set_variable = { global.acid_rain_front_created_day_entries^1 = global.date }
+					set_temp_variable = { acid_rain_front_region_result = constant:acid_rain_runtime.zero }
+					acid_rain_assign_next_front_region = yes
+				}
 				if = {
 					limit = {
-						check_variable = { var = acid_rain_front_region_result value = constant:acid_rain_runtime.one compare = equals }
+						OR = {
+							acid_rain_formation_has_global_opening = yes
+							check_variable = { var = acid_rain_front_region_result value = constant:acid_rain_runtime.one compare = equals }
+						}
 					}
 					set_global_flag = acid_rain_runtime_active
 					set_global_flag = acid_rain
 					set_global_flag = acid_rain_first_generation_started
 					clr_global_flag = acid_rain_cluster_reserved
+					if = {
+						limit = { NOT = { acid_rain_formation_has_global_opening = yes } }
+						acid_rain_process_front = yes
+					}
 					set_temp_variable = { acid_rain_air_requested_bp = constant:acid_rain_air.formation_request_bp }
 					set_temp_variable = { acid_rain_air_request_is_formation = constant:acid_rain_runtime.one }
 					acid_rain_apply_air_request = yes
@@ -1336,18 +1347,21 @@ acid_rain_apply_formation_stage = {
 		if = {
 			limit = { acid_rain_multiple_fronts_evolution_is_enabled = yes check_variable = { var = global.acid_rain_start_chaos value = constant:acid_rain_evolution.front_two_chaos compare = greater_than_or_equals } }
 			set_variable = { global.acid_rain_highest_stage_at_formation = constant:acid_rain_event.evolution_ii_stage }
-			acid_rain_open_additional_front = yes
 			if = {
-				limit = { check_variable = { var = global.acid_rain_front_count value = constant:acid_rain_runtime.two compare = equals } }
-				set_global_flag = acid_rain_multiple_fronts_unlocked
-			}
-			else = {
-				set_global_flag = acid_rain_front_split_pending
-				set_variable = { global.acid_rain_front_split_day = global.date }
-				set_temp_variable = { chaosx_date_days = constant:acid_rain_evolution.front_split_notice_days }
-				set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
-				chaosx_convert_days_to_date_offset = yes
-				add_to_variable = { global.acid_rain_front_split_day = chaosx_date_offset }
+				limit = { NOT = { acid_rain_formation_has_global_opening = yes } }
+				acid_rain_open_additional_front = yes
+				if = {
+					limit = { check_variable = { var = global.acid_rain_front_count value = constant:acid_rain_runtime.two compare = equals } }
+					set_global_flag = acid_rain_multiple_fronts_unlocked
+				}
+				else = {
+					set_global_flag = acid_rain_front_split_pending
+					set_variable = { global.acid_rain_front_split_day = global.date }
+					set_temp_variable = { chaosx_date_days = constant:acid_rain_evolution.front_split_notice_days }
+					set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+					chaosx_convert_days_to_date_offset = yes
+					add_to_variable = { global.acid_rain_front_split_day = chaosx_date_offset }
+				}
 			}
 		}
 		if = {
@@ -1905,6 +1919,12 @@ acid_rain_commit_front_region = {
 	set_variable = { global.acid_rain_front_state_entries^acid_rain_front_id = constant:acid_rain_front_state.warning }
 	set_variable = { global.acid_rain_front_next_warning_day_entries^acid_rain_front_id = global.date }
 	set_temp_variable = { chaosx_date_days = constant:acid_rain_runtime.warning_days }
+	if = {
+		limit = { check_variable = { var = acid_rain_previous_region_id value = constant:acid_rain_runtime.zero compare = equals } }
+		# The first footprint is present at creation. Later destinations retain
+		# their full warning lead and their existing arrival transaction.
+		set_temp_variable = { chaosx_date_days = constant:chaosx_date_units.zero }
+	}
 	set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
 	chaosx_convert_days_to_date_offset = yes
 	add_to_variable = { global.acid_rain_front_next_warning_day_entries^acid_rain_front_id = chaosx_date_offset }
@@ -1988,20 +2008,24 @@ acid_rain_commit_front_region = {
 					acid_rain_state_is_in_region = yes
 					acid_rain_state_is_frozen_valid = yes
 				}
-				set_state_flag = acid_rain_warning_pending
 				set_variable = { acid_rain_warning_front_id = acid_rain_front_id }
 				set_variable = { acid_rain_warning_region_id = acid_rain_selected_region_id }
 				set_variable = { acid_rain_warning_visit_id = acid_rain_current_warning_visit_id }
 				set_variable = { acid_rain_warning_day = global.date }
 				set_variable = { acid_rain_warning_expiry_day = global.acid_rain_front_next_warning_day_entries^acid_rain_front_id }
-				save_event_target_as = acid_rain_report_state
-				CONTROLLER = {
-					acid_rain_register_country_on_control_transfer = yes
-					set_temp_variable = { acid_rain_warning_flag_days = constant:acid_rain_runtime.warning_days }
-					set_country_flag = { flag = acid_rain_country_warning_active days = acid_rain_warning_flag_days }
-					set_country_flag = { flag = acid_rain_country_project_arrival_risk days = acid_rain_warning_flag_days }
-					acid_rain_send_front_warning_report = yes
+				if = {
+					limit = { check_variable = { var = global.acid_rain_front_next_warning_day_entries^acid_rain_front_id value = global.date compare = greater_than } }
+					set_state_flag = acid_rain_warning_pending
+					save_event_target_as = acid_rain_report_state
+					CONTROLLER = {
+						acid_rain_register_country_on_control_transfer = yes
+						set_temp_variable = { acid_rain_warning_flag_days = constant:acid_rain_runtime.warning_days }
+						set_country_flag = { flag = acid_rain_country_warning_active days = acid_rain_warning_flag_days }
+						set_country_flag = { flag = acid_rain_country_project_arrival_risk days = acid_rain_warning_flag_days }
+						acid_rain_send_front_warning_report = yes
+					}
 				}
+				else = { clr_state_flag = acid_rain_warning_pending }
 			}
 		}
 	}
@@ -2686,50 +2710,69 @@ acid_rain_process_front = {
 		}
 		add_to_temp_variable = { acid_rain_front_touch_limit = acid_rain_front_available_footprint }
 		clamp_temp_variable = { var = acid_rain_front_touch_limit max = global.acid_rain_front_target_goal_entries^acid_rain_front_id }
-		set_temp_variable = { acid_rain_cursor_region = acid_rain_selected_region_id }
-		set_temp_variable = { acid_rain_cursor_start = constant:acid_rain_runtime.zero }
-		set_temp_variable = { acid_rain_cursor_end = constant:acid_rain_runtime.zero }
-		acid_rain_prepare_region_cursor = yes
-		set_temp_variable = { acid_rain_touch_cursor_end = acid_rain_cursor_end }
-		set_temp_variable = { acid_rain_process_front_loop_1_break = constant:acid_rain_runtime.zero }
-		for_loop_effect = {
-			break = acid_rain_process_front_loop_1_break
-			start = acid_rain_cursor_start
-			end = acid_rain_touch_cursor_end
-			value = acid_rain_touch_cursor
-			var:global.acid_rain_region_ordered_states^acid_rain_touch_cursor = {
-				if = {
-					limit = {
-						acid_rain_state_is_in_region = yes
-						NOT = { has_state_flag = acid_rain_touched }
-						check_variable = { var = global.acid_rain_front_visited_entries^acid_rain_front_id value = acid_rain_front_touch_limit compare = less_than }
-						OR = { check_variable = { var = global.acid_rain_front_active_state_count_entries^acid_rain_front_id value = constant:acid_rain_runtime.zero compare = equals } any_neighbor_state = { has_state_flag = acid_rain_front_target check_variable = { var = acid_rain_target_front_id value = acid_rain_front_id compare = equals } } }
+		set_temp_variable = { acid_rain_connected_passes = constant:acid_rain_runtime.zero }
+		set_temp_variable = { acid_rain_process_front_connected_break = constant:acid_rain_runtime.zero }
+		while_loop_effect = {
+			break = acid_rain_process_front_connected_break
+			limit = {
+				check_variable = { var = global.acid_rain_front_visited_entries^acid_rain_front_id value = acid_rain_front_touch_limit compare = less_than }
+				check_variable = { var = acid_rain_connected_passes value = constant:acid_rain_coverage.first_footprint_max_states compare = less_than }
+			}
+			set_temp_variable = { acid_rain_connected_before = global.acid_rain_front_visited_entries^acid_rain_front_id }
+			set_temp_variable = { acid_rain_cursor_region = acid_rain_selected_region_id }
+			set_temp_variable = { acid_rain_cursor_start = constant:acid_rain_runtime.zero }
+			set_temp_variable = { acid_rain_cursor_end = constant:acid_rain_runtime.zero }
+			acid_rain_prepare_region_cursor = yes
+			set_temp_variable = { acid_rain_touch_cursor_end = acid_rain_cursor_end }
+			set_temp_variable = { acid_rain_process_front_loop_1_break = constant:acid_rain_runtime.zero }
+			for_loop_effect = {
+				break = acid_rain_process_front_loop_1_break
+				start = acid_rain_cursor_start
+				end = acid_rain_touch_cursor_end
+				value = acid_rain_touch_cursor
+				var:global.acid_rain_region_ordered_states^acid_rain_touch_cursor = {
+					if = {
+						limit = {
+							acid_rain_state_is_in_region = yes
+							NOT = { has_state_flag = acid_rain_touched }
+							check_variable = { var = global.acid_rain_front_visited_entries^acid_rain_front_id value = acid_rain_front_touch_limit compare = less_than }
+							OR = { check_variable = { var = global.acid_rain_front_active_state_count_entries^acid_rain_front_id value = constant:acid_rain_runtime.zero compare = equals } any_neighbor_state = { has_state_flag = acid_rain_front_target check_variable = { var = acid_rain_target_front_id value = acid_rain_front_id compare = equals } } }
+						}
+						acid_rain_touch_state_for_front = yes
 					}
-					acid_rain_touch_state_for_front = yes
 				}
 			}
-		}
-		set_temp_variable = { acid_rain_cursor_region = acid_rain_selected_region_id }
-		set_temp_variable = { acid_rain_cursor_start = constant:acid_rain_runtime.zero }
-		set_temp_variable = { acid_rain_cursor_end = constant:acid_rain_runtime.zero }
-		acid_rain_prepare_region_cursor = yes
-		set_temp_variable = { acid_rain_touch_island_cursor_end = acid_rain_cursor_end }
-		set_temp_variable = { acid_rain_process_front_loop_2_break = constant:acid_rain_runtime.zero }
-		for_loop_effect = {
-			break = acid_rain_process_front_loop_2_break
-			start = acid_rain_cursor_start
-			end = acid_rain_touch_island_cursor_end
-			value = acid_rain_touch_island_cursor
-			var:global.acid_rain_region_ordered_states^acid_rain_touch_island_cursor = {
-				if = {
-					limit = {
-						acid_rain_state_is_in_region = yes
-						NOT = { has_state_flag = acid_rain_touched }
-						check_variable = { var = global.acid_rain_front_visited_entries^acid_rain_front_id value = acid_rain_front_touch_limit compare = less_than }
+			if = {
+				limit = { check_variable = { var = global.acid_rain_front_visited_entries^acid_rain_front_id value = acid_rain_connected_before compare = equals } }
+				set_temp_variable = { acid_rain_cursor_region = acid_rain_selected_region_id }
+				set_temp_variable = { acid_rain_cursor_start = constant:acid_rain_runtime.zero }
+				set_temp_variable = { acid_rain_cursor_end = constant:acid_rain_runtime.zero }
+				acid_rain_prepare_region_cursor = yes
+				set_temp_variable = { acid_rain_touch_island_cursor_end = acid_rain_cursor_end }
+				set_temp_variable = { acid_rain_process_front_loop_2_break = constant:acid_rain_runtime.zero }
+				for_loop_effect = {
+					break = acid_rain_process_front_loop_2_break
+					start = acid_rain_cursor_start
+					end = acid_rain_touch_island_cursor_end
+					value = acid_rain_touch_island_cursor
+					var:global.acid_rain_region_ordered_states^acid_rain_touch_island_cursor = {
+						if = {
+							limit = {
+								acid_rain_state_is_in_region = yes
+								NOT = { has_state_flag = acid_rain_touched }
+								check_variable = { var = global.acid_rain_front_visited_entries^acid_rain_front_id value = acid_rain_front_touch_limit compare = less_than }
+								check_variable = { var = global.acid_rain_front_visited_entries^acid_rain_front_id value = acid_rain_connected_before compare = equals }
+							}
+							acid_rain_touch_state_for_front = yes
+						}
 					}
-					acid_rain_touch_state_for_front = yes
 				}
 			}
+			if = {
+				limit = { check_variable = { var = global.acid_rain_front_visited_entries^acid_rain_front_id value = acid_rain_connected_before compare = equals } }
+				set_temp_variable = { acid_rain_process_front_connected_break = constant:acid_rain_runtime.one }
+			}
+			add_to_temp_variable = { acid_rain_connected_passes = constant:acid_rain_runtime.loop_increment }
 		}
 		if = {
 			limit = {
@@ -4743,6 +4786,7 @@ acid_rain_open_additional_front = {
 				check_variable = { var = acid_rain_front_region_result value = constant:acid_rain_runtime.one compare = equals }
 			}
 			set_variable = { global.acid_rain_front_count = acid_rain_new_front_id }
+			acid_rain_process_front = yes
 		}
 		else = {
 			set_variable = { global.acid_rain_front_state_entries^acid_rain_new_front_id = constant:acid_rain_front_state.inactive }
