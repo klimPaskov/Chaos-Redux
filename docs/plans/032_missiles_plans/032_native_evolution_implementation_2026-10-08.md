@@ -90,7 +90,12 @@ The former timing surface is unsupported, so no numeric pre-change delta is clai
 Explicit probability re-rendering returned `PROBABILITY_ANALYSIS_STALE` after shared-workspace revision changes; preserved analysis-time matrix/curve artifacts were recovered, hash-verified and reviewed instead.
 The original cached `event_compare` baseline returned `EVENT_REVISION_NOT_CACHED`; the artifact-backed retry returned `ARTIFACT_NOT_FOUND` because its provenance manifest was unavailable.
 These are unresolved canonical comparison gates, not evidence that source review is equivalent.
-The current-to-absent-new-file reverse structural request is recorded separately when its outcome is available and cannot establish a historical whole-workspace comparison.
+A current-to-absent-new-file reverse structural request selected only `.201`, disabled rendering and bounded chain/render nodes to five.
+It timed out awaiting `tools/call` after 600 seconds; the required narrower retry reduced both bounds to one and timed out after another 600 seconds.
+Neither returned an observed comparison ID or graph revision, and server-side completion is unknown.
+The initial proposed-source argument shape was corrected from `path/content` to the live-required `relativePath/source` before these timed requests.
+The exact corrected requests and results are retained in [parent final checks](evidence/evolution_timing_20261007/parent_final_checks_20261008.json).
+No reverse overlay is presented as a canonical historical whole-workspace comparison.
 
 References include offline Event modding 117–150, Data structures temporary/array/MTTH sections, installed effects 2312–2326, 2763–2782, 2943–2967 and 4296–4311, native raid outcomes 237–302, callback declarations and exact vanilla examples retained in the handoffs.
 Parent reference-search for raid outcomes with `sources=[script_doc]` found that source kind unavailable; targeted `game_doc` search/read recovered the installed raid section at revision `eac06474fcbde3920523b9b49364f7797851c0cc45f4f0ef41321999a93be43e`.
@@ -115,3 +120,12 @@ Duplicate native ID `1028 4713` remains unattributed; temporary allocation marke
 
 Skills used for this tranche: `chaos-redux-events`, `chaos-redux-subagents`, `chaos-redux-mtth`, `chaos-redux-native-raids` and `chaos-redux-shared-git-commit`.
 No skill was created or changed here.
+
+## Publication
+
+Implementation commit: `21e812c8e7500df3abe6fa0be1e85f1a5910c773`.
+The isolated commit contains only owned changes; the reviewed patch was carried unchanged onto a newer shared HEAD after confirming no incoming ownership-path overlap.
+All 145 retained evidence files were checked against their staged content identity, including eight PNGs through their matching LFS OID, size and local stored object.
+Reconciliation was rehearsed from the parent tree and all 194 affected real-index entries matched the reviewed result after publication.
+Other owners' split, region, Event Log, settings and terminal changes remain outside this commit.
+The final parent rerun again passed 159 Event 32 and 11 local claimant tests; the 43-test CBRN run above remains the final payload regression result.
