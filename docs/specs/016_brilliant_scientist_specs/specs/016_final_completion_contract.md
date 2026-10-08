@@ -82,10 +82,22 @@ The enhancement requires strict programme validity, private Cloning Prototype an
 Nonweekly completion, construction and inheritance callbacks remain baseline-only, and no second paid production subsystem or new scheduler is introduced.
 The existing exact Event016 native and no-DLC paid Prototype paths retain their current latch settlement, with no alternative native source added.
 Implementation and evidence are tracked in `docs/plans/016_brilliant_scientist_plans/016_mengele_cloning_deployment_throughput_2026-10-07.md`, without waiving source, balance or engine acceptance.
+
 Source acceptance, 2026-09-08: the isolated transaction, controlled-site predicates, exact history extraction, and receipt-first terminal cleanup passed independent review in `docs/plans/016_brilliant_scientist_plans/subagent_handoffs/016_clone_maturation_source_review_2026-09-08.md`.
 The parent accepts that bounded source review, not live completion.
 After freezing `E016_CLONE_MATURATION_2026_09_08`, the parent connected the live decision, exact custom costs, compatibility completion helper, and world-end cleanup to the transaction core.
 Native timer behavior, the matching comparison, and final post-integration acceptance remain unproven.
+
+### Private Teleportation physical commissioning
+
+Parent acceptance on 2026-10-08 adopts the two-site recommendation in `016_private_transit_existing_consumer_review_2026-10-08.md` under the user's instruction to take recommended options.
+The existing private Deployment payment and timer fund one selected neighboring pair of owned-and-controlled industrial/supply endpoints, with one infrastructure increment in each endpoint and a level-two actor-controlled railway between verified supply endpoints.
+The pair and intended output are frozen at payment, and only verified physical delivery records commissioning and private Deployment success.
+Partial construction preserves delivered components and paid authority for explicit completion of undelivered work, without a blind full refund or output replay.
+The commissioned pair supports one separately paid supplemental fabrication action with ordinary 65 PP, 200 concrete support equipment, 1,000 fuel and four factories, delivering 180 Portal equipment across 90 days with a 30-day cooldown and four-success private limit.
+These are parent tuning choices; ordinary manufacture, neutral Prototype access and existing raid gates retain their independent authority.
+This full physical route is accepted and queued with exact map/supply binding, whole-route proof and multi-component settlement dependencies recorded in `docs/plans/016_brilliant_scientist_plans/016_mengele_transit_deployment_acceptance_2026-10-08.md`.
+The existing KRG Portal fabrication six-cost defect and neutral output seam are repaired separately through `016_portal_transit_fabrication_receipts_2026-10-08.md`, without treating that repair as private physical commissioning.
 
 ## Reusable API and generic-unit contract
 

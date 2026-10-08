@@ -1,0 +1,619 @@
+# Event016 Portal fabrication transaction core, COUNTRY scope.
+# Native decision admission/timer/CIC belong to the literal existing decision.
+# Shared cost APIs own quotes, debit, ledger, credit, refund and settlement.
+# See 016_portal_transit_batch_effects.md for caller-owned outputs and recovery.
+
+brilliant_scientist_add_portal_transit_equipment = {
+	set_temp_variable = { portal_transit_equipment_delivered = constant:portal_transit_batch.zero }
+	if = {
+		limit = {
+			check_variable = { portal_transit_equipment_amount > constant:portal_transit_batch.zero }
+			has_tech = brilliant_scientist_portal_warfare_tech
+		}
+		set_temp_variable = { portal_transit_equipment_before = num_equipment@teleportation_equipment_1 }
+		add_equipment_to_stockpile = { type = teleportation_equipment_1 amount = portal_transit_equipment_amount producer = THIS }
+		set_temp_variable = { portal_transit_equipment_delivered = num_equipment@teleportation_equipment_1 }
+		subtract_from_temp_variable = { portal_transit_equipment_delivered = portal_transit_equipment_before }
+		clamp_temp_variable = { var = portal_transit_equipment_delivered min = constant:portal_transit_batch.zero }
+	}
+	# Consume the explicit input even on refusal; a literal reuse cannot redeliver.
+	set_temp_variable = { portal_transit_equipment_amount = constant:portal_transit_batch.zero }
+}
+
+# Internal resource observer. Fuel reader is thousands; all receipts use units.
+brilliant_scientist_krg_portal_batch_read_component_balance = {
+	set_temp_variable = { krg_portal_batch_component_balance = constant:portal_transit_batch.zero }
+	if = {
+		limit = { check_variable = { var = krg_portal_batch_component_index value = constant:portal_transit_batch.pp_index compare = equals } }
+		set_temp_variable = { krg_portal_batch_component_balance = has_political_power }
+	}
+	if = {
+		limit = { check_variable = { var = krg_portal_batch_component_index value = constant:portal_transit_batch.support_index compare = equals } }
+		set_temp_variable = { krg_portal_batch_component_balance = num_equipment@support_equipment_1 }
+	}
+	if = {
+		limit = { check_variable = { var = krg_portal_batch_component_index value = constant:portal_transit_batch.fuel_index compare = equals } }
+		set_temp_variable = { krg_portal_batch_component_balance = fuel_k }
+	}
+}
+
+# Internal: owner dispatch selects one of the three literal native components.
+# Unrecorded actual debits survive record rejection in the owner recovery array.
+brilliant_scientist_krg_portal_batch_pay_record_component = {
+	set_temp_variable = { krg_portal_batch_component_paid = constant:portal_transit_batch.zero }
+	set_temp_variable = { krg_portal_batch_component_balance = constant:portal_transit_batch.zero }
+	brilliant_scientist_krg_portal_batch_read_component_balance = yes
+	set_temp_variable = { krg_portal_batch_before_payment = krg_portal_batch_component_balance }
+	set_temp_variable = { universal_cost_payment_resource_kind = krg_portal_batch_component_kind }
+	set_temp_variable = { universal_cost_payment_amount = krg_portal_batch_final^krg_portal_batch_component_index }
+	set_temp_variable = { universal_cost_payment_result = constant:universal_cost_framework.result_no_op }
+	universal_cost_pay_component = yes
+	brilliant_scientist_krg_portal_batch_read_component_balance = yes
+	set_temp_variable = { krg_portal_batch_measured_payment = krg_portal_batch_before_payment }
+	subtract_from_temp_variable = { krg_portal_batch_measured_payment = krg_portal_batch_component_balance }
+	if = {
+		limit = { check_variable = { var = krg_portal_batch_component_kind value = constant:universal_cost_resource_kind.fuel compare = equals } }
+		multiply_temp_variable = { krg_portal_batch_measured_payment = constant:portal_transit_batch.fuel_unit_scale }
+	}
+	clamp_temp_variable = { var = krg_portal_batch_measured_payment min = constant:portal_transit_batch.zero }
+	set_variable = { krg_portal_batch_actual^krg_portal_batch_component_index = krg_portal_batch_measured_payment }
+	set_variable = { krg_portal_batch_refund_remaining^krg_portal_batch_component_index = krg_portal_batch_measured_payment }
+	if = {
+		limit = {
+			check_variable = { var = universal_cost_payment_result value = constant:universal_cost_framework.result_success compare = equals }
+			check_variable = { var = krg_portal_batch_measured_payment value = krg_portal_batch_final^krg_portal_batch_component_index compare = equals }
+			check_variable = { krg_portal_batch_measured_payment > constant:portal_transit_batch.zero }
+		}
+		set_temp_variable = { universal_cost_transaction_id = krg_portal_batch_transaction_id }
+		set_temp_variable = { universal_cost_transaction_component_id = krg_portal_batch_component_id }
+		set_temp_variable = { universal_cost_transaction_resource_kind = krg_portal_batch_component_kind }
+		set_temp_variable = { universal_cost_transaction_resource_id = constant:portal_transit_batch.zero }
+		set_temp_variable = { universal_cost_transaction_ordinary_cost = krg_portal_batch_nominal^krg_portal_batch_component_index }
+		set_temp_variable = { universal_cost_transaction_quoted_cost = krg_portal_batch_final^krg_portal_batch_component_index }
+		set_temp_variable = { universal_cost_transaction_actual_paid_cost = krg_portal_batch_measured_payment }
+		set_temp_variable = { universal_cost_transaction_source_id = krg_portal_batch_source^krg_portal_batch_component_index }
+		set_temp_variable = { universal_cost_transaction_primary_component = constant:portal_transit_batch.zero }
+		set_temp_variable = { universal_cost_transaction_achievement_family_id = constant:universal_cost_family.equipment }
+		set_temp_variable = { universal_cost_transaction_achievement_primary_component_id = constant:black_friday_event.owner_component_support_equipment }
+		set_temp_variable = { universal_cost_transaction_achievement_cost_basis = constant:universal_cost_achievement_basis.primary_component }
+		set_temp_variable = { universal_cost_transaction_achievement_primary_member = constant:portal_transit_batch.zero }
+		if = {
+			limit = { check_variable = { var = krg_portal_batch_component_index value = constant:portal_transit_batch.support_index compare = equals } }
+			set_temp_variable = { universal_cost_transaction_primary_component = constant:black_friday_event.owner_component_support_equipment }
+			set_temp_variable = { universal_cost_transaction_achievement_primary_member = constant:portal_transit_batch.one }
+		}
+		set_temp_variable = { universal_cost_record_transaction_result = constant:universal_cost_framework.result_no_op }
+		set_temp_variable = { universal_cost_recorded_component_index = constant:universal_cost_framework.invalid_index }
+		universal_cost_record_transaction = yes
+		if = {
+			limit = { check_variable = { var = universal_cost_record_transaction_result value = constant:universal_cost_framework.result_success compare = equals } }
+			set_variable = { krg_portal_batch_record_index^krg_portal_batch_component_index = universal_cost_recorded_component_index }
+			set_temp_variable = { krg_portal_batch_component_paid = constant:portal_transit_batch.one }
+		}
+	}
+}
+
+# Internal achievement claim: fixed logical Equipment role, support primary.
+# The shared owner contract alone decides sale eligibility and credit timing.
+brilliant_scientist_krg_portal_batch_achievement_claim = {
+	set_temp_variable = { black_friday_purchase_transaction_id = krg_portal_batch_transaction_id }
+	set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.equipment }
+	set_temp_variable = { black_friday_purchase_ordinary_cost = krg_portal_batch_nominal^constant:portal_transit_batch.support_index }
+	set_temp_variable = { black_friday_purchase_actual_paid_cost = krg_portal_batch_actual^constant:portal_transit_batch.support_index }
+	set_temp_variable = { black_friday_purchase_is_refundable = constant:portal_transit_batch.one }
+	set_temp_variable = { black_friday_purchase_allow_political_power_only = constant:portal_transit_batch.zero }
+	set_temp_variable = { black_friday_purchase_allow_post_expiry_confirmation = constant:portal_transit_batch.zero }
+	set_temp_variable = { black_friday_purchase_sale_sequence = krg_portal_batch_sale_sequence }
+	black_friday_record_achievement_transaction = yes
+}
+
+brilliant_scientist_krg_begin_portal_transit_batch = {
+	set_temp_variable = { krg_portal_batch_begin_result = constant:universal_cost_framework.result_rejected }
+		set_temp_variable = { krg_portal_batch_quote_pp = constant:portal_transit_batch.zero }
+	set_temp_variable = { krg_portal_batch_quote_pp_source = constant:portal_transit_batch.zero }
+	set_temp_variable = { krg_portal_batch_quote_pp_source_count = constant:portal_transit_batch.zero }
+	set_temp_variable = { krg_portal_batch_quote_support = constant:portal_transit_batch.zero }
+	set_temp_variable = { krg_portal_batch_quote_support_source = constant:portal_transit_batch.zero }
+	set_temp_variable = { krg_portal_batch_quote_support_source_count = constant:portal_transit_batch.zero }
+	set_temp_variable = { krg_portal_batch_quote_fuel = constant:portal_transit_batch.zero }
+	set_temp_variable = { krg_portal_batch_quote_fuel_source = constant:portal_transit_batch.zero }
+	set_temp_variable = { krg_portal_batch_quote_fuel_source_count = constant:portal_transit_batch.zero }
+	set_temp_variable = { krg_portal_batch_quote_valid = constant:portal_transit_batch.zero }
+	if = {
+		limit = {
+			check_variable = { var = krg_portal_batch_native_entry value = constant:portal_transit_batch.one compare = equals }
+			brilliant_scientist_krg_portal_batch_requirements_met = yes
+			# Native admission already reserved exactly four CIC. No factory retest.
+			brilliant_scientist_krg_portal_batch_can_pay_direct = yes
+		}
+		set_temp_variable = { krg_portal_batch_native_entry = constant:portal_transit_batch.zero }
+		set_temp_variable = { black_friday_owner_transaction_id = constant:portal_transit_batch.zero }
+		black_friday_allocate_owner_transaction = yes
+		if = {
+			limit = { check_variable = { black_friday_owner_transaction_id > constant:portal_transit_batch.zero } }
+			set_variable = { krg_portal_batch_actor = THIS }
+			set_variable = { krg_portal_batch_action = constant:portal_transit_batch.action_id }
+			add_to_variable = { krg_portal_batch_serial = constant:portal_transit_batch.one }
+			set_variable = { krg_portal_batch_receipt_serial = krg_portal_batch_serial }
+			set_variable = { krg_portal_batch_transaction_id = black_friday_owner_transaction_id }
+			set_variable = { krg_portal_batch_output_expected = constant:portal_transit_batch.equipment_output }
+			set_variable = { krg_portal_batch_output_delivered = constant:portal_transit_batch.zero }
+			set_variable = { krg_portal_batch_sale_sequence = global.black_friday_sale_sequence }
+			clr_country_flag = krg_portal_batch_closed
+			clr_country_flag = krg_portal_batch_delivery_committed
+			clr_country_flag = krg_portal_batch_shared_refund_attempted
+			clr_country_flag = krg_portal_batch_sale_eligible
+			set_country_flag = krg_portal_batch_active
+			resize_array = { array = krg_portal_batch_nominal size = constant:portal_transit_batch.component_count value = constant:portal_transit_batch.zero }
+			resize_array = { array = krg_portal_batch_final size = constant:portal_transit_batch.component_count value = constant:portal_transit_batch.zero }
+			resize_array = { array = krg_portal_batch_source size = constant:portal_transit_batch.component_count value = constant:portal_transit_batch.zero }
+			resize_array = { array = krg_portal_batch_source_count size = constant:portal_transit_batch.component_count value = constant:portal_transit_batch.zero }
+			resize_array = { array = krg_portal_batch_actual size = constant:portal_transit_batch.component_count value = constant:portal_transit_batch.zero }
+			resize_array = { array = krg_portal_batch_record_index size = constant:portal_transit_batch.component_count value = constant:universal_cost_framework.invalid_index }
+			resize_array = { array = krg_portal_batch_refund_remaining size = constant:portal_transit_batch.component_count value = constant:portal_transit_batch.zero }
+			set_variable = { krg_portal_batch_nominal^constant:portal_transit_batch.pp_index = constant:portal_transit_batch.political_power }
+			set_variable = { krg_portal_batch_final^constant:portal_transit_batch.pp_index = krg_portal_batch_quote_pp }
+			set_variable = { krg_portal_batch_source^constant:portal_transit_batch.pp_index = krg_portal_batch_quote_pp_source }
+			set_variable = { krg_portal_batch_source_count^constant:portal_transit_batch.pp_index = krg_portal_batch_quote_pp_source_count }
+			set_variable = { krg_portal_batch_nominal^constant:portal_transit_batch.support_index = constant:portal_transit_batch.support_equipment }
+			set_variable = { krg_portal_batch_final^constant:portal_transit_batch.support_index = krg_portal_batch_quote_support }
+			set_variable = { krg_portal_batch_source^constant:portal_transit_batch.support_index = krg_portal_batch_quote_support_source }
+			set_variable = { krg_portal_batch_source_count^constant:portal_transit_batch.support_index = krg_portal_batch_quote_support_source_count }
+			set_variable = { krg_portal_batch_nominal^constant:portal_transit_batch.fuel_index = constant:portal_transit_batch.fuel }
+			set_variable = { krg_portal_batch_final^constant:portal_transit_batch.fuel_index = krg_portal_batch_quote_fuel }
+			set_variable = { krg_portal_batch_source^constant:portal_transit_batch.fuel_index = krg_portal_batch_quote_fuel_source }
+			set_variable = { krg_portal_batch_source_count^constant:portal_transit_batch.fuel_index = krg_portal_batch_quote_fuel_source_count }
+			set_temp_variable = { krg_portal_batch_reset_index = constant:portal_transit_batch.zero }
+			while_loop_effect = {
+				limit = { check_variable = { krg_portal_batch_reset_index < constant:portal_transit_batch.component_count } }
+				set_variable = { krg_portal_batch_actual^krg_portal_batch_reset_index = constant:portal_transit_batch.zero }
+				set_variable = { krg_portal_batch_refund_remaining^krg_portal_batch_reset_index = constant:portal_transit_batch.zero }
+				set_variable = { krg_portal_batch_record_index^krg_portal_batch_reset_index = constant:universal_cost_framework.invalid_index }
+				add_to_temp_variable = { krg_portal_batch_reset_index = constant:portal_transit_batch.one }
+			}
+			set_temp_variable = { krg_portal_batch_all_paid = constant:portal_transit_batch.one }
+			set_temp_variable = { krg_portal_batch_component_paid = constant:portal_transit_batch.zero }
+			if = {
+				limit = { check_variable = { var = krg_portal_batch_all_paid value = constant:portal_transit_batch.one compare = equals } }
+				set_temp_variable = { krg_portal_batch_component_index = constant:portal_transit_batch.pp_index }
+				set_temp_variable = { krg_portal_batch_component_kind = constant:universal_cost_resource_kind.political_power }
+				set_temp_variable = { krg_portal_batch_component_id = constant:black_friday_event.owner_component_political_power }
+				brilliant_scientist_krg_portal_batch_pay_record_component = yes
+				if = { limit = { check_variable = { var = krg_portal_batch_component_paid value = constant:portal_transit_batch.zero compare = equals } } set_temp_variable = { krg_portal_batch_all_paid = constant:portal_transit_batch.zero } }
+			}
+			if = {
+				limit = { check_variable = { var = krg_portal_batch_all_paid value = constant:portal_transit_batch.one compare = equals } }
+				set_temp_variable = { krg_portal_batch_component_index = constant:portal_transit_batch.support_index }
+				set_temp_variable = { krg_portal_batch_component_kind = constant:universal_cost_resource_kind.support_equipment_1 }
+				set_temp_variable = { krg_portal_batch_component_id = constant:black_friday_event.owner_component_support_equipment }
+				brilliant_scientist_krg_portal_batch_pay_record_component = yes
+				if = { limit = { check_variable = { var = krg_portal_batch_component_paid value = constant:portal_transit_batch.zero compare = equals } } set_temp_variable = { krg_portal_batch_all_paid = constant:portal_transit_batch.zero } }
+			}
+			if = {
+				limit = { check_variable = { var = krg_portal_batch_all_paid value = constant:portal_transit_batch.one compare = equals } }
+				set_temp_variable = { krg_portal_batch_component_index = constant:portal_transit_batch.fuel_index }
+				set_temp_variable = { krg_portal_batch_component_kind = constant:universal_cost_resource_kind.fuel }
+				set_temp_variable = { krg_portal_batch_component_id = constant:black_friday_event.owner_component_fuel }
+				brilliant_scientist_krg_portal_batch_pay_record_component = yes
+				if = { limit = { check_variable = { var = krg_portal_batch_component_paid value = constant:portal_transit_batch.zero compare = equals } } set_temp_variable = { krg_portal_batch_all_paid = constant:portal_transit_batch.zero } }
+			}
+			if = {
+				limit = { check_variable = { var = krg_portal_batch_all_paid value = constant:portal_transit_batch.one compare = equals } }
+				set_country_flag = krg_portal_batch_funded
+				if = { limit = { black_friday_achievement_is_valid_sale = yes } set_country_flag = krg_portal_batch_sale_eligible }
+				brilliant_scientist_krg_portal_batch_achievement_claim = yes
+				set_temp_variable = { krg_portal_batch_begin_result = constant:universal_cost_framework.result_success }
+			}
+			else = {
+				set_temp_variable = { krg_portal_batch_cancel_result = constant:universal_cost_framework.result_no_op }
+				brilliant_scientist_krg_cancel_portal_transit_batch = yes
+				set_temp_variable = { krg_portal_batch_begin_result = krg_portal_batch_cancel_result }
+				if = { limit = { check_variable = { var = krg_portal_batch_begin_result value = constant:universal_cost_framework.result_success compare = equals } } set_temp_variable = { krg_portal_batch_begin_result = constant:universal_cost_framework.result_rejected } }
+			}
+		}
+	}
+	set_temp_variable = { krg_portal_batch_native_entry = constant:portal_transit_batch.zero }
+}
+
+# Internal recovery guard validates existing recorded components before credit.
+brilliant_scientist_krg_portal_batch_check_recovery_records = {
+	set_temp_variable = { krg_portal_batch_recovery_records_valid = constant:portal_transit_batch.one }
+
+	set_temp_variable = { krg_portal_batch_component_index = constant:portal_transit_batch.pp_index }
+	set_temp_variable = { krg_portal_batch_component_kind = constant:universal_cost_resource_kind.political_power }
+	set_temp_variable = { krg_portal_batch_component_id = constant:black_friday_event.owner_component_political_power }
+	if = {
+		limit = { check_variable = { krg_portal_batch_record_index^krg_portal_batch_component_index > constant:universal_cost_framework.invalid_index } }
+		if = {
+			limit = { NOT = { brilliant_scientist_krg_portal_batch_component_record_is_valid = yes } }
+			set_temp_variable = { krg_portal_batch_recovery_records_valid = constant:portal_transit_batch.zero }
+		}
+	}
+
+	set_temp_variable = { krg_portal_batch_component_index = constant:portal_transit_batch.support_index }
+	set_temp_variable = { krg_portal_batch_component_kind = constant:universal_cost_resource_kind.support_equipment_1 }
+	set_temp_variable = { krg_portal_batch_component_id = constant:black_friday_event.owner_component_support_equipment }
+	if = {
+		limit = { check_variable = { krg_portal_batch_record_index^krg_portal_batch_component_index > constant:universal_cost_framework.invalid_index } }
+		if = {
+			limit = { NOT = { brilliant_scientist_krg_portal_batch_component_record_is_valid = yes } }
+			set_temp_variable = { krg_portal_batch_recovery_records_valid = constant:portal_transit_batch.zero }
+		}
+	}
+
+	set_temp_variable = { krg_portal_batch_component_index = constant:portal_transit_batch.fuel_index }
+	set_temp_variable = { krg_portal_batch_component_kind = constant:universal_cost_resource_kind.fuel }
+	set_temp_variable = { krg_portal_batch_component_id = constant:black_friday_event.owner_component_fuel }
+	if = {
+		limit = { check_variable = { krg_portal_batch_record_index^krg_portal_batch_component_index > constant:universal_cost_framework.invalid_index } }
+		if = {
+			limit = { NOT = { brilliant_scientist_krg_portal_batch_component_record_is_valid = yes } }
+			set_temp_variable = { krg_portal_batch_recovery_records_valid = constant:portal_transit_batch.zero }
+		}
+	}
+	set_temp_variable = { krg_portal_batch_recorded_count = constant:portal_transit_batch.zero }
+	set_temp_variable = { krg_portal_batch_count_index = constant:portal_transit_batch.zero }
+	while_loop_effect = {
+		limit = { check_variable = { krg_portal_batch_count_index < constant:portal_transit_batch.component_count } }
+		if = { limit = { check_variable = { krg_portal_batch_record_index^krg_portal_batch_count_index > constant:universal_cost_framework.invalid_index } } add_to_temp_variable = { krg_portal_batch_recorded_count = constant:portal_transit_batch.one } }
+		add_to_temp_variable = { krg_portal_batch_count_index = constant:portal_transit_batch.one }
+	}
+	set_temp_variable = { universal_cost_transaction_id = krg_portal_batch_transaction_id }
+	set_temp_variable = { universal_cost_transaction_lookup_id = krg_portal_batch_transaction_id }
+	set_temp_variable = { universal_cost_transaction_found_index = constant:universal_cost_framework.invalid_index }
+	set_temp_variable = { universal_cost_transaction_is_indexed = constant:portal_transit_batch.zero }
+	set_temp_variable = { universal_cost_transaction_lookup_result = constant:universal_cost_framework.result_no_op }
+	set_temp_variable = { universal_cost_transaction_pointer = constant:portal_transit_batch.zero }
+	universal_cost_find_transaction_row = yes
+	if = {
+		limit = { check_variable = { universal_cost_transaction_found_index > constant:universal_cost_framework.invalid_index } }
+		if = {
+			limit = { OR = {
+				NOT = { check_variable = { var = universal_cost_transaction_component_counts^universal_cost_transaction_found_index value = krg_portal_batch_recorded_count compare = equals } }
+				check_variable = { var = universal_cost_transaction_states^universal_cost_transaction_found_index value = constant:universal_cost_framework.transaction_state_settled compare = equals }
+			} }
+			set_temp_variable = { krg_portal_batch_recovery_records_valid = constant:portal_transit_batch.zero }
+		}
+		if = {
+			limit = { check_variable = { krg_portal_batch_recorded_count > constant:portal_transit_batch.zero } }
+			set_temp_variable = { universal_cost_chain_valid = constant:portal_transit_batch.zero }
+			universal_cost_validate_component_chain = yes
+			if = { limit = { check_variable = { var = universal_cost_chain_valid value = constant:portal_transit_batch.zero compare = equals } } set_temp_variable = { krg_portal_batch_recovery_records_valid = constant:portal_transit_batch.zero } }
+		}
+	}
+	else_if = {
+		limit = { OR = { check_variable = { krg_portal_batch_recorded_count > constant:portal_transit_batch.zero } check_variable = { var = universal_cost_transaction_lookup_result value = constant:universal_cost_framework.result_rejected compare = equals } } }
+		set_temp_variable = { krg_portal_batch_recovery_records_valid = constant:portal_transit_batch.zero }
+	}
+}
+
+# Internal: direct recovery of an unrecorded debit or observed shared shortfall.
+# Credits only the remaining measured obligation through the shared credit API.
+brilliant_scientist_krg_portal_batch_credit_owed_component = {
+	set_temp_variable = { krg_portal_batch_component_balance = constant:portal_transit_batch.zero }
+	if = {
+		limit = { check_variable = { krg_portal_batch_refund_remaining^krg_portal_batch_component_index > constant:portal_transit_batch.zero } }
+		brilliant_scientist_krg_portal_batch_read_component_balance = yes
+		set_temp_variable = { krg_portal_batch_before_credit = krg_portal_batch_component_balance }
+		set_temp_variable = { universal_cost_payment_resource_kind = krg_portal_batch_component_kind }
+		set_temp_variable = { universal_cost_payment_amount = krg_portal_batch_refund_remaining^krg_portal_batch_component_index }
+		set_temp_variable = { universal_cost_credit_result = constant:universal_cost_framework.result_no_op }
+		universal_cost_credit_component = yes
+		brilliant_scientist_krg_portal_batch_read_component_balance = yes
+		set_temp_variable = { krg_portal_batch_measured_credit = krg_portal_batch_component_balance }
+		subtract_from_temp_variable = { krg_portal_batch_measured_credit = krg_portal_batch_before_credit }
+		if = {
+			limit = { check_variable = { var = krg_portal_batch_component_kind value = constant:universal_cost_resource_kind.fuel compare = equals } }
+			multiply_temp_variable = { krg_portal_batch_measured_credit = constant:portal_transit_batch.fuel_unit_scale }
+		}
+		clamp_temp_variable = { var = krg_portal_batch_measured_credit min = constant:portal_transit_batch.zero max = krg_portal_batch_refund_remaining^krg_portal_batch_component_index }
+		set_temp_variable = { krg_portal_batch_still_owed = krg_portal_batch_refund_remaining^krg_portal_batch_component_index }
+		subtract_from_temp_variable = { krg_portal_batch_still_owed = krg_portal_batch_measured_credit }
+		set_variable = { krg_portal_batch_refund_remaining^krg_portal_batch_component_index = krg_portal_batch_still_owed }
+	}
+	if = {
+		limit = {
+			check_variable = { var = krg_portal_batch_refund_remaining^krg_portal_batch_component_index value = constant:portal_transit_batch.zero compare = equals }
+			check_variable = { krg_portal_batch_record_index^krg_portal_batch_component_index > constant:universal_cost_framework.invalid_index }
+		}
+		set_temp_variable = { universal_cost_transaction_id = krg_portal_batch_transaction_id }
+		set_temp_variable = { universal_cost_transaction_component_id = krg_portal_batch_component_id }
+		set_temp_variable = { universal_cost_mark_component_refunded_result = constant:universal_cost_framework.result_no_op }
+		universal_cost_mark_component_refunded = yes
+	}
+}
+
+brilliant_scientist_krg_recover_portal_transit_batch_refund = {
+	set_temp_variable = { krg_portal_batch_refund_result = constant:universal_cost_framework.result_no_op }
+	set_temp_variable = { universal_cost_refund_transaction_result = constant:universal_cost_framework.result_no_op }
+	set_temp_variable = { universal_cost_refund_total = constant:portal_transit_batch.zero }
+	set_temp_variable = { universal_cost_refund_unhandled_total = constant:portal_transit_batch.zero }
+	if = {
+		limit = { brilliant_scientist_krg_portal_batch_can_recover_refund = yes }
+		set_temp_variable = { krg_portal_batch_refund_result = constant:universal_cost_framework.result_partial }
+		set_temp_variable = { krg_portal_batch_recovery_records_valid = constant:portal_transit_batch.zero }
+		brilliant_scientist_krg_portal_batch_check_recovery_records = yes
+		if = {
+			limit = { check_variable = { var = krg_portal_batch_recovery_records_valid value = constant:portal_transit_batch.one compare = equals } }
+			set_temp_variable = { krg_portal_batch_first_shared_refund = constant:portal_transit_batch.zero }
+			if = {
+				limit = { NOT = { has_country_flag = krg_portal_batch_shared_refund_attempted } }
+				set_country_flag = krg_portal_batch_shared_refund_attempted
+				set_temp_variable = { krg_portal_batch_first_shared_refund = constant:portal_transit_batch.one }
+				set_temp_variable = { krg_portal_batch_component_balance = constant:portal_transit_batch.zero }
+				set_temp_variable = { krg_portal_batch_component_index = constant:portal_transit_batch.pp_index }
+				set_temp_variable = { krg_portal_batch_component_kind = constant:universal_cost_resource_kind.political_power }
+				set_temp_variable = { krg_portal_batch_component_id = constant:black_friday_event.owner_component_political_power }
+				brilliant_scientist_krg_portal_batch_read_component_balance = yes
+				set_temp_variable = { krg_portal_batch_before_refund_pp = krg_portal_batch_component_balance }
+				set_temp_variable = { krg_portal_batch_component_index = constant:portal_transit_batch.support_index }
+				set_temp_variable = { krg_portal_batch_component_kind = constant:universal_cost_resource_kind.support_equipment_1 }
+				set_temp_variable = { krg_portal_batch_component_id = constant:black_friday_event.owner_component_support_equipment }
+				brilliant_scientist_krg_portal_batch_read_component_balance = yes
+				set_temp_variable = { krg_portal_batch_before_refund_support = krg_portal_batch_component_balance }
+				set_temp_variable = { krg_portal_batch_component_index = constant:portal_transit_batch.fuel_index }
+				set_temp_variable = { krg_portal_batch_component_kind = constant:universal_cost_resource_kind.fuel }
+				set_temp_variable = { krg_portal_batch_component_id = constant:black_friday_event.owner_component_fuel }
+				brilliant_scientist_krg_portal_batch_read_component_balance = yes
+				set_temp_variable = { krg_portal_batch_before_refund_fuel = krg_portal_batch_component_balance }
+				set_temp_variable = { universal_cost_transaction_id = krg_portal_batch_transaction_id }
+				set_temp_variable = { universal_cost_refund_transaction_result = constant:universal_cost_framework.result_no_op }
+				set_temp_variable = { universal_cost_refund_total = constant:portal_transit_batch.zero }
+				set_temp_variable = { universal_cost_refund_unhandled_total = constant:portal_transit_batch.zero }
+				universal_cost_refund_transaction = yes
+				set_temp_variable = { krg_portal_batch_component_index = constant:portal_transit_batch.pp_index }
+				set_temp_variable = { krg_portal_batch_component_kind = constant:universal_cost_resource_kind.political_power }
+				set_temp_variable = { krg_portal_batch_component_id = constant:black_friday_event.owner_component_political_power }
+				brilliant_scientist_krg_portal_batch_read_component_balance = yes
+				set_temp_variable = { krg_portal_batch_measured_credit = krg_portal_batch_component_balance }
+				subtract_from_temp_variable = { krg_portal_batch_measured_credit = krg_portal_batch_before_refund_pp }
+				clamp_temp_variable = { var = krg_portal_batch_measured_credit min = constant:portal_transit_batch.zero max = krg_portal_batch_refund_remaining^krg_portal_batch_component_index }
+				set_temp_variable = { krg_portal_batch_still_owed = krg_portal_batch_refund_remaining^krg_portal_batch_component_index }
+				subtract_from_temp_variable = { krg_portal_batch_still_owed = krg_portal_batch_measured_credit }
+				set_variable = { krg_portal_batch_refund_remaining^krg_portal_batch_component_index = krg_portal_batch_still_owed }
+				set_temp_variable = { krg_portal_batch_component_index = constant:portal_transit_batch.support_index }
+				set_temp_variable = { krg_portal_batch_component_kind = constant:universal_cost_resource_kind.support_equipment_1 }
+				set_temp_variable = { krg_portal_batch_component_id = constant:black_friday_event.owner_component_support_equipment }
+				brilliant_scientist_krg_portal_batch_read_component_balance = yes
+				set_temp_variable = { krg_portal_batch_measured_credit = krg_portal_batch_component_balance }
+				subtract_from_temp_variable = { krg_portal_batch_measured_credit = krg_portal_batch_before_refund_support }
+				clamp_temp_variable = { var = krg_portal_batch_measured_credit min = constant:portal_transit_batch.zero max = krg_portal_batch_refund_remaining^krg_portal_batch_component_index }
+				set_temp_variable = { krg_portal_batch_still_owed = krg_portal_batch_refund_remaining^krg_portal_batch_component_index }
+				subtract_from_temp_variable = { krg_portal_batch_still_owed = krg_portal_batch_measured_credit }
+				set_variable = { krg_portal_batch_refund_remaining^krg_portal_batch_component_index = krg_portal_batch_still_owed }
+				set_temp_variable = { krg_portal_batch_component_index = constant:portal_transit_batch.fuel_index }
+				set_temp_variable = { krg_portal_batch_component_kind = constant:universal_cost_resource_kind.fuel }
+				set_temp_variable = { krg_portal_batch_component_id = constant:black_friday_event.owner_component_fuel }
+				brilliant_scientist_krg_portal_batch_read_component_balance = yes
+				set_temp_variable = { krg_portal_batch_measured_credit = krg_portal_batch_component_balance }
+				subtract_from_temp_variable = { krg_portal_batch_measured_credit = krg_portal_batch_before_refund_fuel }
+				multiply_temp_variable = { krg_portal_batch_measured_credit = constant:portal_transit_batch.fuel_unit_scale }
+				clamp_temp_variable = { var = krg_portal_batch_measured_credit min = constant:portal_transit_batch.zero max = krg_portal_batch_refund_remaining^krg_portal_batch_component_index }
+				set_temp_variable = { krg_portal_batch_still_owed = krg_portal_batch_refund_remaining^krg_portal_batch_component_index }
+				subtract_from_temp_variable = { krg_portal_batch_still_owed = krg_portal_batch_measured_credit }
+				set_variable = { krg_portal_batch_refund_remaining^krg_portal_batch_component_index = krg_portal_batch_still_owed }
+			}
+			set_temp_variable = { krg_portal_batch_component_index = constant:portal_transit_batch.pp_index }
+			set_temp_variable = { krg_portal_batch_component_kind = constant:universal_cost_resource_kind.political_power }
+			set_temp_variable = { krg_portal_batch_component_id = constant:black_friday_event.owner_component_political_power }
+			# First attempt lets the shared ledger credit recorded components once.
+			# Explicit later retries credit only the measured owner remainder.
+			if = {
+				limit = { OR = {
+					check_variable = { var = krg_portal_batch_first_shared_refund value = constant:portal_transit_batch.zero compare = equals }
+					check_variable = { var = krg_portal_batch_record_index^krg_portal_batch_component_index value = constant:universal_cost_framework.invalid_index compare = equals }
+					check_variable = { var = krg_portal_batch_refund_remaining^krg_portal_batch_component_index value = constant:portal_transit_batch.zero compare = equals }
+				} }
+				brilliant_scientist_krg_portal_batch_credit_owed_component = yes
+			}
+			set_temp_variable = { krg_portal_batch_component_index = constant:portal_transit_batch.support_index }
+			set_temp_variable = { krg_portal_batch_component_kind = constant:universal_cost_resource_kind.support_equipment_1 }
+			set_temp_variable = { krg_portal_batch_component_id = constant:black_friday_event.owner_component_support_equipment }
+			# First attempt lets the shared ledger credit recorded components once.
+			# Explicit later retries credit only the measured owner remainder.
+			if = {
+				limit = { OR = {
+					check_variable = { var = krg_portal_batch_first_shared_refund value = constant:portal_transit_batch.zero compare = equals }
+					check_variable = { var = krg_portal_batch_record_index^krg_portal_batch_component_index value = constant:universal_cost_framework.invalid_index compare = equals }
+					check_variable = { var = krg_portal_batch_refund_remaining^krg_portal_batch_component_index value = constant:portal_transit_batch.zero compare = equals }
+				} }
+				brilliant_scientist_krg_portal_batch_credit_owed_component = yes
+			}
+			set_temp_variable = { krg_portal_batch_component_index = constant:portal_transit_batch.fuel_index }
+			set_temp_variable = { krg_portal_batch_component_kind = constant:universal_cost_resource_kind.fuel }
+			set_temp_variable = { krg_portal_batch_component_id = constant:black_friday_event.owner_component_fuel }
+			# First attempt lets the shared ledger credit recorded components once.
+			# Explicit later retries credit only the measured owner remainder.
+			if = {
+				limit = { OR = {
+					check_variable = { var = krg_portal_batch_first_shared_refund value = constant:portal_transit_batch.zero compare = equals }
+					check_variable = { var = krg_portal_batch_record_index^krg_portal_batch_component_index value = constant:universal_cost_framework.invalid_index compare = equals }
+					check_variable = { var = krg_portal_batch_refund_remaining^krg_portal_batch_component_index value = constant:portal_transit_batch.zero compare = equals }
+				} }
+				brilliant_scientist_krg_portal_batch_credit_owed_component = yes
+			}
+			if = {
+				limit = {
+					check_variable = { var = krg_portal_batch_refund_remaining^constant:portal_transit_batch.pp_index value = constant:portal_transit_batch.zero compare = equals }
+					check_variable = { var = krg_portal_batch_refund_remaining^constant:portal_transit_batch.support_index value = constant:portal_transit_batch.zero compare = equals }
+					check_variable = { var = krg_portal_batch_refund_remaining^constant:portal_transit_batch.fuel_index value = constant:portal_transit_batch.zero compare = equals }
+				}
+				# All recorded rows are already credited/acknowledged; finalize state.
+				set_temp_variable = { universal_cost_transaction_id = krg_portal_batch_transaction_id }
+				universal_cost_refund_transaction = yes
+				set_temp_variable = { krg_portal_batch_refund_closed = constant:portal_transit_batch.zero }
+				if = { limit = { check_variable = { var = universal_cost_refund_transaction_result value = constant:universal_cost_framework.result_success compare = equals } } set_temp_variable = { krg_portal_batch_refund_closed = constant:portal_transit_batch.one } }
+				# The shared refund is a no-op for an already-refunded or absent row.
+				if = {
+					limit = { check_variable = { var = universal_cost_refund_transaction_result value = constant:universal_cost_framework.result_no_op compare = equals } }
+					set_temp_variable = { universal_cost_transaction_lookup_id = krg_portal_batch_transaction_id }
+					set_temp_variable = { universal_cost_transaction_found_index = constant:universal_cost_framework.invalid_index }
+					set_temp_variable = { universal_cost_transaction_lookup_result = constant:universal_cost_framework.result_no_op }
+					set_temp_variable = { universal_cost_transaction_is_indexed = constant:portal_transit_batch.zero }
+					set_temp_variable = { universal_cost_transaction_pointer = constant:portal_transit_batch.zero }
+					universal_cost_find_transaction_row = yes
+					if = {
+						limit = { check_variable = { var = universal_cost_transaction_lookup_result value = constant:universal_cost_framework.result_no_op compare = equals } }
+						set_temp_variable = { krg_portal_batch_refund_closed = constant:portal_transit_batch.one }
+					}
+					if = {
+						limit = { check_variable = { universal_cost_transaction_found_index > constant:universal_cost_framework.invalid_index } }
+						if = { limit = { check_variable = { var = universal_cost_transaction_states^universal_cost_transaction_found_index value = constant:universal_cost_framework.transaction_state_refunded compare = equals } } set_temp_variable = { krg_portal_batch_refund_closed = constant:portal_transit_batch.one } }
+					}
+				}
+				if = {
+					limit = { check_variable = { var = krg_portal_batch_refund_closed value = constant:portal_transit_batch.one compare = equals } }
+					set_temp_variable = { black_friday_purchase_transaction_id = krg_portal_batch_transaction_id }
+					black_friday_retract_achievement_transaction = yes
+					clear_variable = universal_cost_allocated_transaction_id_@var:krg_portal_batch_transaction_id
+					clr_country_flag = krg_portal_batch_refund_pending
+					set_country_flag = krg_portal_batch_closed
+					set_temp_variable = { krg_portal_batch_refund_result = constant:universal_cost_framework.result_success }
+				}
+			}
+		}
+	}
+}
+
+brilliant_scientist_krg_cancel_portal_transit_batch = {
+	set_temp_variable = { krg_portal_batch_cancel_result = constant:universal_cost_framework.result_no_op }
+	if = {
+		limit = { brilliant_scientist_krg_portal_batch_identity_is_valid = yes }
+		# Native cancel/expiry callers own removal; retire script authority first.
+		clr_country_flag = krg_portal_batch_active
+		if = {
+			limit = { OR = {
+				has_country_flag = krg_portal_batch_delivery_committed
+				check_variable = { krg_portal_batch_output_delivered > constant:portal_transit_batch.zero }
+			} }
+			# Never delete partially delivered equipment or refund its whole payment.
+			if = { limit = { NOT = { has_country_flag = krg_portal_batch_delivery_committed } } set_country_flag = krg_portal_batch_output_pending }
+			set_temp_variable = { krg_portal_batch_cancel_result = constant:universal_cost_framework.result_partial }
+		}
+		else = {
+			clr_country_flag = krg_portal_batch_funded
+			set_country_flag = krg_portal_batch_refund_pending
+			set_temp_variable = { krg_portal_batch_refund_result = constant:universal_cost_framework.result_no_op }
+			brilliant_scientist_krg_recover_portal_transit_batch_refund = yes
+			set_temp_variable = { krg_portal_batch_cancel_result = krg_portal_batch_refund_result }
+			if = { limit = { check_variable = { var = krg_portal_batch_cancel_result value = constant:universal_cost_framework.result_no_op compare = equals } } set_temp_variable = { krg_portal_batch_cancel_result = constant:universal_cost_framework.result_partial } }
+		}
+	}
+	# Corrupted identity is retained for explicit inspection; no invented refund.
+}
+
+# Settlement retries never redeliver output or advance KRG history.
+brilliant_scientist_krg_portal_batch_settle_delivered = {
+	set_temp_variable = { krg_portal_batch_settlement_result = constant:universal_cost_framework.result_partial }
+	set_temp_variable = { universal_cost_transaction_id = krg_portal_batch_transaction_id }
+	set_temp_variable = { universal_cost_settle_transaction_result = constant:universal_cost_framework.result_no_op }
+	universal_cost_settle_transaction = yes
+	if = {
+		limit = { check_variable = { var = universal_cost_settle_transaction_result value = constant:universal_cost_framework.result_success compare = equals } }
+		if = {
+			limit = { has_country_flag = krg_portal_batch_sale_eligible }
+			set_temp_variable = { black_friday_purchase_transaction_id = krg_portal_batch_transaction_id }
+			set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.equipment }
+			set_temp_variable = { black_friday_purchase_is_refundable = constant:portal_transit_batch.zero }
+			set_temp_variable = { black_friday_purchase_sale_sequence = krg_portal_batch_sale_sequence }
+			set_temp_variable = { black_friday_purchase_allow_political_power_only = constant:portal_transit_batch.zero }
+			set_temp_variable = { black_friday_purchase_allow_post_expiry_confirmation = constant:portal_transit_batch.zero }
+			black_friday_confirm_achievement_transaction = yes
+		}
+		clr_country_flag = krg_portal_batch_settlement_pending
+		set_country_flag = krg_portal_batch_closed
+		set_temp_variable = { krg_portal_batch_settlement_result = constant:universal_cost_framework.result_success }
+	}
+}
+
+brilliant_scientist_krg_portal_batch_deliver_remainder = {
+	set_temp_variable = { krg_portal_batch_delivery_result = constant:universal_cost_framework.result_partial }
+	clr_country_flag = krg_portal_batch_active
+	set_temp_variable = { portal_transit_equipment_amount = krg_portal_batch_output_expected }
+	subtract_from_temp_variable = { portal_transit_equipment_amount = krg_portal_batch_output_delivered }
+	set_temp_variable = { portal_transit_equipment_delivered = constant:portal_transit_batch.zero }
+	brilliant_scientist_add_portal_transit_equipment = yes
+	add_to_variable = { krg_portal_batch_output_delivered = portal_transit_equipment_delivered }
+	if = {
+		limit = { check_variable = { var = krg_portal_batch_output_delivered value = krg_portal_batch_output_expected compare = equals } }
+		# Exact observed delivery is the fresh one-shot history authority.
+		set_variable = { krg_portal_batch_refund_remaining^constant:portal_transit_batch.pp_index = constant:portal_transit_batch.zero }
+		set_variable = { krg_portal_batch_refund_remaining^constant:portal_transit_batch.support_index = constant:portal_transit_batch.zero }
+		set_variable = { krg_portal_batch_refund_remaining^constant:portal_transit_batch.fuel_index = constant:portal_transit_batch.zero }
+		set_country_flag = krg_portal_batch_delivery_committed
+		clr_country_flag = krg_portal_batch_funded
+		clr_country_flag = krg_portal_batch_output_pending
+		add_to_variable = { brilliant_scientist_krg_portal_transit_batches = constant:portal_transit_batch.one }
+		set_country_flag = krg_portal_batch_settlement_pending
+		set_temp_variable = { krg_portal_batch_settlement_result = constant:universal_cost_framework.result_no_op }
+		brilliant_scientist_krg_portal_batch_settle_delivered = yes
+		set_temp_variable = { krg_portal_batch_delivery_result = krg_portal_batch_settlement_result }
+	}
+	else_if = {
+		limit = { check_variable = { var = krg_portal_batch_output_delivered value = constant:portal_transit_batch.zero compare = equals } }
+		set_temp_variable = { krg_portal_batch_cancel_result = constant:universal_cost_framework.result_no_op }
+		brilliant_scientist_krg_cancel_portal_transit_batch = yes
+		set_temp_variable = { krg_portal_batch_delivery_result = krg_portal_batch_cancel_result }
+		if = { limit = { check_variable = { var = krg_portal_batch_delivery_result value = constant:universal_cost_framework.result_success compare = equals } } set_temp_variable = { krg_portal_batch_delivery_result = constant:universal_cost_framework.result_rejected } }
+	}
+	else = {
+		set_country_flag = krg_portal_batch_output_pending
+		# Any over-delivery is also retained, never clipped into successful history.
+	}
+}
+
+brilliant_scientist_krg_finish_portal_transit_batch = {
+	set_temp_variable = { krg_portal_batch_finish_result = constant:universal_cost_framework.result_no_op }
+	if = {
+		limit = { brilliant_scientist_krg_portal_batch_receipt_is_current = yes }
+		if = {
+			limit = {
+				brilliant_scientist_krg_portal_batch_is_operational = yes
+				check_variable = { brilliant_scientist_krg_portal_transit_batches < constant:brilliant_scientist_krg_capacity.portal_transit_batch_maximum }
+			}
+			set_temp_variable = { krg_portal_batch_delivery_result = constant:universal_cost_framework.result_no_op }
+			brilliant_scientist_krg_portal_batch_deliver_remainder = yes
+			set_temp_variable = { krg_portal_batch_finish_result = krg_portal_batch_delivery_result }
+		}
+		else = {
+			set_temp_variable = { krg_portal_batch_cancel_result = constant:universal_cost_framework.result_no_op }
+			brilliant_scientist_krg_cancel_portal_transit_batch = yes
+			set_temp_variable = { krg_portal_batch_finish_result = krg_portal_batch_cancel_result }
+		}
+	}
+}
+
+brilliant_scientist_krg_recover_portal_transit_batch_output = {
+	set_temp_variable = { krg_portal_batch_output_recovery_result = constant:universal_cost_framework.result_no_op }
+	if = {
+		limit = { brilliant_scientist_krg_portal_batch_can_recover_output = yes }
+		if = {
+			limit = { has_country_flag = krg_portal_batch_delivery_committed }
+			set_temp_variable = { krg_portal_batch_settlement_result = constant:universal_cost_framework.result_no_op }
+			brilliant_scientist_krg_portal_batch_settle_delivered = yes
+			set_temp_variable = { krg_portal_batch_output_recovery_result = krg_portal_batch_settlement_result }
+		}
+		else = {
+			set_temp_variable = { krg_portal_batch_delivery_result = constant:universal_cost_framework.result_no_op }
+			brilliant_scientist_krg_portal_batch_deliver_remainder = yes
+			set_temp_variable = { krg_portal_batch_output_recovery_result = krg_portal_batch_delivery_result }
+		}
+	}
+}
+brilliant_scientist_krg_cleanup_portal_transit_batch = {
+	set_temp_variable = { krg_portal_batch_cleanup_result = constant:universal_cost_framework.result_no_op }
+	set_temp_variable = { krg_portal_batch_cancel_result = constant:universal_cost_framework.result_no_op }
+	brilliant_scientist_krg_cancel_portal_transit_batch = yes
+	set_temp_variable = { krg_portal_batch_cleanup_result = krg_portal_batch_cancel_result }
+	# Only explicit cleanup removes the native action, after receipt retirement.
+	# Reentry may complete an owed refund but cannot reopen a closed receipt.
+	set_temp_variable = { krg_portal_batch_cleanup_transaction = krg_portal_batch_transaction_id }
+	remove_decision = brilliant_scientist_krg_fabricate_portal_transit_batch
+	if = {
+		limit = {
+			has_country_flag = krg_portal_batch_closed
+			check_variable = { var = krg_portal_batch_transaction_id value = krg_portal_batch_cleanup_transaction compare = equals }
+		}
+		set_temp_variable = { krg_portal_batch_cleanup_result = constant:universal_cost_framework.result_success }
+	}
+}

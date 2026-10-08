@@ -1,0 +1,108 @@
+# ============================================================================
+# EVENT 016 - PORTAL TRANSIT BATCH COST PRESENTATION
+# ============================================================================
+# One fresh payer quote owns the three direct-cost outputs across its return.
+# Nested component getters use the same affordability predicates as admission.
+# Integer amounts stay compact; fractional amounts retain five-digit precision.
+# This presentation changes temporary scratch only and never records payment.
+# ============================================================================
+
+defined_text = {
+	name = GetPortalTransitBatchCost
+	text = {
+		trigger = {
+			set_temp_variable = { krg_portal_batch_quote_pp = constant:brilliant_scientist_krg_value.zero }
+			set_temp_variable = { krg_portal_batch_quote_support = constant:brilliant_scientist_krg_value.zero }
+			set_temp_variable = { krg_portal_batch_quote_fuel = constant:brilliant_scientist_krg_value.zero }
+			set_temp_variable = { krg_portal_batch_quote_valid = constant:brilliant_scientist_krg_value.zero }
+			brilliant_scientist_krg_quote_portal_transit_batch = yes
+			check_variable = { var = krg_portal_batch_quote_valid value = constant:brilliant_scientist_krg_value.one compare = equals }
+		}
+		localization_key = portal_transit_batch_cost_values
+	}
+	text = { localization_key = portal_transit_batch_quote_unavailable }
+}
+
+defined_text = {
+	name = GetPortalTransitBatchPoliticalPower
+	text = {
+		trigger = { brilliant_scientist_krg_portal_batch_can_pay_political_power = yes }
+		localization_key = portal_transit_batch_political_power
+	}
+	text = { localization_key = portal_transit_batch_political_power_blocked }
+}
+
+defined_text = {
+	name = GetPortalTransitBatchSupportEquipment
+	text = {
+		trigger = { brilliant_scientist_krg_portal_batch_can_pay_support_equipment = yes }
+		localization_key = portal_transit_batch_support_equipment
+	}
+	text = { localization_key = portal_transit_batch_support_equipment_blocked }
+}
+
+defined_text = {
+	name = GetPortalTransitBatchFuel
+	text = {
+		trigger = { brilliant_scientist_krg_portal_batch_can_pay_fuel = yes }
+		localization_key = portal_transit_batch_fuel
+	}
+	text = { localization_key = portal_transit_batch_fuel_blocked }
+}
+
+defined_text = {
+	name = GetPortalTransitBatchPoliticalPowerValue
+	text = {
+		trigger = {
+			set_temp_variable = { portal_batch_display_rounded_pp = krg_portal_batch_quote_pp }
+			round_temp_variable = portal_batch_display_rounded_pp
+			check_variable = { var = portal_batch_display_rounded_pp value = krg_portal_batch_quote_pp compare = equals }
+		}
+		localization_key = portal_transit_batch_political_power_integer
+	}
+	text = { localization_key = portal_transit_batch_political_power_fractional }
+}
+
+defined_text = {
+	name = GetPortalTransitBatchSupportEquipmentValue
+	text = {
+		trigger = {
+			set_temp_variable = { portal_batch_display_rounded_support = krg_portal_batch_quote_support }
+			round_temp_variable = portal_batch_display_rounded_support
+			check_variable = { var = portal_batch_display_rounded_support value = krg_portal_batch_quote_support compare = equals }
+		}
+		localization_key = portal_transit_batch_support_equipment_integer
+	}
+	text = { localization_key = portal_transit_batch_support_equipment_fractional }
+}
+
+defined_text = {
+	name = GetPortalTransitBatchFuelValue
+	text = {
+		trigger = {
+			set_temp_variable = { portal_batch_display_rounded_fuel = krg_portal_batch_quote_fuel }
+			round_temp_variable = portal_batch_display_rounded_fuel
+			check_variable = { var = portal_batch_display_rounded_fuel value = krg_portal_batch_quote_fuel compare = equals }
+		}
+		localization_key = portal_transit_batch_fuel_integer
+	}
+	text = { localization_key = portal_transit_batch_fuel_fractional }
+}
+
+# Recovery quotes are amounts owed to the payer, not a new purchase quote.
+defined_text = {
+	name = GetPortalTransitBatchRefundAmounts
+	text = {
+		trigger = {
+			brilliant_scientist_krg_portal_batch_can_recover_refund = yes
+			set_temp_variable = { portal_batch_refund_display_index = constant:portal_transit_batch.pp_index }
+			set_temp_variable = { portal_batch_refund_display_pp = krg_portal_batch_refund_remaining^portal_batch_refund_display_index }
+			set_temp_variable = { portal_batch_refund_display_index = constant:portal_transit_batch.support_index }
+			set_temp_variable = { portal_batch_refund_display_support = krg_portal_batch_refund_remaining^portal_batch_refund_display_index }
+			set_temp_variable = { portal_batch_refund_display_index = constant:portal_transit_batch.fuel_index }
+			set_temp_variable = { portal_batch_refund_display_fuel = krg_portal_batch_refund_remaining^portal_batch_refund_display_index }
+		}
+		localization_key = portal_transit_batch_refund_amounts
+	}
+	text = { localization_key = portal_transit_batch_refund_unverified }
+}

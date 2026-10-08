@@ -263,3 +263,7 @@ CXT's ordinary completed-project fixture covers exact adoption and historical am
 The full native/provider lifecycle matrix and native cancellation/reselection proof remain part of the Event016 completion contract.
 The same player-triggered probe calculates the ordinary weekly clone output and records chaosx_cxt_event016_clone_base_weekly_output, chaosx_cxt_event016_clone_deployment_weekly_bonus and chaosx_cxt_event016_clone_total_weekly_output.
 This read-only production projection initializes its consumed temporary outputs, clears its weekly mode and grants no equipment, manpower, programme state or periodic CXT replenishment.
+The same player-triggered probe observes the existing KRG Portal fabrication transaction through `chaosx_cxt_event016_probe_portal_transit_receipt`.
+It records transaction/serial, expected/delivered equipment, actual PP/support/fuel and fresh quote values under `chaosx_cxt_event016_portal_*`, plus actor-exists, funded, output-pending, refund-pending and quote-valid debug flags.
+An absent KRG clears those observations; a malformed component array supplies no inferred actual payment.
+This observation invokes the pure quote in trigger context with caller-owned temporary outputs and never starts, funds, refunds, completes or replenishes a project.

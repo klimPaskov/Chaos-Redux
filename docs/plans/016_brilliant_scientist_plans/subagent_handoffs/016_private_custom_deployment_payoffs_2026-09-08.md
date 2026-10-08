@@ -5,6 +5,8 @@ Disposition: source audit implemented; all payoff proposals unresolved pending p
 Current Cloning disposition, 2026-10-08: its additional-site and paid-cycle proposal is superseded by the accepted existing-facility throughput contract in `../016_mengele_cloning_deployment_throughput_2026-10-07.md`.
 The parent's acceptance follows the user's instruction to take recommended options and preserves a physical-site production payoff without duplicating the existing producer.
 This disposition applies only to Cloning; the other family proposals retain their recorded acceptance and implementation limits.
+Current Teleportation disposition, 2026-10-08: the two-site physical commissioning and separately paid fabrication recommendation is promoted into the accepted final completion contract through `../016_mengele_transit_deployment_acceptance_2026-10-08.md`.
+Parent acceptance follows the user's instruction to take recommended options; exact map/supply binding and partial-construction settlement remain queued dependencies, and the KRG fabrication repair is not a substitute for that payoff.
 Ownership: this handoff only; no gameplay, AI, technology, GUI, focus, or asset edits.
 
 ## Requirement and current finding

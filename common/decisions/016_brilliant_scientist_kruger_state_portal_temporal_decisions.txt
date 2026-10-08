@@ -3,6 +3,8 @@
 @CR_SC_BRILLIANT_SCIENTIST_KRG_MODIFIER_HEAVY_FACTORY_USE = 4
 @CR_SC_BRILLIANT_SCIENTIST_KRG_MODIFIER_STANDARD_FACTORY_USE = 2
 @CR_SC_BRILLIANT_SCIENTIST_KRG_MODIFIER_STRATEGIC_FACTORY_USE = 6
+@CR_SC_BRILLIANT_SCIENTIST_KRG_PORTAL_BATCH_PP = 65
+@CR_SC_BRILLIANT_SCIENTIST_KRG_PORTAL_BATCH_CIC = 4
 # ============================================================================
 # CHAOS REDUX - EVENT 016 KRUGER STATE PORTAL AND TEMPORAL DECISIONS
 # ============================================================================
@@ -216,29 +218,79 @@ brilliant_scientist_krg_portal_and_temporal_category = {
 			brilliant_scientist_krg_decisions_are_active = yes
 			brilliant_scientist_kruger_focus_teleportation_is_operational = yes
 			has_country_flag = brilliant_scientist_focus_unlock_bounded_portal_recruitment
+			hidden_trigger = {
+				NOT = { brilliant_scientist_krg_portal_batch_output_recovery_is_pending = yes }
+				NOT = { brilliant_scientist_krg_portal_batch_refund_recovery_is_pending = yes }
+			}
 		}
 		available = {
-			brilliant_scientist_kruger_focus_teleportation_is_operational = yes
-			hidden_trigger = { has_country_flag = brilliant_scientist_focus_unlock_bounded_portal_recruitment }
-			OR = {
-				brilliant_scientist_kruger_raid_ai_is_active = yes
-				has_country_flag = brilliant_scientist_krg_terminal_supply_network_linked
+			custom_trigger_tooltip = {
+				tooltip = portal_transit_batch_requirements_tt
+				hidden_trigger = { brilliant_scientist_krg_portal_batch_requirements_met = yes }
 			}
-			brilliant_scientist_krg_can_pay_project_batch_cost = yes
-			check_variable = { brilliant_scientist_krg_portal_transit_batches < constant:brilliant_scientist_krg_capacity.portal_transit_batch_maximum }
+			hidden_trigger = { brilliant_scientist_krg_portal_batch_can_pay = yes }
 		}
-		cost = constant:brilliant_scientist_krg_cost.pp_heavy
-		days_remove = constant:brilliant_scientist_krg_timing.heavy_days
-		days_re_enable = constant:brilliant_scientist_krg_timing.reenable_short_days
-		modifier = { civilian_factory_use = @CR_SC_BRILLIANT_SCIENTIST_KRG_MODIFIER_HEAVY_FACTORY_USE }
-		complete_effect = { brilliant_scientist_krg_pay_project_batch_cost = yes }
+		custom_cost_trigger = { brilliant_scientist_krg_portal_batch_can_pay = yes }
+		custom_cost_text = portal_transit_batch_custom_cost
+		ai_hint_pp_cost = @CR_SC_BRILLIANT_SCIENTIST_KRG_PORTAL_BATCH_PP
+		days_remove = constant:portal_transit_batch.duration_days
+		days_re_enable = constant:portal_transit_batch.cooldown_days
+		modifier = { civilian_factory_use = @CR_SC_BRILLIANT_SCIENTIST_KRG_PORTAL_BATCH_CIC }
+		complete_effect = {
+			custom_effect_tooltip = portal_transit_batch_started_tt
+			hidden_effect = {
+				set_temp_variable = { krg_portal_batch_native_entry = constant:portal_transit_batch.one }
+				brilliant_scientist_krg_begin_portal_transit_batch = yes
+				set_temp_variable = { krg_portal_batch_native_entry = constant:portal_transit_batch.zero }
+			}
+		}
+		cancel_if_not_visible = no
 		cancel_trigger = {
 			OR = {
-				NOT = { brilliant_scientist_krg_decisions_are_active = yes }
-				NOT = { brilliant_scientist_kruger_focus_teleportation_is_operational = yes }
+				NOT = { brilliant_scientist_krg_portal_batch_is_operational = yes }
+				NOT = { brilliant_scientist_krg_portal_batch_receipt_is_current = yes }
 			}
 		}
-		remove_effect = { brilliant_scientist_krg_complete_portal_transit_batch = yes }
+		cancel_effect = {
+			custom_effect_tooltip = portal_transit_batch_cancelled_tt
+			hidden_effect = { brilliant_scientist_krg_cancel_portal_transit_batch = yes }
+		}
+		remove_effect = {
+			custom_effect_tooltip = portal_transit_batch_delivery_tt
+			hidden_effect = { brilliant_scientist_krg_complete_portal_transit_batch = yes }
+		}
+		ai_will_do = { base = constant:brilliant_scientist_krg_ai.medium }
+	}
+
+	brilliant_scientist_krg_recover_portal_transit_output = {
+		icon = GFX_decision_brilliant_scientist_krg_portal_terminal
+		visible = { hidden_trigger = { brilliant_scientist_krg_portal_batch_output_recovery_is_pending = yes } }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = portal_transit_batch_output_recovery_requirements_tt
+				hidden_trigger = { brilliant_scientist_krg_portal_batch_can_recover_output = yes }
+			}
+		}
+		complete_effect = {
+			custom_effect_tooltip = portal_transit_batch_output_recovery_tt
+			hidden_effect = { brilliant_scientist_krg_recover_portal_transit_batch_output = yes }
+		}
+		ai_will_do = { base = constant:brilliant_scientist_krg_ai.medium }
+	}
+
+	brilliant_scientist_krg_recover_portal_transit_refund = {
+		icon = GFX_decision_brilliant_scientist_krg_portal_terminal
+		visible = { hidden_trigger = { brilliant_scientist_krg_portal_batch_refund_recovery_is_pending = yes } }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = portal_transit_batch_refund_recovery_requirements_tt
+				hidden_trigger = { brilliant_scientist_krg_portal_batch_can_recover_refund = yes }
+			}
+		}
+		complete_effect = {
+			custom_effect_tooltip = portal_transit_batch_refund_recovery_tt
+			hidden_effect = { brilliant_scientist_krg_recover_portal_transit_batch_refund = yes }
+		}
 		ai_will_do = { base = constant:brilliant_scientist_krg_ai.medium }
 	}
 

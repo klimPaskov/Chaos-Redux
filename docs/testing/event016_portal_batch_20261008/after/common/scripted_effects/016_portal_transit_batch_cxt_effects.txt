@@ -1,0 +1,69 @@
+# ============================================================================
+# EVENT 016 - CXT PORTAL FABRICATION OBSERVATION
+# ============================================================================
+# Existing player-triggered CXT probe only. Observes KRG receipt metadata,
+# concrete paid components, delivered quantity and a fresh read-only quote.
+# It starts no project, grants no inventory, refunds nothing and changes no
+# KRG history or receipt. Quote temporaries are owned before nested evaluation.
+# ============================================================================
+
+chaosx_cxt_event016_probe_portal_transit_receipt = {
+	if = {
+		limit = { tag = CXT has_country_flag = chaosx_test_country_initialized }
+		set_variable = { chaosx_cxt_event016_portal_transaction_id = constant:portal_transit_batch.zero }
+		set_variable = { chaosx_cxt_event016_portal_serial = constant:portal_transit_batch.zero }
+		set_variable = { chaosx_cxt_event016_portal_output_expected = constant:portal_transit_batch.zero }
+		set_variable = { chaosx_cxt_event016_portal_output_delivered = constant:portal_transit_batch.zero }
+		set_variable = { chaosx_cxt_event016_portal_paid_pp = constant:portal_transit_batch.zero }
+		set_variable = { chaosx_cxt_event016_portal_paid_support = constant:portal_transit_batch.zero }
+		set_variable = { chaosx_cxt_event016_portal_paid_fuel = constant:portal_transit_batch.zero }
+		set_variable = { chaosx_cxt_event016_portal_quote_pp = constant:portal_transit_batch.zero }
+		set_variable = { chaosx_cxt_event016_portal_quote_support = constant:portal_transit_batch.zero }
+		set_variable = { chaosx_cxt_event016_portal_quote_fuel = constant:portal_transit_batch.zero }
+		clr_country_flag = chaosx_cxt_event016_portal_actor_exists
+		clr_country_flag = chaosx_cxt_event016_portal_funded
+		clr_country_flag = chaosx_cxt_event016_portal_output_pending
+		clr_country_flag = chaosx_cxt_event016_portal_refund_pending
+		clr_country_flag = chaosx_cxt_event016_portal_quote_valid
+		if = {
+			limit = { KRG = { exists = yes } }
+			set_country_flag = chaosx_cxt_event016_portal_actor_exists
+			set_variable = { chaosx_cxt_event016_portal_transaction_id = KRG.krg_portal_batch_transaction_id }
+			set_variable = { chaosx_cxt_event016_portal_serial = KRG.krg_portal_batch_receipt_serial }
+			set_variable = { chaosx_cxt_event016_portal_output_expected = KRG.krg_portal_batch_output_expected }
+			set_variable = { chaosx_cxt_event016_portal_output_delivered = KRG.krg_portal_batch_output_delivered }
+			set_temp_variable = { krg_portal_batch_quote_pp = constant:portal_transit_batch.zero }
+			set_temp_variable = { krg_portal_batch_quote_support = constant:portal_transit_batch.zero }
+			set_temp_variable = { krg_portal_batch_quote_fuel = constant:portal_transit_batch.zero }
+			set_temp_variable = { krg_portal_batch_quote_valid = constant:portal_transit_batch.zero }
+			set_temp_variable = { portal_batch_cxt_paid_pp = constant:portal_transit_batch.zero }
+			set_temp_variable = { portal_batch_cxt_paid_support = constant:portal_transit_batch.zero }
+			set_temp_variable = { portal_batch_cxt_paid_fuel = constant:portal_transit_batch.zero }
+			KRG = {
+				if = {
+					limit = { brilliant_scientist_krg_quote_portal_transit_batch = yes }
+					set_temp_variable = { portal_batch_cxt_component_index = constant:portal_transit_batch.zero }
+				}
+				if = {
+					limit = { check_variable = { var = krg_portal_batch_actual^num value = constant:portal_transit_batch.component_count compare = equals } }
+					set_temp_variable = { portal_batch_cxt_component_index = constant:portal_transit_batch.pp_index }
+					set_temp_variable = { portal_batch_cxt_paid_pp = krg_portal_batch_actual^portal_batch_cxt_component_index }
+					set_temp_variable = { portal_batch_cxt_component_index = constant:portal_transit_batch.support_index }
+					set_temp_variable = { portal_batch_cxt_paid_support = krg_portal_batch_actual^portal_batch_cxt_component_index }
+					set_temp_variable = { portal_batch_cxt_component_index = constant:portal_transit_batch.fuel_index }
+					set_temp_variable = { portal_batch_cxt_paid_fuel = krg_portal_batch_actual^portal_batch_cxt_component_index }
+				}
+			}
+			set_variable = { chaosx_cxt_event016_portal_paid_pp = portal_batch_cxt_paid_pp }
+			set_variable = { chaosx_cxt_event016_portal_paid_support = portal_batch_cxt_paid_support }
+			set_variable = { chaosx_cxt_event016_portal_paid_fuel = portal_batch_cxt_paid_fuel }
+			set_variable = { chaosx_cxt_event016_portal_quote_pp = krg_portal_batch_quote_pp }
+			set_variable = { chaosx_cxt_event016_portal_quote_support = krg_portal_batch_quote_support }
+			set_variable = { chaosx_cxt_event016_portal_quote_fuel = krg_portal_batch_quote_fuel }
+			if = { limit = { KRG = { has_country_flag = krg_portal_batch_funded } } set_country_flag = chaosx_cxt_event016_portal_funded }
+			if = { limit = { KRG = { brilliant_scientist_krg_portal_batch_output_recovery_is_pending = yes } } set_country_flag = chaosx_cxt_event016_portal_output_pending }
+			if = { limit = { KRG = { brilliant_scientist_krg_portal_batch_refund_recovery_is_pending = yes } } set_country_flag = chaosx_cxt_event016_portal_refund_pending }
+			if = { limit = { check_variable = { var = krg_portal_batch_quote_valid value = constant:portal_transit_batch.one compare = equals } } set_country_flag = chaosx_cxt_event016_portal_quote_valid }
+		}
+	}
+}
