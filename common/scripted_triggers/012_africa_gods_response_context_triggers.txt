@@ -1,0 +1,199 @@
+# Overview: pure context predicates for the Gods of Africa response views.
+# Host helpers are COUNTRY scoped on the host. Answer helpers are COUNTRY
+# scoped on a candidate. They take no parameters and perform no effects.
+# Inside any_of_scopes, THIS is the array member and ROOT remains the host.
+
+gods_of_africa_substitute_answer_is_current = {
+	exists = yes
+	has_country_flag = gods_of_africa_participant
+	# These offer flags cheaply reject unrelated participants before the live
+	# contract and deadline checks in the canonical pending predicate.
+	has_country_flag = gods_of_africa_negotiation_open
+	has_country_flag = gods_of_africa_substitute_offered
+	gods_of_africa_substitute_offer_is_pending = yes
+}
+
+gods_of_africa_reject_answer_is_current = {
+	exists = yes
+	OR = {
+		AND = {
+			has_country_flag = gods_of_africa_participant
+			has_country_flag = gods_of_africa_negotiation_open
+			has_country_flag = gods_of_africa_substitute_offered
+			gods_of_africa_substitute_offer_is_pending = yes
+		}
+		AND = {
+			# The canonical helper also requires this flag.
+			has_country_flag = gods_of_africa_victor_renewal_requested
+			gods_of_africa_victor_renewal_is_current = yes
+		}
+	}
+}
+
+gods_of_africa_reconciliation_answer_is_current = {
+	exists = yes
+	OR = {
+		AND = {
+			has_country_flag = gods_of_africa_reparations_paid
+			has_country_flag = gods_of_africa_reconciliation_offer_pending
+			gods_of_africa_participant_can_reconcile = yes
+		}
+		AND = {
+			# The canonical helper also requires this flag.
+			has_country_flag = gods_of_africa_victor_renewal_requested
+			gods_of_africa_victor_renewal_is_current = yes
+		}
+	}
+}
+
+gods_of_africa_host_has_pending_answers = {
+	gods_of_africa_active_host_is_valid = yes
+	OR = {
+		any_of_scopes = {
+			array = gods_of_africa_participants
+			gods_of_africa_substitute_answer_is_current = yes
+		}
+		any_of_scopes = {
+			array = gods_of_africa_candidate_registry
+			OR = {
+				gods_of_africa_reject_answer_is_current = yes
+				gods_of_africa_reconciliation_answer_is_current = yes
+			}
+		}
+	}
+}
+
+gods_of_africa_host_has_priority_context = {
+	gods_of_africa_active_host_is_valid = yes
+	OR = {
+		check_variable = { gods_of_africa_need_land_equipment > constant:gods_of_africa_value.zero }
+		check_variable = { gods_of_africa_need_fuel > constant:gods_of_africa_value.zero }
+		check_variable = { gods_of_africa_need_manpower > constant:gods_of_africa_value.zero }
+		check_variable = { gods_of_africa_need_industry > constant:gods_of_africa_value.zero }
+		check_variable = { gods_of_africa_need_transport > constant:gods_of_africa_value.zero }
+		AND = {
+			NOT = { has_country_flag = gods_of_africa_focus_arsenal_support_unlocked }
+			NOT = { has_country_flag = gods_of_africa_focus_logistics_support_unlocked }
+			check_variable = { gods_of_africa_need_emergency > constant:gods_of_africa_value.zero }
+		}
+		AND = {
+			has_country_flag = gods_of_africa_focus_arsenal_support_unlocked
+			NOT = { has_country_flag = gods_of_africa_focus_logistics_support_unlocked }
+			check_variable = { gods_of_africa_need_support_equipment > constant:gods_of_africa_value.zero }
+		}
+		AND = {
+			has_country_flag = gods_of_africa_focus_logistics_support_unlocked
+			check_variable = { gods_of_africa_need_aircraft > constant:gods_of_africa_value.zero }
+		}
+	}
+}
+
+gods_of_africa_host_has_partner_context = {
+	gods_of_africa_active_host_is_valid = yes
+	OR = {
+		AND = {
+			OR = {
+				has_country_flag = gods_of_africa_focus_office_voices_complete
+				check_variable = { var = gods_of_africa_doctrine value = constant:gods_of_africa_value.zero compare = greater_than }
+			}
+			any_of_scopes = {
+				array = gods_of_africa_participants
+				exists = yes
+				has_country_flag = gods_of_africa_participant
+				OR = {
+					AND = {
+						has_country_flag = gods_of_africa_demand_active
+						has_country_flag = gods_of_africa_offender
+						NOT = { has_country_flag = gods_of_africa_defiant }
+						NOT = { has_country_flag = gods_of_africa_leniency_used }
+					}
+					gods_of_africa_can_public_pardon = yes
+				}
+			}
+		}
+		AND = {
+			OR = {
+				has_country_flag = gods_of_africa_focus_shelter_unlocked
+				has_country_flag = gods_of_africa_focus_reserve_unlocked
+				has_country_flag = gods_of_africa_focus_security_unlocked
+				has_country_flag = gods_of_africa_focus_logistics_support_unlocked
+				has_country_flag = gods_of_africa_focus_relief_unlocked
+				has_country_flag = gods_of_africa_focus_expedition_unlocked
+				has_country_flag = gods_of_africa_focus_sanctuary_unlocked
+			}
+			any_of_scopes = {
+				array = gods_of_africa_participants
+				exists = yes
+				has_country_flag = gods_of_africa_participant
+				NOT = { has_country_flag = gods_of_africa_defiant }
+				gods_of_africa_participant_can_receive_protection = yes
+			}
+		}
+		AND = {
+			has_country_flag = gods_of_africa_focus_expedition_unlocked
+			any_of_scopes = {
+				array = gods_of_africa_participants
+				exists = yes
+				has_country_flag = gods_of_africa_participant
+				gods_of_africa_expedition_target_is_valid = yes
+			}
+		}
+	}
+}
+
+gods_of_africa_host_has_judgment_context = {
+	gods_of_africa_active_host_is_valid = yes
+	OR = {
+		AND = {
+			OR = {
+				has_country_flag = gods_of_africa_focus_offense_memory_unlocked
+				has_country_flag = gods_of_africa_focus_judgment_unlocked
+				has_country_flag = gods_of_africa_focus_judgment_reach_unlocked
+			}
+			any_of_scopes = {
+				array = gods_of_africa_participants
+				exists = yes
+				has_country_flag = gods_of_africa_participant
+				gods_of_africa_participant_generation_is_current = yes
+				gods_of_africa_proven_offender = yes
+				OR = {
+					has_country_flag = gods_of_africa_demand_active
+					has_country_flag = gods_of_africa_defiant
+				}
+				NOT = { has_country_flag = gods_of_africa_enemy_marked }
+				ROOT = { gods_of_africa_priority_offender_capacity_available = yes }
+			}
+		}
+		AND = {
+			OR = {
+				has_country_flag = gods_of_africa_focus_offense_memory_unlocked
+				has_country_flag = gods_of_africa_focus_judgment_unlocked
+				has_country_flag = gods_of_africa_focus_judgment_reach_unlocked
+			}
+			any_of_scopes = {
+				array = gods_of_africa_participants
+				exists = yes
+				has_country_flag = gods_of_africa_participant
+				gods_of_africa_can_escalate_offense = yes
+			}
+		}
+		AND = {
+			has_country_flag = gods_of_africa_focus_sanctions_unlocked
+			any_of_scopes = {
+				array = gods_of_africa_participants
+				exists = yes
+				has_country_flag = gods_of_africa_participant
+				gods_of_africa_coalition_target_is_valid = yes
+			}
+		}
+		AND = {
+			has_country_flag = gods_of_africa_focus_occupier_coercion_unlocked
+			any_of_scopes = {
+				array = gods_of_africa_participants
+				exists = yes
+				has_country_flag = gods_of_africa_participant
+				gods_of_africa_occupier_coercion_target_is_valid = yes
+			}
+		}
+	}
+}

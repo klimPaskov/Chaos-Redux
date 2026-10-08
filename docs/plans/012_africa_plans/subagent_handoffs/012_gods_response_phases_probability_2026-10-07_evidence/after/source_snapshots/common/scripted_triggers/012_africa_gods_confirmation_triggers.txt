@@ -1,0 +1,33 @@
+# Event 012 Gods permanent-defiance confirmation.
+# COUNTRY scope on the participant. These guards read only current authority
+# and the participant's unconsumed confirmation receipt; they change no state.
+
+gods_of_africa_defiance_action_is_valid = {
+	gods_of_africa_participant_can_defy = yes
+	gods_of_africa_contract_history_identity_is_current = yes
+	OR = {
+		NOT = { has_country_flag = gods_of_africa_demand_active }
+		gods_of_africa_contract_ledger_can_close = yes
+	}
+}
+
+gods_of_africa_defiance_request_is_available = {
+	gods_of_africa_defiance_action_is_valid = yes
+	OR = {
+		is_ai = yes
+		NOT = { has_country_flag = gods_of_africa_defiance_confirmation_pending }
+	}
+}
+
+gods_of_africa_defiance_confirmation_is_current = {
+	has_country_flag = gods_of_africa_defiance_confirmation_pending
+	gods_of_africa_defiance_action_is_valid = yes
+	has_variable = gods_of_africa_defiance_confirmation_host_id
+	has_variable = gods_of_africa_defiance_confirmation_origin_id
+	has_variable = gods_of_africa_defiance_confirmation_generation
+	has_variable = gods_of_africa_defiance_confirmation_epoch
+	check_variable = { gods_of_africa_defiance_confirmation_host_id = event_target:africa_host.id }
+	check_variable = { gods_of_africa_defiance_confirmation_origin_id = event_target:africa_host.africa_origin_host_id }
+	check_variable = { gods_of_africa_defiance_confirmation_generation = event_target:africa_host.africa_host_generation }
+	check_variable = { gods_of_africa_defiance_confirmation_epoch = event_target:africa_host.gods_of_africa_authority_epoch }
+}

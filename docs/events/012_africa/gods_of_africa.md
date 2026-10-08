@@ -187,6 +187,24 @@ Let the World Answer adds the host decision `gods_of_africa_arm_offender_enemies
 
 ## Africa-side agency and ending
 
+The human unifier begins by choosing its doctrine.
+Continental affairs then separates current tribute priorities, cooperation with partners and responses to proven offenses.
+Each group keeps its existing choices and costs, and a return control leads back to the overview.
+The priority group shows the five core needs and at most one advanced need at a time.
+Selecting a priority returns to the overview.
+
+Offers requiring Africa's answer take precedence over discretionary policy.
+Unpayable substitutes still have an explanation and a reject choice, while paid reconciliation and victor-renewal requests retain their existing response windows.
+After the last current offer closes, the previous group returns.
+AI governments use their existing direct actions without navigating these groups.
+Final settlement delivery and original-host recovery remain accessible under their own rules.
+The [response-view contract](../../../common/scripted_effects/012_africa_gods_response_view_effects.md) records the bounded context, target scopes and lifecycle.
+
+Participants choose substitutions through the three named alternatives rather than a duplicate shortcut.
+During a final ultimatum, urgent answers and any ongoing reconciliation remain available while optional preparations and an untimed declaration of defiance wait.
+Preparations already purchased keep their effects, and eligible unused preparations return when the ultimatum ends.
+Reconciliation and the ultimatum keep separate deadlines, payments and outcomes.
+
 The host category exposes the current Strength band, doctrine, one qualitative priority, and bounded target actions. Africa can choose a reciprocal, exaction, or ambiguity doctrine; grant one-off leniency; issue a public pardon that lowers Wrath without erasing hidden offense history; mark a proven offender; escalate one proven offense through the normal punishment ceiling; and protect a reliable partner. Reciprocal Covenant strengthens and accelerates protection, softens punishment intent, and rewards earlier loyalty; Sovereign Exaction raises tribute and marked-offender punishment while demanding sustained support for Favored standing; Strategic Ambiguity lengthens demand windows, deepens gated intelligence, shifts some retaliation into diplomatic sanctions, and allows more ordinary lapses before Respected standing is lost. Their complete thresholds and caps are recorded in the accepted doctrine matrix in Part 3. Priority-offender marks are capped at three concurrent marked participants, and archiving a stale marked participant releases its host slot. These actions modify the same ledger and do not raise the Strength ceiling.
 
 The accepted doctrine matrix changes only the hidden relationship rules and effects of existing host choices. It creates no third public value or new protection payment; the base equipment, fuel, and political-power price and optional fourth logistics type are unchanged.

@@ -313,6 +313,11 @@ Every named region should have a tooltip or documentation entry explaining which
 
 The installed vanilla `common/decisions/_documentation.md` defines how often each block runs. `allowed` runs once at game start or save load, so permanent filters such as `original_tag` belong there. `visible` and `available` run every frame while the decision interface refreshes, so keep them cheap and move expensive or world-scanning checks elsewhere. For targeted decisions, put acting-country prechecks in `target_root_trigger` and per-target selection in `target_trigger`, which run once per day, and narrow the candidates with `targets`, `target_array` (vanilla `AST.txt` uses `target_array = AST.core_states`), or a `state_trigger` value such as `any_owned_state` instead of checking every state or country.
 
+When an urgent targeted response must appear promptly after an offer, putting its volatile offer predicate only in the daily `target_trigger` can leave a cache gap.
+Keep the existing narrow `targets` or `target_array` and preselect stable candidate eligibility in `target_root_trigger`/`target_trigger`; repeat the full current offer and authority predicate in live `visible`, `available`, and effect preflight, preserving `ROOT`/`FROM` scope semantics and every existing eligibility requirement.
+Use this pattern only when the per-frame work stays bounded and cheap; never expand to a world scan, weaken eligibility, or hide a paid deadline.
+New or uncached countries still obey the engine's target refresh, so source counts do not prove immediate target admission or native UI appearance.
+
 ## 8. Mission quality
 
 Do not create passive checklist missions that the player already satisfies.

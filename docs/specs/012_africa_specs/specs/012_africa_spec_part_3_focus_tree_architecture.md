@@ -1066,3 +1066,22 @@ The other host/defiance phase proposals retain their separate unresolved disposi
 
 Implementation and validation evidence: `docs/plans/012_africa_plans/subagent_handoffs/012_gods_council_receipts_implementation_2026-10-07.md`, the matching independent review, source-model test and probability handoff.
 Source-model cases do not establish native stock movement, actual expiry, save/reload behavior, UI appearance or complete AI eligibility.
+
+## 2026-10-07 accepted response-phase integration
+
+Acceptance basis: the full-Gods action-budget requirement, the user's recommended-choice authorization and the parent's adoption of `012_gods_decision_phases_addendum_2026-10-07.md`.
+The existing human host category separates doctrine selection, overview, tribute priorities, partner actions and judgment actions without adding a category or scripted GUI.
+Current offers requiring the host's answer take precedence without losing the saved discretionary view.
+The candidate arrays and complete answer predicates preserve unaffordable substitutes, paid reconciliation and victor renewal outside live membership.
+Stable existence preselection keeps those reply rows ready for live visibility checks under the native target-cache rules.
+
+The six-priority surface keeps its five core needs and existing single advanced lane, with a separate return-navigation control.
+Partner and judgment groups retain four gameplay actions each.
+Final commitment appears on overview, doctrine and pending-answer surfaces, while settlement delivery and recovery keep independent access.
+AI hosts retain their original direct campaign actions and numeric weights.
+
+The three named substitute alternatives replace the duplicate generic shortcut.
+During an ultimatum, optional preparations and the untimed defiance entry defer, but purchased preparation effects, paid reconciliation and every applicable ultimatum answer remain.
+Neither clock, payment, due date nor outcome handler is altered.
+The implementation contract, source-model evidence and validation limits are in `012_gods_response_view_effects.md` and `012_gods_response_phases_implementation_2026-10-07.md`.
+Source/model counts are not a native row-layout or scheduler acceptance claim.

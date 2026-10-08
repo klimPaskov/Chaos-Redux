@@ -1,0 +1,104 @@
+# Event 012 human-host decision views, evaluated on the host COUNTRY.
+# Current pending answers override discretionary presentation without changing
+# the saved view. AI hosts retain the existing campaign eligibility directly.
+
+gods_of_africa_response_view_is_overview = {
+	NOR = {
+		check_variable = { gods_of_africa_response_view = constant:gods_of_africa_response_view.priorities }
+		check_variable = { gods_of_africa_response_view = constant:gods_of_africa_response_view.partners }
+		check_variable = { gods_of_africa_response_view = constant:gods_of_africa_response_view.judgment }
+	}
+}
+
+gods_of_africa_host_doctrine_is_selected = {
+	OR = {
+		check_variable = { gods_of_africa_doctrine = constant:gods_of_africa_doctrine.reciprocal_covenant }
+		check_variable = { gods_of_africa_doctrine = constant:gods_of_africa_doctrine.sovereign_exaction }
+		check_variable = { gods_of_africa_doctrine = constant:gods_of_africa_doctrine.strategic_ambiguity }
+	}
+}
+
+gods_of_africa_host_human_policy_phase_is_open = {
+	is_ai = no
+	gods_of_africa_active_host_is_valid = yes
+	gods_of_africa_host_doctrine_is_selected = yes
+	NOT = { gods_of_africa_host_has_pending_answers = yes }
+}
+
+gods_of_africa_host_doctrine_view_is_open = {
+	gods_of_africa_active_host_is_valid = yes
+	OR = {
+		is_ai = yes
+		NOT = { gods_of_africa_host_has_pending_answers = yes }
+	}
+}
+
+gods_of_africa_host_overview_is_open = {
+	gods_of_africa_response_view_is_overview = yes
+	gods_of_africa_host_human_policy_phase_is_open = yes
+}
+
+# Test the cheap selected view before inspecting bounded pending-answer arrays.
+gods_of_africa_host_priorities_view_is_open = {
+	OR = {
+		AND = { is_ai = yes gods_of_africa_active_host_is_valid = yes }
+		AND = {
+			check_variable = { gods_of_africa_response_view = constant:gods_of_africa_response_view.priorities }
+			gods_of_africa_host_human_policy_phase_is_open = yes
+		}
+	}
+}
+
+gods_of_africa_host_partners_view_is_open = {
+	OR = {
+		AND = { is_ai = yes gods_of_africa_active_host_is_valid = yes }
+		AND = {
+			check_variable = { gods_of_africa_response_view = constant:gods_of_africa_response_view.partners }
+			gods_of_africa_host_human_policy_phase_is_open = yes
+		}
+	}
+}
+
+gods_of_africa_host_judgment_view_is_open = {
+	OR = {
+		AND = { is_ai = yes gods_of_africa_active_host_is_valid = yes }
+		AND = {
+			check_variable = { gods_of_africa_response_view = constant:gods_of_africa_response_view.judgment }
+			gods_of_africa_host_human_policy_phase_is_open = yes
+		}
+	}
+}
+
+gods_of_africa_host_can_open_priorities = {
+	gods_of_africa_host_overview_is_open = yes
+	gods_of_africa_host_has_priority_context = yes
+}
+
+gods_of_africa_host_can_open_partners = {
+	gods_of_africa_host_overview_is_open = yes
+	gods_of_africa_host_has_partner_context = yes
+}
+
+gods_of_africa_host_can_open_judgments = {
+	gods_of_africa_host_overview_is_open = yes
+	gods_of_africa_host_has_judgment_context = yes
+}
+
+gods_of_africa_host_can_return_to_overview = {
+	is_ai = no
+	gods_of_africa_active_host_is_valid = yes
+	NOT = { gods_of_africa_response_view_is_overview = yes }
+	NOT = { gods_of_africa_host_has_pending_answers = yes }
+}
+
+# The final commitment belongs on overview, doctrine or urgent-reply surfaces.
+# It must not become a seventh primary choice in the six-priority view.
+gods_of_africa_host_settlement_view_is_open = {
+	gods_of_africa_active_host_is_valid = yes
+	OR = {
+		is_ai = yes
+		gods_of_africa_response_view_is_overview = yes
+		NOT = { gods_of_africa_host_doctrine_is_selected = yes }
+		gods_of_africa_host_has_pending_answers = yes
+	}
+}

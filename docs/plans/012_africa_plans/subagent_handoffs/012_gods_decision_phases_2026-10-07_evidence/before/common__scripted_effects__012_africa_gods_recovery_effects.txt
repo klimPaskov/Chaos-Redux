@@ -1,0 +1,436 @@
+# Event 012 Gods original-owner mandate recovery.
+# All public calls use = yes. Inputs and recount outputs are caller-set temps.
+# This file never selects a host, changes shared generation, uncaps a country,
+# changes doctrine, or initializes from a queued event. See the matching .md.
+
+# Actual setup caller alone supplies this one-call authorization input.
+# COUNTRY object scope; ROOT independent. No legacy/wake migration is allowed.
+gods_of_africa_authorize_initial_epoch = {
+	if = {
+		limit = {
+			check_variable = { gods_of_africa_initial_epoch_setup = constant:gods_of_africa_value.one }
+			gods_of_africa_authority_owner_object_is_current = yes
+			gods_of_africa_authority_owner_has_physical_return = yes
+			NOT = { gods_of_africa_continent_is_secured = yes }
+			NOT = { has_variable = gods_of_africa_authority_epoch }
+			NOT = { has_variable = gods_of_africa_loss_sequence }
+			NOT = { has_variable = gods_of_africa_loss_epoch }
+			NOT = { has_country_flag = gods_of_africa_cancelled_on_unifier_loss }
+			NOT = { has_country_flag = gods_of_africa_unifier_loss_recorded }
+			NOT = { has_country_flag = gods_of_africa_recovery_epoch }
+			NOT = { has_country_flag = gods_of_africa_original_mandate_restored }
+			NOT = { has_country_flag = gods_of_africa_active }
+			NOT = { has_country_flag = gods_of_africa_activation_committed }
+		}
+		set_variable = { gods_of_africa_authority_epoch = constant:gods_of_africa_value.one }
+		set_variable = { gods_of_africa_authority_host_id = THIS.id }
+		set_variable = { gods_of_africa_authority_origin_host_id = africa_origin_host_id }
+		set_variable = { gods_of_africa_authority_host_generation = africa_host_generation }
+		set_country_flag = gods_of_africa_epoch_authorized
+	}
+	# Consume the caller token even when an invalid or repeated call is rejected.
+	set_temp_variable = { gods_of_africa_initial_epoch_setup = constant:gods_of_africa_value.zero }
+}
+
+# Member COUNTRY. Private request state only; durable history is untouched.
+gods_of_africa_clear_recovery_member_request = {
+	clr_country_flag = gods_of_africa_recovery_invited
+	clr_country_flag = gods_of_africa_recovery_approved
+	clr_country_flag = gods_of_africa_recovery_declined
+	clear_variable = gods_of_africa_recovery_request_host
+	clear_variable = gods_of_africa_recovery_request_host_id
+	clear_variable = gods_of_africa_recovery_request_origin_host_id
+	clear_variable = gods_of_africa_recovery_request_host_generation
+	clear_variable = gods_of_africa_recovery_request_loss_sequence
+	clear_variable = gods_of_africa_recovery_request_cancelled_epoch
+	clear_variable = gods_of_africa_recovery_answer_day
+}
+
+# Host object. Cleanup validates ownership receipts even after physical loss.
+# Member cleanup does not mutate this host's invitation array while iterating.
+gods_of_africa_close_recovery_requests = {
+	for_each_scope_loop = {
+		array = gods_of_africa_recovery_invited_members
+		if = {
+			limit = {
+				has_variable = gods_of_africa_recovery_request_host_id
+				check_variable = { var = gods_of_africa_recovery_request_host_id value = PREV.id compare = equals }
+			}
+			gods_of_africa_clear_recovery_member_request = yes
+		}
+	}
+	clear_array = gods_of_africa_recovery_invited_members
+	clear_array = gods_of_africa_recovery_eligible_members
+	clear_array = gods_of_africa_recovery_approved_members
+	clear_array = gods_of_africa_mandate_approved_members
+	clr_country_flag = gods_of_africa_recovery_open
+	clear_variable = gods_of_africa_recovery_host_id
+	clear_variable = gods_of_africa_recovery_origin_host_id
+	clear_variable = gods_of_africa_recovery_host_generation
+	clear_variable = gods_of_africa_recovery_loss_sequence
+	clear_variable = gods_of_africa_recovery_cancelled_epoch
+	clear_variable = gods_of_africa_recovery_start_day
+}
+
+# Departing host object BEFORE parent roster/target cleanup. Can run capitulated
+# or after a terminal flag was set. Never needs an unrelated native ROOT.
+gods_of_africa_revoke_current_epoch = {
+	if = {
+		limit = {
+			has_variable = gods_of_africa_authority_epoch
+			has_variable = gods_of_africa_authority_host_id
+			check_variable = { var = gods_of_africa_authority_host_id value = THIS.id compare = equals }
+		}
+		if = {
+			limit = {
+				has_country_flag = gods_of_africa_epoch_authorized
+				NOT = {
+					AND = {
+						has_variable = gods_of_africa_loss_epoch
+						check_variable = { var = gods_of_africa_loss_epoch value = gods_of_africa_authority_epoch compare = equals }
+					}
+				}
+			}
+			if = {
+				limit = { NOT = { has_variable = gods_of_africa_loss_sequence } }
+				set_variable = { gods_of_africa_loss_sequence = constant:gods_of_africa_value.zero }
+			}
+			add_to_variable = { gods_of_africa_loss_sequence = constant:gods_of_africa_value.one }
+			set_variable = { gods_of_africa_loss_epoch = gods_of_africa_authority_epoch }
+			set_variable = { gods_of_africa_loss_day = global.num_days }
+		}
+		clr_country_flag = gods_of_africa_epoch_authorized
+		set_country_flag = gods_of_africa_cancelled_on_unifier_loss
+		gods_of_africa_close_recovery_requests = yes
+		clr_country_flag = gods_of_africa_recovery_epoch
+		clr_country_flag = gods_of_africa_activation_clock_scheduled
+		clr_country_flag = gods_of_africa_owner_clock_scheduled
+		clr_country_flag = gods_of_africa_registry_clock_scheduled
+		clear_variable = gods_of_africa_consolidation_start_day
+		clear_variable = gods_of_africa_consolidation_due_day
+		clear_variable = gods_of_africa_next_owner_tick_day
+		clear_variable = gods_of_africa_next_registry_review_day
+		clear_variable = gods_of_africa_last_clock_repair_day
+	}
+}
+
+# Host ROOT. Snapshot transaction identity, never authority or shared owner.
+gods_of_africa_begin_original_host_recovery = {
+	if = {
+		limit = { gods_of_africa_original_host_recovery_can_start = yes }
+		gods_of_africa_close_recovery_requests = yes
+		set_variable = { gods_of_africa_recovery_host_id = THIS.id }
+		set_variable = { gods_of_africa_recovery_origin_host_id = africa_origin_host_id }
+		set_variable = { gods_of_africa_recovery_host_generation = africa_host_generation }
+		set_variable = { gods_of_africa_recovery_loss_sequence = gods_of_africa_loss_sequence }
+		set_variable = { gods_of_africa_recovery_cancelled_epoch = gods_of_africa_loss_epoch }
+		set_variable = { gods_of_africa_recovery_start_day = global.num_days }
+		set_country_flag = gods_of_africa_recovery_open
+		for_each_scope_loop = {
+			array = africa_relationship_countries
+			if = {
+				limit = { gods_of_africa_recovery_member_is_eligible = yes }
+				event_target:africa_host = {
+					if = {
+						limit = { NOT = { is_in_array = { array = gods_of_africa_recovery_eligible_members value = PREV } } }
+						add_to_array = { array = gods_of_africa_recovery_eligible_members value = PREV }
+					}
+				}
+			}
+		}
+	}
+}
+
+# Native targeted decision: host ROOT/THIS, member FROM. Read the live registry
+# so a member joining during this congress can also be invited without restart.
+gods_of_africa_invite_recovery_member = {
+	if = {
+		limit = {
+			gods_of_africa_recovery_can_invite = yes
+			FROM = {
+				gods_of_africa_recovery_member_is_eligible = yes
+				NOT = { gods_of_africa_recovery_member_receipt_is_current = yes }
+			}
+		}
+		FROM = {
+			gods_of_africa_clear_recovery_member_request = yes
+			set_variable = { gods_of_africa_recovery_request_host = ROOT }
+			set_variable = { gods_of_africa_recovery_request_host_id = ROOT.id }
+			set_variable = { gods_of_africa_recovery_request_origin_host_id = ROOT.africa_origin_host_id }
+			set_variable = { gods_of_africa_recovery_request_host_generation = ROOT.africa_host_generation }
+			set_variable = { gods_of_africa_recovery_request_loss_sequence = ROOT.gods_of_africa_loss_sequence }
+			set_variable = { gods_of_africa_recovery_request_cancelled_epoch = ROOT.gods_of_africa_loss_epoch }
+			set_country_flag = gods_of_africa_recovery_invited
+		}
+		if = {
+			limit = { NOT = { is_in_array = { array = gods_of_africa_recovery_invited_members value = FROM } } }
+			add_to_array = { array = gods_of_africa_recovery_invited_members value = FROM }
+		}
+		if = {
+			limit = { NOT = { is_in_array = { array = gods_of_africa_recovery_eligible_members value = FROM } } }
+			add_to_array = { array = gods_of_africa_recovery_eligible_members value = FROM }
+		}
+	}
+}
+
+# Member COUNTRY; caller temp gods_of_africa_recovery_answer is zero (decline)
+# or one (approve). No default; callers must initialize before every call.
+gods_of_africa_record_recovery_member_answer = {
+	if = {
+		limit = {
+			gods_of_africa_recovery_member_request_is_current = yes
+			OR = {
+				check_variable = { gods_of_africa_recovery_answer = constant:gods_of_africa_value.zero }
+				check_variable = { gods_of_africa_recovery_answer = constant:gods_of_africa_value.one }
+			}
+		}
+		clr_country_flag = gods_of_africa_recovery_approved
+		clr_country_flag = gods_of_africa_recovery_declined
+		set_variable = { gods_of_africa_recovery_answer_day = global.num_days }
+		if = {
+			limit = { check_variable = { gods_of_africa_recovery_answer = constant:gods_of_africa_value.one } }
+			set_country_flag = gods_of_africa_recovery_approved
+			event_target:africa_host = {
+				if = {
+					limit = {
+						has_country_flag = gods_of_africa_recovery_open
+						NOT = { is_in_array = { array = gods_of_africa_recovery_approved_members value = PREV } }
+					}
+					add_to_array = { array = gods_of_africa_recovery_approved_members value = PREV }
+				}
+				if = {
+					limit = {
+						has_country_flag = gods_of_africa_recovery_epoch
+						NOT = { is_in_array = { array = gods_of_africa_mandate_approved_members value = PREV } }
+					}
+					add_to_array = { array = gods_of_africa_mandate_approved_members value = PREV }
+				}
+			}
+		}
+		else = {
+			set_country_flag = gods_of_africa_recovery_declined
+			event_target:africa_host = {
+				remove_from_array = { array = gods_of_africa_recovery_approved_members value = PREV }
+				remove_from_array = { array = gods_of_africa_mandate_approved_members value = PREV }
+			}
+		}
+	}
+}
+
+# COUNTRY participant. Parent cancellation clears two durable settlement flags;
+# retain their exact pre-call presence rather than acknowledging old reports.
+# The normal settlement/victory receipt fields are not cleared by that closure.
+gods_of_africa_cancel_recovery_participant_preserving_receipts = {
+	# Africa's defeat ends the defiance a participant survived.
+	gods_of_africa_achievement_complete_survive_defiance = yes
+	set_temp_variable = { gods_of_africa_recovery_keep_final_outcome = constant:gods_of_africa_value.zero }
+	set_temp_variable = { gods_of_africa_recovery_keep_settlement_report = constant:gods_of_africa_value.zero }
+	set_temp_variable = { gods_of_africa_recovery_keep_victor_report = constant:gods_of_africa_value.zero }
+	if = {
+		limit = { has_country_flag = gods_of_africa_final_outcome_committed }
+		set_temp_variable = { gods_of_africa_recovery_keep_final_outcome = constant:gods_of_africa_value.one }
+	}
+	if = {
+		limit = { has_country_flag = gods_of_africa_settlement_report_pending }
+		set_temp_variable = { gods_of_africa_recovery_keep_settlement_report = constant:gods_of_africa_value.one }
+	}
+	if = {
+		limit = { has_country_flag = gods_of_africa_victor_report_pending }
+		set_temp_variable = { gods_of_africa_recovery_keep_victor_report = constant:gods_of_africa_value.one }
+	}
+	gods_of_africa_cancel_participant = yes
+	if = {
+		limit = { check_variable = { gods_of_africa_recovery_keep_final_outcome = constant:gods_of_africa_value.one } }
+		set_country_flag = gods_of_africa_final_outcome_committed
+	}
+	if = {
+		limit = { check_variable = { gods_of_africa_recovery_keep_settlement_report = constant:gods_of_africa_value.one } }
+		set_country_flag = gods_of_africa_settlement_report_pending
+	}
+	if = {
+		limit = { check_variable = { gods_of_africa_recovery_keep_victor_report = constant:gods_of_africa_value.one } }
+		set_country_flag = gods_of_africa_victor_report_pending
+	}
+}
+
+# Cleanup contract: gods_of_africa_cancel_participant and its current closure
+# do not remove rows from gods_of_africa_participants. The array is cleared only
+# after the loop. Parent must retain that contract or use verified arraycopy
+# before introducing in-loop removals. No assumed arraycopy syntax is emitted.
+gods_of_africa_clear_residual_recovery_roster = {
+	for_each_scope_loop = {
+		array = gods_of_africa_participants
+		gods_of_africa_cancel_recovery_participant_preserving_receipts = yes
+	}
+	clear_array = gods_of_africa_participants
+	clear_array = gods_of_africa_selected_participants
+	set_variable = { gods_of_africa_participant_count = gods_of_africa_participants^num }
+	set_variable = { gods_of_africa_active_demand_count = constant:gods_of_africa_value.zero }
+	set_variable = { gods_of_africa_priority_offender_count = constant:gods_of_africa_value.zero }
+	clear_variable = gods_of_africa_selected_mobile_type
+	clear_variable = gods_of_africa_truck_need_amount
+	clear_variable = gods_of_africa_artillery_need_amount
+	clr_country_flag = gods_of_africa_armor_needed
+	clr_country_flag = gods_of_africa_active
+	clr_country_flag = gods_of_africa_activation_committed
+	clr_country_flag = gods_of_africa_consolidation_pending
+	clr_country_flag = gods_of_africa_activation_clock_scheduled
+	clr_country_flag = gods_of_africa_owner_clock_scheduled
+	clr_country_flag = gods_of_africa_registry_clock_scheduled
+	clear_variable = gods_of_africa_consolidation_start_day
+	clear_variable = gods_of_africa_consolidation_due_day
+	clear_variable = gods_of_africa_next_dispatch_day
+	clear_variable = gods_of_africa_next_owner_tick_day
+	clear_variable = gods_of_africa_next_registry_review_day
+	clear_variable = gods_of_africa_last_clock_repair_day
+}
+
+# Host ROOT, congress identity + fresh quorum checked before any mutation.
+gods_of_africa_commit_original_host_recovery = {
+	# These outputs escape the nested trigger to the mandate/history writes.
+	set_temp_variable = { gods_of_africa_recovery_eligible_count = constant:gods_of_africa_value.zero }
+	set_temp_variable = { gods_of_africa_recovery_approved_count = constant:gods_of_africa_value.zero }
+	set_temp_variable = { gods_of_africa_recovery_majority_count = constant:gods_of_africa_value.zero }
+	if = {
+		limit = { gods_of_africa_recovery_can_finish = yes }
+		gods_of_africa_clear_residual_recovery_roster = yes
+		clear_array = gods_of_africa_mandate_approved_members
+		# Copy is non-mutating: requests/approval source survive consolidation.
+		for_each_scope_loop = {
+			array = gods_of_africa_recovery_approved_members
+			if = {
+				limit = { gods_of_africa_recovery_member_approval_is_current = yes }
+				event_target:africa_host = {
+					if = {
+						limit = { NOT = { is_in_array = { array = gods_of_africa_mandate_approved_members value = PREV } } }
+						add_to_array = { array = gods_of_africa_mandate_approved_members value = PREV }
+					}
+				}
+			}
+		}
+		add_to_variable = { gods_of_africa_authority_epoch = constant:gods_of_africa_value.one }
+		set_variable = { gods_of_africa_authority_host_id = THIS.id }
+		set_variable = { gods_of_africa_authority_origin_host_id = africa_origin_host_id }
+		set_variable = { gods_of_africa_authority_host_generation = africa_host_generation }
+		set_variable = { gods_of_africa_mandate_host_id = THIS.id }
+		set_variable = { gods_of_africa_mandate_origin_host_id = africa_origin_host_id }
+		set_variable = { gods_of_africa_mandate_host_generation = africa_host_generation }
+		set_variable = { gods_of_africa_mandate_loss_sequence = gods_of_africa_loss_sequence }
+		set_variable = { gods_of_africa_mandate_cancelled_epoch = gods_of_africa_loss_epoch }
+		set_variable = { gods_of_africa_mandate_authority_epoch = gods_of_africa_authority_epoch }
+		set_variable = { gods_of_africa_mandate_eligible_at_commit = gods_of_africa_recovery_eligible_count }
+		set_variable = { gods_of_africa_mandate_approvals_at_commit = gods_of_africa_recovery_approved_count }
+		set_variable = { gods_of_africa_mandate_day = global.num_days }
+		# Milestone precedes the sole cancellation-clear grant in this package.
+		set_country_flag = gods_of_africa_original_mandate_restored
+		set_country_flag = gods_of_africa_epoch_authorized
+		set_country_flag = gods_of_africa_recovery_epoch
+		clr_country_flag = gods_of_africa_cancelled_on_unifier_loss
+		set_variable = { gods_of_africa_restoration_generation = africa_host_generation }
+		set_country_flag = gods_of_africa_consolidation_pending
+		set_variable = { gods_of_africa_consolidation_start_day = global.num_days }
+		set_variable = { gods_of_africa_consolidation_due_day = global.num_days }
+		add_to_variable = { gods_of_africa_consolidation_due_day = constant:gods_of_africa_timing.consolidation_days }
+		clr_country_flag = gods_of_africa_recovery_open
+		# Normal append-only local history; parent owns milestone log wiring.
+		add_to_array = { array = gods_of_africa_recovery_history_host_ids value = THIS.id }
+		add_to_array = { array = gods_of_africa_recovery_history_loss_sequences value = gods_of_africa_loss_sequence }
+		add_to_array = { array = gods_of_africa_recovery_history_old_epochs value = gods_of_africa_loss_epoch }
+		add_to_array = { array = gods_of_africa_recovery_history_new_epochs value = gods_of_africa_authority_epoch }
+		add_to_array = { array = gods_of_africa_recovery_history_eligible_counts value = gods_of_africa_mandate_eligible_at_commit }
+		add_to_array = { array = gods_of_africa_recovery_history_approval_counts value = gods_of_africa_mandate_approvals_at_commit }
+		add_to_array = { array = gods_of_africa_recovery_history_days value = global.num_days }
+		set_variable = { gods_of_africa_milestone_payload = constant:africa_event_log.gods_original_host_recovery }
+		set_variable = { gods_of_africa_milestone_actor = THIS.id }
+		gods_of_africa_record_milestone = yes
+		clr_country_flag = gods_of_africa_activation_report_sent
+		clr_country_flag = gods_of_africa_activation_report_pending
+		set_temp_variable = { gods_of_africa_clock_kind = constant:gods_of_africa_recovery_clock.activation }
+		set_temp_variable = { gods_of_africa_clock_due = gods_of_africa_consolidation_due_day }
+		set_temp_variable = { gods_of_africa_clock_days = constant:gods_of_africa_value.zero }
+		gods_of_africa_schedule_current_clock = yes
+	}
+}
+
+# Trusted host scheduling only, not a wake handler. Caller sets kind/due/days.
+# Match the caller due to the present owner date. Does not change a due date.
+gods_of_africa_schedule_current_clock = {
+	if = {
+		limit = {
+			tag = ROOT
+			gods_of_africa_epoch_permission_is_current = yes
+		}
+		set_temp_variable = { gods_of_africa_clock_days = gods_of_africa_clock_due }
+		subtract_from_temp_variable = { gods_of_africa_clock_days = global.num_days }
+		if = {
+			limit = { check_variable = { gods_of_africa_clock_days < constant:gods_of_africa_value.one } }
+			set_temp_variable = { gods_of_africa_clock_days = constant:gods_of_africa_value.one }
+		}
+		if = {
+			limit = {
+				check_variable = { gods_of_africa_clock_kind = constant:gods_of_africa_recovery_clock.activation }
+				has_country_flag = gods_of_africa_consolidation_pending
+				NOT = { has_country_flag = gods_of_africa_active }
+				NOT = { has_country_flag = gods_of_africa_activation_committed }
+				has_variable = gods_of_africa_consolidation_due_day
+				check_variable = { var = gods_of_africa_clock_due value = gods_of_africa_consolidation_due_day compare = equals }
+				OR = {
+					NOT = { has_country_flag = gods_of_africa_recovery_epoch }
+					gods_of_africa_recovery_mandate_is_current = yes
+				}
+			}
+			set_country_flag = gods_of_africa_activation_clock_scheduled
+			country_event = { id = chaosx.nr12.600 days = var:gods_of_africa_clock_days }
+		}
+		else_if = {
+			limit = {
+				check_variable = { gods_of_africa_clock_kind = constant:gods_of_africa_recovery_clock.owner }
+				has_country_flag = gods_of_africa_active
+				has_country_flag = gods_of_africa_activation_committed
+				has_variable = gods_of_africa_next_owner_tick_day
+				check_variable = { var = gods_of_africa_clock_due value = gods_of_africa_next_owner_tick_day compare = equals }
+			}
+			set_country_flag = gods_of_africa_owner_clock_scheduled
+			country_event = { id = chaosx.nr12.606 days = var:gods_of_africa_clock_days }
+		}
+		else_if = {
+			limit = {
+				check_variable = { gods_of_africa_clock_kind = constant:gods_of_africa_recovery_clock.registry }
+				has_country_flag = gods_of_africa_active
+				has_country_flag = gods_of_africa_activation_committed
+				has_variable = gods_of_africa_next_registry_review_day
+				check_variable = { var = gods_of_africa_clock_due value = gods_of_africa_next_registry_review_day compare = equals }
+			}
+			set_country_flag = gods_of_africa_registry_clock_scheduled
+			country_event = { id = chaosx.nr12.607 days = var:gods_of_africa_clock_days }
+		}
+	}
+}
+
+# One current-day repair after authorization, receipt, due and quorum checks.
+# Retains the elapsed due day and authority epoch. No fresh consolidation.
+gods_of_africa_resume_original_host_recovery = {
+	if = {
+		limit = { gods_of_africa_recovery_can_resume = yes }
+		set_variable = { gods_of_africa_last_clock_repair_day = global.num_days }
+		set_temp_variable = { gods_of_africa_clock_kind = constant:gods_of_africa_value.zero }
+		set_temp_variable = { gods_of_africa_clock_due = constant:gods_of_africa_value.zero }
+		if = {
+			limit = { gods_of_africa_activation_wake_is_due = yes }
+			set_temp_variable = { gods_of_africa_clock_kind = constant:gods_of_africa_recovery_clock.activation }
+			set_temp_variable = { gods_of_africa_clock_due = gods_of_africa_consolidation_due_day }
+		}
+		else_if = {
+			limit = { gods_of_africa_owner_wake_is_due = yes }
+			set_temp_variable = { gods_of_africa_clock_kind = constant:gods_of_africa_recovery_clock.owner }
+			set_temp_variable = { gods_of_africa_clock_due = gods_of_africa_next_owner_tick_day }
+		}
+		else_if = {
+			limit = { gods_of_africa_registry_wake_is_due = yes }
+			set_temp_variable = { gods_of_africa_clock_kind = constant:gods_of_africa_recovery_clock.registry }
+			set_temp_variable = { gods_of_africa_clock_due = gods_of_africa_next_registry_review_day }
+		}
+		set_temp_variable = { gods_of_africa_clock_days = constant:gods_of_africa_value.zero }
+		gods_of_africa_schedule_current_clock = yes
+	}
+}

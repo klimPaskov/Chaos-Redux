@@ -1,0 +1,1005 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 012 GODS OF AFRICA CONSTANTS
+# ============================================================================
+# Event 012 owns this persistent diplomatic and tribute layer. Values are kept
+# in script constants so the host can tune the system without duplicating
+# numbers across events, decisions, or focus rewards.
+# ============================================================================
+
+gods_of_africa_timing = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	consolidation_days = 180
+	owner_tick_days = 30
+	registry_review_days = 90
+	priority_change_cooldown_days = 30
+	introduction_stagger_days = 7
+	first_demand_delay_days = 21
+	demand_cooldown_days = 120
+	# Logistics preparation shortens the repeat interval only after the
+	# transport lane has been deliberately developed in the host focus overlay.
+	logistics_demand_cooldown_reduction_days = 30
+	negotiation_extension_days = 30
+	partial_payment_cooldown_days = 30
+	repetition_window_days = 365
+	defiance_review_days = 60
+	settlement_review_days = 45
+	max_active_demands = 4
+	# Registry storage follows native country cardinality; this cap bounds only
+	# concurrent offender marks within the existing host action budget.
+	priority_offender_cap = 3
+	# A voluntary shipment is deliberately slower than ordinary responses and
+	# keeps a reserve behind the meaningful contribution.
+	voluntary_aid_cooldown_days = 180
+	# A payment or voluntary shipment that moved nothing cannot be resent
+	# until this many days have passed, so it is never repeated every day.
+	undelivered_retry_days = 7
+	# A participant at war with another country gets more time to answer, and
+	# more again while it is losing that war (spec DEM-04, decision L23).
+	wartime_deadline_extension_days = 30
+	losing_war_deadline_extension_days = 30
+	# Near capitulation with no political tribute to ask, Africa waits.
+	hardship_postpone_days = 60
+	# A participant Africa could not quote this time is passed over for a
+	# while, so the dispatcher moves on to the next participant.
+	unquotable_retry_days = 30
+}
+
+gods_of_africa_value = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	zero = 0
+	one = 1
+	# These are exclusive upper bounds used by `<` checks in scripted
+	# localisation/effects: 0-19, 20-39, 40-59, 60-79, 80-100.
+	limited_strength = 20
+	regional_strength = 40
+	continental_strength = 60
+	global_strength = 80
+	maximum_strength = 100
+	minimum_wrath = 0
+	maximum_wrath = 100
+	minimum_generation = 1
+	starting_strength = 18
+	starting_wrath = 8
+	strength_military_weight = 25
+	strength_industry_weight = 20
+	strength_continent_weight = 20
+	strength_reach_weight = 15
+	strength_internal_weight = 10
+	strength_chaos_weight = 10
+	wrath_compliance_delta = -3
+	wrath_negotiation_delta = -1
+	wrath_substitute_delta = 1
+	wrath_refusal_delta = 8
+	wrath_failure_delta = 12
+	wrath_defiance_delta = 18
+	wrath_leniency_delta = -4
+	wrath_protection_delta = -2
+	wrath_pardon_delta = -12
+	strength_smoothing_step = 8
+	capacity_floor_equipment = 500
+	capacity_floor_fuel = 500
+	capacity_floor_manpower = 10000
+	capacity_floor_industry = 1
+	minimum_demand_amount = 1
+	maximum_demand_amount = 25000
+	repeated_conduct_threshold = 2
+	first_refusal_max_punishment_tier = 2
+	# Settlement bands are deliberately stricter than simple survival. A
+	# respected relationship tolerates only a small record of failures and
+	# refusals and requires Wrath to remain below the hostile threshold.
+	respected_failure_ceiling = 2
+	respected_refusal_ceiling = 2
+	respected_wrath_ceiling = 70
+	catastrophe_strength_gate = 80
+	catastrophe_wrath_gate = 90
+	# The global Chaos meter is 0..1001; tier 4 begins at 800 in the shared
+	# Event 012 meter contract. A value of 5 would make catastrophe nearly
+	# unconditional and is therefore deliberately not used.
+	catastrophe_chaos_gate = 800
+	catastrophe_failure_gate = 3
+	catastrophe_offense_gate = 2
+	favored_minimum_compliance = 3
+}
+
+gods_of_africa_band = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	limited = 0
+	regional = 1
+	continental = 2
+	global = 3
+	extreme = 4
+}
+
+gods_of_africa_armor_chassis = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+	light = 1
+	medium = 2
+	heavy = 3
+	modern = 4
+	super_heavy = 5
+	amphibious = 6
+}
+
+gods_of_africa_armor = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+	units_per_thousand = 1000
+	minimum_chassis_reserve = 25
+	operating_reserve_fraction = 0.1
+	minimum_shipment = 5
+	maximum_shipment = 300
+	spare_quote_fraction = 0.1
+	production_quote_fraction = 0.01
+	maximum_spare_fraction = 0.25
+	host_stockpile_floor = 100
+}
+
+gods_of_africa_demand_family = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	land_equipment = 1
+	mobile_artillery = 2
+	armor = 3
+	aircraft = 4
+	fuel = 5
+	transport = 6
+	industry_repair = 7
+	resources = 8
+	manpower = 9
+	recognition = 10
+	territory = 11
+	# The participant withdraws the guarantee, military access or volunteers it
+	# gives one named enemy of Africa.
+	end_enemy_support = 12
+	emergency_relief = 13
+	support_equipment = 14
+	# Security Oaths concessions (Evolution III, Continental Strength or more).
+	military_access = 15
+	non_aggression = 16
+	guarantee_africa = 17
+	# Continuing support: a fixed number of instalments of rifles or fuel at a
+	# fixed interval, delivered by the owner review (decision L28).
+	continuing_support = 18
+}
+
+# Continuing support instalments (decision L28).
+gods_of_africa_instalments = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	count = 3
+	interval_days = 30
+	equipment_per_instalment = 500
+	fuel_per_instalment = 500
+	# The contract deadline allows one interval of grace after the last
+	# instalment is due.
+	grace_intervals = 1
+}
+
+# The three named state slots of a territory demand (decision L25).
+gods_of_africa_named_slot = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	first = 1
+	second = 2
+	third = 3
+}
+
+gods_of_africa_demand_status = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	open = 1
+	extended = 2
+	partial = 3
+	resolved = 4
+	failed = 5
+	cancelled = 6
+}
+
+gods_of_africa_response = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	comply = 1
+	negotiate = 2
+	substitute = 3
+	refuse = 4
+	defy = 5
+}
+
+gods_of_africa_doctrine = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	reciprocal_covenant = 1
+	sovereign_exaction = 2
+	strategic_ambiguity = 3
+}
+
+gods_of_africa_punishment = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	pressure = 1
+	disruption = 2
+	crisis = 3
+	ultimatum = 4
+	catastrophe = 5
+}
+
+gods_of_africa_settlement = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	favored = 1
+	respected = 2
+	distrusted = 3
+	enemy = 4
+}
+
+gods_of_africa_history = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	minimum = 0
+	first = 1
+	serious = 2
+	extreme = 3
+}
+
+# Runtime ladders used by the owner-local Gods of Africa helpers. These are
+# deliberately separate from the public enum-like namespaces above: callers
+# can tune arithmetic without changing saved contract identities.
+gods_of_africa_wrath = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	direction_increase = 1
+	direction_decrease = 2
+	floor_war = 50
+	floor_territory = 60
+	floor_broken_treaty = 70
+	floor_defiant = 70
+	floor_recent_extreme = 80
+	# Exclusive upper bounds for the six public Wrath bands.
+	quiet = 15
+	watchful = 30
+	angered = 50
+	hostile = 70
+	vengeful = 85
+	condemning = 100
+	compliance_magnitude = 3
+	negotiation_magnitude = 1
+	substitute_magnitude = 1
+	war_magnitude = 10
+	refusal_magnitude = 8
+	failure_magnitude = 12
+	# A broken agreement replaces the ordinary refusal, failure or war gain.
+	treaty_breach_magnitude = 20
+	defiance_magnitude = 18
+	leniency_magnitude = 4
+	protection_magnitude = 2
+	voluntary_aid_magnitude = 4
+	voluntary_aid_repeat_magnitude = 2
+	pardon_magnitude = 12
+}
+
+gods_of_africa_strength = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	divisions_divisor = 20
+	factories_divisor = 2
+	relationships_divisor = 1
+	reach_divisor = 1
+	chaos_divisor = 1
+	component_average_divisor = 2
+	component_triple_average_divisor = 3
+	technology_radio = 10
+	technology_radio_detection = 10
+	technology_construction = 10
+	technology_machine_tools = 10
+	technology_fighter = 10
+	technology_synthetic = 10
+	evolution_ii_amplifier = 15
+	evolution_iii_amplifier = 25
+	# Each major power that formally recognises Africa adds to the continent
+	# component, up to the cap.
+	recognition_per_major = 5
+	recognition_cap = 20
+	component_min = 0
+	component_max = 100
+	weighted_divisor = 100
+}
+
+# Wartime hardship thresholds on the participant's surrender progress (0..1).
+gods_of_africa_hardship = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	losing_war_surrender = 0.25
+	near_capitulation_surrender = 0.5
+}
+
+# What keeps Africa's army in the field (decision L29). The military
+# component is multiplied by floor + span x (equipment share x army equipment
+# ratio + fuel share x fuel ratio); floor and span sum to one, and so do the
+# two shares.
+gods_of_africa_strength_sustain = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	floor = 0.4
+	span = 0.6
+	equipment_share = 0.6
+	fuel_share = 0.4
+	full = 1
+	none = 0
+	# Strength points lost while an enemy holds Africa's capital.
+	capital_loss_penalty = 15
+	# Surrender progress steps and the Strength each one costs.
+	surrender_light = 0.1
+	surrender_light_penalty = 5
+	surrender_heavy = 0.25
+	surrender_heavy_penalty = 12
+	surrender_severe = 0.4
+	surrender_severe_penalty = 20
+	# From this surrender progress Strength falls at once, without smoothing.
+	surrender_immediate = 0.25
+}
+
+gods_of_africa_transaction = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	partial_payment_ratio_numerator = 1
+	partial_payment_ratio_denominator = 2
+	land_equipment_amount = 1000
+	support_equipment_amount = 500
+	aircraft_amount = 50
+	fuel_amount = 1000
+	transport_amount = 20
+	manpower_amount = 10000
+	industry_pp_amount = 20
+	# Strategic-resource tribute is represented by a real base-game resource-rights
+	# concession on a controlled steel-bearing state. It is not a simulated
+	# stockpile transfer and therefore needs only one live output unit.
+	resources_amount = 1
+	recognition_pp_amount = 10
+	territory_pp_amount = 25
+	end_support_pp_amount = 10
+	concession_pp_amount = 10
+	# A territory demand names at most this many African core states, one per
+	# named slot in the demand text.
+	territory_state_limit = 3
+	reconciliation_pp_amount = 10
+	# Emergency relief is paid in political power, so it sits on the same
+	# scale as the other political families.
+	emergency_amount = 50
+	max_substitutes = 3
+	pressure_pp_loss = 5
+	disruption_pp_loss = 10
+	crisis_pp_loss = 20
+	ultimatum_pp_loss = 25
+	catastrophe_pp_loss = 30
+	catastrophe_population_loss = 25000
+	catastrophe_minimum_population_remaining = 10000
+	# Protection transfers are deliberately modest fixed packages. The owner
+	# still checks its live reserve before debiting them. Settlement support is
+	# a frozen obligation scaled by grading (012_africa_gods_grading_constants.txt).
+	protection_infantry_equipment = 500
+	protection_fuel = 500
+	protection_pp_cost = 10
+	protection_intelligence_amount = 5
+	protection_cooldown_days = 180
+	voluntary_aid_equipment_amount = 500
+	voluntary_aid_fuel_amount = 500
+	voluntary_aid_equipment_capacity = 1000
+	voluntary_aid_fuel_capacity = 1000
+	defensive_preparation_pp_cost = 15
+	defensive_stockpile_pp_cost = 15
+	defensive_transport_pp_cost = 15
+	defensive_countermeasure_pp_cost = 15
+	defiant_punishment_review_days = 180
+	# The reserve focus improves response cadence without creating a free
+	# shipment or bypassing the host's real protection affordability checks.
+	reserve_protection_cooldown_reduction_days = 60
+}
+
+gods_of_africa_protection = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	transport_host_stockpile_minimum = 40
+	reconstruction_infrastructure_levels = 1
+	reconstruction_infrastructure_cap = 5
+}
+
+gods_of_africa_defensive_effect = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	defensive_stability_gain = 0.02
+	defensive_war_support_gain = 0.03
+	defensive_punishment_pp_relief = 5
+}
+
+gods_of_africa_punishment_effect = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	pressure_stability_loss = -0.01
+	pressure_war_support_loss = -0.01
+	disruption_stability_loss = -0.02
+	disruption_war_support_loss = -0.02
+	disruption_resistance_gain = 2
+	crisis_stability_loss = -0.03
+	crisis_war_support_loss = -0.03
+	crisis_infrastructure_damage = 1
+	ultimatum_stability_loss = -0.04
+	ultimatum_war_support_loss = -0.04
+	ultimatum_infrastructure_damage = 2
+	ultimatum_industry_damage = 1
+	ambiguity_pressure_stability_loss = -0.005
+	ambiguity_pressure_war_support_loss = -0.005
+	ambiguity_disruption_stability_loss = -0.01
+	ambiguity_disruption_war_support_loss = -0.01
+	ambiguity_crisis_stability_loss = -0.015
+	ambiguity_crisis_war_support_loss = -0.015
+	ambiguity_ultimatum_stability_loss = -0.02
+	ambiguity_ultimatum_war_support_loss = -0.02
+	# Punishment families (decision L26). Material losses are this unit times
+	# the punishment tier (1 Pressure to 4 Ultimatum), and only what the
+	# target holds is taken.
+	stockpile_equipment_unit = 250
+	stockpile_fuel_unit = 250
+	military_infantry_unit = 500
+	military_support_unit = 100
+	logistical_convoy_unit = 5
+	logistical_naval_damage = 1
+	covert_factory_damage = 1
+	# A bluff at Limited Strength costs only this much political power.
+	bluff_pp_loss = 2
+	# One half of a material loss, when the target cannot lose the whole.
+	partial_loss_fraction = 0.5
+}
+
+# Punishment families (decision L26). The selector prefers a family that fits
+# the offence, avoids the family used within the repeat window, and falls back
+# to political pressure.
+gods_of_africa_punishment_family = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	pressure = 1
+	unrest = 2
+	infrastructure = 3
+	stockpile = 4
+	diplomatic = 5
+	covert = 6
+	logistical = 7
+	military = 8
+	disaster = 9
+}
+
+gods_of_africa_punishment_scope = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	repeat_window_days = 180
+	# States struck by a state-targeting family at each tier.
+	pressure_states = 1
+	disruption_states = 1
+	crisis_states = 3
+	ultimatum_states = 5
+	# A target near capitulation is struck in one state at most.
+	collapsing_target_states = 1
+	# At Limited Strength every second punishment is a bluff.
+	bluff_cycle = 2
+	# The catastrophe's waves of civilian deaths reach this many states.
+	catastrophe_wave_states = 3
+}
+
+# The staged final ultimatum before a catastrophe (decision L26).
+gods_of_africa_ultimatum = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	deadline_days = 60
+	settlement_pp = 150
+	settlement_equipment = 3000
+	# The settlement leaves the payer this much infantry equipment.
+	settlement_equipment_reserve = 500
+	wrath_relief = 25
+}
+
+# Gods focus payoffs (decision L27).
+# Expedition: Africa's package to a partner fighting outside Africa.
+gods_of_africa_expedition = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	infantry_equipment = 1000
+	support_equipment = 200
+	manpower = 10000
+	# Africa keeps at least this much of each after the package leaves.
+	infantry_reserve = 2000
+	support_reserve = 200
+	manpower_reserve = 50000
+	pp_cost = 25
+	cooldown_days = 180
+}
+
+# The Final Council: a participant's voice before the settlement.
+gods_of_africa_council = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	pledge_equipment = 1000
+	pledge_equipment_reserve = 500
+	speech_pp = 25
+}
+
+# Measure Needs: Africa ignores a material it holds in this surplus.
+gods_of_africa_needs = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	land_surplus = 20000
+	support_surplus = 4000
+	aircraft_surplus = 400
+	manpower_surplus = 200000
+	percent = 100
+}
+
+# No Sanctuary for Occupiers: claims, a war goal and liberation support.
+gods_of_africa_occupier_coercion = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	pp_cost = 50
+	cooldown_days = 365
+	liberation_equipment = 1000
+	# Africa keeps at least this much infantry equipment after the shipment.
+	liberation_reserve = 1000
+}
+
+# Let the World Answer: Africa arms the enemies of an offender (decision L26).
+gods_of_africa_coalition = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	equipment = 1000
+	# Africa keeps this much infantry equipment after the shipment.
+	host_reserve = 1000
+	pp_cost = 25
+	cooldown_days = 180
+}
+
+gods_of_africa_demand = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	ceremonial_band = 0
+	standard_band = 1
+	severe_band = 2
+	emergency_band = 3
+	punitive_band = 4
+	ceremonial_burden = 5
+	standard_burden = 10
+	severe_burden = 20
+	emergency_burden = 30
+	punitive_burden = 40
+	deadline_ceremonial = 45
+	deadline_standard = 90
+	deadline_severe = 120
+	deadline_emergency = 60
+	deadline_punitive = 150
+	# The mission is a visible response surface; the owner-local clock still
+	# enforces each contract's frozen deadline (45/60/90/120) precisely.
+	maximum_mission_timeout = 180
+}
+
+gods_of_africa_demand_scale = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	base_percent = 100
+	capacity_major_percent = 120
+	capacity_very_high_percent = 140
+	wrath_percent = 120
+	strength_percent = 120
+	chaos_percent = 120
+	need_percent = 120
+	conduct_percent = 115
+	repetition_percent = 110
+	reciprocal_percent = 90
+	sovereign_percent = 120
+	capacity_major_delta = 20
+	capacity_very_high_delta = 40
+	wrath_delta = 20
+	strength_delta = 20
+	chaos_delta = 20
+	need_delta = 20
+	conduct_delta = 15
+	repetition_delta = 10
+	# Wartime hardship (decision L23): a war elsewhere lowers the scale, and
+	# losing that war lowers it again.
+	wartime_delta = -20
+	losing_war_delta = -25
+	reciprocal_delta = -10
+	sovereign_delta = 20
+	percent_divisor = 100
+	major_factory_threshold = 30
+	very_high_factory_threshold = 60
+	repetition_threshold = 2
+}
+
+gods_of_africa_doctrine_effect = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	strategic_ambiguity_deadline_extension_days = 30
+	reciprocal_protection_cooldown_reduction_days = 30
+	strategic_ambiguity_protection_intelligence_amount = 10
+	reciprocal_punishment_tier_reduction = 1
+	sovereign_exaction_punishment_tier_increase = 1
+	reciprocal_protection_wrath_relief = 4
+	sovereign_exaction_protection_wrath_relief = 1
+	reciprocal_favored_minimum_compliance = 2
+	sovereign_exaction_favored_minimum_compliance = 4
+	sovereign_exaction_favored_minimum_aid = 2
+	strategic_ambiguity_respected_failure_ceiling = 3
+	strategic_ambiguity_respected_refusal_ceiling = 3
+}
+
+gods_of_africa_history_kind = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	compliance = 1
+	partial = 2
+	substitute = 3
+	failure = 4
+	refusal = 5
+	defiance = 6
+	aid = 7
+	punishment = 8
+	reconciliation = 9
+	treaty_break = 10
+	substitute_rejected = 11
+	reconciliation_offer = 12
+	victory = 13
+	victor_relegitimation = 14
+	victor_renewal_rejected = 15
+	war_cancellation = 16
+	# Report-only response kinds. They label a .604 row and are never written
+	# to the relationship history.
+	undelivered = 17
+	lapsed = 18
+	# Africa went to war against the participant and ended its agreements.
+	agreement_ended_by_host = 19
+	# Report-only: the named states left the participant's hands, so the
+	# territory demand lapsed without a failure.
+	territory_lapsed = 20
+	# The participant met Africa's final ultimatum.
+	ultimatum_met = 21
+	# Report-only: one instalment of a continuing support agreement arrived.
+	instalment = 22
+}
+
+# One immutable equipment archetype within the existing mobile/artillery family.
+gods_of_africa_mobile_type = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	trucks = 1
+	artillery = 2
+}
+
+gods_of_africa_mobile = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	units_per_thousand = 1000
+	operating_reserve_fraction = 0.10
+	truck_reserve_floor = 100
+	artillery_reserve_floor = 25
+	truck_route_stock_floor = 100
+	artillery_route_stock_floor = 25
+	minimum_shipment = 1
+	spare_quote_fraction = 0.10
+	maximum_spare_fraction = 0.25
+	maximum_truck_shipment = 500
+	maximum_artillery_shipment = 300
+}
+
+# Event 012 Gods AI weights for the host doctrine and settlement rows. These are
+# decision scores, not probabilities of any player-visible outcome.
+gods_of_africa_ai = {
+	schema = { any_key = yes data = fixed_point }
+	doctrine_base = 10
+	# A cooperative government at peace measures tribute against need.
+	reciprocal_peace_factor = 3
+	reciprocal_cooperation_factor = 1.5
+	# A government at war, or facing foreign occupation of African cores,
+	# claims restitution.
+	exaction_war_factor = 3
+	exaction_occupation_factor = 2
+	# A dominant Africa in a high-Chaos world keeps its judgment veiled.
+	ambiguity_high_chaos_factor = 4
+	settlement_delivery_base = 10
+	# At war, Africa keeps its spare stock longer before paying settlement debts.
+	settlement_delivery_war_factor = 0.25
+}
+
+# Event 012 Gods participant and Africa AI response weights (decision L24).
+# Decision scores, not probabilities. Posture comes from the current state
+# through the gods_of_africa_ai_* triggers in 012_africa_gods_triggers.txt; no
+# country carries a fixed personality.
+gods_of_africa_ai_response = {
+	schema = { any_key = yes data = fixed_point }
+	# Fulfil the Demand.
+	comply_base = 50
+	comply_light_burden = 2
+	comply_heavy_burden = 0.4
+	comply_strong_africa = 1.5
+	comply_weak_africa = 0.6
+	comply_loyal = 3
+	comply_rival = 0.2
+	comply_gambler = 0.6
+	# High Wrath against a Continental or stronger Africa: fear of retaliation.
+	comply_fear = 1.5
+	comply_losing_war = 0.6
+	comply_high_chaos = 1.2
+	# What the demand asks for: a gesture is easy, land and abandoning an ally
+	# at war are not.
+	comply_family_recognition = 1.5
+	comply_family_non_aggression = 1.5
+	comply_family_military_access = 0.8
+	comply_family_guarantee = 0.6
+	comply_family_end_support = 0.5
+	comply_family_territory = 0.5
+	# Partial payment.
+	partial_base = 15
+	partial_full_payable = 0.25
+	partial_full_unpayable = 1.5
+	partial_heavy_burden = 1.5
+	partial_loyal = 1.5
+	partial_rival = 0.3
+	partial_losing_war = 1.5
+	# Negotiate: extension and substitute offers.
+	negotiate_base = 20
+	negotiate_unpayable = 2
+	negotiate_heavy_burden = 2
+	negotiate_light_burden = 0.3
+	negotiate_losing_war = 2
+	negotiate_gambler = 1.5
+	negotiate_rival = 0.5
+	negotiate_vengeful = 0.5
+	# Substitute slots: offer what Africa needs.
+	substitute_slot_base = 10
+	substitute_needed_family = 3
+	substitute_unneeded_family = 0.2
+	substitute_unpayable = 2
+	substitute_heavy_burden = 2
+	return_to_demand_base = 5
+	# Refuse.
+	refuse_base = 5
+	refuse_agreed_terms = 0.3
+	refuse_unpayable = 4
+	refuse_heavy_burden = 3
+	refuse_light_burden = 0.3
+	refuse_weak_africa = 2.5
+	refuse_strong_africa = 0.5
+	refuse_loyal = 0.1
+	refuse_rival = 3
+	refuse_gambler = 2
+	refuse_holds_core = 2
+	refuse_low_wrath = 1.5
+	refuse_high_wrath = 0.6
+	# Permanent defiance.
+	defiance_base = 2
+	defiance_loyal = 0.05
+	defiance_holds_core = 4
+	defiance_hostile_faction = 3
+	defiance_offender = 2
+	defiance_high_wrath = 3
+	# A stronger power facing a weak Africa doubts its threats.
+	defiance_low_credibility = 3
+	defiance_dominant_africa = 0.3
+	defiance_demand_active = 2
+	defiance_heavy_burden = 1.5
+	# Defensive preparation after defiance.
+	defense_base = 8
+	defense_high_wrath = 1.5
+	defense_dominant_africa = 1.5
+	defense_weak_africa = 0.5
+	# Reconciliation and voluntary aid.
+	reconcile_base = 10
+	reconcile_friendly = 2
+	reconcile_strong_africa = 1.5
+	reconcile_rival = 0.2
+	aid_base = 4
+	aid_loyal = 5
+	aid_african_emergency = 2
+	aid_low_wrath = 1.5
+	aid_repeat = 0.5
+	aid_rival = 0.05
+	aid_gambler = 0.3
+	aid_losing_war = 0.3
+	# Africa: protection.
+	protect_base = 10
+	protect_proven_partner = 3
+	protect_common_enemy = 1.5
+	protect_near_collapse = 0.3
+	# Africa: mark and escalate.
+	judgment_base = 5
+	judgment_holds_core = 4
+	judgment_at_war = 3
+	judgment_defiant = 2
+	judgment_target_collapsing = 0.2
+	judgment_weak_africa = 0.5
+	judgment_exaction = 1.5
+	judgment_reciprocal = 0.5
+	# Africa: public pardon and leniency.
+	mercy_base = 3
+	mercy_favored_track = 3
+	mercy_hardship = 3
+	mercy_loyal = 2
+	mercy_holds_core = 0.1
+	mercy_reciprocal = 2
+	mercy_exaction = 0.5
+	# Africa: substitute answers.
+	accept_substitute_base = 10
+	accept_substitute_emergency = 2
+	accept_substitute_reliable = 1.5
+	accept_substitute_high_wrath = 0.5
+	reject_substitute_base = 2
+	reject_substitute_unneeded = 5
+	reject_substitute_high_wrath = 2
+	# Africa: reconciliation.
+	accept_reconciliation_base = 4
+	accept_reconciliation_near_collapse = 2
+	accept_reconciliation_reciprocal = 1.5
+	accept_reconciliation_exaction = 0.5
+	# Final ultimatum answers.
+	ultimatum_return_land_base = 30
+	ultimatum_settlement_base = 20
+	ultimatum_refuse_base = 2
+	ultimatum_refuse_rival = 4
+	ultimatum_refuse_weak_africa = 3
+	ultimatum_answer_loyal = 2
+	# Let the World Answer.
+	coalition_base = 5
+	coalition_holds_core = 3
+	coalition_at_war = 2
+	coalition_defiant = 1.5
+	# Expedition, council voices and occupier coercion (decision L27).
+	expedition_base = 8
+	expedition_loyal = 2
+	expedition_collapsing = 0.2
+	council_pledge_base = 10
+	council_pledge_loyal = 3
+	council_pledge_rival = 0.1
+	council_speech_base = 8
+	council_speech_friendly = 2
+	council_speech_rival = 0.1
+	coercion_base = 6
+	coercion_strong_africa = 2
+	coercion_weak_africa = 0.3
+	coercion_at_war = 0.5
+	# Signing a continuing support agreement (decision L28).
+	instalment_sign_base = 60
+	instalment_sign_heavy_burden = 1.5
+	instalment_sign_light_burden = 0.5
+	instalment_sign_loyal = 2
+	instalment_sign_rival = 0.2
+	instalment_sign_weak_africa = 0.6
+}
+
+# How heavy a demand is against the participant's usable stock (stock above its
+# operating floor), frozen at contract creation for the AI weights: heavy when
+# the stock could not cover the demand this many times over, light when it
+# could cover it this many times over.
+gods_of_africa_ai_burden = {
+	schema = { any_key = yes data = int }
+	heavy_multiple = 5
+	light_multiple = 10
+}
+
+# Event 012 Gods achievement thresholds.
+gods_of_africa_achievement = {
+	schema = { any_key = yes data = int }
+	# Survive Defiance: Africa's Strength when the participant defies.
+	survive_defiance_strength = 60
+	# Continental Provision: fulfilled tribute families and paying major powers.
+	provision_families = 4
+	provision_majors = 4
+	# The Careful Gambler: refusals that still allow good standing.
+	careful_gambler_refusals = 2
+}

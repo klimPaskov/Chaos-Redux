@@ -2,8 +2,15 @@
 
 Date: 2026-10-07.
 Owner: `chaosx_improvement_loop_planner`, plan only.
-Disposition: `unresolved` pending parent adoption and implementation.
-Only this addendum is written; all rules introduced below are proposals until the parent records acceptance.
+Disposition: `implemented` at source level for the host/participant integration, with the Council portion committed in `b0d53742ec12ba87b690898420c4bb1e58988c28`.
+The parent adopts the bounded recommendation under the user's full-Gods action-budget requirement and recommended-choice authorization.
+This plan-only author wrote only the addendum; current implementation and acceptance limits are owned by `012_gods_response_phases_implementation_2026-10-07.md`.
+
+Parent integration refinements: reply rows prewarm their existing bounded arrays by existence and evaluate the exact old volatile target predicates in live visibility; discretionary actions recheck view in availability and execution; final commitment stays on overview, doctrine or pending-answer surfaces to preserve six primary priorities.
+The new response-view enum is isolated in its own schema-first constants file.
+No clock, paid offer, material amount or numeric willingness factor changes.
+The 21-group source model and independent review cover action counts, 768 reply-predicate comparisons, stale clicks, AI bypass, old payment/weight/mission AST preservation and manual clock-handler orders.
+Native scheduling, target-cache timing, row appearance and complete probability evaluation remain unproved; this disposition is not whole-feature completion.
 
 ## Acceptance and problem
 
