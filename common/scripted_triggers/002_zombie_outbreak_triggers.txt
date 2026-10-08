@@ -100,7 +100,10 @@ is_anti_zombie_bomb_target_state = {
 	NOT = { has_dynamic_modifier = { modifier = zombie_decontaminated_state } }
 }
 
+# State scope with ROOT = actor country. Used only after a country-scope
+# preflight or the immediate native raid country bridge.
 is_weaponized_zombie_raid_target_state = {
+	can_host_zombie_outbreak_state = yes
 	OR = {
 		AND = {
 			ROOT = { NOT = { has_country_flag = weaponized_zombie_friendly_to_humans } }
@@ -123,6 +126,51 @@ has_weaponized_zombie_raid_payload = {
 		var = num_equipment@zombie_disease_bomb_1
 		value = constant:weaponized_zombies.raid_payload
 		compare = greater_than_or_equals
+	}
+}
+
+# Country scope. Target-specific policy belongs to the gates below because
+# visible has no target country. Native payload affordability is start-only.
+weaponized_zombie_raid_actor_is_authorized = {
+	exists = yes
+	has_capitulated = no
+	NOT = { has_global_flag = world_end }
+	brilliant_scientist_biological_agent_weaponized_zombies_is_unlocked = yes
+	bio_kruger_last_resort_authority_is_valid = yes
+}
+
+# Country scope, ROOT = actor, FROM = exact native victim.
+weaponized_zombie_raid_can_target_from = {
+	weaponized_zombie_raid_actor_is_authorized = yes
+	FROM = { exists = yes }
+	has_war_with = FROM
+	NOT = { is_in_faction_with = FROM }
+	cbrn_policy_allows_strategic_use_against_from = yes
+	var:target_state = {
+		is_weaponized_zombie_raid_target_state = yes
+		is_controlled_by = FROM
+	}
+}
+
+# Country scope with ROOT reset to the exact actor by the immediate bridge.
+# The fixed event also checks the prepared tier/friendly identity. Neither
+# stock nor Command Power is checked/debited again after native commitment.
+weaponized_zombie_native_raid_context_is_valid = {
+	has_event_target = zombie_native_raid_actor
+	has_event_target = zombie_native_raid_victim
+	has_event_target = zombie_native_raid_target_state
+	tag = event_target:zombie_native_raid_actor
+	weaponized_zombie_raid_actor_is_authorized = yes
+	event_target:zombie_native_raid_victim = {
+		exists = yes
+		set_temp_variable = { cbrn_retaliation_target_id = id }
+	}
+	has_war_with = event_target:zombie_native_raid_victim
+	NOT = { is_in_faction_with = event_target:zombie_native_raid_victim }
+	cbrn_policy_allows_strategic_use_against_target_id = yes
+	event_target:zombie_native_raid_target_state = {
+		is_weaponized_zombie_raid_target_state = yes
+		is_controlled_by = event_target:zombie_native_raid_victim
 	}
 }
 

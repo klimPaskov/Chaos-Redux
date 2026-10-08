@@ -3,6 +3,9 @@
 Disposition: historical implementation sequence, superseded where incompatible with the [accepted amendment](../specs/13_2026_09_20_accepted_cbrn_overhaul.md) and [requirement ledger](../../../plans/chaos_warfare_system_plans/2026-09-20_cbrn_overhaul_requirement_ledger.md).
 Resume only open accepted requirements from that ledger. These stages do not authorize repeating completed work or promoting older unresolved proposals.
 
+Stage 7's public operative-retention claim is specifically superseded by the accepted native-raid-only/removal design and the [consolidation map](../../../plans/chaos_warfare_system_plans/2026-10-08_native_biological_operation_consolidation.md).
+The five intelligence attacks and operation-only preparation/phases/capture/refunds retire; shared research, lifecycle, covert history/achievements and zombie profile/outbreak requirements remain.
+
 ## Stage 0: Local engine and source verification
 
 Read the required offline wiki pages and current vanilla documentation. Inspect exact 1.19 Army HQ, regimental support, essential equipment, ability, unit-modifier, MIO, raid, aircraft mission, and AI patterns.
@@ -97,7 +100,8 @@ Implement explicit chemical air operation first. Add continuous mission effects 
 
 ## Stage 7: Biological integration
 
-Refactor biological raids, operative operations, accidents, outbreaks, facilities, countermeasures, and evidence. Preserve zombie separation.
+Resume open native biological raid, accident, outbreak, facility, countermeasure and evidence contracts; do not recreate the superseded public operative interface.
+Preserve Event 016's shared route and zombie project/profile/outbreak separation through genuine current consumers, with no synthetic native capture callback.
 
 Validate all agent profiles and countermeasure paths.
 

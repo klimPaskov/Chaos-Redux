@@ -10,7 +10,7 @@ Biowarfare has seven connected pillars:
 
 1. Development and unlocks.
 2. Payload production and exact stockpile safety.
-3. Delivery by native raids and operative operations.
+3. Delivery by native raids.
 4. Incubation, detection, and state contamination.
 5. Spread between states and countries.
 6. Medical containment and recovery.
@@ -42,16 +42,16 @@ Deliberate battlefield and strategic deployment uses dedicated native raids.
 
 Ordinary battlefield raids require Pathogen Handling Protocols, full derived protection readiness, a completed agent project, matching payload, and battlefield-use authority. Theater CBRN Headquarters is an advanced Chaos Warfare certification, not a prerequisite for these basic attacks.
 
-Operative release uses the intelligence-operation route, while food, water, and medical sabotage uses its separate covert route.
+Food, water and medical sabotage uses covert native supply-chain raids.
 
-The historical Japan-China campaign uses exact-state Anthrax and Plague operations on its explicit route, and the exceptional doomsday release uses `biological_stockpile_doomsday_raid` under the shared biological raid category.
+The historical Japan-China campaign uses exact-state Anthrax and Plague raids on its explicit route, and the exceptional doomsday release uses `biological_stockpile_doomsday_raid` under the shared biological raid category.
 
 Those exceptions consume exact payload and enter the same ordinary lifecycle; they do not replace the native raid system for ordinary strategic or battlefield deployment.
 
 In practice:
 
 - native routes reserve or consume the exact matching payload,
-- the raid or operation supplies the exact target state and responsible actor,
+- the raid supplies the exact target state and responsible actor,
 - the ordinary lifecycle creates incubation before an outbreak becomes active,
 - detection, deaths, medical pressure, evidence, attribution, contamination, spread, and Condemnation continue after the initial release.
 
@@ -111,15 +111,11 @@ An Anthrax, Plague, or Tularemia treatment course consumes Political Power, Supp
 ## Stockpile Safety and Accidents
 
 One exact owned biowarfare facility is designated as the national arsenal.
-Anthrax, Plague, Tularemia, and Smallpox inventories are read from their live
-equipment stockpiles and combined with Biosecurity, safety technology, facility
-condition, bombing, sabotage, and recent handling.
+Anthrax, Plague, Tularemia, and Smallpox inventories are read from their live equipment stockpiles and combined with Biosecurity, safety technology, facility condition, bombing, sabotage, and recent handling.
 
 The player sees one of four bands: Controlled, Strained, Dangerous, or Critical.
-Ordinary incidents range from a contained loss to an internationally exposed
-major outbreak. The exact matching equipment is debited once, and every
-non-contained result enters the shared incubation and outbreak lifecycle in the
-exact arsenal state.
+Ordinary incidents range from a contained loss to an internationally exposed major outbreak.
+The exact matching equipment is debited once, and every non-contained result enters the shared incubation and outbreak lifecycle in the exact arsenal state.
 
 Biowarfare therefore includes internal risk:
 
@@ -127,14 +123,12 @@ Biowarfare therefore includes internal risk:
 - stockpile mismanagement can cause catastrophic domestic consequences,
 - emergency release paths are possible but extremely dangerous politically and strategically.
 
-Stockpile accidents are cooldown-gated per payload type. After an Anthrax,
-Plague, Tularemia, or Smallpox stockpile accident, that same payload type cannot
-produce another ordinary accident for 730 days. Other payload types keep their
-independent cooldowns. Fail-Safe Containment Facilities stop ordinary accidents
-but do not stop sabotage, bombing, capture release, or doomsday release.
+Stockpile accidents are cooldown-gated per payload type.
+After an Anthrax, Plague, Tularemia, or Smallpox stockpile accident, that same payload type cannot produce another ordinary accident for 730 days.
+Other payload types keep their independent cooldowns.
+Fail-Safe Containment Facilities stop ordinary accidents but do not stop sabotage, bombing, capture release, or doomsday release.
 
-See [Biological Stockpile Safety](biological_stockpile_safety.md) for exact
-designation, risk-band, scheduler, lifecycle, AI, and asset contracts.
+See [Biological Stockpile Safety](biological_stockpile_safety.md) for exact designation, risk-band, scheduler, lifecycle, AI, and asset contracts.
 
 ## Diplomacy and International Consequences
 
@@ -160,7 +154,9 @@ Agent-specific route preferences may differ because their strategic effects diff
 
 ## Implementation surfaces and remaining validation
 
-Strategic and battlefield raids, operative release, food-water-medical sabotage, the Japan-China campaign raids, field testing, stockpile accidents, captured-facility recovery raids, the biological doomsday raid, agent-specific incubation and treatment, evidence, attribution, deaths, contamination, spread, and designer integration all enter the ordinary biological lifecycle.
+Strategic, battlefield and covert supply-chain raids, the Japan-China campaign raids, field testing, stockpile accidents, captured-facility recovery raids, the biological doomsday raid, agent-specific incubation and treatment, evidence, attribution, deaths, contamination, spread and designer integration enter the ordinary biological lifecycle.
+Event 016 retains the shared `operative_release` lifecycle route from its native owner; this internal route token does not expose a public intelligence attack.
+The [consolidation map](../../../plans/chaos_warfare_system_plans/2026-10-08_native_biological_operation_consolidation.md) records retired interface-specific behavior and retained shared history, evidence and achievements.
 
 Captured facilities are secured or destroyed through native land raids and never through a deployment decision.
 

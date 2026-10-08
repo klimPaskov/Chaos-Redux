@@ -1,0 +1,79 @@
+[
+  {
+    "path": "C:\\Users\\klimp\\OneDrive\\Documents\\Paradox Interactive\\Hearts of Iron IV\\mod\\chaos_redux\\paradox_wiki\\Triggers - Hearts of Iron 4 Wiki.md",
+    "startLine": 2359,
+    "endLine": 2382,
+    "revision": "abc51ad18a2c46e46d47baa795c5a840ebaf7c4ae3e777426c64a9f4c0c0ce06",
+    "text": "## Scripted triggers <a id=\"Scripted_triggers\"></a>\n\nScripted triggers serve a similar purpose to functions in that they can be defined in `/Hearts of Iron IV/common/scripted_triggers/*.txt` and then used elsewhere as a shortened version. Alongside that, the game has certain base game scripted triggers that are checked directly in the game's code determining triggers for functions that cannot be changed.\n\nA scripted trigger is defined simply as\n\n```text\nscripted_trigger_name = {\n\t<triggers>\n}\n```\n\nThis example can be used as a trigger in regular code as `scripted_trigger_name = yes` or `scripted_trigger_name = no`.\n\nFor example, this would be the definition in any scripted trigger file:\n\n```text\nstate_is_in_area = {\n    OR = {\n        state = 120\n        state = 121\n        state = 123\n        state = 124\n        state = 125"
+  },
+  {
+    "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Hearts of Iron IV\\documentation\\triggers_documentation.md",
+    "startLine": 2708,
+    "endLine": 2721,
+    "revision": "7d27ed77dadaf3a213a4b3e2c624bf9c02dae495317abe8eee833b27c2d1de29",
+    "text": "## exists\n\n* Supported Scopes: COUNTRY\n* Supported Targets: none\n\n```\nCheck if the current country exist. The country of the scope you are in. Example: DEN = { exists = yes }\n```\n\n## faction_goal_fulfillment\n\n* Supported Scopes: COUNTRY\n* Supported Targets: any\n"
+  },
+  {
+    "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Hearts of Iron IV\\documentation\\triggers_documentation.md",
+    "startLine": 3844,
+    "endLine": 3854,
+    "revision": "7d27ed77dadaf3a213a4b3e2c624bf9c02dae495317abe8eee833b27c2d1de29",
+    "text": "## has_event_target\n\n* Supported Scopes: any\n* Supported Targets: any\n\n```\nchecks if current scope or global scope has the specified event target saved\n```\n\n## has_facility_specialization\n"
+  },
+  {
+    "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Hearts of Iron IV\\documentation\\triggers_documentation.md",
+    "startLine": 5051,
+    "endLine": 5059,
+    "revision": "7d27ed77dadaf3a213a4b3e2c624bf9c02dae495317abe8eee833b27c2d1de29",
+    "text": "## has_war_with\n\n* Supported Scopes: COUNTRY\n* Supported Targets: THIS, ROOT, PREV, FROM, OWNER, CONTROLLER, OCCUPIED, CAPITAL\n\n```\nis countries at war\n```\n"
+  },
+  {
+    "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Hearts of Iron IV\\documentation\\triggers_documentation.md",
+    "startLine": 5381,
+    "endLine": 5391,
+    "revision": "7d27ed77dadaf3a213a4b3e2c624bf9c02dae495317abe8eee833b27c2d1de29",
+    "text": "## is_controlled_by\n\n* Supported Scopes: STATE\n* Supported Targets: THIS, ROOT, PREV, FROM, OWNER, CONTROLLER, OCCUPIED, CAPITAL\n\n```\ncheck if state is controlled by\n```\n\n## is_core_of\n"
+  },
+  {
+    "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Hearts of Iron IV\\documentation\\triggers_documentation.md",
+    "startLine": 5695,
+    "endLine": 5708,
+    "revision": "7d27ed77dadaf3a213a4b3e2c624bf9c02dae495317abe8eee833b27c2d1de29",
+    "text": "## is_in_faction_with\n\n* Supported Scopes: COUNTRY\n* Supported Targets: THIS, ROOT, PREV, FROM, OWNER, CONTROLLER, OCCUPIED, CAPITAL\n\n```\ncheck if member of same faction as specified country\n```\n\n## is_in_home_area\n\n* Supported Scopes: STATE\n* Supported Targets: any\n"
+  },
+  {
+    "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Hearts of Iron IV\\documentation\\triggers_documentation.md",
+    "startLine": 7649,
+    "endLine": 7657,
+    "revision": "7d27ed77dadaf3a213a4b3e2c624bf9c02dae495317abe8eee833b27c2d1de29",
+    "text": "## tag\n\n* Supported Scopes: COUNTRY, CHARACTER, COMBATANT\n* Supported Targets: THIS, ROOT, PREV, FROM, OWNER, CONTROLLER, OCCUPIED, CAPITAL\n\n```\ncountry tag trigger\n```\n"
+  },
+  {
+    "path": "C:\\Users\\klimp\\OneDrive\\Documents\\Paradox Interactive\\Hearts of Iron IV\\mod\\chaos_redux\\paradox_wiki\\Data structures - Hearts of Iron 4 Wiki.md",
+    "startLine": 435,
+    "endLine": 443,
+    "revision": "62273f37ed30e5479acb331a8973f48dadc1867c4913c8a940e3e790e7af32d4",
+    "text": "### Variable types <a id=\"Variable_types\"></a>\n\nThere are two types of variables: regular and temporary. There are the following differences between the two:\n\n- Different effects are used to set and modify regular and temporary variables. Typically, the difference is just in changing `variable` to `temp_variable`.\n- Temporary variables only exist within the effect or trigger block where they're defined, similarly to regular event targets (although without carrying over to events). This does not mean they don't survive outside of the scope where they're defined, but the '*entire* effect block, such as a focus reward or an event option. Meanwhile, regular variables exist forever. Note that this, however, does not always function properly in regards to scripted effects or triggers: temporary variables defined within of them may not still exist outside of them within the same effect/trigger block. However, a temporary variable defined before the scripted effect or trigger's usage will always carry on into it and get modified properly within.\n- Due to the previous point, **temporary variables can be defined and modified in trigger blocks** as well as in effect blocks. This enables them to be computed as-needed in scripted triggers called from the `trigger` block of scripted localizations. Meanwhile, regular variables are restricted to only being defined in effect blocks.\n- Temporary variables are unscoped: they will remain the same regardless of in which scope they're defined and where they're checked. Meanwhile, regular variables are restricted to scopes, so that the variable has different values depending on which scope it's checked in, such as how different countries may have different stability values.\n"
+  },
+  {
+    "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Hearts of Iron IV\\common\\raids\\_documentation.md",
+    "startLine": 66,
+    "endLine": 117,
+    "revision": "eac06474fcbde3920523b9b49364f7797851c0cc45f4f0ef41321999a93be43e",
+    "text": "\tai_will_do = {\n\t\t# AI only wants to do raids if resulting AI weight is > 0\n\t\t# FROM refers to the target country\n\t\t# var:target_state and var:target_province can also be used when applicable\n\n\t    base = 2\n\t\tmodifier = {\n\t\t\tfactor = 0\n\t\t\t<triggers>\n\t\t}\n\t}\n\n\tai_min_success_chance = 0.1 # [Optional] Per-type override of RAIDS_MIN_SUCCESS_FOR_LAUNCH (0.0-1.0).\n\n\tmax_distance = 500 # [Optional] Hard cap on source-to-target path length, in universal distance units (same space as the engine's path lengths). Sources further away than this cannot be used. AI ignores this when unlimited_ai_range = yes.\n\n\tfire_only_once = yes # if the raid can only be executed once\n\tdays_re_enable = 60 # How many days before the raid can be created again against the same target.\n\t                    # There is RAID_DEFAULT_TARGET_COOLDOWN_DAYS define which is used if no value is specified in script.\n\t                    # Set to 0 if you don't want any cooldown.\n\n\tdays_to_prepare = 30\n\tspeed_multiplier = 1.0 # optional unit speed multiplier, default = 1 (see also: RAID_UNIT_SPEED_MULTIPLIER in defines.lua)\n\n\tallowed = {\n\t\t# Mainly for Country Specific Raids and for dlc locks\n\t}\n\n\t# Whether the raid type should be visible or not, before considering potential targets\n\tvisible = {\n\t\t# Keep these triggers simple for performance reasons\n\t}\n\n\t# Whether the raid type should be visible for a specific target\n\tshow_target = {\n        # Keep these triggers simple for performance reasons\n\t\t# Use FROM to refer to the target country, e.g. to prevent targeting allies\n\t\t# var:target_state and var:target_province can also be used when applicable\n    }\n\n\t# Available represents being able to prepare a raid\n\tavailable = {\n\t\t# Keep these triggers simple for performance reasons\n\t\t# Use FROM to refer to the target country, e.g. to prevent targeting allies\n\t\t# var:target_state and var:target_province can also be used when applicable\n\t}\n\n\t# Launchable represents being able to start a raid\n\tlaunchable = {\n\t\t# Use FROM to refer to the target country, e.g. to require being at war\n\t\t# var:target_state and var:target_province can also be used when applicable\n\t}"
+  },
+  {
+    "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Hearts of Iron IV\\common\\raids\\_documentation.md",
+    "startLine": 167,
+    "endLine": 180,
+    "revision": "eac06474fcbde3920523b9b49364f7797851c0cc45f4f0ef41321999a93be43e",
+    "text": "\tessential_equipment = {\n        # list of equipment archetypes and numbers\n        # Having this equipment (in stockpile) is a precondition for *creating* the raid, and\n        # will be collected after a raid is created\n\t\ttransport_plane_equipment = 5\n\n\t\tnukes = 1\t\t\t\t\t# number of nukes (if using nukes). See: nuke_type\n    }\n\n\tadditional_equipment = {\n\t\t# list of equipment archetypes and numbers\n\t\t# This equipment is collected after a raid is created (not needed for creating the raid)\n\t\t# Note: essential_equipment and additional_equipment are not additive, instead the max of both is used\n\t\t# Note: ships (ship hulls) can also be used, and will be primarily be collected from existing fleets"
+  },
+  {
+    "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Hearts of Iron IV\\common\\raids\\air_raids.txt",
+    "startLine": 144,
+    "endLine": 174,
+    "revision": "4bc5ced6afb625b65dcf01e45cfb6583b555bd8a045b53064675ccfe0ddbc657",
+    "text": "\t\tsuccess_levels = {\n\t\t\tfailure = {\n\t\t\t\tvictim_effects = {\n\t\t\t\t\tvar:target_state = {\n\t\t\t\t\t\tcustom_effect_tooltip = {\n\t\t\t\t\t\t\tlocalization_key = raid_facility_damage_tt\n\t\t\t\t\t\t\tDAMAGE = 5\n\t\t\t\t\t\t}\n\t\t\t\t\t\thidden_effect = {\n\t\t\t\t\t\t\tdamage_building = {\n\t\t\t\t\t\t\t\ttags = facility\n\t\t\t\t\t\t\t\tdamage = 0.05 # levels of damage\n\t\t\t\t\t\t\t\tprovince = var:ROOT.target_province\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t}\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t\tactor_effects = {\n\t\t\t\t\traid_damage_units = {\n\t\t\t\t\t\tplane_loss = 70\n\t\t\t\t\t\tratio = no\n\t\t\t\t\t}\n\t\t\t\t\traid_add_unit_experience = 0.05\n\t\t\t\t}\n\t\t\t\tvisual_effect = {\n\t\t\t\t\tentity = \"raid_failed_entity\"\n\t\t\t\t\tanimation = \"attack\"\n\t\t\t\t\t}\n\t\t\t}\n\t\t\tlimited_success = {\n\t\t\t    victim_effects = {"
+  }
+]

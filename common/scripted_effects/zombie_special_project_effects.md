@@ -41,3 +41,18 @@ The CXT fixture does not replace or clamp ordinary profiles.
 No icons, sprites, GUI layouts, portraits, or assets are introduced by this helper.
 The existing report uses `GFX_report_event_generic_biowarfare` and is unchanged.
 If a future sandbox requires several representative strains, add explicitly documented fixture variants derived from real choice sequences rather than a universal buff.
+
+## Native raid consequence contract
+
+`apply_weaponized_zombie_strike_consequences` runs in country scope with ROOT equal to the exact raid actor after `weaponized_zombie_native_raid_context_is_valid` and the fixed bridge event's prepared tier/friendly checks succeed.
+It reads regular targets `zombie_native_raid_actor`, `zombie_native_raid_victim`, and `zombie_native_raid_target_state`; it never infers the victim from FROM.
+It initializes caller-owned temporary `cbrn_action_doctrine_condemnation_mult` before calling `cbrn_set_doctrine_condemnation_mult_from_country` and consumes the returned canonical mastery multiplier only in that same caller frame.
+Defaults and tuning come from the existing `weaponized_zombies`, `condemnation_severity`, `condemnation_context`, `cbrn_math`, and canonical doctrine categories; no tuning values or probabilities are added.
+It marks accepted deployment, preserves hostile non-zombie condemnation, political penalties, use history, treaty and Kruger consequences, and preserves friendly anti-zombie achievement credit.
+It has no resource debit, refund, persistent dispatch scalar, or fabricated receipt.
+The minor and full resolvers in `common/scripted_effects/zombie_native_raid_effects.txt` call it before their existing state-to-actor spawn nesting, so the original target's zombie-control status remains available for consequence classification.
+The paired resolver owns the final gate and applies both consequences and spawn in the same accepted effect block.
+
+Call sites are the 12 fixed events `zombie_native_raid_bridge.1` through `.12`, through the minor/full resolver helpers.
+All 18 limited-success/success/critical-success callbacks across the six existing native raid types dispatch those events.
+Helper contracts and native validation limits are in `common/scripted_effects/zombie_native_raid_effects.md` and the dated zombie native authorization handoff.

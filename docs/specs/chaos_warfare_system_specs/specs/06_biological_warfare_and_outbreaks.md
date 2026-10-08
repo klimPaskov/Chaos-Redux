@@ -2,6 +2,10 @@
 
 > **2026-09-20 accepted amendment:** The user's explicit CBRN implementation request in [the accepted overhaul amendment](13_2026_09_20_accepted_cbrn_overhaul.md) supersedes conflicting older requirements in this file. Use the amendment and [requirement ledger](../../../plans/chaos_warfare_system_plans/2026-09-20_cbrn_overhaul_requirement_ledger.md) before treating any role, policy, raid, project, limit, organization, or asset here as current design.
 
+The public operative-interface retention claims below are specifically superseded by that accepted native-raid-only/removal direction.
+The [consolidation map](../../../plans/chaos_warfare_system_plans/2026-10-08_native_biological_operation_consolidation.md) records all five retired intelligence attacks, operation-only preparation/phases/capture/refunds, native successors and retained shared capabilities.
+Ordinary research, agent profiles, lifecycle, countermeasures, evidence, covert achievements and the separate zombie project/outbreak package remain subject to their accepted contracts; an internal `operative_release` route does not authorize a public intelligence operation.
+
 ## Design role
 
 Biological warfare is a slow, uncertain, and potentially self-propagating weapon system. It is not chemical warfare with a longer state modifier. Its central mechanics are incubation, detection, spread, outbreak intensity, containment, attribution, mutation risk, and public-health capacity.
@@ -195,7 +199,10 @@ Outcomes:
 
 A successful delivery does not guarantee an outbreak. It creates contamination and an incubation timer.
 
-### Operative outbreak operation
+### Operative outbreak operation — superseded public interface
+
+Disposition: the historical requirements in this subsection are superseded for network/operative preparation, intelligence phases and captured-character consequences.
+Native supply-chain raids provide public covert deployment; no captured-character proxy or operation-only Command Power refund is migrated into native callbacks.
 
 Uses the existing intelligence-operation concept.
 
@@ -225,11 +232,13 @@ It targets concentrated armies and supply areas. It has lower strategic spread t
 
 ### Sabotage of food, water, or medical systems
 
-Covert deployment uses the native operative-operation family. It creates lower initial dose, high attribution uncertainty, and severe political consequence after discovery without generating one decision card for every eligible state.
+Public covert deployment uses native supply-chain sabotage raids and the shared ordinary lifecycle, retaining route-specific exposure, attribution and discovery consequences without generating one decision card for every eligible state.
+The earlier public operative-family retention claim is superseded; the shared Event 016 route and covert history requirements remain.
 
 ## Chaos Warfare doctrine interaction
 
-Chaos Warfare doctrine is an escalation path. It may raise seed potency, outbreak growth, spread, deaths, duration, medical saturation, preparation speed, and aggressive AI willingness. It may also ease deployment through bounded preparation savings or a bounded Command Power refund after an operation has resolved.
+Chaos Warfare doctrine is an escalation path. It may raise seed potency, outbreak growth, spread, deaths, duration, medical saturation, preparation speed, and aggressive AI willingness.
+Native routes retain their accepted preparation and downstream doctrine contracts, while the removed intelligence interface's Command Power refunds are superseded and must not be copied into native outcomes.
 
 Condemnation is the only consequence record doctrine may reduce. Doctrine may not reduce physical payload debit, evidence, attribution, deaths or death history, contamination or contamination history, medical saturation or medical history, confirmed-use history, domestic war-support penalties, biological-use counters, accident records, resistance trauma, or public-harm floors.
 
@@ -245,17 +254,25 @@ Do not replay those decision instructions as current work, or treat either snaps
 
 The strategic biological raid tranche uses the native selected state, exact agent payload reservation and debit, six biological outcomes, and state-owned incubation and lifecycle ticks. All four ordinary agents use identical native base success, critical-success, and disaster factors. Verified aircraft, formation, intelligence, interception, anti-air, radar, reliability, and operational conditions may modify those factors, but agent identity does not. It does not seed contamination from continuous air activity or infer a launch state.
 
-The ordinary operative-release tranche implements four separate native intelligence operations for Anthrax, Plague, Tularemia, and Smallpox. Each operation uses its native selected state, agent-specific state profile, native non-refunded agent equipment, distinct preparation time and equipment bill, and abort, partial-release, or full-release resolution. Partial and full release enter the same state-owned lifecycle as the strategic raid with the operative-release route profile; an abort records an attempt but does not create confirmed biological-use history. The operation engine does not expose the runtime amount charged by its equipment block, so the native cost and `return_on_complete = no` are authoritative and no numeric payload proof or lifecycle amount is fabricated for this route.
+Historical operative-release tranche, superseded for public-interface retention: four intelligence operations previously selected exact states and entered the shared lifecycle through `operative_release`, using native intelligence-operation equipment and abort/partial/full results.
+Their operation-only costs, network, operatives, phases, capture handling and refunds are retired; exact archived source/Git identities and native replacements are recorded in the consolidation map.
+The shared route token remains for Event 016's native owner and is not deleted or renumbered.
 
 The battlefield-dissemination tranche implements four separate native land raids for Anthrax, Plague, Tularemia, and Smallpox. Deployment is not a decision click. Each raid selects the exact native target state, starts from a supply node, assigns an infantry, motorized, or mechanized formation, reserves the exact matching agent payload as essential equipment, and resolves failure, limited success, success, or critical success through the shared ordinary lifecycle. All four agents use the same native base success factor. Pathogen Handling Protocols, derived full protection readiness, battlefield-use policy, the matching project, and national last-resort safeguards where applicable are mandatory. A vanilla-doctrine country can satisfy these gates without Theater CBRN Headquarters; the native selected state and assigned formation prove release context.
 
 The current raid API exposes no launch callback and no exact link between a headquarters command and the raid's selected state. The implementation therefore does not infer a headquarters state or retain a proxy. If exact authorization or target context is invalid at resolution, the reserved payload remains lost and no release, evidence substitute, or use record is fabricated. Successful primary dispatch may create one bounded adjacent friendly connected-spread seed. It performs no alternate-state search or periodic retry.
 
-The current-version `on_operative_captured` hook reads the captured character's exact operation token, assigned country, and positive assigned state. Every actual capture callback is evaluated immediately. A capture matching a live seeded episode creates confirmed attribution and a one-shot outbreak coverup consequence; otherwise it creates attempt and coverup consequences without falsely recording completed weapon use. The engine exposes no unique operation-instance identifier, so actual captured operatives cannot be deduplicated by operation without inventing identity. Missing or mismatched context fails closed, with no inferred country, inferred state, periodic search, proxy, estimator, or fallback.
+Historical capture interface, superseded and retired: the ordinary attack package used actual `on_operative_captured` character/operation pointers to distinguish a matching seeded episode from an attempt.
+Native raid outcomes expose no captured-character counterpart, and no synthetic capture or proxy replaces this operation-only layer.
+Shared lifecycle discovery, attribution, covert coverup history and Condemnation remain attached to their genuine current consumers.
 
-Theater Contamination and Terminal Hazard doctrine increase operation success and refund bounded Command Power after resolution while leaving the native equipment cost intact. Operation AI uses defensive-profile suppression and agent-specific target-country evidence. The native API cannot rank the eventual selected state, and current-version triggers expose no exact state-scope frontline predicate; Tularemia therefore uses only verified troop-presence and supply-node evidence rather than unrelated buildings or an estimator.
+Historical intelligence-operation success modifiers, AI and Command Power refunds are superseded with that interface.
+Native route AI and consequence doctrine use their current owner contracts, while the zombie consequence caller retains the canonical current mastery multiplier before its getter returns.
+Existing physical target evidence remains required; unrelated buildings or inferred fronts are not substitutes.
 
-The generic exact-state supply-chain decision tranche is retired. Native `state_target` decisions expand into one card for every eligible state, which violates the accepted non-spam decision-surface rule. The four native operative operations provide the covert ordinary-agent route, the Japan–China campaign retains its two historically bounded exact-state decisions, strategic and battlefield deployment retain their raid surfaces, and doomsday release remains a decision. Legacy supply-chain decision identifiers and resolvers remain fail-closed for migration: no country can list a new target, while an already committed exact ledger can still finish or clean up without an alternate state, proxy, payload refund, or fabricated release.
+The generic exact-state supply-chain decision tranche is retired because native `state_target` decisions would expand into one card for every eligible state.
+The earlier operative/Japan-decision/doomsday-decision delivery claims in this dated snapshot are superseded as current public-interface instructions.
+Supply-chain covert, Japan campaign and doomsday deployment use their native raids; legacy committed-ledger cleanup remains separate and cannot start a new attack, select an alternate state or fabricate a release/refund.
 
 The ordinary lifecycle reads `smallpox_vaccination_program_idea` directly for agent-specific growth, spread, and death multipliers. Recovery calls `bio_lifecycle_cleanup_state_response_if_no_ordinary_episode` for the exact state. This removes field hospitals, quarantine, stale legacy protection state, and the quarantine modifier only after no ordinary episode remains.
 
@@ -263,7 +280,8 @@ The current implementation has no `common/on_actions/chaosx_on_actions_biowarfar
 
 `GFX_decision_bio_designate_strategic_raid_staging_state` is registered in `interface/biological_warfare.gfx`. Strategic raids reuse the byte-preserved Chaos Redux raid icons under `gfx/interface/military_raids/`.
 
-The operative operations reuse the existing `GFX_operations_plant_bioweapon`, `GFX_operations_plant_bioweapon_map`, and operation phase sprites. Weaponized-zombie operations remain separate and retain their existing project, operation, effects, and player-facing outcome text.
+Historical operation sprites and their eight exclusive DDS consumers are retired with all five public intelligence attacks, as recorded by the consolidation asset crosswalk.
+Native map/equipment sprites and the separate zombie project/profile/outbreak package remain; the older instruction to retain zombie intelligence operations is specifically superseded.
 
 The historically specific Japan–China campaign tranche implements two exact-state decisions on the explicit Pingfang and Ishii authority route. The Anthrax supply-network action and Plague-vector action require an enemy-controlled Chinese core state adjacent to real Japanese or Japanese-subject occupation, consume exact agent payload, support equipment, Command Power, and Political Power, and enter the shared ordinary lifecycle through the private `japan_china_campaign` route. Both decisions use equal deterministic release acceptance after their exact gates pass; agent identity changes lifecycle potency, not delivery success. Route-aware AI distinguishes logistics and urban targets, doctrine shortens the national cooldown and grants only a bounded post-dispatch Command Power refund, and no target, frontline, launch state, proxy, estimator, refund, alternate action, or periodic pulse is fabricated.
 

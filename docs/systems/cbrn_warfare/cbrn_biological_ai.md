@@ -83,11 +83,11 @@ Their different payload reservations, preparation costs, lifecycle profiles, cou
 - `cbrn_ai_has_conventional_army_deficit` pauses offensive expansion before ordinary army supply is sacrificed.
 - Special-project completion grants the exact delivery technology that enables the exact payload model.
 - Ordinary strategic and battlefield deployment remains on the raid surfaces.
-- Ordinary covert deployment uses the four native operative operations. The generic state-target supply-chain decision family is invisible migration code because it would generate one card per eligible state. Strategic, battlefield, supply-chain, and doomsday deployment use the two accepted native CBRN raid categories; the historically scoped Japan-China actions are being migrated separately.
-- Historically precise Japan-China campaign releases remain targeted decisions.
+- Ordinary covert deployment uses native supply-chain sabotage raids. The generic state-target supply-chain decision family is invisible migration code because it would generate one card per eligible state. Strategic, battlefield, supply-chain, Japan campaign and doomsday deployment use the two accepted native CBRN raid categories.
+- No public biological intelligence attack is selected; the internal `operative_release` lifecycle token remains for Event 016's native owner.
 - Biological doomsday release uses `biological_stockpile_doomsday_raid` under `biological_raids`.
 - An unrestricted actor under formal censure receives a continuation preference only when a current enemy has reached the exact near-victory surrender threshold.
-- An actor at its own near-capitulation threshold stops choosing ordinary strategic raids, battlefield raids, covert sabotage, operative release, and Japan-China campaign actions.
+- An actor at its own near-capitulation threshold stops choosing ordinary strategic raids, battlefield raids, covert sabotage and Japan-China campaign actions.
 - An explicitly authorized doomsday route leaves the doomsday raid as the sole biological release choice during collapse.
 - A collapsing actor without that route strongly prefers exact stockpile destruction instead of continued release.
 
@@ -119,7 +119,7 @@ Required Stage 10 follow-up:
 
 - finish event-driven regimental template adoption and removal while preserving exact stock and unlock gates;
 - connect the offensive chemical template gates to an exact target receipt once the Stage 6 chemical delivery adapter exposes one;
-- finish the exact operation target-country and relationship audit within the native operation interface;
+- finish native raid target, relationship, current authorization and outcome scenarios; no retired intelligence adapter is a pending implementation route;
 - complete the historically sourced designer-identity audit and confirm the differentiated profile weights against the package scenarios;
 - run the seven-major and three-minor scenario matrix after those consumers are complete;
 - carry completed headquarters, countermeasure, sanction-response, and collapse behavior through the final Stage 10 audit.

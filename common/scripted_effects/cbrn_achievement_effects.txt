@@ -283,16 +283,6 @@ cbrn_achievement_record_chemical_action = {
 		if = { limit = { NOT = { has_variable = cbrn_achievement_first_covert_operation_day } } set_variable = { cbrn_achievement_first_covert_operation_day = global.num_days } }
 	}
 	if = {
-		limit = {
-			OR = {
-				check_variable = { var = bio_seed_route value = constant:bio_lifecycle_route.operative_release compare = equals }
-				check_variable = { var = bio_seed_route value = constant:bio_lifecycle_route.food_water_medical_sabotage compare = equals }
-			}
-			check_variable = { var = bio_seed_result value = constant:bio_lifecycle_result.success compare = equals }
-		}
-		set_country_flag = cbrn_achievement_covert_strategic_result_history
-	}
-	if = {
 		limit = { check_variable = { var = cbrn_action_severity value = constant:cbrn_operation_severity.doomsday compare = equals } }
 		set_country_flag = cbrn_achievement_doomsday_use_history
 		set_country_flag = cbrn_achievement_strategic_civilian_attack_history
@@ -430,8 +420,9 @@ cbrn_achievement_record_chemical_episode = {
 	cbrn_achievement_record_nerve_episode = yes
 }
 
-# Country scope. Called once for each actual deliberate biological seed, before
-# later incubation, spread, or confirmation can create duplicate use records.
+# Country scope. Receives an accepted deliberate seed's route and result from
+# the lifecycle's use-history callback. Records each covert use and its first
+# day separately from the one-time delivery-family history.
 cbrn_achievement_record_biological_operation = {
 	set_country_flag = cbrn_achievement_biological_operation_history
 	if = {
@@ -458,14 +449,21 @@ cbrn_achievement_record_biological_operation = {
 				check_variable = { var = bio_seed_route value = constant:bio_lifecycle_route.operative_release compare = equals }
 				check_variable = { var = bio_seed_route value = constant:bio_lifecycle_route.food_water_medical_sabotage compare = equals }
 			}
-			NOT = { has_country_flag = cbrn_achievement_operation_biological_covert_history }
 		}
-		set_country_flag = cbrn_achievement_operation_biological_covert_history
-		add_to_variable = { cbrn_achievement_operation_type_count = constant:cbrn_achievement_value.one }
+		# Count the delivery family once and each accepted covert use separately.
+		if = {
+			limit = { NOT = { has_country_flag = cbrn_achievement_operation_biological_covert_history } }
+			set_country_flag = cbrn_achievement_operation_biological_covert_history
+			add_to_variable = { cbrn_achievement_operation_type_count = constant:cbrn_achievement_value.one }
+		}
 		set_country_flag = cbrn_achievement_covert_operation_history
 		if = { limit = { NOT = { has_variable = cbrn_achievement_covert_operation_count } } set_variable = { cbrn_achievement_covert_operation_count = constant:cbrn_achievement_value.zero } }
 		add_to_variable = { cbrn_achievement_covert_operation_count = constant:cbrn_achievement_value.one }
 		if = { limit = { NOT = { has_variable = cbrn_achievement_first_covert_operation_day } } set_variable = { cbrn_achievement_first_covert_operation_day = global.num_days } }
+		if = {
+			limit = { check_variable = { var = bio_seed_result value = constant:bio_lifecycle_result.success compare = equals } }
+			set_country_flag = cbrn_achievement_covert_strategic_result_history
+		}
 	}
 	if = {
 		limit = { check_variable = { var = bio_seed_route value = constant:bio_lifecycle_route.field_test_release compare = equals } NOT = { has_country_flag = cbrn_achievement_operation_biological_field_test_history } }

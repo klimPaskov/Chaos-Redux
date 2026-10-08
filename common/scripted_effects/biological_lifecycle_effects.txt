@@ -1606,69 +1606,6 @@ bio_lifecycle_release_confirmed_condemnation_if_due = {
 	}
 }
 
-# State scope. The caller has proven an exact captured ordinary operation,
-# assigned country, assigned state, actor, victim, agent, and matching operative
-# release episode. Capture raises evidence and attribution immediately, adds
-# coverup pressure once, and releases all latent Condemnation without marking
-# the still-incubating or hidden outbreak as medically detected.
-bio_lifecycle_confirm_operative_release_from_capture = {
-	if = {
-		limit = { bio_operative_release_capture_matches_seeded_episode = yes }
-		set_temp_variable = { bio_active_agent = bio_operation_agent }
-		meta_effect = {
-			text = {
-				if = {
-					limit = {
-						check_variable = {
-							var = bio_agent_[BIO_AGENT]_evidence
-							value = constant:bio_lifecycle_evidence.confirmed_operative_floor
-							compare = less_than
-						}
-					}
-					set_variable = { bio_agent_[BIO_AGENT]_evidence = constant:bio_lifecycle_evidence.confirmed_operative_floor }
-				}
-				if = {
-					limit = {
-						check_variable = {
-							var = bio_agent_[BIO_AGENT]_actor_evidence
-							value = constant:bio_lifecycle_evidence.confirmed_operative_floor
-							compare = less_than
-						}
-					}
-					set_variable = { bio_agent_[BIO_AGENT]_actor_evidence = constant:bio_lifecycle_evidence.confirmed_operative_floor }
-				}
-				if = {
-					limit = { NOT = { has_state_flag = bio_agent_[BIO_AGENT]_operative_capture_coverup_recorded } }
-					add_to_variable = { bio_agent_[BIO_AGENT]_condemnation_base = constant:bio_lifecycle_condemnation.coverup_add }
-					clamp_variable = {
-						var = bio_agent_[BIO_AGENT]_condemnation_base
-						min = constant:bio_lifecycle_math.zero
-						max = constant:bio_lifecycle_condemnation.maximum
-					}
-					set_state_flag = bio_agent_[BIO_AGENT]_operative_capture_coverup_recorded
-				}
-				set_variable = { bio_agent_[BIO_AGENT]_attribution = constant:bio_lifecycle_attribution.confirmed_attack }
-				set_variable = { bio_agent_[BIO_AGENT]_operative_last_attempt_evidence = constant:bio_lifecycle_evidence.confirmed_operative_floor }
-					set_state_flag = bio_agent_[BIO_AGENT]_operative_attempt_confirmed_history
-					set_state_flag = bio_confirmed_operative_attribution_history
-					if = {
-						limit = {
-							has_variable = bio_agent_[BIO_AGENT]_actor
-							var:bio_agent_[BIO_AGENT]_actor = { exists = yes }
-						}
-						var:bio_agent_[BIO_AGENT]_actor = {
-							set_country_flag = cbrn_achievement_covert_discovered_history
-							set_country_flag = cbrn_achievement_covert_coverup_history
-						}
-					}
-			}
-			BIO_AGENT = "[?bio_active_agent|.0]"
-		}
-		bio_lifecycle_load_current_agent_record = yes
-		set_temp_variable = { bio_current_attribution = constant:bio_lifecycle_attribution.confirmed_attack }
-		bio_lifecycle_release_confirmed_condemnation_if_due = yes
-	}
-}
 
 # Confirmed accidents release their own public Condemnation and domestic cost.
 # They never set deliberate-use history or invoke unconventional-use treaties.

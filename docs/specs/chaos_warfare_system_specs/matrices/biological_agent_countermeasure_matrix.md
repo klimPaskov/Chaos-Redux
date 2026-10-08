@@ -20,10 +20,13 @@ The individual trait columns remain non-monotonic because they describe distinct
 
 ## Delivery matrix
 
+The public-operative row is a superseded historical proposal under [accepted amendment 13](../specs/13_2026_09_20_accepted_cbrn_overhaul.md), not a current attack interface.
+The [consolidation map](../../../plans/chaos_warfare_system_plans/2026-10-08_native_biological_operation_consolidation.md) records native supply-chain successors and the explicit retirement of operation-only network/operative/phases/capture/refund behavior; unrelated profile and response rows remain unchanged.
+
 | Delivery | Anthrax | Plague | Tularemia | Smallpox | Preparation | Attribution risk | Friendly spread risk |
 | --- | --- | --- | --- | --- | ---: | ---: | ---: |
 | strategic air raid | strong | strong | strong | strong late | 21 to 45 days | high | medium |
-| operative outbreak | strong | strong | moderate | strong | 90 to 240 days | low to extreme on capture | medium to high |
+| operative outbreak — superseded public interface | strong | strong | moderate | strong | historical 90 to 240 days | historical low to extreme on capture | historical medium to high |
 | battlefield dissemination | moderate persistent effect | serious spread effect | low overall with high disruption | severe long-incubation effect | 14 to 30 days | high | high |
 | food or water sabotage | moderate | strong | moderate | moderate | 120 to 300 days | low initially | medium |
 | stockpile accident | strong local | strong spread | moderate | strong spread | none | public if severe | domestic high |
@@ -86,7 +89,7 @@ The model applies these rates to an exposed share, not automatically to the whol
 
 | Action | Base gain when confirmed | Additional pressure |
 | --- | ---: | --- |
-| covert failed seed with no outbreak | 5 to 15 | captured operative or samples |
+| covert failed seed with no outbreak | 5 to 15 | retained forensic evidence or samples; operation-only captured-character consequence retired |
 | local deliberate outbreak | 15 to 40 | deaths and non-core target |
 | strategic raid | 30 to 70 | target population and spread |
 | repeated cross-border spread | +10 to 30 | repeat-use and coverup |

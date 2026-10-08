@@ -2,6 +2,10 @@
 
 Before reusing this prompt, apply the user's accepted 2026-09-20 CBRN amendment at `docs/specs/chaos_warfare_system_specs/specs/13_2026_09_20_accepted_cbrn_overhaul.md` and its requirement ledger. Older conflicting reward, policy, raid, unit, project, or asset requests are superseded.
 
+The earlier public biological operative-retention instruction is specifically superseded by the accepted native-raid-only/removal design.
+Resume from the [native consolidation map](../../../plans/chaos_warfare_system_plans/2026-10-08_native_biological_operation_consolidation.md); do not recreate the retired intelligence attacks, phases, captured-character handlers, refunds, helper APIs or operation-only art.
+Preserve Event 016's shared `operative_release` lifecycle route, genuine covert detection/history/achievement consumers and the separate zombie project/profile/outbreak package.
+
 Implement the complete Chaos Warfare CBRN rework from this planning package in the Chaos Redux repository. Treat the user's 2026-09-20 amendment as accepted design and keep earlier package proposals subordinate where they conflict. Do not reduce it to a doctrine-stat pass.
 
 Before editing, read `AGENTS.md`, every relevant repo skill, the current chemical and biological docs and implementation, the condemnation impact spec, the offline Paradox wiki pages required by AGENTS.md, and current Hearts of Iron IV 1.19 documentation and vanilla examples. Inspect exact Army Headquarters, regimental support, essential equipment, company-gated ability, `unit_modifiers`, raid, air mission, MIO, AI, unit, equipment, and scripted GUI patterns. If a planned engine surface is unsupported, stop that surface and report the blocker. Do not silently substitute an approximation.
@@ -17,7 +21,7 @@ Use the stages below only for requirements still open in the current ledger. Ver
 5. Add Army HQ support companies and company-gated order abilities with command-power scaling and current `unit_modifiers` behavior.
 6. Rework the grand doctrine, four tracks, four milestones, doctrine-only technologies, officer corps, traits, icons, and AI.
 7. Refactor cylinder, projector, artillery, armor, aircraft, raid, and tactic delivery through one chemical exposure helper. Explicit chemical air operations and raids must consume payload and contaminate exact target states only through the shared pipeline. Continuous mission contamination remains fail-closed until a verified current-version mission hook exists; no estimator, aircraft-presence proxy, or other fallback may be retained, and idle aircraft never count as use.
-8. Refactor biological raids, operative operations, accidents, incubation, detection, spread, countermeasures, captured facilities, evidence, and doomsday release. Keep weaponized zombies separate except for shared helper call sites.
+8. Complete open biological native-raid, accident, incubation, detection, spread, countermeasure, captured-facility, evidence and doomsday contracts. Public operative retention is superseded; preserve shared lifecycle consumers and the separate zombie package through its native raids without inventing captured-character proxies.
 9. Wire one action record to Deaths, Air Cleanliness, Condemnation, chaos, and diplomatic consequences without double counting.
 10. Retire the superseded targeted occupation attack decisions and adapter; preserve historical occupation records and keep the separate camp method under its own payload and consequence contract.
 11. Implement AI program posture, research, production, templates, headquarters, operation use, protection, containment, and sanctions response for the country profiles.

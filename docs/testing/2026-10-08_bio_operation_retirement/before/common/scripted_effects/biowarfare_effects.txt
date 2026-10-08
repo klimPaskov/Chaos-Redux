@@ -1,0 +1,210 @@
+# ============================================================================
+# CHAOS REDUX - BIOLOGICAL OPERATION AND STABLE ENTRY EFFECTS
+# ============================================================================
+# Overview:
+# - Preserves the weaponized-zombie intelligence-operation helpers without
+#   mixing zombie outbreak state into the ordinary pathogen lifecycle.
+# - Keeps the stable doomsday entry identifier as a thin call to the exact
+#   biological doomsday resolver.
+# - Legacy apply_*_contamination calculators, immediate biological death
+#   registration, inferred field-test targeting, and all-state refresh helpers
+#   have been removed after caller migration.
+# ============================================================================
+
+bio_set_integrated_operations_bw_modifiers_from_actor_country = {
+	set_temp_variable = { var = bio_bw_condemnation_mult value = 1 }
+	set_temp_variable = { var = bio_outbreak_potency_mult value = 1 }
+	set_temp_variable = { var = bio_outbreak_duration_mult value = 1 }
+
+	if = {
+		limit = { var:actor_country = { has_country_flag = integrated_chemical_operations_theater_intelligence_overmatch_unlocked } }
+		set_temp_variable = { var = bio_bw_condemnation_mult value = constant:chem_integrated_operations.condemnation_mult.theater_intelligence_overmatch }
+		set_temp_variable = { var = bio_outbreak_potency_mult value = constant:bio_integrated_operations.outbreak_potency_mult.theater_intelligence_overmatch }
+		set_temp_variable = { var = bio_outbreak_duration_mult value = constant:bio_integrated_operations.outbreak_duration_mult.theater_intelligence_overmatch }
+	}
+	else_if = {
+		limit = { var:actor_country = { has_country_flag = integrated_chemical_operations_air_surface_chemical_link_unlocked } }
+		set_temp_variable = { var = bio_bw_condemnation_mult value = constant:chem_integrated_operations.condemnation_mult.air_surface_chemical_link }
+		set_temp_variable = { var = bio_outbreak_potency_mult value = constant:bio_integrated_operations.outbreak_potency_mult.air_surface_chemical_link }
+		set_temp_variable = { var = bio_outbreak_duration_mult value = constant:bio_integrated_operations.outbreak_duration_mult.air_surface_chemical_link }
+	}
+	else_if = {
+		limit = { var:actor_country = { has_country_flag = integrated_chemical_operations_signal_intelligence_fusion_unlocked } }
+		set_temp_variable = { var = bio_outbreak_potency_mult value = constant:bio_integrated_operations.outbreak_potency_mult.signal_intelligence_fusion }
+		set_temp_variable = { var = bio_outbreak_duration_mult value = constant:bio_integrated_operations.outbreak_duration_mult.signal_intelligence_fusion }
+	}
+
+	if = {
+		limit = { var:actor_country = { has_country_flag = integrated_chemical_operations_operational_recon_grids_unlocked } }
+		if = {
+			limit = { check_variable = { var = bio_bw_condemnation_mult value = 1 compare = greater_than_or_equals } }
+			set_temp_variable = { var = bio_bw_condemnation_mult value = constant:chem_integrated_operations.condemnation_mult.operational_recon_grids }
+		}
+	}
+}
+bio_set_integrated_operations_bw_modifiers_from_operation_actor = {
+	set_temp_variable = { var = bio_bw_condemnation_mult value = 1 }
+	set_temp_variable = { var = bio_outbreak_potency_mult value = 1 }
+	set_temp_variable = { var = bio_outbreak_duration_mult value = 1 }
+
+	if = {
+		limit = { event_target:bio_operation_actor = { has_country_flag = integrated_chemical_operations_theater_intelligence_overmatch_unlocked } }
+		set_temp_variable = { var = bio_bw_condemnation_mult value = constant:chem_integrated_operations.condemnation_mult.theater_intelligence_overmatch }
+		set_temp_variable = { var = bio_outbreak_potency_mult value = constant:bio_integrated_operations.outbreak_potency_mult.theater_intelligence_overmatch }
+		set_temp_variable = { var = bio_outbreak_duration_mult value = constant:bio_integrated_operations.outbreak_duration_mult.theater_intelligence_overmatch }
+	}
+	else_if = {
+		limit = { event_target:bio_operation_actor = { has_country_flag = integrated_chemical_operations_air_surface_chemical_link_unlocked } }
+		set_temp_variable = { var = bio_bw_condemnation_mult value = constant:chem_integrated_operations.condemnation_mult.air_surface_chemical_link }
+		set_temp_variable = { var = bio_outbreak_potency_mult value = constant:bio_integrated_operations.outbreak_potency_mult.air_surface_chemical_link }
+		set_temp_variable = { var = bio_outbreak_duration_mult value = constant:bio_integrated_operations.outbreak_duration_mult.air_surface_chemical_link }
+	}
+	else_if = {
+		limit = { event_target:bio_operation_actor = { has_country_flag = integrated_chemical_operations_signal_intelligence_fusion_unlocked } }
+		set_temp_variable = { var = bio_outbreak_potency_mult value = constant:bio_integrated_operations.outbreak_potency_mult.signal_intelligence_fusion }
+		set_temp_variable = { var = bio_outbreak_duration_mult value = constant:bio_integrated_operations.outbreak_duration_mult.signal_intelligence_fusion }
+	}
+
+	if = {
+		limit = { event_target:bio_operation_actor = { has_country_flag = integrated_chemical_operations_operational_recon_grids_unlocked } }
+		if = {
+			limit = { check_variable = { var = bio_bw_condemnation_mult value = 1 compare = greater_than_or_equals } }
+			set_temp_variable = { var = bio_bw_condemnation_mult value = constant:chem_integrated_operations.condemnation_mult.operational_recon_grids }
+		}
+	}
+}
+# Canonical biological Condemnation adapter used by the separate
+# weaponized-zombie operation path.
+bio_register_condemnation_source = {
+	set_temp_variable = { condemnation_source_type = constant:condemnation_source.biological }
+	set_temp_variable = { condemnation_base_gain = bio_condemnation_base_gain }
+	set_temp_variable = { condemnation_visibility_type = constant:condemnation_visibility.public }
+	set_temp_variable = { condemnation_severity_type = bio_condemnation_severity_type }
+	set_temp_variable = { condemnation_civilian_deaths = 0 }
+	set_temp_variable = { condemnation_contamination_value = bio_condemnation_contamination_value }
+	set_temp_variable = { condemnation_victim_country = bio_condemnation_victim_country }
+	set_temp_variable = { condemnation_context_type = bio_condemnation_context_type }
+	condemnation_add_source = yes
+}
+
+bio_operation_calculate_plant_success_chance = {
+	set_temp_variable = { var = bio_operation_success_chance value = constant:bio_operation_plant_outbreak.base_success }
+	set_temp_variable = { var = bio_operation_infectiousness_bonus value = bio_operation_infectiousness }
+	multiply_temp_variable = { var = bio_operation_infectiousness_bonus value = constant:bio_operation_plant_outbreak.infectiousness_factor }
+	add_to_temp_variable = { var = bio_operation_success_chance value = bio_operation_infectiousness_bonus }
+
+	if = {
+		limit = {
+			ROOT = {
+				network_strength = {
+					target = FROM
+					value > constant:bio_operation_plant_outbreak.intel_floor_100
+				}
+			}
+		}
+		add_to_temp_variable = { var = bio_operation_success_chance value = constant:bio_operation_plant_outbreak.intel_bonus_100 }
+	}
+	else_if = {
+		limit = {
+			ROOT = {
+				network_strength = {
+					target = FROM
+					value > constant:bio_operation_plant_outbreak.intel_floor_80
+				}
+			}
+		}
+		add_to_temp_variable = { var = bio_operation_success_chance value = constant:bio_operation_plant_outbreak.intel_bonus_80 }
+	}
+	else_if = {
+		limit = {
+			ROOT = {
+				network_strength = {
+					target = FROM
+					value > constant:bio_operation_plant_outbreak.intel_floor_60
+				}
+			}
+		}
+		add_to_temp_variable = { var = bio_operation_success_chance value = constant:bio_operation_plant_outbreak.intel_bonus_60 }
+	}
+	else_if = {
+		limit = {
+			ROOT = {
+				network_strength = {
+					target = FROM
+					value > constant:bio_operation_plant_outbreak.intel_floor_40
+				}
+			}
+		}
+		add_to_temp_variable = { var = bio_operation_success_chance value = constant:bio_operation_plant_outbreak.intel_bonus_40 }
+	}
+
+	round_temp_variable = bio_operation_success_chance
+	clamp_temp_variable = {
+		var = bio_operation_success_chance
+		min = constant:bio_operation_plant_outbreak.min_success
+		max = constant:bio_operation_plant_outbreak.max_success
+	}
+	set_temp_variable = { var = bio_operation_failure_chance value = constant:bio_lifecycle_math.hundred }
+	subtract_from_temp_variable = { var = bio_operation_failure_chance value = bio_operation_success_chance }
+}
+
+bio_operation_apply_weaponized_zombie_consequences = {
+	bio_set_integrated_operations_bw_modifiers_from_operation_actor = yes
+
+	event_target:bio_operation_actor = {
+		set_country_flag = weaponized_zombie_has_successful_deployment
+		if = {
+			limit = { NOT = { has_country_flag = weaponized_zombie_friendly_to_humans } }
+			add_political_power = constant:weaponized_zombies.condemnation_pp_loss_negative
+			add_stability = constant:weaponized_zombies.condemnation_stability_loss_negative
+			add_war_support = constant:weaponized_zombies.condemnation_warsupport_loss_negative
+			set_temp_variable = { bio_condemnation_base_gain = constant:weaponized_zombies.condemnation_score }
+			multiply_temp_variable = { bio_condemnation_base_gain = bio_bw_condemnation_mult }
+			set_temp_variable = { bio_condemnation_severity_type = constant:condemnation_severity.major }
+			event_target:bio_operation_victim = { set_temp_variable = { bio_condemnation_victim_country = THIS } }
+			set_temp_variable = { bio_condemnation_contamination_value = 0 }
+			set_temp_variable = { bio_condemnation_context_type = constant:condemnation_context.weaponized_zombies }
+			bio_register_condemnation_source = yes
+			if = {
+				limit = { NOT = { has_variable = bioweapon_uses } }
+				set_variable = { bioweapon_uses = 0 }
+			}
+			add_to_variable = { bioweapon_uses = 1 }
+			set_country_flag = used_bioweapon
+			set_country_flag = used_unconventional_weapon
+			air_cleanliness_treaty_on_unconventional_use = yes
+			set_country_flag = used_weaponized_zombie_weapon
+			brilliant_scientist_krg_record_confirmed_offensive_biological_use = yes
+			every_other_country = {
+				limit = {
+					exists = yes
+					has_government = democratic
+					NOT = { tag = event_target:bio_operation_actor }
+				}
+				add_opinion_modifier = {
+					target = PREV
+					modifier = strategic_bioweapon_user
+				}
+			}
+		}
+	}
+
+	event_target:bio_operation_victim = { set_country_flag = bioweapon_target }
+}
+
+bio_execute_weaponized_zombie_plant_operation = {
+	random_list = {
+		bio_operation_failure_chance = {
+			custom_effect_tooltip = operation_plant_weaponized_zombie_failure_tt
+		}
+		bio_operation_success_chance = {
+			custom_effect_tooltip = operation_plant_weaponized_zombie_success_tt
+			event_target:bio_operation_actor = {
+				PREV = {
+					PREV = { spawn_weaponized_zombie_outbreak_from_creator = yes }
+				}
+			}
+			bio_operation_apply_weaponized_zombie_consequences = yes
+		}
+	}
+}

@@ -63,15 +63,13 @@ Source: `common/scripted_triggers/cbrn_ai_posture_triggers.txt`.
 
 All triggers are country scoped, side-effect free, and return false when required variables or proof are missing. They do not authorize a target, create activity evidence, infer an operation, inspect idle aircraft, refresh a biological arsenal snapshot, or provide any fallback.
 
-## Biological subsystem-private operation triggers
+## Retired biological intelligence triggers
 
-Source: `common/scripted_triggers/biological_operation_triggers.txt`. These triggers are not shared dynamic triggers and must not be moved into `chaosx_dynamic_triggers` without frequent, unrelated call sites.
-
-The four exact state selectors are `bio_operative_release_anthrax_target_state`, `bio_operative_release_plague_target_state`, `bio_operative_release_tularemia_target_state`, and `bio_operative_release_smallpox_target_state`. They combine the common ordinary-pathogen state gate with agent-specific target profiles and reject an already-active episode of the same agent. Anthrax selects airfield, port, depot, industry, or the existing `biowarfare_facility` building; Plague selects dense urban or transport states; Tularemia selects states with an actual troop presence or supply node; Smallpox selects mass-population or strategic states. Current-version script exposes no exact state-scope frontline predicate, so Tularemia does not use an unrelated building as a frontline substitute.
-
-`bio_operative_release_can_prepare_against_from` is the shared country-level readiness, use-policy, and relationship gate. Each operation combines it with its own completed project, exact stock checks, intelligence network, and valid-state requirement. `bio_operative_release_ai_may_target_from` adds route-aware first-use, domestic containment, retaliation, radicalism, and desperation rules without bypassing those native operation gates. The four `bio_operative_release_ai_*_target_profile` helpers distinguish high-value target countries from countries that merely contain a minimally eligible state; the native operation API does not expose a field for ranking the eventual selected state itself.
-
-`bio_operative_release_native_operation_scopes_are_valid` checks the current-version ROOT/FROM/FROM.FROM control relationship before the resolver dereferences the selected state. `bio_operative_release_native_context_is_valid` then validates the exact saved actor, victim, selected state, project, policy, readiness, and agent profile. The engine does not expose a runtime operation-equipment debit amount, so these triggers do not fabricate or validate one; the operation's native `equipment` block and `return_on_complete = no` are the debit authority. Capture triggers validate the ordinary operation token, `operation_country`, positive `operation_state`, exact employer and victim, and any matching live lifecycle episode. Missing or mismatched context returns false. There is no inferred state, alternate operation token, periodic scan, estimator, proxy, or fallback.
+Disposition: the `bio_operative_release_*` trigger family and `biological_operation_triggers.txt` source are retired with the public intelligence attacks under accepted amendment 13.
+Former network, operation-state and captured-character predicates are not current native raid requirements or callable APIs.
+Native supply-chain country/state gates remain in `biological_sabotage_raid_triggers.txt`; weaponized-zombie preflight and exact outcome gates remain in `002_zombie_outbreak_triggers.txt`.
+Strategic zombie permission requires Unrestricted Authorization or Retaliation Only with the exact unexpired victim right; Battlefield Authorization and friendly mode supply no bypass.
+The [consolidation map](../../docs/plans/chaos_warfare_system_plans/2026-10-08_native_biological_operation_consolidation.md) records the accepted retirement, shared retained routes and evidence limits.
 
 ## cbrn_country_has_program
 

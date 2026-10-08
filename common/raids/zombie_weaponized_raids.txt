@@ -19,6 +19,10 @@ types = {
 		ai_will_do = {
 			base = 1
 			modifier = {
+				factor = 0
+				NOT = { weaponized_zombie_raid_can_target_from = yes }
+			}
+			modifier = {
 				factor = constant:brilliant_scientist_raid_ai.kruger_state_factor
 				ROOT = { brilliant_scientist_is_active_kruger_state = yes brilliant_scientist_kruger_raid_ai_is_active = yes }
 			}
@@ -42,23 +46,25 @@ types = {
 
 		allowed = { }
 		visible = {
-			brilliant_scientist_biological_agent_weaponized_zombies_is_unlocked = yes
+			weaponized_zombie_raid_actor_is_authorized = yes
 			has_country_flag = weaponized_zombie_raid_success_low
 			NOT = { has_country_flag = weaponized_zombie_friendly_to_humans }
 		}
 		show_target = {
-			var:target_state = { is_weaponized_zombie_raid_target_state = yes }
-			NOT = { is_in_faction_with = FROM }
+			weaponized_zombie_raid_can_target_from = yes
 		}
 		available = {
 			custom_trigger_tooltip = {
-				hidden_trigger = { has_weaponized_zombie_raid_payload = yes }
-				tooltip = weaponized_zombie_raid_available_tooltip
+				tooltip = weaponized_zombie_raid_authorization_tt
+				hidden_trigger = { weaponized_zombie_raid_can_target_from = yes }
 			}
+			hidden_trigger = { has_weaponized_zombie_raid_payload = yes }
 		}
 		launchable = {
-			has_war_with = FROM
-			var:target_state = { is_weaponized_zombie_raid_target_state = yes }
+			custom_trigger_tooltip = {
+				tooltip = weaponized_zombie_raid_authorization_tt
+				hidden_trigger = { weaponized_zombie_raid_can_target_from = yes }
+			}
 		}
 
 		launch_sound = raid_launch_nuclear_strike
@@ -137,14 +143,13 @@ types = {
 				actor_effects = {
 					raid_damage_units = { plane_loss = 0.20 ratio = yes }
 					raid_add_unit_experience = 0.1
-					apply_weaponized_zombie_strike_consequences = yes
+					hidden_effect = {
+						capture_weaponized_zombie_native_raid_context = yes
+						var:actor_country = { country_event = { id = zombie_native_raid_bridge.1 } }
+					}
 				}
 				victim_effects = {
-					var:target_state = {
-						var:ROOT.actor_country = {
-							spawn_minor_weaponized_zombie_outbreak_from_creator = yes
-						}
-					}
+					custom_effect_tooltip = weaponized_zombie_raid_minor_outcome_tt
 				}
 			}
 			success = {
@@ -152,28 +157,26 @@ types = {
 				actor_effects = {
 					raid_damage_units = { plane_loss = 0.1 ratio = yes }
 					raid_add_unit_experience = 0.2
-					apply_weaponized_zombie_strike_consequences = yes
+					hidden_effect = {
+						capture_weaponized_zombie_native_raid_context = yes
+						var:actor_country = { country_event = { id = zombie_native_raid_bridge.2 } }
+					}
 				}
 				victim_effects = {
-					var:target_state = {
-						var:ROOT.actor_country = {
-							spawn_weaponized_zombie_outbreak_from_creator = yes
-						}
-					}
+					custom_effect_tooltip = weaponized_zombie_raid_full_outcome_tt
 				}
 			}
 			critical_success = {
 				custom_sound = generic_bioweapon_aerosol
 				actor_effects = {
 					raid_add_unit_experience = 0.35
-					apply_weaponized_zombie_strike_consequences = yes
+					hidden_effect = {
+						capture_weaponized_zombie_native_raid_context = yes
+						var:actor_country = { country_event = { id = zombie_native_raid_bridge.2 } }
+					}
 				}
 				victim_effects = {
-					var:target_state = {
-						var:ROOT.actor_country = {
-							spawn_weaponized_zombie_outbreak_from_creator = yes
-						}
-					}
+					custom_effect_tooltip = weaponized_zombie_raid_full_outcome_tt
 				}
 			}
 		}
@@ -192,28 +195,34 @@ types = {
 		}
 		ai_will_do = {
 			base = 1
+			modifier = {
+				factor = 0
+				NOT = { weaponized_zombie_raid_can_target_from = yes }
+			}
 			modifier = { factor = constant:brilliant_scientist_raid_ai.kruger_state_factor ROOT = { brilliant_scientist_is_active_kruger_state = yes brilliant_scientist_kruger_raid_ai_is_active = yes } }
 			modifier = { factor = constant:brilliant_scientist_raid_ai.kruger_host_factor ROOT = { brilliant_scientist_kruger_raid_ai_is_active = yes NOT = { brilliant_scientist_is_active_kruger_state = yes } } }
 		}
 		allowed = { }
 		visible = {
-			brilliant_scientist_biological_agent_weaponized_zombies_is_unlocked = yes
+			weaponized_zombie_raid_actor_is_authorized = yes
 			has_country_flag = weaponized_zombie_raid_success_medium
 			NOT = { has_country_flag = weaponized_zombie_friendly_to_humans }
 		}
 		show_target = {
-			var:target_state = { is_weaponized_zombie_raid_target_state = yes }
-			NOT = { is_in_faction_with = FROM }
+			weaponized_zombie_raid_can_target_from = yes
 		}
 		available = {
 			custom_trigger_tooltip = {
-				hidden_trigger = { has_weaponized_zombie_raid_payload = yes }
-				tooltip = weaponized_zombie_raid_available_tooltip
+				tooltip = weaponized_zombie_raid_authorization_tt
+				hidden_trigger = { weaponized_zombie_raid_can_target_from = yes }
 			}
+			hidden_trigger = { has_weaponized_zombie_raid_payload = yes }
 		}
 		launchable = {
-			has_war_with = FROM
-			var:target_state = { is_weaponized_zombie_raid_target_state = yes }
+			custom_trigger_tooltip = {
+				tooltip = weaponized_zombie_raid_authorization_tt
+				hidden_trigger = { weaponized_zombie_raid_can_target_from = yes }
+			}
 		}
 		launch_sound = raid_launch_nuclear_strike
 		target_type = { province = any }
@@ -262,14 +271,13 @@ types = {
 				actor_effects = {
 					raid_damage_units = { plane_loss = 0.20 ratio = yes }
 					raid_add_unit_experience = 0.1
-					apply_weaponized_zombie_strike_consequences = yes
+					hidden_effect = {
+						capture_weaponized_zombie_native_raid_context = yes
+						var:actor_country = { country_event = { id = zombie_native_raid_bridge.3 } }
+					}
 				}
 				victim_effects = {
-					var:target_state = {
-						var:ROOT.actor_country = {
-							spawn_minor_weaponized_zombie_outbreak_from_creator = yes
-						}
-					}
+					custom_effect_tooltip = weaponized_zombie_raid_minor_outcome_tt
 				}
 			}
 			success = {
@@ -277,28 +285,26 @@ types = {
 				actor_effects = {
 					raid_damage_units = { plane_loss = 0.1 ratio = yes }
 					raid_add_unit_experience = 0.2
-					apply_weaponized_zombie_strike_consequences = yes
+					hidden_effect = {
+						capture_weaponized_zombie_native_raid_context = yes
+						var:actor_country = { country_event = { id = zombie_native_raid_bridge.4 } }
+					}
 				}
 				victim_effects = {
-					var:target_state = {
-						var:ROOT.actor_country = {
-							spawn_weaponized_zombie_outbreak_from_creator = yes
-						}
-					}
+					custom_effect_tooltip = weaponized_zombie_raid_full_outcome_tt
 				}
 			}
 			critical_success = {
 				custom_sound = generic_bioweapon_aerosol
 				actor_effects = {
 					raid_add_unit_experience = 0.35
-					apply_weaponized_zombie_strike_consequences = yes
+					hidden_effect = {
+						capture_weaponized_zombie_native_raid_context = yes
+						var:actor_country = { country_event = { id = zombie_native_raid_bridge.4 } }
+					}
 				}
 				victim_effects = {
-					var:target_state = {
-						var:ROOT.actor_country = {
-							spawn_weaponized_zombie_outbreak_from_creator = yes
-						}
-					}
+					custom_effect_tooltip = weaponized_zombie_raid_full_outcome_tt
 				}
 			}
 		}
@@ -317,28 +323,34 @@ types = {
 		}
 		ai_will_do = {
 			base = 1
+			modifier = {
+				factor = 0
+				NOT = { weaponized_zombie_raid_can_target_from = yes }
+			}
 			modifier = { factor = constant:brilliant_scientist_raid_ai.kruger_state_factor ROOT = { brilliant_scientist_is_active_kruger_state = yes brilliant_scientist_kruger_raid_ai_is_active = yes } }
 			modifier = { factor = constant:brilliant_scientist_raid_ai.kruger_host_factor ROOT = { brilliant_scientist_kruger_raid_ai_is_active = yes NOT = { brilliant_scientist_is_active_kruger_state = yes } } }
 		}
 		allowed = { }
 		visible = {
-			brilliant_scientist_biological_agent_weaponized_zombies_is_unlocked = yes
+			weaponized_zombie_raid_actor_is_authorized = yes
 			has_country_flag = weaponized_zombie_raid_success_high
 			NOT = { has_country_flag = weaponized_zombie_friendly_to_humans }
 		}
 		show_target = {
-			var:target_state = { is_weaponized_zombie_raid_target_state = yes }
-			NOT = { is_in_faction_with = FROM }
+			weaponized_zombie_raid_can_target_from = yes
 		}
 		available = {
 			custom_trigger_tooltip = {
-				hidden_trigger = { has_weaponized_zombie_raid_payload = yes }
-				tooltip = weaponized_zombie_raid_available_tooltip
+				tooltip = weaponized_zombie_raid_authorization_tt
+				hidden_trigger = { weaponized_zombie_raid_can_target_from = yes }
 			}
+			hidden_trigger = { has_weaponized_zombie_raid_payload = yes }
 		}
 		launchable = {
-			has_war_with = FROM
-			var:target_state = { is_weaponized_zombie_raid_target_state = yes }
+			custom_trigger_tooltip = {
+				tooltip = weaponized_zombie_raid_authorization_tt
+				hidden_trigger = { weaponized_zombie_raid_can_target_from = yes }
+			}
 		}
 		launch_sound = raid_launch_nuclear_strike
 		target_type = { province = any }
@@ -387,14 +399,13 @@ types = {
 				actor_effects = {
 					raid_damage_units = { plane_loss = 0.20 ratio = yes }
 					raid_add_unit_experience = 0.1
-					apply_weaponized_zombie_strike_consequences = yes
+					hidden_effect = {
+						capture_weaponized_zombie_native_raid_context = yes
+						var:actor_country = { country_event = { id = zombie_native_raid_bridge.5 } }
+					}
 				}
 				victim_effects = {
-					var:target_state = {
-						var:ROOT.actor_country = {
-							spawn_minor_weaponized_zombie_outbreak_from_creator = yes
-						}
-					}
+					custom_effect_tooltip = weaponized_zombie_raid_minor_outcome_tt
 				}
 			}
 			success = {
@@ -402,28 +413,26 @@ types = {
 				actor_effects = {
 					raid_damage_units = { plane_loss = 0.1 ratio = yes }
 					raid_add_unit_experience = 0.2
-					apply_weaponized_zombie_strike_consequences = yes
+					hidden_effect = {
+						capture_weaponized_zombie_native_raid_context = yes
+						var:actor_country = { country_event = { id = zombie_native_raid_bridge.6 } }
+					}
 				}
 				victim_effects = {
-					var:target_state = {
-						var:ROOT.actor_country = {
-							spawn_weaponized_zombie_outbreak_from_creator = yes
-						}
-					}
+					custom_effect_tooltip = weaponized_zombie_raid_full_outcome_tt
 				}
 			}
 			critical_success = {
 				custom_sound = generic_bioweapon_aerosol
 				actor_effects = {
 					raid_add_unit_experience = 0.35
-					apply_weaponized_zombie_strike_consequences = yes
+					hidden_effect = {
+						capture_weaponized_zombie_native_raid_context = yes
+						var:actor_country = { country_event = { id = zombie_native_raid_bridge.6 } }
+					}
 				}
 				victim_effects = {
-					var:target_state = {
-						var:ROOT.actor_country = {
-							spawn_weaponized_zombie_outbreak_from_creator = yes
-						}
-					}
+					custom_effect_tooltip = weaponized_zombie_raid_full_outcome_tt
 				}
 			}
 		}

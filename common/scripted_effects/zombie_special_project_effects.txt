@@ -3910,69 +3910,66 @@ conduct_weaponized_zombie_field_test = {
 }
 
 apply_weaponized_zombie_strike_consequences = {
-	# Capture the exact native raid or decision inputs before entering actor
-	# scope. Temporary inputs are shared across scopes and must not use ROOT.
-	set_temp_variable = { weaponized_zombie_consequence_target_state = var:target_state }
-	set_temp_variable = { weaponized_zombie_consequence_victim_country = var:victim_country }
-	bio_set_integrated_operations_bw_modifiers_from_actor_country = yes
-
-	var:actor_country = {
-		set_country_flag = weaponized_zombie_has_successful_deployment
-		if = {
-			limit = {
-				NOT = { has_country_flag = weaponized_zombie_friendly_to_humans }
-				NOT = {
-					var:weaponized_zombie_consequence_target_state = {
-						is_zombie_controlled_state = yes
-					}
-				}
-			}
-			add_political_power = constant:weaponized_zombies.condemnation_pp_loss_negative
-			add_stability = constant:weaponized_zombies.condemnation_stability_loss_negative
-			add_war_support = constant:weaponized_zombies.condemnation_warsupport_loss_negative
-			set_temp_variable = { bio_condemnation_base_gain = constant:weaponized_zombies.condemnation_score }
-			multiply_temp_variable = { bio_condemnation_base_gain = bio_bw_condemnation_mult }
-			set_temp_variable = { bio_condemnation_severity_type = constant:condemnation_severity.major }
-			var:weaponized_zombie_consequence_victim_country = {
-				set_temp_variable = { bio_condemnation_victim_country = THIS }
-			}
-			set_temp_variable = { bio_condemnation_contamination_value = 0 }
-			set_temp_variable = { bio_condemnation_context_type = constant:condemnation_context.weaponized_zombies }
-			bio_register_condemnation_source = yes
-			if = {
-				limit = { NOT = { has_variable = bioweapon_uses } }
-				set_variable = { bioweapon_uses = 0 }
-			}
-			add_to_variable = { bioweapon_uses = 1 }
-			set_country_flag = used_bioweapon
-			set_country_flag = used_unconventional_weapon
-			air_cleanliness_treaty_on_unconventional_use = yes
-			if = {
-				limit = { NOT = { has_country_flag = used_weaponized_zombie_weapon } }
-				set_country_flag = used_weaponized_zombie_weapon
-			}
-			brilliant_scientist_krg_record_confirmed_offensive_biological_use = yes
-			every_other_country = {
-				limit = {
-					exists = yes
-					has_government = democratic
-					NOT = { tag = ROOT }
-				}
-				add_opinion_modifier = {
-					target = PREV
-					modifier = strategic_bioweapon_user
-				}
-			}
-		}
-		else_if = {
-			limit = {
-				has_country_flag = weaponized_zombie_friendly_to_humans
-				var:weaponized_zombie_consequence_target_state = {
+	# Country scope with ROOT = exact actor after the native final gate.
+	# The output exists in this caller frame before the nested doctrine helper,
+	# so normal helper-frame cleanup cannot discard the returned multiplier.
+	set_temp_variable = { cbrn_action_doctrine_condemnation_mult = constant:cbrn_math.one }
+	cbrn_set_doctrine_condemnation_mult_from_country = yes
+	set_country_flag = weaponized_zombie_has_successful_deployment
+	if = {
+		limit = {
+			NOT = { has_country_flag = weaponized_zombie_friendly_to_humans }
+			NOT = {
+				event_target:zombie_native_raid_target_state = {
 					is_zombie_controlled_state = yes
 				}
 			}
-			set_country_flag = achievement_fight_fire_with_fire
 		}
+		add_political_power = constant:weaponized_zombies.condemnation_pp_loss_negative
+		add_stability = constant:weaponized_zombies.condemnation_stability_loss_negative
+		add_war_support = constant:weaponized_zombies.condemnation_warsupport_loss_negative
+		set_temp_variable = { bio_condemnation_base_gain = constant:weaponized_zombies.condemnation_score }
+		multiply_temp_variable = { bio_condemnation_base_gain = cbrn_action_doctrine_condemnation_mult }
+		set_temp_variable = { bio_condemnation_severity_type = constant:condemnation_severity.major }
+		event_target:zombie_native_raid_victim = {
+			set_temp_variable = { bio_condemnation_victim_country = THIS }
+		}
+		set_temp_variable = { bio_condemnation_contamination_value = 0 }
+		set_temp_variable = { bio_condemnation_context_type = constant:condemnation_context.weaponized_zombies }
+		bio_register_condemnation_source = yes
+		if = {
+			limit = { NOT = { has_variable = bioweapon_uses } }
+			set_variable = { bioweapon_uses = 0 }
+		}
+		add_to_variable = { bioweapon_uses = 1 }
+		set_country_flag = used_bioweapon
+		set_country_flag = used_unconventional_weapon
+		air_cleanliness_treaty_on_unconventional_use = yes
+		if = {
+			limit = { NOT = { has_country_flag = used_weaponized_zombie_weapon } }
+			set_country_flag = used_weaponized_zombie_weapon
+		}
+		brilliant_scientist_krg_record_confirmed_offensive_biological_use = yes
+		every_other_country = {
+			limit = {
+				exists = yes
+				has_government = democratic
+				NOT = { tag = ROOT }
+			}
+			add_opinion_modifier = {
+				target = PREV
+				modifier = strategic_bioweapon_user
+			}
+		}
+	}
+	else_if = {
+		limit = {
+			has_country_flag = weaponized_zombie_friendly_to_humans
+			event_target:zombie_native_raid_target_state = {
+				is_zombie_controlled_state = yes
+			}
+		}
+		set_country_flag = achievement_fight_fire_with_fire
 	}
 }
 

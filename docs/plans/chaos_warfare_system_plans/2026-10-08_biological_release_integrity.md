@@ -1,5 +1,8 @@
 # Biological release caller integrity
 
+Historical bounded caller-review snapshot: commit `4704913e8cf573cb3f03227fe75eeee9f29a81e5` integrates this lifetime tranche.
+Its queued public-interface retirement and continuity-gap dispositions below are superseded by the [native consolidation map](2026-10-08_native_biological_operation_consolidation.md); source-case results, archives, scenario evidence and native limitations remain historical evidence and are not erased.
+
 Disposition: bounded lifetime repairs implemented and reviewed; all 256 source cases pass in the shared tree and the isolated candidate tree; capture probability, native execution and the accepted CBRN goal remain incomplete.
 Acceptance basis: the user's implementation request recorded in the [accepted CBRN amendment](../../specs/chaos_warfare_system_specs/specs/13_2026_09_20_accepted_cbrn_overhaul.md), the parent-confirmed original native raid-only direction, and explicit parent authorization of the consuming-owner declarations, extra returned receipts and private doomsday break isolation.
 These repairs preserve the original paid gates, callbacks, actor/target bindings, tuning and weighted bodies.

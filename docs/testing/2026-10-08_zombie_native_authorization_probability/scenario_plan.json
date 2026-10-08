@@ -1,0 +1,135 @@
+{
+  "scenarioSetId": "ZOMBIE_NATIVE_RAID_AUTHORIZATION_2026_10_08",
+  "scenarioHash": null,
+  "status": "planned_but_not_evaluated",
+  "reason": "The live probability adapter schema has no RaidType ai_will_do or success_factors adapter, and probability_inspect returns no_weighted_surfaces for both native raid files. These are source-coverage cases, not claimed MCP scenario results.",
+  "scopeBindings": {
+    "preflightActor": "ROOT country scope",
+    "preflightVictim": "FROM country scope",
+    "preflightTargetState": "var:target_state",
+    "nativeCallbackActor": "event_target:zombie_native_raid_actor",
+    "nativeCallbackVictim": "event_target:zombie_native_raid_victim",
+    "nativeCallbackTargetState": "event_target:zombie_native_raid_target_state"
+  },
+  "sharedScenarioDefaults": [
+    "Unless a case explicitly overrides it, ROOT exists and has_capitulated=no, the world_end global flag is absent, and the actor is unlocked and passes bio_kruger_last_resort_authority_is_valid.",
+    "Unless a case explicitly overrides it, FROM exists, ROOT is at war with FROM, they are not in the same faction, and var:target_state passes is_weaponized_zombie_raid_target_state and is_controlled_by=FROM.",
+    "The callback form binds zombie_native_raid_actor to ROOT, zombie_native_raid_victim to FROM, and zombie_native_raid_target_state to var:target_state; the callback helper rechecks all three pointers and current war, faction, policy, target validity, and controller.",
+    "The CBRN policy values come from common/script_constants/cbrn_system_constants.txt: retaliation_authority=2, limited_battlefield_authority=3, and unrestricted_authorization=5.",
+    "A retaliation record is keyed to the actual FROM.id through cbrn_retaliation_[TARGET_ID]_expiry_day. This plan leaves the engine ID symbolic and does not guess a numeric country ID."
+  ],
+  "sourceGates": {
+    "actorAuthorization": "weaponized_zombie_raid_actor_is_authorized",
+    "targetAuthorization": "weaponized_zombie_raid_can_target_from",
+    "finalCallbackValidation": "weaponized_zombie_native_raid_context_is_valid",
+    "projectUnlock": "brilliant_scientist_biological_agent_weaponized_zombies_is_unlocked",
+    "krugerAuthority": "bio_kruger_last_resort_authority_is_valid",
+    "strategicPolicyAgainstFrom": "cbrn_policy_allows_strategic_use_against_from",
+    "strategicPolicyAgainstExactTarget": "cbrn_policy_allows_strategic_use_against_target_id",
+    "validTargetState": "is_weaponized_zombie_raid_target_state"
+  },
+  "scopedRaidTypes": [
+    "weaponized_zombie_strike_low",
+    "weaponized_zombie_strike_medium",
+    "weaponized_zombie_strike_high",
+    "weaponized_zombie_strike_low_friendly",
+    "weaponized_zombie_strike_medium_friendly",
+    "weaponized_zombie_strike_high_friendly"
+  ],
+  "candidatePoolCompleteness": "These six custom zombie RaidTypes are the bounded source scope. The complete engine-wide native raid AI selection pool and target enumeration were not exposed by MCP, so no normalized AI selection probability is claimed.",
+  "scenarios": [
+    {
+      "id": "unauthorized_no_project",
+      "expectedGate": "weaponized_zombie_raid_actor_is_authorized=false",
+      "declaredConditions": [
+        "No zombie unlock arm is met: has_tech zombie_disease_bomb_delivery_systems=false, has_country_flag weaponized_zombies_completed=false, is_special_project_completed sp:weaponize_the_zombies=false.",
+        "Use a non-Kruger-state actor so bio_kruger_last_resort_authority_is_valid passes through NOT brilliant_scientist_is_active_kruger_state; keep war and target otherwise valid to isolate missing unlock."
+      ]
+    },
+    {
+      "id": "unrestricted_valid_enemy",
+      "expectedGate": "weaponized_zombie_raid_can_target_from=true",
+      "declaredConditions": [
+        "Unlock via is_special_project_completed sp:weaponize_the_zombies=true.",
+        "Actor exists, has_capitulated=no, world_end is absent, and Kruger authority passes.",
+        "cbrn_use_policy=5 (unrestricted_authorization), FROM exists, has_war_with FROM=true, target is not in the same faction, and var:target_state is valid and controlled by FROM."
+      ]
+    },
+    {
+      "id": "retaliation_record_valid",
+      "expectedGate": "weaponized_zombie_raid_can_target_from=true",
+      "declaredConditions": [
+        "cbrn_use_policy=2 (retaliation_only), with an exact FROM target and active war.",
+        "The helper derives cbrn_retaliation_target_id from FROM.id; cbrn_retaliation_[TARGET_ID]_expiry_day exists and global.num_days is less than or equal to its expiry day.",
+        "Actor unlock, Kruger authority, faction, target-state validity, and controller checks pass."
+      ]
+    },
+    {
+      "id": "retaliation_record_absent",
+      "expectedGate": "weaponized_zombie_raid_can_target_from=false",
+      "declaredConditions": [
+        "Use cbrn_use_policy=2, a valid war and target, but omit the dynamic cbrn_retaliation_[FROM.id]_expiry_day record."
+      ]
+    },
+    {
+      "id": "retaliation_record_expired",
+      "expectedGate": "weaponized_zombie_raid_can_target_from=false",
+      "declaredConditions": [
+        "Use cbrn_use_policy=2 and a target-specific expiry record whose expiry day is less than global.num_days."
+      ]
+    },
+    {
+      "id": "battlefield_only_strategic_target",
+      "expectedGate": "weaponized_zombie_raid_can_target_from=false",
+      "declaredConditions": [
+        "Use cbrn_use_policy=3 (limited_battlefield_authority), no exact retaliation right, and otherwise valid enemy/target-state bindings.",
+        "This native zombie surface uses strategic-use permission, so battlefield-only policy does not satisfy cbrn_policy_allows_strategic_use_against_from."
+      ]
+    },
+    {
+      "id": "zombie_friendly_enemy_target",
+      "expectedGate": "Friendly RaidTypes visible and target gate passes under unrestricted authorization",
+      "declaredConditions": [
+        "Actor has weaponized_zombie_friendly_to_humans.",
+        "Target state is zombie-controlled, valid, controlled by FROM, and FROM is an active enemy; actor unlock and unrestricted policy pass.",
+        "Hostile RaidTypes are hidden by their existing NOT friendly flag gate."
+      ]
+    },
+    {
+      "id": "lost_war",
+      "expectedGate": "weaponized_zombie_raid_can_target_from=false",
+      "declaredConditions": [
+        "Keep actor authorization and target-state validity otherwise true, but has_war_with FROM=false."
+      ]
+    },
+    {
+      "id": "lost_control",
+      "expectedGate": "weaponized_zombie_raid_can_target_from=false",
+      "declaredConditions": [
+        "Keep actor authorization and war true, but make var:target_state not controlled by FROM.",
+        "The final callback must likewise reject a target state whose controller no longer equals event_target:zombie_native_raid_victim."
+      ]
+    },
+    {
+      "id": "kruger_permitted",
+      "expectedGate": "bio_kruger_last_resort_authority_is_valid=true",
+      "declaredConditions": [
+        "Actor is in the active Kruger state and the existing brilliant_scientist_kruger_raid_ai_is_active path is true, or all canonical last-resort authority requirements are true.",
+        "All non-Kruger actor, policy, war, target, and callback bindings are valid."
+      ]
+    },
+    {
+      "id": "kruger_blocked",
+      "expectedGate": "bio_kruger_last_resort_authority_is_valid=false",
+      "declaredConditions": [
+        "Actor is in the active Kruger state, brilliant_scientist_kruger_raid_ai_is_active=false, and brilliant_scientist_krg_canonical_biological_last_resort_is_authorized=false.",
+        "All other authorization and target conditions are valid to isolate the Kruger authority failure."
+      ]
+    }
+  ],
+  "classification": {
+    "raidAiWeights": "score-only source expressions; selection/ranking probability unresolved because no native RaidType AI adapter or complete engine candidate pool is exposed",
+    "successFactors": "source-defined native chance formulas; final scenario probabilities unresolved because no native RaidType success_factors adapter is exposed",
+    "scenarioHashes": "none generated; no scenario was submitted to an unsupported or unrelated adapter"
+  }
+}

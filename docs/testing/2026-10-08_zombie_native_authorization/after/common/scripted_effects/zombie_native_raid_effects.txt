@@ -1,0 +1,31 @@
+# Chaos Redux native weaponized zombie outcome helpers.
+# Raid callbacks capture exact actor/victim/state pointers and immediately fire
+# a fixed country event. The event validates its tier/friendly profile before
+# one resolver gates both consequences and the existing outbreak spawn.
+# Native essential_equipment and command_power are the only settlement.
+
+capture_weaponized_zombie_native_raid_context = {
+	var:actor_country = { save_event_target_as = zombie_native_raid_actor }
+	var:victim_country = { save_event_target_as = zombie_native_raid_victim }
+	var:target_state = { save_event_target_as = zombie_native_raid_target_state }
+}
+
+resolve_minor_weaponized_zombie_native_raid = {
+	if = {
+		limit = { weaponized_zombie_native_raid_context_is_valid = yes }
+		apply_weaponized_zombie_strike_consequences = yes
+		event_target:zombie_native_raid_target_state = {
+			ROOT = { spawn_minor_weaponized_zombie_outbreak_from_creator = yes }
+		}
+	}
+}
+
+resolve_weaponized_zombie_native_raid = {
+	if = {
+		limit = { weaponized_zombie_native_raid_context_is_valid = yes }
+		apply_weaponized_zombie_strike_consequences = yes
+		event_target:zombie_native_raid_target_state = {
+			ROOT = { spawn_weaponized_zombie_outbreak_from_creator = yes }
+		}
+	}
+}

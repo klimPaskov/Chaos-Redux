@@ -65,11 +65,22 @@ The [raid-owner report](../../plans/chaos_warfare_system_plans/2026-10-07_biolog
 The [biological release ledger](../../plans/chaos_warfare_system_plans/2026-10-08_biological_release_integrity.md) records ten lifetime-repaired follow-up consumers across facility, event, doomsday, missile and connected-spread owners.
 Each owner allocates only its consumed defaults and returned outputs; these acceptance receipts do not create a generic replay guard.
 The doomsday owner retains target array/count, stocks, seed acceptance and doctrine outputs, while its private break binding isolates the existing ordered traversal from an unrelated inherited temporary.
-The remaining `bio_operative_release_dispatch_seed_internal` is unpatched, and four ordinary attacks in `common/operations/chaosx_bioweapon_operations.txt` still compete with the accepted raid-only loop.
-Migration/removal of those four attacks and the separate public weaponized-zombie intelligence attack is accepted and queued under the raid-only direction.
-Shared covert/lifecycle/achievement capabilities remain, while operation-only network/operative preparation, phases, capture handlers and Command Power refunds retire with their public attacks; no native captured-character proxy is introduced.
-Native zombie authorization parity and the shared covert-count defect remain unresolved continuity work.
+Commit `4704913e8` integrates those ten lifetime-repaired consumers; the ordinary operative eleventh and all five competing public intelligence attacks are retired in source under the accepted raid-only direction.
+Shared covert/lifecycle/achievement capabilities and Event 016's `operative_release` route remain, while operation-only network/operative preparation, phases, capture handlers and Command Power refunds are removed without a native captured-character proxy.
+The biological recorder registers the covert family once and counts each source-accepted use-history invocation, with qualifying biological success recorded in its own recorder rather than the chemical recorder.
+The hidden achievement remains unchanged, and count-per-invocation source checks do not prove native callback uniqueness.
+The [consolidation map](../../plans/chaos_warfare_system_plans/2026-10-08_native_biological_operation_consolidation.md) records the retirement, source census, retained native assets and broader evidence limits.
 Source-model receipt checks do not establish complete helper flow, native payment/refunds, callback cardinality, protection, outbreak progression or balance.
+
+## Weaponized-zombie native outcomes
+
+Six hostile/friendly native profiles use twelve fixed hidden actor-country events, with separate minor/full IDs for each prepared tier and target family.
+The bridge captures exact actor, victim and selected state as chain-local regular targets and restores actor-country ROOT before the shared final gate.
+Consequences and existing spawn helpers run in the same accepted block, with consequences first so the original selected target supplies friendly credit and responsibility.
+Authorization requires Unrestricted Authorization or Retaliation Only with an exact unexpired right against the victim; Battlefield Authorization cannot authorize this strategic route, even with a stale right, and friendly anti-zombie profiles have no policy bypass.
+The consequence caller owns the canonical current doctrine/mastery multiplier before its getter returns.
+Native payment remains 125 payload, 15 Command Power and ten-day preparation; launch/outcome do not require committed stock to remain free, add a second debit or promise refunds.
+Existing AI/success/cost/aircraft inputs are preserved apart from the authorization zero gate; no supported native adapter establishes normalized AI selection or success odds.
 
 ## Chemical ground payment and balance
 

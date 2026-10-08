@@ -2,6 +2,9 @@
 
 Before reusing this prompt, apply the user's accepted 2026-09-20 CBRN amendment at `docs/specs/chaos_warfare_system_specs/specs/13_2026_09_20_accepted_cbrn_overhaul.md` and its requirement ledger. Older conflicting reward, policy, raid, unit, project, or asset requests are superseded.
 
+The public biological operative launch instruction is specifically superseded by that native-raid-only/removal authority and the [consolidation map](../../../plans/chaos_warfare_system_plans/2026-10-08_native_biological_operation_consolidation.md).
+Do not add a competing attack decision, preparation mission or intelligence operation; preserve response decisions and genuine shared lifecycle/achievement consumers.
+
 ## Task
 
 Implement remaining accepted decisions and missions under [chaos-redux-decisions-missions](../../../../.agents/skills/chaos-redux-decisions-missions/SKILL.md). Reconcile older action lists below with the accepted amendment and current owner ledger before replaying them. Preserve recorded native-category presentation. An optional window sketch does not authorize a new shared system GUI. Shared interfaces remain parent-owned and require the scripted-GUI skill and matching MCP evidence when changed. Use dynamic costs, named targets, AI behavior, cleanup and custom tooltips.
@@ -70,10 +73,10 @@ Preparation uses timed missions. Completion rechecks order, target, payload, wea
 
 ### Biological Operations and Containment
 
-Offensive actions:
+Native attack surfaces to integrate, not new decision or intelligence-operation actions:
 
 - prepare strategic biological raid
-- launch operative outbreak operation
+- select native covert supply-chain sabotage; the earlier public operative-launch request is superseded
 - seed battlefield contamination where supported
 - sabotage selected infrastructure through biological release
 

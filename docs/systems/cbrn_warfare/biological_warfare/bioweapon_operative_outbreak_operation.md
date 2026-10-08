@@ -1,8 +1,16 @@
-# Biological Operative-Release Operations
+# Retired biological intelligence attacks
 
-This subsystem provides four ordinary, state-targeted biological intelligence operations and keeps the weaponized-zombie operation separate. Ordinary releases use the shared biological lifecycle, so an operation establishes a hidden seed rather than applying a direct contamination modifier.
+Disposition: superseded public-interface description under the user's accepted native-raid-only/removal instruction and [amendment 13](../../../specs/chaos_warfare_system_specs/specs/13_2026_09_20_accepted_cbrn_overhaul.md).
+The four ordinary intelligence attacks and the weaponized-zombie intelligence attack are retired in source together with their exclusive network/operative preparation, phases, captured-character callbacks and Command Power refunds.
+The [consolidation map](../../../plans/chaos_warfare_system_plans/2026-10-08_native_biological_operation_consolidation.md) is the current authority for native successors, retained shared capabilities, assets and validation limits.
+Ordinary covert deployment uses [native supply-chain raids](biological_sabotage.md); strategic and battlefield delivery retain their native raids, and weaponized zombies retain six hostile/friendly native profiles.
+The shared `operative_release` lifecycle token remains for Event 016's native owner, together with covert detection/history and count-per-valid-invocation achievement records.
+No native raid captured-character proxy is introduced, and the hidden achievement is not enabled by this consolidation.
 
-## Player flow
+All sections below are historical descriptions of the retired interface, not current player actions, costs, live APIs, assets or implementation instructions.
+The retirement manifest preserves the exact source/Git identities; the historical description remains to distinguish removed interface behavior from the shared lifecycle that survives.
+
+## Historical retired player flow
 
 1. Complete the special project for Anthrax, Plague, Tularemia, or Smallpox delivery.
 2. Establish the required intelligence network in an eligible target country.
@@ -87,7 +95,8 @@ No new visual asset is required for this tranche. All five operations reuse the 
 - `GFX_phase_bioweapon_seed_medical_chain` and its small sprite
 - `GFX_phase_bioweapon_contaminate_transport_hub` and its small sprite
 
-The sprite declarations remain in `interface/chaosx_operations.gfx`. Their DDS files remain under `gfx/interface/operations/chaosx_bioweapon/`. Existing raid icons under `gfx/interface/military_raids/` are unrelated and remain untouched.
+The historical sprites were declared in the retired `interface/chaosx_operations.gfx`, with eight retired DDS files under `gfx/interface/operations/chaosx_bioweapon/`.
+The current [asset crosswalk](../../../plans/chaos_warfare_system_plans/2026-10-08_native_biological_operation_consolidation.md#asset-consumer-crosswalk) records their Git provenance and exact retained native map/equipment consumers; no replacement art is implied.
 
 ## Future plans
 

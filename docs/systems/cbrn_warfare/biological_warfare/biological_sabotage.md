@@ -14,14 +14,17 @@ This exact source mapping supersedes the older migration-only descriptions below
 
 ## Purpose
 
-This subsystem supplies four ordinary-agent profiles, shared evidence parameters and twelve native land-raid definitions for exact-state supply-chain deployment. Native operative operations retain their own separate source and permissions.
+This subsystem supplies four ordinary-agent profiles, shared evidence parameters and twelve native land-raid definitions for exact-state covert supply-chain deployment.
+The [native consolidation map](../../../plans/chaos_warfare_system_plans/2026-10-08_native_biological_operation_consolidation.md) records the retired competing intelligence interface and retained shared lifecycle contracts.
 
-It is not battlefield dissemination. Battlefield delivery remains in `common/raids/biological_battlefield_raids.txt` and reuses the established military-raid icons. It is also separate from weaponized-zombie projects, operations, state records, AI, and outcomes. Japan's China-theater actions are migrating to native raids; the doomsday release uses `biological_stockpile_doomsday_raid`.
+Battlefield delivery remains in `common/raids/biological_battlefield_raids.txt` and reuses the established military-raid icons.
+Weaponized zombies retain their separate projects, native raids, state records, AI and outcomes.
+Japan's China-theater attacks use dedicated native raids; the doomsday release uses `biological_stockpile_doomsday_raid`.
 
 ## Active player routes
 
 - Strategic and battlefield deployment use native raid surfaces.
-- Covert ordinary-agent deployment uses the native operative operations.
+- Covert ordinary-agent deployment uses the twelve native supply-chain sabotage raids.
 - Japan's bounded China-theater actions use their dedicated native raids.
 - Doomsday release is a native raid under `biological_raids`.
 
@@ -37,7 +40,8 @@ The route's critical outcome is an operational delivery band, not a weapon-sever
 
 ## Migration tuning
 
-Lifecycle, route, doctrine, and AI tuning remains centralized in `common/script_constants/biological_lifecycle_constants.txt` and the route-specific raid and operation constants. `common/script_constants/biological_sabotage_constants.txt` supplies active native target profiles, AI and resolution tuning; database-only raid fields mirror their anchors locally.
+Lifecycle, route, doctrine and AI tuning remains centralized in `common/script_constants/biological_lifecycle_constants.txt` and the route-specific native raid constants.
+`common/script_constants/biological_sabotage_constants.txt` supplies active native target profiles, AI and resolution tuning; database-only raid fields mirror their anchors locally.
 
 | Agent | Payload | Support equipment | Command Power | Base / Theater / Terminal preparation |
 |---|---:|---:|---:|---:|
@@ -72,7 +76,9 @@ Cleanup preserves permanent attempt, resolution, equipment-consumption, evidence
 
 ## AI behavior
 
-AI cannot select the retired generic decision family. Active raids, operative operations, Japan's historical campaign raids, and doomsday raids retain their own route-aware gates. No target estimator or alternate-state search is retained; raid AI probability evidence remains pending where the MCP adapter does not expose a raid surface.
+AI cannot select the retired generic decision or intelligence-operation families.
+Native supply-chain, strategic, battlefield, Japan campaign and doomsday raids retain their route-aware gates.
+No target estimator or alternate-state search is retained; numerical raid AI probability evidence remains unresolved where the MCP adapter does not expose a raid surface.
 
 ## Files and identifiers
 
@@ -95,4 +101,6 @@ The migration resolver stores exact actor, victim, state, preparation, equipment
 
 ## Status
 
-The generic state-card surface is closed. The shared lifecycle continues to expose active incidents and discovered outbreaks to biological response decisions, while current covert use is handled by native operative operations.
+The generic state-card and competing intelligence-attack surfaces are closed in source.
+The shared lifecycle exposes active incidents and discovered outbreaks to biological response decisions, while public covert deployment uses native supply-chain raids.
+Count-per-valid-invocation covert achievement continuity is retained without enabling the hidden achievement or claiming native callback uniqueness.
