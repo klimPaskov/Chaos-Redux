@@ -207,6 +207,14 @@ Duplicate requests must not overwrite that receipt.
 Treat controller changes or loss of authority as no consent.
 Existing affirmative-first event patterns are not general precedents for safe confirmations.
 
+### Proposal popup lifecycle
+
+Keep a visible human popup's carrier pointer, family, proposal sequence, and carrier/recipient generation snapshots immutable through proposal withdrawal.
+Invalidate the live proposal separately, retain the shown-popup lock, and serialize replacement delivery until the old event's `after` has closed its snapshot.
+Every reply effect must revalidate the snapshot against the current proposal before mutation, even if its option was visible when the event fired.
+A stale close option must remain usable and describe closing the old prompt without promising to accept, refuse, or change another proposal.
+Treat `timeout_days` as execution of the guarded first option, followed by normal `after` closure, rather than a special timeout branch (offline Event modding, lines 184-186).
+
 ## Chaos source handling
 
 Implement event-owned Chaos changes only on concrete outcomes defined by the spec, using the shared Chaos Meter and history path. Common hooks include meaningful movement success, special Chaos-country growth, spread, failed containment, actual use of dangerous capabilities, and durable containment or defeat.
@@ -557,6 +565,9 @@ Partition recorded-owner and physical-holder accounting by the state disposition
 Review matching and stale nonces, distinct and identical owner/holder identities, repeated closure, and dead-actor cleanup along the exact source call chains.
 
 When setup helpers require the recipient country as ROOT, invoke them from a hidden triggered-only country event received by that country; regular event targets carry through events fired by the originating effect chain.
+Apply this ROOT contract to country scopes entered by `for_each_scope_loop` or debug dispatch as well.
+Country-owned helpers need an explicit actor input contract or a generation-bound `country_event` relay rooted in the actual recipient.
+Revalidate the saved recipient and generation before dispatching the helper, and cover direct actor entry and foreign-root debug/iterator entry separately.
 Give a dormant tag owned land and a valid capital before entering capital-based setup or spawning units; use runtime meta construction when its TAG scope must be deferred until activation.
 For a player-transfer bootstrap, queue the delayed recipient event before `change_tag_from` and make player transfer the final effect in that country block, so receiver scheduling does not reuse an invalidated country scope.
 Inject file-scoped duration constants as meta arguments when generating a new script buffer, rather than leaving an unresolved `@` token inside generated text.

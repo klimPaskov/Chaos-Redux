@@ -244,6 +244,17 @@ A pointer's presence alone must neither expose a pending-payment quote nor autho
 
 When accepted design requires emergency resolution to remain available while every other recovery is unaffordable, do not gate it on full nominal reserves. Bound each actual fee by its nominal fee and the nonnegative current reserve, show the actual quote with matching texticons, and recompute all fees together before any debit, then charge that coherent quote once. Avoid hidden partial payments and threshold fee-waiver cliffs. For variable-fee emergency actions, use an `ai_hint_pp_cost` matching the actual quote only if that input form is verified as supported, otherwise omit the fixed nominal hint so a zero quote remains available to AI at zero political power. Never assume `ai_hint_pp_cost` accepts dynamic values. Verify exact numeric reader tokens in installed dynamic-variable documentation rather than assuming a display or stat name: `has_political_power`, `has_stability`, and `has_war_support` are documented readers, while raw `war_support` is not a documented built-in reader. This does not forbid a custom normal variable named `war_support`. Make final resolution and cleanup idempotent with a closed-state guard, and require queued work and late timed callbacks to match the active context before invoking cleanup. Preserve earned finite aftermath until its intended expiry and retain achievement receipts when removing active-crisis state.
 
+### Paid timed-decision entry and expiry
+
+For a `days_remove` decision, selection must pass the full quote, including free factories committed by its native `civilian_factory_use` modifier.
+At `complete_effect` entry, recheck live requirements and spendable reserves without counting that project's own native factory reservation twice.
+Limit that factory exception to the exact native-reserved path, retaining full affordability checks elsewhere.
+Reject duplicate starts and publish the actor/family/generation-bound active receipt before the custom debit, then charge once.
+At `remove_effect` expiry, require exact current paid-project proof and continuing finish requirements without rerunning the purchase quote or slot-open start gate.
+Publish the success receipt before clearing active proof so cancellation cannot mistake successful closure for receipt loss.
+Cover exact-quote selection, reservation-before-entry, duplicate start, depleted reserves after payment, stale generation, and successful expiry in source cases.
+Source ordering models do not prove native reservation or callback ordering.
+
 ### Refundable native political-power credit receipts
 
 For refundable native political-power decisions using the sale price table, read the [receipt API contract](../../../common/scripted_effects/026_black_friday_simple_cost_api.md#refundable-native-political-power-decisions) and its [production helpers](../../../common/scripted_effects/026_black_friday_effects.txt).
