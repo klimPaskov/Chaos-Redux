@@ -2,6 +2,32 @@
 
 The event catalog workbook is edited only by its owner. These are the Event 006 rows and fields that need updating from the implemented source; wording below is copied from the in-game localisation.
 
+## 2026-10-08 full-scope catalog reconciliation
+
+Disposition: read-only review. This section supersedes the dated `accepted and queued` labels below only as current catalog-action status. The original dated notes remain the acceptance and implementation-history ledger.
+
+For D3, D4, D5, D7, D13, D15-D17, and D19-D34, the reported country-package, formable, incident, milestone, leader, and route metadata has no dedicated field in the current catalog schema. The current disposition for those metadata items is `source implemented; no mapped catalog field`. Keep each item's acceptance basis and dated wording below.
+
+D9's `.81` failure-result title, body, and option also have no field in SCN-008's manual setup row. Their current disposition is `source implemented; no mapped catalog field`. The setup row has a separate wording reconciliation at `Scenarios!C8`, `D8`, and `E8`, detailed in [the full-scope review handoff](subagent_handoffs/catalog_full_scope_review_20261008.md). `Scenarios!B8` matches current source.
+
+The Event 006 event-name, Event Details, and five evolution mirrors match current in-game keys. Cluster 2's name, detail, and aggregate membership mirror match its active Event Log dispatch. The initial read-only review flagged `Clusters!B17:C17` because the Event Log dispatcher omits cluster 16. Parent follow-up below supersedes that catalog-cell disposition: the workbook text matches the defined accepted keys, while runtime integration remains a shared-queue source gap.
+
+For D35-D43, report titles, manual-launch messages, status-window labels, reservation details, and grouped response behavior have no dedicated catalog field. Their current disposition is `source implemented; no mapped catalog field`. The mapped Event 006 detail and evolution fields match. Parent follow-up records the cluster 16 runtime gap as source-owner work. The inherited working-tree D35-D43 block below is preserved verbatim.
+
+The D25 and D29 Hadhramaut/Comoros availability statements remain historical. D34, dated 2026-10-05, supersedes those statements, and their original dated wording is retained.
+
+Event 006 and SCN-008 remain `Needs Testing`. No playable or native acceptance is made. At this initial read-only review, the workbook was not saved and the exporter was not run. The parent-authorized follow-up below records the later workbook save and export.
+
+## 2026-10-08 parent-accepted implementation follow-up
+
+The parent accepted the exact proposed values for `Scenarios!C8`, `D8`, and `E8`. Those three cells are now updated in the authoritative workbook. SCN-008 was found by ID in the current workbook and the HEAD LFS workbook, and its `Needs Testing` status remains unchanged. Event 006 remains `Needs Testing`.
+
+The current workbook was updated from an immutable beforecopy with a targeted OOXML edit. The three target styles remain intact, and no other cell or package feature changed. The required exporter completed successfully, and all three working CSVs have parsed full-sheet parity with the current workbook. The handoff records hashes, exact exporter output, and the private HEAD candidate and exports.
+
+Parent disposition for cluster 16: `Clusters!B17:C17` match the defined accepted wording and remain unchanged. The missing `event_cluster_id` runtime constant is a shared-queue source gap. Parent review found constants for IDs 1-12 and 20, with no Event 006 specification authority to invent a runtime package for ID 16. The owning source agent retains that integration work.
+
+The private `.git/event6_catalog_head_candidate.xlsx` contains only the accepted three-cell delta against the resolved HEAD LFS workbook at commit `0761d7150f5624d2e7dc80338d9ef1ccab55c370`. Its private exports are under `.git/event6_catalog_head_exports`. These artifacts are integration candidates, not authoritative workbooks. No Git index, ref, or commit was changed.
+
 ## 2026-10-04: foreign reactions (D3)
 
 Disposition: `accepted and queued` for the catalog owner; implementation is committed.
@@ -225,3 +251,16 @@ Disposition: `accepted and queued` for the catalog owner; implementation is comm
 
 - The Hadhramaut and the Comoros no longer appear in Independence Waves, Join conversions or Every Banner Rises launches. Both return once a sourced ruler or the record of an actual royal council is available.
 - The Danubian Confederation, the Balkan Federation, the Council of Communities and the other unions that include a newly created state can now count that state's capital toward their formation.
+
+## 2026-10-06: Runtime and presentation repairs (D35-D43)
+
+Disposition: `accepted and queued` for the workbook owner under the task's explicit no-workbook-edit rule.
+Source repairs are committed as f23583f2 and b696cec63.
+
+Use the current plain report title "The First Orders" for the released government's opening and "Replies from the Member Governments" for the aggregated Low Countries member summary where the catalog records those reports.
+The world declaration report describes local assemblies and garrisons proclaiming independent governments and the need for recognition, government and terms of separation.
+The dedicated status window is titled "Independence Status", with "Status panels" above its five tabs.
+Manual launches that cannot proceed show one explanation of the pending government replies, unsettled transfer or unsuitable territory.
+Regional projects reserve their advertised two factories for the project duration.
+Package questions display once per current appointment, and Low Countries member replies receive one combined summary rather than one report for every member.
+Event detail, evolution detail and cluster wording must be copied from their final in-game keys when the workbook owner reconciles them; this note does not certify workbook alignment.
