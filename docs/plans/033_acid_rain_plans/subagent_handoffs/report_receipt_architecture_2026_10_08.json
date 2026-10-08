@@ -1,0 +1,225 @@
+{
+  "id": "Event033_F7_bounded_report_architecture_audit_2026_10_08",
+  "disposition": "read-only source audit and conditional owner proposal, not implementation acceptance",
+  "sourceManifest": [
+    {
+      "path": "common/scripted_effects/033_acid_rain_effects.txt",
+      "sha256": "3eb102bf6168362eadd58188d45791cd81f9713dc379d9e08da325334e65bd48"
+    },
+    {
+      "path": "common/scripted_effects/033_acid_rain_aftermath_effects.txt",
+      "sha256": "1be409c02132f47ab4330a3569fe38a888abca21498262abc9eee0d1201f0c88"
+    },
+    {
+      "path": "common/scripted_effects/033_acid_rain_preparedness_effects.txt",
+      "sha256": "eea8b037405ae54848d54020571df208314795b2b1394ade4a300590909853dc"
+    },
+    {
+      "path": "common/scripted_effects/033_acid_rain_achievement_effects.txt",
+      "sha256": "211189c5d72f929c4daac56f6b026338339754f74e9d430a3717b542044e312a"
+    },
+    {
+      "path": "common/scripted_triggers/033_acid_rain_triggers.txt",
+      "sha256": "ae069680a185d0a0aa24d301fe62d158edab09a1a8d7d4ca0a36752dfa974f86"
+    },
+    {
+      "path": "common/script_constants/033_acid_rain_constants.txt",
+      "sha256": "900491e8c605450abc7c3057033276fdd00e52d0b709bff29be3bb42dbb15db7"
+    },
+    {
+      "path": "events/033_acid_rain.txt",
+      "sha256": "e628e71cb9663743a76ce901c35a44cd2281952d5794bab179923605cd5fcfc1"
+    },
+    {
+      "path": "localisation/english/033_acid_rain_l_english.yml",
+      "sha256": "5f8169ac30b4cf546d5b91b03f347ba868890a65788df9d4724b12db1bd51963"
+    }
+  ],
+  "sourceDrift": {
+    "initialRuntime": "e5c34d8bd73971609e26b7aef2d4a01cdd4f3f795c2856d83189dfcd546f5def",
+    "currentRuntime": "3eb102bf6168362eadd58188d45791cd81f9713dc379d9e08da325334e65bd48",
+    "ownerChange": "Only three caller temporary declarations at3324-3326. Owner receipt/test reports exact reversal and26 bounded frame/scalar cases. This auditor did not rerun or modify that test."
+  },
+  "senderLookup": {
+    "revision": "ed915a0880f765a2f48dcd59dcbf9a90b648f2baddebbb8d1c336743e0304c35",
+    "complete": true,
+    "definition": {
+      "kind": "scripted_effect",
+      "id": "acid_rain_send_severe_impact_report",
+      "path": "mod:common/scripted_effects/033_acid_rain_effects.txt",
+      "rootKind": "mod",
+      "loadOrder": 15,
+      "overridden": false,
+      "sourceShadowed": false,
+      "startLine": 3382,
+      "endLine": 3409,
+      "fromLine": 3382,
+      "toLine": 3409,
+      "nextLine": null,
+      "nextColumn": null,
+      "text": "acid_rain_send_severe_impact_report = {\n\tif = {\n\t\tlimit = { check_variable = { var = acid_rain_impact_episode_key value = constant:acid_rain_runtime.zero compare = greater_than } }\n\t\tif = {\n\t\t\tlimit = { check_variable = { var = acid_rain_pulse_class value = constant:acid_rain_mortality_class.superstorm compare = equals } }\n\t\t\tif = {\n\t\t\t\tlimit = {\n\t\t\t\t\tOR = {\n\t\t\t\t\t\tNOT = { has_variable = acid_rain_last_superstorm_impact_report_id }\n\t\t\t\t\t\tcheck_variable = { var = acid_rain_last_superstorm_impact_report_id value = acid_rain_impact_episode_key compare = less_than }\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t\tset_variable = { acid_rain_last_superstorm_impact_report_id = acid_rain_impact_episode_key }\n\t\t\t\tacid_rain_fire_severe_impact_report = yes\n\t\t\t}\n\t\t}\n\t\telse_if = {\n\t\t\tlimit = {\n\t\t\t\tOR = {\n\t\t\t\t\tNOT = { has_variable = acid_rain_last_severe_impact_report_id }\n\t\t\t\t\tcheck_variable = { var = acid_rain_last_severe_impact_report_id value = acid_rain_impact_episode_key compare = less_than }\n\t\t\t\t}\n\t\t\t}\n\t\t\tset_variable = { acid_rain_last_severe_impact_report_id = acid_rain_impact_episode_key }\n\t\t\tacid_rain_fire_severe_impact_report = yes\n\t\t}\n\t}\n}"
+    },
+    "referencesComplete": false,
+    "unresolvedReferenceCount": 20220,
+    "consumerProof": "Exact local token/caller reads, not complete indexed reference coverage."
+  },
+  "references": [
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Hearts of Iron IV\\documentation\\triggers_documentation.md",
+      "startLine": 5672,
+      "endLine": 5685,
+      "revision": "7d27ed77dadaf3a213a4b3e2c624bf9c02dae495317abe8eee833b27c2d1de29",
+      "source": "game_doc"
+    },
+    {
+      "path": "C:\\Users\\klimp\\OneDrive\\Documents\\Paradox Interactive\\Hearts of Iron IV\\mod\\chaos_redux\\paradox_wiki\\Data structures - Hearts of Iron 4 Wiki.md",
+      "startLine": 1147,
+      "endLine": 1147,
+      "revision": "62273f37ed30e5479acb331a8973f48dadc1867c4913c8a940e3e790e7af32d4",
+      "source": "wiki"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Hearts of Iron IV\\documentation\\effects_documentation.md",
+      "startLine": 2943,
+      "endLine": 2967,
+      "revision": "2cdc93d26775990468eed167442f7a416b13059fb8fe07d139b54250b79209af",
+      "source": "game_doc"
+    },
+    {
+      "path": "C:\\Users\\klimp\\OneDrive\\Documents\\Paradox Interactive\\Hearts of Iron IV\\mod\\chaos_redux\\paradox_wiki\\Data structures - Hearts of Iron 4 Wiki.md",
+      "startLine": 303,
+      "endLine": 328,
+      "revision": "62273f37ed30e5479acb331a8973f48dadc1867c4913c8a940e3e790e7af32d4",
+      "source": "wiki"
+    }
+  ],
+  "senderModel": [
+    {
+      "kind": "severe",
+      "sequence": [
+        3,
+        2,
+        3
+      ],
+      "decisions": [
+        {
+          "key": 3,
+          "dispatchRequested": true
+        },
+        {
+          "key": 2,
+          "dispatchRequested": false
+        },
+        {
+          "key": 3,
+          "dispatchRequested": false
+        }
+      ],
+      "dispatches": [
+        3
+      ],
+      "modelBoundary": "Actual parsed sender only. Fire helper is a dispatch-request witness, not native/controller delivery or physical proof."
+    },
+    {
+      "kind": "superstorm",
+      "sequence": [
+        3,
+        2,
+        3
+      ],
+      "decisions": [
+        {
+          "key": 3,
+          "dispatchRequested": true
+        },
+        {
+          "key": 2,
+          "dispatchRequested": false
+        },
+        {
+          "key": 3,
+          "dispatchRequested": false
+        }
+      ],
+      "dispatches": [
+        3
+      ],
+      "modelBoundary": "Actual parsed sender only. Fire helper is a dispatch-request witness, not native/controller delivery or physical proof."
+    },
+    {
+      "kind": "severe",
+      "sequence": [
+        2,
+        3
+      ],
+      "decisions": [
+        {
+          "key": 2,
+          "dispatchRequested": true
+        },
+        {
+          "key": 3,
+          "dispatchRequested": true
+        }
+      ],
+      "dispatches": [
+        2,
+        3
+      ],
+      "modelBoundary": "Actual parsed sender only. Fire helper is a dispatch-request witness, not native/controller delivery or physical proof."
+    }
+  ],
+  "physicalModelExecuted": false,
+  "findings": [
+    {
+      "number": 1,
+      "status": "original ABI hole repaired in current3EB source",
+      "outputs": [
+        "acid_rain_impact_episode_key",
+        "acid_rain_impact_evacuation_status",
+        "acid_rain_impact_end_day"
+      ],
+      "caller": "acid_rain_apply_state_pulse:3323-3334",
+      "helper": "acid_rain_prepare_severe_impact_report:3344-3372",
+      "consumer": "CONTROLLER -> acid_rain_send_severe_impact_report -> fire",
+      "forecastABI": "Both forecast creators set kind/lead in country and population input in the same state producer frame before country entry. Helpers write saved country fields, not temporary returns."
+    },
+    {
+      "number": 2,
+      "status": "conditional minimal proposal",
+      "key": "recipient country / explicit report generation / mortality class / episode",
+      "boundedStorage": "Severe:33 indexed entries including reserved0. Superstorm:6 indexed rows including reserved0, reported serial and pulse witness per slot. Separate forecast/impact channels if forecast receipts are repaired.",
+      "freshProof": "Actual positive applied loss, matching observed population delta and pulse key, exact source state/controller/generation/class/episode proof before receipt/publication. Do not infer proof from aggregate counters or modifiers.",
+      "assumptions": [
+        "Country report generation initialized by the owner, not inferred from has_country_flag registered.",
+        "Delivery is synchronous with the current physical packet and no valid older-slot report remains after reuse.",
+        "Serials remain exact and unique; existing5-slot bound is not a lifetime-serial bound.",
+        "Native popup fact binding is independently unresolved."
+      ]
+    },
+    {
+      "number": 3,
+      "status": "bounded shape proven, full safety conditional",
+      "severe": "IDs1..32 are append-only within generation, count increases only on accepted forecast; no retirement decrement/reuse.",
+      "superstorm": "Slots1..5 reused when active=2; independent total_episodes serial stamped globally and on states.",
+      "missingCurrentValidation": "state_has_superstorm_layer does not compare state.forecast_id with global.episode_entries[slot]. Preparer/sender add no slot/serial/generation validation. Fixed-slot serial receipts need that exact equality and stale-packet exclusion."
+    },
+    {
+      "number": 4,
+      "status": "migration unresolved",
+      "known": "Legacy maximum identifies the greatest recorded dispatch key for each country/class under that old ledger, not the complete reported set or native acknowledgement.",
+      "unknown": "For maximum3, history{3} and{2,3} are indistinguishable. Physical receipts/history flags do not encode report delivery. No safe prefix fill, empty-ledger redelivery or silent skip follows.",
+      "requiredDecision": "Parent must accept explicit legacy ambiguity handling. Clean-generation bounded receipts can proceed independently."
+    },
+    {
+      "number": 5,
+      "status": "fact packet/display contract unresolved",
+      "ordering": "Exact loss and country death/prevention updates -> prepare/send/fire104 inside pulse -> real damage in worker afterward.",
+      "available": "Returned applied loss, observed before/after delta, current pulse/class/source identity, estimated prevented amount; effective protection inputs only inside profile helper; measured damage points only after damage helper.",
+      "payload": "Fire stores only kind/evacuation/remaining days.104 reads mutable country cumulative death/prevention fields. Those are not per-episode packets.",
+      "sameTransaction": "Parsed sender with episode2 then3 requests two dispatches; severe processing can visit two source states controlled by the same country. Both fire calls overwrite the same country fields.",
+      "targetVsFacts": "Regular state event target carries scope identity into fired chains, not frozen country or state scalar values. Native description evaluation timing/snapshot semantics were not proved. No queue policy proposed."
+    }
+  ],
+  "limits": "Source and bounded sender model only. No native/controller delivery, mortality, damage, protection attribution, finance, migration, MP or GUI acceptance. No source, runner, F6 evidence or policy edits."
+}

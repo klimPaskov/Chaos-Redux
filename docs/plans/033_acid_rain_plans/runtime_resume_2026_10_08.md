@@ -11,7 +11,12 @@ The unchanged report preparer returns episode, evacuation status and end-date va
 See `validation/report_return_storage_owner_2026_10_08.md` for the exact before commit, byte reversal and non-native scope.
 Seven non-sealed source suites pass at this checkpoint, including the new report-return suite; sealed F6 is retained as E5 evidence rather than relabelled as current F7.
 The maximum-only report deduplication, actual damage/protection payload, report-display timing, migration and other F7 acceptance still require implementation and evidence.
-The architect is read-only on the bounded F7 receipt/payload audit; it owns no gameplay or runner patch.
+The architect completed its read-only bounded F7 receipt/payload audit and made no gameplay or runner patch.
+Its `subagent_handoffs/report_receipt_architecture_2026_10_08.md` and paired JSON confirm the original ABI repair, append-only severe IDs, reused superstorm slots, missing state/global storm-serial equality and report publication preceding real damage.
+The proposed generation/class/episode receipt shape remains conditional, not accepted migration or native delivery design.
+A legacy maximum of three cannot distinguish reported episode sets `{3}` and `{2,3}`; neither complete delivery history nor an ambiguous-history handling policy is established.
+No historical receipt is fabricated, uncertain episode silently discarded or first-impact report silently replayed by this checkpoint.
+Native per-event scalar fact binding is also unproved, and a carried state target alone does not freeze mutable country totals.
 
 ## Historical F6 opening checkpoint
 
