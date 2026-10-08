@@ -1,5 +1,10 @@
 # Event 035 current requirement state, 7 October 2026
 
+Parent commit notice, 8 October 2026: the parent accepted the bounded source/deep-report review and published source implementation as `19d3d0a59a4b3a14b45bec4d86b02dd3179e1ec0` over 30 exact paths, with the real index reconciled.
+This supersedes earlier Public Works source-commit, source-review and private-index preparation status below, retaining those statements as historical evidence rather than full acceptance.
+The recorded 87-test pass in 82.667 seconds remains source evidence, while separate `populated_wks_v2` work continues in the full-balance queue and native execution/full Event 035 completion remain incomplete.
+These five assigned documentation files are frozen after this commit-notice update for the parent's documentation follow-up commit.
+
 ## Parent Public Works implementation notice, 8 October 2026
 
 Acceptance basis U1 remains the explicit full-package instruction reproduced below, without simplifications.
@@ -7,7 +12,7 @@ The current parent assignment authorizes surgical reconciliation of this ledger,
 The narrower curator-only and two-file authority statements below describe the earlier documentation pass and do not restrict the parent's subsequent source implementation.
 No historical G6 authority claim, inherited-requirement disposition, or whole-event acceptance boundary is erased by this notice.
 
-Disposition: implemented bounded Public Works source under U1, with parent source-plan review complete and Git commit/hash pending.
+Disposition: implemented bounded Public Works source under U1 in `19d3d0a59a4b3a14b45bec4d86b02dd3179e1ec0`, with parent bounded source/deep-report review accepted and full acceptance unresolved.
 The parent published `common/scripted_effects/035_great_depression_public_works_effects.txt` and its companion `.md`, the Public Works triggers, and their launch, completion, failure, transfer, cleanup, native-timer and local-demand consumers.
 This supersedes only the earlier Public Works source-no-map finding, rather than closing the full Regional Works Program or the event.
 The result covers nine identified needs: infrastructure, railway and port repair, inadequate infrastructure, an eligible adjacent capital-linked rail pair, missing coastal port facilities, wartime anti-air, housing recovery and abandoned-site conversion.
@@ -56,7 +61,7 @@ These completed rule reads supersede the pending seven-line reference status and
 The architect's earlier full rule reads remain evidenced, while native execution, complete helper coverage, argument semantics, balance and campaign acceptance remain unresolved.
 
 Original Part 3 reserved/unspent resource refunds, the lasting-capacity closing transaction, hidden-row paid paths, authentic Event 034 producer/corridor/salvage/multi-region evidence, complete AI/scenarios/assets/achievements/catalog and live evidence retain their existing open dispositions.
-The Public Works source is currently uncommitted pending the parent's commit notice and hash.
+The parent reports the Public Works source published in `19d3d0a59a4b3a14b45bec4d86b02dd3179e1ec0` and the real index reconciled.
 The [documentation handoff](subagent_handoffs/public_works_documentation_2026-10-08.md) records this pass's source identities, MCP results, changed dispositions and review limits.
 
 ## Scope and authority

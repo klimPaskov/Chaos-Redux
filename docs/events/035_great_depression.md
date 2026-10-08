@@ -1,5 +1,10 @@
 # Event 35: Great Depression 2.0
 
+Parent commit notice, 8 October 2026: the parent accepted the bounded source/deep-report review and published source implementation as `19d3d0a59a4b3a14b45bec4d86b02dd3179e1ec0` over 30 exact paths, with the real index reconciled.
+This supersedes earlier Public Works source-commit, source-review and private-index preparation status below, retaining those statements as historical evidence rather than full acceptance.
+The recorded 87-test pass in 82.667 seconds remains source evidence, while separate `populated_wks_v2` work continues in the full-balance queue and native execution/full Event 035 completion remain incomplete.
+These five assigned documentation files are frozen after this commit-notice update for the parent's documentation follow-up commit.
+
 ## Overview
 
 Event 35 is a Minor Repeatable, Chaos level 1, Low-severity member of the Negative Economy cluster.
@@ -194,7 +199,7 @@ The project proof deadline and bound native mission share the legitimately exten
 Durable issuance and local-recovery history survive transient cleanup.
 The [October 8 documentation handoff](../plans/035_great_depression_plans/subagent_handoffs/public_works_documentation_2026-10-08.md) records implemented bounded source under U1, with the parent's final guarded-source 87-method pass in 82.667 seconds recorded, including 21 Public Works methods, the same 512 local combinations and eight invalid-actor cases, foreign-ROOT retention and paid-project type reinterpretation with no award.
 The earlier 86-method pass in 102.797 seconds remains historical and is superseded only as the current test boundary.
-Parent source-plan review is complete and native repair-family reference reads are complete, with Git commit/hash pending.
+Parent bounded source/deep-report review is accepted and native repair-family reference reads are complete, with source published as `19d3d0a59a4b3a14b45bec4d86b02dd3179e1ec0`.
 The same-nine-WKS comparison is terminal partial, analysis `probability-7cae77ee230c7184e69c9508`, with 57 unresolved native inputs and zero-eligible placeholders that prove no actual exclusion, score delta or normalized probability.
 The input gap remains subject to fixture-support versus fixture-construction clarification, while full balance, native execution, campaign acceptance and event completion remain open.
 The parent's narrow `.8` trace and state render completed partial, with the current render selecting one node, zero helpers and 46,254 omitted nodes.

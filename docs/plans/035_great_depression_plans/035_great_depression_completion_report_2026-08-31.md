@@ -1,8 +1,13 @@
 # Event 35 Great Depression 2.0 implementation report
 
+Parent commit notice, 8 October 2026: the parent accepted the bounded source/deep-report review and published source implementation as `19d3d0a59a4b3a14b45bec4d86b02dd3179e1ec0` over 30 exact paths, with the real index reconciled.
+This supersedes earlier Public Works source-commit, source-review and private-index preparation status below, retaining those statements as historical evidence rather than full acceptance.
+The recorded 87-test pass in 82.667 seconds remains source evidence, while separate `populated_wks_v2` work continues in the full-balance queue and native execution/full Event 035 completion remain incomplete.
+These five assigned documentation files are frozen after this commit-notice update for the parent's documentation follow-up commit.
+
 ## Disposition
 
-Parent implementation notice, 8 October 2026: the [Public Works documentation handoff](subagent_handoffs/public_works_documentation_2026-10-08.md) records implemented bounded source under U1, with parent source-plan review complete and commit/hash pending.
+Parent implementation notice, 8 October 2026: the [Public Works documentation handoff](subagent_handoffs/public_works_documentation_2026-10-08.md) records implemented bounded source under U1, with parent bounded source/deep-report review accepted and source published as `19d3d0a59a4b3a14b45bec4d86b02dd3179e1ec0`.
 Nine identified work kinds now have exact paid-site binding, preserved-capacity repair proof, bounded physical result or measured local recovery, transfer-safe issuance and synchronized due-date-plus-28 proof/mission deadlines.
 This supersedes only the earlier Public Works source-no-map finding.
 The parent reports all 18 Public Works methods passing in 41.540 seconds, including 512 local-demand subsets and the corrected adoption, automatic-resume and post-work control-pause deadline cases.
@@ -22,7 +27,7 @@ The parent's narrow `.8` trace and state render completed partial at revisions `
 The current render selects one node with zero helpers and 46,254 omitted nodes, superseding only the prior zero-node count as current evidence.
 Reported artifact hashes, unavailable render resources and the terminal matching `.8` comparison outcome are retained in the documentation handoff, with no event delta proved and visual inspection/full lifecycle proof unresolved.
 Reserved/unspent refund accounting, the lasting-capacity closing transaction, inherited consumers and authentic source histories, complete AI/scenarios/assets/achievements/catalog, native and live evidence remain required.
-The current source is uncommitted pending the parent's hash notice, and no whole-event completion or absence-of-gaps claim follows from this documentation pass.
+The current source is published in `19d3d0a59a4b3a14b45bec4d86b02dd3179e1ec0`, and no whole-event completion or absence-of-gaps claim follows from this documentation pass.
 
 Event 35 source, presentation, assets, achievements, documentation, and catalog surfaces exist, but their presence is not full requirement coverage.
 

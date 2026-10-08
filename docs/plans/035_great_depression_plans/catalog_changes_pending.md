@@ -1,5 +1,10 @@
 # Event 35 Catalog Changes Pending
 
+Parent commit notice, 8 October 2026: the parent accepted the bounded source/deep-report review and published source implementation as `19d3d0a59a4b3a14b45bec4d86b02dd3179e1ec0` over 30 exact paths, with the real index reconciled.
+This supersedes earlier Public Works source-commit, source-review and private-index preparation status below, retaining those statements as historical evidence rather than full acceptance.
+The recorded 87-test pass in 82.667 seconds remains source evidence, while separate `populated_wks_v2` work continues in the full-balance queue and native execution/full Event 035 completion remain incomplete.
+These five assigned documentation files are frozen after this commit-notice update for the parent's documentation follow-up commit.
+
 Disposition: unresolved until the spreadsheet owner applies or rejects each row.
 The workbook `docs/spreadsheets/chaos_redux_events_catalog.xlsx` is the only editable catalog source; this file records what the Event 35 engineer needs from it, and the exported CSVs must not be edited by hand.
 

@@ -1,5 +1,10 @@
 # Event 035 Public Works documentation reconciliation, 8 October 2026
 
+Parent commit notice, 8 October 2026: the parent accepted the bounded source/deep-report review and published source implementation as `19d3d0a59a4b3a14b45bec4d86b02dd3179e1ec0` over 30 exact paths, with the real index reconciled.
+This supersedes earlier Public Works source-commit, source-review and private-index preparation status below, retaining those statements as historical evidence rather than full acceptance.
+The recorded 87-test pass in 82.667 seconds remains source evidence, while separate `populated_wks_v2` work continues in the full-balance queue and native execution/full Event 035 completion remain incomplete.
+These five assigned documentation files are frozen after this commit-notice update for the parent's documentation follow-up commit.
+
 ## Final paid-project type guard and freeze
 
 The parent reports `python -m unittest discover -s .tools -p 'test_event035*py'` completed on the final guarded source with 87 methods in 82.667 seconds, `OK`.
@@ -15,13 +20,13 @@ The owner continues separate `populated_wks_v2` fixtures, without replacing or p
 
 ## Scope, authority and disposition
 
-Disposition: implemented bounded documentation reconciliation, pending parent review.
+Disposition: implemented bounded documentation reconciliation, with parent bounded source/deep-report review accepted and full acceptance unresolved.
 Acceptance basis U1 is the parent's explicit user instruction accepting full `docs/specs/035_great_depression_specs/` implementation without simplification.
 Parts 3 and 4 supply the Regional Works Program and center-recovery design, and Part 11 supplies the required acceptance cases.
 The parent published the bounded Public Works source and retains code, integration, source/MCP review, audit and commit ownership.
 This handoff supersedes only the earlier Public Works source-no-map finding, with no promotion of the full mechanic or event to complete.
 Parent source-plan review is complete, and the source is frozen after the final guarded 87-method passing run.
-Git commit/hash remains pending, with full balance and Event 035 completion open.
+Source is published in `19d3d0a59a4b3a14b45bec4d86b02dd3179e1ec0` with the real index reconciled, while full balance and Event 035 completion remain open.
 
 The exact write scope is four existing Markdown documents and this assigned handoff.
 No gameplay, localisation, scripted localisation, skills, assets, workbook, exports or Git state was changed by this curator.

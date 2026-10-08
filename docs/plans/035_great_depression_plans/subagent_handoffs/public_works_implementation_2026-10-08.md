@@ -1,7 +1,10 @@
 # Event 035 Public Works source implementation
 
-Disposition: implemented bounded source contract under U1, with partial mandatory comparison delivered and shared-tree commit pending.
+Disposition: implemented bounded source contract under U1 in commit `19d3d0a59a4b3a14b45bec4d86b02dd3179e1ec0`, with partial mandatory comparison delivered and full acceptance open.
 U1 is the user's full Event 035 specification-package instruction, without simplifications.
+The shared-tree transaction used an isolated 30-path index, a compare-and-swap ref update, and path-specific real-index reconciliation.
+Only two owned Public Works snapshot-attribute lines entered the mixed file; Event 031's three working-tree lines and Event 006's comment wording remained unstaged and intact.
+No index lock was removed, no unrelated index/working file was reset, and all five frozen comparison inputs retained their exact bytes in the committed tree.
 This closes the source-no-map finding only, not the full Regional Works Program or Event 035 goal.
 
 ## Requirement and transaction coverage
