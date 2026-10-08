@@ -1,5 +1,10 @@
 # Event 006 package incidents
 
+The [appointment and shown-report lifecycle](systems/package_incident_lifecycle.md) defines the current country-owned scheduling, delivery, reply and closure API.
+Each slot captures its shown generation/package only on valid delivery and retains that proof through origin cleanup until its own native after handler closes it.
+Closing a stale report can dispatch an existing current appointment using its remaining hours without resetting the stored due date.
+All 130 event mappings and 260 option bodies remain unchanged; source-model and native-evidence limits are recorded in the October 8 lifecycle handoff.
+
 The covered Level 2 packages each have two incidents tied to local conditions and their relations with the former administration.
 
 ## How it works
@@ -7,16 +12,17 @@ The covered Level 2 packages each have two incidents tied to local conditions an
 1. When a released country settles its founding posture (`chaosx.nr6.41` for players, `chaosx.nr6.42` for the AI), `independence_wave_schedule_package_incident_a` stores the current Event 006 generation in `independence_wave_package_incident_generation` and schedules the package's first incident after `independence_wave_package_incident.first_delay_days`.
 2. Either answer to the first incident schedules the second after `independence_wave_package_incident.second_delay_days`.
 3. Separate first- and second-incident due dates use `chaosx_convert_days_to_date_offset`, with caller-initialized temporary output storage.
-4. `can_deliver_independence_wave_package_incident_a` and its second-incident counterpart require the live origin and current generation, the scheduled phase, a due appointment and no prior delivery or resolution.
-5. Each public report consumes its delivery flag in `immediate`, so two compatible delayed calls cannot open duplicate reports while the player answers.
-6. Each answer first checks that its phase is still delivered and unresolved for the active government, then performs its original payment and result once.
+4. `can_deliver_independence_wave_package_incident_a` and its second-incident counterpart require the live origin/current generation, scheduled phase, due appointment, no prior delivery/resolution and a free shown slot.
+5. Valid `immediate` captures the shown generation/package before publishing shown and delivered, so compatible callbacks cannot overwrite an outstanding report.
+6. Every effect-time answer matches the preserved shown snapshot to the active origin and package before applying its original payment and result once.
 The results use the shared clamped Statehood helpers, the package's own values, and the stated former-host changes.
 Costly options require and spend 35 political power or the light manpower cost.
-7. `independence_wave_clear_package_incident_runtime` runs in the generation reset and at origin end, clearing both appointments and delivery flags.
+7. Origin reset/end clears live appointments and answer flags while retaining an outstanding popup's shown proof.
+8. Its native `after` closes only that shown slot and may dispatch an existing current appointment using the stored due date's remaining hours.
 
 A stored country generation is mutable state, not an immutable payload attached to a delayed event.
-The due-date and consumed-delivery checks reject early callbacks from a prior release and duplicate mature delivery.
-Their native re-release test remains recorded in the finishing status report.
+The due-date, shown-lifetime and effect-time snapshot checks reject premature or stale authority without pretending that a delayed native callback carries a historical scalar generation.
+Source-model cases and independent review are recorded in the October 8 lifecycle handoff; native lifetime and zero-delay ordering remain separate gates.
 
 No hook iterates countries or runs on a daily, weekly or monthly pulse.
 

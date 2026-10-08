@@ -1,8 +1,8 @@
 # ============================================================================
 # CHAOS REDUX - EVENT 006 PACKAGE INCIDENT TRIGGERS
 # ============================================================================
-# A package incident fires only for the live Event 006 generation that
-# scheduled it.
+# Delivery fulfills a valid currently due appointment for the matching package.
+# Effect-time answers require its preserved shown generation/package snapshot.
 # ============================================================================
 
 can_fire_independence_wave_package_incident = {
@@ -16,6 +16,7 @@ can_fire_independence_wave_package_incident = {
 # block, so another call cannot open a second copy while the player answers.
 can_deliver_independence_wave_package_incident_a = {
 	can_fire_independence_wave_package_incident = yes
+	NOT = { has_country_flag = independence_wave_package_incident_a_shown }
 	has_country_flag = independence_wave_package_incident_a_scheduled
 	NOT = { has_country_flag = independence_wave_package_incident_a_delivered }
 	NOT = { has_country_flag = independence_wave_package_incident_a_resolved }
@@ -25,6 +26,7 @@ can_deliver_independence_wave_package_incident_a = {
 
 can_deliver_independence_wave_package_incident_b = {
 	can_fire_independence_wave_package_incident = yes
+	NOT = { has_country_flag = independence_wave_package_incident_b_shown }
 	has_country_flag = independence_wave_package_incident_b_scheduled
 	NOT = { has_country_flag = independence_wave_package_incident_b_delivered }
 	NOT = { has_country_flag = independence_wave_package_incident_b_resolved }
@@ -33,15 +35,26 @@ can_deliver_independence_wave_package_incident_b = {
 }
 
 # COUNTRY scope. An answer mutates the current government only once, after
-# its own report has been delivered. Origin cleanup invalidates that answer.
+# its own report has been delivered. The shown snapshot survives origin cleanup
+# but cannot authorize a replacement generation or package.
 can_resolve_independence_wave_package_incident_a = {
 	can_fire_independence_wave_package_incident = yes
+	has_country_flag = independence_wave_package_incident_a_shown
+	has_variable = independence_wave_package_incident_a_shown_generation
+	has_variable = independence_wave_package_incident_a_shown_package
+	check_variable = { var = independence_wave_package_incident_a_shown_generation value = independence_wave_generation_id compare = equals }
+	check_variable = { var = independence_wave_package_incident_a_shown_package value = independence_wave_package_id compare = equals }
 	has_country_flag = independence_wave_package_incident_a_delivered
 	NOT = { has_country_flag = independence_wave_package_incident_a_resolved }
 }
 
 can_resolve_independence_wave_package_incident_b = {
 	can_fire_independence_wave_package_incident = yes
+	has_country_flag = independence_wave_package_incident_b_shown
+	has_variable = independence_wave_package_incident_b_shown_generation
+	has_variable = independence_wave_package_incident_b_shown_package
+	check_variable = { var = independence_wave_package_incident_b_shown_generation value = independence_wave_generation_id compare = equals }
+	check_variable = { var = independence_wave_package_incident_b_shown_package value = independence_wave_package_id compare = equals }
 	has_country_flag = independence_wave_package_incident_b_delivered
 	NOT = { has_country_flag = independence_wave_package_incident_b_resolved }
 }

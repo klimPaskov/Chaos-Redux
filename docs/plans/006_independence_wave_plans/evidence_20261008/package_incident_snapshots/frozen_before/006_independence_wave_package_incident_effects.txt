@@ -1,0 +1,732 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 006 PACKAGE INCIDENT SCHEDULING
+# ============================================================================
+# Overview:
+# - `independence_wave_schedule_package_incident_a` runs in the released
+#   country when it resolves its founding posture and schedules that package's
+#   first incident.
+# - `independence_wave_schedule_package_incident_b` runs from either answer to
+#   the first incident and schedules the second.
+# - Both store the current generation and a due date. Public delivery also
+#   consumes a phase-specific flag before the player chooses an answer.
+# - `independence_wave_clear_package_incident_runtime` clears every receipt; the
+#   generation reset and origin end call it.
+# No effect iterates countries or runs on a periodic hook.
+# ============================================================================
+
+# COUNTRY scope: the released country after its founding posture resolves.
+independence_wave_schedule_package_incident_a = {
+	if = {
+		limit = {
+			is_independence_wave_active_country = yes
+			has_variable = independence_wave_package_id
+			NOT = { has_country_flag = independence_wave_package_incident_a_scheduled }
+		}
+		set_variable = { independence_wave_package_incident_generation = independence_wave_generation_id }
+		set_temp_variable = { independence_wave_package_incident_delay = constant:independence_wave_package_incident.first_delay_days }
+		set_temp_variable = { chaosx_date_days = independence_wave_package_incident_delay }
+		set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+		chaosx_convert_days_to_date_offset = yes
+		set_variable = { independence_wave_package_incident_a_due_date = global.date }
+		add_to_variable = { independence_wave_package_incident_a_due_date = chaosx_date_offset }
+		if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_001 } }
+			set_country_flag = independence_wave_package_incident_a_scheduled
+			country_event = { id = chaosx.nr6.101 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_002 } }
+			set_country_flag = independence_wave_package_incident_a_scheduled
+			country_event = { id = chaosx.nr6.103 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_004 } }
+			set_country_flag = independence_wave_package_incident_a_scheduled
+			country_event = { id = chaosx.nr6.105 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_014 } }
+			set_country_flag = independence_wave_package_incident_a_scheduled
+			country_event = { id = chaosx.nr6.107 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_023 } }
+			set_country_flag = independence_wave_package_incident_a_scheduled
+			country_event = { id = chaosx.nr6.109 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_026 } }
+			set_country_flag = independence_wave_package_incident_a_scheduled
+			country_event = { id = chaosx.nr6.111 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_029 } }
+			set_country_flag = independence_wave_package_incident_a_scheduled
+			country_event = { id = chaosx.nr6.113 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_033 } }
+			set_country_flag = independence_wave_package_incident_a_scheduled
+			country_event = { id = chaosx.nr6.115 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_041 } }
+			set_country_flag = independence_wave_package_incident_a_scheduled
+			country_event = { id = chaosx.nr6.117 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_038 } }
+			set_country_flag = independence_wave_package_incident_a_scheduled
+			country_event = { id = chaosx.nr6.119 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_040 } }
+			set_country_flag = independence_wave_package_incident_a_scheduled
+			country_event = { id = chaosx.nr6.121 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_044 } }
+			set_country_flag = independence_wave_package_incident_a_scheduled
+			country_event = { id = chaosx.nr6.123 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_045 } }
+			set_country_flag = independence_wave_package_incident_a_scheduled
+			country_event = { id = chaosx.nr6.125 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_070 } }
+			set_country_flag = independence_wave_package_incident_a_scheduled
+			country_event = { id = chaosx.nr6.127 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_071 } }
+			set_country_flag = independence_wave_package_incident_a_scheduled
+			country_event = { id = chaosx.nr6.129 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_072 } }
+			set_country_flag = independence_wave_package_incident_a_scheduled
+			country_event = { id = chaosx.nr6.131 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_173 } }
+			set_country_flag = independence_wave_package_incident_a_scheduled
+			country_event = { id = chaosx.nr6.133 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_184 } }
+			set_country_flag = independence_wave_package_incident_a_scheduled
+			country_event = { id = chaosx.nr6.135 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_013 } }
+			set_country_flag = independence_wave_package_incident_a_scheduled
+			country_event = { id = chaosx.nr6.137 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_015 } }
+			set_country_flag = independence_wave_package_incident_a_scheduled
+			country_event = { id = chaosx.nr6.139 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_039 } }
+			set_country_flag = independence_wave_package_incident_a_scheduled
+			country_event = { id = chaosx.nr6.141 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_081 } }
+			set_country_flag = independence_wave_package_incident_a_scheduled
+			country_event = { id = chaosx.nr6.200 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_082 } }
+			set_country_flag = independence_wave_package_incident_a_scheduled
+			country_event = { id = chaosx.nr6.202 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_078 } }
+			set_country_flag = independence_wave_package_incident_a_scheduled
+			country_event = { id = chaosx.nr6.204 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_073 } }
+			set_country_flag = independence_wave_package_incident_a_scheduled
+			country_event = { id = chaosx.nr6.206 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_083 } }
+			set_country_flag = independence_wave_package_incident_a_scheduled
+			country_event = { id = chaosx.nr6.208 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_097 } }
+			set_country_flag = independence_wave_package_incident_a_scheduled
+			country_event = { id = chaosx.nr6.210 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_099 } }
+			set_country_flag = independence_wave_package_incident_a_scheduled
+			country_event = { id = chaosx.nr6.212 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_108 } }
+			set_country_flag = independence_wave_package_incident_a_scheduled
+			country_event = { id = chaosx.nr6.214 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_110 } }
+			set_country_flag = independence_wave_package_incident_a_scheduled
+			country_event = { id = chaosx.nr6.216 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_111 } }
+			set_country_flag = independence_wave_package_incident_a_scheduled
+			country_event = { id = chaosx.nr6.218 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_113 } }
+			set_country_flag = independence_wave_package_incident_a_scheduled
+			country_event = { id = chaosx.nr6.220 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_115 } }
+			set_country_flag = independence_wave_package_incident_a_scheduled
+			country_event = { id = chaosx.nr6.222 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_119 } }
+			set_country_flag = independence_wave_package_incident_a_scheduled
+			country_event = { id = chaosx.nr6.224 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_126 } }
+			set_country_flag = independence_wave_package_incident_a_scheduled
+			country_event = { id = chaosx.nr6.226 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_130 } }
+			set_country_flag = independence_wave_package_incident_a_scheduled
+			country_event = { id = chaosx.nr6.228 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_134 } }
+			set_country_flag = independence_wave_package_incident_a_scheduled
+			country_event = { id = chaosx.nr6.230 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_136 } }
+			set_country_flag = independence_wave_package_incident_a_scheduled
+			country_event = { id = chaosx.nr6.232 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_137 } }
+			set_country_flag = independence_wave_package_incident_a_scheduled
+			country_event = { id = chaosx.nr6.234 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_138 } }
+			set_country_flag = independence_wave_package_incident_a_scheduled
+			country_event = { id = chaosx.nr6.236 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_139 } }
+			set_country_flag = independence_wave_package_incident_a_scheduled
+			country_event = { id = chaosx.nr6.238 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_140 } }
+			set_country_flag = independence_wave_package_incident_a_scheduled
+			country_event = { id = chaosx.nr6.240 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_141 } }
+			set_country_flag = independence_wave_package_incident_a_scheduled
+			country_event = { id = chaosx.nr6.242 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_143 } }
+			set_country_flag = independence_wave_package_incident_a_scheduled
+			country_event = { id = chaosx.nr6.244 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_145 } }
+			set_country_flag = independence_wave_package_incident_a_scheduled
+			country_event = { id = chaosx.nr6.246 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_147 } }
+			set_country_flag = independence_wave_package_incident_a_scheduled
+			country_event = { id = chaosx.nr6.248 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_150 } }
+			set_country_flag = independence_wave_package_incident_a_scheduled
+			country_event = { id = chaosx.nr6.250 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_151 } }
+			set_country_flag = independence_wave_package_incident_a_scheduled
+			country_event = { id = chaosx.nr6.252 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_155 } }
+			set_country_flag = independence_wave_package_incident_a_scheduled
+			country_event = { id = chaosx.nr6.254 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_159 } }
+			set_country_flag = independence_wave_package_incident_a_scheduled
+			country_event = { id = chaosx.nr6.256 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_161 } }
+			set_country_flag = independence_wave_package_incident_a_scheduled
+			country_event = { id = chaosx.nr6.258 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_162 } }
+			set_country_flag = independence_wave_package_incident_a_scheduled
+			country_event = { id = chaosx.nr6.260 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_166 } }
+			set_country_flag = independence_wave_package_incident_a_scheduled
+			country_event = { id = chaosx.nr6.262 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_169 } }
+			set_country_flag = independence_wave_package_incident_a_scheduled
+			country_event = { id = chaosx.nr6.264 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_170 } }
+			set_country_flag = independence_wave_package_incident_a_scheduled
+			country_event = { id = chaosx.nr6.266 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_171 } }
+			set_country_flag = independence_wave_package_incident_a_scheduled
+			country_event = { id = chaosx.nr6.268 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_175 } }
+			set_country_flag = independence_wave_package_incident_a_scheduled
+			country_event = { id = chaosx.nr6.270 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_180 } }
+			set_country_flag = independence_wave_package_incident_a_scheduled
+			country_event = { id = chaosx.nr6.272 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_182 } }
+			set_country_flag = independence_wave_package_incident_a_scheduled
+			country_event = { id = chaosx.nr6.274 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_185 } }
+			set_country_flag = independence_wave_package_incident_a_scheduled
+			country_event = { id = chaosx.nr6.276 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_192 } }
+			set_country_flag = independence_wave_package_incident_a_scheduled
+			country_event = { id = chaosx.nr6.278 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_020 } }
+			set_country_flag = independence_wave_package_incident_a_scheduled
+			country_event = { id = chaosx.nr6.280 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_064 } }
+			set_country_flag = independence_wave_package_incident_a_scheduled
+			country_event = { id = chaosx.nr6.282 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_065 } }
+			set_country_flag = independence_wave_package_incident_a_scheduled
+			country_event = { id = chaosx.nr6.284 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_066 } }
+			set_country_flag = independence_wave_package_incident_a_scheduled
+			country_event = { id = chaosx.nr6.286 days = independence_wave_package_incident_delay }
+		}
+	}
+}
+
+# COUNTRY scope: called by either answer to the first incident.
+independence_wave_schedule_package_incident_b = {
+	if = {
+		limit = {
+			is_independence_wave_active_country = yes
+			has_country_flag = independence_wave_package_incident_a_resolved
+			NOT = { has_country_flag = independence_wave_package_incident_b_scheduled }
+		}
+		set_variable = { independence_wave_package_incident_generation = independence_wave_generation_id }
+		set_temp_variable = { independence_wave_package_incident_delay = constant:independence_wave_package_incident.second_delay_days }
+		set_temp_variable = { chaosx_date_days = independence_wave_package_incident_delay }
+		set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+		chaosx_convert_days_to_date_offset = yes
+		set_variable = { independence_wave_package_incident_b_due_date = global.date }
+		add_to_variable = { independence_wave_package_incident_b_due_date = chaosx_date_offset }
+		if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_001 } }
+			set_country_flag = independence_wave_package_incident_b_scheduled
+			country_event = { id = chaosx.nr6.102 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_002 } }
+			set_country_flag = independence_wave_package_incident_b_scheduled
+			country_event = { id = chaosx.nr6.104 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_004 } }
+			set_country_flag = independence_wave_package_incident_b_scheduled
+			country_event = { id = chaosx.nr6.106 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_014 } }
+			set_country_flag = independence_wave_package_incident_b_scheduled
+			country_event = { id = chaosx.nr6.108 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_023 } }
+			set_country_flag = independence_wave_package_incident_b_scheduled
+			country_event = { id = chaosx.nr6.110 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_026 } }
+			set_country_flag = independence_wave_package_incident_b_scheduled
+			country_event = { id = chaosx.nr6.112 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_029 } }
+			set_country_flag = independence_wave_package_incident_b_scheduled
+			country_event = { id = chaosx.nr6.114 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_033 } }
+			set_country_flag = independence_wave_package_incident_b_scheduled
+			country_event = { id = chaosx.nr6.116 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_041 } }
+			set_country_flag = independence_wave_package_incident_b_scheduled
+			country_event = { id = chaosx.nr6.118 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_038 } }
+			set_country_flag = independence_wave_package_incident_b_scheduled
+			country_event = { id = chaosx.nr6.120 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_040 } }
+			set_country_flag = independence_wave_package_incident_b_scheduled
+			country_event = { id = chaosx.nr6.122 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_044 } }
+			set_country_flag = independence_wave_package_incident_b_scheduled
+			country_event = { id = chaosx.nr6.124 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_045 } }
+			set_country_flag = independence_wave_package_incident_b_scheduled
+			country_event = { id = chaosx.nr6.126 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_070 } }
+			set_country_flag = independence_wave_package_incident_b_scheduled
+			country_event = { id = chaosx.nr6.128 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_071 } }
+			set_country_flag = independence_wave_package_incident_b_scheduled
+			country_event = { id = chaosx.nr6.130 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_072 } }
+			set_country_flag = independence_wave_package_incident_b_scheduled
+			country_event = { id = chaosx.nr6.132 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_173 } }
+			set_country_flag = independence_wave_package_incident_b_scheduled
+			country_event = { id = chaosx.nr6.134 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_184 } }
+			set_country_flag = independence_wave_package_incident_b_scheduled
+			country_event = { id = chaosx.nr6.136 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_013 } }
+			set_country_flag = independence_wave_package_incident_b_scheduled
+			country_event = { id = chaosx.nr6.138 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_015 } }
+			set_country_flag = independence_wave_package_incident_b_scheduled
+			country_event = { id = chaosx.nr6.140 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_039 } }
+			set_country_flag = independence_wave_package_incident_b_scheduled
+			country_event = { id = chaosx.nr6.142 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_081 } }
+			set_country_flag = independence_wave_package_incident_b_scheduled
+			country_event = { id = chaosx.nr6.201 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_082 } }
+			set_country_flag = independence_wave_package_incident_b_scheduled
+			country_event = { id = chaosx.nr6.203 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_078 } }
+			set_country_flag = independence_wave_package_incident_b_scheduled
+			country_event = { id = chaosx.nr6.205 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_073 } }
+			set_country_flag = independence_wave_package_incident_b_scheduled
+			country_event = { id = chaosx.nr6.207 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_083 } }
+			set_country_flag = independence_wave_package_incident_b_scheduled
+			country_event = { id = chaosx.nr6.209 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_097 } }
+			set_country_flag = independence_wave_package_incident_b_scheduled
+			country_event = { id = chaosx.nr6.211 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_099 } }
+			set_country_flag = independence_wave_package_incident_b_scheduled
+			country_event = { id = chaosx.nr6.213 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_108 } }
+			set_country_flag = independence_wave_package_incident_b_scheduled
+			country_event = { id = chaosx.nr6.215 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_110 } }
+			set_country_flag = independence_wave_package_incident_b_scheduled
+			country_event = { id = chaosx.nr6.217 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_111 } }
+			set_country_flag = independence_wave_package_incident_b_scheduled
+			country_event = { id = chaosx.nr6.219 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_113 } }
+			set_country_flag = independence_wave_package_incident_b_scheduled
+			country_event = { id = chaosx.nr6.221 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_115 } }
+			set_country_flag = independence_wave_package_incident_b_scheduled
+			country_event = { id = chaosx.nr6.223 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_119 } }
+			set_country_flag = independence_wave_package_incident_b_scheduled
+			country_event = { id = chaosx.nr6.225 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_126 } }
+			set_country_flag = independence_wave_package_incident_b_scheduled
+			country_event = { id = chaosx.nr6.227 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_130 } }
+			set_country_flag = independence_wave_package_incident_b_scheduled
+			country_event = { id = chaosx.nr6.229 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_134 } }
+			set_country_flag = independence_wave_package_incident_b_scheduled
+			country_event = { id = chaosx.nr6.231 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_136 } }
+			set_country_flag = independence_wave_package_incident_b_scheduled
+			country_event = { id = chaosx.nr6.233 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_137 } }
+			set_country_flag = independence_wave_package_incident_b_scheduled
+			country_event = { id = chaosx.nr6.235 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_138 } }
+			set_country_flag = independence_wave_package_incident_b_scheduled
+			country_event = { id = chaosx.nr6.237 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_139 } }
+			set_country_flag = independence_wave_package_incident_b_scheduled
+			country_event = { id = chaosx.nr6.239 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_140 } }
+			set_country_flag = independence_wave_package_incident_b_scheduled
+			country_event = { id = chaosx.nr6.241 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_141 } }
+			set_country_flag = independence_wave_package_incident_b_scheduled
+			country_event = { id = chaosx.nr6.243 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_143 } }
+			set_country_flag = independence_wave_package_incident_b_scheduled
+			country_event = { id = chaosx.nr6.245 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_145 } }
+			set_country_flag = independence_wave_package_incident_b_scheduled
+			country_event = { id = chaosx.nr6.247 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_147 } }
+			set_country_flag = independence_wave_package_incident_b_scheduled
+			country_event = { id = chaosx.nr6.249 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_150 } }
+			set_country_flag = independence_wave_package_incident_b_scheduled
+			country_event = { id = chaosx.nr6.251 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_151 } }
+			set_country_flag = independence_wave_package_incident_b_scheduled
+			country_event = { id = chaosx.nr6.253 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_155 } }
+			set_country_flag = independence_wave_package_incident_b_scheduled
+			country_event = { id = chaosx.nr6.255 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_159 } }
+			set_country_flag = independence_wave_package_incident_b_scheduled
+			country_event = { id = chaosx.nr6.257 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_161 } }
+			set_country_flag = independence_wave_package_incident_b_scheduled
+			country_event = { id = chaosx.nr6.259 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_162 } }
+			set_country_flag = independence_wave_package_incident_b_scheduled
+			country_event = { id = chaosx.nr6.261 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_166 } }
+			set_country_flag = independence_wave_package_incident_b_scheduled
+			country_event = { id = chaosx.nr6.263 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_169 } }
+			set_country_flag = independence_wave_package_incident_b_scheduled
+			country_event = { id = chaosx.nr6.265 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_170 } }
+			set_country_flag = independence_wave_package_incident_b_scheduled
+			country_event = { id = chaosx.nr6.267 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_171 } }
+			set_country_flag = independence_wave_package_incident_b_scheduled
+			country_event = { id = chaosx.nr6.269 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_175 } }
+			set_country_flag = independence_wave_package_incident_b_scheduled
+			country_event = { id = chaosx.nr6.271 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_180 } }
+			set_country_flag = independence_wave_package_incident_b_scheduled
+			country_event = { id = chaosx.nr6.273 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_182 } }
+			set_country_flag = independence_wave_package_incident_b_scheduled
+			country_event = { id = chaosx.nr6.275 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_185 } }
+			set_country_flag = independence_wave_package_incident_b_scheduled
+			country_event = { id = chaosx.nr6.277 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_192 } }
+			set_country_flag = independence_wave_package_incident_b_scheduled
+			country_event = { id = chaosx.nr6.279 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_020 } }
+			set_country_flag = independence_wave_package_incident_b_scheduled
+			country_event = { id = chaosx.nr6.281 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_064 } }
+			set_country_flag = independence_wave_package_incident_b_scheduled
+			country_event = { id = chaosx.nr6.283 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_065 } }
+			set_country_flag = independence_wave_package_incident_b_scheduled
+			country_event = { id = chaosx.nr6.285 days = independence_wave_package_incident_delay }
+		}
+		else_if = {
+			limit = { check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_066 } }
+			set_country_flag = independence_wave_package_incident_b_scheduled
+			country_event = { id = chaosx.nr6.287 days = independence_wave_package_incident_delay }
+		}
+	}
+}
+
+# COUNTRY scope. Zeroes the shared Statehood and former-host deltas before an
+# incident option writes the ones it uses.
+independence_wave_package_incident_clear_deltas = {
+	set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_value.minimum }
+	set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_value.minimum }
+	set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_value.minimum }
+	set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_value.minimum }
+	set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_value.minimum }
+	set_temp_variable = { independence_wave_decision_host_claim_delta = constant:independence_wave_value.minimum }
+	set_temp_variable = { independence_wave_decision_hostility_delta = constant:independence_wave_value.minimum }
+	set_temp_variable = { independence_wave_decision_host_obligations_delta = constant:independence_wave_value.minimum }
+	set_temp_variable = { independence_wave_decision_property_delta = constant:independence_wave_value.minimum }
+	set_temp_variable = { independence_wave_decision_population_delta = constant:independence_wave_value.minimum }
+	set_temp_variable = { independence_wave_decision_border_delta = constant:independence_wave_value.minimum }
+	set_temp_variable = { independence_wave_decision_host_pressure_delta = constant:independence_wave_value.minimum }
+	set_temp_variable = { independence_wave_decision_reconquest_fear_delta = constant:independence_wave_value.minimum }
+}
+
+# COUNTRY scope. Generation-local cleanup for the incident receipts.
+independence_wave_clear_package_incident_runtime = {
+	clr_country_flag = independence_wave_package_incident_a_scheduled
+	clr_country_flag = independence_wave_package_incident_a_resolved
+	clr_country_flag = independence_wave_package_incident_b_scheduled
+	clr_country_flag = independence_wave_package_incident_b_resolved
+	clr_country_flag = independence_wave_package_incident_a_delivered
+	clr_country_flag = independence_wave_package_incident_b_delivered
+	clear_variable = independence_wave_package_incident_a_due_date
+	clear_variable = independence_wave_package_incident_b_due_date
+	clear_variable = independence_wave_package_incident_generation
+}
