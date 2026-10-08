@@ -479,7 +479,7 @@ For every super-event audio package:
 5. When using `chaosx_super_event_audio_researcher`, receive its final game-ready `.wav`, source documentation, licensing notes, and conversion handoff.
 6. After accepting the file, place that `.wav` in the event-scoped sound folder: `sound/<event_id>_<event_slug>/super_event_<super_event_id>_<super_event_name>.wav`.
 7. Add or update the base `sound` definition in `sound/chaosx_sound.asset` so it points to the final WAV and has a unique sound definition id.
-8. Add or update the required settings-volume `soundeffect` wrappers in `sound/chaosx_sound.asset`. Each wrapper must point to the base sound, follow the existing `max_audible` and `max_audible_behaviour` pattern, and use the helper naming contract `chaosx_super_event_<super_event_id>_sound_<volume_suffix>`.
+8. Add or update the required settings-volume `soundeffect` wrappers in `sound/chaosx_sound.asset`. Each wrapper must point to the base sound, follow the existing `max_audible` and `max_audible_behaviour` pattern, and use the helper naming contract `chaosx_super_event_<audio_id>_sound_<volume_suffix>`, where `<audio_id>` is the value of `global.current_super_event_audio_id` read by `play_dynamic_super_event_sound` in `common/scripted_effects/chaosx_settings_effects.txt`.
 9. Set `global.current_super_event_audio_id` to the correct unique audio id and call `play_current_super_event_sound = yes`, the settings-aware sound helper.
 10. Update the relevant event/system documentation and `music/chaosx_music_track_list.html`, the canonical audio catalogue. Every final cue must have a row that lists the super-event id using the track and the source/rights details. If a user-approved reuse exists, document every id in the row and explain the approval in the audio docs.
 11. Verify the final file path, sound definitions, volume wrappers, ids, helper call, and docs before calling the super-event complete.
@@ -613,6 +613,9 @@ Treat project-root `docs/assets/<event_id>_<event_slug>/` as temporary evidence 
 ## 20. Super-event slot wiring
 
 When wiring a super-event, choose the slot intentionally.
+
+Presentation slots (`super_event_visible`) and audio IDs (`global.current_super_event_audio_id`) are independently allocated namespaces.
+Record both identities and their mapping in plans and handoffs; the presentation slot does not determine the audio ID or sound wrapper names.
 
 Make sure the implementation:
 

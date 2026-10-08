@@ -116,9 +116,10 @@ It does not assert acceptance or current implementation status.
 | 095 Occupation Revolt | [`095_occupation_revolt_specs/README.md`](095_occupation_revolt_specs/README.md) |
 | 097 Collaboration | [`097_collaboration_specs/README.md`](097_collaboration_specs/README.md) |
 | 098 New Ore | [`098_new_ore_specs/098_new_ore_readme.md`](098_new_ore_specs/098_new_ore_readme.md) |
+| 099 Sandstorm | [`099_sandstorm_specs/README.md`](099_sandstorm_specs/README.md) |
 | 100 Inflation | [`100_inflation_specs/100_inflation_README.md`](100_inflation_specs/100_inflation_README.md) |
 
-Events 091, 096, and 099 have no specification package in this checkout.
+Events 091 and 096 have no specification package in this checkout.
 
 Shared and cross-event specification packages are indexed below.
 

@@ -104,10 +104,12 @@ Lower gaps are not allocated by this audit.
 | Slot | Presentation | Owner | Disposition |
 | --- | --- | --- | --- |
 | 119 | Super-Alloy operational breakthrough | Event 098 | Reserved for proposed design |
+| 120 | The World of Dust global disruption (working title) | Event 099 | Reserved for proposed design |
 
 The presentation namespace uses the value of `super_event_visible`, separately from triggerable and world-end scenario IDs.
 Slot 117 belongs to Acid Rain and slot 118 belongs to the Gods of Africa global-credibility presentation; both use constant-based selectors and must be included when checking occupancy.
 Slot 119 was checked against current selectors, constants, localisation keys, and planning reservations before allocation.
+Slot 120 was checked against those same surfaces for Sandstorm on 8 October 2026, including the existing New Ore reservation at 119.
 The reservation does not implement the presentation or approve final text, image, audio, or an audio ID.
 Allocate the final audio ID independently and keep its unique recording and sound-registration requirements.
 
