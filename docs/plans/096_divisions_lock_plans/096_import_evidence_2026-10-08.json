@@ -1,0 +1,389 @@
+{
+  "date": "2026-10-08",
+  "scope": "Import and document review only; no gameplay mutation or claim of implemented replacement.",
+  "source_lookup": [
+    {
+      "revision": "79a28526ecf259f67d13bbd7b69a90887eae2fa0cee937242d3b8df226d371b7",
+      "definitions": [
+        {
+          "kind": "event",
+          "id": "chaosx.nr96.1",
+          "path": "mod:events/096_divisions_lock.txt",
+          "rootKind": "mod",
+          "loadOrder": 15,
+          "overridden": false,
+          "sourceShadowed": false,
+          "startLine": 22,
+          "endLine": 39,
+          "fromLine": 22,
+          "toLine": 39,
+          "nextLine": null,
+          "nextColumn": null,
+          "text": "country_event = {\n\tid = chaosx.nr96.1\n\ttitle = chaosx.nr96.1.t\n\n\thidden = yes\n\tis_triggered_only = yes\n\n\timmediate = {\n\t\tevery_country = {\n\t\t\t# Shared ownership marker used by Event 19 and other template\n\t\t\t# transactions that must wait for this global lock to finish.\n\t\t\tset_country_flag = division_template_lock_event_active\n\t\t\tcountry_lock_all_division_template = yes\n\t\t\tcountry_event = { id = chaosx.nr96.2 }\n\t\t\tcountry_event = { id = chaosx.nr96.3 days = 90 }\n\t\t}\n\t}\n}"
+        }
+      ]
+    },
+    {
+      "revision": "79a28526ecf259f67d13bbd7b69a90887eae2fa0cee937242d3b8df226d371b7",
+      "definitions": [
+        {
+          "kind": "event",
+          "id": "chaosx.nr96.3",
+          "path": "mod:events/096_divisions_lock.txt",
+          "rootKind": "mod",
+          "loadOrder": 15,
+          "overridden": false,
+          "sourceShadowed": false,
+          "startLine": 62,
+          "endLine": 76,
+          "fromLine": 62,
+          "toLine": 76,
+          "nextLine": null,
+          "nextColumn": null,
+          "text": "country_event = {\n\tid = chaosx.nr96.3\n\ttitle = chaosx.nr96.3.t\n\tdesc = chaosx.nr96.3.d\n\tpicture = GFX_report_event_manchukuo_army\n\n\tis_triggered_only = yes\n\n\toption = {\n\t\tcountry_lock_all_division_template = no\n\t\tclr_country_flag = division_template_lock_event_active\n\t\tname = chaosx.nr96.3.a\n\t\tai_chance = { base = 100 }\n\t}\n}"
+        }
+      ]
+    },
+    {
+      "revision": "bf7b73b59256de045139815209105e1038c25aa43432dc85f510a654ec809ad9",
+      "definitions": [
+        {
+          "kind": "event",
+          "id": "chaosx.nr96.2",
+          "path": "mod:events/096_divisions_lock.txt",
+          "rootKind": "mod",
+          "loadOrder": 15,
+          "overridden": false,
+          "sourceShadowed": false,
+          "startLine": 43,
+          "endLine": 58,
+          "fromLine": 43,
+          "toLine": 58,
+          "nextLine": null,
+          "nextColumn": null,
+          "text": "country_event = {\n\tid = chaosx.nr96.2\n\ttitle = chaosx.nr96.2.t\n\tdesc = chaosx.nr96.2.d\n\tpicture = GFX_report_event_manchukuo_army\n\n\tis_triggered_only = yes\n\n\toption = {\n\t\teffect_tooltip = { # So that the player couldn't cheese it.\n\t\t\tcountry_lock_all_division_template = yes\n\t\t}\n\t\tname = chaosx.nr96.2.a\n\t\tai_chance = { base = 100 }\n\t}\n}"
+        }
+      ]
+    }
+  ],
+  "shared_lock_current_location": {
+    "revision": "20b47f810126de7f8e98485f9827744778755b10b50c7f6039d79c095a8ad9ef",
+    "location": {
+      "path": "mod:common/scripted_effects/014_cannibalism_effects.txt",
+      "rootKind": "mod",
+      "loadOrder": 15,
+      "shadowed": false,
+      "line": 19437,
+      "column": 2,
+      "text": "\tcountry_lock_all_division_template = yes",
+      "owners": [
+        {
+          "kind": "scripted_effect",
+          "id": "cannibalism_warlord_focus_reset_contracts",
+          "startLine": 19325,
+          "endLine": 19448,
+          "overridden": false
+        }
+      ],
+      "chain": [
+        {
+          "key": "cannibalism_warlord_focus_reset_contracts",
+          "occurrence": 0,
+          "index": 760,
+          "startLine": 19325,
+          "endLine": 19448
+        },
+        {
+          "key": "country_lock_all_division_template",
+          "occurrence": 0,
+          "index": 100,
+          "startLine": 19437,
+          "endLine": 19437
+        }
+      ],
+      "chainTruncated": false,
+      "keyPath": [
+        {
+          "key": "country_lock_all_division_template",
+          "occurrence": 0
+        }
+      ],
+      "structureAvailable": true
+    }
+  },
+  "local_cannibalism_lock_evidence": {
+    "sha256": "5b59a1e84651ec44f712f5ef60ada011ba0ac979ffdc143ee199f57550430827",
+    "callers": [
+      {
+        "path": "common/scripted_effects/014_cannibalism_effects.txt",
+        "lock_line": 5367,
+        "enclosing_top_level": "cannibalism_setup_current_warlord_country = {",
+        "definition_line": 5281,
+        "context": [
+          "\t\t\tcannibalism_unlock_event014_warlord_package_subunits = yes",
+          "\t\t\tcannibalism_create_current_warlord_templates = yes",
+          "\t\t\tcountry_lock_all_division_template = yes",
+          "\t\t\tevent_target:cannibalism_warlord_origin_state = { save_event_target_as = cannibalism_consumption_target_state }",
+          "\t\t\tset_temp_variable = { cannibalism_consumption_context = constant:cannibalism_consumption_mode.warlord_creation }"
+        ]
+      },
+      {
+        "path": "common/scripted_effects/014_cannibalism_effects.txt",
+        "lock_line": 13796,
+        "enclosing_top_level": "cannibalism_create_unified_country_from_selected_host = {",
+        "definition_line": 13687,
+        "context": [
+          "\t\t\t\tcannibalism_create_current_warlord_templates = yes",
+          "\t\t\t\tcannibalism_open_inherited_warlord_recruitment = yes",
+          "\t\t\t\tcountry_lock_all_division_template = yes",
+          "\t\t\t\tif = { limit = { NOT = { has_idea = cannibalism_unified_command_burden } } add_ideas = cannibalism_unified_command_burden }",
+          "\t\t\t\tadd_country_leader_role = {"
+        ]
+      },
+      {
+        "path": "common/scripted_effects/014_cannibalism_effects.txt",
+        "lock_line": 19437,
+        "enclosing_top_level": "cannibalism_warlord_focus_reset_contracts = {",
+        "definition_line": 19325,
+        "context": [
+          "\t\tadd_ideas = cannibalism_closed_muster_rolls",
+          "\t}",
+          "\tcountry_lock_all_division_template = yes",
+          "\tset_division_force_allow_recruiting = { division_template = \"Scavenger Warband\" force_allow_recruiting = no }",
+          "\tset_division_force_allow_recruiting = { division_template = \"Feast Guard\" force_allow_recruiting = no }"
+        ]
+      },
+      {
+        "path": "common/scripted_effects/014_cannibalism_effects.txt",
+        "lock_line": 21746,
+        "enclosing_top_level": "cannibalism_wendigo_focus_preserve_pack_contract = {",
+        "definition_line": 21745,
+        "context": [
+          "",
+          "cannibalism_wendigo_focus_preserve_pack_contract = {",
+          "\tcountry_lock_all_division_template = yes",
+          "\tif = {",
+          "\t\tlimit = { has_template = \"Wendigo Pack\" }"
+        ]
+      }
+    ]
+  },
+  "references": [
+    {
+      "id": "ca80a74e704e0246c6a33a8453ab613c49cd63f8ab01a113660d8bbd9f1a7141",
+      "revision": "2cdc93d26775990468eed167442f7a416b13059fb8fe07d139b54250b79209af",
+      "source": "game_doc",
+      "title": "effects documentation",
+      "heading": "country_lock_all_division_template",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Hearts of Iron IV\\documentation\\effects_documentation.md",
+      "startLine": 2968,
+      "endLine": 2976,
+      "excerpt": "## country_lock_all_division_template * Supported Scopes: COUNTRY",
+      "authority": "Installed game documentation",
+      "sectionStartLine": 2968,
+      "sectionEndLine": 2976,
+      "startColumn": 1,
+      "text": "## country_lock_all_division_template\n\n* Supported Scopes: COUNTRY\n* Supported Targets: none\n\n```\nLock all the division template at the country level. Note that you need to unlock them in the same way Can also supply the reason it is locked with localization key(You can't use 'set_division_template_lock' individually, because the lock at the country level will not be removed)Ex:country_lock_all_division_template = yescountry_lock_all_division_template = {  is_locked = yes  desc = LOC_KEY}\n```\n",
+      "nextLine": null,
+      "nextColumn": null
+    },
+    {
+      "id": "6f7db06e546ff666ce2c0ecb5cdc9053e203123ea70a12c2aec1768fc5415ba7",
+      "revision": "997ddb09bfd63efb41a425149c46bd812d5f8953217a403386b2f6c85196aa0c",
+      "source": "wiki",
+      "title": "Effects",
+      "heading": "country_lock_all_division_template",
+      "path": "C:\\Users\\klimp\\OneDrive\\Documents\\Paradox Interactive\\Hearts of Iron IV\\mod\\chaos_redux\\paradox_wiki\\Effects - Hearts of Iron 4 Wiki.md",
+      "startLine": 2043,
+      "endLine": 2043,
+      "excerpt": "| country_lock_all_division_template | `<bool>`<br>Boolean. **OR**<br> `is_locked = <bool>`<br>Boolean.<br> `desc = <loc_key>`<br>Tooltip. | `country_lock_all_division_template = yes`*(example below)* | Locks all division templates for the current scope. | Used to prevent training, disbanding, and e",
+      "authority": "Offline Paradox Wiki snapshot",
+      "sectionStartLine": 2043,
+      "sectionEndLine": 2043,
+      "startColumn": 1,
+      "text": "| country_lock_all_division_template | `<bool>`<br>Boolean. **OR**<br> `is_locked = <bool>`<br>Boolean.<br> `desc = <loc_key>`<br>Tooltip. | `country_lock_all_division_template = yes`*(example below)* | Locks all division templates for the current scope. | Used to prevent training, disbanding, and editing units. | 1.9 |",
+      "nextLine": null,
+      "nextColumn": null
+    },
+    {
+      "id": "ee305038ef0f5c1dcdf968291f2a4c27916fdb8b0ee597602d56a46b44ce0127",
+      "revision": "2cdc93d26775990468eed167442f7a416b13059fb8fe07d139b54250b79209af",
+      "source": "game_doc",
+      "title": "effects documentation",
+      "heading": "effect_tooltip",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Hearts of Iron IV\\documentation\\effects_documentation.md",
+      "startLine": 3644,
+      "endLine": 3652,
+      "excerpt": "## effect_tooltip * Supported Scopes: any",
+      "authority": "Installed game documentation",
+      "sectionStartLine": 3644,
+      "sectionEndLine": 3652,
+      "startColumn": 1,
+      "text": "## effect_tooltip\n\n* Supported Scopes: any\n* Supported Targets: any\n\n```\nShows just tooltip of effects\n```\n",
+      "nextLine": null,
+      "nextColumn": null
+    },
+    {
+      "id": "a00996de7fe83509ffe68c5d5670f269faf83b7a4d22508febff3b499e238fc0",
+      "revision": "997ddb09bfd63efb41a425149c46bd812d5f8953217a403386b2f6c85196aa0c",
+      "source": "wiki",
+      "title": "Effects",
+      "heading": "effect_tooltip",
+      "path": "C:\\Users\\klimp\\OneDrive\\Documents\\Paradox Interactive\\Hearts of Iron IV\\mod\\chaos_redux\\paradox_wiki\\Effects - Hearts of Iron 4 Wiki.md",
+      "startLine": 355,
+      "endLine": 355,
+      "excerpt": "| effect_tooltip | `<string>`<br> | *(example below)* | Displays the effects in the tooltip without executing them. |  |  |",
+      "authority": "Offline Paradox Wiki snapshot",
+      "sectionStartLine": 355,
+      "sectionEndLine": 355,
+      "startColumn": 1,
+      "text": "| effect_tooltip | `<string>`<br> | *(example below)* | Displays the effects in the tooltip without executing them. |  |  |",
+      "nextLine": null,
+      "nextColumn": null
+    }
+  ],
+  "event_trace": {
+    "status": "ok",
+    "code": "EVENT_INSPECTED_PARTIAL",
+    "analysisMode": "focused",
+    "boundary": {
+      "direction": "both",
+      "expandHelpers": false,
+      "maxDepth": 1,
+      "maxEdges": 6,
+      "maxNodes": 6,
+      "refresh": false
+    },
+    "counts": {
+      "artifacts": 1,
+      "blockingDiagnostics": 0,
+      "derivedEdges": 0,
+      "diagnostics": 2284,
+      "edges": 41402,
+      "entries": 1208,
+      "events": 10384,
+      "helpers": 0,
+      "issues": 2284,
+      "options": 15995,
+      "skippedSources": 0,
+      "stateAccesses": 32945,
+      "terminals": 7950,
+      "unresolvedNodes": 10728
+    },
+    "graphHash": "9ba5f02c5cc445835280215270f4d0a3e3752dc90acc30079243289dc43603da",
+    "mode": "trace",
+    "revision": "e59ab758e239e5ea62d20e5c085f4aa12ec8c39fae3ec9dac0d5ddca379ebd2d",
+    "validation": {
+      "checks": [
+        {
+          "id": "event-analysis",
+          "message": "Whole-workspace helper projections and lifecycle passes were deferred; the requested event analysis retains direct source evidence",
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    "diagnostics": [
+      {
+        "category": "configuration",
+        "code": "MCP_INLINE_FILES_TRUNCATED",
+        "details": {
+          "returned": 64,
+          "total": 404
+        },
+        "message": "Inline source inventory is limited to 64 paths; use the linked resource for the complete inventory",
+        "severity": "info"
+      }
+    ],
+    "artifacts": [
+      {
+        "description": "Authoritative Event Chain Viewer trace report",
+        "mimeType": "application/json",
+        "name": "event-trace-e59ab758e239.json",
+        "sha256": "88d1608d303685f705b4a98ee3a21fec6415fba97c57dfe53b2ec662a00a4aa2",
+        "size": 1083269,
+        "uri": "hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/88d1608d303685f705b4a98ee3a21fec6415fba97c57dfe53b2ec662a00a4aa2/ecbdbfcfe760e9a3cd0b9e28679222e2f0e1deb2650f36fe5b60478ed7bb2528/event-trace-e59ab758e239.json"
+      }
+    ],
+    "limits": "Focused event/on-action projection. Counts are server index counts, not completed Divisions Lock features. Helpers and full lifecycle deferred. Inline inventory truncated; no complete-source coverage claimed."
+  },
+  "catalog": {
+    "path": "docs/spreadsheets/chaos_redux_events_catalog.xlsx",
+    "sha256": "c945a81b16454de68468f73d43348612828df76eae463973626990af06a91a29",
+    "read_only": true,
+    "event96": {
+      "name": "Divisions lock",
+      "type": "Minor Repeatable",
+      "chaos_level": 1,
+      "cluster_id": "",
+      "status": "To Be Reworked"
+    },
+    "peace": {
+      "id": 4,
+      "members": "9, 9, 9, 9, 61",
+      "severities": "Low, Low, Medium, High, High"
+    },
+    "interpretation": "High Peace membership for Event096 is a source-design target; current catalog membership is absent."
+  },
+  "identifiers": {
+    "root": "chaosx.nr96.1",
+    "existing_children": [
+      "chaosx.nr96.2",
+      "chaosx.nr96.3"
+    ],
+    "cluster": 4,
+    "proposed_helper_prefix": "division_inspection_",
+    "helper_collision_scan": "No current exact proposed helper-name matches outside this new package in checked source/spec/plan text.",
+    "allocation_scope": "The package reuses its event root and existing Peace cluster. Evolution/history/achievement identifiers require their actual owning registries, independently of super-event presentation slots.",
+    "achievement_names": [
+      "chaosx_096_grow_into_army",
+      "chaosx_096_orderly_stand_down",
+      "chaosx_096_inspection_proof"
+    ],
+    "achievement_name_scan": "No exact matches outside this package in current common, events, interface, localisation, specs and plans. These names are proposed labels, not allocated shared numeric achievements."
+  },
+  "import_identity": {
+    "files": 21,
+    "original_manifest_rows_verified": 20,
+    "source_snapshot_archives_installed": false,
+    "archive_sha256": "d1de3e2a00805552d4b6978883173a345e8d9e621d4dc106745ad87aac8d7bfc"
+  },
+  "tooltip_scope_correction": "Event 096 line53 is inside effect_tooltip and displays the already-applied lock without executing another mutation. Its actual country-lock writes are lines34 and71.",
+  "document_verification": {
+    "spec_files": 21,
+    "local_links_checked": 105,
+    "heading_links_checked": 22,
+    "errors": [],
+    "current_inventory_hashes_verified": 21,
+    "goal_characters": 3993,
+    "original_assertions": 94,
+    "independent_checks": 115,
+    "source_snapshots_installed": false
+  },
+  "identifier_check": {
+    "passed": true,
+    "counts": {
+      "triggerable_scenarios": {
+        "registered_or_reserved": 32,
+        "runtime_constants": 18
+      },
+      "cluster_identifiers": {
+        "registered_or_reserved": 22,
+        "runtime_constants": 13
+      },
+      "world_end_scenarios": {
+        "registered_or_reserved": 16,
+        "runtime_constants": 15
+      },
+      "super_event_presentations": {
+        "planning_reservations": 2,
+        "occupied_selector_or_text_slots": 79
+      },
+      "event_definitions": 3455,
+      "runtime_country_tags": 171,
+      "catalog_cluster_rows": 19
+    },
+    "errors": [],
+    "scope": "Declared numeric reservations, their package evidence, runtime event definitions and country tags, canonical workbook cluster identities, and reserved super-event slots against literal/constant selectors and text identities. Audio IDs, historical prose and undeclared future identifiers are not inferred as presentation-slot definitions."
+  }
+}

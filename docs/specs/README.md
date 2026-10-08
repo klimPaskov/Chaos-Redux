@@ -5,7 +5,7 @@ Each package must identify the explicit decision or accepted source that establi
 Being listed here does not establish approval, implementation, or completed validation.
 Keep proposals and unresolved acceptance questions distinct from accepted design, and keep working plans in `docs/plans/`.
 Consult the [shared identifier registry](shared_identifier_registry.md) before allocating scenario, cluster, or other shared identifiers.
-The [8 October planning improvement review](../plans/repo_cleanup/specification_improvements_2026-10-08/report.md) records current refinements, cross-event connections, retained designs and unresolved choices across every package.
+The [8 October planning improvement review](../plans/repo_cleanup/specification_improvements_2026-10-08/report.md) records refinements, cross-event connections, retained designs and unresolved choices across its 105-package baseline.
 
 ## Package navigation
 
@@ -115,12 +115,13 @@ It does not assert acceptance or current implementation status.
 | 093 Treaty of Tordesillas Restoration | [`093_treaty_of_tordesillas_restoration_specs/README.md`](093_treaty_of_tordesillas_restoration_specs/README.md) |
 | 094 Half Gone | [`094_half_gone_specs/README.md`](094_half_gone_specs/README.md) |
 | 095 Occupation Revolt | [`095_occupation_revolt_specs/README.md`](095_occupation_revolt_specs/README.md) |
+| 096 Divisions lock | [`096_divisions_lock_specs/README.md`](096_divisions_lock_specs/README.md) |
 | 097 Collaboration | [`097_collaboration_specs/README.md`](097_collaboration_specs/README.md) |
 | 098 New Ore | [`098_new_ore_specs/098_new_ore_readme.md`](098_new_ore_specs/098_new_ore_readme.md) |
 | 099 Sandstorm | [`099_sandstorm_specs/README.md`](099_sandstorm_specs/README.md) |
 | 100 Inflation | [`100_inflation_specs/100_inflation_README.md`](100_inflation_specs/100_inflation_README.md) |
 
-Events 091 and 096 have no specification package in this checkout.
+Event 091 has no specification package in this checkout.
 
 Shared and cross-event specification packages are indexed below.
 
