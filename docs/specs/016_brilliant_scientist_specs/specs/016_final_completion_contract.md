@@ -73,7 +73,15 @@ The existing cycle count and its crisis/achievement thresholds remain permanent 
 Start records exact direct payments once; invalidation cancels and refunds only the matching receipt once; success consumes that receipt before adding clone equipment, refreshing the shared clone-stockpile consumer, and recording cycle history.
 The native decision owns civilian-factory reservation and release, so callback affordability never double-counts already-reserved factories.
 The existing decision icon and category are retained, with concise cost/output text and no additional GUI.
-This correction does not by itself close the separate private Mengele Deployment-site and supplemental-production payoff; that provider adapter remains accepted work pending its site contract and integration.
+This KRG correction is separate from the private Mengele Deployment physical-site and production payoff.
+Parent acceptance on 2026-10-07 selects the recommended existing-facility consumer from `016_private_clone_existing_production_review_2026-09-08.md` under the user's instruction to take recommended choices.
+The parent chooses four additional Clone Equipment per owned-and-controlled biological facility-bearing state on the existing weekly invocation, retaining one baseline equipment per controlled facility-bearing state.
+This is a parent balance choice and produces five total per qualifying owned facility each regular week.
+Existing facilities provide the physical site requirement, with ownership, control and the building rechecked rather than inferred from a country-only counter.
+The enhancement requires strict programme validity, private Cloning Prototype and Deployment history, shared clone operational access and the existing production completion latch.
+Nonweekly completion, construction and inheritance callbacks remain baseline-only, and no second paid production subsystem or new scheduler is introduced.
+The existing exact Event016 native and no-DLC paid Prototype paths retain their current latch settlement, with no alternative native source added.
+Implementation and evidence are tracked in `docs/plans/016_brilliant_scientist_plans/016_mengele_cloning_deployment_throughput_2026-10-07.md`, without waiving source, balance or engine acceptance.
 Source acceptance, 2026-09-08: the isolated transaction, controlled-site predicates, exact history extraction, and receipt-first terminal cleanup passed independent review in `docs/plans/016_brilliant_scientist_plans/subagent_handoffs/016_clone_maturation_source_review_2026-09-08.md`.
 The parent accepts that bounded source review, not live completion.
 After freezing `E016_CLONE_MATURATION_2026_09_08`, the parent connected the live decision, exact custom costs, compatibility completion helper, and world-end cleanup to the transaction core.

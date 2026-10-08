@@ -2,6 +2,10 @@
 
 Date: 2026-09-08.
 Disposition: read-only source audit implemented; throughput and native-receipt proposals unresolved pending parent acceptance.
+Current disposition, 2026-10-08: the existing-consumer throughput recommendation is promoted into the accepted final completion contract under the parent's 2026-10-07 decision and the user's instruction to take recommended options.
+The accepted tuning and implementation evidence are in `../016_mengele_cloning_deployment_throughput_2026-10-07.md`.
+The alternative `sp_mengele_cloning` private-native admission proposal is superseded by `docs/specs/016_brilliant_scientist_specs/specs/016_native_prototype_ownership_amendment_2026-10-03.md`; the exact private source remains `sp_brilliant_scientist_cloning`.
+The dated source findings below remain historical and do not describe the current producer or bridge where the later implementation differs.
 Only this handoff was added.
 No gameplay, AI, localisation, existing handoff, scheduler or other file was changed; no commit was made.
 All facility/equipment terminology below describes fictional game mechanics only.

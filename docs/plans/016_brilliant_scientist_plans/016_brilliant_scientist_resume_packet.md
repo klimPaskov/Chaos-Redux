@@ -6,6 +6,11 @@ Date: 2026-07-14
 
 ## Current native-receipt checkpoint, 2026-10-07
 
+The [private Cloning Deployment throughput tranche](016_mengele_cloning_deployment_throughput_2026-10-07.md) is implemented and source-reviewed on 2026-10-08.
+It adds four weekly Clone Cohorts per owned-and-controlled facility-bearing state to the preserved one-per-controlled-state baseline, with strict private receipts and operational access; direct callbacks remain baseline-only.
+Its twelve-state source model, immutable baseline comparison, independent audit and partial MCP evidence are retained with the plan.
+This closes the accepted Cloning physical-production source payoff while preserving the native lifecycle, runtime and wider Event016 acceptance gaps below.
+
 This checkpoint supersedes only older current queue statements for the demonstrated native receipt work below.
 The dated history and broader accepted completion requirements remain in force.
 Acceptance comes from the user-approved exact output marker hooks and unchanged matching paid timer, the accepted fifteen-family portfolio, and the parent's recommended-option acceptance recorded in the [native ownership amendment](../../specs/016_brilliant_scientist_specs/specs/016_native_prototype_ownership_amendment_2026-10-03.md).

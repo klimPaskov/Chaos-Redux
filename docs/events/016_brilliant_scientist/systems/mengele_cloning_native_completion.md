@@ -7,7 +7,10 @@ A duplicate callback therefore cannot repeat that initial payload or queue anoth
 
 The first completion keeps the original effect order and payload.
 It clears germany_mengele_cloning_unlock_pending, records directorate_special_project_cloning_completed, selects Mengele refinement, produces the initial equipment through germany_mengele_produce_clone_equipment, and conditionally schedules germany_mengele.24.
-The existing weekly and programme transition replenishment callers continue to call the separate production helper.
+Completion, facility-construction and programme-inheritance callers use `germany_mengele_produce_clone_equipment`, which selects the baseline producer explicitly.
+The existing weekly hook selects `germany_mengele_weekly_clone_equipment_production` under its completion-latch filter.
+Both entries share the controlled-facility baseline; only the weekly entry adds the private Deployment throughput for owned and controlled facility-bearing states described in `mengele_cloning_stages.md`.
+The calculator owns the count temporary before the nested counter returns, and stockpile writes identify the invoking country as producer.
 There is no completion-latch clear in the current common or events source inventory.
 
 ## Scope and presentation

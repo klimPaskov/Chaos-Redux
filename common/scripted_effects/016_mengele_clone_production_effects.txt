@@ -1,0 +1,91 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 016 PRIVATE CLONING DEPLOYMENT PRODUCTION
+# ============================================================================
+# COUNTRY-scoped baseline/weekly entry points share the legacy facility counter
+# and clone stockpile consumer. Only weekly private Deployment adds the owned,
+# controlled facility-state bonus. The calculator changes temporary scratch
+# only; public wrappers replace stale mode and clear it after settlement.
+# See 016_mengele_clone_production_effects.md for ownership and integration.
+# ============================================================================
+
+# COUNTRY scope. Parameter-free entry for completion/construction/inheritance.
+germany_mengele_baseline_clone_equipment_production = {
+	set_temp_variable = { mengele_clone_production_mode = constant:germany_mengele_clone_production_mode.baseline }
+	germany_mengele_apply_clone_equipment_production = yes
+	set_temp_variable = { mengele_clone_production_mode = constant:germany_mengele_clone_production_mode.none }
+}
+
+# COUNTRY scope. Parameter-free entry reserved for the existing weekly hook.
+germany_mengele_weekly_clone_equipment_production = {
+	set_temp_variable = { mengele_clone_production_mode = constant:germany_mengele_clone_production_mode.weekly }
+	germany_mengele_apply_clone_equipment_production = yes
+	set_temp_variable = { mengele_clone_production_mode = constant:germany_mengele_clone_production_mode.none }
+}
+
+# COUNTRY scope. Input: mengele_clone_production_mode, consumed on every path.
+# Outputs: base, deployment, and combined temporaries below. External callers
+# must initialize all three before this call to retain them after return.
+# Unsupported/absent mode returns zero without counting facility states.
+# Own the legacy counter output before calling its unmodified helper.
+germany_mengele_calculate_clone_equipment_production = {
+	set_temp_variable = { mengele_clone_production_base_output = constant:brilliant_scientist_value.zero }
+	set_temp_variable = { mengele_clone_production_deployment_output = constant:brilliant_scientist_value.zero }
+	set_temp_variable = { mengele_clone_equipment_output = constant:brilliant_scientist_value.zero }
+	set_temp_variable = { mengele_biowarfare_facility_count = constant:brilliant_scientist_value.zero }
+	set_temp_variable = { mengele_clone_production_owned_facility_count = constant:brilliant_scientist_value.zero }
+	if = {
+		limit = {
+			germany_mengele_clone_production_mode_is_supported = yes
+			has_country_flag = germany_mengele_cloning_project_completed
+		}
+		germany_mengele_count_biowarfare_facilities = yes
+		set_temp_variable = { mengele_clone_production_base_output = mengele_biowarfare_facility_count }
+		multiply_temp_variable = { mengele_clone_production_base_output = constant:germany_mengele_cloning_project.clone_equipment_per_facility_per_week }
+		round_temp_variable = mengele_clone_production_base_output
+		if = {
+			limit = {
+				check_variable = { var = mengele_clone_production_mode value = constant:germany_mengele_clone_production_mode.weekly compare = equals }
+				brilliant_scientist_mengele_cloning_deployment_production_is_active = yes
+			}
+			every_owned_state = {
+				limit = {
+					is_controlled_by = PREV
+					biowarfare_facility > constant:brilliant_scientist_value.zero
+				}
+				add_to_temp_variable = { mengele_clone_production_owned_facility_count = constant:brilliant_scientist_value.one }
+			}
+			set_temp_variable = { mengele_clone_production_deployment_output = mengele_clone_production_owned_facility_count }
+			multiply_temp_variable = { mengele_clone_production_deployment_output = constant:germany_mengele_cloning_project.deployment_bonus_per_owned_facility_per_week }
+			round_temp_variable = mengele_clone_production_deployment_output
+		}
+		set_temp_variable = { mengele_clone_equipment_output = mengele_clone_production_base_output }
+		add_to_temp_variable = { mengele_clone_equipment_output = mengele_clone_production_deployment_output }
+	}
+	set_temp_variable = { mengele_clone_production_mode = constant:germany_mengele_clone_production_mode.none }
+}
+
+# COUNTRY scope. Internal producer; public callers use a literal wrapper.
+# Own calculator outputs across its return. One combined stockpile write and
+# one reserve refresh under the existing latch, including zero-facility refresh.
+germany_mengele_apply_clone_equipment_production = {
+	set_temp_variable = { mengele_clone_production_base_output = constant:brilliant_scientist_value.zero }
+	set_temp_variable = { mengele_clone_production_deployment_output = constant:brilliant_scientist_value.zero }
+	set_temp_variable = { mengele_clone_equipment_output = constant:brilliant_scientist_value.zero }
+	if = {
+		limit = {
+			germany_mengele_clone_production_mode_is_supported = yes
+			has_country_flag = germany_mengele_cloning_project_completed
+		}
+		germany_mengele_calculate_clone_equipment_production = yes
+		if = {
+			limit = { check_variable = { mengele_clone_equipment_output > constant:brilliant_scientist_value.zero } }
+			add_equipment_to_stockpile = {
+				type = clone_equipment_1
+				amount = mengele_clone_equipment_output
+				producer = THIS
+			}
+		}
+		clone_refresh_reserve_manpower = yes
+	}
+	set_temp_variable = { mengele_clone_production_mode = constant:germany_mengele_clone_production_mode.none }
+}

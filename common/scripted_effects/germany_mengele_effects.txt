@@ -83,22 +83,8 @@ germany_mengele_count_biowarfare_facilities = {
 }
 
 germany_mengele_produce_clone_equipment = {
-	if = {
-		limit = { has_country_flag = germany_mengele_cloning_project_completed }
-		germany_mengele_count_biowarfare_facilities = yes
-		set_temp_variable = { mengele_clone_equipment_output = mengele_biowarfare_facility_count }
-		multiply_temp_variable = { mengele_clone_equipment_output = constant:germany_mengele_cloning_project.clone_equipment_per_facility_per_week }
-		round_temp_variable = mengele_clone_equipment_output
-		if = {
-			limit = { check_variable = { mengele_clone_equipment_output > 0 } }
-			add_equipment_to_stockpile = {
-				type = clone_equipment_1
-				amount = mengele_clone_equipment_output
-				producer = ROOT
-			}
-		}
-		clone_refresh_reserve_manpower = yes
-	}
+	# Completion, construction and inheritance callers retain baseline output.
+	germany_mengele_baseline_clone_equipment_production = yes
 }
 
 # COUNTRY scope. Both native cloning routes share one durable completion latch.

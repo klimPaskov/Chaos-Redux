@@ -2,6 +2,9 @@
 
 Date: 2026-09-08.
 Disposition: source audit implemented; all payoff proposals unresolved pending parent acceptance.
+Current Cloning disposition, 2026-10-08: its additional-site and paid-cycle proposal is superseded by the accepted existing-facility throughput contract in `../016_mengele_cloning_deployment_throughput_2026-10-07.md`.
+The parent's acceptance follows the user's instruction to take recommended options and preserves a physical-site production payoff without duplicating the existing producer.
+This disposition applies only to Cloning; the other family proposals retain their recorded acceptance and implementation limits.
 Ownership: this handoff only; no gameplay, AI, technology, GUI, focus, or asset edits.
 
 ## Requirement and current finding

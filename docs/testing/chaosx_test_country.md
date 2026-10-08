@@ -261,3 +261,5 @@ Missing or short arrays report none rather than creating receipts.
 The existing carrier/setup contract is unchanged and the probe adds no periodic registration or grant hook.
 CXT's ordinary completed-project fixture covers exact adoption and historical ambiguity, and does not prove a fresh native research clock or payment.
 The full native/provider lifecycle matrix and native cancellation/reselection proof remain part of the Event016 completion contract.
+The same player-triggered probe calculates the ordinary weekly clone output and records chaosx_cxt_event016_clone_base_weekly_output, chaosx_cxt_event016_clone_deployment_weekly_bonus and chaosx_cxt_event016_clone_total_weekly_output.
+This read-only production projection initializes its consumed temporary outputs, clears its weekly mode and grants no equipment, manpower, programme state or periodic CXT replenishment.
