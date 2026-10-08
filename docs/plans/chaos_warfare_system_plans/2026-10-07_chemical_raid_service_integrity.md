@@ -1,6 +1,6 @@
 # Chemical raid action-record integrity
 
-Disposition: bounded caller-storage source implementation reviewed; committed dependency integration and native outcomes remain incomplete.
+Disposition: bounded raid caller-storage source implementation reviewed; shared dependencies committed; remaining Camp/missile declarations implemented and parent-reviewed; native outcomes remain incomplete.
 Acceptance basis: the approved CBRN overhaul requires one reliable native raid execution path, exact resource accounting and no duplicate outcomes.
 The parent authorized the [chemical caller-storage patch](subagent_handoffs/2026-10-07_chemical_raid_lifetime_patch.md) from the reviewed action-record audit and insertion map.
 
@@ -45,18 +45,19 @@ Air outcome RNG, native cancellation, target loss, war termination and final eng
 
 ## Shared-tree dependencies and remaining consumers
 
-The working baseline already contained eighteen exposure-profile allocations, six generic protection-output allocations and two payload-authorization metadata allocations.
-Those 26 declarations are preserved and not attributed to this patch.
-The exposure file and the untracked `common/scripted_effects/cbrn_payload_reservation_effects.txt` are byte-unchanged.
-Only the six new weight declarations belong to this patch in the already dirty protection file.
-The tests include those current working dependencies; they do not prove that a committed checkout contains the untracked reservation source or the other owners' dirty changes.
-The isolated commit must retain only this patch's hunks and leave those dependencies for their owners to integrate and validate.
-The current [chemical reservation contract](../../systems/cbrn_warfare/chemical_payload_reservations.md) and [Event 032 receipt review](../032_missiles_plans/subagent_handoffs/032_chemical_receipt_review_2026-10-07.md) identify that integration surface; the manual receipt review does not replace executable or native stock evidence.
+The historical working baseline contained eighteen exposure-profile allocations, six generic protection-output allocations and two payload-authorization metadata allocations outside this patch's ownership.
+At that capture the reservation API was untracked and neighboring dependencies were dirty; those facts remain baseline provenance, rather than current integration blockers.
+Peer commit `5793df4345a413dcf7cadf5aeae99597a859020a` and follow-up `0dc5df3f11da5639e79752591cf78781b7da4d43` are ancestors of the reconciled HEAD and publish the exposure outputs, generic protection outputs and `cbrn_payload_reservation_effects.txt` API.
+Current HEAD retains the six private protection weights from `611cbb63`.
+The [missile follow-up](subagent_handoffs/2026-10-07_missile_cbrn_caller_followup.md) records this dependency coverage without attributing peer custody work to the raid patch or certifying its complete transactions.
+The [chemical reservation contract](../../systems/cbrn_warfare/chemical_payload_reservations.md) and [Event 032 receipt review](../032_missiles_plans/subagent_handoffs/032_chemical_receipt_review_2026-10-07.md) remain receipt evidence rather than native stock proof.
 
-`missiles_dispatch_chemical_payload`, `missiles_check_chemical_payload_stock` in `common/scripted_effects/032_missiles_operations_effects.txt`, and `camp_rework_apply_chemical_escalation_in_action_state` in `common/scripted_effects/camp_repression_rework_effects.txt` remain queued caller contracts.
-Their current source must be reconciled against the [insertion map](subagent_handoffs/2026-10-07_chemical_action_lifetime_insertion_map.json), preserving the missile owner's durable receipt work.
-They were not patched or validated by these eighteen cases.
+The [remaining-caller report](2026-10-08_remaining_chemical_callers.md) records 66 Camp declarations inside its existing eligible branch and one missile retaliation-status declaration before reset, with 46 independently reviewed passing source-model cases.
+The two insertions are implemented in source and parent-reviewed; every original statement, cost, gate and order is preserved.
+The missile owner retains its justified partial packet; the removed `missiles_check_chemical_payload_stock` entry in the old insertion map is superseded and must not be applied.
+These callers were outside the original eighteen-case suite; the separate source checks retain actual getter, exact-model fixture debit, returned-death and none/authorized strategic missile history boundaries.
 The proof tested here prevents repeated dispatch within the same prepared source frame; it is not a persistent replay identifier for distinct native callbacks.
+A fresh Camp invocation prepares a separate record and may pay again.
 
 ## MCP and native acceptance
 
@@ -66,7 +67,11 @@ The earlier bounded land-bridge trace was partial and its complete artifact was 
 The attempted trace-revision comparison returned `EVENT_REVISION_NOT_CACHED`.
 The [MCP route review](subagent_handoffs/2026-10-07_mcp_event_comparison_route_review.md) identifies the cause: graph references require a scan graph, and a trace is only a report.
 A future canonical comparison must retain the scan's `event-graph-<revision>.json` artifact; an archived-source overlay can provide only an explicitly reversed comparison against current source.
-Current domain comparison/render coverage and native execution remain open.
+The parent subsequently captured a bounded Camp scan at revision `db07bcddfa36d3e812d8f033f1f08177ead60ee2d6bc5c59d90d89970b63e2a5` with a 96,333,999-byte graph, zero expanded helpers and deferred lifecycle projections.
+The correctly shaped artifact-backed comparison returned `ARTIFACT_NOT_FOUND` because the artifact provenance manifest is unavailable; this is a genuine artifact-access failure distinct from the earlier trace/report-as-graph mistake.
+The [remaining-caller report](2026-10-08_remaining_chemical_callers.md) retains the stable graph URI and [parent MCP receipt](../../testing/2026-10-07_camp_chemical_lifetime/recorded_mcp_attempts.json), with the original structured-store loss and recorded-output reconstruction explicit.
+No complete graph body read or successful comparison/render is established; current domain comparison/render coverage and native execution remain open.
+The separate reconciliation attempt returns `EVENT_GRAPH_ARTIFACT_LIMIT` because that snapshot exceeds the fixed 67,108,864-byte comparison ceiling; it does not replace the parent's provenance-manifest failure.
 The [chemical probability audit](subagent_handoffs/2026-10-07_chemical_raid_lifetime_probability.md) submitted the five existing RNG getter locations to the direct-random adapter; all returned no candidate and no required inputs.
 The unchanged getter segment and bounds have identical before/after/current normalized hashes, but no numeric distribution or native outcome chance is claimed.
 The separate incubation archived-source overlay comparison timed out after 600 seconds without a backend task handle; a second full graph overlay for chemical source was not started while its backend completion remained unknown.

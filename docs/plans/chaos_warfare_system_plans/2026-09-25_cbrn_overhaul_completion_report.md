@@ -380,7 +380,11 @@ This is bounded source implementation, not full CBRN completion.
 The [caller-storage repair](2026-10-07_chemical_raid_service_integrity.md) retains the complete action packet in native land, air and exact-state doomsday owners, including their original dispatch guards.
 The parent reran eighteen independent source cases: repeated accepted dispatch and failed-attempt calls apply one captured record, rejected/unpaid/unbound records apply none, and protection, evidence, arsenal and bridge outputs survive their producing helpers.
 The patch adds 206 scalar declarations and one temporary-array initializer while preserving every original statement and its order.
-Twenty-six pre-existing neighboring allocations remain other working-tree content; the untracked reservation API and dirty dependency integration are not proved by this commit.
-Missile/camp callers, complete damage and doomsday allocation, native settlement/cardinality and unsurfaced RNG behavior remain open.
-Trace reports cannot serve as graph baselines, so future canonical event comparisons require retained scan graph artifacts.
+The twenty-six neighboring allocations were outside the raid patch's ownership; peer commits `5793df434` and `0dc5df3f11`, verified in current HEAD, publish the exposure/generic-protection outputs and reservation API while retaining `611cbb63`'s six private protection weights.
+The [remaining-caller report](2026-10-08_remaining_chemical_callers.md) records the frozen source implementation of 66 Camp declarations and one missile retaliation-status declaration, pending parent integration, with 46 independently reviewed passing cases.
+Camp retains the original 60 action fields, five method outputs and returned civilian deaths; the strategic missile caller retains its justified partial packet and none/authorized history, and the removed stock-check helper's old insertion-map entry is superseded.
+Same-record shared dispatch deduplication does not prevent a fresh Camp invocation from paying again; the separate proportionate classifier probe is not a missile route.
+Full sinks, actual eligibility/protection, custody, complete damage and doomsday allocation, native settlement/cardinality, balance and eleven biological caller reviews remain unresolved.
+The bounded Camp scan is partial with zero helpers and deferred lifecycle projections; its correctly shaped graph-artifact comparison fails with `ARTIFACT_NOT_FOUND` because the provenance manifest is unavailable, distinct from the earlier trace/report-as-graph mistake.
+No complete graph read or successful comparison/render is established.
 No gameplay simplification, new payment/refund or policy change is introduced, and CBRN-03 remains incomplete.

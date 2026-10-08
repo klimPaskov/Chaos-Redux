@@ -47,7 +47,11 @@ The same caller retains the dispatch proof through consequence application; only
 Accepted dispatch requires a paid payload, valid bound targets and an undispatched record, and marks dispatch before applying its sinks.
 The air failed-attempt path follows its corresponding one-attempt guard and retains returned evidence/attribution fields.
 The exceptional release owns its target array/count, arsenal totals and condemnation share until its event bridge consumes the result.
-The [source-integrity report](../../plans/chaos_warfare_system_plans/2026-10-07_chemical_raid_service_integrity.md) distinguishes these repaired callers from pending missile/camp consumers, shared uncommitted dependencies and native settlement evidence.
+The restricted-site Camp caller owns the 60 action fields, five method outputs and returned civilian death count inside its existing eligibility branch before their producers run.
+The strategic missile caller owns its existing specialized outputs and direct inputs, including returned retaliation status initialized to none before reset; optional condition inputs remain gated by its explicit missing-condition receipt.
+Its removed stock-check helper has no current caller contract, and no universal 60-field missile allocation is required by this route.
+The shared dispatch proof guards repeated dispatch of one prepared record; a fresh Camp invocation prepares another record and may debit again.
+The [source-integrity report](../../plans/chaos_warfare_system_plans/2026-10-07_chemical_raid_service_integrity.md) and [remaining-caller evidence](../../plans/chaos_warfare_system_plans/2026-10-08_remaining_chemical_callers.md) distinguish frozen Camp/missile source repairs awaiting parent integration from committed peer dependencies and unresolved native settlement, full sink and balance evidence.
 
 ## Biological helper output ownership
 
