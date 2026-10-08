@@ -42,6 +42,7 @@ Used the current chaos-redux-xlsx skill, references/catalog.md, references/prese
 
 ## Parent review and export scope
 
+The parent published the isolated catalog commit as `02cf2601e5720e3bfe048e3830081ca7af910fb8` and reconciled only this plan's index paths, preserving all other-owner workbook changes as unstaged work.
 The parent independently reopened the isolated original and candidate, verified exactly six changed values and zero style changes, and confirmed the other 23 ZIP member payloads are unchanged.
 The generated cluster CSV also synchronizes cluster 11's member/severity lists to the already committed workbook values `42, 47` and `Low, Low`.
 Those values are not an additional workbook edit or a worktree-only change: the workbook remains the authority, and the full CSV is the repository export of the reviewed HEAD-plus-six-cells candidate.

@@ -31,7 +31,8 @@ See `subagent_handoffs/ai_current_audit_2026_10_07.md` and `region_output_storag
 The root trace and linked helper/source checks remain partial source evidence, as recorded in `launch_preflight_repair_2026_10_07.md` and `terminal_interruption_and_loop_storage_2026_10_07.md`.
 The cached comparison returned `EVENT_REVISION_NOT_CACHED`, artifact recovery returned `ARTIFACT_NOT_FOUND`, and the reverse overlay reached a client observation timeout.
 The narrower request's handle 85 was not found after app continuation, so its backend outcome is unresolved.
-A fresh one-node, no-render reverse original-root overlay request is recorded separately and cannot be treated as successful merely because it was dispatched.
+A fresh one-node, no-render reverse original-root overlay request also returned `timed out awaiting tools/call after 600s` on 2026-10-08.
+That narrower client delivery supplies no durable backend job identity, termination proof or successful comparison.
 
 ## Commit boundary and open gates
 

@@ -1,6 +1,6 @@
 # Event 33 catalog changes pending
 
-Disposition: implemented in the authoritative workbook and generated exports on 2026-10-07, pending parent isolated commit integration.
+Disposition: implemented in the authoritative workbook and generated exports on 2026-10-07, integrated by parent commit `02cf2601e5720e3bfe048e3830081ca7af910fb8`.
 The acceptance basis is agent decision D21 in [agent_decisions_2026-10-04.md](agent_decisions_2026-10-04.md), taken on 2026-10-04 under the full design authority the user granted for Event 033.
 The catalog worker applied the six approved cells and ran `python .tools/export_event_catalog_csv.py` after the workbook save.
 The current [handoff](subagent_handoffs/catalog_current_review_2026_10_07.md) and [preservation evidence](catalog_current_2026_10_07/resume_verification.json) identify the exact cell changes, current source/export hashes, unchanged native workbook features and protected other-owner edits.
