@@ -1,8 +1,15 @@
 # Event 006 ready-formable federation flags
 
-Status: needs_user_review; all four assets await the parent’s required visual review before final commit.
+Status: asset processing complete; parent visual review accepted all four motifs and all twelve native-size base files on 2026-10-06, recorded in ready_formable_flags_20261006.md and commit aeea04afc1d2838e53e25d30c2f48e2831a3c714.
+Native formation and actual cosmetic-flag display remain unverified consumer behavior.
 
-The four IDs were verified in `common/countries/006_independence_wave_ready_formable_contracts_cosmetics.txt` and their English names were verified in `localisation/english/006_independence_wave_ready_formable_contracts_l_english.yml` before generation.
+The four IDs were checked in the producer's palette table before generation, and their English names were checked in `localisation/english/006_independence_wave_ready_formable_contracts_l_english.yml`.
+The engine-loaded palette definitions are in `common/countries/cosmetic.txt`; the producer table is archived at `docs/plans/006_independence_wave_plans/evidence_20261006/ready_cosmetic_palette_source.txt` and is not a second engine definition.
+
+The parent uses the common fictional federation identity across democratic, communist, fascist and neutral governments rather than claiming four historically distinct political flags.
+Forty-eight ideology aliases at the three native sizes are exact byte copies of these accepted twelve base outputs, preserving the charter symbol while preventing a base-country ideology flag from taking precedence over it.
+The resulting sixty runtime paths and alias hashes are recorded in `docs/plans/006_independence_wave_plans/evidence_20261006/ready_cosmetic_flag_variants.json`, and installed by source commit 9e2837f8edc1633cd8e96415366821ca5dc16886.
+This reuse records the parent choice within the human-authorized fictional-symbol scope and does not promote native display or historical-attestation claims.
 
 These are original fictional alternate-history symbols for negotiated federation proposals; none claims historical attestation, and no real national or religious glyph was copied.
 

@@ -59,6 +59,7 @@ They add fourteen candidate pieces and twenty-eight unresolved/qualifying DDS as
 The actual consumers are the ready-formable route and integration categories, attached to `independence_wave_formable_state_puzzle_scripted_gui` and group `independence_wave_formables`.
 State sprites are registered in `interface/chaosx_formable_state_puzzles.gfx`, layout in `interface/chaosx_formable_state_puzzle_group_independence_wave_formables.gui`, and manifests under `docs/formables/state_puzzles/006_form17_state_puzzle/` and the corresponding 32/36/37 folders.
 The accepted NCX/IDX/MRX/MSX flag art has generic and ideology variants at all three native sizes.
+All four ideological paths deliberately use the same fictional federation charter symbol; the forty-eight aliases copy the twelve accepted base files byte-for-byte and make cosmetic flag precedence explicit.
 Their palettes live in the engine-loaded `common/countries/cosmetic.txt`.
 Existing integration, border arbitration, network and league decision icons are reused; no new portrait or model is introduced by these contracts.
 
