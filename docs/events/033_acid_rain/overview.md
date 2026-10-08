@@ -70,7 +70,12 @@ Direct Chaos is applied only at mapped gameplay impacts, and shared Chaos receip
 Fronts, warnings, severe cells, superstorms, project jobs, operations, mortality receipts, coverage rows, and cleanup records carry or validate the current generation before changing state.
 Every registry array is created at its bound before indexed writes.
 The frozen registry carries a region index (`global.acid_rain_region_ordered_states` with per-region bounds), so front warnings, arrivals, departures, footprint growth and retirement, and severe-cell pools read only their region in registry order; the index rebuilds itself for a new generation or an older save.
+Region cursors, per-region weights, weighted selection and front-assignment results use caller-owned temporary output storage at every nested return boundary.
+The bounded retry uses temporary candidate storage, and selector entry removes its legacy saved scratch without changing recorded front or coverage state.
 Cleanup is safe to call repeatedly after dissipation, interruption, host transfer, migration, or reload.
+Every inspected base `world_end` setter calls `acid_rain_interrupt_for_world_end` immediately after that commitment and before its next downstream action, and the bounded host worker checks that same interruption entry point before doing weather work.
+Terminal packets add no mortality, damage or Air, while administrative closure preserves the actual coverage, population-loss history, contamination and unresolved aftermath without natural-dissipation Chaos credit.
+Native iteration helpers use separate reset break storage, so an inherited stop from another effect chain cannot truncate a region, state or participant pass.
 
 ## Reports
 

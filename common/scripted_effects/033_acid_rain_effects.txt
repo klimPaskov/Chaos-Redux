@@ -181,7 +181,9 @@ acid_rain_initialize_region_arrays = {
 	set_variable = { global.acid_rain_region_first_visit_target_entries^0 = constant:acid_rain_runtime.zero }
 	set_variable = { global.acid_rain_region_first_visit_observed_entries^0 = constant:acid_rain_runtime.zero }
 	set_variable = { global.acid_rain_region_second_visit_observed_entries^0 = constant:acid_rain_runtime.zero }
+	set_temp_variable = { acid_rain_initialize_region_arrays_loop_1_break = constant:acid_rain_runtime.zero }
 	for_loop_effect = {
+		break = acid_rain_initialize_region_arrays_loop_1_break
 		start = constant:acid_rain_region.first
 		end = constant:acid_rain_runtime.region_loop_end
 		value = acid_rain_region_index
@@ -275,7 +277,9 @@ acid_rain_initialize_front_arrays = {
 	set_variable = { global.acid_rain_front_severe_entries^0 = constant:acid_rain_runtime.zero }
 	set_variable = { global.acid_rain_front_severe_cooldown_day_entries^0 = constant:acid_rain_runtime.zero }
 	set_variable = { global.acid_rain_front_cooldown_day_entries^0 = constant:acid_rain_runtime.zero }
+	set_temp_variable = { acid_rain_initialize_front_arrays_loop_1_break = constant:acid_rain_runtime.zero }
 	for_loop_effect = {
+		break = acid_rain_initialize_front_arrays_loop_1_break
 		start = constant:acid_rain_runtime.one
 		end = constant:acid_rain_runtime.front_loop_end
 		value = acid_rain_front_index
@@ -532,7 +536,9 @@ acid_rain_adopt_legacy_coverage = {
 		limit = {
 			check_variable = { var = global.acid_rain_migration_was_active value = constant:acid_rain_runtime.one compare = equals }
 		}
+		set_temp_variable = { acid_rain_adopt_legacy_coverage_loop_1_break = constant:acid_rain_runtime.zero }
 		for_each_scope_loop = {
+			break = acid_rain_adopt_legacy_coverage_loop_1_break
 			array = global.acid_rain_frozen_states
 			if = {
 				limit = { has_state_flag = acid_rain_legacy_affected }
@@ -555,7 +561,9 @@ acid_rain_adopt_legacy_coverage = {
 				clr_state_flag = acid_rain_legacy_affected
 			}
 		}
+		set_temp_variable = { acid_rain_adopt_legacy_coverage_loop_2_break = constant:acid_rain_runtime.zero }
 		for_loop_effect = {
+			break = acid_rain_adopt_legacy_coverage_loop_2_break
 			start = constant:acid_rain_region.first
 			end = constant:acid_rain_runtime.region_loop_end
 			value = acid_rain_migration_region_id
@@ -632,7 +640,9 @@ acid_rain_form_frozen_registry = {
 	}
 	set_variable = { global.acid_rain_total_valid_states = global.acid_rain_frozen_states^num }
 	set_variable = { global.acid_rain_state_death_registry_count = constant:acid_rain_runtime.zero }
+	set_temp_variable = { acid_rain_form_frozen_registry_loop_1_break = constant:acid_rain_runtime.zero }
 	for_loop_effect = {
+		break = acid_rain_form_frozen_registry_loop_1_break
 		start = constant:acid_rain_region.first
 		end = constant:acid_rain_runtime.region_loop_end
 		value = acid_rain_region_index
@@ -660,12 +670,16 @@ acid_rain_build_region_index = {
 	set_temp_variable = { acid_rain_index_array_size = constant:acid_rain_runtime.region_loop_end }
 	resize_array = { array = global.acid_rain_region_index_start_entries size = acid_rain_index_array_size }
 	resize_array = { array = global.acid_rain_region_index_end_entries size = acid_rain_index_array_size }
+	set_temp_variable = { acid_rain_build_region_index_loop_1_break = constant:acid_rain_runtime.zero }
 	for_loop_effect = {
+		break = acid_rain_build_region_index_loop_1_break
 		start = constant:acid_rain_region.first
 		end = constant:acid_rain_runtime.region_loop_end
 		value = acid_rain_index_region
 		set_variable = { global.acid_rain_region_index_start_entries^acid_rain_index_region = global.acid_rain_region_ordered_states^num }
+		set_temp_variable = { acid_rain_build_region_index_loop_2_break = constant:acid_rain_runtime.zero }
 		for_each_scope_loop = {
+			break = acid_rain_build_region_index_loop_2_break
 			array = global.acid_rain_frozen_states
 			if = {
 				limit = { check_variable = { var = acid_rain_region_id value = acid_rain_index_region compare = equals } }
@@ -682,6 +696,7 @@ acid_rain_build_region_index = {
 # global.acid_rain_region_ordered_states that holds that region's frozen
 # states; an empty slice for region 0. The index is rebuilt first when it
 # belongs to another generation, which also covers saves made before it existed.
+# Callers declare both outputs before this nested helper returns.
 acid_rain_prepare_region_cursor = {
 	if = {
 		limit = {
@@ -1172,7 +1187,9 @@ acid_rain_form_country_registry = {
 acid_rain_reset_generation_flags = {
 	if = {
 		limit = { has_global_flag = acid_rain_runtime_resolved }
+		set_temp_variable = { acid_rain_reset_generation_flags_loop_1_break = constant:acid_rain_runtime.zero }
 		for_each_scope_loop = {
+			break = acid_rain_reset_generation_flags_loop_1_break
 			array = global.acid_rain_participant_countries
 			acid_rain_cleanup_country_runtime = yes
 		}
@@ -1217,6 +1234,7 @@ acid_rain_start_runtime = {
 	if = {
 		limit = {
 			NOT = { has_global_flag = acid_rain_runtime_active }
+			acid_rain_launch_preflight_is_valid = yes
 		}
 		acid_rain_migrate_legacy_runtime = yes
 		acid_rain_reset_generation_flags = yes
@@ -1237,7 +1255,9 @@ acid_rain_start_runtime = {
 			if = {
 				limit = { NOT = { has_global_flag = acid_rain_migration_failed_closed } }
 				acid_rain_form_country_registry = yes
+				set_temp_variable = { acid_rain_start_runtime_loop_1_break = constant:acid_rain_runtime.zero }
 				for_each_scope_loop = {
+					break = acid_rain_start_runtime_loop_1_break
 					array = global.acid_rain_frozen_states
 					acid_rain_033_achievement_register_runtime_state = yes
 				}
@@ -1248,6 +1268,7 @@ acid_rain_start_runtime = {
 				set_variable = { global.acid_rain_front_generation_entries^1 = global.acid_rain_generation_id }
 				set_variable = { global.acid_rain_front_created_day_entries^1 = global.date }
 				set_temp_variable = { acid_rain_front_id = constant:acid_rain_runtime.one }
+				set_temp_variable = { acid_rain_front_region_result = constant:acid_rain_runtime.zero }
 				acid_rain_assign_next_front_region = yes
 				if = {
 					limit = {
@@ -1602,6 +1623,7 @@ acid_rain_try_preparation_report = {
 
 # ANY SCOPE. Computes the authored weight for one candidate region. The caller
 # supplies acid_rain_region_candidate and the current stable front id.
+# Output: caller-declared temporary acid_rain_region_candidate_weight.
 acid_rain_compute_region_candidate_weight = {
 	set_temp_variable = { acid_rain_region_candidate_weight = constant:acid_rain_runtime.zero }
 	if = {
@@ -1640,9 +1662,15 @@ acid_rain_compute_region_candidate_weight = {
 # ANY SCOPE. Selects one region through the explicit seven-entry weighted pool.
 # A zero result means all unfinished regions are temporarily occupied or
 # reserved by another stable front.
+# Outputs: caller-declared acid_rain_region_candidate and
+# acid_rain_region_weight_total. Internal candidate weights remain local.
 acid_rain_select_weighted_region = {
+	# Retire the saved scratch written by the earlier regular-variable retry.
+	clear_variable = acid_rain_region_candidate
 	set_temp_variable = { acid_rain_highest_untouched_count = constant:acid_rain_runtime.zero }
+	set_temp_variable = { acid_rain_select_weighted_region_loop_1_break = constant:acid_rain_runtime.zero }
 	for_loop_effect = {
+		break = acid_rain_select_weighted_region_loop_1_break
 		start = constant:acid_rain_region.first
 		end = constant:acid_rain_runtime.region_loop_end
 		value = acid_rain_region_scan_id
@@ -1651,24 +1679,31 @@ acid_rain_select_weighted_region = {
 		if = { limit = { check_variable = { var = acid_rain_region_scan_untouched value = acid_rain_highest_untouched_count compare = greater_than } } set_temp_variable = { acid_rain_highest_untouched_count = acid_rain_region_scan_untouched } }
 	}
 	set_temp_variable = { acid_rain_region_candidate = constant:acid_rain_runtime.one }
+	set_temp_variable = { acid_rain_region_candidate_weight = constant:acid_rain_runtime.zero }
 	acid_rain_compute_region_candidate_weight = yes
 	set_temp_variable = { acid_rain_region_weight_1 = acid_rain_region_candidate_weight }
 	set_temp_variable = { acid_rain_region_candidate = constant:acid_rain_runtime.two }
+	set_temp_variable = { acid_rain_region_candidate_weight = constant:acid_rain_runtime.zero }
 	acid_rain_compute_region_candidate_weight = yes
 	set_temp_variable = { acid_rain_region_weight_2 = acid_rain_region_candidate_weight }
 	set_temp_variable = { acid_rain_region_candidate = constant:acid_rain_runtime.three }
+	set_temp_variable = { acid_rain_region_candidate_weight = constant:acid_rain_runtime.zero }
 	acid_rain_compute_region_candidate_weight = yes
 	set_temp_variable = { acid_rain_region_weight_3 = acid_rain_region_candidate_weight }
 	set_temp_variable = { acid_rain_region_candidate = constant:acid_rain_runtime.four }
+	set_temp_variable = { acid_rain_region_candidate_weight = constant:acid_rain_runtime.zero }
 	acid_rain_compute_region_candidate_weight = yes
 	set_temp_variable = { acid_rain_region_weight_4 = acid_rain_region_candidate_weight }
 	set_temp_variable = { acid_rain_region_candidate = constant:acid_rain_runtime.five }
+	set_temp_variable = { acid_rain_region_candidate_weight = constant:acid_rain_runtime.zero }
 	acid_rain_compute_region_candidate_weight = yes
 	set_temp_variable = { acid_rain_region_weight_5 = acid_rain_region_candidate_weight }
 	set_temp_variable = { acid_rain_region_candidate = constant:acid_rain_runtime.six }
+	set_temp_variable = { acid_rain_region_candidate_weight = constant:acid_rain_runtime.zero }
 	acid_rain_compute_region_candidate_weight = yes
 	set_temp_variable = { acid_rain_region_weight_6 = acid_rain_region_candidate_weight }
 	set_temp_variable = { acid_rain_region_candidate = constant:acid_rain_runtime.seven }
+	set_temp_variable = { acid_rain_region_candidate_weight = constant:acid_rain_runtime.zero }
 	acid_rain_compute_region_candidate_weight = yes
 	set_temp_variable = { acid_rain_region_weight_7 = acid_rain_region_candidate_weight }
 	set_temp_variable = { acid_rain_region_weight_total = acid_rain_region_weight_1 }
@@ -1937,9 +1972,13 @@ acid_rain_commit_front_region = {
 		add_chaos_meter_value = yes
 	}
 	set_temp_variable = { acid_rain_cursor_region = acid_rain_selected_region_id }
+	set_temp_variable = { acid_rain_cursor_start = constant:acid_rain_runtime.zero }
+	set_temp_variable = { acid_rain_cursor_end = constant:acid_rain_runtime.zero }
 	acid_rain_prepare_region_cursor = yes
 	set_temp_variable = { acid_rain_commit_cursor_end = acid_rain_cursor_end }
+	set_temp_variable = { acid_rain_commit_front_region_loop_1_break = constant:acid_rain_runtime.zero }
 	for_loop_effect = {
+		break = acid_rain_commit_front_region_loop_1_break
 		start = acid_rain_cursor_start
 		end = acid_rain_commit_cursor_end
 		value = acid_rain_commit_cursor
@@ -1970,9 +2009,13 @@ acid_rain_commit_front_region = {
 
 acid_rain_assign_next_front_region = {
 	set_temp_variable = { acid_rain_cursor_region = global.acid_rain_front_region_entries^acid_rain_front_id }
+	set_temp_variable = { acid_rain_cursor_start = constant:acid_rain_runtime.zero }
+	set_temp_variable = { acid_rain_cursor_end = constant:acid_rain_runtime.zero }
 	acid_rain_prepare_region_cursor = yes
 	set_temp_variable = { acid_rain_reassign_cursor_end = acid_rain_cursor_end }
+	set_temp_variable = { acid_rain_assign_next_front_region_loop_1_break = constant:acid_rain_runtime.zero }
 	for_loop_effect = {
+		break = acid_rain_assign_next_front_region_loop_1_break
 		start = acid_rain_cursor_start
 		end = acid_rain_reassign_cursor_end
 		value = acid_rain_reassign_cursor
@@ -1982,6 +2025,8 @@ acid_rain_assign_next_front_region = {
 	}
 	set_temp_variable = { acid_rain_front_region_result = constant:acid_rain_runtime.zero }
 	set_temp_variable = { acid_rain_region_attempts = constant:acid_rain_runtime.zero }
+	set_temp_variable = { acid_rain_region_candidate = constant:acid_rain_runtime.zero }
+	set_temp_variable = { acid_rain_region_weight_total = constant:acid_rain_runtime.zero }
 	acid_rain_select_weighted_region = yes
 	if = {
 		limit = { check_variable = { var = acid_rain_region_candidate value = constant:acid_rain_runtime.zero compare = greater_than } }
@@ -1990,12 +2035,14 @@ acid_rain_assign_next_front_region = {
 	else = {
 		set_temp_variable = { acid_rain_region_attempts = constant:acid_rain_runtime.max_target_attempts }
 	}
+	set_temp_variable = { acid_rain_assign_next_front_region_loop_2_break = constant:acid_rain_runtime.zero }
 	while_loop_effect = {
+		break = acid_rain_assign_next_front_region_loop_2_break
 		limit = {
 			check_variable = { var = acid_rain_front_region_result value = constant:acid_rain_runtime.one compare = less_than }
 			check_variable = { var = acid_rain_region_attempts value = constant:acid_rain_runtime.max_target_attempts compare = less_than }
 		}
-		set_variable_to_random = { var = acid_rain_region_candidate min = constant:acid_rain_region.first max = constant:acid_rain_runtime.region_loop_end integer = yes }
+		set_temp_variable_to_random = { var = acid_rain_region_candidate min = constant:acid_rain_region.first max = constant:acid_rain_runtime.region_loop_end integer = yes }
 		if = {
 			limit = {
 				NOT = { check_variable = { var = global.acid_rain_region_state_entries^acid_rain_region_candidate value = constant:acid_rain_region_state.complete compare = equals } }
@@ -2023,7 +2070,9 @@ acid_rain_assign_next_front_region = {
 			check_variable = { var = acid_rain_region_weight_total value = constant:acid_rain_runtime.zero compare = greater_than }
 		}
 		set_temp_variable = { acid_rain_fallback_region_selected = constant:acid_rain_runtime.zero }
+		set_temp_variable = { acid_rain_assign_next_front_region_loop_3_break = constant:acid_rain_runtime.zero }
 		for_loop_effect = {
+			break = acid_rain_assign_next_front_region_loop_3_break
 			start = constant:acid_rain_region.first
 			end = constant:acid_rain_runtime.region_loop_end
 			value = acid_rain_region_candidate
@@ -2131,6 +2180,8 @@ acid_rain_activate_front = {
 # the bounded worker is an idempotent reload fallback.
 acid_rain_prepare_front_warning = {
 	set_temp_variable = { acid_rain_front_region_result = constant:acid_rain_runtime.zero }
+	set_temp_variable = { acid_rain_region_candidate = constant:acid_rain_runtime.zero }
+	set_temp_variable = { acid_rain_region_weight_total = constant:acid_rain_runtime.zero }
 	acid_rain_select_weighted_region = yes
 	if = {
 		limit = {
@@ -2138,6 +2189,8 @@ acid_rain_prepare_front_warning = {
 			check_variable = { var = global.acid_rain_front_correction_entries^acid_rain_front_id value = constant:acid_rain_runtime.one compare = equals }
 		}
 		set_variable = { global.acid_rain_front_correction_entries^acid_rain_front_id = constant:acid_rain_runtime.zero }
+		set_temp_variable = { acid_rain_region_candidate = constant:acid_rain_runtime.zero }
+		set_temp_variable = { acid_rain_region_weight_total = constant:acid_rain_runtime.zero }
 		acid_rain_select_weighted_region = yes
 	}
 	if = {
@@ -2168,9 +2221,13 @@ acid_rain_prepare_front_warning = {
 		set_temp_variable = { acid_rain_warning_arrival_day = global.acid_rain_front_move_day_entries^acid_rain_front_id }
 		acid_rain_prepare_warning_report = yes
 		set_temp_variable = { acid_rain_cursor_region = acid_rain_selected_region_id }
+		set_temp_variable = { acid_rain_cursor_start = constant:acid_rain_runtime.zero }
+		set_temp_variable = { acid_rain_cursor_end = constant:acid_rain_runtime.zero }
 		acid_rain_prepare_region_cursor = yes
 		set_temp_variable = { acid_rain_warning_cursor_end = acid_rain_cursor_end }
+		set_temp_variable = { acid_rain_prepare_front_warning_loop_1_break = constant:acid_rain_runtime.zero }
 		for_loop_effect = {
+			break = acid_rain_prepare_front_warning_loop_1_break
 			start = acid_rain_cursor_start
 			end = acid_rain_warning_cursor_end
 			value = acid_rain_warning_cursor
@@ -2251,9 +2308,13 @@ acid_rain_execute_front_move = {
 			}
 		}
 		set_temp_variable = { acid_rain_cursor_region = global.acid_rain_front_region_entries^acid_rain_front_id }
+		set_temp_variable = { acid_rain_cursor_start = constant:acid_rain_runtime.zero }
+		set_temp_variable = { acid_rain_cursor_end = constant:acid_rain_runtime.zero }
 		acid_rain_prepare_region_cursor = yes
 		set_temp_variable = { acid_rain_departure_cursor_end = acid_rain_cursor_end }
+		set_temp_variable = { acid_rain_execute_front_move_loop_1_break = constant:acid_rain_runtime.zero }
 		for_loop_effect = {
+			break = acid_rain_execute_front_move_loop_1_break
 			start = acid_rain_cursor_start
 			end = acid_rain_departure_cursor_end
 			value = acid_rain_departure_cursor
@@ -2302,9 +2363,13 @@ acid_rain_execute_front_move = {
 		set_variable = { global.acid_rain_front_next_work_day_entries^acid_rain_front_id = global.date }
 		acid_rain_initialize_front_visit_timing = yes
 		set_temp_variable = { acid_rain_cursor_region = acid_rain_selected_region_id }
+		set_temp_variable = { acid_rain_cursor_start = constant:acid_rain_runtime.zero }
+		set_temp_variable = { acid_rain_cursor_end = constant:acid_rain_runtime.zero }
 		acid_rain_prepare_region_cursor = yes
 		set_temp_variable = { acid_rain_arrival_cursor_end = acid_rain_cursor_end }
+		set_temp_variable = { acid_rain_execute_front_move_loop_2_break = constant:acid_rain_runtime.zero }
 		for_loop_effect = {
+			break = acid_rain_execute_front_move_loop_2_break
 			start = acid_rain_cursor_start
 			end = acid_rain_arrival_cursor_end
 			value = acid_rain_arrival_cursor
@@ -2389,7 +2454,9 @@ acid_rain_check_stable_fronts = {
 			NOT = { has_global_flag = acid_rain_second_front_stable_receipt }
 		}
 		set_temp_variable = { acid_rain_stable_front_count = constant:acid_rain_runtime.zero }
+		set_temp_variable = { acid_rain_check_stable_fronts_loop_1_break = constant:acid_rain_runtime.zero }
 		for_loop_effect = {
+			break = acid_rain_check_stable_fronts_loop_1_break
 			start = constant:acid_rain_runtime.one
 			end = constant:acid_rain_runtime.front_loop_end
 			value = acid_rain_stable_front_index
@@ -2419,7 +2486,9 @@ acid_rain_check_stable_fronts = {
 			NOT = { has_global_flag = acid_rain_third_front_stable_receipt }
 		}
 		set_temp_variable = { acid_rain_stable_front_count = constant:acid_rain_runtime.zero }
+		set_temp_variable = { acid_rain_check_stable_fronts_loop_2_break = constant:acid_rain_runtime.zero }
 		for_loop_effect = {
+			break = acid_rain_check_stable_fronts_loop_2_break
 			start = constant:acid_rain_runtime.one
 			end = constant:acid_rain_runtime.front_loop_end
 			value = acid_rain_stable_front_index
@@ -2447,9 +2516,13 @@ acid_rain_check_stable_fronts = {
 acid_rain_force_lowest_uncovered_state = {
 	set_temp_variable = { acid_rain_forced_state_found = constant:acid_rain_runtime.zero }
 	set_temp_variable = { acid_rain_cursor_region = acid_rain_selected_region_id }
+	set_temp_variable = { acid_rain_cursor_start = constant:acid_rain_runtime.zero }
+	set_temp_variable = { acid_rain_cursor_end = constant:acid_rain_runtime.zero }
 	acid_rain_prepare_region_cursor = yes
 	set_temp_variable = { acid_rain_forced_cursor_end = acid_rain_cursor_end }
+	set_temp_variable = { acid_rain_force_lowest_uncovered_state_loop_1_break = constant:acid_rain_runtime.zero }
 	for_loop_effect = {
+		break = acid_rain_force_lowest_uncovered_state_loop_1_break
 		start = acid_rain_cursor_start
 		end = acid_rain_forced_cursor_end
 		value = acid_rain_forced_cursor
@@ -2494,9 +2567,13 @@ acid_rain_retire_front_footprint_states = {
 		subtract_from_temp_variable = { acid_rain_front_retire_maximum = constant:acid_rain_runtime.two }
 		clamp_temp_variable = { var = acid_rain_front_retire_goal min = constant:acid_rain_runtime.one max = acid_rain_front_retire_maximum }
 		set_temp_variable = { acid_rain_cursor_region = global.acid_rain_front_region_entries^acid_rain_front_id }
+		set_temp_variable = { acid_rain_cursor_start = constant:acid_rain_runtime.zero }
+		set_temp_variable = { acid_rain_cursor_end = constant:acid_rain_runtime.zero }
 		acid_rain_prepare_region_cursor = yes
 		set_temp_variable = { acid_rain_retire_cursor_end = acid_rain_cursor_end }
+		set_temp_variable = { acid_rain_retire_front_footprint_states_loop_1_break = constant:acid_rain_runtime.zero }
 		for_loop_effect = {
+			break = acid_rain_retire_front_footprint_states_loop_1_break
 			start = acid_rain_cursor_start
 			end = acid_rain_retire_cursor_end
 			value = acid_rain_retire_cursor
@@ -2526,9 +2603,13 @@ acid_rain_retire_front_footprint_states = {
 		if = {
 			limit = { check_variable = { var = acid_rain_front_retired_state_count value = acid_rain_front_retire_goal compare = less_than } }
 			set_temp_variable = { acid_rain_cursor_region = global.acid_rain_front_region_entries^acid_rain_front_id }
+			set_temp_variable = { acid_rain_cursor_start = constant:acid_rain_runtime.zero }
+			set_temp_variable = { acid_rain_cursor_end = constant:acid_rain_runtime.zero }
 			acid_rain_prepare_region_cursor = yes
 			set_temp_variable = { acid_rain_retire_island_cursor_end = acid_rain_cursor_end }
+			set_temp_variable = { acid_rain_retire_front_footprint_states_loop_2_break = constant:acid_rain_runtime.zero }
 			for_loop_effect = {
+				break = acid_rain_retire_front_footprint_states_loop_2_break
 				start = acid_rain_cursor_start
 				end = acid_rain_retire_island_cursor_end
 				value = acid_rain_retire_island_cursor
@@ -2605,9 +2686,13 @@ acid_rain_process_front = {
 		add_to_temp_variable = { acid_rain_front_touch_limit = acid_rain_front_available_footprint }
 		clamp_temp_variable = { var = acid_rain_front_touch_limit max = global.acid_rain_front_target_goal_entries^acid_rain_front_id }
 		set_temp_variable = { acid_rain_cursor_region = acid_rain_selected_region_id }
+		set_temp_variable = { acid_rain_cursor_start = constant:acid_rain_runtime.zero }
+		set_temp_variable = { acid_rain_cursor_end = constant:acid_rain_runtime.zero }
 		acid_rain_prepare_region_cursor = yes
 		set_temp_variable = { acid_rain_touch_cursor_end = acid_rain_cursor_end }
+		set_temp_variable = { acid_rain_process_front_loop_1_break = constant:acid_rain_runtime.zero }
 		for_loop_effect = {
+			break = acid_rain_process_front_loop_1_break
 			start = acid_rain_cursor_start
 			end = acid_rain_touch_cursor_end
 			value = acid_rain_touch_cursor
@@ -2624,9 +2709,13 @@ acid_rain_process_front = {
 			}
 		}
 		set_temp_variable = { acid_rain_cursor_region = acid_rain_selected_region_id }
+		set_temp_variable = { acid_rain_cursor_start = constant:acid_rain_runtime.zero }
+		set_temp_variable = { acid_rain_cursor_end = constant:acid_rain_runtime.zero }
 		acid_rain_prepare_region_cursor = yes
 		set_temp_variable = { acid_rain_touch_island_cursor_end = acid_rain_cursor_end }
+		set_temp_variable = { acid_rain_process_front_loop_2_break = constant:acid_rain_runtime.zero }
 		for_loop_effect = {
+			break = acid_rain_process_front_loop_2_break
 			start = acid_rain_cursor_start
 			end = acid_rain_touch_island_cursor_end
 			value = acid_rain_touch_island_cursor
@@ -2689,9 +2778,13 @@ acid_rain_process_front = {
 			if = {
 				limit = { acid_rain_all_regions_are_complete = yes }
 				set_temp_variable = { acid_rain_cursor_region = acid_rain_selected_region_id }
+				set_temp_variable = { acid_rain_cursor_start = constant:acid_rain_runtime.zero }
+				set_temp_variable = { acid_rain_cursor_end = constant:acid_rain_runtime.zero }
 				acid_rain_prepare_region_cursor = yes
 				set_temp_variable = { acid_rain_complete_cursor_end = acid_rain_cursor_end }
+				set_temp_variable = { acid_rain_process_front_loop_3_break = constant:acid_rain_runtime.zero }
 				for_loop_effect = {
+					break = acid_rain_process_front_loop_3_break
 					start = acid_rain_cursor_start
 					end = acid_rain_complete_cursor_end
 					value = acid_rain_complete_cursor
@@ -3465,7 +3558,9 @@ acid_rain_apply_state_damage = {
 		set_temp_variable = { acid_rain_damage_no_target = constant:acid_rain_runtime.zero }
 		set_temp_variable = { acid_rain_damage_one = constant:acid_rain_runtime.one }
 		set_temp_variable = { dynamic_building_damage_amount = acid_rain_damage_one }
+		set_temp_variable = { acid_rain_apply_state_damage_loop_1_break = constant:acid_rain_runtime.zero }
 		while_loop_effect = {
+			break = acid_rain_apply_state_damage_loop_1_break
 			limit = {
 				check_variable = { var = acid_rain_damage_pressure value = constant:acid_rain_runtime.one compare = greater_than_or_equals }
 				check_variable = { var = acid_rain_damage_points_spent value = acid_rain_damage_points_cap compare = less_than }
@@ -3478,7 +3573,9 @@ acid_rain_apply_state_damage = {
 			clamp_temp_variable = { var = dynamic_building_damage_amount max = acid_rain_damage_pressure }
 			set_temp_variable = { acid_rain_damage_target_attempts = constant:acid_rain_runtime.zero }
 			set_temp_variable = { acid_rain_damage_target_applied = constant:acid_rain_runtime.zero }
+			set_temp_variable = { acid_rain_apply_state_damage_loop_2_break = constant:acid_rain_runtime.zero }
 			while_loop_effect = {
+				break = acid_rain_apply_state_damage_loop_2_break
 				limit = {
 					check_variable = { var = acid_rain_damage_target_attempts value = constant:acid_rain_air_damage.damage_target_loop_end compare = less_than }
 					check_variable = { var = acid_rain_damage_target_applied value = constant:acid_rain_runtime.zero compare = equals }
@@ -3705,7 +3802,9 @@ acid_rain_try_weekly_air_request = {
 		else = {
 			set_temp_variable = { acid_rain_air_active_states = global.acid_rain_ordinary_target_states^num }
 			# A severe cell can outlast the front that formed it.
+			set_temp_variable = { acid_rain_try_weekly_air_request_loop_1_break = constant:acid_rain_runtime.zero }
 			for_each_scope_loop = {
+				break = acid_rain_try_weekly_air_request_loop_1_break
 				array = global.acid_rain_severe_target_states
 				if = {
 					limit = {
@@ -3739,7 +3838,9 @@ acid_rain_try_weekly_air_request = {
 			# the Standard intensity used by acid_rain_pulse_global_states.
 			set_temp_variable = { acid_rain_air_open_fronts = constant:acid_rain_runtime.zero }
 			set_temp_variable = { acid_rain_air_average_intensity = constant:acid_rain_runtime.zero }
+			set_temp_variable = { acid_rain_try_weekly_air_request_loop_2_break = constant:acid_rain_runtime.zero }
 			for_loop_effect = {
+				break = acid_rain_try_weekly_air_request_loop_2_break
 				start = constant:acid_rain_runtime.one
 				end = constant:acid_rain_runtime.front_loop_end
 				value = acid_rain_air_front_index
@@ -3792,7 +3893,9 @@ acid_rain_try_weekly_air_request = {
 			set_temp_variable = { acid_rain_air_storm_count = constant:acid_rain_runtime.zero }
 			set_temp_variable = { acid_rain_air_storm_loop_end = constant:acid_rain_event.max_severe_cells }
 			add_to_temp_variable = { acid_rain_air_storm_loop_end = constant:acid_rain_runtime.loop_increment }
+			set_temp_variable = { acid_rain_try_weekly_air_request_loop_3_break = constant:acid_rain_runtime.zero }
 			for_loop_effect = {
+				break = acid_rain_try_weekly_air_request_loop_3_break
 				start = constant:acid_rain_runtime.one
 				end = acid_rain_air_storm_loop_end
 				value = acid_rain_air_severe_cell_index
@@ -3803,7 +3906,9 @@ acid_rain_try_weekly_air_request = {
 			}
 			set_temp_variable = { acid_rain_air_storm_loop_end = constant:acid_rain_event.max_superstorms }
 			add_to_temp_variable = { acid_rain_air_storm_loop_end = constant:acid_rain_runtime.loop_increment }
+			set_temp_variable = { acid_rain_try_weekly_air_request_loop_4_break = constant:acid_rain_runtime.zero }
 			for_loop_effect = {
+				break = acid_rain_try_weekly_air_request_loop_4_break
 				start = constant:acid_rain_runtime.one
 				end = acid_rain_air_storm_loop_end
 				value = acid_rain_air_superstorm_index
@@ -3886,7 +3991,9 @@ acid_rain_pulse_global_states = {
 	if = {
 		limit = { has_global_flag = acid_rain_global_layer_active }
 		set_temp_variable = { acid_rain_global_opening_pending_count = constant:acid_rain_runtime.zero }
+		set_temp_variable = { acid_rain_pulse_global_states_loop_1_break = constant:acid_rain_runtime.zero }
 		for_each_scope_loop = {
+			break = acid_rain_pulse_global_states_loop_1_break
 			array = global.acid_rain_frozen_states
 			if = {
 				limit = {
@@ -3948,7 +4055,9 @@ acid_rain_pulse_front_states = {
 			acid_rain_front_is_open = yes
 			NOT = { has_global_flag = acid_rain_global_transition_active }
 		}
+		set_temp_variable = { acid_rain_pulse_front_states_loop_1_break = constant:acid_rain_runtime.zero }
 		for_each_scope_loop = {
+			break = acid_rain_pulse_front_states_loop_1_break
 			array = global.acid_rain_ordinary_target_states
 			if = {
 				limit = {
@@ -4033,7 +4142,9 @@ acid_rain_append_state_to_severe_weighted_pool = {
 		min = constant:acid_rain_severe_target_weight.minimum
 		max = constant:acid_rain_severe_target_weight.maximum
 	}
+	set_temp_variable = { acid_rain_append_state_to_severe_weighted_pool_loop_1_break = constant:acid_rain_runtime.zero }
 	while_loop_effect = {
+		break = acid_rain_append_state_to_severe_weighted_pool_loop_1_break
 		limit = { check_variable = { acid_rain_severe_state_weight > constant:acid_rain_runtime.zero } }
 		add_to_array = { array = global.acid_rain_severe_planner_weighted_candidates value = THIS }
 		subtract_from_temp_variable = { acid_rain_severe_state_weight = constant:acid_rain_runtime.loop_increment }
@@ -4049,9 +4160,13 @@ acid_rain_create_severe_cell = {
 	set_temp_variable = { acid_rain_severe_front_region = global.acid_rain_front_region_entries^acid_rain_front_id }
 	set_temp_variable = { acid_rain_active_front_state_count = constant:acid_rain_runtime.zero }
 	set_temp_variable = { acid_rain_cursor_region = acid_rain_severe_front_region }
+	set_temp_variable = { acid_rain_cursor_start = constant:acid_rain_runtime.zero }
+	set_temp_variable = { acid_rain_cursor_end = constant:acid_rain_runtime.zero }
 	acid_rain_prepare_region_cursor = yes
 	set_temp_variable = { acid_rain_severe_count_cursor_end = acid_rain_cursor_end }
+	set_temp_variable = { acid_rain_create_severe_cell_loop_1_break = constant:acid_rain_runtime.zero }
 	for_loop_effect = {
+		break = acid_rain_create_severe_cell_loop_1_break
 		start = acid_rain_cursor_start
 		end = acid_rain_severe_count_cursor_end
 		value = acid_rain_severe_count_cursor
@@ -4076,16 +4191,22 @@ acid_rain_create_severe_cell = {
 		clear_array = global.acid_rain_severe_planner_next_frontier
 		clear_array = global.acid_rain_severe_planner_weighted_candidates
 		set_temp_variable = { acid_rain_severe_target_attempt = constant:acid_rain_runtime.zero }
+		set_temp_variable = { acid_rain_create_severe_cell_loop_2_break = constant:acid_rain_runtime.zero }
 		while_loop_effect = {
+			break = acid_rain_create_severe_cell_loop_2_break
 			limit = {
 				check_variable = { var = global.acid_rain_severe_planner_targets^num value = acid_rain_severe_target_goal compare = less_than }
 				check_variable = { var = acid_rain_severe_target_attempt value = constant:acid_rain_runtime.max_target_attempts compare = less_than }
 			}
 			clear_array = global.acid_rain_severe_planner_weighted_candidates
 			set_temp_variable = { acid_rain_cursor_region = acid_rain_severe_front_region }
+			set_temp_variable = { acid_rain_cursor_start = constant:acid_rain_runtime.zero }
+			set_temp_variable = { acid_rain_cursor_end = constant:acid_rain_runtime.zero }
 			acid_rain_prepare_region_cursor = yes
 			set_temp_variable = { acid_rain_severe_pool_cursor_end = acid_rain_cursor_end }
+			set_temp_variable = { acid_rain_create_severe_cell_loop_3_break = constant:acid_rain_runtime.zero }
 			for_loop_effect = {
+				break = acid_rain_create_severe_cell_loop_3_break
 				start = acid_rain_cursor_start
 				end = acid_rain_severe_pool_cursor_end
 				value = acid_rain_severe_pool_cursor
@@ -4110,9 +4231,13 @@ acid_rain_create_severe_cell = {
 				# No connected candidate remains. Rebuild the same weighted pool
 				# without adjacency so a disconnected island can be selected.
 				set_temp_variable = { acid_rain_cursor_region = acid_rain_severe_front_region }
+				set_temp_variable = { acid_rain_cursor_start = constant:acid_rain_runtime.zero }
+				set_temp_variable = { acid_rain_cursor_end = constant:acid_rain_runtime.zero }
 				acid_rain_prepare_region_cursor = yes
 				set_temp_variable = { acid_rain_severe_island_cursor_end = acid_rain_cursor_end }
+				set_temp_variable = { acid_rain_create_severe_cell_loop_4_break = constant:acid_rain_runtime.zero }
 				for_loop_effect = {
+					break = acid_rain_create_severe_cell_loop_4_break
 					start = acid_rain_cursor_start
 					end = acid_rain_severe_island_cursor_end
 					value = acid_rain_severe_island_cursor
@@ -4151,9 +4276,13 @@ acid_rain_create_severe_cell = {
 			limit = { check_variable = { var = global.acid_rain_severe_planner_targets^num value = acid_rain_severe_target_goal compare = less_than } }
 			clear_array = global.acid_rain_severe_planner_weighted_candidates
 			set_temp_variable = { acid_rain_cursor_region = acid_rain_severe_front_region }
+			set_temp_variable = { acid_rain_cursor_start = constant:acid_rain_runtime.zero }
+			set_temp_variable = { acid_rain_cursor_end = constant:acid_rain_runtime.zero }
 			acid_rain_prepare_region_cursor = yes
 			set_temp_variable = { acid_rain_severe_fill_cursor_end = acid_rain_cursor_end }
+			set_temp_variable = { acid_rain_create_severe_cell_loop_5_break = constant:acid_rain_runtime.zero }
 			for_loop_effect = {
+				break = acid_rain_create_severe_cell_loop_5_break
 				start = acid_rain_cursor_start
 				end = acid_rain_severe_fill_cursor_end
 				value = acid_rain_severe_fill_cursor
@@ -4201,7 +4330,9 @@ acid_rain_create_severe_cell = {
 			set_variable = { global.acid_rain_severe_cell_damage_entries^acid_rain_new_severe_cell_id = constant:acid_rain_runtime.zero }
 			set_variable = { global.acid_rain_severe_cell_low_preparedness_exposure_entries^acid_rain_new_severe_cell_id = constant:acid_rain_runtime.zero }
 			set_variable = { global.acid_rain_severe_cell_supply_disruption_entries^acid_rain_new_severe_cell_id = constant:acid_rain_runtime.zero }
+			set_temp_variable = { acid_rain_create_severe_cell_loop_6_break = constant:acid_rain_runtime.zero }
 			for_each_scope_loop = {
+				break = acid_rain_create_severe_cell_loop_6_break
 				array = global.acid_rain_severe_planner_targets
 				set_state_flag = acid_rain_severe_cell_target
 				set_state_flag = acid_rain_severe_forecast_pending
@@ -4256,9 +4387,13 @@ acid_rain_create_severe_cell = {
 			}
 			# Preserve original frozen-state processing order when publishing the committed target registry.
 			set_temp_variable = { acid_rain_cursor_region = acid_rain_severe_front_region }
+			set_temp_variable = { acid_rain_cursor_start = constant:acid_rain_runtime.zero }
+			set_temp_variable = { acid_rain_cursor_end = constant:acid_rain_runtime.zero }
 			acid_rain_prepare_region_cursor = yes
 			set_temp_variable = { acid_rain_severe_publish_cursor_end = acid_rain_cursor_end }
+			set_temp_variable = { acid_rain_create_severe_cell_loop_7_break = constant:acid_rain_runtime.zero }
 			for_loop_effect = {
+				break = acid_rain_create_severe_cell_loop_7_break
 				start = acid_rain_cursor_start
 				end = acid_rain_severe_publish_cursor_end
 				value = acid_rain_severe_publish_cursor
@@ -4369,7 +4504,9 @@ acid_rain_try_severe_evolution = {
 			set_temp_variable = { acid_rain_severe_front_selected = constant:acid_rain_runtime.zero }
 			set_temp_variable = { acid_rain_severe_cell_loop_end = constant:acid_rain_event.max_severe_cells }
 			add_to_temp_variable = { acid_rain_severe_cell_loop_end = constant:acid_rain_runtime.loop_increment }
+			set_temp_variable = { acid_rain_try_severe_evolution_loop_1_break = constant:acid_rain_runtime.zero }
 			for_loop_effect = {
+				break = acid_rain_try_severe_evolution_loop_1_break
 				start = constant:acid_rain_runtime.one
 				end = constant:acid_rain_runtime.front_loop_end
 				value = acid_rain_severe_front_index
@@ -4380,7 +4517,9 @@ acid_rain_try_severe_evolution = {
 						check_variable = { var = global.date value = global.acid_rain_front_severe_cooldown_day_entries^acid_rain_severe_front_index compare = greater_than_or_equals }
 					}
 					set_temp_variable = { acid_rain_severe_front_has_active_cell = constant:acid_rain_runtime.zero }
+					set_temp_variable = { acid_rain_try_severe_evolution_loop_2_break = constant:acid_rain_runtime.zero }
 					for_loop_effect = {
+						break = acid_rain_try_severe_evolution_loop_2_break
 						start = constant:acid_rain_runtime.one
 						end = acid_rain_severe_cell_loop_end
 						value = acid_rain_severe_cell_check_index
@@ -4424,7 +4563,9 @@ acid_rain_try_severe_impact_chaos = {
 		set_temp_variable = { acid_rain_severe_impact_found = constant:acid_rain_runtime.zero }
 		set_temp_variable = { acid_rain_severe_cell_loop_end = constant:acid_rain_event.max_severe_cells }
 		add_to_temp_variable = { acid_rain_severe_cell_loop_end = constant:acid_rain_runtime.loop_increment }
+		set_temp_variable = { acid_rain_try_severe_impact_chaos_loop_1_break = constant:acid_rain_runtime.zero }
 		for_loop_effect = {
+			break = acid_rain_try_severe_impact_chaos_loop_1_break
 			start = constant:acid_rain_runtime.one
 			end = acid_rain_severe_cell_loop_end
 			value = acid_rain_severe_cell_check_index
@@ -4461,10 +4602,13 @@ acid_rain_try_severe_impact_chaos = {
 # and retires without deleting the durable severe-history receipt.
 acid_rain_process_severe_cells = {
 	clear_temp_array = acid_rain_severe_processing_snapshot
-	for_each_scope_loop = { array = global.acid_rain_severe_target_states add_to_temp_array = { array = acid_rain_severe_processing_snapshot value = THIS } }
+	set_temp_variable = { acid_rain_process_severe_cells_loop_1_break = constant:acid_rain_runtime.zero }
+	for_each_scope_loop = { break = acid_rain_process_severe_cells_loop_1_break array = global.acid_rain_severe_target_states add_to_temp_array = { array = acid_rain_severe_processing_snapshot value = THIS } }
 	set_temp_variable = { acid_rain_severe_cell_loop_end = constant:acid_rain_event.max_severe_cells }
 	add_to_temp_variable = { acid_rain_severe_cell_loop_end = constant:acid_rain_runtime.loop_increment }
+	set_temp_variable = { acid_rain_process_severe_cells_loop_2_break = constant:acid_rain_runtime.zero }
 	for_loop_effect = {
+		break = acid_rain_process_severe_cells_loop_2_break
 		start = constant:acid_rain_runtime.one
 		end = acid_rain_severe_cell_loop_end
 		value = acid_rain_severe_cell_index
@@ -4479,7 +4623,9 @@ acid_rain_process_severe_cells = {
 		}
 		if = {
 			limit = { check_variable = { var = global.acid_rain_severe_cell_active_entries^acid_rain_severe_cell_index value = constant:acid_rain_runtime.one compare = equals } }
+			set_temp_variable = { acid_rain_process_severe_cells_loop_3_break = constant:acid_rain_runtime.zero }
 			for_each_scope_loop = {
+				break = acid_rain_process_severe_cells_loop_3_break
 				array = acid_rain_severe_processing_snapshot
 				if = {
 					limit = {
@@ -4524,7 +4670,9 @@ acid_rain_process_severe_cells = {
 			}
 			if = {
 				limit = { check_variable = { var = global.date value = global.acid_rain_severe_cell_end_entries^acid_rain_severe_cell_index compare = greater_than_or_equals } }
+				set_temp_variable = { acid_rain_process_severe_cells_loop_4_break = constant:acid_rain_runtime.zero }
 				for_each_scope_loop = {
+					break = acid_rain_process_severe_cells_loop_4_break
 					array = acid_rain_severe_processing_snapshot
 					if = {
 						limit = { check_variable = { var = acid_rain_severe_cell_id value = acid_rain_severe_cell_index compare = equals } }
@@ -4576,6 +4724,7 @@ acid_rain_open_additional_front = {
 		set_variable = { global.acid_rain_front_created_day_entries^acid_rain_new_front_id = global.date }
 		set_variable = { global.acid_rain_front_initial_footprint_done_entries^acid_rain_new_front_id = constant:acid_rain_runtime.zero }
 		set_temp_variable = { acid_rain_front_id = acid_rain_new_front_id }
+		set_temp_variable = { acid_rain_front_region_result = constant:acid_rain_runtime.zero }
 		acid_rain_assign_next_front_region = yes
 		if = {
 			limit = {
@@ -4705,13 +4854,17 @@ acid_rain_begin_global_transition = {
 	if = {
 		limit = { NOT = { has_global_flag = acid_rain_global_layer_active } }
 		set_global_flag = acid_rain_global_layer_active
+		set_temp_variable = { acid_rain_begin_global_transition_loop_1_break = constant:acid_rain_runtime.zero }
 		for_each_scope_loop = {
+			break = acid_rain_begin_global_transition_loop_1_break
 			array = global.acid_rain_participant_countries
 			acid_rain_recalculate_country_scale = yes
 		}
 		set_variable = { global.acid_rain_phase = constant:acid_rain_phase.global }
 		set_variable = { global.acid_rain_global_transition_day = global.date }
+		set_temp_variable = { acid_rain_begin_global_transition_loop_2_break = constant:acid_rain_runtime.zero }
 		for_each_scope_loop = {
+			break = acid_rain_begin_global_transition_loop_2_break
 			array = global.acid_rain_participant_countries
 			# The first global check follows all committed transition consequences.
 		}
@@ -4729,7 +4882,9 @@ acid_rain_begin_global_transition = {
 		set_temp_variable = { acid_rain_evolution_tier = constant:acid_rain_event.evolution_iii_tier }
 		acid_rain_record_evolution = yes
 		set_variable = { global.acid_rain_completed_region_count = constant:acid_rain_region.count }
+		set_temp_variable = { acid_rain_begin_global_transition_loop_3_break = constant:acid_rain_runtime.zero }
 		for_loop_effect = {
+			break = acid_rain_begin_global_transition_loop_3_break
 			start = constant:acid_rain_region.first
 			end = constant:acid_rain_runtime.region_loop_end
 			value = acid_rain_global_region_index
@@ -4737,7 +4892,9 @@ acid_rain_begin_global_transition = {
 		}
 		# Regional severe cells are retired before global targets are created.
 		# Their history remains, but no regional pulse can survive the phase change.
+		set_temp_variable = { acid_rain_begin_global_transition_loop_4_break = constant:acid_rain_runtime.zero }
 		for_each_scope_loop = {
+			break = acid_rain_begin_global_transition_loop_4_break
 			array = global.acid_rain_frozen_states
 			if = {
 				limit = { has_state_flag = acid_rain_severe_cell_target }
@@ -4755,18 +4912,24 @@ acid_rain_begin_global_transition = {
 		}
 		set_temp_variable = { acid_rain_global_severe_loop_end = constant:acid_rain_event.max_severe_cells }
 		add_to_temp_variable = { acid_rain_global_severe_loop_end = constant:acid_rain_runtime.loop_increment }
+		set_temp_variable = { acid_rain_begin_global_transition_loop_5_break = constant:acid_rain_runtime.zero }
 		for_loop_effect = {
+			break = acid_rain_begin_global_transition_loop_5_break
 			start = constant:acid_rain_runtime.one
 			end = acid_rain_global_severe_loop_end
 			value = acid_rain_global_severe_index
 			set_variable = { global.acid_rain_severe_cell_active_entries^acid_rain_global_severe_index = constant:acid_rain_runtime.two }
 			set_variable = { global.acid_rain_severe_cell_cooldown_day_entries^acid_rain_global_severe_index = global.date }
 		}
+		set_temp_variable = { acid_rain_begin_global_transition_loop_6_break = constant:acid_rain_runtime.zero }
 		for_loop_effect = {
+			break = acid_rain_begin_global_transition_loop_6_break
 			start = constant:acid_rain_runtime.one
 			end = constant:acid_rain_runtime.front_loop_end
 			value = acid_rain_global_front_index
+			set_temp_variable = { acid_rain_begin_global_transition_loop_7_break = constant:acid_rain_runtime.zero }
 			for_each_scope_loop = {
+				break = acid_rain_begin_global_transition_loop_7_break
 				array = global.acid_rain_frozen_states
 				if = { limit = { check_variable = { var = acid_rain_target_front_id value = acid_rain_global_front_index compare = equals } } acid_rain_release_front_state = yes }
 			}
@@ -4775,7 +4938,9 @@ acid_rain_begin_global_transition = {
 		set_variable = { global.acid_rain_front_count = constant:acid_rain_runtime.zero }
 		set_variable = { global.acid_rain_active_front_count = constant:acid_rain_runtime.zero }
 		set_variable = { global.acid_rain_warning_count = constant:acid_rain_runtime.zero }
+		set_temp_variable = { acid_rain_begin_global_transition_loop_8_break = constant:acid_rain_runtime.zero }
 		for_each_scope_loop = {
+			break = acid_rain_begin_global_transition_loop_8_break
 			array = global.acid_rain_frozen_states
 			acid_rain_touch_state_for_global_layer = yes
 			if = {
@@ -4810,7 +4975,8 @@ acid_rain_begin_global_transition = {
 		set_global_flag = acid_rain_coverage_complete
 		set_variable = { global.acid_rain_coverage_complete_day = global.date }
 		clr_global_flag = acid_rain_global_transition_active
-		for_each_scope_loop = { array = global.acid_rain_participant_countries acid_rain_project_country_obligations = yes acid_rain_033_achievement_check_runtime_country = yes }
+		set_temp_variable = { acid_rain_begin_global_transition_loop_9_break = constant:acid_rain_runtime.zero }
+		for_each_scope_loop = { break = acid_rain_begin_global_transition_loop_9_break array = global.acid_rain_participant_countries acid_rain_project_country_obligations = yes acid_rain_033_achievement_check_runtime_country = yes }
 	}
 }
 
@@ -4881,7 +5047,9 @@ acid_rain_append_state_to_superstorm_weighted_pool = {
 		min = constant:acid_rain_superstorm_target_weight.minimum
 		max = constant:acid_rain_superstorm_target_weight.maximum
 	}
+	set_temp_variable = { acid_rain_append_state_to_superstorm_weighted_pool_loop_1_break = constant:acid_rain_runtime.zero }
 	while_loop_effect = {
+		break = acid_rain_append_state_to_superstorm_weighted_pool_loop_1_break
 		limit = { check_variable = { acid_rain_superstorm_state_weight > constant:acid_rain_runtime.zero } }
 		add_to_array = { array = global.acid_rain_superstorm_planner_weighted_candidates value = THIS }
 		subtract_from_temp_variable = { acid_rain_superstorm_state_weight = constant:acid_rain_runtime.loop_increment }
@@ -4897,13 +5065,17 @@ acid_rain_create_superstorm_forecast = {
 			check_variable = { var = global.acid_rain_superstorm_forecast_count value = global.acid_rain_superstorm_capacity compare = less_than }
 			check_variable = { var = global.acid_rain_superstorm_forecast_count value = constant:acid_rain_event.max_superstorms compare = less_than }
 		}
+		set_temp_variable = { acid_rain_create_superstorm_forecast_loop_1_break = constant:acid_rain_runtime.zero }
 		for_loop_effect = {
+			break = acid_rain_create_superstorm_forecast_loop_1_break
 			start = constant:acid_rain_region.first
 			end = constant:acid_rain_runtime.region_loop_end
 			value = acid_rain_superstorm_region_index
 			set_variable = { global.acid_rain_superstorm_region_active_entries^acid_rain_superstorm_region_index = constant:acid_rain_runtime.zero }
 		}
+		set_temp_variable = { acid_rain_create_superstorm_forecast_loop_2_break = constant:acid_rain_runtime.zero }
 		for_each_scope_loop = {
+			break = acid_rain_create_superstorm_forecast_loop_2_break
 			array = global.acid_rain_superstorm_target_states
 			if = {
 				limit = { has_state_flag = acid_rain_superstorm_target }
@@ -4914,13 +5086,17 @@ acid_rain_create_superstorm_forecast = {
 		clear_array = global.acid_rain_superstorm_planner_targets
 		clear_array = global.acid_rain_superstorm_planner_weighted_candidates
 		set_temp_variable = { acid_rain_superstorm_target_attempt = constant:acid_rain_runtime.zero }
+		set_temp_variable = { acid_rain_create_superstorm_forecast_loop_3_break = constant:acid_rain_runtime.zero }
 		while_loop_effect = {
+			break = acid_rain_create_superstorm_forecast_loop_3_break
 			limit = {
 				check_variable = { var = global.acid_rain_superstorm_planner_targets^num value = acid_rain_superstorm_target_goal compare = less_than }
 				check_variable = { var = acid_rain_superstorm_target_attempt value = constant:acid_rain_runtime.max_target_attempts compare = less_than }
 			}
 			clear_array = global.acid_rain_superstorm_planner_weighted_candidates
+			set_temp_variable = { acid_rain_create_superstorm_forecast_loop_4_break = constant:acid_rain_runtime.zero }
 			for_each_scope_loop = {
+				break = acid_rain_create_superstorm_forecast_loop_4_break
 				array = global.acid_rain_frozen_states
 				if = {
 					limit = {
@@ -4937,7 +5113,9 @@ acid_rain_create_superstorm_forecast = {
 			}
 			if = {
 				limit = { check_variable = { var = global.acid_rain_superstorm_planner_weighted_candidates^num value = constant:acid_rain_runtime.zero compare = equals } }
+				set_temp_variable = { acid_rain_create_superstorm_forecast_loop_5_break = constant:acid_rain_runtime.zero }
 				for_each_scope_loop = {
+					break = acid_rain_create_superstorm_forecast_loop_5_break
 					array = global.acid_rain_frozen_states
 					if = {
 						limit = {
@@ -4967,7 +5145,9 @@ acid_rain_create_superstorm_forecast = {
 		if = {
 			limit = { check_variable = { var = global.acid_rain_superstorm_planner_targets^num value = constant:acid_rain_runtime.zero compare = greater_than } }
 			set_temp_variable = { acid_rain_new_superstorm_id = constant:acid_rain_runtime.zero }
+			set_temp_variable = { acid_rain_create_superstorm_forecast_loop_6_break = constant:acid_rain_runtime.zero }
 			for_loop_effect = {
+				break = acid_rain_create_superstorm_forecast_loop_6_break
 				start = constant:acid_rain_runtime.one
 				end = constant:acid_rain_runtime.six
 				value = acid_rain_superstorm_slot_index
@@ -5001,7 +5181,9 @@ acid_rain_create_superstorm_forecast = {
 				set_variable = { global.acid_rain_superstorm_target_count_entries^acid_rain_new_superstorm_id = global.acid_rain_superstorm_planner_targets^num }
 				set_variable = { global.acid_rain_superstorm_active_entries^acid_rain_new_superstorm_id = constant:acid_rain_runtime.zero }
 				set_variable = { global.acid_rain_superstorm_region_entries^acid_rain_new_superstorm_id = constant:acid_rain_runtime.zero }
+				set_temp_variable = { acid_rain_create_superstorm_forecast_loop_7_break = constant:acid_rain_runtime.zero }
 				for_each_scope_loop = {
+					break = acid_rain_create_superstorm_forecast_loop_7_break
 					array = global.acid_rain_superstorm_planner_targets
 					set_state_flag = acid_rain_superstorm_target
 					# The seed state, listed first, names the region the map marker uses.
@@ -5052,7 +5234,9 @@ acid_rain_create_superstorm_forecast = {
 						acid_rain_add_state_to_forecast_report = yes
 					}
 				}
+				set_temp_variable = { acid_rain_create_superstorm_forecast_loop_8_break = constant:acid_rain_runtime.zero }
 				for_each_scope_loop = {
+					break = acid_rain_create_superstorm_forecast_loop_8_break
 					array = global.acid_rain_frozen_states
 					if = { limit = { has_state_flag = acid_rain_superstorm_target check_variable = { var = acid_rain_superstorm_id value = acid_rain_new_superstorm_id compare = equals } NOT = { is_in_array = { array = global.acid_rain_superstorm_target_states value = THIS } } } add_to_array = { array = global.acid_rain_superstorm_target_states value = THIS } }
 				}
@@ -5097,7 +5281,9 @@ acid_rain_try_extra_superstorm = {
 		set_global_flag = acid_rain_superstorm_capacity_four_reached
 	}
 	set_temp_variable = { acid_rain_superstorm_refill_attempt = constant:acid_rain_runtime.zero }
+	set_temp_variable = { acid_rain_try_extra_superstorm_loop_1_break = constant:acid_rain_runtime.zero }
 	while_loop_effect = {
+		break = acid_rain_try_extra_superstorm_loop_1_break
 		limit = {
 			has_global_flag = acid_rain_global_layer_active
 			check_variable = { var = global.acid_rain_superstorm_forecast_count value = global.acid_rain_superstorm_capacity compare = less_than }
@@ -5113,10 +5299,13 @@ acid_rain_try_extra_superstorm = {
 # exact population receipts, not a shared population or attrition estimate.
 acid_rain_process_superstorms = {
 	clear_temp_array = acid_rain_superstorm_processing_snapshot
-	for_each_scope_loop = { array = global.acid_rain_superstorm_target_states add_to_temp_array = { array = acid_rain_superstorm_processing_snapshot value = THIS } }
+	set_temp_variable = { acid_rain_process_superstorms_loop_1_break = constant:acid_rain_runtime.zero }
+	for_each_scope_loop = { break = acid_rain_process_superstorms_loop_1_break array = global.acid_rain_superstorm_target_states add_to_temp_array = { array = acid_rain_superstorm_processing_snapshot value = THIS } }
 	set_temp_variable = { acid_rain_superstorm_loop_end = constant:acid_rain_event.max_superstorms }
 	add_to_temp_variable = { acid_rain_superstorm_loop_end = constant:acid_rain_runtime.loop_increment }
+	set_temp_variable = { acid_rain_process_superstorms_loop_2_break = constant:acid_rain_runtime.zero }
 	for_loop_effect = {
+		break = acid_rain_process_superstorms_loop_2_break
 		start = constant:acid_rain_runtime.one
 		end = acid_rain_superstorm_loop_end
 		value = acid_rain_superstorm_index
@@ -5128,7 +5317,9 @@ acid_rain_process_superstorms = {
 			}
 			set_variable = { global.acid_rain_superstorm_active_entries^acid_rain_superstorm_index = constant:acid_rain_runtime.one }
 			add_to_variable = { global.acid_rain_superstorm_count = constant:acid_rain_runtime.loop_increment }
+			set_temp_variable = { acid_rain_process_superstorms_loop_3_break = constant:acid_rain_runtime.zero }
 			for_each_scope_loop = {
+				break = acid_rain_process_superstorms_loop_3_break
 				array = acid_rain_superstorm_processing_snapshot
 				if = {
 					limit = { check_variable = { var = acid_rain_superstorm_id value = acid_rain_superstorm_index compare = equals } }
@@ -5138,7 +5329,9 @@ acid_rain_process_superstorms = {
 		}
 		if = {
 			limit = { check_variable = { var = global.acid_rain_superstorm_active_entries^acid_rain_superstorm_index value = constant:acid_rain_runtime.one compare = equals } }
+			set_temp_variable = { acid_rain_process_superstorms_loop_4_break = constant:acid_rain_runtime.zero }
 			for_each_scope_loop = {
+				break = acid_rain_process_superstorms_loop_4_break
 				array = acid_rain_superstorm_processing_snapshot
 				if = {
 					limit = {
@@ -5186,7 +5379,9 @@ acid_rain_process_superstorms = {
 			}
 			if = {
 				limit = { check_variable = { var = global.date value = global.acid_rain_superstorm_end_entries^acid_rain_superstorm_index compare = greater_than_or_equals } }
+				set_temp_variable = { acid_rain_process_superstorms_loop_5_break = constant:acid_rain_runtime.zero }
 				for_each_scope_loop = {
+					break = acid_rain_process_superstorms_loop_5_break
 					array = acid_rain_superstorm_processing_snapshot
 					if = {
 						limit = { check_variable = { var = acid_rain_superstorm_id value = acid_rain_superstorm_index compare = equals } }
@@ -5362,7 +5557,9 @@ acid_rain_finish_runtime = {
 		if = { limit = { has_global_flag = acid_rain_dissipation_pending NOT = { has_global_flag = world_end } } set_temp_variable = { acid_rain_033_natural_closure = constant:acid_rain_runtime.one } }
 		clr_global_flag = acid_rain_global_transition_active
 		set_temp_variable = { acid_rain_unresolved_aftermath_count = constant:acid_rain_runtime.zero }
+		set_temp_variable = { acid_rain_finish_runtime_loop_1_break = constant:acid_rain_runtime.zero }
 		for_each_scope_loop = {
+			break = acid_rain_finish_runtime_loop_1_break
 			array = global.acid_rain_frozen_states
 			acid_rain_advance_consequence_interval = yes
 			acid_rain_assess_window_aftermath = yes
@@ -5394,7 +5591,9 @@ acid_rain_finish_runtime = {
 		clear_array = global.acid_rain_active_consequence_states
 		clr_global_flag = acid_rain_global_layer_active
 		acid_rain_store_dissipation_report_facts = yes
+		set_temp_variable = { acid_rain_finish_runtime_loop_2_break = constant:acid_rain_runtime.zero }
 		for_each_scope_loop = {
+			break = acid_rain_finish_runtime_loop_2_break
 			array = global.acid_rain_participant_countries
 			acid_rain_project_country_obligations = yes
 			country_event = { id = chaosx.nr33.109 }
@@ -5409,13 +5608,16 @@ acid_rain_finish_runtime = {
 			limit = { NOT = { has_global_flag = acid_rain_final_dissipation_receipt } }
 			set_global_flag = acid_rain_final_dissipation_receipt
 			if = {
-				limit = { has_global_flag = acid_rain_global_layer_receipt }
-				set_temp_variable = { chaos_change = constant:acid_rain_evolution.global_final_chaos_loss }
+				limit = { check_variable = { var = acid_rain_033_natural_closure value = constant:acid_rain_runtime.one compare = equals } }
+				if = {
+					limit = { has_global_flag = acid_rain_global_layer_receipt }
+					set_temp_variable = { chaos_change = constant:acid_rain_evolution.global_final_chaos_loss }
+				}
+				else = { set_temp_variable = { chaos_change = constant:acid_rain_evolution.ordinary_final_chaos_loss } }
+				add_chaos_meter_value = yes
 			}
-			else = { set_temp_variable = { chaos_change = constant:acid_rain_evolution.ordinary_final_chaos_loss } }
-			add_chaos_meter_value = yes
 		}
-		if = { limit = { has_event_target = acid_rain_runtime_host } event_target:acid_rain_runtime_host = { news_event = { id = chaosx.nr33.205 } } }
+		if = { limit = { has_event_target = acid_rain_runtime_host check_variable = { var = acid_rain_033_natural_closure value = constant:acid_rain_runtime.one compare = equals } } event_target:acid_rain_runtime_host = { news_event = { id = chaosx.nr33.205 } } }
 		set_global_flag = acid_rain_runtime_resolved
 		set_global_flag = acid_rain_endpoint_recorded
 		set_global_flag = acid_rain_aftermath_retained
@@ -5434,7 +5636,20 @@ acid_rain_finish_runtime = {
 		clr_global_flag = acid_rain_host_worker_scheduled
 		clr_global_flag = acid_rain_host_bound
 		set_variable = { global.acid_rain_phase = constant:acid_rain_phase.closed }
-		set_variable = { global.acid_rain_world_coverage = constant:acid_rain_dissipation.global_coverage_ladder_100 }
+		if = {
+			limit = { check_variable = { var = acid_rain_033_natural_closure value = constant:acid_rain_runtime.one compare = equals } }
+			set_variable = { global.acid_rain_world_coverage = constant:acid_rain_dissipation.global_coverage_ladder_100 }
+		}
+	}
+}
+
+# ANY SCOPE. Called at terminal commitment before country/world rewrites.
+# Uses only Event 33's frozen registries, preserves actual coverage and shared
+# population/Air history, and cannot create natural-dissipation credit.
+acid_rain_interrupt_for_world_end = {
+	if = {
+		limit = { has_global_flag = world_end has_global_flag = acid_rain_runtime_active }
+		acid_rain_finish_runtime = yes
 	}
 }
 
@@ -5468,9 +5683,12 @@ acid_rain_bind_host_and_schedule_worker = {
 # registries.
 acid_rain_host_worker = {
 	clr_global_flag = acid_rain_host_worker_scheduled
+	acid_rain_interrupt_for_world_end = yes
 	if = {
 		limit = { has_global_flag = acid_rain_runtime_active }
+		set_temp_variable = { acid_rain_host_worker_loop_1_break = constant:acid_rain_runtime.zero }
 		for_each_scope_loop = {
+			break = acid_rain_host_worker_loop_1_break
 			array = global.acid_rain_participant_countries
 			# AI scoring and the players' decision cost text both read these rows.
 			acid_rain_refresh_country_project_quotes = yes
@@ -5484,7 +5702,9 @@ acid_rain_host_worker = {
 					compare = equals
 				}
 			}
+			set_temp_variable = { acid_rain_host_worker_loop_2_break = constant:acid_rain_runtime.zero }
 			for_loop_effect = {
+				break = acid_rain_host_worker_loop_2_break
 				start = constant:acid_rain_runtime.one
 				end = constant:acid_rain_runtime.front_loop_end
 				value = acid_rain_worker_front_id
@@ -5523,7 +5743,9 @@ acid_rain_host_worker = {
 		}
 		acid_rain_try_weekly_air_request = yes
 		acid_rain_refresh_active_consequences = yes
+		set_temp_variable = { acid_rain_host_worker_loop_3_break = constant:acid_rain_runtime.zero }
 		for_each_scope_loop = {
+			break = acid_rain_host_worker_loop_3_break
 			array = global.acid_rain_participant_countries
 			acid_rain_project_country_obligations = yes
 			acid_rain_033_achievement_check_runtime_country = yes

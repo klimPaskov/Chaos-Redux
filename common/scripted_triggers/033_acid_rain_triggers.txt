@@ -161,6 +161,7 @@ acid_rain_state_has_proven_transport_damage = {
 # Internal physical-packet proof. Zero population loss does not invalidate corrosion.
 acid_rain_packet_has_current_layer = {
 	hidden_trigger = {
+		NOT = { has_global_flag = world_end }
 		acid_rain_state_is_frozen_valid = yes
 		check_variable = { var = acid_rain_consequence_generation value = global.acid_rain_generation_id compare = equals }
 		check_variable = { var = acid_rain_pulse_key value = constant:acid_rain_aftermath.zero compare = greater_than }
@@ -309,6 +310,7 @@ acid_rain_launch_preflight_is_valid = {
 
 acid_rain_runtime_is_active = {
 	has_global_flag = acid_rain_runtime_active
+	NOT = { has_global_flag = world_end }
 	NOT = { has_global_flag = acid_rain_dissipation_pending }
 	NOT = { has_global_flag = acid_rain_runtime_resolved }
 	has_variable = global.acid_rain_generation_id
@@ -2064,6 +2066,7 @@ acid_rain_current_action_requirements_hold = {
 # ---------------------------------------------------------------------------
 
 acid_rain_air_can_receive_request = {
+	NOT = { has_global_flag = world_end }
 	NOT = { has_global_flag = settings_air_cleanliness_disabled }
 	NOT = { has_global_flag = fallout_air_cleanliness_disabled }
 	NOT = { has_global_flag = air_contamination_irreversible }
