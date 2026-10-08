@@ -81,8 +81,15 @@ FORM-27 Great Lakes Federation, FORM-28 East African Federation and FORM-29 Horn
 
 The rows reuse their registered or vanilla flags, names and leader portraits, shared Event 006 and vanilla idea pictures, the shared decision icons and vanilla report event pictures. No new sprite is registered.
 
+## Focus source status (2026-10-08)
+
+The accepted five-node regional groups for `UGA`, `RWA`, `BRD`, `HAR`, `SOM`, `TIG` are implemented at source in `416688b8963ea0b1a47e3c8682b8125455cfca40`.
+The [regional source report](../../plans/006_independence_wave_plans/subagent_handoffs/regional_focus_source_commit_20261007.md) records the parent-reviewed contract, imports, project interlocks and validation limits.
+Definitions are in [006_independence_wave_regional_focus_a.txt](../../../common/national_focus/006_independence_wave_regional_focus_a.txt), imported by the existing shared Event 006 tree.
+Project nodes reuse the completion helpers in [the regional package effects](../../../common/scripted_effects/006_independence_wave_east_africa_package_effects.txt) already used by [their paid decisions](../../../common/decisions/006_independence_wave_east_africa_decisions.txt), with project/focus locks and guarded capstone progression.
+Imported-node geometry/connectors, native project behavior, full campaign AI and outstanding portrait gates remain open.
+
 ## Future plans
 
-- Five-node focus groups for the six Level 2 rows.
 - Sourced leaders for the Buganda, Harar, Somaliland and Tigray governments.
 - FORM-27 and FORM-29 carrier contracts now that two or more members of each exist.

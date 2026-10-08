@@ -67,9 +67,16 @@ The shared generic Event 006 AI profiles apply. Decision weights use `independen
 
 The rows reuse their existing assets: the registered CUX and CXX flags and names, the vanilla LEB, PAL and IMO flags, names and leader portraits, shared Event 006 and vanilla idea pictures, the shared decision icons and vanilla report event pictures (`GFX_report_event_worker_protests`, `merchant_ship_01`, `gathering_protest`, `generic_read_write`, `generic_sign_treaty1` and `generic_conference`). No new sprite is registered.
 
+## Focus source status (2026-10-08)
+
+The accepted five-node regional groups for `CUX`, `IMO`, `LEB`, `PAL` are implemented at source in `416688b8963ea0b1a47e3c8682b8125455cfca40`.
+The [regional source report](../../plans/006_independence_wave_plans/subagent_handoffs/regional_focus_source_commit_20261007.md) records the parent-reviewed contract, imports, project interlocks and validation limits.
+Definitions are in [006_independence_wave_regional_focus_a.txt](../../../common/national_focus/006_independence_wave_regional_focus_a.txt), imported by the existing shared Event 006 tree.
+Project nodes reuse the completion helpers in [the regional package effects](../../../common/scripted_effects/006_independence_wave_levant_arabia_package_effects.txt) already used by [their paid decisions](../../../common/decisions/006_independence_wave_levant_arabia_decisions.txt), with project/focus locks and guarded capstone progression.
+Imported-node geometry/connectors, native project behavior, full campaign AI and outstanding portrait gates remain open.
+
 ## Future plans
 
 - A sourced leader for the Hejaz council.
 - A sourced Qu'aiti or Kathiri sultan, which would re-admit the Hadhramaut.
-- A five-node focus group for each Level 2 row.
 - A FORM-20 Arabian federation or FORM-21 Levantine federation contract once three members of either exist.

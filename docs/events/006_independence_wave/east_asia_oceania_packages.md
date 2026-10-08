@@ -6,12 +6,12 @@ Agent decision D31 admits thirteen Southeast Asia, East Asia and Oceania rows th
 
 | Row | Tag | Anchor | Depth | Leadership | Government routes | Power centres |
 | --- | --- | --- | --- | --- | --- | --- |
-| IW-150 Aceh | ATJ | 1050 | Level 2 | Vanilla roster: Sultan Alauddin Muhammad Da'ud Syah II, the last Sultan of Aceh, exiled in 1907. | constitutional, traditional, emergency, patron client | traditional authority and assembly |
+| IW-150 Aceh | ATJ | 1050 | Level 3 signature source with a Level 2 foundation | Vanilla roster: Sultan Alauddin Muhammad Da'ud Syah II, the last Sultan of Aceh, exiled in 1907. | constitutional, traditional, emergency, patron client | traditional authority and assembly |
 | IW-151 Minangkabau | FUX (X-tag) | 1048 | Level 2 | Institutional government: the Minangkabau Council of the Nagari, chaired by the leader the game appoints. | constitutional, popular council, traditional, emergency, patron client | traditional authority and assembly |
 | IW-154 Bugis state | FXX (X-tag) | 673 | Level 1 | Institutional government: the Hadat Council of South Celebes, chaired by the leader the game appoints. | constitutional, traditional, patron client | traditional authority and assembly |
 | IW-155 Bali | BLI | 1052 | Level 2 | Vanilla roster: Ida I Dewa Agung Gde Oka Geg, Dewa Agung of Klungkung. | constitutional, traditional, emergency, patron client | traditional authority and assembly |
 | IW-159 Shan federation | GCX (X-tag) | 999 | Level 2 | Institutional government: the Federal Council of Shan Chiefs (formed 1922), chaired by the leader the game appoints. | constitutional, traditional, emergency, patron client | central government and provinces |
-| IW-161 Mon State | IAX (X-tag) | 994 | Level 2 | Institutional government: the Provisional Mon Federal Council of monasteries, cultural associations and town notables, chaired by the leader the game appoints. | constitutional, popular council, traditional, patron client | traditional authority and assembly |
+| IW-161 Mon State | IAX (X-tag) | 994 | Level 3 signature source with a Level 2 foundation | Institutional government: the Provisional Mon Federal Council of monasteries, cultural associations and town notables, chaired by the leader the game appoints. | constitutional, popular council, traditional, patron client | traditional authority and assembly |
 | IW-162 Kachin state | IBX (X-tag) | 998 | Level 2 | Institutional government: the Council of the Kachin Duwas, chaired by the leader the game appoints. | constitutional, traditional, emergency, patron client | central government and provinces |
 | IW-166 Laos | LAO | 1069 | Level 2 | Vanilla roster: King Sisavang Vong of Luang Prabang, on the throne from 1904. | constitutional, traditional, emergency, patron client | central government and provinces |
 | IW-167 Champa | CHM | 286 | Level 1 | Vanilla CHM has no characters; the game appoints the leader of its opening government. | constitutional, traditional, patron client | traditional authority and assembly |
@@ -22,7 +22,7 @@ Agent decision D31 admits thirteen Southeast Asia, East Asia and Oceania rows th
 
 Radical sovereignty is excluded for all thirteen. Aceh, Bali, Laos, Champa, Inner Mongolia, Ryukyu and Samoa are vanilla tags released by `release` from their vanilla cores. Minangkabau, the Bugis state, the Shan federation, Mon State, the Kachin state and East Turkestan are created as dynamic countries from their reserved tags and open under a named council chaired by the leader the game appoints: the Minangkabau Council of the Nagari, the Hadat Council of South Celebes, the Federal Council of Shan Chiefs (the federation's council from 1922), the Provisional Mon Federal Council, the Council of the Kachin Duwas and the Provisional Council of East Turkestan.
 
-Aceh, Bali, Laos, Inner Mongolia and Ryukyu keep their vanilla leaders: Sultan Alauddin Muhammad Da'ud Syah II, the Dewa Agung of Klungkung, King Sisavang Vong, Prince Demchugdongrub and Hiroshi Sho. Vanilla CHM and SAM have no characters, so the game appoints the leader of their opening governments. Aceh and Mon State are registry Level 3 rows admitted with a Level 2 layer; their signature routes are described in [the Event 006 signature modules](signature_modules.md).
+Aceh, Bali, Laos, Inner Mongolia and Ryukyu keep their vanilla leaders: Sultan Alauddin Muhammad Da'ud Syah II, the Dewa Agung of Klungkung, King Sisavang Vong, Prince Demchugdongrub and Hiroshi Sho. Vanilla CHM and SAM have no characters, so the game appoints the leader of their opening governments. Aceh and Mon State have implemented Level 3 signature source over their Level 2 foundations, as described in [the Event 006 signature modules](signature_modules.md).
 
 Aceh and Minangkabau share RG-SUMATRA, the Bugis state and Bali share RG-EAST-INDONESIA, the Shan, Mon and Kachin rows share RG-MAINLAND-SE-ASIA-COARSE, Laos and Champa share RG-LAOS-VIETNAM-HIGHLANDS, East Turkestan and Inner Mongolia share RG-INNER-ASIA, and Samoa shares RG-PACIFIC-ISLANDS with Fiji, so a wave releases at most one country from each group. East Turkestan's anchor 617 is Sinkiang's capital, which the planner protects, so it is chosen only after Urumqi has passed to a country whose capital is elsewhere. Inner Mongolia and Samoa need their vanilla tags to be absent, as Mengkukuo exists at the 1936 start.
 
@@ -129,20 +129,36 @@ The Bugis state and Champa are Level 1 rows with no regional layer.
 
 ## Formables
 
-FORM-36 Maritime Federation has Aceh, the Bugis state and Bali (Riau is blocked and the Moluccan row is a vanilla overlay). FORM-37 Mainland Southeast Asian Federation has Mon State, the Shan federation and the Kachin state (Karen, Chin and Arakan are blocked). FORM-38 Polynesian League State has Hawaii and Samoa (Tonga and Aotearoa are blocked). All three remain closed: none has a carrier tag, member contract, consent rule, territory proof or flag, and none is in the shared commit allowlist. The three FORM-37 members share RG-MAINLAND-SE-ASIA-COARSE, and the Bugis state and Bali share RG-EAST-INDONESIA, so those members arrive in different waves.
+FORM-36 Maritime Federation and FORM-37 Mainland Southeast Asian Federation are implemented at source under the accepted D31 contracts in `9e2837f8edc1633cd8e96415366821ca5dc16886`.
+FORM-36 places MRX on its existing carrier and binds Aceh ATJ at 1050, the Bugis state FXX at 673 and Bali BLI at 1052.
+FORM-37 places MSX on its existing carrier and binds Mon IAX at 994, Shan GCX at 999 and Kachin IBX at 998.
+Both use explicit proposal replies, sovereign-member integration and two paid 180-day stages, as detailed in [the ready-formable contracts](systems/ready_formable_contracts.md).
+Riau remains blocked, the Moluccan row remains a vanilla overlay, and Karen, Chin and Arakan remain blocked.
+The three FORM-37 members share RG-MAINLAND-SE-ASIA-COARSE, and the Bugis state and Bali share RG-EAST-INDONESIA, so those members arrive in different waves.
+The [signature source report](../../plans/006_independence_wave_plans/subagent_handoffs/signature_source_integration_20261007.md) retains native consent/cost/cleanup, production GUI and full-AI limits.
+
+FORM-38 Polynesian League State retains Hawaii and Samoa, with Tonga and Aotearoa blocked.
+It remains closed under its existing missing carrier, member/consent, territory, flag and commit contract.
 
 ## Level 3 signature modules
 
 Aceh builds its school and port institutions, forms PUSA only after 5 May 1939, retires its merchant credit before opening the FORM-36 route, and preserves the vanilla roster. Mon can choose local federal councils or a central river office, then fund its Salween transport and border watch before offering a sovereign FORM-37 compact. A costed Mon school-delegate program is optional and does not gate FORM-37. See [the Event 006 signature modules](signature_modules.md) for the full focus, decision, formable and cleanup contract.
+The ten Aceh and eleven Mon signature focuses are implemented at source in `9e2837f8edc1633cd8e96415366821ca5dc16886`, with the separate native, imported-layout, full-AI and grounded portrait gates retained.
 
 ## Assets
 
 The rows reuse their registered or vanilla flags, names and leader portraits, shared Event 006 and vanilla idea pictures, the shared decision icons and vanilla report event pictures. No new sprite is registered.
 
+## Focus source status (2026-10-08)
+
+The accepted five-node regional groups for `ATJ`, `FUX`, `BLI`, `GCX`, `IAX`, `IBX`, `LAO`, `GMX`, `MEN`, `OKN`, `SAM` are implemented at source in `416688b8963ea0b1a47e3c8682b8125455cfca40`.
+The [regional source report](../../plans/006_independence_wave_plans/subagent_handoffs/regional_focus_source_commit_20261007.md) records the parent-reviewed contract, imports, project interlocks and validation limits.
+Definitions are in [006_independence_wave_regional_focus_b.txt](../../../common/national_focus/006_independence_wave_regional_focus_b.txt), imported by the existing shared Event 006 tree.
+Project nodes reuse the completion helpers in [the regional package effects](../../../common/scripted_effects/006_independence_wave_east_asia_oceania_package_effects.txt) already used by [their paid decisions](../../../common/decisions/006_independence_wave_east_asia_oceania_decisions.txt), with project/focus locks and guarded capstone progression.
+Imported-node geometry/connectors, native project behavior, full campaign AI and outstanding portrait gates remain open.
+
 ## Future plans
 
 - Rights-cleared character or portrait work for the Aceh education route remains pending in the [portrait research handoff](../../plans/006_independence_wave_plans/subagent_handoffs/signature_portraits_20261006.md); the signature mechanics do not assign a new named character.
-- Five-node focus groups for the eleven Level 2 rows.
 - Sourced institutional leaders for the six custom councils.
 - Named community packages for the Dayak, Karen, Chin, Hmong, Papuan and Maori rows, and sourced claimants for Riau and Pattani.
-- Carrier contracts for FORM-36 and FORM-37, whose three admitted members each meet the minimum member count.

@@ -117,15 +117,29 @@ The Sikkim row is Level 1 and has no regional layer.
 
 ## Formables
 
-FORM-32 Indus Federation now has all four named member packages (Punjab, Sindh, Balochistan and Pashtunistan). FORM-33 Dravidian Federation has two of its named members (the Madras States and Mysore; Travancore is blocked behind the Madras States anchor). FORM-34 Northeast Federation has Assam and Manipur, but its profile requires the Naga package, which is unresearched. FORM-35 Himalayan Confederation has Kashmir and Sikkim. All four families remain closed: none has a carrier tag, member contract, consent rule, territory proof or flag, and none is in the shared commit allowlist. FORM-32 is the first South Asian family whose member prerequisite is met, so it is queued first.
+FORM-32 Indus Federation is implemented at source under the accepted D30 contract in `9e2837f8edc1633cd8e96415366821ca5dc16886`.
+Its existing carrier takes IDX, with exact FDX, SIN, BLC and PSH membership, explicit proposal replies and two paid 180-day integration stages.
+The [ready-formable contract](systems/ready_formable_contracts.md) binds one live stored Punjab anchor at 440 or 986, Sindh at 443, Balochistan at 1012 and Pashtunistan at 442, preserving each member's sovereign territory.
+The [signature source report](../../plans/006_independence_wave_plans/subagent_handoffs/signature_source_integration_20261007.md) retains native consent/cost/cleanup, production GUI and full-AI limits.
+
+FORM-33 Dravidian Federation retains its Madras States and Mysore members, with Travancore blocked behind the Madras States anchor.
+FORM-34 Northeast Federation retains Assam and Manipur and requires the unresearched Naga package.
+FORM-35 Himalayan Confederation retains Kashmir and Sikkim.
+Those three families remain closed under their existing missing carrier, member/consent, territory, flag and commit contracts.
 
 ## Assets
 
 The rows reuse their registered or vanilla flags, names and leader portraits, shared Event 006 and vanilla idea pictures, the shared decision icons and vanilla report event pictures. No new sprite is registered.
 
+## Focus source status (2026-10-08)
+
+The accepted five-node regional groups for `FDX`, `SIN`, `BLC`, `PSH`, `KAS`, `HYD`, `MYS`, `RAS`, `FOX`, `MPU` are implemented at source in `416688b8963ea0b1a47e3c8682b8125455cfca40`.
+The [regional source report](../../plans/006_independence_wave_plans/subagent_handoffs/regional_focus_source_commit_20261007.md) records the parent-reviewed contract, imports, project interlocks and validation limits.
+Definitions are in [006_independence_wave_regional_focus_a.txt](../../../common/national_focus/006_independence_wave_regional_focus_a.txt) and [006_independence_wave_regional_focus_b.txt](../../../common/national_focus/006_independence_wave_regional_focus_b.txt), imported by the existing shared Event 006 tree.
+Project nodes reuse the completion helpers in [the regional package effects](../../../common/scripted_effects/006_independence_wave_south_asia_package_effects.txt) already used by [their paid decisions](../../../common/decisions/006_independence_wave_south_asia_decisions.txt), with project/focus locks and guarded capstone progression.
+Imported-node geometry/connectors, native project behavior, full campaign AI and outstanding portrait gates remain open.
+
 ## Future plans
 
-- A FORM-32 Indus Federation carrier contract: an X-ending carrier tag and flag, a consent rule across the four members, a state puzzle over 440, 443, 1012 and 442, and a water and army settlement after formation.
-- Five-node focus groups for the ten Level 2 rows.
 - Sourced institutional leaders for the Punjab and Assam assemblies and sourced leaders for Sindh, Balochistan and Pashtunistan.
 - A named Naga political package for IW-146 and a route consumer for the Himalayan Confederation.

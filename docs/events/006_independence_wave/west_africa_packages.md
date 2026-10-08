@@ -6,7 +6,7 @@ Agent decision D27 admits four West and Central Africa rows through the regional
 
 | Row | Tag | Anchor | Depth | Leadership | Government routes | Power centres |
 | --- | --- | --- | --- | --- | --- | --- |
-| IW-097 Oyo | DSX (X-tag) | 558 Nigeria | Registry Level 3, admitted with a Level 2 layer | The Oyo Mesi and Council of Ministers, chaired by the leader the game appoints | constitutional, popular council, traditional, emergency, patron client | traditional authority and assembly |
+| IW-097 Oyo | DSX (X-tag) | 558 Nigeria | Level 3 signature source with a Level 2 foundation | The Oyo Mesi and Council of Ministers, chaired by the leader the game appoints | constitutional, popular council, traditional, emergency, patron client | traditional authority and assembly |
 | IW-099 Kanem-Bornu | DUX (X-tag) | 901 Borno | Level 2 | The Council of the Shehu of Bornu, chaired by the leader the game appoints | constitutional, traditional, emergency, patron client | traditional authority and assembly |
 | IW-106 Aro Confederacy | EBX (X-tag) | 900 Benue | Level 1 | The Confederated Council of the Aro Towns, chaired by the leader the game appoints | constitutional, popular council, traditional, emergency | central government and provinces |
 | IW-107 Biafran regional state | BIA | 900 Benue | Level 1 | Vanilla BIA roster; its democratic government opens under the leader the game appoints | constitutional, popular council, emergency, patron client | labour councils and ministries |
@@ -51,6 +51,15 @@ The rows reuse their registered or vanilla flags and names, shared Event 006 and
 ## Level 3 signature module
 
 IW-097 Oyo joins its Alaafin and Oyo Mesi settlement to an optional Yoruba town compact, a costed market-road project in the controlled anchor state, and the existing regional congress and leadership actions. The module preserves local sovereignty and does not claim all Yoruba communities. Its full focus, decision, balance, cleanup and reward contract is in [the Event 006 signature modules](signature_modules.md).
+Its ten-node signature layer is implemented at source in `9e2837f8edc1633cd8e96415366821ca5dc16886`, with [the signature source report](../../plans/006_independence_wave_plans/subagent_handoffs/signature_source_integration_20261007.md) recording the reviewed source and separate imported-layout, native, full-AI and portrait limits.
+
+## Focus source status (2026-10-08)
+
+The accepted five-node regional groups for `DSX`, `DUX` are implemented at source in `416688b8963ea0b1a47e3c8682b8125455cfca40`.
+The [regional source report](../../plans/006_independence_wave_plans/subagent_handoffs/regional_focus_source_commit_20261007.md) records the parent-reviewed contract, imports, project interlocks and validation limits.
+Definitions are in [006_independence_wave_regional_focus_a.txt](../../../common/national_focus/006_independence_wave_regional_focus_a.txt), imported by the existing shared Event 006 tree.
+Project nodes reuse the completion helpers in [the regional package effects](../../../common/scripted_effects/006_independence_wave_west_africa_package_effects.txt) already used by [their paid decisions](../../../common/decisions/006_independence_wave_west_africa_decisions.txt), with project/focus locks and guarded capstone progression.
+Imported-node geometry/connectors, native project behavior, full campaign AI and outstanding portrait gates remain open.
 
 ## Future plans
 

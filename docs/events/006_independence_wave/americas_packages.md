@@ -70,8 +70,15 @@ FORM-44 Rio de la Plata Confederation has the Guarani and Patagonian states, and
 
 The rows reuse their registered or vanilla flags, names and leader portraits, shared Event 006 and vanilla idea pictures, the shared decision icons and vanilla report event pictures. No new sprite is registered.
 
+## Focus source status (2026-10-08)
+
+The accepted five-node regional groups for `QUE`, `GZX`, `HCX`, `YUC` are implemented at source in `416688b8963ea0b1a47e3c8682b8125455cfca40`.
+The [regional source report](../../plans/006_independence_wave_plans/subagent_handoffs/regional_focus_source_commit_20261007.md) records the parent-reviewed contract, imports, project interlocks and validation limits.
+Definitions are in [006_independence_wave_regional_focus_b.txt](../../../common/national_focus/006_independence_wave_regional_focus_b.txt), imported by the existing shared Event 006 tree.
+Project nodes reuse the completion helpers in [the regional package effects](../../../common/scripted_effects/006_independence_wave_americas_package_effects.txt) already used by [their paid decisions](../../../common/decisions/006_independence_wave_americas_decisions.txt), with project/focus locks and guarded capstone progression.
+Imported-node geometry/connectors, native project behavior, full campaign AI and outstanding portrait gates remain open.
+
 ## Future plans
 
-- Five-node focus groups for Quebec, Newfoundland, Texas and Yucatan.
 - Sourced institutional leaders for the Newfoundland, Texas and Patagonian institutions, and sourced leaders for Quebec and Yucatan.
 - Named community packages for the Haudenosaunee, Pueblo, Maya, Garifuna, Quechua, Chaco, Amazonian and Maroon rows, and distinct map states for Acadia, the Cherokee, Lakota, Dine and Miskito rows.

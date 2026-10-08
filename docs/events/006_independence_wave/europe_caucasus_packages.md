@@ -74,15 +74,28 @@ Occitania, Trieste, Courland, Polesia, Galicia-Lodomeria and Khuzestan are Level
 
 ## Formables
 
-FORM-17 North Caucasian Federation now has all three named member packages (Circassia at 827, Chechnya at 821 and Dagestan at 232), in three different reservation groups, so it is queued first. FORM-06 Adriatic Federation has Venice and Trieste (Dalmatia is an overlay). FORM-10 Baltic Federation has Karelia and Courland (Ingria is blocked and Livonia is an overlay). All three remain closed: none has a carrier tag, member contract, consent rule, territory proof or flag, and none is in the shared commit allowlist. FORM-18 gains its third member through Khuzestan.
+FORM-17 North Caucasian Federation is implemented at source under the accepted D33 contract in `9e2837f8edc1633cd8e96415366821ca5dc16886`.
+Its existing carrier takes NCX, with exact CLX at 827, CIN at 821 and DAG at 232 membership, explicit proposal replies, sovereign-member integration and two paid 180-day stages for mountain defence and an autonomy charter.
+The [ready-formable contract](systems/ready_formable_contracts.md) and [signature source report](../../plans/006_independence_wave_plans/subagent_handoffs/signature_source_integration_20261007.md) retain native consent/cost/cleanup, production GUI and full-AI limits.
+
+FORM-06 Adriatic Federation retains Venice and Trieste, with Dalmatia an overlay.
+FORM-10 Baltic Federation retains Karelia and Courland, with Ingria blocked and Livonia an overlay.
+Those two families remain closed under their existing missing carrier, member/consent, territory, flag and commit contracts.
+FORM-18 retains Khuzestan as its third member.
 
 ## Assets
 
 The rows reuse their registered or vanilla flags, names and leader portraits, shared Event 006 and vanilla idea pictures, the shared decision icons and vanilla report event pictures. No new sprite is registered.
 
+## Focus source status (2026-10-08)
+
+The accepted five-node regional groups for `ATX`, `CLX`, `CIN`, `DAG` are implemented at source in `416688b8963ea0b1a47e3c8682b8125455cfca40`.
+The [regional source report](../../plans/006_independence_wave_plans/subagent_handoffs/regional_focus_source_commit_20261007.md) records the parent-reviewed contract, imports, project interlocks and validation limits.
+Definitions are in [006_independence_wave_regional_focus_b.txt](../../../common/national_focus/006_independence_wave_regional_focus_b.txt), imported by the existing shared Event 006 tree.
+Project nodes reuse the completion helpers in [the regional package effects](../../../common/scripted_effects/006_independence_wave_europe_caucasus_package_effects.txt) already used by [their paid decisions](../../../common/decisions/006_independence_wave_europe_caucasus_decisions.txt), with project/focus locks and guarded capstone progression.
+Imported-node geometry/connectors, native project behavior, full campaign AI and outstanding portrait gates remain open.
+
 ## Future plans
 
-- A FORM-17 North Caucasian Federation carrier contract: an X-ending carrier tag and flag, a consent rule for the three members, a state puzzle over 827, 821 and 232, and a mountain defence and religious settlement after formation.
-- Five-node focus groups for Venice, Circassia, Chechnya and Dagestan.
 - Sourced institutional leaders for the six custom institutions.
 - A reviewed identity split for the two CHU packages (Volga Bulgaria and Chuvashia).
