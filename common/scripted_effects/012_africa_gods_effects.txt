@@ -713,7 +713,9 @@ gods_of_africa_refresh_strength = {
 		clamp_temp_variable = { var = gods_of_africa_strength_internal min = constant:gods_of_africa_strength.component_min max = constant:gods_of_africa_strength.component_max }
 		set_temp_variable = { gods_of_africa_strength_chaos = constant:gods_of_africa_strength.component_min }
 		set_temp_variable = { gods_of_africa_strength_chaos = global.chaos_meter_value }
-		divide_temp_variable = { gods_of_africa_strength_chaos = constant:gods_of_africa_strength.chaos_divisor }
+		# Normalize the shared meter against its final-tier endpoint.
+		divide_temp_variable = { gods_of_africa_strength_chaos = constant:chaos_meter_tier_range.tier_final.min }
+		multiply_temp_variable = { gods_of_africa_strength_chaos = constant:gods_of_africa_strength.component_max }
 		if = { limit = { has_global_flag = africa_evolution_ii_logged } add_to_temp_variable = { gods_of_africa_strength_chaos = constant:gods_of_africa_strength.evolution_ii_amplifier } }
 		if = { limit = { has_global_flag = africa_evolution_iii_logged } add_to_temp_variable = { gods_of_africa_strength_chaos = constant:gods_of_africa_strength.evolution_iii_amplifier } }
 		clamp_temp_variable = { var = gods_of_africa_strength_chaos min = constant:gods_of_africa_strength.component_min max = constant:gods_of_africa_strength.component_max }

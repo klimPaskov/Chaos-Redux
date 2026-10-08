@@ -24,6 +24,11 @@ The prior activation, catalog and guide commits remain `b3af259674ee4b5d8c4aa049
 
 ## Baseline and verification ownership
 
+The October 8 completion audit identifies three additional source requirements that remain open: an industrial consequence for industrial tribute, the accepted relationship safeguards for protection, and trend, next-threshold and cause context for the two public values.
+The earlier rejection of extra standing prose does not waive those compact value-display fields.
+The guide's obsolete phase, budget-hint and catalog instructions are reconciled with their completed source work.
+The Strength Chaos normalization has separate source-model and probability-boundary evidence, while direct territorial-control and relative-world-power coverage remain under parent audit.
+
 Before editing weighted visibility or adding confirmation option weights, the parent copied exact current decision, event, Council and contribution sources to `012_gods_decision_fixes_2026-10-07_evidence/before/`.
 Its manifest records source paths and SHA-256 identities; those snapshots must not be overwritten.
 The probability specialist owns named fixtures, raw fixture persistence and same-scenario comparison for the defiance change.

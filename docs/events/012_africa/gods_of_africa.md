@@ -1,12 +1,14 @@
 # Gods of Africa
 
-Current contract (2026-10-07): Gods of Africa is implemented in Event 012 source through measured contributions, real diplomatic concessions, agreement and conduct receipts, twelve-factor grading, frozen material settlement obligations, proportional deferred delivery, continuing-support instalments, staged punishment, focus payoffs, four achievements, and the global-credibility super-event.
+Current source (2026-10-08): Gods of Africa is implemented in Event 012 source through measured contributions, real diplomatic concessions, agreement and conduct receipts, twelve-factor grading, frozen material settlement obligations, proportional deferred delivery, continuing-support instalments, staged punishment, focus payoffs, four achievements, and the global-credibility super-event.
 The activation repair uses the same guarded consolidation initializer at Evolution I and continental formation, preserves SCN-011 chronology without rewards, distinguishes formation from final security, and exposes one host-wide final-settlement action.
 The user's full-Gods Event 012 goal remains active with no simplifications authorized; source implementation and the architect's accepted source cases do not establish native execution or overall completion.
 
-The October 7 [decision audit](../../plans/012_africa_plans/subagent_handoffs/012_gods_decision_surface_review_2026-10-07.md) also identifies remaining implementation work, tracked in [the decision repair record](../../plans/012_africa_plans/subagent_handoffs/012_gods_decision_repairs_2026-10-07.md).
-This includes the remaining host and defiance action phases, the redundant generic substitute shortcut, and fixed-cost AI budgeting hints.
-The extraordinary ultimatum payment still requires its separate transaction review; its existing native shipment is not evidence of a simulated transfer.
+The October 7 decision repairs implement the host and defiance phases, preserve the three named substitutes, and advertise fixed political-power budgets.
+The [October 8 completion audit](../../plans/012_africa_plans/subagent_handoffs/012_gods_current_completion_audit_2026-10-08.md) identifies remaining source work: the industrial tribute consequence, protection relationship safeguards, and compact trend, threshold and cause context for the two public values.
+Strength's Chaos input uses the shared meter scale, while direct territorial-control and relative-world-power coverage remain under parent audit.
+The [extraordinary ultimatum payment review](../../plans/012_africa_plans/subagent_handoffs/012_gods_ultimatum_payment_review_2026-10-08.md) preserves the existing real native shipment and its prices, with native delivery semantics still unresolved.
+These dispositions are tracked in [the decision repair record](../../plans/012_africa_plans/subagent_handoffs/012_gods_decision_repairs_2026-10-07.md).
 
 The acceptance basis is the current full-Gods/no-simplification instruction, the scoped L decisions in [the October 4 decision record](../../plans/012_africa_plans/agent_decisions_2026-10-04.md), and the later accepted fixes in [the October 5–6 decision record](../../plans/012_africa_plans/agent_decisions_2026-10-05.md).
 The [takeover status](../../plans/012_africa_plans/takeover_status_2026-10-06.md), [Gods source audit](../../plans/012_africa_plans/subagent_handoffs/takeover_gods_audit_2026-10-06.md), and [completion review](../../plans/012_africa_plans/subagent_handoffs/takeover_completion_review_2026-10-06.md) provide implementation evidence and their specific validation limits.
@@ -86,6 +88,7 @@ The player sees exactly two values:
 - Gods of Africa Strength is a global value from 0 to 100. It combines African military readiness, industry and logistics, continental control, strategic reach, internal condition, Chaos, and Event 012 development. Ordinary refreshes move at most `strength_smoothing_step` (8) points; major defeat or recovery may request an immediate recalculation. Its five bands set the highest punishment tier the system can credibly attempt.
   Sustainment (decision L29): the military component is multiplied by `gods_of_africa_strength_sustain.floor` (0.4) plus `span` (0.6) times the weighted share of the army's rifles against their target (`num_equipment_in_armies_k@infantry_equipment` over `num_target_equipment_in_armies_k@infantry_equipment`, weight 0.6) and of fuel against tank capacity (`fuel_k` over `max_fuel_k`, weight 0.4), so an unsupplied or under-equipped army scores below a supplied one of the same size; the factor is kept in `gods_of_africa_strength_sustain_factor`.
   While an enemy holds Africa's capital, Strength loses `capital_loss_penalty` (15) points, and the first loss is applied at once (`gods_of_africa_strength_capital_loss_recorded`). Surrender progress above 0.1, 0.25 and 0.4 costs 5, 12 and 20 points, and above `surrender_immediate` (0.25) every refresh applies the new value at once, so Strength falls quickly as Africa nears capitulation.
+  Chaos is measured against the shared final-tier endpoint (`chaos_meter_tier_range.tier_final.min`, 1000) before entering its 0-to-100 component. Evolution II adds 15 component points and Evolution III adds 25, while the component contributes at most ten points to total Strength. This keeps ordinary Chaos tiers meaningful alongside African capability.
 - Wrath of the Gods is a 0 to 100 value stored separately for each participant. Compliance, meaningful aid, refusal, failed deadlines, war, occupation, treaty breaches, and defiance move it through one central transaction helper. War, occupied African territory, broken treaties, permanent defiance, and recent extreme punishment reapply hidden floors after every transaction.
 
 Capacity, African needs, conduct history, demand repetition, punishment intent, and settlement history remain hidden. The interface communicates them through qualitative demand language, reports, tooltips, diplomatic memory, and outcomes rather than a third meter.
@@ -449,8 +452,8 @@ Tool exposure, verified service health, offline model output, standalone viewer 
 Other-owner Charter, model, portrait, technology, and map evidence is not certified by this guide.
 
 The authoritative catalog is `docs/spreadsheets/chaos_redux_events_catalog.xlsx`, with CSV exports produced only by `.tools/export_event_catalog_csv.py`.
-The earlier Event 070 unassignment is historical workbook evidence, not proof of current Event 012/SCN-011 parity.
-The parent and `chaosx_spreadsheet_doc_worker` own the pending catalog alignment; this reconciliation reads or edits neither the workbook nor its exports.
+The October 8 completion audit independently verifies the current Event 012/SCN-011 wording and matching catalog exports.
+The catalog alignment remains committed in `02ee33eb62f973ea7cca3c7166ed5ed87816d4b0`; this source repair changes neither the workbook nor its exports.
 
 ## Unique tribute outcomes
 

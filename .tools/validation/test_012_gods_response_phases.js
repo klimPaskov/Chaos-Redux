@@ -32,6 +32,10 @@ for (const file of ['012_africa_gods_constants.txt', '012_africa_gods_response_c
 const block = (nodes, key) => { const matches = nodes.filter(n => n.key === key); assert.equal(matches.length, 1, 'unique block ' + key); return matches[0].value; };
 const field = (nodes, key) => nodes.find(n => n.key === key)?.value;
 const allNodes = nodes => nodes.flatMap(n => [n, ...(Array.isArray(n.value) ? allNodes(n.value) : [])]);
+const chaosRanges = block(load('common/script_constants/chaos_meter_constants.txt'), 'chaos_meter_tier_range');
+const chaosEndpoint = Number(field(block(chaosRanges, 'tier_final'), 'min'));
+assert.ok(chaosEndpoint > 0);
+constants.set('constant:chaos_meter_tier_range.tier_final.min', chaosEndpoint);
 const suffixes = ['can_prepare_defensive_defiance', 'can_harden_stockpiles', 'can_secure_transport', 'can_prepare_countermeasures', 'participant_can_defy'];
 for (const path of [viewTriggerPath, contextPath]) for (const n of load(path)) triggers.set(n.key, n.value);
 for (const name of [...suffixes, 'participant_can_reconcile', 'substitute_offer_is_pending', 'reconciliation_can_be_paid', 'participant_can_offer_aid', 'participant_generation_is_current']) triggers.set(P + name, block(load(triggerPath), P + name));
@@ -83,7 +87,7 @@ function fixture() {
 	participant.flags.add(P + 'participant');
 	host.arrays.set(P + 'participants', [participant]); host.arrays.set(P + 'candidate_registry', [participant, victor]);
 	host.vars.set(P + 'doctrine', constants.get('constant:' + P + 'doctrine.reciprocal_covenant'));
-	const state = { day: 130, writes: [], targets: new Map([['africa_host', host]]) };
+	const state = { day: 130, writes: [], targets: new Map([['africa_host', host]]), globals: new Map(), globalFlags: new Set() };
 	function context(root = host, from = participant) { return { root, from, current: root, previous: null, temps: new Map() }; }
 	function scoped(token, ctx) {
 		if (token === 'ROOT') return ctx.root;
@@ -98,6 +102,7 @@ function fixture() {
 		assert.ok(!token.startsWith('constant:'), 'unresolved constant ' + token);
 		if (Number.isFinite(Number(token))) return Number(token);
 		if (token === 'global.num_days') return state.day;
+		if (token === 'global.chaos_meter_value') return state.globals.get('chaos_meter_value') ?? 0;
 		if (['ROOT', 'FROM', 'THIS', 'PREV'].includes(token)) return scoped(token, ctx);
 		if (token.endsWith('.id')) return scoped(token.slice(0, -3), ctx).identity;
 		if (token.startsWith('event_target:') && token.includes('.')) { const dot = token.indexOf('.'); return scoped(token.slice(0, dot), ctx).vars.get(token.slice(dot + 1)) ?? 0; }
@@ -123,6 +128,7 @@ function fixture() {
 		if (n.key === 'exists') return ctx.current.exists === (n.value === 'yes');
 		if (n.key === 'is_ai') return ctx.current.ai === (n.value === 'yes');
 		if (n.key === 'has_country_flag') return ctx.current.flags.has(n.value);
+		if (n.key === 'has_global_flag') return state.globalFlags.has(n.value);
 		if (n.key === 'has_variable') return ctx.current.vars.has(n.value);
 		if (n.key === 'is_in_array') return (ctx.current.arrays.get(field(n.value, 'array')) ?? []).includes(value(field(n.value, 'value'), ctx));
 		if (n.key === 'has_event_target') return state.targets.has(n.value);
@@ -160,13 +166,14 @@ function fixture() {
 			if (['ROOT', 'FROM'].includes(n.key) || n.key.startsWith('event_target:')) { run(n.value, { ...ctx, previous: ctx.current, current: scoped(n.key, ctx) }); continue; }
 			if (n.key === 'save_event_target_as') { state.targets.set(n.value, ctx.current); continue; }
 			if (n.key === 'clear_variable') { ctx.current.vars.delete(n.value); continue; }
-			if (['set_variable', 'set_temp_variable', 'multiply_temp_variable', 'add_to_variable'].includes(n.key)) {
+			if (['set_variable', 'set_temp_variable', 'multiply_temp_variable', 'divide_temp_variable', 'add_to_temp_variable', 'add_to_variable'].includes(n.key)) {
 				const [key, token] = assignment(n), store = n.key.endsWith('_temp_variable') ? ctx.temps : ctx.current.vars, right = value(token, ctx);
-				if (n.key === 'multiply_temp_variable') { assert.equal(typeof right, 'number'); assert.equal(typeof store.get(key), 'number'); store.set(key, store.get(key) * right); }
-				else if (n.key === 'add_to_variable') { assert.equal(typeof right, 'number'); assert.equal(typeof (store.get(key) ?? 0), 'number'); store.set(key, (store.get(key) ?? 0) + right); }
+				if (['multiply_temp_variable', 'divide_temp_variable'].includes(n.key)) { assert.equal(typeof right, 'number'); assert.equal(typeof store.get(key), 'number'); if (n.key === 'divide_temp_variable') assert.notEqual(right, 0); store.set(key, n.key === 'multiply_temp_variable' ? store.get(key) * right : store.get(key) / right); }
+				else if (['add_to_variable', 'add_to_temp_variable'].includes(n.key)) { assert.equal(typeof right, 'number'); assert.equal(typeof (store.get(key) ?? 0), 'number'); store.set(key, (store.get(key) ?? 0) + right); }
 				else store.set(key, right);
 				continue;
 			}
+			if (n.key === 'clamp_temp_variable') { const key = field(n.value, 'var'), lo = value(field(n.value, 'min'), ctx), hi = value(field(n.value, 'max'), ctx); assert.ok(hi >= lo); ctx.temps.set(key, Math.max(Math.min(ctx.temps.get(key), hi), lo)); continue; }
 			if (n.key === 'set_country_flag') { ctx.current.flags.add(n.value); continue; }
 			if (n.key === 'clr_country_flag') { ctx.current.flags.delete(n.value); continue; }
 			if (['activate_mission', 'remove_mission', 'country_event', 'add_opinion_modifier'].includes(n.key)) { state.writes.push({ nativeBoundary: n.key, payload: n.value, scope: ctx.current.identity }); continue; }
@@ -279,7 +286,22 @@ test('AST_preservation_all_existing_decisions_prices_weights_and_gameplay', () =
 test('AST_owner_trigger_effect_and_tuning_preservation', () => {
 	for (const path of [effectPath, recoveryPath]) {
 		function strip(nodes) { return nodes.filter(n => n.key !== P + 'clear_response_view').map(n => ({ ...n, value: Array.isArray(n.value) ? strip(n.value) : n.value })); }
-		assert.deepEqual(strip(load(path)), historical.get(path), path);
+		let expected = historical.get(path);
+		if (path === effectPath) {
+			let replacements = 0;
+			function normalize(nodes) { return nodes.flatMap(n => {
+				if (n.key === 'divide_temp_variable' && assignment(n)[0] === P + 'strength_chaos' && assignment(n)[1] === 'constant:' + P + 'strength.chaos_divisor') {
+					replacements++;
+					const divide = structuredClone(n), multiply = structuredClone(n);
+					divide.value[0].value = 'constant:chaos_meter_tier_range.tier_final.min';
+					multiply.key = 'multiply_temp_variable'; multiply.value[0].value = 'constant:' + P + 'strength.component_max';
+					return [divide, multiply];
+				}
+				return [{ ...n, value: Array.isArray(n.value) ? normalize(n.value) : n.value }];
+			}); }
+			expected = normalize(expected); assert.equal(replacements, 1);
+		}
+		assert.deepEqual(strip(load(path)), expected, path);
 	}
 	for (const old of historical.get(triggerPath)) {
 		const actual = block(load(triggerPath), old.key);
@@ -287,12 +309,50 @@ test('AST_owner_trigger_effect_and_tuning_preservation', () => {
 		else assert.deepEqual(actual, old.value, old.key);
 	}
 	const constantPath = 'common/script_constants/012_africa_gods_constants.txt';
-	assert.deepEqual(load(constantPath), historical.get(constantPath));
+	const expectedTuning = historical.get(constantPath).map(n => n.key === P + 'strength' ? { ...n, value: n.value.filter(x => x.key !== 'chaos_divisor') } : n);
+	assert.deepEqual(load(constantPath), expectedTuning);
 	const enumAst = block(load('common/script_constants/012_africa_gods_response_constants.txt'), P + 'response_view');
 	assert.equal(enumAst[0].key, 'schema'); assert.equal(field(enumAst[0].value, 'data'), 'int');
 	assert.deepEqual(enumAst.slice(1).map(n => [n.key, Number(n.value)]), [['overview', 0], ['priorities', 1], ['partners', 2], ['judgment', 3]]);
-	return { unchangedOwnerBodiesAfterRemovingOnlyPresentationEdits: true, originalTuningCategoriesUnchanged: true };
+	return { otherOwnerBodiesPreserved: true, acceptedStrengthNormalization: 'shared final-tier endpoint', otherTuningPreserved: true };
 });
+test('012_GODS_STRENGTH_CHAOS_component_curve', () => {
+	const body = field(block(load(effectPath), P + 'refresh_strength'), 'if');
+	const oldBody = field(block(historical.get(effectPath), P + 'refresh_strength'), 'if');
+	const key = P + 'strength_chaos';
+	function component(nodes) {
+		const start = nodes.findIndex(n => n.key === 'set_temp_variable' && assignment(n)[0] === key && assignment(n)[1] === 'global.chaos_meter_value');
+		const end = nodes.findIndex((n, i) => i >= start && n.key === 'clamp_temp_variable' && field(n.value, 'var') === key);
+		assert.ok(start >= 0 && end > start); return nodes.slice(start, end + 1);
+	}
+	const weightAt = body.findIndex(n => n.key === 'set_temp_variable' && assignment(n)[0] === P + 'strength_component' && assignment(n)[1] === key);
+	const divisor = body.find(n => n.key === 'divide_temp_variable' && assignment(n)[0] === P + 'strength_target');
+	assert.ok(weightAt > 0 && divisor);
+	const weighting = [...body.slice(weightAt, weightAt + 3), divisor];
+	const obsolete = 'constant:' + P + 'strength.chaos_divisor';
+	constants.set(obsolete, Number(field(block(historical.get('common/script_constants/012_africa_gods_constants.txt'), P + 'strength'), 'chaos_divisor')));
+	const maximum = constants.get('constant:' + P + 'strength.component_max');
+	const budget = maximum * constants.get('constant:' + P + 'value.strength_chaos_weight') / constants.get('constant:' + P + 'strength.weighted_divisor');
+	const points = [...new Set([maximum, chaosEndpoint * 1.2, ...chaosRanges.filter(n => n.key !== 'schema').flatMap(n => n.value.filter(x => ['min', 'max', 'plus'].includes(x.key)).map(x => Number(x.value)))])].sort((a, b) => a - b);
+	const rows = [];
+	try {
+		for (const flags of [[], ['africa_evolution_ii_logged'], ['africa_evolution_iii_logged'], ['africa_evolution_ii_logged', 'africa_evolution_iii_logged']]) {
+			let previous = -1;
+			for (const meter of points) {
+				function run(nodes) { const f = fixture(), ctx = f.context(); f.state.globals.set('chaos_meter_value', meter); flags.forEach(x => f.state.globalFlags.add(x)); ctx.temps.set(P + 'strength_target', 0); f.run(component(nodes), ctx); f.run(weighting, ctx); return { component: ctx.temps.get(key), contribution: ctx.temps.get(P + 'strength_target') }; }
+				const before = run(oldBody), after = run(body);
+				const bonus = (flags.includes('africa_evolution_ii_logged') ? constants.get('constant:' + P + 'strength.evolution_ii_amplifier') : 0) + (flags.includes('africa_evolution_iii_logged') ? constants.get('constant:' + P + 'strength.evolution_iii_amplifier') : 0);
+				assert.ok(Math.abs(after.component - Math.min(maximum, meter / chaosEndpoint * maximum + bonus)) < 1e-8);
+				assert.ok(after.component >= previous && after.contribution >= 0 && after.contribution <= budget + 1e-8); previous = after.component;
+				if (meter >= chaosEndpoint) assert.equal(after.component, maximum);
+				if (meter === maximum && flags.length === 0) { assert.equal(before.component, maximum); assert.ok(after.component < maximum); }
+				rows.push({ meter, evolutionFlags: flags, before, after });
+			}
+		}
+	} finally { constants.delete(obsolete); }
+	return { sourceArithmeticOnly: true, cases: rows.length, maximumContribution: budget, sharedEndpoint: chaosEndpoint, rows };
+});
+
 test('012_GODS_HOST_DOCTRINE_ALL_NEEDS', () => {
 	for (const lane of ['emergency', 'support', 'air_defense']) for (const saved of [undefined, 0, 1, 2, 3, 999]) {
 		const f = fixture(); allNeeds(f, lane); targetContext(f); f.host.vars.delete(P + 'doctrine');
