@@ -5,8 +5,9 @@ The activation repair uses the same guarded consolidation initializer at Evoluti
 The user's full-Gods Event 012 goal remains active with no simplifications authorized; source implementation and the architect's accepted source cases do not establish native execution or overall completion.
 
 The October 7 decision repairs implement the host and defiance phases, preserve the three named substitutes, and advertise fixed political-power budgets.
-The [October 8 completion audit](../../plans/012_africa_plans/subagent_handoffs/012_gods_current_completion_audit_2026-10-08.md) identifies remaining source work: the industrial tribute consequence, protection relationship safeguards, and compact trend, threshold and cause context for the two public values.
+The [October 8 completion audit](../../plans/012_africa_plans/subagent_handoffs/012_gods_current_completion_audit_2026-10-08.md) identifies remaining source work: the industrial tribute consequence and compact trend, threshold and cause context for the two public values.
 Strength's Chaos input uses the shared meter scale, while direct territorial-control and relative-world-power coverage remain under parent audit.
+Protection uses the [earned relationship gate](../../plans/012_africa_plans/subagent_handoffs/012_gods_protection_eligibility_implementation_2026-10-08.md), and committed-value observers provide display and trend data for the pending compact interface.
 The [extraordinary ultimatum payment review](../../plans/012_africa_plans/subagent_handoffs/012_gods_ultimatum_payment_review_2026-10-08.md) preserves the existing real native shipment and its prices, with native delivery semantics still unresolved.
 These dispositions are tracked in [the decision repair record](../../plans/012_africa_plans/subagent_handoffs/012_gods_decision_repairs_2026-10-07.md).
 

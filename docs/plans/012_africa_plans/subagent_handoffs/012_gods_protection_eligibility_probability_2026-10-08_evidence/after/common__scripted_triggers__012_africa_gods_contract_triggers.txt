@@ -1,0 +1,169 @@
+# Event 012 immutable tribute identity and unique terminal outcome checks.
+# Closure is internal proof, so loss/archival can retire an old contract safely.
+
+gods_of_africa_contract_ledger_can_close = {
+	has_country_flag = gods_of_africa_contract_history_initialized
+	has_country_flag = gods_of_africa_contract_ledger_open
+	NOT = { has_country_flag = gods_of_africa_contract_ledger_closed }
+	has_country_flag = gods_of_africa_demand_active
+	has_variable = gods_of_africa_contract_ledger_epoch
+	has_variable = gods_of_africa_demand_authority_epoch
+	check_variable = { gods_of_africa_contract_ledger_epoch = gods_of_africa_demand_authority_epoch }
+	has_variable = gods_of_africa_contract_ledger_id
+	has_variable = gods_of_africa_contract_ledger_generation
+	has_variable = gods_of_africa_contract_ledger_origin_id
+	has_variable = gods_of_africa_contract_original_family
+	has_variable = gods_of_africa_history_origin_host_id
+	has_variable = gods_of_africa_history_owner_id
+	check_variable = { gods_of_africa_history_owner_id = THIS.id }
+	check_variable = { gods_of_africa_contract_ledger_origin_id = gods_of_africa_history_origin_host_id }
+	has_variable = gods_of_africa_demand_id
+	has_variable = gods_of_africa_demand_generation
+	check_variable = { gods_of_africa_contract_ledger_id = gods_of_africa_demand_id }
+	check_variable = { gods_of_africa_contract_ledger_generation = gods_of_africa_demand_generation }
+}
+
+gods_of_africa_contract_close_kind_is_valid = {
+	OR = {
+		check_variable = { gods_of_africa_contract_close_kind = constant:gods_of_africa_contract_close.full_original }
+		check_variable = { gods_of_africa_contract_close_kind = constant:gods_of_africa_contract_close.honored_substitute }
+		check_variable = { gods_of_africa_contract_close_kind = constant:gods_of_africa_contract_close.failure }
+		check_variable = { gods_of_africa_contract_close_kind = constant:gods_of_africa_contract_close.refusal }
+		check_variable = { gods_of_africa_contract_close_kind = constant:gods_of_africa_contract_close.war_breach }
+		check_variable = { gods_of_africa_contract_close_kind = constant:gods_of_africa_contract_close.retired }
+	}
+}
+
+# Current participant COUNTRY, before economic or relationship mutations.
+gods_of_africa_contract_history_identity_is_current = {
+	has_country_flag = gods_of_africa_contract_history_initialized
+	has_variable = gods_of_africa_history_owner_id
+	has_variable = gods_of_africa_history_origin_host_id
+	check_variable = { gods_of_africa_history_owner_id = THIS.id }
+	has_event_target = africa_host
+	event_target:africa_host = { exists = yes has_variable = africa_origin_host_id }
+	check_variable = { gods_of_africa_history_origin_host_id = event_target:africa_host.africa_origin_host_id }
+}
+
+# Participant COUNTRY. Frozen native demand owner, independent of global owner.
+gods_of_africa_demand_owner_object_is_proven = {
+	has_variable = gods_of_africa_demand_host
+	has_variable = gods_of_africa_demand_host_id
+	has_variable = gods_of_africa_demand_origin_host_id
+	has_variable = gods_of_africa_demand_generation
+	has_variable = gods_of_africa_demand_authority_epoch
+	has_variable = gods_of_africa_demand_id
+	check_variable = { gods_of_africa_demand_id > constant:gods_of_africa_value.zero }
+	var:gods_of_africa_demand_host = {
+		exists = yes
+		has_variable = africa_host_generation
+		has_variable = gods_of_africa_authority_epoch
+		check_variable = { var = gods_of_africa_authority_epoch value = PREV.gods_of_africa_demand_authority_epoch compare = equals }
+		has_variable = africa_origin_host_id
+		check_variable = { var = THIS.id value = PREV.gods_of_africa_demand_host_id compare = equals }
+		check_variable = { var = africa_host_generation value = PREV.gods_of_africa_demand_generation compare = equals }
+		check_variable = { var = africa_origin_host_id value = PREV.gods_of_africa_demand_origin_host_id compare = equals }
+	}
+}
+
+# Participant COUNTRY. The open contract carries agreed terms: Africa granted an
+# extension or accepted a substitute, or a partial payment already began.
+gods_of_africa_contract_is_agreed = {
+	has_country_flag = gods_of_africa_contract_agreed
+	has_country_flag = gods_of_africa_contract_ledger_open
+	has_variable = gods_of_africa_contract_agreed_id
+	has_variable = gods_of_africa_contract_ledger_id
+	check_variable = { gods_of_africa_contract_agreed_id = gods_of_africa_contract_ledger_id }
+}
+
+# Participant COUNTRY. A renewed recognition after a capitulation victory stays
+# binding until this victor breaks it or wins another war against Africa.
+gods_of_africa_victor_renewal_agreement_is_live = {
+	has_country_flag = gods_of_africa_victor_relegitimation_committed
+	NOT = { has_country_flag = gods_of_africa_victor_exempt }
+	has_variable = gods_of_africa_victor_relegitimated_sequence
+	NOT = {
+		AND = {
+			has_variable = gods_of_africa_victor_renewal_breached_sequence
+			check_variable = { gods_of_africa_victor_renewal_breached_sequence = gods_of_africa_victor_relegitimated_sequence }
+		}
+	}
+	# Africa's own war against the victor ends the renewal without a breach.
+	NOT = {
+		AND = {
+			has_variable = gods_of_africa_victor_renewal_ended_sequence
+			check_variable = { gods_of_africa_victor_renewal_ended_sequence = gods_of_africa_victor_relegitimated_sequence }
+		}
+	}
+}
+
+# Participant COUNTRY. The participant is on the attacking side of a war with
+# Africa: it declared the war or joined an attacker's war against Africa
+# (triggers_documentation.md, has_offensive_war_with). Only this aggression
+# breaks its agreements with Africa.
+gods_of_africa_participant_is_aggressor_against_host = {
+	has_event_target = africa_host
+	has_offensive_war_with = event_target:africa_host
+}
+
+# Participant COUNTRY. Africa is on the attacking side of a war with this
+# participant.
+gods_of_africa_host_is_aggressor_against_participant = {
+	has_event_target = africa_host
+	event_target:africa_host = { has_offensive_war_with = PREV }
+}
+
+# Participant COUNTRY. Live relationship agreements that war with Africa breaks.
+gods_of_africa_participant_has_live_agreement = {
+	OR = {
+		has_country_flag = gods_of_africa_protected
+		has_country_flag = gods_of_africa_reconciliation_agreement_live
+		gods_of_africa_victor_renewal_agreement_is_live = yes
+	}
+}
+
+# Participant COUNTRY. Permanent defiance, an unresolved broken agreement, and
+# unreconciled war or occupation against Africa are all settled through the
+# same paid reconciliation that Africa must accept.
+gods_of_africa_participant_needs_reconciliation = {
+	OR = {
+		has_country_flag = gods_of_africa_defiant
+		has_country_flag = gods_of_africa_unresolved_treaty_break
+		has_country_flag = gods_of_africa_unresolved_major_offense
+	}
+}
+
+# Participant COUNTRY. The open contract is being paid, or is now owed, in an
+# accepted substitute rather than its original family.
+gods_of_africa_contract_has_substitute_terms = {
+	OR = {
+		has_country_flag = gods_of_africa_substitute_accepted
+		has_country_flag = gods_of_africa_contract_substitute_terms
+	}
+}
+
+# Participant COUNTRY. Africa can take delivery of the current demand. A fuel
+# payment is limited to Africa's free tank space, so it needs room for at least
+# one unit of fuel; every other family is always receivable here.
+gods_of_africa_host_can_receive_demand_payment = {
+	OR = {
+		AND = {
+			NOT = { check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.fuel } }
+			# Continuing support paid in fuel needs tank room too (decision L28).
+			NOT = {
+				AND = {
+					check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.continuing_support }
+					check_variable = { gods_of_africa_demand_instalment_material = constant:gods_of_africa_demand_family.fuel }
+				}
+			}
+		}
+		AND = {
+			has_event_target = africa_host
+			event_target:africa_host = {
+				set_temp_variable = { gods_of_africa_host_fuel_room_k = max_fuel_k }
+				subtract_from_temp_variable = { gods_of_africa_host_fuel_room_k = fuel_k }
+				check_variable = { var = gods_of_africa_host_fuel_room_k value = constant:gods_of_africa_contribution_measure.k_per_native compare = greater_than_or_equals }
+			}
+		}
+	}
+}

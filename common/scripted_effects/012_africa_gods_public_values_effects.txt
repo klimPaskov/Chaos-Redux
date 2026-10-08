@@ -1,0 +1,130 @@
+# Event 012 Gods private presentation cache and committed-value observation.
+# Country scope throughout. Strength reads the authoritative global value on
+# the current host. Wrath reads only THIS. No raw metric, history, material,
+# event target, or gameplay band is written. See the matching .md contract.
+
+# Current HOST, after global Strength is committed. ROOT is not consulted.
+gods_of_africa_observe_public_strength = {
+	if = {
+		limit = {
+			has_event_target = africa_host
+			tag = event_target:africa_host
+			has_variable = global.gods_of_africa_strength
+		}
+		clr_country_flag = gods_of_africa_strength_trend_rising
+		clr_country_flag = gods_of_africa_strength_trend_falling
+		if = {
+			limit = {
+				has_country_flag = gods_of_africa_strength_sample_known
+				has_variable = gods_of_africa_strength_previous_observed
+			}
+			if = {
+				limit = { check_variable = { global.gods_of_africa_strength > gods_of_africa_strength_previous_observed } }
+				set_country_flag = gods_of_africa_strength_trend_rising
+			}
+			else_if = {
+				limit = { check_variable = { global.gods_of_africa_strength < gods_of_africa_strength_previous_observed } }
+				set_country_flag = gods_of_africa_strength_trend_falling
+			}
+		}
+		set_variable = { global.gods_of_africa_strength_display = global.gods_of_africa_strength }
+		round_variable = global.gods_of_africa_strength_display
+		if = {
+			limit = { check_variable = { global.gods_of_africa_strength_display > global.gods_of_africa_strength } }
+			subtract_from_variable = { global.gods_of_africa_strength_display = constant:gods_of_africa_value.one }
+		}
+		set_variable = { global.gods_of_africa_strength_fill = global.gods_of_africa_strength }
+		divide_variable = { global.gods_of_africa_strength_fill = constant:gods_of_africa_value.maximum_strength }
+		clamp_variable = { var = global.gods_of_africa_strength_fill min = constant:gods_of_africa_value.zero max = constant:gods_of_africa_value.one }
+		set_variable = { global.gods_of_africa_strength_frame = global.gods_of_africa_strength_display }
+		add_to_variable = { global.gods_of_africa_strength_frame = constant:gods_of_africa_value.one }
+		set_variable = { gods_of_africa_strength_previous_observed = global.gods_of_africa_strength }
+		set_country_flag = gods_of_africa_strength_sample_known
+	}
+}
+
+# ACTOR, once after the committed Wrath clamp/floor. Initial observation and
+# unchanged observations are neutral. Temporary shipment arithmetic is unused.
+gods_of_africa_observe_public_wrath = {
+	if = {
+		limit = { has_variable = gods_of_africa_wrath }
+		clr_country_flag = gods_of_africa_wrath_trend_rising
+		clr_country_flag = gods_of_africa_wrath_trend_falling
+		if = {
+			limit = {
+				has_country_flag = gods_of_africa_wrath_sample_known
+				has_variable = gods_of_africa_wrath_previous_observed
+			}
+			if = {
+				limit = { check_variable = { gods_of_africa_wrath > gods_of_africa_wrath_previous_observed } }
+				set_country_flag = gods_of_africa_wrath_trend_rising
+			}
+			else_if = {
+				limit = { check_variable = { gods_of_africa_wrath < gods_of_africa_wrath_previous_observed } }
+				set_country_flag = gods_of_africa_wrath_trend_falling
+			}
+		}
+		set_variable = { gods_of_africa_wrath_display = gods_of_africa_wrath }
+		round_variable = gods_of_africa_wrath_display
+		if = {
+			limit = { check_variable = { gods_of_africa_wrath_display > gods_of_africa_wrath } }
+			subtract_from_variable = { gods_of_africa_wrath_display = constant:gods_of_africa_value.one }
+		}
+		set_variable = { gods_of_africa_wrath_fill = gods_of_africa_wrath }
+		divide_variable = { gods_of_africa_wrath_fill = constant:gods_of_africa_value.maximum_wrath }
+		clamp_variable = { var = gods_of_africa_wrath_fill min = constant:gods_of_africa_value.zero max = constant:gods_of_africa_value.one }
+		set_variable = { gods_of_africa_wrath_frame = gods_of_africa_wrath_display }
+		add_to_variable = { gods_of_africa_wrath_frame = constant:gods_of_africa_value.one }
+		set_variable = { gods_of_africa_wrath_previous_observed = gods_of_africa_wrath }
+		set_country_flag = gods_of_africa_wrath_sample_known
+	}
+}
+
+# ACTOR, floor-owner boundary. An apply_wrath request remains present here,
+# so even a fully floor-clamped transaction observes its neutral final result.
+# A second unchanged direct floor check is not another metric movement.
+gods_of_africa_observe_public_wrath_commit = {
+	if = {
+		limit = {
+			has_variable = gods_of_africa_wrath
+			OR = {
+				NOT = { has_country_flag = gods_of_africa_wrath_sample_known }
+				NOT = { has_variable = gods_of_africa_wrath_previous_observed }
+				check_variable = { gods_of_africa_wrath > gods_of_africa_wrath_previous_observed }
+				check_variable = { gods_of_africa_wrath < gods_of_africa_wrath_previous_observed }
+				AND = {
+					has_variable = gods_of_africa_wrath_request
+					check_variable = { gods_of_africa_wrath_request > constant:gods_of_africa_value.zero }
+				}
+			}
+		}
+		gods_of_africa_observe_public_wrath = yes
+	}
+}
+
+# HOST, including a retired host after the current target has moved elsewhere.
+gods_of_africa_clear_public_strength_observation = {
+	clr_country_flag = gods_of_africa_strength_trend_rising
+	clr_country_flag = gods_of_africa_strength_trend_falling
+	clr_country_flag = gods_of_africa_strength_sample_known
+	clear_variable = gods_of_africa_strength_previous_observed
+}
+
+# COUNTRY, only inside an existing owner path that also resets global Strength.
+# Does not write raw Strength. Frame one represents the empty atlas cell.
+gods_of_africa_reset_public_strength_values = {
+	set_variable = { global.gods_of_africa_strength_display = constant:gods_of_africa_value.zero }
+	set_variable = { global.gods_of_africa_strength_fill = constant:gods_of_africa_value.zero }
+	set_variable = { global.gods_of_africa_strength_frame = constant:gods_of_africa_value.one }
+}
+
+# ACTOR, enrollment/archive/authority loss/final cleanup. Durable Wrath remains.
+gods_of_africa_clear_public_wrath_values = {
+	clr_country_flag = gods_of_africa_wrath_trend_rising
+	clr_country_flag = gods_of_africa_wrath_trend_falling
+	clr_country_flag = gods_of_africa_wrath_sample_known
+	clear_variable = gods_of_africa_wrath_previous_observed
+	clear_variable = gods_of_africa_wrath_display
+	clear_variable = gods_of_africa_wrath_fill
+	clear_variable = gods_of_africa_wrath_frame
+}

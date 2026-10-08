@@ -39,6 +39,7 @@ gods_of_africa_initialize_system = {
 			}
 			set_variable = { gods_of_africa_restoration_generation = africa_host_generation }
 			gods_of_africa_clear_response_view = yes
+			gods_of_africa_clear_public_strength_observation = yes
 			# A restored host starts a fresh owner lifecycle. Do not let a loss
 			# receipt from the previous generation suppress its future cleanup.
 			clr_country_flag = gods_of_africa_cancelled_on_unifier_loss
@@ -51,6 +52,7 @@ gods_of_africa_initialize_system = {
 			set_variable = { gods_of_africa_priority_offender_count = constant:gods_of_africa_value.zero }
 			set_variable = { gods_of_africa_strength = constant:gods_of_africa_value.starting_strength }
 			set_variable = { global.gods_of_africa_strength = constant:gods_of_africa_value.starting_strength }
+			gods_of_africa_observe_public_strength = yes
 			set_variable = { gods_of_africa_strength_band = constant:gods_of_africa_band.limited }
 			# Zero is the unchosen doctrine state expected by the host decisions.
 			set_variable = { gods_of_africa_doctrine = constant:gods_of_africa_value.zero }
@@ -414,6 +416,7 @@ gods_of_africa_register_participant = {
 	gods_of_africa_remember_candidate = yes
 	if = {
 		limit = { gods_of_africa_participant_can_register = yes }
+		gods_of_africa_clear_public_wrath_values = yes
 		gods_of_africa_withdraw_protection_package = yes
 		gods_of_africa_clear_report_receipts = yes
 		gods_of_africa_clear_mobile_quote = yes
@@ -594,6 +597,7 @@ gods_of_africa_archive_invalid_participant = {
 	remove_mission = gods_of_africa_demand_mission
 	remove_mission = gods_of_africa_reconciliation_mission
 	clr_country_flag = gods_of_africa_participant
+	gods_of_africa_clear_public_wrath_values = yes
 }
 
 gods_of_africa_activate_system = {
@@ -800,6 +804,7 @@ gods_of_africa_refresh_strength = {
 		else_if = { limit = { check_variable = { gods_of_africa_strength < constant:gods_of_africa_value.global_strength } } set_variable = { gods_of_africa_strength_band = constant:gods_of_africa_band.global } }
 		else = { set_variable = { gods_of_africa_strength_band = constant:gods_of_africa_band.extreme } }
 		set_variable = { global.gods_of_africa_strength = gods_of_africa_strength }
+		gods_of_africa_observe_public_strength = yes
 		clr_country_flag = gods_of_africa_strength_immediate
 		gods_of_africa_emit_global_credibility_super_event = yes
 	}
@@ -868,6 +873,7 @@ gods_of_africa_enforce_wrath_floor = {
 			set_variable = { gods_of_africa_wrath = gods_of_africa_wrath_floor }
 		}
 		clamp_variable = { var = gods_of_africa_wrath min = constant:gods_of_africa_value.minimum_wrath max = constant:gods_of_africa_value.maximum_wrath }
+		gods_of_africa_observe_public_wrath_commit = yes
 	}
 }
 
@@ -4230,6 +4236,7 @@ gods_of_africa_fail_reconciliation = {
 # COUNTRY scope on a participant. History and the final settlement are kept;
 # all active contract state and registry identity are removed idempotently.
 gods_of_africa_clean_participant = {
+	gods_of_africa_clear_public_wrath_values = yes
 	gods_of_africa_release_owned_offender_mark = yes
 	gods_of_africa_retire_interrupted_contract = yes
 	gods_of_africa_release_demand_slot = yes
@@ -4431,6 +4438,7 @@ gods_of_africa_finalize_participant = {
 		gods_of_africa_clear_substitute_slots = yes
 		set_country_flag = gods_of_africa_final_outcome_committed
 		clr_country_flag = gods_of_africa_participant
+		gods_of_africa_clear_public_wrath_values = yes
 	}
 }
 
@@ -4467,6 +4475,7 @@ gods_of_africa_cancel_on_unifier_loss = {
 		}
 		gods_of_africa_revoke_current_epoch = yes
 		gods_of_africa_clear_response_view = yes
+		gods_of_africa_clear_public_strength_observation = yes
 		if = { limit = { has_variable = gods_of_africa_authority_epoch } set_variable = { gods_of_africa_last_loss_cleanup_epoch = gods_of_africa_authority_epoch } }
 		set_country_flag = gods_of_africa_cancelled_on_unifier_loss
 		for_each_scope_loop = {
@@ -4495,6 +4504,7 @@ gods_of_africa_cancel_on_unifier_loss = {
 		if = {
 			limit = { has_event_target = africa_host tag = event_target:africa_host }
 			set_variable = { global.gods_of_africa_strength = constant:gods_of_africa_value.zero }
+			gods_of_africa_reset_public_strength_values = yes
 		}
 		set_country_flag = gods_of_africa_unifier_loss_recorded
 		if = {
@@ -4511,6 +4521,7 @@ gods_of_africa_cancel_on_unifier_loss = {
 }
 
 gods_of_africa_cancel_participant = {
+	gods_of_africa_clear_public_wrath_values = yes
 	gods_of_africa_retire_interrupted_contract = yes
 	gods_of_africa_release_demand_slot = yes
 	gods_of_africa_clear_council_pledge = yes
@@ -4678,6 +4689,7 @@ gods_of_africa_terminate_system = {
 
 gods_of_africa_clean_system = {
 	gods_of_africa_clear_response_view = yes
+	gods_of_africa_clear_public_strength_observation = yes
 	clear_array = gods_of_africa_participants
 	clear_array = gods_of_africa_selected_participants
 	clear_variable = gods_of_africa_truck_need_amount
@@ -4695,6 +4707,7 @@ gods_of_africa_clean_system = {
 	clr_country_flag = gods_of_africa_registry_clock_scheduled
 	set_variable = { gods_of_africa_active_demand_count = constant:gods_of_africa_value.zero }
 	set_variable = { global.gods_of_africa_strength = constant:gods_of_africa_value.zero }
+	gods_of_africa_reset_public_strength_values = yes
 	set_variable = { gods_of_africa_restoration_generation = africa_host_generation }
 	clear_variable = gods_of_africa_next_dispatch_day
 	clear_variable = gods_of_africa_next_registry_review_day

@@ -753,22 +753,26 @@ gods_of_africa_extreme_gate_is_open = {
 # Event 012 generation. It deliberately does not test the host's resources so
 # an eligible target can remain visible while the protection cost is blocked.
 gods_of_africa_participant_can_receive_protection = {
-	gods_of_africa_participant_generation_is_current = yes
-	gods_of_africa_participant_is_registered = yes
-	NOT = { has_country_flag = gods_of_africa_defiant }
-	has_country_flag = gods_of_africa_reliable_memory_applied
-	NOT = { has_war_with = event_target:africa_host }
-	has_event_target = africa_host
-	OR = {
-		NOT = { has_variable = gods_of_africa_protection_due_day }
-		check_variable = {
-			var = global.num_days
-			value = gods_of_africa_protection_due_day
-			compare = greater_than_or_equals
+	custom_trigger_tooltip = {
+		tooltip = gods_of_africa_protection_target_requirements_tt
+		gods_of_africa_protection_relationship_is_eligible = yes
+		gods_of_africa_participant_generation_is_current = yes
+		gods_of_africa_participant_is_registered = yes
+		NOT = { has_country_flag = gods_of_africa_defiant }
+		has_country_flag = gods_of_africa_reliable_memory_applied
+		NOT = { has_war_with = event_target:africa_host }
+		has_event_target = africa_host
+		OR = {
+			NOT = { has_variable = gods_of_africa_protection_due_day }
+			check_variable = {
+				var = global.num_days
+				value = gods_of_africa_protection_due_day
+				compare = greater_than_or_equals
+			}
 		}
-	}
-	event_target:africa_host = {
-		gods_of_africa_active_host_is_valid = yes
+		event_target:africa_host = {
+			gods_of_africa_active_host_is_valid = yes
+		}
 	}
 }
 

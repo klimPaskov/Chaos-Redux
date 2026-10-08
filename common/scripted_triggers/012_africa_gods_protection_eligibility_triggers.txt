@@ -1,0 +1,32 @@
+# Event 012 protection relationship eligibility. COUNTRY scope on the participant.
+# Pure predicates: only temporary quote comparisons are assigned. The ordinary
+# generation, membership, peace, cooldown and host-validity gates remain owned
+# by gods_of_africa_participant_can_receive_protection.
+
+gods_of_africa_protection_has_meaningful_aid = {
+	set_temp_variable = { gods_of_africa_protection_infantry_aid_minimum_k = constant:gods_of_africa_transaction.voluntary_aid_equipment_amount }
+	multiply_temp_variable = { gods_of_africa_protection_infantry_aid_minimum_k = constant:gods_of_africa_contribution_measure.k_per_native }
+	set_temp_variable = { gods_of_africa_protection_fuel_aid_minimum_k = constant:gods_of_africa_transaction.voluntary_aid_fuel_amount }
+	multiply_temp_variable = { gods_of_africa_protection_fuel_aid_minimum_k = constant:gods_of_africa_contribution_measure.k_per_native }
+	OR = {
+		AND = {
+			has_variable = gods_of_africa_voluntary_paid_infantry_k
+			check_variable = { var = gods_of_africa_voluntary_paid_infantry_k value = gods_of_africa_protection_infantry_aid_minimum_k compare = greater_than_or_equals }
+		}
+		AND = {
+			has_variable = gods_of_africa_voluntary_paid_fuel_k
+			check_variable = { var = gods_of_africa_voluntary_paid_fuel_k value = gods_of_africa_protection_fuel_aid_minimum_k compare = greater_than_or_equals }
+		}
+	}
+}
+
+gods_of_africa_protection_relationship_is_eligible = {
+	has_variable = gods_of_africa_wrath
+	check_variable = { gods_of_africa_wrath < constant:gods_of_africa_wrath.watchful }
+	has_variable = gods_of_africa_compliance_count
+	check_variable = { var = gods_of_africa_compliance_count value = constant:gods_of_africa_protection.minimum_completed_demands compare = greater_than_or_equals }
+	gods_of_africa_protection_has_meaningful_aid = yes
+	NOT = { gods_of_africa_participant_needs_reconciliation = yes }
+	NOT = { gods_of_africa_participant_holds_host_core_state = yes }
+	NOT = { gods_of_africa_participant_owns_host_core_state = yes }
+}

@@ -284,8 +284,35 @@ test('AST_preservation_all_existing_decisions_prices_weights_and_gameplay', () =
 	return { existingRows: beforeDecisions.size, guardedHostRows: gated.length, navigationRows: navigation.length, fixedPpHintsMatchingCharges: fixedPpHints.size };
 });
 test('AST_owner_trigger_effect_and_tuning_preservation', () => {
+	// Only accepted presentation calls in their named owner bodies may be
+	// omitted from this legacy gameplay comparison. No wildcard helper strip.
+	const presentationHooks = new Map([
+		['initialize_system', ['clear_public_strength_observation', 'observe_public_strength']],
+		['register_participant', ['clear_public_wrath_values']],
+		['archive_invalid_participant', ['clear_public_wrath_values']],
+		['refresh_strength', ['observe_public_strength']],
+		['enforce_wrath_floor', ['observe_public_wrath_commit']],
+		['clean_participant', ['clear_public_wrath_values']],
+		['finalize_participant', ['clear_public_wrath_values']],
+		['cancel_on_unifier_loss', ['clear_public_strength_observation', 'reset_public_strength_values']],
+		['cancel_participant', ['clear_public_wrath_values']],
+		['clean_system', ['clear_public_strength_observation', 'reset_public_strength_values']],
+	].map(([owner, hooks]) => [P + owner, hooks.map(x => P + x)]));
+	const presentationNames = new Set([...presentationHooks.values()].flat());
 	for (const path of [effectPath, recoveryPath]) {
-		function strip(nodes) { return nodes.filter(n => n.key !== P + 'clear_response_view').map(n => ({ ...n, value: Array.isArray(n.value) ? strip(n.value) : n.value })); }
+		const observed = new Map();
+		function strip(nodes, owner) { return nodes.flatMap(n => {
+			if (n.key === P + 'clear_response_view') return [];
+			if (presentationNames.has(n.key) && !Array.isArray(n.value)) {
+				assert.equal(path, effectPath, 'presentation hook file');
+				assert.ok(presentationHooks.get(owner)?.includes(n.key), owner + ' hook ' + n.key);
+				assert.equal(n.op, '='); assert.equal(n.value, 'yes');
+				const key = owner + '/' + n.key;
+				observed.set(key, (observed.get(key) ?? 0) + 1);
+				return [];
+			}
+			return [{ ...n, value: Array.isArray(n.value) ? strip(n.value, owner ?? n.key) : n.value }];
+		}); }
 		let expected = historical.get(path);
 		if (path === effectPath) {
 			let replacements = 0;
@@ -302,15 +329,33 @@ test('AST_owner_trigger_effect_and_tuning_preservation', () => {
 			expected = normalize(expected); assert.equal(replacements, 1);
 		}
 		assert.deepEqual(strip(load(path)), expected, path);
+		if (path === effectPath) for (const [owner, hooks] of presentationHooks)
+			for (const hook of hooks) assert.equal(observed.get(owner + '/' + hook), 1, owner + ' exactly one ' + hook);
 	}
 	for (const old of historical.get(triggerPath)) {
 		const actual = block(load(triggerPath), old.key);
 		if (suffixes.includes(old.key.slice(P.length))) assert.deepEqual(actual, [{ key: 'NOT', op: '=', value: [{ key: 'has_country_flag', op: '=', value: P + 'final_ultimatum_pending' }] }, ...old.value]);
+		else if (old.key === P + 'participant_can_receive_protection' && actual.length === 1 && actual[0].key === 'custom_trigger_tooltip') {
+			// Parent-owned F2: this exact wrapper and one private policy gate.
+			assert.equal(actual[0].op, '=');
+			const wrapped = actual[0].value;
+			assert.deepEqual(wrapped.filter(n => n.key === 'tooltip'), [{ key: 'tooltip', op: '=', value: P + 'protection_target_requirements_tt' }]);
+			assert.deepEqual(wrapped.filter(n => n.key === P + 'protection_relationship_is_eligible'), [{ key: P + 'protection_relationship_is_eligible', op: '=', value: 'yes' }]);
+			assert.deepEqual(wrapped.filter(n => !['tooltip', P + 'protection_relationship_is_eligible'].includes(n.key)), old.value, old.key + ' original requirements');
+		}
 		else assert.deepEqual(actual, old.value, old.key);
 	}
 	const constantPath = 'common/script_constants/012_africa_gods_constants.txt';
 	const expectedTuning = historical.get(constantPath).map(n => n.key === P + 'strength' ? { ...n, value: n.value.filter(x => x.key !== 'chaos_divisor') } : n);
-	assert.deepEqual(load(constantPath), expectedTuning);
+	const currentTuning = load(constantPath).map(n => {
+		if (n.key !== P + 'protection') return n;
+		const gate = n.value.filter(x => x.key === 'minimum_completed_demands');
+		if (!gate.length) return n;
+		assert.deepEqual(gate, [{ key: 'minimum_completed_demands', op: '=', value: '3' }], 'parent-owned F2 minimum');
+		assert.equal(field(block(historical.get(constantPath), n.key), 'minimum_completed_demands'), undefined);
+		return { ...n, value: n.value.filter(x => x.key !== 'minimum_completed_demands') };
+	});
+	assert.deepEqual(currentTuning, expectedTuning);
 	const enumAst = block(load('common/script_constants/012_africa_gods_response_constants.txt'), P + 'response_view');
 	assert.equal(enumAst[0].key, 'schema'); assert.equal(field(enumAst[0].value, 'data'), 'int');
 	assert.deepEqual(enumAst.slice(1).map(n => [n.key, Number(n.value)]), [['overview', 0], ['priorities', 1], ['partners', 2], ['judgment', 3]]);
