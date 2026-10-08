@@ -56,6 +56,7 @@ Dissipation ends the weather runtime but does not erase contamination already ad
 ## Evolution path
 
 The evolutions are cumulative and can activate while a generation is live.
+The evolution log bridge forwards the caller's exact stage and tier to the shared row recorder, replacing any stale ambient context before recording.
 
 - Severe Storm Cells unlock at Rising Chaos and add bounded local severe episodes with nine-day forecasts without replacing the parent front.
 - Multiple Weather Fronts unlock at Chaos Tier and add independent second and possible third front records.
