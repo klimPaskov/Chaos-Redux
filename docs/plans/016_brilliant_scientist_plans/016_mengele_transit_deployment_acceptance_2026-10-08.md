@@ -23,7 +23,9 @@ Loss of a site or qualifying route suspends this supplemental consumer and cance
 Learned technology, genuine completed history and produced equipment persist; reacquisition and repair restore eligibility without free replacement construction.
 Actor-bound endpoint proof does not transfer to a captor and never writes KRG history.
 
-Queued implementation is blocked by the two timed-out MCP map lookups, unverified exact supply-province binding and whole-corridor level/damage proof, plus the unresolved multi-component settlement/recovery seam.
+The earlier map lookup timeouts are historical: current bounded lookups and connected map inspection return source data, with geometry, membership and network checks passing at the recorded revision.
+Queued implementation still requires a verified current special supply-node reader, exact selected-node health, whole-corridor level/damage proof, and the multi-component settlement/recovery seam.
+The pure geometry input is implemented separately through `016_transit_state_catalog_2026-10-08.md`; source membership and initial supply/rail records do not prove current runtime endpoint eligibility.
 Those are exact dependencies, not permission to reduce the payoff or claim source-only map review as equivalent evidence.
 The neutral Portal equipment output and existing KRG fabrication repair proceed through `016_portal_transit_fabrication_receipts_2026-10-08.md` while preserving this full commissioning requirement.
 Ordinary production, neutral Prototype entitlement and existing Portal raid gates retain their separate authority.

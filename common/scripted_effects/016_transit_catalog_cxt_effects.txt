@@ -1,0 +1,25 @@
+# Event016 read-only CXT catalogue observation, existing player-triggered probe.
+# Caller-owned query outputs survive the STATE helper and return to CXT.
+# No catalogue population hook, inventory, building, payment or history output.
+chaosx_cxt_event016_probe_transit_state_catalog = {
+	if = {
+		limit = { tag = CXT exists = yes has_country_flag = chaosx_test_country_initialized }
+		set_temp_variable = { transit_catalog_state_id = constant:transit_catalog.zero }
+		set_temp_variable = { transit_catalog_loaded = constant:transit_catalog.zero }
+		clear_temp_array = transit_state_province_ids
+		set_temp_variable = { transit_catalog_province_count = constant:transit_catalog.zero }
+		capital_scope = {
+			if = {
+				limit = { brilliant_scientist_transit_load_state_province_catalog = yes }
+				set_temp_variable = { transit_catalog_province_count = transit_state_province_ids^num }
+			}
+		}
+		set_variable = { chaosx_cxt_event016_transit_catalog_state_id = transit_catalog_state_id }
+		set_variable = { chaosx_cxt_event016_transit_catalog_province_count = transit_catalog_province_count }
+		clr_country_flag = chaosx_cxt_event016_transit_catalog_loaded
+		if = {
+			limit = { check_variable = { var = transit_catalog_loaded value = constant:transit_catalog.one compare = equals } }
+			set_country_flag = chaosx_cxt_event016_transit_catalog_loaded
+		}
+	}
+}

@@ -1,0 +1,26 @@
+# Event016 lazy state/province membership query, STATE scope.
+# Caller initializes all consumed temporary outputs before this pure query.
+# Numeric GetID is distinct from the opaque state id variable.
+# Unknown IDs leave an empty array and loaded=zero; no dynamically pasted helper name.
+# See 016_transit_state_province_catalog_triggers.md.
+
+brilliant_scientist_transit_load_state_province_catalog = {
+	clear_temp_array = transit_state_province_ids
+	set_temp_variable = { transit_catalog_state_id = constant:transit_catalog.zero }
+	set_temp_variable = { transit_catalog_loaded = constant:transit_catalog.zero }
+	meta_trigger = {
+		text = {
+			set_temp_variable = { transit_catalog_state_id = [STATE_ID] }
+			always = yes
+		}
+		STATE_ID = "[This.GetID]"
+	}
+	if = {
+		limit = {
+			check_variable = { var = transit_catalog_state_id value = constant:transit_catalog.state_id_min compare = greater_than_or_equals }
+			check_variable = { var = transit_catalog_state_id value = constant:transit_catalog.state_id_max compare = less_than_or_equals }
+		}
+		brilliant_scientist_transit_catalog_1_1081 = yes
+	}
+	always = yes
+}

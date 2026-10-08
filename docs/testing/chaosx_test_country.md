@@ -267,3 +267,5 @@ The same player-triggered probe observes the existing KRG Portal fabrication tra
 It records transaction/serial, expected/delivered equipment, actual PP/support/fuel and fresh quote values under `chaosx_cxt_event016_portal_*`, plus actor-exists, funded, output-pending, refund-pending and quote-valid debug flags.
 An absent KRG clears those observations; a malformed component array supplies no inferred actual payment.
 This observation invokes the pure quote in trigger context with caller-owned temporary outputs and never starts, funds, refunds, completes or replenishes a project.
+The probe also evaluates CXT's current capital-state province catalogue through `chaosx_cxt_event016_probe_transit_state_catalog`, recording `chaosx_cxt_event016_transit_catalog_state_id`, `chaosx_cxt_event016_transit_catalog_province_count` and the `chaosx_cxt_event016_transit_catalog_loaded` flag.
+These are read-only geometry observations; current supply-node, health, control and route proof are not inferred from the catalogue.
