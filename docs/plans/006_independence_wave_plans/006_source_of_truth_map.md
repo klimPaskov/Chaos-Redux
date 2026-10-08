@@ -1,5 +1,64 @@
 # Event 006 source-of-truth map
 
+## Current authority and source checkpoint (2026-10-08)
+
+The complete accepted Event 006 objective remains active and incomplete under the human's full-goal instruction and standing recommended-choice authority.
+This checkpoint takes precedence over dated queue, admission and implementation claims below.
+Earlier acceptance records remain evidence for their design, while their counts and unfinished-source instructions are historical where superseded here.
+The shared October 6 insertion and all older evidence are retained.
+
+| Authority or evidence | Current role and boundary |
+| --- | --- |
+| Parent's October 8 reconciliation assignment within the human-authorized scope | Reaffirms the full goal, standing recommended-choice authority, October 7 parent acceptance of Mon/PUSA recommendations, unchanged admission and open completion gates. |
+| D1-D34 in [the takeover decisions](agent_decisions_2026-10-04.md) and D35 onward in [the continuation decisions](agent_decisions_2026-10-05.md) | Accepted design/repair decisions within their recorded basis, with newer implementation dispositions below. Their dated counts are historical. |
+| [Accepted Mon/PUSA payoff contract](../../specs/006_independence_wave_specs/specs/006_signature_payoff_contract.md) | Source design promoted from the October 7 planner under explicit parent acceptance within the human's standing authority. Source presence is separate proof. |
+| `9e2837f8edc1633cd8e96415366821ca5dc16886` and [signature source report](subagent_handoffs/signature_source_integration_20261007.md) | Current implementation authority for the signature/ready-family tranche and its native, imported-focus, GUI, probability and portrait limits. |
+| `416688b8963ea0b1a47e3c8682b8125455cfca40` and [regional source report](subagent_handoffs/regional_focus_source_commit_20261007.md) | Implemented forty-four Level 2 groups, 220 imports/definitions and reviewed project/focus interlocks. Imported visuals and campaign AI remain unresolved. |
+| `8574c5e58eeb01752e6249a3d67b919b3194fddb` | Observed HEAD at intake, containing three scoped generic skill/handoff additions. It does not add Event 006 completion evidence. |
+| [October 6 completion audit](subagent_handoffs/completion_takeover_20261006.md) | Historical pre-integration findings plus continuing whole-event omissions. Findings 1-3 receive the source dispositions below, rather than deletion. |
+| [Signature probability comparison](subagent_handoffs/signature_probability_compare_20261007.md) and [ready-family probability handoff](subagent_handoffs/signature_ready_probability_20261006.md) | Distinct scenario-specific evidence. Frozen-hash mismatch, excluded/unbound fixtures, imported-pool discovery and newer Mon/ready comparisons remain unresolved. |
+| [October 8 documentation handoff](subagent_handoffs/documentation_checkpoint_20261008.md) | Bounded curator patch and MCP observation record. Parent owns review, integration, commit and final completion claims. |
+
+## Current plan and finding dispositions (2026-10-08)
+
+| Document or finding | Disposition | Acceptance basis, evidence, reason and remaining limit |
+| --- | --- | --- |
+| Completion takeover finding 1, D25-D33 Level 2 focus groups | `implemented` at source | Full accepted Part 5 requirement and parent-reviewed five-node contract, evidenced by `416688b8` and the regional source report. All 44 groups/220 shared focuses are integrated. Imported geometry/connectors and campaign AI are still open. |
+| Completion takeover finding 2, D27/D31 Oyo/Aceh/Mon Level 3 mechanics | `implemented` at source | Accepted D27/D31 scope and October 6 implementation instruction, evidenced by `9e2837f8` and the signature source report. Thirty-one focuses and eight paid projects are integrated. Exact-person art, native behavior and full AI remain open. |
+| Completion takeover finding 3, D30/D31/D33 FORM-17/32/36/37 | `implemented` at source | Accepted ready-member contracts and parent-accepted four-family puzzle scope, evidenced by `9e2837f8`. Exact live members, invitations, sovereign integration, safe cosmetic carriers, two paid 180-day stages, four overlays and fourteen pieces are wired. Native consent/cost/cleanup and matched production GUI evidence remain open. |
+| [Mon river-office/PUSA planner](subagent_handoffs/mon_river_office_closure_20261007.md) | `promoted into an accepted spec` | Parent accepted its recommendations October 7 under the human's standing instruction to take recommended options, explicitly reaffirmed by this assignment. Destination is `006_signature_payoff_contract.md`. Its old `unresolved` label is historical provenance. `9e2837f8` separately proves source implementation. No new broad expansion is required for these findings. |
+| Six ready-protocol defect findings and late governance/restoration lifecycle | `implemented` at source | Owner-applied repairs within the accepted contract, with parsed-body regression and independent source review in the signature source report. Preserve stale-popup, caller-output, reservation, cleanup and institution-order limits as native gates. |
+| Three signature achievements and nine reviewed DDS states | `implemented` at source | Accepted signature achievement scope, with wiring and art review recorded by the source report. Unlock behavior and live consumers remain unexecuted. |
+| Four-family puzzle layout handoff | `implemented` at source, visual evidence `blocked` | [GUI owner handoff](subagent_handoffs/ready_formable_puzzles_gui_takeover_20261006.md) identifies the actual grouped window, nineteen total overlays and fourteen added pieces. Prior inspect/render returned `SCAN_PATTERN_LIMIT` without production artifacts. Asset previews do not close this gate. |
+| Mon/PUSA native reservation and research-use checks | `blocked` for evidence | Source-model cases are recorded in the integration report. Native reservation order, research consumption and same-generation live lifecycle are not executed by this curator. |
+| Signature and ready-family complete AI/balance acceptance | `unresolved` | Keep both probability owner handoffs, named scenario sets and source snapshots. The older seven-project comparison excludes every row, lacks accepted frozen-hash equality and omits the new Mon project. Ready route/stage zero-change comparisons also exclude all rows. None establishes campaign odds. |
+| Two signature grounded portraits, twelve earlier style finals, Ishaki/Polluzha quality repairs | `blocked` | [Portrait owner handoff](subagent_handoffs/signature_portraits_20261006.md) retains exact source attribution/rights/period/retrieval blockers. Styled finals remain user-owned, and existing placeholders are not promoted. |
+| Completion takeover finding 4, whole-pack contradictions | `accepted and queued` | The audit requires current source/design reconciliation under the full-goal authority. This patch fixes only the owned checkpoint docs. Part 6/Part 7/README/event formable-registry corrections remain outside this curator's write scope. |
+| Completion takeover finding 5, current Event 006 detail/evolution parity | `implemented` as bounded review | [October 7 catalog owner receipt](subagent_handoffs/signature_catalog_review_20261007.md) verifies B7, C7 and D7:H7 against current localisation, with no edit/export and `Needs Testing` retained. Broader queued catalog fields and export parity are not certified by this receipt. |
+| Residual D34 static-tag consumers and D29-D34 sourced leadership standards | `accepted and queued`, with per-row blockers | D38 and the current takeover/source reports prove the repaired subset. Review residual consumers before patching, and retain each exact institution/identity/map/source gate. No new country/formable or weaker substitute is authorized by this recommendation. |
+
+Admission remains 109 content-attested packages, 78 reservation groups and 112 adapters.
+IW-076/IW-131/IW-179 remain adapter-only and fail closed, and the remaining 84 unattested selectable rows retain their individual D25-D34 dependencies.
+FORM-32's Balochistan anchor remains state 1012, and FORM-36/37 reservation conflicts retain later-wave or equivalent valid native setup requirements.
+The automatic ladder remains 3/4/5/7/10 with no pre-event surface.
+The curator's October 8 focus/event/GUI/technology/map calls produced no observed final artifacts before their bounded client waits ended, as detailed in the documentation handoff.
+The read-only probability auditor separately returned a hash-verified eight-candidate inspect artifact at revision `112568a4af857f1b57c14b51f12238e69cb7dfb7dba678f519dd0e0bca6d6db2`, with an incomplete score-only pool and no scenario-evaluation result.
+That establishes the probability inspect route's response only, and does not establish health or coverage for the other exposed routes.
+Standalone viewer availability remains a separately recorded package gap.
+No source disposition above establishes native or whole-event completion.
+
+## Historical implementation evidence (2026-10-06)
+
+The dated snapshots below are historical evidence and do not state the current admission boundary.
+D1-D34 in [the takeover decision record](agent_decisions_2026-10-04.md) and D35 onward in the 2026-10-05 record supersede their conflicting source-status claims.
+The current allocator crosswalk has 109 content-attested packages, 78 reservation groups and 112 adapters; IW-076, IW-131 and IW-179 remain adapter-only and fail closed.
+The automatic ladder remains 3/4/5/7/10, and there is no pre-event surface.
+The general foreign-reaction and remnant-petition source is implemented; native behavior and complete typed probability evidence remain separate gates.
+The current bounded completion receipt is `docs/plans/006_independence_wave_plans/subagent_handoffs/completion_takeover_20261006.md`.
+Its then-missing forty-four Level 2 groups, three signature modules and four ready-member contracts have source dispositions in the October 8 tables above and [the active takeover status](takeover_status_2026-10-06.md).
+No whole-event completion follows from the historical checkmarks or the current admission count.
+
+
 ## 2026-10-03 live-startup error repair
 
 The orchestrator confirmed on 2026-10-03 that the five host-response variable predicates, report-callback counter, and invalid global-flag clear findings no longer appear at HEAD `d51bba41f`.

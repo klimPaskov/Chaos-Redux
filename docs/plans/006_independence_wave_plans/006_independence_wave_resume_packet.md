@@ -1,6 +1,40 @@
 # Event 006 resume packet
 
-## Current source checkpoint (2026-10-07)
+## Current source checkpoint (2026-10-08)
+
+The full accepted Event 006 goal remains active and incomplete.
+The user's standing instruction to take recommended options persists.
+Current source commit `9e2837f8edc1633cd8e96415366821ca5dc16886` integrates the Oyo/Aceh/Mon signature modules and FORM-17/32/36/37 sovereign contracts.
+Read [the signature source integration report](subagent_handoffs/signature_source_integration_20261007.md) for implementation evidence and its limits, and [the current source-of-truth map](006_source_of_truth_map.md) for dispositions.
+The source includes 31 signature focuses, eight paid projects, three achievements with nine reviewed DDS states, four exact-member contracts with two paid 180-day stages, four puzzle overlays with fourteen pieces, six protocol-defect repairs, and late-governance/restoration-receipt handling.
+Those source plans are implemented and must not be restarted from the earlier draft queue.
+
+The [Mon/PUSA payoff contract](../../specs/006_independence_wave_specs/specs/006_signature_payoff_contract.md) promotes the planner's recommendations with an independent acceptance basis: parent acceptance on October 7 under the human's standing recommended-choice instruction, reaffirmed in this October 8 reconciliation assignment.
+The source commit supplies separate implementation proof.
+No new broad expansion is required for the Mon river-office or PUSA payoff findings.
+Mon's paid services retain the river-office route, local preparation and current-generation/anchor proof, replace one institution, and award +15 capacity, +5 legitimacy and -5 instability through the clamped writer.
+PUSA retains its May 5, 1939 gate and grants one 50% industry research bonus after paid success.
+Both durable award histories survive same-generation cleanup/setup/CXT.
+
+The regional source commit `416688b8963ea0b1a47e3c8682b8125455cfca40` already integrates forty-four Level 2 groups with 220 shared focuses, as recorded in [the regional source report](subagent_handoffs/regional_focus_source_commit_20261007.md).
+The three generic skill additions in `8574c5e58eeb01752e6249a3d67b919b3194fddb` concern reusable lifecycle rules and their handoff, and do not close an Event 006 gate.
+Admission remains 109 attested packages, 78 reservation groups and 112 adapters, with IW-076/IW-131/IW-179 adapter-only and fail closed.
+The 3/4/5/7/10 ladder and no-pre-event invariant remain unchanged.
+
+Imported-focus geometry/connectors, matched production GUI states, complete AI/balance scenarios, native consent/cost/timing/cleanup/research behavior, grounded portraits and whole-event audits remain open.
+Keep the [signature comparison](subagent_handoffs/signature_probability_compare_20261007.md) and [ready-family scenario handoff](subagent_handoffs/signature_ready_probability_20261006.md) distinct, including their frozen hashes, excluded fixtures and newer Mon gaps.
+The [catalog review](subagent_handoffs/signature_catalog_review_20261007.md) verifies Event 006 detail/evolution parity without a workbook edit, and leaves `Needs Testing` unchanged.
+It does not certify every queued catalog or export surface.
+
+Next feasible accepted work is to reconcile the takeover audit's remaining Part 6/Part 7/README/formable-registry contradictions under a separately bounded documentation scope, review residual D34 dynamic-carrier consumers beyond the repaired subset, and pursue already accepted sourced-leadership standards where exact source/rights/role gates permit.
+Retain each of the remaining 84 unattested selectable rows' individual D25-D34 dependencies.
+Do not invent countries, formable contracts or weaker substitutes to bypass those gates.
+Resume the existing focus/GUI/probability/native evidence work alongside that source cleanup.
+The [October 8 documentation handoff](subagent_handoffs/documentation_checkpoint_20261008.md) records the bounded patch, unresolved conflicts and fresh MCP observation limits.
+
+## Historical source checkpoint (2026-10-07)
+
+The following draft-integration instructions describe the pre-`9e2837f8` checkpoint and are superseded for continuation by the October 8 checkpoint above.
 
 The previous goal turn made concrete progress through two reviewed source commits.
 `e00eeb6a1715f7de1831264846d5b664fefe45db` fixes duplicate bilateral progress and caller-owned temporary outputs, with nine bounded callback regression cases and independent source/tooltip review.
