@@ -3,7 +3,17 @@
 Disposition: implemented source checkpoints with explicitly incomplete overall acceptance.
 The user's Event 033 goal remains active and no event-completion claim is made.
 
-## Current F6 source checkpoint
+## Current F7 report-return checkpoint
+
+The current runtime is `3eb102bf6168362eadd58188d45791cd81f9713dc379d9e08da325334e65bd48`.
+Only three caller-owned temporary declarations were added to the committed E5 source, preserving the existing exact-positive-loss guard and every mortality/weight/cost/cap equation.
+The unchanged report preparer returns episode, evacuation status and end-date values to its caller, with twenty-six actual-preparer/scalar-frame cases and two cold before-source negative controls.
+See `validation/report_return_storage_owner_2026_10_08.md` for the exact before commit, byte reversal and non-native scope.
+Seven non-sealed source suites pass at this checkpoint, including the new report-return suite; sealed F6 is retained as E5 evidence rather than relabelled as current F7.
+The maximum-only report deduplication, actual damage/protection payload, report-display timing, migration and other F7 acceptance still require implementation and evidence.
+The architect is read-only on the bounded F7 receipt/payload audit; it owns no gameplay or runner patch.
+
+## Historical F6 opening checkpoint
 
 The formation-opening runtime is `e5c34d8bd73971609e26b7aef2d4a01cdd4f3f795c2856d83189dfcd546f5def`, with triggers `ae069680a185d0a0aa24d301fe62d158edab09a1a8d7d4ca0a36752dfa974f86`.
 Constants and root remain the F5 identities below.
