@@ -19,9 +19,28 @@
 # validated entry points and keep their presentation phases mutually exclusive.
 # ============================================================================
 
-# The AI hint requires a file-scoped literal. Keep it aligned with the shared
-# gods_of_africa_transaction.protection_pp_cost constant.
+# AI hints require file-scoped literals. Their shared charge constants remain
+# authoritative; the response source check rejects a mismatched hint.
+# Mirrors constant:gods_of_africa_transaction.protection_pp_cost.
 @GODS_OF_AFRICA_PROTECTION_PP_COST = 10
+# Mirrors constant:gods_of_africa_ultimatum.settlement_pp.
+@GODS_OF_AFRICA_ULTIMATUM_PP_COST = 150
+# Mirrors constant:gods_of_africa_council.speech_pp.
+@GODS_OF_AFRICA_COUNCIL_SPEECH_PP_COST = 25
+# Mirrors constant:gods_of_africa_transaction.defensive_preparation_pp_cost.
+@GODS_OF_AFRICA_DEFENSIVE_PREPARATION_PP_COST = 15
+# Mirrors constant:gods_of_africa_transaction.defensive_stockpile_pp_cost.
+@GODS_OF_AFRICA_DEFENSIVE_STOCKPILE_PP_COST = 15
+# Mirrors constant:gods_of_africa_transaction.defensive_transport_pp_cost.
+@GODS_OF_AFRICA_DEFENSIVE_TRANSPORT_PP_COST = 15
+# Mirrors constant:gods_of_africa_transaction.defensive_countermeasure_pp_cost.
+@GODS_OF_AFRICA_DEFENSIVE_COUNTERMEASURE_PP_COST = 15
+# Mirrors constant:gods_of_africa_coalition.pp_cost.
+@GODS_OF_AFRICA_COALITION_PP_COST = 25
+# Mirrors constant:gods_of_africa_expedition.pp_cost.
+@GODS_OF_AFRICA_EXPEDITION_PP_COST = 25
+# Mirrors constant:gods_of_africa_occupier_coercion.pp_cost.
+@GODS_OF_AFRICA_OCCUPIER_COERCION_PP_COST = 50
 
 gods_of_africa_participant_category = {
 	gods_of_africa_demand_mission = {
@@ -159,6 +178,7 @@ gods_of_africa_participant_category = {
 				gods_of_africa_ultimatum_settlement_is_affordable = yes
 			}
 		}
+		ai_hint_pp_cost = @GODS_OF_AFRICA_ULTIMATUM_PP_COST
 		custom_cost_trigger = { gods_of_africa_ultimatum_settlement_is_affordable = yes }
 		custom_cost_text = gods_of_africa_ultimatum_settlement_cost
 		cost = 0
@@ -276,6 +296,7 @@ gods_of_africa_participant_category = {
 				gods_of_africa_council_speech_is_affordable = yes
 			}
 		}
+		ai_hint_pp_cost = @GODS_OF_AFRICA_COUNCIL_SPEECH_PP_COST
 		custom_cost_trigger = { gods_of_africa_council_speech_is_affordable = yes }
 		custom_cost_text = gods_of_africa_council_speech_cost
 		cost = 0
@@ -913,6 +934,7 @@ gods_of_africa_participant_category = {
 			has_country_flag = gods_of_africa_defiant
 		}
 		available = { gods_of_africa_can_prepare_defensive_defiance = yes }
+		ai_hint_pp_cost = @GODS_OF_AFRICA_DEFENSIVE_PREPARATION_PP_COST
 		custom_cost_trigger = { gods_of_africa_can_prepare_defensive_defiance = yes }
 		custom_cost_text = gods_of_africa_defensive_preparation_cost
 		cost = 0
@@ -944,6 +966,7 @@ gods_of_africa_participant_category = {
 			has_country_flag = gods_of_africa_defiant
 		}
 		available = { gods_of_africa_can_harden_stockpiles = yes }
+		ai_hint_pp_cost = @GODS_OF_AFRICA_DEFENSIVE_STOCKPILE_PP_COST
 		custom_cost_trigger = { gods_of_africa_can_harden_stockpiles = yes }
 		custom_cost_text = gods_of_africa_defensive_stockpile_cost
 		cost = 0
@@ -975,6 +998,7 @@ gods_of_africa_participant_category = {
 			has_country_flag = gods_of_africa_defiant
 		}
 		available = { gods_of_africa_can_secure_transport = yes }
+		ai_hint_pp_cost = @GODS_OF_AFRICA_DEFENSIVE_TRANSPORT_PP_COST
 		custom_cost_trigger = { gods_of_africa_can_secure_transport = yes }
 		custom_cost_text = gods_of_africa_defensive_transport_cost
 		cost = 0
@@ -1006,6 +1030,7 @@ gods_of_africa_participant_category = {
 			has_country_flag = gods_of_africa_defiant
 		}
 		available = { gods_of_africa_can_prepare_countermeasures = yes }
+		ai_hint_pp_cost = @GODS_OF_AFRICA_DEFENSIVE_COUNTERMEASURE_PP_COST
 		custom_cost_trigger = { gods_of_africa_can_prepare_countermeasures = yes }
 		custom_cost_text = gods_of_africa_defensive_countermeasure_cost
 		cost = 0
@@ -1044,6 +1069,7 @@ gods_of_africa_participant_category = {
 		available = {
 			gods_of_africa_reconciliation_can_be_paid = yes
 		}
+		# This row also offers free victor recognition, so it has no fixed PP hint.
 		custom_cost_trigger = {
 			gods_of_africa_reconciliation_can_be_paid = yes
 		}
@@ -2137,6 +2163,7 @@ gods_of_africa_host_category = {
 				FROM = { gods_of_africa_coalition_target_is_valid = yes }
 			}
 		}
+		ai_hint_pp_cost = @GODS_OF_AFRICA_COALITION_PP_COST
 		custom_cost_trigger = { gods_of_africa_host_can_arm_coalition = yes }
 		custom_cost_text = gods_of_africa_coalition_cost
 		cost = 0
@@ -2201,6 +2228,7 @@ gods_of_africa_host_category = {
 				FROM = { gods_of_africa_expedition_target_is_valid = yes }
 			}
 		}
+		ai_hint_pp_cost = @GODS_OF_AFRICA_EXPEDITION_PP_COST
 		custom_cost_trigger = { gods_of_africa_host_can_send_expedition = yes }
 		custom_cost_text = gods_of_africa_expedition_cost
 		cost = 0
@@ -2264,6 +2292,7 @@ gods_of_africa_host_category = {
 				FROM = { gods_of_africa_occupier_coercion_target_is_valid = yes }
 			}
 		}
+		ai_hint_pp_cost = @GODS_OF_AFRICA_OCCUPIER_COERCION_PP_COST
 		custom_cost_trigger = { gods_of_africa_host_can_coerce_occupier = yes }
 		custom_cost_text = gods_of_africa_coercion_cost
 		cost = 0

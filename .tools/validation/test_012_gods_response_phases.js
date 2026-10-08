@@ -232,13 +232,32 @@ function gateFor(name) {
 	return P + 'host_settlement_view_is_open';
 }
 const gated = [...doctrine, ...priority, ...partners, ...judgment, 'commit_settlement'];
+// The later fixed-cost AI budgeting pass adds metadata without changing payment.
+// File-local literals are required here, so reject drift from shared charge tuning.
+const fixedPpHints = new Map([
+	['ultimatum_pay_settlement', ['ULTIMATUM', 'ultimatum.settlement_pp']],
+	['council_speech', ['COUNCIL_SPEECH', 'council.speech_pp']],
+	['prepare_defensive_defiance', ['DEFENSIVE_PREPARATION', 'transaction.defensive_preparation_pp_cost']],
+	['harden_stockpiles', ['DEFENSIVE_STOCKPILE', 'transaction.defensive_stockpile_pp_cost']],
+	['secure_transport', ['DEFENSIVE_TRANSPORT', 'transaction.defensive_transport_pp_cost']],
+	['prepare_countermeasures', ['DEFENSIVE_COUNTERMEASURE', 'transaction.defensive_countermeasure_pp_cost']],
+	['protect_partner', ['PROTECTION', 'transaction.protection_pp_cost']],
+	['arm_offender_enemies', ['COALITION', 'coalition.pp_cost']],
+	['send_expedition', ['EXPEDITION', 'expedition.pp_cost']],
+	['coerce_occupier', ['OCCUPIER_COERCION', 'occupier_coercion.pp_cost']],
+]);
 test('AST_preservation_all_existing_decisions_prices_weights_and_gameplay', () => {
 	assert.equal(gated.length, 20);
 	for (const [id, old] of beforeDecisions) {
 		const current = decisions.get(id); assert.ok(current, 'deleted row ' + id);
-		for (const key of ['cost', 'custom_cost_trigger', 'custom_cost_text', 'ai_hint_pp_cost', 'ai_will_do', 'days_remove', 'days_re_enable', 'days_mission_timeout', 'cancel_trigger', 'timeout_effect', 'cancel_effect', 'activation', 'target_array', 'target_root_trigger'])
+		for (const key of ['cost', 'custom_cost_trigger', 'custom_cost_text', 'ai_will_do', 'days_remove', 'days_re_enable', 'days_mission_timeout', 'cancel_trigger', 'timeout_effect', 'cancel_effect', 'activation', 'target_array', 'target_root_trigger'])
 			assert.deepEqual(field(current, key), field(old, key), id + '.' + key);
 		const short = id.slice(P.length);
+		if (fixedPpHints.has(short)) {
+			const [literal, charge] = fixedPpHints.get(short), token = '@GODS_OF_AFRICA_' + literal + '_PP_COST';
+			assert.equal(field(current, 'ai_hint_pp_cost'), token, id + ' fixed AI hint');
+			assert.equal(Number(field(load(decisionPath), token)), constants.get('constant:' + P + charge), id + ' shared PP charge');
+		} else assert.deepEqual(field(current, 'ai_hint_pp_cost'), field(old, 'ai_hint_pp_cost'), id + ' unchanged AI hint');
 		if (gated.includes(short)) {
 			const gate = gateFor(short);
 			assert.deepEqual(field(current, 'visible'), [{ key: gate, op: '=', value: 'yes' }, ...field(old, 'visible')], id + ' live visibility');
@@ -254,7 +273,8 @@ test('AST_preservation_all_existing_decisions_prices_weights_and_gameplay', () =
 			assert.deepEqual(field(current, 'available'), field(old, 'available'), id + ' availability');
 		}
 	}
-	return { existingRows: beforeDecisions.size, guardedHostRows: gated.length, navigationRows: navigation.length };
+	assert.equal(field(decisions.get(P + 'seek_reconciliation'), 'ai_hint_pp_cost'), undefined, 'mixed free/paid reconciliation must not reserve a fixed fee');
+	return { existingRows: beforeDecisions.size, guardedHostRows: gated.length, navigationRows: navigation.length, fixedPpHintsMatchingCharges: fixedPpHints.size };
 });
 test('AST_owner_trigger_effect_and_tuning_preservation', () => {
 	for (const path of [effectPath, recoveryPath]) {

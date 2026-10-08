@@ -330,6 +330,11 @@ The [Council shipment contract](../../../common/scripted_effects/012_africa_gods
 
 ## AI response posture
 
+Fixed custom political-power payments advertise their exact charge to the AI through saving hints.
+The ten fixed-price rows cover ultimatum settlement, Council speech, four preparations, protection, coalition support, expeditions and occupier coercion.
+The reconciliation entry also offers free victor recognition, so it retains its branch-specific affordability without a fixed reservation hint.
+The [budget-hint contract](../../plans/012_africa_plans/subagent_handoffs/012_gods_ai_budget_hints_implementation_2026-10-08.md) records the charge mapping and native acceptance limits.
+
 Participant and Africa AI weights follow the current campaign state, never a per-country personality (decision L24). The posture triggers at the end of `common/scripted_triggers/012_africa_gods_triggers.txt` read Africa's Strength band (`gods_of_africa_ai_africa_is_weak` for Limited or Regional, `_strong` for Continental and above, `_dominant` for Global and above), the participant's Wrath band, its opinion of Africa (above 25 or below -25), whether it holds or owns Africa's core land, whether it is in Africa's faction, protected by Africa or fighting a common enemy, whether it leads a faction hostile to Africa, its surrender progress, and whether it has more factories than Africa. From these, a government is a loyal ally, a defiant rival, a selective gambler (a stronger power that is neither, while Africa is below the Global band), or by default a cooperative pragmatist.
 
 Contract creation freezes the demand's burden (`gods_of_africa_freeze_demand_burden`): heavy when the participant's usable stock above its operating floor could not cover the demand `gods_of_africa_ai_burden.heavy_multiple` (5) times over, light when it could cover it `light_multiple` (10) times over. Every base and factor is a `gods_of_africa_ai_response` constant, and every closed gate keeps an explicit `factor = 0`.
