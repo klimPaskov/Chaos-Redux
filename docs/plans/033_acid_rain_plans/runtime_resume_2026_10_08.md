@@ -3,6 +3,27 @@
 Disposition: implemented source checkpoints with explicitly incomplete overall acceptance.
 The user's Event 033 goal remains active and no event-completion claim is made.
 
+## Current F5 checkpoint
+
+`4a592fd0c4a9e284f5bf78d09fe49717ddcb41bb` implements per-stage evolution controls, safe notice cancellation, due-clock/current-state-generation proof at global commitment and correct tier/log mapping.
+The current runtime is `71f0be97b23c2818ee2302009b6fc98c6a6b1a1b43f5588dd05bf1ae35914d89`, triggers are `0602105374350841e579279eb17b5cc627cded074c2b0503d2def361d1585c60` and constants are `900491e8c605450abc7c3057033276fdd00e52d0b709bff29be3bb42dbb15db7`.
+The independently rerun source replay passes 143 checks, including all 24 formation masks and 21 lifecycle contracts with conservative frames and explicit delegated bodies.
+Fresh E455-to-71F0 conditional comparison `probability-c122b4cf2df725d21dc64eef` reports zero changes/zero unresolved items across 32 named cases and 64 records.
+Conditional probabilities and source replay are not native eligibility, population-loss, payment, migration or multiplayer proof.
+The complete dated fixture/source/request/receipt bundle is committed with byte-preserving attributes, and the original 8B85/130-check evidence remains historical.
+See `validation/evolution_control_owner_repair_2026_10_08.md` and the current probability/source handoffs for source identities and artifact-provenance limits.
+The broad helper-aware one-node global-warning state-flow request returned a 600-second client timeout, with backend outcome unknown.
+A distinct narrower focused trace retry is tracked by parent cell 118 and cannot close the missing full helper/lifecycle gate.
+
+The UI worker's two-file ABI repair is stable at GUI-helper `d8da2914c924b5ee200449b811de88d971af99be9e48e4d632cedd46b70a623a` and scripted-localisation `326cf6d0b4906c0546b3cd1a719656b664e611a61f7adf5245384a43ed955223`.
+Its 149 source-frame assertions still pass with the current F5 dependencies, but that bundle is not yet integrated or visually approved.
+The parent inspected the retained full 1920x1080 render and confirmed the dense single-front storm background and inaccurate 35-percent coverage fill.
+Those and the remaining documented GUI/tooltip/phase defects require repair, not renderer excuses.
+The authoritative dedicated window is `acid_rain_world_window`, with `acid_rain_category_inlay`, rather than the earlier logical-name shorthand `chaosx_acid_rain_window`.
+
+The earlier resume sections below remain historical checkpoints.
+F6 immediate formation footprint, F7 reports, F8 AI useful windows, Humanitarian source proof/retirement and all required native/asset/audio/achievement gates still prevent completion.
+
 ## Finished commits
 
 `03447df6c5e4226525d2c26dc450f103d2297e78` guards public launches, repairs 28 regional output boundaries, adds fifteen terminal interruption hooks and isolates seventy-seven runtime loops.
