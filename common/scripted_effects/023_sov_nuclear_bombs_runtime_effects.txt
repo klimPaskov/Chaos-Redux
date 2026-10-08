@@ -427,6 +427,7 @@ sov_nuclear_bombs_credit_evolution_devices = {
 		clear_variable = sov_nuclear_bombs_evolution_stage
 		clear_variable = sov_nuclear_bombs_evolution_credit_amount
 		sov_nuclear_bombs_refresh_ledger_reconciliation = yes
+		missiles_note_payload_change = yes
 	}
 }
 
@@ -456,6 +457,7 @@ sov_nuclear_bombs_register_production_devices = {
 		set_country_flag = sov_nuclear_bombs_production_transaction_recorded
 		clear_variable = sov_nuclear_bombs_production_amount
 		sov_nuclear_bombs_refresh_ledger_reconciliation = yes
+		missiles_note_payload_change = yes
 	}
 }
 
@@ -780,6 +782,7 @@ sov_nuclear_bombs_commit_reserved_device = {
 		clr_country_flag = sov_nuclear_bombs_action_reservation_active
 		set_variable = { sov_nuclear_bombs_action_reservation_source = constant:sov_nuclear_bombs_ledger.zero }
 		sov_nuclear_bombs_refresh_ledger_reconciliation = yes
+		missiles_note_payload_change = yes
 	}
 }
 
@@ -1296,12 +1299,20 @@ sov_nuclear_bombs_operationalize_breakaway_site = {
 		set_variable = { sov_nuclear_bombs_site_reconciliation_state = constant:sov_nuclear_bombs_custody.reconciled }
 		sov_nuclear_bombs_record_breakaway_actor_from_state = yes
 		sov_nuclear_bombs_refresh_ledger_reconciliation = yes
+		if = {
+			limit = { has_state_flag = sov_nuclear_bombs_native_custody_with_holder has_variable = sov_nuclear_bombs_site_holder }
+			var:sov_nuclear_bombs_site_holder = {
+				if = { limit = { exists = yes } missiles_note_payload_change = yes }
+			}
+		}
 	}
 }
 
 # State scope. Move all currently intact site custody into the transferred
 # bucket without granting operational access to the new holder.
 sov_nuclear_bombs_mark_site_transferred = {
+	# Capture only countries whose native stock changes in this transaction.
+	clear_temp_array = sov_nuclear_bombs_transfer_payload_notice_countries
 	if = {
 		limit = {
 			sov_nuclear_bombs_state_is_registered = yes
@@ -1346,6 +1357,7 @@ sov_nuclear_bombs_mark_site_transferred = {
 					set_temp_variable = { sov_nuclear_bombs_native_transfer_delta = PREV.sov_nuclear_bombs_native_transfer_amount }
 					multiply_temp_variable = { sov_nuclear_bombs_native_transfer_delta = -1 }
 					add_nuclear_bombs = sov_nuclear_bombs_native_transfer_delta
+					add_to_temp_array = { array = sov_nuclear_bombs_transfer_payload_notice_countries value = THIS }
 				}
 				clr_state_flag = sov_nuclear_bombs_native_custody_with_holder
 				set_state_flag = sov_nuclear_bombs_native_custody_removed
@@ -1368,6 +1380,7 @@ sov_nuclear_bombs_mark_site_transferred = {
 				set_temp_variable = { sov_nuclear_bombs_native_transfer_delta = PREV.sov_nuclear_bombs_native_transfer_amount }
 				multiply_temp_variable = { sov_nuclear_bombs_native_transfer_delta = -1 }
 				add_nuclear_bombs = sov_nuclear_bombs_native_transfer_delta
+				add_to_temp_array = { array = sov_nuclear_bombs_transfer_payload_notice_countries value = THIS }
 			}
 			set_state_flag = sov_nuclear_bombs_native_custody_removed
 		}
@@ -1427,7 +1440,14 @@ sov_nuclear_bombs_mark_site_transferred = {
 			clr_state_flag = sov_nuclear_bombs_breakaway_site_operationalized
 		}
 		sov_nuclear_bombs_refresh_ledger_reconciliation = yes
+		set_temp_variable = { sov_nuclear_bombs_transfer_payload_notice_break = constant:sov_nuclear_bombs_ledger.zero }
+		for_each_scope_loop = {
+			array = sov_nuclear_bombs_transfer_payload_notice_countries
+			break = sov_nuclear_bombs_transfer_payload_notice_break
+			if = { limit = { exists = yes } missiles_note_payload_change = yes }
+		}
 	}
+	clear_temp_array = sov_nuclear_bombs_transfer_payload_notice_countries
 }
 
 # State scope. This marker belongs only to the Event 005 release bridge. An
@@ -1501,6 +1521,8 @@ sov_nuclear_bombs_rebind_event5_site_holder = {
 # settlement path; it is also reused by collapse recovery so native stockpile
 # movement and actor attribution cannot diverge between the two routes.
 sov_nuclear_bombs_return_site_custody_to_soviet = {
+	# Retain the actual donor through the holder overwrite until settlement.
+	clear_temp_array = sov_nuclear_bombs_return_payload_notice_countries
 	if = {
 		limit = {
 			sov_nuclear_bombs_state_is_registered = yes
@@ -1559,9 +1581,11 @@ sov_nuclear_bombs_return_site_custody_to_soviet = {
 				set_temp_variable = { sov_nuclear_bombs_native_return_delta = sov_nuclear_bombs_return_total }
 				multiply_temp_variable = { sov_nuclear_bombs_native_return_delta = -1 }
 				add_nuclear_bombs = sov_nuclear_bombs_native_return_delta
+				add_to_temp_array = { array = sov_nuclear_bombs_return_payload_notice_countries value = THIS }
 			}
 		}
 		SOV = { add_nuclear_bombs = sov_nuclear_bombs_return_total }
+		SOV = { add_to_temp_array = { array = sov_nuclear_bombs_return_payload_notice_countries value = THIS } }
 		add_to_variable = { sov_nuclear_bombs_site_assigned = sov_nuclear_bombs_return_total }
 		set_variable = { sov_nuclear_bombs_site_operational = constant:sov_nuclear_bombs_ledger.zero }
 		set_variable = { sov_nuclear_bombs_site_transferred = constant:sov_nuclear_bombs_ledger.zero }
@@ -1579,6 +1603,12 @@ sov_nuclear_bombs_return_site_custody_to_soviet = {
 		else = { set_variable = { sov_nuclear_bombs_site_reconciliation_state = constant:sov_nuclear_bombs_custody.reconciled } }
 		clear_variable = sov_nuclear_bombs_native_transfer_amount
 		sov_nuclear_bombs_refresh_ledger_reconciliation = yes
+		set_temp_variable = { sov_nuclear_bombs_return_payload_notice_break = constant:sov_nuclear_bombs_ledger.zero }
+		for_each_scope_loop = {
+			array = sov_nuclear_bombs_return_payload_notice_countries
+			break = sov_nuclear_bombs_return_payload_notice_break
+			if = { limit = { exists = yes } missiles_note_payload_change = yes }
+		}
 	}
 	else_if = {
 		limit = {
@@ -1588,6 +1618,7 @@ sov_nuclear_bombs_return_site_custody_to_soviet = {
 		set_variable = { sov_nuclear_bombs_site_reconciliation_state = constant:sov_nuclear_bombs_custody.disputed }
 		set_global_flag = sov_nuclear_bombs_native_custody_reconciliation_disputed
 	}
+	clear_temp_array = sov_nuclear_bombs_return_payload_notice_countries
 }
 
 # State scope. Return a transferred site to Soviet assigned custody only after

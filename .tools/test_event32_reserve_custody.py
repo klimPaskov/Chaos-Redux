@@ -22,7 +22,7 @@ OPS = source('common/scripted_effects/032_missiles_operations_effects.txt')
 TRIGGERS = {**source('common/scripted_triggers/032_missiles_triggers.txt'),
             **source('common/scripted_triggers/032_missiles_operations_triggers.txt')}
 CONSTANTS = source('common/script_constants/032_missiles_constants.txt')
-EFFECTS = {**CORE, **OPS}
+EFFECTS = {**CORE, **OPS, **source('common/scripted_effects/032_missiles_evolution_effects.txt')}
 
 
 def scope(**variables):

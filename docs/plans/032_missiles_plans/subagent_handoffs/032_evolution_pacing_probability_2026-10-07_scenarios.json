@@ -1,0 +1,560 @@
+{
+  "schema": "chaosx.probability-baseline-fixture.v1",
+  "fixtureId": "E32_EVOLUTION_PACING_2026-10-07",
+  "status": "unresolved_numeric_baseline",
+  "workspaceId": "mod_chaos_redux_ea3b2d67c2c0",
+  "date": "2026-10-07",
+  "scope": {
+    "surface": "Event 32 evolution unlock timing",
+    "helper": "missiles_arm_evolution_track",
+    "tracks": [
+      "Rogue Launch Commands",
+      "Unreliable Guidance",
+      "Saturation Arsenals",
+      "Special Warheads",
+      "Automatic Retaliation"
+    ],
+    "readOnly": true,
+    "gameplayFilesChanged": false,
+    "sourceSnapshotsCreated": false
+  },
+  "scenarioSet": {
+    "id": "E32_EVOLUTION_PACING_2026-10-07",
+    "mcpScenarioHash": null,
+    "mcpScenarioHashStatus": "No evaluator artifact was produced, so HOI4 MCP returned no scenario hash.",
+    "candidatePool": {
+      "applicable": false,
+      "completeness": "not_applicable",
+      "reason": "These five tracks have independent eligibility gates and delayed events; they are not candidates in a probability-proportional selection pool. The program registry is external state, not a normalized candidate pool."
+    },
+    "cadence": {
+      "acceptedEvent32Firing": "Calls missiles_evaluate_evolution_unlocks from missiles_global_firing_transaction.",
+      "evolutionJob": "Each newly armed track queues chaosx.nr32.190 at its sampled delay; a job requeues after 7 days when another due track remains.",
+      "watch": "One chaosx.nr32.191 watch is queued every 30 days while any enabled track remains locked; each watch recounts global.missiles_program_registry.",
+      "mcpModel": "No scheduled transitions or cadence fields were modeled by the probability adapter."
+    },
+    "terminalStates": [
+      "A track unlocks and records once.",
+      "A track is disabled and its pending flag/date are cleared at an evaluation.",
+      "The shared watch stops when no enabled locked track remains."
+    ],
+    "seed": null,
+    "seedStatus": "No seeded simulation was run because direct_random did not match this source construct.",
+    "scenarios": [
+      {
+        "id": "EVO-01",
+        "state": {
+          "missiles_program_ever_initialized": true,
+          "global.chaos_meter_value": 200,
+          "events_log_disabled_evolution_32_32_4": false
+        }
+      },
+      {
+        "id": "EVO-02",
+        "state": {
+          "missiles_program_ever_initialized": true,
+          "global.chaos_meter_value": 200,
+          "events_log_disabled_evolution_32_32_4": false
+        }
+      },
+      {
+        "id": "EVO-03",
+        "state": {
+          "missiles_program_ever_initialized": true,
+          "global.chaos_meter_value": 400,
+          "events_log_disabled_evolution_32_32_2": false
+        }
+      },
+      {
+        "id": "EVO-04",
+        "state": {
+          "missiles_program_ever_initialized": true,
+          "global.chaos_meter_value": 400,
+          "events_log_disabled_evolution_32_32_2": false
+        }
+      },
+      {
+        "id": "EVO-05",
+        "state": {
+          "missiles_program_ever_initialized": true,
+          "global.chaos_meter_value": 600,
+          "events_log_disabled_evolution_32_32_1": false
+        }
+      },
+      {
+        "id": "EVO-06",
+        "state": {
+          "missiles_program_ever_initialized": true,
+          "global.chaos_meter_value": 600,
+          "events_log_disabled_evolution_32_32_1": false
+        }
+      },
+      {
+        "id": "EVO-07",
+        "state": {
+          "missiles_program_ever_initialized": true,
+          "global.chaos_meter_value": 800,
+          "events_log_disabled_evolution_32_32_3": false
+        }
+      },
+      {
+        "id": "EVO-08",
+        "state": {
+          "missiles_program_ever_initialized": true,
+          "global.chaos_meter_value": 800,
+          "events_log_disabled_evolution_32_32_3": false
+        }
+      },
+      {
+        "id": "EVO-09",
+        "state": {
+          "missiles_program_ever_initialized": true,
+          "global.chaos_meter_value": 899,
+          "events_log_disabled_evolution_32_32_5": false
+        }
+      },
+      {
+        "id": "EVO-10",
+        "state": {
+          "missiles_program_ever_initialized": true,
+          "global.chaos_meter_value": 900,
+          "events_log_disabled_evolution_32_32_5": false,
+          "world_end": false
+        }
+      },
+      {
+        "id": "EVO-PACE",
+        "state": {
+          "missiles_program_ever_initialized": true,
+          "global.chaos_meter_value": 900,
+          "missiles_evolution_first_pulse_done": false
+        }
+      }
+    ]
+  },
+  "scenarioProfiles": [
+    {
+      "id": "EVO-01",
+      "matrixId": "EVO-01",
+      "track": "rogue_commands",
+      "trackType": 4,
+      "disableGate": "events_log_disabled_evolution_32_32_4",
+      "baseConstant": "missiles_evolution_timing.rogue_days",
+      "baseDays": 120,
+      "acceptedSetup": "Gathering Storm with widespread instability.",
+      "expected": "Shorter than base.",
+      "sourceEligibility": "Chaos at least 200 and at least one vulnerable managed program.",
+      "sourceHighPressure": "At least 2 vulnerable managed programs applies the 0.50 delay factor.",
+      "classification": "unresolved"
+    },
+    {
+      "id": "EVO-02",
+      "matrixId": "EVO-02",
+      "track": "rogue_commands",
+      "trackType": 4,
+      "disableGate": "events_log_disabled_evolution_32_32_4",
+      "baseConstant": "missiles_evolution_timing.rogue_days",
+      "baseDays": 120,
+      "acceptedSetup": "Stable world with one secure program.",
+      "expected": "Longer than base.",
+      "sourceEligibility": "Requires at least one vulnerable managed program; one secure program alone supplies none.",
+      "sourceFinding": "If the matrix setup means zero vulnerable programs, the source is ineligible rather than slower than base.",
+      "classification": "exact_source_gate_conflict; numeric_timing_unresolved"
+    },
+    {
+      "id": "EVO-03",
+      "matrixId": "EVO-03",
+      "track": "unreliable_guidance",
+      "trackType": 2,
+      "disableGate": "events_log_disabled_evolution_32_32_2",
+      "baseConstant": "missiles_evolution_timing.guidance_days",
+      "baseDays": 105,
+      "acceptedSetup": "Many launches and low readiness.",
+      "expected": "Shorter than base.",
+      "sourceEligibility": "Chaos at least 400, one operational program, and at least one strain condition: 2 low-readiness programs, 1 overstocked program, at least 3 global launches, or unmaintained share at least 0.50.",
+      "sourceHighPressure": "At least 2 managed programs at war applies the 0.50 delay factor.",
+      "classification": "unresolved"
+    },
+    {
+      "id": "EVO-04",
+      "matrixId": "EVO-04",
+      "track": "unreliable_guidance",
+      "trackType": 2,
+      "disableGate": "events_log_disabled_evolution_32_32_2",
+      "baseConstant": "missiles_evolution_timing.guidance_days",
+      "baseDays": 105,
+      "acceptedSetup": "Few launches and high readiness.",
+      "expected": "Longer than base.",
+      "sourceEligibility": "Still requires one operational program and at least one strain condition; the matrix does not specify overstocking or maintenance neglect.",
+      "sourceLongening": "A managed program count below 2 applies 1.50; the source does not select this branch from readiness and launch count alone.",
+      "classification": "external_inputs_incomplete; numeric_timing_unresolved"
+    },
+    {
+      "id": "EVO-05",
+      "matrixId": "EVO-05",
+      "track": "saturation",
+      "trackType": 1,
+      "disableGate": "events_log_disabled_evolution_32_32_1",
+      "baseConstant": "missiles_evolution_timing.saturation_days",
+      "baseDays": 90,
+      "acceptedSetup": "Chaos Tier with many mature programs.",
+      "expected": "Near target MTTH.",
+      "sourceEligibility": "Chaos at least 600, at least 2 operational programs, operational share at least 0.40, and at least 2 managed programs at war.",
+      "sourceHighPressure": "At least 4 managed programs at war applies the 0.50 delay factor; the matrix does not declare the war count.",
+      "classification": "external_inputs_incomplete; numeric_timing_unresolved"
+    },
+    {
+      "id": "EVO-06",
+      "matrixId": "EVO-06",
+      "track": "saturation",
+      "trackType": 1,
+      "disableGate": "events_log_disabled_evolution_32_32_1",
+      "baseConstant": "missiles_evolution_timing.saturation_days",
+      "baseDays": 90,
+      "acceptedSetup": "Few early programs.",
+      "expected": "Longer or ineligible.",
+      "sourceEligibility": "Early programs that do not meet the operational-count and 0.40 operational-share gates are ineligible.",
+      "classification": "bounded_source_gate; numeric_timing_unresolved"
+    },
+    {
+      "id": "EVO-07",
+      "matrixId": "EVO-07",
+      "track": "special_warheads",
+      "trackType": 3,
+      "disableGate": "events_log_disabled_evolution_32_32_3",
+      "baseConstant": "missiles_evolution_timing.special_days",
+      "baseDays": 120,
+      "acceptedSetup": "No payload owner.",
+      "expected": "Ineligible.",
+      "sourceEligibility": "Chaos at least 800 and at least 1 managed program owns a supported payload.",
+      "classification": "exact_source_gate; numeric_timing_unresolved"
+    },
+    {
+      "id": "EVO-08",
+      "matrixId": "EVO-08",
+      "track": "special_warheads",
+      "trackType": 3,
+      "disableGate": "events_log_disabled_evolution_32_32_3",
+      "baseConstant": "missiles_evolution_timing.special_days",
+      "baseDays": 120,
+      "acceptedSetup": "Several payload owners.",
+      "expected": "Eligible.",
+      "sourceEligibility": "Chaos at least 800 and at least 1 managed program owns a supported payload.",
+      "sourceHighPressure": "At least 2 payload-owning programs applies the 0.50 delay factor.",
+      "classification": "unresolved"
+    },
+    {
+      "id": "EVO-09",
+      "matrixId": "EVO-09",
+      "track": "automatic_retaliation",
+      "trackType": 5,
+      "disableGate": "events_log_disabled_evolution_32_32_5",
+      "baseConstant": "missiles_evolution_timing.retaliation_days",
+      "baseDays": 150,
+      "acceptedSetup": "Below 900 chaos.",
+      "expected": "Ineligible.",
+      "sourceEligibility": "Chaos at least 900, no world_end, at least 2 operational programs, and at least 1 hostile retaliation-capable pair.",
+      "classification": "exact_source_threshold; numeric_timing_unresolved"
+    },
+    {
+      "id": "EVO-10",
+      "matrixId": "EVO-10",
+      "track": "automatic_retaliation",
+      "trackType": 5,
+      "disableGate": "events_log_disabled_evolution_32_32_5",
+      "baseConstant": "missiles_evolution_timing.retaliation_days",
+      "baseDays": 150,
+      "acceptedSetup": "At least 900 chaos, no active world end, and a hostile missile pair.",
+      "expected": "Eligible.",
+      "sourceEligibility": "Also requires 2 operational programs; hostile-pair counting requires a retaliation-capable program and an operational hostile counterpart.",
+      "sourceHighPressure": "At least 2 hostile capable pairs applies the 0.50 delay factor.",
+      "classification": "external_scope_bindings_incomplete; numeric_timing_unresolved"
+    },
+    {
+      "id": "EVO-PACE",
+      "matrixId": null,
+      "track": "all_five_tracks",
+      "trackType": null,
+      "disableGates": [
+        "events_log_disabled_evolution_32_32_1",
+        "events_log_disabled_evolution_32_32_2",
+        "events_log_disabled_evolution_32_32_3",
+        "events_log_disabled_evolution_32_32_4",
+        "events_log_disabled_evolution_32_32_5"
+      ],
+      "baseConstant": null,
+      "acceptedSetup": "First high-chaos pulse with every track eligible and enabled.",
+      "expected": "Five independent track jobs are staggered.",
+      "sourceFormula": "The helper overwrites the normal base/random delay with first_fire_delay_days plus missiles_evolution_armed times first_fire_stagger_days, then rounds and clamps.",
+      "sourceOrder": ["rogue_commands", "unreliable_guidance", "saturation", "special_warheads", "automatic_retaliation"],
+      "sourceConstants": {
+        "first_fire_delay_days": 21,
+        "first_fire_stagger_days": 14,
+        "job_stagger_days": 7,
+        "watch_days": 30
+      },
+      "mcpStateOmissions": "The submitted state set first_pulse_done=false but omitted all five current disable gates, unlocked/pending states, and the program registry.",
+      "classification": "bounded_source_formula; MCP_timing_unresolved"
+    }
+  ],
+  "sharedExternalFactors": {
+    "completeness": "incomplete_for_all_scenarios",
+    "missing": [
+      "Complete global.missiles_program_registry membership and country scope bindings.",
+      "Per-program missiles_country_can_manage_program result.",
+      "Per-program stage, active site, war, readiness, reserve, capacity, guidance improvement, payload ownership, command control, stability, civil war, security, damage, capture, and occupation facts used by the source gates.",
+      "The full hostile retaliation-capable pair relationship set for EVO-10 and EVO-PACE.",
+      "Global missiles_launch_total and the exact program-pool denominators for operational and unmaintained shares.",
+      "All other tracks' current disabled, unlocked, pending, and due-date state for EVO-PACE.",
+      "Whether the first pulse has already completed for EVO-01 through EVO-10.",
+      "Current global date and scheduled queue state when the track is armed.",
+      "Any program, war, payload, site, chaos, or disable-state changes during a track's delay.",
+      "An engine RNG seed and a probability adapter that recognizes set_temp_variable_to_random."
+    ],
+    "candidatePool": "Not applicable; this is not probability-proportional sampling.",
+    "uncertainInputs": "None simulated. The source RNG value is an explicit uniform random input, but the connected direct_random adapter did not match it.",
+    "scheduledStateChanges": [],
+    "date": null,
+    "terminalState": "Track unlock, track disable, or all enabled tracks unlocked/disabled.",
+    "classification": "unresolved"
+  },
+  "sourceTrace": {
+    "normalBaseDays": {
+      "rogue_commands": 120,
+      "unreliable_guidance": 105,
+      "saturation": 90,
+      "special_warheads": 120,
+      "automatic_retaliation": 150
+    },
+    "normalDelayModifiers": {
+      "fewer_than_2_managed_programs": 1.5,
+      "high_pressure_factor": 0.5,
+      "random_spread_min": 0.75,
+      "random_spread_width": 0.5,
+      "random_input": "set_temp_variable_to_random produces a value in [0,1) in installed game documentation.",
+      "post_processing": "round, then clamp to at least 1 day"
+    },
+    "highPressureConditions": {
+      "rogue_commands": "vulnerable managed programs >= 2",
+      "unreliable_guidance": "managed programs at war >= 2",
+      "saturation": "managed programs at war >= 4",
+      "special_warheads": "payload-owning managed programs >= 2",
+      "automatic_retaliation": "hostile retaliation-capable pairs >= 2"
+    },
+    "firstPulse": {
+      "overrideRunsAfterRandomSample": true,
+      "baseDays": 21,
+      "perArmedTrackStaggerDays": 14,
+      "trackOrder": ["rogue_commands", "unreliable_guidance", "saturation", "special_warheads", "automatic_retaliation"],
+      "classification": "bounded_source_formula; no MCP timing trace"
+    },
+    "selectionModel": "Independent per-track gates and scheduled jobs; no normalized race, random_list, or MTTH syntax exists in the inspected evolution helper/event surface.",
+    "commitOrdering": "Each chaosx.nr32.190 invocation commits at most one due track; source branch order is rogue, guidance, saturation, special warheads, automatic retaliation. Remaining due tracks cause a 7-day requeue.",
+    "watchModel": "One queued chaosx.nr32.191 hidden event repeats every 30 days while any enabled track remains locked and recounts the bounded program registry.",
+    "mcpInterpretation": "Source constants and gate expressions are exact source facts; the realized timing distribution and cumulative chance are unresolved."
+  },
+  "mcpEvidence": {
+    "liveSchemas": {
+      "probability_inspect": "Inspected connected tool schema for adapter, candidatePool, source, and workspaceId.",
+      "probability_evaluate": "Inspected connected schema for scenarioSet, metrics, outputs, horizonDays, and adapter.",
+      "probability_sweep": "Inspected connected schema for scenarioSet and sweep paths/steps/pairwise/findRankReversals.",
+      "probability_render": "Requires a retained analysisId; none was returned.",
+      "probability_compare": "No before/after comparison run because no weighted edit was made and no numeric baseline artifact exists.",
+      "serverVersion": "No separate server version or health route was exposed in the connected tool catalog; the exact running server version was not independently confirmed."
+    },
+    "inspectCalls": [
+      {
+        "adapter": "direct_random",
+        "requestedIdentifier": "missiles_arm_evolution_track",
+        "code": "PROBABILITY_SOURCE_DISCOVERED",
+        "status": "ok",
+        "discoveryReason": "identifier_not_found",
+        "suggestedAdapter": "random_list",
+        "availableAdapter": "random_list",
+        "randomListCandidatesInFile": 19,
+        "sourceHash": "02d2c9f5dce675e336c3c67ccc35a866f85d16a56f372d60b3a03129f13801cb",
+        "sourceRevision": "2fcfa414fb60c0fef1fe7cea70bba47a1d2eff58a5dc7f3adb9919a3b4060324",
+        "artifactUri": "hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/79ee188405c6dce5d9013a80203f7369626386e73912600a0393e535483aeee8/60f402dd2d0cf416601682cd0ce67aad3067a9adba13c9790c0852e75ac8f3f7/probability-inspect-02d2c9f5dce6.json"
+      },
+      {
+        "adapter": "event_mean_time_to_happen",
+        "requestedIdentifier": "missiles_arm_evolution_track",
+        "code": "PROBABILITY_SOURCE_DISCOVERED",
+        "status": "ok",
+        "discoveryReason": "requested_adapter_empty",
+        "suggestedAdapter": "random_list",
+        "availableAdapter": "random_list",
+        "randomListCandidatesInFile": 19,
+        "sourceHash": "02d2c9f5dce675e336c3c67ccc35a866f85d16a56f372d60b3a03129f13801cb",
+        "sourceRevision": "c822e464e8aac03b93d77f5f12e6b088865e39e330ec97a4e8569598a145cf62",
+        "artifactUri": "hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/90b72757aa1bc8515ee93a122f4ad1fe777f564ef9d032856515be24485bb6c7/b058d793c1a7a447a064e343a2fe772e23137bc4ac92cf879abfeab9c619acc7/probability-inspect-02d2c9f5dce6.json"
+      }
+    ],
+    "analysisCalls": [
+      {
+        "tool": "probability_evaluate",
+        "adapter": "event_mean_time_to_happen",
+        "scenarioSetId": "E32_EVOLUTION_PACING_2026-10-07",
+        "scenarioIds": ["EVO-01", "EVO-02", "EVO-03", "EVO-04", "EVO-05", "EVO-06", "EVO-07", "EVO-08", "EVO-09", "EVO-10", "EVO-PACE"],
+        "code": "PROBABILITY_SURFACE_EMPTY",
+        "status": "error",
+        "blocker": "No weighted blocks matched this request",
+        "analysisArtifacts": [],
+        "scenarioHash": null
+      },
+      {
+        "tool": "probability_evaluate",
+        "adapter": "direct_random",
+        "scenarioSetId": "E32_EVOLUTION_PACING_2026-10-07",
+        "scenarioIds": ["EVO-01", "EVO-02", "EVO-03", "EVO-04", "EVO-05", "EVO-06", "EVO-07", "EVO-08", "EVO-09", "EVO-10", "EVO-PACE"],
+        "code": "PROBABILITY_SURFACE_EMPTY",
+        "status": "error",
+        "blocker": "No weighted blocks matched this request",
+        "analysisArtifacts": [],
+        "scenarioHash": null
+      },
+      {
+        "tool": "probability_sweep",
+        "adapter": "event_mean_time_to_happen",
+        "scenarioSetId": "E32_EVOLUTION_PACING_2026-10-07",
+        "scenarioIds": ["EVO-01", "EVO-02", "EVO-03", "EVO-04", "EVO-05", "EVO-06", "EVO-07", "EVO-08", "EVO-09", "EVO-10", "EVO-PACE"],
+        "sweptPaths": [
+          "missiles_evolution_timing.rogue_days",
+          "missiles_evolution_timing.guidance_days",
+          "missiles_evolution_timing.saturation_days",
+          "missiles_evolution_timing.special_days",
+          "missiles_evolution_timing.retaliation_days",
+          "missiles_evolution_pressure.delay_shortening_multiplier",
+          "missiles_evolution_pressure.delay_lengthening_multiplier",
+          "missiles_evolution_pacing.spread_min",
+          "missiles_evolution_pacing.spread_width"
+        ],
+        "code": "PROBABILITY_SURFACE_EMPTY",
+        "status": "error",
+        "blocker": "No weighted blocks matched this request",
+        "analysisArtifacts": [],
+        "scenarioHash": null
+      }
+    ],
+    "render": {
+      "probabilityRender": "Not callable without an analysisId; both evaluations and the sweep returned no analysis artifacts.",
+      "eventInspect": {
+        "eventId": "chaosx.nr32.190",
+        "code": "EVENT_INSPECTED_PARTIAL",
+        "status": "ok",
+        "blockingDiagnostics": 1,
+        "graphRevision": "8f4a82aa5d847df22b40a90e209f8bd0e27f3d6ebe79d13e4fb3dbaf45dc33b0",
+        "graphHash": "d494c41cf68a6eb896650d0f95ea38572ce93b8c83273a07a92d60c74eb41ceb",
+        "artifactUri": "hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/c26dad0c97f217c5851f4b2e198a482d1ae093e42d585488d0ec6f5fdefd10bf/f0189c19b981fc16f073e84c3562b9594cdea98e5407648a1cade053c175f98f/event-trace-8f4a82aa5d84.json"
+      },
+      "eventRender": {
+        "view": "timing",
+        "code": "EVENT_RENDERED_PARTIAL",
+        "status": "ok",
+        "graphRevision": "8f4a82aa5d847df22b40a90e209f8bd0e27f3d6ebe79d13e4fb3dbaf45dc33b0",
+        "graphHash": "d494c41cf68a6eb896650d0f95ea38572ce93b8c83273a07a92d60c74eb41ceb",
+        "selectedNodeIds": [],
+        "totalGraphNodes": 45964,
+        "branchRenders": 0,
+        "manifestUri": "hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/80e79c4c36df450f7bd57b2025aaba4d343a06c6bc093220151fc4f3c6227018/dbecfd93f1dd0d166b08b4679681af06c673144ea217c134076df7c46eef11f1/event-timing-8f4a82aa5d84-manifest.json",
+        "jsonUri": "hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/bdb0b5943efb485b2af530ff4af3f0187c5d8a2eee26bde14a4f821ca70a4f4a/0cfd4be390d5d13fb82b41197772ea6d6c0e83b10246585fc71f000b13d4f132/event-timing-8f4a82aa5d84.json",
+        "svgUri": "hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/baa81d39602ac354d79d44e13e3dfa37d2b95caa10811e634cf259bc73fe3769/7755c24ac9fbe1b571aa877db1a28185c20c2692b4e9643f6c5ac1716bf5d34c/event-timing-8f4a82aa5d84.svg",
+        "pngUri": "hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/9307a070bfb320d28a88749d97f7c4ae801bb62f361d5d1b75cc12d62e4e78cf/1469d31143b282957e5a403d780d2c317ab16c81e726f5b356ed094b2c4816af/event-timing-8f4a82aa5d84.png"
+      }
+    },
+    "comparison": {
+      "attempted": false,
+      "comparisonId": null,
+      "reason": "No weighted timing edit or after-source exists; user explicitly deferred comparison until the parent freezes pre-edit physical sources."
+    },
+    "simulation": {
+      "attempted": false,
+      "reason": "The direct_random adapter did not match the uniform variable draw; a custom pool or random_list proxy would model a different surface."
+    },
+    "sequence": {
+      "attempted": false,
+      "reason": "No declared custom weighted pool exists; cadence alone does not turn independent evolution tracks into a pool."
+    }
+  },
+  "sourceIdentities": [
+    {
+      "path": "common/scripted_effects/032_missiles_operations_effects.txt",
+      "identifiers": ["missiles_measure_evolution_pressure", "missiles_arm_evolution_track", "missiles_evaluate_evolution_unlocks", "missiles_queue_evolution_watch", "missiles_run_evolution_job"],
+      "localSha256": "5EC05957945AD6F2F2E71ADF4091EDECA7B08E57A233F8267585B7428CBCD6E7",
+      "sourceLookupRevisions": ["640f18464a7eae92e6808dbe1a8b1a0a5e355f91aa86076ca7de7d1f959f3e76", "4a27c70bd4e962fc09e2680ab8342d387756cc4b245e299904ea9aef0881a3bd", "369e182c77c427cfbe9a740ca6d1ff3c7c298bd1ea7bc1073a76fe59aa30a7f8"],
+      "sourceLines": "missiles_measure_evolution_pressure 543-594; missiles_arm_evolution_track 655-712; missiles_evaluate_evolution_unlocks 816-978; missiles_run_evolution_watch 983-987; watch queue 991-1015; delayed job 1020-1123"
+    },
+    {
+      "path": "common/script_constants/032_missiles_constants.txt",
+      "identifiers": ["missiles_evolution_timing", "missiles_evolution_pressure", "missiles_evolution_pacing"],
+      "localSha256": "1DABADF3281586EF3106819E5B130F0685C726C85D495A5EF59798FA3C368A94",
+      "sourceLookupRevision": "174a3d894524b4e78a7a1eeb32042d53ce7b437c5686b1bb9c73b7618188d790",
+      "sourceLines": "timing 414-435; pressure 786-808; pacing 812-837"
+    },
+    {
+      "path": "common/scripted_triggers/032_missiles_operations_triggers.txt",
+      "identifiers": ["missiles_evolution_rogue_launch_commands_is_eligible", "missiles_evolution_unreliable_guidance_is_eligible", "missiles_evolution_saturation_is_eligible", "missiles_evolution_special_warheads_is_eligible", "missiles_evolution_automatic_retaliation_is_eligible", "missiles_evolution_track_awaits_unlock"],
+      "localSha256": "424E1749A463C7621C89F8A881ECCFD05109F78B8911F6598601C7D324948504",
+      "sourceLookupRevisions": ["8a5a4f3972667eb1dd0cd0bb9865a1e3d0fbe791711c2c224007c383b07c468e", "369e182c77c427cfbe9a740ca6d1ff3c7c298bd1ea7bc1073a76fe59aa30a7f8"],
+      "sourceLines": "eligibility helpers 1041-1089; awaits-unlock current gates 1091-1116"
+    },
+    {
+      "path": "common/scripted_effects/032_missiles_effects.txt",
+      "identifiers": ["missiles_global_firing_transaction", "missiles_evaluate_evolution_unlocks"],
+      "localSha256": "B28EF2A3CE3E88C177E29FCF7DEEFC0AE253531D17FF41AFB1EABEE90A7F4E64",
+      "sourceLookupRevision": "f80448312962dc62d3a6568168f1b29b5e763acb0160dc770ee869e6c1222dd8",
+      "sourceLine": "missiles_global_firing_transaction call at 274"
+    },
+    {
+      "path": "events/032_missile_crisis.txt",
+      "identifiers": ["chaosx.nr32.190", "chaosx.nr32.191"],
+      "localSha256": "2416FC6159201C6059925CD68218DE159EE0F37ADE4F89896403801FEC99A50A",
+      "sourceLookupRevision": "8a069c1e5049b5f1356f651580963c6afa9dba88b3a039db153d06d61194b243",
+      "sourceLines": "chaosx.nr32.190 62-67; chaosx.nr32.191 72-76"
+    }
+  ],
+  "documentationReferences": [
+    {
+      "source": "wiki",
+      "title": "Data structures",
+      "heading": "MTTH variables",
+      "path": "paradox_wiki/Data structures - Hearts of Iron 4 Wiki.md",
+      "lines": "887-913",
+      "revision": "62273f37ed30e5479acb331a8973f48dadc1867c4913c8a940e3e790e7af32d4"
+    },
+    {
+      "source": "wiki",
+      "title": "Event modding",
+      "heading": "Triggering",
+      "path": "paradox_wiki/Event modding - Hearts of Iron 4 Wiki.md",
+      "lines": "117-150",
+      "revision": "96327b896298420d84058394a44ed08be7eb518726b8f207b392fea71f05d43d"
+    },
+    {
+      "source": "wiki",
+      "title": "Event modding",
+      "heading": "Effect",
+      "path": "paradox_wiki/Event modding - Hearts of Iron 4 Wiki.md",
+      "lines": "192-229",
+      "revision": "96327b896298420d84058394a44ed08be7eb518726b8f207b392fea71f05d43d"
+    },
+    {
+      "source": "game_doc",
+      "title": "effects documentation",
+      "heading": "set_temp_variable_to_random",
+      "path": "C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/effects_documentation.md",
+      "lines": "7842-7858",
+      "revision": "2cdc93d26775990468eed167442f7a416b13059fb8fe07d139b54250b79209af"
+    }
+  ],
+  "retainedOlderBaselines": [
+    "docs/plans/032_missiles_plans/subagent_handoffs/032_evolution_gate_probability_baseline_2026-10-03.md",
+    "docs/plans/032_missiles_plans/subagent_handoffs/032_evolution_gate_probability_baseline_2026-10-03_scenarios.json"
+  ],
+  "remainingWork": [
+    "Parent freezes the physical pre-edit sources before any authorized timing edit.",
+    "Obtain or implement a probability adapter for separate per-track MTTH or the set_temp_variable_to_random delay source; do not substitute unrelated random_list entries.",
+    "Rerun EVO-01 through EVO-10 and EVO-PACE with complete managed-program scopes, external factors, and any scheduled state changes on an adapter-supported surface.",
+    "Request same-scenario probability_compare only after the owner applies a weighted change and supplies the immutable before paths."
+  ]
+}

@@ -248,6 +248,7 @@ cbrn_try_debit_action_payload = {
 			limit = { check_variable = { var = cbrn_payload_debit_model_matched value = constant:cbrn_proof.supplied compare = equals } }
 			set_temp_variable = { cbrn_action_payload_consumed = cbrn_action_payload_required }
 			set_temp_variable = { cbrn_action_payload_consumed_proof = constant:cbrn_proof.supplied }
+			missiles_note_payload_change = yes
 		}
 	}
 }
@@ -388,6 +389,9 @@ cbrn_change_air_payload_profile = {
 		}
 		set_country_flag = { flag = cbrn_air_profile_change_in_progress days = var:cbrn_payload_profile_change_days }
 		set_temp_variable = { cbrn_payload_profile_change_accepted = constant:cbrn_proof.supplied }
+		missiles_note_payload_change = yes
+		set_temp_variable = { missiles_payload_completion_days = cbrn_payload_profile_change_days }
+		missiles_queue_payload_completion_observation = yes
 	}
 }
 
@@ -695,6 +699,7 @@ cbrn_convert_selected_agent_to_air_payload_lots = {
 				cbrn_debit_selected_air_agent_stock_internal = yes
 				cbrn_add_selected_air_payload_output_internal = yes
 				set_temp_variable = { cbrn_payload_conversion_completed = constant:cbrn_proof.supplied }
+				missiles_note_payload_change = yes
 			}
 		}
 	}

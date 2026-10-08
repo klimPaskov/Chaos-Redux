@@ -35,6 +35,10 @@ See [Chemical payload reservations](../../systems/cbrn_warfare/chemical_payload_
 
 The five separate evolution tracks are Saturation Arsenals, Unreliable Guidance, Special Warheads, Rogue Launch Commands, and Automatic Retaliation. Each track has its own eligibility gate, pacing entry, log row, AI factors, adoption state, interaction hooks, and disabled-safe behavior.
 
+Ordinary evolution waiting uses five native MTTH clocks on one living host, with durable pressure observations at finite transaction boundaries and fresh validation before an unlock.
+The first high-chaos firing retains a separate finite, staggered exception; no recurring registry watch is scheduled.
+The [pacing contract](systems/evolution_pacing.md) explains observation delays, distinct hostile-pair counts, host recovery, toggles and the remaining engine-evidence limits.
+
 Automatic Retaliation exposes Off, Supervised, Delegated, and Automatic postures. Warning records retain source incident, attribution, root, parent, generation, queue kind, and response state. Verification and response windows are ordinary decisions and missions; automatic response uses bounded queued events and chain receipts and never makes a direct recursive launch call.
 
 ## Decisions, missions, and SCN-015

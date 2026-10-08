@@ -1,0 +1,136 @@
+add_namespace = chaosx.nr32
+
+# Native Event 032 MTTH clocks. One living host evaluates stored observation
+# data. Rejected attempts remain re-armable; successful global unlock flags,
+# not fire_only_once, enforce the shared once-only log contract.
+# The one-day base is the unit for the variable day scale below.
+@missiles_mtth_unit_days = 1
+
+country_event = {
+	id = chaosx.nr32.201
+	hidden = yes
+	is_triggered_only = no
+	trigger = {
+		missiles_evolution_clock_host_is_current = yes
+		has_global_flag = missiles_evolution_rogue_launch_commands_pending
+		has_global_flag = missiles_evolution_rogue_launch_commands_native_pending
+		NOT = { has_global_flag = missiles_evolution_rogue_launch_commands_short_pending }
+		NOT = { has_variable = global.missiles_evolution_rogue_launch_commands_due_date }
+		NOT = { has_global_flag = missiles_evolution_rogue_launch_commands_unlocked }
+		NOT = { has_global_flag = events_log_disabled_evolution_32_32_4 }
+		missiles_evolution_rogue_launch_commands_is_eligible = yes
+	}
+	mean_time_to_happen = {
+		days = @missiles_mtth_unit_days
+		modifier = { factor = global.missiles_evolution_rogue_mtth_days }
+	}
+	immediate = {
+		set_temp_variable = { missiles_evolution_selection = constant:missiles_evolution.rogue_commands }
+		missiles_attempt_native_evolution_unlock = yes
+	}
+}
+
+country_event = {
+	id = chaosx.nr32.202
+	hidden = yes
+	is_triggered_only = no
+	trigger = {
+		missiles_evolution_clock_host_is_current = yes
+		has_global_flag = missiles_evolution_unreliable_guidance_pending
+		has_global_flag = missiles_evolution_unreliable_guidance_native_pending
+		NOT = { has_global_flag = missiles_evolution_unreliable_guidance_short_pending }
+		NOT = { has_variable = global.missiles_evolution_unreliable_guidance_due_date }
+		NOT = { has_global_flag = missiles_evolution_unreliable_guidance_unlocked }
+		NOT = { has_global_flag = events_log_disabled_evolution_32_32_2 }
+		missiles_evolution_unreliable_guidance_is_eligible = yes
+	}
+	mean_time_to_happen = {
+		days = @missiles_mtth_unit_days
+		modifier = { factor = global.missiles_evolution_guidance_mtth_days }
+	}
+	immediate = {
+		set_temp_variable = { missiles_evolution_selection = constant:missiles_evolution.unreliable_guidance }
+		missiles_attempt_native_evolution_unlock = yes
+	}
+}
+
+country_event = {
+	id = chaosx.nr32.203
+	hidden = yes
+	is_triggered_only = no
+	trigger = {
+		missiles_evolution_clock_host_is_current = yes
+		has_global_flag = missiles_evolution_saturation_pending
+		has_global_flag = missiles_evolution_saturation_native_pending
+		NOT = { has_global_flag = missiles_evolution_saturation_short_pending }
+		NOT = { has_variable = global.missiles_evolution_saturation_due_date }
+		NOT = { has_global_flag = missiles_evolution_saturation_unlocked }
+		NOT = { has_global_flag = events_log_disabled_evolution_32_32_1 }
+		missiles_evolution_saturation_is_eligible = yes
+	}
+	mean_time_to_happen = {
+		days = @missiles_mtth_unit_days
+		modifier = { factor = global.missiles_evolution_saturation_mtth_days }
+	}
+	immediate = {
+		set_temp_variable = { missiles_evolution_selection = constant:missiles_evolution.saturation }
+		missiles_attempt_native_evolution_unlock = yes
+	}
+}
+
+country_event = {
+	id = chaosx.nr32.204
+	hidden = yes
+	is_triggered_only = no
+	trigger = {
+		missiles_evolution_clock_host_is_current = yes
+		has_global_flag = missiles_evolution_special_warheads_pending
+		has_global_flag = missiles_evolution_special_warheads_native_pending
+		NOT = { has_global_flag = missiles_evolution_special_warheads_short_pending }
+		NOT = { has_variable = global.missiles_evolution_special_warheads_due_date }
+		NOT = { has_global_flag = missiles_evolution_special_warheads_unlocked }
+		NOT = { has_global_flag = events_log_disabled_evolution_32_32_3 }
+		missiles_evolution_special_warheads_is_eligible = yes
+	}
+	mean_time_to_happen = {
+		days = @missiles_mtth_unit_days
+		modifier = { factor = global.missiles_evolution_special_mtth_days }
+	}
+	immediate = {
+		set_temp_variable = { missiles_evolution_selection = constant:missiles_evolution.special_warheads }
+		missiles_attempt_native_evolution_unlock = yes
+	}
+}
+
+country_event = {
+	id = chaosx.nr32.205
+	hidden = yes
+	is_triggered_only = no
+	trigger = {
+		missiles_evolution_clock_host_is_current = yes
+		has_global_flag = missiles_evolution_automatic_retaliation_pending
+		has_global_flag = missiles_evolution_automatic_retaliation_native_pending
+		NOT = { has_global_flag = missiles_evolution_automatic_retaliation_short_pending }
+		NOT = { has_variable = global.missiles_evolution_automatic_retaliation_due_date }
+		NOT = { has_global_flag = missiles_evolution_automatic_retaliation_unlocked }
+		NOT = { has_global_flag = events_log_disabled_evolution_32_32_5 }
+		missiles_evolution_automatic_retaliation_is_eligible = yes
+	}
+	mean_time_to_happen = {
+		days = @missiles_mtth_unit_days
+		modifier = { factor = global.missiles_evolution_retaliation_mtth_days }
+	}
+	immediate = {
+		set_temp_variable = { missiles_evolution_selection = constant:missiles_evolution.automatic_retaliation }
+		missiles_attempt_native_evolution_unlock = yes
+	}
+}
+
+# Finite notification receiver; only completed mutation owners schedule it.
+country_event = {
+	id = chaosx.nr32.192
+	hidden = yes
+	is_triggered_only = yes
+	immediate = { missiles_run_evolution_observation = yes }
+}
+

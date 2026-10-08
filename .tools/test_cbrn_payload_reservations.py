@@ -44,11 +44,16 @@ EFFECT_FILES = (
     "condemnation_response_effects.txt",
     "032_missiles_payload_receipt_effects.txt",
     "032_missiles_operations_effects.txt",
+    "032_missiles_evolution_effects.txt",
 )
 # Read the owning consumption boundary only, without importing the unmodeled
 # commit/resolution/consequence closure into this bounded source fixture.
-SELECTED_EFFECTS = {"032_missiles_operations_effects.txt":
-                    ("missiles_consume_chemical_payload", "missiles_consume_special_payload")}
+SELECTED_EFFECTS = {
+    "032_missiles_operations_effects.txt":
+        ("missiles_consume_chemical_payload", "missiles_consume_special_payload"),
+    "032_missiles_evolution_effects.txt":
+        ("missiles_note_payload_change", "missiles_queue_payload_completion_observation"),
+}
 TRIGGER_FILES = ("cbrn_payload_reservation_triggers.txt", "cbrn_payload_triggers.txt",
                  "cbrn_triggers.txt", "cbrn_diplomacy_triggers.txt", "cbrn_designer_triggers.txt",
                  "condemnation_sanctions_triggers.txt", "032_missiles_payload_receipt_triggers.txt",
@@ -216,6 +221,7 @@ class Machine:
         self.calls = Counter()
         self.trace = []
         self.nativecalls = []
+        self.payload_notifications = []
         self.outcomes = {"debit": deque(), "credit": deque()}
         self.measurement = None
         self.after_call = {}  # Scenario transitions after real helper/frame return.
@@ -536,6 +542,15 @@ class Machine:
                     self.current.flags.discard(v)
             elif k == "save_event_target_as":
                 self.targets[v] = self.current
+            elif k == "country_event":
+                if (self.current.kind != "country" or
+                        {child.key for child in v} != {"id", "days"} or
+                        item(v, "id") != "chaosx.nr32.193"):
+                    self.unmodeled(n)
+                # Native scheduling boundary only; no delivery or world-clock
+                # success is synthesized by this stock-accounting fixture.
+                self.payload_notifications.append(
+                    (self.current.name, item(v, "id"), self.value(item(v, "days"))))
             elif k in ("clear_array", "add_to_array", "remove_from_array", "clear_temp_array", "add_to_temp_array"):
                 temporary = "temp_array" in k
                 key = v if isinstance(v, str) else item(v, "array")
@@ -1776,6 +1791,7 @@ class ChemicalReceipts(unittest.TestCase):
         self.assertEqual(self.row("agent"), old_agent)
         self.assertEqual(self.row("held"), self.cost)
         self.assertNotIn("cbrn_air_profile_change_in_progress", self.actor.flags)
+        self.assertEqual(self.m.payload_notifications, [])
         self.assertEqual(len(self.m.nativecalls), 1)
         self.call("cbrn_return_payload_reservation")
         self.assert_result("accepted")
@@ -1788,6 +1804,10 @@ class ChemicalReceipts(unittest.TestCase):
         self.assertIn("cbrn_air_profile_change_in_progress", self.actor.flags)
         self.assertEqual(self.actor.timed_flags["cbrn_air_profile_change_in_progress"],
                          self.c("cbrn_payload_profile_timing.air_change_days"))
+        self.assertEqual(self.m.payload_notifications, [
+            (self.actor.name, "chaosx.nr32.193",
+             self.c("cbrn_payload_profile_timing.air_change_days") +
+             self.c("missiles_evolution_pacing.payload_completion_grace_days"))])
         loss = (self.cost * (D(1) - self.c("cbrn_payload_conversion.air_profile_switch_recovery"))).quantize(
             D(1), rounding=ROUND_HALF_UP)
         self.assertEqual(self.actor.stocks[self.model], self.cost - loss)

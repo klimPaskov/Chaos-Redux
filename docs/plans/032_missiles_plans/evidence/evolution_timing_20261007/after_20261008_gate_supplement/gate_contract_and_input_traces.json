@@ -1,0 +1,234 @@
+{
+  "scenarioSetId": "E32_NATIVE_GATES_SUPPLEMENT_V1_20261008",
+  "scenarioIds": [
+    "EVO-FINAL",
+    "EVO-WORLD-END",
+    "EVO-NONHOST",
+    "EVO-INCOMPLETE"
+  ],
+  "candidatePool": [
+    "chaosx.nr32.201",
+    "chaosx.nr32.202",
+    "chaosx.nr32.203",
+    "chaosx.nr32.204",
+    "chaosx.nr32.205"
+  ],
+  "poolComplete": true,
+  "normalization": "not applicable, independent native clocks",
+  "sourceInputBoundary": "Declared published pressure/day caches and ordinary armed native mode. No effect execution or pressure-publication inference.",
+  "tierFact": {
+    "flag": "chaos_tier",
+    "value": 5,
+    "chaos": 1000,
+    "meaning": "Declared tier_final for the source-derived cache calculation. Native clock gates consume the computed caches."
+  },
+  "worldFacts": {
+    "programs": 4,
+    "operational": 4,
+    "war": 4,
+    "vulnerable": 2,
+    "payloadOwners": 2,
+    "responders": 2,
+    "unorderedHostilePairs": 2,
+    "guidanceStrain": {
+      "lowReadiness": 2,
+      "launches": 3
+    },
+    "mature": 2,
+    "totalReserve": 32
+  },
+  "hostFacts": "GER current root has synthetic native id 1. Baseline host is GER id 1. EVO-NONHOST global host is FRA id 2. These are fixture identity facts, not measured game IDs.",
+  "absenceFacts": "EVO-INCOMPLETE explicitly declares flag.missiles_pressure_observation_ready=false and omits that flag from the present-flags list. All due-date keys are absent in every case.",
+  "modeFacts": "Every track pending/native=true, short=false, unlocked=false, disabled=false. First-pulse-done=true.",
+  "externalFactorCompleteness": "Complete declared primitive inputs for this conditional model. Actual registry/site publication, native engine execution, logs, adoption and lifecycle remain outside the probability model.",
+  "requestedMetrics": [
+    "effective_mtth_days"
+  ],
+  "noCDF": true,
+  "noSweep": true,
+  "noSequence": true,
+  "noBeforeRetry": true,
+  "parentReportedEvidence": {
+    "actualSourceClockTests": 23,
+    "status": "pass",
+    "basis": "User report in this supplement request",
+    "rerunByAuditor": false,
+    "boundaries": "No native/log/adoption completion inferred."
+  },
+  "calculationEvidence": {
+    "traces": [
+      {
+        "entry": "missiles_rogue_evolution_mtth",
+        "cache": "global.missiles_evolution_rogue_mtth_days",
+        "baseToken": "constant:missiles_evolution_timing.rogue_days",
+        "base": 120,
+        "fewVariable": "global.missiles_pressure_vulnerable",
+        "fewCount": 2,
+        "fewThreshold": 2,
+        "highPredicate": "missiles_evolution_rogue_launch_commands_pressure_is_high",
+        "highPredicateUnchanged": true,
+        "highPredicateBody": "missiles_evolution_rogue_launch_commands_pressure_is_high = {\n\tcheck_variable = { var = global.missiles_pressure_vulnerable value = constant:missiles_evolution_pacing.widespread_vulnerable_programs compare = greater_than_or_equals }\n}",
+        "finalTierValue": 5,
+        "modifiers": [
+          {
+            "token": "constant:missiles_evolution_pressure.delay_lengthening_multiplier",
+            "value": 1.5,
+            "applied": false,
+            "valueAfter": 120
+          },
+          {
+            "token": "constant:missiles_evolution_pressure.delay_shortening_multiplier",
+            "value": 0.5,
+            "applied": true,
+            "valueAfter": 60
+          },
+          {
+            "token": "constant:missiles_evolution_pacing.collapse_pressure_factor",
+            "value": 0.8,
+            "applied": true,
+            "valueAfter": 48
+          }
+        ],
+        "M": 48
+      },
+      {
+        "entry": "missiles_guidance_evolution_mtth",
+        "cache": "global.missiles_evolution_guidance_mtth_days",
+        "baseToken": "constant:missiles_evolution_timing.guidance_days",
+        "base": 105,
+        "fewVariable": "global.missiles_pressure_operational",
+        "fewCount": 4,
+        "fewThreshold": 2,
+        "highPredicate": "missiles_evolution_unreliable_guidance_pressure_is_high",
+        "highPredicateUnchanged": true,
+        "highPredicateBody": "missiles_evolution_unreliable_guidance_pressure_is_high = {\n\tOR = {\n\t\tcheck_variable = { var = global.missiles_pressure_war value = constant:missiles_evolution_pressure.minimum_war_programs compare = greater_than_or_equals }\n\t\tAND = {\n\t\t\tcheck_variable = { var = global.missiles_pressure_launches value = constant:missiles_evolution_pacing.launch_strain_threshold compare = greater_than_or_equals }\n\t\t\tcheck_variable = { var = global.missiles_pressure_low_readiness value = constant:missiles_evolution_pacing.minimum_strained_programs compare = greater_than_or_equals }\n\t\t}\n\t}\n}",
+        "finalTierValue": 5,
+        "modifiers": [
+          {
+            "token": "constant:missiles_evolution_pressure.delay_lengthening_multiplier",
+            "value": 1.5,
+            "applied": false,
+            "valueAfter": 105
+          },
+          {
+            "token": "constant:missiles_evolution_pressure.delay_shortening_multiplier",
+            "value": 0.5,
+            "applied": true,
+            "valueAfter": 52.5
+          },
+          {
+            "token": "constant:missiles_evolution_pacing.collapse_pressure_factor",
+            "value": 0.8,
+            "applied": true,
+            "valueAfter": 42
+          }
+        ],
+        "M": 42
+      },
+      {
+        "entry": "missiles_saturation_evolution_mtth",
+        "cache": "global.missiles_evolution_saturation_mtth_days",
+        "baseToken": "constant:missiles_evolution_timing.saturation_days",
+        "base": 90,
+        "fewVariable": "global.missiles_pressure_operational",
+        "fewCount": 4,
+        "fewThreshold": 2,
+        "highPredicate": "missiles_evolution_saturation_pressure_is_high",
+        "highPredicateUnchanged": true,
+        "highPredicateBody": "missiles_evolution_saturation_pressure_is_high = {\n\tcheck_variable = { var = global.missiles_pressure_war value = constant:missiles_evolution_pacing.saturation_pressure_war_programs compare = greater_than_or_equals }\n}",
+        "finalTierValue": 5,
+        "modifiers": [
+          {
+            "token": "constant:missiles_evolution_pressure.delay_lengthening_multiplier",
+            "value": 1.5,
+            "applied": false,
+            "valueAfter": 90
+          },
+          {
+            "token": "constant:missiles_evolution_pressure.delay_shortening_multiplier",
+            "value": 0.5,
+            "applied": true,
+            "valueAfter": 45
+          },
+          {
+            "token": "constant:missiles_evolution_pacing.collapse_pressure_factor",
+            "value": 0.8,
+            "applied": true,
+            "valueAfter": 36
+          }
+        ],
+        "M": 36
+      },
+      {
+        "entry": "missiles_special_evolution_mtth",
+        "cache": "global.missiles_evolution_special_mtth_days",
+        "baseToken": "constant:missiles_evolution_timing.special_days",
+        "base": 120,
+        "fewVariable": "global.missiles_pressure_payload_owners",
+        "fewCount": 2,
+        "fewThreshold": 2,
+        "highPredicate": "missiles_evolution_special_warheads_pressure_is_high",
+        "highPredicateUnchanged": true,
+        "highPredicateBody": "missiles_evolution_special_warheads_pressure_is_high = {\n\tcheck_variable = { var = global.missiles_pressure_payload_owners value = constant:missiles_evolution_pacing.special_pressure_payload_owners compare = greater_than_or_equals }\n}",
+        "finalTierValue": 5,
+        "modifiers": [
+          {
+            "token": "constant:missiles_evolution_pressure.delay_lengthening_multiplier",
+            "value": 1.5,
+            "applied": false,
+            "valueAfter": 120
+          },
+          {
+            "token": "constant:missiles_evolution_pressure.delay_shortening_multiplier",
+            "value": 0.5,
+            "applied": true,
+            "valueAfter": 60
+          },
+          {
+            "token": "constant:missiles_evolution_pacing.collapse_pressure_factor",
+            "value": 0.8,
+            "applied": true,
+            "valueAfter": 48
+          }
+        ],
+        "M": 48
+      },
+      {
+        "entry": "missiles_retaliation_evolution_mtth",
+        "cache": "global.missiles_evolution_retaliation_mtth_days",
+        "baseToken": "constant:missiles_evolution_timing.retaliation_days",
+        "base": 150,
+        "fewVariable": "global.missiles_pressure_responders",
+        "fewCount": 2,
+        "fewThreshold": 2,
+        "highPredicate": "missiles_evolution_automatic_retaliation_pressure_is_high",
+        "highPredicateUnchanged": true,
+        "highPredicateBody": "missiles_evolution_automatic_retaliation_pressure_is_high = {\n\tcheck_variable = { var = global.missiles_pressure_hostile_pairs value = constant:missiles_evolution_pacing.retaliation_pressure_pairs compare = greater_than_or_equals }\n}",
+        "finalTierValue": 5,
+        "modifiers": [
+          {
+            "token": "constant:missiles_evolution_pressure.delay_lengthening_multiplier",
+            "value": 1.5,
+            "applied": false,
+            "valueAfter": 150
+          },
+          {
+            "token": "constant:missiles_evolution_pressure.delay_shortening_multiplier",
+            "value": 0.5,
+            "applied": true,
+            "valueAfter": 75
+          },
+          {
+            "token": "constant:missiles_evolution_pacing.collapse_pressure_factor",
+            "value": 0.8,
+            "applied": true,
+            "valueAfter": 60
+          }
+        ],
+        "M": 60
+      }
+    ],
+    "mtthFileSame": true,
+    "hostGateSame": true
+  }
+}

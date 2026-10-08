@@ -4,6 +4,8 @@
 # Exact transaction-boundary hooks only. ROOT is the new controller, FROM is
 # the old controller, and FROM.FROM is the changed state for state control.
 # No recurring country or whole-world scan is used.
+# Completed relevant callbacks request one coalesced evolution observation.
+# The notification owner supplies the delayed receiver and never self-requeues.
 # ============================================================================
 
 on_actions = {
@@ -124,6 +126,15 @@ on_actions = {
 				# views at the war boundary instead of waiting for another action.
 				ROOT = { if = { limit = { has_country_flag = missiles_program_initialized } missiles_set_program_phases = yes } }
 				FROM = { if = { limit = { has_country_flag = missiles_program_initialized } missiles_set_program_phases = yes } }
+				if = {
+					limit = {
+						OR = {
+							ROOT = { has_country_flag = missiles_program_initialized }
+							FROM = { has_country_flag = missiles_program_initialized }
+						}
+					}
+					missiles_notify_evolution_change = yes
+				}
 			}
 		}
 	}
@@ -134,6 +145,25 @@ on_actions = {
 				limit = { FROM = { exists = yes has_country_flag = missiles_program_initialized } }
 				FROM = { set_variable = { missiles_achievement_war_won_pending = constant:missiles_program_value.one } }
 			}
+			if = {
+				limit = {
+					OR = {
+						ROOT = { has_country_flag = missiles_program_initialized }
+						FROM = { has_country_flag = missiles_program_initialized }
+					}
+				}
+				missiles_notify_evolution_change = yes
+			}
+		}
+	}
+
+	# ROOT is the country whose capitulation status was lifted.
+	on_uncapitulation = {
+		effect = {
+			if = {
+				limit = { ROOT = { exists = yes has_country_flag = missiles_program_initialized } }
+				missiles_notify_evolution_change = yes
+			}
 		}
 	}
 
@@ -142,6 +172,15 @@ on_actions = {
 			if = {
 				limit = { ROOT = { exists = yes has_country_flag = missiles_program_initialized } }
 				ROOT = { set_variable = { missiles_achievement_war_won_pending = constant:missiles_program_value.one } }
+			}
+			if = {
+				limit = {
+					OR = {
+						ROOT = { has_country_flag = missiles_program_initialized }
+						FROM = { has_country_flag = missiles_program_initialized }
+					}
+				}
+				missiles_notify_evolution_change = yes
 			}
 		}
 	}
@@ -160,6 +199,7 @@ on_actions = {
 					limit = { has_country_flag = missiles_program_initialized }
 					missiles_clear_target = yes
 					missiles_set_program_phases = yes
+					missiles_notify_evolution_change = yes
 				}
 			}
 		}
@@ -180,18 +220,54 @@ on_actions = {
 				FROM = { save_event_target_as = missiles_capture_former_controller }
 				FROM.FROM = { missiles_handle_site_control_changed = yes }
 			}
+			# Launch sites and first/last controlled-land edges affect the
+			# programme observation. Ordinary frontline movement does not poll it.
+			if = {
+				limit = {
+					OR = {
+						AND = {
+							FROM.FROM = { missiles_state_has_registered_site = yes }
+							OR = {
+								ROOT = { has_country_flag = missiles_program_initialized }
+								FROM = { has_country_flag = missiles_program_initialized }
+							}
+						}
+						ROOT = { has_country_flag = missiles_program_initialized num_of_controlled_states < constant:missiles_event.two }
+						FROM = { has_country_flag = missiles_program_initialized num_of_controlled_states < constant:missiles_event.one }
+					}
+				}
+				missiles_notify_evolution_change = yes
+			}
 		}
 	}
 
 	on_release_as_free = {
 		effect = {
 			ROOT = { missiles_reconcile_released_country_sites = yes }
+			if = {
+				limit = {
+					OR = {
+						ROOT = { has_country_flag = missiles_program_initialized }
+						FROM = { has_country_flag = missiles_program_initialized }
+					}
+				}
+				missiles_notify_evolution_change = yes
+			}
 		}
 	}
 
 	on_release_as_puppet = {
 		effect = {
 			ROOT = { missiles_reconcile_released_country_sites = yes }
+			if = {
+				limit = {
+					OR = {
+						ROOT = { has_country_flag = missiles_program_initialized }
+						FROM = { has_country_flag = missiles_program_initialized }
+					}
+				}
+				missiles_notify_evolution_change = yes
+			}
 		}
 	}
 
@@ -200,6 +276,18 @@ on_actions = {
 			ROOT = { save_event_target_as = missiles_annexing_country }
 			FROM = {
 				if = { limit = { has_country_flag = missiles_program_initialized } missiles_cleanup_removed_country = yes }
+			}
+			# Cleanup clears initialized, but its completion flag proves that the
+			# annexed country contributed a programme before this transaction.
+			if = {
+				limit = {
+					OR = {
+						ROOT = { has_country_flag = missiles_program_initialized }
+						FROM = { has_country_flag = missiles_program_initialized }
+						FROM = { has_country_flag = missiles_program_cleanup_complete }
+					}
+				}
+				missiles_notify_evolution_change = yes
 			}
 		}
 	}

@@ -1,0 +1,38 @@
+# Event 032 median-time targets, evaluated from the latest complete pressure
+# observation. Native event MTTH supplies the stochastic clock; these entries
+# calculate its live day scale without sampling a uniform deadline.
+
+missiles_rogue_evolution_mtth = {
+	base = constant:missiles_evolution_timing.rogue_days
+	modifier = { factor = constant:missiles_evolution_pressure.delay_lengthening_multiplier check_variable = { var = global.missiles_pressure_vulnerable value = constant:missiles_evolution_pacing.widespread_vulnerable_programs compare = less_than } }
+	modifier = { factor = constant:missiles_evolution_pressure.delay_shortening_multiplier missiles_evolution_rogue_launch_commands_pressure_is_high = yes }
+	modifier = { factor = constant:missiles_evolution_pacing.collapse_pressure_factor has_global_flag = { flag = chaos_tier value = constant:chaos_meter_tier_id.tier_final } }
+}
+
+missiles_guidance_evolution_mtth = {
+	base = constant:missiles_evolution_timing.guidance_days
+	modifier = { factor = constant:missiles_evolution_pressure.delay_lengthening_multiplier check_variable = { var = global.missiles_pressure_operational value = constant:missiles_evolution_pressure.minimum_operational_programs compare = less_than } }
+	modifier = { factor = constant:missiles_evolution_pressure.delay_shortening_multiplier missiles_evolution_unreliable_guidance_pressure_is_high = yes }
+	modifier = { factor = constant:missiles_evolution_pacing.collapse_pressure_factor has_global_flag = { flag = chaos_tier value = constant:chaos_meter_tier_id.tier_final } }
+}
+
+missiles_saturation_evolution_mtth = {
+	base = constant:missiles_evolution_timing.saturation_days
+	modifier = { factor = constant:missiles_evolution_pressure.delay_lengthening_multiplier check_variable = { var = global.missiles_pressure_operational value = constant:missiles_evolution_pressure.minimum_operational_programs compare = less_than } }
+	modifier = { factor = constant:missiles_evolution_pressure.delay_shortening_multiplier missiles_evolution_saturation_pressure_is_high = yes }
+	modifier = { factor = constant:missiles_evolution_pacing.collapse_pressure_factor has_global_flag = { flag = chaos_tier value = constant:chaos_meter_tier_id.tier_final } }
+}
+
+missiles_special_evolution_mtth = {
+	base = constant:missiles_evolution_timing.special_days
+	modifier = { factor = constant:missiles_evolution_pressure.delay_lengthening_multiplier check_variable = { var = global.missiles_pressure_payload_owners value = constant:missiles_evolution_pacing.special_pressure_payload_owners compare = less_than } }
+	modifier = { factor = constant:missiles_evolution_pressure.delay_shortening_multiplier missiles_evolution_special_warheads_pressure_is_high = yes }
+	modifier = { factor = constant:missiles_evolution_pacing.collapse_pressure_factor has_global_flag = { flag = chaos_tier value = constant:chaos_meter_tier_id.tier_final } }
+}
+
+missiles_retaliation_evolution_mtth = {
+	base = constant:missiles_evolution_timing.retaliation_days
+	modifier = { factor = constant:missiles_evolution_pressure.delay_lengthening_multiplier check_variable = { var = global.missiles_pressure_responders value = constant:missiles_evolution_pressure.minimum_retaliation_programs compare = less_than } }
+	modifier = { factor = constant:missiles_evolution_pressure.delay_shortening_multiplier missiles_evolution_automatic_retaliation_pressure_is_high = yes }
+	modifier = { factor = constant:missiles_evolution_pacing.collapse_pressure_factor has_global_flag = { flag = chaos_tier value = constant:chaos_meter_tier_id.tier_final } }
+}

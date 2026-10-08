@@ -1,0 +1,132 @@
+{
+  "server": {
+    "name": "hoi4-agent-tools",
+    "version": "3.10.0",
+    "websiteUrl": "https://github.com/klimPaskov/hoi4-agent-tools"
+  },
+  "capabilities": {
+    "logging": {},
+    "prompts": {
+      "listChanged": true
+    },
+    "resources": {
+      "listChanged": true
+    },
+    "tools": {
+      "listChanged": true
+    },
+    "tasks": {
+      "list": {},
+      "cancel": {},
+      "requests": {
+        "tools": {
+          "call": {}
+        }
+      }
+    }
+  },
+  "clientCapabilities": {},
+  "inputSchema": {
+    "type": "object",
+    "properties": {
+      "workspaceId": {
+        "default": "current",
+        "type": "string",
+        "pattern": "^[a-z][a-z0-9_-]{0,63}$"
+      },
+      "adapter": {
+        "type": "string",
+        "enum": [
+          "event_mean_time_to_happen",
+          "event_option_ai_chance",
+          "decision_ai_will_do",
+          "mission_ai_will_do",
+          "national_focus_ai_will_do",
+          "technology_ai_will_do",
+          "doctrine_ai_will_do",
+          "direct_random",
+          "random_list",
+          "ai_strategy_factor",
+          "custom_weighted_pool"
+        ]
+      },
+      "scenarioSet": {
+        "description": "Explicit world-state scenarios."
+      },
+      "candidatePool": {
+        "maxItems": 100000,
+        "type": "array",
+        "items": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        }
+      },
+      "horizonDays": {
+        "type": "number",
+        "exclusiveMinimum": 0,
+        "maximum": 1000000
+      },
+      "metrics": {
+        "minItems": 1,
+        "maxItems": 4,
+        "type": "array",
+        "items": {
+          "type": "string",
+          "enum": [
+            "conditional_probability",
+            "raw_value",
+            "cumulative_chance",
+            "effective_mtth_days"
+          ]
+        }
+      },
+      "acceptanceBands": {
+        "description": "Optional named metric acceptance bands."
+      },
+      "diagnosticThresholds": {
+        "description": "Optional diagnostic thresholds."
+      },
+      "outputs": {
+        "maxItems": 10,
+        "type": "array",
+        "items": {
+          "type": "string",
+          "enum": [
+            "json",
+            "ranking",
+            "matrix",
+            "waterfall",
+            "timing",
+            "sensitivity",
+            "threshold",
+            "sequence",
+            "comparison",
+            "unresolved"
+          ]
+        }
+      },
+      "refresh": {
+        "type": "boolean"
+      },
+      "source": {
+        "description": "Source selector; snapshotPath binds frozen bytes to path with expectedSourceHash."
+      },
+      "customPoolManifest": {
+        "description": "Declared custom weighted pool and state transitions."
+      }
+    },
+    "required": [
+      "scenarioSet"
+    ],
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "additionalProperties": false
+  },
+  "command": "C:\\Program Files\\nodejs\\node.exe",
+  "args": [
+    "C:/Users/klimp/AppData/Local/npm-cache/_npx/e5002410e5b7105a/node_modules/hoi4-agent-tools/dist/bin/stdio.js"
+  ],
+  "cwd": "C:\\Users\\klimp\\OneDrive\\Documents\\Paradox Interactive\\Hearts of Iron IV\\mod\\chaos_redux",
+  "config": "C:/Users/klimp/AppData/Roaming/hoi4-agent-tools/config.json",
+  "windowsHide": true
+}

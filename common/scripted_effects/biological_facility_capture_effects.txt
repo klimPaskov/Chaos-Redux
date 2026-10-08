@@ -189,6 +189,7 @@ bio_facility_capture_initialize_exact_state_ledger = {
 		}
 		var:bio_stockpile_safety_arsenal_actor = {
 			country_event = { id = cbrn_bio_facility.3 }
+			missiles_note_payload_change = yes
 		}
 	}
 }
@@ -258,6 +259,7 @@ bio_facility_capture_restore_on_original_recapture = {
 		save_event_target_as = bio_facility_notice_state
 		CONTROLLER = { country_event = { id = cbrn_bio_facility.6 } }
 		bio_facility_capture_clear_captured_ledger_only = yes
+		CONTROLLER = { missiles_note_payload_change = yes }
 	}
 }
 
@@ -378,6 +380,10 @@ bio_facility_capture_transfer_fraction_to_controller = {
 		if = { limit = { NOT = { has_variable = bio_facility_capture_recovered_payload_total } } set_variable = { bio_facility_capture_recovered_payload_total = constant:bio_facility_capture_math.zero } }
 		add_to_variable = { bio_facility_capture_recovered_payload_total = bio_facility_capture_transaction_total }
 		set_country_flag = bio_facility_capture_recovered_payload_history
+		if = {
+			limit = { check_variable = { var = bio_facility_capture_transaction_total value = constant:bio_facility_capture_math.zero compare = greater_than } }
+			missiles_note_payload_change = yes
+		}
 	}
 }
 

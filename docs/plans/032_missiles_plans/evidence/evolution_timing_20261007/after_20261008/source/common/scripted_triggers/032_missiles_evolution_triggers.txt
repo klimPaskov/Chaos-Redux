@@ -1,0 +1,124 @@
+# Event 032 native evolution clocks. Recurring native gates read only stored
+# host identity, complete pressure observations and track flags; they never
+# iterate the programme registry. Attempt effects revalidate before recording.
+
+missiles_evolution_clock_host_is_current = {
+	exists = yes
+	has_global_flag = missiles_program_ever_initialized
+	has_global_flag = missiles_pressure_observation_ready
+	has_variable = global.missiles_evolution_host_id
+	check_variable = { var = id value = global.missiles_evolution_host_id compare = equals }
+	has_country_flag = missiles_program_initialized
+	NOT = { has_country_flag = missiles_program_cleanup_complete }
+	NOT = { has_global_flag = world_end }
+}
+
+# Input: the caller-owned temporary missiles_evolution_selection enum.
+# This is checked again after a fresh observation in the committing effect.
+missiles_selected_evolution_can_unlock = {
+	has_global_flag = missiles_program_ever_initialized
+	has_global_flag = missiles_pressure_observation_ready
+	NOT = { has_global_flag = world_end }
+	OR = {
+		AND = {
+			check_variable = { missiles_evolution_selection = constant:missiles_evolution.rogue_commands }
+			NOT = { has_global_flag = events_log_disabled_evolution_32_32_4 }
+			NOT = { has_global_flag = missiles_evolution_rogue_launch_commands_unlocked }
+			missiles_evolution_rogue_launch_commands_is_eligible = yes
+		}
+		AND = {
+			check_variable = { missiles_evolution_selection = constant:missiles_evolution.unreliable_guidance }
+			NOT = { has_global_flag = events_log_disabled_evolution_32_32_2 }
+			NOT = { has_global_flag = missiles_evolution_unreliable_guidance_unlocked }
+			missiles_evolution_unreliable_guidance_is_eligible = yes
+		}
+		AND = {
+			check_variable = { missiles_evolution_selection = constant:missiles_evolution.saturation }
+			NOT = { has_global_flag = events_log_disabled_evolution_32_32_1 }
+			NOT = { has_global_flag = missiles_evolution_saturation_unlocked }
+			missiles_evolution_saturation_is_eligible = yes
+		}
+		AND = {
+			check_variable = { missiles_evolution_selection = constant:missiles_evolution.special_warheads }
+			NOT = { has_global_flag = events_log_disabled_evolution_32_32_3 }
+			NOT = { has_global_flag = missiles_evolution_special_warheads_unlocked }
+			missiles_evolution_special_warheads_is_eligible = yes
+		}
+		AND = {
+			check_variable = { missiles_evolution_selection = constant:missiles_evolution.automatic_retaliation }
+			NOT = { has_global_flag = events_log_disabled_evolution_32_32_5 }
+			NOT = { has_global_flag = missiles_evolution_automatic_retaliation_unlocked }
+			missiles_evolution_automatic_retaliation_is_eligible = yes
+		}
+	}
+}
+
+# Input: selected enum. Native attempts cannot consume a finite short-clock
+# receipt, even when fired manually or delivered after a mode change.
+missiles_selected_evolution_has_native_clock = {
+	OR = {
+		AND = { check_variable = { missiles_evolution_selection = constant:missiles_evolution.rogue_commands } has_global_flag = missiles_evolution_rogue_launch_commands_pending has_global_flag = missiles_evolution_rogue_launch_commands_native_pending NOT = { has_global_flag = missiles_evolution_rogue_launch_commands_short_pending } NOT = { has_variable = global.missiles_evolution_rogue_launch_commands_due_date } }
+		AND = { check_variable = { missiles_evolution_selection = constant:missiles_evolution.unreliable_guidance } has_global_flag = missiles_evolution_unreliable_guidance_pending has_global_flag = missiles_evolution_unreliable_guidance_native_pending NOT = { has_global_flag = missiles_evolution_unreliable_guidance_short_pending } NOT = { has_variable = global.missiles_evolution_unreliable_guidance_due_date } }
+		AND = { check_variable = { missiles_evolution_selection = constant:missiles_evolution.saturation } has_global_flag = missiles_evolution_saturation_pending has_global_flag = missiles_evolution_saturation_native_pending NOT = { has_global_flag = missiles_evolution_saturation_short_pending } NOT = { has_variable = global.missiles_evolution_saturation_due_date } }
+		AND = { check_variable = { missiles_evolution_selection = constant:missiles_evolution.special_warheads } has_global_flag = missiles_evolution_special_warheads_pending has_global_flag = missiles_evolution_special_warheads_native_pending NOT = { has_global_flag = missiles_evolution_special_warheads_short_pending } NOT = { has_variable = global.missiles_evolution_special_warheads_due_date } }
+		AND = { check_variable = { missiles_evolution_selection = constant:missiles_evolution.automatic_retaliation } has_global_flag = missiles_evolution_automatic_retaliation_pending has_global_flag = missiles_evolution_automatic_retaliation_native_pending NOT = { has_global_flag = missiles_evolution_automatic_retaliation_short_pending } NOT = { has_variable = global.missiles_evolution_automatic_retaliation_due_date } }
+	}
+}
+
+missiles_short_evolution_work_exists = {
+	OR = {
+		AND = { has_global_flag = missiles_evolution_rogue_launch_commands_pending has_global_flag = missiles_evolution_rogue_launch_commands_short_pending NOT = { has_global_flag = missiles_evolution_rogue_launch_commands_native_pending } has_variable = global.missiles_evolution_rogue_launch_commands_due_date }
+		AND = { has_global_flag = missiles_evolution_unreliable_guidance_pending has_global_flag = missiles_evolution_unreliable_guidance_short_pending NOT = { has_global_flag = missiles_evolution_unreliable_guidance_native_pending } has_variable = global.missiles_evolution_unreliable_guidance_due_date }
+		AND = { has_global_flag = missiles_evolution_saturation_pending has_global_flag = missiles_evolution_saturation_short_pending NOT = { has_global_flag = missiles_evolution_saturation_native_pending } has_variable = global.missiles_evolution_saturation_due_date }
+		AND = { has_global_flag = missiles_evolution_special_warheads_pending has_global_flag = missiles_evolution_special_warheads_short_pending NOT = { has_global_flag = missiles_evolution_special_warheads_native_pending } has_variable = global.missiles_evolution_special_warheads_due_date }
+		AND = { has_global_flag = missiles_evolution_automatic_retaliation_pending has_global_flag = missiles_evolution_automatic_retaliation_short_pending NOT = { has_global_flag = missiles_evolution_automatic_retaliation_native_pending } has_variable = global.missiles_evolution_automatic_retaliation_due_date }
+	}
+}
+
+# The two waiting modes are exclusive. A native clock has no due date; a
+# short clock has a real finite receipt. Malformed/retired modes are rearmed
+# only at an authorized observation, never interpreted as an elapsed timer.
+missiles_selected_evolution_pending_is_well_formed = {
+	OR = {
+		AND = {
+			check_variable = { missiles_evolution_selection = constant:missiles_evolution.rogue_commands }
+			has_global_flag = missiles_evolution_rogue_launch_commands_pending
+			OR = {
+				AND = { has_global_flag = missiles_evolution_rogue_launch_commands_native_pending NOT = { has_global_flag = missiles_evolution_rogue_launch_commands_short_pending } NOT = { has_variable = global.missiles_evolution_rogue_launch_commands_due_date } }
+				AND = { has_global_flag = missiles_evolution_rogue_launch_commands_short_pending NOT = { has_global_flag = missiles_evolution_rogue_launch_commands_native_pending } has_variable = global.missiles_evolution_rogue_launch_commands_due_date }
+			}
+		}
+		AND = {
+			check_variable = { missiles_evolution_selection = constant:missiles_evolution.unreliable_guidance }
+			has_global_flag = missiles_evolution_unreliable_guidance_pending
+			OR = {
+				AND = { has_global_flag = missiles_evolution_unreliable_guidance_native_pending NOT = { has_global_flag = missiles_evolution_unreliable_guidance_short_pending } NOT = { has_variable = global.missiles_evolution_unreliable_guidance_due_date } }
+				AND = { has_global_flag = missiles_evolution_unreliable_guidance_short_pending NOT = { has_global_flag = missiles_evolution_unreliable_guidance_native_pending } has_variable = global.missiles_evolution_unreliable_guidance_due_date }
+			}
+		}
+		AND = {
+			check_variable = { missiles_evolution_selection = constant:missiles_evolution.saturation }
+			has_global_flag = missiles_evolution_saturation_pending
+			OR = {
+				AND = { has_global_flag = missiles_evolution_saturation_native_pending NOT = { has_global_flag = missiles_evolution_saturation_short_pending } NOT = { has_variable = global.missiles_evolution_saturation_due_date } }
+				AND = { has_global_flag = missiles_evolution_saturation_short_pending NOT = { has_global_flag = missiles_evolution_saturation_native_pending } has_variable = global.missiles_evolution_saturation_due_date }
+			}
+		}
+		AND = {
+			check_variable = { missiles_evolution_selection = constant:missiles_evolution.special_warheads }
+			has_global_flag = missiles_evolution_special_warheads_pending
+			OR = {
+				AND = { has_global_flag = missiles_evolution_special_warheads_native_pending NOT = { has_global_flag = missiles_evolution_special_warheads_short_pending } NOT = { has_variable = global.missiles_evolution_special_warheads_due_date } }
+				AND = { has_global_flag = missiles_evolution_special_warheads_short_pending NOT = { has_global_flag = missiles_evolution_special_warheads_native_pending } has_variable = global.missiles_evolution_special_warheads_due_date }
+			}
+		}
+		AND = {
+			check_variable = { missiles_evolution_selection = constant:missiles_evolution.automatic_retaliation }
+			has_global_flag = missiles_evolution_automatic_retaliation_pending
+			OR = {
+				AND = { has_global_flag = missiles_evolution_automatic_retaliation_native_pending NOT = { has_global_flag = missiles_evolution_automatic_retaliation_short_pending } NOT = { has_variable = global.missiles_evolution_automatic_retaliation_due_date } }
+				AND = { has_global_flag = missiles_evolution_automatic_retaliation_short_pending NOT = { has_global_flag = missiles_evolution_automatic_retaliation_native_pending } has_variable = global.missiles_evolution_automatic_retaliation_due_date }
+			}
+		}
+	}
+}

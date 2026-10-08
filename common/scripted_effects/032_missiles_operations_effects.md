@@ -156,11 +156,15 @@ Nuclear and biological escrow still use their separate owners; their physical lo
 
 ## Evolution pacing
 
-`missiles_register_program` keeps every live programme in `global.missiles_program_registry` (first package, scenario package, capture shell, civil-war child); `missiles_cleanup_removed_country` removes it and rehomes a removed evolution host through `missiles_requeue_pending_evolution_jobs`.
-`missiles_measure_evolution_pressure` recounts programmes, operational programmes, wars, vulnerability, low readiness, overstock, unmaintained advanced programmes, payload owners, and responder/war pairs over that registry and publishes unscoped temporaries for the `missiles_evolution_*_is_eligible` and `*_pressure_is_high` triggers; `global.missiles_launch_total` counts committed launches.
-`missiles_evaluate_evolution_unlocks` (firing fallback) and `missiles_run_evolution_job` (`chaosx.nr32.190` on `global.missiles_evolution_host`) clear disabled pending state, recount, arm newly eligible tracks through `missiles_arm_evolution_track`, and commit at most one due track through `missiles_commit_evolution_track`, which sets the shared evolution-log temporaries, requires `is_current_evolution_enabled`, records the unlock, and refreshes each programme through `chaosx.nr32.8`.
-`missiles_queue_evolution_watch` keeps one watch (`chaosx.nr32.191`, flag `missiles_evolution_watch_queued`, date `global.missiles_evolution_watch_due_date`) queued on the host while `missiles_evolution_track_awaits_unlock` holds; `missiles_run_evolution_watch` reruns `missiles_evaluate_evolution_unlocks` every `watch_days`, so a track that becomes eligible between firings is armed, and a removed host hands the watch to a living programme.
-Tuning lives in `missiles_evolution_timing` (base delays) and `missiles_evolution_pacing` (spread, first-firing stagger, job stagger, watch interval, and eligibility thresholds).
+The [evolution pacing contract](../../docs/events/032_missiles/systems/evolution_pacing.md) documents finite observations, native clocks, exclusive waiting modes, queue receipts, setting changes and validation limits.
+`missiles_register_program` retains live membership in `global.missiles_program_registry`; exact initialization/removal and settled programme/world mutations notify one coalesced `chaosx.nr32.192` observation.
+`missiles_measure_evolution_pressure` publishes durable global counts, ratios, date and generation, distinguishes operational/mature/response capability and counts unordered hostile pairs once.
+`missiles_evaluate_evolution_unlocks` observes and arms or disarms; it never commits merely because an ordinary deadline elapsed.
+Native MTTH events `.201` through `.205` use the live day scales from `common/mtth/032_missiles_evolution_mtth.txt`, and their recurring gates perform no registry iteration.
+Only the first-high-chaos exception uses finite `.190` due dates, with earliest-job coalescing, obsolete-host rejection and seven-day spacing for overdue successful commitments.
+Retired `.191` deliveries and the unused watch API are cancellation sinks, not polling fallbacks.
+A fresh precommit observation, the shared enabled gate and the recorder's fresh acknowledgement protect once-only actorless logging and `.8` country adoption dispatch.
+Native changes without a supported exact notification remain discoverable at a later permitted pulse, not continuously; native trigger-check latency and source-model/MCP limitations remain explicit.
 
 ## Whole-missile site allocation
 

@@ -1,0 +1,243 @@
+# Event 032 finite observation notifications and native clock adapters.
+# External owners notify only after a completed material transaction. One
+# coalesced receiver supplies a fresh effect context and never requeues itself.
+# Native MTTH events own ordinary waiting; .190 owns finite first-fire dates.
+
+missiles_update_evolution_mtth_values = {
+	set_variable = { global.missiles_evolution_rogue_mtth_days = mtth:missiles_rogue_evolution_mtth }
+	set_variable = { global.missiles_evolution_guidance_mtth_days = mtth:missiles_guidance_evolution_mtth }
+	set_variable = { global.missiles_evolution_saturation_mtth_days = mtth:missiles_saturation_evolution_mtth }
+	set_variable = { global.missiles_evolution_special_mtth_days = mtth:missiles_special_evolution_mtth }
+	set_variable = { global.missiles_evolution_retaliation_mtth_days = mtth:missiles_retaliation_evolution_mtth }
+}
+
+# Any scope. This is an edge notification, not a periodic observer.
+missiles_notify_evolution_change = {
+	if = { limit = { has_global_flag = world_end } missiles_cancel_all_evolution_clocks = yes }
+	else_if = {
+		limit = {
+			has_global_flag = missiles_program_ever_initialized
+			NOT = { has_global_flag = missiles_evolution_observing }
+			NOT = { has_global_flag = world_end }
+			OR = {
+				NOT = { has_global_flag = missiles_evolution_first_pulse_done }
+				missiles_evolution_track_awaits_unlock = yes
+			}
+		}
+		missiles_select_evolution_host = yes
+		if = {
+			limit = {
+				has_variable = global.missiles_evolution_host
+				OR = {
+					NOT = { has_global_flag = missiles_evolution_observation_queued }
+					NOT = { check_variable = { var = global.missiles_evolution_observation_host_id value = global.missiles_evolution_host_id compare = equals } }
+				}
+			}
+			set_global_flag = missiles_evolution_observation_queued
+			set_variable = { global.missiles_evolution_observation_host_id = global.missiles_evolution_host_id }
+			set_temp_variable = { missiles_observation_delay_hours = constant:missiles_evolution_pacing.observation_coalesce_hours }
+			var:global.missiles_evolution_host = { country_event = { id = chaosx.nr32.192 hours = missiles_observation_delay_hours } }
+		}
+	}
+}
+
+# COUNTRY receiver .192. An obsolete host delivery cannot clear a new host's
+# queued observation. The completed pulse has no automatic successor.
+missiles_run_evolution_observation = {
+	if = {
+		limit = {
+			has_global_flag = missiles_evolution_observation_queued
+			check_variable = { var = id value = global.missiles_evolution_observation_host_id compare = equals }
+		}
+		clr_global_flag = missiles_evolution_observation_queued
+		clear_variable = global.missiles_evolution_observation_host_id
+		set_global_flag = missiles_evolution_observing
+		missiles_evaluate_evolution_unlocks = yes
+		clr_global_flag = missiles_evolution_observing
+	}
+}
+
+# COUNTRY, fresh native event context. Input: caller-created selection enum.
+# A stale positive gate is discarded, not retried by a background scan.
+missiles_attempt_native_evolution_unlock = {
+	if = {
+		limit = { missiles_evolution_clock_host_is_current = yes missiles_selected_evolution_has_native_clock = yes }
+		set_global_flag = missiles_evolution_observing
+		missiles_clear_disabled_evolution_pending = yes
+		missiles_measure_evolution_pressure = yes
+		missiles_update_evolution_mtth_values = yes
+		set_temp_variable = { missiles_evolution_commits = constant:missiles_program_value.zero }
+		if = {
+			limit = { missiles_selected_evolution_can_unlock = yes }
+			missiles_commit_evolution_track = yes
+		}
+		else = { missiles_clear_evolution_track_pending = yes }
+		# Adoption can change programme capacity and pressure. It is itself a
+		# finite mutation boundary, not authority for a self-scheduling watch.
+		if = {
+			limit = { check_variable = { missiles_evolution_commits > constant:missiles_program_value.zero } }
+			missiles_evaluate_evolution_unlocks = yes
+		}
+		else = { missiles_apply_evolution_observation = yes }
+		clr_global_flag = missiles_evolution_observing
+	}
+}
+
+# Terminal cleanup affects only Event 032's clocks, never the world-end owner
+# or already-recorded evolution/history flags.
+missiles_cancel_all_evolution_clocks = {
+	clr_global_flag = missiles_evolution_rogue_launch_commands_pending
+	clr_global_flag = missiles_evolution_rogue_launch_commands_native_pending
+	clr_global_flag = missiles_evolution_rogue_launch_commands_short_pending
+	clear_variable = global.missiles_evolution_rogue_launch_commands_due_date
+	clr_global_flag = missiles_evolution_unreliable_guidance_pending
+	clr_global_flag = missiles_evolution_unreliable_guidance_native_pending
+	clr_global_flag = missiles_evolution_unreliable_guidance_short_pending
+	clear_variable = global.missiles_evolution_unreliable_guidance_due_date
+	clr_global_flag = missiles_evolution_saturation_pending
+	clr_global_flag = missiles_evolution_saturation_native_pending
+	clr_global_flag = missiles_evolution_saturation_short_pending
+	clear_variable = global.missiles_evolution_saturation_due_date
+	clr_global_flag = missiles_evolution_special_warheads_pending
+	clr_global_flag = missiles_evolution_special_warheads_native_pending
+	clr_global_flag = missiles_evolution_special_warheads_short_pending
+	clear_variable = global.missiles_evolution_special_warheads_due_date
+	clr_global_flag = missiles_evolution_automatic_retaliation_pending
+	clr_global_flag = missiles_evolution_automatic_retaliation_native_pending
+	clr_global_flag = missiles_evolution_automatic_retaliation_short_pending
+	clear_variable = global.missiles_evolution_automatic_retaliation_due_date
+	clr_global_flag = missiles_evolution_short_job_queued
+	clear_variable = global.missiles_evolution_short_job_due_date
+	clear_variable = global.missiles_evolution_short_job_host_id
+	clear_variable = global.missiles_evolution_next_short_commit_date
+	clr_global_flag = missiles_evolution_observation_queued
+	clear_variable = global.missiles_evolution_observation_host_id
+	clr_global_flag = missiles_evolution_watch_queued
+	clear_variable = global.missiles_evolution_watch_due_date
+}
+
+# Consume a complete observation without another registry pass. This owner
+# arms or disarms, never commits a track merely because a due date elapsed.
+missiles_apply_evolution_observation = {
+	set_temp_variable = { missiles_evolution_armed = constant:missiles_program_value.zero }
+	set_temp_variable = { missiles_evolution_selection = constant:missiles_evolution.rogue_commands }
+	if = {
+		limit = { missiles_selected_evolution_can_unlock = yes }
+		if = { limit = { NOT = { missiles_selected_evolution_pending_is_well_formed = yes } } missiles_arm_evolution_track = yes }
+	}
+	else = { missiles_clear_evolution_track_pending = yes }
+	set_temp_variable = { missiles_evolution_selection = constant:missiles_evolution.unreliable_guidance }
+	if = {
+		limit = { missiles_selected_evolution_can_unlock = yes }
+		if = { limit = { NOT = { missiles_selected_evolution_pending_is_well_formed = yes } } missiles_arm_evolution_track = yes }
+	}
+	else = { missiles_clear_evolution_track_pending = yes }
+	set_temp_variable = { missiles_evolution_selection = constant:missiles_evolution.saturation }
+	if = {
+		limit = { missiles_selected_evolution_can_unlock = yes }
+		if = { limit = { NOT = { missiles_selected_evolution_pending_is_well_formed = yes } } missiles_arm_evolution_track = yes }
+	}
+	else = { missiles_clear_evolution_track_pending = yes }
+	set_temp_variable = { missiles_evolution_selection = constant:missiles_evolution.special_warheads }
+	if = {
+		limit = { missiles_selected_evolution_can_unlock = yes }
+		if = { limit = { NOT = { missiles_selected_evolution_pending_is_well_formed = yes } } missiles_arm_evolution_track = yes }
+	}
+	else = { missiles_clear_evolution_track_pending = yes }
+	set_temp_variable = { missiles_evolution_selection = constant:missiles_evolution.automatic_retaliation }
+	if = {
+		limit = { missiles_selected_evolution_can_unlock = yes }
+		if = { limit = { NOT = { missiles_selected_evolution_pending_is_well_formed = yes } } missiles_arm_evolution_track = yes }
+	}
+	else = { missiles_clear_evolution_track_pending = yes }
+	set_global_flag = missiles_evolution_first_pulse_done
+	if = {
+		limit = { NOT = { missiles_short_evolution_work_exists = yes } }
+		clr_global_flag = missiles_evolution_short_job_queued
+		clear_variable = global.missiles_evolution_short_job_due_date
+		clear_variable = global.missiles_evolution_short_job_host_id
+	}
+}
+
+# COUNTRY: cheap notification receipt, not an authoritative pressure cache.
+# A repeated clamp/network refresh with unchanged numbers creates no job.
+missiles_notify_program_numbers_changed = {
+	if = {
+		limit = {
+			has_country_flag = missiles_program_initialized
+			NOT = { has_country_flag = missiles_program_cleanup_complete }
+			NOT = { has_country_flag = missiles_system_carrier }
+			NOT = { has_country_flag = missiles_temporary_actor }
+			OR = {
+				NOT = { has_country_flag = missiles_evolution_numbers_known }
+				NOT = { check_variable = { var = missiles_program_stage value = missiles_evolution_noted_program_stage compare = equals } }
+				NOT = { check_variable = { var = missiles_operational_reserve value = missiles_evolution_noted_operational_reserve compare = equals } }
+				NOT = { check_variable = { var = missiles_launch_readiness value = missiles_evolution_noted_launch_readiness compare = equals } }
+				NOT = { check_variable = { var = missiles_command_control value = missiles_evolution_noted_command_control compare = equals } }
+				NOT = { check_variable = { var = missiles_active_site_count value = missiles_evolution_noted_active_site_count compare = equals } }
+				NOT = { check_variable = { var = missiles_total_site_capacity value = missiles_evolution_noted_total_site_capacity compare = equals } }
+				NOT = { check_variable = { var = missiles_launch_site_count value = missiles_evolution_noted_launch_site_count compare = equals } }
+				NOT = { check_variable = { var = missiles_active_site_region_count value = missiles_evolution_noted_active_site_region_count compare = equals } }
+			}
+		}
+		set_country_flag = missiles_evolution_numbers_known
+		set_variable = { missiles_evolution_noted_program_stage = missiles_program_stage }
+		set_variable = { missiles_evolution_noted_operational_reserve = missiles_operational_reserve }
+		set_variable = { missiles_evolution_noted_launch_readiness = missiles_launch_readiness }
+		set_variable = { missiles_evolution_noted_command_control = missiles_command_control }
+		set_variable = { missiles_evolution_noted_active_site_count = missiles_active_site_count }
+		set_variable = { missiles_evolution_noted_total_site_capacity = missiles_total_site_capacity }
+		set_variable = { missiles_evolution_noted_launch_site_count = missiles_launch_site_count }
+		set_variable = { missiles_evolution_noted_active_site_region_count = missiles_active_site_region_count }
+		missiles_notify_evolution_change = yes
+	}
+}
+
+# Any scope: the count of crossed thresholds distinguishes the 900 boundary
+# inside Totalen Chaos. Only a changed band notifies; small meter adjustments
+# do not cause registry observations.
+missiles_note_chaos_threshold_change = {
+	if = {
+		limit = { has_global_flag = missiles_program_ever_initialized }
+		set_temp_variable = { missiles_evolution_new_chaos_band = constant:missiles_program_value.zero }
+		if = { limit = { check_variable = { var = global.chaos_meter_value value = constant:missiles_evolution_pressure.minimum_chaos_rogue compare = greater_than_or_equals } } add_to_temp_variable = { missiles_evolution_new_chaos_band = constant:missiles_program_value.one } }
+		if = { limit = { check_variable = { var = global.chaos_meter_value value = constant:missiles_evolution_pressure.minimum_chaos_guidance compare = greater_than_or_equals } } add_to_temp_variable = { missiles_evolution_new_chaos_band = constant:missiles_program_value.one } }
+		if = { limit = { check_variable = { var = global.chaos_meter_value value = constant:missiles_evolution_pressure.minimum_chaos_saturation compare = greater_than_or_equals } } add_to_temp_variable = { missiles_evolution_new_chaos_band = constant:missiles_program_value.one } }
+		if = { limit = { check_variable = { var = global.chaos_meter_value value = constant:missiles_evolution_pressure.minimum_chaos_special compare = greater_than_or_equals } } add_to_temp_variable = { missiles_evolution_new_chaos_band = constant:missiles_program_value.one } }
+		if = { limit = { check_variable = { var = global.chaos_meter_value value = constant:missiles_evolution_pressure.minimum_chaos_retaliation compare = greater_than_or_equals } } add_to_temp_variable = { missiles_evolution_new_chaos_band = constant:missiles_program_value.one } }
+		if = { limit = { has_global_flag = { flag = chaos_tier value = constant:chaos_meter_tier_id.tier_final } } add_to_temp_variable = { missiles_evolution_new_chaos_band = constant:missiles_program_value.one } }
+		if = {
+			limit = {
+				OR = {
+					NOT = { has_variable = global.missiles_evolution_observed_chaos_band }
+					NOT = { check_variable = { var = global.missiles_evolution_observed_chaos_band value = missiles_evolution_new_chaos_band compare = equals } }
+				}
+			}
+			set_variable = { global.missiles_evolution_observed_chaos_band = missiles_evolution_new_chaos_band }
+			missiles_notify_evolution_change = yes
+		}
+		if = { limit = { has_global_flag = world_end } missiles_cancel_all_evolution_clocks = yes }
+	}
+}
+
+# Any scope, called only by the shared evolution-setting transaction for
+# Event 032. An explicit setting change refreshes country adoption once.
+missiles_evolution_setting_changed = {
+	missiles_clear_disabled_evolution_pending = yes
+	if = {
+		limit = {
+			has_global_flag = missiles_program_ever_initialized
+			NOT = { has_global_flag = world_end }
+			NOT = { has_global_flag = missiles_evolution_observing }
+		}
+		set_global_flag = missiles_evolution_observing
+		set_temp_variable = { missiles_evolution_setting_loop_break = constant:missiles_program_value.zero }
+		for_each_scope_loop = {
+			array = global.missiles_program_registry
+			break = missiles_evolution_setting_loop_break
+			if = { limit = { exists = yes } country_event = { id = chaosx.nr32.8 } }
+		}
+		clr_global_flag = missiles_evolution_observing
+		missiles_notify_evolution_change = yes
+	}
+}

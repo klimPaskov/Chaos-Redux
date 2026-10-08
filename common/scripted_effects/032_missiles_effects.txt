@@ -67,6 +67,7 @@ missiles_clamp_program_values = {
 		}
 		set_variable = { missiles_reserved_reserve = constant:missiles_program_value.minimum }
 	}
+	missiles_notify_program_numbers_changed = yes
 }
 
 missiles_set_program_phases = {
@@ -157,6 +158,7 @@ missiles_refresh_program_status_idea = {
 		add_ideas = missiles_program_experimental
 	}
 	missiles_set_program_phases = yes
+	missiles_notify_evolution_change = yes
 }
 
 missiles_initialize_program_record = {
@@ -271,7 +273,7 @@ missiles_global_firing_transaction = {
 				# receiver binds ROOT to the recipient before site/AI helpers run.
 				country_event = { id = chaosx.nr32.5 }
 			}
-			missiles_evaluate_evolution_unlocks = yes
+			missiles_notify_evolution_change = yes
 			if = {
 				limit = {
 					check_variable = { var = global.missiles_firing_first_news_pending value = constant:missiles_event.one compare = equals }
@@ -406,6 +408,7 @@ missiles_normalize_technology_stage = {
 		}
 		set_variable = { missiles_program_stage = missiles_normalized_stage }
 	}
+	missiles_notify_program_numbers_changed = yes
 }
 
 missiles_apply_next_technology_step = {
@@ -876,6 +879,7 @@ missiles_recalculate_network = {
 		}
 	}
 	set_variable = { missiles_active_site_region_count = missiles_network_strategic_regions^num }
+	missiles_notify_program_numbers_changed = yes
 }
 
 missiles_refresh_site_flags = {
@@ -952,6 +956,7 @@ missiles_refresh_site_flags = {
 			add_dynamic_modifier = { modifier = missiles_launch_site_active }
 		}
 	}
+	missiles_notify_evolution_change = yes
 }
 
 missiles_reinforce_one_site = {

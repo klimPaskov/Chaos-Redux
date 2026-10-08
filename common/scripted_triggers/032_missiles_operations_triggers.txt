@@ -1018,7 +1018,14 @@ missiles_program_is_vulnerable = {
 # Owns a supported unconventional payload: technology plus physical stock.
 missiles_program_owns_special_payload = {
 	OR = {
-		missiles_country_has_chemical_payload_candidate = yes
+		AND = {
+			missiles_country_has_chemical_payload_candidate = yes
+			set_temp_variable = { cbrn_action_agent = cbrn_air_payload_agent }
+			OR = {
+				cbrn_air_payload_can_fund_strategic_action = yes
+				missiles_operation_has_paid_chemical_receipt = yes
+			}
+		}
 		missiles_country_has_biological_payload_candidate = yes
 		missiles_country_has_nuclear_payload_candidate = yes
 		missiles_country_has_thermonuclear_payload_candidate = yes
@@ -1040,60 +1047,87 @@ missiles_program_can_answer_retaliation = {
 	}
 }
 
-# Any scope. Track eligibility reads the temporaries published by
-# missiles_measure_evolution_pressure in the same evaluation.
+# COUNTRY endpoint; PREV is the other operational programme in the frozen
+# pair iterator. War is direct hostility. Outside war, an actual war goal or
+# active justification is the concrete strategic-threat signal, in either
+# direction; alliance and subject ties exclude that peacetime signal.
+missiles_evolution_pair_is_hostile = {
+	OR = {
+		has_war_with = PREV
+		AND = {
+			NOT = { is_in_faction_with = PREV }
+			NOT = { is_subject_of = PREV }
+			PREV = { NOT = { is_subject_of = PREV } }
+			OR = {
+				has_wargoal_against = PREV
+				is_justifying_wargoal_against = PREV
+				PREV = { has_wargoal_against = PREV }
+				PREV = { is_justifying_wargoal_against = PREV }
+			}
+		}
+	}
+}
+
+# Any scope. Track eligibility reads the durable complete observation published
+# by missiles_measure_evolution_pressure at an authorized evaluation boundary.
 missiles_evolution_rogue_launch_commands_is_eligible = {
 	check_variable = { var = global.chaos_meter_value value = constant:missiles_evolution_pressure.minimum_chaos_rogue compare = greater_than_or_equals }
-	check_variable = { var = missiles_pressure_vulnerable value = constant:missiles_evolution_pacing.minimum_vulnerable_programs compare = greater_than_or_equals }
+	check_variable = { var = global.missiles_pressure_vulnerable value = constant:missiles_evolution_pacing.minimum_vulnerable_programs compare = greater_than_or_equals }
 }
 missiles_evolution_rogue_launch_commands_pressure_is_high = {
-	check_variable = { var = missiles_pressure_vulnerable value = constant:missiles_evolution_pacing.widespread_vulnerable_programs compare = greater_than_or_equals }
+	check_variable = { var = global.missiles_pressure_vulnerable value = constant:missiles_evolution_pacing.widespread_vulnerable_programs compare = greater_than_or_equals }
 }
 
 missiles_evolution_unreliable_guidance_is_eligible = {
 	check_variable = { var = global.chaos_meter_value value = constant:missiles_evolution_pressure.minimum_chaos_guidance compare = greater_than_or_equals }
-	check_variable = { var = missiles_pressure_operational value = constant:missiles_program_value.one compare = greater_than_or_equals }
+	check_variable = { var = global.missiles_pressure_operational value = constant:missiles_program_value.one compare = greater_than_or_equals }
 	OR = {
-		check_variable = { var = missiles_pressure_low_readiness value = constant:missiles_evolution_pacing.minimum_strained_programs compare = greater_than_or_equals }
-		check_variable = { var = missiles_pressure_overstocked value = constant:missiles_evolution_pacing.minimum_overstocked_programs compare = greater_than_or_equals }
-		check_variable = { var = missiles_pressure_launches value = constant:missiles_evolution_pacing.launch_strain_threshold compare = greater_than_or_equals }
-		check_variable = { var = missiles_pressure_unmaintained_share value = constant:missiles_evolution_pacing.maintenance_neglect_share compare = greater_than_or_equals }
+		check_variable = { var = global.missiles_pressure_low_readiness value = constant:missiles_evolution_pacing.minimum_strained_programs compare = greater_than_or_equals }
+		check_variable = { var = global.missiles_pressure_overstocked value = constant:missiles_evolution_pacing.minimum_overstocked_programs compare = greater_than_or_equals }
+		check_variable = { var = global.missiles_pressure_launches value = constant:missiles_evolution_pacing.launch_strain_threshold compare = greater_than_or_equals }
+		check_variable = { var = global.missiles_pressure_unmaintained_share value = constant:missiles_evolution_pacing.maintenance_neglect_share compare = greater_than_or_equals }
 	}
 }
 missiles_evolution_unreliable_guidance_pressure_is_high = {
-	check_variable = { var = missiles_pressure_war value = constant:missiles_evolution_pressure.minimum_war_programs compare = greater_than_or_equals }
+	OR = {
+		check_variable = { var = global.missiles_pressure_war value = constant:missiles_evolution_pressure.minimum_war_programs compare = greater_than_or_equals }
+		AND = {
+			check_variable = { var = global.missiles_pressure_launches value = constant:missiles_evolution_pacing.launch_strain_threshold compare = greater_than_or_equals }
+			check_variable = { var = global.missiles_pressure_low_readiness value = constant:missiles_evolution_pacing.minimum_strained_programs compare = greater_than_or_equals }
+		}
+	}
 }
 
 missiles_evolution_saturation_is_eligible = {
 	check_variable = { var = global.chaos_meter_value value = constant:missiles_evolution_pressure.minimum_chaos_saturation compare = greater_than_or_equals }
-	check_variable = { var = missiles_pressure_operational value = constant:missiles_evolution_pressure.minimum_operational_programs compare = greater_than_or_equals }
-	check_variable = { var = missiles_pressure_operational_share value = constant:missiles_evolution_pacing.saturation_operational_share compare = greater_than_or_equals }
-	check_variable = { var = missiles_pressure_war value = constant:missiles_evolution_pressure.minimum_war_programs compare = greater_than_or_equals }
+	check_variable = { var = global.missiles_pressure_operational value = constant:missiles_evolution_pressure.minimum_operational_programs compare = greater_than_or_equals }
+	check_variable = { var = global.missiles_pressure_operational_share value = constant:missiles_evolution_pacing.saturation_operational_share compare = greater_than_or_equals }
+	check_variable = { var = global.missiles_pressure_war value = constant:missiles_evolution_pressure.minimum_war_programs compare = greater_than_or_equals }
 }
 missiles_evolution_saturation_pressure_is_high = {
-	check_variable = { var = missiles_pressure_war value = constant:missiles_evolution_pacing.saturation_pressure_war_programs compare = greater_than_or_equals }
+	check_variable = { var = global.missiles_pressure_war value = constant:missiles_evolution_pacing.saturation_pressure_war_programs compare = greater_than_or_equals }
 }
 
 missiles_evolution_special_warheads_is_eligible = {
 	check_variable = { var = global.chaos_meter_value value = constant:missiles_evolution_pressure.minimum_chaos_special compare = greater_than_or_equals }
-	check_variable = { var = missiles_pressure_payload_owners value = constant:missiles_evolution_pressure.minimum_payload_owners compare = greater_than_or_equals }
+	check_variable = { var = global.missiles_pressure_payload_owners value = constant:missiles_evolution_pressure.minimum_payload_owners compare = greater_than_or_equals }
 }
 missiles_evolution_special_warheads_pressure_is_high = {
-	check_variable = { var = missiles_pressure_payload_owners value = constant:missiles_evolution_pacing.special_pressure_payload_owners compare = greater_than_or_equals }
+	check_variable = { var = global.missiles_pressure_payload_owners value = constant:missiles_evolution_pacing.special_pressure_payload_owners compare = greater_than_or_equals }
 }
 
 missiles_evolution_automatic_retaliation_is_eligible = {
+	check_variable = { var = global.missiles_pressure_responders value = constant:missiles_program_value.one compare = greater_than_or_equals }
 	check_variable = { var = global.chaos_meter_value value = constant:missiles_evolution_pressure.minimum_chaos_retaliation compare = greater_than_or_equals }
 	NOT = { has_global_flag = world_end }
-	check_variable = { var = missiles_pressure_operational value = constant:missiles_evolution_pressure.minimum_retaliation_programs compare = greater_than_or_equals }
-	check_variable = { var = missiles_pressure_hostile_pairs value = constant:missiles_program_value.one compare = greater_than_or_equals }
+	check_variable = { var = global.missiles_pressure_operational value = constant:missiles_evolution_pressure.minimum_retaliation_programs compare = greater_than_or_equals }
+	check_variable = { var = global.missiles_pressure_hostile_pairs value = constant:missiles_program_value.one compare = greater_than_or_equals }
 }
 missiles_evolution_automatic_retaliation_pressure_is_high = {
-	check_variable = { var = missiles_pressure_hostile_pairs value = constant:missiles_evolution_pacing.retaliation_pressure_pairs compare = greater_than_or_equals }
+	check_variable = { var = global.missiles_pressure_hostile_pairs value = constant:missiles_evolution_pacing.retaliation_pressure_pairs compare = greater_than_or_equals }
 }
 
-# Any scope. At least one enabled evolution track has not unlocked yet, so the
-# evolution watch keeps checking eligibility between Event 32 firings.
+# Any scope. At least one enabled track can still use future observations.
 missiles_evolution_track_awaits_unlock = {
 	OR = {
 		AND = {
