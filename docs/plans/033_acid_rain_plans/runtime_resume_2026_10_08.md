@@ -29,9 +29,10 @@ These client handles are observation state, not durable backend job identities.
 
 ## Owned work in progress
 
-The existing architecture role `01a11636-299f-7351-834c-b5a800e06a8a` is resumed for unique reset break storage only in aftermath, achievement, preparedness and CXT helper files plus its test/handoff.
+The existing architecture role `01a11636-299f-7351-834c-b5a800e06a8a` delivered twenty-eight loop binding/reset repairs in aftermath, achievement and preparedness helpers, with CXT unchanged.
+The parent reviewed the exact hunks and reran its actual-source envelope test, including byte/AST preservation and frozen before negative controls.
 The existing event UI role `01a1162b-7228-72f3-a0f1-4dc51974ec21` is resumed for the GUI return families and GUI helper loop isolation in the two already assigned presentation files.
-Their current changes are not part of either parent source commit and need completed handoffs, parent review and their required checks before publication.
+The architecture tranche is isolated for a separate source commit, while the UI tranche still needs its completed handoff, parent review and required checks before publication.
 No role may change costs, weighted policy, layout, assets, shared systems or workbook under these narrow grants.
 The probability role `01a11623-bc1a-7040-a774-983d447dbfff` is resumed for an F5 baseline over formation/live enable controls before the owner changes probability-bearing admission.
 It must distinguish immutable before runtime `e455292b55d0443abb234a00506b9501b02f8c2a8df5afe298ff855f56cb406f` from the subsequent log-only `94c0c9d3c8b8b63f57878033648bb71b1f34ac89739d279a299ec3f163c1a510` snapshot.

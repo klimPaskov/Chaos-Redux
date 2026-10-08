@@ -1180,7 +1180,9 @@ acid_rain_033_achievement_record_arrival = {
 			set_temp_variable = { acid_rain_033_achievement_warning_match = @acid_rain_033_achievement_no_row }
 			if = {
 				limit = { has_variable = acid_rain_033_achievement_warning_visit_row_count }
+				set_temp_variable = { acid_rain_033_achievement_record_arrival_loop_1_break = constant:acid_rain_runtime.zero }
 				for_each_loop = {
+					break = acid_rain_033_achievement_record_arrival_loop_1_break
 					array = acid_rain_033_achievement_warning_visit_ids
 					index = acid_rain_033_achievement_warning_index
 					value = acid_rain_033_achievement_row_value
@@ -1424,7 +1426,9 @@ acid_rain_033_achievement_record_severe_pulse = {
 				set_temp_variable = { acid_rain_033_achievement_severe_pulse_row = @acid_rain_033_achievement_no_row }
 				if = {
 					limit = { has_variable = acid_rain_033_achievement_severe_target_row_count }
+					set_temp_variable = { acid_rain_033_achievement_record_severe_pulse_loop_1_break = constant:acid_rain_runtime.zero }
 					for_each_loop = {
+						break = acid_rain_033_achievement_record_severe_pulse_loop_1_break
 						array = acid_rain_033_achievement_severe_target_state_ids
 						index = acid_rain_033_achievement_severe_index
 						value = acid_rain_033_achievement_row_value
@@ -1498,7 +1502,9 @@ acid_rain_033_achievement_record_severe_protection = {
 				set_temp_variable = { acid_rain_033_achievement_protection_row = @acid_rain_033_achievement_no_row }
 				if = {
 					limit = { has_variable = acid_rain_033_achievement_severe_target_row_count }
+					set_temp_variable = { acid_rain_033_achievement_record_severe_protection_loop_1_break = constant:acid_rain_runtime.zero }
 					for_each_loop = {
+						break = acid_rain_033_achievement_record_severe_protection_loop_1_break
 						array = acid_rain_033_achievement_severe_target_state_ids
 						index = acid_rain_033_achievement_protection_index
 						value = acid_rain_033_achievement_row_value
@@ -1558,7 +1564,9 @@ acid_rain_033_achievement_record_severe_cell_closure = {
 			set_temp_variable = { acid_rain_033_achievement_episode_protection = @acid_rain_033_achievement_zero }
 			if = {
 				limit = { has_variable = acid_rain_033_achievement_severe_target_row_count }
+				set_temp_variable = { acid_rain_033_achievement_record_severe_cell_closure_loop_1_break = constant:acid_rain_runtime.zero }
 				for_each_loop = {
+					break = acid_rain_033_achievement_record_severe_cell_closure_loop_1_break
 					array = acid_rain_033_achievement_severe_target_state_ids
 					index = acid_rain_033_achievement_episode_index
 					value = acid_rain_033_achievement_row_value
@@ -1589,7 +1597,9 @@ acid_rain_033_achievement_record_severe_cell_closure = {
 			set_temp_variable = { acid_rain_033_achievement_episode_row = @acid_rain_033_achievement_no_row }
 			if = {
 				limit = { has_variable = acid_rain_033_achievement_severe_episode_row_count }
+				set_temp_variable = { acid_rain_033_achievement_record_severe_cell_closure_loop_2_break = constant:acid_rain_runtime.zero }
 				for_each_loop = {
+					break = acid_rain_033_achievement_record_severe_cell_closure_loop_2_break
 					array = acid_rain_033_achievement_severe_episode_ids
 					index = acid_rain_033_achievement_episode_summary_index
 					value = acid_rain_033_achievement_row_value
@@ -2050,7 +2060,9 @@ acid_rain_033_achievement_close_runtime_episode = {
 # COUNTRY SCOPE. Inspect the frozen evacuation rows for the episode just closed.
 # Threshold zero records a missing design input and cannot produce an award.
 acid_rain_033_achievement_settle_episode_evacuations = {
+	set_temp_variable = { acid_rain_033_achievement_settle_episode_evacuations_loop_1_break = constant:acid_rain_runtime.zero }
 	for_each_loop = {
+		break = acid_rain_033_achievement_settle_episode_evacuations_loop_1_break
 		array = acid_rain_033_achievement_evacuation_state_scopes
 		value = acid_rain_033_achievement_evacuation_scope
 		index = acid_rain_033_achievement_evacuation_index
@@ -2120,7 +2132,9 @@ acid_rain_033_achievement_refresh_deadlines = {
 		limit = { acid_rain_033_achievement_generation_is_current = yes }
 	set_variable = { acid_rain_033_achievement_recovery_resolved_count = @acid_rain_033_achievement_zero }
 	set_variable = { acid_rain_033_achievement_tier3_resolved_count = @acid_rain_033_achievement_zero }
+	set_temp_variable = { acid_rain_033_achievement_refresh_deadlines_loop_1_break = constant:acid_rain_runtime.zero }
 	for_each_scope_loop = {
+		break = acid_rain_033_achievement_refresh_deadlines_loop_1_break
 		array = acid_rain_033_achievement_recovery_state_scopes
 		if = {
 			limit = {
@@ -2137,7 +2151,9 @@ acid_rain_033_achievement_refresh_deadlines = {
 			}
 		}
 	}
+	set_temp_variable = { acid_rain_033_achievement_refresh_deadlines_loop_2_break = constant:acid_rain_runtime.zero }
 	for_each_scope_loop = {
+		break = acid_rain_033_achievement_refresh_deadlines_loop_2_break
 		array = acid_rain_033_achievement_tier3_state_scopes
 		if = {
 			limit = {
@@ -2199,7 +2215,9 @@ acid_rain_033_achievement_record_acute_closure = {
 		divide_variable = { acid_rain_033_achievement_closure_death_ceiling = @acid_rain_033_achievement_five_state_death_denominator }
 		multiply_variable = { acid_rain_033_achievement_closure_death_ceiling = @acid_rain_033_achievement_five_state_death_numerator }
 		set_variable = { acid_rain_033_achievement_closure_tier3_count = @acid_rain_033_achievement_zero }
+		set_temp_variable = { acid_rain_033_achievement_record_acute_closure_loop_1_break = constant:acid_rain_runtime.zero }
 		for_each_scope_loop = {
+			break = acid_rain_033_achievement_record_acute_closure_loop_1_break
 			array = acid_rain_033_achievement_responsible_states
 			if = { limit = { check_variable = { var = acid_rain_state_aftermath_tier value = @acid_rain_033_achievement_tier3 compare = greater_than_or_equals } } add_to_variable = { PREV.acid_rain_033_achievement_closure_tier3_count = @acid_rain_033_achievement_one } }
 		}
@@ -2371,7 +2389,9 @@ acid_rain_033_achievement_capture_action_start = {
 	set_variable = { acid_rain_033_achievement_active_action_visit = @acid_rain_033_achievement_zero }
 	if = {
 		limit = { check_variable = { var = acid_rain_selected_action value = constant:acid_rain_action.recovery_transport compare = less_than } }
+		set_temp_variable = { acid_rain_033_achievement_capture_action_start_loop_1_break = constant:acid_rain_runtime.zero }
 		for_each_scope_loop = {
+			break = acid_rain_033_achievement_capture_action_start_loop_1_break
 			array = acid_rain_033_achievement_responsible_states
 			if = {
 				limit = { has_state_flag = acid_rain_warning_pending check_variable = { var = PREV.acid_rain_033_achievement_active_action_visit value = @acid_rain_033_achievement_zero compare = equals } }
@@ -2413,7 +2433,9 @@ acid_rain_033_achievement_record_runtime_action = {
 	}
 	if = {
 		limit = { check_variable = { var = acid_rain_selected_action value = constant:acid_rain_action.urgent_shelter compare = equals } }
+		set_temp_variable = { acid_rain_033_achievement_record_runtime_action_loop_1_break = constant:acid_rain_runtime.zero }
 		for_each_scope_loop = {
+			break = acid_rain_033_achievement_record_runtime_action_loop_1_break
 			array = acid_rain_033_achievement_responsible_states
 			if = {
 				limit = { OR = { has_state_flag = acid_rain_severe_cell_target has_state_flag = acid_rain_superstorm_target } }
@@ -2441,7 +2463,9 @@ acid_rain_033_achievement_record_runtime_arrival = {
 	set_temp_variable = { acid_rain_033_input_arrival_day = global.date }
 	CONTROLLER = {
 		acid_rain_033_achievement_record_arrival = yes
+		set_temp_variable = { acid_rain_033_achievement_record_runtime_arrival_loop_1_break = constant:acid_rain_runtime.zero }
 		for_each_loop = {
+			break = acid_rain_033_achievement_record_runtime_arrival_loop_1_break
 			array = acid_rain_033_achievement_pending_action_keys
 			value = acid_rain_033_pending_action_key
 			index = acid_rain_033_pending_action_index
@@ -2507,7 +2531,9 @@ acid_rain_033_achievement_record_runtime_evacuation_completion = {
 # Tier-3 downgrade must precede day 180 and is audited on day 180 itself.
 acid_rain_033_achievement_schedule_deadline = {
 	set_temp_variable = { acid_rain_033_deadline_candidate = @acid_rain_033_achievement_zero }
+	set_temp_variable = { acid_rain_033_achievement_schedule_deadline_loop_1_break = constant:acid_rain_runtime.zero }
 	for_each_scope_loop = {
+		break = acid_rain_033_achievement_schedule_deadline_loop_1_break
 		array = acid_rain_033_achievement_recovery_state_scopes
 		if = {
 			limit = { NOT = { has_state_flag = acid_rain_033_achievement_state_recovery_resolved } }
@@ -2525,7 +2551,9 @@ acid_rain_033_achievement_schedule_deadline = {
 			}
 		}
 	}
+	set_temp_variable = { acid_rain_033_achievement_schedule_deadline_loop_2_break = constant:acid_rain_runtime.zero }
 	for_each_scope_loop = {
+		break = acid_rain_033_achievement_schedule_deadline_loop_2_break
 		array = acid_rain_033_achievement_tier3_state_scopes
 		if = {
 			limit = {

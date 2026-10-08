@@ -485,11 +485,15 @@ acid_rain_project_country_obligations = {
 	set_variable = { acid_rain_033_achievement_tier3_row_count = constant:acid_rain_aftermath.zero }
 	set_variable = { acid_rain_033_achievement_tier3_resolved_count = constant:acid_rain_aftermath.zero }
 	set_temp_variable = { acid_rain_next_obligation_deadline = constant:acid_rain_aftermath.zero }
+	set_temp_variable = { acid_rain_project_country_obligations_loop_1_break = constant:acid_rain_runtime.zero }
 	for_each_scope_loop = {
+		break = acid_rain_project_country_obligations_loop_1_break
 		array = acid_rain_tier3_history_states
 		if = {
 			limit = { check_variable = { var = acid_rain_consequence_generation value = global.acid_rain_generation_id compare = equals } }
+			set_temp_variable = { acid_rain_project_country_obligations_loop_2_break = constant:acid_rain_runtime.zero }
 			for_each_loop = {
+				break = acid_rain_project_country_obligations_loop_2_break
 				array = acid_rain_tier3_entry_days
 				index = acid_rain_obligation_row
 				value = acid_rain_obligation_entry_day
@@ -573,7 +577,9 @@ acid_rain_record_paid_recovery_consequence = {
 
 # COUNTRY SCOPE. Exact project/action completion hook, with unchanged payment.
 acid_rain_country_water_context_changed = {
+	set_temp_variable = { acid_rain_country_water_context_changed_loop_1_break = constant:acid_rain_runtime.zero }
 	for_each_scope_loop = {
+		break = acid_rain_country_water_context_changed_loop_1_break
 		array = acid_rain_033_achievement_responsible_states
 		if = { limit = { check_variable = { var = acid_rain_consequence_generation value = global.acid_rain_generation_id compare = equals } } acid_rain_reconcile_state_consequences = yes }
 	}
@@ -582,8 +588,10 @@ acid_rain_country_water_context_changed = {
 # Host checks only the current union footprint. Copy before removing any members.
 acid_rain_refresh_active_consequences = {
 	clear_temp_array = acid_rain_active_consequence_snapshot
-	for_each_scope_loop = { array = global.acid_rain_active_consequence_states add_to_temp_array = { array = acid_rain_active_consequence_snapshot value = THIS } }
-	for_each_scope_loop = { array = acid_rain_active_consequence_snapshot acid_rain_reconcile_state_consequences = yes }
+	set_temp_variable = { acid_rain_refresh_active_consequences_loop_1_break = constant:acid_rain_runtime.zero }
+	for_each_scope_loop = { break = acid_rain_refresh_active_consequences_loop_1_break array = global.acid_rain_active_consequence_states add_to_temp_array = { array = acid_rain_active_consequence_snapshot value = THIS } }
+	set_temp_variable = { acid_rain_refresh_active_consequences_loop_2_break = constant:acid_rain_runtime.zero }
+	for_each_scope_loop = { break = acid_rain_refresh_active_consequences_loop_2_break array = acid_rain_active_consequence_snapshot acid_rain_reconcile_state_consequences = yes }
 }
 
 # One state transaction: advance the preceding interval before sampling replacements.

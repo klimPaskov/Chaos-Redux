@@ -524,7 +524,9 @@ acid_rain_refresh_country_action_quotes = {
 	set_temp_variable = { acid_rain_component_quote = constant:acid_rain_runtime.zero }
 
 	set_temp_variable = { acid_rain_action_quote_loop_end = constant:acid_rain_runtime.action_loop_end }
+	set_temp_variable = { acid_rain_refresh_country_action_quotes_loop_1_break = constant:acid_rain_runtime.zero }
 	for_loop_effect = {
+		break = acid_rain_refresh_country_action_quotes_loop_1_break
 		start = constant:acid_rain_runtime.one
 		end = acid_rain_action_quote_loop_end
 		value = acid_rain_action_quote_index
@@ -888,7 +890,9 @@ acid_rain_cancel_project = {
 # grants a bounded repair-speed bonus while the crews return to normal work.
 # Consumed equipment and political power remain spent.
 acid_rain_demobilize_emergency_apparatus = {
+	set_temp_variable = { acid_rain_demobilize_emergency_apparatus_loop_1_break = constant:acid_rain_runtime.zero }
 	for_loop_effect = {
+		break = acid_rain_demobilize_emergency_apparatus_loop_1_break
 		start = constant:acid_rain_runtime.one
 		end = constant:acid_rain_runtime.five
 		value = acid_rain_demobilize_project_index
@@ -971,7 +975,9 @@ acid_rain_resolve_operation_family = {
 acid_rain_refresh_operation_state = {
 	set_temp_variable = { acid_rain_running_operations = acid_rain_evacuations_active }
 	add_to_temp_variable = { acid_rain_running_operations = acid_rain_recovery_ops_active }
+	set_temp_variable = { acid_rain_refresh_operation_state_loop_1_break = constant:acid_rain_runtime.zero }
 	for_loop_effect = {
+		break = acid_rain_refresh_operation_state_loop_1_break
 		start = constant:acid_rain_runtime.one
 		end = constant:acid_rain_action.family_rows
 		value = acid_rain_op_scan_family
@@ -1412,7 +1418,9 @@ acid_rain_release_state_operation = {
 # power stay spent. Input: temporary acid_rain_keep_recovery_operations, one
 # to keep recovery work and demobilization running through acute dissipation.
 acid_rain_release_running_operations = {
+	set_temp_variable = { acid_rain_release_running_operations_loop_1_break = constant:acid_rain_runtime.zero }
 	for_loop_effect = {
+		break = acid_rain_release_running_operations_loop_1_break
 		start = constant:acid_rain_runtime.one
 		end = constant:acid_rain_action.family_rows
 		value = acid_rain_op_release_family
@@ -1430,11 +1438,15 @@ acid_rain_release_running_operations = {
 		}
 	}
 	clear_temp_array = acid_rain_op_release_states
+	set_temp_variable = { acid_rain_release_running_operations_loop_2_break = constant:acid_rain_runtime.zero }
 	for_each_scope_loop = {
+		break = acid_rain_release_running_operations_loop_2_break
 		array = acid_rain_op_states
 		add_to_temp_array = { array = acid_rain_op_release_states value = THIS }
 	}
+	set_temp_variable = { acid_rain_release_running_operations_loop_3_break = constant:acid_rain_runtime.zero }
 	for_each_scope_loop = {
+		break = acid_rain_release_running_operations_loop_3_break
 		array = acid_rain_op_release_states
 		if = {
 			limit = {
@@ -1485,7 +1497,9 @@ acid_rain_cleanup_country_runtime = {
 	if = { limit = { exists = no } acid_rain_033_achievement_mark_country_ceased = yes }
 	set_temp_variable = { acid_rain_keep_recovery_operations = constant:acid_rain_runtime.zero }
 	acid_rain_release_running_operations = yes
+	set_temp_variable = { acid_rain_cleanup_country_runtime_loop_1_break = constant:acid_rain_runtime.zero }
 	for_loop_effect = {
+		break = acid_rain_cleanup_country_runtime_loop_1_break
 		start = constant:acid_rain_runtime.one
 		end = constant:acid_rain_runtime.five
 		value = acid_rain_cleanup_project_index
@@ -1507,7 +1521,9 @@ acid_rain_cleanup_country_runtime = {
 # so an action started before a warning can still be credited for finishing
 # before that warning's arrival. Each operation binds to at most one visit.
 acid_rain_bind_operations_to_warning = {
+	set_temp_variable = { acid_rain_bind_operations_to_warning_loop_1_break = constant:acid_rain_runtime.zero }
 	for_loop_effect = {
+		break = acid_rain_bind_operations_to_warning_loop_1_break
 		start = constant:acid_rain_runtime.one
 		end = constant:acid_rain_action.family_demobilize
 		value = acid_rain_op_bind_family
@@ -1523,7 +1539,9 @@ acid_rain_bind_operations_to_warning = {
 			set_variable = { acid_rain_op_warning_day_entries^acid_rain_op_bind_family = acid_rain_033_input_warning_day }
 		}
 	}
+	set_temp_variable = { acid_rain_bind_operations_to_warning_loop_2_break = constant:acid_rain_runtime.zero }
 	for_each_scope_loop = {
+		break = acid_rain_bind_operations_to_warning_loop_2_break
 		array = acid_rain_op_states
 		if = {
 			limit = {
