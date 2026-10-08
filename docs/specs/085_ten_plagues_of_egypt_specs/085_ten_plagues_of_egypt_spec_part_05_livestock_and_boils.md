@@ -132,6 +132,28 @@ The AI must recognize a medical emergency in a hungry or severely damaged state 
 It may still preserve a threatened front when immediate military survival outweighs a particular commitment.
 That tradeoff is evaluated through the same visible costs and requirements used by the player.
 
+### Medical help within the plague calendar
+
+When Doctor Wu has an active viable institute and lawful access to an affected district, the government can seek his existing clinical services alongside its ordinary response.
+The disease owner must first identify a treatable biological component, its current version, the living recipients, and the supported outcome.
+[Wu's cure sequence](../089_doctor_wu_specs/medicine/089_doctor_wu_spec_part_3_universal_cures.md) distinguishes emergency support, a matching completed treatment, new research, manufacture, and actual delivery.
+
+The 25-day Boils phase and its 15-day care objective continue on their existing calendar.
+Wu's proposed 45-, 90-, and 150-day research bands do not become instant cures because a plague deadline is close.
+An existing matching treatment can help once available material, qualified staff, and delivery reach the district.
+A new project can provide supported emergency care during development and retain useful research for continuing illness or a renewed cycle, without promising completion during the acute phase.
+Earlier plague research helps only when the disease owner confirms the relevant clinical match.
+
+The player chooses how much available care and research capacity to commit while maintaining the local service base.
+Event 085 recognizes the people actually reached for its existing care objective and Wrath credit.
+Wu and the disease owner settle their own material and clinical effects once, using the recipient-union rules in [Part 18](../089_doctor_wu_specs/integration/089_doctor_wu_spec_part_18_shared_owners_and_consequences.md).
+Two providers treating the same people cannot earn two full protective credits.
+
+If access or delivery fails, ordinary local care remains available and completed research retains its supported value.
+The AI must distinguish care that can arrive before the objective closes from research that addresses later needs.
+Medical success leaves the sequence running.
+Any surviving care network still needs its own valid shelter and Passover work, and treatment creates no automatic firstborn protection.
+
 ### Before the storm
 
 During the latter part of Boils, the government receives the Hail and Fire warning.

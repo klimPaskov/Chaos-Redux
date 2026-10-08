@@ -89,4 +89,8 @@ Presentation conflict (`unresolved`): Part 10 and the asset prompt map category 
 The parent must record whether to use basic formatted values with an eligible picture or a reviewed meter/inlay without that picture.
 Preserve the original alternatives until this is resolved and do not produce both consumers by default.
 
-The main mechanic uses the ordinary decision interface with a strong category picture, one Depression Severity meter or compact progress display, a trend indicator, the next threshold, up to three material causes, and a phased action list. A separate event-owned scripted GUI is not the planned baseline because the player has one public value and no more than five primary actions in one phase. The implementation agent may escalate to a dedicated window only after direct inspection proves that the ordinary category cannot present the severity state, selected Depression Center, and active mission clearly. Such a change requires a recorded design exception and the event UI workflow.
+Both presentation alternatives use the ordinary decision interface, one public Depression Severity value, a trend, the next threshold, and the phased action list with up to three material causes, the selected Depression Center, the active mission, and no more than five primary actions in one phase.
+The simple alternative presents basic formatted values with an eligible category picture.
+The meter or inlay alternative omits that picture and requires the appropriate visual review.
+The unresolved choice above must be recorded before asset production or layout work.
+A dedicated event-owned window requires a separate finding that the chosen ordinary surface cannot communicate the existing state and actions clearly, followed by recorded acceptance and the event UI workflow.

@@ -267,18 +267,15 @@ Event 31 cannot duplicate or remove the wealth source through a generic raid.
 
 ## Event 32 Missiles
 
-A territorial actor can capture operational missiles or a launch site only when it actually takes a state containing them or defeats a force that owns them.
+A territorial Event 31 actor that takes a registered launch state enters the [Event 32 capture and custody process](../032_missiles_specs/032_missiles_spec_part_2_program_and_launch_sites.md#capture). A defeated force yields missiles only when Event 32 can prove physical custody of surviving stock. Territory, a rocket-site building, and command access are separate facts.
 
-Rules:
+Event 32 disables the compromised site's launches, settles its old operation allocations, and records any sealed captured stock. Event 31 cannot turn that stock into available reserve or award technology. Integration, guarding, study, scuttling, and any supported diplomatic transfer remain Event 32 choices. Chemical, biological, and nuclear payloads retain their separate owner receipts.
 
-- Event 31 does not grant missile technology or stockpiles by itself
-- the Missiles system remains owner of launch sites, technology, packages, and automatic retaliation
-- government players can receive an emergency Secure the Launch Site mission
-- a successful actor seizure creates a major public strategic shock
-- unconventional warhead use follows the shared weapon and Condemnation systems
-- a local cell without territory cannot fire a strategic missile through an abstract attack
+The government's Secure the Launch Site objective names the threatened registered state and uses Event 32's current custody and command proof. Clearing nearby cells can remove the Event 31 threat, but does not certify a compromised site. Failure can produce a strategic seizure report only after actual control and custody loss. It cannot simulate a launch or supply the missing arsenal. A local cell without territory remains unable to launch strategic missiles.
 
-This interaction belongs in a later implementation tranche only after Event 32 has a stable runtime contract.
+Government AI prioritizes an exposed site it can defend or recover with valid forces and supply. Territorial AI guards captured stock while command access is unresolved and considers integration only when its technology, supply, and custody can support it. Neither actor receives a force or payload exemption. Ordinary counterterror play continues when Event 32 is absent or its custody interface is unavailable. The seizure connection remains queued until that interface is verified.
+
+Acceptance case: an actor captures a site during a paid special-warhead preparation. Event 32 settles the prepared operation and its payload through their owners once, the actor receives only proven sealed stock, and neither a duplicate capture callback nor recapture creates missiles, payloads, technology, or a second launch.
 
 ## Chemical, biological, nuclear, and thermonuclear systems
 

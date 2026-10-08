@@ -320,14 +320,29 @@ The revised date should not receive a global public countdown value.
 ## Real overlapping disaster
 
 A real campaign disaster can occur close to the Last Day because other events remain active until a world end is committed.
+Natural disaster, asteroid impact, plague, nuclear exchange, severe Air Winter, and Heat Wave can leave real people in danger while the predicted date passes.
 
-Possible cases include a natural disaster, asteroid impact, plague outbreak, nuclear exchange, severe Air Winter, or another existential event.
+The date still expires once.
+Unless an owner has committed a terminal outcome, Event 049 enters its failed-date aftermath and countries can begin reconstruction while the other crisis continues.
+An ongoing hazard does not suspend the calendar, rerun the final-night sequence, or make institutional recovery wait for that hazard's cleanup.
 
-The system must distinguish coincidence from ownership.
+The sharp global Conviction reduction follows the Immediate Conviction collapse rules above.
+A proven extraordinary global catastrophe can temper that reduction; a local disaster instead changes the directly affected societies' interpretation and recovery conditions.
+The continued presence of an ordinary disaster flag is not proof that the whole world witnessed the predicted ending.
 
-Event 049 can treat the real event as a confirmation shock. It cannot claim ownership of the disaster’s damage, deaths, contamination, or Chaos.
+The player chooses whether to retain functioning relief institutions and preparation sites, reopen ordinary services alongside them, or withdraw commitments from sites that no longer serve a valid need.
+Resources already committed to relief remain occupied until their actual project or owner releases them.
+Keeping a Doomsday shelter does not grant another supply stockpile or automatically qualify it as a Heat Wave cooling centre.
+Only its proven water, service, transport, or shelter function can help the hazard owner's existing response.
 
-If the real event is severe enough to commit its own world end before The Final Vigil, that owner’s terminal route takes precedence.
+Event 049 owns the belief response and the post-date institutional choice.
+The disaster owner retains damage, deaths, contamination, migration, relief deliveries, and Chaos receipts.
+Confirmation uses the bounded source-family allowance in Part 10; repeated losses, reports, or Heat Wave pulses from the same milestone do not provide further ballots for belief escalation.
+The bounded revised-date hardliner branch can use the coincidence as its existing eligibility evidence, but cannot reopen a global countdown.
+
+AI continuity and preparation governments should preserve useful relief capacity while restoring institutions.
+They should not repeatedly switch posture or postpone reconstruction merely because a local hazard remains active.
+If the real event commits its own world end before The Final Vigil, that owner's terminal route takes precedence.
 
 ## Long-term national scars
 

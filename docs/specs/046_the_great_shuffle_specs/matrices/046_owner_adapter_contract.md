@@ -85,10 +85,20 @@ It records only the minimal source proof needed to identify Event 46 as the chan
 
 The owner recalculates derived stages, modifiers, available actions, AI strategy, display state, and bounded processing registration.
 
+A threshold crossing changes what can be attempted; it does not prove an objective was performed.
+For example, eligible current [Yakubite Influence or Cohesion](../../044_yakub_returns_specs/specs/044_yakub_returns_spec_part_3_diaspora_international.md) could change organizational pressure, but cannot create chapters, member consent, a founder's return, or fulfilled aid.
+Eligible current [Bulgarian Momentum or Administration](../../048_old_great_bulgaria_specs/specs/048_old_great_bulgaria_spec_part_4_decisions_integration_formables.md) could change pressure and governing capacity, but cannot create territorial control, integration completion, cores, or another formation reward.
+These examples constrain a future owner-approved registration; they do not register those values or approve rewriting every public meter.
+
+An in-progress paid project keeps its actor, target, paid amount, generation, deadline, and completed work.
+After reconciliation, its owner applies the existing continuation, pause, or failure rule against the changed world without buying the project again.
+A stockpile loss can obstruct a fresh purchase but cannot retroactively erase a payment already made.
+A separately required live reserve or route remains a real completion requirement.
+Any failure or refund belongs to the project owner and its actual-outcome contract, not an Event 046 recovery grant.
+The adapter is unavailable when the owner cannot reconcile those commitments safely.
+
 Reconciliation restores legality.
-
 It cannot restore the old value, award compensation, or silently clamp the result to a preferred range that was not part of planning.
-
 When a clamp is legally necessary, the legal clamp must have been included in the result plan and report.
 
 ## Report phase
@@ -160,7 +170,8 @@ Every adapter needs:
 - no-write proof for protected ledgers
 - valid and invalid scope cases
 - minimum and maximum result cases
-- threshold crossing cases
+- threshold crossing cases, including high Influence without chapter/control proof and high Administration without completed integration
+- an in-progress paid project whose current reserves or pressure change, without duplicate payment, completion, or compensation
 - save and load resume case
 - AI refresh case when relevant
 - report formatting case

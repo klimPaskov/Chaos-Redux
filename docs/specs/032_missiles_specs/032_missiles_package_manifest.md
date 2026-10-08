@@ -1,9 +1,9 @@
 # Event 32 package manifest
 
-Inventory refreshed on 2026-10-07 for the current local documentation files, excluding this manifest.
+Inventory refreshed on 2026-10-08 for the current local documentation files, excluding this manifest.
 The source disclosures, environment limitations, archive descriptions, and original validation receipts below remain historical planning evidence.
 They do not establish current tool health, implementation status, or design acceptance.
-Current inventory totals: 22 files, 305,953 bytes, 45,744 whitespace-delimited words.
+Current inventory totals: 22 files, 314,167 bytes, 46,882 whitespace-delimited words.
 
 
 ## Original package identity
@@ -73,7 +73,7 @@ This manifest excludes its own hash.
 | `032_missiles_requirement_traceability.md` | 8,995 | 8,995 | `d35096f3c65a5b5aee3ad0e32efd5c0864c21b5cae8129f758d5e048c5964651` |
 | `032_missiles_research_notes.md` | 4,339 | 4,339 | `8abd85f4a1ca031671e660ab036e38c3e2338e7788340c820d93c90ecbdae3de` |
 | `032_missiles_source_review.md` | 8,114 | 8,114 | `10e79b8b47e7f6efe9a8c55fd119c3fa89ddfd62a7eb150db4a48cfed3053950` |
-| `032_missiles_spec_part_1_core.md` | 13,666 | 13,666 | `43787b9f33a0d61ec4088a25e4b0777595f66cc9466f7f45183b46690490c659` |
+| `032_missiles_spec_part_1_core.md` | 19,733 | 19,733 | `6a1e1be276abbf63d10b6eef33d781e210e2627a1a4ca336bad6b71c9c58cd16` |
 | `032_missiles_spec_part_2_program_and_launch_sites.md` | 19,279 | 19,279 | `ead30740f2eb146ccd3768abc02e9be7bf8b5472a0ec059911b556582ce6562f` |
 | `032_missiles_spec_part_3_operations_and_consequences.md` | 21,569 | 21,569 | `21a9e3fc1c75f359d85fb4cbefbaaaa425fd349aaf18005448e450da616a5545` |
 | `032_missiles_spec_part_4_evolutions.md` | 35,981 | 35,981 | `cb6d46f480315d1e7f584ca65012f09a87e4db0682569cc87248b7c771a85704` |
@@ -81,6 +81,6 @@ This manifest excludes its own hash.
 | `032_missiles_spec_part_6_ai_and_probability.md` | 16,147 | 16,147 | `5a5667a4d84e261bd16ac54cb2f3b6027798df0a30cd39aa1f2864dce85b5304` |
 | `032_missiles_spec_part_7_assets_text_and_achievements.md` | 15,312 | 15,311 | `f1b9c9c1e44a9a84fcde50e054660db058f68f9e5d5d1f01cff5ed3c498eb8e2` |
 | `032_missiles_spec_part_8_implementation_contract.md` | 18,178 | 18,178 | `dc121c6fbc203597e12cc1ab178d466993b2e5e0c6e419a04822aa23bc218b42` |
-| `032_missiles_system_connections.md` | 12,352 | 12,352 | `b54abc7d710677be9f1b369ddb712f0024003d8d29e780a318d1ede19c3bd0ff` |
+| `032_missiles_system_connections.md` | 14,499 | 14,499 | `d5592256ebdbd511fe24e9fdedd01bbb480deede3f097203341c72e9eb315e5f` |
 | `032_missiles_test_matrix.md` | 24,601 | 24,601 | `211a9a770ce979a378cbeb6eea1e6b5ef70023589f5e85523afb5b4e44f33a41` |
 | `README.md` | 5,938 | 5,938 | `7fca2c923a8a3d315e69db94f12c02cfdc4250ea4f98c3cd0e8c2e889e9881bd` |

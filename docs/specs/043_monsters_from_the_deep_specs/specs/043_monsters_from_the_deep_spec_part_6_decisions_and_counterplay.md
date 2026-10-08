@@ -440,7 +440,19 @@ Up to four:
 - civilian factory burden
 - temporary stability or local production loss
 
-**Mission:** protect the route for a defined duration.
+**Mission:** protect the named origin, transport corridor, and destination for a duration derived from the live movement amount, transport, and threat distance.
+
+Before starting, show the proposed destination, transport commitment, and local consequence of moving civilians out of the defended coast.
+An internal destination is preferred when Migration proves it safe; foreign reception requires that owner's actual capacity and consent.
+A request or prepared reception site does not count as evacuation.
+Migration alone removes the departing population, records route deaths, credits survivors, and resolves failed or partial movement.
+Event 043 reads that completed result and records only its evacuation consequence.
+
+The strategic choice is between protecting the shore's immediate labor and supply base or moving people while a route still exists.
+Fortification and evacuation can coexist when the country can sustain both; starting one does not reserve the other's trains, convoys, fuel, or construction capacity for free.
+Each action shows its own remaining usable resources through the existing owner quote, without charging a movement fee again through Event 043.
+After a partial transfer, only civilians actually removed cease to be feeding targets.
+The monster's next feeding action uses current remaining population and its normal feeding receipt; the requested evacuation amount never becomes saved lives, Hunger denial, or deaths.
 
 **Success:**
 
@@ -448,13 +460,14 @@ Up to four:
 - lower feeding capacity
 - reduced future deaths
 - temporary disruption in origin and destination
-- Event 043 evacuation receipt
+- Event 043 evacuation receipt tied to the completed origin, destination, and movement generation
 
 **Failure:**
 
-- trapped population
-- route damage
-- possible displacement deaths through Migration
+- untransferred civilians remain at the origin with the real local threat
+- route damage can require a different lawful destination or a later attempt
+- possible displacement deaths belong to Migration's measured movement result
+- an expired defense mission does not fabricate a failed transfer or kill the whole requested cohort
 - no double debit
 
 ### Fortify a Named Port

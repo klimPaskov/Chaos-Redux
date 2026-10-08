@@ -49,6 +49,20 @@ The selected country must be a normal minor that can plausibly join a faction.
 
 The event should not select countries that are not meant to use ordinary diplomacy. This includes nonhuman countries, terminal crisis actors, scripted world threats, countries managed by special isolation systems, and countries whose current event package deliberately disables standard faction joining. Use shared Chaos Redux classification triggers where possible instead of creating a duplicate local classifier.
 
+### Civil agreements and formal factions
+
+An ordinary minor's Event 015 reserve compact, sponsorship, observer role, or association can remain active while that country is outside a native faction.
+Those civil relationships do not exempt it from Event 017 selection or guarantee an offered faction.
+Joining Event 015's formal defense League is native faction membership and excludes the country through the existing faction gate.
+Event 015 owns its bilateral obligations, guarantees, and case disposition.
+Event 017 owns only the chosen faction accession and alignment pressure, so accession neither grants League proof nor cancels every civil agreement automatically.
+A later war or breached obligation is handled by Event 015's existing exact-pair rules.
+
+Revalidate the selected minor and saved faction at the option click.
+If the minor joined a formal League while its Event 017 offer was open, close that obsolete choice without a second accession, alignment reward, or replacement-faction draw.
+AI uses the same distinction between an existing civil partner and an existing faction member.
+These checks use current diplomatic state and preserve ordinary faction selection when Event 015 is absent.
+
 ### Soft weighting factors
 
 Eligible countries should not be equally likely in all situations. The selection score should consider:

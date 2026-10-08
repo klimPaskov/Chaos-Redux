@@ -43,6 +43,24 @@ Use current surviving population, actual buildings and units physically present 
 
 At impact, freeze the applied casualty and damage receipts used by reports. Later reports can add clearly dated owner-tail losses but cannot rewrite the original impact total. The American analysis report should distinguish its experiment's immediate results from continuing contamination or disease.
 
+## A mainland emergency does not undo an experiment
+
+If Japan's Event 074 landing is active, the testing program retains its ordinary foreign target rules and independent schedules.
+An actual invasion changes America's resource situation, not the minor's accepted test or the USA's responsibility for it.
+Provider affordability must exclude resources already reserved for a western defense formation or transport project; defense likewise excludes provider reservations.
+When several generated assignments require the same finite article or capacity, commission them against one reconciled available pool rather than quoting that article to every job.
+A commitment accepted by one owner is unavailable to the other until its own cancellation or completion contract releases it.
+
+Player USA can decline the generated wave, cancel an uncommitted test, or let the foreign program continue while paying for mainland defense from the remainder.
+Cancellation releases only the test's real unspent reservation and earns no development result.
+A committed impact and subsequent analysis continue unless their existing provider conditions become invalid; a lost American port does not erase accepted rights in an unrelated foreign state.
+Any completed weapon-family result enters the normal research or production consumer and can help future defense without becoming another emergency division grant.
+
+AI USA still proceeds with every valid assignment.
+A provider genuinely unable to reserve its required article or capacity is invalid; condemnation, the landing's existence, or a desire to spare resources is not a hidden refusal branch.
+Future acceptance cases pair one competing reservation with [Event 074's U01 or U03 action](../../074_japan_lands_in_usa_specs/design/074_japan_lands_in_usa_spec_part_4_decisions_and_campaign.md), then cover player cancellation before commitment and an impact already committed when coastal recovery occurs.
+With Event 074 absent, these remain the ordinary provider-resource and cancellation rules.
+
 ## American cancellation
 
 A player-controlled United States can decline the generated wave or cancel an uncommitted experiment. A declined wave uses the shared event's ordinary firing history and does not refund the random draw. Cancellation sacrifices the reward, releases only resources that were actually reserved, and returns no already consumed equipment or spent industrial work.

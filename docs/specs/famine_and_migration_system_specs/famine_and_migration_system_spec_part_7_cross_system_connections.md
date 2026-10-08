@@ -9,500 +9,179 @@
 
 ## Integration rule
 
-Famine and migration are shared consequence systems. Existing events and mechanics should call them through bounded adapters with explicit actor, target, cause, severity, and proof fields.
-
-An event keeps ownership of its own premise, stages, choices, evolutions, super-events, countries, and terminal routes. Famine owns food-security pressure and famine mortality. Migration owns civilian movement, migration-route mortality, reception burden, and return. The neutral transfer primitive owns only exact physical debit, route-death separation, and survivor credit.
-
-The adapter model prevents parallel famine or migration logic from being reimplemented inside each event.
-
-## Chaos Meter
-
-### Deaths
-
-Every famine, occupation-repression, forced-labor, and forced-displacement death enters the existing Deaths ledger.
-
-The shared total continues to affect Chaos through the existing deaths threshold.
-
-Migration itself does not add deaths or Chaos. Deaths caused by dangerous routes, border violence, or trapped exposure do.
-
-### Air Cleanliness
-
-Air Cleanliness changes the likelihood, severity, and recovery of active food-security states.
-
-The famine system reads contamination bands and current winter or environmental states. It does not create a second global pollution value.
-
-Migration can redistribute population away from contaminated states. Overcrowded safe states can face food and medical pressure, but the movement does not clean the air.
-
-### Condemnation
-
-The condemnation system receives deliberate-starvation, relief-obstruction, lethal forced-labor, deportation, violent-pushback, forced-return, camp-deprivation, and cover-up sources.
-
-Public and hidden evidence follow the existing condemnation contract.
-
-## Camps and genocide
-
-The camp and genocide system connects through:
-
-- food-deprivation requests
-- labor-removal requests
-- forced-labor death registration
-- deportation and transfer requests
-- nearby flight-pressure requests
-- escapee and survivor reception
-- liberation return and family reunification
-- hidden and public evidence
-
-The camp system remains responsible for site state, discovery, concealment, and tribunals.
-
-## Chemical warfare
-
-Chemical contamination can:
-
-- reduce local food production
-- contaminate water and storage
-- increase medical and flight pressure
-- block return
-- create evacuation from affected states
-
-Chemical deaths remain chemical deaths. Later hunger uses famine. Route exposure to chemical contamination uses the chemical system when it is the direct physical cause.
-
-Civilian protective equipment, shelters, decontamination, medical support, and warning coverage can reduce both flight pressure and secondary food-system damage.
-
-## Biological warfare and outbreaks
-
-Biological attacks and outbreaks can:
-
-- remove labor
-- close routes
-- overload medical capacity
-- create voluntary flight
-- create quarantine and border disputes
-- increase famine vulnerability
-- spread through overcrowded conditions when exposure is proven
-
-Outbreak deaths remain outbreak deaths. Hunger deaths remain famine.
-
-The system should give countries a controlled-reception alternative to indiscriminate border closure.
-
-## Nuclear and thermonuclear systems
-
-Nuclear adapters should create:
-
-- immediate survivor exodus from the target state
-- secondary exodus from fallout states
-- reception pressure in safe states
-- return restrictions
-- local food-production and route damage
-- Air Cleanliness and nuclear-winter pressure through the existing system
-
-The nuclear system remains responsible for blast, fallout, condemnation, and direct chaos effects.
-
-## Strategic bombing
-
-The bombing system should request displacement when persistent damage crosses a meaningful civilian threshold.
-
-It should also pass proven transport, housing, port, rail, and storage damage into food security.
-
-Bombing does not create a generic refugee flow from every air mission. The adapter uses actual state impact and recent damage.
-
-## Natural disasters
-
-The existing natural-disaster entry point should add optional famine and displacement outputs to its resolved aftermath.
-
-Suggested family behavior:
-
-- drought increases food-production pressure and delayed rural migration
-- flood and tsunami create immediate displacement, crop loss, and transport failure
-- earthquake creates housing displacement and route damage
-- locusts create direct crop pressure
-- wildfire creates evacuation, crop loss, and Air Cleanliness pressure
-- volcano creates evacuation, ash pressure, crop loss, and long return delays
-- severe cold creates transport and need pressure
-- heat wave creates water, labor, and crop pressure
-
-Event 13 keeps ownership of its damage jobs and reports. It calls the appropriate famine or migration adapter only after exact target states and causal facts are known.
-
-## War, peace, and occupation
-
-### War
-
-War creates scoped triggers through:
-
-- front movement
-- control changes
-- siege and encirclement
-- bombing
-- naval blockade
-- military requisition
-- evacuation orders
-- refugee arrival
-
-A declaration of war alone should not create movement in every state.
-
-### Peace
-
-Peace can:
-
-- reopen routes
-- permit voluntary return
-- end military requisition
-- expose occupation evidence
-- create border and citizenship disputes
-- trigger demobilization and housing pressure
-- leave unresolved camps, famine, or contamination
-
-The peace system should not automatically return every displaced cohort on the day of peace.
-
-### Occupation
-
-Occupation-law changes call the shared policy profiles described in Part 4.
-
-Liberation lowers fear and can open return, but only after food, housing, route, and persecution checks pass.
-
-## Event 5 Soviet Collapse
-
-This is the deepest existing event connection.
-
-Event 5 already contains grain extraction, forced-labor quotas, gulag expansion, NKVD pressure, deportation, republic fear, and evidence themes.
-
-Adapters should connect:
-
-- grain extraction to food pressure
-- forced-labor quotas to labor removal and forced-labor deaths
-- gulag expansion to camp population, famine, outbreak, and forced labor
-- deportation to exact forced movement
-- movement restrictions to trapped pressure
-- concealment to hidden evidence and delayed relief
-- republic hunger and deportation memory to independence pressure
-- collapse and civil war to internal displacement and refugee flows
-- coalition intervention to relief corridors and return
-
-The event's political and military stages remain owned by Event 5.
-
-## Event 6 Independence Wave
-
-Newly released countries can inherit:
-
-- refugee inflows
-- returning co-nationals
-- damaged food routes
-- disputed property
-- sponsor relief
-- border closure by former rulers
-- reception burden beyond their small state capacity
-
-Recognition and foreign-aid decisions can support relief and resettlement.
-
-The release process should not duplicate population. A state keeps its current population, including arrivals and losses.
-
-## Event 9 White Peace
-
-White peace can reopen civilian routes and start voluntary return.
-
-It should not erase occupation, camp, famine, or displacement memory.
-
-## Event 10 Death Island and isolated-state events
-
-An isolated island crisis can use the island-blockade and maritime-evacuation contracts when the event's world state creates human civilian populations at risk.
-
-Special nonhuman actors remain excluded from ordinary civilian cohorts.
-
-## Event 11 Secret Alliance
-
-Covert coalitions can:
-
-- sponsor refugee routes
-- use camps or refugee flows as intelligence sources
-- close borders to protect secrecy
-- exploit displacement politically
-
-Only concrete event content should call these adapters.
-
-## Event 12 and Event 13 natural-disaster family
-
-Every disaster that damages food, water, housing, or transport should use the shared aftermath adapters.
-
-Disaster clusters should not count each famine or migration consequence as another random pacing event.
-
-## Event 14 Cannibalism and Hunger Lines
-
-The Hunger Lines scenario and cannibalism system can connect through:
-
-- famine pressure as a recruitment and escalation input
-- displacement and abandoned districts as territorial opportunity
-- disrupted relief routes
-- trapped populations
-- host-country fear and border policy
-- relief success reducing hunger-driven support
-
-Cannibalism deaths remain owned by Event 14. Ordinary hunger deaths use famine.
-
-## Event 15 Utopia Manifesto
-
-Direct connections include:
-
-- common stores and rationing
-- blockade and shortage
-- refugee districts
-- open or closed sanctuary
-- redistribution and local resistance
-- foreign relief and inspection
-- return or integration after the movement changes territory
-
-Separate famine and migration adapters can make the Utopia premise materially affect food and movement without duplicating an event-only refugee tracker.
-
-## Event 16 Brilliant Scientist and Kruger technology
-
-Advanced technologies can provide bounded relief tools when their existing capabilities support it.
-
-Possible effects include:
-
-- improved logistics
-- synthetic food or material substitution if an accepted technology supports it
-- decontamination
-- medical support
-- advanced airlift or transport
-- protected habitats
-
-The system should not invent a new Kruger technology solely to remove famine. Any connection must use an existing or separately accepted technology.
-
-## Event 18 cave and underground actors
-
-Cave emergence, underground hazards, and abandoned mining regions can create:
-
-- evacuation
-- depopulated mining states
-- food-route collapse
-- host reception
-- blocked return
-
-Nonhuman country exclusions still apply.
-
-## Event 19 Infantry Spawn and custom forces
-
-Spawned armies can create displacement through battles, occupation, and state control.
-
-The system should not classify every custom force as a civilian threat. It should use actual war, damage, occupation, and nonhuman classification.
-
-No new combat unit is created by this system.
-
-## Event 20 Black Plague
-
-The plague system should connect through:
-
-- flight from outbreak states
-- quarantine reception
-- closed borders
-- overcrowding and sanitation pressure
-- route-based spread only with proven exposure
-- famine from labor and route failure
-- return after containment
-
-Rat Nations and other nonhuman actors remain excluded from ordinary civilian reception logic.
-
-## Event 21 Random Civil War
-
-Civil wars can create:
-
-- rapid internal displacement
-- ideological destination choice
-- border flight
-- return after settlement
-- partitioned family and property claims
-- famine through front and route damage
-
-The event should pass the actual rebel, original country, state, and war context.
-
-## Event 23 Soviet Nuclear Bombs
-
-Soviet nuclear use connects through the general nuclear adapters, plus Event 5 republic and border consequences when applicable.
-
-## Event 25 Alien Technology in Antarctica
-
-Expedition logistics should not normally use civilian famine or migration. A failed expedition can use its own personnel consequences.
-
-No shared civilian adapter is needed unless the event later creates a populated Antarctic settlement.
-
-## Event 28 Asteroid Incoming
-
-The asteroid event can create:
-
-- immediate displacement from surviving rings
-- blocked return to wasteland states
-- famine from dust, transport, and crop loss
-- Air Cleanliness pressure
-- international resettlement
-
-The asteroid system owns immediate impact deaths and destruction.
-
-## Event 32 Missiles
-
-Missile attacks can call the same bombing, chemical, biological, nuclear, and displacement adapters according to warhead type and actual target effects.
-
-## Event 33 Acid Rain Superstorm
-
-Acid rain can create:
-
-- contaminated food and water
-- crop pressure
-- evacuation
-- shelter and clean-state reception
-- Air Cleanliness interaction
-- delayed return
-
-The event owns the storm route and direct effects. Famine owns later food-security consequences; migration separately owns any proven movement.
-
-## Event 43 global flood and related flood concepts
-
-Flooding can create large internal and international movement, damaged food routes, and permanent resettlement from uninhabitable states.
-
-If the event creates water-covered or invalid states, the migration system must move only surviving population that can legally leave before state conversion.
-
-## Event 50 Great Embargo
-
-The embargo event can add food pressure only when:
-
-- the target depends on imports
-- relevant routes are actually restricted
-- domestic substitution is insufficient
-- relief exemptions are absent
-
-The event should create diplomatic relief, smuggling, and third-country aid choices.
-
-## Event 51 Heat Wave
-
-Heat can create crop, water, labor, and migration pressure, especially in states already affected by drought, wildfire, outbreak, or high Air Contamination.
-
-## Event 95 Occupation Revolt
-
-Famine, deportation, forced labor, and unequal relief can increase revolt pressure.
-
-Successful protected administration and relief can reduce it.
-
-## Event 118 Locust Plague
-
-This backlog event should call the shared famine system. It must not implement a separate flat famine effect.
-
-The locust event owns swarm movement and crop damage. Famine owns food stages, relief, and famine deaths; migration separately owns any proven displacement.
-
-## Event 120 Volcano
-
-Volcano aftermath should call ash, Air Cleanliness, crop loss, evacuation, reception, and return adapters.
-
-## Event 131 Mutiny
-
-Famine, civilian starvation, unequal military rations, and failed evacuation can increase mutiny pressure.
-
-Mutiny remains owned by its event.
-
-## Event 141 mass-suicide concept
-
-This system should not use famine or migration to hide or reclassify suicide deaths. It can create flight pressure and reception from threatened areas, but the death reason remains owned by the event.
-
-## Event 149 Immigrations
-
-Event 149 should be retired, disabled, or converted into a compatibility adapter.
-
-Its random population drain should not remain active beside this system.
-
-## Great Shortage and other backlog concepts
-
-Any future shortage event should become a pressure source or narrative wrapper around the shared food system. It should not create a parallel global shortage meter.
-
-## Disease cluster
-
-Disease cluster members can call outbreak-flight and quarantine adapters after their own target states are resolved.
-
-The migration consequence does not add extra cluster pacing events.
-
-## Natural Disasters cluster
-
-Disaster members can call food and displacement aftermath adapters.
-
-Cluster severity can scale the initial request, but the later state progression remains dynamic.
-
-## Liberations cluster
-
-Liberation can open return, expose camps, and create emergency relief.
-
-It can also trigger reverse displacement or retaliation if the new authority threatens part of the population.
-
-## Wars cluster
-
-War events can create movement through their actual conflicts, control changes, and damage. The cluster itself should not create a generic refugee total.
-
-## Peace cluster
-
-Peace events can open return and corridor settlement. They do not automatically resolve famine or reception capacity.
-
-## Manual scenarios
-
-Existing manual scenarios can call the famine or migration adapters when their launched world state provides the exact facts required by that mechanic.
-
-Relevant examples include:
-
-- Soviet Collapse
-- Disaster Barrage
-- Hunger Lines
-- Black Plague Unbound
-- Fallout or nuclear scenarios
-
-The scenario wrapper can supply initial severity or coverage. Ongoing deaths and movement remain dynamic.
-
-## Shared country classifiers
-
-Ordinary civilian flows should exclude countries that pass the special Chaos country or actual nonhuman classifiers when they do not represent a normal human civilian society.
-
-A special actor can still be:
-
-- the cause of flight
-- the military threat controlling a route
-- the source of contamination
-- the target of foreign containment
-
-Human civilians living under a transformed or captured government require a documented population-transition rule before exclusion.
-
-## World-threat aggregate
-
-Mass famine and displacement can be consequences of world threats. They should not automatically register a new existential threat source.
-
-A specific owning event can decide whether its famine or displacement escalation changes the shared threat aggregate.
-
-## Event-log relationship
-
-This system should have its own concise system history or use the Chaos Meter history where appropriate.
-
-It should not create fake random-event history entries for every state pulse.
-
-Suggested records include:
-
-- state entered famine
-- state entered catastrophic famine
-- major relief operation
-- mass evacuation
-- border closure with trapped population
-- mass return or integration
-- deliberate-starvation evidence exposed
-
-The Deaths tab remains the detailed death ledger.
-
-## Documentation ownership
-
-The final implementation should create a permanent system document under `docs/systems/` and update related event docs only where they call an adapter.
-
-The event catalog workbook should update affected rows, especially Event 5, Event 13, Event 14, Event 15, Event 20, Event 28, Event 33, Event 50, Event 118, and Event 149, after implementation facts are known.
-
-The three catalog CSV files remain export-only.
-
-## Integration acceptance
-
-Integration is complete only when:
-
-- every listed active connection uses a shared adapter
-- no event duplicates the food, movement, or death transaction
-- event ownership and shared-system ownership are clear
-- clusters do not create extra pacing events for consequences
-- special and nonhuman country exclusions are correct
-- manual scenarios can seed the system without fixed long-term casualties
-- Event 149 no longer applies a competing flat migration effect
-- docs and catalog wording reflect the final implemented behavior
+Famine and Migration are independent consequence owners.
+An event submits a bounded request only after it knows the actual human civilian state, responsible country, cause, amount, generation and relevant food or movement proof.
+A food request does not authorize movement; a movement request does not grant food, reception services or a safe destination.
+The event retains its premise, actors, progression and terminal outcomes.
+
+Famine owns food security and later famine mortality.
+Migration owns living cohort identity, route resolution, reception and durable outcomes; the neutral transfer primitive alone applies physical movement.
+Direct blast, plague, chemical, disaster, camp and cannibalism losses remain with their original owners.
+An already-applied loss may justify a later food assessment, but cannot become another death debit or a living evacuation amount.
+
+The [integration matrix](famine_and_migration_system_integration_matrix.csv) preserves the wider connection inventory.
+Its historical combined-system labels, Event 149 alternatives and unimplemented owner hooks do not override the accepted separate systems or authorize speculative APIs.
+Use the [current takeover](../../plans/famine_and_migration_system_plans/takeover_status_2026-10-06.md) to distinguish published owner calls from remaining boundaries.
+A connection without a proven owner receipt remains unresolved; ordinary food, migration and event play continue independently.
+
+## Deaths, Air Cleanliness and Condemnation
+
+Deaths records the owning transaction's actual accepted mortality once, including its responsible country, state and proximate cause.
+Living movement adds neither deaths nor Chaos.
+Route deaths are a slice of the measured origin debit, logged without a second population reduction; the existing Deaths threshold owns its Chaos consequence.
+
+Air Cleanliness owns contamination and winter state.
+Famine reads its bounded food-production, transport and recovery consequences without another pollution value.
+Moving people away from contamination changes their host and reception demand, not the air itself.
+
+Condemnation receives proven deliberate starvation, relief obstruction, lethal forced labor, deportation, violent pushback, forced return and concealment through the appropriate owner.
+Public and hidden evidence retain that owner's visibility and repeat rules.
+Reusing a death or obstruction receipt for presentation must not charge another condemnation award.
+
+## Camps, custody and liberation
+
+The [accepted camp administration contract](../../plans/system_camp_repression_rework_plans/administration_redesign_2026-09-06/accepted_implementation.md) owns finite living custody, site authority, supported labor, commitments, direct mortality, discovery and reform.
+Its existing exact-state food aftermath can worsen Famine; a later famine loss must concern the remaining population rather than repeat the recorded camp loss.
+A state-wide external death total cannot be deducted from a selected detainee origin; the accepted mixed-origin PAUSE remains binding when attribution is ambiguous.
+
+Release or liberation settles verified living custody where those people actually are.
+Return to their historical home is a separate Migration choice requiring a current safe origin, route and receiving authority.
+Local release moves nobody; evacuating or returning a recorded group uses one measured transfer and one reception settlement.
+No release total creates a copied refugee cohort or credits population a second time.
+
+The practical choice is to fund camp reform and replacement labor, support survivors locally, or use existing paid shelter, medical and transport responses for an actual relocation.
+Food delivery cannot release custody, and closure cannot supply a safe journey.
+AI uses the same existing actions and declines unsafe voluntary return.
+Future check: release a live group into a food-insecure host, restore food without moving it, then return it through a valid route; repeat with a closed border and an ambiguous mixed-origin loss.
+The first case must conserve living people and settle reception once; the latter cases retain people and PAUSE instead of fabricating a destination or deaths.
+
+## Soviet Collapse: extraction, relief and republic memory
+
+[Event 005's crisis model](../005_soviet_collapse_specs/005_soviet_union_collapse_final_clean_merged_part_2_core_threat_evolutions.md) owns Moscow Authority, republican grievance, obedience and collapse.
+A current Soviet or successor-controlled state under proven extraction, blocked movement or camp overreach can supply food or flight pressure through its respective owner.
+Famine assesses that exact state's live food conditions; Migration separately handles living survivors and trapped obligations.
+The existing political owner may consume the resulting state-local suffering and attributed policy memory without another population loss, automatic defection or forced Event 005 launch.
+
+Reducing quotas addresses a continuing cause and sacrifices supported labor or extraction output.
+Paid grain relief addresses current deprivation while leaving continuing extraction able to renew the problem.
+Prisoner release retains the accepted first-positive-release national settlement; later paid releases do not repeat it or erase accumulated republican memory.
+Moscow and successor AI compare their existing quota, relief and release responses against the affected region's food and route conditions, rather than treating suppression as a food supply.
+Future check: compare relief with unchanged extraction against sustained quota reduction in the same state; then repeat across succession with the original responsible country preserved.
+Food recovery must not refund earlier deaths or independently complete an Event 005 political mission.
+
+## Independence and peace
+
+An [Event 006 Independence Wave](../006_independence_wave_specs/README.md) release transfers sovereignty over the state's current population, including earlier arrivals and losses.
+It creates no additional population grant.
+The successor's existing relief and recognition choices may support its actual food and reception needs; inherited capacity must be revalidated under the new owner rather than counted alongside the former ruler's copy.
+Sponsor aid and return remain separate transactions with their existing costs and consent requirements.
+
+After a completed [Event 009 settlement](../009_white_peace_specs/specs/009_white_peace_spec.md), the existing sparse owners reassess only their registered subjects associated with the settled participants.
+A ceasefire can remove one route hazard; food, housing, persecution, custody, contamination, border permission and reception capacity still decide whether return is possible.
+Peace creates no free return, cleared grievance or second Chaos reduction for the same settlement.
+AI continues the ordinary return or resettlement choice only when its full prerequisites hold.
+Future check: end the matching war while the origin remains hungry and the border closed, then restore those conditions; no return is accepted before the second state of the test.
+
+## Hunger Lines and Cannibalism
+
+The successful Hunger Lines launch provides bounded live Event 014 node states and launch intensity to the existing famine-owned scenario adapter.
+Setup failure supplies neither food context nor flight request.
+The adapter opens its dated food context and requests living-survivor flight through Migration; it changes no Event 014 progression or native population itself.
+Repeated calls within that context window do not duplicate starting pressure.
+
+[Event 014's integration contract](../014_cannibalism_specs/specs/014_cannibalism_spec_part_9_ai_balance_and_integrations.md) keeps consumption, Larder, cells and evolutions with Cannibalism.
+An existing hunger-driven episode may consume an actual relief result to ease its material pressure.
+Relief food does not become free Larder, and improved food cannot cure an established ideological cell or release prisoners.
+Camp exploitation requires Event 014's own active policy and cell conditions; camps do not automatically become cannibal nodes.
+Ordinary AI can fund relief and evacuation while retaining the separate containment task.
+Future check: successful and failed scenario launches, repeated launch-adapter calls, and real relief before and after ideological escalation must retain distinct results and exactly one owning death path.
+
+## Black Plague and controlled reception
+
+[Event 020's movement contract](../020_black_plague_specs/specs/020_black_plague_spec_part_3_cure_spread_and_biowarfare.md) owns strain, exposure, disease mortality, containment and cure.
+Migration owns the origin, actual survivor transfer, current host and route deaths.
+Only an accepted physical transfer from a proven exposed origin can supply movement-related exposure to the receiving state; a request, capacity offer, rejected transfer or unrelated host outbreak supplies no such proof.
+Refugee status alone is not disease evidence.
+
+The host can spend its existing shelter and medical resources on controlled reception, seek another consenting safe host, or decline the request while civilians remain at the origin.
+Open policy still requires the accepted whole-request capacity and route gates.
+Controlled medical reception neither certifies a cure nor creates detention authority.
+An infected camp uses its existing hospital, relief and quarantine choices; state-wide plague deaths cannot be assigned to a particular custody origin without provenance.
+Humanitarian AI can prepare reception when it can afford the actual group; it cannot accept a group through missing safety or capacity facts.
+Future check: the same exposed cohort with prepared, unprepared and rejected reception must produce exposure only after accepted movement, one reception credit, and separate disease/route mortality.
+An unexposed cohort and a stale replay must add no movement-derived exposure.
+
+## Exact hazard aftermath
+
+Chemical owners can pass proven crop, water, storage, transport, medical and return hazards; direct chemical losses remain chemical.
+Protection, shelters, decontamination and medical support reduce only the consequences their existing capabilities support.
+Biological owners can pass labor and route disruption and actual exposed movement through the same ownership boundary; overcrowding alone cannot invent infection.
+
+Nuclear owners resolve blast and fallout first, then request evacuation of the remaining human survivors, food-route damage, safe reception and return restrictions.
+Air Cleanliness and nuclear winter retain their existing owners.
+A direct strike loss, living survivor request and later hunger loss are distinct quantities.
+
+[Event 013](../013_natural_disasters_specs/README.md) submits aftermath only after its actual target states and damage family resolve.
+Drought and locust crop damage favor food pressure and delayed flight; flood, tsunami, earthquake and wildfire support immediate evacuation where a route exists.
+Volcano, severe cold and heat retain their ash, transport, water, labor, crop and return consequences.
+The disaster owner keeps damage jobs and reports.
+Repeated disaster receipts cannot multiply the same initial food component or copy an already-resolved evacuation.
+
+Persistent strategic bombing may supply food and displacement pressure only from an authoritative state-impact receipt.
+Recent bombing danger can affect destination safety, but cannot identify an attacker or fabricate damaged housing, a displacement amount or corridor obstruction.
+The current absence of a documented generic bombing callback remains an owner boundary, not permission to scan every air mission.
+War declarations alone create no civilian flows; front, control-change, siege, requisition and blockade consequences require their actual state context.
+Occupation-law mapping remains with the current policy resolver, and liberation opens return only after full safety checks.
+
+## Other event consequences
+
+These retain their existing design intent in the matrix and owner packages; they are not assertions of callable adapters or completed wiring.
+A contributing event must be active with an actual affected human state, and its absence leaves ordinary play intact.
+
+- Event 010 or an isolated-state event may use maritime relief and evacuation for surviving human civilians when isolation, port, convoy and route evidence exists.
+- Event 011 may sponsor a concrete refugee route, consume proven survivor intelligence, exploit displacement politically, or close actual borders to protect secrecy through its own concrete event choices. The original secrecy-closure option remains unresolved; Migration retains border-policy and trapped-population consequences, and a secret alliance alone supplies no flow.
+- Event 012 is the African political-project owner, including its Gods of Africa content, rather than a second natural-disaster event. Its accepted shelter or diaspora choices may use Migration-owned services and transfers. The [documented reception service](../../../common/scripted_effects/migration_adapter_effects.md) adds capacity only; owner lifecycle wiring must be verified separately, and that receipt supplies neither route permission nor an arrival.
+- Event 015 may connect real common stores, rationing, blockade, sanctuary and refugee districts to food and movement through the separate owners; its Commonwealth ledger remains political and economic rather than a duplicate population ledger.
+- Event 016 may provide logistics, decontamination, medical support, protected habitats or transport only through an existing accepted capability. No technology is invented merely to erase famine.
+- Event 018 cave hazards and abandoned mining regions may create evacuation, mining labor loss, food-route disruption, reception and blocked return from their actual human states.
+- Event 019 custom forces and Event 021 civil wars may create displacement through actual battles, rebel/original-country context, control change and occupation. Custom-force identity alone supplies no danger or civilian amount.
+- Event 023 uses the nuclear aftermath contract; any Soviet political consequence remains Event 005-owned.
+- Event 025 expedition personnel retain their expedition owner. A civilian adapter requires a separately accepted populated settlement.
+- Event 028 resolves impact deaths before surviving-ring evacuation, dust and crop pressure, reception or resettlement; any required living transfer precedes irreversible state invalidation.
+- Event 032 uses the warhead's actual bombing, chemical, biological or nuclear aftermath owner.
+- Event 033 retains storm movement and direct losses; its accepted food aftermath can affect crops and water, while separate proven evacuation, safe reception and contamination checks govern return.
+- Event 043 flooding can require permanent resettlement where states become uninhabitable. Only surviving population with a legal route may move before state conversion.
+- Event 050 food pressure requires actual import dependence, restricted routes, inadequate domestic substitution and missing relief exemptions. Its existing relief, smuggling and third-country aid choices remain diplomatic choices with real logistics.
+- Event 051 heat affects crop, water and labor conditions and can compound proven drought, wildfire, outbreak or contamination.
+- Event 095 may consume accumulated local famine, deportation, forced-labor or unequal-relief pressure; its revolt remains event-owned. Successful protection can reduce that local pressure without undoing deaths.
+- Future Event 118 crop loss, Event 120 volcanic aftermath and Event 131 military ration/mutiny consequences remain owner-dependent backlog. Event 131 needs actual military ration conflict; civilian famine alone cannot force a mutiny.
+- Event 141 retains its suicide death reason. Famine or Migration may receive living flight or food consequences but never relabel those deaths.
+
+Any future Great Shortage owner supplies proven state food pressure or narrative context through Famine's existing progression and mortality; it must not create a parallel global shortage meter.
+
+Event 149 remains retired.
+The historical retire/disable/compatibility alternatives in the integration matrix do not reopen a competing migration event or authorize a flat drain.
+
+## Clusters, launches and eligible civilians
+
+Disease, Natural Disasters, Liberations, Wars and Peace cluster members can submit their own proven aftermath.
+The cluster owns event pacing; food assessments, movement, camp exposure, reverse displacement and return do not count as another random event.
+Existing manual launches such as Soviet Collapse, Disaster Barrage, Hunger Lines, Black Plague Unbound and nuclear scenarios can seed exact facts after successful setup.
+The launch's initial coverage and severity do not impose long-term casualty totals or bypass owner gates.
+
+Actual nonhuman societies do not receive ordinary human famine or reception treatment.
+A special actor can cause flight, hold a route or create contamination without becoming an eligible civilian host.
+Human civilians under a transformed or captured government need the documented population-transition rule rather than blanket disappearance through a classifier.
+Mass famine or displacement alone does not register another world-threat source; the owning event decides whether its existing threat meaning changes.
+
+## Documentation and acceptance
+
+Permanent Famine and Migration documents describe their respective public contracts.
+History may record significant famine, relief, evacuation, trapping, return, integration or exposed starvation; it supplies no fake random-event entries or routine popups.
+Deaths remains the detailed mortality ledger.
+Related event documents and catalog rows change only after their owners implement and verify the relevant receipt; catalog CSVs remain exports.
+
+Acceptance requires one owning payment/loss/reward per transaction, conserved living movement, correct responsible-country attribution, no new pacing events, and disabled or absent counterpart tests.
+The future checks above require actual owner-source traces and appropriate MCP inspection/rendering; weighted route or AI changes additionally require the probability auditor's named baseline/evaluate/compare scenarios.
+They are design acceptance cases rather than tests executed by this review.
+Unproven hooks, missing owner APIs and current visual, probability or native-execution gates remain explicit in the takeover record.

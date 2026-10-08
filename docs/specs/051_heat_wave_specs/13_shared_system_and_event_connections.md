@@ -120,17 +120,31 @@ The event should not create separate discount logic. Costs that cannot safely us
 
 ## Event 050 The Great Embargo
 
-A Heat Wave target under a major embargo should face weaker:
+When a country has active Heat Wave exposure and a live embargo, use public enforcement proof for the particular emergency route.
+Fuel, spare-part, machinery, and foreign-support constraints may weaken existing heat actions only where that route or input is actually exposed; the presence of an embargo alone does not penalize every state equally.
+Event 050 owns economic restrictions and Pressure.
+Event 051 should not add a second embargo modifier.
 
-- emergency food imports
-- spare-part and machinery access
-- fuel and transport access
-- foreign relief
-- lend-lease support
+For Emergency Food Imports and Secure the Emergency Food Route, the target chooses between a monitored relief route, a viable intermediary, or domestic harvest and water protection using the existing action families.
+The [Event 050 relief exemption](../050_the_great_embargo_specs/specs/050_the_great_embargo_spec_part_8_achievements_interactions_and_acceptance.md#famine-system) applies only to the named cargo and route; it cannot erase sanctions on fuel or industrial inputs.
+Both categories can refer to one delivery, but transport commitments, payment, and the Famine reserve or relief credit occur once through their existing owners.
 
-Event 51 should read public embargo status and enforcement facts. It should not duplicate sanctions or create a second embargo modifier.
+Route closure, a lost port, insufficient transport, or revoked exemption gives the existing partial or failed food-route outcome.
+Heat Wave does not invent the missing shipment or take a separate famine population loss.
+An AI import plan must have a usable route and affordable commitment; otherwise it should evaluate the valid domestic mitigation choices.
+When Event 050 is absent or disabled, the food route uses its normal Famine and transport validation without sanction conditions.
 
-The connection should make Event 50 materially worsen a later Heat Wave without making survival impossible.
+## Event 049 Doomsday
+
+Heat Wave may supply [Doomsday's bounded catastrophe confirmation](../049_doomsday_specs/specs/049_doomsday_spec_part_10_integrations_ai_and_balance.md#event-051-heat-wave) only after its existing cross-continental habitability milestone has actually occurred and Doomsday is already active.
+Repeated stress updates, evolution activation, and duplicate reports do not qualify.
+Event 049 owns the belief response and consumes its source-family allowance; Event 051 keeps heat consequences and their existing owners.
+
+A functioning Doomsday preparation or civic relief site can contribute to an existing water, cooling, or corridor action only through capacity that Heat Wave verifies and the country actually keeps committed.
+The same transport and civilian capacity cannot support two projects at once.
+After the predicted date passes, Event 049 can restore institutions while Heat Wave continues; preserving a useful site does not require a second prophecy or a new heat protection route.
+AI can retain compatible relief capacity and proceed with ordinary reconstruction.
+Without active Doomsday or compatible site proof, Heat Wave plays normally.
 
 ## Event 034 Industrial Boom
 
@@ -230,15 +244,17 @@ Potential new cross-system helper should enter `chaosx_dynamic_effects` only whe
 
 # Adapter failure policy
 
-Every cross-system request should return or expose an acceptance result where the owner API supports it.
+Every cross-system request should return or expose an acceptance result where the owner contract supports it.
 
-If rejected:
+A rejected Famine, Migration, or disaster request creates no transaction in that owner and grants no heat-owned substitute for its core outcome.
+Existing local Heat Stress, service pressure, and mitigation continue under their own rules; rejection cannot manufacture famine, displacement, death, or disaster damage.
+An action whose purpose requires the request must either remain unavailable before commitment or close through its declared rejection outcome.
+Release reserved targets and unspent commitments through the owning action's existing payment proof; a rejected uncharged setup cannot create a refund.
+Costs already consumed by a separately completed heat action are not paid back a second time.
 
-- Event 51 records a compact debug reason
-- no partial owner-ledger write occurs
-- the request proof is cleared
-- the player-facing event uses a safe local consequence or no consequence
-- it does not retry every day without a cooldown
+Record the reason for implementation evidence, clear the request proof, and respect the action's existing cooldown.
+A later retry needs fresh eligibility and capacity, not an automatic daily replay.
+An accepted delayed owner request retains that owner's cleanup even if Heat Wave enters recovery or its episode closes.
 
 # Integration acceptance matrix
 

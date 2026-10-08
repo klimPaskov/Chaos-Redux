@@ -109,21 +109,29 @@ Farming administrations retain local geographic names because their purpose is t
 Temporary front occupations retain existing names.
 These differences express the route's method without inventing a large irrelevant map-name system.
 
-## Event 066, Abundance
+## Material supplied by Abundance and the Black Market
 
-The new brief proposes sharing value-registration information with Abundance.
-The supplied catalog snapshot still identifies Event 066 differently, so the design must not assume a finished Abundance implementation or registry already exists.
-The desired shared boundary is a neutral resource registration with valid scopes, bounds and safe operations.
+The [Event 066 provider design](../066_abundance_specs/specs/066_abundance_spec_part_2_dynamic_value_space.md) can expose a real stockpile or safely supported value that Event 070 can also consume.
+A shared description registers the supported scope, bounds and operations, while each event retains its own progression.
+Event 066 owns the abundance choice and actual increase.
+Event 070 owns the later debit, conversion, Fullness and hunger.
+A material payout can therefore provide a reserve for an Empire feeding recipe or a later pet bite, but its delivery does not increase Cookie-owned reward value, lifetime clicks, Level or the frozen daily click target.
+It cannot satisfy pet clicks merely because the material has become plentiful.
+The exact shared registry and operations still require implementation evidence, and Event 070 retains its own complete value registrations until a common owner is verified.
 
-Event 066 owns its selection, increases and reward presentation.
-Event 070 owns appetite, selection for consumption, debits, Fullness, Level and revolt.
-Neither event calls the other event's private progression logic.
-A neutral adapter can expose a value to both, one or neither system according to supported operations.
+The [Event 057 market contract](../057_the_black_market_specs/04_inventory_trade_and_provider_api.md#request-and-receipt-flow) provides another paid material source.
+Only successfully delivered goods owned by the consuming country become eligible under an existing Cookie recipe.
+A pending offer, reserved shipment, borrowed asset or unsupported special package is not edible stock.
+Event 057 owns payment, delivery, capture and any refund, and Event 070 begins its consumption transaction only after successful receipt.
+If a Cookie debit proves that recently imported goods were consumed, the market may retire that amount from its recent-import resale lock through its validated consumption receipt.
+That retirement returns no Market Credit and creates no second food conversion.
 
-Abundance can replenish a real stockpile that the Cookie can later consume.
-That is a meaningful interaction.
-It does not count as a Cookie reward for lifetime reward scaling.
-Only a payout actually owned by the Cookie system increases its reward-value history.
+Both sources change the player's real choice between retaining military material and consuming it.
+Cookie Empire AI uses the current usable stock and replacement needs, rather than counting announced deliveries as food.
+Several source receipts for the same delivered batch cannot let it be eaten twice, and consumed goods cannot also be donated or sold from the same allocation.
+Fullness uses the actual Cookie debit, while ordinary scarcity, contamination and third-party restrictions continue to determine what remains usable.
+Neither link opens another event, awards its milestones or changes its evolution state.
+Ordinary stockpiles and production preserve feeding and Empire play when either source is absent.
 
 ## Other event connections
 
@@ -131,8 +139,6 @@ Only a payout actually owned by the Cookie system increases its reward-value his
 | --- | --- | --- |
 | Great Depression and industrial crises | Damaged output makes farming and reserve production harder, and can alter valid reward families | Do not cancel the other event's modifiers or remove its private state |
 | Industrial Boom and new infrastructure | Actual extra industry, routes and stocks can support the Cookie economy or become edible assets | Do not treat promised construction as a completed asset |
-| Black Market | Purchased compatible material can be fed or converted after it is actually received | Cookie logic never edits market contract completion |
-| Abundance | Real valid increases can replenish edible values | Cookie reward history counts only Cookie-owned payouts |
 | Population increase and migration | Actual current civilians and receiving capacity change valid consumption and evacuation | No synthetic population, migration or death double counting |
 | Zombies, plague and other civilian crises | Existing damage and displacement influence valid population, control and farming | No automatic immunity because the ruler is a biscuit |
 | Research Failure and scientific events | Current supported research state can affect valid research gifts and edible progress | Unsupported progress setters are not replaced by unrelated speed modifiers |

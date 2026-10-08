@@ -37,15 +37,7 @@ It should hide or clear if:
 
 ## Core Fury decision values
 
-Decision tooltips should reference these values through scripted localisation where possible.
-
-| Value | Use in decisions |
-| --- | --- |
-| Fury Momentum | cost reduction for target preparation, better reserve-spawned unit quality while reserve remains |
-| Fury Overextension | blocks new wars if too high, raises integration costs |
-| Compliance Drive | improves coring and occupation decisions |
-| Fury Reach | unlocks no-neighbor and world-end decisions |
-| Fury Pact Cohesion | unlocks shared decisions or rivalry consequences |
+Decision tooltips explain Momentum and Overextension alongside the selected target, actual state compliance, garrison capacity, supplies, and finite reserve where the current action uses them. Compliance Drive remains an occupation idea. Cooperation and rivalry are mutually exclusive commitments backed by project-pact membership and real shipments. Reach, Pact Cohesion, and numeric Compliance Drive are retired under the [accepted release corrections](007_fury_release_corrections_2026-10-05.md). They must not return as requirements or decorative counters.
 
 ## Decision family: choose and prepare target
 
@@ -122,20 +114,9 @@ Reserve-spawned units should be automatic only while the hidden reinforcement re
 
 ### Open the Depots
 
-Role: consumes equipment to create an extra direct reinforcement wave.
+This wartime action releases one finite reserve column after Depot Cadres. Its ordinary quote is 15 command power, 610 rifles, 40 support equipment, and 6,300 manpower, using the accepted central price and any applicable sale accounting. It consumes one reserve and respects the actor's lifetime cap.
 
-Costs:
-
-- infantry equipment.
-- support equipment.
-- trains or trucks if logistics branch is used.
-- command power.
-
-Effects:
-
-- an extra reinforcement wave spawns immediately.
-- increases overextension or supply strain.
-- AI uses when at war and equipment reserve is high.
+The full hover shows all four payments and independently calculated affordability. The compact row shows at most three components. If delivery or settlement fails, the paid vector is refunded and any delivery is retracted. AI uses the action when the current war needs another column and its actual stores can cover the full quote. An empty reserve or a peace interval cannot become an alternative purchase lane.
 
 ### Empty the Training Yards
 
@@ -150,7 +131,7 @@ Costs:
 
 Effects:
 
-- increases next weekly draw from the existing pool or adds a capped emergency refill.
+- improves an emergency one-time wave or adds a centrally capped refill where that action is accepted. The automatic weekly draw remains one column and shares the existing lifetime cap.
 - units arrive undertrained.
 - raises overextension.
 - AI uses when losing a war or when Evolution III has multiple fronts.

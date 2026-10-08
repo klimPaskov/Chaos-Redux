@@ -56,15 +56,23 @@ No custom periodic Chaos loop is added.
 
 | Existing event or system | Meaningful relationship | Required boundary |
 | --- | --- | --- |
-| 006 Independence Wave | A Celtic government may already exist or become independent during the Irish campaign | Reuse it, retain its content, and require its consent. Do not release or duplicate it again. |
+| 006 Independence Wave | An existing or newly released Scottish, Welsh or Breton government can answer the corresponding Irish offer | Reuse its live identity and origin. Existing forces and content replace any proposed new-release grant, while Irish aid remains paid and its charter requires fresh acceptance. |
 | 009 White Peace | An automatic peace could interrupt the defined northern attempt | Use narrowly owned protection on the reclamation actor/context where supported. The inspected generic event excludes factions and is not a proof of the required British settlement. |
 | 060 Research Failure | Irish or partner technology can regress during military development | Re-evaluate template and training feasibility. Do not restore all lost technology as an incidental focus bypass. |
 | 061 Industrial conversion | Military and civilian capacity can change during paid projects | Pause or revise future capacity commitments without duplicating buildings or inventing negative available factories. |
-| 062 Allies Backstab | A Celtic or Atlantic alignment can be affected by the broader faction system | Respect the actual faction change and invalidate affected charters or offers. Do not grant permanent blanket immunity. |
-| 063 End Subject Status | A client or dominion may become independent | Update sovereignty and accepted obligations. It does not automatically become an Irish-owned state or remain a loyal subject through stale flags. |
+| 062 Allies Backstab | A real faction rupture can separate Celtic partners or end a military route used by an Atlantic agreement | Suspend only clauses and offers that depend on the lost membership, access or safe war side. Other accepted obligations keep their own terms, and no partner receives blanket immunity. |
+| 063 Subjects Break Free | A Scottish, Welsh or Breton subject can become a sovereign counterpart in place | End subject-only authority and aid conditions. Reassess the existing bilateral or federal offer against its new sovereignty, with consent and no second release, army or formation reward. |
 | 064 Border fortifications | The northern front may have unusually strong forts | Include the case in force and AI testing. Do not delete the forts or auto-win because the ordinary opening is harder. |
-| 071 Persia and 073 Mongols | Other formables and territorial projects can change current holders | Read actual country identity and ownership, with no global exclusion merely because another formable exists. |
 | Shared scenarios and global crisis systems | Government survival, territory, supply, and ordinary population systems may change | Update only the affected event-owned work. Do not override the shared scenario lifecycle to preserve an Irish mission. |
+
+The [Event 063 settlement owner](../../../063_subjects_break_free_specs/specs/063_subjects_break_free_spec_part_2_settlements.md) decides recognition, contested independence and any safe restoration war.
+Ireland cannot undo that result through a pending union or dominion acceptance, and gaining sovereignty alone does not accept a Celtic federal charter.
+The same government may keep a voluntary procurement or port agreement whose terms remain valid.
+The 90-day federal constitutional proof counts only after its own required sovereign members, homelands and accepted charters are valid together.
+An Event 063 release or an [Event 062 faction rupture](../../../062_allies_backstab_specs/specs/062_allies_backstab_spec_part_6_outcomes_connections.md) is not itself an Irish guarantee breach under CX01 or an Irish coercive rupture under CX02.
+Those consequences require the Irish conduct defined above.
+AI Ireland reassesses whether it can still provide the offered protection, and the independent partner evaluates the revised offer under its normal sovereignty and capacity rules.
+Ordinary Celtic diplomacy remains complete when those events are absent.
 
 These interactions are contracts against the supplied catalog and mechanics, not claims that every listed rework is already implemented.
 The reviewed catalog snapshot statuses are retained in the research ledger.

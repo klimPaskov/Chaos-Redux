@@ -28,7 +28,7 @@ These are required tests, not performed game results. The included Python model 
 | A22 | One-state host | Agreed supported route or explicit exclusion; no silent substitute | Design decision plus engine proof |
 | A23 | Multi-island host | Both sides have viable supply and an actual military plan | Game |
 | A24 | Damaged formations and stockpiles during split | No refresh/duplication hidden by transfer substitute | Source plus before/after game evidence |
-| A25 | Medical bargain during several concurrent diseases | Named owner outcomes only; no parallel cure fiction | Game with owner state |
+| A25 | Medical bargain during several concurrent diseases, with deliverable or unfinished independent Wu care | Named owner outcomes only. Deliverable care can obsolete a pending promise. Unfinished research cannot supply coverage. A care handover preserves completed cures, cannot duplicate staff or stock, and provides only the specific 090 evidence it proves. Non-biological findings leave the ordinary inquiry route viable | Game with disease, service, and agreement owner state |
 | A26 | Recovery when no living personnel pool exists | No resurrection or unbounded manpower grant | Game |
 | A27 | Research Failure archive and capacity losses differ | Correct component restored; slot ceiling respected | Game with owner history |
 | A28 | Diplomatic offer involves a human government | Real choice; promised outcome not falsely guaranteed | Multiplayer or controlled two-country game |

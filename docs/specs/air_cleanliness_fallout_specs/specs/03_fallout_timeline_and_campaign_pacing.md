@@ -81,29 +81,32 @@ The user approved the Ash-week orientation contract on 2026-07-18. Every materia
 | 4 | government-archetype introduction | `74` and `76` | `75` and `77` | 3 days | `government_archetype` |
 | 5 | first character or institution | `78` and `80` | `79` and `81` | 2 days | `character_or_institution` |
 
+The five human choices are visible; delayed results apply silently, retaining event tokens, costs, outcomes, memory and cleanup.
+Under accepted F2, a complete orientation has six visible reports: five choices and one closure naming the office and actual results.
+Skipped or cancelled components under the existing A2 admission/stall rules are reported as incomplete when the closure is delivered; they do not manufacture success.
 The sequence closes through human event `82` or hidden AI event `83`. Hidden event `84` owns authenticated cleanup. These 23 `chaosx.fallout` suffixes are reserved with these exact roles:
 
 | Suffix | Event role | Visibility | Follow-up |
 | ---: | --- | --- | --- |
 | 62 | national orientation root | human visible | 64 |
 | 63 | national orientation root | hidden AI | 65 |
-| 64 | national orientation result | human visible | 66 |
+| 64 | national orientation result | hidden human result | 66 |
 | 65 | national orientation result | hidden AI | 67 |
 | 66 | capital condition root | human visible | 68 |
 | 67 | capital condition root | hidden AI | 69 |
-| 68 | capital condition result | human visible | 70 |
+| 68 | capital condition result | hidden human result | 70 |
 | 69 | capital condition result | hidden AI | 71 |
 | 70 | immediate resource crisis root | human visible | 72 |
 | 71 | immediate resource crisis root | hidden AI | 73 |
-| 72 | immediate resource crisis result | human visible | 74 |
+| 72 | immediate resource crisis result | hidden human result | 74 |
 | 73 | immediate resource crisis result | hidden AI | 75 |
 | 74 | government archetype root | human visible | 76 |
 | 75 | government archetype root | hidden AI | 77 |
-| 76 | government archetype result | human visible | 78 |
+| 76 | government archetype result | hidden human result | 78 |
 | 77 | government archetype result | hidden AI | 79 |
 | 78 | character or institution root | human visible | 80 |
 | 79 | character or institution root | hidden AI | 81 |
-| 80 | character or institution result | human visible | 82 |
+| 80 | character or institution result | hidden human result | 82 |
 | 81 | character or institution result | hidden AI | 83 |
 | 82 | orientation closure | human visible | 84 |
 | 83 | orientation closure | hidden AI | 84 |
@@ -125,38 +128,29 @@ The accepted live-ledger contract removes caller-supplied Cohesion and state Sup
 
 Orientation state results write the authenticated assigned capital directly. Exposure, Shelter capacity, Adaptation, and Reclamation use the live Air Winter values. Recovery writes the same delta to `air_winter_recovery_bonus` and current `air_winter_recovery`. Supply changes use the sole Supply Access helper. Phase and grade remain frozen display and scoring facts. A stale state identity, non-produced Air Winter row, wrong ownership or control, or stale schema-3 Supply Access row records a typed diagnostic and blocks the result before mutation.
 
-Orientation refuses to start when the successor allocation, player-continuation ownership, nine-region row, twelve-archetype row, country-memory row, main-state target, or curated character or institution registry is missing. A missing row records a typed diagnostic. It cannot select a generic fallback. The character or institution component requires at least two valid curated candidates.
+Orientation starts from current allocation, player continuation, region, archetype, memory, main-state and installed office/candidate evidence.
+A2/A14/A16 in the [October 4 ledger](../../../plans/air_cleanliness_fallout_plans/agent_decisions_2026-10-04.md) govern country-local dispatch, reviewed cell coverage, affordable component admission and bounded cancellation; the twelve memory pilots add local identity without replacing wider cell coverage.
+Their accepted absent-row, affordability and stall handling must not be replaced by an unapproved generic package or an indefinite ordinary-event lock.
+A3 retains native repair crews and repair-speed consequences instead of promising an exact restored infrastructure level.
 
-The package requires six dedicated Fallout report images for national orientation, capital condition, resource crisis, government authority, first character or institution, and orientation closure. All six dedicated images and sprite registrations exist. The dormant transaction substrate, schema-3 Cohesion and Supply Access ledgers, live Air Winter state-result mapping, shared localisation, all 23 orientation event blocks at `62` through `84`, and authenticated closure and cleanup are implemented. History `9110` contains 45 explicit component, branch, and outcome payloads, and the shared Event Log detail route selects their name and payload text. The source design contains the manually reviewed 108-cell live-region and government-archetype coverage matrix plus a twelve-successor memory and candidate pilot covering every live region and archetype. The resource pilot has an idempotent exact-memory mapper, one exact supporting resource and deterministic AI preference per reviewed identity, and request authentication against a separate current capital-asset receipt. The government pilot has an idempotent exact-memory mapper, one exact consolidation benefit and deterministic AI preference per reviewed identity, and transaction authentication against its current row. The candidate pilot has 36 typed ids, an idempotent exact-memory mapper, and request authentication against a separate installed-package receipt. None of the required approval or package receipt surfaces has a setter. The completion audit keeps all 23 defined blocks uncounted because the caller, runtime approval producers, the other 96 regional and archetype cells, exact capital repair, installable candidate packages and assets, activation, and final audits remain incomplete.
-
-No caller may be wired until successor allocation, player continuation, and every required candidate registry are proven. The closure and cleanup do not set `fallout_event_scheduler_activation_approved` or `fallout_event_scheduler_active`. The scheduler remains dormant. The 23 reserved blocks contribute zero to the release floor until the complete tranche is implemented, wired, localised, logged, detailed, manually reviewed, and audited. The Fallout living-world count therefore remains 0 of 660.
-
-The approved scoring inputs, branch costs, result values, regional and archetype coverage rules, human and AI ownership rules, recovery rules, asset requirements, and validation scenarios in `docs/plans/air_cleanliness_fallout_plans/FALLOUT_ASH_WEEK_ORIENTATION_CONTRACT_PROPOSAL.md` are incorporated into this source spec as acceptance criteria.
+Six dedicated report families cover national orientation, capital condition, emergency supplies, government, office/institution and closure.
+History `9110`, all 23 component identities and authenticated cleanup remain the authored orientation contract.
+The coordinator owns scheduler activation; orientation closure cannot set either activation flag.
+Reservation and source definition alone do not satisfy [spec 12](12_event_content_budget_and_acceptance.md)'s content-quality and coverage proof.
+The original [orientation contract](../../../plans/air_cleanliness_fallout_plans/FALLOUT_ASH_WEEK_ORIENTATION_CONTRACT_PROPOSAL.md) retains scoring, prices, outcome magnitudes, identity, parity and recovery requirements where not superseded by the recorded decisions above.
 
 No country should begin with every decision visible. The orientation opens the first emergency set.
 
-## Accepted ordinary scheduler pacing
+## Ordinary pacing through the decade
 
-The user approved the living-world scheduler numerical contract on 2026-07-18. It replaces the earlier 10 through 14 day draft cadence with a phase and frozen successor-size table. Frozen size is small for 1 through 3 assigned states, medium for 4 through 9, and large for 10 or more. Later conquest and fragmentation do not change that pacing identity.
+[Spec 01's cadence and visible-budget passage](01_living_world_event_ecosystem.md#cadence-and-visible-budget) is the sole coefficient table for the frozen small/medium/large pacing identity, ordinary envelope costs, crisis breaks and broadcasts.
+Its scheduling and determinism passages own bounded review lanes, priority order, caps, signed scores and retries; this timeline consumes them instead of maintaining another numeric copy.
+Every visible result already promised by an ordinary envelope remains reserved, while hidden mechanical results have no visible-popup charge.
 
-| Phase | Small | Medium | Large |
-| --- | ---: | ---: | ---: |
-| First season | 24 days | 18 days | 14 days |
-| First winter year | 28 days | 24 days | 20 days |
-| Consolidation | 32 days | 28 days | 24 days |
-| Rival orders | 34 days | 30 days | 26 days |
-| New states | 36 days | 32 days | 28 days |
-| Soot retreat | 38 days | 34 days | 30 days |
-| Second world | 40 days | 36 days | 32 days |
-| Open continuation | 46 days | 42 days | 38 days |
-
-Every opening reserves its complete visible envelope through an immutable visible-budget cost from 1 through 4. A result may extend the due day. It cannot shorten the reservation. A pressure-80 crisis may break cadence only after a seven-day visible gap and outside a 180-day crisis-break lock. That break reserves 42 days for each visible beat in its envelope. Broadcasts keep the separate thirty-day global minimum.
-
-Under continuous eligible content, the day-8-through-day-3650 arithmetic produces about 103.9 ordinary visible beats for a small successor, 118.0 for a medium successor, and 136.2 for a large successor. Including the eleven planned visible Ash-week beats gives baselines of about 114.9, 129.0, and 147.2. Candidate droughts, invalid targets, route locks, wars, and choices can lower those totals. Rare crisis breaks can raise them.
-
-The coordinator reviews current human successors once per engine date and reviews 1, 2, 3, or 4 AI registry countries when the frozen registry contains 1 through 30, 31 through 60, 61 through 90, or at least 91 countries. Transaction reconciliation runs first. One country may commit no more than one newly selected envelope on the same engine date.
-
-The exact scoring, fatigue, target repetition, transaction caps, deterministic tie order, AI parity, and save-recovery requirements are authoritative in `01_living_world_event_ecosystem.md`. The numerical implementation remains dormant. It does not authorize either activation setter, a candidate-content row, an ordinary event call, or release-floor credit.
+Using the existing continuous-content day-8-through-day-3650 arithmetic, the ordinary portion remains about 103.9, 118.0 and 136.2 visible beats for small, medium and large successors.
+A complete six-report orientation brings those illustrative totals to about 109.9, 124.0 and 142.2.
+These are arithmetic baselines, not observed campaign frequencies: candidate droughts, skipped components, delayed orientation, wars, locks, player choices and eligible crisis breaks can change delivery.
+The broad 90-to-180-event campaign target remains in [spec 12](12_event_content_budget_and_acceptance.md).
 
 ## Days 8 to 30
 

@@ -129,6 +129,13 @@ Use regional claim pools:
 - player-facing tooltips name the affected region
 - direct annexation cannot duplicate states or create invalid capitals
 - AI must not pursue a restoration whose required capital or state set is impossible
+- a permanently consumed Death state retains its wasteland and population-loss history under any new political identity
+
+A [Death-consumed state](../../010_death_specs/specs/010_death_spec_part_2_mechanics.md#the-consumption-effect) can receive a political ownership settlement only under the existing Charter and country-package rules. Its former population, industry, resources, and recruitment base remain absent. Recognition, cores, a restored name, or ecological protection do not constitute resurrection. Death's accepted custodial policies remain authoritative for the dead zone.
+
+If a required historical capital is consumed, use only that package's already-defined compact, autonomy, or negotiated outcome where its living-state prerequisites still pass. A package with no valid outcome remains unavailable and names the missing capital or viable state requirement. Do not allocate a substitute tag, invent a backup capital, or create a restoration reward through a zero-population state. Existing continent-settlement requirements still apply, and Death does not create an automatic exemption or a continental-unity receipt.
+
+Future checks compare the same restoration with an intact capital, a Death-consumed capital with an accepted compact outcome, and a consumed capital without such an outcome. Ordinary restoration remains unchanged when Death is absent.
 
 Examples:
 

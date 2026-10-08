@@ -249,7 +249,16 @@ Ownership boundary:
 
 A recent demobilization can make a country appear weak. The target model should read current military and industrial capacity, while also recognizing temporary demobilization state so the same event chain does not deterministically punish every demobilized minor.
 
-An expelled country under Return to Peacetime can use its own rearmament decisions. Event 62 does not bypass their costs.
+An expelled country with an active Event 061 transition keeps its own factory ledger, law targets, Readiness, deadlines, and emergency-use receipts.
+Once expulsion has committed and the loyalist side has a live pending declaration against that victim, Event 062 may supply an opponent-specific imminent-attack fact to the existing Event 061 emergency gate.
+A selection score, low cohesion, or a rumor of purge is insufficient.
+The fact ends when that declaration is cancelled, recognized separation or readmission resolves the hostility, or the opponent disappears; an actual war then supplies the ordinary war context.
+
+The victim can pay for Emergency Rearmament, or Emergency National Defence when already under the extreme laws, through Event 061's existing costs and cycle limits.
+Event 062 neither starts another Event 061 cycle nor grants restored factories, laws, readiness points, or formations for selecting this response.
+Completing that recovery does not satisfy Event 062's capital-and-supply hold mission until its own objectives are met.
+AI facing a legal imminent attack prioritizes the owner exit before a formation purchase it cannot execute, while retaining Event 062 aid and settlement options.
+When no Event 061 transition exists, the ordinary Event 062 mobilization path remains sufficient.
 
 ## Famine and Migration
 

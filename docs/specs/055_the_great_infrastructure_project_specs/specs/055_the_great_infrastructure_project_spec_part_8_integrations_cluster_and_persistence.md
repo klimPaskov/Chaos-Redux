@@ -194,6 +194,14 @@ Event 18 and Event 55 still apply their own member effects, history, repeatable 
 
 The cluster does not grant separate Chaos merely because two positive events occurred together.
 
+## Random construction on an existing project
+
+Event 58 can create an ordinary railway, port, or other physical item on an Event 55 route without creating an Event 55 project instance.
+Event 55 consumes only the verified physical change under [the lifecycle reconciliation rule](055_the_great_infrastructure_project_spec_part_3_project_lifecycle.md#work-already-present-on-the-route).
+Event 58 owns its random placement and milestone; Event 55 owns the remaining bill, route agreements, commissioning, operating status, and completion record.
+The placement cannot grant an operating corridor receipt to Famine, Migration, or the Black Market while the Event 55 project remains unfinished or inaccessible.
+The reciprocal placement boundary is in [Event 58's integration design](../../058_random_buildings_specs/specs/058_random_buildings_spec_part_4_integration_presentation_balance.md#infrastructure-project-interaction).
+
 ## Other economic interactions
 
 A project can react to an active industrial boom, economic collapse, or major resource shortage when those systems expose stable public facts.

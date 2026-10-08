@@ -1,6 +1,6 @@
 # Package Manifest
 
-Current working-file integrity refreshed on 2026-10-07.
+Current working-file integrity refreshed on 2026-10-08.
 The rows index repository bytes, while supplied-source inventories and original validation reports retain their historical evidence scope.
 
 
@@ -21,7 +21,7 @@ This manifest records every package file except this manifest itself. Hashes use
 | `10_flavour_and_report_event_families.md` | 14267 | 198 | `2898ba1f25ad5c5731b1a60dba1dffcee64a84cdadf874a113215de544a1b0a5` |
 | `11_evolutions.md` | 13531 | 382 | `5a4adababf6dc088bc908ec847ad3490df691fc6041f31a3ec16d106ca3d3816` |
 | `12_environmental_degradation_and_terrain.md` | 9394 | 269 | `17edcb0b0dcaa50fead544ed3d105f9e6a72db103aed6160b67f601d54cfa9fe` |
-| `13_shared_system_and_event_connections.md` | 10159 | 254 | `be28f727a106c332d75813f0577365f44e9ac9c51a5274274985b85d2c104f76` |
+| `13_shared_system_and_event_connections.md` | 13260 | 270 | `9471bab53506113528b4f60f08138b531d75f11f4905f6e6ec47e28e31a6209b` |
 | `14_ai_strategy_and_probability_scenarios.md` | 11531 | 333 | `0126bf6ce071c47e21389dafcab06cf3cc758f8c3429e86d3c65535cbc05e314` |
 | `15_chaos_logs_cluster_and_repeatability.md` | 8957 | 228 | `5ad10b6e1f7db633b56bb1954c6ff7c1a9038031b9dbebef1a9e3ab0f6094881` |
 | `16_presentation_and_writing_direction.md` | 7964 | 261 | `4d403af52b8d8b4029303d372ee0dd568d69f05758508da50826bda35b1915b7` |

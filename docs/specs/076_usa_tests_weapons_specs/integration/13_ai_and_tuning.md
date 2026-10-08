@@ -65,7 +65,7 @@ An analysis reward can use a family-appropriate secondary route if the original 
 
 ## Evolution timing
 
-After the initial high-Chaos opening, the proposed activation median is 90 days while the stage's eligibility remains true. This is not a guarantee that all games activate on day 90. The missing dedicated MTTH skill, installed semantics and required probability tools must be used before choosing the actual scripted scheduling formula.
+[Part 04](../gameplay/04_evolutions.md) owns the 90-day MTTH timing target for eligible active evolutions. That parameter does not establish a 90-day median or a guaranteed day-90 transition. The implementation must use the current MTTH skill and probability adapter to establish the actual timing distribution before choosing the scheduling formula.
 
 A bounded event-owned implementation must preserve the intended timing distribution or document a measured deviation for correction. Do not use a new all-country daily loop to approximate it. Save and reload must not reroll a hidden countdown in the player's favor.
 

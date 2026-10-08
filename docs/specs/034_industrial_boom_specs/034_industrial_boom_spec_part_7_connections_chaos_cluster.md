@@ -2,18 +2,9 @@
 
 ## Connection philosophy
 
-Industrial Boom should react to the world without becoming hardwired to every event that can damage industry, disrupt trade, or add resources. The event should read shared economic conditions and accept narrow reusable pressure inputs from owning systems.
+Industrial Boom reads existing economic conditions and accepts bounded owner-reported shocks or relief. Event 35 is its direct failure relationship and receives the frozen collapse snapshot. Other events affect the boom through actual infrastructure, fuel, trade, control, damage, and stability, with a pressure adapter only when those facts cannot express the industrial consequence clearly.
 
-The design uses three connection layers:
-
-1. **Direct relationship**
-   - Event 35 is the direct failure state and receives the full inherited snapshot.
-2. **Shared-condition observation**
-   - Event 34 reads ordinary country and state facts such as infrastructure, fuel, convoys, trade access, control, damage, and stability.
-3. **Reusable pressure adapters**
-   - Other events can report a bounded industrial shock or relief when ordinary game state cannot express the consequence clearly.
-
-A direct event-ID call should be used only when the relationship defines the event, as with Event 35. Other events should not need Event 34-specific code merely because they happen to affect logistics or resources.
+One loss can affect several systems. Its owner applies the physical loss, while Event 34 manages the resulting industrial strain. A connection must identify the affected region and the choice it changes.
 
 ## Direct connection: Event 35 Great Depression 2.0
 
@@ -31,51 +22,23 @@ Key rules:
 
 ## Shared economic pressure adapter
 
-A reusable industrial-pressure input should allow an owning system to report one bounded effect to an active Event 34 country.
+A shock or relief request identifies the active boom country, source family, magnitude band, optional state and duration, and the source's proof and receipt. Unknown sources, invalid states, inactive booms, and replayed one-shot receipts produce no change.
 
-Conceptual input fields:
+Event 34 applies the accepted change to Overheating or hidden pressure once. A state-linked request can affect its existing project or protection state, and the cause summary identifies the responsible loss or relief. The caller gains no authority over landing or cleanup.
 
-- Target country.
-- Source family.
-- Pressure direction: shock or relief.
-- Magnitude band.
-- Optional target state.
-- Optional duration.
-- Proof that the source owns the consequence.
-- One-shot or recurring receipt identity.
-
-Conceptual result:
-
-- Event 34 changes Overheating or hidden pressure once.
-- A state-linked source may change project or protection state.
-- The strongest cause list can show a short source description.
-- The source does not gain ownership of Event 34 cleanup or landing.
-
-The adapter should fail closed when the target has no active boom, the state is invalid, the source identity is unknown, or the same one-shot receipt has already been consumed.
+An adapter and an ordinary state observation must not each impose the same immediate shock. After that shock, continuing damage can still sustain maintenance or supply pressure until repaired. Repair removes that ongoing cause rather than granting the original shock amount back as repeatable relief.
 
 ## Natural disasters and state damage
 
-A natural disaster can affect Event 34 through ordinary state damage and a bounded shock adapter.
+A confirmed disaster loss in an active Industrial Region can interrupt a project, consume applicable protection, worsen Overheating, and lower landing quality according to the region's importance. A forecast changes preparation priorities without proving damage. The player can protect the endangered region and preserve output, or cool the expansion to reduce exposure to a disrupted supply chain.
 
-Event 34 response:
+[Acid Rain's state consequence contract](../033_acid_rain_specs/specs/033_acid_rain_consequence_repair_acceptance_2026_10_03.md) supplies a concrete example. Use actual corrosion, disrupted transport, or retained state burden, and preserve paid recovery already recorded there. Event 34 protection mitigates industrial strain only. It does not remove rain, lower Acid Rain mortality, grant Preparedness, or settle that event's recovery obligation.
 
-- Recalculate the Industrial Region's infrastructure and control.
-- Pause or slow affected projects.
-- Consume regional protection when appropriate.
-- Raise Overheating according to the state's national importance.
-- Update landing quality.
+The disaster owner applies building damage, population loss, Deaths, environmental aftermath, Air changes, and their shared Chaos once. Event 34 observes the industrial result. If the same loss causes a boom collapse, its condition enters the frozen Event 35 snapshot without a second adapter charge for the old incident. New damage after the handoff can affect the active depression through Event 35's own connection.
 
-Natural disaster ownership:
+AI compares protection and supply repair with cooling or landing according to the exposed region's remaining value and valid project requirements. It cannot certify damaged work merely to secure a legacy. When no compatible disaster evidence exists, ordinary boom management continues.
 
-- Physical building damage.
-- Population loss.
-- Deaths logging.
-- Disaster reports and aftermath.
-- Air contamination or other disaster-specific systems.
-
-Event 34 must not recreate those effects. It only interprets the industrial consequence.
-
-A disaster in an unimportant state should not produce the same shock as destruction of a protected Miracle Region.
+Acceptance case: one corrosion receipt interrupts a Miracle Region, is reported twice, and then precedes a crash. The physical loss and immediate economic shock occur once, Event 35 inherits the remaining damage, and later repair clears only the continuing industrial cause.
 
 ## Strategic bombing and war damage
 

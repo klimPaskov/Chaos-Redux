@@ -33,6 +33,33 @@ The connection should make postponement, narrow investigation, and provisional p
 
 The supplied catalog does not identify a confirmed implementation ID for this named connection. The interaction is part of the design, but the exact event identity must be resolved in the live repository before wiring. No numeric ID is assigned by guesswork.
 
+### Documented harm and failed sponsorship
+
+An already active chamber can examine a completed Event 076 impact for which its government accepted the ultimatum or authorized the American program.
+For a victim, the existing acute Domestic Hostility band of 75 or more makes a new impact politically relevant; it does not fire Parliament of Fear or become a second Paranoia meter.
+For USA, a dispute over an actual completed test and its disclosed authorization can provide a relevant institutional lead.
+An Event 075 reveal can likewise raise a sponsorship case in a real major donor whose recorded delivered contribution materially supported the revealed army.
+A refused request, an undelivered promise, or a donor unrelated to the active chamber does not qualify as that government's failed sponsorship.
+
+The outside owner supplies facts: the accepted test, impact state and loss receipt, or the donor's completed aid and the real Tuvan reveal.
+Those facts establish what happened, not whether an official committed misconduct or organized a plot.
+An approval obtained through a threat of war is not evidence of collusion; an aid program deceived by TAN is not proof that its staff wanted the invasion.
+Allegations about concealment, diversion, unauthorized conduct or complicity require their own persistent case truth and corroboration under Part 2.
+Use a verified officeholder link where one exists; otherwise investigate the responsible institution without inventing a guilty historical person.
+
+The player uses the existing inquiry, provisional protection or negotiated-support modes to accept an independent finding, preserve staff during reconstruction, or make a stated accountability concession.
+Investigating consumes the same sole commission and case capacity as other cases.
+New allegations compete for that capacity, and duplicate reports of one impact or delivery remain one lead.
+AI evaluates the visible evidence, staffing need and actual support agreement; it does not treat high Hostility or donor embarrassment as hidden knowledge of guilt.
+Political relief follows a credible finding or carried-out concession, not the removal of a casualty record.
+
+Event 076 retains Hostility, Deaths, repair and Condemnation ownership, and Event 075 retains aid custody and reveal ownership.
+The same disruption enters Event 077's existing pressure assessment once; its Hostility-derived Stability loss and an imported description must not become two independent shocks for that same impact.
+There is no additional integration Chaos award.
+The future acceptance cases compare a coerced acceptance with a false collusion charge, a documented diversion with corroboration, a real major donor with a refused-only observer, and a duplicate report while the commission is occupied.
+Without an active chamber, the existing victim or donor reaction proceeds normally.
+See [Event 076's backlash and recovery](../076_usa_tests_weapons_specs/gameplay/10_victims_and_recovery.md) and [Event 075's donor evidence](../075_tannu_what_specs/campaign/075_tannu_what_spec_part_13_donors_and_containment.md).
+
 ### Native politics and other crises
 
 A native purge, character-removal event, or government transition owns its existing commitments. Event 077 needs a cooperation adapter or a temporary eligibility deferral for the conflicting period. It must not clear another system's state to create room for itself.

@@ -195,11 +195,12 @@ A future working cluster concept could be a sudden mobilization or command-colla
 
 Required integration:
 
-- base zombie registry entry can use only the approved base unit
+- base `zombies` remains the only trainable zombie body; its provider 501 keeps the derivative route
 - derivative zombie countries use distinct origin and identity
 - parent zombie counts, leagues, mutations, stages, evolutions, super-events, and world-end conditions exclude Event 19 derivatives
 - if the parent event is active, Event 19 can react through visible containment or hostility decisions without claiming the derivative is the parent outbreak
-- advanced parent zombie variants remain unavailable
+- the owner-approved provider 511 may supply its recorded mutation and armour variants as spawn-only, family-only lots; it has no derivative profile and grants neither zombie training nor parent mutation progression
+- unregistered or unapproved variants remain unavailable; the exact variant inventory stays in the [owner coverage ledger](../../../events/019_infantry_spawn/systems/unit_family_coverage.md) and Part 5 rather than another list here
 
 Potential interaction:
 
@@ -274,13 +275,20 @@ Interaction direction:
 
 ## Civil war and coup systems
 
-Required integration:
+Event 019 owns a revolt whose defining cause is its recorded formations, claimant, or registered family.
+Event 021 owns a distinct domestic political fracture under its [specialized-event precedence](../../021_random_civil_war_specs/021_random_civil_war_overlap_and_catalog_reconciliation.md#specialized-event-precedence).
+When both plans touch the same host, a pending Event 019 release has priority over its frozen region and recorded formations; Event 021 must select another viable opening or leave that opening uncommitted.
+It cannot create a second actor from the same district or treat the same loyal formations as ordinary defections.
+The receiving player's existing containment, reassignment, negotiation, and demobilization choices therefore determine whether the formation crisis remains a live competing claim.
 
-- check active civil wars before release
-- use one-state takeover logic
-- preserve former parent event targets safely
-- clean war and faction state on annexation or negotiated settlement
-- avoid duplicate dynamic countries with no territory
+Ordinary managed Event 019 lots alone do not give the host blanket immunity from Event 021.
+A separate political opening may proceed only through an accepted integration that preserves actual formation identity, equipment obligations, generation ownership, and pending transactions across the resulting actor and state changes.
+A native army ratio or territory transfer is not proof that those Event 019 records transferred correctly.
+Without that proof, the combined opening remains unresolved and must not substitute a new free army, settle debt, or reroll the old lots.
+
+AI uses the same ownership and viability checks: it cannot plan two releases against one frozen formation base, and it rechecks political eligibility under Event 021's normal cooldown, grace, and viability rules after the specialized transaction resolves.
+One-state takeover, former-parent context, annexation cleanup, and negotiated settlement retain their existing Event 019 rules.
+Wars and deaths still reach their shared owners once; the connection adds no separate Chaos reward.
 
 ## Chaos Meter
 
@@ -504,7 +512,7 @@ The implementation is not complete unless every item below is finished or explic
 ### Evolution IV
 
 - documented family registry
-- base zombie trainable and stronger variants excluded
+- base zombie trainable; approved stronger provider-511 variants spawn-only and without a derivative profile
 - ghost and golem spawn-only
 - future explicit opt-in
 - saturation and containment
@@ -559,6 +567,9 @@ The implementation is not complete unless every item below is finished or explic
 - no free civil-war army
 - no invalid target or route use
 - task-specific scenario validation
+- P19-CW-RESERVED: a host with a pending claimant or family release and a competing Event 021 plan preserves one region, one formation owner, and one obligation set; the conflicting political opening remains uncommitted
+- P19-CW-ORDINARY: a host with managed ordinary lots and a distinct political premise receives no blanket immunity, while an unproved formation-transfer adapter grants no duplicate army or debt settlement
+- P19-ZOMBIE-MODES: a provider-511 lot materializes only its registered spawn-only variants, with no training unlock, derivative creation, or parent mutation/evolution credit
 
 ### Logs and documentation
 

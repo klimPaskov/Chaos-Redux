@@ -5,6 +5,7 @@ Each package must identify the explicit decision or accepted source that establi
 Being listed here does not establish approval, implementation, or completed validation.
 Keep proposals and unresolved acceptance questions distinct from accepted design, and keep working plans in `docs/plans/`.
 Consult the [shared identifier registry](shared_identifier_registry.md) before allocating scenario, cluster, or other shared identifiers.
+The [8 October planning improvement review](../plans/repo_cleanup/specification_improvements_2026-10-08/report.md) records current refinements, cross-event connections, retained designs and unresolved choices across every package.
 
 ## Package navigation
 

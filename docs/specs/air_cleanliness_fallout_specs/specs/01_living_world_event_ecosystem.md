@@ -244,7 +244,10 @@ score = primary_family_base
 
 Resource pressure is twice the distance below 50, with both the distance and result clamped to their accepted bounds. Air Winter phases 0 through 6 normalize to 0, 15, 30, 45, 65, 85, and 100. Severity and state value use event-owned formulas tied to exact receipts. Player relevance is 100 for a human recipient, 50 when an AI recipient's exact bilateral partner is human, 25 when the candidate names a current human-owned war or mission target, and 0 otherwise. Only the highest applicable player-relevance value is used.
 
-A new major arc receives a capacity adjustment of plus 10 with zero active arcs, zero with one, minus 20 with two, and becomes ineligible with three. An authenticated continuation does not use that adjustment. The final rounded score must be greater than zero. The scheduler has no minimum-score fallback.
+A new major arc receives a capacity adjustment of plus 10 with zero active arcs, zero with one, minus 20 with two, and becomes ineligible with three. An authenticated continuation does not use that adjustment. An eligible final rounded score may be zero or negative: the first eligible row establishes the baseline, and later rows use the same higher-score and stable tie order.
+F4 in the [finishing ledger](../../../plans/air_cleanliness_fallout_plans/agent_decisions_2026-10-05.md#f4-eligible-candidates-may-have-nonpositive-scores) supersedes the positive-score admission rule.
+Fatigue ranks valid stories; it does not create a second eligibility floor or bypass any phase, resource, reservation, repetition or target requirement.
+An empty selection still carries score zero and cannot be issued as a candidate.
 
 ## Fatigue, repetition, and caps
 
@@ -271,9 +274,9 @@ Cleanup-pending and issued tombstones count against their cap until exact releas
 
 A recurring character or institution reserved by an unresolved arc, delayed row, or bilateral row cannot open another independent arc. A bilateral candidate requires current scheduler and survival rows for both countries, distinct participants, valid gates in both directions, no conflicting issued reciprocal receipt, no opening of the same pair and family in the previous 90 days, and available row capacity on both sides. Exact partner-score ties use the lower frozen partner registry index. Both reciprocal rows commit before either event may issue.
 
-The implemented relationship reservation substrate records this contract in `2026-07-26_relationship_candidate_reservation_addendum.md`. The candidate eligibility trigger remains fail-closed unless both rows carry the exact reciprocal candidate id, transaction key, event-token pair, visible cost, bilateral opportunity, and source-index back-reference. The selected relationship branch calls the existing bilateral reservation API and does not use the ordinary receipt or dispatch path. Refugee Train candidate `415` now has a dormant pairing pass that writes reciprocal registry indices for the two lowest reviewed rows. The other relationship rows retain the no-partner sentinel, and no relationship event is active or release-floor countable until a bilateral opening and response consumer is proven.
+The implemented relationship reservation substrate records this contract in `2026-07-26_relationship_candidate_reservation_addendum.md`. The candidate eligibility trigger remains fail-closed unless both rows carry the exact reciprocal candidate id, transaction key, event-token pair, visible cost, bilateral opportunity, and source-index back-reference. The selected relationship branch calls the existing bilateral reservation API and does not use the ordinary receipt or dispatch path. Refugee Train candidate `415` has an authored pairing pass that writes reciprocal registry indices for the two lowest reviewed rows. The other relationship rows retain the no-partner sentinel, and no relationship event is active or release-floor countable until a bilateral opening and response consumer is proven.
 
-The implemented major-arc reservation substrate records its top-level payload contract in `2026-07-26_major_arc_candidate_reservation_addendum.md`. Major rows may reserve only through the exact arc identity, parent-ticket, actor-shape, and current-scope proof, then enter the existing capped arc ledger at the opening stage. The Year Zero, Orchard Flowers, Skilled List, and False Spring Losses pilots have separate major-stage consumers that authenticate their existing human and hidden-AI events, advance their tickets through authored stages, and release their rows after cleanup. All four remain dormant and outside release-floor credit.
+The implemented major-arc reservation substrate records its top-level payload contract in `2026-07-26_major_arc_candidate_reservation_addendum.md`. Major rows may reserve only through the exact arc identity, parent-ticket, actor-shape, and current-scope proof, then enter the existing capped arc ledger at the opening stage. The Year Zero, Orchard Flowers, Skilled List, and False Spring Losses pilots have separate major-stage consumers that authenticate their existing human and hidden-AI events, advance their tickets through authored stages, and release their rows after cleanup. Their historical dormancy labels do not override A1/A7; actual release-floor credit still requires the authored chain review and its evidence limits.
 
 The scheduler selects the higher final score. Exact score ties prefer crisis incidents, then major-arc openings, relationships, routine incidents, and broadcasts. Remaining ties use the lower stable candidate identity, lower stable target identity, then lower bilateral partner registry index. Due results and cleanup never compete with new candidates. Random rolls and MTTH do not resolve ties.
 
@@ -283,7 +286,10 @@ Human and hidden AI routes use the same eligibility, score, costs, arc and queue
 
 Save recovery retries one frozen unissued selection without rescoring. An issued selection remains a blocking tombstone and cannot emit a second command. A stale generation cancels an unissued selection with a typed reason. An issued selection remains owned by its exact event terminalizer.
 
-The numerical scheduler remains dormant until the release gates pass. Both activation flags must remain unset. No unreviewed candidate row, event caller, or suffix from `100` through `126` receives release-floor credit from the numerical substrate.
+The coordinator owns activation under A1 in the [October 4 ledger](../../../plans/air_cleanliness_fallout_plans/agent_decisions_2026-10-04.md#a1-living-world-scheduler-activation-replaces-the-spec-12-release-receipt): current map-return, registry, numerical-registry and player-continuation receipts, with no scheduler error.
+Each country still needs completed orientation and the quiet interval before an ordinary opening; an issued opening or continuation does not recheck the already reserved cooldown.
+Chain-local helpers cannot grant activation, and a reservation or numerical helper supplies no release-floor content credit.
+[Spec 12](12_event_content_budget_and_acceptance.md) governs the separate manually reviewed content obligation.
 
 ## Event memory
 
@@ -464,7 +470,7 @@ Completion requires:
 
 ## Refugee Train bilateral consumer pilot
 
-The Refugee Train relationship row has a dormant authored bilateral opening and response consumer at event ids `1019` through `1022`.
+The Refugee Train relationship row has an authored bilateral opening and response consumer at event ids `1019` through `1022`.
 
 The existing reciprocal reservation stores the initiator and responder tokens, and the reconciler emits the opening envelope only for a current reserved initiator row.
 
@@ -472,8 +478,9 @@ The opening transition is token authenticated and commits both rows to `response
 
 The response side provides human and hidden AI paths with deterministic success, partial, and failure outcomes, durable country and state memory, Air Winter and Supply Access effects, and existing bilateral cleanup.
 
-The dormant pilot writes dedicated Event Log history `9160` with four opening-choice payloads and twelve branch-outcome payloads. The current participant is the primary actor and the authenticated paired country is the secondary actor, while shared Event Log routing supplies the compact title and detail text.
+The pilot writes dedicated Event Log history `9160` with four opening-choice payloads and twelve branch-outcome payloads. The current participant is the primary actor and the authenticated paired country is the secondary actor, while shared Event Log routing supplies the compact title and detail text.
 
-This pilot remains outside the ordinary reviewed-row count and contributes zero countable blocks until the Fallout scheduler activation and runtime receipt surfaces are proven. Event Log rendering, save recovery, multiplayer host authority, and cleanup timing remain unobserved.
+A1/A7 in the October 4 ledger govern activation and paired dispatch; this authored consumer does not set activation itself.
+Its historical proof does not certify current Event Log rendering, save recovery, multiplayer authority or cleanup timing, and no current release count is asserted here.
 
 The implementation addendum is `docs/plans/air_cleanliness_fallout_plans/2026-07-26_refugee_train_bilateral_consumer_addendum.md`.

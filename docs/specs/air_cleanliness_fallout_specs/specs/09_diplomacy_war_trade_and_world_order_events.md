@@ -74,6 +74,28 @@ Contact should depend on:
 
 A country should not instantly know every successor on reveal day.
 
+## Relief after the blackout
+
+The pre-collapse treaty stops operating under the permanent Fallout boundary; surviving history gives governments standing to rebuild contact rather than automatically restoring the former membership network.
+At the first loaded account, a banned government takes the accepted Recognition loss instead of the former-member Recognition/Cohesion grant; seed-exchange Food memory remains a separate recorded benefit.
+The [inherited-choice contract](baseline/04_survival_mechanics.md#inherited-winter-choices) owns these starting changes and their apply-once generation rule.
+
+The accepted reconstruction category is available to current survivors that were treaty members and were never banned, including bespoke USA/NZL survivors.
+A proposer pays the accepted 35 political power and deposits 5 Recognition to approach one eligible current counterpart; the counterpart's choice is consent or refusal, not a restoration imposed by old membership.
+After ninety days, a successful accepted compact grants the existing asymmetric Recognition benefits, Cohesion and reconstruction/opinion consequences from A19.
+F5 binds each government to one exact proposal as sender or recipient, carries the actual proposer into the reply, and authenticates the current generation and counterpart before settlement.
+Refusal or counterpart loss returns the surviving sender's Recognition deposit once under that contract; political effort is not described as a refundable second deposit.
+Refusal blocks the same pair for the existing year, while loss/annexation cleanup closes only the lost pair and stale replies receive the owned closing notice.
+
+This gives the player a reason to preserve trustworthy relief relations before collapse and a choice of which surviving partner to approach afterward.
+No other compact, trade or country-memory event may duplicate its deposit refund, restore pre-collapse access, grant a second reconstruction reward or force another survivor's acceptance.
+Where the treaty never existed or valid history/counterpart is absent, ordinary signal, practical-contact and recognition play remain available under authored gates.
+AI proposer/recipient behavior stays with the existing reconstruction owner, reading affordability, current survival needs, counterpart standing and active commitments; there is no new owner-side weight from this connection.
+Its required future auditor cases distinguish a solvent trusted pair, an unaffordable sender, a banned former member, a busy recipient, refusal, lost counterpart and a stale answer after a new-generation reservation.
+Human and hidden AI replies must use the same exact pair, actual payment and apply-once settlement.
+
+Acceptance basis and exact source limits remain in A10/A19 of the [October 4 ledger](../../../plans/air_cleanliness_fallout_plans/agent_decisions_2026-10-04.md) and F5/F6/F15 of the [finishing ledger](../../../plans/air_cleanliness_fallout_plans/agent_decisions_2026-10-05.md); this passage does not replace those immutable decision receipts.
+
 ## Bilateral memory
 
 Every important relationship stores:

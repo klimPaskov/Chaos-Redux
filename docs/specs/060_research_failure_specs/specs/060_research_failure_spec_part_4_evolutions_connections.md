@@ -295,20 +295,30 @@ It creates dependence and does not clear the lost-technology ledger.
 
 ## Connection: Gift from Scientists
 
-Gift from Scientists becomes especially valuable during Research Failure.
+When Event 54 actually grants a compatible technology to the affected country, Event 60 reconciles only the exact lost-knowledge entries covered by that grant or its approved prerequisite package.
+It records the direct-gift recovery once and ends the matching legacy-family penalty only when no related loss remains.
+Event 54 owns recipients, quantity, eligible pool, grant validation, and completion; Event 60 neither grants the same technology again nor requests another draw.
+The observer leaves Scientific Capacity, Archive Recovery, research slots, institutional settlement, and reconstruction Chaos unchanged.
+It applies equally to AI and human recipients and creates no research-selection preference for the AI.
+Without a matching loss, the gift follows ordinary Event 54 play and produces no Event 60 recovery reward.
 
-When its recipient has outstanding safe lost-knowledge entries, the gift first checks those entries.
-A compatible lost technology receives priority over a random unrelated discovery, unless the accepted Event 54 design provides a deliberate player choice.
+This package proposes that a Gift firing inside the same Scientific Research cluster episode occurs after Event 60's rollback, so the two members cannot erase each other's work by callback order.
+Event 54 retains its framework-order invariant; the parent must accept one consistent combined order before this proposal can become an implementation instruction.
+Future acceptance case `060_exact_gift`: a country has two lost nodes and a valid multi-grant Event 54 firing gives it one matching technology plus an unrelated technology.
+Only the covered loss clears, no slot or public value rises, and replaying the grant receipt has no second effect.
+A nonmatching gift does not reroll for recovery.
 
-The grant:
+Three source-design choices remain unresolved and require explicit parent disposition before their affected selection, regression, or cluster behavior can be implemented:
 
-- Restores one compatible technology.
-- Clears that ledger entry.
-- Ends the matching family penalty when no related loss remains.
-- Records that a direct gift was used.
-- Leaves Scientific Capacity, Archive Recovery, and research slots unchanged.
+- This package originally gives compatible lost technology priority over unrelated discovery; [Event 54 Part 1](../../054_gift_from_scientists_specs/specs/054_gift_from_scientists_spec_part_1_core.md#global-incident) instead preserves independent random draws unaffected by national research needs.
+The recovery-priority proposal and the unchanged-random-pool rule remain alternatives; the observer above does not choose between them or authorize a targeted gift.
+- [Event 54 Part 4](../../054_gift_from_scientists_specs/specs/054_gift_from_scientists_spec_part_4_evolutions_and_chaos.md#irreversibility) and [Part 5](../../054_gift_from_scientists_specs/specs/054_gift_from_scientists_spec_part_5_connections_and_cluster.md#research-failure) protect completed gifts from deletion, while [Event 60's safe linear policy](060_research_failure_spec_part_2_technology_regression.md#safe-linear-technology) makes verified normal researched nodes eligible without a gift-origin exemption.
+The parent must resolve whether past gifted nodes are protected or later safe regression can include them, retaining owner protection for custom nodes in either case.
+- This package proposes regression before the positive grant, while Event 54 retains the ordinary cluster framework order in [its cluster contract](../../054_gift_from_scientists_specs/specs/054_gift_from_scientists_spec_part_5_connections_and_cluster.md#cluster-sequencing-invariant).
+The implementation owner must verify the shared episode order and obtain a consistent parent disposition; the exact-match observer is compatible with an actual accepted grant but does not approve transaction ordering.
+A source location or historical accepted label alone supplies no claim-level acceptance basis.
 
-A Gift firing inside the same Scientific Research cluster episode occurs after Event 60's rollback. It then becomes a partial recovery and is not erased immediately.
+Future case `060_prior_gift_policy` must test the chosen disposition separately from same-cluster ordering; it remains unresolved until that choice is accepted.
 
 ## Connection: Brilliant Scientist
 
@@ -355,12 +365,14 @@ Research Failure and Intel Leaked can reinforce one another without merging into
 
 ## Connection: Mysterious Man
 
-Mysterious Man can create a rare archive incident when its final accepted design includes scientific knowledge.
-The stranger may supply a genuine missing series, an impossible method, or a false but persuasive reconstruction.
+The earlier Event 60 proposal allows a rare genuine archive series, impossible method, or persuasive false reconstruction from Mysterious Man, affecting one bounded branch with a hidden result.
+That proposal remains unresolved: [Event 53's authoritative rules](../../053_mysterious_man_specs/README.md#authoritative-rules) and [scope closure](../../053_mysterious_man_specs/quality/design_scope_and_closure.md) instead preserve one demand, payment settling only the current visit, and one harmful equal-weight refusal package, with no counterplay.
+An archive reward or special recovery bargain cannot be treated as an available Event 53 provider without a separately accepted change to that owner's design.
 
-The player should not know the hidden result before choosing.
-The reward or danger affects one bounded branch and the archive state.
-It cannot bypass owner protections or introduce an incompatible technology.
+An approved harmful owner package can still damage scientific institutions under its own refusal contract, with Event 60 handling only the explicitly permitted incident or ledger consequence.
+It cannot identify, bargain with, investigate, delay, or permanently satisfy the man.
+Until the owner defines and accepts a knowledge package, Research Failure continues through its normal recovery choices without this beneficial stranger offer.
+Future case `060_stranger_boundary` checks that payment produces no archive reward and that a repeated ordinary visit does not create an extra recovery action or Event 60 firing.
 
 ## Connection: Research Investment
 
@@ -385,12 +397,26 @@ Research Failure never assumes that an unusual technology is safe because it app
 
 ## Connection: Black Market
 
-When the Black Market exists, an affected member may receive a rare offer for stolen blueprints, instruments, or the return of missing archives.
-The offer can provide one branch bonus, a disputed archive package, or access to a licensed legacy design.
+When Event 57 exists, an affected active member can choose a scarce sourced archive, calibrated instruments, or a technical dossier instead of waiting for ordinary reconstruction or foreign assistance.
+The existing offer or commission must identify one currently relevant lost branch or reconstruction requirement, its permitted recovery effect, delivery time, Market Credit and logistics costs, and Exposure or false-record risk.
+The country receives no membership, supplier, or inventory merely because Research Failure struck.
+An outsider continues through the existing public recovery routes without learning the network's members.
 
-The trade should carry high cost, false-record risk, intelligence exposure, or criminal dependence.
-It does not sell a full technology tree.
-Countries outside the Black Market do not learn its membership through this connection.
+Event 57 owns the source debit, price, routes, seizure, refunds, and settlement under [its provider contract](../../057_the_black_market_specs/04_inventory_trade_and_provider_api.md#provider-package-contract).
+Event 60 owns verification, disputed methods, branch compatibility, loss reconciliation, and its existing reconstruction costs.
+An instrument or purchased equipment lot can meet its named material requirement but cannot teach a technology or reopen a research slot.
+A partial dossier supplies only its declared branch support; a complete normal-technology dossier requires Event 57 Evolution III and one exact approved grant.
+A disputed series goes through the existing careful-versus-rushed verification choice and false-archive incident, rather than creating a new truth meter.
+
+The buyer request is checked before purchase, dispatch, and recovery application.
+If the named loss was already resolved before purchase or dispatch, the request is rejected or cancelled using the market's applicable settlement rules; it cannot charge again or retarget itself to another technology.
+If ordinary research or a scientist gift resolves the loss after dispatch, the delivery remains the original records and follows its stated obsolescence and settlement terms, but grants no duplicate technology, loss clearance, public-value increase, or unrelated replacement bonus.
+The offer must explain that possibility before commitment; Event 60 cannot invent a credit refund from its own ledger.
+
+An AI member compares the delivery horizon and remaining verification work with its urgent reconstruction need, available credit, route safety, and ordinary aid; it does not buy an obsolete series or assume a paid shipment has already restored capability.
+The existing market and reconstruction owners retain all costs and weighted tuning.
+Future acceptance case `060_dossier_overlap`: a compatible dossier is dispatched and the same node is then restored by ordinary research or an authorized Event 54 grant.
+The market settles one source and one payment under its terms, while Event 60 clears the matching loss only once and never supplies a second technology, slot, archive reward, or secrecy reveal.
 
 ## Scientific Research cluster episode
 
@@ -400,7 +426,7 @@ Event 60's role is High because it can transform a country's research plan for y
 The cluster owner should coordinate members through these rules:
 
 - Event 60 chooses and records its target before positive grant members resolve.
-- A positive technology grant checks the new lost ledger first.
+- A completed positive technology grant is reconciled against the new lost ledger through the exact-match observer; any recovery-biased selection remains subject to the unresolved Event 54 choice above.
 - A research-speed or investment benefit can support reconstruction but does not remove the crisis.
 - A doctrine member stays in its own doctrine domain.
 - Two negative members avoid the same country unless their combined design is explicit.

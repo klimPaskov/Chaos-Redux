@@ -47,13 +47,18 @@ Hardline routes can turn schools into ideological control institutions. Civic ro
 
 Food distribution, clinics, housing aid, funeral support, childcare, and emergency transport give the movement practical authority.
 
-These institutions become stronger during depression, famine, war damage, migration pressure, or municipal collapse.
+These institutions can gain practical authority during depression, famine, war damage, migration pressure, or municipal collapse when they deliver a service to an affected local population.
+A crisis elsewhere, an aid promise, or the movement's publicity alone grants no institution progress.
 
-Relief actions interact with the shared Famine and Migration systems when those systems are active.
+The existing government-service and movement-relief actions present a political choice.
+Government provision can reduce the grievance behind Influence without handing service control to a chapter.
+Licensed cooperation with a capable local chapter can bring help sooner and keep the chapter public, while strengthening that chapter's institutional position.
+Evidence-based oversight preserves lawful access; obstruction that actually prevents usable relief can strengthen the underground route.
+Neither accepting aid nor sheltering civilians proves agreement with Yakub's doctrine.
 
-A government that competes through effective services can reduce Influence without repression.
-
-A government that blocks relief during a real crisis creates a strong recruitment cause.
+Use the delivered-outcome rules in Part 5 when Famine or Migration is active.
+When neither system has a valid local problem, these institutions retain their ordinary employment, housing, clinic, and municipal-service role.
+They do not create a famine, reception burden, or migration request to justify political progress.
 
 ### Businesses and finance
 

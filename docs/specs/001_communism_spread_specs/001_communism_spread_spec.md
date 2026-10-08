@@ -36,6 +36,25 @@ The visual intensity should reflect control level:
 
 Use an existing three-stage state control structure if possible, similar in spirit to systems used by Norway or Sweden. The player should immediately understand that these are infected or occupied political zones.
 
+### Insurgency on a newly sovereign front
+
+Event 001 owns a state's insurgent control level and its associated disruption.
+Soviet Collapse and Independence Wave own the country package, release territory, starting army and origin that their respective events create.
+When an ordinary Event 005 or Event 006 country takes control of an already insurgent state and passes Event 001's participant rules, the existing state-control-change route attaches the local insurgency runtime to its current controller.
+Secession alone creates no communist control level, and a socialist government is not evidence that its states have insurgent committees.
+
+The receiving country keeps its release origin, focus access, government and founding-force receipt.
+The insurgency counts the state once for its current controller and local intervention acts on that same front.
+The losing controller stops counting it, while the state's existing control level, incident history and Event 001 disruption remain attached to the state until their owning resolution clears them.
+Do not reapply a starting army, split an equipment stockpile, transfer Event 005 or Event 006 origin, or award a second release consequence merely because this front changed controller.
+The existing Event 001 exclusions still govern special actors and invalid recipients.
+
+This creates a choice for a young republic: secure its insurgent industrial front with the same local intervention costs, or preserve scarce founding resources and tolerate that state's established disruption.
+Ordinary release and state-building continue when Event 001 has no active local control to carry over.
+Acceptance cases should compare an insurgent state released through Event 005, the same state released through Event 006, and a clean socialist release.
+The first two keep one state-control record and one release origin, while the clean release gains no insurgency from its ideology.
+An occupation followed by restored control must move the count without refreshing either origin's force reward.
+
 ## Control Levels
 
 ### Level 1: Agitation Zone
@@ -466,15 +485,9 @@ This includes:
 - Any spreadsheet that tracks events, decisions, modifiers, or system status
 - Any TODO, roadmap, or design document where this communism spread event is listed
 
-Make sure the event log clearly records:
-- The old communism spread event was replaced
-- The national communism spread idea was simplified to daily communism support
-- State-based communist control was added
-- Three state control levels were added
-- State-based military interventions were added
-- Emergency national intervention was reworked
-- Emergency civil war behavior was added
-- Industry sabotage events were made state-based
+The event log records the affected country, concrete state-control incidents, insurgent escalation, intervention outcomes and active evolution.
+Event Details describes the present territorial crisis and the pressure on industry, local authority and loyalist forces.
+Keep the implementation changes and retired behavior in development documentation.
 
 ## Cleanup Requirements
 
@@ -680,24 +693,18 @@ Emergency intervention should feel like a national trauma.
 
 ## World Revolution Major Event Hook
 
-This communism state-control system should be tied to the major event called World Revolution.
+World Revolution is an existing later-event connection.
+Event 001 supplies eligibility and foreshadowing to the normal major-event system and never directly launches the revolution.
+Its later territorial handoff remains described under World Revolution State Integration.
 
-Do not fully integrate World Revolution yet.
+Eligibility begins when Whispers of the World Revolution actually enters through active-event evolution or a pre-fire evolved opening.
+The evolved opening must establish that Evolution 3 entry as part of its opening contract rather than treating a high Chaos value as equivalent to progression.
+Baseline Event 001 firing and the Chaos threshold alone do not unlock World Revolution.
+After actual entry, the normal major-event system decides whether the eligible Revolution fires.
 
-For now, the communism spread system should only unlock the possibility for that major event to appear later.
-
-As soon as the communism spread event fires, set a flag showing that World Revolution is now allowed to enter the major event pool.
-
-This means:
-- World Revolution should not fire directly from this communism spread event
-- No full World Revolution event chain should be implemented yet
-- No special global effects should be added yet
-- No additional World Revolution mechanics should be created yet
-- The communism spread event should only set the correct flag or condition so World Revolution can now fire through the normal major event system
-
-Before the communism spread event fires, World Revolution should be locked out and should display as unavailable in the major event system.
-
-After the communism spread event fires, World Revolution should no longer be locked at zero weight. Its weight can then begin increasing through the normal major event system.
+Evolution 3 retains the existing +200 contribution for each qualifying foreshadowing news incident and its existing cooldown/pacing contract.
+Eligibility, the weight contribution and the eventual Revolution firing are separate consequences.
+Unlocking eligibility does not itself fire a Revolution event or super-event.
 
 ## Major Event Weight Display
 
@@ -822,7 +829,7 @@ The movement is no longer only about local revolutionary cells. Rumors spread th
 
 This should feel strange, ideological, and threatening.
 
-Do not fully integrate the World Revolution event yet. This evolution should only create atmosphere and strengthen the connection between the communism spread system and the World Revolution major event. This evolution should make the world revolution super event available now. If before it was unlocked by simply the event being fired, now it should unlock once the evolution stage 3 is reached (Chaos Tier).
+This evolution strengthens the existing World Revolution connection through rare whispers and the specified foreshadowing contribution. Its actual entry, through active-event progression or a pre-fire evolved opening, unlocks normal major-event eligibility under World Revolution Major Event Hook. Reaching Chaos Tier or firing the baseline does not substitute for that entry, and the unlock does not itself launch World Revolution or its super-event.
 
 New possible behavior:
 - News events mention whispers of World Revolution

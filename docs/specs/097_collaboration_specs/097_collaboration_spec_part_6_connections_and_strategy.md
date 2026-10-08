@@ -3,25 +3,31 @@
 
 ## Occupation revolt
 
-Event 095 represents the national opposition that Collaboration cannot eliminate by definition. A prepared administration may govern effectively while a displaced national movement still considers it illegitimate.
+Event 095 represents the national opposition that Collaboration cannot eliminate by definition.
+A prepared administration may govern effectively while a displaced national movement still considers it illegitimate.
+Its [claimant and homeland rules](../095_occupation_revolt_specs/095_occupation_revolt_spec_part_02_claimants_and_homelands.md) and [territorial consequence contract](../095_occupation_revolt_specs/095_occupation_revolt_spec_part_11_connections_and_consequences.md) govern the restoration.
 
-The connection must work in both directions. High compliance and a functioning administration can make an uprising harder to organize where Event 095's own design uses those conditions. A successful restoration can overthrow the client regime and end its sponsor's actual control. Neither event should simply disable the other whenever it fires.
+A collaboration government is a potential target when Event 095 finds a genuine surviving national identity, sufficient local organization, hostile homeland control and a viable opening.
+Native compliance and this variant's actual administration history may affect that assessment where Event 095 supports them.
+Event 097 preserves the claimant's cores and identity, supplies the relevant relationship and history, and does not create an immunity flag or a second restoration army.
+When Event 095 is absent or cannot admit the claimant, native resistance and ordinary war remain available.
 
-A collaboration government remains a valid potential target when Event 095 finds a genuine surviving national claimant and sufficient opposition under its own rules. Event 097 must not remove the claimant's cores, erase its national identity, or set an immunity flag as a side effect of creating the government.
+A partial uprising changes only its committed state bundle.
+The old sponsor loses administrative access where actual control is lost, while unaffected territory and a surviving collaborator regime retain their current status.
+A government-creation offer closes if its target area has been restored or its actor relationship is invalid.
+A completed restoration cannot be reversed by acknowledging a stale Event 097 notice.
 
-If an uprising restores the original country, the old sponsor loses access to administrative effects in territory it no longer controls. A delayed government-creation offer must close if its target area has been restored or its actor relationship is no longer valid.
+The restored country keeps only the collaboration preserved by its actual native identity and receives its next universal layer at the next legitimate firing.
+A surviving old network gives the former occupier no automatic puppet, counter-revolt or second civil war.
+Its future benefit requires lawful hostile occupation and the current unused opportunity.
+Spent administration and government-readiness history survives release, recapture, cosmetic change and restoration of the same political identity.
+A genuinely different political identity needs the explicit native lifecycle handling already required by this variant, without replaying the predecessor's spent opportunities.
 
-The restored country does not inherit an automatic world-sized network from the client government it displaced. The native country lifecycle determines what collaboration survives for that political identity. Its next universal opportunity is the next legitimate firing of Event 097.
-
-## Collaboration does not grant a free counter-revolt
-
-A former occupier may still have a native network inside the restored country if the native system preserves it. That network does not automatically return the country to puppet status or trigger an immediate second civil war.
-
-The former occupier must again acquire lawful hostile occupation and meet the current conditions for any unused effect. Spent early-administration and government-readiness opportunities do not reset merely because the same regime has been removed.
-
-A restoration that creates a genuinely different political country needs explicit identity handling. It must not become a means to farm repeated readiness awards through renaming, civil-war cycling, or releasing and annexing the same area.
-
-The Event 095 rework owns the revolt's army, opening territory, leadership, and success conditions. Event 097 supplies only the collaboration relationship and relevant occupation or government history. It does not duplicate the revolt system inside a second event chain.
+The displaced country uses Event 095's preparation and restoration choices.
+The sponsor decides how to defend its actual holdings through ordinary military and occupation tools.
+AI considers current homeland control, local organization and valid military access rather than assuming that a deep network either prevents a revolt or guarantees a successful counterattack.
+Event 095 retains its army, opening territory, leadership and success conditions.
+The two owners retain their own transition and Chaos receipts.
 
 ## Treaty of Tordesillas Restoration
 

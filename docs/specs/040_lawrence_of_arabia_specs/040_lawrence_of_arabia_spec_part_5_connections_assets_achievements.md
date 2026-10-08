@@ -63,24 +63,15 @@ Reaction events should be prioritized by proximity, existing relations, route ac
 
 ### Malta Crusaders
 
-Malta Crusaders can become a direct rival for influence and access in the eastern Mediterranean and Levant.
+The host government's choice arises from a real competing offer or a route dispute. Malta or its human crusader successor must control a port or corridor used by British aid, threaten an existing partner, or be willing and able to deliver alternative support. Control of a named Levantine state with no relevant route or relationship does not reduce Influence by itself.
 
-Relevant Malta actions include:
+Use the existing Play Britain Against a Rival and Balance Foreign Sponsors actions. The target can ask Britain for protection, accept a specific Maltese aid or access bargain under national custody, or refuse both commitments. A rival offer is available only with a willing sponsor, resources, and delivery access. Hostile Malta can strengthen the case for British protection without becoming an available donor. Completed alternative support can reduce dependence on Britain; an invitation or undeliverable promise cannot provide that benefit.
 
-- conquering Jerusalem, Jordan, Levantine states, or strategic islands
-- blocking British sea or air routes
-- recruiting local allies
-- offering a religious or military patronage system that competes with Britain
-- attacking a British client or counter-bloc member
+Britain can reinforce a threatened partner, restore the affected rail or port route, reroute through an existing air or sea path, or reduce its commitment. The sending action owns its payment and cargo; Event 40 updates Influence and promise credibility from its actual outcome, while Event 38 retains territory, council, and patronage ownership. Neither campaign adds a second aid grant, forced alignment, or new faction. AI compares the viable bargain, current protection, route exposure, and sponsor obligations.
 
-Event 40 responses include:
+A counter-bloc or federation congress retains its existing choice to negotiate with or oppose Malta; a patronage offer supplies no formation or accession proof.
 
-- Britain reroutes aid or reinforces clients
-- Arabian governments play Britain and Malta against each other
-- anti-British states accept Maltese help at the cost of a different dependency
-- a federation congress excludes, negotiates with, or fights Malta
-
-Malta is a special Chaos country and is never an ordinary Lawrence target.
+Malta's crusader actor and successors are excluded through Event 40's specific target rule while retaining ordinary human civilian classification. Ordinary diplomacy and access remain usable when the other event is absent. The matching [Event 38 contract](../038_malta_crusaders_specs/14_event_chain_reactions_cross_events.md#event-40-lawrence-of-arabia) owns Malta's side.
 
 ### Independence Wave
 
@@ -121,16 +112,11 @@ Exposure should create evidence and diplomatic consequences, not automatically d
 
 ### Murder Mystery and leadership violence
 
-Murder Mystery can affect Event 40 only through an explicit bridge.
+Use a committed Event 39 incident involving the active Arabian target or an existing Event 40 partner. Event 39 owns the victim's disposition, protection, succession, investigation, and casualty accounting under [its character-safety contract](../039_murder_mystery_specs/039_murder_mystery_spec_part_3_character_safety.md). An unrelated murder, attempted attack, or generic office casualty cannot be described as proof of British responsibility. A recorded witness loss can interrupt the relevant evidence task without automatically dismantling the British network.
 
-Possible bridges include:
+After a safe leadership succession, Event 40 rechecks the actual government's access terms and settlement. A successor that honors the existing bargain keeps it; a leadership change alone does not reopen the country for a second intervention. An active target uses its existing officer-security, evidence, and national-custody choices. An Evolution II client uses its existing autonomy and conference actions to retain, renegotiate, or reject obligations. Britain can reinforce a viable partner or offer concessions through its existing actions. These choices affect current access and Influence only where the changed government or disrupted institution actually supports that consequence.
 
-- assassination of a client leader
-- disappearance of a key witness
-- suspicion that a British or anti-British network arranged a killing
-- a succession crisis that changes target eligibility or AI profile
-
-Event 40 must not claim responsibility for an unrelated murder without evidence from the bridge.
+Lawrence remains Event 40-owned and protected until a safe removal disposition is explicitly agreed. His detention, transfer, injury, defection, or death follows Event 40's character lifecycle; a generic liaison casualty does not remove him or close his personal routes. Evidence sharing can aid an existing investigation, but neither a British network nor an Assassin cell is created by this bridge. AI secures exposed offices and existing access before using succession as an opportunity for a new commitment. The normal campaign continues when Event 39 is absent.
 
 ### Famine and Migration
 

@@ -88,7 +88,15 @@ These are optional integration hooks. Event 011 must work without them.
 
 ### Tensions Rising, Event 008
 
-Active diplomatic panic can improve recruitment and make coordinated complaints easier. Secret Alliance should not duplicate Event 008's world-tension role.
+Read the existing timed diplomatic context when an [Event 008 shock](../../008_tensions_rising_specs/specs/008_tensions_rising_spec.md) involves the fixed target and a candidate or active member. It can make a fear, grievance, or opportunist motive more plausible within the existing recruitment evaluation. The global pulse alone cannot recruit a country, waive strategic access, create readiness, or apply another world-tension packet. Recruitment retains its normal capacity, consent, and validity requirements.
+
+Event 008 owns its shock, duration, and pressure accounting. Event 011 owns its operation dossier and corroboration. A circulating accusation supplies no Evidence or suspect confidence unless an independent Event 011 operation creates a valid source-aware clue. The same rumour cannot become a second evidence class merely because two events described it. Pact absence leaves Event 008 ordinary behaviour intact, and shock expiry removes only that diplomatic context.
+
+An Event 008 non-transfer border conflict does not meet the hostile normal-war reveal rule. A later normal war between an active member and the fixed target immediately uses the existing all-valid-members reveal contract. Future checks distinguish panic alone, a genuine separately corroborated operation during panic, an unresolved border clash, and a normal hostile war. No numeric recruitment or operation-weight claim is accepted without the probability owner's matching scenarios.
+
+### Africa's Scramble response, Event 012
+
+When the player-controlled African unifier is also the fixed Event 011 target, use the [Scramble coalition ownership rule](../../012_africa_specs/specs/012_africa_spec_part_5_high_chaos_world_order.md#coalition-war). Event 012 owns its colonial-interest terms and treaty obligations. Event 011 owns concealed membership, evidence, reveal, faction identity, and Resolve. An actual member entering a normal Scramble war against the target still causes immediate pact reveal. Crisis diplomacy supplies no member list or pact clue. A surviving public faction is not renamed or displaced to create another copy of the same coalition. The two systems close their own obligations from the actual war outcome.
 
 ### Intel Leaked, Event 052
 

@@ -49,25 +49,32 @@ Suggested country flags:
 
 ## The consumption effect
 
-Every Death state should pass through one shared scripted effect, even if the call comes from origin creation, island spread, withering, coastal jump, world-end foothold creation, or a manual scenario. This prevents drift between versions.
+Origin creation, island spread, withering, coastal jumps, world-end footholds, and the manual scenario share the same first-consumption transaction. Freeze the actual state and its living population before changing ownership. Immediately recheck the caller's target conditions so a departed controller or completed competing action cannot leave a charge attached to a different state.
 
-A consumed state must:
+On a state's first successful consumption:
 
-1. save its pre-consumption population.
-2. add that value to Death's consumed-population variable.
-3. send the value to the shared civilian deaths tracker when enabled.
-4. set the state population to zero.
-5. delete all civilian factories, military factories, dockyards, synthetic refineries, fuel silos, airbases, anti-air, radar, forts, coastal forts, naval bases, railways, supply hubs, infrastructure, and other strategic buildings if the engine can remove them.
-6. remove or neutralize resources and local building slots through state modifiers if raw deletion is not possible.
-7. transfer owner and controller to Death.
-8. add a Death core.
-9. apply the Death wasteland state modifier.
-10. clear resistance, compliance, garrison, and occupation-state concerns from Death by making the state a Death core.
-11. mark the state as consumed permanently.
-12. update consumed-state counters and spread pressure.
-13. update event-log and chaos/death history if the reveal state allows the player to know what happened.
+1. save its living pre-consumption population and the consumption date.
+2. add that population once to Death's consumed-population total.
+3. record genuine civilian losses once through the shared deaths owner when enabled and applicable to this path.
+4. set population to zero.
+5. remove civilian factories, military factories, dockyards, refineries, silos, airbases, anti-air, radar, forts, naval bases, railways, hubs, infrastructure, and other strategic buildings through supported effects.
+6. neutralise resources and usable building slots through the state category and modifiers where literal deletion is unavailable.
+7. transfer owner and controller to Death, add its core, and apply the active wasteland condition.
+8. remove ordinary resistance, compliance, and garrison concerns for Death.
+9. retain the permanent consumed-state marker and add the state once to the island, mainland, and relevant continent census.
+10. refresh the soul budget and spread state from those actual totals.
+11. evaluate the mainland reveal using the frozen living population and the actual island/mainland classification.
+12. publish only the history and information allowed by the current revelation state.
 
-If some building category cannot be literally deleted by script, the implementation must document the unsupported field and use an equivalent state modifier or scripted cleanup that makes the state strategically useless. This is not a design fallback. It is the engine-specific representation of the same requirement.
+The consumed-state marker survives recapture, liberation, a new controller, or a constitutional identity change. A military retake reactivates the wasteland and closes live custodial projects, including the accepted Seal Names backlash when applicable. It does not add another consumed state, recount the erased population, mint another population-derived soul budget, or qualify a second mainland revelation. Ordinary withering continues to exclude previously consumed states. A repeated consumption callback is therefore harmless even when a control-change callback also fires.
+
+The [accepted custodial progression](../../../plans/010_death_plans/2026_07_11_death_improvement_loop_addendum.md) remains irreversible. Retaking and recovering the same dead zone cannot renew survey, outpost, memorial, or achievement rewards. A new living controller ends the outgoing controller's timed transit service and receives only the permanent policy state that the accepted custodial rules preserve.
+
+An African state later entering [Event 012's restoration or integration process](../../012_africa_specs/specs/012_africa_spec_part_4_country_packages_formables.md) retains this permanent loss. Cores, congress recognition, resource programmes, and a new cosmetic identity cannot restore its inhabitants or strategic resources. Event 012 can settle its political ownership under its ordinary rules and choose an already-defined viable living site for an allowed project, while Death owns the wasteland and custodial restrictions. Neither event grants the other's progression.
+
+If a building category cannot literally be removed, record the unsupported field and the exact state representation that makes it unusable. Parent acceptance and engine evidence are required for that representation. A smaller penalty must not be presented as fulfillment of the strategically useless wasteland requirement.
+
+Future acceptance distinguishes first consumption, duplicate same-day callbacks, living recapture followed by military retake, and Charter recognition of the recaptured dead zone. Only first consumption increases the historical census and population-derived budget. None of the later cases restores population or repeats civilian-death credit.
 
 ## Wasteland effects
 
@@ -404,7 +411,7 @@ Each foothold is immediately consumed and receives world-end ghost divisions. Th
 
 ## Chaos, deaths, and air cleanliness links
 
-Death is fundamentally a deaths-system event. Every consumed population should be treated as civilian deaths when the deaths system is enabled. Every 1,000,000 total deaths should still affect Chaos through the shared Chaos Meter rules. But with this event, move it to 10million. So deaths caused from the death country are 1/10.
+Death records the living population lost through the shared civilian-deaths owner when that system is enabled. Its retained Death-specific Chaos conversion is one tenth of the ordinary deaths conversion, equivalent to the ordinary receipt per ten million Death-sourced deaths. Keep that attribution in the shared accounting path rather than adding a second direct Chaos grant from consumption. Death's own consumed-population census continues when shared death tracking is disabled, without manufacturing an equivalent shared-deaths or Chaos receipt. Manual scenario setup follows its opening rule and does not create an immediate Chaos packet from its preloaded footprint.
 
 Death should not create air contamination by default. A Death wasteland is not a chemical cloud or biological outbreak. It may use dark-storm visuals, but those are supernatural/visual and should not automatically alter Air Cleanliness unless a later accepted feature explicitly links Death with contamination.
 

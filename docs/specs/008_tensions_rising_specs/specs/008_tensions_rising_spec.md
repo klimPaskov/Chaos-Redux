@@ -38,11 +38,7 @@ The event should feel different from direct war events. It is about the world pr
 
 Working popup title: **Tensions Rising**
 
-The baseline incident is a short report, not a dramatic apocalypse announcement. It should read like a sober foreign-office bulletin:
-
-- “A sequence of public accusations, military communiqués, and newspaper leaks has unsettled diplomatic circles.”
-- “Public denials accompany the reports, and observers grow more nervous.”
-- “Markets, staff offices, and border commands react to the same pressure without waiting for a formal declaration.”
+The baseline report follows a specific disturbance in ordinary life, such as patrols lingering along a disputed frontier, crews refusing a familiar route, or travellers repeating the same accusation in several ports. Name the affected place or relationship when that information is reliable. Keep the cause uncertain and let concrete behaviour carry the unease. Finished wording belongs to localisation implementation.
 
 ### Baseline trigger and effect
 
@@ -58,7 +54,7 @@ The baseline version should be clean and readable. Do not add relation damage or
 
 The player-facing text should mention the public uncertainty and the rise in tension. It should not mention hidden future systems, hidden event weights, future evolutions, or timer manipulation.
 
-Recommended option text: **Another file on the desk.**
+Option direction: restrained acknowledgement from a government deciding how seriously to treat the disturbance. Mild irony can fit the baseline, while higher-stage incidents should show fatigue or practical concern.
 
 ## Evolved identity
 
@@ -200,9 +196,7 @@ The implementation may represent pulse strength as an added decrement, a next-ti
 
 ### Player visibility
 
-The pulse should be partly visible in event details and later reports, not as a raw number. Suggested wording:
-
-> “Higher stages can briefly quicken the rhythm of later incidents as governments, newspapers, and staff offices react to one another.”
+Later reports can convey an accelerating succession of disturbances through affected people, routes, and relationships. Tooltips explain the temporary consequence where useful. Event details should not present the hidden timer formula or forecast another event by name.
 
 ## Relation damage system
 
@@ -246,33 +240,44 @@ The final implementation should use named timed opinion modifiers with localisat
 - `tensions_rising_border_alarm`
 - `tensions_rising_permanent_alert`
 
-## Delayed report and news layer
+## Root reports and delayed incidents
 
-The delayed layer is where the event earns its personality. These follow-ups should usually have minimal direct gameplay effect. They explain what the hidden pulse and opinion damage feel like.
+The [owner state map](../../../plans/008_tensions_rising_plans/documentation_state_2026-10-05.md) records the accepted report-batching tranche. Roots accumulate their actual world-tension and Chaos packets into one pending report for each recipient. The first effectful root supplies the batch's stage context, including when an earlier root contributed no effects. Acknowledgement describes the completed batch and never applies those packets again.
 
-### Delay timing
+A batch can schedule at most one selected delayed incident from its first effectful evolved root. Further roots contributing to that same pending report add their effects without creating more follow-up invitations. A later independent batch has its own opportunity. This preserves a repeatable pressure event without multiplying popups while a player holds a report open.
 
-- Stage I: 5–15 days, low chance.
-- Stage II: 4–12 days, moderate chance.
-- Stage III: 3–10 days, high chance.
-- Stage IV: 2–8 days, very high chance.
+The heavier incident bundles retain the unresolved acceptance boundary of the [follow-up addendum](../../../plans/008_tensions_rising_plans/008_followup_incident_improvement_addendum.md). The intended role is a smaller, distinct aftershock with an actual consequence. It must not advertise a new loss, reward, or border clash until the parent accepts that claim and its consumer is verified.
 
-Only one delayed follow-up should be scheduled from a single event firing unless a later stage deliberately creates a rare double headline.
+### Delivery and delay
 
-### Follow-up families
+The retained delay bands are 5–15 days at Stage I, 4–12 at Stage II, 3–10 at Stage III, and 2–8 at Stage IV. Their selection and timing require the owner's named probability scenarios before tuning is accepted.
 
-| Follow-up | Best stage | Player-facing event type | Gameplay effect |
-| --- | --- | --- | --- |
-| The Telegram Nobody Signed | I–II | incident event | small WT/chaos/opinion aftershock |
-| Embassy Side Doors | I–II | incident event | small WT/chaos/opinion aftershock plus AI posture pressure |
-| The Calm Map Says Nothing | I+ at 100% WT | incident event | explains why the event still matters at max WT and adds pressure |
-| Insurance Rates Jump in Neutral Ports | II–III | incident event | small pressure bundle and Insurance Market achievement hook |
-| The Rumour That Arrived Twice | II–III | incident event | duplicate foreign accusations with multiple opinion shocks |
-| Staff Cars After Midnight | III–IV | incident event | temporary AI posture and opinion pressure |
-| Fleets Keep Radio Silence | III–IV | incident event | temporary AI posture and opinion pressure |
-| One Denial Too Many | II–IV | incident event | heavier opinion pressure and possible high-stage border clash |
-| Border Lamps | III–IV | incident event | heavier opinion pressure and possible high-stage safe non-transfer border war |
-| The Last Normal Briefing | IV | incident event | strongest follow-up bundle and highest safe border-war chance |
+At delivery, use the currently enabled evolved stage. An evolution disabled during the delay cannot return through an internal Stage I fallback. If no evolved stage remains available, close the delayed effect without inventing an aftershock or repeating the root payment. A terminal campaign state closes the queued ordinary incident. Frozen root-report totals remain a record of what already happened.
+
+For a proposed border clash, recheck both countries, adjacent owned-and-controlled states, peace, independence, faction separation, existing border conflict, and the global and actor cooldowns immediately before starting combat. A failed pair search leaves only the incident's accepted non-combat effects. It cannot turn into a war goal, territory transfer, a substitute normal declaration, or a new Event 008 firing.
+
+### Incident families
+
+| Working incident family | Distinct consequence |
+| --- | --- |
+| Telegram Nobody Signed | a light tension and diplomatic aftershock |
+| Embassy Side Doors | diplomatic friction and a temporary posture response |
+| Unease Along the Frontier | continuing pressure when the tension bar is already full |
+| Insurance Rates Jump in Neutral Ports | shipping pressure and the peaceful convoy-owner achievement hook |
+| Rumour That Arrived Twice | two distinct diplomatic accusations rather than another root packet |
+| Staff Cars After Midnight | temporary preparation pressure around an eligible major |
+| Fleets Keep Radio Silence | maritime preparation and diplomatic friction |
+| One Denial Too Many | heavier diplomatic damage with a proposed late-stage clash |
+| Border Lamps | a proposed safe adjacent non-transfer clash and diplomatic consequences |
+| Last Normal Briefing | the strongest bounded aftershock on its earned Stage IV occasion |
+
+These labels identify design families and are not final popup wording. The historical Calm Map Says Nothing label maps to the current Unease Along the Frontier family without renaming its existing helper.
+
+### Connection to Secret Alliance
+
+When Event 011 is active, an Event 008 opinion shock involving its fixed target and a candidate or member can influence that country's ordinary diplomatic context. Event 008 owns the timed shock and its pressure receipt. Event 011 owns recruitment, motive evaluation, operation evidence, and reveal. A repeated rumour or global pulse alone supplies no pact clue, confirmed suspect, readiness grant, or extra Chaos packet. A non-transfer border clash remains outside the hostile normal-war reveal rule. If a later normal war involves an active member and the fixed target, Event 011 applies its existing immediate reveal contract.
+
+Future checks must distinguish a shared rumour without an Event 011 dossier, an independently corroborated Event 011 operation during panic, a border clash, and a normal hostile war. Ordinary Event 008 play remains unchanged when the alliance is absent.
 
 ## Cluster design
 

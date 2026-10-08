@@ -67,17 +67,24 @@ The interaction should use the intelligence advantage already created by the eve
 
 ### Military abundance and preparation events
 
-Events that provide equipment, ships, infrastructure, research, or economic capacity can move a country above an offensive feasibility threshold.
+Actual delivered assets and usable infrastructure can move an AI country above an offensive feasibility threshold.
+Event 56 owns fleet identity, commissioning, delayed tranches, and support; Event 55 owns route operation; Event 57 owns delivery and settlement.
+Event 059 evaluates what the country can use now through its normal material and access checks, without applying another equipment, naval, supply, or production grant.
 
-Relevant examples include:
+A maritime AI receiving an Event 56 invasion-support or escort package still needs the target, convoys, landing troops, aircraft where required, home reserve, and sustainable follow-up supply.
+The reserved second tranche of phased commissioning does not count as available naval cover.
+A promised Event 55 grand port or a purchased Black Market lot still in transit does not satisfy a current basing or replacement need.
+After commissioning or settled delivery, ordinary reevaluation can make the same legal operation viable; source-event history alone cannot do so.
+If the usable route or newly acquired capability is lost before launch, the AI narrows or delays the operation under its existing safety envelope rather than seeking another event reward.
+Human recipients retain normal control, and campaigns without these events use the same current-material rules.
 
-- The Navy
-- The Great Infrastructure Project
-- Gift from Scientists
-- Industrial Boom
-- The Black Market
+Gift from Scientists and Industrial Boom can likewise improve ordinary research or production conditions.
+Their actual effects can support a plan, but Event 059 does not assign another bonus merely because either event fired.
 
-These events should not receive direct Event 059 bonuses. Their ordinary material effects can make a previously impossible operation viable.
+Future acceptance case `059_promised_invasion`: a coastal AI at Evolution III has a legal landing target but lacks escort cover, while its phased navy and bought replacement lot are still pending.
+The offensive is blocked for lack of actual capability, can become viable after real delivery if all other needs remain covered, and is suppressed again after port loss.
+Compare the same circumstances after human takeover: Event 059 makes no launch choice.
+The future weighted audit must start with `hoi4.probability_inspect` and route this case through `chaosx_ai_probability_auditor`; this prose establishes no tested score or engine control.
 
 ### Economic and research setbacks
 
@@ -292,7 +299,13 @@ Armour, aircraft, and naval operations should scale down. The AI can preserve th
 
 ### Research regression
 
-If Research Failure removes access to equipment generations or supporting technology, the AI should use what it can produce. It must not keep a plan that depends on lost equipment.
+Research Failure can remove reproducible equipment generations or enabling knowledge while leaving completed ships, deployed forces, and stockpiles usable under [Event 60's legacy-consumer policy](../../060_research_failure_specs/specs/060_research_failure_spec_part_2_technology_regression.md#existing-equipment-and-designs).
+The AI distinguishes forces available for the current operation from the replacements, refits, aircraft, fuel, and logistics needed to sustain or expand it.
+A limited operation using an intact existing fleet can remain viable; a long offensive relying on newly producing a lost family must narrow or wait until a verified legacy line, license, compatible purchase, or rediscovery supplies that need.
+Event 059 does not delete the surviving material, impose a second regression penalty, restore technology, or override Event 60's family safety rules.
+
+Future acceptance case `059_legacy_force`: compare identical ready fleets after naval-technology regression with and without a verified replacement path.
+The existing ships count in both cases, while the sustained-operation assessment differs when replacements are unavailable; possession alone cannot clear the research crisis.
 
 ### Return to Peacetime
 

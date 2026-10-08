@@ -325,38 +325,43 @@ A merged route requires member consent, compatible politics, and a dedicated hig
 
 ## Cross-event connection: Famine
 
-Event 44 relief institutions can:
+Use the affected state's actual food-security condition and a local government service project, chapter relief institution, or International aid commitment.
+A formed Yakubite state remains an ordinary Famine participant.
+The [Famine food-security design](../../famine_and_migration_system_specs/famine_and_migration_system_spec_part_2_famine_food_security.md) and its current owner contract determine stock, access, delivery, severity, and mortality.
 
-- distribute reserves
-- open local relief
-- protect routes
-- request International aid
-- support evacuation
-- expose government neglect
-- fail and lose public confidence
+The government may provide services itself or authorize a capable chapter to help under oversight.
+Direct public provision can lower the local grievance after delivery, but ties down civilian capacity the government could use elsewhere.
+Chapter cooperation can preserve a faster local route while advancing its existing institutional status; it does not also receive an equal contradictory Influence reduction for the same political outcome.
+International aid uses the existing member-institution or aid-corridor action and commits real donor resources and transport.
 
-Famine remains the owner of food security, reserves, relief access, and deaths.
+Credit practical authority or fulfilled-aid Cohesion only after the owner reports a positive delivered result to the named state or population.
+Use one Event 044 political receipt per project or aid generation, shared by the institution and International consumers; those consumers may change different political consequences but cannot debit supplies again or each claim a second fulfilled-aid reward.
+A paid-but-undelivered contract remains a commitment.
+Intercepted transport, lost access, or a recipient becoming invalid changes the current promise according to responsibility and the owner's failure result, rather than granting an automatic martyr or blaming an actor that could not control the route.
 
-Event 44 changes political trust and movement institutions.
-
-A Yakubite state uses the normal Famine system.
+Deliberate obstruction needs both responsibility and evidence that the blocked route could deliver useful relief.
+An unaffordable offer, unsafe destination, or rejected malformed request is not sufficient proof.
+Famine owns food and deaths, while Event 044 changes only its current local institutions, Influence cause, or the International's existing promise memory.
+There is no duplicate relief stock, food-security modifier, mortality award, or Chaos receipt.
+AI compares the remaining local need and delivery feasibility with other commitments; it does not select an impossible corridor merely to gain Cohesion.
+If the local Famine problem or its owner interface is unavailable, ordinary Event 044 service choices continue without these external rewards.
 
 ## Cross-event connection: Migration
 
-Migration can move civilians from:
+Use a real movement or reception result involving an active chapter's state, a Yakubite state, or an International member that committed to shelter the cohort.
+The [Migration movement and reception design](../../famine_and_migration_system_specs/famine_and_migration_system_spec_part_3_displacement_migration_return.md), its [current continuation record](../../../plans/famine_and_migration_system_plans/takeover_status_2026-10-06.md), and the independent movement owner govern origin, destination, route safety, policy, capacity, actual survivor transfer, and return.
 
-- civil war
-- suppression
-- supremacist policies
-- colonial conflict
-- famine
-- terminal war
+Existing relief institutions may assist lawful reception or request aid for a strained host.
+A government can keep public administration of the service or accept chapter assistance with the same institutional tradeoff as local relief.
+An International member can fulfill a declared reception commitment and strengthen Cohesion; it receives credit for the actual sheltered or settled amount, once for that commitment, rather than every request, preparation step, or repeated reception refresh.
+Civilians who arrive remain civilians.
+Their movement grants no chapter membership, militia manpower, territorial claim, doctrine acceptance, or automatic International accession.
 
-Movement institutions can receive, reject, organize, exploit, or protect displaced cohorts.
-
-Migration remains the owner of movement, reception, settlement, and forced-displacement deaths.
-
-A route that uses forced return or violent border policy receives the normal consequences.
+Migration alone transfers population and applies route deaths, reception load, settlement, or forced-return consequences.
+Event 044 consumes the result without repeating those changes.
+A failed or partly completed request retains only the real owner outcome; it cannot convert untransferred people into martyrs or successful rescue propaganda.
+AI assistance requires a valid host, safe route, usable capacity, and resources remaining after prior commitments.
+When Migration is absent, disabled, or has no eligible local problem, Event 044 retains its normal institutions and state politics without inventing arrivals or force-firing another event.
 
 ## Cross-event connection: Camp and Repression
 

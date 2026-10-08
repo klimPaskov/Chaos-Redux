@@ -128,17 +128,26 @@ The route should not treat civilian harm as a direct Black Market effect. Any de
 
 ### International corridor route
 
-Event 55 can publish a route package for major railways, highways, tunnels, bridges, ports, and trade corridors.
+Event 55 can publish a commissioned route asset for major railways, highways, tunnels, bridges, ports, and trade corridors.
+Event 57 can use its current physical capacity and operating status after establishing its own clandestine endpoints and intermediary access.
+A public transit agreement is not smuggling permission, and an unfinished project is not an operating route.
+The corridor can shorten delivery, carry larger cargo, connect distant members, or support a relay; the member still pays the selected route's existing logistics and Exposure costs.
 
-A published corridor can:
+When the Event 55 receipt reports a severed crossing, lost port, suspended agreement, or embargo-related restriction, Event 57 refreshes only the affected route and deliveries before their next dispatch or settlement.
+A separate valid underground path can keep the cargo moving even when the public corridor is dormant, but it uses that path's real capacity, duration, cost, and risk rather than retaining the fast corridor treatment.
+The buyer chooses the existing delay, paid reroute, or abandonment response.
+Without a proven alternative, the delivery follows its existing final-failure rules and cannot continue on the old receipt.
 
-- increase route capacity
-- reduce delivery time
-- connect otherwise distant members
-- create a new intermediary node
-- make a route more valuable to investigators
+Event 55 owns physical damage, project repair, agreement restoration, and operating status.
+Event 57 owns clandestine access, cargo settlement, seizures, route evidence, and Exposure.
+An investigation of this route exposes only the proven shipment, intermediary, or endpoint, never a public project partner as a market member without separate evidence.
+A repair restores physical eligibility but does not clear an Event 57 investigation or Burned endpoint.
+The AI evaluates the remaining legal paths and urgent cargo using the normal route-choice rules; a completed corridor does not force a purchase or a new evolution.
+When Event 55 is absent, ordinary land, neutral, maritime, and other valid routes retain their normal behavior.
 
-Event 57 reads only the approved corridor receipt. It does not inspect or take ownership of Event 55's project ledger.
+Future acceptance case `057_corridor_severed`: a bought lot loses its Event 55 crossing before settlement while an unrelated clandestine relay survives.
+The buyer may pay for that relay under its own slower and riskier terms; the old fast-corridor benefit ends, no second source debit occurs, and repairing the bridge does not erase seizure evidence.
+The physical owner contract is [Event 55's operational status](../055_the_great_infrastructure_project_specs/specs/055_the_great_infrastructure_project_spec_part_1_core.md#operational-status).
 
 ### Covert air route
 

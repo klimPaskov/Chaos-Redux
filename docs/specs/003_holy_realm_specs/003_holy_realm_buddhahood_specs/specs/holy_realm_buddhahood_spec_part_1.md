@@ -159,7 +159,31 @@ The event must connect with the shared world-threat framework. The Holy Realm sh
 
 The event should respect global random-event registration, event log naming, debug naming, event details, evolution details, super-event slots, and event catalog alignment.
 
-The strongest anti-chaos effects must only apply against countries that are tagged or classified as chaos threats. Use the shared `is_special_chaos_country = yes` trigger for this classification. If future event work creates another chaos country, it should extend that shared trigger instead of creating a Holy Realm-specific wrapper. Ordinary countries remain excluded unless the shared trigger classifies them as a chaos country.
+The shared special-country classification identifies an unusual actor, while its owning system establishes whether it is conducting a hostile campaign.
+Reuse that shared classification rather than inventing a second Holy Realm country taxonomy.
+Harmful Buddha powers require both the existing eligible chaos-actor classification and a current hostile front against the Holy Realm, a living Sangha Compact member or the human population the selected relief mission protects.
+Use existing actor diplomacy, wars, occupation and owner-recorded behavior evidence for that second check.
+If the owning system cannot supply adequate proof, leave the harmful target unavailable and record that integration gap.
+The same proof governs decision, GUI and AI target paths and is checked before Meditation Charge is spent.
+Declaring a war against a peaceful special actor cannot manufacture a clean anti-chaos act or a Final Silence prerequisite.
+
+Event 002's social-behavior result makes this distinction necessary.
+A Semi-Sapient Cooperative strain or a Purifier with no hostile human front remains an unusual observer, not a lawful target for harmful powers.
+A creator-loyal strain has protection only within its actual loyalty relationship and can become a valid target when it attacks a protected human country.
+A Creator-Betrayer is reassessed when its outbreak owner changes its stance and hostile conduct appears, rather than on its archetype name alone.
+Neither a friendly label nor creator loyalty gives permanent immunity after a verified hostile escalation.
+The outbreak owner retains stance changes, cure behavior, target discrimination and civilian consequences.
+Holy Realm consumes that evidence for its existing power permission and anti-chaos-act tracking, without changing the strain, launching an outbreak or charging another event's casualties or Chaos again.
+
+Purifier target permission follows the reciprocal Event 002 contract: a Holy Realm-controlled sanctuary remains human territory, and a hostile horde occupying it is a non-human controller.
+Holy Realm protection cannot sanitize a deliberate human-target zombie attack by an ordinary creator country.
+Ordinary creator governments still use their normal diplomacy and condemnation rules.
+When Event 002 is absent or disabled, the Holy Realm continues its existing teaching and anti-chaos routes against other verified hostile sources.
+
+Acceptance cases should compare a cooperative horde at peace, a Purifier fighting only zombies, a creator-loyal horde attacking a Compact member, and the same horde after a verified betrayal.
+The first two cannot be farmed for clean-route power credit, while the hostile cases can qualify only through current conduct and a valid protected front.
+A stale target that ceases hostile conduct before activation must spend no charge.
+Keep qualitative foreign-reaction direction focused on what monks and protected communities have witnessed, without revealing the weaponization profile's hidden choices.
 
 ## High-level event map
 

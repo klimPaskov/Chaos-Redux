@@ -109,7 +109,11 @@
 - Optional members show accurate fired or skipped reasons.
 - The cluster remains available after fire-once members have fired.
 - The cluster counts as one pacing event.
-- Gift from Scientists and Research Failure can coexist without overwriting each other.
+- Event 54/Event 60 selection, member order, and grant-protection alternatives have an explicit parent acceptance record before their combined behavior is implemented.
+- Actual Event 54 grants reconcile only exactly matching outstanding Event 60 losses once, with direct-gift achievement provenance.
+- An unrelated gift changes no lost-ledger entry and no receipt observer adds, retargets, redraws, or force-fires a grant.
+- Matching recovery grants no research-slot, Scientific Capacity, Archive Recovery, or additional Chaos refund.
+- A gift followed by a later Research Failure incident follows the accepted provenance-protection decision rather than an inferred implementation rule.
 
 ## Assets and achievements
 
@@ -143,7 +147,7 @@ Any of these conditions blocks completion:
 - custom technology grants alter owner lifecycle
 - doctrines enter the pool
 - a country can receive duplicate grants
-- a failed candidate consumes a slot or loops forever
+- a failed candidate consumes a slot, reappears after a same-firing pool rebuild, or loops forever
 - normal technology popups create report spam
 - human reports omit exact results
 - save and reload can reroll or duplicate grants

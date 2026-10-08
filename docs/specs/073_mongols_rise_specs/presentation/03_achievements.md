@@ -2,11 +2,11 @@
 
 A01 through A16 are planning IDs and working directions. They are not final titles, descriptions, runtime registry numbers, or final localisation. Allocate unique runtime IDs through the existing achievement registry after inspection. All entries require the existing campaign eligibility rules and exclude developer-only force and auto-completion unless the framework explicitly says otherwise.
 
+Final descriptions state each implemented achievement and its key restriction in ordinary player language. The entries define design conditions, not final localisation.
+
 ## A01: First sustained mounted campaign
 
 **Title direction:** First sustained mounted campaign.
-
-**Description direction:** Explain this exact sustained achievement and its key restriction in ordinary player language. Do not reuse this planning paragraph as final localisation.
 
 **Eligible countries:** MON restoration.
 
@@ -26,8 +26,6 @@ A01 through A16 are planning IDs and working directions. They are not final titl
 
 **Title direction:** Command without armor.
 
-**Description direction:** Explain this exact sustained achievement and its key restriction in ordinary player language. Do not reuse this planning paragraph as final localisation.
-
 **Eligible countries:** MON restoration.
 
 **Unlock:** Defeat a stronger conventional opponent in a qualifying campaign while every eligible normal field formation remains cavalry.
@@ -45,8 +43,6 @@ A01 through A16 are planning IDs and working directions. They are not final titl
 ## A03: The restored imperial center
 
 **Title direction:** The restored imperial center.
-
-**Description direction:** Explain this exact sustained achievement and its key restriction in ordinary player language. Do not reuse this planning paragraph as final localisation.
 
 **Eligible countries:** MON restoration.
 
@@ -66,8 +62,6 @@ A01 through A16 are planning IDs and working directions. They are not final titl
 
 **Title direction:** A prepared inheritance.
 
-**Description direction:** Explain this exact sustained achievement and its key restriction in ordinary player language. Do not reuse this planning paragraph as final localisation.
-
 **Eligible countries:** Heir route MON.
 
 **Unlock:** Resolve a genuine succession peacefully through the arrangement made before the vacancy and retain major obligations.
@@ -85,8 +79,6 @@ A01 through A16 are planning IDs and working directions. They are not final titl
 ## A05: The service state survives
 
 **Title direction:** The service state survives.
-
-**Description direction:** Explain this exact sustained achievement and its key restriction in ordinary player language. Do not reuse this planning paragraph as final localisation.
 
 **Eligible countries:** New Great Khan MON.
 
@@ -106,8 +98,6 @@ A01 through A16 are planning IDs and working directions. They are not final titl
 
 **Title direction:** A compact kept.
 
-**Description direction:** Explain this exact sustained achievement and its key restriction in ordinary player language. Do not reuse this planning paragraph as final localisation.
-
 **Eligible countries:** Council route MON.
 
 **Unlock:** Complete a joint campaign with several real khanates and honor every promised settlement share.
@@ -125,8 +115,6 @@ A01 through A16 are planning IDs and working directions. They are not final titl
 ## A07: The four regional settlements
 
 **Title direction:** The four regional settlements.
-
-**Description direction:** Explain this exact sustained achievement and its key restriction in ordinary player language. Do not reuse this planning paragraph as final localisation.
 
 **Eligible countries:** MON restoration.
 
@@ -146,8 +134,6 @@ A01 through A16 are planning IDs and working directions. They are not final titl
 
 **Title direction:** A connected imperial economy.
 
-**Description direction:** Explain this exact sustained achievement and its key restriction in ordinary player language. Do not reuse this planning paragraph as final localisation.
-
 **Eligible countries:** MON or qualifying central successor.
 
 **Unlock:** Maintain a reviewed multi-region Silk Roads chain through its durability window.
@@ -165,8 +151,6 @@ A01 through A16 are planning IDs and working directions. They are not final titl
 ## A09: Beijing and the field army
 
 **Title direction:** Beijing and the field army.
-
-**Description direction:** Explain this exact sustained achievement and its key restriction in ordinary player language. Do not reuse this planning paragraph as final localisation.
 
 **Eligible countries:** MON restoration.
 
@@ -186,8 +170,6 @@ A01 through A16 are planning IDs and working directions. They are not final titl
 
 **Title direction:** A western empire.
 
-**Description direction:** Explain this exact sustained achievement and its key restriction in ordinary player language. Do not reuse this planning paragraph as final localisation.
-
 **Eligible countries:** MON or loyal Golden Horde.
 
 **Unlock:** Complete a meaningful European campaign with a functioning eastern connection.
@@ -205,8 +187,6 @@ A01 through A16 are planning IDs and working directions. They are not final titl
 ## A11: Universal recognition
 
 **Title direction:** Universal recognition.
-
-**Description direction:** Explain this exact sustained achievement and its key restriction in ordinary player language. Do not reuse this planning paragraph as final localisation.
 
 **Eligible countries:** MON restoration.
 
@@ -226,8 +206,6 @@ A01 through A16 are planning IDs and working directions. They are not final titl
 
 **Title direction:** A smaller empire that lasts.
 
-**Description direction:** Explain this exact sustained achievement and its key restriction in ordinary player language. Do not reuse this planning paragraph as final localisation.
-
 **Eligible countries:** Surviving MON center.
 
 **Unlock:** After qualifying fragmentation, establish a durable smaller settlement or successor compact.
@@ -245,8 +223,6 @@ A01 through A16 are planning IDs and working directions. They are not final titl
 ## A13: The horde is stopped
 
 **Title direction:** The horde is stopped.
-
-**Description direction:** Explain this exact sustained achievement and its key restriction in ordinary player language. Do not reuse this planning paragraph as final localisation.
 
 **Eligible countries:** Non-imperial human opponent.
 
@@ -266,8 +242,6 @@ A01 through A16 are planning IDs and working directions. They are not final titl
 
 **Title direction:** An independent khanate survives.
 
-**Description direction:** Explain this exact sustained achievement and its key restriction in ordinary player language. Do not reuse this planning paragraph as final localisation.
-
 **Eligible countries:** Human khanate successor.
 
 **Unlock:** Survive a real imperial collapse, retain viable government and complete a distinct regional objective independently.
@@ -286,8 +260,6 @@ A01 through A16 are planning IDs and working directions. They are not final titl
 
 **Title direction:** Tribute without ruin.
 
-**Description direction:** Explain this exact sustained achievement and its key restriction in ordinary player language. Do not reuse this planning paragraph as final localisation.
-
 **Eligible countries:** MON or qualifying center.
 
 **Unlock:** Maintain several feasible tribute agreements through a war and fulfill the center’s side of every bargain.
@@ -305,8 +277,6 @@ A01 through A16 are planning IDs and working directions. They are not final titl
 ## A16: The succession coalition
 
 **Title direction:** The succession coalition.
-
-**Description direction:** Explain this exact sustained achievement and its key restriction in ordinary player language. Do not reuse this planning paragraph as final localisation.
 
 **Eligible countries:** Human regional khanate.
 

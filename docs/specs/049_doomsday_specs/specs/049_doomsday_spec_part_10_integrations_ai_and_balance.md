@@ -105,6 +105,20 @@ Shelters and public-health continuity can provide bounded protection where the A
 
 Air Cleanliness changes remain owned by the contamination system and Event 033.
 
+### Event 051 Heat Wave
+
+When both events are already active, the first proven cross-continental habitability milestone in [Heat Wave's Evolution III](../../051_heat_wave_specs/11_evolutions.md) can consume one existing catastrophe-family confirmation allowance.
+Evolution activation, a hot-state registration, and later mortality pulses do not qualify on their own.
+Directly affected countries can receive a stronger local belief response than distant countries, within the existing country and global Conviction limits.
+
+National Preparation and Concordat relief sites can support Heat Wave's existing cooling, water-delivery, or corridor response only where the heat owner verifies an actual compatible function and available capacity.
+The country must choose whether to keep that relief commitment or use the same transport and civilian capacity for other continuity work.
+The connection grants no extra mitigation resource and leaves Heat Stress, heat mortality, evacuation, and environmental change with Event 051 and its humanitarian owners.
+
+Near the Last Day, use [the overlapping-disaster aftermath](049_doomsday_spec_part_9_last_day_and_aftermath.md#real-overlapping-disaster).
+The AI can retain useful relief and still reopen ordinary institutions after the date.
+If Event 051 is absent, disabled, or has no verified milestone or compatible site, the ordinary Doomsday loop proceeds without this connection.
+
 ### Event 044 Space race
 
 Space observation can create credible data, disputed images, public reassurance, or new astronomical fears.

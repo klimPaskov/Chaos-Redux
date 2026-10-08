@@ -39,7 +39,7 @@ Each executed scenario must record game/repository revision, setup, observed beh
 | QA22 | Foreign target pagination | At most four targets plus navigation, browsing spends nothing and creates no mission |
 | QA23 | Poor-country project | No negative equipment or factories, reduced scope declared before acceptance |
 | QA24 | Cost band changes during project | Contracted costs remain fixed and spending is not duplicated |
-| QA25 | Full, partial, failed, and canceled negotiation | Correct distinct outcomes and durations, no parent/child double mission |
+| QA25 | Full, partial, failed, and canceled negotiation | Correct distinct outcomes and durations, no parent/child double mission; an external Event 82 remobilization uses the existing single 60-day repair extension without an automatic betrayal award, while deliberate repudiation or unrepaired expiry can fail |
 | QA26 | Honest co-optation versus sham | Material authority and delivery determine result, no free repeated Stability |
 | QA27 | Suppression with no surviving network | No indestructible underground bonuses remain |
 | QA28 | Eradication success or failure | Specified costs and consequences, no population deletion from organizational closure |
@@ -52,7 +52,7 @@ Each executed scenario must record game/repository revision, setup, observed beh
 | QA35 | Every constitutional route | Distinct institutions and tradeoffs, complete early/middle/late path and aftermath |
 | QA36 | Existing-country focus integration | Meaningful national tree preserved, no blanket replacement |
 | QA37 | Event-created authority | Complete country package, all names/flags/roles/forces/tech/diplomacy covered |
-| QA38 | Subject movement government | No sovereign treaty, faction, or resource power without actual autonomy authority |
+| QA38 | Subject movement government | No sovereign treaty, faction, or resource power without actual autonomy authority; an Event 79 winner preserves the current constitutional government and cells, while Event 81 cancels ineligible sovereign tax work after actual puppeting |
 | QA39 | Political reversal | Current valid identities and surviving assets preserved, no resurrected ruler or duplicate rewards |
 | QA40 | Religious and secular flavour | Institutions fit the actual country, no universal religion-to-Reaction shortcut |
 
@@ -70,7 +70,7 @@ Each executed scenario must record game/repository revision, setup, observed beh
 | QA48 | Civil-war eligibility | High I/R alone insufficient, real rupture and viable authority required |
 | QA49 | One-state crisis | Playable capital/authority outcome, no unsupported state partition |
 | QA50 | Civil-war material split | Pre/post ledger reconciles armies, ships, wings, equipment, manpower, population, and characters |
-| QA51 | Existing external war during civil war | War and faction relationships remain valid and explicit |
+| QA51 | Existing external war during civil war | War and faction relationships remain valid and explicit; an Event 80 crash declaration is not vetoed by movement government, and ordinary mediation does not silently end it |
 | QA52 | Peaceful reunification | Surviving assets merge once, treaties and actual leaders resolve correctly |
 | QA53 | Postwar demobilization | Actual survivors and recoverable equipment only, no double return |
 | QA54 | Bloc founding | Three qualified consenting sovereign members and valid faction membership resolution |
@@ -78,7 +78,7 @@ Each executed scenario must record game/repository revision, setup, observed beh
 | QA56 | Refuge and migration | Actual surviving arrivals counted once, reception capacity and route matter |
 | QA57 | Chaos1000 and majorityabove50% | Terminal does not fire |
 | QA58 | Chaos1001 and exactly50% majority | Terminal does not fire |
-| QA59 | Owner/controller/subject overlap | Every state's living population counted once under actual controller |
+| QA59 | Owner/controller/subject/travel overlap | Every resident state counted once under actual controller; live Airship custody remains in the world denominator once without a state-control numerator until actual settlement, including a strict-majority near miss |
 | QA60 | Zero denominator or nonhuman population edge | Correct authoritative living-population definition and no division error |
 | QA61 | No meaningful traditionalist territory | No enemy created to force the world-end scene |
 | QA62 | Disabled terminal branch | Ordinary episode continues but automatic world end remains disabled |

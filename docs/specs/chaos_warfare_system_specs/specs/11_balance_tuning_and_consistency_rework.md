@@ -38,9 +38,11 @@ Fix: create equipment, stockpiles, military issue, civilian distribution, filter
 
 Fix: country program formulas and differentiated profiles.
 
-### Doctrine reduces confirmed Condemnation
+### Doctrine and consequence ownership
 
-Fix: doctrine affects evidence and collateral damage, not confirmed responsibility below a floor.
+Fix: doctrine may increase the potency of an authorized CBRN operation and reduce only its Condemnation impact through the accepted bounded multiplier and public-harm floors.
+It must not reduce evidence, attribution, physical harm, deaths, contamination, medical saturation, trauma, responsibility, or use history.
+An existing camp interaction remains separately authorized and governed by its camp owner; it is not permission to conceal ordinary CBRN use.
 
 ### Genocide terminology inside doctrine
 

@@ -73,6 +73,22 @@ Implement coverage for:
 
 Internal republics must have focus content. They cannot be empty map releases.
 
+## Don foothold and release-origin ownership
+
+The Don Host Emergency Circle (`DHC`) and Event 006's IW-039 `DON` package use the existing reciprocal exclusion in [the accepted IW-039 contract](../006_independence_wave_specs/specs/006_independence_wave_spec_part_5_country_packages_and_regional_overlays.md#accepted-iw-039don-anchor-capital-and-event-005-exclusion-2026-09-26).
+Event 006 uses state 245/Millerovo as its required anchor and capital, state 238/Volgodonsk only as optional compact territory, and excludes state 218 from that package.
+Event 005 retains its own DHC footprint and creation rules when no competing Event 006 package exists.
+
+A living DHC, its Event 005 successor receipt, or the specified Event 005 state ownership/control/reservation prevents IW-039 setup.
+An active or in-flight Event 006 DON package prevents Event 005 from creating DHC or taking state 238 for that successor, including a force-all successor request.
+The existing joint coordinator owns reservation arbitration, and each event keeps its own country setup, army, focus content and release history.
+The losing request uses its existing candidate replacement or blocked-slot reporting without converting the winning country to a second origin.
+This protection is local to the accepted DHC/IW-039 overlap and does not suppress unrelated Soviet successors or ordinary DHC behavior in a campaign without that Event 006 package.
+
+Required order cases are DHC before IW-039, IW-039 before DHC, both prepared in one Liberations incident, and ordinary DHC with no Event 006 reservation.
+Verify a single origin and founding-force receipt, no second transfer of state 238, and preservation of the protected Soviet remnant.
+These cases validate the accepted interlock and do not authorize a larger Don map or another country package.
+
 ## Required high-chaos and evolved splinters
 
 Implement and audit all high-chaos splinters required by the specs.

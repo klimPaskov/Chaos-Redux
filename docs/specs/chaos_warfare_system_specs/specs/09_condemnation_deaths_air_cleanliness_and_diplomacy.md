@@ -239,7 +239,11 @@ A participant requests access to facilities and stockpiles. Acceptance can reduc
 
 ### Offer protective aid
 
-Countries can send gas-mask crates, medical aid, decontamination equipment, or vaccines to the victim. This creates opinion, legitimacy, and evidence-sharing effects.
+Countries can send gas-mask crates, medical aid, decontamination equipment, or vaccines to the victim.
+Protective Aid supplies a live protection need; Sponsor Decontamination treats an exact chemically contaminated state.
+Their accepted shipment, access, payment, timer, and cancellation rules remain owned by the CBRN diplomacy system and its [protection transaction amendment](13_2026_09_20_accepted_cbrn_overhaul.md#protection-units-and-limits) and [Sponsor Decontamination correction](../corrections/2026-09-25_international_decontamination_cost.md).
+The player chooses where limited protective stock or cleanup capacity will prevent further harm, rather than purchasing a second diplomatic reward for the same delivery.
+Opinion, legitimacy, and evidence sharing may consume the completed action's result, but they do not repeat its payment, physical delivery, population loss, or Chaos contribution.
 
 ### Declare retaliation policy
 
@@ -251,7 +255,10 @@ Targets payload, delivery equipment, protective technology, or general military 
 
 ### Humanitarian carve-out
 
-Allows masks, medical equipment, and decontamination supplies to reach the condemned country or its civilians while offensive materials remain embargoed.
+A sanction participant may permit masks, medical equipment, and decontamination supplies to reach a condemned country's civilians while keeping offensive materials restricted.
+The [Condemnation owner](../../condemnation_system_specs/specs/condemnation_impact_system_spec.md#participant-actions) controls that exception; it grants neither stock nor a completed CBRN mission.
+If relief is then dispatched through an eligible CBRN action, that action owns the actual payment and outcome.
+Relief access does not erase the offender's evidence, responsibility, or prior deaths, and declining a carve-out does not itself create a second exposure episode.
 
 ### Share forensic evidence
 
@@ -259,7 +266,15 @@ Raises attribution confidence among allied or neutral participants. Requires int
 
 ### Sponsor decontamination mission
 
-Reduces contamination and deaths in a victim state. It can create observer access and evidence.
+Treats an exact chemically contaminated consenting foreign-controlled state under the existing access and peace requirements.
+The ordinary and Event 026 sale variants preserve the same cleanup outcome and 45-day mission; the [accepted cost correction](../corrections/2026-09-25_international_decontamination_cost.md) owns their exact material bill, native factory commitment, and cancellation settlement.
+An active sale can make dispatch affordable, but it does not change who may receive treatment or produce a larger cleanup reward.
+Observer access may provide evidence of an earlier attack; the attribution model publishes only the unpaid portion of that attack's Condemnation.
+
+When [Event 020's Black Plague](../../020_black_plague_specs/specs/020_black_plague_spec_part_3_cure_spread_and_biowarfare.md#biological-warfare-registration) is also present, its distinct disease and countermeasure remain owned by Event 020.
+A CBRN chemical cleanup mission must not be displayed as its cure or advance its countermeasure project.
+Biological aid uses only an explicitly compatible disease response, while ordinary Plague, Black Plague, and weaponized-zombie outcomes retain separate identities.
+These distinctions preserve normal CBRN relief when Event 020 is absent and do not initialize or fire another event.
 
 ### Shield an ally
 

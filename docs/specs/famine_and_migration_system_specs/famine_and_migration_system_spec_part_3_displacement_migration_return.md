@@ -520,7 +520,10 @@ This can improve order and outbreak containment. Harsh or discriminatory use can
 
 ### Integrate labor and families
 
-The country begins local integration. This consumes capacity and time, then converts the displaced modifier into normal population and labor.
+The country begins local integration of people already present in the host state.
+It spends the existing food, housing, administration and protection resources, then settles one complete verified hosted cohort and its state/national reception load.
+The population credited on arrival stays in place; integration removes temporary status and permits its existing long-term labor benefit without a second population or manpower grant.
+An invalid host, insufficient reception ledger, completed cohort or stale replay changes nothing.
 
 ### Maintain transit status
 

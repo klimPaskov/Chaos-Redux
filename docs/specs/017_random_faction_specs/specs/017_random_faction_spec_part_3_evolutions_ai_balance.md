@@ -9,7 +9,7 @@ Each evolution has two entry paths:
 - active-event evolution, where prior Event 17 pressure already exists and the new evolution changes current regional behavior
 - pre-fire evolved opening, where Event 17 has not fired in the current campaign state but the first firing starts in a more intense form
 
-The event uses three evolution stages. Evolution IV and Evolution V are intentionally unused for this design unless a later accepted plan adds a new diplomacy mechanic.
+The event uses three evolution stages.
 
 ## Evolution I: Regional Bloc Race
 

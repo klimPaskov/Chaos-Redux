@@ -1,9 +1,9 @@
 # Package manifest
 
-Inventory refreshed on 2026-10-07 for the current local documentation files, excluding this manifest.
+Inventory refreshed on 2026-10-08 for the current local documentation files, excluding this manifest.
 The source disclosures, environment limitations, archive descriptions, and original validation receipts below remain historical planning evidence.
 They do not establish current tool health, implementation status, or design acceptance.
-Current inventory totals: 38 files, 244,214 bytes, 34,344 whitespace-delimited words.
+Current inventory totals: 38 files, 245,263 bytes, 34,478 whitespace-delimited words.
 
 
 ## Original package identity
@@ -24,7 +24,7 @@ Current inventory totals: 38 files, 244,214 bytes, 34,344 whitespace-delimited w
 | `00_master_spec.md` | 9,003 | 1,206 | `05f31b99dd3f06e941ad4a57698b6fc65c988b13aee63fb5d022f2cf4e69aa01` |
 | `01_event_identity_and_playable_promise.md` | 7,460 | 1,067 | `ea8d064d47f9456dba2ec424a5914bdaeacd741ce4c503b2b4a37c360f61f00e` |
 | `02_national_postures_and_membership.md` | 11,586 | 1,622 | `7b134db978609a5cd610ff5de9d7374deb77bb83739e903a2dd439745fb8c7bc` |
-| `03_condemnation_normalization_and_cbrn_integration.md` | 10,901 | 1,636 | `ac704b010c24d713ff99c67bb3a1e3a2ffd80c1429460f459a399cd389ce9e60` |
+| `03_condemnation_normalization_and_cbrn_integration.md` | 11,950 | 1,770 | `9eef67f462e8241fc9ee426f34e4e6aea896c91b45a5116d0fedaf62b242127f` |
 | `04_recurring_conventions_and_treaty_families.md` | 13,599 | 1,836 | `812574f446203918f4a302fffa2dc8e7c1ebcd83b923dbe82116eedf7abf1b5a` |
 | `05_evolution_i_first_use_becomes_acceptable.md` | 6,120 | 889 | `290154bb06df052581d89c889827e4554d24b34cf50e98203bf691674a748c40` |
 | `06_evolution_ii_strategic_wmd_doctrine.md` | 7,107 | 986 | `af54f0c56698e52a080996bc55df0afc2076972309205aaf551450d62ac3c56a` |

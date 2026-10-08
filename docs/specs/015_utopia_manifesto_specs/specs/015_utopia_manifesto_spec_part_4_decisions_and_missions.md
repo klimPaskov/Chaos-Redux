@@ -787,6 +787,21 @@ Output:
 - initial integrity
 - peaceful offer list
 
+A resource case can use an Event 018 field only while that exact state's accessible resource can remedy the declared deficit.
+The case follows the actual owner, access terms, and physical field instead of treating the discovery amount as a permanent national entitlement.
+Event 018 owns its resource additions, suspension, closure, and breach, while Event 015 owns the case, resource-rights agreement, and its existing disposition costs.
+A supply contract or extraction-zone lease provides access without creating another deposit or advancing either event's progression.
+
+Suspension or blocked transport calls for the existing offer-revision or domestic-alternative route when delivery cannot satisfy the case.
+Permanent sealing removes only Event 018 additions.
+The case then rechecks the remaining ordinary resources before deciding whether the selected remedy still works.
+If the remedy has disappeared, close or convert the case through its current lifecycle and remove only its own expired resource rights and claim.
+A lawful safety closure counts as loss of supply, rather than a refusal that unlocks an automatic ultimatum.
+The founder can remain short of resources after relinquishing an obsolete target, making reserve use, substitution, or another valid peaceful offer the practical next choice.
+
+AI uses the same continuing relevance and access tests and should revise a lost remedy rather than enforce a claim to an empty field.
+These rules also apply to an ordinary supply interruption when Event 018 is absent.
+
 ### Decision: Offer Purchase or Long Supply Contract
 
 Costs:

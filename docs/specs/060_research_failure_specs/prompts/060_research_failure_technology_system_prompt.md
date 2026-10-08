@@ -74,7 +74,7 @@ Publish bounded owner APIs for:
 - testing whether a technology is in the current lost ledger
 - marking ordinary research recovery
 - reconciling a direct technology grant
-- selecting a compatible lost node for Gift from Scientists
+- observing exact nodes covered by an actual authorized Gift from Scientists grant; keep the proposed lost-node selector and prior-gift regression policy unresolved until parent disposition under Part 4, rather than changing Event 54's draw
 - applying a Brilliant Scientist recovery opportunity
 - applying owner-approved special technology degradation or recovery
 - reading domain counts for AI and localisation

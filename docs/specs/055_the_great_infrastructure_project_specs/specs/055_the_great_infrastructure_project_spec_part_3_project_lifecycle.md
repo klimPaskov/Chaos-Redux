@@ -192,6 +192,27 @@ The procurement mission can fail or slow when:
 
 The player can accept delay, buy emergency imports where allowed, reduce scope, or divert national resources at a wider cost.
 
+## Work already present on the route
+
+A project procures the physical work still missing from its stored route plan.
+At authorization, each planned building or segment records its required finished state and what is already present; existing railways and ports are part of the starting geography rather than work to buy again.
+At the next unpaid procurement or construction checkpoint, ordinary construction or an Event 58 placement can satisfy an exact physical item when the project owner verifies the same state or province, building or segment, required level, usable condition, and access.
+A similar building elsewhere, a damaged level, or an unconnected supply node does not satisfy that item.
+
+The player can retain the original route and finish its remaining work, reduce scope under the normal reduced-completion rules, or suspend or abandon if the project has become redundant.
+Event 55 recalculates only the uncommitted physical work and its remaining construction time using the existing family cost model.
+Paid equipment, completed survey effort, diplomatic commitments, commissioning, safety checks, and recurring maintenance are not refunded or completed by the outside grant.
+If nothing physical remains to build, legal access and commissioning still have to succeed before the project can operate.
+The proposal or mission summary identifies the completed item and the work still owed without presenting the outside grant as a second project reward.
+
+This is reconciliation of the current project, not a new project family or a second completion record.
+The AI uses the remaining work and outstanding agreements when reassessing the same project; it does not keep purchasing an already satisfied physical item or abandon a useful route solely because another event built part of it.
+When Event 58 is absent, the same rule still handles ordinary construction, while the project follows its normal lifecycle when nothing has changed.
+
+Future acceptance case `055_external_segment`: an active railway project receives an Event 58 upgrade on one planned segment after an earlier cost has been paid.
+Only the still-unpaid matching physical work is removed from the remaining bill; sunk costs remain spent, a missing partner agreement still blocks commissioning, and replaying the placement notice creates no refund or completion credit.
+A grant in a neighboring state leaves the project's bill unchanged.
+
 ## Main construction mission
 
 The main mission is the central project timer.

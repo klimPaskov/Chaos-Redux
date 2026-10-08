@@ -191,5 +191,14 @@ Shared Air Cleanliness may receive a bounded particulate contribution through an
 When the wall clears, future local emissions stop.
 Previously accepted shared atmospheric contribution follows that owner's recovery rather than being subtracted by a guessed Sandstorm withdrawal.
 
+An already active [Inflation episode](../100_inflation_specs/100_inflation_spec_part_2_economic_balance.md#supply-disruption-during-and-after-a-storm) can read the same verified present shortage, damage and repair facts for the country controlling the affected facilities.
+Event 100 owns their national ratio, pressure family, cap and review, and a forecast or dust label supplies no guessed price pressure or new episode.
+The controller chooses how much useful capacity to protect and repair while managing its existing monetary or fiscal restraint.
+
+M3 and Inflation's productive restoration can observe one qualifying native repair, retaining its proportional attribution and physical result once.
+Starting Inflation's optional repair support still requires its own disclosed allocation and minimum paid term.
+Clearance leaves remaining damage intact, and a control change moves the current facility assessment without transferring the old government's paid policy or resetting either owner's history.
+
 These longer consequences can outlast the weather because their physical or shared-system causes remain.
-The local report should explain which owner now governs the remaining problem and provide a relevant link or map selection.
+The local report links remaining damage to the actual repair location and the owning system, while Inflation explains its own current economic cause.
+AI reevaluates useful repair and protective commitments from remaining facilities and current authority rather than prolonging a weather response to cure a price index.

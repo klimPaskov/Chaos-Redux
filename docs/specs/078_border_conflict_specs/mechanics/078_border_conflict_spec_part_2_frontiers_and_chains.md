@@ -184,3 +184,22 @@ A cosmetic flag or name change preserves a still-valid country identity.
 A reused tag does not.
 When safe identity cannot be established, hold the affected result for cleanup and report the technical failure without granting land.
 The rest of the world's valid conflicts continue independently.
+
+A confirmed capture can alter another active campaign without becoming that campaign's capture receipt.
+If revealed TAN gains a state that creates a traversable border with a non-allied third country, Event 075's existing new-neighbor check considers that country under its current legal rules.
+Event 078 does not declare the war, fire TAN's reveal, or extend its own chain to the third country.
+TAN's player chooses where to concentrate its real army after the new exposure; its outward-war policy retains the existing obligation to address eligible neighbors.
+If Event 075 commits a direct war while a dispute between that pair is unresolved, cancel that dispute and chain without a state award.
+A valid Event 078 transfer committed before that war remains a real transfer, and the later war cannot retroactively void it.
+[Event 075 owns the new-border policy](../../075_tannu_what_specs/campaign/075_tannu_what_spec_part_10_reveal_and_wars.md).
+
+A transfer involving an active Mongolian imperial corridor instead changes its actual route condition and the affected partner's ability to deliver.
+Event 073 can offer its existing repair, detour or obligation-review response; loss of access is inability, not automatic rebellion or new unpaid tribute.
+Event 078 does not pay Mongol settlement spoils for its own capture, recreate a lost khanate, or erase another owner's state-bound industrial or contamination history.
+[Event 073 owns route benefits](../../073_mongols_rise_specs/empire/03_karakorum_and_silk_roads.md) and [tribute revision](../../073_mongols_rise_specs/empire/02_tribute_and_diplomacy.md).
+
+Affected actors recheck through their existing bounded campaign paths after the authoritative territorial result.
+They do not trigger another worldwide scan or alter target tickets and seed chances to manufacture the connection.
+AI uses the resulting route and border situation through those same owners.
+The distinguishing future cases are a TAN capture exposing a third country, a direct war committed before the native result, the opposite ordering with a valid prior capture, and an imperial route cut while its khan remains loyal.
+With the other episode absent or inactive, only the ordinary state transfer and native border-conflict lifecycle apply.

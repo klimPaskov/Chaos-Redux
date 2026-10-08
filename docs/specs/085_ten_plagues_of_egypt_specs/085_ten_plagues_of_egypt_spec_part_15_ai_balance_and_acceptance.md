@@ -121,7 +121,7 @@ The following cases are acceptance requirements, not reported test passes.
 | A20 — Donation loop | Returning the same shipment does not generate repeated Wrath reductions |
 | A21 — Food owner | Crop loss affects proven remaining capacity; no private famine stage is set |
 | A22 — Famine timing | Sustained severe exposure produces owner mortality within its actual schedule |
-| A23 — Disease owner | Boils uses a peaceful accepted episode; no weapon unlock or duplicate flat death effect |
+| A23 — Disease owner | Boils uses a peaceful accepted episode without weapon unlock or duplicate mortality. Compare ordinary care, a delivered matching Wu treatment, and new research due after the acute phase. Only actually reached patients change the care result, with one clinical settlement and one applicable protective credit. Medical help cannot grant Passover coverage or firstborn immunity |
 | A24 — Composite storm | Hail plus causal fire share the accepted budget and coherent protection |
 | A25 — Repeated storm | A new valid strike affects surviving people and remaining structures only |
 | A26 — Locust front | It traverses valid adjacent states and protects already moved surviving food |

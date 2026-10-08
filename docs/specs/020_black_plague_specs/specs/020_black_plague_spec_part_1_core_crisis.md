@@ -225,7 +225,8 @@ A country can restrict troop movement through threatened regions, but doing so s
 
 ### Refugees and occupied territory
 
-A state with high resistance, collapsing administration, population displacement, or a recent front movement creates additional exposure to neighboring states. If Event 149 Immigration or another refugee system is active in a compatible form, the Black Plague should use its real migration routes rather than creating a duplicate refugee variable.
+A state with high resistance, collapsing administration, population displacement, or a recent front movement creates additional exposure to neighboring states. When the [independent migration mechanic](../../famine_and_migration_system_specs/README.md) supplies a compatible committed movement route, the Black Plague consumes that route and receiving-state context rather than creating a duplicate refugee variable.
+Event 149's retired random-event identity is not the migration owner; Part 3 defines how accepted passage and medical reception interact with exposure.
 
 ### Ports before Evolution II
 

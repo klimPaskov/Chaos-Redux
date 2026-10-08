@@ -185,15 +185,13 @@ Its harsher position is expressed through bilateral and multilateral reaction lo
 
 ## Evidence and inspections
 
-Event 036 does not make hidden evidence public automatically.
+An inspection treaty can reveal existing evidence through a compatible owner route. It creates neither an action record nor an attacker. Refusal can create suspicion, treaty breach, or a cover-up source only when the evidence owner proves the relevant conditions.
 
-An inspection treaty can create a valid disclosure route.
+Environmental harm alone does not prove unconventional weapon use. [Acid Rain's separate Air source](../033_acid_rain_specs/specs/033_acid_rain_spec_part_11_integrations_migration_and_save_safety.md#air-cleanliness-integration), natural aerosol, and an unattributed outbreak do not qualify for weapon-use normalization or retaliation proof. A country may pursue an existing valid inspection, but the result can remain unresolved. Convention AI cannot convert a high contamination value into a confirmed attacker or retaliatory permission.
 
-A successful inspection may reveal existing evidence through the shared evidence system.
+If a real chemical or biological action occurs in a state already under Acid Rain, the CBRN owner proves and attributes that action. Event 036 applies relief only to the eligible public source components of that action. Rain mortality, environmental burden, and the Acid Rain Air receipt keep their original owner, and the weapon's confirmed record remains intact.
 
-Refusal can create suspicion, a treaty breach, and a cover-up source only when the owning evidence system proves the required conditions.
-
-The convention must never invent evidence because an AI country chose to inspect.
+Acceptance case: the same state first receives corrosive rain without an attacker and later a proved chemical strike. Only the strike produces a treaty-compatible use assessment and potential retaliation proof. Duplicate inspections add no second use record, Deaths, contamination, or Condemnation transaction.
 
 ## Protection
 

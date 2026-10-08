@@ -65,4 +65,8 @@ Presentation conflict (`unresolved`): Part 9 and the asset prompt request a mete
 The parent must record either a simple category with basic formatted values and an eligible picture, or a reviewed meter/inlay surface without the additional category picture.
 Keep both original design requirements visible until that decision is recorded; do not produce both consumers by default.
 
-The main mechanic uses the ordinary decision interface with a strong static category picture, one Overheating meter or equivalent compact progress display, a trend indicator, and the next threshold. A separate scripted GUI is rejected at planning stage because the mechanic has one public value and at most five primary actions. The implementation agent should escalate to a dedicated event-owned window only when direct inspection proves that the normal category cannot present the meter and state selector clearly. Such a change requires a recorded design exception and the event UI workflow.
+Both presentation alternatives use the ordinary decision interface, one public Overheating value, a trend, the next threshold, and the phased action list with the selected Industrial Region and at most five primary actions.
+The simple alternative presents basic formatted values with an eligible category picture.
+The meter or inlay alternative omits that picture and requires the appropriate visual review.
+The unresolved choice above must be recorded before asset production or layout work.
+A dedicated event-owned window requires a separate finding that the chosen ordinary surface cannot communicate the existing state and actions clearly, followed by recorded acceptance and the event UI workflow.

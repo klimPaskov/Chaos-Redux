@@ -18,21 +18,30 @@ Selection is random within the eligible country pool, using weights and cooldown
 
 ## Core flow
 
-1. Select an eligible aggressor.
-2. Select an eligible target.
-3. Save both countries as event targets.
-4. Create the declaration.
-5. Show the relevant report event to involved countries.
-6. Show an observer popup only for relevant cases.
-7. Record the firing in the event log.
+1. Select an eligible aggressor and legal target using the existing pairing model.
+2. Retain the invocation's stage, requested declaration count and selected actors.
+3. Create each declaration only while the pair remains legal at that step.
+4. Build the remaining linked dispute from the realized participants, excluding already-hostile pairs from additional declaration credit.
+5. Finish the chain before sending its participant responses and observer summary.
+6. Record the declarations actually created and the distinct countries actually involved.
 
-Observer relevance should include:
+The evolution ladder specifies the requested size of a dispute, while the realized chain records what happened.
+After each declaration, faction calls, subject relations, capitulation or another crisis can make a later pair unavailable.
+Use the existing legal-pair exclusions and permitted safe-pair fallback rather than forcing that stale pair.
+If the remaining eligible pairs cannot complete the requested linked dispute, retain the wars already created and identify the unfilled slots as blocked.
+Do not report the requested count as an accomplished count, reopen an existing war for another receipt, or add a disconnected filler conflict solely to reach the number.
+An invocation that creates no declaration uses the existing unsuccessful-launch feedback and grants no participant reward.
+An invocation that creates some declarations is reported as that partial incident, not as a second complete firing.
 
-- major country involvement
-- faction leader involvement
-- neighboring country involvement
-- compatible special chaos country involvement
-- late evolution stages
+Every involved country receives at most one participant response for this invocation.
+A country that both attacked and was attacked receives the defender response, following the accepted response priority.
+One observer summary covers the completed chain and uses its actual distinct participant count.
+Observer relevance includes major or faction-leader involvement, a neighboring participant, a compatible special country, or the late evolution stage.
+Participant resources and temporary effects are applied once through that response, while shared war systems own the underlying war and its normal consequences.
+
+Future acceptance cases should interrupt a three-country chain after its first declaration, make the next pair already hostile through a faction call, and remove one actor before the final step.
+Each case must show truthful realized counts, one response per live participant, no repeated war reward and no forced stale declaration.
+Existing option weights, special-country draw thresholds and stage-size tuning remain unchanged by this contract.
 
 ## Baseline: Border Incident Becomes War
 
@@ -255,7 +264,7 @@ Record:
 - event name
 - aggressor
 - target
-- declaration count
+- realized declaration count and any blocked requested slots
 - special chaos country involvement
 - active War Contagion stage
 - fired count

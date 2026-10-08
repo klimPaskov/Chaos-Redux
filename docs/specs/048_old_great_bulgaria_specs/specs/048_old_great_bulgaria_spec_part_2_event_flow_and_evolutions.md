@@ -57,5 +57,7 @@ Evolution state itself creates no Chaos. Concrete consequences such as wars, ann
 - Bulgarian subjects can be kept autonomous, deepened into protectorates, or integrated when route rules permit it.
 - If the historical owner no longer exists, pressure targets the current owner.
 - Existing regional wars are reused when practical. The event should attach Bulgarian claims and interventions instead of opening redundant parallel wars.
+- When an active Third Balkan War includes the hostile pair and target group, its [claim and settlement owner](../../045_third_balkan_war_specs/specs/045_third_balkan_war_spec_part_4_claims_settlement_connections.md) handles Bulgarian participation and the shared peace offer. Event 048 retains its own Momentum, Administration, and later integration. A demand cannot apply a separate transfer while the same territory is under that pending settlement.
+- A settled corridor, temporary occupation, or armistice line is not territorial acquisition. Only an enacted ownership or designated subject result can satisfy the corresponding formation rule. A formal claim waiver survives focus completion and evolution unlocks until an explicit lawful revival rule resolves it.
 - Dead, annexed, nonhuman, or otherwise invalid targets are skipped or resolved through the current territorial owner.
 - A player-controlled target is never protected from the event. It receives the same demand, refusal, negotiation, or war choices as an AI country.

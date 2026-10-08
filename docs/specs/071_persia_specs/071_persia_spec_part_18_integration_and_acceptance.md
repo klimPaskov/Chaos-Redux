@@ -67,7 +67,21 @@ Research Failure can affect ordinary Persian research and production. The event 
 
 Border Fortifications and infrastructure events can complete relevant physical prerequisites. They do not pay a second Persian construction reward for buildings already present. Abundance can affect an applicable ordinary or safely registered event value, but cannot change the root-fired flag, duplicate first-completion records, or directly bypass the guard-cap integrity rules.
 
-Other formables keep their own identity and tree. Persia must not overwrite another event's country package merely because it expands into the same region. Where competing claims exist, ordinary ownership and diplomacy decide the result unless a documented cross-event agreement is added.
+Other formables keep their own identity and tree.
+Persia's project follows current ownership and diplomacy, so another restoration does not supply free territorial progress or replace that country's content.
+
+An actual [Event 063 subject separation](../063_subjects_break_free_specs/specs/063_subjects_break_free_spec_part_1_core.md) also changes imperial restoration proof.
+Part 10 owns cancellation of satrapy-only obligations and the choice between a new sovereign partnership and the one existing independence dispute.
+Persia evaluates that choice from access, protection commitments, the former satrapy's current strength and the safe war graph.
+An unfired Event 063 creates no liberation network, independence or extra crisis for Persia.
+
+When a [ZIN colony](../068_zin_specs/068_zin_13_evolutions_scenarios_and_connections.md#a-persian-restoration-encounters-a-colony) owns a state in an opened regional project, the player sees that government's real posture and terms.
+A declined recognition or access offer does not provoke a neutral colony.
+A committed seizure or war invokes Event 068's own defensive peace demand, which may include Persian-owned states bordering the colony and differs from Persia's restoration request.
+Neither offer transfers territory before acceptance, and the applicable war and ownership transaction must satisfy both owners before either records a completed settlement.
+A treaty partner counts only for the access it actually grants, while a satrapy milestone requires a supported subject relationship and its separate charter.
+Colony units, residents, homeland history and later ZIN progression remain Event 068 content.
+An absent colony leaves the ordinary territorial campaign intact.
 
 ## Shared helper considerations
 

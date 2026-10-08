@@ -1,6 +1,6 @@
 # Event 050 package manifest
 
-Current working-file integrity refreshed on 2026-10-07.
+Current working-file integrity refreshed on 2026-10-08.
 The rows index repository bytes, while supplied-source inventories and original validation reports retain their historical evidence scope.
 
 
@@ -48,10 +48,10 @@ This manifest lists every file in the extractable source package except this man
 | `docs/specs/050_the_great_embargo_specs/specs/050_the_great_embargo_spec_part_5_evolutions_and_fragmentation.md` | 15683 | 2306 | `c94a355b0c0e34852adc723d52c1d8c5609d79c26dbbf7d5cb82869c5a7d8606` |
 | `docs/specs/050_the_great_embargo_specs/specs/050_the_great_embargo_spec_part_6_ai_balance_and_probability.md` | 14705 | 2198 | `8c7c001ce05915b3d82849c8547b712177ce09446c106b06f13964c676185f30` |
 | `docs/specs/050_the_great_embargo_specs/specs/050_the_great_embargo_spec_part_7_presentation_logs_and_assets.md` | 13519 | 1979 | `b598b841eb0758455979c81105eaceed1660fcdcc8dd36c2fabf20d33962fa97` |
-| `docs/specs/050_the_great_embargo_specs/specs/050_the_great_embargo_spec_part_8_achievements_interactions_and_acceptance.md` | 14089 | 2056 | `6cdad4e6222d4299bd19a17124172cb04401b6ae53cc2fd2fe2ce9061aedf343` |
+| `docs/specs/050_the_great_embargo_specs/specs/050_the_great_embargo_spec_part_8_achievements_interactions_and_acceptance.md` | 17935 | 2578 | `83dbe48a816c5812ac7c725d4b1e897d3e8274f7e0c586fe3ce6426fa0b598eb` |
 
 ## Totals
 
 - Files excluding this manifest: 41
-- Bytes excluding this manifest: 240860
-- Markdown words excluding this manifest: 35012
+- Bytes excluding this manifest: 244706
+- Markdown words excluding this manifest: 35534

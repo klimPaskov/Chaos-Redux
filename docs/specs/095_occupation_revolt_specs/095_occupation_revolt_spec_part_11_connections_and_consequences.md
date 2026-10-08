@@ -13,18 +13,26 @@ That supported provenance distinguishes it from an invented fallback country cre
 The restoration package uses the identity already established by the other event.
 It does not retrospectively claim that the country's borders or institutions are historical facts.
 
-## Subject liberation
+## Subject liberation and the existing liberation network
 
-The user's connection name is Subjects Break Free.
-The supplied catalog contains Event 063 under the name End Subject Status.
-Treat the relationship between those labels as a repository alias to verify, not permission to rename the other event or assume its exact current root.
+[Event 063, Subjects Break Free](../063_subjects_break_free_specs/specs/063_subjects_break_free_spec_part_2_settlements.md) owns independence of existing subject countries.
+Event 095 concerns identities displaced from their homeland.
+A subject controlling its homeland normally belongs to Event 063; a displaced subject can qualify here through the ordinary identity and displacement tests.
+If a protected subject release changes status during preparation without returning the homeland, the claimant may still need its restoration campaign.
+An actual external restoration instead uses the overtaken-by-restoration closure without another opening grant.
 
-Subject liberation concerns countries that exist under another country's political authority.
-Occupation revolt concerns an identity displaced from control of its homeland.
-A subject that controls its home territory ordinarily belongs to the subject-liberation system.
-A subject or former subject that has actually lost its homeland can qualify for Event 095 through the same displacement tests as other countries.
-A claimant restored as a subject has not earned a full-independence result.
-Its later pursuit of freedom can transfer naturally to the subject event.
+A completed independent restoration can offer its existing origin and outcome record to the [liberation network](../063_subjects_break_free_specs/specs/063_subjects_break_free_spec_part_4_evolutions_clusters_and_connections.md) through a reviewed, owner-approved adapter.
+The claimant must actually exist independently.
+Preserve earlier Independence Wave or Soviet-origin identity; Event 063 owns network eligibility, recognition, congress and Pact decisions.
+Event 095 grants no automatic membership, guarantee, Liberation Cohesion or duplicate independence reward.
+
+A restored subject closes with that honest outcome and may later pursue Event 063.
+AI follows current status and diplomatic conditions: an independent claimant can seek compatible support, while a subject cannot claim independent-network credit.
+When Event 063 or its adapter is absent or disabled, normal restoration and diplomacy remain playable.
+
+A future acceptance case compares independent and subject restorations sharing an earlier Event 006 origin.
+Only the independent country can be offered as an active independent network participant.
+Neither reruns Event 006 setup, and a later subject release does not spawn another revolt army.
 
 ## Civil wars and ideological revolutions
 
@@ -39,17 +47,47 @@ Do not restore an obsolete ideology because it existed at the first occupation.
 A legitimate surviving national identity can continue its restoration under a different government.
 Its foreign agreements may need renegotiation when their actual terms or eligibility change.
 
-## Territory-changing events
+## Sales, partitions and the claimant's real homeland
 
-Annexations, partitions, state transfers and wars change which home states are eligible.
-Event 095 revalidates its tracked homeland and active target list at the relevant ownership and control changes.
-It does not build a new global territorial monitoring system for every event in the mod.
-Recorded agreements and source responsibility survive a change of controller where their owning systems require it.
+[Greenland Sale](../092_greenland_sale_specs/092_greenland_sale_spec_part_04_territory_and_sovereignty.md) and [Tordesillas partition](../093_treaty_of_tordesillas_restoration_specs/093_treaty_of_tordesillas_restoration_spec_part_06_geographic_partition.md) change territorial authority, rather than national origin.
+A sale preserves an authentic displaced claimant's homeland record.
+A treaty claim or imperial integration core alone cannot make a distant acquisition that crown's original lost homeland.
+Part 02's provenance test still distinguishes genuine overlapping identities from invented expansion rights.
 
-A state transferred by Treaty of Tordesillas Restoration, another partition or a sale is not automatically part of a claimant's homeland merely because its owner changed.
-A genuine claimant displaced by such a transfer can become eligible through the ordinary identity and control checks.
-Overlapping liberation events cannot each grant the same state, army and political reward.
-The first actual transaction is authoritative and later operations revalidate against it.
+An ownership or control change invalidates the tracked state's cached opening or spread assessment.
+At the next existing operation boundary, recheck the current counterpart, local forces, access and political terms.
+The buyer does not inherit the seller's personal sponsor contract or earlier civilian responsibility without the relevant owner's explicit succession rule.
+A saved occupier target cannot declare war on the former owner after a sale.
+
+An accepted restoration settlement or committed opening exposes its exact state disposition to the other territorial owners before an incompatible cession can be promised.
+A dormant network or foreign core alone is not that commitment and does not expose covert cells through a public listing.
+[The auction owner](../092_greenland_sale_specs/092_greenland_sale_spec_part_11_connections_and_consequences.md) handles its cancellation and refund when actual liberation removes an advertised holding; completed purchases carry no insurance against later revolt.
+If a lawful sale finishes first, preparation revalidates against the buyer.
+
+Liberation of a treaty region makes Event 093 refresh its real Consolidation numerators against the frozen denominator.
+Neither event removes the other's legitimate core, and independent faction association does not preserve absorbed-territory credit.
+Claimant AI evaluates the new opponent and support route rather than treating payment as national consent or an automatic war.
+
+A future acceptance case sells a prepared claimant's home port before opening: the movement must use the current buyer, actual route and finite material budget.
+A second liberates a treaty-integrated state: authentic identity survives and imperial credit falls only where real authority was lost.
+Ordinary territorial changes use the same revalidation when either connection is absent.
+
+## Disappearance during a restoration campaign
+
+[Half gone](../094_half_gone_specs/094_half_gone_spec_part_7_connections.md) owns an unexplained loss, not an occupier's suppression action.
+A living claimant or donor can lose its reserve; a dormant unactivated identity is not a live country target.
+Dispatched stores, underground caches and issued equipment retain Parts 03 and 04's ownership distinctions, with no new cache-loss provider or second debit through stale national stock.
+
+Before opening, use surviving recruits and equipment in the existing national budget.
+A population disappearance in a tracked home state limits future volunteer potential, but is neither lost sovereignty nor confirmed deaths.
+A smaller viable opening may proceed; an unviable one follows ordinary preparation or closure.
+Readiness cannot replace stores or replay that episode's finite cache.
+After opening, demographic loss does not halve the army already fielded.
+
+Country activation consults the character owner's active absence state.
+Historical setup repair cannot recreate a missing commander or unique person; use valid leadership and legitimate owner-supported absence or replacement.
+A future acceptance case restores a country with a missing commander and depleted reinforcement stocks: the identity stays absent, reinforcement spends only available equipment, and the cache is not issued again.
+Without Event 094, ordinary country and force continuity remain authoritative.
 
 ## Famine, relief and displacement
 

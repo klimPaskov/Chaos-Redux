@@ -168,6 +168,7 @@ The state carries a permanent mine identity until one of these terminal local ou
 - the deposit is permanently exhausted through a defined failure or exploitation route
 - the mine is permanently sealed
 - a catastrophic collapse destroys the workings beyond recovery
+- the state becomes Event 028's permanent main crater
 - a supernatural closure consumes or removes the site
 - a later accepted event explicitly converts the site through a safe adapter
 
@@ -203,6 +204,23 @@ This refresh should use a narrow ownership or control hook, an event-driven stat
 It must not rely on a whole-world daily, weekly, or monthly scan.
 
 If the installed engine and repository do not expose a proven narrow controller-change route, implementation must stop and report that blocker. Do not add an unauthorized global scan.
+
+## Physical destruction by Asteroid Incoming
+
+The [Event 028 impact profile](../028_asteroid_incoming_specs/028_asteroid_incoming_spec_part_3_impact_damage_and_aftermath.md) determines whether the selected mine state survives.
+A permanent main crater ends this mine's operating life.
+Event 029 removes its contribution, closes site-specific projects and missions under their existing cancellation policies, and rebuilds the controller aggregate from surviving mines.
+The historical state record, original discovery payment, and already established national aftermath remain.
+The destroyed site cannot be mined again or satisfy successful sealing, evacuation, reform, or bargain achievements.
+Impact deaths cannot satisfy a mine obligation or trigger a second mine-death debit.
+
+Damage in a surviving ring state or fragment center instead revalidates works, supply, and transport.
+The player can use the existing repair, reduced-extraction, temporary-closure, and reopening choices when their physical requirements hold.
+A fragment-crater identity does not by itself destroy the mine.
+The same physical building loss and repair remain shared facts even when both events offer recovery work.
+
+The mine owner checks this condition during its ordinary state refresh, including the first refresh after re-enabling the event.
+It does not launch Asteroid Incoming, add a new incident roll, or grant a replacement discovery windfall.
 
 ## Visible mechanic values
 

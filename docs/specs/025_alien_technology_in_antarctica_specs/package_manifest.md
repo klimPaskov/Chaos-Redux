@@ -1,7 +1,7 @@
 # Event 025 working-tree documentation manifest
 
 The package was authored on `2026-08-18`.
-This inventory and its checksum ledger describe repository documentation bytes refreshed on `2026-10-07`, including preserved pre-audit edits.
+This inventory and its checksum ledger describe repository documentation bytes refreshed on `2026-10-08`, including preserved pre-audit edits.
 They provide file integrity evidence only.
 Original uploaded-source receipts remain in `research/025_source_reading_ledger.md`.
 

@@ -120,11 +120,18 @@ A registered technology's owner can add a concrete Chaos source when the recipie
 
 ## Irreversibility
 
-There is no generic containment route for Event 54. The technology has already spread into state institutions and cannot be removed cleanly without damaging unrelated research state.
+Event 54 supplies no generic containment or rollback route after the grant.
+Its anomaly milestones are one-time records of knowledge actually appearing; an unrelated later loss does not reverse those milestones automatically.
 
-Research Failure may reduce research capacity after a gift, but it does not erase the technologies already received and therefore does not reverse Event 54's anomaly milestones.
+The relationship with Research Failure remains unresolved.
+This package proposes that completed Event 54 gifts remain protected while Event 60 damages research capacity.
+[Event 60's technology-regression design](../../060_research_failure_specs/specs/060_research_failure_spec_part_2_technology_regression.md) instead includes broad safe rollback of ordinary researched nodes and does not establish a provenance exemption for gifts.
+Parent acceptance must choose between protecting Event 54 grants and allowing later Event 60 incidents to regress ordinary gifted nodes through their normal safety policies.
+Neither proposal authorizes changing the other owner's behavior merely because its source files already exist.
 
-This lack of reversal is acceptable because the event's direct Chaos contribution is small, one-time, and capped across the whole campaign.
+Independently of that choice, a grant that genuinely restores an outstanding Event 60 loss can reconcile exactly that loss once through Event 60's ledger.
+It does not refund slots, Scientific Capacity, Archive Recovery, or either event's earlier Chaos accounting.
+The precise selection and co-occurrence boundary is in [Part 5](054_gift_from_scientists_spec_part_5_connections_and_cluster.md#research-failure).
 
 ## Evolution presentation direction
 

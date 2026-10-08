@@ -174,6 +174,24 @@ A military delivery can relieve equipment shortages and help pay some covert cos
 
 The delivery should not reduce Pressure unless it changes a concrete coalition or target outcome.
 
+## Event 052: Intel Leaked
+
+An active embargo can consume a current industrial, resource, or shortage-domain finding only when an existing core enforcer is a named Event 052 exploiter against this target and can act on that particular weakness.
+At its next existing coalition review, Event 050 can revise that enforcer's relevant enforcement assessment or priority.
+Leaked files alone do not raise global Pressure, remove target resources, expose every smuggling host, or start a new embargo.
+
+The target can make the finding obsolete through actual substitution or use Event 052's prepared False industrial shortage deception.
+A deception payoff requires the enforcer to commit to a matching mistaken assessment or enforcement action; possessing a copy is insufficient.
+Event 050 owns the resulting enforcement contribution and reports its actual review result to the existing Event 052 incident, which owns Reliance, Exposure, and deception success.
+One Event 052 sequence supplies at most one such adjustment for this embargo and enforcer.
+Changing archive domains or repeating reviews cannot refresh it.
+It stops applying when the relevant files lose value, the enforcer leaves, or the embargo closes.
+
+AI enforcers should use authentic relevant evidence and stop relying on information contradicted by observed supply changes.
+AI targets should consider the existing deception only when its preparation cost and a reliant active enforcer make it useful.
+If the leak is absent or its owner cannot provide the proof, Event 050 keeps its ordinary dependence model and review behavior.
+The matching incident rules are in [Event 052's Great Embargo connection](../../052_intel_leaked_specs/specs/052_intel_leaked_spec_part_5_evolutions_repeatability_and_connections.md#event-050-the-great-embargo-connection).
+
 ## Shared Condemnation system
 
 Public Condemnation can strengthen the opening justification, coalition recruitment, and hardliner behavior.
@@ -191,17 +209,28 @@ When the same target is affected by both systems:
 ## Famine system
 
 An embargo does not automatically create famine.
+Food risk requires real import dependence, route disruption, reserve failure, inadequate local supply, or an existing Famine incident validated by its owner.
+Famine retains Food Security, Food Reserves, Relief Access, mortality, and relief decisions.
 
-It can contribute to famine risk only when validated food-security conditions exist, such as import dependence, route disruption, reserve failure, inadequate local supply, and no relief corridor. The famine system owns Food Security, Food Reserves, Relief Access, mortality, and relief decisions.
+When the target has a validated food need and a usable named port or land corridor, its existing Diplomatic Concessions or Neutral Intermediaries response can seek a food-and-relief exemption.
+The offer names the route, the relief scope, and any inspection or monitoring commitment before acceptance.
+The target and intermediary commit the transport, fuel, and civilian capacity required by the existing delivery; the coalition decides through its existing relevant-actor choice or review whether that route is exempt, restricted, or refused.
+A new humanitarian meter or parallel permanent agreement system is unnecessary.
 
-Event 50 can:
+An exemption changes that delivery's enforcement conditions rather than lifting the whole embargo.
+Food-only access does not complete Secure Replacement Supply or count as an industrial replacement route.
+It does not reduce Embargo Pressure unless a separate real coalition defection or settlement already satisfies the ordinary Pressure rules.
+Core enforcers can allow monitored relief while maintaining strategic restrictions; hardliners can deny it at the existing diplomatic cost and crisis consequences.
+If refusal or later obstruction satisfies [Famine's existing relief-obstruction proof](../../../systems/famine_system.md#adapters), Famine registers its Condemnation consequence once; a rejected negotiation without that proof supplies none.
 
-- raise route difficulty for an already valid famine incident
-- create a diplomatic choice around humanitarian relief
-- exclude food or relief cargo from enforcement when participants agree
-- worsen the target's ability to fund imports
+Only Famine credits the actual accepted delivery to reserves or relief access.
+Event 050 and [Heat Wave's Emergency Food Imports](../../051_heat_wave_specs/09_decisions_and_missions.md#emergency-food-imports) may both describe the same route, but must not pay, credit, or reward that shipment twice.
+Destroyed transport, closed ports, revoked access, or a refused owner request produce the existing partial or failed delivery outcome, with no reserve credit and no Event 050 population debit.
+Closing the embargo removes its own restriction and exemption proof; it does not undo relief already delivered or close the Famine incident.
 
-It must not debit population or log famine deaths directly.
+AI food-vulnerable targets should compare a monitored relief offer with preserving scarce transport for domestic supply.
+Outside AI should assess a usable route and the actual relief scope rather than treat permission as coalition defection.
+When Famine or the optional Heat Wave connection is unavailable, ordinary embargo responses remain available and do not manufacture a famine.
 
 ## Migration system
 

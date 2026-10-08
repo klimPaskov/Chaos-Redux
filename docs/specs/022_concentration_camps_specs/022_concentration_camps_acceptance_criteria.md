@@ -388,11 +388,15 @@ Pass conditions:
 - Event 13 disaster hook preserves cause ownership
 - Event 16 experiment link uses its public contract
 - Event 20 plague cause accounting is distinct
+- P22-PLAGUE-LIBERATION: a noncontinuing controller captures an infected camp state; camp operation stops, active plague persists, and supported local care remains possible without erasing original responsibility
+- P22-PLAGUE-TRANSFER: accepted medically supported passage moves only proved living survivors and consumes its owning payment once; rejection, route loss, or receiver-capacity failure before departure leaves them at the origin with no arrival credit or arrival-based exposure
+- P22-PLAGUE-OUTSIDE-LOSS: a whole-state epidemic loss observes the camp owner's provenance rules; an unlabelled loss with mixed living origins pauses origin-specific actions rather than inventing a detainee death split
+- P22-PLAGUE-ABSENT: the same relief site with no active Black Plague retains ordinary camp disease and relief, with no forced outbreak or missing response
 - Event 21 civil-war pressure is bounded
 - Event 31 terror link is used only for independent campaigns
 - chemical and biological systems own contamination
 - famine owns general famine state and deaths
-- migration owns actual transfers when available
+- the independent migration owner owns actual survivor transfers and reception; a pending request or marker supplies no movement, death, or destination-population receipt
 - occupation and resistance use current engine and mod systems
 - air cleanliness affects disease and relief where supported
 

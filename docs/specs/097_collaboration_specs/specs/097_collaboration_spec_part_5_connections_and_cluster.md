@@ -38,7 +38,10 @@ Every write requires the caller to supply proof that matches its own state. A ca
 
 Collaboration makes occupied populations easier to govern. Occupation Revolt represents national resistance trying to overthrow foreign rule. A government installed through Event 097 can become the target of a national restoration uprising if enough opposition survives. Event 095 owns the uprising itself. Event 097 owns the record of who was installed and how much opposition survived.
 
-Event 095 is marked for rework and has no specification. In its current form it returns enemy-controlled cores to a random government in exile and raises revolt divisions, without reading collaboration, compliance, or resistance. The contract below is what Event 097 offers. The Event 095 rework decides how to use it.
+The [Event 095 claimant design](../../095_occupation_revolt_specs/095_occupation_revolt_spec_part_02_claimants_and_homelands.md) and [territorial consequence contract](../../095_occupation_revolt_specs/095_occupation_revolt_spec_part_11_connections_and_consequences.md) govern the proposed restoration.
+Its claimant must have an authentic displaced national identity, a qualifying homeland and a viable opening.
+The installed government's record identifies the actual original country, installer and affected territory for that assessment.
+A collaboration-government label alone cannot nominate an unrelated claimant or manufacture its army.
 
 ### Restoration pressure
 
@@ -65,7 +68,19 @@ The band, not the inputs, is shown, and only as a line in two reports to the ori
 
 ### What Event 095 can do with it
 
-When the Event 095 rework exists, it can treat a High band as the condition that enough opposition survives, choose the installed government as the target of its national restoration uprising, and call the Retire action when the uprising restores the original country. Event 097 then applies its reversal Chaos and retires the registry row.
+A High restoration band is this variant's input for sufficient surviving opposition.
+Event 095 still validates the genuine claimant, its supported local organization, current hostile control and viable territorial opening under its own rules.
+An invalid claimant or failed opening leaves the installed government and its Event 097 record intact.
+When the connection is unavailable, native occupation and this variant's administration lifecycle continue normally.
+
+A partial uprising changes only the states it actually takes.
+Those states lose seated administrations through the ordinary recapture rule, while an installed government that still survives keeps its valid record.
+Event 095 calls Retire only for the matching government record when its completed restoration actually ends that installed government.
+Event 097 applies its own matching reversal once, and Event 095 retains the state transfer, revolt forces and its other consequences.
+
+An installer can reinforce its threatened homeland holdings or use this variant's existing Loyalty Commissions when eligible.
+The original country pursues Event 095's real preparation and restoration choices.
+AI uses the observed restoration band as context for those existing choices, without treating High as a guaranteed uprising or government defeat.
 
 ### What Event 095 changes in Event 097
 

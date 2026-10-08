@@ -1,6 +1,6 @@
 # Event 062 specification package manifest
 
-Current local file inventory refreshed on 2026-10-07; original planning-source receipts remain in the source-reading reports.
+Current local file inventory refreshed on 2026-10-08; original planning-source receipts remain in the source-reading reports.
 The inventory excludes this manifest and preserves any explicitly listed external plan-document rows.
 
 ## Package identity
@@ -32,9 +32,9 @@ The inventory excludes this manifest and preserves any explicitly listed externa
 | `specs/062_allies_backstab_spec_part_1_core.md` | 9605 | 172 | `4f0b4565242d03d997aaa009bfe64478158aff8d29e6afe6a0aca2bd1698299a` |
 | `specs/062_allies_backstab_spec_part_2_selection.md` | 10985 | 184 | `ae2fa8df2ccb70d75625eeb46296e978abe009325c1e982d9ed62d1752c48a38` |
 | `specs/062_allies_backstab_spec_part_3_transaction_and_war.md` | 11128 | 217 | `4a4d1d6061cfe6181cf2b1506de2266d5d2c790f4f86d64616d45abb06f3df5a` |
-| `specs/062_allies_backstab_spec_part_4_decisions_and_missions.md` | 19397 | 439 | `fa507e960c32f2c94abd0404d358ba67ca5eba2a9bf46defa30efb5bf8c6132d` |
+| `specs/062_allies_backstab_spec_part_4_decisions_and_missions.md` | 20175 | 445 | `9711cc0c8ff7f85b3bb2c728d03fcf301fbed5b14ce1148e0b028925634bc682` |
 | `specs/062_allies_backstab_spec_part_5_evolutions.md` | 12030 | 287 | `bebb641eb07c461260273733517382b62769a6d48bdc07d5e9c1701648c79290` |
-| `specs/062_allies_backstab_spec_part_6_outcomes_connections.md` | 12077 | 282 | `f8425c32260896a58a8678a6a5805315465aa9e0c0337273d7796a64fc02df50` |
+| `specs/062_allies_backstab_spec_part_6_outcomes_connections.md` | 13268 | 291 | `ed15009fec170759aae95a41884996cc78c909efb0b80166edb41272ab966765` |
 | `specs/062_allies_backstab_spec_part_7_ai_achievements_presentation.md` | 15469 | 360 | `2accad5d2cda42d9fe8e63858b96eea8662c2597deb8fd892e4d46e646248f6c` |
 
 ## Historical creation checks

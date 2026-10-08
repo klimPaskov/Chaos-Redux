@@ -130,13 +130,13 @@ A blocked engine capability remains a blocker and cannot be relabeled as passed 
 | `CON-002` | Foreign player receives aid request | Choice, timeout, and AI fallback function without blocking target |
 | `CON-003` | Rival recruits diaspora cohort | Host benefit and target loss apply once, cohort cannot be farmed |
 | `CON-004` | Rival steals archive | Bounded effect, one receipt, possible exposure, no entire technology transfer |
-| `CON-005` | Gift from Scientists targets country with lost ledger | Compatible lost node receives priority, ledger and family update, slot state unchanged |
-| `CON-006` | Gift recipient has no compatible lost node | Gift uses normal Event 54 route |
+| `CON-005` | Actual authorized Gift grant covers one or more lost nodes | Only exact covered entries and matching family state reconcile once; no slots, Capacity or Archive refund. Lost-node selection priority and protection of prior gifts remain unresolved alternatives under Part 4, not tested assumptions |
+| `CON-006` | Actual Gift has no compatible lost node | Event 54 retains its authorized draw and grant; Event 60 provides no reroll or recovery reward |
 | `CON-007` | Brilliant Scientist opportunity | One bounded owner-safe recovery benefit applies, not total event resolution |
 | `CON-008` | Recent Intel Leaked on same target | Security and exploitation interaction applies without duplicate intel stacking |
-| `CON-009` | Mysterious Man archive branch | Hidden valid or false outcome affects one safe branch and persists across reload |
+| `CON-009` | Proposed Mysterious Man archive branch | Unresolved owner-design conflict: beneficial archive outcome cannot enter the demand/refusal loop without separately accepted Event 53 expansion. Normal payment grants no archive reward; preserve hidden valid/false proposal only as an alternative |
 | `CON-010` | Black Market member receives offer | Membership remains hidden and trade cannot sell full technology tree |
-| `CON-011` | Scientific Research cluster includes Event 60 and positive grant | Regression resolves first, positive event becomes partial recovery, cluster counts as one pacing event |
+| `CON-011` | Scientific Research cluster includes Event 60 and positive grant | Proposed rollback-before-grant order requires parent disposition against Event 54 framework ordering. Under the accepted consistent order, actual matching grants reconcile once, both effects remain and the cluster counts as one pacing event |
 | `CON-012` | Cluster member is invalid | Member skips with normal reason and Event 60 remains coherent |
 
 ## Chaos

@@ -170,7 +170,7 @@ Scaling factors:
 - use in foreign territory
 - use in occupied territory
 - use against non-core populations
-- doctrine branches that reduce public visibility or discipline use
+- the accepted doctrine multiplier on Condemnation impact, without reducing evidence or attribution
 - contamination contribution
 
 Doctrine mitigation can reduce gain. It must never erase consequences completely when heavy use is visible.
@@ -200,7 +200,12 @@ Scaling factors:
 - target country status and war context
 - whether the user takes visible containment measures
 
-Containment efforts should reduce future growth and improve decay. They should not erase the initial gain.
+Containment efforts should reduce future growth and improve decay.
+They should not erase the initial gain, the evidence, or the deaths already recorded.
+An outbreak's intensity identifies the need for relief; it does not identify a guilty country by itself.
+A natural outbreak or an unattributed foreign seed must not condemn its current controller merely for suffering or reporting the disease.
+Biological blame follows the source owner's deliberate-use or exposed-accident evidence and stored responsible actor.
+Later attribution publishes the unpaid part of the existing episode rather than charging the full attack again, as defined in the [CBRN attribution model](../../chaos_warfare_system_specs/specs/09_condemnation_deaths_air_cleanliness_and_diplomacy.md#attribution-model).
 
 ### Nuclear source
 
@@ -614,7 +619,7 @@ Participant countries should also have actions and AI decisions.
 | Join strategic embargo | Target reaches Tier 4 and participant can bear trade cost | Resource shortage risk and consumer goods burden. |
 | Join total embargo | Target reaches Tier 5 and broad pressure exists | Larger economic cost and faction tension. |
 | Abstain | Trade dependency, ally shield, weak economy, or strategic need | Opinion cost with sanction leaders or victims. |
-| Humanitarian carve-out | Relief supplies, medicine, or civilian exceptions | Reduced pressure but less economic damage to target. |
+| Humanitarian carve-out | Permit named defensive relief while keeping offensive trade restricted | Forgone economic pressure; any actual shipment retains its CBRN owner's payment and access rules. |
 | Quiet breach | Profit motive or resource need | Exposure risk, condemnation gain, relations loss with sanction leaders. |
 | Tighten enforcement | Target evasion is exposed | Enforcement cost, lower target evasion strength. |
 | Shield ally | Same faction or vital partner | Diplomatic cost and participant hypocrisy pressure. |
@@ -806,6 +811,9 @@ Chemical systems should call the source-aware helper only when weapons are used 
 ### Biological warfare
 
 Biological systems should call the helper after strikes, deliberate spread, public outbreak links, accident exposure, and doomsday release.
+The biological lifecycle owns the affected state's disease, continuing deaths, and Air Cleanliness contribution; Condemnation consumes the attributed source result and never runs a second mortality or contamination process.
+[Event 020](../../020_black_plague_specs/specs/020_black_plague_spec_part_3_cure_spread_and_biowarfare.md#biological-warfare-registration) owns Black Plague identity, countermeasure progress, and its registered weaponization route.
+Sanction compliance or humanitarian access does not grant its samples, project, cure, or progression, and ordinary relief remains available through its own owner when that event is absent.
 
 ### Camps and genocide mechanics
 
@@ -813,7 +821,9 @@ Discovery, leaks, occupation, liberation, observers, and exposed records should 
 
 ### Chaos Warfare
 
-Doctrine paths can change gain rates, compliance credibility, evasion options, or defiance strength. They should not remove consequences from heavy visible use.
+The [accepted CBRN doctrine boundary](../../chaos_warfare_system_specs/specs/09_condemnation_deaths_air_cleanliness_and_diplomacy.md#doctrine-mitigation-rule) permits a bounded change to Condemnation impact while retaining public-harm floors.
+It does not reduce evidence, attribution, payload debit, physical harm, deaths, contamination, trauma, responsibility, or history.
+Any broader compliance, evasion, or defiance route remains a separately reviewed proposal rather than an automatic doctrine privilege.
 
 ## Asset and icon needs
 
@@ -930,6 +940,9 @@ The system is not complete until these scenarios are checked or explicitly block
 18. AI targets choose compliance when weak and defiance when strong.
 19. UI shows source breakdown, tier, active sanctions, participant count, and next threshold.
 20. Tooltips show dynamic costs and blocked requirements without raw trigger spam.
+21. A natural or unattributed outbreak receives its normal response without assigning blame to the suffering controller; later confirmed foreign responsibility updates the original episode once.
+22. A humanitarian carve-out permits only its named defensive relief. The CBRN action pays and supplies once, offensive restrictions remain, and the target's evidence and recorded deaths persist.
+23. When Event 020 and ordinary biological episodes coexist, relief and sanctions preserve their distinct disease/countermeasure ownership without duplicating mortality or granting another event's progression.
 
 ## Acceptance criteria
 

@@ -125,6 +125,16 @@ The helper must:
 
 A civil war involving a country with no Event 32 program receives no missile content.
 
+## Event 31: Random Terror
+
+An Event 31 territorial seizure uses the ordinary site-capture process. Event 32 owns the site, exact surviving missile custody, canceled operation settlement, command recovery, and every later launch. Event 31 owns the deliberate seizure, nearby cells, government security objective, and its public strategic reaction.
+
+The [Event 31 connection](../031_random_terror_specs/031_random_terror_spec_part_10_cross_event_system_interactions.md#event-32-missiles) may read Event 32 custody proof. It cannot allocate a share of the former country's national arsenal independently. Sealed captured stock stays unavailable until an existing Event 32 resolution grants access. Payload owners separately settle chemical, biological, and nuclear reservations.
+
+If both the generic state-control hook and Event 31 report the capture, they resolve the same custody transaction. Event 31's distinct strategic seizure may have its own reaction, but it adds no second physical loss, confirmed weapon use, or shared Chaos charge. Event 32 AI applies the same technology, force, supply, and command requirements to these actors as to other recipients. Without Event 31, the ordinary capture process is unchanged.
+
+Acceptance case: a launch state changes to an Event 31 actor and back during preparation. Available, assigned, sealed, returned, and destroyed missiles reconcile to the original stock, and a canceled operation cannot launch through a late callback.
+
 ## Event 23: Soviet Nuclear Bombs
 
 Event 23 owns:
@@ -329,17 +339,11 @@ Event 32 should register a stable death-reason family if the shared enum require
 
 ## Chaos Meter
 
-Direct Event 32 firing and evolution changes use event-owned chaos deltas.
+The [core consequence-budget map](032_missiles_spec_part_1_core.md#chaos-effects) owns Event 32's proposed direct amounts. Evolution eligibility, activation, logging, doctrine adoption, payload integration, retaliation posture, and preparation add zero Chaos by themselves.
 
-Strike consequences use:
+Unexplained material program grants use the completed firing receipt. Unauthorized launches, unintended neutral impacts, newly demonstrated special delivery, and mistaken automated exchanges use the committed incident or closed root-chain proof named in that map. Saturation's separate proposed budget remains unassigned pending a distinct supported abnormal outcome.
 
-- direct conventional escalation where designed
-- shared death contribution
-- shared contamination contribution
-- shared nuclear-use ladder
-- shared war or peace systems
-
-Avoid double counting one strike under several event-owned paths.
+Shared Deaths, contamination, nuclear-use, war, peace and other consequence systems retain their own sources. Event 32 records only the additional abnormal manifestation or command/delivery breakdown, never a second charge for the same physical loss. One causal root receives at most one applicable evolution-family premium, including when several tracks contributed.
 
 ## Fallout consequence route
 

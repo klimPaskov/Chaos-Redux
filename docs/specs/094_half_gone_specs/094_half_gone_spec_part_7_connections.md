@@ -76,10 +76,47 @@ The Devil may boast, imply responsibility, or claim that the country's other adv
 
 The report, super-event, achievement text, and hidden resolution must preserve that distinction. The player may form a theory. The event does not settle it.
 
-## Other existing systems
+## Aid promised, aid delivered and later disappearance
 
-Equipment received from another abundance event can later disappear as part of the current stockpile. The donor event does not need to be rewritten. Research-sharing membership survives unless its actual owner changes it, while personal participation can be affected by a character absence.
+The [Tordesillas aid contract](../093_treaty_of_tordesillas_restoration_specs/093_treaty_of_tordesillas_restoration_spec_part_03_spanish_civil_war.md) and [revolt shipments](../095_occupation_revolt_specs/095_occupation_revolt_spec_part_07_foreign_support_and_settlements.md) distinguish donor stock, transit and recipient stock.
+Half gone removes compatible reserve actually held by the selected country at that instant.
+A promise is not another arsenal; goods already removed into a delivery transaction cannot be removed again through the donor's stale promise.
+Transit enters only through a compatible owner-supported reserve operation with one physical result.
 
-Population loss must coordinate with existing migration, famine, and state ledgers without duplicating people. It must not feed zombie bodies or confirmed-death rewards, because the missing population has not been established as corpses. Chemical and biological stores remain subject to their physical equipment and native-operation ownership.
+Donor loss before dispatch makes the aid owner recheck the remaining bill and stocks.
+Existing pause, revision and inability-to-deliver terms apply, with no free replacement or automatic deadline extension.
+Recipient loss after credited arrival leaves the donation genuinely fulfilled, including an earned Galicia bargain.
+The donor does not owe it twice, while outstanding installments remain outstanding.
 
-Condemnation, retaliation, and world threat do not attach to the victim automatically. A later government action can create its own evidence and consequences, but the disappearance alone supplies no confirmed perpetrator.
+AI donors protect current defense and honor actual affordable terms; recipients may request normal new aid without duplicating a fulfilled claim.
+A future acceptance case compares Portugal losing rifles before dispatch with Spain losing them after credited arrival.
+Only the former changes Portugal's ability to pay its remaining bill.
+The same boundary preserves revolt-shipment arrival and Cohesion accounting.
+If either aid owner is absent, normal recovery continues.
+
+## Property and national continuity
+
+[Greenland Sale](../092_greenland_sale_specs/092_greenland_sale_spec_part_03_dynamic_value.md) sells state assets, not national reserve equipment.
+Equipment-only loss changes military circumstances and bidding willingness without deleting the lot or adjusting funded principal.
+Population loss in a listed state changes its current assessment; the auction owner applies its existing deterioration or capability rule.
+Cancellation neither restores those people nor adds deaths.
+
+[Occupation Revolt's force rules](../095_occupation_revolt_specs/095_occupation_revolt_spec_part_04_forces_and_opening.md) use surviving recruits and equipment before opening.
+A loss cannot create another cache or become a suppression operation.
+After opening, fielded formations remain protected by the existing incident scope.
+A returning country preserves active character absence rather than recreating a missing commander from historical setup, with valid command and owner-supported replacement still available.
+
+A future acceptance case restores a country after its commander disappears: valid government returns, that identity stays absent and no spent cache is replayed.
+Population loss changes future recruit potential without retroactively halving an issued army.
+The auction buyer, occupier and treaty partner gain no perpetrator attribution from the connection.
+
+## Shared records after recovery
+
+Equipment supplied by Abundance or another aid event becomes ordinary current reserve and can disappear on a later firing.
+Its completed grant receipt remains history rather than a perpetual protection or repayment claim.
+Research-sharing membership survives unless its owner changes it, while a participant's personal absence follows the character owner.
+
+Population loss reconciles existing migration, famine and reception representations with one physical result.
+It does not feed zombie bodies or confirmed-death rewards, and chemical or biological stock loss creates no release merely because a container is missing.
+Condemnation, retaliation and world threat require their owners' actual evidence of a later action; the unexplained disappearance supplies no confirmed perpetrator.
+

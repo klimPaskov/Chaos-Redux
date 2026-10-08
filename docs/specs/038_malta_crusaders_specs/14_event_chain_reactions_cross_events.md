@@ -275,20 +275,11 @@ The Holy World terminal does not automatically receive free chemical or biologic
 
 ## Event 40: Lawrence of Arabia
 
-Malta is a direct rival in the eastern Mediterranean and Levant.
+Use the [Event 40 rival-patron contract](../040_lawrence_of_arabia_specs/040_lawrence_of_arabia_spec_part_5_connections_assets_achievements.md#malta-crusaders) when Malta or a human crusader successor controls a port or corridor actually used by British aid, threatens an existing partner, or can deliver a rival offer. Jerusalem, Jordan, Levantine ports and strategic islands matter through current access and relationships.
 
-Relevant interactions:
+Malta owns its territory, council consequences, and the specific patronage or access obligation. A sending action applies its payment and cargo once; Event 40 owns the resulting Influence, credibility, and client settlement. A willing Maltese sponsor needs real stock and a usable route. A Malta attacking the target is a threat rather than an available donor. The Arabian government uses existing sponsor-balancing and national-custody choices; counter-blocs and federation congresses retain their existing negotiation or opposition options.
 
-- control of Jerusalem, Jordan, Levantine territory, Greek islands, or ports
-- competition for local governments
-- competing aid and military patronage
-- British route access
-- federation or client-state conflicts
-- embargo and convoy pressure
-
-Arabian governments can play Britain and Malta against each other, accept one patron, reject both, or form a counter-bloc.
-
-Older Event 40 notes call Malta a “special Chaos country.” Implementation must interpret that as an event-special actor exclusion from Lawrence targeting, not as automatic placement in `is_special_chaos_country` or `is_actual_nonhuman_country`. Malta should have a narrow `lawrence_invalid_target_malta_crusader` trigger or equivalent owner-specific exclusion.
+Malta and ordinary principalities retain human civilian systems. Event 40 uses its specific target exclusion for the crusader actor and successors. An accepted offer grants neither Papal submission nor formation proof. Malta's AI considers route, stock, war alignment, and existing obligations before committing. With either event absent, ordinary diplomacy, routes, and war effects continue.
 
 ## Event 45: Third Balkan War
 

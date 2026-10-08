@@ -52,6 +52,14 @@ Treatment, containment, immunity, and logistical relief are different promises. 
 
 The cost comes from access to people, medical administration, records, and protected facilities. A cure is not secretly fake. Breaking the relationship does not automatically reinfect everyone who recovered. Disease later returning through a new exposure is a new event governed by the disease owner, not a retrospective cancellation of the original delivery.
 
+An active Wu institute can provide an independent alternative only through [its actual care sequence](../../089_doctor_wu_specs/medicine/089_doctor_wu_spec_part_3_universal_cures.md).
+For the named patients, compare matching treatment already available and deliverable with research or manufacture that remains unfinished.
+The bargain can remain tempting when extraordinary care arrives sooner or reaches people the independent network cannot yet serve.
+Wu's presence alone cannot make an urgent offer irrelevant, and a research design alone cannot count as delivered care.
+If independent treatment reaches the promised patients before the offer is answered, refresh or withdraw the obsolete medical promise under the existing pending-offer rule.
+A government can decline and pursue independent care without starting Wu's event or receiving his progression from that refusal.
+The AI evaluates this visible alternative through the existing acceptance policy, using current access, capacity, and delivery rather than an author-facing promise of eventual cure.
+
 All of the medical content here is fictional game design. It specifies state, unit, and population outcomes, not real pathogen cultivation, laboratory protocols, or methods of biological attack.
 
 ## Medical offer: The Wards Go Quiet

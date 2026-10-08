@@ -7,12 +7,17 @@ The package contains design and historical tranche receipts, not a single curren
 Acceptance requires a recorded user decision or parent acceptance within the authorized scope; an old `accepted`, `reviewed`, or `implemented` label alone is insufficient.
 The owner skills and `AGENTS.md` govern workflow; the specifications retain unique mechanics, identity, narrative direction, and acceptance criteria.
 Use [SOURCE_SPEC_INDEX.md](SOURCE_SPEC_INDEX.md) for the complete inventory and read the following precedence map before continuing an older prompt.
+The [finishing decision ledger](../../plans/air_cleanliness_fallout_plans/agent_decisions_2026-10-05.md), recorded on October 6 under the explicit G1–G8 finishing authority, follows the October 4 ledger.
+Its F2, F3, F4, F5, F6, F10 and F15 decisions govern orientation presentation, inherited-site recovery, signed selection scores, exact reconstruction counterparts, funded relief, visual reset and actual-charge refunds.
+The [takeover status](../../plans/air_cleanliness_fallout_plans/takeover_status_2026-10-06.md) records their source evidence and remaining proof limits.
+This precedence does not approve unrelated matrix rows or certify current engine behavior.
 
 | Surface | Disposition and evidence |
 | --- | --- |
 | Baseline and living-world design | Retained source design; acceptance is unresolved wherever no attributable decision is recorded. Explicit user directions reported by baseline 01, 07, and 08 cover the removal of the 1000-Chaos requirement, the dedicated blackout, and every-valid-province manual launch, respectively. These records do not establish blanket approval of every matrix row. |
 | Scheduler activation and ordinary-chain dormancy | The pre-October activation gate is superseded by the accepted A1 addendum in [spec 12](specs/12_event_content_budget_and_acceptance.md#agent-decision-addendum-2026-10-04), whose stated basis is the user's grant of design authority recorded in the [October 4 decision ledger](../../plans/air_cleanliness_fallout_plans/agent_decisions_2026-10-04.md). Earlier dormant-status and `0 of 660` statements in reviewed specs and matrices are tranche snapshots, not current activation instructions or current counts. The 660-block library quality target remains distinct from activation. |
 | Orientation and integration snapshots | The same decision ledger records A2 orientation integration, A3 capital repair, A11 USA/NZL allocation, A14 cell coverage, and A16 office installation. Earlier statements that those callers/setters are absent are superseded as current guidance by those named decisions. Current source and matching MCP evidence must be reconciled before certifying implementation; the documentation audit does not recertify these receipts. |
+| Orientation presentation, recovery and ranking | F2 preserves all five choices and delayed outcomes but presents one closing report: six visible reports in a complete orientation. F3 carries distinct inherited-site outcomes once, preserving mixed successes and failures. F4 accepts eligible zero/negative scores while retaining ranking and tie order. [Spec 03](specs/03_fallout_timeline_and_campaign_pacing.md), [baseline 04](specs/baseline/04_survival_mechanics.md) and [spec 01](specs/01_living_world_event_ecosystem.md) hold these current passages; older counts and positive-score statements are superseded. |
 | Reviewed chain specs 13 through 106 and matrices | Preserve ids, transactions, branch mechanics, timing, memory, cleanup, and unique design. Read their status and missing-producer paragraphs as historical review evidence where superseded above. A chain must not take coordinator-owned activation authority; that ownership rule remains valid. |
 | Manual scenario reservation | The recorded reservation is raw id `14`; the highest-live-id-plus-one rule describes its initial allocation. Continuations reconcile the existing reservation instead of allocating another row. A genuine collision requires an explicit ownership/remapping decision. Counts and sweep receipts in spec 68 are snapshot proof data, not current engine execution evidence. |
 | Consequence and technology receipts | [Spec 68](specs/68_fallout_consequence_boundary.md) and [spec 69](specs/69_fallout_tag_preservation_technology_and_fracture.md) preserve their static proof claims and exact live limitations. They do not prove campaign execution or every supported tree/target. The two spec filenames beginning with `69` are distinct contracts, not duplicate event ids. |
@@ -26,7 +31,9 @@ Use [SOURCE_SPEC_INDEX.md](SOURCE_SPEC_INDEX.md) for the complete inventory and 
 - The master matrix release-composition bullets require eight anchors per archetype, while spec 12's archetype quality gate requires ten. Preserve both as an unresolved floor-versus-full-quality distinction until the parent records the intended acceptance hierarchy; this audit changes no tuning or content quota.
 - Baseline acceptance still describes universal focus content and deferred bespoke expansion, while the living-world requirement calls for non-generic content for every survivor and B7/A11 record bespoke pilots. These are different tranche boundaries, not proof that the larger requirement is complete.
 - The NZL symbol ledger and six referenced report manifests are absent from the current checkout. Their paths and affected contracts are recorded in the [package audit handoff](../../plans/repo_cleanup/specification_package_audit_2026-10-07/handoffs/air_fallout.md). Retain their historical provenance claims without presenting the missing documents as accessible validation.
-- Current engine status remains unverified by this cleanup. Event, focus, GUI, map, and technology inspect routes were exposed, but the narrow requests returned no results within the bounded orchestration before it was terminated. No current inspect/render/compare or live-game validation claim follows from those requests. Weighted tuning was preserved and was not audited by this documentation-only pass.
+- The October 7 audit obtained no current engine evidence from its bounded requests; its exact receipt remains in the linked package audit handoff.
+Current finishing evidence and limitations are recorded in the October 6 takeover status, rather than inferred from either that audit or older tranche labels.
+This planning review does not renew an implementation, probability, viewer or live-game completion claim.
 
 ## Status
 
@@ -79,21 +86,13 @@ The reservation is Fallout-owned and appears only in the manual sandbox scenario
 It never authorizes insertion into ordinary Event Log, ordinary Event Details, evolution, world-end selector, or ordinary super-event registries.
 The 10,154-province sweep, 41 batches, completion receipts, and seven-day handoff are the snapshot substrate recorded by spec 68; verify current map and source revisions before repeating an implementation claim.
 
-## What this pass adds
+## Where consequences are specified
 
-This pass adds:
-
-- a complete event ecology and pacing model
-- a large catalogue target with global, regional, archetype, country-memory, character, diplomatic, war, mutant-fiction, recovery, and generational event layers
-- concrete event chains with real effects and follow-up state
-- a 99-candidate successor event overlay matrix
-- a normal-map climate presentation requirement in addition to the winter mapmode
-- biome-specific visible cold states
-- climate recovery, thaw, ultraviolet, and second-generation event arcs
-- anti-spam rules so a large event library creates variety instead of constant popups
-- implementation, asset, and audit prompts
-- a manual improvement-loop pass
-- a precise continuation prompt
+[Baseline 01](specs/baseline/01_core_overhaul.md) owns pre-collapse atmospheric sources and request paths; [spec 68](specs/68_fallout_consequence_boundary.md) owns the admitted transition, permanent 99-percent lock and standard/manual population-loss boundary.
+[Baseline 04](specs/baseline/04_survival_mechanics.md#inherited-winter-choices) distinguishes state-attached recovery from government-attached policy memory without modifying the frozen opening ledger.
+[Spec 09](specs/09_diplomacy_war_trade_and_world_order_events.md#relief-after-the-blackout) owns the treaty-to-reconstruction player consequence; the current treaty decisions and finishing ledger retain exact transaction rules.
+[Spec 01](specs/01_living_world_event_ecosystem.md) owns scheduler coefficients, cadence, caps, ranking and parity; [spec 03](specs/03_fallout_timeline_and_campaign_pacing.md) owns orientation sequence and campaign progression; [spec 12](specs/12_event_content_budget_and_acceptance.md) owns content quality and release coverage.
+Repeated narrative references consume these contracts instead of declaring another activation, payment, inheritance or accounting rule.
 
 ## Text boundary
 

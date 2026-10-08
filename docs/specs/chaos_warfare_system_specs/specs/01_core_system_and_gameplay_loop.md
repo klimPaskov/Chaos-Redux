@@ -14,16 +14,12 @@ The power is conditional. A country that lacks protective equipment, payloads, d
 
 ### 1. Establish a national program
 
-The player chooses a policy posture before normal use becomes practical:
+The player chooses one of the three accepted use policies: Retaliation Only, Battlefield Authorization, or Unrestricted Authorization.
+Changing that permission costs 5 Command Power and starts the 90-day reassessment interval specified in the accepted amendment.
+Defensive preparation, civilian protection, and covert research are investments within a national program; they are not additional use policies and do not authorize an attack.
 
-- defensive preparedness
-- retaliatory reserve
-- limited battlefield authorization
-- unrestricted theater use
-- covert biological capability
-- civil-defence priority
-
-The posture controls AI willingness, decision visibility, public doctrine, treaty response, and the rate at which evidence becomes politically damaging.
+The opening choice is how far to authorize use while building the protection and delivery capacity to sustain it.
+A country may prepare a substantial defensive reserve without granting first-use permission, and doctrine progression never changes that permission automatically.
 
 ### 2. Build protective capacity
 
@@ -45,26 +41,24 @@ The player chooses which delivery roles to support:
 
 The player does not need every agent or every delivery method. Specialisation is cheaper and more reliable than trying to maintain a universal arsenal.
 
-### 4. Prepare an operation through Army Headquarters
+### 4. Prepare delivery and protective headquarters support
 
-The strongest battlefield effects require an Army Headquarters company and a commander ability. The headquarters selects an order, verifies stockpile and protective coverage, calculates weather and intelligence quality, spends command power and payloads, then applies an order-scoped preparation state.
+Native Chemical Raids and Biological Raids own offensive target selection, assigned formations, matching payloads, intelligence gates, and preparation.
+Ordinary authorized chemical and biological battlefield raids remain accessible to vanilla-doctrine countries after their research, project, production, protection, and policy requirements are met.
+Theater CBRN Headquarters provides the Chaos Warfare specialization through Operations and Intelligence, Protection and Decontamination, and Medical and Biosecurity.
+Its five protective orders support supplied forces; the retired paid Prepare Chemical Offensive and Combined CBRN Overmatch abilities are not an additional attack or payment stage.
 
-The player sees:
-
-- divisions covered by the headquarters
-- current protective coverage
-- payload requirement
-- forecast confidence
-- expected contamination class
-- friendly-exposure risk
-- likely evidence and Condemnation band
-- operation duration and cooldown
+The player prepares enough payload for the selected delivery and enough protection and medical support to survive the affected area.
+Relevant tooltips distinguish the raid's target and payload commitment from the headquarters' protective coverage, equipment requirement, active duration, and cooldown.
+This lets the player choose between a limited authorized operation and a sustained protected offensive without presenting two separate charges for the same release.
+The raid's assigned formation must not be presented as proof of a particular headquarters association where that exact association is unverified.
 
 ### 5. Deliver and exploit
 
 Delivery creates an exposure event. Exposure affects units, state population, supply, movement, organisation, entrenchment, reinforcement, and medical burden according to agent class, dose, weather, terrain, and protection.
 
-The immediate combat bonus is smaller than the current broad doctrine modifiers. The decisive power comes from temporary enemy disruption and the ability to coordinate protected assault units into the affected area.
+The decisive power comes from temporary enemy disruption and the ability to coordinate supplied, protected assault units into the affected area.
+Protection, payload availability, and the aftermath determine how long that advantage can be sustained.
 
 ### 6. Contain the aftermath
 

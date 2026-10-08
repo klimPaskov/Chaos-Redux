@@ -222,6 +222,15 @@ A delayed tranche resolves through one bounded follow-up. At resolution:
 
 If the original port has been lost, one re-selection is allowed. The system should not chase changing ports indefinitely.
 
+The follow-up uses current usable port conditions, including an Event 55 grand port commissioned or an Event 58 naval-base level placed during the delay.
+A promised project, an incomplete emergency facility, or a port owned but not controlled by the recipient is insufficient.
+The improvement can make the original reserved tranche deliverable at its scheduled resolution; it cannot accelerate the timer, reroll the identity, enlarge the reserved composition, repeat support already received, or restart the one allowed port re-selection.
+If the original port is still valid, the recipient keeps it rather than obtaining a free transfer to every better port built afterward.
+
+Future acceptance case `056_port_during_delay`: a no-port recipient receives one usable Event 58 naval-base level before its follow-up.
+The same reserved package resolves once at the scheduled date if all other gates pass, and the emergency-facility commitment is reconciled without creating a second port reward or refunding sunk work.
+Loss of control before resolution cancels or uses the one legal re-selection; an unfinished Event 55 grand port does not rescue the delivery.
+
 ## Package cancellation and partial delivery
 
 A recipient can receive less than the planned package when legal content, port conditions, or global safety limits prevent full delivery.

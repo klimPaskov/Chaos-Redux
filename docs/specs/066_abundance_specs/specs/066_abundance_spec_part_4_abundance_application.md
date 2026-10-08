@@ -199,6 +199,17 @@ It must not duplicate population transfers, deaths, trapped populations, or reli
 A provider attached to another event changes the exposed value without marking the owner event as fired.
 It does not advance unrelated stages unless the owner callback defines that progression as the abundance operation.
 
+For an active Event 061 transition, abundant War Support or material reserves can improve the real inputs to Readiness and pay an existing recovery action.
+Readiness itself is derived from five pillars, so a provider cannot make it abundant by setting the displayed total or the exemption flag.
+The owner recalculates Readiness from actual laws, restored ledger capacity, institutions, and public preparation; factory or law action credit still requires the corresponding owner transaction.
+The physical restoration ledger is a record of Event 061 conversion rights, not an abundant resource, and unrelated new civilian factories do not create more rights.
+
+Where their owners register them, Event 062 Crisis Cohesion and Event 063 Liberation Cohesion can rise for an existing active crisis side or a formed Pact.
+Their thresholds can unlock the existing coordination or congress-aftermath actions, but increased cohesion does not prove a held capital, delivered aid, another member's consent, former-overlord recognition, or the required independent membership.
+A card stored for a side or Pact that has ended is rejected by that owner; it does not recreate the crisis or faction.
+AI evaluation distinguishes the value's immediate coordination benefit from actions whose separate territorial, material, or diplomatic proof is still missing.
+Absent, disabled, unrevealed, or unsupported owner mechanics contribute no such candidates.
+
 ## Chaos impact map
 
 The first campaign manifestation of Abundance adds a one-time `+5` Chaos because the same impossible phenomenon appears across the world.

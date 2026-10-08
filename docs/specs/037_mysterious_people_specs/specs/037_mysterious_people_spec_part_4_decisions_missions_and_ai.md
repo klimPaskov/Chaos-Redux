@@ -84,7 +84,11 @@ Direction:
 
 Favored by authoritarian, exclusionary, low-capacity, or highly pressured regimes.
 
-If this stance creates undercounting, warning signs should appear through events and shared humanitarian evidence. The player should understand why official pressure later changes.
+Restricted Registration can conceal need from the official forecast without removing people or their physical demand. The existing pressure model, food burden, state priority, response eligibility, and achievement sustainment checks still use real population, provenance, and applied capacity. A lower reported estimate cannot satisfy a healthy-pressure timer or make a proven Famine or trapped-population crisis disappear.
+
+The one pressure readout can carry the existing qualitative registration-confidence status when its estimate is unreliable; do not add another public meter. Reports show contradictory rolls, unserved households, crowded wards, and shortages. A Registration Drive corrects the estimate and exposes obligations already present. It does not create another population grant or debit the same pressure twice.
+
+The player therefore trades immediate administrative enrollment and official calm for weaker integration, a smaller dividend, and less reliable planning. Housing, services, and safe movement remain the ways to reduce physical burden. AI response and target choice follow the real bottleneck rather than treating concealment as successful containment.
 
 ## Selected-state workflow
 

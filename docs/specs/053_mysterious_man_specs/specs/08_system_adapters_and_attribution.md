@@ -173,7 +173,13 @@ It should return:
 
 The adapter cannot record Event 52 as fired or trigger its normal opening presentation.
 
-Until this adapter exists and passes source-bookkeeping tests, both Intel Leaked registry entries remain inactive.
+The read-only validity check must include the target's current exposure, the owner's active-sequence and target caps, and the locked target proof.
+If a live leak already owns this country, neither the normal nor severe Event 53 entry may enter the pool merely to reset its clock, restore cleared Exposure, rerun missions, or duplicate foreign intelligence.
+A deliberate strengthening of that incident would need a separately accepted owner profile with new substantial harm and a receipt that preserves completed recovery; the current adapter proposal does not approve such a merge.
+
+Both entries remain inactive until the bounded adapter exists and passes source-bookkeeping and active-owner overlap tests.
+When overlap makes them invalid, they are omitted before the uniform draw, including from any compound package requiring their component.
+An owner rejection after reservation follows the existing Event 53 recovery rule and supplies no duplicate Event 052 crisis.
 
 ## Great Embargo adapter
 
@@ -190,7 +196,16 @@ Event 50 requires a bounded embargo adapter. It owns:
 
 The adapter receives Event 53 origin and suppresses Event 50 firing, history, pacing, and evolution.
 
-Until this adapter exists, both embargo registry entries remain inactive.
+The target cannot receive a second embargo ledger while Event 050 already has a live crisis for it.
+Both Event 53 embargo entries are invalid in that case; stronger severity is not permission to replace the current coalition, undo concessions, reset fatigue, or extend its end date.
+Any compound package requiring that embargo is also invalid before selection.
+
+For a fresh valid target, the adapter applies only the selected normal or severe operational package and the owner keeps its ordinary responses, relevant outside-country choices, duration, and cleanup.
+Event 53's next visit can occur after a committed owner receipt, while the embargo continues.
+If the source event later becomes normally eligible, it must respect this operational crisis instead of duplicating it; suppression of fired history does not erase active-state eligibility.
+
+Both embargo entries remain inactive until this adapter exists and the fresh-target, active-crisis, concession-preservation, and source-bookkeeping cases pass.
+Overlap changes validity rather than weight: every remaining valid package still has one equal ballot, and the refusal still resolves one substantial consequence.
 
 ## Random Civil War adapter
 

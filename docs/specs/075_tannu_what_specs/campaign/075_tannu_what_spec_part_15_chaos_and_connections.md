@@ -76,9 +76,26 @@ Soviet collapse, genuine independence waves, and comparable actual map changes a
 The episode follows the resulting countries rather than a fixed Soviet-Mongolian-Chinese target list.
 A new state can become a useful donor before the reveal or a target after a new border appears.
 
-The Mongol event is a meaningful regional interaction when it has actually produced a neighboring power.
-The outcome depends on current territory and relationships.
-This package does not assume that an unreworked catalog entry already supplies a particular tag, army, focus, or script helper.
+A restored Mongolian empire matters when its actual frontier or a required aid-transit corridor reaches TAN.
+During accumulation, TAN may accept a limited tribute or transit bargain through Mongolia's existing demand system, seek genuine protection, or refuse and risk its legal campaign.
+Those terms remain distinct: access and tribute alone do not exempt an independent TAN from either opening wars or its later non-allied-neighbor policy.
+A Mongolian levy uses transferable TAN-owned surplus; a paid reserve cohort and still-foreign-owned support are unavailable to that levy.
+A separate Mongolian gift uses the ordinary aid record once and does not refund the tribute or duplicate paid reserve backing.
+
+The reveal rechecks unanswered Mongolian offers, actual treaties and current land neighbors in its normal commitment transaction.
+A bordering Mongolian protector becomes an opening opponent after protection is broken.
+A post-reveal independent tributary remains a target when it is not genuinely allied and no current legal restriction prevents war.
+A valid later alliance can exempt the neighbor during ordinary expansion, while its equal-ally territory still does not count toward TAN's continental certification; the final global campaign uses its existing submission rule.
+TAN's player can therefore trade near-term access and diplomatic safety against payment, dependence and future conquest requirements.
+Neither event can accept an obsolete offer to reverse a war already committed by the other.
+
+AI uses the offer's actual debit, useful corridor and observed regional threat when deciding, rather than assuming all Mongol demands are protection or all Mongol armies are weak cavalry targets.
+Mongolia retains its permanent static-defense weakness; TAN retains its paid conventional force and existing focus choices.
+Event 073 owns its obligations and settlements, Event 075 owns its reveal and subsequent border declarations, and shared war sources own the resulting wars.
+The connection adds no separate Chaos milestone or receipt for paying transit.
+With either episode absent, the remaining country's normal diplomatic and campaign rules still apply.
+Future acceptance cases cover a pre-reveal bargain, a reveal with an unanswered offer, a revealed non-allied tributary and a later equal alliance that fails continental qualification.
+The counterpart is [Event 073's northern campaign](../../073_mongols_rise_specs/expansion/02_mongol_union_and_siberia.md), with [tribute terms](../../073_mongols_rise_specs/empire/02_tribute_and_diplomacy.md) remaining its owner.
 
 ## Peace, global wars, and military preparation
 

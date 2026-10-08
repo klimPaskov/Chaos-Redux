@@ -1,6 +1,6 @@
 # Package Manifest
 
-The local receipt was refreshed on `2026-10-07` after documentation cleanup.
+The local receipt was refreshed on `2026-10-08` after documentation cleanup.
 It excludes this manifest and does not renew the historical results in `quality/package_validation.md`.
 
 Line counts use the number of LF bytes plus one. Hashes are SHA-256 over the current file bytes.
@@ -47,12 +47,12 @@ Line counts use the number of LF bytes plus one. Hashes are SHA-256 over the cur
 | `research/repo_inspection_notes.md` | 1643 | 39 | `80018ae8534d4c6accf2ce295e5e96f031fe033770ec651c8ba55cc639533ad7` |
 | `research/research_to_design_connections.md` | 2256 | 17 | `933db7286232fc3a137b9b651863b51dbf12b27a6ac007901e924fe54596e23c` |
 | `research/source_reading_manifest.md` | 4787 | 58 | `74b26fca0fc1042757c7bcd2af24fd55a445ab92705336396b529ac32cd89c34` |
-| `specs/030_time_traveler_spec_part_10_scenario_integrations_ai_balance.md` | 15492 | 294 | `7bfaa8d9791ff95c66e161d38b9cc74cb9ccb2fd343f54fbcccb828bacf647fd` |
+| `specs/030_time_traveler_spec_part_10_scenario_integrations_ai_balance.md` | 16719 | 307 | `1638b20434f35aa222eb3668d275310454bbbd36ea802958717bc3b8bb1c987b` |
 | `specs/030_time_traveler_spec_part_11_assets_text_achievements.md` | 12819 | 278 | `f2bb571d9e732d8ae929a2e9bf466602db74c0a14a9ad00b7e922efa68e6e960` |
 | `specs/030_time_traveler_spec_part_12_acceptance_criteria.md` | 11400 | 201 | `eedaa840e2b7b49b7e2877ec39bb8cdd026a312c9ab52995127f4d5a90f0de98` |
 | `specs/030_time_traveler_spec_part_1_core.md` | 10569 | 141 | `02c22196f016ac4f26e06cc4614cd8bc4e55cee95ff343586a442bfe46b876f2` |
 | `specs/030_time_traveler_spec_part_2_baseline_and_values.md` | 11939 | 210 | `a09e413d000c8f41bc4a4efbb551557f14854b6b04c7c3e0dfe4a5308f7122c9` |
-| `specs/030_time_traveler_spec_part_3_consultations_and_intelligence_war.md` | 12895 | 201 | `40c2cf63595a7411b72a45a60fd030f9bb4fed8c2cf80c947705853d6eba2b39` |
+| `specs/030_time_traveler_spec_part_3_consultations_and_intelligence_war.md` | 14752 | 221 | `c6a681a721dbd8a042a686c2f1c2577155307dab2e455ccb985a74739d58d058` |
 | `specs/030_time_traveler_spec_part_4_evolution_i_ambition.md` | 11847 | 197 | `622f99b063a343a190fdefd551668a498f7147b7a465235894b4f6cb543c39c3` |
 | `specs/030_time_traveler_spec_part_5_evolution_ii_past.md` | 13878 | 301 | `20a82dfc9da51fb57868651af4d36c2cd73d8bb3388fa050554e3c8a9db2d00c` |
 | `specs/030_time_traveler_spec_part_6_evolution_iii_future.md` | 12527 | 230 | `1a10c013a4338889d8898301ffca1cce407c056e92f24a865a3861726c69da31` |
@@ -61,4 +61,4 @@ Line counts use the number of LF bytes plus one. Hashes are SHA-256 over the cur
 | `specs/030_time_traveler_spec_part_9_world_end_machine_extinction.md` | 12484 | 231 | `352543e6c060432b165433966bf47303ae4fb6d1ea04cd3510fff618b9e4dcd4` |
 
 Total files before this manifest: 52
-Total bytes before this manifest: 274801
+Total bytes before this manifest: 277885

@@ -380,15 +380,17 @@ Licensing foreign equipment can bridge a military gap without restoring domestic
 
 ## Gift from Scientists
 
-When Event 54 or its final accepted replacement grants a technology to a country with lost-knowledge entries, it should first search the safe lost ledger.
-A compatible lost technology has priority over an unrelated new discovery unless Event 54's own design explicitly chooses another category.
+A completed Event 54 grant is observed against the safe lost ledger.
+Only exact compatible nodes actually included in that grant or its approved prerequisite package are marked recovered once; the matching family is recalculated and direct-gift achievement attribution is recorded.
+The observer does not grant another technology, change the draw, restore research slots, or increase Scientific Capacity or Archive Recovery.
+With no matching loss, Event 54 follows its normal grant and Event 60 applies no recovery effect.
+The additive donor-union helper remains separate and does not own technology removal or Event 54 selection.
 
-The grant follows the normal compatibility rules and never changes mutually exclusive branches.
-It clears the selected ledger entry, recalculates the affected family, and records that the recovery came from a direct gift.
-It does not restore research slots or Scientific Capacity.
-
-If no compatible lost entry exists, Event 54 proceeds with its normal grant logic.
-The existing shared union helper can support additive donor grants, but it does not own technology removal or Event 60's selection policy.
+The original recovery-priority proposal is preserved as an unresolved alternative to Event 54's independent random pool.
+Protection of past Event 54 grants from later safe regression also remains unresolved against this package's normal safe-linear policy.
+[The connection design](060_research_failure_spec_part_4_evolutions_connections.md#connection-gift-from-scientists) records both competing rules and exact counterpart references.
+Neither a targeted Gift helper nor regression of a disputed gift-origin node may be treated as accepted until the parent records the applicable disposition.
+This does not prevent safe regression of undisputed nodes or exact reconciliation of an actual authorized grant.
 
 ## Brilliant Scientist and Kruger technology systems
 

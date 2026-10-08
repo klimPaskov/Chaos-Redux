@@ -110,19 +110,13 @@ When a disaster occurs during an active episode, one milestone report can explai
 
 ## Field hospitals, logistics, and technology
 
-Existing HOI4 and Chaos Redux military systems should directly shape Event 41.
+Existing field-hospital companies and technology, logistics support, support equipment, supply, infrastructure, railways, ports, trains, trucks, fuel, and convoys shape the response. They support the current medical and evacuation capacity model; no additional technology branch is needed.
 
-Relevant protection includes:
+An [Equipment from Heavens logistics package](../../042_equipment_from_heavens_specs/specs/042_equipment_from_heavens_spec_part_2_delivery_manifest.md#logistics-equipment-composition) can solve a transport-stock shortage once the actual stockpile grant is applied. Event 42 keeps its uniform recipient selection and deliberately unoptimized cargo. Disease never changes its draw or quantity. Delivered trains, trucks, support equipment, and convoys then behave like the same items obtained through production or ordinary aid.
 
-- field-hospital support companies
-- field-hospital technology
-- logistics support
-- supply status
-- infrastructure and rail quality
-- trains, motorized equipment, fuel, ports, and convoys
-- military medical or support technologies already present in the mod
+The affected army chooses the existing Assign Medical Evacuation Priority action, committing the route-appropriate stock, fuel, and front capacity, or keeps transport supporting combat operations. A surplus of trains cannot repair a cut railway; an overseas evacuation still needs the relevant port, convoys, and safe route. Repair the Medical Corridor remains the response to access failure. Even a successful evacuation moves sick soldiers into convalescence and sacrifices front capacity before recovery returns them to duty; the windfall does not cure them or replace lost manpower.
 
-The event should recognize these systems without creating duplicate technologies. A new dedicated technology branch is unnecessary.
+Event 42 applies the grant and any disclosed recovery accident. Event 41 applies its medical commitment, recovery transitions, and fatalities. No provenance-specific transport pool or second grant is created. If transport has already been committed or transferred, subsequent actions and any recovery accident use the actual remaining stock under their existing contracts. AI evaluates the usable route and operational sacrifice after the windfall; stock abundance alone does not make evacuation effective. With no skyfall, the same choices and capacity rules apply to ordinary stock.
 
 ## Diseases cluster role
 

@@ -349,6 +349,7 @@ This affects:
 - the need for an emergency commissioning facility
 
 Event 55 does not influence package identity. A country with excellent ports can still receive a convoy package or a coastal fleet.
+Completed port improvements during phased commissioning follow the [current-port follow-up rule](056_the_navy_spec_part_2_eligibility_and_commissioning.md#delayed-commissioning); anticipated improvements do not remove current fuel, repair, aircraft, or control constraints from the AI commissioning choice.
 
 ## Event connection: Riches Found
 
@@ -387,6 +388,23 @@ This prevents a double event effect and preserves Famine ownership.
 New ports and ships remain vulnerable to ordinary damage, combat, air attack, and disaster systems.
 
 Event 56 does not protect its fleets from later events. It also does not duplicate a disaster effect by damaging them directly after delivery.
+
+## Event connection: The Black Market
+
+An existing Event 57 member can later sell actually delivered convoy or equipment surplus through the market's ordinary sale action.
+Event 56 supplies provenance and delivered quantity; the stockpile custodian and Event 57 sale contract prove the remaining source and apply the single debit.
+Reserved heavy ships, cancelled tranches, and hull value already converted by Break Up the Package are not a second source of goods.
+A supported ship-transfer package still requires an explicit owner-approved transfer and capture policy; this connection does not establish that engine capability.
+
+The commissioning choice remains about using the gift, not obtaining Market Credit immediately.
+The market keeps its readiness reserve, fee, recent-import protection, Exposure, route, and settlement rules, including the costs of any later sale.
+Event 56 creates no membership, offer, credit, research, or captured-hull claim merely because a fleet appeared.
+An AI member considers only saleable surplus after its convoy, supply, and naval commitments, using Event 57's existing sale evaluation.
+Without the market, delivered fleets and support remain ordinary assets.
+
+Future acceptance case `056_market_provenance`: a phased recipient can list delivered excess convoys after the market's reserve checks but cannot list the reserved tranche.
+One accepted sale removes those convoys once and earns credit once; replaying Event 56's provenance callback, breaking up already converted value, or repeating settlement cannot create another lot.
+The consumer contract is [Event 57's naval adapter](../../057_the_black_market_specs/04_inventory_trade_and_provider_api.md#event-56-the-navy).
 
 ## Event history connection
 

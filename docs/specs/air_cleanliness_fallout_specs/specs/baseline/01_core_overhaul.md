@@ -20,7 +20,11 @@ Fallout can begin through three paths.
 | --- | --- | --- |
 | Gradual atmospheric collapse | Global contamination exceeds 100 percent and the world fails the terminal stabilization roll. Higher contamination, severe winter, global deaths, and ruined food states increase the chance. | The black-screen sequence interrupts ordinary play after escalating winter flavour and map damage. |
 | Scripted apocalypse bridge | A terminal cause such as the Final Silence Holy Realm route explicitly requests Fallout as its aftermath. | The cause produces its own ending beat, then the Fallout black screen begins after a short delay. |
-| Manual scenario | The manual Fallout scenario uses the next free live scenario id, thermonuclear-strikes every valid province, waits seven days, then requests Fallout. | The map is visibly destroyed first. The black screen then covers the processing and narrative transition. |
+| Manual scenario | The Fallout-owned sandbox launch retains its raw-id-14 reservation, thermonuclear-strikes every valid province, waits seven days, then requests Fallout. | The map is visibly destroyed first. The selected intensity grades the aftermath; the strike set remains the same. The black screen then covers the processing and narrative transition. |
+
+The admitted aftermath follows [spec 68](../68_fallout_consequence_boundary.md): Air Contamination is fixed permanently at 99 percent, while Air Winter resumes after the rewrite.
+That locked aftermath does not lower the pre-admission collapse threshold or reopen ordinary source accumulation.
+Ordinary nuclear use, including Event 023 strikes, retains its nuclear fallout and humanitarian owners; the manual sweep uses its own aggregate population-loss contract and cannot pay those losses twice.
 
 The user instruction overrides the old world-end rule that required chaos above 1000. Fallout can use chaos above 1000 as one possible pressure source, but it must not require it. Air contamination above 100 percent or a scripted terminal event is enough.
 
@@ -46,6 +50,21 @@ Large wildfire smoke, volcanic eruptions, ashfall, and massive-eruption aftermat
 All natural sources feed one decaying global reservoir with a hard `4 bp` monthly ceiling, equal to `0.04 percent` Air Contamination. No number of affected states may raise that monthly contribution above the ceiling. The reservoir must use physical impact identity to reject duplicate registration, include regional spread and chained ash impacts, and decay through the existing host-owned monthly Air Cleanliness update. It must not add another periodic world iterator.
 
 Natural sources may reinforce an existing atmospheric crisis, but they are not a fast independent route to Fallout. Chemical contamination and nuclear fallout remain the dominant sustained sources.
+
+### Traveling dust and the atmospheric reservoir
+
+Unresolved connection proposal: [Sandstorm part 07](../../../099_sandstorm_specs/099_sandstorm_part_07_shared_systems_chaos_and_ai.md#particulate-contribution) supplies substantial severe land exposure and an episode-bound emission receipt.
+Its proposed two-basis-point allowance must fit inside the existing four-basis-point natural reservoir ceiling; the Air owner must settle the exact allowance window and cadence with Event 099 before implementation.
+The current Event 013 helper validates private disaster sequence/family context, so Event 099 cannot call it with fabricated Event 013 identities.
+The Air owner must provide bounded admission, return the amount actually admitted, and retain monthly decay and shared Chaos conversion; Event 099 retains the traveling footprint, local protection choices and emission deduplication.
+An exhausted allowance, a duplicate exposure, a disabled Air source or the permanent Fallout lock admits zero; a clearing front stops future submissions and does not subtract previously accepted pollution.
+A country can protect households and machinery through the existing storm responses while the accepted atmospheric burden continues to decay under Air ownership.
+Those responses keep Event 099's geographic and affordability priorities; they gain no extra filter purchase or free second protection issue from the atmospheric connection.
+If Event 099 is absent, the existing Event 013 sources and ordinary atmospheric recovery continue unchanged.
+
+The distinguishing future cases are a repeated movement/exposure receipt, simultaneous ash and dust at the shared ceiling, front cessation with residual pressure, and a late dust callback after Fallout admission.
+All require one admitted amount, one shared Chaos conversion and no storm-owned withdrawal from the reservoir.
+
 
 ## Global atmospheric thresholds
 

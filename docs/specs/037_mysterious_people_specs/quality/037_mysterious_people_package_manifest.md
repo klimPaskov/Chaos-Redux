@@ -1,6 +1,6 @@
 # Event 037 specification package manifest
 
-This is the current local-file ledger as of 7 October 2026; it excludes itself.
+This is the current local-file ledger as of 8 October 2026; it excludes itself.
 The historical source-reading receipt remains in `037_mysterious_people_source_reading_manifest.md`.
 No ZIP rebuild or gameplay validation is implied.
 
@@ -8,9 +8,9 @@ No ZIP rebuild or gameplay validation is implied.
 | --- | --- |
 | Package | `docs/specs/037_mysterious_people_specs/` |
 | Listed files | 23 |
-| Listed bytes | 205627 |
+| Listed bytes | 206627 |
 | Goal characters, including final newline | 3990 |
-| SHA-256 of concatenated listed bytes in sorted relative-path order | `5649df4caa3c2b1eff28c1a181e8da43633034e6ad285be4e30df3f310bed50b` |
+| SHA-256 of concatenated listed bytes in sorted relative-path order | `476caff88f4519aa2a97b3976ae8ab2fc52b9cd433a666afc35356ce5bea159c` |
 
 ## File inventory
 
@@ -35,7 +35,7 @@ No ZIP rebuild or gameplay validation is implied.
 | `specs/037_mysterious_people_spec_part_1_core.md` | 14,229 | 219 | `a69674b251158f08e21a9caebe6dfea1399b69022030070004a037a99611eb14` |
 | `specs/037_mysterious_people_spec_part_2_population_and_ledger.md` | 14,952 | 298 | `85b902758a0b3718739c81005d35fa93f6c319b970b9469e5cd501cbdc506eac` |
 | `specs/037_mysterious_people_spec_part_3_pressure_and_evolutions.md` | 13,850 | 262 | `552d1e5261b2fffd031805470812904e7dd4d22e8db37db15741212ae35800d1` |
-| `specs/037_mysterious_people_spec_part_4_decisions_missions_and_ai.md` | 16,489 | 457 | `95c629fd64480a361b981b3da9d96c35c04504d9c6c57762b7265e63617c8627` |
+| `specs/037_mysterious_people_spec_part_4_decisions_missions_and_ai.md` | 17,489 | 461 | `360e429db068ff9b416df45c23b23a1ab876feed11e8c7e34e5f21b1a86672c8` |
 | `specs/037_mysterious_people_spec_part_5_events_flavour_and_reactions.md` | 21,242 | 724 | `fc8b9ec8f34cd1cc682c00f844d66c86fabd6b4acc7c72db9eec4ee898a437c9` |
 | `specs/037_mysterious_people_spec_part_6_system_connections.md` | 10,525 | 199 | `3360121524f0cb7de60fab911cffdc7b6d4d82d0136d4a8e328dd2f18f712275` |
 | `specs/037_mysterious_people_spec_part_7_assets_achievements_and_catalog.md` | 10,597 | 243 | `dbb1ce6730cffc944b7d42230bcef469a5af09061f4a470f1b198ad50c6e2f22` |

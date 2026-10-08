@@ -1,9 +1,9 @@
 # Event 34 Industrial Boom package manifest
 
-Inventory refreshed on 2026-10-07 for the current local documentation files, excluding this manifest.
+Inventory refreshed on 2026-10-08 for the current local documentation files, excluding this manifest.
 The source disclosures, environment limitations, archive descriptions, and original validation receipts below remain historical planning evidence.
 They do not establish current tool health, implementation status, or design acceptance.
-Current inventory totals: 22 files, 293,784 bytes, 42,749 whitespace-delimited words.
+Current inventory totals: 22 files, 294,606 bytes, 42,836 whitespace-delimited words.
 
 
 ## Original package identity
@@ -36,7 +36,7 @@ No design section was shortened to produce a quicker package. The event scope wa
 | `034_industrial_boom_repository_crosscheck.md` | 7,065 | 876 | 96 | `ea60a2b3e9c2f02fac79b72c75c709da6c382d28cbfa04e7fae70bea23e1ae2d` |
 | `034_industrial_boom_research_notes.md` | 12,000 | 1,560 | 171 | `084fc4a894a5d98f7d2dc5c04080076228fdae8f6197ea795e8a1bee93370633` |
 | `034_industrial_boom_source_reading_ledger.md` | 8,892 | 983 | 83 | `a269c0c0c893da3b97dac11472d05fa4c1ad4d19d526d243344e35d6faa40845` |
-| `034_industrial_boom_spec_index.md` | 5,121 | 568 | 68 | `28201f86ef2bcf941204446cd0ee5065bbb757ab5775079a71eeacd0e64edaf1` |
+| `034_industrial_boom_spec_index.md` | 5,229 | 579 | 72 | `63cb5e28f8ce955b21356eebea5123e327c459dcb9d45690b10dca1f45c427b6` |
 | `034_industrial_boom_spec_part_10_achievements_acceptance.md` | 20,670 | 3,107 | 694 | `d9c61a57a324c4573223f7fe3b1047a38ed1668abd2b9b546692205f174cd35b` |
 | `034_industrial_boom_spec_part_1_core.md` | 18,439 | 2,758 | 387 | `acef1b2caf6bc1f7854dfea5acd94caaca3c80acf9be20c795853e318510be0f` |
 | `034_industrial_boom_spec_part_2_overheating.md` | 17,311 | 2,687 | 404 | `cd0112136b36884b35ce2ec9aa503bf6f233b074c04244d3f206c1b872afef18` |
@@ -44,14 +44,14 @@ No design section was shortened to produce a quicker package. The event scope wa
 | `034_industrial_boom_spec_part_4_regions_legacy_repeatability.md` | 18,947 | 2,838 | 527 | `d628fa13fd42fd32a0fd61098f3cea4a456a77999c8fd6e099d5d216242ce233` |
 | `034_industrial_boom_spec_part_5_evolutions.md` | 26,106 | 3,871 | 644 | `1a00819319a4ff21d3fc5474c5522e7aab65790b1df74e8e7acfaf0e30530ae2` |
 | `034_industrial_boom_spec_part_6_event_35_inheritance.md` | 14,956 | 2,343 | 411 | `e526e2d42946e303496485886885aa3515885ea0f59bd4b5c04010de652693ab` |
-| `034_industrial_boom_spec_part_7_connections_chaos_cluster.md` | 14,031 | 2,147 | 348 | `48dee99510d6c4ba8c066667ceefebe4996f93d88ab8cb9e7b5813965dfc78a2` |
+| `034_industrial_boom_spec_part_7_connections_chaos_cluster.md` | 14,745 | 2,223 | 311 | `2e4c33340ac598c20a5a9c33bbee65df0fb27b9b7231e8bea2c635531c36e657` |
 | `034_industrial_boom_spec_part_8_ai_probability_balance.md` | 16,938 | 2,582 | 477 | `776c78dea104df2af0e5090cc3434d3d13fba1ba2e36844e8a7f40a61ae1eb6c` |
 | `034_industrial_boom_spec_part_9_presentation_assets_text.md` | 16,063 | 2,344 | 590 | `034a30174aa723ccfde4889f0fc6406e75c92f5f9e1d6ea527c4c758e6b75aa8` |
 | `034_industrial_boom_subagent_review.md` | 8,216 | 1,166 | 124 | `893819f5ee0fb7dbe19742cfedacdb84f4bfb9c713a05eb630bb872bff920aba` |
 
 - Current files listed, excluding this manifest: 22
-- Current total bytes, excluding this manifest: 293,784
-- Current whitespace-delimited words, excluding this manifest: 42,749
+- Current total bytes, excluding this manifest: 294,606
+- Current whitespace-delimited words, excluding this manifest: 42,836
 
 ## Original design summary
 

@@ -62,7 +62,12 @@ Pool exhaustion is a valid outcome. It should appear in the human report and deb
 
 A candidate can fail its final validation because the country state changed, an owner callback declined, a prerequisite package became invalid, or an incompatibility appeared after the pool was built.
 
-The candidate is removed from the current attempt and the country rerolls. Repeated rejection cannot create an infinite loop. Every failed candidate must leave the temporary pool for that recipient and slot.
+The candidate is excluded for that recipient for the remainder of this firing and the country rerolls from the remaining safe pool.
+Compatibility rebuilds after later successful grants must preserve that rejection exclusion; a provider cannot republish the same identity under another list entry or alias.
+No rejected candidate consumes a grant slot, and no exclusion carries into another country or a later Event 54 firing.
+Within this firing, each rejection reduces the remaining candidate set, so repeated rejection terminates in a successful grant or genuine safe-pool exhaustion.
+The human report shows the actual compatible delivery; the existing debug receipt retains rejection evidence without exposing internal candidates or safety reasons.
+No compensatory technology or extra draw exceeds the stage target.
 
 All rejectable conditions must be resolved before mutation begins. Once an approved grant package or callback starts, its bounded effects must complete without a later rejection branch. No failed validation may leave partial owner state.
 

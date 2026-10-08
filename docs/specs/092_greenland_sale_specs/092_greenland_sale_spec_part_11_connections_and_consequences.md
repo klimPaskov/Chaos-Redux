@@ -17,19 +17,38 @@ It must not cancel a cheap listing merely because another country has become mor
 
 ## Independence Wave and other liberation events
 
-Liberation changes what an empire still owns.
-A colonial state that has become part of an independent country cannot remain in its former ruler's sale catalog.
-If it was included in an active lot, the whole advertised lot is canceled and escrow is returned.
-The former ruler does not receive sale proceeds for a territory that is no longer its property.
+A completed Independence Wave release or Occupation Revolt opening that removes one advertised state from the seller's ownership or full control cancels the whole active lot under Part 04.
+Event 092 returns refundable escrow once; the liberation owner keeps its territorial, force, origin and political results.
+The seller receives no proceeds, and a completed earlier sale carries no insurance against later liberation.
 
-A newly independent government can become a bidder or seller under the same economic and sovereignty rules as other countries.
-It is not forced to participate and does not inherit its former ruler's auction receipt by default.
-A country whose entire new homeland would be the lot is protected against selling itself out of existence.
+An already accepted liberation settlement or committed opening can reserve specific states before the map changes.
+Its owner exposes that disposition to listing and closing preflight, which blocks an incompatible lot.
+A claimant, dormant underground network, foreign core or possible future revolt alone is not a committed transfer and does not secretly forbid every homeland sale.
+Disclose public obligations without revealing another owner's covert information or clearing its progression and population records.
 
-An ownership transfer does not erase an already established independence process, population claim, or promised liberation settlement in another system.
-Where that system has already committed the territory to a disposition, listing is blocked.
-Where its future outcome legitimately depends on the current owner, that system reassesses the new situation through its own rules.
-The auction never clears another event's progression flags to make the state appear politically quiet.
+A newly independent government may bid or sell using its own real reserve and the ordinary survival safeguards.
+It receives neither its former ruler's auction money nor a duplicate country package.
+[Occupation Revolt's homeland rules](../095_occupation_revolt_specs/095_occupation_revolt_spec_part_02_claimants_and_homelands.md) preserve the authentic claimant, while its [territorial revalidation](../095_occupation_revolt_specs/095_occupation_revolt_spec_part_11_connections_and_consequences.md) uses the buyer as current counterpart.
+Purchase grants no new revolt army.
+
+AI bidders include disclosed national disputes in the existing administration and defense burden, without privileged bids or discretionary cancellation.
+Ordinary ownership checks still work if the liberation system is absent or disabled.
+A future acceptance case distinguishes a dormant network in a valid lot, an actual opening cancelling it before settlement, and later liberation of a completed purchase without refund.
+
+## The treaty and paid territorial ownership
+
+A Treaty of Tordesillas sphere or Portuguese claim can increase buying interest, but cannot convey someone else's property.
+The [Galicia settlement](../093_treaty_of_tordesillas_restoration_specs/093_treaty_of_tordesillas_restoration_spec_part_02_galicia_crisis.md) and [restitution rules](../093_treaty_of_tordesillas_restoration_specs/093_treaty_of_tordesillas_restoration_spec_part_08_faction_and_empire.md) own the diplomatic obligations.
+An accepted cession blocks a conflicting new listing; negotiations, claims and sphere assignment alone do not.
+Conversely, a published auction's state commitment must be resolved before that seller accepts a contradictory immediate treaty handover.
+
+A sale preserves geographic sphere and the recognized Galician exception.
+Correct-sphere ownership can support later treaty admission; wrong-sphere purchase grants no integration entitlement.
+Later restitution uses existing consent or standing-policy terms, without an auction refund or second seller receipt.
+Treaty AI prefers retainable correct-sphere positions; buying for its partner needs an affordable support purpose without assumed reimbursement.
+
+An unadopted or disabled treaty imposes no sphere restriction.
+A future acceptance case contrasts a claim leaving a lawful auction open with an accepted cession blocking it, then verifies that a paid wrong-sphere purchase retains its price through separate consent-based restitution.
 
 ## Resource discoveries and industrial change
 
@@ -40,6 +59,13 @@ A resource-rich Greenland becomes more expensive even when no special Greenland 
 Economic decline, damaged production, and reduced usable logistics can move value in the other direction.
 A country whose homeland economy has deteriorated can also become a more motivated seller, but it cannot borrow against an auction outcome that has not occurred.
 A country whose civilian capacity has collapsed earns less new reserve rather than continuing to mint points at an old rate.
+
+Half gone provides a useful distinction between a poorer country and a poorer lot.
+Its equipment-only loss changes the bidder's war reserve, not the state assets being purchased, and does not halve Industrial Reserve or funded auction escrow by proxy.
+An evolved population loss in an advertised state changes the lot's current assessment; Part 03's published deterioration and advertised-capability rules decide whether cancellation is warranted.
+A stability loss may change future willingness without releasing an accepted high bid.
+Event 094 applies the disappearance once, while Event 092 owns any actual cancellation and refund.
+Compare an equipment-only incident with a population incident that does and one that does not cross the existing 25-percent disclosed-assessment threshold; none resets the closing clock solely because a report appeared.
 
 A windfall in some other native or event-owned currency is not automatically Industrial Reserve.
 In particular, the legacy CIC event's native market capacity cannot be copied into the auction reserve without an explicit, conservation-preserving conversion design and a proven interface.

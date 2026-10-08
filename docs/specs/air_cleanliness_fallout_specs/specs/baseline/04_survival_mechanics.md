@@ -62,6 +62,35 @@ Every produced Fallout state receives immutable opening and mutable current Supp
 
 Current Supply Access drives a dedicated state dynamic modifier through `local_supply_impact_factor`. The exact translation is `clamp(-0.50 + 0.005 * current Supply Access, -0.50, 0)`. It therefore restores local distribution from minus 50 percent at zero access to ordinary capacity at 100 access without creating an above-normal bonus. This stacks with the Air Winter phase `local_supplies` modifier. One state helper owns current mutation, clamping, factor calculation, and immediate modifier refresh.
 
+## Inherited winter choices
+
+The frozen opening profile records what the rewrite left; the first Ash-week account then applies accepted history to mutable current resources once per Fallout generation.
+The opening profile remains unchanged, so an orientation retry cannot manufacture another inheritance grant.
+A20 in the October 4 ledger owns the original policy histories; F3 in the [finishing ledger](../../../../plans/air_cleanliness_fallout_plans/agent_decisions_2026-10-05.md#f3-winter-recovery-follows-inherited-sites) owns the additional state-attached recovery.
+The magnitudes remain in `fallout_air_winter_memory`, `fallout_winter_recovery_memory` and `fallout_treaty_memory`; this passage defines attachment and player meaning rather than a second tuning table.
+
+| Earlier choice or outcome | Survivor attachment | Continuing consequence |
+| --- | --- | --- |
+| Regional relief, tunnel-school shelters, cleared rail yards, dam crews, refinery stocks or district heat, reactor work or safe scram, furnace work or shutdown | States the survivor currently owns and controls, carrying the exact accepted outcome | Preserved stores, shelter, medical capacity, waterworks, power skills or Scrap enter the first current account; recorded fuel sacrifices and failed-site losses still apply. |
+| Seed vault, breeding-stock and herd outcomes | The original A20 state-history rule over owned states | Food and accepted breeding-stock Cohesion memory apply under A20's existing better-outcome precedence. This rule is not silently replaced by F3's control gate or mixed-site treatment. |
+| Island rescue/quarantine/exclusion, Desert City water policy, dead-city salvage | The government's own accepted country-history flags | The actual policy changes first resources, Recognition or Cohesion; taking another country's state does not copy that government's policy. |
+| Treaty membership, ban and seed exchange | The continuing government's own treaty history | Banned status takes precedence over the former-member standing grant; seed history retains its separate Food grant. [Spec 09](../09_diplomacy_war_trade_and_world_order_events.md#relief-after-the-blackout) owns later reconstruction. |
+
+Each distinct F3 outcome contributes once nationally: ten successful rail sites do not grant ten copies, while one successful site and another failed site both contribute.
+Its Cohesion gains and losses are summed before one clamp, including near-zero or near-full starts.
+A refinery's district heat preserves Power at its recorded Fuel cost; a safe shutdown preserves Scrap without recreating a refinery.
+A shelter-school community can preserve Shelter capacity and Medicine even when the rewrite destroyed the former building.
+These are surviving material and community consequences, not automatic restoration of native buildings, population, equipment, leaders or technology.
+Government policies and state-attached histories retain their distinct precedence instead of merging every past success into a new recovery score.
+
+The closing orientation report names actual applied causes and actual component results.
+Human and AI survivors consume the same history and current-resource mutations; AI winter choices remain the existing source owner's work, with inherited cost visible in their later start rather than an extra difficulty bonus.
+Absent histories contribute nothing and leave the ordinary frozen-profile start playable.
+Broader refugee identity, focus and migration-allocation consumers remain accepted and queued under A20/F3; they are not supplied by these starting grants.
+
+Future acceptance cases compare the same survivor footprint with successful and failed preparations, exclude a merely occupied F3 site, apply opposing site outcomes at 0/99/100 Cohesion, repeat orientation, and compare matching human/AI histories.
+The original A20 ownership and better-outcome precedence receive separate cases so an implementation cannot accidentally unify the two contracts.
+
 ## State classes after Fallout
 
 The world map should feel new. State classes replace ordinary state identity as the main strategic layer.
@@ -79,6 +108,21 @@ The world map should feel new. State classes replace ordinary state identity as 
 | Hydro enclave | Power system survived | Electricity, diplomacy, strategic target |
 | Reactor keep | Reactor or atomic facility survived | Power and science, meltdown risk |
 | Rail spine | Key route still passable | Logistics, war goals, regional federation path |
+
+### Ore-bearing ruins
+
+Unresolved connection proposal: if a rewritten state already carries a valid Event 098 deposit, its Fallout class, wrecked buildings and technology regression do not erase that geological identity.
+[New Ore part 08](../../../098_new_ore_specs/098_new_ore_spec_part_8_campaign_lifecycle.md) retains the direct armor tier for the actual current controller regardless of infrastructure damage; Fallout must hand its finalized territorial result to that owner for entitlement reconciliation.
+The survivor can defend or capture the deposit under ordinary Fallout war, or seek a valid Event 098 agreement when that owner's diplomacy is available.
+A Fallout salvage expedition grants its own authored Scrap or equipment result and does not manufacture ore access, an extra deposit, a foreign licence or recovered tank technology.
+Event 098 alone reconciles paid allocations under [part 03's protected-term rules](../../../098_new_ore_specs/098_new_ore_spec_part_3_foreign_access.md).
+Removing a guarantee alone during Fallout's diplomacy reset does not terminate prepaid commercial or security access when the same actors and supplying control remain valid; current and already paid future periods retain their original deadlines.
+Faction allocation ends with the faction, while actual controller replacement or an invalid supplier/customer ends the affected agreement through Event 098's own settlement rules.
+Fallout cannot invent a replacement supplier, erase an unsettled payment, refund it independently or renew a term.
+An owner-accepted reset/settlement handoff is the implementation dependency; retaining a country tag alone does not prove every foreign allocation remains valid.
+AI strategic valuation may read an actually usable deposit alongside the state's survival value; a ruined supply network still limits armies and grants no hidden resupply.
+Future cases retain a deposit in a dead city under the same controller, preserve a prepaid term after guarantee removal, close faction allocation with faction dissolution, transfer a deposit to another survivor, and distinguish retained ore armor from regressed tank technology.
+Without Event 098 or a valid deposit, state grading, salvage and survival retain their ordinary behavior.
 
 ## Survival decisions
 

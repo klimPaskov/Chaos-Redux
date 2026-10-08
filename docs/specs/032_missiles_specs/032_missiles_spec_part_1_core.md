@@ -242,19 +242,27 @@ Event 32 remains disabled by default while its catalog status is To Be Reworked.
 
 ## Chaos effects
 
-Suggested direct chaos changes:
+The amounts below remain proposed consequence budgets. Their values preserve the earlier table's calibration, while payment requires an actual abnormal outcome. Evolution eligibility, MTTH completion, activation, logging, doctrine adoption, payload integration, retaliation posture, and operation preparation have zero direct Chaos effect. A simultaneous physical consequence must qualify through its own receipt rather than receive a charge for the evolution state.
 
-| Event 32 action | Suggested chaos change |
-| --- | --- |
-| First global firing | `+10` |
-| Later ordinary firing | `+4` |
-| Rogue Launch Commands unlock | `+6` |
-| Unreliable Guidance unlock | `+6` |
-| Saturation Arsenals unlock | `+10` |
-| Special Warheads unlock | `+15` |
-| Automatic Retaliation unlock | `+20` |
+| Budget family | Retained proposed amount | Existing consequence that can qualify | Repeat and overlap limit |
+| --- | ---: | --- | --- |
+| First global manifestation | `+10` | The first global firing completes a valid recipient's operational launch-site, reserve and command package of unexplained origin, as described in the premise. Announcement, an empty dispatch or rejected setup is insufficient. | Once per campaign, after the firing transaction commits. All recipients and chunks share that receipt. This measures the unexplained appearance rather than ordinary military strength. |
+| Later material manifestation | `+4` | A later global firing actually creates a distinct unexplained technology step, reserve addition or site-capacity expansion under the existing repeat package. A full-cap, unchanged or rejected program creates no new manifestation. | At most once per completed global firing with actual new material results. Normal paid replenishment, repair, research, recapture and report delivery do not qualify. |
+| Rogue Launch Commands consequence | `+6` | A rogue crew or mutinous site completes an unauthorized launch during its confrontation with national command, using the existing rogue incident and operation records. The government has not authorized the launch through emergency doctrine. | First qualifying outcome once per campaign. Preparation, a bluff, peaceful surrender and a launch stopped before commitment give zero. The source is the proved loss of launch authority, distinct from casualties or war. |
+| Unreliable Guidance consequence | `+6` | The designed Neutral Drift outcome produces an actual wrong-state impact in a country neutral to the launcher when the incident began. The actual and intended targets prove the unintended international breach. | First qualifying outcome once per campaign. A dud, debris without an applied impact, a wrong object in the intended enemy state or a warning without a launch gives zero. War-entry and Deaths retain their separate owners. |
+| Saturation Arsenals consequence | `+10` | Assignment remains unresolved. The existing track designs larger reserves, defensive saturation and bounded multi-state barrages, but supplies no distinct abnormal consequence beyond the material grant or the other tracks' outcomes. Ordinary authorized bombardment alone cannot support an extra premium. | Keep this budget unassigned and apply zero unless the parent accepts a distinct qualifying outcome already supported by the design. Adoption, reserve growth and larger damage totals cannot silently substitute for that missing assignment. |
+| Special Warheads consequence | `+15` | The first confirmed release through a newly operational Event 32 special-payload missile-delivery route demonstrates that dangerous delivery capability in use. The operation and payload owner must prove real missiles, payload consumption, release, and the delivery method. | Once per campaign across all payload families. Stock ownership, integration and a failed release give zero. An already demonstrated equivalent missile route gives no new breakthrough, and another owner must not have already charged the same delivery milestone. Physical CBRN, nuclear, contamination and Deaths sources remain separate. |
+| Automatic Retaliation consequence | `+20` | The existing false, forged or mistaken-warning chain becomes an actual automated exchange reaching a third country, with committed linked launches and wrong-country or unresolved-attribution proof. The closed root summary demonstrates escalation beyond an ordinary verified bilateral response. | First qualifying root once per campaign. Warnings, prepared responses, verified ordinary retaliation and a chain stopped before this material exchange give zero. Existing generation, participant, incident and missile caps remain unchanged. |
 
-Conventional strikes may add a small direct chaos increase when they hit major strategic targets or neutral territory. Special payloads use the existing nuclear, thermonuclear, chemical, biological, contamination, condemnation, and death ladders. Event 32 must not apply those shared changes twice.
+The last five budgets never pay for unlocking their track. Each requires that track's enabled incident route and the committed outcome above. The amounts remain provisional until parent review and implementation-stage balance evidence establish their significance alongside the shared Chaos sources.
+
+For one closed operation or root chain, select at most one supported, previously unrecorded evolution-family budget. When several qualify, use the largest and record which outcome it represents. Equal amounts use the earliest committed qualifying incident, with stable incident ID breaking a same-date tie. Record every qualifying milestone as having occurred even when only the largest pays, so a later root cannot claim back payment for a suppressed milestone. Families that have not yet qualified can still do so in a distinct later root. This prevents a single rogue special-payload barrage and its mistaken responses from stacking every track's premium. Duplicate callbacks, linked strikes, renewed warnings and reloads cannot reopen a settled root.
+
+Shared war, deaths, destruction, contamination, nuclear use and world tension keep their own consequence accounting. These budgets measure unexplained material appearance, loss of command, unintended international spillover, newly demonstrated delivery, or automated escalation. They are not casualty multipliers or additional damage charges. An unspecified small conventional-strike premium cannot be added for a fact already charged by this map or a shared owner.
+
+Scenario setup keeps its own instant-Chaos contract. It cannot charge these manifestation budgets again for the same seeded program or unlock, and it must retain the seeded manifestation receipt so a later firing cannot relabel it as the first appearance. Later real outcomes use this same map after setup, without a scenario exemption or a second setup charge.
+
+Acceptance cases: unlock and log all five tracks without committing an outcome and verify zero direct Chaos. A stopped rogue launch and a verified false warning also give zero. A real unintended neutral impact can consume the Guidance budget once, while duplicate delivery does nothing. A mixed rogue, special-payload and automated root receives only its largest supported budget after closure, with shared losses applied once. A normal saturation barrage leaves the retained `+10` assignment unresolved and unpaid.
 
 ## Baseline completion state
 

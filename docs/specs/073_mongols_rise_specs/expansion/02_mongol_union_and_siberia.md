@@ -20,6 +20,25 @@ The Siberian route opens when the empire has a direct frontier or a valid northe
 
 The root asks whether the empire wants a limited border settlement or a deeper campaign toward major rail and resource regions. The limited route can deliver a viable northern frontier without becoming a total war for the whole Soviet or Russian state. The deeper route creates a larger military commitment with serious winter, distance, and supply problems.
 
+An existing independent TAN on the chosen approach is a government to negotiate with or fight, not an empty corridor or an automatic part of the Mongol homeland set.
+When its Tannu What? episode is active, the same limited demand offers an accountable tribute or transit agreement, a separately valid alliance arrangement, or refusal; it does not replace TAN's aid institutions and ordinary army with a generic frontier khanate.
+Transit must identify the TAN-controlled route actually needed by the northern operation.
+A levy draws only from transferable TAN-owned surplus, never from foreign-owned formations or manpower and equipment already held in a paid Tuvan reserve.
+The two governments see that a tributary agreement alone does not make TAN an ally.
+
+Before TAN's reveal, Mongolia can value transit over a levy that consumes a potential partner's defensive reserve, or insist on payment and accept greater political risk.
+Event 075 owns any separate aid appeal and delivered gift; tribute collection is not an additional Tuvan donation, and the same resources cannot pay both commitments.
+If TAN reveals while the offer is unanswered, recheck the demand against the actual opening wars before accepting it.
+A bordering Mongolian protector is included in that opening after TAN breaks protection; neither a pending demand nor an old transit payment prevents the war.
+After the reveal, a compliant independent tributary still falls under TAN's non-allied-neighbor rule unless a genuine exempt relationship or current legal restriction applies.
+Mongolia can negotiate that relationship where possible, defend the corridor, or abandon the exposed northern objective rather than buying a false guarantee of peace.
+
+This interaction uses the existing demand, obligation, and campaign controls.
+AI evaluates TAN's observed field strength, its actual protector and the corridor's supply value, without reading TAN's hidden worldwide aid ledger.
+The future acceptance cases distinguish an ordinary TAN, an aid-phase transit partner, a reveal during an unanswered demand, and a revealed non-allied tributary.
+None grants a second army or treats a Tuvan defeat as a completed Mongol settlement before its real territorial terms are valid.
+See [Event 075's reveal rules](../../075_tannu_what_specs/campaign/075_tannu_what_spec_part_10_reveal_and_wars.md) and [regional connection](../../075_tannu_what_specs/campaign/075_tannu_what_spec_part_15_chaos_and_connections.md).
+
 The first fork is operational. Following existing transport routes offers better supply and predictable resistance. A wider mounted approach offers opportunities for encirclement but makes recovery harder when a link is cut. Terrain bonuses reduce selected difficulties without removing the need for transport.
 
 The regional settlement can retain a narrow corridor directly or establish a viable frontier administration. A new country is created only if an appropriate existing identity cannot be reused and a complete country package is possible. The design does not require a generic Siberian khanate solely to fill another subject slot.

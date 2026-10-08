@@ -123,7 +123,20 @@ Displaced temporal formations may use compatible formation and provider patterns
 
 ### Event 027 Doctrine Research
 
-A military consultation can grant one valid doctrine mastery result or doctrine choice through the established doctrine system. This is preferred when a full technology grant would be excessive.
+A completed military consultation may provide one country-local doctrine choice or one mastery result through a verified doctrine operation.
+The [Event 027 choice flow](../../027_doctrine_research_specs/027_doctrine_research_spec_part_2_choice_flow.md) defines adoption, exact one-step mastery, banked progress, revalidation, and unsupported-domain handling.
+Offer the doctrine variant only when the recipient has a valid target and its owner operation can be proven.
+Other already designed military consultation variants remain available when that route is unavailable.
+
+A choice that establishes a Grand Doctrine grants zero event mastery steps.
+A mastery result advances exactly one eligible level without replacing a doctrine or bypassing a custom domain's downstream gates.
+Completion revalidates the current target through the doctrine owner before recording a successful grant.
+The Event 027 evolution stage does not multiply this consultation reward.
+
+The receipt belongs to Event 030 and the consultation's recipient government.
+It creates neither an Event 027 global firing nor a new Event 027 batch, queue entry, History row, cluster roll, or achievement choice.
+If the same country already has an open Event 027 selection page, its normal target rebuild recognizes the externally changed mastery before consuming its own choice.
+This connection never calls the global Event 027 entry to obtain a local reward.
 
 ### Event 032 Missiles Giveaway and nuclear systems
 

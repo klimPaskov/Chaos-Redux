@@ -1,6 +1,6 @@
 # Event 066 Abundance Package Manifest
 
-Current local file inventory refreshed on 2026-10-07; original planning-source receipts remain in the source-reading reports.
+Current local file inventory refreshed on 2026-10-08; original planning-source receipts remain in the source-reading reports.
 The inventory excludes this manifest and preserves any explicitly listed external plan-document rows.
 
 - Intended extraction root: repository root
@@ -32,10 +32,10 @@ The inventory excludes this manifest and preserves any explicitly listed externa
 | `docs/specs/066_abundance_specs/specs/066_abundance_spec_part_1_core.md` | 7006 | 1070 | `8929bb7191ac67faf273b175e61001943ab94ecbc4c38b4b5284b225f3bb5ae8` |
 | `docs/specs/066_abundance_specs/specs/066_abundance_spec_part_2_dynamic_value_space.md` | 12025 | 1842 | `fd3d1ff08928d035095ddeb60a9ef99869bbe08e6d6b9f8aac83ec493c5f00e9` |
 | `docs/specs/066_abundance_specs/specs/066_abundance_spec_part_3_choice_generation.md` | 9727 | 1481 | `d0dabb68f1809b5b09c902811ac4da938fe49f0fcd7a02a05017e512eae184b7` |
-| `docs/specs/066_abundance_specs/specs/066_abundance_spec_part_4_abundance_application.md` | 10377 | 1550 | `0f73b37fbec152095793537cc6e0712291907afbe95b8fb9f51c387704eaedad` |
+| `docs/specs/066_abundance_specs/specs/066_abundance_spec_part_4_abundance_application.md` | 11812 | 1761 | `0549b92dc6ef0292b24eb70dadb90944a87f97ff844e4f814fe46fd974131814` |
 | `docs/specs/066_abundance_specs/specs/066_abundance_spec_part_5_evolutions_and_cluster.md` | 8640 | 1309 | `0a7f1fcea640e17e08d5b996a09bc8f3d279b24f32f7093d60b48bd18cb554e1` |
 | `docs/specs/066_abundance_specs/specs/066_abundance_spec_part_6_global_flow_ai_multiplayer.md` | 9937 | 1548 | `525c24f0a5e414a900dd876f092805e08544d38b4b64c98fdbbc91c38d6c07b6` |
-| `docs/specs/066_abundance_specs/specs/066_abundance_spec_part_7_presentation_logs_connections.md` | 11126 | 1766 | `c8d9ce0bde97a9e4f24ec5a18f2a1644235264b0399c6a3e4607b6fb95399b1a` |
+| `docs/specs/066_abundance_specs/specs/066_abundance_spec_part_7_presentation_logs_connections.md` | 12258 | 1937 | `bff027837c552dfa202dad072c7bf648690b1507304463627d1d23378ce5e763` |
 | `docs/specs/066_abundance_specs/specs/066_abundance_spec_part_8_achievements_assets.md` | 9406 | 1323 | `1aecea264c969ac3a94004ef8a68d7cbfc2526aafdbf6be25f1866b89048b42b` |
 | `docs/specs/066_abundance_specs/specs/066_abundance_spec_part_9_acceptance_criteria.md` | 10089 | 1526 | `dfb1157ff600a36415a5affd3c08be6e1ca83a5d74abc5aa007fca9935f90684` |
 

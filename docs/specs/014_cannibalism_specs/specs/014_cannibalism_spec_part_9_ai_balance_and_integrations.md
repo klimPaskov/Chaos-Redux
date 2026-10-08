@@ -466,13 +466,21 @@ Do not create a parallel one-off cooperation flag.
 
 ## Famine, locust, plague, and disaster interactions
 
-Where other events create real shortages or isolation:
+Actual shortages and isolation can raise Field Hunger and make containment logistics harder.
+A disaster family appearing elsewhere, or a disaster warning without local consequences, supplies no shortage evidence.
+Famine alone creates no ritual cell or cult.
 
-- Field Hunger rises
-- containment logistics become harder
-- relief decisions can solve more than one problem
+When an Event 014 relief action reaches a state with active Event 013 aftermath, the existing shared-relief bridge credits that state's current rescue, stabilization, or reconstruction phase.
+The Event 014 action owns its payment and containment result, and Event 013 owns recovery completion, later disaster losses, and its history.
+Medical protection additionally requires that state's active disaster-disease pressure.
+The relief can remove the matching hunger, supply, or disease pressure without finishing every recovery phase, repairing every damaged building, erasing accrued deaths, or curing an established ritual cell or network node.
+A supply restoration therefore changes the next containment choice while investigation and cell suppression can remain necessary.
 
-The events remain separate. A famine does not automatically create a cult.
+One completed shipment or medical action receives one bridge application to its actual destination, including when both systems acknowledge it.
+A different independently paid delivery can still help through the existing action limits.
+A closed aftermath card receives no delayed credit, and loss of access leaves the existing relief action's own failure or cancellation outcome authoritative.
+Without Event 013 aftermath, ordinary Event 014 relief retains its containment result.
+AI should judge relief against the local shortage and its remaining containment work, with the same destination, affordability, and completion checks as a human.
 
 ## Camps and genocide-system interaction
 

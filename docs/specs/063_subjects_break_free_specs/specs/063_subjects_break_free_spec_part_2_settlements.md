@@ -218,6 +218,12 @@ The dispute can contain one or more specific issues:
 
 The event should choose issues that exist in the snapshot. It should not invent a strategic-port dispute for a landlocked country or a territorial dispute where neither side has a relevant core or claim.
 
+Third-party recognition, a reachable guarantee, or Liberation Pact admission can secure the breakaway internationally while this bilateral dispute remains unresolved.
+Those outcomes can complete the recognition mission's security route, but they do not record recognition by the former overlord, clear its restoration objective, or convert the pair to negotiated separation.
+The settlement remains contested until that overlord accepts terms, an independence-preserving peace settles the dispute, or the existing settlement cleanup resolves it after expiry or the former overlord's disappearance.
+Expiry of a restoration objective removes only that objective unless the settlement owner also resolves the other disputed issues, and it never fabricates voluntary former-overlord recognition.
+A guarantee changes coercion risk through ordinary diplomacy; it does not start or end a war on its own.
+
 ### Pressure sequence
 
 A contested settlement can produce:

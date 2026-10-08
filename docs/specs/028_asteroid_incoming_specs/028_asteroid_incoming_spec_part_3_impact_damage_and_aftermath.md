@@ -225,6 +225,33 @@ The event can strike states already damaged by war or disaster.
 - Recovery burden starts from the event profile and can account for pre-existing infrastructure weakness.
 - A state already carrying a temporary natural-disaster modifier may keep it when compatible. Duplicate generic penalties should be consolidated where possible.
 
+## An existing Riches Found mine in the impact footprint
+
+A registered Event 029 mine can be struck like any other eligible location.
+Its persistent identity does not exempt it from the selected impact profile or invite a target reroll.
+[Riches Found](../029_riches_found_specs/029_riches_found_spec_part_1_core_loop.md) owns the mine ledger, controller aggregate, concessions, paid projects, and surviving evolution aftermath.
+
+When the main center becomes a permanent crater, the mine is physically destroyed.
+Event 029 retires that mine's operating contribution and active site work, then rebuilds the controller's remaining-mine aggregate using its existing diminishing returns and cap.
+The original 1,000 political-power windfall stays with the discoverer, and later capture or release grants no replacement windfall.
+The historical mine identity remains, but reconstruction, a new controller, or repair of a neighboring route cannot reopen it.
+
+Destruction is not a successful evacuation, sealing project, reform, or completed bargain.
+It gives no corresponding Event 029 achievement credit and cannot use impact deaths to pay a Bottomless Account obligation.
+Existing obligations, contractual settlement, paid-project cancellation, and national aftermath follow their Event 029 terminal policies, with only actual recorded payments available for any valid refund.
+Mine-specific casualty effects must not run again for people already removed by Event 028.
+Previously distributed Gold Disease material or already established national aftermath is not erased by destroying its original source.
+
+Surviving ring states and fragment centers retain their mine identity.
+Event 029 rechecks the damaged works, route, and current controller before allowing output or further development.
+A broken physical requirement can suspend operation and make the existing repair or temporary-closure actions useful.
+A fragment-crater marker alone is insufficient to declare the mine destroyed, because fragment centers retain surviving population and buildings.
+Neither owner restores shared buildings above their allowed repair baseline or charges the same physical damage twice.
+
+Only mines already registered in the footprint require this reconciliation.
+When Event 029 is absent or disabled, the ordinary asteroid transaction still finishes without enabling or firing it.
+A later Event 029 refresh must recognize a permanent main crater before restoring mine benefits or actions.
+
 ## Control and report edge cases
 
 - When owner and controller differ, population and building losses apply to the state once.

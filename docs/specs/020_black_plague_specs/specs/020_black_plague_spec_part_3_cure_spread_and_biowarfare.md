@@ -520,9 +520,35 @@ When Event 41 is reworked, active frontline disease should increase troop-route 
 
 A future locust crisis can reduce food and state capacity, increasing mortality and containment burden. Event 20 should not assume Event 118 is implemented.
 
-### Event 149 Immigration
+### Independent migration system
 
-A future migration crisis can provide real movement routes and receiving states. Event 20 should consume those routes when available instead of duplicating them.
+The accepted [migration owner](../../famine_and_migration_system_specs/README.md) supplies displacement requests, actual origin and destination movement, receiving capacity, and the controlled medical-reception policy.
+Its [reception contract](../../famine_and_migration_system_specs/famine_and_migration_system_spec_part_3_displacement_migration_return.md#population-movement-principle) leaves the living cohort at its origin until route, receiver approval, and capacity permit a real transfer.
+Event 20 consumes accepted passage from a proven infected origin as exposure context; it owns strain, disease load, recognition, treatment, and any later epidemic deaths.
+The passage does not make every arriving person infected and does not seed a new outbreak without the disease owner's normal exposure and evolution gates.
+It cannot bypass Evolution II's ordinary overseas-spread boundary.
+
+A receiving country chooses between its existing medical-reception preparation and rejection of an unsafe or unaffordable request.
+Prepared care can reduce exposure through the disease contract, while refusing or delaying passage leaves the real cohort and its current outbreak at the origin.
+A rejected, expired, or uncommitted request creates no arrival-based destination exposure or population credit; unrelated adjacency and transport exposure continue normally.
+Migration pays and records movement and distinct route deaths once, and Event 20 pays and records disease response and disease deaths once.
+Neither owner re-debits the other's accepted loss or creates another migration pool.
+When the migration connection is absent, ordinary Event 20 adjacency, troop-route, port, and containment play remains complete.
+
+### Event 22 camp networks and survivor relief
+
+An operational, abandoned, or liberated camp site uses the existing selected-state response when it has proven Black Plague infection or an eligible exposure route.
+Confinement and poor care amplify that hazard; a building alone cannot create the strain, force-fire Event 20, or certify infection.
+The human controller chooses supported care in place through existing hospitals, sanitation, medical relief, and relief corridors, or a medically supported transfer with a proved living cohort, receiver, route, and real capacity.
+Care in place retains the local medical burden; transfer relieves crowding only after actual passage and can carry eligible exposure.
+
+The [camp owner contract](../../022_concentration_camps_specs/022_concentration_camps_spec_part_5_integrations_balance_presentation.md#black-plague-and-event-20) retains responsibility, evidence, custody provenance, and survivor relief.
+Event 20 owns disease phase, countermeasures, spread, and epidemic deaths: closing the site does not cure the origin's outbreak, and curing plague does not close the site or erase responsibility.
+Statewide epidemic deaths cannot identify a detainee origin; the shared camp observer owns outside-loss reconciliation and its accepted mixed-origin PAUSE.
+Record medical loss and any qualifying obstruction evidence through their existing owners without duplicating the same death or obstruction source.
+A jointly delivered service has one owning payment receipt and cannot automatically complete an independent project twice.
+Relief AI chooses supported care in place when a safe medical route or receiver capacity is missing.
+Without active Black Plague, ordinary camp disease and relief continue.
 
 ### Event 2 Zombie Outbreak and Event 10 Death
 
@@ -574,3 +600,6 @@ This surface is complete only when:
 - delivery uses existing biowarfare systems
 - condemnation, air cleanliness, deaths, chaos, and world threat are aligned
 - the dedicated Black Plague strategic-response category reuses the existing disease state, contamination, death, countermeasure, and world-end systems instead of duplicating them
+- P20-MIGRATION-REJECTED: a denied or expired medical-reception request retains the origin cohort and creates no arrival-based destination exposure, while existing local exposure continues
+- P20-MIGRATION-PASSAGE: an accepted movement from a proven infected origin preserves exact population conservation and feeds one eligible exposure context; prepared reception changes care without granting an instant cure
+- verify the disease half of P22-PLAGUE-LIBERATION and P22-PLAGUE-OUTSIDE-LOSS under the [camp owner's existing integration acceptance](../../022_concentration_camps_specs/022_concentration_camps_acceptance_criteria.md#event-integrations); reuse those joint cases rather than a second camp cohort test set

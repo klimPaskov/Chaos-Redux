@@ -185,9 +185,17 @@ Public Works, transport recovery, foreign aid, and restored trade can reduce Eve
 
 ### Natural disasters
 
-A natural disaster striking an active Depression Center raises local damage, unemployment, logistics failure, and Severity. Event 35 reads the disaster aftermath or receives a bounded shock adapter. It does not call a disaster merely to make the depression harder.
+A confirmed disaster loss in an active Depression Center can raise local unemployment, logistics pressure, and Severity. A forecast identifies a vulnerable center without applying a damage shock. [Acid Rain](../033_acid_rain_specs/specs/033_acid_rain_spec_part_4_mortality_damage_and_environment.md) provides state-local damage and retained burden, with [its recovery rules](../033_acid_rain_specs/specs/033_acid_rain_spec_part_5_preparedness_decisions_and_recovery.md) remaining authoritative.
 
-Recovery work completed before the disaster can reduce the added pressure where infrastructure and reserves logically help.
+The player chooses whether to preserve an existing recovery project through disruption or redirect the center toward its permitted restructuring or liquidation route. Completion must still prove the project's current requirements. A reopened economic center may retain Acid Rain aftermath, and clearing rain aftermath alone does not certify economic recovery.
+
+Event 35 receives one immediate economic shock per proven incident, through either the observation or adapter route. Persistent damage can sustain pressure afterward. If the incident was already included in an Event 34 collapse snapshot, it is inherited condition rather than a second arrival shock. Later independent damage remains a new condition.
+
+Disaster building damage is not an Event 35 factory-loss receipt. Event 35 can restore only its own proved losses or separately accepted project capacity. Disaster repair remains with the damage owner and cannot become free industry through Rebuild or repeated center reopening. Depression relief also leaves disaster deaths, Air contributions, and Humanitarian obligations under their owners.
+
+AI prioritizes the threatened viable center and keeps paid project progress unless its existing interruption or failure rules invalidate the work. These connections do not start another event or an independent depression when that system is absent.
+
+Acceptance case: corrosion hits a center during certification after a boom collapse. The inherited old damage is not charged again, new damage can interrupt proof, and reopening grants neither a replacement factory for the disaster loss nor clearance of Acid Rain aftermath.
 
 ### Air contamination and CBRN systems
 

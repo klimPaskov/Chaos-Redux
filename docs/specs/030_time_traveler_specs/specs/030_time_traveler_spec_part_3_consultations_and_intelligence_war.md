@@ -93,6 +93,26 @@ The player chooses a restrained, political, intelligence, or coercive response. 
 
 Heavy-handed success can protect the government while lowering legitimacy or raising condemnation if abuses become public. The consultation must never provide a free universal purge button.
 
+## What a consultation actually proves
+
+Before payment, each offered consultation identifies the recipient government, the named objective, the deadline, the promised reward family, and whether its knowledge has been distributed beyond the traveler.
+The objective must be observable through the relevant owner system.
+A forecast about a possible crisis cannot force that crisis to occur merely to prove the traveler right.
+
+The player's intervention can prevent the remembered result.
+For a military forecast, maintaining the named supplied corridor for the required period proves the defensive work even when the predicted offensive never happens.
+For an industrial forecast, meeting the named stockpile or restored-route requirement proves preparation even when the shortage is avoided.
+The deadline alone provides no success receipt, and a prediction's non-occurrence alone provides no failure receipt.
+
+Exact and strategic success are distinguished by the evidence the objective actually produced.
+A failed objective can be attributed to divergence only when a recorded change invalidated the premise, rather than when the player ignored an unchanged requirement.
+Forged advice requires evidence of the planted record or operation and must not become the default explanation for an ordinary setback.
+An actor or state that becomes invalid returns through the existing cancellation path rather than fabricating a new target and retaining the old price.
+
+If already distributed knowledge allows a mission to continue after custody changes, its completed result belongs to the government that committed the consultation.
+The new custodian receives direct access for later consultations and cannot collect the same completed advice result again.
+These distinctions use the existing mission, custody, and result records without another player-facing value.
+
 ## Advice result classes
 
 | Result | Meaning | Reward direction |

@@ -23,23 +23,13 @@ Fury should be readable as a strange war event, not as a normal focus-tree claim
 
 The first player-facing impression should be simple.
 
-A minor country that should not matter starts winning wars too quickly. Observers cannot agree whether it is a coup, a mass mobilization, a staff-office obsession, or a country losing all sense of limit. The player sees the first warning through a report event or news note only after the first conquest, unless the player is close to the region or has intelligence access.
+A small country suddenly mobilises columns it could not ordinarily sustain and begins attacking its neighbours. One immediate opening World News announces each successful ordinary or manual preparation batch, using the first new actor and the frozen count of actors actually created. The first genuine territorial gain has its own campaign-once conquest news. Nearby defenders learn the danger through these two distinct moments, mobilisation and captured foreign ground.
 
 The event should create tension without giving the player a free expansion tool. Fury must never select the player as the Fury actor. The ordinary Fury loop can declare on a player country when that country is a valid target; the player exclusion applies to Fury actor selection, not Fury target selection.
 
-## What Fury is not
+## Campaign role
 
-Fury is not a generic random war.
-
-A random war picks an attacker and a defender. Fury creates an actor with memory, growth, occupation tools, coring pressure, capped military reinforcement, a focus tree, and evolving behavior. The country becomes a campaign problem until it is stopped or until it runs out of nearby targets.
-
-Fury is not a formable country by default.
-
-The selected state does not become a new hardcoded tag. It becomes a Fury actor through flags, ideas, decisions, and a shared focus tree. This preserves the dynamic nature of the event and allows Luxembourg, Uruguay, or any similar country to be valid examples rather than hardcoded cases.
-
-Fury is not a player reward.
-
-The player can fight Fury, contain Fury, manipulate Fury indirectly, or trigger the custom challenge scenario. The player does not receive the Fury package, finite reinforcement reserve, or the Fury focus tree from ordinary random play.
+Fury gives an existing AI country a persistent expansion identity through its army, finite reserve, occupation work, focus tree, decisions, and later faction role. Its first wars should be locally credible, while accumulated conquest can make it a continental problem. Familiar country names and flags keep that transformation legible. The player responds through defence, containment, diplomacy, and the manual challenge rather than receiving Fury's opening package.
 
 ## Baseline event loop
 
@@ -50,7 +40,7 @@ The baseline loop has seven steps.
 3. Give a starting army package and first stockpile support.
 4. Start finite weekly Fury reinforcement from a hidden reserve pool.
 5. Pick one weaker eligible neighbor and declare war without warning.
-6. When that neighbor is defeated, run conquest settlement and fire the first-conquest news if this is the first victory.
+6. Record the campaign-once news after the first genuine territorial gain. When the current neighbour is defeated, run its eligible conquest settlement.
 7. Pick the next weaker neighbor, or enter the no-neighbor branch if no valid target remains.
 
 The loop repeats until one of these end states occurs.
@@ -205,17 +195,16 @@ Limited extra weekly reserves may come from evolutions, scenario setup, or world
 
 ## Fury values
 
-Fury should use a few readable values rather than many hidden numbers.
+Two values explain the actor's immediate strategic choice.
 
 | Value | Color direction | Meaning | Increases from | Decreases from |
 | --- | --- | --- | --- | --- |
-| Fury Momentum | red | confidence and pace of expansion | victories, captured capitals, completed expansion focuses, high chaos | defeats, stalled wars, casualties, overextension |
-| Fury Overextension | orange | administrative strain and risk | too many non-core states, multiple wars, high resistance, low supply | integration decisions, compliance, occupation focuses, peace time |
-| Fury Compliance Drive | green | ability to absorb conquered land | occupation decisions, depot cadres, compliance focuses, high momentum | resistance, occupation losses, harsh extraction |
-| Fury Reach | purple | ability to start distant or world-end spread | no-neighbor state, becoming major, world-end focuses, other Fury actors | Fury defeat, containment, lack of ports or routes |
-| Fury Pact Cohesion | yellow | cooperation between Fury states | pact type, shared wars, cooperation focuses | target disputes, hostile type, rival Fury wars |
+| Fury Momentum | red | confidence and pace of expansion | victories, captured capitals, expansion preparation, high chaos | defeats, stalled wars, casualties, overextension |
+| Fury Overextension | orange | administrative strain and risk | non-core territory, simultaneous wars, resistance, weak supply | integration work, compliance, occupation institutions, a pause in expansion |
 
-The player does not need to see every value in a custom window. Event details, decision tooltips, national spirits, and news text should reveal the practical state. If a future UI is added, these values are the core meters.
+Occupation strength is expressed through actual state compliance, garrison capacity, supplies, and the existing Compliance Drive idea. Target preparation records work on the current legal opponent. Cooperation and rivalry use their existing route flags, project-pact membership, and physical reserve sharing. These mechanisms retain their distinct choices without a separate Compliance Drive, Reach, or Pact Cohesion counter.
+
+Event details, national spirits, decisions, and reports should explain whether the actor can sustain another war, needs to consolidate, or is preparing the terminal branch. A cooperation choice spends real resources on eligible partners and locks the rival route. A rivalry choice locks cooperation and influences the score of a legal third-country target also pursued by a non-allied rival. Attacks on another Fury actor wait until ordinary legal neighbours are exhausted, except in the explicit Hostile Fury challenge.
 
 ## Conquest settlement
 
@@ -230,7 +219,7 @@ When a Fury actor defeats its target, the settlement should:
 5. add claims or cores only through the integration system.
 6. raise momentum.
 7. raise overextension based on the amount taken.
-8. fire first-conquest news if this is the first Fury victory.
+8. fire campaign-once first-conquest news only if this completed annexation supplies the first qualifying territorial gain.
 9. queue next target selection after a short delay.
 
 If the defeated target is in a larger war or has complicated faction ties, Fury should get a clean occupation reward without breaking unrelated player wars. The settlement must avoid stealing player-occupied land.
@@ -239,13 +228,13 @@ If a South American Fury actor capitulates a South American target, the Fury set
 
 ## First-conquest news event
 
-A news event should fire when any Fury country defeats its first neighbor.
+The first-conquest news fires once across the campaign after an actor gains foreign controlled territory above its starting footprint or completes an eligible annexation. Starting with several states does not prove conquest. The report describes captured foreign ground when a war is still ongoing, and names an annexation only when that settlement actually completed.
 
 Purpose:
 
 - make the system visible to the world.
 - show that this is not an ordinary random war.
-- warn nearby powers without revealing the world-end branch.
+- give nearby powers a reason to prepare without revealing later routes.
 
 Tone:
 
@@ -256,11 +245,11 @@ Tone:
 
 Player-facing direction:
 
-Title direction: `A Border Vanishes`.
+Title direction: identify the territorial breakthrough without treating a controlled-state gain as a completed annexation.
 
-Description direction: A small country defeats a neighbor, and outside observers struggle to explain the cause. Reports emphasize sudden mobilization, improvised columns, and new officials moving into captured administrative buildings.
+Description direction: name the Fury actor and the foreign territory actually taken. Describe improvised columns, displaced defenders, and the speed of the advance.
 
-Button direction: short, cold, and uneasy. Example direction: `Count the next border`.
+Button direction: an uneasy practical reaction from an observer who now has a concrete reason to prepare.
 
 The exact text belongs in localisation during implementation.
 
@@ -308,7 +297,8 @@ In ordinary random play, the player mainly interacts with Fury as an observer, n
 
 Player-facing hooks:
 
-- news after first conquest.
+- immediate opening news for each successful preparation batch.
+- campaign-once news after the first genuine territorial gain.
 - super-event after major threshold.
 - event details entry.
 - possible anti-Fury decisions when a Fury major exists or when Fury borders the player.

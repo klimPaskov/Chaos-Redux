@@ -41,7 +41,7 @@ These are required checks, not completed tests. No HOI4 runtime, GUI renderer, t
 | V33 | Flying City refit at a poor field | No false technical capability, no completed conversion |
 | V34 | Late Flying City installation | Visual form can change, unearned thirty-step completion reward remains locked |
 | V35 | Chaos falls after a physical refit | Existing form persists without repeat activation or duplicate rewards |
-| V36 | Boarding and normal disembarkation | Resident plus travel population is conserved and Deaths remains unchanged |
+| V36 | Boarding and normal disembarkation | Resident plus travel population is conserved and Deaths remains unchanged; an active Event 84 terminal check includes live custody in the world denominator once and assigns no state control to people still in transit |
 | V37 | Onboard death after origin population withdrawal | Live custody decreases and one actual death is registered, with no second state debit |
 | V38 | Home state changes controller or loses population | Aboard people remain backed in travel custody and attribution remains coherent |
 | V39 | Birth and stowaway discovery | One birth creates one person, discovering an already backed traveller creates none |
@@ -49,7 +49,7 @@ These are required checks, not completed tests. No HOI4 runtime, GUI renderer, t
 | V41 | Rescue crosses a controller transfer | Work credit and living counts persist without duplicated people |
 | V42 | Crash with partially empty hull | Structural profile uses the actual form and onboard casualties use actual occupants |
 | V43 | Population-limited local impact | Reported deaths equal the shared helper's actual applied loss |
-| V44 | Immediate foreign crash | War exists before a report option is clicked and no war goal is created |
+| V44 | Immediate foreign crash | War exists before a report option is clicked and no war goal is created, including a Peace Movement-led USA; Event 84 observes the same war without veto, duplicate declaration, or forced white peace |
 | V45 | Friendly or same-faction impact controller | Minimal supported separation permits the exact required war, without unrelated faction destruction |
 | V46 | Subject, overlord, truce, pact, or democratic restriction | Each blocking relationship is tested and resolved explicitly, with no silent skip or retarget |
 | V47 | Existing American war with the controller | No duplicate declaration or generic war Chaos |

@@ -292,15 +292,19 @@ Discovery effects:
 
 ## Chaos Redux integration
 
-All deaths route through the shared Deaths pipeline.
+The [accepted national-administration contract](../../../plans/system_camp_repression_rework_plans/administration_redesign_2026-09-06/accepted_implementation.md) governs finite custody, supported output, commitments, reserves and reform.
+Camp mortality submits its actual living-pool loss once through the existing exact civilian-loss/Deaths owner, preserving location, cause and responsible authority.
+An existing camp food-aftermath receipt can feed [Famine](../../famine_and_migration_system_specs/famine_and_migration_system_spec_part_7_cross_system_connections.md), which assesses later consequences on the remaining population without repeating Camp's deaths.
+A whole-state famine or plague loss cannot be assigned to a selected detention origin; ambiguous mixed-origin losses preserve the accepted PAUSE until provenance is restored.
+Inspection, relief and hospital care use their existing paid responses.
 
-All hidden deaths must:
+Closure or reform settles verified survivors where they actually are and substitutes the supported civilian workforce where required.
+Release in place changes custody only; return or evacuation needs a separate Migration transaction with current actor, food, route and reception proof.
+A release total creates no copied refugee cohort, free journey or second population credit.
+Pre-administration sites retain their accepted zero-recorded-survivor closure policy.
 
-- record civilian deaths;
-- reduce state population through `add_manpower` negative deltas;
-- update country totals;
-- add chaos by the existing deaths-to-chaos rule.
-
-Condemnation should continue using the existing condemnation path that integrates with the Chaos Meter Condemnation tab.
-
-World-end scenario hooks should remain indirect. This system can help raise chaos and create world threats, but a camp network itself should not become a world-end scenario unless a country-specific chain, such as the Mengele Directorate, reaches its own terminal world-order route.
+Discovery and Condemnation retain the original responsible country through peace or territorial handover.
+A country-specific chain such as the Mengele Directorate owns terminal world-order progression; the shared camp network contributes only its existing Chaos and threat consequences.
+AI uses the same existing reform, relief and safe-relocation gates.
+Future acceptance: release locally, restore host food, then fund return; repeat with lost authority, an unsafe route and ambiguous origins.
+Require one custody settlement, conserved movement/reception and preserved PAUSE; the takeover's engine, visual and probability gates remain open.

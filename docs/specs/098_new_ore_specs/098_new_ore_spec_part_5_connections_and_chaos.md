@@ -68,6 +68,27 @@ The state selectors allow a New Ore deposit to coexist with an Asteroid mineral 
 
 The supplied project registry describes a newer current-controller Asteroid mineral API than the repository snapshot retrieved during this planning task. The implementation must resolve that difference before choosing an integration surface. It must preserve the intended mineral contract and cannot adopt a fixed six-slot limit from older code as an unreviewed design restriction.
 
+## Sandstorm, Event 099
+
+The connection becomes relevant when [Sandstorm's actual or committed approach footprint](../099_sandstorm_specs/099_sandstorm_part_02_fronts_and_forecasts.md) intersects a registered ore state or a real military supply route serving its defense.
+A remote storm or a country-level dust label does not change a deposit's situation.
+Event 099 owns the local [military and supply penalties](../099_sandstorm_specs/099_sandstorm_part_03_military_and_air.md), exposure, responses and physical damage.
+Event 098 keeps the deposit, armor entitlement and agreement terms.
+
+The material's armor advantage remains effective through the passage.
+Reduced ordinary extraction, damaged machinery or slower transport does not switch off direct or purchased ore access.
+Armored forces inside the footprint still suffer Event 099's coordination, movement and supply consequences, while otherwise comparable forces in a clear theater retain their ordinary weather conditions.
+
+The controller can prepare its threatened forces or a genuinely useful corridor through [Event 099's existing responses](../099_sandstorm_specs/099_sandstorm_part_05_responses_and_missions.md).
+A multi-deposit supplier can offer a safer physical source through Event 098's consensual reassignment, and a customer can seek its one existing backup agreement before a threatened source is captured.
+Reassignment preserves remaining current and paid future periods under part 3.
+A new backup uses its own ordinary quote and adaptation rule, with no added Sandstorm access fee.
+A storm alone cannot start the source-defense mission, which still requires a real hostile threat.
+
+AI weighs the forecast's certainty, actual route usefulness, source exposure and alternative access through its existing defense and agreement choices.
+Only an actual terminating event, such as source capture, changes contractual entitlement under part 3.
+Dust clearance supplies neither an ore reliability award nor a new Chaos receipt.
+
 ## Positive Economy cluster behavior
 
 New Ore is a High member of Positive Economy because its discovery creates an exceptional material advantage and can make one state a source of economic and diplomatic opportunity. The later possibility of conflict does not change its assigned cluster identity.

@@ -193,7 +193,11 @@ Integration rules:
 - return requires safety, border access, and destination capacity
 - a receiving country can refuse, limit, or support admission, with visible consequences
 
-Until the shared migration API exists, Event 22 should use bounded state and country markers. It should not create a permanent parallel population-transfer framework.
+The [independent migration mechanic](../famine_and_migration_system_specs/README.md) owns displacement, reception, return, and exact population movement; Event 149's retired event identity is not a provider.
+Use its [living-cohort and reception contract](../famine_and_migration_system_specs/famine_and_migration_system_spec_part_3_displacement_migration_return.md#population-movement-principle) and the camp owner's proved custody provenance for survivor movement.
+A request or location marker does not prove that anybody moved.
+Until the exact source cohort, real destination capacity, passage, and inverse/commit contract are verified, retain survivors in their current accommodation and report the transfer as unresolved rather than inventing population credit or transport deaths.
+The existing secure-site and food/medical-relief actions remain available; their ordinary safety and affordability gates still apply.
 
 ## Occupation, resistance, and garrison integration
 
@@ -257,13 +261,29 @@ Air cleanliness does not serve as a cosmetic modifier. It should affect the camp
 
 ### Black Plague and Event 20
 
-When Event 20 plague exists:
+The connection requires a registered site or recorded survivor accommodation in a state with proven active Black Plague or an eligible Event 20 exposure route.
+Overcrowding and neglect amplify that existing hazard; a camp building alone neither proves infection nor starts Event 20.
+Rat Nation and Rat King actors remain outside the ordinary human camp loop.
 
-- overcrowded camps are high-risk outbreak states
-- plague deaths remain Event 20 deaths unless confinement or deliberate neglect caused an additional Event 22 loss
-- Rat Nation or Rat King actors are excluded as normal Event 22 countries through the special-country trigger
-- abandoned camps can become plague reservoirs
-- humane relief can reduce spread while extermination or abandonment can accelerate it
+The affected operator or liberator uses the existing food/medical-relief and quarantine/decontamination actions, together with Event 20's hospital, sanitation, and relief-corridor response.
+Care in place reduces neglect and supports disease containment while committing local supply and medical capacity.
+Medically supported transfer can relieve overcrowding, but requires a proved living cohort, receiver approval, actual capacity, and a safe route under the migration and disease owners' current rules.
+If those gates fail before departure, the request moves nobody and produces no successful movement receipt; payment reservations and spent preparation costs retain the migration owner's existing rejection and cancellation rules.
+Local care remains a meaningful response.
+A noncontinuing capture or transparent camp closure stops coercive operation but leaves the state's infection, containment requirements, and residual medical needs intact.
+An Event 20 cure removes active plague only through its own state machine and does not itself dismantle the site, preserve records, or complete survivor relief.
+
+Event 20 owns strain, epidemic mortality, and spread.
+The shared camp mortality owner owns any separate confinement, violence, deprivation, or relief-failure loss from still-proved living custody.
+Before such a loss, it reconciles accepted outside population/death observations under the [current finite-custody contract](../../systems/camp_institutional_mortality.md#existing-systems-and-remaining-attribution-work).
+A whole-state plague death total cannot identify which camp origins died.
+An unlabelled outside loss with mixed living origins retains the accepted PAUSE until source-labelled provenance is restored; it cannot be resolved by proportional or newest-first assignment.
+
+Criminal responsibility and the medical cause of death remain separate.
+Original operator and neglect evidence survive relief or transfer, but the same victim is not re-registered as an Event 22 death or a second shared Chaos source.
+An actual jointly delivered medical service can support both owners through its one paid receipt; opening two projects does not automatically pay or complete either twice.
+Relief AI prioritizes supported care in place when routes or receivers are unsafe, and considers transfer only when the same exact-cohort and medical gates available to the player pass.
+With Event 20 absent, disabled, or merely initialized without an outbreak, ordinary camp disease and relief retain their existing behavior.
 
 ### Biological warfare
 

@@ -6,13 +6,13 @@
 - Intended repository path: `docs/specs/049_doomsday_specs/`
 - Event: `049 Doomsday`
 - Original manifest date: `2026-09-01`
-- Current working-file integrity refreshed: `2026-10-07`
+- Current working-file integrity refreshed: `2026-10-08`
 
 ## Inventory summary
 
 - Files listed below: `32`
-- Total listed bytes: `355694`
-- Total listed words: `49297`
+- Total listed bytes: `358917`
+- Total listed words: `49736`
 - The manifest omits its own checksum so that its contents remain stable.
 
 ## File inventory
@@ -39,7 +39,7 @@
 | `research/049_doomsday_bibliography.md` | 4421 | 518 | `f4710bf1309574a7d224bb0173f9c974b0447c5323757903b7cd4aa40f438e48` |
 | `research/049_doomsday_research_notes.md` | 7819 | 1102 | `8078d7c00ef26e6f7c2a067530a64a762ca20339b65e3e54b9dd2ae4854b498b` |
 | `research/049_doomsday_source_brief.md` | 5371 | 729 | `97fc940cf9464ede807c284c6f8855250f3d03c7c8fa719a2bc82f992a50ae3d` |
-| `specs/049_doomsday_spec_part_10_integrations_ai_and_balance.md` | 19890 | 2879 | `e271571568631e19be1cb873835f358688ee6026cca50553dedbf7b06a8ce301` |
+| `specs/049_doomsday_spec_part_10_integrations_ai_and_balance.md` | 21311 | 3063 | `820bfab5a15fd53fc2ad7127b6b98c386f7f5c00dc4f94c232c92509e43e689b` |
 | `specs/049_doomsday_spec_part_11_presentation_and_assets.md` | 17673 | 2430 | `4b4ea5b410984bc99a81f180fcc5dfa48c4a9050e6431ad0b92e0a5b8858e185` |
 | `specs/049_doomsday_spec_part_12_achievements_and_acceptance.md` | 17947 | 2619 | `64f8de46037e84d055634b19f3ec724a2a8541ff4a66a74d2eec2426dea54039` |
 | `specs/049_doomsday_spec_part_1_core.md` | 14875 | 2199 | `2364ebf4f79a7d2fe0dc04c247e13d7254557fd086dd51599ffedb8484036634` |
@@ -50,7 +50,7 @@
 | `specs/049_doomsday_spec_part_6_evolutions.md` | 17765 | 2493 | `f9a315eeca699b87486af559b221787d6c96f58c904eecc65f2287706c60d254` |
 | `specs/049_doomsday_spec_part_7_focus_content.md` | 21268 | 2938 | `b871a06a98bd3a7607c67dc8238067892da6228c1cfaa5b150db07e3aa533538` |
 | `specs/049_doomsday_spec_part_8_final_vigil.md` | 19181 | 2697 | `7efbecb90236e0dac6ef7bd52e1a020ffec414dc0dc42af806a422fb7247668c` |
-| `specs/049_doomsday_spec_part_9_last_day_and_aftermath.md` | 17973 | 2547 | `f0a776f38ed4878e0789cb714baa0c0bdd7f6b9191780085b3d9049fb1f4633c` |
+| `specs/049_doomsday_spec_part_9_last_day_and_aftermath.md` | 19775 | 2802 | `fd6910efcc089ff69a97da2947ebf82e48e2959a8bda9b32f7fef0b20bd49501` |
 
 ## Integrity rules
 

@@ -94,11 +94,33 @@ The Scientist retains his project histories, authority, special forces, clone sy
 
 ## Doctor Wu: the person and the institution
 
-Wu can distinguish unusual physical, behavioral, memory, or medical changes from ordinary illness. He can slow transformation, protect selected officials, treat altered troops, help preserve the human leader, or attempt a dangerous study of infernal biology. His involvement offers a strong resistance route and a credible temptation for his own research.
+Wu's participation begins with an accessible living patient, implicated hospital, altered formation, or independent clinical witness.
+[His medical contract](../../089_doctor_wu_specs/medicine/089_doctor_wu_spec_part_3_universal_cures.md) distinguishes a supported biological condition from a non-biological cause, and [his shared-owner rules](../../089_doctor_wu_specs/integration/089_doctor_wu_spec_part_18_shared_owners_and_consequences.md) retain exact staff, recipients, stock, and care commitments.
+He can examine unusual physical, behavioral, memory, or medical changes and treat a compatible condition.
+Compatible research into infernal biology remains a possible use of Wu's existing qualified projects and actual source material.
+Slowing transformation or liberating a host requires an explicit Event 090 result, rather than assuming that every possession is a registered disease.
 
-Separate three objectives. **Keep the Patient Human** stabilizes the individual without dissolving state agreements. **Protect the Independent Staff** preserves witnesses and care outside the protected network. **Separate the Host** attempts an actual personal liberation under the broader political conditions. Success in one does not imply success in the others.
+**Keep the Patient Human** commits an available qualified service to the actual person or formation.
+A biological match permits the supported treatment.
+An unexplained non-biological finding supplies evidence for the existing inquiry and leaves ordinary supportive care available.
+A clinical result alone does not lower the main acceptance count, reset a portrait tier, or dissolve state agreements.
 
-Wu does not automatically cure possession. His medical authority, available staff, treatment production, strain rules, and domestic or foreign competition remain governed by his full current specification. That full specification was not available in the retained handoff as an inspected contract. The interface described here is therefore a proposal requiring a fresh read of the current Wu package before implementation, not a claim about an existing exact API.
+**Protect the Independent Staff** preserves the actual witnesses and continuing care outside the protected network.
+A government separating from a medical bargain can appoint an independent provider or arrange a supported foreign service for the existing patient group.
+Its real staff, medicine, route, and handover interval must cover that commitment, using Wu's ordinary domestic or foreign service rules.
+Research completed elsewhere cannot replace a missing delivery, and the same team or stock cannot serve both institutions beyond its available capacity.
+If the handover fails, the government can continue negotiating, reduce the supported commitment, or accept the declared service interruption without reversing completed cures.
+
+**Separate the Host** uses the completed assessment as evidence within Event 090's existing loophole or liberation route.
+Event 090 still requires the specific binding term, preserved proof, and an independent authority able to act.
+A medical finding can support the case about one person or hospital mandate, while other accepted arrangements remain effective.
+The player can preserve care first or risk an earlier institutional confrontation.
+The AI applies the existing informed-resister policy to that actual feasible choice, and countries without Wu retain the records-and-witness route.
+
+The earlier retained handoff did not inspect Wu's full current specification.
+This focused connection uses its cure and shared-owner design boundaries without closing the complete-source and exact-interface gate.
+Medical authority, production, strain rules, custody, and institutional competition remain governed by Wu's current owners.
+All three objective labels are working roles within the existing inquiry and liberation content, rather than additional decision families or an interface.
 
 ## Time Traveler: one possible future
 

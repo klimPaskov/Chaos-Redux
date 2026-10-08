@@ -46,6 +46,6 @@ Line counts use the number of LF bytes plus one, including files that end with L
 | `specs/014_cannibalism_spec_part_6_decisions_missions_and_gui.md` | 21186 | 783 | `bc8695935f3d38cd4a7a7895ea1315368b2182986b5532273730d3b28e1ac1dd` |
 | `specs/014_cannibalism_spec_part_7_hannibal_reveal_and_unification.md` | 17465 | 468 | `ffa9fb8b1294126a562d5f407c19c73cf945bd4bedeca77bbb3fb2d44a13f24e` |
 | `specs/014_cannibalism_spec_part_8_wendigo_and_world_end.md` | 15446 | 416 | `9ea7bdece297674a6fe391724985d6ed0a8c1d35b2508a1b469cf6ecc4d9053f` |
-| `specs/014_cannibalism_spec_part_9_ai_balance_and_integrations.md` | 18024 | 566 | `d3d85ed5572fc86939f47d28606466cb0e309d9c78777963eadf44df56a10d24` |
+| `specs/014_cannibalism_spec_part_9_ai_balance_and_integrations.md` | 19459 | 574 | `9d1d5c2f8965b0ac7ccf8ce95dbc8c5493a529b9b86e8625da135f2c5983f255` |
 
 Total files before this manifest: 43

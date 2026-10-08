@@ -141,15 +141,15 @@ An immediate one-time flow is appropriate for a direct forced expulsion, sudden 
 
 ### Destination capacity
 
-Reception capacity should meaningfully limit flow without acting as a hard arbitrary cap.
+The accepted prospective reception contract in Part 3 requires enough current safe capacity for the full offered transaction, including existing reception load.
+Open policy changes willingness to receive; it does not waive that gate or turn a preparation request into arrivals.
+An unaffordable or oversized request leaves living people at the origin while the receiver can prepare services or the existing selector can find another eligible host.
+No unreviewed partial-cohort split is inferred from spare capacity.
 
-When capacity is exceeded:
-
-- arrivals can still enter under open policy
-- shelter, food, sanitation, and political pressure worsen
-- route processing slows
-- destination famine or outbreak risk can rise
-- the host gains reasons to distribute, seek aid, integrate, resettle, or close entry
+Overcrowding can still arise when food, shelter or medical capacity deteriorates after a valid arrival.
+The existing people and reception load remain in their actual host, with food, sanitation and political pressure creating reasons to distribute, seek aid, integrate or resettle.
+A later border closure does not remove them.
+Future balance case: compare an offer one person above available headroom with an exactly affordable offer, then remove host services after arrival; expect rejection without debit in the first case and a retained, genuinely overcrowded population in the last.
 
 ### Long-term benefit
 

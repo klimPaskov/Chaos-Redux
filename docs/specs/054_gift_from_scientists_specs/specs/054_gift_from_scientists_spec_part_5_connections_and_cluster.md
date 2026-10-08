@@ -76,13 +76,33 @@ Event 27 belongs to both Scientific Research and Military Preparation at Medium 
 
 ## Research Failure
 
-Event 60 can coexist with Event 54.
+A country with reduced research slots can still receive Event 54 grants.
+The gift changes completed knowledge rather than rebuilding its institutions.
+Event 60 keeps the slot loss, Scientific Capacity, Archive Recovery, reconstruction route, and independent incident cleanup.
 
-A country with reduced research slots can still receive direct technology grants. Event 54 does not restore slots, remove Research Failure, or compensate the target.
+After an authorized Event 54 grant commits, Event 60 can observe its existing recipient receipt and mark recovered only outstanding loss-ledger entries for technology identities actually delivered, including any approved required package nodes.
+It recalculates only the matching legacy-family pressure and clears that pressure only when no related loss remains.
+An unrelated grant supplies no restoration, and a second receipt check cannot recover or reward the same entry again.
+Event 60 records direct-gift provenance for its independent-rediscovery achievement disqualifiers.
+No research slots, Capacity, Archive Recovery, or new Chaos receipt accompany this matching reconciliation.
 
-When both events participate in one cluster firing, neither overwrites the other. The technologies remain researched and the research-capacity penalty remains active.
+Two design choices remain unresolved before the combined behavior is implemented.
 
-This combination is intentionally uneven. A country can receive valuable completed research while losing the ability to continue normal work at the same pace.
+First, [Event 54's ordinary policy](054_gift_from_scientists_spec_part_1_core.md#baseline-firing) and [equal-weight policy](054_gift_from_scientists_spec_part_6_ai_multiplayer_and_balance.md#randomness-policy) keep the full safe missing pool random, while [Event 60's Gift proposal](../../060_research_failure_specs/specs/060_research_failure_spec_part_4_evolutions_connections.md#connection-gift-from-scientists) prefers a compatible lost technology.
+The parent must accept either unchanged equal random selection or a defined lost-ledger priority exception.
+Until that choice is accepted, the observer does not retarget Event 54, redraw a poor result, add a grant, or force-fire either event.
+
+Second, this package proposes protection of completed gifts, while Event 60's safe regression can remove ordinary researched nodes in later incidents.
+The parent must decide whether provenance protection applies and whether it is limited to a shared cluster transaction or persists into later Event 60 incidents.
+The original alternatives remain recorded in [Part 4](054_gift_from_scientists_spec_part_4_evolutions_and_chaos.md#irreversibility) and Event 60's technology-regression design.
+
+For a shared Scientific Research firing, the framework must also settle member order consistently with those choices.
+Event 60's proposal fixes rollback before positive grants; Event 54 permits established member order and evaluates technology state at its own transaction start.
+An actual committed gift can match a loss already recorded at that point, but the observer never manufactures a pre-existing loss or silently schedules a second gift to compensate for reversed order.
+After both effects, completed grant and loss receipts must explain the resulting technology state and the research-capacity penalty remains active.
+
+Human and AI recipients use the same accepted selection rule and exact-match reconciliation.
+If Event 60 is absent, disabled, or has no matching active loss ledger, Event 54 resolves normally without a reconstruction reward.
 
 ## Video Game in Sweden
 
@@ -144,7 +164,7 @@ Gift from Scientists can participate with any other accepted member.
 
 When Gift from Scientists and Doctrine Research appear together, doctrine gains remain Event 27's responsibility and Event 54 uses its non-doctrine pool.
 
-When Gift from Scientists and Research Failure appear together, both effects remain visible and persistent.
+When Gift from Scientists and Research Failure appear together, research-capacity damage remains independent; technology results follow the explicitly accepted selection, order, and protection rules above.
 
 When Gift from Scientists and Brilliant Scientist appear together, a technology granted through Event 54 cannot count as a Kruger reward or alter which country receives the scientist.
 
@@ -157,8 +177,10 @@ The cluster framework may use its established member order, but it must preserve
 - Event 54 grants are based on the recipient's technology state at its own transaction start
 - a same-cluster doctrine reward cannot enter Event 54's pool
 - a same-cluster custom owner event cannot mark an Event 54 grant as its normal reward
-- Research Failure cannot delete completed Event 54 grants
-- Event 54 cannot restore research slots removed by Research Failure
+- the parent records the accepted Event 60/Event 54 order and grant-protection boundary before their combined technology result is claimed
+- any actual compatible grant can reconcile only its exact outstanding loss-ledger identities once
+- no observer adds, retargets, redraws, or force-fires an Event 54 grant
+- Event 54 cannot restore research slots, Scientific Capacity, or Archive Recovery lost through Research Failure
 - member report events do not create extra pacing transactions
 
 ## Cluster presentation direction

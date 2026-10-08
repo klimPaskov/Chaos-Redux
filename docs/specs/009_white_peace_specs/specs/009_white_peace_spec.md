@@ -237,19 +237,20 @@ On 2026-10-05, the parent also accepted the shared Event Settings evolution cont
 
 The parent also accepted a 181-day country cooldown around the 180-day No Winner check. This one-day margin prevents a different settlement from restoring a cleared survival watch at the delayed event's day-180 boundary.
 
-## Safe-war protection standard
+## Safe-war protection and event ownership
 
-Add a reusable opt-out pattern for other events and scripted content:
+Use the existing Event 009 country and pair gates, including `can_country_be_white_peace_target`, `can_pair_receive_white_peace`, the isolated-enemy test, recent-settlement memory, and the two existing protection flags. The owning event supplies any temporary opt-out and closes it with its own war lifecycle. Event 009 never clears another event's claims, target, crisis mission, defeat proof, or native faction in order to make a settlement possible.
 
-- country flag: `white_peace_protected_country`;
-- pair flag or country memory: `recent_white_peace_with_<target>` if the implementation can safely encode the target;
-- war-context flag when an event chain owns the war;
-- scripted trigger: `can_country_be_white_peace_target`;
-- scripted trigger: `can_pair_receive_white_peace`;
-- scripted effect: `mark_recent_white_peace_pair`;
-- documentation entry explaining how future events can protect their wars.
+| Current owner state | White Peace consequence | Release boundary |
+| --- | --- | --- |
+| An active [Fury actor](../../007_fury_specs/specs/007_fury_spec_part_1_core.md) is a belligerent | Reject the war through the shared special-country classification. An isolated first Fury war remains part of Event 007's finite expansion and conquest loop. | Reconsider only after Fury's actor cleanup and every ordinary pair gate pass. Historical Fury participation alone is insufficient protection. |
+| [Death](../../010_death_specs/specs/010_death_spec_part_2_mechanics.md) is a belligerent | Reject the existential war through Death/nonhuman classification. A status-quo settlement cannot defeat Death or restore a wasteland. | Death's own occupation and defeat rules resolve the crisis. A later ordinary war between surviving normal countries can be evaluated normally. |
+| The [Secret Alliance](../../011_secret_alliance_specs/specs/011_secret_alliance_spec_part_4_reveal_war_and_scenario.md) has revealed and formed its faction | The ordinary faction veto protects its target war. Event 009 cannot dissolve the faction or convert its Resolve outcome into a peace acknowledgement. | Event 011's own war-resolution and faction lifecycle remain authoritative. Concealed membership alone does not protect an unrelated otherwise-safe war or disclose a suspect. |
+| Event 012 currently owns a liberation, forced-withdrawal, or [Scramble settlement](../../012_africa_specs/specs/012_africa_spec_part_5_high_chaos_world_order.md) | Its specific chain must opt out through the existing protection contract when the normal faction and special-actor vetoes do not already cover it. This is an integration requirement pending owner acceptance and implementation evidence. | The Event 012 chain releases its protection when its obligations close. A continental claim, former League membership, or an African location alone cannot protect every ordinary war. |
 
-If the repository already has a different naming convention for event-protection flags, follow that convention and map the spec names to the existing pattern.
+Recheck the selected pair's current owner state immediately before applying white peace. If a preselected ordinary pair has become a Fury war, a Death front, a revealed pact war, or an explicitly protected crisis, settle nothing for that pair and use the existing failed-revalidation path. Successful independent pairs in a multi-settlement chain retain their actual outcome and aggregate reporting. Do not invent a success count for a rejected pair.
+
+White Peace owns only its actual settlement, recent-settlement memory, modest diplomatic aftermath, and capped de-escalation receipt. Other systems can read that completed result without taking an additional peace reward or recording the same war ending twice. Candidate eligibility changes require the normal probability-owner baseline and matching comparison, with protected and ordinary wars declared in the same scenario set.
 
 ## Cluster role
 
@@ -428,4 +429,4 @@ The event is complete only when:
 16. Candidate selection excludes protected scripted content, civil conflict, nonhuman/special threat actors, near-capitulation cases, and recent pair repeats.
 17. Event log, event detail, evolution detail, cluster detail, and localisation agree.
 18. Report and AI-news images and achievement icon needs are wired and documented.
-19. Implementation validation includes no-war, forced major-locked, one isolated minor war, multiple isolated wars, a third-country war participant, major-war, protected-war, repeated-firing, and high-evolution cases.
+19. Future implementation validation includes no-war, forced major-locked, one isolated minor war, multiple isolated wars, a third-country war participant, major-war, repeated-firing, and high-evolution cases. Protected-owner cases separately cover an isolated active Fury war, a Death front, a revealed Secret Alliance war, a concealed member's unrelated ordinary war, an opted-out Scramble war, and a normal pair becoming protected between preselection and settlement.

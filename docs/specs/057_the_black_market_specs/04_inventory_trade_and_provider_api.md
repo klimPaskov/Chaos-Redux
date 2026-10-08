@@ -600,9 +600,24 @@ Event 57 reads the route receipt and leaves project ownership with Event 55.
 
 ### Event 56: The Navy
 
-Event 56 can publish convoys, captured naval assets, unusual naval equipment, or supported ship-transfer packages.
+Event 56 provenance can identify actually delivered convoys or equipment, while the ordinary member-surplus sale proves what remains above readiness reserves and debits the source once.
+A grant receipt is not an escrowed lot: it cannot sell reserved or cancelled tranches, count the same converted hull value twice, or create cargo from an old fleet-size record.
+The recipient uses the existing sale decision; Event 56 does not generate inventory or credit automatically.
+[Event 56's connection](../056_the_navy_specs/specs/056_the_navy_spec_part_5_ai_clusters_and_connections.md#event-connection-the-black-market) defines this publisher boundary.
 
-Event 57 accepts only packages that Event 56 marks tradeable and safe.
+Unusual naval equipment and specific ship transfers still require the owning naval system's trade permission, exact source, readiness checks, and verified debit and delivery callbacks.
+Captured assets need a capture receipt from their actual custodian, not an assumption that a manifested fleet is captured stock.
+An unsupported hull transfer stays unavailable while ordinary surplus convoys remain saleable.
+
+### Event 60: Research Failure
+
+An affected member can seek a sourced archive, instruments, or a technical dossier through existing offers or commissions.
+Event 60 supplies a buyer-specific lost-domain or reconstruction request; Event 57 still requires a source, current evolution permission, and a valid delivery path.
+The request does not add membership or disclose the member list, and a desperate country cannot receive a complete technology dossier below the market's Evolution III gate.
+Event 60 verifies the recovery effect and handles disputed methods; Event 57 handles source debit, price, route failure, credit settlement, and Exposure under the existing contract.
+A received instrument or equipment lot can support the named reconstruction requirement without teaching its technology.
+A direct technology grant is limited to the exact owner-approved dossier and reconciles only its matching loss entries.
+See [Event 60's archive-purchase choice and overlap case](../060_research_failure_specs/specs/060_research_failure_spec_part_4_evolutions_connections.md#connection-black-market).
 
 ### Wars, occupations, and collapse
 

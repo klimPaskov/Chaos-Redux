@@ -127,11 +127,11 @@ Regenerate CSV exports with the repository tool. Do not edit the exports directl
 
 - run repository validators and event tools
 - run every acceptance row
-- perform live AI and UI scenarios
-- verify save and reload
+- map AI and UI acceptance scenarios to source and MCP evidence; keep observed game behavior unresolved until user-supplied evidence exists
+- document save-and-reload acceptance cases; inspect a user-supplied save when runtime state is needed
 - verify control transitions and later countries
-- verify fresh logs and performance
-- spawn the improvement-loop planner
+- assess source and bounded-processing performance risks without launching HOI4 or requesting logs
+- spawn the improvement-loop planner only after meaningful implementation and disposition of any earlier accepted addendum
 - resolve its output
 - spawn the event completion auditor
 - produce a requirement-to-evidence table
@@ -148,7 +148,7 @@ Do not accept the implementation when any of these remains:
 - arbitrary wars against unrelated weak targets
 - suicide attacks through critical supply, fuel, manpower, or transport failure
 - generic strategy overrides a hard owner plan
-- cluster assignment remains Diplomacy or blank
+- cluster assignment contradicts the Diplomacy design or lacks verified registry membership
 - evolution activation changes Chaos
 - duplicate shared war or death Chaos
 - pre-fire catch-up creates report spam or broken history

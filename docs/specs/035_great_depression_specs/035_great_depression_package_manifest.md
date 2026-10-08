@@ -1,9 +1,9 @@
 # Event 35 Great Depression 2.0 package manifest
 
-Inventory refreshed on 2026-10-07 for the current local documentation files, excluding this manifest.
+Inventory refreshed on 2026-10-08 for the current local documentation files, excluding this manifest.
 The source disclosures, environment limitations, archive descriptions, and original validation receipts below remain historical planning evidence.
 They do not establish current tool health, implementation status, or design acceptance.
-Current inventory totals: 28 files, 416,463 bytes, 59,549 whitespace-delimited words.
+Current inventory totals: 28 files, 418,292 bytes, 59,779 whitespace-delimited words.
 
 
 ## Original package identity
@@ -45,7 +45,7 @@ Event 34 retains its accepted `The Long Fall` achievement for the inherited Evol
 | `035_great_depression_research_notes.md` | 12,424 | 1,479 | 192 | `bc5976be0e878866b7ab6ac0bc8858535dd290193d133a80797194d31700c833` |
 | `035_great_depression_reusable_crisis_api.md` | 12,709 | 1,796 | 460 | `ce5394a84cc128896893743e66f09c77c3aadc1f1da7f6df3985412e3d2dae04` |
 | `035_great_depression_source_reading_ledger.md` | 13,901 | 1,285 | 132 | `1fa90cb32b72295737d09ed06509e520130138eddda80fe9e302de1199e2bf48` |
-| `035_great_depression_spec_index.md` | 7,218 | 822 | 92 | `8aec9767822e539be5650ef2d8733c9dd0146a1909e6a342c387a9dc1bee4fcf` |
+| `035_great_depression_spec_index.md` | 7,309 | 830 | 96 | `8e9f5a14807eab590695a3bd65ea29450872ac9f506a5ad11835fc7a7116693e` |
 | `035_great_depression_spec_part_10_presentation_assets_text.md` | 22,687 | 3,364 | 644 | `bb16afc5bdc0f3ba6b6ac648a1bf4644fce1c3d47325b6109f5f2dfb6de55594` |
 | `035_great_depression_spec_part_11_achievements_acceptance.md` | 29,238 | 4,256 | 817 | `d1303136850f83926c6dab5f32a941967f6101f43cc669913fc9df18459a6def` |
 | `035_great_depression_spec_part_1_core.md` | 24,709 | 3,591 | 418 | `ddaa477680d7df7978f15910b906f4606cdd37ae400be2f96292d195d90f086f` |
@@ -55,15 +55,15 @@ Event 34 retains its accepted `The Long Fall` achievement for the inherited Evol
 | `035_great_depression_spec_part_5_financial_contagion.md` | 17,111 | 2,597 | 389 | `a4260649e639223717ec7f7c78511d1dac4deeff040f7ea08204bfe70e9aa8d5` |
 | `035_great_depression_spec_part_6_social_collapse.md` | 18,479 | 2,694 | 507 | `0bdf244d57861ff458c6d07c10ac0ba2f52032b36a89400369b60c892593c999` |
 | `035_great_depression_spec_part_7_second_great_depression.md` | 17,424 | 2,578 | 414 | `45a03c087053bc60a8fb0c18f753c9d1d45d9aae52b7b7000822773d49e0ce67` |
-| `035_great_depression_spec_part_8_inheritance_connections_chaos_cluster.md` | 18,255 | 2,766 | 320 | `520e160269db26041eba062ed630e3697757b4434b77a491ab884576551e88e1` |
+| `035_great_depression_spec_part_8_inheritance_connections_chaos_cluster.md` | 19,993 | 2,988 | 328 | `245490d44c5ac1b6622c499f86a3a793244b15f8863f6c8ea90c2cfbc5e68969` |
 | `035_great_depression_spec_part_9_ai_probability_balance.md` | 28,236 | 4,240 | 846 | `10dbe4a5ac234f328e4defd6f71a302351c875b89f21e75dac6a232a07de959b` |
 | `035_great_depression_state_lifecycle_map.md` | 7,321 | 1,112 | 163 | `ce9ff87b405185f18be49581f103b54b3ad9fa4be670a6066338fb8676bc48dd` |
 | `035_great_depression_subagent_review.md` | 10,864 | 1,484 | 375 | `8bf6a3cf7d314d7f792b879502ac0719fa09d5e20350360750b7c9324792e982` |
 | `035_great_depression_super_event_prompt.md` | 10,506 | 1,531 | 300 | `9b4648730acc492ee75cee4d530ae914126bd23484a2aa6f29c8339b3ad05e37` |
 
 - Current files listed, excluding this manifest: 28
-- Current total bytes, excluding this manifest: 416,463
-- Current whitespace-delimited words, excluding this manifest: 59,549
+- Current total bytes, excluding this manifest: 418,292
+- Current whitespace-delimited words, excluding this manifest: 59,779
 
 ## Original design summary
 

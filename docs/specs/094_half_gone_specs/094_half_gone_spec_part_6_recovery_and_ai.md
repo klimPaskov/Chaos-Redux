@@ -16,7 +16,15 @@ This response is available after a meaningful equipment-stock loss when the coun
 
 The proposed starting cost is 25 Political Power and the occupation of one available civilian factory for 90 days. During those 90 days, military factory output receives a 15% bonus. The country still chooses its production lines and supplies their normal inputs. The program does not materialize the missing equipment or replace foreign variants with invented domestic copies.
 
-The opportunity cost is visible before commitment. A country which needs its only available civilian factory for another urgent task can decline and continue normal production. The program is worthwhile when additional military output matters more than that civilian capacity and political spending.
+The opportunity cost is visible before commitment.
+A country which needs its only available civilian factory for another urgent task can decline and continue normal production.
+The program is worthwhile when additional military output matters more than that civilian capacity and political spending.
+
+A [Greenland Sale reserve allocation](../092_greenland_sale_specs/092_greenland_sale_spec_part_02_purchasing_power_and_payment.md) and this program cannot occupy the same civilian capacity at the same time.
+The player can reduce future auction-reserve production to free capacity for arsenal reconstruction, or keep funding a desired purchase and rely on normal military output.
+Stopping new reserve production does not withdraw an accepted bid, refund spent principal or erase already earned reserve.
+The AI makes that choice from its current war demand and real free capacity rather than charging both projects against the same factory.
+A future acceptance case should give a country one available factory already committed to reserve production: reconstruction stays unavailable until that commitment is genuinely released, and no later daily accrual credits the same factory to both uses.
 
 The bonus ends when the program ends. Cancellation releases the factory and ends the bonus, without returning Political Power or deleting equipment legitimately produced while it was active. If the country loses the capacity required to operate it, the program closes cleanly and reports the interruption without imposing another arbitrary loss.
 

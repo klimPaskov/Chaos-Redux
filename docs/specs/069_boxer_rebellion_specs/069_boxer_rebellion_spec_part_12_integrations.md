@@ -90,13 +90,23 @@ Do not automatically dissolve the Boxer movement or transfer every foreign claim
 
 ### The Black Market
 
-The market can provide a real supply path to societies, Chinese governments, or collaborators when the existing market system and a valid transaction are available.
-Every purchase must have a payer, delivered allocation, route, and recipient.
-A delivery failure must not still create the equipment in the recipient's stockpile.
+The [Event 057 trade contract](../057_the_black_market_specs/04_inventory_trade_and_provider_api.md#provider-package-contract) supplies arms only to a valid member-country buyer through its own payment, route and successful-delivery rules.
+A surviving Boxer country, Chinese government or collaborator may buy when it meets that owner's eligibility.
+Local societies without a country cannot purchase as an invented market member.
+They obtain market-sourced arms through a valid government buyer and the existing D09 supply action, with that government's accepted compact and a second real delivery path.
 
-The baseline event remains playable without the Black Market.
-Ordinary donations, captured allocations, and domestic production supply the movement through their own real accounting.
-Do not invent a parallel market currency for Event 069.
+Market delivery credits the buyer once.
+D09 subsequently debits the delivered stock allocated to the society and credits only its actual surviving shipment.
+A failed market delivery creates no Boxer allocation, and a later failed D09 shipment does not refund goods already delivered by the market.
+Captured cargo remains the market or shipment owner's physical result rather than a second scripted equipment grant.
+Event 057 owns Market Credit, exposure and the contract, while Event 069 owns the recipient compact, local supply mission and any initial political benefit.
+The purchase itself adds no automatic Boxer Strength, Intervention Pressure or duplicate Chaos.
+Confirmed exposure can inform an existing attribution investigation when the receipt identifies the responsible government and recipient.
+
+AI governments and a Boxer state compare delivered usable equipment with route risk, domestic reserves and their actual compact obligations.
+They cannot count a pending purchase as militia readiness or bypass a foreign arms restriction through a free Event 069 delivery.
+Ordinary paid donations, captured allocations and domestic production remain complete supply paths when the market is absent, unavailable or closed to that actor.
+No new market currency or anonymous buyer is added.
 
 ### Random Civil War
 

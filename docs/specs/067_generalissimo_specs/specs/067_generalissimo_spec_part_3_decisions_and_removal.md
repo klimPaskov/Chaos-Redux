@@ -780,7 +780,7 @@ The most direct lethal option and the method with the strongest political afterm
 
 - separated military intelligence
 - low personal-security reach
-- active Event 039 or intelligence support where valid
+- owner-validated Event 039 operation evidence or other valid intelligence preparation, under the Part 7 support contract
 - reduced loyal guard support
 - a controlled venue or travel route
 

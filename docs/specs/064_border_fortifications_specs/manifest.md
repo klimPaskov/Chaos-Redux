@@ -1,6 +1,6 @@
 # Event 064 Planning Package Manifest
 
-Current local file inventory refreshed on 2026-10-07; original planning-source receipts remain in the source-reading reports.
+Current local file inventory refreshed on 2026-10-08; original planning-source receipts remain in the source-reading reports.
 The inventory excludes this manifest and preserves any explicitly listed external plan-document rows.
 
 Generated on 2026-09-03.
@@ -8,8 +8,8 @@ Generated on 2026-09-03.
 ## Package totals
 
 - Files listed excluding this manifest: 22
-- Total bytes excluding this manifest: 341593
-- Total words excluding this manifest: 53067
+- Total bytes excluding this manifest: 342743
+- Total words excluding this manifest: 53236
 - Goal prompt length: 3964 characters
 - Acceptance criteria: 606
 - Required repository roots present: `docs/specs/064_border_fortifications_specs/` and `docs/plans/064_border_fortifications_plans/`
@@ -59,7 +59,7 @@ Paths are relative to the repository root after ZIP extraction.
 | `docs/specs/064_border_fortifications_specs/specs/064_border_fortifications_spec_part_1_core_and_baseline.md` | 19821 | 3060 | `5bf3a29e8a8ccda0a2cb9c9d410032006b55f23fe51dd1f67031bc0869c1071f` |
 | `docs/specs/064_border_fortifications_specs/specs/064_border_fortifications_spec_part_2_evolutions_and_targeting.md` | 27796 | 4373 | `a76e604f9ddfbf68a76f091f7d84090b84005d7f7200465185108c8b92e5c7a1` |
 | `docs/specs/064_border_fortifications_specs/specs/064_border_fortifications_spec_part_3_responses_decisions_and_ai.md` | 30457 | 4828 | `733f1974e5c6cd7f33d89a4a9d1a722250fd21e9c602193def2342ab18fc0e57` |
-| `docs/specs/064_border_fortifications_specs/specs/064_border_fortifications_spec_part_4_chaos_clusters_and_connections.md` | 23757 | 3669 | `779ca2c58b958d79bb3c50c6e82bb2b4c26ca37257300c5e63c230f0dbb246f5` |
+| `docs/specs/064_border_fortifications_specs/specs/064_border_fortifications_spec_part_4_chaos_clusters_and_connections.md` | 24907 | 3838 | `d38370b4acb2308358896d9fd9ad0b0423549a46c4533614643fad80c5fb46f5` |
 | `docs/specs/064_border_fortifications_specs/specs/064_border_fortifications_spec_part_5_text_assets_achievements_and_acceptance.md` | 28059 | 4259 | `ab4995b50d2add1b07c5f07d7484a2b42e10315cd21ba848e43e12f8ad1fd301` |
 
 The manifest does not hash itself. Regenerate it after any package edit before redistribution.

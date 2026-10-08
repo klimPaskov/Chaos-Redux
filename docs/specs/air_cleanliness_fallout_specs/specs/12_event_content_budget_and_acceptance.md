@@ -9,11 +9,13 @@ The full Fallout event implementation should contain roughly 660 to 910 unique e
 
 The release floor is 660 manually reviewed event blocks. Expansion toward 910 is allowed only after every added block receives the same choice, AI, memory, effect, and cleanup review as the release floor.
 
-The accepted Ash-week orientation contract reserves 23 blocks at `chaosx.fallout.62` through `chaosx.fallout.84`. Reservation contributes zero blocks. The tranche enters the release count only after all events, localisation, AI, effects, delayed results, memory, cleanup, six dedicated assets, log entries, event-detail entries, callers, and audits are complete. The current Fallout living-world count remains 0 of 660.
+The Ash-week contract keeps 23 component/result/closure/cleanup identities at `chaosx.fallout.62` through `chaosx.fallout.84`; accepted F2 presents six human reports in a complete sequence.
+[Spec 03](03_fallout_timeline_and_campaign_pacing.md#ash-week) owns the current sequence and [the scope map](../SOURCE_OF_TRUTH_AND_SCOPE.md) explains why earlier dormant, missing-producer and zero-count statements are historical snapshots.
+No current reviewed-block total is certified by this planning file.
 
-The schema-3 Cohesion and State Supply Access ledgers and the authenticated live Air Winter result mapping are substrate, not event blocks. They do not increase the release count. All 23 orientation blocks are defined at `62` through `84`, but they remain uncounted. History `9110` and the generic Event Log detail route are statically wired. Orientation still fails acceptance while its caller, exact capital repair approval, the other 96 region and archetype cells, the character registry, activation, and final audits remain incomplete.
-
-The accepted dormant scheduler numerical substrate is also non-countable. Constants, candidate scoring, fatigue, pacing receipts, transaction caps, bounded review lanes, debug receipts, and save-recovery helpers do not count as event blocks. Suffix reservations `100` through `126` remain at zero defined blocks until separately reviewed content exists.
+The survival, Cohesion, State Supply Access and scheduler numerical substrates are not event blocks.
+Suffix reservations, constants, queues, scoring helpers, receipts and generated drafts supply zero content credit by themselves.
+A defined chain counts only after its authored mechanics, text, AI, memory, assets, history, callers and cleanup have the required review; source activation alone does not satisfy the 660-block quality obligation.
 
 The implementation count target is detailed in `matrices/fallout_run_event_budget_matrix.md`.
 
@@ -49,7 +51,8 @@ The run budget matrix controls:
 
 A library of hundreds of events must not become hundreds of popups in one game.
 
-The accepted continuous-content baseline is about 114.9 visible beats for a small successor, 129.0 for a medium successor, and 147.2 for a large successor from Ash week through day 3650. Every opening reserves all visible beats promised by its envelope. Large successors never receive an ordinary base cooldown shorter than fourteen days.
+[Spec 03](03_fallout_timeline_and_campaign_pacing.md#ordinary-pacing-through-the-decade) owns illustrative continuous-content arithmetic with six orientation reports.
+[Spec 01](01_living_world_event_ecosystem.md#cadence-and-visible-budget) owns the sole pacing table; every opening reserves all visible beats promised by its envelope, and a large successor has no ordinary base cooldown shorter than fourteen days.
 
 Pacing acceptance requires all of these properties:
 
@@ -63,7 +66,8 @@ Pacing acceptance requires all of these properties:
 - a full eight-row delayed queue or six-row bilateral queue rejects new work without deleting an older row
 - save recovery retries one frozen unissued selection and never reissues an issued selection
 - human and hidden AI routes reserve the same costs, results, fatigue, delayed rows, memory, and cleanup
-- no numerical helper sets either activation flag or defines a block in suffixes `100` through `126`
+- only the coordinator grants activation under A1; numerical helpers and suffix reservations grant no reviewed content credit
+- eligible zero/negative scores keep the existing ranking and tie order under F4, while an empty selection cannot issue an event
 
 ## Event block quality
 
@@ -399,17 +403,13 @@ The player should remember:
 - how altered and machine societies were treated
 - what world order began to form
 
-## Release audit receipt
+## Activation and release quality
 
-The living-world scheduler may activate only after a generation-bound audit receipt proves at least 660 manually reviewed event blocks and the engine-sensitive sweep, blackout, host authority, save recovery, and multiplayer surfaces.
-
-The receipt also requires current map return postconditions, successor allocation, the survival transition barrier, player continuation, orientation rows, and reviewed candidate registries.
-
-The receipt is evidence, not content credit for reservations or generated drafts.
-
-The audit receipt must remain generation-bound and fail closed when any receipt is missing.
-
-The accepted scheduler numerical contract does not authorize an activation setter.
+The accepted A1 coordinator gate requires current map-return, registry, numerical-registry and player-continuation receipts and no scheduler error; ordinary openings still need that country's completed orientation and quiet interval.
+[Spec 01](01_living_world_event_ecosystem.md#determinism-relationships-and-ai-parity) owns this gate and prohibits chain-local activation.
+The 660-block floor, per-family and per-successor coverage, unique choices, parity, assets, cleanup and campaign-event budget remain independent quality obligations.
+Activation is not a content-completion certificate, and engine-sensitive sweep, blackout, host, save and multiplayer conclusions still need their own evidence.
+The earlier release-audit receipt as an activation prerequisite is superseded by the recorded decision below, whose immutable acceptance basis remains the October 4 ledger.
 
 ## Agent decision addendum, 2026-10-04
 

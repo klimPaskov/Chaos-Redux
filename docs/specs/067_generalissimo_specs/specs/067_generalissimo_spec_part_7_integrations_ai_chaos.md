@@ -343,31 +343,35 @@ Rules:
 - The world-end branch may use an Event 019 owner API for auxiliary claimant commanders only when that API is public and idempotent.
 - Calling an Event 019 helper must not fabricate Event 019 history, evolution, or pacing entries.
 
-## Event 039 Assassin Network integration
+## Event 039 Murder Mystery and Assassin Network integration
 
-When an Event 039 intelligence network exists in the host or a valid allied country, it can support the assassination route.
+The [Event 039 cell and intelligence-exchange design](../../039_murder_mystery_specs/039_murder_mystery_spec_part_5_international_network.md) distinguishes hostile cells from cooperating governments.
+A cell in the host or an ally is a security problem and does not by itself provide assassination assistance.
+Useful support requires an accepted government cooperation role and an Event 039 owner-validated result that concerns the Generalissimo's actual security, venue, or officer route.
+Captured-route knowledge can satisfy or strengthen one existing Event 067 preparation, while a compromised exchange can invalidate that support before the removal attempt.
 
-Possible effects:
-
-- improved preparation
-- reduced personal-security reach
-- better information on loyal officers
-- a distinct failure consequence if the network is compromised
-
-Event 067 must remain fully functional when Event 039 has not fired.
-
-The manual Assassin Network scenario does not automatically start Event 067.
+Event 039 owns the evidence, cooperation cost, disclosure and compromise result.
+Event 067 owns whether that result still applies to the chosen removal method, its displayed chance, the one-use preparation and the immediate revolt on failure.
+Several reports about the same route contribute one preparation rather than stacking separate network bonuses.
+A general protected-person protocol or an unrelated cell arrest cannot substitute for evidence about this operation.
+The assistance bridge remains an implementation dependency until the two owners publish that narrow contract.
+Ordinary Event 067 security and intelligence preparations remain sufficient when the bridge is absent, and the manual Assassin Network scenario does not start Event 067.
 
 ## Event 052 Intel Leaked integration
 
-If the Generalissimo's network is exposed through Event 052 or another intelligence leak, the government can gain:
+An [Event 052 archive](../../052_intel_leaked_specs/specs/052_intel_leaked_spec_part_2_exposure_and_exploitation.md) matters to this crisis only while it concerns the current host, contains a relevant personnel, internal-security or mobilization domain, and remains useful under Event 052's Exposure and authentication rules.
+Event 067 resolves which live institution those files concern from its own command and preparation records.
+Files about a captured Generalissimo institution can make an existing officer-rotation, arsenal-movement or intelligence-separation preparation possible with better information.
+Files revealing a government operation instead compromise that preparation and give the player a reason to change its venue or method before committing.
+An industrial-only leak and an obsolete archive produce no removal advantage.
 
-- temporary removal chance
-- visibility into major hidden causes
-- a cheaper officer rotation
-- a chance to move arsenals before the next demand
-
-The leak can also strengthen him when it exposes weak government countermeasures. The direction depends on whose files were compromised.
+Event 052 owns archive freshness, recipients, authentication, disclosure and recovery.
+Event 067 owns the resulting preparation change and revalidates it at the removal confirmation.
+The benefit ends when the relevant archive becomes obsolete, the venue changes or the crisis ends.
+The same incident-domain and operation pair cannot both improve and compromise the same preparation, and cannot pay again through repeated disclosure or reload.
+Useful information does not independently create Influence, reduce it or repeat a Chaos receipt.
+An AI government uses the same preparation validity as the player and cannot treat the mere firing of Event 052 as a reason for an unprepared assassination.
+No new option or meter is needed, and the normal preparation path remains available without a relevant leak.
 
 ## Event 059 The Offensive integration
 

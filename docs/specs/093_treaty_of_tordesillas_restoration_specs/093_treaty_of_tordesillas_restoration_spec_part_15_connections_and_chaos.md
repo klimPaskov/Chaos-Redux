@@ -15,13 +15,46 @@ The inspected repository implementation of Event 086 currently grants Germany cl
 
 A World Claims core or claim is not deleted because Event 093 is suspended. The treaty can decline to act on an outside-sphere claim and exclude it from its own coring route. If another system legitimately cores an eligible correct-sphere state, that core can contribute to actual integrated ownership, but it does not fabricate an Event 093 project or achievement history.
 
-## Spanish wars and crises
+## Spanish wars, liberation and actual control
 
-The live Spanish Civil War is the main baseline opportunity. Another civil war or internal crisis can create leverage, but it must be resolved through the actual national-authority and ownership situation. A random civil-war event does not automatically select the historical Nationalists or make every rebel eligible for the Galicia contract.
+The live Spanish Civil War remains the main baseline opportunity.
+Another crisis uses actual national authority and ownership, rather than automatically selecting historical Nationalists or treating regional rebels as parties to Galicia's national bargain.
+Unification, annexation or subject status invokes existing suspension and succession rules without recreating two nominal crowns.
 
-A national unification, annexation, or subject outcome from another event can invalidate the two-power premise. Event 093 responds through suspension and succession rules. It does not reverse the external event, re-create Portugal, or split a merged country just to preserve its own route.
+[Occupation Revolt](../095_occupation_revolt_specs/095_occupation_revolt_spec_part_02_claimants_and_homelands.md) can restore an authentic displaced country in a treaty sphere, including territory already integrated by a crown.
+Its owner determines preparation, opening and settlement; treaty claims or cores neither erase that homeland nor suppress its campaign automatically.
 
-The Formables cluster relation is thematic and catalog-level. Event 093 is the Medium member specified by the user. It does not replace the cluster's existing weights or register the same initiating event multiple times through separate aliases.
+Actual restoration refreshes Part 09's reach and direct-integration numerators against the frozen activation denominator.
+The surviving crown's core remains, but land it no longer owns and controls cannot count as direct integration.
+An independent restored faction associate is not absorbed sphere territory; a negotiated subject counts only through the valid-patron route, with no direct-core credit.
+Restored Spain or Portugal must pass sovereign continuity and reaffirmation before exercising treaty authority.
+
+AI responds through existing theater priorities to the lost region, route and current opponent.
+An outside revolt is not itself the other crown's betrayal or another treaty-owned liberation/war Chaos charge.
+A future acceptance case liberates a completed imperial core: the core remains, real Consolidation credit falls, an unsatisfied 90-day entry proof breaks, and an active world-end uses its existing recovery periods.
+Ordinary liberation produces the same refresh without Event 095.
+
+The Formables cluster relation remains thematic and catalog-level.
+Event 093 remains the user's Medium member, without changed weights or duplicate initiating aliases.
+
+## Purchases within the two spheres
+
+[Greenland Sale's market](../092_greenland_sale_specs/092_greenland_sale_spec_part_11_connections_and_consequences.md) provides paid ownership without moving Part 06's sphere, protected homeland or Galician exception.
+That ownership can satisfy one admission condition; the applicable holding, security, supply, route and payment gates still apply.
+Wrong-sphere purchase supplies no integration entitlement.
+
+Use the auction owner's existing state commitment and cancellation rules alongside accepted treaty cessions before agreeing a conflicting handover.
+A claim, proposed conference or unaccepted restitution request does not reserve property.
+The treaty cannot redirect a winning lot or charge the auction seller another territorial price.
+
+A crown buying partner-assigned territory remains subject to its agreed restitution policy.
+A later consent-based transfer returns no winning principal and creates no duplicate auction credit.
+The supporting buyer bears its cost unless the partners explicitly agree reimbursement through an existing supported settlement.
+AI prefers retainable correct-sphere positions or an affordable defined support purpose.
+
+A future acceptance case compares a bought correct-sphere region awaiting normal integration gates with a wrong-sphere one awaiting restitution.
+Neither purchase moves the line, clears foreign cores or counts as a completed project.
+Without the market, ordinary conquest, diplomacy and integration remain available.
 
 ## Costs and Black Friday
 
@@ -35,7 +68,12 @@ Do not assume that a factory commitment, native volunteer expense, or every exis
 
 A Galician transfer, a cross-sphere restitution, and an integration completion preserve real state populations and existing civilian records. No civilian migration is implied by a diplomatic border change. No core automatically creates an extra population stockpile.
 
-If an established war, famine, migration, or disease system changes population or losses, its owner helpers remain authoritative. Event 093 can react to the actual condition, but cannot apply the same deaths again or overwrite the source ledger. The frozen readiness denominators are unaffected by those losses.
+If an established war, famine, migration, disease or Half gone incident changes population or losses, its owner helpers remain authoritative.
+Event 093 reacts to the actual condition without applying the same loss again or overwriting its source record.
+A Half gone population disappearance leaves the activation-weighted Consolidation denominator intact and creates no confirmed Deaths entry.
+Loss of Portugal's undelivered rifles can pause or require revision of its existing assistance contract under Part 03; loss of Spain's stock after delivery does not revoke Portugal's already credited fulfillment.
+The delivery deadline and every still-outstanding component remain the signed contract's requirements.
+Compare these two timings before treating a missing arsenal as deliberate treaty betrayal.
 
 The supplied dynamic-helper documentation identifies shared equipment debits, population operations, and world-threat refresh paths. Some older debit helpers do not provide a full actual-paid receipt. Their existence does not prove that a new multi-resource transfer is safe without inspection and validation.
 

@@ -227,6 +227,12 @@ Only final recognition, readmission, successor-faction formation, and cleanup ac
 
 **Effect direction:** unlock emergency raising of ordinary formations, improve mobilization on controlled core territory, and reduce the opening shock penalty.
 
+A victim already under Event 061's No Army law first needs the paid Emergency National Defence exit described in that owner's recovery sequence.
+The committed Event 062 attack supplies the concrete emergency context; it does not supply manpower, equipment, restored law ranks, or another Event 061 emergency allowance.
+Until recruitment and the quoted stockpile payment are legal, the formation-raising action remains unavailable and names the existing law or material obstacle.
+Once the owner exit succeeds, Event 062 may raise only formations paid from the victim's actual available manpower and equipment through its normal action.
+Foreign aid, capital-defense coordination, and settlement remain available according to their own requirements while that exit is incomplete.
+
 **Risk:** the burden weakens long-term production. No free divisions appear without manpower and equipment.
 
 **AI:** highest priority for a victim with low field strength and enough resources to benefit.

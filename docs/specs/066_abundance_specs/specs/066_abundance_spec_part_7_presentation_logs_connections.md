@@ -172,7 +172,7 @@ It does not replace fixed events that have their own narrative, targeting, escal
 | 56 The Navy | Naval expansion | Event 66 can increase naval resources, stockpiles, or capacities without creating the event's full navy package |
 | 57 The Radar | Radar expansion | Event 66 can affect radar-linked capacity only through a safe owner provider |
 | 58 The Industrial Complex | Factory expansion | Event 66 remains a random four-choice wave, while Event 58 has a fixed industrial identity |
-| 64 Border Fortifications | Fortification abundance and defensive depth | Both belong to Sudden Abundance, but Event 64 always produces fortifications |
+| 64 Border Fortifications | Fortification abundance and defensive depth | A chosen train, truck, equipment, fuel, manpower, or experience candidate can fund the matching response project after Event 66's owner receipt succeeds. Event 64 keeps its normal target, duration, reserve floor, single-project limit, and payment. Abundance supplies the actual reserve, not an additional project discount or a new fort wave. |
 | 82 Law upgrade | A law change | A law itself is not a numeric value unless an owner exposes a coherent abundance interpretation |
 | 83 Agency upgrade | Intelligence agency development | Event 66 can use agency currencies or capacities, while Event 83 owns upgrade progression |
 | 84 PP | Fixed Political Power grant | Political Power is one candidate among the dynamic Event 66 space |
@@ -185,6 +185,13 @@ It does not replace fixed events that have their own narrative, targeting, escal
 | 132 Investment | Investment event concept | Event 66 can affect investment currencies when a provider exists |
 | 135 Equipment choice | Equipment choice event concept | Event 66 uses the shared provider pool and four country-specific cards |
 | 137 Research Investment | Research investment event concept | Event 66 can increase an exposed research currency without duplicating that event's route |
+
+If the player receives a logistics surplus during an open Event 064 response window, Connect the New Line becomes useful only for a still-controlled defense state whose transport can improve.
+The player may spend that reserve on the project or preserve it for the field army; neither choice changes the Event 066 card already selected.
+A later target loss invokes Event 064's cancellation rules, and a partial or rejected Abundance item cannot satisfy the material cost.
+AI reads the changed reserves when judging affordability and current front priorities, while the Abundance generator continues to draw independently of that usefulness.
+Neither owner claims an extra Chaos receipt solely because the surplus funded a fortification response.
+This connection is dormant when the other mechanic is unavailable, and either event retains its ordinary standalone play.
 
 ## Shared country classifiers
 

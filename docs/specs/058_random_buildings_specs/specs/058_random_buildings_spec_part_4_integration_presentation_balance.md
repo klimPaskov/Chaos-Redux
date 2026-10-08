@@ -261,11 +261,21 @@ The event does not protect its buildings from future damage and does not automat
 
 ## Infrastructure-project interaction
 
-Event 55, The Great Infrastructure Project, and Event 58 can affect some of the same physical systems.
+Random Buildings can place an ordinary building or railway segment on a route already proposed or being built by Event 55.
+The same state or province, real building or segment, usable level, and current access must match before Event 55 treats it as completed physical work.
+Event 58 applies no project refund, completion, agreement, commissioning, or operating benefit.
+Event 55 reassesses only its remaining uncommitted work at its next existing checkpoint under [the lifecycle rule](../../055_the_great_infrastructure_project_specs/specs/055_the_great_infrastructure_project_spec_part_3_project_lifecycle.md#work-already-present-on-the-route).
+A fort near the route or a disconnected supply hub is still an Event 58 result, but it cannot satisfy a different project component.
 
-Random Buildings remains random and immediate. It does not open project decisions or count a Great Infrastructure Project as completed.
+A random completed instance of an Event 55-owned dam, fixed crossing, corridor, or other project construct is a separate provider proposal.
+Its entry must explicitly allow the completed instance and define initialization, access, commissioning, responsibility, operating status, uniqueness, and achievement credit.
+Without that complete permission, Event 58 can place only its ordinary registered construction and cannot infer a commissioned megaproject from the physical building.
+Any real bridge, tunnel, or railway operation still requires the existing map evidence gates.
 
-A railway, port, dam, bridge, tunnel, corridor, or other structure owned by Event 55 can join Event 58 only through an explicit provider entry that defines whether a random completed instance makes sense.
+Future acceptance case `058_active_works_overlap`: a construction wave upgrades a planned rail segment and adds a neighboring fort.
+The wave reports both results normally; Event 55 removes only the verified still-unpaid rail work, keeps its agreement and commissioning requirements, and awards no project completion for the fort or the wave.
+A later border change is handled by the respective ordinary building and project ownership rules, without creating a second instance.
+Event 58 has no player purchase or AI response to add; the construction rolls remain independent, and Event 55's AI reassesses the same remaining work.
 
 ## Gift from Scientists interaction
 

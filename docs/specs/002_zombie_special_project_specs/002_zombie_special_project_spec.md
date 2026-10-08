@@ -355,17 +355,22 @@ In these cases, the strain should become hostile to almost everyone, including t
 
 ## 6.4 Special anti-zombie-friendly path
 
-There should be a valid path where the resulting zombies are not friendly to humans in a normal sense, but are highly hostile to other zombie outbreaks and other non-human entities.
+The Purifier path retains enough cognition to distinguish human communities from the non-human forces it hunts.
+It requires the existing mix of selective cognition, moderate friendliness and research directions that avoid pure mindless frenzy.
+Its strike may target a state controlled by an actual zombie outbreak or another explicitly supported non-human threat.
+The target identity comes from that threat's own living country/profile contract, not from the general special-Chaos-country classification.
+The Holy Realm is a human sanctuary even when its supernatural leadership makes it a special Chaos actor, so that classification cannot make Holy Realm territory a Purifier target.
+A hostile zombie horde occupying a Holy Realm or ordinary human state is a valid non-human controller, while the same state under the sanctuary's or ordinary government's control is not.
 
-This makes the bomb useful as an anti-zombie weapon.
+Target permission must be checked at preparation, launch and outcome against the current controller and the payload's retained behavior profile.
+If the controller becomes human before resolution, the action grants no outbreak or Purifier success reward there.
+The native raid retains ownership of its payload reservation and cancellation outcome, following the accepted cure-payload correction where applicable.
+Do not add a scripted refund or debit to resolve that targeting change.
 
-If the final strain belongs to this category, the strike should only be allowed in non-human states.
-
-That means the bomb can only be used where the target state is already controlled by zombies or another non-human threat.
-
-This path should be tied to a mix of selective cognition, moderate friendliness, and research directions that do not produce pure mindless frenzy.
-
----
+Purifier use on a valid non-human target retains the intended exemption from human-target condemnation.
+Hostile human-targeting strains retain their existing condemnation consequences through the owning system.
+The same target gate applies to human and AI launch paths without changing their existing willingness weights.
+Required cases are a peaceful Holy Realm controller, a hostile horde controlling its former sanctuary, and restoration of human control between preparation and outcome.
 
 ## 7. Final outbreak archetypes
 
@@ -594,13 +599,11 @@ Other factors can influence final success too, the stronger, the better.
 
 ## 11.3 Targeting rules
 
-Normal hostile strains can be used against enemy human-controlled states.
-
-Purifier or anti-zombie strains can be used against non-human states.
-
-If the final strain ended up strongly selective or semi-friendly, targeting restrictions should reflect that logic.
-
-For example, a strain designed to attack only zombies should not be usable on a normal civilian target.
+Normal hostile strains can be used against eligible enemy human-controlled states.
+Purifier and anti-zombie-friendly strains use the controller-and-profile contract in Section 6.4.
+Selective or semi-friendly targeting must remain consistent with the retained cognition and social-behavior result.
+A special-country marker, a change of country name or a supernatural leader does not by itself turn a civilian target into a non-human target.
+The declared payload profile must govern both permission and the resulting outbreak, so an allowed Purifier strike cannot silently resolve as a human-hunting strain.
 
 ## 11.4 Interaction with existing zombie factions
 

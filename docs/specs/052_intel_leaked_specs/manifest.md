@@ -1,6 +1,6 @@
 # Event 052 Specification Package Manifest
 
-Current working-file integrity refreshed on 2026-10-07.
+Current working-file integrity refreshed on 2026-10-08.
 The rows index repository bytes, while supplied-source inventories and original validation reports retain their historical evidence scope.
 
 
@@ -8,7 +8,7 @@ Package filename: `052_intel_leaked_specs.zip`
 Top-level extraction folder: `052_intel_leaked_specs/`
 Intended repository location: `docs/specs/052_intel_leaked_specs/`
 Files listed below: 29
-Approximate Markdown word count before this manifest: 35774
+Approximate Markdown word count before this manifest: 36061
 
 The manifest excludes its own hash because a file cannot contain a stable cryptographic hash of its complete final bytes.
 
@@ -41,7 +41,7 @@ The manifest excludes its own hash because a file cannot contain a stable crypto
 | `specs/052_intel_leaked_spec_part_2_exposure_and_exploitation.md` | Source event specification | 15899 | 328 | `56f0c9b75a855947ced4ba4e0f767bbe653438cc3b05e6a566c51fba455cf812` |
 | `specs/052_intel_leaked_spec_part_3_damage_control_and_recovery.md` | Source event specification | 16346 | 368 | `4916563d657d370939fe2e6cb6217934ed26e3ad96d744224b5b4b8e96ef4eea` |
 | `specs/052_intel_leaked_spec_part_4_deception_investigation_and_variants.md` | Source event specification | 16231 | 471 | `a43c7a301f66dbba93d244dd6988679ab45b196a862a70f82be78b82039eeb1c` |
-| `specs/052_intel_leaked_spec_part_5_evolutions_repeatability_and_connections.md` | Source event specification | 16927 | 413 | `df8aee56bd7f8c64b3924e4c765413a9c59d0aed0a0c3732247cea93e475ff36` |
+| `specs/052_intel_leaked_spec_part_5_evolutions_repeatability_and_connections.md` | Source event specification | 19009 | 425 | `281c57b193f52efc65db849c96ebf18184c1e05fcd506b9f5b1b5356183884a5` |
 | `specs/052_intel_leaked_spec_part_6_ai_presentation_achievements_and_balance.md` | Source event specification | 15222 | 405 | `a24cee2e6237593c0658bb1f0c6c928cfd49230087e4546f002b6882861343d0` |
 
 ## Required package components

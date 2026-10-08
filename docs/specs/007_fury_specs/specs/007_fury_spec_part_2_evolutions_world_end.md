@@ -125,8 +125,8 @@ If one Fury actor already exists, Evolution II should:
 - initialize the second Fury with the current evolution level.
 - unlock Fury-to-Fury diplomacy decisions.
 - enable pact or rivalry logic depending on type.
-- add Fury Pact Cohesion if the actors cooperate.
-- add target-partition decisions if both actors are near the same region.
+- use the existing project-pact membership and reserve-sharing rules when the actors cooperate.
+- let rivalry influence pursuit of the same legal third-country target. Joint plans provide their accepted preparation, command, and truck rewards without partitioning territory.
 
 ### Pre-fire evolved opening
 

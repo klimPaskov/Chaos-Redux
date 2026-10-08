@@ -393,9 +393,28 @@ A terminal death-state or other nonhuman actor should be excluded from normal re
 
 ### Event 13, Natural Disasters
 
-Earthquakes, landslides, or eruptions can damage a field, expose new seams, accelerate collapse, or complicate sealing. Event 13 owns disaster selection and effects. Event 018 supplies field-specific reactions.
+An earthquake, landslide, or eruption affects a field only when Event 013 records a physical geological impact on the site or damage to its infrastructure, rail or supply access, or processing industry, and the Event 018 site remains open, suspended, or under incomplete sealing.
+A forecast, a neighboring impact, or a disaster report alone cannot change the field.
+Event 013 owns physical damage, deaths, recovery needs, and the disaster history.
+Event 018 translates damaged works and access into reduced Developed Yield and Workforce Safety through its existing damage bands, without applying those physical losses again.
+Where a geological impact opens lower workings or exposes seams, preserve its Excavation Depth and, after reveal, Subsurface Disturbance consequences through Event 018's existing incident and risk rules.
+A collapse can damage an incomplete seal and increase closure difficulty or advance the existing incident pressure, subject to the site's enabled stage and normal containment checks.
+Suspension prevents resumed extraction, but it cannot make damaged galleries or partial seals immune to those geological consequences.
+Exposed seams change the site's access and risk without granting a new discovery or resource roll.
+The current owner chooses between repair for renewed extraction and suspension followed by inspection or sealing through the existing field actions.
+Disaster recovery can reopen a transport route without certifying the underground site as safe.
 
-A disaster must not automatically cause Evolution IV. It can increase Depth, Disturbance, or closure difficulty.
+A permanently closed field remains closed even after a rupture or eruption.
+Its Event 018 resource ledger stays empty, ordinary original resources remain outside that ledger, and repairs cannot revive its discovery, incident clock, or cave origin.
+A converted cave origin uses its existing anchor and liberation rules rather than becoming a second discovery field.
+The disaster adds no resource roll, excavation reward, ordinary evolution entry, or automatic Evolution IV transition.
+Any ongoing underground progression remains with Event 018's existing incident and containment rules.
+
+If ownership changes between the impact and field reaction, the surviving site's new owner receives the management consequence once.
+Apply the field reaction once per state and physical impact, rather than once per report or sequence summary.
+Distinct later physical impacts can still damage the same live field.
+AI should restore a usable route and inspect the damaged site before resuming high extraction, with suspension or sealing preferred when its existing safety and breach assessment requires them.
+Without an eligible Event 018 site, Event 013 damage and recovery proceed normally.
 
 ### Event 29, Riches Found
 

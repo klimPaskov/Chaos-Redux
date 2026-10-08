@@ -311,16 +311,28 @@ The event must not duplicate generic world-tension or Chaos changes already prod
 
 ## Event 050 The Great Embargo connection
 
-When industrial, resource, diplomatic, or shortage domains are active, a stable Great Embargo adapter can let sanctioning governments target pressure more accurately.
+This connection requires an already active embargo against the exposed country, a current industrial, resource, or shortage domain, and an existing core enforcer that is also a named exploiter for this incident.
+The finding must concern a weakness that the enforcer can affect through its actual supply or route contribution.
+Passive foreign possession of the files does not supply this proof.
 
-The connection can:
+At the next existing coalition review, [Event 050](../../050_the_great_embargo_specs/specs/050_the_great_embargo_spec_part_8_achievements_interactions_and_acceptance.md#event-052-intel-leaked) can revise that enforcer's matching enforcement assessment or priority.
+Event 050 owns the change in its contribution and economic consequences.
+Event 052 owns the authentic archive domain, its remaining usefulness, Reliance, and the target's existing damage-control or False industrial shortage action.
+It neither starts the embargo nor removes resources.
 
-- improve embargo preparation
-- reveal a fuel or resource weakness
-- increase a named exploiter's economic Reliance
-- create a false-shortage deception route
+The target can change the real shortage through its embargo responses, making the old finding obsolete, or pay the existing deception's production and civilian-capacity cost to support a false estimate.
+Full deception success requires the named enforcer to act on that false estimate; copying the archive or attending a review is insufficient.
+The owner result can feed the ordinary Poison the Leak success or partial-success rule, without a second economic penalty or an extra Exposure reward for the same action.
+The target learns the observed consequence, not the complete foreign Reliance ledger.
 
-Event 52 should not directly start The Great Embargo or remove resources.
+One incident sequence can supply at most one matching adjustment per embargo and enforcer.
+Deep Files, changing domain labels, and repeated reviews do not refresh that allowance.
+The adjustment ceases when its archive domain loses value, the enforcer leaves, or the embargo resolves.
+Event 052 cleanup clears its intelligence and deception proof without removing Event 050's independent sanctions; embargo cleanup clears its contribution without resetting another active leak target.
+
+AI exploiters should use relevant verified material and stop relying on contradicted shortages.
+AI targets should prefer routine safety when no active enforcer has meaningful Reliance, and consider the economic deception only when its cost and observed opportunity justify it.
+If Event 050 is absent, disabled, or lacks the required public proof, the existing False industrial shortage profile retains its other valid foreign applications and the leak recovers normally.
 
 ## Event 094 Half Gone connection
 

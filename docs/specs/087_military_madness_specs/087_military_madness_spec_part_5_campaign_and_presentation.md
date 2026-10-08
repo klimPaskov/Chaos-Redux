@@ -94,7 +94,14 @@ Law Upgrade can increase mobilization while Military Madness improves what the a
 
 Agency Upgrade and Intel Leaked can affect what governments know or can investigate through their own established systems. They do not expose Event 087's complete private ledger.
 
-World Claims can provide political ambitions that become attractive during a powerful year. Claims, war goals, cores, and territorial integration remain owned by that event and normal game systems.
+When the recipient already has a [World Claims target](../086_world_claims_specs/086_world_claims_spec_part_4_integration.md), a useful speed, attack, defense, or recovery result can create a choice between taking that state during the remaining package and consolidating ground already held.
+The target must have that recipient's own World Claims provenance, and ordinary diplomatic restrictions still decide whether an offensive is possible.
+Its control and high-Compliance intervals start and continue under World Claims rules, even if the military advantage ends earlier.
+Expiry removes only the sampled contribution, leaving actual holdings, spent integration entitlements, and valid elapsed control history intact.
+A speed result cannot substitute for holding time, and a claim cannot supply divisions to exploit the result.
+If an offensive fails and state control is lost, World Claims resets the affected clocks under its own rules without refreshing the military package.
+The player can judge that exposure against the local expiry information, while the existing military AI retains responsibility for operations and World Claims retains its own route qualification.
+This connection supplies no additional war order, reward, or claim wave.
 
 Existing equipment, naval, and military reinforcement events can make a previously unused result useful later. They receive no extra trigger chance merely because Military Madness rolled a compatible statistic.
 

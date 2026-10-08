@@ -1,6 +1,6 @@
 # Event 41 specification package manifest
 
-Current local-file inventory as of 7 October 2026.
+Current local-file inventory as of 8 October 2026.
 This table supersedes the two conflicting inventories previously embedded here and excludes this manifest.
 It does not rewrite the historical supplied-source audit or claim a ZIP rebuild, design approval, implementation or engine validation.
 
@@ -30,5 +30,5 @@ Listed files: 23.
 | `specs/041_disease_in_divisions_spec_part_2_simulation_and_balance.md` | 20343 | `50fb6564f5f9d6893c3586297c359ce797c39db5818b9081d0be90f833be2fa3` |
 | `specs/041_disease_in_divisions_spec_part_3_decisions_and_resolution.md` | 20249 | `13df9865eb0eb1eeabcc3be0b6c41531fedf5be6b7b568235c1f76575257421d` |
 | `specs/041_disease_in_divisions_spec_part_4_evolutions_and_international_spread.md` | 18040 | `21256f32d6de2a4b7d0aa5444eb1581842493c691a5c557e6f66ec5f12c4a916` |
-| `specs/041_disease_in_divisions_spec_part_5_connections_cluster_and_presentation.md` | 15793 | `148272ca8bbb5297f51337486086e6d6060ed1eba6ea0da0d1963f247db683f1` |
+| `specs/041_disease_in_divisions_spec_part_5_connections_cluster_and_presentation.md` | 17281 | `24e611f24de4fa541c79ff321d4f4f984c2bbec09e631e598c46cce1cd5e4738` |
 | `specs/041_disease_in_divisions_spec_part_6_ai_achievements_and_replay.md` | 16241 | `b94d5cd0ee690dac886f503ee5d9e26a48f5269c8915cbcf3930bdfbe556f147` |

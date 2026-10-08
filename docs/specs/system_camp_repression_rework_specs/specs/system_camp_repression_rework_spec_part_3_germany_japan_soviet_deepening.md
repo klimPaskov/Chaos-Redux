@@ -231,7 +231,9 @@ The Soviet Union should become the most mechanically distinct package.
 
 `grain_extraction_burden` should feed `famine_pressure`.
 
-`famine_pressure` should cause state damage, population loss, stability loss, recruitable population loss, and republic grievance.
+`famine_pressure` expresses the Soviet administration failure and remains distinct from Famine-owned state food stages.
+Proven extraction, deprivation and route disruption can feed the affected state's Famine assessment; only the owning mortality transaction applies each actual loss.
+The resulting suffering and attributed policy memory can inform existing republic grievance, without an additional population or recruitable-manpower debit.
 
 `old_movement_grievance` should feed the Soviet Collapse event and republic resistance.
 
@@ -268,7 +270,8 @@ Critical paranoia:
 
 ### Famine pressure
 
-Famine should be a failed-management chain, not a random flavor event.
+Soviet failure reports remain Camp-owned institutional outcomes.
+Ongoing state food stages and civilian famine responses belong to the independent Famine system; the reports do not create another famine event layer.
 
 Famine pressure rises from:
 
@@ -328,14 +331,15 @@ That evidence records current behavior separately from the user's acceptance bas
 
 ### Soviet Collapse bridge
 
-During Union Crisis:
+During an active [Event 005 Union Crisis](../../005_soviet_collapse_specs/005_soviet_union_collapse_final_clean_merged_part_2_core_threat_evolutions.md), repression may improve Moscow Authority or obedience while worsening existing Old Movement and foreign grievance.
+Suppression relief stays bounded at high threat, and recorded overuse can make successors more hostile.
 
-- early repression can reduce organized opposition or increase Moscow Authority;
-- it can raise Military Obedience if NKVD authority is high;
-- it increases Old Movement grievance and foreign grievance;
-- at high crisis threat, suppression relief stops scaling;
-- overuse makes post-collapse successor states more hostile;
-- famine or mass deportation states should become more likely to defect or radicalize.
+Quota reduction sacrifices supported coercive output and removes a continuing food cause; paid relief treats present deprivation while extraction can renew it.
+The first measured prisoner release retains its accepted one-time national settlement.
+Relief neither repeats that settlement nor erases prior grievance or deaths.
+State-specific suffering may inform existing political consequences, without starting Event 005, selecting a defection or granting an evolution.
+AI retains the same suppression, quota and aid choices.
+The matched relief/extraction/succession cases in [Famine Part 7](../../famine_and_migration_system_specs/famine_and_migration_system_spec_part_7_cross_system_connections.md) test continuing causes and original responsibility without duplicate loss or mission credit.
 
 ### Extreme escalation
 

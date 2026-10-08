@@ -145,6 +145,17 @@ If a different event already affects the selected territory, retain its state da
 A Japanese landing must not cure a famine, erase chemical contamination, remove fortifications from Event 064, or reset another event's state modifier merely because it prepares a port.
 Only Event 074's own temporary support is removed during its cleanup.
 
+When USA also operates the foreign weapons-testing program, western defense uses the material left after real provider reservations.
+U01 defense formations, U03 transport work and U04 counterattack preparation compete with those commitments rather than spending the same manpower, equipment, trains or fuel twice.
+Player USA can prioritize defense, choose an affordable generated test program, or cancel an uncommitted test and use only the resources its owner actually releases.
+The landing does not cancel committed foreign impacts, accelerate analysis or turn a testing-only prototype into a defense weapon.
+A completed typed development reward helps through its normal consumer and supplies no second Event 074 grant.
+
+Defense AI uses the remaining pools, while Event 076 retains its required policy of proceeding with every valid assigned test.
+An active landing adds no universal test-ineligibility condition.
+[Event 076 owns reservation reconciliation, cancellation and the paired acceptance cases](../../076_usa_tests_weapons_specs/gameplay/03_test_schedules.md).
+Without that program, ordinary western defense remains unchanged.
+
 Shared force-provider concepts may be reused only where their documented budget and country-neutral contract fit ordinary Japanese units.
 The portal-raid implementation is a useful reference for transactional controller changes and creation receipts.
 It is not permission to add teleportation equipment, portal troops, or Event 016 flags to this invasion.

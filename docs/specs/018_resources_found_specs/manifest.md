@@ -1,13 +1,13 @@
 # Event 018 Planning Package Manifest
 
 Original planning receipt dated 2026-08-10.
-Current-byte inventory refreshed 2026-10-07.
+Current-byte inventory refreshed 2026-10-08.
 
 ## Package totals
 
 - Files listed: 26
-- Total bytes excluding this manifest: 420382
-- Total words excluding this manifest: 62007
+- Total bytes excluding this manifest: 422727
+- Total words excluding this manifest: 62356
 - Goal prompt length: 3,981 characters
 - Required package folders present: specs, prompts, matrices, research, focus_graphs
 
@@ -55,7 +55,7 @@ The current cleanup verified inventory hashes and local navigation, without reru
 | `specs/018_resources_found_spec_part_4_evolutions.md` | 27962 | 4216 | `8a4d185a894ddc550334dd777b2de4b41b032e5fa20a69390558ca774a38ba61` |
 | `specs/018_resources_found_spec_part_5_cave_country_package.md` | 22701 | 3405 | `8b12ee42a39e1954aeb415ee64c1b255d1c824c1f2896f6ea287abee45ba8846` |
 | `specs/018_resources_found_spec_part_6_focus_tree_and_brood_warfare.md` | 26207 | 3864 | `d16e3189a0f1bde7feba34915252db8fe2a2c11488634516538643ba9862da91` |
-| `specs/018_resources_found_spec_part_7_world_end_aftermath_and_connections.md` | 19457 | 2859 | `ad5d03ece2ac6a47f65d55eaf402bcc3bf5ffb5bf260eb830faef3cf1ec228b9` |
+| `specs/018_resources_found_spec_part_7_world_end_aftermath_and_connections.md` | 21802 | 3208 | `857a47329e8719d11bebf4bd874b55737c0532fcd77957dc0f924c7709210c9d` |
 | `specs/018_resources_found_spec_part_8_ai_text_assets_and_acceptance.md` | 19537 | 2835 | `25228fc23829eb73be65851305059a374b45a298fb701a12e43ed815c4e184b8` |
 
 The manifest does not hash itself. Recreate it after any package edit before redistribution.

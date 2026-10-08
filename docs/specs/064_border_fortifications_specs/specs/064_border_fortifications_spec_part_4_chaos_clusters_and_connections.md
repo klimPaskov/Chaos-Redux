@@ -191,7 +191,7 @@ Suggested coordination with accepted Sudden Abundance members:
 | Event 37 Mysterious People | Population pressure in fortified border states can influence local staffing or supply text, without converting population directly into free garrison units. |
 | Event 42 Equipment from Heavens | One current Event 064 project can receive a bounded equipment-cost reduction after Event 42 has actually delivered relevant stockpiles. |
 | Event 56 The Navy | Coastal Fortress State scoring can increase around ports and naval bases strengthened by Event 56. |
-| Event 66 Abundance | A relevant military or logistics value rolled by Event 66 can reduce one response cost or improve AI affordability. The effects do not reroll Event 66 or grant a second abundance choice. |
+| Event 66 Abundance | A successfully applied, still-available equipment, train, truck, convoy, fuel, manpower, or experience surplus can make the matching Event 064 project affordable. Event 064 quotes and debits its existing cost from the live reserve; an offer or rejected card supplies nothing. The same surplus does not also create a separate Event 066 discount, another project slot, or another abundance choice. |
 
 The cluster system should use existing member outcomes and flags. It should not create extra popups solely to explain these links.
 
@@ -273,7 +273,15 @@ Event 62 should not rebuild the line or grant an Event 064 bonus. It can use the
 
 A subject boundary fortified by Event 064 can become the first defensive line of an independent breakaway state.
 
-Completed buildings transfer with territory. Active Event 064 postures and projects do not automatically transfer unless the accepted country-transfer framework explicitly supports a safe migration.
+Event 063 releases the existing subject country in place.
+That country keeps its Event 064 posture, response deadline, active project, stored payment, and same-wave project limits; no country-to-country project transfer occurs.
+The existing project rechecks its target under the new diplomatic position: a Reinforce a Priority Sector project continues only while the country controls the target and it still contains a current foreign land frontier, while a logistics or redoubt project continues only if its own role remains valid.
+A subject-overlord boundary remains a foreign controlled-country frontier before and after independence, so diplomatic status alone does not cancel that sector.
+
+An actual loss of target control or removal of the project's required frontier uses Event 064's ordinary cancellation and partial-refund rules.
+The new controller does not inherit the active project or its payment.
+Completed buildings stay in their provinces, and no release refunds them or grants another fort wave.
+AI recalculates local threat and project viability from the new independent position without changing the paid project's scope.
 
 Newly freed borders wait for a later wave when no prior physical line exists.
 

@@ -32,6 +32,25 @@ For political disruption, stability below 35% is a reasonable first severe trigg
 
 An opening risk assessment groups these same causes. Two reports about the same shortage count as one cause. Two or three distinct strong families can justify +70. Failure memory can move an otherwise borderline opening up one severity step, but cannot by itself produce an immediate +100 opening.
 
+### Supply disruption during and after a storm
+
+When [Sandstorm](../099_sandstorm_specs/099_sandstorm_part_04_civilians_industry_and_recovery.md#longer-consequences-and-shared-systems) materially disrupts a controlled industrial state or useful input route, its verified current facts enter the existing shortage and damaged-capacity families.
+National ratios use actual controlled useful capacity and the affected share, rather than imposing the full local weather percentage on the country or its legal owner abroad.
+Ordinary native shortages and damage remain valid without the connection.
+
+One damaged factory cannot enter both families solely because its lost output is also called a shortage.
+A distinct disrupted material or supply route can qualify alongside genuine industrial damage when the two effects have separate current evidence.
+Forecasts, disaster labels and shelter or policy opportunity costs are not additional physical damage.
+An actual resulting input deficit enters its proper family once, with unknown attribution left unresolved.
+
+The government can protect capacity during passage or direct repairs afterward while choosing its existing price policy.
+Sandstorm's M3 may observe the same real restoration as D07, whose disclosed allocation and minimum paid term remain due.
+Both observe one native repair with existing proportional attribution, and neither completion adds a recurring reduction after the repaired cause has already been removed.
+
+The next review removes only the contribution whose actual condition ended, while clear weather leaves unrepaired damage in the assessment.
+Old restraint and known releases keep their recorded order and dates, so a repaired cause can make early easing sensible while the index remains positive.
+The cause explanation identifies the affected state or route and distinguishes clearance from completed repairs.
+
 ## Credit stance and delayed commitment
 
 The policy ladder has seven positions.

@@ -41,7 +41,7 @@ Both systems may affect an actual transaction, but the combined native price mus
 
 A country becoming a genuine subject through the influence contest changes sovereignty and therefore its Tax Resistance permissions. If ENG becomes its master, the British-dependent schedule and hard lock apply. If another country becomes its master, the non-British dependent treatment applies after ordinary subject obligations.
 
-Foreign Influence is not a second Event 81 resistance currency. British Tax neither gives automatic Influence to every British collector nor lets a player spend Event 79 Influence to bypass the dependency lock. A later legitimate independence outcome updates taxation normally.
+Read the actual confirmed puppet relationship, not a displayed 100 Influence, a leadership appointment, or an uncommitted winner report. The tax owner reconciles the new status before a pending resistance completion can succeed, cancelling unfinished sovereign work under Part 3 and preserving consolidated history. Delivered investment stays in the target's usable economic base rather than becoming untaxable sponsor property. Event 81 gives no automatic Influence to a collector, and a sponsor cannot spend Influence to bypass the dependency lock. A later legitimate independence outcome restores the ordinary choices without repeating the contest or a refusal reward. Taxpayer AI stops selecting sovereign reform once subject status is confirmed; sponsor AI values the client's actual post-tax capacity rather than assuming nominal invested factories are all available. See [Event 79 takeover](../079_the_master_specs/08_takeover_and_aftermath.md).
 
 ## Event 72: Ireland Reclaims the North
 

@@ -1,6 +1,6 @@
 # Event 58 current package manifest
 
-This local inventory was refreshed on 2026-10-07 after the documentation cleanup.
+This local inventory was refreshed on 2026-10-08 after the documentation cleanup.
 It records file identity and does not certify acceptance, probability balance, or runtime behavior.
 Its own checksum is excluded.
 
@@ -30,5 +30,5 @@ Its own checksum is excluded.
 | `specs/058_random_buildings_spec_part_1_core.md` | 11036 | 148 | `03fe6912b5c5f212060dc722b2edf3351a778946ca8e4dcd46a69135fe1b3383` |
 | `specs/058_random_buildings_spec_part_2_state_layers.md` | 15705 | 265 | `6f88b2426af789e2e3f6d9f9255cbdf592da980d50cdb6bf6dff667c57f22d74` |
 | `specs/058_random_buildings_spec_part_3_provincial_exceptional.md` | 14764 | 299 | `987cccf279d3b4540be4a63eda291abf137c9b601568234b767c3f985b0227b9` |
-| `specs/058_random_buildings_spec_part_4_integration_presentation_balance.md` | 16148 | 347 | `847c96a315293580ec1a536ec489de328027e061f27004421ec8ec5a907cc444` |
+| `specs/058_random_buildings_spec_part_4_integration_presentation_balance.md` | 17688 | 357 | `31b8dc0148dc00a3a28e6921344ccf1fd288bd18cda609a34327c65bee7d3b41` |
 | `specs/058_random_buildings_spec_part_5_achievements.md` | 7334 | 169 | `ec92aa99101679f6e0f895ea6892113a60cffc96a99d1998f0521c33cf2e6caf` |

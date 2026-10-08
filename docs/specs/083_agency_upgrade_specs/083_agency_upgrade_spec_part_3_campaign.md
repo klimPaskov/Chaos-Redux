@@ -56,6 +56,8 @@ The supplied brief establishes this connection by name. No unverified event numb
 
 Other systems can use the expanded agencies and recruited operatives through normal native mechanics. Agency ownership, capacity, current bonuses, and actual operative assignments are the relevant facts. They should not need a parallel Event 83-only agency screen or a second type of operative.
 
+In [The Master](../079_the_master_specs/02_influence_and_starting_conditions.md#initial-position), a sponsor can use its expanded service to establish the actual target presence required by the intelligence-evidence provider. Empty operative slots, unclaimed recruits, or a historical Agency Upgrade firing do not supply that evidence. A qualifying current network can contribute the bounded registration seed once; building it after registration does not reseed the race or grant automatic Influence income. During the race, evidence for exposing a rival still requires that rival's actual operation record. A sponsor deciding between home protection and a network in the contested minor therefore has a real allocation choice, and AI uses the same current-presence and evidence conditions. If no contest is active, the ordinary agency game continues.
+
 Another event granting an operative or an upgrade remains independent. Event 83 does not count that reward as one of its own future grants. Conversely, a native milestone triggered by an Event 83 upgrade retains its normal reward without being subtracted from the stated package.
 
 ## Country change and campaign continuity

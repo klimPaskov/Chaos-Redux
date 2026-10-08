@@ -222,15 +222,25 @@ Event 025 must remain complete when Event 044 is unavailable or disabled.
 
 ## Event 028 Asteroid Incoming
 
-Event 028 is currently unreworked. The shared connection should be informational.
+Event 028 owns its three target pairs, the two-day locked course, physical damage, dust, crater identities, and civilian losses, as defined in [its core](../../028_asteroid_incoming_specs/028_asteroid_incoming_spec_part_1_core.md) and [impact aftermath](../../028_asteroid_incoming_specs/028_asteroid_incoming_spec_part_3_impact_damage_and_aftermath.md).
 
-Possible future hook:
+The useful expedition connection is a damaged gateway.
+When the impact footprint includes an active participant's saved staging state, Event 025 revalidates the actual port and access route after the impact transaction.
+A permanently destroyed gateway blocks further recovery through that route and makes the existing change-gateway, emergency resupply, evacuation, or withdrawal choices relevant.
+A surviving damaged port stays usable when it still passes the normal route requirements, with readiness and burden derived from its current condition.
+The trajectory notice alone changes neither readiness nor progress.
 
-- alien sensors improve impact prediction
-- asteroid fragments can be compared with Antarctic material
-- false assumptions about extraterrestrial origin change report wording
+Verified surveys and recovered fragments survive a gateway failure.
+Event 025 owns the expedition's route response and temporary commitments, while Event 028 owns the underlying population and building damage.
+The route refresh adds no second casualty, stockpile-loss, dust, or Chaos transaction for the same impact.
+A race that already resolved keeps its winner and technology reward.
 
-Event 025 must not call Event 028 or grant its reward before Event 028 has an accepted rework.
+A holder of verified Antarctic sensor material may receive contextual interpretation of the publicly announced trajectory.
+That interpretation supplies neither an earlier target reveal nor a change to the locked coordinates, delay, impact profile, or miss outcome.
+Material comparison can use already recovered specimens, without granting a second technology or treating ordinary crater material as another Antarctic fragment.
+
+This connection reads an actual Event 028 consequence when that package is available.
+Event 025 retains its ordinary route checks when Event 028 is absent or disabled and never launches it.
 
 ## Event 052 Intel Leaked
 
@@ -254,9 +264,16 @@ This connection is optional and should remain flavor-scale. Event 024 cannot det
 
 ## Event 027 Doctrine Research
 
-Alien Dependence can distort doctrine choices after Evolution V.
+A country that retains alien material and chooses Evolution V integration can develop command practices around decoded systems.
+Event 027's [domain and mastery contract](../../027_doctrine_research_specs/027_doctrine_research_spec_part_1_core.md) remains authoritative for every doctrine choice.
+Alien Dependence cannot bypass a domain prerequisite, replace an active Grand Doctrine, enlarge a batch, or grant a complete doctrine.
+A containment or corrective policy acts through Event 025's existing Dependence and artifact choices, without refunding or resetting native doctrine progress.
 
-A future Event 027 rework may read that state and offer a strange doctrine breakthrough or a corrective path. Event 025 does not grant a complete ordinary doctrine.
+The proposed strange doctrine breakthrough remains an unresolved, deferred design possibility.
+It would need a distinct military institution or formation role, an owner-designed doctrine graph and adapter, and attributable acceptance before it could become a selectable branch.
+The current suggestion supplies none of those elements, so it must not become an automatic extra domain or reward in the Event 027 implementation.
+Preserve it for a later owner review rather than treating its removal from the active connection as rejection or approval.
+Countries without Event 027 continue the same Event 025 artifact policies.
 
 ## Event 011 Secret Alliance
 

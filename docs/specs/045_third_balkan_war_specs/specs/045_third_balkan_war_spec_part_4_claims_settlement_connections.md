@@ -225,7 +225,26 @@ Evolution II reuses their country release, civil-war, starting-force, and cleanu
 
 ### Old Great Bulgaria
 
-Active Bulgarian route claims and identities can affect dispute weighting, claim availability, and AI. Event 045 does not grant a second copy of those claims or route rewards.
+Read Event 048 only when its active Bulgarian country owns a live claim or ambition in the registered dispute group.
+The connection follows that country's current identity and the current territorial owner rather than assuming a historical tag still controls the land.
+The [Bulgarian territorial and integration rules](../../048_old_great_bulgaria_specs/specs/048_old_great_bulgaria_spec_part_4_decisions_integration_formables.md) own the revival claims, Momentum, Administration, integration, and formation rewards.
+Event 045 can recognize an existing claim as the principal settlement objective; it does not grant it again or open a second war when the linked conflict already covers the hostile pair.
+
+During a live Event 045 settlement offer, Bulgarian pressure on the same state group uses that offer's explicit terms.
+Bulgaria chooses between pressing its principal territorial claim, accepting a transit or protectorate compromise, and formally waiving a claim to secure peace.
+The offer must show whether it grants ownership, temporary occupation, access, or a designated loyal subject.
+A corridor or armistice line cannot count as sovereignty for Greater Bulgaria, while a subject counts only for the outer groups already permitted by the chosen Bulgarian political route.
+Accepting weaker terms may preserve peace and administrative capacity at the cost of a still-incomplete formation objective.
+
+Event 045 owns the agreed settlement, its generation-bound transfer request, access terms, signatories, and waiver memory.
+After a real territorial transfer, Event 048 evaluates the current state for its normal integration loop; settlement does not grant a free core, completed administration mission, or repeated surge.
+A formally waived claim cannot reappear merely because an Event 048 focus rereads its historical region or a higher evolution becomes available.
+Reopening it requires the existing explicit Event 045 revival rule or a separately reviewed decision; the player must see the peace commitment before accepting it.
+
+If ownership or signatories change before agreement is enacted, the proposal is revalidated and the player receives revised terms or a failed offer, with no ghost transfer or payment.
+After the world-war handoff, ordinary war and peace systems own the conflict and Event 048 reads their real territorial results.
+Bulgarian AI should compare attainable sovereignty with its remaining supply and Administration, rather than reject every useful compromise or count access as a completed conquest.
+When Event 048 is absent, Event 045 uses its ordinary claim registry and settlement choices; when Event 045 is absent, Bulgaria keeps its normal territorial-pressure loop.
 
 ### Famine and Migration
 

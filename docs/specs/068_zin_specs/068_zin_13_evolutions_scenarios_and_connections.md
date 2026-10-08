@@ -132,7 +132,22 @@ Do not impose a hidden Chaos floor during the Reckoning. The explicit terminal-e
 | Shared achievements | Track actual actor origin, route and scenario provenance. | Forced setup does not silently earn ordinary progression achievements. |
 | Event log and details | First arrival, actual evolutions, major succession results, public terminal branches and scenario entries use their proper shared surfaces. | Ordinary colony development is not mislabeled as an evolution, and hidden information is not published in Event Details. |
 
-Other rough events, such as disasters, disease, defensive construction or independent unit arrivals, may later gain ZIN-aware reactions. Those bridges are not treated as existing APIs here. Their owning specification and source must be inspected before a dependency is added.
+### A Persian restoration encounters a colony
+
+If an actual Event 068 colony holds a state in an opened [Event 071 territorial project](../071_persia_specs/071_persia_spec_part_3_territories_and_wars.md), Persia negotiates with that colony's current government.
+Historical ambition does not convert the colony into a satrapy or erase its resident policy.
+Recognition, access and a freely declined political offer leave the colony's neutral posture intact under [the provocation rules](068_zin_01_colonies_and_crossings.md#provocation-and-defensive-peace).
+A committed expulsion, seizure or war activates those existing rules, including the colony's exact neighboring-state peace demand against the aggressor.
+The Persian recovery demand and that defensive offer remain distinct choices with their own displayed state sets.
+
+Event 071 owns its project, offer and settlement proof, while Event 068 owns the colony's posture, defensive offer and subsequent settlement of transferred states.
+One actual transfer supplies both owners' factual outcome, with population movement, deaths and ordinary diplomatic Chaos paid only by their established owners.
+Only a supported and explicitly accepted subject relationship can qualify for a Persian charter, and a guarantee or access treaty alone earns no satrapy milestone.
+Neither event summons the other, changes its evolution settings or grants its opening army.
+AI Persia evaluates the colony's real forces and diplomatic terms before choosing a confrontation, while the colony uses its existing society policy.
+Without this territorial overlap, both campaigns use their ordinary diplomacy.
+
+Disaster, disease and independent-unit reactions remain future bridges until their owning contract identifies a concrete local consequence.
 
 ## Aftermath without a terminal ending
 

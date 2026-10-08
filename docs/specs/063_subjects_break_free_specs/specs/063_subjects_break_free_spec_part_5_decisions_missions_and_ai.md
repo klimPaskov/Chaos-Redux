@@ -151,9 +151,15 @@ About `180` days, adjusted by war state, existing guarantees, and former-overlor
 
 ### Success
 
-- former overlord recognizes independence
-- a sufficient group of relevant states recognizes the country
-- a credible guarantee or Pact admission makes restoration pressure untenable
+The mission has two successful routes under its existing recognition and credibility requirements.
+
+- Bilateral settlement: the former overlord recognizes independence, or an owner-resolved peace secures that recognition. Apply the matching settlement cleanup and record the former-overlord recognition fact.
+- International security: the required relevant recognitions, a credible reachable guarantee, or valid Pact admission secures support while the former overlord still refuses. Complete the mission and retain the contested settlement, its actual disputed issue, and any live restoration objective.
+
+The category shows the successful route and the former overlord's continuing posture in its existing phase text.
+International security must not satisfy the former-overlord recognition condition of Independence Secured or Peaceful Release.
+AI can prefer mediation or association after securing outside support, but it must still judge any live ultimatum and safe-war conditions from the unresolved pair.
+Repeating recognition or guaranteeing an already protected country does not reopen this mission for another success reward.
 
 ### Failure
 

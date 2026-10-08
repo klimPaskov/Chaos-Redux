@@ -67,6 +67,23 @@ The baseline event must work in the supported base-game configuration. Installed
 
 A native diplomatic action that requires an unavailable expansion cannot be the only entry into foreign access. Commercial, security, and faction choices must use eligible ordinary relationships in the current configuration. A country's political rules can make a particular security promise unavailable without hiding its lawful commercial choices.
 
+### Continuity through a supported Fallout transition
+
+If the Fallout owner supports continuation of an existing ore system, Event 098 preserves each geological identity at its actual state while Fallout applies its [state rewrite and tag-preservation contract](../air_cleanliness_fallout_specs/specs/69_fallout_tag_preservation_technology_and_fracture.md).
+Changed state grades, survival resources and technology do not turn that deposit into a Scrap allowance.
+[Fallout salvage](../air_cleanliness_fallout_specs/specs/baseline/04_survival_mechanics.md#survival-resources) retains its own stock and spending rules.
+Salvaged armored equipment uses the receiving country's current Event 098 entitlement, and neither salvage nor a former ore-equipped item grants export access.
+
+Event 098 reconciles actual post-transition control, valid actors and diplomacy through the same rules as other transformations.
+A changed controller terminates the former source agreements.
+Dissolved faction membership ends faction allocations.
+A non-hostile guarantee or qualification reset with unchanged valid actors and source control retains commercial/security paid-term protection under part 3, including any already paid future period.
+Renewal and new offers require an owner-supported current relationship and legality assessment rather than revival of obsolete guarantees.
+
+Remaining positive-armor consumers use the current material grade against their otherwise equivalent post-regression armor.
+The connection grants no replacement technology or relaxed armor floor.
+The Fallout owner keeps the [transition and presentation boundaries](../air_cleanliness_fallout_specs/specs/68_fallout_consequence_boundary.md), and unresolved continuation or negotiation support remains an explicit owner dependency.
+
 ## Time, eligibility, and saved campaigns
 
 All continuing periods use campaign dates and recorded episode identity. Loading a save, changing controller, opening a decision tab, or receiving a repeated callback cannot extend an already confirmed term or finish a sustained achievement early.

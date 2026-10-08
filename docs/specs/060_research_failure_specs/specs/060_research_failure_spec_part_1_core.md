@@ -321,8 +321,9 @@ The Scientific Research cluster may unlock at a different tier according to the 
 
 As a High member, Research Failure represents one of the cluster's strongest negative outcomes.
 When a cluster firing includes a positive scientific event in the same episode, ordering must preserve the crisis and prevent accidental cancellation.
-Technology regression occurs first.
-A later technology gift or research benefit may then interact with the newly created lost-knowledge ledger as a partial recovery opportunity.
+This package proposes technology regression before positive grants.
+Acceptance of that episode order remains unresolved against Event 54's framework-order invariant under [the connection design](060_research_failure_spec_part_4_evolutions_connections.md#connection-gift-from-scientists).
+Once a consistent order is accepted, an actual completed technology gift can reconcile exactly matching lost-knowledge entries as a partial recovery, without changing its owner's draw or restoring institutional capacity.
 
 Two destructive scientific members should not independently target the same country in contradictory order unless their accepted designs define a combined incident.
 Cluster firing still counts as one global pacing event while Event 60 retains its own history, repeatable cap change, actor, and evolution state under the shared cluster rules.

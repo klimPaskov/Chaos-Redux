@@ -414,7 +414,15 @@ Remaining colonial administrations militarise, suppress movements, or seek immed
 
 ### Coalition war
 
-Several powers form a containment coalition and attack. The coalition needs a clear goal, such as restoring access, breaking the League, or seizing strategic bases. It should not be a generic total-annexation war.
+Several powers negotiate a containment coalition with a concrete goal, such as restoring access, breaking the League, or seizing strategic bases. Recognition and negotiated withdrawal remain alternatives to joining the war. A participant commits only through its existing valid diplomacy and war path.
+
+If the player-controlled unifier is also the fixed target of [Secret Alliance](../../011_secret_alliance_specs/specs/011_secret_alliance_spec_part_4_reveal_war_and_scenario.md), faction identity and secret knowledge require separate ownership. An active pact member entering this normal hostile war causes Event 011's immediate reveal and all-valid-members war entry. The Scramble does not reveal hidden membership during negotiations or grant Evidence from sanctions, colonial history, or an ultimatum alone.
+
+At coalition formation, inspect each participant's current public faction and commitment. If an existing revealed anti-target faction is already fighting the same host, the foreign power can support that existing war only through a valid commitment. It cannot be moved into a duplicate faction, force another faction's leader to leave, or rename the Event 011 pact as the Scramble coalition. A country unable to join safely remains on its eligible sanctions, recognition, or negotiated track. It is not silently counted as a military participant.
+
+Event 012 retains its own demands, bases, concessions, member obligations, and treaty result. Event 011 retains its Resolve and doctrine-specific war result. A returned base or signed recognition treaty can satisfy an actual Scramble term without automatically defeating the pact. Pact fracture does not automatically settle an unfulfilled Scramble ultimatum. Both systems read the same actual war outcome, while the existing declaration and casualty owners apply each underlying Chaos or death receipt once.
+
+This connection creates no common coalition meter, shared constitution, extra faction, duplicated reward, or new super-event role. Without an active Event 011 campaign against the same host, the Scramble follows its ordinary response tracks. Future validation must distinguish a concealed member declaring during the Scramble, a public pact already at war, a foreign faction leader unable to change commitment, and treaty recognition while the pact's separate objective remains unresolved.
 
 ## Scramble crisis phases
 

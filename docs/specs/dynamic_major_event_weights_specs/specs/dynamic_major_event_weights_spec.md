@@ -51,6 +51,10 @@ If the player changes the configured major event gain from 150 to another value,
 ## Counting rules
 
 The calculation must use the current active random event pool, not a static event catalog count.
+One counted entry is one source event in the existing random-pool registry, regardless of how many reports, helpers, countries, or follow-ups that source can produce.
+The pool owner determines whether an entry is currently participating; this feature consumes that result rather than creating a second eligibility or reservation registry.
+Record whether an exclusion is permanent retirement or a temporary owner-controlled suspension, and preserve the owner's reenabling behavior.
+Low recovering weight alone is not removal, and a status refresh cannot add a pacing receipt, alter a weight, retire an entry, or activate a pending event.
 
 Count as current major events:
 
@@ -95,7 +99,8 @@ The dynamic gain should be recalculated only when needed.
 
 Required timing:
 
-- Recalculate immediately before major event weights increase after a minor pacing event.
+- Recalculate immediately before major event weights increase after a minor pacing event, using the pool state at that existing accounting point after the firing's owner-controlled membership changes.
+- Use that one calculated gain for the one pacing receipt; follow-up reports and status refreshes do not recalculate and apply an additional gain.
 - Recalculate when the status or debug UI displays the current major gain.
 - Recalculate when settings or event list views need to show the current value.
 
@@ -105,7 +110,17 @@ Avoid daily recalculation unless the existing system already rebuilds a matching
 
 A fired cluster still counts as one global pacing event.
 
-If a cluster contains several member events, apply the dynamic major weight gain only once for the cluster firing. Member events may still apply their own effects, fire-once removal, repeatable cap changes, logs, and details, but they must not each add major weight.
+If a cluster contains several member events, apply the dynamic major weight gain only once for the cluster firing.
+Member events may still apply their own effects, fire-once removal, repeatable cap changes, logs, and details, but they must not each add major weight.
+A member remains a counted source only if the normal pool owner still includes it; a cluster wrapper is not an extra source entry.
+
+[Event 026's reservation and lifecycle](../../026_black_friday_specs/026_black_friday_spec_part_2_friday_reservation_and_lifecycle.md#event-system-pacing) supplies the delayed-activation case.
+Reservation removes Black Friday from live selection without recording a firing or adding major gain.
+A different minor event that fires while it is reserved uses the pool's current membership at its own pacing receipt.
+Eligible Friday activation supplies one normal fire-once pacing receipt using the pool state at activation, while its hidden activation, report, and expiry roles add none.
+Cancellation or a below-threshold Friday adds none; it follows Event 026's existing reservation and reenabling rules.
+The weight helper must neither activate the sale nor reset its selecting timer.
+When Event 026 is absent or disabled, the same ordinary pool and pacing contract applies without a reservation adapter.
 
 ## Settings behaviour
 
@@ -211,7 +226,16 @@ Required cases:
 | Fired major events | Fired major events do not affect the current major count. |
 | Fired fire-once minor events | Fired fire-once minor events do not affect the current non-major count. |
 | Repeatable event at low recovering weight | Still counts if it remains in the active pool. |
-| Cluster firing | Dynamic gain applies once for the cluster firing. |
+| Cluster firing | Dynamic gain applies once after owner-controlled member accounting; the wrapper and member reports add no extra gain. |
+| `dmg_pool_membership` | Low recovering weight remains counted; temporary exclusions and reenabling match the existing pool owner's decisions without becoming permanent removal. |
+| `dmg_black_friday_wait` | Reservation removes only Event 026 from participating sources, gives no gain, and does not prevent another minor from supplying its own one gain. |
+| `dmg_black_friday_activate` | Eligible Friday activation records one gain from the activation-time pool; same-day activation, hidden reports, and expiry cannot add another. |
+| `dmg_black_friday_cancel` | Disable/cancellation and below-threshold Fridays give no gain; reenabling follows Event 026 without restoring an old reservation. |
+| `dmg_readonly_status` | Opening or refreshing existing status displays shows the current calculation without applying gain, changing weights, or activating pending events. |
+
+These named cases are future validation scenarios, not executed probability evidence.
+Before any weighted-source patch, the parent routes the actual candidate pool, owner eligibility inputs, and immutable source baseline through `chaosx_ai_probability_auditor` for inspection and evaluation, then uses matching scenarios for the mandatory post-patch comparison.
+Unknown eligibility or native timing remains unresolved rather than inferred from these formula examples.
 
 Validation should inspect real script paths and variables. Do not claim this is complete with only a calculator note.
 

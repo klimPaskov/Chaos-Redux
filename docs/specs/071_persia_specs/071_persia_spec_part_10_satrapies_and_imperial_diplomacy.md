@@ -80,6 +80,23 @@ Imperial guarantees create obligations for Persia. If a protected state is attac
 
 ## Loss, exit, and recovery
 
-A bargaining subject can be stabilized by completing the missing obligation. A defiant subject can enter a 120-day settlement hearing. A seceding subject requires a negotiated exit, a revised charter, or an actual conflict.
+A bargaining subject can be stabilized by completing the missing obligation.
+A defiant subject can enter a 120-day settlement hearing.
+A seceding subject requires a negotiated exit, a revised charter, or an actual conflict.
+A peaceful release gives up the relevant imperial milestone and can reduce the crisis.
+A reconquest still needs a new settlement, but does not repeat the original first-completion reward.
+If Persia collapses, subjects keep their existing assets and follow the explicit breakup rules in part 12.
 
-A peaceful release gives up the relevant imperial milestone and can reduce the crisis. A reconquest still needs a new settlement, but does not repeat the original first-completion reward. If Persia collapses, subjects keep their existing assets and follow the explicit breakup rules in part 12. They do not all turn into arbitrary hostile clones.
+An actual [Event 063 independence result](../063_subjects_break_free_specs/specs/063_subjects_break_free_spec_part_2_settlements.md) changes a satrapy's relationship in place.
+The former subject retains its country, forces and institutions, and Event 071 closes subject-only levies, capacity contributions and charter eligibility from that result.
+Completed transfers remain completed, while undelivered commitments follow their dispatch and ownership records.
+A completed investment is not refunded merely because the recipient is independent.
+Access, protection or trade can continue only under an ordinary agreement whose terms remain valid or a new accepted offer.
+The first post-independence obligation cannot be collected from the old 90-day subject schedule.
+
+Event 063 owns its release and recognition, contested separation or restoration-war settlement.
+Event 071 presents the corresponding imperial hearing or partner offer and updates regional restoration proof.
+It does not release the country again, impose a second simultaneous secession war, or restore subject status through a stale charter flag.
+If Event 071's own breakup resolves first, an already independent country is no longer a subject candidate for Event 063.
+Neither event restarts first-satrapy rewards or provides a replacement army.
+
