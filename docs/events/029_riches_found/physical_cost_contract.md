@@ -3,6 +3,7 @@
 This document covers the ten physical-cost profiles and ordinary deep-section output loss implemented on 2026-10-07.
 The acceptance basis is the human Event 029 goal and Part 3's named cost profiles, not an approval of fixed prices as the full dynamic-cost system.
 The complete Event 029 package remains incomplete.
+The two evolution-specific sealing profiles and their conditional entombment contract are documented separately in [seal_project_contract.md](seal_project_contract.md).
 
 ## Payment and capacity
 
