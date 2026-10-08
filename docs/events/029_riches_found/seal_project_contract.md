@@ -45,6 +45,8 @@ Gold sealing remains a localized-source containment action rather than an emerge
 Part 4 permits sealing the strongest incident areas while preserving upper workings.
 No new minimum-integrity number is inferred from that prose.
 Its existing one-time partial-seal guard remains intact, and its tooltip promises production only from stable upper workings, not unrestricted reopening.
+When the project creates a partial seal, the existing partial-seal helper adds twelve Extraction Pressure before the explicit eighteen-point relief; the effect tooltip discloses that conditional strain instead of presenting the relief as the entire change.
+An existing partial seal, or a mine that cannot begin that temporary-closure step, does not incur the additional twelve-point strain through this action.
 
 ## Source and reference evidence
 
