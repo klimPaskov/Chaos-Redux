@@ -1324,7 +1324,7 @@ acid_rain_apply_formation_stage = {
 		set_global_flag = acid_rain_formation_stage_committed
 		set_variable = { global.acid_rain_highest_stage_at_formation = constant:acid_rain_runtime.zero }
 		if = {
-			limit = { check_variable = { var = global.acid_rain_start_chaos value = constant:acid_rain_evolution.severe_chaos compare = greater_than_or_equals } }
+			limit = { acid_rain_severe_evolution_is_enabled = yes check_variable = { var = global.acid_rain_start_chaos value = constant:acid_rain_evolution.severe_chaos compare = greater_than_or_equals } }
 			set_global_flag = acid_rain_severe_unlocked
 			set_variable = { global.acid_rain_highest_stage_at_formation = constant:acid_rain_event.evolution_i_stage }
 			set_variable = { global.acid_rain_severe_next_check_day = global.acid_rain_runtime_start_day }
@@ -1334,7 +1334,7 @@ acid_rain_apply_formation_stage = {
 			add_to_variable = { global.acid_rain_severe_next_check_day = chaosx_date_offset }
 		}
 		if = {
-			limit = { check_variable = { var = global.acid_rain_start_chaos value = constant:acid_rain_evolution.front_two_chaos compare = greater_than_or_equals } }
+			limit = { acid_rain_multiple_fronts_evolution_is_enabled = yes check_variable = { var = global.acid_rain_start_chaos value = constant:acid_rain_evolution.front_two_chaos compare = greater_than_or_equals } }
 			set_variable = { global.acid_rain_highest_stage_at_formation = constant:acid_rain_event.evolution_ii_stage }
 			acid_rain_open_additional_front = yes
 			if = {
@@ -1351,7 +1351,7 @@ acid_rain_apply_formation_stage = {
 			}
 		}
 		if = {
-			limit = { check_variable = { var = global.acid_rain_start_chaos value = constant:acid_rain_evolution.global_chaos compare = greater_than_or_equals } }
+			limit = { acid_rain_global_evolution_is_enabled = yes check_variable = { var = global.acid_rain_start_chaos value = constant:acid_rain_evolution.global_chaos compare = greater_than_or_equals } }
 			set_variable = { global.acid_rain_highest_stage_at_formation = constant:acid_rain_event.evolution_iii_stage }
 			set_global_flag = acid_rain_global_transition_active
 			set_variable = { global.acid_rain_phase = constant:acid_rain_phase.global_warning }
@@ -2507,9 +2507,8 @@ acid_rain_check_stable_fronts = {
 			set_global_flag = acid_rain_third_front_stable_receipt
 			set_temp_variable = { chaos_change = constant:acid_rain_evolution.front_three_chaos_gain }
 			add_chaos_meter_value = yes
-			set_temp_variable = { acid_rain_evolution_stage = constant:acid_rain_event.evolution_iii_stage }
-			set_temp_variable = { acid_rain_evolution_tier = constant:acid_rain_event.evolution_iii_tier }
-			acid_rain_record_evolution = yes
+			# A third regional front is the same Multiple Weather Fronts stage,
+			# already recorded at the stable second front. It is not Global Rain.
 			if = { limit = { has_event_target = acid_rain_runtime_host } event_target:acid_rain_runtime_host = { news_event = { id = chaosx.nr33.203 } } }
 		}
 	}
@@ -4412,7 +4411,14 @@ acid_rain_create_severe_cell = {
 # direct +5 change in the processing helper below.
 acid_rain_try_severe_evolution = {
 	if = {
+		limit = { has_global_flag = acid_rain_severe_transition_pending NOT = { acid_rain_severe_evolution_is_enabled = yes } }
+		clr_global_flag = acid_rain_severe_transition_pending
+		clear_variable = global.acid_rain_severe_transition_day
+	}
+	if = {
 		limit = {
+			acid_rain_severe_evolution_is_enabled = yes
+			acid_rain_runtime_is_active = yes
 			check_variable = { var = global.chaos_meter_value value = constant:acid_rain_evolution.severe_chaos compare = greater_than_or_equals }
 			check_variable = { var = global.acid_rain_runtime_start_day value = constant:acid_rain_runtime.zero compare = greater_than }
 			NOT = { has_global_flag = acid_rain_severe_unlocked }
@@ -4430,6 +4436,8 @@ acid_rain_try_severe_evolution = {
 	if = {
 		limit = {
 			has_global_flag = acid_rain_severe_transition_pending
+			acid_rain_severe_evolution_is_enabled = yes
+			acid_rain_runtime_is_active = yes
 			check_variable = { var = global.date value = global.acid_rain_severe_transition_day compare = greater_than_or_equals }
 		}
 		clr_global_flag = acid_rain_severe_transition_pending
@@ -4452,6 +4460,8 @@ acid_rain_try_severe_evolution = {
 	if = {
 		limit = {
 			has_global_flag = acid_rain_severe_unlocked
+			acid_rain_severe_evolution_is_not_disabled = yes
+			acid_rain_runtime_is_active = yes
 			NOT = { has_global_flag = acid_rain_global_layer_active }
 			NOT = { has_global_flag = acid_rain_global_transition_active }
 			check_variable = { var = global.acid_rain_severe_cell_count value = constant:acid_rain_event.max_severe_cells compare = less_than }
@@ -4745,7 +4755,14 @@ acid_rain_open_additional_front = {
 # distinct region is available; neither route shares front state or warnings.
 acid_rain_try_multiple_fronts = {
 	if = {
+		limit = { has_global_flag = acid_rain_front_split_pending NOT = { acid_rain_multiple_fronts_evolution_is_enabled = yes } }
+		clr_global_flag = acid_rain_front_split_pending
+		clear_variable = global.acid_rain_front_split_day
+	}
+	if = {
 		limit = {
+			acid_rain_multiple_fronts_evolution_is_enabled = yes
+			acid_rain_runtime_is_active = yes
 			check_variable = { var = global.chaos_meter_value value = constant:acid_rain_evolution.front_two_chaos compare = greater_than_or_equals }
 			NOT = { has_global_flag = acid_rain_global_layer_active }
 			NOT = { has_global_flag = acid_rain_global_transition_active }
@@ -4764,6 +4781,8 @@ acid_rain_try_multiple_fronts = {
 	if = {
 		limit = {
 			has_global_flag = acid_rain_front_split_pending
+			acid_rain_multiple_fronts_evolution_is_enabled = yes
+			acid_rain_runtime_is_active = yes
 			NOT = { has_global_flag = acid_rain_global_layer_active }
 			NOT = { has_global_flag = acid_rain_global_transition_active }
 			check_variable = { var = global.date value = global.acid_rain_front_split_day compare = greater_than_or_equals }
@@ -4785,6 +4804,8 @@ acid_rain_try_multiple_fronts = {
 	if = {
 		limit = {
 			has_global_flag = acid_rain_multiple_fronts_unlocked
+			acid_rain_multiple_fronts_evolution_is_not_disabled = yes
+			acid_rain_runtime_is_active = yes
 			NOT = { has_global_flag = acid_rain_third_front_resolved }
 			NOT = { has_global_flag = acid_rain_global_layer_active }
 			NOT = { has_global_flag = acid_rain_global_transition_active }
@@ -4850,11 +4871,22 @@ acid_rain_try_multiple_fronts = {
 	}
 }
 
-# STATE SCOPE. Global-layer coverage uses a distinct receipt from front
+# ANY SCOPE. Global-layer coverage uses a distinct receipt from front
 # coverage but preserves the same frozen generation and region assignment.
 acid_rain_begin_global_transition = {
 	if = {
-		limit = { NOT = { has_global_flag = acid_rain_global_layer_active } }
+		limit = {
+			acid_rain_runtime_has_frozen_registry = yes
+			has_global_flag = acid_rain_global_transition_active
+			has_variable = global.acid_rain_global_warning_day
+			check_variable = { var = global.date value = global.acid_rain_global_warning_day compare = greater_than_or_equals }
+			all_of_scopes = {
+				array = global.acid_rain_frozen_states
+				acid_rain_state_is_frozen_valid = yes
+			}
+			acid_rain_global_evolution_is_enabled = yes
+			NOT = { has_global_flag = acid_rain_global_layer_active }
+		}
 		set_global_flag = acid_rain_global_layer_active
 		set_temp_variable = { acid_rain_begin_global_transition_loop_1_break = constant:acid_rain_runtime.zero }
 		for_each_scope_loop = {
@@ -4987,13 +5019,23 @@ acid_rain_begin_global_transition = {
 acid_rain_try_global_evolution = {
 	if = {
 		limit = {
+			has_global_flag = acid_rain_global_transition_active
+			NOT = { has_global_flag = acid_rain_global_layer_active }
+			NOT = { acid_rain_global_evolution_is_enabled = yes }
+		}
+		clr_global_flag = acid_rain_global_transition_active
+		clear_variable = global.acid_rain_global_warning_day
+		set_variable = { global.acid_rain_phase = constant:acid_rain_phase.regional }
+	}
+	if = {
+		limit = {
+			acid_rain_global_evolution_is_enabled = yes
+			acid_rain_runtime_is_active = yes
 			check_variable = { var = global.chaos_meter_value value = constant:acid_rain_evolution.global_chaos compare = greater_than_or_equals }
 			NOT = { has_global_flag = acid_rain_global_layer_active }
 			NOT = { has_global_flag = acid_rain_global_transition_active }
 		}
-		set_global_flag = acid_rain_severe_unlocked
 		clr_global_flag = acid_rain_severe_transition_pending
-		set_global_flag = acid_rain_multiple_fronts_unlocked
 		clr_global_flag = acid_rain_front_split_pending
 		set_global_flag = acid_rain_global_transition_active
 		set_variable = { global.acid_rain_phase = constant:acid_rain_phase.global_warning }
@@ -5007,6 +5049,8 @@ acid_rain_try_global_evolution = {
 	if = {
 		limit = {
 			has_global_flag = acid_rain_global_transition_active
+			acid_rain_global_evolution_is_enabled = yes
+			acid_rain_runtime_is_active = yes
 			check_variable = { var = global.date value = global.acid_rain_global_warning_day compare = greater_than_or_equals }
 		}
 		acid_rain_begin_global_transition = yes
@@ -5064,6 +5108,9 @@ acid_rain_append_state_to_superstorm_weighted_pool = {
 acid_rain_create_superstorm_forecast = {
 	if = {
 		limit = {
+			acid_rain_global_evolution_is_not_disabled = yes
+			acid_rain_runtime_is_active = yes
+			has_global_flag = acid_rain_global_layer_active
 			check_variable = { var = global.acid_rain_superstorm_forecast_count value = global.acid_rain_superstorm_capacity compare = less_than }
 			check_variable = { var = global.acid_rain_superstorm_forecast_count value = constant:acid_rain_event.max_superstorms compare = less_than }
 		}
@@ -5255,6 +5302,8 @@ acid_rain_try_extra_superstorm = {
 	if = {
 		limit = {
 			has_global_flag = acid_rain_global_layer_active
+			acid_rain_global_evolution_is_not_disabled = yes
+			acid_rain_runtime_is_active = yes
 			check_variable = { var = global.acid_rain_superstorm_capacity value = constant:acid_rain_evolution.global_superstorm_third_capacity compare = less_than }
 		}
 		set_temp_variable = { chaosx_date_offset = global.date }
@@ -5276,6 +5325,8 @@ acid_rain_try_extra_superstorm = {
 	if = {
 		limit = {
 			has_global_flag = acid_rain_global_layer_active
+			acid_rain_global_evolution_is_not_disabled = yes
+			acid_rain_runtime_is_active = yes
 			check_variable = { var = global.acid_rain_superstorm_capacity value = constant:acid_rain_evolution.global_superstorm_fourth_capacity compare = less_than }
 			check_variable = { var = global.chaos_meter_value value = constant:acid_rain_evolution.world_collapse_superstorm_chaos compare = greater_than_or_equals }
 		}
@@ -5288,6 +5339,8 @@ acid_rain_try_extra_superstorm = {
 		break = acid_rain_try_extra_superstorm_loop_1_break
 		limit = {
 			has_global_flag = acid_rain_global_layer_active
+			acid_rain_global_evolution_is_not_disabled = yes
+			acid_rain_runtime_is_active = yes
 			check_variable = { var = global.acid_rain_superstorm_forecast_count value = global.acid_rain_superstorm_capacity compare = less_than }
 			check_variable = { var = acid_rain_superstorm_refill_attempt value = constant:acid_rain_event.max_superstorms compare = less_than }
 		}

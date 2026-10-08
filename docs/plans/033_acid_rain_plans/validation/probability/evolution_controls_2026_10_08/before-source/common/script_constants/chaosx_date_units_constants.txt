@@ -1,0 +1,30 @@
+# ============================================================================
+# CHAOS REDUX - SHARED DATE-UNIT CONSTANTS
+# ============================================================================
+# Date variables (global.date and every stored copy of it) count one game hour
+# as 0.00001 (offline wiki Data structures, Game variables: date), so one day
+# is 0.00024 date units. Variables hold five decimals (Data structures,
+# Variables), so both values are exact at runtime.
+#
+# The conversion never stores 0.00001 or 0.00024 as a literal. Day counts are
+# multiplied by hours_per_day and divided by hours_per_date_unit, the same
+# integer route used by the Event 013 and Event 021 converters, so every
+# intermediate value is a whole number of hours and the schema stays int.
+#
+# Consumers: chaosx_convert_days_to_date_offset and
+# chaosx_convert_date_offset_to_days in
+# common/scripted_effects/chaosx_dynamic_effects.txt.
+# ============================================================================
+
+chaosx_date_units = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	zero = 0
+	hour_step = 1
+	day_step = 1
+	hours_per_day = 24
+	hours_per_date_unit = 100000
+}

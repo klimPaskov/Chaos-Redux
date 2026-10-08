@@ -308,6 +308,71 @@ acid_rain_launch_preflight_is_valid = {
 	any_state = { acid_rain_state_is_valid_target = yes }
 }
 
+# ANY SCOPE. These predicates build the shared evolution context locally.
+# No temporary output is consumed after return. Enabled gates admit a new
+# stage at its tier. Not-disabled gates retain an already activated stage
+# after falling Chaos while still blocking new forecasts when unchecked.
+acid_rain_severe_evolution_is_enabled = {
+	hidden_trigger = {
+		set_temp_variable = { events_log_evolution_event_id = constant:acid_rain_event.id }
+		set_temp_variable = { events_log_evolution_type = constant:acid_rain_event.evolution_type }
+		set_temp_variable = { events_log_evolution_stage = constant:acid_rain_event.evolution_i_stage }
+		set_temp_variable = { events_log_evolution_tier = constant:acid_rain_event.evolution_i_tier }
+		is_current_evolution_enabled = yes
+	}
+}
+
+acid_rain_severe_evolution_is_not_disabled = {
+	hidden_trigger = {
+		set_temp_variable = { events_log_evolution_event_id = constant:acid_rain_event.id }
+		set_temp_variable = { events_log_evolution_type = constant:acid_rain_event.evolution_type }
+		set_temp_variable = { events_log_evolution_stage = constant:acid_rain_event.evolution_i_stage }
+		set_temp_variable = { events_log_evolution_tier = constant:acid_rain_event.evolution_i_tier }
+		NOT = { has_disabled_current_evolution = yes }
+	}
+}
+
+acid_rain_multiple_fronts_evolution_is_enabled = {
+	hidden_trigger = {
+		set_temp_variable = { events_log_evolution_event_id = constant:acid_rain_event.id }
+		set_temp_variable = { events_log_evolution_type = constant:acid_rain_event.evolution_type }
+		set_temp_variable = { events_log_evolution_stage = constant:acid_rain_event.evolution_ii_stage }
+		set_temp_variable = { events_log_evolution_tier = constant:acid_rain_event.evolution_ii_tier }
+		is_current_evolution_enabled = yes
+	}
+}
+
+acid_rain_multiple_fronts_evolution_is_not_disabled = {
+	hidden_trigger = {
+		set_temp_variable = { events_log_evolution_event_id = constant:acid_rain_event.id }
+		set_temp_variable = { events_log_evolution_type = constant:acid_rain_event.evolution_type }
+		set_temp_variable = { events_log_evolution_stage = constant:acid_rain_event.evolution_ii_stage }
+		set_temp_variable = { events_log_evolution_tier = constant:acid_rain_event.evolution_ii_tier }
+		NOT = { has_disabled_current_evolution = yes }
+	}
+}
+
+acid_rain_global_evolution_is_enabled = {
+	hidden_trigger = {
+		set_temp_variable = { events_log_evolution_event_id = constant:acid_rain_event.id }
+		set_temp_variable = { events_log_evolution_type = constant:acid_rain_event.evolution_type }
+		set_temp_variable = { events_log_evolution_stage = constant:acid_rain_event.evolution_iii_stage }
+		set_temp_variable = { events_log_evolution_tier = constant:acid_rain_event.evolution_iii_tier }
+		is_current_evolution_enabled = yes
+	}
+}
+
+acid_rain_global_evolution_is_not_disabled = {
+	hidden_trigger = {
+		set_temp_variable = { events_log_evolution_event_id = constant:acid_rain_event.id }
+		set_temp_variable = { events_log_evolution_type = constant:acid_rain_event.evolution_type }
+		set_temp_variable = { events_log_evolution_stage = constant:acid_rain_event.evolution_iii_stage }
+		set_temp_variable = { events_log_evolution_tier = constant:acid_rain_event.evolution_iii_tier }
+		NOT = { has_disabled_current_evolution = yes }
+	}
+}
+
+
 acid_rain_runtime_is_active = {
 	has_global_flag = acid_rain_runtime_active
 	NOT = { has_global_flag = world_end }

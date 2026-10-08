@@ -1,0 +1,81 @@
+{
+  "sourceRuntimeSha256": "71f0be97b23c2818ee2302009b6fc98c6a6b1a1b43f5588dd05bf1ae35914d89",
+  "sourceTriggerSha256": "0602105374350841e579279eb17b5cc627cded074c2b0503d2def361d1585c60",
+  "commitEffect": {
+    "path": "common/scripted_effects/033_acid_rain_effects.txt",
+    "line": 4876,
+    "newGuardLines": [
+      4881,
+      4886
+    ]
+  },
+  "sourceRequirements": [
+    "has_variable global.acid_rain_global_warning_day",
+    "global.date >= global.acid_rain_global_warning_day",
+    "all_of_scopes global.acid_rain_frozen_states: acid_rain_state_is_frozen_valid"
+  ],
+  "actualStatePredicate": {
+    "path": "common/scripted_triggers/033_acid_rain_triggers.txt",
+    "lines": [
+      68,
+      76
+    ],
+    "checks": [
+      "scope_exists=yes",
+      "has_state_flag acid_rain_frozen_valid",
+      "has_variable acid_rain_registry_generation",
+      "acid_rain_registry_generation equals global.acid_rain_generation_id"
+    ]
+  },
+  "literalFormationEvidence": {
+    "runtimeLines": {
+      "resetCaller": 610,
+      "generationWriter": 618,
+      "frozenRegistryFlag": 658
+    },
+    "resetHelper": {
+      "definition": 45,
+      "clearsRegistryGeneration": 78
+    },
+    "claim": "These literal bodies were inspected and ordered before registry_frozen publication; not a native migration execution or proof that dynamic/foreign writers do not exist."
+  },
+  "placement": "Only attempted acid_rain_begin_global_transition outer guard; host-worker and maintenance bodies byte-identical. No new unconditional periodic registry scan in source; no native performance claim.",
+  "docs": [
+    {
+      "path": "C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/triggers_documentation.md",
+      "revision": "7d27ed77dadaf3a213a4b3e2c624bf9c02dae495317abe8eee833b27c2d1de29",
+      "lines": [
+        1052,
+        1066
+      ],
+      "section": "all_of_scopes",
+      "read": "Direct pertinent local section; actual per-element scope and false-on-any-failure rule."
+    },
+    {
+      "path": "C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/triggers_documentation.md",
+      "revision": "7d27ed77dadaf3a213a4b3e2c624bf9c02dae495317abe8eee833b27c2d1de29",
+      "lines": [
+        5006,
+        5014
+      ],
+      "section": "has_variable"
+    },
+    {
+      "path": "paradox_wiki/Data structures - Hearts of Iron 4 Wiki.md",
+      "revision": "62273f37ed30e5479acb331a8973f48dadc1867c4913c8a940e3e790e7af32d4",
+      "lines": [
+        1149,
+        1151
+      ],
+      "section": "all_of_scopes and distinction from all_of"
+    }
+  ],
+  "notEstablished": [
+    "Native missing/premature due-clock rejection",
+    "Native stale/missing-marker/current-generation-state rejection",
+    "Native scope array binding and callback frame execution",
+    "Migration history, registry completeness/uniqueness/ID-position equivalence",
+    "Absence of dynamic or foreign registry writers"
+  ],
+  "requiredOmittedFacts": "Exact per-state scope/flag/generation ledger and global current generation; presence/value of due clock. Existing named scalar/source fixtures are not silently hydrated with defaults."
+}

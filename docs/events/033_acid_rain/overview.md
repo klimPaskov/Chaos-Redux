@@ -57,12 +57,17 @@ Dissipation ends the weather runtime but does not erase contamination already ad
 
 The evolutions are cumulative and can activate while a generation is live.
 The evolution log bridge forwards the caller's exact stage and tier to the shared row recorder, replacing any stale ambient context before recording.
+Each stage uses the shared enable control at formation, notice admission and queued activation.
+An unchecked stage or loss of its admission tier cancels its uncommitted notice, and a cancelled global warning returns to regional coverage processing.
+Activated fronts, the global layer and already reserved storm forecasts retain their history and finish through the ordinary maintenance and dissipation paths.
+Unchecked stages admit no new severe cells, regional front splits or global superstorm forecasts.
 
 - Severe Storm Cells unlock at Rising Chaos and add bounded local severe episodes with nine-day forecasts without replacing the parent front.
 - Multiple Weather Fronts unlock at Chaos Tier and add independent second and possible third front records.
 - Global Acid Rain unlocks at Totalen Chaos, exposes every frozen valid state through the same exact mortality gateway, retires regional fronts idempotently, allows bounded superstorms with nine-day forecasts, and still reaches guaranteed dissipation.
 
 Evolution unlocks add no Chaos by themselves.
+The third regional front retains its separate mapped impact receipt within Multiple Weather Fronts and does not record Global Acid Rain.
 Direct Chaos is applied only at mapped gameplay impacts, and shared Chaos receipts are never counted a second time by Event 033.
 
 ## Runtime and save safety
