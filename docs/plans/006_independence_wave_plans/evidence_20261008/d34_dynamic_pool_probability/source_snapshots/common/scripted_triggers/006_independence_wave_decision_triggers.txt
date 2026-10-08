@@ -1,0 +1,979 @@
+# Some fields in this file reject script-constant tokens.
+# These file-scoped values mirror the authoritative shared constants.
+@CR_SC_INDEPENDENCE_WAVE_DECISION_GATE_MINIMUM_DIVISIONS = 2
+@CR_SC_INDEPENDENCE_WAVE_DECISION_GATE_SECURE_CAPITAL_DIVISIONS = 3
+@CR_SC_INDEPENDENCE_WAVE_DECISION_GATE_SECURE_CAPITAL_FRAGILE_DIVISIONS = 1
+# ============================================================================
+# CHAOS REDUX - EVENT 006 INDEPENDENCE WAVE DECISION TRIGGERS
+# ============================================================================
+# Reusable phase, target, mission-cap, resource-safety, and material-cost
+# predicates for DM-01 through DM-62. All country scans are initiated by a
+# player or AI targeted action. No periodic world iteration is performed here.
+# ============================================================================
+
+is_independence_wave_provisional_or_later = {
+	is_independence_wave_package_content_active = yes
+	check_variable = {
+		var = independence_wave_founding_phase
+		value = constant:independence_wave_founding_phase.provisional_state
+		compare = greater_than_or_equals
+	}
+}
+
+is_independence_wave_recognized_or_later = {
+	is_independence_wave_package_content_active = yes
+	check_variable = {
+		var = independence_wave_founding_phase
+		value = constant:independence_wave_founding_phase.recognized_state
+		compare = greater_than_or_equals
+	}
+}
+
+# Country scope. DM-03 is an automatic founding mission, but its accepted
+# contract still requires the released country to hold its reserved anchor
+# and keep the local founding situation peaceful while registration runs.
+is_independence_wave_register_population_anchor_secure = {
+	has_variable = independence_wave_anchor_state
+	var:independence_wave_anchor_state = {
+		is_owned_and_controlled_by = ROOT
+	}
+	has_war = no
+}
+
+is_independence_wave_regional_power = {
+	is_independence_wave_package_content_active = yes
+	check_variable = {
+		var = independence_wave_founding_phase
+		value = constant:independence_wave_founding_phase.regional_power
+		compare = greater_than_or_equals
+	}
+}
+
+has_independence_wave_active_founding_mission = {
+	OR = {
+		has_active_mission = independence_wave_secure_provisional_capital
+		has_active_mission = independence_wave_ice_hold_the_harbour
+		has_active_mission = independence_wave_establish_revenue_service
+		has_active_mission = independence_wave_register_population
+		has_active_mission = independence_wave_hold_first_assembly
+		has_active_mission = independence_wave_confirm_traditional_authority
+		has_active_mission = independence_wave_nav_hold_fueros_together
+		has_active_mission = independence_wave_glc_hold_council_together
+	}
+}
+
+has_independence_wave_active_diplomatic_action = {
+	OR = {
+		has_decision = independence_wave_send_diplomatic_mission
+		has_decision = independence_wave_request_former_host_recognition
+		has_decision = independence_wave_seek_regional_guarantee
+		has_decision = independence_wave_coordinate_recognition_campaign
+		has_decision = independence_wave_grant_base_or_transit_rights
+		has_decision = independence_wave_offer_ceasefire_line
+		has_decision = independence_wave_divide_state_property
+		has_decision = independence_wave_negotiate_citizenship_and_return
+		has_decision = independence_wave_demand_recognition_by_force
+		has_decision = independence_wave_offer_association_or_reunion
+		has_country_flag = independence_wave_iw093_host_settlement_active
+		has_country_flag = independence_wave_iw093_host_negotiation_pending
+		has_country_flag = independence_wave_iw093_post_crisis_ratification_active
+		has_country_flag = independence_wave_iw098_host_settlement_active
+		has_country_flag = independence_wave_iw098_host_negotiation_pending
+		has_country_flag = independence_wave_iw098_post_crisis_ratification_active
+	}
+}
+
+has_independence_wave_active_security_mission = {
+	OR = {
+		has_active_mission = independence_wave_integrate_militias
+		has_decision = independence_wave_secure_depot
+		has_active_mission = independence_wave_form_border_guards
+		has_decision = independence_wave_open_volunteer_corridor
+		has_active_mission = independence_wave_professionalize_army
+		has_active_mission = independence_wave_prepare_reclamation_defense
+	}
+}
+
+has_independence_wave_active_league_crisis = {
+	OR = {
+		has_decision = independence_wave_request_collective_recognition
+		has_decision = independence_wave_request_border_arbitration
+		has_decision = independence_wave_rescue_threatened_member
+		has_decision = independence_wave_call_charter_expulsion_vote
+		has_decision = independence_wave_sponsor_member_coup
+		has_decision = independence_wave_request_charter_war_mandate
+		has_decision = independence_wave_refuse_binding_arbitration
+		has_active_mission = independence_wave_convene_founding_congress
+		has_active_mission = independence_wave_challenge_league_leadership
+		has_active_mission = independence_wave_coordinate_reclamation_fronts
+		has_active_mission = independence_wave_transform_league_charter
+	}
+}
+
+# Country scope, called from the owner of a selected capital state. A defensive
+# charter may authorize war only against a living external country that is not
+# already a League member and is not already at war with the applicant.
+is_valid_independence_wave_charter_war_authorization_target = {
+	exists = yes
+	NOT = { tag = ROOT }
+	NOT = { has_country_flag = independence_wave_league_member }
+	ROOT = {
+		NOT = { has_war_with = PREV }
+		can_declare_war_on = PREV
+	}
+}
+
+# Country scope, with FROM as the state selected by DM-42/43/44/60/62. The
+# regular variable stores the country chosen when the timer began. Resolution
+# is valid only while that exact country still exists, keeps the origin
+# generation stored with it, and still owns the selected state; a capital
+# transfer or a later release of the same tag cannot redirect an outcome.
+has_valid_independence_wave_active_league_decision_target = {
+	has_variable = independence_wave_active_league_target_country
+	var:independence_wave_active_league_target_country = { exists = yes }
+	FROM = { is_owned_by = var:ROOT.independence_wave_active_league_target_country }
+	var:independence_wave_active_league_target_country = {
+		check_variable = { var = independence_wave_generation_id value = ROOT.independence_wave_active_league_target_generation compare = equals }
+	}
+}
+
+# A client can remain in the member ledger only while a leader's charter
+# expulsion vote is pending. It cannot use ordinary league actions in that
+# enforcement window.
+is_independence_wave_charter_compliant_member = {
+	has_country_flag = independence_wave_league_member
+	NOT = { has_country_flag = independence_wave_client_route_locked }
+}
+
+# A route proposal is a country-scoped commitment made by the Event 006
+# focus tree.  Lifecycle decisions may consume it only after the League has
+# reached a phase where a charter route is meaningful.
+has_independence_wave_league_route_proposal = {
+	OR = {
+		has_country_flag = independence_wave_charter_proposal_defensive_congress
+		has_country_flag = independence_wave_charter_proposal_development_compact
+		has_country_flag = independence_wave_charter_proposal_sovereign_equality
+		has_country_flag = independence_wave_charter_proposal_armed_liberation
+		has_country_flag = independence_wave_charter_proposal_radical_revisionist
+	}
+}
+
+# The League state-machine effects are deliberately reached only through the
+# active Event 006 League category.  These predicates keep their callers
+# phase-safe and prevent a stale decision timer from mutating a later phase.
+can_independence_wave_proclaim_consultative_league = {
+	is_independence_wave_active_country = yes
+	has_country_flag = independence_wave_league_founder
+	NOT = { has_country_flag = independence_wave_client_route_locked }
+	has_global_flag = independence_wave_charter_vote_open
+	check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.charter_vote }
+	independence_wave_league_founder_arrays_are_aligned = yes
+	check_variable = { var = global.independence_wave_league_founder_count value = constant:independence_wave_league.formation_members compare = greater_than_or_equals }
+}
+
+can_independence_wave_upgrade_consultative_league = {
+	is_independence_wave_active_country = yes
+	is_independence_wave_charter_compliant_member = yes
+	has_country_flag = independence_wave_league_route_available
+	has_independence_wave_league_route_proposal = yes
+	check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.consultative_league }
+	check_variable = { var = global.independence_wave_league_member_count value = constant:independence_wave_league.formation_members compare = greater_than_or_equals }
+	independence_wave_league_member_arrays_are_aligned = yes
+}
+
+can_independence_wave_begin_league_durability = {
+	is_independence_wave_active_country = yes
+	is_independence_wave_charter_compliant_member = yes
+	check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.formal_league }
+	check_variable = { var = global.independence_wave_league_member_count value = constant:independence_wave_league.durable_members compare = greater_than_or_equals }
+	check_variable = { var = global.independence_wave_league_cohesion value = constant:independence_wave_league.durable_cohesion compare = greater_than_or_equals }
+	NOT = { has_global_flag = independence_wave_league_durability_watch_active }
+	NOT = { has_global_flag = independence_wave_league_durability_mission_complete }
+	independence_wave_league_member_arrays_are_aligned = yes
+}
+
+can_independence_wave_reform_league = {
+	is_independence_wave_active_country = yes
+	is_independence_wave_charter_compliant_member = yes
+	check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.league_crisis }
+	has_global_flag = independence_wave_league_crisis_active
+	independence_wave_league_member_arrays_are_aligned = yes
+}
+
+can_independence_wave_normalize_reformed_league = {
+	is_independence_wave_active_country = yes
+	is_independence_wave_charter_compliant_member = yes
+	check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.reformed_league }
+	has_global_flag = independence_wave_league_reformed
+	check_variable = { var = global.independence_wave_league_member_count value = constant:independence_wave_league.formation_members compare = greater_than_or_equals }
+	independence_wave_league_member_arrays_are_aligned = yes
+}
+
+can_independence_wave_reunify_rival_leagues = {
+	is_independence_wave_active_country = yes
+	is_independence_wave_charter_compliant_member = yes
+	check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.rival_leagues }
+	is_independence_wave_rival_bloc_active = yes
+	independence_wave_league_member_arrays_are_aligned = yes
+}
+
+can_independence_wave_dissolve_league = {
+	is_independence_wave_active_country = yes
+	is_independence_wave_charter_compliant_member = yes
+	check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.league_crisis }
+	has_global_flag = independence_wave_league_crisis_active
+	independence_wave_league_member_arrays_are_aligned = yes
+}
+
+can_independence_wave_restart_informal_network = {
+	is_independence_wave_active_country = yes
+	has_country_flag = independence_wave_network_member
+	check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.dissolved_network }
+	has_global_flag = independence_wave_league_dissolved
+}
+
+# Country scope. A member can refuse one pending binding-arbitration request
+# only when the requester is still a live, compliant Event 006 member. The
+# requester pointer is written by DM-43 and cleared by its resolution or
+# cancellation effect.
+is_independence_wave_binding_arbitration_refusal_target = {
+	is_independence_wave_active_country = yes
+	is_independence_wave_charter_compliant_member = yes
+	has_global_flag = independence_wave_charter_arbitration
+	has_country_flag = independence_wave_arbitration_pending
+	has_variable = independence_wave_arbitration_requester
+	var:independence_wave_arbitration_requester = {
+		exists = yes
+		is_independence_wave_active_country = yes
+		is_independence_wave_charter_compliant_member = yes
+	}
+}
+
+# The leader authority used by DM-60. The active-vote guard stays in the
+# decision's target-root trigger so the same authority can safely revalidate
+# a vote when it resolves or cancels.
+is_independence_wave_charter_expulsion_authority = {
+	is_independence_wave_active_country = yes
+	has_country_flag = independence_wave_league_current_leader
+	has_country_flag = independence_wave_league_member
+	NOT = { has_country_flag = independence_wave_client_route_locked }
+	has_global_flag = independence_wave_charter_anti_puppetry
+	independence_wave_league_member_arrays_are_aligned = yes
+	check_variable = {
+		var = global.independence_wave_league_member_count
+		value = constant:independence_wave_decision_gate.charter_expulsion_member_minimum
+		compare = greater_than_or_equals
+	}
+	has_event_target = independence_wave_league_leader_target
+	event_target:independence_wave_league_leader_target = {
+		exists = yes
+		tag = ROOT
+	}
+	OR = {
+		check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.formal_league }
+		check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.durable_league }
+		check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.reformed_league }
+	}
+}
+
+# DM-60 consumes a recorded factual ground. The writer is responsible for
+# setting the case flag at the exact transaction point; a generic member,
+# client, claim, or war relation never creates a case on its own.
+is_valid_independence_wave_charter_expulsion_target = {
+	exists = yes
+	is_independence_wave_active_country = yes
+	has_country_flag = independence_wave_league_member
+	has_country_flag = independence_wave_expulsion_ground_recorded
+	NOT = { has_country_flag = independence_wave_expulsion_resolved }
+	NOT = { tag = ROOT }
+	ROOT = { is_independence_wave_charter_expulsion_authority = yes }
+}
+
+has_independence_wave_active_border_operation = {
+	OR = {
+		has_decision = independence_wave_survey_claimed_districts
+		has_decision = independence_wave_sponsor_plebiscite
+		has_decision = independence_wave_negotiate_transfer
+		has_decision = independence_wave_prepare_border_ultimatum
+		has_decision = independence_wave_integrate_settled_district
+	}
+}
+
+has_independence_wave_active_formable_operation = {
+	OR = {
+		has_active_mission = independence_wave_convene_formation_congress
+		has_decision = independence_wave_integrate_member_region
+		has_decision = independence_wave_sco_convene_maritime_conference
+		has_decision = independence_wave_wls_convene_celtic_council
+		has_decision = independence_wave_afx_convene_meuse_industrial_conference
+		has_decision = independence_wave_agx_convene_north_sea_coastal_conference
+		has_decision = independence_wave_rhi_convene_rhine_congress
+		has_decision = independence_wave_bay_convene_south_german_estates
+		has_decision = independence_wave_bri_convene_celtic_delegation
+		has_decision = independence_wave_ajx_convene_rhenish_league_congress
+		has_decision = independence_wave_hbx_prepare_pacific_maritime_congress
+		has_decision = independence_wave_haw_authorize_pacific_delegation
+		has_decision = independence_wave_fsm_ratify_autonomous_federation_mandate
+		has_active_mission = independence_wave_form05_charter_deadline
+		has_active_mission = independence_wave_form05_complete_first_maritime_board
+		has_independence_wave_form05_active_project = yes
+		has_independence_wave_form39_pending_human_invitation = yes
+		has_independence_wave_form39_project_active = yes
+		has_independence_wave_form48_active_carrier_project = yes
+		has_independence_wave_form48_invitation_response_in_progress = yes
+		has_independence_wave_form48_member_response_in_progress = yes
+		has_decision = independence_wave_form08_convene_river_congress
+		has_decision = independence_wave_form08_arbitrate_minorities
+		has_decision = independence_wave_form08_standardize_rail_authority
+		has_independence_wave_formable_transaction_lock = yes
+	}
+}
+
+# Availability must include a stockpile exactly equal to the displayed debit.
+# The built-in numeric triggers expose strict `>` comparisons, so each gate is
+# written as `NOT = { value < cost }` to keep the custom-cost tooltip, payment,
+# and affordability check on the same amount.
+can_pay_independence_wave_administration_light_cost = {
+	NOT = { num_of_civilian_factories_available_for_projects < constant:independence_wave_decision_cost.civilian_factory_light }
+	NOT = { command_power < constant:independence_wave_decision_cost.command_power_light }
+	NOT = { has_manpower < constant:independence_wave_decision_cost.manpower_light }
+}
+
+can_pay_independence_wave_administration_standard_cost = {
+	NOT = { num_of_civilian_factories_available_for_projects < constant:independence_wave_decision_cost.civilian_factory_standard }
+	NOT = { command_power < constant:independence_wave_decision_cost.command_power_standard }
+	NOT = { has_manpower < constant:independence_wave_decision_cost.manpower_standard }
+}
+
+can_pay_independence_wave_diplomatic_light_cost = {
+	NOT = { command_power < constant:independence_wave_decision_cost.command_power_light }
+	OR = {
+		NOT = { has_equipment = { convoy < constant:independence_wave_decision_cost.convoy_light } }
+		NOT = { has_equipment = { train_equipment < constant:independence_wave_decision_cost.train_light } }
+	}
+}
+
+can_pay_independence_wave_diplomatic_standard_cost = {
+	NOT = { command_power < constant:independence_wave_decision_cost.command_power_standard }
+	OR = {
+		NOT = { has_equipment = { convoy < constant:independence_wave_decision_cost.convoy_standard } }
+		NOT = { has_equipment = { train_equipment < constant:independence_wave_decision_cost.train_standard } }
+	}
+}
+
+can_pay_independence_wave_diplomatic_standard_factory_cost = {
+	NOT = { num_of_civilian_factories_available_for_projects < constant:independence_wave_decision_cost.civilian_factory_light }
+	NOT = { command_power < constant:independence_wave_decision_cost.command_power_standard }
+	OR = {
+		NOT = { has_equipment = { convoy < constant:independence_wave_decision_cost.convoy_standard } }
+		NOT = { has_equipment = { train_equipment < constant:independence_wave_decision_cost.train_standard } }
+	}
+}
+
+can_pay_independence_wave_security_light_cost = {
+	NOT = { command_power < constant:independence_wave_decision_cost.command_power_light }
+	NOT = { has_equipment = { infantry_equipment < constant:independence_wave_decision_cost.infantry_light } }
+	NOT = { has_equipment = { support_equipment < constant:independence_wave_decision_cost.support_light } }
+}
+
+can_pay_independence_wave_security_standard_cost = {
+	NOT = { has_manpower < constant:independence_wave_decision_cost.manpower_standard }
+	NOT = { has_army_experience < constant:independence_wave_decision_cost.army_experience_standard }
+	NOT = { has_equipment = { infantry_equipment < constant:independence_wave_decision_cost.infantry_standard } }
+	NOT = { has_equipment = { support_equipment < constant:independence_wave_decision_cost.support_standard } }
+}
+
+# Material security projects that add their own command-power reserve use the
+# four-group personnel-and-equipment palette and do not duplicate the shared XP
+# charge from the general security action.
+can_pay_independence_wave_security_material_standard_cost = {
+	NOT = { has_manpower < constant:independence_wave_decision_cost.manpower_standard }
+	NOT = { has_equipment = { infantry_equipment < constant:independence_wave_decision_cost.infantry_standard } }
+	NOT = { has_equipment = { support_equipment < constant:independence_wave_decision_cost.support_standard } }
+}
+
+can_pay_independence_wave_security_major_cost = {
+	NOT = { has_manpower < constant:independence_wave_decision_cost.manpower_major }
+	NOT = { has_army_experience < constant:independence_wave_decision_cost.army_experience_major }
+	NOT = { has_equipment = { infantry_equipment < constant:independence_wave_decision_cost.infantry_major } }
+	NOT = { has_equipment = { support_equipment < constant:independence_wave_decision_cost.support_major } }
+}
+
+# Major shared actions use dedicated four-group palettes. Keeping their
+# affordability checks separate prevents a composite action from silently
+# charging a fifth resource through one of the broad standard helpers.
+can_pay_independence_wave_border_ultimatum_cost = {
+	NOT = { has_stability < constant:independence_wave_decision_cost.stability_standard }
+	NOT = { command_power < constant:independence_wave_decision_cost.command_power_standard }
+	NOT = { has_equipment = { infantry_equipment < constant:independence_wave_decision_cost.infantry_standard } }
+	NOT = { has_equipment = { support_equipment < constant:independence_wave_decision_cost.support_standard } }
+}
+
+can_pay_independence_wave_coordinated_operation_cost = {
+	NOT = { command_power < constant:independence_wave_decision_cost.command_power_standard }
+	OR = {
+		NOT = { has_equipment = { convoy < constant:independence_wave_decision_cost.convoy_standard } }
+		NOT = { has_equipment = { train_equipment < constant:independence_wave_decision_cost.train_standard } }
+	}
+	NOT = { has_equipment = { infantry_equipment < constant:independence_wave_decision_cost.infantry_standard } }
+	NOT = { has_equipment = { support_equipment < constant:independence_wave_decision_cost.support_standard } }
+}
+
+can_pay_independence_wave_integration_cost = {
+	NOT = { command_power < constant:independence_wave_decision_cost.command_power_standard }
+	NOT = { has_manpower < constant:independence_wave_decision_cost.manpower_standard }
+	NOT = { has_equipment = { infantry_equipment < constant:independence_wave_decision_cost.infantry_standard } }
+	NOT = { has_equipment = { support_equipment < constant:independence_wave_decision_cost.support_standard } }
+}
+
+# DM-01 reserves the infantry and support equipment at mission start. The
+# force-level branches mirror the capital garrison tiers without charging
+# manpower or army experience, which remain available for the later founding
+# actions.
+independence_wave_secure_provisional_capital_equipment_cost_satisfied = {
+	OR = {
+		AND = {
+			check_variable = { var = independence_wave_force_level value = constant:liberation_force_level.fragile compare = equals }
+			has_equipment = { infantry_equipment > constant:independence_wave_decision_cost.provisional_capital_infantry_light_gate }
+			has_equipment = { support_equipment > constant:independence_wave_decision_cost.provisional_capital_support_light_gate }
+		}
+		AND = {
+			check_variable = { var = independence_wave_force_level value = constant:liberation_force_level.viable compare = equals }
+			has_equipment = { infantry_equipment > constant:independence_wave_decision_cost.provisional_capital_infantry_standard_gate }
+			has_equipment = { support_equipment > constant:independence_wave_decision_cost.provisional_capital_support_standard_gate }
+		}
+		AND = {
+			OR = {
+				check_variable = { var = independence_wave_force_level value = constant:liberation_force_level.armed compare = equals }
+				check_variable = { var = independence_wave_force_level value = constant:liberation_force_level.high_chaos compare = equals }
+			}
+			has_equipment = { infantry_equipment > constant:independence_wave_decision_cost.provisional_capital_infantry_major_gate }
+			has_equipment = { support_equipment > constant:independence_wave_decision_cost.provisional_capital_support_major_gate }
+		}
+		AND = {
+			NOT = { has_variable = independence_wave_force_level }
+			has_equipment = { infantry_equipment > constant:independence_wave_decision_cost.provisional_capital_infantry_standard_gate }
+			has_equipment = { support_equipment > constant:independence_wave_decision_cost.provisional_capital_support_standard_gate }
+		}
+	}
+}
+
+# A capital with a supply node does not need a transport burden. Otherwise the
+# country must reserve either trains or trucks for the isolated administration.
+independence_wave_secure_provisional_capital_transport_cost_satisfied = {
+	OR = {
+		capital_scope = { supply_node > 0 }
+		AND = {
+			NOT = { capital_scope = { supply_node > 0 } }
+			OR = {
+				has_equipment = { train_equipment > constant:independence_wave_decision_cost.provisional_capital_train_gate }
+				has_equipment = { motorized_equipment > constant:independence_wave_decision_cost.provisional_capital_motorized_gate }
+			}
+		}
+	}
+}
+
+# DM-01's automatic mission is started only after its tied garrison and
+# material commitments can be paid. `independence_wave_refresh_country_state`
+# retries this country-scoped gate when a later state change supplies the
+# missing equipment; no world scan is introduced.
+can_pay_independence_wave_provisional_capital_cost = {
+	is_independence_wave_package_content_active = yes
+	has_country_flag = independence_wave_package_setup_complete
+	NOT = { has_country_flag = independence_wave_dm01_capital_secured }
+	NOT = { has_country_flag = independence_wave_dm01_capital_failed }
+	NOT = { has_country_flag = independence_wave_dm01_costs_reserved }
+	NOT = { has_active_mission = independence_wave_secure_provisional_capital }
+	capital_scope = { is_controlled_by = PREV }
+	independence_wave_secure_provisional_capital_garrison_satisfied = yes
+	independence_wave_secure_provisional_capital_equipment_cost_satisfied = yes
+	independence_wave_secure_provisional_capital_transport_cost_satisfied = yes
+}
+
+can_pay_independence_wave_strategic_cost = {
+	NOT = { num_of_civilian_factories_available_for_projects < constant:independence_wave_decision_cost.civilian_factory_standard }
+	NOT = { has_stability < constant:independence_wave_decision_cost.stability_standard }
+	can_pay_independence_wave_diplomatic_standard_cost = yes
+}
+
+# Major strategic actions reserve the major project factory commitment while
+# keeping the same stability, command-power, and transport payment palette.
+can_pay_independence_wave_strategic_major_cost = {
+	NOT = { num_of_civilian_factories_available_for_projects < constant:independence_wave_decision_cost.civilian_factory_major }
+	NOT = { has_stability < constant:independence_wave_decision_cost.stability_standard }
+	can_pay_independence_wave_diplomatic_standard_cost = yes
+}
+
+has_independence_wave_safe_reserve_surplus = {
+	capital_scope = { is_controlled_by = ROOT }
+	NOT = { has_independence_wave_severe_instability = yes }
+	OR = {
+		has_equipment = { infantry_equipment > constant:independence_wave_decision_cost.infantry_major }
+		has_equipment = { train_equipment > constant:independence_wave_decision_cost.train_major }
+		has_equipment = { convoy > constant:independence_wave_decision_cost.convoy_major }
+		has_fuel > constant:independence_wave_decision_cost.fuel_major
+	}
+}
+
+has_independence_wave_severe_host_threat = {
+	is_independence_wave_package_content_active = yes
+	has_independence_wave_living_former_host = yes
+	OR = {
+		check_variable = { independence_wave_host_outcome = constant:independence_wave_host_outcome.reclamation_conflict }
+		check_variable = {
+			var = independence_wave_reconquest_fear
+			value = constant:independence_wave_host_relation.conflict_gate
+			compare = greater_than_or_equals
+		}
+		var:independence_wave_former_host = { has_war_with = PREV }
+	}
+}
+
+is_independence_wave_former_host_target = {
+	exists = yes
+	ROOT = {
+		has_independence_wave_living_former_host = yes
+		var:independence_wave_former_host = { tag = PREV }
+	}
+}
+
+is_valid_independence_wave_recognition_target = {
+	exists = yes
+	NOT = { tag = ROOT }
+	NOT = { has_war_with = ROOT }
+	OR = {
+		is_major = yes
+		is_neighbor_of = ROOT
+		is_independence_wave_active_country = yes
+	}
+}
+
+is_valid_independence_wave_patron_target = {
+	exists = yes
+	NOT = { tag = ROOT }
+	NOT = { has_war_with = ROOT }
+	NOT = { is_subject_of = ROOT }
+	OR = {
+		is_major = yes
+		is_neighbor_of = ROOT
+		has_guaranteed = ROOT
+	}
+}
+
+is_valid_independence_wave_network_target = {
+	is_independence_wave_active_country = yes
+	NOT = { tag = ROOT }
+	NOT = { has_war_with = ROOT }
+}
+
+is_valid_independence_wave_same_region_target = {
+	is_valid_independence_wave_network_target = yes
+	check_variable = {
+		var = independence_wave_region
+		value = ROOT.independence_wave_region
+		compare = equals
+	}
+}
+
+is_valid_independence_wave_depot_state = {
+	is_controlled_by = ROOT
+	is_owned_by = ROOT
+	NOT = {
+		AND = {
+			has_state_flag = independence_wave_dm18_depot_secured_by@ROOT
+			check_variable = {
+				var = independence_wave_dm18_generation@ROOT
+				value = ROOT.independence_wave_generation_id
+				compare = equals
+			}
+		}
+	}
+	OR = {
+		supply_node > 0
+		arms_factory > 0
+		infrastructure > 2
+	}
+	ROOT = {
+		divisions_in_state = {
+			state = PREV
+			size > @CR_SC_INDEPENDENCE_WAVE_DECISION_GATE_MINIMUM_DIVISIONS
+		}
+	}
+}
+
+is_valid_independence_wave_ambition_state = {
+	owner = { exists = yes NOT = { tag = ROOT } }
+	controller = { exists = yes }
+	OR = {
+		is_claimed_by = ROOT
+		any_neighbor_state = { is_owned_by = ROOT }
+	}
+}
+
+# State scope. DM-58 can only freeze a current-generation, living external
+# objective that is already connected to the member by a claim or border.
+# The state and owner arrays are rebuilt by the paid reclamation transaction;
+# no generic state or fallback war target is manufactured here.
+is_valid_independence_wave_reclamation_front_state = {
+	owner = {
+		exists = yes
+		NOT = { tag = event_target:independence_wave_reclamation_front_member }
+		NOT = { has_country_flag = independence_wave_league_member }
+		NOT = { has_war_with = event_target:independence_wave_reclamation_front_member }
+		# The paid operation may only be charged after this exact member/owner
+		# pair is already war-legal.  This is evaluated while the state is still
+		# frozen, before any costs or wargoal effects are applied.
+		event_target:independence_wave_reclamation_front_member = {
+			can_declare_war_on = PREV
+			NOT = { has_wargoal_against = { target = PREV type = take_state_focus } }
+		}
+		NOT = { is_in_array = { array = global.independence_wave_reclamation_front_targets value = THIS } }
+	}
+	controller = { exists = yes }
+	OR = {
+		is_claimed_by = event_target:independence_wave_reclamation_front_member
+		any_neighbor_state = { is_owned_by = event_target:independence_wave_reclamation_front_member }
+	}
+	NOT = { has_state_flag = independence_wave_dm58_reclamation_front_used }
+	NOT = { is_in_array = { array = global.independence_wave_reclamation_front_states value = THIS } }
+}
+
+# State scope. This is the second, mutation-time validation for a witness
+# row. The state and owner are already present in the aligned witness arrays,
+# so the reservation-array exclusions used by the availability probe are not
+# repeated here. The saved owner must still be the state's current owner and
+# the saved member must still be able to declare the finite reclamation war.
+is_valid_independence_wave_reclamation_front_witness_slot = {
+	event_target:independence_wave_reclamation_front_member = {
+		is_independence_wave_reclamation_front_member_eligible = yes
+	}
+	owner = {
+		exists = yes
+		tag = event_target:independence_wave_reclamation_front_target
+		NOT = { tag = event_target:independence_wave_reclamation_front_member }
+		NOT = { has_country_flag = independence_wave_league_member }
+		NOT = { has_war_with = event_target:independence_wave_reclamation_front_member }
+		event_target:independence_wave_reclamation_front_member = {
+			can_declare_war_on = PREV
+			NOT = { has_wargoal_against = { target = PREV type = take_state_focus } }
+		}
+	}
+	controller = { exists = yes }
+	OR = {
+		is_claimed_by = event_target:independence_wave_reclamation_front_member
+		any_neighbor_state = { is_owned_by = event_target:independence_wave_reclamation_front_member }
+	}
+	NOT = { has_state_flag = independence_wave_dm58_reclamation_front_used }
+}
+
+# Country scope. This centralizes the DM-58 preflight's member validity and
+# intentionally mirrors the paid resolver without relying on the activating
+# decision country.
+is_independence_wave_reclamation_front_member_eligible = {
+	is_independence_wave_active_country = yes
+	has_country_flag = independence_wave_league_member
+	NOT = { has_country_flag = independence_wave_client_route_locked }
+}
+
+# State scope. The calling scope must be the candidate league member. The
+# owner block therefore reaches that member through PREV.PREV, while the
+# claim and border checks reach it through PREV and PREV.PREV respectively.
+# This mirrors the paid resolver's state predicate without reserving anything.
+is_independence_wave_reclamation_front_preflight_state = {
+	owner = {
+		exists = yes
+		NOT = { tag = PREV.PREV }
+		NOT = { has_country_flag = independence_wave_league_member }
+		NOT = { has_war_with = PREV.PREV }
+		PREV.PREV = {
+			can_declare_war_on = PREV
+			NOT = { has_wargoal_against = { target = PREV type = take_state_focus } }
+		}
+		NOT = { is_in_array = { array = global.independence_wave_reclamation_front_targets value = THIS } }
+	}
+	controller = { exists = yes }
+	OR = {
+		is_claimed_by = PREV
+		any_neighbor_state = { is_owned_by = PREV.PREV }
+	}
+	NOT = { has_state_flag = independence_wave_dm58_reclamation_front_used }
+	NOT = { is_in_array = { array = global.independence_wave_reclamation_front_states value = THIS } }
+}
+
+# Country scope. DM-58 cannot start until this non-mutating proof finds three
+# distinct league members, each matched to a legal state under a different
+# external owner. Owner uniqueness also makes the selected state slots unique.
+# This exact three-slot matcher is coupled to the accepted DM-58 minimum of
+# three members. Keep it aligned with formation_member_minimum if that contract
+# changes.
+has_independence_wave_reclamation_front_preflight = {
+	check_variable = {
+		var = global.independence_wave_league_member_count
+		value = constant:independence_wave_decision_gate.formation_member_minimum
+		compare = greater_than_or_equals
+	}
+	# The frozen member ledger is far smaller than every country in the world.
+	# Each nested any_of_scopes branch stops as soon as it proves one legal slot.
+	any_of_scopes = {
+		array = global.independence_wave_league_member_country_entries
+		# Member one -> state one -> owner one.
+		is_independence_wave_reclamation_front_member_eligible = yes
+		any_state = {
+			is_independence_wave_reclamation_front_preflight_state = yes
+			owner = {
+				any_of_scopes = {
+					array = global.independence_wave_league_member_country_entries
+					# Member two cannot repeat member one. In this scope chain,
+					# PREV.PREV.PREV is member one.
+					NOT = { tag = PREV.PREV.PREV }
+					is_independence_wave_reclamation_front_member_eligible = yes
+					any_state = {
+						is_independence_wave_reclamation_front_preflight_state = yes
+						owner = {
+							# PREV.PREV.PREV is owner one. Reject it before
+							# evaluating the third member's state search.
+							NOT = { tag = PREV.PREV.PREV }
+							any_of_scopes = {
+								array = global.independence_wave_league_member_country_entries
+								# Member three cannot repeat member two or member one.
+								# In this scope chain member two is PREV.PREV.PREV,
+								# while member one is six PREV hops away: owner two, state two,
+								# member two, owner one, state one, then member one.
+								NOT = { tag = PREV.PREV.PREV }
+								NOT = { tag = PREV.PREV.PREV.PREV.PREV.PREV }
+								is_independence_wave_reclamation_front_member_eligible = yes
+								any_state = {
+									is_independence_wave_reclamation_front_preflight_state = yes
+									owner = {
+										# Owner three cannot repeat owner two or owner one.
+										# The current scope is owner three. Owner one is six PREV hops
+										# away: state three, member three, owner two, state two, member two,
+										# then owner one.
+										NOT = { tag = PREV.PREV.PREV }
+										NOT = { tag = PREV.PREV.PREV.PREV.PREV.PREV }
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+# DM-01's capital garrison is force-tier aware. Fragile releases can satisfy
+# the objective with two divisions; stronger releases retain the established
+# four-division requirement. The helper is evaluated only after package setup,
+# when `independence_wave_force_level` has been published. Country scope: inside
+# capital_scope, PREV is the checked country, and inside that PREV block PREV is
+# the capital state again, so the garrison is counted for the refreshed country
+# even when another country's effect triggered the refresh.
+independence_wave_secure_provisional_capital_garrison_satisfied = {
+	OR = {
+		AND = {
+			check_variable = { var = independence_wave_force_level value = constant:liberation_force_level.fragile compare = equals }
+			capital_scope = {
+				PREV = { divisions_in_state = { state = PREV size > @CR_SC_INDEPENDENCE_WAVE_DECISION_GATE_SECURE_CAPITAL_FRAGILE_DIVISIONS } }
+			}
+		}
+		AND = {
+			OR = {
+				NOT = { has_variable = independence_wave_force_level }
+				NOT = { check_variable = { var = independence_wave_force_level value = constant:liberation_force_level.fragile compare = equals } }
+			}
+			capital_scope = {
+				PREV = { divisions_in_state = { state = PREV size > @CR_SC_INDEPENDENCE_WAVE_DECISION_GATE_SECURE_CAPITAL_DIVISIONS } }
+			}
+		}
+	}
+}
+
+is_valid_independence_wave_surveyed_state = {
+	is_valid_independence_wave_ambition_state = yes
+	has_state_flag = independence_wave_dm48_surveyed_by@ROOT
+	check_variable = {
+		var = independence_wave_dm48_generation@ROOT
+		value = ROOT.independence_wave_generation_id
+		compare = equals
+	}
+}
+
+is_valid_independence_wave_settled_state = {
+	is_controlled_by = ROOT
+	NOT = { is_core_of = ROOT }
+	OR = {
+		AND = {
+			has_state_flag = independence_wave_dm49_plebiscite_settled_by@ROOT
+			check_variable = { var = independence_wave_dm49_generation@ROOT value = ROOT.independence_wave_generation_id compare = equals }
+		}
+		AND = {
+			has_state_flag = independence_wave_dm50_transfer_settled_by@ROOT
+			check_variable = { var = independence_wave_dm50_generation@ROOT value = ROOT.independence_wave_generation_id compare = equals }
+		}
+		AND = {
+			has_state_flag = independence_wave_dm51_ultimatum_settled_by@ROOT
+			check_variable = { var = independence_wave_dm51_generation@ROOT value = ROOT.independence_wave_generation_id compare = equals }
+		}
+	}
+}
+
+is_valid_independence_wave_breakaway_sponsorship_state = {
+	is_independence_wave_candidate_anchor_available = yes
+	owner = { exists = yes NOT = { tag = ROOT } }
+	NOT = { has_state_flag = independence_wave_dm57_sponsorship_active }
+}
+
+# State scope. This validates only the frozen sponsorship contract. Current
+# candidate eligibility is deliberately excluded so an unselected or temporarily
+# invalid candidate remains queued for a later wave.
+has_valid_independence_wave_breakaway_sponsorship_record = {
+	has_state_flag = independence_wave_dm57_sponsorship_active
+	is_in_array = { array = global.independence_wave_sponsored_breakaway_states value = THIS }
+	has_variable = independence_wave_sponsoring_country
+	has_variable = independence_wave_sponsorship_generation
+	has_variable = independence_wave_sponsored_opening_strength
+	has_variable = independence_wave_sponsored_route
+	check_variable = {
+		var = independence_wave_sponsored_opening_strength
+		value = constant:independence_wave_value.minimum
+		compare = greater_than
+	}
+	check_variable = { independence_wave_sponsored_route = constant:independence_wave_government_route.radical_sovereignty }
+	var:independence_wave_sponsoring_country = {
+		exists = yes
+		is_independence_wave_active_country = yes
+		check_variable = {
+			var = independence_wave_generation_id
+			value = PREV.independence_wave_sponsorship_generation
+			compare = equals
+		}
+	}
+}
+
+can_independence_wave_use_high_chaos_actions = {
+	is_independence_wave_regional_power = yes
+	has_country_flag = independence_wave_route_radical_sovereignty
+	has_independence_wave_open_sovereignty_evolution = yes
+}
+
+can_independence_wave_prepare_formable = {
+	is_independence_wave_regional_power = yes
+	can_independence_wave_prepare_selected_formable_transaction = yes
+	check_variable = {
+		var = independence_wave_legitimacy
+		value = constant:independence_wave_decision_gate.formation_legitimacy
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = independence_wave_recognition
+		value = constant:independence_wave_decision_gate.formation_recognition
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = independence_wave_capacity
+		value = constant:independence_wave_decision_gate.formation_capacity
+		compare = greater_than_or_equals
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Bilateral diplomatic receipts
+# ---------------------------------------------------------------------------
+# A released Event 006 country stores one receipt per government that has
+# recognized or guaranteed it, keyed by that government's tag and valued with
+# the released country's origin generation. A later release of the same tag
+# starts a new generation and therefore inherits no recognition. Country-
+# initiated decisions, network endorsements, and foreign reactions read the
+# same receipts, so one act can never award Statehood progress twice.
+
+# Scope: the released country. PREV: the recognizing government.
+has_independence_wave_recognition_receipt_from_prev = {
+	has_variable = independence_wave_generation_id
+	has_variable = independence_wave_recognized_by_generation_@PREV
+	check_variable = { var = independence_wave_recognized_by_generation_@PREV value = independence_wave_generation_id compare = equals }
+}
+
+# Scope: the released country. PREV: the guaranteeing government.
+has_independence_wave_guarantee_receipt_from_prev = {
+	has_variable = independence_wave_generation_id
+	has_variable = independence_wave_guaranteed_by_generation_@PREV
+	check_variable = { var = independence_wave_guaranteed_by_generation_@PREV value = independence_wave_generation_id compare = equals }
+}
+
+# Scope: the released country. ROOT: the recognizing government.
+has_independence_wave_recognition_receipt_from_root = {
+	has_variable = independence_wave_generation_id
+	has_variable = independence_wave_recognized_by_generation_@ROOT
+	check_variable = { var = independence_wave_recognized_by_generation_@ROOT value = independence_wave_generation_id compare = equals }
+}
+
+# Scope: the released country. Input: regular event target
+# `independence_wave_bilateral_actor`.
+has_independence_wave_recognition_receipt = {
+	has_event_target = independence_wave_bilateral_actor
+	event_target:independence_wave_bilateral_actor = {
+		PREV = { has_independence_wave_recognition_receipt_from_prev = yes }
+	}
+}
+
+has_independence_wave_guarantee_receipt = {
+	has_event_target = independence_wave_bilateral_actor
+	event_target:independence_wave_bilateral_actor = {
+		PREV = { has_independence_wave_guarantee_receipt_from_prev = yes }
+	}
+}
+
+# A guarantee promise is closed when the engine relationship or the
+# generation receipt already exists for the actor.
+has_independence_wave_guarantee_from_actor = {
+	has_event_target = independence_wave_bilateral_actor
+	OR = {
+		has_independence_wave_guarantee_receipt = yes
+		event_target:independence_wave_bilateral_actor = { has_guaranteed = PREV }
+	}
+}
+
+# Decision scope (ROOT is the payer). DM-11/12/13/16/34 freeze the selected
+# capital's owner and the generation of the country whose status is at stake
+# when the decision is taken. Settlement uses only this receipt and never the
+# later owner of the selected state.
+has_valid_independence_wave_diplomatic_counterpart = {
+	has_variable = independence_wave_diplomatic_counterpart
+	has_variable = independence_wave_diplomatic_released_country
+	has_variable = independence_wave_diplomatic_generation
+	var:independence_wave_diplomatic_counterpart = {
+		exists = yes
+		NOT = { tag = ROOT }
+		NOT = { has_war_with = ROOT }
+	}
+	var:independence_wave_diplomatic_released_country = {
+		exists = yes
+		check_variable = { var = independence_wave_generation_id value = ROOT.independence_wave_diplomatic_generation compare = equals }
+	}
+}
+
+# Scope: a released Event 006 country. Input: event target
+# `independence_wave_bilateral_actor`. True while this country has a paid
+# recognition, guarantee, or base-rights decision running toward that actor,
+# so a foreign offer settles or defers it instead of charging twice.
+has_independence_wave_pending_transaction_with_actor = {
+	has_event_target = independence_wave_bilateral_actor
+	has_variable = independence_wave_diplomatic_counterpart
+	OR = {
+		has_decision = independence_wave_send_diplomatic_mission
+		has_decision = independence_wave_seek_regional_guarantee
+		has_decision = independence_wave_grant_base_or_transit_rights
+	}
+	var:independence_wave_diplomatic_counterpart = { tag = event_target:independence_wave_bilateral_actor }
+}
+
+# Scope: an Event 006 actor. Input: event target
+# `independence_wave_bilateral_target`. True while this actor runs a paid
+# recognition campaign for that target.
+has_independence_wave_pending_endorsement_for_target = {
+	has_event_target = independence_wave_bilateral_target
+	has_variable = independence_wave_diplomatic_counterpart
+	has_decision = independence_wave_coordinate_recognition_campaign
+	var:independence_wave_diplomatic_counterpart = { tag = event_target:independence_wave_bilateral_target }
+}

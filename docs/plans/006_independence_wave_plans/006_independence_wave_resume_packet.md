@@ -4,6 +4,28 @@
 
 The full accepted Event 006 goal remains active and incomplete.
 The user's standing instruction to take recommended options persists.
+
+The October 8 continuation also completed these bounded plans: `0a76b693bca00fb4e80de5148e5ffa71a857ac48` reconciles Part 6/Part 7/README/formable-registry status; `64ba2c42d66a0104750cf58d58d30469728e529d` aligns nine regional package pages; `0761d7150f5624d2e7dc80338d9ef1ccab55c370` makes all four compromise-report descriptions plain through the existing selectors; and `78b68a1993e715173a1e74c92a9ddf8fe9435449` aligns three SCN-008 workbook cells and its export with all eight modes and four intensities.
+The catalog commit preserves the pre-existing working-copy comment-package state through an isolated HEAD-based LFS candidate.
+Its [full-scope review](subagent_handoffs/catalog_full_scope_review_20261008.md) separates the completed wording mirrors from Domestic Unrest's missing shared runtime integration.
+No Event 006 or SCN-008 status is promoted from `Needs Testing`.
+
+The source-only Hadhramaut research is archived in `4616cf8f3459601e8e72debe935ba6900521932f`.
+Umar's V3 source candidate has parent framing acceptance for the January 1936 candidate only, with first-publication/studio attribution/distribution-rights and successor coverage unresolved.
+The [portrait handoff](subagent_handoffs/iw076_hadhramaut_portrait_source_20261008.md) and [flag provenance handoff](subagent_handoffs/iw076_hadhramaut_flag_provenance_20261008.md) preserve the separate coast/interior identities and unprovenanced existing flag.
+No DDS, portrait wiring or admission follows; IW-076 remains fail closed.
+
+The [D34 residual audit](subagent_handoffs/d34_dynamic_consumer_residual_audit_20261008.md) identifies three paid diplomatic target pools, two FORM-48 scalar HBX receipt checks, and the static FORM-48 display reads as remaining source defects.
+The [binding contract](d34_dynamic_target_binding_contract_20261008.md) is accepted and queued for the target/receipt owner after the assigned baseline.
+R1/R2 source is parent applied after the corrected D01/D02 baseline: three dynamic target declarations and a hidden FROM binding predicate, a generation-pinned registration tuple, and two FORM-48 `THIS` membership values.
+The independent source audit found and closed a missing-cache-row restamp bug through the third publication-generation receipt; all twenty-six actual-source assertions pass.
+The [owner source report](subagent_handoffs/d34_dynamic_binding_source_commit_20261008.md) records exact owned files and validation limits.
+The probability auditor `01a11aea-681c-7500-a661-350f3fb7f997` completed the three corrected sixteen-case R1 comparisons; score-only traces stay unchanged, while target-scope truth remains unresolved.
+Its six-case R2 evaluation returned internal error, and a verified before/after helper-dependency comparison route remains unavailable; preserve that open gate.
+The post-comparison third-receipt correction is a separate current source/fixture boundary, with the pre-fix case retained.
+The R3 display fix is committed as `77ee68fabe686cfda74c225313a601971853aedf`, using native boolean validity, caller-initialized outputs and exact bound carrier/generation lookup.
+The architect's separate [R4 cleanup-generation review](subagent_handoffs/form48_member_generation_cleanup_20261008.md) confirms the member/carrier generation mismatch and weak frozen-member walker; its independent weighted baseline is queued before owner lifecycle application.
+Do not restart completed R1/R3 source work, weaken the provenance checks or patch R4 before its baseline.
 Current source commit `9e2837f8edc1633cd8e96415366821ca5dc16886` integrates the Oyo/Aceh/Mon signature modules and FORM-17/32/36/37 sovereign contracts.
 Read [the signature source integration report](subagent_handoffs/signature_source_integration_20261007.md) for implementation evidence and its limits, and [the current source-of-truth map](006_source_of_truth_map.md) for dispositions.
 The source includes 31 signature focuses, eight paid projects, three achievements with nine reviewed DDS states, four exact-member contracts with two paid 180-day stages, four puzzle overlays with fourteen pieces, six protocol-defect repairs, and late-governance/restoration-receipt handling.
@@ -34,11 +56,11 @@ The 3/4/5/7/10 ladder and no-pre-event invariant remain unchanged.
 
 Imported-focus geometry/connectors, matched production GUI states, complete AI/balance scenarios, native consent/cost/timing/cleanup/research behavior, grounded portraits and whole-event audits remain open.
 Keep the [signature comparison](subagent_handoffs/signature_probability_compare_20261007.md) and [ready-family scenario handoff](subagent_handoffs/signature_ready_probability_20261006.md) distinct, including their frozen hashes, excluded fixtures and newer Mon gaps.
-The [catalog review](subagent_handoffs/signature_catalog_review_20261007.md) verifies Event 006 detail/evolution parity without a workbook edit, and leaves `Needs Testing` unchanged.
-It does not certify every queued catalog or export surface.
+The [October 7 catalog review](subagent_handoffs/signature_catalog_review_20261007.md) is the historical event-row parity receipt; the October 8 full-scope review above supersedes it for the mapped scenario wording and current export parity.
+Neither receipt promotes native or whole-event acceptance.
 
 The Part 6/Part 7/README/formable-registry contradictions are reconciled by the [whole-pack documentation handoff](subagent_handoffs/wholepack_doc_reconciliation_20261008.md), with the nineteen-family/66-row/132-piece/twenty-category source totals and individual readiness gates explicit.
-Next feasible accepted work is to review residual D34 dynamic-carrier consumers beyond the repaired subset and pursue already accepted sourced-leadership standards where exact source/rights/role gates permit.
+Next feasible accepted work is to finish the already-audited D34 R1/R2/R3 source corrections and their same-scenario evidence, then pursue the remaining sourced-leadership and package standards where exact source/rights/role gates permit.
 Retain each of the remaining 84 unattested selectable rows' individual D25-D34 dependencies.
 Do not invent countries, formable contracts or weaker substitutes to bypass those gates.
 Resume the existing focus/GUI/probability/native evidence work alongside that source cleanup.

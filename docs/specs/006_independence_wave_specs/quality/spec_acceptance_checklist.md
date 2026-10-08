@@ -1,6 +1,22 @@
 # Source specification acceptance checklist
 
-## Current authority and evidence boundary (2026-09-26)
+## Current acceptance evidence (2026-10-08)
+
+The dated snapshots below are historical evidence and do not state the current admission boundary.
+D1-D34 in [the takeover decision record](../../../plans/006_independence_wave_plans/agent_decisions_2026-10-04.md) and D35 onward in the 2026-10-05 record supersede their conflicting source-status claims.
+The current allocator crosswalk has 109 content-attested packages, 78 reservation groups and 112 adapters; IW-076, IW-131 and IW-179 remain adapter-only and fail closed.
+The automatic ladder remains 3/4/5/7/10, and there is no pre-event surface.
+The general foreign-reaction and remnant-petition source is implemented; native behavior and complete typed probability evidence remain separate gates.
+The October 6 takeover audit is a historical missing-work receipt.
+Its forty-four Level 2 groups are implemented at source in `416688b8963ea0b1a47e3c8682b8125455cfca40`, and its three signature modules plus FORM-17/32/36/37 contracts are implemented at source in `9e2837f8edc1633cd8e96415366821ca5dc16886`.
+The [regional source report](../../../plans/006_independence_wave_plans/subagent_handoffs/regional_focus_source_commit_20261007.md) and [signature integration report](../../../plans/006_independence_wave_plans/subagent_handoffs/signature_source_integration_20261007.md) preserve their imported-layout, native, AI/balance, GUI and portrait limits.
+The [October 8 catalog review](../../../plans/006_independence_wave_plans/subagent_handoffs/catalog_full_scope_review_20261008.md) records Event 006/cluster mirrors and the committed three-cell SCN-008 wording/export alignment, with `Needs Testing` retained.
+The residual D34 R1/R2 source corrections follow [the accepted binding contract](../../../plans/006_independence_wave_plans/d34_dynamic_target_binding_contract_20261008.md) and [owner source report](../../../plans/006_independence_wave_plans/subagent_handoffs/d34_dynamic_binding_source_commit_20261008.md), with complete probability/native evidence still open.
+The separate FORM-48 cleanup-generation correction remains queued for its own weighted baseline and lifecycle transaction.
+No whole-event completion follows from the historical checkmarks or the current admission count.
+
+
+## Historical authority and evidence boundary (2026-09-26)
 
 The accepted full Event 006 specification remains the design authority; implementation counts and blockers are reconciled in `../../../plans/006_independence_wave_plans/006_source_of_truth_map.md`. The current static boundary is 32 content-attested selectable packages across 29 compatible reservation groups, 41 runtime adapters, and 161 unattested selectable non-overlay rows. IW-039/DON is one of nine adapter-only fail-closed rows. The accepted automatic ladder remains 3/4/5/7/10, with World Collapse at 10. The static allocator, 32-cell/eight-edge SCN-008 matrix, country API, 102 flag families, and repository localisation audit pass; they do not prove the unadmitted package runtime or full-event completion.
 

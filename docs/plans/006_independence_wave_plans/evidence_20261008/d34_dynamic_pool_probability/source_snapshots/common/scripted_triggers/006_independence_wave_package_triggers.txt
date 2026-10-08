@@ -1,0 +1,628 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 006 PACKAGE PLANNER TRIGGERS
+# ============================================================================
+# Shared predicates for the package-specific readiness triggers. Static tag,
+# anchor, readiness, and reservation-group checks remain in the generated-by-
+# hand package registry so every accepted row is independently auditable.
+# ============================================================================
+
+is_independence_wave_candidate_anchor_available = {
+	owner = {
+		exists = yes
+		controls_state = PREV
+		NOT = { is_soviet_collapse_active_origin_country = yes }
+		# During automatic allocation the first weight pass has already reserved
+		# each ready anchor's host. An unprotectable host leaves this pool.
+		OR = {
+			NOT = { has_global_flag = independence_wave_hosts_preselected }
+			AND = {
+				is_in_array = { array = global.liberation_plan_hosts value = THIS }
+				has_country_flag = liberation_release_plan_host
+				check_variable = { var = liberation_release_plan_id value = global.liberation_plan_id compare = equals }
+			}
+		}
+	}
+	NOT = { controller = { is_soviet_collapse_active_origin_country = yes } }
+	NOT = { is_liberation_release_current_reserved_state = yes }
+	NOT = { is_liberation_release_current_protected_state = yes }
+}
+
+# STATE scope, called from an exact package identity trigger, so PREV is the
+# checked carrier. Before reservation this is the ordinary candidate-anchor
+# proof. During execution preflight the frozen anchor is already reserved for
+# this same package and carrier in the current plan, and that reservation must
+# pass, while a reservation held by any other package or carrier still fails.
+# Input: temporary `independence_wave_execution_package_id`.
+is_independence_wave_exact_package_anchor_available = {
+	OR = {
+		is_independence_wave_candidate_anchor_available = yes
+		AND = {
+			is_liberation_release_current_reserved_state = yes
+			NOT = { is_liberation_release_current_protected_state = yes }
+			check_variable = { var = liberation_release_plan_owner value = constant:liberation_plan_owner.independence_wave compare = equals }
+			check_variable = { var = liberation_release_package_id value = independence_wave_execution_package_id compare = equals }
+			check_variable = { var = liberation_release_target_country value = PREV compare = equals }
+			owner = {
+				exists = yes
+				controls_state = PREV
+				NOT = { is_soviet_collapse_active_origin_country = yes }
+			}
+			NOT = { controller = { is_soviet_collapse_active_origin_country = yes } }
+		}
+	}
+}
+
+# COUNTRY scope. Shared dormant-carrier, reservation, and origin-system proof.
+# This is intentionally separate from package readiness: reused vanilla tags
+# cannot be granted build flags through duplicate dormant-country history files.
+# A few custom Event 006 carrier shells are instantiated by startup history so
+# their character definitions can be parsed. They are still dormant when they
+# own and control no states. Treat that empty shell exactly like an absent tag;
+# living countries remain excluded by the owned/control-state checks below.
+# The reservation marker is intentionally not part of this predicate: the
+# selected dormant target receives that marker before execution preflight, and
+# the allocator checks duplicate reservations separately.
+is_independence_wave_dormant_country_scope = {
+	OR = {
+		exists = no
+		AND = {
+			exists = yes
+			check_variable = { var = num_owned_states value = 0 compare = equals }
+			NOT = { num_of_controlled_states > 0 }
+			NOT = { has_country_flag = independence_wave_active_origin }
+			NOT = { has_country_flag = independence_wave_origin_prepared }
+			NOT = { has_country_flag = independence_wave_origin_committed }
+		}
+	}
+}
+
+is_independence_wave_candidate_origin_available = {
+	is_independence_wave_dormant_country_scope = yes
+	# A frozen target is checked again after reservation during execution
+	# preflight. Allow that same-plan reservation to pass the immutable package
+	# identity trigger, while rejecting a stale reservation marker from another
+	# plan. The reservation effect still rejects duplicate array entries.
+	OR = {
+		NOT = { has_country_flag = liberation_release_reserved_country }
+		is_liberation_release_current_reserved_country = yes
+	}
+	NOT = {
+		has_variable = independence_wave_last_rejected_plan_id
+		check_variable = {
+			var = independence_wave_last_rejected_plan_id
+			value = global.liberation_plan_id
+			compare = equals
+		}
+	}
+	NOT = { has_country_flag = soviet_collapse_active_origin }
+	NOT = { check_variable = { liberation_origin = constant:liberation_origin.soviet_collapse } }
+	NOT = { has_country_flag = independence_wave_active_origin }
+	# Event 012 carriers retain their creating event's package, tree, decisions,
+	# AI, and formable routes even if the country later ceases to exist.
+	NOT = { has_country_flag = africa_priority_member_package_active }
+	NOT = { has_country_flag = africa_priority_member_focus_tree_loaded }
+}
+
+# Legacy content-flag gate retained for packages that have not yet passed the
+# exact static registry audit. No accepted package should gain this flag from
+# gameplay setup.
+is_independence_wave_candidate_tag_available = {
+	is_independence_wave_candidate_origin_available = yes
+	has_country_flag = independence_wave_package_content_ready
+}
+
+# Exact immutable package-ID/tag entries. These are identity proofs, not
+# readiness grants; a package row must still use an explicitly attested wrapper
+# after every gameplay, visual, and formable dependency passes audit.
+is_independence_wave_exact_package_iw_001_tag_available = {
+	is_independence_wave_candidate_origin_available = yes
+	OR = { original_tag = SCO exists = no }
+}
+
+is_independence_wave_exact_package_iw_002_tag_available = {
+	is_independence_wave_candidate_origin_available = yes
+	OR = { original_tag = WLS exists = no }
+}
+
+is_independence_wave_exact_package_iw_004_tag_available = {
+	is_independence_wave_candidate_origin_available = yes
+	OR = { original_tag = BRI exists = no }
+}
+
+is_independence_wave_exact_package_iw_006_tag_available = {
+	is_independence_wave_candidate_origin_available = yes
+	OR = { original_tag = AFX exists = no }
+}
+
+is_independence_wave_exact_package_iw_007_tag_available = {
+	is_independence_wave_candidate_origin_available = yes
+	OR = { original_tag = AGX exists = no }
+}
+
+is_independence_wave_exact_package_iw_008_tag_available = {
+	is_independence_wave_candidate_origin_available = yes
+	OR = { original_tag = RHI exists = no }
+}
+
+is_independence_wave_exact_package_iw_009_tag_available = {
+	is_independence_wave_candidate_origin_available = yes
+	OR = { original_tag = BAY exists = no }
+}
+
+is_independence_wave_exact_package_iw_010_tag_available = {
+	is_independence_wave_candidate_origin_available = yes
+	OR = { original_tag = AJX exists = no }
+}
+
+is_independence_wave_exact_package_iw_012_tag_available = {
+	is_independence_wave_candidate_origin_available = yes
+	OR = { original_tag = ICE exists = no }
+}
+
+is_independence_wave_exact_package_iw_017_tag_available = {
+	is_independence_wave_candidate_origin_available = yes
+	OR = { original_tag = COR exists = no }
+}
+
+is_independence_wave_exact_package_iw_018_tag_available = {
+	is_independence_wave_candidate_origin_available = yes
+	OR = { original_tag = ARX exists = no }
+}
+
+is_independence_wave_exact_package_iw_019_tag_available = {
+	is_independence_wave_candidate_origin_available = yes
+	OR = { original_tag = ASX exists = no }
+}
+
+is_independence_wave_exact_package_iw_014_tag_available = {
+	is_independence_wave_candidate_origin_available = yes
+	OR = { original_tag = CAT exists = no }
+}
+
+is_independence_wave_exact_package_iw_013_tag_available = {
+	is_independence_wave_candidate_origin_available = yes
+	OR = { original_tag = NAV exists = no }
+}
+
+is_independence_wave_exact_package_iw_015_tag_available = {
+	is_independence_wave_candidate_origin_available = yes
+	OR = { original_tag = GLC exists = no }
+}
+
+# IW-030 is a registered MNT carrier whose static admission proof must remain
+# safe while the country is still dormant. The state-105 anchor block proves the
+# current host owns and controls the reserved capital state, while the explicit
+# host identity check prevents a released MNT scope from masquerading as its own
+# former host. Runtime setup, force-generation, and lifecycle cleanup receipts
+# remain in the package-specific runtime trigger.
+is_independence_wave_exact_package_iw_030_tag_available = {
+	is_independence_wave_candidate_origin_available = yes
+	OR = { original_tag = MNT exists = no }
+	105 = {
+		is_independence_wave_exact_package_anchor_available = yes
+		owner = {
+			exists = yes
+			NOT = { tag = MNT }
+		}
+	}
+}
+
+# IW-031 reuses vanilla KOS. It is eligible only while dormant, while state 802
+# remains held by a distinct living host, and while the native capital binding
+# still identifies Kosovo's compact territory.
+is_independence_wave_exact_package_iw_031_tag_available = {
+	is_independence_wave_candidate_origin_available = yes
+	OR = { original_tag = KOS exists = no }
+	802 = {
+		is_independence_wave_exact_package_anchor_available = yes
+		owner = {
+			exists = yes
+			NOT = { tag = KOS }
+		}
+	}
+}
+
+# IW-038 reuses vanilla RUT. The exact candidate remains dormant, state 73 must
+# be available from a distinct living host, and the vanilla capital binding
+# must still identify the package compact.
+is_independence_wave_exact_package_iw_038_tag_available = {
+	is_independence_wave_candidate_origin_available = yes
+	OR = { original_tag = RUT exists = no }
+	73 = {
+		is_independence_wave_exact_package_anchor_available = yes
+		owner = {
+			exists = yes
+			NOT = { tag = RUT }
+		}
+	}
+}
+
+is_independence_wave_exact_package_iw_173_tag_available = {
+	is_independence_wave_candidate_origin_available = yes
+	OR = { original_tag = HAW exists = no }
+}
+
+is_independence_wave_exact_package_iw_177_tag_available = {
+	is_independence_wave_candidate_origin_available = yes
+	OR = { original_tag = FIJ exists = no }
+}
+
+is_independence_wave_exact_package_iw_179_tag_available = {
+	is_independence_wave_candidate_origin_available = yes
+	OR = { original_tag = FSM exists = no }
+}
+
+is_independence_wave_exact_package_iw_184_tag_available = {
+	is_independence_wave_candidate_origin_available = yes
+	OR = { original_tag = HBX exists = no }
+}
+
+# IW-093 and IW-098 are fixed identity proofs only. Their package-content
+# admission remains separate and is intentionally absent from the generic
+# readiness list until every required runtime surface is attested.
+is_independence_wave_exact_package_iw_093_tag_available = {
+	is_independence_wave_candidate_origin_available = yes
+	OR = { original_tag = DOX exists = no }
+}
+
+is_independence_wave_exact_package_iw_098_tag_available = {
+	is_independence_wave_candidate_origin_available = yes
+	OR = { original_tag = SOK exists = no }
+}
+
+# These wrappers prove only the exact dormant tag and immutable package identity.
+# Compile-time content attestation remains the separate admission authority.
+# AFX and AGX are both currently admitted through their exact content
+# attestations; the wrappers below do not authorize any other package.
+is_independence_wave_ready_package_iw_006_tag_available = {
+	is_independence_wave_exact_package_iw_006_tag_available = yes
+}
+
+is_independence_wave_ready_package_iw_007_tag_available = {
+	is_independence_wave_exact_package_iw_007_tag_available = yes
+}
+
+is_independence_wave_high_chaos_pool_open = {
+	OR = {
+		has_global_flag = independence_wave_plan_open_sovereignty
+		check_variable = {
+			var = independence_wave_wave_chaos_band
+			value = constant:independence_wave_planner.high_chaos_pool_minimum_band
+			compare = greater_than_or_equals
+		}
+	}
+}
+
+has_independence_wave_remaining_plan_slot = {
+	check_variable = {
+		var = global.independence_wave_plan_selected_count
+		value = global.independence_wave_plan_target_count
+		compare = less_than
+	}
+}
+
+independence_wave_plan_metadata_arrays_are_aligned = {
+	check_variable = { var = global.independence_wave_plan_selected_package_ids^num value = global.independence_wave_plan_selected_count compare = equals }
+	check_variable = { var = global.independence_wave_plan_selected_regions^num value = global.independence_wave_plan_selected_count compare = equals }
+	check_variable = { var = global.independence_wave_plan_selected_hosts^num value = global.independence_wave_plan_selected_count compare = equals }
+	check_variable = { var = global.independence_wave_plan_country_row_indices^num value = global.independence_wave_plan_selected_count compare = equals }
+	check_variable = { var = global.independence_wave_plan_selected_depths^num value = global.independence_wave_plan_selected_count compare = equals }
+	check_variable = { var = global.independence_wave_plan_selected_archetypes^num value = global.independence_wave_plan_selected_count compare = equals }
+	check_variable = { var = global.independence_wave_plan_selected_dispositions^num value = global.independence_wave_plan_selected_count compare = equals }
+	check_variable = { var = global.independence_wave_plan_selected_registered_tag_statuses^num value = global.independence_wave_plan_selected_count compare = equals }
+	check_variable = { var = global.independence_wave_plan_sponsorship_count value = constant:independence_wave_planner.no_candidates compare = greater_than_or_equals }
+	check_variable = { var = global.independence_wave_plan_sponsorship_count value = global.independence_wave_plan_selected_count compare = less_than_or_equals }
+	check_variable = { var = global.independence_wave_plan_sponsorship_country_rows^num value = global.independence_wave_plan_sponsorship_count compare = equals }
+	check_variable = { var = global.independence_wave_plan_sponsorship_states^num value = global.independence_wave_plan_sponsorship_count compare = equals }
+	check_variable = { var = global.independence_wave_plan_sponsorship_sponsors^num value = global.independence_wave_plan_sponsorship_count compare = equals }
+	check_variable = { var = global.independence_wave_plan_sponsorship_generations^num value = global.independence_wave_plan_sponsorship_count compare = equals }
+	check_variable = { var = global.independence_wave_plan_sponsorship_opening_strengths^num value = global.independence_wave_plan_sponsorship_count compare = equals }
+	check_variable = { var = global.independence_wave_plan_sponsorship_routes^num value = global.independence_wave_plan_sponsorship_count compare = equals }
+}
+
+# SOURCE: 006_independence_wave_country_registry_triggers.txt
+# Static registry predicates; callers still provide the creating-event gate.
+# ============================================================================
+
+is_independence_wave_registry_event6_origin = {
+	is_independence_wave_active_origin_country = yes
+}
+
+is_independence_wave_registry_soviet_origin = {
+	is_soviet_collapse_active_origin_country = yes
+}
+
+# Event 012 may use a carrier only after it has recorded its own package origin
+# and neither Event 006 nor Event 005 owns the live origin.
+is_independence_wave_registry_africa_origin = {
+	has_country_flag = africa_priority_member_package_active
+	has_country_flag = africa_priority_member_origin_validated
+	NOT = { is_independence_wave_registry_event6_origin = yes }
+	NOT = { is_independence_wave_registry_soviet_origin = yes }
+}
+
+is_independence_wave_registry_event6_owned_tag = {
+	OR = {
+		original_tag = ACX
+		original_tag = AFX
+		original_tag = AGX
+		original_tag = AJX
+		original_tag = AKX
+		original_tag = ARX
+		original_tag = ASX
+		original_tag = ATX
+		original_tag = AXX
+		original_tag = BAX
+		original_tag = BBX
+		original_tag = BFX
+		original_tag = BHX
+		original_tag = BJX
+		original_tag = BKX
+		original_tag = BWX
+		original_tag = CIX
+		original_tag = CJX
+		original_tag = CKX
+		original_tag = CLX
+		original_tag = COX
+		original_tag = CPX
+		original_tag = CQX
+		original_tag = CUX
+		original_tag = CVX
+		original_tag = CWX
+		original_tag = CXX
+		original_tag = CYX
+		original_tag = DAX
+		original_tag = DBX
+		original_tag = DFX
+		original_tag = DHX
+		original_tag = DJX
+		original_tag = DKX
+		original_tag = DLX
+		original_tag = DMX
+		original_tag = DNX
+		original_tag = DOX
+		original_tag = DPX
+		original_tag = DSX
+		original_tag = DUX
+		original_tag = DVX
+		original_tag = DYX
+		original_tag = DZX
+		original_tag = EBX
+		original_tag = EEX
+		original_tag = EHX
+		original_tag = ELX
+		original_tag = EMX
+		original_tag = ENX
+		original_tag = EQX
+		original_tag = ERX
+		original_tag = ESX
+		original_tag = EUX
+		original_tag = EWX
+		original_tag = EXX
+		original_tag = EYX
+		original_tag = FAX
+		original_tag = FBX
+		original_tag = FDX
+		original_tag = FLX
+		original_tag = FNX
+		original_tag = FOX
+		original_tag = FPX
+		original_tag = FSX
+		original_tag = FUX
+		original_tag = FVX
+		original_tag = FXX
+		original_tag = GBX
+		original_tag = GCX
+		original_tag = GDX
+		original_tag = GGX
+		original_tag = GHX
+		original_tag = GIX
+		original_tag = GLX
+		original_tag = GMX
+		original_tag = GRX
+		original_tag = GTX
+		original_tag = GYX
+		original_tag = GZX
+		original_tag = HAX
+		original_tag = HBX
+		original_tag = HCX
+		original_tag = HDX
+		original_tag = HEX
+		original_tag = HFX
+		original_tag = HGX
+		original_tag = HHX
+		original_tag = HKX
+		original_tag = HMX
+		original_tag = HPX
+		original_tag = HQX
+		original_tag = HSX
+		original_tag = HTX
+		original_tag = HUX
+		original_tag = HWX
+		original_tag = HXX
+		original_tag = HYX
+		original_tag = HZX
+		original_tag = IAX
+		original_tag = IBX
+		original_tag = ICX
+	}
+}
+
+is_independence_wave_registry_registered_reuse_tag = {
+	OR = {
+		original_tag = AFA
+		original_tag = ALT
+		original_tag = ANU
+		original_tag = ARM
+		original_tag = ASY
+		original_tag = ATJ
+		original_tag = AZR
+		original_tag = BAN
+		original_tag = BAR
+		original_tag = BAY
+		original_tag = BIA
+		original_tag = BLC
+		original_tag = BLI
+		original_tag = BOS
+		original_tag = BRD
+		original_tag = BRI
+		original_tag = BSK
+		original_tag = BYA
+		original_tag = CAT
+		original_tag = CHM
+		original_tag = CHU
+		original_tag = CIN
+		original_tag = COR
+		original_tag = CRI
+		original_tag = DAG
+		original_tag = DAH
+		original_tag = DON
+		original_tag = EVE
+		original_tag = FER
+		original_tag = FIJ
+		original_tag = FSM
+		original_tag = GAL
+		original_tag = GAR
+		original_tag = GEO
+		original_tag = GLC
+		original_tag = HAR
+		original_tag = HAW
+		original_tag = HYD
+		original_tag = ICE
+		original_tag = IMO
+		original_tag = KAR
+		original_tag = KAS
+		original_tag = KHA
+		original_tag = KHL
+		original_tag = KOM
+		original_tag = KOS
+		original_tag = KUB
+		original_tag = KUR
+		original_tag = LAO
+		original_tag = LEB
+		original_tag = MAC
+		original_tag = MAD
+		original_tag = MAY
+		original_tag = MEL
+		original_tag = MEN
+		original_tag = MIS
+		original_tag = MNT
+		original_tag = MPU
+		original_tag = MYS
+		original_tag = NAV
+		original_tag = NEN
+		original_tag = OCC
+		original_tag = OKN
+		original_tag = ORO
+		original_tag = PAL
+		original_tag = PNG
+		original_tag = POK
+		original_tag = PSH
+		original_tag = QUE
+		original_tag = RAS
+		original_tag = RHI
+		original_tag = RIF
+		original_tag = RUT
+		original_tag = RWA
+		original_tag = SAM
+		original_tag = SCO
+		original_tag = SIN
+		original_tag = SKK
+		original_tag = SOK
+		original_tag = SOM
+		original_tag = TAT
+		original_tag = TIG
+		original_tag = TRA
+		original_tag = UDM
+		original_tag = UGA
+		original_tag = WLS
+		original_tag = WPG
+		original_tag = YAK
+		original_tag = YUC
+	}
+}
+
+is_independence_wave_registry_resolved_carrier_tag = {
+	OR = {
+		is_independence_wave_registry_event6_owned_tag = yes
+		is_independence_wave_registry_registered_reuse_tag = yes
+	}
+}
+
+# The 12 Event 012 direct identity overlaps. COG is intentionally overlay-only
+# for Event 006 and therefore is not part of the selectable subset below.
+is_independence_wave_registry_africa_overlap_tag = {
+	OR = {
+		original_tag = DOX
+		original_tag = DSX
+		original_tag = SOK
+		original_tag = DUX
+		original_tag = COG
+		original_tag = DYX
+		original_tag = DZX
+		original_tag = UGA
+		original_tag = HAR
+		original_tag = EMX
+		original_tag = EQX
+		original_tag = MAD
+	}
+}
+
+is_independence_wave_registry_africa_overlap_non_overlay_tag = {
+	OR = {
+		original_tag = DOX
+		original_tag = DSX
+		original_tag = SOK
+		original_tag = DUX
+		original_tag = DYX
+		original_tag = DZX
+		original_tag = UGA
+		original_tag = HAR
+		original_tag = EMX
+		original_tag = EQX
+		original_tag = MAD
+	}
+}
+
+is_independence_wave_registry_africa_overlap_current_map_bound_tag = {
+	OR = {
+		original_tag = DOX
+		original_tag = DSX
+		original_tag = SOK
+		original_tag = DUX
+		original_tag = UGA
+		original_tag = HAR
+		original_tag = EQX
+		original_tag = MAD
+	}
+}
+
+# Event 012 package identities with direct Event 006 rows. These predicates
+# deliberately describe identity only; callers add the Event 012 origin gate.
+is_independence_wave_registry_africa_asante_carrier = { original_tag = DOX }
+is_independence_wave_registry_africa_oyo_carrier = { original_tag = DSX }
+is_independence_wave_registry_africa_sokoto_carrier = { original_tag = SOK }
+is_independence_wave_registry_africa_kanem_bornu_carrier = { original_tag = DUX }
+is_independence_wave_registry_africa_kongo_carrier = {
+	original_tag = COG
+	has_cosmetic_tag = COG_kingdom_of_kongo
+}
+is_independence_wave_registry_africa_luba_carrier = { original_tag = DYX }
+is_independence_wave_registry_africa_lunda_carrier = { original_tag = DZX }
+is_independence_wave_registry_africa_buganda_carrier = { original_tag = UGA }
+is_independence_wave_registry_africa_harar_carrier = { original_tag = HAR }
+is_independence_wave_registry_africa_kilwa_carrier = { original_tag = EMX }
+is_independence_wave_registry_africa_zulu_carrier = { original_tag = EQX }
+is_independence_wave_registry_africa_merina_carrier = { original_tag = MAD }
+
+# These Event 012 identities intentionally stay on vanilla carriers. They are
+# not asserted to be Event 006 same-identity overlaps (TIG's IW row is Tigray,
+# while Aksum is a separate Event 012 identity).
+is_independence_wave_registry_africa_nonmatching_vanilla_carrier = {
+	OR = {
+		original_tag = MLI
+		original_tag = TIG
+		original_tag = SUD
+		original_tag = ZIM
+	}
+}

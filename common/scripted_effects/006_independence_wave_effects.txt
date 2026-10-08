@@ -1981,6 +1981,26 @@ independence_wave_register_active_country = {
 		}
 		add_to_array = { array = global.independence_wave_active_countries value = THIS }
 		add_to_array = { array = global.independence_wave_active_country_generation_entries value = independence_wave_generation_id }
+		# The birth tuple is pinned to its own publication generation. Repairing
+		# a missing cache row cannot restamp the same generation's identity.
+		if = {
+			limit = {
+				OR = {
+					AND = {
+						NOT = { has_variable = independence_wave_registered_generation_id }
+						NOT = { has_variable = independence_wave_registered_package_id }
+						NOT = { has_variable = independence_wave_registered_original_tag }
+					}
+					AND = {
+						has_variable = independence_wave_registered_generation_id
+						check_variable = { var = independence_wave_generation_id value = independence_wave_registered_generation_id compare = greater_than }
+					}
+				}
+			}
+			set_variable = { independence_wave_registered_package_id = independence_wave_package_id }
+			set_variable = { independence_wave_registered_original_tag = original_tag }
+			set_variable = { independence_wave_registered_generation_id = independence_wave_generation_id }
+		}
 	}
 	set_variable = { global.independence_wave_active_country_count = global.independence_wave_active_countries^num }
 }

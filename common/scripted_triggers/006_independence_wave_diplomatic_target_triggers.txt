@@ -1,0 +1,55 @@
+# ============================================================================
+# EVENT 006 - CURRENT DIPLOMATIC TARGET BINDING
+# ============================================================================
+# COUNTRY scope: the decision's FROM target. Preserve ordinary static foreign
+# partners; dynamic targets require the validated registration-time identity
+# tuple, exact paired generation row and the still-held anchor. No world scan,
+# persistent mutation, pre-release proof or surviving former host is required.
+# Private iterator temporaries have no outputs outside this boolean predicate.
+# ============================================================================
+
+is_independence_wave_current_diplomatic_target = {
+	exists = yes
+	OR = {
+		AND = {
+			is_dynamic_country = no
+			NOT = { is_independence_wave_registry_event6_owned_tag = yes }
+		}
+		AND = {
+			is_independence_wave_active_country = yes
+			has_country_flag = independence_wave_package_setup_complete
+			has_variable = independence_wave_generation_id
+			has_variable = independence_wave_package_id
+			has_variable = independence_wave_anchor_state
+			has_variable = independence_wave_registered_package_id
+			has_variable = independence_wave_registered_original_tag
+			has_variable = independence_wave_registered_generation_id
+			check_variable = { independence_wave_generation_id > constant:independence_wave_value.minimum }
+			check_variable = { var = independence_wave_package_id value = independence_wave_registered_package_id compare = equals }
+			check_variable = { var = original_tag value = independence_wave_registered_original_tag compare = equals }
+			check_variable = { var = independence_wave_generation_id value = independence_wave_registered_generation_id compare = equals }
+			has_independence_wave_force_package_for_current_generation = yes
+			independence_wave_active_country_arrays_are_aligned = yes
+			var:independence_wave_anchor_state = {
+				is_owned_by = PREV
+				is_controlled_by = PREV
+			}
+			set_temp_variable = { independence_wave_diplomatic_registry_country = constant:independence_wave_value.minimum }
+			set_temp_variable = { independence_wave_diplomatic_registry_index = constant:independence_wave_formable_tuning.first_array_index }
+			any_of = {
+				array = global.independence_wave_active_countries
+				value = independence_wave_diplomatic_registry_country
+				index = independence_wave_diplomatic_registry_index
+				var:independence_wave_diplomatic_registry_country = {
+					exists = yes
+					tag = PREV
+					check_variable = {
+						var = independence_wave_generation_id
+						value = global.independence_wave_active_country_generation_entries^independence_wave_diplomatic_registry_index
+						compare = equals
+					}
+				}
+			}
+		}
+	}
+}
