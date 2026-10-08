@@ -787,18 +787,23 @@ great_depression_abandon_selected_center = {
 great_depression_launch_regional_works_program = {
 	if = {
 		limit = { great_depression_center_public_works_target_is_valid = yes }
+		great_depression_prepare_public_works_plan = yes
 		if = {
-			limit = { NOT = { has_state_flag = great_depression_center_public_works_receipt } }
+			limit = {
+				has_state_flag = great_depression_public_works_plan_prepared
+				ROOT = { great_depression_can_pay_public_works = yes }
+			}
 			set_state_flag = great_depression_center_public_works_receipt
+			ROOT = {
+				set_variable = { great_depression_cost_family = constant:great_depression_cost_family.public_works }
+				set_temp_variable = { great_depression_action_delta = constant:great_depression_action.strong_relief }
+				set_variable = { great_depression_pending_center_project = constant:great_depression_center_project.public_works }
+				great_depression_commit_country_action = yes
+				set_country_flag = great_depression_public_works_project_active
+			}
+			great_depression_authorize_center_project = yes
 		}
-		ROOT = {
-			set_variable = { great_depression_cost_family = constant:great_depression_cost_family.public_works }
-			set_temp_variable = { great_depression_action_delta = constant:great_depression_action.strong_relief }
-			set_variable = { great_depression_pending_center_project = constant:great_depression_center_project.public_works }
-			great_depression_commit_country_action = yes
-			set_country_flag = great_depression_public_works_project_active
-		}
-		great_depression_authorize_center_project = yes
+		else = { great_depression_clear_public_works_plan = yes }
 	}
 }
 
@@ -2690,7 +2695,18 @@ great_depression_timeout_reopen_depression_center = {
 			NOT = { has_country_flag = great_depression_mission_reopen_depression_center_complete }
 		}
 		set_country_flag = great_depression_mission_reopen_depression_center_failed
-		great_depression_mission_timeout = yes
+		if = {
+			limit = {
+				has_variable = great_depression_mission_reopen_center_authorization_id
+				var:great_depression_mission_reopen_center_state_id = {
+					check_variable = { var = great_depression_center_project_type value = constant:great_depression_center_project.public_works compare = equals }
+					check_variable = { var = great_depression_center_project_authorization_id value = ROOT.great_depression_mission_reopen_center_authorization_id compare = equals }
+					great_depression_center_project_has_unspent_authorization = yes
+				}
+			}
+			var:great_depression_mission_reopen_center_state_id = { great_depression_fail_center_project = yes }
+		}
+		else = { great_depression_mission_timeout = yes }
 		clear_variable = great_depression_mission_reopen_center_state_id
 		clear_variable = great_depression_mission_reopen_center_episode_id
 		clear_variable = great_depression_mission_reopen_center_authorization_id

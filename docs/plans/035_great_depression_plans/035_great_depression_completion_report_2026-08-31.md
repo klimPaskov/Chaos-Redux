@@ -2,6 +2,28 @@
 
 ## Disposition
 
+Parent implementation notice, 8 October 2026: the [Public Works documentation handoff](subagent_handoffs/public_works_documentation_2026-10-08.md) records implemented bounded source under U1, with parent source-plan review complete and commit/hash pending.
+Nine identified work kinds now have exact paid-site binding, preserved-capacity repair proof, bounded physical result or measured local recovery, transfer-safe issuance and synchronized due-date-plus-28 proof/mission deadlines.
+This supersedes only the earlier Public Works source-no-map finding.
+The parent reports all 18 Public Works methods passing in 41.540 seconds, including 512 local-demand subsets and the corrected adoption, automatic-resume and post-work control-pause deadline cases.
+Final actor/authority guards require a valid normal civilian actor for prepare/bind/current-plan proof and prevent stale or foreign ROOT from stripping another owner's valid repair term.
+The parent reports `python -m unittest discover -s .tools -p 'test_event035*py'` completed on the final guarded source with 87 methods in 82.667 seconds, `OK`.
+This includes 21 Public Works methods, the same 512 local combinations and eight invalid-actor cases, foreign-ROOT repair-term retention, and the paid-project type reinterpretation no-award regression.
+The earlier 86-method pass in 102.797 seconds remains historical and is superseded only as the current test boundary.
+The previous 18- and 86-method passes remain historical, and the final 87-method result is parent-reported source-model evidence with native, balance and campaign limits preserved.
+The final `great_depression_project_has_public_works_result` guard permits its non-Public-Works branch only when no active Public Works plan and no paid Public Works receipt remain.
+Changing a paid ready project's type to finance therefore grants no map, finance or completion award, while ordinary other projects retain their contract after `great_depression_clear_public_works_plan` removes those markers.
+The architect's final three-correction review remains narrow source evidence, and native repair-family reference reads are complete.
+The same-nine-WKS comparison returned terminal partial analysis `probability-7cae77ee230c7184e69c9508` after a 600-second timeout and narrower retry, with 57 unresolved native actor/state/cost inputs.
+Zero-eligible placeholder rows establish no actual target exclusion, score delta or normalized probability, and the full JSON is unavailable despite the retained URI and initial owner hash verification.
+Separate renders report analysis not cached, and fixture-support versus fixture-construction clarification remains open in the [probability handoff](subagent_handoffs/public_works_probability_2026-10-08.md).
+Full balance and event completion remain open, and an input gap is not verified tool-capability evidence.
+The parent's narrow `.8` trace and state render completed partial at revisions `5b61a45d5836c19fd276ef8a5e51b000c91b28ce24b8158b45c373319843902d` and `10aaec8852ad155188b9418a96fec3a0d1d9c7f07eaa5bd47c57cb3bc29062e8` respectively, after the wider 600-second timeout.
+The current render selects one node with zero helpers and 46,254 omitted nodes, superseding only the prior zero-node count as current evidence.
+Reported artifact hashes, unavailable render resources and the terminal matching `.8` comparison outcome are retained in the documentation handoff, with no event delta proved and visual inspection/full lifecycle proof unresolved.
+Reserved/unspent refund accounting, the lasting-capacity closing transaction, inherited consumers and authentic source histories, complete AI/scenarios/assets/achievements/catalog, native and live evidence remain required.
+The current source is uncommitted pending the parent's hash notice, and no whole-event completion or absence-of-gaps claim follows from this documentation pass.
+
 Event 35 source, presentation, assets, achievements, documentation, and catalog surfaces exist, but their presence is not full requirement coverage.
 
 The current requirement and evidence ledger is [current_requirement_state_2026-10-07.md](current_requirement_state_2026-10-07.md).
@@ -46,7 +68,8 @@ The scoped availability repair and its immutable audit inputs were published as 
 Its real-index reconciliation initially encountered `.git/index.lock` while other Git processes were live, then completed without changing the working-tree files or unrelated index paths.
 This transaction does not claim that the full Event 35 goal or probability comparison is complete.
 
-Full fidelity remains unresolved, including fixed project work targets, immediate bank-audit completion, Public Works map results, conditional reserved-resource accounting, and inherited requirements previously described as closed under D4.
+The earlier fixed-work, instantaneous-audit and Public Works source findings retain their historical evidence below, with subsequent duration and bank notices in the current ledger and the October 8 bounded Public Works notice above.
+Full fidelity remains unresolved, including native map-result acceptance, conditional reserved-resource accounting, lasting-capacity closure and inherited requirements previously described as closed under D4.
 
 The presentation tranche is committed as `75967b75fcabe80aaca1f0648ee022e8de4b93fd` with its five index paths reconciled.
 The two reusable scope-frame and first-valid-selector skill rules are committed as `c3c91450ca9d9c37bd386c3f560160991410ba1a`.
@@ -180,7 +203,7 @@ The follow-up achievement audit corrected the registry to the single root `uniqu
 - Missions activate without an entry debit, require affordability on completion, debit exactly once on success, and do not refund an unspent cost on cancellation or timeout.
 - One to three normal Depression Centers use aligned bounded state, stage, project, baseline, loss, owner, and timing ledgers.
 - Center statuses, delayed projects, transfer reconciliation, occupation handling, loss limits, restoration, repeat legacies, relapse, and diminishing returns have source implementations and bounded evidence.
-- This does not certify every mapped requirement, including part 3's condition-scaled duration, bank-audit lifecycle, conditional unspent-resource accounting, and real Public Works map improvement.
+- Later source tranches establish bounded duration, bank and Public Works implementations with their individual evidence limits, without certifying their complete native or scenario acceptance, conditional unspent-resource accounting or lasting-capacity closure.
 - Baseline National Breakdown uses warning, prevention mission, proof, and the bounded `chaosx.nr35.6` resolution event.
 - National Breakdown always permits emergency settlement or cabinet replacement and permits civil conflict only when every strict adapter gate passes.
 
@@ -415,7 +438,7 @@ The detailed scenario records in this section retain earlier bounded projections
 
 ## Simplifications, omissions, fallbacks, and blockers
 
-- The full implementation remains incomplete, with duration, staged audit, real Public Works map results, reserved/unspent accounting, and inherited consumer/proof requirements detailed in the October 7 ledger.
+- The full implementation remains incomplete, with final duration/bank/Public Works acceptance, reserved/unspent accounting, lasting-capacity closure and inherited consumer/proof requirements detailed in the current ledger and October 8 Public Works handoff.
 - This report does not certify absence of simplifications or omissions.
 - Regular icon alpha used the documented per-cell rembg/U2Net repair only after native-alpha generation failed.
 - Whole-sheet fallback was rejected and repaired edges were reviewed.
@@ -443,3 +466,4 @@ The detailed scenario records in this section retain earlier bounded projections
 - The ID-aligned Event 34 Long Fall aliases in `interface/035_great_depression_achievement_aliases.gfx` are now the only Event 34 achievement sprite names; the former unprefixed names were removed from `interface/035_great_depression.gfx`.
 - No mapped route or asset is intentionally omitted, but full upstream regional histories, corridor/recovery integration where that source data is absent, complete API success/rollback acceptance, and current engine validation remain unresolved.
 - Required supported map/state engine evidence remains missing, so this report does not claim the implementation goal complete.
+

@@ -926,8 +926,23 @@ great_depression_center_protection_target_is_valid = {
 great_depression_center_public_works_target_is_valid = {
 	great_depression_selected_center_target_is_valid = yes
 	great_depression_center_project_target_is_open = yes
-	has_state_flag = great_depression_center_reopened
-	NOT = { has_state_flag = great_depression_center_public_works_receipt }
+	OR = {
+		has_state_flag = great_depression_center_distressed
+		has_state_flag = great_depression_center_idled
+		has_state_flag = great_depression_center_shuttered
+		has_state_flag = great_depression_center_reopened
+		has_state_flag = great_depression_center_abandoned
+	}
+	NOT = { has_state_flag = great_depression_center_liquidated }
+	great_depression_public_works_has_recorded_need = yes
+	OR = {
+		NOT = { has_state_flag = great_depression_center_public_works_receipt }
+		AND = {
+			has_state_flag = great_depression_center_project_failed_receipt
+			check_variable = { var = great_depression_center_project_type value = constant:great_depression_center_project.public_works compare = equals }
+			check_variable = { var = great_depression_center_project_failed_authorization_id value = great_depression_center_project_authorization_id compare = equals }
+		}
+	}
 }
 
 great_depression_center_rebuild_target_is_valid = {
@@ -2252,7 +2267,17 @@ great_depression_should_activate_reopen_depression_center = {
 	great_depression_main_mission_slot_is_open = yes
 	NOT = { has_country_flag = great_depression_mission_reopen_depression_center_complete }
 	NOT = { has_country_flag = great_depression_mission_reopen_depression_center_failed }
-	great_depression_can_start_center_mission = yes
+	OR = {
+		great_depression_can_start_center_mission = yes
+		AND = {
+			great_depression_can_manage = yes
+			great_depression_has_selected_center = yes
+			var:great_depression_selected_center_state = {
+				great_depression_public_works_plan_is_current = yes
+				great_depression_center_project_has_unspent_authorization = yes
+			}
+		}
+	}
 }
 
 great_depression_reopen_depression_center_context_is_valid = {

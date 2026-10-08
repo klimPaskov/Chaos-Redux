@@ -1,5 +1,64 @@
 # Event 035 current requirement state, 7 October 2026
 
+## Parent Public Works implementation notice, 8 October 2026
+
+Acceptance basis U1 remains the explicit full-package instruction reproduced below, without simplifications.
+The current parent assignment authorizes surgical reconciliation of this ledger, the completion report, `catalog_changes_pending.md`, `docs/events/035_great_depression.md`, and `subagent_handoffs/public_works_documentation_2026-10-08.md` only.
+The narrower curator-only and two-file authority statements below describe the earlier documentation pass and do not restrict the parent's subsequent source implementation.
+No historical G6 authority claim, inherited-requirement disposition, or whole-event acceptance boundary is erased by this notice.
+
+Disposition: implemented bounded Public Works source under U1, with parent source-plan review complete and Git commit/hash pending.
+The parent published `common/scripted_effects/035_great_depression_public_works_effects.txt` and its companion `.md`, the Public Works triggers, and their launch, completion, failure, transfer, cleanup, native-timer and local-demand consumers.
+This supersedes only the earlier Public Works source-no-map finding, rather than closing the full Regional Works Program or the event.
+The result covers nine identified needs: infrastructure, railway and port repair, inadequate infrastructure, an eligible adjacent capital-linked rail pair, missing coastal port facilities, wartime anti-air, housing recovery and abandoned-site conversion.
+Preparation and paid binding retain the exact original payer, site, episode, fresh paid-action count/day and unspent authorization.
+The final prepare/bind/current-plan guards require an existing normal civilian actor, special/nonhuman exclusions and coherent crisis state, so direct completion cannot exploit stale valid-crisis flags.
+Repair-term updating may remove a modifier only for the current state owner or recorded plan owner, preserving another owner's valid repair term from stale or foreign ROOT.
+The final `great_depression_project_has_public_works_result` guard permits its non-Public-Works branch only when no active Public Works plan and no paid Public Works receipt remain.
+Changing a paid ready project's type to finance therefore grants no map, finance or completion award, while ordinary other projects retain their contract after `great_depression_clear_public_works_plan` removes those markers.
+Repair proof requires reduced damaged levels with total levels preserved, while physical issuance is bounded to one level per globally allocated episode after accepted controlled work and checks the actual total and usable result.
+Externally completed capacity grants no extra level, and the frozen rail pair retains adjacency, ownership/control, capital-network and identical restricted-path checks at issuance and proof.
+Housing and abandoned-site recovery remeasure `great_depression_measure_center_local_demand`, the same helper consumed by the national hidden-component rebuild, after changing the physical stage and ledger.
+Self-written outcome flags and changes to national demand alone cannot certify that local result.
+
+The later lifecycle corrections restore repair administration after legitimate resume, retain original payer and baseline through transfer, and relabel spent issuance only when both authorization and the old episode match.
+Center proof and the bound native mission use the legitimately extended project due date plus 28 days, with the exact mission retired through the shared once-only failure path.
+The architect's [final correction review](subagent_handoffs/public_works_native_architecture_2026-10-08.md#final-verification-of-the-three-owner-corrections) confirms those three narrow source fixes and records two successful in-memory production-chain probes.
+Its earlier WIP findings and fixture failures remain dated evidence.
+The parent's subsequent notice corrects the fixtures to process legitimate resume before counting work and to use actual control loss for suspension, since Severity contributes to separate paralysis accounting.
+
+The parent's final Public Works test notice reports all 18 methods passing in 41.540 seconds, including 512 local-demand subsets, stale-authorization adoption, automatic repair resume without a manual updater, and post-work control-pause proof/native deadline equality.
+The parent reports `python -m unittest discover -s .tools -p 'test_event035*py'` completed on the final guarded source with 87 methods in 82.667 seconds, `OK`.
+This includes 21 Public Works methods, the same 512 local combinations and eight invalid-actor cases, foreign-ROOT repair-term retention, and the paid-project type reinterpretation no-award regression.
+The earlier 86-method pass in 102.797 seconds remains historical and is superseded only as the current test boundary.
+The previous expected 84-method target is superseded by this expanded source boundary.
+The earlier run passed 82 methods and failed two new fixture timing assumptions, while the parent reports the older 66-method tranche passing with the genuine SelectedInfra2 tooltip fixture.
+These are owner-reported source-model results, and this curator records the explicit final pass notice without rerunning the suite or inferring native execution.
+The mandatory same-nine-WKS comparison is terminal partial evidence from `chaosx_ai_probability_auditor`, analysis `probability-7cae77ee230c7184e69c9508`, after the first 600-second timeout and narrower retry.
+Its 57 unresolved native actor/state/cost inputs leave zero-eligible rows as placeholders, with no verified score delta or normalized selection probability.
+The owner initially verified the raw JSON size/hash, then its configured local file/provenance became unavailable, retaining the URI with full payload unavailable.
+Separate renders returned `PROBABILITY_ANALYSIS_NOT_CACHED`.
+The parent requested clarification whether native fixture bindings were unsupported or simply not constructed, so the input gap is not verified tool-capability evidence.
+The [scenario-specific probability handoff](subagent_handoffs/public_works_probability_2026-10-08.md) retains the nine cases and exact delivery limits.
+Immutable before sources are under `audit_inputs/public_works_2026_10_07/`, with shared helpers current rather than a frozen historical workspace.
+The prior native root render selected zero nodes and the trigger check retained 44 unchecked argument blocks, `valid = null` and `parametersChecked = false`.
+The parent reports the after-source `.8` two-node `state_flow` request timed out after 600 seconds, then the narrower one-node trace completed `EVENT_INSPECTED_PARTIAL`, revision `5b61a45d5836c19fd276ef8a5e51b000c91b28ce24b8158b45c373319843902d`.
+The one-node state render completed `EVENT_RENDERED_PARTIAL`, revision `10aaec8852ad155188b9418a96fec3a0d1d9c7f07eaa5bd47c57cb3bc29062e8`, with one selected node, zero helpers and 46,254 omitted nodes.
+The earlier zero-selected-node render remains historical, while the trace and render retain distinct revisions and incomplete coverage.
+The parent inspected the configuration-derived local artifact storage including hidden and ignored files, finding no current `97`/`7e` hash folders or matching render files.
+Artifact retrieval and visual inspection remain unresolved, with no visual-review, native-execution or full-lifecycle proof inferred from the returned render status.
+The terminal matching `.8` comparison outcome for historical revision `5cfd59c3818248f901e34d4d9e94388c5652c2f651d3c5472cc6a9bfd0bdedda` and after revision `10aaec8852ad155188b9418a96fec3a0d1d9c7f07eaa5bd47c57cb3bc29062e8` is recorded in the assigned documentation handoff, with no event delta proved.
+The adjacent STATE traversal returned `SCRIPT_CHECKED`, `valid = true`, for syntax, command kind and declared scope only, with `parametersChecked = false`.
+Native building and railway snippets each remain partial with one unchecked argument block.
+The remaining native repair-family lines 4880-4886 returned OK at installed `documentation\modifiers_documentation.md`, revision `00a0eca6d2b3a70ce4b8a0d38997dd609aa0c9349ddcd04c8cac92849425be7e`.
+The exact offline `paradox_wiki\Modifiers - Hearts of Iron 4 Wiki.md:1219` read also returned OK, revision `fe41a26f2b8d3b8e78a9b0dea9ce1a55f001d1e27886807a0a3fb2d2f535f14f`.
+These completed rule reads supersede the pending seven-line reference status and retain the architect's prior full-rule evidence without establishing native argument or execution acceptance.
+The architect's earlier full rule reads remain evidenced, while native execution, complete helper coverage, argument semantics, balance and campaign acceptance remain unresolved.
+
+Original Part 3 reserved/unspent resource refunds, the lasting-capacity closing transaction, hidden-row paid paths, authentic Event 034 producer/corridor/salvage/multi-region evidence, complete AI/scenarios/assets/achievements/catalog and live evidence retain their existing open dispositions.
+The Public Works source is currently uncommitted pending the parent's commit notice and hash.
+The [documentation handoff](subagent_handoffs/public_works_documentation_2026-10-08.md) records this pass's source identities, MCP results, changed dispositions and review limits.
+
 ## Scope and authority
 
 Later source update: `subagent_handoffs/condition_duration_implementation_2026-10-07.md` records the five-factor work formula, frozen certification, exact native mission binding, protection exclusion and transfer preservation.
@@ -61,7 +120,7 @@ Source hashes below identify observed bytes in a shared working tree and do not 
 | Condition-scaled project duration, part 3 Regional Works Program and part 11 D-01 under U1 | Effects lines 784-787 set due day to current day plus `center_project_total_days`, 133 at constants line 69. Completion/process gates at 852 and 1100 use that same work target. Pauses extend the due day and freight adds work credit. | Accepted and queued. Effective calendar time can vary through interruption and credit, but a duration formula using state damage, Severity, infrastructure, war and previous failures is not established. Addendum A4's fixed stages do not prove a waiver. |
 | Exact reserved/unspent refund accounting, parts 3, 4 and 9 under U1 | Decision action commit at 144-151 debits through effects 468-618. Civilian commitment freezes the accepted quote at 604. `center_project_has_unspent_authorization` at surface triggers 814-835 tests authorization/episode/completion/failure identity, not unspent resource balances. Fail/project cleanup has no stockpile refund ledger in the bounded source. | Unresolved accounting/design conflict. Immediate debits are treated as sunk costs in addendum A4. Part 3 returns some proved unspent resources. Parent must implement any reserved/unspent path with exact quantities and symmetry, or establish from accepted design and source that no refundable quantity remains. A reservation flag or unused authorization is insufficient proof. |
 | Bank holiday, audit and recapitalization lifecycle, part 3 and part 11 C-03 under U1 | Decision effects 518-524 set audit active and complete on the same invocation, and 526-532 recapitalization also sets completion immediately. No audit due-day or audit mission appears in the bounded owned-source token scan. Episode reset clears both flags. | Accepted and queued. Part 3 requires an audit mission with success/failure/premature reopening. Addendum A5 specifies 21-day audit and 42-day follow-up, which are also not fulfilled by instant flags. Incident-written audit completion must not certify this sequence. |
-| Real Public Works map improvement, parts 3 and 4 under U1 | Authorization at decision effects 762-778 is paid. Main completion adds Public Works flags/modifier and legacy counters at 901 onward. The only owned building-construction effect found is 1013, a civilian-factory restoration branch for `reopened_capacity` under a loss receipt. | Accepted and queued for proved damaged/missing infrastructure or connection. Public Works modifiers and later construction-speed legacy do not establish completed map repair. Need exact target, need/baseline, bounded result and repeat/transfer proof. |
+| Real Public Works map improvement, parts 3 and 4 under U1 | October 8 published owner helpers freeze nine real needs and exact paid identity, require damage reduction with total-capacity preservation, verify bounded building/rail output, and remeasure local recovery through the national consumer's shared helper. Main authorize/fail/complete/process/transfer/adopt/cleanup and native-timer hooks are present. | Implemented bounded source with parent source-plan review complete, pending parent commit and full audit/balance acceptance. The earlier source-no-map finding is superseded by the parent notice and `subagent_handoffs/public_works_documentation_2026-10-08.md`. Source fixtures and partial MCP do not prove native map outcomes, full balance, refunds or lasting-capacity closure. |
 | Conference, blocs, currencies and supplier contracts, parts 5 and 7 under U1 | D21/D22/D25/D28/D30/D34/D36 and October 6 evidence document paid contributions, bounded participants, withdrawal, quotes and news guards. The parent subsequently supplied the four-line late Event 034 activation hook and its source handoff, and this curator reran 14 report tests. | Implemented source portions, complete scenario evidence unresolved. The late supplier quote hook exists in current source and its actual activation slice passes foreign-ROOT, ordinary-boom and risk-replay cases. Same-scenario comparison and native integration remain open. No commit is claimed. |
 | Reports, event history and cluster, parts 8 and 10 under U1 | D31/D35 replace old per-country conversion news with chain/world guards. Eleven report tests include 28 conversions, chain descendants, aggregation, quotes, CXT and tooltip lifetime. | Implemented source scheduling portions. Same-hour actor/history ordering, category fit, toggles and actual delivery remain unresolved. D15 historical conversion policy is superseded by D31/D35. |
 | Assets, super-event and achievements, parts 10 and 11 under U1 | October 6 records 80 DDS files, six Event 035 contracts plus Event 034 Long Fall, slot 105/audio 106. | Recorded bounded evidence, not recertified by this curator. Binary assets, generation-route equivalence, native display/playback and all achievement positive/near-miss/exploit/save/disqualifier cases remain outside this pass. |
@@ -85,6 +144,9 @@ Source hashes below identify observed bytes in a shared working tree and do not 
 | October 6 tooltip-helper lifetime handoff | Implemented source repair under recorded parent acceptance, with conservative output-lifetime tests. Native tooltip resolution and fit remain unresolved. |
 | October 3 API, transaction, reclosure, cost, affordability, scope and cleanup handoffs | Historical source repair evidence retained through the named completion report and takeover. Superseded only where later named repairs change those claims. No whole-package acceptance or current normalized probability is inferred. |
 | Catalog changes pending | Accepted and queued through U1 and October 6 recorded parent scope, because this curator cannot edit workbook or exports. |
+| October 8 Public Works bounded source and documentation handoff | Implemented source under U1, with exact current helper/call-site evidence and validation limits in `subagent_handoffs/public_works_documentation_2026-10-08.md`. Supersedes the source-no-map finding only. Parent source-plan review is complete and the final guarded-source 87-method pass is recorded, with commit/hash and full native/balance acceptance pending. |
+| `subagent_handoffs/public_works_native_architecture_2026-10-08.md` | Historical WIP findings retained, with its final review superseding the three corrected lifecycle flaws in the reviewed bytes. Two fixture sequencing failures are superseded by the parent's corrections and final 18-method Public Works pass notice, with the parent's expanded full 87-method pass recorded. Partial native coverage remains unresolved. |
+| `subagent_handoffs/public_works_probability_2026-10-08.md` | Baseline gate evidence retained under its nine named WKS scenarios. Its initial no-post-patch-source statement is historical after the parent publication notice. The same-nine-case after comparison is terminal partial, analysis `probability-7cae77ee230c7184e69c9508`, with 57 unresolved native inputs, unavailable full JSON and uncached separate renders. Fixture-support versus fixture-construction clarification remains open, with no score delta, normalized probability or complete balance certified. |
 
 ## Acceptance coverage boundary
 
@@ -235,3 +297,4 @@ Native category binding, map/state geometry and improvements, full helper/lifecy
 Skills applied are events, subagents and decisions/missions.
 Their ownership and evidence rules preserve bounded source completion separately from the full feature claim.
 No skill was created or updated, no HOI4 instance was launched, no logs were requested, and no external source mutation or Git transaction was performed.
+

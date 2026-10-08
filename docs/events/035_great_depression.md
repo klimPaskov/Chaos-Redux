@@ -171,6 +171,36 @@ Returning centers reuse their exact existing row, including at full capacity, wi
 Source retirement preserves only an exact, still-open transfer to a different owner, leaving the local work and receipts available for successor adoption.
 Malformed active work with missing required duration or an inconsistent certification cut cannot reserve a successor's active project slot.
 
+### Regional Works Program
+
+Launch Regional Works Program selects a real need in an owned, controlled and currently registered Distressed, Idled, Shuttered, Reopened or Abandoned center, excluding Liquidated sites and occupied project slots.
+Its frozen need follows this priority: damaged infrastructure, damaged railway facilities, damaged port facilities, inadequate infrastructure, an eligible neighboring capital-linked railway, missing coastal port facilities, wartime anti-air protection, abandoned works, or locally needed housing and employment recovery.
+The action prepares the exact site before payment and binds its original payer, episode, fresh payment count/day and unspent authorization after the paid project starts.
+Preparation, binding and current-plan proof require an existing normal civilian actor, special/nonhuman exclusions and coherent crisis state, preventing direct completion through stale crisis flags.
+The final `great_depression_project_has_public_works_result` guard permits its non-Public-Works branch only when no active Public Works plan and no paid Public Works receipt remain.
+Changing a paid ready project's type to finance therefore grants no map, finance or completion award, while ordinary other projects retain their contract after `great_depression_clear_public_works_plan` removes those markers.
+`GetGreatDepressionWorksNeed` displays the frozen paid need ahead of the current preview, and the tooltip names `[FROM.GetName]` with the accepted controlled-work duration and result requirement.
+Repair administration accelerates native repairs, while certification requires reduced damage and preserved total facility levels.
+Construction issues at most one physical level per globally allocated episode after accepted work and checks actual total and usable capacity, with no extra level when external construction already meets the target.
+Rail issuance and proof use the same frozen adjacent partner, current ownership/control, capital network and restricted route.
+Coastal port facilities establish local capacity without certifying sea access, convoy availability or an international shipping route.
+Housing and abandoned-site conversion change the physical center stage and ledger to Reopened and prove a reduction in the same local demand contribution that the national pressure rebuild consumes.
+Those local outcomes grant no factory or building slot.
+
+Suspension removes repair administration, and legitimate resume restores it after the stage transition.
+The repair updater may remove a term only for the current state owner or recorded plan owner, so a stale or foreign ROOT cannot strip another owner's valid repair administration.
+Transfer retains the original payer, accepted need, baseline and work, and marks issuance spent for the successor only when authorization and the pre-transfer episode both match.
+The project proof deadline and bound native mission share the legitimately extended project due date plus 28 days, with failure retiring the exact mission and charging the shared consequence once.
+Durable issuance and local-recovery history survive transient cleanup.
+The [October 8 documentation handoff](../plans/035_great_depression_plans/subagent_handoffs/public_works_documentation_2026-10-08.md) records implemented bounded source under U1, with the parent's final guarded-source 87-method pass in 82.667 seconds recorded, including 21 Public Works methods, the same 512 local combinations and eight invalid-actor cases, foreign-ROOT retention and paid-project type reinterpretation with no award.
+The earlier 86-method pass in 102.797 seconds remains historical and is superseded only as the current test boundary.
+Parent source-plan review is complete and native repair-family reference reads are complete, with Git commit/hash pending.
+The same-nine-WKS comparison is terminal partial, analysis `probability-7cae77ee230c7184e69c9508`, with 57 unresolved native inputs and zero-eligible placeholders that prove no actual exclusion, score delta or normalized probability.
+The input gap remains subject to fixture-support versus fixture-construction clarification, while full balance, native execution, campaign acceptance and event completion remain open.
+The parent's narrow `.8` trace and state render completed partial, with the current render selecting one node, zero helpers and 46,254 omitted nodes.
+Current render resources remain unavailable, so visual inspection and full lifecycle proof remain unresolved, and the matching before/after `.8` comparison proves no event delta as recorded in the documentation handoff.
+It supersedes the prior source-no-map finding only, while Part 3 reserved/unspent refunds, lasting-capacity closure, inherited consumers, full acceptance and native/live evidence remain open.
+
 Every mapped project type has a producer.
 Finance restoration starts from Restore Local Credit and Trade Connection.
 A successful Keep Essential Freight Moving mission restores basic transport and supply for the selected center: it starts transport integration on a closed center with no running project, or moves the project already running there several weeks closer to completion, once per project.

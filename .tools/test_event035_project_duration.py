@@ -32,7 +32,7 @@ class ProjectDurationTests(unittest.TestCase):
         runtime._call_effect("great_depression_quote_center_project_duration", site)
         return runtime.temp_frames[0]["great_depression_duration_quote_days"]
 
-    def authorize(self, runtime, actor, site, kind="public_works"):
+    def authorize(self, runtime, actor, site, kind="transport_integration"):
         actor.values["great_depression_pending_center_project"] = runtime.constants["constant:great_depression_center_project." + kind]
         runtime.run_effect("great_depression_authorize_center_project", site)
 
@@ -148,6 +148,9 @@ class ProjectDurationTests(unittest.TestCase):
 
     def test_actual_regional_works_tooltip_quote_matches_accepted_duration(self):
         runtime, actor, site = self.prepared("reopened")
+        # The current works contract requires a genuine selected-state need.
+        site.buildings["infrastructure"] = 2
+        actor.values["great_depression_selected_center_state"] = site
         actor.values["great_depression_depression_severity"] = 80
         path = ROOT / "common/decisions/035_great_depression_decisions.txt"
         nodes, _ = parse_nodes(lex(uncomment(path.read_text(encoding="utf-8-sig"))), 0, str(path))

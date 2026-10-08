@@ -1,0 +1,262 @@
+# ============================================================================
+# EVENT 035 - PUBLIC WORKS NEED AND ACCEPTED MAP PROOF
+# ============================================================================
+# STATE beneath the paying crisis country. Need checks are read-only and expose
+# no hidden component meters. Native repair reduction or a bounded physical
+# result must match the accepted site, episode and paid authorization.
+# ============================================================================
+
+great_depression_public_works_has_recorded_need = {
+	OR = {
+		check_variable = { damaged_building_level@infrastructure > constant:great_depression_api.zero }
+		check_variable = { damaged_building_level@rail_way > constant:great_depression_api.zero }
+		check_variable = { damaged_building_level@naval_base > constant:great_depression_api.zero }
+		check_variable = { infrastructure_level < constant:great_depression_public_works.infrastructure_need_floor }
+		AND = {
+			is_coastal = yes
+			naval_base < constant:great_depression_public_works.port_target
+		}
+		AND = {
+			ROOT = { has_war = yes }
+			anti_air_building < constant:great_depression_public_works.air_protection_target
+		}
+		great_depression_public_works_has_rail_need = yes
+		AND = {
+			has_state_flag = great_depression_center_abandoned
+			NOT = { has_state_flag = great_depression_public_works_abandoned_conversion_proven }
+		}
+		AND = {
+			state_population_k > constant:great_depression_public_works.housing_population_floor_k
+			great_depression_public_works_has_local_housing_need = yes
+			NOT = { has_state_flag = great_depression_public_works_housing_proven }
+		}
+	}
+}
+
+great_depression_public_works_has_rail_need = {
+	NOT = { great_depression_public_works_has_capital_railway = yes }
+	any_neighbor_state = {
+		is_owned_by = ROOT
+		is_controlled_by = ROOT
+		great_depression_public_works_has_capital_railway = yes
+		ROOT = {
+			can_build_railway = {
+				level = constant:great_depression_public_works.rail_level
+				start_state = PREV.PREV
+				target_state = PREV
+				build_only_on_allied = yes
+				fallback = no
+				controller_priority = {
+					base = constant:great_depression_public_works.route_denied
+					modifier = { add = constant:great_depression_public_works.route_owner_add tag = ROOT }
+				}
+			}
+		}
+	}
+}
+
+great_depression_public_works_has_capital_railway = {
+	is_owned_by = ROOT
+	is_controlled_by = ROOT
+	OR = {
+		is_capital = yes
+		AND = {
+			ROOT = { any_owned_state = { is_capital = yes is_controlled_by = ROOT } }
+			ROOT = {
+				has_railway_connection = {
+					start_state = ROOT.capital
+					target_state = PREV
+					build_only_on_allied = yes
+					fallback = no
+					controller_priority = {
+						base = constant:great_depression_public_works.route_denied
+						modifier = { add = constant:great_depression_public_works.route_owner_add tag = ROOT }
+					}
+				}
+			}
+		}
+	}
+}
+
+great_depression_public_works_plan_is_current = {
+	ROOT = { great_depression_active_country_is_valid = yes }
+	has_state_flag = great_depression_center
+	great_depression_center_has_current_registration = yes
+	has_state_flag = great_depression_public_works_plan_active
+	has_variable = great_depression_public_works_plan_episode_id
+	has_variable = great_depression_public_works_plan_authorization_id
+	has_variable = great_depression_public_works_plan_kind
+	has_state_flag = great_depression_public_works_paid_receipt
+	has_variable = great_depression_public_works_paid_action_count
+	has_variable = great_depression_public_works_plan_owner
+	has_variable = great_depression_public_works_plan_site
+	check_variable = { great_depression_public_works_paid_action_count > constant:great_depression_api.zero }
+	check_variable = { var = great_depression_public_works_plan_owner value = ROOT compare = equals }
+	state = var:great_depression_public_works_plan_site
+	check_variable = { var = great_depression_center_project_episode_id value = ROOT.great_depression_active_episode_id compare = equals }
+	check_variable = { var = great_depression_public_works_plan_episode_id value = ROOT.great_depression_active_episode_id compare = equals }
+	check_variable = { var = great_depression_public_works_plan_authorization_id value = great_depression_center_project_authorization_id compare = equals }
+	check_variable = { great_depression_public_works_plan_authorization_id > constant:great_depression_api.zero }
+	check_variable = { great_depression_public_works_plan_kind > constant:great_depression_public_works_kind.none }
+	check_variable = { var = great_depression_public_works_plan_kind value = constant:great_depression_public_works_kind.abandoned_works compare = less_than_or_equals }
+	check_variable = { var = great_depression_center_project_type value = constant:great_depression_center_project.public_works compare = equals }
+	is_owned_by = ROOT
+	is_controlled_by = ROOT
+}
+
+great_depression_public_works_rail_plan_is_valid = {
+	great_depression_public_works_rail_endpoints_are_current = yes
+	ROOT = {
+		can_build_railway = {
+			level = constant:great_depression_public_works.rail_level
+			start_state = PREV
+			target_state = var:PREV.great_depression_public_works_rail_partner
+			build_only_on_allied = yes
+			fallback = no
+			controller_priority = {
+				base = constant:great_depression_public_works.route_denied
+				modifier = { add = constant:great_depression_public_works.route_owner_add tag = ROOT }
+			}
+		}
+	}
+}
+
+great_depression_public_works_rail_endpoints_are_current = {
+	great_depression_public_works_plan_is_current = yes
+	has_variable = great_depression_public_works_rail_partner
+	any_neighbor_state = { state = var:PREV.great_depression_public_works_rail_partner }
+	var:great_depression_public_works_rail_partner = {
+		is_owned_by = ROOT
+		is_controlled_by = ROOT
+		great_depression_public_works_has_capital_railway = yes
+	}
+}
+
+great_depression_public_works_physical_target_is_met = {
+	great_depression_public_works_plan_is_current = yes
+	OR = {
+		AND = {
+			check_variable = { var = great_depression_public_works_plan_kind value = constant:great_depression_public_works_kind.infrastructure_capacity compare = equals }
+			has_variable = great_depression_public_works_target_level
+			has_variable = great_depression_public_works_initial_level
+			check_variable = { var = great_depression_public_works_target_level value = great_depression_public_works_initial_level compare = greater_than }
+			check_variable = { var = great_depression_public_works_target_level value = constant:great_depression_public_works.infrastructure_cap compare = less_than_or_equals }
+			check_variable = { var = infrastructure_level value = great_depression_public_works_target_level compare = greater_than_or_equals }
+			check_variable = { var = non_damaged_building_level@infrastructure value = great_depression_public_works_target_level compare = greater_than_or_equals }
+		}
+		AND = {
+			check_variable = { var = great_depression_public_works_plan_kind value = constant:great_depression_public_works_kind.port_connection compare = equals }
+			is_coastal = yes
+			has_variable = great_depression_public_works_target_level
+			has_variable = great_depression_public_works_initial_level
+			check_variable = { var = great_depression_public_works_target_level value = great_depression_public_works_initial_level compare = greater_than }
+			check_variable = { var = great_depression_public_works_target_level value = constant:great_depression_public_works.port_target compare = less_than_or_equals }
+			check_variable = { var = building_level@naval_base value = great_depression_public_works_target_level compare = greater_than_or_equals }
+			check_variable = { var = non_damaged_building_level@naval_base value = great_depression_public_works_target_level compare = greater_than_or_equals }
+		}
+		AND = {
+			check_variable = { var = great_depression_public_works_plan_kind value = constant:great_depression_public_works_kind.air_protection compare = equals }
+			has_variable = great_depression_public_works_target_level
+			has_variable = great_depression_public_works_initial_level
+			check_variable = { var = great_depression_public_works_target_level value = great_depression_public_works_initial_level compare = greater_than }
+			check_variable = { var = great_depression_public_works_target_level value = constant:great_depression_public_works.air_protection_target compare = less_than_or_equals }
+			check_variable = { var = building_level@anti_air_building value = great_depression_public_works_target_level compare = greater_than_or_equals }
+			check_variable = { var = non_damaged_building_level@anti_air_building value = great_depression_public_works_target_level compare = greater_than_or_equals }
+		}
+		AND = {
+			check_variable = { var = great_depression_public_works_plan_kind value = constant:great_depression_public_works_kind.rail_connection compare = equals }
+			great_depression_public_works_rail_endpoints_are_current = yes
+			ROOT = {
+				has_railway_connection = {
+					start_state = PREV
+					target_state = var:PREV.great_depression_public_works_rail_partner
+					build_only_on_allied = yes
+					fallback = no
+					controller_priority = {
+						base = constant:great_depression_public_works.route_denied
+						modifier = { add = constant:great_depression_public_works.route_owner_add tag = ROOT }
+					}
+				}
+			}
+		}
+		AND = {
+			check_variable = { var = great_depression_public_works_plan_kind value = constant:great_depression_public_works_kind.housing_support compare = equals }
+			has_state_flag = great_depression_public_works_housing_proven
+			great_depression_public_works_local_recovery_is_measured = yes
+		}
+		AND = {
+			check_variable = { var = great_depression_public_works_plan_kind value = constant:great_depression_public_works_kind.abandoned_works compare = equals }
+			has_state_flag = great_depression_public_works_abandoned_conversion_proven
+			great_depression_public_works_local_recovery_is_measured = yes
+		}
+	}
+}
+
+great_depression_public_works_result_is_proven = {
+	great_depression_public_works_plan_is_current = yes
+	has_state_flag = great_depression_public_works_result_proven
+	has_variable = great_depression_public_works_proven_authorization_id
+	check_variable = { var = great_depression_public_works_proven_authorization_id value = great_depression_center_project_authorization_id compare = equals }
+}
+
+great_depression_public_works_repair_proof_is_met = {
+	great_depression_public_works_plan_is_current = yes
+	has_variable = great_depression_public_works_target_damage
+	has_variable = great_depression_public_works_initial_level
+	has_variable = great_depression_public_works_initial_damage
+	check_variable = { great_depression_public_works_initial_level > constant:great_depression_api.zero }
+	check_variable = { great_depression_public_works_initial_damage > constant:great_depression_api.zero }
+	check_variable = { var = great_depression_public_works_initial_damage value = great_depression_public_works_initial_level compare = less_than_or_equals }
+	check_variable = { var = great_depression_public_works_target_damage value = great_depression_public_works_initial_damage compare = less_than }
+	OR = {
+		AND = {
+			check_variable = { var = great_depression_public_works_plan_kind value = constant:great_depression_public_works_kind.infrastructure_repair compare = equals }
+			check_variable = { var = damaged_building_level@infrastructure value = great_depression_public_works_target_damage compare = less_than_or_equals }
+			check_variable = { var = building_level@infrastructure value = great_depression_public_works_initial_level compare = greater_than_or_equals }
+		}
+		AND = {
+			check_variable = { var = great_depression_public_works_plan_kind value = constant:great_depression_public_works_kind.rail_repair compare = equals }
+			check_variable = { var = damaged_building_level@rail_way value = great_depression_public_works_target_damage compare = less_than_or_equals }
+			check_variable = { var = building_level@rail_way value = great_depression_public_works_initial_level compare = greater_than_or_equals }
+		}
+		AND = {
+			check_variable = { var = great_depression_public_works_plan_kind value = constant:great_depression_public_works_kind.port_repair compare = equals }
+			check_variable = { var = damaged_building_level@naval_base value = great_depression_public_works_target_damage compare = less_than_or_equals }
+			check_variable = { var = building_level@naval_base value = great_depression_public_works_initial_level compare = greater_than_or_equals }
+		}
+	}
+}
+
+# Read-only eligibility is expressed through the same stages measured by the
+# national demand rebuild. National distress alone never fabricates local need.
+great_depression_public_works_has_local_housing_need = {
+	NOT = { has_state_flag = great_depression_center_liquidated }
+	OR = {
+		AND = { has_state_flag = great_depression_center_distressed NOT = { has_state_flag = great_depression_center_protected } }
+		has_state_flag = great_depression_center_idled
+		has_state_flag = great_depression_center_shuttered
+		has_state_flag = great_depression_center_hollowed
+		has_state_flag = great_depression_center_abandoned
+	}
+}
+
+great_depression_public_works_local_recovery_is_measured = {
+	has_variable = great_depression_public_works_initial_local_demand
+	has_variable = great_depression_center_local_demand
+	check_variable = { great_depression_public_works_initial_local_demand > constant:great_depression_api.zero }
+	check_variable = { var = great_depression_center_local_demand value = great_depression_public_works_initial_local_demand compare = less_than }
+	has_state_flag = great_depression_center_reopened
+	NOT = { has_state_flag = great_depression_center_liquidated }
+}
+
+# Unrelated projects retain their existing completion contract.
+great_depression_project_has_public_works_result = {
+	OR = {
+		AND = {
+			NOT = { check_variable = { var = great_depression_center_project_type value = constant:great_depression_center_project.public_works compare = equals } }
+			NOT = { has_state_flag = great_depression_public_works_plan_active }
+			NOT = { has_state_flag = great_depression_public_works_paid_receipt }
+		}
+		great_depression_public_works_result_is_proven = yes
+	}
+}

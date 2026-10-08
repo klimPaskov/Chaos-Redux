@@ -21,6 +21,7 @@ EFFECT_FILES = (
     r"common\scripted_effects\035_great_depression_inherited_liability_effects.txt",
     r"common\scripted_effects\035_great_depression_bank_effects.txt",
     r"common\scripted_effects\035_great_depression_project_duration_effects.txt",
+    r"common\scripted_effects\035_great_depression_public_works_effects.txt",
 )
 TRIGGER_FILES = (
     r"common\scripted_triggers\035_great_depression_triggers.txt",
@@ -28,6 +29,7 @@ TRIGGER_FILES = (
     r"common\scripted_triggers\035_great_depression_decision_surface_triggers.txt",
     r"common\scripted_triggers\035_great_depression_bank_triggers.txt",
     r"common\scripted_triggers\035_great_depression_project_duration_triggers.txt",
+    r"common\scripted_triggers\035_great_depression_public_works_triggers.txt",
 )
 CONSTANTS_FILE = r"common\script_constants\035_great_depression_constants.txt"
 REGION_CONSTANTS_FILE = r"common\script_constants\035_great_depression_region_constants.txt"
@@ -172,6 +174,7 @@ class Event35Runtime:
         "activate_mission", "remove_mission",
         "clamp_temp_variable",
         "add_days_mission_timeout",
+        "build_railway",
     }
 
     def __init__(self):
@@ -287,12 +290,19 @@ class Event35Runtime:
             mission = token.split("@", 1)[1]
             return max(0, self.current.values["native_mission_deadlines"][mission] - self.globals["num_days"])
         # Documented native state getters are declared fixture data.
-        if isinstance(token, str) and (token == "infrastructure_level" or token.startswith("damaged_building_level@")):
+        if token == "PREV.PREV":
+            return self.scope_stack[-3]
+        if isinstance(token, str) and (token == "infrastructure_level" or token.startswith(("damaged_building_level@", "building_level@", "non_damaged_building_level@"))):
             scope = self.scope_stack[-1]
             if scope.kind != "state":
                 raise SourceContractError(f"native state getter {token} in {scope.kind}")
             if token == "infrastructure_level":
                 return scope.buildings.get("infrastructure", 0)
+            if token.startswith("building_level@"):
+                return scope.buildings.get(token.split("@", 1)[1], 0)
+            if token.startswith("non_damaged_building_level@"):
+                building = token.split("@", 1)[1]
+                return scope.buildings.get(building, 0) - scope.values.get("damaged_building_level@" + building, 0)
             return scope.values.get(token, 0)
         if isinstance(token, Scope) or isinstance(token, (float, int, bool)):
             return token
@@ -369,6 +379,8 @@ class Event35Runtime:
             values[rest] = value
 
     def _variable(self, token):
+        if token == "infrastructure_level" or token.startswith(("building_level@", "damaged_building_level@", "non_damaged_building_level@")):
+            return self._value(token)
         if token.startswith("constant:"):
             return self._value(token)
         if token.startswith("global.") or token.startswith(("ROOT.", "PREV.", "THIS.")) or "^" in token:
@@ -390,7 +402,7 @@ class Event35Runtime:
             return scope.population_k
         if key == "num_of_factories" and scope.kind == "country":
             return scope.values.get("num_of_factories", 0)
-        if key in ("industrial_complex", "arms_factory", "dockyard") and scope.kind == "state":
+        if key in ("industrial_complex", "arms_factory", "dockyard", "naval_base", "anti_air_building") and scope.kind == "state":
             return scope.buildings.get(key, 0)
         if key == "num_of_civilian_factories_available_for_projects" and scope.kind == "country":
             return scope.resources.get("civilian_factories_available", 0)
@@ -523,6 +535,28 @@ class Event35Runtime:
             return scope.kind == "state" and self._same(scope.controller, self._value(value))
         if key == "state":
             return scope.kind == "state" and self._same(scope, self._value(value))
+        if key == "is_capital":
+            return scope.kind == "state" and self._same(scope, scope.owner.values.get("capital")) == (value == "yes")
+        if key == "is_coastal":
+            return scope.kind == "state" and scope.values.get("coastal", False) == (value == "yes")
+        if key in ("any_neighbor_state", "any_owned_state"):
+            candidates = scope.values.get("neighbors" if key == "any_neighbor_state" else "owned_states", [])
+            for candidate in candidates:
+                self.scope_stack.append(candidate)
+                try:
+                    if self._conditions(value, candidate):
+                        return True
+                finally:
+                    self.scope_stack.pop()
+            return False
+        if key in ("can_build_railway", "has_railway_connection"):
+            args = {n.key: n.value for n in value}
+            start, end = self._value(args["start_state"]), self._value(args["target_state"])
+            if not isinstance(start, Scope) or not isinstance(end, Scope):
+                raise SourceContractError("Rail endpoint fixture must bind real states")
+            if args.get("build_only_on_allied") != "yes" or args.get("fallback") != "no" or "controller_priority" not in args:
+                raise SourceContractError("Rail operation lost frozen route restrictions")
+            return (start.id, end.id) in scope.values.get(key, set())
         if key == "is_in_array":
             args = {item.key: item.value for item in value}
             array = self._array_values(args["array"])
@@ -596,7 +630,16 @@ class Event35Runtime:
             if previous_was_branch:
                 branch_taken = False
                 previous_was_branch = False
-            if key in ("ROOT", "PREV", "THIS") or key.startswith("event_target:") or key.startswith("var:"):
+            if key == "every_neighbor_state":
+                for candidate in scope.values.get("neighbors", []):
+                    self.scope_stack.append(candidate)
+                    try:
+                        predicate = first(value, "limit", [])
+                        if self._conditions(predicate, candidate):
+                            self._effects([n for n in value if n.key != "limit"], candidate)
+                    finally:
+                        self.scope_stack.pop()
+            elif key in ("ROOT", "PREV", "THIS") or key.startswith("event_target:") or key.startswith("var:"):
                 target = self._value(key)
                 if not isinstance(target, Scope):
                     raise SourceContractError(f"scope selector {key} did not resolve to an object")
@@ -771,6 +814,16 @@ class Event35Runtime:
             self._require_scope(scope, "state", key, line)
             args = {child.key: child.value for child in value}
             self.native_calls.append((key, scope.id, self._value(args.get("type")), self._value(args.get("level"))))
+            if args.get("instant_build") == "yes":
+                building, amount = self._value(args["type"]), self._value(args["level"])
+                scope.buildings[building] = scope.buildings.get(building, 0) + amount
+        elif key == "build_railway":
+            self._require_scope(scope, "country", key, line)
+            args = {child.key: child.value for child in value}
+            start, end = self._value(args["start_state"]), self._value(args["target_state"])
+            self.native_calls.append((key, scope.id, start.id, end.id))
+            if scope.values.get("fixture_rail_build_succeeds", True):
+                scope.values.setdefault("has_railway_connection", set()).add((start.id, end.id))
         elif key == "remove_building":
             self._require_scope(scope, "state", key, line)
             args = {child.key: child.value for child in value}
@@ -830,6 +883,7 @@ def registered_case(stage="shuttered", episode=35):
         "civilian_factories_available": 20, "stability": 0.7, "war_support": 0.6,
     })
     site = state(121, owner)
+    owner.values.update({"capital": site, "owned_states": [site]})
     site.population_k = 8000
     site.buildings.update({"industrial_complex": 3, "arms_factory": 1, "dockyard": 0})
     site.flags.update({"great_depression_center", f"great_depression_center_{stage}"})

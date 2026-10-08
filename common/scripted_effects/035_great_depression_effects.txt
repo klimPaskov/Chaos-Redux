@@ -753,6 +753,18 @@ great_depression_authorize_center_project = {
 			great_depression_center_project_target_is_open = yes
 			is_owned_by = ROOT
 			is_controlled_by = ROOT
+			OR = {
+				ROOT = { NOT = { check_variable = { var = great_depression_pending_center_project value = constant:great_depression_center_project.public_works compare = equals } } }
+				AND = {
+					has_state_flag = great_depression_public_works_plan_prepared
+					state = var:great_depression_public_works_plan_site
+					check_variable = { var = great_depression_public_works_plan_payer value = ROOT compare = equals }
+					check_variable = { var = great_depression_public_works_expected_payment_count value = ROOT.great_depression_successful_action_count compare = equals }
+					check_variable = { var = ROOT.great_depression_last_action_day value = global.num_days compare = equals }
+					check_variable = { var = great_depression_public_works_plan_episode_id value = ROOT.great_depression_active_episode_id compare = equals }
+					check_variable = { great_depression_public_works_plan_kind > constant:great_depression_public_works_kind.none }
+				}
+			}
 			check_variable = {
 				var = ROOT.great_depression_pending_center_project
 				value = constant:great_depression_center_project.none
@@ -801,6 +813,10 @@ great_depression_authorize_center_project = {
 	set_variable = { great_depression_center_project_paralysis_days = constant:great_depression_api.zero }
 	set_variable = { great_depression_next_center_project_stage = constant:great_depression_center_project_stage.authorized }
 	great_depression_set_center_project_stage = yes
+	if = {
+		limit = { check_variable = { var = great_depression_center_project_type value = constant:great_depression_center_project.public_works compare = equals } }
+		great_depression_bind_public_works_plan = yes
+	}
 	ROOT = {
 		great_depression_refresh_mission_capacity_ledger = yes
 		great_depression_process_center_mission = yes
@@ -825,6 +841,8 @@ great_depression_fail_center_project = {
 		set_variable = { great_depression_center_project_stage = constant:great_depression_center_project_stage.failed }
 		set_variable = { great_depression_center_project_stage_day = global.num_days }
 		great_depression_write_center_project_ledger = yes
+		great_depression_retire_public_works_mission = yes
+		great_depression_clear_public_works_plan = yes
 		clr_state_flag = great_depression_center_project_authorized
 		clr_state_flag = great_depression_center_project_active_work
 		clr_state_flag = great_depression_center_project_paused
@@ -852,6 +870,7 @@ great_depression_fail_center_project = {
 }
 
 great_depression_complete_center_project = {
+	great_depression_finish_public_works_result = yes
 	if = {
 		limit = {
 			has_state_flag = great_depression_center
@@ -865,6 +884,7 @@ great_depression_complete_center_project = {
 			is_controlled_by = ROOT
 			great_depression_center_project_has_unspent_authorization = yes
 			great_depression_center_project_duration_is_coherent = yes
+			great_depression_project_has_public_works_result = yes
 			check_variable = { var = great_depression_center_project_work_days value = great_depression_center_project_required_work_days compare = greater_than_or_equals }
 			check_variable = {
 				var = great_depression_center_project_type
@@ -918,6 +938,11 @@ great_depression_complete_center_project = {
 				limit = { check_variable = { var = great_depression_center_project_type value = constant:great_depression_center_project.public_works compare = equals } }
 				set_state_flag = great_depression_center_public_works
 				add_dynamic_modifier = { modifier = great_depression_center_public_works }
+				set_variable = { great_depression_public_works_last_completed_kind = great_depression_public_works_plan_kind }
+				set_variable = { great_depression_public_works_last_completed_authorization_id = great_depression_center_project_authorization_id }
+				set_variable = { great_depression_public_works_last_completed_payer = great_depression_public_works_plan_payer }
+				set_variable = { great_depression_public_works_last_completed_episode_id = great_depression_public_works_plan_episode_id }
+				great_depression_clear_public_works_plan = yes
 				if = {
 					limit = { NOT = { has_state_flag = great_depression_center_public_works_completed_receipt } }
 					set_state_flag = great_depression_center_public_works_completed_receipt
@@ -1052,6 +1077,7 @@ great_depression_complete_center_project = {
 }
 
 great_depression_process_center_project = {
+	great_depression_update_public_works_repair_term = yes
 	if = {
 		limit = {
 			has_state_flag = great_depression_center
@@ -1144,6 +1170,12 @@ great_depression_process_center_project = {
 					great_depression_set_center_project_stage = yes
 				}
 			}
+			great_depression_update_public_works_repair_term = yes
+			if = {
+				limit = { check_variable = { var = great_depression_center_project_type value = constant:great_depression_center_project.public_works compare = equals } }
+				ROOT = { great_depression_sync_center_project_mission = yes }
+			}
+			great_depression_timeout_unproved_public_works = yes
 		}
 	}
 }
@@ -1177,6 +1209,7 @@ great_depression_reconcile_center_transfer = {
 			NOT = { has_state_flag = great_depression_center_transfer_contract_open }
 		}
 		set_state_flag = great_depression_center_transfer_receipt
+		remove_dynamic_modifier = { modifier = great_depression_public_works_repair_administration }
 		set_state_flag = great_depression_center_transfer_contract_open
 		clr_state_flag = great_depression_center_transfer_adopted_receipt
 		set_variable = { great_depression_center_transfer_episode_id = ROOT.great_depression_active_episode_id }
@@ -1360,6 +1393,23 @@ great_depression_adopt_transferred_center = {
 		set_variable = { great_depression_center_episode_id = ROOT.great_depression_active_episode_id }
 		if = {
 			limit = {
+				has_state_flag = great_depression_public_works_plan_active
+				check_variable = { var = great_depression_public_works_plan_authorization_id value = great_depression_center_project_authorization_id compare = equals }
+				check_variable = { var = great_depression_public_works_plan_episode_id value = great_depression_center_transfer_episode_id compare = equals }
+			}
+			set_variable = { great_depression_public_works_plan_episode_id = ROOT.great_depression_active_episode_id }
+			set_variable = { great_depression_public_works_plan_owner = ROOT }
+			# Issuance stays spent after adoption into a different national episode.
+			if = {
+				limit = {
+					check_variable = { var = great_depression_public_works_issued_authorization_id value = great_depression_center_project_authorization_id compare = equals }
+					check_variable = { var = great_depression_public_works_issued_episode_id value = great_depression_center_transfer_episode_id compare = equals }
+				}
+				set_variable = { great_depression_public_works_issued_episode_id = ROOT.great_depression_active_episode_id }
+			}
+		}
+		if = {
+			limit = {
 				OR = {
 					has_state_flag = great_depression_center_project_authorized
 					has_state_flag = great_depression_center_project_active_work
@@ -1407,6 +1457,7 @@ great_depression_adopt_transferred_center = {
 		}
 		great_depression_write_center_stage_ledger = yes
 		great_depression_write_center_project_ledger = yes
+		great_depression_update_public_works_repair_term = yes
 		set_state_flag = great_depression_center_transfer_adopted_receipt
 		clr_state_flag = great_depression_center_transfer_contract_open
 		clear_variable = great_depression_transfer_adopted_stage
@@ -3193,6 +3244,7 @@ great_depression_clear_registered_center_runtime = {
 						}
 					}
 				great_depression_clear_center_state_flags = yes
+				great_depression_clear_public_works_plan = yes
 				clear_variable = great_depression_center_episode_id
 				clr_state_flag = great_depression_center_loss_receipt
 				clr_state_flag = great_depression_center_positive_resolution_receipt
@@ -4577,32 +4629,25 @@ great_depression_rebuild_hidden_components = {
 			end = great_depression_center_state_ids^num
 			value = great_depression_hidden_center_index
 			var:great_depression_center_state_ids^great_depression_hidden_center_index = {
+				great_depression_measure_center_local_demand = yes
+				ROOT = { add_to_variable = { great_depression_hidden_demand_stress = PREV.great_depression_center_local_demand } }
 				if = {
 					limit = { has_state_flag = great_depression_center_distressed }
 					ROOT = {
-						add_to_variable = { great_depression_hidden_demand_stress = constant:great_depression_hidden_component.demand_distressed_center }
 						add_to_variable = { great_depression_hidden_industrial_stress = constant:great_depression_hidden_component.industrial_center_pressure }
 					}
 				}
 				if = {
 					limit = { has_state_flag = great_depression_center_idled }
 					ROOT = {
-						add_to_variable = { great_depression_hidden_demand_stress = constant:great_depression_hidden_component.demand_idled_center }
 						add_to_variable = { great_depression_hidden_industrial_stress = constant:great_depression_hidden_component.industrial_center_pressure }
 					}
 				}
 				if = {
 					limit = { has_state_flag = great_depression_center_shuttered }
 					ROOT = {
-						add_to_variable = { great_depression_hidden_demand_stress = constant:great_depression_hidden_component.demand_shuttered_center }
 						add_to_variable = { great_depression_hidden_industrial_stress = constant:great_depression_hidden_component.industrial_center_pressure }
 					}
-				}
-				# A deliberately liquidated center is written off: it leaves only a
-				# residual drag on demand instead of the full weight of a failed one.
-				if = {
-					limit = { has_state_flag = great_depression_center_liquidated }
-					ROOT = { add_to_variable = { great_depression_hidden_demand_stress = constant:great_depression_hidden_component.demand_liquidated_center } }
 				}
 				if = {
 					limit = {
@@ -4610,7 +4655,6 @@ great_depression_rebuild_hidden_components = {
 						NOT = { has_state_flag = great_depression_center_liquidated }
 					}
 					ROOT = {
-						add_to_variable = { great_depression_hidden_demand_stress = constant:great_depression_hidden_component.demand_abandoned_center }
 						add_to_variable = { great_depression_hidden_industrial_stress = constant:great_depression_hidden_component.industrial_center_pressure }
 					}
 				}
@@ -4620,13 +4664,8 @@ great_depression_rebuild_hidden_components = {
 						NOT = { has_state_flag = great_depression_center_liquidated }
 					}
 					ROOT = {
-						add_to_variable = { great_depression_hidden_demand_stress = constant:great_depression_hidden_component.demand_hollowed_center }
 						add_to_variable = { great_depression_hidden_industrial_stress = constant:great_depression_hidden_component.industrial_center_pressure }
 					}
-				}
-				if = {
-					limit = { has_state_flag = great_depression_center_public_works }
-					ROOT = { add_to_variable = { great_depression_hidden_demand_stress = constant:great_depression_hidden_component.demand_public_works_relief } }
 				}
 				if = {
 					limit = {
@@ -4636,7 +4675,6 @@ great_depression_rebuild_hidden_components = {
 						}
 					}
 					ROOT = {
-						add_to_variable = { great_depression_hidden_demand_stress = constant:great_depression_hidden_component.demand_reopened_relief }
 						add_to_variable = { great_depression_hidden_industrial_stress = constant:great_depression_hidden_component.industrial_recovery_relief }
 					}
 				}

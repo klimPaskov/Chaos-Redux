@@ -115,6 +115,11 @@ great_depression_sync_center_project_mission = {
 						set_variable = { great_depression_mission_reopen_center_deadline_day = PREV.great_depression_center_project_due_day }
 						add_to_variable = { great_depression_mission_reopen_center_deadline_day = constant:great_depression_project_duration.mission_grace_days }
 						if = {
+							limit = { PREV = { check_variable = { var = great_depression_center_project_type value = constant:great_depression_center_project.public_works compare = equals } } }
+							set_variable = { great_depression_mission_reopen_center_deadline_day = PREV.great_depression_center_project_due_day }
+							add_to_variable = { great_depression_mission_reopen_center_deadline_day = constant:great_depression_public_works.proof_grace_days }
+						}
+						if = {
 							limit = { check_variable = { var = global.num_days value = great_depression_mission_reopen_center_deadline_day compare = greater_than_or_equals } }
 							great_depression_timeout_reopen_depression_center = yes
 							remove_mission = great_depression_reopen_depression_center
