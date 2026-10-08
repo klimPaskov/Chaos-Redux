@@ -2,6 +2,21 @@
 
 All names in this file are working labels, not final localisation.
 
+## Current implementation checkpoint (2026-10-08)
+
+Acceptance is determined by the recorded user decisions and parent acceptance within the full Event 006 authorization, rather than this file's location or current source presence.
+D7 admits the FORM-07 IFX contract, D13 admits the exact IW-043/CHU and IW-058/ASY packages, D23 accepts FORM-08's two-member TRA/AXX contract under DCX, and D24 implements FORM-11 under CHX, as recorded in [the decision ledger](../../../plans/006_independence_wave_plans/agent_decisions_2026-10-04.md).
+D29 and D30 supersede the older MAD/SIN unadmitted-package claims, without making their other regional formable families operational.
+The current crosswalk remains 109 attested packages, 112 adapters and 78 compatible reservation groups, with IW-076/IW-131/IW-179 adapter-only and fail closed.
+Source commit `9e2837f8edc1633cd8e96415366821ca5dc16886` implements the accepted FORM-17/32/36/37 contracts, as evidenced by [the signature source report](../../../plans/006_independence_wave_plans/subagent_handoffs/signature_source_integration_20261007.md).
+These four families retain exact live member/anchor proof, proposal-specific replies, sovereign-member integration, safe carrier cosmetic identities and two paid 180-day stages.
+This implementation subset does not promote the other rows of the 48-family registry.
+Native formation, imported-focus layout, production GUI, complete AI/balance and portrait gates remain open, and the full Event 006 goal remains active and incomplete.
+The package-incident shown-snapshot lifecycle repair is `implemented` at source in `00191fdc2e741307846268192392f91d6bf0bac5`, as recorded in [the owner source report](../../../plans/006_independence_wave_plans/subagent_handoffs/package_incident_snapshot_source_20261008.md).
+All 130 A/B mappings and 260 option bodies are preserved, with current A/B shown snapshots, remaining-hour dispatch and the original 45/150-day appointments retained.
+Native popup/timeout/zero-delay behavior, helper expansion and successful lifecycle comparison remain open.
+The [whole-pack reconciliation handoff](../../../plans/006_independence_wave_plans/subagent_handoffs/wholepack_doc_reconciliation_20261008.md) records the bounded documentation changes and current evidence limits.
+
 ## Regional formable framework
 
 Independence Wave countries can grow into larger states through a shared regional formation system.
@@ -41,33 +56,38 @@ The initial registry is in `matrices/006_formable_family_registry.csv`.
 
 ## Grouped state-puzzle consumer contract (accepted current addition, 2026-08-09)
 
-The current Event 006 state-puzzle surface is a grouped consumer workflow for fourteen runtime-authored families: FORM-01, FORM-02, FORM-03, FORM-04, FORM-05, FORM-07, FORM-08, FORM-09, FORM-12, FORM-13, FORM-16, FORM-18, FORM-39, and FORM-48.
+The current Event 006 state-puzzle surface is a grouped consumer workflow for nineteen source-authored families: FORM-01, FORM-02, FORM-03, FORM-04, FORM-05, FORM-07, FORM-08, FORM-09, FORM-11, FORM-12, FORM-13, FORM-16, FORM-17, FORM-18, FORM-32, FORM-36, FORM-37, FORM-39 and FORM-48.
 
 This is a current implementation subset of the 48-row registry, not a declaration that every registry row is operational.
 
-Each of the fourteen consumer specs declares `group_id = independence_wave_formables`, `group_scripted_gui_id = independence_wave_formable_state_puzzle_scripted_gui`, `group_window_id = chaosx_independence_wave_formable_state_puzzle_window`, one family activation helper, a finite `summary_required_count`, and the family territory helper used by the owning formation path.
+Each consumer spec declares `group_id = independence_wave_formables`, `group_scripted_gui_id = independence_wave_formable_state_puzzle_scripted_gui`, `group_window_id = chaosx_independence_wave_formable_state_puzzle_window`, one family activation helper, a finite `summary_required_count`, and the family territory helper used by the owning formation path.
 
 The grouped scripted GUI is presentation-only for human players and leaves the normal decision, mission, and AI paths as gameplay owners.
 
 State qualification, summary and hover status, player availability, and AI commit availability use the same family territory contract, with pending founding invitations taking precedence so mutually exclusive family overlays do not present simultaneously.
 
-The current generated evidence covers fourteen manifests, 50 candidate-state rows, and 100 unresolved/qualifying DDS pieces, while seventeen Event 006 formable decision categories attach the same grouped scripted GUI through `context_type = decision_category`.
+The current source manifests cover nineteen families, 66 candidate-state rows and 132 paired unresolved/qualifying DDS pieces, while twenty Event 006 formable decision categories attach the same grouped scripted GUI through `context_type = decision_category`.
+The fifteen-family, 52-row, 104-piece and eighteen-category count is the pre-`9e2837f8` source checkpoint, retained as historical coverage rather than the current total.
 
-FORM-07 and FORM-48 remain readiness-controlled and fail closed under their identity, package, member, and integration contracts; their visible consumer surfaces do not make the families available for formation.
+FORM-07 uses the accepted IFX identity and its exact Iberian consent, territory and integration contract under D7.
+FORM-48 has a source-authored contract but remains unreachable without the admitted HBX/HAW/FSM member set; a visible puzzle does not provide missing admission.
 
-FORM-08 intentionally displays the researched states 84 and 82 with a required summary count of three while its territory helper remains false; no third state is invented until a researched Danubian member and anchor are approved.
+D23 defines FORM-08 as the two-member TRA/AXX family with states 84 and 82, two required anchors, explicit consent and the DCX cosmetic identity.
+It does not require an invented third member or state.
 
-The category attachment crosswalk and current MCP GUI evidence are retained in `docs/plans/006_independence_wave_plans/subagent_handoffs/006_formable_state_puzzle_category_attachment_audit_2026_08_09.md` and the settled filesystem audit; aggregate offline GUI diagnostics do not constitute family-isolated visual acceptance.
+The August 9 category attachment audit and settled filesystem audit remain historical crosswalk evidence under `docs/plans/006_independence_wave_plans/subagent_handoffs/`.
+The [four-family GUI owner handoff](../../../plans/006_independence_wave_plans/subagent_handoffs/ready_formable_puzzles_gui_takeover_20261006.md) identifies the later grouped layout and two added categories, with `SCAN_PATTERN_LIMIT` and no matched current production before/after artifacts.
+Manifest or asset coverage and older aggregate GUI diagnostics do not constitute current family-isolated visual acceptance.
 
 ## Event 006 compatibility and signature contract for IW-043 and IW-058
 
-The source-implemented CHU/ASY package tranche remains a separate fail-closed design surface rather than part of the current 32-package runtime attestation set across 29 compatible reservation groups. IW-043 on vanilla carrier `CHU` and IW-058 on vanilla carrier `ASY` remain HOLD / fail-closed until their sourced identity, rights, package, and runtime gates are independently accepted. IW-023 TRA is admitted to the runtime and SCN-008 dispatch sets by the dated reconciliation handoff, but FORM-08 remains a separate fail-closed Vojvodina/Slavonia member, consent, and anchor gate. Their signature formable surfaces remain separate gates:
+D13 admits IW-043 on CHU and IW-058 on ASY through their exact package gates.
+Their grounded character portraits remain attributed source placeholders, and source admission does not prove native gameplay or a styled-final portrait.
+FORM-12 and FORM-13 use the IW-043 member, anchor, consent, integration and cleanup contracts.
+FORM-18 and the sovereign Mesopotamian autonomy settlement use the IW-058 guarantees and corresponding exact contracts.
+The compatibility adapter suppresses vanilla `form_idel_uralic_republic`, `neo_assyrian_empire_decision` and `neo_mesopotamia_decision` only for the active Event 006 signature carriers and preserves ordinary and Event 005 consumers.
 
-- FORM-12 and FORM-13 must use the IW-043 member, anchor, rights, consent, integration, and cleanup contract.
-- FORM-18 and the sovereign Mesopotamian autonomy settlement must use the IW-058 guarantee, anchor, consent, integration, and cleanup contract.
-- The exact compatibility adapter for vanilla `form_idel_uralic_republic`, `neo_assyrian_empire_decision`, and `neo_mesopotamia_decision` passed its parent re-audit. It suppresses those shortcuts only for active Event 006 IW-043/IW-058 carriers and preserves ordinary and Event 005 behavior.
-
-The CHU/ASY package surfaces remain source-implemented but unadmitted. The exact package setup may write the FORM-12/13/18 adapter and achievement-writer attestations only after the matching carrier passes the current package gate. FORM-12 and FORM-13 require three external consenting members with three distinct controlled anchors. FORM-18 requires two external consenting members with two distinct controlled anchors. All three use a paid 180-day congress, a frozen invitation ledger, explicit human replies or scored AI consent, an immutable terminal recount, and a bounded retry cooldown.
+The exact package setup may write the FORM-12/13/18 adapter and achievement-writer attestations only after the matching carrier passes the current package gate. FORM-12 and FORM-13 require three external consenting members with three distinct controlled anchors. FORM-18 requires two external consenting members with two distinct controlled anchors. All three use a paid 180-day congress, a frozen invitation ledger, explicit human replies or scored AI consent, an immutable terminal recount, and a bounded retry cooldown.
 
 Successful formation applies only a carrier cosmetic identity and then runs two sovereignty-preserving integration stages. Member countries retain their tags, sovereignty, Event 006 origin, territory, focus content, and units. No member annexation, subject creation, blanket core grant, or origin-ending shortcut is available. FORM-18's military method requires the tracked defensive former-host, sovereign-anchor, and corridor-control receipts before payment and rejects an offensive pretext. Its sovereign-autonomy compact is a mutually exclusive bilateral alternative with boundary, protection, jurisdiction, transit, property, and security terms. The two IW-043 route proofs and the three IW-058 proof writers are sole, exact-contract call sites.
 

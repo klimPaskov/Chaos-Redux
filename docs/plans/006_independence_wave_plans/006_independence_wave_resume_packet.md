@@ -9,6 +9,17 @@ Read [the signature source integration report](subagent_handoffs/signature_sourc
 The source includes 31 signature focuses, eight paid projects, three achievements with nine reviewed DDS states, four exact-member contracts with two paid 180-day stages, four puzzle overlays with fourteen pieces, six protocol-defect repairs, and late-governance/restoration-receipt handling.
 Those source plans are implemented and must not be restarted from the earlier draft queue.
 
+The package-incident lifecycle plan is implemented at source in `00191fdc2e741307846268192392f91d6bf0bac5`.
+Its [source report](subagent_handoffs/package_incident_snapshot_source_20261008.md) and [independent architect audit](subagent_handoffs/package_incident_snapshot_audit_20261008.md) retain the 130 A/B event mappings and 260 byte-identical option bodies, preserved shown generation/package snapshots, queued remaining hours and the original 45/150-day appointments.
+The canonical pre-change sources are under `evidence_20261008/package_incident_snapshots/frozen_before/`; the later `before/` copy is noncanonical.
+Native popup lifetime, timeout/after ordering, zero-delay delivery and successful MCP lifecycle comparison remain open.
+Arbitrary replay of a closed handler after its shown slot is reused is outside the country-snapshot guarantee.
+Do not restart this source plan or treat its source cases as native execution.
+
+Flag acceptance and country integration evidence are reconciled in `cc59fddfa76bd7d007dcd1d763b618c0d91e3464`.
+The four ready-family charter flags retain parent visual acceptance and the 48 byte-identical ideology aliases, with native flag selection still unverified.
+The [country integration review](subagent_handoffs/signature_country_integration_20261008.md) preserves the separate map, portrait and domain-evidence limits.
+
 The [Mon/PUSA payoff contract](../../specs/006_independence_wave_specs/specs/006_signature_payoff_contract.md) promotes the planner's recommendations with an independent acceptance basis: parent acceptance on October 7 under the human's standing recommended-choice instruction, reaffirmed in this October 8 reconciliation assignment.
 The source commit supplies separate implementation proof.
 No new broad expansion is required for the Mon river-office or PUSA payoff findings.
@@ -26,7 +37,8 @@ Keep the [signature comparison](subagent_handoffs/signature_probability_compare_
 The [catalog review](subagent_handoffs/signature_catalog_review_20261007.md) verifies Event 006 detail/evolution parity without a workbook edit, and leaves `Needs Testing` unchanged.
 It does not certify every queued catalog or export surface.
 
-Next feasible accepted work is to reconcile the takeover audit's remaining Part 6/Part 7/README/formable-registry contradictions under a separately bounded documentation scope, review residual D34 dynamic-carrier consumers beyond the repaired subset, and pursue already accepted sourced-leadership standards where exact source/rights/role gates permit.
+The Part 6/Part 7/README/formable-registry contradictions are reconciled by the [whole-pack documentation handoff](subagent_handoffs/wholepack_doc_reconciliation_20261008.md), with the nineteen-family/66-row/132-piece/twenty-category source totals and individual readiness gates explicit.
+Next feasible accepted work is to review residual D34 dynamic-carrier consumers beyond the repaired subset and pursue already accepted sourced-leadership standards where exact source/rights/role gates permit.
 Retain each of the remaining 84 unattested selectable rows' individual D25-D34 dependencies.
 Do not invent countries, formable contracts or weaker substitutes to bypass those gates.
 Resume the existing focus/GUI/probability/native evidence work alongside that source cleanup.

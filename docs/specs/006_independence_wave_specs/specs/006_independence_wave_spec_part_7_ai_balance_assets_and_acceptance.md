@@ -6,13 +6,24 @@ All names in this file are working labels, not final localisation.
 
 AI, balance, asset, achievement, and acceptance checks apply to the single shared `independence_wave_focus_tree` generic framework used by every admitted Event 006 release. Package and regional variation is gated shared content and scripted adapters inside that tree. A reviewed additive carrier may preserve a meaningful existing tree, currently IW-012 ICE. Bespoke country focus-tree definitions and live/in-game testing are outside the current implementation scope. This scope decision does not waive package, formable, asset, AI, balance, rights, or runtime gates.
 
-## Current addition acceptance boundary (2026-08-09)
+## Addition contract and current source boundary (2026-10-08)
 
-The grouped formable state-puzzle workflow is source- and asset-aligned for fourteen runtime-authored families and seventeen attached Event 006 decision categories, with 50 candidate-state rows and 100 DDS pieces.
+The grouped formable state-puzzle workflow is source- and asset-aligned for nineteen source-authored families and twenty attached Event 006 decision categories, with 66 candidate-state rows and 132 DDS pieces.
+This is implementation evidence for the named source subset, rather than approval or operational readiness of all 48 registry families.
+The current crosswalk remains 109 attested packages, 112 adapters and 78 compatible reservation groups, with IW-076/IW-131/IW-179 adapter-only and fail closed.
 
 The shared GUI, generated summaries, finite state helpers, and player/AI formation gates are one contract, but the current offline GUI evidence is aggregate and does not prove family-isolated visual states, click regions, or overflow behavior.
 
-FORM-07 and FORM-48 remain intentionally readiness-controlled and fail closed, and FORM-08 remains intentionally unavailable because its researched two-state candidate set cannot satisfy the required three-state threshold; these are explicit readiness boundaries rather than completed formable availability or an approved third FORM-08 state.
+D7 admits the exact FORM-07 IFX contract, D23 defines FORM-08 with two consenting members and two anchors under DCX, and D24 supplies the FORM-11 CHX contract.
+D13 admits the exact IW-043/CHU and IW-058/ASY packages, and D29/D30 supersede the older MAD/SIN admission claims in [the parent decision record](../../../plans/006_independence_wave_plans/agent_decisions_2026-10-04.md).
+The accepted FORM-17/32/36/37 contracts are `implemented` at source in `9e2837f8edc1633cd8e96415366821ca5dc16886`, with exact sovereign members, proposal-specific replies and two paid 180-day stages recorded in [the source integration report](../../../plans/006_independence_wave_plans/subagent_handoffs/signature_source_integration_20261007.md).
+FORM-48 remains unreachable without its complete admitted member set.
+These source dispositions do not certify campaign availability, consent, AI scoring or live formation.
+Imported-focus layout, current production GUI states, complete probability/balance scenarios, native lifecycle and grounded portrait acceptance remain open.
+The package-incident shown-snapshot lifecycle repair is `implemented` at source in `00191fdc2e741307846268192392f91d6bf0bac5`, as recorded in [the owner source report](../../../plans/006_independence_wave_plans/subagent_handoffs/package_incident_snapshot_source_20261008.md).
+All 130 A/B mappings and 260 option bodies are preserved, with current A/B shown snapshots, remaining-hour dispatch and the original 45/150-day appointments retained.
+Native popup/timeout/zero-delay behavior, helper expansion and successful lifecycle comparison remain open.
+The full Event 006 goal remains active and incomplete, with this bounded patch recorded in [the whole-pack documentation handoff](../../../plans/006_independence_wave_plans/subagent_handoffs/wholepack_doc_reconciliation_20261008.md).
 
 Join the Independence Wave is a scoped current addition for severely reduced living countries and retains the normal frozen release transaction, human continuation, decline cooldown, failure receipt, and Event Log/history contract.
 
@@ -22,9 +33,9 @@ War entry records the exact pre-loss owned-state baseline, state-control callbac
 
 These additions remain separate from whole-event completion. The grouped GUI acceptance limitation, the owner-patched Join retry/loss evidence, and any future engine-backed scenario receipts remain bounded documentation and validation surfaces rather than a waiver of the broader Event 006 HOLD / PARTIAL status.
 
-The current grouped GUI inspection is retained at `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/6f38780e05ee78efa5d9a7408288d4052bbf8b00f4901651df1412c86034a231/29c916409a6e614d0b7a161658e670d296fa1b53e75d14a06fd1b810c652c56f/gui-inspect.fdf2c34d03def14e.json` with shared revision `fdf2c34d03def14e0624f6dd33e6f1ac84e4167c618d8cf12ab6fcb4cd51666d`; aggregate graph and overlap diagnostics prevent family-isolated visual acceptance. A 2026-08-13 retry against `chaosx_independence_wave_formable_state_puzzle_window` and scenario `E6_FORMABLE_STATE_PUZZLE_GUI_SETTLED_2026_08_09` returned `GUI_INSPECTED` with 93 inspected elements and a paired `GUI_RENDERED` SVG; the current source map records exact artifact URIs and the remaining workspace-wide diagnostic bound.
+The historical August grouped GUI inspection is retained at `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/6f38780e05ee78efa5d9a7408288d4052bbf8b00f4901651df1412c86034a231/29c916409a6e614d0b7a161658e670d296fa1b53e75d14a06fd1b810c652c56f/gui-inspect.fdf2c34d03def14e.json` with shared revision `fdf2c34d03def14e0624f6dd33e6f1ac84e4167c618d8cf12ab6fcb4cd51666d`; aggregate graph and overlap diagnostics prevent family-isolated visual acceptance. A 2026-08-13 retry against `chaosx_independence_wave_formable_state_puzzle_window` and scenario `E6_FORMABLE_STATE_PUZZLE_GUI_SETTLED_2026_08_09` returned `GUI_INSPECTED` with 93 inspected elements and a paired `GUI_RENDERED` SVG; the current source map records exact artifact URIs and the remaining workspace-wide diagnostic bound.
 
-The current Join event inspect/render revision is `d0c3016e0598be2a37c11abe8b7674a20c737a74e01216fe8fa12c3bfa100c25`, as recorded in `docs/plans/006_independence_wave_plans/subagent_handoffs/006_join_wave_settled_filesystem_audit_2026_08_09.md`; focused source evidence is bounded and does not replace user-owned live validation.
+The historical August Join event inspect/render revision is `d0c3016e0598be2a37c11abe8b7674a20c737a74e01216fe8fa12c3bfa100c25`, as recorded in `docs/plans/006_independence_wave_plans/subagent_handoffs/006_join_wave_settled_filesystem_audit_2026_08_09.md`; focused source evidence is bounded and does not replace user-owned live validation.
 
 ## AI design promise
 
