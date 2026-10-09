@@ -178,6 +178,13 @@ Malformed active work with missing required duration or an inconsistent certific
 
 ### Regional Works Program
 
+Convert Works into Lasting Capacity is offered during Stabilization for a current completed Public Works authorization.
+The selected center must retain its completed-works receipt, positive paid authorization, current episode and a recognized work kind, with no active plan or closed conversion receipt.
+Its entry checks current material affordability again before payment.
+Reopened centers without completed work, failed work, prior-episode receipts and Panic-stage governments cannot start that conversion.
+The closer's AI blocker uses this same eligibility contract, preserving the existing numeric weights and allowing a valid Relief Coalition willingness score of 34 in the declared source case.
+These entry guards do not establish the pending physical legacy, emergency-capacity closure or integrated material-refund outcomes.
+
 Launch Regional Works Program selects a real need in an owned, controlled and currently registered Distressed, Idled, Shuttered, Reopened or Abandoned center, excluding Liquidated sites and occupied project slots.
 Its frozen need follows this priority: damaged infrastructure, damaged railway facilities, damaged port facilities, inadequate infrastructure, an eligible neighboring capital-linked railway, missing coastal port facilities, wartime anti-air protection, abandoned works, or locally needed housing and employment recovery.
 The action prepares the exact site before payment and binds its original payer, episode, fresh payment count/day and unspent authorization after the paid project starts.

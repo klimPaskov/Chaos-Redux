@@ -1066,6 +1066,7 @@ class CenterProjectSourceTests(unittest.TestCase):
         self.assertEqual(site.values["great_depression_center_episode_id"], owner.values["great_depression_active_episode_id"])
 
         runtime.advance(8)
+        owner.values["great_depression_phase"] = runtime.constants["constant:great_depression_phase.stabilization"]
         self.assertTrue(pay_action(runtime, owner, site, "great_depression_convert_works_into_lasting_capacity",
                                    "great_depression_center_lasting_capacity_target_is_valid", "great_depression_can_pay_public_works"))
         self.complete_by_processing(runtime, owner, site)
@@ -1177,8 +1178,9 @@ class CenterProjectSourceTests(unittest.TestCase):
         self.assertEqual(site.values["great_depression_center_project_completed_authorization_id"], completed_id)
         failed_id = site.values["great_depression_center_project_failed_authorization_id"]
         runtime.advance(8)
-        self.assertTrue(pay_action(runtime, owner, site, "great_depression_convert_works_into_lasting_capacity",
-                                   "great_depression_center_lasting_capacity_target_is_valid", "great_depression_can_pay_public_works"))
+        self.assertFalse(runtime.test_trigger("great_depression_center_lasting_capacity_target_is_valid", site, root=owner))
+        self.assertTrue(pay_action(runtime, owner, site, "great_depression_launch_regional_works_program",
+                                   "great_depression_center_public_works_target_is_valid", "great_depression_can_pay_public_works"))
         self.assertEqual(site.values["great_depression_center_project_failed_authorization_id"], failed_id)
         self.assertGreater(site.values["great_depression_center_project_authorization_id"], failed_id)
         self.assertEqual(site.values["great_depression_center_project_completed_authorization_id"], completed_id)

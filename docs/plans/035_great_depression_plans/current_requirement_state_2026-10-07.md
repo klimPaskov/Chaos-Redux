@@ -1,5 +1,14 @@
 # Event 035 current requirement state, 7 October 2026
 
+Later parent source notice, 8 October 2026: the lasting-capacity entry requires Stabilization and current positively identified completed Works, rejects active/stale/failed/unpaid/repeated proof, and rechecks funds in the actual mapper.
+The closer's old factor-zero condition required the very Reopened stage its target gate demands, so valid AI willingness was always zero.
+The closer-only blocker uses its current eligibility predicate with unchanged coefficients and other helper consumers, yielding a declared valid Relief Coalition source willingness of 34.
+The final source suite passed 91 methods in 106.706 seconds, including four closure methods covering the six LCC cases, four rejected direct clicks, five malformed identities and the parsed AI formula.
+The same-six MCP comparison is partial, with +34 stable raw delta and unresolved eligibility/target race, as recorded in `subagent_handoffs/lasting_closure_probability_2026-10-08.md`.
+`subagent_handoffs/lasting_closure_entry_repair_2026-10-08.md` closes those bounded entry/AI defects only.
+Physical legacy, emergency CIV demobilization/migration, cause-sensitive resumed costs and interruption burden remain required, and the isolated escrow sidecar is not integrated merely because its files exist.
+No full refund, native campaign, per-asset, achievement, catalog/export or full Event 035 completion follows from this notice.
+
 Parent commit notice, 8 October 2026: the parent accepted the bounded source/deep-report review and published source implementation as `19d3d0a59a4b3a14b45bec4d86b02dd3179e1ec0` over 30 exact paths, with the real index reconciled.
 This supersedes earlier Public Works source-commit, source-review and private-index preparation status below, retaining those statements as historical evidence rather than full acceptance.
 The recorded 87-test pass in 82.667 seconds remains source evidence, while separate `populated_wks_v2` work continues in the full-balance queue and native execution/full Event 035 completion remain incomplete.
