@@ -88,10 +88,17 @@ Use repo skills as required implementation guidance.
 
 The `hoi4-agent-tools` service is exposed through the `mcp__hoi4_agent_tools__hoi4_*` coding-agent tools for focus trees, event chains, technology trees, weighted logic, scripted GUIs, and maps.
 Use checks that answer a concrete question about the change and reuse results until their relevant inputs change.
-If a tool fails or gives an inconclusive answer, allow the initial read-only request and at most one corrected or narrower retry for that issue across the task, including subagents and resumed turns; then read local references and code directly and run useful local checks.
-Record what could not be checked once and continue implementation; do not repeatedly ask for unchanged job status, repair external tools, or create replacement clients unless tooling work was requested.
+For a tool failure or unsupported/inconclusive analysis, allow the initial read-only request and at most one retry with corrected or narrower inputs; skip the retry when the tool is known to be unavailable or there is no useful correction.
+The limit follows the underlying failure across files, scenarios, tools using the same unsupported capability, agents, and resumed turns.
+A new request name, unrelated source edit, or another successful status poll does not reset it; retry only after new information or a tool/input change addresses the failure.
+Then read local references and code directly and run the useful available checks.
+This limit does not excuse a confirmed code defect: fix the defect and recheck the affected behavior.
+Record the failed check, attempts already used, and what would justify trying again once in the existing handoff or work note; do not create another report for unchanged results.
+Continue implementation instead of polling unchanged status or repairing external tools unless tooling work was requested.
 Inspect current source or transaction state before retrying an uncertain mutation.
 Tool exposure does not prove service health or the availability of a standalone viewer.
+Reuse schema/version discovery for an unchanged connection; a successful read-only domain call establishes that route works without a separate health tool.
+If task/job negotiation cannot be confirmed, use the ordinary supported domain call or local source review instead of blocking on that optional delivery mechanism.
 For local documentation and source precedents, verify `hoi4.reference_context`, `hoi4.reference_search`, `hoi4.reference_read`, and `hoi4.source_lookup` in the connected tool list and call their live schemas. Retain the cited source path, line span, and revision; follow `nextLine` only for the relevant section. A context bundle identifies sources but does not establish that their detailed rules have been read.
 When the live `hoi4.source_lookup` schema accepts `view` and `keyPath`, use bounded child structure to locate a nested block and select repeated keys with their zero-based `occurrence`.
 When it accepts `path` and `line`, use it to find the definitions and `keyPath` containing a diagnostic, diff, or editor line, then navigate that block. Returned `suggestions` are near-miss names to verify, not matches. Pass a search result's `matchLine` as `startLine` to `hoi4.reference_read` to land on the answering line.
@@ -99,7 +106,7 @@ Continue structure pages with `nextChildOffset` as `childOffset`, retaining the 
 Use `includeReferences = false` for a focused event or scripted-helper definition read; enable references when investigating consumers.
 When `hoi4.script_validate` is exposed, use it to check a relevant effect or trigger body under its explicit scope against installed documentation.
 Its true result covers only `checksPerformed`; unresolved commands, `valid = null`, unchecked argument blocks, and omitted findings require further inspection, and parameter semantics and engine behavior remain separate evidence.
-Before using `hoi4.event_inspect` or `hoi4.tech_inspect` with `mode = helper_expansion`, `hoi4.job_inspect`, `hoi4.job_cancel`, or native MCP tasks, verify the connected server version and health, live tool schemas, and client task negotiation. Use only confirmed routes; otherwise follow the installed domain tools and record the missing capability. Inspect final tool results and retain continuation URIs, source revisions, coverage, and unresolved findings. Jobs and helper pages are delivery and coverage tools; keep domain-specific inspect, render, compare, and scenario evidence.
+Before using `hoi4.event_inspect` or `hoi4.tech_inspect` with `mode = helper_expansion`, `hoi4.job_inspect`, `hoi4.job_cancel`, or asynchronous MCP tasks, verify the connected server version and health, live tool schemas, and client task negotiation. Use only confirmed routes; otherwise follow the installed domain tools and record the missing capability. Inspect final tool results and retain continuation URIs, source revisions, coverage, and unresolved findings. Jobs and helper pages are delivery and coverage tools; keep domain-specific inspect, render, compare, and scenario evidence.
 Verify standalone Technology Tree Viewer availability only when the task needs that viewer, separately from exposed technology routes.
 An absent viewer does not block source implementation. Keep viewer and inspector use read-only.
 
@@ -127,6 +134,8 @@ Use project custom subagents when a task needs bounded research, asset productio
 The main agent owns final implementation, wiring, source review, proportionate checks, and completion claims.
 The user performs live-game validation.
 Review subagent outputs once and recheck actual fixes; do not restart completed checks or commission audits of unchanged findings.
+If delegation is unavailable or the user disallows it, the parent performs the permitted implementation/review using the same specialist checklist and identifies itself as the reviewer.
+Do not invent a specialist handoff or self-approve work that explicitly requires an independent reviewer; preserve all asset, tool, and authorization requirements.
 
 All project custom subagents must be spawned with a fully explicit, self-contained prompt and no inherited parent-thread context, and the parent prompt must carry every path, constraint, and prior decision the role needs. Treat the canonical identifiers in `chaos-redux-subagents` as routing and ownership contracts, and write the role boundaries into the delegation prompt. Runtime-specific spawning, model selection, and generated-definition details belong to that skill.
 
@@ -159,7 +168,7 @@ Spreadsheet source and export rule:
 
 Patch-capable subagents are allowed to make small, local improvements by default when the change is inside the current task surface and directly improves the feature. They may vary costs, add clearer dynamic localisation, improve tooltips, adjust safe AI weights, add narrow helper calls, fix route locks, add cleanup hooks, or correct existing formable checks. For example, `chaosx_event_ui_worker` may implement the accepted bounded GUI introduced by a named event, but no subagent may invent an unplanned or shared scripted GUI system, expand a whole mechanic, redesign a route family, add a new country package, or change the requested design on its own. Broad gaps become a plan under `docs/plans/<event_id>_<event_slug>_plans/`. Every subagent edit needs a handoff that lists changed files, identifiers, meaningful validation when it affects confidence, and remaining risks. Documentation cleanup handoffs must record each affected document using the dispositions and evidence requirements in Specs and Plans below.
 
-For major event work, the main agent should use the improvement loop after meaningful implementation tranches when several new mechanics have been added and now need deeper connections. The planner should expand ideas using the event-planning skill and relevant research. It should not be used repeatedly while a previous plan for the same event is still unresolved.
+For major event work, the main agent should use the improvement loop after substantial implementation stages when several new mechanics have been added and now need deeper connections. The planner should expand ideas using the event-planning skill and relevant research. It should not be used repeatedly while a previous plan for the same event is still unresolved.
 
 ### Specs and Plans
 
@@ -181,10 +190,12 @@ Use these dispositions for plans, addenda, and reconciled documents:
 - `promoted into an accepted spec`: record the acceptance basis and destination spec
 - `rejected`: record the decision and reason
 - `superseded`: name the replacement document
-- `blocked`: record the exact missing input, route, or dependency
+- `blocked`: name the requested output that cannot be delivered and the indispensable missing input, permission, or production dependency; an unavailable optional check is recorded as a limitation of the affected claim
 
 Implementation evidence proves what exists and does not establish design approval.
-On resume, reassess old blocker labels under the current completion rules instead of repeating failed checks to update statuses.
+On resume, reassess old blocker labels against current source and the completion rules; an old unavailable check does not reopen finished implementation.
+Keep historical results unchanged and update only the current conclusion when needed.
+Unaccepted improvement proposals and separately queued work do not become requirements of the current task.
 The main agent reviews dispositions and merges accepted design into the relevant spec or records it as accepted and queued.
 
 ## 1. Coding Style
@@ -375,6 +386,8 @@ A goal can never be marked complete unless it is actually complete.
 For every goal, especially large event, mechanic, focus-tree, country-package, balance, UI, or asset goals, completion requires evidence. The agent must finish the requested implementation, update all related files, run or document the required checks, and report any blocker or simplification.
 Unavailable tools, inconclusive analysis, or missing historical evidence limit what was checked; they do not by themselves prevent completing otherwise finished implementation.
 Use the MCP retry limits above, preserve the distinction between source review and observed game behavior, and never report an unavailable check as passed.
+After reviewing the relevant rules and code and the useful available checks, finish when the requested implementation is present and no known defect remains.
+Further investigation needs a specific unanswered question that could change the implementation; if an indispensable answer is unavailable, state that obstacle once and finish independent work instead of repeating the investigation.
 Do not wait for or request user-owned game testing as a completion step.
 If a specific render, measurement, or test result is itself a requested output, its absence still leaves that output incomplete.
 
@@ -389,7 +402,7 @@ Do not claim completion when:
 - localisation is missing
 - AI behavior is missing
 - assets are missing, unwired, or undocumented
-- a named event-owned scripted GUI is missing its `chaosx_event_ui_worker` handoff or the required review of its layout, states, resolutions, and click regions, or has known unresolved visual defects
+- a named event-owned scripted GUI is missing its `chaosx_event_ui_worker` handoff (or the parent's equivalent when delegation is unavailable or disallowed) or the required review of its layout, states, resolutions, and click regions, or has known unresolved visual defects
 - event logs, docs, spreadsheet rows, or manifests are stale
 - any requested route, country, decision, mission, achievement, evolution, or super-event is missing
 - a design fallback or simplification was used without explicit approval

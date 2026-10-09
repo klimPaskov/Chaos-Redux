@@ -2124,7 +2124,7 @@ When delegation is allowed and useful, use `chaosx_improvement_loop_planner` wit
 Otherwise the parent performs this review; missing delegation alone does not leave the spec incomplete.
 
 Resolve an expansion addendum by folding accepted design into `docs/specs/<event_id>_<event_slug>_specs/`, implementing or queuing it with a clear reason, or rejecting it with a clear reason.
-If the review recommends closure, record that conclusion in the existing handoff and finish the identified checks and fixes.
+If the review recommends stopping expansion, record that conclusion in the existing handoff and finish the identified checks and fixes.
 Accepted current-scope design must not remain unresolved at completion.
 Recheck actual fixes; another full review needs new design work or a distinct unresolved design gap, not an unchanged report status.
 

@@ -43,7 +43,7 @@ DSH composes subagents at runtime through its delegation tool and loads no agent
 
 Every DSH child runs on `deepseek-official/deepseek-flash` and nothing else, so specify no model. Naming `provider` and `model` together is allowed only as that pair; naming one alone is rejected, and effort may be named alone because the configured default already fixes the route. If a task looks like it needs a stronger model, split it into narrower bounded subagents instead. `subagent_fork` cannot select a child model, so use the ordinary delegation tool when the route matters. Model selection is sampled when a session is composed, so a session without those fields predates the opt-in rather than being misconfigured. DSH layout, skill roots, model selection, and MCP registration are documented in `docs/runtimes.md`.
 
-Claude Code subagents run on fixed model tiers set by `CLAUDE_MODELS` in `.tools/sync/sync_claude_agents.py` and listed in the generated `.claude/agent-map.md`: `opus` for design, architecture, implementation, and gatekeeping audits, and `sonnet` for research, asset production, exploration, spreadsheet transcription, and text or documentation upkeep. A new TOML role stops the sync until it receives a tier. Change a tier in that table and rerun the sync rather than editing generated files, and override the model for a single spawn only when the task clearly exceeds or falls below the role's usual work.
+Claude Code subagents run on fixed model tiers set by `CLAUDE_MODELS` in `.tools/sync/sync_claude_agents.py` and listed in the generated `.claude/agent-map.md`: `opus` for design, architecture, implementation, and completion reviews, and `sonnet` for research, asset production, exploration, spreadsheet transcription, and text or documentation upkeep. A new TOML role stops the sync until it receives a tier. Change a tier in that table and rerun the sync rather than editing generated files, and override the model for a single spawn only when the task clearly exceeds or falls below the role's usual work.
 
 Use `chaosx_repo_explorer` only for read-only repo exploration when touched-file mapping, pattern search, vanilla reference mapping, missing-file recovery, dependency mapping, or edit-order planning is actually unclear. It is not a default preflight agent.
 
@@ -155,13 +155,13 @@ Some runtimes refuse report-file writes from subagents. Ask every read-only or a
 
 When an event mechanic needs more depth, new branches, new countries, a new formable suite, a new scripted GUI system, deeper regional logic, historical anchors, or a larger route redesign, the planner writes a plan under `docs/plans/<event_id>_<event_slug>_plans/`. The main agent decides what to implement.
 
-The parent should use this planner after a meaningful implementation tranche, not after every small patch. Do not spawn it again for the same event until its previous addendum has been implemented, folded into specs, queued with a reason, or rejected with a reason.
+The parent should use this planner after a substantial implementation stage, not after every small patch. Do not spawn it again for the same event until its previous addendum has been implemented, folded into specs, queued with a reason, or rejected with a reason.
 
 ### Documentation curation agents
 
 `chaosx_documentation_curator` is patch-capable for documentation surfaces only. It may update Markdown specs, docs, plans, handoffs, manifests, prompt files, README files, route coverage tables, source-of-truth ledgers, resume packets, and documentation indexes inside the current task scope.
 
-Use it after long implementation tranches, after several subagent handoffs, before a major resume, or whenever docs may be stale, contradictory, duplicated, or too numerous. It should distinguish explicit user decisions, accepted design with its acceptance basis, current implementation evidence, and proposals. Apply the AGENTS.md Specs and Plans dispositions: `unresolved`, `accepted and queued` with acceptance basis and reason, `implemented` with evidence and validation limits, `promoted into an accepted spec` with acceptance basis and destination, `rejected` with recorded reason, `superseded` with a named replacement, or `blocked` with the exact limitation.
+Use it after long implementation stages, after several subagent handoffs, before a major resume, or whenever docs may be stale, contradictory, duplicated, or too numerous. It should distinguish explicit user decisions, accepted design with its acceptance basis, current implementation evidence, and proposals. Apply the AGENTS.md Specs and Plans dispositions: `unresolved`, `accepted and queued` with acceptance basis and reason, `implemented` with evidence and validation limits, `promoted into an accepted spec` with acceptance basis and destination, `rejected` with recorded reason, `superseded` with a named replacement, or `blocked` with the exact limitation.
 
 For package cleanup, apply these evidence rules:
 
@@ -233,12 +233,14 @@ Active small patches include:
 Any patch to an AI weight, probability-bearing modifier, MTTH-backed score, random-selection weight, strategy factor, or weighted target check requires a bounded baseline and post-fix comparison using the same named scenarios.
 The parent or owner preserves pre-edit source bytes and the scenario fixture; the read-only probability auditor reviews the baseline, then the owner applies the patch and the auditor compares the changed behavior.
 Use `hoi4.probability_compare` when supported, or retain a before/after source/helper comparison with scenario scores and stated assumptions when the tool cannot answer.
+If the original source or a trustworthy snapshot cannot be recovered within the check limit, review current behavior and state that the historical change could not be measured; do not reconstruct an old workspace or block an otherwise reviewed fix solely to obtain that comparison.
+A corrupt or mismatched snapshot must never be used as verified evidence, and a specifically requested exact historical comparison remains incomplete without it.
 The auditor does not choose balance targets or patch source; a failed analyzer or unavailable comparison alone does not block a documented fix.
 
 If immutable probability snapshots are committed as durable before-source evidence, preserve the copied bytes through narrowly scoped Git attributes and any clean filters.
 When attributes change after staging, plain `git add` may reuse cached normalization; force path-specific `git add --renormalize` under byte-preserving attributes and filters, or explicitly promote a blob using `git hash-object -w --no-filters` and a path-specific index update.
 Verify that the raw committed blob's SHA-256 matches the recorded copied-byte hash, reading it without text decoding, newline conversion, or checkout filters.
-Preserve the physical original and keep any mismatch and dependent comparison proof unresolved until repaired and reverified.
+If a saved comparison file differs from its recorded source bytes or hash, preserve the original and do not rely on that comparison until the mismatch is corrected and the hashes are checked again.
 
 Active small patches do not include:
 
@@ -303,8 +305,13 @@ If a patch touches localisation, list the keys changed. If it touches decisions 
 
 When a routed task touches focus trees, event chains, technology or doctrine trees, weighted logic, scripted GUI, or maps, use the relevant MCP checks under the retry limits in AGENTS.md. Pass only the diagnostics, revision, scenario hash, comparison, or linked artifact URI the parent needs instead of copying a complete graph or matrix into the prompt. Tool exposure is separate from service health and standalone viewer availability. If the relevant MCP route remains unavailable after the retry limit, report what could not be checked and continue with the relevant local documentation, source, and local tests. When a task needs the standalone Technology Tree Viewer, verify its availability separately from the exposed read-only `mcp__hoi4_agent_tools__hoi4_tech_inspect`, `mcp__hoi4_agent_tools__hoi4_tech_render`, and `mcp__hoi4_agent_tools__hoi4_tech_compare` routes. Do not invent viewer capabilities or treat an absent viewer as missing source implementation.
 
-Share prior attempts and useful results across agents and resumed turns; changing the caller or transport does not restart the retry allowance.
-Successful job progress or page continuation is not a failed retry, but repeated unchanged polling and recovery requests follow the same limit.
+Share the failed check, attempts already used, and the condition needed to retry through the existing handoff; changing files, caller, tool name, or transport does not restart the same failure.
+Use AGENTS.md to distinguish an unavailable check from a defect or missing requested output.
+An advancing page offset, new result data, or completed work is progress; another `running` status or timestamp alone is not.
+Useful continuation is not a failed retry, but unchanged polling and recovery requests follow the same limit.
+Keep the existing job handle and continue independent work when polling cannot add information.
+For a production job or a result explicitly requested by the user, follow its documented polling interval and a finite wait limit set when it starts; do not restart the job or extend that limit merely because it still says `running`.
+If that limit expires, preserve the handle and completed outputs and report the missing requested result. Ordinary workflow verification does not become a requested deliverable merely because an older checklist calls it mandatory.
 If the tool cannot analyze the script, evaluate the actual weights, helpers, constants, eligibility, and target scope in named cases and label score-only or uncertain conclusions accurately.
 Do not change gameplay to satisfy an analyzer or treat missing tool output as evidence that behavior is absent.
 
@@ -325,7 +332,7 @@ Use the same configured workspace, mod-root environment, and working directory; 
 Plain client `capabilities: {}` does not negotiate native tasks, even when the server advertises task support; verify job-tool availability separately through live schemas.
 Record the separate connection and use only confirmed read-only domain calls; this route does not authorize desktop or game launch, external dependency edits, or replay of an unresolved mutation.
 
-On a confirmed route, use `mode = helper_expansion` with `hoi4.event_inspect` or `hoi4.tech_inspect` for bounded helper pages, and use `hoi4.job_inspect` and `hoi4.job_cancel` for persistent jobs. Request native MCP tasks only when the client negotiates support. Keep opaque job IDs and helper continuation URIs intact. A completed job can still contain a tool-level error, and cancellation is a request whose final outcome must be inspected. For paged helper evidence, retain the source revision, selected roots, bounds, `finished`/`complete` status, and unresolved findings; resume only with the returned continuation under the same revision and authorized principal. Jobs and helper pages are delivery and coverage tools; they do not replace the owning event, technology, focus, probability, GUI, or map workflow's inspect, render, compare, and scenario evidence. Keep task-specific mechanics and fixtures in their profiles and handoffs, not this routing skill.
+On a confirmed route, use `mode = helper_expansion` with `hoi4.event_inspect` or `hoi4.tech_inspect` for bounded helper pages, and use `hoi4.job_inspect` and `hoi4.job_cancel` for persistent jobs. Request asynchronous MCP tasks only when the client negotiates support. Keep opaque job IDs and helper continuation URIs intact. A completed job can still contain a tool-level error, and cancellation is a request whose final outcome must be inspected. For paged helper evidence, retain the source revision, selected roots, bounds, `finished`/`complete` status, and unresolved findings; resume only with the returned continuation under the same revision and authorized principal. Jobs and helper pages are delivery and coverage tools; they do not replace the owning event, technology, focus, probability, GUI, or map workflow's inspect, render, compare, and scenario evidence. Keep task-specific mechanics and fixtures in their profiles and handoffs, not this routing skill.
 
 #### Event comparisons and focus previews
 

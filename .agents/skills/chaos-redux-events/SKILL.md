@@ -64,7 +64,7 @@ For large or multi-surface event work, use project subagents to keep the main im
 - Spawn `chaosx_3d_model_pipeline` for bounded Meshy 7 model geometry, textures, rigs, skeletal actions, Internet-sourced unit sound design, bespoke vanilla-green custom-unit counter handoffs, `.mesh`/`.anim` exports, reimport proof, and runtime handoff when the event owns a 3D unit or building surface.
 - Spawn `chaosx_event_ui_worker` only when the named event specifically introduces and owns a dedicated scripted GUI or mechanic window. Never route shared event logs, event details, settings, super-event frameworks, or unrelated existing UIs to it.
 - Spawn `chaosx_super_event_text_researcher` and `chaosx_super_event_audio_researcher` for actual super-event research packages according to `chaos-redux-super-events`.
-- Spawn `chaosx_improvement_loop_planner` after a meaningful implementation tranche when several new mechanics, country packages, formables, focus routes, decisions, scripted GUI surfaces, super-event candidates, or lore systems have been added and the event needs deeper connection. Do not spawn it again for the same event until the previous addendum is implemented, folded into specs, queued with a reason, or rejected.
+- Spawn `chaosx_improvement_loop_planner` after a substantial implementation stage when several new mechanics, country packages, formables, focus routes, decisions, scripted GUI surfaces, super-event candidates, or lore systems have been added and the event needs deeper connection. Do not spawn it again for the same event until the previous addendum is implemented, folded into specs, queued with a reason, or rejected.
 - Spawn `chaosx_focus_tree_auditor` after creating or heavily changing focus trees.
 - Spawn `chaosx_ai_probability_auditor` for every in-scope AI weight, MTTH, random-selection, or weighted-pool surface before completion.
 - Spawn `chaosx_event_completion_auditor` before claiming a large event, event rework, or spec-driven implementation is complete.
@@ -958,6 +958,7 @@ Rules:
 - A post-20 catalog ID without an actual `chaosx.nr<ID>.1` root definition is `Unavailable`.
 - Treat the workbook `Legend` sheet as the source for status, Type, Member Severity, evolution-column, and World-End colors. Keep dropdown ranges, conditional-formatting rules, static fills, and exported values synchronized with the Legend.
 - These status rules classify catalog entries only and must not silently change runtime registration or enablement.
+- `Needs Testing` and the absence of approval for `Playable` do not keep an otherwise completed implementation task open; retain the honest catalog label without waiting for user testing or requesting a status upgrade.
 
 ## Final event checklist
 

@@ -45,7 +45,7 @@ Do not use this skill to inflate simple bug fixes. Use it when the bug reveals a
 
 ### Deployment cadence
 
-The main agent should actively deploy the improvement loop during large event implementation, especially after a meaningful tranche of work adds several new mechanics, countries, focus routes, formables, decision systems, scripted GUI elements, or super-event candidates. This is the best moment to ask whether the new surfaces are connected, reactive, regionally grounded, and worth playing.
+The main agent should actively deploy the improvement loop during large event implementation, especially after a substantial stage of work adds several new mechanics, countries, focus routes, formables, decision systems, scripted GUI elements, or super-event candidates. This is the best moment to ask whether the new surfaces are connected, reactive, regionally grounded, and worth playing.
 
 Do not spawn the improvement loop planner repeatedly for the same event while the previous addendum is still waiting. Before another loop pass, the previous plan should be implemented, folded into `docs/specs/<event_id>_<event_slug>_specs/`, explicitly queued with a reason, or rejected with a reason. This prevents endless plan stacking.
 
@@ -65,9 +65,9 @@ The planner should recommend stopping expansion when all of these are true:
 - open gaps are small finalization tasks, validation tasks, polish, or documentation alignment, not missing design depth
 - previous improvement addenda are implemented, folded into specs, queued with a reason, or rejected with a reason
 
-When this condition is met, the planner should not write a new large expansion. It should update the current handoff with the closure recommendation instead. That handoff should list only the final small tasks, such as last localisation checks, final validation scenarios, asset handoff verification, spreadsheet alignment, rechecks of actual audit fixes, or cleanup. It should explicitly say that broad expansion is no longer recommended because the system is now clean and additional mechanics would bloat it.
+When this condition is met, the planner should not write a new large expansion. It should update the current handoff with the recommendation to finish instead. That handoff should list only the final small tasks, such as last localisation checks, final validation scenarios, asset handoff verification, spreadsheet alignment, rechecks of actual audit fixes, or cleanup. It should explicitly say that broad expansion is no longer recommended because the system is now clean and additional mechanics would bloat it.
 
-A closure handoff should not claim implementation completion on its own. It tells the main agent that the design loop can stop, the new plan can be finished, final validations can run, and the goal can be marked complete if the main agent verifies there are no blockers, simplifications, fallbacks, or unresolved accepted plans. Unavailable tools and user-owned game testing are handled under AGENTS.md; do not require another closure report just to restate those limits.
+A completion note should not claim implementation completion on its own. It tells the main agent that the design loop can stop, the new plan can be finished, final validations can run, and the goal can be marked complete if the main agent verifies there are no missing current-task requirements, known defects, unauthorized simplifications or fallbacks, or unresolved accepted current-task plans. Approved substitutions still need disclosure; unaccepted proposals and separately queued work do not prevent completion. Unavailable tools and user-owned game testing are handled under AGENTS.md; do not require another completion report just to restate those limits.
 
 ## Relationship with other skills
 
@@ -244,7 +244,7 @@ An asset addendum can define route-specific report images, decision icons, idea 
 
 For animated assets, define the state. The asset worker needs to know what frame set means inactive, active, dangerous, locked, completed, corrupted, hidden, or formed. The main agent needs static fallbacks and sprite names. The docs need manifest data to prove the asset was sourced or generated correctly.
 
-Use `docs/assets/<event_id>_<event_slug>/` only as a temporary event-scoped evidence and working folder for those source files, previews, contact sheets, manifests, animation plans, and handoffs. Keep it while implementation or review is active, blocked, or incomplete. The parent owns cleanup under the existing deletion authorization and completion/source rules. Before the event goal is fully complete, the parent promotes durable provenance, coverage, review, and runtime-wiring facts into permanent event or plan documentation, verifies that no runtime reference points into `docs/assets/`, and deletes the complete workspace. A closure handoff should treat the absence of the deleted workspace as expected, not as a missing asset. Never delete skill-local reference assets or another event's workspace.
+Use `docs/assets/<event_id>_<event_slug>/` only as a temporary event-scoped evidence and working folder for those source files, previews, contact sheets, manifests, animation plans, and handoffs. Keep it while implementation or review is active, blocked, or incomplete. The parent owns cleanup under the existing deletion authorization and completion/source rules. Before the event goal is fully complete, the parent promotes durable provenance, coverage, review, and runtime-wiring facts into permanent event or plan documentation, verifies that no runtime reference points into `docs/assets/`, and deletes the complete workspace. A completion note should treat the absence of the deleted workspace as expected, not as a missing asset. Never delete skill-local reference assets or another event's workspace.
 
 Use source-based assets for real people, real symbols, and real historical images. Real flags require sourced design references followed by reference-constrained imagegen reconstruction. Use generated assets for fictional, symbolic, supernatural, or impossible content. If an asset cannot be sourced or generated safely, mark it blocked instead of substituting a weak image.
 
@@ -284,4 +284,4 @@ Do not claim a major feature is complete while an accepted expansion addendum is
 
 Accept an improvement when it makes the system more playable, reactive, readable, visually coherent, regionally specific, or integrated with Chaos Redux systems. Reject it when it only adds size, noise, difficulty, darkness, or spectacle without improving play.
 
-If the improvement loop returns a closure handoff, finish its accepted current-scope tasks and recheck actual fixes once. Missing functionality remains incomplete; unavailable MCP or live-game evidence alone does not block implemented delivery under AGENTS.md.
+If the improvement loop returns a completion note, finish its accepted current-scope tasks and recheck actual fixes once. Missing functionality remains incomplete; unavailable MCP or live-game evidence alone does not block implemented delivery under AGENTS.md.

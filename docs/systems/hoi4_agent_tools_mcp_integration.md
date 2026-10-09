@@ -67,12 +67,13 @@ These checks do not establish parameter semantics or game execution.
 
 With a mod-relative `path` instead of a body, `hoi4.script_validate` checks every effect and trigger body of an event, decision, national focus, scripted helper, or on-action file under the scope its structure fixes, and treats Chaos Redux scripted effects and triggers as known commands.
 Prefer a targeted run on changed script files when available; its findings can identify errors such as a dynamic variable compared as a trigger or a scope link outside its scopes.
-If the validator fails or cannot resolve a construct, inspect that construct against installed documentation and source instead of waiting for live testing or repeating the same request.
+If the validator cannot run or cannot resolve a construct, inspect that construct against installed documentation and source instead of waiting for game testing or repeating the same request.
+If it identifies an actual script error, fix that error and recheck the changed behavior; a tool retry limit does not waive a real defect.
 Its warnings cover player-facing text (colour codes in news and report events, including through scripted localisation, development wording, and unlocalised flags in decision and focus requirement tooltips) and visible events that would reach one player once per loop iteration; fix each one or record why it stays.
 
 ## Writes and recovery
 
-Domain rewrites validate the complete proposal, generate review evidence, apply through the internal transaction journal, re-index and post-validate the result, and retain exact-byte recovery data. A blocked proposal does not mutate source. Recovery is automatic when a write or post-validation fails; intentional reversal of a successful edit is a new authorized source change (normally through Git), because the public MCP surface does not expose caller-managed transaction, apply, or rollback tools.
+Domain rewrites validate the complete proposal, generate review evidence, apply through the internal transaction journal, re-index and post-validate the result, and retain exact-byte recovery data. A proposal rejected before writing does not mutate source. After a write error or timeout, inspect the actual source and transaction result before repeating the operation; automatic recovery must not be assumed to have finished solely because the response failed. Recovery is automatic when a write or post-validation fails; intentional reversal of a successful edit is a new authorized source change (normally through Git), because the public MCP surface does not expose caller-managed transaction, apply, or rollback tools.
 
 For scripted GUI work, `gui_rewrite` is optional; the transaction behavior above does not make its automatic post-write/index validation or transaction success a project completion gate.
 An authorized reviewed GUI edit may be applied directly without another fallback approval solely because the optional rewrite blocks or rolls back.
