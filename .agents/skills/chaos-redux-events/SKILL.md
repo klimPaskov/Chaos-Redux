@@ -191,6 +191,20 @@ Every reply effect must revalidate the snapshot against the current proposal bef
 A stale close option must remain usable and describe closing the old prompt without promising to accept, refuse, or change another proposal.
 Treat `timeout_days` as execution of the guarded first option, followed by normal `after` closure, rather than a special timeout branch (offline Event modding, lines 184-186).
 
+### Generation receipts and cleanup
+
+Give every immutable birth/provenance tuple its own publication-generation receipt and publish the complete tuple together.
+Mutable array/cache row presence or absence is not first-publication authority; first publication requires a validated unpublished identity with all tuple receipts absent.
+Same-generation missing or stale row repair must preserve the old tuple rather than restamp it from mutable current fields.
+Partial receipt loss fails closed rather than reconstructing from mutable fields; renewal may publish a new tuple only for a genuine validated newer generation proven against the publication receipt.
+
+Match each entity's current generation to its own birth or installation snapshot, and validate the counterpart's generation separately against that counterpart's snapshot.
+Never compare member generation to carrier generation as proof of shared identity, or infer a missing member receipt from the carrier snapshot.
+
+Before destructive response, idea, flag, or relation clearing during bounded frozen-member cleanup, verify the actual member country, its matching frozen generation row, and the exact current binding.
+Undo only the exact owned relation directions before clearing their ownership and binding receipts, and leave unowned relations intact.
+Rejected frozen rows must not clear another incarnation's state; a direct stale-local-receipt retirement policy must be explicit and grant no world-relation mutation authority.
+
 ## Chaos source handling
 
 Implement event-owned Chaos changes only on concrete outcomes defined by the spec, using the shared Chaos Meter and history path. Common hooks include meaningful movement success, special Chaos-country growth, spread, failed containment, actual use of dangerous capabilities, and durable containment or defeat.
