@@ -25,24 +25,10 @@ handoffs.
 
 ## Installed routes
 
-The trusted project configuration is `.codex/config.toml`:
-
-- `meshy`: the version-pinned official `@meshy-ai/meshy-mcp-server@0.4.0` wrapper.
-- `blender_hoi4`: the repository-owned, job-root-bounded adapter exposing only
-  named Blender operations.
-- `blender_lab_dev`: the official Blender Lab MCP checkout at tag `v1.0.0`, kept
-  disabled for production because its general-purpose code bridge is broader
-  than the production allowlist.
-
-The locked local dependencies are recorded in
-`.tools/3d_pipeline/config/dependencies.lock.json`. Blender 5.1.2 is launched
-headlessly through its executable at
-`C:/Program Files/Blender Foundation/Blender 5.1/blender.exe`; the user-facing
-shortcut is retained and verified at
-`C:/Users/klimp/AppData/Roaming/Microsoft/Windows/Start Menu/Programs/Blender/Blender 5.1.lnk`.
-The checksum-locked `io_pdx_mesh` extension is installed in Blender's user
-extension directory and is loaded directly by the worker for deterministic
-export and reimport.
+The trusted project configuration is `.codex/config.toml`; the verified package versions, executable paths, schemas, and checksums are recorded in `.tools/3d_pipeline/config/dependencies.lock.json`.
+Use those records rather than copying machine-specific version numbers into another guide.
+The repository-owned `blender_hoi4` adapter exposes named production operations, while live manual authoring uses the separately verified Blender Lab route described in the pipeline skill.
+The checksum-locked `io_pdx_mesh` extension remains required for export and reimport.
 
 Run the environment probe from the repository root with:
 
@@ -52,20 +38,17 @@ py -3.13 .tools/3d_pipeline/verify_environment.py --probe-meshy
 
 ## Autonomous job lifecycle
 
-`run_pilot.py` creates a deterministic job root under `docs/assets/chaos_redux_3d_model_pilots/models_3d/<asset_slug>/` for every asset it runs, and it records the job document, the reference preflight, the input manifest, the provenance record, and the asset brief there before any provider work.
-The runner holds the asset specifications for its own slugs, currently the `anomaly_signal_beacon` pilot and the `alien_infantry` unit.
-An asset the runner holds no specification for gets its job root created directly by the parent that owns it.
+The owner creates the job at its configured event/asset root, records the job document, reference checks, input manifest, source attribution, and asset brief before provider work, and uses the shared clients and allowlisted adapter operations.
+The old fixed-model `run_pilot.py` is retained locally at `.tmp/3d_pipeline/run_pilot.py`; it is not a shared runner for new assets.
+Keep new unit-specific scripts and fixed job specifications in `.tmp/<task>/` or the owning job workspace.
 
 Every initialized job holds exactly one reference image for the Meshy input, under `refs/original` and at the path its specification names.
 No side-profile sheet, turnaround board, collage, or multi-view Meshy input is created.
 The one-image count and checksum are recorded in the reference preflight and input manifest.
 There is no separate job generator and no repository pilot job list.
 
-`run_pilot.py` records each paid provider call before waiting, checks balance
-before every paid tranche, downloads successful GLB/FBX results immediately,
-and appends state transitions to `history.jsonl`. A paid task is never silently
-retried. Existing task and download records allow a stopped run to continue
-without spending a second generation tranche.
+Record each paid provider call before waiting, check balance before each batch of paid operations, download successful GLB/FBX results immediately, and append state transitions to `history.jsonl`.
+Never silently retry a paid task; use existing task and download records to resume without paying for the same generation twice.
 
 The official Meshy MCP server returns signed `assets.meshy.ai` URLs for rigging
 and animation packages rather than local files. The adapter records those URLs

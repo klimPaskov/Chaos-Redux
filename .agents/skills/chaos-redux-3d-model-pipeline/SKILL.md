@@ -43,6 +43,10 @@ When the live session cannot produce a required element or role to this standard
 
 ## Ownership and completion boundary
 
+Keep `.tools/3d_pipeline/` limited to shared adapters, clients, libraries, wrappers, and maintained tests.
+Put unit-specific runners, fixed checkpoint probes, pilot specifications, and repair batches in `.tmp/<task>/` or the owning job workspace; do not embed them in the shared toolchain.
+Temporary placement does not relax any authoring, source, licensing, dependency, or approval rule in this skill.
+
 A provider result is a source candidate, a `.blend` is a working artifact, and a `.mesh` or `.anim` is a runtime candidate. Worker completion requires the requested production, review, export/reimport, sound-source, counter, and handoff outputs; the parent completes exact runtime registration and source consumer checks. User-supplied in-game evidence is reviewed when available but never requested or awaited as a delivery gate under AGENTS.md. Do not claim live validation from production or source checks.
 
 The 3D worker may create source files, Blender checkpoints, textures, `.mesh`, `.anim`, sourced unit-audio candidates, mechanically derived audio, previews, manifests, reports, and handoffs. It must not edit gameplay, sound definitions, localisation, `.gfx`, `.gui`, `.asset`, entity, event, focus, decision, country, history, AI, on-action, or spreadsheet files unless the parent grants a narrow exception explicitly. The parent owns runtime identifiers, source wiring, final review, and the overall completion claim. The user performs live consumer validation.

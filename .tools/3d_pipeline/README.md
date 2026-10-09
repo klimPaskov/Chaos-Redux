@@ -28,8 +28,6 @@ No desktop window is opened by this route.
 | `review/pdx_textures.py` | Provider PBR conversion with source-adjacent `material_classes.json`; no flat-G recipe, no raw RGBA DDS route, no source upscaling. |
 | `audio/master.py inspect/audit-tree/batch` | Source-only recording analysis, mastering, duplicate/take/attribution coverage, and staging; see `audio/README.md` for exact schemas, role targets, recovery limits and commands. |
 | `audio/metrics.py`, `inventory.py` | Codec, sample, DC, spectral, lead, RMS/LUFS/true-peak and loop-edge measurements, source hashes, family pools and cue coverage. |
-| `runtime/audio_allowlist.py --inventory <json> --output <json>` | Produce a parent-reviewed list of existing recordings and originating attribution rows; ignored archives are searched, while the new audit's own files are excluded as source evidence. |
-| `runtime/install_audio.py --batch <json> --provenance <json> --output <dir> [--execute]` | Promote only passing, licensed, byte-matched candidates; retain exact preimages and provenance. This is mastering acceptance, not sound-package acceptance. |
 | `adapter/geometry_delivery_checks.py` | Report winding, duplicates, open/non-manifold topology and normal splits despite ambiguous islands; topology is inspected jointly across each object's streams. |
 | `adapter/animation_delivery_checks.py` | Inspect decoded local/world motion, quaternion signs, loop seams, root travel and measured sole plants; negate only existing aligned quaternion keys/handles, never add skeletal keys. |
 | `adapter/delivery_policy.py` | Resolve declared job/action policies and read real native hierarchy and evaluated foot/toe sole geometry. Unknown or weak contact regions remain unmeasured. |
@@ -405,12 +403,11 @@ Run these commands from the repository root after the start and dependency gates
 
 ~~~powershell
 python .tools/3d_pipeline/verify_environment.py --probe-meshy
-python .tools/3d_pipeline/run_pilot.py anomaly_signal_beacon
-python .tools/3d_pipeline/run_pilot.py --phase candidate anomaly_signal_beacon
-python .tools/3d_pipeline/run_pilot.py --phase candidate --all
 ~~~
 
-The pilot runner is a provider-generation, static-mesh, and export orchestrator, and it is not a rigging or animation route. A provider-eligible bipedal rig and its actions come from the Meshy provider route and its ingestion operations, and every other skeleton, skin weight set, and action is authored live in Blender through the Blender MCP bridge. `--phase candidate` stops after provider generation and candidate preparation for the selected pilots.
+The fixed-model pilot runner, unit-specific checkpoint probes, cannibal audio batch, and October unit-repair audio helpers are retained locally under `.tmp/3d_pipeline/`, not as shared entry points.
+Use the shared clients and allowlisted adapter operations with the owning job specification; keep new job-specific orchestration in `.tmp/<task>/` or its job workspace.
+A provider-eligible bipedal rig and its actions still come from the Meshy provider route and its ingestion operations; other skeletons, skin weights, and actions are authored live in Blender under the pipeline skill.
 
 This workflow supports both skeletal 3D `.mesh`/`.anim` production and static HOI4 map-building `.mesh` production.
 
@@ -434,4 +431,6 @@ Never use `special_project_facility_spawn` for a custom map-building consumer. U
 
 Route 2D frame-sheet animation, animated sprites, GIF previews, and frame-by-frame UI packages to `chaos-redux-frame-animation`.
 
-Regenerate the full map-building coordinate override after an installed vanilla map update with `python .tools/generate_chaosx_building_positions.py --vanilla-map "C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/map" --output map/buildings.txt --force`. The generator preserves all vanilla rows and derives distinct in-province positions for both custom warfare facilities, five concentration-camp levels, and five extermination-camp levels.
+After an installed vanilla map update, review the active `map/buildings.txt` against the new map before rebuilding it.
+The old one-off `generate_chaosx_building_positions.py` is retained locally in `.tmp/archive/` and in Git history; review its assumptions before reusing it.
+It preserved vanilla rows and derived distinct in-province positions for both custom warfare facilities, five concentration-camp levels, and five extermination-camp levels; these coverage requirements still apply.

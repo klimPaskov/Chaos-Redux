@@ -147,7 +147,7 @@ These agents do not patch gameplay files:
 
 They may write reports only when a report path is provided or obvious from the task.
 
-Some runtimes refuse report-file writes from subagents. Ask every read-only or audit subagent to return its complete findings inline as well, and allow scratch helper files only for intermediate data such as scan outputs or range lists that the parent can read afterwards.
+Some runtimes refuse report-file writes from subagents. Ask every read-only or audit subagent to return its complete findings inline as well, and keep scratch helpers and intermediate data such as scan outputs or range lists under `.tmp/<task>/`, where the parent can read them afterwards. Do not install one-off audit/report scripts in `.tools/`.
 
 ### Plan-only agents
 

@@ -374,6 +374,13 @@ When implementing any new mechanic, follow this checklist:
 20. When updating content (for example reworking an event), write as if the feature has always existed. Do not use meta wording like “now it is,” “now it has been reworked,” “newly added,” or similar update-history phrasing.
 21. Respect the player-facing writing style found in `chaos-redux-events`.
 22. Markdown prose must not be hard-wrapped in the middle of a sentence. Keep each sentence on one physical line and place line breaks only between sentences or paragraphs.
+23. Keep maintained, reusable tooling in `.tools/`; put one-off repairs, migrations, job-specific scripts, temporary checks, and their outputs in ignored `.tmp/`, grouping related files by task.
+    `.tools/3d_pipeline/` is shared infrastructure, not storage for unit-specific runners or fixed model jobs.
+    Retain meaningful maintained regression tests even when they cover one event; a filename or date alone does not decide whether a tool is temporary.
+    Promote a helper into `.tools/` only for demonstrated recurring use or a required shared entry point, with documented inputs, outputs, callers, and appropriate checks; adding command-line arguments alone does not make a one-off tool reusable.
+24. Before adding a skill, document, report, wrapper, or helper, check its existing owner and extend that source where it fits.
+    Keep one current task report, avoid duplicate instruction copies outside the established generators, and review new files for unnecessary scaffolding before completion.
+    Control bloat by removing duplication and keeping temporary work out of maintained paths, not by deleting specific requirements or shortening them into generic advice.
 
 Follow these rules and your changes will be easier to review, safer to merge and more consistent with the rest of the project.
 If an indispensable design choice or input is missing, finish independent work and ask a focused question.
@@ -420,6 +427,7 @@ Do not claim a goal is complete just because the game loads or because the most 
 
 For large events, mechanics, focus-tree rewrites, country packages, balance passes, or multi-system goals, produce a concrete completion report. The report should list files changed, systems touched, balance checks, tests or meaningful validation scenarios, assets reused or created, documentation updated, and remaining blockers.
 Update one current report instead of creating repeated status reports, and explain concretely what does not work, what could not be checked, and what action is needed.
+Lead with the result and any needed user action; keep hashes, internal status labels, and long check inventories in technical notes unless the user requests them.
 
 Every simplification must be reported. This includes skipped routes, fallback trees used in place of bespoke trees, missing assets, missing localisation, missing AI behavior, missing focus paths, missing dynamic scaling, hardcoded values where dynamic logic was requested, placeholder content, or weaker substitutes.
 

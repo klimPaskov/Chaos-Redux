@@ -12,10 +12,13 @@ A tool belongs here when at least one of these conditions is true:
 - it enforces a repository-wide contract that ordinary source inspection cannot safely replace;
 - it is a required runtime adapter, wrapper, synchronizer, exporter, or packaging entry point;
 - it is a specialized validator for an active shared registry whose consumers span multiple event packages.
+- it is a maintained regression test for current behavior, with meaningful failure assertions and an identifiable owner or caller.
 
-A file should be removed or moved out of this directory when it is a one-time migration, a superseded generator, event-local evidence with no continuing validation role, a cached interpreter artifact, a temporary report, or an unreferenced preset.
+A file belongs in ignored `.tmp/<task>/` instead when it is a one-time migration or repair, a superseded generator, a fixed-unit runner, event-local evidence with no continuing validation role, a temporary report, or an unreferenced preset.
+Do not create `.tools/tmp/` or a permanent `.tools/archive/` for that work.
+A maintained regression test can cover one event when it protects a current, nontrivial contract; its name or date alone does not make it disposable.
 
-Before retiring a tool, search its filename, module name, output signatures, and generated-file headers across `AGENTS.md`, `.agents/skills/`, `.codex/`, docs, configuration, runtime source, and Git history. Preserve uncertain or recently active tooling until its owner and replacement are clear.
+Before retiring a tool, search its filename, module name, output signatures, and generated-file headers across `AGENTS.md`, `.agents/skills/`, `.codex/`, docs, configuration, runtime source, and Git history. An old audit mention alone does not make a helper maintained; check whether a current command, import, test, or workflow still needs it. Preserve a genuinely active dependency until its callers have been updated.
 
 ## Supported tools
 
@@ -55,7 +58,7 @@ python .tools/sync/sync_opencode_agents.py
 python .tools/sync/sync_claude_agents.py
 ```
 
-Do not hand-edit generated Qoder, Cursor, opencode, or Claude Code agent files, and do not commit the generated `CLAUDE.md`; `AGENTS.md` stays canonical.
+Do not hand-edit generated Qoder, Cursor, opencode, or Claude Code agent files, and commit the generated `CLAUDE.md` with its canonical `AGENTS.md` changes.
 
 ### Universal formable-state tooling
 
@@ -63,7 +66,7 @@ Do not hand-edit generated Qoder, Cursor, opencode, or Claude Code agent files, 
 
 This is the sole supported formable-state tool in `.tools`. It rebuilds the shared GFX, GUI, scripted-GUI, scripted-localisation, and localisation outputs from complete manifests under `docs/formables/state_puzzles/`.
 
-The former geometry, registry, and consumer compilers are retained under `archive/` as reviewed-build provenance. They are not normal maintenance commands and must be restored and reviewed deliberately before a map revision or new consumer is compiled.
+The former geometry, registry, and consumer compilers are retained locally under `.tmp/archive/`, with their tracked originals recoverable from Git history. They are not normal maintenance commands and must be reviewed against current inputs before a map revision or new consumer is compiled.
 
 ### Offline Paradox wiki snapshot
 
@@ -137,9 +140,12 @@ The 3D adapter's `.venv/` is local runtime state and is already ignored by the r
 
 Generated reports should be tracked only when another maintained tool or durable handoff consumes them and their provenance is current. Place event-local audit receipts and implementation handoffs in the matching `docs/plans/<event>_plans/` hierarchy, not in `.tools`.
 
-## Archive
+## Temporary and retired tools
 
-Retired, event-specific, and one-off generation scripts are preserved under `archive/` for provenance and possible future recovery. They are not supported repository tools, are not part of normal validation, and must not be cited as current completion proof without a fresh review against current source.
+Retired generators are kept locally in `.tmp/archive/`; the former `.tools/tmp/` scratch files are in `.tmp/tools_scratch/`.
+Fixed-model pilots, unit-specific inspection scripts, and dated audio-repair helpers are in `.tmp/3d_pipeline/`.
+These local files are ignored, are not required for a fresh checkout, and are not normal maintenance commands. Tracked originals remain available in Git history.
+Retain historical reports and generated-file headers as records of what ran at the time; update active commands and imports instead of rewriting old results.
 
 ## Adding or removing a tool
 
@@ -149,11 +155,12 @@ When adding a tool:
 2. Give it a narrow command-line contract, safe defaults, and a read-only check or dry-run mode when practical.
 3. Document its authoritative inputs, generated outputs, dependencies, and destructive behavior here or in a dedicated package README.
 4. Reference it from the owning system documentation or skill.
-5. Keep generated artifacts and caches out of Git.
+5. Keep generated artifacts and caches out of Git; put one-off helpers in `.tmp/<task>/` rather than promoting them by default.
+6. Reuse an existing tool before adding a wrapper or generator. A new permanent tool needs demonstrated recurring use or a required shared entry point; accepting arguments alone is not enough.
 
 When removing a tool:
 
 1. Verify direct references, imports, dynamically constructed commands, generated-file headers, docs, skills, agents, configuration, and historical handoffs.
 2. Identify the authoritative replacement or explain why no continuing tool is required.
-3. Update active instructions and generated-output provenance in the same change.
-4. Leave uncertain future hooks in place and document the unresolved owner instead of deleting them.
+3. Update active instructions, imports, and dependency records in the same change; preserve historical provenance unchanged.
+4. Preserve moved bytes in `.tmp/` and keep required runtime dependencies, locks, and maintained regression tests in place. Do not retain an unused hook solely for hypothetical future use.

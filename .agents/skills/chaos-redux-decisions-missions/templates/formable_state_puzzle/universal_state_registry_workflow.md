@@ -10,11 +10,12 @@ The canonical active-map geometry source is `docs/formables/state_registry/gener
 
 The source registry is immutable build input for consumers. Do not hand-edit it, copy its state geometry into a second owner manifest, stretch an old mask, or redraw a state in an asset editor.
 
-The shipped portable registry index and universal live-trigger wrappers are reviewed build artifacts derived from that source. The former registry builder is retained at `.tools/archive/build_formable_state_registry.py` for provenance, but it is not a supported routine command.
+The shipped portable registry index and universal live-trigger wrappers are reviewed build artifacts derived from that source. The former registry builder is retained locally at `.tmp/archive/build_formable_state_registry.py` for provenance, but it is not a supported routine command.
 
 The consumer contract is `docs/formables/state_registry/consumer_spec.schema.json` and `docs/formables/state_registry/consumer_spec.template.json`. The schema defines the finite candidate `state_ids`, optional `state_groups`, projection, qualification and visibility policies, helper overrides, and owner output paths. The companion `category_attachment_audit.md` records how the manifest's category ID is attached to each owning decision category.
 
-The shipped consumer manifests, projected PNG/DDS pairs, previews, and helper hooks are reviewed build artifacts. The former compiler is retained at `.tools/archive/build_formable_state_puzzle_consumer.py` for provenance, but it is not a supported routine command. A map revision or new consumer requires a deliberate restoration and fresh review of the archived geometry/registry/consumer toolchain, or an approved replacement, before any generated artifacts are changed.
+The shipped consumer manifests, projected PNG/DDS pairs, previews, and helper hooks are reviewed build artifacts. The former compiler is retained locally at `.tmp/archive/build_formable_state_puzzle_consumer.py` for provenance, but it is not a supported routine command. A map revision or new consumer requires a deliberate restoration and fresh review of the archived geometry/registry/consumer toolchain, or an approved replacement, before any generated artifacts are changed.
+These temporary copies are local only; recover missing retired tools from Git history and review them before reuse.
 
 The runtime generator is `.tools/generate_formable_state_puzzle_runtime.mjs`. It discovers every `manifest.json` directly below `docs/formables/state_puzzles/*/` whose `status` is `complete`, validates each manifest and runtime DDS pair, rejects duplicate category or formable identifiers after runtime normalisation (including `a-b` versus `a_b`), and emits the shared GFX, GUI, scripted-GUI, scripted-localisation, and localisation surfaces. It has no hardcoded category allow-list.
 
