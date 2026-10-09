@@ -26,12 +26,13 @@ for (const category of parse(fs.readFileSync('common/script_constants/033_acid_r
 	for (const row of Array.isArray(category.value) ? category.value : [])
 		if (!Array.isArray(row.value) && Number.isFinite(Number(row.value))) constants.set('constant:' + category.key + '.' + row.key, Number(row.value));
 
-function replay(prefix, region, stale = false) {
+function replay(prefix, region, stale = false, indexed = true) {
 	const globals = new Map([['global.acid_rain_generation_id', 2], ['global.acid_rain_region_index_generation', stale ? 1 : 2],
 		['global.acid_rain_region_index_start_entries', [0, 0, 4, 8, 12, 16, 20, 24]],
 		['global.acid_rain_region_index_end_entries', [0, 4, 8, 12, 16, 20, 24, 28]]]);
 	const parent = new Map([['acid_rain_cursor_region', region], ['caller_sentinel', 37]]);
 	let temps = parent, rebuilds = 0;
+	const flags = new Set(indexed ? ['acid_rain_region_chunks_indexed'] : []);
 	function value(token) {
 		if (token.startsWith('constant:')) { assert.ok(constants.has(token)); return constants.get(token); }
 		if (Number.isFinite(Number(token))) return Number(token);
@@ -42,6 +43,7 @@ function replay(prefix, region, stale = false) {
 		if (node.key === 'NOT') return !node.value.every(trigger);
 		if (node.key === 'OR') return node.value.some(trigger);
 		if (node.key === 'has_variable') return temps.has(node.value) || globals.has(node.value);
+		if (node.key === 'has_global_flag') return flags.has(node.value);
 		assert.equal(node.key, 'check_variable', 'unknown trigger');
 		const [key, token] = assignment(node), a = value(key), b = value(token);
 		const kind = node.value.find(n => n.key === 'compare').value;
@@ -59,6 +61,7 @@ function replay(prefix, region, stale = false) {
 			} else if (node.key === 'acid_rain_build_region_index') {
 				// Out-of-scope rebuild mock, with unchanged fixture array contents.
 				rebuilds++; globals.set('global.acid_rain_region_index_generation', 2);
+				flags.add('acid_rain_region_chunks_indexed');
 			} else throw Error('unknown effect ' + node.key);
 		}
 	}
@@ -87,6 +90,7 @@ for (const [index, name] of Object.keys(outputs).entries()) {
 			assert.deepEqual(replay(prefix, 0), { start: 0, end: 0, rebuilds: 0 });
 			assert.deepEqual(replay(prefix, 8), { start: 0, end: 0, rebuilds: 0 });
 			assert.deepEqual(replay(prefix, 4, true), { start: 12, end: 16, rebuilds: 1 });
+			assert.deepEqual(replay(prefix, 4, false, false), { start: 12, end: 16, rebuilds: 1 }, 'same-generation legacy index needs chunks');
 		}
 		checked.push({ caller: site.caller, helper: name, outputs: outputs[name] });
 	}
@@ -95,6 +99,6 @@ assert.deepEqual(replay([], 4), { start: undefined, end: undefined, rebuilds: 0 
 assert.equal(/set_variable_to_random\s*=\s*\{\s*var\s*=\s*acid_rain_region_candidate/.test(text), false, 'retry candidate escaped into saved scope');
 assert.equal(parse(namedBlock(text, 'acid_rain_select_weighted_region'))[0].value[0].key, 'clear_variable');
 assert.equal(parse(namedBlock(text, 'acid_rain_select_weighted_region'))[0].value[0].value, 'acid_rain_region_candidate', 'legacy saved scratch not retired');
-console.log(JSON.stringify({ status: 'pass', source_sha256: hash(bytes), call_sites: checked, cursor_cases: 160,
+console.log(JSON.stringify({ status: 'pass', source_sha256: hash(bytes), call_sites: checked, cursor_cases: 176,
 	negative_control: 'undeclared cursor outputs disappear on helper return',
 	limits: ['Native array reads/rebuilding/predicates are fixtures', 'Weighted selector caller storage is audited, not numerical probability or full formation execution'] }, null, 2));

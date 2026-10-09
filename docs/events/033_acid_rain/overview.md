@@ -13,6 +13,10 @@ It grows through reachable untouched neighbours before seeding a disconnected is
 An eligible global opening skips ordinary region selection and regional footprints and retains its three-day global transition.
 A front announces its next region roughly one week ahead, visits 60 to 85 percent of the region's eligible states on its first pass, and clears the remainder on its second pass.
 Target selection favours states that no front has touched, with an explicit island path and a deterministic endpoint after full frozen-set coverage.
+The frozen regional index stores numeric chunk starts alongside its ordered state list.
+Regional warning, movement, growth, retirement and severe-cell traversals visit those chunks in order, with at most 1,000 indices in each numeric loop, so a large region does not lose its suffix to the engine's numeric-loop limit.
+The chunk index is generation-owned, rebuilt once when a same-generation legacy index lacks it, and cleared when the next generation initializes.
+The worker reads compact chunk metadata and the selected region's states rather than scanning every state each day.
 The rain ordinarily disperses only after it has crossed every eligible state.
 
 Countries manage Preparedness from 0 to 100 through four permanent projects: Expand the Shelter Network, Protect Water and Food, Expand Medical and Protective Capacity, and Harden Transport and Infrastructure.

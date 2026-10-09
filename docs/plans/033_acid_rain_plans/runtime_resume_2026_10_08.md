@@ -3,7 +3,33 @@
 Disposition: implemented source checkpoints with explicitly incomplete overall acceptance.
 The user's Event 033 goal remains active and no event-completion claim is made.
 
-## Current storm-clock source checkpoint, 2026-10-09
+## Current regional traversal checkpoint, 2026-10-09
+
+The runtime is `aca3b851579c12ec69422b84bcd0416568303b062f2b9f26c69fa97d3de3abba` and constants are `6838c2fcdfad25c6147045544c2253ca05b29cc5273dd4071ba9622e824b0a85`.
+Sixteen regional cursors use a serialized, generation-owned chunk-start array with independently reset foreach and numeric breaks.
+Each numeric batch respects the installed `MAX_EFFECT_ITERATION = 1000`, preserves the previous state-operation body and order, and forwards an intentional inner stop to its own outer loop.
+Initial indexing still uses the existing frozen-state foreach pass; routine traversal reads compact chunk metadata and the selected region only.
+Missing chunk metadata on an otherwise current legacy index forces one lazy rebuild rather than silently leaving the suffix unreachable.
+
+The maintained `test_033_region_batches.js` replays the actual index and all sixteen traversal envelopes against immutable commit `23f8aa8c9de178decd5bf7f267ae23a596521df3`.
+It passes 224 cases over empty, 999-, 1,000-, 1,001-, 2,001- and 2,101-state regions, preserving sixteen original payloads and demonstrating the old unreachable suffix.
+Three actual index cases cover missing legacy metadata, same-generation reuse and a new generation.
+The updated caller-storage suite covers 176 cases, and seven focused source suites pass with 94 private loop envelopes.
+These are source traversal and migration-index proofs, not physical population removal, native scheduling, save/reload, whole-event coverage or multiplayer observations.
+
+Primary references are installed `documentation/effects_documentation.md:4279-4295,4312-4330` at revision `2cdc93d26775990468eed167442f7a416b13059fb8fe07d139b54250b79209af`, installed `common/defines/00_defines.lua:25`, and offline `Data structures - Hearts of Iron 4 Wiki.md:1216` at revision `62273f37ed30e5479acb331a8973f48dadc1867c4913c8a940e3e790e7af32d4`.
+The previously sealed storm runner remains unchanged.
+Its current-source request stops at the changed constants fingerprint rather than executing its cases; no current forty-four-case pass is claimed from that request.
+The new regression's AST reversal preserves unrelated runtime roots, including the storm processors, but that is not a replacement claim of full sealed execution.
+
+The probability auditor retains the separate immutable 48B/D284 F8 baseline and 29 named source-derived cases.
+The architect is implementing AI usefulness and pre-debit guards without changing costs or human choices; Water aftermath and Transport structural benefits remain in scope even at zero mortality.
+The dedicated GUI worker is repairing known geometry, meter, completion-frame, hover and wording defects while preserving the neutral base and identifying aligned regional overlay needs.
+The earlier renderer and unsupported probability limits are reused under the replacement AGENTS retry rules, not retried or called passes.
+F7 receipt/payload migration, Humanitarian retirement, final assets/audio and the explicitly requested remaining Part 12 outputs still leave the full Event 033 goal incomplete.
+No functionality fallback or simplification is introduced by the traversal repair.
+
+## Historical storm-clock source checkpoint, 2026-10-09
 
 The current runtime is `48b6c9b8ddcbacc8fafc002551735b7ade269929ecb36fa7beb5e6cc0a2ecabe` and triggers are `d284abdeb77e548c6d1d157f3bb5fb9c9b6ae548a86df2de222451efab21e6b5`.
 Severe and superstorm openings anchor their class pulse clocks at actual opening, and only `start <= now < end` can activate or dispatch.
