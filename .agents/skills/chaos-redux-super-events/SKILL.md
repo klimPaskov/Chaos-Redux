@@ -74,7 +74,7 @@ Use `chaos-redux-event-assets` for:
 - sprite handoff notes for main-agent `.gfx` wiring
 - asset manifests
 
-Super-event images may be sourced or generated; section 19 sets the default source mode for each kind of moment.
+Super-event images may be sourced or generated; [Super-event image handoff](#8-super-event-image-handoff) sets the default source mode for each kind of moment.
 
 ### This skill
 
@@ -148,7 +148,7 @@ Keep the key numbering aligned with the actual super-event slot.
 
 Do not invent a different localisation pattern unless the existing repo pattern has changed.
 
-## 6. Title rules
+### Title rules
 
 A good super-event title should be short, memorable, and specific.
 
@@ -174,7 +174,7 @@ Avoid generic titles such as:
 
 Use titles that fit the event's actual identity.
 
-## 7. Description rules
+### Description rules
 
 The description should explain the event clearly without turning into a normal event wall of text.
 
@@ -199,7 +199,7 @@ For secret or uncertain events, use partial information:
 
 Do not reveal a hidden world-ending branch too early.
 
-## 8. Button text and remark rules
+### Button text and remark rules
 
 The button text (`.a`) should feel like a reaction to the moment.
 
@@ -243,13 +243,13 @@ Avoid generic button text such as:
 
 The button text should be short enough to fit well in-game.
 
-Document the cultural source in the super-event research note when the button text is a reference. Research and verify it through the cultural remark workflow in section 10.
+Document the cultural source in the super-event research note when the button text is a reference. Research and verify it through the [cultural remark research workflow](#cultural-remark-research-workflow).
 
-## 9. Quote rules
+## 6. Quote rules
 
 The quote (`.q`) should deepen the super-event.
 
-Do not invent or misattribute quotes. Use a quote only when it fits the specific event, and find and verify it through the quote research workflow in section 10.
+Do not invent or misattribute quotes. Use a quote only when it fits the specific event, and find and verify it through the [quote research workflow](#quote-research-workflow).
 
 Prefer quotes that can be checked against a reliable source. Primary sources are best. If a primary source is not available, use reputable quote collections, archives, books, speeches, scripture references, or other traceable sources.
 
@@ -284,7 +284,7 @@ If a modern cultural line is used as the main quote anyway, it must be very shor
 
 If attribution is uncertain, mark it uncertain or choose another quote.
 
-## 10. Quote research workflow
+### Quote research workflow
 
 Use the repository web research workflow from `AGENTS.md` for quote research.
 
@@ -326,7 +326,7 @@ If a translation is used, state that it is a translation when relevant.
 
 If no strong quote is found, continue searching instead of inventing one.
 
-### Cultural remark research workflow
+#### Cultural remark research workflow
 
 The button text (`.a`) can be a meaningful remark or cultural reference.
 
@@ -363,33 +363,33 @@ Do not misquote a line if presenting it as a direct reference.
 
 Do not use a reference that breaks the tone of the event unless the contrast is intentional.
 
-## 11. Quote style by super-event type
+### Quote style by super-event type
 
-### First reveal
+#### First reveal
 
 Use quotes about discovery, doubt, fear, false peace, hidden rot, or the first sign of collapse.
 
-### Escalation
+#### Escalation
 
 Use quotes about loss of control, failed containment, pride, punishment, betrayal, war, disease, or mass panic.
 
-### World-end scenario
+#### World-end scenario
 
 Use quotes about final judgment, collapse, extinction, fate, prophecy, silence, ruin, or the end of order.
 
-### Defeat aftermath
+#### Defeat aftermath
 
 Use quotes about memory, cost, survival, rebuilding, responsibility, or vigilance.
 
-### Ideological victory or transformation
+#### Ideological victory or transformation
 
 Use quotes about faith, revolution, obedience, sacrifice, destiny, legitimacy, power, or rebirth.
 
-### Scientific or experimental disaster
+#### Scientific or experimental disaster
 
 Use quotes about knowledge, arrogance, forbidden inquiry, unintended consequences, or the limits of control.
 
-## 12. Audio research purpose
+## 7. Audio research and implementation
 
 Super-event audio should make the moment feel distinct.
 
@@ -407,7 +407,7 @@ Never create or accept a super-event track from generated test tones, primitive 
 
 Never describe a final cue with placeholder provenance such as "restored legacy", "legacy audio package", "repository history", or similar implementation-history wording in player-facing or attribution documentation. The canonical audio catalogue at `music/chaosx_music_track_list.html` and the audio docs must name the actual source title, creator or composer, performer or recording source when known, source URL, license, and duration. Use attribution status `verified` only after the title and creator/composer are identified and the source/license have been checked.
 
-## 13. Audio research rules
+### Audio research rules
 
 Before looking outside the repository, check whether an approved suitable track already exists in the repo. Inspect:
 
@@ -468,7 +468,7 @@ If the license is unclear, mark it unsuitable and find another option. Do not wi
 
 Do not claim a track is public domain without checking.
 
-## 14. Audio implementation workflow
+### Audio implementation workflow
 
 For every super-event audio package:
 
@@ -486,7 +486,7 @@ For every super-event audio package:
 
 Use the existing Chaos Redux settings-aware sound helper. Do not bypass it.
 
-## 15. Audio editing notes
+### Audio editing notes
 
 For every suitable track, propose practical editing notes.
 
@@ -508,7 +508,7 @@ Possible notes:
 Preserve the original source file before destructive edits.
 Document any edited derivative file.
 
-## 16. Audio implementation expectations
+### Audio implementation expectations
 
 When implementing audio, follow the existing Chaos Redux audio pattern.
 
@@ -530,9 +530,9 @@ Use `play_current_super_event_sound = yes` rather than bypassing the settings-aw
 
 Fallbacks are not allowed without discussing them with the user. If final audio is unavailable, stop and explain the blocker instead of silently leaving default or placeholder audio.
 
-## 17. Audio documentation
+### Audio documentation
 
-Always update `music/chaosx_music_track_list.html`, the canonical audio catalogue, for every super-event track, with the row and reuse documentation required by section 14, step 10.
+Always update `music/chaosx_music_track_list.html`, the canonical audio catalogue, for every super-event track, with the row and reuse documentation required by the [audio implementation workflow](#audio-implementation-workflow), step 10.
 
 Update any additional audio documentation used by the repo.
 
@@ -559,7 +559,7 @@ For each super-event audio package, document:
 
 If metadata cannot identify the author, title, source, license, or duration, and the user did not provide it, reject the track or ask the user for the missing information instead of guessing.
 
-## 18. Audio validation checklist
+### Audio validation checklist
 
 Before finishing any super-event task, confirm:
 
@@ -577,7 +577,7 @@ Before finishing any super-event task, confirm:
 - every completed super-event has a unique final track unless exact reuse was explicitly approved by the user and documented
 - no placeholder, default, mismatched, or wrong-format audio remains for completed super-events
 
-## 19. Super-event image handoff
+## 8. Super-event image handoff
 
 Super-event images are handled through `chaos-redux-event-assets`.
 
@@ -610,7 +610,7 @@ The asset skill handles:
 
 Treat project-root `docs/assets/<event_id>_<event_slug>/` as temporary evidence for super-event image and audio work. Retain source files, previews, contact sheets, manifests, provenance, research notes, and handoffs while work is active, blocked, awaiting review, or undergoing acceptance scenarios. Before declaring the event goal fully complete, move or copy durable evidence into `docs/events/`, `docs/plans/`, `docs/specs/`, `docs/super_events/`, or another permanent documentation surface, then delete only that event-scoped workspace. Never delete skill-local reusable assets under `.agents/skills/.../assets/` or unrelated workspaces. Do not require the deleted workspace to exist for a completion claim.
 
-## 20. Super-event slot wiring
+## 9. Super-event slot wiring
 
 When wiring a super-event, choose the slot intentionally.
 
@@ -633,7 +633,7 @@ Do not reuse a slot accidentally.
 
 Do not let two unrelated super-events point to the same current image, text, or audio unless the reuse is intentional and documented.
 
-## 21. World-end super-events
+## 10. World-end super-events
 
 World-end super-events need stricter alignment.
 
@@ -649,7 +649,7 @@ When a super-event represents a world-end scenario:
 
 A world-end super-event should feel like an end-state, not a normal escalation.
 
-## 22. Defeat aftermath super-events
+## 11. Defeat aftermath super-events
 
 Use defeat aftermath super-events only when the defeated threat was global or near-global, long enough, and costly enough to reshape the campaign.
 
@@ -663,7 +663,7 @@ The super-event should communicate:
 
 Quotes and audio should usually feel reflective, not triumphant without cost.
 
-## 23. Documentation requirements
+## 12. Documentation requirements
 
 The event documentation should explain:
 
@@ -681,7 +681,7 @@ The event documentation should explain:
 
 Do not leave the docs saying only "super-event added."
 
-## 24. Manifest or research note
+### Manifest or research note
 
 For every super-event research package, create or update a markdown note.
 
@@ -727,7 +727,7 @@ The note should include:
 - implementation notes
 - open questions
 
-## 25. Improvement-loop super-event depth
+## 13. Improvement-loop super-event depth
 
 Improvement addenda can propose new super-events, but a super-event should still mark a real campaign threshold. Do not add one just because a route has a strong image. Use one when a formable changes regional order, a hidden route becomes public, a scripted GUI mechanic reaches a global milestone, a league or world threat emerges, or a defeat aftermath reshapes the campaign.
 
@@ -735,7 +735,7 @@ For formables, the super-event should reflect the formation method. A negotiated
 
 Animated portraits or animated scripted GUI assets can support a super-event-adjacent moment, but they are not replacements for the super-event package. The super-event still needs aligned text, quote, image, audio, trigger, docs, etc.
 
-## 26. Final checklist
+## 14. Final checklist
 
 Before closing a super-event task, confirm:
 

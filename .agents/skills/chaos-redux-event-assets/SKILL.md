@@ -105,7 +105,7 @@ For event-specific assets, include the event id or slug where useful. For exampl
 
 Use `docs/assets/<event_id>_<event_slug>/` with `manifest.md`, `prompts/`, `source_png/`, `processed_png/`, `contact_sheets/`, `notes/`, and `gfx_handoff.md` as needed. Treat it as a temporary, event-scoped working and evidence folder, not as a shipped asset library. Keep original sources, processed previews, and runtime outputs separate. Use it during active implementation for source files, processed previews, contact sheets, prompts, provenance, manifests, animation plans and previews, source-audio downloads, and handoff notes. Keep it while the event is active, blocked, awaiting review, or undergoing acceptance scenarios.
 
-#### Durable portrait source archive
+### Durable portrait source archive
 
 `chaosx_portrait_creator` owns one durable source package for every grounded portrait and archives it without changing runtime identity. Select the mode in the brief or manifest: `source_placeholder` keeps the unchanged source/crop, deterministic `156x210` PNG, DDS, and wiring. `styled_final` is an optional provider branch that starts only after the user explicitly requests it and supplies the result. Never silently repaint, replace, or overwrite provenance.
 
@@ -204,7 +204,7 @@ The current reference examples use a native `114x101` canvas. Treat that size as
 
 The picture folder must contain its own `contact_sheet.png`. If the contact sheet is missing, create it before new category-picture work. Label every reference with its filename and native dimensions, record each source as Vanilla, Chaos Redux, or user-provided reference material in `CATALOG.md`, and update the reference library README when the family or workflow changes. The reference images and contact sheet are review-only assets. Never wire, recolour, trace, or ship them as runtime art.
 
-After placing a technology/doctrine icon, prefer targeted read-only `hoi4.tech_inspect` and `hoi4.tech_render` checks for the changed sprite/texture under the AGENTS.md retry limit. If unavailable, inspect the actual technology, GFX, DDS, and folder placement directly and report the visual limitation. A standalone viewer is optional for code/asset wiring; missing or ambiguous required assets remain implementation findings. This skill still owns source art, processing, DDS conversion, placement, manifests, and sprite handoff.
+After placing a technology or doctrine icon, use the read-only `mcp__hoi4_agent_tools__hoi4_tech_inspect` in `explain` or `lint` mode to verify the sprite and texture references, then use the `assets` or affected folder view in `mcp__hoi4_agent_tools__hoi4_tech_render` for deterministic review. Apply the AGENTS.md retry limit to these checks. Tool exposure does not establish service health or standalone Technology Tree Viewer installation. If the route remains unavailable, inspect the technology, GFX, DDS, and folder placement directly and report the missing visual check; a standalone viewer is required only when the task needs it. Missing or ambiguous assets remain implementation findings. This skill still owns source art, processing, DDS conversion, placement, manifests, and sprite handoff.
 
 #### Canonical unit-visual paths
 
@@ -345,7 +345,7 @@ Inspect every iteration at full source resolution and the final HOI4 native size
 
 Use a centered silhouette, strong value contrast, and one clear subject readable at native size; avoid interior detail that disappears at 45x45 or 64x64. For variable UI backgrounds, use a slight dark/black outline and subtle drop shadow, with no chroma rim, white outline, glow, sticker border, or oversized medallion fill. Apply the shared transparency and focused-edit rules and inspect on contrasting solid and checker backgrounds. Keep visible ImageGen source evidence, prompt/background mode, processed alpha, and the contact-sheet evidence below; a primitive drawing or resized unrelated icon cannot pass.
 
-### Icon type separation rules
+#### Icon type separation rules
 
 Focus, idea, national-spirit, officer-corps, decision, mission, decision-category, achievement, technology, special-project, balance-of-power, intelligence-agency, intelligence-operation, commander-trait, medal, military-raid, state-modifier, MIO, faction, building, and modifier icons are separate asset types.
 
@@ -371,7 +371,7 @@ The manifest must record the exact asset type for every icon and should note whe
 
 The idea and national spirit, focus, and decision icon families below all apply the shared generation, text, transparency, and separate-source rules; for each, a user-provided or specifically requested source takes precedence.
 
-### Idea and national spirit icons
+#### Idea and national spirit icons
 
 Use compact HOI4 symbolic art with aged texture, strong contrast, a clear silhouette, and readable meaning at `64x64`, usually without a full focus frame. Use `idea_` and inspect `icons/ideas/` plus its catalog row.
 
@@ -382,19 +382,19 @@ Check each consumer independently: decision and category `icon` fields accept bo
 
 Inspect `assets/visual_components/national_spirit_backgrounds/contact_sheet.png` for matching background treatment. A catalog `background_template` may sit beneath original ImageGen subject art when the exact idea or national-spirit consumer fits; keep the template source as a separate layer.
 
-### Focus icons
+#### Focus icons
 
 Use HOI4 focus art with a strong central symbol, clear silhouette, aged texture, painterly detail, and readable contrast tied to the focus tree story, ideology, or gameplay purpose; avoid generic thumbnails. Use `goal_` and nominal `94x86`, inspecting `icons/national_focus/`, its catalog row, and the owning sprite/current vanilla precedent before selecting the actual canvas.
 
 Inspect `assets/visual_components/focus_pieces/contact_sheet.png` and `assets/visual_components/focus_backgrounds/contact_sheet.png` for optional subject scale, framing, and composition cues in the ImageGen prompt. These components are references; create the icon's subject as original ImageGen art.
 
-### Decision icons
+#### Decision icons
 
 Compose decision icons for `32x32` readability with simple central symbols, strong contrast, and limited interior detail. Use `decision_` or `decision_category_` for category icons, and inspect `icons/decisions/`, `icons/missions/`, or `icons/decision_categories/` with the owning consumer. Missions use the decision pipeline with mission-specific semantic readability.
 
 For a decision-category icon, inspect `assets/visual_components/national_spirit_backgrounds/decision_category_background_blue_roundel.png` as a cataloged background candidate. Composite it only when the exact category consumer fits, beneath an original ImageGen subject. Do not transfer that background to ordinary decision or mission icons by resizing it.
 
-### Additional gameplay icon families
+#### Additional gameplay icon families
 
 Route additional icon work by the exact UI surface:
 
@@ -406,13 +406,13 @@ Route additional icon work by the exact UI surface:
 
 Read the matching canonical catalog entries and inspect the owning `.gfx`, `.gui`, or database definition before choosing canvas, frame layout, transparency, or filename. These families are not reskinned decision or idea icons. When a source is a strip or contains several UI states, preserve its frame semantics and document them in the manifest and handoff.
 
-### Achievement icons
+#### Achievement icons
 
 Achievement icons should be compact and readable at 64x64.
 
 Inspect `assets/gfx_references/icons/achievements/contact_sheet.png` and the matching individual references before creating an achievement icon. The contact sheet and reference examples are review material, while the `template/` folder below is a separate workflow-input folder excluded from the achievement reference count.
 
-#### Supplied templates
+##### Supplied templates
 
 Use these exact supplied workflow inputs and do not invent, rename, move, resize, crop, trim, recolor, redraw, filter, or replace them:
 
@@ -424,7 +424,7 @@ assets/gfx_references/icons/achievements/template/overlay.png
 
 `achievement_template.png` is the completed-state background, `achievement_template_grey.png` is the grey and not-eligible background, and `overlay.png` is the unchanged red-cross not-eligible overlay. The supplied files are 64x64 workflow inputs. Verify their integrity against SHA-256 `248DB006611EB3942550C43DF83802AA6FB24761035FC928B5D34586C0C4C5BA`, `70E073694C1A7D9FE40C63B1EB2E987A8A45B3FFD15CCF789EEAA5B843B90022`, and `89BC80C6AC975BF6F1FF000FF3070B20C337BFB8B8AE966AE35A5540C004D6DD` respectively.
 
-#### New achievement creation
+##### New achievement creation
 
 For each new achievement, use `$imagegen` to design one original subject on a genuinely transparent background with the inspected achievement references guiding framing, density, contrast, and readability. Request no achievement frame, square background, red cross, text, or fake checkerboard. Process the result into one centered 64x64 color subject layer, retain the native ImageGen source PNG, prompt, and processed PNG, and do not independently generate three state artworks or borrow another icon type.
 
@@ -436,11 +436,11 @@ Build the three complete source layers deterministically from the one processed 
 
 Do not derive a new not-eligible source from a completed or runtime grey output, or recolor or resize the red cross.
 
-#### Existing-triplet migration
+##### Existing-triplet migration
 
 For an existing achievement, provide the complete `<achievement_id>.{png,dds}`, `<achievement_id>_grey.{png,dds}`, and `<achievement_id>_not_eligible.{png,dds}` source triplet to the processor. Migration preserves each supplied state layer at its native 64x64 canvas and exact position without resizing, cropping, alpha-trimming, grayscale conversion, recoloring, redrawing, filtering, or other preprocessing. It never derives a missing not-eligible state from grey plus the overlay and never replaces a supplied not-eligible layer.
 
-#### Shared processing and validation
+##### Shared processing and validation
 
 Use `.agents/skills/chaos-redux-event-assets/tools/process_achievement_icons.py` for both modes. Supply all three complete source layers; directory mode collects the base, `_grey`, and `_not_eligible` triplet, and a single file is never valid input. Each decoded PNG or DDS state must be exactly 64x64. The processor fails closed on a missing state, a wrong canvas, an already-applied outer template border, or an existing output without `--force`.
 
@@ -462,7 +462,7 @@ python -B .agents/skills/chaos-redux-event-assets/tools/process_achievement_icon
 
 For an explicit one-triplet pass, provide `--completed <completed.png|completed.dds> --grey <grey.png|grey.dds> --not-eligible <not_eligible.png|not_eligible.dds> --achievement-id <achievement_id> --output-dir <separate_output_directory>`. Use `--dry-run` to decode and validate complete source triplets without writing, or `--audit --input <source_triplet_directory> --output-dir <output_directory>` to recompute and validate existing triplets. The processor writes optional review PNGs below `output-dir/review/` and final DDS files directly below `output-dir`.
 
-#### Runtime placement and handoff
+##### Runtime placement and handoff
 
 Use an `achievement_` prefix for source or intermediate art when it helps distinguish the asset type.
 

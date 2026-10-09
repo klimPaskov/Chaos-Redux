@@ -43,6 +43,32 @@ Common triggers:
 
 Do not use this skill to inflate simple bug fixes. Use it when the bug reveals a real design gap.
 
+### Deployment cadence
+
+The main agent should actively deploy the improvement loop during large event implementation, especially after a meaningful tranche of work adds several new mechanics, countries, focus routes, formables, decision systems, scripted GUI elements, or super-event candidates. This is the best moment to ask whether the new surfaces are connected, reactive, regionally grounded, and worth playing.
+
+Do not spawn the improvement loop planner repeatedly for the same event while the previous addendum is still waiting. Before another loop pass, the previous plan should be implemented, folded into `docs/specs/<event_id>_<event_slug>_specs/`, explicitly queued with a reason, or rejected with a reason. This prevents endless plan stacking.
+
+A second loop pass is justified when the main agent has implemented the previous addendum and the new implemented layer creates new design questions. It is also justified after a completion auditor finds a different large design gap that was not covered by the previous plan. Do not repeat the same review merely to close an unchanged status.
+
+### Stop condition and anti-bloat rule
+
+The improvement loop is not infinite. Its job is to improve the event until the design is deep, connected, replayable, and clean enough to finish. If another expansion would add noise, bloat, repeated mechanics, unnecessary darkness, duplicate routes, or more maintenance burden than gameplay value, the loop should say so clearly.
+
+The planner should recommend stopping expansion when all of these are true:
+
+- the event has no known simplifications, fallbacks, or shallow placeholder content
+- the implemented mechanics match the accepted specs and plans
+- player choices have real consequences and replay value
+- AI behavior exists for systems that AI countries can use
+- localisation, event logs, docs, assets, GUI surfaces, focus routes, decisions, formables, and super-events are properly aligned where relevant
+- open gaps are small finalization tasks, validation tasks, polish, or documentation alignment, not missing design depth
+- previous improvement addenda are implemented, folded into specs, queued with a reason, or rejected with a reason
+
+When this condition is met, the planner should not write a new large expansion. It should update the current handoff with the closure recommendation instead. That handoff should list only the final small tasks, such as last localisation checks, final validation scenarios, asset handoff verification, spreadsheet alignment, rechecks of actual audit fixes, or cleanup. It should explicitly say that broad expansion is no longer recommended because the system is now clean and additional mechanics would bloat it.
+
+A closure handoff should not claim implementation completion on its own. It tells the main agent that the design loop can stop, the new plan can be finished, final validations can run, and the goal can be marked complete if the main agent verifies there are no blockers, simplifications, fallbacks, or unresolved accepted plans. Unavailable tools and user-owned game testing are handled under AGENTS.md; do not require another closure report just to restate those limits.
+
 ## Relationship with other skills
 
 Use the system skill that owns the surface being improved.
@@ -74,32 +100,6 @@ docs/plans/<event_id>_<event_slug>_plans/
 The plans folder is where subagents add working handoffs. The specs folder holds source design whose acceptance basis must be recorded. A spec path, status label, old handoff, or implementation evidence does not establish approval. Record the explicit user decision or parent acceptance within the user-authorized scope that supports each accepted claim. Keep unsupported or conflicting claims unresolved and use the AGENTS.md Specs and Plans dispositions.
 
 If an improvement addendum is accepted as source design, the main agent should fold it into the relevant spec file under `docs/specs/<event_id>_<event_slug>_specs/` or record it as `accepted and queued` with its acceptance basis and reason. Record implementation evidence separately from design acceptance.
-
-## Deployment cadence
-
-The main agent should actively deploy the improvement loop during large event implementation, especially after a meaningful tranche of work adds several new mechanics, countries, focus routes, formables, decision systems, scripted GUI elements, or super-event candidates. This is the best moment to ask whether the new surfaces are connected, reactive, regionally grounded, and worth playing.
-
-Do not spawn the improvement loop planner repeatedly for the same event while the previous addendum is still waiting. Before another loop pass, the previous plan should be implemented, folded into `docs/specs/<event_id>_<event_slug>_specs/`, explicitly queued with a reason, or rejected with a reason. This prevents endless plan stacking.
-
-Use one bounded review after substantial design work and recheck actual fixes only. Another planner pass needs new design work or a distinct broad gap; do not audit the audit or repeat closure reviews. If delegation is unavailable, the parent performs the review under AGENTS.md without treating a missing planner as an implementation blocker.
-
-## Stop condition and anti-bloat rule
-
-The improvement loop is not infinite. Its job is to improve the event until the design is deep, connected, replayable, and clean enough to finish. If another expansion would add noise, bloat, repeated mechanics, unnecessary darkness, duplicate routes, or more maintenance burden than gameplay value, the loop should say so clearly.
-
-The planner should recommend stopping expansion when all of these are true:
-
-- the event has no known simplifications, fallbacks, or shallow placeholder content
-- the implemented mechanics match the accepted specs and plans
-- player choices have real consequences and replay value
-- AI behavior exists for systems that AI countries can use
-- localisation, event logs, docs, assets, GUI surfaces, focus routes, decisions, formables, and super-events are properly aligned where relevant
-- open gaps are small finalization tasks, validation tasks, polish, or documentation alignment, not missing design depth
-- previous improvement addenda are implemented, folded into specs, queued with a reason, or rejected with a reason
-
-When this condition is met, stop expansion and return one concise current handoff with any remaining concrete tasks. Update the existing handoff rather than adding closure/status reports. Rechecks cover actual fixes, not whole-audit reruns.
-
-A closure handoff is design advice, not an implementation certificate or required completion artifact. The parent finishes current-scope work and proportionate code review and local checks, reports material limitations, and does not request or await user live-game validation.
 
 ## Research and historical connection standard
 

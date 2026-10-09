@@ -94,7 +94,7 @@ Record useful artifacts and file revision. If the routes cannot answer within th
 For the generated consumer window, prefer these targeted read-only GUI checks:
 
 - `mcp__hoi4_agent_tools__hoi4_gui_inspect` for the linked decision category, window hierarchy, icon bounds, tooltip regions, scripted-GUI properties, and generated sprite references.
-- `mcp__hoi4_agent_tools__hoi4_gui_render` for representative resolutions and relevant normal, hover, qualifying, hidden, long-text, and unresolved states.
+- `mcp__hoi4_agent_tools__hoi4_gui_render` for every resolution supported by the consumer and its relevant normal, hover, unresolved, qualifying, optional-hidden, long-text, and missing-localisation states.
 
 Record the returned artifact URIs and review that every piece stays inside the intended category description width, keeps its real relative position, has a tight hover region, and remains informational. The inspect must also resolve the linked category's `scripted_gui` property and generated window. If a GUI route cannot answer within the retry limit, inspect the exact generated category/window linkage, piece positions and sizes, sprites, text, and hover/click regions locally and report the visual limit.
 

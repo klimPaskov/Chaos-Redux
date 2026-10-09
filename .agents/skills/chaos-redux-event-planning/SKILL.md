@@ -36,7 +36,22 @@ Identify the authoritative design parts and their acceptance basis before extend
 
 Before proposing a shared scenario or cluster ID, check all active spec packages and reservations, implemented registry definitions and constants including hidden entries, and the canonical workbook `docs/spreadsheets/chaos_redux_events_catalog.xlsx`. CSV exports can orient research but do not establish current occupancy. Distinguish event IDs, manual triggerable-scenario IDs, world-end registry IDs, cluster IDs, and display/sort values explicitly; equal numbers in different namespaces do not establish a collision. Record proposed reservations centrally in `docs/specs/shared_identifier_registry.md` with namespace, owner, status, and source evidence before other packages consume them; a reservation does not prove design acceptance or runtime registration. Preserve implemented IDs and remap colliding proposals with their package references instead of renumbering live content to fit a plan.
 
-## Specification folder convention
+## 2. Input
+
+The user will provide either:
+
+- a rough event idea
+- a partly developed concept
+- an existing event that needs deeper rework
+- a detailed spec that needs cleanup before implementation
+
+Treat the user idea as the starting point. Do not assume it is final.
+
+When the idea is rough, expand it into a deeper design.
+
+When the idea is already detailed, preserve the core direction and improve structure, clarity, missing connections, and implementation readiness.
+
+### Specification folder convention
 
 Event source specifications should live in event-specific subfolders under `docs/specs/`.
 
@@ -55,21 +70,6 @@ docs/specs/006_independence_wave_specs/specs/006_independence_wave_spec_part_5_c
 ```
 
 Use `docs/plans/<event_id>_<event_slug>_plans/` for subagent plans, improvement addenda, audit follow-up notes, blocked reports, and implementation handoffs. Plans can become source design later, but the main agent should promote or merge them into `docs/specs/` when they are accepted as part of the final event design.
-
-## 2. Input
-
-The user will provide either:
-
-- a rough event idea
-- a partly developed concept
-- an existing event that needs deeper rework
-- a detailed spec that needs cleanup before implementation
-
-Treat the user idea as the starting point. Do not assume it is final.
-
-When the idea is rough, expand it into a deeper design.
-
-When the idea is already detailed, preserve the core direction and improve structure, clarity, missing connections, and implementation readiness.
 
 ## 3. Design purpose
 
@@ -379,7 +379,7 @@ Good focus reward types include:
 - objective completion bonuses
 - events or event chains
 
-When a specification changes technologies, doctrines, folders, prerequisites, unlocks, grants, or research bonuses, identify placement, exclusivity, unlocks, bonuses, and assets and request bounded code review and local checks with targeted `hoi4.tech_inspect`, `hoi4.tech_render`, and `hoi4.tech_compare` support when available. Carry the AGENTS.md retry/completion rules into the coding prompt; an unavailable tool/viewer is a check limitation, not a reason to leave implementation unfinished.
+When a specification adds or changes technologies, doctrines, folders, prerequisites, unlocks, grants, or research bonuses, the coding-agent prompt must require the implementation agent to inspect the affected graph with `hoi4.tech_inspect`, render the relevant folder or branch with `hoi4.tech_render`, and compare the implemented source with `hoi4.tech_compare`. The plan must identify intended placement, prerequisites, exclusivity, unlocks, bonuses, and asset needs so the implementation agent has a concrete result to verify. Apply the AGENTS.md retry limits and use direct source checks when a route remains unavailable; missing tool output does not remove any placement, prerequisite, unlock, bonus, or asset requirement.
 
 Every focus path should have a distinct purpose. If two focus groups would grant nearly the same effect, merge them, rewrite one, or make one an upgrade of the other.
 
@@ -1696,6 +1696,16 @@ Avoid filler. Every section should add useful design, player-facing detail, impl
 
 Before saving the final files, run a cleanup pass. Remove generic safeguards, obvious implementation boilerplate, empty labels, repeated wording, admin audit sections, temporary continuation prompts, and temporary compaction notes that do not belong in the final package.
 
+### Improvement-loop expansion specs
+
+When `chaos-redux-improvement-loop` produces an expansion addendum, treat it as proposed event-planning input until its acceptance basis is recorded. Fold accepted design into the main spec pack with the same seriousness as the original user idea. Record the explicit user decision or parent acceptance within the user-authorized scope that supports each accepted claim. A spec path, status label, old handoff, or implementation evidence does not establish approval. Keep unsupported or conflicting claims unresolved and use the AGENTS.md Specs and Plans dispositions.
+
+An improvement-derived spec can be shaped freely. It does not need to copy the section order of this skill. It should still make the design concrete. A useful addendum explains the playable promise, the route or mechanic that feels shallow, the deeper player loop, the choices that change outcomes, the AI behavior, the visual and localisation needs, and the surfaces that must align.
+
+The planning agent should preserve the open structure of the addendum where that helps the idea. Use tables, route maps, prose, diagrams, or country package matrices only when they make the design easier to implement. Do not convert every improvement into a rigid checklist.
+
+When an accepted improvement addendum includes formables, scripted GUI, animated sprites, animated portraits, or hidden routes, the final spec pack should carry that accepted design into the relevant files instead of leaving it isolated. The core spec explains why the expansion matters. The decision and focus files explain how the player reaches it. The asset prompt explains the static and animated visual work. The coding prompt and goal prompt tell the implementation agent to wire and validate it.
+
 ## 13. Asset planning
 
 The event specification should identify all important visual assets. For major events, assume every visible system needs asset planning unless the spec explicitly explains why it does not.
@@ -1883,25 +1893,6 @@ Do not claim a quote, cultural reference, or audio track is usable without check
 If a license or attribution is unclear, mark it as uncertain.
 
 The super-event prompt must explicitly state that unresearched titles, button text, quotes, cultural remarks, slogans, lyric fragments, allusions, and audio choices are blockers. The implementation agent must not convert research directions, working labels, achievement names, asset names, or draft-like wording into final super-event localisation.
-
-## Improvement-loop expansion specs
-
-When `chaos-redux-improvement-loop` produces an expansion addendum, treat it as proposed event-planning input until its acceptance basis is recorded. Fold accepted design into the main spec pack with the same seriousness as the original user idea. Record the explicit user decision or parent acceptance within the user-authorized scope that supports each accepted claim. A spec path, status label, old handoff, or implementation evidence does not establish approval. Keep unsupported or conflicting claims unresolved and use the AGENTS.md Specs and Plans dispositions.
-
-An improvement-derived spec can be shaped freely. It does not need to copy the section order of this skill. It should still make the design concrete. A useful addendum explains the playable promise, the route or mechanic that feels shallow, the deeper player loop, the choices that change outcomes, the AI behavior, the visual and localisation needs, and the surfaces that must align.
-
-The planning agent should preserve the open structure of the addendum where that helps the idea. Use tables, route maps, prose, diagrams, or country package matrices only when they make the design easier to implement. Do not convert every improvement into a rigid checklist.
-
-When an accepted improvement addendum includes formables, scripted GUI, animated sprites, animated portraits, or hidden routes, the final spec pack should carry that accepted design into the relevant files instead of leaving it isolated. The core spec explains why the expansion matters. The decision and focus files explain how the player reaches it. The asset prompt explains the static and animated visual work. The coding prompt and goal prompt tell the implementation agent to wire and validate it.
-
-### Review before completion
-
-After substantial design work, use one `chaosx_improvement_loop_planner` pass to inspect depth, integration, AI, assets, aftermath, and bloat where that review is useful.
-If delegation is unavailable, the parent performs the same bounded review and records only material limits; a missing planner or closure report alone does not block a complete spec.
-Spawn with a self-contained `fork_turns="none"` prompt naming the current files, constraints, known decisions, previous addendum disposition, and exact design question.
-Resolve findings in the existing spec/plan: implement accepted current-scope requirements, queue separately scoped accepted work with a reason, or reject proposals with a reason.
-Recheck actual fixes only and do not audit the audit, stack closure reports, or reopen a resolved pass without new design work or a distinct known defect.
-Missing requested design remains incomplete; unavailable verification does not.
 
 ## 18. Output rules
 
@@ -2122,6 +2113,22 @@ The final response should include:
 - a brief package summary that does not repeat the full specification
 
 ## 21. Cleanup and quality gate
+
+### Review before completion
+
+After the main design is assembled, review event specs, large addenda, country packages, focus-tree plans, decision systems, super-event plans, asset-heavy plans, formable plans, custom UI plans, and implementation handoffs for depth and unnecessary complexity.
+Inspect the current spec, accepted plans, unresolved handoffs, asset needs, AI plans, mechanic surfaces, and implementation handoff needs.
+Find remaining shallow systems, disconnected mechanics, missing route depth, missing AI behavior, missing asset states, missing aftermath, and scope bloat.
+
+When delegation is allowed and useful, use `chaosx_improvement_loop_planner` with a self-contained `fork_turns="none"` prompt naming the event id, event slug, current goal, user constraints, spec and plan paths, known unresolved decisions, and exact question.
+Otherwise the parent performs this review; missing delegation alone does not leave the spec incomplete.
+
+Resolve an expansion addendum by folding accepted design into `docs/specs/<event_id>_<event_slug>_specs/`, implementing or queuing it with a clear reason, or rejecting it with a clear reason.
+If the review recommends closure, record that conclusion in the existing handoff and finish the identified checks and fixes.
+Accepted current-scope design must not remain unresolved at completion.
+Recheck actual fixes; another full review needs new design work or a distinct unresolved design gap, not an unchanged report status.
+
+Tiny known-file text edits, narrow typo fixes, and direct one-line skill updates need no design review when they do not change event design, mechanics, focus trees, decisions, country packages, assets, super-events, or implementation handoff rules.
 
 ### Formation and UI questions for planning passes
 

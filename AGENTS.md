@@ -370,34 +370,47 @@ An unavailable check alone calls for source review and useful local checks, not 
 
 ## 5. Completion and Simplification Reporting
 
-Complete the requested implementation, update related files, and review proportionate task-specific checks before claiming completion.
-Unavailable tools, inconclusive analysis, missing historical evidence, and user-owned game testing do not prevent finishing or committing otherwise completed agent work; explain what could not be checked without claiming success.
-Do not wait for, request, or repeatedly list pending user testing.
-If a specific render or measured result is itself the requested deliverable, its absence still leaves that output incomplete.
-If behavior can only be confirmed in a running game, review the documented rules and relevant code, explain any important uncertainty, and finish the implementation without changing the design just to satisfy a check.
+A goal can never be marked complete unless it is actually complete.
+
+For every goal, especially large event, mechanic, focus-tree, country-package, balance, UI, or asset goals, completion requires evidence. The agent must finish the requested implementation, update all related files, run or document the required checks, and report any blocker or simplification.
+Unavailable tools, inconclusive analysis, or missing historical evidence limit what was checked; they do not by themselves prevent completing otherwise finished implementation.
+Use the MCP retry limits above, preserve the distinction between source review and observed game behavior, and never report an unavailable check as passed.
+Do not wait for or request user-owned game testing as a completion step.
+If a specific render, measurement, or test result is itself a requested output, its absence still leaves that output incomplete.
+
+Validation reporting must be useful. Run basic syntax hygiene internally when helpful, but do not spend the final report listing checks that only restate mandatory AGENTS.md rules, such as unsupported operator checks or brackets balance or BOM encoding checks, etc. Never tell me directly: `Validation passed: diff whitespace check, brace balance on touched scripts, no unsupported <=/>=, localisation BOM intact, git diff --check passed, no remaining X references, workspace is clean.` Mention validation only when it is task-specific, could realistically fail, found a problem, changed the implementation, or gives the user useful evidence. Leave passing boilerplate checks out of the user-facing report.
 
 Do not claim completion when:
 
-- requested mechanics, routes, countries, decisions, missions, achievements, evolutions, or super-events remain missing
-- content is generic, copied, shallow, or only partially integrated instead of meeting the accepted design
-- changed costs or weights lack balance reasoning and representative scenarios
-- localisation, AI, assets, wiring, event logs/details, documentation, or applicable spreadsheet fields are missing or stale
-- an event-owned GUI lacks its implementation or specialist handoff, or has known unresolved layout defects
-- a design fallback or simplification lacks authorization
+- only the most visible part was implemented
+- a focus tree was created but not reviewed, customized, balanced, localized, and wired
+- a large batch of countries received generic or copied content
+- balance checks were skipped
+- localisation is missing
+- AI behavior is missing
+- assets are missing, unwired, or undocumented
+- a named event-owned scripted GUI is missing its `chaosx_event_ui_worker` handoff or the required review of its layout, states, resolutions, and click regions, or has known unresolved visual defects
+- event logs, docs, spreadsheet rows, or manifests are stale
+- any requested route, country, decision, mission, achievement, evolution, or super-event is missing
+- a design fallback or simplification was used without explicit approval
 
-Balance checks should inspect the relevant variables, costs, outcomes, triggers, weights, and representative scenarios.
-Calculations from the scripted values and conditions are acceptable when a tool cannot analyze the mechanic; distinguish AI scores from probabilities and state important assumptions.
-A successful load, passing syntax check, or vague assertion of balance is insufficient.
+Balance checks are implementation work, not optional polish. If the spec or user asks for balance validation, the agent must inspect the relevant variables, scripted effects, decisions, mission outcomes, trigger conditions, AI weights, and scenario behavior. A vague statement that balance was adjusted is not enough.
+When a tool cannot analyze the mechanic, calculate representative cases from the actual scripted values and conditions, distinguish AI scores from probabilities, and state important assumptions.
 
-Implement the content itself; do not substitute report generators, tooling work, or bulk-generated drafts for customized, integrated, reviewed content.
-Run basic syntax and encoding hygiene internally, but report validation only when it is task-specific, finds a problem, changes the implementation, or materially supports confidence.
-Do not list passing whitespace, bracket, operator, BOM, or clean-workspace checks in the final response.
+Do not replace real implementation work with tooling work. Do not spend the goal creating Python scripts, report generators, or bulk-generation helpers while leaving the actual content shallow or incomplete. Small scripts may be used for mechanical audits such as checking duplicate ids, or finding missing localisation keys, but they are not a substitute for implementing and validating the content.
 
-For large or multi-system work, update one concise completion report with changed files and behavior, useful checks, assets/documentation, and actual remaining work.
-Reuse current handoffs instead of generating repeated status reports.
-Describe problems in plain terms: what does not work, what could not be checked, and what action is needed; avoid unexplained labels or jargon.
-Disclose every real omission or simplification, including placeholders, fallback content, missing dynamic behavior, and weaker substitutes; if none were made, say so briefly.
-Keep unavailable verification separate from missing functionality, and report any unimplemented requested scope as incomplete.
+Do not bulk-generate large focus trees, country packages, decisions, localisation, or validation reports and call them complete. Generated or scripted drafts are acceptable only when every result is manually reviewed, customized to the country or route, wired into the mod, localized, given AI behavior, documented, and checked against the spec.
+
+If any requested item is not implemented to the fullest extent, report it under a clear section such as `Simplifications, omissions, and blockers`. Even small deviations must be listed. If no simplifications were made, the final report must explicitly say so and provide evidence through files changed, audits, meaningful validation notes, and completed checklists.
+
+Do not claim a goal is complete just because the game loads or because the most visible part works.
+
+For large events, mechanics, focus-tree rewrites, country packages, balance passes, or multi-system goals, produce a concrete completion report. The report should list files changed, systems touched, balance checks, tests or meaningful validation scenarios, assets reused or created, documentation updated, and remaining blockers.
+Update one current report instead of creating repeated status reports, and explain concretely what does not work, what could not be checked, and what action is needed.
+
+Every simplification must be reported. This includes skipped routes, fallback trees used in place of bespoke trees, missing assets, missing localisation, missing AI behavior, missing focus paths, missing dynamic scaling, hardcoded values where dynamic logic was requested, placeholder content, or weaker substitutes.
+
+If there are no simplifications, say so explicitly and provide evidence through audits, docs, or changed files. If the goal cannot be fully implemented, report that the goal is incomplete instead of presenting partial work as done.
 
 ## 6. Event Integration
 

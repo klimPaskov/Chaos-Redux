@@ -79,26 +79,7 @@ The normal HOI4 deliverable is:
 
 If the user explicitly asks for a temporary mockup, a transform-only preview may be created, but it must be marked as a mockup and never recorded as a final asset.
 
-## 5. HOI4 animation model
-
-HOI4 does not play a GIF as a game asset.
-
-The usual HOI4 animation pattern is a texture sheet plus sprite metadata:
-
-- put frames into one texture sheet
-- define the sheet in a `.gfx` file
-- use `frameAnimatedSpriteType` for automatic animation
-- set `noOfFrames` to the number of frames in the sheet
-- set `animation_rate_fps` to the playback rate
-- set `looping = yes` or `looping = no`
-- set `play_on_show = yes` when the animation should restart when the GUI element appears
-- reference the sprite name from the relevant `.gui`, character, focus, decision, or scripted GUI surface
-
-For the common horizontal-sheet pattern, `noOfFrames` divides the texture into equal-width frame columns from left to right. A 64x64 asset with 8 frames should produce a sheet that is 512x64. A 156x210 animated portrait with 10 frames should produce a sheet that is 1560x210.
-
-Do not assume every HOI4 surface accepts animated sprites in the same way. Before wiring, inspect the offline Paradox wiki snapshot, vanilla examples, local documentation, and existing Chaos Redux examples for the exact target surface.
-
-## 6. What counts as a real source frame
+### What counts as a real source frame
 
 A valid source frame can be:
 
@@ -120,7 +101,26 @@ A valid source frame is not:
 
 Subtle effects still need source frames. For example, a glowing seal loop should have generated or sourced frame variants for weak glow, rising glow, peak glow, falling glow, and rest. A floating occult emblem should have source frames where the emblem and light behavior are intentionally drawn for each pose or state.
 
-## 7. Required animation brief
+## 5. HOI4 animation model
+
+HOI4 does not play a GIF as a game asset.
+
+The usual HOI4 animation pattern is a texture sheet plus sprite metadata:
+
+- put frames into one texture sheet
+- define the sheet in a `.gfx` file
+- use `frameAnimatedSpriteType` for automatic animation
+- set `noOfFrames` to the number of frames in the sheet
+- set `animation_rate_fps` to the playback rate
+- set `looping = yes` or `looping = no`
+- set `play_on_show = yes` when the animation should restart when the GUI element appears
+- reference the sprite name from the relevant `.gui`, character, focus, decision, or scripted GUI surface
+
+For the common horizontal-sheet pattern, `noOfFrames` divides the texture into equal-width frame columns from left to right. A 64x64 asset with 8 frames should produce a sheet that is 512x64. A 156x210 animated portrait with 10 frames should produce a sheet that is 1560x210.
+
+Do not assume every HOI4 surface accepts animated sprites in the same way. Before wiring, inspect the offline Paradox wiki snapshot, vanilla examples, local documentation, and existing Chaos Redux examples for the exact target surface.
+
+## 6. Required animation brief
 
 Before generating frames, write a short animation brief.
 
@@ -146,7 +146,7 @@ The brief must include:
 - target `.gfx` file
 - target `.gui`, character, focus, decision, or scripted GUI file if known
 
-## 8. Frame plan
+### Frame plan
 
 Create a frame plan before calling `$imagegen`.
 
@@ -163,7 +163,7 @@ For loops, the first and last frames must connect cleanly. Either repeat the fir
 
 Use enough real source frames for the motion to be smooth. More sprites are better than a choppy loop when the target surface and texture size can reasonably support them, especially for subtle pulses, breathing light, drifting particles, animated portraits, and slow UI state changes. Do not choose a small number of frames just to finish faster, and do not hide a rough low-frame loop behind filters, transforms, or opacity tricks. If a low frame count is used, the brief must justify it with the target size, performance cost, or intentionally stepped motion.
 
-## 9. Generation rules
+## 7. Generation rules
 
 Generate or source the frames separately.
 
@@ -182,7 +182,7 @@ If a frame fails native-transparency validation, use the `chaos-redux-event-asse
 
 For real people, do not generate fake motion that implies real footage, speech, or new real-world behavior. Use sourced stills and subtle symbolic layers only when the parent scope allows it. Keep the result clearly an in-game portrait or UI asset.
 
-## 10. Deterministic processing rules
+## 8. Deterministic processing rules
 
 Local scripts may do only mechanical processing:
 
@@ -204,7 +204,7 @@ Local scripts may do only mechanical processing:
 
 Local scripts may not create the animation's main visual change. If a script changes position, opacity, glow, or scale, that output is a preview or assembly artifact unless the same visual change already exists in the generated or sourced frames.
 
-## 11. HOI4 sheet construction
+### HOI4 sheet construction
 
 For the common `frameAnimatedSpriteType` pattern, build a one-row horizontal sheet.
 
@@ -231,7 +231,7 @@ A sheet path should describe that it is a sheet:
 
 Do not call the sheet `<asset_slug>_animated.gif`. Do not put `.gif` in `.gfx` texture paths.
 
-## 12. Naming rules
+## 9. Naming rules
 
 Use lowercase snake_case.
 
@@ -271,7 +271,7 @@ GFX_<asset_slug>_animated
 
 Keep names stable once the main agent wires them.
 
-## 13. Required output package
+## 10. Required output package
 
 An animation package must include:
 
@@ -306,7 +306,34 @@ Final in-game DDS files must still move into the correct mod asset folders. Do n
 
 The event-scoped `docs/assets/<event_id>_<event_slug>/animations/<asset_slug>/` tree is temporary evidence and working material. Keep it while the animation is active, blocked, awaiting review, or undergoing acceptance scenarios. Before declaring the event goal fully complete, promote durable frame metadata, provenance, review results, coverage, and sprite handoff facts into permanent event or plan documentation, verify that no runtime reference points into `docs/assets/`, and delete the complete event-scoped workspace. An absent workspace is expected after full completion. Never delete the skill-local reference library or another event's workspace.
 
-## 14. `.gfx` handoff pattern
+## 11. HOI4 wiring handoff
+
+The animation handoff must give the implementation agent enough information to wire without guessing.
+
+For every animated asset, record:
+
+- final static DDS path
+- final sheet DDS path
+- final sheet PNG path
+- proposed static sprite name
+- proposed animated sprite name
+- target `.gfx` file
+- target `.gui` file if relevant
+- target frame size
+- calculated sheet size
+- frame count
+- animation rate
+- loop behavior
+- `play_on_show` behavior
+- whether it is decorative or state-driven
+- state value, route flag, decision availability, focus route, or GUI state that controls it
+- static fallback behavior
+- local wiki page, vanilla file, or Chaos Redux example used as wiring precedent
+- any syntax uncertainty found during vanilla or repo example inspection
+
+If the animated sprite is for a character portrait, record the character key and portrait field that should reference the animated sprite name. If the animated sprite is for a scripted GUI, record the scripted GUI entry point and the static fallback sprite used when the animation is hidden, unsupported, or disabled.
+
+### `.gfx` handoff pattern
 
 The handoff must include a ready-to-copy snippet, but the implementation agent must verify it against local vanilla and Chaos Redux examples before using it.
 
@@ -338,34 +365,7 @@ spriteTypes = {
 
 This snippet is a starting pattern, not proof that a specific GUI surface supports it. The implementation agent must confirm the target surface and existing repo conventions.
 
-## 15. HOI4 wiring handoff
-
-The animation handoff must give the implementation agent enough information to wire without guessing.
-
-For every animated asset, record:
-
-- final static DDS path
-- final sheet DDS path
-- final sheet PNG path
-- proposed static sprite name
-- proposed animated sprite name
-- target `.gfx` file
-- target `.gui` file if relevant
-- target frame size
-- calculated sheet size
-- frame count
-- animation rate
-- loop behavior
-- `play_on_show` behavior
-- whether it is decorative or state-driven
-- state value, route flag, decision availability, focus route, or GUI state that controls it
-- static fallback behavior
-- local wiki page, vanilla file, or Chaos Redux example used as wiring precedent
-- any syntax uncertainty found during vanilla or repo example inspection
-
-If the animated sprite is for a character portrait, record the character key and portrait field that should reference the animated sprite name. If the animated sprite is for a scripted GUI, record the scripted GUI entry point and the static fallback sprite used when the animation is hidden, unsupported, or disabled.
-
-## 16. Leader portrait overlay animations
+### Leader portrait overlay animations
 
 Use a scripted GUI overlay when an animation should appear over an existing country leader portrait without replacing the portrait itself. This is the safest pattern for state-driven effects such as burning, corruption, divine glow, warning frames, possession, transmission noise, or route-state overlays.
 
@@ -455,7 +455,7 @@ scripted_gui = {
 
 The matching `.gui` containers should use the real vanilla portrait position for the chosen parent. If the target portrait is nested two containers deep, add those parent offsets to the portrait offset and record the calculation in `gfx_handoff.md`.
 
-## 17. Quality gates
+## 12. Quality gates
 
 Before marking an animation complete, verify:
 
@@ -484,7 +484,7 @@ Before marking an animation complete, verify:
 - leader overlay handoffs record the vanilla file, portrait element, parent window, context type, position, scale, and any summed offsets
 - no fake transform-only animation is being presented as final art
 
-## 18. Blockers
+### Blockers
 
 Stop and report a blocker when:
 

@@ -16,6 +16,8 @@ Keep map writes within assigned scope and inspect uncertain write outcomes; do n
 
 You are patch-capable by default inside the current task scope. Inspect first. If you find a small, local country package issue tied to the requested feature, patch it directly. Do not wait for a separate permission prompt to fix tag references, focus loading, party names, leader ids, country localisation, simple starting setup, AI strategy references, or existing formable checks.
 
+For an authorized map rewrite, preserve dry-run, proposal review, apply, post-validation, and rollback or recovery records; this role does not gain ownership of unrelated map edits.
+
 Read and apply:
 - AGENTS.md.
 - .agents/skills/chaos-redux-subagents/SKILL.md.

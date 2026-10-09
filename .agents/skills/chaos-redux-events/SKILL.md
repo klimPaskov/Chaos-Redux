@@ -173,24 +173,6 @@ An inline formatted variable string such as `localization_key = "[?temp_value|0]
 Temporary variables assigned in the same `text.trigger` remain visible to the selected localisation key, so calculate the display value there.
 Retain constant-backed temporary getters where the installed documentation supports the assignment, and do not introduce persistent globals solely for formatting.
 
-### Helper output lifetime
-
-Temporary variables first created inside a scripted effect or trigger may disappear after return, while caller-preinitialized storage retains the helper's modifications (`paradox_wiki/Data structures - Hearts of Iron 4 Wiki.md`, Variable types, line 440).
-
-- Before each helper call, ensure every temporary scalar and temporary-array output consumed afterwards has caller-owned storage, including calls inside `if.limit` and scripted-localisation `text.trigger`. Initialize new output storage without resetting existing input or cursor values.
-- Apply this at every nested call boundary: each caller initializes the outputs it consumes, and outer callers also initialize forwarded outputs needed after return.
-- Public helper API docs must list caller-owned output storage and its required initial values.
-- Actual-source tests must model conservative call-frame cleanup by discarding temporary scalars and arrays first created in the returning helper, retaining modifications to caller-preinitialized storage, and keeping scoped regular saved state separate from temporary storage instead of using one flat global temporary dictionary.
-
-When a source audit or fixture cannot model this call-frame lifetime, report it as unmodelled and separately check caller preinitialization before consuming helper outputs.
-For shared dispatchers, locate the matching authorization gate and recursively inspect its body and invoked helpers for actual dispatch and accounting, including package-specific nested branches.
-A flat block-shape assertion or literal marker match does not establish that execution coverage.
-
-Native effect loops stop after 1,000 iterations, so pending-queue recovery must preserve the unvisited suffix and every unacknowledged receipt rather than clear the whole queue and rebuild only visited rows.
-Process a bounded batch by popping each selected row before recovery and appending unresolved rows behind the unvisited suffix, without adding a world scan.
-Clear a receipt only after its matching recovery is acknowledged.
-Actual-source fixtures must enforce the native loop ceiling and verify more than 1,000 queued rows across repeated invocations, unresolved-row rotation, and receipt preservation.
-
 ## Event anatomy
 
 - entry event: the canonical `chaosx.nr<ID>.1` start
@@ -507,6 +489,33 @@ Keep the complete bodies of `is_special_chaos_country`, `is_actual_nonhuman_coun
 
 If you add a new reusable dynamic scripted effect (an effect that could be generalized for all events), document it in `common/scripted_effects/chaosx_dynamic_effects.md` in the same change.
 
+#### Helper output lifetime
+
+Temporary variables first created inside a scripted effect or trigger may disappear after return, while caller-preinitialized storage retains the helper's modifications (`paradox_wiki/Data structures - Hearts of Iron 4 Wiki.md`, Variable types, line 440).
+
+- Before each helper call, ensure every temporary scalar and temporary-array output consumed afterwards has caller-owned storage, including calls inside `if.limit` and scripted-localisation `text.trigger`. Initialize new output storage without resetting existing input or cursor values.
+- Apply this at every nested call boundary: each caller initializes the outputs it consumes, and outer callers also initialize forwarded outputs needed after return.
+- Public helper API docs must list caller-owned output storage and its required initial values.
+- Actual-source tests must model conservative call-frame cleanup by discarding temporary scalars and arrays first created in the returning helper, retaining modifications to caller-preinitialized storage, and keeping scoped regular saved state separate from temporary storage instead of using one flat global temporary dictionary.
+
+When a source audit or fixture cannot model this call-frame lifetime, report it as unmodelled and separately check caller preinitialization before consuming helper outputs.
+For shared dispatchers, locate the matching authorization gate and recursively inspect its body and invoked helpers for actual dispatch and accounting, including package-specific nested branches.
+A flat block-shape assertion or literal marker match does not establish that execution coverage.
+
+
+
+Native effect loops stop after 1,000 iterations, so pending-queue recovery must preserve the unvisited suffix and every unacknowledged receipt rather than clear the whole queue and rebuild only visited rows.
+Process a bounded batch by popping each selected row before recovery and appending unresolved rows behind the unvisited suffix, without adding a world scan.
+Clear a receipt only after its matching recovery is acknowledged.
+Actual-source fixtures must enforce the native loop ceiling and verify more than 1,000 queued rows across repeated invocations, unresolved-row rotation, and receipt preservation.
+
+##### Retiring unused helpers
+
+- Before deleting a scripted effect, trigger, or `defined_text`, search every placeholder constructor (`[ID]`-style `meta_effect`/`meta_trigger` text, `@` token pasting, `[EXTENSION_EFFECT]_apply`) and the GUI, `.gfx`, localisation, and docs for the name; a zero token count alone does not prove the code is dead.
+- Delete the comment header attached directly above the removed block, or it will describe the next definition.
+- After each removal pass, rescan for helpers, localisation keys, and script-constant keys whose only consumer was the removed code, and repeat until nothing new appears.
+- Repository files can mix CRLF and LF line endings; edit them line by line with their own endings instead of splitting on one newline style.
+
 #### Native special-project output overrides
 
 Do not assume duplicate native project IDs safely replace or partially merge definitions across filenames.
@@ -596,6 +605,12 @@ When a terminal record stops maintenance but an achievement or outcome still nee
 Preserve the original due date across narrow controller changes, rescheduling only the remaining delay when delivery needs repair.
 Revalidate the exact record and eligible actor tag under the existing identity contract, preserving any actor-specific invalidation.
 Check early, duplicate, transferred, and stale-actor deliveries without adding a periodic world scan.
+
+Compare a temporary paid benefit's duration with the recurring consequence cadence and state whether the intended rule samples current status or credits elapsed coverage, because activation and expiry can both fall between pulses.
+When elapsed coverage is promised, preserve exact successful activation and expiry or earlier invalidation times instead of relying only on the current flag.
+Aggregate the union of valid service intervals once against the existing consequence window, retain past valid service after expiry or control changes, and prune history only after its covered portion has been consumed.
+Do not silently shorten the cadence or invent coefficients to compensate for missed service.
+Validate expiry before the first pulse, intervals crossing window boundaries, overlapping activations, duplicate callbacks, and control transfer or other invalidation.
 
 ### 5. Event log integration
 
@@ -753,7 +768,7 @@ If the event can produce a terminal scenario:
 
 If the branch is dramatic but not actually terminal, treat it as a major escalation evolution or super-event instead of world-end.
 
-## World threat framework
+### World threat framework
 
 If an event or mechanic creates an existential external threat that should push other systems toward cooperation, integrate it with the shared world-threat framework instead of inventing a new one-off flag.
 
@@ -773,6 +788,106 @@ Implementation pattern:
 5. document the threat source in the mechanic doc
 
 Do not create a parallel global "cooperation crisis" or "threat active" flag for a single event chain. Everything should fold back into `world_in_threat`. The exact purpose of that flag is not yet planned.
+
+### Formable nations as event surfaces
+
+When an event can create or empower countries, consider whether it should create formable nation routes. A formable can be a major event payoff, a late-game ambition, a hidden branch, a rare evolution reward, a country package route, or a post-crisis consolidation goal.
+
+Event implementation must keep formables aligned across:
+
+- event flags and route flags
+- decision category visibility
+- focus unlocks
+- scripted triggers for state control
+- scripted effects for formation
+- cosmetic tags and country names
+- flags and portraits
+- AI strategy
+- achievements
+- super-events where the formation changes world order
+- cleanup after tag switch, annexation, puppet transfer, civil war, or route failure
+
+Use scripted helpers for formation effects. Do not duplicate formation logic in events, decisions, focuses, scripted GUI buttons, and achievements. The decision can pay the cost and validate requirements, while a shared helper performs the identity change and logs the result.
+
+Hidden formables should still have implementation coverage. They need reveal events, hidden flags, visibility triggers, localisation, assets, AI rules, and cleanup.
+
+When exact state control is the formation proof, use the manifest-driven state-puzzle workflow under `.agents/skills/chaos-redux-decisions-missions/templates/formable_state_puzzle/`. Keep the generated state pieces, shared territory helper, formation decision, AI path, and every in-scope decision category synchronized. Complete the companion `category_attachment_audit.md` and list every category that exposes the formable, including shared or phase-specific categories.
+
+When an event declares the strict `all_formable_categories` attachment policy, every in-scope formable category must set `scripted_gui = <generated_state_puzzle_gui_id>` and point to the generated `context_type = decision_category` block for its manifest. A category picture, text-only description, or separate status GUI does not satisfy this rule. A missing or mismatched category row is an incomplete formable surface and must remain a blocker in the handoff.
+
+### Scripted GUI and animated event presentation
+
+Major event mechanics can use scripted GUI windows, decision-category interfaces, animated leader portraits, or custom buttons when they make the system easier to play. Treat that UI as part of the event contract, not as decoration added later. Static or animated category pictures are eligible only for simple categories with a description, an ordinary decision list, and at most basic value tables. Do not add category pictures alongside an existing complex category GUI, meters, extra custom buttons or controls, rich interactive panels, or other animations. Normal decision-list action buttons are allowed, and the category picture itself may be animated when this simple-category gate passes.
+
+Use `chaos-redux-scripted-gui` for every authorized scripted GUI layout change, including parent-owned shared surfaces. Create/select the reference before implementation and record its acceptance basis and native-element mapping under that skill. When the event specifically adds a dedicated scripted GUI or mechanic window, route its bounded layout implementation and visual-quality pass to `chaosx_event_ui_worker`. The worker follows the reference-image, native-layout, and layout review rules in `chaos-redux-scripted-gui`, preferring targeted MCP views, correcting confirmed defects, and using code review and local checks after the retry limit with material visual limitations reported. Never send the shared event log, event-details framework, settings, super-event framework, shared registries, or unrelated existing UIs to this worker. Eligibility requires accepted spec or source evidence that the named event introduces and owns the UI. Apply authorized reviewed source edits directly or optionally through `gui_rewrite`; its automatic post-write/index validation is not a mandatory gate under `chaos-redux-scripted-gui`.
+
+When an event uses a custom interface, align these surfaces:
+
+- decision category or entry button
+- scripted GUI definition
+- scripted triggers and effects
+- costs and tooltips
+- animated and static sprites
+- localisation and scripted localisation
+- AI fallback behavior
+- cleanup and invalidation rules
+- documentation and asset manifest
+
+For a formable state puzzle, add the manifest-to-category attachment crosswalk to this contract. Verify every in-scope category metadata block against the generated scripted-GUI identifier and window, then prefer targeted `hoi4.gui_inspect` and `hoi4.gui_render` for the linked category window within the retry limit or inspect that exact category/window mapping directly. Do not claim category coverage from a state-piece render alone.
+
+Every player-clickable GUI button that changes gameplay must validate the same requirements as a normal decision. It must show costs and missing requirements clearly. It must call scripted effects that can also be used by AI, decisions, focuses, and cleanup systems.
+
+Event targets are valid scope pointers inside scripted GUI triggers, effects, and scripted localisation. Preserve `event_target:` usage when a GUI action intentionally carries a country, state, or character pointer across clicks, localisation, or event chains. Audits must verify that the target is referenced in a valid scope and that its lifecycle is safe, including cleanup for global targets and stale-target handling. Do not require migration to variables or remove an event-target GUI pattern merely because a variable could represent the same pointer.
+
+Animated leader portraits, animated route emblems, glow effects, particles, and float effects should be used for major reveals, high-chaos escalation, hidden formables, supernatural leaders, or final transformations. Each animated asset needs a static fallback and manifest entry.
+
+### 3D model and entity integration
+
+When an event creates or changes a 3D unit or building, treat the model as a runtime contract across the event, unit or building definition, entity, `.asset`, `.gfx`, materials, textures, actions, and live map consumer.
+
+The event implementation must use the `chaos-redux-3d-model-pipeline` handoff instead of trying to produce geometry or animations inside event work. The model handoff must include the exact runtime identifiers, processed texture paths, `.mesh`/`.anim` paths, action names, scale crosswalk, provider and Blender evidence, and reimport proof.
+
+For a spawned unit, validate that `create_unit` is executed in a country or other supported scope, that the unit template and sub-unit are registered, that every emitted `unit_<id>_icon_small` text icon exists when required, and that movement uses a real exported action rather than a static substitute.
+
+For a building or map entity, validate that the building has an entity, the entity key resolves in the `.gfx`/`.asset` chain, the province belongs to the specified state, the building command has the correct argument count, and the test province is visible at the intended zoom without an existing building hiding it.
+
+For map-entity allocation, distinguish typed country/state scope references from documented plain numeric IDs, and do not assume `THIS.id` is a displayed state number or country ordinal.
+Host fixtures must preserve that distinction and reject undocumented pointer arithmetic instead of seeding scope references with ordinary integers.
+Allocate entity IDs from a proven numeric getter or an existing verified literal map ledger, then audit uniqueness and collisions against every existing and proof allocation because `create_entity` replaces an entity with the same ID.
+Preserve scope pointers separately for identity and durable target links.
+Source/model and collision checks do not prove native playback or save/restore entity identity, and do not establish that every native arithmetic conversion is impossible.
+
+The main event agent owns the gameplay and runtime source wiring, final runtime copy synchronization, province/state placement, and review of live-consumer and in-game evidence supplied by the user. The user performs live-consumer and in-game validation. The 3D worker owns the bounded model package and must not claim event or in-game completion.
+
+### Generated asset handling
+
+Use the `chaos-redux-event-assets` skill whenever an event task requires generated or processed visual assets.
+
+For every generated asset:
+
+1. Create the base artwork by following the official `$imagegen` skill workflow through `chaos-redux-event-assets`.
+2. Save the original generated image as a source PNG in the active event-scoped temporary `docs/assets/<event_id>_<event_slug>/` workspace.
+3. Create a processed PNG preview at the correct HOI4 target size in that temporary workspace.
+4. Convert the processed PNG to DDS 32 bit unsigned BGRA 8.8.8.8.
+5. Move the DDS into the correct mod asset folder.
+6. Add or update the matching sprite definition in the correct `.gfx` file.
+7. Update localisation, docs, and event spreadsheet entries that reference the asset.
+8. Record the asset in the active workspace manifest and requirement-to-runtime crosswalk.
+
+The asset manifest must include:
+
+- asset name
+- asset type
+- source PNG path
+- processed PNG path
+- final DDS path
+- target size
+- sprite name
+- intended in-game use
+- related event id
+- notes
+
+Do not leave a runtime asset only in a temporary folder. While the event is active, retain the source, processed preview, manifest, crosswalk, and handoff in `docs/assets/<event_id>_<event_slug>/` for evidence and review. Before declaring the event goal fully complete, promote durable provenance, licensing, attribution, coverage, review, and wiring facts into permanent `docs/events/`, `docs/plans/`, `docs/specs/`, `docs/super_events/`, or another appropriate documentation surface, verify that no runtime reference points into `docs/assets/`, and delete the complete event-scoped workspace. If the event is blocked or incomplete, keep the workspace and report the blocker. The absence of the deleted workspace is expected for a fully complete event and is not an asset blocker.
 
 ## Documentation rules
 
@@ -813,14 +928,7 @@ Do not leave the doc describing:
 - removed assets
 - outdated spreadsheet or deck expectations
 
-### Retiring unused helpers
-
-- Before deleting a scripted effect, trigger, or `defined_text`, search every placeholder constructor (`[ID]`-style `meta_effect`/`meta_trigger` text, `@` token pasting, `[EXTENSION_EFFECT]_apply`) and the GUI, `.gfx`, localisation, and docs for the name; a zero token count alone does not prove the code is dead.
-- Delete the comment header attached directly above the removed block, or it will describe the next definition.
-- After each removal pass, rescan for helpers, localisation keys, and script-constant keys whose only consumer was the removed code, and repeat until nothing new appears.
-- Repository files can mix CRLF and LF line endings; edit them line by line with their own endings instead of splitting on one newline style.
-
-## Event catalog spreadsheet
+### Event catalog spreadsheet
 
 Maintain the gameplay-facing event table in:
 
@@ -840,7 +948,7 @@ Rules:
 - keep evolution and world-end columns aligned with the real chain structure
 - do not put baseline progression stages into evolution columns unless they are actual mutation tracks
 
-### Event catalog status contract
+#### Event catalog status contract
 
 - Use exactly these status labels: `Playable`, `Partially Available`, `To Be Reworked`, `Unavailable`, and `Needs Testing`.
 - `Playable` requires explicit approval and must never be inferred or assigned by default.
@@ -850,106 +958,6 @@ Rules:
 - A post-20 catalog ID without an actual `chaosx.nr<ID>.1` root definition is `Unavailable`.
 - Treat the workbook `Legend` sheet as the source for status, Type, Member Severity, evolution-column, and World-End colors. Keep dropdown ranges, conditional-formatting rules, static fills, and exported values synchronized with the Legend.
 - These status rules classify catalog entries only and must not silently change runtime registration or enablement.
-
-## Formable nations as event surfaces
-
-When an event can create or empower countries, consider whether it should create formable nation routes. A formable can be a major event payoff, a late-game ambition, a hidden branch, a rare evolution reward, a country package route, or a post-crisis consolidation goal.
-
-Event implementation must keep formables aligned across:
-
-- event flags and route flags
-- decision category visibility
-- focus unlocks
-- scripted triggers for state control
-- scripted effects for formation
-- cosmetic tags and country names
-- flags and portraits
-- AI strategy
-- achievements
-- super-events where the formation changes world order
-- cleanup after tag switch, annexation, puppet transfer, civil war, or route failure
-
-Use scripted helpers for formation effects. Do not duplicate formation logic in events, decisions, focuses, scripted GUI buttons, and achievements. The decision can pay the cost and validate requirements, while a shared helper performs the identity change and logs the result.
-
-Hidden formables should still have implementation coverage. They need reveal events, hidden flags, visibility triggers, localisation, assets, AI rules, and cleanup.
-
-When exact state control is the formation proof, use the manifest-driven state-puzzle workflow under `.agents/skills/chaos-redux-decisions-missions/templates/formable_state_puzzle/`. Keep the generated state pieces, shared territory helper, formation decision, AI path, and every in-scope decision category synchronized. Complete the companion `category_attachment_audit.md` and list every category that exposes the formable, including shared or phase-specific categories.
-
-When an event declares the strict `all_formable_categories` attachment policy, every in-scope formable category must set `scripted_gui = <generated_state_puzzle_gui_id>` and point to the generated `context_type = decision_category` block for its manifest. A category picture, text-only description, or separate status GUI does not satisfy this rule. A missing or mismatched category row is an incomplete formable surface and must remain a blocker in the handoff.
-
-## Scripted GUI and animated event presentation
-
-Major event mechanics can use scripted GUI windows, decision-category interfaces, animated leader portraits, or custom buttons when they make the system easier to play. Treat that UI as part of the event contract, not as decoration added later. Static or animated category pictures are eligible only for simple categories with a description, an ordinary decision list, and at most basic value tables. Do not add category pictures alongside an existing complex category GUI, meters, extra custom buttons or controls, rich interactive panels, or other animations. Normal decision-list action buttons are allowed, and the category picture itself may be animated when this simple-category gate passes.
-
-Use `chaos-redux-scripted-gui` for every authorized scripted GUI layout change, including parent-owned shared surfaces. Create/select the reference before implementation and record its acceptance basis and native-element mapping under that skill. When the event specifically adds a dedicated scripted GUI or mechanic window, route its bounded layout implementation and visual-quality pass to `chaosx_event_ui_worker`. The worker follows the reference-image, native-layout, and layout review rules in `chaos-redux-scripted-gui`, preferring targeted MCP views, correcting confirmed defects, and using code review and local checks after the retry limit with material visual limitations reported. Never send the shared event log, event-details framework, settings, super-event framework, shared registries, or unrelated existing UIs to this worker. Eligibility requires accepted spec or source evidence that the named event introduces and owns the UI. Apply authorized reviewed source edits directly or optionally through `gui_rewrite`; its automatic post-write/index validation is not a mandatory gate under `chaos-redux-scripted-gui`.
-
-When an event uses a custom interface, align these surfaces:
-
-- decision category or entry button
-- scripted GUI definition
-- scripted triggers and effects
-- costs and tooltips
-- animated and static sprites
-- localisation and scripted localisation
-- AI fallback behavior
-- cleanup and invalidation rules
-- documentation and asset manifest
-
-For a formable state puzzle, add the manifest-to-category attachment crosswalk to this contract. Verify every in-scope category metadata block against the generated scripted-GUI identifier and window, then prefer targeted `hoi4.gui_inspect` and `hoi4.gui_render` for the linked category window within the retry limit or inspect that exact category/window mapping directly. Do not claim category coverage from a state-piece render alone.
-
-Every player-clickable GUI button that changes gameplay must validate the same requirements as a normal decision. It must show costs and missing requirements clearly. It must call scripted effects that can also be used by AI, decisions, focuses, and cleanup systems.
-
-Event targets are valid scope pointers inside scripted GUI triggers, effects, and scripted localisation. Preserve `event_target:` usage when a GUI action intentionally carries a country, state, or character pointer across clicks, localisation, or event chains. Audits must verify that the target is referenced in a valid scope and that its lifecycle is safe, including cleanup for global targets and stale-target handling. Do not require migration to variables or remove an event-target GUI pattern merely because a variable could represent the same pointer.
-
-Animated leader portraits, animated route emblems, glow effects, particles, and float effects should be used for major reveals, high-chaos escalation, hidden formables, supernatural leaders, or final transformations. Each animated asset needs a static fallback and manifest entry.
-
-## 3D model and entity integration
-
-When an event creates or changes a 3D unit or building, treat the model as a runtime contract across the event, unit or building definition, entity, `.asset`, `.gfx`, materials, textures, actions, and live map consumer.
-
-The event implementation must use the `chaos-redux-3d-model-pipeline` handoff instead of trying to produce geometry or animations inside event work. The model handoff must include the exact runtime identifiers, processed texture paths, `.mesh`/`.anim` paths, action names, scale crosswalk, provider and Blender evidence, and reimport proof.
-
-For a spawned unit, validate that `create_unit` is executed in a country or other supported scope, that the unit template and sub-unit are registered, that every emitted `unit_<id>_icon_small` text icon exists when required, and that movement uses a real exported action rather than a static substitute.
-
-For a building or map entity, validate that the building has an entity, the entity key resolves in the `.gfx`/`.asset` chain, the province belongs to the specified state, the building command has the correct argument count, and the test province is visible at the intended zoom without an existing building hiding it.
-
-For map-entity allocation, distinguish typed country/state scope references from documented plain numeric IDs, and do not assume `THIS.id` is a displayed state number or country ordinal.
-Host fixtures must preserve that distinction and reject undocumented pointer arithmetic instead of seeding scope references with ordinary integers.
-Allocate entity IDs from a proven numeric getter or an existing verified literal map ledger, then audit uniqueness and collisions against every existing and proof allocation because `create_entity` replaces an entity with the same ID.
-Preserve scope pointers separately for identity and durable target links.
-Source/model and collision checks do not prove native playback or save/restore entity identity, and do not establish that every native arithmetic conversion is impossible.
-
-The main event agent owns the gameplay and runtime source wiring, final runtime copy synchronization, province/state placement, and review of live-consumer and in-game evidence supplied by the user. The user performs live-consumer and in-game validation. The 3D worker owns the bounded model package and must not claim event or in-game completion.
-
-## Generated asset handling
-
-Use the `chaos-redux-event-assets` skill whenever an event task requires generated or processed visual assets.
-
-For every generated asset:
-
-1. Create the base artwork by following the official `$imagegen` skill workflow through `chaos-redux-event-assets`.
-2. Save the original generated image as a source PNG in the active event-scoped temporary `docs/assets/<event_id>_<event_slug>/` workspace.
-3. Create a processed PNG preview at the correct HOI4 target size in that temporary workspace.
-4. Convert the processed PNG to DDS 32 bit unsigned BGRA 8.8.8.8.
-5. Move the DDS into the correct mod asset folder.
-6. Add or update the matching sprite definition in the correct `.gfx` file.
-7. Update localisation, docs, and event spreadsheet entries that reference the asset.
-8. Record the asset in the active workspace manifest and requirement-to-runtime crosswalk.
-
-The asset manifest must include:
-
-- asset name
-- asset type
-- source PNG path
-- processed PNG path
-- final DDS path
-- target size
-- sprite name
-- intended in-game use
-- related event id
-- notes
-
-Do not leave a runtime asset only in a temporary folder. While the event is active, retain the source, processed preview, manifest, crosswalk, and handoff in `docs/assets/<event_id>_<event_slug>/` for evidence and review. Before declaring the event goal fully complete, promote durable provenance, licensing, attribution, coverage, review, and wiring facts into permanent `docs/events/`, `docs/plans/`, `docs/specs/`, `docs/super_events/`, or another appropriate documentation surface, verify that no runtime reference points into `docs/assets/`, and delete the complete event-scoped workspace. If the event is blocked or incomplete, keep the workspace and report the blocker. The absence of the deleted workspace is expected for a fully complete event and is not an asset blocker.
 
 ## Final event checklist
 

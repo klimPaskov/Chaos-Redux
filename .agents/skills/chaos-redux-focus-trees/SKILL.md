@@ -50,7 +50,28 @@ prerequisite = { focus = b }
 
 Use vanilla examples before changing complex prerequisite and mutual-exclusion structures.
 
-## Core design baseline
+## 3. Focus tree design purpose
+
+A focus tree defines a country's playable identity. Rewards should express that identity and change how the country plays.
+
+A good focus tree gives the country:
+
+- political routes
+- ideology choices where the country identity supports them
+- internal faction choices
+- military development
+- industry and logistics development
+- diplomacy
+- expansion or settlement policy
+- special mechanics
+- crisis or failure routes
+- late-game ambitions
+- AI route behavior
+- visual identity through icons, names, leaders, flags, and ideas
+
+A tree should not stay politically static unless the country is intentionally fixed by its concept.
+
+### Core design baseline
 
 A strong focus tree should:
 
@@ -94,27 +115,6 @@ Reject trees that:
 - use a focus inlay window as decoration, or place one where it obscures focuses, connectors, navigation, filters, or other tree controls
 
 The duration and reward rules need context. A 35-day focus works when the click creates a real choice, action, event, requirement, or opportunity. A 5 percent modifier can be meaningful when it affects a sensitive statistic, supports a larger reward package, contributes to a visible stacking system, or completes an idea lifecycle. Repeated small standalone rewards remain a design defect. Early action can be military, diplomatic, political, industrial, or crisis-driven.
-
-## 3. Focus tree design purpose
-
-A focus tree defines a country's playable identity. Rewards should express that identity and change how the country plays.
-
-A good focus tree gives the country:
-
-- political routes
-- ideology choices where the country identity supports them
-- internal faction choices
-- military development
-- industry and logistics development
-- diplomacy
-- expansion or settlement policy
-- special mechanics
-- crisis or failure routes
-- late-game ambitions
-- AI route behavior
-- visual identity through icons, names, leaders, flags, and ideas
-
-A tree should not stay politically static unless the country is intentionally fixed by its concept.
 
 ## 4. Path-level implementation
 
@@ -268,76 +268,6 @@ Examples:
 - a diplomacy branch can end in recognition, neutrality, sponsor alignment, balanced sponsorship, faction creation, or anti-puppet protection
 
 A focus should usually unlock new gameplay. Strong focus rewards unlock decisions, missions, units, advisors, leaders, laws, claims, cores, war goals, buildings, events, mechanics, route access, or AI behavior. Flat modifiers should support the main reward.
-
-#### First-glance branch clarity gate
-
-A focus tree fails when its major branches cannot be identified from a normal in-game view. Branch clarity is a design requirement and cannot be deferred as visual polish.
-
-At first glance, a reviewer should be able to point to every visible branch family that the country supports:
-
-- the opening group or main trunk
-- the main political branch family and its major political forks
-- the industry, economy, and logistics branch
-- the military branch family
-- the army, navy, and air subbranches where they are substantial enough to exist
-- the diplomacy, foreign alignment, or faction branch
-- the expansion, reunification, liberation, federation, or settlement branch
-- the special mechanic, internal struggle, crisis, or high-chaos branch once it is visible
-- the late-game ambition or convergence path
-
-The reviewer should not need to read every tooltip, inspect source files, or trace long connectors across the tree to understand what each major area is for.
-
-Every visible focus needs one primary branch ownership or an explicit convergence role. A focus may affect several systems, but its position, prerequisite chain, title, icon family, reward, and follow-up content should still make its main role clear. Related focuses should stay in a coherent lane or compact cluster with an obvious opener, internal progression, meaningful choices, and a clear payoff.
-
-A military family can split into army, navy, and air subbranches. Keep those subbranches visibly grouped under the military family while making each one separately readable. Maritime powers need a clear naval path. Countries whose strategy depends on air power need a clear air path. A landlocked or very small country may omit or compress a branch when its identity genuinely does not support it. Document that choice instead of scattering token naval or air focuses through unrelated branches.
-
-Cross-branch interaction should use a small number of deliberate junctions, convergence focuses, decision unlocks, mission gates, or shared mechanic thresholds. Do not create a spiderweb of prerequisite lines. Whitespace, lane placement, focus names, icon families, and connectors should all describe the same branch taxonomy.
-
-Visual grouping cannot rescue weak route logic. If two branches use the same goals, rewards, next steps, and campaign plan, redesign the routes before adjusting coordinates. If the tree looks random because the underlying choices are random, rewrite the branch architecture, prerequisites, rewards, and payoffs.
-
-First-glance review:
-
-1. Record the route architecture map and intended lane order before final coordinates are accepted.
-2. Prefer a full-tree render at normal in-game zoom with real titles/icons; if the route cannot answer within the shared budget, inspect native coordinates, bounds, connector paths, titles, and icon references and report the visual limitation.
-3. Review the available render or bounded source layout once. Name each major branch, root, important fork, and payoff; use the parent or focus auditor where useful.
-4. Mark every focus whose primary branch, next choice, or relationship to nearby focuses is ambiguous.
-5. Rewrite branch logic, branch roots, prerequisites, names, icons, spacing, or coordinates as required. Do not limit the fix to moving boxes when the route design itself is unclear.
-6. Recheck actual fixes in the affected layout/branches; do not rerun the entire audit or wait for unavailable renders. Confirmed ambiguity remains a defect, while missing visual proof is a stated limitation.
-
-Hard rejection conditions include:
-
-- a major branch can only be found by reading all tooltips or following long connector lines
-- political, industry, military, naval, air, diplomacy, expansion, and special content is mixed together without clear boundaries
-- a branch has no obvious root, internal direction, meaningful route consequence, or capstone
-- focuses appear as random islands or mixed-purpose clusters with no stable route identity
-- reviewers cannot agree where major branches begin and end because the layout and route logic conflict
-- the graph is clean but the routes remain interchangeable, shallow, or meaningless
-
-Do not accept a tree as mostly readable, functional, or ready for later polish. Continue the render, review, and rewrite loop until the tree is logical, meaningful, and clean.
-
-#### Focus filters and Focus Navigation
-
-Every focus tree must use clear focus search filters. Give each focus the current supported `search_filters` tags that describe its primary gameplay role. The filter taxonomy should agree with branch ownership, layout, titles, icons, and rewards.
-
-Use the current vanilla filter keys whenever they fit. Create or extend custom filter definitions only when the tree genuinely needs a category that the existing filters cannot represent cleanly. Do not assign one generic filter to most of the tree. Do not tag a political focus as industry, a naval focus as army, or a special-mechanic focus as a generic political focus merely because that is convenient.
-
-A focus may use more than one filter when it genuinely belongs to more than one gameplay system. Multi-tagging does not excuse unclear branch ownership. Every visible focus still needs one primary branch home or an explicit convergence role.
-
-Large trees with spatially separate branch families must use HOI4 Focus Navigation shortcuts. A player should be able to select a branch tab or button and be taken directly to that part of the tree at a useful zoom level instead of dragging across a large canvas.
-
-Each Focus Navigation entry must:
-
-- represent one real branch family or another clearly defined tree region
-- use a short localised label and a distinct, readable icon
-- target a stable branch root, anchor focus, or deliberate visual center
-- pan and zoom to a view that shows enough of the branch to understand its immediate structure
-- work correctly after the player has manually panned or zoomed elsewhere
-- stay aligned with the branch's filter tags, icon family, route name, and actual content
-- hide or remain unavailable when showing it would reveal a deliberately hidden or unrevealed branch
-
-Provide navigation entries for separate political route groups when they occupy distant regions and need separate access. Do the same for army, navy, air, economy or industry, diplomacy, expansion, crisis, or special-mechanic regions when they are large and spatially distinct. Do not add navigation buttons for tiny nearby side spurs.
-
-Focus Navigation improves usability. It does not rescue a bad layout. A tree still fails if its branches are random, interleaved, overly distant without reason, or unreadable after the navigation shortcut moves the player there.
 
 #### Cross-branch utility
 
@@ -1199,6 +1129,76 @@ Required layout checks:
 
 If an `available = { has_completed_focus = ... }` condition gates a focus, decide whether it should also be a visible prerequisite. Do not add a visible prerequisite if it creates a crossing line, long detour, or asymmetric distortion. Move the branch, shorten the connection, or redesign the gate.
 
+### First-glance branch clarity gate
+
+A focus tree fails when its major branches cannot be identified from a normal in-game view. Branch clarity is a design requirement and cannot be deferred as visual polish.
+
+At first glance, a reviewer should be able to point to every visible branch family that the country supports:
+
+- the opening group or main trunk
+- the main political branch family and its major political forks
+- the industry, economy, and logistics branch
+- the military branch family
+- the army, navy, and air subbranches where they are substantial enough to exist
+- the diplomacy, foreign alignment, or faction branch
+- the expansion, reunification, liberation, federation, or settlement branch
+- the special mechanic, internal struggle, crisis, or high-chaos branch once it is visible
+- the late-game ambition or convergence path
+
+The reviewer should not need to read every tooltip, inspect source files, or trace long connectors across the tree to understand what each major area is for.
+
+Every visible focus needs one primary branch ownership or an explicit convergence role. A focus may affect several systems, but its position, prerequisite chain, title, icon family, reward, and follow-up content should still make its main role clear. Related focuses should stay in a coherent lane or compact cluster with an obvious opener, internal progression, meaningful choices, and a clear payoff.
+
+A military family can split into army, navy, and air subbranches. Keep those subbranches visibly grouped under the military family while making each one separately readable. Maritime powers need a clear naval path. Countries whose strategy depends on air power need a clear air path. A landlocked or very small country may omit or compress a branch when its identity genuinely does not support it. Document that choice instead of scattering token naval or air focuses through unrelated branches.
+
+Cross-branch interaction should use a small number of deliberate junctions, convergence focuses, decision unlocks, mission gates, or shared mechanic thresholds. Do not create a spiderweb of prerequisite lines. Whitespace, lane placement, focus names, icon families, and connectors should all describe the same branch taxonomy.
+
+Visual grouping cannot rescue weak route logic. If two branches use the same goals, rewards, next steps, and campaign plan, redesign the routes before adjusting coordinates. If the tree looks random because the underlying choices are random, rewrite the branch architecture, prerequisites, rewards, and payoffs.
+
+First-glance review:
+
+1. Record the route architecture map and intended lane order before final coordinates are accepted.
+2. Prefer a full-tree render at normal in-game zoom with real titles/icons; if the route cannot answer within the shared budget, inspect native coordinates, bounds, connector paths, titles, and icon references and report the visual limitation.
+3. Review the available render without source annotations. Name every major branch, its visible root, its important fork, and its payoff from the render alone; when possible, use the parent or focus auditor instead of only the layout author. If rendering is unavailable, inspect the source layout and state that first-glance visual clarity was not observed.
+4. Mark every focus whose primary branch, next choice, or relationship to nearby focuses is ambiguous.
+5. Rewrite branch logic, branch roots, prerequisites, names, icons, spacing, or coordinates as required. Do not limit the fix to moving boxes when the route design itself is unclear.
+6. Recheck actual fixes in the affected layout/branches; do not rerun the entire audit or wait for unavailable renders. Confirmed ambiguity remains a defect, while missing visual proof is a stated limitation.
+
+Hard rejection conditions include:
+
+- a major branch can only be found by reading all tooltips or following long connector lines
+- political, industry, military, naval, air, diplomacy, expansion, and special content is mixed together without clear boundaries
+- a branch has no obvious root, internal direction, meaningful route consequence, or capstone
+- focuses appear as random islands or mixed-purpose clusters with no stable route identity
+- reviewers cannot agree where major branches begin and end because the layout and route logic conflict
+- the graph is clean but the routes remain interchangeable, shallow, or meaningless
+
+Do not accept a tree as mostly readable, functional, or ready for later polish. Continue the render, review, and rewrite loop until the tree is logical, meaningful, and clean.
+
+### Focus filters and Focus Navigation
+
+Every focus tree must use clear focus search filters. Give each focus the current supported `search_filters` tags that describe its primary gameplay role. The filter taxonomy should agree with branch ownership, layout, titles, icons, and rewards.
+
+Use the current vanilla filter keys whenever they fit. Create or extend custom filter definitions only when the tree genuinely needs a category that the existing filters cannot represent cleanly. Do not assign one generic filter to most of the tree. Do not tag a political focus as industry, a naval focus as army, or a special-mechanic focus as a generic political focus merely because that is convenient.
+
+A focus may use more than one filter when it genuinely belongs to more than one gameplay system. Multi-tagging does not excuse unclear branch ownership. Every visible focus still needs one primary branch home or an explicit convergence role.
+
+Large trees with spatially separate branch families must use HOI4 Focus Navigation shortcuts. A player should be able to select a branch tab or button and be taken directly to that part of the tree at a useful zoom level instead of dragging across a large canvas.
+
+Each Focus Navigation entry must:
+
+- represent one real branch family or another clearly defined tree region
+- use a short localised label and a distinct, readable icon
+- target a stable branch root, anchor focus, or deliberate visual center
+- pan and zoom to a view that shows enough of the branch to understand its immediate structure
+- work correctly after the player has manually panned or zoomed elsewhere
+- stay aligned with the branch's filter tags, icon family, route name, and actual content
+- hide or remain unavailable when showing it would reveal a deliberately hidden or unrevealed branch
+
+Provide navigation entries for separate political route groups when they occupy distant regions and need separate access. Do the same for army, navy, air, economy or industry, diplomacy, expansion, crisis, or special-mechanic regions when they are large and spatially distinct. Do not add navigation buttons for tiny nearby side spurs.
+
+Focus Navigation improves usability. It does not rescue a bad layout. A tree still fails if its branches are random, interleaved, overly distant without reason, or unreadable after the navigation shortcut moves the player there.
+
 ## 13. Event-created versus existing countries
 
 When an event creates or releases a country, set a flag showing that the event created that country.
@@ -1243,7 +1243,7 @@ AI should consider:
 
 Avoid flat AI weights when campaign state matters.
 
-Route focus selection/weights through one bounded `chaosx_ai_probability_auditor` pass. Prefer targeted inspect/evaluate/comparison and use sweeps or simulation only for an actual threshold or uncertain-input question. If the adapter cannot answer within the AGENTS.md retry limit, inspect real weights, MTTH, helpers, prerequisites, bypasses, strategy, and external factors and evaluate named source scenarios, preserving before/after source when weights change. A supported independent-score-race model is not weight divided by total weight; label score-only or unresolved selection conclusions when the candidate pool or external factors are incomplete. This skill retains route design and tuning ownership.
+For every in-scope focus-selection or focus-weight surface, route the audit through `chaosx_ai_probability_auditor`. Use `hoi4.probability_inspect` to identify the candidate pool and required scenario inputs, evaluate named campaign states with `hoi4.probability_evaluate`, sweep thresholds and rank reversals with `hoi4.probability_sweep`, compare a proposed change with `hoi4.probability_compare`, and use `hoi4.probability_simulate` only for explicitly declared uncertain inputs. Use `hoi4.probability_render` when a ranking, matrix, sensitivity, comparison, or unresolved view is clearer than a compact trace. The focus adapter models the verified independent score race, not weight divided by the sum of weights. Supply the complete available-focus pool and declare prerequisite, bypass, strategy, and external factors. Keep anything the analyzer cannot resolve visible as uncertainty. Use the result as balance evidence while this skill retains ownership of route design and tuning decisions. Apply the AGENTS.md retry limit to unavailable or inconclusive tool checks; keep direct calculations distinct from unsupported game-execution or cumulative-timing claims.
 
 AI should not accidentally choose suicidal or nonsensical routes just because they are visible.
 
@@ -1274,24 +1274,6 @@ Focus trees should consider animated portraits or animated route emblems for maj
 Animated portraits need static fallbacks. They should be assigned through the same leader, character, or cosmetic identity logic as the route itself. `chaosx_portrait_creator` owns the sourced or generated base portrait before `chaos-redux-frame-animation` creates the animation package.
 
 Do not make every leader animated. Animation should signal a special route, a high-chaos identity, a super-event-level transformation, or a rare hidden outcome.
-
-## Improvement addenda and formation routes
-
-When an improvement addendum deepens a focus tree, preserve the route idea before adding nodes. Aim for a sharper country identity, stronger branch interaction, clearer route locks, better rewards, stronger AI, and more visible consequences.
-
-Formation routes should usually combine focus preparation with a decision that verifies state control. Focuses can discover old claims, call a congress, unlock a seal, prepare integration, recruit elites, expose a hidden identity, or open the formation decision. The decision then checks the map and performs the formation.
-
-Hidden formables can be routed through secret focuses, events, leader changes, chaos tiers, ancient artifacts, internal factions, or custom GUI investigation. Hidden content should still have a full implementation handoff. It needs reveal logic, visibility rules, localisation, assets, AI handling, post-formation gameplay, and disqualifiers.
-
-Animated leader portraits and animated route emblems should be reserved for major transformations under section 15.1: route payoffs that change the country's identity, reveal a high-chaos leader, form a new state, or complete a dramatic ideological break. Keep a static fallback and ensure the animation has a clear trigger and cleanup state.
-
-## Subagent patches for focus trees
-
-Focus tree subagents are active small-patch agents by default inside the current task scope. They can patch prerequisite fixes, mutual exclusion fixes, bypasses, route locks, AI weights, icon references, focus filters, localisation keys, small reward variety, existing decision hooks, and existing formable unlock hooks without waiting for a separate permission prompt.
-
-They should not redesign a whole tree, add a full route family, create a new formable chain, or change the country identity. When the tree needs broader depth, they should write an improvement plan under `docs/plans/<event_id>_<event_slug>_plans/` and leave implementation to the main agent.
-
-Every patch returns one concise current handoff with changed files/focus ids, before/after route behavior, meaningful checks, and material limitations; update a durable handoff only when useful or requested.
 
 ## 16. Documentation and audit
 
@@ -1392,6 +1374,24 @@ Before completion, audit:
 - limited wars without peace, escalation, AI, cleanup, or postwar rules
 - repeated or uncontrolled civil wars
 - leader customization that produces one dominant trait stack
+
+### Improvement addenda and formation routes
+
+When an improvement addendum deepens a focus tree, preserve the route idea before adding nodes. Aim for a sharper country identity, stronger branch interaction, clearer route locks, better rewards, stronger AI, and more visible consequences.
+
+Formation routes should usually combine focus preparation with a decision that verifies state control. Focuses can discover old claims, call a congress, unlock a seal, prepare integration, recruit elites, expose a hidden identity, or open the formation decision. The decision then checks the map and performs the formation.
+
+Hidden formables can be routed through secret focuses, events, leader changes, chaos tiers, ancient artifacts, internal factions, or custom GUI investigation. Hidden content should still have a full implementation handoff. It needs reveal logic, visibility rules, localisation, assets, AI handling, post-formation gameplay, and disqualifiers.
+
+Animated leader portraits and animated route emblems should be reserved for major transformations under section 15.1: route payoffs that change the country's identity, reveal a high-chaos leader, form a new state, or complete a dramatic ideological break. Keep a static fallback and ensure the animation has a clear trigger and cleanup state.
+
+### Subagent patches for focus trees
+
+Focus tree subagents are active small-patch agents by default inside the current task scope. They can patch prerequisite fixes, mutual exclusion fixes, bypasses, route locks, AI weights, icon references, focus filters, localisation keys, small reward variety, existing decision hooks, and existing formable unlock hooks without waiting for a separate permission prompt.
+
+They should not redesign a whole tree, add a full route family, create a new formable chain, or change the country identity. When the tree needs broader depth, they should write an improvement plan under `docs/plans/<event_id>_<event_slug>_plans/` and leave implementation to the main agent.
+
+Every patch returns one concise current handoff with changed files/focus ids, before/after route behavior, meaningful checks, and material limitations; update a durable handoff only when useful or requested.
 
 ## 17. Completion rules
 

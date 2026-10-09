@@ -192,41 +192,6 @@ Do not hide a fifth cost in a tooltip, scripted effect, confirmation popup, or s
 
 Every player-facing cost must have the correct texticon for the value it represents. If a custom spendable value has no valid texticon, add and wire a proper texticon before using it as a displayed cost, or redesign that part of the action as a requirement, risk, or consequence. Never fall back to a literal resource name in the cost string.
 
-## 6. Cost localisation
-
-Inline decision cost localisation must be compact and show at most three values, each identified by its matching texticon.
-When normal text is necessary, use no more than four words in the entire inline cost/status string.
-Separate each texticon name from following formatting codes with whitespace, or use a closed texticon syntax verified in installed vanilla.
-Do not repeat a cost already drawn by the native row or expand resource names beside their texticons.
-Keep every payment and reserved resource explicit in the full cost tooltip, and check the longest available and blocked strings beside the decision title in an available native preview or inspected text/asset bounds.
-The inline display limit does not change the payment contract or the separate gameplay cost budget.
-
-Each cost entry pairs its amount with the matching texticon; either order is allowed when native renders confirm fit and valid icon separation.
-
-`<amount> <matching_texticon>` or `<matching_texticon> <amount>`
-
-Good examples:
-
-- `2,000 <infantry_equipment_texticon>`
-- `20 <army_xp_texticon> 20 <command_power_texticon>`
-- `20 <army_xp_texticon> 20 <command_power_texticon> 2,000 <infantry_equipment_texticon>`
-
-Do not write literal cost labels such as `Manpower:`, `Fuel:`, `Political Power:`, or `Support Equipment:` in the cost string. Do not use filler words such as `and`, `plus`, `requires`, or `needed` between cost entries. The texticon identifies the resource.
-
-Use:
-
-`20 <army_xp_texticon> 20 <command_power_texticon>`
-
-Do not use:
-
-`20 Army XP and 20 Command Power`
-
-Do not use:
-
-`20 <army_xp_texticon> and 20 <command_power_texticon>`
-
-If the country cannot pay a cost, show the affected amount and texticon in the blocked or red state used by the owning UI. Satisfied costs remain in the normal state.
-
 ### Custom-cost affordability and payment
 
 Every native `custom_cost_text = <base>` needs localisation for `<base>`, `<base>_blocked`, and `<base>_tooltip`; the engine selects the row key through `custom_cost_trigger` and the tooltip key on hover (offline Decision modding, lines 311-329).
@@ -275,6 +240,41 @@ For upfront payments, draw each spendable cost once in the native or custom cost
 Requirements are separate from costs. A requirement such as `Depot control` can use concise literal text because it is not a spendable value. When a decision has many non-cost requirements, show a short summary such as `Requirements met` or `§RRequirements not met§!` and place the precise requirement list in a concise tooltip. Do not use this pattern to conceal extra spendable costs.
 
 The same rules apply to ordinary decisions, missions with payment actions, scripted GUI buttons, confirmation windows, and any other player-facing action that spends resources.
+
+## 6. Cost localisation
+
+Inline decision cost localisation must be compact and show at most three values, each identified by its matching texticon.
+When normal text is necessary, use no more than four words in the entire inline cost/status string.
+Separate each texticon name from following formatting codes with whitespace, or use a closed texticon syntax verified in installed vanilla.
+Do not repeat a cost already drawn by the native row or expand resource names beside their texticons.
+Keep every payment and reserved resource explicit in the full cost tooltip, and check the longest available and blocked strings beside the decision title in an available native preview or inspected text/asset bounds.
+The inline display limit does not change the payment contract or the separate gameplay cost budget.
+
+Each cost entry pairs its amount with the matching texticon; either order is allowed when native renders confirm fit and valid icon separation.
+
+`<amount> <matching_texticon>` or `<matching_texticon> <amount>`
+
+Good examples:
+
+- `2,000 <infantry_equipment_texticon>`
+- `20 <army_xp_texticon> 20 <command_power_texticon>`
+- `20 <army_xp_texticon> 20 <command_power_texticon> 2,000 <infantry_equipment_texticon>`
+
+Do not write literal cost labels such as `Manpower:`, `Fuel:`, `Political Power:`, or `Support Equipment:` in the cost string. Do not use filler words such as `and`, `plus`, `requires`, or `needed` between cost entries. The texticon identifies the resource.
+
+Use:
+
+`20 <army_xp_texticon> 20 <command_power_texticon>`
+
+Do not use:
+
+`20 Army XP and 20 Command Power`
+
+Do not use:
+
+`20 <army_xp_texticon> and 20 <command_power_texticon>`
+
+If the country cannot pay a cost, show the affected amount and texticon in the blocked or red state used by the owning UI. Satisfied costs remain in the normal state.
 
 ## 7. Trigger and requirement clarity
 
@@ -514,7 +514,7 @@ Example recognition progression:
 
 Do not create a separate idea for every mission if the same institution is clearly growing.
 
-## 15. Focus and decision integration
+## 15. Focus integration and decision presentation
 
 Focuses and decisions should be designed together.
 
@@ -723,7 +723,7 @@ The reusable selected-target pattern is:
 
 Do not leave stale, invalid, or irrelevant decisions visible simply because their scripted trigger is easy to write.
 
-## Decision category presentation hierarchy
+### Decision category presentation hierarchy
 
 A complex scripted GUI is not the default presentation for a decision category. Choose the least complex surface that communicates the category's current state, purpose, and available actions clearly.
 
@@ -755,7 +755,7 @@ A category picture must remain presentation. Do not draw fake buttons, meters, v
 
 Use a full scripted GUI only when the player must manage a living system that cannot be read cleanly from ordinary decisions, category text, tooltips, and a category picture. Valid reasons include several interacting values, target selection, repeated map interaction, competing factions, a state-by-state formable display, or a persistent board whose state changes often.
 
-### Player-facing category text and attached displays
+#### Player-facing category text and attached displays
 
 Decision category descriptions, status summaries, scripted localisation, and compact attached displays must read as intentional game UI. Do not use repeated pipes or vertical bars, divider-character runs, ASCII or Unicode table rows, or other text separators to simulate columns, meters, ledger rows, buttons, or panel layout. Do not emit debug-style telemetry dumps such as `Label value | Label value | ...`, generic developer-state labels, raw variable names, or country-agnostic fallback prose that can leak another country's wording.
 
@@ -763,7 +763,7 @@ Use short natural-language lines, properly wired icons or texticons, real meters
 
 This restriction applies to runtime player-facing text and art. Internal Markdown audit tables may still use normal table syntax and must never be copied into localisation.
 
-### Decision category picture reference workflow
+#### Decision category picture reference workflow
 
 Before designing or auditing a category picture, inspect:
 
@@ -780,7 +780,7 @@ When reviewing existing Chaos Redux decision categories, produce a category pres
 
 Apply the eligibility gate above before identifying existing categories that would benefit from a static or animated category picture and currently lack one. Categories that the gate excludes because of complex UI, meters, additional custom controls, rich interactive panels, or other animations are ineligible, not missing picture assets. Do not add a picture to every category. Keep ordinary categories ordinary when a picture would add no useful identity, territorial context, or state feedback.
 
-## Formable nation decisions
+### Formable nation decisions
 
 Use decisions for formable nations when the player should prove control over land, complete a political route, or spend resources before changing the country identity. A formable decision should feel like a proclamation, settlement, congress, coronation, constitutional act, annexation settlement, liberation charter, or administrative project. It should not be only a hidden tag switch.
 
@@ -801,7 +801,7 @@ A formable decision must define:
 
 State requirements must be readable. Use named state groups and custom trigger tooltips. Do not expose raw state id lists to the player unless the existing UI pattern already does that cleanly. If several alternate maps can qualify, create clear requirement groups.
 
-### Formable state-puzzle presentation standard
+#### Formable state-puzzle presentation standard
 
 When exact territorial control is the central proof for a formable, use the reusable formable state-puzzle presentation. The interface should show the required territory assembled from the exact in-game shapes of its states, arranged in their real geographic positions like pieces of one map.
 
@@ -841,7 +841,7 @@ AI must use the same formation conditions and decision logic without depending o
 
 Hidden formables need extra care. A hidden formable can be locked behind an event, secret focus, rare ideology, high chaos, special leader, historical artifact, super-event, achievement route, or scripted GUI investigation. Hidden does not mean undocumented. The implementation handoff must still define all triggers, effects, assets, and cleanup.
 
-### Formation missions and integration projects
+#### Formation missions and integration projects
 
 Large formables should usually need post-formation work. Use missions or decision chains for integration when instant cores would be too strong.
 
@@ -860,13 +860,13 @@ Good formation follow-ups include:
 
 Formation systems should support partial success and failure. A country can form the title but gain only claims, delay core grants, create dissatisfied regions, trigger rival reactions, or open emergency missions.
 
-## Scripted GUI decision categories and mechanic windows
+### Scripted GUI decision categories and mechanic windows
 
 Choose the presentation layer from the hierarchy above before creating a custom window. Use an attached scripted GUI or a separate mechanic window only when active values, targets, meters, factions, or exact state pieces need a visual management surface that ordinary decisions, tooltips, and a category picture cannot provide clearly. Basic formatted value tables alone do not require this richer presentation. A custom interface must have a gameplay reason and cannot compensate for weak actions.
 
 Use the scripted GUI skill's [reference-image workflow](../chaos-redux-scripted-gui/SKILL.md#reference-image-before-implementation), [bounded MCP preview and comparison workflow](../chaos-redux-scripted-gui/SKILL.md#mcp-visual-review-and-optional-rewrite), and [visual and usability review](../chaos-redux-scripted-gui/SKILL.md#scripted-gui-visual-and-usability-review). Apply that skill to GUI layout, backgrounds, text, content budgets, interaction presentation, and bounded visual checks; unavailable MCP evidence is a limitation under AGENTS.md. Route layout work on a dedicated UI introduced and owned by one named event to `chaosx_event_ui_worker` under `chaos-redux-subagents`. Shared event log, event details, settings, super-event frameworks, and unrelated interfaces remain parent-owned and require their own authorization. The decision owner retains the gameplay rules below.
 
-### GUI action integrity
+#### GUI action integrity
 
 Every gameplay-changing GUI action follows the same cost, affordability, requirement, payment, effect, AI, and cleanup contract as a normal decision. Use the same scripted effect families, validation triggers, logging, and lifecycle helpers so a GUI cannot bypass decision balance. Each action may have at most four distinct spendable cost types, with the correct texticon for every displayed cost; never hide an extra cost in a tooltip or confirmation window. Keep non-consumed requirements separate from payment and explain missing requirements precisely.
 
@@ -881,7 +881,7 @@ For each gameplay-changing control, document:
 
 Do not add actions to fill layout space or manufacture depth. Merge duplicate actions and remove controls whose result does not change play. Information and navigation controls follow [click regions and state behavior](../chaos-redux-scripted-gui/SKILL.md#click-regions-overlap-and-state-behavior); they do not require an invented gameplay effect.
 
-### Animated decision category presentation
+#### Animated decision category presentation
 
 Animation is optional. First apply the same category-picture eligibility gate to static and animated pictures, then decide whether a static picture is sufficient. Use an animated category picture or animated GUI sprite only when motion makes a changing state easier to notice or strengthens a category whose identity depends on active propaganda, mobilization, escalating crisis, or transformation. An animated picture remains a simple-category alternative and must not accompany existing animated GUI. Every animated category picture needs a static fallback.
 
@@ -922,7 +922,7 @@ AI should understand:
 
 Avoid flat `ai_will_do` when campaign state matters.
 
-Route decision/mission weights through one bounded `chaosx_ai_probability_auditor` pass. Prefer targeted inspect/evaluate and a matched before/after comparison; use sweeps or simulation only for a real threshold or uncertain-input question. If the adapter fails, is unsupported, or misclassifies the surface, read actual `ai_will_do`, MTTH, helpers, constants, and eligibility and evaluate named source scenarios under the AGENTS.md budget. Include availability, target, cost, cooldown, and route state; preserve before/after source when weights change. These are willingness scores, not click probabilities, and unresolved engine state is a stated limitation rather than an automatic blocker.
+For every in-scope decision or mission weight, route the analysis through `chaosx_ai_probability_auditor`. Use `hoi4.probability_inspect` to find required inputs, `hoi4.probability_evaluate` for named campaign states, `hoi4.probability_sweep` for thresholds and rank reversals, and `hoi4.probability_compare` after a source change. Use `hoi4.probability_simulate` only for explicitly declared uncertain inputs, and use `hoi4.probability_render` when the ranking, matrix, sensitivity, comparison, or unresolved view improves review. Decision and mission `ai_will_do` results are willingness scores, so do not present them as click probabilities. Include availability, target, cost, cooldown, and route state where relevant, and retain unresolved engine state in the result. If the route is unavailable or misclassifies the script, calculate the same named cases directly and state which conclusions remain uncertain. Apply the AGENTS.md retry limit to unavailable or inconclusive tool checks; keep direct calculations distinct from unsupported game-execution or cumulative-timing claims.
 
 AI should not take suicidal or nonsensical decisions just because they are available.
 
@@ -1013,7 +1013,7 @@ Do not replace a required production helper with a no-op solely to pass a loader
 Exercise the production pending-payment preflight and display/gate consumers with valid records, presence-only pointers, nonpositive IDs, actor/target or phase mismatches, and missing or nonpositive actual-paid fields, asserting display/gate agreement, no fabricated quote or fresh debit on rejection, and no durable-state mutation by the preflight.
 These source tests do not establish native engine execution or timed expiry.
 
-## Improvement addenda for decisions and mechanic windows
+### Improvement addenda for decisions and mechanic windows
 
 When an improvement addendum proposes decision depth, scripted GUI, or mechanic windows, translate the design into active play. The decision category should show the mechanic clearly, but the gameplay should still live in decisions, missions, scripted effects, scripted triggers, AI rules, and cleanup logic.
 
@@ -1027,7 +1027,7 @@ The state-puzzle package is manifest-driven. Follow `templates/formable_state_pu
 
 When an owning event or system declares a strict all-category attachment policy, every shared or phase-specific category that exposes the formable's formation or integration decisions must attach its relevant generated state-puzzle GUI. A static category picture, text-only category, or unrelated status GUI cannot replace that state-puzzle attachment when exact state control is the formation proof. Missing category coverage is a blocker and must be recorded in the owner handoff.
 
-## Subagent patches for decision systems
+### Subagent patches for decision systems
 
 Decision and mission subagents are active small-patch agents by default inside the current task scope. They can patch varied costs, clearer dynamic localisation, custom trigger tooltips, AI target checks, cleanup hooks, visibility checks, cooldown fixes, scripted GUI button text, narrow helper call sites, and existing formable requirement fixes without waiting for a separate permission prompt.
 

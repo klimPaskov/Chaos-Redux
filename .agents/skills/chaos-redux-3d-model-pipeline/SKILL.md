@@ -81,7 +81,7 @@ Choose the route before provider calls. Firearm-bearing units, including existin
 
 Always create or restore every missing required model component, anatomy element, equipment piece, weapon, or held tool in Blender without renewed approval, preserving intended identity and source-informed design. Record an inventory that maps each required element to its modeled geometry, material, rig/attachment, action usage, and export/reimport evidence. Use verified bounded modeling and authoring operations; absent capability is a blocker, not permission to omit the element or replace it with a static/action alias. The authorization covers required component completion and modest budget-preserving reduction, while other provider/source substitutions retain their separate approval rules. Never store credentials in job files, skill files, manifests, prompts, logs, or handoffs.
 
-## Equipped items are generated separately and animated as an assembly
+### Equipped items are generated separately and animated as an assembly
 
 Meshy is unreliable at a subject holding an object, so a body is never generated with anything in its hands. Every held or equipped item — firearm, melee weapon, tool, shield, staff, banner, instrument, or carried object — uses the separated route, and a provider candidate that already holds an item is historical evidence only. A firearm is the special case of this rule: the item-free body for a firearm unit is a weapon-free body, and that unit's extra requirements are the `fires_in_combat` or `non_firing` declaration, per-firing-state discharge timing, muzzle or weapon locator, particle and light effects, licensed weapon-matched sound, and grip and stock contacts, or the zero-state audit of firing states, effects, locators, and sounds for `non_firing`.
 
@@ -239,7 +239,9 @@ If evidence metadata is recovered, mark it reconstructed and name the surviving 
 
 When `owner_id` identifies an event, the model job belongs under that event's temporary `docs/assets/<event_id>_<event_slug>/models_3d/<asset_slug>/` evidence workspace. Keep source files, checkpoints, exports, manifests, QA evidence, and handoffs there while work is active, blocked, awaiting review, or undergoing acceptance scenarios. Before the event goal is genuinely complete, promote durable provenance, licensing, QA/reimport results, crosswalk facts, and runtime-handoff facts into permanent event, plan, spec, or other owner-approved documentation, place final runtime files in engine-facing folders, verify that no runtime reference points into `docs/assets/`, then delete the complete event-scoped workspace. Never delete skill-local references, durable portrait archives, or another event's workspace. Retain this workspace for blocked or incomplete work and report the blocker.
 
-## Designed-artwork source-first reference gate
+## Reference images
+
+### Designed-artwork source-first reference gate
 
 After the mandatory key and job-root gates, search for and select actual Internet-sourced modern designed artwork before approving any model reference. Build the candidate pool from game concept art, game character or unit art, game production or promotional art, tabletop or miniature concept art and renders, fantasy or horror illustration, and professional character or creature design sheets. Do not use archival photographs, museum works, historical paintings or drawings, historical plates, antiquities, archaeological images, ethnographic records, reenactment photography, or documentary imagery as model-reference candidates, shortlist entries, comparison images, or selected sources. Prefer official artist, game-studio, publisher, portfolio, or asset pages and sources with explicit reusable licensing. Use the repository's normal web-search workflow and record the search scope, queries, date, eligible artwork candidate URLs, rights decisions, and exact rejection reasons in `refs/source/source_search.md`.
 
@@ -259,7 +261,7 @@ For a licensed or explicitly user-authorized source, use native ImageGen on a se
 
 If no eligible source survives provenance, rights, AI-use, or visual-identity review, mark the job `needs_user_review` or `blocked` and stop provider work. A source-free from-scratch reference is a distinct fallback that requires explicit parent/user approval after the documented search fails. Ordinary model-production authorization does not waive that fallback gate.
 
-## Exactly one reference image per Meshy geometry task
+### Exactly one reference image per Meshy geometry task
 
 Each Meshy geometry task receives exactly one approved, fully colored, full-subject image with genuine transparency or the required plain background. Use `refs/original/meshy_input.png` for the body; for firearm units this body image must be weapon-free. Prepare each required item as a separate item-only input under `refs/firearms/<firearm_id>/meshy_input.png` or `refs/equipment/<item_id>/meshy_input.png` and submit it through its own Meshy 7 geometry task, never alongside the body or another item. Preserve intended identity and distinctive non-equipment traits while allowing authorized weapon exclusion, pose cleanup, and restoration. Record source URL, creator, terms, rights/AI-use status, prompt, comparison, pose mode, and parent review for every task. Never submit multi-view boards, comparison sheets, search-result pages, or additional images to a single geometry task; never overwrite immutable source evidence. A source-free fallback still needs separate approval after documented search failure. An unavailable required provider route remains a blocker.
 
@@ -269,7 +271,7 @@ For a sourced artwork with an unwanted opaque background, request genuine transp
 
 Do not create or submit a turnaround sheet, multi-view board, collage, side-profile set, or separate front/rear images. Vanilla references may be imported into Blender read-only for calibration, and Blender may render front, rear, side, top, underside, wireframe, or material QA views after generation, but none of those views is a Meshy input or may be sent back to the provider.
 
-### Portrait fidelity gate
+#### Portrait fidelity gate
 
 For a portrait-inspired custom unit, compare the prepared candidate against the source portrait before any paid Meshy call and preserve the exact head or face identity, silhouette, proportions, clothing or anatomy, distinctive attachments, palette, and intended unit identity. Preserve the source pose unless the approved derivative records `pose_preparation_mode = t_pose` or `pose_preparation_mode = a_pose` without unintended identity drift; the equipped-item route strips source items for separate Meshy generation and may restore hidden body details. Do not accept a generic redesign that preserves only the unit category. Require explicit parent or user acceptance of the source-to-prepared comparison. Without it, mark the job `needs_user_review` or `blocked` and do not call Meshy. Record the source/prepared comparison, exact prompt, pose mode and reason, approval or status, and revision lineage in the job manifest, with each revision identifying its predecessor. Reference review is separate from provider generation, under `Exactly one reference image per Meshy geometry task`.
 
@@ -345,20 +347,6 @@ Repair rejected roles in the live Blender session while preserving accepted geom
 
 Hold loop coverage, root policy, ground contact, export, and reimport evidence to `Action evidence and ground contacts`, and record the authoring or ingestion session, the accepted checkpoint, the authored or ingested bones and channels, and the role phases for every action.
 
-## Rebuilding existing units with the review tools
-
-Follow `references/unit_rebuild_workflow.md` for every rebuild or new provider-eligible biped. It is the ordered route: free triage of the shipped model, identity sources (portraits plus renders of the current model), portrait-grounded reference, provider generation, intake, action review and grounding, export, and runtime wiring.
-
-Use the repository tools instead of ad hoc scripts:
-
-- `.tools/3d_pipeline/review/review_cli.py` — read-only background-Blender triage, reference renders, action review with floor contact and phase measurement, and comparison sheets.
-- `.tools/3d_pipeline/review/provider_intake.py` — downloads, calibrates, writes verified provenance, and chains provider action imports from a manifest.
-- `.tools/3d_pipeline/review/lab_actions.py` — live Lab helpers for grounding, slot repair, NLA cleanup, and authored bone-direction keys.
-- `.tools/3d_pipeline/review/pdx_textures.py` — profile-driven PDX material preparation from provider PBR maps; use `.tools/3d_pipeline/textures/cli.py` for final compressed model-texture delivery under the contract below.
-- `.tools/3d_pipeline/review/export_package.py` — mesh and action export with a reimport proof per role and optional hash-checked runtime install.
-
-A reference that looks generic beside the unit's portrait is rejected before any geometry credit is spent. Provider actions are ingested, grounded, reviewed from at least two views, and re-authored in Blender when a role reads as the wrong character.
-
 ## Blender processing and checkpoints
 
 Use a versioned scene template with protected provider-source, working, rig, action, export, reference, and evidence collections. Unattended work must use the verified repository-owned allowlisted adapter. Do not expose unrestricted Blender Python, shell commands, arbitrary URLs, or paths outside the job and approved reference roots. A development-only Blender route is allowed only in the isolated profile and only after the parent verifies its installation and actual callable interface.
@@ -384,6 +372,20 @@ Required stages:
 Save stable checkpoint stages in `blender/checkpoints/` for source import, normalization, component modeling/repair, materials, rig/weights, props/attachments, actions, and pre-export. Preserve immutable source checkpoints, versions, and stage transitions. Complete missing required anatomy, equipment, weapons, tools, and other model components under the standing authorization in `Route selection and component completion`. Record source-informed design and added geometry separately, preserve the intended identity, and report an exact capability blocker if required modeling operations are unavailable.
 
 For a humanoid recovery with detached or loose components, use the verified repository-owned `chaosx_blender_hoi4_review_humanoid_components` operation with `render_group = true` before selecting any component for reuse. Require a grouped visual review render with explicit component ids and named views against the dim whole-body reference. Bounds-only guessing is invalid. The review reads the source checkpoint without saving or mutating it and writes only job-root-bounded previews and a review report. Do not isolate a component until the parent has reviewed that evidence.
+
+### Rebuilding existing units with the review tools
+
+Follow `references/unit_rebuild_workflow.md` for every rebuild or new provider-eligible biped. It is the ordered route: free triage of the shipped model, identity sources (portraits plus renders of the current model), portrait-grounded reference, provider generation, intake, action review and grounding, export, and runtime wiring.
+
+Use the repository tools instead of ad hoc scripts:
+
+- `.tools/3d_pipeline/review/review_cli.py` — read-only background-Blender triage, reference renders, action review with floor contact and phase measurement, and comparison sheets.
+- `.tools/3d_pipeline/review/provider_intake.py` — downloads, calibrates, writes verified provenance, and chains provider action imports from a manifest.
+- `.tools/3d_pipeline/review/lab_actions.py` — live Lab helpers for grounding, slot repair, NLA cleanup, and authored bone-direction keys.
+- `.tools/3d_pipeline/review/pdx_textures.py` — profile-driven PDX material preparation from provider PBR maps; use `.tools/3d_pipeline/textures/cli.py` for final compressed model-texture delivery under the contract below.
+- `.tools/3d_pipeline/review/export_package.py` — mesh and action export with a reimport proof per role and optional hash-checked runtime install.
+
+A reference that looks generic beside the unit's portrait is rejected before any geometry credit is spent. Provider actions are ingested, grounded, reviewed from at least two views, and re-authored in Blender when a role reads as the wrong character.
 
 ## Geometry, materials, rigging, and actions
 
@@ -564,7 +566,7 @@ For nonhumanoid/creature jobs, `manifest.md` and `runtime/handoff.md` must repea
 
 When the event/system owner and slug are known, place the subagent handoff under the parent-provided `docs/plans/<owner_id>_<owner_slug>_plans/subagent_handoffs/` path. The parent must review every artifact and either wire it, queue it with a reason, reject it with a reason, or carry its blocker forward.
 
-## Runtime copy synchronization
+### Runtime copy synchronization
 
 Treat the selected source exports, staged runtime copies, and active consumer files as separate surfaces. A runtime file can be stale or be overwritten by an older mapped texture even when the current source export is correct. Select the final geometry, material maps, and actions first, then lock the selected source paths in the manifest before synchronizing any runtime copy. Record each source and destination path, source and destination SHA-256, copy tool or actor, copy time, and provenance link, then compare destination hashes after synchronization. Never synchronize from an older provider or processed path, never let a filename alone choose the source, and never synchronize before final source selection. The parent owns active runtime copies, `.asset`, entity, `.gfx`, gameplay wiring, and live consumer bindings. The user supplies in-game screenshots and live validation. The worker owns the evidence and exact handoff needed for parent wiring and review.
 

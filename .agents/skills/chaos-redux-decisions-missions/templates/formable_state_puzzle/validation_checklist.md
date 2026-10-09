@@ -64,9 +64,9 @@ This checklist records evidence for a copied owner implementation. It does not c
 
 - [ ] Every GFX texture path resolves under the owner asset package and never points into the skill-local directory.
 - [ ] The YAML localisation file is UTF-8 with BOM and contains category, summary, requirement, hover, owner/controller fallback, control, core, and status keys.
-- [ ] Consumer state/province membership, exact geometry provenance, and projection were checked from bounded map MCP output or direct installed-map/registry source, with the evidence scope stated.
-- [ ] Linked category/window, hierarchy, hover/click regions, and sprites were checked from targeted GUI output or direct native source.
-- [ ] Representative resolutions/states were reviewed using available renders or source bounds, text budgets, and state wiring; unavailable previews are a visual limitation under AGENTS.md.
+- [ ] `mcp__hoi4_agent_tools__hoi4_map_inspect` covers the consumer state IDs and bounded province IDs, and `mcp__hoi4_agent_tools__hoi4_map_render` supplies the relevant state/province layer artifact with source revision recorded. If the tool remains unavailable under AGENTS.md, check the same source data directly and record what could not be confirmed.
+- [ ] `mcp__hoi4_agent_tools__hoi4_gui_inspect` covers the linked category, hierarchy, click regions, hover regions, and sprite properties. If the tool remains unavailable under AGENTS.md, check the same source data directly and record what could not be confirmed.
+- [ ] `mcp__hoi4_agent_tools__hoi4_gui_render` covers every supported resolution and the relevant normal, hover, unresolved, qualifying, optional-hidden, long-text, and missing-localisation states. If rendering remains unavailable under AGENTS.md, inspect the same bounds and state wiring from source and record the missing visual checks.
 - [ ] Every processed PNG was converted with `.agents/skills/chaos-redux-event-assets/tools/convert_to_dds.py`, and every DDS was decoded back at native size with exact dimensions, BGRA header/byte-length, alpha, and pixel-equality evidence.
 - [ ] The same named scenarios are used to compare piece status, summary status, and formation decision availability.
 - [ ] Any unavailable MCP route, unresolved engine dynamic-list scope, missing geometry artifact, DDS round-trip failure, or deferred in-game check is recorded with the exact reason.

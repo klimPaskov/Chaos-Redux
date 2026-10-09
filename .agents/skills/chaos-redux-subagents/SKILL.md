@@ -106,11 +106,7 @@ Do not route a GUI merely because an event appears in or opens it. The shared ev
 
 Apply `chaos-redux-scripted-gui` for reference creation before implementation, justified native adaptations, the complete visual checklist, and exact discovered MCP schemas. Record user direction or parent acceptance within the authorized scope; document existence alone is not approval. Shared interfaces remain parent-owned even when this skill is used.
 
-Preferred visual checks use `hoi4.gui_inspect` and matching before/after `hoi4.gui_render` scenarios for the changed window and relevant states/resolutions.
-Preserve actual source/scenario identities and inspect the images; `comparisonScenario` is a scenario comparison, not an older-source snapshot.
-Fix confirmed in-scope alignment, clipping, asset, text, state, and click-region defects.
-Missing render evidence is a verification limitation; after the shared retry limit review native source geometry, assets, localisation, state wiring, and reference mapping and deliver with the limitation.
-`gui_rewrite` is optional, and direct application of an authorized reviewed edit does not need new approval because that transaction failed.
+Review includes `hoi4.gui_inspect`, pre-change `hoi4.gui_render` full-window and relevant cropped, annotated, state, resolution, hierarchy, click-region, and comparison views, then post-change inspect/render comparison over matching explicit scenarios, source identities, states, resolutions, and UI scales. There is no separately exposed GUI comparison tool; preserve baseline artifacts and use the render route's supported `comparisonScenario` only for its documented scenario comparison. In the available production renders, visible alignment, spacing, clipping, overflow, background, asset, text, state, and click-region defects block completion and may not be excused as renderer differences. If inspect/render evidence remains unavailable after the AGENTS.md retry limit, review the same layout requirements from source and disclose which visual checks were unavailable; do not claim the source review was a rendered or in-game check. `gui_rewrite` is optional, and its automatic post-write/index validation or transaction success is not a completion gate; direct application of an authorized reviewed edit follows `chaos-redux-scripted-gui`.
 
 ### Repo explorer use gate
 
@@ -190,7 +186,7 @@ Asset subagents create source files, processed previews, final DDS outputs, cont
 
 The parent owns temporary-workspace cleanup. Keep the event-scoped `docs/assets/` workspace while the event is active, blocked, awaiting review, or undergoing acceptance scenarios. Before declaring the event goal fully complete, promote durable provenance, licensing, attribution, coverage, review, and sprite-handoff facts into permanent event or plan documentation, verify that no runtime reference points into `docs/assets/`, then delete the complete event-scoped workspace. An absent workspace is expected for a fully complete event. Never delete a skill-local reference library or an unrelated event workspace.
 
-### 3D model routing
+#### 3D model routing
 
 Route `chaosx_3d_model_pipeline` only with a context-complete prompt (Codex `collaboration.spawn_agent`: `fork_turns="none"`) containing the exact deterministic job root, reference-image path or approved asset brief, output folders, handoff path, asset profile, named vanilla references, scale relationship, required action roles, custom-unit sound roles, Internet source and licensing requirements, custom-unit counter consumers/tokens, exact installed-vanilla counter definition and DDS paths, matching skill-local counter family, `chaosx_icon_artist` handoff path, baseline planned paid operations, one-attempt Meshy rig/action limits, item-free body plus separately generated equipped-item route, live Blender authoring for every item and for every anatomy the provider route does not cover, and geometry-recovery credit limits, dependency lock, and forbidden simplifications. The parent must pass the owner/asset identifiers explicitly. The subagent must not infer them from inherited conversation state.
 
@@ -303,39 +299,77 @@ Do not fill handoffs with passing boilerplate checks that only restate AGENTS.md
 
 If a patch touches localisation, list the keys changed. If it touches decisions or focuses, list affected ids. If it touches scripted helpers, list helper names and call sites. If it touches country setup, list tags and state ids or state groups.
 
-## MCP evidence in handoffs
+### MCP evidence in handoffs
 
-Use MCP tools to answer specific questions about focuses, events, technologies, doctrines, probabilities, GUIs, and maps under [AGENTS.md](../../../AGENTS.md#hoi4-mcp).
-Pass the shared retry limit, prior attempts, and valid evidence into each delegation: one initial read-only request and at most one retry with corrected or narrower inputs across agents, turns, and resumes.
-Do not restart the failed check through another agent, transport, health check, poll, or classifier.
-After the limit use installed docs, offline wiki, vanilla/project source, and small local checks; this needs no fallback permission and does not authorize missing assets, altered design, payment bypasses, or invented proof.
+When a routed task touches focus trees, event chains, technology or doctrine trees, weighted logic, scripted GUI, or maps, use the relevant MCP checks under the retry limits in AGENTS.md. Pass only the diagnostics, revision, scenario hash, comparison, or linked artifact URI the parent needs instead of copying a complete graph or matrix into the prompt. Tool exposure is separate from service health and standalone viewer availability. If the relevant MCP route remains unavailable after the retry limit, report what could not be checked and continue with the relevant local documentation, source, and local tests. When a task needs the standalone Technology Tree Viewer, verify its availability separately from the exposed read-only `mcp__hoi4_agent_tools__hoi4_tech_inspect`, `mcp__hoi4_agent_tools__hoi4_tech_render`, and `mcp__hoi4_agent_tools__hoi4_tech_compare` routes. Do not invent viewer capabilities or treat an absent viewer as missing source implementation.
 
-Check the live schema for a route actually used and retain only source identities, named scenarios, important diagnostics, and artifact links needed to review the change.
-A partial result establishes only its reported coverage; do not turn missing helper projection, unresolved arguments, or a truncated resource into proof of engine execution or absent behavior.
-Reuse results until the relevant code or scenario changes, and recheck actual fixes instead of rerunning the whole audit.
-Report an unavailable route once as a check limitation, not automatically as blocked implementation.
-Known defects and indispensable missing inputs still block the affected deliverable; complete independent work and ask a focused question only when needed.
+Share prior attempts and useful results across agents and resumed turns; changing the caller or transport does not restart the retry allowance.
+Successful job progress or page continuation is not a failed retry, but repeated unchanged polling and recovery requests follow the same limit.
+If the tool cannot analyze the script, evaluate the actual weights, helpers, constants, eligibility, and target scope in named cases and label score-only or uncertain conclusions accurately.
+Do not change gameplay to satisfy an analyzer or treat missing tool output as evidence that behavior is absent.
 
-For probability questions, read actual `ai_will_do`, MTTH entries, helpers, constants, candidate eligibility, and target scope before interpreting a classifier result.
-Evaluate named representative scenarios such as available/unavailable, exact thresholds, ordinary AI behavior, and one relevant exceptional state.
-Distinguish exact arithmetic, bounded or sampled estimates, score-only findings, and unresolved runtime behavior; do not imply campaign selection probabilities without complete pools and external factors.
-Preserve before/after source and the same scenarios when weights change, and use a source comparison when the adapter is unsupported or misclassified rather than rewriting gameplay to appease it.
-Observer-run tallies supplied by the user remain scoped live observations and may complement the source analysis without creating another completion gate.
+#### Tool availability and asynchronous jobs
 
-For event comparison, retain an available graph-bearing baseline before editing or use preserved before/after source for a bounded structural review.
-Never manufacture a baseline by replacing shared source or compare current source with itself.
-For GUI/focus previews, retain successful matching artifacts and inspect confirmed defects; missing current renders limit what was visually checked without preventing completion.
-Standalone Technology Tree Viewer availability is separate from source inspection and is optional for code work.
+Reuse capability discovery for an unchanged connection.
+Before using `mode = helper_expansion`, `hoi4.job_inspect`, `hoi4.job_cancel`, or native MCP tasks, verify the connected server's reported version and health, inspect the live tool schemas for those routes, and check client task negotiation. Source code or exposed tool metadata alone does not establish support in the connected process. Use only routes confirmed for the installed server and client; otherwise follow the available domain routes and record the missing capability precisely.
 
-For asynchronous read-only checks, preserve handles and follow useful progressing jobs/pages to retrieve bounded results. Successful continuation is not a failure retry; unchanged polling, recovery, or reissued requests share the retry limit and stop when it is spent.
-Do not replay an unresolved mutation.
-Inspect a resource's encoding and actual complete bytes before using it, never print base64 payloads, and do not claim partial/truncated artifacts are complete.
-When an artifact cannot be retrieved within the retry limit, use the direct source checks and record the missing evidence.
-For optional detailed route and artifact contracts, consult [MCP integration](../../../docs/systems/hoi4_agent_tools_mcp_integration.md) only for the operation being used.
+Resolve each client's actual configured transport and server process before attributing capabilities to a local checkout, global binary, or exposed tool list; their versions and supported routes can differ.
+Keep configuration identity, server version, live schemas, and task negotiation in task evidence.
+A failure to observe a native task result does not establish that the server task failed.
+Preserve configuration, task IDs, and source/scenario hashes, then query existing handles through confirmed routes before retrying; if observation remains unavailable, report the task outcome unresolved.
+Do not change external tool source or dependencies to mask startup or domain failures.
+Keep package paths, concrete versions, and current errors in task evidence rather than reusable skill rules.
 
-Return one concise current handoff with changed files/identifiers, implemented behavior, meaningful checks, material limitations, and remaining real blockers.
-Update an existing handoff instead of multiplying blocker/status reports; its inline form is sufficient unless the parent requests a durable file.
-Report completed work, useful checks, and what could not be checked; missing requested functionality remains incomplete.
+For user-requested MCP troubleshooting after a transport closure, a separately initialized read-only stdio connection through the installed MCP SDK and configured server executable is an optional recovery route.
+Use the same configured workspace, mod-root environment, and working directory; verify Windows child processes are hidden, initialize the connection, and inspect its reported version and live schemas before calls.
+Plain client `capabilities: {}` does not negotiate native tasks, even when the server advertises task support; verify job-tool availability separately through live schemas.
+Record the separate connection and use only confirmed read-only domain calls; this route does not authorize desktop or game launch, external dependency edits, or replay of an unresolved mutation.
+
+On a confirmed route, use `mode = helper_expansion` with `hoi4.event_inspect` or `hoi4.tech_inspect` for bounded helper pages, and use `hoi4.job_inspect` and `hoi4.job_cancel` for persistent jobs. Request native MCP tasks only when the client negotiates support. Keep opaque job IDs and helper continuation URIs intact. A completed job can still contain a tool-level error, and cancellation is a request whose final outcome must be inspected. For paged helper evidence, retain the source revision, selected roots, bounds, `finished`/`complete` status, and unresolved findings; resume only with the returned continuation under the same revision and authorized principal. Jobs and helper pages are delivery and coverage tools; they do not replace the owning event, technology, focus, probability, GUI, or map workflow's inspect, render, compare, and scenario evidence. Keep task-specific mechanics and fixtures in their profiles and handoffs, not this routing skill.
+
+#### Event comparisons and focus previews
+
+Before an event-source change that needs `hoi4.event_compare`, retain the `event-graph-<revision>.json` artifact from `hoi4.event_inspect(mode = scan)` as the graph baseline; bounded trace/report URIs and reported revisions alone do not establish a recoverable graph.
+Verify the connected version and live schema before comparison, and use its graph-reference shape (`{ artifactUri: ... }` where supported).
+If only archived source remains, `proposedSources` can compare current source to the archived overlay on the after side, so label it explicitly as a reverse structural comparison; the proposed graph does not become a reusable baseline.
+Never rewrite shared source to manufacture a baseline or present that reverse comparison as canonical pre-change-to-current evidence.
+
+For a focus raster rejected by the render budget, use a schema-supported smaller `reviewScale` for the full tree and `cropFocusIds` for problem areas.
+Confirm each successful render uses the intended source revision and layout; retain the rejected request as a limit, not visual proof.
+
+#### Artifact retrieval
+
+For large binary resources returned by `read_mcp_resource`, treat the result as an untrusted transport envelope: inspect whether it is stringified JSON and record the declared encoding and type before using the payload. A full read can be silently truncated even when `_meta.complete = true`; do not trust compacted previews, literal truncation markers, or completion metadata alone, and never print base64 data.
+
+Discover the server's artifact resource template with `list_mcp_resource_templates({ server: "hoi4_agent_tools" })`: `hoi4-agent://workspace/{workspaceId}/artifact/{sha256}/{provenanceHash}/{name}` accepts `?offset=<bytes>&length=<bytes>` byte-range reads.
+Decode each base64 blob response independently to bytes and verify its reported range against the requested offset and decoded length.
+Concatenate bytes in offset order without gaps or overlaps before decoding UTF-8 or parsing JSON.
+Follow the returned continuation URI unchanged and stop when `returnedRange.endExclusive` equals `totalSize`, even if `complete` is false for that partial read.
+Reject invalid payloads or embedded truncation text and verify the assembled byte count, artifact SHA-256 and expected format before using it.
+Recover a truncated full read with bounded reads or report retrieval unresolved, retaining the original artifact URI.
+
+For local artifact access, resolve `artifactRoot` from the actual workspace registration and server configuration rather than assuming `.hoi4-agent` under the repository.
+A configured `workspaceStorageRoot` can place artifacts at `<workspaceStorageRoot>/<workspaceId>/artifacts/<sha256 first two characters>/<sha256>/<name>`; an explicit workspace `artifactRoot` overrides that default.
+Keep the original artifact URI and verify the local bytes against its declared size and SHA-256 before using them.
+
+#### Probability scenarios and comparisons
+
+When the parent supplies observer-run tallies from `chaos-redux-save-inspection`, the auditor reports them as live observations beside its scenarios and states how many runs back them; they do not prove a different unobserved scenario. For probability work, `chaosx_ai_probability_auditor` must start with `hoi4.probability_inspect`, name the analyzed surface and scenario ids, state whether the candidate pool and external factors were complete, and distinguish exact, bounded, sampled, score-only, and unresolved results. Use `hoi4.probability_evaluate`, `hoi4.probability_sweep`, and `hoi4.probability_compare` according to the scenario and the shared retry limit, with `hoi4.probability_simulate`, `hoi4.probability_sequence`, and `hoi4.probability_render` only under their declared evidence conditions. For technology or doctrine work, list the affected technology, folder, unlock, grant, bonus, or asset ids and include the relevant `hoi4.tech_compare` result when source changed.
+
+For `hoi4.probability_inspect` and `hoi4.probability_evaluate`, pass a mod-relative source object, for example `source: { path: "common/decisions/camp_repression_generic_decisions.txt" }`. The installed route rejects a string `source` and `{ relativePath: ... }` even when tool metadata calls the source type unknown. Argument-validation rejection identifies an invalid request shape; correct it against the live schema before declaring the route unhealthy. For `hoi4.probability_compare`, check the live schema and pass real, nonempty `before.path` and `after.path` source paths with the identical saved `scenarioSet`; do not add `sourceRevision` or `sourceHash` to either source object, because the installed route rejects those fields. Keep revisions and hashes in the handoff as evidence. `beforeManifest` and `afterManifest` are for declared custom pools (`id`, `selection`, `candidates`, `transitions`), not saved probability analysis artifacts. An analysis URI cannot replace the pre-edit source. If an exact before source is missing, or a deleted candidate prevents a valid comparison, retain before/after inspect evidence, state that the numeric delta is unresolved, and never compare the current file to itself.
+
+Indexed adapters can require a canonical gameplay `path` for discovery; an archive-path `no_weighted_surfaces` result does not establish an unsupported adapter or absent weights.
+Recheck the live schema and source surface before classifying the gap.
+For an immutable baseline, use live-supported `snapshotPath` and `expectedSourceHash` fields with `path` naming the logical gameplay file.
+For the supported snapshot contract, `expectedSourceHash` verifies the raw snapshot-byte SHA-256, distinct from the analysis result's `sourceHash`.
+Preserve exact before and after bytes outside gameplay directories and compare them with the identical saved `scenarioSet`, without replacing live source.
+Reuse the complete saved fixture verbatim, including labels and descriptions; reconcile differing returned scenario hashes before claiming a matched comparison.
+Shared helpers and constants remain current, so a frozen source comparison does not establish a historical whole-workspace comparison.
+An empty `requiredInputPaths` discovery result does not prove complete scenario inputs.
+With `technology.external_factors_complete` unbound, a zero exposed-score delta does not establish unchanged total native AI research preference.
+Check evaluation requirements and unresolved findings against the live schema and installed evaluator, including its numeric/token predicate shapes and representational limits.
+
+Probability scenario schemas vary between installed server versions and connected routes; inspect each live route schema and pass only fields it accepts. Where supported, put `date` at the scenario's top level. Explicit `controls` maps and typed scope bindings such as `{ id, type, actor, state, flags }` may be accepted by a newer direct client while the connected tool rejects them. Treat absent schema fields and `candidateOverrides` as unresolved inputs or eligibility assumptions, not live proof of campaign state. Record validation errors and artifact URIs, never invent fixture keys or add gameplay flags solely to satisfy the adapter, and never present partial score-only output as balance evidence.
 
 ## Specialist routing
 
