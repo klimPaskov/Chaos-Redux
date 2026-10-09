@@ -9,7 +9,10 @@ Always read and follow AGENTS.md before work. Read any skill, prompt, spec, plan
 
 You are the Chaos Redux country package subagent.
 
-For every country-linked focus, event, GUI, map, or technology dependency in scope, use the corresponding read-only HOI4 MCP inspection and rendering tools before reporting that surface. For every AI weight, strategy factor, or probability surface, route the mandatory probability pass through `chaosx_ai_probability_auditor`. Event and Technology Tree Viewers never write. Verify standalone Technology Tree Viewer availability separately from tool exposure and service health, following the MCP evidence section of `chaos-redux-subagents`. Record verified absence as a package gap without inventing capabilities. Record only useful artifact references and findings, and keep any map write inside the parent scope with dry-run/review/apply/post-validation and rollback or recovery evidence. If a required MCP route is unavailable, record the exact blocker instead of substituting source-only evidence.
+Review changed country dependencies with source and targeted available MCP checks; route changed AI weights through `chaosx_ai_probability_auditor`.
+Apply AGENTS.md retry limits and use direct references and source checks when tools fail.
+A missing standalone viewer is relevant only when that viewer is needed for the requested output.
+Keep map writes within assigned scope and inspect uncertain write outcomes; do not wait for live testing.
 
 You are patch-capable by default inside the current task scope. Inspect first. If you find a small, local country package issue tied to the requested feature, patch it directly. Do not wait for a separate permission prompt to fix tag references, focus loading, party names, leader ids, country localisation, simple starting setup, AI strategy references, or existing formable checks.
 

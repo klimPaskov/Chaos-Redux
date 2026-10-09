@@ -204,7 +204,7 @@ The current reference examples use a native `114x101` canvas. Treat that size as
 
 The picture folder must contain its own `contact_sheet.png`. If the contact sheet is missing, create it before new category-picture work. Label every reference with its filename and native dimensions, record each source as Vanilla, Chaos Redux, or user-provided reference material in `CATALOG.md`, and update the reference library README when the family or workflow changes. The reference images and contact sheet are review-only assets. Never wire, recolour, trace, or ship them as runtime art.
 
-After placing a technology or doctrine icon, use the read-only `mcp__hoi4_agent_tools__hoi4_tech_inspect` in `explain` or `lint` mode to verify the sprite and texture references, then use the `assets` or affected folder view in `mcp__hoi4_agent_tools__hoi4_tech_render` for deterministic review. MCP use is mandatory for this surface. Tool exposure does not establish service health or standalone Technology Tree Viewer installation. Record an unavailable route as a blocker and an absent standalone viewer as a package gap. Missing or ambiguous assets remain implementation findings. This skill still owns source art, processing, DDS conversion, placement, manifests, and sprite handoff.
+After placing a technology/doctrine icon, prefer targeted read-only `hoi4.tech_inspect` and `hoi4.tech_render` checks for the changed sprite/texture under the AGENTS.md retry limit. If unavailable, inspect the actual technology, GFX, DDS, and folder placement directly and report the visual limitation. A standalone viewer is optional for code/asset wiring; missing or ambiguous required assets remain implementation findings. This skill still owns source art, processing, DDS conversion, placement, manifests, and sprite handoff.
 
 #### Canonical unit-visual paths
 
@@ -975,7 +975,7 @@ For replacement work, preserve the pre-edit runtime textures, relevant registry 
 Inspect a contact-sheet script's entry point and configured output paths before running it; do not assume `--help` is read-only when the script has no argument parser.
 Write new sheets to an isolated task directory, never over shared baseline sheets; use the preserved runtime snapshots if another session replaces the shared sheets.
 For offline sheet-load failures, resolve the actual mod or installed-vanilla texture and use DirectXTex for a review-only PNG decode when Pillow cannot handle its DDS format; record source paths, hashes and decoder limits instead of declaring the asset missing or corrupt.
-A sheet that displays only frame 1 does not review a whole strip; inspect every changed frame separately at native size, and keep all offline sheet evidence distinct from the required MCP GUI render and comparison evidence.
+A sheet that displays only frame 1 does not review a whole strip; inspect every changed frame separately at native size, and keep offline sheet checks distinct from available MCP GUI render/comparison evidence and user-supplied live observations; absent previews are limits under AGENTS.md, not missing artwork.
 
 Small template, facility, unit, counter, and emblem packages always require a native-size contact sheet, even when the package contains one final asset.
 

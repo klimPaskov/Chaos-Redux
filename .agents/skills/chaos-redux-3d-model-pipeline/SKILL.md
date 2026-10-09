@@ -37,13 +37,13 @@ This rule covers the whole surface, not only animation: geometry repair, compone
 - No motion: no static pose, no single-frame or transform-only stand-in, no whole-rig translation or rotation presented as an action, no formulaic loop with no role content, no reuse or light retiming of one role's action for another role, and no action copied from another model without real re-authoring on this rig.
 - No component: no omitted required element, no painted or flat stand-in replacing modeled geometry, no fused provider weapon or prop kept as the final assembly, and no prop attached through whole-object transforms rather than a real control.
 - No evidence: no reuse of another model's renders, previews, measurements, or acceptance, no role reported as validated from a viewport glance, and no pass claimed from file existence without decoded or reimported proof of the delivered bytes.
-- No export or runtime: no skipped reimport proof, no entity scale that compensates for authored scale or proportion errors, no baking of a defective rig or action to hide the defect, and no runtime candidate shipped without checking its live consumer.
+- No export or runtime: no skipped reimport proof, no entity scale that compensates for authored scale or proportion errors, no baking of a defective rig or action to hide the defect, and no runtime candidate shipped without checking its consumer source bindings.
 
 When the live session cannot produce a required element or role to this standard, stop and report the exact capability or blocker.
 
 ## Ownership and completion boundary
 
-A provider result is a source candidate, a `.blend` is a working artifact, and a `.mesh` or `.anim` is a runtime candidate. The package is not complete merely because a provider task, Blender preview, or export succeeded. Completion requires the exact runtime registration, a live consumer, and user-provided in-game evidence reviewed by the parent implementation agent.
+A provider result is a source candidate, a `.blend` is a working artifact, and a `.mesh` or `.anim` is a runtime candidate. Worker completion requires the requested production, review, export/reimport, sound-source, counter, and handoff outputs; the parent completes exact runtime registration and source consumer checks. User-supplied in-game evidence is reviewed when available but never requested or awaited as a delivery gate under AGENTS.md. Do not claim live validation from production or source checks.
 
 The 3D worker may create source files, Blender checkpoints, textures, `.mesh`, `.anim`, sourced unit-audio candidates, mechanically derived audio, previews, manifests, reports, and handoffs. It must not edit gameplay, sound definitions, localisation, `.gfx`, `.gui`, `.asset`, entity, event, focus, decision, country, history, AI, on-action, or spreadsheet files unless the parent grants a narrow exception explicitly. The parent owns runtime identifiers, source wiring, final review, and the overall completion claim. The user performs live consumer validation.
 

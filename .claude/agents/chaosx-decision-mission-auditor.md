@@ -9,7 +9,11 @@ Always read and follow AGENTS.md before work. Read any skill, prompt, spec, plan
 
 You are the Chaos Redux decision and mission subagent.
 
-For every decision-owned GUI surface in scope, use `hoi4.gui_inspect` and `hoi4.gui_render` as mandatory read-only evidence. Treat the production render as the one-to-one in-game visual view: visible alignment, spacing, clipping, overflow, background, asset, text, state, and click-region defects must be fixed and may not be dismissed as renderer differences. Apply an authorized reviewed GUI patch directly or optionally through `hoi4.gui_rewrite`; its automatic post-write/index validation is not a completion gate. Follow `chaos-redux-scripted-gui` for required before-and-after inspection, renders, and matched comparisons, including after direct application. For every in-scope decision or mission weight, route the mandatory probability analysis through `chaosx_ai_probability_auditor`. Record useful artifact references and findings. Do not create a tool wrapper or treat MCP output as a replacement for gameplay, balance, or parent review. If a required MCP route is unavailable, record the exact blocker rather than treating source-only review as equivalent.
+Review decision-owned GUI source and representative renders when available, fixing known layout and click-region defects under `chaos-redux-scripted-gui`.
+Apply reviewed changes directly or through optional `hoi4.gui_rewrite`; inspect current source after an uncertain write.
+Route changed weights through `chaosx_ai_probability_auditor`, reusing existing scenarios and results.
+Follow AGENTS.md retry limits; failed MCP checks or decision-AI classification call for source-based review, not a blocked implementation.
+Check costs, how long resources are held, and cleanup against documentation and precedents without waiting for game testing or changing behavior to satisfy the analyzer.
 
 When a named event specifically introduces and owns a dedicated scripted GUI, retain decision costs, effects, AI, cleanup, and balance here but route layout creation and visual-quality work to `chaosx_event_ui_worker`. Never route the shared event log, event-details framework, settings, shared windows, or unrelated existing UIs to that worker.
 

@@ -9,7 +9,7 @@ Use this skill when a task touches decisions, missions, timed objectives, decisi
 
 This skill is for implementation and cleanup. For broader Chaos Redux event wiring, use `chaos-redux-events`. For focus trees, use `chaos-redux-focus-trees`. For visual assets, use `chaos-redux-event-assets`. For scripted GUI layout and visual evidence, use [chaos-redux-scripted-gui](../chaos-redux-scripted-gui/SKILL.md).
 
-For large or reworked decision systems, spawn `chaosx_decision_mission_auditor` after implementation and before completion. The subagent is patch-capable by default inside the current task scope. It should audit objective quality, costs, tooltips, AI validity, cleanup, duplicate missions, route integration, fairy-dust rewards, exploit risk, localisation, and balance evidence. Route every in-scope decision or mission weight to `chaosx_ai_probability_auditor` for the mandatory MCP probability pass. The probability auditor remains read-only. The `chaosx_decision_mission_auditor` may directly patch small decision, mission, tooltip, dynamic localisation, AI, cleanup, cooldown, visibility, and existing formable requirement issues when the fix is local and clearly safer.
+For large or reworked decision systems, spawn `chaosx_decision_mission_auditor` after implementation and before completion. The subagent is patch-capable by default inside the current task scope. It should audit objective quality, costs, tooltips, AI validity, cleanup, duplicate missions, route integration, fairy-dust rewards, exploit risk, localisation, and balance evidence. Route every in-scope decision or mission weight to `chaosx_ai_probability_auditor` for one bounded review of representative cases from the script with MCP support when available. The probability auditor remains read-only. The `chaosx_decision_mission_auditor` may directly patch small decision, mission, tooltip, dynamic localisation, AI, cleanup, cooldown, visibility, and existing formable requirement issues when the fix is local and clearly safer.
 
 ## 1. Required reading
 
@@ -22,7 +22,7 @@ Before editing decisions or missions:
 - `templates/formable_state_puzzle/README.md` and `templates/formable_state_puzzle/universal_state_registry_workflow.md` when a formable's proof uses exact state control
 
 Do not rely on memory when syntax or UI behavior is documented.
-Reference retrieval does not replace decision or mission scenario inspection, weighted-logic comparison, or the audit and UI evidence required below.
+Read real decision/mission conditions, costs, timing, cleanup, `ai_will_do`, MTTH, and helpers and check named representative cases once. If the decision-AI classifier fails or misclassifies the block, evaluate source scenarios and retain before/after comparison when weights change; label score/eligibility assumptions and never rewrite gameplay to satisfy the classifier. Follow AGENTS.md for the shared retry limit and completion limits.
 
 ## 2. Core design rule
 
@@ -198,7 +198,7 @@ Inline decision cost localisation must be compact and show at most three values,
 When normal text is necessary, use no more than four words in the entire inline cost/status string.
 Separate each texticon name from following formatting codes with whitespace, or use a closed texticon syntax verified in installed vanilla.
 Do not repeat a cost already drawn by the native row or expand resource names beside their texticons.
-Keep every payment and reserved resource explicit in the full cost tooltip, and verify the longest available and blocked strings beside the actual decision title in native MCP renders.
+Keep every payment and reserved resource explicit in the full cost tooltip, and check the longest available and blocked strings beside the decision title in an available native preview or inspected text/asset bounds.
 The inline display limit does not change the payment contract or the separate gameplay cost budget.
 
 Each cost entry pairs its amount with the matching texticon; either order is allowed when native renders confirm fit and valid icon separation.
@@ -253,7 +253,7 @@ Reject duplicate starts and publish the actor/family/generation-bound active rec
 At `remove_effect` expiry, require exact current paid-project proof and continuing finish requirements without rerunning the purchase quote or slot-open start gate.
 Publish the success receipt before clearing active proof so cancellation cannot mistake successful closure for receipt loss.
 Cover exact-quote selection, reservation-before-entry, duplicate start, depleted reserves after payment, stale generation, and successful expiry in source cases.
-Source ordering models do not prove native reservation or callback ordering.
+Local simulations cannot confirm exactly when the game holds resources or runs completion effects. Use documented cost and timer settings and tested project patterns even when their behavior cannot be observed in game. Review resource payments, resources held while actions run, timers, completion, cancellation, and cleanup; explain any important behavior these checks cannot confirm. Do not add a second debit, synthetic timer, free payment path, or gameplay rewrite to avoid a verification limit. Known errors in costs, timing, or cleanup still need to be fixed.
 
 ### Refundable native political-power credit receipts
 
@@ -864,7 +864,7 @@ Formation systems should support partial success and failure. A country can form
 
 Choose the presentation layer from the hierarchy above before creating a custom window. Use an attached scripted GUI or a separate mechanic window only when active values, targets, meters, factions, or exact state pieces need a visual management surface that ordinary decisions, tooltips, and a category picture cannot provide clearly. Basic formatted value tables alone do not require this richer presentation. A custom interface must have a gameplay reason and cannot compensate for weak actions.
 
-Use the scripted GUI skill's [reference-image workflow](../chaos-redux-scripted-gui/SKILL.md#reference-image-before-implementation), [active MCP preview and comparison workflow](../chaos-redux-scripted-gui/SKILL.md#required-mcp-visual-review-and-optional-rewrite), and [visual and usability review](../chaos-redux-scripted-gui/SKILL.md#scripted-gui-visual-and-usability-review). These are mandatory for GUI layout, backgrounds, text, content budgets, interaction presentation, and visual evidence. Route layout work on a dedicated UI introduced and owned by one named event to `chaosx_event_ui_worker` under `chaos-redux-subagents`. Shared event log, event details, settings, super-event frameworks, and unrelated interfaces remain parent-owned and require their own authorization. The decision owner retains the gameplay rules below.
+Use the scripted GUI skill's [reference-image workflow](../chaos-redux-scripted-gui/SKILL.md#reference-image-before-implementation), [bounded MCP preview and comparison workflow](../chaos-redux-scripted-gui/SKILL.md#mcp-visual-review-and-optional-rewrite), and [visual and usability review](../chaos-redux-scripted-gui/SKILL.md#scripted-gui-visual-and-usability-review). Apply that skill to GUI layout, backgrounds, text, content budgets, interaction presentation, and bounded visual checks; unavailable MCP evidence is a limitation under AGENTS.md. Route layout work on a dedicated UI introduced and owned by one named event to `chaosx_event_ui_worker` under `chaos-redux-subagents`. Shared event log, event details, settings, super-event frameworks, and unrelated interfaces remain parent-owned and require their own authorization. The decision owner retains the gameplay rules below.
 
 ### GUI action integrity
 
@@ -922,7 +922,7 @@ AI should understand:
 
 Avoid flat `ai_will_do` when campaign state matters.
 
-For every in-scope decision or mission weight, route the analysis through `chaosx_ai_probability_auditor`. It must use `hoi4.probability_inspect` to find required inputs, `hoi4.probability_evaluate` for named campaign states, `hoi4.probability_sweep` for thresholds and rank reversals, and `hoi4.probability_compare` after a source change. Use `hoi4.probability_simulate` only for explicitly declared uncertain inputs, and use `hoi4.probability_render` when the ranking, matrix, sensitivity, comparison, or unresolved view improves review. Decision and mission `ai_will_do` results are willingness scores, so do not present them as click probabilities. Include availability, target, cost, cooldown, and route state where relevant, and retain unresolved engine state in the result. If the probability route is unavailable, record the exact blocker and do not substitute source-only analysis.
+Route decision/mission weights through one bounded `chaosx_ai_probability_auditor` pass. Prefer targeted inspect/evaluate and a matched before/after comparison; use sweeps or simulation only for a real threshold or uncertain-input question. If the adapter fails, is unsupported, or misclassifies the surface, read actual `ai_will_do`, MTTH, helpers, constants, and eligibility and evaluate named source scenarios under the AGENTS.md budget. Include availability, target, cost, cooldown, and route state; preserve before/after source when weights change. These are willingness scores, not click probabilities, and unresolved engine state is a stated limitation rather than an automatic blocker.
 
 AI should not take suicidal or nonsensical decisions just because they are available.
 
@@ -1061,7 +1061,7 @@ A decision or mission task is complete only when:
 - every manifest-driven formable has a completed category attachment audit with no missing, duplicate, or mismatched category IDs
 - formable category families that declare the strict state-puzzle attachment policy have every in-scope category metadata block pointing to the matching generated `scripted_gui`
 - every mechanic surface meets the [content and interaction budget](../chaos-redux-scripted-gui/SKILL.md#content-and-interaction-budget), including ordinary categories and attached displays
-- scripted GUI work meets the [active MCP preview and comparison workflow](../chaos-redux-scripted-gui/SKILL.md#required-mcp-visual-review-and-optional-rewrite) and [visual and usability review](../chaos-redux-scripted-gui/SKILL.md#scripted-gui-visual-and-usability-review), with the required [handoff evidence](../chaos-redux-scripted-gui/SKILL.md#handoff-and-completion)
+- scripted GUI work meets the [bounded MCP preview and comparison workflow](../chaos-redux-scripted-gui/SKILL.md#mcp-visual-review-and-optional-rewrite) and [visual and usability review](../chaos-redux-scripted-gui/SKILL.md#scripted-gui-visual-and-usability-review), with the required [handoff evidence](../chaos-redux-scripted-gui/SKILL.md#handoff-and-completion)
 - gameplay-changing GUI controls have the decision owner's [action-integrity evidence](#gui-action-integrity)
 - no decision or gameplay-changing GUI action uses more than four distinct spendable cost types
 - every displayed spendable cost uses the correct texticon, with no literal resource-name fallback and no hidden fifth cost in a tooltip or confirmation surface

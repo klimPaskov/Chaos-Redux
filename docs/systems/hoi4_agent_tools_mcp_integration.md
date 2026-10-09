@@ -41,13 +41,17 @@ When reading an artifact resource, use the configured MCP server key `hoi4_agent
 
 ## Existing workflow ownership
 
-Use the skill that owns the current work. `chaos-redux-focus-trees` owns focus inspection and layout evidence; `chaos-redux-events` owns event-chain inspection; `chaos-redux-scripted-gui` owns GUI reference-to-native design and mandatory visual evidence; `chaos-redux-decisions-missions` retains GUI action costs, requirements, effects, AI, cleanup, and balance. Technology and map work use their domain inspect, render, compare, and rewrite routes. There is no central MCP skill or router.
+Use the skill that owns the current work.
+`chaos-redux-focus-trees` owns focus inspection and layout review; `chaos-redux-events` owns event-chain inspection; `chaos-redux-scripted-gui` owns GUI reference-to-native design and visual review; `chaos-redux-decisions-missions` retains GUI action costs, requirements, effects, AI, cleanup, and balance.
+Choose routes that answer a concrete question about the changed surface and apply the retry limits in `AGENTS.md`.
+There is no central MCP skill or router.
 
 ## Local reference workflow
 
 Call `hoi4.reference_context` for the work surface, then `hoi4.reference_search` and `hoi4.reference_read` for the exact rule or command. `hoi4.source_lookup` finds exact vanilla and Chaos Redux definitions, override status, and indexed usages. Keep the source path, line span, and revision with implementation notes. The offline wiki under `paradox_wiki/` and installed game documentation are the source material; do not fetch the Paradox Wiki website. Read only the sections relevant to the task. A citation bundle is a navigation result, so read the cited sections that support each decision. If a reference root is unavailable or sections are skipped, inspect the local files directly and record the missing coverage. When a live context result includes `omittedSources`, raise the result limit or use targeted search/read to cover those required sources; `missing` identifies absent files instead. At a limit of 1, installed documentation can occupy the only result; a limit of 2 or more can retain both available required source kinds. Context excerpts select question-matching sections within required files, but still require reading the cited rules. Installed game documentation takes precedence for current syntax; verify a vanilla source precedent when possible.
 
-Check the connected tool list and live schemas before using any route. Domain-specific inspect, render, compare, and declared scenarios remain necessary for implementation evidence; reference retrieval does not replace them.
+Check the connected tool list and live schemas before using a route and reuse that discovery within the task unless the connection changes.
+Use direct local references when retrieval fails; record a material limitation once and continue.
 
 When supported by the live schema, use `source_lookup` with `view = structure` and a bounded `keyPath` to inspect one nested source block.
 Repeated keys require their zero-based `occurrence`; structural continuation uses `nextChildOffset` as `childOffset` with the same query settings and `expectedRevision`.
@@ -62,7 +66,8 @@ A true result covers only `checksPerformed`; `valid = null`, unresolved helpers,
 These checks do not establish parameter semantics or game execution.
 
 With a mod-relative `path` instead of a body, `hoi4.script_validate` checks every effect and trigger body of an event, decision, national focus, scripted helper, or on-action file under the scope its structure fixes, and treats Chaos Redux scripted effects and triggers as known commands.
-Run it on each changed script file before handing work to live testing: its errors predict load errors the game reports, such as a dynamic variable compared as a trigger or a scope link outside its scopes.
+Prefer a targeted run on changed script files when available; its findings can identify errors such as a dynamic variable compared as a trigger or a scope link outside its scopes.
+If the validator fails or cannot resolve a construct, inspect that construct against installed documentation and source instead of waiting for live testing or repeating the same request.
 Its warnings cover player-facing text (colour codes in news and report events, including through scripted localisation, development wording, and unlocalised flags in decision and focus requirement tooltips) and visible events that would reach one player once per loop iteration; fix each one or record why it stays.
 
 ## Writes and recovery
@@ -71,12 +76,16 @@ Domain rewrites validate the complete proposal, generate review evidence, apply 
 
 For scripted GUI work, `gui_rewrite` is optional; the transaction behavior above does not make its automatic post-write/index validation or transaction success a project completion gate.
 An authorized reviewed GUI edit may be applied directly without another fallback approval solely because the optional rewrite blocks or rolls back.
-Source review, required MCP inspect/render evidence, click-region checks, matched scenario/reference comparisons, and correction of every visible in-scope defect remain mandatory under `chaos-redux-scripted-gui`.
+Review source, click regions, representative affected scenarios, and available renders under `chaos-redux-scripted-gui`.
+Fix known defects; disclose unavailable visual checks without treating them as missing implementation.
 This workflow rule does not disable or modify the installed server's internal validation.
 
 ## Rendering limits
 
-Focus, GUI, map, and event renders are deterministic offline evidence, not game screenshots. Scripted GUI previews include fidelity information and do not run, launch, automate, control, or capture HOI4. For GUI visual acceptance, follow `chaos-redux-scripted-gui`: treat the production MCP render as the one-to-one in-game visual review surface, fix every visible in-scope defect, and never dismiss a defect as a renderer discrepancy. Event analysis is bounded and static; dynamic destinations or runtime behavior may remain unresolved and must be reported.
+Focus, GUI, map, and event renders are offline evidence, not game screenshots.
+Scripted GUI previews include fidelity information and do not run, launch, automate, control, or capture HOI4.
+Follow `chaos-redux-scripted-gui` to review available renders and fix visible defects; do not dismiss a defect without inspecting its source and scenario.
+Event analysis is bounded and static; dynamic destinations or runtime behavior may remain uncertain without blocking delivery of a documented implementation.
 
 GUI scenarios accept `flags`, `variables`, and `closedFlags: true`, which treats undeclared flags as unset as the game does; set them so tabbed windows such as the settings window render one page at a time, and render each page as its own scenario.
 `GUI_UNRESOLVED_VISIBILITY_OVERLAP` means the scenario has not decided which overlapping element is visible; supply the missing flags or variables instead of treating the stack as a layout defect.
@@ -86,4 +95,6 @@ GUI scenarios accept `flags`, `variables`, and `closedFlags: true`, which treats
 
 Use stdio for local agents. A stdio server exits when its launching process exits; Codex sessions that keep one server per subagent set `HOI4_AGENT_STDIO_IDLE_EXIT_MINUTES` (30) in the server environment so idle servers exit. For a separate process, run `hoi4-agent-tools-http --config PATH` with loopback binding, a long bearer token supplied through the configured environment variable, an exact origin allowlist, and explicit workspace grants. Non-loopback deployments need HTTPS, OAuth/OIDC, isolation, and the package limits described in the standalone `docs/http.md`.
 
-If tools are missing, check `npm list --global hoi4-agent-tools --depth=0`, confirm the project is trusted, and restart Codex. Call the domain tool you need directly while the MCP `cwd` is the target mod. Verify the package with its Inspector and integration tests when a required route is absent.
+During mod implementation, missing tools call for direct source/reference review after the bounded check allowance.
+Do not turn a content task into package installation, server repair, replacement-client work, or repeated health checks.
+When the user specifically requests MCP setup or repair, inspect the active registration and installed package, reproduce the failing route, and use the package's own diagnostics and integration tests within that separate scope.

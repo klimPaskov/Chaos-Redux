@@ -76,8 +76,8 @@ Use repo skills as required implementation guidance.
 - Use `chaos-redux-focus-trees` before editing/viewing national focus trees.
 - Use `chaos-redux-decisions-missions` before editing decisions/missions
 - Use `chaos-redux-native-raids` before implementing or auditing native raid types, callback scope, event bridges, equipment payments, or outcome tooltips.
-- Use `chaos-redux-scripted-gui` for scripted GUI reference images before implementation, native layout, visual and usability review, and mandatory MCP before-and-after evidence.
-- Use `chaosx_event_ui_worker` when a named event specifically introduces a dedicated scripted GUI or mechanic window. It follows the reference-image and layout rules in `chaos-redux-scripted-gui`, and must use the HOI4 MCP GUI inspect, render, and post-change comparison workflow. Never route the shared event log, event-details framework, settings UI, super-event framework, shared registries, or unrelated existing UIs to this worker.
+- Use `chaos-redux-scripted-gui` for scripted GUI reference images before implementation, native layout and focused visual and usability review.
+- Use `chaosx_event_ui_worker` when a named event specifically introduces a dedicated scripted GUI or mechanic window. It follows the reference-image and layout rules in `chaos-redux-scripted-gui`, using targeted MCP checks within the retry limits below. Never route the shared event log, event-details framework, settings UI, super-event framework, shared registries, or unrelated existing UIs to this worker.
 - Use `chaos-redux-mtth` when MTTH logic or weighted timing would reduce clutter or make AI and release logic clearer.
 - Use `chaos-redux-subagents` when coordinating project custom subagents, routing bounded work, or defining parent/subagent ownership boundaries.
 - Use `chaos-redux-xlsx` for Chaos Redux spreadsheet work, including the event catalog, doctrine workbook, formatting, formulas, and catalog exports.
@@ -87,6 +87,10 @@ Use repo skills as required implementation guidance.
 ### HOI4 MCP
 
 The `hoi4-agent-tools` service is exposed through the `mcp__hoi4_agent_tools__hoi4_*` coding-agent tools for focus trees, event chains, technology trees, weighted logic, scripted GUIs, and maps.
+Use checks that answer a concrete question about the change and reuse results until their relevant inputs change.
+If a tool fails or gives an inconclusive answer, allow the initial read-only request and at most one corrected or narrower retry for that issue across the task, including subagents and resumed turns; then read local references and code directly and run useful local checks.
+Record what could not be checked once and continue implementation; do not repeatedly ask for unchanged job status, repair external tools, or create replacement clients unless tooling work was requested.
+Inspect current source or transaction state before retrying an uncertain mutation.
 Tool exposure does not prove service health or the availability of a standalone viewer.
 For local documentation and source precedents, verify `hoi4.reference_context`, `hoi4.reference_search`, `hoi4.reference_read`, and `hoi4.source_lookup` in the connected tool list and call their live schemas. Retain the cited source path, line span, and revision; follow `nextLine` only for the relevant section. A context bundle identifies sources but does not establish that their detailed rules have been read.
 When the live `hoi4.source_lookup` schema accepts `view` and `keyPath`, use bounded child structure to locate a nested block and select repeated keys with their zero-based `occurrence`.
@@ -96,17 +100,23 @@ Use `includeReferences = false` for a focused event or scripted-helper definitio
 When `hoi4.script_validate` is exposed, use it to check a relevant effect or trigger body under its explicit scope against installed documentation.
 Its true result covers only `checksPerformed`; unresolved commands, `valid = null`, unchecked argument blocks, and omitted findings require further inspection, and parameter semantics and engine behavior remain separate evidence.
 Before using `hoi4.event_inspect` or `hoi4.tech_inspect` with `mode = helper_expansion`, `hoi4.job_inspect`, `hoi4.job_cancel`, or native MCP tasks, verify the connected server version and health, live tool schemas, and client task negotiation. Use only confirmed routes; otherwise follow the installed domain tools and record the missing capability. Inspect final tool results and retain continuation URIs, source revisions, coverage, and unresolved findings. Jobs and helper pages are delivery and coverage tools; keep domain-specific inspect, render, compare, and scenario evidence.
-Verify standalone Technology Tree Viewer availability separately from the exposed technology routes documented in the MCP evidence section of `chaos-redux-subagents`.
-Record an absent viewer as a package gap without inventing capabilities. Keep viewer and inspector use read-only.
+Verify standalone Technology Tree Viewer availability only when the task needs that viewer, separately from exposed technology routes.
+An absent viewer does not block source implementation. Keep viewer and inspector use read-only.
 
-- Focus work: inspect, render, lint, and use `hoi4.focus_rewrite` for cleanup or a complete new route plan; review the returned layout and diagnostics.
-- Event work: use narrow `hoi4.event_inspect` queries and the read-only render and compare tools, then edit source files through the normal workflow.
-- Technology work: inspect, render, and compare technology and doctrine trees, including their prerequisites, placements, unlocks, bonuses, references, and missing assets.
-- Weighted-logic work: always start with `hoi4.probability_inspect`, then inspect and evaluate event MTTH, event options, decision and mission scores, focus and research selection, random blocks, AI strategy factors, and declared custom pools under explicit scenarios; use sweeps, seeded simulation, sequence analysis, comparisons, and rendered evidence according to the scenario contract.
-- GUI work: follow `chaos-redux-scripted-gui`, create the intended reference before implementing a new or redesigned layout, inspect and render the linked layout, states, resolutions, and click regions, apply the authorized reviewed edit directly or optionally through `hoi4.gui_rewrite`, then compare matching before-and-after scenarios and source artifacts. The rewrite transaction's automatic post-write/index validation is not a mandatory completion gate, and its failure or rollback alone does not require another fallback approval for direct application. Treat the production MCP render as the one-to-one in-game visual view for review: every visible alignment, spacing, clipping, overflow, background, asset, text, state, and click-region defect must be fixed, and an agent may not dismiss a bad GUI as a renderer discrepancy.
-- Map work: inspect connected province, state, region, adjacency, supply, and railway data before a declarative `hoi4.map_rewrite`.
+- Focus work: inspect the changed route, lint source, and render affected layout when useful; use `hoi4.focus_rewrite` or reviewed direct edits for cleanup and new routes.
+- Event work: use narrow `hoi4.event_inspect` queries and render or compare when they answer a relevant structural question, then edit source normally.
+- Technology work: inspect prerequisites, placements, unlocks, bonuses, references, and assets; render or compare the changed portion when useful.
+- Weighted-logic work: prefer `hoi4.probability_inspect` and representative named scenarios; choose evaluation, comparison, sweeps, simulation, sequence analysis, or renders only as needed for the actual balance question.
+  If an analyzer cannot handle the script, review the actual code and calculate its behavior in a few relevant cases; explain what remains uncertain.
+- GUI work: follow `chaos-redux-scripted-gui`, establish the intended reference, inspect linked layout and click regions, and review representative affected states and resolutions before and after editing when rendering is available.
+  Apply reviewed edits directly or through optional `hoi4.gui_rewrite`.
+  Check source state before retrying an uncertain write.
+  Fix known visible defects; if the renderer is unavailable, review source geometry, assets, text and state wiring, and disclose the visual-check limitation without waiting for a game screenshot.
+- Map work: inspect the connected province, state, region, adjacency, supply, and railway data before editing through a declarative `hoi4.map_rewrite` or reviewed direct source change.
 
-MCP use is mandatory for every in-scope focus, event, technology or doctrine, weighted-logic, scripted GUI, and map surface supported by the installed server. If the required route is unavailable, record the exact blocker and do not treat source-only review as equivalent engine evidence. MCP does not replace the required source review, wiki and vanilla-documentation checks, tests, audits, or parent review.
+MCP supports implementation and review; successful MCP output is not a universal completion gate.
+Apply these retry limits to every supported surface.
+Source review and local checks can support completion when a tool is unavailable, but must not be described as MCP proof or live engine validation.
 
 ### Subagents
 
@@ -114,7 +124,9 @@ Use project custom subagents when a task needs bounded research, asset productio
 
 `chaos-redux-subagents` is the detailed source of truth for subagent routing, ownership boundaries, handoff quality, audit cadence, asset routing, super-event routing, and the recursive mechanic expansion loop.
 
-The main agent remains responsible for final implementation, final wiring, final review, required source and MCP validation, and completion claims. The user performs live-game validation. Subagents return evidence, files, manifests, spec addenda, patches, or handoff notes depending on the parent-granted mode. The main agent must review their outputs and carry blockers or uncertainty into the final report.
+The main agent owns final implementation, wiring, source review, proportionate checks, and completion claims.
+The user performs live-game validation.
+Review subagent outputs once and recheck actual fixes; do not restart completed checks or commission audits of unchanged findings.
 
 All project custom subagents must be spawned with a fully explicit, self-contained prompt and no inherited parent-thread context, and the parent prompt must carry every path, constraint, and prior decision the role needs. Treat the canonical identifiers in `chaos-redux-subagents` as routing and ownership contracts, and write the role boundaries into the delegation prompt. Runtime-specific spawning, model selection, and generated-definition details belong to that skill.
 
@@ -122,13 +134,16 @@ Use these high-level routing rules:
 
 - Use `chaosx_repo_explorer` only when file locations, existing patterns, vanilla references, likely touchpoints, missing-file recovery, or implementation order are unclear. Do not use it for small known-file edits, provided-file edits, direct skill or prompt updates, localisation-only cleanup, asset-only production, or tasks already bounded to exact files. The parent should inspect the known files directly for those cases.
 - Use asset subagents for non-portrait visual production: `chaosx_asset_source_researcher`, `chaosx_generated_event_art`, and `chaosx_icon_artist`. All character portrait work belongs to `chaosx_portrait_creator`.
-- Use `chaosx_event_ui_worker` only for a dedicated scripted GUI introduced and owned by one named event or event-owned mechanic. The parent prompt must prove event ownership and name exact GUI identifiers, files, entry point, states, resolutions, assets, and handoff path. The worker owns bounded layout implementation and mandatory MCP visual evidence, while the parent and decision owner retain gameplay, costs, effects, AI, balance, and final integration. The parent reviews required MCP evidence and the user performs live-game validation. It must not audit the shared event log, event details, settings, super-events, shared registries, or unrelated existing UIs.
+- Use `chaosx_event_ui_worker` only for a dedicated scripted GUI introduced and owned by one named event or event-owned mechanic. The parent prompt must prove event ownership and name exact GUI identifiers, files, entry point, states, resolutions, assets, and handoff path. The worker owns bounded layout implementation and available visual checks; the parent and decision owner retain gameplay, costs, effects, AI, balance, and final integration. It must not audit the shared event log, event details, settings, super-events, shared registries, or unrelated existing UIs.
 - Use `chaosx_portrait_creator` for complete portrait production: grounded source research and placeholders, fictional native ImageGen portraits, user-supplied final validation, processing, DDS conversion, portrait-specific wiring, manifests, and handoffs. It never operates RunPod.
 - For asset animation, route 2D frame sheets to `chaos-redux-frame-animation` and skeletal `.anim` actions to `chaos-redux-3d-model-pipeline`. Each skill owns its own production route, asset requirements, and fallbacks, so do not repeat paid rig or animation attempts, and do not pass a static pose or transform-only mockup as a requested animation.
 - Use super-event subagents for specialised research: `chaosx_super_event_text_researcher` and `chaosx_super_event_audio_researcher`.
 - Use audit subagents before completion claims: `chaosx_focus_tree_auditor`, `chaosx_decision_mission_auditor`, `chaosx_country_package_auditor`, `chaosx_localisation_auditor`, `chaosx_event_completion_auditor`, and `chaosx_ai_probability_auditor` for every weighted AI or probability surface.
-- Use `chaosx_ai_probability_auditor` for read-only audits of AI weights, MTTH, event `ai_chance`, random lists, focus and research selection, decision and mission scores, AI strategy factors, and declared custom weighted pools; it must use the HOI4 MCP probability workflow and return scenario-specific evidence.
-- Any AI weight, probability-bearing modifier, MTTH-backed score, random-selection weight, strategy factor, or weighted target patch requires a baseline audit, an owner-applied patch, and a mandatory `hoi4.probability_compare` pass through `chaosx_ai_probability_auditor` using the same named scenarios. The auditor remains read-only and does not choose balance targets.
+- Use `chaosx_ai_probability_auditor` for read-only audits of AI weights, MTTH, event `ai_chance`, random lists, focus and research selection, decision and mission scores, AI strategy factors, and declared custom weighted pools; it uses available MCP analysis or source-derived calculations and returns scenario-specific findings.
+- For changed AI weights, MTTH-backed scores, random selection, strategy factors, or weighted targets, preserve before/after source and compare representative named scenarios through `chaosx_ai_probability_auditor`.
+  Prefer `hoi4.probability_compare` when supported; calculations from the actual script are sufficient when the analyzer fails, provided assumptions and score-versus-probability limits are explicit.
+  A missing old baseline limits historical delta claims; it does not require reconstructing an entire old workspace or block validating the current behavior.
+  The auditor remains read-only and does not choose balance targets.
 - Use `chaosx_scripted_system_architect` for reusable scripted effects, triggers, script constants, event targets, meta effects, variable patterns, and dynamic helper design.
 - Use `chaosx_documentation_curator` during long implementation when specs, plans, docs, manifests, prompts, reports, or subagent handoffs may be stale, duplicated, contradictory, or too numerous. It patches documentation surfaces only, writes source-of-truth maps and resume packets, and does not edit gameplay files or spreadsheets.
 - Use `chaosx_spreadsheet_doc_worker` only after implementation facts are available. Spreadsheet event-detail, evolution-detail, and cluster-detail fields must match the in-game localisation wording.
@@ -169,6 +184,7 @@ Use these dispositions for plans, addenda, and reconciled documents:
 - `blocked`: record the exact missing input, route, or dependency
 
 Implementation evidence proves what exists and does not establish design approval.
+On resume, reassess old blocker labels under the current completion rules instead of repeating failed checks to update statuses.
 The main agent reviews dispositions and merges accepted design into the relevant spec or records it as accepted and queued.
 
 ## 1. Coding Style
@@ -339,7 +355,9 @@ When implementing any new mechanic, follow this checklist:
 14. Respect the repository style and naming rules so new content blends with existing Chaos Redux code.
 15. For systems that touch or are related to bio/chemical warfare, review any related docs, and verify integration across events, on_actions, decisions, contamination effects, scripted logic, etc.
 16. When the user reports an issue after new changes were made, assume the game has already been reloaded. Do not default to restart/reload advice. Do not ask for, request, or search for logs. If the user did not paste any error lines, treat it as having no error lines to use. Do not tell the user to run in-game validation. Assume they will always verify changes in a live session and in a new save. Do not mention old saves. When the user supplies a save, read it with `chaos-redux-save-inspection` before forming a hypothesis. Agents must not launch or run Hearts of Iron IV for in-game testing; all in-game testing and live consumer validation belong to the user.
-17. Unapproved fallbacks are forbidden and MUST ALWAYS be discussed with the user. A wired sourced portrait remains an explicitly pending source placeholder until the user supplies its HOI4-style replacement.
+17. Design fallbacks and reductions of requested functionality require user approval unless already authorized.
+    Direct source/reference review and local checks are preauthorized verification alternatives and do not require another permission question.
+    A wired sourced portrait remains an explicitly pending source placeholder until the user supplies its HOI4-style replacement.
 18. When the user reports that something is wrong and you can't figure out what exactly, then add temporary debug code (for example: `log = "my debug log"`) that exposes the relevant runtime values needed to understand the issue, and remove every debug line you added once the issue is resolved.
 19. When an error is reported or discovered after your changes, treat it as caused by your current change set. Do not speculate that the project was already broken before your work.
 20. When updating content (for example reworking an event), write as if the feature has always existed. Do not use meta wording like “now it is,” “now it has been reworked,” “newly added,” or similar update-history phrasing.
@@ -347,45 +365,39 @@ When implementing any new mechanic, follow this checklist:
 22. Markdown prose must not be hard-wrapped in the middle of a sentence. Keep each sentence on one physical line and place line breaks only between sentences or paragraphs.
 
 Follow these rules and your changes will be easier to review, safer to merge and more consistent with the rest of the project.
-If this checklist cannot be satisfied, stop and request more design input instead of guessing.
+If an indispensable design choice or input is missing, finish independent work and ask a focused question.
+An unavailable check alone calls for source review and useful local checks, not another design request.
 
-## 5. Completion Proof and Simplification Reporting
+## 5. Completion and Simplification Reporting
 
-A goal can never be marked complete unless it is actually complete.
-
-For every goal, especially large event, mechanic, focus-tree, country-package, balance, UI, or asset goals, completion requires evidence. The agent must finish the requested implementation, update all related files, run or document the required checks, and report any blocker or simplification.
-
-Validation reporting must be useful. Run basic syntax hygiene internally when helpful, but do not spend the final report listing checks that only restate mandatory AGENTS.md rules, such as unsupported operator checks or brackets balance or BOM encoding checks, etc. Never tell me directly: `Validation passed: diff whitespace check, brace balance on touched scripts, no unsupported <=/>=, localisation BOM intact, git diff --check passed, no remaining X references, workspace is clean.` Mention validation only when it is task-specific, could realistically fail, found a problem, changed the implementation, or gives the user useful evidence. Leave passing boilerplate checks out of the user-facing report.
+Complete the requested implementation, update related files, and review proportionate task-specific checks before claiming completion.
+Unavailable tools, inconclusive analysis, missing historical evidence, and user-owned game testing do not prevent finishing or committing otherwise completed agent work; explain what could not be checked without claiming success.
+Do not wait for, request, or repeatedly list pending user testing.
+If a specific render or measured result is itself the requested deliverable, its absence still leaves that output incomplete.
+If behavior can only be confirmed in a running game, review the documented rules and relevant code, explain any important uncertainty, and finish the implementation without changing the design just to satisfy a check.
 
 Do not claim completion when:
 
-- only the most visible part was implemented
-- a focus tree was created but not reviewed, customized, balanced, localized, and wired
-- a large batch of countries received generic or copied content
-- balance checks were skipped
-- localisation is missing
-- AI behavior is missing
-- assets are missing, unwired, or undocumented
-- a named event-owned scripted GUI is missing its `chaosx_event_ui_worker` handoff or mandatory MCP before-and-after layout evidence
-- event logs, docs, spreadsheet rows, or manifests are stale
-- any requested route, country, decision, mission, achievement, evolution, or super-event is missing
-- a fallback or simplification was used without explicit approval
+- requested mechanics, routes, countries, decisions, missions, achievements, evolutions, or super-events remain missing
+- content is generic, copied, shallow, or only partially integrated instead of meeting the accepted design
+- changed costs or weights lack balance reasoning and representative scenarios
+- localisation, AI, assets, wiring, event logs/details, documentation, or applicable spreadsheet fields are missing or stale
+- an event-owned GUI lacks its implementation or specialist handoff, or has known unresolved layout defects
+- a design fallback or simplification lacks authorization
 
-Balance checks are implementation work, not optional polish. If the spec or user asks for balance validation, the agent must inspect the relevant variables, scripted effects, decisions, mission outcomes, trigger conditions, AI weights, and scenario behavior. A vague statement that balance was adjusted is not enough.
+Balance checks should inspect the relevant variables, costs, outcomes, triggers, weights, and representative scenarios.
+Calculations from the scripted values and conditions are acceptable when a tool cannot analyze the mechanic; distinguish AI scores from probabilities and state important assumptions.
+A successful load, passing syntax check, or vague assertion of balance is insufficient.
 
-Do not replace real implementation work with tooling work. Do not spend the goal creating Python scripts, report generators, or bulk-generation helpers while leaving the actual content shallow or incomplete. Small scripts may be used for mechanical audits such as checking duplicate ids, or finding missing localisation keys, but they are not a substitute for implementing and validating the content.
+Implement the content itself; do not substitute report generators, tooling work, or bulk-generated drafts for customized, integrated, reviewed content.
+Run basic syntax and encoding hygiene internally, but report validation only when it is task-specific, finds a problem, changes the implementation, or materially supports confidence.
+Do not list passing whitespace, bracket, operator, BOM, or clean-workspace checks in the final response.
 
-Do not bulk-generate large focus trees, country packages, decisions, localisation, or validation reports and call them complete. Generated or scripted drafts are acceptable only when every result is manually reviewed, customized to the country or route, wired into the mod, localized, given AI behavior, documented, and checked against the spec.
-
-If any requested item is not implemented to the fullest extent, report it under a clear section such as `Simplifications, omissions, and blockers`. Even small deviations must be listed. If no simplifications were made, the final report must explicitly say so and provide evidence through files changed, audits, meaningful validation notes, and completed checklists.
-
-Do not claim a goal is complete just because the game loads or because the most visible part works.
-
-For large events, mechanics, focus-tree rewrites, country packages, balance passes, or multi-system goals, produce a concrete completion report. The report should list files changed, systems touched, balance checks, tests or meaningful validation scenarios, assets reused or created, documentation updated, and remaining blockers.
-
-Every simplification must be reported. This includes skipped routes, fallback trees used in place of bespoke trees, missing assets, missing localisation, missing AI behavior, missing focus paths, missing dynamic scaling, hardcoded values where dynamic logic was requested, placeholder content, or weaker substitutes.
-
-If there are no simplifications, say so explicitly and provide evidence through audits, docs, or changed files. If the goal cannot be fully implemented, report that the goal is incomplete instead of presenting partial work as done.
+For large or multi-system work, update one concise completion report with changed files and behavior, useful checks, assets/documentation, and actual remaining work.
+Reuse current handoffs instead of generating repeated status reports.
+Describe problems in plain terms: what does not work, what could not be checked, and what action is needed; avoid unexplained labels or jargon.
+Disclose every real omission or simplification, including placeholders, fallback content, missing dynamic behavior, and weaker substitutes; if none were made, say so briefly.
+Keep unavailable verification separate from missing functionality, and report any unimplemented requested scope as incomplete.
 
 ## 6. Event Integration
 

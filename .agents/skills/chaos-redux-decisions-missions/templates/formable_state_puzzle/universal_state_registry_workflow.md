@@ -78,25 +78,25 @@ Do not cache state qualification, owner/controller names, or formation readiness
 
 HOI4 cannot create a new texture, state-piece sprite, or positioned scripted-GUI node during play. An event can change live relevance or control for a predeclared candidate, but it cannot introduce an arbitrary runtime state ID, texture, or GUI node. Regeneration is the only supported path for a new candidate.
 
-## Mandatory evidence gates
+## Source, visual, and asset checks
 
 ### Map MCP evidence
 
-Use the installed read-only HOI4 MCP map routes before promoting a consumer:
+Prefer these targeted read-only map checks within the AGENTS.md retry limit:
 
 - `mcp__hoi4_agent_tools__hoi4_map_inspect` with the candidate `stateIds` and bounded `provinceIds` to verify state membership and exact geometry provenance.
 - `mcp__hoi4_agent_tools__hoi4_map_render` with the relevant `state` or `province` layer and review overlays to confirm the source map and projection context.
 
-Record the returned artifact URIs, source revision, and any diagnostics in the owner handoff. If either route is unavailable, record the exact blocker and do not treat source-only review as map-engine evidence.
+Record useful artifacts and file revision. If the routes cannot answer within the retry limit, inspect the exact registry provenance, installed state/province membership, geometry, and projection locally and report the check limitation without claiming engine execution.
 
 ### GUI MCP evidence
 
-After the runtime generator emits the consumer window, use the installed read-only HOI4 MCP GUI routes:
+For the generated consumer window, prefer these targeted read-only GUI checks:
 
 - `mcp__hoi4_agent_tools__hoi4_gui_inspect` for the linked decision category, window hierarchy, icon bounds, tooltip regions, scripted-GUI properties, and generated sprite references.
-- `mcp__hoi4_agent_tools__hoi4_gui_render` for every supported resolution and the normal, hover, unresolved, qualifying, optional-hidden, long-text, and missing-localisation states relevant to the consumer.
+- `mcp__hoi4_agent_tools__hoi4_gui_render` for representative resolutions and relevant normal, hover, qualifying, hidden, long-text, and unresolved states.
 
-Record the returned artifact URIs and review that every piece stays inside the intended category description width, keeps its real relative position, has a tight hover region, and remains informational. The inspect must also resolve the linked category's `scripted_gui` property and generated window. If a GUI route is unavailable, record the exact blocker and do not substitute source inspection for the required visual evidence.
+Record the returned artifact URIs and review that every piece stays inside the intended category description width, keeps its real relative position, has a tight hover region, and remains informational. The inspect must also resolve the linked category's `scripted_gui` property and generated window. If a GUI route cannot answer within the retry limit, inspect the exact generated category/window linkage, piece positions and sizes, sprites, text, and hover/click regions locally and report the visual limit.
 
 ### DDS round-trip evidence
 
@@ -108,6 +108,6 @@ There is no dedicated DDS MCP route in the installed HOI4 tool surface; the repo
 
 ## Handoff minimum
 
-The owner handoff should list the consumer spec and schema, registry content hash and map roots, builder `--check` result, compiler result and manifest path, candidate and optional visibility policy, generated runtime outputs, the completed category attachment audit with every in-scope category row, map and GUI MCP artifact URIs, DDS round-trip evidence, and any skipped or blocked checks.
+The owner handoff should list the consumer spec and schema, registry content hash and map roots, builder `--check` result, compiler result and manifest path, candidate and optional visibility policy, generated runtime outputs, the completed category attachment audit with every in-scope category row, available map/GUI artifacts, DDS round-trip evidence, and material check limitations or real blockers.
 
-Report every simplification explicitly. In particular, report a deferred candidate, a missing DDS, a failed provenance check, an unavailable MCP route, an unresolved engine scope, or a staged `--no-dds` build as incomplete rather than silently falling back to hand-authored geometry or cached state data.
+Report every simplification explicitly. In particular, report a deferred candidate, a missing DDS, a failed provenance check, a known unsafe scope, or a staged `--no-dds` build as incomplete rather than silently falling back to hand-authored geometry or cached state data. An unavailable MCP check or absent live observation is a verification limitation, not missing functionality.

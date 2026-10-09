@@ -15,7 +15,7 @@ Use this skill together with:
 - `chaos-redux-event-assets` when focus icons, leader portraits, flags, or idea icons are required
 - `chaos-redux-improvement-loop` when a tree needs broader route depth or a near-completion anti-bloat pass
 - `chaos-redux-subagents` before routing focus audits, improvement plans, or active small patches
-- the installed `hoi4-agent-tools` MCP server for mandatory `hoi4.focus_inspect` and `hoi4.focus_render` work, plus bounded `hoi4.focus_rewrite` work. Use it to inspect, render, lint, compare, and improve focus-tree structure, then review every returned layout and diagnostic. Route every in-scope focus weight through `chaosx_ai_probability_auditor`. If the required MCP route is unavailable, record the exact blocker and do not treat source-only review as equivalent. MCP does not replace required source review, wiki and vanilla documentation checks, repository validation, or parent review.
+- targeted `hoi4.focus_inspect` and `hoi4.focus_render` support when available, with optional `hoi4.focus_rewrite`. Review returned layouts/diagnostics, route weights through one bounded `chaosx_ai_probability_auditor` pass, and follow the AGENTS.md retry limit. An unavailable or partial route is a check limitation: inspect prerequisites, exclusivity, rewards, layout, icons, localisation, and named source scenarios directly, without requiring a viewer or live-game validation.
 
 ## 1. Required checks
 
@@ -295,14 +295,14 @@ Cross-branch interaction should use a small number of deliberate junctions, conv
 
 Visual grouping cannot rescue weak route logic. If two branches use the same goals, rewards, next steps, and campaign plan, redesign the routes before adjusting coordinates. If the tree looks random because the underlying choices are random, rewrite the branch architecture, prerequisites, rewards, and payoffs.
 
-Mandatory first-glance review loop:
+First-glance review:
 
 1. Record the route architecture map and intended lane order before final coordinates are accepted.
-2. Render the full tree at normal in-game zoom with its real focus titles and icons.
-3. Review the render without source annotations. Name every major branch, its visible root, its important fork, and its payoff from the render alone. When possible, use the parent agent or focus auditor instead of relying only on the layout author.
+2. Prefer a full-tree render at normal in-game zoom with real titles/icons; if the route cannot answer within the shared budget, inspect native coordinates, bounds, connector paths, titles, and icon references and report the visual limitation.
+3. Review the available render or bounded source layout once. Name each major branch, root, important fork, and payoff; use the parent or focus auditor where useful.
 4. Mark every focus whose primary branch, next choice, or relationship to nearby focuses is ambiguous.
 5. Rewrite branch logic, branch roots, prerequisites, names, icons, spacing, or coordinates as required. Do not limit the fix to moving boxes when the route design itself is unclear.
-6. Render the tree again and repeat the review until every major branch and important fork is immediately understandable.
+6. Recheck actual fixes in the affected layout/branches; do not rerun the entire audit or wait for unavailable renders. Confirmed ambiguity remains a defect, while missing visual proof is a stated limitation.
 
 Hard rejection conditions include:
 
@@ -1243,7 +1243,7 @@ AI should consider:
 
 Avoid flat AI weights when campaign state matters.
 
-For every in-scope focus-selection or focus-weight surface, route the audit through `chaosx_ai_probability_auditor`. It must use `hoi4.probability_inspect` to identify the candidate pool and required scenario inputs, evaluate named campaign states with `hoi4.probability_evaluate`, sweep thresholds and rank reversals with `hoi4.probability_sweep`, compare a proposed change with `hoi4.probability_compare`, and use `hoi4.probability_simulate` only for explicitly declared uncertain inputs. Use `hoi4.probability_render` when a ranking, matrix, sensitivity, comparison, or unresolved view is clearer than a compact trace. The focus adapter models the verified independent score race, not weight divided by the sum of weights. Supply the complete available-focus pool and declare prerequisite, bypass, strategy, and external factors. Keep anything the analyzer cannot resolve visible as uncertainty. Use the result as balance evidence while this skill retains ownership of route design and tuning decisions.
+Route focus selection/weights through one bounded `chaosx_ai_probability_auditor` pass. Prefer targeted inspect/evaluate/comparison and use sweeps or simulation only for an actual threshold or uncertain-input question. If the adapter cannot answer within the AGENTS.md retry limit, inspect real weights, MTTH, helpers, prerequisites, bypasses, strategy, and external factors and evaluate named source scenarios, preserving before/after source when weights change. A supported independent-score-race model is not weight divided by total weight; label score-only or unresolved selection conclusions when the candidate pool or external factors are incomplete. This skill retains route design and tuning ownership.
 
 AI should not accidentally choose suicidal or nonsensical routes just because they are visible.
 
@@ -1291,7 +1291,7 @@ Focus tree subagents are active small-patch agents by default inside the current
 
 They should not redesign a whole tree, add a full route family, create a new formable chain, or change the country identity. When the tree needs broader depth, they should write an improvement plan under `docs/plans/<event_id>_<event_slug>_plans/` and leave implementation to the main agent.
 
-Every patch must write a handoff with changed files, changed focus ids, route behavior before and after, meaningful validation, skipped task-specific validation, and remaining route risks.
+Every patch returns one concise current handoff with changed files/focus ids, before/after route behavior, meaningful checks, and material limitations; update a durable handoff only when useful or requested.
 
 ## 16. Documentation and audit
 
@@ -1399,14 +1399,14 @@ A focus tree task is complete only when:
 
 - the tree has distinct political, industry, and expansion branch families, unless it is explicitly documented as a temporary non-playable tag
 - large playable countries have military, diplomacy, internal faction, special mechanic, and late-game branches where their identity supports them
-- the full normal-zoom render makes every supported major branch family immediately recognizable
+- every supported major branch family has recognizable grouping, reviewed in an available normal-zoom render or layout coordinates and sizes in the source with visual limits stated
 - every focus has accurate search filter tags that match its primary gameplay role
 - large trees provide Focus Navigation shortcuts for every spatially separate major branch family, with correct labels, icons, anchors, pan behavior, zoom, and reveal logic
 - the main political, industry, military, diplomacy, expansion, and special routes are visually distinct, with naval and air subroutes clear where they exist
 - every visible focus has one clear primary branch ownership or explicit convergence role
 - every major branch has an obvious root, meaningful internal choices, readable progression, and a clear payoff or convergence
 - the player can understand the major choices and paths without reading every tooltip or tracing every connector
-- the mandatory render, review, rewrite, and rerender loop has continued until no major branch remains ambiguous
+- one bounded layout/route review and rechecks of actual fixes found no known ambiguous major branch; unavailable MCP or user live testing is reported as a limitation
 - no branch soup, random focus islands, mixed-purpose clusters, or misleading route grouping remains
 - the opening is lean enough to understand and complexity is revealed in stages
 - stable countries do not start with unnecessary stacks of national spirits or military clutter

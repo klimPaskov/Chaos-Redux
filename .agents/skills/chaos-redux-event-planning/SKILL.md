@@ -379,7 +379,7 @@ Good focus reward types include:
 - objective completion bonuses
 - events or event chains
 
-When a specification adds or changes technologies, doctrines, folders, prerequisites, unlocks, grants, or research bonuses, the coding-agent prompt must require the implementation agent to inspect the affected graph with `hoi4.tech_inspect`, render the relevant folder or branch with `hoi4.tech_render`, and compare the implemented source with `hoi4.tech_compare`. The plan must identify intended placement, prerequisites, exclusivity, unlocks, bonuses, and asset needs so the implementation agent has a concrete result to verify.
+When a specification changes technologies, doctrines, folders, prerequisites, unlocks, grants, or research bonuses, identify placement, exclusivity, unlocks, bonuses, and assets and request bounded code review and local checks with targeted `hoi4.tech_inspect`, `hoi4.tech_render`, and `hoi4.tech_compare` support when available. Carry the AGENTS.md retry/completion rules into the coding prompt; an unavailable tool/viewer is a check limitation, not a reason to leave implementation unfinished.
 
 Every focus path should have a distinct purpose. If two focus groups would grant nearly the same effect, merge them, rewrite one, or make one an upgrade of the other.
 
@@ -1283,13 +1283,13 @@ The asset prompt must distinguish provider source files from final runtime copie
 
 Route production to `chaosx_3d_model_pipeline`. Supply job root, selected firearm-body/direct-repair/general route, input/reference status, source equipment identity, component inventory, profile, vanilla scale, actions, sound/effect synchronization, counter consumers, dependency lock, provider preflight where needed, calibrated budgets, and handoff path. Meshy 7 owns body and held-item geometry generation and the provider rig/action stage for eligible bipeds; Blender owns required component completion, firearm and item fitting and attachment, and every rig or action the provider route does not cover. Require preserved source lineage, actual modeling/authoring routes, contact/deformation/semantic review, export/reimport proof, and no renewed approval for required components or authorized Blender work.
 
-The coding-agent prompt must state that the main implementation agent owns `.asset`, entity, `.gfx`, unit/building/gameplay wiring, valid province and state placement, final source and MCP validation, and review of available in-game evidence. The user performs live runtime validation.
+The coding-agent prompt must state that the main implementation agent owns `.asset`, entity, `.gfx`, unit/building/gameplay wiring, valid province and state placement, code review, useful local checks, and any game results supplied by the user. The user performs live runtime validation; agents neither request nor await it as a delivery gate.
 
 ##### 3D model planning matrix
 
 | Surface | Minimum planned evidence |
 | --- | --- |
-| Humanoid unit | Vanilla source-height measurement, entity-scale crosswalk, repaired geometry, PDX material audit, idle/move/attack actions, `.mesh`/`.anim` reimport proof, unit consumer, movement test, and screenshot |
+| Humanoid unit | Vanilla source-height measurement, entity-scale crosswalk, repaired geometry, PDX material audit, idle/move/attack actions, `.mesh`/`.anim` reimport proof, unit consumer/source binding, plus any available user-supplied movement observations and screenshot |
 | Building or static map entity | Vanilla building precedent, valid state/province pair, entity and `.asset` existence, mesh/material proof, scale and zoom test, construction or level test, and screenshot |
 | Creature, vehicle, aircraft, or naval object | Profile-specific axis and contact calibration, topology/material proof, required action list, export/reimport proof, entity/runtime wiring, and domain-appropriate live test |
 
@@ -1444,7 +1444,7 @@ Map the UI states if the UI represents pressure, route choice, threat, stage, fa
 
 When an event has an important decision category, choose its presentation layer before designing a custom window. Start with an ordinary category, then apply the picture eligibility gate before testing whether a static or animated category picture is enough. Basic formatted value tables alone do not require a richer GUI. Use a richer scripted GUI or a separate mechanic window only when the system needs active visual management that normal decisions, tooltips, and one category picture cannot provide.
 
-For a new or redesigned scripted GUI, use `chaos-redux-scripted-gui` to create reference image(s) before native implementation and carry the image-to-element mapping, supported HOI4 adaptations, acceptance basis, assets, states, and matched MCP scenarios into the implementation handoff. A plan or image file does not establish approval; record explicit user direction or parent acceptance within the authorized scope. If the named event specifically introduces a dedicated scripted GUI, include a bounded `chaosx_event_ui_worker` handoff in the implementation prompt. Name the event-owned GUI identifiers, files, entry point, layout regions, states, resolutions, decisions, assets, allowed files, and handoff path. Require mandatory `hoi4.gui_inspect`, comprehensive `hoi4.gui_render`, and post-change comparison evidence plus the full reference-image, native-layout, and visual-review contract from `chaos-redux-scripted-gui`, which permits direct application of reviewed edits and makes `gui_rewrite` optional rather than requiring its automatic post-write/index validation to pass. Explicitly exclude the shared event log, event-details framework, settings, super-event framework, shared registries, and unrelated existing UIs.
+For a new or redesigned scripted GUI, use `chaos-redux-scripted-gui` to create reference image(s) before native implementation and carry the image-to-element mapping, supported HOI4 adaptations, acceptance basis, assets, states, and matched MCP scenarios into the implementation handoff. A plan or image file does not establish approval; record explicit user direction or parent acceptance within the authorized scope. If the named event specifically introduces a dedicated scripted GUI, include a bounded `chaosx_event_ui_worker` handoff in the implementation prompt. Name the event-owned GUI identifiers, files, entry point, layout regions, states, resolutions, decisions, assets, allowed files, and handoff path. Require the reference-image, native-layout, and layout review rules from `chaos-redux-scripted-gui`, preferring targeted MCP views with code review and local checks after the shared retry limit, which permits direct application of reviewed edits and makes `gui_rewrite` optional rather than requiring its automatic post-write/index validation to pass. Explicitly exclude the shared event log, event-details framework, settings, super-event framework, shared registries, and unrelated existing UIs.
 
 For major events, important decision categories, custom mechanic windows, formable routes, high-chaos route reveals, active crisis meters, special leader transformations, faction boards, patron influence networks, or occult and supernatural systems, run a presentation-choice pass. The pass must choose between ordinary category presentation, an eligible static or animated picture, a compact attached display, and a full scripted GUI. Existing complex UI, meters, additional custom controls, rich interactive panels, or other animations exclude category pictures from this choice. Animation should be planned only when it clarifies a changing state or materially strengthens the category. Static presentation needs no defensive justification when it is the clearer option.
 
@@ -1894,19 +1894,14 @@ The planning agent should preserve the open structure of the addendum where that
 
 When an accepted improvement addendum includes formables, scripted GUI, animated sprites, animated portraits, or hidden routes, the final spec pack should carry that accepted design into the relevant files instead of leaving it isolated. The core spec explains why the expansion matters. The decision and focus files explain how the player reaches it. The asset prompt explains the static and animated visual work. The coding prompt and goal prompt tell the implementation agent to wire and validate it.
 
-### Mandatory near-completion improvement loop pass
+### Review before completion
 
-Before any event-planning goal is treated as near complete, the coding agent must spawn `chaosx_improvement_loop_planner` for a final depth and anti-bloat pass. This is mandatory for event specs, large addenda, country packages, focus-tree plans, decision systems, super-event planning, asset-heavy plans, formable plans, custom UI plans, and any goal that creates or changes meaningful Chaos Redux design.
-
-Run this pass after the main design is mostly assembled and before the final completion report. The loop planner should inspect the current spec, accepted plans, unresolved handoffs, asset needs, AI plans, mechanic surfaces, and implementation handoff needs. Its job is to find remaining shallow systems, disconnected mechanics, missing route depth, missing AI behavior, missing asset states, missing aftermath, or scope bloat.
-
-Spawn the loop planner with Codex `collaboration.spawn_agent` using `fork_turns="none"`. The parent prompt must explicitly pass the event id, event slug, current goal, user constraints, current spec paths, relevant plan paths, known unresolved decisions, and the exact question to answer. Do not rely on inherited conversation context.
-
-The loop planner may return either an expansion addendum or a closure handoff. If it returns an expansion addendum, the parent must resolve it before completion by folding accepted content into `docs/specs/<event_id>_<event_slug>_specs/`, implementing or queuing it with a clear reason, or rejecting it with a clear reason. If it returns a closure handoff, record that closure and proceed with final checks.
-
-A goal is not complete while an accepted loop addendum is unresolved, while a loop-recommended closure handoff has not been recorded, or while the mandatory loop pass was skipped without a tooling blocker. If the loop agent cannot be spawned because the tool is unavailable, the completion report must state that as a blocker and must not hide it as finished work.
-
-Tiny known-file text edits, narrow typo fixes, and direct one-line skill updates can skip the loop pass only when they do not create or change event design, mechanics, focus trees, decisions, country packages, assets, super-events, or implementation handoff rules.
+After substantial design work, use one `chaosx_improvement_loop_planner` pass to inspect depth, integration, AI, assets, aftermath, and bloat where that review is useful.
+If delegation is unavailable, the parent performs the same bounded review and records only material limits; a missing planner or closure report alone does not block a complete spec.
+Spawn with a self-contained `fork_turns="none"` prompt naming the current files, constraints, known decisions, previous addendum disposition, and exact design question.
+Resolve findings in the existing spec/plan: implement accepted current-scope requirements, queue separately scoped accepted work with a reason, or reject proposals with a reason.
+Recheck actual fixes only and do not audit the audit, stack closure reports, or reopen a resolved pass without new design work or a distinct known defect.
+Missing requested design remains incomplete; unavailable verification does not.
 
 ## 18. Output rules
 
@@ -2038,7 +2033,7 @@ The prompt must tell the coding agent to:
 - implement the full AI strategy matrix from the spec, including route preferences, foreign influence behavior, focus choices, unit-raising choices, decision choices, faction behavior, and high-chaos exceptions
 - perform the full vanilla, Chaos Redux, Workshop, and local-mod tag collision audit before creating a new country tag, reuse existing vanilla identities when they already exist, and preserve living vanilla countries and meaningful existing trees
 - use `hoi4.tech_inspect`, `hoi4.tech_render`, and `hoi4.tech_compare` when technologies, doctrines, folders, prerequisites, unlocks, grants, or research bonuses are involved
-- spawn `chaosx_ai_probability_auditor` and use the probability inspection, evaluation, sweep, comparison, rendering, simulation, and sequence tools according to the scenario plan when weighted behavior is involved
+- route weighted behavior through one bounded `chaosx_ai_probability_auditor` pass with named representative scenarios and before/after source comparison; prefer targeted MCP tools and use source/helper evaluation when unsupported
 - route required 3D model and skeletal animation production through `chaosx_3d_model_pipeline` with Codex `collaboration.spawn_agent` using `fork_turns="none"`, then implement and validate the final `.asset`, entity, `.gfx`, unit or building consumer, placement, and animation, and review available user-supplied live in-game evidence
 - follow the flat reference-constrained imagegen rule for every flag and the sourced identity-preserving portrait rule for every grounded polity and real person
 - follow `AGENTS.md`
@@ -2050,7 +2045,7 @@ The prompt must tell the coding agent to:
 - keep all Chaos Redux systems aligned
 - report anything that cannot be implemented cleanly
 - keep iterating until the full spec is implemented to its fullest extent
-- spawn `chaosx_improvement_loop_planner` with Codex `collaboration.spawn_agent` using `fork_turns="none"` before claiming the goal is near complete, then resolve its addendum or closure handoff before final completion
+- perform one bounded depth review where useful, through `chaosx_improvement_loop_planner` or the parent, and resolve actual design findings without repeated closure reports
 - avoid fallbacks, simplifications, temporary versions, and good-enough approximations
 - not claim completion until the implemented files satisfy the spec
 
@@ -2076,10 +2071,10 @@ A good goal prompt should include:
 - the requirement to implement every mapped Chaos source and reversal, including special Chaos-country growth and anti-farming guards, and to prove that generic Chaos sources are not double counted
 - the requirement to create all required static and animated assets, static fallbacks, tags, starting divisions, reinforcement pathways, non-linear focus trees based on the mapped paths, focus filter tags, decisions, evolutions, achievements, and docs
 - the requirement to research and source final super-event titles, button text, quotes, cultural remarks, and audio through the proper super-event workflow when super-events exist
-- the requirement to spawn `chaosx_improvement_loop_planner` near completion and resolve its addendum or closure handoff before claiming completion
+- bounded depth review and disposition of accepted current-scope findings, with parent review when delegation is unavailable
 - the requirement to audit all installed tag sources before adding custom tags and to reuse existing vanilla identities when applicable
 - the requirement to use the technology graph tools when technology content exists
-- the requirement to spawn `chaosx_ai_probability_auditor` and use the probability tool workflow when weighted behavior exists
+- bounded probability auditing of actual weights, helpers, and representative scenarios, with source comparison when tool support is unavailable
 - the requirement to route and validate 3D model or skeletal animation work through `chaosx_3d_model_pipeline` when relevant
 - the requirement to provide a concrete completion report
 
@@ -2115,14 +2110,14 @@ The final response should include:
 - AI strategy matrices for major events or country-creation events
 - weighted-behavior scenario matrices, `chaosx_ai_probability_auditor` routing, and probability-tool instructions when relevant
 - technology graph placement and tool instructions when technology content exists
-- 3D model and skeletal animation planning, vanilla scale references, Meshy reference requirements, pipeline routing, and live validation requirements when relevant
+- 3D model and skeletal animation planning, vanilla scale references, Meshy reference requirements, pipeline routing, and user-owned live validation separated from implementation delivery when relevant
 - clear focus-tree path maps, non-linear architecture, anchor focuses, mutual exclusions, convergence, hidden routes, crisis branches, late-game paths, filters, reward diversity, and idea lifecycle audits when relevant
 - decisions, rare variants, evolutions, achievements, route identities, leader changes, flags, and unit-generation systems mapped when they exist
 - varied costs, risks, requirements, and sacrifices instead of default political power or command power purchases
 - a public-facing value budget for every main special mechanic, with one or two values preferred, three acceptable when needed, four as the hard maximum, and hidden internal values separated from player-facing state
 - uncertainties and blockers stated clearly
 - strong enough effects for the intended role
-- `chaosx_improvement_loop_planner` spawned near completion, with its addendum resolved or closure handoff recorded
+- useful depth review completed and actual findings resolved or explicitly scoped/queued, without a tool or closure-report completion gate
 - temporary continuation prompts removed from every final package file
 - a brief package summary that does not repeat the full specification
 
@@ -2139,7 +2134,7 @@ Before finishing a major event spec, ask:
 - Which presentation layer should each category use: ordinary category, static picture, animated picture, compact display, or full scripted GUI?
 - Does the category pass the same eligibility gate for static and animated pictures, and if so, would a picture communicate the category more clearly than a complex custom window?
 - If exact state control is central to a formable, does the plan use exact state shapes as grey and green dynamic puzzle pieces and keep them synchronized with real eligibility?
-- If the named event introduces a full UI, does the plan route only the event-owned window to `chaosx_event_ui_worker` with exact identifiers and mandatory MCP before-and-after evidence while excluding shared interfaces?
+- If the named event introduces a full UI, does the plan route only the event-owned window to `chaosx_event_ui_worker` with exact identifiers and bounded visual checks and available before/after evidence while excluding shared interfaces?
 - Are animated sprites, leader portraits, particles, glow, warning states, selected states, or button states planned only where motion makes a changing state clearer?
 - Does the asset prompt include eligible category pictures, formable state pieces, sprite names, state logic, static fallbacks, and frame-sheet needs where animation is actually used?
 - Does the goal prompt tell the implementation agent to verify formables, category-picture eligibility, state-puzzle eligibility, justified UI windows, and any animated sprite handoffs?
@@ -2226,8 +2221,8 @@ Reject the draft if it has any of these problems:
 - route-unlocked advisors that do not match route identity
 - major focus trees without achievement hooks
 - completion prompts missing a route coverage table requirement
-- near-completion work that skipped the mandatory `chaosx_improvement_loop_planner` pass without a tooling blocker
-- unresolved loop-agent expansion addendum, missing addendum disposition, or missing closure handoff before completion
+- meaningful design gaps left unreviewed or unresolved
+- unresolved accepted current-scope design requirements or missing disposition of an expansion proposal
 - focus trees where unit rewards are repeated generic division spawns instead of route-specific military institutions, decisions, templates, or mobilization systems
 - unit-granting focuses that exist only as filler or repeated free divisions with no story, route logic, or constraints
 - major focus trees that read like one vertical checklist instead of a branching system
@@ -2273,7 +2268,7 @@ Reject the draft if it has any of these problems:
 - living vanilla countries or meaningful existing trees overwritten without an explicit event requirement
 - technology or doctrine changes without `hoi4.tech_inspect`, `hoi4.tech_render`, and `hoi4.tech_compare` requirements in the coding prompt
 - weighted AI or event behavior without named probability scenarios and the correct inspection, evaluation, sweep, comparison, or rendering workflow
-- visible 3D units, buildings, creatures, vehicles, aircraft, naval objects, or map entities without an asset profile, vanilla scale reference, source geometry measurement, action plan, provider lineage, export and reimport proof, live consumer, and screenshot evidence
+- visible 3D units, buildings, creatures, vehicles, aircraft, naval objects, or map entities without an asset profile, vanilla scale reference, source geometry measurement, action plan, provider lineage, export and reimport proof, wired consumer, and any available user-supplied screenshot evidence, with absent live proof reported as a limitation
 - a side-profile sheet, turnaround board, collage, or multi-view board planned as a Meshy input instead of one clean reference image
 - requested skeletal animations replaced by a static mesh or render
 - historical or grounded flags that skip cited design research, flat reconstruction, or manual geometry comparison

@@ -193,4 +193,5 @@ Required output after work:
 - blockers, needs_user_review items, and remaining parent work
 
 Completion standard:
-Every requested 3D requirement is complete, blocked, or needs_user_review in the asset package. A custom unit is not complete until its sourced sound package and bespoke vanilla-green counter package both exist or carry explicit blockers, including recorded installed-vanilla counter inspection. The parent can perform final runtime wiring without guessing. The user performs live consumer validation in game. The parent reviews that evidence and owns the overall asset completion claim.
+Every requested 3D requirement is complete, blocked, or needs_user_review in the asset package. A custom unit is not complete until its sourced sound package and bespoke vanilla-green counter package both exist or carry explicit blockers, including recorded installed-vanilla counter inspection. The parent can perform final runtime wiring without guessing. The parent reviews the delivered package and owns integration.
+User-owned live testing does not delay finishing the asset package or establish a claim that it was tested in game.

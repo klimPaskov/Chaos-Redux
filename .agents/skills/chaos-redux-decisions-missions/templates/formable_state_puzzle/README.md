@@ -92,7 +92,7 @@ Complete [category_attachment_audit.md](category_attachment_audit.md) after the 
 
 ### 9. Validate before handing off
 
-Run every item in `validation_checklist.md`, including the universal registry provenance gate, mandatory map/GUI MCP inspect/render artifacts, and DDS decode round-trip evidence described in [universal_state_registry_workflow.md](universal_state_registry_workflow.md). Record skipped checks with the exact reason. A skill-local package is not an in-game completion claim. The parent owns runtime wiring and final source review. The user performs live-consumer validation.
+Apply relevant `validation_checklist.md` checks, including registry provenance and DDS round-trip checks. Prefer bounded map/GUI MCP support under AGENTS.md; if unavailable, inspect the exact registry/map and generated category/window source and report the check limitation. The parent owns runtime wiring/review, and user live-consumer testing is neither claimed nor awaited before finishing the implementation.
 
 ## Helper contract and migration map
 

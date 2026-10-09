@@ -76,5 +76,7 @@ One server is one `@deepseek-ai/dsh-mcp-client` entry, and its tools appear as `
 The production servers are `hoi4_agent_tools`, `meshy`, and `blender_hoi4`, and their wrappers live under `.tools/3d_pipeline/wrappers/`.
 Because the patch layer is outside the repository, a checkout does not carry them and they must be registered per machine.
 
-An MCP tool name that does not appear in a session means the server was never registered, and a configuration file for another runtime is not evidence that DSH has it.
-`AGENTS.md` makes MCP use mandatory for focus, event, technology, doctrine, weighted-logic, scripted GUI, and map work, so an unregistered profile blocks that work rather than downgrading it to source-only review.
+An MCP tool absent from the session is unavailable there; another runtime's configuration does not prove DSH has it.
+Do not infer the exact registration or startup failure without inspecting it.
+Unavailable domain tools are verification limits under `AGENTS.md`; continue source implementation and local checks, carrying existing results and retry history into delegated or resumed work.
+Profile repair is a separate task when requested.
