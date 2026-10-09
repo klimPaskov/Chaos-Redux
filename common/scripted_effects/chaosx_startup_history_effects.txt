@@ -12,6 +12,8 @@
 
 @eng_1939_respirator_factories = 1
 @eng_1939_respirator_efficiency = 100
+@fra_1939_respirator_factories = 1
+@fra_1939_respirator_efficiency = 100
 
 chaosx_apply_startup_history_grants = {
 	if = {
@@ -1160,6 +1162,20 @@ chaosx_startup_grant_fra = {
 			cbrn_initialize_payload_logistics = yes
 			set_variable = { cbrn_shell_filling_agent = constant:cbrn_agent.phosgene }
 			set_variable = { cbrn_air_payload_agent = constant:cbrn_agent.mustard }
+			if = {
+				limit = { date > 1938.12.31 }
+				# Active prewar manufacture supports this existing-factory queue.
+				# Its size and efficiency are gameplay calibration, not historical
+				# plant or inventory counts; no civilian issue is inferred here.
+				add_equipment_production = {
+					equipment = {
+						type = gas_mask_equipment_1
+						creator = FRA
+					}
+					requested_factories = @fra_1939_respirator_factories
+					efficiency = @fra_1939_respirator_efficiency
+				}
+			}
 			if = {
 				limit = { 16 = { is_owned_by = FRA } }
 				16 = { chaosx_add_startup_cw_facility_9725 = yes }

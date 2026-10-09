@@ -109,6 +109,8 @@ The [native CSH flag correction](../corrections/2026-10-03_csh_native_flag_looku
 It changes neither roster ownership nor dated transfer behavior.
 
 The user's 2026-09-25 follow-up explicitly selects the force-scaled military mask bands for both historical bookmarks: 75% active issue for established majors, 100% for Italy, 50% for Japan, 25% for smaller defensive profiles, and a separate 25% reserve against each bookmark's deployed-force requirement. The percentages are gameplay calibration, not exact historical inventory claims. Britain alone receives a separately sourced 1939 civilian mask issue; other countries begin with zero civilian coverage until country-specific evidence supports a grant. Dated research, personnel, industry, and offensive-stock distinctions remain separate.
+The [France protective-industry correction](../corrections/2026-10-09_france_1939_protective_industry.md) represents sourced prewar manufacture with one existing military factory requested for basic masks after 31 December 1938.
+Its factory count and efficiency are explicit gameplay calibration; it supplies no free factory, equipment stock or guessed civilian issue.
 
 The four accepted commander traits are **Biological Operations Veteran**, **Hazard Warfare Veteran**, **Protected Assault Expert**, and **Theatre Containment Organizer**. **Chemical Operations Commander** is awarded from service evidence. Native CBRN High Command must be represented. The **Field-Validated Planner** trait and its Event 24 reward route are removed by the same 2026-09-20 user instruction; Event 24 field validation may still resolve its non-trait effects.
 
