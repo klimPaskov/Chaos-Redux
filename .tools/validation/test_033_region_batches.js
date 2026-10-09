@@ -130,8 +130,10 @@ function execute(nodes, e) {
 					e.temps.set(name, v); execute(body, e); v += value(setting(b, 'add') ?? '1', e);
 				}
 			} else {
+				let ordinal = 0;
 				for (const item of [...e.arrays.get(setting(b, 'array'))]) {
 					if (value(stop, e)) break;
+					e.temps.set(setting(b, 'index') ?? 'i', ordinal++);
 					e.temps.set(name, item);
 					const parent = e.state;
 					if (n.key === 'for_each_scope_loop') e.state = item;
@@ -169,7 +171,9 @@ for (const sizes of fixtures) {
 		const row = manifest.changes[i], start = e.arrays.get('global.acid_rain_region_index_start_entries')[r], end = e.arrays.get('global.acid_rain_region_index_end_entries')[r];
 		e.temps.set('acid_rain_cursor_start', start); e.temps.set(row.fullEnd, end);
 		e.temps.set(row.chunkStop, 0); e.temps.set(row.stop, 1); e.trace = []; e.stop = null;
+		e.temps.set('i', 7845);
 		execute([wrappedLoops[i]], e);
+		assert.equal(e.temps.get('i'), 7845, 'chunk iterator clobbered caller index');
 		const wanted = states.filter(x => x.acid_rain_region_id === r).map(x => x.id);
 		assert.deepEqual(e.trace, wanted);
 		const fresh = [...e.trace]; e.trace = []; e.temps.set(row.stop, 0); execute([oldLoops[i]], e);

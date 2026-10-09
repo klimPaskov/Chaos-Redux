@@ -5,9 +5,10 @@ The user's Event 033 goal remains active and no event-completion claim is made.
 
 ## Current regional traversal checkpoint, 2026-10-09
 
-The runtime is `aca3b851579c12ec69422b84bcd0416568303b062f2b9f26c69fa97d3de3abba` and constants are `6838c2fcdfad25c6147045544c2253ca05b29cc5273dd4071ba9622e824b0a85`.
+The runtime is `ffa56f54433aebf036e6cf7f4147a3f85640a5ba0d2d7ff9bb1de9ebb1ee7fdf` and constants are `6838c2fcdfad25c6147045544c2253ca05b29cc5273dd4071ba9622e824b0a85`.
 Sixteen regional cursors use a serialized, generation-owned chunk-start array with independently reset foreach and numeric breaks.
 Each numeric batch respects the installed `MAX_EFFECT_ITERATION = 1000`, preserves the previous state-operation body and order, and forwards an intentional inner stop to its own outer loop.
+Each chunk iterator also owns its ordinal variable rather than overwriting the native default `i`; the traversal replay checks preservation of a caller's sentinel index in every case.
 Initial indexing still uses the existing frozen-state foreach pass; routine traversal reads compact chunk metadata and the selected region only.
 Missing chunk metadata on an otherwise current legacy index forces one lazy rebuild rather than silently leaving the suffix unreachable.
 
