@@ -90,6 +90,10 @@ The [dated-scientist ownership correction](../corrections/2026-10-03_dated_scien
 It covers the reported Haldane, Fishman, and Velikanov day-one errors and removes runtime recruitment while preserving all dates, traits, retirements, and identity flags.
 Dedicated-holder engine acceptance remains pending.
 
+The [conduct-trait date correction](../corrections/2026-10-09_scientist_conduct_trait_dates.md) separates Rascher's and Mengele's existing research availability from the dated records used for their inhumane traits.
+The one-time awards begin on 15 May 1941 and 30 May 1943 respectively, preserving identities, skills, CSH transfer dates, portraits and independent authorization.
+
+
 The [native CSH flag correction](../corrections/2026-10-03_csh_native_flag_lookup.md) follows the user's confirmed load errors by supplying the base and four ideology lookup filenames in all three native sizes.
 It changes neither roster ownership nor dated transfer behavior.
 

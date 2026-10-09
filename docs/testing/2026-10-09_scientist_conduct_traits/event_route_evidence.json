@@ -1,0 +1,90 @@
+{
+  "task": "2026-10-09_scientist_conduct_traits",
+  "purpose": "Bounded read-only check for Event 016 and Germany-Mengele route consumers before and after the two character-trait date changes.",
+  "mcp_workspace": "mod_chaos_redux_ea3b2d67c2c0",
+  "event_graph": {
+    "revision_before": "283a550085362183c930b3e9508acd4051d381fab0d6edd4f1b8afac59de6889",
+    "revision_after": "283a550085362183c930b3e9508acd4051d381fab0d6edd4f1b8afac59de6889",
+    "analysis_mode": "focused",
+    "helper_expansion": false,
+    "reported_helpers": 0,
+    "blocking_diagnostics": 0,
+    "inline_source_inventory": "MCP_INLINE_FILES_TRUNCATED informational diagnostic; 64 of 404 paths returned inline.",
+    "coverage_limit": "Focused scan and render do not provide workspace helper/lifecycle closure. Local helper source was inspected separately; no runtime outcome is claimed."
+  },
+  "surfaces": [
+    {
+      "event_id": "chaosx.nr16.1",
+      "source": "events/016_brilliant_scientist.txt",
+      "inspect_status_before": "EVENT_INSPECTED_PARTIAL; status ok",
+      "inspect_status_after": "EVENT_INSPECTED_PARTIAL; status ok",
+      "render_view": "neighborhood downstream",
+      "selected_nodes": 9,
+      "render_status_before": "EVENT_RENDERED_PARTIAL; status ok",
+      "render_status_after": "EVENT_RENDERED_PARTIAL; status ok",
+      "render_artifact_before": "hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/f78793d151318380115bdf2aa27b7af1ca9d772b92bf5e06ef403e6f5957a1f4/b361834481ff1f24d70b11514dfdb5b77bcc3799430665b5f5b73f866b56ee68/event-neighborhood-283a55008536.json",
+      "render_artifact_after": "hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/22c7cb96e6064366ac939461f29ef822f222bbdf39930fced354d26a13432376/8e569811a0575383a40f153d5e75d6d509b85c9ede4198a587fba9ccd827a4c8/event-neighborhood-283a55008536.json",
+      "consumer_finding": "The selected neighborhood contains neither GER_josef_mengele nor scientist_trait_inhumane. The Dhrondan/Mengele contact events use separate dhrondan_mengele_* country flags."
+    },
+    {
+      "event_id": "germany_mengele.1",
+      "source": "events/germany_mengele.txt",
+      "inspect_status_before": "EVENT_INSPECTED_PARTIAL; status ok",
+      "inspect_status_after": "EVENT_INSPECTED_PARTIAL; status ok",
+      "render_view": "neighborhood downstream",
+      "selected_nodes": 7,
+      "render_status_before": "EVENT_RENDERED_PARTIAL; status ok",
+      "render_status_after": "EVENT_RENDERED_PARTIAL; status ok",
+      "render_artifact": "hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/a87679b5299e3f457e4d9f9f8296385fc1d636bb333a23974ba796b2837ba10b/3edcf9acfa6b6067283264809d9a5a4c4f1c0eac75ee3b8ee33fb536cb45a72b/event-neighborhood-283a55008536.json",
+      "consumer_finding": "The selected neighborhood contains neither GER_josef_mengele nor scientist_trait_inhumane. Its option edges call germany_mengele_authorize_full_program, germany_mengele_restrict_program, or germany_mengele_reject_program; inspected helper bodies use program flags, variables, ideas, and follow-up events, not the scientist ID or trait."
+    },
+    {
+      "event_id": "chaosx.nr16.41",
+      "source": "events/016_brilliant_scientist_dhrondan_contact_events.txt",
+      "inspect_status": "EVENT_INSPECTED_PARTIAL; status ok",
+      "render_view": "neighborhood downstream",
+      "selected_nodes": 3,
+      "blocking_diagnostics": 0,
+      "render_artifact": "hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/9a03059551aa0b6cf031cb9b9b73d7043a0e05c56e77504142b6ee666049d2f8/3629c9e0f3c273feb15dcdd05a2e9529922f3bc2f66bd19ec6c4829e146534d4/event-neighborhood-283a55008536.json",
+      "consumer_finding": "The Dhrondan expedition report varies text and eligibility using dhrondan_mengele_* and dhrondan_expedition_* country flags; it does not reference either GER scientist ID or scientist_trait_inhumane."
+    },
+    {
+      "event_id": "chaosx.nr16.901",
+      "source": "events/016_brilliant_scientist_super_events.txt",
+      "inspect_status": "EVENT_INSPECTED_PARTIAL; status ok",
+      "render_view": "neighborhood downstream",
+      "selected_nodes": 5,
+      "blocking_diagnostics": 0,
+      "render_artifact": "hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/bf0cda40769a8238b4de87d1e94e7b1d9727ed65ed799f0128474748d5a2a177/c9d9f03386dc780ecad3c2cf25ae35ee119ba72613152841afe235ec6e7b2891/event-neighborhood-283a55008536.json",
+      "consumer_finding": "The hidden singularity fallout retry uses mengele_event016_singularity_* country flags and dispatch helpers; source scan found no GER_josef_mengele or scientist_trait_inhumane dependency."
+    },
+    {
+      "event_id": "chaosx.nr16.300",
+      "source": "events/016_brilliant_scientist_super_events.txt",
+      "inspect_status": "EVENT_INSPECTED_PARTIAL; status ok",
+      "render_view": "neighborhood downstream",
+      "selected_nodes": 3,
+      "blocking_diagnostics": 0,
+      "render_artifact": "hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/9b10f77bfe5cbd2e5bda65c4447454931d9733d425df5f4c0eb56ff3d9f7be97/84a398ad5f908a769099e7a058999e131df53a0d53bb0d8558dc85867779bff0/event-neighborhood-283a55008536.json",
+      "consumer_finding": "The hidden retry for Event 016 super-event dispatch operates on the shared presentation queue and does not use either historical scientist ID or trait."
+    }
+  ],
+  "source_scan": {
+    "query": "GER_josef_mengele, GER_sigmund_rascher, scientist_trait_inhumane in events/016*.txt and events/germany_mengele.txt",
+    "direct_event_consumers": [],
+    "other_portrait_consumers": [
+      {
+        "source": "common/scripted_effects/chaosx_triggerable_scenarios_effects.txt:2503",
+        "use": "Creates a separate country leader with the approved GFX_portrait_GER_josef_mengele picture; it does not recruit GER_josef_mengele or read scientist_trait_inhumane."
+      },
+      {
+        "source": "common/scripted_effects/germany_mengele_effects.txt:1892",
+        "use": "Creates a separate directorate country leader with the approved GFX_portrait_GER_josef_mengele picture; the effect does not read the historical character ID or scientist_trait_inhumane."
+      }
+    ],
+    "trait_effect": "The existing scientist_trait_inhumane definition applies special_project_speed_factor, scientist_breakthrough_bonus_factor, scientist_research_bonus_factor, scientist_xp_gain_factor, and special_project_facility_supply_consumption_factor to the biological-warfare specialization. Their availability shifts to the accepted dates; the effect is not an event trigger or offensive authorization.",
+    "germany_mengele_policy_helpers": "The germany_mengele_authorize_full_program, germany_mengele_restrict_program, and germany_mengele_reject_program helpers use program flags, permission variables, ideas, condemnation/chaos effects, and follow-up events; no scientist-trait or historical character-ID predicate was found in the reviewed bodies.",
+    "trait_modifiers_unchanged": "common/scientist_traits/chaosx_00_traits.txt continues to grant biological special-project speed, breakthrough, research, XP, and supply modifiers; this patch changes their availability date only."
+  },
+  "native_limit": "HOI4 MCP results are source-graph/render evidence, not game execution. The event graph revision is unchanged because this patch does not edit event or on_action source; focused event analysis also leaves helper closure unresolved."
+}

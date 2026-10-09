@@ -179,3 +179,50 @@ The bounded report is complete, while CBRN implementation and acceptance remain 
 
 Skills applied: `chaos-redux-events`, `chaos-redux-improvement-loop`, `chaos-redux-subagents`, `chaos-redux-event-planning`, `chaos-redux-decisions-missions` and `chaos-redux-native-raids`.
 No skill was changed.
+
+## Bounded Livens follow-up after parent commit 7f73e6dec
+
+Disposition: source-inaccessible legacy duplicates, rather than seven required current roles or a demonstrated normal/CXT menu-access defect.
+This follow-up is read-only and was appended only after the parent confirmed publication of `7f73e6dec665a25fb1f2e3127fba3cda11a745ca`.
+The parent's commit has corrected the obsolete HQ/support coverage described in priority 5 above.
+The separate Livens legacy line at `docs\events\019_infantry_spawn\systems\unit_family_coverage.md:39` still lists these IDs without clearly identifying their inactive disposition.
+
+All seven definitions in `common\units\livens_projector_support.txt` were read directly.
+They begin at lines 25, 78, 126, 174, 222, 270 and 318: base, chlorine, phosgene, mustard, lewisite, sarin and soman.
+Every definition has `active = no`, support-group placement, the same combat stats and `same_support_type = cbrn_offensive_delivery`.
+The base needs 200 projector chassis, while the six variants add different legacy agent cylinders and quantities.
+Those payload/name differences do not establish six distinct battlefield roles or a currently executable agent-selection consumer.
+There is no tabun unit definition, despite retained tabun sprite aliases and a file-local payload constant.
+
+| Consumer | Exact current source gate and result |
+| --- | --- |
+| Technology | `common\technologies\chaosx_technologies.txt:435-445` enables `livens_projector_equipment_1` and only `cbrn_chemical_projector_battery`. The improved/advanced technologies modify the consolidated battery and enable chassis models 2/3. No reviewed technology unlocks any of the seven old sub-units. |
+| Ordinary templates and history | Full literal source searches over `common`, `events` and `history` found no old Livens unit in a current division template, OOB, `unlock_subunit`, normal grant or spawn effect. The four gameplay files containing old IDs are the unit definitions, synchronized tokens, Livens trigger library and Event 027 trigger file. |
+| AI templates | `common\ai_templates\cbrn_regimental_support.txt:78-85,105-112` includes the consolidated battery only. The assault gate is `cbrn_country_can_field_chemical_assault_template`, which requires its technologies, real equipment stocks and defensive/HQ/contamination relevance. The artillery gate is `cbrn_country_can_field_chemical_artillery_template`, which additionally requires battlefield policy, payload, deployed HQ and a verified force target. Their exact gates are at `common\scripted_triggers\cbrn_regimental_support_triggers.txt:113-157`. No weight or eligibility conclusion is inferred beyond these literal consumer gates. |
+| Native projector raids | The nine current projector types in `common\raids\cbrn_chemical_land_raids.txt`, starting with unit requirements at lines 1490-1491 and ending at 2698-2699, require three infantry or motorized battalions plus one `cbrn_chemical_projector_battery`. None accepts a legacy Livens unit as the matching battery. |
+| CXT static grants | `common\scripted_effects\chaosx_test_country_unit_effects.txt:15-70` unlocks the consolidated battery at line 27 and omits all seven legacy units. Its chemical-assault template uses the consolidated battery at line 552. The header explicitly documents that legacy Livens IDs stay outside playable grants. |
+| CXT dynamic fallback | `chaosx_test_country_create_registered_unit_roster`, at the same file's lines 1091-1142, walks only the explicitly populated `global.chaosx_test_country_registered_frontline_subunits` and `global.chaosx_test_country_registered_support_subunits`. It does not scan all synchronized tokens or all unit definitions. Registration requires explicit temporary unit/anchor inputs at lines 959-1006. The only external current support-registration caller found is Event 039's `saboteur_cell` at `common\scripted_effects\039_murder_mystery_cxt_test_effects.txt:33-35`, with no Livens row. Therefore the generic meta-built support fallback at lines 1048-1070 supplies no current Livens path. |
+| Legacy profile helpers | The six agent template checks, combined template check and commander check in `common\scripted_triggers\chemical_livens_support_triggers.txt` have no external callers in the reviewed runtime source. The combined trigger's internal calls do not make the library reachable. |
+| Event 027 | `doctrine_research_ai_selected_track_has_force_fit`, at `common\scripted_triggers\027_doctrine_research_triggers.txt:266`, retains old Livens battalion checks in its combat-support branch at lines 406-412. They read a hypothetical existing battalion count and do not unlock, create or field a legacy unit. Under current source grants they are inert, but they remain obsolete dependency references. |
+| Presentation and token retention | `common\synchronized_dynamic_tokens\chaosx_tokens.txt:169-175`, existing GFX aliases and `localisation\english\chaosx_units_l_english.yml` retain the legacy names. Token and sprite availability does not itself grant a unit or register it with CXT. |
+
+The correct consolidation implication is to keep the one current Projector Battery in the thirteen-role mastery package, rather than expand mastery to count seven inert definitions.
+The seven are not justified as distinct retained playable roles by their current stats or consumers.
+The parent can record the inactive legacy disposition in the Event 019 coverage row and, if the user's latest removal instruction requires deleting retained overlaps rather than excluding them from grants, review a bounded removal of the old unit definitions, orphan Livens helper library, synchronized tokens, Event 027 force-fit reads and old presentation references.
+That is a parent decision and implementation review, not a new plan or gameplay patch by this auditor.
+Keep `livens_projector_chassis`, all three projector equipment technologies and the consolidated battery, because they serve the active native raid and CXT roles.
+Do not delete shared textures merely because a legacy alias uses them, and do not edit shared provider registries for these support-only bodies.
+
+Reference evidence: live `reference_read` consulted offline Unit modding lines 52-96 at revision `996fc17096970b294292a69d35afa0c13ebf78feb76c84d1979372fde7864714`, including the explicit `active` unlock contract at line 63.
+Technology modding lines 146-171 were read at revision `c5428838db20c4c812c66aff82cbafc58db3b73453c30436bce0d97436170bee` for `enable_subunits`.
+Installed `documentation\effects_documentation.md:8533-8547`, revision `2cdc93d26775990468eed167442f7a416b13059fb8fe07d139b54250b79209af`, was read for the country-scope `unlock_subunit` effect.
+Vanilla `common\units\engineer.txt:2-8` and `common\technologies\support.txt:98-101` were read as an inactive sub-unit explicitly unlocked by its technology.
+No detailed installed unit-definition documentation was found under `common\units`, so the `active` field claim rests on the cited offline unit reference and vanilla precedent, not a fabricated installed rule.
+
+The exposed `hoi4.tech_inspect(mode=unlocks,targetKind=sub_unit,targetId=livens_projector_support_chlorine,maxNodes=5,maxDepth=1)` route produced no result before the observation was terminated.
+No artifact, task handle, complete unlock inventory, render, comparison or native menu observation was obtained from that request, and backend completion remains unknown.
+The source classification above is therefore explicitly source evidence, rather than equivalent native proof.
+No HOI4 process, desktop control, log search or save mutation occurred.
+
+Follow-up fingerprints: `common\units\livens_projector_support.txt` SHA-256 `6272aaff8d7dc0b2593eebfe5c3bee4eb585f410b36fa68c5eedaa41dc079de1`, and current `common\scripted_effects\chaosx_test_country_unit_effects.txt` SHA-256 `3efd338bdb203e77f10b746a06c826292f32b8b01dfc652e0764a1317530c950`.
+No gameplay or shared registry was changed by this follow-up.

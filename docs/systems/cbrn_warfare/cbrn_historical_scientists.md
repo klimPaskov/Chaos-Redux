@@ -24,6 +24,12 @@ Traits use the existing vanilla scientist vocabulary plus `scientist_trait_inhum
 
 The inhumane traits describe method and conduct, not greater historical stature; low-skill perpetrators remain low-skill even when that trait is present. The roster table identifies later awards by date rather than implying the trait exists at recruitment.
 
+The [Rascher and Mengele date contract](../../specs/chaos_warfare_system_specs/corrections/2026-10-09_scientist_conduct_trait_dates.md) retains their January 1941 and January 1943 scientist access while awarding the conduct trait separately.
+Rascher's trait date represents the documented request of 15 May 1941, not a claimed first experiment.
+Mengele's trait begins with his documented Auschwitz assignment on 30 May 1943.
+The existing German startup and daily callbacks award each trait once, without granting offensive authorization.
+
+
 ## Roster
 
 | Country | Scientist | Specialization | Skill | Traits |
@@ -55,8 +61,8 @@ The inhumane traits describe method and conduct, not greater historical stature;
 | Germany | Walter Schreiber | Biological warfare | 2 | None |
 | Germany | Erich Traub | Biological warfare | 3 | Gifted Engineer |
 | Germany | Kurt Gutzeit | Biological warfare | 1 | Inhumane |
-| Germany | Sigmund Rascher | Biological warfare | 1 | Inhumane |
-| Germany | Josef Mengele | Biological warfare | 1 | Inhumane |
+| Germany | Sigmund Rascher | Biological warfare | 1 | Inhumane from 15 May 1941 |
+| Germany | Josef Mengele | Biological warfare | 1 | Inhumane from 30 May 1943 |
 | Germany | August Hirt | Chemical warfare | 1 | Inhumane CW from 25 November 1942 |
 | Germany | Ferdinand Flury | Chemical warfare | 3 | Bright |
 | Germany | Otto Ambros | Chemical warfare | 3 | Gifted Engineer |

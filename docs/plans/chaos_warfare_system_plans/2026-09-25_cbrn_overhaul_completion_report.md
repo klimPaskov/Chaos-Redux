@@ -414,3 +414,11 @@ The parent reviewed 58 protection and 15 MIO source scenarios, with exact unchan
 Event rendering exposes only the unchanged maintenance event and defers both repaired helpers, while its one-event comparison hits the 64 MiB graph ceiling.
 Native lifecycle, equipment, modifier delivery and the broader overhaul acceptance remain incomplete.
 No gameplay simplification, new periodic scan, cost retune or catalog-prose change belongs to this tranche.
+
+## Scientist chronology and retained unit roster
+
+The [roster review](2026-10-09_scientist_and_unit_roster_review.md) dates two conduct traits through the existing German helper, with all 67 identities, portraits, skills and recruitment dates retained.
+Twenty-two source assertions and native command-kind/scope checks cover the bounded repair, without proving holder transfer or live trait delivery.
+The seven Livens support variants are documented as inactive legacy definitions with no current normal or CXT unlock path in the reviewed source.
+They do not expand the thirteen-role playable CBRN package or its mastery lists.
+No gameplay simplification, asset change or event-catalog prose change belongs to this follow-up.
