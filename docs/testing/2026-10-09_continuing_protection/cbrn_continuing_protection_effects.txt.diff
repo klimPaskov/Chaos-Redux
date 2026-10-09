@@ -1,0 +1,268 @@
+--- common/scripted_effects/cbrn_continuing_protection_effects.txt.before
++++ common/scripted_effects/cbrn_continuing_protection_effects.txt.after
+@@ -0,0 +1,265 @@
++# Chaos Redux exact-state continuing chemical protection.
++# Records only successfully paid hospital time and applies authored live civilian
++# protection to the existing thirty-day loss callback. No payment or world pulse.
++# Paired interval arrays are merged at registration and copied during pruning.
++# Inputs/outputs and discrete-tick assumptions are recorded in the task handoff.
++
++# STATE. Input: temporary cutoff and truncate proof. End limit is read only when
++# truncate is supplied. Persistent paired arrays are replaced after traversal.
++cbrn_prune_hospital_protection_history = {
++	set_temp_variable = { cbrn_hospital_history_break = constant:cbrn_math.zero }
++	clear_temp_array = cbrn_hospital_history_kept_starts
++	clear_temp_array = cbrn_hospital_history_kept_ends
++	if = {
++		limit = { check_variable = { var = cbrn_hospital_protection_start_days^num value = cbrn_hospital_protection_end_days^num compare = equals } }
++		for_each_loop = {
++			array = cbrn_hospital_protection_start_days
++			value = cbrn_hospital_history_start
++			index = cbrn_hospital_history_index
++			break = cbrn_hospital_history_break
++			set_temp_variable = { cbrn_hospital_history_end = cbrn_hospital_protection_end_days^cbrn_hospital_history_index }
++			if = {
++				limit = { check_variable = { cbrn_hospital_history_truncate = constant:cbrn_proof.supplied } }
++				clamp_temp_variable = { var = cbrn_hospital_history_end max = cbrn_hospital_history_end_limit }
++			}
++			clamp_temp_variable = { var = cbrn_hospital_history_start min = cbrn_hospital_history_cutoff }
++			if = {
++				limit = { check_variable = { cbrn_hospital_history_end > cbrn_hospital_history_start } }
++				add_to_temp_array = { array = cbrn_hospital_history_kept_starts value = cbrn_hospital_history_start }
++				add_to_temp_array = { array = cbrn_hospital_history_kept_ends value = cbrn_hospital_history_end }
++			}
++		}
++		clear_array = cbrn_hospital_protection_start_days
++		clear_array = cbrn_hospital_protection_end_days
++		set_temp_variable = { cbrn_hospital_history_copy_break = constant:cbrn_math.zero }
++		for_each_loop = {
++			array = cbrn_hospital_history_kept_starts
++			value = cbrn_hospital_history_start
++			index = cbrn_hospital_history_index
++			break = cbrn_hospital_history_copy_break
++			add_to_array = { array = cbrn_hospital_protection_start_days value = cbrn_hospital_history_start }
++			add_to_array = { array = cbrn_hospital_protection_end_days value = cbrn_hospital_history_kept_ends^cbrn_hospital_history_index }
++		}
++	}
++}
++
++# STATE. Keep one authored period of idle history, or older time still owed by
++# an existing due callback. No count cap, periodic scan, or invented expiry.
++cbrn_prepare_hospital_history_cutoff = {
++	set_temp_variable = { cbrn_hospital_history_cutoff = global.num_days }
++	subtract_from_temp_variable = { cbrn_hospital_history_cutoff = constant:cbrn_chemical_continuing_death.period_days }
++	if = {
++		limit = { has_variable = cbrn_chemical_continuing_death_due_day }
++		set_temp_variable = { cbrn_hospital_history_due_start = cbrn_chemical_continuing_death_due_day }
++		subtract_from_temp_variable = { cbrn_hospital_history_due_start = constant:cbrn_chemical_continuing_death.period_days }
++		clamp_temp_variable = { var = cbrn_hospital_history_cutoff max = cbrn_hospital_history_due_start }
++	}
++}
++
++# STATE. Called only by successful paid hospital completion. Input duration is
++# the same existing temporary used for the timed flag and modifier.
++cbrn_record_paid_hospital_protection_interval = {
++	set_temp_variable = { cbrn_hospital_history_cutoff = constant:cbrn_math.zero }
++	cbrn_prepare_hospital_history_cutoff = yes
++	set_temp_variable = { cbrn_hospital_history_truncate = constant:cbrn_proof.missing }
++	cbrn_prune_hospital_protection_history = yes
++	if = {
++		limit = {
++			check_variable = { cbrn_response_duration_local > constant:cbrn_math.zero }
++			check_variable = { var = cbrn_hospital_protection_start_days^num value = cbrn_hospital_protection_end_days^num compare = equals }
++		}
++		set_temp_variable = { cbrn_hospital_paid_start = global.num_days }
++		set_temp_variable = { cbrn_hospital_paid_end = cbrn_hospital_paid_start }
++		add_to_temp_variable = { cbrn_hospital_paid_end = cbrn_response_duration_local }
++		set_temp_variable = { cbrn_hospital_paid_count = cbrn_hospital_protection_start_days^num }
++		if = {
++			limit = { check_variable = { cbrn_hospital_paid_count > constant:cbrn_math.zero } }
++			set_temp_variable = { cbrn_hospital_paid_last = cbrn_hospital_paid_count }
++			subtract_from_temp_variable = { cbrn_hospital_paid_last = constant:cbrn_math.one }
++			if = {
++				limit = { check_variable = { var = cbrn_hospital_paid_start value = cbrn_hospital_protection_end_days^cbrn_hospital_paid_last compare = less_than_or_equals } }
++				clamp_temp_variable = { var = cbrn_hospital_paid_end min = cbrn_hospital_protection_end_days^cbrn_hospital_paid_last }
++				set_variable = { var = cbrn_hospital_protection_end_days^cbrn_hospital_paid_last value = cbrn_hospital_paid_end }
++			}
++			else = {
++				add_to_array = { array = cbrn_hospital_protection_start_days value = cbrn_hospital_paid_start }
++				add_to_array = { array = cbrn_hospital_protection_end_days value = cbrn_hospital_paid_end }
++			}
++		}
++		else = {
++			add_to_array = { array = cbrn_hospital_protection_start_days value = cbrn_hospital_paid_start }
++			add_to_array = { array = cbrn_hospital_protection_end_days value = cbrn_hospital_paid_end }
++		}
++	}
++}
++
++# STATE. Response invalidation closes only future hospital service, preserving
++# paid elapsed intervals for the already scheduled death window. Control and
++# verified-alert reset callers supply their exact native/reset boundary day.
++cbrn_end_active_hospital_protection = {
++	set_temp_variable = { cbrn_hospital_history_cutoff = constant:cbrn_math.zero }
++	cbrn_prepare_hospital_history_cutoff = yes
++	set_temp_variable = { cbrn_hospital_history_truncate = constant:cbrn_proof.supplied }
++	set_temp_variable = { cbrn_hospital_history_end_limit = global.num_days }
++	cbrn_prune_hospital_protection_history = yes
++	clr_state_flag = cbrn_hospitals_utilities_secured
++	if = {
++		limit = { has_dynamic_modifier = { modifier = cbrn_hospitals_utilities_protected } }
++		remove_dynamic_modifier = { modifier = cbrn_hospitals_utilities_protected }
++	}
++}
++
++# STATE. Terminal contamination cleanup retains recent paid time that could
++# overlap a later contamination window, and drops history too old to be used.
++cbrn_prune_idle_hospital_protection_history = {
++	set_temp_variable = { cbrn_hospital_history_cutoff = constant:cbrn_math.zero }
++	cbrn_prepare_hospital_history_cutoff = yes
++	set_temp_variable = { cbrn_hospital_history_truncate = constant:cbrn_proof.missing }
++	cbrn_prune_hospital_protection_history = yes
++}
++
++# STATE. Inputs: start/end of the scheduled period. Output fraction must exist
++# in the caller. Stored registration rows are chronological and union-merged.
++cbrn_measure_hospital_protection_overlap = {
++	set_temp_variable = { cbrn_continuing_hospital_fraction = constant:cbrn_math.zero }
++	set_temp_variable = { cbrn_hospital_overlap_days = constant:cbrn_math.zero }
++	set_temp_variable = { cbrn_hospital_overlap_cursor = cbrn_continuing_window_start }
++	set_temp_variable = { cbrn_hospital_overlap_break = constant:cbrn_math.zero }
++	if = {
++		limit = {
++			check_variable = { cbrn_continuing_window_end > cbrn_continuing_window_start }
++			check_variable = { var = cbrn_hospital_protection_start_days^num value = cbrn_hospital_protection_end_days^num compare = equals }
++		}
++		for_each_loop = {
++			array = cbrn_hospital_protection_start_days
++			value = cbrn_hospital_overlap_start
++			index = cbrn_hospital_overlap_index
++			break = cbrn_hospital_overlap_break
++			set_temp_variable = { cbrn_hospital_overlap_end = cbrn_hospital_protection_end_days^cbrn_hospital_overlap_index }
++			clamp_temp_variable = { var = cbrn_hospital_overlap_start min = cbrn_hospital_overlap_cursor }
++			clamp_temp_variable = { var = cbrn_hospital_overlap_end max = cbrn_continuing_window_end }
++			if = {
++				limit = { check_variable = { cbrn_hospital_overlap_end > cbrn_hospital_overlap_start } }
++				set_temp_variable = { cbrn_hospital_overlap_piece = cbrn_hospital_overlap_end }
++				subtract_from_temp_variable = { cbrn_hospital_overlap_piece = cbrn_hospital_overlap_start }
++				add_to_temp_variable = { cbrn_hospital_overlap_days = cbrn_hospital_overlap_piece }
++				set_temp_variable = { cbrn_hospital_overlap_cursor = cbrn_hospital_overlap_end }
++			}
++		}
++		set_temp_variable = { cbrn_continuing_hospital_fraction = cbrn_hospital_overlap_days }
++		divide_temp_variable = { cbrn_continuing_hospital_fraction = constant:cbrn_chemical_continuing_death.period_days }
++		clamp_temp_variable = { var = cbrn_continuing_hospital_fraction min = constant:cbrn_math.zero max = constant:cbrn_math.one }
++	}
++}
++
++# STATE. Pure class/table adapter. Preserve inherited public calculator inputs
++# and outputs. Reads current real-equipment snapshots, with hospital medical
++# capacity evaluated both without and with the authored medical bonus.
++cbrn_calculate_continuing_civilian_protection = {
++	set_temp_variable = { cbrn_continuing_saved_0 = cbrn_action_agent_class }
++	set_temp_variable = { cbrn_continuing_saved_1 = cbrn_protection_respiratory }
++	set_temp_variable = { cbrn_continuing_saved_2 = cbrn_protection_skin }
++	set_temp_variable = { cbrn_continuing_saved_3 = cbrn_protection_antidote }
++	set_temp_variable = { cbrn_continuing_saved_4 = cbrn_protection_decontamination }
++	set_temp_variable = { cbrn_continuing_saved_5 = cbrn_protection_medical }
++	set_temp_variable = { cbrn_continuing_saved_6 = cbrn_protection_warning }
++	set_temp_variable = { cbrn_continuing_saved_7 = cbrn_action_effective_protection }
++	set_temp_variable = { cbrn_continuing_saved_8 = cbrn_action_casualty_mult }
++	set_temp_variable = { cbrn_continuing_saved_9 = cbrn_action_mask_only_casualty_mult }
++	set_temp_variable = { cbrn_continuing_saved_10 = cbrn_action_disruption_mult }
++	set_temp_variable = { cbrn_continuing_saved_11 = cbrn_action_contamination_mult }
++	set_temp_variable = { cbrn_continuing_saved_12 = cbrn_action_protection_resolved_proof }
++	set_temp_variable = { cbrn_continuing_saved_controller_medical = cbrn_state_controller_medical_capacity }
++	controller = { cbrn_refresh_country_civilian_decontamination_pool = yes }
++	# Caller storage exports the shared snapshot's pre-hospital medical base.
++	set_temp_variable = { cbrn_state_controller_medical_capacity = constant:cbrn_math.zero }
++	cbrn_refresh_state_civilian_mask_snapshot = yes
++	set_temp_variable = { cbrn_action_agent_class = cbrn_last_chemical_agent_class }
++	set_temp_variable = { cbrn_protection_respiratory = cbrn_civilian_respiratory_protection }
++	set_temp_variable = { cbrn_protection_skin = cbrn_civilian_skin_protection }
++	set_temp_variable = { cbrn_protection_antidote = cbrn_civilian_antidote_protection }
++	set_temp_variable = { cbrn_protection_decontamination = cbrn_civilian_decontamination_protection }
++	set_temp_variable = { cbrn_protection_warning = cbrn_civilian_warning_protection }
++	set_temp_variable = { cbrn_continuing_medical_base = cbrn_state_controller_medical_capacity }
++	clamp_temp_variable = { var = cbrn_continuing_medical_base min = constant:cbrn_meter.minimum max = constant:cbrn_meter.maximum }
++	set_temp_variable = { cbrn_protection_medical = cbrn_continuing_medical_base }
++	set_temp_variable = { cbrn_action_casualty_mult = constant:cbrn_math.one }
++	set_temp_variable = { cbrn_action_mask_only_casualty_mult = constant:cbrn_math.one }
++	set_temp_variable = { cbrn_action_effective_protection = constant:cbrn_math.zero }
++	set_temp_variable = { cbrn_action_protection_resolved_proof = constant:cbrn_proof.missing }
++	cbrn_calculate_action_protection = yes
++	set_temp_variable = { cbrn_continuing_mask_only_mult = cbrn_action_mask_only_casualty_mult }
++	set_temp_variable = { cbrn_continuing_without_hospital_mult = cbrn_action_casualty_mult }
++	set_temp_variable = { cbrn_protection_medical = cbrn_continuing_medical_base }
++	add_to_temp_variable = { cbrn_protection_medical = constant:cbrn_protection_response.hospital_medical_bonus }
++	clamp_temp_variable = { var = cbrn_protection_medical min = constant:cbrn_meter.minimum max = constant:cbrn_meter.maximum }
++	cbrn_calculate_action_protection = yes
++	set_temp_variable = { cbrn_continuing_with_hospital_mult = cbrn_action_casualty_mult }
++	set_temp_variable = { cbrn_action_agent_class = cbrn_continuing_saved_0 }
++	set_temp_variable = { cbrn_protection_respiratory = cbrn_continuing_saved_1 }
++	set_temp_variable = { cbrn_protection_skin = cbrn_continuing_saved_2 }
++	set_temp_variable = { cbrn_protection_antidote = cbrn_continuing_saved_3 }
++	set_temp_variable = { cbrn_protection_decontamination = cbrn_continuing_saved_4 }
++	set_temp_variable = { cbrn_protection_medical = cbrn_continuing_saved_5 }
++	set_temp_variable = { cbrn_protection_warning = cbrn_continuing_saved_6 }
++	set_temp_variable = { cbrn_action_effective_protection = cbrn_continuing_saved_7 }
++	set_temp_variable = { cbrn_action_casualty_mult = cbrn_continuing_saved_8 }
++	set_temp_variable = { cbrn_action_mask_only_casualty_mult = cbrn_continuing_saved_9 }
++	set_temp_variable = { cbrn_action_disruption_mult = cbrn_continuing_saved_10 }
++	set_temp_variable = { cbrn_action_contamination_mult = cbrn_continuing_saved_11 }
++	set_temp_variable = { cbrn_action_protection_resolved_proof = cbrn_continuing_saved_12 }
++	set_temp_variable = { cbrn_state_controller_medical_capacity = cbrn_continuing_saved_controller_medical }
++}
++
++# STATE. In/out: caller-owned chaos_state_deaths_mult and scaled percent.
++# Current terminal hazard is quantized on percent before population, matching
++# the original rate arithmetic. Environment and bounded protection occur once.
++# Only current discrete stock/fitting/condition/controller inputs are sampled.
++cbrn_apply_continuing_civilian_protection = {
++	set_temp_variable = { cbrn_continuing_environment_mult = chaos_state_deaths_mult }
++	set_temp_variable = { cbrn_continuing_window_end = cbrn_chemical_continuing_death_due_day }
++	set_temp_variable = { cbrn_continuing_window_start = cbrn_continuing_window_end }
++	subtract_from_temp_variable = { cbrn_continuing_window_start = constant:cbrn_chemical_continuing_death.period_days }
++	set_temp_variable = { cbrn_continuing_hospital_fraction = constant:cbrn_math.zero }
++	cbrn_measure_hospital_protection_overlap = yes
++	set_temp_variable = { cbrn_continuing_mask_only_mult = constant:cbrn_math.one }
++	set_temp_variable = { cbrn_continuing_without_hospital_mult = constant:cbrn_math.one }
++	set_temp_variable = { cbrn_continuing_with_hospital_mult = constant:cbrn_math.one }
++	if = {
++		limit = {
++			has_variable = cbrn_last_chemical_agent_class
++			controller = { exists = yes }
++		}
++		cbrn_calculate_continuing_civilian_protection = yes
++	}
++	set_temp_variable = { cbrn_continuing_unprotected_days_fraction = constant:cbrn_math.one }
++	subtract_from_temp_variable = { cbrn_continuing_unprotected_days_fraction = cbrn_continuing_hospital_fraction }
++	set_temp_variable = { cbrn_continuing_protection_mult = cbrn_continuing_without_hospital_mult }
++	multiply_temp_variable = { cbrn_continuing_protection_mult = cbrn_continuing_unprotected_days_fraction }
++	set_temp_variable = { cbrn_continuing_hospital_piece = cbrn_continuing_with_hospital_mult }
++	multiply_temp_variable = { cbrn_continuing_hospital_piece = cbrn_continuing_hospital_fraction }
++	add_to_temp_variable = { cbrn_continuing_protection_mult = cbrn_continuing_hospital_piece }
++	set_temp_variable = { chaos_state_deaths_mult = constant:cbrn_math.one }
++	if = {
++		limit = { controller = { exists = yes } }
++		cbrn_designer_apply_blister_continuing_death_treatment = yes
++	}
++	multiply_temp_variable = { cbrn_continuing_protection_mult = chaos_state_deaths_mult }
++	set_temp_variable = { cbrn_continuing_protection_floor = cbrn_continuing_mask_only_mult }
++	multiply_temp_variable = { cbrn_continuing_protection_floor = constant:cbrn_hazard_budget.residual_floor }
++	clamp_temp_variable = { var = cbrn_continuing_protection_mult min = cbrn_continuing_protection_floor max = constant:cbrn_math.one }
++	set_temp_variable = { chaos_state_deaths_mult = cbrn_continuing_environment_mult }
++	multiply_temp_variable = { chaos_state_deaths_mult = cbrn_continuing_protection_mult }
++	if = {
++		limit = { controller = { exists = yes has_idea = cbrn_terminal_hazard_doctrine_spirit } }
++		multiply_temp_variable = { chaos_state_deaths_percent = constant:cbrn_doctrine_spirit.terminal_hazard.casualty_mult }
++	}
++}
++
++# STATE. Called after the existing successful due callback. Preserve all future
++# service, but discard intervals before the next authored period's start.
++cbrn_finish_continuing_hospital_protection_window = {
++	set_temp_variable = { cbrn_hospital_history_cutoff = global.num_days }
++	set_temp_variable = { cbrn_hospital_history_truncate = constant:cbrn_proof.missing }
++	cbrn_prune_hospital_protection_history = yes
++}

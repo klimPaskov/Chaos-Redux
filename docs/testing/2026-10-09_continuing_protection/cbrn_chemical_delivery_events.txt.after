@@ -1,0 +1,223 @@
+# ============================================================================
+# CHAOS REDUX - CBRN CHEMICAL DELIVERY STATE RECOVERY EVENTS
+# ============================================================================
+# Overview:
+# - Performs exact-state expiry, medical recovery, and evidence decay for the
+#   shared chemical consequence dispatcher.
+# - Every event is scheduled from the affected state. No global periodic
+#   country or state iteration is introduced.
+# - Due-day checks make overlapping exposures safe: an older event cannot
+#   erase a later record whose expiry was extended.
+# ============================================================================
+
+add_namespace = cbrn_delivery
+
+state_event = {
+	id = cbrn_delivery.1
+	hidden = yes
+	is_triggered_only = yes
+
+	trigger = {
+		has_variable = cbrn_chemical_contamination_expiry_day
+	}
+
+	immediate = {
+		set_temp_variable = { cbrn_delivery_current_day = global.num_days }
+		if = {
+			limit = {
+				check_variable = {
+					var = cbrn_chemical_contamination_expiry_day
+					value = cbrn_delivery_current_day
+					compare = less_than_or_equals
+				}
+			}
+		}
+		else = {
+			set_temp_variable = { cbrn_contamination_remaining_days = cbrn_chemical_contamination_expiry_day }
+			set_temp_variable = { cbrn_contamination_current_day_negative = cbrn_delivery_current_day }
+			multiply_temp_variable = { cbrn_contamination_current_day_negative = constant:cbrn_payload_math.negation_multiplier }
+			add_to_temp_variable = { cbrn_contamination_remaining_days = cbrn_contamination_current_day_negative }
+			clamp_temp_variable = { var = cbrn_contamination_remaining_days min = constant:cbrn_scheduler.contamination_minimum_days max = constant:cbrn_scheduler.contamination_maximum_days }
+			round_temp_variable = cbrn_contamination_remaining_days
+			state_event = { id = cbrn_delivery.1 days = cbrn_contamination_remaining_days }
+		}
+		if = {
+			limit = {
+				check_variable = {
+					var = cbrn_chemical_contamination_expiry_day
+					value = cbrn_delivery_current_day
+					compare = less_than_or_equals
+				}
+			}
+			if = {
+				limit = { has_dynamic_modifier = { modifier = chem_state_contamination } }
+				remove_dynamic_modifier = { modifier = chem_state_contamination }
+			}
+			cbrn_air_cleanliness_clear_chemical_state_contribution = yes
+			clear_variable = cbrn_chemical_contamination
+			clear_variable = cbrn_chemical_contamination_class
+			clear_variable = cbrn_chemical_contamination_duration_days
+			clear_variable = cbrn_chemical_contamination_expiry_day
+			clear_variable = cbrn_chemical_effective_strength
+			clear_variable = cbrn_chemical_supplies
+			clear_variable = cbrn_chemical_supply_impact
+			clear_variable = cbrn_chemical_speed
+			clear_variable = cbrn_chemical_truck_attrition
+			clear_variable = cbrn_chemical_attack
+			clear_variable = cbrn_chemical_breakthrough
+			clear_variable = cbrn_chemical_continuing_death_rate
+			clear_variable = cbrn_chemical_continuing_death_due_day
+			cbrn_prune_idle_hospital_protection_history = yes
+			set_variable = { cbrn_last_chemical_cleanup_date = cbrn_delivery_current_day }
+			cbrn_achievement_try_contain_nerve_episode = yes
+		}
+	}
+}
+
+state_event = {
+	id = cbrn_delivery.2
+	hidden = yes
+	is_triggered_only = yes
+
+	trigger = {
+		has_variable = cbrn_medical_recovery_due_day
+		has_variable = cbrn_medical_saturation
+	}
+
+	immediate = {
+		set_temp_variable = { cbrn_delivery_current_day = global.num_days }
+		if = {
+			limit = {
+				check_variable = {
+					var = cbrn_medical_recovery_due_day
+					value = cbrn_delivery_current_day
+					compare = less_than_or_equals
+				}
+			}
+			subtract_from_variable = { cbrn_medical_saturation = constant:cbrn_chemical_dispatch.medical_recovery_step }
+			clamp_variable = { var = cbrn_medical_saturation min = constant:cbrn_chemical_dispatch.state_medical_minimum max = constant:cbrn_chemical_dispatch.state_medical_maximum }
+			if = {
+				limit = { check_variable = { cbrn_medical_saturation > constant:cbrn_math.zero } }
+				set_temp_variable = { cbrn_medical_recovery_days_local = constant:cbrn_chemical_dispatch.medical_recovery_days }
+				round_temp_variable = cbrn_medical_recovery_days_local
+				set_variable = { cbrn_medical_recovery_due_day = cbrn_delivery_current_day }
+				add_to_variable = { cbrn_medical_recovery_due_day = cbrn_medical_recovery_days_local }
+				state_event = { id = cbrn_delivery.2 days = cbrn_medical_recovery_days_local }
+			}
+			else = {
+				clear_variable = cbrn_medical_saturation
+				clear_variable = cbrn_medical_recovery_due_day
+			}
+		}
+	}
+}
+
+state_event = {
+	id = cbrn_delivery.3
+	hidden = yes
+	is_triggered_only = yes
+
+	trigger = {
+		has_variable = cbrn_evidence_decay_due_day
+		has_variable = cbrn_evidence_quality
+	}
+
+	immediate = {
+		set_temp_variable = { cbrn_delivery_current_day = global.num_days }
+		if = {
+			limit = {
+				check_variable = {
+					var = cbrn_evidence_decay_due_day
+					value = cbrn_delivery_current_day
+					compare = less_than_or_equals
+				}
+			}
+			subtract_from_variable = { cbrn_evidence_quality = constant:cbrn_chemical_dispatch.evidence_decay_step }
+			clamp_variable = { var = cbrn_evidence_quality min = constant:cbrn_chemical_dispatch.state_evidence_minimum max = constant:cbrn_chemical_dispatch.state_evidence_maximum }
+			cbrn_refresh_state_attribution = yes
+			if = {
+				limit = { check_variable = { cbrn_evidence_quality > constant:cbrn_math.zero } }
+				set_temp_variable = { cbrn_evidence_decay_days_local = constant:cbrn_chemical_dispatch.evidence_decay_days }
+				round_temp_variable = cbrn_evidence_decay_days_local
+				set_variable = { cbrn_evidence_decay_due_day = cbrn_delivery_current_day }
+				add_to_variable = { cbrn_evidence_decay_due_day = cbrn_evidence_decay_days_local }
+				state_event = { id = cbrn_delivery.3 days = cbrn_evidence_decay_days_local }
+			}
+			else = {
+				clear_variable = cbrn_evidence_quality
+				clear_variable = cbrn_attribution_state
+				clear_variable = cbrn_evidence_decay_due_day
+			}
+		}
+	}
+}
+
+state_event = {
+	id = cbrn_delivery.4
+	hidden = yes
+	is_triggered_only = yes
+
+	trigger = {
+		has_variable = cbrn_chemical_continuing_death_due_day
+	}
+
+	immediate = {
+		set_temp_variable = { cbrn_delivery_current_day = global.num_days }
+		set_temp_variable = { cbrn_continuing_death_period = constant:cbrn_chemical_continuing_death.period_days }
+		round_temp_variable = cbrn_continuing_death_period
+		if = {
+			limit = {
+				check_variable = {
+					var = cbrn_chemical_continuing_death_due_day
+					value = cbrn_delivery_current_day
+					compare = less_than_or_equals
+				}
+				has_variable = cbrn_chemical_contamination_expiry_day
+				check_variable = { cbrn_chemical_contamination_expiry_day > cbrn_delivery_current_day }
+				has_variable = cbrn_chemical_continuing_death_rate
+				check_variable = { cbrn_chemical_continuing_death_rate > constant:cbrn_math.zero }
+			}
+			if = {
+				limit = { NOT = { has_global_flag = settings_chaos_deaths_disabled } }
+				set_temp_variable = { chaos_state_deaths_percent = cbrn_chemical_continuing_death_rate }
+				set_temp_variable = { chaos_state_deaths_mult = constant:cbrn_math.one }
+				chaos_meter_apply_outbreak_state_death_environment_multiplier = yes
+				cbrn_apply_continuing_civilian_protection = yes
+				set_temp_variable = { chaos_state_deaths_cap_factor = constant:cbrn_chemical_continuing_death.cap_factor }
+				set_temp_variable = { chaos_state_deaths_random_min = constant:chaos_meter_state_death_dynamic.outbreak_random_min }
+				set_temp_variable = { chaos_state_deaths_random_span = constant:chaos_meter_state_death_dynamic.outbreak_random_span }
+				set_temp_variable = { chaos_deaths_reason = constant:chaos_meter_deaths_reason.chemical_attack }
+				set_temp_variable = { chaos_state_deaths_percent_divisor = constant:cbrn_chemical_continuing_death.scale }
+				set_temp_variable = { chaos_deaths_change = constant:cbrn_math.zero }
+				chaos_meter_register_state_civilian_deaths_percent = yes
+				cbrn_achievement_record_nerve_episode_deaths = yes
+			}
+			cbrn_finish_continuing_hospital_protection_window = yes
+			set_variable = { cbrn_chemical_continuing_death_due_day = cbrn_delivery_current_day }
+			add_to_variable = { cbrn_chemical_continuing_death_due_day = cbrn_continuing_death_period }
+			state_event = { id = cbrn_delivery.4 days = cbrn_continuing_death_period }
+		}
+		else = {
+			if = {
+				limit = {
+					OR = {
+						NOT = { has_variable = cbrn_chemical_contamination_expiry_day }
+						check_variable = { var = cbrn_chemical_contamination_expiry_day value = cbrn_delivery_current_day compare = less_than_or_equals }
+					}
+				}
+				clear_variable = cbrn_chemical_continuing_death_due_day
+				cbrn_prune_idle_hospital_protection_history = yes
+			}
+			else_if = {
+				limit = { check_variable = { var = cbrn_chemical_continuing_death_due_day value = cbrn_delivery_current_day compare = less_than_or_equals } }
+				# A due zero-rate pass consumes its elapsed window without a loss.
+				cbrn_finish_continuing_hospital_protection_window = yes
+				set_variable = { cbrn_chemical_continuing_death_due_day = cbrn_delivery_current_day }
+				add_to_variable = { cbrn_chemical_continuing_death_due_day = cbrn_continuing_death_period }
+				state_event = { id = cbrn_delivery.4 days = cbrn_continuing_death_period }
+			}
+			# An already-future due date belongs to its pending receiver.
+			# Early and stale duplicate callbacks neither move it nor enqueue another.
+		}
+	}
+}

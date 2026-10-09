@@ -1,0 +1,621 @@
+{
+  "op": "call",
+  "name": "hoi4.probability_evaluate",
+  "arguments": {
+    "adapter": "decision_ai_will_do",
+    "source": {
+      "path": "common/decisions/cbrn_protection_decisions.txt",
+      "snapshotPath": "docs/testing/2026-10-09_hospital_entry_probability/cbrn_protection_decisions.txt.before",
+      "expectedSourceHash": "d263e1803a5dbd2b760f78a4f79a29edfdd910b770b79a78600220327afdc790"
+    },
+    "candidatePool": [
+      "cbrn_protect_hospitals_and_utilities"
+    ],
+    "scenarioSet": {
+      "schemaVersion": "1.0",
+      "id": "HOSPITAL_ENTRY_AI_BASELINE_2026_10_09",
+      "workspaceId": "mod_chaos_redux_ea3b2d67c2c0",
+      "surfaceHint": "decision_ai_will_do",
+      "description": "Named synthetic one-target score and gate diagnostics for cbrn_protect_hospitals_and_utilities. ENG/state 16 is a fixture binding, not a live campaign target or complete national target pool. A population of 1000 yields source-calculated quoted values of 30 masks and 20 support under current constants; hospital PP is 10. Exact-alert cases explicitly supply those normal state quote variables as hypothetical registration output. Clean/contamination-only baseline cases omit them because the current dormant alert writer is the only active source; this keeps the existing missing-writer condition visible. The adapter reports AI willingness scores only and does not normalize them to a decision-selection probability.",
+      "scenarios": [
+        {
+          "id": "HP_CLEAN_NO_ALERT",
+          "label": "Synthetic ENG/state 16; no raid alert, zero chemical contamination, and no quote costs registered in this baseline; population below the high-population AI threshold.",
+          "date": "1936.1.1",
+          "actor": "ENG",
+          "state": {
+            "is_ai": true,
+            "is_actual_nonhuman_country": false,
+            "has_capitulated": false,
+            "political_power": 10,
+            "has_equipment": true,
+            "scope.any_controlled_state": true,
+            "num_equipment@gas_mask_equipment": 30,
+            "num_equipment@gas_mask_equipment_reconditioned": 0,
+            "num_equipment@gas_mask_equipment_1": 30,
+            "num_equipment@gas_mask_equipment_2": 0,
+            "num_equipment@gas_mask_equipment_3": 0,
+            "num_equipment@gas_mask_equipment_4": 0,
+            "num_equipment@support_equipment": 20
+          },
+          "flags": [],
+          "controls": {
+            "16": "ENG"
+          },
+          "scopes": {
+            "ROOT": {
+              "id": "ENG",
+              "type": "country",
+              "actor": "ENG",
+              "state": {
+                "is_ai": true,
+                "is_actual_nonhuman_country": false,
+                "has_capitulated": false,
+                "political_power": 10,
+                "has_equipment": true,
+                "scope.any_controlled_state": true,
+                "num_equipment@gas_mask_equipment": 30,
+                "num_equipment@gas_mask_equipment_reconditioned": 0,
+                "num_equipment@gas_mask_equipment_1": 30,
+                "num_equipment@gas_mask_equipment_2": 0,
+                "num_equipment@gas_mask_equipment_3": 0,
+                "num_equipment@gas_mask_equipment_4": 0,
+                "num_equipment@support_equipment": 20
+              },
+              "flags": []
+            },
+            "FROM": {
+              "id": "16",
+              "type": "state",
+              "actor": "ENG",
+              "state": {
+                "exists": true,
+                "owner": "ENG",
+                "controller": "ENG",
+                "is_capital": false,
+                "state_population_k": 1000,
+                "cbrn_chemical_contamination": 0
+              },
+              "flags": []
+            }
+          }
+        },
+        {
+          "id": "HP_EXACT_ALERT_NO_CONTAMINATION",
+          "label": "Synthetic pre-repair alert registration: alert flag present, contamination zero, quote variables derived at 1000 population (mask 30, support 20). The alert itself has no active production event writer in this baseline.",
+          "date": "1936.1.1",
+          "actor": "ENG",
+          "state": {
+            "is_ai": true,
+            "is_actual_nonhuman_country": false,
+            "has_capitulated": false,
+            "political_power": 10,
+            "has_equipment": true,
+            "scope.any_controlled_state": true,
+            "num_equipment@gas_mask_equipment": 30,
+            "num_equipment@gas_mask_equipment_reconditioned": 0,
+            "num_equipment@gas_mask_equipment_1": 30,
+            "num_equipment@gas_mask_equipment_2": 0,
+            "num_equipment@gas_mask_equipment_3": 0,
+            "num_equipment@gas_mask_equipment_4": 0,
+            "num_equipment@support_equipment": 20
+          },
+          "flags": [],
+          "controls": {
+            "16": "ENG"
+          },
+          "scopes": {
+            "ROOT": {
+              "id": "ENG",
+              "type": "country",
+              "actor": "ENG",
+              "state": {
+                "is_ai": true,
+                "is_actual_nonhuman_country": false,
+                "has_capitulated": false,
+                "political_power": 10,
+                "has_equipment": true,
+                "scope.any_controlled_state": true,
+                "num_equipment@gas_mask_equipment": 30,
+                "num_equipment@gas_mask_equipment_reconditioned": 0,
+                "num_equipment@gas_mask_equipment_1": 30,
+                "num_equipment@gas_mask_equipment_2": 0,
+                "num_equipment@gas_mask_equipment_3": 0,
+                "num_equipment@gas_mask_equipment_4": 0,
+                "num_equipment@support_equipment": 20
+              },
+              "flags": []
+            },
+            "FROM": {
+              "id": "16",
+              "type": "state",
+              "actor": "ENG",
+              "state": {
+                "exists": true,
+                "owner": "ENG",
+                "controller": "ENG",
+                "is_capital": false,
+                "state_population_k": 1000,
+                "cbrn_chemical_contamination": 0,
+                "cbrn_response_hospital_mask_cost": 30,
+                "cbrn_response_hospital_support_cost": 20
+              },
+              "flags": [
+                "cbrn_chemical_raid_alert_active"
+              ]
+            }
+          }
+        },
+        {
+          "id": "HP_CONTAMINATION_NO_ALERT",
+          "label": "Synthetic state with positive chemical contamination but no raid-alert flag and no quote variables registered; tests the accepted contamination relevance path against the strict-alert baseline.",
+          "date": "1936.1.1",
+          "actor": "ENG",
+          "state": {
+            "is_ai": true,
+            "is_actual_nonhuman_country": false,
+            "has_capitulated": false,
+            "political_power": 10,
+            "has_equipment": true,
+            "scope.any_controlled_state": true,
+            "num_equipment@gas_mask_equipment": 30,
+            "num_equipment@gas_mask_equipment_reconditioned": 0,
+            "num_equipment@gas_mask_equipment_1": 30,
+            "num_equipment@gas_mask_equipment_2": 0,
+            "num_equipment@gas_mask_equipment_3": 0,
+            "num_equipment@gas_mask_equipment_4": 0,
+            "num_equipment@support_equipment": 20
+          },
+          "flags": [],
+          "controls": {
+            "16": "ENG"
+          },
+          "scopes": {
+            "ROOT": {
+              "id": "ENG",
+              "type": "country",
+              "actor": "ENG",
+              "state": {
+                "is_ai": true,
+                "is_actual_nonhuman_country": false,
+                "has_capitulated": false,
+                "political_power": 10,
+                "has_equipment": true,
+                "scope.any_controlled_state": true,
+                "num_equipment@gas_mask_equipment": 30,
+                "num_equipment@gas_mask_equipment_reconditioned": 0,
+                "num_equipment@gas_mask_equipment_1": 30,
+                "num_equipment@gas_mask_equipment_2": 0,
+                "num_equipment@gas_mask_equipment_3": 0,
+                "num_equipment@gas_mask_equipment_4": 0,
+                "num_equipment@support_equipment": 20
+              },
+              "flags": []
+            },
+            "FROM": {
+              "id": "16",
+              "type": "state",
+              "actor": "ENG",
+              "state": {
+                "exists": true,
+                "owner": "ENG",
+                "controller": "ENG",
+                "is_capital": false,
+                "state_population_k": 1000,
+                "cbrn_chemical_contamination": 1
+              },
+              "flags": []
+            }
+          }
+        },
+        {
+          "id": "HP_ALERT_AND_CONTAMINATION",
+          "label": "Synthetic alert and positive contamination together, with the same 1000-population quote values.",
+          "date": "1936.1.1",
+          "actor": "ENG",
+          "state": {
+            "is_ai": true,
+            "is_actual_nonhuman_country": false,
+            "has_capitulated": false,
+            "political_power": 10,
+            "has_equipment": true,
+            "scope.any_controlled_state": true,
+            "num_equipment@gas_mask_equipment": 30,
+            "num_equipment@gas_mask_equipment_reconditioned": 0,
+            "num_equipment@gas_mask_equipment_1": 30,
+            "num_equipment@gas_mask_equipment_2": 0,
+            "num_equipment@gas_mask_equipment_3": 0,
+            "num_equipment@gas_mask_equipment_4": 0,
+            "num_equipment@support_equipment": 20
+          },
+          "flags": [],
+          "controls": {
+            "16": "ENG"
+          },
+          "scopes": {
+            "ROOT": {
+              "id": "ENG",
+              "type": "country",
+              "actor": "ENG",
+              "state": {
+                "is_ai": true,
+                "is_actual_nonhuman_country": false,
+                "has_capitulated": false,
+                "political_power": 10,
+                "has_equipment": true,
+                "scope.any_controlled_state": true,
+                "num_equipment@gas_mask_equipment": 30,
+                "num_equipment@gas_mask_equipment_reconditioned": 0,
+                "num_equipment@gas_mask_equipment_1": 30,
+                "num_equipment@gas_mask_equipment_2": 0,
+                "num_equipment@gas_mask_equipment_3": 0,
+                "num_equipment@gas_mask_equipment_4": 0,
+                "num_equipment@support_equipment": 20
+              },
+              "flags": []
+            },
+            "FROM": {
+              "id": "16",
+              "type": "state",
+              "actor": "ENG",
+              "state": {
+                "exists": true,
+                "owner": "ENG",
+                "controller": "ENG",
+                "is_capital": false,
+                "state_population_k": 1000,
+                "cbrn_chemical_contamination": 1,
+                "cbrn_response_hospital_mask_cost": 30,
+                "cbrn_response_hospital_support_cost": 20
+              },
+              "flags": [
+                "cbrn_chemical_raid_alert_active"
+              ]
+            }
+          }
+        },
+        {
+          "id": "HP_ALREADY_SECURED",
+          "label": "Synthetic alert target with the duplicate hospital-secured flag already set and quote values present.",
+          "date": "1936.1.1",
+          "actor": "ENG",
+          "state": {
+            "is_ai": true,
+            "is_actual_nonhuman_country": false,
+            "has_capitulated": false,
+            "political_power": 10,
+            "has_equipment": true,
+            "scope.any_controlled_state": true,
+            "num_equipment@gas_mask_equipment": 30,
+            "num_equipment@gas_mask_equipment_reconditioned": 0,
+            "num_equipment@gas_mask_equipment_1": 30,
+            "num_equipment@gas_mask_equipment_2": 0,
+            "num_equipment@gas_mask_equipment_3": 0,
+            "num_equipment@gas_mask_equipment_4": 0,
+            "num_equipment@support_equipment": 20
+          },
+          "flags": [],
+          "controls": {
+            "16": "ENG"
+          },
+          "scopes": {
+            "ROOT": {
+              "id": "ENG",
+              "type": "country",
+              "actor": "ENG",
+              "state": {
+                "is_ai": true,
+                "is_actual_nonhuman_country": false,
+                "has_capitulated": false,
+                "political_power": 10,
+                "has_equipment": true,
+                "scope.any_controlled_state": true,
+                "num_equipment@gas_mask_equipment": 30,
+                "num_equipment@gas_mask_equipment_reconditioned": 0,
+                "num_equipment@gas_mask_equipment_1": 30,
+                "num_equipment@gas_mask_equipment_2": 0,
+                "num_equipment@gas_mask_equipment_3": 0,
+                "num_equipment@gas_mask_equipment_4": 0,
+                "num_equipment@support_equipment": 20
+              },
+              "flags": []
+            },
+            "FROM": {
+              "id": "16",
+              "type": "state",
+              "actor": "ENG",
+              "state": {
+                "exists": true,
+                "owner": "ENG",
+                "controller": "ENG",
+                "is_capital": false,
+                "state_population_k": 1000,
+                "cbrn_chemical_contamination": 0,
+                "cbrn_response_hospital_mask_cost": 30,
+                "cbrn_response_hospital_support_cost": 20
+              },
+              "flags": [
+                "cbrn_chemical_raid_alert_active",
+                "cbrn_hospitals_utilities_secured"
+              ]
+            }
+          }
+        },
+        {
+          "id": "HP_WRONG_CONTROLLER",
+          "label": "Synthetic state owned by ENG but controlled by FRA; alert flag and quote values present, so only the target-controller gate differs.",
+          "date": "1936.1.1",
+          "actor": "ENG",
+          "state": {
+            "is_ai": true,
+            "is_actual_nonhuman_country": false,
+            "has_capitulated": false,
+            "political_power": 10,
+            "has_equipment": true,
+            "scope.any_controlled_state": false,
+            "num_equipment@gas_mask_equipment": 30,
+            "num_equipment@gas_mask_equipment_reconditioned": 0,
+            "num_equipment@gas_mask_equipment_1": 30,
+            "num_equipment@gas_mask_equipment_2": 0,
+            "num_equipment@gas_mask_equipment_3": 0,
+            "num_equipment@gas_mask_equipment_4": 0,
+            "num_equipment@support_equipment": 20
+          },
+          "flags": [],
+          "controls": {
+            "16": "FRA"
+          },
+          "scopes": {
+            "ROOT": {
+              "id": "ENG",
+              "type": "country",
+              "actor": "ENG",
+              "state": {
+                "is_ai": true,
+                "is_actual_nonhuman_country": false,
+                "has_capitulated": false,
+                "political_power": 10,
+                "has_equipment": true,
+                "scope.any_controlled_state": false,
+                "num_equipment@gas_mask_equipment": 30,
+                "num_equipment@gas_mask_equipment_reconditioned": 0,
+                "num_equipment@gas_mask_equipment_1": 30,
+                "num_equipment@gas_mask_equipment_2": 0,
+                "num_equipment@gas_mask_equipment_3": 0,
+                "num_equipment@gas_mask_equipment_4": 0,
+                "num_equipment@support_equipment": 20
+              },
+              "flags": []
+            },
+            "FROM": {
+              "id": "16",
+              "type": "state",
+              "actor": "FRA",
+              "state": {
+                "exists": true,
+                "owner": "ENG",
+                "controller": "FRA",
+                "is_capital": false,
+                "state_population_k": 1000,
+                "cbrn_chemical_contamination": 0,
+                "cbrn_response_hospital_mask_cost": 30,
+                "cbrn_response_hospital_support_cost": 20
+              },
+              "flags": [
+                "cbrn_chemical_raid_alert_active"
+              ]
+            }
+          }
+        },
+        {
+          "id": "HP_PAYMENT_ONE_SHORT",
+          "label": "Synthetic alert target with quote 10 PP, 30 masks and 20 support; all three resource stocks are one below the quote.",
+          "date": "1936.1.1",
+          "actor": "ENG",
+          "state": {
+            "is_ai": true,
+            "is_actual_nonhuman_country": false,
+            "has_capitulated": false,
+            "political_power": 9,
+            "has_equipment": true,
+            "scope.any_controlled_state": true,
+            "num_equipment@gas_mask_equipment": 29,
+            "num_equipment@gas_mask_equipment_reconditioned": 0,
+            "num_equipment@gas_mask_equipment_1": 29,
+            "num_equipment@gas_mask_equipment_2": 0,
+            "num_equipment@gas_mask_equipment_3": 0,
+            "num_equipment@gas_mask_equipment_4": 0,
+            "num_equipment@support_equipment": 19
+          },
+          "flags": [],
+          "controls": {
+            "16": "ENG"
+          },
+          "scopes": {
+            "ROOT": {
+              "id": "ENG",
+              "type": "country",
+              "actor": "ENG",
+              "state": {
+                "is_ai": true,
+                "is_actual_nonhuman_country": false,
+                "has_capitulated": false,
+                "political_power": 9,
+                "has_equipment": true,
+                "scope.any_controlled_state": true,
+                "num_equipment@gas_mask_equipment": 29,
+                "num_equipment@gas_mask_equipment_reconditioned": 0,
+                "num_equipment@gas_mask_equipment_1": 29,
+                "num_equipment@gas_mask_equipment_2": 0,
+                "num_equipment@gas_mask_equipment_3": 0,
+                "num_equipment@gas_mask_equipment_4": 0,
+                "num_equipment@support_equipment": 19
+              },
+              "flags": []
+            },
+            "FROM": {
+              "id": "16",
+              "type": "state",
+              "actor": "ENG",
+              "state": {
+                "exists": true,
+                "owner": "ENG",
+                "controller": "ENG",
+                "is_capital": false,
+                "state_population_k": 1000,
+                "cbrn_chemical_contamination": 0,
+                "cbrn_response_hospital_mask_cost": 30,
+                "cbrn_response_hospital_support_cost": 20
+              },
+              "flags": [
+                "cbrn_chemical_raid_alert_active"
+              ]
+            }
+          }
+        },
+        {
+          "id": "HP_PAYMENT_EXACT",
+          "label": "Synthetic alert target with exact quote resources: 10 PP, 30 masks and 20 support.",
+          "date": "1936.1.1",
+          "actor": "ENG",
+          "state": {
+            "is_ai": true,
+            "is_actual_nonhuman_country": false,
+            "has_capitulated": false,
+            "political_power": 10,
+            "has_equipment": true,
+            "scope.any_controlled_state": true,
+            "num_equipment@gas_mask_equipment": 30,
+            "num_equipment@gas_mask_equipment_reconditioned": 0,
+            "num_equipment@gas_mask_equipment_1": 30,
+            "num_equipment@gas_mask_equipment_2": 0,
+            "num_equipment@gas_mask_equipment_3": 0,
+            "num_equipment@gas_mask_equipment_4": 0,
+            "num_equipment@support_equipment": 20
+          },
+          "flags": [],
+          "controls": {
+            "16": "ENG"
+          },
+          "scopes": {
+            "ROOT": {
+              "id": "ENG",
+              "type": "country",
+              "actor": "ENG",
+              "state": {
+                "is_ai": true,
+                "is_actual_nonhuman_country": false,
+                "has_capitulated": false,
+                "political_power": 10,
+                "has_equipment": true,
+                "scope.any_controlled_state": true,
+                "num_equipment@gas_mask_equipment": 30,
+                "num_equipment@gas_mask_equipment_reconditioned": 0,
+                "num_equipment@gas_mask_equipment_1": 30,
+                "num_equipment@gas_mask_equipment_2": 0,
+                "num_equipment@gas_mask_equipment_3": 0,
+                "num_equipment@gas_mask_equipment_4": 0,
+                "num_equipment@support_equipment": 20
+              },
+              "flags": []
+            },
+            "FROM": {
+              "id": "16",
+              "type": "state",
+              "actor": "ENG",
+              "state": {
+                "exists": true,
+                "owner": "ENG",
+                "controller": "ENG",
+                "is_capital": false,
+                "state_population_k": 1000,
+                "cbrn_chemical_contamination": 0,
+                "cbrn_response_hospital_mask_cost": 30,
+                "cbrn_response_hospital_support_cost": 20
+              },
+              "flags": [
+                "cbrn_chemical_raid_alert_active"
+              ]
+            }
+          }
+        },
+        {
+          "id": "HP_PAYMENT_ONE_ABOVE",
+          "label": "Synthetic alert target with each quoted resource one above the requirement: 11 PP, 31 masks and 21 support.",
+          "date": "1936.1.1",
+          "actor": "ENG",
+          "state": {
+            "is_ai": true,
+            "is_actual_nonhuman_country": false,
+            "has_capitulated": false,
+            "political_power": 11,
+            "has_equipment": true,
+            "scope.any_controlled_state": true,
+            "num_equipment@gas_mask_equipment": 31,
+            "num_equipment@gas_mask_equipment_reconditioned": 0,
+            "num_equipment@gas_mask_equipment_1": 31,
+            "num_equipment@gas_mask_equipment_2": 0,
+            "num_equipment@gas_mask_equipment_3": 0,
+            "num_equipment@gas_mask_equipment_4": 0,
+            "num_equipment@support_equipment": 21
+          },
+          "flags": [],
+          "controls": {
+            "16": "ENG"
+          },
+          "scopes": {
+            "ROOT": {
+              "id": "ENG",
+              "type": "country",
+              "actor": "ENG",
+              "state": {
+                "is_ai": true,
+                "is_actual_nonhuman_country": false,
+                "has_capitulated": false,
+                "political_power": 11,
+                "has_equipment": true,
+                "scope.any_controlled_state": true,
+                "num_equipment@gas_mask_equipment": 31,
+                "num_equipment@gas_mask_equipment_reconditioned": 0,
+                "num_equipment@gas_mask_equipment_1": 31,
+                "num_equipment@gas_mask_equipment_2": 0,
+                "num_equipment@gas_mask_equipment_3": 0,
+                "num_equipment@gas_mask_equipment_4": 0,
+                "num_equipment@support_equipment": 21
+              },
+              "flags": []
+            },
+            "FROM": {
+              "id": "16",
+              "type": "state",
+              "actor": "ENG",
+              "state": {
+                "exists": true,
+                "owner": "ENG",
+                "controller": "ENG",
+                "is_capital": false,
+                "state_population_k": 1000,
+                "cbrn_chemical_contamination": 0,
+                "cbrn_response_hospital_mask_cost": 30,
+                "cbrn_response_hospital_support_cost": 20
+              },
+              "flags": [
+                "cbrn_chemical_raid_alert_active"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "metrics": [
+      "raw_value"
+    ],
+    "outputs": [
+      "json",
+      "waterfall",
+      "unresolved"
+    ],
+    "refresh": true
+  },
+  "liveSchema": "Start with the matching inspect tool; use hoi4.probability_inspect for weights and timing. Find local documentation with hoi4.reference_context, hoi4.reference_search and hoi4.reference_read, and source definitions with hoi4.source_lookup. Inspection and rendering are read-only; rewrite tools edit mod source. Results describe offline source and scenario models, not observed game behavior. Unresolved states are not confirmed coverage. Read linked artifacts when summaries omit detail. Long operations support negotiated MCP tasks and hoi4.job_inspect/hoi4.job_cancel; background rewrites need a stable requestKey.\n\nEvaluate weights and probabilities under explicit scenarios.\n\nexec tool declaration:\n```ts\ndeclare const tools: { mcp__hoi4_agent_tools__hoi4_probability_evaluate(args: { acceptanceBands?: unknown; adapter?: \"event_mean_time_to_happen\" | \"event_option_ai_chance\" | \"decision_ai_will_do\" | \"mission_ai_will_do\" | \"national_focus_ai_will_do\" | \"technology_ai_will_do\" | \"doctrine_ai_will_do\" | \"direct_random\" | \"random_list\" | \"ai_strategy_factor\" | \"custom_weighted_pool\"; candidatePool?: Array<string>; customPoolManifest?: unknown; diagnosticThresholds?: unknown; horizonDays?: number; metrics?: Array<\"conditional_probability\" | \"raw_value\" | \"cumulative_chance\" | \"effective_mtth_days\">; outputs?: Array<\"json\" | \"ranking\" | \"matrix\" | \"waterfall\" | \"timing\" | \"sensitivity\" | \"threshold\" | \"sequence\" | \"comparison\" | \"unresolved\">; refresh?: boolean; scenarioSet: unknown; source?: unknown; workspaceId?: string; }): Promise<CallToolResult<{ artifacts: Array<unknown>; blockers: Array<unknown>; changedFiles: Array<unknown>; code: string; data: { [key: string]: unknown; }; diagnostics: Array<unknown>; filesScanned: Array<unknown>; proposedFiles: Array<unknown>; status: \"ok\" | \"blocked\" | \"error\"; validation: unknown; workspaceId: string; }>>; };\n```"
+}

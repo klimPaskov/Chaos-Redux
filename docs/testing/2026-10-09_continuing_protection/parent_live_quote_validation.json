@@ -1,0 +1,47 @@
+{
+  "sourcePath": "common/scripted_triggers/cbrn_immediate_response_cost_triggers.txt",
+  "snippet": "\t\tset_temp_variable = { cbrn_hospital_ordinary_masks = FROM.state_population_k }\n\t\tmultiply_temp_variable = { cbrn_hospital_ordinary_masks = constant:cbrn_protection_decision_cost.protect_hospitals_mask_ratio }\n\t\tclamp_temp_variable = {\n\t\t\tvar = cbrn_hospital_ordinary_masks\n\t\t\tmin = constant:cbrn_protection_decision_cost.protect_hospitals_mask_min\n\t\t\tmax = constant:cbrn_protection_decision_cost.protect_hospitals_mask_max\n\t\t}\n\t\tround_temp_variable = cbrn_hospital_ordinary_masks\n\t\tset_temp_variable = { cbrn_hospital_ordinary_support = FROM.state_population_k }\n\t\tmultiply_temp_variable = { cbrn_hospital_ordinary_support = constant:cbrn_protection_decision_cost.protect_hospitals_support_ratio }\n\t\tclamp_temp_variable = {\n\t\t\tvar = cbrn_hospital_ordinary_support\n\t\t\tmin = constant:cbrn_protection_decision_cost.protect_hospitals_support_min\n\t\t\tmax = constant:cbrn_protection_decision_cost.protect_hospitals_support_max\n\t\t}\n\t\tround_temp_variable = cbrn_hospital_ordinary_support\n",
+  "kind": "trigger",
+  "scope": "country",
+  "bindings": [
+    {
+      "name": "FROM",
+      "scope": "state"
+    },
+    {
+      "name": "ROOT",
+      "scope": "country"
+    }
+  ],
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\"artifactCount\":0,\"code\":\"SCRIPT_BINDING_RESERVED\",\"status\":\"error\",\"workspaceId\":\"\"}"
+      }
+    ],
+    "structuredContent": {
+      "status": "error",
+      "code": "SCRIPT_BINDING_RESERVED",
+      "workspaceId": "",
+      "filesScanned": [],
+      "proposedFiles": [],
+      "changedFiles": [],
+      "diagnostics": [],
+      "artifacts": [],
+      "validation": {
+        "passed": false,
+        "checks": []
+      },
+      "blockers": [
+        {
+          "code": "SCRIPT_BINDING_RESERVED",
+          "message": "ROOT, THIS and PREV follow the supplied scope and traversal stack",
+          "details": {}
+        }
+      ],
+      "data": {}
+    },
+    "isError": true
+  }
+}

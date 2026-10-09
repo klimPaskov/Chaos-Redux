@@ -78,13 +78,29 @@ cbrn_quote_hospital_response_bundle = {
 	set_temp_variable = { cbrn_hospital_pp_affordable = constant:universal_cost_framework.zero }
 	set_temp_variable = { cbrn_hospital_support_affordable = constant:universal_cost_framework.zero }
 	set_temp_variable = { cbrn_hospital_masks_affordable = constant:universal_cost_framework.zero }
+	set_temp_variable = { cbrn_hospital_ordinary_masks = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_hospital_ordinary_support = constant:cbrn_math.zero }
 	if = {
 		limit = {
-			FROM = {
-				has_variable = cbrn_response_hospital_mask_cost
-				has_variable = cbrn_response_hospital_support_cost
-			}
+			FROM = { is_controlled_by = ROOT }
 		}
+		# One live population quote serves display, affordability and payment.
+		set_temp_variable = { cbrn_hospital_ordinary_masks = FROM.state_population_k }
+		multiply_temp_variable = { cbrn_hospital_ordinary_masks = constant:cbrn_protection_decision_cost.protect_hospitals_mask_ratio }
+		clamp_temp_variable = {
+			var = cbrn_hospital_ordinary_masks
+			min = constant:cbrn_protection_decision_cost.protect_hospitals_mask_min
+			max = constant:cbrn_protection_decision_cost.protect_hospitals_mask_max
+		}
+		round_temp_variable = cbrn_hospital_ordinary_masks
+		set_temp_variable = { cbrn_hospital_ordinary_support = FROM.state_population_k }
+		multiply_temp_variable = { cbrn_hospital_ordinary_support = constant:cbrn_protection_decision_cost.protect_hospitals_support_ratio }
+		clamp_temp_variable = {
+			var = cbrn_hospital_ordinary_support
+			min = constant:cbrn_protection_decision_cost.protect_hospitals_support_min
+			max = constant:cbrn_protection_decision_cost.protect_hospitals_support_max
+		}
+		round_temp_variable = cbrn_hospital_ordinary_support
 		set_temp_variable = { cbrn_response_component_ordinary = constant:cbrn_protection_decision_cost.protect_hospitals_pp }
 		set_temp_variable = { cbrn_response_component_family = constant:universal_cost_family.political_power }
 		set_temp_variable = { cbrn_response_component_kind = constant:universal_cost_resource_kind.political_power }
@@ -98,7 +114,7 @@ cbrn_quote_hospital_response_bundle = {
 		set_temp_variable = { cbrn_hospital_source = cbrn_response_component_source }
 		set_temp_variable = { cbrn_hospital_quote_valid = cbrn_response_component_valid }
 
-		set_temp_variable = { cbrn_response_component_ordinary = FROM.cbrn_response_hospital_mask_cost }
+		set_temp_variable = { cbrn_response_component_ordinary = cbrn_hospital_ordinary_masks }
 		set_temp_variable = { cbrn_response_component_family = constant:universal_cost_family.equipment }
 		# Aggregate price; the exact concrete-model allocation preflights stock.
 		set_temp_variable = { cbrn_response_component_kind = constant:universal_cost_resource_kind.custom_adapter }
@@ -139,7 +155,7 @@ cbrn_quote_hospital_response_bundle = {
 			set_temp_variable = { cbrn_hospital_masks_affordable = constant:universal_cost_framework.one }
 		}
 
-		set_temp_variable = { cbrn_response_component_ordinary = FROM.cbrn_response_hospital_support_cost }
+		set_temp_variable = { cbrn_response_component_ordinary = cbrn_hospital_ordinary_support }
 		set_temp_variable = { cbrn_response_component_family = constant:universal_cost_family.equipment }
 		set_temp_variable = { cbrn_response_component_kind = constant:universal_cost_resource_kind.support_equipment_1 }
 		cbrn_quote_immediate_response_component = yes

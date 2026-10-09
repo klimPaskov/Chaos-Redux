@@ -1,0 +1,84 @@
+{
+  "task": "Continuing CBRN protection native-random audit",
+  "status": "Read-only",
+  "priorHandoff": "docs/plans/chaos_warfare_system_plans/subagent_handoffs/2026-10-09_continuing_protection_review.md",
+  "primaryHandoffEvidenceLines": "154-157",
+  "probabilitySurface": {
+    "adapterRequested": "direct_random",
+    "sourcePath": "common/scripted_effects/chaos_meter_effects.txt",
+    "sourceArtifactHash": "d7afa38dece30ac357eb230fe873062a5a20e74fb53d0e58e83546f1d6137f84",
+    "sourceRevision": "b6d778e5506e33962854d88aebadd1c509e363525de31fb902d922892b1ffc98",
+    "artifactUri": "hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/d850a7c1b8113b7cd4bf7be6a287716062bf319f9a4b08c5f34d90fca53457ce/4e65860b0465b92f26c5bf2c4ae2532b298fe2eee3a4d316d9e749302347bf5b/probability-inspect-d7afa38dece3.json",
+    "result": "PROBABILITY_SOURCE_DISCOVERED",
+    "discoveryReason": "no_weighted_surfaces",
+    "candidateCount": 0,
+    "unresolved": 0,
+    "classification": "No weighted candidate pool was found; numeric random-value effects are not thereby disproved or evaluated."
+  },
+  "nativeRngCallSites": {
+    "effect": "chaos_meter_register_state_civilian_deaths_percent",
+    "path": "common/scripted_effects/chaos_meter_effects.txt",
+    "sourceLookupRevision": "5e197998bdbab4b6ebb6fd8232d26d149f8d22f1f2dd00d7cb716735df1fb7f3",
+    "lines": "3575-3707",
+    "calls": [
+      {
+        "line": 3641,
+        "token": "set_temp_variable_to_random = { var = chaos_state_deaths_roll }"
+      },
+      {
+        "line": 3665,
+        "token": "set_temp_variable_to_random = { var = chaos_state_deaths_cap_roll }"
+      }
+    ],
+    "commandArguments": "No min, max, integer, or seed argument is passed at these two sites."
+  },
+  "randomTransforms": {
+    "callerPath": "events/cbrn_chemical_delivery_events.txt",
+    "lines": "182-192",
+    "unchangedCallerInputs": [
+      "chaos_state_deaths_random_min = constant:chaos_meter_state_death_dynamic.outbreak_random_min",
+      "chaos_state_deaths_random_span = constant:chaos_meter_state_death_dynamic.outbreak_random_span",
+      "chaos_state_deaths_cap_factor = constant:cbrn_chemical_continuing_death.cap_factor",
+      "chaos_state_deaths_percent_divisor = constant:cbrn_chemical_continuing_death.scale"
+    ],
+    "constantsPath": "common/script_constants/chaos_meter_constants.txt",
+    "constantsRawSha256": "3afc88033de79f3abb0d173c82aaef6130fbf0846cd012a575ca00b73bde1b4a",
+    "outbreakRandomMin": 1.25,
+    "outbreakRandomSpan": 1.65,
+    "genericCapRandomMin": 0.75,
+    "genericCapRandomSpan": 0.85,
+    "derivedBounds": "Given the documented draw interval only: death multiplier in [1.25, 2.90), cap multiplier in [0.75, 1.60). These are transformed bounds, not odds or distribution claims."
+  },
+  "deterministicProtection": {
+    "newHelperPath": "common/scripted_effects/cbrn_continuing_protection_effects.txt",
+    "collectorLine": "cbrn_apply_continuing_civilian_protection at 218-257",
+    "floor": "clamp combined casualty multiplier with min = same-mask M × constant:cbrn_hazard_budget.residual_floor (0.50), max = 1",
+    "terminal": "If current controller has cbrn_terminal_hazard_doctrine_spirit, multiply caller-owned chaos_state_deaths_percent by constant:cbrn_doctrine_spirit.terminal_hazard.casualty_mult (1.10) before population/divisor and integer rounding.",
+    "terminalConstantsPath": "common/script_constants/cbrn_doctrine_constants.txt",
+    "terminalConstantsRawSha256": "125542877243eba1fa24706057fa163edcde5f38ec7bcd54b24c778c5b7a18ed",
+    "distinction": "The 0.50 guarantee applies to a deterministic casualty multiplier before native draws, integer rounding, and cap. It is not a lower bound on the realized integer death ratio."
+  },
+  "sourcePreservation": {
+    "changedFileManifest": "docs/testing/2026-10-09_continuing_protection/source_metadata.json",
+    "changedFiles": 6,
+    "chaosMeterEffectFilePresentInChangedFileList": false,
+    "currentChaosMeterEffectsRawSha256": "f2e4a3a6dbdd30bee11b5ceea021213cff23d772bc9ad05317988e15962ac257",
+    "noFrozenBeforeCopyForChaosMeterEffects": true,
+    "eventDiffPath": "docs/testing/2026-10-09_continuing_protection/cbrn_chemical_delivery_events.txt.diff",
+    "stateEffectDiffPath": "docs/testing/2026-10-09_continuing_protection/cbrn_chemical_state_effects.txt.diff",
+    "conclusion": "The changed event preserves the existing random min/span, cap, divisor, and generic registration call; the shared Chaos Meter helper is not in the six-file change manifest. The folder lacks a byte-exact before copy for chaos_meter_effects.txt, so a separate raw before/after hash comparison is unavailable."
+  },
+  "sourceHarness": {
+    "reportPath": "docs/testing/2026-10-09_continuing_protection/source_test_results.json",
+    "parentHandoffLine": "116",
+    "reportedCases": 125,
+    "matchedUnprotectedCases": 32,
+    "fixtureDrawBehavior": "The harness VM substitutes exactly 0.5 on every set_temp_variable_to_random and counts each call.",
+    "conclusion": "Same-draw source preservation for the declared unprotected class/stage/terminal fixtures; not statistical sampling or evidence of a native distribution."
+  },
+  "analysisLimits": [
+    "No AI weight, ai_chance, random_list, or custom weighted pool belongs to this narrow surface.",
+    "No probability_evaluate, probability_sweep, probability_compare, probability_render, simulation, or sequence was run because inspection found no weighted candidates and no defensible native distribution.",
+    "The protection multiplier and terminal percent intentionally change deterministic inputs to integer death arithmetic, so no unchanged outcome distribution claim is made for protected cases."
+  ]
+}

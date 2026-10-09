@@ -470,7 +470,7 @@ These effects are defined in `cbrn_designer_effects.txt`. Country-scope module h
 | `cbrn_unlock_malodor_aerosol_modules_after_project` | Country scope. Called only by the completed Malodor project output. Reads completed designer traits and grants the exact Malodor variant technologies without depending on whether the project-completed trigger has updated during its own output block. |
 | `cbrn_unlock_behavioral_aerosol_modules_after_project` | Same contract for the completed Behavioral-Agent project and its exact rack variants. |
 | `cbrn_designer_refresh_contaminated_state_vehicle_attrition` | State scope. Recomputes the contamination modifier's truck-attrition input from the state's exact contamination strength and the current controller's completed Vehicle Recovery Teams trait. Contamination application and the exact state-control-change hook call it for one state. Trait completion enters its country through `FROM` and refreshes controlled states with a stored strength. The result is assigned from strength on every call, so repeated refreshes do not stack. An existing dynamic modifier is then forced to refresh. |
-| `cbrn_designer_apply_blister_continuing_death_treatment` | State scope inside the existing chemical-contamination death pass. Requires an active contamination modifier, a persisted blister-agent class, and a current controller with Burn Treatment. It multiplies only the already-prepared continuing-death value; initial release deaths and non-blister contamination are unchanged. |
+| `cbrn_designer_apply_blister_continuing_death_treatment` | State scope inside the continuing-protection collector. Requires an active contamination modifier, a persisted blister-agent class, and a current controller with Burn Treatment. Its contribution is collected once with mask and hospital protection under the same-mask floor. Initial release deaths and non-blister treatment are outside this helper. |
 
 The hidden technology family is defined in `cbrn_aerosol_module_variant_technologies.txt`. Separate technology IDs preserve an exact AND gate between one agent and one physical rack direction. The module variants are defined in `chemical_air_bomb_variant_modules.txt`: Lightweight changes only that rack's weight, agility burden, and payload volume; Long-Range changes only the installed rack's range and maneuver burden; combined modules compose both. No helper applies a country modifier, ordinary-aircraft bonus, strategic dose proxy, friendly-risk proxy, or periodic unlock pulse.
 
@@ -858,8 +858,11 @@ The owner refund helper refuses a committed issue; it cannot credit PP or crates
 The inspected distributor and outcome do not alter receipt arrays, and maintenance only schedules its existing delayed job.
 A failed late confirmation therefore retains the paid issue and gives no achievement credit rather than manufacturing a reversible issue.
 
-`cbrn_quote_hospital_response_bundle` reads FROM's normal alert-time material costs, quotes PP/support/masks, and allocates the one mask price among five real models, oldest first.
-The COUNTRY payment gate requires the original exact alert/ownership/secured-state rule and inclusive current-price affordability.
+`cbrn_quote_hospital_response_bundle` calculates ordinary masks and support from the current target state's population using the existing ratios, bounds and rounding, quotes PP/support/masks, and allocates the one mask price among five real models, oldest first.
+It is COUNTRY-scoped with FROM bound to the controlled target STATE and ROOT bound to the payer.
+The caller declares `cbrn_hospital_ordinary_masks` and `cbrn_hospital_ordinary_support` when it needs those outputs after returning; the payment order uses them for component receipts, mask counterfactual accounting and the purchase's ordinary material sum.
+The three public cost getters, payment readiness and execution all use that quote, so prior alert-time cached prices are unnecessary and stale caches cannot set the hospital debit.
+The COUNTRY payment gate requires actual chemical contamination or an exact alert, current control, no active secured-state response and inclusive current-price affordability.
 All seven receipt components use existing native resource-kind IDs as distinct component IDs.
 Zero-paid model components preserve any unfilled ordinary counterfactual cost solely as accounting; they create no stock.
 Only a fully paid, settled receipt invokes `cbrn_complete_paid_hospital_response`, which sets the original secured flag and timed protection without a debit or affordability check.
@@ -1043,7 +1046,9 @@ The [accepted correction](../../docs/specs/chaos_warfare_system_specs/correction
 
 ### cbrn_calculate_state_raid_response_costs
 
-State-scope population calculator for hospital/utility masks and support equipment, plus shelter support equipment and trains. Costs are clamped to centralized minima/maxima and stored as persistent state variables for decision display.
+State-scope population calculator retaining legacy hospital/utility fields plus the shelter support-equipment and train costs.
+Costs are clamped to centralized minima/maxima and stored as persistent state variables for the existing alert/shelter consumers.
+The public hospital quote computes its own current ordinary prices through `cbrn_quote_hospital_response_bundle` and does not read these cached hospital fields.
 
 ### cbrn_register_exact_state_chemical_raid_alert
 
@@ -1286,7 +1291,7 @@ The state-owned chemical ledger is defined in `cbrn_chemical_state_effects.txt`.
 | `cbrn_chemical_set_air_contribution_from_class` | State scope. Converts the exact canonical contamination class into the configured Air Cleanliness contribution and applies only the delta to the state and global component totals. |
 | `cbrn_air_cleanliness_update_chemical_state_contribution` | State scope. The shared country-scope `air_contamination_apply_delta_bp`, which can fire the contamination news events, runs in the state owner's scope. Reads the temporary `cbrn_air_contribution_value`, stores it as the state's `cbrn_chemical_air_contribution_bp`, and applies only the delta to the global chemical Air Cleanliness total and affected-state count. While Air Cleanliness is disabled it stores the state value without changing the global totals. |
 | `cbrn_air_cleanliness_clear_chemical_state_contribution` | State scope. The shared country-scope `air_contamination_apply_delta_bp`, which can fire the contamination news events, runs in the state owner's scope. Removes the state's stored chemical Air Cleanliness contribution from the global chemical total and affected-state count, then clears the state value. |
-| `cbrn_chemical_refresh_state_modifier`, `cbrn_chemical_refresh_continuing_death_profile`, and `cbrn_chemical_schedule_continuing_deaths` | State scope. Derive the presentation modifier and the exact continuing-death profile and schedule from the canonical contamination receipt. |
+| `cbrn_chemical_refresh_state_modifier`, `cbrn_chemical_refresh_continuing_death_profile`, and `cbrn_chemical_schedule_continuing_deaths` | State scope. Derive the presentation modifier, raw scaled stage/class loss rate and schedule from the canonical contamination receipt. The current controller's terminal factor is applied at the continuing event's scaled-percentage step rather than stored in the rate. |
 | `cbrn_chemical_rebuild_air_cleanliness_contributions` | Any scope. Explicit settings-reenable repair for states with live canonical chemical receipts. It is called only from the bounded repair path and is not a recurring world scan. |
 
 `chem_state_contamination` is the presentation modifier for the canonical receipt. No legacy contamination writer or parallel state ledger remains. The canonical state receipt is the only source for chemical Air Cleanliness, expiry, and continuing deaths.
@@ -1361,3 +1366,44 @@ cbrn_apply_state_contamination_delta_internal = yes
 set_temp_variable = { cleanup_completed = cbrn_state_previous_contamination_value }
 subtract_from_temp_variable = { cleanup_completed = cbrn_state_new_contamination_value }
 ```
+
+## Continuing civilian protection
+
+`cbrn_state_has_hospital_response_need` in `common/scripted_triggers/cbrn_protection_triggers.txt` is a pure STATE relevance check for an exact chemical alert or current chemical contamination.
+The hospital decision uses it in country visibility and target-root scans, while `cbrn_state_can_protect_hospitals_and_utilities` adds ROOT control and the no-active-response check for targeting and live payment preflight.
+It introduces no alert or cost; other alert-only response predicates keep their own contracts.
+
+`cbrn_continuing_protection_effects.txt` owns nine STATE-scoped helpers used by the existing paid hospital outcome and continuing-loss event.
+The [mechanic contract](../../docs/systems/cbrn_warfare/continuing_civilian_protection.md) records the accepted discrete equipment sampling, timing and same-mask budget.
+
+| Helper | Inputs and outputs | Defaults, side effects and caller |
+| --- | --- | --- |
+| `cbrn_prepare_hospital_history_cutoff` | Current day, optional continuing due date and caller-owned temporary `cbrn_hospital_history_cutoff`. | Chooses the earlier cutoff needed to retain an owed period. Used by registration, invalidation and idle cleanup. |
+| `cbrn_prune_hospital_protection_history` | Cutoff, truncate proof, optional end limit, paired state start/end arrays. | Equal-length chronological rows are clipped and copied after traversal. Mismatched lengths remain untouched and cannot generate overlap credit. |
+| `cbrn_record_paid_hospital_protection_interval` | Current day and existing temporary `cbrn_response_duration_local`. | Successful paid completion appends or merges a positive service period. It neither charges resources nor infers a receipt from a flag. |
+| `cbrn_end_active_hospital_protection` | Current invocation day. | Truncates future care, retains elapsed valid service, and clears the hospital flag and modifier. Central response clears and every real control change use this idempotent local effect. |
+| `cbrn_prune_idle_hospital_protection_history` | Current day and optional due date. | Expiry cleanup discards unusably old history while retaining current or future care that can overlap a later period. |
+| `cbrn_measure_hospital_protection_overlap` | Temporary scheduled-window start/end and caller-owned `cbrn_continuing_hospital_fraction`. | Starts at zero, measures the union of aligned paid rows, and returns a fraction bounded from zero to one. |
+| `cbrn_calculate_continuing_civilian_protection` | Stored class, current shared stock/coverage snapshots and caller-owned `cbrn_continuing_mask_only_mult`, `cbrn_continuing_without_hospital_mult`, `cbrn_continuing_with_hospital_mult`. | Refreshes derived snapshots and uses the existing pure calculator twice. Preserves inherited calculator inputs/outputs and the snapshot's medical scratch. No attacker or raid context is fabricated. |
+| `cbrn_apply_continuing_civilian_protection` | Caller-owned `chaos_state_deaths_percent` and `chaos_state_deaths_mult`, scheduled due day, class, care arrays and current controller. | Combines live protection with elapsed paid care and one Burn Treatment contribution under the same-mask floor. Applies current terminal hazard to the scaled percentage at its original quantization point. Unresolved protection inputs retain the unprotected defaults. |
+| `cbrn_finish_continuing_hospital_protection_window` | Actual execution day. | Consumes elapsed portions after a legitimate due pass, including disabled or zero-rate passes, while preserving future care. |
+
+Persistent care data consists only of `cbrn_hospital_protection_start_days` and `cbrn_hospital_protection_end_days` on the treated state.
+Temporary outputs and in/out values must be declared by their consuming caller.
+The state snapshot's `cbrn_state_controller_medical_capacity` is declared before the snapshot call when the pre-hospital base is required.
+Subtracting the hospital bonus from an already clamped combined value cannot reconstruct that base.
+
+The direct state-event calculation begins with:
+
+```txt
+set_temp_variable = { chaos_state_deaths_percent = cbrn_chemical_continuing_death_rate }
+set_temp_variable = { chaos_state_deaths_mult = constant:cbrn_math.one }
+chaos_meter_apply_outbreak_state_death_environment_multiplier = yes
+cbrn_apply_continuing_civilian_protection = yes
+```
+
+`cbrn_delivery.4` still owns the following cap, random-input, divisor and actual loss-registration fields.
+It preserves an already-future due date on early or duplicate delivery.
+A legitimate late pass measures the originally scheduled window and rearms from execution day.
+The care collector creates no loss event, payment, refund, world scan or independent readiness resource.
+The same-mask factor floor applies before random draws, rounding and caps, without promising a fixed realized integer-loss ratio.

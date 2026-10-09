@@ -422,3 +422,33 @@ Twenty-two source assertions and native command-kind/scope checks cover the boun
 The seven Livens support variants are documented as inactive legacy definitions with no current normal or CXT unlock path in the reviewed source.
 They do not expand the thirteen-role playable CBRN package or its mastery lists.
 No gameplay simplification, asset change or event-catalog prose change belongs to this follow-up.
+
+## Continuing civilian and hospital protection
+
+The [accepted correction](../../specs/chaos_warfare_system_specs/corrections/2026-10-09_continuing_civilian_protection.md) and [mechanic guide](../../systems/cbrn_warfare/continuing_civilian_protection.md) implement the existing hospital continuing-loss promise through paid state-local intervals, current stock-backed protection and the same-mask additional-benefit floor.
+The STATE helper family feeds `cbrn_delivery.4`; successful paid hospital completion records care, central response resets and every real control transfer close future care, and due assessments consume elapsed service without inventing a historical equipment timeline.
+The [source review](subagent_handoffs/2026-10-09_continuing_protection_review.md) records 157 modeled source cases and four ROOT-binding probes; native scope/stock/timer behavior and identical declared random draws are fixture boundaries rather than an engine or RNG-distribution result.
+The parent applied the four-file hospital-entry/quote patch and the [decision integration audit](subagent_handoffs/2026-10-09_hospital_decision_integration_audit.md) found no source defect: `cbrn_state_has_hospital_response_need` aligns public/root/target/preflight gates, and the live COUNTRY quote uses current FROM STATE population with the existing ratios, bounds and rounding rather than alert-time cache values.
+The order declares ordinary mask/support outputs and uses them for component/purchase receipts and achievement basis; successfully settled payment precedes the existing hospital flag, modifier and paid-care interval.
+The 32 public-entry/quote cases cover real getter/preflight agreement, payment boundaries, stale caches, current population prices, five-model debit, duplicate/control-loss rejection and denied care after failed settlement.
+Existing payment, control, active-response exclusion and cooldown are retained; quote/receipt fields intentionally changed, so no full hospital-order AST identity is asserted.
+The [single matched hospital AI comparison](subagent_handoffs/2026-10-09_hospital_entry_probability.md) reports zero exposed changes at fixture hash `1fbef20cc57ced1ed2ac0928792e2c187022de812ed259a5e8c35fbc8a2ea1df`, with three excluded/six unresolved records and seven unresolved items.
+Its frozen before decision resolves current helper closure on both sides and its detailed after artifact remains unread; aggregate counts do not prove old/new helper eligibility, exact payment readiness or native choice odds.
+The [corrected live-quote validation](../../testing/2026-10-09_continuing_protection/parent_live_quote_validation_corrected.json) is partial with `valid=null` and six unchecked argument blocks, rather than native parameter proof.
+The [text alignment](subagent_handoffs/2026-10-09_continuing_protection_text.md) makes continuing care and three independently bound MIO reductions conditional on protection/care; native MIO tooltip inspection selected zero elements and does not prove wrapping or getter delivery.
+The [random review](subagent_handoffs/2026-10-09_continuing_protection_random_review.md) retains the native draw-range/source bounds with distribution, independence and seeding unknown; the numeric-effects adapter discovered no weighted surface.
+Partial event traces with zero helpers and the parent comparison's graph byte ceiling remain evidence limits; no tool retry or native success is claimed from this documentation integration.
+The [Civil Defence relevance and automatic-priority findings](subagent_handoffs/2026-10-09_civil_defence_relevance_review.md) remain queued, including permanent-history visibility/demand, response continuity, threatened/rural-core priority and AI/receiver alignment.
+The exact-alert registration provider still has no active source caller, and other pre-alert actions are not repaired by the hospital contamination route.
+This narrow hospital repair does not close those category issues, the existing reconnaissance budget or the full CBRN goal.
+No gameplay simplification, new coefficient, price, duration, icon or catalog-prose change belongs to this tranche.
+
+The separate `docs/spreadsheets/doctrines.xlsx` Chaos Warfare worksheet/Overview transcription is implemented in reviewed commit `9a8720beab9be9c19561d2dd6a473ec8d486126d` under the parent's accepted documentation assignment.
+The [workbook handoff](subagent_handoffs/2026-10-09_doctrine_workbook_alignment.md) and [review receipt](../../testing/2026-10-09_doctrine_workbook_alignment/workbook_review.json) preserve fifteen source hashes, 112 changed cells, seven sheets total, all five vanilla-sheet values/styles and workbook package features; Overview changes only C6 and the old source archive remains identifiable.
+The current workbook hash is `108293159cd1f96594e31cfd686effa8f489303c6504b482b9a9bf5513adf11e`; package members remain present despite thirteen reserialized XML payloads, so no byte-identical package claim is made.
+Application visual inspection, native mastery/milestone timing and effective full-stack aggregation remain unverified; current source transcription is implemented without closing those limits or the reconnaissance budget.
+The event catalog and its CSV exports were untouched, and the separate doctrine workbook has no catalog export step.
+
+The parent ran the same 157 cases and four ROOT-binding probes from an isolated proposed commit tree; scenario results matched the working run.
+The receipt is `docs/testing/2026-10-09_continuing_protection/parent_isolated_source_review.json`, which distinguishes unchanged raw baseline snapshots, normal Git line-ending conversion and two unrelated shared-tree constant-file differences.
+Those unrelated files are excluded from this commit, and matching fixture results do not establish their equivalence outside the tested cases.

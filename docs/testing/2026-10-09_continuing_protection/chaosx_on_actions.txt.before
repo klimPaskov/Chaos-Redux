@@ -1,0 +1,93 @@
+# ============================================================================
+# CHAOS REDUX - SHARED ON ACTIONS
+# ============================================================================
+# Event-owned hooks live in common/on_actions/<event_id>_<event_slug>_on_actions.txt.
+# all on_daily, on_weekly, and on_monthly evaluate for all countries by default.
+# ============================================================================
+on_actions = {
+	on_startup = {
+		effect = {
+			random_country = {
+				limit = { exists = yes }
+				chaosx_apply_startup_history_grants = yes
+			}
+
+			# History grants intentionally preserve starting CBRN capability, but the
+			# decision presentation remains dormant until post-start play reveals it.
+			every_country = {
+				cbrn_hide_inherited_decision_surfaces_at_game_start = yes
+			}
+		}
+	}
+
+	# ROOT is the new controller, FROM is the old controller, and FROM.FROM is
+	# the transferred state. Distributed masks remain in the state, suffer
+	# turnover/occupation loss, and never return to either national reserve.
+	# A threatened state's field-kit demand is reassigned even without masks.
+	on_state_control_changed = {
+		effect = {
+			# An undelivered state receipt belongs to its original supplier even
+			# when no civilian masks had previously been issued in the state.
+			FROM.FROM = {
+				if = {
+					limit = { has_state_flag = cbrn_occupied_mask_escrow_active }
+					set_temp_variable = { cbrn_mask_escrow_refunded = constant:cbrn_math.zero }
+					set_temp_variable = { cbrn_mask_escrow_refund_blocked = constant:cbrn_math.zero }
+					cbrn_refund_occupied_state_mask_reservation = yes
+					if = {
+						limit = { check_variable = { cbrn_mask_escrow_refund_blocked = constant:cbrn_math.zero } }
+						clr_state_flag = cbrn_occupied_distribution_program_target
+					}
+				}
+				if = {
+					limit = { has_state_flag = cbrn_external_mask_escrow_active }
+					cbrn_occupation_close_external_aid_reservation = yes
+					set_temp_variable = { cbrn_mask_escrow_refunded = constant:cbrn_math.zero }
+					set_temp_variable = { cbrn_mask_escrow_refund_blocked = constant:cbrn_math.zero }
+					cbrn_refund_external_state_mask_reservation = yes
+					if = {
+						limit = { check_variable = { cbrn_mask_escrow_refund_blocked = constant:cbrn_math.zero } }
+						clr_state_flag = cbrn_occupation_external_aid_project_active
+					}
+				}
+			}
+			if = {
+				limit = { fallout_world_rewrite_callbacks_are_allowed = yes }
+				if = {
+					limit = {
+						FROM.FROM = {
+							has_variable = cbrn_civilian_mask_crates
+							check_variable = { cbrn_civilian_mask_crates > constant:cbrn_math.zero }
+						}
+					}
+					ROOT = { save_event_target_as = cbrn_new_state_controller }
+					FROM = { save_event_target_as = cbrn_old_state_controller }
+					FROM.FROM = { cbrn_transfer_state_civilian_mask_ledger = yes }
+				}
+				# A threatened state can change hands without carrying any issued
+				# civilian masks. Recalculate both country kit pools in that case too.
+				if = {
+					limit = {
+						FROM.FROM = {
+							cbrn_state_has_emergency_context = yes
+							NOT = { check_variable = { cbrn_civilian_mask_crates > constant:cbrn_math.zero } }
+						}
+					}
+					FROM = { cbrn_refresh_country_civilian_decontamination_pool = yes }
+					ROOT = { cbrn_refresh_country_civilian_decontamination_pool = yes }
+				}
+			}
+		}
+	}
+
+	# on_weekly = {
+	# 	effect = {
+	# 		if = {
+	# 			limit = {
+	# 				is_special_chaos_country = yes
+	# 			}
+	# 			clear_special_chaos_country_civilian_effects = yes
+	# 		}
+	# 	}
+	# }
+}

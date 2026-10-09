@@ -1,0 +1,61 @@
+--- events/cbrn_chemical_delivery_events.txt.before
++++ events/cbrn_chemical_delivery_events.txt.after
+@@ -67,6 +67,7 @@
+ 			clear_variable = cbrn_chemical_breakthrough
+ 			clear_variable = cbrn_chemical_continuing_death_rate
+ 			clear_variable = cbrn_chemical_continuing_death_due_day
++			cbrn_prune_idle_hospital_protection_history = yes
+ 			set_variable = { cbrn_last_chemical_cleanup_date = cbrn_delivery_current_day }
+ 			cbrn_achievement_try_contain_nerve_episode = yes
+ 		}
+@@ -181,7 +182,7 @@
+ 				set_temp_variable = { chaos_state_deaths_percent = cbrn_chemical_continuing_death_rate }
+ 				set_temp_variable = { chaos_state_deaths_mult = constant:cbrn_math.one }
+ 				chaos_meter_apply_outbreak_state_death_environment_multiplier = yes
+-				cbrn_designer_apply_blister_continuing_death_treatment = yes
++				cbrn_apply_continuing_civilian_protection = yes
+ 				set_temp_variable = { chaos_state_deaths_cap_factor = constant:cbrn_chemical_continuing_death.cap_factor }
+ 				set_temp_variable = { chaos_state_deaths_random_min = constant:chaos_meter_state_death_dynamic.outbreak_random_min }
+ 				set_temp_variable = { chaos_state_deaths_random_span = constant:chaos_meter_state_death_dynamic.outbreak_random_span }
+@@ -191,6 +192,7 @@
+ 				chaos_meter_register_state_civilian_deaths_percent = yes
+ 				cbrn_achievement_record_nerve_episode_deaths = yes
+ 			}
++			cbrn_finish_continuing_hospital_protection_window = yes
+ 			set_variable = { cbrn_chemical_continuing_death_due_day = cbrn_delivery_current_day }
+ 			add_to_variable = { cbrn_chemical_continuing_death_due_day = cbrn_continuing_death_period }
+ 			state_event = { id = cbrn_delivery.4 days = cbrn_continuing_death_period }
+@@ -198,16 +200,24 @@
+ 		else = {
+ 			if = {
+ 				limit = {
+-					has_variable = cbrn_chemical_contamination_expiry_day
+-					check_variable = { cbrn_chemical_contamination_expiry_day > cbrn_delivery_current_day }
+-				}
++					OR = {
++						NOT = { has_variable = cbrn_chemical_contamination_expiry_day }
++						check_variable = { var = cbrn_chemical_contamination_expiry_day value = cbrn_delivery_current_day compare = less_than_or_equals }
++					}
++				}
++				clear_variable = cbrn_chemical_continuing_death_due_day
++				cbrn_prune_idle_hospital_protection_history = yes
++			}
++			else_if = {
++				limit = { check_variable = { var = cbrn_chemical_continuing_death_due_day value = cbrn_delivery_current_day compare = less_than_or_equals } }
++				# A due zero-rate pass consumes its elapsed window without a loss.
++				cbrn_finish_continuing_hospital_protection_window = yes
+ 				set_variable = { cbrn_chemical_continuing_death_due_day = cbrn_delivery_current_day }
+ 				add_to_variable = { cbrn_chemical_continuing_death_due_day = cbrn_continuing_death_period }
+ 				state_event = { id = cbrn_delivery.4 days = cbrn_continuing_death_period }
+ 			}
+-			else = {
+-				clear_variable = cbrn_chemical_continuing_death_due_day
+-			}
+-		}
+-	}
+-}
++			# An already-future due date belongs to its pending receiver.
++			# Early and stale duplicate callbacks neither move it nor enqueue another.
++		}
++	}
++}

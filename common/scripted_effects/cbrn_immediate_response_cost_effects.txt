@@ -156,6 +156,8 @@ cbrn_execute_emergency_distribution_order = {
 
 cbrn_execute_hospital_response_order = {
 	set_temp_variable = { cbrn_hospital_quote_valid = constant:universal_cost_framework.zero }
+	set_temp_variable = { cbrn_hospital_ordinary_masks = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_hospital_ordinary_support = constant:cbrn_math.zero }
 	set_temp_variable = { cbrn_hospital_pp = constant:cbrn_protection_decision_cost.protect_hospitals_pp }
 	set_temp_variable = { cbrn_hospital_masks = constant:cbrn_math.zero }
 	set_temp_variable = { cbrn_hospital_support = constant:cbrn_math.zero }
@@ -183,13 +185,13 @@ cbrn_execute_hospital_response_order = {
 		set_temp_variable = { cbrn_response_component_primary_member = constant:universal_cost_framework.zero }
 		cbrn_pay_and_record_response_component = yes
 		set_temp_variable = { cbrn_response_component_kind = constant:universal_cost_resource_kind.support_equipment_1 }
-		set_temp_variable = { cbrn_response_component_ordinary = FROM.cbrn_response_hospital_support_cost }
+		set_temp_variable = { cbrn_response_component_ordinary = cbrn_hospital_ordinary_support }
 		set_temp_variable = { cbrn_response_component_quoted = cbrn_hospital_support }
 		set_temp_variable = { cbrn_response_component_primary_member = constant:universal_cost_framework.one }
 		cbrn_pay_and_record_response_component = yes
 		# Unfilled ordinary counterfactual masks belong to the first model's
 		# accounting field. They are never paid, returned, or issued as equipment.
-		set_temp_variable = { cbrn_hospital_unfilled_ordinary_masks = FROM.cbrn_response_hospital_mask_cost }
+		set_temp_variable = { cbrn_hospital_unfilled_ordinary_masks = cbrn_hospital_ordinary_masks }
 		subtract_from_temp_variable = { cbrn_hospital_unfilled_ordinary_masks = cbrn_hospital_masks }
 		set_temp_variable = { cbrn_response_component_kind = constant:universal_cost_resource_kind.gas_mask_equipment_reconditioned }
 		set_temp_variable = { cbrn_response_component_ordinary = cbrn_hospital_mask_reconditioned }
@@ -222,8 +224,8 @@ cbrn_execute_hospital_response_order = {
 				FROM = { cbrn_complete_paid_hospital_response = yes }
 				set_temp_variable = { black_friday_purchase_transaction_id = cbrn_response_transaction }
 				set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.state_project }
-				set_temp_variable = { black_friday_purchase_ordinary_cost = FROM.cbrn_response_hospital_mask_cost }
-				add_to_temp_variable = { black_friday_purchase_ordinary_cost = FROM.cbrn_response_hospital_support_cost }
+				set_temp_variable = { black_friday_purchase_ordinary_cost = cbrn_hospital_ordinary_masks }
+				add_to_temp_variable = { black_friday_purchase_ordinary_cost = cbrn_hospital_ordinary_support }
 				set_temp_variable = { black_friday_purchase_actual_paid_cost = cbrn_hospital_masks }
 				add_to_temp_variable = { black_friday_purchase_actual_paid_cost = cbrn_hospital_support }
 				set_temp_variable = { black_friday_purchase_allow_political_power_only = constant:universal_cost_framework.zero }
@@ -253,5 +255,6 @@ cbrn_complete_paid_hospital_response = {
 	set_temp_variable = { cbrn_response_duration_local = constant:cbrn_protection_decision_timing.response_effect_days }
 	set_state_flag = { flag = cbrn_hospitals_utilities_secured days = var:cbrn_response_duration_local }
 	add_dynamic_modifier = { modifier = cbrn_hospitals_utilities_protected days = cbrn_response_duration_local }
+	cbrn_record_paid_hospital_protection_interval = yes
 	cbrn_achievement_record_state_medical_response = yes
 }

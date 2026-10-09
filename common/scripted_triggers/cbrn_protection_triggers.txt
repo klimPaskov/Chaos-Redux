@@ -4,8 +4,8 @@
 # Overview:
 # - Gates national respirator programs, field issue, state distribution,
 #   procurement, allied transfers, filter service, and reconditioning.
-# - Keeps exact-state chemical-raid responses unavailable unless a verified
-#   raid/operation adapter has set cbrn_chemical_raid_alert_active.
+# - Requires verified alerts for pre-raid responses; hospital care also serves
+#   controlled states with actual chemical contamination.
 # - Reads real equipment and factory capacity. It never infers air activity or
 #   creates contamination from aircraft presence.
 # ============================================================================
@@ -776,9 +776,16 @@ cbrn_state_has_shelter_response_resources = {
 	}
 }
 
+cbrn_state_has_hospital_response_need = {
+	OR = {
+		cbrn_state_has_exact_chemical_raid_alert = yes
+		cbrn_state_has_chemical_contamination = yes
+	}
+}
+
 cbrn_state_can_protect_hospitals_and_utilities = {
 	is_controlled_by = ROOT
-	cbrn_state_has_exact_chemical_raid_alert = yes
+	cbrn_state_has_hospital_response_need = yes
 	NOT = { has_state_flag = cbrn_hospitals_utilities_secured }
 	# Resource affordability is in the cost row so a shortfall does not hide the target.
 }
