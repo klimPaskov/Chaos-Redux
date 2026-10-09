@@ -6961,6 +6961,25 @@ decision_riches_found_gold_seal_depths = {
 	}
 	available = {
 		hidden_trigger = { riches_found_can_afford_gold_seal_depths = yes }
+		custom_trigger_tooltip = {
+			tooltip = riches_found_seal_project_ready_tt
+			hidden_trigger = {
+				set_temp_variable = { rf_seal_family = constant:rf_seal_protocol.zero }
+				set_temp_variable = { rf_seal_result = constant:rf_seal_protocol.zero }
+				set_temp_variable = { rf_seal_mine_seq = constant:rf_seal_protocol.zero }
+				set_temp_variable = { rf_seal_payer = constant:rf_seal_protocol.zero }
+				set_temp_variable = { rf_seal_state = constant:rf_seal_protocol.zero }
+				set_temp_variable = { rf_seal_epoch = constant:rf_seal_protocol.zero }
+				set_temp_variable = { rf_seal_manpower = constant:rf_seal_protocol.zero }
+				set_temp_variable = { rf_seal_support = constant:rf_seal_protocol.zero }
+				set_temp_variable = { rf_seal_civilian = constant:rf_seal_protocol.zero }
+				set_temp_variable = { rf_seal_days = constant:rf_seal_protocol.zero }
+				set_temp_variable = { rf_seal_refund_manpower = constant:rf_seal_protocol.zero }
+				set_temp_variable = { rf_seal_refund_support = constant:rf_seal_protocol.zero }
+				set_temp_variable = { rf_seal_closed = constant:rf_seal_protocol.zero }
+				rf_gold_seal_can_start_manual = yes
+			}
+		}
 		FROM = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
@@ -6988,7 +7007,21 @@ decision_riches_found_gold_seal_depths = {
 		}
 	}
 	custom_cost_trigger = {
+		set_temp_variable = { rf_seal_family = constant:rf_seal_protocol.zero }
+		set_temp_variable = { rf_seal_result = constant:rf_seal_protocol.zero }
+		set_temp_variable = { rf_seal_mine_seq = constant:rf_seal_protocol.zero }
+		set_temp_variable = { rf_seal_payer = constant:rf_seal_protocol.zero }
+		set_temp_variable = { rf_seal_state = constant:rf_seal_protocol.zero }
+		set_temp_variable = { rf_seal_epoch = constant:rf_seal_protocol.zero }
+		set_temp_variable = { rf_seal_manpower = constant:rf_seal_protocol.zero }
+		set_temp_variable = { rf_seal_support = constant:rf_seal_protocol.zero }
+		set_temp_variable = { rf_seal_civilian = constant:rf_seal_protocol.zero }
+		set_temp_variable = { rf_seal_days = constant:rf_seal_protocol.zero }
+		set_temp_variable = { rf_seal_refund_manpower = constant:rf_seal_protocol.zero }
+		set_temp_variable = { rf_seal_refund_support = constant:rf_seal_protocol.zero }
+		set_temp_variable = { rf_seal_closed = constant:rf_seal_protocol.zero }
 		riches_found_can_afford_gold_seal_depths = yes
+		rf_gold_seal_can_start_manual = yes
 	}
 	custom_cost_text = riches_found_cost_gold_seal_depths
 	days_remove = constant:riches_found_decision_duration.project
@@ -6996,20 +7029,38 @@ decision_riches_found_gold_seal_depths = {
 	fire_only_once = no
 	complete_effect = {
 		custom_effect_tooltip = decision_riches_found_gold_seal_depths_tt
-		add_manpower = constant:riches_found_decision_cost.manpower_standard_negative
-		add_equipment_to_stockpile = { type = support_equipment amount = constant:riches_found_decision_cost.support_heavy_negative }
+		set_temp_variable = { rf_seal_family = constant:rf_seal_protocol.zero }
+		set_temp_variable = { rf_seal_result = constant:rf_seal_protocol.zero }
+		set_temp_variable = { rf_seal_mine_seq = constant:rf_seal_protocol.zero }
+		set_temp_variable = { rf_seal_payer = constant:rf_seal_protocol.zero }
+		set_temp_variable = { rf_seal_state = constant:rf_seal_protocol.zero }
+		set_temp_variable = { rf_seal_epoch = constant:rf_seal_protocol.zero }
+		set_temp_variable = { rf_seal_manpower = constant:rf_seal_protocol.zero }
+		set_temp_variable = { rf_seal_support = constant:rf_seal_protocol.zero }
+		set_temp_variable = { rf_seal_civilian = constant:rf_seal_protocol.zero }
+		set_temp_variable = { rf_seal_days = constant:rf_seal_protocol.zero }
+		set_temp_variable = { rf_seal_refund_manpower = constant:rf_seal_protocol.zero }
+		set_temp_variable = { rf_seal_refund_support = constant:rf_seal_protocol.zero }
+		set_temp_variable = { rf_seal_closed = constant:rf_seal_protocol.zero }
+		rf_gold_seal_start = yes
 	}
 	remove_effect = {
+		set_temp_variable = { rf_seal_family = constant:rf_seal_protocol.zero }
+		set_temp_variable = { rf_seal_result = constant:rf_seal_protocol.zero }
+		set_temp_variable = { rf_seal_mine_seq = constant:rf_seal_protocol.zero }
+		set_temp_variable = { rf_seal_payer = constant:rf_seal_protocol.zero }
+		set_temp_variable = { rf_seal_state = constant:rf_seal_protocol.zero }
+		set_temp_variable = { rf_seal_epoch = constant:rf_seal_protocol.zero }
+		set_temp_variable = { rf_seal_manpower = constant:rf_seal_protocol.zero }
+		set_temp_variable = { rf_seal_support = constant:rf_seal_protocol.zero }
+		set_temp_variable = { rf_seal_civilian = constant:rf_seal_protocol.zero }
+		set_temp_variable = { rf_seal_days = constant:rf_seal_protocol.zero }
+		set_temp_variable = { rf_seal_refund_manpower = constant:rf_seal_protocol.zero }
+		set_temp_variable = { rf_seal_refund_support = constant:rf_seal_protocol.zero }
+		set_temp_variable = { rf_seal_closed = constant:rf_seal_protocol.zero }
+		rf_gold_seal_resolve = yes
 		if = {
-			limit = {
-				FROM = {
-					riches_found_mine_still_valid_for_payer = yes
-					has_state_flag = riches_found_layer_gold
-					riches_found_gold_route_is_restricted = yes
-					NOT = { has_state_flag = riches_found_gold_depths_sealed }
-				}
-			}
-
+			limit = { check_variable = { rf_seal_result = constant:rf_seal_protocol.result_consumed } }
 			FROM = {
 				set_state_flag = riches_found_gold_depths_sealed
 				set_state_flag = riches_found_depths_sealed
@@ -7025,12 +7076,23 @@ decision_riches_found_gold_seal_depths = {
 			}
 			riches_found_reconcile_controller = yes
 			riches_found_refresh_mine_state = yes
-
 		}
-		else = {
-			add_manpower = constant:riches_found_decision_cost.manpower_standard
-			add_equipment_to_stockpile = { type = support_equipment amount = constant:riches_found_decision_cost.support_heavy }
-		}
+	}
+	cancel_effect = {
+		set_temp_variable = { rf_seal_family = constant:rf_seal_protocol.zero }
+		set_temp_variable = { rf_seal_result = constant:rf_seal_protocol.zero }
+		set_temp_variable = { rf_seal_mine_seq = constant:rf_seal_protocol.zero }
+		set_temp_variable = { rf_seal_payer = constant:rf_seal_protocol.zero }
+		set_temp_variable = { rf_seal_state = constant:rf_seal_protocol.zero }
+		set_temp_variable = { rf_seal_epoch = constant:rf_seal_protocol.zero }
+		set_temp_variable = { rf_seal_manpower = constant:rf_seal_protocol.zero }
+		set_temp_variable = { rf_seal_support = constant:rf_seal_protocol.zero }
+		set_temp_variable = { rf_seal_civilian = constant:rf_seal_protocol.zero }
+		set_temp_variable = { rf_seal_days = constant:rf_seal_protocol.zero }
+		set_temp_variable = { rf_seal_refund_manpower = constant:rf_seal_protocol.zero }
+		set_temp_variable = { rf_seal_refund_support = constant:rf_seal_protocol.zero }
+		set_temp_variable = { rf_seal_closed = constant:rf_seal_protocol.zero }
+		rf_gold_seal_cancel = yes
 	}
 	ai_will_do = {
 		base = constant:riches_found_decision_ai.medium
@@ -7247,6 +7309,25 @@ decision_riches_found_demons_permanent_seal = {
 	}
 	available = {
 		hidden_trigger = { riches_found_can_afford_demons_permanent_seal = yes }
+		custom_trigger_tooltip = {
+			tooltip = riches_found_seal_project_ready_tt
+			hidden_trigger = {
+				set_temp_variable = { rf_seal_family = constant:rf_seal_protocol.zero }
+				set_temp_variable = { rf_seal_result = constant:rf_seal_protocol.zero }
+				set_temp_variable = { rf_seal_mine_seq = constant:rf_seal_protocol.zero }
+				set_temp_variable = { rf_seal_payer = constant:rf_seal_protocol.zero }
+				set_temp_variable = { rf_seal_state = constant:rf_seal_protocol.zero }
+				set_temp_variable = { rf_seal_epoch = constant:rf_seal_protocol.zero }
+				set_temp_variable = { rf_seal_manpower = constant:rf_seal_protocol.zero }
+				set_temp_variable = { rf_seal_support = constant:rf_seal_protocol.zero }
+				set_temp_variable = { rf_seal_civilian = constant:rf_seal_protocol.zero }
+				set_temp_variable = { rf_seal_days = constant:rf_seal_protocol.zero }
+				set_temp_variable = { rf_seal_refund_manpower = constant:rf_seal_protocol.zero }
+				set_temp_variable = { rf_seal_refund_support = constant:rf_seal_protocol.zero }
+				set_temp_variable = { rf_seal_closed = constant:rf_seal_protocol.zero }
+				rf_demons_seal_can_start_manual = yes
+			}
+		}
 		FROM = {
 			is_controlled_by = ROOT
 			has_state_flag = riches_found_mine_state
@@ -7278,7 +7359,21 @@ decision_riches_found_demons_permanent_seal = {
 		}
 	}
 	custom_cost_trigger = {
+		set_temp_variable = { rf_seal_family = constant:rf_seal_protocol.zero }
+		set_temp_variable = { rf_seal_result = constant:rf_seal_protocol.zero }
+		set_temp_variable = { rf_seal_mine_seq = constant:rf_seal_protocol.zero }
+		set_temp_variable = { rf_seal_payer = constant:rf_seal_protocol.zero }
+		set_temp_variable = { rf_seal_state = constant:rf_seal_protocol.zero }
+		set_temp_variable = { rf_seal_epoch = constant:rf_seal_protocol.zero }
+		set_temp_variable = { rf_seal_manpower = constant:rf_seal_protocol.zero }
+		set_temp_variable = { rf_seal_support = constant:rf_seal_protocol.zero }
+		set_temp_variable = { rf_seal_civilian = constant:rf_seal_protocol.zero }
+		set_temp_variable = { rf_seal_days = constant:rf_seal_protocol.zero }
+		set_temp_variable = { rf_seal_refund_manpower = constant:rf_seal_protocol.zero }
+		set_temp_variable = { rf_seal_refund_support = constant:rf_seal_protocol.zero }
+		set_temp_variable = { rf_seal_closed = constant:rf_seal_protocol.zero }
 		riches_found_can_afford_demons_permanent_seal = yes
+		rf_demons_seal_can_start_manual = yes
 	}
 	custom_cost_text = riches_found_cost_demons_permanent_seal
 	days_remove = constant:riches_found_decision_duration.long_project
@@ -7286,22 +7381,38 @@ decision_riches_found_demons_permanent_seal = {
 	fire_only_once = no
 	complete_effect = {
 		custom_effect_tooltip = decision_riches_found_demons_permanent_seal_tt
-		add_manpower = constant:riches_found_decision_cost.manpower_heavy_negative
-		add_equipment_to_stockpile = { type = support_equipment amount = constant:riches_found_decision_cost.support_heavy_negative }
+		set_temp_variable = { rf_seal_family = constant:rf_seal_protocol.zero }
+		set_temp_variable = { rf_seal_result = constant:rf_seal_protocol.zero }
+		set_temp_variable = { rf_seal_mine_seq = constant:rf_seal_protocol.zero }
+		set_temp_variable = { rf_seal_payer = constant:rf_seal_protocol.zero }
+		set_temp_variable = { rf_seal_state = constant:rf_seal_protocol.zero }
+		set_temp_variable = { rf_seal_epoch = constant:rf_seal_protocol.zero }
+		set_temp_variable = { rf_seal_manpower = constant:rf_seal_protocol.zero }
+		set_temp_variable = { rf_seal_support = constant:rf_seal_protocol.zero }
+		set_temp_variable = { rf_seal_civilian = constant:rf_seal_protocol.zero }
+		set_temp_variable = { rf_seal_days = constant:rf_seal_protocol.zero }
+		set_temp_variable = { rf_seal_refund_manpower = constant:rf_seal_protocol.zero }
+		set_temp_variable = { rf_seal_refund_support = constant:rf_seal_protocol.zero }
+		set_temp_variable = { rf_seal_closed = constant:rf_seal_protocol.zero }
+		rf_demons_seal_start = yes
 	}
 	remove_effect = {
+		set_temp_variable = { rf_seal_family = constant:rf_seal_protocol.zero }
+		set_temp_variable = { rf_seal_result = constant:rf_seal_protocol.zero }
+		set_temp_variable = { rf_seal_mine_seq = constant:rf_seal_protocol.zero }
+		set_temp_variable = { rf_seal_payer = constant:rf_seal_protocol.zero }
+		set_temp_variable = { rf_seal_state = constant:rf_seal_protocol.zero }
+		set_temp_variable = { rf_seal_epoch = constant:rf_seal_protocol.zero }
+		set_temp_variable = { rf_seal_manpower = constant:rf_seal_protocol.zero }
+		set_temp_variable = { rf_seal_support = constant:rf_seal_protocol.zero }
+		set_temp_variable = { rf_seal_civilian = constant:rf_seal_protocol.zero }
+		set_temp_variable = { rf_seal_days = constant:rf_seal_protocol.zero }
+		set_temp_variable = { rf_seal_refund_manpower = constant:rf_seal_protocol.zero }
+		set_temp_variable = { rf_seal_refund_support = constant:rf_seal_protocol.zero }
+		set_temp_variable = { rf_seal_closed = constant:rf_seal_protocol.zero }
+		rf_demons_seal_resolve = yes
 		if = {
-			limit = {
-				FROM = {
-					riches_found_mine_still_valid_for_payer = yes
-					has_state_flag = riches_found_layer_demons
-					riches_found_demons_district_cleared = yes
-					NOT = { has_state_flag = riches_found_contract_active }
-					NOT = { has_state_flag = riches_found_occupation_active }
-					NOT = { has_state_flag = riches_found_demons_permanent_seal }
-				}
-			}
-
+			limit = { check_variable = { rf_seal_result = constant:rf_seal_protocol.result_consumed } }
 			FROM = {
 				set_state_flag = riches_found_demons_permanent_seal
 				# A purge is not an evacuation; account for any trapped shift
@@ -7311,12 +7422,23 @@ decision_riches_found_demons_permanent_seal = {
 			}
 			riches_found_reconcile_controller = yes
 			riches_found_refresh_mine_state = yes
-
 		}
-		else = {
-			add_manpower = constant:riches_found_decision_cost.manpower_heavy
-			add_equipment_to_stockpile = { type = support_equipment amount = constant:riches_found_decision_cost.support_heavy }
-		}
+	}
+	cancel_effect = {
+		set_temp_variable = { rf_seal_family = constant:rf_seal_protocol.zero }
+		set_temp_variable = { rf_seal_result = constant:rf_seal_protocol.zero }
+		set_temp_variable = { rf_seal_mine_seq = constant:rf_seal_protocol.zero }
+		set_temp_variable = { rf_seal_payer = constant:rf_seal_protocol.zero }
+		set_temp_variable = { rf_seal_state = constant:rf_seal_protocol.zero }
+		set_temp_variable = { rf_seal_epoch = constant:rf_seal_protocol.zero }
+		set_temp_variable = { rf_seal_manpower = constant:rf_seal_protocol.zero }
+		set_temp_variable = { rf_seal_support = constant:rf_seal_protocol.zero }
+		set_temp_variable = { rf_seal_civilian = constant:rf_seal_protocol.zero }
+		set_temp_variable = { rf_seal_days = constant:rf_seal_protocol.zero }
+		set_temp_variable = { rf_seal_refund_manpower = constant:rf_seal_protocol.zero }
+		set_temp_variable = { rf_seal_refund_support = constant:rf_seal_protocol.zero }
+		set_temp_variable = { rf_seal_closed = constant:rf_seal_protocol.zero }
+		rf_demons_seal_cancel = yes
 	}
 	ai_will_do = {
 		base = constant:riches_found_decision_ai.medium

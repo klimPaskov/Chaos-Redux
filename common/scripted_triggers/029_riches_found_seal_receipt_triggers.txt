@@ -1,0 +1,203 @@
+# Event 029 sealing receipts. COUNTRY THIS = ROOT, FROM = exact mine STATE.
+# Public wrappers set family. Temporary outputs require caller allocation.
+# Manual preflight deliberately excludes native civilian-factory reservation.
+# API and native-boundary restriction: docs/events/029_riches_found/seal_receipt_contract.md.
+
+# Private context read. A persistent state marker validates the state object.
+rf_seal_identity_valid = {
+	set_temp_variable = { rf_seal_mine_seq = FROM.riches_found_mine_sequence }
+	set_temp_variable = { rf_seal_payer = THIS }
+	set_temp_variable = { rf_seal_state = FROM }
+	exists = yes
+	check_variable = { rf_seal_payer = ROOT }
+	FROM = { riches_found_mine_is_registered = yes }
+	OR = {
+		check_variable = { rf_seal_family = constant:rf_seal_protocol.gold }
+		check_variable = { rf_seal_family = constant:rf_seal_protocol.demons }
+	}
+	check_variable = { rf_seal_mine_seq > constant:rf_seal_protocol.zero }
+	check_variable = { var = rf_seal_mine_seq value = constant:rf_seal_protocol.max_integer compare = less_than_or_equals }
+	set_temp_variable = { rf_seal_fraction = rf_seal_mine_seq }
+	modulo_temp_variable = { var = rf_seal_fraction value = constant:rf_seal_protocol.one }
+	check_variable = { rf_seal_fraction = constant:rf_seal_protocol.zero }
+}
+
+# STATE. Missing counters read as zero, but fractions/negative values reject.
+rf_seal_state_counters_valid = {
+	check_variable = { var = rf_seal_pending_count value = constant:rf_seal_protocol.zero compare = greater_than_or_equals }
+	check_variable = { var = rf_seal_pending_count value = constant:rf_seal_protocol.max_integer compare = less_than_or_equals }
+	set_temp_variable = { rf_seal_fraction = rf_seal_pending_count }
+	modulo_temp_variable = { var = rf_seal_fraction value = constant:rf_seal_protocol.one }
+	check_variable = { rf_seal_fraction = constant:rf_seal_protocol.zero }
+	check_variable = { var = rf_seal_control_epoch value = constant:rf_seal_protocol.zero compare = greater_than_or_equals }
+	check_variable = { var = rf_seal_control_epoch value = constant:rf_seal_protocol.max_integer compare = less_than_or_equals }
+	set_temp_variable = { rf_seal_fraction = rf_seal_control_epoch }
+	modulo_temp_variable = { var = rf_seal_fraction value = constant:rf_seal_protocol.one }
+	check_variable = { rf_seal_fraction = constant:rf_seal_protocol.zero }
+}
+
+# STATE. Preserve the two current finish routes, including military purge.
+rf_seal_state_route_valid = {
+	is_controlled_by = ROOT
+	riches_found_mine_is_registered = yes
+	NOT = { riches_found_mine_is_terminal = yes }
+	if = {
+		limit = { check_variable = { rf_seal_family = constant:rf_seal_protocol.gold } }
+		has_state_flag = riches_found_layer_gold
+		riches_found_gold_route_is_restricted = yes
+		NOT = { has_state_flag = riches_found_gold_depths_sealed }
+	}
+	else = {
+		has_state_flag = riches_found_layer_demons
+		riches_found_demons_district_cleared = yes
+		NOT = { has_state_flag = riches_found_contract_active }
+		NOT = { has_state_flag = riches_found_occupation_active }
+		NOT = { has_state_flag = riches_found_demons_permanent_seal }
+	}
+}
+
+rf_seal_receipt_absent = {
+	meta_trigger = {
+		text = {
+			NOT = {
+				OR = {
+					has_country_flag = rf_seal_pending_[FAMILY]_[SEQ]
+					has_variable = rf_seal_payer_[FAMILY]_@var:rf_seal_mine_seq
+					has_variable = rf_seal_state_[FAMILY]_@var:rf_seal_mine_seq
+					has_variable = rf_seal_epoch_[FAMILY]_@var:rf_seal_mine_seq
+					has_variable = rf_seal_manpower_[FAMILY]_@var:rf_seal_mine_seq
+					has_variable = rf_seal_support_[FAMILY]_@var:rf_seal_mine_seq
+					has_variable = rf_seal_civilian_[FAMILY]_@var:rf_seal_mine_seq
+					has_variable = rf_seal_days_[FAMILY]_@var:rf_seal_mine_seq
+				}
+			}
+		}
+		FAMILY = "[?rf_seal_family|.0]"
+		SEQ = "[?rf_seal_mine_seq|.0]"
+	}
+}
+
+# COUNTRY quote, with a coherent current family recipe and no persistent writes.
+rf_seal_quote = {
+	set_temp_variable = { rf_seal_manpower = constant:rf_seal_protocol.zero }
+	set_temp_variable = { rf_seal_support = constant:rf_seal_protocol.zero }
+	set_temp_variable = { rf_seal_civilian = constant:rf_seal_protocol.zero }
+	set_temp_variable = { rf_seal_days = constant:rf_seal_protocol.zero }
+	rf_seal_identity_valid = yes
+	if = {
+		limit = { check_variable = { rf_seal_family = constant:rf_seal_protocol.gold } }
+		set_temp_variable = { rf_seal_manpower = constant:riches_found_decision_cost.manpower_standard }
+		set_temp_variable = { rf_seal_days = constant:riches_found_decision_duration.project }
+	}
+	else = {
+		set_temp_variable = { rf_seal_manpower = constant:riches_found_decision_cost.manpower_heavy }
+		set_temp_variable = { rf_seal_days = constant:riches_found_decision_duration.long_project }
+	}
+	set_temp_variable = { rf_seal_support = constant:riches_found_decision_cost.support_heavy }
+	set_temp_variable = { rf_seal_civilian = constant:riches_found_decision_cost.civ_standard }
+	rf_seal_amounts_valid = yes
+}
+
+# COUNTRY. Whole positive quotes, nonnegative captured epoch, no rounding.
+rf_seal_amounts_valid = {
+	check_variable = { rf_seal_manpower > constant:rf_seal_protocol.zero }
+	check_variable = { rf_seal_support > constant:rf_seal_protocol.zero }
+	check_variable = { rf_seal_civilian > constant:rf_seal_protocol.zero }
+	check_variable = { rf_seal_days > constant:rf_seal_protocol.zero }
+	check_variable = { var = rf_seal_manpower value = constant:rf_seal_protocol.max_integer compare = less_than_or_equals }
+	check_variable = { var = rf_seal_support value = constant:rf_seal_protocol.max_integer compare = less_than_or_equals }
+	check_variable = { var = rf_seal_civilian value = constant:rf_seal_protocol.max_integer compare = less_than_or_equals }
+	check_variable = { var = rf_seal_days value = constant:rf_seal_protocol.max_integer compare = less_than_or_equals }
+	set_temp_variable = { rf_seal_fraction = rf_seal_manpower }
+	modulo_temp_variable = { var = rf_seal_fraction value = constant:rf_seal_protocol.one }
+	check_variable = { rf_seal_fraction = constant:rf_seal_protocol.zero }
+	set_temp_variable = { rf_seal_fraction = rf_seal_support }
+	modulo_temp_variable = { var = rf_seal_fraction value = constant:rf_seal_protocol.one }
+	check_variable = { rf_seal_fraction = constant:rf_seal_protocol.zero }
+	set_temp_variable = { rf_seal_fraction = rf_seal_civilian }
+	modulo_temp_variable = { var = rf_seal_fraction value = constant:rf_seal_protocol.one }
+	check_variable = { rf_seal_fraction = constant:rf_seal_protocol.zero }
+	set_temp_variable = { rf_seal_fraction = rf_seal_days }
+	modulo_temp_variable = { var = rf_seal_fraction value = constant:rf_seal_protocol.one }
+	check_variable = { rf_seal_fraction = constant:rf_seal_protocol.zero }
+}
+
+# COUNTRY. Selection keeps the parent's existing two-factory gate separately.
+rf_seal_can_start_manual = {
+	rf_seal_quote = yes
+	rf_seal_receipt_absent = yes
+	FROM = {
+		rf_seal_state_route_valid = yes
+		rf_seal_state_counters_valid = yes
+		NOT = { has_state_flag = rf_seal_epoch_exhausted }
+		check_variable = { rf_seal_pending_count < constant:rf_seal_protocol.max_integer }
+	}
+	set_temp_variable = { rf_seal_manpower_k = rf_seal_manpower }
+	divide_temp_variable = { rf_seal_manpower_k = constant:rf_seal_protocol.manpower_per_thousand }
+	check_variable = { var = manpower_k value = rf_seal_manpower_k compare = greater_than_or_equals }
+	check_variable = { var = num_equipment@support_equipment value = rf_seal_support compare = greater_than_or_equals }
+}
+
+# COUNTRY. Refund identity deliberately ignores current control/route/tuning.
+rf_seal_load_receipt = {
+	rf_seal_identity_valid = yes
+	meta_trigger = {
+		text = {
+			has_country_flag = rf_seal_pending_[FAMILY]_[SEQ]
+			has_variable = rf_seal_payer_[FAMILY]_@var:rf_seal_mine_seq
+			has_variable = rf_seal_state_[FAMILY]_@var:rf_seal_mine_seq
+			has_variable = rf_seal_epoch_[FAMILY]_@var:rf_seal_mine_seq
+			has_variable = rf_seal_manpower_[FAMILY]_@var:rf_seal_mine_seq
+			has_variable = rf_seal_support_[FAMILY]_@var:rf_seal_mine_seq
+			has_variable = rf_seal_civilian_[FAMILY]_@var:rf_seal_mine_seq
+			has_variable = rf_seal_days_[FAMILY]_@var:rf_seal_mine_seq
+			set_temp_variable = { rf_seal_payer = rf_seal_payer_[FAMILY]_@var:rf_seal_mine_seq }
+			set_temp_variable = { rf_seal_state = rf_seal_state_[FAMILY]_@var:rf_seal_mine_seq }
+			set_temp_variable = { rf_seal_epoch = rf_seal_epoch_[FAMILY]_@var:rf_seal_mine_seq }
+			set_temp_variable = { rf_seal_manpower = rf_seal_manpower_[FAMILY]_@var:rf_seal_mine_seq }
+			set_temp_variable = { rf_seal_support = rf_seal_support_[FAMILY]_@var:rf_seal_mine_seq }
+			set_temp_variable = { rf_seal_civilian = rf_seal_civilian_[FAMILY]_@var:rf_seal_mine_seq }
+			set_temp_variable = { rf_seal_days = rf_seal_days_[FAMILY]_@var:rf_seal_mine_seq }
+		}
+		FAMILY = "[?rf_seal_family|.0]"
+		SEQ = "[?rf_seal_mine_seq|.0]"
+	}
+	check_variable = { rf_seal_payer = ROOT }
+	check_variable = { rf_seal_state = FROM }
+	check_variable = { var = rf_seal_epoch value = constant:rf_seal_protocol.zero compare = greater_than_or_equals }
+	check_variable = { var = rf_seal_epoch value = constant:rf_seal_protocol.max_integer compare = less_than_or_equals }
+	set_temp_variable = { rf_seal_fraction = rf_seal_epoch }
+	modulo_temp_variable = { var = rf_seal_fraction value = constant:rf_seal_protocol.one }
+	check_variable = { rf_seal_fraction = constant:rf_seal_protocol.zero }
+	rf_seal_amounts_valid = yes
+	FROM = {
+		rf_seal_state_counters_valid = yes
+		check_variable = { rf_seal_pending_count > constant:rf_seal_protocol.zero }
+	}
+}
+
+# COUNTRY. Called only after load in an actual native removal boundary.
+rf_seal_finish_valid = {
+	FROM = {
+		NOT = { has_state_flag = rf_seal_epoch_exhausted }
+		check_variable = { rf_seal_control_epoch = rf_seal_epoch }
+		rf_seal_state_route_valid = yes
+	}
+}
+
+rf_gold_seal_quote = {
+	set_temp_variable = { rf_seal_family = constant:rf_seal_protocol.gold }
+	rf_seal_quote = yes
+}
+rf_demons_seal_quote = {
+	set_temp_variable = { rf_seal_family = constant:rf_seal_protocol.demons }
+	rf_seal_quote = yes
+}
+rf_gold_seal_can_start_manual = {
+	set_temp_variable = { rf_seal_family = constant:rf_seal_protocol.gold }
+	rf_seal_can_start_manual = yes
+}
+rf_demons_seal_can_start_manual = {
+	set_temp_variable = { rf_seal_family = constant:rf_seal_protocol.demons }
+	rf_seal_can_start_manual = yes
+}

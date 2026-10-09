@@ -1,0 +1,219 @@
+# Event 029 paid seal receipts, exact refunds, and bounded controller epochs.
+# COUNTRY THIS = ROOT, FROM = original mine. Resolve/cancel ONLY inline at
+# the matching native timed-decision boundary. No events or virtual deadlines.
+# Public temporary outputs must be allocated by each outer caller.
+# Native factory ordering/atomicity is outside this manual-payment contract.
+# API: docs/events/029_riches_found/seal_receipt_contract.md.
+
+# COUNTRY. Recheck all manual reserves and current route, publish, then debit once.
+rf_seal_start = {
+	# Allocate directly in this frame, not through a returning allocator helper.
+	set_temp_variable = { rf_seal_result = constant:rf_seal_protocol.result_rejected }
+	set_temp_variable = { rf_seal_mine_seq = constant:rf_seal_protocol.zero }
+	set_temp_variable = { rf_seal_payer = constant:rf_seal_protocol.zero }
+	set_temp_variable = { rf_seal_state = constant:rf_seal_protocol.zero }
+	set_temp_variable = { rf_seal_epoch = constant:rf_seal_protocol.zero }
+	set_temp_variable = { rf_seal_manpower = constant:rf_seal_protocol.zero }
+	set_temp_variable = { rf_seal_support = constant:rf_seal_protocol.zero }
+	set_temp_variable = { rf_seal_civilian = constant:rf_seal_protocol.zero }
+	set_temp_variable = { rf_seal_days = constant:rf_seal_protocol.zero }
+	set_temp_variable = { rf_seal_refund_manpower = constant:rf_seal_protocol.zero }
+	set_temp_variable = { rf_seal_refund_support = constant:rf_seal_protocol.zero }
+	set_temp_variable = { rf_seal_closed = constant:rf_seal_protocol.zero }
+	if = {
+		limit = { rf_seal_can_start_manual = yes }
+		set_temp_variable = { rf_seal_epoch = FROM.rf_seal_control_epoch }
+		meta_effect = {
+			text = {
+				set_variable = { rf_seal_payer_[FAMILY]_@var:rf_seal_mine_seq = rf_seal_payer }
+				set_variable = { rf_seal_state_[FAMILY]_@var:rf_seal_mine_seq = rf_seal_state }
+				set_variable = { rf_seal_epoch_[FAMILY]_@var:rf_seal_mine_seq = rf_seal_epoch }
+				set_variable = { rf_seal_manpower_[FAMILY]_@var:rf_seal_mine_seq = rf_seal_manpower }
+				set_variable = { rf_seal_support_[FAMILY]_@var:rf_seal_mine_seq = rf_seal_support }
+				set_variable = { rf_seal_civilian_[FAMILY]_@var:rf_seal_mine_seq = rf_seal_civilian }
+				set_variable = { rf_seal_days_[FAMILY]_@var:rf_seal_mine_seq = rf_seal_days }
+				set_country_flag = rf_seal_pending_[FAMILY]_[SEQ]
+			}
+			FAMILY = "[?rf_seal_family|.0]"
+			SEQ = "[?rf_seal_mine_seq|.0]"
+		}
+		FROM = {
+			if = { limit = { NOT = { has_variable = rf_seal_control_epoch } } set_variable = { rf_seal_control_epoch = constant:rf_seal_protocol.zero } }
+			add_to_variable = { rf_seal_pending_count = constant:rf_seal_protocol.one }
+		}
+		set_temp_variable = { rf_seal_signed = rf_seal_manpower }
+		multiply_temp_variable = { rf_seal_signed = constant:rf_seal_protocol.negative_one }
+		add_manpower = var:rf_seal_signed
+		set_temp_variable = { equipment_stockpile_removal_amount = rf_seal_support }
+		remove_support_equipment_from_stockpile = yes
+		set_temp_variable = { rf_seal_result = constant:rf_seal_protocol.result_paid }
+	}
+}
+
+# STATE. Only a zero pending count permits reset, never elapsed time or transfer.
+rf_seal_reset_exhausted_epoch_if_idle = {
+	if = {
+		limit = {
+			has_state_flag = rf_seal_epoch_exhausted
+			rf_seal_state_counters_valid = yes
+			check_variable = { rf_seal_pending_count = constant:rf_seal_protocol.zero }
+		}
+		set_variable = { rf_seal_control_epoch = constant:rf_seal_protocol.zero }
+		clr_state_flag = rf_seal_epoch_exhausted
+	}
+}
+
+# STATE, only FROM.FROM at on_state_control_changed, before existing reconcile.
+# Pointer comparison includes same-controller notifications and native state identity.
+rf_seal_note_control_change = {
+	set_temp_variable = { rf_seal_changed_state = THIS }
+	set_temp_variable = { rf_seal_old_controller = FROM }
+	set_temp_variable = { rf_seal_new_controller = ROOT }
+	if = {
+		limit = {
+			riches_found_mine_is_registered = yes
+			check_variable = { rf_seal_changed_state = FROM.FROM }
+			NOT = { check_variable = { rf_seal_old_controller = rf_seal_new_controller } }
+			ROOT = { exists = yes }
+			is_controlled_by = ROOT
+			rf_seal_state_counters_valid = yes
+		}
+		if = {
+			limit = { NOT = { has_state_flag = rf_seal_epoch_exhausted } }
+			if = {
+				limit = { check_variable = { rf_seal_control_epoch < constant:rf_seal_protocol.max_integer } }
+				add_to_variable = { rf_seal_control_epoch = constant:rf_seal_protocol.one }
+			}
+			else = { set_state_flag = rf_seal_epoch_exhausted }
+		}
+		rf_seal_reset_exhausted_epoch_if_idle = yes
+	}
+}
+
+# COUNTRY private closure. Revalidate immediately before mutation and publish fresh
+# closure only for this invocation. Malformed rows/counters remain pending.
+rf_seal_close_loaded = {
+	set_temp_variable = { rf_seal_closed = constant:rf_seal_protocol.zero }
+	if = {
+		limit = { rf_seal_load_receipt = yes }
+		meta_effect = {
+			text = {
+				clr_country_flag = rf_seal_pending_[FAMILY]_[SEQ]
+				clear_variable = rf_seal_payer_[FAMILY]_@var:rf_seal_mine_seq
+				clear_variable = rf_seal_state_[FAMILY]_@var:rf_seal_mine_seq
+				clear_variable = rf_seal_epoch_[FAMILY]_@var:rf_seal_mine_seq
+				clear_variable = rf_seal_manpower_[FAMILY]_@var:rf_seal_mine_seq
+				clear_variable = rf_seal_support_[FAMILY]_@var:rf_seal_mine_seq
+				clear_variable = rf_seal_civilian_[FAMILY]_@var:rf_seal_mine_seq
+				clear_variable = rf_seal_days_[FAMILY]_@var:rf_seal_mine_seq
+			}
+			FAMILY = "[?rf_seal_family|.0]"
+			SEQ = "[?rf_seal_mine_seq|.0]"
+		}
+		FROM = {
+			subtract_from_variable = { rf_seal_pending_count = constant:rf_seal_protocol.one }
+			rf_seal_reset_exhausted_epoch_if_idle = yes
+		}
+		set_temp_variable = { rf_seal_closed = constant:rf_seal_protocol.one }
+	}
+}
+
+# COUNTRY private exact-credit path, after loading this payer's immutable quote.
+rf_seal_refund_loaded = {
+	rf_seal_close_loaded = yes
+	if = {
+		limit = { check_variable = { rf_seal_closed = constant:rf_seal_protocol.one } }
+		set_temp_variable = { rf_seal_refund_manpower = rf_seal_manpower }
+		set_temp_variable = { rf_seal_refund_support = rf_seal_support }
+		add_manpower = var:rf_seal_refund_manpower
+		add_equipment_to_stockpile = { type = support_equipment amount = rf_seal_refund_support }
+		set_temp_variable = { rf_seal_result = constant:rf_seal_protocol.result_refunded }
+	}
+}
+
+# COUNTRY generic native boundary. In-country output slots are allocated by callers.
+rf_seal_resolve = {
+	set_temp_variable = { rf_seal_result = constant:rf_seal_protocol.result_none }
+	set_temp_variable = { rf_seal_mine_seq = constant:rf_seal_protocol.zero }
+	set_temp_variable = { rf_seal_payer = constant:rf_seal_protocol.zero }
+	set_temp_variable = { rf_seal_state = constant:rf_seal_protocol.zero }
+	set_temp_variable = { rf_seal_epoch = constant:rf_seal_protocol.zero }
+	set_temp_variable = { rf_seal_manpower = constant:rf_seal_protocol.zero }
+	set_temp_variable = { rf_seal_support = constant:rf_seal_protocol.zero }
+	set_temp_variable = { rf_seal_civilian = constant:rf_seal_protocol.zero }
+	set_temp_variable = { rf_seal_days = constant:rf_seal_protocol.zero }
+	set_temp_variable = { rf_seal_refund_manpower = constant:rf_seal_protocol.zero }
+	set_temp_variable = { rf_seal_refund_support = constant:rf_seal_protocol.zero }
+	set_temp_variable = { rf_seal_closed = constant:rf_seal_protocol.zero }
+	if = {
+		limit = { rf_seal_identity_valid = yes }
+		if = {
+			limit = { NOT = { rf_seal_receipt_absent = yes } }
+			set_temp_variable = { rf_seal_result = constant:rf_seal_protocol.result_invalid }
+			if = {
+				limit = { rf_seal_load_receipt = yes }
+				if = {
+					limit = { rf_seal_finish_valid = yes }
+					rf_seal_close_loaded = yes
+					if = {
+						limit = { check_variable = { rf_seal_closed = constant:rf_seal_protocol.one } }
+						set_temp_variable = { rf_seal_result = constant:rf_seal_protocol.result_consumed }
+					}
+				}
+				else = { rf_seal_refund_loaded = yes }
+			}
+		}
+	}
+	else = { set_temp_variable = { rf_seal_result = constant:rf_seal_protocol.result_invalid } }
+}
+
+# COUNTRY native cancellation boundary: force exact refund without finish rewards.
+rf_seal_cancel = {
+	# Allocate directly here before nested receipt/closure reads.
+	set_temp_variable = { rf_seal_result = constant:rf_seal_protocol.result_none }
+	set_temp_variable = { rf_seal_mine_seq = constant:rf_seal_protocol.zero }
+	set_temp_variable = { rf_seal_payer = constant:rf_seal_protocol.zero }
+	set_temp_variable = { rf_seal_state = constant:rf_seal_protocol.zero }
+	set_temp_variable = { rf_seal_epoch = constant:rf_seal_protocol.zero }
+	set_temp_variable = { rf_seal_manpower = constant:rf_seal_protocol.zero }
+	set_temp_variable = { rf_seal_support = constant:rf_seal_protocol.zero }
+	set_temp_variable = { rf_seal_civilian = constant:rf_seal_protocol.zero }
+	set_temp_variable = { rf_seal_days = constant:rf_seal_protocol.zero }
+	set_temp_variable = { rf_seal_refund_manpower = constant:rf_seal_protocol.zero }
+	set_temp_variable = { rf_seal_refund_support = constant:rf_seal_protocol.zero }
+	set_temp_variable = { rf_seal_closed = constant:rf_seal_protocol.zero }
+	if = {
+		limit = { rf_seal_identity_valid = yes }
+		if = {
+			limit = { NOT = { rf_seal_receipt_absent = yes } }
+			set_temp_variable = { rf_seal_result = constant:rf_seal_protocol.result_invalid }
+			if = { limit = { rf_seal_load_receipt = yes } rf_seal_refund_loaded = yes }
+		}
+	}
+	else = { set_temp_variable = { rf_seal_result = constant:rf_seal_protocol.result_invalid } }
+}
+
+rf_gold_seal_start = {
+	set_temp_variable = { rf_seal_family = constant:rf_seal_protocol.gold }
+	rf_seal_start = yes
+}
+rf_demons_seal_start = {
+	set_temp_variable = { rf_seal_family = constant:rf_seal_protocol.demons }
+	rf_seal_start = yes
+}
+rf_gold_seal_resolve = {
+	set_temp_variable = { rf_seal_family = constant:rf_seal_protocol.gold }
+	rf_seal_resolve = yes
+}
+rf_demons_seal_resolve = {
+	set_temp_variable = { rf_seal_family = constant:rf_seal_protocol.demons }
+	rf_seal_resolve = yes
+}
+rf_gold_seal_cancel = {
+	set_temp_variable = { rf_seal_family = constant:rf_seal_protocol.gold }
+	rf_seal_cancel = yes
+}
+rf_demons_seal_cancel = {
+	set_temp_variable = { rf_seal_family = constant:rf_seal_protocol.demons }
+	rf_seal_cancel = yes
+}

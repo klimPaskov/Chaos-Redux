@@ -20,11 +20,15 @@ Counting foregone output, each profile uses four cost types.
 
 Both projects exclude terminal mines at selection.
 The delayed result checks the original payer's control, registration, and nonterminal status again.
+It also requires the controller epoch captured by that paid project, so a transfer away and back cannot validate the old commitment.
 Gold sealing also rechecks the Gold Disease layer, restricted-access route, and absence of an already completed gold seal.
 Demonic sealing also rechecks the demonic layer, cleared district, and absence of an active concession, occupation, or completed demonic seal.
-A failed delayed check returns exactly the manpower and support equipment charged by that project, without an output change or a second sealing reward.
+A failed delayed check consumes the original payer's stored receipt and returns exactly its recorded manpower and support-equipment payment, without an output change or a second sealing reward.
+The receipt's pending slot stays locked until the project's native removal or cancellation boundary and is consumed only once.
+Native cancellation uses the same stored-quote refund and never applies a mine outcome.
+The selection effect rechecks manual reserves before publishing and charging the receipt; a rejected stale entry makes no manual debit and cannot later receive an unpaid refund.
 Elapsed native factory commitment is opportunity time, not escrowed equipment or buildings, and is not refunded.
-These checks do not establish generation-safe callback identity after controller cycling or atomic native factory reservation after a stale click.
+The direct native-boundary protocol rejects controller cycling in source and follows the documented native timer termination semantics; it does not claim atomic native factory reservation after a stale click or observed engine callback behavior.
 
 ## Evacuation, military clearance, and harm
 
@@ -83,6 +87,6 @@ Consumers remain the ordinary mine-management category, existing deep-section an
 No dedicated GUI, portrait, animation, unit, or new asset family is introduced.
 The ongoing visual repair must approve the exact ordinary decision icons independently.
 
-Control of shaft entrances, integrity-dependent success, affected-group resistance, time-scaled evacuation quality, the complete dynamic quote, native callback identity, and current live consumer evidence remain separate acceptance requirements.
+Control of shaft entrances, integrity-dependent success, affected-group resistance, time-scaled evacuation quality, the complete dynamic quote, observed native callback execution, and current live consumer evidence remain separate acceptance requirements.
 The existing `riches_found_state_can_control_access` cannot simply substitute for a closure-project gate because it requires an active mine and excludes closed or collapsed containment targets.
 Future integration must preserve severe-collapse sealing and the explicitly harmful alternative, not silently omit either route or relabel a military purge as safe evacuation.
