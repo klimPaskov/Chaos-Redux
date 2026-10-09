@@ -1,143 +1,87 @@
 # CBRN Warfare System
 
-## Purpose
+## Scope and authority
 
-The CBRN Warfare System coordinates Chaos Warfare doctrine, protective production, Army Headquarters preparation, regimental support, chemical delivery, biological outbreaks, civilian defence, evidence, attribution, deaths, contamination, Condemnation, sanctions, and recovery.
+The system links protective production, Chaos Warfare specialization, native chemical and biological raids, outbreaks, state response, evidence, deaths, contamination, Condemnation and recovery.
+The [accepted CBRN amendment](../../specs/chaos_warfare_system_specs/specs/13_2026_09_20_accepted_cbrn_overhaul.md) governs design; the [requirement ledger](../../plans/chaos_warfare_system_plans/2026-09-20_cbrn_overhaul_requirement_ledger.md) and [completion report](../../plans/chaos_warfare_system_plans/2026-09-25_cbrn_overhaul_completion_report.md) distinguish current source implementation from remaining gaps.
+This overview describes the current source loop and does not certify the complete package or native execution.
 
-The accepted design source is `docs/specs/chaos_warfare_system_specs/`. Working implementation and audit evidence lives in `docs/plans/chaos_warfare_system_plans/`.
+## Playable loop
 
-## Current implementation boundary
+1. Research ordinary protection, medical and delivery technologies and produce their real equipment and payloads.
+2. Choose Retaliation Only, Battlefield Authorization or Unrestricted Authorization through the three direct policy decisions, each costing 5 Command Power with a 90-day reassessment interval.
+3. Let stock-backed maintenance derive readiness, service military filters and issue military masks before threatened civilian filter service/issue and remaining civilian work.
+4. Equip the available support and Army HQ roles, with Chaos Warfare adoption and mastery providing specialization without separate establishment, claim, training-purchase or commission cards.
+5. Use the native Chemical Raids or Biological Raids interface, meeting the selected route's exact target, origin, assigned forces, intelligence, preparation, policy, protection and real payload requirements.
+6. Resolve source-recorded consequences and respond through applicable treatment, protection, containment, decontamination, evidence and diplomatic actions.
 
-The shared Stage 1 data model defines Chemical Readiness, policy, capacities, contamination and attribution classes, protection layers, agent and route profiles, and a fail-closed chemical action-record calculator.
+Native land routes use assigned divisions and supply-node origins, while air routes retain their own aircraft requirements.
+Doctrine never raises use policy automatically, and ordinary protected battlefield routes retain vanilla-doctrine access after their normal research, project and equipment gates.
+Chemical Readiness is derived from issued equipment, cleanup kits, training and specialization rather than purchased as a separate currency.
+Civil Defence responds to live alerts, contamination, active chemical responses or credible current-enemy capability/use, with separate biological-outbreak and active occupied-program visibility.
+Own durable victim history or retaliation permission alone does not sustain current civilian issue, and biological-only visibility does not grant a new chemical respirator benefit.
+Routine new civilian issue retains its 50% effective-coverage target, serves threatened rural cores before clean strategic fallback, and leaves paid occupied-population and foreign-aid reservations under their existing contracts.
+The dedicated British historical receipt, real model stocks, filter costs and bounded country scheduler remain separate from optional emergency response purchases.
+See [command and protection](cbrn_simplification.md), [current need and priority](../../specs/chaos_warfare_system_specs/corrections/2026-10-09_civil_defence_current_need_and_priority.md) and [native raid integration](cbrn_native_raid_migration.md) for exact boundaries.
 
-The Stage 2 protective-equipment layer adds four producible respirator/protective-set models, one non-producible reconditioned model, three decontamination models, three instrument models, their technology branches, real national reserves, model-specific military issue, population-scaled state distribution through national program cards, fitting, filter condition, loss, replacement, reconditioning, transfer cleanup, starting profiles, production AI, decisions, event handling, localisation, and type-specific assets. Existing chemical abilities now read equipment-backed respiratory and skin protection instead of treating technology ownership as protection.
+## Formations and mastery
 
-Medical response remains an institutional capacity backed by support equipment, trucks, field hospitals, and mapped treatment technologies. No unsupported standalone medical-equipment archetype is introduced.
+Three HQ sections provide Operations and Intelligence, Protection and Decontamination, and Medical and Biosecurity.
+The field package has one Protection Company, one Field Medical Company, reconnaissance, projectors, ammunition logistics, biosecurity assault, the Chaos Battalion and three light/medium/heavy armored-delivery roles.
+The eighteen obsolete agent-specific tank companies are deleted; retained inactive legacy definitions elsewhere do not expand the playable roster.
+Nerve suppression remains an operation upgrade rather than a standing company.
+The four authored mastery lists cover thirteen unique retained roles, with membership shared across tracks as shown below.
 
-The exact-state chemical air-raid adapter and exact-state camp chemical method consume real payloads, resolve the applicable equipment-backed protection receipt, and pass their result through the shared consequence dispatcher. Gas-Chamber Saturation Drills strengthen nerve-agent use inside an already active camp transaction; they do not create camp infrastructure or depend on the unavailable legacy occupation-operation estimator. The shared calculator remains fail-closed for any route that cannot prove an exact target state, real payload debit, resolved protection, and every route-required condition. Continuous ordinary-air missions are rejected because the installed engine exposes no verified eligible-activity hook; idle chemical-capable aircraft cannot enter the exposure path.
+| Track | Authored contributors | Count |
+| --- | --- | ---: |
+| Hazard Assault Formations | Protection, reconnaissance, Field Medical, biosecurity assault, Chaos Battalion | 5 |
+| Contaminant Fire Support | Projector, ammunition train, Field Medical | 3 |
+| Toxic Armored Warfare | Light, medium and heavy armored delivery | 3 |
+| Integrated CBRN Command | Operations HQ, Protection HQ, Medical HQ, Protection, reconnaissance, Field Medical | 6 |
 
-Military mask accounting keeps two native surfaces distinct: protection reads actual respirator models deployed in divisions through `num_equipment_in_armies@<model>` plus the model-specific military-issue ledger, while loss and filter replacement debit the non-reclaimable issue ledger because the installed script surface has no current-version effect for removing a selected equipment model from deployed divisions. The system does not fabricate a fielded-unit removal or retain an undisclosed synthetic damage estimator.
+The [unit package](cbrn_unit_consolidation.md) and [doctrine guide](chaos_warfare_doctrine.md) own exact identifiers, unlocks, equipment bills, abilities and category memberships.
+The lists describe source eligibility, not measured mastery speed or native division statistics.
 
-## Final gameplay loop
+## Projects and historical starts
 
-1. Establish a national program and choose a use policy.
-2. Produce masks, filters, decontamination equipment, instruments, payloads, and route-specific stores.
-3. Issue military protection, build civilian reserves, and run national distribution programs; exact-state cards remain reserved for live alerts, contamination, outbreaks, evidence, occupation incidents, and selected operations.
-4. Equip regimental support and Army Headquarters companies.
-5. Prepare a route-specific operation with command cost, duration, cooldown, target, payload, forecast, and cleanup plan.
-6. Debit payload, resolve protection and conditions, and create one exposure record.
-7. Apply disruption, deaths, contamination or outbreak pressure, medical saturation, evidence, attribution, Condemnation, and sanctions through shared adapters.
-8. Replace filters, treat casualties, contain outbreaks, decontaminate states and routes, manage inspections, and absorb diplomatic consequences.
+The eight first-tier projects are Mechanized Smoke Screens, Collective Protection Systems, Self-Renewing Filters, Phantom Mist, Mass Vaccine Production, Field Antibiotics, Regenerative Serum and Broad-Spectrum Antiserum.
+Self-Renewing Filters, Phantom Mist, Regenerative Serum and Broad-Spectrum Antiserum are fictional project entries.
+The [user-approved shared Event 016 exception](../../specs/chaos_warfare_system_specs/corrections/2026-10-09_shared_event016_project_budget_exception.md), integrated in `e4372477`, preserves full Biomedical Acceleration, cloning, paleogenetics and xenobiology rewards through existing shared APIs while ordinary CBRN bonuses retain their caps.
+Budget reporting keeps ordinary subtotal, exceptional family/stage contributions and combined totals visible, with native aggregation and the reconnaissance countermodel unresolved.
+Weaponization remains separately authorized rather than an automatic ordinary project stage.
+France's [1939 protective-industry setup](../../specs/chaos_warfare_system_specs/corrections/2026-10-09_france_1939_protective_industry.md), integrated in `7133a8990`, requests basic-respirator production from an existing military factory without granting a factory, starting stock or inferred civilian issue.
+Other historical entitlements remain governed by the accepted country-specific profiles and evidence.
 
-## Layers
+## Consequences and biological response
 
-### National
+Chemical delivery uses exact source records and equipment-backed protection before the shared consequence dispatcher updates disruption, deaths, contamination, medical saturation, evidence, attribution and Condemnation.
+Doctrine's bounded Condemnation mitigation does not erase payload expenditure, deaths, attribution, confirmed-use history or public-harm records.
+Idle chemical-capable aircraft do not create exposure through an unverified ordinary-air activity estimator.
+Ordinary anthrax, plague, tularemia and smallpox retain separate incubation, spread, containment and treatment profiles, while weaponized zombies have their own lifecycle.
+The [biological system](biological_warfare/biowarfare_system.md) and [continuing civilian protection](continuing_civilian_protection.md) describe their current consumers and timing contracts.
 
-- Chemical Readiness, a 0–100 output derived from military mask coverage, decontamination capacity, protective research, and specialization
-- one of three use policies: Retaliation Only, Battlefield Authorization, or Unrestricted Authorization
-- decontamination, medical, biological-security, attribution-control, and command-integration capacities
-- real protective and offensive stockpiles
-- differentiated AI program posture and country profile
+Biomedical response entitlement reads the durable `conventional_technology_biomedical_operational` flag, with the separate weaponized flag additionally requiring operational entitlement.
+The current biological lifecycle adds fifty points per eligible tier to surveillance, containment, medical response and biosecurity, retaining the existing response clamp.
+The ordinary shared API grants operational entitlement; story stage/owner lifecycle is a separate contract, so project damage, suspension or owner inactivity does not itself establish automatic loss of a durable neutral capability.
+This source trace does not prove native callback execution or every response outcome.
 
-### Army Headquarters
+## Current consumers and remaining status
 
-Army Headquarters is the theater layer. Three CBRN sections combine Operations and Intelligence, Protection and Decontamination, and Medical and Biosecurity. Their abilities require equipment, preparation, command power, duration, cooldown, AI use, and cleanup. The exact surviving IDs and inactive compatibility definitions are mapped in `cbrn_unit_consolidation.md`.
+The original restored grand emblem remains `GFX_doctrine_chaos_warfare_medium`, using `gfx/interface/doctrines/icons/doctrine_chaos_warfare.dds`.
+Current asset references follow their actual consumers rather than obsolete six-HQ, six-MIO or staged window/animation inventories.
 
-### Division
-
-Regimental support is the division layer. Six field roles cover the Protection Company, Field Medical Company, reconnaissance, chemical projectors, ammunition logistics, and biological security assault; the Chaos battalion and three surviving armored chassis provide distinct combat and delivery roles. Nerve suppression is an operation upgrade rather than a standing company. Strong scripted benefits scale or disappear with essential-equipment shortages. The 18 agent-specific tank companies remain inactive compatibility definitions, and `cbrn_unit_consolidation.md` records the exact old-to-new map and the same-country exposure limitation.
-
-### State
-
-Affected states store only active values: chemical contamination, outbreak state, civilian protection, decontamination progress, medical saturation, evidence, attribution, and movement controls. Recovery removes stale values. No all-state initialization or broad all-country periodic pulse is used.
-
-## Shared chemical exposure
-
-Every chemical route must eventually call `cbrn_prepare_chemical_action_record` after proving:
-
-- an exact target state
-- real payload consumption
-- resolved protection
-- resolved conditions
-
-The calculator returns one consistent result for disruption, military/civilian deaths, contamination, medical burden, evidence, attribution, Condemnation base, and friendly risk. A later single dispatcher owns all persistent consequence changes. This keeps Deaths, Air Cleanliness, Condemnation, contamination, and operation history synchronized.
-
-Protection is layered. Respirators dominate choking-agent defence; blister and nerve defence additionally depend on skin protection, decontamination, antidotes, medical response, warning, and training. Doctrine has its own bounded Condemnation multiplier, separate from retaliation and target-relationship context. It can reduce impact through discipline and precision, but cannot erase evidence, attribution, confirmed-use history, deaths, or visible contamination.
-
-## Biological boundary
-
-Ordinary biological warfare will use separate profiles for anthrax, plague, tularemia, and smallpox, with agent-specific incubation, detection, spread, containment, treatment, safety, and attribution. Weaponized zombies remain a separate weapon class and lifecycle. They may share only explicitly approved evidence, death, Air Cleanliness, and consequence adapters.
-
-Event 016 Biomedical Acceleration integrates at the existing exact-state response calculation instead of creating a parallel protection ledger. A healthy operational project contributes fifty points each to surveillance, containment, medical response, and biosecurity; weaponization contributes a further fifty. The normal response clamp remains authoritative, and suspended, damaged, dismantled, stolen, transferred, or inactive project state contributes nothing.
-
-## Existing-system integration
-
-- Deaths: one operation or continuing-death period creates one shared record and real population loss.
-- Air Cleanliness: chemical contamination changes the global value only when a state crosses a contamination class; biological contribution follows outbreak bands.
-- Condemnation: chemical, biological, atrocity, and coverup sources remain distinct; latent attribution pays only the unpaid public share as evidence rises.
-- Chaos: existing Deaths and Air Cleanliness rules remain authoritative; ordinary CBRN use does not add a second large direct chaos gain.
-- Sanctions: later tiers affect offensive production, imported materials, research, aircraft, trucks, and instruments while humanitarian carve-outs can preserve defensive aid.
-
-## Source files
-
-| Surface | File |
+| Consumer family | Current source or owner reference |
 | --- | --- |
-| Shared constants | `common/script_constants/cbrn_system_constants.txt` |
-| Shared triggers | `common/scripted_triggers/cbrn_triggers.txt` |
-| Protection/readiness effects | `common/scripted_effects/cbrn_protection_effects.txt` |
-| Exposure/action effects | `common/scripted_effects/cbrn_exposure_effects.txt` |
-| Helper contract evidence | `docs/plans/chaos_warfare_system_plans/2026-07-13_stage_1_shared_data_model.md` |
-| Protective equipment | `common/units/equipment/cbrn_protective_equipment.txt` |
-| Protective technology | `common/technologies/chaosx_technologies.txt` |
-| Protection decisions | `common/decisions/cbrn_protection_decisions.txt` |
-| Protection decision effects | `common/scripted_effects/cbrn_protection_decision_effects.txt` |
-| Protection triggers | `common/scripted_triggers/cbrn_protection_triggers.txt` |
-| Decision visibility triggers | `common/scripted_triggers/cbrn_decision_visibility_triggers.txt` |
-| Decision visibility effects | `common/scripted_effects/cbrn_decision_visibility_effects.txt` |
-| Starting profiles | `common/scripted_effects/cbrn_starting_protection_effects.txt` |
-| Protection production AI | `common/ai_strategy/cbrn_protection_production.txt` |
-| Maintenance/events | `events/cbrn_protection_events.txt` |
-| Stage 2 sprites | `interface/cbrn_protection.gfx` |
-| Stage 2 implementation evidence | `docs/plans/chaos_warfare_system_plans/2026-07-13_stage_2_protective_equipment.md` |
+| Protection technology, equipment, decisions and state modifiers | [cbrn_protection.gfx](../../../interface/cbrn_protection.gfx) |
+| Doctrine, officer corps and commander traits | [cbrn_doctrine.gfx](../../../interface/cbrn_doctrine.gfx), [chaosx_traits.gfx](../../../interface/chaosx_traits.gfx) |
+| Unit counters and texticons | [unit/texticon coverage](cbrn_unit_texticon_assets.md), [subunit icons](../../../interface/chaosx_subuniticons.gfx), [texticons](../../../interface/chaosx_texticons.gfx) |
+| Project equipment and special-project cards | [project equipment](../../../interface/cbrn_project_equipment.gfx), [special projects](../../../interface/cbrn_special_projects.gfx) |
+| Chemical delivery and biological response | [chemical delivery](../../../interface/cbrn_chemical_delivery.gfx), [biological warfare](../../../interface/biological_warfare.gfx) |
+| Designers and industry | [designers](../../../interface/cbrn_designers.gfx), [MIO industry](../../../interface/cbrn_mio_industry.gfx) |
+| Achievements | [achievement contract and status](cbrn_achievements.md) |
 
-The mapped units, Army Headquarters layer, doctrine, officer corps, route adapters, payloads, biological lifecycle, designers, achievements, and consequence dispatcher have separate implementation and audit records under `docs/plans/chaos_warfare_system_plans/`. Current status and evidence limits are in the [accepted overhaul amendment](../../specs/chaos_warfare_system_specs/specs/13_2026_09_20_accepted_cbrn_overhaul.md), [requirement ledger](../../plans/chaos_warfare_system_plans/2026-09-20_cbrn_overhaul_requirement_ledger.md), and [completion report](../../plans/chaos_warfare_system_plans/2026-09-25_cbrn_overhaul_completion_report.md); this overview does not establish a five-tab GUI or native visual proof.
-
-## Asset registry
-
-> The family inventory and future-stage list below preserve the earlier Stage 2 plan. Their six-family MIO, six-HQ, and readiness-seal/window-animation targets were superseded or left without an accepted consumer by the 2026-09-20 overhaul; they are not current completion requirements. The accepted amendment and current requirement ledger control their disposition.
-
-Stage 2 assets live under `docs/assets/chaos_warfare_system/stage_2_protective_equipment/`. `interface/cbrn_protection.gfx` registers purpose-built final DDS art for eleven technologies, fourteen equipment/model cards, two decision categories, nineteen decisions, five exact-state response modifiers, and the defective-reconditioned-batch report event. No placeholder or cross-type resized substitute is used.
-
-Before each later visible stage is implemented, stable gameplay and sprite identifiers must be registered and produced through `chaos-redux-event-assets`; animation also requires `chaos-redux-frame-animation`.
-
-The complete required families are:
-
-- doctrine: grand doctrine, four track adoptions, twenty mastery rewards, four milestones
-- technology: four gas-mask models; decontamination, instruments, treatment, delivery, HQ, and biosecurity technologies
-- unit: six Army HQ companies, ten regimental companies, Chaos Assault Battalion, required counter/text variants
-- equipment: four protective sets, three decontamination models, three instrument models, class payloads, shell lots, and air payload lots
-- decisions: five categories and all program, distribution, operation, containment, inspection, retaliation, suppression, and occupation actions
-- ideas/officer corps: readiness, policies, reserve/shortage, medical/safety, retaliation, and six mapped spirits
-- state modifiers: five chemical contamination classes, civilian protection, decontamination corridor, medical saturation, quarantine, and biological states
-- designers: six mapped CBRN MIO families
-- UI: window/background/header, five tab-state families, meters, severity frames, attribution markers, operation cards, warning overlays
-- animation: readiness seal, Severe/Catastrophic warning border, operation-preparation indicator, each with real frames and static fallback
-- achievements: thirteen active definitions with completed, grey, and ineligible 64x64 assets; No Wind Is Friendly and Unbroken Supply Corridor remain accepted requirements blocked by missing exact army outcomes
-
-Chemical special-project prototype rewards use the exact, already-registered agent project icons `GFX_sp_sarin_bomb`, `GFX_sp_soman_bomb`, `GFX_sp_malodor_bomb`, and `GFX_sp_aphrodisiac_bomb`. They remain on the special-project project-icon surface and do not replace the preserved raid icons under `gfx/interface/military_raids/`.
-
-Working sources belong under `docs/assets/chaos_warfare_system/`. Final DDS paths and sprite names will be recorded in that package's manifest and `gfx_handoff.md`; GFX registration will use type-specific interface files, never resized cross-type substitutes.
-
-## Future implementation stages
-
-- consolidated regimental support and protected assault battalion
-- Army Headquarters companies and abilities
-- doctrine, technologies, officer corps, and command roles
-- chemical route migration and exact-state raids
-- biological lifecycle and targeted self-scheduling
-- unified consequences, diplomacy, and sanctions
-- nerve suppression and bounded occupation policy
-- differentiated AI, country programs, and current-schema designers
-- final UI, localisation, assets, achievements, audits, and thirty balance scenarios
-
-These are required implementation stages, not optional ideas. The system is incomplete until the package completion audit proves every stage.
+Registration and source references do not prove every asset's final wiring, visible appearance or complete coverage.
+No Wind Is Friendly and Unbroken Supply Corridor remain accepted implementation gaps because exact affected-army/forecast recovery and assigned-army supply/objective evidence are absent.
+Personal native-raid-to-commander association, exact lifecycle/refunds, effective aggregation and visual consumers remain unverified.
+Within-tier allocation order and native state/resource transactions retain their documented limits.
+The current [requirement ledger](../../plans/chaos_warfare_system_plans/2026-09-20_cbrn_overhaul_requirement_ledger.md) and [completion report](../../plans/chaos_warfare_system_plans/2026-09-25_cbrn_overhaul_completion_report.md) control remaining work; historical stage plans do not create duplicate current requirements.

@@ -1,8 +1,73 @@
 # Remaining CBRN source gaps, 2026-10-09
 
-Disposition: bounded read-only completion review, with one confirmed deterministic consumer gap accepted by the parent for a narrow repair.
+Current disposition at `7133a8990abf7277aa58719cdc468d6343622f4c`: no new concrete source defect or unimplemented accepted output was confirmed in the bounded ordinary research, production, native-preflight and human-decision review.
+The earlier findings below are historical evidence, superseded where specified by the parent-reviewed source tranches in the current-disposition section.
 The broad overhaul remains incomplete.
 This auditor changed only this handoff, with no gameplay, shared documentation, assets, workbook, index or commit edits.
+
+## Current ordinary-loop review at 7133a8990
+
+The parent requested a read-only review of ordinary accessible technology/project grants and the remaining human decision layers.
+Commander/HQ service belongs to the parent's separate audit and was not repeated.
+The thirteen mastery roles, original main emblem, concentrated doctrine rewards, 50/75/100 base-day costs and ordinary CBRN caps were preserved.
+The user's latest shared Event 016 endgame exception remains authoritative, and this review recommends no reduction to those shared outputs.
+
+| Earlier subject | Current disposition and evidence |
+| --- | --- |
+| Vehicle Recovery Teams completion refresh | Parent-reviewed source repair in `7f73e6d`, replacing the pre-repair priority-1 finding. Its published consumer tranche owns the bounded controlled-state refresh and associated evidence. This auditor did not rerun the parent's tests. |
+| Continuing chemical protection and hospital care | Parent-reviewed source repair in `d53224f`, replacing the priority-2 requirement-to-consumer question. Current continuing-protection owner handoffs retain the physical protection, hospital and same-mask budget contract with native execution limits. |
+| Routine priority distribution and readiness administration | Parent-reviewed tranche `05d144` supplies the automatic priority path. Current CBRN human decisions contain no routine military-issue, priority-distribution or readiness-commission card. The automatic maintenance owner and its earlier output/order repairs remain separate source evidence, rather than missing player administration. |
+| Historical industrial entitlement | France's accepted 1939 respirator production request is implemented in `7133a8990`; see `2026-10-09_1939_western_start_entitlements.md`. Other countries retain explicit evidence-based dispositions. The former broad historical finding is not permission to add unsourced industry, stock or status flags. Native queue assignment and output remain unproved. |
+| Project discovery, completion order and accounting | The parent-reviewed `e4372477` tranche and `2026-10-09_project_route_contract_review.md` record 74 bounded route/accounting cases. No new duplicate grant or missing ordinary project output was demonstrated here. Those cases do not prove native project-card activation or native reward cardinality. |
+| Retired CBRN support inventory | The parent corrected the old HQ/support coverage paragraph in `7f73e6d`. The later Livens follow-up below records its own source-only legacy disposition and must not revive the retired companies as missing current roles. |
+
+### Explicit active paths reviewed
+
+`common\technologies\chaosx_technologies.txt:471-490` makes Chlorine an ordinary research node and unlocks its exact agent lot, legacy cylinder and air payload models, then reveals the operations surface.
+The other ordinary agent definitions retain their mapped production unlocks and research/project ownership.
+`basic_gas_masks` at lines 987-1001 unlocks real masks and starts the existing protection maintenance job.
+`field_decontamination_kits` at lines 1082-1097 unlocks actual decontamination equipment and the consolidated Protection Company.
+These visible research definitions do not require the Chaos Warfare grand doctrine.
+
+`common\scripted_triggers\cbrn_triggers.txt:11-17` recognizes an ordinary country program through basic mask technology, without a player-established programme flag being mandatory.
+`common\scripted_triggers\cbrn_chemical_land_raid_triggers.txt:12-34,92-111` supplies the cylinder/projector actor, readiness, protection and policy gates.
+The representative active cylinder raid in `common\raids\cbrn_chemical_land_raids.txt` uses the selected state, supply-node origin, qualifying assigned division, exact native equipment reservation and the same preparation/launch contract for human and AI owners.
+Neither the cylinder nor projector ordinary preflight adds a Chaos Warfare adoption, terminal headquarters or manual preparation decision requirement.
+The projector's matching unit remains the one consolidated Projector Battery, rather than the inactive agent-specific Livens definitions.
+
+The four ordinary agent projects in `common\special_projects\projects\biowarfare_main_projects.txt` retain normal native `available`, `allowed` and `visible` access.
+Their outputs grant the matching delivery technology and mark the actual completing facility for arsenal registration.
+The Anthrax representative is at lines 432-440 and 476-513, with the other three families following the same owner contract.
+`common\scripted_triggers\biological_battlefield_triggers.txt:98-107` requires handling research, a completed matching agent project, full derived protection readiness, current battlefield policy and the retained event-authority exclusion.
+It does not require Theater CBRN Headquarters or Chaos Warfare doctrine.
+`common\raids\biological_battlefield_raids.txt:137-166` uses the exact victim/target gates, native preparation and launch, supply-node origin, ordinary qualifying battalions and native essential payload reservation.
+This is an executable source path rather than a new decision-based attack route, with native engine behavior still unproved.
+
+The hidden `chemical_artillery_shells`, `armored_agent_delivery`, `sealed_tank_crews`, advanced suppression and air-integration markers remain mapped doctrine-specialization grants in `cbrn_regimental_support_technologies.txt`, `cbrn_doctrine_triggers.txt` and `cbrn_doctrine_effects.txt`.
+Original specification 04 explicitly lists artillery, persistent filling, armored delivery and air interdiction as doctrine-only specialties at lines 167-171.
+Their grant-only research gates therefore do not establish a defect in the accepted ordinary basic chemical or biological access contract.
+This review does not broaden all four delivery specializations into ordinary research without a new accepted requirement.
+
+All eight named projects remain defined in `common\special_projects\projects\cbrn_special_projects.txt` with their matching completion adapters in `cbrn_special_project_effects.txt` and gates in `cbrn_special_project_triggers.txt`.
+The medical, collective-protection and advanced-discovery prerequisites name ordinary accessible research or previously completed projects, rather than a required human administration claim.
+Shared Event 016 advanced outputs and story/ordinary completion ownership retain their accepted exception and the parent's reviewed accounting.
+
+The reviewed human layers are the current `cbrn_doctrine_decisions.txt`, `cbrn_protection_decisions.txt`, `cbrn_occupation_decisions.txt`, `cbrn_diplomacy_decisions.txt` and `biowarfare_disease_containment_decisions.txt`.
+Their live actions are deliberate policy choices, actual procurement/reconditioning, timed aid/occupied distribution and reconciliation, exact incident response, containment and diplomatic response.
+No reviewed current CBRN owner defines a normal chemical/biological attack-start decision competing with the native raid interface.
+The three doctrine-policy choices remain explicit and share their accepted payment/reassessment owner.
+Category reveal flags deliberately distinguish inherited startup capability from post-start research/project or live incident presentation, as documented by `cbrn_decision_visibility_triggers.txt` and `cbrn_decision_visibility_effects.txt`.
+Their existence is not a missing automatic-readiness grant or evidence that a country needs another commissioning decision.
+
+### Current conclusion and limits
+
+No confirmed new defect or missing accepted ordinary output is recommended for implementation from this pass.
+This conclusion is bounded to the inspected active source paths and must not become a claim that all decisions, targets, timers, payments, project orders or native UI consumers were observed or fully validated.
+The review did not exercise engine/game/log access, run a new test framework, change weights or bonuses, reopen portraits or famine/migration, or write Git state.
+Known special-project probability, graph-size/provenance, native doctrine-renderer and standalone-viewer blockers were not retried, as the parent reported their initial and corrected attempts exhausted.
+No new source finding required a fresh domain scenario or a new probability balance target.
+The existing native reservation/cancellation/cardinality, precise scope association, combined-stat and presentation evidence gates retain their parent-owned disposition, rather than being converted into source defects or weaker substitutes.
+The only change from this follow-up is this handoff's current-disposition reconciliation.
 
 ## Authority and scope
 
@@ -16,7 +81,7 @@ No bonus cuts, new route, substitute operation, free historical stock, periodic 
 Automatic protection/readiness and the 67-person personnel review belong to the parent and other assigned reviewers.
 The parent subsequently accepted the Vehicle Recovery finding below and owns its implementation and test files, so the pre-repair source evidence here must not be mistaken for a review of that later patch.
 
-## Completion by reviewed surface
+## Historical completion snapshot before parent source tranches
 
 | Surface | Disposition | Current evidence and limit |
 | --- | --- | --- |
@@ -28,7 +93,7 @@ The parent subsequently accepted the Vehicle Recovery finding below and owns its
 | CBRN family consumer disposition | Source disposition present, documentation stale | Event 019's support-only boundary is explicit and provider 521 owns the combat `chaos_battalion` family. Its coverage paragraph still lists retired HQ/support definitions. See priority 5. |
 | Ongoing civilian protection against chemical contamination | Requirement-to-consumer question, assigned parent scope | The active continuing-death transaction does not read the issued-mask or hospital-response state directly. The relevant inherited requirement and exact path are recorded under priority 2, without inventing a replacement formula. |
 
-## Five prioritized next owner actions
+## Historical five owner actions and their original evidence
 
 ### 1. Review the parent's accepted Vehicle Recovery completion refresh
 

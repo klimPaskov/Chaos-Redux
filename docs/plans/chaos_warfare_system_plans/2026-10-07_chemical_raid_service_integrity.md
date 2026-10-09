@@ -59,6 +59,20 @@ These callers were outside the original eighteen-case suite; the separate source
 The proof tested here prevents repeated dispatch within the same prepared source frame; it is not a persistent replay identifier for distinct native callbacks.
 A fresh Camp invocation prepares a separate record and may pay again.
 
+The 2026-10-09 receipt-scope review does not establish an additional safe persistent native-raid guard.
+Installed `documentation/effects_documentation.md:7888–7895` labels `set_variable` as any-scope, while the offline `Data structures` scoping section at lines 445–452 describes regular storage only on countries, states, characters and global scope.
+Installed `common/raids/_documentation.md:247–301,548–558` establishes RAID_INSTANCE outcome scope and four built-in actor/victim/target variables, but documents neither custom persistent storage on that instance nor an instance identifier suitable for a country-side receipt.
+The installed raid precedents inspected use country flags for one-time national achievements, which cannot distinguish concurrent or repeated legitimate raids.
+These sources therefore do not prove that an instance-local custom variable would survive or be writable; a generic any-scope command check would not settle that storage question.
+No native callback replay was observed in this review, and no speculative raid variable, country-wide pending scalar, refund or extra payment is added.
+Native callback uniqueness remains the same unresolved acceptance item, separate from the repaired within-frame dispatch proof.
+
+| Receipt-scope reference | Source SHA-256 |
+| --- | --- |
+| Installed `documentation/effects_documentation.md`, lines 7888–7895 | `2cdc93d26775990468eed167442f7a416b13059fb8fe07d139b54250b79209af` |
+| Offline `paradox_wiki/Data structures - Hearts of Iron 4 Wiki.md`, lines 445–452 | `62273f37ed30e5479acb331a8973f48dadc1867c4913c8a940e3e790e7af32d4` |
+| Installed `common/raids/_documentation.md`, lines 247–301 and 548–558 | `eac06474fcbde3920523b9b49364f7797851c0cc45f4f0ef41321999a93be43e` |
+
 ## MCP and native acceptance
 
 Offline Data structures lines 435-443 and installed `set_temp_variable` documentation lines 7820-7827 establish the caller-ownership contract; source revisions are recorded by the patch handoff.

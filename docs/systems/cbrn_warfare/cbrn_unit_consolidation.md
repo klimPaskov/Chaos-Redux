@@ -6,7 +6,7 @@ The Operations and Intelligence section retains the sealing command ability, whi
 
 ## Fielded units and compatibility
 
-| Fielded ID | Role and retained output | Inactive compatibility ID absorbed |
+| Fielded ID | Role and retained output | Former role/reference superseded |
 | --- | --- | --- |
 | `cbrn_hq_operations_section` | Operations plans, weather intelligence, reconnaissance, and command orders | `cbrn_hq_intelligence_weather_cell` |
 | `cbrn_hq_protective_logistics_section` | Protective issue, corridor opening, and mobile decontamination | `cbrn_hq_mobile_decontamination_column` |
@@ -15,7 +15,11 @@ The Operations and Intelligence section retains the sealing command ability, whi
 | `cbrn_medical_countermeasure_detachment` | Field hospitals, epidemiology, and quarantine | `cbrn_field_epidemiology_detachment` |
 | Nerve-delivery certification | Operation-only upgrade; it does not field a standing suppression company | `cbrn_nerve_suppression_detachment` (retired compatibility reference) |
 
-The six agent-specific Livens projector companies remain inactive definitions for compatibility. They are absent from CXT playable templates and AI formations. Existing surviving IDs remain stable so technology, counter sprites, and save-facing references have one canonical consumer. There are no agent-specific chemical tank companies; armored chemical delivery uses only the light, medium, and heavy armored delivery roles.
+The former HQ/support identifiers in the table have no retained unit definitions; the table maps absorbed roles and references rather than declaring compatibility units.
+`common/units/livens_projector_support.txt` retains seven `active = no` legacy definitions: the prototype `livens_projector_support` and the Chlorine, Phosgene, Mustard, Lewisite, Sarin and Soman variants.
+These inactive legacy definitions are separate from the active combined Projector Battery and do not expand the thirteen-role mastery roster.
+The eighteen obsolete agent-specific chemical tank definitions are deleted, while armored delivery retains only its light, medium and heavy chassis roles.
+Current surviving identifiers link technology, counters and formation consumers to the retained playable roster.
 
 ## Research and AI formation flow
 
@@ -29,14 +33,16 @@ The original user instruction sets 50/75/100 base-day targets, rather than relat
 The [bounded research calibration](../../plans/chaos_warfare_system_plans/2026-10-09_research_costs_and_numeric_text.md) resolves 27 researchable costs to `.45454/.68181/.90909` over installed base 110, with less than .001 day of downward source error.
 Hidden grant-marker raw costs, chronology, technology rewards and AI coefficients are preserved; native cost-field precision and calendar rounding remain unproved.
 
-## Static stat and production checks
+## Ordinary-source stat and production checks
 
 The projector battery starts with soft attack 12, hard attack 4, defense 4, and breakthrough 10.
 Each of its two progression technologies grants 2.5% soft attack, 13% hard attack, 4% defense and 6.5% breakthrough.
 The [actual-source budget audit](../../plans/chaos_warfare_system_plans/subagent_handoffs/2026-10-07_doctrine_reward_budget_source_checks.md) gives conservative independent-layer bounds of +32.8602% soft attack, +32.8455% hard attack, +34.7559% defense and +34.5832% breakthrough, reserving the possible 2.5% contribution from the CBRN-earned commander defense-skill point.
 The Chaos Battalion starts at breakthrough 18 and organization 40; its mastery III reward grants 15% breakthrough, and its hidden 1942 technology adds 4% breakthrough and eleven flat organization points.
 With the possible Cadres and earned defense-skill layers, its conservative breakthrough bound is +34.849%; its organization bound is +33.3404%.
-These are source models with explicit native aggregation limits, not measured division statistics.
+These are ordinary-source models with explicit native aggregation limits, not measured division statistics.
+The earlier +35% bounds omit the named shared Event 016 endgame rewards; the [accepted exception](../../specs/chaos_warfare_system_specs/corrections/2026-10-09_shared_event016_project_budget_exception.md) preserves full project power with separately disclosed ordinary, exceptional and combined totals.
+No numerical retune or whole-package cap compliance follows from these ordinary tables.
 
 At representative 1939 production costs, the chemical-assault AI template needs 1,110 infantry weapons, 449 gas masks, 200 decontamination kits, 88 instruments, 310 support kits, 110 trucks, and 24 projector chassis. Using installed vanilla infantry IC 0.58, support IC 4, truck IC 2.5, and the 1936 CBRN mask IC 0.27, decontamination IC 7.5, and instrument IC 5, the bill is at least 4,220.03 IC before projector construction. A conventional nine-infantry formation needs 900 infantry weapons or 522 IC under the same infantry model, so eight such formations cost 4,176 IC. The CBRN formation carries only nine combat battalions at that near-equal cost and is a costly specialized offensive package.
 
@@ -48,7 +54,7 @@ The exposure comparison holds national military mask coverage equal between side
 
 | Condition | Equal-IC source result |
 | --- | --- |
-| Clean state | No exposure damage applies; one protected template retains its native support and terrain bonuses, with the corrected Livens and Chaos Battalion percentages bounded by the accepted +35% dedicated-stat cap, while the plain side fields one whole template with 234.5 IC unspent. The available budgets match; actual IC spent differs. |
+| Clean state | No exposure damage applies; one protected template retains its native support and terrain bonuses, with the ordinary Livens and Chaos Battalion source percentages bounded by the accepted +35% dedicated-stat cap, while the plain side fields one whole template with 234.5 IC unspent. The available budgets match; actual IC spent differs. |
 | Unprotected exposure | With protection 0, both templates take `D` organization and `L` strength damage; the corrected unit technologies do not create a separate exposure reduction for the Protection Company. |
 | Protected exposure | With full improved-mask coverage and no other layers, the respiratory score reaches 75, choking casualty multiplier is 0.25, and disruption multiplier is 0.4375. Both templates therefore take `0.4375D` organization and `0.25L` strength damage under the same country coverage; corrected unit-tech percentages change native stats only. |
 | Equipment shortage | If this protected template has only 50 of its 100 improved masks and no other army or issued masks, its 9,320 manpower requires 93.2 mask crates; coverage becomes 53.65 and the respiratory score is capped there. Choking casualties use the 0.45 medium-band multiplier and disruption uses about 0.598, again shared by every division of that country. Missing essential equipment also weakens the company's native stats, while the AI formation gate refuses a new understocked template and a native chemical raid without its exact required payload cannot launch. |
