@@ -152,7 +152,17 @@ cbrn_chemical_protection_consortium = {
 		all_parents = { cbrn_decon_low_water_process }
 		limit_to_equipment_type = { decontamination_equipment }
 		equipment_bonus = { reliability = @cbrn_protection_high_quality build_cost_ic = @cbrn_protection_low_cost }
-		on_complete = { custom_effect_tooltip = cbrn_decon_vehicle_recovery_teams_tt }
+		on_complete = {
+			custom_effect_tooltip = cbrn_decon_vehicle_recovery_teams_tt
+			hidden_effect = {
+				FROM = {
+					every_controlled_state = {
+						limit = { has_variable = cbrn_chemical_effective_strength }
+						cbrn_designer_refresh_contaminated_state_vehicle_attrition = yes
+					}
+				}
+			}
+		}
 	}
 	trait = {
 		token = cbrn_decon_rapid_route_clearance

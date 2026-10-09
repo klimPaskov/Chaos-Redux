@@ -404,3 +404,13 @@ The [13-role force audit](subagent_handoffs/2026-10-08_equal_cost_force_audit.md
 Probability fixture provenance, fresh partial comparisons and the parent's technology reverse-comparison receipt are recorded with their exact limitations in the reconciliation; zero exposed score delta never proves unchanged native research preference.
 No event/detail/evolution/cluster catalog wording changed, and no catalog update is planned.
 The wider goal remains incomplete; source calibration and binding checks do not close native technology, GUI, combat or AI acceptance.
+
+## Automatic protection and industrial recovery consumers
+
+The [October 9 consumer repair](2026-10-09_protection_and_recovery_consumers.md) preserves debit, useful-delivery and reconditioned-batch outputs across scripted-helper boundaries.
+Military issue precedes civilian filter service under the existing stock, reserve and cadence rules.
+Vehicle Recovery Teams refreshes existing controlled-state penalties through its inherited native completion callback and the current-controller recalculation helper.
+The parent reviewed 58 protection and 15 MIO source scenarios, with exact unchanged 20/80 conditional reconditioning weights from the matching MCP audit.
+Event rendering exposes only the unchanged maintenance event and defers both repaired helpers, while its one-event comparison hits the 64 MiB graph ceiling.
+Native lifecycle, equipment, modifier delivery and the broader overhaul acceptance remain incomplete.
+No gameplay simplification, new periodic scan, cost retune or catalog-prose change belongs to this tranche.

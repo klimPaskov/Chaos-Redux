@@ -1,0 +1,66 @@
+--- cbrn_protection_effects.txt.before
++++ cbrn_protection_effects.txt.after
+@@ -1838,6 +1838,8 @@
+ }
+ 
+ cbrn_distribute_requested_external_masks_to_state = {
++	# Caller storage preserves the useful-delivery result across the internal helper.
++	set_temp_variable = { cbrn_distribution_usable_crates = constant:cbrn_math.zero }
+ 	set_temp_variable = { cbrn_external_distribution_proof = constant:cbrn_proof.missing }
+ 	if = {
+ 		limit = {
+@@ -1859,6 +1861,8 @@
+ # State scope. An occupied-program receipt has already removed these models
+ # from ROOT's stockpile. The common distributor consumes only receipt balances.
+ cbrn_distribute_reserved_occupied_masks_to_state = {
++	# Caller storage preserves the useful-delivery result across the internal helper.
++	set_temp_variable = { cbrn_distribution_usable_crates = constant:cbrn_math.zero }
+ 	set_temp_variable = { cbrn_reserved_distribution_proof = constant:cbrn_proof.missing }
+ 	if = {
+ 		limit = {
+@@ -1881,6 +1885,8 @@
+ # State scope. The state receipt stores the original donor independently of
+ # later control, so simultaneous aid targets do not share a country balance.
+ cbrn_distribute_reserved_external_masks_to_state = {
++	# Caller storage preserves the useful-delivery result across the internal helper.
++	set_temp_variable = { cbrn_distribution_usable_crates = constant:cbrn_math.zero }
+ 	set_temp_variable = { cbrn_external_distribution_proof = constant:cbrn_proof.missing }
+ 	if = {
+ 		limit = {
+@@ -2013,6 +2019,8 @@
+ 		multiply_temp_variable = { cbrn_mask_stock_debit_requested = constant:cbrn_protection_technology_effect.rapid_filter_replacement_cost_mult }
+ 	}
+ 	round_temp_variable = cbrn_mask_stock_debit_requested
++	# Caller storage keeps the serviced amount after the country debit returns.
++	set_temp_variable = { cbrn_mask_stock_debit_completed = constant:cbrn_math.zero }
+ 	cbrn_debit_mask_stockpile_oldest_first = yes
+ 	if = {
+ 		limit = {
+@@ -2053,6 +2061,8 @@
+ 		multiply_temp_variable = { cbrn_mask_stock_debit_requested = cbrn_contamination_filter_cost_mult }
+ 	}
+ 	round_temp_variable = cbrn_mask_stock_debit_requested
++	# Caller storage keeps the serviced amount after the country debit returns.
++	set_temp_variable = { cbrn_mask_stock_debit_completed = constant:cbrn_math.zero }
+ 	controller = { cbrn_debit_mask_stockpile_oldest_first = yes }
+ 	if = {
+ 		limit = {
+@@ -2416,13 +2426,14 @@
+ 			limit = { check_variable = { cbrn_military_mask_filter_condition < constant:cbrn_mask_filters.condition_full } }
+ 			cbrn_replace_military_mask_filters = yes
+ 		}
++		# Military service and issue consume stock before civilian service and issue.
++		if = {
++			limit = { check_variable = { cbrn_military_mask_shortage_crates > constant:cbrn_math.zero } }
++			cbrn_issue_masks_to_field_army = yes
++		}
+ 		if = {
+ 			limit = { cbrn_country_has_filter_replacement_work = yes }
+ 			cbrn_complete_civilian_filter_replacement_program = yes
+-		}
+-		if = {
+-			limit = { check_variable = { cbrn_military_mask_shortage_crates > constant:cbrn_math.zero } }
+-			cbrn_issue_masks_to_field_army = yes
+ 		}
+ 		if = {
+ 			limit = { cbrn_country_needs_civilian_mask_issue = yes }

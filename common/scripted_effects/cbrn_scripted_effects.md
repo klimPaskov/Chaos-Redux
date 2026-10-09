@@ -469,7 +469,7 @@ These effects are defined in `cbrn_designer_effects.txt`. Country-scope module h
 | `cbrn_sync_aerosol_designer_module_unlocks` | Country scope, idempotent. Reads both completed MIO traits and reruns the relevant direction helpers. Each chlorine, phosgene, mustard, lewisite, Tabun, Sarin, and Soman technology calls this after research so a trait completed earlier cannot bypass the agent gate. |
 | `cbrn_unlock_malodor_aerosol_modules_after_project` | Country scope. Called only by the completed Malodor project output. Reads completed designer traits and grants the exact Malodor variant technologies without depending on whether the project-completed trigger has updated during its own output block. |
 | `cbrn_unlock_behavioral_aerosol_modules_after_project` | Same contract for the completed Behavioral-Agent project and its exact rack variants. |
-| `cbrn_designer_refresh_contaminated_state_vehicle_attrition` | State scope. Recomputes the legacy contamination modifier's truck-attrition input from the state's exact contamination strength and the current controller's completed Vehicle Recovery Teams trait. It is called by contamination application and the exact state-control-change hook, then forces the modifier to refresh. |
+| `cbrn_designer_refresh_contaminated_state_vehicle_attrition` | State scope. Recomputes the contamination modifier's truck-attrition input from the state's exact contamination strength and the current controller's completed Vehicle Recovery Teams trait. Contamination application and the exact state-control-change hook call it for one state. Trait completion enters its country through `FROM` and refreshes controlled states with a stored strength. The result is assigned from strength on every call, so repeated refreshes do not stack. An existing dynamic modifier is then forced to refresh. |
 | `cbrn_designer_apply_blister_continuing_death_treatment` | State scope inside the existing chemical-contamination death pass. Requires an active contamination modifier, a persisted blister-agent class, and a current controller with Burn Treatment. It multiplies only the already-prepared continuing-death value; initial release deaths and non-blister contamination are unchanged. |
 
 The hidden technology family is defined in `cbrn_aerosol_module_variant_technologies.txt`. Separate technology IDs preserve an exact AND gate between one agent and one physical rack direction. The module variants are defined in `chemical_air_bomb_variant_modules.txt`: Lightweight changes only that rack's weight, agility burden, and payload volume; Long-Range changes only the installed rack's range and maneuver burden; combined modules compose both. No helper applies a country modifier, ordinary-aircraft bonus, strategic dose proxy, friendly-risk proxy, or periodic unlock pulse.
@@ -713,6 +713,10 @@ event_target:cbrn_occupation_target_state = {
 }
 ```
 
+The external and reserved distribution wrappers declare `cbrn_distribution_usable_crates` before their internal distributor so positive-delivery checks read the returned result.
+An outer caller consuming usable or consumed quantities, or the external/reserved proof, must still declare those temporary outputs before the public wrapper.
+The wrapper declaration supports its own nested read and does not create persistent output storage for an undeclared outer caller.
+
 ### cbrn_distribute_priority_masks_to_state, cbrn_distribute_full_masks_to_state, and cbrn_distribute_emergency_masks_to_state
 
 These state-scope wrappers supply the accepted 50-percent priority, 95-percent full, or 35-percent effective emergency targets. The shared helper derives the larger raw emergency allocation needed after reduced fitting quality and degraded filter condition; emergency issue also applies the 0.60 improvised baseline and 1.30 wastage. Defaults and side effects are those of `cbrn_distribute_requested_masks_to_state`.
@@ -726,6 +730,10 @@ These country-scope completion effects replace routine per-state decision-card m
 Debits a requested amount from real country stock in reconditioned, basic, improved, advanced, then sealed order.
 
 Scope: country. Input: temporary `cbrn_mask_stock_debit_requested`. Defaults: request is clamped to available stock and zero. Outputs: `cbrn_mask_stock_debit_completed` and remaining request. Side effects: model-specific stock removal and snapshot refresh.
+
+Any caller reading the completed debit must declare `cbrn_mask_stock_debit_completed` before calling this helper.
+Military filter service, controller-paid civilian filter service, population registration and HQ consumption own that output storage at their consuming boundary.
+The producer resets the existing output before each debit, and a partial stockpile returns only the quantity taken.
 
 ### Timed occupied-distribution and external-aid respirator reservations
 
@@ -879,6 +887,9 @@ The [accepted contract](../../docs/specs/chaos_warfare_system_specs/corrections/
 
 Restore worn military or exact-state civilian filters using real national respirator crates. The state helper additionally scales cost with current chemical contamination. `rapid_filter_replacement` reduces the real replacement-crate debit by the centralized 30-percent efficiency gain in either scope.
 
+Both callers declare the debit output before the stock helper and base restoration and reduced replacement demand on its returned quantity.
+The civilian caller retains that unscoped temporary through its `controller` block.
+
 Scope: country for military; state for civilian. Inputs: current issued/distributed crates and filter condition. Defaults: no worn filters or no reserve causes no restoration. Outputs: proportional restored condition and refreshed coverage. Side effects: oldest-first stock debit and reduced replacement demand.
 
 ### cbrn_apply_military_mask_loss and cbrn_apply_state_civilian_mask_loss
@@ -899,6 +910,10 @@ Converts the national damaged/rejected-mask cache and replacement ledger into lo
 
 Scope: country. Inputs: `cbrn_reconditionable_mask_cache` and `cbrn_mask_replacement_demand`. Defaults: no source material produces no output. Output: temporary `cbrn_recondition_recovered`. Side effects: consumes source ledgers and adds real non-buildable reconditioned equipment.
 
+A caller reading `cbrn_recondition_recovered` must declare it before this helper.
+`cbrn_complete_mask_reconditioning` owns that storage and reaches its existing 20/80 defective/safe quality roll only after positive recovery.
+Repeating completion with no remaining source material produces neither another batch nor another quality roll.
+
 ### cbrn_apply_annual_mask_storage_loss
 
 Applies model-specific annual warehouse losses, reduced by an established national reserve.
@@ -912,6 +927,15 @@ Transfers distributed civilian protection after `on_state_control_changed` witho
 Scope: transferred state. Required regular event targets: `cbrn_old_state_controller` and `cbrn_new_state_controller`. Defaults: the caller only invokes it for a non-empty state ledger. Outputs: surviving state stock and controller aggregate totals. Side effects: clears projects and exact-alert responses, removes their dynamic modifiers, applies turnover/occupation survival and filter loss, charges lost stock to replacement demand, moves aggregate ownership, and recalculates both controllers' civilian cleanup-kit pools.
 
 The same `on_state_control_changed` callback separately refreshes both country kit pools for a threatened state with no issued-mask ledger, so the original mask-ledger gate cannot leave decontamination demand attached to the previous controller. This state-specific hook remains under the existing world-rewrite callback guard.
+
+### cbrn_run_protection_maintenance_cycle
+
+Country scope.
+Refreshes real stock and derived protection, then uses available masks for military filter service, military issue, civilian filter service and civilian issue in that order.
+The existing historical replacement reserve, per-cycle military issue increment, civilian eligibility and service formulas still govern each stage.
+Every twelfth cycle applies the existing storage and issued-equipment losses.
+This helper creates no worldwide pulse and spends no independent readiness currency.
+The [source scenarios](../../docs/testing/2026-10-09_automatic_protection_repair/source_test_results.json) cover partial service, real-stock priority and the temporary-output contracts under explicit native-input models.
 
 ### cbrn_start_protection_maintenance_job
 

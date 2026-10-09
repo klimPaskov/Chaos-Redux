@@ -1,0 +1,75 @@
+{
+  "op": "call",
+  "name": "hoi4.probability_evaluate",
+  "arguments": {
+    "adapter": "random_list",
+    "source": {
+      "path": "common/scripted_effects/cbrn_protection_decision_effects.txt",
+      "snapshotPath": "docs/testing/2026-10-09_automatic_protection_repair/cbrn_protection_decision_effects.txt.before",
+      "expectedSourceHash": "3931110c80d36dce6379fb10dd87386720d391222f2ffbcdcaed659ece129b1b"
+    },
+    "candidatePool": [
+      "common/scripted_effects/cbrn_protection_decision_effects.txt:243.entry.1",
+      "common/scripted_effects/cbrn_protection_decision_effects.txt:243.entry.2"
+    ],
+    "scenarioSet": {
+      "schemaVersion": "1.0",
+      "id": "CBRN_MASK_RECONDITION_RANDOM_LIST_BASELINE_2026_10_09",
+      "workspaceId": "mod_chaos_redux_ea3b2d67c2c0",
+      "surfaceHint": "random_list",
+      "description": "Two synthetic country-scope cases label the caller gate boundary: zero versus positive recovered mask count. The random_list adapter evaluates only the two entry weights conditional on this list being reached; it does not execute cbrn_recondition_damaged_masks, resolve its temporary-variable lifecycle, or prove the enclosing caller gate. No entry-specific external modifiers or uncertain weight inputs are declared.",
+      "scenarios": [
+        {
+          "id": "CBRN_MASK_RECOVERY_ZERO",
+          "label": "Zero recovered output; caller positive-recovery guard is false.",
+          "actor": "ENG",
+          "state": {
+            "cbrn_recondition_recovered": 0
+          },
+          "scopes": {
+            "ROOT": {
+              "id": "ENG",
+              "type": "country",
+              "actor": "ENG",
+              "state": {
+                "cbrn_recondition_recovered": 0
+              },
+              "flags": []
+            }
+          }
+        },
+        {
+          "id": "CBRN_MASK_RECOVERY_POSITIVE",
+          "label": "Positive recovered output; conditional random_list weights are reviewed if the caller gate is reached.",
+          "actor": "ENG",
+          "state": {
+            "cbrn_recondition_recovered": 1
+          },
+          "scopes": {
+            "ROOT": {
+              "id": "ENG",
+              "type": "country",
+              "actor": "ENG",
+              "state": {
+                "cbrn_recondition_recovered": 1
+              },
+              "flags": []
+            }
+          }
+        }
+      ]
+    },
+    "metrics": [
+      "raw_value",
+      "conditional_probability"
+    ],
+    "outputs": [
+      "json",
+      "ranking",
+      "matrix",
+      "waterfall",
+      "unresolved"
+    ],
+    "refresh": true
+  }
+}

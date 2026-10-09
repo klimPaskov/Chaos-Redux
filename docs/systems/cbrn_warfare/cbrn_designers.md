@@ -10,6 +10,12 @@ The [DuPont polymer signature correction](../../specs/chaos_warfare_system_specs
 
 The active chemical/protective family uses the shorter **Field Decontamination** heading through `cbrn_decon_header_field_systems`; the older Chemical Munitions Combine heading shown in earlier UI captures is no longer referenced by an active organization definition. This source correction reduces branch-heading width but native MIO panel rendering remains unverified.
 
+Completing Vehicle Recovery Teams refreshes the contamination-related truck penalty in the country's controlled states, including occupied states.
+The generic organization and its ICI, DuPont and Montecatini variants share this callback.
+The helper recalculates from current contamination strength and the current controller's completed trait, so repeated refreshes and multiple organizations cannot multiply the 45% reduction again.
+New contamination and state-control changes use the same calculation.
+The [source scenarios](../../testing/2026-10-09_mio_vehicle_recovery/source_results.json) cover these consumers, while native completion timing and displayed attrition remain unproved.
+
 A bounded `hoi4.gui_inspect` request for `industrial_organization_detail` and the active organization returned `GUI_INSPECTED` at revision `43ef78ebebd8dfe523a5d3c6be6f2899e55b8f4d800182a93536a3054fd392aa`, but inspected zero elements and reported 2,000 workspace-wide blocking diagnostics. Its [artifact](hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/6ad3f21346f9e878bb1f452bf47f1a1523dcab6df6b3ec6bf58d88faf748389a/7330c93c5a49d3f6997852a60e7c86da14e8f4c0768bfcfa19745990189c78c4/gui-inspect.43ef78ebebd8dfe5.json) is a source-graph diagnostic, not a rendered MIO card or proof of text fit at either requested resolution.
 
 The treatment constants are now 0.85 for six MIO harm/medical reductions and 1.30 for distributed-surveillance detection. The older interpretation of 40–60% standalone MIO treatment benefits is superseded. The biological lifecycle and exposure owners retain final combined treatment-floor review, and the probability auditor retains scenario evidence. The old six-family source files, generic `chemical_agent_payload` archetype target, and old organization sprites described below are retired. The following sections are a historical implementation account only and are not instructions for current gameplay, source paths, costs, AI, or assets.

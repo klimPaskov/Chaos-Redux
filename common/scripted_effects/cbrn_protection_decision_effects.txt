@@ -94,6 +94,8 @@ cbrn_complete_population_registration = {
 		max = constant:cbrn_protection_decision_cost.registration_fitting_loss_max
 	}
 	round_temp_variable = cbrn_mask_stock_debit_requested
+	# Caller storage preserves the actual debit credited to damaged-mask material.
+	set_temp_variable = { cbrn_mask_stock_debit_completed = constant:cbrn_math.zero }
 	cbrn_debit_mask_stockpile_oldest_first = yes
 	if = {
 		limit = { check_variable = { cbrn_mask_stock_debit_completed > constant:cbrn_math.zero } }
@@ -236,6 +238,8 @@ cbrn_begin_mask_reconditioning = {
 }
 
 cbrn_complete_mask_reconditioning = {
+	# Caller storage preserves the recovered batch used by the existing quality roll.
+	set_temp_variable = { cbrn_recondition_recovered = constant:cbrn_math.zero }
 	cbrn_recondition_damaged_masks = yes
 	if = {
 		limit = { check_variable = { cbrn_recondition_recovered > constant:cbrn_math.zero } }

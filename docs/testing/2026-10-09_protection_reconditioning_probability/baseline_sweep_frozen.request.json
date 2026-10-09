@@ -1,0 +1,73 @@
+{
+  "op": "call",
+  "name": "hoi4.probability_sweep",
+  "arguments": {
+    "adapter": "random_list",
+    "source": {
+      "path": "common/scripted_effects/cbrn_protection_decision_effects.txt",
+      "snapshotPath": "docs/testing/2026-10-09_automatic_protection_repair/cbrn_protection_decision_effects.txt.before",
+      "expectedSourceHash": "3931110c80d36dce6379fb10dd87386720d391222f2ffbcdcaed659ece129b1b"
+    },
+    "candidatePool": [
+      "common/scripted_effects/cbrn_protection_decision_effects.txt:243.entry.1",
+      "common/scripted_effects/cbrn_protection_decision_effects.txt:243.entry.2"
+    ],
+    "scenarioSet": {
+      "schemaVersion": "1.0",
+      "id": "CBRN_MASK_RECONDITION_RECOVERY_INPUT_SWEEP_2026_10_09",
+      "workspaceId": "mod_chaos_redux_ea3b2d67c2c0",
+      "surfaceHint": "random_list",
+      "description": "Synthetic sensitivity range around the caller's recovered-output positive guard. It varies only the declared country input from zero to one; it is not a campaign distribution and does not model the helper's temp-variable lifecycle or enclosing effect reachability. The adapter is asked whether this caller input changes the conditional random_list entry ranking/probabilities.",
+      "scenarios": [
+        {
+          "id": "CBRN_MASK_RECOVERY_GATE_SWEEP",
+          "label": "Synthetic recovery-output boundary sweep, from zero to positive.",
+          "actor": "ENG",
+          "state": {
+            "cbrn_recondition_recovered": 0
+          },
+          "scopes": {
+            "ROOT": {
+              "id": "ENG",
+              "type": "country",
+              "actor": "ENG",
+              "state": {
+                "cbrn_recondition_recovered": 0
+              },
+              "flags": []
+            }
+          },
+          "uncertainInputs": [
+            {
+              "path": "scopes.ROOT.state.cbrn_recondition_recovered",
+              "range": {
+                "min": 0,
+                "max": 1
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "sweep": {
+      "paths": [
+        "scopes.ROOT.state.cbrn_recondition_recovered"
+      ],
+      "steps": 2,
+      "pairwise": true,
+      "findRankReversals": true
+    },
+    "metrics": [
+      "raw_value",
+      "conditional_probability"
+    ],
+    "outputs": [
+      "json",
+      "ranking",
+      "sensitivity",
+      "threshold",
+      "unresolved"
+    ],
+    "refresh": true
+  }
+}

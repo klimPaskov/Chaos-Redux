@@ -276,11 +276,11 @@ cbrn_unlock_behavioral_aerosol_modules_after_project = {
 	}
 }
 
-# State scope. Recomputes only the legacy dynamic modifier's truck-attrition
+# State scope. Recomputes only the contamination modifier's truck-attrition
 # input from the exact contamination strength and the current controller's
-# completed Vehicle Recovery Teams trait. It is called when contamination is
-# applied and by the exact state-control-change hook, so no stale controller
-# benefit survives conquest.
+# completed Vehicle Recovery Teams trait. Contamination application, trait
+# completion, and the exact state-control-change hook refresh this value.
+# Recalculation starts from strength, so repeated refreshes never compound.
 cbrn_designer_refresh_contaminated_state_vehicle_attrition = {
 	if = {
 		limit = { has_variable = cbrn_chemical_effective_strength }
