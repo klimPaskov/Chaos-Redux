@@ -1,6 +1,22 @@
 # Simplifications, omissions, and blockers
 
-## Planning scope
+## Current conclusion (2026-10-09)
+
+The full Event 006 goal remains incomplete because actual requested package, route, research and asset work must be assessed against the current source, rather than the historical counts below.
+The current admitted boundary is 109 attested packages, 78 reservation groups and 112 adapters, with IW-076/IW-131/IW-179 outside admission and the remaining selectable rows retaining individual dependencies.
+The forty-four regional focus groups, three signature modules, FORM-17/32/36/37 contracts, package-incident snapshots, dynamic diplomatic targets, current-carrier founding pointers and FORM-48 bound display are implemented and reviewed in their current source reports.
+The FORM-48 member-generation cleanup correction also has twenty-five passing source assertions and representative source-derived AI calculations; it introduces no functionality reduction.
+The [current takeover report](../../../plans/006_independence_wave_plans/takeover_status_2026-10-06.md) owns the current requirement and next-action ledger, while [the resume packet](../../../plans/006_independence_wave_plans/006_independence_wave_resume_packet.md) identifies completed tranches and preserved evidence.
+Unavailable imported-focus views, unsupported analyzer contexts and unobserved user-owned gameplay limit check claims but do not reopen otherwise finished implementation under the October 9 repository rules.
+Requested final assets and indispensable identity, rights, territory or production inputs remain real deliverable dependencies where specifically unresolved.
+The earlier IW-039/DON flag-only FORM-11 and fail-closed note is superseded by D5/D24 and the current Millerovo/Host Federation source contracts.
+DON is admitted under its 245 capital, optional 238 territory and disjoint DHC rule; Rostov 218 remains outside the federation's candidate, transfer, claim and core contract.
+FORM-11 uses the accepted two-host DON/KUB contract under CHX, with its civilian-control, mounted-service and non-host-resident settlement projects.
+The [Millerovo mechanic](../../../events/006_independence_wave/systems/iw039_don_millerovo_host_charter.md) and [formable registry](../../../events/006_independence_wave/systems/formable_registry.md) supply the current implementation and exact remaining evidence limits.
+Sidorin's optional future portrait dependency is not made a requirement by that superseded note.
+The dated planning/source notes below retain their historical evidence and are superseded for current counts and the named implemented contracts by the current source reports and decision ledger.
+
+## Historical planning and reconciliation notes
 
 This package is the accepted source specification. Implementation status is reconciled in `docs/plans/006_independence_wave_plans/006_source_of_truth_map.md`. The wider event remains incomplete, but the verified `24` source has a produced game-ready derivative and runtime package. The current catalog status is evidenced by the authoritative workbook and generated exports, with the 2026-08-28 OOXML repair handoff preserving the read-only refresh record. The older 2026-08-22 process-history discrepancy remains historical. This documentation patch does not edit the workbook or exports.
 
