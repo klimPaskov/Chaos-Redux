@@ -61,15 +61,40 @@ const worldCensus = retained(world, 'africa_initialize_scramble_and_world_packag
 	const loop = body.find(n => n.key === 'for_each_scope_loop' && field(n.value, 'array') === 'global.countries');
 	const finish = body.find(n => n.key === P + 'finish_strength_census');
 	assert(body.indexOf(initialize) < body.indexOf(loop) && body.indexOf(loop) < body.indexOf(finish));
-	return [initialize, loop, finish];
+	const reset = body[body.indexOf(loop) - 1];
+	assertPrivateReset(reset, loop, 'africa_initialize_scramble_and_world_packages');
+	return [initialize, reset, loop, finish];
 }, 'one-time census initialize, complete global.countries loop before candidate filter, finish');
 const stageScalars = retained(transfer, 'africa_host_transfer_stage_scalar_ledger', full => full.filter(n => /strength_census/.test(JSON.stringify(n))), 'Strength flags and cardinality staging');
-const stageArrays = retained(transfer, 'africa_host_transfer_stage_arrays', full => full.filter(n => /strength_countries/.test(JSON.stringify(n))), 'complete measurement-country object array staging');
+const stageArrays = retained(transfer, 'africa_host_transfer_stage_arrays', full => full.filter((n, i) => /strength_countries/.test(JSON.stringify(n)) || (full[i + 1]?.key === 'for_each_scope_loop' && /strength_countries/.test(JSON.stringify(full[i + 1])) && assertPrivateReset(n, full[i + 1], 'africa_host_transfer_stage_arrays'))), 'complete measurement-country object array staging with adjacent reset');
 const control = field(field(field(parse(read('common/on_actions/012_africa_gods_on_actions.txt')), 'on_actions'), 'on_state_control_changed'), 'effect');
 const manifest = JSON.parse(read(manifestPath));
 const beforeSources = manifest.sources.map(s => ({...s, verified: sha(fs.readFileSync(path.join(root, s.snapshot))) === s.sha256}));
 for (const s of manifest.sources) read(s.path);
 const baseline = namedBlock(read(manifest.sources.find(s => s.path === main).snapshot), P + 'refresh_strength');
+
+function assertPrivateReset(reset, loop, owner) {
+	const binding = loop.value.find(n => n.key === 'break');
+	assert(binding && /_break_[1-9][0-9]*$/.test(binding.value), 'private foreach binding');
+	assert.equal(loop.value.filter(n => n.key === 'break').length, 1, 'one break binding per foreach');
+	assert.equal(binding.op, '=');
+	if (owner) assert.match(binding.value, new RegExp('^' + owner + '_break_[1-9][0-9]*$'), 'private break belongs to the caller');
+	assert.deepEqual(reset, {key: 'set_temp_variable', op: '=', value: [{key: binding.value, op: '=', value: 'constant:gods_of_africa_value.zero'}]}, 'exact adjacent private reset');
+	return true;
+}
+// Project only reviewed iterator descriptors from the older Strength baseline.
+// Every other producer, scope, price, weight and arithmetic node stays intact.
+function withoutPrivateForeachState(ns, owner = P + 'refresh_strength') {
+	const out = [];
+	for (let i = 0; i < ns.length; i++) {
+		const n = ns[i], next = ns[i + 1];
+		if (n.key === 'set_temp_variable' && next?.key === 'for_each_scope_loop' && next.value.some(x => x.key === 'break' && /_break_[1-9][0-9]*$/.test(x.value))) {
+			assertPrivateReset(n, next, owner);
+			out.push({...next, value: withoutPrivateForeachState(next.value.filter(x => x.key !== 'break'), owner)}); i++;
+		} else out.push(Array.isArray(n.value) ? {...n, value: withoutPrivateForeachState(n.value, owner)} : n);
+	}
+	return out;
+}
 
 // Named, deliberately untested unrelated routes. No Strength producer, guard,
 // cache observer or output can be replaced through this boundary registry.
@@ -216,7 +241,12 @@ class IntegrationVM extends InputsVM {
 	}
 }
 function invoke(v, n, scope = v.host, rootScope = scope) { v.call(n.startsWith('africa_') ? n : P + n, v.ctx(scope, null, rootScope)); }
-function sample(v) { v.exec(worldCensus, v.ctx(v.host)); invoke(v, 'measure_strength_armies'); return v; }
+function executeRetained(v, body, context) {
+	const before = new Set(Object.keys(v.temp));
+	try { v.exec(body, context); }
+	finally { for (const key of Object.keys(v.temp)) if (!before.has(key)) delete v.temp[key]; }
+}
+function sample(v) { executeRetained(v, worldCensus, v.ctx(v.host)); invoke(v, 'measure_strength_armies'); return v; }
 function fixture() { return sample(new IntegrationVM()); }
 function activate(v) { invoke(v, 'activate_system'); return v; }
 function refresh(v, foreign = v.host) { invoke(v, 'refresh_strength', v.host, foreign); }
@@ -242,7 +272,7 @@ function runSuite() {
 	test('pinned_eight_source_hashes_and_preserved_weighted_penalty_smoothing_tail', () => {
 		assert.equal(beforeSources.length, 8); assert(beforeSources.every(s => s.verified));
 		const oldBody = field(baseline, 'if').filter(n => n.key !== 'limit');
-		const current = field(effects[P + 'refresh_strength'], 'if').filter(n => n.key !== 'limit');
+		const current = withoutPrivateForeachState(field(effects[P + 'refresh_strength'], 'if').filter(n => n.key !== 'limit'));
 		assert.deepEqual(field(field(effects[P + 'refresh_strength'], 'if'), 'limit'), parse(P + 'strength_host_is_current = yes'));
 		const index = oldBody.findIndex(n => n.key === 'set_temp_variable' && n.value[0].key === F + 'target'); assert(index > 0);
 		const gate = current.find(n => n.key === 'if' && walk(n.value).some(x => x.key === P + 'strength_input_factors_applied'));
@@ -359,7 +389,7 @@ function runSuite() {
 		assert.equal(v.host.vars[F + 'african_core_total'], 9); assert.equal(v.host.vars[F + 'african_secured_cores'], 8);
 	});
 	test('actual_activation_and_due_owner_only_sample_on_existing_clock', () => {
-		const v = new IntegrationVM(); v.exec(worldCensus, v.ctx(v.host)); activate(v); assertPublished(v, 58.5);
+		const v = new IntegrationVM(); executeRetained(v, worldCensus, v.ctx(v.host)); activate(v); assertPublished(v, 58.5);
 		assert.equal(callCount(v, 'measure_strength_armies'), 1); assert.equal(v.host.vars[F + 'army_sample_day'], 100);
 		// Existing activation makes the first owner tick due immediately.
 		invoke(v, 'run_owner_tick'); assert.equal(callCount(v, 'measure_strength_armies'), 2); assert.equal(v.host.vars[P + 'next_owner_tick_day'], 130);
@@ -381,7 +411,7 @@ function runSuite() {
 	test('real_transfer_staging_restore_new_owner_tuple_invalidates_cache_without_mandate', () => {
 		const v = fixture(), old = v.host, next = v.actor; refresh(v);
 		old.flags.add('africa_scramble_state_machine_initialised');
-		v.exec(stageScalars, v.ctx(old)); v.exec(stageArrays, v.ctx(old));
+		executeRetained(v, stageScalars, v.ctx(old)); executeRetained(v, stageArrays, v.ctx(old));
 		assert.deepEqual(v.global.arrays.africa_host_transfer_strength_countries, v.worldCountries); assert.equal(v.global.vars.africa_host_transfer_strength_census_size, 2);
 		v.globalFlags.add('africa_host_transfer_scramble_state_machine_initialised');
 		// Trusted surrounding transfer transaction owns target and generation changes.
@@ -461,7 +491,7 @@ function runSuite() {
 		effectBoundaries: [...effectBoundaries], triggerBoundaries: Object.keys(triggerBoundaries),
 		limits: ['5 decimal truncation, no native range or rounding proof', 'typed allocated-country/state/getter/technology/global-flag/ROOT/FROM.FROM fixtures are external inputs', 'only named census and scalar/array transfer subtrees execute, surrounding World routes and transfer commit are outside scope', 'no probability MCP or AI audit', 'native clocks and super-event audiovisual dispatch are boundaries', 'New Strength remains incomplete: capital anchors, port, rail, resource and base families queued']};
 }
-module.exports = { IntegrationVM, runSuite };
+module.exports = { IntegrationVM, runSuite, worldCensus, stageScalars, stageArrays, decorate, invoke, sample, executeRetained, assertPrivateReset, withoutPrivateForeachState };
 if (require.main === module) {
 	const report = runSuite(); fs.mkdirSync(evidenceDir, {recursive: true});
 	fs.writeFileSync(path.join(evidenceDir, 'integration_results.json'), JSON.stringify(report, null, 2) + '\n');

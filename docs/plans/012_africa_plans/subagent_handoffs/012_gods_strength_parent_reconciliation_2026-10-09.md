@@ -124,3 +124,21 @@ No new design decision is required to reconcile the selected fundamental scope.
 No gameplay, helper, test, GUI, English localisation, catalog/workbook, shared-note, Git or game edit was performed.
 Skills used: `chaos-redux-events` and `chaos-redux-subagents`.
 Neither skill was edited, and no resume packet or additional report was created.
+
+## Foreach break isolation regression results
+
+The bounded iterator worker delivered `.tools/validation/test_012_gods_iterator_isolation.js` and minimal break-aware foreach/import support in the existing Strength inputs and integration tests.
+Current results are 13/13 dedicated regression cases, 26/26 original input cases and 57/57 original consumer cases, with current receipts under `.tmp/012_gods_iterator_isolation/current_iterator_results.json`, `current_strength_inputs.json` and `current_strength_integration.json`.
+The AST audit checks all 144 unique owner bindings and adjacent constant-zero resets across eight files, then strips only those validated additions and confirms every other AST node equals the raw before snapshots.
+Actual production census, sampler, recognition, staging, restoration and cleanup paths execute with inherited default break and every private break seeded to one, repeated calls and a fixed foreign ROOT.
+Two sampler calls visit all 1,007 retained country objects, for 2,014 processed rows, without imposing a foreach ceiling.
+The actual nested host-transfer cancellation closes four state receipts and two targeted missions exactly once across two participants, while the complete settlement helper runs four passes twice, sends two exact equipment shipments, commits two distinct receipts and retains the unpaid country's owed amount and pending receipt.
+The raw before sampler stops with zero visited rows under inherited break, establishing that the regression detects the original source defect.
+All three test imports are silent and write-free, and the historical committed integration receipt remains unchanged.
+Evidence remains `SourceNoNativeProof`, with declared native getters, typed object, stock, war, mission, send and rounding fixtures.
+All changed foreach loops are scope iterators, and the audited owner surface contains no numeric foreach or intentional foreach early-exit path to execute, so none was manufactured.
+There are no known test failures or implementation simplifications, and this worker made no production, other-test, game, GUI, AI, workbook, Git or skill changes.
+
+The iterator regression also passes through its fresh-checkout route, deriving the binding inventory from source and using the pinned pre-fix Git definitions when ignored raw snapshots are absent.
+The remaining non-break AST is compared without reconstructing a historical workspace.
+Original raw repair results remain in the ignored task scratch directory, and earlier committed audit receipts remain unchanged.

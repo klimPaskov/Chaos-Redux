@@ -160,7 +160,7 @@ class IntegrationVM extends VM {
 			if(n.key==='add_to_array'){(c.scope.arrays[b.array]||=([])).push(this.value(b.value,c));continue;}
 			if(n.key==='clear_array'){c.scope.arrays[n.value]=[];continue;}
 			if(n.key==='remove_from_array'){c.scope.arrays[b.array]=(c.scope.arrays[b.array]||[]).filter(x=>x!==this.value(b.value,c));continue;}
-			if(n.key==='for_each_scope_loop'){for(const s of c.scope.arrays[b.array]||[])this.exec(n.value.filter(x=>x.key!=='array'),this.ctx(s,c,c.root));continue;}
+			if(n.key==='for_each_scope_loop'){const stop=b.break||'break';for(const s of c.scope.arrays[b.array]||[]){if(this.value(stop,c)!==0)break;this.exec(n.value.filter(x=>!['array','break','tooltip'].includes(x.key)),this.ctx(s,c,c.root));}continue;}
 			if(n.key==='send_equipment'){this.materialMoved=Math.min(this.value(b.amount,c),this.materialLimit);this.trace.push({material:this.materialMoved,equipment:b.equipment});continue;}
 			if(n.key==='round_variable'){c.scope.vars[n.value]=Math.round(c.scope.vars[n.value]);continue;}
 			if(n.key.startsWith('var:')&&Array.isArray(n.value)&&!this.scope(n.key,c))continue;

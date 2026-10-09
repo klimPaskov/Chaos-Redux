@@ -19,13 +19,17 @@
 africa_host_transfer_cancel_active_actions = {
 	set_variable = { global.africa_host_transfer_cancelled_action_count = africa_active_action_targets^num }
 	clear_array = africa_host_transfer_action_cleanup
+	set_temp_variable = { africa_host_transfer_cancel_active_actions_break_1 = constant:gods_of_africa_value.zero }
 	for_each_scope_loop = {
+		break = africa_host_transfer_cancel_active_actions_break_1
 		array = africa_active_action_targets
 		event_target:africa_previous_host = {
 			add_to_array = { array = africa_host_transfer_action_cleanup value = PREV }
 		}
 	}
+	set_temp_variable = { africa_host_transfer_cancel_active_actions_break_2 = constant:gods_of_africa_value.zero }
 	for_each_scope_loop = {
+		break = africa_host_transfer_cancel_active_actions_break_2
 		array = africa_host_transfer_action_cleanup
 		if = {
 			limit = {
@@ -39,14 +43,18 @@ africa_host_transfer_cancel_active_actions = {
 
 	# Peace-exemption missions are not action records, so close their exact target
 	# mission and state flags before the old host pointer is removed.
+	set_temp_variable = { africa_host_transfer_cancel_active_actions_break_3 = constant:gods_of_africa_value.zero }
 	for_each_scope_loop = {
+		break = africa_host_transfer_cancel_active_actions_break_3
 		array = africa_peace_exemption_countries
 		if = {
 			limit = { exists = yes }
 			event_target:africa_previous_host = {
 				remove_targeted_decision = { target = PREV decision = mission_africa_complete_continental_peace_exemption }
 			}
+			set_temp_variable = { africa_host_transfer_cancel_active_actions_break_4 = constant:gods_of_africa_value.zero }
 			for_each_scope_loop = {
+				break = africa_host_transfer_cancel_active_actions_break_4
 				array = africa_continental_peace_exemption_states
 				clr_state_flag = africa_continental_peace_exemption_active
 			}
@@ -491,14 +499,18 @@ africa_host_transfer_restore_world_order_state = {
 			limit = { has_global_flag = africa_host_transfer_gods_of_africa_candidate_census_complete }
 			set_country_flag = gods_of_africa_candidate_census_complete
 		}
+		set_temp_variable = { africa_host_transfer_restore_world_order_state_break_1 = constant:gods_of_africa_value.zero }
 		for_each_scope_loop = {
+			break = africa_host_transfer_restore_world_order_state_break_1
 			array = global.africa_host_transfer_gods_of_africa_candidate_registry
 			event_target:africa_host_transfer_new_host = { add_to_array = { array = gods_of_africa_candidate_registry value = PREV } }
 		}
 		clear_array = gods_of_africa_strength_countries
 		clr_country_flag = gods_of_africa_strength_census_initialized
 		clr_country_flag = gods_of_africa_strength_census_complete
+		set_temp_variable = { africa_host_transfer_restore_world_order_state_break_2 = constant:gods_of_africa_value.zero }
 		for_each_scope_loop = {
+			break = africa_host_transfer_restore_world_order_state_break_2
 			array = global.africa_host_transfer_strength_countries
 			event_target:africa_host_transfer_new_host = { add_to_array = { array = gods_of_africa_strength_countries value = PREV } }
 		}
@@ -768,222 +780,330 @@ africa_host_transfer_stage_arrays = {
 	clear_array = global.africa_host_transfer_first_proof_sovereignty_actor_credits
 	clear_array = global.africa_host_transfer_first_proof_region_state_credits
 	clear_array = global.africa_host_transfer_first_proof_corridor_credits
+	set_temp_variable = { africa_host_transfer_stage_arrays_break_1 = constant:gods_of_africa_value.zero }
 	for_each_scope_loop = {
+		break = africa_host_transfer_stage_arrays_break_1
 		array = africa_relationship_countries
 		ROOT = { add_to_array = { array = global.africa_host_transfer_relationship_countries value = PREV } }
 	}
+	set_temp_variable = { africa_host_transfer_stage_arrays_break_2 = constant:gods_of_africa_value.zero }
 	for_each_scope_loop = {
+		break = africa_host_transfer_stage_arrays_break_2
 		array = gods_of_africa_candidate_registry
 		ROOT = { add_to_array = { array = global.africa_host_transfer_gods_of_africa_candidate_registry value = PREV } }
 	}
+	set_temp_variable = { africa_host_transfer_stage_arrays_break_3 = constant:gods_of_africa_value.zero }
 	for_each_scope_loop = {
+		break = africa_host_transfer_stage_arrays_break_3
 		array = gods_of_africa_strength_countries
 		ROOT = { add_to_array = { array = global.africa_host_transfer_strength_countries value = PREV } }
 	}
+	set_temp_variable = { africa_host_transfer_stage_arrays_break_4 = constant:gods_of_africa_value.zero }
 	for_each_scope_loop = {
+		break = africa_host_transfer_stage_arrays_break_4
 		array = africa_protected_countries
 		ROOT = { add_to_array = { array = global.africa_host_transfer_protected_countries value = PREV } }
 	}
+	set_temp_variable = { africa_host_transfer_stage_arrays_break_5 = constant:gods_of_africa_value.zero }
 	for_each_scope_loop = {
+		break = africa_host_transfer_stage_arrays_break_5
 		array = africa_associate_countries
 		ROOT = { add_to_array = { array = global.africa_host_transfer_associate_countries value = PREV } }
 	}
+	set_temp_variable = { africa_host_transfer_stage_arrays_break_6 = constant:gods_of_africa_value.zero }
 	for_each_scope_loop = {
+		break = africa_host_transfer_stage_arrays_break_6
 		array = africa_chartered_countries
 		ROOT = { add_to_array = { array = global.africa_host_transfer_chartered_countries value = PREV } }
 	}
+	set_temp_variable = { africa_host_transfer_stage_arrays_break_7 = constant:gods_of_africa_value.zero }
 	for_each_scope_loop = {
+		break = africa_host_transfer_stage_arrays_break_7
 		array = africa_autonomous_federal_countries
 		ROOT = { add_to_array = { array = global.africa_host_transfer_autonomous_federal_countries value = PREV } }
 	}
+	set_temp_variable = { africa_host_transfer_stage_arrays_break_8 = constant:gods_of_africa_value.zero }
 	for_each_scope_loop = {
+		break = africa_host_transfer_stage_arrays_break_8
 		array = africa_integrated_countries
 		ROOT = { add_to_array = { array = global.africa_host_transfer_integrated_countries value = PREV } }
 	}
+	set_temp_variable = { africa_host_transfer_stage_arrays_break_9 = constant:gods_of_africa_value.zero }
 	for_each_scope_loop = {
+		break = africa_host_transfer_stage_arrays_break_9
 		array = africa_resistant_countries
 		ROOT = { add_to_array = { array = global.africa_host_transfer_resistant_countries value = PREV } }
 	}
+	set_temp_variable = { africa_host_transfer_stage_arrays_break_10 = constant:gods_of_africa_value.zero }
 	for_each_scope_loop = {
+		break = africa_host_transfer_stage_arrays_break_10
 		array = africa_leaving_countries
 		ROOT = { add_to_array = { array = global.africa_host_transfer_leaving_countries value = PREV } }
 	}
+	set_temp_variable = { africa_host_transfer_stage_arrays_break_11 = constant:gods_of_africa_value.zero }
 	for_each_scope_loop = {
+		break = africa_host_transfer_stage_arrays_break_11
 		array = africa_rival_bloc_countries
 		ROOT = { add_to_array = { array = global.africa_host_transfer_rival_bloc_countries value = PREV } }
 	}
+	set_temp_variable = { africa_host_transfer_stage_arrays_break_12 = constant:gods_of_africa_value.zero }
 	for_each_scope_loop = {
+		break = africa_host_transfer_stage_arrays_break_12
 		array = africa_occupied_settlement_countries
 		ROOT = { add_to_array = { array = global.africa_host_transfer_occupied_settlement_countries value = PREV } }
 	}
+	set_temp_variable = { africa_host_transfer_stage_arrays_break_13 = constant:gods_of_africa_value.zero }
 	for_each_scope_loop = {
+		break = africa_host_transfer_stage_arrays_break_13
 		array = africa_selected_targets
 		ROOT = { add_to_array = { array = global.africa_host_transfer_selected_targets value = PREV } }
 	}
+	set_temp_variable = { africa_host_transfer_stage_arrays_break_14 = constant:gods_of_africa_value.zero }
 	for_each_scope_loop = {
+		break = africa_host_transfer_stage_arrays_break_14
 		array = africa_host_action_targets
 		ROOT = { add_to_array = { array = global.africa_host_transfer_host_action_targets value = PREV } }
 	}
+	set_temp_variable = { africa_host_transfer_stage_arrays_break_15 = constant:gods_of_africa_value.zero }
 	for_each_scope_loop = {
+		break = africa_host_transfer_stage_arrays_break_15
 		array = africa_active_dossiers
 		ROOT = { add_to_array = { array = global.africa_host_transfer_active_dossiers value = PREV } }
 	}
+	set_temp_variable = { africa_host_transfer_stage_arrays_break_16 = constant:gods_of_africa_value.zero }
 	for_each_scope_loop = {
+		break = africa_host_transfer_stage_arrays_break_16
 		array = africa_living_core_projects
 		ROOT = { add_to_array = { array = global.africa_host_transfer_living_core_projects value = PREV } }
 	}
+	set_temp_variable = { africa_host_transfer_stage_arrays_break_17 = constant:gods_of_africa_value.zero }
 	for_each_scope_loop = {
+		break = africa_host_transfer_stage_arrays_break_17
 		array = africa_active_congress_regions
 		ROOT = { add_to_array = { array = global.africa_host_transfer_active_congress_regions value = PREV } }
 	}
+	set_temp_variable = { africa_host_transfer_stage_arrays_break_18 = constant:gods_of_africa_value.zero }
 	for_each_scope_loop = {
+		break = africa_host_transfer_stage_arrays_break_18
 		array = africa_active_obligations
 		ROOT = { add_to_array = { array = global.africa_host_transfer_active_obligations value = PREV } }
 	}
+	set_temp_variable = { africa_host_transfer_stage_arrays_break_19 = constant:gods_of_africa_value.zero }
 	for_each_scope_loop = {
+		break = africa_host_transfer_stage_arrays_break_19
 		array = africa_warning_ledger
 		ROOT = { add_to_array = { array = global.africa_host_transfer_warning_ledger value = PREV } }
 	}
+	set_temp_variable = { africa_host_transfer_stage_arrays_break_20 = constant:gods_of_africa_value.zero }
 	for_each_scope_loop = {
+		break = africa_host_transfer_stage_arrays_break_20
 		array = africa_selected_action_state_candidates
 		ROOT = { add_to_array = { array = global.africa_host_transfer_selected_action_state_candidates value = PREV } }
 	}
+	set_temp_variable = { africa_host_transfer_stage_arrays_break_21 = constant:gods_of_africa_value.zero }
 	for_each_scope_loop = {
+		break = africa_host_transfer_stage_arrays_break_21
 		array = africa_selected_action_state_targets
 		ROOT = { add_to_array = { array = global.africa_host_transfer_selected_action_state_targets value = PREV } }
 	}
+	set_temp_variable = { africa_host_transfer_stage_arrays_break_22 = constant:gods_of_africa_value.zero }
 	for_each_scope_loop = {
+		break = africa_host_transfer_stage_arrays_break_22
 		array = africa_action_state_targets
 		ROOT = { add_to_array = { array = global.africa_host_transfer_action_state_targets value = PREV } }
 	}
+	set_temp_variable = { africa_host_transfer_stage_arrays_break_23 = constant:gods_of_africa_value.zero }
 	for_each_scope_loop = {
+		break = africa_host_transfer_stage_arrays_break_23
 		array = africa_world_constituent_countries
 		ROOT = { add_to_array = { array = global.africa_host_transfer_world_constituent_countries value = PREV } }
 	}
+	set_temp_variable = { africa_host_transfer_stage_arrays_break_24 = constant:gods_of_africa_value.zero }
 	for_each_scope_loop = {
+		break = africa_host_transfer_stage_arrays_break_24
 		array = africa_world_constituent_consented_countries
 		ROOT = { add_to_array = { array = global.africa_host_transfer_world_constituent_consented_countries value = PREV } }
 	}
+	set_temp_variable = { africa_host_transfer_stage_arrays_break_25 = constant:gods_of_africa_value.zero }
 	for_each_scope_loop = {
+		break = africa_host_transfer_stage_arrays_break_25
 		array = africa_world_constituent_refused_countries
 		ROOT = { add_to_array = { array = global.africa_host_transfer_world_constituent_refused_countries value = PREV } }
 	}
+	set_temp_variable = { africa_host_transfer_stage_arrays_break_26 = constant:gods_of_africa_value.zero }
 	for_each_scope_loop = {
+		break = africa_host_transfer_stage_arrays_break_26
 		array = africa_world_constituent_coerced_countries
 		ROOT = { add_to_array = { array = global.africa_host_transfer_world_constituent_coerced_countries value = PREV } }
 	}
+	set_temp_variable = { africa_host_transfer_stage_arrays_break_27 = constant:gods_of_africa_value.zero }
 	for_each_scope_loop = {
+		break = africa_host_transfer_stage_arrays_break_27
 		array = africa_world_constituent_withdrawn_countries
 		ROOT = { add_to_array = { array = global.africa_host_transfer_world_constituent_withdrawn_countries value = PREV } }
 	}
+	set_temp_variable = { africa_host_transfer_stage_arrays_break_28 = constant:gods_of_africa_value.zero }
 	for_each_scope_loop = {
+		break = africa_host_transfer_stage_arrays_break_28
 		array = africa_world_constituent_package_actors
 		ROOT = { add_to_array = { array = global.africa_host_transfer_world_constituent_package_actors value = PREV } }
 	}
+	set_temp_variable = { africa_host_transfer_stage_arrays_break_29 = constant:gods_of_africa_value.zero }
 	for_each_scope_loop = {
+		break = africa_host_transfer_stage_arrays_break_29
 		array = africa_world_package_actors
 		ROOT = { add_to_array = { array = global.africa_host_transfer_world_package_actors value = PREV } }
 	}
+	set_temp_variable = { africa_host_transfer_stage_arrays_break_30 = constant:gods_of_africa_value.zero }
 	for_each_scope_loop = {
+		break = africa_host_transfer_stage_arrays_break_30
 		array = africa_world_package_candidates
 		ROOT = { add_to_array = { array = global.africa_host_transfer_world_package_candidates value = PREV } }
 	}
+	set_temp_variable = { africa_host_transfer_stage_arrays_break_31 = constant:gods_of_africa_value.zero }
 	for_each_scope_loop = {
+		break = africa_host_transfer_stage_arrays_break_31
 		array = africa_world_package_heartland_states
 		ROOT = { add_to_array = { array = global.africa_host_transfer_world_package_heartland_states value = PREV } }
 	}
+	set_temp_variable = { africa_host_transfer_stage_arrays_break_32 = constant:gods_of_africa_value.zero }
 	for_each_scope_loop = {
+		break = africa_host_transfer_stage_arrays_break_32
 		array = africa_world_package_pending_continents
 		ROOT = { add_to_array = { array = global.africa_host_transfer_world_package_pending_continents value = PREV } }
 	}
+	set_temp_variable = { africa_host_transfer_stage_arrays_break_33 = constant:gods_of_africa_value.zero }
 	for_each_scope_loop = {
+		break = africa_host_transfer_stage_arrays_break_33
 		array = africa_world_package_resolved_continents
 		ROOT = { add_to_array = { array = global.africa_host_transfer_world_package_resolved_continents value = PREV } }
 	}
+	set_temp_variable = { africa_host_transfer_stage_arrays_break_34 = constant:gods_of_africa_value.zero }
 	for_each_scope_loop = {
+		break = africa_host_transfer_stage_arrays_break_34
 		array = africa_world_package_successor_candidates
 		ROOT = { add_to_array = { array = global.africa_host_transfer_world_package_successor_candidates value = PREV } }
 	}
+	set_temp_variable = { africa_host_transfer_stage_arrays_break_35 = constant:gods_of_africa_value.zero }
 	for_each_scope_loop = {
+		break = africa_host_transfer_stage_arrays_break_35
 		array = africa_world_sponsorship_targets
 		ROOT = { add_to_array = { array = global.africa_host_transfer_world_sponsorship_targets value = PREV } }
 	}
+	set_temp_variable = { africa_host_transfer_stage_arrays_break_36 = constant:gods_of_africa_value.zero }
 	for_each_scope_loop = {
+		break = africa_host_transfer_stage_arrays_break_36
 		array = africa_world_war_joined_partners
 		ROOT = { add_to_array = { array = global.africa_host_transfer_world_war_joined_partners value = PREV } }
 	}
+	set_temp_variable = { africa_host_transfer_stage_arrays_break_37 = constant:gods_of_africa_value.zero }
 	for_each_scope_loop = {
+		break = africa_host_transfer_stage_arrays_break_37
 		array = africa_world_war_registered_partners
 		ROOT = { add_to_array = { array = global.africa_host_transfer_world_war_registered_partners value = PREV } }
 	}
+	set_temp_variable = { africa_host_transfer_stage_arrays_break_38 = constant:gods_of_africa_value.zero }
 	for_each_scope_loop = {
+		break = africa_host_transfer_stage_arrays_break_38
 		array = africa_scramble_participants
 		ROOT = { add_to_array = { array = global.africa_host_transfer_scramble_participants value = PREV } }
 	}
+	set_temp_variable = { africa_host_transfer_stage_arrays_break_39 = constant:gods_of_africa_value.zero }
 	for_each_scope_loop = {
+		break = africa_host_transfer_stage_arrays_break_39
 		array = africa_scramble_former_colonial_interests
 		ROOT = { add_to_array = { array = global.africa_host_transfer_scramble_former_colonial_interests value = PREV } }
 	}
+	set_temp_variable = { africa_host_transfer_stage_arrays_break_40 = constant:gods_of_africa_value.zero }
 	for_each_scope_loop = {
+		break = africa_host_transfer_stage_arrays_break_40
 		array = africa_scramble_ideological_rivals
 		ROOT = { add_to_array = { array = global.africa_host_transfer_scramble_ideological_rivals value = PREV } }
 	}
+	set_temp_variable = { africa_host_transfer_stage_arrays_break_41 = constant:gods_of_africa_value.zero }
 	for_each_scope_loop = {
+		break = africa_host_transfer_stage_arrays_break_41
 		array = africa_scramble_resource_exposure_interests
 		ROOT = { add_to_array = { array = global.africa_host_transfer_scramble_resource_exposure_interests value = PREV } }
 	}
+	set_temp_variable = { africa_host_transfer_stage_arrays_break_42 = constant:gods_of_africa_value.zero }
 	for_each_scope_loop = {
+		break = africa_host_transfer_stage_arrays_break_42
 		array = africa_scramble_continent_unifier_fears
 		ROOT = { add_to_array = { array = global.africa_host_transfer_scramble_continent_unifier_fears value = PREV } }
 	}
+	set_temp_variable = { africa_host_transfer_stage_arrays_break_43 = constant:gods_of_africa_value.zero }
 	for_each_scope_loop = {
+		break = africa_host_transfer_stage_arrays_break_43
 		array = africa_scramble_south_africa_allied_contacts
 		ROOT = { add_to_array = { array = global.africa_host_transfer_scramble_south_africa_allied_contacts value = PREV } }
 	}
+	set_temp_variable = { africa_host_transfer_stage_arrays_break_44 = constant:gods_of_africa_value.zero }
 	for_each_scope_loop = {
+		break = africa_host_transfer_stage_arrays_break_44
 		array = africa_scramble_coalition_members
 		ROOT = { add_to_array = { array = global.africa_host_transfer_scramble_coalition_members value = PREV } }
 	}
+	set_temp_variable = { africa_host_transfer_stage_arrays_break_45 = constant:gods_of_africa_value.zero }
 	for_each_scope_loop = {
+		break = africa_host_transfer_stage_arrays_break_45
 		array = africa_world_package_absent_continents
 		ROOT = { add_to_array = { array = global.africa_host_transfer_world_package_absent_continents value = PREV } }
 	}
+	set_temp_variable = { africa_host_transfer_stage_arrays_break_46 = constant:gods_of_africa_value.zero }
 	for_each_scope_loop = {
+		break = africa_host_transfer_stage_arrays_break_46
 		array = africa_first_proof_marked_country_scopes
 		ROOT = { add_to_array = { array = global.africa_host_transfer_first_proof_marked_country_scopes value = PREV } }
 	}
+	set_temp_variable = { africa_host_transfer_stage_arrays_break_47 = constant:gods_of_africa_value.zero }
 	for_each_scope_loop = {
+		break = africa_host_transfer_stage_arrays_break_47
 		array = africa_first_proof_marked_state_scopes
 		ROOT = { add_to_array = { array = global.africa_host_transfer_first_proof_marked_state_scopes value = PREV } }
 	}
+	set_temp_variable = { africa_host_transfer_stage_arrays_break_48 = constant:gods_of_africa_value.zero }
 	for_each_scope_loop = {
+		break = africa_host_transfer_stage_arrays_break_48
 		array = africa_first_proof_actor_credits
 		ROOT = { add_to_array = { array = global.africa_host_transfer_first_proof_actor_credits value = PREV } }
 	}
+	set_temp_variable = { africa_host_transfer_stage_arrays_break_49 = constant:gods_of_africa_value.zero }
 	for_each_scope_loop = {
+		break = africa_host_transfer_stage_arrays_break_49
 		array = africa_first_proof_corridor_actor_credits
 		ROOT = { add_to_array = { array = global.africa_host_transfer_first_proof_corridor_actor_credits value = PREV } }
 	}
+	set_temp_variable = { africa_host_transfer_stage_arrays_break_50 = constant:gods_of_africa_value.zero }
 	for_each_scope_loop = {
+		break = africa_host_transfer_stage_arrays_break_50
 		array = africa_first_proof_primary_target_credits
 		ROOT = { add_to_array = { array = global.africa_host_transfer_first_proof_primary_target_credits value = PREV } }
 	}
+	set_temp_variable = { africa_host_transfer_stage_arrays_break_51 = constant:gods_of_africa_value.zero }
 	for_each_scope_loop = {
+		break = africa_host_transfer_stage_arrays_break_51
 		array = africa_first_proof_sovereignty_actor_credits
 		ROOT = { add_to_array = { array = global.africa_host_transfer_first_proof_sovereignty_actor_credits value = PREV } }
 	}
+	set_temp_variable = { africa_host_transfer_stage_arrays_break_52 = constant:gods_of_africa_value.zero }
 	for_each_scope_loop = {
+		break = africa_host_transfer_stage_arrays_break_52
 		array = africa_first_proof_region_state_credits
 		ROOT = { add_to_array = { array = global.africa_host_transfer_first_proof_region_state_credits value = PREV } }
 	}
+	set_temp_variable = { africa_host_transfer_stage_arrays_break_53 = constant:gods_of_africa_value.zero }
 	for_each_scope_loop = {
+		break = africa_host_transfer_stage_arrays_break_53
 		array = africa_first_proof_corridor_credits
 		ROOT = { add_to_array = { array = global.africa_host_transfer_first_proof_corridor_credits value = PREV } }
 	}
 
 	clear_array = global.africa_host_transfer_candidates
 	set_variable = { global.africa_host_transfer_candidate_count = constant:africa_value.zero }
+	set_temp_variable = { africa_host_transfer_stage_arrays_break_54 = constant:gods_of_africa_value.zero }
 	for_each_scope_loop = {
+		break = africa_host_transfer_stage_arrays_break_54
 		array = africa_relationship_countries
 		if = {
 			limit = {
@@ -1027,7 +1147,9 @@ africa_begin_host_transfer = {
 			gods_of_africa_cancel_on_unifier_loss = yes
 		}
 		africa_host_transfer_cancel_active_actions = yes
+		set_temp_variable = { africa_begin_host_transfer_break_1 = constant:gods_of_africa_value.zero }
 		for_each_scope_loop = {
+			break = africa_begin_host_transfer_break_1
 			array = africa_relationship_countries
 			if = {
 				limit = { exists = yes africa_is_charter_subject_of_current_host = yes }
@@ -1068,7 +1190,9 @@ africa_host_transfer_record_terminal_loss = {
 		}
 		save_event_target_as = africa_previous_host
 		africa_host_transfer_cancel_active_actions = yes
+		set_temp_variable = { africa_host_transfer_record_terminal_loss_break_1 = constant:gods_of_africa_value.zero }
 		for_each_scope_loop = {
+			break = africa_host_transfer_record_terminal_loss_break_1
 			array = africa_relationship_countries
 			if = {
 				limit = { exists = yes africa_is_charter_subject_of_current_host = yes }
@@ -1122,7 +1246,9 @@ africa_host_transfer_select_single_candidate = {
 			africa_host_transfer_resolution_is_open = yes
 			check_variable = { global.africa_host_transfer_candidate_count = constant:africa_host_transfer.minimum_candidates }
 		}
+		set_temp_variable = { africa_host_transfer_select_single_candidate_break_1 = constant:gods_of_africa_value.zero }
 		for_each_scope_loop = {
+			break = africa_host_transfer_select_single_candidate_break_1
 			array = global.africa_host_transfer_candidates
 			if = {
 				limit = { africa_host_transfer_candidate_is_valid = yes }
@@ -1286,56 +1412,156 @@ africa_host_transfer_complete_successor = {
 		clear_array = africa_scramble_south_africa_allied_contacts
 		clear_array = africa_scramble_coalition_members
 		clear_array = africa_world_package_absent_continents
-		for_each_scope_loop = { array = global.africa_host_transfer_relationship_countries event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_relationship_countries value = PREV } } }
-		for_each_scope_loop = { array = global.africa_host_transfer_protected_countries event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_protected_countries value = PREV } } }
-		for_each_scope_loop = { array = global.africa_host_transfer_associate_countries event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_associate_countries value = PREV } } }
-		for_each_scope_loop = { array = global.africa_host_transfer_chartered_countries event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_chartered_countries value = PREV } } }
-		for_each_scope_loop = { array = global.africa_host_transfer_autonomous_federal_countries event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_autonomous_federal_countries value = PREV } } }
-		for_each_scope_loop = { array = global.africa_host_transfer_integrated_countries event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_integrated_countries value = PREV } } }
-		for_each_scope_loop = { array = global.africa_host_transfer_resistant_countries event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_resistant_countries value = PREV } } }
-		for_each_scope_loop = { array = global.africa_host_transfer_leaving_countries event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_leaving_countries value = PREV } } }
-		for_each_scope_loop = { array = global.africa_host_transfer_rival_bloc_countries event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_rival_bloc_countries value = PREV } } }
-		for_each_scope_loop = { array = global.africa_host_transfer_occupied_settlement_countries event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_occupied_settlement_countries value = PREV } } }
-		for_each_scope_loop = { array = global.africa_host_transfer_selected_targets event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_selected_targets value = PREV } } }
-		for_each_scope_loop = { array = global.africa_host_transfer_active_dossiers event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_active_dossiers value = PREV } } }
-		for_each_scope_loop = { array = global.africa_host_transfer_living_core_projects event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_living_core_projects value = PREV } } }
-		for_each_scope_loop = { array = global.africa_host_transfer_active_congress_regions event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_active_congress_regions value = PREV } } }
-		for_each_scope_loop = { array = global.africa_host_transfer_active_obligations event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_active_obligations value = PREV } } }
-		for_each_scope_loop = { array = global.africa_host_transfer_warning_ledger event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_warning_ledger value = PREV } } }
-		for_each_scope_loop = { array = global.africa_host_transfer_selected_action_state_candidates event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_selected_action_state_candidates value = PREV } } }
-		for_each_scope_loop = { array = global.africa_host_transfer_selected_action_state_targets event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_selected_action_state_targets value = PREV } } }
-		for_each_scope_loop = { array = global.africa_host_transfer_action_state_targets event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_action_state_targets value = PREV } } }
-		for_each_scope_loop = { array = global.africa_host_transfer_world_constituent_countries event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_world_constituent_countries value = PREV } } }
-		for_each_scope_loop = { array = global.africa_host_transfer_world_constituent_consented_countries event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_world_constituent_consented_countries value = PREV } } }
-		for_each_scope_loop = { array = global.africa_host_transfer_world_constituent_refused_countries event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_world_constituent_refused_countries value = PREV } } }
-		for_each_scope_loop = { array = global.africa_host_transfer_world_constituent_coerced_countries event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_world_constituent_coerced_countries value = PREV } } }
-		for_each_scope_loop = { array = global.africa_host_transfer_world_constituent_withdrawn_countries event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_world_constituent_withdrawn_countries value = PREV } } }
-		for_each_scope_loop = { array = global.africa_host_transfer_world_constituent_package_actors event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_world_constituent_package_actors value = PREV } } }
-		for_each_scope_loop = { array = global.africa_host_transfer_world_package_actors event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_world_package_actors value = PREV } } }
-		for_each_scope_loop = { array = global.africa_host_transfer_world_package_candidates event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_world_package_candidates value = PREV } } }
-		for_each_scope_loop = { array = global.africa_host_transfer_world_package_heartland_states event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_world_package_heartland_states value = PREV } } }
-		for_each_scope_loop = { array = global.africa_host_transfer_world_package_pending_continents event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_world_package_pending_continents value = PREV } } }
-		for_each_scope_loop = { array = global.africa_host_transfer_world_package_resolved_continents event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_world_package_resolved_continents value = PREV } } }
-		for_each_scope_loop = { array = global.africa_host_transfer_world_package_successor_candidates event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_world_package_successor_candidates value = PREV } } }
-		for_each_scope_loop = { array = global.africa_host_transfer_world_sponsorship_targets event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_world_sponsorship_targets value = PREV } } }
-		for_each_scope_loop = { array = global.africa_host_transfer_world_war_joined_partners event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_world_war_joined_partners value = PREV } } }
-		for_each_scope_loop = { array = global.africa_host_transfer_world_war_registered_partners event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_world_war_registered_partners value = PREV } } }
-		for_each_scope_loop = { array = global.africa_host_transfer_scramble_participants event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_scramble_participants value = PREV } } }
-		for_each_scope_loop = { array = global.africa_host_transfer_scramble_former_colonial_interests event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_scramble_former_colonial_interests value = PREV } } }
-		for_each_scope_loop = { array = global.africa_host_transfer_scramble_ideological_rivals event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_scramble_ideological_rivals value = PREV } } }
-		for_each_scope_loop = { array = global.africa_host_transfer_scramble_resource_exposure_interests event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_scramble_resource_exposure_interests value = PREV } } }
-		for_each_scope_loop = { array = global.africa_host_transfer_scramble_continent_unifier_fears event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_scramble_continent_unifier_fears value = PREV } } }
-		for_each_scope_loop = { array = global.africa_host_transfer_scramble_south_africa_allied_contacts event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_scramble_south_africa_allied_contacts value = PREV } } }
-		for_each_scope_loop = { array = global.africa_host_transfer_scramble_coalition_members event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_scramble_coalition_members value = PREV } } }
-		for_each_scope_loop = { array = global.africa_host_transfer_world_package_absent_continents event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_world_package_absent_continents value = PREV } } }
-		for_each_scope_loop = { array = global.africa_host_transfer_first_proof_marked_country_scopes event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_first_proof_marked_country_scopes value = PREV } } }
-		for_each_scope_loop = { array = global.africa_host_transfer_first_proof_marked_state_scopes event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_first_proof_marked_state_scopes value = PREV } } }
-		for_each_scope_loop = { array = global.africa_host_transfer_first_proof_actor_credits event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_first_proof_actor_credits value = PREV } } }
-		for_each_scope_loop = { array = global.africa_host_transfer_first_proof_corridor_actor_credits event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_first_proof_corridor_actor_credits value = PREV } } }
-		for_each_scope_loop = { array = global.africa_host_transfer_first_proof_primary_target_credits event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_first_proof_primary_target_credits value = PREV } } }
-		for_each_scope_loop = { array = global.africa_host_transfer_first_proof_sovereignty_actor_credits event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_first_proof_sovereignty_actor_credits value = PREV } } }
-		for_each_scope_loop = { array = global.africa_host_transfer_first_proof_region_state_credits event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_first_proof_region_state_credits value = PREV } } }
-		for_each_scope_loop = { array = global.africa_host_transfer_first_proof_corridor_credits event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_first_proof_corridor_credits value = PREV } } }
+		set_temp_variable = { africa_host_transfer_complete_successor_break_1 = constant:gods_of_africa_value.zero }
+		for_each_scope_loop = {
+			break = africa_host_transfer_complete_successor_break_1 array = global.africa_host_transfer_relationship_countries event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_relationship_countries value = PREV } } }
+		set_temp_variable = { africa_host_transfer_complete_successor_break_2 = constant:gods_of_africa_value.zero }
+		for_each_scope_loop = {
+			break = africa_host_transfer_complete_successor_break_2 array = global.africa_host_transfer_protected_countries event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_protected_countries value = PREV } } }
+		set_temp_variable = { africa_host_transfer_complete_successor_break_3 = constant:gods_of_africa_value.zero }
+		for_each_scope_loop = {
+			break = africa_host_transfer_complete_successor_break_3 array = global.africa_host_transfer_associate_countries event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_associate_countries value = PREV } } }
+		set_temp_variable = { africa_host_transfer_complete_successor_break_4 = constant:gods_of_africa_value.zero }
+		for_each_scope_loop = {
+			break = africa_host_transfer_complete_successor_break_4 array = global.africa_host_transfer_chartered_countries event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_chartered_countries value = PREV } } }
+		set_temp_variable = { africa_host_transfer_complete_successor_break_5 = constant:gods_of_africa_value.zero }
+		for_each_scope_loop = {
+			break = africa_host_transfer_complete_successor_break_5 array = global.africa_host_transfer_autonomous_federal_countries event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_autonomous_federal_countries value = PREV } } }
+		set_temp_variable = { africa_host_transfer_complete_successor_break_6 = constant:gods_of_africa_value.zero }
+		for_each_scope_loop = {
+			break = africa_host_transfer_complete_successor_break_6 array = global.africa_host_transfer_integrated_countries event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_integrated_countries value = PREV } } }
+		set_temp_variable = { africa_host_transfer_complete_successor_break_7 = constant:gods_of_africa_value.zero }
+		for_each_scope_loop = {
+			break = africa_host_transfer_complete_successor_break_7 array = global.africa_host_transfer_resistant_countries event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_resistant_countries value = PREV } } }
+		set_temp_variable = { africa_host_transfer_complete_successor_break_8 = constant:gods_of_africa_value.zero }
+		for_each_scope_loop = {
+			break = africa_host_transfer_complete_successor_break_8 array = global.africa_host_transfer_leaving_countries event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_leaving_countries value = PREV } } }
+		set_temp_variable = { africa_host_transfer_complete_successor_break_9 = constant:gods_of_africa_value.zero }
+		for_each_scope_loop = {
+			break = africa_host_transfer_complete_successor_break_9 array = global.africa_host_transfer_rival_bloc_countries event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_rival_bloc_countries value = PREV } } }
+		set_temp_variable = { africa_host_transfer_complete_successor_break_10 = constant:gods_of_africa_value.zero }
+		for_each_scope_loop = {
+			break = africa_host_transfer_complete_successor_break_10 array = global.africa_host_transfer_occupied_settlement_countries event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_occupied_settlement_countries value = PREV } } }
+		set_temp_variable = { africa_host_transfer_complete_successor_break_11 = constant:gods_of_africa_value.zero }
+		for_each_scope_loop = {
+			break = africa_host_transfer_complete_successor_break_11 array = global.africa_host_transfer_selected_targets event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_selected_targets value = PREV } } }
+		set_temp_variable = { africa_host_transfer_complete_successor_break_12 = constant:gods_of_africa_value.zero }
+		for_each_scope_loop = {
+			break = africa_host_transfer_complete_successor_break_12 array = global.africa_host_transfer_active_dossiers event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_active_dossiers value = PREV } } }
+		set_temp_variable = { africa_host_transfer_complete_successor_break_13 = constant:gods_of_africa_value.zero }
+		for_each_scope_loop = {
+			break = africa_host_transfer_complete_successor_break_13 array = global.africa_host_transfer_living_core_projects event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_living_core_projects value = PREV } } }
+		set_temp_variable = { africa_host_transfer_complete_successor_break_14 = constant:gods_of_africa_value.zero }
+		for_each_scope_loop = {
+			break = africa_host_transfer_complete_successor_break_14 array = global.africa_host_transfer_active_congress_regions event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_active_congress_regions value = PREV } } }
+		set_temp_variable = { africa_host_transfer_complete_successor_break_15 = constant:gods_of_africa_value.zero }
+		for_each_scope_loop = {
+			break = africa_host_transfer_complete_successor_break_15 array = global.africa_host_transfer_active_obligations event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_active_obligations value = PREV } } }
+		set_temp_variable = { africa_host_transfer_complete_successor_break_16 = constant:gods_of_africa_value.zero }
+		for_each_scope_loop = {
+			break = africa_host_transfer_complete_successor_break_16 array = global.africa_host_transfer_warning_ledger event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_warning_ledger value = PREV } } }
+		set_temp_variable = { africa_host_transfer_complete_successor_break_17 = constant:gods_of_africa_value.zero }
+		for_each_scope_loop = {
+			break = africa_host_transfer_complete_successor_break_17 array = global.africa_host_transfer_selected_action_state_candidates event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_selected_action_state_candidates value = PREV } } }
+		set_temp_variable = { africa_host_transfer_complete_successor_break_18 = constant:gods_of_africa_value.zero }
+		for_each_scope_loop = {
+			break = africa_host_transfer_complete_successor_break_18 array = global.africa_host_transfer_selected_action_state_targets event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_selected_action_state_targets value = PREV } } }
+		set_temp_variable = { africa_host_transfer_complete_successor_break_19 = constant:gods_of_africa_value.zero }
+		for_each_scope_loop = {
+			break = africa_host_transfer_complete_successor_break_19 array = global.africa_host_transfer_action_state_targets event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_action_state_targets value = PREV } } }
+		set_temp_variable = { africa_host_transfer_complete_successor_break_20 = constant:gods_of_africa_value.zero }
+		for_each_scope_loop = {
+			break = africa_host_transfer_complete_successor_break_20 array = global.africa_host_transfer_world_constituent_countries event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_world_constituent_countries value = PREV } } }
+		set_temp_variable = { africa_host_transfer_complete_successor_break_21 = constant:gods_of_africa_value.zero }
+		for_each_scope_loop = {
+			break = africa_host_transfer_complete_successor_break_21 array = global.africa_host_transfer_world_constituent_consented_countries event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_world_constituent_consented_countries value = PREV } } }
+		set_temp_variable = { africa_host_transfer_complete_successor_break_22 = constant:gods_of_africa_value.zero }
+		for_each_scope_loop = {
+			break = africa_host_transfer_complete_successor_break_22 array = global.africa_host_transfer_world_constituent_refused_countries event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_world_constituent_refused_countries value = PREV } } }
+		set_temp_variable = { africa_host_transfer_complete_successor_break_23 = constant:gods_of_africa_value.zero }
+		for_each_scope_loop = {
+			break = africa_host_transfer_complete_successor_break_23 array = global.africa_host_transfer_world_constituent_coerced_countries event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_world_constituent_coerced_countries value = PREV } } }
+		set_temp_variable = { africa_host_transfer_complete_successor_break_24 = constant:gods_of_africa_value.zero }
+		for_each_scope_loop = {
+			break = africa_host_transfer_complete_successor_break_24 array = global.africa_host_transfer_world_constituent_withdrawn_countries event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_world_constituent_withdrawn_countries value = PREV } } }
+		set_temp_variable = { africa_host_transfer_complete_successor_break_25 = constant:gods_of_africa_value.zero }
+		for_each_scope_loop = {
+			break = africa_host_transfer_complete_successor_break_25 array = global.africa_host_transfer_world_constituent_package_actors event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_world_constituent_package_actors value = PREV } } }
+		set_temp_variable = { africa_host_transfer_complete_successor_break_26 = constant:gods_of_africa_value.zero }
+		for_each_scope_loop = {
+			break = africa_host_transfer_complete_successor_break_26 array = global.africa_host_transfer_world_package_actors event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_world_package_actors value = PREV } } }
+		set_temp_variable = { africa_host_transfer_complete_successor_break_27 = constant:gods_of_africa_value.zero }
+		for_each_scope_loop = {
+			break = africa_host_transfer_complete_successor_break_27 array = global.africa_host_transfer_world_package_candidates event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_world_package_candidates value = PREV } } }
+		set_temp_variable = { africa_host_transfer_complete_successor_break_28 = constant:gods_of_africa_value.zero }
+		for_each_scope_loop = {
+			break = africa_host_transfer_complete_successor_break_28 array = global.africa_host_transfer_world_package_heartland_states event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_world_package_heartland_states value = PREV } } }
+		set_temp_variable = { africa_host_transfer_complete_successor_break_29 = constant:gods_of_africa_value.zero }
+		for_each_scope_loop = {
+			break = africa_host_transfer_complete_successor_break_29 array = global.africa_host_transfer_world_package_pending_continents event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_world_package_pending_continents value = PREV } } }
+		set_temp_variable = { africa_host_transfer_complete_successor_break_30 = constant:gods_of_africa_value.zero }
+		for_each_scope_loop = {
+			break = africa_host_transfer_complete_successor_break_30 array = global.africa_host_transfer_world_package_resolved_continents event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_world_package_resolved_continents value = PREV } } }
+		set_temp_variable = { africa_host_transfer_complete_successor_break_31 = constant:gods_of_africa_value.zero }
+		for_each_scope_loop = {
+			break = africa_host_transfer_complete_successor_break_31 array = global.africa_host_transfer_world_package_successor_candidates event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_world_package_successor_candidates value = PREV } } }
+		set_temp_variable = { africa_host_transfer_complete_successor_break_32 = constant:gods_of_africa_value.zero }
+		for_each_scope_loop = {
+			break = africa_host_transfer_complete_successor_break_32 array = global.africa_host_transfer_world_sponsorship_targets event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_world_sponsorship_targets value = PREV } } }
+		set_temp_variable = { africa_host_transfer_complete_successor_break_33 = constant:gods_of_africa_value.zero }
+		for_each_scope_loop = {
+			break = africa_host_transfer_complete_successor_break_33 array = global.africa_host_transfer_world_war_joined_partners event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_world_war_joined_partners value = PREV } } }
+		set_temp_variable = { africa_host_transfer_complete_successor_break_34 = constant:gods_of_africa_value.zero }
+		for_each_scope_loop = {
+			break = africa_host_transfer_complete_successor_break_34 array = global.africa_host_transfer_world_war_registered_partners event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_world_war_registered_partners value = PREV } } }
+		set_temp_variable = { africa_host_transfer_complete_successor_break_35 = constant:gods_of_africa_value.zero }
+		for_each_scope_loop = {
+			break = africa_host_transfer_complete_successor_break_35 array = global.africa_host_transfer_scramble_participants event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_scramble_participants value = PREV } } }
+		set_temp_variable = { africa_host_transfer_complete_successor_break_36 = constant:gods_of_africa_value.zero }
+		for_each_scope_loop = {
+			break = africa_host_transfer_complete_successor_break_36 array = global.africa_host_transfer_scramble_former_colonial_interests event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_scramble_former_colonial_interests value = PREV } } }
+		set_temp_variable = { africa_host_transfer_complete_successor_break_37 = constant:gods_of_africa_value.zero }
+		for_each_scope_loop = {
+			break = africa_host_transfer_complete_successor_break_37 array = global.africa_host_transfer_scramble_ideological_rivals event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_scramble_ideological_rivals value = PREV } } }
+		set_temp_variable = { africa_host_transfer_complete_successor_break_38 = constant:gods_of_africa_value.zero }
+		for_each_scope_loop = {
+			break = africa_host_transfer_complete_successor_break_38 array = global.africa_host_transfer_scramble_resource_exposure_interests event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_scramble_resource_exposure_interests value = PREV } } }
+		set_temp_variable = { africa_host_transfer_complete_successor_break_39 = constant:gods_of_africa_value.zero }
+		for_each_scope_loop = {
+			break = africa_host_transfer_complete_successor_break_39 array = global.africa_host_transfer_scramble_continent_unifier_fears event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_scramble_continent_unifier_fears value = PREV } } }
+		set_temp_variable = { africa_host_transfer_complete_successor_break_40 = constant:gods_of_africa_value.zero }
+		for_each_scope_loop = {
+			break = africa_host_transfer_complete_successor_break_40 array = global.africa_host_transfer_scramble_south_africa_allied_contacts event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_scramble_south_africa_allied_contacts value = PREV } } }
+		set_temp_variable = { africa_host_transfer_complete_successor_break_41 = constant:gods_of_africa_value.zero }
+		for_each_scope_loop = {
+			break = africa_host_transfer_complete_successor_break_41 array = global.africa_host_transfer_scramble_coalition_members event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_scramble_coalition_members value = PREV } } }
+		set_temp_variable = { africa_host_transfer_complete_successor_break_42 = constant:gods_of_africa_value.zero }
+		for_each_scope_loop = {
+			break = africa_host_transfer_complete_successor_break_42 array = global.africa_host_transfer_world_package_absent_continents event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_world_package_absent_continents value = PREV } } }
+		set_temp_variable = { africa_host_transfer_complete_successor_break_43 = constant:gods_of_africa_value.zero }
+		for_each_scope_loop = {
+			break = africa_host_transfer_complete_successor_break_43 array = global.africa_host_transfer_first_proof_marked_country_scopes event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_first_proof_marked_country_scopes value = PREV } } }
+		set_temp_variable = { africa_host_transfer_complete_successor_break_44 = constant:gods_of_africa_value.zero }
+		for_each_scope_loop = {
+			break = africa_host_transfer_complete_successor_break_44 array = global.africa_host_transfer_first_proof_marked_state_scopes event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_first_proof_marked_state_scopes value = PREV } } }
+		set_temp_variable = { africa_host_transfer_complete_successor_break_45 = constant:gods_of_africa_value.zero }
+		for_each_scope_loop = {
+			break = africa_host_transfer_complete_successor_break_45 array = global.africa_host_transfer_first_proof_actor_credits event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_first_proof_actor_credits value = PREV } } }
+		set_temp_variable = { africa_host_transfer_complete_successor_break_46 = constant:gods_of_africa_value.zero }
+		for_each_scope_loop = {
+			break = africa_host_transfer_complete_successor_break_46 array = global.africa_host_transfer_first_proof_corridor_actor_credits event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_first_proof_corridor_actor_credits value = PREV } } }
+		set_temp_variable = { africa_host_transfer_complete_successor_break_47 = constant:gods_of_africa_value.zero }
+		for_each_scope_loop = {
+			break = africa_host_transfer_complete_successor_break_47 array = global.africa_host_transfer_first_proof_primary_target_credits event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_first_proof_primary_target_credits value = PREV } } }
+		set_temp_variable = { africa_host_transfer_complete_successor_break_48 = constant:gods_of_africa_value.zero }
+		for_each_scope_loop = {
+			break = africa_host_transfer_complete_successor_break_48 array = global.africa_host_transfer_first_proof_sovereignty_actor_credits event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_first_proof_sovereignty_actor_credits value = PREV } } }
+		set_temp_variable = { africa_host_transfer_complete_successor_break_49 = constant:gods_of_africa_value.zero }
+		for_each_scope_loop = {
+			break = africa_host_transfer_complete_successor_break_49 array = global.africa_host_transfer_first_proof_region_state_credits event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_first_proof_region_state_credits value = PREV } } }
+		set_temp_variable = { africa_host_transfer_complete_successor_break_50 = constant:gods_of_africa_value.zero }
+		for_each_scope_loop = {
+			break = africa_host_transfer_complete_successor_break_50 array = global.africa_host_transfer_first_proof_corridor_credits event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_first_proof_corridor_credits value = PREV } } }
 		if = {
 			limit = { has_global_flag = africa_host_transfer_first_proof_active }
 			africa_refresh_first_proof_live_ledger = yes
@@ -1357,7 +1583,9 @@ africa_host_transfer_complete_successor = {
 		clear_variable = africa_member_confidence
 		clr_country_flag = africa_selected_roster_target
 		clr_country_flag = africa_relationship_transition_pending_notice
+		set_temp_variable = { africa_host_transfer_complete_successor_break_51 = constant:gods_of_africa_value.zero }
 		for_each_scope_loop = {
+			break = africa_host_transfer_complete_successor_break_51
 			array = africa_relationship_countries
 			if = {
 				limit = { exists = yes }
@@ -1365,7 +1593,9 @@ africa_host_transfer_complete_successor = {
 				africa_apply_member_autonomy_for_current_relationship = yes
 			}
 		}
+		set_temp_variable = { africa_host_transfer_complete_successor_break_52 = constant:gods_of_africa_value.zero }
 		for_each_scope_loop = {
+			break = africa_host_transfer_complete_successor_break_52
 			array = africa_peace_exemption_countries
 			if = { limit = { exists = yes } set_variable = { africa_member_host_generation = event_target:africa_host.africa_host_generation } }
 		}
@@ -1435,7 +1665,9 @@ africa_host_transfer_complete_successor = {
 		africa_load_continental_focus_tree = yes
 		africa_refresh_continental_focus_tree_layout = yes
 		africa_schedule_next_evolution_clock = yes
+		set_temp_variable = { africa_host_transfer_complete_successor_break_53 = constant:gods_of_africa_value.zero }
 		for_each_scope_loop = {
+			break = africa_host_transfer_complete_successor_break_53
 			array = africa_relationship_countries
 			if = { limit = { exists = yes } africa_apply_member_autonomy_for_current_relationship = yes }
 		}

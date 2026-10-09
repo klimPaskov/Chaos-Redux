@@ -43,7 +43,7 @@ assert.ok(milStart >= 0 && indStart > milStart && continentStart > indStart && r
 class InputsVM extends VM {
 	constructor() {
 		super(); this.worldStates = []; this.worldCountries = [this.host, this.actor];
-		this.globalFlags = new Set(['africa_event_active']); this.maxArrayBodyRows = Infinity;
+		this.globalFlags = new Set(['africa_event_active']); this.maxArrayBodyRows = Infinity; this.foreachRuns = [];
 		for (const o of [this.host, this.actor]) { o.arrays = {}; o.armyK = 0; o.divisions = 0; o.exile = false; o.getters = {}; }
 		this.host.flags.add('africa_unifier_host'); this.host.flags.add('africa_host_commit_completed');
 		this.host.arrays.africa_relationship_countries = []; this.host.arrays.gods_of_africa_participants = [];
@@ -91,11 +91,26 @@ class InputsVM extends VM {
 					const child = this.ctx(s, c, c.root);
 					if (this.test(geography, child)) this.exec(body, child);
 				}
-			} else if (n.key === 'for_each_scope_loop') {
-				const arrayName = n.value.find(x => x.key === 'array').value;
-				const body = n.value.filter(x => x.key !== 'array');
-				const a = this.value(arrayName, c) || [];
-				for (const o of a.slice(0, this.maxArrayBodyRows)) this.exec(body, this.ctx(o, c, c.root));
+			} else if (['for_each_scope_loop', 'for_each_loop'].includes(n.key)) {
+				const metadata = Object.fromEntries(n.value.filter(x => ['array', 'break', 'value', 'index'].includes(x.key)).map(x => [x.key, x.value]));
+				const body = n.value.filter(x => !['array', 'break', 'value', 'index'].includes(x.key));
+				const breakVariable = metadata.break || 'break';
+				assert(!breakVariable.includes('.'), 'foreach break is an unscoped temporary');
+				const a = this.value(metadata.array, c) || [];
+				assert(Array.isArray(a), 'foreach requires an array');
+				const run = { kind: n.key, array: metadata.array, breakVariable, scope: c.scope.id, root: c.root?.id, rows: [] };
+				this.foreachRuns.push(run);
+				// No foreach ceiling is inferred. maxArrayBodyRows is an explicit
+				// incomplete-observation fixture used by the existing coverage test.
+				for (let row = 0; row < Math.min(a.length, this.maxArrayBodyRows); row++) {
+					if ((this.temp[breakVariable] ?? 0) !== 0) break;
+					const o = a[row];
+					if (metadata.index) this.temp[metadata.index] = row;
+					if (n.key === 'for_each_loop') this.temp[metadata.value || 'v'] = o;
+					else assert(o && ['country', 'state'].includes(o.type), 'foreach scope requires a typed object');
+					run.rows.push(n.key === 'for_each_scope_loop' ? o.id : o);
+					this.exec(body, n.key === 'for_each_scope_loop' ? this.ctx(o, c, c.root) : c);
+				}
 			} else if (n.key === 'clear_array') {
 				c.scope.arrays[n.value] = [];
 			} else if (n.key === 'add_to_array') {

@@ -200,3 +200,11 @@ The matched seven-scenario weighted-root comparison excluded all 14 candidate-ca
 It holds public Strength fixed and cannot establish campaign Strength effects, numeric score equivalence or selection probabilities.
 Native arithmetic, collection execution, allocation completeness, callback order and the clean live error log remain unproved.
 The integration evidence is in docs/plans/012_africa_plans/subagent_handoffs/012_gods_strength_integration_review_2026-10-09.md.
+
+## Foreach isolation
+
+The army sampler binds its own break temporary and resets it immediately before each traversal.
+The one-time census, recognition pass, succession arrays and related Gods receipt/recovery loops use distinct helper-owned break storage.
+An inherited default break or a previously set private break cannot truncate the next invocation, and the caller's unrelated default break remains intact.
+The maintained iterator regression executes poisoned-break census, sampler, nested cleanup and settlement paths, including 2,014 visits across two 1,007-object samples without imposing a foreach ceiling.
+Its 13 cases preserve the original 26 input and 57 consumer cases under SourceNoNativeProof.

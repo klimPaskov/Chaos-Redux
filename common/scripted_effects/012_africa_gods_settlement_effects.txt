@@ -214,7 +214,9 @@ gods_of_africa_refresh_settlement_owed_totals = {
 	save_event_target_as = gods_of_africa_delivery_source
 	set_variable = { gods_of_africa_reward_equipment_owed_total_k = constant:gods_of_africa_value.zero }
 	set_variable = { gods_of_africa_reward_fuel_owed_total_k = constant:gods_of_africa_value.zero }
+	set_temp_variable = { gods_of_africa_refresh_settlement_owed_totals_break_1 = constant:gods_of_africa_value.zero }
 	for_each_scope_loop = {
+		break = gods_of_africa_refresh_settlement_owed_totals_break_1
 		array = gods_of_africa_candidate_registry
 		if = {
 			limit = { gods_of_africa_settlement_receipt_is_owed_by_source = yes }
@@ -412,7 +414,9 @@ gods_of_africa_deliver_settlement_obligations = {
 		set_variable = { gods_of_africa_delivery_fuel_sent = constant:gods_of_africa_value.zero }
 		set_variable = { gods_of_africa_delivery_fuel_basis_total_k = constant:gods_of_africa_value.zero }
 		# Claimable fuel is limited by each receiver's free tank space.
+		set_temp_variable = { gods_of_africa_deliver_settlement_obligations_break_1 = constant:gods_of_africa_value.zero }
 		for_each_scope_loop = {
+			break = gods_of_africa_deliver_settlement_obligations_break_1
 			array = gods_of_africa_candidate_registry
 			if = {
 				limit = { has_country_flag = gods_of_africa_settlement_obligation_committed }
@@ -430,7 +434,9 @@ gods_of_africa_deliver_settlement_obligations = {
 		set_variable = { gods_of_africa_delivery_equipment_pool = gods_of_africa_delivery_equipment_budget }
 		set_variable = { gods_of_africa_delivery_fuel_pool = gods_of_africa_delivery_fuel_budget }
 		# Proportional pass. Budget times share is multiplied before dividing.
+		set_temp_variable = { gods_of_africa_deliver_settlement_obligations_break_2 = constant:gods_of_africa_value.zero }
 		for_each_scope_loop = {
+			break = gods_of_africa_deliver_settlement_obligations_break_2
 			array = gods_of_africa_candidate_registry
 			if = {
 				limit = { gods_of_africa_settlement_receipt_can_receive_batch = yes }
@@ -473,7 +479,9 @@ gods_of_africa_deliver_settlement_obligations = {
 			}
 		}
 		# Rounding residue: at most one more unit per receiver while budget remains.
+		set_temp_variable = { gods_of_africa_deliver_settlement_obligations_break_3 = constant:gods_of_africa_value.zero }
 		for_each_scope_loop = {
+			break = gods_of_africa_deliver_settlement_obligations_break_3
 			array = gods_of_africa_candidate_registry
 			if = {
 				limit = { gods_of_africa_settlement_receipt_can_receive_batch = yes }
@@ -496,7 +504,9 @@ gods_of_africa_deliver_settlement_obligations = {
 			}
 		}
 		# Completion receipts.
+		set_temp_variable = { gods_of_africa_deliver_settlement_obligations_break_4 = constant:gods_of_africa_value.zero }
 		for_each_scope_loop = {
+			break = gods_of_africa_deliver_settlement_obligations_break_4
 			array = gods_of_africa_candidate_registry
 			if = {
 				limit = {

@@ -313,7 +313,22 @@ test('AST_owner_trigger_effect_and_tuning_preservation', () => {
 	]);
 	for (const path of [effectPath, recoveryPath]) {
 		const observed = new Map();
-		function strip(nodes, owner) { return nodes.flatMap(n => {
+		function strip(nodes, owner) { return nodes.flatMap((n, at) => {
+			const next = nodes[at + 1];
+			if (n.key === 'set_temp_variable' && next && ['for_each_loop', 'for_each_scope_loop'].includes(next.key)) {
+				const [name, initial] = assignment(n);
+				if (new RegExp('^' + owner + '_break_[1-9][0-9]*$').test(name)) {
+					assert.equal(initial, 'constant:gods_of_africa_value.zero');
+					assert.equal(field(next.value, 'break'), name); return [];
+				}
+			}
+			if (['for_each_loop', 'for_each_scope_loop'].includes(n.key)) {
+				const name = field(n.value, 'break');
+				if (name && new RegExp('^' + owner + '_break_[1-9][0-9]*$').test(name)) {
+					assert.equal(assignment(nodes[at - 1])[0], name);
+					n = { ...n, value: n.value.filter(x => x.key !== 'break') };
+				}
+			}
 			if (n.key === P + 'clear_response_view') return [];
 			if (presentationNames.has(n.key) && !Array.isArray(n.value)) {
 				assert.equal(path, effectPath, 'presentation hook file');

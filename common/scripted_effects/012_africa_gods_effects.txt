@@ -118,7 +118,9 @@ gods_of_africa_run_owner_tick = {
 		gods_of_africa_build_need_profile = yes
 		# The native mission owns exact contract expiry. This bounded pass is a
 		# recovery check for an interrupted or missing mission timer.
+		set_temp_variable = { gods_of_africa_run_owner_tick_break_1 = constant:gods_of_africa_value.zero }
 		for_each_scope_loop = {
+			break = gods_of_africa_run_owner_tick_break_1
 			array = gods_of_africa_participants
 			if = {
 				limit = {
@@ -149,7 +151,9 @@ gods_of_africa_run_owner_tick = {
 			gods_of_africa_finish_strength_census = yes
 			gods_of_africa_measure_strength_armies = yes
 			gods_of_africa_refresh_strength = yes
+			set_temp_variable = { gods_of_africa_run_owner_tick_break_2 = constant:gods_of_africa_value.zero }
 			for_each_scope_loop = {
+				break = gods_of_africa_run_owner_tick_break_2
 				array = gods_of_africa_participants
 				gods_of_africa_refresh_participant_floors = yes
 				if = {
@@ -216,13 +220,17 @@ gods_of_africa_review_registry = {
 		# Archive from a separate snapshot because archival removes entries
 		# from the live participant array.
 		clear_array = gods_of_africa_registry_review_participants
+		set_temp_variable = { gods_of_africa_review_registry_break_1 = constant:gods_of_africa_value.zero }
 		for_each_scope_loop = {
+			break = gods_of_africa_review_registry_break_1
 			array = gods_of_africa_participants
 			event_target:africa_host = {
 				add_to_array = { array = gods_of_africa_registry_review_participants value = PREV }
 			}
 		}
+		set_temp_variable = { gods_of_africa_review_registry_break_2 = constant:gods_of_africa_value.zero }
 		for_each_scope_loop = {
+			break = gods_of_africa_review_registry_break_2
 			array = gods_of_africa_registry_review_participants
 			if = {
 				limit = { NOT = { gods_of_africa_participant_is_live = yes } }
@@ -230,7 +238,9 @@ gods_of_africa_review_registry = {
 			}
 		}
 		clear_array = gods_of_africa_registry_review_participants
+		set_temp_variable = { gods_of_africa_review_registry_break_3 = constant:gods_of_africa_value.zero }
 		for_each_scope_loop = {
+			break = gods_of_africa_review_registry_break_3
 			array = gods_of_africa_candidate_registry
 			if = {
 				limit = { gods_of_africa_participant_can_register = yes }
@@ -249,7 +259,9 @@ gods_of_africa_review_registry = {
 gods_of_africa_initialize_registry = {
 	if = {
 		limit = { gods_of_africa_active_host_is_valid = yes }
+		set_temp_variable = { gods_of_africa_initialize_registry_break_1 = constant:gods_of_africa_value.zero }
 		for_each_scope_loop = {
+			break = gods_of_africa_initialize_registry_break_1
 			array = gods_of_africa_candidate_registry
 			if = {
 				limit = { gods_of_africa_participant_can_register = yes }
@@ -274,7 +286,9 @@ gods_of_africa_initialize_world_order_history = {
 		}
 		set_country_flag = gods_of_africa_world_order_history_initialized
 		set_variable = { gods_of_africa_restoration_generation = africa_host_generation }
+		set_temp_variable = { gods_of_africa_initialize_world_order_history_break_1 = constant:gods_of_africa_value.zero }
 		for_each_scope_loop = {
+			break = gods_of_africa_initialize_world_order_history_break_1
 			array = africa_scramble_participants
 			if = {
 				limit = { exists = yes NOT = { has_capitulated = yes } }
@@ -325,7 +339,9 @@ gods_of_africa_initialize_world_order_history = {
 			}
 		}
 		# A real Gods of Africa record outranks the Scramble evidence.
+		set_temp_variable = { gods_of_africa_initialize_world_order_history_break_2 = constant:gods_of_africa_value.zero }
 		for_each_scope_loop = {
+			break = gods_of_africa_initialize_world_order_history_break_2
 			array = gods_of_africa_candidate_registry
 			if = {
 				limit = { exists = yes }
@@ -693,7 +709,9 @@ gods_of_africa_refresh_strength = {
 		# Each recognising major power adds to the continent component, up to
 		# the cap (decision L25).
 		set_variable = { gods_of_africa_recognising_major_count = constant:gods_of_africa_value.zero }
+		set_temp_variable = { gods_of_africa_refresh_strength_break_1 = constant:gods_of_africa_value.zero }
 		for_each_scope_loop = {
+			break = gods_of_africa_refresh_strength_break_1
 			array = gods_of_africa_participants
 			if = {
 				limit = {
@@ -2609,7 +2627,9 @@ gods_of_africa_dispatch_next_demand = {
 	# scope inside `for_each_scope_loop`, so a participant must never read or
 	# clear the dispatch lock through a scoped temp reference.
 	set_variable = { gods_of_africa_dispatch_locked = constant:gods_of_africa_value.zero }
+	set_temp_variable = { gods_of_africa_dispatch_next_demand_break_1 = constant:gods_of_africa_value.zero }
 	for_each_scope_loop = {
+		break = gods_of_africa_dispatch_next_demand_break_1
 		array = gods_of_africa_participants
 		if = {
 			limit = {
@@ -2884,7 +2904,9 @@ gods_of_africa_return_frozen_core_states = {
 	# Every African core state the contract named, and only those, passes to
 	# Africa through the measured core-return path (decision L25).
 	save_event_target_as = gods_of_africa_territory_payer
+	set_temp_variable = { gods_of_africa_return_frozen_core_states_break_1 = constant:gods_of_africa_value.zero }
 	for_each_scope_loop = {
+		break = gods_of_africa_return_frozen_core_states_break_1
 		array = gods_of_africa_demand_states
 		if = {
 			limit = {
@@ -4549,7 +4571,9 @@ gods_of_africa_cancel_on_unifier_loss = {
 		gods_of_africa_clear_public_strength_observation = yes
 		if = { limit = { has_variable = gods_of_africa_authority_epoch } set_variable = { gods_of_africa_last_loss_cleanup_epoch = gods_of_africa_authority_epoch } }
 		set_country_flag = gods_of_africa_cancelled_on_unifier_loss
+		set_temp_variable = { gods_of_africa_cancel_on_unifier_loss_break_1 = constant:gods_of_africa_value.zero }
 		for_each_scope_loop = {
+			break = gods_of_africa_cancel_on_unifier_loss_break_1
 			array = gods_of_africa_participants
 			gods_of_africa_cancel_recovery_participant_preserving_receipts = yes
 		}
@@ -4727,19 +4751,25 @@ gods_of_africa_commit_final_settlement = {
 		if = {
 			limit = { has_variable = gods_of_africa_candidate_count }
 			# Phase 1: classify every historical survivor.
+			set_temp_variable = { gods_of_africa_commit_final_settlement_break_1 = constant:gods_of_africa_value.zero }
 			for_each_scope_loop = {
+				break = gods_of_africa_commit_final_settlement_break_1
 				array = gods_of_africa_candidate_registry
 				gods_of_africa_settlement_classify_participant = yes
 			}
 			# Phase 2: freeze each obligation and apply standing diplomacy once.
+			set_temp_variable = { gods_of_africa_commit_final_settlement_break_2 = constant:gods_of_africa_value.zero }
 			for_each_scope_loop = {
+				break = gods_of_africa_commit_final_settlement_break_2
 				array = gods_of_africa_candidate_registry
 				gods_of_africa_initialize_settlement_obligation = yes
 			}
 			gods_of_africa_initialize_settlement_delivery = yes
 			# Phase 3: one bounded batch, then the reports.
 			gods_of_africa_deliver_settlement_obligations = yes
+			set_temp_variable = { gods_of_africa_commit_final_settlement_break_3 = constant:gods_of_africa_value.zero }
 			for_each_scope_loop = {
+				break = gods_of_africa_commit_final_settlement_break_3
 				array = gods_of_africa_candidate_registry
 				gods_of_africa_settlement_finalize_participant = yes
 			}
