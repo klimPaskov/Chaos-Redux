@@ -146,6 +146,8 @@ gods_of_africa_run_owner_tick = {
 		}
 		if = {
 			limit = { gods_of_africa_owner_tick_due = yes }
+			gods_of_africa_finish_strength_census = yes
+			gods_of_africa_measure_strength_armies = yes
 			gods_of_africa_refresh_strength = yes
 			for_each_scope_loop = {
 				array = gods_of_africa_participants
@@ -488,6 +490,8 @@ gods_of_africa_remember_candidate = {
 # COUNTRY scope on a country named by an engine transaction. Remember minors
 # before activation so a later major/player change can use the bounded review.
 gods_of_africa_try_register_participant = {
+	# Measurement membership is independent of tribute and settlement eligibility.
+	gods_of_africa_remember_strength_country = yes
 	if = {
 		limit = {
 			exists = yes
@@ -619,6 +623,8 @@ gods_of_africa_activate_system = {
 		add_to_variable = { gods_of_africa_next_registry_review_day = constant:gods_of_africa_timing.registry_review_days }
 		set_variable = { gods_of_africa_next_owner_tick_day = global.num_days }
 		gods_of_africa_initialize_registry = yes
+		gods_of_africa_finish_strength_census = yes
+		gods_of_africa_measure_strength_armies = yes
 		set_country_flag = gods_of_africa_strength_immediate
 		gods_of_africa_refresh_strength = yes
 		africa_refresh_continental_focus_tree_layout = yes
@@ -629,7 +635,8 @@ gods_of_africa_activate_system = {
 # caller to set `gods_of_africa_strength_immediate` for a major defeat/recovery.
 gods_of_africa_refresh_strength = {
 	if = {
-		limit = { africa_is_current_host = yes }
+		limit = { gods_of_africa_strength_host_is_current = yes }
+		gods_of_africa_measure_territorial_control = yes
 		set_temp_variable = { gods_of_africa_strength_military = num_divisions }
 		divide_temp_variable = { gods_of_africa_strength_military = constant:gods_of_africa_strength.divisions_divisor }
 		if = {
@@ -729,90 +736,97 @@ gods_of_africa_refresh_strength = {
 		if = { limit = { has_global_flag = africa_evolution_ii_logged } add_to_temp_variable = { gods_of_africa_strength_chaos = constant:gods_of_africa_strength.evolution_ii_amplifier } }
 		if = { limit = { has_global_flag = africa_evolution_iii_logged } add_to_temp_variable = { gods_of_africa_strength_chaos = constant:gods_of_africa_strength.evolution_iii_amplifier } }
 		clamp_temp_variable = { var = gods_of_africa_strength_chaos min = constant:gods_of_africa_strength.component_min max = constant:gods_of_africa_strength.component_max }
-		set_temp_variable = { gods_of_africa_strength_target = gods_of_africa_strength_military }
-		multiply_temp_variable = { gods_of_africa_strength_target = constant:gods_of_africa_value.strength_military_weight }
-		set_temp_variable = { gods_of_africa_strength_component = gods_of_africa_strength_industry }
-		multiply_temp_variable = { gods_of_africa_strength_component = constant:gods_of_africa_value.strength_industry_weight }
-		add_to_temp_variable = { gods_of_africa_strength_target = gods_of_africa_strength_component }
-		set_temp_variable = { gods_of_africa_strength_component = gods_of_africa_strength_continent }
-		multiply_temp_variable = { gods_of_africa_strength_component = constant:gods_of_africa_value.strength_continent_weight }
-		add_to_temp_variable = { gods_of_africa_strength_target = gods_of_africa_strength_component }
-		set_temp_variable = { gods_of_africa_strength_component = gods_of_africa_strength_reach }
-		multiply_temp_variable = { gods_of_africa_strength_component = constant:gods_of_africa_value.strength_reach_weight }
-		add_to_temp_variable = { gods_of_africa_strength_target = gods_of_africa_strength_component }
-		set_temp_variable = { gods_of_africa_strength_component = gods_of_africa_strength_internal }
-		multiply_temp_variable = { gods_of_africa_strength_component = constant:gods_of_africa_value.strength_internal_weight }
-		add_to_temp_variable = { gods_of_africa_strength_target = gods_of_africa_strength_component }
-		set_temp_variable = { gods_of_africa_strength_component = gods_of_africa_strength_chaos }
-		multiply_temp_variable = { gods_of_africa_strength_component = constant:gods_of_africa_value.strength_chaos_weight }
-		add_to_temp_variable = { gods_of_africa_strength_target = gods_of_africa_strength_component }
-		divide_temp_variable = { gods_of_africa_strength_target = constant:gods_of_africa_strength.weighted_divisor }
-		# A lost capital and a losing war cost Strength directly (decision L29).
-		clr_country_flag = gods_of_africa_strength_capital_lost
+		# The caller-owned component temps survive the helper's return.
+		gods_of_africa_apply_strength_input_factors = yes
 		if = {
-			limit = { capital_scope = { NOT = { is_controlled_by = PREV } } }
-			set_country_flag = gods_of_africa_strength_capital_lost
-			subtract_from_temp_variable = { gods_of_africa_strength_target = constant:gods_of_africa_strength_sustain.capital_loss_penalty }
-			# The fall is felt at once the first time the capital is lost.
+			limit = { gods_of_africa_strength_input_factors_applied = yes }
+			clr_country_flag = gods_of_africa_strength_input_publication_blocked
+			set_temp_variable = { gods_of_africa_strength_target = gods_of_africa_strength_military }
+			multiply_temp_variable = { gods_of_africa_strength_target = constant:gods_of_africa_value.strength_military_weight }
+			set_temp_variable = { gods_of_africa_strength_component = gods_of_africa_strength_industry }
+			multiply_temp_variable = { gods_of_africa_strength_component = constant:gods_of_africa_value.strength_industry_weight }
+			add_to_temp_variable = { gods_of_africa_strength_target = gods_of_africa_strength_component }
+			set_temp_variable = { gods_of_africa_strength_component = gods_of_africa_strength_continent }
+			multiply_temp_variable = { gods_of_africa_strength_component = constant:gods_of_africa_value.strength_continent_weight }
+			add_to_temp_variable = { gods_of_africa_strength_target = gods_of_africa_strength_component }
+			set_temp_variable = { gods_of_africa_strength_component = gods_of_africa_strength_reach }
+			multiply_temp_variable = { gods_of_africa_strength_component = constant:gods_of_africa_value.strength_reach_weight }
+			add_to_temp_variable = { gods_of_africa_strength_target = gods_of_africa_strength_component }
+			set_temp_variable = { gods_of_africa_strength_component = gods_of_africa_strength_internal }
+			multiply_temp_variable = { gods_of_africa_strength_component = constant:gods_of_africa_value.strength_internal_weight }
+			add_to_temp_variable = { gods_of_africa_strength_target = gods_of_africa_strength_component }
+			set_temp_variable = { gods_of_africa_strength_component = gods_of_africa_strength_chaos }
+			multiply_temp_variable = { gods_of_africa_strength_component = constant:gods_of_africa_value.strength_chaos_weight }
+			add_to_temp_variable = { gods_of_africa_strength_target = gods_of_africa_strength_component }
+			divide_temp_variable = { gods_of_africa_strength_target = constant:gods_of_africa_strength.weighted_divisor }
+			# A lost capital and a losing war cost Strength directly (decision L29).
+			clr_country_flag = gods_of_africa_strength_capital_lost
 			if = {
-				limit = { NOT = { has_country_flag = gods_of_africa_strength_capital_loss_recorded } }
-				set_country_flag = gods_of_africa_strength_capital_loss_recorded
-				set_country_flag = gods_of_africa_strength_immediate
-			}
-		}
-		else = { clr_country_flag = gods_of_africa_strength_capital_loss_recorded }
-		if = {
-			limit = { check_variable = { var = surrender_progress value = constant:gods_of_africa_strength_sustain.surrender_severe compare = greater_than } }
-			subtract_from_temp_variable = { gods_of_africa_strength_target = constant:gods_of_africa_strength_sustain.surrender_severe_penalty }
-		}
-		else_if = {
-			limit = { check_variable = { var = surrender_progress value = constant:gods_of_africa_strength_sustain.surrender_heavy compare = greater_than } }
-			subtract_from_temp_variable = { gods_of_africa_strength_target = constant:gods_of_africa_strength_sustain.surrender_heavy_penalty }
-		}
-		else_if = {
-			limit = { check_variable = { var = surrender_progress value = constant:gods_of_africa_strength_sustain.surrender_light compare = greater_than } }
-			subtract_from_temp_variable = { gods_of_africa_strength_target = constant:gods_of_africa_strength_sustain.surrender_light_penalty }
-		}
-		if = {
-			limit = { check_variable = { var = surrender_progress value = constant:gods_of_africa_strength_sustain.surrender_immediate compare = greater_than } }
-			set_country_flag = gods_of_africa_strength_immediate
-		}
-		clamp_temp_variable = { var = gods_of_africa_strength_target min = constant:gods_of_africa_strength.component_min max = constant:gods_of_africa_strength.component_max }
-		if = {
-			limit = {
-				OR = {
-					has_country_flag = gods_of_africa_strength_immediate
-					NOT = { has_variable = gods_of_africa_strength }
+				limit = { capital_scope = { NOT = { is_controlled_by = PREV } } }
+				set_country_flag = gods_of_africa_strength_capital_lost
+				subtract_from_temp_variable = { gods_of_africa_strength_target = constant:gods_of_africa_strength_sustain.capital_loss_penalty }
+				# The fall is felt at once the first time the capital is lost.
+				if = {
+					limit = { NOT = { has_country_flag = gods_of_africa_strength_capital_loss_recorded } }
+					set_country_flag = gods_of_africa_strength_capital_loss_recorded
+					set_country_flag = gods_of_africa_strength_immediate
 				}
 			}
-			set_variable = { gods_of_africa_strength = gods_of_africa_strength_target }
-		}
-		else = {
-			set_temp_variable = { gods_of_africa_strength_delta = gods_of_africa_strength_target }
-			subtract_from_temp_variable = { gods_of_africa_strength_delta = gods_of_africa_strength }
-			set_temp_variable = { gods_of_africa_strength_deficit = gods_of_africa_strength }
-			subtract_from_temp_variable = { gods_of_africa_strength_deficit = gods_of_africa_strength_target }
+			else = { clr_country_flag = gods_of_africa_strength_capital_loss_recorded }
 			if = {
-				limit = { check_variable = { gods_of_africa_strength_delta > constant:gods_of_africa_value.strength_smoothing_step } }
-				add_to_variable = { gods_of_africa_strength = constant:gods_of_africa_value.strength_smoothing_step }
+				limit = { check_variable = { var = surrender_progress value = constant:gods_of_africa_strength_sustain.surrender_severe compare = greater_than } }
+				subtract_from_temp_variable = { gods_of_africa_strength_target = constant:gods_of_africa_strength_sustain.surrender_severe_penalty }
 			}
 			else_if = {
-				limit = { check_variable = { gods_of_africa_strength_deficit > constant:gods_of_africa_value.strength_smoothing_step } }
-				set_temp_variable = { gods_of_africa_strength_delta = constant:gods_of_africa_value.strength_smoothing_step }
-				subtract_from_variable = { gods_of_africa_strength = gods_of_africa_strength_delta }
+				limit = { check_variable = { var = surrender_progress value = constant:gods_of_africa_strength_sustain.surrender_heavy compare = greater_than } }
+				subtract_from_temp_variable = { gods_of_africa_strength_target = constant:gods_of_africa_strength_sustain.surrender_heavy_penalty }
 			}
-			else = { set_variable = { gods_of_africa_strength = gods_of_africa_strength_target } }
+			else_if = {
+				limit = { check_variable = { var = surrender_progress value = constant:gods_of_africa_strength_sustain.surrender_light compare = greater_than } }
+				subtract_from_temp_variable = { gods_of_africa_strength_target = constant:gods_of_africa_strength_sustain.surrender_light_penalty }
+			}
+			if = {
+				limit = { check_variable = { var = surrender_progress value = constant:gods_of_africa_strength_sustain.surrender_immediate compare = greater_than } }
+				set_country_flag = gods_of_africa_strength_immediate
+			}
+			clamp_temp_variable = { var = gods_of_africa_strength_target min = constant:gods_of_africa_strength.component_min max = constant:gods_of_africa_strength.component_max }
+			if = {
+				limit = {
+					OR = {
+						has_country_flag = gods_of_africa_strength_immediate
+						NOT = { has_variable = gods_of_africa_strength }
+					}
+				}
+				set_variable = { gods_of_africa_strength = gods_of_africa_strength_target }
+			}
+			else = {
+				set_temp_variable = { gods_of_africa_strength_delta = gods_of_africa_strength_target }
+				subtract_from_temp_variable = { gods_of_africa_strength_delta = gods_of_africa_strength }
+				set_temp_variable = { gods_of_africa_strength_deficit = gods_of_africa_strength }
+				subtract_from_temp_variable = { gods_of_africa_strength_deficit = gods_of_africa_strength_target }
+				if = {
+					limit = { check_variable = { gods_of_africa_strength_delta > constant:gods_of_africa_value.strength_smoothing_step } }
+					add_to_variable = { gods_of_africa_strength = constant:gods_of_africa_value.strength_smoothing_step }
+				}
+				else_if = {
+					limit = { check_variable = { gods_of_africa_strength_deficit > constant:gods_of_africa_value.strength_smoothing_step } }
+					set_temp_variable = { gods_of_africa_strength_delta = constant:gods_of_africa_value.strength_smoothing_step }
+					subtract_from_variable = { gods_of_africa_strength = gods_of_africa_strength_delta }
+				}
+				else = { set_variable = { gods_of_africa_strength = gods_of_africa_strength_target } }
+			}
+			clamp_variable = { var = gods_of_africa_strength min = constant:gods_of_africa_value.zero max = constant:gods_of_africa_value.maximum_strength }
+			if = { limit = { check_variable = { gods_of_africa_strength < constant:gods_of_africa_value.limited_strength } } set_variable = { gods_of_africa_strength_band = constant:gods_of_africa_band.limited } }
+			else_if = { limit = { check_variable = { gods_of_africa_strength < constant:gods_of_africa_value.regional_strength } } set_variable = { gods_of_africa_strength_band = constant:gods_of_africa_band.regional } }
+			else_if = { limit = { check_variable = { gods_of_africa_strength < constant:gods_of_africa_value.continental_strength } } set_variable = { gods_of_africa_strength_band = constant:gods_of_africa_band.continental } }
+			else_if = { limit = { check_variable = { gods_of_africa_strength < constant:gods_of_africa_value.global_strength } } set_variable = { gods_of_africa_strength_band = constant:gods_of_africa_band.global } }
+			else = { set_variable = { gods_of_africa_strength_band = constant:gods_of_africa_band.extreme } }
+			set_variable = { global.gods_of_africa_strength = gods_of_africa_strength }
+			gods_of_africa_observe_public_strength = yes
+			clr_country_flag = gods_of_africa_strength_immediate
+			gods_of_africa_emit_global_credibility_super_event = yes
 		}
-		clamp_variable = { var = gods_of_africa_strength min = constant:gods_of_africa_value.zero max = constant:gods_of_africa_value.maximum_strength }
-		if = { limit = { check_variable = { gods_of_africa_strength < constant:gods_of_africa_value.limited_strength } } set_variable = { gods_of_africa_strength_band = constant:gods_of_africa_band.limited } }
-		else_if = { limit = { check_variable = { gods_of_africa_strength < constant:gods_of_africa_value.regional_strength } } set_variable = { gods_of_africa_strength_band = constant:gods_of_africa_band.regional } }
-		else_if = { limit = { check_variable = { gods_of_africa_strength < constant:gods_of_africa_value.continental_strength } } set_variable = { gods_of_africa_strength_band = constant:gods_of_africa_band.continental } }
-		else_if = { limit = { check_variable = { gods_of_africa_strength < constant:gods_of_africa_value.global_strength } } set_variable = { gods_of_africa_strength_band = constant:gods_of_africa_band.global } }
-		else = { set_variable = { gods_of_africa_strength_band = constant:gods_of_africa_band.extreme } }
-		set_variable = { global.gods_of_africa_strength = gods_of_africa_strength }
-		gods_of_africa_observe_public_strength = yes
-		clr_country_flag = gods_of_africa_strength_immediate
-		gods_of_africa_emit_global_credibility_super_event = yes
+		else = { set_country_flag = gods_of_africa_strength_input_publication_blocked }
 	}
 }
 
@@ -4749,6 +4763,8 @@ gods_of_africa_terminate_system = {
 }
 
 gods_of_africa_clean_system = {
+	gods_of_africa_clear_strength_input_sample = yes
+	clr_country_flag = gods_of_africa_strength_input_publication_blocked
 	gods_of_africa_clear_response_view = yes
 	gods_of_africa_clear_public_strength_observation = yes
 	clear_array = gods_of_africa_participants

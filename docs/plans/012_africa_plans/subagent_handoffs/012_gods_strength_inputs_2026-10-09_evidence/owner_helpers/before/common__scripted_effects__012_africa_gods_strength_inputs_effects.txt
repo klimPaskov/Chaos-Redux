@@ -1,0 +1,49 @@
+# Event 012 physical inputs to the private Gods Strength calculation.
+# COUNTRY scope on the current host, with ROOT independent of that host.
+# No public metric, registry scan, periodic hook, payment or reward is created.
+# The native geographic collection includes each African state once.
+
+gods_of_africa_measure_territorial_control = {
+	if = {
+		limit = { africa_is_current_host = yes }
+		set_variable = { gods_of_africa_strength_african_state_total = constant:gods_of_africa_value.zero }
+		set_variable = { gods_of_africa_strength_african_owned_states = constant:gods_of_africa_value.zero }
+		set_variable = { gods_of_africa_strength_african_controlled_states = constant:gods_of_africa_value.zero }
+		set_variable = { gods_of_africa_strength_african_secured_states = constant:gods_of_africa_value.zero }
+		set_variable = { gods_of_africa_strength_african_core_total = constant:gods_of_africa_value.zero }
+		set_variable = { gods_of_africa_strength_african_secured_cores = constant:gods_of_africa_value.zero }
+		set_variable = { gods_of_africa_strength_territorial_control = constant:gods_of_africa_value.zero }
+		every_collection_element = {
+			input = collection:states_in_africa
+			PREV = { add_to_variable = { gods_of_africa_strength_african_state_total = constant:gods_of_africa_value.one } }
+			if = {
+				limit = { is_owned_by = PREV }
+				PREV = { add_to_variable = { gods_of_africa_strength_african_owned_states = constant:gods_of_africa_value.one } }
+			}
+			if = {
+				limit = { is_controlled_by = PREV }
+				PREV = { add_to_variable = { gods_of_africa_strength_african_controlled_states = constant:gods_of_africa_value.one } }
+			}
+			if = {
+				limit = { is_owned_by = PREV is_controlled_by = PREV }
+				PREV = { add_to_variable = { gods_of_africa_strength_african_secured_states = constant:gods_of_africa_value.one } }
+			}
+			if = {
+				limit = { is_core_of = PREV }
+				PREV = { add_to_variable = { gods_of_africa_strength_african_core_total = constant:gods_of_africa_value.one } }
+				if = {
+					limit = { is_owned_by = PREV is_controlled_by = PREV }
+					PREV = { add_to_variable = { gods_of_africa_strength_african_secured_cores = constant:gods_of_africa_value.one } }
+				}
+			}
+		}
+		if = {
+			limit = { check_variable = { gods_of_africa_strength_african_state_total > constant:gods_of_africa_value.zero } }
+			set_variable = { gods_of_africa_strength_territorial_control = gods_of_africa_strength_african_secured_cores }
+			divide_variable = { gods_of_africa_strength_territorial_control = gods_of_africa_strength_african_state_total }
+			multiply_variable = { gods_of_africa_strength_territorial_control = constant:gods_of_africa_strength.component_max }
+		}
+		clamp_variable = { var = gods_of_africa_strength_territorial_control min = constant:gods_of_africa_strength.component_min max = constant:gods_of_africa_strength.component_max }
+		set_variable = { gods_of_africa_strength_territory_observation_day = global.num_days }
+	}
+}

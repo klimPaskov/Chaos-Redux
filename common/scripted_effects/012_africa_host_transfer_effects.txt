@@ -119,6 +119,16 @@ africa_host_transfer_stage_scalar_ledger = {
 		limit = { has_country_flag = gods_of_africa_candidate_census_complete }
 		set_global_flag = africa_host_transfer_gods_of_africa_candidate_census_complete
 	}
+	# Measurement discovery survives succession, but cached power does not.
+	clr_global_flag = africa_host_transfer_strength_census_initialized
+	clr_global_flag = africa_host_transfer_strength_census_complete
+	clear_variable = global.africa_host_transfer_strength_census_size
+	if = { limit = { has_country_flag = gods_of_africa_strength_census_initialized } set_global_flag = africa_host_transfer_strength_census_initialized }
+	if = { limit = { has_country_flag = gods_of_africa_strength_census_complete } set_global_flag = africa_host_transfer_strength_census_complete }
+	if = {
+		limit = { has_variable = gods_of_africa_strength_census_size }
+		set_variable = { global.africa_host_transfer_strength_census_size = gods_of_africa_strength_census_size }
+	}
 	# The successor inherits the continental tree only from a host that had it.
 	clr_global_flag = africa_host_transfer_previous_host_had_continental_tree
 	if = {
@@ -485,6 +495,23 @@ africa_host_transfer_restore_world_order_state = {
 			array = global.africa_host_transfer_gods_of_africa_candidate_registry
 			event_target:africa_host_transfer_new_host = { add_to_array = { array = gods_of_africa_candidate_registry value = PREV } }
 		}
+		clear_array = gods_of_africa_strength_countries
+		clr_country_flag = gods_of_africa_strength_census_initialized
+		clr_country_flag = gods_of_africa_strength_census_complete
+		for_each_scope_loop = {
+			array = global.africa_host_transfer_strength_countries
+			event_target:africa_host_transfer_new_host = { add_to_array = { array = gods_of_africa_strength_countries value = PREV } }
+		}
+		if = {
+			limit = { has_global_flag = africa_host_transfer_strength_census_initialized }
+			set_country_flag = gods_of_africa_strength_census_initialized
+			set_variable = { gods_of_africa_strength_census_host_id = THIS.id }
+			set_variable = { gods_of_africa_strength_census_generation = africa_host_generation }
+			set_variable = { gods_of_africa_strength_census_origin_host_id = africa_origin_host_id }
+		}
+		if = { limit = { has_variable = global.africa_host_transfer_strength_census_size } set_variable = { gods_of_africa_strength_census_size = global.africa_host_transfer_strength_census_size } }
+		if = { limit = { has_global_flag = africa_host_transfer_strength_census_complete } set_country_flag = gods_of_africa_strength_census_complete }
+		gods_of_africa_clear_strength_input_sample = yes
 		if = { limit = { has_global_flag = africa_host_transfer_world_package_roster_documented } set_country_flag = africa_world_package_roster_documented }
 		if = { limit = { has_global_flag = africa_host_transfer_world_package_roster_partial } set_country_flag = africa_world_package_roster_partial }
 		if = { limit = { has_global_flag = africa_host_transfer_world_package_roster_absence_documented } set_country_flag = africa_world_package_roster_absence_documented }
@@ -509,6 +536,9 @@ africa_host_transfer_restore_world_order_state = {
 
 # Any scope. Clear only the transfer staging receipts; the successor has already copied them.
 africa_host_transfer_clear_route_staging = {
+	clr_global_flag = africa_host_transfer_strength_census_initialized
+	clr_global_flag = africa_host_transfer_strength_census_complete
+	clear_variable = global.africa_host_transfer_strength_census_size
 	clr_global_flag = africa_host_transfer_scramble_state_machine_initialised
 	clr_global_flag = africa_host_transfer_gods_of_africa_candidate_census_complete
 	clr_global_flag = africa_host_transfer_previous_host_had_continental_tree
@@ -685,6 +715,7 @@ africa_host_transfer_clear_route_staging = {
 africa_host_transfer_stage_arrays = {
 	clear_array = global.africa_host_transfer_relationship_countries
 	clear_array = global.africa_host_transfer_gods_of_africa_candidate_registry
+	clear_array = global.africa_host_transfer_strength_countries
 	clear_array = global.africa_host_transfer_protected_countries
 	clear_array = global.africa_host_transfer_associate_countries
 	clear_array = global.africa_host_transfer_chartered_countries
@@ -744,6 +775,10 @@ africa_host_transfer_stage_arrays = {
 	for_each_scope_loop = {
 		array = gods_of_africa_candidate_registry
 		ROOT = { add_to_array = { array = global.africa_host_transfer_gods_of_africa_candidate_registry value = PREV } }
+	}
+	for_each_scope_loop = {
+		array = gods_of_africa_strength_countries
+		ROOT = { add_to_array = { array = global.africa_host_transfer_strength_countries value = PREV } }
 	}
 	for_each_scope_loop = {
 		array = africa_protected_countries
@@ -1445,6 +1480,7 @@ africa_host_transfer_clear_staging = {
 	clear_array = global.africa_host_transfer_candidates
 	clear_array = global.africa_host_transfer_relationship_countries
 	clear_array = global.africa_host_transfer_gods_of_africa_candidate_registry
+	clear_array = global.africa_host_transfer_strength_countries
 	clear_array = global.africa_host_transfer_protected_countries
 	clear_array = global.africa_host_transfer_associate_countries
 	clear_array = global.africa_host_transfer_chartered_countries

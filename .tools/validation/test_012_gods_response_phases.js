@@ -307,6 +307,10 @@ test('AST_owner_trigger_effect_and_tuning_preservation', () => {
 		'transfer_payment', 'resolve_full_compliance', 'apply_partial_delivery',
 		'clear_demand', 'fail_demand', 'clean_participant', 'finalize_participant',
 		'cancel_on_unifier_loss', 'cancel_participant', 'commit_final_settlement'].map(x => P + x));
+	const strengthChangedOwners = new Map([
+		[effectPath, new Set(['try_register_participant', 'activate_system', 'refresh_strength', 'clean_system'].map(x => P + x))],
+		[recoveryPath, new Set([P + 'revoke_current_epoch'])],
+	]);
 	for (const path of [effectPath, recoveryPath]) {
 		const observed = new Map();
 		function strip(nodes, owner) { return nodes.flatMap(n => {
@@ -336,7 +340,7 @@ test('AST_owner_trigger_effect_and_tuning_preservation', () => {
 			}); }
 			expected = normalize(expected); assert.equal(replacements, 1);
 		}
-		const unchanged = ns => path === effectPath ? ns.filter(n => !industrialOwners.has(n.key)) : ns;
+		const unchanged = ns => ns.filter(n => !(path === effectPath && industrialOwners.has(n.key)) && !strengthChangedOwners.get(path).has(n.key));
 		assert.deepEqual(unchanged(strip(load(path))), unchanged(expected), path + ' unchanged owners');
 		if (path === effectPath) for (const [owner, hooks] of presentationHooks)
 			for (const hook of hooks) assert.equal(observed.get(owner + '/' + hook), 1, owner + ' exactly one ' + hook);
@@ -387,10 +391,13 @@ test('012_GODS_STRENGTH_CHAOS_component_curve', () => {
 		const end = nodes.findIndex((n, i) => i >= start && n.key === 'clamp_temp_variable' && field(n.value, 'var') === key);
 		assert.ok(start >= 0 && end > start); return nodes.slice(start, end + 1);
 	}
-	const weightAt = body.findIndex(n => n.key === 'set_temp_variable' && assignment(n)[0] === P + 'strength_component' && assignment(n)[1] === key);
-	const divisor = body.find(n => n.key === 'divide_temp_variable' && assignment(n)[0] === P + 'strength_target');
+	const publication = body.find(n => n.key === 'if' && field(n.value, 'limit')?.some(x => x.key === P + 'strength_input_factors_applied'));
+	assert.ok(publication);
+	const weightedBody = publication.value;
+	const weightAt = weightedBody.findIndex(n => n.key === 'set_temp_variable' && assignment(n)[0] === P + 'strength_component' && assignment(n)[1] === key);
+	const divisor = weightedBody.find(n => n.key === 'divide_temp_variable' && assignment(n)[0] === P + 'strength_target');
 	assert.ok(weightAt > 0 && divisor);
-	const weighting = [...body.slice(weightAt, weightAt + 3), divisor];
+	const weighting = [...weightedBody.slice(weightAt, weightAt + 3), divisor];
 	const obsolete = 'constant:' + P + 'strength.chaos_divisor';
 	constants.set(obsolete, Number(field(block(historical.get('common/script_constants/012_africa_gods_constants.txt'), P + 'strength'), 'chaos_divisor')));
 	const maximum = constants.get('constant:' + P + 'strength.component_max');

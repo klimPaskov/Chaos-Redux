@@ -823,6 +823,7 @@ africa_initialize_scramble_and_world_packages = {
 		set_variable = { gods_of_africa_candidate_count = constant:africa_value.zero }
 		clear_array = gods_of_africa_candidate_registry
 		clr_country_flag = gods_of_africa_candidate_census_complete
+		gods_of_africa_initialize_strength_census = yes
 		clear_array = africa_scramble_participants
 		clear_array = africa_scramble_former_colonial_interests
 		clear_array = africa_scramble_ideological_rivals
@@ -904,6 +905,8 @@ africa_initialize_scramble_and_world_packages = {
 		# Vanilla global.countries is the same country-scope array used by COG.
 		for_each_scope_loop = {
 			array = global.countries
+			# Keep the complete measurement universe before tribute eligibility.
+			gods_of_africa_remember_strength_country = yes
 			if = {
 				limit = {
 					gods_of_africa_candidate_can_be_remembered = yes
@@ -911,6 +914,7 @@ africa_initialize_scramble_and_world_packages = {
 				gods_of_africa_remember_candidate = yes
 			}
 		}
+		gods_of_africa_finish_strength_census = yes
 		set_country_flag = gods_of_africa_candidate_census_complete
 		set_country_flag = africa_scramble_interest_census_complete
 		clear_global_event_target = africa_scramble_lead_participant

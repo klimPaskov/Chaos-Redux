@@ -1,0 +1,37 @@
+[
+  {
+    "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Hearts of Iron IV\\common\\collections\\collections.txt",
+    "sha256": "7e4668d20f868767431a5e548a3d4bd2c068b30b8f12901bdb4b2288840041a2",
+    "startLine": 303,
+    "endLine": 312,
+    "text": "states_in_africa = {\n\tinput = game:all_states\n\toperators = {\n\t\tlimit = {\n\t\t\tis_on_continent = africa\n\t\t}\n\t}\n\tname = COLLECTION_STATES_IN_AFRICA\n}\n"
+  },
+  {
+    "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Hearts of Iron IV\\common\\collections\\_documentation.md",
+    "sha256": "4bcf476723f8908359e2e701ace4d62aedebd799cc5832470c4b9ff7cbbb6394",
+    "startLine": 20,
+    "endLine": 41,
+    "text": "my_awesome_collection = {\n\n\tinput = prefix:another_collection # A reference to another collection that will be used as input\n\n\tlimit = {\n\t\t# Optional\n\t\t#\n\t\t# A trigger that can be used to make the new collection only contain elements of the input\n\t\t# that match certain criteria.\n\t\t#\n\t\t# SCOPE = element of the input collection\n\t\t# PREV = previous scope, defined by the context in which the collection is used\n\t\t# ROOT = PREV.ROOT\n\t\t# FROM = PREV.FROM\n\t\t#\n\t\t# NOTE : the scope structure above mimics the scope structure of other every_xxx effects\n\t}\n}\n```\n\nTo reference the newly created collection in script, use the *collection:* prefix:\n"
+  },
+  {
+    "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Hearts of Iron IV\\common\\scripted_effects\\COG_scripted_effects.txt",
+    "sha256": "77fd69835f9a7115fc60d85de61c5c31e4c7880e30fb6d6e8ae494f318b02710",
+    "startLine": 196,
+    "endLine": 215,
+    "text": "\nCOG_set_up_african_resistance_states = {\n\t\n\thidden_effect = {\n\t\tfor_each_scope_loop = {\n\t\t\tarray = global.countries \n\t\t\tIF = {\n\t\t\t\tlimit = {\n\t\t\t\t\t# Find countries with cores in africa that do not already exist as free or puppeted nations\n\t\t\t\t\texists = no \n\t\t\t\t\tany_state = { \n\t\t\t\t\t\tis_core_of = PREV\n\t\t\t\t\t\tis_on_continent = africa \n\t\t\t\t\t\tOWNER = {\n\t\t\t\t\t\t\tNOT = { is_in_faction_with = ROOT }\n\t\t\t\t\t\t\tNOT = { tag = ROOT }\n\t\t\t\t\t\t}\n\t\t\t\t\t}\n\t\t\t\t}\n"
+  },
+  {
+    "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Hearts of Iron IV\\documentation\\script_collection_input.md",
+    "sha256": "a2d7dfe4c201db2e0b590556882347ce8b33a754e6a60edd7a5a9bab1fde9d49",
+    "startLine": 36,
+    "endLine": 60,
+    "text": "## game all_countries\nAll existing countries (including government in exile).\n### Example\n```\nhas_resources_in_collection = {\n\tcollection = game:all_countries\n\tresource = steel\n\tamount > 799\n\textracted = yes\n}\n```\n\n\n## game all_possible_countries\nAll countries (including those that doesn't exist).\n\n### Example\n```\nhas_resources_in_collection = {\n\tcollection = collection:all_possible_countries\n\tresource = steel\n\tamount > 799\n\textracted = yes\n}\n```"
+  },
+  {
+    "path": "C:\\Users\\klimp\\OneDrive\\Documents\\Paradox Interactive\\Hearts of Iron IV\\mod\\chaos_redux\\paradox_wiki\\Data structures - Hearts of Iron 4 Wiki.md",
+    "sha256": "62273f37ed30e5479acb331a8973f48dadc1867c4913c8a940e3e790e7af32d4",
+    "startLine": 1263,
+    "endLine": 1274,
+    "text": "    array = global.countries\n    break = break\n    limit = {\n        is_dynamic_country = no\n        exists = no\n        any_state = {\n            is_core_of = PREV   # Is core of the currently-checked country\n        }\n    }\n    random_core_state = {\n        transfer_state_to = PREV    # Transfers to the currently-selected country.\n    }"
+  }
+]

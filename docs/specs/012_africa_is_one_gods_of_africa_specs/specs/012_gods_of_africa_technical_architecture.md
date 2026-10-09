@@ -205,45 +205,53 @@ The activation validation must fail closed if the unifier disappeared, Event 012
 
 The public value is clamped between `0` and `100`.
 
-Use a weighted composite. The exact weights should be centralized in script constants and tuned after repository inspection.
+Parent acceptance on October 9 selects the fundamental input contract recorded in the [Strength reconciliation](../../../plans/012_africa_plans/subagent_handoffs/012_gods_strength_parent_reconciliation_2026-10-09.md).
+Acceptance and current source implementation are separate evidence.
+Schema-first fixed-point `gods_of_africa_strength_inputs` constants and the owner helper API define the input arithmetic and lifecycle.
 
-Recommended factor groups:
+| Factor group | Current outer weight | Selected scope |
+| --- | ---: | --- |
+| military readiness and relative power | 25 | existing post-sustainment military input multiplied by `0.75 + 0.25 × clamp(host_world_army_share / 0.10, 0, 1)` |
+| industry and logistics | 20 | existing component retained |
+| continental control | 20 | 50% existing political/recognition input and 50% measured secured-core extent |
+| strategic reach | 15 | existing component retained |
+| internal condition | 10 | existing component retained |
+| Chaos and evolution amplification | 10 | shared endpoint 1000 and evolution II/III additions 15/25, clamped component |
 
-| Factor group | Suggested share | Notes |
-| --- | --- | --- |
-| military readiness and relative power | about `25` | divisions alone are insufficient |
-| industry and logistics | about `20` | factories, fuel, rail, trains, convoys, supply |
-| continental control | about `20` | Event 012 authoritative state groups and institutions |
-| strategic reach | about `15` | air, navy, technology, intelligence, global access |
-| internal condition | about `10` | stability, surrender, capital, cohesion |
-| Chaos and evolution amplification | about `10` | bounded amplifier |
+Military retains division divisor 20, readiness arithmetic and equipment/fuel sustainment shares 60/40 with floor 0.4 and span 0.6.
+The relative-world factor never exceeds one, and zero actual army or nonpositive division count contributes zero.
+Physical extent is host-secured plus eligible cooperative-member-secured host cores divided by every native African state in `states_in_africa`, scaled to 100.
+Host/member, ownership/control and core records stay separate.
+The capital/port strategic 20% proposal is accepted and queued pending province naval-base aggregation and owner/site semantics.
+Rail/resource/active-base families remain unresolved, with no proxy fulfilling them.
 
-These shares are design anchors. The implementation should avoid expensive exact world-rank calculations when a stable bounded comparison can produce the same band ordering.
+### Census and recalculation cadence
 
-### Recalculation cadence
+The existing one-time world-order census initializes measurement ownership, remembers every known country object before tribute filtering, then finishes coverage proof.
+It retains dormant, nonhuman, special and host objects separately from tribute candidates.
+Named onboarding remembers supplied objects before participant filters.
+Activation and the existing due 30-day owner boundary finish census proof and measure roster `deployed_army_manpower_k`.
+No new recurring world-discovery scan is introduced.
+The selected exception is one bounded sample of the retained known-country roster on the existing owner clock, with one army getter per object and no per-country Strength recalculation or discovery loop.
+The accepted recalculation contract still includes major Event 012 territorial milestones, African capital loss/recovery, large war-state changes, doctrine/evolution changes and severe African disaster/recovery.
+Those caller families must remain wired or explicitly tracked as incomplete, and the new control-change callback alone does not certify them.
+Between foreign samples, factor application uses `sample_world - sample_host + current_host`.
 
-Recalculate Strength:
+Main refresh uses actual ROOT-independent current-host proof, measures land, computes unchanged old components and applies the selected factors.
+Only `gods_of_africa_strength_input_factors_applied` authorizes the original weighted, penalty, smoothing, observer and publication tail.
+An invalid sample sets private `gods_of_africa_strength_input_publication_blocked` and publishes no fresh Strength.
+The existing Gods control-change callback refreshes relevant African host/member/core states only for an authorized active host, using cached foreign armies.
+Cleanup/revocation clears samples and preserves discovery.
+Host transfer stages/restores the roster and census receipts/size, binds successor host ID/generation/origin, and discards predecessor samples without granting a Gods mandate.
 
-- at activation
-- after major Event 012 territorial milestones
-- after African capital loss or recovery
-- after large war-state changes
-- after doctrine and evolution changes
-- after severe African disaster or recovery
-- on a low-frequency owner-local refresh, likely monthly
+### Smoothing and verification boundary
 
-One monthly calculation in the African unifier scope is acceptable if it does not iterate every country. Do not run a per-country world recalculation.
-
-### Smoothing
-
-Ordinary changes should move through a smoothing rule or confirmation window. Major proofs such as capitulation risk, capital loss, or continent-control threshold can bypass smoothing.
-
-Suggested behavior:
-
-- ordinary recalculation can move by a bounded amount per refresh
-- a major defeat can drop one or more bands immediately
-- a major victory can raise a band after a short confirmation period
-
+Ordinary successful recalculation moves at most 8 points.
+Existing immediate defeat/recovery paths and capital/surrender penalties are retained.
+Owner source cases and the fixed-Strength decision-root comparison are evidence within their recorded limits.
+Parent integration counts and their proof limits are recorded in the reconciliation report.
+Unknown-object discovery/cardinality identity, native arithmetic/collection/callback timing and a clean live `error.log` remain unverified.
+The full Gods goal remains incomplete, with no simplification in this selected fundamental scope.
 ### Band cache
 
 Cache the current band after recalculation so punishment and UI triggers do not repeat the full calculation.

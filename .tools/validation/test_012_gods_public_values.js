@@ -143,8 +143,14 @@ test('fractional_band_boundaries_and_endpoints', () => {
 	}
 	return { cases, exactBoundaryRule: 'floor display never advances raw band' };
 });
+function strengthPublicationBody() {
+	const producer = field(block(main, P + 'refresh_strength'), 'if');
+	const gate = producer.find(n => n.key === 'if' && field(n.value, 'limit')?.some(x => x.key === P + 'strength_input_factors_applied'));
+	assert.ok(gate, 'actual validated-input publication gate');
+	return gate.value;
+}
 test('actual_strength_smoothing_commit_tail', () => {
-	const owner = field(block(main, P + 'refresh_strength'), 'if');
+	const owner = strengthPublicationBody();
 	const start = owner.findIndex(n => n.key === 'if' && walk(n.value).some(x => x.key === 'has_country_flag' && x.value === P + 'strength_immediate'));
 	// Earlier capital branches also read strength_immediate only by writing it.
 	assert.ok(start >= 0);
@@ -222,7 +228,7 @@ test('hook_locations_and_presentation_write_inventory', () => {
 	const generation = init.find(n => n.key === 'if').value;
 	const globalStart = generation.findIndex(n => n.key === 'set_variable' && assignment(n)[0] === 'global.' + P + 'strength');
 	assert.equal(call(generation, 'observe_public_strength'), globalStart + 1);
-	const strength = field(block(main, P + 'refresh_strength'), 'if');
+	const strength = strengthPublicationBody();
 	const commit = strength.findIndex(n => n.key === 'set_variable' && assignment(n)[0] === 'global.' + P + 'strength');
 	assert.equal(call(strength, 'observe_public_strength'), commit + 1);
 	const floor = field(block(main, P + 'enforce_wrath_floor'), 'if'); assert.equal(floor.at(-1).key, P + 'observe_public_wrath_commit');

@@ -1,0 +1,1566 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 012 HOST TRANSFER EFFECTS
+# ============================================================================
+# Overview:
+# - Stages the committed host ledger before an ordinary annexation removes the
+#   country scope.
+# - Cancels active action records and removes their shared missions exactly once.
+# - Offers the recorded Charter pool to an explicit congress/crisis resolver.
+# - Commits at most one successor, increments the host generation, relinks every
+#   surviving member, reloads the focus tree, and retargets the League globally.
+# - A missing successor leaves a visible suspended-host crisis instead of making
+#   a generic country the new owner.
+# ============================================================================
+
+# COUNTRY scope on the old host. Active actions are a host-owned transaction and
+# cannot be allowed to outlive the host generation. The action kernel owns the
+# actual refund/mission cleanup; this helper only snapshots the bounded target
+# list so the array can be safely mutated while it is being consumed.
+africa_host_transfer_cancel_active_actions = {
+	set_variable = { global.africa_host_transfer_cancelled_action_count = africa_active_action_targets^num }
+	clear_array = africa_host_transfer_action_cleanup
+	for_each_scope_loop = {
+		array = africa_active_action_targets
+		event_target:africa_previous_host = {
+			add_to_array = { array = africa_host_transfer_action_cleanup value = PREV }
+		}
+	}
+	for_each_scope_loop = {
+		array = africa_host_transfer_action_cleanup
+		if = {
+			limit = {
+				exists = yes
+				has_country_flag = africa_action_record_active
+			}
+			africa_cleanup_action = yes
+		}
+	}
+	clear_array = africa_host_transfer_action_cleanup
+
+	# Peace-exemption missions are not action records, so close their exact target
+	# mission and state flags before the old host pointer is removed.
+	for_each_scope_loop = {
+		array = africa_peace_exemption_countries
+		if = {
+			limit = { exists = yes }
+			event_target:africa_previous_host = {
+				remove_targeted_decision = { target = PREV decision = mission_africa_complete_continental_peace_exemption }
+			}
+			for_each_scope_loop = {
+				array = africa_continental_peace_exemption_states
+				clr_state_flag = africa_continental_peace_exemption_active
+			}
+			clear_array = africa_continental_peace_exemption_states
+			clr_country_flag = africa_continental_peace_completion_mission_active
+			clr_country_flag = africa_continental_peace_terms_accepted
+		}
+	}
+	# These exemption registries are transaction-local. The mission and state
+	# flags above are already closed; keeping the host indexes would resurrect a
+	# phantom peace docket on the successor.
+	clear_array = africa_peace_exemption_countries
+	clear_array = africa_peace_exemption_states
+}
+
+# COUNTRY scope on the old host. This copies the scalar campaign ledger into
+# global staging variables while the country still exists. Global staging is
+# deliberately narrow and is cleared only after commit or terminal suspension.
+africa_host_transfer_stage_scalar_ledger = {
+	set_variable = { global.africa_host_transfer_previous_host_id = THIS.id }
+	set_variable = { global.africa_host_transfer_origin_host_id = africa_origin_host_id }
+	set_variable = { global.africa_host_transfer_old_generation = africa_host_generation }
+	set_variable = { global.africa_host_transfer_origin_host_playbook = africa_origin_host_playbook }
+	set_variable = { global.africa_host_transfer_host_playbook = africa_host_playbook }
+	set_variable = { global.africa_host_transfer_host_depth = africa_host_depth }
+	set_variable = { global.africa_host_transfer_regional_overlay = africa_regional_overlay }
+	set_variable = { global.africa_host_transfer_first_proof_type = africa_first_proof_type }
+	set_variable = { global.africa_host_transfer_host_problem = africa_host_problem }
+	set_variable = { global.africa_host_transfer_host_leverage = africa_host_leverage }
+	set_variable = { global.africa_host_transfer_host_rival_risk = africa_host_rival_risk }
+	set_variable = { global.africa_host_transfer_host_support_class = africa_host_support_class }
+	set_variable = { global.africa_host_transfer_constitution = africa_constitution }
+	set_variable = { global.africa_host_transfer_current_phase = africa_current_phase }
+	set_variable = { global.africa_host_transfer_peace_exemption_days = africa_peace_exemption_days }
+	set_variable = { global.africa_host_transfer_selected_action_family = africa_selected_action_family }
+	set_variable = { global.africa_host_transfer_selected_action_id = africa_selected_action_id }
+	set_variable = { global.africa_host_transfer_action_generation = africa_action_generation }
+	set_variable = { global.africa_host_transfer_action_quote_generation = africa_action_quote_generation }
+	set_variable = { global.africa_host_transfer_action_short_days = africa_action_short_days }
+	set_variable = { global.africa_host_transfer_action_medium_days = africa_action_medium_days }
+	set_variable = { global.africa_host_transfer_action_long_days = africa_action_long_days }
+	set_variable = { global.africa_host_transfer_action_epic_days = africa_action_epic_days }
+	set_variable = { global.africa_host_transfer_active_action_cap = africa_active_action_cap }
+	set_variable = { global.africa_host_transfer_selected_target_cap = africa_selected_target_cap }
+	set_variable = { global.africa_host_transfer_dossier_cap = africa_dossier_cap }
+	set_variable = { global.africa_host_transfer_living_core_project_cap = africa_living_core_project_cap }
+	set_variable = { global.africa_host_transfer_civilian_capacity_available = africa_civilian_capacity_available }
+	set_variable = { global.africa_host_transfer_intelligence_capacity_available = africa_intelligence_capacity_available }
+	set_variable = { global.africa_host_transfer_charter_authority = africa_charter_authority }
+	set_variable = { global.africa_host_transfer_continental_reach = africa_continental_reach }
+	set_variable = { global.africa_host_transfer_integration_burden = africa_integration_burden }
+	set_variable = { global.africa_host_transfer_colonial_pressure = africa_colonial_pressure }
+	set_variable = { global.africa_host_transfer_diaspora_settlement_capacity = africa_diaspora_settlement_capacity }
+	set_variable = { global.africa_host_transfer_diaspora_trust = africa_diaspora_trust }
+	set_variable = { global.africa_host_transfer_common_defence_stockpile = africa_common_defence_stockpile }
+	set_variable = { global.africa_host_transfer_common_reserve_deployment_sequence = africa_common_reserve_deployment_sequence }
+	set_variable = { global.africa_host_transfer_member_representation_balance = africa_member_representation_balance }
+	set_variable = { global.africa_host_transfer_restoration_legitimacy = africa_restoration_legitimacy }
+	set_variable = { global.africa_host_transfer_ecological_wrath = africa_ecological_wrath }
+	set_variable = { global.africa_host_transfer_continental_war_readiness = africa_continental_war_readiness }
+	set_variable = { global.africa_host_transfer_consent_commitment = africa_consent_commitment }
+	set_variable = { global.africa_host_transfer_central_capacity = africa_central_capacity }
+	set_variable = { global.africa_host_transfer_regional_equality = africa_regional_equality }
+	set_variable = { global.africa_host_transfer_emergency_rule_debt = africa_emergency_rule_debt }
+	if = {
+		limit = { has_variable = gods_of_africa_candidate_count }
+		set_variable = { global.africa_host_transfer_gods_of_africa_candidate_count = gods_of_africa_candidate_count }
+	}
+	if = {
+		limit = { has_country_flag = gods_of_africa_candidate_census_complete }
+		set_global_flag = africa_host_transfer_gods_of_africa_candidate_census_complete
+	}
+	# The successor inherits the continental tree only from a host that had it.
+	clr_global_flag = africa_host_transfer_previous_host_had_continental_tree
+	if = {
+		limit = { has_focus_tree = africa_continental_focus_tree }
+		set_global_flag = africa_host_transfer_previous_host_had_continental_tree
+	}
+	if = {
+		limit = { has_variable = africa_constitutional_representation }
+		set_variable = { global.africa_host_transfer_constitutional_representation = africa_constitutional_representation }
+		set_variable = { global.africa_host_transfer_constitutional_executive_power = africa_constitutional_executive_power }
+		set_variable = { global.africa_host_transfer_constitutional_resource_governance = africa_constitutional_resource_governance }
+		set_variable = { global.africa_host_transfer_constitutional_command_integration = africa_constitutional_command_integration }
+		set_variable = { global.africa_host_transfer_constitutional_withdrawal_protection = africa_constitutional_withdrawal_protection }
+		set_variable = { global.africa_host_transfer_constitutional_crisis_resilience = africa_constitutional_crisis_resilience }
+		set_variable = { global.africa_host_transfer_constitutional_post_unification_rule = africa_constitutional_post_unification_rule }
+	}
+	if = {
+		limit = { has_country_flag = africa_constitutional_payoff_axes_active }
+		set_global_flag = africa_host_transfer_constitutional_payoff_axes_active
+	}
+	if = {
+		limit = { has_country_flag = africa_scramble_state_machine_initialised }
+		set_global_flag = africa_host_transfer_scramble_state_machine_initialised
+		set_variable = { global.africa_host_transfer_scramble_phase = africa_scramble_phase }
+		set_variable = { global.africa_host_transfer_scramble_participant_count = africa_scramble_participant_count }
+		set_variable = { global.africa_host_transfer_scramble_recognition_count = africa_scramble_recognition_count }
+		set_variable = { global.africa_host_transfer_scramble_conditional_recognition_count = africa_scramble_conditional_recognition_count }
+		set_variable = { global.africa_host_transfer_scramble_sanction_count = africa_scramble_sanction_count }
+		set_variable = { global.africa_host_transfer_scramble_ultimatum_count = africa_scramble_ultimatum_count }
+		set_variable = { global.africa_host_transfer_scramble_expedition_count = africa_scramble_expedition_count }
+		set_variable = { global.africa_host_transfer_scramble_expedition_actor_count = africa_scramble_expedition_actor_count }
+		set_variable = { global.africa_host_transfer_scramble_coalition_break_count = africa_scramble_coalition_break_count }
+		set_variable = { global.africa_host_transfer_scramble_settlement_score = africa_scramble_settlement_score }
+		set_variable = { global.africa_host_transfer_scramble_pressure = africa_scramble_pressure }
+		set_variable = { global.africa_host_transfer_scramble_class_pressure = africa_scramble_class_pressure }
+		set_variable = { global.africa_host_transfer_scramble_integration_burden = africa_scramble_integration_burden }
+		set_variable = { global.africa_host_transfer_scramble_former_colonial_count = africa_scramble_former_colonial_count }
+		set_variable = { global.africa_host_transfer_scramble_ideological_rival_count = africa_scramble_ideological_rival_count }
+		set_variable = { global.africa_host_transfer_scramble_resource_exposure_count = africa_scramble_resource_exposure_count }
+		set_variable = { global.africa_host_transfer_scramble_continent_unifier_fear_count = africa_scramble_continent_unifier_fear_count }
+		set_variable = { global.africa_host_transfer_scramble_south_africa_allied_count = africa_scramble_south_africa_allied_count }
+		set_variable = { global.africa_host_transfer_scramble_coalition_member_count = africa_scramble_coalition_member_count }
+		set_variable = { global.africa_host_transfer_world_package_candidate_count = africa_world_package_candidate_count }
+		set_variable = { global.africa_host_transfer_world_packages_installed_count = africa_world_packages_installed_count }
+		set_variable = { global.africa_host_transfer_world_packages_settled_count = africa_world_packages_settled_count }
+		set_variable = { global.africa_host_transfer_world_packages_sovereign_complete_count = africa_world_packages_sovereign_complete_count }
+		set_variable = { global.africa_host_transfer_world_terminal_resolved_count = africa_world_terminal_resolved_count }
+		set_variable = { global.africa_host_transfer_world_package_roster_disposition_count = africa_world_package_roster_disposition_count }
+		set_variable = { global.africa_host_transfer_world_package_pending_count = africa_world_package_pending_count }
+		set_variable = { global.africa_host_transfer_world_package_absent_count = africa_world_package_absent_count }
+		set_variable = { global.africa_host_transfer_world_package_resolved_count = africa_world_package_resolved_count }
+		set_variable = { global.africa_host_transfer_world_sponsorship_overextension = africa_world_sponsorship_overextension }
+		set_variable = { global.africa_host_transfer_world_order_route = africa_world_order_route }
+		if = { limit = { has_country_flag = africa_world_package_roster_documented } set_global_flag = africa_host_transfer_world_package_roster_documented }
+		if = { limit = { has_country_flag = africa_world_package_roster_partial } set_global_flag = africa_host_transfer_world_package_roster_partial }
+		if = { limit = { has_country_flag = africa_world_package_roster_absence_documented } set_global_flag = africa_host_transfer_world_package_roster_absence_documented }
+		if = { limit = { has_country_flag = africa_world_package_roster_complete } set_global_flag = africa_host_transfer_world_package_roster_complete }
+		if = { limit = { has_country_flag = africa_scramble_interest_census_complete } set_global_flag = africa_host_transfer_scramble_interest_census_complete }
+		if = { limit = { has_country_flag = africa_scramble_response_roster_cleaned } set_global_flag = africa_host_transfer_scramble_response_roster_cleaned }
+		if = { limit = { has_country_flag = africa_scramble_aftermath_materials_applied } set_global_flag = africa_host_transfer_scramble_aftermath_materials_applied }
+		if = { limit = { has_country_flag = africa_scramble_expedition_host_cost_applied } set_global_flag = africa_host_transfer_scramble_expedition_host_cost_applied }
+		if = { limit = { has_country_flag = africa_scramble_expedition_coalition_logged } set_global_flag = africa_host_transfer_scramble_expedition_coalition_logged }
+		if = { limit = { has_country_flag = africa_scramble_defence_material_demanded } set_global_flag = africa_host_transfer_scramble_defence_material_demanded }
+		if = { limit = { has_country_flag = africa_scramble_coalition_phase } set_global_flag = africa_host_transfer_scramble_coalition_phase }
+		if = { limit = { has_country_flag = africa_scramble_intervention_phase } set_global_flag = africa_host_transfer_scramble_intervention_phase }
+		if = { limit = { has_country_flag = africa_scramble_recognition_phase } set_global_flag = africa_host_transfer_scramble_recognition_phase }
+		if = { limit = { has_country_flag = africa_scramble_aftermath_phase } set_global_flag = africa_host_transfer_scramble_aftermath_phase }
+		if = { limit = { has_country_flag = africa_scramble_response_settled } set_global_flag = africa_host_transfer_scramble_response_settled }
+		if = { limit = { has_country_flag = africa_scramble_defensive_war_active } set_global_flag = africa_host_transfer_scramble_defensive_war_active }
+		if = { limit = { has_country_flag = africa_scramble_defensive_war_won } set_global_flag = africa_host_transfer_scramble_defensive_war_won }
+		if = { limit = { has_country_flag = africa_scramble_armistice_signed } set_global_flag = africa_host_transfer_scramble_armistice_signed }
+		if = { limit = { has_country_flag = africa_scramble_expedition_launched } set_global_flag = africa_host_transfer_scramble_expedition_launched }
+	}
+}
+
+# COUNTRY scope on the old host. First-proof flags and counters are part of the playable route, not disposable setup.
+africa_host_transfer_stage_first_proof_state = {
+	if = { limit = { has_variable = africa_first_proof_action_slot } set_variable = { global.africa_host_transfer_first_proof_action_slot = africa_first_proof_action_slot } }
+	if = { limit = { has_variable = africa_first_proof_actor_credit_count } set_variable = { global.africa_host_transfer_first_proof_actor_credit_count = africa_first_proof_actor_credit_count } }
+	if = { limit = { has_variable = africa_first_proof_additional_action_id_1 } set_variable = { global.africa_host_transfer_first_proof_additional_action_id_1 = africa_first_proof_additional_action_id_1 } }
+	if = { limit = { has_variable = africa_first_proof_additional_action_id_2 } set_variable = { global.africa_host_transfer_first_proof_additional_action_id_2 = africa_first_proof_additional_action_id_2 } }
+	if = { limit = { has_variable = africa_first_proof_additional_action_id_3 } set_variable = { global.africa_host_transfer_first_proof_additional_action_id_3 = africa_first_proof_additional_action_id_3 } }
+	if = { limit = { has_variable = africa_first_proof_additional_action_id_4 } set_variable = { global.africa_host_transfer_first_proof_additional_action_id_4 = africa_first_proof_additional_action_id_4 } }
+	if = { limit = { has_variable = africa_first_proof_alternate_primary_action_id } set_variable = { global.africa_host_transfer_first_proof_alternate_primary_action_id = africa_first_proof_alternate_primary_action_id } }
+	if = { limit = { has_variable = africa_first_proof_corridor_partner_credit_count } set_variable = { global.africa_host_transfer_first_proof_corridor_partner_credit_count = africa_first_proof_corridor_partner_credit_count } }
+	if = { limit = { has_variable = africa_first_proof_corridor_state_credit_count } set_variable = { global.africa_host_transfer_first_proof_corridor_state_credit_count = africa_first_proof_corridor_state_credit_count } }
+	if = { limit = { has_variable = africa_first_proof_failures } set_variable = { global.africa_host_transfer_first_proof_failures = africa_first_proof_failures } }
+	if = { limit = { has_variable = africa_first_proof_recovery_attempts } set_variable = { global.africa_host_transfer_first_proof_recovery_attempts = africa_first_proof_recovery_attempts } }
+	if = { limit = { has_variable = africa_first_proof_primary_action_id } set_variable = { global.africa_host_transfer_first_proof_primary_action_id = africa_first_proof_primary_action_id } }
+	if = { limit = { has_variable = africa_first_proof_profile_playbook } set_variable = { global.africa_host_transfer_first_proof_profile_playbook = africa_first_proof_profile_playbook } }
+	if = { limit = { has_variable = africa_first_proof_region_credit_count } set_variable = { global.africa_host_transfer_first_proof_region_credit_count = africa_first_proof_region_credit_count } }
+	if = { limit = { has_variable = africa_first_proof_required_actor_credits } set_variable = { global.africa_host_transfer_first_proof_required_actor_credits = africa_first_proof_required_actor_credits } }
+	if = { limit = { has_variable = africa_first_proof_required_corridor_credits } set_variable = { global.africa_host_transfer_first_proof_required_corridor_credits = africa_first_proof_required_corridor_credits } }
+	if = { limit = { has_variable = africa_first_proof_required_corridor_partner_credits } set_variable = { global.africa_host_transfer_first_proof_required_corridor_partner_credits = africa_first_proof_required_corridor_partner_credits } }
+	if = { limit = { has_variable = africa_first_proof_required_corridor_state_credits } set_variable = { global.africa_host_transfer_first_proof_required_corridor_state_credits = africa_first_proof_required_corridor_state_credits } }
+	if = { limit = { has_variable = africa_first_proof_required_region_credits } set_variable = { global.africa_host_transfer_first_proof_required_region_credits = africa_first_proof_required_region_credits } }
+	if = { limit = { has_country_flag = africa_first_proof_active } set_global_flag = africa_host_transfer_first_proof_active }
+	if = { limit = { has_country_flag = africa_first_proof_actor_semantic_valid } set_global_flag = africa_host_transfer_first_proof_actor_semantic_valid }
+	if = { limit = { has_country_flag = africa_first_proof_aid_action_completed } set_global_flag = africa_host_transfer_first_proof_aid_action_completed }
+	if = { limit = { has_country_flag = africa_first_proof_all_required_regions_credited } set_global_flag = africa_host_transfer_first_proof_all_required_regions_credited }
+	if = { limit = { has_country_flag = africa_first_proof_auxiliary_cancelled_result } set_global_flag = africa_host_transfer_first_proof_auxiliary_cancelled_result }
+	if = { limit = { has_country_flag = africa_first_proof_auxiliary_evidence_unresolved } set_global_flag = africa_host_transfer_first_proof_auxiliary_evidence_unresolved }
+	if = { limit = { has_country_flag = africa_first_proof_auxiliary_failed_result } set_global_flag = africa_host_transfer_first_proof_auxiliary_failed_result }
+	if = { limit = { has_country_flag = africa_first_proof_auxiliary_partial_result } set_global_flag = africa_host_transfer_first_proof_auxiliary_partial_result }
+	if = { limit = { has_country_flag = africa_first_proof_auxiliary_unresolved_target } set_global_flag = africa_host_transfer_first_proof_auxiliary_unresolved_target }
+	if = { limit = { has_country_flag = africa_first_proof_cameroon_british_mandate_seat } set_global_flag = africa_host_transfer_first_proof_cameroon_british_mandate_seat }
+	if = { limit = { has_country_flag = africa_first_proof_cameroon_french_mandate_seat } set_global_flag = africa_host_transfer_first_proof_cameroon_french_mandate_seat }
+	if = { limit = { has_country_flag = africa_first_proof_capital_rail_route } set_global_flag = africa_host_transfer_first_proof_capital_rail_route }
+	if = { limit = { has_country_flag = africa_first_proof_coercion_breached } set_global_flag = africa_host_transfer_first_proof_coercion_breached }
+	if = { limit = { has_country_flag = africa_first_proof_comoros_anjouan_seat } set_global_flag = africa_host_transfer_first_proof_comoros_anjouan_seat }
+	if = { limit = { has_country_flag = africa_first_proof_comoros_grande_comore_seat } set_global_flag = africa_host_transfer_first_proof_comoros_grande_comore_seat }
+	if = { limit = { has_country_flag = africa_first_proof_comoros_mayotte_seat } set_global_flag = africa_host_transfer_first_proof_comoros_mayotte_seat }
+	if = { limit = { has_country_flag = africa_first_proof_comoros_moheli_seat } set_global_flag = africa_host_transfer_first_proof_comoros_moheli_seat }
+	if = { limit = { has_country_flag = africa_first_proof_comoros_transport_operational } set_global_flag = africa_host_transfer_first_proof_comoros_transport_operational }
+	if = { limit = { has_country_flag = africa_first_proof_completed_with_full_evidence } set_global_flag = africa_host_transfer_first_proof_completed_with_full_evidence }
+	if = { limit = { has_country_flag = africa_first_proof_corridor_actor_eligible } set_global_flag = africa_host_transfer_first_proof_corridor_actor_eligible }
+	if = { limit = { has_country_flag = africa_first_proof_corridor_actor_semantic_valid } set_global_flag = africa_host_transfer_first_proof_corridor_actor_semantic_valid }
+	if = { limit = { has_country_flag = africa_first_proof_corridor_breached } set_global_flag = africa_host_transfer_first_proof_corridor_breached }
+	if = { limit = { has_country_flag = africa_first_proof_credit_domestic_settlement } set_global_flag = africa_host_transfer_first_proof_credit_domestic_settlement }
+	if = { limit = { has_country_flag = africa_first_proof_credit_home_corridor } set_global_flag = africa_host_transfer_first_proof_credit_home_corridor }
+	if = { limit = { has_country_flag = africa_first_proof_credit_no_coercion } set_global_flag = africa_host_transfer_first_proof_credit_no_coercion }
+	if = { limit = { has_country_flag = africa_first_proof_credit_outward_partner } set_global_flag = africa_host_transfer_first_proof_credit_outward_partner }
+	if = { limit = { has_country_flag = africa_first_proof_credit_primary_action } set_global_flag = africa_host_transfer_first_proof_credit_primary_action }
+	if = { limit = { has_country_flag = africa_first_proof_credit_reform } set_global_flag = africa_host_transfer_first_proof_credit_reform }
+	if = { limit = { has_country_flag = africa_first_proof_credit_regional_consent } set_global_flag = africa_host_transfer_first_proof_credit_regional_consent }
+	if = { limit = { has_country_flag = africa_first_proof_credit_sovereignty } set_global_flag = africa_host_transfer_first_proof_credit_sovereignty }
+	if = { limit = { has_country_flag = africa_first_proof_domestic_settlement_durable } set_global_flag = africa_host_transfer_first_proof_domestic_settlement_durable }
+	if = { limit = { has_country_flag = africa_first_proof_domestic_settlement_eligible } set_global_flag = africa_host_transfer_first_proof_domestic_settlement_eligible }
+	if = { limit = { has_country_flag = africa_first_proof_equatorial_guinea_bioko_seat } set_global_flag = africa_host_transfer_first_proof_equatorial_guinea_bioko_seat }
+	if = { limit = { has_country_flag = africa_first_proof_equatorial_guinea_rio_muni_seat } set_global_flag = africa_host_transfer_first_proof_equatorial_guinea_rio_muni_seat }
+	if = { limit = { has_country_flag = africa_first_proof_eritrea_highland_seat } set_global_flag = africa_host_transfer_first_proof_eritrea_highland_seat }
+	if = { limit = { has_country_flag = africa_first_proof_eritrea_lowland_seat } set_global_flag = africa_host_transfer_first_proof_eritrea_lowland_seat }
+	if = { limit = { has_country_flag = africa_first_proof_failed } set_global_flag = africa_host_transfer_first_proof_failed }
+	if = { limit = { has_country_flag = africa_first_proof_failed_result } set_global_flag = africa_host_transfer_first_proof_failed_result }
+	if = { limit = { has_country_flag = africa_first_proof_failure_remembered } set_global_flag = africa_host_transfer_first_proof_failure_remembered }
+	if = { limit = { has_country_flag = africa_first_proof_gold_coast_asante_seat } set_global_flag = africa_host_transfer_first_proof_gold_coast_asante_seat }
+	if = { limit = { has_country_flag = africa_first_proof_gold_coast_northern_authority_seat } set_global_flag = africa_host_transfer_first_proof_gold_coast_northern_authority_seat }
+	if = { limit = { has_country_flag = africa_first_proof_guarantee_action_completed } set_global_flag = africa_host_transfer_first_proof_guarantee_action_completed }
+	if = { limit = { has_country_flag = africa_first_proof_home_corridor_durable } set_global_flag = africa_host_transfer_first_proof_home_corridor_durable }
+	if = { limit = { has_country_flag = africa_first_proof_land_settlement_action_completed } set_global_flag = africa_host_transfer_first_proof_land_settlement_action_completed }
+	if = { limit = { has_country_flag = africa_first_proof_ledger_active } set_global_flag = africa_host_transfer_first_proof_ledger_active }
+	if = { limit = { has_country_flag = africa_first_proof_ledger_ready } set_global_flag = africa_host_transfer_first_proof_ledger_ready }
+	if = { limit = { has_country_flag = africa_first_proof_live_actors_valid } set_global_flag = africa_host_transfer_first_proof_live_actors_valid }
+	if = { limit = { has_country_flag = africa_first_proof_live_corridors_valid } set_global_flag = africa_host_transfer_first_proof_live_corridors_valid }
+	if = { limit = { has_country_flag = africa_first_proof_live_primary_target_valid } set_global_flag = africa_host_transfer_first_proof_live_primary_target_valid }
+	if = { limit = { has_country_flag = africa_first_proof_live_regions_valid } set_global_flag = africa_host_transfer_first_proof_live_regions_valid }
+	if = { limit = { has_country_flag = africa_first_proof_live_sovereignty_valid } set_global_flag = africa_host_transfer_first_proof_live_sovereignty_valid }
+	if = { limit = { has_country_flag = africa_first_proof_no_coercion_durable } set_global_flag = africa_host_transfer_first_proof_no_coercion_durable }
+	if = { limit = { has_country_flag = africa_first_proof_no_coercion_eligible } set_global_flag = africa_host_transfer_first_proof_no_coercion_eligible }
+	if = { limit = { has_country_flag = africa_first_proof_outward_partner_eligible } set_global_flag = africa_host_transfer_first_proof_outward_partner_eligible }
+	if = { limit = { has_country_flag = africa_first_proof_partial_result } set_global_flag = africa_host_transfer_first_proof_partial_result }
+	if = { limit = { has_country_flag = africa_first_proof_pending } set_global_flag = africa_host_transfer_first_proof_pending }
+	if = { limit = { has_country_flag = africa_first_proof_primary_semantic_valid } set_global_flag = africa_host_transfer_first_proof_primary_semantic_valid }
+	if = { limit = { has_country_flag = africa_first_proof_primary_target_eligible } set_global_flag = africa_host_transfer_first_proof_primary_target_eligible }
+	if = { limit = { has_country_flag = africa_first_proof_profile_initialized } set_global_flag = africa_host_transfer_first_proof_profile_initialized }
+	if = { limit = { has_country_flag = africa_first_proof_recovered } set_global_flag = africa_host_transfer_first_proof_recovered }
+	if = { limit = { has_country_flag = africa_first_proof_recovered_under_oversight } set_global_flag = africa_host_transfer_first_proof_recovered_under_oversight }
+	if = { limit = { has_country_flag = africa_first_proof_recovered_with_memory } set_global_flag = africa_host_transfer_first_proof_recovered_with_memory }
+	if = { limit = { has_country_flag = africa_first_proof_recovery_contract_active } set_global_flag = africa_host_transfer_first_proof_recovery_contract_active }
+	if = { limit = { has_country_flag = africa_first_proof_recovery_partial_ready } set_global_flag = africa_host_transfer_first_proof_recovery_partial_ready }
+	if = { limit = { has_country_flag = africa_first_proof_recovery_ready } set_global_flag = africa_host_transfer_first_proof_recovery_ready }
+	if = { limit = { has_country_flag = africa_first_proof_recovery_resolved_without_full } set_global_flag = africa_host_transfer_first_proof_recovery_resolved_without_full }
+	if = { limit = { has_country_flag = africa_first_proof_recovery_route_durable } set_global_flag = africa_host_transfer_first_proof_recovery_route_durable }
+	if = { limit = { has_country_flag = africa_first_proof_recovery_target_eligible } set_global_flag = africa_host_transfer_first_proof_recovery_target_eligible }
+	if = { limit = { has_country_flag = africa_first_proof_recovery_target_registered } set_global_flag = africa_host_transfer_first_proof_recovery_target_registered }
+	if = { limit = { has_country_flag = africa_first_proof_reform_durable } set_global_flag = africa_host_transfer_first_proof_reform_durable }
+	if = { limit = { has_country_flag = africa_first_proof_reform_eligible } set_global_flag = africa_host_transfer_first_proof_reform_eligible }
+	if = { limit = { has_country_flag = africa_first_proof_requires_all_regions } set_global_flag = africa_host_transfer_first_proof_requires_all_regions }
+	if = { limit = { has_country_flag = africa_first_proof_requires_domestic_settlement } set_global_flag = africa_host_transfer_first_proof_requires_domestic_settlement }
+	if = { limit = { has_country_flag = africa_first_proof_requires_home_corridor } set_global_flag = africa_host_transfer_first_proof_requires_home_corridor }
+	if = { limit = { has_country_flag = africa_first_proof_requires_no_coercion } set_global_flag = africa_host_transfer_first_proof_requires_no_coercion }
+	if = { limit = { has_country_flag = africa_first_proof_requires_outward_partner } set_global_flag = africa_host_transfer_first_proof_requires_outward_partner }
+	if = { limit = { has_country_flag = africa_first_proof_requires_primary_action } set_global_flag = africa_host_transfer_first_proof_requires_primary_action }
+	if = { limit = { has_country_flag = africa_first_proof_requires_reform } set_global_flag = africa_host_transfer_first_proof_requires_reform }
+	if = { limit = { has_country_flag = africa_first_proof_requires_regional_consent } set_global_flag = africa_host_transfer_first_proof_requires_regional_consent }
+	if = { limit = { has_country_flag = africa_first_proof_requires_sovereignty } set_global_flag = africa_host_transfer_first_proof_requires_sovereignty }
+	if = { limit = { has_country_flag = africa_first_proof_same_overlay_recovery_target } set_global_flag = africa_host_transfer_first_proof_same_overlay_recovery_target }
+	if = { limit = { has_country_flag = africa_first_proof_sierra_leone_colony_seat } set_global_flag = africa_host_transfer_first_proof_sierra_leone_colony_seat }
+	if = { limit = { has_country_flag = africa_first_proof_sierra_leone_protectorate_seat } set_global_flag = africa_host_transfer_first_proof_sierra_leone_protectorate_seat }
+	if = { limit = { has_country_flag = africa_first_proof_south_africa_constitutional_route } set_global_flag = africa_host_transfer_first_proof_south_africa_constitutional_route }
+	if = { limit = { has_country_flag = africa_first_proof_south_africa_wartime_route } set_global_flag = africa_host_transfer_first_proof_south_africa_wartime_route }
+	if = { limit = { has_country_flag = africa_first_proof_sovereignty_breached } set_global_flag = africa_host_transfer_first_proof_sovereignty_breached }
+	if = { limit = { has_country_flag = africa_first_proof_sovereignty_durable } set_global_flag = africa_host_transfer_first_proof_sovereignty_durable }
+	if = { limit = { has_country_flag = africa_first_proof_sovereignty_eligible } set_global_flag = africa_host_transfer_first_proof_sovereignty_eligible }
+	if = { limit = { has_country_flag = africa_first_proof_sovereignty_host_scope } set_global_flag = africa_host_transfer_first_proof_sovereignty_host_scope }
+	if = { limit = { has_country_flag = africa_first_proof_sovereignty_semantic_valid } set_global_flag = africa_host_transfer_first_proof_sovereignty_semantic_valid }
+	if = { limit = { has_country_flag = africa_first_proof_succeeded } set_global_flag = africa_host_transfer_first_proof_succeeded }
+	if = { limit = { has_country_flag = africa_first_proof_success_target } set_global_flag = africa_host_transfer_first_proof_success_target }
+	if = { limit = { has_country_flag = africa_first_proof_togo_british_mandate_seat } set_global_flag = africa_host_transfer_first_proof_togo_british_mandate_seat }
+	if = { limit = { has_country_flag = africa_first_proof_togo_french_mandate_seat } set_global_flag = africa_host_transfer_first_proof_togo_french_mandate_seat }
+	if = { limit = { has_country_flag = africa_first_proof_uganda_ankole_busoga_seat } set_global_flag = africa_host_transfer_first_proof_uganda_ankole_busoga_seat }
+	if = { limit = { has_country_flag = africa_first_proof_uganda_buganda_seat } set_global_flag = africa_host_transfer_first_proof_uganda_buganda_seat }
+	if = { limit = { has_country_flag = africa_first_proof_uganda_bunyoro_seat } set_global_flag = africa_host_transfer_first_proof_uganda_bunyoro_seat }
+}
+
+# COUNTRY scope on the successor. Restore the exact first-proof witnesses before focus and evolution refresh.
+africa_host_transfer_restore_first_proof_state = {
+	if = { limit = { has_variable = global.africa_host_transfer_first_proof_action_slot } set_variable = { africa_first_proof_action_slot = global.africa_host_transfer_first_proof_action_slot } }
+	if = { limit = { has_variable = global.africa_host_transfer_first_proof_actor_credit_count } set_variable = { africa_first_proof_actor_credit_count = global.africa_host_transfer_first_proof_actor_credit_count } }
+	if = { limit = { has_variable = global.africa_host_transfer_first_proof_additional_action_id_1 } set_variable = { africa_first_proof_additional_action_id_1 = global.africa_host_transfer_first_proof_additional_action_id_1 } }
+	if = { limit = { has_variable = global.africa_host_transfer_first_proof_additional_action_id_2 } set_variable = { africa_first_proof_additional_action_id_2 = global.africa_host_transfer_first_proof_additional_action_id_2 } }
+	if = { limit = { has_variable = global.africa_host_transfer_first_proof_additional_action_id_3 } set_variable = { africa_first_proof_additional_action_id_3 = global.africa_host_transfer_first_proof_additional_action_id_3 } }
+	if = { limit = { has_variable = global.africa_host_transfer_first_proof_additional_action_id_4 } set_variable = { africa_first_proof_additional_action_id_4 = global.africa_host_transfer_first_proof_additional_action_id_4 } }
+	if = { limit = { has_variable = global.africa_host_transfer_first_proof_alternate_primary_action_id } set_variable = { africa_first_proof_alternate_primary_action_id = global.africa_host_transfer_first_proof_alternate_primary_action_id } }
+	if = { limit = { has_variable = global.africa_host_transfer_first_proof_corridor_partner_credit_count } set_variable = { africa_first_proof_corridor_partner_credit_count = global.africa_host_transfer_first_proof_corridor_partner_credit_count } }
+	if = { limit = { has_variable = global.africa_host_transfer_first_proof_corridor_state_credit_count } set_variable = { africa_first_proof_corridor_state_credit_count = global.africa_host_transfer_first_proof_corridor_state_credit_count } }
+	if = { limit = { has_variable = global.africa_host_transfer_first_proof_failures } set_variable = { africa_first_proof_failures = global.africa_host_transfer_first_proof_failures } }
+	if = { limit = { has_variable = global.africa_host_transfer_first_proof_recovery_attempts } set_variable = { africa_first_proof_recovery_attempts = global.africa_host_transfer_first_proof_recovery_attempts } }
+	if = { limit = { has_variable = global.africa_host_transfer_first_proof_primary_action_id } set_variable = { africa_first_proof_primary_action_id = global.africa_host_transfer_first_proof_primary_action_id } }
+	if = { limit = { has_variable = global.africa_host_transfer_first_proof_profile_playbook } set_variable = { africa_first_proof_profile_playbook = global.africa_host_transfer_first_proof_profile_playbook } }
+	if = { limit = { has_variable = global.africa_host_transfer_first_proof_region_credit_count } set_variable = { africa_first_proof_region_credit_count = global.africa_host_transfer_first_proof_region_credit_count } }
+	if = { limit = { has_variable = global.africa_host_transfer_first_proof_required_actor_credits } set_variable = { africa_first_proof_required_actor_credits = global.africa_host_transfer_first_proof_required_actor_credits } }
+	if = { limit = { has_variable = global.africa_host_transfer_first_proof_required_corridor_credits } set_variable = { africa_first_proof_required_corridor_credits = global.africa_host_transfer_first_proof_required_corridor_credits } }
+	if = { limit = { has_variable = global.africa_host_transfer_first_proof_required_corridor_partner_credits } set_variable = { africa_first_proof_required_corridor_partner_credits = global.africa_host_transfer_first_proof_required_corridor_partner_credits } }
+	if = { limit = { has_variable = global.africa_host_transfer_first_proof_required_corridor_state_credits } set_variable = { africa_first_proof_required_corridor_state_credits = global.africa_host_transfer_first_proof_required_corridor_state_credits } }
+	if = { limit = { has_variable = global.africa_host_transfer_first_proof_required_region_credits } set_variable = { africa_first_proof_required_region_credits = global.africa_host_transfer_first_proof_required_region_credits } }
+	if = { limit = { has_global_flag = africa_host_transfer_first_proof_active } set_country_flag = africa_first_proof_active }
+	if = { limit = { has_global_flag = africa_host_transfer_first_proof_actor_semantic_valid } set_country_flag = africa_first_proof_actor_semantic_valid }
+	if = { limit = { has_global_flag = africa_host_transfer_first_proof_aid_action_completed } set_country_flag = africa_first_proof_aid_action_completed }
+	if = { limit = { has_global_flag = africa_host_transfer_first_proof_all_required_regions_credited } set_country_flag = africa_first_proof_all_required_regions_credited }
+	if = { limit = { has_global_flag = africa_host_transfer_first_proof_auxiliary_cancelled_result } set_country_flag = africa_first_proof_auxiliary_cancelled_result }
+	if = { limit = { has_global_flag = africa_host_transfer_first_proof_auxiliary_evidence_unresolved } set_country_flag = africa_first_proof_auxiliary_evidence_unresolved }
+	if = { limit = { has_global_flag = africa_host_transfer_first_proof_auxiliary_failed_result } set_country_flag = africa_first_proof_auxiliary_failed_result }
+	if = { limit = { has_global_flag = africa_host_transfer_first_proof_auxiliary_partial_result } set_country_flag = africa_first_proof_auxiliary_partial_result }
+	if = { limit = { has_global_flag = africa_host_transfer_first_proof_auxiliary_unresolved_target } set_country_flag = africa_first_proof_auxiliary_unresolved_target }
+	if = { limit = { has_global_flag = africa_host_transfer_first_proof_cameroon_british_mandate_seat } set_country_flag = africa_first_proof_cameroon_british_mandate_seat }
+	if = { limit = { has_global_flag = africa_host_transfer_first_proof_cameroon_french_mandate_seat } set_country_flag = africa_first_proof_cameroon_french_mandate_seat }
+	if = { limit = { has_global_flag = africa_host_transfer_first_proof_capital_rail_route } set_country_flag = africa_first_proof_capital_rail_route }
+	if = { limit = { has_global_flag = africa_host_transfer_first_proof_coercion_breached } set_country_flag = africa_first_proof_coercion_breached }
+	if = { limit = { has_global_flag = africa_host_transfer_first_proof_comoros_anjouan_seat } set_country_flag = africa_first_proof_comoros_anjouan_seat }
+	if = { limit = { has_global_flag = africa_host_transfer_first_proof_comoros_grande_comore_seat } set_country_flag = africa_first_proof_comoros_grande_comore_seat }
+	if = { limit = { has_global_flag = africa_host_transfer_first_proof_comoros_mayotte_seat } set_country_flag = africa_first_proof_comoros_mayotte_seat }
+	if = { limit = { has_global_flag = africa_host_transfer_first_proof_comoros_moheli_seat } set_country_flag = africa_first_proof_comoros_moheli_seat }
+	if = { limit = { has_global_flag = africa_host_transfer_first_proof_comoros_transport_operational } set_country_flag = africa_first_proof_comoros_transport_operational }
+	if = { limit = { has_global_flag = africa_host_transfer_first_proof_completed_with_full_evidence } set_country_flag = africa_first_proof_completed_with_full_evidence }
+	if = { limit = { has_global_flag = africa_host_transfer_first_proof_corridor_actor_eligible } set_country_flag = africa_first_proof_corridor_actor_eligible }
+	if = { limit = { has_global_flag = africa_host_transfer_first_proof_corridor_actor_semantic_valid } set_country_flag = africa_first_proof_corridor_actor_semantic_valid }
+	if = { limit = { has_global_flag = africa_host_transfer_first_proof_corridor_breached } set_country_flag = africa_first_proof_corridor_breached }
+	if = { limit = { has_global_flag = africa_host_transfer_first_proof_credit_domestic_settlement } set_country_flag = africa_first_proof_credit_domestic_settlement }
+	if = { limit = { has_global_flag = africa_host_transfer_first_proof_credit_home_corridor } set_country_flag = africa_first_proof_credit_home_corridor }
+	if = { limit = { has_global_flag = africa_host_transfer_first_proof_credit_no_coercion } set_country_flag = africa_first_proof_credit_no_coercion }
+	if = { limit = { has_global_flag = africa_host_transfer_first_proof_credit_outward_partner } set_country_flag = africa_first_proof_credit_outward_partner }
+	if = { limit = { has_global_flag = africa_host_transfer_first_proof_credit_primary_action } set_country_flag = africa_first_proof_credit_primary_action }
+	if = { limit = { has_global_flag = africa_host_transfer_first_proof_credit_reform } set_country_flag = africa_first_proof_credit_reform }
+	if = { limit = { has_global_flag = africa_host_transfer_first_proof_credit_regional_consent } set_country_flag = africa_first_proof_credit_regional_consent }
+	if = { limit = { has_global_flag = africa_host_transfer_first_proof_credit_sovereignty } set_country_flag = africa_first_proof_credit_sovereignty }
+	if = { limit = { has_global_flag = africa_host_transfer_first_proof_domestic_settlement_durable } set_country_flag = africa_first_proof_domestic_settlement_durable }
+	if = { limit = { has_global_flag = africa_host_transfer_first_proof_domestic_settlement_eligible } set_country_flag = africa_first_proof_domestic_settlement_eligible }
+	if = { limit = { has_global_flag = africa_host_transfer_first_proof_equatorial_guinea_bioko_seat } set_country_flag = africa_first_proof_equatorial_guinea_bioko_seat }
+	if = { limit = { has_global_flag = africa_host_transfer_first_proof_equatorial_guinea_rio_muni_seat } set_country_flag = africa_first_proof_equatorial_guinea_rio_muni_seat }
+	if = { limit = { has_global_flag = africa_host_transfer_first_proof_eritrea_highland_seat } set_country_flag = africa_first_proof_eritrea_highland_seat }
+	if = { limit = { has_global_flag = africa_host_transfer_first_proof_eritrea_lowland_seat } set_country_flag = africa_first_proof_eritrea_lowland_seat }
+	if = { limit = { has_global_flag = africa_host_transfer_first_proof_failed } set_country_flag = africa_first_proof_failed }
+	if = { limit = { has_global_flag = africa_host_transfer_first_proof_failed_result } set_country_flag = africa_first_proof_failed_result }
+	if = { limit = { has_global_flag = africa_host_transfer_first_proof_failure_remembered } set_country_flag = africa_first_proof_failure_remembered }
+	if = { limit = { has_global_flag = africa_host_transfer_first_proof_gold_coast_asante_seat } set_country_flag = africa_first_proof_gold_coast_asante_seat }
+	if = { limit = { has_global_flag = africa_host_transfer_first_proof_gold_coast_northern_authority_seat } set_country_flag = africa_first_proof_gold_coast_northern_authority_seat }
+	if = { limit = { has_global_flag = africa_host_transfer_first_proof_guarantee_action_completed } set_country_flag = africa_first_proof_guarantee_action_completed }
+	if = { limit = { has_global_flag = africa_host_transfer_first_proof_home_corridor_durable } set_country_flag = africa_first_proof_home_corridor_durable }
+	if = { limit = { has_global_flag = africa_host_transfer_first_proof_land_settlement_action_completed } set_country_flag = africa_first_proof_land_settlement_action_completed }
+	if = { limit = { has_global_flag = africa_host_transfer_first_proof_ledger_active } set_country_flag = africa_first_proof_ledger_active }
+	if = { limit = { has_global_flag = africa_host_transfer_first_proof_ledger_ready } set_country_flag = africa_first_proof_ledger_ready }
+	if = { limit = { has_global_flag = africa_host_transfer_first_proof_live_actors_valid } set_country_flag = africa_first_proof_live_actors_valid }
+	if = { limit = { has_global_flag = africa_host_transfer_first_proof_live_corridors_valid } set_country_flag = africa_first_proof_live_corridors_valid }
+	if = { limit = { has_global_flag = africa_host_transfer_first_proof_live_primary_target_valid } set_country_flag = africa_first_proof_live_primary_target_valid }
+	if = { limit = { has_global_flag = africa_host_transfer_first_proof_live_regions_valid } set_country_flag = africa_first_proof_live_regions_valid }
+	if = { limit = { has_global_flag = africa_host_transfer_first_proof_live_sovereignty_valid } set_country_flag = africa_first_proof_live_sovereignty_valid }
+	if = { limit = { has_global_flag = africa_host_transfer_first_proof_no_coercion_durable } set_country_flag = africa_first_proof_no_coercion_durable }
+	if = { limit = { has_global_flag = africa_host_transfer_first_proof_no_coercion_eligible } set_country_flag = africa_first_proof_no_coercion_eligible }
+	if = { limit = { has_global_flag = africa_host_transfer_first_proof_outward_partner_eligible } set_country_flag = africa_first_proof_outward_partner_eligible }
+	if = { limit = { has_global_flag = africa_host_transfer_first_proof_partial_result } set_country_flag = africa_first_proof_partial_result }
+	if = { limit = { has_global_flag = africa_host_transfer_first_proof_pending } set_country_flag = africa_first_proof_pending }
+	if = { limit = { has_global_flag = africa_host_transfer_first_proof_primary_semantic_valid } set_country_flag = africa_first_proof_primary_semantic_valid }
+	if = { limit = { has_global_flag = africa_host_transfer_first_proof_primary_target_eligible } set_country_flag = africa_first_proof_primary_target_eligible }
+	if = { limit = { has_global_flag = africa_host_transfer_first_proof_profile_initialized } set_country_flag = africa_first_proof_profile_initialized }
+	if = { limit = { has_global_flag = africa_host_transfer_first_proof_recovered } set_country_flag = africa_first_proof_recovered }
+	if = { limit = { has_global_flag = africa_host_transfer_first_proof_recovered_under_oversight } set_country_flag = africa_first_proof_recovered_under_oversight }
+	if = { limit = { has_global_flag = africa_host_transfer_first_proof_recovered_with_memory } set_country_flag = africa_first_proof_recovered_with_memory }
+	if = { limit = { has_global_flag = africa_host_transfer_first_proof_recovery_contract_active } set_country_flag = africa_first_proof_recovery_contract_active }
+	if = { limit = { has_global_flag = africa_host_transfer_first_proof_recovery_partial_ready } set_country_flag = africa_first_proof_recovery_partial_ready }
+	if = { limit = { has_global_flag = africa_host_transfer_first_proof_recovery_ready } set_country_flag = africa_first_proof_recovery_ready }
+	if = { limit = { has_global_flag = africa_host_transfer_first_proof_recovery_resolved_without_full } set_country_flag = africa_first_proof_recovery_resolved_without_full }
+	if = { limit = { has_global_flag = africa_host_transfer_first_proof_recovery_route_durable } set_country_flag = africa_first_proof_recovery_route_durable }
+	if = { limit = { has_global_flag = africa_host_transfer_first_proof_recovery_target_eligible } set_country_flag = africa_first_proof_recovery_target_eligible }
+	if = { limit = { has_global_flag = africa_host_transfer_first_proof_recovery_target_registered } set_country_flag = africa_first_proof_recovery_target_registered }
+	if = { limit = { has_global_flag = africa_host_transfer_first_proof_reform_durable } set_country_flag = africa_first_proof_reform_durable }
+	if = { limit = { has_global_flag = africa_host_transfer_first_proof_reform_eligible } set_country_flag = africa_first_proof_reform_eligible }
+	if = { limit = { has_global_flag = africa_host_transfer_first_proof_requires_all_regions } set_country_flag = africa_first_proof_requires_all_regions }
+	if = { limit = { has_global_flag = africa_host_transfer_first_proof_requires_domestic_settlement } set_country_flag = africa_first_proof_requires_domestic_settlement }
+	if = { limit = { has_global_flag = africa_host_transfer_first_proof_requires_home_corridor } set_country_flag = africa_first_proof_requires_home_corridor }
+	if = { limit = { has_global_flag = africa_host_transfer_first_proof_requires_no_coercion } set_country_flag = africa_first_proof_requires_no_coercion }
+	if = { limit = { has_global_flag = africa_host_transfer_first_proof_requires_outward_partner } set_country_flag = africa_first_proof_requires_outward_partner }
+	if = { limit = { has_global_flag = africa_host_transfer_first_proof_requires_primary_action } set_country_flag = africa_first_proof_requires_primary_action }
+	if = { limit = { has_global_flag = africa_host_transfer_first_proof_requires_reform } set_country_flag = africa_first_proof_requires_reform }
+	if = { limit = { has_global_flag = africa_host_transfer_first_proof_requires_regional_consent } set_country_flag = africa_first_proof_requires_regional_consent }
+	if = { limit = { has_global_flag = africa_host_transfer_first_proof_requires_sovereignty } set_country_flag = africa_first_proof_requires_sovereignty }
+	if = { limit = { has_global_flag = africa_host_transfer_first_proof_same_overlay_recovery_target } set_country_flag = africa_first_proof_same_overlay_recovery_target }
+	if = { limit = { has_global_flag = africa_host_transfer_first_proof_sierra_leone_colony_seat } set_country_flag = africa_first_proof_sierra_leone_colony_seat }
+	if = { limit = { has_global_flag = africa_host_transfer_first_proof_sierra_leone_protectorate_seat } set_country_flag = africa_first_proof_sierra_leone_protectorate_seat }
+	if = { limit = { has_global_flag = africa_host_transfer_first_proof_south_africa_constitutional_route } set_country_flag = africa_first_proof_south_africa_constitutional_route }
+	if = { limit = { has_global_flag = africa_host_transfer_first_proof_south_africa_wartime_route } set_country_flag = africa_first_proof_south_africa_wartime_route }
+	if = { limit = { has_global_flag = africa_host_transfer_first_proof_sovereignty_breached } set_country_flag = africa_first_proof_sovereignty_breached }
+	if = { limit = { has_global_flag = africa_host_transfer_first_proof_sovereignty_durable } set_country_flag = africa_first_proof_sovereignty_durable }
+	if = { limit = { has_global_flag = africa_host_transfer_first_proof_sovereignty_eligible } set_country_flag = africa_first_proof_sovereignty_eligible }
+	if = { limit = { has_global_flag = africa_host_transfer_first_proof_sovereignty_host_scope } set_country_flag = africa_first_proof_sovereignty_host_scope }
+	if = { limit = { has_global_flag = africa_host_transfer_first_proof_sovereignty_semantic_valid } set_country_flag = africa_first_proof_sovereignty_semantic_valid }
+	if = { limit = { has_global_flag = africa_host_transfer_first_proof_succeeded } set_country_flag = africa_first_proof_succeeded }
+	if = { limit = { has_global_flag = africa_host_transfer_first_proof_success_target } set_country_flag = africa_first_proof_success_target }
+	if = { limit = { has_global_flag = africa_host_transfer_first_proof_togo_british_mandate_seat } set_country_flag = africa_first_proof_togo_british_mandate_seat }
+	if = { limit = { has_global_flag = africa_host_transfer_first_proof_togo_french_mandate_seat } set_country_flag = africa_first_proof_togo_french_mandate_seat }
+	if = { limit = { has_global_flag = africa_host_transfer_first_proof_uganda_ankole_busoga_seat } set_country_flag = africa_first_proof_uganda_ankole_busoga_seat }
+	if = { limit = { has_global_flag = africa_host_transfer_first_proof_uganda_buganda_seat } set_country_flag = africa_first_proof_uganda_buganda_seat }
+	if = { limit = { has_global_flag = africa_host_transfer_first_proof_uganda_bunyoro_seat } set_country_flag = africa_first_proof_uganda_bunyoro_seat }
+}
+
+# COUNTRY scope on the successor. World-order and Scramble progression is
+# restored only when the predecessor had actually opened that machine.
+africa_host_transfer_restore_world_order_state = {
+	if = {
+		limit = { has_global_flag = africa_host_transfer_scramble_state_machine_initialised }
+		set_country_flag = africa_scramble_state_machine_initialised
+		set_variable = { africa_scramble_phase = global.africa_host_transfer_scramble_phase }
+		set_variable = { africa_scramble_participant_count = global.africa_host_transfer_scramble_participant_count }
+		set_variable = { africa_scramble_recognition_count = global.africa_host_transfer_scramble_recognition_count }
+		set_variable = { africa_scramble_conditional_recognition_count = global.africa_host_transfer_scramble_conditional_recognition_count }
+		set_variable = { africa_scramble_sanction_count = global.africa_host_transfer_scramble_sanction_count }
+		set_variable = { africa_scramble_ultimatum_count = global.africa_host_transfer_scramble_ultimatum_count }
+		set_variable = { africa_scramble_expedition_count = global.africa_host_transfer_scramble_expedition_count }
+		set_variable = { africa_scramble_expedition_actor_count = global.africa_host_transfer_scramble_expedition_actor_count }
+		set_variable = { africa_scramble_coalition_break_count = global.africa_host_transfer_scramble_coalition_break_count }
+		set_variable = { africa_scramble_settlement_score = global.africa_host_transfer_scramble_settlement_score }
+		set_variable = { africa_scramble_pressure = global.africa_host_transfer_scramble_pressure }
+		set_variable = { africa_scramble_class_pressure = global.africa_host_transfer_scramble_class_pressure }
+		set_variable = { africa_scramble_integration_burden = global.africa_host_transfer_scramble_integration_burden }
+		set_variable = { africa_scramble_former_colonial_count = global.africa_host_transfer_scramble_former_colonial_count }
+		set_variable = { africa_scramble_ideological_rival_count = global.africa_host_transfer_scramble_ideological_rival_count }
+		set_variable = { africa_scramble_resource_exposure_count = global.africa_host_transfer_scramble_resource_exposure_count }
+		set_variable = { africa_scramble_continent_unifier_fear_count = global.africa_host_transfer_scramble_continent_unifier_fear_count }
+		set_variable = { africa_scramble_south_africa_allied_count = global.africa_host_transfer_scramble_south_africa_allied_count }
+		set_variable = { africa_scramble_coalition_member_count = global.africa_host_transfer_scramble_coalition_member_count }
+		set_variable = { africa_world_package_candidate_count = global.africa_host_transfer_world_package_candidate_count }
+		set_variable = { africa_world_packages_installed_count = global.africa_host_transfer_world_packages_installed_count }
+		set_variable = { africa_world_packages_settled_count = global.africa_host_transfer_world_packages_settled_count }
+		set_variable = { africa_world_packages_sovereign_complete_count = global.africa_host_transfer_world_packages_sovereign_complete_count }
+		set_variable = { africa_world_terminal_resolved_count = global.africa_host_transfer_world_terminal_resolved_count }
+		set_variable = { africa_world_package_roster_disposition_count = global.africa_host_transfer_world_package_roster_disposition_count }
+		set_variable = { africa_world_package_pending_count = global.africa_host_transfer_world_package_pending_count }
+		set_variable = { africa_world_package_absent_count = global.africa_host_transfer_world_package_absent_count }
+		set_variable = { africa_world_package_resolved_count = global.africa_host_transfer_world_package_resolved_count }
+		set_variable = { africa_world_sponsorship_overextension = global.africa_host_transfer_world_sponsorship_overextension }
+		set_variable = { africa_world_order_route = global.africa_host_transfer_world_order_route }
+		clear_array = gods_of_africa_candidate_registry
+		set_variable = { gods_of_africa_inherited_history_generation = global.africa_host_transfer_old_generation }
+		set_variable = { gods_of_africa_inherited_history_origin_host_id = global.africa_host_transfer_origin_host_id }
+		if = {
+			limit = { has_variable = global.africa_host_transfer_gods_of_africa_candidate_count }
+			set_variable = { gods_of_africa_candidate_count = global.africa_host_transfer_gods_of_africa_candidate_count }
+		}
+		if = {
+			limit = { has_global_flag = africa_host_transfer_gods_of_africa_candidate_census_complete }
+			set_country_flag = gods_of_africa_candidate_census_complete
+		}
+		for_each_scope_loop = {
+			array = global.africa_host_transfer_gods_of_africa_candidate_registry
+			event_target:africa_host_transfer_new_host = { add_to_array = { array = gods_of_africa_candidate_registry value = PREV } }
+		}
+		if = { limit = { has_global_flag = africa_host_transfer_world_package_roster_documented } set_country_flag = africa_world_package_roster_documented }
+		if = { limit = { has_global_flag = africa_host_transfer_world_package_roster_partial } set_country_flag = africa_world_package_roster_partial }
+		if = { limit = { has_global_flag = africa_host_transfer_world_package_roster_absence_documented } set_country_flag = africa_world_package_roster_absence_documented }
+		if = { limit = { has_global_flag = africa_host_transfer_world_package_roster_complete } set_country_flag = africa_world_package_roster_complete }
+		if = { limit = { has_global_flag = africa_host_transfer_scramble_interest_census_complete } set_country_flag = africa_scramble_interest_census_complete }
+		if = { limit = { has_global_flag = africa_host_transfer_scramble_response_roster_cleaned } set_country_flag = africa_scramble_response_roster_cleaned }
+		if = { limit = { has_global_flag = africa_host_transfer_scramble_aftermath_materials_applied } set_country_flag = africa_scramble_aftermath_materials_applied }
+		if = { limit = { has_global_flag = africa_host_transfer_scramble_expedition_host_cost_applied } set_country_flag = africa_scramble_expedition_host_cost_applied }
+		if = { limit = { has_global_flag = africa_host_transfer_scramble_expedition_coalition_logged } set_country_flag = africa_scramble_expedition_coalition_logged }
+		if = { limit = { has_global_flag = africa_host_transfer_scramble_defence_material_demanded } set_country_flag = africa_scramble_defence_material_demanded }
+		if = { limit = { has_global_flag = africa_host_transfer_scramble_coalition_phase } set_country_flag = africa_scramble_coalition_phase }
+		if = { limit = { has_global_flag = africa_host_transfer_scramble_intervention_phase } set_country_flag = africa_scramble_intervention_phase }
+		if = { limit = { has_global_flag = africa_host_transfer_scramble_recognition_phase } set_country_flag = africa_scramble_recognition_phase }
+		if = { limit = { has_global_flag = africa_host_transfer_scramble_aftermath_phase } set_country_flag = africa_scramble_aftermath_phase }
+		if = { limit = { has_global_flag = africa_host_transfer_scramble_response_settled } set_country_flag = africa_scramble_response_settled }
+		if = { limit = { has_global_flag = africa_host_transfer_scramble_defensive_war_active } set_country_flag = africa_scramble_defensive_war_active }
+		if = { limit = { has_global_flag = africa_host_transfer_scramble_defensive_war_won } set_country_flag = africa_scramble_defensive_war_won }
+		if = { limit = { has_global_flag = africa_host_transfer_scramble_armistice_signed } set_country_flag = africa_scramble_armistice_signed }
+		if = { limit = { has_global_flag = africa_host_transfer_scramble_expedition_launched } set_country_flag = africa_scramble_expedition_launched }
+	}
+}
+
+# Any scope. Clear only the transfer staging receipts; the successor has already copied them.
+africa_host_transfer_clear_route_staging = {
+	clr_global_flag = africa_host_transfer_scramble_state_machine_initialised
+	clr_global_flag = africa_host_transfer_gods_of_africa_candidate_census_complete
+	clr_global_flag = africa_host_transfer_previous_host_had_continental_tree
+	clr_global_flag = africa_host_transfer_world_package_roster_documented
+	clr_global_flag = africa_host_transfer_world_package_roster_partial
+	clr_global_flag = africa_host_transfer_world_package_roster_absence_documented
+	clr_global_flag = africa_host_transfer_world_package_roster_complete
+	clr_global_flag = africa_host_transfer_scramble_interest_census_complete
+	clr_global_flag = africa_host_transfer_scramble_response_roster_cleaned
+	clr_global_flag = africa_host_transfer_scramble_aftermath_materials_applied
+	clr_global_flag = africa_host_transfer_scramble_expedition_host_cost_applied
+	clr_global_flag = africa_host_transfer_scramble_expedition_coalition_logged
+	clr_global_flag = africa_host_transfer_scramble_defence_material_demanded
+	clr_global_flag = africa_host_transfer_scramble_coalition_phase
+	clr_global_flag = africa_host_transfer_scramble_intervention_phase
+	clr_global_flag = africa_host_transfer_scramble_recognition_phase
+	clr_global_flag = africa_host_transfer_scramble_aftermath_phase
+	clr_global_flag = africa_host_transfer_scramble_response_settled
+	clr_global_flag = africa_host_transfer_scramble_defensive_war_active
+	clr_global_flag = africa_host_transfer_scramble_defensive_war_won
+	clr_global_flag = africa_host_transfer_scramble_armistice_signed
+	clr_global_flag = africa_host_transfer_scramble_expedition_launched
+	clr_global_flag = africa_host_transfer_first_proof_active
+	clr_global_flag = africa_host_transfer_first_proof_actor_semantic_valid
+	clr_global_flag = africa_host_transfer_first_proof_aid_action_completed
+	clr_global_flag = africa_host_transfer_first_proof_all_required_regions_credited
+	clr_global_flag = africa_host_transfer_first_proof_auxiliary_cancelled_result
+	clr_global_flag = africa_host_transfer_first_proof_auxiliary_evidence_unresolved
+	clr_global_flag = africa_host_transfer_first_proof_auxiliary_failed_result
+	clr_global_flag = africa_host_transfer_first_proof_auxiliary_partial_result
+	clr_global_flag = africa_host_transfer_first_proof_auxiliary_unresolved_target
+	clr_global_flag = africa_host_transfer_first_proof_cameroon_british_mandate_seat
+	clr_global_flag = africa_host_transfer_first_proof_cameroon_french_mandate_seat
+	clr_global_flag = africa_host_transfer_first_proof_capital_rail_route
+	clr_global_flag = africa_host_transfer_first_proof_coercion_breached
+	clr_global_flag = africa_host_transfer_first_proof_comoros_anjouan_seat
+	clr_global_flag = africa_host_transfer_first_proof_comoros_grande_comore_seat
+	clr_global_flag = africa_host_transfer_first_proof_comoros_mayotte_seat
+	clr_global_flag = africa_host_transfer_first_proof_comoros_moheli_seat
+	clr_global_flag = africa_host_transfer_first_proof_comoros_transport_operational
+	clr_global_flag = africa_host_transfer_first_proof_completed_with_full_evidence
+	clr_global_flag = africa_host_transfer_first_proof_corridor_actor_eligible
+	clr_global_flag = africa_host_transfer_first_proof_corridor_actor_semantic_valid
+	clr_global_flag = africa_host_transfer_first_proof_corridor_breached
+	clr_global_flag = africa_host_transfer_first_proof_credit_domestic_settlement
+	clr_global_flag = africa_host_transfer_first_proof_credit_home_corridor
+	clr_global_flag = africa_host_transfer_first_proof_credit_no_coercion
+	clr_global_flag = africa_host_transfer_first_proof_credit_outward_partner
+	clr_global_flag = africa_host_transfer_first_proof_credit_primary_action
+	clr_global_flag = africa_host_transfer_first_proof_credit_reform
+	clr_global_flag = africa_host_transfer_first_proof_credit_regional_consent
+	clr_global_flag = africa_host_transfer_first_proof_credit_sovereignty
+	clr_global_flag = africa_host_transfer_first_proof_domestic_settlement_durable
+	clr_global_flag = africa_host_transfer_first_proof_domestic_settlement_eligible
+	clr_global_flag = africa_host_transfer_first_proof_equatorial_guinea_bioko_seat
+	clr_global_flag = africa_host_transfer_first_proof_equatorial_guinea_rio_muni_seat
+	clr_global_flag = africa_host_transfer_first_proof_eritrea_highland_seat
+	clr_global_flag = africa_host_transfer_first_proof_eritrea_lowland_seat
+	clr_global_flag = africa_host_transfer_first_proof_failed
+	clr_global_flag = africa_host_transfer_first_proof_failed_result
+	clr_global_flag = africa_host_transfer_first_proof_failure_remembered
+	clr_global_flag = africa_host_transfer_first_proof_gold_coast_asante_seat
+	clr_global_flag = africa_host_transfer_first_proof_gold_coast_northern_authority_seat
+	clr_global_flag = africa_host_transfer_first_proof_guarantee_action_completed
+	clr_global_flag = africa_host_transfer_first_proof_home_corridor_durable
+	clr_global_flag = africa_host_transfer_first_proof_land_settlement_action_completed
+	clr_global_flag = africa_host_transfer_first_proof_ledger_active
+	clr_global_flag = africa_host_transfer_first_proof_ledger_ready
+	clr_global_flag = africa_host_transfer_first_proof_live_actors_valid
+	clr_global_flag = africa_host_transfer_first_proof_live_corridors_valid
+	clr_global_flag = africa_host_transfer_first_proof_live_primary_target_valid
+	clr_global_flag = africa_host_transfer_first_proof_live_regions_valid
+	clr_global_flag = africa_host_transfer_first_proof_live_sovereignty_valid
+	clr_global_flag = africa_host_transfer_first_proof_no_coercion_durable
+	clr_global_flag = africa_host_transfer_first_proof_no_coercion_eligible
+	clr_global_flag = africa_host_transfer_first_proof_outward_partner_eligible
+	clr_global_flag = africa_host_transfer_first_proof_partial_result
+	clr_global_flag = africa_host_transfer_first_proof_pending
+	clr_global_flag = africa_host_transfer_first_proof_primary_semantic_valid
+	clr_global_flag = africa_host_transfer_first_proof_primary_target_eligible
+	clr_global_flag = africa_host_transfer_first_proof_profile_initialized
+	clr_global_flag = africa_host_transfer_first_proof_recovered
+	clr_global_flag = africa_host_transfer_first_proof_recovered_under_oversight
+	clr_global_flag = africa_host_transfer_first_proof_recovered_with_memory
+	clr_global_flag = africa_host_transfer_first_proof_recovery_contract_active
+	clr_global_flag = africa_host_transfer_first_proof_recovery_partial_ready
+	clr_global_flag = africa_host_transfer_first_proof_recovery_ready
+	clr_global_flag = africa_host_transfer_first_proof_recovery_resolved_without_full
+	clr_global_flag = africa_host_transfer_first_proof_recovery_route_durable
+	clr_global_flag = africa_host_transfer_first_proof_recovery_target_eligible
+	clr_global_flag = africa_host_transfer_first_proof_recovery_target_registered
+	clr_global_flag = africa_host_transfer_first_proof_reform_durable
+	clr_global_flag = africa_host_transfer_first_proof_reform_eligible
+	clr_global_flag = africa_host_transfer_first_proof_requires_all_regions
+	clr_global_flag = africa_host_transfer_first_proof_requires_domestic_settlement
+	clr_global_flag = africa_host_transfer_first_proof_requires_home_corridor
+	clr_global_flag = africa_host_transfer_first_proof_requires_no_coercion
+	clr_global_flag = africa_host_transfer_first_proof_requires_outward_partner
+	clr_global_flag = africa_host_transfer_first_proof_requires_primary_action
+	clr_global_flag = africa_host_transfer_first_proof_requires_reform
+	clr_global_flag = africa_host_transfer_first_proof_requires_regional_consent
+	clr_global_flag = africa_host_transfer_first_proof_requires_sovereignty
+	clr_global_flag = africa_host_transfer_first_proof_same_overlay_recovery_target
+	clr_global_flag = africa_host_transfer_first_proof_sierra_leone_colony_seat
+	clr_global_flag = africa_host_transfer_first_proof_sierra_leone_protectorate_seat
+	clr_global_flag = africa_host_transfer_first_proof_south_africa_constitutional_route
+	clr_global_flag = africa_host_transfer_first_proof_south_africa_wartime_route
+	clr_global_flag = africa_host_transfer_first_proof_sovereignty_breached
+	clr_global_flag = africa_host_transfer_first_proof_sovereignty_durable
+	clr_global_flag = africa_host_transfer_first_proof_sovereignty_eligible
+	clr_global_flag = africa_host_transfer_first_proof_sovereignty_host_scope
+	clr_global_flag = africa_host_transfer_first_proof_sovereignty_semantic_valid
+	clr_global_flag = africa_host_transfer_first_proof_succeeded
+	clr_global_flag = africa_host_transfer_first_proof_success_target
+	clr_global_flag = africa_host_transfer_first_proof_togo_british_mandate_seat
+	clr_global_flag = africa_host_transfer_first_proof_togo_french_mandate_seat
+	clr_global_flag = africa_host_transfer_first_proof_uganda_ankole_busoga_seat
+	clr_global_flag = africa_host_transfer_first_proof_uganda_buganda_seat
+	clr_global_flag = africa_host_transfer_first_proof_uganda_bunyoro_seat
+	clear_variable = global.africa_host_transfer_first_proof_action_slot
+	clear_variable = global.africa_host_transfer_first_proof_actor_credit_count
+	clear_variable = global.africa_host_transfer_first_proof_additional_action_id_1
+	clear_variable = global.africa_host_transfer_first_proof_additional_action_id_2
+	clear_variable = global.africa_host_transfer_first_proof_additional_action_id_3
+	clear_variable = global.africa_host_transfer_first_proof_additional_action_id_4
+	clear_variable = global.africa_host_transfer_first_proof_alternate_primary_action_id
+	clear_variable = global.africa_host_transfer_first_proof_corridor_partner_credit_count
+	clear_variable = global.africa_host_transfer_first_proof_corridor_state_credit_count
+	clear_variable = global.africa_host_transfer_first_proof_failures
+	clear_variable = global.africa_host_transfer_first_proof_recovery_attempts
+	clear_variable = global.africa_host_transfer_first_proof_primary_action_id
+	clear_variable = global.africa_host_transfer_first_proof_profile_playbook
+	clear_variable = global.africa_host_transfer_first_proof_region_credit_count
+	clear_variable = global.africa_host_transfer_first_proof_required_actor_credits
+	clear_variable = global.africa_host_transfer_first_proof_required_corridor_credits
+	clear_variable = global.africa_host_transfer_first_proof_required_corridor_partner_credits
+	clear_variable = global.africa_host_transfer_first_proof_required_corridor_state_credits
+	clear_variable = global.africa_host_transfer_first_proof_required_region_credits
+	clear_variable = global.africa_host_transfer_scramble_phase
+	clear_variable = global.africa_host_transfer_scramble_participant_count
+	clear_variable = global.africa_host_transfer_scramble_recognition_count
+	clear_variable = global.africa_host_transfer_scramble_conditional_recognition_count
+	clear_variable = global.africa_host_transfer_scramble_sanction_count
+	clear_variable = global.africa_host_transfer_scramble_ultimatum_count
+	clear_variable = global.africa_host_transfer_scramble_expedition_count
+	clear_variable = global.africa_host_transfer_scramble_expedition_actor_count
+	clear_variable = global.africa_host_transfer_scramble_coalition_break_count
+	clear_variable = global.africa_host_transfer_scramble_settlement_score
+	clear_variable = global.africa_host_transfer_scramble_pressure
+	clear_variable = global.africa_host_transfer_scramble_class_pressure
+	clear_variable = global.africa_host_transfer_scramble_integration_burden
+	clear_variable = global.africa_host_transfer_scramble_former_colonial_count
+	clear_variable = global.africa_host_transfer_scramble_ideological_rival_count
+	clear_variable = global.africa_host_transfer_scramble_resource_exposure_count
+	clear_variable = global.africa_host_transfer_scramble_continent_unifier_fear_count
+	clear_variable = global.africa_host_transfer_scramble_south_africa_allied_count
+	clear_variable = global.africa_host_transfer_scramble_coalition_member_count
+	clear_variable = global.africa_host_transfer_world_package_candidate_count
+	clear_variable = global.africa_host_transfer_world_packages_installed_count
+	clear_variable = global.africa_host_transfer_world_packages_settled_count
+	clear_variable = global.africa_host_transfer_world_packages_sovereign_complete_count
+	clear_variable = global.africa_host_transfer_world_terminal_resolved_count
+	clear_variable = global.africa_host_transfer_world_package_roster_disposition_count
+	clear_variable = global.africa_host_transfer_world_package_pending_count
+	clear_variable = global.africa_host_transfer_world_package_absent_count
+	clear_variable = global.africa_host_transfer_world_package_resolved_count
+	clear_variable = global.africa_host_transfer_world_sponsorship_overextension
+	clear_variable = global.africa_host_transfer_world_order_route
+	clear_variable = global.africa_host_transfer_gods_of_africa_candidate_count
+}
+
+# COUNTRY scope on the old host. Every copied array is a bounded ledger owned by
+# the host; no all-country iteration is used.
+africa_host_transfer_stage_arrays = {
+	clear_array = global.africa_host_transfer_relationship_countries
+	clear_array = global.africa_host_transfer_gods_of_africa_candidate_registry
+	clear_array = global.africa_host_transfer_protected_countries
+	clear_array = global.africa_host_transfer_associate_countries
+	clear_array = global.africa_host_transfer_chartered_countries
+	clear_array = global.africa_host_transfer_autonomous_federal_countries
+	clear_array = global.africa_host_transfer_integrated_countries
+	clear_array = global.africa_host_transfer_resistant_countries
+	clear_array = global.africa_host_transfer_leaving_countries
+	clear_array = global.africa_host_transfer_rival_bloc_countries
+	clear_array = global.africa_host_transfer_occupied_settlement_countries
+	clear_array = global.africa_host_transfer_selected_targets
+	clear_array = global.africa_host_transfer_host_action_targets
+	clear_array = global.africa_host_transfer_active_dossiers
+	clear_array = global.africa_host_transfer_living_core_projects
+	clear_array = global.africa_host_transfer_active_congress_regions
+	clear_array = global.africa_host_transfer_active_obligations
+	clear_array = global.africa_host_transfer_warning_ledger
+	clear_array = global.africa_host_transfer_peace_exemption_countries
+	clear_array = global.africa_host_transfer_peace_exemption_states
+	clear_array = global.africa_host_transfer_selected_action_state_candidates
+	clear_array = global.africa_host_transfer_selected_action_state_targets
+	clear_array = global.africa_host_transfer_action_state_targets
+	clear_array = global.africa_host_transfer_world_constituent_countries
+	clear_array = global.africa_host_transfer_world_constituent_consented_countries
+	clear_array = global.africa_host_transfer_world_constituent_refused_countries
+	clear_array = global.africa_host_transfer_world_constituent_coerced_countries
+	clear_array = global.africa_host_transfer_world_constituent_withdrawn_countries
+	clear_array = global.africa_host_transfer_world_constituent_package_actors
+	clear_array = global.africa_host_transfer_world_package_actors
+	clear_array = global.africa_host_transfer_world_package_candidates
+	clear_array = global.africa_host_transfer_world_package_heartland_states
+	clear_array = global.africa_host_transfer_world_package_pending_continents
+	clear_array = global.africa_host_transfer_world_package_resolved_continents
+	clear_array = global.africa_host_transfer_world_package_successor_candidates
+	clear_array = global.africa_host_transfer_world_sponsorship_targets
+	clear_array = global.africa_host_transfer_world_war_joined_partners
+	clear_array = global.africa_host_transfer_world_war_registered_partners
+	clear_array = global.africa_host_transfer_scramble_participants
+	clear_array = global.africa_host_transfer_scramble_former_colonial_interests
+	clear_array = global.africa_host_transfer_scramble_ideological_rivals
+	clear_array = global.africa_host_transfer_scramble_resource_exposure_interests
+	clear_array = global.africa_host_transfer_scramble_continent_unifier_fears
+	clear_array = global.africa_host_transfer_scramble_south_africa_allied_contacts
+	clear_array = global.africa_host_transfer_scramble_coalition_members
+	clear_array = global.africa_host_transfer_world_package_absent_continents
+	clear_array = global.africa_host_transfer_first_proof_marked_country_scopes
+	clear_array = global.africa_host_transfer_first_proof_marked_state_scopes
+	clear_array = global.africa_host_transfer_first_proof_actor_credits
+	clear_array = global.africa_host_transfer_first_proof_corridor_actor_credits
+	clear_array = global.africa_host_transfer_first_proof_primary_target_credits
+	clear_array = global.africa_host_transfer_first_proof_sovereignty_actor_credits
+	clear_array = global.africa_host_transfer_first_proof_region_state_credits
+	clear_array = global.africa_host_transfer_first_proof_corridor_credits
+	for_each_scope_loop = {
+		array = africa_relationship_countries
+		ROOT = { add_to_array = { array = global.africa_host_transfer_relationship_countries value = PREV } }
+	}
+	for_each_scope_loop = {
+		array = gods_of_africa_candidate_registry
+		ROOT = { add_to_array = { array = global.africa_host_transfer_gods_of_africa_candidate_registry value = PREV } }
+	}
+	for_each_scope_loop = {
+		array = africa_protected_countries
+		ROOT = { add_to_array = { array = global.africa_host_transfer_protected_countries value = PREV } }
+	}
+	for_each_scope_loop = {
+		array = africa_associate_countries
+		ROOT = { add_to_array = { array = global.africa_host_transfer_associate_countries value = PREV } }
+	}
+	for_each_scope_loop = {
+		array = africa_chartered_countries
+		ROOT = { add_to_array = { array = global.africa_host_transfer_chartered_countries value = PREV } }
+	}
+	for_each_scope_loop = {
+		array = africa_autonomous_federal_countries
+		ROOT = { add_to_array = { array = global.africa_host_transfer_autonomous_federal_countries value = PREV } }
+	}
+	for_each_scope_loop = {
+		array = africa_integrated_countries
+		ROOT = { add_to_array = { array = global.africa_host_transfer_integrated_countries value = PREV } }
+	}
+	for_each_scope_loop = {
+		array = africa_resistant_countries
+		ROOT = { add_to_array = { array = global.africa_host_transfer_resistant_countries value = PREV } }
+	}
+	for_each_scope_loop = {
+		array = africa_leaving_countries
+		ROOT = { add_to_array = { array = global.africa_host_transfer_leaving_countries value = PREV } }
+	}
+	for_each_scope_loop = {
+		array = africa_rival_bloc_countries
+		ROOT = { add_to_array = { array = global.africa_host_transfer_rival_bloc_countries value = PREV } }
+	}
+	for_each_scope_loop = {
+		array = africa_occupied_settlement_countries
+		ROOT = { add_to_array = { array = global.africa_host_transfer_occupied_settlement_countries value = PREV } }
+	}
+	for_each_scope_loop = {
+		array = africa_selected_targets
+		ROOT = { add_to_array = { array = global.africa_host_transfer_selected_targets value = PREV } }
+	}
+	for_each_scope_loop = {
+		array = africa_host_action_targets
+		ROOT = { add_to_array = { array = global.africa_host_transfer_host_action_targets value = PREV } }
+	}
+	for_each_scope_loop = {
+		array = africa_active_dossiers
+		ROOT = { add_to_array = { array = global.africa_host_transfer_active_dossiers value = PREV } }
+	}
+	for_each_scope_loop = {
+		array = africa_living_core_projects
+		ROOT = { add_to_array = { array = global.africa_host_transfer_living_core_projects value = PREV } }
+	}
+	for_each_scope_loop = {
+		array = africa_active_congress_regions
+		ROOT = { add_to_array = { array = global.africa_host_transfer_active_congress_regions value = PREV } }
+	}
+	for_each_scope_loop = {
+		array = africa_active_obligations
+		ROOT = { add_to_array = { array = global.africa_host_transfer_active_obligations value = PREV } }
+	}
+	for_each_scope_loop = {
+		array = africa_warning_ledger
+		ROOT = { add_to_array = { array = global.africa_host_transfer_warning_ledger value = PREV } }
+	}
+	for_each_scope_loop = {
+		array = africa_selected_action_state_candidates
+		ROOT = { add_to_array = { array = global.africa_host_transfer_selected_action_state_candidates value = PREV } }
+	}
+	for_each_scope_loop = {
+		array = africa_selected_action_state_targets
+		ROOT = { add_to_array = { array = global.africa_host_transfer_selected_action_state_targets value = PREV } }
+	}
+	for_each_scope_loop = {
+		array = africa_action_state_targets
+		ROOT = { add_to_array = { array = global.africa_host_transfer_action_state_targets value = PREV } }
+	}
+	for_each_scope_loop = {
+		array = africa_world_constituent_countries
+		ROOT = { add_to_array = { array = global.africa_host_transfer_world_constituent_countries value = PREV } }
+	}
+	for_each_scope_loop = {
+		array = africa_world_constituent_consented_countries
+		ROOT = { add_to_array = { array = global.africa_host_transfer_world_constituent_consented_countries value = PREV } }
+	}
+	for_each_scope_loop = {
+		array = africa_world_constituent_refused_countries
+		ROOT = { add_to_array = { array = global.africa_host_transfer_world_constituent_refused_countries value = PREV } }
+	}
+	for_each_scope_loop = {
+		array = africa_world_constituent_coerced_countries
+		ROOT = { add_to_array = { array = global.africa_host_transfer_world_constituent_coerced_countries value = PREV } }
+	}
+	for_each_scope_loop = {
+		array = africa_world_constituent_withdrawn_countries
+		ROOT = { add_to_array = { array = global.africa_host_transfer_world_constituent_withdrawn_countries value = PREV } }
+	}
+	for_each_scope_loop = {
+		array = africa_world_constituent_package_actors
+		ROOT = { add_to_array = { array = global.africa_host_transfer_world_constituent_package_actors value = PREV } }
+	}
+	for_each_scope_loop = {
+		array = africa_world_package_actors
+		ROOT = { add_to_array = { array = global.africa_host_transfer_world_package_actors value = PREV } }
+	}
+	for_each_scope_loop = {
+		array = africa_world_package_candidates
+		ROOT = { add_to_array = { array = global.africa_host_transfer_world_package_candidates value = PREV } }
+	}
+	for_each_scope_loop = {
+		array = africa_world_package_heartland_states
+		ROOT = { add_to_array = { array = global.africa_host_transfer_world_package_heartland_states value = PREV } }
+	}
+	for_each_scope_loop = {
+		array = africa_world_package_pending_continents
+		ROOT = { add_to_array = { array = global.africa_host_transfer_world_package_pending_continents value = PREV } }
+	}
+	for_each_scope_loop = {
+		array = africa_world_package_resolved_continents
+		ROOT = { add_to_array = { array = global.africa_host_transfer_world_package_resolved_continents value = PREV } }
+	}
+	for_each_scope_loop = {
+		array = africa_world_package_successor_candidates
+		ROOT = { add_to_array = { array = global.africa_host_transfer_world_package_successor_candidates value = PREV } }
+	}
+	for_each_scope_loop = {
+		array = africa_world_sponsorship_targets
+		ROOT = { add_to_array = { array = global.africa_host_transfer_world_sponsorship_targets value = PREV } }
+	}
+	for_each_scope_loop = {
+		array = africa_world_war_joined_partners
+		ROOT = { add_to_array = { array = global.africa_host_transfer_world_war_joined_partners value = PREV } }
+	}
+	for_each_scope_loop = {
+		array = africa_world_war_registered_partners
+		ROOT = { add_to_array = { array = global.africa_host_transfer_world_war_registered_partners value = PREV } }
+	}
+	for_each_scope_loop = {
+		array = africa_scramble_participants
+		ROOT = { add_to_array = { array = global.africa_host_transfer_scramble_participants value = PREV } }
+	}
+	for_each_scope_loop = {
+		array = africa_scramble_former_colonial_interests
+		ROOT = { add_to_array = { array = global.africa_host_transfer_scramble_former_colonial_interests value = PREV } }
+	}
+	for_each_scope_loop = {
+		array = africa_scramble_ideological_rivals
+		ROOT = { add_to_array = { array = global.africa_host_transfer_scramble_ideological_rivals value = PREV } }
+	}
+	for_each_scope_loop = {
+		array = africa_scramble_resource_exposure_interests
+		ROOT = { add_to_array = { array = global.africa_host_transfer_scramble_resource_exposure_interests value = PREV } }
+	}
+	for_each_scope_loop = {
+		array = africa_scramble_continent_unifier_fears
+		ROOT = { add_to_array = { array = global.africa_host_transfer_scramble_continent_unifier_fears value = PREV } }
+	}
+	for_each_scope_loop = {
+		array = africa_scramble_south_africa_allied_contacts
+		ROOT = { add_to_array = { array = global.africa_host_transfer_scramble_south_africa_allied_contacts value = PREV } }
+	}
+	for_each_scope_loop = {
+		array = africa_scramble_coalition_members
+		ROOT = { add_to_array = { array = global.africa_host_transfer_scramble_coalition_members value = PREV } }
+	}
+	for_each_scope_loop = {
+		array = africa_world_package_absent_continents
+		ROOT = { add_to_array = { array = global.africa_host_transfer_world_package_absent_continents value = PREV } }
+	}
+	for_each_scope_loop = {
+		array = africa_first_proof_marked_country_scopes
+		ROOT = { add_to_array = { array = global.africa_host_transfer_first_proof_marked_country_scopes value = PREV } }
+	}
+	for_each_scope_loop = {
+		array = africa_first_proof_marked_state_scopes
+		ROOT = { add_to_array = { array = global.africa_host_transfer_first_proof_marked_state_scopes value = PREV } }
+	}
+	for_each_scope_loop = {
+		array = africa_first_proof_actor_credits
+		ROOT = { add_to_array = { array = global.africa_host_transfer_first_proof_actor_credits value = PREV } }
+	}
+	for_each_scope_loop = {
+		array = africa_first_proof_corridor_actor_credits
+		ROOT = { add_to_array = { array = global.africa_host_transfer_first_proof_corridor_actor_credits value = PREV } }
+	}
+	for_each_scope_loop = {
+		array = africa_first_proof_primary_target_credits
+		ROOT = { add_to_array = { array = global.africa_host_transfer_first_proof_primary_target_credits value = PREV } }
+	}
+	for_each_scope_loop = {
+		array = africa_first_proof_sovereignty_actor_credits
+		ROOT = { add_to_array = { array = global.africa_host_transfer_first_proof_sovereignty_actor_credits value = PREV } }
+	}
+	for_each_scope_loop = {
+		array = africa_first_proof_region_state_credits
+		ROOT = { add_to_array = { array = global.africa_host_transfer_first_proof_region_state_credits value = PREV } }
+	}
+	for_each_scope_loop = {
+		array = africa_first_proof_corridor_credits
+		ROOT = { add_to_array = { array = global.africa_host_transfer_first_proof_corridor_credits value = PREV } }
+	}
+
+	clear_array = global.africa_host_transfer_candidates
+	set_variable = { global.africa_host_transfer_candidate_count = constant:africa_value.zero }
+	for_each_scope_loop = {
+		array = africa_relationship_countries
+		if = {
+			limit = {
+				africa_host_transfer_designatable_candidate_is_valid = yes
+			}
+			ROOT = {
+				add_to_array = { array = global.africa_host_transfer_candidates value = PREV }
+				add_to_variable = { global.africa_host_transfer_candidate_count = constant:africa_value.one }
+			}
+		}
+	}
+}
+
+# COUNTRY scope on the old host. The on-annex bridge calls this while the host
+# still exists. A previously recorded constitutional designation can therefore
+# complete atomically and preserve completed focuses; otherwise the old owner is
+# cleared and the resolver receives a visible staged crisis.
+africa_begin_host_transfer = {
+	if = {
+		limit = {
+			africa_host_transfer_source_object_is_current = yes
+			NOT = { has_global_flag = africa_host_successor_consumed }
+			NOT = { has_global_flag = africa_host_transfer_pending }
+		}
+		ROOT = { save_global_event_target_as = africa_host_transfer_resolver }
+		save_global_event_target_as = africa_previous_host
+		set_global_flag = africa_host_transfer_pending
+		set_global_flag = africa_host_transfer_resolution_open
+		# Event 012 host transfer ends the Gods relationship generation owned by
+		# the departing unifier. Cancel it before the shared host pointer is
+		# cleared so every participant and scheduled clock is cleaned exactly once.
+		if = {
+			limit = {
+				OR = {
+					has_country_flag = gods_of_africa_recovery_open
+					has_country_flag = gods_of_africa_active
+					has_country_flag = gods_of_africa_consolidation_pending
+					has_country_flag = gods_of_africa_activation_clock_scheduled
+				}
+			}
+			gods_of_africa_cancel_on_unifier_loss = yes
+		}
+		africa_host_transfer_cancel_active_actions = yes
+		for_each_scope_loop = {
+			array = africa_relationship_countries
+			if = {
+				limit = { exists = yes africa_is_charter_subject_of_current_host = yes }
+				africa_release_member_from_continental_subject_status = yes
+			}
+		}
+		africa_host_transfer_stage_scalar_ledger = yes
+		africa_host_transfer_stage_first_proof_state = yes
+		africa_host_transfer_stage_arrays = yes
+		if = {
+			limit = { africa_host_transfer_designated_successor_is_valid = yes }
+			event_target:africa_host_transfer_designated_successor = { africa_host_transfer_complete_successor = yes }
+		}
+		else = {
+			clr_country_flag = africa_unifier_host
+			clr_country_flag = africa_host_commit_completed
+			if = {
+				limit = { has_event_target = africa_host }
+				clear_global_event_target = africa_host
+			}
+			event_target:africa_host_transfer_resolver = {
+				set_country_flag = africa_host_transfer_resolver
+				country_event = { id = chaosx.nr12.230 }
+			}
+		}
+	}
+}
+
+# COUNTRY scope on the successor host while ROOT is the second annexer. The
+# one-use continuity mandate is terminal after this loss: active ledgers are
+# closed, the global host pointer is cleared, and the project records an
+# explicit dissolution notice instead of silently retaining a dead scope.
+africa_host_transfer_record_terminal_loss = {
+	if = {
+		limit = {
+			africa_host_transfer_source_object_is_current = yes
+			has_global_flag = africa_host_successor_consumed
+		}
+		save_event_target_as = africa_previous_host
+		africa_host_transfer_cancel_active_actions = yes
+		for_each_scope_loop = {
+			array = africa_relationship_countries
+			if = {
+				limit = { exists = yes africa_is_charter_subject_of_current_host = yes }
+				africa_release_member_from_continental_subject_status = yes
+			}
+		}
+		clr_country_flag = africa_unifier_host
+		clr_country_flag = africa_host_commit_completed
+		clr_country_flag = africa_host_successor_received_mandate
+		clr_global_flag = africa_host_transfer_pending
+		clr_global_flag = africa_host_transfer_resolution_open
+		clr_global_flag = africa_host_transfer_suspended
+		if = {
+			limit = {
+				OR = {
+					has_country_flag = gods_of_africa_recovery_open
+					has_country_flag = gods_of_africa_active
+					has_country_flag = gods_of_africa_consolidation_pending
+					has_country_flag = gods_of_africa_activation_clock_scheduled
+				}
+			}
+			gods_of_africa_cancel_on_unifier_loss = yes
+		}
+		if = {
+			limit = { has_event_target = africa_host }
+			clear_global_event_target = africa_host
+		}
+		clr_global_flag = africa_event_active
+		set_global_flag = africa_event_resolved
+		set_global_flag = africa_host_transfer_terminal_after_successor_loss
+		set_global_flag = africa_achievement_league_destroyed
+		set_temp_variable = { africa_event_log_payload = constant:africa_event_log.host_succession_terminal }
+		set_temp_variable = { africa_event_log_actor = THIS.id }
+		set_temp_variable = { africa_event_log_has_actor = constant:africa_value.one }
+		set_temp_variable = { africa_event_log_secondary_actor = ROOT.id }
+		set_temp_variable = { africa_event_log_has_secondary_actor = constant:africa_value.one }
+		africa_record_event_log_world_order_entry = yes
+		ROOT = {
+			set_country_flag = africa_host_transfer_terminal_notice
+			country_event = { id = chaosx.nr12.233 }
+		}
+	}
+}
+
+# COUNTRY scope on the resolver. The single-candidate event option uses this
+# helper so the selection is still an explicit crisis result, not an opinion
+# check or a silent generic fallback.
+africa_host_transfer_select_single_candidate = {
+	if = {
+		limit = {
+			africa_host_transfer_resolution_is_open = yes
+			check_variable = { global.africa_host_transfer_candidate_count = constant:africa_host_transfer.minimum_candidates }
+		}
+		for_each_scope_loop = {
+			array = global.africa_host_transfer_candidates
+			if = {
+				limit = { africa_host_transfer_candidate_is_valid = yes }
+				save_global_event_target_as = africa_host_transfer_successor
+			}
+		}
+		if = {
+			limit = { africa_host_transfer_selected_successor_is_valid = yes }
+			event_target:africa_host_transfer_successor = { africa_host_transfer_complete_successor = yes }
+		}
+		else = { africa_host_transfer_enter_suspended_crisis = yes }
+	}
+}
+
+# COUNTRY scope on the resolver after a targeted congress decision has saved the
+# selected member as a global target.
+africa_host_transfer_commit_selected_successor = {
+	if = {
+		limit = { africa_host_transfer_resolution_is_open = yes africa_host_transfer_selected_successor_is_valid = yes }
+		clr_country_flag = africa_host_transfer_resolver
+		event_target:africa_host_transfer_successor = { africa_host_transfer_complete_successor = yes }
+	}
+	else_if = {
+		limit = {
+			africa_host_transfer_resolution_is_open = yes
+			africa_host_transfer_congress_has_no_valid_candidate = yes
+		}
+		clear_global_event_target = africa_host_transfer_successor
+		africa_host_transfer_enter_suspended_crisis = yes
+	}
+}
+
+# COUNTRY scope on the successor. The staged ledger is copied before staging is
+# cleared. Country arrays are rebuilt from the recorded roster, then each member
+# receives the new host generation and has its autonomy reconciled against the
+# retargeted host.
+africa_host_transfer_complete_successor = {
+	if = {
+		limit = {
+			africa_host_transfer_is_pending = yes
+			africa_host_transfer_candidate_is_valid = yes
+		}
+		save_event_target_as = africa_host_transfer_new_host
+		if = {
+			limit = { has_event_target = africa_host }
+			clear_global_event_target = africa_host
+		}
+		save_global_event_target_as = africa_host
+		set_country_flag = africa_unifier_host
+		set_country_flag = africa_host_commit_completed
+		set_variable = { africa_host_established_day = global.num_days }
+		set_country_flag = africa_original_host_preserved
+		clr_country_flag = africa_host_transfer_resolver
+		clr_country_flag = africa_host_transfer_congress_open
+		set_country_flag = africa_host_successor_received_mandate
+		africa_achievement_register_valid_host_successor = yes
+		set_variable = { africa_origin_host_id = global.africa_host_transfer_origin_host_id }
+		set_variable = { africa_host_generation = global.africa_host_transfer_old_generation }
+		add_to_variable = { africa_host_generation = constant:africa_host_lifecycle.initial_generation }
+		set_variable = { africa_origin_host_playbook = global.africa_host_transfer_origin_host_playbook }
+		set_variable = { africa_host_playbook = global.africa_host_transfer_host_playbook }
+		set_variable = { africa_host_depth = global.africa_host_transfer_host_depth }
+		set_variable = { africa_regional_overlay = global.africa_host_transfer_regional_overlay }
+		set_variable = { africa_first_proof_type = global.africa_host_transfer_first_proof_type }
+		set_variable = { africa_host_problem = global.africa_host_transfer_host_problem }
+		set_variable = { africa_host_leverage = global.africa_host_transfer_host_leverage }
+		set_variable = { africa_host_rival_risk = global.africa_host_transfer_host_rival_risk }
+		set_variable = { africa_host_support_class = global.africa_host_transfer_host_support_class }
+		set_variable = { africa_constitution = global.africa_host_transfer_constitution }
+		set_variable = { africa_current_phase = global.africa_host_transfer_current_phase }
+		set_variable = { africa_peace_exemption_days = global.africa_host_transfer_peace_exemption_days }
+		set_variable = { africa_selected_action_family = global.africa_host_transfer_selected_action_family }
+		set_variable = { africa_selected_action_id = constant:africa_action.none }
+		set_variable = { africa_action_generation = global.africa_host_transfer_action_generation }
+		add_to_variable = { africa_action_generation = constant:africa_host_lifecycle.initial_generation }
+		set_variable = { africa_action_quote_generation = global.africa_host_transfer_action_quote_generation }
+		add_to_variable = { africa_action_quote_generation = constant:africa_host_lifecycle.initial_generation }
+		set_variable = { africa_action_short_days = global.africa_host_transfer_action_short_days }
+		set_variable = { africa_action_medium_days = global.africa_host_transfer_action_medium_days }
+		set_variable = { africa_action_long_days = global.africa_host_transfer_action_long_days }
+		set_variable = { africa_action_epic_days = global.africa_host_transfer_action_epic_days }
+		set_variable = { africa_active_action_count = constant:africa_value.zero }
+		set_variable = { africa_active_action_cap = global.africa_host_transfer_active_action_cap }
+		set_variable = { africa_selected_target_cap = global.africa_host_transfer_selected_target_cap }
+		set_variable = { africa_dossier_cap = global.africa_host_transfer_dossier_cap }
+		set_variable = { africa_living_core_project_cap = global.africa_host_transfer_living_core_project_cap }
+		set_variable = { africa_civilian_capacity_available = global.africa_host_transfer_civilian_capacity_available }
+		set_variable = { africa_intelligence_capacity_available = global.africa_host_transfer_intelligence_capacity_available }
+		set_variable = { africa_charter_authority = global.africa_host_transfer_charter_authority }
+		set_variable = { africa_continental_reach = global.africa_host_transfer_continental_reach }
+		set_variable = { africa_integration_burden = global.africa_host_transfer_integration_burden }
+		set_variable = { africa_colonial_pressure = global.africa_host_transfer_colonial_pressure }
+		set_variable = { africa_diaspora_settlement_capacity = global.africa_host_transfer_diaspora_settlement_capacity }
+		set_variable = { africa_diaspora_trust = global.africa_host_transfer_diaspora_trust }
+		set_variable = { africa_common_defence_stockpile = global.africa_host_transfer_common_defence_stockpile }
+		set_variable = { africa_common_reserve_deployment_sequence = global.africa_host_transfer_common_reserve_deployment_sequence }
+		set_variable = { africa_member_representation_balance = global.africa_host_transfer_member_representation_balance }
+		set_variable = { africa_restoration_legitimacy = global.africa_host_transfer_restoration_legitimacy }
+		set_variable = { africa_ecological_wrath = global.africa_host_transfer_ecological_wrath }
+		set_variable = { africa_continental_war_readiness = global.africa_host_transfer_continental_war_readiness }
+		set_variable = { africa_consent_commitment = global.africa_host_transfer_consent_commitment }
+		set_variable = { africa_central_capacity = global.africa_host_transfer_central_capacity }
+		set_variable = { africa_regional_equality = global.africa_host_transfer_regional_equality }
+		set_variable = { africa_emergency_rule_debt = global.africa_host_transfer_emergency_rule_debt }
+		if = {
+			limit = { has_global_flag = africa_host_transfer_constitutional_payoff_axes_active }
+			set_country_flag = africa_constitutional_payoff_axes_active
+			set_variable = { africa_constitutional_representation = global.africa_host_transfer_constitutional_representation }
+			set_variable = { africa_constitutional_executive_power = global.africa_host_transfer_constitutional_executive_power }
+			set_variable = { africa_constitutional_resource_governance = global.africa_host_transfer_constitutional_resource_governance }
+			set_variable = { africa_constitutional_command_integration = global.africa_host_transfer_constitutional_command_integration }
+			set_variable = { africa_constitutional_withdrawal_protection = global.africa_host_transfer_constitutional_withdrawal_protection }
+			set_variable = { africa_constitutional_crisis_resilience = global.africa_host_transfer_constitutional_crisis_resilience }
+			set_variable = { africa_constitutional_post_unification_rule = global.africa_host_transfer_constitutional_post_unification_rule }
+		}
+		africa_host_transfer_restore_first_proof_state = yes
+		africa_host_transfer_restore_world_order_state = yes
+
+		clear_array = africa_relationship_countries
+		clear_array = africa_protected_countries
+		clear_array = africa_associate_countries
+		clear_array = africa_chartered_countries
+		clear_array = africa_autonomous_federal_countries
+		clear_array = africa_integrated_countries
+		clear_array = africa_resistant_countries
+		clear_array = africa_leaving_countries
+		clear_array = africa_rival_bloc_countries
+		clear_array = africa_occupied_settlement_countries
+		clear_array = africa_selected_targets
+		clear_array = africa_host_action_targets
+		clear_array = africa_active_dossiers
+		clear_array = africa_living_core_projects
+		clear_array = africa_active_congress_regions
+		clear_array = africa_active_obligations
+		clear_array = africa_warning_ledger
+		clear_array = africa_peace_exemption_countries
+		clear_array = africa_peace_exemption_states
+		clear_array = africa_selected_action_state_candidates
+		clear_array = africa_selected_action_state_targets
+		clear_array = africa_action_state_targets
+		clear_array = africa_world_constituent_countries
+		clear_array = africa_world_constituent_consented_countries
+		clear_array = africa_world_constituent_refused_countries
+		clear_array = africa_world_constituent_coerced_countries
+		clear_array = africa_world_constituent_withdrawn_countries
+		clear_array = africa_world_constituent_package_actors
+		clear_array = africa_world_package_actors
+		clear_array = africa_world_package_candidates
+		clear_array = africa_world_package_heartland_states
+		clear_array = africa_world_package_pending_continents
+		clear_array = africa_world_package_resolved_continents
+		clear_array = africa_world_package_successor_candidates
+		clear_array = africa_world_sponsorship_targets
+		clear_array = africa_world_war_joined_partners
+		clear_array = africa_world_war_registered_partners
+		clear_array = africa_scramble_participants
+		clear_array = africa_scramble_former_colonial_interests
+		clear_array = africa_scramble_ideological_rivals
+		clear_array = africa_scramble_resource_exposure_interests
+		clear_array = africa_scramble_continent_unifier_fears
+		clear_array = africa_scramble_south_africa_allied_contacts
+		clear_array = africa_scramble_coalition_members
+		clear_array = africa_world_package_absent_continents
+		for_each_scope_loop = { array = global.africa_host_transfer_relationship_countries event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_relationship_countries value = PREV } } }
+		for_each_scope_loop = { array = global.africa_host_transfer_protected_countries event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_protected_countries value = PREV } } }
+		for_each_scope_loop = { array = global.africa_host_transfer_associate_countries event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_associate_countries value = PREV } } }
+		for_each_scope_loop = { array = global.africa_host_transfer_chartered_countries event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_chartered_countries value = PREV } } }
+		for_each_scope_loop = { array = global.africa_host_transfer_autonomous_federal_countries event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_autonomous_federal_countries value = PREV } } }
+		for_each_scope_loop = { array = global.africa_host_transfer_integrated_countries event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_integrated_countries value = PREV } } }
+		for_each_scope_loop = { array = global.africa_host_transfer_resistant_countries event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_resistant_countries value = PREV } } }
+		for_each_scope_loop = { array = global.africa_host_transfer_leaving_countries event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_leaving_countries value = PREV } } }
+		for_each_scope_loop = { array = global.africa_host_transfer_rival_bloc_countries event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_rival_bloc_countries value = PREV } } }
+		for_each_scope_loop = { array = global.africa_host_transfer_occupied_settlement_countries event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_occupied_settlement_countries value = PREV } } }
+		for_each_scope_loop = { array = global.africa_host_transfer_selected_targets event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_selected_targets value = PREV } } }
+		for_each_scope_loop = { array = global.africa_host_transfer_active_dossiers event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_active_dossiers value = PREV } } }
+		for_each_scope_loop = { array = global.africa_host_transfer_living_core_projects event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_living_core_projects value = PREV } } }
+		for_each_scope_loop = { array = global.africa_host_transfer_active_congress_regions event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_active_congress_regions value = PREV } } }
+		for_each_scope_loop = { array = global.africa_host_transfer_active_obligations event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_active_obligations value = PREV } } }
+		for_each_scope_loop = { array = global.africa_host_transfer_warning_ledger event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_warning_ledger value = PREV } } }
+		for_each_scope_loop = { array = global.africa_host_transfer_selected_action_state_candidates event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_selected_action_state_candidates value = PREV } } }
+		for_each_scope_loop = { array = global.africa_host_transfer_selected_action_state_targets event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_selected_action_state_targets value = PREV } } }
+		for_each_scope_loop = { array = global.africa_host_transfer_action_state_targets event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_action_state_targets value = PREV } } }
+		for_each_scope_loop = { array = global.africa_host_transfer_world_constituent_countries event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_world_constituent_countries value = PREV } } }
+		for_each_scope_loop = { array = global.africa_host_transfer_world_constituent_consented_countries event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_world_constituent_consented_countries value = PREV } } }
+		for_each_scope_loop = { array = global.africa_host_transfer_world_constituent_refused_countries event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_world_constituent_refused_countries value = PREV } } }
+		for_each_scope_loop = { array = global.africa_host_transfer_world_constituent_coerced_countries event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_world_constituent_coerced_countries value = PREV } } }
+		for_each_scope_loop = { array = global.africa_host_transfer_world_constituent_withdrawn_countries event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_world_constituent_withdrawn_countries value = PREV } } }
+		for_each_scope_loop = { array = global.africa_host_transfer_world_constituent_package_actors event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_world_constituent_package_actors value = PREV } } }
+		for_each_scope_loop = { array = global.africa_host_transfer_world_package_actors event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_world_package_actors value = PREV } } }
+		for_each_scope_loop = { array = global.africa_host_transfer_world_package_candidates event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_world_package_candidates value = PREV } } }
+		for_each_scope_loop = { array = global.africa_host_transfer_world_package_heartland_states event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_world_package_heartland_states value = PREV } } }
+		for_each_scope_loop = { array = global.africa_host_transfer_world_package_pending_continents event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_world_package_pending_continents value = PREV } } }
+		for_each_scope_loop = { array = global.africa_host_transfer_world_package_resolved_continents event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_world_package_resolved_continents value = PREV } } }
+		for_each_scope_loop = { array = global.africa_host_transfer_world_package_successor_candidates event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_world_package_successor_candidates value = PREV } } }
+		for_each_scope_loop = { array = global.africa_host_transfer_world_sponsorship_targets event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_world_sponsorship_targets value = PREV } } }
+		for_each_scope_loop = { array = global.africa_host_transfer_world_war_joined_partners event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_world_war_joined_partners value = PREV } } }
+		for_each_scope_loop = { array = global.africa_host_transfer_world_war_registered_partners event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_world_war_registered_partners value = PREV } } }
+		for_each_scope_loop = { array = global.africa_host_transfer_scramble_participants event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_scramble_participants value = PREV } } }
+		for_each_scope_loop = { array = global.africa_host_transfer_scramble_former_colonial_interests event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_scramble_former_colonial_interests value = PREV } } }
+		for_each_scope_loop = { array = global.africa_host_transfer_scramble_ideological_rivals event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_scramble_ideological_rivals value = PREV } } }
+		for_each_scope_loop = { array = global.africa_host_transfer_scramble_resource_exposure_interests event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_scramble_resource_exposure_interests value = PREV } } }
+		for_each_scope_loop = { array = global.africa_host_transfer_scramble_continent_unifier_fears event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_scramble_continent_unifier_fears value = PREV } } }
+		for_each_scope_loop = { array = global.africa_host_transfer_scramble_south_africa_allied_contacts event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_scramble_south_africa_allied_contacts value = PREV } } }
+		for_each_scope_loop = { array = global.africa_host_transfer_scramble_coalition_members event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_scramble_coalition_members value = PREV } } }
+		for_each_scope_loop = { array = global.africa_host_transfer_world_package_absent_continents event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_world_package_absent_continents value = PREV } } }
+		for_each_scope_loop = { array = global.africa_host_transfer_first_proof_marked_country_scopes event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_first_proof_marked_country_scopes value = PREV } } }
+		for_each_scope_loop = { array = global.africa_host_transfer_first_proof_marked_state_scopes event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_first_proof_marked_state_scopes value = PREV } } }
+		for_each_scope_loop = { array = global.africa_host_transfer_first_proof_actor_credits event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_first_proof_actor_credits value = PREV } } }
+		for_each_scope_loop = { array = global.africa_host_transfer_first_proof_corridor_actor_credits event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_first_proof_corridor_actor_credits value = PREV } } }
+		for_each_scope_loop = { array = global.africa_host_transfer_first_proof_primary_target_credits event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_first_proof_primary_target_credits value = PREV } } }
+		for_each_scope_loop = { array = global.africa_host_transfer_first_proof_sovereignty_actor_credits event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_first_proof_sovereignty_actor_credits value = PREV } } }
+		for_each_scope_loop = { array = global.africa_host_transfer_first_proof_region_state_credits event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_first_proof_region_state_credits value = PREV } } }
+		for_each_scope_loop = { array = global.africa_host_transfer_first_proof_corridor_credits event_target:africa_host_transfer_new_host = { add_to_array = { array = africa_first_proof_corridor_credits value = PREV } } }
+		if = {
+			limit = { has_global_flag = africa_host_transfer_first_proof_active }
+			africa_refresh_first_proof_live_ledger = yes
+		}
+		remove_from_array = { array = africa_relationship_countries value = THIS }
+		remove_from_array = { array = africa_protected_countries value = THIS }
+		remove_from_array = { array = africa_associate_countries value = THIS }
+		remove_from_array = { array = africa_chartered_countries value = THIS }
+		remove_from_array = { array = africa_autonomous_federal_countries value = THIS }
+		remove_from_array = { array = africa_integrated_countries value = THIS }
+		remove_from_array = { array = africa_resistant_countries value = THIS }
+		remove_from_array = { array = africa_leaving_countries value = THIS }
+		remove_from_array = { array = africa_rival_bloc_countries value = THIS }
+		remove_from_array = { array = africa_occupied_settlement_countries value = THIS }
+		add_to_array = { array = africa_host_action_targets value = THIS }
+
+		clear_variable = africa_relationship_state
+		clear_variable = africa_member_host_generation
+		clear_variable = africa_member_confidence
+		clr_country_flag = africa_selected_roster_target
+		clr_country_flag = africa_relationship_transition_pending_notice
+		for_each_scope_loop = {
+			array = africa_relationship_countries
+			if = {
+				limit = { exists = yes }
+				set_variable = { africa_member_host_generation = event_target:africa_host.africa_host_generation }
+				africa_apply_member_autonomy_for_current_relationship = yes
+			}
+		}
+		for_each_scope_loop = {
+			array = africa_peace_exemption_countries
+			if = { limit = { exists = yes } set_variable = { africa_member_host_generation = event_target:africa_host.africa_host_generation } }
+		}
+		africa_reconcile_relationship_counts_and_caps = yes
+		africa_achievement_refresh_live_regional_proofs = yes
+
+		# Focus tree rule shared with the founding host (agent decision L35). ROOT
+		# is the resolver here, so the tree is loaded directly instead of through
+		# africa_load_continental_focus_tree:
+		# - the successor inherits the continental tree when the departing host had
+		#   it, copying its finished focuses while that host still exists;
+		# - a generic-tree successor loads the tree directly;
+		# - a successor with its own national tree whose predecessor never adopted
+		#   the programme keeps that tree, and the loader call in chaosx.nr12.232
+		#   (ROOT is the successor there) offers it the adoption choice;
+		# - South Africa keeps its own tree.
+		if = {
+			limit = {
+				NOT = { original_tag = SAF }
+				NOT = { has_focus_tree = africa_continental_focus_tree }
+				OR = {
+					has_global_flag = africa_host_transfer_previous_host_had_continental_tree
+					has_focus_tree = generic_focus
+				}
+			}
+			if = {
+				limit = { has_global_flag = africa_host_transfer_previous_host_had_continental_tree }
+				set_country_flag = africa_continental_programme_adopted
+			}
+			if = {
+				limit = {
+					has_global_flag = africa_host_transfer_previous_host_had_continental_tree
+					has_event_target = africa_previous_host
+					event_target:africa_previous_host = { exists = yes }
+				}
+				load_focus_tree = {
+					tree = africa_continental_focus_tree
+					keep_completed = yes
+					copy_completed_from = event_target:africa_previous_host
+				}
+			}
+			else = {
+				load_focus_tree = { tree = africa_continental_focus_tree keep_completed = yes }
+				if = {
+					limit = { has_global_flag = africa_host_transfer_previous_host_had_continental_tree }
+					set_country_flag = africa_host_focus_completion_transfer_deferred
+				}
+			}
+		}
+		if = {
+			limit = { has_focus_tree = africa_continental_focus_tree }
+			set_country_flag = africa_continental_focus_tree_loaded
+			mark_focus_tree_layout_dirty = yes
+		}
+		africa_clamp_host_values = yes
+		set_global_flag = africa_host_successor_consumed
+		clr_global_flag = africa_host_transfer_pending
+		clr_global_flag = africa_host_transfer_resolution_open
+		clr_global_flag = africa_host_transfer_suspended
+		set_global_flag = africa_host_transfer_completed
+		set_temp_variable = { africa_event_log_payload = constant:africa_event_log.host_succession }
+		set_temp_variable = { africa_event_log_actor = global.africa_host_transfer_previous_host_id }
+		set_temp_variable = { africa_event_log_has_actor = constant:africa_value.one }
+		set_temp_variable = { africa_event_log_secondary_actor = THIS.id }
+		set_temp_variable = { africa_event_log_has_secondary_actor = constant:africa_value.one }
+		africa_record_event_log_world_order_entry = yes
+		africa_load_continental_focus_tree = yes
+		africa_refresh_continental_focus_tree_layout = yes
+		africa_schedule_next_evolution_clock = yes
+		for_each_scope_loop = {
+			array = africa_relationship_countries
+			if = { limit = { exists = yes } africa_apply_member_autonomy_for_current_relationship = yes }
+		}
+		africa_host_transfer_clear_staging = yes
+		country_event = { id = chaosx.nr12.232 }
+	}
+}
+
+# COUNTRY scope on the resolver. The event deliberately leaves the staged ledger
+# intact so a suspended campaign preserves obligations and history for review.
+africa_host_transfer_enter_suspended_crisis = {
+	if = {
+		limit = { africa_host_transfer_is_pending = yes }
+		set_global_flag = africa_host_transfer_suspended
+		clr_global_flag = africa_host_transfer_pending
+		clr_global_flag = africa_host_transfer_resolution_open
+		clr_country_flag = africa_host_transfer_congress_open
+		clr_country_flag = africa_host_transfer_resolver
+		set_temp_variable = { africa_event_log_payload = constant:africa_event_log.host_succession_suspended }
+		set_temp_variable = { africa_event_log_actor = global.africa_host_transfer_previous_host_id }
+		set_temp_variable = { africa_event_log_has_actor = constant:africa_value.one }
+		set_temp_variable = { africa_event_log_secondary_actor = constant:africa_value.zero }
+		set_temp_variable = { africa_event_log_has_secondary_actor = constant:africa_value.zero }
+		africa_record_event_log_world_order_entry = yes
+		clear_global_event_target = africa_previous_host
+		clear_global_event_target = africa_host_transfer_successor
+		clear_global_event_target = africa_host_transfer_designated_successor
+		clear_global_event_target = africa_host_transfer_resolver
+		country_event = { id = chaosx.nr12.231 }
+	}
+}
+
+# Any scope. Staging is cleared only after a completed transfer. The suspended
+# path intentionally retains the arrays so the unresolved constitutional docket
+# is inspectable and cannot silently lose obligations.
+africa_host_transfer_clear_staging = {
+	africa_host_transfer_clear_route_staging = yes
+	clear_global_event_target = africa_previous_host
+	clear_global_event_target = africa_host_transfer_successor
+	clear_global_event_target = africa_host_transfer_designated_successor
+	clear_global_event_target = africa_host_transfer_resolver
+	clear_array = global.africa_host_transfer_candidates
+	clear_array = global.africa_host_transfer_relationship_countries
+	clear_array = global.africa_host_transfer_gods_of_africa_candidate_registry
+	clear_array = global.africa_host_transfer_protected_countries
+	clear_array = global.africa_host_transfer_associate_countries
+	clear_array = global.africa_host_transfer_chartered_countries
+	clear_array = global.africa_host_transfer_autonomous_federal_countries
+	clear_array = global.africa_host_transfer_integrated_countries
+	clear_array = global.africa_host_transfer_resistant_countries
+	clear_array = global.africa_host_transfer_leaving_countries
+	clear_array = global.africa_host_transfer_rival_bloc_countries
+	clear_array = global.africa_host_transfer_occupied_settlement_countries
+	clear_array = global.africa_host_transfer_selected_targets
+	clear_array = global.africa_host_transfer_host_action_targets
+	clear_array = global.africa_host_transfer_active_dossiers
+	clear_array = global.africa_host_transfer_living_core_projects
+	clear_array = global.africa_host_transfer_active_congress_regions
+	clear_array = global.africa_host_transfer_active_obligations
+	clear_array = global.africa_host_transfer_warning_ledger
+	clear_array = global.africa_host_transfer_peace_exemption_countries
+	clear_array = global.africa_host_transfer_peace_exemption_states
+	clear_array = global.africa_host_transfer_selected_action_state_candidates
+	clear_array = global.africa_host_transfer_selected_action_state_targets
+	clear_array = global.africa_host_transfer_action_state_targets
+	clear_array = global.africa_host_transfer_world_constituent_countries
+	clear_array = global.africa_host_transfer_world_constituent_consented_countries
+	clear_array = global.africa_host_transfer_world_constituent_refused_countries
+	clear_array = global.africa_host_transfer_world_constituent_coerced_countries
+	clear_array = global.africa_host_transfer_world_constituent_withdrawn_countries
+	clear_array = global.africa_host_transfer_world_constituent_package_actors
+	clear_array = global.africa_host_transfer_world_package_actors
+	clear_array = global.africa_host_transfer_world_package_candidates
+	clear_array = global.africa_host_transfer_world_package_heartland_states
+	clear_array = global.africa_host_transfer_world_package_pending_continents
+	clear_array = global.africa_host_transfer_world_package_resolved_continents
+	clear_array = global.africa_host_transfer_world_package_successor_candidates
+	clear_array = global.africa_host_transfer_world_sponsorship_targets
+	clear_array = global.africa_host_transfer_world_war_joined_partners
+	clear_array = global.africa_host_transfer_world_war_registered_partners
+	clear_array = global.africa_host_transfer_scramble_participants
+	clear_array = global.africa_host_transfer_scramble_former_colonial_interests
+	clear_array = global.africa_host_transfer_scramble_ideological_rivals
+	clear_array = global.africa_host_transfer_scramble_resource_exposure_interests
+	clear_array = global.africa_host_transfer_scramble_continent_unifier_fears
+	clear_array = global.africa_host_transfer_scramble_south_africa_allied_contacts
+	clear_array = global.africa_host_transfer_scramble_coalition_members
+	clear_array = global.africa_host_transfer_world_package_absent_continents
+	clear_array = global.africa_host_transfer_first_proof_marked_country_scopes
+	clear_array = global.africa_host_transfer_first_proof_marked_state_scopes
+	clear_array = global.africa_host_transfer_first_proof_actor_credits
+	clear_array = global.africa_host_transfer_first_proof_corridor_actor_credits
+	clear_array = global.africa_host_transfer_first_proof_primary_target_credits
+	clear_array = global.africa_host_transfer_first_proof_sovereignty_actor_credits
+	clear_array = global.africa_host_transfer_first_proof_region_state_credits
+	clear_array = global.africa_host_transfer_first_proof_corridor_credits
+	clear_variable = global.africa_host_transfer_candidate_count
+	clear_variable = global.africa_host_transfer_cancelled_action_count
+	clear_variable = global.africa_host_transfer_previous_host_id
+	clear_variable = global.africa_host_transfer_origin_host_id
+	clear_variable = global.africa_host_transfer_old_generation
+	clear_variable = global.africa_host_transfer_origin_host_playbook
+	clear_variable = global.africa_host_transfer_host_playbook
+	clear_variable = global.africa_host_transfer_host_depth
+	clear_variable = global.africa_host_transfer_regional_overlay
+	clear_variable = global.africa_host_transfer_first_proof_type
+	clear_variable = global.africa_host_transfer_host_problem
+	clear_variable = global.africa_host_transfer_host_leverage
+	clear_variable = global.africa_host_transfer_host_rival_risk
+	clear_variable = global.africa_host_transfer_host_support_class
+	clear_variable = global.africa_host_transfer_constitution
+	clear_variable = global.africa_host_transfer_current_phase
+	clear_variable = global.africa_host_transfer_peace_exemption_days
+	clear_variable = global.africa_host_transfer_selected_action_family
+	clear_variable = global.africa_host_transfer_selected_action_id
+	clear_variable = global.africa_host_transfer_action_generation
+	clear_variable = global.africa_host_transfer_action_quote_generation
+	clear_variable = global.africa_host_transfer_action_short_days
+	clear_variable = global.africa_host_transfer_action_medium_days
+	clear_variable = global.africa_host_transfer_action_long_days
+	clear_variable = global.africa_host_transfer_action_epic_days
+	clear_variable = global.africa_host_transfer_active_action_cap
+	clear_variable = global.africa_host_transfer_selected_target_cap
+	clear_variable = global.africa_host_transfer_dossier_cap
+	clear_variable = global.africa_host_transfer_living_core_project_cap
+	clear_variable = global.africa_host_transfer_civilian_capacity_available
+	clear_variable = global.africa_host_transfer_intelligence_capacity_available
+	clear_variable = global.africa_host_transfer_charter_authority
+	clear_variable = global.africa_host_transfer_continental_reach
+	clear_variable = global.africa_host_transfer_integration_burden
+	clear_variable = global.africa_host_transfer_colonial_pressure
+	clear_variable = global.africa_host_transfer_diaspora_settlement_capacity
+	clear_variable = global.africa_host_transfer_diaspora_trust
+	clear_variable = global.africa_host_transfer_common_defence_stockpile
+	clear_variable = global.africa_host_transfer_common_reserve_deployment_sequence
+	clear_variable = global.africa_host_transfer_member_representation_balance
+	clear_variable = global.africa_host_transfer_restoration_legitimacy
+	clear_variable = global.africa_host_transfer_ecological_wrath
+	clear_variable = global.africa_host_transfer_continental_war_readiness
+	clear_variable = global.africa_host_transfer_consent_commitment
+	clear_variable = global.africa_host_transfer_central_capacity
+	clear_variable = global.africa_host_transfer_regional_equality
+	clear_variable = global.africa_host_transfer_emergency_rule_debt
+	clr_global_flag = africa_host_transfer_constitutional_payoff_axes_active
+}
+
+# COUNTRY scope on the current host. This is the explicit constitutional result
+# that makes an in-flight designated successor eligible before a later annexation.
+africa_host_transfer_designate_successor = {
+	if = {
+		limit = {
+			africa_is_current_host = yes
+		}
+		FROM = {
+			if = {
+				limit = { africa_host_transfer_designatable_candidate_is_valid = yes }
+				save_global_event_target_as = africa_host_transfer_designated_successor
+				set_country_flag = africa_host_successor_designated
+			}
+		}
+		set_country_flag = africa_host_successor_designation_recorded
+	}
+}

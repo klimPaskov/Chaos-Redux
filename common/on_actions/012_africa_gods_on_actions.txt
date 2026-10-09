@@ -17,6 +17,29 @@ on_actions = {
 		}
 	}
 
+	# Native ROOT is new controller, FROM old controller, FROM.FROM the state.
+	# Recount only Africa and keep foreign army data on the existing owner clock.
+	on_state_control_changed = {
+		effect = {
+			if = {
+				limit = {
+					has_event_target = africa_host
+					FROM.FROM = { is_on_continent = africa }
+					event_target:africa_host = {
+						gods_of_africa_epoch_permission_is_current = yes
+						has_country_flag = gods_of_africa_active
+					}
+					OR = {
+						FROM = { OR = { tag = event_target:africa_host gods_of_africa_strength_member_is_eligible = yes } }
+						ROOT = { OR = { tag = event_target:africa_host gods_of_africa_strength_member_is_eligible = yes } }
+						FROM.FROM = { is_core_of = event_target:africa_host }
+					}
+				}
+				event_target:africa_host = { gods_of_africa_refresh_strength = yes }
+			}
+		}
+	}
+
 	on_capitulation = {
 		effect = {
 			ROOT = {

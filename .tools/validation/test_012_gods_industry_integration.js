@@ -19,6 +19,9 @@ const effectFiles = ['industry_effects','industry_integration_effects','effects'
 const triggerFiles = ['industry_triggers','industry_integration_triggers','triggers','contract_triggers','epoch_binding_triggers','protection_eligibility_triggers'];
 for(const f of effectFiles) for(const n of load('common/scripted_effects/012_africa_gods_'+f+'.txt')) effects[n.key]=n.value;
 for(const f of triggerFiles) for(const n of load('common/scripted_triggers/012_africa_gods_'+f+'.txt')) triggers[n.key]=n.value;
+// The new normal-settlement cleanup remains actual production code.
+const strengthCleanupOwner = load('common/scripted_effects/012_africa_gods_strength_inputs_effects.txt').find(n => n.key === G + 'clear_strength_input_sample');
+assert.ok(strengthCleanupOwner); effects[strengthCleanupOwner.key] = strengthCleanupOwner.value;
 for(const f of ['012_africa_gods_constants','012_africa_gods_industry_constants','012_africa_constants','012_africa_gods_contract_constants','012_africa_event_log_constants','012_africa_gods_contribution_constants']) {
 	for(const cat of load('common/script_constants/'+f+'.txt')) for(const n of cat.value) if(typeof n.value==='string'&&Number.isFinite(Number(n.value)))constants[cat.key+'.'+n.key]=Number(n.value);
 }

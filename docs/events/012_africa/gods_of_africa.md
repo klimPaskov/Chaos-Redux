@@ -7,8 +7,11 @@ The user's full-Gods Event 012 goal remains active with no simplifications autho
 The October 7 decision repairs implement the host and defiance phases, preserve the three named substitutes, and advertise fixed political-power budgets.
 The [October 8 completion audit](../../plans/012_africa_plans/subagent_handoffs/012_gods_current_completion_audit_2026-10-08.md) records the earlier industrial consequence gap.
 The accepted repair contract is implemented in the current source as documented below and in the [industrial integration review](../../plans/012_africa_plans/subagent_handoffs/012_gods_industry_integration_review_2026-10-09.md).
-Strength's Chaos input uses the shared meter scale.
-Direct territorial-control and relative-world-power inputs remain missing from the full goal.
+Strength's selected fundamental inputs are implemented in current source under the parent's October 9 acceptance: a complete known-country census, sampled world deployed-army manpower, and secured African host-core extent.
+The [Strength reconciliation](../../plans/012_africa_plans/subagent_handoffs/012_gods_strength_parent_reconciliation_2026-10-09.md) separates that acceptance from source evidence and pending integration verification.
+Capital/port strategic coverage is accepted and queued pending province naval-base aggregation and owner/site semantics.
+Rail, resource and active-base families remain unresolved, with no proxy fulfilling them.
+Strength's Chaos input retains the shared meter scale, and the full Gods goal remains incomplete with no simplification in this selected fundamental scope.
 The [compact public-value display](../../plans/012_africa_plans/subagent_handoffs/012_gods_public_values_ui_reference_2026-10-08.md) is implemented with native frame meters, trend, next-band markers and cause/floor tooltips.
 Reviewed participant, endpoint, scale and 20/15 boundary captures are retained, with full-category and remaining host/hover coverage still limited.
 Protection retains the [earned relationship design](../../plans/012_africa_plans/subagent_handoffs/012_gods_protection_eligibility_implementation_2026-10-08.md), with the October 9 canonical-fulfillment correction documented below.
@@ -90,10 +93,33 @@ The [private helper contract](../../../common/scripted_effects/012_africa_gods_c
 
 The player sees exactly two values:
 
-- Gods of Africa Strength is a global value from 0 to 100. It combines African military readiness, industry and logistics, continental control, strategic reach, internal condition, Chaos, and Event 012 development. Ordinary refreshes move at most `strength_smoothing_step` (8) points; major defeat or recovery may request an immediate recalculation. Its five bands set the highest punishment tier the system can credibly attempt.
-  Sustainment (decision L29): the military component is multiplied by `gods_of_africa_strength_sustain.floor` (0.4) plus `span` (0.6) times the weighted share of the army's rifles against their target (`num_equipment_in_armies_k@infantry_equipment` over `num_target_equipment_in_armies_k@infantry_equipment`, weight 0.6) and of fuel against tank capacity (`fuel_k` over `max_fuel_k`, weight 0.4), so an unsupplied or under-equipped army scores below a supplied one of the same size; the factor is kept in `gods_of_africa_strength_sustain_factor`.
-  While an enemy holds Africa's capital, Strength loses `capital_loss_penalty` (15) points, and the first loss is applied at once (`gods_of_africa_strength_capital_loss_recorded`). Surrender progress above 0.1, 0.25 and 0.4 costs 5, 12 and 20 points, and above `surrender_immediate` (0.25) every refresh applies the new value at once, so Strength falls quickly as Africa nears capitulation.
-  Chaos is measured against the shared final-tier endpoint (`chaos_meter_tier_range.tier_final.min`, 1000) before entering its 0-to-100 component. Evolution II adds 15 component points and Evolution III adds 25, while the component contributes at most ten points to total Strength. This keeps ordinary Chaos tiers meaningful alongside African capability.
+- Gods of Africa Strength is a global value from 0 to 100.
+  It combines African military readiness, industry and logistics, continental control, strategic reach, internal condition, Chaos, and Event 012 development.
+  The six outer weights remain 25/20/20/15/10/10.
+  Ordinary refreshes move at most `strength_smoothing_step` (8) points, while major defeat or recovery may request an immediate recalculation.
+  Its five bands set the highest punishment tier the system can credibly attempt.
+  The existing military input retains division divisor 20 and readiness arithmetic, then receives the sustainment factor and `0.75 + 0.25 × clamp(world_army_share / 0.10, 0, 1)`.
+  This competition factor never inflates the old military input, and zero actual deployed army or nonpositive division count contributes zero.
+  Continental control blends 50% of the existing political/recognition component with 50% physical extent.
+  Physical extent counts host-secured and eligible cooperative-member-secured host cores over every African state in native `states_in_africa`.
+  Ownership, control, host cores and member holdings remain separate records, and member holdings do not become host ownership.
+  Sustainment (decision L29): the military component is multiplied by `gods_of_africa_strength_sustain.floor` (0.4) plus `span` (0.6) times the weighted share of the army's rifles against their target (`num_equipment_in_armies_k@infantry_equipment` over `num_target_equipment_in_armies_k@infantry_equipment`, weight 0.6) and of fuel against tank capacity (`fuel_k` over `max_fuel_k`, weight 0.4), so an unsupplied or under-equipped army scores below a supplied one of the same size.
+  The factor is kept in `gods_of_africa_strength_sustain_factor`.
+  While an enemy holds Africa's capital, Strength loses `capital_loss_penalty` (15) points, and the first loss is applied at once (`gods_of_africa_strength_capital_loss_recorded`).
+  Surrender progress above 0.1, 0.25 and 0.4 costs 5, 12 and 20 points, and above `surrender_immediate` (0.25) every refresh applies the new value at once, so Strength falls quickly as Africa nears capitulation.
+  Chaos is measured against the shared final-tier endpoint (`chaos_meter_tier_range.tier_final.min`, 1000) before entering its 0-to-100 component.
+  Evolution II adds 15 component points and Evolution III adds 25, while the component contributes at most ten points to total Strength.
+  This keeps ordinary Chaos tiers meaningful alongside African capability.
+  The one-time measurement census precedes tribute filtering and retains dormant, nonhuman, special and host country objects.
+  Activation and the existing due 30-day owner review finish census proof and sample world `deployed_army_manpower_k`.
+  Between foreign samples, the current host row replaces its sampled row in the world total.
+  Named onboarding records supplied objects before participant filters.
+  A ROOT-independent current-host proof guards refresh, which measures land, calculates the unchanged old components and applies the selected factors.
+  Only actual `gods_of_africa_strength_input_factors_applied` proof permits the weighted, penalty, smoothing, observer and publication tail.
+  Invalid samples set private `gods_of_africa_strength_input_publication_blocked` and publish no fresh Strength.
+  Cleanup and revocation clear samples while retaining the census roster.
+  Host transfer stages and restores that roster and its census receipts/size, binds successor host ID, generation and origin, and discards predecessor samples without granting a Gods mandate.
+  The existing Gods control-change callback refreshes only relevant African host/member/core states under an authorized active host and uses cached foreign armies.
 - Wrath of the Gods is a 0 to 100 value stored separately for each participant. Compliance, meaningful aid, refusal, failed deadlines, war, occupation, treaty breaches, and defiance move it through one central transaction helper. War, occupied African territory, broken treaties, permanent defiance, and recent extreme punishment reapply hidden floors after every transaction.
 
 Capacity, African needs, conduct history, demand repetition, punishment intent, and settlement history remain hidden. The interface communicates them through qualitative demand language, reports, tooltips, diplomatic memory, and outcomes rather than a third meter.

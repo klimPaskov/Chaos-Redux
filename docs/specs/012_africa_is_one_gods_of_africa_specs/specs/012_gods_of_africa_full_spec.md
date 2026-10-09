@@ -179,7 +179,23 @@ Strength should be derived from these factor families:
 - Event 012 routes that improve diplomacy, intelligence, disaster response, covert reach, or military projection
 - accepted owner systems that can genuinely support the threat
 
-Strength must not be a copy of division count. A large but unsupplied army should contribute less than a smaller force with industry, fuel, transport, air cover, and continental control.
+Strength must not be a copy of division count.
+A large but unsupplied army should contribute less than a smaller force with industry, fuel, transport, air cover, and continental control.
+
+Parent acceptance on October 9 selects the fundamental world-army comparison and physical continental extent documented in the [Strength reconciliation](../../../plans/012_africa_plans/subagent_handoffs/012_gods_strength_parent_reconciliation_2026-10-09.md).
+The complete known-country measurement roster is captured before tribute filtering, including dormant, nonhuman, special and host objects.
+World `deployed_army_manpower_k` is sampled at activation and existing due 30-day owner boundaries, with the current host row corrected between foreign samples.
+The military component is its existing post-sustainment input multiplied by `0.75 + 0.25 × clamp(host_world_army_share / 0.10, 0, 1)`, with zero actual army or nonpositive division count contributing zero.
+The factor cannot increase the old military input.
+The continent component is 50% existing political/recognition input and 50% secured host plus cooperative-member host cores over all native `states_in_africa`.
+Host ownership, control, cores and member holdings remain separate.
+Division divisor 20, equipment/fuel sustainment shares 60/40 with floor 0.4 and span 0.6, outer weights 25/20/20/15/10/10, Chaos endpoint 1000, evolution II/III additions 15/25, smoothing 8 and existing penalties are preserved.
+
+Current source implements the selected inputs and their guarded publication lifecycle.
+Source cases and the bounded decision-root comparison do not establish native arithmetic, collection/callback timing, unknown-object discovery or same-cardinality identity coverage.
+The capital/port strategic 20% proposal is accepted and queued pending province naval-base aggregation and owner/site semantics.
+Rail/resource/active-base families remain unresolved and have no fulfilling proxy.
+The full Gods goal remains incomplete, with no simplification in the selected fundamental scope.
 
 #### Strength losses
 

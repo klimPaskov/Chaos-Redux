@@ -1,0 +1,93 @@
+# Event 012 private Strength input proofs. COUNTRY predicates are ROOT independent.
+# These are pure reads. Public effects use = yes and documented caller storage.
+
+gods_of_africa_strength_host_is_current = {
+	africa_has_current_host = yes
+	exists = yes
+	tag = event_target:africa_host
+	has_country_flag = africa_unifier_host
+	has_country_flag = africa_host_commit_completed
+	has_variable = africa_host_generation
+	has_variable = africa_origin_host_id
+	has_global_flag = africa_event_active
+}
+
+gods_of_africa_strength_census_owner_is_current = {
+	gods_of_africa_strength_host_is_current = yes
+	has_country_flag = gods_of_africa_strength_census_initialized
+	has_variable = gods_of_africa_strength_census_host_id
+	has_variable = gods_of_africa_strength_census_generation
+	has_variable = gods_of_africa_strength_census_origin_host_id
+	check_variable = { var = gods_of_africa_strength_census_host_id value = THIS.id compare = equals }
+	check_variable = { var = gods_of_africa_strength_census_generation value = africa_host_generation compare = equals }
+	check_variable = { var = gods_of_africa_strength_census_origin_host_id value = africa_origin_host_id compare = equals }
+}
+
+gods_of_africa_strength_census_is_complete = {
+	gods_of_africa_strength_census_owner_is_current = yes
+	has_country_flag = gods_of_africa_strength_census_complete
+	NOT = { has_country_flag = gods_of_africa_strength_world_coverage_incomplete }
+	has_variable = gods_of_africa_strength_census_size
+	check_variable = { var = gods_of_africa_strength_countries^num value = global.countries^num compare = equals }
+	check_variable = { var = gods_of_africa_strength_census_size value = global.countries^num compare = equals }
+	is_in_array = { array = gods_of_africa_strength_countries value = THIS }
+}
+
+gods_of_africa_strength_member_is_eligible = {
+	africa_has_current_host = yes
+	exists = yes
+	NOT = { has_capitulated = yes }
+	NOT = { tag = event_target:africa_host }
+	africa_member_host_generation_is_current = yes
+	africa_relationship_is_cooperative = yes
+	event_target:africa_host = {
+		is_in_array = { array = africa_relationship_countries value = PREV }
+	}
+}
+
+gods_of_africa_strength_army_sample_is_current = {
+	gods_of_africa_strength_census_is_complete = yes
+	has_country_flag = gods_of_africa_strength_army_sample_valid
+	has_variable = gods_of_africa_strength_army_sample_host_id
+	has_variable = gods_of_africa_strength_army_sample_generation
+	has_variable = gods_of_africa_strength_army_sample_origin_host_id
+	has_variable = gods_of_africa_strength_army_sample_day
+	has_variable = gods_of_africa_strength_army_sample_due_day
+	has_variable = gods_of_africa_strength_world_army_k
+	has_variable = gods_of_africa_strength_host_army_k_sample
+	has_variable = gods_of_africa_strength_army_processed_count
+	check_variable = { var = gods_of_africa_strength_army_sample_host_id value = THIS.id compare = equals }
+	check_variable = { var = gods_of_africa_strength_army_sample_generation value = africa_host_generation compare = equals }
+	check_variable = { var = gods_of_africa_strength_army_sample_origin_host_id value = africa_origin_host_id compare = equals }
+	check_variable = { var = gods_of_africa_strength_army_processed_count value = gods_of_africa_strength_countries^num compare = equals }
+	check_variable = { var = global.num_days value = gods_of_africa_strength_army_sample_day compare = greater_than_or_equals }
+	check_variable = { var = global.num_days value = gods_of_africa_strength_army_sample_due_day compare = less_than_or_equals }
+	check_variable = { var = gods_of_africa_strength_host_army_k_sample value = constant:gods_of_africa_value.zero compare = greater_than_or_equals }
+	check_variable = { var = gods_of_africa_strength_world_army_k value = gods_of_africa_strength_host_army_k_sample compare = greater_than_or_equals }
+}
+
+gods_of_africa_strength_territory_sample_is_current = {
+	gods_of_africa_strength_host_is_current = yes
+	has_country_flag = gods_of_africa_strength_territory_sample_valid
+	has_variable = gods_of_africa_strength_territory_host_id
+	has_variable = gods_of_africa_strength_territory_generation
+	has_variable = gods_of_africa_strength_territory_origin_host_id
+	has_variable = gods_of_africa_strength_territory_observation_day
+	has_variable = gods_of_africa_strength_african_state_total
+	has_variable = gods_of_africa_strength_physical_control
+	check_variable = { var = gods_of_africa_strength_territory_host_id value = THIS.id compare = equals }
+	check_variable = { var = gods_of_africa_strength_territory_generation value = africa_host_generation compare = equals }
+	check_variable = { var = gods_of_africa_strength_territory_origin_host_id value = africa_origin_host_id compare = equals }
+	check_variable = { var = gods_of_africa_strength_territory_observation_day value = global.num_days compare = equals }
+	check_variable = { gods_of_africa_strength_african_state_total > constant:gods_of_africa_value.zero }
+}
+
+gods_of_africa_strength_input_sample_is_current = {
+	gods_of_africa_strength_army_sample_is_current = yes
+	gods_of_africa_strength_territory_sample_is_current = yes
+}
+
+gods_of_africa_strength_input_factors_applied = {
+	gods_of_africa_strength_input_sample_is_current = yes
+	has_country_flag = gods_of_africa_strength_input_factors_valid
+}
