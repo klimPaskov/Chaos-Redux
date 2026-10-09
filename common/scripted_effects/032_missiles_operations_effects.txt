@@ -277,6 +277,7 @@ missiles_select_rogue_launch_target = {
 
 missiles_open_rogue_incident = {
 	missiles_allocate_incident_id = yes
+	set_variable = { missiles_rogue_context_id = missiles_current_incident_id }
 	if = { limit = { NOT = { has_variable = global.missiles_rogue_active_incidents } } set_variable = { global.missiles_rogue_active_incidents = constant:missiles_program_value.zero } }
 	add_to_variable = { global.missiles_rogue_active_incidents = constant:missiles_program_value.one }
 	set_country_flag = missiles_rogue_active_counted
@@ -1435,34 +1436,31 @@ missiles_secure_launch_codes = {
 
 missiles_begin_survey = {
 	# COUNTRY scope from the state-targeted decision; FROM is the surveyed state.
-	if = {
-		limit = { FROM = { missiles_state_is_valid_survey_target = yes } }
-		set_variable = { missiles_survey_site_state = FROM }
-		set_temp_variable = { chaosx_date_days = constant:missiles_evolution_timing.survey_mission_days }
-		set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
-		chaosx_convert_days_to_date_offset = yes
-		set_variable = { missiles_survey_due_date = global.date }
-		add_to_variable = { missiles_survey_due_date = chaosx_date_offset }
-		set_country_flag = missiles_survey_in_progress
-		clr_country_flag = missiles_survey_complete
-	}
+	missiles_start_paid_survey = yes
 }
 
 missiles_complete_survey = {
 	# COUNTRY scope (survey mission completion). The surveyed state becomes the
 	# program's launch site with initial capacity.
 	if = {
-		limit = { missiles_survey_target_is_valid = yes }
-		var:missiles_survey_site_state = { missiles_register_site = yes }
-		set_country_flag = missiles_survey_complete
+		limit = { missiles_survey_is_due = yes }
+		if = {
+			limit = { missiles_survey_project_is_funded = yes missiles_survey_target_is_valid = yes }
+			var:missiles_survey_site_state = { missiles_register_site = yes }
+			set_country_flag = missiles_survey_complete
+			set_variable = { missiles_survey_last_result = constant:missiles_survey_settlement.completed }
+			set_temp_variable = { missiles_survey_refund_ratio = constant:missiles_program_value.zero }
+			missiles_close_survey_payment_with_refund = yes
+			clr_country_flag = missiles_survey_in_progress
+			clear_variable = missiles_survey_due_date
+			clear_variable = missiles_survey_site_state
+		}
+		else = { missiles_cancel_site_survey = yes }
+		missiles_recalculate_network = yes
+		missiles_rebalance_site_custody = yes
+		missiles_refresh_program_status_idea = yes
+		chaosx_032_achievement_prepare_long_reach_snapshot = yes
 	}
-	clr_country_flag = missiles_survey_in_progress
-	clear_variable = missiles_survey_due_date
-	clear_variable = missiles_survey_site_state
-	missiles_recalculate_network = yes
-	missiles_rebalance_site_custody = yes
-	missiles_refresh_program_status_idea = yes
-	chaosx_032_achievement_prepare_long_reach_snapshot = yes
 }
 
 missiles_begin_secondary_site = {
@@ -1686,11 +1684,24 @@ missiles_recover_site_capacity_loss = {
 
 missiles_begin_site_recovery = {
 	# COUNTRY scope. Loyal forces must hold the rogue site itself.
+	missiles_refresh_recovery_quote = yes
 	if = {
 		limit = {
-			has_country_flag = missiles_rogue_command_active
-			has_variable = missiles_rogue_site_state
+			missiles_country_can_start_loyal_recovery = yes
 		}
+		# The fee is collected only after the same live garrison/quote gate.
+		set_temp_variable = { missiles_recovery_payment_delta = constant:missiles_recovery_policy.manpower }
+		multiply_temp_variable = { missiles_recovery_payment_delta = constant:universal_cost_framework.negative_one }
+		add_manpower = missiles_recovery_payment_delta
+		set_temp_variable = { missiles_recovery_payment_delta = constant:missiles_recovery_policy.infantry_equipment }
+		multiply_temp_variable = { missiles_recovery_payment_delta = constant:universal_cost_framework.negative_one }
+		add_equipment_to_stockpile = { type = infantry_equipment amount = missiles_recovery_payment_delta }
+		set_temp_variable = { missiles_recovery_payment_delta = constant:missiles_recovery_policy.command_power }
+		multiply_temp_variable = { missiles_recovery_payment_delta = constant:universal_cost_framework.negative_one }
+		add_command_power = missiles_recovery_payment_delta
+		set_variable = { missiles_site_recovery_actor_id = id }
+		set_variable = { missiles_site_recovery_context_id = missiles_rogue_context_id }
+		set_variable = { missiles_site_recovery_site_id = missiles_rogue_site_id }
 		set_variable = { missiles_recovery_site_state = missiles_rogue_site_state }
 		set_temp_variable = { chaosx_date_days = constant:missiles_evolution_timing.site_recovery_mission_days }
 		set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
@@ -1705,16 +1716,14 @@ missiles_begin_site_recovery = {
 missiles_complete_site_recovery = {
 	# COUNTRY scope (recovery mission completion).
 	if = {
-		limit = { missiles_recovery_target_is_valid = yes }
+		limit = { missiles_recovery_goal_is_satisfied = yes }
 		var:missiles_recovery_site_state = { missiles_recover_rogue_site = yes }
+		add_to_variable = { missiles_command_control = constant:missiles_program_value.command_loyal_force_gain }
+		set_country_flag = missiles_site_recovery_complete
+		missiles_cancel_site_recovery_project = yes
+		missiles_clamp_program_values = yes
+		missiles_close_rogue_incident = yes
 	}
-	add_to_variable = { missiles_command_control = constant:missiles_program_value.command_loyal_force_gain }
-	clr_country_flag = missiles_site_recovery_active
-	set_country_flag = missiles_site_recovery_complete
-	clear_variable = missiles_site_recovery_due_date
-	clear_variable = missiles_recovery_site_state
-	missiles_clamp_program_values = yes
-	missiles_close_rogue_incident = yes
 }
 
 missiles_recover_rogue_site = {
@@ -1742,6 +1751,8 @@ missiles_recover_rogue_site = {
 missiles_close_rogue_incident = {
 	if = {
 		limit = { has_country_flag = missiles_rogue_command_active }
+		missiles_cancel_site_recovery_project = yes
+		remove_mission = missiles_site_recovery_mission
 		if = {
 			limit = { has_country_flag = missiles_rogue_active_counted check_variable = { var = global.missiles_rogue_active_incidents value = constant:missiles_program_value.zero compare = greater_than } }
 			subtract_from_variable = { global.missiles_rogue_active_incidents = constant:missiles_program_value.one }
@@ -1805,6 +1816,7 @@ missiles_close_rogue_incident = {
 		set_country_flag = missiles_rogue_incident_resolved
 		clear_variable = missiles_rogue_site_state
 		clear_variable = missiles_rogue_site_id
+		clear_variable = missiles_rogue_context_id
 		clear_variable = missiles_rogue_foreign_actor
 		clear_variable = missiles_rogue_defection_recipient
 		clear_variable = missiles_rogue_launch_target
@@ -3579,9 +3591,18 @@ missiles_cancel_preparation = {
 # COUNTRY scope. Non-operation native projects own only their pending fields.
 # Their late cancellation/timeout must never abort a different launch receipt.
 missiles_cancel_site_survey = {
+	if = {
+		limit = { missiles_survey_payment_receipt_is_current = yes }
+		set_variable = { missiles_survey_last_result = constant:missiles_survey_settlement.interrupted }
+		if = { limit = { NOT = { missiles_country_can_manage_program = yes } } set_variable = { missiles_survey_last_result = constant:missiles_survey_settlement.program_lost } }
+		else_if = { limit = { NOT = { missiles_survey_target_is_valid = yes } } set_variable = { missiles_survey_last_result = constant:missiles_survey_settlement.state_lost } }
+		else_if = { limit = { missiles_survey_is_due = yes } set_variable = { missiles_survey_last_result = constant:missiles_survey_settlement.timed_out } }
+	}
+	missiles_refund_cancelled_survey = yes
 	clr_country_flag = missiles_survey_in_progress
 	clear_variable = missiles_survey_due_date
-	clear_variable = missiles_survey_site_state
+	# A malformed paid hold keeps its state identity for explicit settlement.
+	if = { limit = { NOT = { has_country_flag = missiles_survey_payment_active } } clear_variable = missiles_survey_site_state }
 }
 
 missiles_cancel_secondary_site_project = {
@@ -3610,6 +3631,9 @@ missiles_cancel_site_repair_project = {
 }
 
 missiles_cancel_site_recovery_project = {
+	clear_variable = missiles_site_recovery_actor_id
+	clear_variable = missiles_site_recovery_context_id
+	clear_variable = missiles_site_recovery_site_id
 	clr_country_flag = missiles_site_recovery_active
 	clear_variable = missiles_site_recovery_due_date
 	clear_variable = missiles_recovery_site_state
@@ -7050,6 +7074,10 @@ missiles_cleanup_removed_country = {
 			NOT = { has_country_flag = missiles_program_cleanup_complete }
 		}
 		set_country_flag = missiles_program_cleanup_complete
+		missiles_cancel_site_survey = yes
+		missiles_cancel_site_recovery_project = yes
+		remove_mission = missiles_launch_state_survey_mission
+		remove_mission = missiles_site_recovery_mission
 		missiles_settle_chemical_payloads_on_removal = yes
 		remove_from_array = { array = global.missiles_program_registry value = THIS }
 		missiles_notify_evolution_change = yes

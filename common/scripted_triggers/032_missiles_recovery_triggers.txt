@@ -1,0 +1,63 @@
+# Event 032 loyal-force recovery. COUNTRY scope and native country-owned
+# division counts, with the exact state pointer supplied to divisions_in_state.
+# The static size field receives the centralized threshold through meta text.
+
+missiles_selected_rogue_site_has_loyal_garrison = {
+	has_country_flag = missiles_rogue_command_active
+	has_variable = missiles_rogue_site_state
+	has_variable = missiles_rogue_context_id
+	check_variable = { missiles_rogue_context_id > constant:missiles_program_value.zero }
+	var:missiles_rogue_site_state = { missiles_site_is_rogue_incident_site = yes }
+	set_temp_variable = { missiles_loyal_garrison_floor = constant:missiles_recovery_policy.minimum_divisions }
+	subtract_from_temp_variable = { missiles_loyal_garrison_floor = constant:missiles_program_value.one }
+	meta_trigger = {
+		text = { divisions_in_state = { state = var:missiles_rogue_site_state size > [DIVISION_FLOOR] } }
+		DIVISION_FLOOR = "[?missiles_loyal_garrison_floor|.0]"
+	}
+}
+
+missiles_recovery_command_is_affordable = {
+	NOT = { command_power < constant:missiles_recovery_policy.command_power }
+}
+missiles_recovery_manpower_is_affordable = {
+	NOT = { has_manpower < constant:missiles_recovery_policy.manpower }
+}
+missiles_recovery_infantry_is_affordable = {
+	NOT = { has_equipment = { infantry_equipment < constant:missiles_recovery_policy.infantry_equipment } }
+}
+missiles_recovery_quote_is_affordable = {
+	missiles_recovery_command_is_affordable = yes
+	missiles_recovery_manpower_is_affordable = yes
+	missiles_recovery_infantry_is_affordable = yes
+}
+
+missiles_country_can_start_loyal_recovery = {
+	missiles_country_can_manage_program = yes
+	missiles_selected_rogue_site_has_loyal_garrison = yes
+	NOT = { has_country_flag = missiles_site_recovery_active }
+	NOT = { has_active_mission = missiles_site_recovery_mission }
+	missiles_recovery_quote_is_affordable = yes
+}
+
+missiles_recovery_receipt_is_current = {
+	has_country_flag = missiles_rogue_command_active
+	has_country_flag = missiles_site_recovery_active
+	has_variable = missiles_site_recovery_actor_id
+	check_variable = { var = missiles_site_recovery_actor_id value = id compare = equals }
+	has_variable = missiles_site_recovery_context_id
+	check_variable = { missiles_site_recovery_context_id > constant:missiles_program_value.zero }
+	check_variable = { var = missiles_site_recovery_context_id value = missiles_rogue_context_id compare = equals }
+	has_variable = missiles_site_recovery_site_id
+	check_variable = { var = missiles_site_recovery_site_id value = missiles_rogue_site_id compare = equals }
+	missiles_recovery_target_is_valid = yes
+	var:missiles_recovery_site_state = {
+		missiles_site_is_rogue_incident_site = yes
+		check_variable = { var = id value = PREV.missiles_site_recovery_site_id compare = equals }
+	}
+}
+
+missiles_recovery_goal_is_satisfied = {
+	missiles_recovery_receipt_is_current = yes
+	missiles_site_recovery_is_due = yes
+	missiles_selected_rogue_site_has_loyal_garrison = yes
+}

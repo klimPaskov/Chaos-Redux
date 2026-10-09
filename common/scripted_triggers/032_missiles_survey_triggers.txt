@@ -1,0 +1,129 @@
+# Event 032 survey quote, payer receipt and settlement gates.
+# COUNTRY scope. Pure resource gates use the shared inclusive native cost
+# predicate; normal display caches never authorize a payment or refund.
+
+missiles_survey_manpower_is_affordable = {
+	set_temp_variable = { universal_cost_affordability_resource_kind = constant:universal_cost_resource_kind.manpower }
+	set_temp_variable = { universal_cost_affordability_amount = constant:missiles_survey_payment.manpower }
+	universal_cost_component_is_affordable = yes
+}
+
+missiles_survey_support_is_affordable = {
+	set_temp_variable = { universal_cost_affordability_resource_kind = constant:universal_cost_resource_kind.support_equipment }
+	set_temp_variable = { universal_cost_affordability_amount = constant:missiles_survey_payment.support_equipment }
+	universal_cost_component_is_affordable = yes
+}
+
+missiles_survey_fuel_is_affordable = {
+	set_temp_variable = { universal_cost_affordability_resource_kind = constant:universal_cost_resource_kind.fuel }
+	set_temp_variable = { universal_cost_affordability_amount = constant:missiles_survey_payment.fuel }
+	universal_cost_component_is_affordable = yes
+}
+
+missiles_survey_quote_is_affordable = {
+	missiles_survey_manpower_is_affordable = yes
+	missiles_survey_support_is_affordable = yes
+	missiles_survey_fuel_is_affordable = yes
+}
+
+missiles_survey_payment_receipt_is_current = {
+	has_country_flag = missiles_survey_payment_active
+	NOT = { has_country_flag = missiles_survey_native_accounting_quarantined }
+	has_variable = missiles_survey_payment_id
+	check_variable = { missiles_survey_payment_id > constant:missiles_program_value.zero }
+	has_variable = missiles_survey_generation
+	check_variable = { var = missiles_survey_payment_id value = missiles_survey_generation compare = equals }
+	has_variable = missiles_survey_payment_actor_id
+	check_variable = { var = missiles_survey_payment_actor_id value = id compare = equals }
+	has_variable = missiles_survey_site_state
+	has_variable = missiles_survey_payment_site_id
+	check_variable = { missiles_survey_payment_site_id > constant:missiles_program_value.zero }
+	var:missiles_survey_site_state = { check_variable = { var = id value = PREV.missiles_survey_payment_site_id compare = equals } }
+	has_variable = missiles_survey_started_date
+	has_variable = missiles_survey_paid_duration_days
+	check_variable = { missiles_survey_paid_duration_days > constant:missiles_program_value.zero }
+	has_variable = missiles_survey_paid_manpower
+	has_variable = missiles_survey_paid_support
+	has_variable = missiles_survey_paid_fuel
+	check_variable = { var = missiles_survey_paid_manpower value = constant:missiles_program_value.zero compare = greater_than_or_equals }
+	check_variable = { var = missiles_survey_paid_support value = constant:missiles_program_value.zero compare = greater_than_or_equals }
+	check_variable = { var = missiles_survey_paid_fuel value = constant:missiles_program_value.zero compare = greater_than_or_equals }
+	has_variable = missiles_survey_quoted_manpower
+	has_variable = missiles_survey_quoted_support
+	has_variable = missiles_survey_quoted_fuel
+	check_variable = { missiles_survey_quoted_manpower > constant:missiles_program_value.zero }
+	check_variable = { missiles_survey_quoted_support > constant:missiles_program_value.zero }
+	check_variable = { missiles_survey_quoted_fuel > constant:missiles_program_value.zero }
+	check_variable = { var = missiles_survey_paid_manpower value = missiles_survey_quoted_manpower compare = less_than_or_equals }
+	check_variable = { var = missiles_survey_paid_support value = missiles_survey_quoted_support compare = less_than_or_equals }
+	check_variable = { var = missiles_survey_paid_fuel value = missiles_survey_quoted_fuel compare = less_than_or_equals }
+	NOT = { check_variable = { var = missiles_survey_payment_id value = missiles_survey_last_settlement_id compare = equals } }
+}
+
+# A closed refund keeps the exact old payer and paid bounds; presence alone
+# cannot turn a malformed pending balance into a new native stock grant.
+missiles_survey_pending_refund_is_current = {
+	has_country_flag = missiles_survey_refund_pending
+	NOT = { has_country_flag = missiles_survey_payment_active }
+	NOT = { has_country_flag = missiles_survey_native_accounting_quarantined }
+	has_variable = missiles_survey_payment_id
+	has_variable = missiles_survey_last_settlement_id
+	check_variable = { missiles_survey_last_settlement_id > constant:missiles_program_value.zero }
+	check_variable = { var = missiles_survey_payment_id value = missiles_survey_last_settlement_id compare = equals }
+	check_variable = { var = missiles_survey_refund_actor_id value = id compare = equals }
+	check_variable = { var = missiles_survey_payment_actor_id value = id compare = equals }
+	has_variable = missiles_survey_paid_manpower
+	has_variable = missiles_survey_paid_support
+	has_variable = missiles_survey_paid_fuel
+	has_variable = missiles_survey_refund_manpower_pending
+	has_variable = missiles_survey_refund_support_pending
+	has_variable = missiles_survey_refund_fuel_pending
+	has_variable = missiles_survey_last_refund_manpower
+	has_variable = missiles_survey_last_refund_support
+	has_variable = missiles_survey_last_refund_fuel
+	check_variable = { var = missiles_survey_refund_manpower_pending value = constant:missiles_program_value.zero compare = greater_than_or_equals }
+	check_variable = { var = missiles_survey_refund_support_pending value = constant:missiles_program_value.zero compare = greater_than_or_equals }
+	check_variable = { var = missiles_survey_refund_fuel_pending value = constant:missiles_program_value.zero compare = greater_than_or_equals }
+	check_variable = { var = missiles_survey_last_refund_manpower value = constant:missiles_program_value.zero compare = greater_than_or_equals }
+	check_variable = { var = missiles_survey_last_refund_support value = constant:missiles_program_value.zero compare = greater_than_or_equals }
+	check_variable = { var = missiles_survey_last_refund_fuel value = constant:missiles_program_value.zero compare = greater_than_or_equals }
+	set_temp_variable = { missiles_survey_refund_bound = missiles_survey_refund_manpower_pending }
+	add_to_temp_variable = { missiles_survey_refund_bound = missiles_survey_last_refund_manpower }
+	check_variable = { var = missiles_survey_refund_bound value = missiles_survey_paid_manpower compare = less_than_or_equals }
+	set_temp_variable = { missiles_survey_refund_bound = missiles_survey_refund_support_pending }
+	add_to_temp_variable = { missiles_survey_refund_bound = missiles_survey_last_refund_support }
+	check_variable = { var = missiles_survey_refund_bound value = missiles_survey_paid_support compare = less_than_or_equals }
+	set_temp_variable = { missiles_survey_refund_bound = missiles_survey_refund_fuel_pending }
+	add_to_temp_variable = { missiles_survey_refund_bound = missiles_survey_last_refund_fuel }
+	check_variable = { var = missiles_survey_refund_bound value = missiles_survey_paid_fuel compare = less_than_or_equals }
+}
+
+# A partially paid start can be refunded but cannot found a launch site.
+missiles_survey_project_is_funded = {
+	missiles_survey_payment_receipt_is_current = yes
+	has_country_flag = missiles_survey_fully_paid
+	has_variable = missiles_survey_quoted_manpower
+	has_variable = missiles_survey_quoted_support
+	has_variable = missiles_survey_quoted_fuel
+	check_variable = { missiles_survey_paid_manpower > constant:missiles_program_value.zero }
+	check_variable = { missiles_survey_paid_support > constant:missiles_program_value.zero }
+	check_variable = { missiles_survey_paid_fuel > constant:missiles_program_value.zero }
+	check_variable = { var = missiles_survey_paid_manpower value = missiles_survey_quoted_manpower compare = equals }
+	check_variable = { var = missiles_survey_paid_support value = missiles_survey_quoted_support compare = equals }
+	check_variable = { var = missiles_survey_paid_fuel value = missiles_survey_quoted_fuel compare = equals }
+}
+
+missiles_survey_owner_is_ready = {
+	missiles_country_can_start_survey = yes
+	NOT = { has_country_flag = missiles_survey_payment_active }
+	NOT = { has_country_flag = missiles_survey_refund_pending }
+	NOT = { has_country_flag = missiles_survey_native_accounting_quarantined }
+	NOT = { has_active_mission = missiles_launch_state_survey_mission }
+}
+
+# COUNTRY decision entry; FROM is its exact native state target.
+missiles_survey_selected_project_can_start = {
+	missiles_survey_owner_is_ready = yes
+	FROM = { missiles_state_is_valid_survey_target = yes }
+	missiles_survey_quote_is_affordable = yes
+}

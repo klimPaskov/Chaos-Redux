@@ -19,8 +19,11 @@ def source(path):
     return dict(parse((ROOT / path).read_text(encoding='utf-8-sig')))
 
 
-EFFECTS = source('common/scripted_effects/032_missiles_operations_effects.txt')
-TRIGGERS = source('common/scripted_triggers/032_missiles_operations_triggers.txt')
+EFFECTS = {**source('common/scripted_effects/032_missiles_operations_effects.txt'),
+           **source('common/scripted_effects/032_missiles_survey_effects.txt')}
+TRIGGERS = {**source('common/scripted_triggers/032_missiles_operations_triggers.txt'),
+            **source('common/scripted_triggers/032_missiles_survey_triggers.txt'),
+            **source('common/scripted_triggers/032_missiles_recovery_triggers.txt')}
 CONSTANTS = source('common/script_constants/032_missiles_constants.txt')
 DECISIONS = dict(source('common/decisions/032_missiles_decisions.txt')['missiles_program_management_category'])
 MISSION_FILE = source('common/decisions/032_missiles_missions.txt')
@@ -83,16 +86,25 @@ class ProjectMissionContract(unittest.TestCase):
     def test_begin_effects_produce_the_flag_and_a_converted_due_date(self):
         for mission, project in PROJECTS.items():
             flag, variable, _ = due_contract(project['due'])
-            nodes = list(descendants(EFFECTS[project['begin']]))
+            begin = project['begin']
+            if begin == 'missiles_begin_survey':
+                self.assertEqual(EFFECTS[begin], [('missiles_start_paid_survey', 'yes')])
+                begin = 'missiles_start_paid_survey'
+            nodes = list(descendants(EFFECTS[begin]))
             with self.subTest(mission=mission):
                 self.assertIn(('set_country_flag', flag), nodes)
                 writes = [dict(body) for key, body in nodes if key in ('set_variable', 'add_to_variable') and isinstance(body, list)]
                 self.assertIn({variable: 'global.date'}, writes)
                 self.assertIn({variable: 'chaosx_date_offset'}, writes)
                 temps = [dict(body) for key, body in nodes if key == 'set_temp_variable']
-                self.assertIn({'chaosx_date_days': f"constant:missiles_evolution_timing.{project['timing']}"}, temps)
+                if begin == 'missiles_start_paid_survey':
+                    self.assertIn({'missiles_survey_paid_duration_days': 'constant:missiles_evolution_timing.survey_mission_days'}, writes)
+                    self.assertIn({'chaosx_date_days': 'missiles_survey_paid_duration_days'}, temps)
+                else:
+                    self.assertIn({'chaosx_date_days': f"constant:missiles_evolution_timing.{project['timing']}"}, temps)
                 keys = [key for key, _ in nodes]
-                self.assertLess(keys.index('chaosx_convert_days_to_date_offset'), [k for k, b in nodes].index('add_to_variable'))
+                self.assertLess(keys.index('chaosx_convert_days_to_date_offset'),
+                                nodes.index(('add_to_variable', [(variable, 'chaosx_date_offset')])))
 
     def test_every_due_date_falls_before_the_native_timeout(self):
         for mission, project in PROJECTS.items():
@@ -130,6 +142,9 @@ class ProjectMissionContract(unittest.TestCase):
                 self.assertIn(('clear_variable', variable), cancel)
                 self.assertIn(('clr_country_flag', flag), cancel)
                 complete = list(descendants(EFFECTS[project['complete']]))
+                if mission == 'missiles_site_recovery_mission':
+                    self.assertIn((project['cancel'], 'yes'), complete)
+                    complete += cancel
                 self.assertIn(('clr_country_flag', flag), complete)
 
     def test_projects_survive_program_phase_changes(self):
@@ -152,13 +167,19 @@ class ProjectMissionContract(unittest.TestCase):
         self.assertIn(('set_country_flag', 'missiles_site_recovery_complete'), recovery)
         self.assertIn(('missiles_close_rogue_incident', 'yes'), recovery)
 
-    def test_recovery_is_goal_style_with_real_divisions_or_the_ai_path(self):
+    def test_recovery_is_goal_style_with_one_shared_owned_garrison_path(self):
         available = list(descendants(value(MISSIONS['missiles_site_recovery_mission'], 'available')))
-        stationed = dict(next(body for key, body in available if key == 'divisions_in_state'))
-        self.assertEqual(stationed['state'], 'var:missiles_recovery_site_state')
-        self.assertEqual(stationed['size'], '@m32_mission_recovery_division_floor')
-        self.assertIn(('is_ai', 'yes'), available)
-        self.assertIn(('missiles_recovery_target_is_valid', 'yes'), available)
+        self.assertIn(('missiles_selected_rogue_site_has_loyal_garrison', 'yes'), available)
+        self.assertIn(('missiles_recovery_receipt_is_current', 'yes'), available)
+        garrison = list(descendants(TRIGGERS['missiles_selected_rogue_site_has_loyal_garrison']))
+        self.assertNotIn(('is_ai', 'yes'), available + garrison)
+        stationed = dict(next(body for key, body in garrison if key == 'divisions_in_state'))
+        self.assertEqual(stationed['state'], 'var:missiles_rogue_site_state')
+        self.assertEqual(stationed['size'], '[DIVISION_FLOOR]')
+        current = list(descendants(TRIGGERS['missiles_recovery_receipt_is_current']))
+        self.assertIn(('missiles_recovery_target_is_valid', 'yes'), current)
+        self.assertIn(('missiles_recovery_goal_is_satisfied', 'yes'),
+                      list(descendants(EFFECTS['missiles_complete_site_recovery'])))
 
     def test_suspended_sites_cannot_launch_and_restoration_stays_reachable(self):
         site_triggers = source('common/scripted_triggers/032_missiles_triggers.txt')
@@ -175,6 +196,8 @@ class ProjectMissionContract(unittest.TestCase):
             'missiles_begin_site_recovery': 'missiles_recovery_site_state',
         }
         for effect, pointer in pointers.items():
+            if effect == 'missiles_begin_survey':
+                effect = 'missiles_start_paid_survey'
             writes = [dict(body) for key, body in descendants(EFFECTS[effect]) if key == 'set_variable']
             self.assertTrue(any(pointer in write for write in writes), effect)
         self.assertNotIn('missiles_pending_site_state', str(EFFECTS))
@@ -226,6 +249,9 @@ class ProjectMissionContract(unittest.TestCase):
             self.assertIn(cleared, cancel)
         recovery_cancel = EFFECTS['missiles_cancel_site_recovery_project']
         self.assertEqual(recovery_cancel, [
+            ('clear_variable', 'missiles_site_recovery_actor_id'),
+            ('clear_variable', 'missiles_site_recovery_context_id'),
+            ('clear_variable', 'missiles_site_recovery_site_id'),
             ('clr_country_flag', 'missiles_site_recovery_active'),
             ('clear_variable', 'missiles_site_recovery_due_date'),
             ('clear_variable', 'missiles_recovery_site_state'),

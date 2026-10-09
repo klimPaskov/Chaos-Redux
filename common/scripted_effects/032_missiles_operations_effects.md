@@ -120,7 +120,8 @@ Each activating decision first calls its COUNTRY-scope begin effect, which store
 | Warning Verification | `missiles_verify_warning` | none | `warning_response_days` (3) | `missiles_complete_warning_verification` verifies or exposes the warning | `missiles_cancel_warning_verification` |
 | Retaliation-Network Restoration | `missiles_begin_network_restoration` | none | `network_restore_days` (60) | `missiles_restore_retaliation_network` clears severance and returns to Supervised when the network is available | `missiles_cancel_network_restoration` |
 
-The mission `available` blocks combine the matching `*_is_due` trigger with the project's objective: the surveyed or construction state is still owned, controlled, and suitable; the repair site is still controlled and not captured, rogue, or scuttled; loyal divisions stand in the rogue site's state, with AI countries exempt; the warning is still actionable; or Command Control, readiness, an active site, and the absence of a rogue command allow restoration.
+The mission `available` blocks combine the matching `*_is_due` trigger with the project's objective: the surveyed or construction state is still owned, controlled, and suitable; the repair site is still controlled and not captured, rogue, or scuttled; the same country-owned garrison and current recovery receipt apply to both humans and AI; the warning is still actionable; or Command Control, readiness, an active site, and the absence of a rogue command allow restoration.
+Survey success additionally requires a fully funded current payer/site receipt, and cancellation returns its observed unused payment according to purchased progress.
 Cancel triggers depend on the project and its objective, never on the current program phase, so a war, peace, incident, or warning does not abort unrelated construction or repair.
 A suspended site carries `missiles_site_suspended`, which `missiles_site_can_launch` rejects; routine `missiles_restore_readiness` maintenance leaves a site under an active repair mission to that mission.
 `.tools/test_event32_project_missions.py` pins the producer, due-date, timeout, completion, and cancellation contract for all six missions.
@@ -153,6 +154,15 @@ Reserved chemical stock remains visible to shared stockpile inspections and prop
 The API and its evidence limits are documented in [Chemical payload reservations](../../docs/systems/cbrn_warfare/chemical_payload_reservations.md).
 Nuclear and biological escrow still use their separate owners; their physical loss and succession audit remains open and is not established by the chemical receipt tests.
 `.tools/test_event32_special_payload.py` pins the order decisions, event wiring, reservation, release, and consumption contract.
+
+## Paid site work and loyal recovery
+
+The [site-work transaction contract](../../docs/events/032_missiles/systems/site_work_transactions.md) documents payment, native quantity measurements, progress refunds, context identity and cleanup.
+`missiles_begin_survey` delegates to the paid survey owner; its completion requires a funded current receipt and due valid state, and cancellation settles the original payer before active fields are cleared.
+`missiles_begin_site_recovery` requires the accepted concrete two-owned-division garrison and inclusive quote before charging once and storing its actor/site/rogue context.
+`missiles_complete_site_recovery` rechecks that exact context, due date and garrison before any recovery reward or crisis closure.
+Country removal and ordinary rogue closure retire the appropriate project and native mission; survey balances that lack a measured credit remain pending instead of being copied to a successor.
+The native resource readers, shared cost dispatch and actor-owned output lifetimes are detailed in the linked contract.
 
 ## Evolution pacing
 

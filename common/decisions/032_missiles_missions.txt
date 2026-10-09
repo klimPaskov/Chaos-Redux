@@ -15,8 +15,6 @@
 @m32_mission_repair_days = 120
 # Aligned with missiles_rogue_tuning.crisis_window_days: the rogue crisis resolves itself then.
 @m32_mission_recovery_days = 30
-# Loyal forces need more than this many divisions in the rogue site's state.
-@m32_mission_recovery_division_floor = 1
 # days_mission_timeout uses a file-local literal; activation applies the dynamic
 # duration. Keep this anchor aligned with missiles_tuning.operation_mission_anchor_days.
 @m32_mission_operation_anchor_days = 1
@@ -35,6 +33,7 @@ missiles_program_management_category = {
 		fire_only_once = no
 		activation = { always = no }
 		available = {
+			hidden_trigger = { missiles_survey_project_is_funded = yes }
 			custom_trigger_tooltip = {
 				tooltip = missiles_survey_mission_due_tt
 				missiles_survey_is_due = yes
@@ -48,6 +47,7 @@ missiles_program_management_category = {
 			OR = {
 				NOT = { missiles_country_can_manage_program = yes }
 				NOT = { has_country_flag = missiles_survey_in_progress }
+				NOT = { missiles_survey_project_is_funded = yes }
 				NOT = { missiles_survey_target_is_valid = yes }
 			}
 		}
@@ -149,20 +149,14 @@ missiles_program_management_category = {
 		fire_only_once = no
 		activation = { always = no }
 		available = {
+			hidden_trigger = { missiles_recovery_receipt_is_current = yes }
 			custom_trigger_tooltip = {
 				tooltip = missiles_site_recovery_mission_due_tt
 				missiles_site_recovery_is_due = yes
 			}
 			custom_trigger_tooltip = {
 				tooltip = missiles_site_recovery_mission_forces_tt
-				missiles_recovery_target_is_valid = yes
-				OR = {
-					is_ai = yes
-					divisions_in_state = {
-						state = var:missiles_recovery_site_state
-						size > @m32_mission_recovery_division_floor
-					}
-				}
+				missiles_selected_rogue_site_has_loyal_garrison = yes
 			}
 		}
 		cancel_trigger = {
@@ -170,6 +164,7 @@ missiles_program_management_category = {
 				NOT = { missiles_country_can_manage_program = yes }
 				NOT = { has_country_flag = missiles_rogue_command_active }
 				NOT = { has_country_flag = missiles_site_recovery_active }
+				NOT = { missiles_recovery_receipt_is_current = yes }
 				NOT = { missiles_recovery_target_is_valid = yes }
 			}
 		}

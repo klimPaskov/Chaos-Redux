@@ -72,15 +72,15 @@ missiles_program_management_category = {
 			FROM = { missiles_state_is_valid_survey_target = yes }
 		}
 		available = {
+			hidden_trigger = { missiles_survey_selected_project_can_start = yes }
+			custom_trigger_tooltip = { tooltip = missiles_survey_owner_ready_tt missiles_survey_owner_is_ready = yes }
 			custom_trigger_tooltip = {
 				tooltip = missiles_survey_requirements_tt
 				FROM = { missiles_state_is_valid_survey_target = yes }
 			}
 		}
 		custom_cost_trigger = {
-			has_manpower > @m32_manpower_low
-			has_equipment = { support_equipment > @m32_support_low }
-			has_fuel > @m32_fuel_low
+			missiles_survey_quote_is_affordable = yes
 		}
 		custom_cost_text = missiles_cost_survey
 		days_re_enable = @m32_reenable_short
@@ -88,9 +88,6 @@ missiles_program_management_category = {
 		complete_effect = {
 			custom_effect_tooltip = missiles_survey_effect_tt
 			hidden_effect = {
-				add_manpower = @m32_manpower_low_negative
-				add_equipment_to_stockpile = { type = support_equipment amount = @m32_support_low_negative }
-				add_fuel = @m32_fuel_low_negative
 				missiles_begin_survey = yes
 				if = {
 					limit = { has_country_flag = missiles_survey_in_progress }
@@ -1422,29 +1419,21 @@ missiles_program_management_category = {
 			NOT = { has_active_mission = missiles_site_recovery_mission }
 		}
 		available = {
+			hidden_trigger = { missiles_country_can_start_loyal_recovery = yes }
 			has_country_flag = missiles_rogue_command_active
 			custom_trigger_tooltip = {
 				tooltip = missiles_loyal_forces_requirements_tt
-				has_variable = missiles_rogue_site_state
-				var:missiles_rogue_site_state = {
-					is_controlled_by = ROOT
-					NOT = { has_state_flag = missiles_site_scuttled }
-				}
+				missiles_selected_rogue_site_has_loyal_garrison = yes
 			}
 		}
 		custom_cost_trigger = {
-			has_manpower > @m32_manpower_high
-			has_equipment = { infantry_equipment > @m32_support_high }
-			command_power > @m32_command_standard
+			missiles_recovery_quote_is_affordable = yes
 		}
 		custom_cost_text = missiles_cost_loyal_forces
 		days_re_enable = @m32_reenable_long
 		complete_effect = {
 			custom_effect_tooltip = missiles_loyal_forces_effect_tt
 			hidden_effect = {
-				add_manpower = @m32_manpower_high_negative
-				add_equipment_to_stockpile = { type = infantry_equipment amount = @m32_support_high_negative }
-				add_command_power = @m32_command_standard_negative
 				missiles_begin_site_recovery = yes
 				if = {
 					limit = { has_country_flag = missiles_site_recovery_active }

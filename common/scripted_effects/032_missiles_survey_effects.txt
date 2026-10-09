@@ -1,0 +1,291 @@
+# Event 032 paid site-survey transactions and progress refunds.
+# COUNTRY owner scope. Payment, display and currency dispatch reuse the
+# shared native cost API. Project receipts survive authority/site loss and
+# are retired before credit, so repeated cancellation cannot mint resources.
+
+missiles_refresh_survey_quote = {
+	set_variable = { missiles_survey_quote_manpower = constant:missiles_survey_payment.manpower }
+	set_variable = { missiles_survey_quote_support = constant:missiles_survey_payment.support_equipment }
+	set_variable = { missiles_survey_quote_fuel = constant:missiles_survey_payment.fuel }
+}
+
+# COUNTRY. Input: universal_cost_payment_resource_kind. Output is created
+# by the caller. Installed native readers return manpower/fuel in thousands.
+missiles_measure_survey_resource = {
+	set_temp_variable = { missiles_survey_resource_observation = constant:universal_cost_framework.negative_one }
+	if = {
+		limit = { check_variable = { universal_cost_payment_resource_kind = constant:universal_cost_resource_kind.manpower } }
+		set_temp_variable = { missiles_survey_resource_observation = manpower_k }
+		multiply_temp_variable = { missiles_survey_resource_observation = constant:missiles_survey_payment.resource_units_per_thousand }
+	}
+	else_if = {
+		limit = { check_variable = { universal_cost_payment_resource_kind = constant:universal_cost_resource_kind.support_equipment } }
+		set_temp_variable = { missiles_survey_resource_observation = num_equipment@support_equipment }
+	}
+	else_if = {
+		limit = { check_variable = { universal_cost_payment_resource_kind = constant:universal_cost_resource_kind.fuel } }
+		set_temp_variable = { missiles_survey_resource_observation = fuel_k }
+		multiply_temp_variable = { missiles_survey_resource_observation = constant:missiles_survey_payment.resource_units_per_thousand }
+	}
+}
+
+# COUNTRY. Retain the first contradictory observation before stopping the
+# account. Outputs are caller-owned; an uncertain delta never becomes money.
+missiles_quarantine_survey_observation = {
+	if = {
+		limit = { NOT = { has_country_flag = missiles_survey_native_accounting_quarantined } }
+		set_variable = { missiles_survey_anomaly_before = missiles_survey_component_before }
+		set_variable = { missiles_survey_anomaly_after = missiles_survey_resource_observation }
+		set_variable = { missiles_survey_anomaly_requested = universal_cost_payment_amount }
+		set_variable = { missiles_survey_anomaly_observed = missiles_survey_component_observed_amount }
+		set_variable = { missiles_survey_anomaly_resource_kind = universal_cost_payment_resource_kind }
+	}
+	set_country_flag = missiles_survey_native_accounting_quarantined
+	set_temp_variable = { missiles_survey_component_observed_amount = constant:missiles_program_value.zero }
+	set_temp_variable = { universal_cost_payment_result = constant:universal_cost_framework.result_no_op }
+}
+
+# COUNTRY. The caller owns the observed amount and native payment result.
+# No native mutation is attempted without a valid pre-observation.
+missiles_pay_survey_component = {
+	set_temp_variable = { missiles_survey_component_observed_amount = constant:missiles_program_value.zero }
+	set_temp_variable = { missiles_survey_resource_observation = constant:universal_cost_framework.negative_one }
+	missiles_measure_survey_resource = yes
+	set_temp_variable = { missiles_survey_component_before = missiles_survey_resource_observation }
+	if = {
+		limit = {
+			NOT = { has_country_flag = missiles_survey_native_accounting_quarantined }
+			check_variable = { var = missiles_survey_component_before value = constant:missiles_program_value.zero compare = greater_than_or_equals }
+		}
+		universal_cost_pay_component = yes
+		missiles_measure_survey_resource = yes
+		set_temp_variable = { missiles_survey_component_observed_amount = missiles_survey_component_before }
+		subtract_from_temp_variable = { missiles_survey_component_observed_amount = missiles_survey_resource_observation }
+		if = {
+			limit = {
+				OR = {
+					check_variable = { missiles_survey_resource_observation < constant:missiles_program_value.zero }
+					check_variable = { missiles_survey_component_observed_amount < constant:missiles_program_value.zero }
+					check_variable = { var = missiles_survey_component_observed_amount value = universal_cost_payment_amount compare = greater_than }
+				}
+			}
+			missiles_quarantine_survey_observation = yes
+		}
+		else_if = {
+			limit = { NOT = { check_variable = { var = missiles_survey_component_observed_amount value = universal_cost_payment_amount compare = equals } } }
+			set_temp_variable = { universal_cost_payment_result = constant:universal_cost_framework.result_no_op }
+		}
+	}
+	else = { missiles_quarantine_survey_observation = yes }
+}
+
+# COUNTRY. A limited credit leaves its unobserved balance pending. Quarantine
+# also blocks later components in the same three-part settlement invocation.
+missiles_credit_survey_component = {
+	set_temp_variable = { missiles_survey_component_observed_amount = constant:missiles_program_value.zero }
+	if = {
+		limit = { check_variable = { universal_cost_payment_amount > constant:missiles_program_value.zero } }
+		set_temp_variable = { missiles_survey_resource_observation = constant:universal_cost_framework.negative_one }
+		missiles_measure_survey_resource = yes
+		set_temp_variable = { missiles_survey_component_before = missiles_survey_resource_observation }
+		if = {
+			limit = {
+				NOT = { has_country_flag = missiles_survey_native_accounting_quarantined }
+				check_variable = { var = missiles_survey_component_before value = constant:missiles_program_value.zero compare = greater_than_or_equals }
+			}
+			universal_cost_credit_component = yes
+			missiles_measure_survey_resource = yes
+			set_temp_variable = { missiles_survey_component_observed_amount = missiles_survey_resource_observation }
+			subtract_from_temp_variable = { missiles_survey_component_observed_amount = missiles_survey_component_before }
+			if = {
+				limit = {
+					OR = {
+						check_variable = { missiles_survey_resource_observation < constant:missiles_program_value.zero }
+						check_variable = { missiles_survey_component_observed_amount < constant:missiles_program_value.zero }
+						check_variable = { var = missiles_survey_component_observed_amount value = universal_cost_payment_amount compare = greater_than }
+					}
+				}
+				missiles_quarantine_survey_observation = yes
+			}
+		}
+		else = { missiles_quarantine_survey_observation = yes }
+	}
+}
+
+# Input/output: caller-created missiles_survey_credit_amount. Integer native
+# resources round down through documented rounding plus a one-unit correction.
+missiles_floor_survey_refund_amount = {
+	clamp_temp_variable = { var = missiles_survey_credit_amount min = constant:missiles_program_value.zero }
+	set_temp_variable = { missiles_survey_unrounded_credit = missiles_survey_credit_amount }
+	round_temp_variable = missiles_survey_credit_amount
+	if = {
+		limit = { check_variable = { var = missiles_survey_credit_amount value = missiles_survey_unrounded_credit compare = greater_than } }
+		subtract_from_temp_variable = { missiles_survey_credit_amount = constant:missiles_program_value.one }
+	}
+}
+
+# Retry only an already-fixed owner refund. No time recomputation, new price,
+# new receipt or recurring event is created by this bounded three-part pass.
+missiles_settle_pending_survey_refund = {
+	if = {
+		limit = {
+			missiles_survey_pending_refund_is_current = yes
+			exists = yes
+		}
+		set_temp_variable = { universal_cost_credit_result = constant:universal_cost_framework.result_no_op }
+		set_temp_variable = { missiles_survey_component_observed_amount = constant:missiles_program_value.zero }
+		set_temp_variable = { universal_cost_payment_resource_kind = constant:universal_cost_resource_kind.manpower }
+		set_temp_variable = { universal_cost_payment_amount = missiles_survey_refund_manpower_pending }
+		missiles_credit_survey_component = yes
+		if = {
+			limit = { check_variable = { missiles_survey_component_observed_amount > constant:missiles_program_value.zero } }
+			add_to_variable = { missiles_survey_last_refund_manpower = missiles_survey_component_observed_amount }
+			subtract_from_variable = { missiles_survey_refund_manpower_pending = missiles_survey_component_observed_amount }
+		}
+		set_temp_variable = { universal_cost_credit_result = constant:universal_cost_framework.result_no_op }
+		set_temp_variable = { universal_cost_payment_resource_kind = constant:universal_cost_resource_kind.support_equipment }
+		set_temp_variable = { universal_cost_payment_amount = missiles_survey_refund_support_pending }
+		missiles_credit_survey_component = yes
+		if = {
+			limit = { check_variable = { missiles_survey_component_observed_amount > constant:missiles_program_value.zero } }
+			add_to_variable = { missiles_survey_last_refund_support = missiles_survey_component_observed_amount }
+			subtract_from_variable = { missiles_survey_refund_support_pending = missiles_survey_component_observed_amount }
+		}
+		set_temp_variable = { universal_cost_credit_result = constant:universal_cost_framework.result_no_op }
+		set_temp_variable = { universal_cost_payment_resource_kind = constant:universal_cost_resource_kind.fuel }
+		set_temp_variable = { universal_cost_payment_amount = missiles_survey_refund_fuel_pending }
+		missiles_credit_survey_component = yes
+		if = {
+			limit = { check_variable = { missiles_survey_component_observed_amount > constant:missiles_program_value.zero } }
+			add_to_variable = { missiles_survey_last_refund_fuel = missiles_survey_component_observed_amount }
+			subtract_from_variable = { missiles_survey_refund_fuel_pending = missiles_survey_component_observed_amount }
+		}
+		if = {
+			limit = {
+				check_variable = { missiles_survey_refund_manpower_pending = constant:missiles_program_value.zero }
+				check_variable = { missiles_survey_refund_support_pending = constant:missiles_program_value.zero }
+				check_variable = { missiles_survey_refund_fuel_pending = constant:missiles_program_value.zero }
+			}
+			clr_country_flag = missiles_survey_refund_pending
+		}
+	}
+}
+
+# Input: caller-owned missiles_survey_refund_ratio, clamped to [0,1].
+# Paid fields, not a present-day quote, determine all native credits.
+missiles_close_survey_payment_with_refund = {
+	if = {
+		limit = { missiles_survey_payment_receipt_is_current = yes }
+		clamp_temp_variable = { var = missiles_survey_refund_ratio min = constant:missiles_program_value.zero max = constant:missiles_program_value.one }
+		set_variable = { missiles_survey_last_settlement_id = missiles_survey_payment_id }
+		set_variable = { missiles_survey_last_site_state = missiles_survey_site_state }
+		set_variable = { missiles_survey_refund_actor_id = missiles_survey_payment_actor_id }
+		set_variable = { missiles_survey_last_refund_manpower = constant:missiles_program_value.zero }
+		set_variable = { missiles_survey_last_refund_support = constant:missiles_program_value.zero }
+		set_variable = { missiles_survey_last_refund_fuel = constant:missiles_program_value.zero }
+		set_temp_variable = { missiles_survey_credit_amount = missiles_survey_paid_manpower }
+		multiply_temp_variable = { missiles_survey_credit_amount = missiles_survey_refund_ratio }
+		missiles_floor_survey_refund_amount = yes
+		set_variable = { missiles_survey_refund_manpower_pending = missiles_survey_credit_amount }
+		set_temp_variable = { missiles_survey_credit_amount = missiles_survey_paid_support }
+		multiply_temp_variable = { missiles_survey_credit_amount = missiles_survey_refund_ratio }
+		missiles_floor_survey_refund_amount = yes
+		set_variable = { missiles_survey_refund_support_pending = missiles_survey_credit_amount }
+		set_temp_variable = { missiles_survey_credit_amount = missiles_survey_paid_fuel }
+		multiply_temp_variable = { missiles_survey_credit_amount = missiles_survey_refund_ratio }
+		missiles_floor_survey_refund_amount = yes
+		set_variable = { missiles_survey_refund_fuel_pending = missiles_survey_credit_amount }
+		# Retire the paid receipt before any shared native credit callback.
+		clr_country_flag = missiles_survey_payment_active
+		clr_country_flag = missiles_survey_fully_paid
+		set_country_flag = missiles_survey_refund_pending
+		missiles_settle_pending_survey_refund = yes
+	}
+}
+
+# Cancellation uses elapsed whole work days, rounded up by the shared date
+# API. A partial day consumes that day's work; integer refunds round down.
+missiles_refund_cancelled_survey = {
+	if = {
+		limit = { missiles_survey_payment_receipt_is_current = yes }
+		set_temp_variable = { chaosx_date_offset = global.date }
+		subtract_from_temp_variable = { chaosx_date_offset = missiles_survey_started_date }
+		set_temp_variable = { chaosx_date_days = constant:chaosx_date_units.zero }
+		chaosx_convert_date_offset_to_days = yes
+		clamp_temp_variable = { var = chaosx_date_days min = constant:missiles_program_value.zero max = missiles_survey_paid_duration_days }
+		set_temp_variable = { missiles_survey_refund_ratio = missiles_survey_paid_duration_days }
+		subtract_from_temp_variable = { missiles_survey_refund_ratio = chaosx_date_days }
+		divide_temp_variable = { missiles_survey_refund_ratio = missiles_survey_paid_duration_days }
+		missiles_close_survey_payment_with_refund = yes
+	}
+	else = { missiles_settle_pending_survey_refund = yes }
+}
+
+# COUNTRY state-targeted decision, FROM is the frozen state. All three costs
+# are checked together before payment; duplicate starts do not alter a hold.
+missiles_start_paid_survey = {
+	set_variable = { missiles_survey_start_result = constant:missiles_result.rejected }
+	missiles_refresh_survey_quote = yes
+	missiles_settle_pending_survey_refund = yes
+	if = {
+		limit = { missiles_survey_selected_project_can_start = yes }
+		if = { limit = { NOT = { has_variable = missiles_survey_generation } } set_variable = { missiles_survey_generation = constant:missiles_program_value.zero } }
+		if = { limit = { check_variable = { var = missiles_survey_generation value = missiles_survey_last_settlement_id compare = less_than } } set_variable = { missiles_survey_generation = missiles_survey_last_settlement_id } }
+		add_to_variable = { missiles_survey_generation = constant:missiles_program_value.one }
+		set_variable = { missiles_survey_payment_id = missiles_survey_generation }
+		set_variable = { missiles_survey_payment_actor_id = id }
+		set_variable = { missiles_survey_site_state = FROM }
+		set_variable = { missiles_survey_payment_site_id = FROM.id }
+		set_variable = { missiles_survey_started_date = global.date }
+		set_variable = { missiles_survey_paid_duration_days = constant:missiles_evolution_timing.survey_mission_days }
+		set_variable = { missiles_survey_paid_manpower = constant:missiles_program_value.zero }
+		set_variable = { missiles_survey_paid_support = constant:missiles_program_value.zero }
+		set_variable = { missiles_survey_paid_fuel = constant:missiles_program_value.zero }
+		set_variable = { missiles_survey_quoted_manpower = missiles_survey_quote_manpower }
+		set_variable = { missiles_survey_quoted_support = missiles_survey_quote_support }
+		set_variable = { missiles_survey_quoted_fuel = missiles_survey_quote_fuel }
+		clr_country_flag = missiles_survey_fully_paid
+		set_country_flag = missiles_survey_payment_active
+		set_temp_variable = { missiles_survey_component_observed_amount = constant:missiles_program_value.zero }
+		set_temp_variable = { universal_cost_payment_result = constant:universal_cost_framework.result_no_op }
+		set_temp_variable = { universal_cost_payment_resource_kind = constant:universal_cost_resource_kind.manpower }
+		set_temp_variable = { universal_cost_payment_amount = missiles_survey_quote_manpower }
+		missiles_pay_survey_component = yes
+		set_variable = { missiles_survey_paid_manpower = missiles_survey_component_observed_amount }
+		if = {
+			limit = { check_variable = { universal_cost_payment_result = constant:universal_cost_framework.result_success } }
+			set_temp_variable = { universal_cost_payment_result = constant:universal_cost_framework.result_no_op }
+			set_temp_variable = { universal_cost_payment_resource_kind = constant:universal_cost_resource_kind.support_equipment }
+			set_temp_variable = { universal_cost_payment_amount = missiles_survey_quote_support }
+			missiles_pay_survey_component = yes
+			set_variable = { missiles_survey_paid_support = missiles_survey_component_observed_amount }
+			if = {
+				limit = { check_variable = { universal_cost_payment_result = constant:universal_cost_framework.result_success } }
+				set_temp_variable = { universal_cost_payment_result = constant:universal_cost_framework.result_no_op }
+				set_temp_variable = { universal_cost_payment_resource_kind = constant:universal_cost_resource_kind.fuel }
+				set_temp_variable = { universal_cost_payment_amount = missiles_survey_quote_fuel }
+				missiles_pay_survey_component = yes
+				set_variable = { missiles_survey_paid_fuel = missiles_survey_component_observed_amount }
+				if = {
+					limit = { check_variable = { universal_cost_payment_result = constant:universal_cost_framework.result_success } }
+					set_country_flag = missiles_survey_fully_paid
+					set_temp_variable = { chaosx_date_days = missiles_survey_paid_duration_days }
+					set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+					chaosx_convert_days_to_date_offset = yes
+					set_variable = { missiles_survey_due_date = global.date }
+					add_to_variable = { missiles_survey_due_date = chaosx_date_offset }
+					set_country_flag = missiles_survey_in_progress
+					clr_country_flag = missiles_survey_complete
+					set_variable = { missiles_survey_start_result = constant:missiles_result.accepted }
+				}
+			}
+		}
+		if = {
+			limit = { NOT = { check_variable = { missiles_survey_start_result = constant:missiles_result.accepted } } }
+			set_variable = { missiles_survey_last_result = constant:missiles_survey_settlement.payment_rejected }
+			set_temp_variable = { missiles_survey_refund_ratio = constant:missiles_program_value.one }
+			missiles_close_survey_payment_with_refund = yes
+			if = { limit = { NOT = { has_country_flag = missiles_survey_payment_active } } clear_variable = missiles_survey_site_state }
+		}
+	}
+}

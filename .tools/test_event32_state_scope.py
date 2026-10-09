@@ -16,6 +16,8 @@ def source(path):
 
 
 OPERATIONS = source('common/scripted_effects/032_missiles_operations_effects.txt')
+SURVEY = source('common/scripted_effects/032_missiles_survey_effects.txt')
+SURVEY_TRIGGERS = source('common/scripted_triggers/032_missiles_survey_triggers.txt')
 CORE = source('common/scripted_effects/032_missiles_effects.txt')
 TRIGGERS = source('common/scripted_triggers/032_missiles_operations_triggers.txt')
 SITE_TRIGGERS = source('common/scripted_triggers/032_missiles_triggers.txt')
@@ -52,7 +54,7 @@ def invalid_state_checks(nodes, scope='country', path=(), previous_scope='countr
 
 class MissileStateScopeContract(unittest.TestCase):
     def test_state_arrays_and_launch_pointers_do_not_use_country_triggers(self):
-        for effects in (CORE, OPERATIONS):
+        for effects in (CORE, OPERATIONS, SURVEY):
             for name, body in effects.items():
                 if not isinstance(body, list):
                     continue
@@ -80,6 +82,14 @@ class MissileStateScopeContract(unittest.TestCase):
             ('missiles_begin_survey', 'missiles_state_is_valid_survey_target', 'missiles_survey_site_state'),
             ('missiles_begin_secondary_site', 'missiles_state_is_valid_secondary_site', 'missiles_secondary_site_state'),
         ):
+            if helper == 'missiles_begin_survey':
+                self.assertEqual(OPERATIONS[helper], [('missiles_start_paid_survey', 'yes')])
+                selected = SURVEY_TRIGGERS['missiles_survey_selected_project_can_start']
+                self.assertEqual(value(selected, 'FROM'), [(predicate, 'yes')])
+                guarded = value(SURVEY['missiles_start_paid_survey'], 'if')
+                self.assertIn(('missiles_survey_selected_project_can_start', 'yes'), value(guarded, 'limit'))
+                self.assertIn(('set_variable', [(pointer, 'FROM')]), guarded)
+                continue
             guarded = value(OPERATIONS[helper], 'if')
             self.assertEqual(value(value(guarded, 'limit'), 'FROM'), [(predicate, 'yes')])
             self.assertEqual(value(guarded, 'set_variable'), [(pointer, 'FROM')])
