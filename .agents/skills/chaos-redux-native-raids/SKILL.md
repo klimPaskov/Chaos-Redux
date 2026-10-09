@@ -10,7 +10,7 @@ Use `chaos-redux-events` for any event chain or log integration and `chaos-redux
 
 ## Read the engine contract
 
-After the required `AGENTS.md` and offline wiki reading, inspect the installed `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/raids/_documentation.md`, the relevant vanilla raid files, and the installed effects and triggers documentation for any helpers used.
+Follow the MCP reference workflow in `AGENTS.md`: gather the relevant wiki guidance and installed `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/raids/_documentation.md` through `hoi4.reference_context` and targeted `hoi4.reference_search`/`hoi4.reference_read`, including effects and triggers documentation for helpers used. Inspect relevant vanilla raid definitions through `hoi4.source_lookup`. Use direct local reads only for references MCP cannot supply, within the shared retry limits.
 Treat the installed documentation as the authority for native fields and scope, and retain the vanilla precedent used in the handoff.
 
 ## Scope and dispatch

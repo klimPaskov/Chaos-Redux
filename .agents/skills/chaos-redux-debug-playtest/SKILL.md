@@ -84,7 +84,7 @@ Common required skills by surface:
 - localisation and dynamic text: use the project localisation rules and, when useful, `chaosx_localisation_auditor`
 - reusable scripted logic: use `chaosx_scripted_system_architect` when a narrow helper is genuinely needed
 
-Consult the required offline Paradox wiki pages and vanilla documentation before patching engine-facing syntax. Live observation does not replace required implementation references.
+Gather and read the required wiki and installed-documentation sections through the MCP reference workflow in `AGENTS.md` before patching engine-facing syntax. Live observation does not replace those implementation references.
 
 Do not reread the entire repository for a narrow known-feature run. Read the complete source-of-truth files for the scoped feature and use targeted search for dependencies.
 

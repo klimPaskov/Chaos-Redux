@@ -59,7 +59,7 @@ Final unit audio is source-only. The worker must never create, synthesize, recor
 
 ## Required reading and local calibration
 
-Before 3D work, read:
+Before 3D work, read the applicable inputs below. Retrieve wiki and installed documentation through the MCP reference workflow in `AGENTS.md`; their paths identify sources and local fallback locations, not an additional manual-reading step:
 
 - `AGENTS.md`.
 - `.agents/skills/chaos-redux-event-assets/SKILL.md`.

@@ -27,7 +27,7 @@ Read and apply:
 - .agents/skills/chaos-redux-focus-trees/SKILL.md when focuses unlock or modify decisions.
 - .agents/skills/chaos-redux-improvement-loop/SKILL.md when design depth gaps appear.
 - .agents/skills/chaos-redux-subagents/SKILL.md.
-- Relevant offline Paradox wiki pages in paradox_wiki/ when syntax or UI behavior must be checked.
+- Relevant wiki and installed-documentation sections through the MCP reference workflow in AGENTS.md when syntax or UI behavior must be checked.
 - Vanilla decision files and documentation in C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/ when precedent matters.
 
 Audit for:

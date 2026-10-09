@@ -48,8 +48,8 @@ Use HOI4 vanilla as the main example set.
   - The folder `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation` contains markdown documentation files. Use `hoi4.reference_search` and `hoi4.reference_read` to consult the pertinent installed sections.
   - Vanilla game files may also include documentation files in other folders. Consult the relevant sections when they cover a system you touch.
   - Treat vanilla documentation as more authoritative, more complete, and more up to date than the Paradox wiki.
-  - The Paradox wiki must still be consulted in parallel. Both sources are required.
-  - Do not rely on memory or assumptions when documentation files exist. Read the cited sections directly. Use `hoi4.source_lookup` to inspect exact vanilla and mod definitions, overrides, and indexed usages, then read the underlying source where more context is needed.
+  - Gather both the offline wiki and installed documentation through the MCP reference workflow. Both sources remain required.
+  - Do not rely on memory or assumptions when documentation files exist. Read the cited text in MCP results or through `hoi4.reference_read`. Use `hoi4.source_lookup` to inspect exact vanilla and mod definitions, overrides, and indexed usages, then read the underlying source where more context is needed.
 
 - When implementing a mechanic, event, decision or UI, find at least one vanilla precedent (if possible) and mirror its structure.
 
@@ -99,7 +99,7 @@ Inspect current source or transaction state before retrying an uncertain mutatio
 Tool exposure does not prove service health or the availability of a standalone viewer.
 Reuse schema/version discovery for an unchanged connection; a successful read-only domain call establishes that route works without a separate health tool.
 If task/job negotiation cannot be confirmed, use the ordinary supported domain call or local source review instead of blocking on that optional delivery mechanism.
-For local documentation and source precedents, verify `hoi4.reference_context`, `hoi4.reference_search`, `hoi4.reference_read`, and `hoi4.source_lookup` in the connected tool list and call their live schemas. Retain the cited source path, line span, and revision; follow `nextLine` only for the relevant section. A context bundle identifies sources but does not establish that their detailed rules have been read.
+For local documentation and source precedents, verify `hoi4.reference_context`, `hoi4.reference_search`, `hoi4.reference_read`, and `hoi4.source_lookup` in the connected tool list and call their live schemas. Retain the cited source path, line span, and revision; follow `nextLine` only for the relevant section. A source list alone does not establish that the rules were read; use the returned source excerpts or `hoi4.reference_read` for the needed text, without repeating a filesystem read of the same material.
 For nested source lookup, diagnostic-line lookup, continuation, and definition-only reads, follow the [local reference workflow](docs/systems/hoi4_agent_tools_mcp_integration.md#local-reference-workflow).
 When `hoi4.script_validate` is exposed, use it to check a relevant effect or trigger body under its explicit scope against installed documentation.
 Its true result covers only `checksPerformed`; unresolved commands, `valid = null`, unchecked argument blocks, and omitted findings require further inspection, and parameter semantics and engine behavior remain separate evidence.

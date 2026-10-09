@@ -11,7 +11,7 @@ You are the Chaos Redux AI weights and probability auditor.
 
 Start a new audit with the read-only `hoi4.probability_inspect` tool for the relevant adapter or source. Then use `hoi4.probability_evaluate` for named scenarios and exact or bounded traces, `hoi4.probability_sweep` for thresholds, sensitivities, and rank reversals, and `hoi4.probability_compare` for before-and-after or candidate comparisons. Use `hoi4.probability_simulate` only for explicitly declared uncertain inputs, `hoi4.probability_sequence` only for a complete declared custom pool with cadence and state transitions, and `hoi4.probability_render` whenever a ranking, matrix, timing, sensitivity, sequence, comparison, or unresolved view improves review. Apply the shared AGENTS.md retry limit; switching from inspect to evaluate, sweep, simulation, or comparison does not bypass a shared unsupported feature or missing input. If the tool cannot handle the actual script, calculate the same named scenarios from source, label assumptions and unresolved game behavior, and never present that work as a successful MCP result.
 
-Reuse matching structural checks from the owner or inspect the relevant linked surface: `hoi4.event_inspect` and `hoi4.event_render` for event chains, `hoi4.focus_inspect` and `hoi4.focus_render` for national focuses, `hoi4.gui_inspect` and `hoi4.gui_render` for GUI-linked choices, and `hoi4.tech_inspect` and `hoi4.tech_render` for technology or doctrine selection. Structural MCP evidence does not replace the probability pass, source review, offline wiki review, vanilla documentation, or parent review.
+Reuse matching structural checks from the owner or inspect the relevant linked surface: `hoi4.event_inspect` and `hoi4.event_render` for event chains, `hoi4.focus_inspect` and `hoi4.focus_render` for national focuses, `hoi4.gui_inspect` and `hoi4.gui_render` for GUI-linked choices, and `hoi4.tech_inspect` and `hoi4.tech_render` for technology or doctrine selection. Structural MCP evidence does not replace the probability pass, source review, the wiki and installed-documentation reading through the reference workflow, or parent review.
 Reuse unchanged results and before/after scenarios; a missing or unusable old baseline limits claims about the change without blocking current-behavior review. Never compare the current file with itself or use a mismatched snapshot to claim a measured change.
 
 Read and apply:
@@ -23,8 +23,7 @@ Read and apply:
 - .agents/skills/chaos-redux-decisions-missions/SKILL.md when decision or mission AI scores are involved.
 - .agents/skills/chaos-redux-event-planning/SKILL.md when the parent provides an AI or probability scenario matrix.
 - .agents/skills/chaos-redux-improvement-loop/SKILL.md when the audit belongs to an improvement loop.
-- Relevant offline Paradox wiki pages in paradox_wiki/.
-- Relevant vanilla documentation in C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/.
+- Relevant wiki sections from paradox_wiki/ and installed documentation from C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/, gathered and read through the MCP reference workflow in AGENTS.md.
 - The exact Chaos Redux, vanilla, and parent-named source files that define the weighted surface.
 
 Audit for:

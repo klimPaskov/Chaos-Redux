@@ -38,7 +38,7 @@ Use `chaos-redux-super-events`, `chaos-redux-focus-trees`, `chaos-redux-decision
 
 ## 3. Required HOI4 references before wiring
 
-Before wiring an animated asset into the game, inspect the local sources that apply to the target surface.
+Before wiring an animated asset into the game, gather the applicable wiki and installed documentation through the MCP reference workflow in `AGENTS.md`, then inspect the exact source and visual precedents below.
 
 Required references:
 
@@ -118,7 +118,7 @@ The usual HOI4 animation pattern is a texture sheet plus sprite metadata:
 
 For the common horizontal-sheet pattern, `noOfFrames` divides the texture into equal-width frame columns from left to right. A 64x64 asset with 8 frames should produce a sheet that is 512x64. A 156x210 animated portrait with 10 frames should produce a sheet that is 1560x210.
 
-Do not assume every HOI4 surface accepts animated sprites in the same way. Before wiring, inspect the offline Paradox wiki snapshot, vanilla examples, local documentation, and existing Chaos Redux examples for the exact target surface.
+Do not assume every HOI4 surface accepts animated sprites in the same way. Before wiring, use the MCP reference workflow for the relevant wiki and installed documentation, and inspect vanilla and Chaos Redux examples for the exact target surface.
 
 ## 6. Required animation brief
 
