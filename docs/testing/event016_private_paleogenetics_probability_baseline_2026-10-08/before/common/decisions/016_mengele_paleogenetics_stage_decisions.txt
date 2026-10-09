@@ -1,0 +1,198 @@
+# Event 016 Paleogenetics stages for the Biological Programs category.
+# The private family/stage receipt API owns direct payment, history, and output.
+# Native projects retain their own clock, payment, and callback. The timed
+# decisions reserve civilian factories through the native modifier lifecycle.
+# These file-local modifier and AI hints mirror shared stage quote constants;
+# decision modifier and ai_hint_pp_cost do not accept constant: tokens here.
+@MENGELE_PALEOGENETICS_THEORY_CIC = 1
+@MENGELE_PALEOGENETICS_PROTOTYPE_CIC = 2
+@MENGELE_PALEOGENETICS_DEPLOYMENT_CIC = 4
+@MENGELE_PALEOGENETICS_WEAPONIZATION_CIC = 6
+@MENGELE_PALEOGENETICS_THEORY_PP = 65
+@MENGELE_PALEOGENETICS_PROTOTYPE_PP = 98
+@MENGELE_PALEOGENETICS_DEPLOYMENT_PP = 130
+@MENGELE_PALEOGENETICS_WEAPONIZATION_PP = 195
+
+mengele_biological_programs_category = {
+
+	mengele_event016_paleogenetics_theory = {
+		icon = GFX_decision_brilliant_scientist_project_paleogenetics_theory
+		visible = { hidden_trigger = { brilliant_scientist_mengele_paleogenetics_theory_decision_visible = yes } }
+		available = {
+			custom_trigger_tooltip = { tooltip = mengele_event016_paleogenetics_theory_requirements_tt hidden_trigger = { brilliant_scientist_mengele_paleogenetics_theory_decision_requirements = yes } }
+			custom_trigger_tooltip = { tooltip = mengele_event016_paleogenetics_theory_costs_tt hidden_trigger = { brilliant_scientist_mengele_paleogenetics_theory_decision_can_pay = yes } }
+		}
+		custom_cost_trigger = { brilliant_scientist_mengele_paleogenetics_theory_decision_can_pay = yes }
+		custom_cost_text = mengele_event016_paleogenetics_theory_cost
+		ai_hint_pp_cost = @MENGELE_PALEOGENETICS_THEORY_PP
+		modifier = { civilian_factory_use = @MENGELE_PALEOGENETICS_THEORY_CIC }
+		days_remove = constant:brilliant_scientist_project_duration.paleogenetics_theory
+		complete_effect = {
+			custom_effect_tooltip = mengele_event016_paleogenetics_stage_started_tt
+			hidden_effect = {
+				set_temp_variable = { mengele_event016_project_family = constant:brilliant_scientist_project_family.paleogenetics }
+				set_temp_variable = { mengele_event016_requested_stage = constant:brilliant_scientist_project_stage.theory }
+				brilliant_scientist_mengele_begin_project_stage = yes
+			}
+		}
+		cancel_if_not_visible = no
+		cancel_trigger = { custom_trigger_tooltip = { tooltip = mengele_event016_paleogenetics_stage_cancel_trigger_tt hidden_trigger = { brilliant_scientist_mengele_paleogenetics_theory_decision_cancel_trigger = yes } } }
+		cancel_effect = {
+			custom_effect_tooltip = mengele_event016_paleogenetics_stage_cancelled_tt
+			hidden_effect = {
+				set_temp_variable = { mengele_event016_project_family = constant:brilliant_scientist_project_family.paleogenetics }
+				set_temp_variable = { mengele_event016_requested_stage = constant:brilliant_scientist_project_stage.theory }
+				brilliant_scientist_mengele_cancel_project_stage = yes
+			}
+		}
+		remove_effect = {
+			custom_effect_tooltip = mengele_event016_paleogenetics_theory_effect_tt
+			hidden_effect = {
+				set_temp_variable = { mengele_event016_project_family = constant:brilliant_scientist_project_family.paleogenetics }
+				set_temp_variable = { mengele_event016_requested_stage = constant:brilliant_scientist_project_stage.theory }
+				brilliant_scientist_mengele_finish_project_stage = yes
+			}
+		}
+		ai_will_do = { base = constant:brilliant_scientist_project_board.ai_medium modifier = { factor = constant:brilliant_scientist_project_ai.preferred_factor has_war = yes } modifier = { factor = constant:brilliant_scientist_project_ai.cautious_factor brilliant_scientist_mengele_paleogenetics_theory_decision_no_spare_factories = yes } }
+	}
+
+	mengele_event016_paleogenetics_prototype = {
+		icon = GFX_decision_brilliant_scientist_project_paleogenetics_prototype
+		visible = { hidden_trigger = { brilliant_scientist_mengele_paleogenetics_prototype_decision_visible = yes } }
+		available = {
+			custom_trigger_tooltip = { tooltip = mengele_event016_paleogenetics_prototype_requirements_tt hidden_trigger = { brilliant_scientist_mengele_paleogenetics_prototype_decision_requirements = yes } }
+			custom_trigger_tooltip = { tooltip = mengele_event016_paleogenetics_prototype_costs_tt hidden_trigger = { brilliant_scientist_mengele_paleogenetics_prototype_decision_can_pay = yes } }
+		}
+		custom_cost_trigger = { brilliant_scientist_mengele_paleogenetics_prototype_decision_can_pay = yes }
+		custom_cost_text = mengele_event016_paleogenetics_prototype_cost
+		ai_hint_pp_cost = @MENGELE_PALEOGENETICS_PROTOTYPE_PP
+		modifier = { civilian_factory_use = @MENGELE_PALEOGENETICS_PROTOTYPE_CIC }
+		days_remove = constant:brilliant_scientist_project_duration.paleogenetics_prototype
+		complete_effect = {
+			custom_effect_tooltip = mengele_event016_paleogenetics_stage_started_tt
+			hidden_effect = {
+				set_temp_variable = { mengele_event016_project_family = constant:brilliant_scientist_project_family.paleogenetics }
+				set_temp_variable = { mengele_event016_requested_stage = constant:brilliant_scientist_project_stage.prototype }
+				brilliant_scientist_mengele_begin_project_stage = yes
+			}
+		}
+		cancel_if_not_visible = no
+		cancel_trigger = { custom_trigger_tooltip = { tooltip = mengele_event016_paleogenetics_stage_cancel_trigger_tt hidden_trigger = { brilliant_scientist_mengele_paleogenetics_prototype_decision_cancel_trigger = yes } } }
+		cancel_effect = {
+			custom_effect_tooltip = mengele_event016_paleogenetics_stage_cancelled_tt
+			hidden_effect = {
+				set_temp_variable = { mengele_event016_project_family = constant:brilliant_scientist_project_family.paleogenetics }
+				set_temp_variable = { mengele_event016_requested_stage = constant:brilliant_scientist_project_stage.prototype }
+				brilliant_scientist_mengele_cancel_project_stage = yes
+			}
+		}
+		remove_effect = {
+			custom_effect_tooltip = mengele_event016_paleogenetics_prototype_effect_tt
+			hidden_effect = {
+				set_temp_variable = { mengele_event016_project_family = constant:brilliant_scientist_project_family.paleogenetics }
+				set_temp_variable = { mengele_event016_requested_stage = constant:brilliant_scientist_project_stage.prototype }
+				set_temp_variable = { mengele_event016_stage_finished = constant:brilliant_scientist_value.zero }
+				set_temp_variable = { mengele_event016_project_output_applied = constant:brilliant_scientist_value.zero }
+				brilliant_scientist_mengele_finish_project_stage = yes
+				# The generic Prototype output records private history. With no native
+				# presentation, this paid decision also grants the paleogenetic operational entitlement.
+				if = {
+					limit = {
+						NOT = { has_dlc = "Gotterdammerung" }
+						check_variable = { var = mengele_event016_stage_finished value = constant:brilliant_scientist_value.one compare = equals }
+						check_variable = { var = mengele_event016_project_output_applied value = constant:brilliant_scientist_value.one compare = equals }
+						has_country_flag = mengele_event016_paleogenetics_prototype_completed
+					}
+					set_temp_variable = { chaosx_custom_technology_family = constant:chaosx_custom_technology_family.paleogenetic }
+					set_temp_variable = { chaosx_custom_technology_source = constant:mengele_event016_project_stage.provenance_mengele }
+					chaosx_grant_custom_operational_technology = yes
+					set_temp_variable = { chaosx_custom_technology_family = constant:brilliant_scientist_value.zero }
+					set_temp_variable = { chaosx_custom_technology_source = constant:brilliant_scientist_value.zero }
+				}
+			}
+		}
+		ai_will_do = { base = constant:brilliant_scientist_project_board.ai_high modifier = { factor = constant:brilliant_scientist_project_ai.preferred_factor has_war = yes } modifier = { factor = constant:brilliant_scientist_project_ai.cautious_factor brilliant_scientist_mengele_paleogenetics_prototype_decision_no_spare_factories = yes } }
+	}
+
+	mengele_event016_paleogenetics_deployment = {
+		icon = GFX_decision_brilliant_scientist_project_paleogenetics_deployment
+		visible = { hidden_trigger = { brilliant_scientist_mengele_paleogenetics_deployment_decision_visible = yes } }
+		available = {
+			custom_trigger_tooltip = { tooltip = mengele_event016_paleogenetics_deployment_requirements_tt hidden_trigger = { brilliant_scientist_mengele_paleogenetics_deployment_decision_requirements = yes } }
+			custom_trigger_tooltip = { tooltip = mengele_event016_paleogenetics_deployment_costs_tt hidden_trigger = { brilliant_scientist_mengele_paleogenetics_deployment_decision_can_pay = yes } }
+		}
+		custom_cost_trigger = { brilliant_scientist_mengele_paleogenetics_deployment_decision_can_pay = yes }
+		custom_cost_text = mengele_event016_paleogenetics_deployment_cost
+		ai_hint_pp_cost = @MENGELE_PALEOGENETICS_DEPLOYMENT_PP
+		modifier = { civilian_factory_use = @MENGELE_PALEOGENETICS_DEPLOYMENT_CIC }
+		days_remove = constant:brilliant_scientist_project_duration.paleogenetics_deployment
+		complete_effect = {
+			custom_effect_tooltip = mengele_event016_paleogenetics_stage_started_tt
+			hidden_effect = {
+				set_temp_variable = { mengele_event016_project_family = constant:brilliant_scientist_project_family.paleogenetics }
+				set_temp_variable = { mengele_event016_requested_stage = constant:brilliant_scientist_project_stage.deployment }
+				brilliant_scientist_mengele_begin_project_stage = yes
+			}
+		}
+		cancel_if_not_visible = no
+		cancel_trigger = { custom_trigger_tooltip = { tooltip = mengele_event016_paleogenetics_stage_cancel_trigger_tt hidden_trigger = { brilliant_scientist_mengele_paleogenetics_deployment_decision_cancel_trigger = yes } } }
+		cancel_effect = {
+			custom_effect_tooltip = mengele_event016_paleogenetics_stage_cancelled_tt
+			hidden_effect = {
+				set_temp_variable = { mengele_event016_project_family = constant:brilliant_scientist_project_family.paleogenetics }
+				set_temp_variable = { mengele_event016_requested_stage = constant:brilliant_scientist_project_stage.deployment }
+				brilliant_scientist_mengele_cancel_project_stage = yes
+			}
+		}
+		remove_effect = {
+			custom_effect_tooltip = mengele_event016_paleogenetics_deployment_effect_tt
+			hidden_effect = {
+				set_temp_variable = { mengele_event016_project_family = constant:brilliant_scientist_project_family.paleogenetics }
+				set_temp_variable = { mengele_event016_requested_stage = constant:brilliant_scientist_project_stage.deployment }
+				brilliant_scientist_mengele_finish_project_stage = yes
+			}
+		}
+		ai_will_do = { base = constant:brilliant_scientist_project_board.ai_medium modifier = { factor = constant:brilliant_scientist_project_ai.preferred_factor has_war = yes } modifier = { factor = constant:brilliant_scientist_project_ai.cautious_factor brilliant_scientist_mengele_paleogenetics_deployment_decision_no_spare_factories = yes } }
+	}
+
+	mengele_event016_paleogenetics_weaponization = {
+		icon = GFX_decision_brilliant_scientist_project_paleogenetics_weaponization
+		visible = { hidden_trigger = { brilliant_scientist_mengele_paleogenetics_weaponization_decision_visible = yes } }
+		available = {
+			custom_trigger_tooltip = { tooltip = mengele_event016_paleogenetics_weaponization_requirements_tt hidden_trigger = { brilliant_scientist_mengele_paleogenetics_weaponization_decision_requirements = yes } }
+			custom_trigger_tooltip = { tooltip = mengele_event016_paleogenetics_weaponization_costs_tt hidden_trigger = { brilliant_scientist_mengele_paleogenetics_weaponization_decision_can_pay = yes } }
+		}
+		custom_cost_trigger = { brilliant_scientist_mengele_paleogenetics_weaponization_decision_can_pay = yes }
+		custom_cost_text = mengele_event016_paleogenetics_weaponization_cost
+		ai_hint_pp_cost = @MENGELE_PALEOGENETICS_WEAPONIZATION_PP
+		modifier = { civilian_factory_use = @MENGELE_PALEOGENETICS_WEAPONIZATION_CIC }
+		days_remove = constant:brilliant_scientist_project_duration.paleogenetics_weaponization
+		complete_effect = {
+			custom_effect_tooltip = mengele_event016_paleogenetics_stage_started_tt
+			hidden_effect = {
+				set_temp_variable = { mengele_event016_project_family = constant:brilliant_scientist_project_family.paleogenetics }
+				set_temp_variable = { mengele_event016_requested_stage = constant:brilliant_scientist_project_stage.weaponization }
+				brilliant_scientist_mengele_begin_project_stage = yes
+			}
+		}
+		cancel_if_not_visible = no
+		cancel_trigger = { custom_trigger_tooltip = { tooltip = mengele_event016_paleogenetics_stage_cancel_trigger_tt hidden_trigger = { brilliant_scientist_mengele_paleogenetics_weaponization_decision_cancel_trigger = yes } } }
+		cancel_effect = {
+			custom_effect_tooltip = mengele_event016_paleogenetics_stage_cancelled_tt
+			hidden_effect = {
+				set_temp_variable = { mengele_event016_project_family = constant:brilliant_scientist_project_family.paleogenetics }
+				set_temp_variable = { mengele_event016_requested_stage = constant:brilliant_scientist_project_stage.weaponization }
+				brilliant_scientist_mengele_cancel_project_stage = yes
+			}
+		}
+		remove_effect = {
+			custom_effect_tooltip = mengele_event016_paleogenetics_weaponization_effect_tt
+			hidden_effect = {
+				set_temp_variable = { mengele_event016_project_family = constant:brilliant_scientist_project_family.paleogenetics }
+				set_temp_variable = { mengele_event016_requested_stage = constant:brilliant_scientist_project_stage.weaponization }
+				brilliant_scientist_mengele_finish_project_stage = yes
+			}
+		}
+		ai_will_do = { base = constant:brilliant_scientist_project_board.ai_medium modifier = { factor = constant:brilliant_scientist_project_ai.preferred_factor has_war = yes } modifier = { factor = constant:brilliant_scientist_project_ai.cautious_factor brilliant_scientist_mengele_paleogenetics_weaponization_decision_no_spare_factories = yes } }
+	}
+}

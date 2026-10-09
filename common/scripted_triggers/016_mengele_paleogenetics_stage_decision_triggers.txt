@@ -27,6 +27,7 @@ brilliant_scientist_mengele_paleogenetics_prototype_decision_visible = {
 	NOT = { is_special_project_completed = sp:sp_brilliant_scientist_paleogenetics }
 }
 brilliant_scientist_mengele_paleogenetics_deployment_decision_visible = {
+	brilliant_scientist_mengele_paleogenetics_selection_is_valid = yes
 	brilliant_scientist_mengele_project_stage_provider_is_valid = yes
 	brilliant_scientist_mengele_paleogenetics_decision_receipt_is_empty = yes
 	has_country_flag = mengele_event016_paleogenetics_prototype_completed
@@ -48,6 +49,8 @@ brilliant_scientist_mengele_paleogenetics_prototype_decision_requirements = {
 }
 brilliant_scientist_mengele_paleogenetics_deployment_decision_requirements = {
 	brilliant_scientist_mengele_paleogenetics_deployment_decision_visible = yes
+	brilliant_scientist_mengele_paleogenetics_selection_is_valid = yes
+	has_tech = brilliant_scientist_paleogenetic_formations_tech
 }
 brilliant_scientist_mengele_paleogenetics_weaponization_decision_requirements = {
 	brilliant_scientist_mengele_paleogenetics_weaponization_decision_visible = yes
@@ -66,8 +69,19 @@ brilliant_scientist_mengele_paleogenetics_prototype_decision_can_pay = {
 }
 brilliant_scientist_mengele_paleogenetics_deployment_decision_can_pay = {
 	NOT = { num_of_civilian_factories_available_for_projects < constant:brilliant_scientist_project_stage_cost.paleogenetics_deployment_civilian_factories }
+	brilliant_scientist_mengele_paleogenetics_deployment_can_pay_support = yes
+	brilliant_scientist_mengele_paleogenetics_deployment_can_pay_fuel = yes
+	brilliant_scientist_mengele_paleogenetics_deployment_can_pay_political_power = yes
+}
+
+# Pure component gates shared by native admission and resource colours.
+brilliant_scientist_mengele_paleogenetics_deployment_can_pay_support = {
 	NOT = { has_equipment = { support_equipment < constant:brilliant_scientist_project_stage_cost.paleogenetics_deployment_support_equipment } }
+}
+brilliant_scientist_mengele_paleogenetics_deployment_can_pay_fuel = {
 	NOT = { has_fuel < constant:brilliant_scientist_project_stage_cost.paleogenetics_deployment_fuel }
+}
+brilliant_scientist_mengele_paleogenetics_deployment_can_pay_political_power = {
 	check_variable = { var = political_power value = constant:brilliant_scientist_project_stage_cost.paleogenetics_deployment_political_power compare = greater_than_or_equals }
 }
 brilliant_scientist_mengele_paleogenetics_weaponization_decision_can_pay = {
@@ -103,7 +117,23 @@ brilliant_scientist_mengele_paleogenetics_prototype_decision_cancel_trigger = {
 	OR = { NOT = { brilliant_scientist_mengele_project_stage_provider_is_valid = yes } NOT = { brilliant_scientist_mengele_paleogenetics_prototype_decision_receipt_matches = yes } }
 }
 brilliant_scientist_mengele_paleogenetics_deployment_decision_cancel_trigger = {
-	OR = { NOT = { brilliant_scientist_mengele_project_stage_provider_is_valid = yes } NOT = { brilliant_scientist_mengele_paleogenetics_deployment_decision_receipt_matches = yes } }
+	OR = {
+		NOT = { brilliant_scientist_mengele_project_stage_provider_is_valid = yes }
+		NOT = { has_country_flag = mengele_event016_paleogenetics_prototype_completed }
+		NOT = { has_tech = brilliant_scientist_paleogenetic_formations_tech }
+		NOT = { brilliant_scientist_mengele_paleogenetics_deployment_decision_receipt_matches = yes }
+		NOT = { brilliant_scientist_mengele_paleogenetics_pending_is_authenticated = yes }
+		NOT = { brilliant_scientist_mengele_paleogenetics_current_pair_is_valid = yes }
+	}
+}
+
+# COUNTRY scope. Free map selection is available only before payment.
+brilliant_scientist_mengele_paleogenetics_choice_is_open = {
+	brilliant_scientist_mengele_project_stage_provider_is_valid = yes
+	has_country_flag = mengele_event016_paleogenetics_prototype_completed
+	NOT = { has_country_flag = mengele_event016_paleogenetics_deployment_completed }
+	NOT = { has_country_flag = mengele_event016_paleogenetics_deployment_pending }
+	brilliant_scientist_mengele_paleogenetics_decision_receipt_is_empty = yes
 }
 brilliant_scientist_mengele_paleogenetics_weaponization_decision_cancel_trigger = {
 	OR = { NOT = { brilliant_scientist_mengele_project_stage_provider_is_valid = yes } NOT = { brilliant_scientist_mengele_paleogenetics_weaponization_decision_receipt_matches = yes } }

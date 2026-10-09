@@ -693,7 +693,46 @@ brilliant_scientist_mengele_load_project_stage_quote = {
 	}
 }
 
+# COUNTRY scope. The paired Paleogenetics Deployment owns measured construction
+# and retained partial payment. Other family stages retain the default API.
 brilliant_scientist_mengele_begin_project_stage = {
+	set_temp_variable = { mengele_event016_stage_started = constant:brilliant_scientist_value.zero }
+	if = {
+		limit = { brilliant_scientist_mengele_paleogenetics_request_is_deployment = yes }
+		brilliant_scientist_mengele_paleogenetics_begin_deployment = yes
+	}
+	else = { brilliant_scientist_mengele_begin_project_stage_default = yes }
+	brilliant_scientist_mengele_clear_project_stage_selectors = yes
+}
+
+brilliant_scientist_mengele_cancel_project_stage = {
+	set_temp_variable = { mengele_event016_stage_cancelled = constant:brilliant_scientist_value.zero }
+	if = {
+		limit = { brilliant_scientist_mengele_paleogenetics_request_is_deployment = yes }
+		brilliant_scientist_mengele_paleogenetics_cancel_deployment = yes
+	}
+	else = { brilliant_scientist_mengele_cancel_project_stage_default = yes }
+	brilliant_scientist_mengele_clear_project_stage_selectors = yes
+}
+
+brilliant_scientist_mengele_finish_project_stage = {
+	set_temp_variable = { mengele_event016_stage_finished = constant:brilliant_scientist_value.zero }
+	set_temp_variable = { mengele_event016_project_output_applied = constant:brilliant_scientist_value.zero }
+	set_temp_variable = { mengele_event016_computation_output_applied = constant:brilliant_scientist_value.zero }
+	set_temp_variable = { mengele_event016_stage_output_gap = constant:brilliant_scientist_value.zero }
+	set_temp_variable = { mengele_event016_project_availability_reconciled = constant:brilliant_scientist_value.zero }
+	set_temp_variable = { mengele_event016_computation_incident_dispatched = constant:brilliant_scientist_value.zero }
+	set_temp_variable = { mengele_event016_computation_incident_recorded = constant:brilliant_scientist_value.zero }
+	set_temp_variable = { mengele_event016_conventional_incident_recorded = constant:brilliant_scientist_value.zero }
+	if = {
+		limit = { brilliant_scientist_mengele_paleogenetics_request_is_deployment = yes }
+		brilliant_scientist_mengele_paleogenetics_finish_deployment = yes
+	}
+	else = { brilliant_scientist_mengele_finish_project_stage_default = yes }
+	brilliant_scientist_mengele_clear_project_stage_selectors = yes
+}
+
+brilliant_scientist_mengele_begin_project_stage_default = {
 	set_temp_variable = { mengele_event016_stage_started = constant:brilliant_scientist_value.zero }
 	# Own quote and mapping outputs in this consuming frame before nested calls.
 	set_temp_variable = { mengele_event016_project_index = constant:brilliant_scientist_value.zero }
@@ -738,7 +777,7 @@ brilliant_scientist_mengele_begin_project_stage = {
 	brilliant_scientist_mengele_clear_project_stage_selectors = yes
 }
 
-brilliant_scientist_mengele_cancel_project_stage = {
+brilliant_scientist_mengele_cancel_project_stage_default = {
 	set_temp_variable = { mengele_event016_stage_cancelled = constant:brilliant_scientist_value.zero }
 	set_temp_variable = { mengele_event016_project_index = constant:brilliant_scientist_value.zero }
 	if = {
@@ -756,7 +795,7 @@ brilliant_scientist_mengele_cancel_project_stage = {
 	brilliant_scientist_mengele_clear_project_stage_selectors = yes
 }
 
-brilliant_scientist_mengele_finish_project_stage = {
+brilliant_scientist_mengele_finish_project_stage_default = {
 	set_temp_variable = { mengele_event016_stage_finished = constant:brilliant_scientist_value.zero }
 	# Scratch belongs to the paid transaction, including nested output restoration.
 	set_temp_variable = { mengele_event016_project_index = constant:brilliant_scientist_value.zero }
@@ -1188,8 +1227,13 @@ brilliant_scientist_mengele_apply_family_stage_output = {
 			}
 			if = {
 				limit = { check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.deployment compare = equals } }
-				brilliant_scientist_mengele_grant_custom_stage_package = yes
-				if = { limit = { check_variable = { var = mengele_event016_stage_package_applied value = constant:brilliant_scientist_value.one compare = equals } } set_country_flag = mengele_event016_paleogenetics_deployment_completed set_temp_variable = { mengele_event016_project_output_applied = constant:brilliant_scientist_value.one } }
+				# Prototype already owns neutral operational entitlement. Private
+				# Deployment requires the authenticated physical construction proof.
+				if = {
+					limit = { brilliant_scientist_mengele_paleogenetics_deployment_outputs_are_complete = yes }
+					set_country_flag = mengele_event016_paleogenetics_deployment_completed
+					set_temp_variable = { mengele_event016_project_output_applied = constant:brilliant_scientist_value.one }
+				}
 			}
 			if = {
 				limit = { check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.weaponization compare = equals } }

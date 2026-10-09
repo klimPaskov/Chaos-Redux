@@ -17,6 +17,12 @@ Civilian-factory/CIC quotes are stored in the receipt but never reserved or refu
 
 `brilliant_scientist_mengele_cancel_project_stage` and `brilliant_scientist_mengele_finish_project_stage` authenticate the exact family/stage receipt, snapshot direct costs, clear the slot, and refund once when no output is accepted. Repeated callbacks see an empty slot and are no-ops.
 
+Paleogenetics Deployment dispatches to the [paired construction contract](016_mengele_paleogenetics_deployment_effects.md) before the default receipt can be cleared.
+The public wrappers own consumed temporary result storage and invoke the unchanged `_default` bodies for every other family/stage.
+Its source-bound native entry freezes the selected pair and measures the direct debit, and its completion requires both measured construction increments.
+A partial or uncertain construction retains its paid authority without the default full-refund path, and only unattempted work can use the recorded no-output cancellation refund.
+Its neutral Prototype entitlement remains independent of these sites.
+
 ### Temporary output storage
 
 Every consuming helper frame owns its nested temporary outputs before making the nested call.
@@ -57,7 +63,8 @@ brilliant_scientist_mengele_finish_project_stage = yes
 Cancel and finish extend each surviving partial array independently only after the exact active family/stage receipt matches.
 Missing cost entries append zero, so absent historical costs produce no fabricated refund.
 Surviving stored prices and rows beyond the family count remain intact.
-No factory creation effect, timer change, new tuning constant, event target, or periodic hook is introduced.
+These default paths introduce no factory creation, timer change, new event target or periodic hook.
+The specialized Paleogenetics Deployment adds its explicitly paid reserve infrastructure and hatchery factory and retains its separate construction state, described in the owning contract.
 The executable cold-frame/economy driver, immutable pre-paid-fix baseline, source hashes, native regression results, MCP references, and outside-file incident lifetime follow-ups are retained in `docs/plans/016_brilliant_scientist_plans/subagent_handoffs/016_funded_provider_cold_lifetime_2026-10-03.md`.
 
 ## Quote provenance

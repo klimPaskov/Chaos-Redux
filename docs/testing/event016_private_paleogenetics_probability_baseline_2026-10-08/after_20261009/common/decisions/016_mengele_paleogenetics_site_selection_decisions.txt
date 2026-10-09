@@ -1,0 +1,101 @@
+# Event 016 private Paleogenetics map selection and retained-output recovery.
+# Free selection owns no paid output. The construction helpers authenticate
+# the actor, frozen pair and exact recorded payment before settlement.
+mengele_biological_programs_category = {
+	mengele_event016_paleogenetics_select_reserve = {
+		icon = GFX_decision_brilliant_scientist_project_paleogenetics_deployment
+		state_target = any_owned_state
+		on_map_mode = map_only
+		target_root_trigger = {
+			brilliant_scientist_mengele_paleogenetics_choice_is_open = yes
+			NOT = { brilliant_scientist_mengele_paleogenetics_reserve_selection_is_valid = yes }
+		}
+		target_trigger = { FROM = { brilliant_scientist_mengele_paleogenetics_reserve_candidate_is_valid = yes } }
+		visible = {
+			brilliant_scientist_mengele_paleogenetics_choice_is_open = yes
+			NOT = { brilliant_scientist_mengele_paleogenetics_reserve_selection_is_valid = yes }
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = mengele_event016_paleogenetics_reserve_site_requirements_tt
+				hidden_trigger = { FROM = { brilliant_scientist_mengele_paleogenetics_reserve_candidate_is_valid = yes } }
+			}
+		}
+		cost = 0
+		complete_effect = {
+			custom_effect_tooltip = mengele_event016_paleogenetics_reserve_selected_tt
+			hidden_effect = { brilliant_scientist_mengele_paleogenetics_select_reserve = yes }
+		}
+		ai_will_do = { base = constant:brilliant_scientist_project_board.ai_medium }
+	}
+	mengele_event016_paleogenetics_select_hatchery = {
+		icon = GFX_decision_brilliant_scientist_project_paleogenetics_deployment
+		state_target = any_owned_state
+		on_map_mode = map_only
+		target_root_trigger = {
+			brilliant_scientist_mengele_paleogenetics_choice_is_open = yes
+			brilliant_scientist_mengele_paleogenetics_reserve_selection_is_valid = yes
+			NOT = { brilliant_scientist_mengele_paleogenetics_selection_is_valid = yes }
+		}
+		target_trigger = { FROM = { brilliant_scientist_mengele_paleogenetics_hatchery_candidate_is_valid = yes } }
+		visible = {
+			brilliant_scientist_mengele_paleogenetics_choice_is_open = yes
+			brilliant_scientist_mengele_paleogenetics_reserve_selection_is_valid = yes
+			NOT = { brilliant_scientist_mengele_paleogenetics_selection_is_valid = yes }
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = mengele_event016_paleogenetics_hatchery_site_requirements_tt
+				hidden_trigger = { FROM = { brilliant_scientist_mengele_paleogenetics_hatchery_candidate_is_valid = yes } }
+			}
+		}
+		cost = 0
+		complete_effect = {
+			custom_effect_tooltip = mengele_event016_paleogenetics_hatchery_selected_tt
+			hidden_effect = { brilliant_scientist_mengele_paleogenetics_select_hatchery = yes }
+		}
+		ai_will_do = { base = constant:brilliant_scientist_project_board.ai_medium }
+	}
+	mengele_event016_paleogenetics_clear_site_selection = {
+		icon = GFX_decision_brilliant_scientist_project_paleogenetics_deployment
+		visible = {
+			brilliant_scientist_mengele_paleogenetics_choice_is_open = yes
+			OR = {
+				has_variable = mengele_event016_paleogenetics_selected_reserve
+				has_variable = mengele_event016_paleogenetics_selected_hatchery
+			}
+		}
+		available = { hidden_trigger = { brilliant_scientist_mengele_paleogenetics_choice_is_open = yes } }
+		cost = 0
+		complete_effect = {
+			custom_effect_tooltip = mengele_event016_paleogenetics_selection_cleared_tt
+			hidden_effect = { brilliant_scientist_mengele_paleogenetics_clear_selection = yes }
+		}
+		ai_will_do = { base = 0 }
+	}
+	mengele_event016_paleogenetics_recover_deployment = {
+		icon = GFX_decision_brilliant_scientist_project_paleogenetics_deployment
+		visible = {
+			brilliant_scientist_mengele_project_stage_provider_is_valid = yes
+			has_country_flag = mengele_event016_paleogenetics_deployment_pending
+			brilliant_scientist_mengele_paleogenetics_paid_identity_is_valid = yes
+			NOT = { has_country_flag = mengele_event016_paleogenetics_deployment_timer_active }
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = mengele_event016_paleogenetics_recovery_requirements_tt
+				hidden_trigger = { brilliant_scientist_mengele_paleogenetics_recovery_is_ready = yes }
+			}
+		}
+		cost = 0
+		complete_effect = {
+			custom_effect_tooltip = mengele_event016_paleogenetics_recovery_effect_tt
+			hidden_effect = {
+				set_temp_variable = { mengele_event016_stage_finished = constant:brilliant_scientist_value.zero }
+				set_temp_variable = { mengele_event016_project_output_applied = constant:brilliant_scientist_value.zero }
+				brilliant_scientist_mengele_paleogenetics_recover_deployment = yes
+			}
+		}
+		ai_will_do = { base = constant:brilliant_scientist_project_board.ai_medium }
+	}
+}

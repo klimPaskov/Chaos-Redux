@@ -269,3 +269,7 @@ An absent KRG clears those observations; a malformed component array supplies no
 This observation invokes the pure quote in trigger context with caller-owned temporary outputs and never starts, funds, refunds, completes or replenishes a project.
 The probe also evaluates CXT's current capital-state province catalogue through `chaosx_cxt_event016_probe_transit_state_catalog`, recording `chaosx_cxt_event016_transit_catalog_state_id`, `chaosx_cxt_event016_transit_catalog_province_count` and the `chaosx_cxt_event016_transit_catalog_loaded` flag.
 These are read-only geometry observations; current supply-node, health, control and route proof are not inferred from the catalogue.
+The same player-triggered native ownership probe observes CXT's private Paleogenetics pair through `chaosx_cxt_event016_probe_paleogenetics_deployment`.
+It records selected-pair, authenticated-payment, completed-pair, recovery-ready and payment/construction-uncertain debug flags, plus the serial, both measured construction deltas and the actual PP/support/fuel debit amounts under `chaosx_cxt_event016_paleogenetics_*`.
+The observer grants no stage, building, equipment, payment, refund or provider identity and adds no recurring hook.
+It shares the existing Event016 CXT package and its player-triggered probe entry point, with no new content carrier or periodic grant.

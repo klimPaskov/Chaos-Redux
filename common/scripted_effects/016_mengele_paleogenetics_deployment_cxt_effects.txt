@@ -1,0 +1,26 @@
+# Event 016 private Paleogenetics observation, COUNTRY scope and CXT only.
+# The existing player-triggered native ownership probe invokes this observer.
+# It grants no content and never changes a production payment or site receipt.
+chaosx_cxt_event016_probe_paleogenetics_deployment = {
+	if = {
+		limit = { tag = CXT has_country_flag = chaosx_test_country_initialized }
+		clr_country_flag = chaosx_cxt_event016_paleogenetics_pair_selected
+		clr_country_flag = chaosx_cxt_event016_paleogenetics_paid_authenticated
+		clr_country_flag = chaosx_cxt_event016_paleogenetics_pair_completed
+		clr_country_flag = chaosx_cxt_event016_paleogenetics_recovery_ready
+		clr_country_flag = chaosx_cxt_event016_paleogenetics_payment_uncertain
+		clr_country_flag = chaosx_cxt_event016_paleogenetics_construction_uncertain
+		if = { limit = { brilliant_scientist_mengele_paleogenetics_selection_is_valid = yes } set_country_flag = chaosx_cxt_event016_paleogenetics_pair_selected }
+		if = { limit = { brilliant_scientist_mengele_paleogenetics_pending_is_authenticated = yes } set_country_flag = chaosx_cxt_event016_paleogenetics_paid_authenticated }
+		if = { limit = { brilliant_scientist_mengele_paleogenetics_deployment_outputs_are_complete = yes } set_country_flag = chaosx_cxt_event016_paleogenetics_pair_completed }
+		if = { limit = { brilliant_scientist_mengele_paleogenetics_recovery_is_ready = yes } set_country_flag = chaosx_cxt_event016_paleogenetics_recovery_ready }
+		if = { limit = { OR = { has_country_flag = mengele_event016_paleogenetics_payment_unverified has_country_flag = mengele_event016_paleogenetics_refund_unverified } } set_country_flag = chaosx_cxt_event016_paleogenetics_payment_uncertain }
+		if = { limit = { has_country_flag = mengele_event016_paleogenetics_construction_unverified } set_country_flag = chaosx_cxt_event016_paleogenetics_construction_uncertain }
+		set_variable = { chaosx_cxt_event016_paleogenetics_serial = mengele_event016_paleogenetics_deployment_serial }
+		set_variable = { chaosx_cxt_event016_paleogenetics_reserve_delta = mengele_event016_paleogenetics_reserve_delta }
+		set_variable = { chaosx_cxt_event016_paleogenetics_hatchery_delta = mengele_event016_paleogenetics_hatchery_delta }
+		set_variable = { chaosx_cxt_event016_paleogenetics_actual_pp = mengele_event016_paleogenetics_actual_pp }
+		set_variable = { chaosx_cxt_event016_paleogenetics_actual_support = mengele_event016_paleogenetics_actual_support }
+		set_variable = { chaosx_cxt_event016_paleogenetics_actual_fuel = mengele_event016_paleogenetics_actual_fuel }
+	}
+}

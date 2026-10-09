@@ -1,0 +1,308 @@
+# Private Event016 paired construction transaction.
+# Generic default owns unchanged direct quote/debits; this owner measures them.
+# See matching markdown for caller temp ownership, faults and native limits.
+
+brilliant_scientist_mengele_paleogenetics_select_reserve = {
+	if = {
+		limit = { brilliant_scientist_mengele_paleogenetics_choice_is_open = yes FROM = { is_owned_by = PREV is_controlled_by = PREV infrastructure > 0 free_building_slots = { building = infrastructure size > 0 } } }
+		set_variable = { mengele_event016_paleogenetics_selected_reserve = FROM }
+		clear_variable = mengele_event016_paleogenetics_selected_hatchery
+	}
+}
+brilliant_scientist_mengele_paleogenetics_select_hatchery = {
+	if = {
+		limit = {
+			brilliant_scientist_mengele_paleogenetics_choice_is_open = yes
+			brilliant_scientist_mengele_paleogenetics_reserve_selection_is_valid = yes
+			set_temp_variable = { mengele_event016_paleogenetics_candidate_scope = FROM }
+			NOT = { check_variable = { var = mengele_event016_paleogenetics_selected_reserve value = mengele_event016_paleogenetics_candidate_scope compare = equals } }
+			FROM = { is_owned_by = PREV is_controlled_by = PREV infrastructure > 0 free_building_slots = { building = infrastructure size > 0 } free_building_slots = { building = industrial_complex size > 0 include_locked = no } }
+		}
+		set_variable = { mengele_event016_paleogenetics_selected_hatchery = FROM }
+	}
+}
+brilliant_scientist_mengele_paleogenetics_clear_selection = {
+	if = {
+		limit = { brilliant_scientist_mengele_paleogenetics_choice_is_open = yes }
+		clear_variable = mengele_event016_paleogenetics_selected_reserve
+		clear_variable = mengele_event016_paleogenetics_selected_hatchery
+	}
+}
+
+brilliant_scientist_mengele_paleogenetics_begin_deployment = {
+	set_temp_variable = { mengele_event016_stage_started = constant:mengele_paleogenetics_deployment.zero }
+	set_temp_variable = { mengele_event016_paleogenetics_entry_proof = mengele_event016_paleogenetics_native_entry }
+	set_temp_variable = { mengele_event016_paleogenetics_native_entry = constant:mengele_paleogenetics_deployment.zero }
+	set_temp_variable = { mengele_event016_stage_quote_loaded = constant:mengele_paleogenetics_deployment.zero }
+	set_temp_variable = { mengele_event016_stage_quote_duration_days = constant:mengele_paleogenetics_deployment.zero }
+	set_temp_variable = { mengele_event016_stage_quote_civilian_factories = constant:mengele_paleogenetics_deployment.zero }
+	set_temp_variable = { mengele_event016_stage_quote_political_power = constant:mengele_paleogenetics_deployment.zero }
+	set_temp_variable = { mengele_event016_stage_quote_support_equipment = constant:mengele_paleogenetics_deployment.zero }
+	set_temp_variable = { mengele_event016_stage_quote_fuel = constant:mengele_paleogenetics_deployment.zero }
+	set_temp_variable = { mengele_event016_stage_quote_source_gap = constant:mengele_paleogenetics_deployment.zero }
+	set_temp_variable = { mengele_event016_stage_duration_loaded = constant:mengele_paleogenetics_deployment.zero }
+	if = {
+		limit = {
+			check_variable = { var = mengele_event016_paleogenetics_entry_proof value = constant:mengele_paleogenetics_deployment.one compare = equals }
+			brilliant_scientist_mengele_paleogenetics_request_is_deployment = yes
+			brilliant_scientist_mengele_paleogenetics_choice_is_open = yes
+			brilliant_scientist_mengele_paleogenetics_selection_is_valid = yes
+			brilliant_scientist_mengele_paleogenetics_serial_can_advance = yes
+			brilliant_scientist_mengele_project_stage_predecessor_is_valid = yes
+			has_tech = brilliant_scientist_paleogenetic_formations_tech
+			brilliant_scientist_mengele_project_stage_can_pay = yes
+		}
+		brilliant_scientist_mengele_load_project_stage_quote = yes
+		if = {
+			limit = {
+				check_variable = { var = mengele_event016_stage_quote_loaded value = constant:mengele_paleogenetics_deployment.one compare = equals }
+				check_variable = { mengele_event016_stage_quote_political_power > constant:mengele_paleogenetics_deployment.zero }
+				check_variable = { mengele_event016_stage_quote_support_equipment > constant:mengele_paleogenetics_deployment.zero }
+				check_variable = { mengele_event016_stage_quote_fuel > constant:mengele_paleogenetics_deployment.zero }
+			}
+			# Publish frozen authority before entering the existing debit path.
+			set_variable = { mengele_event016_paleogenetics_deployment_family = constant:brilliant_scientist_project_family.paleogenetics }
+			set_variable = { mengele_event016_paleogenetics_deployment_stage = constant:brilliant_scientist_project_stage.deployment }
+			set_variable = { mengele_event016_paleogenetics_deployment_action = constant:mengele_paleogenetics_deployment.one }
+			set_variable = { mengele_event016_paleogenetics_deployment_actor = THIS }
+			add_to_variable = { mengele_event016_paleogenetics_deployment_serial = constant:mengele_paleogenetics_deployment.one }
+			set_variable = { mengele_event016_paleogenetics_paid_reserve = mengele_event016_paleogenetics_selected_reserve }
+			set_variable = { mengele_event016_paleogenetics_paid_hatchery = mengele_event016_paleogenetics_selected_hatchery }
+			set_variable = { mengele_event016_paleogenetics_reserve_quantity = constant:mengele_paleogenetics_deployment.component_quantity }
+			set_variable = { mengele_event016_paleogenetics_hatchery_quantity = constant:mengele_paleogenetics_deployment.component_quantity }
+			set_variable = { mengele_event016_paleogenetics_actual_pp = constant:mengele_paleogenetics_deployment.zero }
+			set_variable = { mengele_event016_paleogenetics_paid_pp = mengele_event016_stage_quote_political_power }
+			set_variable = { mengele_event016_paleogenetics_actual_support = constant:mengele_paleogenetics_deployment.zero }
+			set_variable = { mengele_event016_paleogenetics_paid_support = mengele_event016_stage_quote_support_equipment }
+			set_variable = { mengele_event016_paleogenetics_actual_fuel = constant:mengele_paleogenetics_deployment.zero }
+			set_variable = { mengele_event016_paleogenetics_paid_fuel = mengele_event016_stage_quote_fuel }
+			set_country_flag = mengele_event016_paleogenetics_deployment_pending
+			set_country_flag = mengele_event016_paleogenetics_deployment_timer_active
+			set_country_flag = mengele_event016_paleogenetics_deployment_busy
+			clr_country_flag = mengele_event016_paleogenetics_reserve_delivered
+			clr_country_flag = mengele_event016_paleogenetics_hatchery_delivered
+			clr_country_flag = mengele_event016_paleogenetics_reserve_attempted
+			clr_country_flag = mengele_event016_paleogenetics_hatchery_attempted
+			clr_country_flag = mengele_event016_paleogenetics_payment_unverified
+			clr_country_flag = mengele_event016_paleogenetics_construction_unverified
+			clr_country_flag = mengele_event016_paleogenetics_refund_unverified
+			set_variable = { mengele_event016_paleogenetics_reserve_pre = constant:mengele_paleogenetics_deployment.zero }
+			set_variable = { mengele_event016_paleogenetics_reserve_post = constant:mengele_paleogenetics_deployment.zero }
+			set_variable = { mengele_event016_paleogenetics_reserve_delta = constant:mengele_paleogenetics_deployment.zero }
+			set_variable = { mengele_event016_paleogenetics_hatchery_pre = constant:mengele_paleogenetics_deployment.zero }
+			set_variable = { mengele_event016_paleogenetics_hatchery_post = constant:mengele_paleogenetics_deployment.zero }
+			set_variable = { mengele_event016_paleogenetics_hatchery_delta = constant:mengele_paleogenetics_deployment.zero }
+			set_temp_variable = { mengele_event016_paleogenetics_before_pp = political_power }
+			set_temp_variable = { mengele_event016_paleogenetics_before_support = num_equipment@support_equipment }
+			set_temp_variable = { mengele_event016_paleogenetics_before_fuel = fuel_k }
+			multiply_temp_variable = { mengele_event016_paleogenetics_before_fuel = constant:mengele_paleogenetics_deployment.fuel_unit_scale }
+			brilliant_scientist_mengele_begin_project_stage_default = yes
+			set_temp_variable = { mengele_event016_paleogenetics_after_pp = political_power }
+			set_variable = { mengele_event016_paleogenetics_actual_pp = mengele_event016_paleogenetics_before_pp }
+			subtract_from_variable = { mengele_event016_paleogenetics_actual_pp = mengele_event016_paleogenetics_after_pp }
+			set_temp_variable = { mengele_event016_paleogenetics_after_support = num_equipment@support_equipment }
+			set_variable = { mengele_event016_paleogenetics_actual_support = mengele_event016_paleogenetics_before_support }
+			subtract_from_variable = { mengele_event016_paleogenetics_actual_support = mengele_event016_paleogenetics_after_support }
+			set_temp_variable = { mengele_event016_paleogenetics_after_fuel = fuel_k }
+			multiply_temp_variable = { mengele_event016_paleogenetics_after_fuel = constant:mengele_paleogenetics_deployment.fuel_unit_scale }
+			set_variable = { mengele_event016_paleogenetics_actual_fuel = mengele_event016_paleogenetics_before_fuel }
+			subtract_from_variable = { mengele_event016_paleogenetics_actual_fuel = mengele_event016_paleogenetics_after_fuel }
+			if = {
+				limit = { NOT = { brilliant_scientist_mengele_paleogenetics_pending_is_authenticated = yes } }
+				set_country_flag = mengele_event016_paleogenetics_payment_unverified
+				set_temp_variable = { mengele_event016_stage_started = constant:mengele_paleogenetics_deployment.zero }
+			}
+			clr_country_flag = mengele_event016_paleogenetics_deployment_busy
+		}
+	}
+}
+
+# Internal component attempt: an unverified native readback cannot be retried.
+brilliant_scientist_mengele_paleogenetics_attempt_reserve_construction = {
+	set_temp_variable = { mengele_event016_paleogenetics_build_quantity = mengele_event016_paleogenetics_reserve_quantity }
+	set_temp_variable = { mengele_event016_paleogenetics_build_pre = constant:mengele_paleogenetics_deployment.zero }
+	set_temp_variable = { mengele_event016_paleogenetics_build_post = constant:mengele_paleogenetics_deployment.zero }
+	set_temp_variable = { mengele_event016_paleogenetics_build_delta = constant:mengele_paleogenetics_deployment.zero }
+	if = {
+		limit = {
+			brilliant_scientist_mengele_paleogenetics_pending_is_authenticated = yes
+			has_country_flag = mengele_event016_paleogenetics_deployment_busy
+			NOT = { has_country_flag = mengele_event016_paleogenetics_construction_unverified }
+			brilliant_scientist_mengele_project_stage_provider_is_valid = yes
+			brilliant_scientist_mengele_project_stage_predecessor_is_valid = yes
+			brilliant_scientist_mengele_paleogenetics_current_pair_is_valid = yes
+			NOT = { has_country_flag = mengele_event016_paleogenetics_reserve_delivered }
+			NOT = { has_country_flag = mengele_event016_paleogenetics_reserve_attempted }
+		}
+		var:mengele_event016_paleogenetics_paid_reserve = {
+			if = {
+				limit = { is_owned_by = PREV is_controlled_by = PREV infrastructure > 0 free_building_slots = { building = infrastructure size > 0 } }
+				set_temp_variable = { mengele_event016_paleogenetics_build_pre = building_level@infrastructure }
+				PREV = { set_country_flag = mengele_event016_paleogenetics_reserve_attempted }
+				add_building_construction = { type = infrastructure level = mengele_event016_paleogenetics_build_quantity instant_build = yes }
+				set_temp_variable = { mengele_event016_paleogenetics_build_post = building_level@infrastructure }
+				set_temp_variable = { mengele_event016_paleogenetics_build_delta = mengele_event016_paleogenetics_build_post }
+				subtract_from_temp_variable = { mengele_event016_paleogenetics_build_delta = mengele_event016_paleogenetics_build_pre }
+				PREV = {
+					set_variable = { mengele_event016_paleogenetics_reserve_pre = mengele_event016_paleogenetics_build_pre }
+					set_variable = { mengele_event016_paleogenetics_reserve_post = mengele_event016_paleogenetics_build_post }
+					set_variable = { mengele_event016_paleogenetics_reserve_delta = mengele_event016_paleogenetics_build_delta }
+					if = {
+						limit = { check_variable = { var = mengele_event016_paleogenetics_build_delta value = mengele_event016_paleogenetics_reserve_quantity compare = equals } }
+						set_country_flag = mengele_event016_paleogenetics_reserve_delivered
+					}
+					else = { set_country_flag = mengele_event016_paleogenetics_construction_unverified }
+				}
+			}
+		}
+	}
+}
+brilliant_scientist_mengele_paleogenetics_attempt_hatchery_construction = {
+	set_temp_variable = { mengele_event016_paleogenetics_build_quantity = mengele_event016_paleogenetics_hatchery_quantity }
+	set_temp_variable = { mengele_event016_paleogenetics_build_pre = constant:mengele_paleogenetics_deployment.zero }
+	set_temp_variable = { mengele_event016_paleogenetics_build_post = constant:mengele_paleogenetics_deployment.zero }
+	set_temp_variable = { mengele_event016_paleogenetics_build_delta = constant:mengele_paleogenetics_deployment.zero }
+	if = {
+		limit = {
+			brilliant_scientist_mengele_paleogenetics_pending_is_authenticated = yes
+			has_country_flag = mengele_event016_paleogenetics_deployment_busy
+			NOT = { has_country_flag = mengele_event016_paleogenetics_construction_unverified }
+			brilliant_scientist_mengele_project_stage_provider_is_valid = yes
+			brilliant_scientist_mengele_project_stage_predecessor_is_valid = yes
+			brilliant_scientist_mengele_paleogenetics_current_pair_is_valid = yes
+			NOT = { has_country_flag = mengele_event016_paleogenetics_hatchery_delivered }
+			NOT = { has_country_flag = mengele_event016_paleogenetics_hatchery_attempted }
+		}
+		var:mengele_event016_paleogenetics_paid_hatchery = {
+			if = {
+				limit = { is_owned_by = PREV is_controlled_by = PREV infrastructure > 0 free_building_slots = { building = industrial_complex size > 0 include_locked = no } }
+				set_temp_variable = { mengele_event016_paleogenetics_build_pre = building_level@industrial_complex }
+				PREV = { set_country_flag = mengele_event016_paleogenetics_hatchery_attempted }
+				add_building_construction = { type = industrial_complex level = mengele_event016_paleogenetics_build_quantity instant_build = yes }
+				set_temp_variable = { mengele_event016_paleogenetics_build_post = building_level@industrial_complex }
+				set_temp_variable = { mengele_event016_paleogenetics_build_delta = mengele_event016_paleogenetics_build_post }
+				subtract_from_temp_variable = { mengele_event016_paleogenetics_build_delta = mengele_event016_paleogenetics_build_pre }
+				PREV = {
+					set_variable = { mengele_event016_paleogenetics_hatchery_pre = mengele_event016_paleogenetics_build_pre }
+					set_variable = { mengele_event016_paleogenetics_hatchery_post = mengele_event016_paleogenetics_build_post }
+					set_variable = { mengele_event016_paleogenetics_hatchery_delta = mengele_event016_paleogenetics_build_delta }
+					if = {
+						limit = { check_variable = { var = mengele_event016_paleogenetics_build_delta value = mengele_event016_paleogenetics_hatchery_quantity compare = equals } }
+						set_country_flag = mengele_event016_paleogenetics_hatchery_delivered
+					}
+					else = { set_country_flag = mengele_event016_paleogenetics_construction_unverified }
+				}
+			}
+		}
+	}
+}
+
+brilliant_scientist_mengele_paleogenetics_finish_deployment = {
+	set_temp_variable = { mengele_event016_stage_finished = constant:mengele_paleogenetics_deployment.zero }
+	set_temp_variable = { mengele_event016_project_output_applied = constant:mengele_paleogenetics_deployment.zero }
+	if = {
+		limit = {
+			brilliant_scientist_mengele_paleogenetics_request_is_deployment = yes
+			brilliant_scientist_mengele_paleogenetics_pending_is_authenticated = yes
+			NOT = { has_country_flag = mengele_event016_paleogenetics_deployment_busy }
+		}
+		clr_country_flag = mengele_event016_paleogenetics_deployment_timer_active
+		if = {
+			limit = {
+				brilliant_scientist_mengele_project_stage_provider_is_valid = yes
+				brilliant_scientist_mengele_project_stage_predecessor_is_valid = yes
+				has_tech = brilliant_scientist_paleogenetic_formations_tech
+				brilliant_scientist_mengele_paleogenetics_current_pair_is_valid = yes
+				NOT = { has_country_flag = mengele_event016_paleogenetics_construction_unverified }
+			}
+			set_country_flag = mengele_event016_paleogenetics_deployment_busy
+			brilliant_scientist_mengele_paleogenetics_attempt_reserve_construction = yes
+			if = {
+				limit = { NOT = { has_country_flag = mengele_event016_paleogenetics_construction_unverified } }
+				brilliant_scientist_mengele_paleogenetics_attempt_hatchery_construction = yes
+			}
+			if = {
+				limit = { brilliant_scientist_mengele_paleogenetics_deployment_outputs_are_complete = yes brilliant_scientist_mengele_paleogenetics_current_pair_is_valid = yes }
+				# Durable proof and success precede generic row retirement.
+				set_temp_variable = { mengele_event016_project_availability_reconciled = constant:mengele_paleogenetics_deployment.zero }
+				set_temp_variable = { mengele_event016_conventional_incident_recorded = constant:mengele_paleogenetics_deployment.zero }
+				set_country_flag = mengele_event016_paleogenetics_deployment_completed
+				set_temp_variable = { mengele_event016_project_output_applied = constant:mengele_paleogenetics_deployment.one }
+				set_temp_variable = { mengele_event016_stage_finished = constant:mengele_paleogenetics_deployment.one }
+				brilliant_scientist_mengele_reconcile_project_availability = yes
+				force_update_dynamic_modifier = yes
+				brilliant_scientist_mengele_dispatch_conventional_incident = yes
+				clr_country_flag = mengele_event016_paleogenetics_deployment_pending
+				set_temp_variable = { mengele_event016_project_index = constant:mengele_paleogenetics_deployment.family_index }
+				brilliant_scientist_mengele_clear_project_stage_active_receipt = yes
+			}
+			clr_country_flag = mengele_event016_paleogenetics_deployment_busy
+		}
+	}
+	brilliant_scientist_mengele_clear_project_stage_selectors = yes
+}
+
+brilliant_scientist_mengele_paleogenetics_cancel_deployment = {
+	set_temp_variable = { mengele_event016_stage_cancelled = constant:mengele_paleogenetics_deployment.zero }
+	if = {
+		limit = {
+			brilliant_scientist_mengele_paleogenetics_request_is_deployment = yes
+			has_country_flag = mengele_event016_paleogenetics_deployment_pending
+			brilliant_scientist_mengele_paleogenetics_paid_identity_is_valid = yes
+			NOT = { has_country_flag = mengele_event016_paleogenetics_deployment_busy }
+		}
+		clr_country_flag = mengele_event016_paleogenetics_deployment_timer_active
+		if = {
+			limit = {
+				brilliant_scientist_mengele_paleogenetics_pending_is_authenticated = yes
+				NOT = { has_country_flag = mengele_event016_paleogenetics_reserve_attempted }
+				NOT = { has_country_flag = mengele_event016_paleogenetics_hatchery_attempted }
+				NOT = { has_country_flag = mengele_event016_paleogenetics_reserve_delivered }
+				NOT = { has_country_flag = mengele_event016_paleogenetics_hatchery_delivered }
+				check_variable = { var = mengele_event016_paleogenetics_reserve_delta value = constant:mengele_paleogenetics_deployment.zero compare = equals }
+				check_variable = { var = mengele_event016_paleogenetics_hatchery_delta value = constant:mengele_paleogenetics_deployment.zero compare = equals }
+			}
+			set_country_flag = mengele_event016_paleogenetics_deployment_busy
+			clr_country_flag = mengele_event016_paleogenetics_deployment_pending
+			set_temp_variable = { mengele_event016_paleogenetics_refund_before_pp = political_power }
+			set_temp_variable = { mengele_event016_paleogenetics_refund_before_support = num_equipment@support_equipment }
+			set_temp_variable = { mengele_event016_paleogenetics_refund_before_fuel = fuel_k }
+			multiply_temp_variable = { mengele_event016_paleogenetics_refund_before_fuel = constant:mengele_paleogenetics_deployment.fuel_unit_scale }
+			brilliant_scientist_mengele_cancel_project_stage_default = yes
+			set_variable = { mengele_event016_paleogenetics_refunded_pp = political_power }
+			subtract_from_variable = { mengele_event016_paleogenetics_refunded_pp = mengele_event016_paleogenetics_refund_before_pp }
+			set_variable = { mengele_event016_paleogenetics_refunded_support = num_equipment@support_equipment }
+			subtract_from_variable = { mengele_event016_paleogenetics_refunded_support = mengele_event016_paleogenetics_refund_before_support }
+			set_variable = { mengele_event016_paleogenetics_refunded_fuel = fuel_k }
+			multiply_variable = { mengele_event016_paleogenetics_refunded_fuel = constant:mengele_paleogenetics_deployment.fuel_unit_scale }
+			subtract_from_variable = { mengele_event016_paleogenetics_refunded_fuel = mengele_event016_paleogenetics_refund_before_fuel }
+			if = {
+				limit = {
+					check_variable = { var = mengele_event016_paleogenetics_refunded_pp value = mengele_event016_paleogenetics_actual_pp compare = equals }
+					check_variable = { var = mengele_event016_paleogenetics_refunded_support value = mengele_event016_paleogenetics_actual_support compare = equals }
+					check_variable = { var = mengele_event016_paleogenetics_refunded_fuel value = mengele_event016_paleogenetics_actual_fuel compare = equals }
+				}
+				clr_country_flag = mengele_event016_paleogenetics_refund_unverified
+			}
+			else = {
+				set_country_flag = mengele_event016_paleogenetics_refund_unverified
+				set_country_flag = mengele_event016_paleogenetics_deployment_pending
+				set_temp_variable = { mengele_event016_stage_cancelled = constant:mengele_paleogenetics_deployment.zero }
+			}
+			clr_country_flag = mengele_event016_paleogenetics_deployment_busy
+		}
+		else = { set_temp_variable = { mengele_event016_stage_cancelled = constant:mengele_paleogenetics_deployment.one } }
+	}
+	brilliant_scientist_mengele_clear_project_stage_selectors = yes
+}
+
+brilliant_scientist_mengele_paleogenetics_recover_deployment = {
+	set_temp_variable = { mengele_event016_stage_finished = constant:mengele_paleogenetics_deployment.zero }
+	set_temp_variable = { mengele_event016_project_output_applied = constant:mengele_paleogenetics_deployment.zero }
+	if = {
+		limit = { brilliant_scientist_mengele_paleogenetics_recovery_is_ready = yes }
+		set_temp_variable = { mengele_event016_project_family = constant:brilliant_scientist_project_family.paleogenetics }
+		set_temp_variable = { mengele_event016_requested_stage = constant:brilliant_scientist_project_stage.deployment }
+		brilliant_scientist_mengele_paleogenetics_finish_deployment = yes
+	}
+}
