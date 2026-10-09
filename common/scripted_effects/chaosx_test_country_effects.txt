@@ -103,9 +103,8 @@ chaosx_test_country_provision_facility_type = {
 							NOT = { chaosx_test_country_state_has_special_facility = yes }
 							OWNER = { exists = yes }
 							CONTROLLER = { exists = yes }
-							# Every facility declares need_supply, so a borrowed state must
-							# touch territory this country controls; otherwise it can never
-							# join its supply network after the transfer.
+							# Borrow adjacent territory around current control. This is the
+							# search's placement rule, not proof of native supply or construction.
 							any_neighbor_state = { is_controlled_by = ROOT }
 							OR = {
 								NOT = { check_variable = { chaosx_test_country_current_facility = token:naval_facility } }
@@ -168,7 +167,13 @@ chaosx_test_country_provision_facility_type = {
 					# Each try transfers a foreign state and back, so a type that no state can host must not walk the whole map.
 					add_to_temp_variable = { chaosx_test_facility_type_candidate_tries = 1 }
 					if = {
-						limit = { check_variable = { chaosx_test_facility_type_candidate_tries > constant:chaosx_test_country_count.facility_search_max_candidates } }
+						limit = {
+							check_variable = {
+								var = chaosx_test_facility_type_candidate_tries
+								value = constant:chaosx_test_country_count.facility_search_max_candidates
+								compare = greater_than_or_equals
+							}
+						}
 						set_temp_variable = { chaosx_test_facility_type_candidate_failed = 1 }
 					}
 				}
@@ -176,9 +181,8 @@ chaosx_test_country_provision_facility_type = {
 					limit = { has_country_flag = chaosx_test_country_setup_trace_active }
 					log = "CXT_SETUP_TRACE facility_search_end type=[FACILITY] date=[?global.date|.3]"
 				}
-				# A supply-connected owned state is tried first, because
-				# construct_building_in_random_province picks any province in the
-				# state and every facility needs a supplied one.
+				# Prefer states with supply landmarks before the native-eligible
+				# remainder. These landmarks do not prove operational supply.
 				random_owned_controlled_state = {
 					limit = {
 						chaosx_test_country_state_meets_facility_requirements = yes
@@ -187,12 +191,12 @@ chaosx_test_country_provision_facility_type = {
 					}
 					if = {
 						limit = { ROOT = { has_country_flag = chaosx_test_country_setup_trace_active } }
-						log = "CXT_SETUP_TRACE facility_construction_begin state=[This.GetName] type=[FACILITY] supply=connected date=[?global.date|.3]"
+						log = "CXT_SETUP_TRACE facility_construction_begin state=[This.GetName] type=[FACILITY] placement=supply_marker supply=unverified date=[?global.date|.3]"
 					}
 					construct_building_in_random_province = { [FACILITY] = 1 }
 					if = {
 						limit = { ROOT = { has_country_flag = chaosx_test_country_setup_trace_active } }
-						log = "CXT_SETUP_TRACE facility_construction_end state=[This.GetName] type=[FACILITY] supply=connected date=[?global.date|.3]"
+						log = "CXT_SETUP_TRACE facility_construction_end state=[This.GetName] type=[FACILITY] placement=supply_marker supply=unverified date=[?global.date|.3]"
 					}
 				}
 				if = {

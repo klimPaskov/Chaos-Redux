@@ -1,6 +1,6 @@
 # CXT Facility Construction Gate Review — 2026-10-09
 
-Disposition: the reported all-false native construction result remains unresolved because the run was reported at an earlier revision and neither DLC ownership nor the current native gate result is available from source inspection. The current CXT state/actor scopes are source-consistent. A separate bounded-count discrepancy is confirmed and needs parent disposition; it does not explain why construction was rejected.
+Disposition: the reported all-false native construction result remains unresolved because the run was reported at an earlier revision and neither DLC ownership nor the current native gate result is available from source inspection. The current CXT state/actor scopes are source-consistent. The configured candidate bound and inaccurate supply descriptions are corrected in source; they do not explain why native construction was rejected.
 
 ## Revision and ownership
 
@@ -20,16 +20,24 @@ The accepted CXT contract currently describes one facility of each of the six ty
 
    Installed `has_dlc` documentation defines the trigger as checking whether the player has a DLC. The files present in the installed game directory and the technology index are not an ownership signal. The current diagnostic helper already records `has_dlc = "Gotterdammerung"`, the current state owner/controller, shared placement, and the post-transfer native construction result when its existing trace flag is active (`common/scripted_effects/chaosx_test_country_facility_diagnostics.txt:6-45`). This review did not run the game, inspect logs, or add runtime diagnostics.
 
-3. **The current candidate limit admits one more attempt than its name and value specify.** `chaosx_test_country_count.facility_search_max_candidates` is `24` (`common/script_constants/chaosx_test_country_constants.txt:35-36`). The loop starts its counter at zero, performs a candidate attempt, increments the counter, then exits only when `tries > 24` (`common/scripted_effects/chaosx_test_country_effects.txt:80-81, 86-95, 168-173`). That permits candidate 25. The reported 25-state result predates this current code, so this off-by-one cannot be assigned as its cause. Recommended bounded correction: after increment, stop at `greater_than_or_equals` 24, or check the limit before beginning the next attempt. Parent owns any implementation.
+3. **The foreign-candidate search stops at its configured limit.** `chaosx_test_country_count.facility_search_max_candidates` remains 24.
+   The counter starts at zero and the post-attempt stop predicate uses `greater_than_or_equals`, so a failed search performs at most 24 foreign attempts.
+   A successful 24th candidate remains owned and controlled and reaches the unchanged construction passes after the loop; rejected candidates restore before the increment.
+   The [parsed-source checks](../../../testing/2026-10-09_cxt_facility_bound/source_review.json) cover 23/24/25, no-success, first-success and last-permitted-success cases, using explicit selection outcomes rather than simulating native construction or random probabilities.
+   The captured strict-greater-than baseline permitted 25 attempts; that separate defect does not identify the cause of the older reported all-false native results.
 
-4. **One source comment overstates the supply construction rule.** The shared trigger comment says installed documentation requires a supply-connected province to start construction (`common/scripted_triggers/chaosx_test_country_triggers.txt:39-43`), while the retrieved offline Building modding section describes `need_supply` as an operational requirement and no installed building documentation for `need_supply` was found through the reference route. The current code uses the capital/supply-node/railway test as a preferred placement pass and falls back to any native-eligible owned and controlled state (`common/scripted_effects/chaosx_test_country_effects.txt:179-220`), so this wording discrepancy does not itself explain a missing facility. A later comment-only correction should call the first pass a supply heuristic/preference and retain the native trigger as the construction decider.
+4. **Supply descriptions identify a placement heuristic.** The existing capital/supply-node/railway helper and adjacent-borrowed-state filter retain their predicates.
+   Comments distinguish those placement choices from native construction eligibility and actual operational supply.
+   The two preferred-pass diagnostic messages identify `placement=supply_marker supply=unverified`; the fallback still reports unverified supply.
+   The country reviewer found no source or documentation consumer of the old diagnostic spelling.
+   Apart from the inclusive stop predicate and diagnostic text, parsed executable ASTs are unchanged; no native gate, candidate predicate, transfer/restoration, fallback or final building check is bypassed.
 
-## Acceptance checks for the parent-owned live pass
+## Unverified native acceptance criteria
 
 - In a session where the player actually owns Götterdämmerung, verify the post-transfer candidate reports `owner=CXT`, `controller=CXT`, and `native_can_construct=yes` for `land_facility` and `biowarfare_facility`, then verify exactly one owned and controlled level of each type and no corresponding missing flags.
 - In a session where the player does not own Götterdämmerung, record the actual `has_dlc` value and native result for the same two types. If native construction is false, confirm CXT preserves its fail-closed behavior with per-type missing flags and `chaosx_test_country_facility_provisioning_incomplete`; do not infer the cause from installed files or silently bypass the native gate.
 - For any rejected borrowed state, verify the saved owner and controller are restored; for any successful borrowed state, verify ownership and control remain with CXT after setup.
-- Verify the candidate search performs at most the configured number of attempts after the bound correction. This is distinct from diagnosing why `can_construct_building` returned false.
+- Verify the candidate search performs at most the configured number of attempts under the configured bound. This is distinct from diagnosing why `can_construct_building` returned false.
 
 ## Reference and validation evidence
 
@@ -42,3 +50,11 @@ The accepted CXT contract currently describes one facility of each of the six ty
 - Read-only map inspect/render used offline map revision `5a874c5c165059df69ad00191f189fbc000a40dac83374ca6dfb34bafd58a06c`; the query had no candidate-state match, and the rendered owner layer is a static offline representation. No state IDs or starting country were supplied for the reported run, so this cannot model the post-transfer runtime owner/controller state.
 
 Native limitations: source review cannot determine whether the player owns Götterdämmerung, how the native game evaluates these two building types under that ownership state, whether an eligible CXT-controlled state existed in the reported save, or whether the current-revision effect executed. No native validation is claimed.
+
+The parent implements the existing positive candidate-limit contract without new tuning, assets, localisation, grants or a CXT package.
+The source review used the repository's existing Clausewitz parser/VM in an inline Node audit; it checks the actual parsed predicate and models which attempt succeeds.
+Installed/offline comparison rules and the partial native command check are retained in [the reference receipt](../../../testing/2026-10-09_cxt_facility_bound/reference_and_validation.json).
+The native checker recognizes command kind and country scope but leaves the argument block unchecked; documented comparison semantics and the source cases provide the bounded arithmetic evidence.
+
+The parent also read `events/chaosx_test_country.txt:11-65`: its CXT-only country receiver invokes initial setup or refresh from ROOT=CXT, consistent with the documented facility-check scope.
+This source chain does not supply the missing native construction or DLC result.

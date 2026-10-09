@@ -458,3 +458,6 @@ The event catalog and its CSV exports were untouched, and the separate doctrine 
 The parent ran the same 157 cases and four ROOT-binding probes from an isolated proposed commit tree; scenario results matched the working run.
 The receipt is `docs/testing/2026-10-09_continuing_protection/parent_isolated_source_review.json`, which distinguishes unchanged raw baseline snapshots, normal Git line-ending conversion and two unrelated shared-tree constant-file differences.
 Those unrelated files are excluded from this commit, and matching fixture results do not establish their equivalence outside the tested cases.
+
+The [CXT facility review](subagent_handoffs/2026-10-09_cxt_facility_gate_review.md) records an inclusive 24-attempt foreign-candidate limit, successful last-permitted selection reaching construction, and accurate supply-landmark diagnostics.
+The native all-false construction cause remains unresolved; the bound and wording correction bypasses no construction, ownership or DLC gate.

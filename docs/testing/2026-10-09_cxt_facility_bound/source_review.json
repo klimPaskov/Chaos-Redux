@@ -1,0 +1,118 @@
+{
+  "configuredLimit": 24,
+  "boundaries": [
+    {
+      "attempts": 23,
+      "before": false,
+      "after": false
+    },
+    {
+      "attempts": 24,
+      "before": false,
+      "after": true
+    },
+    {
+      "attempts": 25,
+      "before": true,
+      "after": true
+    }
+  ],
+  "cases": [
+    {
+      "successAt": null,
+      "before": {
+        "attempts": 25,
+        "found": false
+      },
+      "after": {
+        "attempts": 24,
+        "found": false
+      }
+    },
+    {
+      "successAt": 1,
+      "before": {
+        "attempts": 1,
+        "found": true
+      },
+      "after": {
+        "attempts": 1,
+        "found": true
+      }
+    },
+    {
+      "successAt": 24,
+      "before": {
+        "attempts": 24,
+        "found": true
+      },
+      "after": {
+        "attempts": 24,
+        "found": true
+      }
+    },
+    {
+      "successAt": 25,
+      "before": {
+        "attempts": 25,
+        "found": true
+      },
+      "after": {
+        "attempts": 24,
+        "found": false
+      }
+    }
+  ],
+  "unchangedOtherLogic": true,
+  "scope": "Actual parsed counter predicate; selected-state success is an explicit model input. Native construction/DLC eligibility, distribution of random selections and state transfers are not simulated.",
+  "files": [
+    {
+      "path": "common/scripted_effects/chaosx_test_country_effects.txt",
+      "before": "a91ef81120f78a47f55d087f74721d97deb30bf6602f4d06ef917f3ff4e296e5",
+      "after": "c775b9cd900cd968c42cac445e694a9d4b7888a31f20b45ab9ebb62adfdf3e16"
+    },
+    {
+      "path": "common/scripted_triggers/chaosx_test_country_triggers.txt",
+      "before": "70c6c9f9afeec0b9760fe59a5a2b4a090f0a9645f1fc4baef5c8546ebc361b29",
+      "after": "708754a32e9c30512ac73487248e02429da4023a1bc0b1da6a58f6c5d9dfff08"
+    }
+  ],
+  "beforePredicate": {
+    "key": "check_variable",
+    "op": "=",
+    "value": [
+      {
+        "key": "chaosx_test_facility_type_candidate_tries",
+        "op": ">",
+        "value": "constant:chaosx_test_country_count.facility_search_max_candidates"
+      }
+    ]
+  },
+  "afterPredicate": {
+    "key": "check_variable",
+    "op": "=",
+    "value": [
+      {
+        "key": "var",
+        "op": "=",
+        "value": "chaosx_test_facility_type_candidate_tries"
+      },
+      {
+        "key": "value",
+        "op": "=",
+        "value": "constant:chaosx_test_country_count.facility_search_max_candidates"
+      },
+      {
+        "key": "compare",
+        "op": "=",
+        "value": "greater_than_or_equals"
+      }
+    ]
+  },
+  "beforeRevision": "05d144fdc8eebf13c425be7ec8d18d7bb4fc8664",
+  "parentScopeRead": {
+    "path": "events/chaosx_test_country.txt",
+    "lines": "11-65",
+    "finding": "The setup receiver requires tag CXT and invokes initial setup or refresh from its country event, giving ROOT=CXT to the normal facility path."
+  }
+}

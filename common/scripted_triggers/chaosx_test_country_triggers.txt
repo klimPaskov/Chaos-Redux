@@ -36,11 +36,10 @@ chaosx_test_country_state_meets_facility_requirements = {
 	chaosx_test_country_state_can_host_special_facility = yes
 }
 
-# State scope. Every special-project facility declares need_supply, and the
-# installed documentation requires a supply-connected province to start
-# construction. A capital, a supply node or a railway marks a state that is
-# already on its owner's network, so these candidates are preferred before any
-# other owned state. Native can_construct_building remains the decider.
+# State scope. Prefer a capital, supply node or railway as supply landmarks.
+# This heuristic does not prove a working supply connection. The facility's
+# need_supply field concerns operation; native can_construct_building decides
+# construction eligibility, including for the fallback placement pass.
 chaosx_test_country_state_is_supply_connected = {
 	OR = {
 		is_capital = yes
