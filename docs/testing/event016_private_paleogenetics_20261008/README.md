@@ -29,4 +29,7 @@ Its one-node retry timed out awaiting tools/call after 600 seconds, recorded in 
 The one-node source-line scope render returned `EVENT_RENDERED_PARTIAL`, revision `283a550085362183c930b3e9508acd4051d381fab0d6edd4f1b8afac59de6889`, with four artifact links and deferred helper/lifecycle projections.
 The selected graph body and pixels could not be inspected: all four canonical cache files were absent and the verified artifact resource route rejected the JSON with `Artifact provenance manifest is unavailable`.
 `event_render_receipt.json` and `event_render_delivery.json` retain the metadata and exact retrieval limit, without treating a selected-node count as proof of the requested helper.
+`event_compare_final_evidence.json` separates the rejected render-revision reference, the trigger-file overlay rejection, and two valid effect-only overlay attempts.
+The four-effect attempt and its narrower public-effect-only retry each timed out after 600 seconds with no comparison artifact.
+They compare current effect sources toward the captured initial effect source, without claiming a whole-project historical baseline or engine acceptance.
 No tool metadata, source test, empty native panel or successful game-menu load establishes full engine, visual or clean-log acceptance.
