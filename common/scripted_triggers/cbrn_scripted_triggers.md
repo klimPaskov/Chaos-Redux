@@ -212,10 +212,19 @@ All triggers in this section are country scoped, side-effect free, and fail clos
 ### Visibility and emergency context
 
 - `cbrn_protection_program_category_visible`: true for an established program/reserve, Basic Service Respirators, real respirator stock, or confirmed enemy chemical use.
-- `cbrn_civil_defence_category_visible`: requires an actual chemical emergency, enemy chemical capability, an active biological outbreak, or a continuing civilian distribution program. The category remains visible while such a condition holds even if no chemical-response decision is currently available.
-- `cbrn_country_has_public_chemical_emergency`: true only for confirmed enemy use, an exact scripted raid alert, or actual controlled-state contamination.
+- `cbrn_civil_defence_category_visible`: requires current chemical need, an active biological outbreak, or an active occupied-distribution programme. Biological relevance alone reveals the category without chemical respirator issue or a new chemical protection benefit.
+- `cbrn_country_has_public_chemical_emergency`: retains the broad `has_enemy_used_chemical_weapons` record/permission helper plus exact alerts or controlled-state contamination for its existing consumers. Civil Defence relevance and routine civilian issue use the separate current-need contract below; no history or retaliation record is cleared.
 
 These triggers never inspect aircraft presence and cannot qualify idle chemical-capable aircraft.
+The [accepted current-need correction](../../docs/specs/chaos_warfare_system_specs/corrections/2026-10-09_civil_defence_current_need_and_priority.md) governs four pure predicates:
+
+- `cbrn_state_has_active_chemical_response`: STATE; any existing hospital, shelter, chemical-alarm or industry-continuity response flag is active.
+- `cbrn_state_has_current_chemical_need`: STATE; exact alert, actual chemical contamination or an active chemical response.
+- `cbrn_country_has_current_chemical_need`: COUNTRY; a controlled state has local need, or a current enemy has chemical capability or confirmed-use history. Own durable victim history and retaliation permission alone do not qualify.
+- `cbrn_state_has_automatic_priority_mask_gap`: STATE with ROOT as issuer; current control, ROOT core, positive population, no active protection project, effective coverage below the existing 50% target, and local need or strategic priority value. It needs no reserve receipt or stock for AI planning; execution adds those requirements.
+
+Inputs are current flags, control/core membership, population and coverage; outputs are boolean only, with no persistent data, stock change or timer.
+`cbrn_country_needs_civilian_mask_issue` uses current need plus the separate pending British 1939 receipt; that receipt's existing successful-issue cleanup remains unchanged.
 
 ### Stock-state triggers
 
@@ -234,13 +243,15 @@ Inputs are live equipment, snapshot, ledger, and controlled-state queries. Outpu
 
 - `cbrn_country_faces_enemy_chemical_capability`: a current enemy has researched a choking, blister, or nerve agent.
 - `cbrn_world_has_confirmed_chemical_use`: the shared dispatcher has recorded confirmed chemical use through its dedicated global history flag. Aggregate Condemnation is never accepted as a proxy for weapon use.
-- `cbrn_country_has_priority_civilian_protection_gap` and `cbrn_country_has_full_civilian_protection_gap`: a controlled core state's effective coverage remains below its corresponding target.
-- `cbrn_country_has_mask_production_signal`: reserve program, allied request, Chaos Warfare posture, enemy capability/use, public world use, or an exact controlled-state alert.
-- `cbrn_country_below_mask_ai_target`: military coverage, reserve plus replacement stock, or eligible civilian distribution remains below the current profile target.
+- `cbrn_country_has_priority_civilian_protection_gap`: at least one controlled state meets the shared automatic-priority structural gap, including threatened rural cores and excluding busy projects. `cbrn_country_has_full_civilian_protection_gap` remains a declared 95% legacy query; it no longer supplies a routine AI production target.
+- `cbrn_country_has_mask_production_signal`: adds current chemical need to the existing reserve, allied request, Chaos Warfare, broad historical-use/capability, world-use and exact-alert signals. The production target remains a separate gate, so a historical signal alone does not recreate current civilian demand.
+- `cbrn_country_below_mask_ai_target`: preserves military coverage, reserve and replacement-backlog targets; civilian demand requires current need or the UK receipt plus the shared 50% priority gap. The orphan profile-based 95% full-distribution branch is removed without adding a full-distribution consumer.
 - `cbrn_country_should_produce_masks`: Basic Service Respirators plus both a valid signal/shortage and an unmet target.
 - `cbrn_country_has_urgent_mask_production_need`: confirmed enemy use, field coverage below 50 percent, or an exact raid alert.
 
-These triggers drive `common/ai_strategy/cbrn_protection_production.txt`. They are read-only trigger queries, not periodic country effects. The world-use query reads only confirmed shared-dispatch history and does not expose latent evidence.
+These triggers drive `common/ai_strategy/cbrn_protection_production.txt`, whose coefficients are unchanged.
+The broad urgent helper retains its historical/retaliation inputs, but its strategy entry also requires `cbrn_country_should_produce_masks`; isolated history/permission cases fail that production gate, while an independent military shortage may still qualify.
+These are read-only queries, not periodic effects; the fourteen-case [source AI review](../../docs/plans/chaos_warfare_system_plans/subagent_handoffs/2026-10-09_civil_defence_priority_probability.md) does not establish native production rates, factory allocation or selection odds.
 
 ### National action gates
 
@@ -262,7 +273,9 @@ available = {
 
 ## CBRN state distribution gates
 
-Routine distribution decisions use the country-scope work queries `cbrn_country_has_priority_distribution_work`, `cbrn_country_has_full_distribution_work`, `cbrn_country_has_filter_replacement_work`, and `cbrn_country_has_occupied_distribution_work`. Each returns true only when at least one controlled state satisfies the corresponding exact state gate below. This allows one national program card without weakening the population-scaled state transaction.
+The country-scope work queries `cbrn_country_has_priority_distribution_work`, `cbrn_country_has_full_distribution_work`, `cbrn_country_has_filter_replacement_work`, and `cbrn_country_has_occupied_distribution_work` retain their exact state gates.
+Bounded routine maintenance uses priority issue and filter service; full-distribution definitions remain without an executable gameplay completion caller, rather than an automatic 95% programme.
+Occupied distribution retains its separate paid reservation contract.
 
 Decision-category presentation is separately gated by `cbrn_protection_decision_surface_is_unlocked`, `cbrn_operations_decision_surface_is_unlocked`, `cbrn_disease_response_decision_surface_is_unlocked`, `cbrn_operations_category_visible`, `cbrn_international_response_category_visible`, and `cbrn_disease_response_category_visible`. Starting capability alone does not satisfy these presentation gates; post-start route flags for the Mengele pathogen cadre and Unconventional Warfare successor, plus live emergencies and incident records, remain direct reveal conditions.
 
@@ -284,7 +297,7 @@ For the other distribution gaps, absent `cbrn_civilian_mask_effective_coverage` 
 
 ### Composite distribution targets
 
-- `cbrn_state_can_receive_priority_masks`: valid ROOT core, priority value, and priority gap.
+- `cbrn_state_can_receive_priority_masks`: the shared automatic-priority structural gap plus ROOT's established national reserve. Execution also rechecks remaining real stock; a threatened populated rural core needs no strategic-value building, while new automatic issue remains core-only.
 - `cbrn_state_can_receive_full_distribution`: valid ROOT core, registered/fitted ROOT population, and full gap.
 - `cbrn_state_has_emergency_context`: an exact alert for this state or real contamination in this state. Country-wide confirmed enemy use does not qualify a clean, unalerted state.
 - `cbrn_state_needs_civilian_decontamination`: a populated state with an exact emergency, or with civilian masks already issued while its controller faces an enemy chemical capability. Only states currently controlled by the calculating country enter its shared civilian-kit demand; a clean state with no prior issue does not dilute the pool.
@@ -294,7 +307,7 @@ For the other distribution gaps, absent `cbrn_civilian_mask_effective_coverage` 
 - `cbrn_state_can_receive_occupied_masks`: valid non-core controlled state with an exact alert or contamination and an occupied gap.
 - `cbrn_state_can_replace_civilian_filters`: valid state with distributed masks and worn filters.
 
-Example:
+Compatibility example for the declared full-distribution gate; it does not establish an active routine programme:
 
 ```txt
 target_trigger = {
@@ -304,18 +317,19 @@ target_trigger = {
 
 ## CBRN exact-state response gates
 
-All are state scoped, side-effect free, and require `cbrn_chemical_raid_alert_active`; a verified caller must create that flag through the exact-state adapter.
+The STATE relevance gates are side-effect free; hospitals accept exact alert OR actual contamination with current ROOT control and no active hospital response.
+Shelters, alarm and industry continuity retain exact-alert-only contracts; the exact-alert adapter has no active source caller in the audited source, and hospital contamination entry does not fabricate alerts for those actions.
 
 - `cbrn_state_has_exact_chemical_raid_alert`: exact alert flag only.
-- `cbrn_state_has_hospital_response_resources`: the controller has the population-scaled mask/support amounts stored on the state.
+- `cbrn_state_has_hospital_response_resources`: retained cache-based mask/support checker; the current public hospital payment path uses its fresh population quote instead.
 - `cbrn_state_has_shelter_response_resources`: the controller has the population-scaled support/train amounts stored on the state.
-- `cbrn_state_can_protect_hospitals_and_utilities`: exact alert and no prior hospital response; the target remains visible during a stock shortage.
-- `cbrn_state_hospital_payment_ready`: the same target, its quoted mask/support equipment, and the political-power payment are all available. The decision cost row, availability, and hidden payment guard share this gate.
+- `cbrn_state_has_hospital_response_need`: exact alert OR actual chemical contamination. `cbrn_state_can_protect_hospitals_and_utilities` adds ROOT control and no active secured-state response; resources are checked separately so a shortage does not hide a relevant target.
+- `cbrn_state_hospital_payment_ready`: delegates through ROOT to the COUNTRY `cbrn_country_hospital_response_payment_ready` gate with FROM as the selected STATE. Display, affordability and payment share `cbrn_quote_hospital_response_bundle`, using live population with existing ratios, bounds and rounding instead of cached alert prices; control, active-response exclusion and cooldown remain.
 - `cbrn_state_can_move_civilians_to_shelters`: exact alert, no shelter/industry-continuity conflict, and full real resources.
 - `cbrn_state_can_sound_chemical_alarm`: exact alert and no alarm already active.
 - `cbrn_state_can_keep_industry_operating`: exact alert and no shelter/continuity conflict.
 
-The resource checks use meta triggers to inject the state-calculated dynamic equipment requirement into `has_equipment`, which otherwise accepts only static amounts.
+The retained cache-based hospital and shelter resource checks use meta triggers for their state-calculated equipment requirements; the public hospital path uses its current population quote and concrete-model payment readiness instead.
 
 Example:
 

@@ -1,0 +1,1028 @@
+{
+  "schemaVersion": "1.0",
+  "id": "CIVIL_DEFENCE_PRIORITY_SOURCE_AFTER_COMPARISON_2026_10_09",
+  "classification": "source-derived predicates and AI strategy enable-gates only; not a probability MCP evaluation, native engine run, production-rate estimate, or normalized odds",
+  "baselineSourceMatrixId": "CIVIL_DEFENCE_PRIORITY_SOURCE_BASELINE_2026_10_09",
+  "scenarioCount": 14,
+  "mcpProbabilityRoute": {
+    "adapter": "ai_strategy_factor",
+    "inspectResult": "no_weighted_surfaces on frozen snapshot and corrected canonical source path",
+    "furtherMcpCalls": "none per parent instruction; no probability_compare result is claimed"
+  },
+  "sourceHashes": {
+    "before": {
+      "triggers": "ce9e25d8fae7c04da8e449b1b468a4bb65f6b652c6a92eb9cd4ff4266e0c2301",
+      "decisionEffects": "bee3a3f81726bd9093e1244ce1bcc7c61d45081bb522994e3b2c5d56b627f506",
+      "protectionEffects": "b8a45b830f4a2e10c0ce4e5b4cba35cfe527e22daa63f0a3a734bc758d176a8c",
+      "aiStrategy": "c9b7f64a38aae40d1775220d38a3af36b8aacddd8f02c7fd0b0a71ddf569acae"
+    },
+    "after": {
+      "triggers": "0bf89033e3a99fb2b628be491fb1d7988b2f4c6039e3f4c507d87b9c2e6b2615",
+      "decisionEffects": "8a827a654952ca878f113b2923802e15f573143da5e6f9ee8cce0aa742704ebc",
+      "protectionEffects": "cacdc5e6bb0fd74af36977a973c1a3e4f6def0090ff24cb7f8132ba4b1eadda7",
+      "aiStrategy": "c9b7f64a38aae40d1775220d38a3af36b8aacddd8f02c7fd0b0a71ddf569acae"
+    },
+    "aiStrategyRawBytesUnchanged": true
+  },
+  "strategyConfigurationUnchanged": true,
+  "strategyValues": {
+    "base": 50,
+    "profile": {
+      "mass_civil_defence": 40,
+      "prepared_power": 30,
+      "military_first": 25,
+      "industrial_reserve": 35,
+      "civil_defence_network": 30,
+      "exposed": 15,
+      "limited": 5
+    },
+    "urgent": 70,
+    "minFactoryBands": [
+      {
+        "range": "10-24",
+        "value": 1
+      },
+      {
+        "range": "25-49",
+        "value": 2
+      },
+      {
+        "range": "50-74",
+        "value": 4
+      },
+      {
+        "range": "75-99",
+        "value": 6
+      },
+      {
+        "range": "100+",
+        "value": 8
+      }
+    ]
+  },
+  "factoryBandLimit": "The named scenarios do not declare num_of_military_factories; per-scenario activation of the five minimum-factory entries is unresolved. If should_produce_masks is true, the band matching actual factory count remains conditional; no production capacity is estimated.",
+  "aggregate": {
+    "shouldProduceBefore": 7,
+    "shouldProduceAfter": 6,
+    "newlyEnabledCases": [
+      "CD_ENEMY_CAPABILITY_ONLY",
+      "CD_ACTIVE_RESPONSE_AFTER_ALERT_EXPIRY",
+      "CD_CONTAMINATION_ONLY_NO_RESERVE_FIRST_PRODUCTION"
+    ],
+    "newlyDisabledCases": [
+      "CD_CLEAN_HISTORY_ONLY_PEACE",
+      "CD_RETALIATION_PERMISSION_ONLY",
+      "CD_BUSY_CORE_CONTAMINATED",
+      "CD_REGISTERED_PROFILE_FULL_GAP_ONLY"
+    ],
+    "unchangedEnabledCases": [
+      "CD_RURAL_CONTAMINATION_VS_CLEAN_CAPITAL",
+      "CD_ENEMY_CONFIRMED_USE_WITHOUT_TECH",
+      "CD_PRIORITY_GAP_BELOW_50"
+    ],
+    "urgentFactorAfterCases": [
+      "CD_ENEMY_CONFIRMED_USE_WITHOUT_TECH",
+      "CD_PRIORITY_GAP_BELOW_50"
+    ]
+  },
+  "rows": [
+    {
+      "scenarioId": "CD_CLEAN_HISTORY_ONLY_PEACE",
+      "scenarioLabel": "Clean peaceful country with only permanent victim history; one controlled core at 49% civilian coverage.",
+      "before": {
+        "hasEnemyUsedChemicalWeapons": true,
+        "publicChemicalEmergency": true,
+        "civilDefenceVisible": true,
+        "needsCivilianMaskIssue": true,
+        "priorityCivilianGap": true,
+        "priorityReceiver": true,
+        "belowMaskAiTarget": true,
+        "maskProductionSignal": true,
+        "shouldProduceMasks": true,
+        "urgentMaskProductionNeed": true,
+        "enabledStrategyFactorIds": [
+          "cbrn_mask_production_base",
+          "cbrn_mask_production_limited_profile",
+          "cbrn_mask_production_urgent"
+        ],
+        "enabledStrategyValues": [
+          {
+            "id": "cbrn_mask_production_base",
+            "value": 50
+          },
+          {
+            "id": "cbrn_mask_production_limited_profile",
+            "value": 5
+          },
+          {
+            "id": "cbrn_mask_production_urgent",
+            "value": 70
+          }
+        ]
+      },
+      "after": {
+        "countryCurrentNeed": false,
+        "localCurrentNeedStates": [],
+        "civilDefenceVisible": false,
+        "issueNeed": false,
+        "priorityGapStates": [
+          "capital"
+        ],
+        "receiverStates": [
+          "capital"
+        ],
+        "threatenedFilterServiceStates": [],
+        "remainderFilterServiceStates": [],
+        "threatenedIssueStates": [],
+        "remainderIssueStates": [],
+        "maintenanceRuns": true,
+        "issueProgramCalled": false,
+        "belowMaskAiTarget": false,
+        "maskProductionSignal": true,
+        "shouldProduceMasks": false,
+        "urgentHelper": true,
+        "urgentFactorEnabled": false,
+        "explanation": "Old victim history still feeds the preserved broad production-signal and urgent helpers, but the new current-need and issue/target gates close production for this clean no-shortage case.",
+        "enabledStrategyFactorIds": [],
+        "enabledStrategyValues": []
+      },
+      "strategyDelta": {
+        "newlyEnabled": [],
+        "newlyDisabled": [
+          "cbrn_mask_production_base",
+          "cbrn_mask_production_limited_profile",
+          "cbrn_mask_production_urgent"
+        ],
+        "unchanged": [],
+        "factoryBandStatus": "disabled by should_produce_masks gate"
+      },
+      "inputRef": "scenario_matrix_before.json#CD_CLEAN_HISTORY_ONLY_PEACE"
+    },
+    {
+      "scenarioId": "CD_RETALIATION_PERMISSION_ONLY",
+      "scenarioLabel": "Peaceful country with only finite retaliation authorization and a 49% capital gap.",
+      "before": {
+        "hasEnemyUsedChemicalWeapons": true,
+        "publicChemicalEmergency": true,
+        "civilDefenceVisible": true,
+        "needsCivilianMaskIssue": true,
+        "priorityCivilianGap": true,
+        "priorityReceiver": true,
+        "belowMaskAiTarget": true,
+        "maskProductionSignal": true,
+        "shouldProduceMasks": true,
+        "urgentMaskProductionNeed": true,
+        "enabledStrategyFactorIds": [
+          "cbrn_mask_production_base",
+          "cbrn_mask_production_limited_profile",
+          "cbrn_mask_production_urgent"
+        ],
+        "enabledStrategyValues": [
+          {
+            "id": "cbrn_mask_production_base",
+            "value": 50
+          },
+          {
+            "id": "cbrn_mask_production_limited_profile",
+            "value": 5
+          },
+          {
+            "id": "cbrn_mask_production_urgent",
+            "value": 70
+          }
+        ]
+      },
+      "after": {
+        "countryCurrentNeed": false,
+        "localCurrentNeedStates": [],
+        "civilDefenceVisible": false,
+        "issueNeed": false,
+        "priorityGapStates": [
+          "capital"
+        ],
+        "receiverStates": [
+          "capital"
+        ],
+        "threatenedFilterServiceStates": [],
+        "remainderFilterServiceStates": [],
+        "threatenedIssueStates": [],
+        "remainderIssueStates": [],
+        "maintenanceRuns": true,
+        "issueProgramCalled": false,
+        "belowMaskAiTarget": false,
+        "maskProductionSignal": true,
+        "shouldProduceMasks": false,
+        "urgentHelper": true,
+        "urgentFactorEnabled": false,
+        "explanation": "Finite retaliation authorization remains in the broad preserved helper, but permission alone no longer opens Civil Defence, issue, or a below-target AI factory strategy.",
+        "enabledStrategyFactorIds": [],
+        "enabledStrategyValues": []
+      },
+      "strategyDelta": {
+        "newlyEnabled": [],
+        "newlyDisabled": [
+          "cbrn_mask_production_base",
+          "cbrn_mask_production_limited_profile",
+          "cbrn_mask_production_urgent"
+        ],
+        "unchanged": [],
+        "factoryBandStatus": "disabled by should_produce_masks gate"
+      },
+      "inputRef": "scenario_matrix_before.json#CD_RETALIATION_PERMISSION_ONLY"
+    },
+    {
+      "scenarioId": "CD_RURAL_CONTAMINATION_VS_CLEAN_CAPITAL",
+      "scenarioLabel": "One contaminated low-value rural core and one clean strategic capital, both at 49% coverage.",
+      "before": {
+        "publicChemicalEmergency": true,
+        "civilDefenceVisible": true,
+        "needsCivilianMaskIssue": true,
+        "priorityCivilianGap": true,
+        "priorityReceiverCapital": true,
+        "priorityReceiverRural": false,
+        "belowMaskAiTarget": true,
+        "maskProductionSignal": true,
+        "shouldProduceMasks": true,
+        "urgentMaskProductionNeed": false,
+        "filterReplacementWork": true,
+        "filterReplacementReceivers": [
+          "capital",
+          "rural"
+        ],
+        "filterReplacementOrder": "capital_scope before every_controlled_state; latter order not claimed; no threat sorting",
+        "enabledStrategyFactorIds": [
+          "cbrn_mask_production_base",
+          "cbrn_mask_production_limited_profile"
+        ],
+        "enabledStrategyValues": [
+          {
+            "id": "cbrn_mask_production_base",
+            "value": 50
+          },
+          {
+            "id": "cbrn_mask_production_limited_profile",
+            "value": 5
+          }
+        ]
+      },
+      "after": {
+        "countryCurrentNeed": true,
+        "localCurrentNeedStates": [
+          "rural"
+        ],
+        "civilDefenceVisible": true,
+        "issueNeed": true,
+        "priorityGapStates": [
+          "capital",
+          "rural"
+        ],
+        "receiverStates": [
+          "capital",
+          "rural"
+        ],
+        "threatenedFilterServiceStates": [
+          "rural"
+        ],
+        "remainderFilterServiceStates": [
+          "capital"
+        ],
+        "threatenedIssueStates": [
+          "rural"
+        ],
+        "remainderIssueStates": [
+          "capital"
+        ],
+        "maintenanceRuns": true,
+        "issueProgramCalled": true,
+        "belowMaskAiTarget": true,
+        "maskProductionSignal": true,
+        "shouldProduceMasks": true,
+        "urgentHelper": false,
+        "urgentFactorEnabled": false,
+        "distributionOrder": "threatened rural filter service and issue run before clean capital filter service and issue",
+        "enabledStrategyFactorIds": [
+          "cbrn_mask_production_base",
+          "cbrn_mask_production_limited_profile"
+        ],
+        "enabledStrategyValues": [
+          {
+            "id": "cbrn_mask_production_base",
+            "value": 50
+          },
+          {
+            "id": "cbrn_mask_production_limited_profile",
+            "value": 5
+          }
+        ]
+      },
+      "strategyDelta": {
+        "newlyEnabled": [],
+        "newlyDisabled": [],
+        "unchanged": [
+          "cbrn_mask_production_base",
+          "cbrn_mask_production_limited_profile"
+        ],
+        "factoryBandStatus": "per-case unresolved because num_of_military_factories is absent; if should_produce_masks is true, the matching configured band remains conditionally eligible"
+      },
+      "inputRef": "scenario_matrix_before.json#CD_RURAL_CONTAMINATION_VS_CLEAN_CAPITAL"
+    },
+    {
+      "scenarioId": "CD_ENEMY_CAPABILITY_ONLY",
+      "scenarioLabel": "Current enemy has chemical technology; no confirmed use, alert, contamination, or other shortage.",
+      "before": {
+        "publicChemicalEmergency": false,
+        "civilDefenceVisible": true,
+        "needsCivilianMaskIssue": true,
+        "priorityCivilianGap": true,
+        "priorityReceiver": false,
+        "belowMaskAiTarget": false,
+        "maskProductionSignal": true,
+        "shouldProduceMasks": false,
+        "urgentMaskProductionNeed": false,
+        "enabledStrategyFactorIds": [],
+        "enabledStrategyValues": []
+      },
+      "after": {
+        "countryCurrentNeed": true,
+        "localCurrentNeedStates": [],
+        "civilDefenceVisible": true,
+        "issueNeed": true,
+        "priorityGapStates": [
+          "capital"
+        ],
+        "receiverStates": [],
+        "threatenedFilterServiceStates": [],
+        "remainderFilterServiceStates": [],
+        "threatenedIssueStates": [],
+        "remainderIssueStates": [],
+        "maintenanceRuns": false,
+        "issueProgramCalled": false,
+        "belowMaskAiTarget": true,
+        "maskProductionSignal": true,
+        "shouldProduceMasks": true,
+        "urgentHelper": false,
+        "urgentFactorEnabled": false,
+        "distributionOrder": "country-level capability opens production; without stock there is no immediate receiver; after stock, high-value clean core can be served in remainder phase",
+        "enabledStrategyFactorIds": [
+          "cbrn_mask_production_base",
+          "cbrn_mask_production_limited_profile"
+        ],
+        "enabledStrategyValues": [
+          {
+            "id": "cbrn_mask_production_base",
+            "value": 50
+          },
+          {
+            "id": "cbrn_mask_production_limited_profile",
+            "value": 5
+          }
+        ]
+      },
+      "strategyDelta": {
+        "newlyEnabled": [
+          "cbrn_mask_production_base",
+          "cbrn_mask_production_limited_profile"
+        ],
+        "newlyDisabled": [],
+        "unchanged": [],
+        "factoryBandStatus": "per-case unresolved because num_of_military_factories is absent; if should_produce_masks is true, the matching configured band remains conditionally eligible"
+      },
+      "inputRef": "scenario_matrix_before.json#CD_ENEMY_CAPABILITY_ONLY"
+    },
+    {
+      "scenarioId": "CD_ENEMY_CONFIRMED_USE_WITHOUT_TECH",
+      "scenarioLabel": "An existing enemy has confirmed-use history but no chemical technology; actor has basic masks and a priority gap.",
+      "before": {
+        "hasEnemyUsedChemicalWeapons": true,
+        "publicChemicalEmergency": true,
+        "civilDefenceVisible": true,
+        "needsCivilianMaskIssue": true,
+        "priorityCivilianGap": true,
+        "priorityReceiver": false,
+        "belowMaskAiTarget": true,
+        "maskProductionSignal": true,
+        "shouldProduceMasks": true,
+        "urgentMaskProductionNeed": true,
+        "enabledStrategyFactorIds": [
+          "cbrn_mask_production_base",
+          "cbrn_mask_production_limited_profile",
+          "cbrn_mask_production_urgent"
+        ],
+        "enabledStrategyValues": [
+          {
+            "id": "cbrn_mask_production_base",
+            "value": 50
+          },
+          {
+            "id": "cbrn_mask_production_limited_profile",
+            "value": 5
+          },
+          {
+            "id": "cbrn_mask_production_urgent",
+            "value": 70
+          }
+        ]
+      },
+      "after": {
+        "countryCurrentNeed": true,
+        "localCurrentNeedStates": [],
+        "civilDefenceVisible": true,
+        "issueNeed": true,
+        "priorityGapStates": [
+          "capital"
+        ],
+        "receiverStates": [],
+        "threatenedFilterServiceStates": [],
+        "remainderFilterServiceStates": [],
+        "threatenedIssueStates": [],
+        "remainderIssueStates": [],
+        "maintenanceRuns": false,
+        "issueProgramCalled": false,
+        "belowMaskAiTarget": true,
+        "maskProductionSignal": true,
+        "shouldProduceMasks": true,
+        "urgentHelper": true,
+        "urgentFactorEnabled": true,
+        "distributionOrder": "confirmed enemy use opens production without technology; a high-value core is a remainder candidate once stock exists",
+        "enabledStrategyFactorIds": [
+          "cbrn_mask_production_base",
+          "cbrn_mask_production_limited_profile",
+          "cbrn_mask_production_urgent"
+        ],
+        "enabledStrategyValues": [
+          {
+            "id": "cbrn_mask_production_base",
+            "value": 50
+          },
+          {
+            "id": "cbrn_mask_production_limited_profile",
+            "value": 5
+          },
+          {
+            "id": "cbrn_mask_production_urgent",
+            "value": 70
+          }
+        ]
+      },
+      "strategyDelta": {
+        "newlyEnabled": [],
+        "newlyDisabled": [],
+        "unchanged": [
+          "cbrn_mask_production_base",
+          "cbrn_mask_production_limited_profile",
+          "cbrn_mask_production_urgent"
+        ],
+        "factoryBandStatus": "per-case unresolved because num_of_military_factories is absent; if should_produce_masks is true, the matching configured band remains conditionally eligible"
+      },
+      "inputRef": "scenario_matrix_before.json#CD_ENEMY_CONFIRMED_USE_WITHOUT_TECH"
+    },
+    {
+      "scenarioId": "CD_ACTIVE_RESPONSE_AFTER_ALERT_EXPIRY",
+      "scenarioLabel": "An accepted timed hospital-protection response remains after its chemical alert has expired.",
+      "before": {
+        "publicChemicalEmergency": false,
+        "civilDefenceVisible": false,
+        "needsCivilianMaskIssue": false,
+        "priorityCivilianGap": true,
+        "priorityReceiver": false,
+        "belowMaskAiTarget": false,
+        "maskProductionSignal": false,
+        "shouldProduceMasks": false,
+        "urgentMaskProductionNeed": false,
+        "enabledStrategyFactorIds": [],
+        "enabledStrategyValues": []
+      },
+      "after": {
+        "countryCurrentNeed": true,
+        "localCurrentNeedStates": [
+          "capital"
+        ],
+        "civilDefenceVisible": true,
+        "issueNeed": true,
+        "priorityGapStates": [
+          "capital"
+        ],
+        "receiverStates": [],
+        "threatenedFilterServiceStates": [],
+        "remainderFilterServiceStates": [],
+        "threatenedIssueStates": [],
+        "remainderIssueStates": [],
+        "maintenanceRuns": false,
+        "issueProgramCalled": false,
+        "belowMaskAiTarget": true,
+        "maskProductionSignal": true,
+        "shouldProduceMasks": true,
+        "urgentHelper": false,
+        "urgentFactorEnabled": false,
+        "distributionOrder": "active response reopens category and first-production demand; no stock means no upkeep pass yet",
+        "enabledStrategyFactorIds": [
+          "cbrn_mask_production_base",
+          "cbrn_mask_production_limited_profile"
+        ],
+        "enabledStrategyValues": [
+          {
+            "id": "cbrn_mask_production_base",
+            "value": 50
+          },
+          {
+            "id": "cbrn_mask_production_limited_profile",
+            "value": 5
+          }
+        ]
+      },
+      "strategyDelta": {
+        "newlyEnabled": [
+          "cbrn_mask_production_base",
+          "cbrn_mask_production_limited_profile"
+        ],
+        "newlyDisabled": [],
+        "unchanged": [],
+        "factoryBandStatus": "per-case unresolved because num_of_military_factories is absent; if should_produce_masks is true, the matching configured band remains conditionally eligible"
+      },
+      "inputRef": "scenario_matrix_before.json#CD_ACTIVE_RESPONSE_AFTER_ALERT_EXPIRY"
+    },
+    {
+      "scenarioId": "CD_CONTAMINATION_ONLY_NO_RESERVE_FIRST_PRODUCTION",
+      "scenarioLabel": "No-stock country with only current state contamination, all military/reserve targets met, and one 49% contaminated core.",
+      "before": {
+        "publicChemicalEmergency": true,
+        "civilDefenceVisible": true,
+        "needsCivilianMaskIssue": true,
+        "priorityCivilianGap": true,
+        "priorityReceiver": false,
+        "belowMaskAiTarget": true,
+        "maskProductionSignal": false,
+        "shouldProduceMasks": false,
+        "urgentMaskProductionNeed": false,
+        "enabledStrategyFactorIds": [],
+        "enabledStrategyValues": []
+      },
+      "after": {
+        "countryCurrentNeed": true,
+        "localCurrentNeedStates": [
+          "core"
+        ],
+        "civilDefenceVisible": true,
+        "issueNeed": true,
+        "priorityGapStates": [
+          "core"
+        ],
+        "receiverStates": [],
+        "threatenedFilterServiceStates": [],
+        "remainderFilterServiceStates": [],
+        "threatenedIssueStates": [],
+        "remainderIssueStates": [],
+        "maintenanceRuns": false,
+        "issueProgramCalled": false,
+        "belowMaskAiTarget": true,
+        "maskProductionSignal": true,
+        "shouldProduceMasks": true,
+        "urgentHelper": false,
+        "urgentFactorEnabled": false,
+        "distributionOrder": "current need becomes a production signal; no reserve/stock means the automated issue pass waits for produced stock",
+        "enabledStrategyFactorIds": [
+          "cbrn_mask_production_base",
+          "cbrn_mask_production_limited_profile"
+        ],
+        "enabledStrategyValues": [
+          {
+            "id": "cbrn_mask_production_base",
+            "value": 50
+          },
+          {
+            "id": "cbrn_mask_production_limited_profile",
+            "value": 5
+          }
+        ]
+      },
+      "strategyDelta": {
+        "newlyEnabled": [
+          "cbrn_mask_production_base",
+          "cbrn_mask_production_limited_profile"
+        ],
+        "newlyDisabled": [],
+        "unchanged": [],
+        "factoryBandStatus": "per-case unresolved because num_of_military_factories is absent; if should_produce_masks is true, the matching configured band remains conditionally eligible"
+      },
+      "inputRef": "scenario_matrix_before.json#CD_CONTAMINATION_ONLY_NO_RESERVE_FIRST_PRODUCTION"
+    },
+    {
+      "scenarioId": "CD_NONCORE_CONTAMINATED_ONLY",
+      "scenarioLabel": "Only a populated, contaminated controlled noncore state is below 50%; no core gap or other deficit.",
+      "before": {
+        "publicChemicalEmergency": true,
+        "civilDefenceVisible": true,
+        "needsCivilianMaskIssue": true,
+        "priorityCivilianGap": false,
+        "priorityReceiver": false,
+        "belowMaskAiTarget": false,
+        "maskProductionSignal": true,
+        "shouldProduceMasks": false,
+        "urgentMaskProductionNeed": false,
+        "filterReplacementReceiver": true,
+        "enabledStrategyFactorIds": [],
+        "enabledStrategyValues": []
+      },
+      "after": {
+        "countryCurrentNeed": true,
+        "localCurrentNeedStates": [
+          "noncore"
+        ],
+        "civilDefenceVisible": true,
+        "issueNeed": true,
+        "priorityGapStates": [],
+        "receiverStates": [],
+        "threatenedFilterServiceStates": [
+          "noncore"
+        ],
+        "remainderFilterServiceStates": [],
+        "threatenedIssueStates": [],
+        "remainderIssueStates": [],
+        "maintenanceRuns": true,
+        "issueProgramCalled": true,
+        "belowMaskAiTarget": false,
+        "maskProductionSignal": true,
+        "shouldProduceMasks": false,
+        "urgentHelper": false,
+        "urgentFactorEnabled": false,
+        "note": "Existing noncore filters can be serviced, but automatic new-mask issue remains core-only.",
+        "enabledStrategyFactorIds": [],
+        "enabledStrategyValues": []
+      },
+      "strategyDelta": {
+        "newlyEnabled": [],
+        "newlyDisabled": [],
+        "unchanged": [],
+        "factoryBandStatus": "disabled by should_produce_masks gate"
+      },
+      "inputRef": "scenario_matrix_before.json#CD_NONCORE_CONTAMINATED_ONLY"
+    },
+    {
+      "scenarioId": "CD_BUSY_CORE_CONTAMINATED",
+      "scenarioLabel": "A 49% controlled, populated, valuable core is contaminated but locked by an active protection project.",
+      "before": {
+        "publicChemicalEmergency": true,
+        "civilDefenceCategoryVisible": true,
+        "needsCivilianMaskIssue": true,
+        "priorityCivilianGap": true,
+        "priorityReceiver": false,
+        "belowMaskAiTarget": true,
+        "maskProductionSignal": true,
+        "shouldProduceMasks": true,
+        "urgentMaskProductionNeed": false,
+        "filterReplacementReceiver": false,
+        "enabledStrategyFactorIds": [
+          "cbrn_mask_production_base",
+          "cbrn_mask_production_limited_profile"
+        ],
+        "enabledStrategyValues": [
+          {
+            "id": "cbrn_mask_production_base",
+            "value": 50
+          },
+          {
+            "id": "cbrn_mask_production_limited_profile",
+            "value": 5
+          }
+        ]
+      },
+      "after": {
+        "countryCurrentNeed": true,
+        "localCurrentNeedStates": [
+          "busy_core"
+        ],
+        "civilDefenceVisible": true,
+        "issueNeed": true,
+        "priorityGapStates": [],
+        "receiverStates": [],
+        "threatenedFilterServiceStates": [],
+        "remainderFilterServiceStates": [],
+        "threatenedIssueStates": [],
+        "remainderIssueStates": [],
+        "maintenanceRuns": true,
+        "issueProgramCalled": true,
+        "belowMaskAiTarget": false,
+        "maskProductionSignal": true,
+        "shouldProduceMasks": false,
+        "urgentHelper": false,
+        "urgentFactorEnabled": false,
+        "enabledStrategyFactorIds": [],
+        "enabledStrategyValues": []
+      },
+      "strategyDelta": {
+        "newlyEnabled": [],
+        "newlyDisabled": [
+          "cbrn_mask_production_base",
+          "cbrn_mask_production_limited_profile"
+        ],
+        "unchanged": [],
+        "factoryBandStatus": "disabled by should_produce_masks gate"
+      },
+      "inputRef": "scenario_matrix_before.json#CD_BUSY_CORE_CONTAMINATED"
+    },
+    {
+      "scenarioId": "CD_PRIORITY_GAP_BELOW_50",
+      "scenarioLabel": "Current alert with an otherwise serviceable priority core at 49%.",
+      "before": {
+        "publicChemicalEmergency": true,
+        "civilDefenceCategoryVisible": true,
+        "needsCivilianMaskIssue": true,
+        "priorityCivilianGap": true,
+        "priorityReceiver": true,
+        "belowMaskAiTarget": true,
+        "maskProductionSignal": true,
+        "shouldProduceMasks": true,
+        "urgentMaskProductionNeed": true,
+        "enabledStrategyFactorIds": [
+          "cbrn_mask_production_base",
+          "cbrn_mask_production_limited_profile",
+          "cbrn_mask_production_urgent"
+        ],
+        "enabledStrategyValues": [
+          {
+            "id": "cbrn_mask_production_base",
+            "value": 50
+          },
+          {
+            "id": "cbrn_mask_production_limited_profile",
+            "value": 5
+          },
+          {
+            "id": "cbrn_mask_production_urgent",
+            "value": 70
+          }
+        ]
+      },
+      "after": {
+        "countryCurrentNeed": true,
+        "localCurrentNeedStates": [
+          "capital"
+        ],
+        "civilDefenceVisible": true,
+        "issueNeed": true,
+        "priorityGapStates": [
+          "capital"
+        ],
+        "receiverStates": [
+          "capital"
+        ],
+        "threatenedFilterServiceStates": [],
+        "remainderFilterServiceStates": [],
+        "threatenedIssueStates": [
+          "capital"
+        ],
+        "remainderIssueStates": [],
+        "maintenanceRuns": true,
+        "issueProgramCalled": true,
+        "belowMaskAiTarget": true,
+        "maskProductionSignal": true,
+        "shouldProduceMasks": true,
+        "urgentHelper": true,
+        "urgentFactorEnabled": true,
+        "enabledStrategyFactorIds": [
+          "cbrn_mask_production_base",
+          "cbrn_mask_production_limited_profile",
+          "cbrn_mask_production_urgent"
+        ],
+        "enabledStrategyValues": [
+          {
+            "id": "cbrn_mask_production_base",
+            "value": 50
+          },
+          {
+            "id": "cbrn_mask_production_limited_profile",
+            "value": 5
+          },
+          {
+            "id": "cbrn_mask_production_urgent",
+            "value": 70
+          }
+        ]
+      },
+      "strategyDelta": {
+        "newlyEnabled": [],
+        "newlyDisabled": [],
+        "unchanged": [
+          "cbrn_mask_production_base",
+          "cbrn_mask_production_limited_profile",
+          "cbrn_mask_production_urgent"
+        ],
+        "factoryBandStatus": "per-case unresolved because num_of_military_factories is absent; if should_produce_masks is true, the matching configured band remains conditionally eligible"
+      },
+      "inputRef": "scenario_matrix_before.json#CD_PRIORITY_GAP_BELOW_50"
+    },
+    {
+      "scenarioId": "CD_PRIORITY_GAP_EXACT_50",
+      "scenarioLabel": "Current alert with an otherwise serviceable priority core at exactly 50%.",
+      "before": {
+        "publicChemicalEmergency": true,
+        "civilDefenceCategoryVisible": true,
+        "needsCivilianMaskIssue": true,
+        "priorityCivilianGap": false,
+        "priorityReceiver": false,
+        "belowMaskAiTarget": false,
+        "maskProductionSignal": true,
+        "shouldProduceMasks": false,
+        "urgentMaskProductionNeed": true,
+        "enabledStrategyFactorIds": [],
+        "enabledStrategyValues": []
+      },
+      "after": {
+        "countryCurrentNeed": true,
+        "localCurrentNeedStates": [
+          "capital"
+        ],
+        "civilDefenceVisible": true,
+        "issueNeed": true,
+        "priorityGapStates": [],
+        "receiverStates": [],
+        "threatenedFilterServiceStates": [],
+        "remainderFilterServiceStates": [],
+        "threatenedIssueStates": [],
+        "remainderIssueStates": [],
+        "maintenanceRuns": true,
+        "issueProgramCalled": true,
+        "belowMaskAiTarget": false,
+        "maskProductionSignal": true,
+        "shouldProduceMasks": false,
+        "urgentHelper": true,
+        "urgentFactorEnabled": false,
+        "explanation": "The urgent helper remains true, but strict less_than 50 closes the target gap and the strategy entry remains gated by should_produce_masks.",
+        "enabledStrategyFactorIds": [],
+        "enabledStrategyValues": []
+      },
+      "strategyDelta": {
+        "newlyEnabled": [],
+        "newlyDisabled": [],
+        "unchanged": [],
+        "factoryBandStatus": "disabled by should_produce_masks gate"
+      },
+      "inputRef": "scenario_matrix_before.json#CD_PRIORITY_GAP_EXACT_50"
+    },
+    {
+      "scenarioId": "CD_UK_HISTORICAL_RECEIPT_ONLY",
+      "scenarioLabel": "The pending British historical civilian issue receipt is the only current issue signal.",
+      "before": {
+        "publicChemicalEmergency": false,
+        "civilDefenceVisible": false,
+        "needsCivilianMaskIssue": true,
+        "priorityCivilianGap": false,
+        "priorityReceiver": false,
+        "belowMaskAiTarget": false,
+        "maskProductionSignal": true,
+        "shouldProduceMasks": false,
+        "urgentMaskProductionNeed": false,
+        "enabledStrategyFactorIds": [],
+        "enabledStrategyValues": []
+      },
+      "after": {
+        "countryCurrentNeed": false,
+        "localCurrentNeedStates": [],
+        "civilDefenceVisible": false,
+        "issueNeed": true,
+        "issueNeedReason": "UK historical receipt flag",
+        "priorityGapStates": [],
+        "receiverStates": [],
+        "threatenedFilterServiceStates": [],
+        "remainderFilterServiceStates": [],
+        "threatenedIssueStates": [],
+        "remainderIssueStates": [],
+        "maintenanceRuns": true,
+        "issueProgramCalled": true,
+        "belowMaskAiTarget": false,
+        "maskProductionSignal": true,
+        "shouldProduceMasks": false,
+        "urgentHelper": false,
+        "urgentFactorEnabled": false,
+        "explanation": "The historical receipt still invokes routine issue, but at exactly 50% there is no eligible priority-mask receiver and it does not reveal Civil Defence on its own.",
+        "enabledStrategyFactorIds": [],
+        "enabledStrategyValues": []
+      },
+      "strategyDelta": {
+        "newlyEnabled": [],
+        "newlyDisabled": [],
+        "unchanged": [],
+        "factoryBandStatus": "disabled by should_produce_masks gate"
+      },
+      "inputRef": "scenario_matrix_before.json#CD_UK_HISTORICAL_RECEIPT_ONLY"
+    },
+    {
+      "scenarioId": "CD_BIOLOGICAL_OUTBREAK_ONLY",
+      "scenarioLabel": "Active biological outbreak with no chemical threat, chemical incident, alert, or response flag.",
+      "before": {
+        "publicChemicalEmergency": false,
+        "civilDefenceVisible": true,
+        "needsCivilianMaskIssue": false,
+        "priorityCivilianGap": false,
+        "priorityReceiver": false,
+        "belowMaskAiTarget": false,
+        "maskProductionSignal": false,
+        "shouldProduceMasks": false,
+        "urgentMaskProductionNeed": false,
+        "enabledStrategyFactorIds": [],
+        "enabledStrategyValues": []
+      },
+      "after": {
+        "countryCurrentNeed": false,
+        "localCurrentNeedStates": [],
+        "civilDefenceVisible": true,
+        "issueNeed": false,
+        "priorityGapStates": [],
+        "receiverStates": [],
+        "threatenedFilterServiceStates": [],
+        "remainderFilterServiceStates": [],
+        "threatenedIssueStates": [],
+        "remainderIssueStates": [],
+        "maintenanceRuns": false,
+        "issueProgramCalled": false,
+        "belowMaskAiTarget": false,
+        "maskProductionSignal": false,
+        "shouldProduceMasks": false,
+        "urgentHelper": false,
+        "urgentFactorEnabled": false,
+        "enabledStrategyFactorIds": [],
+        "enabledStrategyValues": []
+      },
+      "strategyDelta": {
+        "newlyEnabled": [],
+        "newlyDisabled": [],
+        "unchanged": [],
+        "factoryBandStatus": "disabled by should_produce_masks gate"
+      },
+      "inputRef": "scenario_matrix_before.json#CD_BIOLOGICAL_OUTBREAK_ONLY"
+    },
+    {
+      "scenarioId": "CD_REGISTERED_PROFILE_FULL_GAP_ONLY",
+      "scenarioLabel": "Registered mass-civil program has an 80% core gap against the 95% full target, but no current threat and no priority gap.",
+      "before": {
+        "publicChemicalEmergency": false,
+        "civilDefenceVisible": false,
+        "needsCivilianMaskIssue": false,
+        "priorityCivilianGap": false,
+        "fullCivilianGap": true,
+        "priorityReceiver": false,
+        "fullReceiver": true,
+        "belowMaskAiTarget": true,
+        "maskProductionSignal": true,
+        "shouldProduceMasks": true,
+        "urgentMaskProductionNeed": false,
+        "enabledStrategyFactorIds": [
+          "cbrn_mask_production_base",
+          "cbrn_mask_production_mass_civil_profile"
+        ],
+        "enabledStrategyValues": [
+          {
+            "id": "cbrn_mask_production_base",
+            "value": 50
+          },
+          {
+            "id": "cbrn_mask_production_mass_civil_profile",
+            "value": 40
+          }
+        ]
+      },
+      "after": {
+        "countryCurrentNeed": false,
+        "localCurrentNeedStates": [],
+        "civilDefenceVisible": false,
+        "issueNeed": false,
+        "priorityGapStates": [],
+        "receiverStates": [],
+        "threatenedFilterServiceStates": [],
+        "remainderFilterServiceStates": [],
+        "threatenedIssueStates": [],
+        "remainderIssueStates": [],
+        "maintenanceRuns": true,
+        "issueProgramCalled": false,
+        "fullCivilianGapPredicateStillTrue": true,
+        "fullReceiverPredicateStillTrue": true,
+        "fullDistributionEffectCalled": false,
+        "belowMaskAiTarget": false,
+        "maskProductionSignal": true,
+        "shouldProduceMasks": false,
+        "urgentHelper": false,
+        "urgentFactorEnabled": false,
+        "explanation": "The 95% gap predicate and full receiver helper remain defined, but the AI below-target branch no longer consults them and there is no full-distribution effect caller.",
+        "enabledStrategyFactorIds": [],
+        "enabledStrategyValues": []
+      },
+      "strategyDelta": {
+        "newlyEnabled": [],
+        "newlyDisabled": [
+          "cbrn_mask_production_base",
+          "cbrn_mask_production_mass_civil_profile"
+        ],
+        "unchanged": [],
+        "factoryBandStatus": "disabled by should_produce_masks gate"
+      },
+      "inputRef": "scenario_matrix_before.json#CD_REGISTERED_PROFILE_FULL_GAP_ONLY"
+    }
+  ],
+  "afterSourceRawHashes": {
+    "common/scripted_triggers/cbrn_protection_triggers.txt": "0bf89033e3a99fb2b628be491fb1d7988b2f4c6039e3f4c507d87b9c2e6b2615",
+    "common/scripted_effects/cbrn_protection_decision_effects.txt": "8a827a654952ca878f113b2923802e15f573143da5e6f9ee8cce0aa742704ebc",
+    "common/scripted_effects/cbrn_protection_effects.txt": "cacdc5e6bb0fd74af36977a973c1a3e4f6def0090ff24cb7f8132ba4b1eadda7",
+    "common/ai_strategy/cbrn_protection_production.txt": "c9b7f64a38aae40d1775220d38a3af36b8aacddd8f02c7fd0b0a71ddf569acae"
+  },
+  "afterSourceSnapshotBinding": "Each live after source was copied to its .after evidence file and byte/hash verified. The unchanged primary AI strategy file is identical to its .before snapshot."
+}

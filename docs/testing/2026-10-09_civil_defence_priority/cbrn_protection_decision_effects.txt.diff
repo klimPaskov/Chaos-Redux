@@ -1,0 +1,90 @@
+--- common/scripted_effects/cbrn_protection_decision_effects.txt.before
++++ common/scripted_effects/cbrn_protection_decision_effects.txt.after
+@@ -170,10 +170,35 @@
+ 	cbrn_end_state_protection_project = yes
+ }
+ 
++# COUNTRY, ROOT = issuer. Every threatened filter pass precedes this issue pass.
++cbrn_complete_threatened_priority_distribution_program = {
++	capital_scope = {
++		if = {
++			limit = {
++				cbrn_state_has_current_chemical_need = yes
++				cbrn_state_can_receive_priority_masks = yes
++				ROOT = { cbrn_country_has_any_mask_stock = yes }
++			}
++			cbrn_complete_priority_state_distribution = yes
++		}
++	}
++	every_controlled_state = {
++		limit = {
++			NOT = { is_capital = yes }
++			cbrn_state_has_current_chemical_need = yes
++			cbrn_state_can_receive_priority_masks = yes
++			ROOT = { cbrn_country_has_any_mask_stock = yes }
++		}
++		cbrn_complete_priority_state_distribution = yes
++	}
++}
++
++# COUNTRY. Remaining strategic states receive issue only after the threat tier.
+ cbrn_complete_priority_distribution_program = {
+ 	capital_scope = {
+ 		if = {
+ 			limit = {
++				NOT = { cbrn_state_has_current_chemical_need = yes }
+ 				cbrn_state_can_receive_priority_masks = yes
+ 				ROOT = { cbrn_country_has_any_mask_stock = yes }
+ 			}
+@@ -183,6 +208,7 @@
+ 	every_controlled_state = {
+ 		limit = {
+ 			NOT = { is_capital = yes }
++			NOT = { cbrn_state_has_current_chemical_need = yes }
+ 			cbrn_state_can_receive_priority_masks = yes
+ 			ROOT = { cbrn_country_has_any_mask_stock = yes }
+ 		}
+@@ -210,10 +236,35 @@
+ 	}
+ }
+ 
++# COUNTRY. Existing issued noncore equipment remains eligible for service.
++cbrn_complete_threatened_filter_replacement_program = {
++	capital_scope = {
++		if = {
++			limit = {
++				cbrn_state_has_current_chemical_need = yes
++				cbrn_state_can_replace_civilian_filters = yes
++				ROOT = { cbrn_country_has_any_mask_stock = yes }
++			}
++			cbrn_complete_state_filter_replacement = yes
++		}
++	}
++	every_controlled_state = {
++		limit = {
++			NOT = { is_capital = yes }
++			cbrn_state_has_current_chemical_need = yes
++			cbrn_state_can_replace_civilian_filters = yes
++			ROOT = { cbrn_country_has_any_mask_stock = yes }
++		}
++		cbrn_complete_state_filter_replacement = yes
++	}
++}
++
++# COUNTRY. Service outside the threat tier follows threatened service and issue.
+ cbrn_complete_civilian_filter_replacement_program = {
+ 	capital_scope = {
+ 		if = {
+ 			limit = {
++				NOT = { cbrn_state_has_current_chemical_need = yes }
+ 				cbrn_state_can_replace_civilian_filters = yes
+ 				ROOT = { cbrn_country_has_any_mask_stock = yes }
+ 			}
+@@ -223,6 +274,7 @@
+ 	every_controlled_state = {
+ 		limit = {
+ 			NOT = { is_capital = yes }
++			NOT = { cbrn_state_has_current_chemical_need = yes }
+ 			cbrn_state_can_replace_civilian_filters = yes
+ 			ROOT = { cbrn_country_has_any_mask_stock = yes }
+ 		}

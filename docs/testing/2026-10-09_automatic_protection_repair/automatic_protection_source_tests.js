@@ -37,7 +37,7 @@ for (const f of fs.readdirSync(path.join(root, 'common/script_constants')).filte
   }
   walk(parse(text));
 }
-for (const f of ['common/scripted_triggers/cbrn_protection_triggers.txt', 'docs/plans/026_black_friday_plans/subagent_handoffs/exact_quote_source_tests.js']) report.dependencies.push({ path: f, sha256: hash(fs.readFileSync(path.join(root, f))) });
+for (const f of ['common/scripted_triggers/cbrn_protection_triggers.txt', 'common/scripted_triggers/cbrn_triggers.txt', 'docs/plans/026_black_friday_plans/subagent_handoffs/exact_quote_source_tests.js']) report.dependencies.push({ path: f, sha256: hash(fs.readFileSync(path.join(root, f))) });
 const noops = new Set([
   // Fixtures are already initialized. Ancillary achievements and cleanup pools
   // do not determine mask issue/service or derived mask readiness in these cases.
@@ -144,7 +144,7 @@ class ProtectionVM extends VM {
 }
 function load(buffers) {
   buffers.forEach(b => parse(b.toString('utf8')).forEach(n => { if (Array.isArray(n.value)) definitions.set(n.key, n.value); }));
-  parse(fs.readFileSync(path.join(root, 'common/scripted_triggers/cbrn_protection_triggers.txt'), 'utf8')).forEach(n => definitions.set(n.key, n.value));
+  for (const p of ['common/scripted_triggers/cbrn_triggers.txt','common/scripted_triggers/cbrn_protection_triggers.txt']) parse(fs.readFileSync(path.join(root,p),'utf8')).forEach(n => definitions.set(n.key,n.value));
 }
 function fixture(values = [0, 0, 0, 0, 0]) {
   return new ProtectionVM().stock(values)

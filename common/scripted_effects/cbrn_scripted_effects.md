@@ -719,11 +719,18 @@ The wrapper declaration supports its own nested read and does not create persist
 
 ### cbrn_distribute_priority_masks_to_state, cbrn_distribute_full_masks_to_state, and cbrn_distribute_emergency_masks_to_state
 
-These state-scope wrappers supply the accepted 50-percent priority, 95-percent full, or 35-percent effective emergency targets. The shared helper derives the larger raw emergency allocation needed after reduced fitting quality and degraded filter condition; emergency issue also applies the 0.60 improvised baseline and 1.30 wastage. Defaults and side effects are those of `cbrn_distribute_requested_masks_to_state`.
+These state-scope wrappers supply the accepted 50-percent priority, 95-percent full, or 35-percent effective emergency targets. The full wrapper remains a declared legacy surface without a routine gameplay completion caller; its 95% value is not a current automatic or AI production target. The shared helper derives the larger raw emergency allocation needed after reduced fitting quality and degraded filter condition; emergency issue also applies the 0.60 improvised baseline and 1.30 wastage. Defaults and side effects are those of `cbrn_distribute_requested_masks_to_state`.
 
 ### cbrn_complete_priority_distribution_program, cbrn_complete_full_distribution_program, and cbrn_complete_civilian_filter_replacement_program
 
-These country-scope completion effects replace routine per-state decision-card multiplication. Each loops only the deciding country's controlled states, applies the existing exact state transaction to eligible states while real respirator stock remains, and preserves population, fitting, filter, infrastructure, contamination, and occupation scaling. Priority, full-distribution, and filter programs serve the capital first. The occupied programme has its separate owned-receipt callback family below. These effects do not create a world pulse or infer an incident target.
+These COUNTRY helpers traverse only the issuer's controlled states and recheck stock and exact eligibility before invoking unchanged state transactions.
+`cbrn_complete_threatened_filter_replacement_program` services existing masks in locally threatened states; `cbrn_complete_threatened_priority_distribution_program` then issues to their shared 50% automatic-priority gaps, including populated rural ROOT cores.
+The existing civilian filter and priority programmes handle only states without local current need after both threatened passes finish.
+Each tier retains capital preference followed by native controlled-state iteration; no equal allocation or rotation within a tier is promised.
+Inputs are ROOT control, live need/gaps, reserve proof and remaining stock; outputs and side effects remain the existing paid stock/issued-model/filter transactions, and no eligible target or stock produces no delivery.
+Previously issued noncore masks can receive filter service, while new automatic issue remains core-only and never substitutes for paid occupied or foreign-aid reservations.
+`cbrn_complete_full_distribution_program` remains a capital-first declared legacy definition without an executable gameplay caller; routine maintenance does not invoke a 95% full-issue programme.
+The [accepted correction](../../docs/specs/chaos_warfare_system_specs/corrections/2026-10-09_civil_defence_current_need_and_priority.md) preserves all state cost/coverage formulas, the UK receipt and the occupied contract; no world pulse, incident target or new persistent data is created.
 
 ### cbrn_debit_mask_stockpile_oldest_first
 
@@ -934,11 +941,14 @@ The same `on_state_control_changed` callback separately refreshes both country k
 ### cbrn_run_protection_maintenance_cycle
 
 Country scope.
-Refreshes real stock and derived protection, then uses available masks for military filter service, military issue, civilian filter service and civilian issue in that order.
-The existing historical replacement reserve, per-cycle military issue increment, civilian eligibility and service formulas still govern each stage.
+Refreshes real stock and derived protection, then completes military filter service, military issue, threatened civilian filter service, threatened priority issue, remaining civilian filter service and remaining priority issue, in that order.
+Each whole service tier finishes before its issue tier; local alerts, contamination and active response flags select the threatened passes, and every state operation rechecks remaining stock.
+The existing historical replacement reserve, military issue increment, 50% routine civilian target and service/issue formulas still govern each stage.
+Current civilian need and the dedicated British 1939 receipt govern issue; broad historical helpers retain their other consumers, and biological-outbreak visibility alone creates no chemical issue demand.
 Every twelfth cycle applies the existing storage and issued-equipment losses.
 This helper creates no worldwide pulse and spends no independent readiness currency.
-The [source scenarios](../../docs/testing/2026-10-09_automatic_protection_repair/source_test_results.json) cover partial service, real-stock priority and the temporary-output contracts under explicit native-input models.
+The earlier [transaction/output scenarios](../../docs/testing/2026-10-09_automatic_protection_repair/source_test_results.json) retain their scope; the current [46 source cases](../../docs/testing/2026-10-09_civil_defence_priority/source_test_results.json) execute changed predicates/scheduling with modeled native inputs and stock-transaction requests.
+Unchanged state transactions are AST-checked; fixture stock quantities are not game costs or native settlement proof, and within-tier iterator order remains unobserved.
 
 ### cbrn_start_protection_maintenance_job
 

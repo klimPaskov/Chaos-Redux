@@ -27,10 +27,35 @@ cbrn_protection_program_category_visible = {
 cbrn_civil_defence_category_visible = {
 	NOT = { is_actual_nonhuman_country = yes }
 	OR = {
-		cbrn_country_has_public_chemical_emergency = yes
-		cbrn_country_faces_enemy_chemical_capability = yes
+		cbrn_country_has_current_chemical_need = yes
 		has_active_biowarfare_outbreak = yes
 		has_country_flag = cbrn_civilian_distribution_program_active
+	}
+}
+
+# Current civil protection is distinct from durable attack history and a
+# retaliation permission. These pure predicates never clear either record.
+cbrn_state_has_active_chemical_response = {
+	OR = {
+		has_state_flag = cbrn_hospitals_utilities_secured
+		has_state_flag = cbrn_civilians_moved_to_shelters
+		has_state_flag = cbrn_chemical_alarm_sounded
+		has_state_flag = cbrn_industry_ordered_to_continue
+	}
+}
+
+cbrn_state_has_current_chemical_need = {
+	OR = {
+		cbrn_state_has_emergency_context = yes
+		cbrn_state_has_active_chemical_response = yes
+	}
+}
+
+cbrn_country_has_current_chemical_need = {
+	OR = {
+		any_controlled_state = { cbrn_state_has_current_chemical_need = yes }
+		cbrn_country_faces_enemy_chemical_capability = yes
+		any_enemy_country = { has_country_flag = cbrn_confirmed_chemical_use_history }
 	}
 }
 
@@ -159,10 +184,7 @@ cbrn_country_faces_enemy_chemical_capability = {
 # British historical receipt. The receipt clears its flag after real issue.
 cbrn_country_needs_civilian_mask_issue = {
 	OR = {
-		has_enemy_used_chemical_weapons = yes
-		cbrn_country_faces_enemy_chemical_capability = yes
-		any_controlled_state = { has_state_flag = cbrn_chemical_raid_alert_active }
-		any_controlled_state = { cbrn_state_has_chemical_contamination = yes }
+		cbrn_country_has_current_chemical_need = yes
 		has_country_flag = cbrn_historical_civilian_mask_issue
 	}
 }
@@ -173,9 +195,7 @@ cbrn_world_has_confirmed_chemical_use = {
 
 cbrn_country_has_priority_civilian_protection_gap = {
 	any_controlled_state = {
-		is_core_of = ROOT
-		state_population_k > constant:cbrn_math.zero
-		cbrn_state_has_priority_distribution_gap = yes
+		cbrn_state_has_automatic_priority_mask_gap = yes
 	}
 }
 
@@ -189,6 +209,7 @@ cbrn_country_has_full_civilian_protection_gap = {
 
 cbrn_country_has_mask_production_signal = {
 	OR = {
+		cbrn_country_has_current_chemical_need = yes
 		has_country_flag = cbrn_national_respirator_reserve
 		has_country_flag = cbrn_allied_protection_request_received
 		has_doctrine = chaos_warfare
@@ -220,16 +241,7 @@ cbrn_country_below_mask_ai_target = {
 		}
 		cbrn_country_has_mask_replacement_backlog = yes
 		AND = {
-			has_country_flag = cbrn_population_registered_and_fitted
-			OR = {
-				cbrn_profile_is_mass_civil_defence = yes
-				cbrn_profile_is_prepared_power = yes
-				cbrn_profile_is_civil_defence_network = yes
-			}
-			cbrn_country_has_full_civilian_protection_gap = yes
-		}
-		AND = {
-			cbrn_country_has_public_chemical_emergency = yes
+			cbrn_country_needs_civilian_mask_issue = yes
 			cbrn_country_has_priority_civilian_protection_gap = yes
 		}
 	}
@@ -449,11 +461,23 @@ cbrn_state_has_occupied_distribution_gap = {
 	}
 }
 
-cbrn_state_can_receive_priority_masks = {
-	cbrn_state_is_valid_distribution_target = yes
+# STATE, ROOT = issuing country. AI planning shares structural eligibility;
+# it does not require a stock-dependent program receipt before first production.
+cbrn_state_has_automatic_priority_mask_gap = {
+	is_controlled_by = ROOT
 	is_core_of = ROOT
-	cbrn_state_has_priority_protection_value = yes
+	state_population_k > constant:cbrn_math.zero
+	NOT = { has_state_flag = cbrn_protection_project_active }
+	OR = {
+		cbrn_state_has_current_chemical_need = yes
+		cbrn_state_has_priority_protection_value = yes
+	}
 	cbrn_state_has_priority_distribution_gap = yes
+}
+
+cbrn_state_can_receive_priority_masks = {
+	cbrn_state_has_automatic_priority_mask_gap = yes
+	ROOT = { has_country_flag = cbrn_national_respirator_reserve }
 }
 
 cbrn_state_can_receive_full_distribution = {

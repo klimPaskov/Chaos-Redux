@@ -2429,6 +2429,15 @@ cbrn_run_protection_maintenance_cycle = {
 			limit = { check_variable = { cbrn_military_mask_shortage_crates > constant:cbrn_math.zero } }
 			cbrn_issue_masks_to_field_army = yes
 		}
+		# Complete both threatened-state passes before spending on other civilians.
+		if = {
+			limit = { cbrn_country_has_filter_replacement_work = yes }
+			cbrn_complete_threatened_filter_replacement_program = yes
+		}
+		if = {
+			limit = { cbrn_country_needs_civilian_mask_issue = yes }
+			cbrn_complete_threatened_priority_distribution_program = yes
+		}
 		if = {
 			limit = { cbrn_country_has_filter_replacement_work = yes }
 			cbrn_complete_civilian_filter_replacement_program = yes
