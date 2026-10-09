@@ -327,3 +327,26 @@ The occupied-exposure line said those losses also follow from "broken supply", w
 The region tooltip called the visit quota the states the front "covers"; the quota is the number of new states the visit is set to reach before the front moves on, and the text now says so.
 The host worker from the regional branch's closing brace to the end of the effect was indented one tab short, which made `acid_rain_try_weekly_air_request` read as if it ran outside the runtime-active block; it is re-indented with no change to the brace structure.
 The other D30 to D35 items were confirmed correct on review: the request's phase gate, active share, averaging, adders and clamps; the tooltip elements dropping `alwaystransparent` without overlapping a button; the five major notices firing once each from their existing call sites; the region and Preparedness tooltip loaders as scripted triggers using the documented temporary-variable pattern; the Event Details status and achievement texts, their keys and their `_is_out_of_reach` triggers; the arrival, casualty and preparation report facts; and the continent scripted localisation removal.
+
+### D37. Geographically aligned regional presentation states
+
+Disposition: accepted and queued for production and parent review.
+Acceptance basis: the user's Event 033 implementation goal authorizes the dedicated interface and its assets, and Part 6 explicitly requires a neutral base with distinguishable inactive, active, warning, visited and global states.
+The parent accepts this consumer adaptation within that scope on 2026-10-09 to correct the inspected one-front and quiet-state composition; it is not approval of final artwork or a reduction of the required states.
+The retained one-front render `validation/gui_current_2026_10_07/regional_one_1920_v3/acid_rain_world_window-full.png` and individual DDS round-trips show that all seven enlarged storm-painted continent textures are stacked because eligibility alone makes them visible, while the neutral base remains readable by itself.
+The broad ordinary and visited weather veils also obscure inactive geography.
+
+Keep `GFX_acid_rain_map_base` and its 1672-by-941 source, uniformly fitted at scale 0.3188 and offset (13, 0) within the 560-by-300 native map.
+Replace the seven regional overlay consumers with aligned four-frame static state strips at the same stable `GFX_acid_rain_region_overlay_1` through `_7` identifiers and `gfx/interface/033_acid_rain/gui/acid_rain_region_overlay_1.dds` through `_7.dds` paths.
+Each strip has four 560-by-300 frames, a 2240-by-300 total canvas, native scale one and origin (0, 0): inactive/transparent, visited/slate non-weather history, approaching/amber non-rain warning, and active/translucent corrosion cloud and rain.
+History and danger must differ in both colour and non-colour treatment, and no frame may repaint, enlarge, move or replace the neutral map's geography.
+The status lookup gives active weather precedence over approaching weather; absent either, a touched region uses history and an untouched region remains inactive.
+Global presentation remains the existing independently animated atmospheric layer with its still accessibility partner, rather than seven simultaneous regional storm pictures.
+These regional frames replace the broad ordinary, warning and visited full-world veil presentation roles; preserve their historical source packages and record the exact requirement-to-consumer replacements before retiring unused runtime consumers.
+
+Real ImageGen cloud/rain artwork supplies the active region layer, with native transparent unused canvas and recorded request/source lineage.
+The other static frames may use exact native UI mask/state processing over the same geographic projection; they are not animation frames, and no transform-only animation is authorized.
+Keep the existing front, warning, severe and global animation families and their reduced-motion partners.
+Correct marker anchors from measured painted bounds on the retained neutral base, not the old enlarged-continent positions.
+No province-level precision, new gameplay control, extra public value, or gameplay mutation during refresh is introduced.
+Production must preserve old runtime bytes, follow the full current logical-slot/alias/path matrix, obtain separate source and native-size reviews, and complete strict DDS round-trip checks before synchronized promotion and wiring.
