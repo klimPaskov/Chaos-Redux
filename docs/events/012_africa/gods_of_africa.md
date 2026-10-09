@@ -8,7 +8,9 @@ The October 7 decision repairs implement the host and defiance phases, preserve 
 The [October 8 completion audit](../../plans/012_africa_plans/subagent_handoffs/012_gods_current_completion_audit_2026-10-08.md) records the earlier industrial consequence gap.
 The accepted repair contract is implemented in the current source as documented below and in the [industrial integration review](../../plans/012_africa_plans/subagent_handoffs/012_gods_industry_integration_review_2026-10-09.md).
 Strength's Chaos input uses the shared meter scale.
-Direct territorial-control and relative-world-power inputs remain missing from the full goal, and compact interface work remains with its separate owner.
+Direct territorial-control and relative-world-power inputs remain missing from the full goal.
+The [compact public-value display](../../plans/012_africa_plans/subagent_handoffs/012_gods_public_values_ui_reference_2026-10-08.md) is implemented with native frame meters, trend, next-band markers and cause/floor tooltips.
+Reviewed participant, endpoint, scale and 20/15 boundary captures are retained, with full-category and remaining host/hover coverage still limited.
 Protection retains the [earned relationship design](../../plans/012_africa_plans/subagent_handoffs/012_gods_protection_eligibility_implementation_2026-10-08.md), with the October 9 canonical-fulfillment correction documented below.
 The [extraordinary ultimatum payment review](../../plans/012_africa_plans/subagent_handoffs/012_gods_ultimatum_payment_review_2026-10-08.md) preserves the existing real native shipment and its prices, with native delivery semantics still unresolved.
 These dispositions are tracked in [the decision repair record](../../plans/012_africa_plans/subagent_handoffs/012_gods_decision_repairs_2026-10-07.md).

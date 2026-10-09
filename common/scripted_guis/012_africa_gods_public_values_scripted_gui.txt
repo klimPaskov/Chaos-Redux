@@ -1,0 +1,75 @@
+# Event 012 read-only public-value presentation. No buttons or gameplay effects.
+scripted_gui = {
+	gods_of_africa_public_values = {
+		context_type = decision_category
+		window_name = "gods_of_africa_public_values_window"
+
+		properties = {
+			gods_of_africa_public_strength_meter = {
+				frame = global.gods_of_africa_strength_frame
+			}
+			gods_of_africa_public_wrath_meter = {
+				frame = gods_of_africa_wrath_frame
+			}
+		}
+
+		triggers = {
+			gods_of_africa_public_strength_row_visible = {
+				has_variable = global.gods_of_africa_strength
+				has_variable = global.gods_of_africa_strength_display
+				has_variable = global.gods_of_africa_strength_fill
+				has_variable = global.gods_of_africa_strength_frame
+			}
+
+			gods_of_africa_public_wrath_row_visible = {
+				gods_of_africa_public_wrath_is_visible = yes
+				has_variable = gods_of_africa_wrath_display
+				has_variable = gods_of_africa_wrath_fill
+				has_variable = gods_of_africa_wrath_frame
+			}
+
+			gods_of_africa_public_host_context_visible = {
+				has_event_target = africa_host
+				tag = event_target:africa_host
+				has_variable = global.gods_of_africa_strength
+				has_variable = global.gods_of_africa_strength_display
+			}
+
+			gods_of_africa_public_strength_threshold_20_visible = {
+				check_variable = { global.gods_of_africa_strength < constant:gods_of_africa_value.limited_strength }
+			}
+			gods_of_africa_public_strength_threshold_40_visible = {
+				check_variable = { var = global.gods_of_africa_strength value = constant:gods_of_africa_value.limited_strength compare = greater_than_or_equals }
+				check_variable = { global.gods_of_africa_strength < constant:gods_of_africa_value.regional_strength }
+			}
+			gods_of_africa_public_strength_threshold_60_visible = {
+				check_variable = { var = global.gods_of_africa_strength value = constant:gods_of_africa_value.regional_strength compare = greater_than_or_equals }
+				check_variable = { global.gods_of_africa_strength < constant:gods_of_africa_value.continental_strength }
+			}
+			gods_of_africa_public_strength_threshold_80_visible = {
+				check_variable = { var = global.gods_of_africa_strength value = constant:gods_of_africa_value.continental_strength compare = greater_than_or_equals }
+				check_variable = { global.gods_of_africa_strength < constant:gods_of_africa_value.global_strength }
+			}
+
+			gods_of_africa_public_wrath_threshold_15_visible = {
+				check_variable = { gods_of_africa_wrath < constant:gods_of_africa_wrath.quiet }
+			}
+			gods_of_africa_public_wrath_threshold_30_visible = {
+				check_variable = { var = gods_of_africa_wrath value = constant:gods_of_africa_wrath.quiet compare = greater_than_or_equals }
+				check_variable = { gods_of_africa_wrath < constant:gods_of_africa_wrath.watchful }
+			}
+			gods_of_africa_public_wrath_threshold_50_visible = {
+				check_variable = { var = gods_of_africa_wrath value = constant:gods_of_africa_wrath.watchful compare = greater_than_or_equals }
+				check_variable = { gods_of_africa_wrath < constant:gods_of_africa_wrath.angered }
+			}
+			gods_of_africa_public_wrath_threshold_70_visible = {
+				check_variable = { var = gods_of_africa_wrath value = constant:gods_of_africa_wrath.angered compare = greater_than_or_equals }
+				check_variable = { gods_of_africa_wrath < constant:gods_of_africa_wrath.hostile }
+			}
+			gods_of_africa_public_wrath_threshold_85_visible = {
+				check_variable = { var = gods_of_africa_wrath value = constant:gods_of_africa_wrath.hostile compare = greater_than_or_equals }
+				check_variable = { gods_of_africa_wrath < constant:gods_of_africa_wrath.vengeful }
+			}
+		}
+	}
+}
