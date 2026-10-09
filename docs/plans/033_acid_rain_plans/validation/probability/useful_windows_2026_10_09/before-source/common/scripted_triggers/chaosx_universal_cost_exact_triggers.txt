@@ -1,0 +1,625 @@
+# Universal exact quotations: shared read-only arithmetic for triggers/effects.
+# Radix-1000 integer limbs retain five-decimal scalar inputs without constructing
+# an oversized scalar tick value. Only the final payable amount is quantized.
+# Repeated THIS scopes are iteration tokens, never a country/world scan.
+# Every arithmetic loop body is true; all_of_scopes must visit every token.
+# Public contracts and bounds: chaosx_universal_cost_exact_triggers.md.
+
+# Convert non-negative uc_exact_scalar to little-endian uc_exact_factor ticks.
+universal_cost_exact_scalar_to_ticks = {
+	clear_temp_array = uc_exact_factor
+	set_temp_variable = { uc_exact_fraction = uc_exact_scalar }
+	modulo_temp_variable = { var = uc_exact_fraction value = constant:universal_cost_framework.one }
+	set_temp_variable = { uc_exact_whole = uc_exact_scalar }
+	subtract_from_temp_variable = { uc_exact_whole = uc_exact_fraction }
+	multiply_temp_variable = { uc_exact_fraction = constant:universal_cost_exact.ticks_per_unit }
+	set_temp_variable = { uc_exact_digit = uc_exact_fraction }
+	modulo_temp_variable = { var = uc_exact_digit value = constant:universal_cost_exact.radix }
+	add_to_temp_array = { array = uc_exact_factor value = uc_exact_digit }
+	subtract_from_temp_variable = { uc_exact_fraction = uc_exact_digit }
+	divide_temp_variable = { uc_exact_fraction = constant:universal_cost_exact.radix }
+	set_temp_variable = { uc_exact_digit = uc_exact_whole }
+	modulo_temp_variable = { var = uc_exact_digit value = constant:universal_cost_exact.decimal_shift }
+	subtract_from_temp_variable = { uc_exact_whole = uc_exact_digit }
+	divide_temp_variable = { uc_exact_whole = constant:universal_cost_exact.decimal_shift }
+	multiply_temp_variable = { uc_exact_digit = constant:universal_cost_exact.fraction_high_scale }
+	add_to_temp_variable = { uc_exact_digit = uc_exact_fraction }
+	add_to_temp_array = { array = uc_exact_factor value = uc_exact_digit }
+	clear_temp_array = uc_exact_extract_tokens
+	set_temp_variable = { uc_exact_extract_count = constant:universal_cost_exact.scalar_limbs }
+	subtract_from_temp_variable = { uc_exact_extract_count = constant:universal_cost_framework.two }
+	resize_temp_array = { array = uc_exact_extract_tokens size = uc_exact_extract_count value = THIS }
+	all_of_scopes = {
+		array = uc_exact_extract_tokens
+		set_temp_variable = { uc_exact_digit = uc_exact_whole }
+		modulo_temp_variable = { var = uc_exact_digit value = constant:universal_cost_exact.radix }
+		add_to_temp_array = { array = uc_exact_factor value = uc_exact_digit }
+		subtract_from_temp_variable = { uc_exact_whole = uc_exact_digit }
+		divide_temp_variable = { uc_exact_whole = constant:universal_cost_exact.radix }
+	}
+	# Fixed-size traversal removes leading zeros, leaving one limb for zero.
+	clear_temp_array = uc_exact_trim_factor_tokens
+	resize_temp_array = { array = uc_exact_trim_factor_tokens size = uc_exact_factor^num value = THIS }
+	all_of_scopes = {
+		array = uc_exact_trim_factor_tokens
+		set_temp_variable = { uc_exact_top = uc_exact_factor^num }
+		subtract_from_temp_variable = { uc_exact_top = constant:universal_cost_framework.one }
+		if = {
+			limit = {
+				check_variable = { uc_exact_top > constant:universal_cost_framework.zero }
+				check_variable = { uc_exact_factor^uc_exact_top = constant:universal_cost_framework.zero }
+			}
+			remove_from_temp_array = { array = uc_exact_factor index = uc_exact_top }
+		}
+	}
+}
+
+# uc_exact_product *= uc_exact_factor, using grade-school multiplication.
+# Each accumulator is at most 999*999 + 999 + 999 = 999999.
+universal_cost_exact_multiply = {
+	clear_temp_array = uc_exact_multiply_result
+	set_temp_variable = { uc_exact_result_size = uc_exact_product^num }
+	add_to_temp_variable = { uc_exact_result_size = uc_exact_factor^num }
+	resize_temp_array = { array = uc_exact_multiply_result size = uc_exact_result_size }
+	clear_temp_array = uc_exact_multiply_outer_tokens
+	resize_temp_array = { array = uc_exact_multiply_outer_tokens size = uc_exact_product^num value = THIS }
+	clear_temp_array = uc_exact_multiply_inner_tokens
+	resize_temp_array = { array = uc_exact_multiply_inner_tokens size = uc_exact_factor^num value = THIS }
+	set_temp_variable = { uc_exact_i = constant:universal_cost_framework.zero }
+	all_of_scopes = {
+		array = uc_exact_multiply_outer_tokens
+		set_temp_variable = { uc_exact_j = constant:universal_cost_framework.zero }
+		set_temp_variable = { uc_exact_carry = constant:universal_cost_framework.zero }
+		all_of_scopes = {
+			array = uc_exact_multiply_inner_tokens
+			set_temp_variable = { uc_exact_slot = uc_exact_i }
+			add_to_temp_variable = { uc_exact_slot = uc_exact_j }
+			set_temp_variable = { uc_exact_accumulator = uc_exact_product^uc_exact_i }
+			multiply_temp_variable = { uc_exact_accumulator = uc_exact_factor^uc_exact_j }
+			add_to_temp_variable = { uc_exact_accumulator = uc_exact_multiply_result^uc_exact_slot }
+			add_to_temp_variable = { uc_exact_accumulator = uc_exact_carry }
+			set_temp_variable = { uc_exact_digit = uc_exact_accumulator }
+			modulo_temp_variable = { var = uc_exact_digit value = constant:universal_cost_exact.radix }
+			set_temp_variable = { uc_exact_multiply_result^uc_exact_slot = uc_exact_digit }
+			subtract_from_temp_variable = { uc_exact_accumulator = uc_exact_digit }
+			divide_temp_variable = { uc_exact_accumulator = constant:universal_cost_exact.radix }
+			set_temp_variable = { uc_exact_carry = uc_exact_accumulator }
+			add_to_temp_variable = { uc_exact_j = constant:universal_cost_framework.one }
+		}
+		set_temp_variable = { uc_exact_slot = uc_exact_i }
+		add_to_temp_variable = { uc_exact_slot = uc_exact_factor^num }
+		set_temp_variable = { uc_exact_multiply_result^uc_exact_slot = uc_exact_carry }
+		add_to_temp_variable = { uc_exact_i = constant:universal_cost_framework.one }
+	}
+	clear_temp_array = uc_exact_product
+	clear_temp_array = uc_exact_copy_tokens
+	resize_temp_array = { array = uc_exact_copy_tokens size = uc_exact_multiply_result^num value = THIS }
+	set_temp_variable = { uc_exact_copy_index = constant:universal_cost_framework.zero }
+	all_of_scopes = {
+		array = uc_exact_copy_tokens
+		add_to_temp_array = { array = uc_exact_product value = uc_exact_multiply_result^uc_exact_copy_index }
+		add_to_temp_variable = { uc_exact_copy_index = constant:universal_cost_framework.one }
+	}
+	universal_cost_exact_trim_product = yes
+}
+
+universal_cost_exact_trim_product = {
+	clear_temp_array = uc_exact_trim_tokens
+	resize_temp_array = { array = uc_exact_trim_tokens size = uc_exact_product^num value = THIS }
+	all_of_scopes = {
+		array = uc_exact_trim_tokens
+		set_temp_variable = { uc_exact_top = uc_exact_product^num }
+		subtract_from_temp_variable = { uc_exact_top = constant:universal_cost_framework.one }
+		if = {
+			limit = {
+				check_variable = { uc_exact_top > constant:universal_cost_framework.zero }
+				check_variable = { uc_exact_product^uc_exact_top = constant:universal_cost_framework.zero }
+			}
+			remove_from_temp_array = { array = uc_exact_product index = uc_exact_top }
+		}
+	}
+}
+
+# Exact mask intersection. Removing each low bit before division avoids
+# fractional residues masquerading as set bits. Source mask zero means all.
+universal_cost_exact_match_family = {
+	set_temp_variable = { universal_cost_source_matches_quote = constant:universal_cost_framework.zero }
+	if = {
+		limit = { check_variable = { universal_cost_source_mask = constant:universal_cost_framework.zero } }
+		set_temp_variable = { universal_cost_source_matches_quote = constant:universal_cost_framework.one }
+	}
+	else = {
+		set_temp_variable = { uc_exact_source_mask_work = universal_cost_source_mask }
+		set_temp_variable = { uc_exact_quote_mask_work = universal_cost_quote_family_mask }
+		clear_temp_array = uc_exact_mask_tokens
+		resize_temp_array = { array = uc_exact_mask_tokens size = constant:universal_cost_framework.eligibility_bit_count value = THIS }
+		all_of_scopes = {
+			array = uc_exact_mask_tokens
+			set_temp_variable = { uc_exact_source_bit = uc_exact_source_mask_work }
+			modulo_temp_variable = { var = uc_exact_source_bit value = constant:universal_cost_framework.two }
+			set_temp_variable = { uc_exact_quote_bit = uc_exact_quote_mask_work }
+			modulo_temp_variable = { var = uc_exact_quote_bit value = constant:universal_cost_framework.two }
+			if = {
+				limit = {
+					check_variable = { uc_exact_source_bit = constant:universal_cost_framework.one }
+					check_variable = { uc_exact_quote_bit = constant:universal_cost_framework.one }
+				}
+				set_temp_variable = { universal_cost_source_matches_quote = constant:universal_cost_framework.one }
+			}
+			subtract_from_temp_variable = { uc_exact_source_mask_work = uc_exact_source_bit }
+			divide_temp_variable = { uc_exact_source_mask_work = constant:universal_cost_framework.two }
+			subtract_from_temp_variable = { uc_exact_quote_mask_work = uc_exact_quote_bit }
+			divide_temp_variable = { uc_exact_quote_mask_work = constant:universal_cost_framework.two }
+		}
+	}
+}
+
+# Resolve a row without an effect-loop source-count ceiling. Registry edits use
+# this predicate in a limit, preserving temporary outputs in their effect chain.
+universal_cost_exact_find_source = {
+	set_temp_variable = { universal_cost_source_found_index = constant:universal_cost_framework.invalid_index }
+	set_temp_variable = { uc_exact_find_index = constant:universal_cost_framework.zero }
+	clear_temp_array = uc_exact_find_tokens
+	resize_temp_array = { array = uc_exact_find_tokens size = global.universal_cost_source_ids^num value = THIS }
+	all_of_scopes = {
+		array = uc_exact_find_tokens
+		if = {
+			limit = {
+				check_variable = { universal_cost_source_found_index = constant:universal_cost_framework.invalid_index }
+				check_variable = { global.universal_cost_source_ids^uc_exact_find_index = universal_cost_source_id }
+			}
+			set_temp_variable = { universal_cost_source_found_index = uc_exact_find_index }
+		}
+		add_to_temp_variable = { uc_exact_find_index = constant:universal_cost_framework.one }
+	}
+}
+
+# Build a six-limb quantum*trial product, then compare it with remainder.
+# The divisor has at most five limbs; trial is an integer in [0,999].
+universal_cost_exact_division_trial = {
+	clear_temp_array = uc_exact_trial_product
+	resize_temp_array = { array = uc_exact_trial_product size = constant:universal_cost_exact.division_limbs }
+	set_temp_variable = { uc_exact_trial_index = constant:universal_cost_framework.zero }
+	set_temp_variable = { uc_exact_trial_carry = constant:universal_cost_framework.zero }
+	all_of_scopes = {
+		array = uc_exact_quantum_tokens
+		set_temp_variable = { uc_exact_trial_accumulator = uc_exact_quantum^uc_exact_trial_index }
+		multiply_temp_variable = { uc_exact_trial_accumulator = uc_exact_trial }
+		add_to_temp_variable = { uc_exact_trial_accumulator = uc_exact_trial_carry }
+		set_temp_variable = { uc_exact_trial_digit = uc_exact_trial_accumulator }
+		modulo_temp_variable = { var = uc_exact_trial_digit value = constant:universal_cost_exact.radix }
+		set_temp_variable = { uc_exact_trial_product^uc_exact_trial_index = uc_exact_trial_digit }
+		subtract_from_temp_variable = { uc_exact_trial_accumulator = uc_exact_trial_digit }
+		divide_temp_variable = { uc_exact_trial_accumulator = constant:universal_cost_exact.radix }
+		set_temp_variable = { uc_exact_trial_carry = uc_exact_trial_accumulator }
+		add_to_temp_variable = { uc_exact_trial_index = constant:universal_cost_framework.one }
+	}
+	set_temp_variable = { uc_exact_trial_product^uc_exact_trial_index = uc_exact_trial_carry }
+	set_temp_variable = { uc_exact_compare_index = constant:universal_cost_exact.division_limbs }
+	set_temp_variable = { uc_exact_comparison = constant:universal_cost_framework.zero }
+	all_of_scopes = {
+		array = uc_exact_division_tokens
+		subtract_from_temp_variable = { uc_exact_compare_index = constant:universal_cost_framework.one }
+		if = {
+			limit = { check_variable = { uc_exact_comparison = constant:universal_cost_framework.zero } }
+			if = {
+				limit = { check_variable = { var = uc_exact_trial_product^uc_exact_compare_index value = uc_exact_remainder^uc_exact_compare_index compare = greater_than } }
+				set_temp_variable = { uc_exact_comparison = constant:universal_cost_framework.one }
+			}
+			else_if = {
+				limit = { check_variable = { var = uc_exact_trial_product^uc_exact_compare_index value = uc_exact_remainder^uc_exact_compare_index compare = less_than } }
+				set_temp_variable = { uc_exact_comparison = constant:universal_cost_framework.negative_one }
+			}
+		}
+	}
+}
+
+# Divide the high integer numerator by arbitrary represented positive Q ticks.
+# Removed low denominator limbs contribute only a positive sticky fraction.
+# Since Q ticks is an integer, ceil((H+f)/Q)=H div Q + (H mod Q>0 or f>0).
+universal_cost_exact_quantize_product = {
+	clear_temp_array = uc_exact_high
+	clear_temp_array = uc_exact_shift_tokens
+	resize_temp_array = { array = uc_exact_shift_tokens size = uc_exact_product^num value = THIS }
+	set_temp_variable = { uc_exact_shift_index = constant:universal_cost_framework.zero }
+	set_temp_variable = { uc_exact_sticky = constant:universal_cost_framework.zero }
+	all_of_scopes = {
+		array = uc_exact_shift_tokens
+		if = {
+			limit = { check_variable = { var = uc_exact_shift_index value = uc_exact_denominator_shift compare = less_than } }
+			if = {
+				limit = { check_variable = { uc_exact_product^uc_exact_shift_index > constant:universal_cost_framework.zero } }
+				set_temp_variable = { uc_exact_sticky = constant:universal_cost_framework.one }
+			}
+		}
+		else = { add_to_temp_array = { array = uc_exact_high value = uc_exact_product^uc_exact_shift_index } }
+		add_to_temp_variable = { uc_exact_shift_index = constant:universal_cost_framework.one }
+	}
+	if = {
+		limit = { check_variable = { uc_exact_high^num = constant:universal_cost_framework.zero } }
+		add_to_temp_array = { array = uc_exact_high value = constant:universal_cost_framework.zero }
+	}
+	set_temp_variable = { uc_exact_scalar = uc_exact_quantum_scalar }
+	# Output storage belongs to this caller, not the extraction helper's frame.
+	resize_temp_array = { array = uc_exact_factor size = constant:universal_cost_framework.one }
+	universal_cost_exact_scalar_to_ticks = yes
+	clear_temp_array = uc_exact_quantum
+	clear_temp_array = uc_exact_quantum_tokens
+	resize_temp_array = { array = uc_exact_quantum_tokens size = uc_exact_factor^num value = THIS }
+	set_temp_variable = { uc_exact_copy_index = constant:universal_cost_framework.zero }
+	all_of_scopes = {
+		array = uc_exact_quantum_tokens
+		add_to_temp_array = { array = uc_exact_quantum value = uc_exact_factor^uc_exact_copy_index }
+		add_to_temp_variable = { uc_exact_copy_index = constant:universal_cost_framework.one }
+	}
+	clear_temp_array = uc_exact_remainder
+	resize_temp_array = { array = uc_exact_remainder size = constant:universal_cost_exact.division_limbs }
+	clear_temp_array = uc_exact_division_tokens
+	resize_temp_array = { array = uc_exact_division_tokens size = constant:universal_cost_exact.division_limbs value = THIS }
+	clear_temp_array = uc_exact_search_tokens
+	resize_temp_array = { array = uc_exact_search_tokens size = constant:universal_cost_exact.search_steps value = THIS }
+	clear_temp_array = uc_exact_high_tokens
+	resize_temp_array = { array = uc_exact_high_tokens size = uc_exact_high^num value = THIS }
+	clear_temp_array = uc_exact_units
+	resize_temp_array = { array = uc_exact_units size = uc_exact_high^num }
+	set_temp_variable = { uc_exact_high_index = uc_exact_high^num }
+	all_of_scopes = {
+		array = uc_exact_high_tokens
+		subtract_from_temp_variable = { uc_exact_high_index = constant:universal_cost_framework.one }
+		# Shift the remainder one radix digit, from high to low to avoid overlap.
+		set_temp_variable = { uc_exact_rem_index = constant:universal_cost_exact.division_limbs }
+		subtract_from_temp_variable = { uc_exact_rem_index = constant:universal_cost_framework.one }
+		all_of_scopes = {
+			array = uc_exact_division_tokens
+			if = {
+				limit = { check_variable = { uc_exact_rem_index > constant:universal_cost_framework.zero } }
+				set_temp_variable = { uc_exact_previous = uc_exact_rem_index }
+				subtract_from_temp_variable = { uc_exact_previous = constant:universal_cost_framework.one }
+				set_temp_variable = { uc_exact_remainder^uc_exact_rem_index = uc_exact_remainder^uc_exact_previous }
+			}
+			subtract_from_temp_variable = { uc_exact_rem_index = constant:universal_cost_framework.one }
+		}
+		set_temp_variable = { uc_exact_remainder^0 = uc_exact_high^uc_exact_high_index }
+		set_temp_variable = { uc_exact_lower = constant:universal_cost_framework.zero }
+		set_temp_variable = { uc_exact_upper = constant:universal_cost_exact.last_digit }
+		set_temp_variable = { uc_exact_best = constant:universal_cost_framework.zero }
+		all_of_scopes = {
+			array = uc_exact_search_tokens
+			if = {
+				limit = { check_variable = { var = uc_exact_lower value = uc_exact_upper compare = less_than_or_equals } }
+				set_temp_variable = { uc_exact_trial = uc_exact_lower }
+				add_to_temp_variable = { uc_exact_trial = uc_exact_upper }
+				set_temp_variable = { uc_exact_parity = uc_exact_trial }
+				modulo_temp_variable = { var = uc_exact_parity value = constant:universal_cost_framework.two }
+				subtract_from_temp_variable = { uc_exact_trial = uc_exact_parity }
+				divide_temp_variable = { uc_exact_trial = constant:universal_cost_framework.two }
+				set_temp_variable = { uc_exact_comparison = constant:universal_cost_framework.zero }
+				resize_temp_array = { array = uc_exact_trial_product size = constant:universal_cost_framework.one }
+				universal_cost_exact_division_trial = yes
+				if = {
+					limit = { check_variable = { uc_exact_comparison = constant:universal_cost_framework.one } }
+					set_temp_variable = { uc_exact_upper = uc_exact_trial }
+					subtract_from_temp_variable = { uc_exact_upper = constant:universal_cost_framework.one }
+				}
+				else = {
+					set_temp_variable = { uc_exact_best = uc_exact_trial }
+					set_temp_variable = { uc_exact_lower = uc_exact_trial }
+					add_to_temp_variable = { uc_exact_lower = constant:universal_cost_framework.one }
+				}
+			}
+		}
+		set_temp_variable = { uc_exact_trial = uc_exact_best }
+		set_temp_variable = { uc_exact_comparison = constant:universal_cost_framework.zero }
+		resize_temp_array = { array = uc_exact_trial_product size = constant:universal_cost_framework.one }
+		universal_cost_exact_division_trial = yes
+		set_temp_variable = { uc_exact_units^uc_exact_high_index = uc_exact_best }
+		set_temp_variable = { uc_exact_subtract_index = constant:universal_cost_framework.zero }
+		set_temp_variable = { uc_exact_borrow = constant:universal_cost_framework.zero }
+		all_of_scopes = {
+			array = uc_exact_division_tokens
+			set_temp_variable = { uc_exact_difference = uc_exact_remainder^uc_exact_subtract_index }
+			subtract_from_temp_variable = { uc_exact_difference = uc_exact_trial_product^uc_exact_subtract_index }
+			subtract_from_temp_variable = { uc_exact_difference = uc_exact_borrow }
+			set_temp_variable = { uc_exact_borrow = constant:universal_cost_framework.zero }
+			if = {
+				limit = { check_variable = { uc_exact_difference < constant:universal_cost_framework.zero } }
+				add_to_temp_variable = { uc_exact_difference = constant:universal_cost_exact.radix }
+				set_temp_variable = { uc_exact_borrow = constant:universal_cost_framework.one }
+			}
+			set_temp_variable = { uc_exact_remainder^uc_exact_subtract_index = uc_exact_difference }
+			add_to_temp_variable = { uc_exact_subtract_index = constant:universal_cost_framework.one }
+		}
+	}
+	# One ceiling, after every source has participated. Never add an epsilon.
+	set_temp_variable = { uc_exact_round_carry = uc_exact_sticky }
+	set_temp_variable = { uc_exact_rem_index = constant:universal_cost_framework.zero }
+	all_of_scopes = {
+		array = uc_exact_division_tokens
+		if = {
+			limit = { check_variable = { uc_exact_remainder^uc_exact_rem_index > constant:universal_cost_framework.zero } }
+			set_temp_variable = { uc_exact_round_carry = constant:universal_cost_framework.one }
+		}
+		add_to_temp_variable = { uc_exact_rem_index = constant:universal_cost_framework.one }
+	}
+	set_temp_variable = { uc_exact_round_index = constant:universal_cost_framework.zero }
+	all_of_scopes = {
+		array = uc_exact_high_tokens
+		add_to_temp_variable = { uc_exact_units^uc_exact_round_index = uc_exact_round_carry }
+		set_temp_variable = { uc_exact_round_carry = constant:universal_cost_framework.zero }
+		if = {
+			limit = { check_variable = { uc_exact_units^uc_exact_round_index = constant:universal_cost_exact.radix } }
+			set_temp_variable = { uc_exact_units^uc_exact_round_index = constant:universal_cost_framework.zero }
+			set_temp_variable = { uc_exact_round_carry = constant:universal_cost_framework.one }
+		}
+		add_to_temp_variable = { uc_exact_round_index = constant:universal_cost_framework.one }
+	}
+	if = {
+		limit = { check_variable = { uc_exact_round_carry = constant:universal_cost_framework.one } }
+		add_to_temp_array = { array = uc_exact_units value = uc_exact_round_carry }
+	}
+	clear_temp_array = uc_exact_product
+	clear_temp_array = uc_exact_units_tokens
+	resize_temp_array = { array = uc_exact_units_tokens size = uc_exact_units^num value = THIS }
+	set_temp_variable = { uc_exact_copy_index = constant:universal_cost_framework.zero }
+	all_of_scopes = {
+		array = uc_exact_units_tokens
+		add_to_temp_array = { array = uc_exact_product value = uc_exact_units^uc_exact_copy_index }
+		add_to_temp_variable = { uc_exact_copy_index = constant:universal_cost_framework.one }
+	}
+	# uc_exact_factor still holds Q ticks; generic multiplication returns price ticks.
+	universal_cost_exact_multiply = yes
+	set_temp_variable = { uc_exact_scalar_result = constant:universal_cost_framework.zero }
+	set_temp_variable = { uc_exact_scalar_valid = constant:universal_cost_framework.zero }
+	universal_cost_exact_ticks_to_scalar = yes
+}
+
+# Publish uc_exact_scalar_result only after checking the represented envelope.
+# A nonrepresentable mathematical output is invalid, never saturated or rounded.
+universal_cost_exact_ticks_to_scalar = {
+	set_temp_variable = { uc_exact_scalar_valid = constant:universal_cost_framework.one }
+	set_temp_variable = { uc_exact_scalar_result = constant:universal_cost_framework.zero }
+	clear_temp_array = uc_exact_max_ticks
+	add_to_temp_array = { array = uc_exact_max_ticks value = constant:universal_cost_exact.max_tick_limb_zero }
+	add_to_temp_array = { array = uc_exact_max_ticks value = constant:universal_cost_exact.max_tick_limb_one }
+	add_to_temp_array = { array = uc_exact_max_ticks value = constant:universal_cost_exact.max_tick_limb_two }
+	add_to_temp_array = { array = uc_exact_max_ticks value = constant:universal_cost_exact.max_tick_limb_three }
+	add_to_temp_array = { array = uc_exact_max_ticks value = constant:universal_cost_exact.max_tick_limb_four }
+	if = {
+		limit = { check_variable = { uc_exact_product^num > constant:universal_cost_exact.scalar_limbs } }
+		set_temp_variable = { uc_exact_scalar_valid = constant:universal_cost_framework.zero }
+	}
+	else = {
+		# Padding happens after trimming; every following indexed read exists.
+		resize_temp_array = { array = uc_exact_product size = constant:universal_cost_exact.scalar_limbs }
+		clear_temp_array = uc_exact_scalar_tokens
+		resize_temp_array = { array = uc_exact_scalar_tokens size = constant:universal_cost_exact.scalar_limbs value = THIS }
+		set_temp_variable = { uc_exact_decode_index = constant:universal_cost_exact.scalar_limbs }
+		set_temp_variable = { uc_exact_envelope_comparison = constant:universal_cost_framework.zero }
+		all_of_scopes = {
+			array = uc_exact_scalar_tokens
+			subtract_from_temp_variable = { uc_exact_decode_index = constant:universal_cost_framework.one }
+			if = {
+				limit = { check_variable = { uc_exact_envelope_comparison = constant:universal_cost_framework.zero } }
+				if = {
+					limit = { check_variable = { var = uc_exact_product^uc_exact_decode_index value = uc_exact_max_ticks^uc_exact_decode_index compare = greater_than } }
+					set_temp_variable = { uc_exact_envelope_comparison = constant:universal_cost_framework.one }
+				}
+				else_if = {
+					limit = { check_variable = { var = uc_exact_product^uc_exact_decode_index value = uc_exact_max_ticks^uc_exact_decode_index compare = less_than } }
+					set_temp_variable = { uc_exact_envelope_comparison = constant:universal_cost_framework.negative_one }
+				}
+			}
+		}
+		if = {
+			limit = { check_variable = { uc_exact_envelope_comparison = constant:universal_cost_framework.one } }
+			set_temp_variable = { uc_exact_scalar_valid = constant:universal_cost_framework.zero }
+		}
+		else = {
+			set_temp_variable = { uc_exact_decode_index = constant:universal_cost_exact.scalar_limbs }
+			set_temp_variable = { uc_exact_decode_whole = constant:universal_cost_framework.zero }
+			all_of_scopes = {
+				array = uc_exact_scalar_tokens
+				subtract_from_temp_variable = { uc_exact_decode_index = constant:universal_cost_framework.one }
+				if = {
+					limit = { check_variable = { var = uc_exact_decode_index value = constant:universal_cost_framework.two compare = greater_than_or_equals } }
+					multiply_temp_variable = { uc_exact_decode_whole = constant:universal_cost_exact.radix }
+					add_to_temp_variable = { uc_exact_decode_whole = uc_exact_product^uc_exact_decode_index }
+				}
+			}
+			set_temp_variable = { uc_exact_decode_fraction = uc_exact_product^1 }
+			modulo_temp_variable = { var = uc_exact_decode_fraction value = constant:universal_cost_exact.fraction_high_scale }
+			set_temp_variable = { uc_exact_decode_whole_digit = uc_exact_product^1 }
+			subtract_from_temp_variable = { uc_exact_decode_whole_digit = uc_exact_decode_fraction }
+			divide_temp_variable = { uc_exact_decode_whole_digit = constant:universal_cost_exact.fraction_high_scale }
+			multiply_temp_variable = { uc_exact_decode_whole = constant:universal_cost_exact.decimal_shift }
+			add_to_temp_variable = { uc_exact_decode_whole = uc_exact_decode_whole_digit }
+			multiply_temp_variable = { uc_exact_decode_fraction = constant:universal_cost_exact.radix }
+			add_to_temp_variable = { uc_exact_decode_fraction = uc_exact_product^0 }
+			divide_temp_variable = { uc_exact_decode_fraction = constant:universal_cost_exact.ticks_per_unit }
+			set_temp_variable = { uc_exact_scalar_result = uc_exact_decode_whole }
+			add_to_temp_variable = { uc_exact_scalar_result = uc_exact_decode_fraction }
+		}
+	}
+}
+
+# Standalone quantizer producer. Its exact unit limbs remain in uc_exact_units.
+# Scalar units are explicitly unavailable when their whole value cannot fit.
+universal_cost_exact_quantize_scalar = {
+	set_temp_variable = { universal_cost_quantize_result = universal_cost_quantize_amount }
+	set_temp_variable = { universal_cost_quantize_valid = constant:universal_cost_framework.one }
+	set_temp_variable = { universal_cost_quantize_units = constant:universal_cost_framework.zero }
+	set_temp_variable = { universal_cost_quantize_units_valid = constant:universal_cost_framework.one }
+	# Publish a zero unit count even for zero/reward inputs and warm callers.
+	clear_temp_array = uc_exact_units
+	resize_temp_array = { array = uc_exact_units size = constant:universal_cost_framework.one }
+	if = {
+		limit = { NOT = { has_variable = universal_cost_quantize_quantum } }
+		set_temp_variable = { universal_cost_quantize_quantum = constant:universal_cost_framework.default_rounding_quantum }
+	}
+	if = {
+		limit = { check_variable = { var = universal_cost_quantize_quantum value = constant:universal_cost_framework.zero compare = less_than_or_equals } }
+		set_temp_variable = { universal_cost_quantize_quantum = constant:universal_cost_framework.default_rounding_quantum }
+	}
+	if = {
+		limit = { check_variable = { universal_cost_quantize_amount > constant:universal_cost_framework.zero } }
+		set_temp_variable = { uc_exact_scalar = universal_cost_quantize_amount }
+		resize_temp_array = { array = uc_exact_factor size = constant:universal_cost_framework.one }
+		universal_cost_exact_scalar_to_ticks = yes
+		clear_temp_array = uc_exact_product
+		clear_temp_array = uc_exact_scalar_price_tokens
+		resize_temp_array = { array = uc_exact_scalar_price_tokens size = uc_exact_factor^num value = THIS }
+		set_temp_variable = { uc_exact_copy_index = constant:universal_cost_framework.zero }
+		all_of_scopes = {
+			array = uc_exact_scalar_price_tokens
+			add_to_temp_array = { array = uc_exact_product value = uc_exact_factor^uc_exact_copy_index }
+			add_to_temp_variable = { uc_exact_copy_index = constant:universal_cost_framework.one }
+		}
+		set_temp_variable = { uc_exact_denominator_shift = constant:universal_cost_framework.zero }
+		set_temp_variable = { uc_exact_quantum_scalar = universal_cost_quantize_quantum }
+		set_temp_variable = { uc_exact_scalar_result = constant:universal_cost_framework.zero }
+		set_temp_variable = { uc_exact_scalar_valid = constant:universal_cost_framework.zero }
+		resize_temp_array = { array = uc_exact_units size = constant:universal_cost_framework.one }
+		resize_temp_array = { array = uc_exact_units_tokens size = constant:universal_cost_framework.one }
+		universal_cost_exact_quantize_product = yes
+		set_temp_variable = { universal_cost_quantize_valid = uc_exact_scalar_valid }
+		if = {
+			limit = { check_variable = { universal_cost_quantize_valid = constant:universal_cost_framework.one } }
+			set_temp_variable = { universal_cost_quantize_result = uc_exact_scalar_result }
+		}
+		# Decode units by representing their scalar ticks, without scalar division.
+		clear_temp_array = uc_exact_product
+		set_temp_variable = { uc_exact_copy_index = constant:universal_cost_framework.zero }
+		all_of_scopes = {
+			array = uc_exact_units_tokens
+			add_to_temp_array = { array = uc_exact_product value = uc_exact_units^uc_exact_copy_index }
+			add_to_temp_variable = { uc_exact_copy_index = constant:universal_cost_framework.one }
+		}
+		set_temp_variable = { uc_exact_scalar = constant:universal_cost_framework.one }
+		resize_temp_array = { array = uc_exact_factor size = constant:universal_cost_framework.one }
+		universal_cost_exact_scalar_to_ticks = yes
+		universal_cost_exact_multiply = yes
+		set_temp_variable = { uc_exact_scalar_result = constant:universal_cost_framework.zero }
+		set_temp_variable = { uc_exact_scalar_valid = constant:universal_cost_framework.zero }
+		universal_cost_exact_ticks_to_scalar = yes
+		set_temp_variable = { universal_cost_quantize_units_valid = uc_exact_scalar_valid }
+		if = {
+			limit = { check_variable = { universal_cost_quantize_units_valid = constant:universal_cost_framework.one } }
+			set_temp_variable = { universal_cost_quantize_units = uc_exact_scalar_result }
+		}
+	}
+}
+
+# Public read-only frontend; the effect frontend uses the identical predicate.
+# The aligned live registry IS the exact source cache. No scalar composition.
+universal_cost_quote_exact = {
+	set_temp_variable = { universal_cost_quote_final_cost = universal_cost_quote_ordinary_cost }
+	set_temp_variable = { universal_cost_quote_displayed_cost = universal_cost_quote_ordinary_cost }
+	set_temp_variable = { universal_cost_quote_saved_cost = constant:universal_cost_framework.zero }
+	set_temp_variable = { universal_cost_quote_valid = constant:universal_cost_framework.one }
+	set_temp_variable = { universal_cost_quote_source_count = constant:universal_cost_framework.zero }
+	set_temp_variable = { universal_cost_quote_primary_source_id = constant:universal_cost_framework.zero }
+	set_temp_variable = { universal_cost_quote_composed_ratio = constant:universal_cost_framework.basis }
+	set_temp_variable = { uc_exact_denominator_shift = constant:universal_cost_framework.zero }
+	if = {
+		limit = { NOT = { has_variable = universal_cost_quote_rounding_quantum } }
+		set_temp_variable = { universal_cost_quote_rounding_quantum = constant:universal_cost_framework.default_rounding_quantum }
+	}
+	if = {
+		limit = {
+			NOT = {
+				AND = {
+					check_variable = { var = global.universal_cost_source_ratios^num value = global.universal_cost_source_ids^num compare = equals }
+					check_variable = { var = global.universal_cost_source_priorities^num value = global.universal_cost_source_ids^num compare = equals }
+					check_variable = { var = global.universal_cost_source_eligibility_masks^num value = global.universal_cost_source_ids^num compare = equals }
+				}
+			}
+		}
+		set_temp_variable = { universal_cost_quote_valid = constant:universal_cost_framework.zero }
+	}
+	if = {
+		limit = { check_variable = { var = universal_cost_quote_rounding_quantum value = constant:universal_cost_framework.zero compare = less_than_or_equals } }
+		set_temp_variable = { universal_cost_quote_rounding_quantum = constant:universal_cost_framework.default_rounding_quantum }
+	}
+	if = {
+		limit = {
+			check_variable = { universal_cost_quote_valid = constant:universal_cost_framework.one }
+			check_variable = { universal_cost_quote_ordinary_cost > constant:universal_cost_framework.zero }
+			check_variable = { universal_cost_quote_family_mask > constant:universal_cost_framework.zero }
+		}
+		set_temp_variable = { uc_exact_scalar = universal_cost_quote_ordinary_cost }
+		resize_temp_array = { array = uc_exact_factor size = constant:universal_cost_framework.one }
+		universal_cost_exact_scalar_to_ticks = yes
+		clear_temp_array = uc_exact_product
+		clear_temp_array = uc_exact_price_tokens
+		resize_temp_array = { array = uc_exact_price_tokens size = uc_exact_factor^num value = THIS }
+		set_temp_variable = { uc_exact_copy_index = constant:universal_cost_framework.zero }
+		all_of_scopes = {
+			array = uc_exact_price_tokens
+			add_to_temp_array = { array = uc_exact_product value = uc_exact_factor^uc_exact_copy_index }
+			add_to_temp_variable = { uc_exact_copy_index = constant:universal_cost_framework.one }
+		}
+		clear_temp_array = uc_exact_source_tokens
+		resize_temp_array = { array = uc_exact_source_tokens size = global.universal_cost_source_ids^num value = THIS }
+		set_temp_variable = { uc_exact_source_index = constant:universal_cost_framework.zero }
+		set_temp_variable = { uc_exact_primary_priority = constant:universal_cost_framework.priority_sentinel }
+		all_of_scopes = {
+			array = uc_exact_source_tokens
+			set_temp_variable = { uc_exact_source_id = global.universal_cost_source_ids^uc_exact_source_index }
+			set_temp_variable = { uc_exact_source_ratio = global.universal_cost_source_ratios^uc_exact_source_index }
+			set_temp_variable = { universal_cost_source_mask = global.universal_cost_source_eligibility_masks^uc_exact_source_index }
+			if = {
+				limit = {
+					check_variable = { uc_exact_source_id > constant:universal_cost_framework.zero }
+					check_variable = { uc_exact_source_ratio > constant:universal_cost_framework.zero }
+					check_variable = { var = uc_exact_source_ratio value = constant:universal_cost_framework.basis compare = less_than_or_equals }
+				}
+				set_temp_variable = { universal_cost_source_matches_quote = constant:universal_cost_framework.zero }
+				universal_cost_exact_match_family = yes
+				if = {
+					limit = { check_variable = { universal_cost_source_matches_quote = constant:universal_cost_framework.one } }
+					if = {
+						limit = { check_variable = { var = global.universal_cost_source_priorities^uc_exact_source_index value = uc_exact_primary_priority compare = less_than } }
+						set_temp_variable = { uc_exact_primary_priority = global.universal_cost_source_priorities^uc_exact_source_index }
+						set_temp_variable = { universal_cost_quote_primary_source_id = uc_exact_source_id }
+					}
+					add_to_temp_variable = { universal_cost_quote_source_count = constant:universal_cost_framework.one }
+					# An exact identity needs neither multiplication nor denominator shift.
+					if = {
+						limit = { check_variable = { var = uc_exact_source_ratio value = constant:universal_cost_framework.basis compare = less_than } }
+						set_temp_variable = { uc_exact_scalar = uc_exact_source_ratio }
+						resize_temp_array = { array = uc_exact_factor size = constant:universal_cost_framework.one }
+						universal_cost_exact_scalar_to_ticks = yes
+						universal_cost_exact_multiply = yes
+						add_to_temp_variable = { uc_exact_denominator_shift = constant:universal_cost_exact.ratio_denominator_limbs }
+					}
+					# Retired scalar output: zero means unavailable, not a zero price.
+					set_temp_variable = { universal_cost_quote_composed_ratio = constant:universal_cost_framework.zero }
+				}
+			}
+			add_to_temp_variable = { uc_exact_source_index = constant:universal_cost_framework.one }
+		}
+		if = {
+			limit = { check_variable = { universal_cost_quote_source_count > constant:universal_cost_framework.zero } }
+			set_temp_variable = { uc_exact_quantum_scalar = universal_cost_quote_rounding_quantum }
+			set_temp_variable = { uc_exact_scalar_result = constant:universal_cost_framework.zero }
+			set_temp_variable = { uc_exact_scalar_valid = constant:universal_cost_framework.zero }
+			resize_temp_array = { array = uc_exact_units size = constant:universal_cost_framework.one }
+			resize_temp_array = { array = uc_exact_units_tokens size = constant:universal_cost_framework.one }
+			universal_cost_exact_quantize_product = yes
+			set_temp_variable = { universal_cost_quote_valid = uc_exact_scalar_valid }
+			if = {
+				limit = { check_variable = { universal_cost_quote_valid = constant:universal_cost_framework.one } }
+				set_temp_variable = { universal_cost_quote_final_cost = uc_exact_scalar_result }
+			}
+		}
+		set_temp_variable = { universal_cost_quote_saved_cost = universal_cost_quote_ordinary_cost }
+		subtract_from_temp_variable = { universal_cost_quote_saved_cost = universal_cost_quote_final_cost }
+		if = {
+			limit = { check_variable = { universal_cost_quote_saved_cost < constant:universal_cost_framework.zero } }
+			set_temp_variable = { universal_cost_quote_saved_cost = constant:universal_cost_framework.zero }
+		}
+	}
+	set_temp_variable = { universal_cost_quote_displayed_cost = universal_cost_quote_final_cost }
+	# Arithmetic is a producer predicate: validity is data, not a short-circuit.
+	always = yes
+}

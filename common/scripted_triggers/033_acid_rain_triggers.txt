@@ -115,11 +115,66 @@ acid_rain_state_has_superstorm_layer = {
 	hidden_trigger = {
 		acid_rain_state_is_frozen_valid = yes
 		has_state_flag = acid_rain_superstorm_target
+		has_variable = acid_rain_superstorm_id
+		check_variable = { var = acid_rain_superstorm_id value = constant:acid_rain_runtime.zero compare = greater_than }
+		check_variable = { var = acid_rain_superstorm_id value = constant:acid_rain_event.max_superstorms compare = less_than_or_equals }
 		check_variable = { var = acid_rain_superstorm_forecast_generation value = global.acid_rain_generation_id compare = equals }
+		has_variable = acid_rain_superstorm_forecast_id
+		check_variable = { var = acid_rain_superstorm_forecast_id value = global.acid_rain_superstorm_episode_entries^acid_rain_superstorm_id compare = equals }
 		check_variable = { var = global.acid_rain_superstorm_active_entries^acid_rain_superstorm_id value = constant:acid_rain_runtime.one compare = equals }
 		check_variable = { var = global.date value = acid_rain_superstorm_forecast_start_day compare = greater_than_or_equals }
 	}
 }
+# Internal STATE-only worker ownership proof. Caller supplies acid_rain_severe_cell_index.
+# Pure predicate, no output storage, activation, expiry or strongest-layer policy.
+acid_rain_state_is_severe_worker_owned = {
+	hidden_trigger = {
+		acid_rain_state_is_frozen_valid = yes
+		check_variable = { var = global.acid_rain_generation_id value = constant:acid_rain_runtime.zero compare = greater_than }
+		check_variable = { var = acid_rain_consequence_generation value = global.acid_rain_generation_id compare = equals }
+		has_state_flag = acid_rain_severe_cell_target
+		has_variable = acid_rain_severe_cell_id
+		check_variable = { var = acid_rain_severe_cell_id value = constant:acid_rain_runtime.zero compare = greater_than }
+		check_variable = { var = acid_rain_severe_cell_id value = constant:acid_rain_event.max_severe_cells compare = less_than_or_equals }
+		check_variable = { var = acid_rain_severe_cell_id value = acid_rain_severe_cell_index compare = equals }
+		check_variable = { var = acid_rain_severe_forecast_generation value = global.acid_rain_generation_id compare = equals }
+		has_variable = acid_rain_severe_forecast_id
+		check_variable = { var = acid_rain_severe_forecast_id value = acid_rain_severe_cell_index compare = equals }
+		check_variable = { var = acid_rain_severe_cell_index value = global.acid_rain_severe_cell_count compare = less_than_or_equals }
+		has_variable = acid_rain_severe_forecast_start_day
+		has_variable = acid_rain_severe_forecast_end_day
+		check_variable = { var = acid_rain_severe_forecast_start_day value = constant:acid_rain_runtime.zero compare = greater_than }
+		check_variable = { var = acid_rain_severe_forecast_end_day value = acid_rain_severe_forecast_start_day compare = greater_than }
+		check_variable = { var = acid_rain_severe_forecast_start_day value = global.acid_rain_severe_cell_start_entries^acid_rain_severe_cell_index compare = equals }
+		check_variable = { var = acid_rain_severe_forecast_end_day value = global.acid_rain_severe_cell_end_entries^acid_rain_severe_cell_index compare = equals }
+	}
+}
+
+# Internal STATE-only worker ownership proof. Caller supplies acid_rain_superstorm_index.
+# Pure predicate, no output storage, activation, expiry or strongest-layer policy.
+acid_rain_state_is_superstorm_worker_owned = {
+	hidden_trigger = {
+		acid_rain_state_is_frozen_valid = yes
+		check_variable = { var = global.acid_rain_generation_id value = constant:acid_rain_runtime.zero compare = greater_than }
+		check_variable = { var = acid_rain_consequence_generation value = global.acid_rain_generation_id compare = equals }
+		has_state_flag = acid_rain_superstorm_target
+		has_variable = acid_rain_superstorm_id
+		check_variable = { var = acid_rain_superstorm_id value = constant:acid_rain_runtime.zero compare = greater_than }
+		check_variable = { var = acid_rain_superstorm_id value = constant:acid_rain_event.max_superstorms compare = less_than_or_equals }
+		check_variable = { var = acid_rain_superstorm_id value = acid_rain_superstorm_index compare = equals }
+		check_variable = { var = acid_rain_superstorm_forecast_generation value = global.acid_rain_generation_id compare = equals }
+		has_variable = acid_rain_superstorm_forecast_id
+		check_variable = { var = acid_rain_superstorm_forecast_id value = global.acid_rain_superstorm_episode_entries^acid_rain_superstorm_index compare = equals }
+		check_variable = { var = acid_rain_superstorm_forecast_id value = constant:acid_rain_runtime.zero compare = greater_than }
+		has_variable = acid_rain_superstorm_forecast_start_day
+		has_variable = acid_rain_superstorm_forecast_end_day
+		check_variable = { var = acid_rain_superstorm_forecast_start_day value = constant:acid_rain_runtime.zero compare = greater_than }
+		check_variable = { var = acid_rain_superstorm_forecast_end_day value = acid_rain_superstorm_forecast_start_day compare = greater_than }
+		check_variable = { var = acid_rain_superstorm_forecast_start_day value = global.acid_rain_superstorm_start_entries^acid_rain_superstorm_index compare = equals }
+		check_variable = { var = acid_rain_superstorm_forecast_end_day value = global.acid_rain_superstorm_end_entries^acid_rain_superstorm_index compare = equals }
+	}
+}
+
 acid_rain_state_has_acute_layer = {
 	hidden_trigger = {
 		OR = {

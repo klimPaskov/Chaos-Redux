@@ -70,6 +70,9 @@ Unchecked stages admit no new severe cells, regional front splits or global supe
 - Global Acid Rain unlocks at Totalen Chaos, exposes every frozen valid state through the same exact mortality gateway, retires regional fronts idempotently, allows bounded superstorms with nine-day forecasts, and still reaches guaranteed dissipation.
 
 Evolution unlocks add no Chaos by themselves.
+Severe cells and superstorms open only within their stored active window, and the opening anchors each state's next three-day class pulse.
+An unactivated forecast whose window has passed withdraws its reservation without impact history, active-episode closure or a severe cooldown draw.
+An active episode retires before any end-date pulse while preserving its ordinary or global parent layer.
 The third regional front retains its separate mapped impact receipt within Multiple Weather Fronts and does not record Global Acid Rain.
 Direct Chaos is applied only at mapped gameplay impacts, and shared Chaos receipts are never counted a second time by Event 033.
 

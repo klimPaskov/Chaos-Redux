@@ -1,0 +1,1823 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 033 ACID RAIN PREPAREDNESS
+# ============================================================================
+# Country-scope project and response ledgers. Costs are loaded from the exact
+# matrix constants before debit; reserved manpower and civilian commitments are
+# returned exactly once by completion or idempotent cleanup.
+# ============================================================================
+
+acid_rain_load_project_quote = {
+	set_temp_variable = { acid_rain_quote_days = constant:acid_rain_runtime.zero }
+	set_temp_variable = { acid_rain_quote_civ = constant:acid_rain_runtime.zero }
+	set_temp_variable = { acid_rain_quote_support = constant:acid_rain_runtime.zero }
+	set_temp_variable = { acid_rain_quote_train = constant:acid_rain_runtime.zero }
+	set_temp_variable = { acid_rain_quote_convoy = constant:acid_rain_runtime.zero }
+	set_temp_variable = { acid_rain_quote_manpower = constant:acid_rain_runtime.zero }
+	set_temp_variable = { acid_rain_quote_motorized = constant:acid_rain_runtime.zero }
+	set_temp_variable = { acid_rain_quote_fuel = constant:acid_rain_runtime.zero }
+	if = { limit = { check_variable = { var = acid_rain_cache_project value = constant:acid_rain_project.shelter compare = equals } } acid_rain_load_shelter_project_quote = yes }
+	else_if = { limit = { check_variable = { var = acid_rain_cache_project value = constant:acid_rain_project.water compare = equals } } acid_rain_load_water_project_quote = yes }
+	else_if = { limit = { check_variable = { var = acid_rain_cache_project value = constant:acid_rain_project.medical compare = equals } } acid_rain_load_medical_project_quote = yes }
+	else_if = { limit = { check_variable = { var = acid_rain_cache_project value = constant:acid_rain_project.transport compare = equals } } acid_rain_load_transport_project_quote = yes }
+}
+
+acid_rain_load_shelter_project_quote = {
+	if = {
+		limit = { check_variable = { var = acid_rain_country_band value = constant:acid_rain_country_band.fragile compare = equals } }
+		if = { limit = { check_variable = { var = acid_rain_cache_tier value = constant:acid_rain_runtime.one compare = equals } } set_temp_variable = { acid_rain_quote_days = constant:acid_rain_project_cost.shelter_a1_days } set_temp_variable = { acid_rain_quote_civ = constant:acid_rain_project_cost.shelter_a1_civ } set_temp_variable = { acid_rain_quote_support = constant:acid_rain_project_cost.shelter_a1_support } set_temp_variable = { acid_rain_quote_manpower = constant:acid_rain_project_cost.shelter_a1_manpower } }
+		else_if = { limit = { check_variable = { var = acid_rain_cache_tier value = constant:acid_rain_runtime.two compare = equals } } set_temp_variable = { acid_rain_quote_days = constant:acid_rain_project_cost.shelter_a2_days } set_temp_variable = { acid_rain_quote_civ = constant:acid_rain_project_cost.shelter_a2_civ } set_temp_variable = { acid_rain_quote_support = constant:acid_rain_project_cost.shelter_a2_support } set_temp_variable = { acid_rain_quote_manpower = constant:acid_rain_project_cost.shelter_a2_manpower } }
+		else_if = { limit = { check_variable = { var = acid_rain_cache_tier value = constant:acid_rain_runtime.three compare = equals } } set_temp_variable = { acid_rain_quote_days = constant:acid_rain_project_cost.shelter_a3_days } set_temp_variable = { acid_rain_quote_civ = constant:acid_rain_project_cost.shelter_a3_civ } set_temp_variable = { acid_rain_quote_support = constant:acid_rain_project_cost.shelter_a3_support } set_temp_variable = { acid_rain_quote_manpower = constant:acid_rain_project_cost.shelter_a3_manpower } }
+		else_if = { limit = { check_variable = { var = acid_rain_cache_tier value = constant:acid_rain_runtime.four compare = equals } } set_temp_variable = { acid_rain_quote_days = constant:acid_rain_project_cost.shelter_a4_days } set_temp_variable = { acid_rain_quote_civ = constant:acid_rain_project_cost.shelter_a4_civ } set_temp_variable = { acid_rain_quote_support = constant:acid_rain_project_cost.shelter_a4_support } set_temp_variable = { acid_rain_quote_manpower = constant:acid_rain_project_cost.shelter_a4_manpower } }
+	}
+	if = {
+		limit = { check_variable = { var = acid_rain_country_band value = constant:acid_rain_country_band.limited compare = equals } }
+		if = { limit = { check_variable = { var = acid_rain_cache_tier value = constant:acid_rain_runtime.one compare = equals } } set_temp_variable = { acid_rain_quote_days = constant:acid_rain_project_cost.shelter_b1_days } set_temp_variable = { acid_rain_quote_civ = constant:acid_rain_project_cost.shelter_b1_civ } set_temp_variable = { acid_rain_quote_support = constant:acid_rain_project_cost.shelter_b1_support } set_temp_variable = { acid_rain_quote_manpower = constant:acid_rain_project_cost.shelter_b1_manpower } }
+		else_if = { limit = { check_variable = { var = acid_rain_cache_tier value = constant:acid_rain_runtime.two compare = equals } } set_temp_variable = { acid_rain_quote_days = constant:acid_rain_project_cost.shelter_b2_days } set_temp_variable = { acid_rain_quote_civ = constant:acid_rain_project_cost.shelter_b2_civ } set_temp_variable = { acid_rain_quote_support = constant:acid_rain_project_cost.shelter_b2_support } set_temp_variable = { acid_rain_quote_manpower = constant:acid_rain_project_cost.shelter_b2_manpower } }
+		else_if = { limit = { check_variable = { var = acid_rain_cache_tier value = constant:acid_rain_runtime.three compare = equals } } set_temp_variable = { acid_rain_quote_days = constant:acid_rain_project_cost.shelter_b3_days } set_temp_variable = { acid_rain_quote_civ = constant:acid_rain_project_cost.shelter_b3_civ } set_temp_variable = { acid_rain_quote_support = constant:acid_rain_project_cost.shelter_b3_support } set_temp_variable = { acid_rain_quote_manpower = constant:acid_rain_project_cost.shelter_b3_manpower } }
+		else_if = { limit = { check_variable = { var = acid_rain_cache_tier value = constant:acid_rain_runtime.four compare = equals } } set_temp_variable = { acid_rain_quote_days = constant:acid_rain_project_cost.shelter_b4_days } set_temp_variable = { acid_rain_quote_civ = constant:acid_rain_project_cost.shelter_b4_civ } set_temp_variable = { acid_rain_quote_support = constant:acid_rain_project_cost.shelter_b4_support } set_temp_variable = { acid_rain_quote_manpower = constant:acid_rain_project_cost.shelter_b4_manpower } }
+	}
+	if = {
+		limit = { check_variable = { var = acid_rain_country_band value = constant:acid_rain_country_band.established compare = equals } }
+		if = { limit = { check_variable = { var = acid_rain_cache_tier value = constant:acid_rain_runtime.one compare = equals } } set_temp_variable = { acid_rain_quote_days = constant:acid_rain_project_cost.shelter_c1_days } set_temp_variable = { acid_rain_quote_civ = constant:acid_rain_project_cost.shelter_c1_civ } set_temp_variable = { acid_rain_quote_support = constant:acid_rain_project_cost.shelter_c1_support } set_temp_variable = { acid_rain_quote_manpower = constant:acid_rain_project_cost.shelter_c1_manpower } }
+		else_if = { limit = { check_variable = { var = acid_rain_cache_tier value = constant:acid_rain_runtime.two compare = equals } } set_temp_variable = { acid_rain_quote_days = constant:acid_rain_project_cost.shelter_c2_days } set_temp_variable = { acid_rain_quote_civ = constant:acid_rain_project_cost.shelter_c2_civ } set_temp_variable = { acid_rain_quote_support = constant:acid_rain_project_cost.shelter_c2_support } set_temp_variable = { acid_rain_quote_manpower = constant:acid_rain_project_cost.shelter_c2_manpower } }
+		else_if = { limit = { check_variable = { var = acid_rain_cache_tier value = constant:acid_rain_runtime.three compare = equals } } set_temp_variable = { acid_rain_quote_days = constant:acid_rain_project_cost.shelter_c3_days } set_temp_variable = { acid_rain_quote_civ = constant:acid_rain_project_cost.shelter_c3_civ } set_temp_variable = { acid_rain_quote_support = constant:acid_rain_project_cost.shelter_c3_support } set_temp_variable = { acid_rain_quote_manpower = constant:acid_rain_project_cost.shelter_c3_manpower } }
+		else_if = { limit = { check_variable = { var = acid_rain_cache_tier value = constant:acid_rain_runtime.four compare = equals } } set_temp_variable = { acid_rain_quote_days = constant:acid_rain_project_cost.shelter_c4_days } set_temp_variable = { acid_rain_quote_civ = constant:acid_rain_project_cost.shelter_c4_civ } set_temp_variable = { acid_rain_quote_support = constant:acid_rain_project_cost.shelter_c4_support } set_temp_variable = { acid_rain_quote_manpower = constant:acid_rain_project_cost.shelter_c4_manpower } }
+	}
+	if = {
+		limit = { check_variable = { var = acid_rain_country_band value = constant:acid_rain_country_band.great_power compare = equals } }
+		if = { limit = { check_variable = { var = acid_rain_cache_tier value = constant:acid_rain_runtime.one compare = equals } } set_temp_variable = { acid_rain_quote_days = constant:acid_rain_project_cost.shelter_d1_days } set_temp_variable = { acid_rain_quote_civ = constant:acid_rain_project_cost.shelter_d1_civ } set_temp_variable = { acid_rain_quote_support = constant:acid_rain_project_cost.shelter_d1_support } set_temp_variable = { acid_rain_quote_manpower = constant:acid_rain_project_cost.shelter_d1_manpower } }
+		else_if = { limit = { check_variable = { var = acid_rain_cache_tier value = constant:acid_rain_runtime.two compare = equals } } set_temp_variable = { acid_rain_quote_days = constant:acid_rain_project_cost.shelter_d2_days } set_temp_variable = { acid_rain_quote_civ = constant:acid_rain_project_cost.shelter_d2_civ } set_temp_variable = { acid_rain_quote_support = constant:acid_rain_project_cost.shelter_d2_support } set_temp_variable = { acid_rain_quote_manpower = constant:acid_rain_project_cost.shelter_d2_manpower } }
+		else_if = { limit = { check_variable = { var = acid_rain_cache_tier value = constant:acid_rain_runtime.three compare = equals } } set_temp_variable = { acid_rain_quote_days = constant:acid_rain_project_cost.shelter_d3_days } set_temp_variable = { acid_rain_quote_civ = constant:acid_rain_project_cost.shelter_d3_civ } set_temp_variable = { acid_rain_quote_support = constant:acid_rain_project_cost.shelter_d3_support } set_temp_variable = { acid_rain_quote_manpower = constant:acid_rain_project_cost.shelter_d3_manpower } }
+		else_if = { limit = { check_variable = { var = acid_rain_cache_tier value = constant:acid_rain_runtime.four compare = equals } } set_temp_variable = { acid_rain_quote_days = constant:acid_rain_project_cost.shelter_d4_days } set_temp_variable = { acid_rain_quote_civ = constant:acid_rain_project_cost.shelter_d4_civ } set_temp_variable = { acid_rain_quote_support = constant:acid_rain_project_cost.shelter_d4_support } set_temp_variable = { acid_rain_quote_manpower = constant:acid_rain_project_cost.shelter_d4_manpower } }
+	}
+}
+
+acid_rain_load_water_project_quote = {
+	if = {
+		limit = { check_variable = { var = acid_rain_country_band value = constant:acid_rain_country_band.fragile compare = equals } }
+		if = { limit = { check_variable = { var = acid_rain_cache_tier value = constant:acid_rain_runtime.one compare = equals } } set_temp_variable = { acid_rain_quote_days = constant:acid_rain_project_cost.water_a1_days } set_temp_variable = { acid_rain_quote_civ = constant:acid_rain_project_cost.water_a1_civ } set_temp_variable = { acid_rain_quote_support = constant:acid_rain_project_cost.water_a1_support } set_temp_variable = { acid_rain_quote_train = constant:acid_rain_project_cost.water_a1_train } set_temp_variable = { acid_rain_quote_convoy = constant:acid_rain_project_cost.water_a1_convoy } set_temp_variable = { acid_rain_quote_manpower = constant:acid_rain_project_cost.water_a1_manpower } }
+		else_if = { limit = { check_variable = { var = acid_rain_cache_tier value = constant:acid_rain_runtime.two compare = equals } } set_temp_variable = { acid_rain_quote_days = constant:acid_rain_project_cost.water_a2_days } set_temp_variable = { acid_rain_quote_civ = constant:acid_rain_project_cost.water_a2_civ } set_temp_variable = { acid_rain_quote_support = constant:acid_rain_project_cost.water_a2_support } set_temp_variable = { acid_rain_quote_train = constant:acid_rain_project_cost.water_a2_train } set_temp_variable = { acid_rain_quote_convoy = constant:acid_rain_project_cost.water_a2_convoy } set_temp_variable = { acid_rain_quote_manpower = constant:acid_rain_project_cost.water_a2_manpower } }
+		else_if = { limit = { check_variable = { var = acid_rain_cache_tier value = constant:acid_rain_runtime.three compare = equals } } set_temp_variable = { acid_rain_quote_days = constant:acid_rain_project_cost.water_a3_days } set_temp_variable = { acid_rain_quote_civ = constant:acid_rain_project_cost.water_a3_civ } set_temp_variable = { acid_rain_quote_support = constant:acid_rain_project_cost.water_a3_support } set_temp_variable = { acid_rain_quote_train = constant:acid_rain_project_cost.water_a3_train } set_temp_variable = { acid_rain_quote_convoy = constant:acid_rain_project_cost.water_a3_convoy } set_temp_variable = { acid_rain_quote_manpower = constant:acid_rain_project_cost.water_a3_manpower } }
+		else_if = { limit = { check_variable = { var = acid_rain_cache_tier value = constant:acid_rain_runtime.four compare = equals } } set_temp_variable = { acid_rain_quote_days = constant:acid_rain_project_cost.water_a4_days } set_temp_variable = { acid_rain_quote_civ = constant:acid_rain_project_cost.water_a4_civ } set_temp_variable = { acid_rain_quote_support = constant:acid_rain_project_cost.water_a4_support } set_temp_variable = { acid_rain_quote_train = constant:acid_rain_project_cost.water_a4_train } set_temp_variable = { acid_rain_quote_convoy = constant:acid_rain_project_cost.water_a4_convoy } set_temp_variable = { acid_rain_quote_manpower = constant:acid_rain_project_cost.water_a4_manpower } }
+	}
+	if = {
+		limit = { check_variable = { var = acid_rain_country_band value = constant:acid_rain_country_band.limited compare = equals } }
+		if = { limit = { check_variable = { var = acid_rain_cache_tier value = constant:acid_rain_runtime.one compare = equals } } set_temp_variable = { acid_rain_quote_days = constant:acid_rain_project_cost.water_b1_days } set_temp_variable = { acid_rain_quote_civ = constant:acid_rain_project_cost.water_b1_civ } set_temp_variable = { acid_rain_quote_support = constant:acid_rain_project_cost.water_b1_support } set_temp_variable = { acid_rain_quote_train = constant:acid_rain_project_cost.water_b1_train } set_temp_variable = { acid_rain_quote_convoy = constant:acid_rain_project_cost.water_b1_convoy } set_temp_variable = { acid_rain_quote_manpower = constant:acid_rain_project_cost.water_b1_manpower } }
+		else_if = { limit = { check_variable = { var = acid_rain_cache_tier value = constant:acid_rain_runtime.two compare = equals } } set_temp_variable = { acid_rain_quote_days = constant:acid_rain_project_cost.water_b2_days } set_temp_variable = { acid_rain_quote_civ = constant:acid_rain_project_cost.water_b2_civ } set_temp_variable = { acid_rain_quote_support = constant:acid_rain_project_cost.water_b2_support } set_temp_variable = { acid_rain_quote_train = constant:acid_rain_project_cost.water_b2_train } set_temp_variable = { acid_rain_quote_convoy = constant:acid_rain_project_cost.water_b2_convoy } set_temp_variable = { acid_rain_quote_manpower = constant:acid_rain_project_cost.water_b2_manpower } }
+		else_if = { limit = { check_variable = { var = acid_rain_cache_tier value = constant:acid_rain_runtime.three compare = equals } } set_temp_variable = { acid_rain_quote_days = constant:acid_rain_project_cost.water_b3_days } set_temp_variable = { acid_rain_quote_civ = constant:acid_rain_project_cost.water_b3_civ } set_temp_variable = { acid_rain_quote_support = constant:acid_rain_project_cost.water_b3_support } set_temp_variable = { acid_rain_quote_train = constant:acid_rain_project_cost.water_b3_train } set_temp_variable = { acid_rain_quote_convoy = constant:acid_rain_project_cost.water_b3_convoy } set_temp_variable = { acid_rain_quote_manpower = constant:acid_rain_project_cost.water_b3_manpower } }
+		else_if = { limit = { check_variable = { var = acid_rain_cache_tier value = constant:acid_rain_runtime.four compare = equals } } set_temp_variable = { acid_rain_quote_days = constant:acid_rain_project_cost.water_b4_days } set_temp_variable = { acid_rain_quote_civ = constant:acid_rain_project_cost.water_b4_civ } set_temp_variable = { acid_rain_quote_support = constant:acid_rain_project_cost.water_b4_support } set_temp_variable = { acid_rain_quote_train = constant:acid_rain_project_cost.water_b4_train } set_temp_variable = { acid_rain_quote_convoy = constant:acid_rain_project_cost.water_b4_convoy } set_temp_variable = { acid_rain_quote_manpower = constant:acid_rain_project_cost.water_b4_manpower } }
+	}
+	if = {
+		limit = { check_variable = { var = acid_rain_country_band value = constant:acid_rain_country_band.established compare = equals } }
+		if = { limit = { check_variable = { var = acid_rain_cache_tier value = constant:acid_rain_runtime.one compare = equals } } set_temp_variable = { acid_rain_quote_days = constant:acid_rain_project_cost.water_c1_days } set_temp_variable = { acid_rain_quote_civ = constant:acid_rain_project_cost.water_c1_civ } set_temp_variable = { acid_rain_quote_support = constant:acid_rain_project_cost.water_c1_support } set_temp_variable = { acid_rain_quote_train = constant:acid_rain_project_cost.water_c1_train } set_temp_variable = { acid_rain_quote_convoy = constant:acid_rain_project_cost.water_c1_convoy } set_temp_variable = { acid_rain_quote_manpower = constant:acid_rain_project_cost.water_c1_manpower } }
+		else_if = { limit = { check_variable = { var = acid_rain_cache_tier value = constant:acid_rain_runtime.two compare = equals } } set_temp_variable = { acid_rain_quote_days = constant:acid_rain_project_cost.water_c2_days } set_temp_variable = { acid_rain_quote_civ = constant:acid_rain_project_cost.water_c2_civ } set_temp_variable = { acid_rain_quote_support = constant:acid_rain_project_cost.water_c2_support } set_temp_variable = { acid_rain_quote_train = constant:acid_rain_project_cost.water_c2_train } set_temp_variable = { acid_rain_quote_convoy = constant:acid_rain_project_cost.water_c2_convoy } set_temp_variable = { acid_rain_quote_manpower = constant:acid_rain_project_cost.water_c2_manpower } }
+		else_if = { limit = { check_variable = { var = acid_rain_cache_tier value = constant:acid_rain_runtime.three compare = equals } } set_temp_variable = { acid_rain_quote_days = constant:acid_rain_project_cost.water_c3_days } set_temp_variable = { acid_rain_quote_civ = constant:acid_rain_project_cost.water_c3_civ } set_temp_variable = { acid_rain_quote_support = constant:acid_rain_project_cost.water_c3_support } set_temp_variable = { acid_rain_quote_train = constant:acid_rain_project_cost.water_c3_train } set_temp_variable = { acid_rain_quote_convoy = constant:acid_rain_project_cost.water_c3_convoy } set_temp_variable = { acid_rain_quote_manpower = constant:acid_rain_project_cost.water_c3_manpower } }
+		else_if = { limit = { check_variable = { var = acid_rain_cache_tier value = constant:acid_rain_runtime.four compare = equals } } set_temp_variable = { acid_rain_quote_days = constant:acid_rain_project_cost.water_c4_days } set_temp_variable = { acid_rain_quote_civ = constant:acid_rain_project_cost.water_c4_civ } set_temp_variable = { acid_rain_quote_support = constant:acid_rain_project_cost.water_c4_support } set_temp_variable = { acid_rain_quote_train = constant:acid_rain_project_cost.water_c4_train } set_temp_variable = { acid_rain_quote_convoy = constant:acid_rain_project_cost.water_c4_convoy } set_temp_variable = { acid_rain_quote_manpower = constant:acid_rain_project_cost.water_c4_manpower } }
+	}
+	if = {
+		limit = { check_variable = { var = acid_rain_country_band value = constant:acid_rain_country_band.great_power compare = equals } }
+		if = { limit = { check_variable = { var = acid_rain_cache_tier value = constant:acid_rain_runtime.one compare = equals } } set_temp_variable = { acid_rain_quote_days = constant:acid_rain_project_cost.water_d1_days } set_temp_variable = { acid_rain_quote_civ = constant:acid_rain_project_cost.water_d1_civ } set_temp_variable = { acid_rain_quote_support = constant:acid_rain_project_cost.water_d1_support } set_temp_variable = { acid_rain_quote_train = constant:acid_rain_project_cost.water_d1_train } set_temp_variable = { acid_rain_quote_convoy = constant:acid_rain_project_cost.water_d1_convoy } set_temp_variable = { acid_rain_quote_manpower = constant:acid_rain_project_cost.water_d1_manpower } }
+		else_if = { limit = { check_variable = { var = acid_rain_cache_tier value = constant:acid_rain_runtime.two compare = equals } } set_temp_variable = { acid_rain_quote_days = constant:acid_rain_project_cost.water_d2_days } set_temp_variable = { acid_rain_quote_civ = constant:acid_rain_project_cost.water_d2_civ } set_temp_variable = { acid_rain_quote_support = constant:acid_rain_project_cost.water_d2_support } set_temp_variable = { acid_rain_quote_train = constant:acid_rain_project_cost.water_d2_train } set_temp_variable = { acid_rain_quote_convoy = constant:acid_rain_project_cost.water_d2_convoy } set_temp_variable = { acid_rain_quote_manpower = constant:acid_rain_project_cost.water_d2_manpower } }
+		else_if = { limit = { check_variable = { var = acid_rain_cache_tier value = constant:acid_rain_runtime.three compare = equals } } set_temp_variable = { acid_rain_quote_days = constant:acid_rain_project_cost.water_d3_days } set_temp_variable = { acid_rain_quote_civ = constant:acid_rain_project_cost.water_d3_civ } set_temp_variable = { acid_rain_quote_support = constant:acid_rain_project_cost.water_d3_support } set_temp_variable = { acid_rain_quote_train = constant:acid_rain_project_cost.water_d3_train } set_temp_variable = { acid_rain_quote_convoy = constant:acid_rain_project_cost.water_d3_convoy } set_temp_variable = { acid_rain_quote_manpower = constant:acid_rain_project_cost.water_d3_manpower } }
+		else_if = { limit = { check_variable = { var = acid_rain_cache_tier value = constant:acid_rain_runtime.four compare = equals } } set_temp_variable = { acid_rain_quote_days = constant:acid_rain_project_cost.water_d4_days } set_temp_variable = { acid_rain_quote_civ = constant:acid_rain_project_cost.water_d4_civ } set_temp_variable = { acid_rain_quote_support = constant:acid_rain_project_cost.water_d4_support } set_temp_variable = { acid_rain_quote_train = constant:acid_rain_project_cost.water_d4_train } set_temp_variable = { acid_rain_quote_convoy = constant:acid_rain_project_cost.water_d4_convoy } set_temp_variable = { acid_rain_quote_manpower = constant:acid_rain_project_cost.water_d4_manpower } }
+	}
+	if = {
+		limit = { check_variable = { var = acid_rain_country_island_route value = constant:acid_rain_runtime.one compare = equals } }
+		set_temp_variable = { acid_rain_quote_train = constant:acid_rain_runtime.zero }
+	}
+	else = { set_temp_variable = { acid_rain_quote_convoy = constant:acid_rain_runtime.zero } }
+}
+
+acid_rain_load_medical_project_quote = {
+	if = {
+		limit = { check_variable = { var = acid_rain_country_band value = constant:acid_rain_country_band.fragile compare = equals } }
+		if = { limit = { check_variable = { var = acid_rain_cache_tier value = constant:acid_rain_runtime.one compare = equals } } set_temp_variable = { acid_rain_quote_days = constant:acid_rain_project_cost.medical_a1_days } set_temp_variable = { acid_rain_quote_civ = constant:acid_rain_project_cost.medical_a1_civ } set_temp_variable = { acid_rain_quote_support = constant:acid_rain_project_cost.medical_a1_support } set_temp_variable = { acid_rain_quote_manpower = constant:acid_rain_project_cost.medical_a1_manpower } set_temp_variable = { acid_rain_quote_fuel = constant:acid_rain_project_cost.medical_a1_fuel } }
+		else_if = { limit = { check_variable = { var = acid_rain_cache_tier value = constant:acid_rain_runtime.two compare = equals } } set_temp_variable = { acid_rain_quote_days = constant:acid_rain_project_cost.medical_a2_days } set_temp_variable = { acid_rain_quote_civ = constant:acid_rain_project_cost.medical_a2_civ } set_temp_variable = { acid_rain_quote_support = constant:acid_rain_project_cost.medical_a2_support } set_temp_variable = { acid_rain_quote_manpower = constant:acid_rain_project_cost.medical_a2_manpower } set_temp_variable = { acid_rain_quote_fuel = constant:acid_rain_project_cost.medical_a2_fuel } }
+		else_if = { limit = { check_variable = { var = acid_rain_cache_tier value = constant:acid_rain_runtime.three compare = equals } } set_temp_variable = { acid_rain_quote_days = constant:acid_rain_project_cost.medical_a3_days } set_temp_variable = { acid_rain_quote_civ = constant:acid_rain_project_cost.medical_a3_civ } set_temp_variable = { acid_rain_quote_support = constant:acid_rain_project_cost.medical_a3_support } set_temp_variable = { acid_rain_quote_manpower = constant:acid_rain_project_cost.medical_a3_manpower } set_temp_variable = { acid_rain_quote_fuel = constant:acid_rain_project_cost.medical_a3_fuel } }
+		else_if = { limit = { check_variable = { var = acid_rain_cache_tier value = constant:acid_rain_runtime.four compare = equals } } set_temp_variable = { acid_rain_quote_days = constant:acid_rain_project_cost.medical_a4_days } set_temp_variable = { acid_rain_quote_civ = constant:acid_rain_project_cost.medical_a4_civ } set_temp_variable = { acid_rain_quote_support = constant:acid_rain_project_cost.medical_a4_support } set_temp_variable = { acid_rain_quote_manpower = constant:acid_rain_project_cost.medical_a4_manpower } set_temp_variable = { acid_rain_quote_fuel = constant:acid_rain_project_cost.medical_a4_fuel } }
+	}
+	if = {
+		limit = { check_variable = { var = acid_rain_country_band value = constant:acid_rain_country_band.limited compare = equals } }
+		if = { limit = { check_variable = { var = acid_rain_cache_tier value = constant:acid_rain_runtime.one compare = equals } } set_temp_variable = { acid_rain_quote_days = constant:acid_rain_project_cost.medical_b1_days } set_temp_variable = { acid_rain_quote_civ = constant:acid_rain_project_cost.medical_b1_civ } set_temp_variable = { acid_rain_quote_support = constant:acid_rain_project_cost.medical_b1_support } set_temp_variable = { acid_rain_quote_manpower = constant:acid_rain_project_cost.medical_b1_manpower } set_temp_variable = { acid_rain_quote_fuel = constant:acid_rain_project_cost.medical_b1_fuel } }
+		else_if = { limit = { check_variable = { var = acid_rain_cache_tier value = constant:acid_rain_runtime.two compare = equals } } set_temp_variable = { acid_rain_quote_days = constant:acid_rain_project_cost.medical_b2_days } set_temp_variable = { acid_rain_quote_civ = constant:acid_rain_project_cost.medical_b2_civ } set_temp_variable = { acid_rain_quote_support = constant:acid_rain_project_cost.medical_b2_support } set_temp_variable = { acid_rain_quote_manpower = constant:acid_rain_project_cost.medical_b2_manpower } set_temp_variable = { acid_rain_quote_fuel = constant:acid_rain_project_cost.medical_b2_fuel } }
+		else_if = { limit = { check_variable = { var = acid_rain_cache_tier value = constant:acid_rain_runtime.three compare = equals } } set_temp_variable = { acid_rain_quote_days = constant:acid_rain_project_cost.medical_b3_days } set_temp_variable = { acid_rain_quote_civ = constant:acid_rain_project_cost.medical_b3_civ } set_temp_variable = { acid_rain_quote_support = constant:acid_rain_project_cost.medical_b3_support } set_temp_variable = { acid_rain_quote_manpower = constant:acid_rain_project_cost.medical_b3_manpower } set_temp_variable = { acid_rain_quote_fuel = constant:acid_rain_project_cost.medical_b3_fuel } }
+		else_if = { limit = { check_variable = { var = acid_rain_cache_tier value = constant:acid_rain_runtime.four compare = equals } } set_temp_variable = { acid_rain_quote_days = constant:acid_rain_project_cost.medical_b4_days } set_temp_variable = { acid_rain_quote_civ = constant:acid_rain_project_cost.medical_b4_civ } set_temp_variable = { acid_rain_quote_support = constant:acid_rain_project_cost.medical_b4_support } set_temp_variable = { acid_rain_quote_manpower = constant:acid_rain_project_cost.medical_b4_manpower } set_temp_variable = { acid_rain_quote_fuel = constant:acid_rain_project_cost.medical_b4_fuel } }
+	}
+	if = {
+		limit = { check_variable = { var = acid_rain_country_band value = constant:acid_rain_country_band.established compare = equals } }
+		if = { limit = { check_variable = { var = acid_rain_cache_tier value = constant:acid_rain_runtime.one compare = equals } } set_temp_variable = { acid_rain_quote_days = constant:acid_rain_project_cost.medical_c1_days } set_temp_variable = { acid_rain_quote_civ = constant:acid_rain_project_cost.medical_c1_civ } set_temp_variable = { acid_rain_quote_support = constant:acid_rain_project_cost.medical_c1_support } set_temp_variable = { acid_rain_quote_manpower = constant:acid_rain_project_cost.medical_c1_manpower } set_temp_variable = { acid_rain_quote_fuel = constant:acid_rain_project_cost.medical_c1_fuel } }
+		else_if = { limit = { check_variable = { var = acid_rain_cache_tier value = constant:acid_rain_runtime.two compare = equals } } set_temp_variable = { acid_rain_quote_days = constant:acid_rain_project_cost.medical_c2_days } set_temp_variable = { acid_rain_quote_civ = constant:acid_rain_project_cost.medical_c2_civ } set_temp_variable = { acid_rain_quote_support = constant:acid_rain_project_cost.medical_c2_support } set_temp_variable = { acid_rain_quote_manpower = constant:acid_rain_project_cost.medical_c2_manpower } set_temp_variable = { acid_rain_quote_fuel = constant:acid_rain_project_cost.medical_c2_fuel } }
+		else_if = { limit = { check_variable = { var = acid_rain_cache_tier value = constant:acid_rain_runtime.three compare = equals } } set_temp_variable = { acid_rain_quote_days = constant:acid_rain_project_cost.medical_c3_days } set_temp_variable = { acid_rain_quote_civ = constant:acid_rain_project_cost.medical_c3_civ } set_temp_variable = { acid_rain_quote_support = constant:acid_rain_project_cost.medical_c3_support } set_temp_variable = { acid_rain_quote_manpower = constant:acid_rain_project_cost.medical_c3_manpower } set_temp_variable = { acid_rain_quote_fuel = constant:acid_rain_project_cost.medical_c3_fuel } }
+		else_if = { limit = { check_variable = { var = acid_rain_cache_tier value = constant:acid_rain_runtime.four compare = equals } } set_temp_variable = { acid_rain_quote_days = constant:acid_rain_project_cost.medical_c4_days } set_temp_variable = { acid_rain_quote_civ = constant:acid_rain_project_cost.medical_c4_civ } set_temp_variable = { acid_rain_quote_support = constant:acid_rain_project_cost.medical_c4_support } set_temp_variable = { acid_rain_quote_manpower = constant:acid_rain_project_cost.medical_c4_manpower } set_temp_variable = { acid_rain_quote_fuel = constant:acid_rain_project_cost.medical_c4_fuel } }
+	}
+	if = {
+		limit = { check_variable = { var = acid_rain_country_band value = constant:acid_rain_country_band.great_power compare = equals } }
+		if = { limit = { check_variable = { var = acid_rain_cache_tier value = constant:acid_rain_runtime.one compare = equals } } set_temp_variable = { acid_rain_quote_days = constant:acid_rain_project_cost.medical_d1_days } set_temp_variable = { acid_rain_quote_civ = constant:acid_rain_project_cost.medical_d1_civ } set_temp_variable = { acid_rain_quote_support = constant:acid_rain_project_cost.medical_d1_support } set_temp_variable = { acid_rain_quote_manpower = constant:acid_rain_project_cost.medical_d1_manpower } set_temp_variable = { acid_rain_quote_fuel = constant:acid_rain_project_cost.medical_d1_fuel } }
+		else_if = { limit = { check_variable = { var = acid_rain_cache_tier value = constant:acid_rain_runtime.two compare = equals } } set_temp_variable = { acid_rain_quote_days = constant:acid_rain_project_cost.medical_d2_days } set_temp_variable = { acid_rain_quote_civ = constant:acid_rain_project_cost.medical_d2_civ } set_temp_variable = { acid_rain_quote_support = constant:acid_rain_project_cost.medical_d2_support } set_temp_variable = { acid_rain_quote_manpower = constant:acid_rain_project_cost.medical_d2_manpower } set_temp_variable = { acid_rain_quote_fuel = constant:acid_rain_project_cost.medical_d2_fuel } }
+		else_if = { limit = { check_variable = { var = acid_rain_cache_tier value = constant:acid_rain_runtime.three compare = equals } } set_temp_variable = { acid_rain_quote_days = constant:acid_rain_project_cost.medical_d3_days } set_temp_variable = { acid_rain_quote_civ = constant:acid_rain_project_cost.medical_d3_civ } set_temp_variable = { acid_rain_quote_support = constant:acid_rain_project_cost.medical_d3_support } set_temp_variable = { acid_rain_quote_manpower = constant:acid_rain_project_cost.medical_d3_manpower } set_temp_variable = { acid_rain_quote_fuel = constant:acid_rain_project_cost.medical_d3_fuel } }
+		else_if = { limit = { check_variable = { var = acid_rain_cache_tier value = constant:acid_rain_runtime.four compare = equals } } set_temp_variable = { acid_rain_quote_days = constant:acid_rain_project_cost.medical_d4_days } set_temp_variable = { acid_rain_quote_civ = constant:acid_rain_project_cost.medical_d4_civ } set_temp_variable = { acid_rain_quote_support = constant:acid_rain_project_cost.medical_d4_support } set_temp_variable = { acid_rain_quote_manpower = constant:acid_rain_project_cost.medical_d4_manpower } set_temp_variable = { acid_rain_quote_fuel = constant:acid_rain_project_cost.medical_d4_fuel } }
+	}
+}
+
+acid_rain_load_transport_project_quote = {
+	if = {
+		limit = { check_variable = { var = acid_rain_country_band value = constant:acid_rain_country_band.fragile compare = equals } }
+		if = { limit = { check_variable = { var = acid_rain_cache_tier value = constant:acid_rain_runtime.one compare = equals } } set_temp_variable = { acid_rain_quote_days = constant:acid_rain_project_cost.transport_a1_days } set_temp_variable = { acid_rain_quote_civ = constant:acid_rain_project_cost.transport_a1_civ } set_temp_variable = { acid_rain_quote_train = constant:acid_rain_project_cost.transport_a1_train } set_temp_variable = { acid_rain_quote_motorized = constant:acid_rain_project_cost.transport_a1_motorized } set_temp_variable = { acid_rain_quote_fuel = constant:acid_rain_project_cost.transport_a1_fuel } }
+		else_if = { limit = { check_variable = { var = acid_rain_cache_tier value = constant:acid_rain_runtime.two compare = equals } } set_temp_variable = { acid_rain_quote_days = constant:acid_rain_project_cost.transport_a2_days } set_temp_variable = { acid_rain_quote_civ = constant:acid_rain_project_cost.transport_a2_civ } set_temp_variable = { acid_rain_quote_train = constant:acid_rain_project_cost.transport_a2_train } set_temp_variable = { acid_rain_quote_motorized = constant:acid_rain_project_cost.transport_a2_motorized } set_temp_variable = { acid_rain_quote_fuel = constant:acid_rain_project_cost.transport_a2_fuel } }
+		else_if = { limit = { check_variable = { var = acid_rain_cache_tier value = constant:acid_rain_runtime.three compare = equals } } set_temp_variable = { acid_rain_quote_days = constant:acid_rain_project_cost.transport_a3_days } set_temp_variable = { acid_rain_quote_civ = constant:acid_rain_project_cost.transport_a3_civ } set_temp_variable = { acid_rain_quote_train = constant:acid_rain_project_cost.transport_a3_train } set_temp_variable = { acid_rain_quote_motorized = constant:acid_rain_project_cost.transport_a3_motorized } set_temp_variable = { acid_rain_quote_fuel = constant:acid_rain_project_cost.transport_a3_fuel } }
+		else_if = { limit = { check_variable = { var = acid_rain_cache_tier value = constant:acid_rain_runtime.four compare = equals } } set_temp_variable = { acid_rain_quote_days = constant:acid_rain_project_cost.transport_a4_days } set_temp_variable = { acid_rain_quote_civ = constant:acid_rain_project_cost.transport_a4_civ } set_temp_variable = { acid_rain_quote_train = constant:acid_rain_project_cost.transport_a4_train } set_temp_variable = { acid_rain_quote_motorized = constant:acid_rain_project_cost.transport_a4_motorized } set_temp_variable = { acid_rain_quote_fuel = constant:acid_rain_project_cost.transport_a4_fuel } }
+	}
+	if = {
+		limit = { check_variable = { var = acid_rain_country_band value = constant:acid_rain_country_band.limited compare = equals } }
+		if = { limit = { check_variable = { var = acid_rain_cache_tier value = constant:acid_rain_runtime.one compare = equals } } set_temp_variable = { acid_rain_quote_days = constant:acid_rain_project_cost.transport_b1_days } set_temp_variable = { acid_rain_quote_civ = constant:acid_rain_project_cost.transport_b1_civ } set_temp_variable = { acid_rain_quote_train = constant:acid_rain_project_cost.transport_b1_train } set_temp_variable = { acid_rain_quote_motorized = constant:acid_rain_project_cost.transport_b1_motorized } set_temp_variable = { acid_rain_quote_fuel = constant:acid_rain_project_cost.transport_b1_fuel } }
+		else_if = { limit = { check_variable = { var = acid_rain_cache_tier value = constant:acid_rain_runtime.two compare = equals } } set_temp_variable = { acid_rain_quote_days = constant:acid_rain_project_cost.transport_b2_days } set_temp_variable = { acid_rain_quote_civ = constant:acid_rain_project_cost.transport_b2_civ } set_temp_variable = { acid_rain_quote_train = constant:acid_rain_project_cost.transport_b2_train } set_temp_variable = { acid_rain_quote_motorized = constant:acid_rain_project_cost.transport_b2_motorized } set_temp_variable = { acid_rain_quote_fuel = constant:acid_rain_project_cost.transport_b2_fuel } }
+		else_if = { limit = { check_variable = { var = acid_rain_cache_tier value = constant:acid_rain_runtime.three compare = equals } } set_temp_variable = { acid_rain_quote_days = constant:acid_rain_project_cost.transport_b3_days } set_temp_variable = { acid_rain_quote_civ = constant:acid_rain_project_cost.transport_b3_civ } set_temp_variable = { acid_rain_quote_train = constant:acid_rain_project_cost.transport_b3_train } set_temp_variable = { acid_rain_quote_motorized = constant:acid_rain_project_cost.transport_b3_motorized } set_temp_variable = { acid_rain_quote_fuel = constant:acid_rain_project_cost.transport_b3_fuel } }
+		else_if = { limit = { check_variable = { var = acid_rain_cache_tier value = constant:acid_rain_runtime.four compare = equals } } set_temp_variable = { acid_rain_quote_days = constant:acid_rain_project_cost.transport_b4_days } set_temp_variable = { acid_rain_quote_civ = constant:acid_rain_project_cost.transport_b4_civ } set_temp_variable = { acid_rain_quote_train = constant:acid_rain_project_cost.transport_b4_train } set_temp_variable = { acid_rain_quote_motorized = constant:acid_rain_project_cost.transport_b4_motorized } set_temp_variable = { acid_rain_quote_fuel = constant:acid_rain_project_cost.transport_b4_fuel } }
+	}
+	if = {
+		limit = { check_variable = { var = acid_rain_country_band value = constant:acid_rain_country_band.established compare = equals } }
+		if = { limit = { check_variable = { var = acid_rain_cache_tier value = constant:acid_rain_runtime.one compare = equals } } set_temp_variable = { acid_rain_quote_days = constant:acid_rain_project_cost.transport_c1_days } set_temp_variable = { acid_rain_quote_civ = constant:acid_rain_project_cost.transport_c1_civ } set_temp_variable = { acid_rain_quote_train = constant:acid_rain_project_cost.transport_c1_train } set_temp_variable = { acid_rain_quote_motorized = constant:acid_rain_project_cost.transport_c1_motorized } set_temp_variable = { acid_rain_quote_fuel = constant:acid_rain_project_cost.transport_c1_fuel } }
+		else_if = { limit = { check_variable = { var = acid_rain_cache_tier value = constant:acid_rain_runtime.two compare = equals } } set_temp_variable = { acid_rain_quote_days = constant:acid_rain_project_cost.transport_c2_days } set_temp_variable = { acid_rain_quote_civ = constant:acid_rain_project_cost.transport_c2_civ } set_temp_variable = { acid_rain_quote_train = constant:acid_rain_project_cost.transport_c2_train } set_temp_variable = { acid_rain_quote_motorized = constant:acid_rain_project_cost.transport_c2_motorized } set_temp_variable = { acid_rain_quote_fuel = constant:acid_rain_project_cost.transport_c2_fuel } }
+		else_if = { limit = { check_variable = { var = acid_rain_cache_tier value = constant:acid_rain_runtime.three compare = equals } } set_temp_variable = { acid_rain_quote_days = constant:acid_rain_project_cost.transport_c3_days } set_temp_variable = { acid_rain_quote_civ = constant:acid_rain_project_cost.transport_c3_civ } set_temp_variable = { acid_rain_quote_train = constant:acid_rain_project_cost.transport_c3_train } set_temp_variable = { acid_rain_quote_motorized = constant:acid_rain_project_cost.transport_c3_motorized } set_temp_variable = { acid_rain_quote_fuel = constant:acid_rain_project_cost.transport_c3_fuel } }
+		else_if = { limit = { check_variable = { var = acid_rain_cache_tier value = constant:acid_rain_runtime.four compare = equals } } set_temp_variable = { acid_rain_quote_days = constant:acid_rain_project_cost.transport_c4_days } set_temp_variable = { acid_rain_quote_civ = constant:acid_rain_project_cost.transport_c4_civ } set_temp_variable = { acid_rain_quote_train = constant:acid_rain_project_cost.transport_c4_train } set_temp_variable = { acid_rain_quote_motorized = constant:acid_rain_project_cost.transport_c4_motorized } set_temp_variable = { acid_rain_quote_fuel = constant:acid_rain_project_cost.transport_c4_fuel } }
+	}
+	if = {
+		limit = { check_variable = { var = acid_rain_country_band value = constant:acid_rain_country_band.great_power compare = equals } }
+		if = { limit = { check_variable = { var = acid_rain_cache_tier value = constant:acid_rain_runtime.one compare = equals } } set_temp_variable = { acid_rain_quote_days = constant:acid_rain_project_cost.transport_d1_days } set_temp_variable = { acid_rain_quote_civ = constant:acid_rain_project_cost.transport_d1_civ } set_temp_variable = { acid_rain_quote_train = constant:acid_rain_project_cost.transport_d1_train } set_temp_variable = { acid_rain_quote_motorized = constant:acid_rain_project_cost.transport_d1_motorized } set_temp_variable = { acid_rain_quote_fuel = constant:acid_rain_project_cost.transport_d1_fuel } }
+		else_if = { limit = { check_variable = { var = acid_rain_cache_tier value = constant:acid_rain_runtime.two compare = equals } } set_temp_variable = { acid_rain_quote_days = constant:acid_rain_project_cost.transport_d2_days } set_temp_variable = { acid_rain_quote_civ = constant:acid_rain_project_cost.transport_d2_civ } set_temp_variable = { acid_rain_quote_train = constant:acid_rain_project_cost.transport_d2_train } set_temp_variable = { acid_rain_quote_motorized = constant:acid_rain_project_cost.transport_d2_motorized } set_temp_variable = { acid_rain_quote_fuel = constant:acid_rain_project_cost.transport_d2_fuel } }
+		else_if = { limit = { check_variable = { var = acid_rain_cache_tier value = constant:acid_rain_runtime.three compare = equals } } set_temp_variable = { acid_rain_quote_days = constant:acid_rain_project_cost.transport_d3_days } set_temp_variable = { acid_rain_quote_civ = constant:acid_rain_project_cost.transport_d3_civ } set_temp_variable = { acid_rain_quote_train = constant:acid_rain_project_cost.transport_d3_train } set_temp_variable = { acid_rain_quote_motorized = constant:acid_rain_project_cost.transport_d3_motorized } set_temp_variable = { acid_rain_quote_fuel = constant:acid_rain_project_cost.transport_d3_fuel } }
+		else_if = { limit = { check_variable = { var = acid_rain_cache_tier value = constant:acid_rain_runtime.four compare = equals } } set_temp_variable = { acid_rain_quote_days = constant:acid_rain_project_cost.transport_d4_days } set_temp_variable = { acid_rain_quote_civ = constant:acid_rain_project_cost.transport_d4_civ } set_temp_variable = { acid_rain_quote_train = constant:acid_rain_project_cost.transport_d4_train } set_temp_variable = { acid_rain_quote_motorized = constant:acid_rain_project_cost.transport_d4_motorized } set_temp_variable = { acid_rain_quote_fuel = constant:acid_rain_project_cost.transport_d4_fuel } }
+	}
+}
+
+# COUNTRY SCOPE. Derives the minimum pre-spend stock required by the AI from
+# the exact loaded quote. Percentage rules are solved algebraically so the
+# post-spend stock retains the authored share. Resources absent from the quote
+# remain unrestricted, allowing an AI with no trains to choose a shelter action.
+acid_rain_compute_loaded_ai_reserve_requirements = {
+	set_temp_variable = { acid_rain_ai_required_civ = constant:acid_rain_runtime.zero }
+	set_temp_variable = { acid_rain_ai_required_support = constant:acid_rain_runtime.zero }
+	set_temp_variable = { acid_rain_ai_required_train = constant:acid_rain_runtime.zero }
+	set_temp_variable = { acid_rain_ai_required_convoy = constant:acid_rain_runtime.zero }
+	set_temp_variable = { acid_rain_ai_required_manpower = constant:acid_rain_runtime.zero }
+	set_temp_variable = { acid_rain_ai_required_motorized = constant:acid_rain_runtime.zero }
+	set_temp_variable = { acid_rain_ai_required_fuel = constant:acid_rain_runtime.zero }
+	set_temp_variable = { acid_rain_ai_required_civ_trigger_floor = constant:acid_rain_runtime.zero }
+	if = { limit = { acid_rain_prepare_quote_reserve_requirements = yes } }
+}
+
+acid_rain_store_loaded_project_ai_reserve_status = {
+	set_temp_variable = { acid_rain_ai_reserve_pass = constant:acid_rain_runtime.zero }
+	if = { limit = { OR = { is_ai = no acid_rain_country_ai_reserves_allow_loaded_quote = yes } } set_temp_variable = { acid_rain_ai_reserve_pass = constant:acid_rain_runtime.one } }
+	set_variable = { acid_rain_project_ai_reserve_pass_entries^acid_rain_cache_project = acid_rain_ai_reserve_pass }
+}
+
+acid_rain_store_loaded_action_ai_reserve_status = {
+	set_temp_variable = { acid_rain_ai_reserve_pass = constant:acid_rain_runtime.zero }
+	if = { limit = { OR = { is_ai = no acid_rain_country_ai_reserves_allow_loaded_quote = yes } } set_temp_variable = { acid_rain_ai_reserve_pass = constant:acid_rain_runtime.one } }
+	set_variable = { acid_rain_action_ai_reserve_pass_entries^acid_rain_cache_action = acid_rain_ai_reserve_pass }
+}
+
+acid_rain_store_project_quote = {
+	if = { limit = { check_variable = { var = acid_rain_cache_project value = constant:acid_rain_project.shelter compare = equals } }
+		set_variable = { acid_rain_shelter_next_days = acid_rain_quote_days }
+		set_variable = { acid_rain_shelter_next_civ = acid_rain_quote_civ }
+		set_variable = { acid_rain_shelter_next_support = acid_rain_quote_support }
+		set_variable = { acid_rain_shelter_next_train = acid_rain_quote_train }
+		set_variable = { acid_rain_shelter_next_convoy = acid_rain_quote_convoy }
+		set_variable = { acid_rain_shelter_next_manpower = acid_rain_quote_manpower }
+		set_variable = { acid_rain_shelter_next_motorized = acid_rain_quote_motorized }
+		set_variable = { acid_rain_shelter_next_fuel = acid_rain_quote_fuel }
+	}
+	if = { limit = { check_variable = { var = acid_rain_cache_project value = constant:acid_rain_project.water compare = equals } }
+		set_variable = { acid_rain_water_next_days = acid_rain_quote_days }
+		set_variable = { acid_rain_water_next_civ = acid_rain_quote_civ }
+		set_variable = { acid_rain_water_next_support = acid_rain_quote_support }
+		set_variable = { acid_rain_water_next_train = acid_rain_quote_train }
+		set_variable = { acid_rain_water_next_convoy = acid_rain_quote_convoy }
+		set_variable = { acid_rain_water_next_manpower = acid_rain_quote_manpower }
+		set_variable = { acid_rain_water_next_motorized = acid_rain_quote_motorized }
+		set_variable = { acid_rain_water_next_fuel = acid_rain_quote_fuel }
+	}
+	if = { limit = { check_variable = { var = acid_rain_cache_project value = constant:acid_rain_project.medical compare = equals } }
+		set_variable = { acid_rain_medical_next_days = acid_rain_quote_days }
+		set_variable = { acid_rain_medical_next_civ = acid_rain_quote_civ }
+		set_variable = { acid_rain_medical_next_support = acid_rain_quote_support }
+		set_variable = { acid_rain_medical_next_train = acid_rain_quote_train }
+		set_variable = { acid_rain_medical_next_convoy = acid_rain_quote_convoy }
+		set_variable = { acid_rain_medical_next_manpower = acid_rain_quote_manpower }
+		set_variable = { acid_rain_medical_next_motorized = acid_rain_quote_motorized }
+		set_variable = { acid_rain_medical_next_fuel = acid_rain_quote_fuel }
+	}
+	if = { limit = { check_variable = { var = acid_rain_cache_project value = constant:acid_rain_project.transport compare = equals } }
+		set_variable = { acid_rain_transport_next_days = acid_rain_quote_days }
+		set_variable = { acid_rain_transport_next_civ = acid_rain_quote_civ }
+		set_variable = { acid_rain_transport_next_support = acid_rain_quote_support }
+		set_variable = { acid_rain_transport_next_train = acid_rain_quote_train }
+		set_variable = { acid_rain_transport_next_convoy = acid_rain_quote_convoy }
+		set_variable = { acid_rain_transport_next_manpower = acid_rain_quote_manpower }
+		set_variable = { acid_rain_transport_next_motorized = acid_rain_quote_motorized }
+		set_variable = { acid_rain_transport_next_fuel = acid_rain_quote_fuel }
+	}
+		set_temp_variable = { acid_rain_ai_required_civ = constant:acid_rain_runtime.zero }
+	set_temp_variable = { acid_rain_ai_required_support = constant:acid_rain_runtime.zero }
+	set_temp_variable = { acid_rain_ai_required_train = constant:acid_rain_runtime.zero }
+	set_temp_variable = { acid_rain_ai_required_convoy = constant:acid_rain_runtime.zero }
+	set_temp_variable = { acid_rain_ai_required_manpower = constant:acid_rain_runtime.zero }
+	set_temp_variable = { acid_rain_ai_required_motorized = constant:acid_rain_runtime.zero }
+	set_temp_variable = { acid_rain_ai_required_fuel = constant:acid_rain_runtime.zero }
+	set_temp_variable = { acid_rain_ai_required_civ_trigger_floor = constant:acid_rain_runtime.zero }
+acid_rain_compute_loaded_ai_reserve_requirements = yes
+	acid_rain_store_loaded_project_ai_reserve_status = yes
+}
+
+acid_rain_refresh_country_project_quotes = {
+	set_temp_variable = { acid_rain_quote_days = constant:acid_rain_runtime.zero }
+	set_temp_variable = { acid_rain_quote_duration_days = constant:acid_rain_runtime.zero }
+	set_temp_variable = { acid_rain_quote_civ = constant:acid_rain_runtime.zero }
+	set_temp_variable = { acid_rain_quote_civilian_factories = constant:acid_rain_runtime.zero }
+	set_temp_variable = { acid_rain_quote_political_power = constant:acid_rain_runtime.zero }
+	set_temp_variable = { acid_rain_quote_support = constant:acid_rain_runtime.zero }
+	set_temp_variable = { acid_rain_quote_train = constant:acid_rain_runtime.zero }
+	set_temp_variable = { acid_rain_quote_convoy = constant:acid_rain_runtime.zero }
+	set_temp_variable = { acid_rain_quote_manpower = constant:acid_rain_runtime.zero }
+	set_temp_variable = { acid_rain_quote_motorized = constant:acid_rain_runtime.zero }
+	set_temp_variable = { acid_rain_quote_fuel = constant:acid_rain_runtime.zero }
+	set_temp_variable = { acid_rain_quote_effect_days = constant:acid_rain_runtime.zero }
+	set_temp_variable = { acid_rain_quote_kind = constant:acid_rain_runtime.zero }
+	set_temp_variable = { acid_rain_quote_target_required = constant:acid_rain_runtime.zero }
+	set_temp_variable = { acid_rain_quote_family_count = constant:acid_rain_runtime.zero }
+	set_temp_variable = { acid_rain_quote_valid = constant:acid_rain_runtime.zero }
+	set_temp_variable = { acid_rain_quote_target_valid = constant:acid_rain_runtime.zero }
+	set_temp_variable = { acid_rain_quote_target_is_island = constant:acid_rain_runtime.zero }
+	set_temp_variable = { acid_rain_component_quote = constant:acid_rain_runtime.zero }
+
+	set_temp_variable = { acid_rain_cache_project = constant:acid_rain_project.shelter }
+	set_temp_variable = { acid_rain_cache_tier = acid_rain_shelter_tier }
+	add_to_temp_variable = { acid_rain_cache_tier = constant:acid_rain_runtime.one }
+	acid_rain_load_project_quote = yes
+	acid_rain_store_project_quote = yes
+	set_temp_variable = { acid_rain_cache_project = constant:acid_rain_project.water }
+	set_temp_variable = { acid_rain_cache_tier = acid_rain_water_tier }
+	add_to_temp_variable = { acid_rain_cache_tier = constant:acid_rain_runtime.one }
+	acid_rain_load_project_quote = yes
+	acid_rain_store_project_quote = yes
+	set_temp_variable = { acid_rain_cache_project = constant:acid_rain_project.medical }
+	set_temp_variable = { acid_rain_cache_tier = acid_rain_medical_tier }
+	add_to_temp_variable = { acid_rain_cache_tier = constant:acid_rain_runtime.one }
+	acid_rain_load_project_quote = yes
+	acid_rain_store_project_quote = yes
+	set_temp_variable = { acid_rain_cache_project = constant:acid_rain_project.transport }
+	set_temp_variable = { acid_rain_cache_tier = acid_rain_transport_tier }
+	add_to_temp_variable = { acid_rain_cache_tier = constant:acid_rain_runtime.one }
+	acid_rain_load_project_quote = yes
+	acid_rain_store_project_quote = yes
+	if = { limit = { is_ai = no } acid_rain_store_project_cost_display = yes }
+}
+
+# Compatibility entrypoints for the decision surface. The arrays are the
+# authoritative quote cache; each alias refreshes that bounded cache and the
+# transaction effect reloads the selected row immediately before debit.
+acid_rain_refresh_project_quote = {
+	acid_rain_refresh_country_project_quotes = yes
+}
+
+acid_rain_refresh_urgent_action_quote = {
+	acid_rain_refresh_country_action_quotes = yes
+}
+
+acid_rain_refresh_recovery_action_quote = {
+	acid_rain_refresh_country_action_quotes = yes
+}
+
+# COUNTRY SCOPE. Creates the four project rows. Indexed writes only change
+# existing elements, so every row is sized before the runtime uses it.
+acid_rain_initialize_project_ledgers = {
+	set_temp_variable = { acid_rain_array_size = constant:acid_rain_runtime.five }
+	clear_array = acid_rain_project_active_entries
+	resize_array = { array = acid_rain_project_active_entries size = acid_rain_array_size }
+	clear_array = acid_rain_project_tier_entries
+	resize_array = { array = acid_rain_project_tier_entries size = acid_rain_array_size }
+	clear_array = acid_rain_project_end_day_entries
+	resize_array = { array = acid_rain_project_end_day_entries size = acid_rain_array_size }
+	clear_array = acid_rain_project_civ_entries
+	resize_array = { array = acid_rain_project_civ_entries size = acid_rain_array_size }
+	clear_array = acid_rain_project_manpower_entries
+	resize_array = { array = acid_rain_project_manpower_entries size = acid_rain_array_size }
+	clear_array = acid_rain_project_generation_entries
+	resize_array = { array = acid_rain_project_generation_entries size = acid_rain_array_size }
+	clear_array = acid_rain_project_ai_reserve_pass_entries
+	resize_array = { array = acid_rain_project_ai_reserve_pass_entries size = acid_rain_array_size }
+	clear_array = acid_rain_project_target_tier_entries
+	resize_array = { array = acid_rain_project_target_tier_entries size = acid_rain_array_size }
+}
+
+# COUNTRY SCOPE. Creates the action quote rows, one element per action id.
+acid_rain_initialize_action_quote_arrays = {
+	set_temp_variable = { acid_rain_array_size = constant:acid_rain_runtime.action_loop_end }
+	clear_array = acid_rain_action_days_entries
+	resize_array = { array = acid_rain_action_days_entries size = acid_rain_array_size }
+	clear_array = acid_rain_action_effect_days_entries
+	resize_array = { array = acid_rain_action_effect_days_entries size = acid_rain_array_size }
+	clear_array = acid_rain_action_kind_entries
+	resize_array = { array = acid_rain_action_kind_entries size = acid_rain_array_size }
+	clear_array = acid_rain_action_target_required_entries
+	resize_array = { array = acid_rain_action_target_required_entries size = acid_rain_array_size }
+	clear_array = acid_rain_action_family_count_entries
+	resize_array = { array = acid_rain_action_family_count_entries size = acid_rain_array_size }
+	clear_array = acid_rain_action_political_power_entries
+	resize_array = { array = acid_rain_action_political_power_entries size = acid_rain_array_size }
+	clear_array = acid_rain_action_civ_entries
+	resize_array = { array = acid_rain_action_civ_entries size = acid_rain_array_size }
+	clear_array = acid_rain_action_support_entries
+	resize_array = { array = acid_rain_action_support_entries size = acid_rain_array_size }
+	clear_array = acid_rain_action_train_entries
+	resize_array = { array = acid_rain_action_train_entries size = acid_rain_array_size }
+	clear_array = acid_rain_action_convoy_entries
+	resize_array = { array = acid_rain_action_convoy_entries size = acid_rain_array_size }
+	clear_array = acid_rain_action_manpower_entries
+	resize_array = { array = acid_rain_action_manpower_entries size = acid_rain_array_size }
+	clear_array = acid_rain_action_motorized_entries
+	resize_array = { array = acid_rain_action_motorized_entries size = acid_rain_array_size }
+	clear_array = acid_rain_action_fuel_entries
+	resize_array = { array = acid_rain_action_fuel_entries size = acid_rain_array_size }
+	clear_array = acid_rain_action_ai_reserve_pass_entries
+	resize_array = { array = acid_rain_action_ai_reserve_pass_entries size = acid_rain_array_size }
+}
+
+# ---------------------------------------------------------------------------
+# Urgent and recovery quote loader. All banded costs use the authored ceiling
+# rule: final debit is the base cost multiplied by the final country band and
+# rounded upward. Land and island variants set exactly one transport family.
+# ---------------------------------------------------------------------------
+
+acid_rain_load_action_quote = {
+	set_temp_variable = { acid_rain_quote_days = constant:acid_rain_runtime.zero }
+	set_temp_variable = { acid_rain_quote_effect_days = constant:acid_rain_runtime.zero }
+	set_temp_variable = { acid_rain_quote_kind = constant:acid_rain_runtime.zero }
+	set_temp_variable = { acid_rain_quote_target_required = constant:acid_rain_runtime.zero }
+	set_temp_variable = { acid_rain_quote_family_count = constant:acid_rain_runtime.zero }
+	set_temp_variable = { acid_rain_quote_political_power = constant:acid_rain_runtime.zero }
+	set_temp_variable = { acid_rain_quote_civ = constant:acid_rain_runtime.zero }
+	set_temp_variable = { acid_rain_quote_support = constant:acid_rain_runtime.zero }
+	set_temp_variable = { acid_rain_quote_train = constant:acid_rain_runtime.zero }
+	set_temp_variable = { acid_rain_quote_convoy = constant:acid_rain_runtime.zero }
+	set_temp_variable = { acid_rain_quote_manpower = constant:acid_rain_runtime.zero }
+	set_temp_variable = { acid_rain_quote_motorized = constant:acid_rain_runtime.zero }
+	set_temp_variable = { acid_rain_quote_fuel = constant:acid_rain_runtime.zero }
+	if = {
+		limit = { check_variable = { var = acid_rain_country_band value = constant:acid_rain_country_band.fragile compare = equals } }
+		set_temp_variable = { acid_rain_action_band_multiplier = constant:acid_rain_preparedness.band_a_multiplier }
+	}
+	else_if = {
+		limit = { check_variable = { var = acid_rain_country_band value = constant:acid_rain_country_band.limited compare = equals } }
+		set_temp_variable = { acid_rain_action_band_multiplier = constant:acid_rain_preparedness.band_b_multiplier }
+	}
+	else_if = {
+		limit = { check_variable = { var = acid_rain_country_band value = constant:acid_rain_country_band.established compare = equals } }
+		set_temp_variable = { acid_rain_action_band_multiplier = constant:acid_rain_preparedness.band_c_multiplier }
+	}
+	else = { set_temp_variable = { acid_rain_action_band_multiplier = constant:acid_rain_preparedness.band_d_multiplier } }
+
+	if = { limit = { check_variable = { var = acid_rain_cache_action value = constant:acid_rain_action.urgent_shelter compare = equals } }
+		set_temp_variable = { acid_rain_quote_days = constant:acid_rain_urgent_cost.shelter_days }
+		set_temp_variable = { acid_rain_quote_effect_days = constant:acid_rain_preparedness.urgent_shelter_effect_days }
+		set_temp_variable = { acid_rain_quote_kind = constant:acid_rain_runtime.one }
+		set_temp_variable = { acid_rain_quote_family_count = constant:acid_rain_runtime.three }
+		set_temp_variable = { acid_rain_quote_political_power = constant:acid_rain_urgent_cost.shelter_political_power }
+		set_temp_variable = { acid_rain_quote_support = constant:acid_rain_urgent_cost.shelter_support }
+		set_temp_variable = { acid_rain_quote_manpower = constant:acid_rain_urgent_cost.shelter_manpower }
+	}
+	else_if = { limit = { check_variable = { var = acid_rain_cache_action value = constant:acid_rain_action.urgent_water_land compare = equals } }
+		set_temp_variable = { acid_rain_quote_days = constant:acid_rain_urgent_cost.water_days }
+		set_temp_variable = { acid_rain_quote_effect_days = constant:acid_rain_preparedness.urgent_water_effect_days }
+		set_temp_variable = { acid_rain_quote_kind = constant:acid_rain_runtime.one }
+		set_temp_variable = { acid_rain_quote_target_required = constant:acid_rain_runtime.zero }
+		set_temp_variable = { acid_rain_quote_family_count = constant:acid_rain_runtime.three }
+		set_temp_variable = { acid_rain_quote_support = constant:acid_rain_urgent_cost.water_support }
+		set_temp_variable = { acid_rain_quote_train = constant:acid_rain_urgent_cost.water_train }
+		set_temp_variable = { acid_rain_quote_manpower = constant:acid_rain_urgent_cost.water_manpower }
+	}
+	else_if = { limit = { check_variable = { var = acid_rain_cache_action value = constant:acid_rain_action.urgent_water_island compare = equals } }
+		set_temp_variable = { acid_rain_quote_days = constant:acid_rain_urgent_cost.water_days }
+		set_temp_variable = { acid_rain_quote_effect_days = constant:acid_rain_preparedness.urgent_water_effect_days }
+		set_temp_variable = { acid_rain_quote_kind = constant:acid_rain_runtime.one }
+		set_temp_variable = { acid_rain_quote_target_required = constant:acid_rain_runtime.zero }
+		set_temp_variable = { acid_rain_quote_family_count = constant:acid_rain_runtime.three }
+		set_temp_variable = { acid_rain_quote_support = constant:acid_rain_urgent_cost.water_support }
+		set_temp_variable = { acid_rain_quote_convoy = constant:acid_rain_urgent_cost.water_convoy }
+		set_temp_variable = { acid_rain_quote_manpower = constant:acid_rain_urgent_cost.water_manpower }
+	}
+	else_if = { limit = { check_variable = { var = acid_rain_cache_action value = constant:acid_rain_action.urgent_medical compare = equals } }
+		set_temp_variable = { acid_rain_quote_days = constant:acid_rain_urgent_cost.medical_days }
+		set_temp_variable = { acid_rain_quote_effect_days = constant:acid_rain_preparedness.urgent_medical_effect_days }
+		set_temp_variable = { acid_rain_quote_kind = constant:acid_rain_runtime.one }
+		set_temp_variable = { acid_rain_quote_family_count = constant:acid_rain_runtime.three }
+		set_temp_variable = { acid_rain_quote_support = constant:acid_rain_urgent_cost.medical_support }
+		set_temp_variable = { acid_rain_quote_manpower = constant:acid_rain_urgent_cost.medical_manpower }
+		set_temp_variable = { acid_rain_quote_fuel = constant:acid_rain_urgent_cost.medical_fuel }
+	}
+	else_if = { limit = { check_variable = { var = acid_rain_cache_action value = constant:acid_rain_action.urgent_transport compare = equals } }
+		set_temp_variable = { acid_rain_quote_days = constant:acid_rain_urgent_cost.transport_days }
+		set_temp_variable = { acid_rain_quote_effect_days = constant:acid_rain_preparedness.urgent_transport_effect_days }
+		set_temp_variable = { acid_rain_quote_kind = constant:acid_rain_runtime.one }
+		set_temp_variable = { acid_rain_quote_family_count = constant:acid_rain_runtime.three }
+		set_temp_variable = { acid_rain_quote_train = constant:acid_rain_urgent_cost.transport_train }
+		set_temp_variable = { acid_rain_quote_motorized = constant:acid_rain_urgent_cost.transport_motorized }
+		set_temp_variable = { acid_rain_quote_fuel = constant:acid_rain_urgent_cost.transport_fuel }
+	}
+	else_if = { limit = { check_variable = { var = acid_rain_cache_action value = constant:acid_rain_action.urgent_evacuate_land compare = equals } }
+		set_temp_variable = { acid_rain_quote_days = constant:acid_rain_urgent_cost.evacuation_days }
+		set_temp_variable = { acid_rain_quote_kind = constant:acid_rain_runtime.one }
+		set_temp_variable = { acid_rain_quote_target_required = constant:acid_rain_runtime.one }
+		set_temp_variable = { acid_rain_quote_family_count = constant:acid_rain_runtime.four }
+		set_temp_variable = { acid_rain_quote_manpower = constant:acid_rain_urgent_cost.evacuation_manpower }
+		set_temp_variable = { acid_rain_quote_motorized = constant:acid_rain_urgent_cost.evacuation_motorized }
+		set_temp_variable = { acid_rain_quote_train = constant:acid_rain_urgent_cost.evacuation_train }
+		set_temp_variable = { acid_rain_quote_fuel = constant:acid_rain_urgent_cost.evacuation_fuel }
+	}
+	else_if = { limit = { check_variable = { var = acid_rain_cache_action value = constant:acid_rain_action.urgent_evacuate_island compare = equals } }
+		set_temp_variable = { acid_rain_quote_days = constant:acid_rain_urgent_cost.evacuation_days }
+		set_temp_variable = { acid_rain_quote_kind = constant:acid_rain_runtime.one }
+		set_temp_variable = { acid_rain_quote_target_required = constant:acid_rain_runtime.one }
+		set_temp_variable = { acid_rain_quote_family_count = constant:acid_rain_runtime.four }
+		set_temp_variable = { acid_rain_quote_manpower = constant:acid_rain_urgent_cost.evacuation_manpower }
+		set_temp_variable = { acid_rain_quote_motorized = constant:acid_rain_urgent_cost.evacuation_motorized }
+		set_temp_variable = { acid_rain_quote_convoy = constant:acid_rain_urgent_cost.evacuation_convoy }
+		set_temp_variable = { acid_rain_quote_fuel = constant:acid_rain_urgent_cost.evacuation_fuel }
+	}
+	else_if = { limit = { check_variable = { var = acid_rain_cache_action value = constant:acid_rain_action.recovery_transport compare = equals } }
+		set_temp_variable = { acid_rain_quote_days = constant:acid_rain_recovery_cost.transport_days }
+		set_temp_variable = { acid_rain_quote_target_required = constant:acid_rain_runtime.one }
+		set_temp_variable = { acid_rain_quote_kind = constant:acid_rain_runtime.two }
+		set_temp_variable = { acid_rain_quote_family_count = constant:acid_rain_runtime.four }
+		set_temp_variable = { acid_rain_quote_civ = constant:acid_rain_recovery_cost.transport_civ }
+		set_temp_variable = { acid_rain_quote_train = constant:acid_rain_recovery_cost.transport_train }
+		set_temp_variable = { acid_rain_quote_motorized = constant:acid_rain_recovery_cost.transport_motorized }
+		set_temp_variable = { acid_rain_quote_fuel = constant:acid_rain_recovery_cost.transport_fuel }
+	}
+	else_if = { limit = { check_variable = { var = acid_rain_cache_action value = constant:acid_rain_action.recovery_decontaminate_land compare = equals } }
+		set_temp_variable = { acid_rain_quote_days = constant:acid_rain_recovery_cost.decontaminate_days }
+		set_temp_variable = { acid_rain_quote_target_required = constant:acid_rain_runtime.one }
+		set_temp_variable = { acid_rain_quote_kind = constant:acid_rain_runtime.two }
+		set_temp_variable = { acid_rain_quote_family_count = constant:acid_rain_runtime.four }
+		set_temp_variable = { acid_rain_quote_civ = constant:acid_rain_recovery_cost.decontaminate_civ }
+		set_temp_variable = { acid_rain_quote_support = constant:acid_rain_recovery_cost.decontaminate_support }
+		set_temp_variable = { acid_rain_quote_manpower = constant:acid_rain_recovery_cost.decontaminate_manpower }
+		set_temp_variable = { acid_rain_quote_train = constant:acid_rain_recovery_cost.decontaminate_train }
+	}
+	else_if = { limit = { check_variable = { var = acid_rain_cache_action value = constant:acid_rain_action.recovery_decontaminate_island compare = equals } }
+		set_temp_variable = { acid_rain_quote_days = constant:acid_rain_recovery_cost.decontaminate_days }
+		set_temp_variable = { acid_rain_quote_target_required = constant:acid_rain_runtime.one }
+		set_temp_variable = { acid_rain_quote_kind = constant:acid_rain_runtime.two }
+		set_temp_variable = { acid_rain_quote_family_count = constant:acid_rain_runtime.four }
+		set_temp_variable = { acid_rain_quote_civ = constant:acid_rain_recovery_cost.decontaminate_civ }
+		set_temp_variable = { acid_rain_quote_support = constant:acid_rain_recovery_cost.decontaminate_support }
+		set_temp_variable = { acid_rain_quote_manpower = constant:acid_rain_recovery_cost.decontaminate_manpower }
+		set_temp_variable = { acid_rain_quote_convoy = constant:acid_rain_recovery_cost.decontaminate_convoy }
+	}
+	else_if = { limit = { check_variable = { var = acid_rain_cache_action value = constant:acid_rain_action.recovery_industry compare = equals } }
+		set_temp_variable = { acid_rain_quote_days = constant:acid_rain_recovery_cost.industry_days }
+		set_temp_variable = { acid_rain_quote_target_required = constant:acid_rain_runtime.one }
+		set_temp_variable = { acid_rain_quote_kind = constant:acid_rain_runtime.two }
+		set_temp_variable = { acid_rain_quote_family_count = constant:acid_rain_runtime.three }
+		set_temp_variable = { acid_rain_quote_civ = constant:acid_rain_recovery_cost.industry_civ }
+		set_temp_variable = { acid_rain_quote_support = constant:acid_rain_recovery_cost.industry_support }
+		set_temp_variable = { acid_rain_quote_manpower = constant:acid_rain_recovery_cost.industry_manpower }
+	}
+	else_if = { limit = { check_variable = { var = acid_rain_cache_action value = constant:acid_rain_action.recovery_demobilize compare = equals } }
+		set_temp_variable = { acid_rain_quote_days = constant:acid_rain_recovery_cost.demobilize_days }
+		set_temp_variable = { acid_rain_quote_kind = constant:acid_rain_runtime.two }
+		set_temp_variable = { acid_rain_quote_family_count = constant:acid_rain_runtime.one }
+		set_temp_variable = { acid_rain_quote_political_power = constant:acid_rain_recovery_cost.demobilize_political_power }
+	}
+
+	if = { limit = { check_variable = { var = acid_rain_quote_political_power value = constant:acid_rain_runtime.zero compare = greater_than } } multiply_temp_variable = { acid_rain_quote_political_power = acid_rain_action_band_multiplier } add_to_temp_variable = { acid_rain_quote_political_power = constant:acid_rain_preparedness.action_ceiling_bias } round_temp_variable = acid_rain_quote_political_power }
+	if = { limit = { check_variable = { var = acid_rain_quote_civ value = constant:acid_rain_runtime.zero compare = greater_than } } multiply_temp_variable = { acid_rain_quote_civ = acid_rain_action_band_multiplier } add_to_temp_variable = { acid_rain_quote_civ = constant:acid_rain_preparedness.action_ceiling_bias } round_temp_variable = acid_rain_quote_civ }
+	if = { limit = { check_variable = { var = acid_rain_quote_support value = constant:acid_rain_runtime.zero compare = greater_than } } multiply_temp_variable = { acid_rain_quote_support = acid_rain_action_band_multiplier } add_to_temp_variable = { acid_rain_quote_support = constant:acid_rain_preparedness.action_ceiling_bias } round_temp_variable = acid_rain_quote_support }
+	if = { limit = { check_variable = { var = acid_rain_quote_train value = constant:acid_rain_runtime.zero compare = greater_than } } multiply_temp_variable = { acid_rain_quote_train = acid_rain_action_band_multiplier } add_to_temp_variable = { acid_rain_quote_train = constant:acid_rain_preparedness.action_ceiling_bias } round_temp_variable = acid_rain_quote_train }
+	if = { limit = { check_variable = { var = acid_rain_quote_convoy value = constant:acid_rain_runtime.zero compare = greater_than } } multiply_temp_variable = { acid_rain_quote_convoy = acid_rain_action_band_multiplier } add_to_temp_variable = { acid_rain_quote_convoy = constant:acid_rain_preparedness.action_ceiling_bias } round_temp_variable = acid_rain_quote_convoy }
+	if = { limit = { check_variable = { var = acid_rain_quote_manpower value = constant:acid_rain_runtime.zero compare = greater_than } } multiply_temp_variable = { acid_rain_quote_manpower = acid_rain_action_band_multiplier } add_to_temp_variable = { acid_rain_quote_manpower = constant:acid_rain_preparedness.action_ceiling_bias } round_temp_variable = acid_rain_quote_manpower }
+	if = { limit = { check_variable = { var = acid_rain_quote_motorized value = constant:acid_rain_runtime.zero compare = greater_than } } multiply_temp_variable = { acid_rain_quote_motorized = acid_rain_action_band_multiplier } add_to_temp_variable = { acid_rain_quote_motorized = constant:acid_rain_preparedness.action_ceiling_bias } round_temp_variable = acid_rain_quote_motorized }
+	if = { limit = { check_variable = { var = acid_rain_quote_fuel value = constant:acid_rain_runtime.zero compare = greater_than } } multiply_temp_variable = { acid_rain_quote_fuel = acid_rain_action_band_multiplier } add_to_temp_variable = { acid_rain_quote_fuel = constant:acid_rain_preparedness.action_ceiling_bias } round_temp_variable = acid_rain_quote_fuel }
+}
+
+acid_rain_refresh_country_action_quotes = {
+	set_temp_variable = { acid_rain_quote_days = constant:acid_rain_runtime.zero }
+	set_temp_variable = { acid_rain_quote_duration_days = constant:acid_rain_runtime.zero }
+	set_temp_variable = { acid_rain_quote_civ = constant:acid_rain_runtime.zero }
+	set_temp_variable = { acid_rain_quote_civilian_factories = constant:acid_rain_runtime.zero }
+	set_temp_variable = { acid_rain_quote_political_power = constant:acid_rain_runtime.zero }
+	set_temp_variable = { acid_rain_quote_support = constant:acid_rain_runtime.zero }
+	set_temp_variable = { acid_rain_quote_train = constant:acid_rain_runtime.zero }
+	set_temp_variable = { acid_rain_quote_convoy = constant:acid_rain_runtime.zero }
+	set_temp_variable = { acid_rain_quote_manpower = constant:acid_rain_runtime.zero }
+	set_temp_variable = { acid_rain_quote_motorized = constant:acid_rain_runtime.zero }
+	set_temp_variable = { acid_rain_quote_fuel = constant:acid_rain_runtime.zero }
+	set_temp_variable = { acid_rain_quote_effect_days = constant:acid_rain_runtime.zero }
+	set_temp_variable = { acid_rain_quote_kind = constant:acid_rain_runtime.zero }
+	set_temp_variable = { acid_rain_quote_target_required = constant:acid_rain_runtime.zero }
+	set_temp_variable = { acid_rain_quote_family_count = constant:acid_rain_runtime.zero }
+	set_temp_variable = { acid_rain_quote_valid = constant:acid_rain_runtime.zero }
+	set_temp_variable = { acid_rain_quote_target_valid = constant:acid_rain_runtime.zero }
+	set_temp_variable = { acid_rain_quote_target_is_island = constant:acid_rain_runtime.zero }
+	set_temp_variable = { acid_rain_component_quote = constant:acid_rain_runtime.zero }
+
+	set_temp_variable = { acid_rain_action_quote_loop_end = constant:acid_rain_runtime.action_loop_end }
+	set_temp_variable = { acid_rain_refresh_country_action_quotes_loop_1_break = constant:acid_rain_runtime.zero }
+	for_loop_effect = {
+		break = acid_rain_refresh_country_action_quotes_loop_1_break
+		start = constant:acid_rain_runtime.one
+		end = acid_rain_action_quote_loop_end
+		value = acid_rain_action_quote_index
+		set_temp_variable = { acid_rain_cache_action = acid_rain_action_quote_index }
+		acid_rain_load_action_quote = yes
+		set_variable = { acid_rain_action_days_entries^acid_rain_action_quote_index = acid_rain_quote_days }
+		set_variable = { acid_rain_action_effect_days_entries^acid_rain_action_quote_index = acid_rain_quote_effect_days }
+		set_variable = { acid_rain_action_kind_entries^acid_rain_action_quote_index = acid_rain_quote_kind }
+		set_variable = { acid_rain_action_target_required_entries^acid_rain_action_quote_index = acid_rain_quote_target_required }
+		set_variable = { acid_rain_action_family_count_entries^acid_rain_action_quote_index = acid_rain_quote_family_count }
+		set_variable = { acid_rain_action_political_power_entries^acid_rain_action_quote_index = acid_rain_quote_political_power }
+		set_variable = { acid_rain_action_civ_entries^acid_rain_action_quote_index = acid_rain_quote_civ }
+		set_variable = { acid_rain_action_support_entries^acid_rain_action_quote_index = acid_rain_quote_support }
+		set_variable = { acid_rain_action_train_entries^acid_rain_action_quote_index = acid_rain_quote_train }
+		set_variable = { acid_rain_action_convoy_entries^acid_rain_action_quote_index = acid_rain_quote_convoy }
+		set_variable = { acid_rain_action_manpower_entries^acid_rain_action_quote_index = acid_rain_quote_manpower }
+		set_variable = { acid_rain_action_motorized_entries^acid_rain_action_quote_index = acid_rain_quote_motorized }
+		set_variable = { acid_rain_action_fuel_entries^acid_rain_action_quote_index = acid_rain_quote_fuel }
+			set_temp_variable = { acid_rain_ai_required_civ = constant:acid_rain_runtime.zero }
+		set_temp_variable = { acid_rain_ai_required_support = constant:acid_rain_runtime.zero }
+		set_temp_variable = { acid_rain_ai_required_train = constant:acid_rain_runtime.zero }
+		set_temp_variable = { acid_rain_ai_required_convoy = constant:acid_rain_runtime.zero }
+		set_temp_variable = { acid_rain_ai_required_manpower = constant:acid_rain_runtime.zero }
+		set_temp_variable = { acid_rain_ai_required_motorized = constant:acid_rain_runtime.zero }
+		set_temp_variable = { acid_rain_ai_required_fuel = constant:acid_rain_runtime.zero }
+		set_temp_variable = { acid_rain_ai_required_civ_trigger_floor = constant:acid_rain_runtime.zero }
+	acid_rain_compute_loaded_ai_reserve_requirements = yes
+		acid_rain_store_loaded_action_ai_reserve_status = yes
+	}
+	if = { limit = { is_ai = no } acid_rain_store_action_cost_display = yes }
+}
+
+# ---------------------------------------------------------------------------
+# Project transaction API
+# ---------------------------------------------------------------------------
+
+acid_rain_load_stored_action_quote = {
+	set_temp_variable = { acid_rain_quote_days = acid_rain_action_days_entries^acid_rain_selected_action }
+	set_temp_variable = { acid_rain_quote_effect_days = acid_rain_action_effect_days_entries^acid_rain_selected_action }
+	set_temp_variable = { acid_rain_quote_kind = acid_rain_action_kind_entries^acid_rain_selected_action }
+	set_temp_variable = { acid_rain_quote_target_required = acid_rain_action_target_required_entries^acid_rain_selected_action }
+	set_temp_variable = { acid_rain_quote_family_count = acid_rain_action_family_count_entries^acid_rain_selected_action }
+	set_temp_variable = { acid_rain_quote_political_power = acid_rain_action_political_power_entries^acid_rain_selected_action }
+	set_temp_variable = { acid_rain_quote_civ = acid_rain_action_civ_entries^acid_rain_selected_action }
+	set_temp_variable = { acid_rain_quote_support = acid_rain_action_support_entries^acid_rain_selected_action }
+	set_temp_variable = { acid_rain_quote_train = acid_rain_action_train_entries^acid_rain_selected_action }
+	set_temp_variable = { acid_rain_quote_convoy = acid_rain_action_convoy_entries^acid_rain_selected_action }
+	set_temp_variable = { acid_rain_quote_manpower = acid_rain_action_manpower_entries^acid_rain_selected_action }
+	set_temp_variable = { acid_rain_quote_motorized = acid_rain_action_motorized_entries^acid_rain_selected_action }
+	set_temp_variable = { acid_rain_quote_fuel = acid_rain_action_fuel_entries^acid_rain_selected_action }
+}
+
+acid_rain_debit_loaded_quote = {
+	set_temp_variable = { acid_rain_quote_payment_success = constant:acid_rain_runtime.zero }
+	set_temp_variable = { acid_rain_quote_paid_motorized_zero = constant:acid_rain_runtime.zero }
+	set_temp_variable = { acid_rain_quote_paid_motorized_one = constant:acid_rain_runtime.zero }
+	set_temp_variable = { acid_rain_quote_paid_political_power = constant:acid_rain_runtime.zero }
+	set_temp_variable = { acid_rain_quote_paid_support = constant:acid_rain_runtime.zero }
+	set_temp_variable = { acid_rain_quote_paid_train = constant:acid_rain_runtime.zero }
+	set_temp_variable = { acid_rain_quote_paid_convoy = constant:acid_rain_runtime.zero }
+	set_temp_variable = { acid_rain_quote_paid_fuel = constant:acid_rain_runtime.zero }
+	set_temp_variable = { acid_rain_quote_paid_manpower = constant:acid_rain_runtime.zero }
+	if = {
+		limit = { acid_rain_country_can_pay_quote = yes }
+		set_temp_variable = { acid_rain_trucks_before_zero = num_equipment@motorized_equipment_0 }
+		set_temp_variable = { acid_rain_trucks_before_one = num_equipment@motorized_equipment_1 }
+		set_temp_variable = { cbrn_motorized_stock_debit_requested = acid_rain_quote_motorized }
+		set_temp_variable = { cbrn_motorized_stock_debit_completed = constant:acid_rain_runtime.zero }
+		set_temp_variable = { cbrn_motorized_stock_debit_remaining = constant:acid_rain_runtime.zero }
+		cbrn_debit_motorized_stockpile_oldest_first = yes
+		set_temp_variable = { acid_rain_quote_paid_motorized_zero = acid_rain_trucks_before_zero }
+		subtract_from_temp_variable = { acid_rain_quote_paid_motorized_zero = num_equipment@motorized_equipment_0 }
+		set_temp_variable = { acid_rain_quote_paid_motorized_one = acid_rain_trucks_before_one }
+		subtract_from_temp_variable = { acid_rain_quote_paid_motorized_one = num_equipment@motorized_equipment_1 }
+		if = { limit = {
+			check_variable = { var = cbrn_motorized_stock_debit_remaining value = constant:acid_rain_runtime.zero compare = equals }
+			check_variable = { var = cbrn_motorized_stock_debit_completed value = acid_rain_quote_motorized compare = equals }
+		} set_temp_variable = { acid_rain_quote_payment_success = constant:acid_rain_runtime.one } }
+		if = { limit = { check_variable = { var = acid_rain_quote_payment_success value = constant:acid_rain_runtime.one compare = equals } check_variable = { var = acid_rain_quote_political_power value = constant:acid_rain_runtime.zero compare = greater_than } }
+			set_temp_variable = { universal_cost_payment_resource_kind = constant:universal_cost_resource_kind.political_power }
+			set_temp_variable = { universal_cost_payment_amount = acid_rain_quote_political_power }
+			set_temp_variable = { universal_cost_payment_result = constant:acid_rain_runtime.zero }
+			universal_cost_pay_component = yes
+			if = { limit = { check_variable = { var = universal_cost_payment_result value = constant:universal_cost_framework.result_success compare = equals } } set_temp_variable = { acid_rain_quote_paid_political_power = acid_rain_quote_political_power } }
+			else = { set_temp_variable = { acid_rain_quote_payment_success = constant:acid_rain_runtime.zero } }
+		}
+		if = { limit = { check_variable = { var = acid_rain_quote_payment_success value = constant:acid_rain_runtime.one compare = equals } check_variable = { var = acid_rain_quote_support value = constant:acid_rain_runtime.zero compare = greater_than } }
+			set_temp_variable = { universal_cost_payment_resource_kind = constant:universal_cost_resource_kind.support_equipment }
+			set_temp_variable = { universal_cost_payment_amount = acid_rain_quote_support }
+			set_temp_variable = { universal_cost_payment_result = constant:acid_rain_runtime.zero }
+			universal_cost_pay_component = yes
+			if = { limit = { check_variable = { var = universal_cost_payment_result value = constant:universal_cost_framework.result_success compare = equals } } set_temp_variable = { acid_rain_quote_paid_support = acid_rain_quote_support } }
+			else = { set_temp_variable = { acid_rain_quote_payment_success = constant:acid_rain_runtime.zero } }
+		}
+		if = { limit = { check_variable = { var = acid_rain_quote_payment_success value = constant:acid_rain_runtime.one compare = equals } check_variable = { var = acid_rain_quote_train value = constant:acid_rain_runtime.zero compare = greater_than } }
+			set_temp_variable = { universal_cost_payment_resource_kind = constant:universal_cost_resource_kind.train_equipment }
+			set_temp_variable = { universal_cost_payment_amount = acid_rain_quote_train }
+			set_temp_variable = { universal_cost_payment_result = constant:acid_rain_runtime.zero }
+			universal_cost_pay_component = yes
+			if = { limit = { check_variable = { var = universal_cost_payment_result value = constant:universal_cost_framework.result_success compare = equals } } set_temp_variable = { acid_rain_quote_paid_train = acid_rain_quote_train } }
+			else = { set_temp_variable = { acid_rain_quote_payment_success = constant:acid_rain_runtime.zero } }
+		}
+		if = { limit = { check_variable = { var = acid_rain_quote_payment_success value = constant:acid_rain_runtime.one compare = equals } check_variable = { var = acid_rain_quote_convoy value = constant:acid_rain_runtime.zero compare = greater_than } }
+			set_temp_variable = { universal_cost_payment_resource_kind = constant:universal_cost_resource_kind.convoy }
+			set_temp_variable = { universal_cost_payment_amount = acid_rain_quote_convoy }
+			set_temp_variable = { universal_cost_payment_result = constant:acid_rain_runtime.zero }
+			universal_cost_pay_component = yes
+			if = { limit = { check_variable = { var = universal_cost_payment_result value = constant:universal_cost_framework.result_success compare = equals } } set_temp_variable = { acid_rain_quote_paid_convoy = acid_rain_quote_convoy } }
+			else = { set_temp_variable = { acid_rain_quote_payment_success = constant:acid_rain_runtime.zero } }
+		}
+		if = { limit = { check_variable = { var = acid_rain_quote_payment_success value = constant:acid_rain_runtime.one compare = equals } check_variable = { var = acid_rain_quote_fuel value = constant:acid_rain_runtime.zero compare = greater_than } }
+			set_temp_variable = { universal_cost_payment_resource_kind = constant:universal_cost_resource_kind.fuel }
+			set_temp_variable = { universal_cost_payment_amount = acid_rain_quote_fuel }
+			set_temp_variable = { universal_cost_payment_result = constant:acid_rain_runtime.zero }
+			universal_cost_pay_component = yes
+			if = { limit = { check_variable = { var = universal_cost_payment_result value = constant:universal_cost_framework.result_success compare = equals } } set_temp_variable = { acid_rain_quote_paid_fuel = acid_rain_quote_fuel } }
+			else = { set_temp_variable = { acid_rain_quote_payment_success = constant:acid_rain_runtime.zero } }
+		}
+		if = { limit = { check_variable = { var = acid_rain_quote_payment_success value = constant:acid_rain_runtime.one compare = equals } check_variable = { var = acid_rain_quote_manpower value = constant:acid_rain_runtime.zero compare = greater_than } }
+			set_temp_variable = { universal_cost_payment_resource_kind = constant:universal_cost_resource_kind.manpower }
+			set_temp_variable = { universal_cost_payment_amount = acid_rain_quote_manpower }
+			set_temp_variable = { universal_cost_payment_result = constant:acid_rain_runtime.zero }
+			universal_cost_pay_component = yes
+			if = { limit = { check_variable = { var = universal_cost_payment_result value = constant:universal_cost_framework.result_success compare = equals } } set_temp_variable = { acid_rain_quote_paid_manpower = acid_rain_quote_manpower } }
+			else = { set_temp_variable = { acid_rain_quote_payment_success = constant:acid_rain_runtime.zero } }
+		}
+		if = { limit = { check_variable = { var = acid_rain_quote_payment_success value = constant:acid_rain_runtime.zero compare = equals } }
+			if = { limit = { check_variable = { var = acid_rain_quote_paid_political_power value = constant:acid_rain_runtime.zero compare = greater_than } }
+				set_temp_variable = { universal_cost_payment_resource_kind = constant:universal_cost_resource_kind.political_power }
+				set_temp_variable = { universal_cost_payment_amount = acid_rain_quote_paid_political_power }
+				set_temp_variable = { universal_cost_credit_result = constant:acid_rain_runtime.zero }
+				universal_cost_credit_component = yes
+			}
+			if = { limit = { check_variable = { var = acid_rain_quote_paid_support value = constant:acid_rain_runtime.zero compare = greater_than } }
+				set_temp_variable = { universal_cost_payment_resource_kind = constant:universal_cost_resource_kind.support_equipment }
+				set_temp_variable = { universal_cost_payment_amount = acid_rain_quote_paid_support }
+				set_temp_variable = { universal_cost_credit_result = constant:acid_rain_runtime.zero }
+				universal_cost_credit_component = yes
+			}
+			if = { limit = { check_variable = { var = acid_rain_quote_paid_train value = constant:acid_rain_runtime.zero compare = greater_than } }
+				set_temp_variable = { universal_cost_payment_resource_kind = constant:universal_cost_resource_kind.train_equipment }
+				set_temp_variable = { universal_cost_payment_amount = acid_rain_quote_paid_train }
+				set_temp_variable = { universal_cost_credit_result = constant:acid_rain_runtime.zero }
+				universal_cost_credit_component = yes
+			}
+			if = { limit = { check_variable = { var = acid_rain_quote_paid_convoy value = constant:acid_rain_runtime.zero compare = greater_than } }
+				set_temp_variable = { universal_cost_payment_resource_kind = constant:universal_cost_resource_kind.convoy }
+				set_temp_variable = { universal_cost_payment_amount = acid_rain_quote_paid_convoy }
+				set_temp_variable = { universal_cost_credit_result = constant:acid_rain_runtime.zero }
+				universal_cost_credit_component = yes
+			}
+			if = { limit = { check_variable = { var = acid_rain_quote_paid_fuel value = constant:acid_rain_runtime.zero compare = greater_than } }
+				set_temp_variable = { universal_cost_payment_resource_kind = constant:universal_cost_resource_kind.fuel }
+				set_temp_variable = { universal_cost_payment_amount = acid_rain_quote_paid_fuel }
+				set_temp_variable = { universal_cost_credit_result = constant:acid_rain_runtime.zero }
+				universal_cost_credit_component = yes
+			}
+			if = { limit = { check_variable = { var = acid_rain_quote_paid_manpower value = constant:acid_rain_runtime.zero compare = greater_than } }
+				set_temp_variable = { universal_cost_payment_resource_kind = constant:universal_cost_resource_kind.manpower }
+				set_temp_variable = { universal_cost_payment_amount = acid_rain_quote_paid_manpower }
+				set_temp_variable = { universal_cost_credit_result = constant:acid_rain_runtime.zero }
+				universal_cost_credit_component = yes
+			}
+			if = { limit = { check_variable = { var = acid_rain_quote_paid_motorized_zero value = constant:acid_rain_runtime.zero compare = greater_than } }
+				set_temp_variable = { universal_cost_payment_resource_kind = constant:universal_cost_resource_kind.motorized_equipment_0 }
+				set_temp_variable = { universal_cost_payment_amount = acid_rain_quote_paid_motorized_zero }
+				set_temp_variable = { universal_cost_credit_result = constant:acid_rain_runtime.zero }
+				universal_cost_credit_component = yes
+			}
+			if = { limit = { check_variable = { var = acid_rain_quote_paid_motorized_one value = constant:acid_rain_runtime.zero compare = greater_than } }
+				set_temp_variable = { universal_cost_payment_resource_kind = constant:universal_cost_resource_kind.motorized_equipment_1 }
+				set_temp_variable = { universal_cost_payment_amount = acid_rain_quote_paid_motorized_one }
+				set_temp_variable = { universal_cost_credit_result = constant:acid_rain_runtime.zero }
+				universal_cost_credit_component = yes
+			}
+		}
+	}
+}
+
+acid_rain_add_project_factory_commitment = {
+	if = { limit = { check_variable = { var = acid_rain_selected_project value = constant:acid_rain_project.shelter compare = equals } check_variable = { var = acid_rain_quote_civ value = constant:acid_rain_runtime.one compare = equals } } add_dynamic_modifier = { modifier = acid_rain_project_commitment_1_one } }
+	if = { limit = { check_variable = { var = acid_rain_selected_project value = constant:acid_rain_project.shelter compare = equals } check_variable = { var = acid_rain_quote_civ value = constant:acid_rain_runtime.two compare = equals } } add_dynamic_modifier = { modifier = acid_rain_project_commitment_1_two } }
+	if = { limit = { check_variable = { var = acid_rain_selected_project value = constant:acid_rain_project.shelter compare = equals } check_variable = { var = acid_rain_quote_civ value = constant:acid_rain_runtime.three compare = equals } } add_dynamic_modifier = { modifier = acid_rain_project_commitment_1_three } }
+	if = { limit = { check_variable = { var = acid_rain_selected_project value = constant:acid_rain_project.water compare = equals } check_variable = { var = acid_rain_quote_civ value = constant:acid_rain_runtime.one compare = equals } } add_dynamic_modifier = { modifier = acid_rain_project_commitment_2_one } }
+	if = { limit = { check_variable = { var = acid_rain_selected_project value = constant:acid_rain_project.water compare = equals } check_variable = { var = acid_rain_quote_civ value = constant:acid_rain_runtime.two compare = equals } } add_dynamic_modifier = { modifier = acid_rain_project_commitment_2_two } }
+	if = { limit = { check_variable = { var = acid_rain_selected_project value = constant:acid_rain_project.water compare = equals } check_variable = { var = acid_rain_quote_civ value = constant:acid_rain_runtime.three compare = equals } } add_dynamic_modifier = { modifier = acid_rain_project_commitment_2_three } }
+	if = { limit = { check_variable = { var = acid_rain_selected_project value = constant:acid_rain_project.medical compare = equals } check_variable = { var = acid_rain_quote_civ value = constant:acid_rain_runtime.one compare = equals } } add_dynamic_modifier = { modifier = acid_rain_project_commitment_3_one } }
+	if = { limit = { check_variable = { var = acid_rain_selected_project value = constant:acid_rain_project.medical compare = equals } check_variable = { var = acid_rain_quote_civ value = constant:acid_rain_runtime.two compare = equals } } add_dynamic_modifier = { modifier = acid_rain_project_commitment_3_two } }
+	if = { limit = { check_variable = { var = acid_rain_selected_project value = constant:acid_rain_project.medical compare = equals } check_variable = { var = acid_rain_quote_civ value = constant:acid_rain_runtime.three compare = equals } } add_dynamic_modifier = { modifier = acid_rain_project_commitment_3_three } }
+	if = { limit = { check_variable = { var = acid_rain_selected_project value = constant:acid_rain_project.transport compare = equals } check_variable = { var = acid_rain_quote_civ value = constant:acid_rain_runtime.one compare = equals } } add_dynamic_modifier = { modifier = acid_rain_project_commitment_4_one } }
+	if = { limit = { check_variable = { var = acid_rain_selected_project value = constant:acid_rain_project.transport compare = equals } check_variable = { var = acid_rain_quote_civ value = constant:acid_rain_runtime.two compare = equals } } add_dynamic_modifier = { modifier = acid_rain_project_commitment_4_two } }
+	if = { limit = { check_variable = { var = acid_rain_selected_project value = constant:acid_rain_project.transport compare = equals } check_variable = { var = acid_rain_quote_civ value = constant:acid_rain_runtime.three compare = equals } } add_dynamic_modifier = { modifier = acid_rain_project_commitment_4_three } }
+}
+
+acid_rain_remove_project_factory_commitment = {
+	if = { limit = { check_variable = { var = acid_rain_selected_project value = constant:acid_rain_project.shelter compare = equals } check_variable = { var = acid_rain_project_civ_entries^acid_rain_selected_project value = constant:acid_rain_runtime.one compare = equals } } remove_dynamic_modifier = { modifier = acid_rain_project_commitment_1_one } }
+	if = { limit = { check_variable = { var = acid_rain_selected_project value = constant:acid_rain_project.shelter compare = equals } check_variable = { var = acid_rain_project_civ_entries^acid_rain_selected_project value = constant:acid_rain_runtime.two compare = equals } } remove_dynamic_modifier = { modifier = acid_rain_project_commitment_1_two } }
+	if = { limit = { check_variable = { var = acid_rain_selected_project value = constant:acid_rain_project.shelter compare = equals } check_variable = { var = acid_rain_project_civ_entries^acid_rain_selected_project value = constant:acid_rain_runtime.three compare = equals } } remove_dynamic_modifier = { modifier = acid_rain_project_commitment_1_three } }
+	if = { limit = { check_variable = { var = acid_rain_selected_project value = constant:acid_rain_project.water compare = equals } check_variable = { var = acid_rain_project_civ_entries^acid_rain_selected_project value = constant:acid_rain_runtime.one compare = equals } } remove_dynamic_modifier = { modifier = acid_rain_project_commitment_2_one } }
+	if = { limit = { check_variable = { var = acid_rain_selected_project value = constant:acid_rain_project.water compare = equals } check_variable = { var = acid_rain_project_civ_entries^acid_rain_selected_project value = constant:acid_rain_runtime.two compare = equals } } remove_dynamic_modifier = { modifier = acid_rain_project_commitment_2_two } }
+	if = { limit = { check_variable = { var = acid_rain_selected_project value = constant:acid_rain_project.water compare = equals } check_variable = { var = acid_rain_project_civ_entries^acid_rain_selected_project value = constant:acid_rain_runtime.three compare = equals } } remove_dynamic_modifier = { modifier = acid_rain_project_commitment_2_three } }
+	if = { limit = { check_variable = { var = acid_rain_selected_project value = constant:acid_rain_project.medical compare = equals } check_variable = { var = acid_rain_project_civ_entries^acid_rain_selected_project value = constant:acid_rain_runtime.one compare = equals } } remove_dynamic_modifier = { modifier = acid_rain_project_commitment_3_one } }
+	if = { limit = { check_variable = { var = acid_rain_selected_project value = constant:acid_rain_project.medical compare = equals } check_variable = { var = acid_rain_project_civ_entries^acid_rain_selected_project value = constant:acid_rain_runtime.two compare = equals } } remove_dynamic_modifier = { modifier = acid_rain_project_commitment_3_two } }
+	if = { limit = { check_variable = { var = acid_rain_selected_project value = constant:acid_rain_project.medical compare = equals } check_variable = { var = acid_rain_project_civ_entries^acid_rain_selected_project value = constant:acid_rain_runtime.three compare = equals } } remove_dynamic_modifier = { modifier = acid_rain_project_commitment_3_three } }
+	if = { limit = { check_variable = { var = acid_rain_selected_project value = constant:acid_rain_project.transport compare = equals } check_variable = { var = acid_rain_project_civ_entries^acid_rain_selected_project value = constant:acid_rain_runtime.one compare = equals } } remove_dynamic_modifier = { modifier = acid_rain_project_commitment_4_one } }
+	if = { limit = { check_variable = { var = acid_rain_selected_project value = constant:acid_rain_project.transport compare = equals } check_variable = { var = acid_rain_project_civ_entries^acid_rain_selected_project value = constant:acid_rain_runtime.two compare = equals } } remove_dynamic_modifier = { modifier = acid_rain_project_commitment_4_two } }
+	if = { limit = { check_variable = { var = acid_rain_selected_project value = constant:acid_rain_project.transport compare = equals } check_variable = { var = acid_rain_project_civ_entries^acid_rain_selected_project value = constant:acid_rain_runtime.three compare = equals } } remove_dynamic_modifier = { modifier = acid_rain_project_commitment_4_three } }
+}
+
+acid_rain_start_project = {
+	if = {
+		limit = {
+			acid_rain_country_has_runtime_record = yes
+			acid_rain_country_has_free_project_slot = yes
+			acid_rain_country_action_is_not_stale = yes
+			check_variable = { var = acid_rain_project_active_entries^acid_rain_selected_project value = constant:acid_rain_runtime.zero compare = equals }
+		}
+		set_temp_variable = { acid_rain_selected_tier = constant:acid_rain_runtime.one }
+		if = { limit = { check_variable = { var = acid_rain_selected_project value = constant:acid_rain_project.shelter compare = equals } } set_temp_variable = { acid_rain_selected_tier = acid_rain_shelter_tier } }
+		if = { limit = { check_variable = { var = acid_rain_selected_project value = constant:acid_rain_project.water compare = equals } } set_temp_variable = { acid_rain_selected_tier = acid_rain_water_tier } }
+		if = { limit = { check_variable = { var = acid_rain_selected_project value = constant:acid_rain_project.medical compare = equals } } set_temp_variable = { acid_rain_selected_tier = acid_rain_medical_tier } }
+		if = { limit = { check_variable = { var = acid_rain_selected_project value = constant:acid_rain_project.transport compare = equals } } set_temp_variable = { acid_rain_selected_tier = acid_rain_transport_tier } }
+		add_to_temp_variable = { acid_rain_selected_tier = constant:acid_rain_runtime.one }
+	set_temp_variable = { acid_rain_quote_days = constant:acid_rain_runtime.zero }
+		set_temp_variable = { acid_rain_quote_duration_days = constant:acid_rain_runtime.zero }
+		set_temp_variable = { acid_rain_quote_civ = constant:acid_rain_runtime.zero }
+		set_temp_variable = { acid_rain_quote_civilian_factories = constant:acid_rain_runtime.zero }
+		set_temp_variable = { acid_rain_quote_political_power = constant:acid_rain_runtime.zero }
+		set_temp_variable = { acid_rain_quote_support = constant:acid_rain_runtime.zero }
+		set_temp_variable = { acid_rain_quote_train = constant:acid_rain_runtime.zero }
+		set_temp_variable = { acid_rain_quote_convoy = constant:acid_rain_runtime.zero }
+		set_temp_variable = { acid_rain_quote_manpower = constant:acid_rain_runtime.zero }
+		set_temp_variable = { acid_rain_quote_motorized = constant:acid_rain_runtime.zero }
+		set_temp_variable = { acid_rain_quote_fuel = constant:acid_rain_runtime.zero }
+		set_temp_variable = { acid_rain_quote_effect_days = constant:acid_rain_runtime.zero }
+		set_temp_variable = { acid_rain_quote_kind = constant:acid_rain_runtime.zero }
+		set_temp_variable = { acid_rain_quote_target_required = constant:acid_rain_runtime.zero }
+		set_temp_variable = { acid_rain_quote_family_count = constant:acid_rain_runtime.zero }
+		set_temp_variable = { acid_rain_quote_valid = constant:acid_rain_runtime.zero }
+		set_temp_variable = { acid_rain_quote_target_valid = constant:acid_rain_runtime.zero }
+		set_temp_variable = { acid_rain_quote_target_is_island = constant:acid_rain_runtime.zero }
+		set_temp_variable = { acid_rain_component_quote = constant:acid_rain_runtime.zero }
+		set_temp_variable = { acid_rain_cost_quote_mode = constant:acid_rain_runtime.one }
+		set_temp_variable = { acid_rain_cost_quote_row = acid_rain_selected_project }
+		set_temp_variable = { acid_rain_quote_use_saved_target = constant:acid_rain_runtime.zero }
+		if = { limit = { acid_rain_prepare_current_row_quote = yes } }
+			set_temp_variable = { acid_rain_ai_required_civ = constant:acid_rain_runtime.zero }
+		set_temp_variable = { acid_rain_ai_required_support = constant:acid_rain_runtime.zero }
+		set_temp_variable = { acid_rain_ai_required_train = constant:acid_rain_runtime.zero }
+		set_temp_variable = { acid_rain_ai_required_convoy = constant:acid_rain_runtime.zero }
+		set_temp_variable = { acid_rain_ai_required_manpower = constant:acid_rain_runtime.zero }
+		set_temp_variable = { acid_rain_ai_required_motorized = constant:acid_rain_runtime.zero }
+		set_temp_variable = { acid_rain_ai_required_fuel = constant:acid_rain_runtime.zero }
+		set_temp_variable = { acid_rain_ai_required_civ_trigger_floor = constant:acid_rain_runtime.zero }
+		acid_rain_compute_loaded_ai_reserve_requirements = yes
+		if = {
+			limit = {
+				check_variable = { var = acid_rain_quote_days value = constant:acid_rain_runtime.zero compare = greater_than }
+				acid_rain_country_can_pay_quote = yes
+				OR = { is_ai = no acid_rain_country_ai_reserves_allow_loaded_quote = yes }
+			}
+			set_temp_variable = { acid_rain_quote_payment_success = constant:acid_rain_runtime.zero }
+			acid_rain_debit_loaded_quote = yes
+			if = { limit = { check_variable = { var = acid_rain_quote_payment_success value = constant:acid_rain_runtime.one compare = equals } }
+			acid_rain_add_project_factory_commitment = yes
+			set_variable = { acid_rain_project_active_entries^acid_rain_selected_project = constant:acid_rain_runtime.one }
+			set_variable = { acid_rain_project_tier_entries^acid_rain_selected_project = acid_rain_selected_tier }
+			set_variable = { acid_rain_project_end_day_entries^acid_rain_selected_project = global.date }
+			set_temp_variable = { chaosx_date_days = acid_rain_quote_days }
+			set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+			chaosx_convert_days_to_date_offset = yes
+			add_to_variable = { acid_rain_project_end_day_entries^acid_rain_selected_project = chaosx_date_offset }
+			set_variable = { acid_rain_project_civ_entries^acid_rain_selected_project = acid_rain_quote_civ }
+			set_variable = { acid_rain_project_manpower_entries^acid_rain_selected_project = acid_rain_quote_manpower }
+			set_variable = { acid_rain_project_generation_entries^acid_rain_selected_project = global.acid_rain_generation_id }
+			add_to_variable = { acid_rain_active_projects = constant:acid_rain_runtime.loop_increment }
+			add_to_variable = { acid_rain_committed_civilian_factories = acid_rain_quote_civ }
+			add_to_variable = { acid_rain_committed_manpower = acid_rain_quote_manpower }
+			if = { limit = { check_variable = { var = acid_rain_selected_project value = constant:acid_rain_project.shelter compare = equals } } set_country_flag = acid_rain_project_shelter_active }
+			if = { limit = { check_variable = { var = acid_rain_selected_project value = constant:acid_rain_project.water compare = equals } } set_country_flag = acid_rain_project_water_active }
+			if = { limit = { check_variable = { var = acid_rain_selected_project value = constant:acid_rain_project.medical compare = equals } } set_country_flag = acid_rain_project_medical_active }
+			if = { limit = { check_variable = { var = acid_rain_selected_project value = constant:acid_rain_project.transport compare = equals } } set_country_flag = acid_rain_project_transport_active }
+			if = { limit = { check_variable = { var = acid_rain_selected_project value = constant:acid_rain_project.shelter compare = equals } } country_event = { id = chaosx.nr33.30 days = acid_rain_quote_days } }
+			if = { limit = { check_variable = { var = acid_rain_selected_project value = constant:acid_rain_project.water compare = equals } } country_event = { id = chaosx.nr33.31 days = acid_rain_quote_days } }
+			if = { limit = { check_variable = { var = acid_rain_selected_project value = constant:acid_rain_project.medical compare = equals } } country_event = { id = chaosx.nr33.32 days = acid_rain_quote_days } }
+			if = { limit = { check_variable = { var = acid_rain_selected_project value = constant:acid_rain_project.transport compare = equals } } country_event = { id = chaosx.nr33.33 days = acid_rain_quote_days } }
+			}
+		}
+	}
+}
+
+acid_rain_apply_project_preparedness_gain = {
+	if = { limit = { check_variable = { var = acid_rain_selected_project value = constant:acid_rain_project.shelter compare = equals } } add_to_variable = { acid_rain_preparedness = constant:acid_rain_preparedness.shelter_gain } }
+	if = { limit = { check_variable = { var = acid_rain_selected_project value = constant:acid_rain_project.water compare = equals } } add_to_variable = { acid_rain_preparedness = constant:acid_rain_preparedness.water_gain } }
+	if = { limit = { check_variable = { var = acid_rain_selected_project value = constant:acid_rain_project.medical compare = equals } } add_to_variable = { acid_rain_preparedness = constant:acid_rain_preparedness.medical_gain } }
+	if = { limit = { check_variable = { var = acid_rain_selected_project value = constant:acid_rain_project.transport compare = equals } } add_to_variable = { acid_rain_preparedness = constant:acid_rain_preparedness.transport_gain } }
+	clamp_variable = { var = acid_rain_preparedness min = constant:acid_rain_preparedness.minimum max = constant:acid_rain_preparedness.maximum }
+}
+
+acid_rain_complete_project = {
+	if = {
+		limit = {
+			check_variable = { var = acid_rain_project_active_entries^acid_rain_selected_project value = constant:acid_rain_runtime.one compare = equals }
+			check_variable = { var = acid_rain_project_generation_entries^acid_rain_selected_project value = global.acid_rain_generation_id compare = equals }
+			check_variable = { var = global.date value = acid_rain_project_end_day_entries^acid_rain_selected_project compare = greater_than_or_equals }
+		}
+		acid_rain_remove_project_factory_commitment = yes
+		set_temp_variable = { acid_rain_project_reserved_manpower = acid_rain_project_manpower_entries^acid_rain_selected_project }
+		set_temp_variable = { acid_rain_project_release = acid_rain_project_reserved_manpower }
+		multiply_temp_variable = { acid_rain_project_release = constant:acid_rain_runtime.negative_one }
+		add_to_variable = { acid_rain_committed_manpower = acid_rain_project_release }
+		add_manpower = acid_rain_project_reserved_manpower
+		set_temp_variable = { acid_rain_project_reserved_civ = acid_rain_project_civ_entries^acid_rain_selected_project }
+		set_temp_variable = { acid_rain_negative_cost = acid_rain_project_reserved_civ }
+		multiply_temp_variable = { acid_rain_negative_cost = constant:acid_rain_runtime.negative_one }
+		add_to_variable = { acid_rain_committed_civilian_factories = acid_rain_negative_cost }
+		acid_rain_apply_project_preparedness_gain = yes
+		if = { limit = { check_variable = { var = acid_rain_selected_project value = constant:acid_rain_project.shelter compare = equals } } add_to_variable = { acid_rain_shelter_tier = constant:acid_rain_runtime.one } clr_country_flag = acid_rain_project_shelter_active }
+		if = { limit = { check_variable = { var = acid_rain_selected_project value = constant:acid_rain_project.water compare = equals } } add_to_variable = { acid_rain_water_tier = constant:acid_rain_runtime.one } clr_country_flag = acid_rain_project_water_active }
+		if = { limit = { check_variable = { var = acid_rain_selected_project value = constant:acid_rain_project.medical compare = equals } } add_to_variable = { acid_rain_medical_tier = constant:acid_rain_runtime.one } clr_country_flag = acid_rain_project_medical_active }
+		if = { limit = { check_variable = { var = acid_rain_selected_project value = constant:acid_rain_project.transport compare = equals } } add_to_variable = { acid_rain_transport_tier = constant:acid_rain_runtime.one } clr_country_flag = acid_rain_project_transport_active }
+		if = { limit = { check_variable = { var = acid_rain_active_projects value = constant:acid_rain_runtime.zero compare = greater_than } } subtract_from_variable = { acid_rain_active_projects = constant:acid_rain_runtime.loop_increment } }
+		acid_rain_033_achievement_record_runtime_project = yes
+		set_variable = { acid_rain_project_active_entries^acid_rain_selected_project = constant:acid_rain_runtime.zero }
+		set_variable = { acid_rain_project_civ_entries^acid_rain_selected_project = constant:acid_rain_runtime.zero }
+		set_variable = { acid_rain_project_manpower_entries^acid_rain_selected_project = constant:acid_rain_runtime.zero }
+		set_variable = { acid_rain_project_end_day_entries^acid_rain_selected_project = constant:acid_rain_runtime.zero }
+		acid_rain_refresh_country_project_quotes = yes
+		acid_rain_refresh_country_action_quotes = yes
+		set_country_flag = acid_rain_preparation_receipt
+	}
+}
+
+acid_rain_cancel_project = {
+	if = { limit = { check_variable = { var = acid_rain_project_active_entries^acid_rain_selected_project value = constant:acid_rain_runtime.one compare = equals } }
+		acid_rain_remove_project_factory_commitment = yes
+		set_temp_variable = { acid_rain_project_reserved_manpower = acid_rain_project_manpower_entries^acid_rain_selected_project }
+		set_temp_variable = { acid_rain_project_release = acid_rain_project_reserved_manpower }
+		multiply_temp_variable = { acid_rain_project_release = constant:acid_rain_runtime.negative_one }
+		add_to_variable = { acid_rain_committed_manpower = acid_rain_project_release }
+		add_manpower = acid_rain_project_reserved_manpower
+		set_temp_variable = { acid_rain_project_reserved_civ = acid_rain_project_civ_entries^acid_rain_selected_project }
+		multiply_temp_variable = { acid_rain_project_reserved_civ = constant:acid_rain_runtime.negative_one }
+		add_to_variable = { acid_rain_committed_civilian_factories = acid_rain_project_reserved_civ }
+		if = { limit = { check_variable = { var = acid_rain_active_projects value = constant:acid_rain_runtime.zero compare = greater_than } } subtract_from_variable = { acid_rain_active_projects = constant:acid_rain_runtime.loop_increment } }
+		set_variable = { acid_rain_project_active_entries^acid_rain_selected_project = constant:acid_rain_runtime.zero }
+		set_variable = { acid_rain_project_civ_entries^acid_rain_selected_project = constant:acid_rain_runtime.zero }
+		set_variable = { acid_rain_project_manpower_entries^acid_rain_selected_project = constant:acid_rain_runtime.zero }
+		set_variable = { acid_rain_project_generation_entries^acid_rain_selected_project = constant:acid_rain_runtime.zero }
+		set_variable = { acid_rain_project_end_day_entries^acid_rain_selected_project = constant:acid_rain_runtime.zero }
+		set_variable = { acid_rain_project_target_tier_entries^acid_rain_selected_project = constant:acid_rain_runtime.zero }
+		if = { limit = { check_variable = { var = acid_rain_selected_project value = constant:acid_rain_project.shelter compare = equals } } clr_country_flag = acid_rain_project_shelter_active }
+		if = { limit = { check_variable = { var = acid_rain_selected_project value = constant:acid_rain_project.water compare = equals } } clr_country_flag = acid_rain_project_water_active }
+		if = { limit = { check_variable = { var = acid_rain_selected_project value = constant:acid_rain_project.medical compare = equals } } clr_country_flag = acid_rain_project_medical_active }
+		if = { limit = { check_variable = { var = acid_rain_selected_project value = constant:acid_rain_project.transport compare = equals } } clr_country_flag = acid_rain_project_transport_active }
+	}
+}
+
+# COUNTRY SCOPE. Demobilization settles every unfinished permanent project
+# through the normal cancellation path, clears temporary national fatigue and
+# grants a bounded repair-speed bonus while the crews return to normal work.
+# Consumed equipment and political power remain spent.
+acid_rain_demobilize_emergency_apparatus = {
+	set_temp_variable = { acid_rain_demobilize_emergency_apparatus_loop_1_break = constant:acid_rain_runtime.zero }
+	for_loop_effect = {
+		break = acid_rain_demobilize_emergency_apparatus_loop_1_break
+		start = constant:acid_rain_runtime.one
+		end = constant:acid_rain_runtime.five
+		value = acid_rain_demobilize_project_index
+		set_temp_variable = { acid_rain_selected_project = acid_rain_demobilize_project_index }
+		acid_rain_cancel_project = yes
+	}
+	clr_country_flag = acid_rain_medical_fatigue
+	set_temp_variable = { acid_rain_demobilized_days = constant:acid_rain_preparedness.demobilize_recovery_days }
+	set_country_flag = { flag = acid_rain_demobilized days = acid_rain_demobilized_days }
+	add_dynamic_modifier = { modifier = acid_rain_demobilized_recovery days = acid_rain_demobilized_days }
+}
+
+# ---------------------------------------------------------------------------
+# Response operations
+# ---------------------------------------------------------------------------
+# Shelter Protocols, Water Distribution, Medical Surge, Reroute Transport and
+# demobilization run as national operations, one per family at a time, in the
+# acid_rain_op_*_entries rows indexed by acid_rain_action.family_*.
+# Evacuations and recovery work run as state operations, one per state, held
+# on the state itself and listed in the owner's acid_rain_op_states array.
+# acid_rain_evacuations_active and acid_rain_recovery_ops_active count the
+# operations in progress against the band caps.
+# Every operation keeps its own paid reservation, schedules its own completion
+# callback and is released exactly once by completion, interruption or cleanup.
+# Completion, release and binding effects never read ROOT, so they run from
+# callbacks and participant loops alike; only acid_rain_start_action expects
+# the deciding country as ROOT.
+
+# COUNTRY SCOPE. Creates empty operation rows for a new country record.
+acid_rain_initialize_operation_rows = {
+	set_temp_variable = { acid_rain_array_size = constant:acid_rain_action.family_rows }
+	clear_array = acid_rain_op_action_entries
+	resize_array = { array = acid_rain_op_action_entries size = acid_rain_array_size }
+	clear_array = acid_rain_op_end_day_entries
+	resize_array = { array = acid_rain_op_end_day_entries size = acid_rain_array_size }
+	clear_array = acid_rain_op_generation_entries
+	resize_array = { array = acid_rain_op_generation_entries size = acid_rain_array_size }
+	clear_array = acid_rain_op_manpower_entries
+	resize_array = { array = acid_rain_op_manpower_entries size = acid_rain_array_size }
+	clear_array = acid_rain_op_civ_entries
+	resize_array = { array = acid_rain_op_civ_entries size = acid_rain_array_size }
+	clear_array = acid_rain_op_effect_days_entries
+	resize_array = { array = acid_rain_op_effect_days_entries size = acid_rain_array_size }
+	clear_array = acid_rain_op_key_entries
+	resize_array = { array = acid_rain_op_key_entries size = acid_rain_array_size }
+	clear_array = acid_rain_op_start_day_entries
+	resize_array = { array = acid_rain_op_start_day_entries size = acid_rain_array_size }
+	clear_array = acid_rain_op_visit_entries
+	resize_array = { array = acid_rain_op_visit_entries size = acid_rain_array_size }
+	clear_array = acid_rain_op_region_entries
+	resize_array = { array = acid_rain_op_region_entries size = acid_rain_array_size }
+	clear_array = acid_rain_op_front_entries
+	resize_array = { array = acid_rain_op_front_entries size = acid_rain_array_size }
+	clear_array = acid_rain_op_warning_day_entries
+	resize_array = { array = acid_rain_op_warning_day_entries size = acid_rain_array_size }
+	clear_array = acid_rain_op_states
+	set_variable = { acid_rain_evacuations_active = constant:acid_rain_runtime.zero }
+	set_variable = { acid_rain_recovery_ops_active = constant:acid_rain_runtime.zero }
+	set_variable = { acid_rain_action_civ_committed = constant:acid_rain_runtime.zero }
+	set_variable = { acid_rain_evacuation_cap = constant:acid_rain_action.evacuation_cap_fragile }
+	set_variable = { acid_rain_recovery_cap = constant:acid_rain_action.recovery_cap_fragile }
+	clr_country_flag = acid_rain_national_action_active
+}
+
+# COUNTRY SCOPE. Maps acid_rain_selected_action to its national family.
+# Output: temporary acid_rain_op_family, zero for evacuations and recovery.
+# The consuming caller declares its output before this helper returns.
+acid_rain_resolve_operation_family = {
+	set_temp_variable = { acid_rain_op_family = constant:acid_rain_runtime.zero }
+	if = { limit = { check_variable = { var = acid_rain_selected_action value = constant:acid_rain_action.urgent_shelter compare = equals } } set_temp_variable = { acid_rain_op_family = constant:acid_rain_action.family_shelter } }
+	else_if = { limit = { check_variable = { var = acid_rain_selected_action value = constant:acid_rain_action.urgent_water_land compare = equals } } set_temp_variable = { acid_rain_op_family = constant:acid_rain_action.family_water } }
+	else_if = { limit = { check_variable = { var = acid_rain_selected_action value = constant:acid_rain_action.urgent_water_island compare = equals } } set_temp_variable = { acid_rain_op_family = constant:acid_rain_action.family_water } }
+	else_if = { limit = { check_variable = { var = acid_rain_selected_action value = constant:acid_rain_action.urgent_medical compare = equals } } set_temp_variable = { acid_rain_op_family = constant:acid_rain_action.family_medical } }
+	else_if = { limit = { check_variable = { var = acid_rain_selected_action value = constant:acid_rain_action.urgent_transport compare = equals } } set_temp_variable = { acid_rain_op_family = constant:acid_rain_action.family_transport } }
+	else_if = { limit = { check_variable = { var = acid_rain_selected_action value = constant:acid_rain_action.recovery_demobilize compare = equals } } set_temp_variable = { acid_rain_op_family = constant:acid_rain_action.family_demobilize } }
+}
+
+# COUNTRY SCOPE. Keeps the aggregate operation flag, the civilian factory
+# commitment modifier and the category gate in step with the operation rows.
+acid_rain_refresh_operation_state = {
+	set_temp_variable = { acid_rain_running_operations = acid_rain_evacuations_active }
+	add_to_temp_variable = { acid_rain_running_operations = acid_rain_recovery_ops_active }
+	set_temp_variable = { acid_rain_refresh_operation_state_loop_1_break = constant:acid_rain_runtime.zero }
+	for_loop_effect = {
+		break = acid_rain_refresh_operation_state_loop_1_break
+		start = constant:acid_rain_runtime.one
+		end = constant:acid_rain_action.family_rows
+		value = acid_rain_op_scan_family
+		if = {
+			limit = { check_variable = { var = acid_rain_op_action_entries^acid_rain_op_scan_family value = constant:acid_rain_runtime.zero compare = greater_than } }
+			add_to_temp_variable = { acid_rain_running_operations = constant:acid_rain_runtime.loop_increment }
+		}
+	}
+	if = {
+		limit = { check_variable = { var = acid_rain_running_operations value = constant:acid_rain_runtime.zero compare = greater_than } }
+		set_country_flag = acid_rain_national_action_active
+	}
+	else = { clr_country_flag = acid_rain_national_action_active }
+	clamp_variable = { var = acid_rain_action_civ_committed min = constant:acid_rain_runtime.zero }
+	if = {
+		limit = { check_variable = { var = acid_rain_action_civ_committed value = constant:acid_rain_runtime.zero compare = greater_than } }
+		add_dynamic_modifier = { modifier = acid_rain_action_commitment }
+		force_update_dynamic_modifier = yes
+	}
+	else = { remove_dynamic_modifier = { modifier = acid_rain_action_commitment } }
+}
+
+# COUNTRY SCOPE. Copies one operation's achievement fields into the
+# acid_rain_033_achievement_active_action_* view the achievement recorders
+# read. Input: temporary acid_rain_op_family, or var:acid_rain_selected_action_state
+# when the family is zero.
+acid_rain_load_operation_achievement_view = {
+	if = {
+		limit = { check_variable = { var = acid_rain_op_family value = constant:acid_rain_runtime.zero compare = greater_than } }
+		set_variable = { acid_rain_033_achievement_active_action_key = acid_rain_op_key_entries^acid_rain_op_family }
+		set_variable = { acid_rain_033_achievement_active_action_start_day = acid_rain_op_start_day_entries^acid_rain_op_family }
+		set_variable = { acid_rain_033_achievement_active_action_visit = acid_rain_op_visit_entries^acid_rain_op_family }
+		set_variable = { acid_rain_033_achievement_active_action_region = acid_rain_op_region_entries^acid_rain_op_family }
+		set_variable = { acid_rain_033_achievement_active_action_front = acid_rain_op_front_entries^acid_rain_op_family }
+		set_variable = { acid_rain_033_achievement_active_action_warning_day = acid_rain_op_warning_day_entries^acid_rain_op_family }
+	}
+	else_if = {
+		limit = { has_variable = acid_rain_selected_action_state }
+		var:acid_rain_selected_action_state = {
+			PREV = {
+				set_variable = { acid_rain_033_achievement_active_action_key = PREV.acid_rain_action_key }
+				set_variable = { acid_rain_033_achievement_active_action_start_day = PREV.acid_rain_action_start_day }
+				set_variable = { acid_rain_033_achievement_active_action_visit = PREV.acid_rain_action_visit }
+				set_variable = { acid_rain_033_achievement_active_action_region = PREV.acid_rain_action_region }
+				set_variable = { acid_rain_033_achievement_active_action_front = PREV.acid_rain_action_front }
+				set_variable = { acid_rain_033_achievement_active_action_warning_day = PREV.acid_rain_action_warning_day }
+			}
+		}
+	}
+}
+
+# COUNTRY SCOPE. Opens the operation that acid_rain_debit_loaded_quote has
+# just paid. Inputs: acid_rain_selected_action, the loaded acid_rain_quote_*
+# temporaries and, for state operations, var:acid_rain_selected_action_state.
+acid_rain_open_operation = {
+	set_temp_variable = { acid_rain_op_family = constant:acid_rain_runtime.zero }
+	acid_rain_resolve_operation_family = yes
+	acid_rain_033_achievement_capture_action_start = yes
+	set_temp_variable = { acid_rain_op_end_day = global.date }
+	set_temp_variable = { chaosx_date_days = acid_rain_quote_days }
+	set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+	chaosx_convert_days_to_date_offset = yes
+	add_to_temp_variable = { acid_rain_op_end_day = chaosx_date_offset }
+	add_to_variable = { acid_rain_committed_manpower = acid_rain_quote_manpower }
+	add_to_variable = { acid_rain_committed_civilian_factories = acid_rain_quote_civ }
+	add_to_variable = { acid_rain_action_civ_committed = acid_rain_quote_civ }
+	set_variable = { acid_rain_country_last_action_day = global.date }
+	if = {
+		limit = { check_variable = { var = acid_rain_op_family value = constant:acid_rain_runtime.zero compare = greater_than } }
+		set_variable = { acid_rain_op_action_entries^acid_rain_op_family = acid_rain_selected_action }
+		set_variable = { acid_rain_op_end_day_entries^acid_rain_op_family = acid_rain_op_end_day }
+		set_variable = { acid_rain_op_generation_entries^acid_rain_op_family = global.acid_rain_generation_id }
+		set_variable = { acid_rain_op_manpower_entries^acid_rain_op_family = acid_rain_quote_manpower }
+		set_variable = { acid_rain_op_civ_entries^acid_rain_op_family = acid_rain_quote_civ }
+		set_variable = { acid_rain_op_effect_days_entries^acid_rain_op_family = acid_rain_quote_effect_days }
+		set_variable = { acid_rain_op_key_entries^acid_rain_op_family = acid_rain_033_achievement_active_action_key }
+		set_variable = { acid_rain_op_start_day_entries^acid_rain_op_family = acid_rain_033_achievement_active_action_start_day }
+		set_variable = { acid_rain_op_visit_entries^acid_rain_op_family = acid_rain_033_achievement_active_action_visit }
+		set_variable = { acid_rain_op_region_entries^acid_rain_op_family = acid_rain_033_achievement_active_action_region }
+		set_variable = { acid_rain_op_front_entries^acid_rain_op_family = acid_rain_033_achievement_active_action_front }
+		set_variable = { acid_rain_op_warning_day_entries^acid_rain_op_family = acid_rain_033_achievement_active_action_warning_day }
+		if = { limit = { check_variable = { var = acid_rain_op_family value = constant:acid_rain_action.family_shelter compare = equals } } country_event = { id = chaosx.nr33.42 days = acid_rain_quote_days } }
+		else_if = { limit = { check_variable = { var = acid_rain_op_family value = constant:acid_rain_action.family_water compare = equals } } country_event = { id = chaosx.nr33.43 days = acid_rain_quote_days } }
+		else_if = { limit = { check_variable = { var = acid_rain_op_family value = constant:acid_rain_action.family_medical compare = equals } } country_event = { id = chaosx.nr33.44 days = acid_rain_quote_days } }
+		else_if = { limit = { check_variable = { var = acid_rain_op_family value = constant:acid_rain_action.family_transport compare = equals } } country_event = { id = chaosx.nr33.45 days = acid_rain_quote_days } }
+		else = { country_event = { id = chaosx.nr33.46 days = acid_rain_quote_days } }
+	}
+	else = {
+		set_temp_variable = { acid_rain_op_is_evacuation = constant:acid_rain_runtime.zero }
+		if = {
+			limit = {
+				OR = {
+					check_variable = { var = acid_rain_selected_action value = constant:acid_rain_action.urgent_evacuate_land compare = equals }
+					check_variable = { var = acid_rain_selected_action value = constant:acid_rain_action.urgent_evacuate_island compare = equals }
+				}
+			}
+			set_temp_variable = { acid_rain_op_is_evacuation = constant:acid_rain_runtime.one }
+			add_to_variable = { acid_rain_evacuations_active = constant:acid_rain_runtime.loop_increment }
+		}
+		else = { add_to_variable = { acid_rain_recovery_ops_active = constant:acid_rain_runtime.loop_increment } }
+		var:acid_rain_selected_action_state = {
+			PREV = { add_to_array = { array = acid_rain_op_states value = PREV } }
+			set_state_flag = acid_rain_action_lock
+			set_variable = { acid_rain_action_owner = PREV }
+			set_variable = { acid_rain_action_owner_country_id = PREV.id }
+			set_variable = { acid_rain_action_owner_generation = global.acid_rain_generation_id }
+			set_variable = { acid_rain_action_type = PREV.acid_rain_selected_action }
+			set_variable = { acid_rain_action_start_day = global.date }
+			set_variable = { acid_rain_action_due_day = acid_rain_op_end_day }
+			set_variable = { acid_rain_action_reserved_manpower = acid_rain_quote_manpower }
+			set_variable = { acid_rain_action_reserved_civ = acid_rain_quote_civ }
+			set_variable = { acid_rain_action_key = PREV.acid_rain_033_achievement_active_action_key }
+			set_variable = { acid_rain_action_visit = PREV.acid_rain_033_achievement_active_action_visit }
+			set_variable = { acid_rain_action_region = PREV.acid_rain_033_achievement_active_action_region }
+			set_variable = { acid_rain_action_front = PREV.acid_rain_033_achievement_active_action_front }
+			set_variable = { acid_rain_action_warning_day = PREV.acid_rain_033_achievement_active_action_warning_day }
+			if = {
+				limit = { check_variable = { var = acid_rain_op_is_evacuation value = constant:acid_rain_runtime.one compare = equals } }
+				# Partial severe protection begins after one full day of movement.
+				set_variable = { acid_rain_evacuation_partial_day = global.date }
+				set_temp_variable = { chaosx_date_days = constant:acid_rain_preparedness.evacuation_partial_delay_days }
+				set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+				chaosx_convert_days_to_date_offset = yes
+				add_to_variable = { acid_rain_evacuation_partial_day = chaosx_date_offset }
+				set_temp_variable = { acid_rain_evacuation_disruption_days = constant:acid_rain_preparedness.evacuation_disruption_max_days }
+				add_dynamic_modifier = { modifier = acid_rain_evacuation_disruption days = acid_rain_evacuation_disruption_days }
+				acid_rain_033_achievement_record_runtime_evacuation_start = yes
+			}
+			state_event = { id = chaosx.nr33.47 days = acid_rain_quote_days trigger_for = controller }
+		}
+	}
+	acid_rain_refresh_operation_state = yes
+}
+
+# COUNTRY SCOPE. Validates, prices, debits and opens the action selected in
+# acid_rain_selected_action. State actions also need
+# var:acid_rain_selected_action_state. The same affordability and gate
+# triggers the decision shows are rechecked here before any debit.
+acid_rain_start_action = {
+	if = {
+		limit = {
+			acid_rain_country_has_runtime_record = yes
+			acid_rain_selected_operation_can_open = yes
+		}
+		set_temp_variable = { acid_rain_quote_days = constant:acid_rain_runtime.zero }
+		set_temp_variable = { acid_rain_quote_duration_days = constant:acid_rain_runtime.zero }
+		set_temp_variable = { acid_rain_quote_civ = constant:acid_rain_runtime.zero }
+		set_temp_variable = { acid_rain_quote_civilian_factories = constant:acid_rain_runtime.zero }
+		set_temp_variable = { acid_rain_quote_political_power = constant:acid_rain_runtime.zero }
+		set_temp_variable = { acid_rain_quote_support = constant:acid_rain_runtime.zero }
+		set_temp_variable = { acid_rain_quote_train = constant:acid_rain_runtime.zero }
+		set_temp_variable = { acid_rain_quote_convoy = constant:acid_rain_runtime.zero }
+		set_temp_variable = { acid_rain_quote_manpower = constant:acid_rain_runtime.zero }
+		set_temp_variable = { acid_rain_quote_motorized = constant:acid_rain_runtime.zero }
+		set_temp_variable = { acid_rain_quote_fuel = constant:acid_rain_runtime.zero }
+		set_temp_variable = { acid_rain_quote_effect_days = constant:acid_rain_runtime.zero }
+		set_temp_variable = { acid_rain_quote_kind = constant:acid_rain_runtime.zero }
+		set_temp_variable = { acid_rain_quote_target_required = constant:acid_rain_runtime.zero }
+		set_temp_variable = { acid_rain_quote_family_count = constant:acid_rain_runtime.zero }
+		set_temp_variable = { acid_rain_quote_valid = constant:acid_rain_runtime.zero }
+		set_temp_variable = { acid_rain_quote_target_valid = constant:acid_rain_runtime.zero }
+		set_temp_variable = { acid_rain_quote_target_is_island = constant:acid_rain_runtime.zero }
+		set_temp_variable = { acid_rain_component_quote = constant:acid_rain_runtime.zero }
+		set_temp_variable = { acid_rain_cost_quote_mode = constant:acid_rain_runtime.two }
+		set_temp_variable = { acid_rain_cost_quote_row = acid_rain_selected_action }
+		set_temp_variable = { acid_rain_quote_use_saved_target = constant:acid_rain_runtime.one }
+		if = { limit = { acid_rain_prepare_current_row_quote = yes } }
+		set_variable = { acid_rain_selected_action = acid_rain_cost_quote_row }
+		set_temp_variable = { acid_rain_ai_required_civ = constant:acid_rain_runtime.zero }
+		set_temp_variable = { acid_rain_ai_required_support = constant:acid_rain_runtime.zero }
+		set_temp_variable = { acid_rain_ai_required_train = constant:acid_rain_runtime.zero }
+		set_temp_variable = { acid_rain_ai_required_convoy = constant:acid_rain_runtime.zero }
+		set_temp_variable = { acid_rain_ai_required_manpower = constant:acid_rain_runtime.zero }
+		set_temp_variable = { acid_rain_ai_required_motorized = constant:acid_rain_runtime.zero }
+		set_temp_variable = { acid_rain_ai_required_fuel = constant:acid_rain_runtime.zero }
+		set_temp_variable = { acid_rain_ai_required_civ_trigger_floor = constant:acid_rain_runtime.zero }
+		acid_rain_compute_loaded_ai_reserve_requirements = yes
+		if = {
+			limit = {
+				check_variable = { var = acid_rain_quote_valid value = constant:acid_rain_runtime.one compare = equals }
+				check_variable = { var = acid_rain_quote_days value = constant:acid_rain_runtime.zero compare = greater_than }
+				acid_rain_current_action_requirements_hold = yes
+				acid_rain_country_can_pay_quote = yes
+				OR = { is_ai = no acid_rain_country_ai_reserves_allow_loaded_quote = yes }
+				OR = {
+					check_variable = { var = acid_rain_quote_target_required value = constant:acid_rain_runtime.zero compare = equals }
+					AND = {
+						check_variable = { var = acid_rain_quote_target_required value = constant:acid_rain_runtime.one compare = equals }
+						has_variable = acid_rain_selected_action_state
+						acid_rain_selected_state_accepts_action = yes
+					}
+				}
+			}
+			set_temp_variable = { acid_rain_quote_payment_success = constant:acid_rain_runtime.zero }
+			acid_rain_debit_loaded_quote = yes
+			if = {
+				limit = { check_variable = { var = acid_rain_quote_payment_success value = constant:acid_rain_runtime.one compare = equals } }
+				acid_rain_open_operation = yes
+			}
+		}
+	}
+}
+
+acid_rain_start_urgent_action = {
+	acid_rain_start_action = yes
+}
+
+acid_rain_start_recovery_action = {
+	acid_rain_start_action = yes
+}
+
+# COUNTRY SCOPE. Applies a finished action. National families act on the
+# country; evacuations and recovery act on var:acid_rain_selected_action_state.
+acid_rain_apply_action_effect = {
+	set_temp_variable = { acid_rain_completed_action_type = acid_rain_selected_action }
+	if = { limit = { check_variable = { var = acid_rain_selected_action value = constant:acid_rain_action.urgent_shelter compare = equals } } set_country_flag = { flag = acid_rain_action_shelter_active days = acid_rain_quote_effect_days } }
+	if = { limit = { check_variable = { var = acid_rain_selected_action value = constant:acid_rain_action.urgent_water_land compare = equals } } set_country_flag = { flag = acid_rain_action_water_active days = acid_rain_quote_effect_days } }
+	if = { limit = { check_variable = { var = acid_rain_selected_action value = constant:acid_rain_action.urgent_water_island compare = equals } } set_country_flag = { flag = acid_rain_action_water_active days = acid_rain_quote_effect_days } }
+	if = { limit = { check_variable = { var = acid_rain_selected_action value = constant:acid_rain_action.urgent_medical compare = equals } } set_country_flag = { flag = acid_rain_action_medical_active days = acid_rain_quote_effect_days } set_temp_variable = { acid_rain_medical_fatigue_days = constant:acid_rain_preparedness.urgent_medical_effect_days } set_country_flag = { flag = acid_rain_medical_fatigue days = acid_rain_medical_fatigue_days } }
+	if = { limit = { check_variable = { var = acid_rain_selected_action value = constant:acid_rain_action.urgent_transport compare = equals } } set_country_flag = { flag = acid_rain_action_transport_active days = acid_rain_quote_effect_days } }
+	if = {
+		limit = {
+			OR = {
+				check_variable = { var = acid_rain_selected_action value = constant:acid_rain_action.urgent_evacuate_land compare = equals }
+				check_variable = { var = acid_rain_selected_action value = constant:acid_rain_action.urgent_evacuate_island compare = equals }
+			}
+		}
+		var:acid_rain_selected_action_state = {
+			if = {
+				limit = { NOT = { has_state_flag = acid_rain_evacuated } }
+				set_state_flag = acid_rain_evacuated
+				set_state_flag = acid_rain_evacuation_receipt
+				set_variable = { acid_rain_evacuation_generation = global.acid_rain_generation_id }
+				set_variable = { acid_rain_evacuation_country_id = CONTROLLER.id }
+				set_variable = { acid_rain_evacuation_completion_day = global.date }
+				acid_rain_033_achievement_record_runtime_evacuation_completion = yes
+				# A large evacuation strains food and shelter where people arrive.
+				if = {
+					limit = { check_variable = { var = state_population_k value = constant:acid_rain_humanitarian.evacuation_large_population_k compare = greater_than_or_equals } }
+					set_temp_variable = { acid_rain_humanitarian_amount = state_population_k }
+					multiply_temp_variable = { acid_rain_humanitarian_amount = constant:acid_rain_humanitarian.people_per_k }
+					multiply_temp_variable = { acid_rain_humanitarian_amount = constant:acid_rain_humanitarian.evacuation_share }
+					round_temp_variable = acid_rain_humanitarian_amount
+					set_temp_variable = { acid_rain_humanitarian_kind = constant:acid_rain_humanitarian.kind_evacuation }
+					set_temp_variable = { acid_rain_humanitarian_revision = acid_rain_action_key }
+					acid_rain_register_humanitarian_pressure = yes
+				}
+			}
+		}
+	}
+	if = {
+		limit = {
+			check_variable = { var = acid_rain_selected_action value = constant:acid_rain_action.recovery_transport compare = greater_than_or_equals }
+			check_variable = { var = acid_rain_selected_action value = constant:acid_rain_action.recovery_industry compare = less_than_or_equals }
+		}
+		var:acid_rain_selected_action_state = { acid_rain_apply_recovery_result = yes }
+	}
+	if = {
+		limit = { check_variable = { var = acid_rain_selected_action value = constant:acid_rain_action.recovery_demobilize compare = equals } }
+		acid_rain_demobilize_emergency_apparatus = yes
+	}
+}
+
+# COUNTRY SCOPE. Completes national family acid_rain_op_family when its own
+# callback fires. A stale callback for an earlier operation of the same
+# family finds a later due day or another generation and does nothing.
+acid_rain_complete_national_operation = {
+	if = {
+		limit = {
+			check_variable = { var = acid_rain_op_action_entries^acid_rain_op_family value = constant:acid_rain_runtime.zero compare = greater_than }
+			check_variable = { var = acid_rain_op_generation_entries^acid_rain_op_family value = global.acid_rain_generation_id compare = equals }
+			check_variable = { var = global.date value = acid_rain_op_end_day_entries^acid_rain_op_family compare = greater_than_or_equals }
+		}
+		set_variable = { acid_rain_selected_action = acid_rain_op_action_entries^acid_rain_op_family }
+		set_temp_variable = { acid_rain_quote_effect_days = acid_rain_op_effect_days_entries^acid_rain_op_family }
+		acid_rain_load_operation_achievement_view = yes
+		acid_rain_apply_action_effect = yes
+		acid_rain_033_achievement_record_runtime_action = yes
+		if = {
+			limit = { check_variable = { var = acid_rain_op_family value = constant:acid_rain_action.family_water compare = equals } }
+			set_variable = { acid_rain_water_protection_until = global.date }
+			set_temp_variable = { chaosx_date_days = acid_rain_quote_effect_days }
+			set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+			chaosx_convert_days_to_date_offset = yes
+			add_to_variable = { acid_rain_water_protection_until = chaosx_date_offset }
+			acid_rain_country_water_context_changed = yes
+		}
+		set_country_flag = acid_rain_action_receipt
+		acid_rain_release_national_operation = yes
+	}
+}
+
+# STATE SCOPE. Completes this state's evacuation or recovery operation when
+# its own callback fires and settles it with the country that paid for it.
+acid_rain_complete_state_operation = {
+	if = {
+		limit = {
+			has_state_flag = acid_rain_action_lock
+			has_variable = acid_rain_action_owner
+			check_variable = { var = acid_rain_action_owner_generation value = global.acid_rain_generation_id compare = equals }
+			check_variable = { var = global.date value = acid_rain_action_due_day compare = greater_than_or_equals }
+		}
+		save_event_target_as = acid_rain_completed_action_state
+		set_temp_variable = { acid_rain_recovery_consequence_generation = acid_rain_action_owner_generation }
+		set_temp_variable = { acid_rain_recovery_consequence_key = acid_rain_action_key }
+		set_temp_variable = { acid_rain_recovery_tier_before = acid_rain_state_aftermath_tier }
+		acid_rain_advance_consequence_interval = yes
+		set_temp_variable = { acid_rain_action_target_valid = constant:acid_rain_runtime.zero }
+		if = { limit = { acid_rain_state_operation_still_valid = yes } set_temp_variable = { acid_rain_action_target_valid = constant:acid_rain_runtime.one } }
+		var:acid_rain_action_owner = {
+			set_variable = { acid_rain_selected_action_state = PREV }
+			set_variable = { acid_rain_selected_action = PREV.acid_rain_action_type }
+			set_temp_variable = { acid_rain_op_family = constant:acid_rain_runtime.zero }
+			set_temp_variable = { acid_rain_quote_effect_days = constant:acid_rain_runtime.zero }
+			if = {
+				limit = { check_variable = { var = acid_rain_action_target_valid value = constant:acid_rain_runtime.one compare = equals } }
+				acid_rain_load_operation_achievement_view = yes
+				acid_rain_apply_action_effect = yes
+				acid_rain_033_achievement_record_runtime_action = yes
+				if = {
+					limit = {
+						OR = {
+							check_variable = { var = acid_rain_selected_action value = constant:acid_rain_action.urgent_evacuate_land compare = equals }
+							check_variable = { var = acid_rain_selected_action value = constant:acid_rain_action.urgent_evacuate_island compare = equals }
+						}
+					}
+					add_to_variable = { acid_rain_evacuations_lifetime = constant:acid_rain_runtime.loop_increment }
+				}
+				else = { event_target:acid_rain_completed_action_state = { acid_rain_record_paid_recovery_consequence = yes } }
+				set_country_flag = acid_rain_action_receipt
+			}
+			else = { set_country_flag = acid_rain_action_interrupted_stale_target }
+			acid_rain_release_state_operation = yes
+			acid_rain_project_country_obligations = yes
+			acid_rain_gui_refresh_read_only = yes
+		}
+	}
+}
+
+# COUNTRY SCOPE. Returns national family acid_rain_op_family's reservation
+# once and frees the family.
+acid_rain_release_national_operation = {
+	if = {
+		limit = { check_variable = { var = acid_rain_op_action_entries^acid_rain_op_family value = constant:acid_rain_runtime.zero compare = greater_than } }
+		set_temp_variable = { acid_rain_reserved_manpower = acid_rain_op_manpower_entries^acid_rain_op_family }
+		add_manpower = acid_rain_reserved_manpower
+		subtract_from_variable = { acid_rain_committed_manpower = acid_rain_reserved_manpower }
+		set_temp_variable = { acid_rain_reserved_civ = acid_rain_op_civ_entries^acid_rain_op_family }
+		subtract_from_variable = { acid_rain_committed_civilian_factories = acid_rain_reserved_civ }
+		subtract_from_variable = { acid_rain_action_civ_committed = acid_rain_reserved_civ }
+		set_variable = { acid_rain_op_action_entries^acid_rain_op_family = constant:acid_rain_runtime.zero }
+		set_variable = { acid_rain_op_end_day_entries^acid_rain_op_family = constant:acid_rain_runtime.zero }
+		set_variable = { acid_rain_op_generation_entries^acid_rain_op_family = constant:acid_rain_runtime.zero }
+		set_variable = { acid_rain_op_manpower_entries^acid_rain_op_family = constant:acid_rain_runtime.zero }
+		set_variable = { acid_rain_op_civ_entries^acid_rain_op_family = constant:acid_rain_runtime.zero }
+		set_variable = { acid_rain_op_effect_days_entries^acid_rain_op_family = constant:acid_rain_runtime.zero }
+		set_variable = { acid_rain_op_key_entries^acid_rain_op_family = constant:acid_rain_runtime.zero }
+		set_variable = { acid_rain_op_start_day_entries^acid_rain_op_family = constant:acid_rain_runtime.zero }
+		set_variable = { acid_rain_op_visit_entries^acid_rain_op_family = constant:acid_rain_runtime.zero }
+		set_variable = { acid_rain_op_region_entries^acid_rain_op_family = constant:acid_rain_runtime.zero }
+		set_variable = { acid_rain_op_front_entries^acid_rain_op_family = constant:acid_rain_runtime.zero }
+		set_variable = { acid_rain_op_warning_day_entries^acid_rain_op_family = constant:acid_rain_runtime.zero }
+		acid_rain_refresh_operation_state = yes
+		acid_rain_refresh_country_project_quotes = yes
+		acid_rain_refresh_country_action_quotes = yes
+	}
+}
+
+# COUNTRY SCOPE. Returns the reservation of the state operation in
+# var:acid_rain_selected_action_state once, unlocks the state and lowers the
+# matching in-progress counter. Only the paying country may release it.
+acid_rain_release_state_operation = {
+	if = {
+		limit = {
+			has_variable = acid_rain_selected_action_state
+			var:acid_rain_selected_action_state = {
+				has_state_flag = acid_rain_action_lock
+				check_variable = { var = acid_rain_action_owner_country_id value = PREV.id compare = equals }
+			}
+		}
+		set_temp_variable = { acid_rain_reserved_manpower = constant:acid_rain_runtime.zero }
+		set_temp_variable = { acid_rain_reserved_civ = constant:acid_rain_runtime.zero }
+		set_temp_variable = { acid_rain_released_type = constant:acid_rain_runtime.zero }
+		var:acid_rain_selected_action_state = {
+			set_temp_variable = { acid_rain_reserved_manpower = acid_rain_action_reserved_manpower }
+			set_temp_variable = { acid_rain_reserved_civ = acid_rain_action_reserved_civ }
+			set_temp_variable = { acid_rain_released_type = acid_rain_action_type }
+			# A failed evacuation ends its disruption now; a finished one keeps
+			# it until the severe episode closes.
+			if = {
+				limit = { NOT = { has_state_flag = acid_rain_evacuated } }
+				remove_dynamic_modifier = { modifier = acid_rain_evacuation_disruption }
+			}
+			clear_variable = acid_rain_evacuation_partial_day
+			clr_state_flag = acid_rain_action_lock
+			clear_variable = acid_rain_action_owner
+			clear_variable = acid_rain_action_owner_generation
+			clear_variable = acid_rain_action_owner_country_id
+			clear_variable = acid_rain_action_type
+			clear_variable = acid_rain_action_start_day
+			clear_variable = acid_rain_action_due_day
+			clear_variable = acid_rain_action_reserved_manpower
+			clear_variable = acid_rain_action_reserved_civ
+			clear_variable = acid_rain_action_key
+			clear_variable = acid_rain_action_visit
+			clear_variable = acid_rain_action_region
+			clear_variable = acid_rain_action_front
+			clear_variable = acid_rain_action_warning_day
+			PREV = { remove_from_array = { array = acid_rain_op_states value = PREV } }
+		}
+		add_manpower = acid_rain_reserved_manpower
+		subtract_from_variable = { acid_rain_committed_manpower = acid_rain_reserved_manpower }
+		subtract_from_variable = { acid_rain_committed_civilian_factories = acid_rain_reserved_civ }
+		subtract_from_variable = { acid_rain_action_civ_committed = acid_rain_reserved_civ }
+		if = {
+			limit = {
+				OR = {
+					check_variable = { var = acid_rain_released_type value = constant:acid_rain_action.urgent_evacuate_land compare = equals }
+					check_variable = { var = acid_rain_released_type value = constant:acid_rain_action.urgent_evacuate_island compare = equals }
+				}
+			}
+			subtract_from_variable = { acid_rain_evacuations_active = constant:acid_rain_runtime.loop_increment }
+			clamp_variable = { var = acid_rain_evacuations_active min = constant:acid_rain_runtime.zero }
+		}
+		else = {
+			subtract_from_variable = { acid_rain_recovery_ops_active = constant:acid_rain_runtime.loop_increment }
+			clamp_variable = { var = acid_rain_recovery_ops_active min = constant:acid_rain_runtime.zero }
+		}
+		clear_variable = acid_rain_selected_action_state
+		acid_rain_refresh_operation_state = yes
+		acid_rain_refresh_country_project_quotes = yes
+		acid_rain_refresh_country_action_quotes = yes
+	}
+}
+
+# COUNTRY SCOPE. Interrupts running operations and returns their
+# reservations; spent equipment, fuel, trains, convoys, trucks and political
+# power stay spent. Input: temporary acid_rain_keep_recovery_operations, one
+# to keep recovery work and demobilization running through acute dissipation.
+acid_rain_release_running_operations = {
+	set_temp_variable = { acid_rain_release_running_operations_loop_1_break = constant:acid_rain_runtime.zero }
+	for_loop_effect = {
+		break = acid_rain_release_running_operations_loop_1_break
+		start = constant:acid_rain_runtime.one
+		end = constant:acid_rain_action.family_rows
+		value = acid_rain_op_release_family
+		set_temp_variable = { acid_rain_op_family = acid_rain_op_release_family }
+		if = {
+			limit = {
+				check_variable = { var = acid_rain_op_action_entries^acid_rain_op_family value = constant:acid_rain_runtime.zero compare = greater_than }
+				OR = {
+					check_variable = { var = acid_rain_keep_recovery_operations value = constant:acid_rain_runtime.zero compare = equals }
+					check_variable = { var = acid_rain_op_family value = constant:acid_rain_action.family_demobilize compare = less_than }
+				}
+			}
+			set_country_flag = acid_rain_action_interrupted_cleanup
+			acid_rain_release_national_operation = yes
+		}
+	}
+	clear_temp_array = acid_rain_op_release_states
+	set_temp_variable = { acid_rain_release_running_operations_loop_2_break = constant:acid_rain_runtime.zero }
+	for_each_scope_loop = {
+		break = acid_rain_release_running_operations_loop_2_break
+		array = acid_rain_op_states
+		add_to_temp_array = { array = acid_rain_op_release_states value = THIS }
+	}
+	set_temp_variable = { acid_rain_release_running_operations_loop_3_break = constant:acid_rain_runtime.zero }
+	for_each_scope_loop = {
+		break = acid_rain_release_running_operations_loop_3_break
+		array = acid_rain_op_release_states
+		if = {
+			limit = {
+				OR = {
+					check_variable = { var = acid_rain_keep_recovery_operations value = constant:acid_rain_runtime.zero compare = equals }
+					check_variable = { var = acid_rain_action_type value = constant:acid_rain_action.recovery_transport compare = less_than }
+				}
+			}
+			PREV = {
+				set_variable = { acid_rain_selected_action_state = PREV }
+				set_country_flag = acid_rain_action_interrupted_cleanup
+				acid_rain_release_state_operation = yes
+			}
+		}
+	}
+}
+
+# COUNTRY SCOPE. Interrupts the operation on one state after a controller
+# change. Input: var:acid_rain_selected_action_state.
+acid_rain_interrupt_state_operation = {
+	set_country_flag = acid_rain_action_interrupted_control_change
+	acid_rain_release_state_operation = yes
+}
+
+# COUNTRY SCOPE. Acute dissipation stops new urgent work but preserves every
+# paid permanent project and its scheduled completion event. Recovery work
+# and demobilization keep running when acid_rain_keep_recovery_operations is
+# one; otherwise every operation is released.
+acid_rain_enter_country_recovery_tail = {
+	acid_rain_release_running_operations = yes
+	if = {
+		limit = { any_controlled_state = { has_state_flag = acid_rain_aftercare_unresolved } }
+		set_country_flag = acid_rain_recovery_tail_active
+	}
+	else = { clr_country_flag = acid_rain_recovery_tail_active }
+	set_variable = { acid_rain_active_exposed_states = constant:acid_rain_runtime.zero }
+	clr_country_flag = acid_rain_country_warning_active
+	clr_country_flag = acid_rain_country_exposure_active
+	clr_country_flag = acid_rain_country_severe_forecast_active
+}
+
+# Called by terminal settlement, invalid tag transitions, and administrative
+# interruption. Every temporary commitment is released once; consumed
+# equipment, fuel, trains, convoys, motorized equipment, and political power
+# remain spent, and unfinished project tiers are not granted.
+acid_rain_cleanup_country_runtime = {
+	acid_rain_033_achievement_mark_admin_disqualified = yes
+	if = { limit = { exists = no } acid_rain_033_achievement_mark_country_ceased = yes }
+	set_temp_variable = { acid_rain_keep_recovery_operations = constant:acid_rain_runtime.zero }
+	acid_rain_release_running_operations = yes
+	set_temp_variable = { acid_rain_cleanup_country_runtime_loop_1_break = constant:acid_rain_runtime.zero }
+	for_loop_effect = {
+		break = acid_rain_cleanup_country_runtime_loop_1_break
+		start = constant:acid_rain_runtime.one
+		end = constant:acid_rain_runtime.five
+		value = acid_rain_cleanup_project_index
+		set_temp_variable = { acid_rain_selected_project = acid_rain_cleanup_project_index }
+		acid_rain_cancel_project = yes
+	}
+	if = {
+		limit = { any_controlled_state = { has_state_flag = acid_rain_aftercare_unresolved } }
+		set_country_flag = acid_rain_recovery_tail_active
+	}
+	else = { clr_country_flag = acid_rain_recovery_tail_active }
+	set_variable = { acid_rain_active_exposed_states = constant:acid_rain_runtime.zero }
+	clr_country_flag = acid_rain_country_exposure_active
+	clr_country_flag = acid_rain_country_severe_forecast_active
+}
+
+# COUNTRY SCOPE. Binds running urgent operations that have no warning visit
+# yet to the visit described by the acid_rain_033_input_warning_* temporaries,
+# so an action started before a warning can still be credited for finishing
+# before that warning's arrival. Each operation binds to at most one visit.
+acid_rain_bind_operations_to_warning = {
+	set_temp_variable = { acid_rain_bind_operations_to_warning_loop_1_break = constant:acid_rain_runtime.zero }
+	for_loop_effect = {
+		break = acid_rain_bind_operations_to_warning_loop_1_break
+		start = constant:acid_rain_runtime.one
+		end = constant:acid_rain_action.family_demobilize
+		value = acid_rain_op_bind_family
+		if = {
+			limit = {
+				check_variable = { var = acid_rain_op_action_entries^acid_rain_op_bind_family value = constant:acid_rain_runtime.zero compare = greater_than }
+				check_variable = { var = acid_rain_op_generation_entries^acid_rain_op_bind_family value = global.acid_rain_generation_id compare = equals }
+				check_variable = { var = acid_rain_op_visit_entries^acid_rain_op_bind_family value = constant:acid_rain_runtime.zero compare = equals }
+			}
+			set_variable = { acid_rain_op_visit_entries^acid_rain_op_bind_family = acid_rain_033_input_warning_visit_id }
+			set_variable = { acid_rain_op_region_entries^acid_rain_op_bind_family = acid_rain_033_input_warning_region_id }
+			set_variable = { acid_rain_op_front_entries^acid_rain_op_bind_family = acid_rain_033_input_warning_front_id }
+			set_variable = { acid_rain_op_warning_day_entries^acid_rain_op_bind_family = acid_rain_033_input_warning_day }
+		}
+	}
+	set_temp_variable = { acid_rain_bind_operations_to_warning_loop_2_break = constant:acid_rain_runtime.zero }
+	for_each_scope_loop = {
+		break = acid_rain_bind_operations_to_warning_loop_2_break
+		array = acid_rain_op_states
+		if = {
+			limit = {
+				OR = {
+					check_variable = { var = acid_rain_action_type value = constant:acid_rain_action.urgent_evacuate_land compare = equals }
+					check_variable = { var = acid_rain_action_type value = constant:acid_rain_action.urgent_evacuate_island compare = equals }
+				}
+				check_variable = { var = acid_rain_action_owner_generation value = global.acid_rain_generation_id compare = equals }
+				check_variable = { var = acid_rain_action_visit value = constant:acid_rain_runtime.zero compare = equals }
+			}
+			set_variable = { acid_rain_action_visit = acid_rain_033_input_warning_visit_id }
+			set_variable = { acid_rain_action_region = acid_rain_033_input_warning_region_id }
+			set_variable = { acid_rain_action_front = acid_rain_033_input_warning_front_id }
+			set_variable = { acid_rain_action_warning_day = acid_rain_033_input_warning_day }
+		}
+	}
+}
+
+# STATE SCOPE. Lowers the aftermath tier by one and applies the recovery
+# bonus of the finished action. Input: temporary acid_rain_completed_action_type.
+acid_rain_apply_recovery_result = {
+	remove_dynamic_modifier = { modifier = acid_rain_aftermath_1 }
+	remove_dynamic_modifier = { modifier = acid_rain_aftermath_2 }
+	remove_dynamic_modifier = { modifier = acid_rain_aftermath_3 }
+	if = {
+		limit = { NOT = { has_variable = acid_rain_recovery_action_count } }
+		set_variable = { acid_rain_recovery_action_count = constant:acid_rain_runtime.zero }
+	}
+	add_to_variable = { acid_rain_recovery_action_count = constant:acid_rain_runtime.loop_increment }
+	if = { limit = { check_variable = { var = acid_rain_state_aftermath_tier value = constant:acid_rain_response.recovery_tier_minimum compare = greater_than } } subtract_from_variable = { acid_rain_state_aftermath_tier = constant:acid_rain_runtime.loop_increment } }
+	if = {
+		limit = { check_variable = { var = acid_rain_state_aftermath_tier value = constant:acid_rain_response.recovery_tier_minimum compare = equals } }
+		clr_state_flag = acid_rain_aftercare_unresolved
+		clr_state_flag = acid_rain_environmental_burden
+		set_state_flag = acid_rain_aftercare_recovered
+		if = {
+			limit = { NOT = { has_state_flag = acid_rain_recovery_reported } }
+			set_state_flag = acid_rain_recovery_reported
+			save_event_target_as = acid_rain_report_state
+			CONTROLLER = {
+				if = {
+					limit = { NOT = { has_variable = acid_rain_aftercare_completed_states } }
+					set_variable = { acid_rain_aftercare_completed_states = constant:acid_rain_runtime.zero }
+				}
+				add_to_variable = { acid_rain_aftercare_completed_states = constant:acid_rain_runtime.loop_increment }
+				country_event = { id = chaosx.nr33.110 }
+			}
+		}
+	}
+	else = {
+		clr_state_flag = acid_rain_aftercare_recovered
+		# Timed modifier durations take a variable, not a constant token.
+		set_temp_variable = { acid_rain_aftermath_window_days = constant:acid_rain_response.aftercare_recovery_window_days }
+		if = { limit = { check_variable = { var = acid_rain_state_aftermath_tier value = constant:acid_rain_runtime.one compare = equals } } add_dynamic_modifier = { modifier = acid_rain_aftermath_1 days = acid_rain_aftermath_window_days } }
+		else_if = { limit = { check_variable = { var = acid_rain_state_aftermath_tier value = constant:acid_rain_runtime.two compare = equals } } add_dynamic_modifier = { modifier = acid_rain_aftermath_2 days = acid_rain_aftermath_window_days } }
+		else = { add_dynamic_modifier = { modifier = acid_rain_aftermath_3 days = acid_rain_aftermath_window_days } }
+	}
+	acid_rain_033_achievement_record_recovery_completion = yes
+	set_variable = { acid_rain_last_recovery_action = acid_rain_completed_action_type }
+	# Transport and industry repairs consume the damage the rain recorded here,
+	# so neither can be repeated for damage it did not cause.
+	if = {
+		limit = { check_variable = { var = acid_rain_completed_action_type value = constant:acid_rain_action.recovery_transport compare = equals } }
+		set_variable = { acid_rain_damage_infrastructure_points = constant:acid_rain_aftermath.zero }
+		set_variable = { acid_rain_damage_rail_way_points = constant:acid_rain_aftermath.zero }
+	}
+	if = {
+		limit = { check_variable = { var = acid_rain_completed_action_type value = constant:acid_rain_action.recovery_industry compare = equals } }
+		set_variable = { acid_rain_damage_industrial_complex_points = constant:acid_rain_aftermath.zero }
+		set_variable = { acid_rain_damage_arms_factory_points = constant:acid_rain_aftermath.zero }
+	}
+	set_temp_variable = { acid_rain_recovery_transport_days = constant:acid_rain_preparedness.urgent_transport_effect_days }
+	set_temp_variable = { acid_rain_recovery_bonus_days = constant:acid_rain_preparedness.urgent_water_effect_days }
+	if = { limit = { check_variable = { var = acid_rain_completed_action_type value = constant:acid_rain_action.recovery_transport compare = equals } } add_dynamic_modifier = { modifier = acid_rain_recovery_transport days = acid_rain_recovery_transport_days } }
+	if = { limit = { check_variable = { var = acid_rain_completed_action_type value = constant:acid_rain_action.recovery_decontaminate_land compare = equals } } add_dynamic_modifier = { modifier = acid_rain_recovery_decontamination days = acid_rain_recovery_bonus_days } }
+	if = { limit = { check_variable = { var = acid_rain_completed_action_type value = constant:acid_rain_action.recovery_decontaminate_island compare = equals } } add_dynamic_modifier = { modifier = acid_rain_recovery_decontamination days = acid_rain_recovery_bonus_days } }
+	if = { limit = { check_variable = { var = acid_rain_completed_action_type value = constant:acid_rain_action.recovery_industry compare = equals } } add_dynamic_modifier = { modifier = acid_rain_recovery_industry days = acid_rain_recovery_bonus_days } }
+	CONTROLLER = {
+		if = { limit = { any_controlled_state = { has_state_flag = acid_rain_aftercare_unresolved } } set_country_flag = acid_rain_recovery_tail_active }
+		else = { clr_country_flag = acid_rain_recovery_tail_active }
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Decision cost display rows
+# ---------------------------------------------------------------------------
+
+# COUNTRY SCOPE. Loads one stored project row into the acid_rain_quote_*
+# temporaries and applies the same final quote step as the affordability
+# trigger and the debit. Input: temporary acid_rain_display_project.
+acid_rain_load_display_project_row = {
+	set_temp_variable = { acid_rain_quote_days = constant:acid_rain_runtime.zero }
+	set_temp_variable = { acid_rain_quote_political_power = constant:acid_rain_runtime.zero }
+	set_temp_variable = { acid_rain_quote_civ = constant:acid_rain_runtime.zero }
+	set_temp_variable = { acid_rain_quote_support = constant:acid_rain_runtime.zero }
+	set_temp_variable = { acid_rain_quote_train = constant:acid_rain_runtime.zero }
+	set_temp_variable = { acid_rain_quote_convoy = constant:acid_rain_runtime.zero }
+	set_temp_variable = { acid_rain_quote_manpower = constant:acid_rain_runtime.zero }
+	set_temp_variable = { acid_rain_quote_motorized = constant:acid_rain_runtime.zero }
+	set_temp_variable = { acid_rain_quote_fuel = constant:acid_rain_runtime.zero }
+	set_temp_variable = { acid_rain_quote_civilian_factories = constant:acid_rain_runtime.zero }
+	set_temp_variable = { acid_rain_quote_duration_days = constant:acid_rain_runtime.zero }
+	set_temp_variable = { acid_rain_component_quote = constant:acid_rain_runtime.zero }
+	if = {
+		limit = { check_variable = { var = acid_rain_display_project value = constant:acid_rain_project.shelter compare = equals } }
+		set_temp_variable = { acid_rain_quote_days = acid_rain_shelter_next_days }
+		set_temp_variable = { acid_rain_quote_civ = acid_rain_shelter_next_civ }
+		set_temp_variable = { acid_rain_quote_support = acid_rain_shelter_next_support }
+		set_temp_variable = { acid_rain_quote_train = acid_rain_shelter_next_train }
+		set_temp_variable = { acid_rain_quote_convoy = acid_rain_shelter_next_convoy }
+		set_temp_variable = { acid_rain_quote_manpower = acid_rain_shelter_next_manpower }
+		set_temp_variable = { acid_rain_quote_motorized = acid_rain_shelter_next_motorized }
+		set_temp_variable = { acid_rain_quote_fuel = acid_rain_shelter_next_fuel }
+	}
+	if = {
+		limit = { check_variable = { var = acid_rain_display_project value = constant:acid_rain_project.water compare = equals } }
+		set_temp_variable = { acid_rain_quote_days = acid_rain_water_next_days }
+		set_temp_variable = { acid_rain_quote_civ = acid_rain_water_next_civ }
+		set_temp_variable = { acid_rain_quote_support = acid_rain_water_next_support }
+		set_temp_variable = { acid_rain_quote_train = acid_rain_water_next_train }
+		set_temp_variable = { acid_rain_quote_convoy = acid_rain_water_next_convoy }
+		set_temp_variable = { acid_rain_quote_manpower = acid_rain_water_next_manpower }
+		set_temp_variable = { acid_rain_quote_motorized = acid_rain_water_next_motorized }
+		set_temp_variable = { acid_rain_quote_fuel = acid_rain_water_next_fuel }
+	}
+	if = {
+		limit = { check_variable = { var = acid_rain_display_project value = constant:acid_rain_project.medical compare = equals } }
+		set_temp_variable = { acid_rain_quote_days = acid_rain_medical_next_days }
+		set_temp_variable = { acid_rain_quote_civ = acid_rain_medical_next_civ }
+		set_temp_variable = { acid_rain_quote_support = acid_rain_medical_next_support }
+		set_temp_variable = { acid_rain_quote_train = acid_rain_medical_next_train }
+		set_temp_variable = { acid_rain_quote_convoy = acid_rain_medical_next_convoy }
+		set_temp_variable = { acid_rain_quote_manpower = acid_rain_medical_next_manpower }
+		set_temp_variable = { acid_rain_quote_motorized = acid_rain_medical_next_motorized }
+		set_temp_variable = { acid_rain_quote_fuel = acid_rain_medical_next_fuel }
+	}
+	if = {
+		limit = { check_variable = { var = acid_rain_display_project value = constant:acid_rain_project.transport compare = equals } }
+		set_temp_variable = { acid_rain_quote_days = acid_rain_transport_next_days }
+		set_temp_variable = { acid_rain_quote_civ = acid_rain_transport_next_civ }
+		set_temp_variable = { acid_rain_quote_support = acid_rain_transport_next_support }
+		set_temp_variable = { acid_rain_quote_train = acid_rain_transport_next_train }
+		set_temp_variable = { acid_rain_quote_convoy = acid_rain_transport_next_convoy }
+		set_temp_variable = { acid_rain_quote_manpower = acid_rain_transport_next_manpower }
+		set_temp_variable = { acid_rain_quote_motorized = acid_rain_transport_next_motorized }
+		set_temp_variable = { acid_rain_quote_fuel = acid_rain_transport_next_fuel }
+	}
+	set_temp_variable = { acid_rain_cost_quote_mode = constant:acid_rain_runtime.one }
+	set_temp_variable = { acid_rain_quote_valid = constant:acid_rain_runtime.one }
+	if = { limit = { acid_rain_finalize_loaded_quote = yes } }
+}
+
+# COUNTRY SCOPE. Loads one stored action row by index and applies the final
+# quote step. Input: temporary acid_rain_display_action.
+acid_rain_load_display_action_row = {
+	set_temp_variable = { acid_rain_quote_civilian_factories = constant:acid_rain_runtime.zero }
+	set_temp_variable = { acid_rain_quote_duration_days = constant:acid_rain_runtime.zero }
+	set_temp_variable = { acid_rain_component_quote = constant:acid_rain_runtime.zero }
+	set_temp_variable = { acid_rain_quote_days = acid_rain_action_days_entries^acid_rain_display_action }
+	set_temp_variable = { acid_rain_quote_political_power = acid_rain_action_political_power_entries^acid_rain_display_action }
+	set_temp_variable = { acid_rain_quote_civ = acid_rain_action_civ_entries^acid_rain_display_action }
+	set_temp_variable = { acid_rain_quote_support = acid_rain_action_support_entries^acid_rain_display_action }
+	set_temp_variable = { acid_rain_quote_train = acid_rain_action_train_entries^acid_rain_display_action }
+	set_temp_variable = { acid_rain_quote_convoy = acid_rain_action_convoy_entries^acid_rain_display_action }
+	set_temp_variable = { acid_rain_quote_manpower = acid_rain_action_manpower_entries^acid_rain_display_action }
+	set_temp_variable = { acid_rain_quote_motorized = acid_rain_action_motorized_entries^acid_rain_display_action }
+	set_temp_variable = { acid_rain_quote_fuel = acid_rain_action_fuel_entries^acid_rain_display_action }
+	set_temp_variable = { acid_rain_cost_quote_mode = constant:acid_rain_runtime.two }
+	set_temp_variable = { acid_rain_quote_valid = constant:acid_rain_runtime.one }
+	if = { limit = { acid_rain_finalize_loaded_quote = yes } }
+}
+
+# COUNTRY SCOPE, players only. Publishes the final cost of each project row
+# into persistent acid_rain_cost_<row>_<family> variables that the decision
+# cost text reads. The quote refresh effects call this at every quote edge.
+acid_rain_store_project_cost_display = {
+	set_temp_variable = { acid_rain_display_project = constant:acid_rain_project.shelter }
+	acid_rain_load_display_project_row = yes
+	set_variable = { acid_rain_cost_project_shelter_days = acid_rain_quote_days }
+	set_variable = { acid_rain_cost_project_shelter_civ = acid_rain_quote_civ }
+	set_variable = { acid_rain_cost_project_shelter_support = acid_rain_quote_support }
+	set_variable = { acid_rain_cost_project_shelter_manpower = acid_rain_quote_manpower }
+	set_temp_variable = { acid_rain_display_project = constant:acid_rain_project.water }
+	acid_rain_load_display_project_row = yes
+	set_variable = { acid_rain_cost_project_water_days = acid_rain_quote_days }
+	set_variable = { acid_rain_cost_project_water_civ = acid_rain_quote_civ }
+	set_variable = { acid_rain_cost_project_water_support = acid_rain_quote_support }
+	set_variable = { acid_rain_cost_project_water_train = acid_rain_quote_train }
+	set_variable = { acid_rain_cost_project_water_convoy = acid_rain_quote_convoy }
+	set_variable = { acid_rain_cost_project_water_manpower = acid_rain_quote_manpower }
+	set_temp_variable = { acid_rain_display_project = constant:acid_rain_project.medical }
+	acid_rain_load_display_project_row = yes
+	set_variable = { acid_rain_cost_project_medical_days = acid_rain_quote_days }
+	set_variable = { acid_rain_cost_project_medical_civ = acid_rain_quote_civ }
+	set_variable = { acid_rain_cost_project_medical_support = acid_rain_quote_support }
+	set_variable = { acid_rain_cost_project_medical_manpower = acid_rain_quote_manpower }
+	set_variable = { acid_rain_cost_project_medical_fuel = acid_rain_quote_fuel }
+	set_temp_variable = { acid_rain_display_project = constant:acid_rain_project.transport }
+	acid_rain_load_display_project_row = yes
+	set_variable = { acid_rain_cost_project_transport_days = acid_rain_quote_days }
+	set_variable = { acid_rain_cost_project_transport_civ = acid_rain_quote_civ }
+	set_variable = { acid_rain_cost_project_transport_train = acid_rain_quote_train }
+	set_variable = { acid_rain_cost_project_transport_motorized = acid_rain_quote_motorized }
+	set_variable = { acid_rain_cost_project_transport_fuel = acid_rain_quote_fuel }
+}
+
+# COUNTRY SCOPE, players only. Publishes the final cost of each action row.
+# Water follows the country's own land or island route; evacuation and
+# decontamination publish both routes because the chosen state decides.
+acid_rain_store_action_cost_display = {
+	set_temp_variable = { acid_rain_display_action = constant:acid_rain_action.urgent_shelter }
+	acid_rain_load_display_action_row = yes
+	set_variable = { acid_rain_cost_urgent_shelter_days = acid_rain_quote_days }
+	set_variable = { acid_rain_cost_urgent_shelter_political_power = acid_rain_quote_political_power }
+	set_variable = { acid_rain_cost_urgent_shelter_support = acid_rain_quote_support }
+	set_variable = { acid_rain_cost_urgent_shelter_manpower = acid_rain_quote_manpower }
+	set_temp_variable = { acid_rain_display_action = constant:acid_rain_action.urgent_water_land }
+	if = {
+		limit = { check_variable = { var = acid_rain_country_island_route value = constant:acid_rain_runtime.one compare = equals } }
+		set_temp_variable = { acid_rain_display_action = constant:acid_rain_action.urgent_water_island }
+	}
+	acid_rain_load_display_action_row = yes
+	set_variable = { acid_rain_cost_urgent_water_days = acid_rain_quote_days }
+	set_variable = { acid_rain_cost_urgent_water_support = acid_rain_quote_support }
+	set_variable = { acid_rain_cost_urgent_water_train = acid_rain_quote_train }
+	set_variable = { acid_rain_cost_urgent_water_convoy = acid_rain_quote_convoy }
+	set_variable = { acid_rain_cost_urgent_water_manpower = acid_rain_quote_manpower }
+	set_temp_variable = { acid_rain_display_action = constant:acid_rain_action.urgent_medical }
+	acid_rain_load_display_action_row = yes
+	set_variable = { acid_rain_cost_urgent_medical_days = acid_rain_quote_days }
+	set_variable = { acid_rain_cost_urgent_medical_support = acid_rain_quote_support }
+	set_variable = { acid_rain_cost_urgent_medical_manpower = acid_rain_quote_manpower }
+	set_variable = { acid_rain_cost_urgent_medical_fuel = acid_rain_quote_fuel }
+	set_temp_variable = { acid_rain_display_action = constant:acid_rain_action.urgent_transport }
+	acid_rain_load_display_action_row = yes
+	set_variable = { acid_rain_cost_urgent_transport_days = acid_rain_quote_days }
+	set_variable = { acid_rain_cost_urgent_transport_train = acid_rain_quote_train }
+	set_variable = { acid_rain_cost_urgent_transport_motorized = acid_rain_quote_motorized }
+	set_variable = { acid_rain_cost_urgent_transport_fuel = acid_rain_quote_fuel }
+	set_temp_variable = { acid_rain_display_action = constant:acid_rain_action.urgent_evacuate_land }
+	acid_rain_load_display_action_row = yes
+	set_variable = { acid_rain_cost_evacuate_land_days = acid_rain_quote_days }
+	set_variable = { acid_rain_cost_evacuate_land_manpower = acid_rain_quote_manpower }
+	set_variable = { acid_rain_cost_evacuate_land_motorized = acid_rain_quote_motorized }
+	set_variable = { acid_rain_cost_evacuate_land_train = acid_rain_quote_train }
+	set_variable = { acid_rain_cost_evacuate_land_fuel = acid_rain_quote_fuel }
+	set_temp_variable = { acid_rain_display_action = constant:acid_rain_action.urgent_evacuate_island }
+	acid_rain_load_display_action_row = yes
+	set_variable = { acid_rain_cost_evacuate_island_days = acid_rain_quote_days }
+	set_variable = { acid_rain_cost_evacuate_island_convoy = acid_rain_quote_convoy }
+	set_temp_variable = { acid_rain_display_action = constant:acid_rain_action.recovery_transport }
+	acid_rain_load_display_action_row = yes
+	set_variable = { acid_rain_cost_recovery_transport_days = acid_rain_quote_days }
+	set_variable = { acid_rain_cost_recovery_transport_civ = acid_rain_quote_civ }
+	set_variable = { acid_rain_cost_recovery_transport_train = acid_rain_quote_train }
+	set_variable = { acid_rain_cost_recovery_transport_motorized = acid_rain_quote_motorized }
+	set_variable = { acid_rain_cost_recovery_transport_fuel = acid_rain_quote_fuel }
+	set_temp_variable = { acid_rain_display_action = constant:acid_rain_action.recovery_decontaminate_land }
+	acid_rain_load_display_action_row = yes
+	set_variable = { acid_rain_cost_decontaminate_land_days = acid_rain_quote_days }
+	set_variable = { acid_rain_cost_decontaminate_land_civ = acid_rain_quote_civ }
+	set_variable = { acid_rain_cost_decontaminate_land_support = acid_rain_quote_support }
+	set_variable = { acid_rain_cost_decontaminate_land_manpower = acid_rain_quote_manpower }
+	set_variable = { acid_rain_cost_decontaminate_land_train = acid_rain_quote_train }
+	set_temp_variable = { acid_rain_display_action = constant:acid_rain_action.recovery_decontaminate_island }
+	acid_rain_load_display_action_row = yes
+	set_variable = { acid_rain_cost_decontaminate_island_days = acid_rain_quote_days }
+	set_variable = { acid_rain_cost_decontaminate_island_convoy = acid_rain_quote_convoy }
+	set_temp_variable = { acid_rain_display_action = constant:acid_rain_action.recovery_industry }
+	acid_rain_load_display_action_row = yes
+	set_variable = { acid_rain_cost_recovery_industry_days = acid_rain_quote_days }
+	set_variable = { acid_rain_cost_recovery_industry_civ = acid_rain_quote_civ }
+	set_variable = { acid_rain_cost_recovery_industry_support = acid_rain_quote_support }
+	set_variable = { acid_rain_cost_recovery_industry_manpower = acid_rain_quote_manpower }
+	set_temp_variable = { acid_rain_display_action = constant:acid_rain_action.recovery_demobilize }
+	acid_rain_load_display_action_row = yes
+	set_variable = { acid_rain_cost_demobilize_days = acid_rain_quote_days }
+	set_variable = { acid_rain_cost_demobilize_political_power = acid_rain_quote_political_power }
+}

@@ -3,7 +3,31 @@
 Disposition: implemented source checkpoints with explicitly incomplete overall acceptance.
 The user's Event 033 goal remains active and no event-completion claim is made.
 
-## Current F7 report-return checkpoint
+## Current storm-clock source checkpoint, 2026-10-09
+
+The current runtime is `48b6c9b8ddcbacc8fafc002551735b7ade269929ecb36fa7beb5e6cc0a2ecabe` and triggers are `d284abdeb77e548c6d1d157f3bb5fb9c9b6ae548a86df2de222451efab21e6b5`.
+Severe and superstorm openings anchor their class pulse clocks at actual opening, and only `start <= now < end` can activate or dispatch.
+Expired pending forecasts cancel their proven membership and reservation without a physical pulse, impact history, active closure or severe cooldown draw.
+Genuine active retirement retains its cleanup ordering, history, parent layer, one cooldown draw and counter accounting.
+Worker state ownership checks current frozen/consequence/forecast generation, bounded matching slot, consistent start/end mirrors and storm serial.
+The public storm-layer identity guard checks the slot bounds before indexed serial and status reads, without introducing blanket layer-end or mortality-exclusivity policy.
+
+Sealed runner `241c252df0060dcd616ba8b0319566066e79a9474e8242d1e1bb7d431a027b5f` independently passes all forty-four variants across nine principal source scenarios at those pins.
+Its old 3EB failures remain historical, and physics is witnessed only at dispatch/entry guards, not as successful population or damage mutation.
+Raw runtime reversal verifies that only the two processor bodies changed, and six prior non-sealed source suites still pass with seventy-eight loop envelopes.
+See `validation/storm_clock_2026_10_09/` and the paired storm-clock handoffs for acceptance, snapshots and coverage limits.
+
+F8 inspection correctly selects the service's mission adapter for thirteen timed response rows, with an incomplete pool and twenty-seven discovered input paths.
+The four-case baseline and three-point sweep remain partial with ninety-three and ninety-two unresolved model inputs.
+Excluded raw-zero scores are not proof of native zero willingness or admission failure, and actual usefulness, target, quote and reserve facts remain missing.
+The after query `probability-e316c635aac6f8b6338b1d31` returns four unchanged medical-row projections with zero reported changes and ninety-three unresolved model inputs.
+Both selected decision snapshots have the same B7D bytes, and current shared helpers are used on both sides, so this is not a historical changed-clock or target-guard comparison certificate.
+The changed helper eligibility/timing comparison remains unresolved, and no AI useful-window guard has been implemented by this checkpoint.
+The focused Event 20 scan has zero helpers, and its artifact-backed comparison returns `ARTIFACT_NOT_FOUND` because provenance is unavailable.
+Native clock/lifecycle, actual population loss, reload, multiplayer, performance, assets/audio and the other Part 12 gates remain unfinished.
+The unapproved legacy-report migration policy and F7 physical packet/display findings remain open.
+
+## Historical F7 report-return checkpoint
 
 The current runtime is `3eb102bf6168362eadd58188d45791cd81f9713dc379d9e08da325334e65bd48`.
 Only three caller-owned temporary declarations were added to the committed E5 source, preserving the existing exact-positive-loss guard and every mortality/weight/cost/cap equation.
