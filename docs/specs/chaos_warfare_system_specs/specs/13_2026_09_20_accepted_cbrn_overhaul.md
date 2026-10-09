@@ -57,7 +57,13 @@ The exact-state theater decontamination assignment has three upfront payments an
 
 The six headquarters roles consolidate to **Operations and Intelligence**, **Protection and Decontamination**, and **Medical and Biosecurity**. Division support uses one **Protection Company** and one **Field Medical Company**; nerve suppression is an upgrade within the accepted structure. Remove eighteen agent-specific chemical-tank companies and retain three armored chassis roles.
 
-The fully combined legal CBRN bonuses are capped at army attack and organisation +5% each, planning +15%, coordination +8%, reinforce chance +2 percentage points, and conventional attack, defense, and breakthrough +15% per stat. Dedicated CBRN static bonuses cap at +35% and conditional hazard bonuses at +50%. Artillery doctrine conventional soft attack caps at +10%. Technology costs target 50, 75, and 100 unmodified base days for basic utility, standard equipment, and advanced research. These are combined caps, not a separate allowance for each source.
+The fully combined legal ordinary CBRN bonuses are capped at army attack and organisation +5% each, planning +15%, coordination +8%, reinforce chance +2 percentage points, and conventional attack, defense and breakthrough +15% per stat.
+Dedicated ordinary CBRN static bonuses cap at +35% and conditional hazard bonuses at +50%.
+Artillery doctrine conventional soft attack caps at +10%.
+Technology costs target 50, 75 and 100 unmodified base days for basic utility, standard equipment and advanced research.
+These are combined ordinary caps, not a separate allowance for each source.
+The user's explicit 2026-10-09 [shared Event 016 project exception](../corrections/2026-10-09_shared_event016_project_budget_exception.md) preserves full-strength Biomedical Acceleration, cloning, paleogenetics and xenobiology project rewards through their shared existing integration and common API across ordinary and story routes.
+Their exceptional contributions must be reported separately from the ordinary subtotal, alongside the resulting combined total; the exemption does not cover the whole CBRN package or all Event 016 content.
 
 The acceptance basis for these day targets is the user's original direct instruction, retained in CBRN-08 of the requirement ledger; the parent reaffirmed that instruction for the October 8 calibration and explicitly rejected the conflicting relative-percentage interpretation.
 The [research-cost calibration](../../../plans/chaos_warfare_system_plans/2026-10-09_research_costs_and_numeric_text.md) uses the installed base cost of 110 with accepted downward factors `.45454/.68181/.90909` for 27 researchable technologies, preserving hidden grant-marker costs and all non-cost fields.

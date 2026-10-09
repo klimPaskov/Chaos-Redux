@@ -4,9 +4,17 @@
 
 ## Current source arithmetic and validation limit
 
-The accepted 2026-09-20 ceilings apply to combined legal sources, not to each trait independently. The parent and technology owner retuned doctrine, spirits, High Command, and technology after the first audit. The completion auditor then recomputed strict all-independent upper bounds for separately legal scenarios; the table gives source arithmetic, not the engine's final stat formula. Controlled Retaliation, Theater Contamination, and Terminal Hazard share one `army_spirit` slot; Mask Discipline and Hazard Assault Cadres share one `division_command_spirit` slot. No effective-cap or engine acceptance is claimed here.
+The accepted 2026-09-20 ceilings apply to combined ordinary CBRN doctrine, technology, trait, advisor, MIO and HQ sources, not to each source independently.
+The [user-approved shared Event 016 exception](../../specs/chaos_warfare_system_specs/corrections/2026-10-09_shared_event016_project_budget_exception.md) preserves full project power for Biomedical Acceleration, cloning, paleogenetics and xenobiology through their existing common API and shared integration, including ordinary CBRN access.
+Report each exceptional contribution separately from the ordinary subtotal and resulting combined total; unrelated CBRN and Event 016 content remain outside this exemption.
+The table below retains earlier ordinary-source arithmetic, which omitted these shared modifiers and cannot establish full-package compliance.
+The [ten-check country-stat accounting](../../testing/2026-10-09_shared_project_budget/source_review.json) supplies current ordinary positive pooled bounds of +4% attack, +4.5% organisation, +14% planning, +7.5% coordination and +2 reinforcement points.
+Biomedical Deployment adds exempt +30% organisation and +110 reinforcement points, giving pooled bounds of +34.5% organisation and +112 reinforcement points; separately authorized Weaponization raises the exceptional/combined reinforcement sums to 210/212 points.
+These are declared authored-field source bounds, not native formulas or realized chances above 100%.
+The sixteen-entry inventory for four families does not prove automatic grants or full legal cross-family, unit/equipment or conditional-action combinations.
+Controlled Retaliation, Theater Contamination and Terminal Hazard share one `army_spirit` slot; Mask Discipline and Hazard Assault Cadres share one `division_command_spirit` slot.
 
-| Endpoint and legal posture | Independent-source budget bound | Accepted ceiling |
+| Ordinary endpoint and legal posture | Earlier ordinary independent-source bound | Ordinary accepted ceiling |
 | --- | ---: | ---: |
 | Army attack with Terminal | +4.0375% | +5% |
 | Army organisation with Controlled Retaliation and Mask Discipline | +4.5807% | +5% |
@@ -21,7 +29,8 @@ The accepted 2026-09-20 ceilings apply to combined legal sources, not to each tr
 | Reconnaissance with Operations/Medical HQs and weather technologies | +34.59813% under the flat-point source model | +35% utility interpretation; native semantics unresolved |
 
 The [October 7 source audit](../../plans/chaos_warfare_system_plans/subagent_handoffs/2026-10-07_doctrine_reward_budget_source_checks.md) resolves actual category membership and tests all thirteen retained roles under pooled identical-stat and independent-layer models.
-Its 137 checks reproduce the overlapping armored organization and conservative breakthrough failures in the captured baseline, then place all sixty-five revised role/stat rows within their source budgets.
+Its 137 checks reproduce the overlapping armored organization and conservative breakthrough failures in the captured baseline, then place sixty-five revised ordinary role/stat rows within their sampled source budgets.
+Those checks omitted shared Event 016 project modifiers and are not a full-package or exempt-project audit.
 Chaos Battalion receives one 15% mastery III breakthrough grant, four percent from its advanced doctrine technology, and eleven flat organization points on base forty.
 The conservative breakthrough bound reserves the possible 10% Cadres defense/breakthrough factor and 2.5% CBRN-earned defense skill, reaching +34.849%.
 Each of the two projector upgrades grants 2.5% soft attack, 13% hard attack, 4% defense and 6.5% breakthrough.
@@ -29,7 +38,9 @@ Only Projector and the three armored delivery variants belong to the retained ch
 Projector receives Fire Support's five organization points, while armor receives only its own five, avoiding the ten-point overlap on base twenty-four.
 The generic radio/radar and ordinary vanilla progression are equal-baseline sources, not selectively removed from one side.
 These source bounds include the possible commander defense-skill layer but do not prove native modifier accumulation, actual division statistics or campaign mastery pacing.
-The unchanged conditional hazard endpoint scenarios below retain their separate country and spirit-slot limits.
+The ordinary conditional hazard endpoint scenarios below retain their separate country and spirit-slot limits.
+Ordinary Biomedical Acceleration reaches Deployment, whose synchronized Theory/Prototype/Deployment modifiers author +30% army organisation and `.35 + .25 + .50 = 1.10` reinforcement, or 110 percentage points.
+These are disclosed exempt project contributions, not additions silently absorbed into the ordinary +5%/+2-point budgets; Weaponization is a separate stage and not an automatic ordinary CBRN grant.
 
 | Conditional endpoint | Largest source stack in a separate country- and spirit-slot-legal scenario | Source arithmetic |
 | --- | --- | ---: |

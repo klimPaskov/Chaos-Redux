@@ -1,5 +1,10 @@
 # Doctrine reward and mastery actual-source checks
 
+Budget interpretation is limited to ordinary CBRN sources.
+The [accepted shared Event 016 exception](../../../specs/chaos_warfare_system_specs/corrections/2026-10-09_shared_event016_project_budget_exception.md) preserves endgame project rewards outside those caps.
+The historical result's `FullLegalSourceBudget` caption does not establish full combined endgame compliance; shared modifiers were not included in that subtotal.
+Current separate accounting is in `docs/testing/2026-10-09_shared_project_budget/source_review.json`, including the ordinary subtotal, selected shared rewards, combined source sums and unresolved activation/aggregation limits.
+
 Disposition: implemented bounded source audit, pending parent review.
 Acceptance basis: the parent assigned read-only checks for its frozen four-track reward concentration, broader mastery contributors, two technology retunes, and armored organization recipient correction on 2026-10-07.
 The parent retains gameplay design, source changes, probability evidence, integration, and the final commit.

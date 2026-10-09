@@ -1,4 +1,6 @@
-// Bounded actual-source doctrine regression and budget audit. No HOI4 execution.
+// Bounded ordinary-CBRN doctrine regression and budget audit. No HOI4 execution.
+// Shared Event 016 endgame rewards are separately accounted in
+// docs/testing/2026-10-09_shared_project_budget/source_review.js.
 // Run from the mod root: node docs/testing/2026-10-07_doctrine_reward_budget_source_tests.js
 // Parser follows exact_quote_source_tests.js, adding anonymous database list blocks.
 // No shared parser, engine source, index, balance source, or AI source is modified.
@@ -412,13 +414,14 @@ for(const [kind,file,startLine,endLine] of [
 referenceSections.push({kind: 'installed_skill_data', path: defensePath, startLine: 124, endLine: 204, sha256: hash(defenseBytes), perPoint: defensePerPoint, corpsCommanderTable: skillTable});
 test('source hashes remain stable during the bounded audit', () => { for (const [file, bytes] of inputs) assert.equal(hash(fs.readFileSync(path.join(root, file))), hash(bytes), file); });
 const result = {
- status: tests.some(t => t.status === 'failed') ? 'failed' : 'passed_with_native_semantics_unresolved', scenario: 'FullLegalSourceBudget: controlled CBRN benefit upper bound over an equal conventional baseline', command: 'node docs/testing/2026-10-07_doctrine_reward_budget_source_tests.js', timestamp: new Date().toISOString(),
+ status: tests.some(t => t.status === 'failed') ? 'failed' : 'passed_with_native_semantics_unresolved', scenario: 'OrdinaryCBRNSourceBudget: controlled benefit upper bound excluding explicitly exempt shared Event 016 endgame rewards', command: 'node docs/testing/2026-10-07_doctrine_reward_budget_source_tests.js', timestamp: new Date().toISOString(),
  tests, sourceHashes: Object.fromEntries([...inputs].map(([f,b]) => [f,hash(b)])), referenceSections, reconnaissanceEvidence,
  baselineProvenance: {rewardRevision: baseline, grandDoctrine: grandBaseline, dependenciesWithoutBeforeSnapshot: 'Current dependency files are hashed. Their bodies are not claimed equal to a captured baseline. Before budget overlays only the captured tracks/constants/technology and separate grand baseline onto the same current dependency sources.'},
  rosterEvidence, retainedRoster: retained, chemicalMembershipAmongRetained: chemical,
  otherDefinedChemicalMembersOutsideRetainedRoster: [...units].filter(([id,u]) => !retained.includes(id) && u.categories.includes('category_chemical_support_companies')).map(([id,u]) => ({unit: id, file: u.file, active: optional(u.body,'active')})),
  retiredConstants: {local: retiredLocal, shared: retiredShared}, countryEvidence, equalBaselineCountryTechnologySourcesExcludedFromCBRNAllowance: afterGrants.country.filter(g => !g.cbrnControlled), cadres, extraDefenseSkill: {points: skillPoints, perPoint: defensePerPoint, reservedFactor: extraDefense}, budgetTables, reproducedBaselineBudgetFailures: beforeFailures, conventionalArtillery, pacingCases, mioNativeBonuses, compatibilityFlagReferences: flagReferences,
  limitations: [
+  'The user-approved 2026-10-09 shared Event 016 project exception is outside this ordinary subtotal; use the separate shared-project budget report. This result does not certify the full combined endgame package.',
   'Pooled same-stat accumulation and every-positive-source independent products are two conservative source arithmetic models, not a proved native formula.',
   'Defense modifiers and the earned defense skill are reserved against both defense and attacking breakthrough because their exact native breakthrough semantics remain unsupported.',
   'The country upper bound deliberately sums positive mutually exclusive postures. The planning upper bound selects one highest operations high-command rank rather than stacking three ranks.',
