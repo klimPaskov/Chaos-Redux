@@ -465,11 +465,41 @@ A target keeps a minimum convoy or train reserve needed for active supply and tr
 
 ### Industrial support
 
-Industrial tribute should create a timed civilian-factory burden, construction contribution, repair program, or direct economic support that the engine can prove.
+The accepted industrial tribute is funded native civilian-factory repair at one frozen African site, preserving the existing CPP price rather than adding a donor factory charge.
+Disposition: promoted into an accepted spec from the [industrial tribute design](../../../plans/012_africa_plans/subagent_handoffs/012_gods_industrial_tribute_design_2026-10-08.md), parent accepted within the user's full-Gods goal and queued in `c7e9565a4391a1a2d85b5e4fa160bcbc53f2929c`, as reaffirmed by the October 9 parent reconciliation delegation.
+The bounded contract is implemented in current source.
+Acceptance is independent of the source and the unresolved native evidence recorded in the [parent reconciliation](../../../plans/012_africa_plans/subagent_handoffs/012_gods_industry_parent_reconciliation_2026-10-09.md).
 
-The player-facing action should state the duration and burden. It should not hide an indefinite consumer-goods penalty behind a vague promise.
+Family `industry_repair = 7` keeps the existing 20-CPP base price and all scaling, freezing the actual quote Q and D = clamp(floor(60 * Q / 20), 30, 120) full service days.
+A new program requires the host's single free reservation, an owned, controlled African core with at least 0.50 damaged civilian-factory level, and one civilian factory available for projects as a nonconsumed host requirement.
+Its original host-scoped state modifier grants +50% civilian-factory repair speed for finite purchased time, using the existing `GFX_modifiers_ETH_state_development` icon and no new art.
+The modifier's `enable` calls `gods_of_africa_industry_native_service_is_authorized` in original country source context with ROOT as the state, proving current program ownership, the same frozen site and secured ownership/control/core without revoking closed-finance or donor-loss service.
+The bounded `common\on_actions\012_africa_gods_industry_on_actions.txt` control-change callback reviews FROM's matching reserved program at FROM.FROM and captures retirement before the next owner tick, with no payment, financial closure, service renewal, world scan or recurring hook.
+Each exact CPP debit and matching credit retains the payer's one-CPP reserve and purchases only the increase in cumulative whole-day entitlement.
+Incomplete funding cannot earn the final day, while exact full funding earns D.
+Observed failed transactions reverse only their measured debit/credit and provisional timer write, retaining prior funding and service.
 
-Possible uses include:
+The player-facing terms state the named site, exact remaining CPP, newly purchased days, repair factor, payment deadline and distinct service expiry or early completion.
+A paid term can observe secured-site completion between owner ticks before fresh debit.
+The remaining agreed CPP still settles in full, with no additional repair days or waiver.
+Financial closure, material substitution, donor loss and normal secured-Africa settlement preserve purchased support.
+Hostile host/site loss removes the original scoped modifier and captures retirement before epoch and pointer cleanup.
+Reports retain the original industrial terms after substitution with zero new days, and terminal service history kind 23 remains separate from financial fulfillment.
+No factory level, equipment, manpower or central-capacity gain is fabricated from CPP funding.
+
+The [integration review](../../../plans/012_africa_plans/subagent_handoffs/012_gods_industry_integration_review_2026-10-09.md) retains 29 helper and 44 integration source cases under `SourceNoNativeProof`.
+Native monetary precision, timer extension/restoration/expiry, actual factory assignment and attributable repair remain unproved.
+Modifier presence alone cannot prove timer refresh, and no game evidence is claimed.
+The parent reconciliation preserves installed targeted-modifier/daily-update and control-change scope references.
+Actual daily enable evaluation and native callback ordering remain unproved, so source cleanup before the next owner tick is not immediate engine acceptance.
+Numeric AI weights remain unchanged.
+The [matched AFTER comparison](../../../plans/012_africa_plans/subagent_handoffs/012_gods_industry_probability_2026-10-08.md) completed with a finite partial result and 619 unresolved traces.
+The preserved weighted roots do not freeze helper dependencies, so no numeric AI equivalence or click probability is established.
+The separate F2 adapter audit excluded all five cases with 74 unresolved traces and no score, which remains a check limit.
+No simplification is authorized or introduced by this reconciliation.
+These evidence limits do not mean the industrial source is missing, and they do not establish completion of the wider Gods goal.
+
+Broader industrial uses remain proposals outside this accepted repair tranche:
 
 - rebuilding African railways
 - repairing ports and supply hubs

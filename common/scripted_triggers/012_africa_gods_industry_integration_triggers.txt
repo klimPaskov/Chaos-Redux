@@ -1,0 +1,53 @@
+# Event 012 industry-specific integration requirements. Participant COUNTRY
+# scope unless documented otherwise. No normal variable or gameplay state writes.
+
+# HOST. A proposal whose prior bounded retirement has been durably consumed.
+gods_of_africa_industry_offer_is_available = {
+	gods_of_africa_industry_candidate_is_available = yes
+	has_country_flag = gods_of_africa_industry_candidate_available
+	NOT = { has_country_flag = gods_of_africa_industry_retirement_recorded }
+}
+
+# ACTOR after independently measured payment, before ordinary full closure.
+# The quote's pre-payment balance invariant no longer applies after C advanced.
+gods_of_africa_industry_full_funding_is_proven = {
+	gods_of_africa_industry_record_matches_terms = yes
+	var:gods_of_africa_industry_host = {
+		gods_of_africa_industry_program_owner_is_current = yes
+		NOT = { has_country_flag = gods_of_africa_industry_program_inflight }
+		NOT = { has_country_flag = gods_of_africa_industry_program_unresolved }
+		check_variable = { gods_of_africa_industry_program_last_consumed_receipt > constant:gods_of_africa_value.zero }
+		check_variable = { gods_of_africa_industry_program_funded = gods_of_africa_industry_program_quote }
+		OR = {
+			has_country_flag = gods_of_africa_industry_program_site_completed
+			AND = {
+				has_country_flag = gods_of_africa_industry_program_native_applied
+				var:gods_of_africa_industry_program_site = { has_dynamic_modifier = { modifier = gods_of_africa_industry_repair_program scope = PREV } }
+			}
+		}
+	}
+}
+
+# ACTOR at the original deadline. Recipient invalidation is neutral, not donor
+# refusal, and never resets a balance or awards compliance.
+gods_of_africa_industry_receiver_is_unavailable = {
+	check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.industry_repair }
+	OR = {
+		has_country_flag = gods_of_africa_industry_transaction_unresolved
+		NOT = { gods_of_africa_industry_host_can_receive_payment = yes }
+	}
+}
+
+# COUNTRY pure formatter classification. Caller supplies bare family_to_check.
+gods_of_africa_family_uses_political_power = {
+	OR = {
+		check_variable = { gods_of_africa_family_to_check = constant:gods_of_africa_demand_family.industry_repair }
+		check_variable = { gods_of_africa_family_to_check = constant:gods_of_africa_demand_family.recognition }
+		check_variable = { gods_of_africa_family_to_check = constant:gods_of_africa_demand_family.territory }
+		check_variable = { gods_of_africa_family_to_check = constant:gods_of_africa_demand_family.end_enemy_support }
+		check_variable = { gods_of_africa_family_to_check = constant:gods_of_africa_demand_family.emergency_relief }
+		check_variable = { gods_of_africa_family_to_check = constant:gods_of_africa_demand_family.military_access }
+		check_variable = { gods_of_africa_family_to_check = constant:gods_of_africa_demand_family.non_aggression }
+		check_variable = { gods_of_africa_family_to_check = constant:gods_of_africa_demand_family.guarantee_africa }
+	}
+}

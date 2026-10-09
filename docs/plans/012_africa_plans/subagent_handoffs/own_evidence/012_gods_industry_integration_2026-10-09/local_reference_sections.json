@@ -1,0 +1,30 @@
+[
+  {
+    "path": "C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/effects_documentation.md",
+    "startLine": 5978,
+    "endLine": 5991,
+    "revision": "2cdc93d26775990468eed167442f7a416b13059fb8fe07d139b54250b79209af",
+    "text": "## remove_dynamic_modifier\n\n* Supported Scopes: STATE, COUNTRY, CHARACTER, SPECIAL_PROJECT\n* Supported Targets: THIS, ROOT, PREV, FROM, OWNER, CONTROLLER, OCCUPIED, CAPITAL\n\n```\nremoves a dynamic modifier from the containing scope (country / state / unit-leader / special-project).\nexample :\nremove_dynamic_modifier = {\n  modifier = dynamic_modifier_name\n  scope = GER # optional, must match the scope input used in add_dynamic_modifier (if any)\n}\n```\n"
+  },
+  {
+    "path": "C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/triggers_documentation.md",
+    "startLine": 3775,
+    "endLine": 3792,
+    "revision": "7d27ed77dadaf3a213a4b3e2c624bf9c02dae495317abe8eee833b27c2d1de29",
+    "text": "## has_dynamic_modifier\n\n* Supported Scopes: STATE, COUNTRY, CHARACTER\n* Supported Targets: THIS, ROOT, PREV, FROM, OWNER, CONTROLLER, OCCUPIED, CAPITAL\n\nChecks if scope has a dynamic modifier.\n\n### Example 1\n```\nhas_dynamic_modifier = dynamic_modifier_name\n```\n\n### Example 2\n```\nhas_dynamic_modifier = {\n\tmodifier = dynamic_modifier_name\n\tscope = GER #optional, if the original modifier has been targeted\n}"
+  },
+  {
+    "path": "C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/script_constants/documentation.md",
+    "startLine": 1,
+    "endLine": 60,
+    "revision": "e2812efbddc7961038e1f1f2b6dd6b059bdc70704ec87d1fe530835d9141be1c",
+    "text": "# Constants\nConstants are a way to define simple and complex script values\nthat are reusable in different files in the scripts.\nOnly entries that are documented to support these script constant\ncan utilize it.\n\nAll scoped variables can access script constants by using the `constant:` prefix.\n\nNote that reloading the script database is not enough to propagate the constants.\nThe script that uses the constants has to be reloaded after the script constant database has been reloaded.\n\nA script constant have the following format:\n\n```python\ncategory_name = {\n    # Mandatory to be the first entry\n    schema = {\n        # specific name of the key mutually exclusive with any_key\n        key = foobar \n        # Accept any key of alphabetic characters (no dots), mutually exclusive with key\n        any_key = yes\n        \n        # The data sepecification\n        data = int # integer\n        data = fixed_point # floating point\n        # or\n        data = { SCHEMA_OBJECTS } # complex schema entry\n    }\n\n    # All the data entries that matches the specified schema.\n    DATA*\n}\n```\n\n# Examples\n```python\nsp_complexity = {\n    schema = {\n        any_key = yes\n        data = {\n            {\n                key = min\n                data = int\n            }\n            {\n                key = max\n                data = int\n            }\n        }\n    }\n\n    small = {\n        min = 20\n        max = 30\n    }\n\n    medium = {\n        min = 15\n        max = 20\n    }"
+  },
+  {
+    "path": "C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/dynamic_modifiers/bba_dynamic_modifiers.txt",
+    "startLine": 242,
+    "endLine": 265,
+    "revision": "f8147454267e43da91def4e1937ff56d67a2e09d98c78cc857e5d09d77763539",
+    "text": "ETH_international_red_cross_dynamic_modifier = { #NATIONAL SPIRIT\n\tenable = { always = yes }\n\n\ticon = GFX_idea_ETH_international_red_cross\n\n\tarmy_morale_factor = ETH_irc_morale_factor\n\tenemy_army_bonus_air_superiority_factor = ETH_irc_enemy_army_bonus_air_superiority_factor\n\n\t# from communist branch\n\tindustry_repair_factor = ETH_communist_factory_repair_factor # $MODIFIER_INDUSTRY_REPAIR_FACTOR$\n\n}\n\n#### STATE MODIDIFERS\nETH_state_development_dynamic_modifier = { #STATE MODIFIER\n\tenable = { always = yes }\n\ticon = GFX_modifiers_ETH_state_development\n\tstate_production_speed_buildings_factor = ETH_state_development_production_speed # $MODIFIER_STATE_PRODUCTION_SPEED_BUILDINGS_FACTOR$\n\tlocal_building_slots_factor = ETH_state_development_local_building_slots_factor # $MODIFIER_LOCAL_BUILDING_SLOTS$\n\n\n\t# Later\n\tlocal_factories = ETH_state_development_local_factories\n\tstate_resources_factor = ETH_state_development_state_resources_factor"
+  }
+]

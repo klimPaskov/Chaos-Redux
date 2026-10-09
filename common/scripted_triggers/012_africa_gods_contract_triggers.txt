@@ -148,7 +148,12 @@ gods_of_africa_contract_has_substitute_terms = {
 gods_of_africa_host_can_receive_demand_payment = {
 	OR = {
 		AND = {
+			check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.industry_repair }
+			gods_of_africa_industry_host_can_receive_payment = yes
+		}
+		AND = {
 			NOT = { check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.fuel } }
+			NOT = { check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.industry_repair } }
 			# Continuing support paid in fuel needs tank room too (decision L28).
 			NOT = {
 				AND = {
@@ -158,6 +163,13 @@ gods_of_africa_host_can_receive_demand_payment = {
 			}
 		}
 		AND = {
+			OR = {
+				check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.fuel }
+				AND = {
+					check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.continuing_support }
+					check_variable = { gods_of_africa_demand_instalment_material = constant:gods_of_africa_demand_family.fuel }
+				}
+			}
 			has_event_target = africa_host
 			event_target:africa_host = {
 				set_temp_variable = { gods_of_africa_host_fuel_room_k = max_fuel_k }

@@ -1,0 +1,197 @@
+# Event 012 industrial programme integration with existing contract/history owners.
+# Country scope. No global target or world iterator is created. Owner-helper
+# records remain bounded; terminal service facts enter the existing kind/day
+# history and a participant-owned last-service receipt before host reclamation.
+
+gods_of_africa_capture_industry_retirement = {
+	if = {
+		limit = { has_country_flag = gods_of_africa_industry_retirement_recorded }
+		var:gods_of_africa_industry_retired_participant = {
+			if = {
+				limit = {
+					has_country_flag = gods_of_africa_history_initialized
+					has_variable = gods_of_africa_history_owner_id
+					check_variable = { var = gods_of_africa_history_owner_id value = THIS.id compare = equals }
+					has_variable = gods_of_africa_history_origin_host_id
+					check_variable = { var = gods_of_africa_history_origin_host_id value = PREV.gods_of_africa_industry_retired_origin_host_id compare = equals }
+				}
+				# Historical country data remains the owner even after donor annexation.
+				# No live participant/epoch requirement can erase an earned-service receipt.
+				if = {
+					limit = {
+						NOT = {
+							AND = {
+								has_variable = gods_of_africa_last_industry_retired_host_id
+								check_variable = { gods_of_africa_last_industry_retired_host_id = PREV.gods_of_africa_industry_retired_host_id }
+								check_variable = { gods_of_africa_last_industry_retired_generation = PREV.gods_of_africa_industry_retired_generation }
+								check_variable = { gods_of_africa_last_industry_retired_origin_host_id = PREV.gods_of_africa_industry_retired_origin_host_id }
+								check_variable = { gods_of_africa_last_industry_retired_epoch = PREV.gods_of_africa_industry_retired_epoch }
+								check_variable = { gods_of_africa_last_industry_retired_contract_id = PREV.gods_of_africa_industry_retired_contract_id }
+							}
+						}
+					}
+					add_to_array = { array = gods_of_africa_history_kinds value = constant:gods_of_africa_history_kind.industry_service_ended }
+					add_to_array = { array = gods_of_africa_history_days value = PREV.gods_of_africa_industry_retired_day }
+					add_to_variable = { gods_of_africa_history_count = constant:gods_of_africa_value.one }
+					set_variable = { gods_of_africa_last_industry_retired_host_id = PREV.gods_of_africa_industry_retired_host_id }
+					set_variable = { gods_of_africa_last_industry_retired_generation = PREV.gods_of_africa_industry_retired_generation }
+					set_variable = { gods_of_africa_last_industry_retired_origin_host_id = PREV.gods_of_africa_industry_retired_origin_host_id }
+					set_variable = { gods_of_africa_last_industry_retired_epoch = PREV.gods_of_africa_industry_retired_epoch }
+					set_variable = { gods_of_africa_last_industry_retired_contract_id = PREV.gods_of_africa_industry_retired_contract_id }
+					set_variable = { gods_of_africa_last_industry_retired_site = PREV.gods_of_africa_industry_retired_site }
+					set_variable = { gods_of_africa_last_industry_retired_quote = PREV.gods_of_africa_industry_retired_quote }
+					set_variable = { gods_of_africa_last_industry_retired_service_days = PREV.gods_of_africa_industry_retired_service_days }
+					set_variable = { gods_of_africa_last_industry_retired_funded = PREV.gods_of_africa_industry_retired_funded }
+					set_variable = { gods_of_africa_last_industry_retired_granted_days = PREV.gods_of_africa_industry_retired_granted_days }
+					set_variable = { gods_of_africa_last_industry_retired_due_day = PREV.gods_of_africa_industry_retired_due_day }
+					set_variable = { gods_of_africa_last_industry_retired_initial_damage = PREV.gods_of_africa_industry_retired_initial_damage }
+					set_variable = { gods_of_africa_last_industry_retired_last_damage = PREV.gods_of_africa_industry_retired_last_damage }
+					set_variable = { gods_of_africa_last_industry_retired_observation_day = PREV.gods_of_africa_industry_retired_observation_day }
+					set_variable = { gods_of_africa_last_industry_retired_last_consumed_receipt = PREV.gods_of_africa_industry_retired_last_consumed_receipt }
+					set_variable = { gods_of_africa_last_industry_retired_unpaid = PREV.gods_of_africa_industry_retired_unpaid }
+					set_variable = { gods_of_africa_last_industry_retired_day = PREV.gods_of_africa_industry_retired_day }
+				}
+				clr_country_flag = gods_of_africa_last_industry_retired_site_completed
+				if = {
+					limit = { PREV = { has_country_flag = gods_of_africa_industry_retired_site_completed } }
+					set_country_flag = gods_of_africa_last_industry_retired_site_completed
+				}
+				PREV = { clr_country_flag = gods_of_africa_industry_retirement_recorded }
+			}
+		}
+	}
+}
+
+# HOST synchronous loss/review boundary. Never reconstruct a delayed callback
+# tuple from a newer record; the five expected temps are captured now.
+gods_of_africa_retire_owned_industry_program = {
+	if = {
+		limit = { has_country_flag = gods_of_africa_industry_program_reserved }
+		set_temp_variable = { gods_of_africa_industry_retire_host_id = gods_of_africa_industry_program_host_id }
+		set_temp_variable = { gods_of_africa_industry_retire_generation = gods_of_africa_industry_program_generation }
+		set_temp_variable = { gods_of_africa_industry_retire_origin_host_id = gods_of_africa_industry_program_origin_host_id }
+		set_temp_variable = { gods_of_africa_industry_retire_epoch = gods_of_africa_industry_program_epoch }
+		set_temp_variable = { gods_of_africa_industry_retire_contract_id = gods_of_africa_industry_program_contract_id }
+		gods_of_africa_retire_industry_program = yes
+	}
+	gods_of_africa_capture_industry_retirement = yes
+}
+
+# HOST before existing need selection; closed expired records are reclaimed by
+# the owner helper. No new service is purchased or reinstalled here.
+gods_of_africa_prepare_industry_candidate = {
+	gods_of_africa_review_industry_program = yes
+	gods_of_africa_capture_industry_retirement = yes
+	gods_of_africa_select_industry_site = yes
+	if = {
+		limit = { has_country_flag = gods_of_africa_industry_retirement_recorded }
+		clr_country_flag = gods_of_africa_industry_candidate_available
+	}
+}
+
+# ACTOR during response capture, before ordinary demand cleanup.
+gods_of_africa_capture_industry_response_details = {
+	clr_country_flag = gods_of_africa_last_response_industry
+	clr_country_flag = gods_of_africa_last_response_industry_completed
+	if = {
+		limit = {
+			has_country_flag = gods_of_africa_industry_terms_bound
+			check_variable = { gods_of_africa_industry_contract_id = gods_of_africa_demand_id }
+			check_variable = { gods_of_africa_industry_epoch = gods_of_africa_demand_authority_epoch }
+			check_variable = { gods_of_africa_industry_generation = gods_of_africa_demand_generation }
+		}
+		set_country_flag = gods_of_africa_last_response_industry
+		set_variable = { gods_of_africa_last_response_industry_site = gods_of_africa_industry_site }
+		set_variable = { gods_of_africa_last_response_industry_quote = gods_of_africa_industry_quote }
+		set_variable = { gods_of_africa_last_response_industry_service_days = gods_of_africa_industry_service_days }
+		set_variable = { gods_of_africa_last_response_industry_new_days = constant:gods_of_africa_value.zero }
+		if = {
+			limit = {
+				check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.industry_repair }
+				OR = {
+					check_variable = { gods_of_africa_last_response_kind = constant:gods_of_africa_history_kind.compliance }
+					check_variable = { gods_of_africa_last_response_kind = constant:gods_of_africa_history_kind.partial }
+				}
+			}
+			set_variable = { gods_of_africa_last_response_industry_new_days = gods_of_africa_industry_payment_new_days }
+		}
+		set_variable = { gods_of_africa_last_response_industry_funded = constant:gods_of_africa_value.zero }
+		set_variable = { gods_of_africa_last_response_industry_granted_days = constant:gods_of_africa_value.zero }
+		if = {
+			limit = { gods_of_africa_industry_record_matches_terms = yes }
+			set_variable = { gods_of_africa_last_response_industry_funded = var:gods_of_africa_industry_host.gods_of_africa_industry_program_funded }
+			set_variable = { gods_of_africa_last_response_industry_granted_days = var:gods_of_africa_industry_host.gods_of_africa_industry_program_granted_days }
+			if = {
+				limit = { var:gods_of_africa_industry_host = { has_country_flag = gods_of_africa_industry_program_site_completed } }
+				set_country_flag = gods_of_africa_last_response_industry_completed
+			}
+		}
+		else_if = {
+			limit = {
+				has_variable = gods_of_africa_last_industry_retired_contract_id
+				check_variable = { gods_of_africa_last_industry_retired_host_id = gods_of_africa_industry_host_id }
+				check_variable = { gods_of_africa_last_industry_retired_generation = gods_of_africa_industry_generation }
+				check_variable = { gods_of_africa_last_industry_retired_origin_host_id = gods_of_africa_industry_origin_host_id }
+				check_variable = { gods_of_africa_last_industry_retired_epoch = gods_of_africa_industry_epoch }
+				check_variable = { gods_of_africa_last_industry_retired_contract_id = gods_of_africa_industry_contract_id }
+			}
+			set_variable = { gods_of_africa_last_response_industry_funded = gods_of_africa_last_industry_retired_funded }
+			set_variable = { gods_of_africa_last_response_industry_granted_days = gods_of_africa_last_industry_retired_granted_days }
+			if = {
+				limit = { has_country_flag = gods_of_africa_last_industry_retired_site_completed }
+				set_country_flag = gods_of_africa_last_response_industry_completed
+			}
+		}
+	}
+}
+
+# ACTOR. Caller-owned amount/output temps; this is presentation arithmetic,
+# not permission, payment or programme installation.
+gods_of_africa_compute_industry_quoted_days = {
+	set_temp_variable = { gods_of_africa_industry_quoted_days = constant:gods_of_africa_value.zero }
+	if = {
+		limit = {
+			gods_of_africa_industry_record_matches_terms = yes
+			check_variable = { gods_of_africa_industry_quote > constant:gods_of_africa_value.zero }
+			NOT = { var:gods_of_africa_industry_host = { has_country_flag = gods_of_africa_industry_program_site_completed } }
+		}
+		set_temp_variable = { gods_of_africa_industry_display_funding = var:gods_of_africa_industry_host.gods_of_africa_industry_program_funded }
+		add_to_temp_variable = { gods_of_africa_industry_display_funding = gods_of_africa_industry_display_payment }
+		set_temp_variable = { gods_of_africa_industry_quoted_days = gods_of_africa_industry_service_days }
+		multiply_temp_variable = { gods_of_africa_industry_quoted_days = gods_of_africa_industry_display_funding }
+		divide_temp_variable = { gods_of_africa_industry_quoted_days = gods_of_africa_industry_quote }
+		set_temp_variable = { gods_of_africa_industry_display_remainder = gods_of_africa_industry_quoted_days }
+		modulo_temp_variable = { gods_of_africa_industry_display_remainder = constant:gods_of_africa_value.one }
+		subtract_from_temp_variable = { gods_of_africa_industry_quoted_days = gods_of_africa_industry_display_remainder }
+		if = {
+			limit = { check_variable = { gods_of_africa_industry_display_funding < gods_of_africa_industry_quote } }
+			set_temp_variable = { gods_of_africa_industry_display_ceiling = gods_of_africa_industry_service_days }
+			subtract_from_temp_variable = { gods_of_africa_industry_display_ceiling = constant:gods_of_africa_value.one }
+			clamp_temp_variable = { var = gods_of_africa_industry_quoted_days min = constant:gods_of_africa_value.zero max = gods_of_africa_industry_display_ceiling }
+		}
+		else = { set_temp_variable = { gods_of_africa_industry_quoted_days = gods_of_africa_industry_service_days } }
+		subtract_from_temp_variable = { gods_of_africa_industry_quoted_days = var:gods_of_africa_industry_host.gods_of_africa_industry_program_granted_days }
+		clamp_temp_variable = { var = gods_of_africa_industry_quoted_days min = constant:gods_of_africa_value.zero max = gods_of_africa_industry_service_days }
+	}
+}
+
+# ACTOR existing quote producers only. No per-frame mutation is needed.
+gods_of_africa_refresh_industry_payment_quotes = {
+	set_variable = { gods_of_africa_industry_full_new_days = constant:gods_of_africa_value.zero }
+	set_variable = { gods_of_africa_industry_partial_new_days = constant:gods_of_africa_value.zero }
+	if = {
+		limit = {
+			has_country_flag = gods_of_africa_industry_terms_bound
+			check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.industry_repair }
+		}
+		set_temp_variable = { gods_of_africa_industry_display_payment = gods_of_africa_demand_remaining }
+		set_temp_variable = { gods_of_africa_industry_quoted_days = constant:gods_of_africa_value.zero }
+		gods_of_africa_compute_industry_quoted_days = yes
+		set_variable = { gods_of_africa_industry_full_new_days = gods_of_africa_industry_quoted_days }
+		set_temp_variable = { gods_of_africa_industry_display_payment = gods_of_africa_partial_payment_amount }
+		clamp_temp_variable = { var = gods_of_africa_industry_display_payment min = constant:gods_of_africa_value.zero max = gods_of_africa_demand_remaining }
+		set_temp_variable = { gods_of_africa_industry_quoted_days = constant:gods_of_africa_value.zero }
+		gods_of_africa_compute_industry_quoted_days = yes
+		set_variable = { gods_of_africa_industry_partial_new_days = gods_of_africa_industry_quoted_days }
+	}
+}

@@ -88,6 +88,43 @@ The mission title and description should dynamically identify:
 - current payment progress if partial payment is supported
 - whether substitution and extension are available
 
+### Industrial support terms
+
+Disposition: promoted into an accepted spec from the [industrial tribute design](../../../plans/012_africa_plans/subagent_handoffs/012_gods_industrial_tribute_design_2026-10-08.md), parent accepted within the full-Gods goal and queued in `c7e9565a4391a1a2d85b5e4fa160bcbc53f2929c`, reaffirmed by the October 9 reconciliation delegation.
+The [parent reconciliation](../../../plans/012_africa_plans/subagent_handoffs/012_gods_industry_parent_reconciliation_2026-10-09.md) records current implemented receipt/quote/report source and separate native, text-rendering and AI evidence limits.
+It does not approve the separately owned GUI.
+
+Industrial support uses the existing full and partial decision rows, mission, substitute owners and report wrappers.
+Its sole spendable price is the original frozen scaled CPP quote, based on 20 CPP and shown with `£pol_power` at sufficient precision to agree with the actual debit.
+The payer keeps one CPP in reserve.
+The named African owned/controlled core site, at least 0.50 new-site civilian-factory damage, one nonconsumed available project factory and single host reservation are requirements rather than extra costs.
+Terms show Q, the remaining CPP, +50% civilian-factory repair speed, D = clamp(floor(60 * Q / 20), 30, 120), newly purchased cumulative service days and the distinct payment deadline and service end.
+Use existing `GFX_modifiers_ETH_state_development` for the state modifier.
+No new art or additional action/window is required by this repair.
+
+Pure full/partial gates and execution use the same frozen tuple, receiver validity, actual payment and reserve.
+Blocked text identifies site, host capacity/reservation, authority, CPP or unresolved receipt state, rather than using a fuel-only explanation.
+Secured zero damage observed during paid native support between owner ticks can settle the full remaining agreed CPP without another repair grant.
+A healthy unfunded site or unobserved completion after expiry cannot.
+Accepted material substitutes use their existing prices and grant zero new industrial days.
+Reports preserve original site/Q/D and funded/granted totals, including exact retired data captured from the original host before response capture.
+The truthful report statement “Any paid support keeps...” remains conditional even when prior funding is zero.
+It does not promise unpurchased service or alter existing report tokens.
+Paid support survives ordinary finance cleanup, donor loss and normal settlement, while hostile host/site loss retires original scoped service and records terminal history kind 23 independently of financial outcomes.
+The native modifier's `gods_of_africa_industry_native_service_is_authorized` guard preserves original country/state ownership.
+`common\on_actions\012_africa_gods_industry_on_actions.txt` reviews the old controller's matching site and captures retirement on `on_state_control_changed` before the next scheduled owner tick.
+These source paths add no player cost or action, and actual native daily enable evaluation and callback ordering remain unproved.
+Do not auto-complete the financial mission merely because damage reaches zero or a paid timer ends, waive the remaining CPP, or describe factory assignment or attributable repair as proved.
+
+The retained source tests cover quote caches, pure availability, original/substituted reports and finite service arithmetic.
+`SourceNoNativeProof` and native timer-presence limits still apply.
+Numeric AI weights remain unchanged.
+The [matched AFTER comparison](../../../plans/012_africa_plans/subagent_handoffs/012_gods_industry_probability_2026-10-08.md) completed with a finite partial result and 619 unresolved traces.
+The preserved weighted roots do not freeze helper dependencies, so no numeric AI equivalence or click probability is established.
+The separate F2 adapter audit excluded all five cases with 74 unresolved traces and no score, which remains a check limit.
+This documentation pass supplies no game or native localisation/layout evidence.
+No simplification is authorized or introduced, and compact public-value GUI work remains outside this industrial reconciliation.
+
 ### Mission durations
 
 Use varied durations based on action difficulty.
@@ -112,7 +149,7 @@ Examples:
 - war ended
 - access granted
 - target alliance left
-- a timed industrial commitment completed
+- a paid industrial repair program reaches physical completion, while its agreed CPP balance still requires full measured settlement
 
 Material stockpile payments can remain explicit clickable decisions because the player must choose when to debit the resource.
 

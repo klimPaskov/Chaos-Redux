@@ -1,0 +1,155 @@
+# Event 012 industrial repair terms and numeric presentation.
+# ACTOR country scope. Reads frozen normal terms, owner-prepared day caches and
+# frozen response receipts. Only the caller-owned family classifier temp is set.
+# Formatting and texticons belong to the selected localisation keys.
+
+defined_text = {
+	name = GetGodsOfAfricaIndustryTermsLine
+	text = {
+		trigger = {
+			check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.industry_repair }
+			has_country_flag = gods_of_africa_industry_terms_bound
+			gods_of_africa_industry_completion_is_proven = yes
+		}
+		localization_key = gods_of_africa_industry_terms_completed
+	}
+	text = {
+		trigger = {
+			check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.industry_repair }
+			has_country_flag = gods_of_africa_industry_terms_bound
+		}
+		localization_key = gods_of_africa_industry_terms
+	}
+	text = { localization_key = gods_of_africa_industry_text_empty }
+}
+
+defined_text = {
+	name = GetGodsOfAfricaIndustryPartialTermsLine
+	text = {
+		trigger = {
+			check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.industry_repair }
+			has_country_flag = gods_of_africa_industry_terms_bound
+			gods_of_africa_industry_completion_is_proven = yes
+		}
+		localization_key = gods_of_africa_industry_partial_terms_completed
+	}
+	text = {
+		trigger = {
+			check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.industry_repair }
+			has_country_flag = gods_of_africa_industry_terms_bound
+		}
+		localization_key = gods_of_africa_industry_partial_terms
+	}
+	text = { localization_key = gods_of_africa_industry_text_empty }
+}
+
+defined_text = {
+	name = GetGodsOfAfricaIndustryResponseLine
+	text = {
+		trigger = {
+			has_country_flag = gods_of_africa_last_response_industry
+			check_variable = { gods_of_africa_last_response_kind = constant:gods_of_africa_history_kind.lapsed }
+		}
+		localization_key = gods_of_africa_industry_response_retired
+	}
+	text = {
+		trigger = {
+			has_country_flag = gods_of_africa_last_response_industry
+			has_country_flag = gods_of_africa_last_response_industry_completed
+		}
+		localization_key = gods_of_africa_industry_response_completed
+	}
+	text = {
+		trigger = {
+			has_country_flag = gods_of_africa_last_response_industry
+			check_variable = { gods_of_africa_last_response_industry_new_days > constant:gods_of_africa_value.zero }
+			OR = {
+				check_variable = { gods_of_africa_last_response_kind = constant:gods_of_africa_history_kind.compliance }
+				check_variable = { gods_of_africa_last_response_kind = constant:gods_of_africa_history_kind.partial }
+			}
+		}
+		localization_key = gods_of_africa_industry_response_paid
+	}
+	text = {
+		trigger = {
+			has_country_flag = gods_of_africa_last_response_industry
+			check_variable = { gods_of_africa_last_response_kind = constant:gods_of_africa_history_kind.substitute }
+		}
+		localization_key = gods_of_africa_industry_response_substitute
+	}
+	text = {
+		trigger = { has_country_flag = gods_of_africa_last_response_industry }
+		localization_key = gods_of_africa_industry_response_unchanged
+	}
+	text = { localization_key = gods_of_africa_industry_text_empty }
+}
+
+defined_text = {
+	name = GetGodsOfAfricaPaymentAmountValue
+	text = {
+		trigger = {
+			set_temp_variable = { gods_of_africa_family_to_check = gods_of_africa_payment_family }
+			gods_of_africa_family_uses_political_power = yes
+		}
+		localization_key = gods_of_africa_payment_amount_cpp_value
+	}
+	text = { localization_key = gods_of_africa_payment_amount_material_value }
+}
+
+defined_text = {
+	name = GetGodsOfAfricaPartialPaymentValue
+	text = {
+		trigger = {
+			set_temp_variable = { gods_of_africa_family_to_check = gods_of_africa_demand_family }
+			gods_of_africa_family_uses_political_power = yes
+		}
+		localization_key = gods_of_africa_partial_payment_cpp_value
+	}
+	text = { localization_key = gods_of_africa_partial_payment_material_value }
+}
+
+defined_text = {
+	name = GetGodsOfAfricaDemandRemainingValue
+	text = {
+		trigger = {
+			set_temp_variable = { gods_of_africa_family_to_check = gods_of_africa_demand_family }
+			gods_of_africa_family_uses_political_power = yes
+		}
+		localization_key = gods_of_africa_demand_remaining_cpp_value
+	}
+	text = { localization_key = gods_of_africa_demand_remaining_material_value }
+}
+
+defined_text = {
+	name = GetGodsOfAfricaDemandAmountValue
+	text = {
+		trigger = {
+			set_temp_variable = { gods_of_africa_family_to_check = gods_of_africa_demand_family }
+			gods_of_africa_family_uses_political_power = yes
+		}
+		localization_key = gods_of_africa_demand_amount_cpp_value
+	}
+	text = { localization_key = gods_of_africa_demand_amount_material_value }
+}
+
+# The shared native receiver requirement has family-specific wording.
+defined_text = {
+	name = GetGodsOfAfricaReceiverRequirement
+	text = {
+		trigger = { check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.industry_repair } }
+		localization_key = gods_of_africa_industry_unavailable_tt
+	}
+	text = {
+		trigger = {
+			OR = {
+				check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.fuel }
+				AND = {
+					check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.continuing_support }
+					check_variable = { gods_of_africa_demand_instalment_material = constant:gods_of_africa_demand_family.fuel }
+				}
+			}
+		}
+		localization_key = gods_of_africa_fuel_receiver_requirement
+	}
+	text = { localization_key = gods_of_africa_industry_text_empty }
+}

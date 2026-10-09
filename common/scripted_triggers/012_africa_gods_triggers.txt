@@ -759,7 +759,6 @@ gods_of_africa_participant_can_receive_protection = {
 		gods_of_africa_participant_generation_is_current = yes
 		gods_of_africa_participant_is_registered = yes
 		NOT = { has_country_flag = gods_of_africa_defiant }
-		has_country_flag = gods_of_africa_reliable_memory_applied
 		NOT = { has_war_with = event_target:africa_host }
 		has_event_target = africa_host
 		OR = {
@@ -1017,6 +1016,10 @@ gods_of_africa_current_demand_can_be_paid = {
 	gods_of_africa_demand_payment_is_open = yes
 	gods_of_africa_demand_contract_is_current = yes
 	gods_of_africa_participant_has_capacity_for_family = yes
+	OR = {
+		NOT = { check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.industry_repair } }
+		gods_of_africa_industry_full_payment_can_execute = yes
+	}
 }
 
 # COUNTRY scope on a participant. Partial payment is a measured half-shipment
@@ -1033,6 +1036,10 @@ gods_of_africa_partial_payment_is_affordable = {
 		var = gods_of_africa_partial_payment_amount
 		value = gods_of_africa_demand_remaining
 		compare = less_than_or_equals
+	}
+	OR = {
+		NOT = { check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.industry_repair } }
+		gods_of_africa_industry_partial_payment_can_execute = yes
 	}
 	OR = {
 		NOT = { has_variable = gods_of_africa_next_partial_payment_day }

@@ -48,6 +48,7 @@ gods_of_africa_initialize_system = {
 			clear_array = gods_of_africa_selected_participants
 			set_variable = { gods_of_africa_participant_count = constant:gods_of_africa_value.zero }
 			set_variable = { gods_of_africa_demand_sequence = constant:gods_of_africa_value.zero }
+			clr_country_flag = gods_of_africa_first_demand_milestone_emitted
 			set_variable = { gods_of_africa_active_demand_count = constant:gods_of_africa_value.zero }
 			set_variable = { gods_of_africa_priority_offender_count = constant:gods_of_africa_value.zero }
 			set_variable = { gods_of_africa_strength = constant:gods_of_africa_value.starting_strength }
@@ -96,6 +97,9 @@ gods_of_africa_start_consolidation = {
 
 # COUNTRY scope on the host. Called by the owner-local 30-day callback.
 gods_of_africa_run_owner_tick = {
+	# Historical paid support is reviewed on the existing host clock.
+	gods_of_africa_review_industry_program = yes
+	gods_of_africa_capture_industry_retirement = yes
 	# The ordinary tribute loop ends as soon as the continent reaches its
 	# secured settlement phase. This owner-local check keeps a pending demand
 	# from being dispatched after the political settlement has already closed.
@@ -417,6 +421,7 @@ gods_of_africa_register_participant = {
 	if = {
 		limit = { gods_of_africa_participant_can_register = yes }
 		gods_of_africa_clear_public_wrath_values = yes
+		gods_of_africa_clear_industry_terms = yes
 		gods_of_africa_withdraw_protection_package = yes
 		gods_of_africa_clear_report_receipts = yes
 		gods_of_africa_clear_mobile_quote = yes
@@ -501,6 +506,7 @@ gods_of_africa_try_register_participant = {
 # audit, while live contract state is removed from the active registry.
 gods_of_africa_archive_invalid_participant = {
 	gods_of_africa_retire_interrupted_contract = yes
+	gods_of_africa_clear_industry_terms = yes
 	gods_of_africa_release_demand_slot = yes
 	gods_of_africa_clear_council_pledge = yes
 	gods_of_africa_withdraw_protection_package = yes
@@ -1039,6 +1045,7 @@ gods_of_africa_set_partial_capacity_requirement = {
 gods_of_africa_build_need_profile = {
 	if = {
 		limit = { africa_is_current_host = yes }
+		gods_of_africa_prepare_industry_candidate = yes
 		gods_of_africa_build_mobile_need_profile = yes
 		set_variable = { gods_of_africa_need_land_equipment = constant:gods_of_africa_value.zero }
 		set_variable = { gods_of_africa_need_fuel = constant:gods_of_africa_value.zero }
@@ -1096,7 +1103,10 @@ gods_of_africa_build_need_profile = {
 					check_variable = { africa_central_capacity < constant:africa_measure.medium }
 				}
 			}
-			set_variable = { gods_of_africa_need_industry = constant:gods_of_africa_value.one }
+			if = {
+				limit = { gods_of_africa_industry_offer_is_available = yes }
+				set_variable = { gods_of_africa_need_industry = constant:gods_of_africa_value.one }
+			}
 		}
 		if = {
 			limit = {
@@ -1556,7 +1566,13 @@ gods_of_africa_select_demand_family = {
 	if = { limit = { check_variable = { gods_of_africa_family_candidate = constant:gods_of_africa_demand_family.industry_repair } } set_variable = { gods_of_africa_candidate_amount = constant:gods_of_africa_transaction.industry_pp_amount } }
 	if = { limit = { check_variable = { gods_of_africa_family_candidate = constant:gods_of_africa_demand_family.emergency_relief } } set_variable = { gods_of_africa_candidate_amount = constant:gods_of_africa_transaction.emergency_amount } }
 	if = {
-		limit = { has_event_target = gods_of_africa_demand_participant }
+		limit = {
+			has_event_target = gods_of_africa_demand_participant
+			OR = {
+				NOT = { check_variable = { gods_of_africa_family_candidate = constant:gods_of_africa_demand_family.industry_repair } }
+				gods_of_africa_industry_offer_is_available = yes
+			}
+		}
 		event_target:gods_of_africa_demand_participant = {
 			set_variable = { gods_of_africa_payment_family = event_target:africa_host.gods_of_africa_family_candidate }
 			set_variable = { gods_of_africa_payment_amount = event_target:africa_host.gods_of_africa_candidate_amount }
@@ -2269,6 +2285,8 @@ gods_of_africa_create_demand_contract = {
 			check_variable = { gods_of_africa_active_demand_count < constant:gods_of_africa_timing.max_active_demands }
 		}
 		add_to_variable = { gods_of_africa_demand_sequence = constant:gods_of_africa_value.one }
+		# Publish the slot before actor cleanup can release it.
+		add_to_variable = { gods_of_africa_active_demand_count = constant:gods_of_africa_value.one }
 		event_target:gods_of_africa_demand_participant = {
 			set_country_flag = gods_of_africa_demand_active
 			clr_country_flag = gods_of_africa_punishment_applied
@@ -2306,28 +2324,46 @@ gods_of_africa_create_demand_contract = {
 			}
 			gods_of_africa_bind_demand_epoch = yes
 			gods_of_africa_open_contract_ledger = yes
-			# Freeze whether this appeal answers a real current emergency, so a
-			# later payment can be recorded as emergency assistance.
-			gods_of_africa_freeze_contract_emergency_proof = yes
-			gods_of_africa_remember_demand_repetition = yes
-				set_variable = { gods_of_africa_payment_family = event_target:africa_host.gods_of_africa_selected_family }
-				set_variable = { gods_of_africa_payment_amount = event_target:africa_host.gods_of_africa_contract_amount }
-				gods_of_africa_freeze_diplomatic_terms = yes
-				gods_of_africa_freeze_instalment_terms = yes
-				gods_of_africa_set_payment_capacity_requirement = yes
-				gods_of_africa_freeze_demand_burden = yes
-				gods_of_africa_build_substitute_set = yes
-				activate_mission = gods_of_africa_demand_mission
-				gods_of_africa_sync_demand_mission_timeout = yes
-			country_event = { id = chaosx.nr12.603 }
+			if = {
+				limit = { check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.industry_repair } }
+				gods_of_africa_bind_industry_terms = yes
+				gods_of_africa_refresh_industry_payment_quotes = yes
+				event_target:africa_host = { gods_of_africa_capture_industry_retirement = yes }
+			}
+			if = {
+				limit = {
+					OR = {
+						NOT = { check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.industry_repair } }
+						has_country_flag = gods_of_africa_industry_terms_bound
+					}
+				}
+				# Freeze whether this appeal answers a real current emergency, so a
+				# later payment can be recorded as emergency assistance.
+				gods_of_africa_freeze_contract_emergency_proof = yes
+				gods_of_africa_remember_demand_repetition = yes
+					set_variable = { gods_of_africa_payment_family = event_target:africa_host.gods_of_africa_selected_family }
+					set_variable = { gods_of_africa_payment_amount = event_target:africa_host.gods_of_africa_contract_amount }
+					gods_of_africa_freeze_diplomatic_terms = yes
+					gods_of_africa_freeze_instalment_terms = yes
+					gods_of_africa_set_payment_capacity_requirement = yes
+					gods_of_africa_freeze_demand_burden = yes
+					gods_of_africa_build_substitute_set = yes
+					activate_mission = gods_of_africa_demand_mission
+					gods_of_africa_sync_demand_mission_timeout = yes
+				country_event = { id = chaosx.nr12.603 }
+			}
+			else = { gods_of_africa_clear_demand = yes }
 		}
 		if = {
-			limit = { check_variable = { gods_of_africa_demand_sequence = constant:gods_of_africa_value.one } }
+			limit = {
+				NOT = { has_country_flag = gods_of_africa_first_demand_milestone_emitted }
+				event_target:gods_of_africa_demand_participant = { has_country_flag = gods_of_africa_demand_active }
+			}
+			set_country_flag = gods_of_africa_first_demand_milestone_emitted
 			set_variable = { gods_of_africa_milestone_payload = constant:africa_event_log.gods_first_demand }
 			set_variable = { gods_of_africa_milestone_secondary_actor = event_target:gods_of_africa_demand_participant.id }
 			gods_of_africa_record_milestone = yes
 		}
-		add_to_variable = { gods_of_africa_active_demand_count = constant:gods_of_africa_value.one }
 	}
 }
 
@@ -2551,6 +2587,7 @@ gods_of_africa_compute_partial_payment_amount = {
 		set_variable = { gods_of_africa_partial_payment_amount = constant:gods_of_africa_value.one }
 	}
 	gods_of_africa_set_partial_capacity_requirement = yes
+	gods_of_africa_refresh_industry_payment_quotes = yes
 }
 
 gods_of_africa_dispatch_next_demand = {
@@ -2780,6 +2817,16 @@ gods_of_africa_transfer_payment = {
 			gods_of_africa_pay_political_tribute = yes
 			gods_of_africa_carry_out_diplomatic_concession = yes
 		}
+		else_if = {
+			limit = { check_variable = { gods_of_africa_payment_family = constant:gods_of_africa_demand_family.industry_repair } }
+			gods_of_africa_pay_industrial_tribute = yes
+			# Payment-time review can retire the original site before a report.
+			# Publish from that frozen recipient before copying response fields.
+			if = {
+				limit = { has_variable = gods_of_africa_industry_host }
+				var:gods_of_africa_industry_host = { gods_of_africa_capture_industry_retirement = yes }
+			}
+		}
 		else = {
 			# Political families. Emergency relief under a frozen, still-current
 			# emergency appeal is recorded as emergency assistance; every other
@@ -2850,6 +2897,10 @@ gods_of_africa_resolve_full_compliance = {
 			limit = {
 				check_variable = { gods_of_africa_payment_success > constant:gods_of_africa_value.zero }
 				check_variable = { var = gods_of_africa_payment_delivered value = gods_of_africa_demand_remaining compare = greater_than_or_equals }
+				OR = {
+					NOT = { check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.industry_repair } }
+					gods_of_africa_industry_full_funding_is_proven = yes
+				}
 			}
 			set_temp_variable = { gods_of_africa_response_paid_amount = gods_of_africa_payment_delivered }
 			set_country_flag = gods_of_africa_contract_fulfillment_authorized
@@ -2954,6 +3005,7 @@ gods_of_africa_apply_partial_delivery = {
 	gods_of_africa_bind_payment_mobile_type = yes
 	set_variable = { gods_of_africa_payment_amount = gods_of_africa_demand_remaining }
 	gods_of_africa_set_payment_capacity_requirement = yes
+	gods_of_africa_refresh_industry_payment_quotes = yes
 	set_variable = { gods_of_africa_history_kind_request = constant:gods_of_africa_history_kind.partial }
 	gods_of_africa_record_history = yes
 	set_variable = { gods_of_africa_wrath_request = constant:gods_of_africa_wrath.negotiation_magnitude }
@@ -3191,6 +3243,7 @@ gods_of_africa_resolve_extension = {
 gods_of_africa_clear_demand = {
 	# Any remaining unmatched open ledger is a neutral retirement.
 	gods_of_africa_retire_open_contract = yes
+	gods_of_africa_clear_industry_terms = yes
 	gods_of_africa_release_demand_slot = yes
 	gods_of_africa_clear_contract_agreement = yes
 	gods_of_africa_clear_contract_emergency_proof = yes
@@ -3992,6 +4045,7 @@ gods_of_africa_fail_demand = {
 			OR = {
 				NOT = { gods_of_africa_demand_transfer_is_clear = yes }
 				gods_of_africa_frozen_territory_is_lost = yes
+				gods_of_africa_industry_receiver_is_unavailable = yes
 			}
 		}
 		# Africa could not account for an earlier shipment, or a state the
@@ -4239,6 +4293,7 @@ gods_of_africa_clean_participant = {
 	gods_of_africa_clear_public_wrath_values = yes
 	gods_of_africa_release_owned_offender_mark = yes
 	gods_of_africa_retire_interrupted_contract = yes
+	gods_of_africa_clear_industry_terms = yes
 	gods_of_africa_release_demand_slot = yes
 	gods_of_africa_clear_council_pledge = yes
 	gods_of_africa_withdraw_protection_package = yes
@@ -4437,6 +4492,7 @@ gods_of_africa_finalize_participant = {
 		clear_variable = gods_of_africa_defensive_countermeasure_day
 		gods_of_africa_clear_substitute_slots = yes
 		set_country_flag = gods_of_africa_final_outcome_committed
+		gods_of_africa_clear_industry_terms = yes
 		clr_country_flag = gods_of_africa_participant
 		gods_of_africa_clear_public_wrath_values = yes
 	}
@@ -4473,6 +4529,7 @@ gods_of_africa_cancel_on_unifier_loss = {
 				check_variable = { gods_of_africa_last_loss_cleanup_epoch < gods_of_africa_authority_epoch }
 			}
 		}
+		gods_of_africa_retire_owned_industry_program = yes
 		gods_of_africa_revoke_current_epoch = yes
 		gods_of_africa_clear_response_view = yes
 		gods_of_africa_clear_public_strength_observation = yes
@@ -4523,6 +4580,7 @@ gods_of_africa_cancel_on_unifier_loss = {
 gods_of_africa_cancel_participant = {
 	gods_of_africa_clear_public_wrath_values = yes
 	gods_of_africa_retire_interrupted_contract = yes
+	gods_of_africa_clear_industry_terms = yes
 	gods_of_africa_release_demand_slot = yes
 	gods_of_africa_clear_council_pledge = yes
 	# Authority loss retires the contract before dropping its temporary terms.
@@ -4679,6 +4737,9 @@ gods_of_africa_commit_final_settlement = {
 			set_variable = { gods_of_africa_milestone_actor = THIS.id }
 			gods_of_africa_record_milestone = yes
 		}
+		# Reclaim only completed/expired service; living paid time survives.
+		gods_of_africa_review_industry_program = yes
+		gods_of_africa_capture_industry_retirement = yes
 		gods_of_africa_clean_system = yes
 	}
 }

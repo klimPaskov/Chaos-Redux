@@ -299,6 +299,14 @@ test('AST_owner_trigger_effect_and_tuning_preservation', () => {
 		['clean_system', ['clear_public_strength_observation', 'reset_public_strength_values']],
 	].map(([owner, hooks]) => [P + owner, hooks.map(x => P + x)]));
 	const presentationNames = new Set([...presentationHooks.values()].flat());
+	// These accepted industrial owners are replayed by the dedicated actual-
+	// source integration suite. Preserve every other legacy owner here.
+	const industrialOwners = new Set(['initialize_system', 'run_owner_tick',
+		'register_participant', 'archive_invalid_participant', 'build_need_profile',
+		'select_demand_family', 'create_demand_contract', 'compute_partial_payment_amount',
+		'transfer_payment', 'resolve_full_compliance', 'apply_partial_delivery',
+		'clear_demand', 'fail_demand', 'clean_participant', 'finalize_participant',
+		'cancel_on_unifier_loss', 'cancel_participant', 'commit_final_settlement'].map(x => P + x));
 	for (const path of [effectPath, recoveryPath]) {
 		const observed = new Map();
 		function strip(nodes, owner) { return nodes.flatMap(n => {
@@ -328,7 +336,8 @@ test('AST_owner_trigger_effect_and_tuning_preservation', () => {
 			}); }
 			expected = normalize(expected); assert.equal(replacements, 1);
 		}
-		assert.deepEqual(strip(load(path)), expected, path);
+		const unchanged = ns => path === effectPath ? ns.filter(n => !industrialOwners.has(n.key)) : ns;
+		assert.deepEqual(unchanged(strip(load(path))), unchanged(expected), path + ' unchanged owners');
 		if (path === effectPath) for (const [owner, hooks] of presentationHooks)
 			for (const hook of hooks) assert.equal(observed.get(owner + '/' + hook), 1, owner + ' exactly one ' + hook);
 	}
@@ -341,13 +350,21 @@ test('AST_owner_trigger_effect_and_tuning_preservation', () => {
 			const wrapped = actual[0].value;
 			assert.deepEqual(wrapped.filter(n => n.key === 'tooltip'), [{ key: 'tooltip', op: '=', value: P + 'protection_target_requirements_tt' }]);
 			assert.deepEqual(wrapped.filter(n => n.key === P + 'protection_relationship_is_eligible'), [{ key: P + 'protection_relationship_is_eligible', op: '=', value: 'yes' }]);
-			assert.deepEqual(wrapped.filter(n => !['tooltip', P + 'protection_relationship_is_eligible'].includes(n.key)), old.value, old.key + ' original requirements');
+			assert.deepEqual(wrapped.filter(n => !['tooltip', P + 'protection_relationship_is_eligible'].includes(n.key)), old.value.filter(n => !(n.key === 'has_country_flag' && n.value === P + 'reliable_memory_applied')), old.key + ' retained original requirements');
+		}
+		else if ([P + 'current_demand_can_be_paid', P + 'partial_payment_is_affordable'].includes(old.key)) {
+			// Physical industrial payment gates are executed in the integration suite.
+			assert.ok(allNodes(actual).some(n => n.key === P + (old.key.endsWith('can_be_paid') ? 'industry_full_payment_can_execute' : 'industry_partial_payment_can_execute')));
 		}
 		else assert.deepEqual(actual, old.value, old.key);
 	}
 	const constantPath = 'common/script_constants/012_africa_gods_constants.txt';
 	const expectedTuning = historical.get(constantPath).map(n => n.key === P + 'strength' ? { ...n, value: n.value.filter(x => x.key !== 'chaos_divisor') } : n);
 	const currentTuning = load(constantPath).map(n => {
+		if (n.key === P + 'history_kind') {
+			assert.deepEqual(n.value.filter(x => x.key === 'industry_service_ended'), [{ key: 'industry_service_ended', op: '=', value: '23' }]);
+			return { ...n, value: n.value.filter(x => x.key !== 'industry_service_ended') };
+		}
 		if (n.key !== P + 'protection') return n;
 		const gate = n.value.filter(x => x.key === 'minimum_completed_demands');
 		if (!gate.length) return n;
@@ -359,7 +376,7 @@ test('AST_owner_trigger_effect_and_tuning_preservation', () => {
 	const enumAst = block(load('common/script_constants/012_africa_gods_response_constants.txt'), P + 'response_view');
 	assert.equal(enumAst[0].key, 'schema'); assert.equal(field(enumAst[0].value, 'data'), 'int');
 	assert.deepEqual(enumAst.slice(1).map(n => [n.key, Number(n.value)]), [['overview', 0], ['priorities', 1], ['partners', 2], ['judgment', 3]]);
-	return { otherOwnerBodiesPreserved: true, acceptedStrengthNormalization: 'shared final-tier endpoint', otherTuningPreserved: true };
+	return { unchangedOwnerBodiesPreserved: true, industrialOwnerCoverage: 'dedicated production integration suite', acceptedStrengthNormalization: 'shared final-tier endpoint', otherTuningPreserved: true };
 });
 test('012_GODS_STRENGTH_CHAOS_component_curve', () => {
 	const body = field(block(load(effectPath), P + 'refresh_strength'), 'if');

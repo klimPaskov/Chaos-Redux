@@ -1,0 +1,437 @@
+# Event 012 unique tribute issuance, terminal closure, and recovery streaks.
+# All counters persist on the genuine participant; re-entry never resets them.
+# Public API and call ownership: 012_africa_gods_contract_effects.md.
+
+gods_of_africa_initialize_contract_history = {
+	# Caller is the first-genuine-history branch, before its history marker.
+	if = {
+		limit = {
+			exists = yes
+			has_country_flag = gods_of_africa_participant
+			NOT = { has_country_flag = gods_of_africa_history_initialized }
+			NOT = { has_variable = gods_of_africa_history_count }
+			NOT = { has_country_flag = gods_of_africa_contract_history_initialized }
+		}
+		set_variable = { gods_of_africa_demands_issued = constant:gods_of_africa_value.zero }
+		set_variable = { gods_of_africa_demands_retired = constant:gods_of_africa_value.zero }
+		set_variable = { gods_of_africa_demands_fulfilled = constant:gods_of_africa_value.zero }
+		set_variable = { gods_of_africa_demands_full_original = constant:gods_of_africa_value.zero }
+		set_variable = { gods_of_africa_demands_honored_substitute = constant:gods_of_africa_value.zero }
+		set_variable = { gods_of_africa_demands_failed = constant:gods_of_africa_value.zero }
+		set_variable = { gods_of_africa_demands_refused = constant:gods_of_africa_value.zero }
+		set_variable = { gods_of_africa_demands_broken_by_war = constant:gods_of_africa_value.zero }
+		set_variable = { gods_of_africa_compliance_streak = constant:gods_of_africa_value.zero }
+		set_variable = { gods_of_africa_longest_compliance_streak = constant:gods_of_africa_value.zero }
+		set_variable = { gods_of_africa_reconciliation_offer_sequence = constant:gods_of_africa_value.zero }
+		set_variable = { gods_of_africa_reconciliation_count = constant:gods_of_africa_value.zero }
+		set_variable = { gods_of_africa_post_reconciliation_fulfilled = constant:gods_of_africa_value.zero }
+		set_variable = { gods_of_africa_post_reconciliation_failures = constant:gods_of_africa_value.zero }
+		set_variable = { gods_of_africa_post_reconciliation_refusals = constant:gods_of_africa_value.zero }
+		set_country_flag = gods_of_africa_contract_history_initialized
+	}
+}
+
+gods_of_africa_open_contract_ledger = {
+	if = {
+		limit = {
+			gods_of_africa_contract_history_identity_is_current = yes
+			gods_of_africa_demand_contract_is_current = yes
+			has_variable = gods_of_africa_demand_family
+			NOT = { has_country_flag = gods_of_africa_contract_ledger_open }
+			NOT = {
+				AND = {
+					has_variable = gods_of_africa_last_closed_contract_epoch
+					check_variable = { gods_of_africa_last_closed_contract_epoch = gods_of_africa_demand_authority_epoch }
+					has_variable = gods_of_africa_last_closed_contract_id
+					has_variable = gods_of_africa_last_closed_contract_generation
+					has_variable = gods_of_africa_last_closed_contract_origin_id
+					check_variable = { gods_of_africa_last_closed_contract_id = gods_of_africa_demand_id }
+					check_variable = { gods_of_africa_last_closed_contract_generation = gods_of_africa_demand_generation }
+					check_variable = { gods_of_africa_last_closed_contract_origin_id = event_target:africa_host.africa_origin_host_id }
+				}
+			}
+		}
+		set_variable = { gods_of_africa_contract_ledger_epoch = gods_of_africa_demand_authority_epoch }
+		set_variable = { gods_of_africa_contract_ledger_id = gods_of_africa_demand_id }
+		set_variable = { gods_of_africa_contract_ledger_generation = gods_of_africa_demand_generation }
+		set_variable = { gods_of_africa_contract_ledger_origin_id = event_target:africa_host.africa_origin_host_id }
+		set_variable = { gods_of_africa_contract_original_family = gods_of_africa_demand_family }
+		gods_of_africa_clear_contract_agreement = yes
+		clr_country_flag = gods_of_africa_contract_fulfillment_authorized
+		clr_country_flag = gods_of_africa_contract_ledger_closed
+		set_country_flag = gods_of_africa_contract_ledger_open
+		add_to_variable = { gods_of_africa_demands_issued = constant:gods_of_africa_value.one }
+	}
+}
+
+# Caller initializes temporary gods_of_africa_contract_close_kind to an enum.
+# No current-host predicate here: a neutral loss/archival retirement must work
+# while the original object is capitulated or its shared authority has ended.
+gods_of_africa_close_contract_ledger = {
+	if = {
+		limit = {
+			gods_of_africa_contract_ledger_can_close = yes
+			gods_of_africa_contract_close_kind_is_valid = yes
+			OR = {
+				AND = {
+					NOT = { check_variable = { gods_of_africa_contract_close_kind = constant:gods_of_africa_contract_close.full_original } }
+					NOT = { check_variable = { gods_of_africa_contract_close_kind = constant:gods_of_africa_contract_close.honored_substitute } }
+				}
+				has_country_flag = gods_of_africa_contract_fulfillment_authorized
+			}
+		}
+		# Financial closure preserves already purchased industrial service.
+		gods_of_africa_finish_industry_contract = yes
+		# Consume first, before counters and any later presentation/cleanup.
+		clr_country_flag = gods_of_africa_contract_fulfillment_authorized
+		set_country_flag = gods_of_africa_contract_ledger_closed
+		clr_country_flag = gods_of_africa_contract_ledger_open
+		set_variable = { gods_of_africa_last_closed_contract_epoch = gods_of_africa_contract_ledger_epoch }
+		set_variable = { gods_of_africa_last_closed_contract_id = gods_of_africa_contract_ledger_id }
+		set_variable = { gods_of_africa_last_closed_contract_generation = gods_of_africa_contract_ledger_generation }
+		set_variable = { gods_of_africa_last_closed_contract_origin_id = gods_of_africa_contract_ledger_origin_id }
+		set_variable = { gods_of_africa_last_closed_contract_kind = gods_of_africa_contract_close_kind }
+		set_variable = { gods_of_africa_last_closed_contract_day = global.num_days }
+		if = {
+			limit = { check_variable = { gods_of_africa_contract_close_kind = constant:gods_of_africa_contract_close.retired } }
+			add_to_variable = { gods_of_africa_demands_retired = constant:gods_of_africa_value.one }
+		}
+		else_if = {
+			limit = {
+				OR = {
+					check_variable = { gods_of_africa_contract_close_kind = constant:gods_of_africa_contract_close.full_original }
+					check_variable = { gods_of_africa_contract_close_kind = constant:gods_of_africa_contract_close.honored_substitute }
+				}
+			}
+			add_to_variable = { gods_of_africa_demands_fulfilled = constant:gods_of_africa_value.one }
+			gods_of_africa_achievement_record_provision = yes
+			if = {
+				limit = { check_variable = { gods_of_africa_contract_close_kind = constant:gods_of_africa_contract_close.full_original } }
+				add_to_variable = { gods_of_africa_demands_full_original = constant:gods_of_africa_value.one }
+			}
+			else = { add_to_variable = { gods_of_africa_demands_honored_substitute = constant:gods_of_africa_value.one } }
+			add_to_variable = { gods_of_africa_compliance_streak = constant:gods_of_africa_value.one }
+			clamp_variable = { var = gods_of_africa_longest_compliance_streak min = gods_of_africa_compliance_streak }
+			if = {
+				limit = { check_variable = { gods_of_africa_reconciliation_count > constant:gods_of_africa_value.zero } }
+				add_to_variable = { gods_of_africa_post_reconciliation_fulfilled = constant:gods_of_africa_value.one }
+			}
+		}
+		else = {
+			set_variable = { gods_of_africa_compliance_streak = constant:gods_of_africa_value.zero }
+			if = {
+				limit = { check_variable = { gods_of_africa_contract_close_kind = constant:gods_of_africa_contract_close.refusal } }
+				add_to_variable = { gods_of_africa_demands_refused = constant:gods_of_africa_value.one }
+				if = {
+					limit = { check_variable = { gods_of_africa_reconciliation_count > constant:gods_of_africa_value.zero } }
+					add_to_variable = { gods_of_africa_post_reconciliation_refusals = constant:gods_of_africa_value.one }
+				}
+			}
+			else = {
+				if = {
+					limit = { check_variable = { gods_of_africa_contract_close_kind = constant:gods_of_africa_contract_close.war_breach } }
+					add_to_variable = { gods_of_africa_demands_broken_by_war = constant:gods_of_africa_value.one }
+				}
+				else = { add_to_variable = { gods_of_africa_demands_failed = constant:gods_of_africa_value.one } }
+				if = {
+					limit = { check_variable = { gods_of_africa_reconciliation_count > constant:gods_of_africa_value.zero } }
+					add_to_variable = { gods_of_africa_post_reconciliation_failures = constant:gods_of_africa_value.one }
+				}
+			}
+		}
+	}
+}
+
+gods_of_africa_retire_open_contract = {
+	set_temp_variable = { gods_of_africa_contract_close_kind = constant:gods_of_africa_contract_close.retired }
+	gods_of_africa_close_contract_ledger = yes
+}
+
+# Only the host-accepted, paid reconciliation owner calls this helper.
+gods_of_africa_record_accepted_reconciliation = {
+	if = {
+		limit = {
+			gods_of_africa_contract_history_identity_is_current = yes
+			ROOT = { tag = event_target:africa_host gods_of_africa_active_host_is_valid = yes }
+			gods_of_africa_participant_can_reconcile = yes
+			has_country_flag = gods_of_africa_reparations_paid
+			has_country_flag = gods_of_africa_reconciliation_offer_pending
+			has_variable = gods_of_africa_reconciliation_offer_sequence
+			check_variable = { gods_of_africa_reconciliation_offer_sequence > constant:gods_of_africa_value.zero }
+			OR = {
+				NOT = { has_variable = gods_of_africa_last_accepted_reconciliation_sequence }
+				check_variable = { gods_of_africa_reconciliation_offer_sequence > gods_of_africa_last_accepted_reconciliation_sequence }
+			}
+		}
+		set_variable = { gods_of_africa_last_accepted_reconciliation_sequence = gods_of_africa_reconciliation_offer_sequence }
+		set_variable = { gods_of_africa_last_accepted_reconciliation_generation = event_target:africa_host.africa_host_generation }
+		set_variable = { gods_of_africa_last_accepted_reconciliation_origin_id = event_target:africa_host.africa_origin_host_id }
+		set_variable = { gods_of_africa_last_accepted_reconciliation_day = global.num_days }
+		add_to_variable = { gods_of_africa_reconciliation_count = constant:gods_of_africa_value.one }
+		set_variable = { gods_of_africa_compliance_streak = constant:gods_of_africa_value.zero }
+		set_variable = { gods_of_africa_post_reconciliation_fulfilled = constant:gods_of_africa_value.zero }
+		set_variable = { gods_of_africa_post_reconciliation_failures = constant:gods_of_africa_value.zero }
+		set_variable = { gods_of_africa_post_reconciliation_refusals = constant:gods_of_africa_value.zero }
+	}
+}
+
+# Participant COUNTRY. Release only this contract's frozen original host slot;
+# a changed global target never routes the decrement to a replacement owner.
+gods_of_africa_release_demand_slot = {
+	if = {
+		limit = {
+			has_country_flag = gods_of_africa_demand_active
+			NOT = { has_country_flag = gods_of_africa_demand_slot_released }
+		}
+		set_country_flag = gods_of_africa_demand_slot_released
+		if = {
+			limit = {
+				has_variable = gods_of_africa_demand_host
+				has_variable = gods_of_africa_demand_host_id
+				has_variable = gods_of_africa_demand_origin_host_id
+				has_variable = gods_of_africa_demand_generation
+				has_variable = gods_of_africa_demand_authority_epoch
+			}
+			var:gods_of_africa_demand_host = {
+				if = {
+					limit = {
+						exists = yes
+						has_variable = africa_host_generation
+						has_variable = africa_origin_host_id
+						check_variable = { var = THIS.id value = PREV.gods_of_africa_demand_host_id compare = equals }
+						check_variable = { var = africa_host_generation value = PREV.gods_of_africa_demand_generation compare = equals }
+						has_variable = gods_of_africa_authority_epoch
+						check_variable = { var = gods_of_africa_authority_epoch value = PREV.gods_of_africa_demand_authority_epoch compare = equals }
+						check_variable = { var = africa_origin_host_id value = PREV.gods_of_africa_demand_origin_host_id compare = equals }
+						has_variable = gods_of_africa_active_demand_count
+						check_variable = { gods_of_africa_active_demand_count > constant:gods_of_africa_value.zero }
+					}
+					subtract_from_variable = { gods_of_africa_active_demand_count = constant:gods_of_africa_value.one }
+				}
+			}
+		}
+	}
+}
+
+# Cleanup can race the monthly war observer. Preserve a provable adverse war
+# result before neutral retirement, without punishment after authority ends.
+gods_of_africa_retire_interrupted_contract = {
+	if = {
+		limit = {
+			gods_of_africa_contract_ledger_can_close = yes
+			gods_of_africa_demand_owner_object_is_proven = yes
+			has_war_with = var:gods_of_africa_demand_host
+			has_offensive_war_with = var:gods_of_africa_demand_host
+		}
+		set_temp_variable = { gods_of_africa_contract_close_kind = constant:gods_of_africa_contract_close.war_breach }
+		gods_of_africa_close_contract_ledger = yes
+	}
+	else = { gods_of_africa_retire_open_contract = yes }
+}
+
+# Participant COUNTRY. The open contract becomes agreed terms when Africa grants
+# an extension or accepts a substitute, or when a partial payment begins.
+gods_of_africa_mark_contract_agreed = {
+	if = {
+		limit = {
+			has_country_flag = gods_of_africa_contract_ledger_open
+			has_variable = gods_of_africa_contract_ledger_id
+		}
+		set_country_flag = gods_of_africa_contract_agreed
+		set_variable = { gods_of_africa_contract_agreed_id = gods_of_africa_contract_ledger_id }
+	}
+}
+
+gods_of_africa_clear_contract_agreement = {
+	clr_country_flag = gods_of_africa_contract_agreed
+	clear_variable = gods_of_africa_contract_agreed_id
+}
+
+# Participant COUNTRY. Records one broken owned agreement. The caller sets the
+# temporary gods_of_africa_treaty_breach_kind to a gods_of_africa_agreement
+# value and gods_of_africa_treaty_breach_war to one when war with Africa broke
+# it. The closing owner skips its ordinary Wrath gain, because this helper
+# applies the larger breach gain. Lifetime history and the prior-breach flag are
+# permanent; accepted reconciliation clears only the unresolved cause and floor.
+gods_of_africa_record_treaty_breach = {
+	if = {
+		limit = {
+			gods_of_africa_participant_generation_is_current = yes
+			check_variable = { gods_of_africa_treaty_breach_kind > constant:gods_of_africa_value.zero }
+		}
+		if = {
+			limit = { NOT = { has_variable = gods_of_africa_treaty_break_count } }
+			set_variable = { gods_of_africa_treaty_break_count = constant:gods_of_africa_value.zero }
+		}
+		add_to_variable = { gods_of_africa_treaty_break_count = constant:gods_of_africa_value.one }
+		set_country_flag = gods_of_africa_unresolved_treaty_break
+		set_country_flag = gods_of_africa_prior_treaty_break
+		# The existing Wrath floor cause for an outstanding broken agreement.
+		set_country_flag = gods_of_africa_broken_treaty
+		set_variable = { gods_of_africa_last_treaty_breach_kind = gods_of_africa_treaty_breach_kind }
+		set_variable = { gods_of_africa_last_treaty_breach_day = global.num_days }
+		if = {
+			limit = { check_variable = { gods_of_africa_treaty_breach_kind = constant:gods_of_africa_agreement.tribute_terms } }
+			gods_of_africa_clear_contract_agreement = yes
+		}
+		if = {
+			limit = {
+				OR = {
+					check_variable = { gods_of_africa_treaty_breach_war = constant:gods_of_africa_value.one }
+					check_variable = { gods_of_africa_treaty_breach_kind = constant:gods_of_africa_agreement.protection_compact }
+				}
+				has_country_flag = gods_of_africa_protected
+			}
+			gods_of_africa_withdraw_protection_package = yes
+		}
+		if = {
+			limit = {
+				OR = {
+					check_variable = { gods_of_africa_treaty_breach_war = constant:gods_of_africa_value.one }
+					check_variable = { gods_of_africa_treaty_breach_kind = constant:gods_of_africa_agreement.reconciliation }
+				}
+			}
+			clr_country_flag = gods_of_africa_reconciliation_agreement_live
+		}
+		if = {
+			limit = {
+				OR = {
+					check_variable = { gods_of_africa_treaty_breach_war = constant:gods_of_africa_value.one }
+					check_variable = { gods_of_africa_treaty_breach_kind = constant:gods_of_africa_agreement.victor_renewal }
+				}
+				gods_of_africa_victor_renewal_agreement_is_live = yes
+			}
+			set_variable = { gods_of_africa_victor_renewal_breached_sequence = gods_of_africa_victor_relegitimated_sequence }
+		}
+		# One war breaks every live agreement at once but counts as one breach.
+		if = {
+			limit = { check_variable = { gods_of_africa_treaty_breach_war = constant:gods_of_africa_value.one } }
+			set_country_flag = gods_of_africa_agreement_war_breach_recorded
+		}
+		set_variable = { gods_of_africa_history_kind_request = constant:gods_of_africa_history_kind.treaty_break }
+		gods_of_africa_record_history = yes
+		set_variable = { gods_of_africa_wrath_request = constant:gods_of_africa_wrath.treaty_breach_magnitude }
+		set_variable = { gods_of_africa_wrath_direction = constant:gods_of_africa_wrath.direction_increase }
+		gods_of_africa_apply_wrath = yes
+	}
+	set_temp_variable = { gods_of_africa_treaty_breach_kind = constant:gods_of_africa_value.zero }
+	set_temp_variable = { gods_of_africa_treaty_breach_war = constant:gods_of_africa_value.zero }
+}
+
+# Participant COUNTRY. Sets temporary gods_of_africa_live_agreement_kind to the
+# live agreement a war with Africa would end, by the fixed priority protection
+# compact, accepted reconciliation, renewed recognition; zero when none stands.
+gods_of_africa_select_live_agreement_kind = {
+	set_temp_variable = { gods_of_africa_live_agreement_kind = constant:gods_of_africa_value.zero }
+	if = {
+		limit = { has_country_flag = gods_of_africa_protected }
+		set_temp_variable = { gods_of_africa_live_agreement_kind = constant:gods_of_africa_agreement.protection_compact }
+	}
+	else_if = {
+		limit = { has_country_flag = gods_of_africa_reconciliation_agreement_live }
+		set_temp_variable = { gods_of_africa_live_agreement_kind = constant:gods_of_africa_agreement.reconciliation }
+	}
+	else_if = {
+		limit = { gods_of_africa_victor_renewal_agreement_is_live = yes }
+		set_temp_variable = { gods_of_africa_live_agreement_kind = constant:gods_of_africa_agreement.victor_renewal }
+	}
+}
+
+# Participant COUNTRY. Africa went to war against this participant, so every
+# live agreement ends without a participant breach: protection is withdrawn
+# through the existing helper, the reconciliation stops being live, and a
+# renewed recognition ends. The history names Africa as the party that broke
+# the agreement. War and occupation conduct marks are untouched. The caller
+# sets temporary gods_of_africa_ended_agreement_kind and opens the report.
+gods_of_africa_end_agreements_for_host_war = {
+	if = {
+		limit = { gods_of_africa_participant_generation_is_current = yes }
+		set_variable = { gods_of_africa_last_ended_agreement_kind = gods_of_africa_ended_agreement_kind }
+		set_variable = { gods_of_africa_last_ended_agreement_day = global.num_days }
+		if = {
+			limit = { has_country_flag = gods_of_africa_protected }
+			gods_of_africa_withdraw_protection_package = yes
+		}
+		clr_country_flag = gods_of_africa_reconciliation_agreement_live
+		if = {
+			limit = { gods_of_africa_victor_renewal_agreement_is_live = yes }
+			set_variable = { gods_of_africa_victor_renewal_ended_sequence = gods_of_africa_victor_relegitimated_sequence }
+		}
+		gods_of_africa_clear_contract_agreement = yes
+		# The per-war dedupe shared with the treaty-breach path.
+		set_country_flag = gods_of_africa_agreement_war_breach_recorded
+		set_variable = { gods_of_africa_history_kind_request = constant:gods_of_africa_history_kind.agreement_ended_by_host }
+		gods_of_africa_record_history = yes
+	}
+	set_temp_variable = { gods_of_africa_ended_agreement_kind = constant:gods_of_africa_value.zero }
+}
+
+# Participant COUNTRY from the bounded owner review. A war with Africa while a
+# protection compact, accepted reconciliation or renewed recognition stands
+# ends that agreement once per war. It is a broken agreement only when the
+# participant is the aggressor; when Africa attacked, the agreements end without
+# a breach and the report names Africa. A war already handled by the wartime
+# contract cancellation (the shared dedupe flag) is not counted twice.
+gods_of_africa_observe_agreement_war = {
+	if = {
+		limit = {
+			has_event_target = africa_host
+			NOT = { has_war_with = event_target:africa_host }
+		}
+		clr_country_flag = gods_of_africa_agreement_war_breach_recorded
+	}
+	else_if = {
+		limit = {
+			has_event_target = africa_host
+			has_war_with = event_target:africa_host
+			NOT = { has_country_flag = gods_of_africa_agreement_war_breach_recorded }
+			gods_of_africa_participant_has_live_agreement = yes
+		}
+		gods_of_africa_select_live_agreement_kind = yes
+		if = {
+			limit = { gods_of_africa_participant_is_aggressor_against_host = yes }
+			set_temp_variable = { gods_of_africa_treaty_breach_kind = gods_of_africa_live_agreement_kind }
+			set_temp_variable = { gods_of_africa_treaty_breach_war = constant:gods_of_africa_value.one }
+			gods_of_africa_record_treaty_breach = yes
+			clr_country_flag = gods_of_africa_agreement_ended_by_host
+		}
+		else = {
+			set_temp_variable = { gods_of_africa_ended_agreement_kind = gods_of_africa_live_agreement_kind }
+			gods_of_africa_end_agreements_for_host_war = yes
+			set_country_flag = gods_of_africa_agreement_ended_by_host
+		}
+		set_country_flag = gods_of_africa_agreement_breach_report_pending
+		country_event = { id = chaosx.nr12.616 }
+	}
+}
+
+# Participant COUNTRY inside a fulfilled contract closure. Africa's host keeps
+# the distinct demand families it was paid in and the major powers that paid.
+gods_of_africa_achievement_record_provision = {
+	if = {
+		limit = {
+			has_event_target = africa_host
+			has_variable = gods_of_africa_contract_original_family
+			is_major = yes
+		}
+		set_temp_variable = { gods_of_africa_provision_family = gods_of_africa_contract_original_family }
+		set_temp_variable = { gods_of_africa_provision_payer_id = THIS.id }
+		event_target:africa_host = {
+			if = {
+				limit = { NOT = { is_in_array = { array = gods_of_africa_achievement_provision_families value = gods_of_africa_provision_family } } }
+				add_to_array = { array = gods_of_africa_achievement_provision_families value = gods_of_africa_provision_family }
+			}
+			if = {
+				limit = { NOT = { is_in_array = { array = gods_of_africa_achievement_provision_majors value = gods_of_africa_provision_payer_id } } }
+				add_to_array = { array = gods_of_africa_achievement_provision_majors value = gods_of_africa_provision_payer_id }
+			}
+			if = {
+				limit = {
+					check_variable = { var = gods_of_africa_achievement_provision_families^num value = constant:gods_of_africa_achievement.provision_families compare = greater_than_or_equals }
+					check_variable = { var = gods_of_africa_achievement_provision_majors^num value = constant:gods_of_africa_achievement.provision_majors compare = greater_than_or_equals }
+				}
+				set_country_flag = gods_of_africa_achievement_continental_provision
+			}
+		}
+	}
+}

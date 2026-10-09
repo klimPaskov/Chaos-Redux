@@ -1,0 +1,20 @@
+# Event 012 funded repair control-loss callback.
+# Native ROOT is new controller, FROM is old controller, FROM.FROM is the state.
+# Only the old controller's one matching programme is inspected. No world scan,
+# recurring hook, payment, demand closure or service renewal is introduced.
+on_actions = {
+	on_state_control_changed = {
+		effect = {
+			FROM = {
+				if = {
+					limit = {
+						has_country_flag = gods_of_africa_industry_program_reserved
+						check_variable = { var = gods_of_africa_industry_program_site value = FROM.FROM compare = equals }
+					}
+					gods_of_africa_review_industry_program = yes
+					gods_of_africa_capture_industry_retirement = yes
+				}
+			}
+		}
+	}
+}

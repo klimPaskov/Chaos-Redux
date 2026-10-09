@@ -183,6 +183,10 @@ When Chaos Redux adds a technology definition, no CXT inventory edit is required
 
 The one-time initialization flag is `chaosx_test_country_initialized`.
 
+Event 012 Gods uses the existing package-owned carrier `chaosx_cxt_extension_event012_africa_gods` and idempotent setup effect `chaosx_cxt_extension_event012_africa_gods_apply` in `common/scripted_effects/012_africa_gods_cxt_test_effects.txt`, registered through `common/on_actions/012_africa_gods_cxt_on_actions.txt`.
+The setup retains `gods_of_africa_cxt_fixture_ready` and adds only the inert readiness flag `gods_of_africa_cxt_industry_fixture_ready` for the accepted industrial record contract and does not create damage, grant factories, acquire a Gods host, fire Event 012, move CPP, install repair service or erase active receipts.
+This flag marks fixture readiness and is not native repair or timer proof.
+
 Event 021's package-owned carrier is `chaosx_cxt_extension_event021_random_civil_war`, its idempotent setup effect is `chaosx_cxt_extension_event021_random_civil_war_apply`, and its inert readiness receipts are the global `random_civil_war_cxt_content_registered` flag plus the CXT-local `random_civil_war_cxt_extension_seen` flag. The carrier is registered from `common/on_actions/021_random_civil_war_cxt_on_actions.txt` and implemented in `common/scripted_effects/021_random_civil_war_cxt_test_effects.txt`; it registers the reusable framework without selecting a target, creating a front, firing Event 021, or spending country resources.
 
 Event 035's package-owned carrier is `chaosx_cxt_extension_event035_great_depression`, its setup effect is `chaosx_cxt_extension_event035_great_depression_apply`, and its inert readiness proof is `great_depression_cxt_fixture_ready`. The carrier is registered from `common/on_actions/035_great_depression_cxt_on_actions.txt` and implemented in `common/scripted_effects/035_great_depression_cxt_effects.txt`; the fixture does not start a depression or modify an economy.

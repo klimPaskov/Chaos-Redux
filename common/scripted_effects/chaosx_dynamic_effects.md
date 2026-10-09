@@ -474,6 +474,7 @@ The following APIs are useful to other systems but are not declared in this regi
 
 | capability | authoritative_source | reference |
 | --- | --- | --- |
+| `gods_of_africa_funded_repairs` | [`012_africa_gods_industry_effects.txt`](012_africa_gods_industry_effects.txt) and [`012_africa_gods_industry_integration_effects.txt`](012_africa_gods_industry_integration_effects.txt) | [COUNTRY/STATE funding, finite service, scoped removal, pure preflights and receipt API](012_africa_gods_industry_effects.md) and [contract, report and history integration](012_africa_gods_industry_integration_effects.md) |
 | `ordinary_biological_incubation` | [`biological_lifecycle_effects.txt`](biological_lifecycle_effects.txt) | [incubation scheduling API](../../docs/systems/cbrn_warfare/biological_warfare/biowarfare_system.md#incubation-scheduling-api) |
 | `event021_calendar_conversion` | [`021_random_civil_war_date_effects.txt`](021_random_civil_war_date_effects.txt) | [`date_effects`](021_random_civil_war_date_effects.md) |
 | `event021_exact_front_ledger` | [`021_random_civil_war_front_ledger_effects.txt`](021_random_civil_war_front_ledger_effects.txt) | [`front_ledger_effects`](021_random_civil_war_front_ledger_effects.md) |

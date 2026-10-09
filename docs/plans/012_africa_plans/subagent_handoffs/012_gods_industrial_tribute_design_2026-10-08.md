@@ -2,10 +2,13 @@
 
 Date: 2026-10-08.
 Author: chaosx_improvement_loop_planner, plan only.
-Disposition: accepted and queued after parent review on 2026-10-08 within the complete Gods goal; implementation, numeric AI acceptance and native acceptance remain open.
+Disposition: promoted into the accepted full, technical and decisions/missions/UI specs on 2026-10-09 under the recorded parent acceptance.
+The bounded industrial contract is implemented in source, while numeric AI and native acceptance remain unresolved.
 The only file written by this planner is this handoff.
 Parent acceptance selects the funded one-site native repair program, preserving the existing CPP price and proportional paid service.
-Implementation is queued for the next source tranche while the compact public-value GUI proceeds in its disjoint owner files.
+The [parent reconciliation](012_gods_industry_parent_reconciliation_2026-10-09.md) identifies the current implementation and promoted specification sections.
+The compact public-value GUI proceeds in its disjoint owner files.
+Source findings and planner tool results below describe the pre-implementation inspection on 2026-10-08.
 Earned paid service must survive ordinary contract closure, substitution and the normal secured-Africa settlement until its own native expiry or site completion, while recipient loss or replacement revokes the original recipient's program.
 Normal settlement must not be treated as a hostile authority-loss callback that silently removes previously purchased repair time.
 Repository: C:\Users\klimp\OneDrive\Documents\Paradox Interactive\Hearts of Iron IV\mod\chaos_redux.
@@ -398,14 +401,16 @@ Final sampled SHA-256 fingerprints were:
 ## Parent disposition and promotion
 
 The bounded native repair contract is the recommended design.
-The parent must select/record its acceptance within the full goal, review the implementation and resolve the named engine/AI/visual evidence limits.
-Until then this document remains in docs\plans, and F1 remains open.
-If accepted, merge the contract and accepted tuning into docs\specs\012_africa_is_one_gods_of_africa_specs\specs\012_gods_of_africa_full_spec.md under Industrial support, and reconcile the package's technical and decisions/missions/UI specifications with the same terms and receipt semantics.
+The parent selected this contract within the full goal on 2026-10-08 and promoted it into Industrial support in the full, technical and decisions/missions/UI specs on 2026-10-09.
+The source implementation and its 29 helper and 44 integration cases are recorded in the [integration review](012_gods_industry_integration_review_2026-10-09.md).
+The matched AFTER AI comparison completed with partial coverage and 619 unresolved traces.
+Native monetary precision, timer behavior and attributable repair remain unproved, so F1 has implemented source with outstanding native acceptance.
 Record the parent's acceptance basis separately from later source/native implementation evidence.
 Any event-catalog adjustment belongs to the parent's existing workbook owner after actual implementation wording is known.
 
 Completed planning work: identified the CPP-only gap, researched native repair/construction and finite factory precedents, specified the target/tuning/payment/partial/substitute/loss contract, obtained a read-only AI/cost handoff, and recorded required evidence limits.
-Blocked/unresolved work: complete event/map visual artifact retrieval, complete bound AI scenarios/comparison, native monetary precision and native repair/expiry acceptance, and parent acceptance/implementation.
+Remaining evidence limits: complete event/map visual coverage, resolved bound AI scenarios, native monetary precision and native repair/expiry acceptance.
+Parent acceptance, source integration and the finite matched comparison are recorded above.
 No gameplay, localisation, workbook, assets, Git or game operation was performed by this planner.
 No implementation completion is claimed.
 No CPP waiver, factory grant, permanent consumer-goods penalty or unapproved fallback is proposed.

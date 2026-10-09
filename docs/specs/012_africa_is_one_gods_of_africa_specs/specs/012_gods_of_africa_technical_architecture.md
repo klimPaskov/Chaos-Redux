@@ -447,7 +447,7 @@ Use family-specific readable steps, such as:
 - tanks and aircraft in whole readable groups
 - convoys and trains in whole units
 - fuel in large round quantities
-- factory burden in whole factories and whole days
+- industrial repair service in whole days, with the original CPP quote retaining its precision
 
 Do not display fractional equipment or long decimal values.
 
@@ -467,6 +467,54 @@ The compliance effect should:
 8. clear mission and response decisions
 9. clear temporary contract state
 10. queue grouped Africa report
+
+### Industrial support implementation
+
+Disposition: promoted into an accepted spec from the [industrial tribute design](../../../plans/012_africa_plans/subagent_handoffs/012_gods_industrial_tribute_design_2026-10-08.md), parent accepted within the full-Gods goal and queued in `c7e9565a4391a1a2d85b5e4fa160bcbc53f2929c`, reaffirmed by the October 9 parent delegation.
+The [parent reconciliation](../../../plans/012_africa_plans/subagent_handoffs/012_gods_industry_parent_reconciliation_2026-10-09.md) records the implemented current-source evidence and its separate verification limits.
+This bounded subsection uses current identifiers.
+The other proposed file-map entries retain their own disposition.
+
+The owner package is `common\scripted_effects\012_africa_gods_industry_effects.txt` and its paired triggers.
+Parent integration resides in `012_africa_gods_industry_integration_effects.txt` and its paired triggers.
+Schema-first `012_africa_gods_industry_constants.txt` supplies repair factor 0.50, base 60 days, clamp 30–120, new-site damage 0.50, nonconsumed project-factory floor 1 and one host slot.
+The existing family 7, base 20 CPP and one-CPP payer reserve remain in `012_africa_gods_constants.txt`.
+Q and D = clamp(floor(60 * Q / 20), 30, 120) freeze after existing quote scaling.
+The native modifier in `012_africa_gods_industry_modifiers.txt` uses `state_repair_speed_industrial_complex_factor`, the original host scope and `GFX_modifiers_ETH_state_development`, with no new art.
+Its `enable` calls `gods_of_africa_industry_native_service_is_authorized` in COUNTRY source context with ROOT as the affected STATE, requiring `gods_of_africa_industry_program_owner_is_current`, `gods_of_africa_industry_program_site = ROOT` and `ROOT = { gods_of_africa_industry_program_site_is_secured = yes }`.
+Closed financial terms and donor loss remain eligible for their previously purchased term.
+`common\on_actions\012_africa_gods_industry_on_actions.txt` uses `on_state_control_changed`, scopes to FROM as old controller and compares its reserved program site with FROM.FROM as changed state before calling review and retirement capture.
+That bounded callback addresses the interval before the scheduled owner review without adding payment, closure, renewal, a world scan or recurring hook.
+
+Need/selector preparation proves a physical African owned/controlled core site and free slot separately from the pre-contract payer budget check.
+Contract creation publishes the epoch/ledger before binding the actor, site, host, origin, generation and contract tuple.
+Failed binding releases the slot before mission or milestone publication.
+Full/partial availability and the explicit receiver branch share pure industrial preflight.
+The generic political/fuel branches cannot bypass it.
+`gods_of_africa_pay_industrial_tribute` reviews the original host record before debit, measures donor/recipient CPP deltas independently, grants only new cumulative entitlement beyond prior G and leaves balance consumption to existing parent owners.
+Its observed-failure rollback reverses only the measured current transaction and provisional native write, preserving earlier receipts.
+Full original closure additionally uses `gods_of_africa_industry_full_funding_is_proven`.
+Paid secured-site completion at zero damage between owner ticks can settle remaining finance without extending service, whereas unfunded healthy sites and unobserved post-expiry completion cannot.
+
+The transfer owner immediately captures any retirement from `var:gods_of_africa_industry_host` before response capture.
+Response integration preserves original site/Q/D and exact current or matching retired C/G after material substitution, with zero new industrial days outside original payment reports.
+`gods_of_africa_capture_industry_retirement` publishes terminal kind 23 history once under historical identity, independently of financial fulfillment, compliance and failure.
+Financial finish/clear preserves paid time through closure, donor loss and normal settlement.
+Hostile loss removes original scoped support and publishes retirement before epoch revocation.
+The existing CXT extension adds only the inert `gods_of_africa_cxt_industry_fixture_ready` flag, without creating damage, a host, factories, funding or native service.
+
+The [integration review](../../../plans/012_africa_plans/subagent_handoffs/012_gods_industry_integration_review_2026-10-09.md) retains 29 helper and 44 integration source cases under `SourceNoNativeProof`.
+No tests or domain audits were rerun for this documentation pass.
+Modifier presence cannot prove native timer refresh/restoration/expiry, monetary precision, factory assignment or attributable repair.
+No game evidence is claimed.
+Installed `bba_dynamic_modifiers.txt:1–27,269–279`, offline `Modifiers:123–130`, offline `On actions:450` and installed `00_on_actions.txt:5075–5085` support the guard and callback scope contract, with full paths and revisions in the parent reconciliation.
+Daily native enable evaluation and actual callback ordering remain unproved.
+Source guard/callback coverage is not immediate engine acceptance.
+Numeric AI weights remain unchanged.
+The [matched AFTER comparison](../../../plans/012_africa_plans/subagent_handoffs/012_gods_industry_probability_2026-10-08.md) completed with a finite partial result and 619 unresolved traces.
+The preserved weighted roots do not freeze helper dependencies, so no numeric AI equivalence or click probability is established.
+The separate F2 adapter audit excluded all five cases with 74 unresolved traces and no score, which remains a check limit.
+No simplification is introduced, and parent final source review remains required.
 
 ### Equipment transfers
 
