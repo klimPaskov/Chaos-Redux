@@ -101,7 +101,7 @@ No repository Python script and no adapter operation may generate bones, skin we
 
 The Meshy provider route is the preferred route for rigging and animating provider-eligible bipedal models: the worker generates the body, drives the Meshy rig task and the Meshy animation tasks, and ingests the provider results into the job.
 
-A provider-eligible biped is a bipedal asset with clearly defined limbs and body structure, and it does not have to be human; a bipedal creature or machine that meets that structure may use the provider route. Programmatic provider rigging currently handles only such assets: quadrupeds, winged, serpentine, amorphous and other non-bipedal anatomy are outside it, and the provider rejects pose estimation for them. Verify the live locked route's current rigging constraints before committing an unusual anatomy to the provider route, and move a model to live Blender authoring when the provider rejects it.
+Select static or articulated treatment and provider eligibility using [Skeleton, skinning, and action policy](../../.agents/skills/chaos-redux-3d-model-pipeline/SKILL.md#skeleton-skinning-and-action-policy). Verify the actual anatomy and live locked route; a creature, mechanical, vehicle, building, air, or naval label is not an eligibility rule.
 
 Live Blender authoring covers everything the provider route does not: non-bipedal and non-humanoid anatomy, creature rigs, mechanical and articulated assemblies, firearm-specific rig and attachment work, measured creature rigs, component and prop modeling, and every missing or faulty provider result. Live authoring is iterative and holds every result to visual and deformation review.
 
@@ -313,7 +313,7 @@ An external animation source requires its verified provenance receipt and its se
 
 Meshy is unreliable at a subject holding an object, so a body is never generated with anything in its hands and every held item is produced separately.
 
-Every current equipped unit must receive a fresh item-free Meshy 7 body, even when its armed predecessor was considered complete.
+Apply the separate body/item generation route when generation is required by the requested operation. An existing equipped model does not automatically require a rebuild; use the 3D skill to select the operation and its requirements.
 
 Prepare exactly one body-only reference with every held item excluded, with clear anatomy and neutral hands in a suitable A/T pose; keep each item's design as separate reconstruction evidence.
 
@@ -343,7 +343,7 @@ Death validation measures the evaluated silhouette rather than requiring every f
 
 A nonhumanoid job declares a measured, numeric scale crosswalk against the installed vanilla runtime reference, and a missing, pending, or non-numeric crosswalk is a hard blocker rather than a value to coerce or infer.
 
-A non-bipedal or non-humanoid skeleton, its skin weights, and its actions are authored live in Blender on the dedicated custom-rig route.
+Unsupported anatomy, extra articulations, and missing or faulty provider rig/action results are authored live in Blender under the 3D skill. A nonhuman but provider-eligible biped follows the supported one-attempt route.
 
 ## Export and reimport proof
 
@@ -407,7 +407,7 @@ python .tools/3d_pipeline/verify_environment.py --probe-meshy
 
 The fixed-model pilot runner, unit-specific checkpoint probes, cannibal audio batch, and October unit-repair audio helpers are retained locally under `.tmp/3d_pipeline/`, not as shared entry points.
 Use the shared clients and allowlisted adapter operations with the owning job specification; keep new job-specific orchestration in `.tmp/<task>/` or its job workspace.
-A provider-eligible bipedal rig and its actions still come from the Meshy provider route and its ingestion operations; other skeletons, skin weights, and actions are authored live in Blender under the pipeline skill.
+For requested provider rig/action work, use the supported one-attempt Meshy route and ingest usable results; missing, faulty, or unsupported work proceeds in Blender under the pipeline skill.
 
 This workflow supports both skeletal 3D `.mesh`/`.anim` production and static HOI4 map-building `.mesh` production.
 

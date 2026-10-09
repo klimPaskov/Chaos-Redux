@@ -32,9 +32,11 @@ python .tools/sync/sync_qoder_agents.py
 python .tools/sync/sync_cursor_agents.py
 python .tools/sync/sync_opencode_agents.py
 python .tools/sync/sync_claude_agents.py
+python .tools/sync/sync_read_limits.py
 ```
 
 DSH has no generated agent files to refresh. It consumes `AGENTS.md` and `.agents/skills/` directly, so a canonical change reaches DSH as soon as the file is saved.
+Shared read budgets and each runtime’s supported settings are documented in [Read budgets](../docs/runtimes.md#read-budgets); keep files under 20,000 tokens while readers allow 30,000.
 
 ### Name mapping
 

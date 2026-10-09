@@ -1,6 +1,6 @@
 # Unit model rebuild workflow
 
-This is the step-by-step route for rebuilding an existing custom land-unit model, or building a new provider-eligible biped, with the repository tools in `.tools/3d_pipeline/review/`.
+Read this reference for explicitly requested custom land-unit repair or rebuild work using `.tools/3d_pipeline/review/`. Select only the stages required by that operation under the parent skill; an existing model does not automatically require replacement.
 Every command runs from the mod root.
 Each step lists the evidence to keep and the defects that step exists to catch.
 
@@ -18,7 +18,7 @@ Decide the route from the evidence, not from the file list:
 - Look for rig breakage: knees bending backward, whole-body tilt in idle or move, legs crossing, spider-splayed deaths, meshes splitting into hundreds of loose pieces that separate in motion.
 - Look for mesh tears (seam slivers showing the background) and flat untextured grey.
 - Compare the triangle count with the project norm in `config/asset_profiles.json` (`triangle_range.working_triangle_target`).
-- A model whose provider task ids were never recorded cannot be rigged by the provider; it needs a fresh body.
+- A provider operation that requires the original task ID cannot proceed without a verified ID. Recover it from the job records when possible; otherwise use authorized Blender repair/authoring. Generate replacement geometry only when the requested operation requires it, never merely to recover a missing provider ID or reset rig/action attempt limits.
 
 ## 2. Identity sources
 

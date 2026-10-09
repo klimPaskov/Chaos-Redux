@@ -100,10 +100,7 @@ Tool exposure does not prove service health or the availability of a standalone 
 Reuse schema/version discovery for an unchanged connection; a successful read-only domain call establishes that route works without a separate health tool.
 If task/job negotiation cannot be confirmed, use the ordinary supported domain call or local source review instead of blocking on that optional delivery mechanism.
 For local documentation and source precedents, verify `hoi4.reference_context`, `hoi4.reference_search`, `hoi4.reference_read`, and `hoi4.source_lookup` in the connected tool list and call their live schemas. Retain the cited source path, line span, and revision; follow `nextLine` only for the relevant section. A context bundle identifies sources but does not establish that their detailed rules have been read.
-When the live `hoi4.source_lookup` schema accepts `view` and `keyPath`, use bounded child structure to locate a nested block and select repeated keys with their zero-based `occurrence`.
-When it accepts `path` and `line`, use it to find the definitions and `keyPath` containing a diagnostic, diff, or editor line, then navigate that block. Returned `suggestions` are near-miss names to verify, not matches. Pass a search result's `matchLine` as `startLine` to `hoi4.reference_read` to land on the answering line.
-Continue structure pages with `nextChildOffset` as `childOffset`, retaining the same query settings and `expectedRevision`.
-Use `includeReferences = false` for a focused event or scripted-helper definition read; enable references when investigating consumers.
+For nested source lookup, diagnostic-line lookup, continuation, and definition-only reads, follow the [local reference workflow](docs/systems/hoi4_agent_tools_mcp_integration.md#local-reference-workflow).
 When `hoi4.script_validate` is exposed, use it to check a relevant effect or trigger body under its explicit scope against installed documentation.
 Its true result covers only `checksPerformed`; unresolved commands, `valid = null`, unchecked argument blocks, and omitted findings require further inspection, and parameter semantics and engine behavior remain separate evidence.
 Before using `hoi4.event_inspect` or `hoi4.tech_inspect` with `mode = helper_expansion`, `hoi4.job_inspect`, `hoi4.job_cancel`, or asynchronous MCP tasks, verify the connected server version and health, live tool schemas, and client task negotiation. Use only confirmed routes; otherwise follow the installed domain tools and record the missing capability. Inspect final tool results and retain continuation URIs, source revisions, coverage, and unresolved findings. Jobs and helper pages are delivery and coverage tools; keep domain-specific inspect, render, compare, and scenario evidence.
@@ -480,6 +477,12 @@ Rules:
 6. Record repo paths, commands, examples, gotchas, source folders, validation steps, and handoff rules when they prevent rediscovery.
 7. Keep each skill focused on one reusable workflow.
 8. Do not bloat skills with one-off details that will not help future tasks.
+   Keep maintained guidance files within a 20,000-token full-read output budget.
+   Use the 30,000-token read/output allowance in `.tools/sync/read_limits.json` across runtimes, including an explicit per-call output budget where the tool exposes one; keep the file ceiling at 20,000.
+   A fixed native reader byte/line cap is separate: use an authorized full-file shell read with sufficient output allowance where available, and never treat truncated text as a complete read.
+   If a file exceeds the 20,000-token ceiling, bring it just below that ceiling with only a small margin by relocating complete topics or removing genuine duplication, preserving every requirement and updating references.
+   Leave files that already fit at their current size; do not pad or unnecessarily shorten them.
+   Verify a full-file read at the 20,000-token budget without truncation.
 9. During large multi-event runs, review skill gaps after each completed event or shared system. Update or create skills before starting the next event if something reusable was learned.
 10. Report which skills were used, created, or updated at the end of each task.
 

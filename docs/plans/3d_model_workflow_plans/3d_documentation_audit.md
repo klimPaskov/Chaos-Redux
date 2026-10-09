@@ -2,6 +2,8 @@
 
 Disposition, 2026-09-25: Base-zombie job-root and re-authoring-queue references below are historical. The user requested removal of that model package, and its runtime files and job root were deleted.
 
+Guidance review, 2026-10-09: C1–C3 and C7 are resolved in the canonical 3D skill and agent routing: separate Meshy body/item geometry, one supported rig/action attempt, then Blender assembly/correction/fallback, selected by requested operation without automatic existing-model rebuilds. C4’s provider-key exception and C5’s locator documentation were already corrected before this consolidation. The quoted audit, line numbers, versions, and package observations below remain historical evidence, not current instructions. C6 describes an implementation/acceptance gap rather than permission to alias actions; this documentation change does not repair or certify any model. Follow the [current 3D skill](../../../.agents/skills/chaos-redux-3d-model-pipeline/SKILL.md) and its conditional references; other dated code/package observations are not a current runtime audit.
+
 Read-only audit of the 3D model pipeline documentation surface, cross-checked against the pipeline code.
 
 Audit scope: `.agents/skills/chaos-redux-3d-model-pipeline/SKILL.md`, `.tools/3d_pipeline/README.md`, the `chaosx_3d_model_pipeline` paragraphs of `.agents/skills/chaos-redux-subagents/SKILL.md` (lines 56 and 159-169), `.codex/agents/chaosx_3d_model_pipeline.toml`, `docs/systems/3d_model_pipeline/**`, and the top level of `docs/plans/3d_model_workflow_plans/*.md` (the `adapter_recovery_drafts/**` subtree was excluded from the audit scope).

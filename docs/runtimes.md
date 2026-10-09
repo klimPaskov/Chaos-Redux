@@ -4,6 +4,30 @@ This repository is developed from several agent runtimes.
 Codex is the primary workflow and the sole authoring source for shared instruction and subagent content, and the cross-runtime workflow rules live in [`.codex/README.md`](../.codex/README.md).
 This file records the runtime-specific layouts that are not already covered there.
 
+## Read budgets
+
+[`.tools/sync/read_limits.json`](../.tools/sync/read_limits.json) owns the 30,000-token reader/output target and the separate 20,000-token guidance-file ceiling.
+The larger reader budget is headroom, not permission to enlarge skills.
+Apply its supported settings with `python .tools/sync/sync_read_limits.py`; `--check` checks for drift without writing.
+Add `--user-defaults` to update this user's Codex, Claude, and OpenCode defaults, or `--dsh-profile <existing cordis.patch.yml>` to update a specific DSH profile without starting it.
+These settings are independent of the selected AI model/provider; they do not change model context windows, reply lengths, permissions, or retry limits.
+
+| Runtime | Applied setting | Scope and limits |
+| --- | --- | --- |
+| Codex | `tool_output_token_limit = 30000` | Project and optional user config; preserves tool results in history. A call that explicitly requests less still needs a larger `max_output_tokens` for a full read. |
+| Claude Code | `env.CLAUDE_CODE_FILE_READ_MAX_OUTPUT_TOKENS` and `env.MAX_MCP_OUTPUT_TOKENS`, both `30000` | Project and optional user `settings.json`. File reads and MCP results are separate limits; MCP character annotations or automatic result-file delivery can still apply. |
+| OpenCode | `tool_output.max_bytes = 120000`, `max_lines = 6000` | Project and optional user config. This is a byte/line output allowance; the built-in Read tool's separate 50-KiB and per-line caps remain. Use an authorized shell full-file read for larger guidance. |
+| DSH | `tool-fs.config.readMaxBytes = 120000`, `readLimit = 6000`, `readMaxLineLength = 120000` | Explicit existing profile override, preserving plugin enablement and unrelated entries. These are byte/line/character limits. |
+| Cursor and Qoder | Shared AGENTS.md read policy | No supported global reader-size setting was found in the inspected configuration docs or installed setting registrations. Request the larger allowance where a tool exposes it; fixed client caps remain a limitation. |
+
+The byte allowance uses the config's explicit four-bytes-per-token estimate; it is not an exact tokenizer conversion.
+Read one large guidance file per result, keep smaller calls narrow, and inspect truncation markers and line/byte coverage before treating a read as complete.
+New settings may require a new runtime session; writing them does not change every already-running reader.
+
+Sources: [Codex configuration](https://developers.openai.com/codex/config-reference), [Claude environment variables](https://code.claude.com/docs/en/env-vars), [OpenCode output configuration](https://opencode.ai/v2/docs/config), [OpenCode Read implementation](https://github.com/anomalyco/opencode/blob/dev/packages/opencode/src/tool/read.ts), and [DSH filesystem configuration](https://github.com/deepseek-ai/deepseek-harness/tree/master/packages/fs/tool-fs#configuration).
+The Claude file-read variable was also verified in the installed `2.1.288` executable; the installed OpenCode SDK `1.18.23` declares the `tool_output` fields.
+[Cursor configuration](https://cursor.com/docs/cli/reference/configuration) and [Qoder configuration](https://docs.qoder.com/cli/settings) are the inspected public setting references.
+
 ## DSH (DeepSeek Harness)
 
 DSH needs no generated artifacts, because it reads this repository's canonical files directly.

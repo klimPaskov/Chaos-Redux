@@ -18,6 +18,7 @@ Do not use subagents to hide uncertainty or pass off responsibility. A subagent 
 All project custom subagents must be spawned with a fully explicit, self-contained prompt and no inherited parent-thread context. With the current Codex `collaboration.spawn_agent` tool, set `fork_turns="none"`. In the Qoder, Cursor, opencode, Claude Code, and DSH runtimes subagents are isolated by design, and the parent prompt must still carry every needed input. Cursor loads generated `.cursor/agents/*.md` files as native project subagents, and Claude Code loads generated `.claude/agents/*.md` files as project subagents. Spawn them by hyphen-case name through `/name`, the Task tool, or the `Agent` tool. DSH composes each named role at runtime, so read the canonical identifier below as the role to instantiate. Do not substitute Cursor's built-in `explore`, `shell`, or `browser` agents, or Claude Code's built-in `Explore`, `Plan`, or `general-purpose` agents, for a named Chaos Redux specialist.
 
 The parent prompt must include every path, user correction, task constraint, scope boundary, previous handoff status, accepted plan, queued plan, and design rule the subagent needs.
+The role’s model comes from its runtime configuration; changing that configuration does not change an already-running agent’s model.
 
 If the needed context only exists in conversation, summarize it into the subagent prompt or write it to the relevant spec, plan, handoff, or repo file before spawning.
 
@@ -188,15 +189,21 @@ The parent owns temporary-workspace cleanup. Keep the event-scoped `docs/assets/
 
 #### 3D model routing
 
-Route `chaosx_3d_model_pipeline` only with a context-complete prompt (Codex `collaboration.spawn_agent`: `fork_turns="none"`) containing the exact deterministic job root, reference-image path or approved asset brief, output folders, handoff path, asset profile, named vanilla references, scale relationship, required action roles, custom-unit sound roles, Internet source and licensing requirements, custom-unit counter consumers/tokens, exact installed-vanilla counter definition and DDS paths, matching skill-local counter family, `chaosx_icon_artist` handoff path, baseline planned paid operations, one-attempt Meshy rig/action limits, item-free body plus separately generated equipped-item route, live Blender authoring for every item and for every anatomy the provider route does not cover, and geometry-recovery credit limits, dependency lock, and forbidden simplifications. The parent must pass the owner/asset identifiers explicitly. The subagent must not infer them from inherited conversation state.
+Route `chaosx_3d_model_pipeline` with the self-contained, history-free prompt required above. The parent supplies owner/event/system and asset IDs, requested operation, deterministic job root, reference path or approved brief, output folders, handoff path, profile, vanilla references and scale relationship, required action roles, component inventory, sound roles, source/licensing constraints, counter consumers/tokens and exact vanilla definition/DDS/reference family, icon-artist handoff path, planned paid operations, recorded recovery limits, dependency lock, and forbidden simplifications.
 
-For provider-dependent work, the parent prompt must require the MESHY_API_KEY gate, Meshy 7 geometry, and exactly one approved sourced Meshy input image, no multi-view provider board, immediate provider download and checksum, protected provider source, topology repair, PDX packed-material validation, hash-aware runtime synchronization, and `.mesh`/`.anim` reimport evidence. Blender-only non-firearm existing-model repairs require verified Blender routes and dependencies without a Meshy key or fresh provider attempt. Normal generation, planned remesh/retexture/conversion, the Meshy rig task, the Meshy animation tasks, and authorized geometry recovery remain preauthorized while live balance and provider capability permit them. The Meshy provider route is the preferred route for rigging and animating provider-eligible bipedal models, which do not have to be human: the worker generates the body, drives the Meshy rig task and the Meshy animation tasks, and ingests the provider results into the job through `import_animation_action`, `import_bvh_animation_action`, and `retime_animation_action`. Live Blender authoring covers non-bipedal and non-humanoid anatomy, creature rigs, mechanical and articulated assemblies, firearm-specific rig and attachment work, measured creature rigs, component and prop modeling, and every missing or faulty provider result. No repository Python script and no adapter operation may generate bones, skin weights, or keyframes from a declarative spec, a template, or a formula, and provider results are ingested as authored assets rather than synthesized by repository code. For custom units, require Internet sound-source research, original download preservation, licensing evidence, animation synchronization points, and a blocked state when no defensible sourced file exists; manual, generated, synthesized, recorded, placeholder, and unlicensed audio are forbidden. Also require bespoke counters for every used counter surface, exact installed-vanilla definition/DDS inspection, matching reference-family inspection, and sampled vanilla green evidence; reused counters, arbitrary green, and unreferenced imitations are forbidden. For humanoids, name the installed vanilla source mesh and entity and pass the source-height/entity-scale/effective-runtime crosswalk; for buildings, pass the valid state/province pair and entity visibility test.
+Before dispatch, read [Route selection and component completion](../chaos-redux-3d-model-pipeline/SKILL.md#route-selection-and-component-completion), [Job intake and deterministic layout](../chaos-redux-3d-model-pipeline/SKILL.md#job-intake-and-deterministic-layout), and [Bounded subagent route](../chaos-redux-3d-model-pipeline/SKILL.md#bounded-subagent-route).
+Those sections own operation selection, provider/key/dependency gates, separate body/item generation, one supported rig/action attempt, already-authorized Blender fallback/component work, source integrity, and credit limits.
+Do not copy the production manual into the prompt or invent live tools; pass the accepted inputs and conditional references.
+For humanoids, provide the exact source-height/entity-scale/runtime-height comparison; for buildings, provide the valid state/province pair and visibility test location.
 
-Its allowed scope includes preserved sources, Meshy body candidates, the Meshy rig task and the Meshy animation tasks for a provider-eligible bipedal body, provider action ingestion, Blender component modeling/restoration, materials, rigs, weights, held props, attachments, and real skeletal actions authored live in Blender through the MCP bridge for every asset the provider route does not cover. Firearm-bearing units, including current firearm models, must receive a fresh Meshy 7 weapon-free body from exactly one weapon-free input, then the Meshy rig and its receipt-verified provider actions for that body, and live Blender firearm fitting, attachment, and prop work. Preserve source weapon identity as reconstruction evidence and validate final grip/stock/muzzle/recoil and firing-state effect/sound synchronization. Held items are never generated inside the body: the body input carries empty neutral hands, each item gets its own provider geometry task from its own single image, and the assembled whole — body plus attached item — is what gets animated and validated in Blender. Always create or restore missing required elements without renewed approval; preserve intended identity and record complete component coverage. A provider-eligible bipedal skeleton, its skin weights, and the provider actions ingested onto it arrive as authored provider results, and every other new rig, weight set, and action is authored live in Blender under the repository-code prohibition above. All routes require actual modeling/authoring capability, deformation/contact and semantic-motion review, and export/reimport proof; whole-rig/static substitutes and semantic aliases remain forbidden. No shortcut may stand in for real rigging, skinning, or animation work: an incomplete or anatomy-mismatched skeleton, unreviewed bulk weights, a static or transform-only stand-in, one role's action reused for another, an omitted component, or evidence reused from another model all fail acceptance. Other provider/source substitutions need separate approval. The worker must not create audio from scratch or edit gameplay, GFX, `.gfx`, `.gui`, `.asset`, entity, sound definitions, localisation, events, focuses, decisions, country/history/AI, on-actions, or spreadsheets.
+The worker owns source preparation, Meshy body/item candidates and supported rig/actions, provider ingestion, live Blender assembly/authoring/corrections, complete components, materials, geometry/weight/contact/action review, and export/reimport under the 3D skill's no-shortcut rules.
+It must read [Blender authoring, processing, and PDX export](../chaos-redux-3d-model-pipeline/references/blender-processing-and-export.md) for those operations and [Custom-unit audio and counter delivery](../chaos-redux-3d-model-pipeline/references/unit-audio-and-counters.md) for every custom unit.
+Require licensed Internet-sourced audio and original vanilla-green counters for each actual consumer; generated/placeholder audio, reused counters, arbitrary green, static action substitutes, and omitted components cannot satisfy delivery.
 
-The handoff must list files, provider task lineage and credits, verified dependency versions, Blender checkpoint stages, Meshy attempt ledger, fallback/repair basis, manual Blender authoring operations, retained valid outputs, geometry/material/rig/weight/action/export results, Internet audio source URLs, attribution, licenses, sound roles and animation synchronization points, custom-unit counter consumers/tokens, installed-vanilla counter paths, sampled green-palette evidence, counter-artist outputs, reimport or parser evidence (or an explicit missing-capability blocker), proposed runtime identifiers, statuses, skipped meaningful validation, and remaining risks. Use only actual provider or Blender tool names discovered and verified by the parent; missing integrations are `required installation/verification` or `blocked`, not invented capabilities. Any viewer or inspector is read-only.
-
-The parent alone owns `.asset`/entity/GFX/runtime source wiring, final review, evidence reconciliation, and the overall completion claim. The user performs live-consumer and in-game validation. A successful provider task, `.blend`, preview, or export never authorizes the subagent to claim the feature is complete or to silently use a fallback.
+Require the complete [Evidence package and handoff](../chaos-redux-3d-model-pipeline/SKILL.md#evidence-package-and-handoff), including dependency and provider/attempt lineage, credits, checkpoints, authoring/repair basis, retained valid outputs, model/action/export results, audio attribution/synchronization, counter references/comparisons, exact runtime identifiers, meaningful checks and their limits, and remaining work.
+The parent reviews that package and owns final `.asset`, entity, GFX, sound-definition, gameplay, and runtime wiring, evidence reconciliation, and the overall completion claim.
+The worker may not edit those surfaces or localisation, GUI, country/history/AI, on-actions, or spreadsheets without an explicit narrow exception.
+Inspectors/viewers stay read-only. The user performs in-game validation; provider success, a preview, or an export is not a claim of live completion.
 
 ### Active small-patch agents
 
@@ -277,8 +284,10 @@ Do not create new planning folder names such as `docs/planning/` unless the user
 
 ## Mandatory handoff after any patch
 
-Every subagent that edits files must return one concise current handoff to the parent.
-Use an inline handoff unless a durable file is requested or useful; update that file instead of creating repeated status reports.
+Every subagent that edits files must return one current handoff containing the complete applicable findings below.
+Deliver those findings once: when a durable report is requested or useful, verify that the saved report is readable and return its path with a concise inline summary; otherwise return the complete findings inline.
+If file delivery is unavailable, use complete inline delivery instead of repeatedly trying to produce the same report.
+Update an existing current report rather than creating repeated status reports.
 If the event id and slug are known, place a requested durable handoff under:
 
 ```text
@@ -303,80 +312,8 @@ If a patch touches localisation, list the keys changed. If it touches decisions 
 
 ### MCP evidence in handoffs
 
-When a routed task touches focus trees, event chains, technology or doctrine trees, weighted logic, scripted GUI, or maps, use the relevant MCP checks under the retry limits in AGENTS.md. Pass only the diagnostics, revision, scenario hash, comparison, or linked artifact URI the parent needs instead of copying a complete graph or matrix into the prompt. Tool exposure is separate from service health and standalone viewer availability. If the relevant MCP route remains unavailable after the retry limit, report what could not be checked and continue with the relevant local documentation, source, and local tests. When a task needs the standalone Technology Tree Viewer, verify its availability separately from the exposed read-only `mcp__hoi4_agent_tools__hoi4_tech_inspect`, `mcp__hoi4_agent_tools__hoi4_tech_render`, and `mcp__hoi4_agent_tools__hoi4_tech_compare` routes. Do not invent viewer capabilities or treat an absent viewer as missing source implementation.
-
-Share the failed check, attempts already used, and the condition needed to retry through the existing handoff; changing files, caller, tool name, or transport does not restart the same failure.
-Use AGENTS.md to distinguish an unavailable check from a defect or missing requested output.
-An advancing page offset, new result data, or completed work is progress; another `running` status or timestamp alone is not.
-Useful continuation is not a failed retry, but unchanged polling and recovery requests follow the same limit.
-Keep the existing job handle and continue independent work when polling cannot add information.
-For a production job or a result explicitly requested by the user, follow its documented polling interval and a finite wait limit set when it starts; do not restart the job or extend that limit merely because it still says `running`.
-If that limit expires, preserve the handle and completed outputs and report the missing requested result. Ordinary workflow verification does not become a requested deliverable merely because an older checklist calls it mandatory.
-If the tool cannot analyze the script, evaluate the actual weights, helpers, constants, eligibility, and target scope in named cases and label score-only or uncertain conclusions accurately.
-Do not change gameplay to satisfy an analyzer or treat missing tool output as evidence that behavior is absent.
-
-#### Tool availability and asynchronous jobs
-
-Reuse capability discovery for an unchanged connection.
-Before using `mode = helper_expansion`, `hoi4.job_inspect`, `hoi4.job_cancel`, or native MCP tasks, verify the connected server's reported version and health, inspect the live tool schemas for those routes, and check client task negotiation. Source code or exposed tool metadata alone does not establish support in the connected process. Use only routes confirmed for the installed server and client; otherwise follow the available domain routes and record the missing capability precisely.
-
-Resolve each client's actual configured transport and server process before attributing capabilities to a local checkout, global binary, or exposed tool list; their versions and supported routes can differ.
-Keep configuration identity, server version, live schemas, and task negotiation in task evidence.
-A failure to observe a native task result does not establish that the server task failed.
-Preserve configuration, task IDs, and source/scenario hashes, then query existing handles through confirmed routes before retrying; if observation remains unavailable, report the task outcome unresolved.
-Do not change external tool source or dependencies to mask startup or domain failures.
-Keep package paths, concrete versions, and current errors in task evidence rather than reusable skill rules.
-
-For user-requested MCP troubleshooting after a transport closure, a separately initialized read-only stdio connection through the installed MCP SDK and configured server executable is an optional recovery route.
-Use the same configured workspace, mod-root environment, and working directory; verify Windows child processes are hidden, initialize the connection, and inspect its reported version and live schemas before calls.
-Plain client `capabilities: {}` does not negotiate native tasks, even when the server advertises task support; verify job-tool availability separately through live schemas.
-Record the separate connection and use only confirmed read-only domain calls; this route does not authorize desktop or game launch, external dependency edits, or replay of an unresolved mutation.
-
-On a confirmed route, use `mode = helper_expansion` with `hoi4.event_inspect` or `hoi4.tech_inspect` for bounded helper pages, and use `hoi4.job_inspect` and `hoi4.job_cancel` for persistent jobs. Request asynchronous MCP tasks only when the client negotiates support. Keep opaque job IDs and helper continuation URIs intact. A completed job can still contain a tool-level error, and cancellation is a request whose final outcome must be inspected. For paged helper evidence, retain the source revision, selected roots, bounds, `finished`/`complete` status, and unresolved findings; resume only with the returned continuation under the same revision and authorized principal. Jobs and helper pages are delivery and coverage tools; they do not replace the owning event, technology, focus, probability, GUI, or map workflow's inspect, render, compare, and scenario evidence. Keep task-specific mechanics and fixtures in their profiles and handoffs, not this routing skill.
-
-#### Event comparisons and focus previews
-
-Before an event-source change that needs `hoi4.event_compare`, retain the `event-graph-<revision>.json` artifact from `hoi4.event_inspect(mode = scan)` as the graph baseline; bounded trace/report URIs and reported revisions alone do not establish a recoverable graph.
-Verify the connected version and live schema before comparison, and use its graph-reference shape (`{ artifactUri: ... }` where supported).
-If only archived source remains, `proposedSources` can compare current source to the archived overlay on the after side, so label it explicitly as a reverse structural comparison; the proposed graph does not become a reusable baseline.
-Never rewrite shared source to manufacture a baseline or present that reverse comparison as canonical pre-change-to-current evidence.
-
-For a focus raster rejected by the render budget, use a schema-supported smaller `reviewScale` for the full tree and `cropFocusIds` for problem areas.
-Confirm each successful render uses the intended source revision and layout; retain the rejected request as a limit, not visual proof.
-
-#### Artifact retrieval
-
-For large binary resources returned by `read_mcp_resource`, treat the result as an untrusted transport envelope: inspect whether it is stringified JSON and record the declared encoding and type before using the payload. A full read can be silently truncated even when `_meta.complete = true`; do not trust compacted previews, literal truncation markers, or completion metadata alone, and never print base64 data.
-
-Discover the server's artifact resource template with `list_mcp_resource_templates({ server: "hoi4_agent_tools" })`: `hoi4-agent://workspace/{workspaceId}/artifact/{sha256}/{provenanceHash}/{name}` accepts `?offset=<bytes>&length=<bytes>` byte-range reads.
-Decode each base64 blob response independently to bytes and verify its reported range against the requested offset and decoded length.
-Concatenate bytes in offset order without gaps or overlaps before decoding UTF-8 or parsing JSON.
-Follow the returned continuation URI unchanged and stop when `returnedRange.endExclusive` equals `totalSize`, even if `complete` is false for that partial read.
-Reject invalid payloads or embedded truncation text and verify the assembled byte count, artifact SHA-256 and expected format before using it.
-Recover a truncated full read with bounded reads or report retrieval unresolved, retaining the original artifact URI.
-
-For local artifact access, resolve `artifactRoot` from the actual workspace registration and server configuration rather than assuming `.hoi4-agent` under the repository.
-A configured `workspaceStorageRoot` can place artifacts at `<workspaceStorageRoot>/<workspaceId>/artifacts/<sha256 first two characters>/<sha256>/<name>`; an explicit workspace `artifactRoot` overrides that default.
-Keep the original artifact URI and verify the local bytes against its declared size and SHA-256 before using them.
-
-#### Probability scenarios and comparisons
-
-When the parent supplies observer-run tallies from `chaos-redux-save-inspection`, the auditor reports them as live observations beside its scenarios and states how many runs back them; they do not prove a different unobserved scenario. For probability work, `chaosx_ai_probability_auditor` must start with `hoi4.probability_inspect`, name the analyzed surface and scenario ids, state whether the candidate pool and external factors were complete, and distinguish exact, bounded, sampled, score-only, and unresolved results. Use `hoi4.probability_evaluate`, `hoi4.probability_sweep`, and `hoi4.probability_compare` according to the scenario and the shared retry limit, with `hoi4.probability_simulate`, `hoi4.probability_sequence`, and `hoi4.probability_render` only under their declared evidence conditions. For technology or doctrine work, list the affected technology, folder, unlock, grant, bonus, or asset ids and include the relevant `hoi4.tech_compare` result when source changed.
-
-For `hoi4.probability_inspect` and `hoi4.probability_evaluate`, pass a mod-relative source object, for example `source: { path: "common/decisions/camp_repression_generic_decisions.txt" }`. The installed route rejects a string `source` and `{ relativePath: ... }` even when tool metadata calls the source type unknown. Argument-validation rejection identifies an invalid request shape; correct it against the live schema before declaring the route unhealthy. For `hoi4.probability_compare`, check the live schema and pass real, nonempty `before.path` and `after.path` source paths with the identical saved `scenarioSet`; do not add `sourceRevision` or `sourceHash` to either source object, because the installed route rejects those fields. Keep revisions and hashes in the handoff as evidence. `beforeManifest` and `afterManifest` are for declared custom pools (`id`, `selection`, `candidates`, `transitions`), not saved probability analysis artifacts. An analysis URI cannot replace the pre-edit source. If an exact before source is missing, or a deleted candidate prevents a valid comparison, retain before/after inspect evidence, state that the numeric delta is unresolved, and never compare the current file to itself.
-
-Indexed adapters can require a canonical gameplay `path` for discovery; an archive-path `no_weighted_surfaces` result does not establish an unsupported adapter or absent weights.
-Recheck the live schema and source surface before classifying the gap.
-For an immutable baseline, use live-supported `snapshotPath` and `expectedSourceHash` fields with `path` naming the logical gameplay file.
-For the supported snapshot contract, `expectedSourceHash` verifies the raw snapshot-byte SHA-256, distinct from the analysis result's `sourceHash`.
-Preserve exact before and after bytes outside gameplay directories and compare them with the identical saved `scenarioSet`, without replacing live source.
-Reuse the complete saved fixture verbatim, including labels and descriptions; reconcile differing returned scenario hashes before claiming a matched comparison.
-Shared helpers and constants remain current, so a frozen source comparison does not establish a historical whole-workspace comparison.
-An empty `requiredInputPaths` discovery result does not prove complete scenario inputs.
-With `technology.external_factors_complete` unbound, a zero exposed-score delta does not establish unchanged total native AI research preference.
-Check evaluation requirements and unresolved findings against the live schema and installed evaluator, including its numeric/token predicate shapes and representational limits.
-
-Probability scenario schemas vary between installed server versions and connected routes; inspect each live route schema and pass only fields it accepts. Where supported, put `date` at the scenario's top level. Explicit `controls` maps and typed scope bindings such as `{ id, type, actor, state, flags }` may be accepted by a newer direct client while the connected tool rejects them. Treat absent schema fields and `candidateOverrides` as unresolved inputs or eligibility assumptions, not live proof of campaign state. Record validation errors and artifact URIs, never invent fixture keys or add gameplay flags solely to satisfy the adapter, and never present partial score-only output as balance evidence.
+For a handoff involving supported MCP surfaces, include the relevant source revision, scenario, coverage, and useful results. Apply AGENTS.md retry limits; unavailable verification is not missing implementation.
+Read the complete requirements in [MCP evidence in handoffs](../../../docs/systems/hoi4_agent_tools_mcp_integration.md#mcp-evidence-in-handoffs) before this work.
 
 ## Specialist routing
 
