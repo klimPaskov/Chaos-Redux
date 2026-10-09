@@ -2,11 +2,21 @@
 
 Date: 2026-10-08.
 Role: chaosx_scripted_system_architect; read-only lifecycle follow-up.
-Disposition: confirmed source defect; accepted correction queued for the parent's separate R4 transaction after the frozen comparison.
+Historical disposition: confirmed source defect; accepted correction was queued for the parent's separate R4 transaction after the frozen comparison.
+Current disposition: the parent applied and reviewed the lifecycle correction, and the containing scoped Git commit is its implementation receipt.
+The original read-only findings below remain historical evidence; they are not a queue to redo the finished source patch.
 Only this new handoff was written for R4; core FORM-48 effects/triggers, R3, the fourteen-file baseline, Git/index, admission, assets, workbook, and game state were not changed.
 The full Event 006 goal remains active.
 
 ## Confirmed defect
+
+Parent implementation records a separate normal member-installation generation before granting owned relations, matches member-to-member and carrier-to-carrier receipts, clears the new receipt with the existing local binding, and validates the exact frozen member-generation row before destructive cleanup.
+The [current source audit](form48_member_generation_source_audit_20261008.md) finds no known residual defect in these hunks, and the parent rerun passes all twenty-five actual-source assertions.
+The existing [AI handoff](R4probability_baseline_20261008.md) retains the unavailable analyzer coverage as a limitation and adds representative source-derived scores under explicit eligibility assumptions.
+No coefficient, price, timer, formation method, identity, admission, asset or visible-text requirement is reduced.
+The existing dissolution icon remains `GFX_decision_independence_wave_border_arbitration`; this correction requires no new sprite, GFX or art.
+The owned changes are the two existing FORM-48 source files, the Pacific package documentation and the existing audit/baseline evidence records.
+There is no new periodic hook, reward, unit grant, persistent global target or world sweep.
 
 The exact helper is `has_independence_wave_form48_current_autonomous_binding`, not `has_current_independence_wave_form48_current_autonomous_binding`.
 Its source is `common/scripted_triggers/006_independence_wave_form48_triggers.txt:287-302`.

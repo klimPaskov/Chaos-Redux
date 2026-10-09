@@ -283,15 +283,17 @@ is_independence_wave_form48_postformation_carrier = {
 # Autonomous-member scope. This deliberately proves less than the active-member
 # trigger below so rollback and origin cleanup can use it before or after the
 # postformation surface is initialized. It still fails closed unless the saved
-# carrier, FORM-48 family, and both sides' Event 006 generation are identical.
+# carrier and FORM-48 family match, and each side retains its own installed
+# Event 006 generation. Member and carrier generation numbers may differ.
 has_independence_wave_form48_current_autonomous_binding = {
 	has_country_flag = independence_wave_form48_autonomous_member
 	has_variable = independence_wave_generation_id
 	has_variable = independence_wave_form48_autonomous_carrier
 	has_variable = independence_wave_form48_autonomous_carrier_generation
+	has_variable = independence_wave_form48_autonomous_member_generation
 	has_variable = independence_wave_form48_autonomous_family
 	check_variable = { independence_wave_form48_autonomous_family = constant:independence_wave_formable_family.pacific_regional_federation }
-	check_variable = { var = independence_wave_generation_id value = independence_wave_form48_autonomous_carrier_generation compare = equals }
+	check_variable = { var = independence_wave_generation_id value = independence_wave_form48_autonomous_member_generation compare = equals }
 	var:independence_wave_form48_autonomous_carrier = {
 		exists = yes
 		has_variable = independence_wave_generation_id

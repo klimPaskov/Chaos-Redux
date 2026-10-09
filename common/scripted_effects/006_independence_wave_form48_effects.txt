@@ -60,6 +60,7 @@ independence_wave_form48_install_autonomous_member = {
 	set_variable = { independence_wave_form48_autonomous_family = ROOT.independence_wave_formable_family }
 	set_variable = { independence_wave_form48_autonomous_carrier = ROOT }
 	set_variable = { independence_wave_form48_autonomous_carrier_generation = ROOT.independence_wave_generation_id }
+	set_variable = { independence_wave_form48_autonomous_member_generation = independence_wave_generation_id }
 	if = {
 		limit = { NOT = { gives_military_access_to = ROOT } }
 		give_military_access = ROOT
@@ -651,6 +652,7 @@ independence_wave_form48_remove_event6_autonomous_relations = {
 	clr_country_flag = independence_wave_form48_carrier_guaranteed_member
 	clear_variable = independence_wave_form48_autonomous_carrier
 	clear_variable = independence_wave_form48_autonomous_carrier_generation
+	clear_variable = independence_wave_form48_autonomous_member_generation
 }
 
 independence_wave_form48_clear_autonomous_member_state = {
@@ -682,6 +684,8 @@ independence_wave_form48_cleanup_frozen_autonomous_members = {
 						var:independence_wave_form48_autonomous_carrier = { tag = PREV.PREV }
 						check_variable = { var = independence_wave_form48_autonomous_carrier_generation value = PREV.independence_wave_generation_id compare = equals }
 						check_variable = { var = independence_wave_form48_autonomous_family value = PREV.independence_wave_formable_family compare = equals }
+						check_variable = { var = independence_wave_generation_id value = PREV.independence_wave_formable_member_generation_entries^independence_wave_form48_cleanup_member_index compare = equals }
+						has_independence_wave_form48_current_autonomous_binding = yes
 					}
 					independence_wave_form48_clear_autonomous_member_state = yes
 				}

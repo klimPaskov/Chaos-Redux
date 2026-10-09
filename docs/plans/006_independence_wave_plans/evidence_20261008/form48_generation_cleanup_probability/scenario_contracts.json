@@ -1,0 +1,141 @@
+{
+  "auditId": "E006_R4_FORM48_DISSOLUTION_BASELINE_20261008",
+  "disposition": "prepatch probability baseline; read-only",
+  "sourceDecision": "independence_wave_form48_dissolve_pacific_federation",
+  "adapter": "mission_ai_will_do",
+  "fixtureIdentity": {
+    "carrierTag": "D01",
+    "carrierOriginalTag": "HBX",
+    "carrierPackageId": 184,
+    "carrierAnchor": 378,
+    "memberTags": [
+      "HAW",
+      "FSM"
+    ],
+    "memberPackages": [
+      173,
+      179
+    ],
+    "memberAnchors": [
+      629,
+      684
+    ],
+    "syntheticCountryTagsAreNotNativeObservations": true
+  },
+  "generationModel": {
+    "carrierGeneration": 100,
+    "hawGeneration": 101,
+    "fsmGeneration": 102,
+    "valuesAreSynthetic": true,
+    "distinctCountryBirthGenerationsAreIntentional": true,
+    "memberRegistryRows": [
+      100,
+      101,
+      102
+    ],
+    "memberLocalAutonomousGenerationReceipts": {
+      "HAW": 101,
+      "FSM": 102
+    },
+    "baselineSourceDoesNotReadMemberLocalReceipt": true
+  },
+  "scoreModel": {
+    "decisionAIAssumptionsAreExplicitFixtureInputs": true,
+    "probabilityEvaluateDoesNotExecuteForm48CleanupEffects": true,
+    "scoreFlagsAreConditionalStatesNotObservedEffectOutputs": true,
+    "postCleanupFlagState": {
+      "memberDeparted": true,
+      "allAutonomousMembersBound": false
+    },
+    "noMutationFlagState": {
+      "memberDeparted": false,
+      "allAutonomousMembersBound": true
+    },
+    "memberDepartedAndAllBoundFlagsFeedDissolutionPressureAndAITrainingWeights": true,
+    "compactStrainThresholdCases": [
+      69,
+      70,
+      99,
+      100
+    ],
+    "noHandCalculatedScore": true
+  },
+  "caseContracts": [
+    {
+      "id": "valid_distinct_gens_cleanup_to_departed",
+      "currentSource": "member generation 101/102 differs from carrier receipt 100 so current binding fails; relation removal is skipped and the caller clears member receipts, leaving no departure pressure from that member.",
+      "acceptedR4": "own member receipt matches current generation, actual carrier generation matches carrier receipt; only the valid binding can clear all-bound and mark departure.",
+      "scoreState": "conditional post-cleanup output flags are included to trace the indirect AI weight; this is not a runtime result."
+    },
+    {
+      "id": "stale_membergen_no_mutation",
+      "currentSource": "cleanup walker lacks a frozen member-generation row match before clearing responses/ideas; equal member/carrier numeric generations can pass the current binding helper despite a different frozen row.",
+      "acceptedR4": "frozen member row and corrected binding are checked before any destructive response, idea, relation, or membership cleanup."
+    },
+    {
+      "id": "stale_carriergen_no_mutation",
+      "currentSource": "saved carrier generation must still equal the live carrier generation; stale carrier receipt fails closed.",
+      "acceptedR4": "no cleanup or AI pressure mutation."
+    },
+    {
+      "id": "copied_foreignbinding",
+      "currentSource": "member carrier pointer names D02 instead of the actual D01 carrier; pointer tag check must refuse the binding.",
+      "acceptedR4": "no cleanup or AI pressure mutation."
+    },
+    {
+      "id": "equalgen_appearance_staleownreceipt",
+      "currentSource": "equal member/current and carrier-snapshot numbers pass even when the declared new member birth receipt is stale; baseline source does not read that receipt.",
+      "acceptedR4": "current member generation must match its own append-time member receipt."
+    },
+    {
+      "id": "missingreceipt",
+      "currentSource": "the member-local receipt is absent and unused by frozen source; a numeric equality may still admit the binding.",
+      "acceptedR4": "missing own receipt fails closed."
+    },
+    {
+      "id": "existing_unowned_relations_preserved",
+      "currentSource": "relation removal is limited to directional ownership flags; pre-existing unowned relations must remain while valid cleanup can still publish departure.",
+      "acceptedR4": "preserve relations whose owner receipts are false."
+    },
+    {
+      "id": "normal_fsm_blocked_case",
+      "currentSource": "current FSM/IW-179 remains unadmitted and un-attested; this case is separate from future-valid binding.",
+      "acceptedR4": "no new admission or route."
+    },
+    {
+      "id": "hypothetical_future_valid_binding",
+      "currentSource": "typed future-valid distinct-generation member receipts are not present in today's source and do not admit IW-179.",
+      "acceptedR4": "illustrates the corrected member-local generation contract as a hypothetical fixture."
+    }
+  ],
+  "thresholdContracts": [
+    {
+      "id": "strain_69_below_dissolution_warning",
+      "sourceThreshold": 70,
+      "expectedPressure": false
+    },
+    {
+      "id": "strain_70_at_dissolution_warning",
+      "sourceThreshold": 70,
+      "expectedPressure": true
+    },
+    {
+      "id": "strain_99_below_ai_major",
+      "sourceThreshold": 100,
+      "expectedMajorFactor": false
+    },
+    {
+      "id": "strain_100_at_ai_major",
+      "sourceThreshold": 100,
+      "expectedMajorFactor": true
+    }
+  ],
+  "limits": [
+    "No native game/save/runtime state is observed.",
+    "D01 is a valid three-character synthetic country scope for a declared hypothetical dynamic carrier; HAW and FSM preserve their source original-tag identities.",
+    "The weighted evaluator scores the decision from typed carrier flags and compact strain; it does not execute the cleanup walker or prove that helper effects wrote those flags.",
+    "The source's ROOT/THIS score frame is declared; member scopes/array rows are typed, but cleanup's nested current member/carrier scope transition is not native engine evidence.",
+    "The candidate pool contains only the named dissolution decision and is not a complete national AI selection race; no normalized probability or timing distribution is supported.",
+    "The current normal FSM/IW-179 blocked case is separate from the hypothetical future-valid ledger."
+  ]
+}

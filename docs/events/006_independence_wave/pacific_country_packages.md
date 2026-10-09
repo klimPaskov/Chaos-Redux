@@ -283,6 +283,13 @@ exact invitations and severe-collapse consent logic.
 
 ## FORM-48 boundary
 
+Each autonomous member records its own installation generation separately from the saved carrier generation.
+Cleanup validates each country against its own receipt, so valid members and carriers may have different birth-generation numbers.
+The carrier's frozen-member walker also verifies the exact current member against the saved generation row before clearing responses, ideas, flags or relations.
+Only the four relation directions carrying this feature's ownership receipts are undone; pre-existing unowned relations remain intact.
+Direct retirement of stale local binding receipts grants no authority to mutate world relations, while a rejected frozen row leaves the newer member incarnation untouched.
+The [owner source audit](../../plans/006_independence_wave_plans/subagent_handoffs/form48_member_generation_source_audit_20261008.md) records twenty-five actual-source cases, including distinct generations, stale rows, copied bindings, rollback and repeated cleanup, with native-primitive assumptions explicit.
+
 All three packages select the Pacific Regional Federation family and call the
 shared family registration adapter. Pacific founding invitations have their
 own human ballot: HAW and FSM may authorize sovereign autonomous membership or

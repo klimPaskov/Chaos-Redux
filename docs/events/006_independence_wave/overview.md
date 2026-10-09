@@ -1,8 +1,19 @@
 # Event 006: Independence Wave
 
+## Current source conclusion (2026-10-09)
+
+The source includes the synchronized 3/4/5/7/10 allocator, country openings and host/foreign responses, the common survival and government framework, forty-four regional focus groups and the Oyo/Aceh/Mon signature modules.
+The admitted pool contains 109 attested packages in 78 reservation groups, with 112 adapters; the remaining selectable rows retain their individual research, identity, map, package or asset dependencies.
+IW-076 Hadhramaut, IW-131 Comoros and IW-179 Micronesia remain outside admission.
+FORM-07/08/11 and the exact CHU/ASY signature families have their accepted source contracts, and FORM-17/32/36/37 use the four sovereignty-preserving contracts integrated in `9e2837f8`.
+The grouped puzzle source covers nineteen families, 66 candidate-state rows, 132 paired pieces and twenty category attachments; this does not make all 48 registry families operational.
+The [current takeover report](../../plans/006_independence_wave_plans/takeover_status_2026-10-06.md) and [resume packet](../../plans/006_independence_wave_plans/006_independence_wave_resume_packet.md) carry the current requirement dispositions.
+The dated findings below remain historical evidence and do not reopen completed source work solely because an optional analyzer or renderer was unavailable.
+Known missing content and indispensable production/source inputs remain separate from those check limitations, and the full accepted Event 006 goal remains incomplete.
+
 The accepted Part 2 country-opening family and former-host response family are implemented at source level after acknowledgement of the public wave report. See the [country-opening mechanic](country_opening.md), [country-opening asset manifest](country_opening_asset_manifest.md), [former-host response mechanic](host_response.md), and their dated implementation handoffs in the Event 006 plan folder. The host-response source, partial event MCP evidence, and bounded localisation and catalog reviews are recorded in the [implementation handoff](../../plans/006_independence_wave_plans/subagent_handoffs/006_host_response_implementation_2026-09-27.md), [localisation audit](../../plans/006_independence_wave_plans/subagent_handoffs/006_host_response_localisation_audit_2026-09-27.md), and [catalog alignment handoff](../../plans/006_independence_wave_plans/subagent_handoffs/006_host_response_catalog_alignment_2026-09-27.md). Event 006 remains **HOLD / PARTIAL** as documented below.
 
-## Current reconciliation note (2026-09-27; extends the 2026-09-20 audit baseline)
+## Historical reconciliation note (2026-09-27; extends the 2026-09-20 audit baseline)
 
 The current whole-event disposition remains **HOLD / PARTIAL** at 32 content-attested selectable packages across 29 compatible reservation groups, 41 runtime adapters, and 161 unattested selectable rows. The exact automatic ladder remains `3 / 4 / 5 / 7 / 10`, World Collapse remains at `10`, and the no-pre-event contract remains absolute.
 
@@ -94,11 +105,15 @@ The [Join the Independence Wave](join_wave.md) conversion path offers a signific
 
 The current Join event inspect/render evidence is the post-patch revision `53a767c5012bf86517e556e90f78047efea681342277a5d2813f07ffef0c5f15`, retained in `../../plans/006_independence_wave_plans/subagent_handoffs/006_join_wave_settled_filesystem_audit_2026_08_09.md`; the workspace projection is partial and not a substitute for live validation.
 
-All currently exposed Event 006 formable families use the shared scripted-GUI state-puzzle workflow documented in [the formable registry](systems/formable_registry.md). Seventeen formation, invitation, congress, integration, and transaction categories attach the human-only grouped display, with one activation-gated family overlay visible at a time.
+All source-exposed Event 006 formable families use the shared scripted-GUI state-puzzle workflow documented in [the formable registry](systems/formable_registry.md).
+Twenty formation, invitation, congress, integration and transaction categories attach the human-only grouped display, with one activation-gated family overlay visible at a time.
 
-The current grouped consumer build covers fourteen runtime-authored families (FORM-01, FORM-02, FORM-03, FORM-04, FORM-05, FORM-07, FORM-08, FORM-09, FORM-12, FORM-13, FORM-16, FORM-18, FORM-39, and FORM-48), 50 candidate-state rows, and 100 DDS pieces. FORM-07 and FORM-48 remain readiness-controlled and fail closed under their identity, package, member, and integration gates. FORM-08 intentionally exposes only states 84 and 82 against a required summary count of three, so it remains unavailable and no third state is assumed.
+The current grouped source covers nineteen families: FORM-01/02/03/04/05/07/08/09/11/12/13/16/17/18/32/36/37/39/48, with 66 candidate-state rows and 132 paired DDS pieces.
+FORM-07 uses its accepted IFX identity and exact Iberian contract; FORM-08 uses the accepted two-member TRA/AXX contract under DCX, with states 84 and 82 and two consents.
+FORM-48 remains dependent on the unadmitted FSM/IW-179 package despite its implemented source contract.
 
-The current category attachment crosswalk is `../../plans/006_independence_wave_plans/subagent_handoffs/006_formable_state_puzzle_category_attachment_audit_2026_08_09.md`; the settled grouped filesystem audit records the current asset and source boundary without promoting whole-event completion.
+The August 9 category crosswalk and settled grouped filesystem audit are historical receipts.
+The current source totals and the four added family overlays are recorded by the [signature source report](../../plans/006_independence_wave_plans/subagent_handoffs/signature_source_integration_20261007.md), with source review distinct from production visual evidence.
 
 The current grouped GUI evidence is `../../plans/006_independence_wave_plans/subagent_handoffs/006_event6_formable_gui_mcp_refresh_2026-09-19.md`: read-only inspection resolved 93 elements and rendering produced 27 linked artifacts across three requested states and two resolutions. The dynamic image properties still yield an almost-empty raster with repeated zero-size/clipping warnings, and the zero-pixel comparison is a self-comparison, so family-isolated visual acceptance remains partial. The older `gui-inspect.fdf2c34d03def14e.json` and 2026-08-13 retry are dated structural evidence, not current visual acceptance.
 

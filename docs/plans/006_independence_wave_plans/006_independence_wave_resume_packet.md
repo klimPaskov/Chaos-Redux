@@ -24,8 +24,11 @@ The probability auditor `01a11aea-681c-7500-a661-350f3fb7f997` completed the thr
 Its six-case R2 evaluation returned internal error, and a verified before/after helper-dependency comparison route remains unavailable; preserve that open gate.
 The post-comparison third-receipt correction is a separate current source/fixture boundary, with the pre-fix case retained.
 The R3 display fix is committed as `77ee68fabe686cfda74c225313a601971853aedf`, using native boolean validity, caller-initialized outputs and exact bound carrier/generation lookup.
-The architect's separate [R4 cleanup-generation review](subagent_handoffs/form48_member_generation_cleanup_20261008.md) confirms the member/carrier generation mismatch and weak frozen-member walker; its independent weighted baseline is queued before owner lifecycle application.
-Do not restart completed R1/R3 source work, weaken the provenance checks or patch R4 before its baseline.
+The separate [R4 cleanup-generation correction](subagent_handoffs/form48_member_generation_cleanup_20261008.md) is parent applied after its thirteen-case baseline, with twenty-five actual-source cleanup assertions passing.
+The [AI source review](subagent_handoffs/R4probability_baseline_20261008.md) calculates representative unchanged-coefficient scores and lifecycle pressure, with score-versus-probability and eligibility assumptions explicit.
+Unavailable helper-context analysis limits what was checked; under the October 9 repository rules it does not reopen otherwise finished source implementation or require user game testing to deliver it.
+Do not restart completed R1/R3/R4 source work or weaken the provenance checks.
+The generic publication and separate-owner generation guidance is committed in `a9574af260e21a26eb92610ae34a94805f3d869f`.
 Current source commit `9e2837f8edc1633cd8e96415366821ca5dc16886` integrates the Oyo/Aceh/Mon signature modules and FORM-17/32/36/37 sovereign contracts.
 Read [the signature source integration report](subagent_handoffs/signature_source_integration_20261007.md) for implementation evidence and its limits, and [the current source-of-truth map](006_source_of_truth_map.md) for dispositions.
 The source includes 31 signature focuses, eight paid projects, three achievements with nine reviewed DDS states, four exact-member contracts with two paid 180-day stages, four puzzle overlays with fourteen pieces, six protocol-defect repairs, and late-governance/restoration-receipt handling.
@@ -60,7 +63,7 @@ The [October 7 catalog review](subagent_handoffs/signature_catalog_review_202610
 Neither receipt promotes native or whole-event acceptance.
 
 The Part 6/Part 7/README/formable-registry contradictions are reconciled by the [whole-pack documentation handoff](subagent_handoffs/wholepack_doc_reconciliation_20261008.md), with the nineteen-family/66-row/132-piece/twenty-category source totals and individual readiness gates explicit.
-Next feasible accepted work is to finish the already-audited D34 R1/R2/R3 source corrections and their same-scenario evidence, then pursue the remaining sourced-leadership and package standards where exact source/rights/role gates permit.
+Next feasible accepted work follows the current full-goal source audit in the takeover report, prioritizing actual missing requested package/content and indispensable source or asset inputs rather than unavailable optional checks.
 Retain each of the remaining 84 unattested selectable rows' individual D25-D34 dependencies.
 Do not invent countries, formable contracts or weaker substitutes to bypass those gates.
 Resume the existing focus/GUI/probability/native evidence work alongside that source cleanup.
