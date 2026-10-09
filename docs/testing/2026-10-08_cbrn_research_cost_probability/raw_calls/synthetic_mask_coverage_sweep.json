@@ -1,0 +1,333 @@
+{
+  "tool": "hoi4.probability_sweep",
+  "request": {
+    "adapter": "technology_ai_will_do",
+    "source": {
+      "path": "common/technologies/chaosx_technologies.txt",
+      "snapshotPath": "docs/testing/2026-10-08_cbrn_research_cost_review/after_source/chaosx_technologies.txt",
+      "expectedSourceHash": "4f3743d8d911b2b818cc0d3093417f4b8c2ad21330e00a8fdbba9f62e9e7c998"
+    },
+    "candidatePool": [
+      "pathogen_handling_protocols",
+      "sealed_containment_laboratories",
+      "fail_safe_containment_facilities",
+      "bio_surveillance_networks",
+      "rapid_outbreak_response",
+      "integrated_epidemic_control",
+      "livens_projector_tech",
+      "chlorine_gas",
+      "phosgene",
+      "mustard_gas",
+      "lewisite",
+      "dimercaprol",
+      "tabun",
+      "improved_livens_projector",
+      "advanced_livens_projector",
+      "advanced_gas_masks",
+      "sealed_assault_protection",
+      "improved_gas_masks",
+      "basic_gas_masks",
+      "field_decontamination_kits",
+      "mobile_wash_columns",
+      "rapid_decontamination_plants",
+      "chemical_detection_paper",
+      "mobile_sampling_laboratories",
+      "theater_cbrn_command_set"
+    ],
+    "scenarioSet": {
+      "schemaVersion": "1.0",
+      "id": "CBRN_MASK_COVERAGE_THRESHOLD_SWEEP_2026_10_09",
+      "workspaceId": "mod_chaos_redux_ea3b2d67c2c0",
+      "surfaceHint": "technology_ai_will_do",
+      "description": "Synthetic, deterministic score-sensitivity sweep around the source shortage threshold of 50. This is not a campaign distribution and does not complete the gamewide technology pool or native research modifiers.",
+      "scenarios": [
+        {
+          "id": "CW_1939_CHAOS_PROGRAM_COVERAGE_BOUNDARY",
+          "label": "Synthetic AI country with Chaos Warfare, basic gas masks, established CBRN program, military-first profile, and coverage swept from 49 through 51.",
+          "actor": "USA",
+          "date": "1939.1.1",
+          "state": {
+            "year": 1939,
+            "is_ai": true,
+            "is_major": true,
+            "has_doctrine": "chaos_warfare",
+            "has_tech": "basic_gas_masks",
+            "cbrn_military_mask_coverage": 49,
+            "cbrn_protection_program_profile": 6,
+            "scope.any_controlled_state": true,
+            "scope.any_enemy_country": true,
+            "has_war": true
+          },
+          "flags": [
+            "cbrn_program_established"
+          ],
+          "uncertainInputs": [
+            {
+              "path": "state.cbrn_military_mask_coverage",
+              "range": {
+                "min": 49,
+                "max": 51
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "metrics": [
+      "raw_value"
+    ],
+    "outputs": [
+      "json",
+      "sensitivity",
+      "ranking",
+      "unresolved"
+    ],
+    "sweep": {
+      "paths": [
+        "state.cbrn_military_mask_coverage"
+      ],
+      "steps": 3,
+      "pairwise": false,
+      "findRankReversals": true
+    },
+    "workspaceId": "mod_chaos_redux_ea3b2d67c2c0",
+    "refresh": true
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\"artifactCount\":7,\"code\":\"PROBABILITY_ANALYZED_PARTIAL\",\"status\":\"ok\",\"workspaceId\":\"mod_chaos_redux_ea3b2d67c2c0\"}"
+      },
+      {
+        "type": "resource_link",
+        "uri": "hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/237951c79126cb2cb995afc8b4bf5193d2e1ecc68e1cafe553d4985c99e98191/e7a95674a7af8590c015cc4f9a1379f455107e529db22ea4f2c6694f84169519/probability-d60757fcb57694cded607d72.json",
+        "name": "probability-d60757fcb57694cded607d72.json",
+        "description": "Authoritative AI and MTTH scenario analysis JSON",
+        "mimeType": "application/json",
+        "size": 374300
+      },
+      {
+        "type": "resource_link",
+        "uri": "hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/a52034862e0f46fd7cc4741a847610a5ae87a155c722136121a37e92d6aaf8b8/55c12f14515c76d97b87fd0c4246901c1c51178e54d59650f71cdda8a7018b84/probability-probability-d60757fcb57694cded607d72-sensitivity.svg",
+        "name": "probability-probability-d60757fcb57694cded607d72-sensitivity.svg",
+        "description": "AI and MTTH sensitivity visualization",
+        "mimeType": "image/svg+xml",
+        "size": 2270
+      },
+      {
+        "type": "resource_link",
+        "uri": "hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/419de9a9d0c501c973c5eaaaca7767d6a4c18b9ac56cfb55644cbc1b93c48557/92108cd9f1aef6e11d6d4b46e4c93d9543ddde0a76ded32eaf711709e35c8e97/probability-probability-d60757fcb57694cded607d72-sensitivity.png",
+        "name": "probability-probability-d60757fcb57694cded607d72-sensitivity.png",
+        "description": "AI and MTTH sensitivity raster visualization",
+        "mimeType": "image/png",
+        "size": 11225
+      },
+      {
+        "type": "resource_link",
+        "uri": "hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/d89f48330518a5ce76f866f33708b28450f713992550364da4e8945fa23190b2/b98dc8622a44b29cdf2d2500494d26daf83c317e808306d40805f7ae45adfa30/probability-probability-d60757fcb57694cded607d72-ranking.svg",
+        "name": "probability-probability-d60757fcb57694cded607d72-ranking.svg",
+        "description": "AI and MTTH ranking visualization",
+        "mimeType": "image/svg+xml",
+        "size": 7536
+      },
+      {
+        "type": "resource_link",
+        "uri": "hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/03419abfa464df730622158586d517df660117fa9546961e32e58d25e8552cb2/57509b2dd04380c6d777e184a34d8cbf77bb64260590c8e9ca5908a341192002/probability-probability-d60757fcb57694cded607d72-ranking.png",
+        "name": "probability-probability-d60757fcb57694cded607d72-ranking.png",
+        "description": "AI and MTTH ranking raster visualization",
+        "mimeType": "image/png",
+        "size": 86865
+      },
+      {
+        "type": "resource_link",
+        "uri": "hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/908fdb127c4fec1398c292cbfb1f9b4368028432834d34392b61fe68e90ca3fa/631a11b45fc054e33e054696afc558eb4e050c15f3827cbd4cd99ca184a55d87/probability-probability-d60757fcb57694cded607d72-unresolved.svg",
+        "name": "probability-probability-d60757fcb57694cded607d72-unresolved.svg",
+        "description": "AI and MTTH unresolved visualization",
+        "mimeType": "image/svg+xml",
+        "size": 20959
+      },
+      {
+        "type": "resource_link",
+        "uri": "hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/f37dfa861f0351bb91349326bcf471228a2ba55edf9ff733ec3bca2174684c9d/7142081c42732f9f15fd4201df8c820f9aa3891bffed095946bb8da2ea1910c4/probability-probability-d60757fcb57694cded607d72-unresolved.png",
+        "name": "probability-probability-d60757fcb57694cded607d72-unresolved.png",
+        "description": "AI and MTTH unresolved raster visualization",
+        "mimeType": "image/png",
+        "size": 572975
+      }
+    ],
+    "structuredContent": {
+      "artifacts": [
+        {
+          "description": "Authoritative AI and MTTH scenario analysis JSON",
+          "mimeType": "application/json",
+          "name": "probability-d60757fcb57694cded607d72.json",
+          "sha256": "237951c79126cb2cb995afc8b4bf5193d2e1ecc68e1cafe553d4985c99e98191",
+          "size": 374300,
+          "uri": "hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/237951c79126cb2cb995afc8b4bf5193d2e1ecc68e1cafe553d4985c99e98191/e7a95674a7af8590c015cc4f9a1379f455107e529db22ea4f2c6694f84169519/probability-d60757fcb57694cded607d72.json"
+        },
+        {
+          "description": "AI and MTTH sensitivity visualization",
+          "mimeType": "image/svg+xml",
+          "name": "probability-probability-d60757fcb57694cded607d72-sensitivity.svg",
+          "sha256": "a52034862e0f46fd7cc4741a847610a5ae87a155c722136121a37e92d6aaf8b8",
+          "size": 2270,
+          "uri": "hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/a52034862e0f46fd7cc4741a847610a5ae87a155c722136121a37e92d6aaf8b8/55c12f14515c76d97b87fd0c4246901c1c51178e54d59650f71cdda8a7018b84/probability-probability-d60757fcb57694cded607d72-sensitivity.svg"
+        },
+        {
+          "description": "AI and MTTH sensitivity raster visualization",
+          "mimeType": "image/png",
+          "name": "probability-probability-d60757fcb57694cded607d72-sensitivity.png",
+          "sha256": "419de9a9d0c501c973c5eaaaca7767d6a4c18b9ac56cfb55644cbc1b93c48557",
+          "size": 11225,
+          "uri": "hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/419de9a9d0c501c973c5eaaaca7767d6a4c18b9ac56cfb55644cbc1b93c48557/92108cd9f1aef6e11d6d4b46e4c93d9543ddde0a76ded32eaf711709e35c8e97/probability-probability-d60757fcb57694cded607d72-sensitivity.png"
+        },
+        {
+          "description": "AI and MTTH ranking visualization",
+          "mimeType": "image/svg+xml",
+          "name": "probability-probability-d60757fcb57694cded607d72-ranking.svg",
+          "sha256": "d89f48330518a5ce76f866f33708b28450f713992550364da4e8945fa23190b2",
+          "size": 7536,
+          "uri": "hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/d89f48330518a5ce76f866f33708b28450f713992550364da4e8945fa23190b2/b98dc8622a44b29cdf2d2500494d26daf83c317e808306d40805f7ae45adfa30/probability-probability-d60757fcb57694cded607d72-ranking.svg"
+        },
+        {
+          "description": "AI and MTTH ranking raster visualization",
+          "mimeType": "image/png",
+          "name": "probability-probability-d60757fcb57694cded607d72-ranking.png",
+          "sha256": "03419abfa464df730622158586d517df660117fa9546961e32e58d25e8552cb2",
+          "size": 86865,
+          "uri": "hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/03419abfa464df730622158586d517df660117fa9546961e32e58d25e8552cb2/57509b2dd04380c6d777e184a34d8cbf77bb64260590c8e9ca5908a341192002/probability-probability-d60757fcb57694cded607d72-ranking.png"
+        },
+        {
+          "description": "AI and MTTH unresolved visualization",
+          "mimeType": "image/svg+xml",
+          "name": "probability-probability-d60757fcb57694cded607d72-unresolved.svg",
+          "sha256": "908fdb127c4fec1398c292cbfb1f9b4368028432834d34392b61fe68e90ca3fa",
+          "size": 20959,
+          "uri": "hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/908fdb127c4fec1398c292cbfb1f9b4368028432834d34392b61fe68e90ca3fa/631a11b45fc054e33e054696afc558eb4e050c15f3827cbd4cd99ca184a55d87/probability-probability-d60757fcb57694cded607d72-unresolved.svg"
+        },
+        {
+          "description": "AI and MTTH unresolved raster visualization",
+          "mimeType": "image/png",
+          "name": "probability-probability-d60757fcb57694cded607d72-unresolved.png",
+          "sha256": "f37dfa861f0351bb91349326bcf471228a2ba55edf9ff733ec3bca2174684c9d",
+          "size": 572975,
+          "uri": "hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/f37dfa861f0351bb91349326bcf471228a2ba55edf9ff733ec3bca2174684c9d/7142081c42732f9f15fd4201df8c820f9aa3891bffed095946bb8da2ea1910c4/probability-probability-d60757fcb57694cded607d72-unresolved.png"
+        }
+      ],
+      "blockers": [],
+      "changedFiles": [],
+      "code": "PROBABILITY_ANALYZED_PARTIAL",
+      "data": {
+        "adapterId": "technology_ai_will_do",
+        "analysisId": "probability-d60757fcb57694cded607d72",
+        "analysisStatus": "partial",
+        "cacheKey": "d60757fcb57694cded607d72598311d5895f03e61b4d4a61198d6baf8b3fd71f",
+        "candidates": 25,
+        "diagnostics": 3,
+        "eligibleCandidates": 25,
+        "excludedCandidates": 0,
+        "operation": "sweep",
+        "scenarioHash": "7c178eb8fc3cf2739c32d900c9d8045ceb8486f2817bc6f5429dde5f60113a9c",
+        "scenarios": 1,
+        "sourceHash": "4e4e65d58012130d8194cdbae8f3cd382c04ec22125771e20f73294acfba855e",
+        "sourceRevision": "c1569d3bc19841aee03dbc44b8b04ef2b1f2a36386dc24db05bb3fe5dd11b824",
+        "sweepPoints": 3,
+        "unresolved": 65,
+        "unresolvedCandidates": 0,
+        "visualResources": 6
+      },
+      "diagnostics": [
+        {
+          "category": "design",
+          "code": "PROBABILITY_MODIFIER_UNSATISFIED_IN_SCENARIOS",
+          "details": {
+            "candidateId": "basic_gas_masks",
+            "modifier": "factor:@CBRN_PROTECTION_RESEARCH_CIVIL_DEFENCE_FACTOR",
+            "scenarios": 1
+          },
+          "location": {
+            "end": {
+              "column": 72,
+              "line": 1022,
+              "offset": 24759
+            },
+            "path": "mod:docs/testing/2026-10-08_cbrn_research_cost_review/after_source/chaosx_technologies.txt",
+            "start": {
+              "column": 17,
+              "line": 1022,
+              "offset": 24704
+            },
+            "symbol": "factor"
+          },
+          "message": "basic_gas_masks modifier factor:@CBRN_PROTECTION_RESEARCH_CIVIL_DEFENCE_FACTOR is not active in any supplied scenario",
+          "severity": "info"
+        },
+        {
+          "category": "design",
+          "code": "PROBABILITY_MODIFIER_UNSATISFIED_IN_SCENARIOS",
+          "details": {
+            "candidateId": "improved_gas_masks",
+            "modifier": "factor:@CBRN_PROTECTION_RESEARCH_CIVIL_DEFENCE_FACTOR",
+            "scenarios": 1
+          },
+          "location": {
+            "end": {
+              "column": 72,
+              "line": 981,
+              "offset": 23456
+            },
+            "path": "mod:docs/testing/2026-10-08_cbrn_research_cost_review/after_source/chaosx_technologies.txt",
+            "start": {
+              "column": 17,
+              "line": 981,
+              "offset": 23401
+            },
+            "symbol": "factor"
+          },
+          "message": "improved_gas_masks modifier factor:@CBRN_PROTECTION_RESEARCH_CIVIL_DEFENCE_FACTOR is not active in any supplied scenario",
+          "severity": "info"
+        },
+        {
+          "category": "design",
+          "code": "PROBABILITY_MODIFIER_UNSATISFIED_IN_SCENARIOS",
+          "details": {
+            "candidateId": "improved_gas_masks",
+            "modifier": "factor:@CBRN_PROTECTION_RESEARCH_LIMITED_FACTOR",
+            "scenarios": 1
+          },
+          "location": {
+            "end": {
+              "column": 66,
+              "line": 982,
+              "offset": 23565
+            },
+            "path": "mod:docs/testing/2026-10-08_cbrn_research_cost_review/after_source/chaosx_technologies.txt",
+            "start": {
+              "column": 17,
+              "line": 982,
+              "offset": 23516
+            },
+            "symbol": "factor"
+          },
+          "message": "improved_gas_masks modifier factor:@CBRN_PROTECTION_RESEARCH_LIMITED_FACTOR is not active in any supplied scenario",
+          "severity": "info"
+        }
+      ],
+      "filesScanned": [],
+      "proposedFiles": [],
+      "status": "ok",
+      "validation": {
+        "checks": [
+          {
+            "id": "uncertainty-visible",
+            "message": "65 unresolved or bounded analysis item(s) are explicit",
+            "passed": true
+          }
+        ],
+        "passed": true
+      },
+      "workspaceId": "mod_chaos_redux_ea3b2d67c2c0"
+    }
+  }
+}

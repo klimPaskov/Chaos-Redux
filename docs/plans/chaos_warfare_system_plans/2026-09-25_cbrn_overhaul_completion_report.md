@@ -1,6 +1,6 @@
-# CBRN overhaul implementation and completion review — updated 2026-10-03
+# CBRN overhaul implementation and completion review — updated 2026-10-09
 
-**Disposition: incomplete.** The approved simplified loop is substantially present in source, but native raid lifecycle proof, several consumer validations, remaining unsupported localisation bindings, and the requested technology presentation remain open. This report reviews the integrated repository and later CBRN source tranches through 2026-09-27, with bounded payment and evidence updates on 2026-10-03; it does not convert source presence or specialist handoffs into engine acceptance. At this reconciliation, the cure payload, UWR exact-site, and 23 small texticon source tranches are merged in HEAD as `4639223e5`, `9b21aabc5`, and `8cfa22f24` respectively. Native raid, facility, AI, and visual consumer validation remains open. The accepted design is `docs/specs/chaos_warfare_system_specs/specs/13_2026_09_20_accepted_cbrn_overhaul.md`, and the per-requirement dispositions are in `2026-09-20_cbrn_overhaul_requirement_ledger.md`.
+**Disposition: incomplete.** The approved simplified loop is substantially present in source, but native raid lifecycle proof, several consumer validations, remaining unsupported localisation bindings, and the requested technology presentation remain open. This report reviews the integrated repository and later CBRN source tranches through 2026-09-27, with bounded payment and evidence updates on 2026-10-03 and the research/numeric-text reconciliation on 2026-10-09; it does not convert source presence or specialist handoffs into engine acceptance. At this reconciliation, the cure payload, UWR exact-site, and 23 small texticon source tranches are merged in HEAD as `4639223e5`, `9b21aabc5`, and `8cfa22f24` respectively. Native raid, facility, AI, and visual consumer validation remains open. The accepted design is `docs/specs/chaos_warfare_system_specs/specs/13_2026_09_20_accepted_cbrn_overhaul.md`, and the per-requirement dispositions are in `2026-09-20_cbrn_overhaul_requirement_ledger.md`.
 
 ## Implemented source surfaces
 
@@ -391,3 +391,16 @@ Full sinks, actual eligibility/protection, custody, complete damage and doomsday
 The bounded Camp scan is partial with zero helpers and deferred lifecycle projections; its correctly shaped graph-artifact comparison fails with `ARTIFACT_NOT_FOUND` because the provenance manifest is unavailable, distinct from the earlier trace/report-as-graph mistake.
 No complete graph read or successful comparison/render is established.
 No gameplay simplification, new payment/refund or policy change is introduced, and CBRN-03 remains incomplete.
+
+## Research costs and remaining numeric text
+
+The [October 9 reconciliation](2026-10-09_research_costs_and_numeric_text.md) restores the original 50/75/100 base-day requirement over installed base 110.
+The owner applied `.45454/.68181/.90909` only to 27 researchable costs in two technology files, preserving hidden raw costs through aliases; forty source checks retain all other resolved fields, technology stat rewards and AI blocks.
+The decimal model stays less than .001 day below each target; native cost precision and calendar rounding remain unproved.
+Fifteen remaining raw constant expressions across ten achievement, recovery-raid and Event 020 response keys use twelve getters, with all numeric requirements and public prose preserved.
+The portable binding test uses three immutable canonical Git before blobs and passes twelve bindings; native display and wrapping remain unresolved.
+The [reconnaissance review](subagent_handoffs/2026-10-08_recon_semantics_review.md) authorizes no further cut: Operations retains 25%, HQ/weather values remain, and the native 35% cap stays open.
+The [13-role force audit](subagent_handoffs/2026-10-08_equal_cost_force_audit.md) retains whole formations plus unspent IC and qualified chassis-only projector prices; its two historical technology hashes predate this cost-only patch, while the other twenty inventory hashes still match.
+Probability fixture provenance, fresh partial comparisons and the parent's technology reverse-comparison receipt are recorded with their exact limitations in the reconciliation; zero exposed score delta never proves unchanged native research preference.
+No event/detail/evolution/cluster catalog wording changed, and no catalog update is planned.
+The wider goal remains incomplete; source calibration and binding checks do not close native technology, GUI, combat or AI acceptance.

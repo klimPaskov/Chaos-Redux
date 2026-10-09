@@ -1,0 +1,283 @@
+# ============================================================================
+# CHAOS REDUX - CBRN REGIMENTAL SUPPORT TECHNOLOGIES
+# ============================================================================
+# Overview:
+# - Owns protection progression, field medical research, and hidden CBRN
+#   delivery markers for the consolidated regimental unit roster.
+# - Hidden markers remain grantable by mapped doctrine and projects but cannot
+#   be researched or unlock retired support companies.
+# - Field Epidemiology Teams and Mobile CBRN Hospitals are ordinary research
+#   technologies with a complete defensive AI path.
+# ============================================================================
+
+technologies = {
+	@CBRN_REGIMENTAL_TECH_COST = 1
+	@CBRN_REGIMENTAL_TECH_COST_NORMAL = 0.75
+	@CBRN_REGIMENTAL_PATH_COST = 1
+	@CBRN_REGIMENTAL_AI_DISABLED = 0
+	@CBRN_REGIMENTAL_AI_BASE = 0.75
+	@CBRN_REGIMENTAL_AI_THREAT_FACTOR = 3
+	@CBRN_REGIMENTAL_AI_CONTAMINATION_FACTOR = 3
+	@CBRN_REGIMENTAL_AI_PROGRAM_FACTOR = 1.50
+	@CBRN_REGIMENTAL_AI_OUTBREAK_FACTOR = 4
+	@CBRN_REGIMENTAL_TECH_1937 = 1937
+	@CBRN_REGIMENTAL_TECH_1938 = 1938
+	@CBRN_REGIMENTAL_TECH_1940 = 1940
+	@CBRN_REGIMENTAL_TECH_1941 = 1941
+	@CBRN_REGIMENTAL_BW_X_1940 = 6
+	@CBRN_REGIMENTAL_BW_X_1941 = 7
+	@CBRN_REGIMENTAL_BIO_ROW = 6
+	@CBRN_REGIMENTAL_BIO_MEDICAL_ROW = 8
+	@CBRN_PIONEER_FORT_ATTACK = 0.10
+	@CBRN_PIONEER_FORT_MOVEMENT = 0.05
+	@CBRN_PIONEER_URBAN_ATTACK = 0.05
+	@CBRN_HOSPITAL_TRICKLEBACK_BONUS = 0.10
+	@CBRN_HOSPITAL_EXPERIENCE_LOSS_BONUS = -0.10
+
+
+	hazard_pioneer_formation = {
+		force_use_small_tech_layout = yes
+		allow = { always = no }
+		research_cost = @CBRN_REGIMENTAL_TECH_COST
+		start_year = @CBRN_REGIMENTAL_TECH_1938
+
+		dependencies = {
+			field_decontamination_kits = @CBRN_REGIMENTAL_PATH_COST
+			improved_gas_masks = @CBRN_REGIMENTAL_PATH_COST
+		}
+
+		category_cbrn_primary_protection = {
+			fort = { attack = @CBRN_PIONEER_FORT_ATTACK movement = @CBRN_PIONEER_FORT_MOVEMENT }
+			urban = { attack = @CBRN_PIONEER_URBAN_ATTACK }
+		}
+
+		categories = {
+			chemical_warfare_tech
+			decontamination_tech
+		}
+
+		special_project_specialization = { specialization_cw specialization_land }
+	}
+
+	chemical_artillery_shells = {
+		force_use_small_tech_layout = yes
+		allow = { always = no }
+		research_cost = @CBRN_REGIMENTAL_TECH_COST
+		start_year = @CBRN_REGIMENTAL_TECH_1937
+
+		enable_subunits = {
+			cbrn_chemical_ammunition_train
+		}
+
+		enable_equipments = {
+			chemical_shell_lot_1
+		}
+
+
+		categories = {
+			chemical_warfare_tech
+		}
+
+
+		ai_will_do = { factor = @CBRN_REGIMENTAL_AI_DISABLED }
+		special_project_specialization = { specialization_cw specialization_land }
+	}
+
+	persistent_agent_shell_filling = {
+		force_use_small_tech_layout = yes
+		allow = { always = no }
+		research_cost = @CBRN_REGIMENTAL_TECH_COST
+		start_year = @CBRN_REGIMENTAL_TECH_1940
+
+		dependencies = {
+			chemical_artillery_shells = @CBRN_REGIMENTAL_PATH_COST
+		}
+
+		# The shared chemical-artillery adapter uses this technology as the
+		# persistent fire-plan gate. It must not proxy persistence with generic
+		# unit statistics.
+
+		categories = {
+			chemical_warfare_tech
+			blister_agents_tech
+		}
+
+
+		ai_will_do = { factor = @CBRN_REGIMENTAL_AI_DISABLED }
+		special_project_specialization = { specialization_cw specialization_land }
+	}
+
+	armored_agent_delivery = {
+		force_use_small_tech_layout = yes
+		allow = { always = no }
+		research_cost = @CBRN_REGIMENTAL_TECH_COST
+		start_year = @CBRN_REGIMENTAL_TECH_1938
+
+		enable_subunits = {
+			cbrn_light_armored_delivery_detachment
+			cbrn_medium_armored_delivery_detachment
+			cbrn_heavy_armored_delivery_detachment
+		}
+
+
+		categories = {
+			chemical_warfare_tech
+			armor
+		}
+
+
+		ai_will_do = { factor = @CBRN_REGIMENTAL_AI_DISABLED }
+		special_project_specialization = { specialization_cw specialization_land }
+	}
+
+	sealed_tank_crews = {
+		force_use_small_tech_layout = yes
+		allow = { always = no }
+		research_cost = @CBRN_REGIMENTAL_TECH_COST
+		start_year = @CBRN_REGIMENTAL_TECH_1937
+
+		dependencies = {
+			improved_gas_masks = @CBRN_REGIMENTAL_PATH_COST
+		}
+		on_research_complete = { cbrn_sync_vanilla_project_integrations = yes }
+
+		# The armored-delivery adapter uses this technology to reduce friendly
+		# crew exposure while enforcing the sealed-operation equipment burden.
+		# It must not proxy sealing with generic combat bonuses.
+
+		categories = {
+			chemical_warfare_tech
+			gas_masks_tech
+			armor
+		}
+
+
+		ai_will_do = { factor = @CBRN_REGIMENTAL_AI_DISABLED }
+		special_project_specialization = { specialization_cw specialization_land }
+	}
+
+	nerve_agent_suppression_formation = {
+		force_use_small_tech_layout = yes
+		allow = { always = no }
+		research_cost = @CBRN_REGIMENTAL_TECH_COST
+		start_year = @CBRN_REGIMENTAL_TECH_1940
+
+		dependencies = {
+			armored_agent_delivery = @CBRN_REGIMENTAL_PATH_COST
+			tabun = @CBRN_REGIMENTAL_PATH_COST
+		}
+
+		# The nerve occupation operation checks this offensive-delivery
+		# certification; it does not field a separate suppression company.
+
+		categories = {
+			chemical_warfare_tech
+			nerve_agents_tech
+		}
+
+
+		ai_will_do = { factor = @CBRN_REGIMENTAL_AI_DISABLED }
+		special_project_specialization = { specialization_cw specialization_land }
+	}
+
+	field_epidemiology_teams = {
+		force_use_small_tech_layout = yes
+		research_cost = @CBRN_REGIMENTAL_TECH_COST_NORMAL
+		start_year = @CBRN_REGIMENTAL_TECH_1940
+
+		on_research_complete = {
+			cbrn_reveal_disease_response_decision_surface = yes
+		}
+
+		dependencies = {
+			integrated_epidemic_control = @CBRN_REGIMENTAL_PATH_COST
+			chemical_detection_paper = @CBRN_REGIMENTAL_PATH_COST
+		}
+
+		enable_subunits = {
+			cbrn_medical_countermeasure_detachment
+		}
+
+		path = {
+			leads_to_tech = mobile_cbrn_hospitals
+			research_cost_coeff = @CBRN_REGIMENTAL_PATH_COST
+		}
+
+		categories = {
+			biowarfare_tech
+			cbrn_instruments_tech
+		}
+
+		folder = {
+			name = biowarfare_folder
+			position = { x = @CBRN_REGIMENTAL_BW_X_1940 y = @CBRN_REGIMENTAL_BIO_ROW }
+		}
+
+		ai_will_do = {
+			factor = @CBRN_REGIMENTAL_AI_BASE
+			modifier = { factor = @CBRN_REGIMENTAL_AI_OUTBREAK_FACTOR has_active_biowarfare_outbreak = yes }
+			modifier = { factor = @CBRN_REGIMENTAL_AI_THREAT_FACTOR cbrn_country_has_public_chemical_emergency = yes }
+			modifier = { factor = @CBRN_REGIMENTAL_AI_PROGRAM_FACTOR cbrn_country_has_program = yes }
+		}
+		special_project_specialization = { specialization_biowarfare specialization_land }
+	}
+
+	mobile_cbrn_hospitals = {
+		force_use_small_tech_layout = yes
+		research_cost = @CBRN_REGIMENTAL_TECH_COST
+		start_year = @CBRN_REGIMENTAL_TECH_1941
+
+		dependencies = {
+			field_epidemiology_teams = @CBRN_REGIMENTAL_PATH_COST
+			mobile_wash_columns = @CBRN_REGIMENTAL_PATH_COST
+		}
+
+		category_cbrn_medical_support = {
+			casualty_trickleback = @CBRN_HOSPITAL_TRICKLEBACK_BONUS
+			experience_loss_factor = @CBRN_HOSPITAL_EXPERIENCE_LOSS_BONUS
+		}
+
+		categories = {
+			chemical_warfare_tech
+			biowarfare_tech
+			decontamination_tech
+		}
+
+		folder = {
+			name = biowarfare_folder
+			position = { x = @CBRN_REGIMENTAL_BW_X_1941 y = @CBRN_REGIMENTAL_BIO_MEDICAL_ROW }
+		}
+
+		ai_will_do = {
+			factor = @CBRN_REGIMENTAL_AI_BASE
+			modifier = { factor = @CBRN_REGIMENTAL_AI_THREAT_FACTOR cbrn_country_has_public_chemical_emergency = yes }
+			modifier = { factor = @CBRN_REGIMENTAL_AI_CONTAMINATION_FACTOR cbrn_country_controls_chemical_contamination = yes }
+			modifier = { factor = @CBRN_REGIMENTAL_AI_OUTBREAK_FACTOR has_active_biowarfare_outbreak = yes }
+		}
+		special_project_specialization = { specialization_cw specialization_biowarfare }
+	}
+
+	biological_security_assault_formation = {
+		force_use_small_tech_layout = yes
+		allow = { always = no }
+		research_cost = @CBRN_REGIMENTAL_TECH_COST
+		start_year = @CBRN_REGIMENTAL_TECH_1940
+
+		dependencies = {
+			field_epidemiology_teams = @CBRN_REGIMENTAL_PATH_COST
+			sealed_containment_laboratories = @CBRN_REGIMENTAL_PATH_COST
+		}
+
+		enable_subunits = {
+			cbrn_biosecurity_assault_detachment
+		}
+
+		categories = {
+			biowarfare_tech
+		}
+
+
+		ai_will_do = { factor = @CBRN_REGIMENTAL_AI_DISABLED }
+		special_project_specialization = { specialization_biowarfare specialization_land }
+	}
+}

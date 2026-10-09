@@ -1,0 +1,322 @@
+{
+  "tool": "hoi4.probability_compare",
+  "request": {
+    "adapter": "technology_ai_will_do",
+    "before": {
+      "path": "common/technologies/cbrn_regimental_support_technologies.txt",
+      "snapshotPath": "docs/testing/2026-10-08_cbrn_research_cost_probability/before_source/cbrn_regimental_support_technologies.txt",
+      "expectedSourceHash": "45826eb81040942fdc2fe9b32c61fdb9be09f625ce37ae655ac6e761415c6cb4"
+    },
+    "after": {
+      "path": "common/technologies/cbrn_regimental_support_technologies.txt",
+      "snapshotPath": "docs/testing/2026-10-08_cbrn_research_cost_review/after_source/cbrn_regimental_support_technologies.txt",
+      "expectedSourceHash": "d1f9f1e0444b899019264d73025bd951f84e5e754ebf7cc8cb30cbc8752d3eb6"
+    },
+    "candidatePool": [
+      "field_epidemiology_teams",
+      "mobile_cbrn_hospitals"
+    ],
+    "scenarioSet": {
+      "schemaVersion": "1.0",
+      "id": "CBRN_RESEARCH_COST_SYNTHETIC_INPUTS_2026_10_09",
+      "workspaceId": "mod_chaos_redux_ea3b2d67c2c0",
+      "surfaceHint": "technology_ai_will_do",
+      "description": "Synthetic evaluator inputs to check source-local doctrine, one has_tech token, protection coverage threshold, and program-profile factors around the cost calibration. These cases are not campaign observations and do not claim the complete gamewide research pool or external factors.",
+      "scenarios": [
+        {
+          "id": "1936_no_chaos_no_program_shortage_basic_research",
+          "label": "Synthetic 1936 AI case: no Chaos Warfare doctrine, no CBRN program flag, one researched technology token, mask coverage 49 below threshold, no program profile.",
+          "actor": "USA",
+          "date": "1936.1.1",
+          "state": {
+            "year": 1936,
+            "is_ai": true,
+            "is_major": true,
+            "has_doctrine": false,
+            "has_tech": "mustard_gas",
+            "cbrn_military_mask_coverage": 49,
+            "cbrn_protection_program_profile": 0,
+            "scope.any_controlled_state": true,
+            "scope.any_enemy_country": true,
+            "has_war": false
+          },
+          "flags": []
+        },
+        {
+          "id": "1936_chaos_program_shortage_basic_masks",
+          "label": "Synthetic 1936 AI case: Chaos Warfare doctrine, basic gas masks researched, established program, mass civil-defence profile, mask coverage 49 below threshold.",
+          "actor": "USA",
+          "date": "1936.1.1",
+          "state": {
+            "year": 1936,
+            "is_ai": true,
+            "is_major": true,
+            "has_doctrine": "chaos_warfare",
+            "has_tech": "basic_gas_masks",
+            "cbrn_military_mask_coverage": 49,
+            "cbrn_protection_program_profile": 1,
+            "scope.any_controlled_state": true,
+            "scope.any_enemy_country": true,
+            "has_war": false
+          },
+          "flags": [
+            "cbrn_program_established"
+          ]
+        },
+        {
+          "id": "1939_no_chaos_program_at_threshold_basic_masks",
+          "label": "Synthetic 1939 AI case: no Chaos Warfare doctrine, basic gas masks researched, established program, mass civil-defence profile, mask coverage exactly 50.",
+          "actor": "USA",
+          "date": "1939.1.1",
+          "state": {
+            "year": 1939,
+            "is_ai": true,
+            "is_major": true,
+            "has_doctrine": false,
+            "has_tech": "basic_gas_masks",
+            "cbrn_military_mask_coverage": 50,
+            "cbrn_protection_program_profile": 1,
+            "scope.any_controlled_state": true,
+            "scope.any_enemy_country": true,
+            "has_war": false
+          },
+          "flags": [
+            "cbrn_program_established"
+          ]
+        },
+        {
+          "id": "1939_chaos_program_shortage_military_first",
+          "label": "Synthetic 1939 AI case: Chaos Warfare doctrine, basic gas masks researched, established program, military-first profile, mask coverage 49 below threshold.",
+          "actor": "USA",
+          "date": "1939.1.1",
+          "state": {
+            "year": 1939,
+            "is_ai": true,
+            "is_major": true,
+            "has_doctrine": "chaos_warfare",
+            "has_tech": "basic_gas_masks",
+            "cbrn_military_mask_coverage": 49,
+            "cbrn_protection_program_profile": 6,
+            "scope.any_controlled_state": true,
+            "scope.any_enemy_country": true,
+            "has_war": true
+          },
+          "flags": [
+            "cbrn_program_established"
+          ]
+        },
+        {
+          "id": "1941_no_chaos_program_at_threshold_improved_masks",
+          "label": "Synthetic 1941 AI case: no Chaos Warfare doctrine, improved gas masks researched, established program, industrial-reserve profile, mask coverage exactly 50.",
+          "actor": "USA",
+          "date": "1941.1.1",
+          "state": {
+            "year": 1941,
+            "is_ai": true,
+            "is_major": true,
+            "has_doctrine": false,
+            "has_tech": "improved_gas_masks",
+            "cbrn_military_mask_coverage": 50,
+            "cbrn_protection_program_profile": 4,
+            "scope.any_controlled_state": true,
+            "scope.any_enemy_country": true,
+            "has_war": true
+          },
+          "flags": [
+            "cbrn_program_established"
+          ]
+        },
+        {
+          "id": "1941_chaos_program_shortage_advanced_research",
+          "label": "Synthetic 1941 AI case: Chaos Warfare doctrine, improved gas masks researched, established program, military-first profile, mask coverage 49 below threshold.",
+          "actor": "USA",
+          "date": "1941.1.1",
+          "state": {
+            "year": 1941,
+            "is_ai": true,
+            "is_major": true,
+            "has_doctrine": "chaos_warfare",
+            "has_tech": "improved_gas_masks",
+            "cbrn_military_mask_coverage": 49,
+            "cbrn_protection_program_profile": 6,
+            "scope.any_controlled_state": true,
+            "scope.any_enemy_country": true,
+            "has_war": true
+          },
+          "flags": [
+            "cbrn_program_established"
+          ]
+        }
+      ]
+    },
+    "outputs": [
+      "json",
+      "comparison",
+      "ranking",
+      "unresolved"
+    ],
+    "workspaceId": "mod_chaos_redux_ea3b2d67c2c0",
+    "refresh": true
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\"artifactCount\":7,\"code\":\"PROBABILITY_ANALYZED_PARTIAL\",\"status\":\"ok\",\"workspaceId\":\"mod_chaos_redux_ea3b2d67c2c0\"}"
+      },
+      {
+        "type": "resource_link",
+        "uri": "hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/b65be060e9d7f71043ec95b38a763609fcdd9ef5f5f73cb4c222a14da667fab7/ea7b02ac3766fe8f9703a74d899800c45720b04eb94f0aa5b2c8313dae6f9434/probability-1292263816cc4f15c8de0398.json",
+        "name": "probability-1292263816cc4f15c8de0398.json",
+        "description": "Authoritative AI and MTTH scenario analysis JSON",
+        "mimeType": "application/json",
+        "size": 200177
+      },
+      {
+        "type": "resource_link",
+        "uri": "hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/2450d67f32f665574260ffbd84f57cc7db1a9cf58aca09b66d13c1108a27cc49/752fa989e8c195af9019dba36ee3d360e32e5d7ed10f2e411fca92caa0bb8b8e/probability-probability-1292263816cc4f15c8de0398-comparison.svg",
+        "name": "probability-probability-1292263816cc4f15c8de0398-comparison.svg",
+        "description": "AI and MTTH comparison visualization",
+        "mimeType": "image/svg+xml",
+        "size": 439
+      },
+      {
+        "type": "resource_link",
+        "uri": "hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/a1fd8e11d21dd2414c85f7412d454fa53b5b857ed9fb09593caa20f6277f498f/b68909267a2413182b6748cd415a8a71f3a3598a96907bfad7b96cd75a5722a9/probability-probability-1292263816cc4f15c8de0398-comparison.png",
+        "name": "probability-probability-1292263816cc4f15c8de0398-comparison.png",
+        "description": "AI and MTTH comparison raster visualization",
+        "mimeType": "image/png",
+        "size": 7804
+      },
+      {
+        "type": "resource_link",
+        "uri": "hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/14f06bacf05e60bd586eee117dfe0f4eedae1b4a47d4f7f0fe62a6b17e174cba/d99eb557d3e1acd8f73e094707b8c6b0ad2e1b754f3a37808921c9d46f22f625/probability-probability-1292263816cc4f15c8de0398-ranking.svg",
+        "name": "probability-probability-1292263816cc4f15c8de0398-ranking.svg",
+        "description": "AI and MTTH ranking visualization",
+        "mimeType": "image/svg+xml",
+        "size": 1124
+      },
+      {
+        "type": "resource_link",
+        "uri": "hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/7d5b6ed365a41f6a6e72bc04d2c6396af1975cad544a8f44148ebb8e5a683534/e5d81be3ea71c43a15e3ec53e20a25b4df7974e6225c773c3cb390ca66e6082a/probability-probability-1292263816cc4f15c8de0398-ranking.png",
+        "name": "probability-probability-1292263816cc4f15c8de0398-ranking.png",
+        "description": "AI and MTTH ranking raster visualization",
+        "mimeType": "image/png",
+        "size": 20491
+      },
+      {
+        "type": "resource_link",
+        "uri": "hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/ac1cb70874bf7c9695db6825025e90d355b942f89f23e22114ac52739b188144/c5b1dfe5911222605cdd87c39922eb4794de149f546f62d9496cd1589955105e/probability-probability-1292263816cc4f15c8de0398-unresolved.svg",
+        "name": "probability-probability-1292263816cc4f15c8de0398-unresolved.svg",
+        "description": "AI and MTTH unresolved visualization",
+        "mimeType": "image/svg+xml",
+        "size": 6720
+      },
+      {
+        "type": "resource_link",
+        "uri": "hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/9d2ebbb616548de3384ea65a6fb0e593acb1bc0563c8ccaa505a97166528f21e/a3732b1d5961321d316f8839848b501678cdd42af1ab9af4dc928808ce854fc4/probability-probability-1292263816cc4f15c8de0398-unresolved.png",
+        "name": "probability-probability-1292263816cc4f15c8de0398-unresolved.png",
+        "description": "AI and MTTH unresolved raster visualization",
+        "mimeType": "image/png",
+        "size": 172627
+      }
+    ],
+    "structuredContent": {
+      "artifacts": [
+        {
+          "description": "Authoritative AI and MTTH scenario analysis JSON",
+          "mimeType": "application/json",
+          "name": "probability-1292263816cc4f15c8de0398.json",
+          "sha256": "b65be060e9d7f71043ec95b38a763609fcdd9ef5f5f73cb4c222a14da667fab7",
+          "size": 200177,
+          "uri": "hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/b65be060e9d7f71043ec95b38a763609fcdd9ef5f5f73cb4c222a14da667fab7/ea7b02ac3766fe8f9703a74d899800c45720b04eb94f0aa5b2c8313dae6f9434/probability-1292263816cc4f15c8de0398.json"
+        },
+        {
+          "description": "AI and MTTH comparison visualization",
+          "mimeType": "image/svg+xml",
+          "name": "probability-probability-1292263816cc4f15c8de0398-comparison.svg",
+          "sha256": "2450d67f32f665574260ffbd84f57cc7db1a9cf58aca09b66d13c1108a27cc49",
+          "size": 439,
+          "uri": "hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/2450d67f32f665574260ffbd84f57cc7db1a9cf58aca09b66d13c1108a27cc49/752fa989e8c195af9019dba36ee3d360e32e5d7ed10f2e411fca92caa0bb8b8e/probability-probability-1292263816cc4f15c8de0398-comparison.svg"
+        },
+        {
+          "description": "AI and MTTH comparison raster visualization",
+          "mimeType": "image/png",
+          "name": "probability-probability-1292263816cc4f15c8de0398-comparison.png",
+          "sha256": "a1fd8e11d21dd2414c85f7412d454fa53b5b857ed9fb09593caa20f6277f498f",
+          "size": 7804,
+          "uri": "hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/a1fd8e11d21dd2414c85f7412d454fa53b5b857ed9fb09593caa20f6277f498f/b68909267a2413182b6748cd415a8a71f3a3598a96907bfad7b96cd75a5722a9/probability-probability-1292263816cc4f15c8de0398-comparison.png"
+        },
+        {
+          "description": "AI and MTTH ranking visualization",
+          "mimeType": "image/svg+xml",
+          "name": "probability-probability-1292263816cc4f15c8de0398-ranking.svg",
+          "sha256": "14f06bacf05e60bd586eee117dfe0f4eedae1b4a47d4f7f0fe62a6b17e174cba",
+          "size": 1124,
+          "uri": "hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/14f06bacf05e60bd586eee117dfe0f4eedae1b4a47d4f7f0fe62a6b17e174cba/d99eb557d3e1acd8f73e094707b8c6b0ad2e1b754f3a37808921c9d46f22f625/probability-probability-1292263816cc4f15c8de0398-ranking.svg"
+        },
+        {
+          "description": "AI and MTTH ranking raster visualization",
+          "mimeType": "image/png",
+          "name": "probability-probability-1292263816cc4f15c8de0398-ranking.png",
+          "sha256": "7d5b6ed365a41f6a6e72bc04d2c6396af1975cad544a8f44148ebb8e5a683534",
+          "size": 20491,
+          "uri": "hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/7d5b6ed365a41f6a6e72bc04d2c6396af1975cad544a8f44148ebb8e5a683534/e5d81be3ea71c43a15e3ec53e20a25b4df7974e6225c773c3cb390ca66e6082a/probability-probability-1292263816cc4f15c8de0398-ranking.png"
+        },
+        {
+          "description": "AI and MTTH unresolved visualization",
+          "mimeType": "image/svg+xml",
+          "name": "probability-probability-1292263816cc4f15c8de0398-unresolved.svg",
+          "sha256": "ac1cb70874bf7c9695db6825025e90d355b942f89f23e22114ac52739b188144",
+          "size": 6720,
+          "uri": "hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/ac1cb70874bf7c9695db6825025e90d355b942f89f23e22114ac52739b188144/c5b1dfe5911222605cdd87c39922eb4794de149f546f62d9496cd1589955105e/probability-probability-1292263816cc4f15c8de0398-unresolved.svg"
+        },
+        {
+          "description": "AI and MTTH unresolved raster visualization",
+          "mimeType": "image/png",
+          "name": "probability-probability-1292263816cc4f15c8de0398-unresolved.png",
+          "sha256": "9d2ebbb616548de3384ea65a6fb0e593acb1bc0563c8ccaa505a97166528f21e",
+          "size": 172627,
+          "uri": "hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/9d2ebbb616548de3384ea65a6fb0e593acb1bc0563c8ccaa505a97166528f21e/a3732b1d5961321d316f8839848b501678cdd42af1ab9af4dc928808ce854fc4/probability-probability-1292263816cc4f15c8de0398-unresolved.png"
+        }
+      ],
+      "blockers": [],
+      "changedFiles": [],
+      "code": "PROBABILITY_ANALYZED_PARTIAL",
+      "data": {
+        "adapterId": "technology_ai_will_do",
+        "analysisId": "probability-1292263816cc4f15c8de0398",
+        "analysisStatus": "partial",
+        "cacheKey": "1292263816cc4f15c8de0398f313554ab90419960331f4f960fd272523fe962c",
+        "candidates": 12,
+        "comparisonChanges": 0,
+        "diagnostics": 0,
+        "eligibleCandidates": 12,
+        "excludedCandidates": 0,
+        "operation": "compare",
+        "scenarioHash": "2d7ea8eeb3b7bdb333e27f07cb5a96ce8ea1eec406d2316f020de2a62e1f3e0a",
+        "scenarios": 6,
+        "sourceHash": "6fcd3c46b2900b5f140ffe51cbde7f7ac345ab8a1dcef0c4ca4ee6bc0473e908",
+        "sourceRevision": "f870c771b1cd450b462893a4146cb68133fc437f4cd0af77ac957ee485ad4816",
+        "unresolved": 21,
+        "unresolvedCandidates": 0,
+        "visualResources": 6
+      },
+      "diagnostics": [],
+      "filesScanned": [],
+      "proposedFiles": [],
+      "status": "ok",
+      "validation": {
+        "checks": [
+          {
+            "id": "uncertainty-visible",
+            "message": "21 unresolved or bounded analysis item(s) are explicit",
+            "passed": true
+          }
+        ],
+        "passed": true
+      },
+      "workspaceId": "mod_chaos_redux_ea3b2d67c2c0"
+    }
+  }
+}

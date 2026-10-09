@@ -205,6 +205,9 @@ The weather fields are 0.01, 0.02 and 0.03, totaling 0.06 points under the exist
 Pooling those points and reserving the three percentage sources independently yields +34.589%; independently normalizing each point grant against base four yields +34.59813%.
 The [reconnaissance review](../../plans/chaos_warfare_system_plans/subagent_handoffs/2026-10-07_reconnaissance_budget_review.md) states the earlier source excess, explicit secondary reductions, same-command eligibility and unresolved native semantics.
 Operations planning, Medical wound/sickness protection, HQ abilities and their equipment bills remain intact.
+The [October 8 semantics review](../../plans/chaos_warfare_system_plans/subagent_handoffs/2026-10-08_recon_semantics_review.md) establishes `recon_factor` as percentual and identifies strong vanilla support for flat weather points, while the generic offline technology rule and country/HQ aggregation remain unresolved.
+Preserve the 25% Operations reward and current HQ/weather values; neither the +34.59813% point model nor the failing +40.556% fractional countermodel closes the native 35% cap.
+The later [research-cost source receipt](../../testing/2026-10-08_cbrn_research_cost_review/source_test_results.json) preserves all non-cost technology ASTs, so the cost calibration supplies no stat retune or revised reconnaissance proof.
 
 Chemical Operations Commander is earned from completed qualifying Headquarters service. Chemical Operations Academy grants +3 percent army experience gain and does not award the trait. The two paid offensive HQ preparation orders are retired; five protective orders remain. A country's first confirmed chemical exposure applies a defender-side command shock without an attacker buff.
 
