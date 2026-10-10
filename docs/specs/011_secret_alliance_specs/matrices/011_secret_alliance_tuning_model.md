@@ -1,6 +1,8 @@
 # Event 011 Secret Alliance tuning model
 
-This model defines dynamic factors and tuning relationships. It does not prescribe final script constants. Exact values should be centralized during implementation and validated against several country sizes.
+This model defines dynamic factors and tuning relationships.
+It does not prescribe final script constants.
+The implemented values live in `common/script_constants/011_secret_alliance_constants.txt` and win where this model differs.
 
 ## Core values
 
@@ -55,8 +57,8 @@ Chaos affects tempo, risk tolerance, and evolved opening strength.
 - Calm World favors long intervals, subtle incidents, and defensive motives.
 - Gathering Storm enables Evolution I and broader minor recruitment.
 - Rising Chaos enables Evolution II and major sponsorship.
-- Chaos Tier intensifies Evolution II operations without consuming another evolution stage.
-- Totalen Chaos enables Evolution III and the possibility of a second major.
+- Chaos Tier shortens operation pacing without consuming another evolution stage.
+- Total Chaos enables Evolution III and the possibility of a second major.
 - World Collapse conditions can increase desperation but do not create a world-end branch for this event.
 
 ### Target behavior
@@ -162,6 +164,8 @@ Two independent classes should be more valuable than repeated clues from one cla
 
 ### Confidence bands
 
+The implemented thresholds are Possible 15, Plausible 35, Likely 60, and Confirmed 90 (`secret_alliance_band.confidence_*`), shown to the player as Trace, Plausible, Credible, and Confirmed; Unconnected and Possible both display as Trace.
+
 | Band | Meaning | Player actions supported |
 | --- | --- | --- |
 | Unconnected | No credible link | No country-targeted action |
@@ -211,9 +215,9 @@ No single prewar value should grant automatic victory. Strong preparation should
 
 | Evolution | Normal unlock tier | Active-event pacing | Pre-fire opening | Key limiter |
 | --- | --- | --- | --- | --- |
-| I | Gathering Storm | Dynamic MTTH near the project norm, shortened by membership and target aggression | Four to five minor founders | Recruitment validity and secrecy |
-| II | Rising Chaos | Dynamic MTTH after meaningful baseline activity | One major founder or sponsor plus minors | Major strategic validity |
-| III | Totalen Chaos | Dynamic MTTH after Evolution II, with pressure from readiness and exposure | Start at Evolution II, then accelerate toward III | Prevent instant no-counterplay war |
+| I | Gathering Storm | Dynamic MTTH near the project norm, shortened by membership and target aggression | Three minor founders at higher starting values with recruitment already open | Recruitment validity and secrecy |
+| II | Rising Chaos | Dynamic MTTH after meaningful baseline activity | Three minor founders plus an immediate sponsor approach | Major strategic validity |
+| III | Total Chaos | Dynamic MTTH after Evolution II, with pressure from readiness and exposure | Start at Evolution II, then accelerate toward III | Prevent instant no-counterplay war |
 
 If an evolution is disabled, required baseline flow must still have a safe route. The pact can continue, collapse, or reveal through hostile war without depending on disabled evolution content.
 
@@ -222,9 +226,9 @@ If an evolution is disabled, required baseline flow must still have a safe route
 | Intensity | Starting coalition | Readiness | Resolve | Target preparation window | AI risk tolerance |
 | --- | --- | --- | --- | --- | --- |
 | Low | Three minors | Low to medium | Functional | Short but meaningful | Cautious |
-| Medium | Four to six valid countries | Medium | Functional to committed | Short | Normal |
-| High | One major plus five to seven others | High | Committed | Very short | Aggressive |
-| Maximum | Up to two majors and eight to twelve total, limited by valid pool | Very high | High but motive-dependent | Immediate public crisis | Very aggressive without ignoring validity |
+| Medium | Five valid countries | Medium | Functional to committed | Short | Normal |
+| High | Seven countries including one major | High | Committed | Very short | Aggressive |
+| Maximum | Twelve countries including two majors, limited by the safe valid pool | Very high | High but motive-dependent | Immediate public crisis | Very aggressive without ignoring validity |
 
 The selected type changes composition and doctrine. Intensity changes scale and starting state. Both controls must be read at confirmation time.
 

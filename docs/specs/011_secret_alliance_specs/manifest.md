@@ -61,4 +61,10 @@ Those records do not certify the October working tree or current workbook status
 
 ## Package status
 
-The source specification is implemented. Gameplay, final localisation, visual assets, licensed audio, workbook alignment, specialist audits, and documentation reconciliation are complete at the final static evidence freeze. The original subagent-environment note remains planning chronology. No in-engine playtest is claimed by the documentation audit.
+The source specification is implemented.
+Gameplay, final localisation, visual assets, licensed audio, workbook alignment, specialist audits, and documentation reconciliation were complete at the July 2026 static evidence freeze.
+The original subagent-environment note remains planning chronology.
+No in-engine playtest is claimed by the documentation audit.
+
+The October 2026 release repairs are implemented in source with evidence still open; see the package README status section.
+The 2026-10-10 spec audit edited `README.md`, `handoffs/completion_audit.md`, `handoffs/documentation_state.md`, the event chain map, AI strategy, tuning, and decision and mission matrices, `prompts/secret_alliance_asset_prompt.md`, spec parts 2 through 5, and this section; the hashes above remain the original package values by design.

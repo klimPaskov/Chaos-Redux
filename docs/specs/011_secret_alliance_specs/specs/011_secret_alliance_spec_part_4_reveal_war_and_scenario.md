@@ -16,6 +16,9 @@ The reveal effect forms the faction, assigns a leader, invites every valid activ
 
 This is the hard user rule. It cannot wait for a later event, a separate invitation cycle, or an AI decision.
 
+Existing faction leaders stay outside the valid-member roster, so the reveal moves faction followers into the coalition but never transfers or disbands another faction's leader (parent acceptance, 2026-10-06).
+A safe leader transfer or a coexisting-faction anchor remains an unaccepted future idea, not a required participant class.
+
 ### Pact-controlled reveal
 
 At Evolution III, a cohesive and ready pact can reveal itself publicly before war. The faction appears, the members join it, and a short offensive countdown begins.
@@ -116,7 +119,12 @@ Possible player-earned counters include:
 - exposed depots
 - neutral opinion support
 
-The design should avoid flat global combat bonuses as the only expression of preparation. Operations and countermeasures should affect logistics, planning, intelligence, access, and timing.
+The design should avoid flat global combat bonuses as the only expression of preparation.
+Operations and countermeasures should affect logistics, planning, intelligence, access, and timing.
+
+The coalition war already reaches the shared counters through their owners.
+Its declarations count through `chaos_meter_on_war_relation_added`, which ignores faction follow-up relations against an already attacked defender, and its casualties reach the Deaths tracker through global military casualty aggregation.
+Event 011 therefore adds no bespoke Chaos or Deaths packet at reveal, during the war, or at settlement.
 
 ## Direct player choices after reveal
 
@@ -232,9 +240,11 @@ The launch uses the same member validity, faction formation, war entry, AI strat
 | Intensity | Default composition | Opening condition |
 | --- | --- | --- |
 | Low | 3 minor countries | limited readiness, no preloaded severe sabotage |
-| Medium | 4 to 6 countries, major participation uncommon | moderate readiness and one prepared operation effect |
-| High | 1 major plus 5 to 7 other members when valid | high readiness, coordinated logistics, stronger opening plan |
-| Maximum | up to 2 majors plus 8 to 12 total members, capped by safe candidates | maximum safe readiness, multiple fronts, strong coalition AI, no impossible member forcing |
+| Medium | 5 countries, with no major unless the Great-Power Sponsor type requires one | moderate readiness and one prepared operation effect |
+| High | 7 countries including 1 major when valid | high readiness, coordinated logistics, stronger opening plan |
+| Maximum | 12 countries including 2 majors, capped by the safe valid pool | maximum safe readiness, multiple fronts, strong coalition AI, no impossible member forcing |
+
+The rosters and material packages are `secret_alliance_scenario_scale` values, and the Great-Power Sponsor type always requests at least one major.
 
 Intensity should also scale equipment transfers, planning, intelligence, and coalition resolve. It should not scale only through flat combat modifiers.
 

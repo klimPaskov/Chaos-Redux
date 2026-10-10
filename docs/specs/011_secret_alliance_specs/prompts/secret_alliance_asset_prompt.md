@@ -18,12 +18,12 @@ Do not edit gameplay, localisation, GUI, GFX, event, decision, idea, achievement
 
 Before generation or processing, inspect the matching repository reference folders:
 
-- report images: `.agents/skills/chaos-redux-event-assets/assets/gfx_references/event_art/report`
-- news images: `.agents/skills/chaos-redux-event-assets/assets/gfx_references/event_art/news`
-- super-event images: `.agents/skills/chaos-redux-event-assets/assets/gfx_references/event_art/super_event`
-- decisions and category icons: `.agents/skills/chaos-redux-event-assets/assets/gfx_references/icons/decisions`
-- ideas: `.agents/skills/chaos-redux-event-assets/assets/gfx_references/icons/ideas`
-- achievements: `.agents/skills/chaos-redux-event-assets/assets/gfx_references/icons/achievements`
+- report images: `.claude/skills/chaos-redux-event-assets/assets/gfx_references/event_art/report`
+- news images: `.claude/skills/chaos-redux-event-assets/assets/gfx_references/event_art/news`
+- super-event images: `.claude/skills/chaos-redux-event-assets/assets/gfx_references/event_art/super_event`
+- decisions and category icons: `.claude/skills/chaos-redux-event-assets/assets/gfx_references/icons/decisions`
+- ideas: `.claude/skills/chaos-redux-event-assets/assets/gfx_references/icons/ideas`
+- achievements: `.claude/skills/chaos-redux-event-assets/assets/gfx_references/icons/achievements`
 
 Record the references inspected in the manifest and GFX handoff.
 
@@ -46,7 +46,7 @@ Final DDS files must be placed in the event-scoped gameplay folders from the ass
 
 ## Event pictures
 
-Create seven generated period-documentary report images at source resolution, then apply the report-card processing in [chaos-redux-event-assets](../../../../.agents/skills/chaos-redux-event-assets/SKILL.md) to 210x176 and convert to DDS:
+Create seven generated period-documentary report images at source resolution, then apply the report-card processing in [chaos-redux-event-assets](../../../../.claude/skills/chaos-redux-event-assets/SKILL.md) to 210x176 and convert to DDS:
 
 1. `report_event_first_pattern`
 2. `report_event_missing_courier`

@@ -85,34 +85,76 @@ The pact should not select an island-only minor with no access as a core militar
 ## Connections with other Chaos Redux events
 
 These are optional integration hooks. Event 011 must work without them.
+Each hook names its owner and its disposition; only implemented hooks describe current behaviour.
+
+### Current consumers of Event 011 state (implemented)
+
+- Individual crisis targeting counts `secret_alliance_target_country` and `secret_alliance_active_member` toward a country's crisis load, and Event 011 founder, recruit, and sponsor selection applies the same bounded ticket adjustment (`docs/systems/event_system/individual_crisis_targeting.md`).
+- Utopia Manifesto excludes hosts carrying `secret_alliance_active_member` or `secret_alliance_founder` (`utopia_manifesto_candidate_has_active_event_package`).
+- The shared event pool reports Secret Alliance target, active-run, and postwar-bloc unavailability reasons instead of firing an impossible run (`chaosx_logic_effects.txt`).
+- Black Friday (Event 026) applies its sale ratio to Event 011's cached costs, so the shown, required, and paid amounts stay equal.
 
 ### Tensions Rising, Event 008
 
-Read the existing timed diplomatic context when an [Event 008 shock](../../008_tensions_rising_specs/specs/008_tensions_rising_spec.md) involves the fixed target and a candidate or active member. It can make a fear, grievance, or opportunist motive more plausible within the existing recruitment evaluation. The global pulse alone cannot recruit a country, waive strategic access, create readiness, or apply another world-tension packet. Recruitment retains its normal capacity, consent, and validity requirements.
+Disposition: accepted by the parent on 2026-10-08 and queued; neither event reads the other in source yet.
 
-Event 008 owns its shock, duration, and pressure accounting. Event 011 owns its operation dossier and corroboration. A circulating accusation supplies no Evidence or suspect confidence unless an independent Event 011 operation creates a valid source-aware clue. The same rumour cannot become a second evidence class merely because two events described it. Pact absence leaves Event 008 ordinary behaviour intact, and shock expiry removes only that diplomatic context.
+Read the existing timed diplomatic context when an [Event 008 shock](../../008_tensions_rising_specs/specs/008_tensions_rising_spec.md) involves the fixed target and a candidate or active member.
+The pair flags `tensions_rising_active_<shock>_with_<TAG>` and the border actor flag `tensions_rising_recent_border_war_actor` already exist in `common/scripted_effects/008_tensions_rising_effects.txt`.
+The context can make a fear, grievance, or opportunist motive more plausible within the existing recruitment evaluation.
+The global pulse alone cannot recruit a country, waive strategic access, create readiness, or apply another world-tension packet.
+Recruitment retains its normal capacity, consent, and validity requirements.
 
-An Event 008 non-transfer border conflict does not meet the hostile normal-war reveal rule. A later normal war between an active member and the fixed target immediately uses the existing all-valid-members reveal contract. Future checks distinguish panic alone, a genuine separately corroborated operation during panic, an unresolved border clash, and a normal hostile war. No numeric recruitment or operation-weight claim is accepted without the probability owner's matching scenarios.
+Event 008 owns its shock, duration, and pressure accounting.
+Event 011 owns its operation dossier and corroboration.
+A circulating accusation supplies no Evidence or suspect confidence unless an independent Event 011 operation creates a valid source-aware clue.
+The same rumour cannot become a second evidence class merely because two events described it.
+Pact absence leaves Event 008 ordinary behaviour intact, and shock expiry removes only that diplomatic context.
+
+An Event 008 non-transfer border conflict does not meet the hostile normal-war reveal rule.
+A later normal war between an active member and the fixed target immediately uses the existing all-valid-members reveal contract.
+Future checks distinguish panic alone, a genuine separately corroborated operation during panic, an unresolved border clash, and a normal hostile war.
+No numeric recruitment or operation-weight claim is accepted without the probability owner's matching scenarios.
 
 ### Africa's Scramble response, Event 012
 
-When the player-controlled African unifier is also the fixed Event 011 target, use the [Scramble coalition ownership rule](../../012_africa_specs/specs/012_africa_spec_part_5_high_chaos_world_order.md#coalition-war). Event 012 owns its colonial-interest terms and treaty obligations. Event 011 owns concealed membership, evidence, reveal, faction identity, and Resolve. An actual member entering a normal Scramble war against the target still causes immediate pact reveal. Crisis diplomacy supplies no member list or pact clue. A surviving public faction is not renamed or displaced to create another copy of the same coalition. The two systems close their own obligations from the actual war outcome.
+Disposition: accepted by the parent on 2026-10-08.
+The reveal half is already satisfied because `secret_alliance_handle_war_relation_added` reveals the pact for any normal hostile war with the fixed target; the Event 012 side of the no-displacement rule is queued and unverified.
+
+When the player-controlled African unifier is also the fixed Event 011 target, use the [Scramble coalition ownership rule](../../012_africa_specs/specs/012_africa_spec_part_5_high_chaos_world_order.md#coalition-war).
+Event 012 owns its colonial-interest terms and treaty obligations.
+Event 011 owns concealed membership, evidence, reveal, faction identity, and Resolve.
+An actual member entering a normal Scramble war against the target still causes immediate pact reveal.
+Crisis diplomacy supplies no member list or pact clue.
+A surviving public faction is not renamed or displaced to create another copy of the same coalition.
+The two systems close their own obligations from the actual war outcome.
 
 ### Intel Leaked, Event 052
 
-A leak involving a pact member can sharply increase Evidence. A leak involving the target can raise pact readiness. The exact hook should be added only when Event 052 has a stable implementation.
+Disposition: accepted and queued in the Event 052 package, whose catalogue row is still To Be Reworked.
+The [Event 052 interaction matrix](../../052_intel_leaked_specs/matrices/052_intel_leaked_cluster_and_interaction_matrix.md) owns one bounded Evidence or Pact Readiness change per leak sequence.
+A leak involving a pact member adds Evidence only through Event 011's source-aware clue path, so it cannot repeat a class the dossier already holds.
+A leak involving the target can raise Pact Readiness once.
+The adapter shape is open question 5 in the package README.
 
-### Counterintelligence, Event 147
+### Counterintelligence, Event 147, and Secret Society Influence, Event 150
 
-A global or country counterintelligence improvement can raise Preparedness or reduce operation success. Event 011 should read the shared effect rather than copy it.
-
-### Secret Society Influence, Event 150
-
-A shadowy domestic network can increase false clues, make official compromise more likely, or create a target-side vulnerability. This must remain an optional hook until Event 150 has a defined mechanic.
+Disposition: unresolved; both catalogue rows are Unavailable and neither event has a mechanic to read.
+If Event 147 is built, Event 011 should read its shared counterintelligence effect as a Preparedness or operation-success input rather than copy it.
+If Event 150 is built, a domestic network could increase false clues or official compromise, and that hook must stay optional.
 
 ### World threat framework
 
-The revealed pact is a hostile coalition, but it is not automatically an existential world threat. It should set the shared world-threat state only if the implementation later defines a threshold such as two majors, a near-global member count, and an offensive war of sufficient scope.
+Disposition: unresolved; source has no Event 011 world-threat hook.
+The original direction let a revealed pact set the shared world-threat state above a future threshold such as two majors, a near-global member count, and an offensive war of sufficient scope.
+The [world-threat framework](../../../systems/world_threat_mechanic.md) reserves `world_in_threat` for existential threats and asks other systems to calm ordinary geopolitics while it is set, so open question 1 in the package README proposes the reverse direction: Event 011 reads `world_in_threat` and slows, rather than feeds, the threat.
+
+### Shared systems Event 011 deliberately does not feed
+
+- Chaos Meter and Deaths: the coalition war already counts through war-declaration counting and global casualty aggregation (Part 4), so a bespoke packet would double count.
+- Condemnation: its buckets are chemical, biological, nuclear, atrocity, and cover-up; covert operations, false accusations, and preemption use Event 011's own credibility and diplomatic consequences.
+- Famine and Migration: no Event 011 rule reads population movement, and coalition-war displacement belongs to Migration's ordinary front and control-change handling; the options listed for Event 011 in the Migration package are open question 3 in the package README.
+- Camps and repression, CBRN, and air cleanliness: the pact has no route that builds camps or uses special weapons, and the ideology-flavoured target responses in this part stay tone and weight variants.
+- Event clusters: Event 011 belongs to no runtime cluster; the catalogue's one-member Pacts row is open question 2 in the package README.
 
 ## Player-facing text direction
 
@@ -215,7 +257,8 @@ Important actions should change membership, evidence quality, preparedness, oper
 
 ### Make preparation state-capacity limited
 
-Counter-preparation must be a strategic mobilization, not a cheap meter purchase. Dynamic costs scale from real command power, Army Experience, equipment, transport, fuel, manpower, Political Power, Stability, and War Support commitments. Countries below the small-industry, field-army, or territorial-capacity thresholds pay additional multiplicative surcharges. Large countries retain their existing upward scale, so neither a microstate nor a major can buy the complete response matrix trivially.
+Counter-preparation must be a strategic mobilization, not a cheap meter purchase.
+Dynamic costs scale from real command power, Army Experience, equipment, transport, fuel, manpower, Political Power, Stability, and War Support commitments, with at most four of them on any one action (Part 3, Cost palette). Countries below the small-industry, field-army, or territorial-capacity thresholds pay additional multiplicative surcharges. Large countries retain their existing upward scale, so neither a microstate nor a major can buy the complete response matrix trivially.
 
 Only one protection project and one emergency commitment may be active at a time. Their long lock periods force the target to choose which preparedness layer matters most. The Mobilized band begins at 85, and reaching it requires several independently funded layers such as protection, emergency mobilization, known plans, allied consultation, or a secured frontier. A one-state minor can still defend itself, but cannot reach full Preparedness through cheap project cycling.
 
@@ -235,6 +278,8 @@ Higher costs must buy consequential results. Evidence and confidence gains remai
 - equipment transfers and wartime bonuses cannot repeat through save or event refresh loops
 
 ## Acceptance criteria
+
+The parent's final completion audit records these criteria as implemented at the July 2026 static freeze; the evidence still open after the October release repairs is listed in `docs/plans/011_secret_alliance_plans/agent_decisions_2026-10-05.md`.
 
 The event design is satisfied only when implementation includes:
 

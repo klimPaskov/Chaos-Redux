@@ -1,16 +1,21 @@
 # Event 011 Secret Alliance decision and mission matrix
 
-Status: implemented design matrix reconciled through gameplay commit `407b9a05`, with balance frozen at `1c87d923`. Names remain design labels where they differ from final localisation. Live costs are calculated from target capacity, action family, relevant Evidence bands, and available resources. There is no separate repeat-use cost multiplier.
+Status: implemented design matrix reconciled through gameplay commit `407b9a05`, with balance frozen at `1c87d923`.
+Names remain design labels where they differ from final localisation.
+Live costs are calculated from target capacity, action family, relevant Evidence bands, and available resources.
+There is no separate repeat-use cost multiplier.
+The October 2026 release repairs added two accepted limits: every paid action charges at most four resource types with at most three amounts inline, and phase and irrelevance gates keep at most six rows visible, with one seven-row case after border routes are mapped.
+The commitment and cost columns below are design direction; the live bundles are recorded in `docs/plans/011_secret_alliance_plans/agent_decisions_2026-10-05.md` and source.
 
 ## Category lifecycle
 
 | Phase | Player-facing identity | Visible systems | Decision volume | Closure condition |
 | --- | --- | --- | --- | --- |
 | Baseline | No dedicated category | Ordinary event responses only | None | Evolution II or rare forced exposure |
-| Evolution II opening | Foreign interference response | Evidence, Preparedness, suspects, recent incidents | 5 to 8 relevant actions | Reveal, collapse, or temporary quiet period |
-| Evolution II sustained | Counter-network campaign | Investigation, protection, diplomacy, deception, border actions | 7 to 11, with active mission cap | Evolution III, reveal, or collapse |
-| Evolution III | Coalition crisis | War pressure, known members, Preparedness, emergency actions | 6 to 10 | War, settlement, or pact collapse |
-| Revealed war | Anti-coalition campaign | Coalition Resolve, known members, exposed plans | 5 to 9 | Target war ends |
+| Evolution II opening | Foreign interference response | Evidence, Preparedness, suspects, recent incidents | Up to 6 visible actions | Reveal, collapse, or temporary quiet period |
+| Evolution II sustained | Counter-network campaign | Investigation, protection, diplomacy, deception, border actions | Up to 6 visible, 7 after border routes are mapped, with family caps | Evolution III, reveal, or collapse |
+| Evolution III | Coalition crisis | War pressure, known members, Preparedness, emergency actions | Up to 6 visible | War, settlement, or pact collapse |
+| Revealed war | Anti-coalition campaign | Coalition Resolve, known members, exposed plans | Up to 6 visible | Target war ends |
 | Aftermath | Settlement and cleanup | Confirmed responsibility and settlement choices | 2 to 5 | Final settlement recorded |
 
 ## Investigation decisions

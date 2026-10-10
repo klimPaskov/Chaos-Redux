@@ -1,6 +1,8 @@
 # Event 011 Secret Alliance event chain map
 
-This map translates the design into event families and player-facing states. Identifiers are working labels, not final event IDs or localisation.
+This map translates the design into event families and player-facing states.
+Identifiers are working labels, not final event IDs or localisation.
+Implemented event IDs, pre-fire openings, and stage behaviour are recorded in `docs/events/011_secret_alliance/overview.md`, which wins where this map differs.
 
 ## Chain overview
 
@@ -16,7 +18,7 @@ This map translates the design into event families and player-facing states. Ide
 | Military | Quiet preparation | Hidden or partially visible | Baseline | Survey borders, stage depots, arrange access, coordinate staff assumptions | Readiness rises |
 | Evolution I | Wider private front | Hidden, subtly visible | Gathering Storm | Expand minor membership and operation frequency without exposing the coalition | Evolution log entry, stronger operation pool |
 | Evolution II | Organized hostile network | Target and hidden pact | Rising Chaos | Add major sponsorship, serious sabotage, Evidence and Preparedness counterplay | Response category and mechanic UI open |
-| Evolution III | Open coalition threshold | Target and pact | Totalen Chaos | Make the faction public, prepare war, permit direct preemption | Reveal state, war countdown |
+| Evolution III | Open coalition threshold | Target and pact | Total Chaos | Make the faction public, prepare war, permit direct preemption | Reveal state, war countdown |
 | Forced reveal | Target exposes the pact | Public | Evolution II onward | Convert investigation success into an early, weakened reveal | Faction forms with penalties or fractures |
 | Hostile war reveal | One member enters war with target | Public | Any active stage | Enforce immediate faction formation and universal active-member entry into the war | Faction and target war |
 | Coalition war | Opening campaign | Public | Reveal | Convert hidden values into wartime strengths and weaknesses | Coalition Resolve system |
@@ -178,7 +180,7 @@ A candidate enters the pool only when it remains valid for eventual reveal. The 
 
 **Pre-fire evolved opening**
 
-- Select four to five minor founders rather than three.
+- Keep three minor founders, start at the Evolution I Cohesion and Readiness values, and open Evolution I recruitment immediately.
 - Start with one prior liaison success and a modest readiness band.
 - Give the target a slightly earlier pattern incident without naming the pact.
 
@@ -199,8 +201,7 @@ A pact with repeated recruitment failures can remain small. Evolution I changes 
 
 **Pre-fire evolved opening**
 
-- A major country can become the founder and sponsor.
-- Select two to four minor partners based on reach and motive.
+- Keep three minor founders at the Evolution II starting values and schedule an immediate sponsor approach; the major joins only with a strategic reason (README open question 4).
 - Begin with a sponsor-selected doctrine and one developed network.
 - Open the response category shortly after the first serious incident.
 
@@ -220,7 +221,9 @@ A sponsor can withdraw after exposure, strategic defeat elsewhere, or diplomatic
 
 **Pre-fire evolved opening**
 
-The event begins with the Evolution II major-led package. A shortened dynamic delay then advances it toward Evolution III. This preserves a playable investigation and preparation window rather than creating an instant unexplained faction.
+The event begins with the Evolution II opening package.
+A shortened dynamic delay then advances it toward Evolution III.
+This preserves a playable investigation and preparation window rather than creating an instant unexplained faction.
 
 **Failure and containment**
 

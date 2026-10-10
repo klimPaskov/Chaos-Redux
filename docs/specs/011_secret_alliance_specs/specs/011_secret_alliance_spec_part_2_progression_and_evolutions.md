@@ -81,10 +81,12 @@ Suggested membership bands are:
 | --- | --- | --- |
 | Baseline | 3 founders | none |
 | Evolution I | 4 to 6 members | none |
-| Evolution II | 6 to 9 members | up to 1 major |
+| Evolution II | 6 to 8 members | up to 1 major |
 | Evolution III | 8 to 12 members | up to 2 majors when earned |
 
-These are tuning bands. The actual cap should react to the valid candidate pool and target strength. A small isolated target should not face twelve countries by default. A globally dominant target may attract a wider coalition.
+These are tuning bands; the live values are `evolution_*_member_min`, `evolution_*_member_cap`, and `evolution_*_major_cap` in `secret_alliance_event`.
+The actual cap reacts to the valid candidate pool and target strength: a weak minor target loses three slots, a target that has generated little tension loses one, and the cap never falls below four or above the remaining valid pool.
+A small isolated target should not face twelve countries by default, while a globally dominant target may attract a wider coalition.
 
 A recruited country that later becomes invalid receives a loyalty test. A country that joins the target's faction, becomes the target's subject, enters an incompatible faction as its leader, collapses into civil war, or loses independence cannot remain an active pact member.
 
@@ -130,7 +132,8 @@ The pact remains secret. There is no direct war option and no formal player resp
 
 ### Chaos placement
 
-The default unlock is the Gathering Storm tier. Chaos changes likelihood and intensity, but the evolution should still use dynamic pacing rather than occur immediately at the threshold.
+The default unlock is the Gathering Storm tier (Chaos tier 1).
+Chaos changes likelihood and intensity, but the evolution should still use dynamic pacing rather than occur immediately at the threshold.
 
 ### Active-event entry
 
@@ -140,7 +143,8 @@ Existing members immediately receive the evolved recruitment and operation behav
 
 ### Pre-fire evolved opening
 
-When Event 011 first fires after Evolution I is available, the opening may begin with four minor members instead of three, or with three founders and an accelerated first recruitment.
+When Event 011 first fires after Evolution I is available, the opening keeps three minor founders but starts with higher Cohesion and Readiness and with Evolution I recruitment already open, so the first recruitment arrives sooner.
+This replaces the earlier four-to-five-founder direction in the matrices and historical prompts.
 
 The player-facing opening remains subtle. The evolved opening changes internal strength, pacing, and the frequency of recurring signatures.
 
@@ -167,7 +171,8 @@ The player knows that foreign governments are coordinating. The player does not 
 
 ### Chaos placement
 
-The default unlock is the Rising Chaos tier. The Chaos tier above it increases aggression and readiness without creating a separate evolution stage.
+The default unlock is the Rising Chaos tier (Chaos tier 2).
+The Chaos Tier above it shortens operation pacing without creating a separate evolution stage.
 
 ### Active-event entry
 
@@ -179,9 +184,11 @@ The player response category appears after the first unmistakably coordinated in
 
 ### Pre-fire evolved opening
 
-When Event 011 first fires after Evolution II is available, one eligible major can found the pact and recruit two to four minors. The first player-facing incidents arrive sooner and are more damaging. The response category opens after a short discovery sequence rather than requiring the full baseline.
+When Event 011 first fires after Evolution II is available, the first player-facing incidents arrive sooner and are more damaging, and the response category opens after a short discovery sequence rather than requiring the full baseline.
 
-This is a major-led opening, not a baseline opening with a major added as decoration.
+The original direction asked for a major-led opening in which an eligible major founds the pact and recruits two to four minors.
+Source instead opens with three minor founders at Evolution II starting values and immediately schedules a sponsor approach that the major can refuse on strategic grounds.
+Whether to keep that implemented behaviour is open question 4 in the package README.
 
 ### New operation pool
 
@@ -195,7 +202,10 @@ This is a major-led opening, not a baseline opening with a major added as decora
 - recruitment of a target-country official
 - support for a hostile proxy or opposition network
 
-Killings should be uncommon and consequential. They should not become flavor spam. When deaths are large enough to matter, the implementation should use the shared Deaths system rather than invent a separate tally.
+Killings should be uncommon and consequential.
+They should not become flavor spam.
+The implemented attempt is the rare `chaosx.nr11.21` event; it targets officials rather than populations and registers no bespoke deaths.
+Coalition-war casualties reach the shared Deaths tracker through its global military casualty aggregation, so Event 011 must never add a second deaths tally for the same losses.
 
 ### Player-facing changes
 
@@ -222,7 +232,8 @@ A second major may join when earlier player choices left recruitment open and th
 
 ### Chaos placement
 
-The default unlock is Totalen Chaos. It should use dynamic pacing after the threshold and should not occur instantly for an already active pact.
+The default unlock is Total Chaos (Chaos tier 4).
+It should use dynamic pacing after the threshold and should not occur instantly for an already active pact.
 
 ### Active-event entry
 
@@ -237,7 +248,8 @@ The faction appears on the map when the reveal completes. A dynamic pre-war miss
 
 ### Pre-fire evolved opening
 
-When Event 011 first fires while Evolution III is available, it begins with the Evolution II major-led package. It does not jump directly to public war.
+When Event 011 first fires while Evolution III is available, it begins with the Evolution II opening package at Evolution III starting values.
+It does not jump directly to public war.
 
 The opening uses a compressed discovery period. Evolution III then occurs after a shorter dynamic delay. The player receives a brief but real opportunity to investigate, protect the country, and affect which members answer the final call.
 
