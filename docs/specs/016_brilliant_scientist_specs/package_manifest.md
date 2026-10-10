@@ -41,7 +41,7 @@
 4. `docs/plans/016_brilliant_scientist_plans/016_source_of_truth_map.md`, including parent dispositions R1 through R7 where they do not conflict with the closure contract.
 5. The reconciled specification files in this package.
 6. Promoted portions of the improvement addendum. Rejected R1 and R6 recommendations are historical evidence only.
-7. The project-wide skills and `AGENTS.md`.
+7. The project-wide skills under `.claude/skills/` and `CLAUDE.md`.
 8. Current implementation files as evidence of existing behavior, not as permission to shrink the design.
 
 ## Historical evidence pointers, 2026-08-26
@@ -90,7 +90,7 @@ The named GUI worker attestation is `docs/plans/016_brilliant_scientist_plans/su
 - Source-reading ledger entries: `30`.
 - Achievement working keys: `17`.
 - Super-event packages: `6`.
-- Severe portrait animation families: `6`.
+- Severe portrait animation families: `5`, delivered as six Stage IV route sheets because the xenobiological-or-alien family has two mutually exclusive subvariants.
 - Integrity ledger: `package_checksums.sha256`.
 
 The checksum ledger preserves the established Event 016 source set and order.

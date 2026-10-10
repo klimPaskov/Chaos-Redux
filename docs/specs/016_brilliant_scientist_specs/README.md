@@ -1,24 +1,15 @@
 # Event 016 Brilliant Scientist planning package
 
-> **2026-09-20 biological-route amendment:** The accepted CBRN native-raid simplification replaces the Event 016 biological selection, production, staging, separate deployment decision receipts, and Portal transport refund with eighteen native raid types in the existing `biological_raids` category. The updated [`final completion contract`](specs/016_final_completion_contract.md), [`wonder-technology actions`](systems/016_wonder_technology_actions.md), and current [`biological operations guide`](../../events/016_brilliant_scientist/systems/biological_operations.md) control this route; older decision-receipt passages and handoffs are historical only. Native cancellation/refund and distant Portal path behavior remain unproven by source inspection.
+## Current authority and status
 
-> Binding closure contract, 2026-09-01: [`specs/016_final_completion_contract.md`](specs/016_final_completion_contract.md) promotes the accepted Event 016 Final Completion Plan into the source-of-truth package. It supersedes older completion, deferral, and biological-ledger statements where they conflict. Existing model geometry is preserved, the unsafe parallel biological quantity ledger is retired, all accepted technology, API, unit, raid, country, focus, GUI, presentation, audit, and catalog work remains required, and the repository target is `ready for user live acceptance`.
-
-> Reconciled 2026-08-26. The binding current-runtime map is [`docs/plans/016_brilliant_scientist_plans/016_core_runtime_handoff_map.md`](../../plans/016_brilliant_scientist_plans/016_core_runtime_handoff_map.md). Event 016 has a default-enabled core runtime, a finite ten-country settlement layer, and bounded host-context, first-Prototype, portal-calibration, and high-speed-materials continuations. The existing `.10` and `.11` dossiers carry host-archetype presentation, while the first four KRG foundation reports, route dossiers, and foreign-integration reports carry formation-origin or carried-portfolio presentation. The latest bounded continuations are indexed in the current map, including project-family incident-risk, cross-event contact, breakthrough and aftermath report-art, seven milestone-news handoffs, and the completed 21-icon KRG idea package. This is not a whole-event completion claim: targeted transfer, cleanup, probability, balance, Event 019 isolation, and user-owned live presentation validation remain pending; the native raid framework is the Event 016 biological attack architecture, with no separate KRG biological stockpile or delivery ledger; the clone infantry model/entity package is installed and reusable, Alien Infantry has an accepted Meshy V13 model with seven genuine provider-authored actions and promoted static runtime registrations, the supported muzzle/effect locator and strict audio roles remain open, the Portal Raider runtime model/entity remains rejected and unwired pending its own recovery, and the remaining route-specific 3D packages stay queued; broader country chains are closed/rejected as filler unless a new accepted design reopens them. Earlier snapshot statements below are historical wording.
-
-> Explicit current runtime boundary: no supported authored Alien Infantry muzzle locator/effect binding is available, the registered particle/light definitions remain unbound, strict selection/acknowledgement/impact/special audio roles remain unresolved, and positional playback plus parent/live consumer acceptance remain open. The rejected Portal Raider model has no accepted recovery package, and the Portal beachhead lifecycle remains unowned.
-
-## Historical completion checkpoint, 2026-08-03
-
-- Static implementation: the core runtime, finite ten-country settlement layer, portal-calibration consumer, high-speed-materials trial, KRG country/focus/project/decision surfaces, Event 019 provider adapters, and registered presentation/localisation surfaces are present in source.
-- Validation pending: targeted transfer and cleanup, probability and affordability, quantitative balance, Event 019 provider isolation, live GUI/audio/presentation, and user-owned campaign scenarios remain open.
-- Native raid surface: existing biological, battlefield, captured-facility recovery, hostile and friendly weaponized-zombie, and anti-zombie-cure raids remain manually available under their native policy, staging, target, aircraft or formation, and payload contracts; active Kruger bypasses the separate authority board and makes their AI prefer them without auto-launching or changing native strength. The native raid framework remains authoritative for raid preparation, equipment reservation, cancellation, expiry, outcome, refund, history, contamination, condemnation, and confirmed-use attribution. The retired Event 016 biological quantity ledger is not a dependency. Ordinary industry produces the concrete pathogen equipment, and the eighteen Event 016 native raids reserve it through the engine; there are no separate Event 016 production, staging, or attack-decision receipts.
-- Direct project-force access: the seven Kruger State batch decisions and six bespoke equipment production lines use the operational family stage as their direct living-Kruger entry point. Concrete material, factory, time, capacity, project-history, and failure-state locks remain, while duplicate facility, staffing, terminal, transport-pen, safety-board, and temporal-debt setup steps no longer block active Kruger production.
-- 2D idea icons: all 28 visible KRG lifecycle/project ideas now have bespoke 64x64 `picture` assignments and registered DDS art; the 21-icon extension is documented in `docs/assets/016_brilliant_scientist/krg_country_idea_icons/`.
-- 3D status: the installed clone infantry model/entity package is reusable by generic consumers, and the accepted Meshy V13 Alien Infantry model has seven genuine provider-authored actions with promoted static runtime registrations. Its supported muzzle/effect locator, particle/light binding, strict audio roles, positional playback, and live acceptance remain open. The Portal Raider runtime model/entity remains rejected and unwired after the failed semantic generation task, and the other route-specific model packages remain queued outside the current scope. No model or final GUI/full Event 016 completion claim is made.
-- Broader country chains: the non-model closure handoff closes chains beyond the finite ten-country layer as filler. Reopen only through a new accepted design decision.
-
-These August receipts preserve their frozen scope and are subordinate to the later final completion contract and user amendments: [`016_final_completion_audit_2026-08-03.md`](../../plans/016_brilliant_scientist_plans/subagent_handoffs/016_final_completion_audit_2026-08-03.md) and [`016_nonmodel_content_closure_handoff_2026-08-03.md`](../../plans/016_brilliant_scientist_plans/016_nonmodel_content_closure_handoff_2026-08-03.md).
+- The binding source of truth is [`specs/016_final_completion_contract.md`](specs/016_final_completion_contract.md) with its dated user amendments, followed by the ten-part specification where the contract does not change a disposition.
+- The contract records four user amendments that override older text in this package: the 2026-09-20 native biological-raid simplification, the 2026-09-25 instruction that no Event 016 model is created or changed, the 2026-09-26 split of project rows into three programme categories, and the 2026-10-03 exact native Prototype ownership amendment in [`specs/016_native_prototype_ownership_amendment_2026-10-03.md`](specs/016_native_prototype_ownership_amendment_2026-10-03.md).
+- Implemented design decisions taken after the contract are recorded in `docs/plans/016_brilliant_scientist_plans/agent_decisions_2026-10-04.md` (D1 to D32).
+  Where they change this package's design, the affected spec part names the decision.
+- Current implementation and evidence status lives in the plans folder, not here: start from `docs/plans/016_brilliant_scientist_plans/016_brilliant_scientist_resume_packet.md`, then `016_core_runtime_handoff_map.md` and `016_source_of_truth_map.md`.
+- Static implementation is present in source for the core runtime, the finite ten-country settlement layer, the KRG and DHR country packages, the project portfolio, and the registered presentation surfaces.
+  Targeted transfer, cleanup, probability, balance, native lifecycle, and live presentation acceptance remain open, so this package makes no whole-event completion claim.
+- The pre-contract status banners and the 2026-08-03 completion checkpoint formerly kept at the top of this file were condensed into this section by the 2026-10-10 spec audit; their full text remains in git history and in the August handoffs they cited.
 
 This package expands Event ID `16`, `Brilliant Scientist`, into a full source specification for Chaos Redux.
 
@@ -32,9 +23,8 @@ The event can remain a powerful scientific success story. It can become a secret
 - `docs/plans/016_brilliant_scientist_plans/016_core_runtime_handoff_map.md` records current implementation, validation, blocked-dependency, and deferred-scope boundaries.
 - `docs/plans/016_brilliant_scientist_plans/016_brilliant_scientist_resume_packet.md` records the exact continuation point.
 - `docs/events/016_brilliant_scientist/overview.md` records the current core runtime and its deferred-content boundary.
-- `docs/assets/016_brilliant_scientist/manifest.md` is a missing historical aggregate pointer.
-  Available package evidence includes [the GFX handoff](../../assets/016_brilliant_scientist/gfx_handoff.md) and family manifests.
-  The missing aggregate prevents relying on this pointer as current full asset coverage.
+- [`docs/assets/016_brilliant_scientist/gfx_handoff.md`](../../assets/016_brilliant_scientist/gfx_handoff.md) and the family manifests beside it record asset wiring.
+  No aggregate asset manifest exists, so none of these files is a full asset-coverage verdict.
 - `docs/super_events/016_brilliant_scientist/text_research.md` contains the completed six-package text research.
 - `docs/super_events/016_brilliant_scientist/audio_research.md` contains the completed six-package audio research and final WAV manifest.
 - `docs/plans/016_brilliant_scientist_plans/subagent_handoffs/016_base_portrait_source_handoff.md` records the completed stage-0 source and runtime package.
@@ -111,3 +101,25 @@ The event can remain a powerful scientific success story. It can become a secret
 - Mandate, Dependence, Exposure, and Project Capacity are visible player-facing state. Only Independent Capacity and Grievance are hidden causal state.
 - Exactly seventeen achievements and exactly six mapped super-event packages remain required.
 - The event remains outside event clusters unless the user later changes that catalog decision.
+
+## Open questions
+
+- Cross-owner date gate (owner: Germany Mengele chain and camp system, not this package).
+  Event 016's Mengele provider consumes `brilliant_scientist_mengele_project_stage_provider_is_valid`, which adds no calendar condition of its own.
+  It inherits the programme-owner predicates in `common/scripted_triggers/germany_mengele_triggers.txt`, where `germany_mengele_can_attempt_coup` still carries a fixed `date > 1942.12.31` condition.
+  Under the user's 10 October 2026 rule that dates only influence weights, that gate belongs to the owning system's rework; this package records the dependency and does not change it.
+- Directorate Facilities tab presentation (owner: Directorate GUI).
+  The implemented `brilliant_scientist_directorate_gui_facilities` and `brilliant_scientist_directorate_gui_facility_network` strings both print the cohort and second-site status, so the tab can show the same two facts twice.
+  This is reported for the GUI owner rather than changed here.
+
+## Changelog
+
+- 2026-10-10 spec audit.
+  - Replaced the four stacked status banners and the 2026-08-03 checkpoint at the top of this README with one current authority and status section that points to the plans folder for evidence.
+  - Replaced the dead aggregate asset-manifest pointer with the existing GFX handoff in this README and in the animation, asset, and super-event prompts.
+  - Aligned the Kruger State focus count with the contract's fixed 100 focuses in Part 6, Part 10, the acceptance criteria, the focus architecture matrix, and the country focus prompt.
+  - Reconciled Parts 1 to 3 with implemented decisions D1 and D9: project stages start from family rows with a review selector instead of an approval order, project rows sit in three programme categories, and the compact Directorate GUI uses a header plus five tabs.
+  - Part 2 value tooltips now describe what each value does and which choices move it, with the Overview tab naming recent causes, instead of requiring a numeric component breakdown.
+  - Corrected the manifest's severe portrait animation count to five families delivered as six Stage IV sheets.
+  - Pointed live prompt, routing, and asset-reference links at `.claude/skills/` and `CLAUDE.md`, and marked the achievement, country-focus, decision-mission, and scripted-system prompts as historical build contracts.
+  - Recorded one cross-owner date-gate dependency and one GUI presentation finding under Open questions without changing either owner.

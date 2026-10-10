@@ -1,14 +1,16 @@
 # Scripted-system architecture prompt for Event 016 Brilliant Scientist
 
+> Historical build contract (spec audit 2026-10-10): the work this prompt requested is installed in source. Do not rerun it as a task queue. Continue from [the final completion contract](../specs/016_final_completion_contract.md) and `docs/plans/016_brilliant_scientist_plans/016_brilliant_scientist_resume_packet.md`; this prompt remains the reference for its original acceptance intent.
+
 Spawn `chaosx_scripted_system_architect` with `fork_turns="none"`.
 
 Read:
 
-- `AGENTS.md`
-- `.agents/skills/chaos-redux-events/SKILL.md`
-- `.agents/skills/chaos-redux-decisions-missions/SKILL.md`
-- `.agents/skills/chaos-redux-focus-trees/SKILL.md`
-- `.agents/skills/chaos-redux-subagents/SKILL.md`
+- `CLAUDE.md`
+- `.claude/skills/chaos-redux-events/SKILL.md`
+- `.claude/skills/chaos-redux-decisions-missions/SKILL.md`
+- `.claude/skills/chaos-redux-focus-trees/SKILL.md`
+- `.claude/skills/chaos-redux-subagents/SKILL.md`
 - `docs/plans/016_brilliant_scientist_plans/016_source_of_truth_map.md`
 - `docs/plans/016_brilliant_scientist_plans/016_brilliant_scientist_resume_packet.md`
 - All Event 16 source specs and matrices under `docs/specs/016_brilliant_scientist_specs/`

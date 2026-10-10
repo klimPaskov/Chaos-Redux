@@ -6,11 +6,11 @@ Spawn `chaosx_localisation_auditor` with `fork_turns="none"` after a substantial
 
 Read:
 
-- `AGENTS.md`
-- `.agents/skills/chaos-redux-events/SKILL.md`
-- `.agents/skills/chaos-redux-decisions-missions/SKILL.md`
-- `.agents/skills/chaos-redux-focus-trees/SKILL.md`
-- `.agents/skills/chaos-redux-super-events/SKILL.md`
+- `CLAUDE.md`
+- `.claude/skills/chaos-redux-events/SKILL.md`
+- `.claude/skills/chaos-redux-decisions-missions/SKILL.md`
+- `.claude/skills/chaos-redux-focus-trees/SKILL.md`
+- `.claude/skills/chaos-redux-super-events/SKILL.md`
 - `docs/specs/016_brilliant_scientist_specs/specs/016_brilliant_scientist_spec_part_9_assets_animation_and_localisation.md`
 - Current Event 16 implementation, scripted localisation, Event Details, event log, super-event, achievement, focus, decision, country, and GUI text
 

@@ -6,11 +6,11 @@ Spawn `chaosx_event_completion_auditor` with `fork_turns="none"` after implement
 
 Read:
 
-- `AGENTS.md`
-- `.agents/skills/chaos-redux-events/SKILL.md`
-- `.agents/skills/chaos-redux-improvement-loop/SKILL.md`
-- `.agents/skills/chaos-redux-subagents/SKILL.md`
-- `.agents/skills/chaos-redux-event-planning/SKILL.md`
+- `CLAUDE.md`
+- `.claude/skills/chaos-redux-events/SKILL.md`
+- `.claude/skills/chaos-redux-improvement-loop/SKILL.md`
+- `.claude/skills/chaos-redux-subagents/SKILL.md`
+- `.claude/skills/chaos-redux-event-planning/SKILL.md`
 - Every source-spec, matrix, prompt, acceptance, plan, addendum, and handoff for Event 16
 - Current gameplay, localisation, GUI, GFX, asset, audio, documentation, and spreadsheet files
 

@@ -60,7 +60,7 @@ Normal eligibility:
 - Has not already hosted, expelled, killed, transferred, or lost Kruger through this campaign.
 - Is not already in a terminal world-end state.
 
-The selection pool should include AI and human countries. The current implementation's preference for majors or players should be removed. Every eligible country should retain a chance, with dynamic weighting rather than a hard major-only gate.
+The selection pool should include AI and human countries. Majors and players receive no reserved preference; every eligible country retains a chance, with dynamic weighting rather than a hard major-only gate.
 
 ### Selection weighting
 
@@ -341,7 +341,7 @@ Player actions:
 
 - Allocate project capacity.
 - Manage universities and industrial contracts.
-- Approve or deny project stages.
+- Start, suspend, resume, cancel, replicate, or publish project stages through the family rows and the programme review selector (agent decision D1, 2026-10-04, which removed the separate approval order).
 - Respond to foreign contact.
 - Set security policy.
 - Decide how much independent authority Kruger receives.
@@ -380,7 +380,7 @@ The baseline system ends in one of several persistent resolutions.
 
 ## Core visible values
 
-The host should manage three primary visible values and one visible portfolio state.
+The host manages three primary visible values, the visible Project Capacity budget described in Part 3, and one visible portfolio state.
 
 ### Scientific Mandate
 

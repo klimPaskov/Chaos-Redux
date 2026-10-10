@@ -1,5 +1,7 @@
 # Decision and mission implementation prompt for Event 016 Brilliant Scientist
 
+> Historical build contract (spec audit 2026-10-10): the work this prompt requested is installed in source. Do not rerun it as a task queue. Continue from [the final completion contract](../specs/016_final_completion_contract.md) and `docs/plans/016_brilliant_scientist_plans/016_brilliant_scientist_resume_packet.md`; this prompt remains the reference for its original acceptance intent.
+
 Apply the binding R2, R3, R4, R5, and R7 contracts from `docs/plans/016_brilliant_scientist_plans/016_source_of_truth_map.md`.
 
 Read:
@@ -10,9 +12,9 @@ Read:
 - `docs/specs/016_brilliant_scientist_specs/specs/016_brilliant_scientist_spec_part_7_world_reactions_and_ai.md`
 - `docs/specs/016_brilliant_scientist_specs/matrices/016_decision_mission_map.md`
 - `docs/specs/016_brilliant_scientist_specs/acceptance/016_balance_and_exploit_review.md`
-- `.agents/skills/chaos-redux-decisions-missions/SKILL.md`
-- `.agents/skills/chaos-redux-events/SKILL.md`
-- `AGENTS.md`
+- `.claude/skills/chaos-redux-decisions-missions/SKILL.md`
+- `.claude/skills/chaos-redux-events/SKILL.md`
+- `CLAUDE.md`
 
 Implement the Event 16 decision and mission systems without reducing them to political-power stores.
 

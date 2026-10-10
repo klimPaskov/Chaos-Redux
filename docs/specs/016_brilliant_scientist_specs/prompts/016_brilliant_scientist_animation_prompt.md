@@ -1,6 +1,6 @@
 # Animation production prompt for Event 016 Brilliant Scientist
 
-> Superseded continuation note (2026-08-03): the missing-asset statements below are a historical production prompt. The six Stage-IV route sheets and static fallbacks are present and registered in the current asset manifest. Do not rerun portrait or animation production without a concrete evidence defect. Use `docs/assets/016_brilliant_scientist/manifest.md` and `docs/plans/016_brilliant_scientist_plans/016_core_runtime_handoff_map.md` for current status. Final state-selection or live GUI animation acceptance remains parent-owned.
+> Superseded continuation note (2026-08-03): the missing-asset statements below are a historical production prompt. The six Stage-IV route sheets and static fallbacks are present and registered in the current asset manifest. Do not rerun portrait or animation production without a concrete evidence defect. Use `docs/assets/016_brilliant_scientist/gfx_handoff.md` and `docs/plans/016_brilliant_scientist_plans/016_core_runtime_handoff_map.md` for current status. Final state-selection or live GUI animation acceptance remains parent-owned.
 
 Produce exactly five severe portrait packages: clone, machine, temporal, xenobiological or alien, and synthesis. The combined xenobiological-or-alien package follows the locked campaign conclusion; transformation alone must not imply extraterrestrial provenance.
 
@@ -14,8 +14,8 @@ Read:
 
 - `docs/specs/016_brilliant_scientist_specs/specs/016_brilliant_scientist_spec_part_9_assets_animation_and_localisation.md`
 - `docs/specs/016_brilliant_scientist_specs/matrices/016_asset_inventory.md`
-- `.agents/skills/chaos-redux-frame-animation/SKILL.md`
-- `.agents/skills/chaos-redux-event-assets/SKILL.md`
+- `.claude/skills/chaos-redux-frame-animation/SKILL.md`
+- `.claude/skills/chaos-redux-event-assets/SKILL.md`
 
 ## Required portrait packages
 

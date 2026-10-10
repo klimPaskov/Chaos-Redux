@@ -73,7 +73,7 @@ The design should keep the early event legible. The first project menu should no
 
 ### Project approval
 
-Each new stage requires an approval decision or mission outcome. Approval should state visible cost, purpose, and broad risk class. It should not reveal hidden rebellion arithmetic or every possible accident.
+Each new stage starts through its own family stage row or a mission outcome; no separate approval order exists (agent decision D1, 2026-10-04). The stage row states visible cost, purpose, and broad risk class. It should not reveal hidden rebellion arithmetic or every possible accident.
 
 Kruger can continue theoretical work within his existing mandate, but Deployment and Weaponization require national resources or a deliberate failure of oversight. A high-Mandate Kruger may begin an unauthorized stage, creating a discovery event and a choice between seizure, toleration, or retroactive approval.
 

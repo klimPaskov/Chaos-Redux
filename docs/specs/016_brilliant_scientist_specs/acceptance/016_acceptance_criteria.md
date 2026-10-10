@@ -184,7 +184,7 @@ The accepted 2026-08-02 addendum is retained as a ten-country implementation sna
 
 ## Focus tree
 
-- [ ] Full tree target is approximately 85 to 115 meaningful focuses.
+- [ ] The Kruger State tree has exactly 100 meaningful focuses, as fixed by the final completion contract.
 - [ ] Opening survival content varies by formation type.
 - [ ] Human technocracy route exists.
 - [ ] Replicated sovereignty route exists when cloning supports it.

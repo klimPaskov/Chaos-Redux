@@ -1,6 +1,6 @@
 # Super-event research prompt for Event 016 Brilliant Scientist
 
-> Superseded continuation note (2026-08-03): the image, description, localisation, and wiring gaps below are historical planning text. Current six-image, six-audio, shared wiring, and report presentation status is recorded in `docs/assets/016_brilliant_scientist/manifest.md` and `docs/plans/016_brilliant_scientist_plans/016_core_runtime_handoff_map.md`. Do not rerun completed research or production without a concrete evidence defect. Live presentation acceptance remains parent-owned.
+> Superseded continuation note (2026-08-03): the image, description, localisation, and wiring gaps below are historical planning text. Current six-image, six-audio, shared wiring, and report presentation status is recorded in `docs/assets/016_brilliant_scientist/gfx_handoff.md` and `docs/plans/016_brilliant_scientist_plans/016_core_runtime_handoff_map.md`. Do not rerun completed research or production without a concrete evidence defect. Live presentation acceptance remains parent-owned.
 
 Research exactly six mapped packages. International recognition and qualifying defeat are conditional at runtime but still require complete text, image, unique audio, source, licence, localisation, documentation, and wiring handoffs.
 
@@ -16,8 +16,8 @@ Read:
 
 - `docs/specs/016_brilliant_scientist_specs/specs/016_brilliant_scientist_spec_part_8_super_events_world_end_and_aftermath.md`
 - `docs/specs/016_brilliant_scientist_specs/specs/016_brilliant_scientist_spec_part_9_assets_animation_and_localisation.md`
-- `.agents/skills/chaos-redux-super-events/SKILL.md`
-- `.agents/skills/chaos-redux-event-assets/SKILL.md` for image work
+- `.claude/skills/chaos-redux-super-events/SKILL.md`
+- `.claude/skills/chaos-redux-event-assets/SKILL.md` for image work
 
 ## Packages to research
 

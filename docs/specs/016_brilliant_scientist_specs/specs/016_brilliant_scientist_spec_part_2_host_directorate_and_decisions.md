@@ -16,7 +16,7 @@ The central loop is:
 4. Respond to institutions, assistants, foreign powers, and accidents.
 5. Decide whether to integrate, constrain, export, negotiate with, or confront him.
 
-The system should use one main decision category with a richer scripted GUI when practical. Ordinary decisions remain the actual gameplay actions. The custom interface makes values, project slots, portrait stages, facility states, and warnings readable.
+Ordinary decisions remain the actual gameplay actions. The Directorate category holds governance, security, facilities, foreign liaison, and the programme review board, while the project-stage rows sit in the Conventional, Biological, and Advanced programme categories (agent decision D9, 2026-10-04, matching the user-approved 2026-09-26 provider split). The compact Directorate GUI is the only event-owned mechanic window (final completion contract) and makes values, project stages, portrait stages, facility states, and warnings readable.
 
 ## Kruger Directorate interface
 
@@ -27,6 +27,9 @@ The system should use one main decision category with a richer scripted GUI when
 The interface becomes available after appointment and the primary laboratory site is selected. It should open from the Event 16 decision category. The category header still shows the essential values for players who do not open the custom window.
 
 ### Main layout
+
+Implemented layout (spec audit 2026-10-10 reconciliation): a compact header shows the portrait, role, government-control band, and the four visible values; five tabs (Overview, Projects, Facilities, Foreign, Authority) present the panels below.
+The panel lists below are the design inventory those tabs draw from; a panel shows only entries that are currently true and decision-relevant, not every listed field.
 
 #### Profile panel
 
@@ -122,7 +125,8 @@ Dynamic values should use integer formatting unless a fraction directly changes 
 
 ### Cause breakdown
 
-Every main value tooltip should show named components. For example, Dependence can include:
+Each main value tooltip states what the value does and which kinds of choices move it, and the Overview tab names the latest appointment, institution, priority, security, and authority causes.
+A full numeric component breakdown is not required. Named causes Dependence can draw on include:
 
 - Centralized methods.
 - Active Kruger-led projects.

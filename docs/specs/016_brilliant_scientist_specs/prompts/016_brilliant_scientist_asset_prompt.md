@@ -1,8 +1,8 @@
 # Asset production prompt for Event 016 Brilliant Scientist
 
-> Superseded continuation note (2026-08-03): the production inventory below is a historical planning prompt. The current asset manifest records the produced and registered 2D packages, including the complete 21-icon KRG country-idea extension. Do not rerun broad asset production from this prompt. Use `docs/assets/016_brilliant_scientist/manifest.md` and `docs/plans/016_brilliant_scientist_plans/016_core_runtime_handoff_map.md` for current status. External Stage-0 portrait rights, targeted or live acceptance, and the no-model boundary remain open.
+> Superseded continuation note (2026-08-03): the production inventory below is a historical planning prompt. The current asset manifest records the produced and registered 2D packages, including the complete 21-icon KRG country-idea extension. Do not rerun broad asset production from this prompt. Use `docs/assets/016_brilliant_scientist/gfx_handoff.md` and `docs/plans/016_brilliant_scientist_plans/016_core_runtime_handoff_map.md` for current status. External Stage-0 portrait rights, targeted or live acceptance, and the no-model boundary remain open.
 
-The original planning inventory listed six super-event images, seventeen achievement icon triplets, and five severe portrait animation package families as required production. That inventory statement is historical; current production counts and wiring are controlled by `docs/assets/016_brilliant_scientist/manifest.md` and the current runtime map above.
+The original planning inventory listed six super-event images, seventeen achievement icon triplets, and five severe portrait animation package families as required production. That inventory statement is historical; current production counts and wiring are controlled by `docs/assets/016_brilliant_scientist/gfx_handoff.md` and the current runtime map above.
 
 Use this prompt with the correct narrow Chaos Redux asset subagents. Spawn every project subagent with `fork_turns="none"`.
 
@@ -16,12 +16,12 @@ Read:
 - `docs/specs/016_brilliant_scientist_specs/specs/016_brilliant_scientist_spec_part_5_kruger_state_country_package.md`
 - `docs/specs/016_brilliant_scientist_specs/specs/016_brilliant_scientist_spec_part_6_kruger_state_focus_tree.md`
 - `docs/specs/016_brilliant_scientist_specs/specs/016_brilliant_scientist_spec_part_8_super_events_world_end_and_aftermath.md`
-- `.agents/skills/chaos-redux-event-assets/SKILL.md`
-- `.agents/skills/chaos-redux-frame-animation/SKILL.md` for animated work
+- `.claude/skills/chaos-redux-event-assets/SKILL.md`
+- `.claude/skills/chaos-redux-frame-animation/SKILL.md` for animated work
 
 ## Routing
 
-Route every Kruger portrait, advisor card, staged transformation, and portrait animation to `chaosx_portrait_creator` under [the asset owner skill](../../../../.agents/skills/chaos-redux-event-assets/SKILL.md).
+Route every Kruger portrait, advisor card, staged transformation, and portrait animation to `chaosx_portrait_creator` under [the asset owner skill](../../../../.claude/skills/chaos-redux-event-assets/SKILL.md).
 Preserve Stage 0 and the accepted supplied identity source.
 
 Use `chaosx_generated_event_art` for fictional report and news scenes, super-event art, Kruger State flags, faction emblems, and UI thematic art.
@@ -70,7 +70,7 @@ At minimum:
 
 ## Source and style rules
 
-Inspect the matching reference folders under `.agents/skills/chaos-redux-event-assets/assets/` before creating each asset type.
+Inspect the matching reference folders under `.claude/skills/chaos-redux-event-assets/assets/` before creating each asset type.
 
 Keep World War II visual technology, clothing, vehicles, architecture, laboratories, and press composition. No modern props, readable generated text, watermarks, fake UI, film stills, reenactments, or generic cinematic color grading.
 

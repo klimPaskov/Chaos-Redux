@@ -1,6 +1,6 @@
 # Goal: Rework Event 016 Brilliant Scientist
 
-Continue accepted non-model Event 016 work from `specs/016_final_completion_contract.md` and its later user amendments. Read the current resume packet and `AGENTS.md`. Historical prompts do not authorize repeated production. The 2026-09-25 instruction forbids creating, inspecting, or changing Event 016 models.
+Continue accepted non-model Event 016 work from `specs/016_final_completion_contract.md` and its later user amendments. Read the current resume packet and `CLAUDE.md`. Historical prompts do not authorize repeated production. The 2026-09-25 instruction forbids creating, inspecting, or changing Event 016 models.
 
 Keep Event 16 a minor fire-once incident. A valid random country receives Doctor Warren Kruger, one fixed fictional character. His public appointment grants the promised `+100%` research speed. AI always accepts. A player may appoint him publicly or secretly, or send him to another valid country. Prevent duplicate Krugers, invalid transfers, and repeated rewards.
 

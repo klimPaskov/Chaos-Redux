@@ -1,14 +1,16 @@
 # Achievement implementation prompt for Event 016 Brilliant Scientist
 
+> Historical build contract (spec audit 2026-10-10): the work this prompt requested is installed in source. Do not rerun it as a task queue. Continue from [the final completion contract](../specs/016_final_completion_contract.md) and `docs/plans/016_brilliant_scientist_plans/016_brilliant_scientist_resume_packet.md`; this prompt remains the reference for its original acceptance intent.
+
 The parent disposition is final: implement exactly seventeen achievements. `public_method` and `clean_break` remain distinct. Do not rerun or reinterpret the rejected merge proposal.
 
 Read:
 
 - `docs/specs/016_brilliant_scientist_specs/specs/016_brilliant_scientist_spec_part_10_achievements_and_completion.md`
 - `docs/specs/016_brilliant_scientist_specs/matrices/016_route_coverage.md`
-- `.agents/skills/chaos-redux-events/SKILL.md`
-- `.agents/skills/chaos-redux-event-assets/SKILL.md`
-- `AGENTS.md`
+- `.claude/skills/chaos-redux-events/SKILL.md`
+- `.claude/skills/chaos-redux-event-assets/SKILL.md`
+- `CLAUDE.md`
 
 Implement the full 17-achievement working set. Working labels are not final localisation.
 

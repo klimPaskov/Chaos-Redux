@@ -12,8 +12,8 @@ The Kruger State needs a large bespoke focus tree because it is expected to surv
 
 Target scope:
 
-- Roughly 85 to 115 focuses when fully implemented.
-- Final count is owned by the implementation agent.
+- Exactly 100 focuses, as fixed by the final completion contract.
+- The original 85 to 115 planning range is superseded; weak rewards are replaced in place rather than by adding or removing focuses.
 - Path-level architecture is mandatory.
 - Exact coordinates and final focus names are implementation work.
 - Every major branch needs several focus groups, route interaction, a mechanical unlock, AI behavior, and a clear payoff.

@@ -104,7 +104,7 @@ The following require several completed foundations:
 | Diplomacy and intelligence | 10 to 14 | Recognition, patronage, recruitment, submission |
 | Expansion and integration | 10 to 14 | Former host, facilities, resources, postwar handling |
 | World conquest and singularity | 10 to 16 | Evolution IV and terminal content |
-| Total target | 85 to 115 | Final count depends on project branch visibility and shared nodes |
+| Total | Exactly 100 | Fixed by the final completion contract; lane ranges above are historical planning bands |
 
 The full file can contain all route nodes. A given campaign should see only valid project paths and state-appropriate crisis content.
 

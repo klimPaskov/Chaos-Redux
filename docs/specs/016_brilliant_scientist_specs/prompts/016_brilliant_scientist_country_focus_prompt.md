@@ -1,5 +1,7 @@
 # Kruger State country and focus implementation prompt
 
+> Historical build contract (spec audit 2026-10-10): the work this prompt requested is installed in source. Do not rerun it as a task queue. Continue from [the final completion contract](../specs/016_final_completion_contract.md) and `docs/plans/016_brilliant_scientist_plans/016_brilliant_scientist_resume_packet.md`; this prompt remains the reference for its original acceptance intent.
+
 Apply the binding institutional-capture, split project-family, temporal-debt, origin-conclusion, and terminal-commitment contracts from `016_source_of_truth_map.md`.
 
 Read:
@@ -10,11 +12,11 @@ Read:
 - `docs/specs/016_brilliant_scientist_specs/matrices/016_focus_tree_architecture.md`
 - `docs/specs/016_brilliant_scientist_specs/matrices/016_ai_behavior_matrix.md`
 - `docs/specs/016_brilliant_scientist_specs/acceptance/016_acceptance_criteria.md`
-- `.agents/skills/chaos-redux-focus-trees/SKILL.md`
-- `.agents/skills/chaos-redux-decisions-missions/SKILL.md`
-- `.agents/skills/chaos-redux-events/SKILL.md`
-- `.agents/skills/chaos-redux-event-assets/SKILL.md`
-- `AGENTS.md`
+- `.claude/skills/chaos-redux-focus-trees/SKILL.md`
+- `.claude/skills/chaos-redux-decisions-missions/SKILL.md`
+- `.claude/skills/chaos-redux-events/SKILL.md`
+- `.claude/skills/chaos-redux-event-assets/SKILL.md`
+- `CLAUDE.md`
 
 ## Country package
 
@@ -46,7 +48,7 @@ Do not release an empty or invalid tag. Do not transfer third-party controlled s
 
 ## Focus tree
 
-Create a coherent 85 to 115 focus tree using the path architecture, not a generated reward ladder.
+Create a coherent focus tree of exactly 100 focuses (final completion contract) using the path architecture, not a generated reward ladder.
 
 Required branches:
 

@@ -58,7 +58,7 @@ Spawn `chaosx_generated_event_art` for report and news scenes, super-event image
 
 `prompts/016_brilliant_scientist_asset_prompt.md`
 
-`chaosx_portrait_creator` owns all Kruger portrait and portrait-animation production under [the asset owner skill](../../../../.agents/skills/chaos-redux-event-assets/SKILL.md).
+`chaosx_portrait_creator` owns all Kruger portrait and portrait-animation production under [the asset owner skill](../../../../.claude/skills/chaos-redux-event-assets/SKILL.md).
 Kruger is fictional, so native ImageGen later-stage portraits are appropriate through that worker. Stage 0 is already complete from the exact approved `portrait_generic_biowarfare_europe_male_01` base and must not be recreated. Use its preserved source and registered runtime sprites to maintain identity.
 
 ### 9. Icon and frame-animation work

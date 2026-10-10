@@ -6,7 +6,7 @@ Read `docs/plans/016_brilliant_scientist_plans/016_source_of_truth_map.md` and `
 
 Implement Event ID `16`, Brilliant Scientist, from the complete source package under `docs/specs/016_brilliant_scientist_specs/`.
 
-Read `AGENTS.md`, all relevant repository skills, all ten spec parts, all matrices, research notes, acceptance criteria, balance review, prompt handoffs, current Event 16 files, current event-log and evolution systems, scientist and special-project patterns, world-threat and world-end helpers, country and focus patterns, vanilla documentation, offline wiki pages, and a relevant vanilla precedent for every touched engine surface.
+Read `CLAUDE.md`, all relevant repository skills, all ten spec parts, all matrices, research notes, acceptance criteria, balance review, prompt handoffs, current Event 16 files, current event-log and evolution systems, scientist and special-project patterns, world-threat and world-end helpers, country and focus patterns, vanilla documentation, offline wiki pages, and a relevant vanilla precedent for every touched engine surface.
 
 ## Non-negotiable event promise
 

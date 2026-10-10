@@ -667,7 +667,7 @@ Every valid formation creates a playable and coherent country.
 
 ### Tranche 7: full focus tree and Evolution IV
 
-- 85 to 115 focus architecture.
+- 100-focus architecture.
 - Route-specific decisions and forces.
 - World-conquest branch.
 - World-threat integration.
@@ -718,7 +718,7 @@ Event 16 is complete only when:
 The specification does not lock:
 
 - Final focus coordinates.
-- Final focus count inside the 85 to 115 target range.
+- Final focus layout within the fixed 100-focus count.
 - Final event IDs beyond the stable `chaosx.nr16` namespace.
 - Final localisation text.
 - Final super-event titles, quotes, button remarks, and audio.
