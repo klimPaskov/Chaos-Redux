@@ -116,6 +116,13 @@ The adapter must:
 
 Event 53 does not create a separate flat famine modifier or direct famine deaths.
 
+Current owner facts the adapter must respect:
+
+- famine commits stages one step at a time with hold times, so an immediate crisis is opened by emptying the state reserve ledger and committing a starting stage through a scenario-pressure seam modelled on `famine_apply_hunger_lines_scenario_pressure`, never by writing a later stage directly
+- famine already has one owner adapter per cause (`famine_adapt_<owner>_state`); Event 53 adds one adapter of the same shape rather than a parallel food model
+- the Food Crisis country modifier already converts visible acute, famine, and catastrophic states into Stability and War Support loss
+- the player answers through the existing Release Food Stores, Import Food, Restore Relief, Evacuate, and Conceal Hunger decisions
+
 ## Migration adapter
 
 The migration owner validates displacement cause, origin, route, destination, reception, and settlement.

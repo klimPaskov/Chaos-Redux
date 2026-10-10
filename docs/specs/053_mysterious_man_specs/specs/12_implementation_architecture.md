@@ -265,7 +265,11 @@ The probability auditor remains read-only. The implementation owner applies chan
 6. implement demand selection, amount locking, and payment transactions
 7. implement the Event 53 direct consequence packages
 8. implement registry construction, uniform selection, receipts, and rejection recovery
-9. add owner adapters one system at a time
+9. add owner adapters one system at a time, starting with owners that already exist (natural disasters, famine, migration, disease, Event 006) before packages that need a new reusable owner
+
+The first playable tranche is the direct and gateway set: `mm_b00`, `mm_b01`, `mm_b02`, `mm_b10` through `mm_b16`, and `mm_b24` at baseline, plus `mm_i04`, `mm_i05`, `mm_i07`, and `mm_ii10` at later tiers.
+That gives a baseline refusal pool of eleven equal entries without any new owner system, so the event is playable and fair while adapter packages join one by one.
+Every package that needs a new reusable owner (strike wave, coup, political movement, mutiny, separatist uprising, border or external war, assassination, occupation revolt, security breakdown) stays reserved and absent from the live pool until that owner exists, as section 4 already requires; the completion status lists each one that is still reserved.
 10. implement compound packages after component adapters pass independently
 11. implement Evolution III catastrophe adapters
 12. wire evolution logs, Event Details, and History

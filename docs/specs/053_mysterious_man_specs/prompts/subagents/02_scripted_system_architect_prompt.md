@@ -1,6 +1,6 @@
 # Prompt for `chaosx_scripted_system_architect`
 
-Spawn with `fork_turns="none"` (Codex).
+Spawn with a self-contained prompt and no inherited parent context.
 
 Event ID: `53`.
 Event slug: `mysterious_man`.

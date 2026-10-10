@@ -3,7 +3,7 @@
 All 20 supplied subagent TOML definitions were extracted and read in full. Their ownership boundaries, required evidence, and handoff rules were incorporated into the specification and implementation prompts.
 
 The original planning environment did not expose the Chaos Redux project subagent execution route.
-This historical limitation does not determine current availability; use the current [routing skill](../../../../.agents/skills/chaos-redux-subagents/SKILL.md) and its runtime-specific invocation syntax. No project subagent was executed during this specification pass.
+This historical limitation does not determine current availability; use the current [routing skill](../../../../.claude/skills/chaos-redux-subagents/SKILL.md) and its runtime-specific invocation syntax. No project subagent was executed during this specification pass.
 
 Context-complete prompts are included for every relevant later implementation role:
 

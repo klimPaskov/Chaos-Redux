@@ -1,6 +1,6 @@
 # Event 53 Generated Report-Art Prompt
 
-Use `chaosx_generated_event_art` with `fork_turns="none"` (Codex) for this bounded package.
+Use `chaosx_generated_event_art` with a self-contained prompt and no inherited parent context for this bounded package.
 
 ## Owner and scope
 

@@ -1,6 +1,6 @@
 # Prompt for `chaosx_generated_event_art`
 
-Spawn with `fork_turns="none"` (Codex).
+Spawn with a self-contained prompt and no inherited parent context.
 
 Use the complete bounded brief at:
 

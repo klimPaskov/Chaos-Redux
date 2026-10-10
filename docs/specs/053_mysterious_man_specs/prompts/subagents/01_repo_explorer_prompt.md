@@ -1,6 +1,6 @@
 # Prompt for `chaosx_repo_explorer`
 
-Spawn with `fork_turns="none"` (Codex).
+Spawn with a self-contained prompt and no inherited parent context.
 
 Read `AGENTS.md`, `chaos-redux-subagents`, `chaos-redux-events`, the full source specification under `docs/specs/053_mysterious_man_specs/`, the relevant offline Paradox wiki pages, installed vanilla documentation, and targeted repository files found from the identifiers below.
 

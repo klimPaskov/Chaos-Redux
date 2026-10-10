@@ -1,6 +1,6 @@
 # Event 53 Subagent Routing
 
-Every project subagent must be invoked with `fork_turns="none"` (Codex) and a complete prompt.
+Every project subagent must be invoked with a complete self-contained prompt and no inherited parent context.
 
 ## Relevant implementation agents
 

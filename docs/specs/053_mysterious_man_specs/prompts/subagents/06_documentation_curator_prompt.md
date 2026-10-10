@@ -1,6 +1,6 @@
 # Prompt for `chaosx_documentation_curator`
 
-Spawn with `fork_turns="none"` (Codex) after a substantial Event 53 implementation tranche.
+Spawn with a self-contained prompt and no inherited parent context after a substantial Event 53 implementation tranche.
 
 Read `AGENTS.md`, `chaos-redux-subagents`, the complete Event 53 source specification, all Event 53 plans and subagent handoffs, Event 53 docs, adapter manifests, asset handoffs, validation reports, and only the implementation files needed to confirm current facts.
 

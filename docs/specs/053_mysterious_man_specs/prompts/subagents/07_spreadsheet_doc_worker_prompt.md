@@ -1,6 +1,6 @@
 # Prompt for `chaosx_spreadsheet_doc_worker`
 
-Spawn with `fork_turns="none"` (Codex) only after final Event 53 in-game Event Details and evolution wording exists.
+Spawn with a self-contained prompt and no inherited parent context only after final Event 53 in-game Event Details and evolution wording exists.
 
 Read the spreadsheet skill, the authoritative workbook, the final Event 53 localisation and scripted localisation needed for mirror fields, and:
 

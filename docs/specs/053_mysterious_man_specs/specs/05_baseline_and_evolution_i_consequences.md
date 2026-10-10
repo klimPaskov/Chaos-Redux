@@ -154,9 +154,12 @@ This entry remains blocked until Event 50 exposes a safe bounded adapter.
 
 **Owner:** the famine adapter.
 
-One or several valid states enter a severe food-security incident based on real supply, access, vulnerability, and current conditions. The package cannot create famine in a state that the famine owner cannot validate.
+The target's food reserves in one or several food-vulnerable states are emptied and those states commit acute shortage on the refusal day, following the scenario-pressure precedent that the Hunger Lines use (`famine_apply_hunger_lines_scenario_pressure`).
+The famine owner then moves the states up or down one stage at a time under its normal hold times, so the refusal opens a real food crisis that the player can still answer with Import Food, Release Food Stores, and Restore Relief.
+The package cannot select a state that the famine owner cannot assess.
 
 Famine owns stages, reserves, relief access, mortality, decisions, missions, migration requests, and cleanup. Event 53 supplies origin and requested severity only.
+The existing Food Crisis country modifier already charges Stability and War Support for each visible acute, famine, or catastrophic state, so this package adds no separate Event 53 modifier.
 
 ### `mm_b20_displacement_crisis`
 

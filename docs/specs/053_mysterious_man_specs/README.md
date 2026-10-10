@@ -3,9 +3,8 @@
 ## Authority and current workflow
 
 The [scope review](quality/design_scope_and_closure.md) preserves the no-counterplay premise. Its accepted label does not independently approve every elaborated adapter or package.
-Use current [planning](../../../.agents/skills/chaos-redux-event-planning/SKILL.md), [events](../../../.agents/skills/chaos-redux-events/SKILL.md), [assets](../../../.agents/skills/chaos-redux-event-assets/SKILL.md), and [routing](../../../.agents/skills/chaos-redux-subagents/SKILL.md) guidance.
+Use current [planning](../../../.claude/skills/chaos-redux-event-planning/SKILL.md), [events](../../../.claude/skills/chaos-redux-events/SKILL.md), [assets](../../../.claude/skills/chaos-redux-event-assets/SKILL.md), and [routing](../../../.claude/skills/chaos-redux-subagents/SKILL.md) guidance.
 Unattributed design remains `unresolved`; rediscover current tools and source state before a separately authorized implementation task.
-
 
 This package is the source specification for Chaos Redux Event 53.
 
@@ -58,3 +57,12 @@ The following rules outrank optional tuning suggestions elsewhere in this pack:
 ## Working labels
 
 Names for packages, helpers, events, files, sprites, and engineering states in this specification are working implementation labels. They are not final localisation. Final player-facing text must be written during implementation under the event writing rules and then reviewed by the localisation auditor.
+
+## Changelog
+
+### 2026-10-10 spec audit
+
+- Subagent instructions use the Claude-first wording (self-contained prompt, no inherited parent context) and skill links point to `.claude/skills/`; historical planning-environment records are unchanged.
+- `mm_b19` and `mm_ii11` now open famine the way the current famine owner allows: reserves are emptied and a starting stage is committed through a Hunger Lines-style scenario seam, after which famine moves one stage at a time. The old wording asked for an immediate severe incident, which the stage hold rules forbid.
+- The famine adapter section records the current owner facts (one adapter per cause, the Food Crisis modifier already charges Stability and War Support, the player's real food decisions), so Event 53 adds no duplicate famine penalty.
+- The implementation order names the first playable tranche: eleven direct or gateway packages at baseline that need no new owner system, with every new-owner package reserved until its owner exists. This keeps the equal-ballot rule while making the event shippable without twelve new crisis owners.

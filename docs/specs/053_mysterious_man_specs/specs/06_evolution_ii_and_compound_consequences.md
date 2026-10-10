@@ -106,7 +106,8 @@ The package must distribute damage through a dynamic state-selection plan and mu
 
 **Owner:** the famine system.
 
-A large food-security crisis begins across several proven vulnerable states. The request uses a high severity profile, but famine retains ownership of production, transport, extraction, need, environment, relief, mortality, evacuation requests, and recovery.
+A large food-security crisis begins across several proven vulnerable states.
+The request empties their reserves and commits famine on the refusal day through the same scenario-pressure seam as `mm_b19`, but famine retains ownership of production, transport, extraction, need, environment, relief, mortality, evacuation requests, and recovery.
 
 The adapter cannot bypass famine validity merely because Event 53 selected the package.
 
