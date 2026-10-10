@@ -189,7 +189,7 @@ Apply current owner versions in the actual checkout. The imported author reporte
 | Shared dynamic-effect and dynamic-trigger source documentation | Before creating or calling shared helpers | Explicit scope, initialized outputs, current existence checks, measured population and one-time operation contracts. These are owner source documents, not named skills. |
 | `chaos-redux-decisions-missions` | Before compact action and native re-entry wiring | Free investigation access, actual payer/quote semantics, neutral default and safe stale continuation |
 | `chaos-redux-mtth` | At scheduling, eligible evolution pacing and opportunity review | Explicit cadence and conditional hazard interpretation, with no conflation of score and probability |
-| `chaos-redux-state-ledgers` | At population and incident accounting integration | Exact physical-state attribution, once-only accepted records and current ledger ownership |
+| `chaos-redux-map-states` | At population and incident accounting integration | Exact physical-state attribution, once-only accepted records and current ledger ownership |
 | `chaos-redux-scripted-gui` | Only for shared Event Details/log surfaces affected by registration | Current shared read contract, native consumer review and parent ownership |
 | `chaos-redux-event-assets` | Before source selection, visual work, transformation and final wiring | Complete accepted scene/icon/achievement coverage, provenance and actual native consumer checks |
 | `chaos-redux-subagents` | Before each project-role task | Self-contained task, bounded paths, actual role availability, owner restrictions and reviewed handoff |

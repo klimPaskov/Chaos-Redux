@@ -1,6 +1,6 @@
 # Event 093 decision and mission handoff
 
-Read Parts 02-11, 14-15, and 18 plus chaos-redux-decisions-missions, chaos-redux-events, chaos-redux-state-ledgers, and the actual installed shared-cost contracts.
+Read Parts 02-11, 14-15, and 18 plus chaos-redux-decisions-missions, chaos-redux-events, chaos-redux-map-states, and the actual installed shared-cost contracts.
 Part 11 maps the interaction families.
 Part 14 is the tuning authority.
 This package supplies design behavior, not implementation-ready effect tokens.

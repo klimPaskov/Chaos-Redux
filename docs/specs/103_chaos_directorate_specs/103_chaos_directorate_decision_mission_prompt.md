@@ -12,7 +12,7 @@ Implement the full Event 103 action system in `docs/specs/103_chaos_directorate_
 
 ## Workflow and ownership
 
-Read repository AGENTS and the current `chaos-redux-decisions-missions`, `chaos-redux-events`, `chaos-redux-focus-trees`, `chaos-redux-scripted-gui`, `chaos-redux-state-ledgers`, `chaos-redux-native-raids` and `chaos-redux-subagents` skills for every affected surface. Read the actual existing helper bodies, registration consumers, native operation costs, target selection, timer semantics and relevant civilian or military owners before changing them. Do not use snippets or permissive stubs as proof.
+Read repository AGENTS and the current `chaos-redux-decisions-missions`, `chaos-redux-events`, `chaos-redux-focus-trees`, `chaos-redux-scripted-gui`, `chaos-redux-map-states`, `chaos-redux-native-raids` and `chaos-redux-subagents` skills for every affected surface. Read the actual existing helper bodies, registration consumers, native operation costs, target selection, timer semantics and relevant civilian or military owners before changing them. Do not use snippets or permissive stubs as proof.
 
 Use `chaosx_decision_mission_auditor` for the exact action/cost/lifecycle audit with a self-contained prompt. Coordinate shared owner changes with the parent implementation agent. The parent owns shared frameworks, terminal arbitration, scenario registry and final integration. Only a separately accepted dedicated Event 103 exact-state extension may go to `chaosx_event_ui_worker` after native state navigation proves insufficient. The parent provides exact GUI identifiers/files, entry point, reference acceptance, states, resolutions and click-region handoff. Ordinary categories and shared interfaces remain parent-owned.
 

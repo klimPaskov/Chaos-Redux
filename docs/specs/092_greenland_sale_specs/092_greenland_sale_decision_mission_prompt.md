@@ -1,7 +1,7 @@
 # Decision and mission handoff: Event 092, Greenland Sale
 
 Read Parts 01–13, the original brief, current source pack, reading report, source and decision register, and validation matrix.
-Follow AGENTS, `chaos-redux-events`, `chaos-redux-decisions-missions`, `chaos-redux-state-ledgers`, `chaos-redux-mtth`, and the applicable scripted-GUI and asset rules.
+Follow AGENTS, `chaos-redux-events`, `chaos-redux-decisions-missions`, `chaos-redux-map-states`, `chaos-redux-mtth`, and the applicable scripted-GUI and asset rules.
 Use the supplied decision-mission, scripted-system, AI probability, localisation, documentation, and completion-auditor roles through real subagent tools where available.
 Do not report this prompt as an already completed audit.
 

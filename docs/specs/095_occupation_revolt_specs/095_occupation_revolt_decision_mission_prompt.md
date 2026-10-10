@@ -1,7 +1,7 @@
 # Event 095 decision and mission implementation prompt
 
 Implement the complete operation map in Part 10 and its associated military, government, foreign-support, evolution and recovery behavior in Parts 03–09 and 14.
-Follow CLAUDE.md and read chaos-redux-decisions-missions, chaos-redux-events, chaos-redux-focus-trees, chaos-redux-state-ledgers, chaos-redux-mtth and the current universal-cost and shared-price contracts.
+Follow CLAUDE.md and read chaos-redux-decisions-missions, chaos-redux-events, chaos-redux-focus-trees, chaos-redux-map-states, chaos-redux-mtth and the current universal-cost and shared-price contracts.
 Read the applicable offline wiki pages and installed native documentation before using an engine construct.
 Do not convert the design into a collection of fixed political-power buttons with nominal effects.
 
