@@ -34,11 +34,9 @@ Avoid making the Holy Realm a caricature of pacifism. It can defend, fight chaos
 
 Avoid making powers available as ordinary magic buttons. Meditation is the gate.
 
-## Open research tasks for implementation
+## Research status
 
-- Quote candidates for `The Awakened One`.
-- Quote candidates for `Powers of the Awakened` that frame powers as lesser than liberation.
-- Quote candidates for `The Final Silence` related to Nirvana or cessation.
-- Public domain or clearly licensed audio for each super-event.
-- Sourced historical symbols if real Buddhist symbols or flags are used.
-- Any real portrait if the implementation chooses a real figure instead of a fictional Bodhisattva.
+Quotes for The Awakened One, Powers of the Awakened and both Final Silence branches are verified in `docs/super_events/super_event_quote_sources.md` (Holy Realm Buddhahood section).
+Super-event audio is recorded in `docs/super_events/super_event_audio_packages.md`; source provenance for audio IDs 9 and 28 remains blocked.
+The leader is an anonymous fictional Bodhisattva, so no real portrait source is needed.
+Sourced historical symbols are needed only if a later flag or icon uses a real Buddhist or national symbol directly.

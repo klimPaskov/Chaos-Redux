@@ -6,6 +6,11 @@ The mandala panel is the central presentation surface. It should be a scripted G
 
 The panel is not decoration. It shows values, route status, power readiness, and Final Silence eligibility. Every player-clickable action in the panel must have the same validation as a decision. Buttons must show missing requirements, costs, cooldowns, and visible effects. AI countries need equivalent decision or scripted-effect paths.
 
+Current implementation: `holy_realm_mandala_category_scripted_gui` renders `holy_realm_mandala_category_container` inside the Holy Mandala decision category.
+Its five tabs (Refuge, Arhats, Diplomacy, Doctrine, Warnings) filter the 47 main-category actions for humans while AI sees every action, and only the default Refuge tab at 1920x1080 is parent visually accepted.
+The larger standalone panel below remains future presentation work that must reuse these sprite and scripted-GUI names.
+Any rework shows only the values that gate the current tab's choices; see the value proposal under Open questions in the package README.
+
 ## Visual layout
 
 The panel should feel like a large sacred interface inside HOI4, not a modern mobile minigame.
@@ -57,6 +62,9 @@ If the engine cannot support literal mouse holding, implement the accepted fallb
 - The central animation still pulses while the vow is active.
 
 The fallback must preserve the design logic. The player is making a visible commitment to meditation before powers can be used. It must not become a normal click that instantly buys a buff.
+
+Current implementation uses the concentration sequence (`THR_begin_concentration_sequence`, then `THR_hold_intention`, `THR_hold_energy`, `THR_hold_mind` and `THR_hold_investigation` as timed, paid beats) because scripted GUI offers no reliable held-button timer.
+Its acceptance as the replacement for the literal three-minute hold remains unresolved; no recorded user or parent decision approves it.
 
 ## Dhyana Depth unlocks
 
@@ -276,13 +284,12 @@ Non-terminal completion:
 - Powers stop being usable because the Buddha has passed beyond worldly action.
 - The Sangha Compact becomes a guardianship and reconstruction bloc.
 
-World-end completion:
+World-end completion (accepted current route, see Stage 5 in Part 1):
 
-- Allowed only when global chaos is above 1000 and no other world-end flag is set.
-- Set `world_end` and `world_end_final_silence`.
-- Set matching super-event visible flag.
-- Stop incompatible future systems and branches.
-- Event log, event details, docs, and spreadsheet describe the terminal state.
+- Allowed only when global chaos is above 1000, `world_end_disabled` is not set and no other world-end is active.
+- Record `world_end_final_silence_completed` and `fallout_cause_final_silence_memory`, then request maximum-intensity Fallout.
+- Fallout owns the world-end lock, terminal super-event, contamination, deaths and condemnation; Event 003 adds no parallel launch, witness popup or strike wave.
+- Event log, event details, docs, and spreadsheet describe Fallout caused by Final Silence.
 
 Failure cases:
 
@@ -295,17 +302,5 @@ Failure cases:
 
 Every animated asset must follow the frame animation workflow. Final assets are frame sheets, not GIFs. Every loop needs source frames. Local scripts may assemble and resize frames, but they must not create the main animation by only pulsing, scaling, blurring, recoloring, or moving one still.
 
-Minimum animated assets:
-
-| Asset | Size | Frames | Use |
-| --- | --- | --- | --- |
-| Central mandala dormant | 420x420 | 8 | Idle panel state |
-| Central mandala meditation | 420x420 | 12 | Three-minute ritual or vow active |
-| Central mandala awakened | 420x420 | 12 | Buddhahood state |
-| Central mandala final silence | 420x420 | 12 | Final Silence ritual |
-| Dhyana Seal button | 96x96 | 8 | Meditation hold or concentration sequence |
-| Warning flame ring | 420x420 | 8 | Wrathful Protection and danger states |
-| Buddha portrait animated | 156x210 | 8 | Leader portrait after Buddhahood |
-| Empty Seat portrait animated | 156x210 | 8 | Final Silence aftermath |
-
 Every animated asset needs a static fallback. If any target surface cannot support animation, use the fallback and keep the mandala state readable through static variants.
+The required states, frame counts and delivered packages are owned by the [asset and animation specification](holy_realm_buddhahood_asset_animation_spec.md); its seven 16-frame Mandala states supersede the earlier 8- and 12-frame minimum table that stood here.

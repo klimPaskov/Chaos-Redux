@@ -3,21 +3,23 @@
 This event requires a full asset package. It uses leader portrait evolution, animated mandala GUI, decision icons, focus icons, idea icons, super-event art, report images, flags, formable identity assets, and achievement icons.
 
 Texture consumers use the DDS treatment required by their inspected family, while country flags use the installed flag format and three-size family.
-Production, references, native transparency, conversion, specialist ownership, and manifests follow [chaos-redux-event-assets](../../../../../.agents/skills/chaos-redux-event-assets/SKILL.md).
-Frame packages follow [chaos-redux-frame-animation](../../../../../.agents/skills/chaos-redux-frame-animation/SKILL.md).
+Production, references, native transparency, conversion, specialist ownership, and manifests follow [chaos-redux-event-assets](../../../../../.claude/skills/chaos-redux-event-assets/SKILL.md).
+Frame packages follow [chaos-redux-frame-animation](../../../../../.claude/skills/chaos-redux-frame-animation/SKILL.md).
 Every character portrait belongs to `chaosx_portrait_creator`, including fictional, symbolic, and animated portrait variants.
 The source modes below describe design classification and do not authorize non-portrait workers to produce portraits or agents to operate RunPod.
 
 ## Reference folders to inspect before asset work
 
-- Ideas and national spirits: `C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/gfx_references/icons/ideas`.
-- News event images: `C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/gfx_references/event_art/news`.
-- Report event images: `C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/gfx_references/event_art/report`.
-- Super-event images: `C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/gfx_references/event_art/super_event`.
-- Decision icons: `C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/gfx_references/icons/decisions`.
-- Flags: `C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/gfx_references/flags/normal`.
-- Focus icons: `C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/gfx_references/icons/national_focus`.
-- Achievements: `C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/gfx_references/icons/achievements`.
+All folders are under `.claude/skills/chaos-redux-event-assets/assets/gfx_references/` in the repository:
+
+- Ideas and national spirits: `icons/ideas`.
+- News event images: `event_art/news`.
+- Report event images: `event_art/report`.
+- Super-event images: `event_art/super_event`.
+- Decision icons: `icons/decisions`.
+- Flags: `flags/normal`.
+- Focus icons: `icons/national_focus`.
+- Achievements: `icons/achievements`.
 
 ## Source mode rules
 
@@ -87,19 +89,14 @@ Required central animated sprites:
 
 Each needs a static fallback without `_animated`.
 
-Implementation coverage:
+Implementation coverage (current as of the 2026-10-06 release reconciliation):
 
-- `GFX_portrait_THR_buddha_mandate_animated` is delivered as a 16-frame `2496x210` sheet at `gfx/leaders/003_holy_realm/portrait_THR_buddha_mandate_animated.dds`, with source frames, processed frames, preview GIF, contact sheet, and prompt notes under `docs/assets/003_holy_realm_buddhahood/animations/portrait_THR_buddha_mandate/`. The static fallback remains `GFX_portrait_THR_buddha_mandate`.
-- `GFX_portrait_THR_empty_seat_animated` is delivered as a 16-frame `2496x210` sheet at `gfx/leaders/003_holy_realm/portrait_THR_empty_seat_animated.dds`, with source frames, processed frames, preview GIF, contact sheet, and prompt notes under `docs/assets/003_holy_realm_buddhahood/animations/portrait_THR_empty_seat/`. The static fallback is `GFX_portrait_THR_empty_seat`.
-- `GFX_decision_holy_realm_dhyana_seal_animated` is delivered as a 12-frame `1152x96` sheet at `gfx/interface/decisions/003_holy_realm/dhyana_seal/holy_realm_dhyana_seal_animated.dds`, with source frames, processed frames, preview GIF, contact sheet, and prompt notes under `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_dhyana_seal/`. The static fallback is `GFX_decision_holy_realm_dhyana_seal`.
-- `GFX_holy_realm_mandala_dormant_animated` is delivered as a 16-frame `6720x420` sheet at `gfx/interface/decisions/003_holy_realm/mandala_states/holy_realm_mandala_dormant_animated.dds`, with source frames, processed frames, preview GIF, contact sheet, and prompt notes under `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_dormant/`.
-- `GFX_holy_realm_mandala_teaching_animated` is delivered as a 16-frame `6720x420` sheet at `gfx/interface/decisions/003_holy_realm/mandala_states/holy_realm_mandala_teaching_animated.dds`, with source frames, processed frames, preview GIF, contact sheet, and prompt notes under `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_teaching/`.
-- `GFX_holy_realm_mandala_meditation_animated` is delivered as a 16-frame `6720x420` sheet at `gfx/interface/decisions/003_holy_realm/mandala_states/holy_realm_mandala_meditation_animated.dds`, with source frames, processed frames, preview GIF, contact sheet, and prompt notes under `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_meditation/`.
-- `GFX_holy_realm_mandala_awakened_animated` is delivered as a 16-frame `6720x420` sheet at `gfx/interface/decisions/003_holy_realm/mandala_states/holy_realm_mandala_awakened_animated.dds`, with source frames, processed frames, preview GIF, contact sheet, and prompt notes under `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_awakened/`.
-- `GFX_holy_realm_mandala_wrathful_animated` is delivered as a 16-frame `6720x420` sheet at `gfx/interface/decisions/003_holy_realm/mandala_states/holy_realm_mandala_wrathful_animated.dds`, with source frames, processed frames, preview GIF, contact sheet, and prompt notes under `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_wrathful/`.
-- `GFX_holy_realm_mandala_final_silence_animated` is delivered as a 16-frame `6720x420` sheet at `gfx/interface/decisions/003_holy_realm/mandala_states/holy_realm_mandala_final_silence_animated.dds`, with source frames, processed frames, preview GIF, contact sheet, and prompt notes under `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_final_silence/`.
-- `GFX_holy_realm_mandala_empty_animated` is delivered as a 16-frame `6720x420` sheet at `gfx/interface/decisions/003_holy_realm/mandala_states/holy_realm_mandala_empty_animated.dds`, with source frames, processed frames, preview GIF, contact sheet, and prompt notes under `docs/assets/003_holy_realm_buddhahood/animations/holy_realm_mandala_empty/`.
-- All required central Mandala animated sprites in this table have source-frame packages and wired DDS frame sheets.
+- Mandala: all seven states above are implemented as 16-frame `6720x420` sheets plus static fallbacks under `gfx/interface/decisions/003_holy_realm/mandala_states/`, selected through `GetHolyRealmMandalaSprite`.
+  The parent-approved real-frame package (14 DDS files, digest `F55E542C65E2604DB946F58D9FB7ACF599FB9C922058E8486525F95824677F56`) and its manifest live in `docs/assets/003_holy_realm_buddhahood/release_animation_20261006/`; it supersedes the earlier opaque glow-only sheets, which are kept only as rejected evidence.
+- Portraits: `GFX_portrait_THR_buddha_mandate_animated` and `GFX_portrait_THR_empty_seat_animated` are 16-position sheets built from eight authored poses mirrored into the loop, a parent-authorized reduction; their static fallbacks are `GFX_portrait_THR_buddha_mandate` and `GFX_portrait_THR_empty_seat`.
+  The active package is documented in `docs/plans/003_holy_realm_plans/subagent_handoffs/portraits_release_20261006.md` and archived under `docs/assets/portraits/003_holy_realm/release_20261006/`.
+- Dhyana Seal: the five concentration decision rows use a static 34x34 lotus (accepted 2026-10-06 graphics decision); the 12-frame `GFX_decision_holy_realm_dhyana_seal_animated` sheet stays registered as an unused reserve and is not a live GUI feature.
+- The former source archive `docs/assets/003_holy_realm_buddhahood/animations/` no longer exists; do not regenerate it.
 
 Central mandala visual direction:
 

@@ -2,6 +2,10 @@
 
 Implementation completion must compare final content against this matrix.
 
+Current evidence for each row is in `docs/events/003_holy_realm/overview.md` and `docs/plans/003_holy_realm_plans/release_qa_completion_20261006.md`.
+Every row has a source implementation; the open gates are the unresolved concentration-sequence acceptance, the non-default Mandala GUI state matrix, the full AI focus race and probability comparison, audio IDs 9 and 28 provenance, the queued catalog row and user-owned live validation.
+The World-end rule row now means: terminal only with Chaos above 1000, through the Fallout request rather than a direct Final Silence world-end flag.
+
 | Required feature | Pass condition | Evidence to report |
 | --- | --- | --- |
 | Target selection | Tibet first, then Bhutan or Nepal only if valid | Trigger and manual event view behavior |

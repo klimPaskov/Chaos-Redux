@@ -4,6 +4,14 @@ This seven-part legacy specification is retained as historical design provenance
 The current design reference is [the nested Buddhahood package](003_holy_realm_buddhahood_specs/README.md), with claim-level acceptance and unresolved terminal differences recorded in [the release reconciliation](../../plans/003_holy_realm_plans/release_qa_completion_20261006.md).
 Embedded Photoshop prompts, fallback suggestions, and planning instructions below are historical material and must not be executed as current task instructions.
 
+Superseded legacy design (spec audit 2026-10-10), kept below only as provenance:
+
+- Terminal Final Silence as a Holy Realm-owned nuclear or thermonuclear world-end, with continuous province strikes, wasteland progression, the 75% and 95% death waves and a Final Silence-specific air, deaths and condemnation lock (Part 4, Sections 54 and 59-71, and their Part 5 ledger and Part 7 asset counterparts).
+  Superseded by the parent-accepted Fallout handoff recorded in `docs/plans/003_holy_realm_plans/agent_decisions_2026-10-05.md` (2026-10-06 follow-up): terminal completion records Final Silence cause memory and requests maximum-intensity Fallout.
+- The 1945 launch date and 1947 thermonuclear date (Sections 54, 59, 60 and 144).
+  Superseded by the user's 2026-10-10 decision that dates may influence weights but gameplay conditions decide; current source has no date gate on the launch.
+- Legacy differences not listed here, including the God stage framing (implemented as Divine Sovereignty) and the factory-lead hard condition (current source uses it only as an AI weight), remain unresolved rather than accepted.
+
 ## Part 1: Core Design Foundation
 
 ### 1. Core Concept
@@ -3588,6 +3596,9 @@ Part 4 should develop the Final Silence world-end scenario in detail:
 10. What happens inside the Holy Realm while the rest of the world burns.
 
 ## Part 4: Final Silence World-End Scenario and Escalation Mechanics
+
+Superseded (spec audit 2026-10-10): the terminal launch, date variants, strike waves and Final Silence-owned consequences in this part are replaced by the Fallout handoff; see the note at the top of this file.
+The warning chain, foreign interruption and Mandala Breaks material remains implemented provenance.
 
 ### 53. Purpose of the Final Silence Scenario
 
@@ -7240,6 +7251,8 @@ When Chaos Meter exceeds 1000:
 Extreme chaos alone should not start Final Silence. It only opens the door. The Holy Realm still needs doctrine, industry, date, stage, and capability.
 
 ### 144. Date Balance and 1945 Gate
+
+Superseded (spec audit 2026-10-10): dates no longer gate Final Silence; see the note at the top of this file.
 
 The date requirement should remain central. The Final Silence scenario should not begin before 1945 in standard settings.
 

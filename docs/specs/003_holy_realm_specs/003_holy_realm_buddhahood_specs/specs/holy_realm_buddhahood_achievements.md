@@ -2,6 +2,8 @@
 
 Achievements should be difficult and should reward mastery of the route. Do not add achievements that unlock only because the event fired.
 
+Current implementation: all twelve achievements below are registered in `common/achievements/chaos_redux_achievements.txt` under lowercase ids (for example `holy_realm_no_empire_of_the_wheel`), beside the six legacy Holy Realm achievements `29_` to `34_`; `docs/events/003_holy_realm/overview.md` lists their implemented conditions.
+
 ## Achievement list
 
 ### `HOLY_REALM_NO_EMPIRE_OF_THE_WHEEL`
@@ -102,7 +104,7 @@ Title: The Final Silence.
 Requirement:
 
 - Complete terminal Final Silence with chaos value above 1000.
-- World-end flag is `world_end_final_silence`.
+- Completed Final Silence cause memory and actual `world_end_fallout` exist; the former `world_end_final_silence` requirement is superseded by the accepted Fallout route.
 - Capital sanctuary has not fallen in the last 180 days.
 
 Icon: extinguished world map with a single lotus.
@@ -207,4 +209,4 @@ The implementation needs flags for:
 - Dhyana Depth reached while under chaos war or capital threat.
 - Missions completed while One Becomes Many active.
 
-Achievement icons should follow the asset prompt and use 64x64 completed icons first.
+Achievement icons follow the [asset specification](holy_realm_buddhahood_asset_animation_spec.md); the completed, grey and not-eligible DDS triplets are installed under `gfx/achievements/`.

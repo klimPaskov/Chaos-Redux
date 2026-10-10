@@ -14,6 +14,9 @@ The Holy Realm decision layer must feel like action, not a shop. Political power
 | Final Silence | After `The Last Wheel` and Buddhahood | Runs the final ritual |
 | False Buddha Schism | Only if evolution active | Resolves or exploits schism |
 
+Implemented categories in `common/decisions/categories/003_holy_realm_categories.txt`: `holy_realm_mandala_category` (value rows, refuge and sanctuary work, Mandala of Nations compact acts, formables, Arhat and diplomacy actions, doctrine choice and the arm, renounce and launch Final Silence decisions, filtered by five tabs), `holy_realm_bodhisattva_category` (Bodhisattva missions, concentration sequence, Renew the Vow Under Fire and Buddhahood realization), `holy_realm_buddha_powers_category` (eight powers including Extinction of Defilements), `holy_realm_false_buddha_category`, `holy_realm_doctrine_balance_category` (Vow and Final Silence balance actions), `holy_realm_expansion_category` (letters and staged integration) and `holy_realm_foreign_response_category` (foreign condemnation, containment and disruption).
+Teaching, Sanctuary and Compact actions live inside these categories rather than as separate ones; do not add categories to match the table above.
+
 ## Active mission caps
 
 Default visible teaching missions: 3.
@@ -142,8 +145,11 @@ Costs:
 Success:
 
 - Compassion up.
-- Possible manpower or recruitable support after integration.
+- Manpower only from people who actually arrive and integrate; no refuge action creates recruits from nothing.
 - Compact Cohesion up if refugees come from a compact member.
+
+The parent removed flat manpower from five refuge actions on 2026-10-06 because they created recruits without a population source (`docs/plans/003_holy_realm_plans/agent_decisions_2026-10-05.md`, Refuge resource correction).
+Routing refuge arrivals through the migration owner is a proposal under Open questions in the package README.
 
 Failure or overuse:
 
@@ -218,12 +224,11 @@ Power decisions should be hidden until Buddhahood. Each power spends Meditation 
 
 The compact should behave like a living faction system.
 
-Values:
+Value: Sangha Cohesion is the compact's only tracked value, as in the current implementation.
 
-- Sangha Cohesion.
-- Member Confidence.
-- Aid Burden.
-- Patron Pressure if major powers try to use the compact.
+Proposed (spec audit 2026-10-10): member confidence, aid burden and patron pressure are not separate meters.
+They act as Cohesion changes and membership events: an ignored member loses Cohesion or leaves, aid costs are paid in the action itself, and a major power that dominates a member triggers the existing anti-puppet clause path.
+Three extra meters would add tooltip load without a new decision for the player.
 
 Decision families:
 
@@ -293,8 +298,8 @@ Effect:
 
 Effect:
 
-- If terminal path valid, set world-end flags and fire super-event.
-- If terminal path invalid, fire non-terminal aftermath and transform leader to Empty Seat.
+- If the terminal path is valid, record Final Silence cause memory and request maximum-intensity Fallout, which owns the world-end and its presentation.
+- If the terminal path is invalid or world-end is disabled, fire the non-terminal aftermath and transform the leader to the Empty Seat.
 
 Failure:
 
@@ -312,7 +317,8 @@ Decision categories must close or update when:
 - Target is no longer a valid teaching or compact target.
 - Mission target state is no longer controlled by the expected actor.
 
-Temporary flags and variables should be cleared after events consume them. Power cooldowns should be timed flags, with file-scoped constants if timed flag fields reject script constants or variables.
+Temporary flags and variables should be cleared after events consume them.
+Power cooldowns are timed flags; keep their durations in `common/script_constants/003_holy_realm_constants.txt` and pass them through a temporary variable to `days =`, using a file-scoped `@` constant only where that also fails.
 
 ## Exploit checks
 

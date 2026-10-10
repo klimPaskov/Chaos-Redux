@@ -35,6 +35,12 @@ The Holy Realm should not become a universal conquest tag. It may intervene agai
 | World Suffering | dynamic | How much chaos pressure the Holy Realm can perceive | Mandala outer flame and event details | Active world threats, deaths, chaos value, chaos countries at war, fallen capitals |
 | Sangha Cohesion | 0 to 100 | Strength of the humanitarian compact | Faction panel, decisions, event details | Members aided, members ignored, war state, foreign pressure, failed votes |
 
+Current implementation (source review, 2026-10-10): the original Holy Realm values Spiritual Legitimacy, Compassion Drift, Mandala Reach and Final Silence Pressure, plus the Vow and Final Silence balance of power, run beside this table.
+Bodhi Progress, Dhyana Depth, Defilements, Meditation Charge, Sangha Cohesion and teaching successes gate real choices.
+Detachment is read only by two `> 20` gates.
+`compassion` and `world_suffering` are written but never read by any trigger, decision, GUI row or localisation, so they currently change nothing.
+The consolidation proposal for these values is recorded under Open questions in the [package README](../README.md).
+
 Bodhi Progress by itself is not enough. Buddhahood requires:
 
 - Bodhi Progress at 108.
@@ -98,7 +104,11 @@ The Final Silence route becomes visible only after Buddhahood. It has two forms.
 
 If global chaos is below the world-end threshold, the route is an endgame spiritual victory path. It produces enormous anti-chaos suppression, a unique aftermath, and a leader succession through the Empty Seat, but it does not set `world_end`.
 
-If global chaos is above the world-end threshold, the route can become a terminal world-end scenario. It sets `world_end`, sets `world_end_final_silence`, shows the Final Silence super-event, stops incompatible event branches, and records the terminal state in the event log and spreadsheet.
+If global chaos is above the world-end threshold, the route can become terminal.
+Accepted current route (parent review recorded in `docs/plans/003_holy_realm_plans/agent_decisions_2026-10-05.md`, 2026-10-06 follow-up): terminal completion records `world_end_final_silence_completed` and `fallout_cause_final_silence_memory`, then requests maximum-intensity Fallout through `fallout_request_aftermath`.
+Fallout owns the world-end lock, presentation, contamination, deaths and condemnation consequences; Event 003 queues no country or world-wide witness popup.
+The former direct `world_end_final_silence` world-end flag and Final Silence super-event launch are superseded.
+With `world_end_disabled` set, completion stays on the non-terminal Empty Seat branch.
 
 The Final Silence should never be available before Buddhahood. It should also require the player to have shown at least one Buddha power against a real chaos country. The route represents the Buddha using the supramundane end of defilements, not simply pressing a victory button.
 
@@ -146,6 +156,9 @@ Condition: a chaos country kills enough civilians, conquers a Sangha Compact mem
 
 Effect: the Holy Realm unlocks emergency powers that are stronger against chaos armies but risk Defilements. The route does not make the Buddha cruel. It represents terrifying compassionate protection under extreme conditions.
 
+Current implementation records this evolution only from player actions (`THR_renew_vow_under_fire` and the Touching the Sun and Moon crisis proof), not from the world conditions above.
+Open questions in the package README hold the proposal to drive it from an existing capture seam instead.
+
 Content unlocks:
 
 - Stronger anti-chaos combat decisions.
@@ -185,26 +198,39 @@ The first two cannot be farmed for clean-route power credit, while the hostile c
 A stale target that ceases hostile conduct before activation must spend no charge.
 Keep qualitative foreign-reaction direction focused on what monks and protected communities have witnessed, without revealing the weaponization profile's hidden choices.
 
-## High-level event map
+Disposition: accepted and queued.
+The parent accepted this hostile-conduct distinction on 2026-10-08 (`docs/plans/repo_cleanup/specification_improvements_2026-10-08/report.md`, Parent disposition).
+It remains queued because current `holy_realm_buddha_power_target_valid` in `common/scripted_triggers/003_holy_realm_triggers.txt` still checks only `is_special_chaos_country`, and the outbreak owner has not yet supplied the conduct evidence.
 
-Implementation uses the assigned namespace `chaosx.nr3.*`.
+### Existing shared-system links
 
-| Event | Role | Visible to player |
-| --- | --- | --- |
-| `chaosx.nr3.1` | Bootstrap and target selection | No |
-| `chaosx.nr3.2` | First reveal of the Holy Realm | Yes |
-| `chaosx.nr3.3` | Mandala panel unlocked | Yes |
-| `chaosx.nr3.10` to `.29` | Teaching mission reports | Yes |
-| `chaosx.nr3.30` to `.39` | Meditation vow reports | Yes |
-| `chaosx.nr3.40` | The Unshaken Seat | Yes |
-| `chaosx.nr3.50` | Buddhahood transformation | Yes |
-| `chaosx.nr3.51` | Buddhahood super-event driver | Hidden or system event |
-| `chaosx.nr3.60` to `.69` | Buddha power displays | Yes |
-| `chaosx.nr3.70` | Final Silence ritual begins | Yes |
-| `chaosx.nr3.71` | Final Silence completion, non-terminal | Yes |
-| `chaosx.nr3.72` | Final Silence world-end | Yes |
-| `chaosx.nr3.80` to `.99` | Evolution events | Mixed |
-| `chaosx.nr3.100` to `.119` | Sangha Compact and foreign reactions | Mixed |
+These links exist in current source and are the contract any rework must keep:
+
+- Chaos Meter: `holy_realm_add_chaos` with `chaos_meter_history_reason.special.holy_realm_*` reasons; mercy and renunciation lower Chaos, coercion and Final Silence raise it, and focus gates read the 250/400/600/800 thresholds with launch above 1000.
+- World threats: `holy_realm_refresh_world_threat_source` sets `world_threat_source_holy_realm` only for Divine Sovereignty, final warnings or an armed final doctrine.
+- Fallout and deaths: terminal Final Silence hands contamination, deaths and the world-end lock to Fallout; the retained `chaos_meter_deaths_reason.final_silence` keeps legacy deaths attributable.
+- Event clusters: Event 3 is slot 1 of cluster 6, Formables (High), with Events 12, 38 and 48 in `docs/systems/event_system/event_clusters.md`; cluster logic can only narrow ordinary event eligibility, so the Tibet-first host rule and fire-once guard still decide whether the Realm can form.
+
+Migration, famine, condemnation and deaths-driven evolution links are proposals under Open questions in the package README, not current requirements.
+
+## Event map
+
+Implementation uses the namespace `chaosx.nr3.*` in `events/003_the_holy_realm.txt`.
+The original planning map (.50 transformation, .60-.69 power displays, .72 world-end) is superseded by the implemented layout below; Buddhahood, powers, Schism and evolutions run through decisions, focuses and scripted effects (`holy_realm_attain_buddhahood`, `holy_realm_apply_buddha_power_common_effects`, `holy_realm_record_*_evolution`) plus super-event slots rather than dedicated events.
+
+| Event | Role |
+| --- | --- |
+| `.1`, `.5` | Host selection and the no-host or already-formed explanation |
+| `.2`, `.4`, `.3` | Formation choice, refuge-road policy and Himalayan unity invitation |
+| `.10`, `.20`-`.22` | Bodhisattva accepts the seal and Arhat Administration reports |
+| `.30`, `.31`, `.40` | Unshaken Seat, compassionate-force question and the Throne Without a Body |
+| `.70`, `.74`-`.79` | Final doctrine authorization and the six-step warning chain |
+| `.71`, `.72` | Foreign observation of the Buddha Mandate |
+| `.80`, `.81`, `.83` | Final Silence launch, Empty Seat aftermath and Mandala Breaks interruption |
+| `.73`, `.82`, `.84`, `.90` | Legacy strike-wave and witness callbacks retained for compatibility; the current launch schedules none of them |
+| `.100`-`.102` | Letters of peace and authority |
+| `.110`-`.113` | Bhumi grounds |
+| `.120`-`.131` | Bodhisattva missions, Mandala arbitration, compact refusal and exit notices, and the exiled-echo foreign incident |
 
 ## Event log and details direction
 
@@ -237,3 +263,7 @@ The high-chaos route should be tempting:
 - Stronger anti-chaos combat.
 - Higher risk of Defilements and schism.
 - More dangerous visuals and super-event tone.
+
+Calendar dates never gate availability (user decision, 2026-10-10: dates influence, gameplay conditions decide).
+A date may scale an AI weight, but Chaos thresholds, doctrine state, Buddhahood, ritual steps and map conditions decide what the Realm can do.
+Current source still has two date-dependent behaviours, listed for conversion under Open questions in the package README.

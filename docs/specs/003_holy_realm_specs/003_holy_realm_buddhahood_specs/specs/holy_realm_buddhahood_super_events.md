@@ -1,6 +1,9 @@
 # Holy Realm Super-Event Specification
 
-This event has three planned super-events. The super-event research agent must find real quotes and usable audio. Final implemented quote sources are recorded in `docs/super_events/super_event_quote_sources.md`; final audio candidates and licensing notes are recorded in `docs/assets/003_holy_realm_buddhahood/audio_research/holy_realm_buddhahood_super_event_audio_research.md`.
+This event has three planned super-events. The super-event research agent must find real quotes and usable audio. Final implemented quote sources are recorded in `docs/super_events/super_event_quote_sources.md`; runtime audio, licences and durations are recorded in `docs/super_events/super_event_audio_packages.md`, with research history in `docs/plans/003_holy_realm_plans/003_holy_realm_buddhahood_plans/holy_realm_buddhahood_audio_handoff.md` and the blocked ID 9 and 28 provenance in `docs/plans/003_holy_realm_plans/subagent_handoffs/audio_provenance_20261006.md`.
+
+Current implementation: Holy Realm super-event values `7`, `8`, `10`, `11`, `51` and `61` show The Awakened One (Buddha Mandate), non-terminal Final Silence, The Mandala Breaks, Divine Sovereignty, Mandala of Nations and Powers of the Awakened.
+Terminal Final Silence is presented by Fallout; its legacy terminal art and audio registration remain compatibility material only.
 
 ## Super-event 1: The Awakened One
 
@@ -150,15 +153,12 @@ Audio direction:
 
 Sparse, final, and musical. A slow chant, bell composition, or public domain sacred music can work. The audio should not be pure ambience unless explicitly approved and documented.
 
-Terminal effects:
+Terminal effects (accepted current route, superseding the direct world-end launch planned here):
 
-- Set `world_end`.
-- Set `world_end_final_silence`.
-- Set matching super-event visibility.
-- Set `global.current_super_event_audio_id`.
-- Use settings-aware playback helper.
-- Stop incompatible future random events and end branches.
-- Update event log, docs, and spreadsheet.
+- Record `world_end_final_silence_completed` and `fallout_cause_final_silence_memory`.
+- Request maximum-intensity Fallout; Fallout sets the world-end state and owns the terminal presentation.
+- Event 003 shows no separate terminal super-event and schedules no witness popup.
+- Event log, docs, and spreadsheet describe Fallout caused by Final Silence.
 
 Non-terminal effects:
 
@@ -181,3 +181,4 @@ For each super-event, the research package must include:
 - Documentation row for music track list.
 
 No placeholder audio should remain in a completed super-event.
+Audio IDs 9 and 28 remain blocked on source provenance; no substitute recording is accepted.

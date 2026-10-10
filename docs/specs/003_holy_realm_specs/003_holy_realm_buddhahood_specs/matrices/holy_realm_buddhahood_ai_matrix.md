@@ -33,6 +33,8 @@ AI should weigh decisions by:
 - Equipment and convoy stockpile.
 - Recent failure flags.
 
+The calendar date may scale a weight but never decides by itself whether the AI takes an action.
+
 ## AI power use
 
 | Power | AI uses when | AI avoids when |

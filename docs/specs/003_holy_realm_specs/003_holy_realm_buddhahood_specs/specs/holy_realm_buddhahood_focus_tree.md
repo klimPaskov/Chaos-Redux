@@ -4,6 +4,10 @@ The Holy Realm needs a real focus tree or a major overlay branch on Tibet, Bhuta
 
 The design target is a playable long-lived tree with around 75 to 95 focuses. The implementation agent owns exact count, layout, coordinates, prerequisites, bypasses, and final focus names. The final tree must preserve the path logic below.
 
+Current implementation: `THR_focus` in `common/national_focus/003_holy_realm.txt` has 111 focuses covering all eleven required routes, with the parent-reviewed native layout and seven navigation shortcuts committed as `08a32875eb5e693d52903b0cd88fb35a0d809b1e`.
+The 75 to 95 figure is an unresolved scope-size guide and does not authorize deleting route content.
+The route coverage table in `docs/events/003_holy_realm/overview.md` maps each route below to its implemented focus ids; resume work from that table rather than from the anchor names here, which are design direction.
+
 ## Tree identity
 
 The tree is about the tension between ruling a threatened state and seeking liberation from worldly grasping. It must not be a flat reward ladder. Political, teaching, meditation, anti-chaos, diplomacy, industry, military, and Final Silence paths should interact.
@@ -32,6 +36,8 @@ Add focus search filters or tags where the existing repo supports them.
 | `FOCUS_FILTER_HOLY_REALM_ANTI_CHAOS` | Powers and combat against chaos countries |
 | `FOCUS_FILTER_HOLY_REALM_NIRVANA` | Buddhahood and Final Silence |
 | `FOCUS_FILTER_HOLY_REALM_HIDDEN` | Schism and rare routes |
+
+The implemented tree also uses Holy Realm Peace, Final Silence Pressure, Mandala Integration and Governance filters, with twelve installed custom filter icons; filters follow gameplay role rather than raw tag presence.
 
 ## Opening trunk
 
@@ -147,6 +153,10 @@ Focus groups:
 | Storehouses for the World | Supply hubs or logistics bonuses | Sangha relief decisions |
 
 Capstone: `The Sanctuary That Feeds Armies` should give strong supply and support to compact members fighting chaos, not only factories.
+
+Disposition: unresolved.
+The implemented `THR_storehouses_for_world` places one supply hub in a controlled Realm state, adds 25 Command Power and 4 Mandala Reach, and adds 5 Sangha Cohesion when the Mandala has formed; its parent-accepted prose promises no foreign infrastructure.
+Support for compact members remains a future proposal until accepted; the existing `THR_mandala_joint_defense_of_passes` crisis act is its natural owner.
 
 ## Guardian military branch
 
@@ -298,6 +308,7 @@ AI Holy Realm should prioritize survival and teaching early. It should not rush 
 - AI should only start Final Silence when chaos is very high, requirements are met, and capital is safe.
 
 AI weights must read war state, stability, Dhyana Depth, Defilements, compact status, chaos threat, and enemy proximity. Flat weights are not acceptable.
+Dates may scale a weight but never stand in for these conditions.
 
 ## Route coverage requirement for implementation report
 

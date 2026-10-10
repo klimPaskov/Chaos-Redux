@@ -26,6 +26,9 @@ If the event transforms an existing country, use cosmetic tags, leaders, advisor
 | Empty Seat | Final Silence aftermath | Realm of the Empty Seat or Silent Mandala | Empty Seat council or successor |
 | False Mandala | Schism route | False Mandala or Worldly Mandala | False Buddha or Protector Regent |
 
+Current implementation: every origin uses the shared `THR` cosmetic tag with stage party names; `THR_GREAT_MANDALA` and `THR_SILENT_MANDALA` are the two earned identities, and `holy_realm_mandala_protectorate` marks protectorates.
+Stage portraits are refuge Bodhisattva, four bhumi grounds (Pramudita, Vimala, Acala, Dharmamegha), Arhat Administration, Buddha Mandate, Divine Sovereignty, Empty Seat and False Buddha; the Teacher of the Four Directions and Great Bodhisattva rows below are carried by the bhumi portraits.
+
 The base event-reveal identity must not branch into Tibet-, Bhutan-, or Nepal-specific Holy Realm names. Ideology-specific names should exist for democratic, neutrality, fascism, and communism if the country can switch ideology. If the event locks ideology, cosmetic names and party names should still reflect route identity.
 
 ## Leader and portrait plan
@@ -54,6 +57,9 @@ Leader traits:
 | Unshaken Seat | Pre-Buddha | Lower Defilements, stronger meditation |
 | The Buddha | Final leader | Anti-chaos powers and high Detachment |
 | Empty Seat | After Final Silence | Reconstruction and compact stability, no power activation |
+
+The implemented trait ladder is the four bhumi traits `holy_realm_bodhisattva_pramudita`, `_vimala`, `_acala` and `_dharmamegha` in `common/country_leader/003_holy_realm_traits.txt`, advanced by `holy_realm_advance_bodhisattva_bhumi`.
+The active 12-portrait package (ten static, two animated loops of eight authored poses mirrored into 16 playback positions as a parent-authorized reduction) is recorded in `docs/plans/003_holy_realm_plans/subagent_handoffs/portraits_release_20261006.md`.
 
 ## Starting ideas
 
