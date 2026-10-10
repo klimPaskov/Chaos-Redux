@@ -145,3 +145,27 @@ Remaining defects and limits for this model:
 - The move and retreat actions have no measured sole plant, so their footstep events are half-cycle estimates, and move still reports 20 transitions up to 0.37 u per frame and 17.4 degrees per frame against the locomotion limits; the declared strike windows cover most of attack (5-52 of 70 frames), training and death.
 - The in-game re-film with locked crop was not done (capture work).
 
+### cannibal_feast_guard
+
+Fixed: the body was 1,619 loose open fragments (41,873 vertices, 38,591 boundary edges) that a position weld could not close (welding at 0.02 to 0.035 u and deleting the unclosable pockets left only about 3,300 triangles). It was therefore rebuilt as one closed shell in Blender: the shard mesh was solidified, voxel-remeshed at 0.035 u and decimated to 20,000 triangles (9,986 vertices, 21,252 export vertices, 0 boundary and 0 non-manifold edges, one connected component, export gate pass); the installed mesh's provider skin weights were reprojected onto the new vertices (nearest source face, barycentric blend, four influences, renormalised) and the posed attack renders show the shell deforming cleanly; the shell was unwrapped with a smart UV (33 percent of the 1024 sheet covered) and the regraded diffuse and specular were reprojected onto it (no black islands: the weapon samples real texels), then dilated 12 pixels and compressed to BC1 and BC3 with full mips; the support_attack was trimmed from 7.75 s to the moving 4.04 s window (frames 37-133), the forearm spikes in the training were smoothed, horizontal Hips travel is held, the defend, move and retreat seams are closed (0.8, 0.0 and 0.0 degrees) and exporter quaternion signs are normalised in support_attack (61), training (3) and death (2); entity events are re-timed to the measured strikes (attack impacts 1.17 s, 2.00 s and 3.04 s, support_attack 2.96 s) and the death vocal moved to the start of the collapse.
+
+| action | length | sign flips fixed | worst rotation after windows | violations with/without declared windows | loop | root | declared strike windows |
+|---|---|---|---|---|---|---|---|
+| idle | 1.75 s | 0 | 0 | 0/0 | pass [0.1, 0.0] | pass | - |
+| move | 1.83 s | 0 | 27.4 | 39/39 | pass [0.0, 0.0] | pass | - |
+| attack | 4.62 s | 0 | 0 | 0/220 | not_applicable [2.8, 0.021] | pass | [[12, 33], [36, 59], [61, 80], [83, 100]] |
+| defend | 3.5 s | 0 | 10.4 | 13/13 | pass [0.8, 0.011] | pass | - |
+| support_attack | 4.04 s | 61 | 0 | 0/55 | not_applicable [110.3, 0.145] | pass | [[23, 27], [33, 38], [44, 57], [68, 74]] |
+| retreat | 1.83 s | 0 | 11.9 | 23/23 | pass [0.0, 0.0] | pass | - |
+| training | 6.92 s | 3 | 0 | 0/610 | pass [0.2, 0.001] | pass | [[8, 102], [106, 114], [127, 130]] |
+| death | 2.29 s | 2 | 0 | 0/363 | not_applicable [129.3, 2.217] | pass | [[2, 53]] |
+
+Evidence: `docs/assets/014_cannibalism/models_3d/cannibal_feast_guard/` (checkpoints `wp2_01_prepped` -> `wp2_01r_remesh` -> `wp2_02_geometry` -> `wp2_03_actions_fixed` -> `wp2_04b_weights`; projected textures in `textures/processed`; texture batch `docs/plans/unit_fix_2026-10/wp2_evidence/textures_guard`; `export/wp2/gate_summary.json`; eight native reimport proofs in `validation/wp2_reimport_summary.json`; before and after stills in `blender/previews`). The original job had no `job.yaml`; a minimal one declaring the `humanoid_unit` profile was written so the delivery gate could run.
+
+Remaining defects and limits for this model:
+- The rebuilt shell is a reconstruction of the fragmented surface, not the provider's original topology: surface detail finer than about 0.035 u is gone and the 20,000-triangle shell is smoother than the original; the weights are a reprojection of the provider's installed weights, reviewed in posed renders but not hand-painted. Restoring the original would need the provider geometry, which is no longer on disk (a free re-download of the completed Meshy tasks needs download permission).
+- The cleavers are still part of the body mesh and skinned to the hands, not separate rigid items.
+- The normal map is a flat tangent map (G and A 128): the old one was noise, and a bake needs a provider high-poly that is not on disk, so the model has no surface relief from the normal map.
+- The move, defend and retreat actions still report 39, 13 and 23 world-speed transitions (up to 0.58 u per frame, 27.4 degrees per frame in the move against the 15 degree limit), the attack, support_attack, training and death gates pass only through declared windows (training covers 8-102 of 166 frames), and move has one measured plant (right foot, 0.0 s) with the second footstep a half-cycle estimate.
+- The in-game re-film with locked crop was not done (capture work).
+
