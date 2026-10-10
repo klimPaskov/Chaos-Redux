@@ -147,7 +147,7 @@ Check transparent corners, unclipped photo detail, subtle tilt, a soft shadow an
 
 From the mod root, the named processor is:
 
-    python -B .agents/skills/chaos-redux-event-assets/tools/process_report_event_image.py source.png processed_report_event.png
+    python -B .claude/skills/chaos-redux-event-assets/tools/process_report_event_image.py source.png processed_report_event.png
 
 If a brief later requires a particular real place, person, archive item or photographed event, change that row to the archival source route.
 Record the source link, archive or author, date, rights and uncertainty.
@@ -161,7 +161,7 @@ A reference supplies its declared palette, texture, density or composition, not 
 
 The canonical reference root is:
 
-    .agents/skills/chaos-redux-event-assets/assets/gfx_references/
+    .claude/skills/chaos-redux-event-assets/assets/gfx_references/
 
 Read its README and catalog, then inspect each matching family contact sheet and the exact consumer-specific examples.
 Each family has its own contact_sheet.png.
@@ -239,7 +239,7 @@ The completed source is the centered transparent color subject.
 Derive the grey source deterministically with alignment and alpha unchanged.
 Create the not-eligible source by placing the unchanged red-cross overlay over that grey source.
 The achievement processor adds the exact completed background beneath color and the exact grey background beneath both other sources.
-Use .agents/skills/chaos-redux-event-assets/tools/process_achievement_icons.py with a complete triplet and separate output directory.
+Use .claude/skills/chaos-redux-event-assets/tools/process_achievement_icons.py with a complete triplet and separate output directory.
 Do not use the generic single-image converter independently on the three achievement states.
 
 Retain all source layers, all composited review PNGs and a native-size triplet contact sheet.
@@ -262,7 +262,7 @@ Use exact root-provided filenames and sprite ids once frozen.
 
 For ordinary textures, use only the current repository converter:
 
-    python -B .agents/skills/chaos-redux-event-assets/tools/convert_to_dds.py --input processed.png --output final.dds
+    python -B .claude/skills/chaos-redux-event-assets/tools/convert_to_dds.py --input processed.png --output final.dds
 
 The obsolete .tools/convert_to_dds.py is not the production route.
 Use the achievement processor for achievement states.
@@ -286,7 +286,7 @@ Use completed status only after root's real consumer and source review.
 
 ## Role boundaries and final handoff
 
-Root supplies self-contained narrow prompts with fork_turns set to none.
+Root supplies self-contained narrow prompts.
 Use the actual canonical chaosx_icon_artist for the 33 icon subjects, including the six achievement masters and their eighteen final states.
 Use chaosx_generated_event_art for the ten report photographs and the category scene.
 Use chaosx_asset_source_researcher only for a specifically required non-portrait archival row.

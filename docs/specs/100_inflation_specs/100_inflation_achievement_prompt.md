@@ -209,13 +209,13 @@ All six motifs are distinct:
 | chaosx_100_keep_the_bread_moving | Bread delivery wagon beside an operating wartime factory |
 | chaosx_100_steady_hands | Three separately repaired price scales linked by one continuous ribbon |
 
-Follow the [asset prompt's achievement triplet contract](100_inflation_asset_prompt.md#six-achievement-triplets), [processing and evidence requirements](100_inflation_asset_prompt.md#processing-placement-and-evidence), and the current [asset owner skill](../../../.agents/skills/chaos-redux-event-assets/SKILL.md).
+Follow the [asset prompt's achievement triplet contract](100_inflation_asset_prompt.md#six-achievement-triplets), [processing and evidence requirements](100_inflation_asset_prompt.md#processing-placement-and-evidence), and the current [asset owner skill](../../../.claude/skills/chaos-redux-event-assets/SKILL.md).
 Those sources own native transparency, immutable template integrity, deterministic grey and not-eligible states, strict DDS headers, decoded-pixel equality, native-size review and the complete runtime mapping.
 The six motifs above remain this prompt's art assignment, with eighteen final textures directly under `gfx/achievements/` using each exact id plus `.dds`, `_grey.dds` and `_not_eligible.dds`.
 Use one shared manifest with the asset prompt so each subject is generated once.
 The verified current processor command is:
 
-    python -B .agents/skills/chaos-redux-event-assets/tools/process_achievement_icons.py --input <source_triplet_directory> --achievement-id <exact_id> --output-dir <separate_output_directory> --write-png
+    python -B .claude/skills/chaos-redux-event-assets/tools/process_achievement_icons.py --input <source_triplet_directory> --achievement-id <exact_id> --output-dir <separate_output_directory> --write-png
 
 Retain complete source triplets and a separate output directory, and use the current processor's dry-run/audit routes before final delivery.
 
@@ -236,7 +236,7 @@ Test a same-time excursion followed by a return, a consumed liability callback, 
 Test the shared 120-day reuse lock and the real contraction-shock aftermath.
 Award state must survive a reload without firing twice.
 
-Route the mandatory probability work through the actual chaosx_ai_probability_auditor with a self-contained prompt and fork_turns set to none.
+Route the mandatory probability work through the actual chaosx_ai_probability_auditor with a self-contained prompt.
 Inspect relevant event targeting, evolution pacing, policy willingness and political candidate selection.
 Evaluate named eligible and ineligible country scenarios, sweep thresholds and rank reversals, and compare immutable before/after source under the same scenario set when weighted logic changes.
 Use the discovered probability tool schemas and source objects with actual paths.

@@ -13,7 +13,7 @@ The source protocol permits planning to finish with this explicit map. A future 
 
 ## Required source and capability acquisition
 
-Read current `AGENTS.md`, relevant `.agents/skills/chaos-redux-*` sources, actual shared helper bodies, their owner documentation, offline Decision modding, Effects, Triggers, Scopes, Data structures, On actions, Ideas, Characters and scripted-localisation references. Inspect installed game documentation and exact vanilla precedents for the current version.
+Read current `AGENTS.md`, relevant `.claude/skills/chaos-redux-*` sources, actual shared helper bodies, their owner documentation, offline Decision modding, Effects, Triggers, Scopes, Data structures, On actions, Ideas, Characters and scripted-localisation references. Inspect installed game documentation and exact vanilla precedents for the current version.
 
 The planning session fully read all supplied source attachments. It additionally inspected the target repository at commit `a3ef485c5da7e2337122eca04ac65c175050f251`. That later pass was bounded. Some large repository files received named section reads, as recorded in the research companion. It was not an exhaustive repository or installed-game audit.
 
@@ -51,7 +51,7 @@ Each fixture states expected ordering or allowed outcome, not an invented observ
 ## Canonical specialist map
 
 Dispatch through the current canonical role and runtime contracts in `chaos-redux-subagents`, rather than an imported configuration's model or concurrency settings.
-For Codex, use `collaboration.spawn_agent` with `fork_turns="none"` and a self-contained prompt.
+Give every spawned role a self-contained prompt with no inherited context.
 Pass the event ID, slug, user-authorized acceptance basis, current source paths, allowed/excluded files, exact task, known blockers, prior dispositions, expected handoff and mandatory parent review.
 Do not rely on inherited conversation state or treat a file's existence as approval.
 Actual implementation review results belong in `docs/plans/100_inflation_plans/subagent_handoffs/`.

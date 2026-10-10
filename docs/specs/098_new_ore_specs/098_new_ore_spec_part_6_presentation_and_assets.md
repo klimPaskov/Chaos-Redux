@@ -119,7 +119,7 @@ Paths below are proposed event-owned asset identities. Exact native consumers an
 
 ## Production and review requirements
 
-The asset handoff names the canonical reference root `.agents/skills/chaos-redux-event-assets/assets/gfx_references/` and the consumer-specific families above. The original planning repository connection did not expose the requested reference shelf. The later asset worker must inspect the installed shelf and exact consuming definitions before choosing unresolved sizes or producing final art.
+The asset handoff names the canonical reference root `.claude/skills/chaos-redux-event-assets/assets/gfx_references/` and the consumer-specific families above. The original planning repository connection did not expose the requested reference shelf. The later asset worker must inspect the installed shelf and exact consuming definitions before choosing unresolved sizes or producing final art.
 
 For the category picture, require a labeled reference contact sheet.
 If missing, retain review-only contact-sheet evidence from the actual reference images in the assigned Event 098 workspace, with filenames, native dimensions and provenance.

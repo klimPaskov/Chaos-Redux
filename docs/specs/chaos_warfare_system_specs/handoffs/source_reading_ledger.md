@@ -2,7 +2,7 @@
 
 This records supplied filenames and read claims from the original unmounted planning environment.
 The listed skill copies and catalog CSVs are provenance, not current owner instructions or editable catalog sources.
-Use `AGENTS.md`, current `.agents/skills/` files and the workbook/export contract for present work. Consult the [takeover status](../../../plans/chaos_warfare_system_plans/takeover_status_2026-10-06.md) for later mounted-source evidence.
+Use `AGENTS.md`, current `.claude/skills/` files and the workbook/export contract for present work. Consult the [takeover status](../../../plans/chaos_warfare_system_plans/takeover_status_2026-10-06.md) for later mounted-source evidence.
 
 ## Supplied project files read in full
 

@@ -56,7 +56,7 @@ Store authoritative dates and synchronize native mission timeouts after activati
 
 ## Inspection and acceptance evidence
 
-Use `chaosx_decision_mission_auditor` with `fork_turns="none"`, exact event scope, current accepted files, explicit permitted patches and parent review. Route weighted behavior through `chaosx_ai_probability_auditor`. Begin with probability inspection, evaluate named fixtures, sweep boundaries and compare real immutable before/after source with the same scenarios. Willingness scores are not click probabilities.
+Use `chaosx_decision_mission_auditor` with a self-contained prompt, exact event scope, current accepted files, explicit permitted patches and parent review. Route weighted behavior through `chaosx_ai_probability_auditor`. Begin with probability inspection, evaluate named fixtures, sweep boundaries and compare real immutable before/after source with the same scenarios. Willingness scores are not click probabilities.
 
 Required cases include every action and variant, maximum alternative-list density, all four quantity positions, exact affordability boundaries, a stale quote with a changing discount, third-slot rejection, old versus selected stance, the currency OR shock, normal and emergency cancellation, actual repair success/failure, control renewal with old liability, all-zero reserve/throughput, later-acquired productive capacity, timed programme taper, and a recovery attempt whose fixed closing liability breaks stability.
 

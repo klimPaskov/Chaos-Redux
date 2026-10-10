@@ -7,7 +7,7 @@ Do not add a competing attack decision, preparation mission or intelligence oper
 
 ## Task
 
-Implement remaining accepted decisions and missions under [chaos-redux-decisions-missions](../../../../.agents/skills/chaos-redux-decisions-missions/SKILL.md). Reconcile older action lists below with the accepted amendment and current owner ledger before replaying them. Preserve recorded native-category presentation. An optional window sketch does not authorize a new shared system GUI. Shared interfaces remain parent-owned and require the scripted-GUI skill and matching MCP evidence when changed. Use dynamic costs, named targets, AI behavior, cleanup and custom tooltips.
+Implement remaining accepted decisions and missions under [chaos-redux-decisions-missions](../../../../.claude/skills/chaos-redux-decisions-missions/SKILL.md). Reconcile older action lists below with the accepted amendment and current owner ledger before replaying them. Preserve recorded native-category presentation. An optional window sketch does not authorize a new shared system GUI. Shared interfaces remain parent-owned and require the scripted-GUI skill and matching MCP evidence when changed. Use dynamic costs, named targets, AI behavior, cleanup and custom tooltips.
 
 ## Categories
 
@@ -174,4 +174,4 @@ Clear selected state, selected order, operation payload reservation, temporary e
 
 ## Audit
 
-After implementation, run the decision and mission auditor. Route weights, weighted targets and MTTH to `chaosx_ai_probability_auditor` for the baseline and matching comparison required by [the subagent skill](../../../../.agents/skills/chaos-redux-subagents/SKILL.md). Resolve cost clarity, duplicate missions, passive checklist objectives, AI validity, cleanup, exploit and route integration findings before completion.
+After implementation, run the decision and mission auditor. Route weights, weighted targets and MTTH to `chaosx_ai_probability_auditor` for the baseline and matching comparison required by [the subagent skill](../../../../.claude/skills/chaos-redux-subagents/SKILL.md). Resolve cost clarity, duplicate missions, passive checklist objectives, AI validity, cleanup, exploit and route integration findings before completion.

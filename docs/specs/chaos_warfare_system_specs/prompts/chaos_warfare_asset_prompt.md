@@ -4,7 +4,7 @@ Before reusing this prompt, apply the user's accepted 2026-09-20 CBRN amendment 
 
 The older Prepare Chemical Offensive and Combined CBRN Overmatch icon requests below are superseded by the core integration removal of those paid abilities; five protective HQ orders remain. Check active consumers before creating or wiring any HQ asset.
 
-The production contract is [chaos-redux-event-assets](../../../../.agents/skills/chaos-redux-event-assets/SKILL.md), with [chaos-redux-frame-animation](../../../../.agents/skills/chaos-redux-frame-animation/SKILL.md) for real frame sequences.
+The production contract is [chaos-redux-event-assets](../../../../.claude/skills/chaos-redux-event-assets/SKILL.md), with [chaos-redux-frame-animation](../../../../.claude/skills/chaos-redux-frame-animation/SKILL.md) for real frame sequences.
 Reconcile the lists below against recorded accepted requirements, active consumers and existing owner manifests before producing anything.
 The older six-HQ, larger support/MIO and custom-window inventories are subordinate planning context, not a fresh production assignment.
 Window-only animation concepts retain their recorded rejected disposition unless a later accepted consumer is documented.
@@ -29,10 +29,10 @@ Final DDS folders should follow existing category and event-system conventions w
 
 Before generation, inspect:
 
-- `.agents/skills/chaos-redux-event-assets/assets/gfx_references/icons/national_focus`
-- `.agents/skills/chaos-redux-event-assets/assets/gfx_references/icons/ideas`
-- `.agents/skills/chaos-redux-event-assets/assets/gfx_references/icons/decisions`
-- `.agents/skills/chaos-redux-event-assets/assets/gfx_references/icons/technologies/legacy`
+- `.claude/skills/chaos-redux-event-assets/assets/gfx_references/icons/national_focus`
+- `.claude/skills/chaos-redux-event-assets/assets/gfx_references/icons/ideas`
+- `.claude/skills/chaos-redux-event-assets/assets/gfx_references/icons/decisions`
+- `.claude/skills/chaos-redux-event-assets/assets/gfx_references/icons/technologies/legacy`
 - vanilla officer-corps spirit icons for HQ and officer-corps assets
 - existing Chaos Warfare doctrine and technology icons
 

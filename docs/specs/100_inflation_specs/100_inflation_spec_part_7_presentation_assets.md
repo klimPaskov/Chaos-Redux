@@ -33,7 +33,7 @@ Working labels below are production identifiers and concept directions, not fina
 
 ## Asset inventory
 
-Use the canonical root .agents/skills/chaos-redux-event-assets/assets/gfx_references and inspect the named family contact sheets before production.
+Use the canonical root .claude/skills/chaos-redux-event-assets/assets/gfx_references and inspect the named family contact sheets before production.
 The exact native consumer determines dimensions where there is no universal size.
 The category-picture reference canvas is 114 by 101, while its final runtime bounds follow the actual category consumer.
 The following inventory defines each required art family and its visual purpose.

@@ -4,8 +4,8 @@ This is an implementation handoff. The nine numbered parts carry the accepted ev
 
 ## SubagentUsageMap
 
-Follow the current [subagent ownership contract](../../../.agents/skills/chaos-redux-subagents/SKILL.md), [GUI evidence contract](../../../.agents/skills/chaos-redux-scripted-gui/SKILL.md) and [spreadsheet contract](../../../.agents/skills/chaos-redux-xlsx/SKILL.md).
-All future worker tasks use the current role instructions, a self-contained `fork_turns="none"` spawn, explicit input files and accepted scope, disjoint allowed outputs, and a handoff in `docs/plans/098_new_ore_plans/subagent_handoffs/`. The parent reviews each result and owns shared integration. An auditor's finding is evidence or a proposal, not automatic permission to change the source design.
+Follow the current [subagent ownership contract](../../../.claude/skills/chaos-redux-subagents/SKILL.md), [GUI evidence contract](../../../.claude/skills/chaos-redux-scripted-gui/SKILL.md) and [spreadsheet contract](../../../.claude/skills/chaos-redux-xlsx/SKILL.md).
+All future worker tasks use the current role instructions, a self-contained spawn with no inherited context, explicit input files and accepted scope, disjoint allowed outputs, and a handoff in `docs/plans/098_new_ore_plans/subagent_handoffs/`. The parent reviews each result and owns shared integration. An auditor's finding is evidence or a proposal, not automatic permission to change the source design.
 
 | Role | Bounded responsibility | Required output and parent dependency |
 | --- | --- | --- |

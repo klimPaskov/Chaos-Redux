@@ -79,7 +79,7 @@ Produce the complete asset manifest through the asset prompt. Source symbolic ic
 
 Use the companion MCP/subagent map and preserve actual evidence. Spawn the provided architecture, decision, country, probability, asset and localisation roles when their owned work is ready. Required probability work begins with inspection, evaluates named scenarios, sweeps thresholds and compares immutable source with identical fixtures. Simulate only declared uncertain inputs and sequence only a complete declared pool with cadence.
 
-Near completion, spawn `chaosx_improvement_loop_planner` with `fork_turns="none"`. Resolve its accepted addendum or closure before claiming completion. Then run the read-only event completion audit against the actual source. The planning-session loop does not replace the implementation-session loop.
+Near completion, spawn `chaosx_improvement_loop_planner` with a self-contained prompt. Resolve its accepted addendum or closure before claiming completion. Then run the read-only event completion audit against the actual source. The planning-session loop does not replace the implementation-session loop.
 
 Deliver a route coverage table listing every required action, phase, evolution entry, connection, political result, country exception, art consumer and achievement. Report missing, renamed, merged, simplified, fallback, replaced and blocked items explicitly. Include source coverage, test artifacts, exact probability/visual limitations, files changed and remaining user live-validation needs.
 

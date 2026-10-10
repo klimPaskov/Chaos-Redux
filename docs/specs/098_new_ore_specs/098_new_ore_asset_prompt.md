@@ -26,7 +26,7 @@ The count is a cross-check, not proof of completion. Each identity needs a real 
 
 ## Reference inspection before image creation
 
-The canonical root is `.agents/skills/chaos-redux-event-assets/assets/gfx_references/`. Read its README and CATALOG, then inspect matching contact sheets and exact family examples. The planning repository connection returned 404 for the queried shelf paths. Inspect the user's installed shelf through an available authorized route before choosing production references. Do not substitute old `vanilla_reference` paths merely because older supplied files mentioned them.
+The canonical root is `.claude/skills/chaos-redux-event-assets/assets/gfx_references/`. Read its README and CATALOG, then inspect matching contact sheets and exact family examples. The planning repository connection returned 404 for the queried shelf paths. Inspect the user's installed shelf through an available authorized route before choosing production references. Do not substitute old `vanilla_reference` paths merely because older supplied files mentioned them.
 
 Required families are `icons/ideas/`, `icons/decisions/`, `icons/missions/`, `icons/decision_categories/`, `icons/decision_categories/pictures/`, `icons/state_modifiers/`, `icons/achievements/`, `event_art/report/`, `event_art/news/`, and `event_art/super_event/`. Follow each proposed consumer to its actual `.gfx`, texture, and native `.gui` or modifier/event definition.
 

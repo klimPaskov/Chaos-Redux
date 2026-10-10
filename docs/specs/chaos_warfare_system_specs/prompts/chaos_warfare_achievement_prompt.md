@@ -6,7 +6,7 @@ Before reusing this prompt, apply the user's accepted 2026-09-20 CBRN amendment 
 
 Implement a difficult, route-diverse achievement set for the accepted Chaos Warfare rework. Read the achievement section of the main spec, current achievement registry, localisation, icon pattern, and asset handoff. Use the exact final achievement IDs consistently across script, localisation, GFX, three DDS variants, docs, and tracking.
 
-Check the current requirement ledger, owner achievement contract and registry before repeating work from these older working labels. The two named blocked achievements remain requirements. Neither a weaker proxy nor an older checked checklist closes them. Use [the asset skill](../../../../.agents/skills/chaos-redux-event-assets/SKILL.md) for reviewed achievement triplets and the parent for final integration.
+Check the current requirement ledger, owner achievement contract and registry before repeating work from these older working labels. The two named blocked achievements remain requirements. Neither a weaker proxy nor an older checked checklist closes them. Use [the asset skill](../../../../.claude/skills/chaos-redux-event-assets/SKILL.md) for reviewed achievement triplets and the parent for final integration.
 
 Working labels below are not final player-facing localisation. Write final titles and descriptions during implementation using the specified direction.
 
