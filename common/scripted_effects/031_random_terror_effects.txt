@@ -1309,7 +1309,18 @@ random_terror_apply_incident = {
 		# One report per government at a time: a second incident before the
 		# queued report opens (a pulse incident followed by a spread into a
 		# new state) is told by that report, which reads the latest incident.
+		# A hostage incident whose mission has just opened is told by the report
+		# that asks for the approach, so the choice lives in one place.
 		if = {
+			limit = {
+				has_country_flag = random_terror_hostage_approach_pending
+				NOT = { has_country_flag = random_terror_hostage_report_open }
+				check_variable = { random_terror_incident_type = constant:random_terror_incident.hostage_crisis }
+			}
+			set_country_flag = random_terror_hostage_report_open
+			country_event = { id = chaosx.nr31.10 days = 1 }
+		}
+		else_if = {
 			limit = { NOT = { has_country_flag = random_terror_report_queued } }
 			set_country_flag = random_terror_report_queued
 			country_event = { id = chaosx.nr31.2 days = 1 }
@@ -4289,16 +4300,139 @@ random_terror_decision_security_surge = {
 	random_terror_response_action_lock = yes
 }
 
+# STATE scope, ROOT and CONTROLLER = the responding government.  The
+# consequences of an operation that kills civilians and exposes the government:
+# a pressure rise, the counterterror Deaths for a major loss, a Response
+# Legitimacy loss and public Condemnation.  Used by an abusive raid failure and
+# by an assault on a hostage site that goes wrong.
+random_terror_apply_abusive_operation = {
+	add_to_variable = { random_terror_state_pressure = constant:random_terror_tuning.abusive_operation_pressure_gain }
+	set_state_flag = random_terror_raid_abusive_failure
+	set_temp_variable = { random_terror_civilian_death_request = constant:random_terror_tuning.civilian_deaths_major }
+	set_temp_variable = { random_terror_loss_reason = constant:chaos_meter_deaths_reason.random_terror_counterterror }
+	random_terror_apply_exact_state_loss = yes
+	CONTROLLER = {
+		set_temp_variable = { random_terror_pending_legitimacy_delta = constant:random_terror_tuning.abusive_operation_legitimacy_loss }
+		multiply_temp_variable = { random_terror_pending_legitimacy_delta = -1 }
+		random_terror_apply_legitimacy = yes
+		set_country_flag = random_terror_abusive_response_recorded
+		random_terror_add_public_government_abuse_condemnation = yes
+		random_terror_achievement_record_abusive_failure = yes
+	}
+}
+
+# COUNTRY scope: the government at the hostage report.  Negotiate: the
+# deadline extends once, Response Legitimacy holds, and the captives begin to
+# come out at a price the network can use: the state's Terror Pressure rises
+# and its next incident is no longer held back by a rest period.
+random_terror_choose_hostage_negotiate = {
+	clr_country_flag = random_terror_hostage_approach_pending
+	clr_country_flag = random_terror_hostage_report_open
+	set_country_flag = random_terror_hostage_approach_negotiate
+	if = {
+		limit = { NOT = { has_country_flag = random_terror_hostage_deadline_extended } }
+		set_country_flag = random_terror_hostage_deadline_extended
+		set_temp_variable = { random_terror_hostage_extension_days = constant:random_terror_hostage.extension_days }
+		meta_effect = {
+			text = { add_days_mission_timeout = { mission = random_terror_hostage_deadline days = [EXTENSION_DAYS] } }
+			EXTENSION_DAYS = "[?random_terror_hostage_extension_days|.0]"
+		}
+	}
+	if = {
+		limit = { has_variable = random_terror_mission_target_hostage }
+		var:random_terror_mission_target_hostage = {
+			random_terror_initialize_state_state = yes
+			set_state_flag = random_terror_hostages_partly_freed_@ROOT
+			add_to_variable = { random_terror_state_pressure = constant:random_terror_tuning.minor_pressure_gain }
+			clamp_variable = { var = random_terror_state_pressure min = constant:random_terror_value.minimum max = constant:random_terror_value.maximum }
+			clear_variable = random_terror_state_cooldown_until
+			random_terror_update_state_stage = yes
+		}
+	}
+}
+
+# COUNTRY scope: the government at the hostage report.  Prepare a rescue: the
+# next Targeted Raid on the hostage state draws one outcome band better, and a
+# Security Surge alone can no longer free the captives.
+random_terror_choose_hostage_prepare = {
+	clr_country_flag = random_terror_hostage_approach_pending
+	clr_country_flag = random_terror_hostage_report_open
+	set_country_flag = random_terror_hostage_approach_prepare
+	if = {
+		limit = { has_variable = random_terror_mission_target_hostage }
+		var:random_terror_mission_target_hostage = { set_state_flag = random_terror_hostage_rescue_prepared_@ROOT }
+	}
+}
+
+# COUNTRY scope: the government at the hostage report.  Storm at once: an
+# immediate Security Surge on the hostage state at its normal price.
+random_terror_choose_hostage_storm = {
+	clr_country_flag = random_terror_hostage_approach_pending
+	clr_country_flag = random_terror_hostage_report_open
+	set_country_flag = random_terror_hostage_approach_storm
+	if = {
+		limit = { has_variable = random_terror_mission_target_hostage }
+		add_command_power = constant:random_terror_cost.security_command_power_spend
+		add_fuel = random_terror_scaled_security_fuel_spend
+		add_equipment_to_stockpile = { type = support_equipment amount = random_terror_scaled_security_support_equipment_spend }
+		var:random_terror_mission_target_hostage = {
+			save_event_target_as = random_terror_action_state
+			set_state_flag = random_terror_security_surge_target
+		}
+		random_terror_decision_security_surge = yes
+		random_terror_resolve_storm_hostage_site = yes
+	}
+}
+
+# COUNTRY scope, random_terror_action_state saved: the assault on the hostage
+# site.  Without an intelligence breakthrough or a running response cell the
+# assault is far more likely to end in civilian deaths than a rescue.
+random_terror_resolve_storm_hostage_site = {
+	if = {
+		limit = { has_event_target = random_terror_action_state }
+		set_temp_variable = { random_terror_storm_success_weight = constant:random_terror_hostage.storm_success_weight }
+		set_temp_variable = { random_terror_storm_abusive_weight = constant:random_terror_hostage.storm_abusive_weight_informed }
+		if = {
+			limit = {
+				NOT = { has_country_flag = random_terror_intelligence_breakthrough }
+				NOT = { has_country_flag = random_terror_response_cell_active }
+			}
+			set_temp_variable = { random_terror_storm_abusive_weight = constant:random_terror_hostage.storm_abusive_weight_poor }
+		}
+		set_temp_variable = { random_terror_storm_outcome = constant:random_terror_operation_outcome.clean_success }
+		random_list = {
+			random_terror_storm_success_weight = { set_temp_variable = { random_terror_storm_outcome = constant:random_terror_operation_outcome.clean_success } }
+			random_terror_storm_abusive_weight = { set_temp_variable = { random_terror_storm_outcome = constant:random_terror_operation_outcome.abusive_failure } }
+		}
+		if = {
+			limit = { check_variable = { random_terror_storm_outcome = constant:random_terror_operation_outcome.abusive_failure } }
+			event_target:random_terror_action_state = {
+				random_terror_initialize_state_state = yes
+				random_terror_apply_abusive_operation = yes
+				clamp_variable = { var = random_terror_state_pressure min = constant:random_terror_value.minimum max = constant:random_terror_value.maximum }
+				random_terror_update_state_stage = yes
+			}
+		}
+		else = {
+			random_terror_emergency_surge_outcome = yes
+		}
+	}
+}
+
 # COUNTRY scope: the government acting on its own hostage or uprising
 # subject, saved as random_terror_action_state.  A surge storms the hostage
-# site: against an armed cell only part of the captives get out.  Against an
-# uprising it breaks the rising outright.
+# site: against an armed cell only part of the captives get out, and once a
+# rescue has been prepared a surge alone frees nobody.  Against an uprising it
+# breaks the rising outright.
 random_terror_emergency_surge_outcome = {
 	if = {
 		limit = { has_event_target = random_terror_action_state }
 		event_target:random_terror_action_state = {
 			if = {
-				limit = { has_state_flag = random_terror_hostage_mission_subject_@ROOT }
+				limit = {
+					has_state_flag = random_terror_hostage_mission_subject_@ROOT
+					NOT = { has_state_flag = random_terror_hostage_rescue_prepared_@ROOT }
+				}
 				if = {
 					limit = { has_state_flag = random_terror_state_armed_insurgency }
 					set_state_flag = random_terror_hostages_partly_freed_@ROOT
@@ -5820,6 +5954,18 @@ random_terror_resolve_targeted_raid_outcome = {
 				}
 				ROOT = { clr_country_flag = random_terror_emphasis_first_raid }
 			}
+			# A prepared hostage rescue draws one band better, once.
+			if = {
+				limit = { has_state_flag = random_terror_hostage_rescue_prepared_@ROOT }
+				if = {
+					limit = { check_variable = { random_terror_raid_band = constant:random_terror_intensity.low } }
+					set_temp_variable = { random_terror_raid_band = constant:random_terror_intensity.medium }
+				}
+				else = {
+					set_temp_variable = { random_terror_raid_band = constant:random_terror_intensity.high }
+				}
+				clr_state_flag = random_terror_hostage_rescue_prepared_@ROOT
+			}
 			set_temp_variable = { random_terror_raid_outcome = constant:random_terror_operation_outcome.partial_success }
 			if = {
 				limit = { check_variable = { random_terror_raid_band = constant:random_terror_intensity.high } }
@@ -5931,19 +6077,7 @@ random_terror_resolve_targeted_raid_outcome = {
 			}
 			if = {
 				limit = { check_variable = { random_terror_raid_outcome = constant:random_terror_operation_outcome.abusive_failure } }
-				add_to_variable = { random_terror_state_pressure = constant:random_terror_tuning.abusive_operation_pressure_gain }
-				set_state_flag = random_terror_raid_abusive_failure
-				set_temp_variable = { random_terror_civilian_death_request = constant:random_terror_tuning.civilian_deaths_major }
-				set_temp_variable = { random_terror_loss_reason = constant:chaos_meter_deaths_reason.random_terror_counterterror }
-				random_terror_apply_exact_state_loss = yes
-				CONTROLLER = {
-					set_temp_variable = { random_terror_pending_legitimacy_delta = constant:random_terror_tuning.abusive_operation_legitimacy_loss }
-					multiply_temp_variable = { random_terror_pending_legitimacy_delta = -1 }
-					random_terror_apply_legitimacy = yes
-					set_country_flag = random_terror_abusive_response_recorded
-					random_terror_add_public_government_abuse_condemnation = yes
-					random_terror_achievement_record_abusive_failure = yes
-				}
+				random_terror_apply_abusive_operation = yes
 			}
 			# Survivor displacement (Part 4 Evolution I): a partial or costly
 			# raid scatters the cell's survivors unless a defection channel or
@@ -6890,6 +7024,7 @@ random_terror_finish_restore_mission = {
 # Runs in the hostage state's controller, which receives the mission.
 random_terror_begin_hostage_mission = {
 	set_country_flag = random_terror_hostage_crisis_active
+	set_country_flag = random_terror_hostage_approach_pending
 	set_country_flag = random_terror_mission_slot_1
 	set_country_flag = random_terror_mission_active_hostage
 	set_variable = { random_terror_mission_target_hostage = event_target:random_terror_mission_subject }
@@ -6910,8 +7045,15 @@ random_terror_finish_hostage_mission = {
 			clr_state_flag = random_terror_hostage_mission_subject_@PREV
 			clr_state_flag = random_terror_hostages_recovered_@PREV
 			clr_state_flag = random_terror_hostages_partly_freed_@PREV
+			clr_state_flag = random_terror_hostage_rescue_prepared_@PREV
 		}
 	}
+	clr_country_flag = random_terror_hostage_approach_pending
+	clr_country_flag = random_terror_hostage_report_open
+	clr_country_flag = random_terror_hostage_approach_negotiate
+	clr_country_flag = random_terror_hostage_approach_prepare
+	clr_country_flag = random_terror_hostage_approach_storm
+	clr_country_flag = random_terror_hostage_deadline_extended
 	clr_country_flag = random_terror_mission_slot_1
 	clr_country_flag = random_terror_hostage_crisis_active
 	clr_country_flag = random_terror_mission_active_hostage

@@ -6,6 +6,7 @@ add_namespace = chaosx.news
 @rt_event_actor_merge_accept_weight = 60
 @rt_event_actor_merge_refusal_weight = 40
 @rt_event_ai_high_factor = 2
+@rt_event_hostage_weight = 20
 @rt_event_ai_low_factor = 0.5
 @rt_event_emphasis_weight = 25
 @rt_event_emphasis_coercion_weight = 15
@@ -150,6 +151,72 @@ country_event = {
 		trigger = { has_country_flag = random_terror_emphasis_chosen }
 		ai_chance = { base = 100 }
 		hidden_effect = { clr_country_flag = random_terror_report_queued }
+	}
+}
+
+# Hostage report: asks for the approach to the Hostage Deadline (Part 3).
+# Negotiating extends the deadline once and brings the captives out at a price,
+# preparing a rescue improves the next raid, and storming at once is a Security
+# Surge on the site.  Each approach feeds the existing surge, raid and deadline
+# outcomes; no decision is added.
+country_event = {
+	id = chaosx.nr31.10
+	title = chaosx.nr31.10.t
+	desc = chaosx.nr31.10.d
+	picture = [GetRandomTerrorIncidentReportPicture]
+	is_triggered_only = yes
+	trigger = { has_country_flag = random_terror_hostage_approach_pending }
+
+	option = {
+		name = chaosx.nr31.10.negotiate
+		ai_chance = {
+			base = @rt_event_hostage_weight
+			modifier = {
+				factor = @rt_event_ai_high_factor
+				check_variable = { random_terror_response_legitimacy > constant:random_terror_value.high }
+				NOT = { has_country_flag = random_terror_intelligence_breakthrough }
+				NOT = { has_country_flag = random_terror_response_cell_active }
+			}
+		}
+		custom_effect_tooltip = random_terror_hostage_negotiate_tt
+		hidden_effect = { random_terror_choose_hostage_negotiate = yes }
+	}
+
+	option = {
+		name = chaosx.nr31.10.prepare
+		ai_chance = {
+			base = @rt_event_hostage_weight
+			modifier = {
+				factor = @rt_event_ai_high_factor
+				OR = {
+					has_country_flag = random_terror_intelligence_breakthrough
+					has_country_flag = random_terror_response_cell_active
+				}
+			}
+		}
+		custom_effect_tooltip = random_terror_hostage_prepare_tt
+		hidden_effect = { random_terror_choose_hostage_prepare = yes }
+	}
+
+	option = {
+		name = chaosx.nr31.10.storm
+		trigger = {
+			random_terror_can_afford_security_surge = yes
+			NOT = { has_global_flag = world_end }
+			NOT = { random_terror_government_phase_terminal = yes }
+		}
+		ai_chance = {
+			base = @rt_event_hostage_weight
+			modifier = { factor = @rt_event_ai_high_factor has_war = yes }
+			modifier = { factor = @rt_event_ai_high_factor check_variable = { random_terror_pressure > constant:random_terror_value.high } }
+			modifier = {
+				factor = @rt_event_ai_low_factor
+				NOT = { has_country_flag = random_terror_intelligence_breakthrough }
+				NOT = { has_country_flag = random_terror_response_cell_active }
+			}
+		}
+		custom_effect_tooltip = random_terror_hostage_storm_tt
+		hidden_effect = { random_terror_choose_hostage_storm = yes }
 	}
 }
 
