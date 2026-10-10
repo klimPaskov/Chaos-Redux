@@ -820,6 +820,10 @@ record_events_log_history_entry = {
 		asteroid_incoming_bind_opening_history_sequence = yes
 	}
 	if = {
+		limit = { check_variable = { event_id = constant:mysterious_people_event.id } }
+		mysterious_people_bind_history_sequence = yes
+	}
+	if = {
 		limit = { check_variable = { event_id = constant:brilliant_scientist_event.id } }
 		brilliant_scientist_bind_opening_history_sequence = yes
 		if = {
@@ -2945,10 +2949,27 @@ events_log_rebuild_open_event_details_view = {
 			events_log_add_event_detail_evolution_preview = yes
 			set_temp_variable = { events_log_event_detail_preview_type = constant:chaosx_nr25_identity.evolution_type }
 			set_temp_variable = { events_log_event_detail_preview_tier = constant:chaosx_nr25_evolution_log.technology_changes_users_tier }
+
+		if = {
+			limit = { check_variable = { var = event_id value = constant:mysterious_people_event.id compare = equals } }
+			set_temp_variable = { events_log_event_detail_preview_type = constant:mysterious_people_event.evolution_type }
+			set_temp_variable = { events_log_event_detail_preview_tier = constant:mysterious_people_event.evolution_i_tier }
+			set_temp_variable = { events_log_event_detail_preview_stage = constant:mysterious_people_event.evolution_i_stage }
+			events_log_add_event_detail_evolution_preview = yes
+			set_temp_variable = { events_log_event_detail_preview_type = constant:mysterious_people_event.evolution_type }
+			set_temp_variable = { events_log_event_detail_preview_tier = constant:mysterious_people_event.evolution_ii_tier }
+			set_temp_variable = { events_log_event_detail_preview_stage = constant:mysterious_people_event.evolution_ii_stage }
+			events_log_add_event_detail_evolution_preview = yes
+			set_temp_variable = { events_log_event_detail_preview_type = constant:mysterious_people_event.evolution_type }
+			set_temp_variable = { events_log_event_detail_preview_tier = constant:mysterious_people_event.evolution_iii_tier }
+			set_temp_variable = { events_log_event_detail_preview_stage = constant:mysterious_people_event.evolution_iii_stage }
+			events_log_add_event_detail_evolution_preview = yes
+		}
 			set_temp_variable = { events_log_event_detail_preview_stage = constant:chaosx_nr25_evolution_log.technology_changes_users_stage }
 			events_log_add_event_detail_evolution_preview = yes
 		}
 
+		mysterious_people_load_open_history_payload = yes
 		if = {
 			limit = { check_variable = { var = event_id value = constant:doctrine_research_event.id compare = equals } }
 			set_temp_variable = { events_log_event_detail_preview_type = constant:doctrine_research_event.evolution_type }

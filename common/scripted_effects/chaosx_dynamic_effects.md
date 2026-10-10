@@ -14,6 +14,7 @@ Event-owned orchestration, validation, adapters, and lifecycle helpers belong in
 - [refresh_world_threat_state](#refresh_world_threat_state)
 - [union_compatible_researched_technologies_from_donor](#union_compatible_researched_technologies_from_donor)
 - [call_natural_disaster](#call_natural_disaster)
+- [apply_state_population_gain_without_recruitable_manpower_gain](#apply_state_population_gain_without_recruitable_manpower_gain)
 - [apply_state_population_loss_without_recruitable_manpower_gain](#apply_state_population_loss_without_recruitable_manpower_gain)
 - [apply_exact_state_civilian_population_loss](#apply_exact_state_civilian_population_loss)
 - [stockpile_debit_helpers](#stockpile_debit_helpers)
@@ -237,6 +238,30 @@ Example:
 set_temp_variable = { natural_disaster_call_family = constant:natural_disaster_family.earthquake }
 set_temp_variable = { natural_disaster_call_target_mode = constant:natural_disaster_target_mode.random_valid }
 call_natural_disaster = yes
+```
+
+## apply_state_population_gain_without_recruitable_manpower_gain
+
+Purpose: add real state population without keeping the recruitable manpower that HOI4 credits to the owner and controller at the moment of a positive state-scope `add_manpower`, so the new people become recruitable through the engine's ordinary recruitable-population rules instead of arriving as an instant reserve.
+
+Scope: state.
+
+Inputs: `state_population_gain_request`, the requested number of people as a temporary variable.
+
+Outputs: `state_population_gain_applied`, the measured rise in state population in people, never above the request and never below zero, and `state_population_gain_reconciled`, the observed recruitable credit removed from the owner and distinct controller.
+
+Defaults: a missing or non-positive request applies nothing and returns zero. The request is rounded to whole people.
+
+Side effects: one positive state population mutation, then removal of only the observed positive `manpower_k` credit of the owner and, when different, the controller, each capped at the applied amount. The request is reset to zero after the call. Callers must use `state_population_gain_applied`, never the request, for every ledger update.
+
+Owner-specific precedents with the same measured contract are `camp_occ_apply_population_credit` and `civilian_transfer_apply_destination_credit`. Event 037 Mysterious People is the first caller.
+
+Example:
+
+```txt
+set_temp_variable = { state_population_gain_request = 25000 }
+apply_state_population_gain_without_recruitable_manpower_gain = yes
+set_temp_variable = { my_measured_gain = state_population_gain_applied }
 ```
 
 ## apply_state_population_loss_without_recruitable_manpower_gain

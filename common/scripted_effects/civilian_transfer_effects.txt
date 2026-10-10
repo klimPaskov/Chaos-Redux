@@ -875,6 +875,13 @@ civilian_transfer_finalize = {
 				limit = { check_variable = { var = migration_cohort_host_update_result value = constant:civilian_transfer_route_result.valid compare = equals } }
 				civilian_transfer_reconcile_obligations = yes
 				migration_record_transfer_projection = yes
+				# Event 037 keeps its newcomer ledger inside real population:
+				# departures leave the origin backlog and arrivals carry the
+				# origin newcomer share. It changes no population.
+				if = {
+					limit = { check_variable = { var = civilian_transfer_projection_result value = constant:migration_core_reconciliation.transfer_projection_valid compare = equals } }
+					mysterious_people_on_civilian_transfer = yes
+				}
 				# The shared receipt is the sole cumulative-depopulation seam. It
 				# consumes the measured debit and pre-debit population exactly once
 				# per monotonic transfer generation, including all-death transfers.
