@@ -2,7 +2,9 @@
 
 ## Purpose
 
-This file defines the named scenarios that the later implementation and `chaosx_ai_probability_auditor` must use.
+This file is the single owner of the Event 029 named scenarios, the probability audit sequence, and the evidence format; the other package files point here.
+
+Scenario IDs are stable fixture keys and are not renamed when design names change (for example, "deep reef" scenarios use the deep vein profile).
 
 The scenarios describe expected ordering, valid timing bands, dominance limits, and invalid-action suppression.
 
@@ -22,6 +24,18 @@ The auditor must inspect the actual candidate pool, availability, costs, cooldow
 6. Use `hoi4.probability_render` for decision rankings, evolution timing, target matrices, sensitivity, and comparisons when useful.
 7. After the implementation owner changes a weighted surface, run `hoi4.probability_compare` with the same scenario IDs and inputs.
 8. Mark unresolved engine state as unresolved instead of inventing a probability.
+
+Tool failures follow the retry limits in `CLAUDE.md`; when a surface cannot be analysed, calculate representative cases from the actual script and state the assumptions.
+
+## Evidence status (2026-10-10)
+
+- Surface A: all four policy scenarios were evaluated on the complete five-option root pool; `RF_POLICY_03_POOR_MINOR` now ranks Concession Economy first after the capacity adjustment in [the policy capacity record](../../events/029_riches_found/policy_capacity_ai.md); ordering gaps remain for `_02` and `_04`.
+- Gold Disease route roll: a complete same-scenario comparison for `RF_GOLD_02_AUTHORITARIAN_WARTIME` (spread 0.4, contained 0.6 before restriction).
+- Decision surfaces (B, C, E, I to L): blocked as decisions by the `hoi4-agent-tools` 3.10.0 classifier, which files `days_remove` decisions as missions; the family weights rest on source review (agent decision D45).
+- Foreign partner scoring (Surface D) is a deterministic top-four ranking, not a probability, and has no matching custom-pool adapter.
+- Evolution MTTH (F to H), incident pools (M), and repeat recipient selection (N): not yet evaluated.
+
+Details and artifact references are in `docs/plans/029_riches_found_plans/subagent_handoffs/probability_audit_2026_10_07.md` and the 2026-10-08 seal probability handoffs.
 
 ## Surface A: Initial policy choice
 
@@ -286,7 +300,8 @@ A distant naval power can rank well for a coastal or island mine when it has con
 
 It should rank poorly for an inland mine without transit.
 
-The foreign-target eligibility gate must include the same remote maritime access case the scored selector accepts: a major with sufficient convoys and a mine with a valid port route, port route, or island access. A land-neighbor-only availability trigger leaves this scenario inaccessible before the scored partner selector runs.
+The foreign-target eligibility gate must include the same remote maritime access case the scored selector accepts: a major with sufficient convoys and a mine with a valid port route, port route, or island access.
+A land-neighbor-only availability trigger leaves this scenario inaccessible before the scored partner selector runs.
 
 ### `RF_FOREIGN_03_HOSTILE_RIVAL`
 
@@ -741,13 +756,18 @@ Expected factors:
 - country size, major status, ideology, faction, and player control do not change the country-selection weight
 - a country with no suitable state has zero weight and shows `N/A`
 - the selected state uses its separate suitability weighting after the country has been chosen
-- `RF_REPEATABLE_RECIPIENT_STATE_POOL` covers an empty eligible country/state pool while stale regular prefire owner and state targets remain in the effect chain. The current invocation must leave the prefire result unready unless a valid owner/state pair was selected during that invocation and revalidated. The adapter must bind both current-pool emptiness and regular-target freshness before this can be treated as more than a source-level fail-closed expectation.
+- `RF_REPEATABLE_RECIPIENT_STATE_POOL` covers an empty eligible country/state pool while stale regular prefire owner and state targets remain in the effect chain.
+  The current invocation must leave the prefire result unready unless a valid owner/state pair was selected during that invocation and revalidated.
+  The adapter must bind both current-pool emptiness and regular-target freshness before this can be treated as more than a source-level fail-closed expectation.
 
 ## Supplemental empty-pool comparison cases
 
-`RF_FOREIGN_EMPTY_CANDIDATES` is a supplemental comparison case for a foreign-partner pass with no positive-scoring valid ordinary country and stale regular partner-target state present. It supplements the 39 named Surface A–L scenarios and does not replace `RF_FOREIGN_03_HOSTILE_RIVAL` or `RF_FOREIGN_04_EXISTING_EXCLUSIVE_CONCESSION`.
+`RF_FOREIGN_EMPTY_CANDIDATES` is a supplemental comparison case for a foreign-partner pass with no positive-scoring valid ordinary country and stale regular partner-target state present.
+It supplements the 39 named Surface A–L scenarios and does not replace `RF_FOREIGN_03_HOSTILE_RIVAL` or `RF_FOREIGN_04_EXISTING_EXCLUSIVE_CONCESSION`.
 
-The dated fixture at `docs/plans/029_riches_found_plans/evidence/2026_10_03_scenarios.json` retains all 39 original scenario IDs, this foreign empty-candidate case, Surface M's incident-pool inventory, and the Surface N repeat-recipient edge case. It deliberately omits unconfirmed nested MCP state-binding fields. Until the connected adapter accepts those inputs, pool completeness and scenario state remain unresolved.
+The dated fixture at `docs/plans/029_riches_found_plans/evidence/2026_10_03_scenarios.json` retains all 39 original scenario IDs, this foreign empty-candidate case, Surface M's incident-pool inventory, and the Surface N repeat-recipient edge case.
+It deliberately omits unconfirmed nested MCP state-binding fields.
+Until the connected adapter accepts those inputs, pool completeness and scenario state remain unresolved.
 
 ## Required comparison evidence
 

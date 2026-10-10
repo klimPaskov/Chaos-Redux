@@ -1,32 +1,35 @@
 # Event 029: Riches Found
 
+Implementation status markers in this package: **Implemented** means current source carries the behaviour (source review only, live testing belongs to the user); **Pending** means accepted design not yet in source; **Proposed** means an audit proposal awaiting acceptance.
+The source map is [the Event 029 overview](../../events/029_riches_found/overview.md), and dated decisions are in [the plans folder](../../plans/029_riches_found_plans/).
+
 ## Catalog identity
 
-- Event ID: `29`
-- Event name: Riches Found
-- Type: Minor Repeatable
-- Current status evidence: `To Be Reworked` in the user task and `Unavailable` in the supplied CSV export
-- Status target after implementation: Use the authoritative workbook's verified post-implementation status
-- Cluster: None
-- Recommended baseline chaos level: Calm World, subject to confirmation against the authoritative workbook and current event registration
+- Event ID: `29`, entry event `chaosx.nr29.1`.
+- Event name: Riches Found.
+- Type: Minor Repeatable.
+- Chaos level: 1 (Calm World).
+- Cluster: none, by the user's 2026-10-07 instruction recorded in [the catalog correction handoff](../../plans/029_riches_found_plans/subagent_handoffs/catalog_alignment_2026_10_07.md), which supersedes the older agent decision D2 that kept clusters 7 and 15.
+- Catalog status: Needs Testing.
+- Catalog wording is owned by [the catalog alignment file](029_riches_found_catalog_alignment.md).
 
 ## Event promise
 
-A completely random ordinary country discovers a source of exceptional mineral wealth in one suitable state.
+A completely random ordinary country discovers exceptional mineral wealth in one suitable state.
 
 The discovery delivers an immediate national windfall of exactly 1,000 political power.
 
 The selected state becomes a persistent source of revenue and industrial leverage, and its value follows whoever controls it.
 
-The discovery starts an ordinary mining rush with workers, prospectors, transport firms, merchants, engineers, guards, criminals, officials, foreign concession seekers, and neighboring states competing around one location.
+A mining rush follows: workers, prospectors, transport firms, merchants, engineers, guards, criminals, officials, foreign concession seekers, and neighbouring states compete around one location.
 
-The player manages how quickly the mine is developed, who receives the revenue, who controls access, how the site is protected, and how much political authority is surrendered to private or foreign interests.
+The player decides how fast the mine is developed, who receives the revenue, who controls access, how the site is protected, and how much authority is surrendered to private or foreign interests.
 
 The mine can become a durable development engine, a captured patronage system, an armed enclave, an obsessive killing ground, or a place where impossible bargains are made.
 
 ## Separation from Event 018 Resources Found
 
-Riches Found must not operate as another strategic-resource discovery roll.
+Riches Found is not another strategic-resource discovery roll.
 
 Event 018 owns deposits that add or expand map resources, deeper physical discoveries, caves, fossils, Oth-Kesh, and its underground terminal route.
 
@@ -34,448 +37,242 @@ Event 029 owns windfall governance and control of one exceptionally valuable min
 
 The ordinary reward comes from a persistent state modifier and a controller-wide aggregate, not from adding steel, oil, aluminium, chromium, tungsten, or rubber to the map.
 
-Commodity identity is narrative and mechanical flavor unless a later accepted spec explicitly adds a separate conversion rule.
-
-A state carrying an Event 018 resource-site marker is not eligible for Event 029.
-
-A state already carrying an Event 029 mine is not eligible for another Event 029 mine.
+A state carrying an Event 018 field or cave marker, or an existing Event 029 mine, is not eligible.
 
 The supernatural track never reveals Oth-Kesh, never calls the Event 018 cave chain, and never selects The World Opens Below.
+
+Implemented: the target gate excludes Event 018 markers and registered mines.
 
 ## Valid recipient country
 
 The entry event selects one existing country from the ordinary country pool.
 
-A valid recipient must meet all of these conditions:
+A valid recipient:
 
-- It exists and has at least one owned and controlled eligible state.
-- It is not classified by `is_special_chaos_country`.
-- It is not classified by `is_actual_nonhuman_country`.
-- It is not a civil-war shell, scripted system carrier, or temporary country that the repository already excludes from ordinary civilian events.
-- It can receive political power and country modifiers normally.
-- It has a valid government and capital.
+- exists and owns and controls at least one eligible state;
+- is not classified by `is_special_chaos_country` or `is_actual_nonhuman_country`;
+- is not a civil-war shell, scripted system carrier, or temporary country that the repository excludes from ordinary civilian events;
+- can receive political power and country modifiers normally, with a valid government and capital.
 
-The selection pool should use the normal Event 029 target gate before the event receives live weight.
+Every valid recipient has the same selection weight; mine count, size, ideology, major status, and player control never bias the roll (user requirement: a completely random recipient).
 
-When no valid country and state pair exists, the event shows `N/A` in Event Details and does not enter selection.
+When no valid country and state pair exists, Event Details shows `N/A` and the event does not enter selection.
 
-Force-trigger mode may bypass ordinary selection restrictions only through the existing settings contract.
+Force-trigger mode bypasses ordinary selection only through the existing settings contract.
+
+Implemented: `riches_found_prepare_random_event_fire` builds one pool entry per eligible country, selects and revalidates a fresh pair on every call, and `riches_found_has_no_valid_discovery_pair` drives the `N/A` lock without preparing anything during interface refresh.
 
 ## Suitable state selection
 
 The event selects one state owned and controlled by the recipient.
 
-A suitable state should favor a location that can support a visible rush and a contest over control.
+Positive selection factors are meaningful population, room for development, a land or usable port connection, existing infrastructure or rail, an existing settlement, adjacency to other land states, and border proximity when armed competition is plausible.
 
-Positive selection factors include:
+Wasteland, empty islands without a usable port, impassable terrain, states reserved by another persistent site system, states in an active catastrophic disaster, and states in the middle of a scripted transfer are rejected.
 
-- meaningful population
-- at least one building slot or realistic room for development
-- land connection to the recipient or a usable port connection
-- existing infrastructure, rail, or a plausible route that can be improved
-- meaningful local industry or an existing settlement
-- adjacency to other land states
-- a non-core or colonial location when the event needs a higher-risk variant
-- strategic proximity to a border when armed competition is plausible
+Selection stays random after weighting and must not always choose the capital, richest state, or largest population.
 
-Negative selection factors include:
+The chosen state is saved as the mine's identity and added to the bounded mine registry (at most 64 entries).
 
-- wasteland or permanently ruined state
-- empty or nearly empty island with no usable port
-- impassable terrain
-- state already reserved by another persistent site system
-- active catastrophic disaster that makes the ordinary discovery impossible
-- current occupation without a stable controller when the initial event cannot resolve the recipient cleanly
-- state whose ownership or control is in the middle of a scripted transfer transaction
+## Deposit profiles
 
-The selection should remain random after weighting.
+The discovery assigns one deposit profile.
 
-It should not always choose the capital, richest state, or highest-population state.
+The profile is the mine's quality: it sets the output factor, steers incident weights, foreign interest, development needs, and collapse risk, and selects the discovery picture.
 
-The chosen state is saved as the mine's stable identity and added to a bounded Event 029 mine registry.
+There is no second hidden quality roll; a separate quality band would duplicate the profile without giving the player anything to act on.
 
-## Commodity profiles
+| Profile | Output factor | What the player should expect |
+| --- | --- | --- |
+| Alluvial field | lowest | Fastest rush, weakest claims, most claim jumping and petty crime; administration and sanitation matter first. |
+| Deep vein | standard | Slower opening, costly shafts, rising collapse pressure until the shafts are reinforced. |
+| Gemstone bed | high | Theft, substitution, and smuggling; legitimacy is hard to keep and mine police matter. |
+| Platinum lode | highest | Strong foreign and state interest, concession offers, and processing demands. |
 
-The discovery assigns one narrative profile.
-
-The profile changes report imagery, incident weights, foreign interest, development needs, and collapse risks.
-
-It does not create a strategic resource deposit by default.
-
-### Alluvial gold field
-
-This profile produces the fastest early rush, the largest transient camp, the weakest initial claim system, and the strongest early crime pressure.
-
-Development leans toward roads, water control, washing works, depots, policing, and settlement administration.
-
-The field is easier to enter and harder to regulate.
-
-### Deep gold reef
-
-This profile has slower opening output and stronger long-term value.
-
-Development leans toward shafts, drainage, reinforcement, power, rail, processing works, and specialist labor.
-
-Collapse and deep-excavation pressure rise faster after aggressive development.
-
-### Gemstone field
-
-This profile produces easier concealment, smuggling, substitution, theft, and private handling.
-
-Revenue legitimacy is harder to preserve because small high-value material can leave the official ledger unnoticed.
-
-Foreign buyers, criminal networks, and private guards receive higher incident weight.
-
-### Platinum or precious-metal seam
-
-This profile produces stronger strategic industrial interest, more state involvement, and greater foreign pressure for long-term supply contracts.
-
-Development is capital intensive.
-
-A weak country is more likely to accept foreign finance, while a major country is more likely to nationalize or militarize the site.
+Implemented: profiles, their factors in `riches_found_scaling`, profile incident weights, and the four profile discovery pictures.
 
 ## Immediate discovery package
 
-The receiving country gains exactly 1,000 political power once.
+The receiving country gains exactly 1,000 political power once (user requirement).
 
-The selected state receives the persistent Riches Found state identity.
+The grant uses the native political-power cap; no cap change, deferred credit, or replacement currency is added (agent decision D3).
 
-The mine begins at low development, manageable local order, uncertain revenue legitimacy, and low to moderate extraction pressure.
+The state receives the persistent mine identity, and the entry event offers five opening policies that set the mine's lasting policy profile:
 
-Starting values vary through dynamic factors:
+| Option | Policy profile | Direction |
+| --- | --- | --- |
+| Build a public fortune | Public Development | Slower output, stronger legitimacy and order. |
+| Make the mine an instrument of state | State Extraction | Strong national receipts, dependence risk. |
+| Invite foreign investment | Concession Economy | Fast development with foreign leverage. |
+| Place the mine under armed authority | Militarized Mine | Order by force, legitimacy cost. |
+| Take everything the mountain will yield | Predatory Extraction | Highest short-term output, highest failure risk. |
 
-- Low stability raises disorder and lowers legitimacy.
-- Corruption or atrocity conditions raise hidden capture pressure.
-- A core state begins with higher legitimacy than an occupied or colonial state.
-- Existing infrastructure raises initial development.
-- War, nearby fronts, resistance, and low supply raise order pressure.
-- High chaos raises the chance that the opening rush starts with fraud, violence, or unusual incidents.
-- Strong institutions, democratic competition, and public-service capacity improve the opening governance state.
-- Existing private-security or concession systems can shift the opening toward company control.
+No option is a dominant reward choice.
 
-The initial report must show a real social and economic change in the selected state.
+Starting values then vary once, at discovery, through the owner's stability, core status, infrastructure, war and local resistance, the Chaos Meter, democratic government, and the deposit profile.
 
-It should focus on workers arriving, prices changing, claims being staked, transport routes filling, and officials losing control of access.
+The opening report describes workers arriving, prices changing, claims being staked, routes filling, and officials losing control of access; it does not read as a reward list.
 
-It should not read as a reward list.
+Implemented: the five options, `riches_found_apply_starting_conditions`, the idempotent grant behind `riches_found_discovery_grant_paid`, and the evolved opening descriptions.
 
 ## Persistent state identity
 
-The mine belongs to the state, not to the country that first discovered it.
+The mine belongs to the state, not to the discovering country.
 
-The state carries a permanent mine identity until one of these terminal local outcomes occurs:
+The identity survives temporary closure, occupation, sabotage, damage, loss of the state, and government change.
 
-- the deposit is permanently exhausted through a defined failure or exploitation route
-- the mine is permanently sealed
-- a catastrophic collapse destroys the workings beyond recovery
-- the state becomes Event 028's permanent main crater
-- a supernatural closure consumes or removes the site
-- a later accepted event explicitly converts the site through a safe adapter
+It ends only through permanent exhaustion, permanent sealing, catastrophic collapse beyond recovery, Event 028's permanent main crater, a supernatural closure, or a later accepted adapter.
 
-Temporary closure, occupation, sabotage, damaged infrastructure, loss of the state, or a government change do not erase the identity.
-
-The original discovering country keeps the one-time political-power windfall.
-
-It loses ongoing controller benefits when it no longer controls the state.
-
-The new controller gains the ongoing benefits only after the controller refresh resolves once.
-
-The transfer must never duplicate the contribution for both countries.
+The discovering country keeps the one-time windfall and loses ongoing benefits when it no longer controls the state.
 
 ## Controller transfer contract
 
-Control changes are a normal part of the event.
+The mine follows the current controller through war, occupation, civil war, peace settlement, annexation, liberation, and release.
 
-The mine must follow the current controller during war, occupation, civil war, peace settlement, annexation, liberation, and release.
+The controller refresh:
 
-The controller refresh performs these conceptual steps:
+1. removes the mine's contribution from the previous controller aggregate;
+2. records the new controller once;
+3. recalculates control quality from core status, compliance, resistance, route damage, and current condition;
+4. adds the bounded contribution to the new controller aggregate;
+5. replaces controller-specific decisions and missions;
+6. preserves development, damage, closure, pressure, incidents, contracts, and evolution history;
+7. clears invalid foreign targets and re-evaluates a surviving contract once;
+8. sends a transfer report only when the change is strategically meaningful or a crisis is active.
 
-1. Remove the mine's contribution from the previous controller aggregate.
-2. Save the new controller.
-3. Recalculate control quality, core status, compliance, resistance, supply, local order, revenue legitimacy, security policy, and current mine condition.
-4. Add the mine's bounded contribution to the new controller aggregate.
-5. Replace controller-specific decisions and missions.
-6. Preserve state development, physical damage, closure state, extraction pressure, incidents, and evolution history.
-7. Clear invalid foreign-concession targets and re-evaluate surviving contracts.
-8. Create a transfer report only when the change is strategically meaningful or the mine has an active crisis.
+No whole-world daily, weekly, or monthly scan is allowed.
 
-This refresh should use a narrow ownership or control hook, an event-driven state registry refresh, or another bounded repository pattern.
-
-It must not rely on a whole-world daily, weekly, or monthly scan.
-
-If the installed engine and repository do not expose a proven narrow controller-change route, implementation must stop and report that blocker. Do not add an unauthorized global scan.
+Implemented: the narrow `on_state_control_changed` hook (new controller `ROOT`, old controller `FROM`, state `FROM.FROM`) reconciles registered mines and refreshes registered mines beside the changed state; annexation, peace conference, and capitulation walk only the mine registry.
 
 ## Physical destruction by Asteroid Incoming
 
-The [Event 028 impact profile](../028_asteroid_incoming_specs/028_asteroid_incoming_spec_part_3_impact_damage_and_aftermath.md) determines whether the selected mine state survives.
-A permanent main crater ends this mine's operating life.
-Event 029 removes its contribution, closes site-specific projects and missions under their existing cancellation policies, and rebuilds the controller aggregate from surviving mines.
-The historical state record, original discovery payment, and already established national aftermath remain.
-The destroyed site cannot be mined again or satisfy successful sealing, evacuation, reform, or bargain achievements.
-Impact deaths cannot satisfy a mine obligation or trigger a second mine-death debit.
+The [Event 028 impact profile](../028_asteroid_incoming_specs/028_asteroid_incoming_spec_part_3_impact_damage_and_aftermath.md) decides whether the mine state survives.
 
-Damage in a surviving ring state or fragment center instead revalidates works, supply, and transport.
-The player can use the existing repair, reduced-extraction, temporary-closure, and reopening choices when their physical requirements hold.
-A fragment-crater identity does not by itself destroy the mine.
-The same physical building loss and repair remain shared facts even when both events offer recovery work.
+A permanent main crater ends the mine: its contribution is removed, site projects and missions close under their cancellation policies, and the controller aggregate is rebuilt from surviving mines.
 
-The mine owner checks this condition during its ordinary state refresh, including the first refresh after re-enabling the event.
-It does not launch Asteroid Incoming, add a new incident roll, or grant a replacement discovery windfall.
+The historical record, the original payment, and the national aftermath remain, and the destroyed site cannot satisfy sealing, evacuation, reform, or bargain achievements.
 
-## Visible mechanic values
+Impact deaths never satisfy a mine obligation and never trigger a second mine-death debit.
 
-The decision category presents four values because each one has a separate cause, consequence, threshold, and player response.
+A surviving ring state or fragment centre instead revalidates works, supply, and transport, and the player uses the ordinary repair, closure, and reopening choices.
 
-### Extraction Pressure
+The mine checks this during its ordinary refresh and never launches Asteroid Incoming, adds an incident roll, or grants a replacement windfall.
 
-Extraction Pressure is the primary value.
+Pending: no Event 029 source reads the Event 028 crater markers yet.
 
-Range: 0 to 100.
+## Visible values
 
-It represents how hard the site is being pushed, how much untouched material is being opened, how many workers and guards are exposed, and how quickly later dangers accumulate.
+Every value the player sees must change a decision.
 
-It rises through deep mining, output drives, military requisition, exclusive concessions, weak oversight, wartime desperation, and predatory policies.
+| Value | Shown as | Why the player needs it |
+| --- | --- | --- |
+| Extraction Pressure (primary) | Number with the next threshold (warning 60, severe 80, emergency 95) | It is the main risk dial: it raises output and every danger, and the cooling actions answer it. |
+| Local Order | Number with a band | It gates reopening, the stabilization fund, Drive Deeper, and the security overlay. |
+| Revenue Legitimacy | Number with a band | It gates audits, dividends, administration replacement, and resistance to the Resource Curse. |
+| Mine Development | Band only: Provisional, Organized, Industrial, Mature | It gates Drive Deeper and Trade Access for Infrastructure and scales output; the exact number adds nothing the band does not. |
 
-It falls through closure, reduced shifts, reinforcement, revenue settlement, safety investment, sealed sections, and controlled recovery.
+All four range from 0 to 100 internally.
 
-High pressure raises current rewards and incident frequency.
+Extraction Pressure rises through deep mining, output drives, requisition, exclusive concessions, weak oversight, wartime desperation, and predatory policy, and falls through closure, reinforcement, revenue settlement, sealed sections, and controlled recovery.
 
-It also raises collapse risk, corruption, Gold Disease severity, deep-excavation pressure, and supernatural escalation.
+Mine Development rises through construction, investment, foreign capital, and repairs, and falls through raids, sabotage, fighting, closure decay, and collapse.
 
-The player must see the next important pressure threshold and the broad consequence attached to it.
+Local Order rises through fair claims, mine police, pay protection, supplied garrisons, and trusted administration, and falls through claim jumping, wage theft, private-army rivalry, raids, smuggling, requisition, Gold Disease, and occupation; order made by force contains corruption less well than order made by administration.
 
-### Mine Development
+Revenue Legitimacy rises through dividends, local development, transparent terms, and credible audits, and falls through secret concessions, patronage, displacement, unpaid labour, guard abuses, central seizure, and exposed theft.
 
-Mine Development is a supporting value.
-
-Range: 0 to 100.
-
-It represents roads, rail, drainage, power, processing works, shafts, housing, administration, and extraction capacity.
-
-It rises through construction missions, investment, foreign capital, engineering, local revenue, and successful repairs.
-
-It falls through raids, sabotage, fighting, neglect, closure decay, and collapse.
-
-Development increases the mine's possible contribution and improves recovery from ordinary incidents.
-
-High development also makes the site more attractive to foreign actors and raises the cost of abandoning it.
-
-### Local Order
-
-Local Order is a supporting value.
-
-Range: 0 to 100.
-
-It represents enforceable claims, safe transport, accepted policing, worker discipline, guard reliability, and the state's ability to keep armed groups from controlling the site.
-
-It rises through fair claim resolution, mine police, pay protection, supplied garrisons, community agreements, and trusted administration.
-
-It falls through claim jumping, wage theft, private-army rivalry, raids, smuggling, military requisition, labor conflict, Gold Disease, and occupation.
-
-Low order raises theft, killing, sabotage, foreign interference, and temporary shutdown risk.
-
-Order created through terror is less durable than order created through legitimacy and administration.
-
-### Revenue Legitimacy
-
-Revenue Legitimacy is a supporting value.
-
-Range: 0 to 100.
-
-It represents whether workers, local residents, government bodies, and outside observers accept who receives the mine's income and how contracts were awarded.
-
-It rises through dividends, local development, transparent auctions, public ledgers, community agreements, and credible audits.
-
-It falls through secret concessions, patronage, forced displacement, unpaid labor, private guard abuses, central seizure, colonial extraction, hidden owners, and exposed theft.
-
-High legitimacy reduces corruption, resistance, foreign propaganda opportunities, and security costs.
-
-Low legitimacy accelerates the Resource Curse and makes violent control less effective.
+Implementation status: the committed header shows all four as numbers plus deposit, phase, policy, objective, revenue route, reserve, and account lines; an uncommitted 2026-10-10 header in another session shows phase, pressure, order, and legitimacy only.
+Both must converge on the header in [Presentation](#presentation).
 
 ## Hidden state
 
-The event may use hidden values for implementation and surprise.
+Hidden values exist for causality and surprise and are never shown as raw numbers: concession exposure, illicit capture, deep excavation, private-security autonomy, foreign claim pressure, collapse pressure, Gold Disease pressure, supernatural pressure, sealed-depth integrity, and treasury dependence.
 
-Suggested hidden values include:
+Each hidden value must have at least one producer and at least one consumer that changes something the player can see (an incident, a stage, a decision's availability, or an output factor).
 
-- concession exposure
-- illicit capture
-- deep excavation
-- private-security autonomy
-- foreign claim pressure
-- Gold Disease pressure
-- supernatural pressure
-- sealed-depth integrity
+Their effects reach the player through reports, stage labels, decision availability, modifier text, and one-line tooltips.
 
-The player should not see a raw ledger of these values.
-
-Their visible effects appear through report incidents, stage labels, decision availability, modifier changes, and concise tooltips.
-
-Basic cause and effect must still remain clear.
+Proposed (unresolved): merge foreign claim pressure into concession exposure and sealed-depth integrity into deep excavation, because each pair is produced and consumed by nearly the same actions; implement only if a source review confirms no consumer distinguishes them.
 
 ## State modifier lifecycle
 
-The state uses one persistent mine ledger and exactly one active state-modifier presentation.
+The state carries one persistent mine record and exactly one active state-modifier presentation.
 
-Prefer one dynamic modifier with a stable public identity and a stage line in its tooltip. If the engine requires separate names or icons for the visible stages, replace mutually exclusive modifier variants through one lifecycle helper. Never stack the stage variants.
+The visible stages are Newly Discovered Riches, Established Riches District, Contested Mine District, Closed Mine District, Ruined Workings, Permanently Sealed Workings, Corrupted Mine District, Gold-Sick Mine District, and Opened Depths, plus the lasting Gold Fever Memory modifier after Gold Disease is contained.
 
-Working lifecycle states:
+Stages replace each other through one lifecycle helper and never stack.
 
-- Newly Discovered Riches
-- Expanding Mine District
-- Established Riches District
-- Contested Mine District
-- Closed Mine District
-- Ruined Workings
-- Permanently Sealed Workings
-- Corrupted Mine District
-- Gold-Sick Mine District
-- Opened Depths
+The modifier's effects derive from development, pressure, order, legitimacy, closure, damage, control, and the active evolution; its tooltip carries the deposit profile and the policy profile, which do not need header space.
 
-These are working labels for planning and should not be pasted as final localisation without a writing pass.
+Implemented: `common/dynamic_modifiers/029_riches_found_state_modifiers.txt` and the nine stage icons.
 
-The modifier's effects derive from development, pressure, order, legitimacy, closure, damage, control status, and active evolution.
+## Controller aggregate
 
-The state modifier should not become a stack of separate permanent modifiers.
+The controller receives one aggregate country presentation summarizing every mine it controls, never one spirit per mine.
 
-## Controller aggregate lifecycle
+Its stages are Windfall Receipts, Managed Mineral Revenue, Resource-Dependent Treasury, Captured Revenue State, Gold-Sick Administration, Infernal Accounts, and Reformed Resource Settlement; the highest-priority stage among the controlled mines is shown.
 
-The controller receives one aggregate country modifier or staged idea that summarizes all controlled Event 029 mines.
+The tooltip shows the number of producing mines, the current national benefits against their caps, and one line naming the main reason output is reduced.
 
-Working lifecycle:
+It does not repeat the selected mine's condition, which the category header already shows.
 
-- Windfall Receipts
-- Managed Mineral Revenue
-- Resource-Dependent Treasury
-- Captured Revenue State
-- Corrupted Mine Administration
-- Gold-Sick Administration
-- Infernal Accounts
-
-The aggregate is rebuilt from controlled mine contributions.
-
-The controller should not receive one permanent national spirit for every mine.
-
-The tooltip lists the number of controlled mines, the selected mine's current state, the total bounded contribution, and the major reasons a mine is underperforming.
+Implemented: the stages and the aggregate rebuild; the tooltip trim is pending.
 
 ## Controller benefits
 
-The user-supplied benefit set is preserved:
+The user-supplied benefit set is ticking political power, nationwide construction speed, production efficiency, military factory output, and a civilian-factory benefit.
 
-- ticking political power
-- nationwide construction speed
-- production efficiency
-- military factory output
-- civilian factory benefit
+The civilian-factory benefit is consumer-goods relief, because HOI4 has no literal civilian-factory output modifier.
 
-The civilian-factory benefit must use a real supported HOI4 effect.
+One mine's score is `profile x development x operating state x policy x control quality x order and legitimacy x evolution factor`, built by reusable helpers from script constants.
 
-The preferred design is a bounded combination of consumer-goods relief, civilian construction capacity, and construction speed.
+## Diminishing returns and caps
 
-It must not claim to provide a literal civilian factory output modifier if the engine has no such modifier.
+The first controlled mine contributes at full value, the second at 0.60, the third at 0.25, and later mines at 0.10.
 
-The contribution of one mine is based on:
+The national totals are capped: political power +0.30 a day, construction speed +18%, production efficiency +10%, military factory output +12%, consumer-goods relief 8% (`riches_found_scaling`).
 
-`mine quality x development x operating state x extraction policy x control quality x local order x revenue legitimacy x evolution factors`
+Diminishing returns apply only to the national aggregate; each mine keeps its local value, incidents, and strategic worth.
 
-The design should use script constants and reusable calculation helpers.
+The tooltip states that later mines add less and that the totals are capped, without a formula.
 
-The exact tuning belongs to implementation and probability review.
+Implemented.
 
-## Diminishing returns and country cap
+## Operating states
 
-Event 029 is repeatable, so multiple mines can exist in one country and across the world.
+A mine is open and expanding, regulated, under concession, under military control, under predatory extraction, contested, temporarily closed, quarantined, partially sealed, permanently sealed, collapsed, or exhausted.
 
-The first controlled mine contributes at full bounded value.
+Open states give the normal contribution; contested, quarantined, and partially sealed states give reduced value; a temporarily closed mine keeps its development but produces almost nothing; sealed, collapsed, and exhausted mines leave only their historical identity and aftermath.
 
-The second controlled mine contributes a lower marginal share.
+## Presentation
 
-The third and later mines contribute sharply reduced marginal shares.
+The event uses one ordinary decision category, `riches_found_mine_management`, with the static picture `GFX_decision_cat_picture_riches_found` and no scripted GUI.
 
-The total country-wide benefit has a hard cap.
+The category header shows, in this order:
 
-Development, legitimacy, and order still matter for every mine because they affect local incidents, state value, and which mine is most productive.
+1. the selected mine and its operating condition;
+2. the current layer or phase and the Mine Development band;
+3. Extraction Pressure with its next threshold, then Local Order and Revenue Legitimacy;
+4. at most one conditional line, shown only when something needs an answer: the first unmet containment step, a repair objective, an active mine about to fall, or the next Bottomless Account obligation.
 
-Diminishing returns apply to the nationwide aggregate.
+The deposit, policy profile, and revenue route move to the state modifier tooltip and to the revenue decisions' tooltips, where they explain a choice instead of filling the header.
 
-They do not erase local state development or physical mine value.
+A country with one mine sees it directly; a country with several uses the selected-mine flow, which opens on the mine with an active mission, crisis, recent control change, or threshold warning.
 
-The cap prevents a country that captures several mines from obtaining unlimited political power, construction, and factory output.
+The AI evaluates every valid mine without the selection step.
 
-The implementation must expose the cap and marginal-contribution rule in tooltips without showing a complicated formula.
-
-## Mine operating states
-
-A mine can be in one of these broad operating states:
-
-- Open and expanding
-- Open and regulated
-- Open under concession
-- Open under military control
-- Open under predatory extraction
-- Contested
-- Temporarily closed
-- Quarantined
-- Partially sealed
-- Permanently sealed
-- Collapsed
-- Exhausted
-
-Only open states provide the normal positive controller contribution.
-
-Contested, quarantined, and partially sealed states provide reduced or conditional value.
-
-Temporarily closed mines preserve physical development but provide no ordinary output.
-
-Permanently sealed, collapsed, and exhausted mines leave a historical state identity and aftermath effects without ongoing positive output.
-
-## Presentation choice
-
-The event uses one ordinary decision category with a static category picture.
-
-The category picture establishes the mine's atmosphere through a documentary-style scene of a crowded mine entrance, railhead, pay wagons, workers, guards, and rough construction.
-
-It must not contain fake controls, meters, labels, or generated text.
-
-The normal decision list carries the gameplay.
-
-The category header shows:
-
-- selected mine state
-- current controller
-- operating state
-- Extraction Pressure
-- Mine Development
-- Local Order
-- Revenue Legitimacy
-- one concise line explaining the next important risk or objective
-
-A country controlling one mine sees that mine directly.
-
-A country controlling several mines uses a selected-mine flow that shows one mine's actions at a time.
-
-AI evaluates all valid mines without using the human selection flow.
-
-The presentation should normally expose three to five primary actions and one to three active missions in the current phase.
-
-Obsolete actions disappear when the phase, controller, contract, crisis, or operating state changes.
+The decision-layer contract that keeps each view within three to five actions (six at most) and one to three missions is owned by [Part 3](029_riches_found_spec_part_3_decisions_missions_foreign_interference.md#decision-layers).
 
 ## Player experience arc
 
-The first decision is about access and claims.
+The first decisions are about access and claims.
 
-The second set is about whether the rush becomes a settlement, a state project, or a private enclave.
+The next are about whether the rush becomes a settlement, a state project, or a private enclave.
 
-The middle game is about transport, revenue, contracts, labor, and protection.
+The middle game is transport, revenue, contracts, labour, and protection.
 
-The later ordinary game is about keeping the site productive without allowing violence, corruption, or foreign control to make the mine stronger than the government.
+The late ordinary game is keeping the site productive without letting violence, corruption, or foreign control make the mine stronger than the government.
 
-At high chaos, the same choices acquire new costs.
+At high chaos, the same choices acquire new costs, and pressure becomes an invitation to obsession and supernatural bargaining.
 
-Extraction can still deliver major rewards, but pressure becomes a direct invitation to obsession and supernatural bargaining.
-
-The event remains useful when managed well.
-
-It should not punish the player simply for receiving the discovery.
-
-Failure follows visible choices, neglected pressure, weak control, war, conquest, and bad crisis management.
+A well-managed mine stays useful; failure follows visible choices, neglected pressure, weak control, war, conquest, and bad crisis management, never the discovery itself.

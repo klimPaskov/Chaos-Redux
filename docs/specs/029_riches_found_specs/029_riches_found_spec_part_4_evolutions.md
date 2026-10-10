@@ -25,6 +25,10 @@ They do not create additional evolution-log rows unless the repository later cha
 
 This structure prevents the event from violating its planning contract while keeping the late-game political and supernatural content.
 
+Implemented: the three evolution rows, both late outcomes, the active-event and evolved-opening paths, per-track containment, and the Gold Disease movement routes.
+Each track keeps an active flag separate from its permanent history flag and log row, so containment ends the active crisis while history and achievements remain.
+The source map is [the overview, Evolutions and late outcomes](../../events/029_riches_found/overview.md#evolutions-and-late-outcomes).
+
 ## Shared evolution rules
 
 Each evolution is a mutation track layered onto the ordinary mine lifecycle.
@@ -182,21 +186,11 @@ Mine Development can worsen dependence when the controller has not built a stabi
 
 Local Order produced through private or military force becomes less effective at containing corruption than order produced through accepted administration.
 
-### Controller idea lifecycle
+### Controller stage
 
-Use one staged idea or dynamic modifier.
+The curse moves the controller aggregate (Part 1) between Resource-Dependent Treasury, Captured Revenue State, and, after containment, Reformed Resource Settlement.
 
-Working lifecycle:
-
-1. Windfall Administration
-2. Captured Revenue State
-3. Resource-Dependent Government
-4. Reformed Resource Settlement
-5. Entrenched Patronage
-
-The idea changes through governance choices and results.
-
-It should not stack one new spirit for each corruption event.
+There is no separate curse spirit and no stack of corruption spirits; entrenched patronage shows as Captured Revenue State and the Corrupted Mine District state stage.
 
 ### Evolution decisions
 
@@ -306,7 +300,8 @@ It is effective only when the authority is protected from removal, document dest
 
 Good management should be able to contain the curse.
 
-Containment requires a sustained pattern of choices. One button cannot resolve it.
+Containment requires a sustained pattern of choices.
+One button cannot resolve it.
 
 A credible reform path should include:
 
@@ -323,6 +318,11 @@ A credible reform path should include:
 Containment can transform the controller idea into Reformed Resource Settlement.
 
 The mine remains valuable and can still face ordinary incidents.
+
+Containment model (implemented, D7, R5, R9): each active track keeps one hidden progress value per mine, reviewed each controller pulse; every listed condition that holds adds a step, too few conditions decay it, and a breaking condition (tolerated corruption, tolerated patronage, or illicit capture at its gate) decays it faster and blocks gains.
+A curse mine meeting all seven conditions is contained in about five pulse intervals and one meeting the minimum five in about seven.
+The header's conditional line names the first unmet condition, which is the only part of this progress the player needs to see.
+Containment can relapse when corruption, patronage, or private dominance returns.
 
 ### Failure
 
@@ -443,6 +443,11 @@ Output and private development remain strong.
 
 The controller's national laws, labor policy, and diplomacy become constrained by the enclave.
 
+#### Implemented constraints (D37)
+
+Any one answer settles the district.
+Revoking the charter can fail and then blocks another attempt for a year; buying back needs a negotiable authority and a treasury that can carry it; sharing sovereignty costs daily political power and forbids temporary closure and exclusive concessions; recognizing the board seats a captured board when guards or owners run the district and a representative one otherwise; letting the board govern costs stability, opinion gain, and dearer law changes through one country modifier, Chartered Mine Districts; violent nationalization keeps its Deaths, Chaos Meter, and Condemnation consequences.
+
 ### Transfer behavior
 
 A new controller inherits the authority as a local actor.
@@ -515,7 +520,7 @@ The evolution becomes more likely through:
 
 - high Extraction Pressure
 - high hidden theft
-- high-value portable commodity profile
+- high-value portable deposit profile
 - low Local Order
 - low Revenue Legitimacy
 - repeated wage or shipment disputes
@@ -586,6 +591,9 @@ It does not create a normal biological outbreak state.
 It should not scan every state or country periodically.
 
 Each movement occurs through a specific event, mission result, contract, shipment, or unit rotation action.
+
+Implemented (D8, D30): each route rolls spread against containment, quartered under a quarantine, rationed access, or closure, so containment visibly protects the rest of the country.
+A spread gives the receiving country a temporary Gold Fever or Gold Fever in the Ranks modifier, or raises gold pressure at the receiving mine, and the receiving country gets one short report naming the source mine and route.
 
 ### Crisis decisions
 
@@ -765,7 +773,8 @@ The evolution becomes possible when:
 - deep-excavation pressure is high enough
 - no incompatible terminal `world_end` state is active
 
-At 1,000+ chaos, the evolution can enter while normal Event 029 progression remains active. A terminal route that has already set `world_end` blocks new Event 029 evolution jobs unless that route explicitly keeps this mine system compatible.
+At 1,000+ chaos, the evolution can enter while normal Event 029 progression remains active.
+A terminal route that has already set `world_end` blocks new Event 029 evolution jobs unless that route explicitly keeps this mine system compatible.
 
 The evolution becomes more likely through:
 
@@ -854,17 +863,9 @@ Higher pressure can increase output and supernatural pressure together.
 
 ### Controller condition
 
-The controller receives one staged supernatural modifier. Do not create a stack of small spirits.
+The supernatural condition is shown by the Opened Depths state stage and the Infernal Accounts controller stage, not by a separate five-step supernatural spirit.
 
-Working lifecycle:
-
-- Unexplained Mine Incidents
-- The Opened Depths
-- Infernal Accounts
-- Bound Extraction
-- Sealed and Remembered
-
-The modifier changes through investigation, sealing, purges, assistance, and bargains.
+Early uncertainty lives in the reports, binding and sealing in the containment end states below, and memory of the site in the permanent sealed or ruined state stage.
 
 ### Response routes
 
@@ -883,6 +884,8 @@ The controller removes workers and nearby residents before final containment.
 This lowers deaths and removes available labor and witnesses.
 
 It creates refugees, economic loss, and a slower sealing project.
+
+The refugee half of this is pending: the proposed migration hand-off is described under the Evacuate the Workforce mission in Part 3.
 
 #### Military Purge
 
@@ -916,11 +919,13 @@ It should remain fictional and context-specific.
 
 #### Seek Scientific Assistance
 
-The controller requests engineers, psychologists, physicists, or Event 016 expertise through a bounded adapter.
+The controller requests engineers, psychologists, and physicists.
 
 This can improve measurement, sealing, workforce screening, and evidence handling.
 
 It does not grant Event 016 project history, Kruger ownership, or free advanced technology.
+
+Implemented as Event 029-internal assistance; no Event 016 adapter exists, and one is needed only if a later accepted design lets an Event 016 host lend its scientist.
 
 #### Continue Controlled Exploitation
 
@@ -1043,6 +1048,10 @@ The category shows:
 It should not show a large supernatural currency shop.
 
 The player manages one active obligation at a time.
+
+Implemented account terms (`riches_found_account_*` constants): the promises escalate in a fixed order (material, political authority, public trust, industrial sacrifice, then a human crisis naming 100 marked workers); each obligation has 120 days, payments have a 30-day cooldown, at most five terms can ever be paid, and two breaches end the account.
+Each kind of payment multiplies one mine's contribution before the national caps, so the account can never push the aggregate past its ceiling.
+The header's conditional line shows the next obligation, its deadline, and the breach consequence; nothing else about the ledger is shown.
 
 ### Bounded payment families
 
@@ -1198,25 +1207,11 @@ The main Evolutions tab and selected History detail show the real date, actor, t
 
 ## Evolution pacing factors
 
-The implementation should centralize factors for:
+Entry timing uses one MTTH per track with a base near 90 days once the local gates hold, multiplied by the pressure, development, order, legitimacy, closure, war, concession, private-security, violence, deep-excavation, containment, and multiple-mine factors centralized in `common/mtth/029_riches_found_mtth.txt` and `riches_found_mtth_factor` (implemented).
 
-- base MTTH
-- pressure multiplier
-- development multiplier
-- order multiplier
-- legitimacy multiplier
-- closure multiplier
-- war multiplier
-- concession multiplier
-- private-security multiplier
-- violence multiplier
-- deep-excavation multiplier
-- containment multiplier
-- multiple-mine multiplier
+These factors stay internal; the player reads their effect through the incidents and the pre-evolution reports, never as a timer.
 
-The AI probability audit should evaluate timing bands under named campaign scenarios.
-
-It should not reduce evolution entry to one fixed random chance.
+The AI probability audit evaluates the timing bands under the named scenarios and must not reduce entry to one fixed random chance.
 
 ## Evolution recovery and persistence
 

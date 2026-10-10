@@ -137,7 +137,8 @@ EITI and Opening Extractives material explains that the real individuals who ult
 Design application:
 
 - Require Beneficial-Owner Disclosure becomes a pre-award or renewal decision.
-- Hidden owners appear through incidents. Do not expose them as a raw visible variable.
+- Hidden owners appear through incidents.
+  Do not expose them as a raw visible variable.
 - A corrupt official can be linked to a bidder through an audit.
 - A bidder can withdraw when disclosure is required.
 - Contract transparency alone is not a complete cure, so oversight and public participation still matter.
@@ -226,7 +227,8 @@ The final Demons Beneath the Mine track uses a fictional entity centered on valu
 
 It should not use a real deity's name, a copied altar, a copied offering practice, a living community's sacred symbol, or a claim that one tradition is evil.
 
-A future implementation agent that wants to use a specific regional reference must perform new source research, identify the selected state and culture, and write a respectful localized variant. The reference must not become the event's universal supernatural identity.
+A future implementation agent that wants to use a specific regional reference must perform new source research, identify the selected state and culture, and write a respectful localized variant.
+The reference must not become the event's universal supernatural identity.
 
 Reference consulted for the boundary: [UNESCO digital document on the historic mining context of Potosi and Cerro Rico](https://unesdoc.unesco.org/ark%3A/48223/pf0000109875)
 

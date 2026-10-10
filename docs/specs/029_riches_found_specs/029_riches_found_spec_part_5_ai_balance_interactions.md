@@ -12,6 +12,9 @@ The AI must be able to manage the system without a human-only scripted GUI.
 
 All AI actions should call the same cost, trigger, effect, transfer, logging, and cleanup helpers used by player decisions.
 
+Implementation status (D14, D44, D45): the entry event's five options carry the policy-profile weights; every paid decision reads the stored profile (favoured 2.5, disfavoured 0.4), and decision weights follow the action's family with war-state, low-order, capacity, one-project-at-a-time, bargain, and permanent-seal factors in `riches_found_decision_ai`.
+The factor list is kept in [the overview, AI and probability contract](../../events/029_riches_found/overview.md#ai-and-probability-contract); this part owns the intent.
+
 ## AI state inputs
 
 Important AI inputs include:
@@ -184,7 +187,8 @@ A personalist regime can route revenue through patronage, elite families, office
 
 A weak non-aligned minor can accept foreign infrastructure and security in exchange for access.
 
-The profile should respond to stability, dependence, and foreign protection. Do not treat all non-aligned states the same.
+The profile should respond to stability, dependence, and foreign protection.
+Do not treat all non-aligned states the same.
 
 ### Colonial or occupation governments
 
@@ -297,7 +301,7 @@ Aggressive profiles maintain or increase pressure during war or dependence.
 
 ### Low Mine Development
 
-The AI should select one valid development priority based on geography and commodity profile.
+The AI should select one valid development priority based on geography and deposit profile.
 
 It should not queue rail, housing, processing, drainage, and port projects at once.
 
@@ -407,19 +411,9 @@ Border status and mine-state adjacency should matter.
 
 Every complex `ai_will_do`, event option weight, foreign-target weight, evolution MTTH factor, raid target weight, and random incident pool needs the specialized probability audit.
 
-The auditor begins with `hoi4.probability_inspect`.
+The named scenarios, audit sequence, and evidence format are owned by [the AI probability scenarios file](029_riches_found_ai_probability_scenarios.md).
 
-It then uses:
-
-- `hoi4.probability_evaluate` for named campaign states
-- `hoi4.probability_sweep` for value thresholds and rank reversals
-- `hoi4.probability_compare` after implementation changes
-- `hoi4.probability_simulate` only when uncertain inputs are declared
-- `hoi4.probability_render` when a matrix, sensitivity chart, timing view, or comparison makes the result easier to review
-
-Willingness scores are not click probabilities.
-
-The audit must include availability, target validity, cost, cooldown, policy memory, and route state.
+Willingness scores are not click probabilities, and the audit must include availability, target validity, cost, cooldown, policy memory, and route state.
 
 ## Exact 1,000 political-power windfall
 
@@ -443,6 +437,8 @@ If live or probability evidence shows that 1,000 political power breaks the even
 
 It cannot substitute a smaller value without approval.
 
+Accepted (agent decision D3): the grant uses the native political-power cap with no define change, deferred credit, or headroom exclusion; what a country near the cap actually receives remains a live-game check.
+
 ## Ongoing political-power income
 
 The mine's ticking political-power benefit is separate from the opening grant.
@@ -457,62 +453,25 @@ Corruption, theft, closure, occupation, and crisis reduce effective income.
 
 A country controlling several mines cannot stack uncapped political-power gain.
 
-## Construction and production balance
+## Construction, production, and diminishing returns
 
-The mine supports:
+The benefit families, the diminishing-return factors (1.00, 0.60, 0.25, 0.10), and the national caps are owned by [Part 1](029_riches_found_spec_part_1_core_loop.md#diminishing-returns-and-caps).
 
-- construction speed
-- civilian construction capacity or consumer-goods relief
-- production-efficiency gain or cap
-- military-factory output
+The balance intent is that the first mine is noticeable and several mines stay below the strength of a complete national economic path or a major late-game economic system.
 
-The exact mix should preserve the user request without inventing unsupported modifier names.
+Local projects create real buildings only through one-time project completion and never through repeatable factory or infrastructure farming.
 
-The first mine should have a noticeable effect.
-
-The aggregate cap should keep several mines below the strength of a complete national economic path or major late-game economic system.
-
-Local development projects can create real state buildings only through bounded missions and one-time project completion.
-
-They must not create repeatable factory or infrastructure farming.
-
-## Diminishing returns design bands
-
-Exact constants belong to implementation, but the intended curve is:
-
-- first controlled mine: full marginal contribution
-- second controlled mine: roughly one half to two thirds of the first mine's marginal contribution before quality factors
-- third controlled mine: small marginal contribution
-- fourth and later mines: minimal aggregate contribution while retaining local strategic and denial value
-
-The total country aggregate has a hard cap.
-
-The curve should be implemented through script constants and one reusable aggregation helper.
-
-The tooltip should explain that additional mines have diminishing national returns.
-
-It should not expose a long mathematical formula.
+Pending balance check: compare one, two, three, and four capped mines against a representative national economy focus route before the event leaves Needs Testing.
 
 ## Mine quality and reward strength
 
-Every mine receives a quality band during survey.
+Quality is the deposit profile (Part 1): alluvial 0.80, deep vein 1.00, gemstone 1.15, platinum 1.30 (`riches_found_scaling.quality_*`).
 
-Quality changes the ceiling, not the opening 1,000 political power.
+Quality changes the ceiling, foreign interest, and deep-extraction pressure, never the opening 1,000 political power.
 
-Suggested bands:
+There is no separate quality band, because it would duplicate the profile without adding a player decision.
 
-- modest vast deposit
-- rich deposit
-- exceptional deposit
-- extraordinary deposit
-
-The wording should be improved during localisation.
-
-Quality should influence development payoff, foreign interest, and pressure from deep extraction.
-
-The highest quality must remain rare.
-
-A low-quality mine should still justify the event's premise and the persistent state modifier.
+Even the lowest profile must justify the event's premise and the persistent state modifier.
 
 ## Repeatable-event behavior
 
@@ -524,7 +483,9 @@ The event should not add its own independent timer or recovery system.
 
 A country that already has a mine remains eligible for another firing when it has another suitable state.
 
-Every valid recipient country receives the same country-selection weight. Existing mine count, country size, ideology, major status, and player control must not bias the recipient roll.
+Every valid recipient country receives the same country-selection weight.
+
+Existing mine count, country size, ideology, major status, and player control must not bias the recipient roll.
 
 Diminishing returns limit the persistent value of several mines, while the exact 1,000 political-power grant remains a possible repeated windfall because the user specified a completely random recipient.
 
@@ -659,6 +620,8 @@ The mine's economic bonuses do not directly add chaos simply because they exist.
 
 The event should not create a hidden passive chaos farm.
 
+Implemented (D26): eight sources change the Chaos Meter at most once per mine through `riches_found_apply_chaos_source` and the Riches Found history reason, from -4 for a lasting public settlement to +12 for a demonic bargain; the table is in [the overview, Chaos Meter](../../events/029_riches_found/overview.md#chaos-meter).
+
 ## Deaths integration
 
 Use exact state population loss and the shared Deaths system for:
@@ -679,6 +642,8 @@ Population must be removed exactly once.
 
 Military casualties should be classified correctly when the source is an armed force.
 
+Implemented (D40, D47): two Deaths reasons, `mine_disaster` (291) for collapses and supernatural losses and `mine_violence` (292) for raids, clearances, forced replacement, the purge, violent nationalization, entombment, Gold Disease violence, and predatory prosperity, all through the harm wrappers in `common/scripted_effects/029_riches_found_harm_effects.txt`.
+
 ## Condemnation integration
 
 Condemnation applies to publicly known responsibility for:
@@ -697,15 +662,30 @@ Ordinary corruption, theft, bad contracts, and low legitimacy do not automatical
 
 Hidden evidence remains hidden until a report, audit, occupation, witness, or exposure route reveals it.
 
-## Air Cleanliness and contamination
+Implemented (D41, D47): abuses that are not public when they happen (unaccountable guards, burned records over a lethal history, tolerated corruption over deaths, soldiers ruling a gold-sick district) enter the responsible controller's Condemnation as hidden sources once per mine and kind, and the concession audit, owner disclosure, a published contract, occupation by another country, or a raid on the records exposes them once.
+Forced labour is not an Event 029 action, so it reaches Condemnation only through the shared camp system.
 
-Ordinary mining does not alter global Air Cleanliness by default.
+## Famine and migration
 
-Gold Disease is not biological contamination.
+Event 029 owns no food, refugee, or reception ledger, and the connections below use only the owner-proven adapters in `docs/systems/famine_system.md` and `docs/systems/migration_system.md`.
 
-Demons Beneath the Mine is not chemical, biological, nuclear, or atmospheric contamination.
+- War capture of a mine state already produces war flight through the shared humanitarian capture adapter; Event 029 adds nothing there.
+- Proposed (unresolved): an unmanaged rush or Predatory Extraction submits one bounded food-need component for the mine state to famine (Part 2, Rush pressures).
+- Proposed (unresolved): Evacuate the Workforce moves its people through migration's organized evacuation and exact civilian transfer (Part 3, Evacuate the Workforce).
 
-A later accepted collapse or industrial accident can use relevant environmental systems only through a documented adapter.
+Neither proposal adds an Event 029 value, popup, decision, or scan, and the famine and migration categories, values, and decisions stay their owners' surfaces.
+
+The reworked famine system no longer has incident events or the older famine decisions, so no Event 029 text may refer to them.
+
+## Air Cleanliness, fallout, and CBRN
+
+Ordinary mining does not alter Air Cleanliness, fallout, or contamination.
+
+Gold Disease is not biological contamination, and Demons Beneath the Mine is not chemical, biological, nuclear, or atmospheric contamination.
+
+A CBRN or nuclear strike on a mine state uses the ordinary damage the mine already reads (development, route damage, collapse pressure); Event 029 adds no contamination rule of its own.
+
+A later accepted collapse or industrial accident can use environmental systems only through a documented adapter.
 
 ## Event 013 Natural Disasters
 
@@ -717,7 +697,7 @@ The call should preserve Event 013 ownership of disaster targeting, damage, repo
 
 Event 029 should not use Event 013 as a generic mine-collapse button.
 
-An ordinary mine collapse can remain Event 029-owned.
+An ordinary mine collapse remains Event 029-owned (implemented); no Event 013 call exists, and Part 2 records the proposed earthquake hand-off.
 
 ## Event 016 Brilliant Scientist
 
@@ -742,6 +722,8 @@ The adapter must not:
 - create free facilities or units
 
 Scientific assistance changes Event 029 outcomes only.
+
+Current source implements scientific assistance inside Event 029 with no Event 016 adapter; the list above applies only if such an adapter is later accepted.
 
 ## Event 018 Resources Found
 
@@ -780,11 +762,11 @@ A flavor comparison by frightened characters is possible, but mechanics and Even
 
 ## Camps and genocide systems
 
-The event does not create a separate camp system.
+The event does not create a separate camp system or a forced-labour action.
 
-If a predatory controller uses forced labor or mass killing through an existing shared atrocity route, Event 029 should call the shared population, evidence, Deaths, and Condemnation helpers.
+Its own lethal actions call the shared population, evidence, Deaths, and Condemnation helpers through the harm wrappers.
 
-It should not duplicate those systems inside the mine event.
+A camp or gulag that a controller runs in the mine state stays entirely the camp system's content (`docs/specs/system_camp_repression_rework_specs/README.md`); Event 029 neither reads nor boosts it, so the two atrocity systems never count the same people twice.
 
 ## World threat
 
@@ -824,7 +806,7 @@ The following state must survive save and reload:
 
 - mine registry entry
 - selected state identity
-- commodity profile
+- deposit profile
 - quality
 - development
 - pressure

@@ -2,51 +2,21 @@
 
 ## Status of this file
 
-These are implementation and live-test acceptance criteria.
+These are the acceptance scenarios for Event 029.
 
-They have not been executed in this planning environment.
+A substantial implementation exists; the scenarios are not recorded as passed until source review, the useful available checks, and the user's live testing support them.
 
-The implementation agent must satisfy the source-review, MCP, audit, asset, documentation, and catalog requirements before claiming Event 029 complete.
+Source review is evidence of what the source does, not proof of engine behaviour, and an unavailable check is reported as a limitation, never as a pass.
 
-The user owns live HOI4 validation unless the autonomous debug-playtest skill is explicitly invoked in a later task.
+The current evidence and the open items are tracked in [the latest continuation checkpoint](../../plans/029_riches_found_plans/subagent_handoffs/parent_continuation_2026_10_08.md) and [the 2026-10-07 completion audit](../../plans/029_riches_found_plans/subagent_handoffs/completion_audit_2026_10_07.md).
 
-## Source review gate
+## Review and tool gate
 
-Before editing the repository, the implementation agent must read:
+Required reading, reference workflow, and MCP retry limits follow `CLAUDE.md` section 0; this file adds only the Event 029 surfaces to cover.
 
-- repository `AGENTS.md`
-- `chaos-redux-events`
-- `chaos-redux-decisions-missions`
-- `chaos-redux-event-assets`
-- `chaos-redux-improvement-loop`
-- `chaos-redux-subagents`
-- relevant portions of `CHAOS_REDUX_MECHANICS`
-- this complete spec package
-- current Event 018 implementation and docs
-- current event log, Event Details, repeatable-event, controller-transfer, state-modifier, Deaths, Condemnation, and dynamic-effect patterns
-- relevant offline Paradox wiki pages
-- relevant installed vanilla documentation
-- at least one vanilla event, decision, mission, dynamic modifier, occupation transfer, and state-control precedent
+Useful MCP evidence for Event 029 is `hoi4.event_inspect` and `hoi4.event_render` on the event chain, `hoi4.decision_inspect` on the category, and the probability workflow in [the AI scenarios file](029_riches_found_ai_probability_scenarios.md).
 
-The implementation agent must inspect the actual repository and cannot treat this package as proof of current file names or engine behavior.
-
-## MCP gate
-
-Use the installed HOI4 MCP routes for every supported surface.
-
-Required Event 029 evidence includes:
-
-- `hoi4.event_inspect` on the existing Event 029 entry and any reworked chain
-- `hoi4.event_render` for the final event chain
-- `hoi4.event_compare` against the pre-rework source
-- `hoi4.probability_inspect` on every complex weighted surface
-- probability evaluation, sweeps, rendering, and compare evidence from the named scenario file
-- GUI inspection only if the final implementation changes a shared category attachment or creates a justified event-owned GUI, which this spec does not require
-- map inspection when a decision builds or validates a rail, port, or state route through exact map data
-
-If a required MCP route is unavailable, record the exact blocker.
-
-Source-only review is not equivalent evidence.
+Known limitation: the connected `hoi4-agent-tools` 3.10.0 probability classifier treats decisions with `days_remove` as missions, so 94 of the 97 Event 029 decisions cannot yet be evaluated as decisions; until that tool is fixed, decision weighting is supported by source review and calculations from the actual script.
 
 ## Event registration
 
@@ -58,7 +28,7 @@ Event 029 must:
 - remain outside every cluster unless the user approves a later change
 - have one reusable valid-target gate
 - show `N/A` when no valid country and state pair exists
-- return to the default-enabled allowlist only when the rework is ready for ordinary selection
+- follow the shared settings contract for default enablement
 - resolve its visible name in normal event, debug, log, and Event Details selectors
 
 ## Initial firing
@@ -72,7 +42,7 @@ A normal firing passes when:
 - the state receives one persistent Event 029 identity
 - the mine registry receives one aligned entry
 - original discoverer and current controller are stored
-- initial quality, commodity profile, values, and operating state are initialized
+- initial deposit profile, values, and operating state are initialized
 - the report names the correct country and state
 - the event history records Event 029 once with the correct actor
 - the decision category becomes available to the controller
@@ -130,7 +100,8 @@ Expected result: Later firing can select the other state and cannot select the f
 
 ### `RF_TEST_TRANSFER_01_OCCUPATION`
 
-Setup: Country A controls an active mine. Country B occupies the state during war.
+Setup: Country A controls an active mine.
+Country B occupies the state during war.
 
 Expected result:
 
@@ -180,13 +151,11 @@ Expected result: Aggregate recalculates from two controlled mines with the corre
 
 The category passes when:
 
-- Extraction Pressure, Mine Development, Local Order, and Revenue Legitimacy display as whole, readable values
-- each value has a concise tooltip explaining meaning, main causes, next threshold, consequence, and player response
-- value colors and icons remain consistent across category, decisions, missions, events, modifiers, and tooltips
-- hidden capture, concession exposure, deep excavation, Gold Disease pressure, and supernatural pressure are not exposed as raw numbers
-- visible incidents and decisions still explain why the hidden state matters
-- values persist through save and reload
-- values follow the mine state through controller transfer
+- the header follows [Part 1, Presentation](029_riches_found_spec_part_1_core_loop.md#presentation): Extraction Pressure with its next threshold, Local Order and Revenue Legitimacy as numbers, Mine Development as a band, and at most one conditional line
+- each shown value has a one-line tooltip giving its meaning, its main causes, and the player's response
+- value colours stay consistent across the category, decisions, missions, events, modifiers, and tooltips
+- no hidden value appears as a raw number, while incidents and decisions still explain why it matters
+- values persist through save and reload and follow the mine through controller transfer
 
 ## Baseline progression
 
@@ -205,7 +174,7 @@ Pass conditions:
 Pass conditions:
 
 - camp administration, labor, services, and settlement actions use meaningful costs
-- migration and settlement pressure appear through incidents and modifiers
+- settlement pressure appears through incidents and modifiers
 - public projects improve the state through one-time or mission-backed changes
 - no repeatable free building loop exists
 - local and imported workforce routes produce different consequences
@@ -268,7 +237,7 @@ Pass conditions:
 The category passes when:
 
 - one selected mine is clear
-- one primary value and three supporting values remain readable
+- the header carries only the Part 1 contents
 - current phase normally exposes three to five primary decisions
 - six primary decisions is never exceeded in one phase
 - one to three active missions are visible
@@ -313,6 +282,7 @@ Required mission scenarios:
 - Hold the Mine During War
 - Complete the Public Settlement
 - Audit the Concession
+- Evacuate the Workforce
 
 ## Evolution I tests
 
@@ -384,7 +354,8 @@ Expected result: No syndrome state, quarantine action, movement route, or Gold D
 
 ## Evolution III tests
 
-Before any Evolution III scenario, verify that 1,000+ chaos alone does not bypass an active incompatible `world_end` state. New Event 029 evolution jobs must remain blocked after that terminal state begins unless the terminal owner explicitly permits continuation.
+Before any Evolution III scenario, verify that 1,000+ chaos alone does not bypass an active incompatible `world_end` state.
+New Event 029 evolution jobs must remain blocked after that terminal state begins unless the terminal owner explicitly permits continuation.
 
 ### `RF_TEST_EVO3_01_ENTRY`
 
@@ -484,6 +455,12 @@ Expected result: State markers are mutually exclusive and no Event 018 branch is
 ### Event 019
 
 Expected result: No new unit-family registration exists unless implementation added a real custom combat subunit, which would require a separate accepted scope.
+
+### Famine and migration
+
+Expected result: Event 029 adds no famine or migration value, popup, decision, or scan.
+
+If the Part 2 food-need proposal or the Part 3 evacuation hand-off is accepted, each must pass through the owner's adapter with the required proofs, apply once, and end when its cause ends.
 
 ## Repeatable-event tests
 
@@ -726,36 +703,12 @@ It passes when:
 
 ## Completion audits
 
-Before completion claim, use:
+Use the audit routing in `CLAUDE.md` and `chaos-redux-subagents` before a completion claim: the AI probability, decision and mission, localisation, and event completion auditors, asset review, and `chaosx_spreadsheet_doc_worker` once the wording is final.
 
-- `chaosx_ai_probability_auditor` for weighted and timing surfaces
-- `chaosx_decision_mission_auditor` for decisions, missions, costs, clutter, cleanup, and exploits
-- `chaosx_localisation_auditor` for all player-facing text
-- `chaosx_event_completion_auditor` for full spec-versus-implementation review
-- asset subagents and parent review for every visible asset
-- `chaosx_spreadsheet_doc_worker` after implementation wording is final
+A broad design gap found by an auditor goes to `chaosx_improvement_loop_planner` only after this specification has been implemented or the gap has been queued, rejected, or accepted into it.
 
-A broad design gap found by an auditor goes to `chaosx_improvement_loop_planner` only after this accepted specification has been implemented or formally queued, rejected, or amended.
+## Completion report
 
-## Completion report content
+The completion report follows `CLAUDE.md` section 5.
 
-The final implementation report must list:
-
-- files changed
-- event and helper IDs
-- decisions and missions
-- values and tuning files
-- controller-transfer behavior
-- AI and probability evidence
-- evolution behavior
-- Deaths and Condemnation integration
-- Event 018 separation
-- assets created and wired
-- achievements
-- event log and Event Details
-- docs and workbook updates
-- task-specific validation findings
-- unresolved blockers
-- simplifications, fallbacks, or omissions
-
-If any accepted route, decision family, mission, evolution, late outcome, asset, AI behavior, achievement, log surface, documentation row, or controller-transfer behavior is missing, the event is incomplete.
+Event 029 is incomplete while any accepted route, decision family, mission, evolution, late outcome, asset consumer, AI behaviour, achievement, log surface, document, or controller-transfer behaviour is missing.

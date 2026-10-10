@@ -1,79 +1,99 @@
 # Event 029: Riches Found specification package
 
-Current workflow owners: [event integration](../../../.agents/skills/chaos-redux-events/SKILL.md), [subagent routing](../../../.agents/skills/chaos-redux-subagents/SKILL.md), and [asset production](../../../.agents/skills/chaos-redux-event-assets/SKILL.md).
-The source parts preserve the proposed expanded design.
-Explicit user requirements retain their cited basis, while broader claims labelled accepted require an attributable user decision or parent acceptance before implementation.
-Package location and manual closure reports do not establish that acceptance.
+This package is the design source for Event 029, a repeatable state-bound wealth crisis: a random country finds exceptional mineral wealth in one state, gains exactly 1,000 political power, and the mine then follows whoever controls the state through development, revenue, concessions, security, raids, closure, and three high-chaos evolutions.
 
+Workflow owners: [event integration](../../../.claude/skills/chaos-redux-events/SKILL.md), [decisions and missions](../../../.claude/skills/chaos-redux-decisions-missions/SKILL.md), [subagent routing](../../../.claude/skills/chaos-redux-subagents/SKILL.md), and [asset production](../../../.claude/skills/chaos-redux-event-assets/SKILL.md).
 
-This package expands Event 029 into a repeatable state-bound wealth crisis for Chaos Redux.
+## Status
 
-The repository package location is `docs/specs/029_riches_found_specs/`.
+Event 029 has a substantial source implementation; the catalog status is Needs Testing, and the user owns live testing.
 
-The package is planning material only.
+The source map is [the Event 029 overview](../../events/029_riches_found/overview.md); dated decisions, audits, and evidence are in [the plans folder](../../plans/029_riches_found_plans/), with the latest checkpoint in `subagent_handoffs/parent_continuation_2026_10_08.md`.
 
-It does not claim that Event 029 has been implemented, wired, balanced through the HOI4 probability tools, or tested in game.
+The spec parts mark each claim as **Implemented** (source review only), **Pending** (accepted design not yet in source), or **Proposed** (awaiting acceptance).
+
+The remaining work list is owned by [the coding prompt](029_riches_found_coding_prompt.md#remaining-work).
+
+## Acceptance basis
+
+- User requirements: exactly 1,000 political power on discovery; a completely random recipient; Evolution I at Chaos Tier 600+; the benefit set of ticking political power, construction speed, production efficiency, military factory output, and a civilian-factory benefit; Minor Repeatable with no cluster (2026-10-07 instruction); and the instruction to implement this package fully without simplifications, fallbacks, placeholders, or omitted routes.
+- Accepted design: the rest of this package, accepted through that implementation instruction, together with the dated agent decisions in `docs/plans/029_riches_found_plans/agent_decisions_2026-10-04.md` taken under the user's full-authority grant.
+- The 2026-10-10 audit changes in the changelog were made under the user's 2026-10-10 audit brief, which authorized substantial rework to remove redundant values, repetitive decisions, and micromanagement; items that touch a recorded user requirement are listed under Open questions instead.
 
 ## Package map
 
-1. `029_riches_found_spec_part_1_core_loop.md` defines the event identity, valid target rules, persistent mine state, controller benefits, visible values, repeatability, and presentation.
-2. `029_riches_found_spec_part_2_baseline_progression.md` maps the complete ordinary lifecycle from discovery through development, concessions, armed competition, closure, recovery, and controller transfer.
-3. `029_riches_found_spec_part_3_decisions_missions_foreign_interference.md` maps the decision category, decision families, missions, costs, foreign concessions, raids, occupation behavior, and cleanup.
-4. `029_riches_found_spec_part_4_evolutions.md` defines The Resource Curse, Gold Disease, Demons Beneath the Mine, and their late crisis outcomes.
-5. `029_riches_found_spec_part_5_ai_balance_interactions.md` defines AI strategy, repeatable-event balance, exploit prevention, multiplayer behavior, Event 18 separation, and shared-system integration.
-6. `029_riches_found_spec_part_6_assets_localisation_achievements.md` defines the visual package, writing direction, event-detail direction, catalog direction, and achievement set.
-7. `029_riches_found_research_notes.md` records the historical, economic, governance, security, and folklore research used by the design.
-8. `029_riches_found_ai_probability_scenarios.md` gives the required named scenarios and expected weighted behavior for later MCP auditing.
-9. `029_riches_found_acceptance_criteria.md` gives implementation and live-test acceptance scenarios without claiming they have been run.
-10. `029_riches_found_asset_prompt.md` is a context-complete production prompt for the asset subagents.
-11. `029_riches_found_achievement_prompt.md` is a context-complete achievement implementation prompt.
-12. `029_riches_found_decision_mission_prompt.md` is a context-complete decision and mission implementation prompt.
-13. `029_riches_found_coding_prompt.md` is the full implementation prompt.
-14. `029_riches_found_goal_prompt.md` is a compact implementation goal prompt under 4,000 characters.
-15. `029_riches_found_catalog_alignment.md` maps the required catalog and Event Details content direction.
-16. `029_riches_found_source_review_manifest.md` records what was read, what could not be accessed, and which design choices followed from the source review.
+| File | Owns |
+| --- | --- |
+| [Part 1, core loop](029_riches_found_spec_part_1_core_loop.md) | Identity, recipient and state selection, Event 018 separation, profiles, transfer, visible values and header, hidden state, stages, aggregate, caps |
+| [Part 2, baseline progression](029_riches_found_spec_part_2_baseline_progression.md) | Milestones and overlays, projects and bands, revenue routes, concessions, security, closure, collapse, controller-change variants |
+| [Part 3, decisions and missions](029_riches_found_spec_part_3_decisions_missions_foreign_interference.md) | Decision layers, cost rules, decision and mission families, foreign targets and interference, occupation, cleanup, exploit controls |
+| [Part 4, evolutions](029_riches_found_spec_part_4_evolutions.md) | The three evolutions, containment, The Gilded Sovereignty, The Bottomless Account |
+| [Part 5, AI, balance, interactions](029_riches_found_spec_part_5_ai_balance_interactions.md) | AI intent, the 1,000 political power, repeatability, exploit prevention, multiplayer, shared systems, persistence |
+| [Part 6, assets, writing, achievements](029_riches_found_spec_part_6_assets_localisation_achievements.md) | Asset inventory and status, writing direction, the seven achievements |
+| [Research notes](029_riches_found_research_notes.md) | Historical, economic, governance, security, and folklore research and its sources |
+| [AI probability scenarios](029_riches_found_ai_probability_scenarios.md) | Named scenarios, audit sequence, evidence status |
+| [Acceptance criteria](029_riches_found_acceptance_criteria.md) | Test scenarios and acceptance conditions |
+| [Catalog alignment](029_riches_found_catalog_alignment.md) | Catalog row, Event Details, and evolution wording rules |
+| [Coding prompt](029_riches_found_coding_prompt.md) | Continuation entry point and remaining work |
+| [Goal prompt](029_riches_found_goal_prompt.md) | Compact goal statement |
+| [Decision and mission prompt](029_riches_found_decision_mission_prompt.md) | Decision surface audit and handoff format |
+| [Achievement prompt](029_riches_found_achievement_prompt.md) | Achievement verification |
+| [Asset prompt](029_riches_found_asset_prompt.md) | Remaining asset work and routing |
 
 ## Main design decisions
 
-Event 029 remains a Minor Repeatable event with no cluster assignment.
+- Event 029 is Minor Repeatable with no cluster, chaos level 1.
+- The mine belongs to the state; ongoing benefits follow the current controller through one narrow control-change hook and a bounded registry of at most 64 mines, never a whole-world scan.
+- Event 029 owns windfall governance; Event 018 owns physical resources, caves, Oth-Kesh, and The World Opens Below, and the two never share a state.
+- The player reads Extraction Pressure as the primary value, Local Order and Revenue Legitimacy as supporting numbers, and Mine Development as a band; everything else stays internal.
+- One ordinary decision category with a static picture; a scripted GUI would add maintenance and visual weight without improving any decision.
+- Only three evolutions are registered (600+, 800+, 1,000+), because the planning rule allows one per chaos tier and Evolution I is fixed at 600+; The Gilded Sovereignty and The Bottomless Account are late outcomes inside their tracks, not extra rows.
 
-The event grants the selected country exactly 1,000 political power on discovery because that amount is part of the user-supplied design.
+## Scope boundaries
 
-The lasting system belongs to one selected state and follows the current controller when control changes.
+Event 029 has no focus tree (any ordinary country can own a mine and the mine system already gives lasting play), no country tag (capture is represented through state and controller systems), no super-event (no single global threshold or terminal state), no manual scenario, no custom unit, and no portraits, flags, animation, audio, or 3D assets.
 
-The event is distinct from Event 018 Resources Found.
+## Open questions
 
-Event 018 owns physical strategic-resource discovery, deeper deposits, caves, fossils, Oth-Kesh, and The World Opens Below.
+### Conflicts with recorded user requirements
 
-Event 029 owns windfall politics, a mining rush, claims, concessions, revenue distribution, corruption, private security, raids, obsessive greed, and a fictional supernatural bargain tied to valuation and extraction.
+1. Repeat windfalls: because the recipient is completely random, one country can receive several 1,000 political power windfalls in a campaign.
+   A proposal to halve a country's selection weight for a few years after it receives a windfall would make repeats rarer.
+   It conflicts with the completely random recipient, so it waits for the user's decision.
+2. Cost scaling: the 2026-10-08 checkpoint lists a "full state/country-sensitive cost quote" as outstanding.
+   This audit narrows the Part 3 rule so prices vary only with geography, damage, and repetition, while other conditions change outcomes and availability instead of price.
+   Because the user asked for the package to be implemented without simplifications, the user should confirm that the narrowed rule replaces the outstanding item.
 
-The player sees one primary value, Extraction Pressure, and three supporting values, Mine Development, Local Order, and Revenue Legitimacy.
+### Proposals awaiting acceptance
 
-The system uses an ordinary decision category with a static category picture.
+These do not touch a user requirement; each is marked Proposed in its part and changes no source until accepted.
 
-A dedicated scripted GUI would add maintenance and visual weight without improving the decisions the player must make.
+1. An unmanaged rush or Predatory Extraction submits one bounded food-need component to the famine system (Part 2, Rush pressures).
+2. Evacuate the Workforce moves its people through migration's organized evacuation and exact civilian transfer (Part 3, Evacuate the Workforce).
+3. An Event 013 earthquake in a mine state raises collapse pressure from that disaster's existing report (Part 2, Ordinary collapse).
+4. Merge foreign claim pressure into concession exposure and sealed-depth integrity into deep excavation if no consumer distinguishes them (Part 1, Hidden state).
 
-Only three numbered evolutions are registered.
+## Changelog
 
-The user fixed Evolution I at Chaos Tier, 600+, while the project rule permits one evolution stage per chaos tier.
+### 2026-10-10 spec audit
 
-The two remaining higher tiers support Evolution II at 800+ and Evolution III at 1,000+.
+Pass 1, consistency and cleanup:
 
-The empty Evolution IV and Evolution V placeholders are therefore developed as late crisis outcomes inside the existing tracks instead of being registered as extra evolution stages.
+- Replaced the original planning-environment claims (no repository, wiki, MCP, or subagent access, Codex runners, `AGENTS.md`, `fork_turns`, the `.agents/skills` mirror, and the ImageGen route name) with the current Claude workflow, `CLAUDE.md`, `.claude/skills`, and the asset skill's image route.
+- Recorded the 2026-10-07 user instruction that Event 029 has no cluster, superseding agent decision D2, and refreshed the catalog file to the current row (chaos level 1, Needs Testing, wording matching localisation).
+- Marked implemented, pending, and proposed behaviour across the parts against the overview and the plans folder, including the milestone and overlay model, the decision layers, the five opening policies, revenue routes, partner list, occupation set, Deny the Mine, Chaos Meter sources, Deaths reasons, hidden-abuse Condemnation, containment, Gilded constraints, account terms, and the asset and achievement state.
+- Made one owner per topic: the header in Part 1, the layers and cost rules in Part 3, writing direction and achievement definitions in Part 6, scenarios and the audit sequence in the AI scenarios file; the prompts, acceptance criteria, and Part 5 now point to them instead of restating them.
+- Rewrote the coding, goal, decision and mission, achievement, and asset prompts as continuation prompts with the remaining work, and trimmed the acceptance criteria's review gate, MCP gate, and completion sections to `CLAUDE.md` pointers while keeping every test scenario.
+- Deleted `029_riches_found_source_review_manifest.md`, which only recorded the original upload hashes, Codex subagent TOML files, and environment limits; its design rationale moved to Scope boundaries and its sources are already cited in the research notes.
+- Fixed stale names: state-modifier and controller stage names now match the source, Reopen the Mine and the Evacuate the Workforce mission joined the inventories, and the Event 016 and Event 013 links are recorded as not implemented.
+- Recorded the probability tool limitation (the 3.10.0 classifier files timed decisions as missions) and the current evidence status in the AI scenarios file, and reflowed multi-sentence lines to one sentence per line across the package.
 
-This is a compliance decision, not a reduction of the event's late-game content.
+Pass 2, design improvement:
 
-## Original planning evidence limits
-
-Every file supplied with the task was read in full, including the three CSV catalogs and every TOML file inside `subagents.zip`.
-
-The original package-authoring environment did not expose the Chaos Redux repository, the offline Paradox wiki snapshot, the installed vanilla game files, the authoritative XLSX catalog workbook, the custom Codex subagent spawning interface, or the HOI4 MCP tools.
-
-That planning pass applied supplied rules and source snapshots without live repository or MCP validation.
-
-Those missing checks are mandatory during implementation and are named in the prompts and acceptance criteria.
-
-No section was shortened or omitted to produce a quicker response.
-
-Continuation must inspect current sources and capabilities.
-The original session's missing routes do not establish a current outage.
+- Header: Mine Development becomes a band, the deposit, policy, and revenue lines move to the tooltips that explain them, and at most one conditional line remains, so the header carries only values that drive a decision.
+- Folded the separate four-step quality band into the deposit profile, dropped the development-plateau and settlement-profile concepts as separate values (the band and policy profile already carry them), and dropped the separate controller curse spirit and five-step supernatural spirit in favour of the existing stages.
+- Folded unimplemented duplicate options into existing actions (emergency concession and hands-off claims, company housing, informal growth, emergency fees, security contract, joint public venture, mixed security board), so no layer gains buttons that repeat another choice.
+- Narrowed dynamic costs to geography, damage, and repetition, which the player can see and act on (see Open questions).
+- Asked for two-value opening option tooltips and a shorter aggregate tooltip, removing rows of one- and two-point changes.
+- Added meaningful shared-system connections as proposals (famine food need from an unmanaged rush, migration hand-off for evacuation, Event 013 earthquakes) and stated where Event 029 deliberately has no connection (camps, CBRN, fallout, Air Cleanliness, world threat).
+- Required every hidden value to have a producer and a consumer with a visible effect, and proposed two merges.

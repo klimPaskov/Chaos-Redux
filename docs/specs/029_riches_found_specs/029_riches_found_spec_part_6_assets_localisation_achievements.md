@@ -8,9 +8,22 @@ The event should look grounded during the baseline and increasingly strange only
 
 The asset package should support the state-bound mine system without suggesting a new country, army, or world-scale invasion.
 
-All asset names in this document are working identifiers.
+This part is the single owner of the asset inventory, the writing direction, and the achievement definitions; the asset and achievement prompts point here.
 
-The implementation and asset agents should lock final runtime basenames before production.
+Runtime names are locked and registered in `interface/029_riches_found.gfx`; provenance lives in `docs/assets/029_riches_found/` and the dated records under `docs/events/029_riches_found/`.
+
+## Asset status
+
+| Family | Runtime state | Remaining work |
+| --- | --- | --- |
+| Report images | 13 wired (`GFX_report_event_riches_found_*`), including four deposit-profile discovery variants | Final acceptance with the asset review |
+| Category picture and icon | Wired | None beyond final review |
+| Decision icons | 47 wired, 10 individually reviewed and promoted | 37 still need individual review or repair |
+| Mission icons | 9 wired | Final review |
+| State modifier icons | 9 wired; Gold Fever Memory reuses the gold-sick icon and the late-outcome modifiers reuse existing icons | Final review |
+| Controller aggregate and idea icons | 1 aggregate icon and 7 stage icons wired | Final review |
+| Evolution icons | 3 DDS files and sprites exist | No live consumer reads them yet |
+| Achievement triplets | 7 complete, grey, and not-eligible triplets wired | Unlock and disqualifier acceptance |
 
 ## Asset source mode
 
@@ -20,13 +33,15 @@ Generated period-authentic documentary art is the preferred source mode for repo
 
 Generated symbolic art is the preferred source mode for icons and achievements.
 
-The production prompts must use the approved ImageGen route.
+Production uses the image-generation route defined in `.claude/skills/chaos-redux-event-assets/SKILL.md`.
 
 Internet-sourced archival material should be used only when the final asset is explicitly changed to depict a real photographed object, poster, or place.
 
 No real-person portrait is required.
 
 ## Report-event image family
+
+Runtime names follow `GFX_report_event_riches_found_<subject>` in `gfx/event_pictures/029_riches_found/`, and the discovery report has four deposit-profile variants (`_alluvial`, `_deep_vein`, `_gemstone`, `_platinum`) chosen by `GetRichesFoundDiscoveryPicture`.
 
 Target size: 210x176 unless the inspected active consumer uses another verified size.
 
@@ -146,7 +161,7 @@ Avoid: Readable generated text, giant coins, demonic merchants, modern banking i
 
 Working asset ID: `riches_found_category_picture`.
 
-Reference family: `.agents/skills/chaos-redux-event-assets/assets/gfx_references/icons/decision_categories/pictures/`.
+Reference family: `.claude/skills/chaos-redux-event-assets/assets/gfx_references/icons/decision_categories/pictures/`.
 
 The asset worker must inspect the contact sheet and the actual runtime consumer before locking size.
 
@@ -230,6 +245,7 @@ Required working icons:
 - `decision_riches_found_scientific_assistance`
 - `decision_riches_found_bargain`
 - `decision_riches_found_close_account`
+- `decision_riches_found_reopen_mine`
 
 The implementation can reuse one icon across tightly related levels of the same action only when the semantic action is identical and the visual remains accurate.
 
@@ -249,6 +265,7 @@ Required working icons:
 - `mission_riches_found_hold_mine`
 - `mission_riches_found_public_settlement`
 - `mission_riches_found_audit_concession`
+- `mission_riches_found_evacuate_workforce`
 
 Mission icons should show the objective, not a generic clock.
 
@@ -307,6 +324,8 @@ The Resource Curse icon should show mine wealth capturing a government or treasu
 The Gold Disease icon should show possession and concealed material without medical imagery.
 
 The Demons icon should show an opened shaft responding through impossible symbols or light, without a generic horned creature.
+
+Pending: the sprites `GFX_idea_riches_found_evolution_*` exist, but the Event Details and Event Log evolution rows do not read them yet.
 
 ## Asset-state review
 
@@ -368,20 +387,13 @@ Avoid: A treasury report as the emotional center, a generic official denial, and
 
 ## Discovery option direction
 
-The entry should use one acknowledgement or an immediate policy fork depending on the implementation structure.
+The entry offers the five opening policies listed in Part 1, and no option may be a clearly dominant reward choice.
 
-A single acknowledgement can grant the exact 1,000 political power and open the decision category.
+Each option tooltip names the lasting direction in one line (who gains, what it risks) and shows at most the two value changes that matter for that policy.
 
-If several opening options are used, each should represent a real claims policy and must not make one option a clearly dominant reward choice.
+A row of four one- or two-point changes on a 0 to 100 scale reads as noise, so the current four-value option tooltips should be trimmed (pending).
 
-Option tone can vary through:
-
-- confident state control
-- cautious survey language
-- speculative enthusiasm
-- local-rights emphasis
-- military urgency
-- cynical patronage
+Option tone can vary through confident state control, cautious survey language, speculative enthusiasm, local-rights emphasis, military urgency, and cynical patronage.
 
 Final wording should be researched for country and ideology context where cultural references are used.
 
@@ -539,7 +551,13 @@ Tooltips state:
 - principal risk or mission objective
 - blocked reason when unavailable
 
+A normal action tooltip fits in two to four short lines; a contract may need more when it names its partner and terms.
+
 They do not reveal hidden pressure formulas, exact random chances, future evolution incidents, or secret foreign involvement.
+
+Options involving mass violence, forced labour, or sealed workers use severe in-world language and clear visible consequences, never cheap humour.
+
+Ordinary claims, commercial absurdity, bureaucracy, and speculative excess can carry restrained irony when it fits the actor and the stakes.
 
 ## Event Details direction
 
@@ -569,263 +587,87 @@ Do not mention implementation files, hidden values, unresolved prompts, or Event
 
 ## Achievement set
 
-Every achievement below uses a working key and working label.
-
-Final titles and descriptions require a localisation pass.
-
-### `029_public_fortune`
-
-Working label: Public Fortune.
-
-Visibility: Visible.
-
-Difficulty: Hard.
-
-Eligible countries: Any ordinary country selected by Event 029.
-
-Required route:
-
-- remain the controller of the original mine for at least two years after reaching mature development
-- maintain high Revenue Legitimacy
-- maintain high Local Order
-- keep Extraction Pressure below the severe threshold
-- complete a citizens' dividend or local-development settlement
-- complete at least one permanent public project
-- avoid an exclusive foreign concession
-- avoid recording The Resource Curse for that mine
-
-Disqualifiers:
-
-- permanent closure
-- mine loss before the hold period ends
-- patronage-dominance route
-- mass killing tied to the mine
-
-Why it is interesting: It asks the player to convert the extreme windfall into reliable public value while giving up the strongest short-term extraction route.
-
-Icon direction: A bright ore specimen above a public road, houses, clinic, or civic building, with a balanced treasury motif.
-
-### `029_claim_jumper`
-
-Working label: Claim Jumper.
-
-Visibility: Visible.
-
-Difficulty: Medium to hard.
-
-Eligible countries: Any country that did not receive the mine's original discovery event.
-
-Required route:
-
-- gain control of an Event 029 mine discovered by another country through normal war, civil war, annexation, liberation, or peace settlement
-- keep the mine operational for one year
-- rebuild the controller contribution correctly
-- complete one transfer settlement, contract renegotiation, or repair action
-
-Disqualifiers:
-
-- mine permanently closed before the hold period
-- duplicate control created through a debug or invalid transfer state
-
-Why it is interesting: It treats the persistent state as a strategic objective and tests controller-transfer content.
-
-Icon direction: A claim stake or hand seizing a marked ore claim across a broken border marker.
-
-### `029_the_pay_train_runs`
-
-Working label: The Pay Train Runs.
-
-Visibility: Visible.
-
-Difficulty: Medium.
-
-Eligible countries: Any mine controller with a valid rail or convoy payment route.
-
-Required route:
-
-- complete three distinct pay or shipment protection missions during real raid or disorder risk
-- suffer no successful pay robbery during the sequence
-- keep the mine open
-- maintain supplied security on the named routes
-
-Disqualifiers:
-
-- mission duplication from the same incident
-- success granted when the route was already safe and no objective was active
-
-Why it is interesting: It rewards active map and unit management. Passive values alone cannot unlock it.
-
-Icon direction: A guarded period train or pay wagon carrying a sealed strongbox through a mine district.
-
-### `029_all_that_glitters`
-
-Working label: All That Glitters.
-
-Visibility: Visible.
-
-Difficulty: Very hard.
-
-Eligible countries: Any country.
-
-Required route:
-
-- control at least three active Event 029 mines
-- keep every controlled mine free of Gold Disease and Demons Beneath the Mine
-- keep none in Gilded Sovereignty
-- maintain positive order and legitimacy in every mine
-- remain below the aggregate cap exploitation conditions defined by implementation
-
-Disqualifiers:
-
-- any mine contribution duplicated through controller-transfer error
-- one mine permanently sealed or collapsed during the final verification window
-
-Why it is interesting: It asks the player to manage a portfolio of separate states while diminishing returns make conquest alone insufficient.
-
-Icon direction: Three distinct mine entrances or ore specimens balanced under one restrained national ledger.
-
-### `029_no_man_owns_the_mountain`
-
-Working label: No Man Owns the Mountain.
-
-Visibility: Hidden until The Gilded Sovereignty appears.
-
-Difficulty: Very hard.
-
-Eligible countries: Current controller of a Gilded Sovereignty mine.
-
-Required route:
-
-- dismantle or reform the rival mine authority
-- restore high Revenue Legitimacy
-- restore government access and civil administration
-- preserve the mine as an operating site
-- avoid foreign military intervention
-- avoid a massacre or catastrophic collapse
-
-Disqualifiers:
-
-- accept permanent enclave sovereignty
-- destroy the mine
-- use a mass-killing resolution
-
-Why it is interesting: It makes the political culmination recoverable through a difficult non-destructive route.
-
-Icon direction: A broken private gate or charter seal above an intact mine and public authority emblem.
-
-### `029_close_the_account`
-
-Working label: Close the Account.
-
-Visibility: Hidden until The Bottomless Account appears.
-
-Difficulty: Extreme.
-
-Eligible countries: Current controller of the affected mine.
-
-Required route:
-
-- enter The Bottomless Account through a deliberate agreement
-- reject further terms
-- evacuate the workforce or otherwise keep deaths below the accepted containment ceiling
-- complete permanent sealing or a successful bound-terms closure
-- preserve the country above a defined stability floor
-- end the mine's positive supernatural contribution
-
-Disqualifiers:
-
-- fulfill the ending through unrelated deaths
-- lose the mine before closure
-- accept predatory prosperity as the final state
-- catastrophic collapse caused by a broken term
-
-Why it is interesting: It requires the player to walk away from a powerful reward and survive the cost of doing so.
-
-Icon direction: A shut ledger chained across a sealed mine entrance, with one extinguished golden light.
-
-### `029_the_last_shift`
-
-Working label: The Last Shift.
-
-Visibility: Hidden after Demons Beneath the Mine is recorded.
-
-Difficulty: Very hard.
-
-Eligible countries: Any controller of a supernatural mine.
-
-Required route:
-
-- evacuate workers and nearby residents through the dedicated mission
-- complete one scientific, religious, or controlled engineering assistance route
-- permanently seal the mine
-- avoid mass deaths, military purge, and The Bottomless Account
-- keep the state under control until sealing completes
-
-Disqualifiers:
-
-- abandon the workforce
-- use forced entombment
-- lose the mine during the project
-- reopen the sealed sections
-
-Why it is interesting: It rewards containment, preparation, and restraint. Exploitation disqualifies the route.
-
-Icon direction: Miners leaving a dark shaft while a final reinforced gate closes behind them.
+The seven achievements are registered in `common/achievements/chaos_redux_achievements.txt` with localised titles and descriptions, tracked by `common/scripted_effects/029_riches_found_achievement_effects.txt` and `common/scripted_triggers/029_riches_found_achievement_triggers.txt`.
+
+Unlock and disqualifier acceptance is pending; each definition below is the contract that acceptance checks.
+
+### `029_public_fortune`: Public Fortune
+
+- Visibility and difficulty: visible, hard.
+- Eligible: the country that received the mine's original discovery.
+- Route: after the mine reaches the mature band and a citizens' dividend or local revenue settlement exists, hold the original mine open for two continuous years with Local Order and Revenue Legitimacy in their high bands and Extraction Pressure below severe, having completed at least one lasting public project.
+- Disqualifiers: an exclusive concession on that mine, the Resource Curse recorded on it, mass killing tied to it, a patronage-dominance resolution, permanent closure or destruction, or losing the mine before the hold ends (loss resets the timer; recapture never clears a permanent disqualifier).
+- Why it matters: it asks the player to turn the windfall into reliable public value and give up the strongest short-term extraction.
+- Icon: a bright ore specimen above a public road, houses, or civic building, with a balanced treasury motif.
+
+### `029_claim_jumper`: Claim Jumper
+
+- Visibility and difficulty: visible, medium to hard.
+- Eligible: any country that did not receive this mine's original discovery.
+- Route: take a mine discovered by another country through war, civil war, annexation, liberation, or peace settlement; after the new contribution is reconciled, settle it through an occupation settlement, a renegotiated contract, a replaced administration, or a completed repair, and keep it operating for one year.
+- Disqualifiers: permanent closure before the hold ends, or a contribution left with the former controller.
+- Implemented detail: every controller change clears `riches_found_claim_jumper_settled` and the hold window, so each new controller must settle and hold the mine itself.
+- Icon: a hand or claim stake seizing a marked ore claim across a broken boundary marker.
+
+### `029_the_pay_train_runs`: The Pay Train Runs
+
+- Visibility and difficulty: visible, medium.
+- Eligible: any mine controller with a rail or convoy pay route.
+- Route: complete three distinct Protect the Pay Train missions, each started under real raid, disorder, or route risk, with supplied security on the route and no successful robbery between them, while the mine stays open.
+- Disqualifiers: a robbery, mine loss, or permanent closure resets the sequence; one mission can never count twice; a pay train whose route is damaged while it runs fails and ends the run.
+- Icon: a guarded period train or pay wagon carrying a sealed strongbox through a mining district.
+
+### `029_all_that_glitters`: All That Glitters
+
+- Visibility and difficulty: visible, very hard.
+- Eligible: any ordinary country.
+- Route: control at least three open mines at once, counted through the bounded mine registry, each with Local Order and Revenue Legitimacy above their stable bands and none with Gold Disease, Demons Beneath the Mine, or an unanswered Gilded Sovereignty, and hold that for 180 days under a valid capped aggregate.
+- Disqualifiers: a duplicated contribution, a mine closing or entering a forbidden crisis during the hold, or falling below three mines.
+- Icon: three distinct mine entrances or ore specimens balanced under one national ledger.
+
+### `029_no_man_owns_the_mountain`: No Man Owns the Mountain
+
+- Visibility and difficulty: hidden until The Gilded Sovereignty appears on a player mine, very hard.
+- Eligible: the current controller of that mine.
+- Route: answer the authority through a successful revocation, a buy-back, shared sovereignty, or a representative board; restore civil administration and high Revenue Legitimacy; keep the mine open through a post-reform verification period.
+- Disqualifiers: letting the board govern as an enclave, seizing the enclave by force, destroying or permanently closing the mine, losing control before the reform completes, catastrophic collapse, or foreign military intervention after the authority arose.
+- Implemented detail: foreign military intervention is recorded only for raids by foreign agents or a hostile neighbour, foreign-armed incidents, and capture by a foreign country at war with the owner; diplomatic and economic pressure never counts.
+- Icon: a broken private gate or charter seal above an intact mine and a public authority emblem.
+
+### `029_close_the_account`: Close the Account
+
+- Visibility and difficulty: hidden until The Bottomless Account appears, extreme.
+- Eligible: the current controller of the affected mine.
+- Route: enter the account through a deliberate agreement, reject further terms through Close the Account or a successful binding, evacuate the workforce or keep Event 029 deaths below the containment ceiling, and finish permanent sealing or another closure that ends the supernatural contribution, with national stability above its floor and control held throughout.
+- Disqualifiers: Predatory Prosperity as the final state, a catastrophic collapse from a broken term, losing the mine before closure, or the mass-death disqualifier; a payment warning alone does not disqualify, and unrelated deaths can never satisfy any part of it.
+- Icon: a shut ledger chained across a sealed mine entrance, with one extinguished golden light.
+
+### `029_the_last_shift`: The Last Shift
+
+- Visibility and difficulty: hidden until Demons Beneath the Mine is recorded on a player mine, very hard.
+- Eligible: any controller of that mine.
+- Route: complete the Evacuate the Workforce mission, complete one scientific, religious, or controlled engineering assistance route, then seal the mine permanently while holding it.
+- Disqualifiers: forced entombment, a military purge, mass deaths, any supernatural agreement, losing the mine during the project, or reopening the sealed sections.
+- Icon: miners leaving a dark shaft while a final reinforced gate closes behind them.
 
 ## Achievement tracking rules
 
-Achievement tracking must use stable flags and variables.
+Tracking uses stable flags for true or false history and variables only for counts and dates.
 
-A final-state trigger is insufficient for several achievements.
+A final-state check is never enough where the route needs a past action or an avoided event.
 
-Required historical tracking includes:
+Mission cleanup clears temporary mission state but never permanent achievement history or disqualifiers.
 
-- original discoverer
-- original mine state
-- controller-transfer count
-- mature-development date
-- public settlement completion
-- exclusive concession history
-- Resource Curse history
-- Gold Disease history
-- supernatural history
-- Gilded Sovereignty history
-- Bottomless Account history
-- mission-success sequence
-- mass-death disqualifier
-- foreign-intervention disqualifier
-- evacuation completion
-- permanent-sealing completion
-- duplicate-contribution safety state
-
-Achievements should not unlock through force-trigger mode if the project's achievement rules disqualify debug or custom setup.
-
-The implementation should follow the repository's existing achievement eligibility contract.
+Achievements follow the shared achievement eligibility contract for debug, force-trigger, and custom setups.
 
 ## Achievement asset triplets
 
-Target size: 64x64.
-
-Each achievement needs:
-
-- completed DDS
-- grey DDS
-- not-eligible DDS
-
-The completed icon is the source design.
-
-Grey and not-eligible states follow the repository achievement workflow and reusable overlay.
-
-Achievement files remain in the root achievement folder if that is the verified engine convention.
-
-Filenames must match the full achievement IDs.
-
-The achievement contact sheet should show all three states at native size.
+Each achievement has a 64x64 completed, grey, and not-eligible DDS directly under `gfx/achievements/`, named after the full achievement ID, with the grey and not-eligible states made through the repository achievement workflow and reusable overlay.
 
 ## Asset completion boundary
 
 Asset production is complete only when source files, processed previews, final DDS files, contact sheets, manifests, and handoffs exist.
 
-The main implementation remains incomplete until sprites and consumers are wired, docs and catalog facts are aligned, and the user has performed live visual validation.
-
 The asset agents must not create primitive placeholder art, resize one icon type into another, reuse unrelated assets, or substitute a static unrelated image for a required scene.
+
+Live visual validation belongs to the user and is not an agent completion step.

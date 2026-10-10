@@ -10,35 +10,37 @@ The category opens when the country controls at least one active, closed, damage
 
 The category closes when the country controls no Event 029 mine and has no surviving contract, compensation claim, or short aftermath action.
 
-The category uses an ordinary decision list with a static category picture.
+The category uses an ordinary decision list with a static category picture and no scripted GUI.
 
-It does not require a dedicated scripted GUI.
+The header contents are owned by [Part 1, Presentation](029_riches_found_spec_part_1_core_loop.md#presentation).
 
-The category header uses scripted localisation to show the selected mine state, its operating condition, the four visible values, the controller's current policy profile, and one concise current objective.
+The human player sees actions for one mine at a time; the AI evaluates every valid mine through the same effects and triggers without the selection step.
 
-A country controlling one mine sees that state automatically.
+## Decision layers
 
-A country controlling several mines uses one selected-mine decision flow.
+Each view normally shows three to five primary decisions, never more than six, and one to three active missions.
 
-The human player sees actions for one mine at a time.
+Repair, the mine selector, the return-to-list action, and Court a Partner are navigation or always-relevant upkeep and are not counted; missions are not counted either.
 
-The AI evaluates every valid mine through the same scripted effects and triggers without needing the player-facing selection step.
+Each refresh shows exactly one layer per mine, the first that applies in this order:
 
-## Visible action budget
+1. Occupation: the occupier's own actions.
+2. An open Bottomless Account.
+3. Demons Beneath the Mine.
+4. Gold Disease.
+5. Emergency: a closure, quarantine, collapse, terminal or severely collapsed mine, or pressure, order, or legitimacy in crisis.
+6. Security: armed claimants, a wage dispute, a crime or raid crisis, a mine about to fall, private forces beyond control, or an enemy beside the district while no Army Cordon holds it and a cordon could be raised.
+7. An unanswered Gilded Sovereignty; any one of its six answers settles it.
+8. The Resource Curse.
+9. The stored milestone: claims, rush, development, revenue, or foreign concessions.
 
-Each phase should normally show three to five primary decisions.
+Evolution layers replace the ordinary sets while they are the most urgent problem because each carries its own closure, sealing, workforce, and evacuation actions.
 
-Six is the hard maximum.
+Inside a layer, mutually exclusive pairs keep the count down: Rail Spur, Port Route, and Drive Deeper exclude each other by route state; a mine keeps one standing security force; Buy Out needs working relations and Nationalize with Compensation broken ones; Tolerate Patronage needs legitimacy below its floor and the Stabilization Fund order and legitimacy above theirs.
 
-The category should normally show one to three active missions.
+Obsolete decisions disappear when their contract, layer, target, controller, or crisis ends, and the category never becomes a permanent list of every action in this spec.
 
-Emergency actions replace ordinary actions while an urgent crisis is active.
-
-Obsolete decisions are hidden after their contract, phase, target, controller, or crisis ends.
-
-Basic decisions can be replaced by stronger variants after development or policy changes.
-
-The decision category must not become a permanent list of every action described in this spec.
+Implemented (D20, D32, D38, D43); the per-layer maximum table is kept in [the overview](../../events/029_riches_found/overview.md#decision-layers).
 
 ## Cost rules
 
@@ -56,9 +58,19 @@ Security actions can use infantry equipment, support equipment, fuel, manpower, 
 
 A requirement such as controlling a state, holding a rail route, fielding divisions, or meeting a legitimacy threshold is not a spendable cost.
 
-Dynamic costs should respond to state population, development, damage, distance, war state, supply, local order, concession exposure, and previous failure.
+Construction projects commit civilian factories for the decision's duration instead of spending political power; only the discrete resources are refunded when a delayed result loses its mine.
 
-The visible cost string must use the correct texticons and remain compact.
+A cost may vary only with a factor the player can see and act on:
+
+- geography: an island or overseas mine pays convoys where an inland mine pays trains or trucks;
+- damage: Repair and Restore the Shaft cost more on a collapsed or route-damaged mine;
+- repetition: a renewed crisis measure or a second attempt after failure costs more than the first.
+
+Other influences (order, legitimacy, war, concession exposure) change outcomes and availability instead of price, so the player reads them from the requirement list rather than from a shifting quote.
+
+The visible cost row shows at most three values with the correct texticons, and the full tooltip lists every cost, the duration, and any output loss.
+
+Implementation status: fixed cost profiles are implemented for ten physical actions and the two sealing projects ([physical cost contract](../../events/029_riches_found/physical_cost_contract.md), [seal project contract](../../events/029_riches_found/seal_project_contract.md)); the transport-cost helpers for specialist labour and workforce replacement exist but are not yet wired ([transport cost contract](../../events/029_riches_found/transport_cost_contract.md)); the geography, damage, and repetition scaling above is pending.
 
 ## Selected-mine flow
 
@@ -74,15 +86,23 @@ Invalid selections clear automatically after loss of control, permanent destruct
 
 The decision that applies an effect and the tooltip that previews it must read the same selected-mine scope.
 
+## Implementation map
+
+Every decision and mission family below is implemented in `common/decisions/029_riches_found_decisions.txt` as `decision_riches_found_<key>` or `mission_riches_found_<key>` (97 decisions and nine missions), subject to the pending cost scaling above and the acceptance work in the [acceptance criteria](029_riches_found_acceptance_criteria.md).
+
+Implemented actions this part did not originally name are Renegotiate the Contract, Create an Independent Revenue Authority (baseline and Resource Curse versions), Court a Partner, Reopen the Mine, Deny the Mine to the Enemy, the seven occupation actions, and the Evacuate the Workforce mission.
+
+The per-family entries below keep their role, requirements, cost direction, result, and AI direction; the AI factors themselves are owned by [Part 5](029_riches_found_spec_part_5_ai_balance_interactions.md).
+
 ## Phase 1 decision family: claims and access
 
 ### Survey the Discovery
 
-- Role: Establish the deposit profile, opening quality, workable area, and first access route.
-- Availability: Immediately after discovery until the survey is completed or bypassed by an emergency concession.
+- Role: Map the workable area and the first access route.
+- Availability: Immediately after discovery until the survey is completed.
 - Requirements: Control of the mine state and basic access to it.
 - Cost profile: Civilian-factory burden, manpower, trucks or trains when the state requires transport, and time.
-- Immediate result: Raises Mine Development, improves the reliability of future output, and reveals the commodity profile.
+- Immediate result: Raises Mine Development and opens the claims policies; the deposit profile is already named in the discovery report, and the survey rolls no second quality value.
 - Risk: A rushed survey raises the chance of false claims, unsafe access, or concealed ownership.
 - AI direction: Nearly universal priority unless the country is collapsing, the state is about to be lost, or a foreign emergency project is the only viable route.
 
@@ -259,7 +279,8 @@ The decision that applies an effect and the tooltip that previews it must read t
 - Availability: Stable receipts and a functioning ledger.
 - Requirements: Minimum legitimacy or a reform decision after corruption.
 - Cost profile: Reduced immediate mine contribution and political power.
-- Immediate result: Unlocks repeated bounded state projects through missions. It grants no free building clicks.
+- Immediate result: Sets a standing revenue route that holds back part of the output for local works and counts toward Resource Curse containment.
+  It grants no free buildings.
 - Risk: The fund becomes a corruption target under Evolution I.
 - AI direction: Preferred by democracies and governments trying to contain dependence.
 
@@ -667,6 +688,15 @@ The decision that applies an effect and the tooltip that previews it must read t
 - Partial success: Fiscal terms clarified but hidden influence remains.
 - Failure: Record destruction, intimidation, political scandal, or foreign pressure.
 
+### Evacuate the Workforce
+
+- Start: Evacuate the District (Demons Beneath the Mine) or the emergency evacuation after a severe collapse.
+- Objective: Bring workers and nearby residents out before sealing; collapsed workings do not stop it, but a new collapse or a closure does.
+- Success: Later sealing entombs no one and the evacuation counts for The Last Shift.
+- Failure: The district is still occupied when the seal or the crisis lands.
+- Proposed (unresolved): move the evacuated people through the migration system's organized evacuation and exact civilian transfer (`docs/systems/migration_system.md`, `docs/systems/civilian_transfer_system.md`) into a neighbouring owned state, so the evacuation removes real population from the mine state and loads the receiving state's reception capacity.
+- Reason: Part 4 already says evacuation creates refugees, while the current source records the evacuation without moving anyone.
+
 ## Foreign target management
 
 Foreign concession and pressure decisions should not dump one row for every country into the main category.
@@ -681,6 +711,8 @@ The selection clears when the actor stops existing, relations make the contract 
 
 AI actors evaluate the full valid pool directly.
 
+Implemented as Court a Partner over the mine's ranked list of at most four governments (D36); the AI always keeps the most interested partner.
+
 ## Foreign-interest score
 
 Foreign interest should use a dynamic score.
@@ -693,7 +725,7 @@ Positive factors include:
 - faction or alliance relationship
 - good relations
 - access to the mine through land, port, or convoy route
-- strategic interest in the commodity profile
+- strategic interest in the deposit profile
 - controller weakness
 - active invitation
 - existing concession network
@@ -739,6 +771,8 @@ It should not automatically reveal the actor when the operation remains covert.
 
 The controller should receive counterplay through audit, counterintelligence, security, diplomacy, contract reform, or public exposure.
 
+Implemented as incidents in the foreign-interference pool, with an aggrieved sponsor preferred as the actor; a foreign inspection demand exposes hidden abuse records when the books are open and adds a blocked-inspection Condemnation source when they are not (D41, D47).
+
 ## Neighboring-country behavior
 
 A neighboring country becomes more likely to pressure or raid the mine when:
@@ -750,7 +784,7 @@ A neighboring country becomes more likely to pressure or raid the mine when:
 - the controller is at war or in civil war
 - the neighbor has a claim, core, or local proxy
 - a foreign concession threatens the neighbor's interests
-- the commodity profile has strategic value
+- the deposit profile has strategic value
 
 A friendly neighbor can instead offer transport access, labor, policing cooperation, or a joint venture.
 
@@ -830,16 +864,4 @@ Use one-time project flags, mission state, dynamic costs, contract IDs, cooldown
 
 ## Decision writing direction
 
-Decision titles should name a concrete action.
-
-Descriptions should explain what the government, workers, company, army, or foreign actor will do.
-
-Effect tooltips should show the visible immediate result, principal cost, operating-state change, and main risk.
-
-They should not reveal hidden corruption rolls, Gold Disease entry, supernatural incidents, or future evolution thresholds.
-
-Options involving mass violence, forced labor, or sealed workers should use severe in-world language and clear visible consequences.
-
-They should not use cheap humor.
-
-Ordinary claims, commercial absurdity, bureaucracy, and speculative excess can support restrained irony when it fits the actor and stakes.
+Owned by [Part 6, Decision and mission writing direction](029_riches_found_spec_part_6_assets_localisation_achievements.md#decision-and-mission-writing-direction).

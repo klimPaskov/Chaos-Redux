@@ -10,21 +10,19 @@ Ordinary stages are not recorded as evolutions.
 
 They progress through the mine's own state, decisions, missions, incidents, controller changes, and time.
 
-The baseline lifecycle has seven broad phases:
+The baseline lifecycle has five stored milestones and two overlays.
 
-1. Discovery and claims
-2. The rush
-3. Physical development
-4. Revenue settlement
-5. Foreign concessions
-6. Armed protection and raids
-7. Consolidation, closure, or control crisis
+The milestones are discovery and claims, the rush, physical development, revenue settlement, and foreign concessions.
 
-The phases overlap when the campaign state makes that useful.
+The mine stores only the highest milestone it has reached; it advances one step when the current milestone is complete and never moves back.
 
-A mine can face a raid during development, receive a concession before full physical expansion, or return to a claims crisis after conquest.
+Armed protection and raids, and closure, collapse, or control crisis, are overlays worked out from current conditions on every refresh.
 
-The system should still present one readable current phase and a limited set of relevant actions.
+When an overlay ends, the mine returns to its milestone decisions, including any it had not yet taken.
+
+The phases therefore overlap without losing progress: a mine can face a raid during development, receive a concession before full expansion, or fall into a claims dispute after conquest, and the player still sees one readable layer with a limited action set.
+
+Implemented (agent decisions D20, D32, D38, D43): the layer order and per-layer action budget are owned by [Part 3](029_riches_found_spec_part_3_decisions_missions_foreign_interference.md#decision-layers).
 
 ## Phase 1: Discovery and claims
 
@@ -36,30 +34,21 @@ Prospectors, landowners, workers, soldiers, merchants, local officials, and priv
 
 The state experiences sudden traffic, rising prices, improvised camps, disputed land, forged documents, and early violence.
 
-### Starting choice families
+### Opening policy and claims
 
-The controller must decide who can claim access.
+The entry event's five options set the mine's lasting policy profile (Part 1); the claims decisions then decide who can claim access.
 
-The main approaches are:
+The claims approaches are:
 
-- open claims under a registration system
-- freeze all private claims pending a state survey
-- recognize local or customary claims
-- reserve the entire site for the state
-- authorize one emergency concession
-- allow the rush to proceed with minimal interference
+- register private claims (faster development, more disorder and bribery);
+- freeze all claims pending the state survey (lower pressure, slower development, clandestine digging);
+- recognize local or customary claims (legitimacy and resistance to foreign capture, weaker central revenue);
+- reserve the deposit for the state (strong national control, local resentment when residents are excluded);
+- open an emergency claims court (a mission that settles disputes when order and legitimacy hold).
 
-The first choice sets the initial relationship between Extraction Pressure, Local Order, Revenue Legitimacy, and hidden capture pressure.
+An emergency concession and a hands-off rush are not separate claims choices: the Concession Economy and Predatory Extraction openings already carry those directions, and a second copy would only add a button.
 
-Open claims produce faster development and greater disorder.
-
-A state reserve produces slower development and stronger national control, but local resentment rises when the state excludes residents.
-
-Customary or local recognition raises legitimacy and slows foreign capture, but it can complicate central planning and revenue collection.
-
-An emergency concession builds capacity quickly while placing early control in private hands.
-
-Minimal interference gives the highest chance of claim jumping, private violence, and speculative fraud.
+Implemented: the five opening options and the claims decisions; the dormant claims-policy constants `open_claims` to `minimal_interference` in `riches_found_policy` are never set and can be removed in a cleanup pass.
 
 ### Claims incidents
 
@@ -121,11 +110,12 @@ The local population gains employment and business opportunities while housing, 
 
 ### Rush composition
 
-The rush population is represented through incidents and modifier effects. No separate population pool is needed.
+The rush population is represented through incidents and modifier effects.
+No separate population pool is needed.
 
 Its character depends on:
 
-- commodity profile
+- deposit profile
 - core or non-core status
 - local population
 - state infrastructure
@@ -146,21 +136,11 @@ A platinum seam produces more state officials, industrial missions, and foreign 
 
 ### Rush management approaches
 
-The controller can:
+The controller can build a camp administration, license traders and lodgings, recruit local labour first, import a specialist workforce, authorize worker cooperatives, and establish public health and sanitation.
 
-- build a camp administration
-- license traders and lodgings
-- recruit local labor first
-- import a specialist workforce
-- authorize worker cooperatives
-- permit company housing
-- create a public health and sanitation program
-- levy emergency fees on transport and commerce
-- tolerate informal settlement growth
+Company housing is the Worker Housing project under a concession, and tolerating informal growth is simply not acting, so neither needs its own decision.
 
-These actions should use concrete costs such as trains, trucks, support equipment, civilian-factory burden, manpower, construction capacity, and time.
-
-They should not all be political-power purchases.
+Costs follow [the Part 3 cost rules](029_riches_found_spec_part_3_decisions_missions_foreign_interference.md#cost-rules).
 
 ### Rush benefits
 
@@ -205,19 +185,16 @@ These effects should create active problems and decisions.
 
 They should not become a stack of tiny decorative penalties.
 
+Proposed (unresolved): food shortage is the one rush pressure that matters beyond the district.
+While a mine in the rush milestone has no camp administration, or runs under Predatory Extraction, it submits one bounded unmet-need component for the mine state through the famine system's owner-proven adapter (`docs/systems/famine_system.md`, Adapters), and the component ends when the administration stands or the policy changes.
+Alone it stays below supply strain, so it only matters when war, blockade, or a disaster already press the state, which is exactly when an unmanaged rush should hurt.
+It gives Camp Administration and Sanitation a visible consequence without a new meter, and it adds no famine decision, popup, or scan to Event 029.
+
 ### Settlement outcomes
 
-The rush can mature into one of several ordinary settlement profiles:
+The rush matures into the settlement its policy profile and state-modifier stage describe: a public mining town, a state industrial district, a concession company town, a militarized extraction zone, or a loosely governed boom settlement.
 
-- public mining town
-- state industrial district
-- concession company town
-- militarized extraction zone
-- loosely governed boom settlement
-
-The profile changes incident weights and which later decisions are strongest.
-
-It does not lock the controller permanently into one route.
+There is no separate settlement-profile value; the policy profile already changes incident weights and which later decisions are strongest, and the controller can change direction through its revenue, security, and concession choices.
 
 ## Phase 3: Physical development
 
@@ -229,90 +206,27 @@ It rises through projects that can fail, be sabotaged, or be destroyed.
 
 Development is not a passive monthly number gained from the initial discovery.
 
-### Development project families
+### Development projects
 
-#### Access and transport
+| Project | Lasting physical result | When it appears |
+| --- | --- | --- |
+| Rail Spur, then Open the Railhead | One infrastructure level; on success, one railway level from the mine to the controller's capital where `can_build_railway` allows it | Inland mine without a route |
+| Port Route | One naval base level on the coast | Only where rail cannot serve: islands and railless coasts |
+| Shaft Reinforcement | Lower collapse risk and stronger sealed depths | Any route-served mine; deep veins need it most |
+| Processing Works | Higher output ceiling | Organized extraction with a route |
+| Worker Housing | Higher order and legitimacy, output held back | Rush settlement or later |
+| Sanitation | Fewer health and settlement incidents | After camp administration |
+| Development Fund | Earmarked revenue for works and services | Stable receipts |
+| Drive Deeper | Higher output ceiling, more pressure and deep excavation | Industrial band, steady order, a working route |
+| Repair, then Restore the Shaft | Clears damage, route damage, and severe collapse | Any damaged mine |
 
-Possible projects include:
+Drainage, ventilation, washing works, power, storage, the assay office, explosives magazines, tailings, clinics, markets, fire brigades, courts, police posts, treasury offices, customs posts, and dividend registries are the narrative content of these projects and their reports, not separate decisions.
 
-- road improvement
-- rail spur
-- bridge or mountain route
-- port handling area for an island or coastal state
-- truck depot
-- pay-train route
-- guarded convoy schedule
+Every lasting building or infrastructure result is a one-time project identity that cancellation, transfer, or recapture cannot reset; destroyed buildings are repaired through ordinary construction and Restore the Shaft, never re-granted.
 
-The project chosen depends on geography and installed infrastructure.
+Costs follow [the Part 3 cost rules](029_riches_found_spec_part_3_decisions_missions_foreign_interference.md#cost-rules); the construction projects commit civilian factories while they run instead of spending political power.
 
-A rail project requires a valid rail connection or a proven repository helper for building one.
-
-An island mine uses port and convoy logic instead of pretending a rail route exists.
-
-#### Mine works
-
-Possible projects include:
-
-- drainage
-- shaft reinforcement
-- ventilation
-- washing works
-- crushing and processing plant
-- power supply
-- storage compound
-- secure assay office
-- explosives magazine
-- tailings and water control
-
-The commodity profile changes which projects appear first.
-
-#### Settlement works
-
-Possible projects include:
-
-- worker housing
-- public clinic
-- sanitation
-- market district
-- fire brigade
-- local court
-- police post
-- communications office
-
-These projects improve order and legitimacy more than extraction.
-
-#### Revenue works
-
-Possible projects include:
-
-- treasury office
-- public assay system
-- shipment ledger
-- customs post
-- central buying office
-- local development fund
-- dividend registry
-
-These projects reduce hidden theft and improve the reliability of the controller contribution.
-
-### Project costs
-
-Development projects should combine no more than four spendable costs.
-
-Appropriate cost types include:
-
-- civilian-factory burden
-- trains
-- trucks
-- support equipment
-- infantry equipment for guard posts
-- fuel
-- manpower
-- stability or war support only when the project creates a real political sacrifice
-- convoys for overseas access
-- army XP for military engineering only when the project is genuinely military
-
-State control, supplied divisions, port access, rail connection, or local order are requirements and do not count as spendable costs.
+Implemented (D11, D29, R11), including the AI rule that a mine builds one project at a time.
 
 ### Development risk
 
@@ -328,20 +242,20 @@ Worker cooperatives can raise legitimacy and local support while slowing central
 
 A weak state may need to choose between rapid foreign-built capacity and slow domestic development.
 
-### Development plateaus
+### Development bands
 
-The mine should have clear development bands:
+Mine Development is shown as a band, which is all the player needs to plan:
 
-- provisional workings
-- organized extraction
-- industrial mine district
-- mature extraction complex
+| Band | Development | What changes |
+| --- | --- | --- |
+| Provisional workings | below 35 | Reduced output; Trade Access for Infrastructure is attractive |
+| Organized extraction | 35 to 64 | Normal operation; processing and housing become worthwhile |
+| Industrial mine district | 65 to 79 | Drive Deeper opens; foreign interest rises |
+| Mature extraction complex | 80 and above | Public Fortune's hold period can start; collapse and evolution stakes are highest |
 
-Each band changes the modifier, decision set, and incident pool.
+The thresholds are `riches_found_threshold.minimum_operating_development`, `riches_found_decision_threshold.development_high`, and `riches_found_threshold.mature_development`.
 
-High development should unlock stronger extraction and stronger consequences.
-
-It should not simply increase every positive modifier without limit.
+High development unlocks stronger extraction and stronger consequences; it never raises every positive modifier without limit.
 
 ## Phase 4: Revenue settlement
 
@@ -393,11 +307,11 @@ A share of revenue is withheld from current spending.
 
 This gives weaker immediate bonuses and a stronger long-term protection against dependence, price shock, closure, and reconstruction costs.
 
-The fund should be represented through staged protection and later actions, not an abstract number that never changes play.
+The fund builds one reserve that pays one later bill (a repair's stockpile cost or one closure's idle crews) and is then spent; only a new fund builds another, so it cannot be farmed.
 
 #### Worker or community participation
 
-Workers and local institutions receive a formal share and representation.
+Workers and local institutions receive a formal share through worker cooperatives (rush) and the local revenue share.
 
 This improves legitimacy and order, and it can lower central control.
 
@@ -410,6 +324,18 @@ Revenue is routed through favored officials, officers, party organizations, loca
 This buys short-term order and political loyalty.
 
 It raises hidden capture and makes later reform harder.
+
+#### How the routes work in play
+
+The chosen settlement is a standing route, not a one-time payment.
+
+Central receipts add 20 percent output; a dividend, a local share, a fund, worker housing, or a workers' share hold some output back; patronage leaks output; the route factor stays between 0.6 and 1.25 (`riches_found_revenue_route`).
+
+Each controller pulse the route drifts the mine: unwatched central receipts and patronage grow illicit capture, while a dividend or a local share raise order and lower capture until capture reaches its gate, so one payment cannot erase entrenched corruption.
+
+Central receipts also raise treasury dependence, which drives the Resource-Dependent Treasury stage.
+
+Implemented (D35, D46).
 
 ### Revenue legitimacy incidents
 
@@ -459,7 +385,7 @@ The event should select plausible foreign actors through dynamic factors:
 - existing relations
 - industrial capacity
 - war state
-- strategic interest in the commodity profile
+- strategic interest in the deposit profile
 - naval access for overseas sites
 - hostility or rivalry with the controller
 - prior concessions
@@ -467,6 +393,10 @@ The event should select plausible foreign actors through dynamic factors:
 The actor is a government scope even when the narrative interest is a company.
 
 No new company country tag is required.
+
+Implemented (D33, D36): the mine keeps a ranked list of at most four interested governments, rebuilt only at discovery and after deliberate actions; the offer goes to the most interested, and a human controller can court any other listed government through Court a Partner.
+At war, hostile (opinion below -25), excluded, and capitulated actors are never listed.
+Pending: the distant naval-power route (`RF_FOREIGN_02_DISTANT_NAVAL_POWER`) still needs a convoy and port access test.
 
 ### Concession forms
 
@@ -498,27 +428,20 @@ The agreement improves finance, transport, or industrial support.
 
 It can reduce freedom to close the mine or redirect revenue.
 
-#### Security contract
-
-A foreign actor supplies guards, weapons, advisers, or transport protection.
-
-Local order can improve quickly.
-
-Revenue legitimacy and sovereignty can fall, especially after abuses.
-
 #### Infrastructure-for-access agreement
 
 A foreign actor builds rail, port, roads, power, or processing works in exchange for long-term access.
 
 This provides visible development and creates a durable leverage relationship.
 
-#### Joint public venture
+It is offered only below the industrial development band, so it never competes with Drive Deeper.
 
-The controller and foreign actor share investment, oversight, and receipts.
+#### Forms folded into other actions
 
-This route needs stronger relations and administration.
+A foreign security contract is Hire Private Guards under a running concession, and a joint public venture is a limited concession with beneficial-owner disclosure and a published contract.
+Separate contract types would repeat those choices with new names, so the four contract types are limited concession, exclusive concession, offtake, and infrastructure access (`riches_found_contract_type`).
 
-It produces lower capture risk than an exclusive concession and less immediate benefit.
+Signing gives the partner one bounded Mine Concession Share modifier however many contracts it holds, and both governments a contract opinion pair; buyouts and compensated nationalization pay the partner, while uncompensated nationalization leaves a lasting grievance that makes the sponsor the preferred interference actor (D13, R6).
 
 ### Contract visibility
 
@@ -563,7 +486,8 @@ Contracts can:
 - be exposed as corrupt
 - become the basis for foreign pressure or intervention
 
-A controller change should re-evaluate the contract. It must not erase or duplicate the contract automatically.
+A controller change should re-evaluate the contract.
+It must not erase or duplicate the contract automatically.
 
 ## Phase 6: Armed protection and raids
 
@@ -611,13 +535,7 @@ This can protect against raiders and private guards.
 
 It creates an armed political constituency and raises the risk of a local power struggle.
 
-#### Mixed security board
-
-Civil authorities, workers, state forces, and concession representatives share responsibility.
-
-This works best with high legitimacy and functioning institutions.
-
-It is vulnerable to paralysis and hidden collusion.
+A mine keeps one standing force at a time; a mixed security board is not a separate approach, because Recognize the Board in The Gilded Sovereignty already covers shared local authority where it matters.
 
 ### Raid actors
 
@@ -742,6 +660,9 @@ Reopening requires a safety, order, or contract check.
 
 The mine should not reopen automatically into the exact condition that caused closure.
 
+Implemented (D5, R1, R2): every closing action uses one closure helper; the maintenance pulse lowers pressure and collapse pressure until the review date, and legitimacy slips unless the crews hold a standing share or were paid within the revenue cycle.
+Reopen the Mine is a paid inspection that needs pressure below the reopening ceiling, a route, and adequate order or a security force, and a 180-day cooldown blocks closure loops.
+
 ### Partial sealing
 
 The controller can seal deeper sections while leaving safer workings open.
@@ -785,9 +706,11 @@ Severe collapse closes the mine and damages state infrastructure.
 
 Catastrophic collapse can permanently destroy the workings after a major population loss and building damage.
 
-Event 013 Natural Disasters may be called only through its public exact-state API when the implementation can supply every required proof and when the physical cause fits.
+Event 029 owns the collapse effect and applies exact state damage through its own bounded helpers (implemented, `riches_found_collapse_mine`).
 
-Otherwise Event 029 owns the collapse effect and applies exact state damage through its own bounded helpers.
+Event 013 Natural Disasters is not called for ordinary collapses; a later adapter may call its public exact-state API only when a real earthquake or landslide is the physical cause and every required proof exists.
+
+A mine in a state struck by an Event 013 earthquake should take a collapse-pressure increase from that disaster's existing state report rather than a second disaster roll (proposed, unresolved).
 
 ### Exhaustion
 
@@ -826,6 +749,9 @@ Resistance, non-core status, damaged transport, and contract disputes reduce val
 The occupier can exploit, negotiate, close, or restore the mine.
 
 Predatory occupation raises legitimacy and condemnation risks.
+
+Implemented (D10, D24, D34): the occupier's set is reopen, requisition output, keep the previous administration, replace the concession, share revenue, strip equipment, and deny the mine before retreat; sharing revenue lowers resistance, keeping the administration raises compliance, and requisition or stripping raise resistance, which feeds the occupied output factor.
+The hostile capture itself already sends war refugees through the shared humanitarian capture adapter, so Event 029 adds no flight of its own.
 
 ### Civil war
 
@@ -879,18 +805,13 @@ Wartime emergency extraction should deliver a clear temporary advantage and a la
 
 It must not become a free permanent increase.
 
+When the controller's war is being lost or no troops hold the district, the mine is marked about to fall and the owner may Deny the Mine to the Enemy, wrecking and closing the workings so the occupier inherits damage instead of output (implemented, D38, D43, D44).
+
 ## Colonial and non-core variants
 
 A colonial or non-core mine begins with lower revenue legitimacy and stronger local claims.
 
-The controller can pursue:
-
-- direct extraction
-- local revenue share
-- development agreement
-- concession company rule
-- military zone
-- negotiated autonomy over the site
+The controller pursues direct extraction (central receipts), a local revenue share, concession company rule, or a military zone through the ordinary decisions; negotiated autonomy is Share Sovereignty or Recognize the Board once The Gilded Sovereignty arises.
 
 Direct extraction gives strong short-term national benefit and increases resistance, foreign propaganda, and armed interference.
 
