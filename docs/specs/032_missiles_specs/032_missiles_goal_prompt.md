@@ -1,27 +1,24 @@
-# /goal: Implement Event 32, Missiles
+# /goal: Finish Event 32, Missiles
 
-Implement Event 32 to the fullest accepted design in `docs/specs/032_missiles_specs/`. Read every file there first. Follow all prompt, matrix, acceptance, and test files as one binding contract.
+Finish Event 32 against `docs/specs/032_missiles_specs/`.
+Start with the package README status table and open questions, then `docs/events/032_missiles.md`, `docs/events/032_missiles/systems/`, and the dated decisions in `docs/plans/032_missiles_plans/`.
+Follow CLAUDE.md and the skills it routes to.
 
-Follow `AGENTS.md`, `chaos-redux-events`, `chaos-redux-decisions-missions`, `chaos-redux-event-assets`, `chaos-redux-improvement-loop`, and `chaos-redux-subagents`. Read the required offline wiki, installed vanilla documentation, and relevant Chaos Redux and vanilla precedents.
+Most of the event is implemented in source: the global firing transaction, program values, technology adapter, launch sites and custody, operations, special-payload holds, five evolution tracks on native MTTH clocks, the decision category and missions, SCN-015, assets, achievements and Event Logs.
+Treat that behaviour as accepted unless an owning spec section says otherwise.
 
-Keep ID `32`, namespace `chaosx.nr32`, entry event `chaosx.nr32.1`, Minor Repeatable classification, Calm World minimum chaos, and no cluster. Replace the legacy grant with one bounded global firing transaction that freezes valid recipients, processes each once, and counts once for pacing, repeatable state, history, and first-news behavior. Do not add a recurring whole-world scan.
+Close the remaining items listed in `032_missiles_coding_prompt.md`, Remaining work: real-distance reach, the territory-scaled site cap, denial exposure, the fuel-crisis slowdown, source-derived probability evidence for every weighted surface, asset workspace cleanup, and the catalog status promotion.
+Implement each from its owning spec section.
+Do not implement `unresolved` proposals (Chaos budgets, humanitarian aftermath, README open questions) unless the user accepts them.
 
-Implement one normalized missile technology step per firing, mature-program packages, Operational Reserve, Launch Readiness, Command Control, guidance status, retaliation posture, and the complete launch-state system. Implement valid site selection, upgrade priority, physical capacity, reserve custody, hardening, damage, capture, succession, cleanup, and no-duplication accounting.
+Keep the explicit user presentation rule: one ordinary category with a static picture and no dedicated scripted GUI.
+Keep the scripted operation adapter, the bounded retaliation chain, exact reserve and payload custody, and the ban on recurring all-country scans.
+Event 32 owns no world-end branch.
 
-Implement every mapped operation and target profile. Prove native raid behavior and use the scripted adapter only where parity requires it. Complete preparation, commitment, guidance, drift, damage, deaths, evidence, attribution, incidents, and cleanup.
+Other sessions may have uncommitted Event 32 edits; preserve them and commit only your own hunks.
+Spawn project subagents with fully self-contained prompts and no inherited context.
+Use MCP only for concrete questions under the CLAUDE.md retry limit, and never present source review as engine evidence.
+Live-game testing belongs to the user.
 
-Implement all five evolution tracks with separate enable gates, dynamic pacing, logs, AI, adoption, interactions, and safe disabled behavior: Saturation Arsenals, Unreliable Guidance, Special Warheads, Rogue Launch Commands, and Automatic Retaliation. Automatic retaliation must obey every specified queue and chain bound. Direct recursive launch calls are forbidden.
-
-Special payload delivery requires the relevant existing technology, policy, stockpile, and site custody. Consume real payloads and call the shared CBRN, Deaths, Air Cleanliness, evidence, Condemnation, and Fallout consequence systems. Event 32 owns no world-end branch. Preserve the Event 16 reaction helper and keep Event 23 and Event 76 ownership separate.
-
-Implement the phased decision category, target selection, missions, crisis actions, and collision-audited `SCN-015`. Use one ordinary category with a static picture. Do not add a dedicated scripted GUI. Respect the action, mission, cost, AI parity, and cleanup limits.
-
-Use `hoi4.event_inspect`, `hoi4.event_render`, and `hoi4.event_compare`. Use `hoi4.tech_inspect`, `hoi4.tech_render`, and `hoi4.tech_compare`. Implement every named probability scenario. Spawn `chaosx_ai_probability_auditor` with `fork_turns="none"` before weighted changes, then run the same-scenario `hoi4.probability_compare` pass. Record exact blockers when a mandatory route is unavailable.
-
-Create and wire every authorized static asset. Implement all eight achievements with full tracking and icon triplets. Do not add excluded asset or content families.
-
-Update Event Logs, Event Details, affected docs, tests, assets, achievements, scenarios, and `docs/spreadsheets/chaos_redux_events_catalog.xlsx`. Regenerate the CSV exports with the repository exporter and never edit them directly.
-
-Use required project subagents with `fork_turns="none"` and review every handoff. Near completion, spawn `chaosx_improvement_loop_planner`, resolve its addendum or closure, then run the event completion auditor. Do not invoke autonomous desktop testing unless the user explicitly requests it.
-
-Keep iterating until every acceptance item is satisfied. Do not claim completion while any accepted surface or meaningful validation remains missing. Report every blocker, fallback, simplification, rejected requirement, and skipped meaningful check.
+Update the event doc, README status table, test matrix and workbook with each change, then regenerate the CSV exports with the repository exporter.
+Do not claim completion while any listed item remains open, and report every simplification, fallback, blocker and unrun check.

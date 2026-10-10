@@ -1,5 +1,9 @@
 # Event 32 asset-production prompt
 
+Status: delivered.
+The package below exists as 82 runtime DDS files (plus five guidance and four posture icons counted in that total), audited in `docs/events/032_missiles/asset_audit.md`.
+Keep this prompt as the brief for replacements or additions; the only open asset work is cleanup of the temporary workspace (part 7, Asset paths).
+
 ## Role
 
 Use `chaos-redux-event-assets` and the appropriate bounded asset workers to create the complete visual package for Event 32, Missiles.
@@ -9,7 +13,7 @@ Read these files first:
 - `docs/specs/032_missiles_specs/032_missiles_spec_part_7_assets_text_and_achievements.md`
 - `docs/specs/032_missiles_specs/032_missiles_achievement_prompt.md`
 - `docs/specs/032_missiles_specs/032_missiles_decision_mission_prompt.md`
-- `AGENTS.md`
+- `CLAUDE.md`
 - `chaos-redux-event-assets`
 - `chaos-redux-frame-animation`
 
@@ -153,18 +157,8 @@ Do not satisfy these by renaming or resizing the decision icons.
 
 ## Raid and payload icons
 
-Inspect the exact native raid adapter and existing CBRN raid assets before adding anything.
-
-Create new Event 32 operation icons only when no matching installed or Chaos Redux icon already represents the same delivery and payload surface:
-
-- conventional missile raid
-- saturation missile raid
-- chemical missile delivery
-- biological missile delivery
-- nuclear missile delivery
-- thermonuclear missile delivery
-
-Reuse must be exact and documented. Do not duplicate a chemical, biological, nuclear, or thermonuclear icon under a new filename only for Event 32.
+None.
+Event 32 uses the scripted operation adapter, so no raid icon is part of this package (part 7, Raid or operation icons).
 
 ## Achievement icons
 

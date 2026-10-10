@@ -1,5 +1,9 @@
 # Event 32 specification, part 7: Assets, text, and achievements
 
+Implementation status: the visual package (82 runtime DDS files) and the eight achievements are `implemented` in source.
+The runtime mapping and per-file visual audit are in `docs/events/032_missiles/asset_audit.md`.
+Pending: the temporary workspace `docs/assets/032_missiles/` still exists and must be folded into permanent documentation and removed (Asset paths below).
+
 ## Visual direction
 
 Event 32 should look mechanical, military, and period-authentic.
@@ -169,6 +173,11 @@ Required custom texticons:
 
 The final cost strings and header use these icons consistently.
 
+### Guidance and posture labels
+
+Five guidance-grade icons (poor, uncertain, serviceable, accurate, precise) and four posture icons (off, supervised, delegated, automatic) sit inline with their labels.
+They illustrate the one guidance grade and one posture label allowed by the part 2 value budget; they are not separate meters.
+
 ## Decision icon family
 
 Each decision icon is its own decision-surface asset.
@@ -221,18 +230,10 @@ Mission icons should remain visually distinct from clickable decision icons even
 
 ## Raid or operation icons
 
-When the native raid adapter is used, inspect the exact raid icon contract.
-
-Possible required icons:
-
-- conventional missile raid
-- saturation missile raid
-- chemical missile delivery
-- biological missile delivery
-- nuclear missile delivery
-- thermonuclear missile delivery
-
-Existing CBRN raid icons should be reused when they already identify the same payload and delivery surface. Event 32 should not create duplicate chemical or nuclear icon families only to change filenames.
+None.
+Event 32 uses the scripted operation adapter (part 8), so no raid icon is registered.
+Launch, abort and accept-response decisions reuse the Event 32 launch, incident and warning decision icons.
+A future native adapter would need its own accepted brief before any raid icon is made, and it must reuse existing CBRN raid icons where they already identify the same payload and delivery surface.
 
 ## Achievement assets
 
@@ -274,20 +275,18 @@ If implementation discovers that the accepted operation cannot be represented wi
 
 ## Asset paths
 
-Recommended event-owned runtime grouping:
+Implemented runtime grouping:
 
 - `gfx/event_pictures/032_missiles/`
 - `gfx/interface/decisions/032_missiles/`
 - `gfx/interface/ideas/032_missiles/`
 - `gfx/interface/state_modifiers/032_missiles/`
-- exact raid or modifier folders required by the inspected consumer
+- `gfx/texticons/032_missiles/`
 - achievement files directly under `gfx/achievements/`
+- sprites in `interface/032_missiles.gfx`
 
-Recommended temporary workspace during active asset work:
-
-- `docs/assets/032_missiles/`
-
-The temporary workspace is deleted only after final assets are wired, durable provenance and coverage facts are promoted, and no runtime reference points into `docs/assets/`.
+The temporary workspace `docs/assets/032_missiles/` is deleted only after durable provenance and coverage facts are promoted into `docs/events/032_missiles/` and no document or runtime reference points into it.
+That cleanup is pending: `docs/events/032_missiles.md` still cites `docs/assets/032_missiles/manifest.md`.
 
 ## Asset acceptance
 

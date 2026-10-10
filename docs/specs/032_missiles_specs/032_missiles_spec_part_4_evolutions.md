@@ -3,18 +3,22 @@
 ## Evolution structure
 
 Event 32 uses five parallel mutation tracks.
+Implementation status: all five tracks, their gates, native pacing, logging, adoption and disabled-safe behaviour are `implemented` in source; runtime detail lives in `docs/events/032_missiles/systems/evolution_pacing.md`.
 
-The catalog numbers remain stable. Their unlock order follows campaign conditions and chaos tiers, so a later-numbered evolution may activate before an earlier-numbered one. This is intentional. The evolution number identifies the catalog track, not a mandatory sequence.
+The catalog numbers remain stable.
+Unlock order follows campaign conditions and chaos tiers, so a later-numbered evolution may activate before an earlier-numbered one.
+The evolution number identifies the catalog track, not a sequence.
 
-| Catalog evolution | Working track label | Minimum chaos tier | Main prerequisite |
-| --- | --- | --- | --- |
-| Evolution IV | Rogue Launch Commands | Gathering Storm | Event 32 fired once and at least one country has a vulnerable program |
-| Evolution II | Unreliable Guidance | Rising Chaos | Event 32 fired once and global program strain exists |
-| Evolution I | Saturation Arsenals | Chaos Tier | Event 32 fired at least once and a meaningful share of programs is operational |
-| Evolution III | Special Warheads | Totalen Chaos | Event 32 fired once and at least one eligible payload owner exists |
-| Evolution V | Automatic Retaliation | Late Totalen Chaos, at least `900` chaos | Event 32 fired once and at least two countries can support retaliation |
+| Catalog evolution | Track | Minimum chaos | Implemented prerequisite |
+| --- | --- | ---: | --- |
+| Evolution IV | Rogue Launch Commands | `200` (Gathering Storm) | At least one vulnerable program: weak command, compromise, civil war, stability below `0.30`, or a damaged, captured or occupied site |
+| Evolution II | Unreliable Guidance | `400` (Rising Chaos) | An operational program and real strain: two low-readiness programs, overstock beyond site capacity, three committed launches worldwide, or half the advanced programs without guidance investment |
+| Evolution I | Saturation Arsenals | `600` (Chaos Tier) | At least two operational programs forming at least 40% of the live pool, and two programs at war |
+| Evolution III | Special Warheads | `800` (Totalen Chaos) | One program owning both the technology and the physical stock of a supported payload |
+| Evolution V | Automatic Retaliation | `900` | No world end, two operational programs, one hostile pair, and one response-capable program (advanced stage, a secure site, Command Control `75`, and the response reserve); the responder can be a third country |
 
-Each track has one global evolution unlock entry. Country-level adoption and incidents are ordinary progression inside that track.
+Each track has one global evolution unlock entry.
+An unlock grants access only; country adoption and incidents are ordinary progression inside the track.
 
 An evolution disabled in Event Details:
 
@@ -40,44 +44,32 @@ The normal evolution process is:
 8. Evolution context is set and recorded once.
 9. Country adoption and incident logic become available.
 
-No global daily or weekly scan is required. The implementation can evaluate pending tracks through:
+No global daily or weekly scan is used.
+Pressure is observed at finite boundaries: the firing transaction, program transactions, war and peace, state control, chaos-threshold crossings, and settled payload-stock transactions, coalesced into one `chaosx.nr32.192` delivery.
 
-- the Event 32 firing transaction
-- chaos-tier change hooks
-- bounded delayed evolution jobs created when a threshold is first met
-- exact shared-system events that make a prerequisite true
+Implemented pacing (superseding the 2026-10-04 delayed-job model):
 
-Suggested base MTTH targets:
+| Track | Native MTTH event | Base day scale |
+| --- | --- | ---: |
+| Rogue Launch Commands | `chaosx.nr32.201` | `120` |
+| Unreliable Guidance | `chaosx.nr32.202` | `105` |
+| Saturation Arsenals | `chaosx.nr32.203` | `90` |
+| Special Warheads | `chaosx.nr32.204` | `120` |
+| Automatic Retaliation | `chaosx.nr32.205` | `150` |
 
-| Track | Base MTTH after eligibility |
-| --- | --- |
-| Rogue Launch Commands | about `120` days |
-| Unreliable Guidance | about `105` days |
-| Saturation Arsenals | about `90` days |
-| Special Warheads | about `120` days |
-| Automatic Retaliation | about `150` days |
+`common/mtth/032_missiles_evolution_mtth.txt` shortens a track by `0.5` under its corresponding pressure, lengthens it by `1.5` when few programs can use it, and applies `0.8` in the final chaos tier.
+Each attempt rechecks the real prerequisites before recording; a rejected attempt does not consume the track.
 
-The MTTH should shorten when the corresponding global pressure rises and lengthen when few programs can use the track.
-
-When the first Event 32 firing occurs above an evolution threshold, the event may create a short delayed unlock job instead of waiting the full ordinary MTTH. The delay should still give the baseline setup time to finish and should avoid firing five evolution popups on the same day.
+When the first firing happens above several thresholds, those tracks use a short exception instead: `21` days plus `14` per eligible track in order, with at least seven days between commits, so five popups never land on one day.
 
 ## Evolution logging
 
-Use one distinct `type` value per track.
-
-Recommended mapping:
-
-| Track | Evolution type | Stage |
-| --- | --- | --- |
-| Saturation Arsenals | `missiles_evolution.saturation` | `1` |
-| Unreliable Guidance | `missiles_evolution.unreliable_guidance` | `1` |
-| Special Warheads | `missiles_evolution.special_warheads` | `1` |
-| Rogue Launch Commands | `missiles_evolution.rogue_commands` | `1` |
-| Automatic Retaliation | `missiles_evolution.automatic_retaliation` | `1` |
+Every track uses the canonical Event Logs identity: event `32`, type `constant:missiles_event.evolution_type` (`32`), and stage equal to the catalog number (I Saturation `1`, II Guidance `2`, III Special Warheads `3`, IV Rogue `4`, V Automatic Retaliation `5`).
+The shared toggle flag is `events_log_disabled_evolution_32_32_<stage>`.
+The logged tier is each track's minimum chaos tier.
 
 Each unlock is actorless because it changes the global Event 32 rules.
-
-The evolution row direction should explain the visible change in missile warfare. It should not list hidden incident probabilities or reveal every rare outcome.
+The evolution row explains the visible change in missile warfare without listing hidden probabilities or rare outcomes.
 
 ---
 
@@ -91,55 +83,28 @@ The evolution changes reserve scale, site capacity, replenishment, range, cooldo
 
 ## Global unlock conditions
 
-Suggested conditions:
-
-- current chaos tier is Chaos Tier or above
-- Event 32 has fired at least once
-- the evolution is enabled
-- at least a meaningful share of valid program countries has normalized stage `2` or higher
-- at least two countries are at war or one global conflict contains several program countries
-- the evolution has not already been recorded
-
-The share threshold should be dynamic and based on the current valid program pool. A fixed country count can be used as a floor.
+See the Evolution structure table: Chaos Tier, an operational share of at least 40% of the live pool with a two-program floor, and two programs at war.
 
 ## Immediate global effects
 
-On unlock:
-
-- increase the mature-program reserve multiplier
-- raise the ordinary reserve cap
-- unlock saturation barrage preparation
-- permit one extra launch-site cap slot for countries that meet territory and industry requirements
-- shorten replenishment cooldowns
-- shorten launch cooldowns after readiness recovery
-- extend reach at later technology stages
-- increase defense-saturation effects
-- activate saturation AI profiles
-- create one global news item if the presentation review supports it
-- record the evolution row
-
-The unlock must not grant every country a maximum arsenal immediately. Countries receive an initial saturation package scaled by their current program and then build further reserves through Event 32 repeats and decisions.
+On unlock the track becomes available and the evolution row is recorded.
+Nothing is granted to any country by the unlock itself; every saturation effect below reads the live enabled-and-adopted state.
 
 ## Country adoption
 
-A country can adopt saturation doctrine when it has:
-
-- normalized stage `2` or higher
-- at least one active launch site
-- sufficient industry
-- minimum Command Control
-- no active total program collapse
+Adopt Saturation Doctrine is an explicit country decision (agent decisions, item 6).
+It requires stage Guided or higher, an active site, more than `15` factories, Command Control at the operation minimum, Launch Readiness at the floor, and no rogue command.
+It costs `25` command power, `140` support equipment and `700` fuel.
 
 Adoption provides:
 
-- saturation barrage action
-- larger replenishment batches
-- higher site capacity ceiling
-- reserve-dispersal or rapid-reload decisions
+- the saturation barrage action
+- the saturation reserve ceiling of `40`
+- larger replenishment and shorter launch cooldowns
 - AI willingness to conduct repeated strikes
-- a visible saturation-program status
 
-A country can decline or delay adoption. It still receives larger repeat-event packages, but does not gain the most aggressive operation set until it commits.
+A country can decline or delay adoption indefinitely.
+Disabling the track suspends every saturation bonus without removing stock.
 
 ## Saturation barrage mechanics
 
@@ -168,11 +133,12 @@ Possible cost package:
 - support equipment
 - manpower or civilian factory burden
 
-Use no more than four spendable cost types.
-
-A country with strong industry can replenish faster, but every replenishment must have a cap and cooldown. Event 32 repeat firings remain valuable.
+The part 5 cost rules apply.
+A country with strong industry can replenish faster, but every replenishment has a cap and cooldown, and repeat firings remain valuable.
 
 ## Range
+
+Saturation range bonuses only matter once reach compares against real target distance (part 3, Reach, pending).
 
 The evolution may increase reach through:
 
@@ -241,30 +207,21 @@ The evolution expands the failure model. It creates wrong-state impacts, neutral
 
 ## Global unlock conditions
 
-Suggested conditions:
-
-- current chaos tier is Rising Chaos or above
-- Event 32 has fired at least once
-- the evolution is enabled
-- at least one of these global pressures is true:
-  - several countries have low readiness
-  - missile reserves have grown faster than site capacity
-  - a meaningful number of launches has occurred
-  - a large share of programs has advanced technology without maintenance investment
-- the evolution has not already been recorded
+See the Evolution structure table: Rising Chaos, an operational program, and one of the four strain signals.
 
 ## Immediate global effects
 
 On unlock:
 
 - activate the expanded guidance outcome table
-- unlock guidance and maintenance actions
-- add preparation risk breakdowns
+- unlock the aftermath actions (recalibration, debris investigation, site suspension)
+- show the guidance grade's one-line risk statement before launch
 - allow accidental neutral and self-target incidents
 - allow mistaken-retaliation bridges
-- add maintenance-backlog state to missile programs
 - adjust AI to consider failure risk
 - record one evolution row
+
+Maintenance backlog stays an internal input to the guidance grade, not a separate visible state.
 
 The evolution does not make every launch unreliable. A well-maintained high-readiness program should remain dependable.
 
@@ -380,7 +337,9 @@ Country actions should include:
 - reduce extended-range strain
 - suspend one damaged site
 
-Each action should change a visible risk statement or readiness result. Tiny generic modifiers are insufficient.
+Each action must change the visible guidance grade, its risk statement, or readiness.
+Tiny generic modifiers are insufficient.
+Implemented actions: Improve Guidance and Maintenance, Emergency Guidance Recalibration, Investigate Debris and Suspend a Damaged Site (part 5).
 
 ## AI behavior
 
@@ -432,15 +391,9 @@ The evolution joins Event 32 to the existing chemical, biological, nuclear, ther
 
 ## Global unlock conditions
 
-Suggested conditions:
-
-- current chaos tier is Totalen Chaos or above
-- Event 32 has fired at least once
-- the evolution is enabled
-- at least one valid missile country owns a supported unconventional payload technology and stockpile
-- the evolution has not already been recorded
-
-The global unlock can occur when only one country qualifies. Other countries gain delivery access later when they acquire a supported payload.
+See the Evolution structure table: Totalen Chaos and one program that owns both the technology and physical stock of a supported payload.
+The unlock can occur when only one country qualifies.
+Other countries gain delivery access later when they acquire a supported payload.
 
 ## Immediate global effects
 
@@ -458,18 +411,14 @@ No payload is granted by the evolution.
 
 ## Payload integration record
 
-Each payload family has its own country-level integration state:
-
-- unavailable
-- eligible
-- integrating
-- operational
-- suspended
-- compromised
+Each payload family has one player-facing integration state: fitted or not fitted.
+A fitted family is stored at a secure site; a family held for a prepared operation is shown on that operation, not as a separate state.
+Loss of custody (capture, isolation, destruction) is resolved through the site and receipt records rather than a visible "suspended" or "compromised" label.
 
 A country can integrate several payloads, but each has its own stockpile and consequence adapter.
+Implemented as three decisions: Integrate Special Payload (`chaosx.nr32.30`), Select Special Payload (`.31`, conventional always available) and Set Special-Payload Policy (`.32`).
 
-Integration should require:
+Integration requires:
 
 - supported technology
 - physical stockpile
@@ -526,18 +475,17 @@ Thermonuclear delivery requires the exact supported weapon and shared route. It 
 
 ## Special-payload policy
 
-Countries should have a policy or posture that affects AI and command risk:
+Countries have a policy that affects AI use, ordinary preparation and command risk:
 
 - prohibited
-- retaliatory only
+- retaliation only
 - military targets only
-- unrestricted under war conditions
+- unrestricted in war
 - emergency delegation
-- rogue control
 
-Final labels require localisation work.
-
+Rogue control is not a selectable policy; it is the state a rogue incident forces onto a captured payload.
 The policy does not override stockpile, technology, target, or shared-system gates.
+README open question 3 proposes showing the policy to humans only once a Delegated or Automatic posture exists.
 
 ## Command burden
 
@@ -603,13 +551,7 @@ The evolution creates internal political and military incidents around sites, cr
 
 ## Global unlock conditions
 
-Suggested conditions:
-
-- current chaos tier is Gathering Storm or above
-- Event 32 has fired at least once
-- the evolution is enabled
-- at least one missile country has a vulnerable program
-- the evolution has not already been recorded
+See the Evolution structure table: Gathering Storm and at least one vulnerable program.
 
 Vulnerability can include:
 
@@ -827,16 +769,8 @@ The evolution creates warning events, retaliation postures, verification windows
 
 ## Global unlock conditions
 
-Suggested conditions:
-
-- global chaos is at least `900`
-- no terminal `world_end` state is active
-- Event 32 has fired at least once
-- the evolution is enabled
-- at least two countries have operational missile programs
-- at least one pair is hostile, at war, or under severe strategic tension
-- at least one country has enough reserve and surviving sites to retaliate
-- the evolution has not already been recorded
+See the Evolution structure table.
+Outside actual war, a held war goal or active justification in either direction counts as a hostile pair; faction and subject ties never do, and negative opinion alone does not.
 
 ## Immediate global effects
 
@@ -851,7 +785,8 @@ On unlock:
 - connect qualifying missile and special-payload strikes to the warning helper
 - record one evolution row
 
-The unlock does not force every country into automatic posture.
+The unlock gives every program access to the warning network with posture Off.
+Set Retaliation Posture is an explicit decision (`15` command power and `5` Launch Readiness, `70`-day cooldown), blocked during a warning, a committed retaliation, or a severed network; it opens `chaosx.nr32.40`.
 
 ## Retaliation postures
 
@@ -918,16 +853,16 @@ Final wording should avoid exposing exact hidden probabilities.
 
 ## Response window
 
-Suggested response windows:
+Implemented response windows (`missiles_resolution`):
 
 | Posture | Response window |
 | --- | --- |
 | Off | no automatic countdown |
 | Supervised | `7` days |
-| Delegated | `4` to `5` days |
-| Automatic | `2` to `3` days |
+| Delegated | `5` days |
+| Automatic | `3` days |
 
-The exact duration can depend on readiness, warning quality, damage, and payload estimate.
+Delay Retaliation adds `3` days once per warning, and a warning expires after `14` days.
 
 The player should have enough time to understand the incident. A one-day surprise that can launch thermonuclear weapons would create poor gameplay.
 
@@ -962,9 +897,8 @@ The player should have enough time to understand the incident. A one-day surpris
 
 ### Change target
 
-- allowed only when new attribution evidence exists
-- uses the exact selected-target flow
-- cannot silently redirect to a random country
+`rejected` for this round (agent decisions, lead decision 5).
+A response always targets the warning's attacker; verification that names a different actor resolves the warning instead of redirecting it.
 
 ### Restore control
 
@@ -1050,17 +984,9 @@ The chain cannot recurse directly inside one effect block.
 
 ## Chain caps
 
-Suggested hard caps:
-
-- generation cap `3`
-- country cap `6`
-- linked-incident cap `12`
-- one response per country per root
-- one active warning per country per root
-- automatic missile cap per root derived from constants
-- thermonuclear automatic response cap much lower than conventional
-
-The implementation must prove that false warnings, wrong-state hits, and special payloads use the same root record.
+Part 3, Causal chain controls, owns the hard caps.
+In addition, an automatic response never raises its payload above conventional unless the payload policy allows it, and thermonuclear automatic responses stay rarer than conventional ones.
+False warnings, wrong-state hits, and special payloads use the same root record.
 
 ## AI behavior
 

@@ -5,9 +5,12 @@
 This is a planning-time closure review performed against the complete Event 32 specification package.
 
 The closure below remains planning evidence, with acceptance governed by the package README and attributable decisions.
-A `chaosx_improvement_loop_planner` worker was dispatched with the then-recorded `fork_context=false` instruction on 2026-09-05 for a final implementation-time addendum review, but it produced no handoff after bounded waits and was shut down.
-No new design addendum is promoted from that worker; the missing independent handoff is recorded in `docs/plans/032_missiles_plans/subagent_handoffs/032_improvement_loop_planner_handoff_2026-09-05.md`.
-This preserves the historical dispatch receipt; current Codex spawning uses `fork_turns="none"` under the owner skill.
+A `chaosx_improvement_loop_planner` worker was dispatched on 2026-09-05 for a final implementation-time addendum review, but it produced no handoff after bounded waits and was shut down.
+No design addendum is promoted from that worker; the missing handoff is recorded in `docs/plans/032_missiles_plans/subagent_handoffs/032_improvement_loop_planner_handoff_2026-09-05.md`.
+A new planner pass, if needed, is spawned with a fully self-contained prompt under `chaos-redux-subagents`.
+
+The 2026-10-10 spec audit added a second closure layer: it trimmed visible values to the part 2 value budget and listed the remaining depth proposals (humanitarian aftermath, incident inspection, payload policy, merged site protection) as README open questions.
+No further broad expansion is recommended until those are decided.
 
 ## Playable promise
 

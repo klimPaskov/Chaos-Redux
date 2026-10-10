@@ -1,708 +1,134 @@
 # Event 32 specification, part 8: Implementation contract
 
-## Implementation ownership
+This part owns the runtime boundaries Event 32 must keep.
+The current file list, API reference and event ID map are maintained with the source, not copied here:
 
-Event 32 should use event-owned files for its private runtime and shared files only for established framework integration.
+- runtime files: `docs/events/032_missiles/overview.md`, section Runtime files
+- country, site, operation and warning APIs: `docs/events/032_missiles.md` and `common/scripted_effects/032_missiles_effects.md`, `032_missiles_operations_effects.md`, `032_missiles_scenario_effects.md`
+- tuning: `common/script_constants/032_missiles_constants.txt` plus the recovery, scenario and survey constant files
 
-Recommended event-owned files:
+## Ownership
 
-- `events/032_missile_crisis.txt`
-- `common/script_constants/032_missiles_constants.txt`
-- `common/scripted_effects/032_missiles_effects.txt`
-- `common/scripted_triggers/032_missiles_triggers.txt`
-- `common/on_actions/032_missiles_on_actions.txt` only for narrow exact hooks
-- `common/ideas/032_missiles_ideas.txt`
-- `common/dynamic_modifiers/032_missiles_dynamic_modifiers.txt`
-- `common/decisions/032_missiles_decisions.txt`
-- `common/decisions/categories/032_missiles_categories.txt`
-- `common/raids/032_missiles_raids.txt` when the native raid adapter is used
-- `common/opinion_modifiers/032_missiles_opinion_modifiers.txt`
-- event-owned GFX files
-- event-owned localisation files
-- `docs/events/032_missiles.md`
+Event 32 keeps its private runtime in `032_missiles_*` files and touches shared files only for established framework integration:
 
-Shared framework touchpoints include:
-
-- random-event category registration
-- reworked-event default enable allowlist
+- random-event registration, the repeatable-event array and the reworked-event default-enable allowlist
 - event name and debug selectors
-- Event Logs history and Event Details
-- evolution log catalog and selectors
-- triggerable scenario registry
-- shared CBRN consequence adapters
-- shared Deaths reason enum or adapter
-- shared dynamic effect or trigger registry only when the helper becomes genuinely reusable
-- authoritative event catalog workbook
+- Event Logs history, Event Details and the five evolution rows
+- the triggerable scenario registry
+- shared CBRN, Deaths, Air Cleanliness and Condemnation entry points
+- the authoritative catalog workbook
 
-## Namespace and IDs
+A helper becomes shared only after demonstrated cross-system reuse, and then lives in the owning shared system with its documentation.
+Shared chemical, biological or nuclear logic never moves into Event 32 files.
 
-Keep:
+## Namespace and event IDs
 
-- namespace `chaosx.nr32`
-- entry event `chaosx.nr32.1`
+Namespace `chaosx.nr32` and entry event `chaosx.nr32.1` are fixed.
+Implemented IDs: `.1` entry, `.2` country report, `.3` first news, `.4` scenario setup failure report, `.5` to `.9` hidden receivers (`.5` recipient, `.6` scenario setup, `.7` controller refresh, `.8` evolution access refresh, `.9` disaster receiver), `.30` to `.32` payload orders, `.40` posture, `.60` and `.69` incident reports, `.80` to `.90` warning and retaliation, `.190` to `.193` evolution observation and legacy cleanup, `.201` to `.205` native evolution clocks.
+New IDs must be collision-checked against `events/032_missile_crisis.txt` and `events/032_missiles_evolution_events.txt` and added to the event doc.
 
-The current country report ID `chaosx.nr32.2` can remain the first-recipient report.
+## Core API contract
 
-Allocate stable subevent ranges before implementation.
+These named entry points are the stable contract other systems and scenarios call:
 
-Recommended ranges:
+- recipient validation: `missiles_is_valid_recipient`
+- program setup: `missiles_initialize_or_advance_program`, `missiles_normalize_technology_stage`, `missiles_apply_next_technology_step`, `missiles_apply_mature_program_package`
+- operations: `missiles_preflight_operation`, `missiles_commit_operation`, `missiles_resolve_operation`, `missiles_abort_operation`, `missiles_cleanup_operation`
+- incidents: `missiles_allocate_incident_id`
+- sites and succession: `missiles_handle_site_control_changed`, `missiles_scuttle_site`, `missiles_split_program_after_civil_war`, `missiles_finalize_civil_war_split_child`, `missiles_finalize_planned_inheritance`, `missiles_cleanup_removed_country`
+- natural disasters: `missiles_natural_disaster_damage_site` (queue only) and receiver `chaosx.nr32.9`
 
-| Range | Use |
-| --- | --- |
-| `.1` to `.9` | entry, reports, first news bridge |
-| `.10` to `.29` | baseline setup and repeat reports |
-| `.30` to `.49` | strike results and accidents |
-| `.50` to `.69` | Saturation and Unreliable reports |
-| `.70` to `.89` | Special Warheads reports |
-| `.90` to `.119` | Rogue Launch Commands incidents |
-| `.120` to `.149` | Automatic Retaliation warnings and chain results |
-| `.150` to `.169` | capture, civil war, succession, and cleanup |
-| `.170` to `.189` | scenario result and setup failure |
-| `.190` to `.199` | debug-only or reserved |
+Every transaction returns its exact applied amount, fails closed on unproven scope, and is idempotent per receipt.
 
-The final mapping can differ, but it must be documented and collision-free.
+## Constants, flags and variables
 
-## Core scripted APIs
-
-### Recipient validation
-
-Recommended trigger:
-
-`missiles_is_valid_recipient`
-
-Inputs:
-
-- current country scope
-
-Outputs:
-
-- boolean
-- stable reject reason through a temporary result when called from setup
-
-The trigger should delegate special-country profile checks to narrow helpers.
-
-### Program initialization
-
-Recommended effect:
-
-`missiles_initialize_or_advance_program`
-
-Inputs:
-
-- current country
-- firing context
-- first or repeat flag
-- scenario context
-- package scale
-
-Outputs:
-
-- accepted result
-- normalized technology stage
-- reserve delta
-- site result
-- report type
-- debug receipt
-
-Side effects:
-
-- changes one country only
-- creates or advances program
-- does not record the global Event 32 history row
-
-### Technology adapter
-
-Recommended effect family:
-
-- `missiles_normalize_technology_stage`
-- `missiles_grant_next_technology_step`
-- `missiles_apply_mature_program_package`
-
-The technology adapter must be isolated from reserve, site, and report code.
-
-### Reserve helpers
-
-Recommended effect and trigger family:
-
-- `missiles_add_reserve`
-- `missiles_remove_reserve`
-- `missiles_can_pay_reserve`
-- `missiles_reserve_operation_missiles`
-- `missiles_refund_operation_missiles`
-- `missiles_transfer_captured_reserve`
-- `missiles_destroy_reserve`
-
-Every transaction returns the exact applied amount.
-
-### Site helpers
-
-Recommended family:
-
-- `missiles_build_site_candidate_pool`
-- `missiles_score_site_candidate`
-- `missiles_select_site`
-- `missiles_create_site`
-- `missiles_upgrade_site`
-- `missiles_damage_site`
-- `missiles_repair_site`
-- `missiles_capture_site`
-- `missiles_scuttle_site`
-- `missiles_cleanup_site`
-- `missiles_refresh_site_modifier`
-
-### Operation helpers
-
-Recommended family:
-
-- `missiles_preflight_operation`
-- `missiles_create_operation_receipt`
-- `missiles_reserve_operation_resources`
-- `missiles_commit_operation`
-- `missiles_abort_operation`
-- `missiles_resolve_operation`
-- `missiles_cleanup_operation`
-
-### Damage helpers
-
-Recommended family:
-
-- `missiles_calculate_conventional_damage`
-- `missiles_apply_conventional_damage`
-- `missiles_calculate_civilian_loss`
-- `missiles_register_incident_deaths`
-- `missiles_apply_site_target_damage`
-
-Special payloads call shared owning-system effects.
-
-### Incident helpers
-
-Recommended family:
-
-- `missiles_allocate_incident_id`
-- `missiles_record_incident`
-- `missiles_close_incident`
-- `missiles_create_warning`
-- `missiles_process_warning`
-- `missiles_can_add_retaliation_generation`
-- `missiles_link_retaliation_incident`
-- `missiles_close_root_chain`
-
-### Succession helpers
-
-Recommended family:
-
-- `missiles_preflight_country_split`
-- `missiles_split_program_after_civil_war`
-- `missiles_transfer_inherited_site`
-- `missiles_cleanup_removed_country`
-
-These helpers require frozen state and country packages from the caller.
-
-## Constants
-
-All tuning belongs in `common/script_constants/032_missiles_constants.txt` or a clearly justified shared tuning file.
-
-Recommended constant groups:
-
-- program stage IDs
-- recipient profile IDs
-- reserve package values
-- reserve caps
-- readiness bands
-- command-control bands
-- guidance factors
-- site levels
-- site capacity
-- site hardening
-- site security
-- site count thresholds
-- site scoring
-- operation profile IDs
-- target profile IDs
-- payload IDs
-- preparation duration
-- cooldowns
-- reserve costs
-- readiness costs
-- command-control costs
-- conventional damage
-- death scaling
-- evolution IDs
-- evolution MTTH
-- evolution threshold factors
-- rogue incident IDs
-- warning states
-- retaliation posture IDs
-- chain caps
-- scenario profile IDs
-- scenario intensity scaling
-- AI profile IDs
-- AI weights
-- chaos deltas
-- log type IDs
-- stable reject reasons
-
-Do not use file-scoped `@` constants for values consumed across event, decision, trigger, effect, localisation, and scenario files.
-
-## Flags and variables
-
-Use flags for true or false state.
-
-Potential country flags:
-
-- program initialized
-- first report seen
-- mature line reached
-- saturation adopted
-- payload integration flags
-- site crisis active
-- rogue crisis active
-- warning active
-- scenario origin
-- achievement disqualifiers
-
-Potential country variables:
-
-- normalized stage
-- reserve
-- reserved reserve
-- readiness
-- command control
-- active site count
-- current operation ID
-- current incident ID
-- selected target ID
-- retaliation posture
-- root warning ID
-- AI profile
-
-Potential state variables:
-
-- site owner ID
-- site level
-- capacity
-- hardening
-- security
-- damage
-- local reserve share or capture estimate
-- operation ID
-- incident ID
-
-Use temporary variables for one-call calculations. Do not scope temporary variables with `ROOT.` or `PREV.`.
-
-## Event targets and persistent records
-
-Regular event targets are suitable for one immediate report chain.
-
-Persistent concurrent operations, sites, and retaliation incidents should use:
-
-- numeric country IDs
-- state IDs
-- arrays
-- variables
-- stable incident IDs
-- global event targets only when one unique pointer is sufficient and cleanup is guaranteed
-
-Do not reuse one global event target for several simultaneous operations.
-
-Every global event target must have a named cleanup point.
+All tuning lives in script constants; file-scoped `@` constants are used only where a field rejects `constant:` tokens.
+Flags hold true or false state; numeric variables hold counts, ids and scores.
+Temporary variables are never scoped through `ROOT.` or `PREV.`.
+Persistent concurrent operations, sites and incidents use country and state ids, arrays and variables; a global event target is used only for one unique pointer with a named cleanup point.
 
 ## Event dispatch
 
-The global entry can use a one-time country loop because Event 32 explicitly affects every valid existing country.
-
-It must not add:
-
-- `on_daily`
-- `on_weekly`
-- `on_monthly`
-- another recurring all-country on-action
-
-without separate user approval.
-
-The setup can be split into delayed deterministic chunks if required. The final result must remain atomic at the Event 32 history and repeatable-weight level.
+The global entry uses one country loop at firing time because Event 32 explicitly affects every valid country.
+It must not add `on_daily`, `on_weekly`, `on_monthly` or another recurring all-country on-action without separate user approval.
+Event-scoped `on_state_control_changed`, `on_war_relation_added` and `on_peace` hooks are bounded to programs and registered sites.
 
 ## Prepared operation state machine
 
-Recommended states:
-
-1. none
-2. selecting
-3. resources reserved
-4. preparing
-5. ready
-6. committed
-7. resolving
-8. completed
-9. aborted
-10. invalidated
-
-Every state transition has:
-
-- one entry effect
-- one exit effect
-- resource rule
-- site receipt rule
-- target validity rule
-- visible decision set
-- cleanup rule
-
-The implementation must reject impossible transitions.
+States: none, selecting, resources reserved, preparing, ready, committed, resolving, completed, aborted, invalidated.
+Every transition has one entry effect, one exit effect, a resource rule, a site-allocation rule, a target validity rule, a visible decision set and a cleanup rule.
+Impossible transitions are rejected.
 
 ## Incident state machine
 
-Recommended states:
-
-1. created
-2. evidence pending
-3. warning active
-4. response preparing
-5. response committed
-6. consequences applied
-7. closed
-
-Rogue incidents may use an additional crisis state, but they should still close through the shared incident cleanup.
+States: created, evidence pending, warning active, response preparing, response committed, consequences applied, closed.
+Rogue incidents keep their own site pointer (`missiles_rogue_site_state`) and close their own record only while they are the current incident.
 
 ## Evolution runtime
 
-Each evolution needs:
+Each track has an unlock flag, the shared enable gate, an eligibility trigger, a native MTTH clock, a recorded flag, the canonical log context, behaviour helpers and disable behaviour.
+Disabled tracks never arm, record or adopt.
+Disabling an active track suspends decisions, AI behaviour, preparation, commitment, rogue activity and retaliation responses while keeping adoption history, reserve and physical payload custody.
 
-- global unlock flag
-- enabled gate
-- eligibility trigger
-- pending-job flag
-- MTTH or delayed evaluation
-- recorded flag
-- evolution context
-- log call
-- behavior helper
-- cleanup or disable behavior
+## Operation adapter
 
-Disabled evolutions must not set pending or recorded flags.
-
-When an evolution is disabled after it was active, the project-wide toggle contract should decide whether existing state is suspended or retained. Event 32 should follow the current evolution-toggle precedent and document the result.
-
-## Native raid adapter
-
-Before implementation:
-
-- inspect installed raid documentation
-- inspect at least one vanilla rocket-site or nuclear raid
-- inspect current Chaos Redux CBRN raids
-- verify starting-point behavior
-- verify target-state and target-province variables
-- verify equipment and nuke consumption
-- verify AI availability
-- verify DLC gates
-- verify outcome effects
-- verify map icons and visuals
-
-The native adapter is accepted only when it can prove:
-
-- exact launch state
-- exact target state
-- exact reserve receipt
-- exact payload receipt
-- exact outcome
-- actor and victim
-- cleanup
-- AI route
-
-## Scripted strike adapter
-
-If native raids cannot satisfy parity, implement the scripted adapter as a full supported route.
-
-The parent review of `docs/plans/032_missiles_plans/subagent_handoffs/032_native_raid_parity_audit_2026-10-03.md` accepts that condition under the user's full Event 32 implementation authorization.
-The installed documented RaidInstance surface exposes actor, victim, target state, and target province, while its starting-point gate identifies only the source controller country.
-It cannot authenticate the frozen exact launch state or multi-site allocation used by this design.
-This documents the existing conditional route choice and does not establish observed native behavior, numeric balance, or completion of the scripted adapter.
-
-It may use decisions and delayed events, but it must not become a weaker decorative substitute.
-
-Required parity:
-
-- target selection
-- preparation
-- reserve payment
-- site capacity
-- cooldown
-- guidance failure
-- damage
-- deaths
-- payload
-- diplomacy
-- AI
-- logs
-- incident chain
-
-The adapter should expose the same operation API so later systems do not care which presentation route is active.
+Decision: the scripted strike adapter is the full supported route.
+Basis: parent review of `docs/plans/032_missiles_plans/subagent_handoffs/032_native_raid_parity_audit_2026-10-03.md` under the user's full Event 32 implementation authorization.
+The documented RaidInstance API exposes actor, victim, target state and province, but its starting-point gate identifies only the source controller country, so it cannot authenticate the frozen launch state or multi-site allocation.
+No native raid definition or raid icon is added.
+A future native adapter needs an authenticated launch-state and instance-receipt contract and must keep custody and consequence parity.
 
 ## Shared CBRN adapters
 
-Before adding any new Event 32 payload helper, inspect existing chemical, biological, nuclear, thermonuclear, Condemnation, Air Cleanliness, and Deaths entry points.
-
-If the exact reusable route exists, call it.
-
-If a route is missing, add it to the owning shared system and document:
-
-- purpose
-- scope
-- inputs
-- outputs
-- defaults
-- side effects
-- usage example
-
-Do not put shared chemical exposure logic inside `032_missiles_effects.txt`.
+Event 32 calls the existing chemical, biological, nuclear, thermonuclear, Condemnation, Air Cleanliness and Deaths entry points.
+A missing route is added to the owning shared system with purpose, scope, inputs, outputs, defaults, side effects and an example.
+The chemical measured reservation (`docs/systems/cbrn_warfare/chemical_payload_reservations.md`) is the precedent.
 
 ## AI implementation
 
-AI target and incident weights require:
-
-- complete candidate pools
-- centralized weights
-- named scenarios
-- baseline auditor pass
-- owner patch
-- `hoi4.probability_compare`
-- final scenario evidence
-
-AI decisions should use the same ability and payment triggers as player decisions.
-
-The human selected-target variable must not block AI from seeing all valid targets.
+AI decisions use the same ability and payment triggers as player decisions.
+The human selected-target state never blocks AI from seeing all valid targets.
+Weighted surfaces follow part 6.
 
 ## Localisation
 
-Recommended files:
+Event 32 localisation lives in `localisation/english/032_missile_crisis_l_english.yml`, `032_missiles_decisions_l_english.yml`, `032_missiles_achievements_l_english.yml` and `032_missiles_requirement_flags_l_english.yml`, with scripted localisation in `common/scripted_localisation/032_missiles_*.txt`.
+Visible text follows part 7 and the `chaos-redux-events` writing rules: dynamic targets, states, values and posture; precise blocked reasons; concise value tooltips; Event Details wording aligned with the workbook.
 
-- `localisation/english/032_missiles_l_english.yml`
-- `common/scripted_localisation/032_missiles_scripted_localisation.txt`
-- shared event-name and Event Logs selectors
-- shared scenario scripted localisation
-- shared GUI localisation where the decision category needs labels
+## Save compatibility
 
-All visible text must be final implementation wording written from the direction in part 7.
-
-Requirements:
-
-- UTF-8 with BOM
-- no `:0`
-- no raw internal variable names
-- no paste of specification labels without review
-- dynamic target, state, reserve, readiness, control, payload, and posture text
-- cost texticons
-- precise blocked reasons
-- concise value tooltips
-- Event Details wording aligned with workbook
-
-## GFX and assets
-
-Register stable sprite names before final art production.
-
-Recommended naming direction:
-
-- `GFX_032_missiles_report`
-- `GFX_032_missiles_news`
-- `GFX_032_missiles_category_picture`
-- event-owned decision, mission, idea, state-modifier, raid, texticon, and achievement names
-
-Exact names should be recorded in the asset manifest and kept stable.
-
-## Achievements
-
-Achievements remain grouped under the root-only Chaos Redux achievement registry.
-
-Implementation requires:
-
-- stable IDs
-- tracking flags and variables
-- disqualifiers
-- final localisation
-- triplet icons
-- docs
-- route hooks
-- scenario-origin rules
-- full test cases
-
-## Triggerable scenario
-
-SCN-015 requires:
-
-- constants
-- registry entry
-- sort value
-- five profile types
-- four intensity stops
-- launch eligibility
-- confirmation flow
-- launch effect
-- profile and intensity scripted localisation
-- scenario result or failure report
-- idempotence
-- bypass cleanup
-- docs
-- workbook row
-- CSV regeneration
-
-The next public ID must be re-audited before source is patched.
-
-## Event Logs
-
-Required shared changes:
-
-- event name mapping
-- debug name mapping
-- history details
-- event-detail premise
-- five evolution catalog rows
-- five evolution name and detail selectors
-- actor behavior
-- enabled state
-- fired count and weight display
-- `N/A` when no valid recipient exists
-- one history row per global firing
-
-## Documentation
-
-Required permanent documentation:
-
-- `docs/events/032_missiles.md`
-- API notes for any shared helper
-- scenario documentation
-- updated cross-event docs when a bridge changes
-- asset coverage and provenance after temporary-workspace cleanup
-- achievement list
-- probability evidence references
-- test matrix
-- completion report
-
-## Workbook
-
-Update only:
-
-`docs/spreadsheets/chaos_redux_events_catalog.xlsx`
-
-Required Event 32 fields:
-
-- final status
-- chaos level
-- event detail
-- five evolution details
-- cluster remains blank
-- manual scenario reference if the workbook schema supports it
-- implementation notes appropriate for player-facing fields
-
-Required scenario fields:
-
-- SCN-015 ID and name
-- source event
-- profile labels and details
-- intensity details
-- status
-
-Then run:
-
-`python .tools/export_event_catalog_csv.py`
-
-Do not edit the exported CSV files directly.
-
-## Migration from legacy Event 32
-
-The current legacy source grants two technologies and two rocket-site levels.
-
-Migration requirements:
-
-- preserve namespace and entry ID
-- preserve Event 16 reaction behavior
-- replace capital-first and random-state site selection
-- replace blanket two-tech grant with normalized one-step progression
-- replace generic bomber picture with final Event 32 art
-- replace generic country report text
-- prevent old and new site logic from running together
-- seed new program variables when an existing save-facing legacy site is detected only if the project supports migration
-- document whether the rework requires a new campaign
-
-The implementation agent must follow the repository rule on save compatibility and should not invent a silent migration that cannot be proven.
+The legacy event (two technologies and two capital rocket-site levels in one global loop) is fully replaced.
+No silent migration of legacy rocket sites is attempted; the rework assumes a new campaign.
 
 ## Performance budget
 
-The system should meet these design limits:
-
-- one global recipient transaction per Event 32 firing
+- one global recipient transaction per firing
 - no recurring global country scan
-- one prepared operation per ordinary country by default
-- one active rogue crisis per country
-- one active warning per country per root incident
-- global active-incident cap
-- retaliation generation cap
-- bounded drift-state pool
-- bounded barrage failure rolls
-- one-shot delayed recovery
+- one prepared operation per country
+- one active rogue crisis per country and a global rogue cap
+- one active warning per country per root
+- retaliation caps from part 3
+- bounded drift pools and barrage failure rolls
+- one coalesced evolution observation per change boundary
 - exact cleanup after country or state change
 - no GUI polling beyond ordinary decision and scripted-localisation evaluation
 
-## Required MCP evidence during implementation
+## MCP and subagent use
 
-### Event chain
-
-- `hoi4.event_inspect`
-- `hoi4.event_render`
-- `hoi4.event_compare`
-
-### Technology
-
-- `hoi4.tech_inspect`
-- `hoi4.tech_render`
-- `hoi4.tech_compare`
-
-### Probability
-
-- `hoi4.probability_inspect`
-- scenario-specific evaluate, sweep, simulation, comparison, and render
-
-### GUI
-
-A full event-owned scripted GUI is not planned. Use GUI tools only if implementation changes a shared category or target presentation that falls within their supported scope.
-
-## Required subagent sequence
-
-Recommended sequence:
-
-1. parent and repository explorer map current source where needed
-2. scripted-system architect reviews APIs, constants, receipts, and incident queue
-3. parent implements baseline program and operation pipeline
-4. decision and mission auditor reviews actions, costs, cleanup, and exploits
-5. AI probability auditor establishes baseline scenarios
-6. parent patches AI and weighted outcomes
-7. AI probability auditor compares final source
-8. asset workers create bounded art
-9. localisation auditor reviews all visible text
-10. spreadsheet worker updates the authoritative workbook
-11. improvement-loop planner returns addendum or closure
-12. parent resolves that result
-13. event completion auditor compares full specs to implementation
-14. parent writes concrete completion report
-
-All project subagents use `fork_turns="none"`.
+Use the HOI4 MCP routes that answer a concrete question, under the CLAUDE.md retry limit.
+Event and technology inspect/render artifacts exist; their compare routes failed with recorded errors (`032_missiles_test_results.md`), and source review is not presented as engine evidence.
+Project subagents are spawned with a fully self-contained prompt and no inherited parent context, following `chaos-redux-subagents`.
 
 ## Explicit implementation boundaries
 
 Do not add any of these without a new accepted design:
 
-- country package
-- national focus tree
-- faction
-- formable nation
-- leader or portrait
-- flag
-- custom unit
-- custom 3D model
+- country package, national focus tree, faction or formable nation
+- leader, portrait or flag
+- custom unit or custom 3D model
 - animated sprite
 - dedicated event-owned scripted GUI
-- event-owned super event
-- event-owned campaign terminal branch
+- event-owned super-event or campaign terminal branch
 - new chemical or biological agent
 - free nuclear or thermonuclear stockpile
 - generic all-country periodic scanner
-
-These boundaries protect implementation depth from unnecessary expansion.

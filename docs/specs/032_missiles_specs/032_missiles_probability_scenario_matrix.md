@@ -3,8 +3,10 @@
 ## Use
 
 This matrix defines the named scenarios that the implementation and `chaosx_ai_probability_auditor` must use.
-
-The implementation may add scenarios. It may not remove a scenario without recording why the surface no longer exists.
+The implementation may add scenarios.
+It may not remove a scenario without recording why the surface no longer exists.
+IDs here are probability scenarios; live tests with the same ID in `032_missiles_test_matrix.md` are a separate namespace.
+The `EVO-*` rows evaluate the native MTTH clocks described in part 4, Evolution pacing.
 
 ## Site selection scenarios
 
@@ -146,7 +148,8 @@ The implementation may add scenarios. It may not remove a scenario without recor
 
 ## Comparison requirement
 
-Any patch to a weighted value must be followed by `hoi4.probability_compare` using the same scenario IDs that established the baseline.
+Any patch to a weighted value must be compared on the same scenario IDs that established the baseline, with `hoi4.probability_compare` when the route works and a labelled source-derived calculation otherwise (part 6, Required probability workflow).
+The MCP probability routes are currently `blocked` by repeated `INTERNAL_ERROR`.
 
 The final audit should include:
 

@@ -1,5 +1,8 @@
 # Event 32 specification, part 3: Operations and consequences
 
+Implementation status: the operation pipeline, guidance, damage, Deaths, custody, payload holds and incident records are `implemented` in source through the scripted adapter documented in `docs/events/032_missiles.md` and `docs/events/032_missiles/systems/ordinary_preparation.md`.
+Pending items in this part are marked where they appear (Reach).
+
 ## Operation model
 
 A missile attack is a prepared state-targeted operation.
@@ -47,7 +50,8 @@ The operation record remains authoritative until it is completed, canceled, inva
 15. schedule bounded readiness recovery and aftermath
 16. clear the prepared-operation receipt
 
-A prepared operation cannot silently retarget after the player has paid. If the target becomes invalid, the operation aborts or asks for a new target through an explicit route.
+A prepared operation cannot silently retarget after the player has paid.
+If the target becomes invalid, the operation aborts and returns its reservation; changing the participating site or buying faster preparation for a prepared operation was `rejected` (agent decisions, lead decision 5).
 
 ## Valid ordinary targets
 
@@ -136,11 +140,12 @@ This profile becomes more important after other countries have mature programs. 
 
 Distributes hits across several valid strategic objects in one exact state. It is less precise and more destructive than a profile-focused strike.
 
-### Saturation barrage
-
-Available only through Saturation Arsenals. It uses several launch states or a high-capacity site to overwhelm defenses and hit many objects. It creates the greatest readiness loss and malfunction exposure.
+Saturation is a strike profile, not a target profile; it is defined below.
 
 ## Strike profiles
+
+The implemented costs, preparation days, readiness costs and damage values live in `missiles_cost`, `missiles_tuning`, `missiles_program_value` and `missiles_operation_damage`.
+The suggested ranges in this part are the design envelope those constants must stay inside, not a second source of numbers.
 
 ### Precision strike
 
@@ -229,7 +234,11 @@ The player sees a simple reach result:
 - extended range with penalty
 - out of range
 
-The implementation must not claim exact geographic reach if it uses only country adjacency or capital distance. Use the most accurate engine-supported method and document its limitations.
+The implementation must not claim geographic reach if it uses only country adjacency or capital distance.
+
+Implementation gap (pending): `missiles_calculate_operation_reach` builds an abstract band from stage, hardening and damage, and `missiles_operation_has_reach` only checks that the band is positive, so no target is ever out of range and the band drives no choice.
+Either compare the band against the real distance between the launch state and the target state (engine-supported state distance), which makes site placement and secondary sites matter for reach, or remove the band and its tooltip mention.
+The first option is the design intent.
 
 ## Preparation time
 
@@ -264,9 +273,12 @@ Each operation has one commitment point.
 Before commitment:
 
 - the player can cancel
-- most reserved missiles return
-- some readiness may be lost
-- payload stockpile normally returns
+- reserved missiles return once
+- preparation fees stay spent
+- a held special payload returns once to its owner's stock
+
+Every special payload is held from the moment preparation is accepted: nuclear, thermonuclear and biological warheads move into one held receipt, and chemical agent moves into the CBRN-owned measured reservation (`docs/systems/cbrn_warfare/chemical_payload_reservations.md`).
+A chemical strike whose reservation became invalid, or whose chemical use stopped being permitted, is called off at launch with its missiles returned once.
 
 After commitment:
 
@@ -382,7 +394,10 @@ Inputs should include:
 
 Suggested conventional loss bands should remain lower than nuclear or thermonuclear effects. The exact tuning belongs in shared constants and must be audited against ordinary strategic bombing.
 
-Deaths are recorded once. Event 32 must not reduce state population directly and then call the Deaths API for the same loss.
+Deaths are recorded once.
+Event 32 must not reduce state population directly and then call the Deaths API for the same loss.
+Implemented: civilian losses register through `chaos_meter_register_deaths` with `chaos_meter_deaths_reason.strategic_bombing`, and military losses with `military_casualties`.
+A dedicated missile reason is not needed unless the Deaths ledger later needs to separate missile strikes from bombing.
 
 ## Military losses
 
@@ -502,7 +517,7 @@ Event 32 grants delivery integration. It does not grant the payload technology o
 A chemical missile strike must:
 
 - select one exact target state
-- consume matching chemical payload equipment
+- hold the frozen agent and quantity in a CBRN measured reservation at preparation and consume that hold once at release
 - consume missiles
 - call the shared chemical exposure pipeline
 - create contamination and disruption according to the selected agent
@@ -615,7 +630,13 @@ Possible consequences:
 
 ### Special payload
 
-Use the shared Condemnation system. Do not add a separate Event 32 sanctions ladder.
+Use the shared Condemnation system.
+Do not add a separate Event 32 sanctions ladder.
+
+### Aftermath responses
+
+The launching country can compensate a neutral victim, or deny responsibility for its own unconfirmed neutral accident (25 political power, a disputed record and worse relations).
+Both read the same incident record as the strike; part 5 owns the decisions.
 
 ## Incident record
 
@@ -643,19 +664,18 @@ Required fields:
 - retaliation generation
 - closed or active state
 
-The implementation can store only the fields needed by game logic and visible logs. A debug or documentation receipt should prove the full transaction.
+Store only the fields that game logic, achievements or visible logs read.
+The list above is the menu, not a requirement to persist every field.
 
 ## Causal chain controls
 
-Retaliation and mistaken-response chains must have strict limits.
-
-Suggested limits:
+Retaliation and mistaken-response chains have strict limits, implemented in `missiles_chain_limits`:
 
 - maximum retaliation generation `3`
 - maximum participating countries per root incident `6`
-- maximum active linked incidents per root `12`
-- maximum missiles launched by automatic branches per root set by constants
-- one retaliation receipt per country per root incident
+- maximum linked incidents per root `12`
+- maximum active queue entries `24`
+- one retaliation launch per country per root incident
 - one processed warning receipt per country per root incident
 - one final closure event when the root chain ends
 

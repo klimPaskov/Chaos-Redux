@@ -1,6 +1,10 @@
 # Event 32 specification, part 5: Decisions, missions, and scenario
 
-All decision, mission, phase, scenario, and action names in this file are working design labels. Implementation must write final player-facing localisation from the stated direction and project writing rules.
+Decision, mission, phase, scenario, and action names in this file are design labels; final wording lives in `localisation/english/032_missiles_decisions_l_english.yml`.
+
+Implementation status: the category, phases, actions, missions and SCN-015 are `implemented` in source.
+The implemented phase flags are establishment, maintenance, expansion, operations, preparation, incident, rogue command and retaliation; they map onto the six design phases below (maintenance and expansion share Phase 2, and the rogue phase is the rogue branch of Phase 5).
+Implementation decisions with their basis are recorded in `docs/plans/032_missiles_plans/agent_decisions_2026-10-04.md` and `032_site_work_implementation_2026-10-09.md`.
 
 ## Presentation choice
 
@@ -14,9 +18,11 @@ Event 32 uses an ordinary decision category with:
 - state and target tooltips
 - ordinary timed missions for preparation, repairs, verification, and crisis response
 
-Use the ordinary decision system. The mechanic has three main national values, one selected target at a time, and actions that fit the category. A custom window would add layout, asset, and maintenance work without improving target control or value clarity.
+Use the ordinary decision system (explicit user presentation rule: one ordinary category with a static picture and no dedicated scripted GUI).
+The implemented category is `missiles_program_management_category` with the picture `GFX_decision_cat_picture_032_missiles`.
 
-The category picture is presentation only. It should show a launch-control or missile-site scene. It must not contain painted buttons, fake meters, numbers, labels, or controls.
+The category picture is presentation only.
+It shows a launch-control or missile-site scene and contains no painted buttons, fake meters, numbers, labels, or controls.
 
 ## Category header
 
@@ -26,24 +32,11 @@ The main header should expose:
 2. Launch Readiness
 3. Command Control
 
-Additional compact status lines:
+Below them sits one context line chosen by priority (`GetMissilesCategoryContextLine`): active crisis, then a retaliation warning, then the prepared operation or selected target, then the last preparation failure, then the guidance grade.
+Stage, site count and posture appear only when they explain the current line; they are not standing rows.
+This follows the part 2 player-facing value budget.
 
-- normalized missile stage
-- active launch-site count
-- current guidance grade
-- selected target when one exists
-- retaliation posture when Evolution V is active
-- active program crisis when one exists
-
-The header should not show every internal pressure component.
-
-Each value needs:
-
-- a texticon or clear icon
-- current value or band
-- next relevant threshold
-- one concise tooltip explaining what changes it
-- one concise tooltip explaining the current consequence
+Each of the three values has its texticon, its current number, and one tooltip saying what raises it, what lowers it, and which action it gates.
 
 ## Decision visibility budget
 
@@ -70,11 +63,10 @@ Main actions:
 
 - survey a launch state
 - resolve a captured site
-- establish command authority
-- inspect the new arsenal
-- restore a deferred program
+- establish command authority (repeatable on its cooldown while Command Control is below the secure gate)
+- suspend and repair an isolated or damaged only site
 
-This phase should disappear after the program is operational.
+This phase disappears once the program has a working site and secure command.
 
 ### Phase 2: Maintenance and expansion
 
@@ -89,8 +81,13 @@ Main actions:
 - harden a launch state
 - expand site capacity
 - establish a secondary site when justified
+- adopt Saturation Doctrine, once the track is unlocked and not yet adopted
+- set retaliation posture, once Automatic Retaliation is available
+- restore the retaliation network, while it is severed
 
-The category should show only the actions currently useful. A fully hardened site should not keep a dead hardening decision visible.
+The category shows only actions that are currently useful.
+A fully hardened site does not keep a dead hardening decision visible.
+At war, replenishment, readiness, guidance and launch-authority work stay visible whenever no strike can be prepared or the human has not started choosing a target, and always for the AI (agent decisions, item 4).
 
 ### Phase 3: War operations
 
@@ -109,7 +106,7 @@ Main actions:
 - prepare strategic barrage
 - prepare saturation barrage when available
 - prepare counterforce strike
-- integrate or select special payload when available
+- special-payload orders (integrate, select, set policy) at the objective step when Special Warheads is enabled and adopted
 
 ### Phase 4: Prepared operation
 
@@ -117,14 +114,12 @@ Visible while one operation is active.
 
 Main actions:
 
-- inspect operation
 - cancel before commitment
-- change participating site before commitment
-- increase preparation effort where allowed
 - launch when the mission completes
 - abort after target invalidation
 
-Ordinary maintenance and expansion actions should hide when they would invalidate the prepared operation.
+Changing the participating site and buying faster preparation were `rejected` (agent decisions, lead decision 5).
+Ordinary maintenance and expansion actions hide when they would invalidate the prepared operation.
 
 ### Phase 5: Incident response
 
@@ -151,15 +146,12 @@ Main actions:
 - delay retaliation
 - sever network
 - isolate one site
-- change target after new evidence
 - accept current response
-- restore control after stand-down
 
 ## Cost design
 
 Each action may consume at most four spendable cost types.
-
-Custom Event 32 values need proper texticons.
+Custom Event 32 values use their texticons.
 
 Potential cost types:
 
@@ -206,22 +198,20 @@ Freezes a candidate pool and starts a short survey mission.
 - no terminal program cleanup
 - no active program transfer
 
-#### Suggested costs
+#### Costs
 
-- support equipment
-- civilian factory commitment
-- manpower
+Implemented: one inclusive quote of `300` manpower, `40` support equipment and `250` fuel for a `60`-day survey of one owned and controlled state.
 
 #### Success
 
-- selects the highest valid scored state
-- creates the primary site
+- creates the primary site in the surveyed state
 - grants initial capacity
 - refreshes program status
 
 #### Failure
 
-Failure should occur only when the frozen state becomes invalid. Resources return according to progress, and the player gets a precise blocked reason.
+Failure occurs only when the frozen state becomes invalid.
+Unused work returns in proportion to the remaining days of the frozen purchase, measured against what the engine actually credits, and the survey description names the reason and the returned amounts (`docs/events/032_missiles/systems/site_work_transactions.md`).
 
 ### Establish command authority
 
@@ -243,22 +233,23 @@ Creates the first code, crew, and command structure.
 
 #### Result
 
-- raises Command Control to the initial secure band
+- raises Command Control toward the secure gate
 - enables ordinary launch preparation
 - sets the first command receipt
-- calls Event 16's missile-crisis reaction helper when the recipient is the active Kruger host and the helper has not been recorded
+
+The Event 16 missile-crisis reaction is called from the first-package recipient transaction, not from this decision (system connections, Event 16).
 
 ### Resolve a captured site
 
-This is a category of mutually exclusive resolution decisions:
+Four final, mutually exclusive decisions, shown for one captured state at a time (part 2, Capture):
 
-- secure and inspect
-- integrate
-- scuttle
-- transfer through an explicit diplomatic route
-- hold inactive
+- guard (hold inactive, stock stays sealed)
+- study (as guard, plus a guidance-training gain)
+- integrate (guided programs only; stock joins Operational Reserve once)
+- scuttle (site and stock destroyed once)
 
-The category appears only for the selected captured state. It hides after resolution.
+Diplomatic transfer was `rejected` for this round.
+The decisions hide after resolution.
 
 ## Maintenance actions
 
@@ -539,23 +530,22 @@ About `21` to `45` days.
 
 Uses the same strike pipeline with a launch-site target profile.
 
-### Select special payload
+### Special-payload orders
 
-Only operational integrations appear.
+Three decisions, available while Special Warheads is enabled and adopted and hidden while an operation is prepared:
 
-The action freezes:
+- Integrate Special Payload opens the family choice (`chaosx.nr32.30`), stores the fitted warhead at a secure site, and then asks for standing orders
+- Select Special Payload (`8` command power, `35`-day cooldown) chooses the payload for the next order; conventional is always available
+- Set Special-Payload Policy (`15` command power, `70`-day cooldown) sets the part 4 policy
 
-- payload family
-- physical stockpile proof
-- target compatibility
-- extra preparation
-- additional command and readiness cost
-
-The payload is reserved when operation preparation begins, not when the player first opens the target category.
+Humans issue them at the objective step after selecting an enemy; the AI uses them in any working phase.
+The payload is held when operation preparation is accepted (part 3, Launch commitment point).
 
 ## Preparation missions
 
 Preparation missions are goal-style where possible.
+Implemented project durations: survey `60` days, secondary site `90`, repair `45`, rogue-site recovery `14`, warning verification `3`, network restoration `60`; strike preparation follows the per-profile constants in `missiles_tuning`.
+Each project keeps its own state pointer and due date, so no project cancels another.
 
 The player should not pay a second ceremonial click after completing a requirement that the game can prove automatically.
 
@@ -604,11 +594,12 @@ The tooltip should not show the exact hidden random outcome table.
 
 ### Inspect the incident
 
-Opens or displays the current result summary.
+Closes the incident response after the player has seen the result summary, so the aftermath actions below come first.
+README open question 2 proposes replacing this click with automatic closure once no response action remains.
 
 ### Accelerate recovery
 
-Uses a bounded extra cost to improve one-shot readiness recovery.
+Uses a bounded extra cost to improve one-shot readiness recovery, once per incident.
 
 ### Compensate an accidental neutral victim
 
@@ -632,15 +623,9 @@ Uses a bounded extra cost to improve one-shot readiness recovery.
 
 ### Deny responsibility
 
-Available only when attribution is not confirmed.
-
-Possible consequences:
-
-- temporary diplomatic benefit
-- higher cover-up or later evidence penalty
-- worse result if exposed
-
-This action should connect to the existing evidence or condemnation system where appropriate.
+Available only for this country's own neutral accident while attribution is not confirmed.
+Implemented: `25` political power (a political act), the existing denial opinion modifier, a disputed incident record, and incident closure.
+A later debris investigation or verification that confirms the actor makes the denial count against the country's relations again; that exposure link is pending.
 
 ## Unreliable Guidance actions
 
@@ -683,9 +668,9 @@ This action should connect to the existing evidence or condemnation system where
 
 ### Send loyal forces
 
-- requires nearby supplied divisions or a concrete garrison condition
-- starts a timed site-recovery mission
-- risks site damage and launch
+Implemented: `15` command power, `1,200` manpower and `140` infantry equipment, then a `14`-day recovery mission that succeeds only while two country-owned divisions stand in the rogue state, for human and AI alike, inside the `30`-day crisis window.
+Retaking the site is this mission; there is no separate retake decision.
+Division presence does not prove local supply, and the AI is not ordered to move divisions there.
 
 ### Negotiate with the command
 
@@ -703,14 +688,7 @@ This action should connect to the existing evidence or condemnation system where
 - may cause casualties
 - special payload scuttling must call the owning shared system
 
-### Retake the site
-
-Goal mission requirements can include:
-
-- control the state
-- station a required number of supplied divisions
-- maintain supply
-- keep the site from launching during the mission
+Isolate and Scuttle the Rogue Site target only the crisis site recorded in `missiles_rogue_site_state`; acting on another site leaves the crisis open.
 
 ## Automatic Retaliation decisions
 
@@ -723,43 +701,20 @@ The action cycles or selects:
 - Delegated
 - Automatic
 
-Each posture has clear public tradeoffs.
-
-Changing posture:
-
-- uses command power
-- may use readiness
-- has a cooldown
-- cannot be changed during a committed response without an emergency action
+Each posture option in `chaosx.nr32.40` carries its public tradeoff tooltip.
+Implemented: `15` command power and `5` Launch Readiness, `70`-day cooldown, blocked during a warning, a committed retaliation, or a severed network.
+Posture starts Off when the track unlocks.
 
 ### Verify warning
 
-Possible requirements:
-
-- radar or intelligence
-- functioning command network
-- enough time remaining
-
-Possible costs:
-
-- command power
-- intelligence exposure
-- readiness
-
-Results:
-
-- confidence rises
-- confidence falls
-- actor changes
-- false signal exposed
-- conflicting evidence remains
+A `3`-day verification mission that resolves the warning as verified or false.
+Possible costs are command power and readiness; the result can raise or lower confidence, expose a false signal, or leave conflicting evidence.
 
 ### Delay retaliation
 
-- extends countdown once
+- extends the countdown by `3` days, once per warning
 - lowers readiness
-- may lower AI deterrence evaluation
-- cannot be repeated indefinitely
+- the per-warning outcome flags clear when the next warning opens, so a past delay or false alarm never blocks a later warning
 
 ### Sever the network
 
@@ -771,19 +726,19 @@ Results:
 
 ### Isolate one site
 
-- targeted state action
+- targets one of the country's own working sites
 - preserves other sites
-- useful during local compromise
+- the AI uses it only on a compromised site
 
 ### Accept response
 
-- confirms current target and payload policy
-- commits operation
-- hides further stand-down actions after commitment
+- shares one route and one gate with the warning event's accept option and with Delegated or Automatic posture
+- prepares a retaliation against the warning's attacker
+- a refused order (for example, the attacker is out of reach) leaves the warning open and restores the earlier target choice
 
 ### Restore retaliation network
 
-Timed mission after severance.
+A `60`-day mission after severance; severing starts it immediately, and completion returns posture to Supervised.
 
 Requirements can include:
 
@@ -833,15 +788,13 @@ AI should:
 
 ## Identity
 
-- Stable planned ID: `SCN-015`
-- Working public name: Missile Age
+- ID: `SCN-015`, raw ID `15`, between the Fallout sandbox at raw ID `14` and Global Jihad at raw ID `16` (collision-audited and registered)
+- Public name: Missile Age
 - Source event: Event 32
 - Type control: five profiles
 - Intensity control: Low, Medium, High, Maximum
-- Launch mode: manual sandbox and challenge setup
-- Status target: implemented with Event 32
-
-Implementation must repeat the scenario registry audit. Raw ID 14 is currently reserved by the Fallout manual sandbox.
+- Launch mode: manual sandbox and challenge setup through the shared Triggerable Scenarios window
+- Status: `implemented` in source; runtime contract in `docs/events/032_missiles/systems/triggerable_scenario.md`
 
 ## Scenario purpose
 

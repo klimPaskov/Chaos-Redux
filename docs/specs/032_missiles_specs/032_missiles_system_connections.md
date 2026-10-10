@@ -6,7 +6,24 @@ Event 32 owns missile-program progression, operational missile reserve, launch-s
 
 Other systems retain ownership of their own payloads, countries, terminal routes, events, and shared ledgers.
 
-A connection should use a narrow helper or adapter. Event 32 must not copy another system's logic into its own files.
+A connection should use a narrow helper or adapter.
+Event 32 must not copy another system's logic into its own files.
+
+## Connection status
+
+| Connection | Status |
+| --- | --- |
+| Event 16 reaction | `implemented`: called from the first-package recipient transaction |
+| Event 13 site damage | `implemented`: one guarded line in Event 13's building-damage helper queues the site, receiver `chaosx.nr32.9` applies it under the controller |
+| Event 21 civil-war split | `implemented`: Event 21 calls `missiles_preflight_country_split` and `missiles_split_program_after_civil_war` |
+| Event 5 and Event 6 transfers | `implemented` through the generic capture and release path (`missiles_reconcile_released_country_sites`); the dedicated planned-inheritance helpers exist but no caller uses them yet |
+| Event 31 seizure | `implemented` through the ordinary capture path |
+| Event 23 nuclear stock | `implemented`: delivery consumes the shared stock and leaves Event 23 ownership intact |
+| CBRN, Deaths, Air Cleanliness, Condemnation, Fallout | `implemented` through the shared owners |
+| Event 52 fuel shortage | pending: fuel is a cost only; no fuel-crisis reading exists |
+| Event 76 test data | `accepted and queued` until Event 76 is reworked |
+| Chaos Meter direct budgets | `unresolved` (part 1) |
+| Migration and famine aftermath | `unresolved` proposal (Humanitarian aftermath below) |
 
 ## Event 5: Soviet Collapse
 
@@ -70,31 +87,15 @@ Natural disasters can damage:
 
 Event 13 remains the owner of disaster targeting, delayed impacts, deaths, and aftermath.
 
-Event 32 should expose a narrow state-damage adapter that Event 13 may call after a valid disaster hits a launch state.
-
-Possible results:
-
-- readiness loss
-- capacity loss
-- site damage
-- reserve destruction
-- guidance backlog
-- false-warning pressure
-- repair mission
-
-A disaster does not activate an Event 32 evolution by itself.
+Event 13 reports each physical impact on a registered launch site through `missiles_natural_disaster_damage_site`, which only queues the strongest severity on the controller; receiver `chaosx.nr32.9` applies it with the controller as ROOT.
+A disaster costs readiness and command, damages the site and its capacity, destroys a severity-scaled share of the stock stored there, and cancels a strike being prepared at the site.
+A wrecking impact destroys the site once; a lesser one leaves a damaged site with a repair request.
+A disaster never activates an Event 32 evolution, and Event 13 keeps its own history, deaths and reports.
 
 ## Event 16: Brilliant Scientist
 
-The current repository already calls `brilliant_scientist_record_missile_crisis` from the Event 32 country report.
-
-The rework must preserve this bridge.
-
-Recommended call point:
-
-- after the active Kruger host receives its first successful Event 32 program transaction
-- before the first report option finishes
-- only when the existing Event 16 helper gates permit it
+Event 32 calls `brilliant_scientist_record_missile_crisis` from each first-package recipient transaction in that recipient's own scope.
+Event 16 owns the host and personal receipts, so an earlier non-host recipient cannot suppress the current host's reaction.
 
 Event 32 must not duplicate:
 
@@ -190,8 +191,9 @@ Fuel shortage should reduce:
 - extended-range viability
 
 The bridge should read real fuel stockpile and existing fuel-crisis modifiers.
-
 Event 32 should not create a separate global fuel-crisis system.
+Status: pending; today fuel appears only as a payment, which already makes a fuel-starved program unable to replenish or adopt Saturation doctrine.
+The remaining design value is a readiness-restoration and preparation slowdown during a fuel crisis.
 
 ## Event 76: USA Tests Weapons
 
@@ -335,15 +337,29 @@ Required sources include:
 - special payload through shared routes
 - delayed contamination or outbreak through owning systems
 
-Event 32 should register a stable death-reason family if the shared enum requires one.
+Implemented reasons: `chaos_meter_deaths_reason.strategic_bombing` for civilians and `military_casualties` for crews and garrisons.
+
+## Humanitarian aftermath
+
+Status: `unresolved` proposal (README open question 5).
+Both receiving systems already accept bombing as an owner-proven source, so these links give missile strikes the same civilian aftermath as the rest of the war instead of a cleaner, consequence-free form of strategic bombing.
+
+Migration: a committed conventional or special impact on a populated state (Strategic, Saturation or Command profiles, wrong-state and neutral impacts included) requests flight pressure through the migration bombing adapter with the state, actor, cause, the people actually killed or exposed, and the incident id as the request receipt.
+Precision strikes stay below the request threshold.
+Migration alone decides the cohort, route and reception; Event 32 adds no population transaction.
+
+Famine: a Logistics interdiction strike that destroys railway, supply-hub or port levels submits the measured damage through the famine transport adapter for that state.
+Famine alone decides whether a food problem exists; war elsewhere and a single strike on a well-supplied state stay below supply strain.
+
+Camps: no connection.
+A missile strike has no camp-specific consequence that the ordinary population and Deaths routes do not already carry, so a camp link would be decoration.
+
+Acceptance cases when accepted: a Saturation strike on a populated enemy industrial state creates one migration request tied to the incident id, and a repeated callback adds nothing; a Logistics strike that destroys railway levels in a blockaded island raises famine transport pressure once; a Precision strike creates neither.
 
 ## Chaos Meter
 
-The [core consequence-budget map](032_missiles_spec_part_1_core.md#chaos-effects) owns Event 32's proposed direct amounts. Evolution eligibility, activation, logging, doctrine adoption, payload integration, retaliation posture, and preparation add zero Chaos by themselves.
-
-Unexplained material program grants use the completed firing receipt. Unauthorized launches, unintended neutral impacts, newly demonstrated special delivery, and mistaken automated exchanges use the committed incident or closed root-chain proof named in that map. Saturation's separate proposed budget remains unassigned pending a distinct supported abnormal outcome.
-
-Shared Deaths, contamination, nuclear-use, war, peace and other consequence systems retain their own sources. Event 32 records only the additional abnormal manifestation or command/delivery breakdown, never a second charge for the same physical loss. One causal root receives at most one applicable evolution-family premium, including when several tracks contributed.
+The [core consequence-budget map](032_missiles_spec_part_1_core.md#chaos-effects) owns Event 32's proposed direct amounts and is `unresolved` and not implemented.
+Shared Deaths, contamination, nuclear-use, war, peace and other consequence systems keep their own sources; Event 32 never charges a second time for the same physical loss.
 
 ## Fallout consequence route
 

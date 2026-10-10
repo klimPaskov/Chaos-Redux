@@ -3,6 +3,7 @@
 Historical evidence: source names, hashes, repository observations, and tool/runtime limitations below belong to the original planning pass.
 They do not establish current local file availability, current service health, implementation status, or design approval.
 Use the package entry point and current owner skills for active guidance.
+The legacy event described under Current repository findings has since been replaced; the "tooling limitations" no longer describe the current environment, where the installed game, its documentation and the HOI4 MCP are available.
 
 ## Review scope
 
@@ -111,7 +112,8 @@ The specification follows these project rules:
 
 ## Subagent-role review applied
 
-This chat runtime did not expose the project Codex subagent runner. The subagent TOMLs were therefore used as review contracts, not presented as independently executed agent reports.
+The planning runtime did not expose the project subagent runner.
+The subagent definitions were therefore used as review contracts, not presented as independently executed agent reports.
 
 The following role checks were applied manually:
 

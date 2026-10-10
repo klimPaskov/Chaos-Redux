@@ -3,10 +3,11 @@
 ## Testing boundary
 
 This file defines the required test cases.
+It does not claim that the cases have been run; results live in `docs/plans/032_missiles_plans/032_missiles_test_results.md`.
+Live-game testing belongs to the user, and autonomous desktop testing requires explicit invocation of the debug-playtest skill.
+Static inspection is never reported as in-game verification.
 
-It does not claim that the cases have been run.
-
-Autonomous live testing requires explicit invocation of the Chaos Redux debug-playtest skill. Normal implementation agents must not claim in-game verification from static inspection.
+Live-case IDs in this file (for example `PAY-01` or `WARN-01` in the project-missions table) are a separate namespace from the probability scenario IDs of the same name in `032_missiles_probability_scenario_matrix.md`; cite the file with the ID.
 
 ## Static source and MCP tests
 
@@ -231,9 +232,10 @@ Verify clean abort and resource rule.
 
 ### `OP-05`: Reach failure
 
-Select an out-of-range state.
+Select a state beyond the launch site's reach.
 
 Verify preparation is blocked with exact reason.
+Blocked until real-distance reach is implemented (part 3, Reach); today no state is out of range.
 
 ### `OP-06`: No valid target object
 
@@ -251,7 +253,7 @@ Verify capacity, reserve, defense saturation, readiness loss, cooldown, and aggr
 
 ### `SAT-03`: Site cap
 
-Verify no unlimited site creation.
+Verify no unlimited site creation, and that a country with fewer than 8 controlled states cannot build a second site once the territory-scaled cap lands (part 2).
 
 ### `SAT-04`: AI reserve floor
 
@@ -528,7 +530,7 @@ At native size, inspect:
 - state modifiers
 - decision icons
 - mission icons
-- raid icons
+- guidance and posture icons
 - texticons
 - achievement triplets
 
@@ -604,9 +606,10 @@ These live cases cover the 2026-10-04 gameplay round. Their source contracts are
 | `DOC-02` | Automatic Retaliation unlocked | Posture starts Off; the posture decision is blocked during a warning |
 | `ALLOC-01` | Saturation barrage over sites with capacities 10 and 2 for 10 missiles | The order is accepted with allocations 8 and 2 |
 | `ALLOC-02` | Capture a reserving site before launch | The order ends and exactly that site's allocation is lost |
-| `EVO-PACE-01` | First firing above several thresholds | Unlocks arrive about 21 days later, staggered about 14 days apart |
-| `EVO-PACE-02` | Track becomes eligible between firings | The evolution watch arms it within about 30 days and it unlocks near its base delay without another Event 32 firing |
-| `EVO-PACE-03` | Disable a pending track | Its pending job clears and it never records an unlock |
+| `EVO-PACE-01` | First firing above several thresholds | Unlocks arrive about 21 days later, then 14 days apart in track order, never two on one day |
+| `EVO-PACE-02` | Track becomes eligible between firings (for example a war starts) | The war boundary notification observes it, its native MTTH clock (`.201` to `.205`) arms, and it unlocks without another Event 32 firing |
+| `EVO-PACE-03` | Disable a pending track | Its clock never records an unlock and no row is logged |
+| `EVO-PACE-04` | Track becomes ineligible before its clock fires | The attempt rechecks prerequisites, records nothing, and the track can still unlock later |
 | `WARN-01` | Two warnings in a row under Automatic posture, the first proven false | Each warning can be delayed once; the second is answered automatically when its short window closes |
 | `WARN-02` | Verified warning; take Accept the Current Response | A retaliation against the warning's attacker enters preparation and the warning closes |
 | `WARN-03` | Human selected an enemy and objective; a warning arrives from an attacker out of reach; take Accept the Current Response | The order is refused, the warning stays open with its other options, the earlier enemy and objective are still selected, and the next ordinary strike records no retaliation lineage |
@@ -655,3 +658,10 @@ The production-source ledger model is `.tools/test_event32_reserve_custody.py`; 
 | `CUSTODY-04` | C recaptures a guarded/studied arsenal holding 8 sealed missiles from B | B's held ledger loses 8, C's held ledger gains 8, the state retains a receipt for 8, and a repeated same-controller callback changes nothing |
 | `CUSTODY-05` | Cancel preparation or isolate a participating site in refund mode | The full valid missile reservation returns once; physical mutation completes before custody redistribution; isolation restores the appropriate phase |
 | `CUSTODY-06` | A nonlethal foreign strike writes incoming facts on the target state | The defender records those state facts, receives its own network totals and repair incident, and reaches its final status through the controller-bound receiver |
+
+## Audit additions (2026-10-10)
+
+| ID | Setup | Required result |
+| --- | --- | --- |
+| `VALUE-01` | Open the category, a launch state's tooltip and the program idea for a program at war with a damaged site | The category shows three values and one context line; the state shows one site status; the idea lists no numbers; no hardening, security, capacity or pressure number appears outside the decision that changes it |
+| `CHAOS-01` | Unlock all five tracks, adopt Saturation and set a posture | The Chaos Meter does not move from Event 32 |

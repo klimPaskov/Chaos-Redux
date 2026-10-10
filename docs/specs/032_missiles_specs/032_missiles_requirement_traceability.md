@@ -10,10 +10,10 @@ A mapping proves design coverage. It does not prove implementation.
 
 | Supplied requirement | Specification coverage |
 | --- | --- |
-| Event ID 32 | Part 1, Catalog identity. Part 8, Namespace and IDs. Acceptance criteria, Catalog and registration |
+| Event ID 32 | Part 1, Catalog identity. Part 8, Namespace and event IDs. Acceptance criteria, Catalog and registration |
 | Event name Missiles | Part 1, Catalog identity. Event Details and workbook contracts |
 | Minor Repeatable | Part 1, Catalog identity and Global firing model. Acceptance criteria, Catalog and registration |
-| To Be Reworked | Source review and migration contract. The implementation keeps the event disabled by default until complete |
+| To Be Reworked | Part 1, Catalog identity and Default enable state. The event is default-enabled; the catalog status is promoted only when the README status table closes |
 | No cluster | Part 1, Catalog identity. Acceptance criteria, Catalog and registration |
 
 ## Baseline
@@ -23,7 +23,7 @@ A mapping proves design coverage. It does not prove implementation.
 | Global repeatable event affecting every valid existing country | Part 1, Global firing model and Valid recipient contract. Part 8, Event dispatch |
 | Country with no missile technology unlocks the first step | Part 1, Technology progression. Part 2, Technology adapter |
 | Country with an existing program receives the next step | Part 1, Technology progression and Repeated firing flow. Part 2, Technology adapter |
-| Country completes one available missile technology step | Part 1, Technology progression. Part 8, Technology adapter |
+| Country completes one available missile technology step | Part 1, Technology progression. Part 2, Technology adapter |
 | Full missile line gives a larger operational package | Part 1, Mature-program package. Part 2, Operational reserve model |
 | Every country receives missiles and at least one usable launch state | Part 1, Program initialization. Part 2, Operational reserve model and Launch-state records |
 | Initial sites favor owned, controlled core states with infrastructure and protection | Part 2, Eligible launch-state contract, Site selection ladder, and Site scoring factors |
@@ -100,7 +100,7 @@ A mapping proves design coverage. It does not prove implementation.
 
 | Requirement | Specification coverage |
 | --- | --- |
-| Event Logs, Event Details, evolutions, and history | Part 1, Event Logs integration. Part 8, Event Logs |
+| Event Logs, Event Details, evolutions, and history | Part 1, Event Logs integration. Part 4, Evolution logging |
 | Dynamic AI and probability proof | Part 6 and the probability scenario matrix |
 | No recurring global scan | Parts 1, 2, 4, and 8. Acceptance criteria and test matrix |
 | Shared Deaths, contamination, and Condemnation | Part 3 and System connections |
@@ -109,5 +109,7 @@ A mapping proves design coverage. It does not prove implementation.
 | Asset coverage | Part 7 and asset prompt |
 | Achievement coverage | Part 7 and achievement prompt |
 | Manual scenario coverage | Part 5, SCN-015. Decision and mission prompt |
-| Migration from current implementation | Source review and Part 8, Migration from legacy Event 32 |
+| Migration from the legacy implementation | Part 8, Save compatibility (legacy event fully replaced; new campaign assumed) |
+| Chaos Meter feedback | Part 1, Chaos effects (`unresolved` proposal). System connections, Chaos Meter |
+| Player-facing value restraint | Part 2, Player-facing value budget |
 | Full completion proof | Acceptance criteria and test matrix |

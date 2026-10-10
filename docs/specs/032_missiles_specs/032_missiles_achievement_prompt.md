@@ -2,17 +2,12 @@
 
 ## Role and source files
 
-Implement the complete Event 32 achievement set and coordinate its icons through `chaos-redux-event-assets`.
+This file owns the definitions of the eight Event 32 achievements.
+Status: all eight are `implemented` in source with tracking, disqualifiers, localisation in `localisation/english/032_missiles_achievements_l_english.yml`, and icon triplets under `gfx/achievements/`; tracking lives in `common/scripted_effects/032_missiles_achievement_effects.txt` and `common/scripted_triggers/032_missiles_achievement_triggers.txt`.
+Use this file to review or retune them.
 
-Read:
-
-- `docs/specs/032_missiles_specs/032_missiles_spec_part_7_assets_text_and_achievements.md`
-- `docs/specs/032_missiles_specs/032_missiles_asset_prompt.md`
-- `docs/specs/032_missiles_specs/032_missiles_acceptance_criteria.md`
-- `AGENTS.md`
-- the existing Chaos Redux achievement registry and achievement documentation
-
-The labels below are working labels. Write final player-facing localisation from the stated direction and the project writing rules.
+Read part 7 of this package, `CLAUDE.md`, and the existing Chaos Redux achievement registry and documentation.
+The labels below are design labels; the final wording lives in the localisation file.
 
 ## Shared rules
 

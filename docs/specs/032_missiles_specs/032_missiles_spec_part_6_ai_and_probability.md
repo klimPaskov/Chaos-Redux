@@ -22,7 +22,7 @@ The AI must not launch merely because a decision is available.
 ## AI doctrine profiles
 
 Each missile country receives one current AI profile derived from government, strategy, war state, industry, threat, event history, and program condition.
-
+Implemented as `missiles_assign_ai_profile` with the eight ids in `missiles_ai_profile`; weights live in `missiles_ai_weight` and `missiles_ai_factor`.
 Profiles can change as the campaign changes.
 
 ### Restrained deterrent
@@ -526,9 +526,10 @@ AI should:
 
 ## MTTH and evolution probability
 
-Each evolution uses a complete eligibility gate and an MTTH model.
+Each evolution uses a complete eligibility gate and a native MTTH clock (part 4, Evolution pacing).
+The engine checks native MTTH triggers on its own cadence, so measured activation latency differs from the quoted day scale; a timing claim must use the game-version adapter or an explicit calculation, not the formula alone.
 
-The auditor should inspect:
+The auditor inspects:
 
 - base MTTH
 - chaos-tier factor
@@ -551,20 +552,16 @@ Expected ordering after all tracks are eligible:
 
 ## Required probability workflow
 
-Every weighted surface requires:
+Every weighted surface uses the named scenarios in `032_missiles_probability_scenario_matrix.md` with a complete candidate pool where normalization applies.
+Prefer `hoi4.probability_inspect` followed by `hoi4.probability_compare` on the same scenarios; add evaluate, sweep, simulate, sequence or render only when they answer a concrete balance question.
+The CLAUDE.md retry limit applies: one initial call and at most one corrected retry per failing capability.
 
-1. `hoi4.probability_inspect`
-2. named scenario definitions
-3. complete candidate pool where normalization applies
-4. `hoi4.probability_evaluate` for exact scenarios
-5. `hoi4.probability_sweep` for sensitive thresholds
-6. `hoi4.probability_simulate` for bounded random chains where exact evaluation is insufficient
-7. `hoi4.probability_compare` after the final source patch
-8. `hoi4.probability_render` when a matrix or sensitivity chart improves review
+Current status (`blocked` for MCP evidence): every `hoi4.probability_inspect` call in the 2026-10-03 to 2026-10-08 rounds returned `INTERNAL_ERROR` or timed out (`docs/plans/032_missiles_plans/032_missiles_test_results.md`).
+The owed work is source-derived calculation from the actual script for the representative scenarios, stating assumptions and the difference between AI scores and probabilities.
+That calculation can close the surfaces without MCP; it must not be reported as MCP proof.
 
-Use `hoi4.probability_sequence` only for the declared evolution, replenishment, or retaliation sequence after cadence, recovery, caps, removals, cooldowns, resets, and terminal states have been fully declared.
-
-The probability auditor is read-only. The implementation owner chooses the balance target and applies the patch.
+`chaosx_ai_probability_auditor` is read-only and is spawned with a fully self-contained prompt and no inherited parent context.
+The implementation owner chooses the balance target and applies the patch.
 
 ## Required audit surfaces
 

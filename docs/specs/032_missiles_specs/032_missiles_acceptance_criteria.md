@@ -3,8 +3,30 @@
 ## Completion rule
 
 Event 32 is complete only when every accepted requirement below is implemented, wired, documented, and validated.
-
 A missing evolution, incomplete operation adapter, placeholder asset, unverified probability surface, stale workbook row, or unreported fallback blocks completion.
+Each checklist line points back to its owning spec section; the checklist does not add requirements of its own.
+CLAUDE.md rules that apply to all work (encoding, key format, operators, cost limits) are not repeated here.
+
+## Section status
+
+Boxes stay unticked until live evidence or an explicit completion audit closes them; this table records the source state on 2026-10-10.
+
+| Section | Source state | Open items |
+| --- | --- | --- |
+| Catalog and registration | implemented | catalog status promotion |
+| Global firing, recipients, technology, program values, reserve | implemented | live validation |
+| Launch-site selection | implemented | territory-scaled site cap (part 2) |
+| Site lifecycle | implemented | live validation |
+| Decision presentation, decisions, missions | implemented | live validation; README open questions 2 and 3 |
+| Strike pipeline | implemented | real-distance reach (part 3) |
+| Conventional damage | implemented | live validation |
+| Five evolution tracks | implemented | timing evidence; live validation |
+| Shared systems | implemented except Event 52 fuel and Event 76 | fuel-crisis slowdown; Event 76 queued |
+| AI and probability | implemented in source | probability evidence `blocked` on MCP; source-derived calculations owed |
+| SCN-015 | implemented | live validation |
+| Assets and achievements | implemented | temporary workspace cleanup |
+| Player-facing text | implemented | localisation audit after the remaining changes |
+| Documentation and spreadsheet | partly current | event doc pacing section still describes the retired delayed-job model; catalog status |
 
 ## Catalog and registration
 
@@ -17,8 +39,7 @@ A missing evolution, incomplete operation adapter, placeholder asset, unverified
 - [ ] Event 32 is registered in the repeatable-event array.
 - [ ] Event type resolution returns Minor Repeatable.
 - [ ] Repeatable weight recovery and cap reduction use the shared system.
-- [ ] Event 32 remains disabled by default until the rework is complete.
-- [ ] The completion change adds Event 32 to the reworked-event default enable allowlist.
+- [ ] Event 32 is in the reworked-event default-enable allowlist, and its catalog status is promoted only when this checklist closes.
 - [ ] Event name, debug name, Event Details, and catalog mappings agree.
 - [ ] Event list shows `N/A` when no valid recipient exists.
 
@@ -52,9 +73,7 @@ A missing evolution, incomplete operation adapter, placeholder asset, unverified
 
 ## Technology progression
 
-- [ ] Technology graph is inspected with `hoi4.tech_inspect`.
-- [ ] Relevant folder or branch is rendered with `hoi4.tech_render`.
-- [ ] Implemented graph changes are checked with `hoi4.tech_compare`.
+- [ ] The installed technology graph mapping is evidenced (MCP inspect/render artifacts exist; compare failed with a recorded error, so source review covers the change).
 - [ ] Normalized stages map to exact installed technology.
 - [ ] One next valid technology step is granted per firing.
 - [ ] Prerequisites and mutual exclusions are respected.
@@ -72,7 +91,8 @@ A missing evolution, incomplete operation adapter, placeholder asset, unverified
 - [ ] Command Control is clamped from `0` to `100`.
 - [ ] Guidance is derived and explained without adding an unnecessary permanent meter.
 - [ ] Retaliation posture is a named state.
-- [ ] One program idea or dynamic modifier summarizes current status.
+- [ ] One program status idea (experimental, operational, compromised) names the force without listing numbers (part 2).
+- [ ] No program value outside the part 2 player-facing value budget is shown as a standing number.
 - [ ] Status refreshes after every meaningful transaction.
 - [ ] Program variables survive ordinary government and ideology changes.
 - [ ] Cleanup runs on permanent country removal.
@@ -104,7 +124,7 @@ A missing evolution, incomplete operation adapter, placeholder asset, unverified
 - [ ] Capital is a fallback, not an automatic first choice.
 - [ ] One-state minor uses its sole valid state.
 - [ ] Secondary sites prefer another strategic region where possible.
-- [ ] Site count cap scales with territory and program need.
+- [ ] Site count cap scales with territory and program need (pending: only the flat cap of four is enforced).
 - [ ] Saturation adds capacity without unlimited sites.
 - [ ] Site-selection scenarios pass the probability audit.
 
@@ -141,8 +161,6 @@ A missing evolution, incomplete operation adapter, placeholder asset, unverified
 ## Decisions and costs
 
 - [ ] Every action represents concrete work.
-- [ ] No action has more than four spendable cost types.
-- [ ] Every custom cost has a valid texticon.
 - [ ] Political power is not the default program currency.
 - [ ] Replenishment, readiness, guidance, security, hardening, capacity, and site construction have distinct costs.
 - [ ] Costs scale dynamically where specified.
@@ -174,7 +192,7 @@ A missing evolution, incomplete operation adapter, placeholder asset, unverified
 - [ ] Precision, strategic, counterforce, and saturation profiles have distinct costs and effects.
 - [ ] Saturation is unavailable without its evolution and adoption.
 - [ ] Exact site capacity is proven.
-- [ ] Reach is proven through the accepted adapter.
+- [ ] Reach compares against the real distance from launch state to target state (pending, part 3).
 - [ ] Launch cooldown is enforced.
 - [ ] Readiness cost is applied once.
 - [ ] Command burden is applied once.
@@ -262,7 +280,7 @@ A missing evolution, incomplete operation adapter, placeholder asset, unverified
 - [ ] Posture adoption has requirements, costs, and cooldown.
 - [ ] Warning records store source incident and attribution.
 - [ ] Response windows are playable.
-- [ ] Verify, delay, sever, isolate, redirect, accept, and restore actions work where valid.
+- [ ] Verify, delay, sever, isolate, accept, and restore actions work where valid (redirect was rejected).
 - [ ] False warnings can be exposed.
 - [ ] Forged signals require a valid actor and access.
 - [ ] Retaliation creates linked incidents, not direct recursion.
@@ -295,14 +313,16 @@ A missing evolution, incomplete operation adapter, placeholder asset, unverified
 - [ ] Fallout remains the owner of its terminal consequence.
 - [ ] Event Logs ownership is not duplicated.
 
+## Chaos Meter
+
+- [ ] No Event 32 effect pays direct Chaos for an unlock, adoption, posture or preparation.
+- [ ] Direct Chaos budgets are wired only after part 1's map is accepted, using outcome-named constants and one budget per closed root.
+
 ## AI and probability
 
-- [ ] Every weighted surface begins with `hoi4.probability_inspect`.
+- [ ] Every weighted surface in part 6 has evidence for its named scenarios: MCP results where the route works, otherwise source-derived calculations labelled as such.
 - [ ] Candidate pools are complete where normalization applies.
-- [ ] Named scenarios are used.
-- [ ] Sensitive thresholds use sweeps.
-- [ ] Bounded chains use simulation where needed.
-- [ ] Every weighted patch receives `hoi4.probability_compare`.
+- [ ] Every weighted patch is compared on the same scenarios as its baseline.
 - [ ] Final result distinguishes exact, bounded, sampled, score-only, and unresolved evidence.
 - [ ] AI maintains reserve and readiness.
 - [ ] AI selects strategic targets.
@@ -333,12 +353,12 @@ A missing evolution, incomplete operation adapter, placeholder asset, unverified
 - [ ] Country report image exists and is wired.
 - [ ] First-news image exists and is wired.
 - [ ] Static decision category picture exists and is wired.
-- [ ] Program idea icon exists.
+- [ ] Three program idea icons exist.
 - [ ] Required site modifier icons exist.
 - [ ] Reserve, readiness, and command texticons exist.
 - [ ] Every visible decision has a suitable decision icon.
 - [ ] Every visible mission has a suitable mission icon.
-- [ ] Raid icons exist or exact shared icons are documented.
+- [ ] No raid icon is registered while the scripted adapter is the route.
 - [ ] Eight achievement triplets exist.
 - [ ] Source evidence and prompts are retained during active work.
 - [ ] PNG previews and DDS files exist.
@@ -362,8 +382,6 @@ A missing evolution, incomplete operation adapter, placeholder asset, unverified
 - [ ] Scenario wording hides internal bypasses.
 - [ ] Achievement wording is final and route-specific.
 - [ ] No instruction fragments or working labels remain in localisation.
-- [ ] Localisation files use UTF-8 with BOM.
-- [ ] Localisation keys omit `:0`.
 
 ## Achievements
 
@@ -399,7 +417,7 @@ A missing evolution, incomplete operation adapter, placeholder asset, unverified
 - [ ] Localisation auditor review completed.
 - [ ] Improvement-loop addendum or closure resolved.
 - [ ] Event completion auditor review completed.
-- [ ] Required MCP event and technology evidence exists.
+- [ ] Event and technology evidence exists, with failed MCP compare routes recorded as limits rather than passes.
 - [ ] Any skipped meaningful validation is reported.
 - [ ] Every simplification, omission, fallback, placeholder, or blocker is listed.
 - [ ] Final report lists files, systems, assets, AI evidence, docs, spreadsheet changes, and remaining risks.
