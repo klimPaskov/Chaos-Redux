@@ -2,38 +2,27 @@
 
 ## Purpose
 
-Event 027 gives every AI country direct doctrine choices. The AI must use those choices well enough that a human player does not receive a systematic advantage from global symmetry.
+Event 027 gives every AI country direct doctrine choices, so the AI must spend them well enough that global symmetry gives human players no systematic advantage.
+This file names the scenarios and their expected ordering.
+It never prescribes numeric weights, which live in the Event 027 script constants.
 
-This file defines named scenarios and expected ordering. It does not prescribe final numeric weights.
-
-The probability auditor must distinguish score evidence from normalized probability evidence. A branch score is not a click probability unless the complete candidate pool, every modifier, and the final selection operation are present.
-
-## Mandatory audit route
-
-For each weighted surface:
-
-1. Use `hoi4.probability_inspect` to identify the exact source, candidates, modifiers, external factors, and normalization model.
-2. Record whether the pool is complete.
-3. Use `hoi4.probability_evaluate` for fixed named scenarios.
-4. Use `hoi4.probability_sweep` for important changing inputs.
-5. Use `hoi4.probability_simulate` only when seeded sampling helps test bounded randomness.
-6. Use `hoi4.probability_compare` after any source change, using the same scenarios.
-7. Use `hoi4.probability_render` when a ranking, sensitivity, timing, or comparison view improves review.
-8. Use `hoi4.probability_sequence` only when the complete repeatable-event pool and sequence contract are declared.
-
-The auditor remains read-only. The parent agent chooses the intended balance target and applies changes.
+Route weighted audits through `chaosx_ai_probability_auditor` and the `chaos-redux-subagents` skill, which own the tool workflow and the rule that a score is not a click probability unless the whole pool, every modifier, and the final selection are bound.
+The auditor is read-only, and the parent chooses balance targets.
 
 ## Weighted surfaces
 
-The implementation should expose separate auditable surfaces for:
+| Surface | Source | Evidence status |
+| --- | --- | --- |
+| AI domain choice | `doctrine_research_ai_score_domains` | Groups A and D evaluated after D6, D17, and D18 (`probability_domain_compare_2026-10-04.md`, `probability_domain_round2_2026-10-05.md`). |
+| AI Grand Doctrine choice | `doctrine_research_ai_score_selected_grand` | Group B evaluated after D16 and D19 (`probability_native_preferences_2026-10-05.md`, `probability_track_round2_2026-10-05.md`). |
+| AI track choice | `doctrine_research_ai_score_selected_track` | Group C and DR-D03, DR-D04 evaluated after D19 (`probability_track_round2_2026-10-05.md`). |
+| AI subdoctrine choice | `doctrine_research_ai_score_selected_subdoctrine` | DR-C07 variants evaluated after D25 (`probability_subdoctrine_round3_2026-10-05.md`); the later change that resets only a zero native product to the base weight, so fractional factors such as 0.5 keep their effect, has scenario inputs in `probability_subdoctrine_zero_reset/` but no recorded comparison yet. |
+| Multi-choice allocation | the AI loop in `027_doctrine_research_effects.txt` | Group E evaluated only as single-choice pools; no batch timeline is bound. |
+| Automatic event selection | shared event picker and repeatable recovery | Group F unresolved. |
+| Optional cluster participation | National Breakthroughs loader | Unconstructible until a second member exists. |
 
-- Event 027 automatic selection from the repeatable-event pool
-- National Breakthroughs cluster participation when Event 027 is optional
-- AI doctrine-domain choice
-- AI Grand Doctrine choice inside an empty domain
-- AI track choice inside an active Grand Doctrine
-- AI subdoctrine choice inside an empty track
-- AI choice allocation across a two-to-five-choice batch
+Evidence files live in `docs/plans/027_doctrine_research_plans/`, and `agent_decisions_2026-10-04.md` records each decision the evidence supports.
+Real-campaign mixes remain a live check.
 
 ## Scenario group A: Domain selection
 
@@ -55,7 +44,8 @@ The implementation should expose separate auditable surfaces for:
 2. Air
 3. Navy
 
-Army should have a clear lead. Bounded randomness should not make Navy a frequent winner.
+Army should have a clear lead.
+Bounded randomness should not make Navy a frequent winner.
 
 **Failure signals**
 
@@ -77,15 +67,16 @@ Army should have a clear lead. Bounded randomness should not make Navy a frequen
 
 **Expected ordering**
 
-Navy should compete strongly with Army and normally lead when convoy losses and overseas plans are severe. Army remains valid because it already has useful progress.
+Navy should compete strongly with Army and normally lead when convoy losses and overseas plans are severe.
+Army remains valid because it already has useful progress.
 
 **Failure signals**
 
-- Army wins automatically due an unconditional land preference
+- Army wins automatically through an unconditional land preference
 - Navy remains low despite fleet, coastline, and war factors
 - the AI cannot select an empty Navy domain while Army is active
 
-### DR-A03: Air-centered continental power
+### DR-A03: Air-centred continental power
 
 **State**
 
@@ -99,7 +90,8 @@ Navy should compete strongly with Army and normally lead when convoy losses and 
 
 **Expected ordering**
 
-Air should lead or remain within the top bounded pool. Army may win when a near-complete Army branch has immediate value.
+Air should lead or remain within the top bounded pool.
+Army may win when a near-complete Army branch has immediate value.
 
 **Failure signals**
 
@@ -119,7 +111,9 @@ Air should lead or remain within the top bounded pool. Army may win when a near-
 
 **Expected ordering**
 
-Army should lead clearly. Air may remain a secondary option. Navy should be invalid or close to zero according to native availability and AI strategy.
+Army should lead clearly.
+Air may remain a secondary option.
+Navy should be invalid or close to zero according to native availability and AI strategy.
 
 **Failure signals**
 
@@ -131,20 +125,21 @@ Army should lead clearly. Air may remain a secondary option. Navy should be inva
 **State**
 
 - currently landlocked or nearly landlocked country
-- focus route and AI strategy target a coastal expansion
-- planned dockyard construction and naval invasion
+- a credible plan to gain a coast
 - no current fleet
 - Army doctrine active
 - Navy domain empty
 
 **Expected ordering**
 
-Navy should rise above the ordinary landlocked score. It need not dominate unless the planned maritime commitment is near and credible.
+Navy should rise above the ordinary landlocked score.
+It need not dominate unless the maritime commitment is near and credible.
+The implementation reads the plan from a core or claim on a coastal state the country does not control, or a war goal, held or being justified, against a coastal owner (D17).
 
 **Failure signals**
 
-- current coastline is a permanent zero-weight blocker despite an explicit route plan
-- scripted route preference forces Navy after the route becomes invalid
+- current coastline is a permanent zero-weight blocker despite an explicit plan
+- the plan keeps raising Navy after the claim or war goal is gone
 
 ### DR-A06: All ordinary domains complete
 
@@ -155,7 +150,8 @@ Navy should rise above the ordinary landlocked score. It need not dominate unles
 
 **Expected result**
 
-No candidate. The batch closes without compensation.
+No candidate.
+The batch closes without compensation.
 
 **Failure signals**
 
@@ -165,21 +161,19 @@ No candidate. The batch closes without compensation.
 
 ## Scenario group B: Grand Doctrine selection
 
-### DR-B01: Mobile armored army
+### DR-B01: Mobile armoured army
 
 **State**
 
 - empty Army domain
 - high tank production
-- several armored divisions
+- several armoured divisions
 - offensive plan across open terrain
 - sufficient fuel
 
 **Expected ordering**
 
-A mobile or armored Grand Doctrine should rank above infantry-mass or static-defense choices when those are the current graph alternatives.
-
-The exact doctrine names depend on the installed graph.
+A mobile or armoured Grand Doctrine should rank above infantry-mass or static-defence choices.
 
 ### DR-B02: Manpower-rich infantry state
 
@@ -187,7 +181,7 @@ The exact doctrine names depend on the installed graph.
 
 - empty Army domain
 - infantry-heavy force
-- limited armor production
+- limited armour production
 - large manpower reserve
 - defensive or broad-front war
 
@@ -199,15 +193,14 @@ Infantry, mass, defensive, or irregular approaches should rise according to the 
 
 **State**
 
-- historical AI plan prefers one Grand Doctrine
-- current force composition strongly favors another
-- the historical plan remains active
+- the country's native AI preference favours one Grand Doctrine
+- current force composition strongly favours another
 
-**Expected behavior**
+**Expected behaviour**
 
-The result should reflect the intended balance between country identity and campaign evidence. A strong historical preference can lead, but severe campaign mismatch should reduce its dominance.
-
-The audit must report ordering under both historical and alternate AI plans.
+The result should balance country identity against campaign evidence.
+A strong native preference can lead, but a severe campaign mismatch should reduce its dominance.
+The audit reports the ordering with and without the native country factor.
 
 ### DR-B04: Invalid doctrine candidate
 
@@ -227,13 +220,14 @@ The invalid candidate has zero participation and cannot be selected.
 **State**
 
 - active Army Grand Doctrine
-- armor branch one event mastery step from completion
-- country fields armored divisions and produces tanks
+- armour branch one mastery step from completion
+- country fields armoured divisions and produces tanks
 - infantry branch has lower levels and moderate relevance
 
 **Expected ordering**
 
-Armor should lead clearly. Completion and force fit reinforce each other.
+Armour should lead clearly.
+Completion and force fit reinforce each other.
 
 ### DR-C02: Near-complete irrelevant branch
 
@@ -245,7 +239,8 @@ Armor should lead clearly. Completion and force fit reinforce each other.
 
 **Expected ordering**
 
-The land branch should lead. Completion value alone should not overpower a severe strategic mismatch.
+The land branch should lead.
+Completion value alone should not overpower a severe strategic mismatch.
 
 ### DR-C03: Empty track fills missing capability
 
@@ -258,7 +253,8 @@ The land branch should lead. Completion value alone should not overpower a sever
 
 **Expected ordering**
 
-An eligible operations or logistics branch should gain enough value to compete strongly. The AI should be able to select a new branch and should not always stack existing branches.
+An eligible operations or logistics branch should gain enough value to compete strongly.
+The AI should be able to select a new branch and should not always stack existing branches.
 
 ### DR-C04: Four equal tracks
 
@@ -270,9 +266,11 @@ An eligible operations or logistics branch should gain enough value to compete s
 - no immediate completion
 - four-choice batch
 
-**Expected behavior**
+**Expected behaviour**
 
-Seeded simulation should show bounded variation and meaningful distribution. One fixed track should not win every choice. Continuity can produce some stacking, but the AI should frequently develop more than one track.
+Seeded simulation should show bounded variation and meaningful distribution.
+One fixed track should not win every choice.
+Continuity can produce some stacking, but the AI should frequently develop more than one track.
 
 ### DR-C05: One dominant track
 
@@ -282,9 +280,10 @@ Seeded simulation should show bounded variation and meaningful distribution. One
 - other branches have weak or neutral fit
 - five-choice batch
 
-**Expected behavior**
+**Expected behaviour**
 
-The AI should stack several choices in the dominant branch and finish it when possible. After completion, it must recalculate and move to the next valid target.
+The AI should stack several choices in the dominant branch and finish it when possible.
+After completion, it must rescore and move to the next valid target.
 
 ### DR-C06: Branch completes between choices
 
@@ -293,9 +292,10 @@ The AI should stack several choices in the dominant branch and finish it when po
 - first Event 027 choice advances a branch
 - native faction sharing or combat completes it before the second choice resolves
 
-**Expected behavior**
+**Expected behaviour**
 
-The second choice pool excludes the completed branch. The AI does not waste a choice or use a stale score.
+The second choice pool excludes the completed branch.
+The AI does not waste a choice or use a stale score.
 
 ### DR-C07: Banked mastery on empty track
 
@@ -305,11 +305,12 @@ The second choice pool excludes the completed branch. The AI does not waste a ch
 - enough banked mastery to unlock one or more native levels on branch selection
 - several eligible subdoctrines
 
-**Expected behavior**
+**Expected behaviour**
 
-The selected branch follows AI fit. Native banked progress remains intact. Event attribution records at most one additional event mastery step.
-
-The scenario remains unresolved until the local engine sequence is proven.
+The selected branch follows AI fit, and a banked or fitting subdoctrine clearly leads.
+Native banked progress remains intact.
+Event attribution records at most one additional mastery step.
+The banked level the AI reads for an unassigned subdoctrine is a live check.
 
 ## Scenario group D: Custom doctrine selection
 
@@ -318,15 +319,15 @@ The scenario remains unresolved until the local engine sequence is proven.
 **State**
 
 - Chaos Warfare establishment prerequisites satisfied
-- doctrine not yet selected
+- `land` folder empty
 - chemical and biological investment
 - fielded CBRN headquarters and support formations
 - active unconventional-warfare plan
-- ordinary Army domain also valid
 
 **Expected ordering**
 
-Chaos Warfare should compete strongly and may lead. It must remain a valid domain adoption. It cannot become a direct downstream unlock.
+Chaos Warfare should compete strongly with the Army Grand Doctrines for the empty `land` folder and may lead.
+It remains an adoption and never becomes a direct downstream unlock.
 
 ### DR-D02: CBRN-unready ordinary country
 
@@ -345,34 +346,34 @@ Chaos Warfare is absent from the candidate pool.
 **State**
 
 - Chaos Warfare active
-- Hazard Assault formations fielded
-- limited armored-delivery equipment
+- Hazard Assault battalions fielded
+- limited armoured-delivery detachments
 - limited projector batteries
 - four valid tracks
 
 **Expected ordering**
 
-Hazard Assault Formations should lead. Integrated CBRN Command may compete when headquarters and protection systems are strong.
+The Infantry track (Hazard Assault Formations) should lead.
+The Operations track (Integrated CBRN Command) may compete when headquarters and protection systems are strong.
 
-### DR-D04: Active Chaos Warfare, theater command need
+### DR-D04: Active Chaos Warfare, theatre command need
 
 **State**
 
 - strong CBRN headquarters network
 - active contamination and biological threats
-- air and surface coordination need
-- several operations gates approaching
+- several operation gates approaching
 
 **Expected ordering**
 
-Integrated CBRN Command should lead or compete strongly.
+The Operations track (Integrated CBRN Command) should lead or compete strongly.
 
 ### DR-D05: Special nonhuman country without adapter
 
 **State**
 
-- live special country
-- no coherent ordinary or custom doctrine adapter
+- live special country classified as actually nonhuman
+- no Kruger exception and no custom adapter
 
 **Expected result**
 
@@ -388,7 +389,9 @@ No candidate and no fabricated doctrine reward.
 
 **Expected result**
 
-The country participates through that adapter. Identity classification alone does not suppress it.
+The country participates through that adapter.
+Identity classification alone does not suppress it.
+No current special country registers such an adapter, so this scenario applies to the first one that does.
 
 ## Scenario group E: Multi-choice sequence
 
@@ -402,7 +405,8 @@ The country participates through that adapter. Identity classification alone doe
 
 **Expected sequence**
 
-Choice 1 can adopt the Grand Doctrine. Choice 2 can select or advance one track in the newly active doctrine.
+Choice 1 can adopt the Grand Doctrine.
+Choice 2 can assign or advance one track in the newly active doctrine.
 
 ### DR-E02: Evolution II mixed services
 
@@ -410,12 +414,13 @@ Choice 1 can adopt the Grand Doctrine. Choice 2 can select or advance one track 
 
 - three-choice batch
 - Army active with one high-value branch
-- Navy empty with credible maritime plan
+- Navy empty with a credible maritime plan
 - Air active with moderate value
 
-**Expected behavior**
+**Expected behaviour**
 
-The AI may stack Army, adopt Navy, or split across services according to score. Scores must recalculate after Navy adoption.
+The AI may stack Army, adopt Navy, or split across services according to score.
+Scores must be recalculated after the Navy adoption.
 
 ### DR-E03: Evolution III broad curriculum
 
@@ -424,9 +429,10 @@ The AI may stack Army, adopt Navy, or split across services according to score. 
 - four-choice batch
 - four tracks with close scores
 
-**Expected behavior**
+**Expected behaviour**
 
-Distribution across several tracks should occur often enough that the AI can use broad-development play. The exact rate is a balance target chosen by the parent after evidence.
+Distribution across several tracks should occur often enough that the AI uses broad development.
+The exact rate is a balance target chosen by the parent after evidence.
 
 ### DR-E04: Evolution IV branch completion
 
@@ -435,9 +441,10 @@ Distribution across several tracks should occur often enough that the AI can use
 - five-choice batch
 - one fresh five-level branch is the clear strategic fit
 
-**Expected behavior**
+**Expected behaviour**
 
-The AI can direct all five choices into the branch and complete it. This should be possible, not guaranteed in every close-score case.
+The AI can direct all five choices into the branch and complete it.
+This should be possible, not guaranteed in every close-score case.
 
 ### DR-E05: Queue with different stages
 
@@ -448,7 +455,9 @@ The AI can direct all five choices into the branch and complete it. This should 
 
 **Expected sequence**
 
-The first batch remains one choice. The second begins with three choices after the first closes. No merge into four choices occurs.
+The first batch remains one choice.
+The second begins with three choices after the first closes.
+No merge into four choices occurs.
 
 ### DR-E06: Evolution unlock during batch
 
@@ -459,44 +468,48 @@ The first batch remains one choice. The second begins with three choices after t
 
 **Expected sequence**
 
-The active batch remains two choices. The next normal firing grants three.
+The active batch remains two choices.
+The next normal firing grants three.
 
 ## Scenario group F: Repeatable-event and cluster selection
+
+The shared picker selects across every registered event, not only repeatable ones.
+A firing resets Event 027's weight and halves its maximum cap, and weight recovers on the minor and major event pacing pulses rather than on a monthly hook.
+Scenarios in this group must bind that real pool and cadence before they claim a probability.
 
 ### DR-F01: Initial event pool
 
 **State**
 
 - Event 027 enabled and unfired
-- complete current repeatable-event pool declared
-- baseline recovery and cap settings
+- the complete current automatic-selection pool declared, with live eligibility, weights, and caps
 
 **Expected evidence**
 
-Report Event 027's normalized chance and ranking without assuming it dominates because it has default starting weight.
+Event 027's normalised chance and rank, without assuming dominance from its default starting weight.
 
 ### DR-F02: After first firing
 
 **State**
 
-- Event 027 has fired once
-- its cap has been reduced through the shared repeatable system
-- scheduled monthly recovery declared
+- Event 027 has fired once, its cap halved
+- recovery declared per event pacing pulse
 
 **Expected evidence**
 
-Show the event's bounded recovery and lower cap relative to unfired repeatable events.
+Bounded recovery and a lower cap than unfired events.
 
 ### DR-F03: Sequence through four firings
 
 **State**
 
 - complete event-pool manifest
-- timer cadence, monthly recovery, cap reduction, event removals, major reset behavior, and cluster behavior declared
+- timer cadence, pulse recovery, cap reduction, event removals, major reset behaviour, and cluster behaviour declared
 
 **Expected evidence**
 
-Use sequence analysis only when the complete pool is available. Determine whether Event 027 can recur at a reasonable declining frequency and whether it starves other positive events.
+Whether Event 027 recurs at a reasonable declining frequency and whether it starves other positive events.
+Sequence analysis is valid only with the complete pool.
 
 ### DR-F04: Event 027 optional cluster member
 
@@ -504,11 +517,12 @@ Use sequence analysis only when the complete pool is available. Determine whethe
 
 - another National Breakthroughs member selected
 - Event 027 eligible
-- complete cluster member pool and participation factors declared
+- complete member pool and participation factors declared
 
 **Expected evidence**
 
-Evaluate Event 027's optional participation and total cluster-size distribution. The cluster should usually produce a limited group, not every member.
+Event 027's optional participation and the total cluster-size distribution, which should usually stay at two or three members.
+This scenario cannot be built until a second member joins the runtime cluster.
 
 ### DR-F05: Event 027 selected cluster member
 
@@ -519,51 +533,43 @@ Evaluate Event 027's optional participation and total cluster-size distribution.
 
 **Expected result**
 
-Event 027 fires once as the guaranteed selected member. No optional-member logic can schedule a second fanout.
+Event 027 fires once as the guaranteed member, and no optional-member logic schedules a second fanout.
+Source flow already shows the trigger row is excluded from the optional roll and dispatched first; no activation probability has been measured.
 
 ## Scenario group G: Human parity and validity
 
 ### DR-G01: Human and AI pool parity
 
-For a fixed country state, inspect the human-visible valid pool and AI candidate pool.
+For a fixed country state, inspect the human-visible valid pool and the AI candidate pool.
 
 **Expected result**
 
-Every AI candidate is a valid human action, and every valid human action can enter AI scoring. Human navigation pages do not create hidden extra doctrine options.
+Every AI candidate is a valid human action, and every valid human action can enter AI scoring.
+Human navigation pages create no hidden extra doctrine options, and the general staff option (R5, pending) uses the AI pool unchanged.
 
 ### DR-G02: DLC matrix
 
-Evaluate all supported DLC combinations that change doctrine content.
+Evaluate every supported DLC combination that changes doctrine content.
 
 **Expected result**
 
-Unavailable content has zero participation. Available domains preserve their current graph and order. Conditional adapters activate only under proven rules.
+Unavailable content has zero participation.
+Available domains keep their current graph and order.
+Conditional adapters activate only under proven rules.
 
 ### DR-G03: Invalid adapter injection
 
-Introduce a test adapter with a missing branch identity or unknown maximum mastery.
+Introduce a test adapter with a missing branch identity or an unknown maximum level.
 
 **Expected result**
 
-The adapter fails closed. Other domains remain valid. No bad subdoctrine reaches a mastery trigger or effect.
+The adapter fails closed.
+Other domains remain valid.
+No bad subdoctrine reaches a mastery trigger or effect.
 
-## Required comparison report
+## Reporting
 
-The final probability audit should include:
+The final audit lists, per surface, the baseline and patched scenario IDs, evidence type, pool completeness, whether the intended ordering is met, and the remaining uncertainty.
+It highlights any candidate that dominates unrelated scenarios, any valid domain that is starved, any invalid candidate with positive weight, any sequence where Event 027 recurs too often, any evolved curriculum where the AI fails to rescore, any custom doctrine whose score ignores owner readiness, and any difference between human and AI pools.
 
-| Surface | Baseline scenario IDs | Patched scenario IDs | Evidence type | Pool completeness | Intended ordering met | Remaining uncertainty |
-| --- | --- | --- | --- | --- | --- | --- |
-
-The report should highlight:
-
-- any candidate that dominates across unrelated scenarios
-- any valid domain that is consistently starved
-- any invalid candidate with positive weight
-- any sequence where Event 027 recurs too frequently
-- any evolved batch where AI fails to recalculate
-- any custom doctrine whose score ignores owner-system readiness
-- any difference between human and AI candidate pools
-
-## Acceptance standard
-
-Weighted logic is ready when the named scenarios demonstrate the intended ordering, invalid candidates remain at zero, bounded randomness preserves variety, multi-choice batches recalculate after every action, and post-patch comparison shows no new dominance or starvation problem.
+Weighted logic is ready when the named scenarios show the intended ordering, invalid candidates stay at zero, bounded randomness preserves variety, multi-choice curricula rescore after every action, and the post-patch comparison shows no new dominance or starvation.

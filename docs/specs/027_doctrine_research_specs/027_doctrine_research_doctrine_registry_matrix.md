@@ -2,277 +2,108 @@
 
 ## Purpose
 
-Event 027 needs one stable doctrine-domain registry. The registry lets the event support current vanilla domains, DLC domains, Chaos Warfare, and future custom doctrine families without hardcoding every choice into the global fanout.
+The registry lets Event 027 serve vanilla domains, DLC domains, Chaos Warfare, and future custom doctrine families without hardcoding choices into the firing.
+This file owns the adapter contract.
+The implemented adapters live in `common/scripted_triggers/027_doctrine_research_triggers.txt` and `common/scripted_effects/027_doctrine_research_exact_mastery_effects.txt`, and the overview's Domains section describes them.
 
-This document defines the design contract. The coding agent must map it to current repository patterns after doctrine graph inspection.
+## Principles
 
-## Registry principles
+- A domain enters the pool only when its adapter can answer every question a safe choice needs.
+- Adapters fail closed: a broken custom domain hides itself and never removes a valid ordinary domain.
+- The registry keeps native order and identity, and never renames, merges, or flattens tracks.
+- Queries run at country scope during a firing or a choice, never as a recurring world scan.
+- No unknown subdoctrine identity ever reaches a mastery trigger or effect, because a bad identity in `has_mastery_level` has crashed the game before (official 1.17.1 patch notes).
 
-A doctrine domain enters Event 027 only when its adapter can answer every question needed for a safe country choice.
+## Adapter contract
 
-The adapter must fail closed. A valid Army domain can remain available when a broken custom domain is hidden.
-
-The registry preserves the doctrine interface's order and identity. It does not rename tracks, merge branches, or flatten several doctrine domains into one generic pool.
-
-The event queries the registry at country scope. It does not run a recurring whole-world doctrine scan.
-
-## Required adapter contract
-
-| Contract field | Required answer |
+| Field | Required answer |
 | --- | --- |
-| Stable domain identity | One stable ID that remains distinct from display text. |
-| Display identity | Dynamic domain name and verified domain icon. |
-| Country eligibility | Whether the current country can use the domain under its DLC, origin, route, and owner-system rules. |
-| Grand Doctrine state | Whether one Grand Doctrine is active and which doctrine it is. |
-| Grand Doctrine adoption pool | Every Grand Doctrine the country can currently adopt when the domain is empty. |
-| Grand Doctrine adoption action | A safe native or owner-system action that selects exactly one eligible Grand Doctrine. |
-| Track order | Every track identity in the order used by the doctrine interface. |
-| Track display | Track name and icon when available. |
-| Selected subdoctrine | Current selected branch for each track, or an empty state. |
-| Empty-track pool | Every subdoctrine the country can currently select in an empty track. |
-| Subdoctrine selection action | A safe action that selects one eligible branch without replacing an existing branch. |
-| Current mastery level | Whole-number level after native banked mastery and other effects are resolved. |
-| Maximum mastery level | Exact branch maximum, with no assumption that every branch has five levels. |
-| One-step advancement | A safe action that grants exactly one event-attributed mastery step. |
-| Completion state | Whether the branch is complete and whether the track's native Grand Doctrine Milestone is active. |
-| Native banked mastery behavior | How banked mastery resolves when the branch is selected or completed. |
-| AI domain factors | Country state that makes this domain relevant or irrelevant. |
-| AI doctrine factors | Strategy factors for eligible Grand Doctrines. |
-| AI branch factors | Force, production, theater, route, and completion factors for tracks and subdoctrines. |
-| DLC and feature gate | Exact content ownership and ruleset conditions. |
-| Icon ownership | Verified sprites for domain, Grand Doctrine, track, and subdoctrine display. |
-| Cleanup contract | How stale owner-system state is removed and how the adapter reports invalid state. |
-| Documentation owner | Source document that explains the doctrine family and its public behavior. |
+| Domain identity | A stable ID distinct from display text, and its native folder. |
+| Display | Localised domain name and a verified doctrine-owned icon. |
+| Eligibility | DLC, origin, route, and owner-system conditions for the current country. |
+| Grand Doctrine state | Whether the folder has an active Grand Doctrine and which one. |
+| Adoption pool and action | Every adoptable Grand Doctrine and a native or owner action that adopts exactly one without replacing anything. |
+| Tracks | Every track identity and index in native order, with name and icon. |
+| Selected subdoctrine | The held branch per track, or empty. |
+| Empty-track pool and action | Every assignable subdoctrine and an action that assigns one without replacing a branch. |
+| Levels | Current level after banked mastery resolves, and the exact maximum per branch. |
+| One-step advancement | An action that grants exactly one event-attributed level. |
+| Completion | Branch completion and the track's native Milestone state. |
+| Banked mastery | How the bank resolves on assignment and completion. |
+| AI factors | Domain, Grand Doctrine, track, and subdoctrine factors drawn from visible force structure, identity, route, threats, or owner-system state. |
+| Cleanup | How stale owner-system state is removed and how invalid state is reported. |
+| Documentation owner | The document that explains the doctrine family. |
 
 ## Domain matrix
 
-| Domain | Baseline status | Grand Doctrine model | Track model | Event 027 treatment | Main validation risk |
-| --- | --- | --- | --- | --- | --- |
-| Army | Required | Current vanilla Army Grand Doctrines | Arbitrary registered tracks, commonly infantry, armor, combat support, and operations | Adopt one eligible Army Grand Doctrine or advance one valid Army subdoctrine track. | Exact one-level effect and banked mastery order. |
-| Navy | Required when available in current ruleset | Current vanilla Navy Grand Doctrines | Current naval tracks and subdoctrines | Adopt one eligible Navy Grand Doctrine or advance one valid naval track. | DLC topology, domain icon consumer, and naval AI strategy. |
-| Air | Required when available in current ruleset | Current vanilla Air Grand Doctrines | Current air tracks and subdoctrines | Adopt one eligible Air Grand Doctrine or advance one valid air track. | DLC topology and air AI strategy. |
-| Supported Special Forces content | Conditional | Include only when the installed graph exposes a compatible doctrine hierarchy | Use the installed track structure | Participate through its own adapter only in states with a provable branch-to-track identity; omit an ambiguous occupied-track state. | Current version and DLC model must be proven. |
-| Chaos Warfare | Required custom domain | Conditional `chaos_warfare` Grand Doctrine | Four project tracks with five mastery levels each | Respect establishment gates, then advance only through the owning mastery route. | Bypassing equipment, formation, policy, readiness, technology, or operation state. |
-| Future custom domain | Registry extension | Owner-defined | Owner-defined arbitrary track structure | Participate only after full adapter, AI, asset, and documentation coverage. | Incomplete callback surface or unsupported mastery semantics. |
+| Domain | Native folder | Tracks | Status |
+| --- | --- | --- | --- |
+| Army | `land` | Infantry, Combat Support, Armor, Operations | Implemented; available while the folder holds no Chaos Warfare. |
+| Navy | `naval` | Submarines, Screens, Carriers, Capital Ships | Implemented. |
+| Air | `air` | Fighter, Strike, Medium, Heavy Aircraft | Implemented. |
+| Special Forces | `special_forces` | First and Second Special Forces | Implemented behind the installed DLC and technology gates; see below. |
+| Chaos Warfare | `land` | The four Army tracks, one Chaos Warfare subdoctrine each | Implemented behind the CBRN establishment gate; see below. |
+| Future custom | owner-defined | owner-defined | Disabled until a complete adapter is registered. |
 
-## Army domain expectations
+Army and Chaos Warfare share the `land` folder, so folder-owned emptiness checks name each domain's own subdoctrine identities and keep an Army Infantry row and a Chaos Warfare Infantry row apart.
 
-The Army adapter should expose the current installed Grand Doctrine and track graph without assuming the September 2025 work-in-progress examples are final.
+### Mastery step mechanism
 
-The adapter should preserve:
+Every supported branch advances through the native `add_mastery` route, one point at a time, re-reading the level until it reaches exactly the next level.
+The guard stops at the level's reward cost, scaled for negative mastery gain factors, and an unresolved readback ends the step as ambiguous without spending a choice.
+The 125 `<doctrine>_mastery_gain_factor` names read through `modifier@` are pre-registered in `common/synchronized_dynamic_tokens/027_doctrine_research_tokens.txt`; a new `modifier@` read adds its name there.
+Same-effect readback after `add_mastery` and the gain-factor behaviour are live checks.
 
-- the installed doctrine names
-- the installed track order
-- one selected subdoctrine per track
-- branch-specific mastery thresholds
-- native Grand Doctrine Milestone behavior
-- native doctrine and branch AI preferences
-- all current DLC and country restrictions
+### Special Forces
 
-The Event 027 Army page should show only tracks that can receive one event mastery step.
+Each of the eight Special Forces subdoctrines can occupy either native track and is mutually exclusive with its sibling, while native mastery is read per subdoctrine.
+The adapter therefore grants and reads Special Forces mastery by folder and subdoctrine, keeps the selected track label on the receipt, and excludes an empty-track candidate whose sibling already holds a track.
+While both tracks are occupied, the first entry covers both held subdoctrines and the second entry stays hidden, so the domain stays available instead of disappearing.
+A Special Forces entry reports the Milestone of the subdoctrine it shows, because completing a subdoctrine completes whichever track holds it.
 
-## Navy domain expectations
+### Chaos Warfare
 
-The Navy adapter should treat maritime relevance as AI strategy, not human availability.
+Chaos Warfare is the `chaos_warfare` Grand Doctrine in the `land` folder, adoptable only while the folder is empty and `cbrn_chaos_warfare_adoption_capable` holds.
+Its tracks keep their compatibility identities:
 
-A landlocked human country may select Navy doctrine when the native system permits it. A landlocked AI country normally scores the domain very low unless its focus route, future expansion, subject network, or scripted strategy gives it a credible maritime plan.
+| Track | Subdoctrine | Compatibility ID |
+| --- | --- | --- |
+| Infantry | Hazard Assault Formations | `extermination_columns` |
+| Armor | Toxic Armored Warfare | `chemical_suppression` |
+| Combat Support | Contaminant Fire Support | `contaminant_firebases` |
+| Operations | Integrated CBRN Command | `integrated_chemical_operations` |
 
-The adapter must use current naval doctrine topology. It should not assume that every naval branch, track, or mastery source exists without the required DLC.
+Native mastery runs the reward effects in `common/doctrines/subdoctrines/land/chaos_warfare_*_subdoctrines.txt`, so the CBRN institutional flags, technology grants, operation gates, and officer-corps state update through the owner's own route.
+Event 027 waives only the doctrine cost, never the establishment package, and never converts a level into a direct unit, operation, policy, or equipment unlock.
+The CBRN system documentation is `docs/systems/cbrn_warfare/chaos_warfare_doctrine.md`.
 
-## Air domain expectations
+## Registering a future custom domain
 
-The Air adapter should preserve the current domain's separation between broad doctrine choice and track-specific mastery.
+A system that adds a doctrine family registers it in this order:
 
-AI should consider actual aircraft production, wings, mission plans, airbase capacity, enemies, and strategic route. The adapter should not use a fixed major-country bonus as a substitute for air relevance.
+1. Name the owner system, the stable domain ID, and the native folder.
+2. Document the hierarchy and its player-facing purpose.
+3. Provide every contract field above.
+4. Prove the one-step action against the doctrine graph, including banked mastery.
+5. Provide AI factors drawn from real state, never a bonus for the adapter merely existing.
+6. Verify icons on the event pages.
+7. Add DLC, route, and special-country gates, and an exception in `doctrine_research_country_has_doctrine_system` if the owner is a country the nonhuman classifier excludes.
+8. Add cleanup and invalidation behaviour.
+9. Add scenarios to the probability file and update this matrix and the overview.
 
-## Supported Special Forces expectations
+A family that only adds branches to an existing folder extends that domain's adapter.
+A new domain is justified only by a distinct high-level selection, track registry, mastery state, AI identity, and player-facing role.
 
-Special Forces content remains conditional because its exact current doctrine structure must be inspected in the installed game and DLC setup.
+## Valid actions
 
-The adapter can be enabled when all of these are proven:
-
-- one stable doctrine-domain identity
-- eligible doctrine or track selection
-- selected branch identity
-- mastery levels
-- exact one-step advancement
-- icons
-- AI strategy
-- DLC gate
-
-If current Special Forces content uses a different model, Event 027 should omit it until an owner-specific adapter is designed. The event should not translate it into Army mastery or generic experience.
-
-Current-ruleset disposition: the installed Special Forces graph permits the same eight subdoctrine identities in either of its two native tracks, while the exposed mastery readback is subdoctrine-wide. Event 027 therefore supports adoption, empty-track assignment, and active mastery when the selected track identity is unambiguous, including the case where only one native track is occupied. When both native tracks are occupied, Special Forces is explicitly absent from the Event 027 pool for that country state until an owner-specific identity proof exists. This is a fail-closed absence, not a fallback reward or a translation into another doctrine domain.
-
-## Chaos Warfare adapter expectations
-
-The Chaos Warfare adapter must use the owning system's established compatibility IDs:
-
-| Public track | Compatibility identity |
+| Action | Valid when |
 | --- | --- |
-| Hazard Assault Formations | `extermination_columns` |
-| Toxic Armored Warfare | `chemical_suppression` |
-| Contaminant Fire Support | `contaminant_firebases` |
-| Integrated CBRN Command | `integrated_chemical_operations` |
+| Adoption | The domain is eligible, its folder has no active Grand Doctrine, the doctrine exists and passes DLC, country, and owner gates, and adoption replaces nothing. |
+| Assigned-track step | The domain and Grand Doctrine are valid, the track holds a known subdoctrine below its maximum, and the step action is available. |
+| Empty-track step | The domain and Grand Doctrine are valid, the track is empty, at least one subdoctrine can be assigned, and assignment plus one step is safe. |
 
-The adapter must expose the public name while using the correct internal identity.
+## Outputs
 
-### Grand Doctrine establishment
-
-Chaos Warfare adoption through Event 027 is available only when the country satisfies the owning system's establishment rules. The supplied mechanics guide identifies equipment and fielded-formation requirements. The implementation must read the current doctrine documentation and source for the complete active gate.
-
-The event waives the doctrine purchase cost. It does not waive the establishment package.
-
-### Track advancement
-
-Each track's event mastery step must enter through the same state transition used by normal Chaos Warfare mastery.
-
-Directly setting a visible level while skipping the owner-system transition is invalid because later systems may read:
-
-- compatibility IDs
-- mastery-level flags or variables
-- operation eligibility
-- equipment or formation qualification
-- doctrine capstones
-- officer-corps effects
-- Condemnation multipliers
-- AI state
-- documentation and event detail state
-
-### Downstream requirements
-
-A mastery level can be earned while a separate downstream technology, equipment, formation, policy, or readiness gate remains unmet. The downstream content stays locked until that gate is satisfied.
-
-Event 027 should not convert a mastery grant into the direct unlock of a custom unit, chemical operation, policy, or equipment type.
-
-## Future custom doctrine registration
-
-A future event or system that adds a doctrine family can register it for Event 027 after completing this sequence:
-
-1. Identify the owner system and stable domain ID.
-2. Document the doctrine hierarchy and player-facing purpose.
-3. Provide every adapter contract field.
-4. Prove the one-step mastery action with doctrine graph inspection and comparison.
-5. Provide AI domain, doctrine, and branch factors.
-6. Verify icons and event-page consumers.
-7. Add DLC, route, and special-country gates.
-8. Add save, cleanup, and invalidation behavior.
-9. Add Event 027 scenario coverage.
-10. Update the doctrine-domain matrix and Event 027 documentation.
-
-An owner should extend an existing domain adapter when it adds branches to that domain. It should create a new domain only when the doctrine family has a distinct high-level selection, track registry, mastery state, AI identity, and player-facing role.
-
-## Option-pool contract
-
-The registry returns only actions that can succeed now.
-
-### Valid Grand Doctrine adoption
-
-A Grand Doctrine is valid when:
-
-- the domain is eligible
-- the domain has no active Grand Doctrine
-- the doctrine exists in the current graph
-- required DLC is active
-- country and route restrictions pass
-- selection does not replace progress
-- the owner-system adoption action is available
-
-### Valid active-track mastery
-
-A selected branch is valid when:
-
-- its domain and Grand Doctrine are valid
-- the track exists
-- the selected subdoctrine exists
-- the current level is below maximum
-- the one-step advancement action is available
-
-### Valid empty-track mastery
-
-An empty track is valid when:
-
-- its domain and Grand Doctrine are valid
-- the track exists and has no selected branch
-- at least one eligible subdoctrine exists
-- branch selection is safe
-- banked mastery behavior is understood
-- one event mastery step can be applied without corrupting native progress
-
-## Registry output needed by human pages
-
-For each visible domain or branch, the adapter should make these public values available:
-
-- localized name
-- icon
-- selected or unselected state
-- current mastery level
-- next mastery level
-- maximum level
-- track completion state
-- native Milestone state when relevant
-- concise blocked reason when a visible action can become invalid during confirmation
-
-The event page should not reconstruct these values from hardcoded English names or branch-number assumptions.
-
-## Registry output needed by AI
-
-The adapter should return scores or score factors for:
-
-- domain relevance
-- eligible Grand Doctrine fit
-- track relevance
-- subdoctrine fit in an empty track
-- completion value
-- continuity value
-- route-specific preference
-- hard invalidation
-
-AI factors can call owner-system triggers. They should not duplicate large custom-system state tables inside Event 027.
-
-## Registry output needed by achievements
-
-Every successful mastery receipt needs stable identities for:
-
-- batch
-- domain
-- Grand Doctrine
-- track
-- subdoctrine
-- event-attributed mastery step number
-- branch completion at batch close
-
-Achievement tracking should use stable IDs. Localized names and icons can change without breaking records.
-
-## Graph validation expectations
-
-Before and after implementation, the coding agent must use the current HOI4 MCP doctrine and technology routes to inspect:
-
-- folders and domains
-- Grand Doctrine placements
-- track identities and order
-- subdoctrine identities
-- prerequisites and exclusivity
-- mastery levels and thresholds
-- unlocks and native Milestones
-- effects used by mastery grants
-- icons and texture references
-- DLC-dependent graph differences
-- Chaos Warfare graph and references
-
-The implementation comparison must prove that Event 027 adds grant and query behavior without altering the doctrine graph itself unless an accepted graph repair is separately required.
-
-## Registry acceptance criteria
-
-The registry is ready when:
-
-- every required domain has a complete adapter
-- every conditional domain is either complete or explicitly absent from the current ruleset
-- no invalid branch can reach a doctrine effect
-- one event mastery step is proven for every supported branch family
-- banked mastery sequence behavior is documented
-- human option order matches the doctrine interface
-- AI can score every supported domain
-- achievements receive stable domain and track identities
-- custom-system cleanup removes stale options
-- local graph, assets, and DLC combinations pass the named acceptance scenarios
+Human pages need the localised name, icon, selected state, current, next, and maximum level, and completion and Milestone state, all read from the adapter rather than from English names or branch-number assumptions.
+The AI needs domain, Grand Doctrine, track, and subdoctrine factors, completion and continuity values, and hard invalidation.
+Achievements need stable identities for curriculum, domain, Grand Doctrine, track, subdoctrine, the step's pre- and post-level, and branch completion, so renamed text or icons never break records.

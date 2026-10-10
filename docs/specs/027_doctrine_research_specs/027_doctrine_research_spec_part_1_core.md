@@ -1,289 +1,192 @@
 # Event 027: Doctrine Research
 
+## Part 1: Core rules
+
+Status markers used in this package: **implemented** means the rule exists in the current source and is described in `docs/events/027_doctrine_research/overview.md`, **pending** means the rule is accepted or proposed but not yet in source, and **live check** means the source exists but depends on engine behaviour that only a live session can confirm.
+The README holds the acceptance basis for each status.
+
 ## Catalog identity
 
-| Field | Accepted specification |
+| Field | Specification |
 | --- | --- |
 | Event ID | `27` |
 | Event name | Doctrine Research |
+| Entry event | `chaosx.nr27.1` (console bridge); ordinary dispatch calls the firing transaction directly |
 | Type | Minor Repeatable |
-| Status during specification | To Be Reworked |
-| Recommended minimum chaos level | Calm World |
-| Cluster | National Breakthroughs |
-| Recommended member severity | Medium |
-| Main effect | Every valid country receives a doctrine-development batch. |
-| Baseline batch size | One choice per country. |
-| Maximum evolved batch size | Five choices per country at Evolution IV. |
+| Minimum chaos level | Calm World |
+| Cluster | National Breakthroughs (cluster `9`, runtime member row `9001`) |
+| Member severity | Medium |
+| Main effect | Every valid country receives a doctrine curriculum of one to five choices. |
+| Baseline curriculum size | One choice per country. |
+| Maximum curriculum size | Five choices per country at Evolution IV. |
 
 ## Event promise
 
-Doctrine Research represents a worldwide burst of military learning. General staffs compare recent campaigns, translate captured manuals, rebuild field exercises, test new formations, and turn practical lessons into doctrine. The event gives every country a meaningful doctrinal choice without replacing normal combat mastery, military experience, faction sharing, focus rewards, or decision rewards.
+Doctrine Research represents a worldwide burst of military learning.
+General staffs compare recent campaigns, translate captured manuals, rebuild field exercises, and turn practical lessons into doctrine.
+Every country receives a doctrinal choice that sits beside, and never replaces, combat mastery, military experience, faction sharing, focus rewards, or decision rewards.
 
-The player decides how concentrated the breakthrough becomes. One country may finish a nearly complete armored track. Another may begin naval doctrine. A third may divide an evolved batch across infantry, operations, air, and naval tracks. The event remains understandable at baseline and gains depth through the number of choices. Unrelated crisis mechanics are outside its design.
+The player decides how concentrated the breakthrough becomes.
+One country finishes a nearly complete armored track, another establishes its first naval doctrine, and a third spreads an evolved curriculum across infantry, operations, air, and naval tracks.
+The baseline event is complete on its own, and evolutions only increase the number of choices.
 
-The full ordinary event is complete at baseline. Evolutions increase the batch size. They do not replace the normal choice flow and do not create a separate doctrine system.
+## Terminology
 
-## Doctrine terminology
-
-The current doctrine model distinguishes Grand Doctrines, tracks, subdoctrines, mastery levels, and Grand Doctrine Milestones.
-
-For Event 027, the following terms are authoritative:
-
-| Term | Meaning in this specification |
+| Term | Meaning |
 | --- | --- |
-| Doctrine domain | One military doctrine family, such as Army, Navy, Air, an eligible Special Forces family, or Chaos Warfare. |
-| Grand Doctrine | The high-level doctrine selected inside one domain. |
-| Track | One category inside a Grand Doctrine. A track contains the subdoctrine choice for that category. |
+| Doctrine domain | One entry in the Event 027 domain menu: Army, Navy, Air, Special Forces, or Chaos Warfare. A domain maps to one native doctrine folder plus the Grand Doctrines it offers. |
+| Grand Doctrine | The high-level doctrine selected inside one native folder. |
+| Track | One category inside a Grand Doctrine that holds one selected subdoctrine. |
 | Subdoctrine | The selected branch inside a track. |
-| Mastery level | One reward level inside the selected subdoctrine. |
-| Event mastery step | Exactly one mastery-level advancement granted by one Event 027 choice. |
-| Grand Doctrine Milestone | The native reward attached to completing a track. Event text must not call an ordinary mastery step a Milestone. |
-| Batch | All choices granted to one country by one firing of Event 027. |
+| Mastery level | One native reward level inside a subdoctrine. |
+| Mastery step | Exactly one mastery level granted by one Event 027 choice. |
+| Grand Doctrine Milestone | The native reward attached to completing a track. A mastery step is never called a Milestone. |
+| Curriculum | The player-facing name for all choices one firing grants to one country. Script and documentation call it a batch. |
 
-The rough input uses `mastery milestone` for the repeated reward. The implementation and player-facing text should use `mastery level` or `mastery step` so the reward does not collide with the doctrine interface's separate Milestone concept.
+Player-facing text uses curriculum, choice, mastery level, and Milestone.
+It never uses batch, receipt, adapter, or queue.
 
-## Domain-scoped interpretation
-
-Each country can have doctrine state in several military domains. A country may have an Army Grand Doctrine while lacking a Navy Grand Doctrine. The event therefore evaluates doctrine adoption inside the domain selected for the current choice.
-
-A single choice follows this rule:
+## One choice
 
 1. The country selects one valid doctrine domain.
-2. If that domain has no active Grand Doctrine, the country selects and adopts one eligible Grand Doctrine in that domain.
-3. Grand Doctrine adoption consumes the choice and grants no event mastery step.
-4. If that domain already has an active Grand Doctrine, the country selects one eligible track and advances its selected subdoctrine by one mastery level.
-5. If the chosen track has no selected subdoctrine, the country selects one eligible subdoctrine for that track and receives the first event mastery step in the same choice.
+2. If the domain's native folder has no active Grand Doctrine, the country adopts one eligible Grand Doctrine. Adoption spends the choice and grants no mastery step.
+3. If the domain has an active Grand Doctrine, the country selects one track that can still advance and gains one mastery step in its subdoctrine.
+4. If that track is empty, the country first selects one eligible subdoctrine for it and receives the first mastery step in the same choice.
 
-This interpretation preserves the user's explicit rule that adopting the high-level doctrine consumes one choice without mastery. It also lets a country develop several military services over repeated firings instead of treating the first Grand Doctrine selected anywhere as the only doctrine it can ever adopt through the event.
+Rule 2 is the user's explicit brief: adopting the high-level doctrine consumes one choice without mastery.
+Domain scoping lets a country with an Army doctrine still adopt a Navy doctrine through a later choice or firing.
+All four steps are **implemented**; the empty-track assignment and its banked-mastery readback are a **live check**.
 
-## Baseline firing
+### Army and Chaos Warfare share one native folder
 
-At baseline, one random-event firing grants one choice to every valid country in the firing snapshot.
+Chaos Warfare is a native Grand Doctrine in the `land` folder, so it is an alternative to the Army Grand Doctrines and never coexists with one.
+The domain menu lists Army and Chaos Warfare as separate entries so the player can see the CBRN option, but both offer adoption only while the `land` folder is empty, and only one of them can offer mastery at a time.
+Chaos Warfare uses the four Army tracks, and each track holds one Chaos Warfare subdoctrine:
 
-For a country with at least one active Grand Doctrine and one eligible subdoctrine track, that choice can advance exactly one mastery level.
+| Track | Chaos Warfare subdoctrine | Compatibility ID |
+| --- | --- | --- |
+| Infantry | Hazard Assault Formations | `extermination_columns` |
+| Armor | Toxic Armored Warfare | `chemical_suppression` |
+| Combat Support | Contaminant Fire Support | `contaminant_firebases` |
+| Operations | Integrated CBRN Command | `integrated_chemical_operations` |
 
-For a country that selects a domain with no Grand Doctrine, that choice can adopt one eligible Grand Doctrine in that domain. It receives no event mastery step from that choice.
+## Costs and compensation
 
-For a country with several valid domains, the country chooses the domain. The event does not force Army doctrine merely because Army is the most common military domain.
-
-For a country with no valid doctrine options in any registered domain, the batch resolves without a substitute reward. A human country receives a concise closure report that explains that no eligible curriculum remains. An AI country closes the batch silently.
-
-## Country participation snapshot
-
-The participant set is fixed when Event 027 fires.
-
-A country belongs to the participant set when all of the following are true at the snapshot:
-
-- the country exists as a live country scope
-- the country is not an observer, placeholder carrier, or invalid system scope
-- at least one registered doctrine domain can produce a valid adoption or mastery option for that country
-- the country's doctrine state can be read and changed safely through the verified domain adapter
-
-Countries created after the snapshot receive no retroactive batch. They become eligible at the next normal firing.
-
-A country that disappears before resolving its batch loses the unresolved batch. Unused choices do not transfer to its annexer, overlord, civil-war opponent, successor, or liberator.
-
-A government that still exists in exile remains eligible if its doctrine state and event scope remain valid. A cosmetic tag, ideology change, puppet status change, faction change, or leadership change does not erase the batch.
-
-A civil war that begins after the snapshot does not duplicate the original batch. The country that owned the batch retains it when that scope remains valid. The newly created side waits for a later Event 027 firing.
-
-## Valid country families
-
-Ordinary countries, subjects, governments in exile, event-created human countries, and special Chaos countries may participate when they have a valid doctrine adapter.
-
-Special and nonhuman countries are not excluded by identity alone. Their participation depends on whether the owning event or system gives them a coherent doctrine domain and a safe mastery contract. A plague state with no normal doctrine system receives no fabricated Army doctrine. A Kruger sovereignty with a valid normal or custom doctrine graph may participate through that graph.
-
-The event must never invent a generic human doctrine package for a special country merely to satisfy global coverage.
-
-## Choice costs
-
-Event 027 represents the breakthrough itself. Grand Doctrine adoption and subdoctrine adoption performed through the event do not charge the normal military-experience purchase cost.
-
-The choice also does not provide a refund. A country that previously spent experience on doctrine receives no compensation.
-
-The event grants no Army, Navy, or Air experience. It grants no research bonus, technology, political power, command power, equipment, unit, spirit, or generic modifier alongside the doctrine result.
-
-Normal doctrine prerequisites, DLC ownership, branch eligibility, mutual exclusions, domain availability, and custom system gates continue to apply. The event waives the purchase cost for the selected valid doctrine action. It does not waive the existence and validity of that action.
+Event 027 waives the normal experience cost of the doctrine action it performs.
+It grants no refund for earlier spending and no experience, research bonus, technology, political power, command power, equipment, unit, spirit, or generic modifier.
+Native prerequisites, DLC ownership, mutual exclusions, and owner-system gates still apply.
+A country with no valid action receives no substitute reward, because compensation would favour the countries that already finished the most doctrine content.
 
 ## Grand Doctrine adoption
 
-When the selected domain lacks a Grand Doctrine, the country chooses among the Grand Doctrines that are currently eligible in that domain.
+Adoption activates the selected Grand Doctrine through the native doctrine system, spends one choice, grants no mastery step, selects no track automatically, and changes no other folder.
+The event never replaces an active Grand Doctrine and never changes a selected subdoctrine to a different branch.
+Replacement and respecialisation stay with the native doctrine screen.
 
-Adoption has these consequences:
+## Mastery steps
 
-- the selected Grand Doctrine becomes active through the native doctrine system
-- the current Event 027 choice is consumed
-- no event mastery step is granted
-- no track or subdoctrine is selected automatically
-- no other domain is changed
-- no existing doctrine progress in another domain is removed
-- normal immediate bonuses from Grand Doctrine adoption apply through the native system
+A track can receive a mastery step when it holds a subdoctrine below its maximum level, or when it is empty and at least one subdoctrine can be selected for it.
+One successful mastery choice advances exactly one level, whatever the branch's level count or mastery-point thresholds.
+Branches with fewer than five levels simply leave the pool earlier, and branches with more levels still receive one level per choice.
 
-The event never replaces an existing Grand Doctrine. A domain with an active Grand Doctrine proceeds to track development. Doctrine replacement, refund, reset, or late-game respecialization remains owned by the native doctrine system and other explicit content.
+The implementation reaches exactly the next level by granting mastery one point at a time and re-reading the level, with a guard scaled to the level's reward cost and the country's mastery gain factors (**implemented**, **live check** for same-effect readback).
+The overview owns the exact guard values.
 
-## Subdoctrine and mastery development
+### Banked mastery
 
-When the selected domain already has a Grand Doctrine, the country sees every track that can produce a valid event mastery step.
-
-A track is valid when one of these states applies:
-
-- it has a selected subdoctrine below its maximum mastery level
-- it has no selected subdoctrine and at least one eligible subdoctrine can be selected
-
-A selected subdoctrine at maximum mastery is not a valid target. A track with no eligible subdoctrine is not a valid target.
-
-If a track has an active subdoctrine, one successful choice advances that branch by exactly one event mastery step.
-
-If a track is empty, the country first chooses one eligible subdoctrine for that track. The event then grants the first event mastery step to that branch as part of the same choice. The normal subdoctrine purchase cost is waived.
-
-The event never changes a selected subdoctrine to a different branch. A country that wants to replace a branch uses the native replacement rules outside Event 027.
-
-## Banked mastery
-
-Native doctrine mastery can be banked before a subdoctrine is selected or after a branch is completed. Event 027 preserves that banked mastery.
-
-The event must resolve the country's current native state at the moment the final choice is confirmed. If selecting a subdoctrine causes banked mastery to unlock one or more native levels, those levels remain valid native progress. The event then applies one additional event mastery step when another level remains.
-
-If banked mastery or another effect completes the selected branch before the event grant is applied, the choice returns to the valid-target selection without consuming a choice.
-
-The event must not delete, cap, convert, or temporarily hide banked mastery to force the visible result to look like a one-level increase. Achievement tracking distinguishes event-attributed choices from native banked progress.
-
-## Exact advancement rule
-
-One successful choice consumes one choice and produces one of two event-attributed results:
-
-- one Grand Doctrine adoption with zero event mastery steps
-- one event mastery step in one valid subdoctrine branch
-
-The event must not use a flat mastery-point amount that can cross an unknown number of thresholds. The implementation needs a verified doctrine operation that targets the next mastery level or calculates the exact amount required for one level without spilling into another event-attributed level.
-
-Branches may have a different number of levels. Five choices do not imply that every modded branch has five levels. A branch with fewer remaining levels becomes invalid when complete, and the country redirects later choices. A branch with more than five levels receives at most one level per choice.
+Native mastery can be banked on an empty track or a completed branch.
+Event 027 never deletes, caps, or hides banked mastery.
+When assigning a subdoctrine resolves banked levels, those levels stay native progress and the event then adds one step if a level remains.
+When the bank completes the branch on assignment, the assignment stands, no choice is spent, and the player is told that stored mastery finished the branch (**implemented** as page `.13`).
+Achievements count only event-attributed steps.
 
 ## Choice consumption
 
-A choice is consumed only after a valid doctrine action succeeds.
-
-The following actions never consume a choice:
-
-- opening a domain page
-- opening a track page
-- returning to a prior page
-- selecting an option that became invalid before resolution
-- reaching an unsupported doctrine adapter
-- encountering a missing DLC gate
-- finding that another effect completed the branch while the event was open
-- closing a batch because the country has no valid options
-
-A failed doctrine action returns the country to the nearest valid selection page and preserves the remaining choice count.
+A choice is spent only after its doctrine action succeeds.
+Navigation, pagination, a target that became invalid, an unsupported domain, and a branch completed by another source while the page was open never spend a choice.
+A failed action returns the country to the nearest rebuilt page with its remaining choices intact.
 
 ## Stacking and distribution
 
-Every choice in an evolved batch is independent.
+Every choice is independent.
+A country may stack choices on one branch until it completes, divide them among tracks, or spread them across domains.
+A Grand Doctrine adopted by one choice is active for the next, so Evolution I is the first stage where a country can establish a doctrine and begin its first track in one curriculum.
+The event imposes no diversity quota and no stacking cap.
 
-A country may spend all choices on one branch until that branch is complete. It may divide choices among tracks in one Grand Doctrine. It may divide choices among Army, Navy, Air, supported Special Forces content, Chaos Warfare, and future registered domains.
+## Participation
 
-Grand Doctrine adoption can be followed by mastery in the same domain when the batch has another choice. Evolution I therefore enables a country with no doctrine in the selected domain to adopt a Grand Doctrine with its first choice and begin one subdoctrine with its second.
+The participant set is fixed when the event fires.
+A country participates while it exists as a live country or government in exile, has a doctrine system, and has at least one valid doctrine action (**implemented**).
 
-The event does not impose a diversity quota or stacking cap on the player.
+A country has a doctrine system unless the shared `is_actual_nonhuman_country` classifier marks it, so zombie outbreaks, plague rat states, Death, and similar nonhuman powers receive nothing and no fabricated doctrine.
+A Kruger sovereignty keeps its doctrine graph even when its population is no longer human.
+A future special country joins only by registering a complete custom adapter (see the registry matrix).
 
-## Batch snapshot
+Countries created after a firing receive nothing from it and join the next firing.
+A country that disappears loses its unused choices, which never transfer to an annexer, overlord, successor, civil-war opponent, or liberator.
+Subject, puppet, ideology, cosmetic tag, faction, leadership, and controller changes never erase a curriculum.
+A civil war after the snapshot leaves the original curriculum with the original country, and the new side waits for the next firing.
 
-Each country batch stores the following design facts when Event 027 fires:
+## Curriculum snapshot and queue
 
-- the batch identity
-- the evolution stage used for the batch
-- the total number of choices
-- the remaining number of choices
-- the country that owns the batch
-- the firing date
-- achievement tracking for choices made inside that batch
+Each curriculum stores its identity, owner, firing date, evolution stage, total and remaining choices, the domains that were empty when it began, and its achievement evidence.
+Its size never changes after creation, so an evolution that unlocks mid-curriculum affects only later firings.
+Doctrine options are rebuilt before every choice so combat mastery, faction sharing, focuses, DLC state, and owner-system changes are respected.
 
-Doctrine options are not snapshotted. They are rebuilt before each choice so combat mastery, DLC state, focus rewards, custom-system changes, branch completion, and other doctrine effects are respected.
+A country holds one active curriculum and an ordered queue of later ones.
+A later firing appends a separate curriculum with its own size and stage, never merging into or overwriting the active one.
+When a curriculum closes, the next queued one starts and rechecks the country's doctrine state.
+All of this is **implemented**, including compaction of closed rows so ledger scans stay bounded.
 
-The batch size is snapshotted. An evolution that unlocks while a country is resolving a batch does not add choices to that batch.
+## Persistence and control changes
 
-## Repeat firing and queue behavior
+Active and queued curricula survive save and reload.
+A one-time transaction receipt prevents a duplicate effect after reload, a double click, or a delayed continuation; a pending receipt is recovered only by its exact identity and otherwise fails closed (**implemented**, **live check** across save and reload).
 
-Event 027 is repeatable and uses the shared repeatable-event weight system. Later firings may occur while one or more countries still hold unresolved choices, especially in multiplayer or after control changes.
+The current controller resolves remaining choices.
+An AI resolves its curriculum silently, a human receives the next page, and a tag switch never redirects one country's choices into another country's doctrine.
+Lifecycle callbacks reconcile only countries with pending work (**implemented**).
 
-Each country can have one active batch and an ordered queue of later batches.
+## Multiplayer
 
-When Event 027 fires for a country that already has an active batch:
-
-- the new batch is appended after the active batch
-- its own size and evolution stage are preserved
-- the active batch is not overwritten
-- the batches are not merged
-- achievement tracking remains separate per batch
-- the queued batch begins when the prior batch closes
-
-A batch that reaches zero remaining choices closes immediately. A batch that has no valid doctrine options also closes. The next queued batch then begins and rechecks the country's current doctrine state.
-
-Repeatable weight recovery and cap reduction remain shared Event 027 behavior. The batch queue does not alter event weight, timer acceleration, major-event gain, or cluster pacing.
-
-## Save, reload, and control changes
-
-Active and queued batches must survive save and reload.
-
-A change between human and AI control does not erase doctrine choices. The current controller resolves the remaining choices. When a country becomes AI-controlled, the AI uses the same valid pool and finishes the active batch through a bounded continuation path. When a country becomes human-controlled, the next unresolved choice opens for that player.
-
-Tag switching must not redirect one country's choices into another country's doctrine state. The country owns the batch, and the current player tag only determines which human sees its next page.
-
-## Multiplayer behavior
-
-One Event 027 firing is global. Every human country in the participant snapshot receives its own independent chain, and every AI country resolves its own batch.
-
-One player cannot consume, delay, redirect, or overwrite another player's choices. A player who resolves quickly does not advance another player's chain.
-
-The random-event history records one Event 027 firing for the world. It does not record one random event per human player.
-
-The event must avoid a shared global `remaining_choices` value. Every country's active batch and queue are country-owned.
+One firing is global.
+Every human receives an independent chain, no player can consume or delay another country's choices, and all curriculum state is country-owned.
 
 ## Event history and evolution memory
 
-The canonical Event 027 entry event creates one global History row with no country actor. The row describes a worldwide doctrine-development wave.
+Each firing records one actorless History row whose detail states the curriculum size of that firing.
+Choice pages and AI resolution record nothing further.
+Evolution promotions record one actorless evolution row each.
+Event Details explains the premise and the stage previews without raw variables, queues, or AI scores.
 
-Country selection pages and AI resolution events do not create extra History rows.
+## Connections with other systems
 
-Evolution unlocks create global evolution records with no country actor. The evolution record identifies the Event 027 stage and its increased batch size. Ordinary choices inside a batch are not evolution records.
+### Native doctrine progress
 
-Event Details should explain the event premise and current evolution stage without listing raw variables, internal queues, or hidden AI scores.
+Combat mastery, training, attachés, faction sharing, focus rewards, and decision rewards stay active.
+An Event 027 step can change what native faction sharing later passes on; Event 027 neither duplicates nor suppresses that, and never counts it as its own step.
 
-## Connection with native doctrine sharing
+### Chaos Warfare
 
-Native faction doctrine sharing, mastery from combat, training, attachés, focus rewards, decision rewards, and other doctrine sources remain active.
+Event 027 can establish Chaos Warfare only when the owning establishment gate (`cbrn_chaos_warfare_adoption_capable`) holds, and it advances Chaos Warfare tracks only through native mastery.
+Native mastery runs the reward effects in the Chaos Warfare subdoctrine files, so every institutional flag, technology grant, and operation gate the CBRN system reads updates exactly as it would from combat mastery.
+Event 027 never grants a downstream CBRN unit, equipment type, policy, operation, idea, or readiness value directly, and a mastery level can be earned while a separate downstream gate stays unmet.
 
-An Event 027 choice can make a country newly eligible to share or receive doctrine progress through native faction systems. Those native consequences are allowed. Event 027 must not duplicate the sharing reward, suppress it, or claim the secondary progress as another Event 027 choice.
+Adopting Chaos Warfare has a real cost beyond the CBRN programme: the Chaos Meter's combat collateral model adds a civilian-death rate for countries with `chaos_warfare` at war, which feeds the Deaths ledger.
+Revision R4 in part 2 makes that consequence visible on the adoption choice.
 
-## Connection with Chaos Warfare
+### Event 016 Brilliant Scientist
 
-Chaos Warfare is a conditional custom Grand Doctrine with four visible mastery tracks:
+A successful adoption calls `brilliant_scientist_record_doctrine_research`, which records the decision once in an active Kruger host's policy history (**implemented**).
 
-- Hazard Assault Formations
-- Toxic Armored Warfare
-- Contaminant Fire Support
-- Integrated CBRN Command
+### National Breakthroughs members
 
-Event 027 may advance these tracks only through the verified Chaos Warfare adapter. Grand Doctrine establishment requirements, fielded formation requirements, technology gates, equipment gates, use-policy gates, readiness caps, operation gates, and doctrine visibility rules remain owned by Chaos Warfare.
+Event 085 grants military experience that countries spend through the native screen; Event 027 never converts itself into experience and never scales Event 085.
+Event 089 owns doctrine sharing after its own rework; Event 027 does not absorb that concept or call it.
+Events that create countries or unlock custom doctrine families affect only later firings.
 
-The event cannot activate Chaos Warfare for a country that fails its Grand Doctrine eligibility. It cannot grant a blocked custom unit, equipment type, operation, or policy by directly setting a downstream mastery reward.
+## Completion of one firing
 
-One mastery step must use the same route that the Chaos Warfare system recognizes for its institutional state, ideas, operation eligibility, AI, documentation, and any Condemnation multiplier.
-
-## Connection with other events
-
-Event 027 remains distinct from other National Breakthroughs members.
-
-Event 085 may grant military experience that countries later spend through normal doctrine actions. Event 027 grants direct event choices and does not convert itself into experience.
-
-Event 089 concerns doctrine or technology sharing and requires its own rework. Event 027 does not absorb that event's concept, spread a fixed doctrine to every country, or assume Event 089 is implemented.
-
-Events that create countries, transform countries, or unlock custom doctrine families affect future Event 027 firings through the normal participant snapshot and adapter registry. They do not receive retroactive batches from a firing that occurred before the country or adapter existed.
-
-## Baseline completion condition
-
-The baseline event is complete when every country in the participant snapshot has resolved or closed its one-choice batch.
-
-The global random-event system does not wait for every human popup before scheduling the next event. Country batches persist independently through the queue contract.
-
-The event has no persistent crisis state after all batches close. Its campaign memory consists of repeatable-event state, fired history, evolution stage, achievement records, and the permanent doctrine progress created through the native and custom doctrine systems.
+A firing is resolved when every participant has spent or closed its curriculum.
+The random-event system never waits for human pages, and the event leaves no crisis state behind.
+Its campaign memory is the repeatable-event state, History rows, evolution stage, achievement records, and the permanent doctrine progress it created.
