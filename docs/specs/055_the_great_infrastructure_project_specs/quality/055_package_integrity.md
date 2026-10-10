@@ -1,6 +1,6 @@
 # Current package inventory
 
-This inventory was refreshed on 2026-10-07 after the documentation cleanup.
+This inventory was refreshed on 2026-10-10 after the documentation cleanup.
 It records local file identity and does not validate engine behavior or design approval.
 Its own checksum is excluded because a self-checksum would change the file.
 
@@ -32,16 +32,16 @@ Its own checksum is excluded because a self-checksum would change the file.
 | `quality/055_source_reading_ledger.md` | 7084 | `fcb992e0bda16c68114f71d52750656863c4819ddca23a19dba41555ccc0306f` |
 | `quality/055_subagent_execution_log.md` | 2065 | `e0f3f013416f09fe111bcf037f0b43fabc7fa0c7a175c0156bef42bbb15a4a16` |
 | `quality/055_the_great_infrastructure_project_probability_scenario_matrix.md` | 8142 | `718bebbbff145f3327eac255d5e69b89eaf013ce2d11becc2e0176d0f0b73c9c` |
-| `README.md` | 3978 | `7906283694803bcdce3bc659f7a231737fc00364ad5b832f81162fd0e67f8406` |
+| `README.md` | 5139 | `b920fd7f9ca82629979f586125b92fd4ade2781d067a029601f590924b4988c6` |
 | `research/055_historical_infrastructure_research.md` | 10550 | `965f0bf208c68c476d4135770a2ca98183b761d4b01f4937bed96ac2dba241bf` |
 | `research/055_research_bibliography.md` | 2432 | `b705b7335608bcac66ad7c2f0601fe5b4e21b2722b3090e58ed78b846639306f` |
 | `specs/055_the_great_infrastructure_project_spec_part_10_acceptance_criteria.md` | 14250 | `4b6eb121eed222a2fd892d31af7bdfe29b3b4142cdeaf63519a93151d48a7d38` |
-| `specs/055_the_great_infrastructure_project_spec_part_1_core.md` | 14808 | `168c4cdac1dae5e7b33fc916cd94a0cdaba9740f3060063f09abc7a4f0ba6a80` |
+| `specs/055_the_great_infrastructure_project_spec_part_1_core.md` | 15164 | `ea1bc799c8324f809193d5fa839a76e6cdc5e3acf82a094a9c73c7b96ce39283` |
 | `specs/055_the_great_infrastructure_project_spec_part_2_candidate_generation.md` | 15764 | `d648b0307a827c199436702ced1b2736061c2ed027d9de5a883b8fec0bfb0b84` |
-| `specs/055_the_great_infrastructure_project_spec_part_3_project_lifecycle.md` | 18158 | `6fe2deb411eac1040993d6cf9d2e738dcc83a9d39ab8f7e9cdbead704a910bcb` |
+| `specs/055_the_great_infrastructure_project_spec_part_3_project_lifecycle.md` | 21479 | `d43d51ec7c726f7e055c4d205c66a0236b3b7980128a598b74fa19ecde314086` |
 | `specs/055_the_great_infrastructure_project_spec_part_4_project_families.md` | 19810 | `938c848a09e8b61349a8436a43c88dd08142dfec579187dadc3cb80cca57f18b` |
 | `specs/055_the_great_infrastructure_project_spec_part_5_international_corridors_and_crossings.md` | 16635 | `1fc4a836dff2fbaabd44b0052eb11f11b7d7a4c19d1f9ad2db147d2e47ad666a` |
 | `specs/055_the_great_infrastructure_project_spec_part_6_evolutions_and_repeat_firings.md` | 14722 | `8c62e2661fe11a4474a0141a33374b351375f9b4230af99db12c58c6e4becf04` |
 | `specs/055_the_great_infrastructure_project_spec_part_7_ai_balance_and_variants.md` | 16336 | `3ec7ea9f680c055f0657588434306f92f2e362f3566088be1b506f4e380d7b63` |
-| `specs/055_the_great_infrastructure_project_spec_part_8_integrations_cluster_and_persistence.md` | 16316 | `e90d3fb080110154536b1a86df3a6f3f6ef6e3d511c66bd9a0927d551dbce8c5` |
+| `specs/055_the_great_infrastructure_project_spec_part_8_integrations_cluster_and_persistence.md` | 17789 | `12b23411c65a08b8cc21ca240fe0c4f59c131cd30a3078844bd5f1082cd92ec0` |
 | `specs/055_the_great_infrastructure_project_spec_part_9_presentation_assets_and_achievements.md` | 17649 | `f8d0831f6b5084f5e9a964a4ae0c4d9e32de973af8df7819492a695113ca9510` |
