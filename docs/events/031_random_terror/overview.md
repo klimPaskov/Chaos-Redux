@@ -464,10 +464,30 @@ The achievement active-state count credits the government owning the counted sta
 `random_terror_apply_exact_state_loss` records the measured applied loss rather than the requested loss, and the major-loss threshold stays above 400 people.
 
 The workbook mirrors Event 31 localisation and contains Global Jihad as SCN-016; the Events-sheet status change for Event 31 from `To Be Reworked` to `Needs Testing` is queued in `docs/plans/031_random_terror_plans/catalog_changes_pending.md`.
-No Internal Fracture cluster is registered by this implementation.
+No Internal Fracture cluster is registered by this implementation. Event 31 is an optional trigger row (row 16003, Medium) of the Domestic Unrest cluster, runtime cluster 16, together with Events 1 and 6.
 
 The focus tree has 114 focuses with titles, no connector crossings and no same-row spacing violations in the last structural render.
 The scenario window GUI inspector reported no missing fields for `chaosx_scenarios_window` with Event 31 selected, and its shared-window overlap and alignment findings remain open for the window's owner.
+
+## Response prices, hostage approach and bridges
+
+The stockpile prices (support equipment, fuel, trains, convoys) of the 23 government actions come from `random_terror_update_response_costs`: a size factor from the states the government controls, plus surcharges for active crisis states beyond the first, Terror Pressure above the high and severe bands, an ongoing war and a remote priority state, all in `random_terror_cost_scale`. The base amounts in `random_terror_cost` describe a medium government in a quiet crisis. Command power, army experience, manpower and stability are not scaled.
+
+A hostage incident that opens a Hostage Deadline mission sends the hostage report `chaosx.nr31.10`. Opening a channel extends the deadline once and starts the captives coming out at a price (Terror Pressure rises and the state's rest period ends). Preparing a rescue makes the next Targeted Raid draw one band better and stops a Security Surge alone from freeing anyone. Storming at once is a Security Surge whose assault ends in civilian deaths more often without an intelligence breakthrough or a response cell (`random_terror_hostage`).
+
+Event 31 losses record `random_terror_attack` (311), `random_terror_counterterror` (312) and `random_terror_atrocity` (313) in the shared Deaths reasons. The Chaos impact map also reverses: a restored parent government (`-5`), a retaken captured capital (`-3`) and a dissolved International or defeated leader (`-3`).
+
+Relief strain submits a migration flight request, Force Extraction submits famine occupation pressure and a migration deportation request, and transport disruption or depot sabotage in a state famine tracks submits famine event pressure (`random_terror_bridge`). A government camp active in its own crisis state is collective punishment: once per camp and crisis the government loses Response Legitimacy, the state's activity rises one step, the No Collective Punishment achievement is lost, and the reprisal report `chaosx.nr31.11` explains it.
+
+## The dominant actor's choice and actor mergers
+
+When the False Revelation selects a human dominant actor, `chaosx.nr31.12` asks it to accept the claim, contest it or keep an independent command before anything is promoted or merged. Accepting makes the actor the final command. Contesting sets the rival claimant flag, and the actor goes to war with the final command when the revelation commits. Independence keeps the actor outside the final command without a war. When every viable actor declined, a free carrier is split off the declining actor with half of its territory outside the capital and a share of its forces. An unanswered choice falls back to accepting after `random_terror_tuning.dominant_choice_days` days (`chaosx.nr31.13`). At the commit, an AI jihadist actor subordinates itself, becomes a rival claimant, merges into the final command or collapses into cells (`random_terror_terminal_disposition`; the last two only when its Territorial Control is below the low band), and ordinary non-jihadist actors are not subordinated.
+
+Every actor merger, the accepted merger offer and the AI merger alike, runs `random_terror_reconcile_actor_merge` once: states, units, unit leaders, equipment and fuel move to the absorber, the absorber keeps the compatible technology the absorbed command had and takes over its war with the parent, and the absorber records which organization it absorbed. The cooperation strategies are written per target tag and require `random_terror_is_cooperating_actor` of both sides, so a command kept independent or locked in a leadership contest is neutral to the other carriers.
+
+## Global Jihad type geography
+
+Each new territorial actor takes the seed state its type prefers (`random_terror_scenario_type_seed_state`, thresholds in `random_terror_scenario_geo`). Dispersed Networks picks populous or well connected states apart from earlier seeds and reaches more countries with fewer actors. Border Corridors picks a port or road-connected border state beside a weaker neighbour, linked to the earlier seeds, and gives the actor stronger External Supply. Capital Uprisings picks a state beside the parent's capital and gives the actor more takeover potential. Territorial Fronts picks a state with populated neighbours and extends the actor over one to four of them by intensity while the parent keeps its capital and at least three states. Random Pattern rotates through the four types for every seeded country, extra state and actor. A launch falls back to any valid actor state when a type finds no match.
 
 ## Future extensions
 

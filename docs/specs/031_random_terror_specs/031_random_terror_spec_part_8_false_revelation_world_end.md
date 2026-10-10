@@ -9,7 +9,7 @@ Implemented: the initial gate (Chaos `1000+`, Evolution V, public toggle, readin
 Open, from the completion audit:
 
 - C01 terminal access: the government response category is hidden once `world_end` is set, so the counteroffensive and the emergency missions cannot be used after the transition. See World-end transition below.
-- C02 player control: a human dominant actor is promoted before it can choose, the rejection option starts no rival war, and every AI Event 31 actor is subordinated, including non-jihadist actors. See Player control and Actor unification.
+- C02 player control is implemented: a human dominant actor is asked (`chaosx.nr31.12`) to accept, contest or keep an independent command before any promotion or merger, and an unanswered choice falls back to accepting after 30 days. Contesting makes the actor a rival claimant that goes to war with the final command when the revelation commits, independence keeps it outside the command without a war, and when every viable actor declined, a free carrier is split off the declining actor with half of its territory outside the capital and a share of its forces. AI jihadist actors choose between subordination, rivalry, merger into the final command and collapse into cells (the last two only when weak); non-jihadist actors are never subordinated automatically. Two-player transition evidence is still missing.
 - C03 commit revalidation: the delayed commit does not recheck the full gate. See Delayed transition.
 - C04 strategic victory and unity: the victory counter increments even when a takeover fails, does not distinguish major victories, and unity counts every actor. See Major strategic victory.
 - C10 campaign beats and aftermath: see the two sections below, both revised by the 2026-10-10 audit.

@@ -8,9 +8,11 @@ Implemented: every government decision and mission in the [matrix](031_random_te
 
 Open:
 
-- Costs and commitments (C09): most costs are fixed constants, and Military Reinforcement and Isolate the Enclave set timed flags without a maintained force commitment. The scaling and commitment rules under Cost design still apply.
-- Hostage approach: the approach choice under Hostage Deadline below is an audit revision and is not yet implemented.
-- Collective punishment through camps: the bridge under Coercive response is an audit revision and is not yet implemented.
+- Commitments (C09): Military Reinforcement and Isolate the Enclave still set timed flags without a maintained force commitment.
+- Scaled costs are implemented: the stockpile prices (support equipment, fuel, trains, convoys) of the 23 government actions come from `random_terror_update_response_costs`, which multiplies the base prices by a size factor from the states the government controls (`random_terror_cost_scale`) plus surcharges for active crisis states beyond the first, Terror Pressure above the high and severe bands, an ongoing war and a remote priority state. Command power, army experience, manpower and stability are not scaled.
+- The hostage approach is implemented on the hostage report (`chaosx.nr31.10`): open a channel, prepare a rescue or storm at once, with the outcomes described under The Hostage Deadline.
+- Collective punishment through camps is implemented as the pulse check `random_terror_apply_collective_punishment`, which reads `is_valid_camp_active_site_state` and `genocide_responsible_country` from the camp system and shows the reprisal report `chaosx.nr31.11`.
+- Terminal access (C01) was repaired on 2026-10-10: the category stays open while the revelation is the world end.
 - Terminal access (C01): the response category is hidden once `world_end` is set. Part 8 requires it to stay usable.
 
 ## Presentation choice

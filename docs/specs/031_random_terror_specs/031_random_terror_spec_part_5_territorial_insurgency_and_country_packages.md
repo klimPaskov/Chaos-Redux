@@ -9,7 +9,8 @@ Implemented: eight predeclared carrier tags (JHX, JIX, JKX, JLX, JMX, JNX, JOX, 
 Open:
 
 - Starting forces and capitals (C07): every profile starts with the same manpower and equipment grant and a fixed division floor, and the capital is the founding state. The resource and capital rules below still apply.
-- Mergers and takeover (C08): absorption transfers states without stockpiles, compatible technology or troops, and a parent that loses all territory is only flagged.
+- Mergers (C08) are implemented as one transaction, `random_terror_reconcile_actor_merge`: states, units, unit leaders, equipment and fuel move once, the absorber keeps the compatible technology the absorbed command had and takes over its war with the parent, and a success-only flag records which organization became dominant. The accepted merger offer and the AI merger at the revelation both use it.
+- Takeover of the parent (C08) is still open: a parent that loses all territory is only flagged, and the transformed-parent identity, army and technology reconciliation is not implemented.
 - Leadership contest (C05): the contest compares the challenger's authority with itself, so the designed contest cannot be won.
 - Supply Collapse: the economy failure form described under Captured Economy is an audit revision. The current implementation still names it Famine.
 

@@ -6,11 +6,11 @@
 
 Implemented: registration in the shared scenario window as `#016` with all five types and four intensities, fail-closed launch status, a preflight that counts only free carriers the selected intensity unlocks (D2), evolution flags applied only after the preflight passes, Jihadist International formation at Medium and above with one independent command at High and Maximum (D10), held-back evolution popups with a launch report and news, and Maximum activating the Final Jihad without bypassing the False Revelation gates.
 
+Type geography (C06) is implemented in `random_terror_scenario_type_seed_state`, `random_terror_scenario_shape_actor` and the `random_terror_scenario_geo` constants: Dispersed Networks seeds populous or well connected states apart from earlier seeds and reaches more countries with fewer actors, Border Corridors seeds port or road-connected border states beside weaker neighbours in a linked chain with stronger External Supply, Capital Uprisings seeds states beside the parent's capital with more takeover potential, and Territorial Fronts extends each actor over one to four neighbouring parent states by intensity while the parent keeps its capital and enough states. Random Pattern rotates through the four types for every seeded country, extra state and actor.
+
 Open (C06):
 
-- Border Corridors and Territorial Fronts change only pressure and activity values. They do not yet build connected border, port or rail groups or larger contiguous actors.
-- Random Pattern draws one of the four patterns instead of a mixture.
-- Actors receive one random state each, and the preflight counts states without reserving a complete allocation before mutations.
+- A launch falls back to any valid actor state when a type finds no matching state, so the preflight still counts states and carriers rather than reserving a typed allocation.
 - The twenty type and intensity cases have no acceptance evidence.
 
 ## Scenario identity

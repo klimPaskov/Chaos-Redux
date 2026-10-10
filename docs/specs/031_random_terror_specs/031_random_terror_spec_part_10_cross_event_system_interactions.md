@@ -8,11 +8,11 @@ Implemented: the Event 14 rivalry with a real cannibal-border clash, hostile AI 
 
 Open:
 
-- Deaths reasons (C11): all Event 31 losses use the shared `civilian_combat` reason. The reason map below is required.
-- Chaos: implemented as the Chaos impact map below, except the reversal rows for a restored parent government, a retaken capital and a dissolved International, which stay open. The rolling cap is a fixed 180-day window opened by the first grant.
-- Famine, migration and camps: the bridges below are 2026-10-10 audit revisions and are not implemented.
+- Deaths reasons (C11) are implemented: `random_terror_attack` (311), `random_terror_counterterror` (312) and `random_terror_atrocity` (313) in `chaos_meter_deaths_reason`, with cause lines in both Deaths tab selectors and the civilian combat bin.
+- Chaos is implemented as the Chaos impact map below, including the reversal rows for a restored parent government (`-5`), a retaken capital (`-3`) and a dissolved International or defeated leader (`-3`), under the history reason `random_terror_restored`. A coup-fallen government counts as restored when its civil war has ended at crisis closure. The rolling cap is a fixed 180-day window opened by the first grant.
+- Famine, migration and camps: relief strain submits a migration flight request, Force Extraction submits famine occupation pressure and a migration deportation request, transport disruption and depot sabotage in a state famine tracks submit famine event pressure, and a government camp in its own crisis state is collective punishment. The requests use the public core endpoints (`migration_request_event_pressure`, `migration_request_deportation_pressure`, `famine_request_occupation_pressure`, `famine_request_event_pressure`) with the state's population share and the responsible actor, as Event 37 does. The camp bridge reads `is_valid_camp_active_site_state`, which the camp owner was editing during this pass.
 - The Event 32 seizure connection stays queued until Event 32's custody interface is verified.
-- The cooperation strategies still befriend an independent command, which contradicts the independent-command role. Independent commands should be neither befriended nor supported by the other carriers.
+- The cooperation strategies are fixed: independent and contested commands are neutral to the other carriers.
 
 ## Interaction purpose
 

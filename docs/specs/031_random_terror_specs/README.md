@@ -37,15 +37,15 @@ The latest completion verdict is "partial", with the open findings C01 to C14 li
 | Part | Status | Main open items |
 | --- | --- | --- |
 | 1 Identity and player loop | Implemented core loop, first emphasis, recurring pulse and closure | Campaign and multiplayer validation |
-| 2 Targeting and incidents | Implemented engine and exact state losses | Valid incident pools (C13), distinct Deaths reasons (C11), migration adapter for relief strain (audit revision) |
-| 3 Government response | All matrix decisions and eight missions exist, plus Press the Safe-Haven Host and Terminal Counteroffensive | Scaled costs and maintained commitments (C09), hostage approach choice (audit revision) |
+| 2 Targeting and incidents | Implemented engine and exact state losses | Valid incident pools (C13). Deaths reasons and the relief strain flight request were added on 2026-10-10 |
+| 3 Government response | All matrix decisions and eight missions exist, plus Press the Safe-Haven Host and Terminal Counteroffensive | Maintained force commitments (C09). Scaled costs, the hostage approach report and the camp reprisal check were added on 2026-10-10 |
 | 4 Evolutions | Scheduling, enable checks, reports and logging implemented | Per-organization identity and support profile (Evolution I), disabled-after-unlock cases |
-| 5 Country packages | Eight carriers, leaders, flags, research slots, technology inheritance, real formations | Resource-grounded forces and safe capitals (C07), merger and takeover reconciliation (C08), leadership contest defect (C05) |
+| 5 Country packages | Eight carriers, leaders, flags, research slots, technology inheritance, real formations | Resource-grounded forces and safe capitals (C07), parent takeover reconciliation (C08), leadership contest defect (C05). The actor merger transaction was added on 2026-10-10 |
 | 6 Focus tree | 114 focuses with routes, filters, navigation and idea slots | Forge the Seal core rule, specialist route review |
-| 7 Global Jihad | Five types, four intensities, preflight and cleanup | Type geography and Random Pattern mixture (C06) |
-| 8 False Revelation | Gate, entity, five slots, objective-based strengths, uprising wave, both super-events | Dominant-player choice before promotion (C02), unity meaning (C04), aftermath (C10). Terminal government access (C01), commit revalidation (C03) and the takeover victory count (C04) were repaired on 2026-10-10 |
+| 7 Global Jihad | Five types, four intensities, preflight and cleanup | Acceptance evidence for the twenty cases. Type geography and the Random Pattern mixture were added on 2026-10-10 |
+| 8 False Revelation | Gate, entity, five slots, objective-based strengths, uprising wave, both super-events | Unity meaning (C04), aftermath (C10). The dominant-player choice (C02) was added on 2026-10-10. Terminal government access (C01), commit revalidation (C03) and the takeover victory count (C04) were repaired on 2026-10-10 |
 | 9 AI and balance | Weights authored and reviewed in source | Named scenario evidence, Chaos feedback balance (audit revision) |
-| 10 Cross-event | Event 14 rivalry, Event 21 guard, special-country classifier, world-threat source | Famine, migration and camp bridges and three Chaos reversal rows (audit revision). The Chaos impact map replaced per-incident Chaos on 2026-10-10 |
+| 10 Cross-event | Event 14 rivalry, Event 21 guard, special-country classifier, world-threat source | The Chaos impact map replaced per-incident Chaos on 2026-10-10, and the same day added the three reversal rows and the famine, migration and camp bridges |
 | 11 Assets | 444 inventoried runtime files plus map buttons | Entity animation state binding, 36 stale achievement hashes, flag cycle disposition |
 | 12 Achievements | Twelve IDs, trackers, localisation and icon triplets | Cut Every Route network proof (C12) and full valid and invalid cases. The safe-haven acceptance receipt was added on 2026-10-10 |
 | 13 Documentation and catalog | Selectors, Event Details, SCN-016 row | Evolution IV workbook wording and status change queued in [catalog_changes_pending.md](../../plans/031_random_terror_plans/catalog_changes_pending.md) |
@@ -157,7 +157,18 @@ Decided on 2026-10-10 under the user's autonomous-design instruction.
 - Replaced per-incident Chaos with the Chaos impact map milestones in Part 10.
 - Added the safe-haven acceptance receipt for its achievement and the guard-absorbed attack report.
 - Recorded the decisions on the three audit proposals above.
-- Still open: dominant-player choice before promotion (C02), geography of Global Jihad types (C06), starting forces and capitals (C07), merger transaction (C08), scaled response costs (C09), full terminal phases and aftermath (C10), per-reason Deaths (C11), famine, migration and camp bridges, Domestic Unrest cluster registration (no runtime cluster 16 exists and its other members belong to other events).
+- Still open: starting forces and capitals (C07), takeover of the parent (C08), maintained force commitments (C09), full terminal phases and aftermath (C10).
+
+### 2026-10-10 open items
+
+- Domestic Unrest is runtime cluster 16 with Events 1, 6 and 31 as optional trigger rows; Event 63 joins when its rework registers a member row.
+- A human dominant actor accepts, contests or keeps an independent command before the revelation promotes anything (C02), and AI jihadist actors choose between subordination, rivalry, merger and collapse.
+- The Global Jihad types have their own seed geography and Random Pattern mixes them (C06).
+- Actor mergers run one reconciliation transaction (C08).
+- Government stockpile prices scale with the government and the crisis (C09), and the hostage report asks for the approach.
+- Event 31 losses use their own three Deaths reasons (C11), and the three missing Chaos reversal rows exist.
+- Relief strain, Force Extraction, transport sabotage and camps connect to migration, famine and the camp system.
+- Independent commands are neutral to the other carriers' cooperation strategies.
 
 ### 2026-10-10 spec audit
 

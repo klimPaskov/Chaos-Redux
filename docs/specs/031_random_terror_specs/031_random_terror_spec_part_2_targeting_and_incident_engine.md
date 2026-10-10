@@ -9,9 +9,9 @@ Implemented: the bounded wave with per-country load tickets, exact state inciden
 Open:
 
 - Incident validity (C13): the current draw samples all 24 families and converts invalid results afterwards (an inland port attack becomes a civilian attack). The pool must be filtered before the draw, as required under Incident selection by stage.
-- Deaths reasons (C11): every loss currently uses the shared `civilian_combat` reason. The reason map below is still required.
-- Direct Chaos: the current incident tail adds Chaos on every incident. The [Part 10 Chaos impact map](031_random_terror_spec_part_10_cross_event_system_interactions.md#chaos-impact-map) replaces it.
-- Relief strain: the incident currently only records a flag. It must use the migration adapter described under Border displacement and relief strain.
+- Deaths reasons (C11) and relief strain are implemented as recorded below; only the incident pool filter above stays open.
+- Deaths: incidents, hostage outcomes and cannibal clashes record the shared `random_terror_attack` reason (311), costly and abusive raids record `random_terror_counterterror` (312), and Force Extraction records `random_terror_atrocity` (313).
+- Relief strain: the incident submits a flight request through `migration_request_event_pressure` for 2 percent of the struck state's population (`random_terror_bridge.relief_flight_share`) and keeps only its relief consequence.
 
 ## Targeting purpose
 

@@ -9,7 +9,8 @@ Implemented in source: government decision and mission weights, first-emphasis a
 Open:
 
 - No named scenario below has current baseline and comparison evidence. Probability routes timed out or returned partial inventories, so every weight is reviewed in source only.
-- The probability specialist reported four source findings: the leadership contest self-comparison (C05), context-invalid incident weight (C13), first-found tie retention in strongest-actor selection, and cooperation strategies that still befriend an independent command.
+- The probability specialist reported four source findings: the leadership contest self-comparison (C05), context-invalid incident weight (C13), first-found tie retention in strongest-actor selection, and cooperation strategies that still befriend an independent command. The last is fixed: each cooperation strategy is per target tag and both sides must pass `random_terror_is_cooperating_actor`, so an independent or contested command is neutral to the other carriers.
+- The terminal disposition weights (`random_terror_terminal_disposition`), the storm assault odds (`random_terror_hostage`) and the response cost factor (`random_terror_cost_scale`) are authored in source and have no probability comparison.
 - Chaos feedback: the scenario `P11_chaos_feedback` below is new in the 2026-10-10 audit.
 
 ## Balance purpose
