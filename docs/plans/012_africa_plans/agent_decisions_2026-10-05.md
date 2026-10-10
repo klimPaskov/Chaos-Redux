@@ -58,9 +58,81 @@ The evidence file is `takeover_reporting_evidence_2026-10-06.json` beside this d
 
 ## Takeover autonomy-art decision, 2026-10-06
 
-Disposition: `accepted and queued` until the asset handoff is installed and reviewed.
+Disposition: `implemented` with source artwork, native-size/4x parent review, strict DDS round-trip and both paths wired.
 Acceptance basis: the assigned 012 GFX fix table and G5 covering every visible defect.
 The table incorrectly describes the two autonomy sprites as dead.
 `common/autonomous_states/012_africa_autonomy.txt` defines both autonomy states, and their live relationship consumers use native implicit autonomy sprite lookup.
 They keep their current sprite IDs and receive separate 35x35 autonomy artwork instead of focus textures or deletion.
 The unused division-template emblem sprites are a separate family and require their own consumer check.
+
+## Takeover final-ultimatum restitution, 2026-10-06
+
+Disposition: `implemented`, subject to native state-transfer and final-grade live evidence.
+Acceptance basis: the twelve-factor grading design requires positive proof of returned land, the accepted final-ultimatum return option, and the current user instruction to repair every remaining source-side defect.
+The ultimatum previously transferred the land and wrote only the old `gods_of_africa_territory_returned` flag, which the grader deliberately ignores as positive restitution proof.
+Both ordinary tribute and the ultimatum use the same state-scoped transfer kernel.
+The ultimatum has a separate frozen due-day identity, participant, current host generation and origin, and before/after state proof rather than a fabricated tribute contract.
+A return counts only when that state becomes owned and controlled by the recorded host.
+The existing unique-state array prevents repeated returns from increasing restitution.
+This changes no price, AI score, mission duration or popup count.
+
+## Takeover unused division-template emblem decision, 2026-10-06
+
+Disposition: `implemented`.
+Acceptance basis: the assigned 012 GFX table explicitly permits deleting the unused blurred emblems and their 76x42 twins.
+A fresh search of unit, template, scripted GUI, interface and localisation consumers found no use of these 16 sprite IDs outside their registrations.
+The 16 textures and registrations were removed, while the separately registered live unit counters and all technology, equipment, focus and decision art remain.
+Original paths and hashes are in `takeover_unused_emblems_2026-10-06.json`.
+
+## Takeover global-credibility music and wiring, 2026-10-06
+
+Disposition: `implemented` in source, with live appearance, settings and audible playback pending.
+Acceptance basis: required Gods presentation rows DOC-09/DOC-10, the current finish assignment authorizing asset acquisition, and the granted authority to replace weak design choices.
+The earlier download-permission note was a takeover workflow decision rather than an approval gate in the super-event skill.
+Source acquisition is authorized by the current task, and no approval for a fallback was inferred.
+Iyanetha has clear creator/Library of Congress public-domain evidence but its stated pensive electronic-beat role is weaker than this ceremony.
+The selected cue is the complete 1994 White House military-band performance of the 1897 hymn Nkosi Sikelel’ iAfrika, with official unrestricted/public-domain archive evidence and retained jurisdiction notes.
+It supplies a ceremonial image of foreign recognition of African political authority.
+The whole 104-second performance replaces the earlier approximate 110 to 120-second target within the skill's one to two minute range, preserving the music without padding or repetition.
+The runtime file, one unique base sound, six volume wrappers/category entries, slot 118 getters/image and both guarded firing paths are installed together.
+The emitter sets its once-per-campaign flag before invoking the shared settings-aware presenter, including an activation already at global reach.
+Source/format review is complete, while audible and in-game acceptance remain in the orchestrator checklist.
+
+## Takeover counter readability, 2026-10-06
+
+Disposition: `implemented` with native/4x parent review, strict DDS round-trip and runtime hash checks.
+Acceptance basis: the eight assigned 012 counter tickets and G5 covering every visible defect.
+The three large NATO frames and three matching small role glyphs use original native-alpha artwork in the measured vanilla field.
+Parent review also found the old large normal figures faint and too detailed for their counter size, so separate compact stone, tree/axe and hooded-seer silhouettes replace those three normals in the sampled vanilla green palette.
+The two listed small gorilla/disaster dark-frame findings were stale: their current light-grey silhouettes are readable and were preserved.
+All good small normal frames and the approved NATO fields remain pixel-identical through the additional large-normal repair.
+The source-mode, bounded alpha-edge fallback and candidate lineage are documented in the counter handoff and durable inventory.
+
+## Completion-review support prepayment correction, 2026-10-06
+
+Disposition: `implemented`.
+Acceptance basis: G2/G5 and the completion auditor's concrete manual-fuel-prepayment case.
+A short manual whole-balance payment left the instalment count unchanged, so a later small automatic shipment could close through the suppressed progress branch.
+All signed partial payments recompute their count from the real remaining balance.
+The final automatic branch uses that balance against the tranche amount, reserving the canonical cumulative closure report even after manual prepayments.
+Manual progress on an open signed agreement also stays in its mission instead of opening another partial report.
+No stock price, native transfer, AI weight or agreed interval changes.
+
+## Takeover focus connector repair, 2026-10-06
+
+Disposition: `implemented` with reviewed after-inspect JSON and raster crops.
+Acceptance basis: G5, the accepted Gods overlay and the focus auditor's confirmed Hand of Judgment connector crossing Sanctuary.
+Only Sanctuary, Last Sentence and Occupiers move to (92,27), (92,28) and (90,28) respectively, outside the settlement connector.
+The other 298 focuses and every cost, prerequisite, reveal gate, effect and AI weight remain unchanged.
+The connected rewrite route closed its transport without changing the source, so the same reviewed three-node plan was applied directly.
+A separately initialized read-only MCP 3.9.0 client supplied the missing after-inspect, file checks and final half-scale raster.
+The through-node diagnostic is removed, and the parent reviewed the repaired terminal fork crops.
+The existing five direct long convergences between retained branch lanes remain as source-layout warnings, with their native visibility checks listed for the orchestrator.
+
+## Final localisation review, 2026-10-06
+
+Disposition: `implemented`.
+Acceptance basis: G3 and the localisation auditor's signed-support expiry reading.
+A failed support agreement uses a short expiry sentence before its cumulative paid/owed summary, so the same balance is not printed twice.
+Ordinary demand expiry keeps its existing balance sentence.
+The same report and closure owner remain; no extra popup or gameplay change is introduced.
