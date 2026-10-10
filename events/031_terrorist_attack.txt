@@ -6,6 +6,8 @@ add_namespace = chaosx.news
 @rt_event_actor_merge_accept_weight = 60
 @rt_event_actor_merge_refusal_weight = 40
 @rt_event_ai_high_factor = 2
+@rt_event_dominant_accept_weight = 50
+@rt_event_dominant_decline_weight = 25
 @rt_event_hostage_weight = 20
 @rt_event_ai_low_factor = 0.5
 @rt_event_emphasis_weight = 25
@@ -326,7 +328,10 @@ country_event = {
 	desc = chaosx.nr31.7.d
 	picture = GFX_report_event_031_random_terror_capital_emergency_guard
 	is_triggered_only = yes
-	trigger = { has_global_flag = random_terror_false_revelation_pending }
+	trigger = {
+		has_global_flag = random_terror_false_revelation_pending
+		NOT = { has_country_flag = random_terror_dominant_declined }
+	}
 
 	option = {
 		name = chaosx.nr31.7.a
@@ -367,6 +372,51 @@ country_event = {
 		ai_chance = { base = 100 }
 		set_country_flag = random_terror_terminal_government_alerted
 		set_country_flag = random_terror_terminal_choice_recorded
+	}
+}
+
+# The human dominant actor chooses before the transition promotes or merges
+# anything (Part 8, Player control).
+country_event = {
+	id = chaosx.nr31.12
+	title = chaosx.nr31.12.t
+	desc = chaosx.nr31.12.d
+	picture = GFX_report_event_031_random_terror_international_network_gathering
+	is_triggered_only = yes
+	trigger = { has_country_flag = random_terror_dominant_choice_open }
+
+	option = {
+		name = chaosx.nr31.12.accept
+		ai_chance = { base = @rt_event_dominant_accept_weight }
+		custom_effect_tooltip = random_terror_dominant_accept_tt
+		hidden_effect = { random_terror_dominant_choose_accept = yes }
+	}
+
+	option = {
+		name = chaosx.nr31.12.contest
+		ai_chance = { base = @rt_event_dominant_decline_weight }
+		custom_effect_tooltip = random_terror_dominant_contest_tt
+		hidden_effect = { random_terror_dominant_choose_contest = yes }
+	}
+
+	option = {
+		name = chaosx.nr31.12.independent
+		ai_chance = { base = @rt_event_dominant_decline_weight }
+		custom_effect_tooltip = random_terror_dominant_independent_tt
+		hidden_effect = { random_terror_dominant_choose_independent = yes }
+	}
+}
+
+# Hidden fallback: a dominant actor that has not answered takes the safest
+# route, so the transition cannot stall on an absent player.
+country_event = {
+	id = chaosx.nr31.13
+	hidden = yes
+	is_triggered_only = yes
+	trigger = { has_country_flag = random_terror_dominant_choice_open }
+
+	immediate = {
+		random_terror_dominant_choose_accept = yes
 	}
 }
 
@@ -536,7 +586,7 @@ country_event = {
 		}
 		clr_country_flag = random_terror_absorption_offer_pending
 		set_country_flag = random_terror_absorbed_by_network
-		every_owned_state = { transfer_state_to = event_target:random_terror_absorbing_actor }
+		random_terror_reconcile_actor_merge = yes
 		set_country_flag = random_terror_cleanup_requested
 		random_terror_cleanup_actor = yes
 		event_target:random_terror_absorbing_actor = { random_terror_accept_actor_absorption = yes }

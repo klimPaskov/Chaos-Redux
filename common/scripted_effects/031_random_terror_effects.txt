@@ -58,6 +58,8 @@
 @rt_raid_low_abusive_weight = 15
 @rt_partner_accept_weight = 70
 @rt_partner_refusal_weight = 30
+@rt_split_force_share = 0.5
+@rt_merge_force_share = 1
 
 # -----------------------------------------------------------------------------
 # Core registries and value maintenance
@@ -7732,7 +7734,10 @@ random_terror_select_dominant_actor = {
 	set_temp_variable = { random_terror_dominant_score = constant:random_terror_value.zero }
 	clear_global_event_target = random_terror_dominant_actor
 	every_country = {
-		limit = { random_terror_is_jihadist_actor = yes }
+		limit = {
+			random_terror_is_jihadist_actor = yes
+			NOT = { has_country_flag = random_terror_dominant_declined }
+		}
 		set_temp_variable = { random_terror_candidate_score = random_terror_network_authority }
 		add_to_temp_variable = { random_terror_candidate_score = random_terror_territorial_control }
 		add_to_temp_variable = { random_terror_candidate_score = random_terror_external_supply }
@@ -7856,6 +7861,311 @@ random_terror_process_false_revelation_candidate = {
 	}
 }
 
+# Any scope.  A human dominant actor chooses before any promotion or merger.
+# The transition waits behind random_terror_dominant_choice_pending; the
+# fallback event chaosx.nr31.13 takes the safest route (accept) when the human
+# does not answer in time.
+random_terror_ask_dominant_actor = {
+	set_global_flag = random_terror_dominant_choice_pending
+	set_temp_variable = { random_terror_dominant_choice_wait = constant:random_terror_tuning.dominant_choice_days }
+	event_target:random_terror_dominant_actor = {
+		set_country_flag = random_terror_dominant_choice_open
+		country_event = { id = chaosx.nr31.12 }
+		country_event = { id = chaosx.nr31.13 days = random_terror_dominant_choice_wait }
+	}
+}
+
+# COUNTRY scope: the human dominant actor closing its choice.
+random_terror_dominant_close_choice = {
+	clr_country_flag = random_terror_dominant_choice_open
+	clr_global_flag = random_terror_dominant_choice_pending
+}
+
+# Accept: the actor takes the revelation as its own and keeps control as the
+# final command.
+random_terror_dominant_choose_accept = {
+	random_terror_dominant_close_choice = yes
+	set_country_flag = random_terror_dominant_choice_accepted
+	random_terror_begin_false_revelation = yes
+}
+
+# Contest: the actor rejects the claim.  Another actor, or a command split off
+# this one, becomes the final command, and this actor fights it as a rival
+# claimant when the revelation commits.
+random_terror_dominant_choose_contest = {
+	random_terror_dominant_close_choice = yes
+	set_country_flag = random_terror_dominant_declined
+	set_country_flag = random_terror_dominant_contested
+	set_country_flag = random_terror_terminal_resister
+	random_terror_begin_false_revelation = yes
+}
+
+# Independence: the actor keeps its own command, outside the final command and
+# without a war against it.
+random_terror_dominant_choose_independent = {
+	random_terror_dominant_close_choice = yes
+	set_country_flag = random_terror_dominant_declined
+	set_country_flag = random_terror_terminal_independent
+	set_country_flag = random_terror_independent_command
+	random_terror_begin_false_revelation = yes
+}
+
+# Any scope.  Every viable actor declined the revelation: a free JMX carrier
+# receives about half of the territory of one declining actor (never its
+# capital) with a share of its forces and its technology, and becomes the
+# final command.
+random_terror_split_final_command = {
+	random_country = {
+		limit = {
+			has_country_flag = random_terror_dominant_declined
+			random_terror_is_viable_actor = yes
+			num_of_controlled_states > 1
+		}
+		save_event_target_as = random_terror_split_source
+	}
+	if = {
+		limit = { has_event_target = random_terror_split_source }
+		event_target:random_terror_split_source = {
+			save_event_target_as = random_terror_tech_donor
+			set_temp_variable = { random_terror_split_count = num_of_controlled_states }
+			multiply_temp_variable = { random_terror_split_count = constant:random_terror_value.half }
+			round_temp_variable = random_terror_split_count
+			clamp_temp_variable = { var = random_terror_split_count min = constant:random_terror_value.one max = constant:random_terror_value.maximum }
+			for_loop_effect = {
+				start = 0
+				end = random_terror_split_count
+				value = random_terror_split_index
+				random_owned_controlled_state = {
+					limit = {
+						NOT = { is_capital = yes }
+						NOT = { has_state_flag = random_terror_split_moved }
+					}
+					set_state_flag = random_terror_split_moved
+				}
+			}
+			random_owned_state = {
+				limit = { has_state_flag = random_terror_split_moved }
+				save_global_event_target_as = random_terror_final_capital
+			}
+			set_global_flag = random_terror_slot_jmx_used
+			transfer_units_fraction = {
+				target = JMX
+				size = @rt_split_force_share
+			}
+			every_owned_state = {
+				limit = { has_state_flag = random_terror_split_moved }
+				clr_state_flag = random_terror_split_moved
+				transfer_state_to = JMX
+			}
+		}
+		JMX = {
+			random_terror_inherit_actor_technology = yes
+			if = {
+				limit = {
+					OR = {
+						has_country_flag = random_terror_actor
+						has_country_flag = random_terror_actor_setup_complete
+					}
+				}
+				random_terror_clear_actor_runtime = yes
+			}
+			set_capital = { state = event_target:random_terror_final_capital remember_old_capital = no }
+			set_variable = { random_terror_actor_profile = constant:random_terror_actor_profile.final }
+			random_terror_initialize_actor = yes
+			random_terror_mark_final_actor = yes
+			save_global_event_target_as = random_terror_final_actor
+		}
+	}
+}
+
+# COUNTRY scope: the absorbed actor.  Input: event target
+# random_terror_absorbing_actor.  One merger transaction (Part 5, Actor
+# mergers; Part 8, Direct merger): the absorbed command's states, units,
+# unit leaders, equipment and fuel move to the absorbing command once, the
+# absorbing command keeps the compatible technology the absorbed one had, and
+# it takes over the absorbed command's war with its parent.  A success-only
+# receipt on the absorber records which organization became dominant, and the
+# once guard stops a second pass.  Cleanup of the absorbed actor follows.
+random_terror_reconcile_actor_merge = {
+	if = {
+		limit = {
+			NOT = { has_country_flag = random_terror_merge_reconciled }
+			has_event_target = random_terror_absorbing_actor
+			event_target:random_terror_absorbing_actor = { random_terror_is_actor = yes }
+		}
+		set_country_flag = random_terror_merge_reconciled
+		save_event_target_as = random_terror_tech_donor
+		every_owned_state = { transfer_state_to = event_target:random_terror_absorbing_actor }
+		transfer_units_fraction = {
+			target = event_target:random_terror_absorbing_actor
+			size = @rt_merge_force_share
+		}
+		event_target:random_terror_absorbing_actor = {
+			random_terror_inherit_actor_technology = yes
+			set_country_flag = random_terror_merged_from_@PREV
+		}
+		every_country = {
+			limit = {
+				has_country_flag = random_terror_parent_of_@PREV
+				has_war_with = PREV
+				NOT = { has_war_with = event_target:random_terror_absorbing_actor }
+			}
+			if = {
+				limit = { event_target:random_terror_absorbing_actor = { can_declare_war_on = PREV } }
+				event_target:random_terror_absorbing_actor = { declare_war_on = { target = PREV type = annex_everything } }
+			}
+		}
+	}
+}
+
+# COUNTRY scope: an AI jihadist actor merging into the final command at the
+# revelation.
+random_terror_merge_into_final = {
+	event_target:random_terror_final_actor = { save_event_target_as = random_terror_absorbing_actor }
+	random_terror_reconcile_actor_merge = yes
+	set_country_flag = random_terror_absorbed_by_network
+	set_country_flag = random_terror_cleanup_requested
+	random_terror_cleanup_actor = yes
+	event_target:random_terror_final_actor = { random_terror_accept_actor_absorption = yes }
+}
+
+# COUNTRY scope: an AI actor other than the final command when the revelation
+# commits.  An ordinary non-jihadist actor is left alone.  A jihadist actor
+# subordinates itself, becomes a rival claimant, merges into the final command
+# or collapses into cells; the last two are open only to a weak command.
+random_terror_resolve_ai_actor_disposition = {
+	if = {
+		limit = { random_terror_is_jihadist_actor = yes }
+		set_temp_variable = { random_terror_disposition_subordinate = constant:random_terror_terminal_disposition.subordinate_weight }
+		set_temp_variable = { random_terror_disposition_rival = constant:random_terror_terminal_disposition.rival_weight }
+		set_temp_variable = { random_terror_disposition_merge = constant:random_terror_value.zero }
+		set_temp_variable = { random_terror_disposition_fragment = constant:random_terror_value.zero }
+		if = {
+			limit = { check_variable = { random_terror_territorial_control < constant:random_terror_value.low } }
+			set_temp_variable = { random_terror_disposition_merge = constant:random_terror_terminal_disposition.merge_weight_weak }
+			set_temp_variable = { random_terror_disposition_fragment = constant:random_terror_terminal_disposition.fragment_weight_weak }
+		}
+		random_list = {
+			random_terror_disposition_subordinate = {
+				set_country_flag = random_terror_terminal_subordinate
+			}
+			random_terror_disposition_rival = {
+				set_country_flag = random_terror_terminal_resister
+			}
+			random_terror_disposition_merge = {
+				random_terror_merge_into_final = yes
+			}
+			random_terror_disposition_fragment = {
+				set_country_flag = random_terror_cleanup_requested
+				random_terror_cleanup_actor = yes
+			}
+		}
+	}
+}
+
+# COUNTRY scope: a rival claimant at war with the final command once the
+# revelation commits, so the rejection costs a real war.
+random_terror_declare_rival_claimant_war = {
+	if = {
+		limit = {
+			exists = yes
+			random_terror_is_actor = yes
+			has_country_flag = random_terror_terminal_resister
+			NOT = { has_capitulated = yes }
+			has_event_target = random_terror_final_actor
+			NOT = { has_war_with = event_target:random_terror_final_actor }
+			can_declare_war_on = event_target:random_terror_final_actor
+		}
+		declare_war_on = { target = event_target:random_terror_final_actor type = annex_everything }
+	}
+}
+
+# Any scope.  Seats the final command once the dominant actor is settled: an AI
+# dominant actor is annexed into a free JMX carrier, any other viable dominant
+# actor becomes the final command itself, and when every viable actor declined
+# the final command is split off one that did.  Then opens the terminal state,
+# the delayed commit and the consent events.
+random_terror_promote_final_command = {
+	if = {
+		limit = {
+			has_event_target = random_terror_dominant_actor
+			event_target:random_terror_dominant_actor = {
+				is_ai = yes
+				random_terror_is_viable_actor = yes
+				any_owned_state = { always = yes }
+			}
+			JMX = { random_terror_carrier_is_free = yes }
+		}
+		set_global_flag = random_terror_slot_jmx_used
+		event_target:random_terror_dominant_actor = {
+			random_owned_state = { save_global_event_target_as = random_terror_final_capital }
+		}
+		JMX = {
+			# The final command keeps the technology of the command it absorbs.
+			event_target:random_terror_dominant_actor = { save_event_target_as = random_terror_tech_donor }
+			random_terror_inherit_actor_technology = yes
+			annex_country = { target = event_target:random_terror_dominant_actor transfer_troops = yes }
+			if = {
+				limit = {
+					OR = {
+						has_country_flag = random_terror_actor
+						has_country_flag = random_terror_actor_setup_complete
+					}
+				}
+				random_terror_clear_actor_runtime = yes
+			}
+			set_capital = { state = event_target:random_terror_final_capital remember_old_capital = no }
+			set_variable = { random_terror_actor_profile = constant:random_terror_actor_profile.final }
+			random_terror_initialize_actor = yes
+			random_terror_mark_final_actor = yes
+			save_global_event_target_as = random_terror_final_actor
+		}
+	}
+	else_if = {
+		limit = {
+			has_event_target = random_terror_dominant_actor
+			event_target:random_terror_dominant_actor = {
+				random_terror_is_viable_actor = yes
+				any_owned_state = { always = yes }
+			}
+		}
+		event_target:random_terror_dominant_actor = {
+			capital_scope = { save_global_event_target_as = random_terror_final_capital }
+			random_terror_mark_final_actor = yes
+			save_global_event_target_as = random_terror_final_actor
+		}
+	}
+	# Every other viable actor declined and one of them could still be split:
+	# the final command is carved out of the declining actor's territory.
+	else_if = {
+		limit = {
+			NOT = { has_event_target = random_terror_dominant_actor }
+			random_terror_split_source_exists = yes
+			JMX = { random_terror_carrier_is_free = yes }
+		}
+		random_terror_split_final_command = yes
+	}
+	if = {
+		limit = { has_event_target = random_terror_final_actor }
+		set_variable = { global.random_terror_terminal_counteroffensive_contributions = constant:random_terror_value.zero }
+		if = {
+			limit = { has_event_target = random_terror_final_capital }
+			event_target:random_terror_final_capital = { set_state_flag = random_terror_terminal_command_capital }
+		}
+		set_global_flag = random_terror_terminal_active
+		random_terror_refresh_world_threat_source = yes
+		random_terror_refresh_terminal_strength = yes
+		event_target:random_terror_final_actor = { random_terror_schedule_terminal_check = yes }
+		event_target:random_terror_final_actor = { random_terror_assign_actor_cosmetic_tag = yes }
+		set_global_flag = random_terror_false_revelation_pending
+		set_global_flag = random_terror_false_revelation_enabled
+		set_variable = { global.random_terror_terminal_start_date = global.date }
+		set_temp_variable = { random_terror_world_end_delay = constant:random_terror_tuning.world_end_delay_days }
+		event_target:random_terror_final_actor = { country_event = { id = chaosx.nr31.95 days = random_terror_world_end_delay } }
+		every_country = { limit = { is_ai = no exists = yes } country_event = { id = chaosx.nr31.7 } }
+	}
+}
+
 random_terror_begin_false_revelation = {
 	random_terror_initialize_global_state = yes
 	if = {
@@ -7865,72 +8175,11 @@ random_terror_begin_false_revelation = {
 		random_terror_release_dead_carriers = yes
 		random_terror_select_dominant_actor = yes
 		if = {
-			limit = {
-				has_event_target = random_terror_dominant_actor
-				event_target:random_terror_dominant_actor = {
-					is_ai = yes
-					random_terror_is_viable_actor = yes
-					any_owned_state = { always = yes }
-				}
-				JMX = { random_terror_carrier_is_free = yes }
-			}
-			set_global_flag = random_terror_slot_jmx_used
-			event_target:random_terror_dominant_actor = {
-				random_owned_state = { save_global_event_target_as = random_terror_final_capital }
-			}
-			JMX = {
-				# The final command keeps the technology of the command it absorbs.
-				event_target:random_terror_dominant_actor = { save_event_target_as = random_terror_tech_donor }
-				random_terror_inherit_actor_technology = yes
-				annex_country = { target = event_target:random_terror_dominant_actor transfer_troops = yes }
-				if = {
-					limit = {
-						OR = {
-							has_country_flag = random_terror_actor
-							has_country_flag = random_terror_actor_setup_complete
-						}
-					}
-					random_terror_clear_actor_runtime = yes
-				}
-				set_capital = { state = event_target:random_terror_final_capital remember_old_capital = no }
-				set_variable = { random_terror_actor_profile = constant:random_terror_actor_profile.final }
-				random_terror_initialize_actor = yes
-				random_terror_mark_final_actor = yes
-				save_global_event_target_as = random_terror_final_actor
-			}
+			limit = { random_terror_dominant_actor_needs_choice = yes }
+			random_terror_ask_dominant_actor = yes
 		}
-		else_if = {
-			limit = {
-				has_event_target = random_terror_dominant_actor
-				event_target:random_terror_dominant_actor = {
-					random_terror_is_viable_actor = yes
-					any_owned_state = { always = yes }
-				}
-			}
-			event_target:random_terror_dominant_actor = {
-				capital_scope = { save_global_event_target_as = random_terror_final_capital }
-				random_terror_mark_final_actor = yes
-				save_global_event_target_as = random_terror_final_actor
-			}
-		}
-		if = {
-			limit = { has_event_target = random_terror_final_actor }
-			set_variable = { global.random_terror_terminal_counteroffensive_contributions = constant:random_terror_value.zero }
-			if = {
-				limit = { has_event_target = random_terror_final_capital }
-				event_target:random_terror_final_capital = { set_state_flag = random_terror_terminal_command_capital }
-			}
-			set_global_flag = random_terror_terminal_active
-			random_terror_refresh_world_threat_source = yes
-			random_terror_refresh_terminal_strength = yes
-			event_target:random_terror_final_actor = { random_terror_schedule_terminal_check = yes }
-			event_target:random_terror_final_actor = { random_terror_assign_actor_cosmetic_tag = yes }
-			set_global_flag = random_terror_false_revelation_pending
-			set_global_flag = random_terror_false_revelation_enabled
-			set_variable = { global.random_terror_terminal_start_date = global.date }
-			set_temp_variable = { random_terror_world_end_delay = constant:random_terror_tuning.world_end_delay_days }
-			event_target:random_terror_final_actor = { country_event = { id = chaosx.nr31.95 days = random_terror_world_end_delay } }
-			every_country = { limit = { is_ai = no exists = yes } country_event = { id = chaosx.nr31.7 } }
+		else = {
+			random_terror_promote_final_command = yes
 		}
 	}
 }
@@ -8010,7 +8259,11 @@ random_terror_commit_false_revelation = {
 			}
 			if = {
 				limit = { is_ai = yes }
-				set_country_flag = random_terror_terminal_subordinate
+				random_terror_resolve_ai_actor_disposition = yes
+			}
+			else_if = {
+				limit = { has_country_flag = random_terror_terminal_independent }
+				set_country_flag = random_terror_terminal_choice_honored
 			}
 			else_if = {
 				limit = { has_country_flag = random_terror_terminal_subordinate }
@@ -8031,6 +8284,10 @@ random_terror_commit_false_revelation = {
 				}
 				random_terror_join_final_command = yes
 			}
+		}
+		every_country = {
+			limit = { random_terror_is_actor = yes }
+			random_terror_declare_rival_claimant_war = yes
 		}
 		# Phase 1: the synchronized uprising wave, only in governments with
 		# real groundwork (Part 8 Uprising system).
@@ -8833,6 +9090,7 @@ random_terror_reset_repeatable_cycle = {
 		clr_global_flag = random_terror_chaos_international_paid
 		clr_global_flag = random_terror_chaos_international_relieved
 		clr_global_flag = random_terror_chaos_uprising_wave_paid
+		clr_global_flag = random_terror_dominant_choice_pending
 		clr_global_flag = random_terror_false_revelation_candidate_pending
 		clr_global_flag = random_terror_false_revelation_candidate_accelerated
 		clr_global_flag = random_terror_false_revelation_candidate_lapsed
@@ -9108,6 +9366,12 @@ random_terror_clear_actor_runtime = {
 	clr_country_flag = random_terror_terminal_subordinate
 	clr_country_flag = random_terror_terminal_player_command
 	clr_country_flag = random_terror_terminal_resister
+	clr_country_flag = random_terror_terminal_independent
+	clr_country_flag = random_terror_dominant_choice_open
+	clr_country_flag = random_terror_dominant_choice_accepted
+	clr_country_flag = random_terror_dominant_declined
+	clr_country_flag = random_terror_dominant_contested
+	clr_country_flag = random_terror_merge_reconciled
 	clr_country_flag = random_terror_actor_action_lock
 	clr_country_flag = random_terror_actor_absorption_offer_pending
 	clr_country_flag = random_terror_absorption_offer_pending
@@ -9131,10 +9395,12 @@ random_terror_clear_actor_runtime = {
 		clr_country_flag = random_terror_absorption_refused_by_@PREV
 		clr_country_flag = random_terror_jihad_refused_by_@PREV
 		clr_country_flag = random_terror_leader_contested_@PREV
+		clr_country_flag = random_terror_merged_from_@PREV
 		PREV = {
 			clr_country_flag = random_terror_absorption_refused_by_@PREV
 			clr_country_flag = random_terror_jihad_refused_by_@PREV
 			clr_country_flag = random_terror_leader_contested_@PREV
+			clr_country_flag = random_terror_merged_from_@PREV
 		}
 	}
 	remove_dynamic_modifier = { modifier = random_terror_mobilized_cadres }

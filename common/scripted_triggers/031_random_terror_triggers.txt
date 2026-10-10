@@ -861,6 +861,7 @@ random_terror_global_jihad_context_valid = {
 
 random_terror_can_begin_false_revelation = {
 	NOT = { has_global_flag = world_end }
+	NOT = { has_global_flag = random_terror_dominant_choice_pending }
 	NOT = { has_global_flag = random_terror_terminal_active }
 	NOT = { has_global_flag = random_terror_false_revelation_resolved }
 	has_global_flag = random_terror_evolution_5_unlocked
@@ -876,6 +877,28 @@ random_terror_can_begin_false_revelation = {
 	any_country = {
 		random_terror_is_viable_actor = yes
 		random_terror_is_jihadist_actor = yes
+	}
+}
+
+# Any scope.  The selected dominant actor is human and has not yet accepted the
+# revelation: it makes the accept, contest or independence choice before any
+# promotion or merger (Part 8, Player control).
+random_terror_dominant_actor_needs_choice = {
+	has_event_target = random_terror_dominant_actor
+	event_target:random_terror_dominant_actor = {
+		is_ai = no
+		random_terror_is_viable_actor = yes
+		NOT = { has_country_flag = random_terror_dominant_choice_accepted }
+	}
+}
+
+# Any scope.  A human actor that declined the revelation still holds enough
+# territory to split a final command off from.
+random_terror_split_source_exists = {
+	any_country = {
+		has_country_flag = random_terror_dominant_declined
+		random_terror_is_viable_actor = yes
+		num_of_controlled_states > 1
 	}
 }
 
