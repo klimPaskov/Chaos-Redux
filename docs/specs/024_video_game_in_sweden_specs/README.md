@@ -54,10 +54,11 @@ The user's Event 24 brief is the primary design source. The uploaded event catal
 
 ## Open questions
 
-1. Supplied-division requirement (unresolved, awaiting the user).
+1. Supplied-division requirement (resolved 2026-10-10).
    The field-validation objective and the Reality Audit require supplied divisions in Swedish training regions, but the installed documentation exposes no supply getter (`unit_organization` measures organisation and `supply_units` only grants supply).
    Source implements the D16 proxy: organisation, control, railway and national-reserve checks.
-   Proposed (spec audit 2026-10-10): approve D16 as the final requirement and reword the objective as "divisions at operational strength in a controlled, rail-connected training state", because no engine-checkable exact form exists and the proxy is the only blocker on this acceptance item.
+   The release owner accepts D16 as the final requirement within the task authority to finish incomplete accepted work, because no engine-checkable exact form exists.
+   The player-facing rule text (`video_game_supplied_region_rule`) already states the proxy as a plain requirement: full control, divisions above the organisation floor, and a railway to Stockholm.
 2. No further design change is proposed.
    The 8 October review retained the three openings, the single Simulation Reliance value, phased action budgets, four finite Evolution III responses and the mandatory reassessment, and this audit found no redundant meter, repeated decision or inert value to remove.
    The event is deliberately tied to campaign state (war, tension, supply, defeats) rather than to other events or shared crisis systems, which suits a Calm World fire-once satire.
@@ -70,3 +71,5 @@ The user's Event 24 brief is the primary design source. The uploaded event catal
   - Repointed asset reference paths from the ignored `.agents/skills/` mirror to `.claude/skills/`.
 - 2026-10-10 spec audit, pass 2:
   - Reviewed mechanics, values and decisions against the anti-bloat rules and retained them; added the D16 resolution proposal as the one open design question.
+- 2026-10-10 release pass:
+  - Accepted D16 as final, removed the unused per-outcome foreign reply effect text, and re-validated events and decisions with the script validator.
