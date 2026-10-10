@@ -49,6 +49,7 @@ The workforce penalties represent the legal system reserving almost everyone for
 This prevents a player from retaining a theoretical 99% reserve while treating the remaining economy as if the law were harmless until the final recruit is mobilized.
 
 War Support mitigates disruption and administration. It does not create additional people to perform civilian work.
+Food production also loses its workers: Part 7 defines the famine pressure this law feeds in already vulnerable states.
 
 ## Training and reinforcement
 

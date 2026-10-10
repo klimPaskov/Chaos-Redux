@@ -80,7 +80,7 @@ Disabling future firings must not orphan existing law effects or exits. Reconcil
 
 Implement Part 8 and the separate scenario contract, including actual shortages, marginal recovery with both laws, current affordability, Political Power reservation, and consistent voluntary-entry/exit reasoning.
 
-Spawn `chaosx_ai_probability_auditor` with a fully self-contained prompt and `fork_turns="none"`. It must start with `hoi4.probability_inspect`, then use evaluate, sweep, simulate, compare, and render as required. Use the actual candidate pool and verified game-version MTTH adapter. Never present a weight as a percentage or a nominal MTTH as a deadline.
+Spawn `chaosx_ai_probability_auditor` with a fully self-contained prompt through `chaos-redux-subagents`. It must start with `hoi4.probability_inspect`, then use evaluate, sweep, simulate, compare, and render as required. Use the actual candidate pool and verified game-version MTTH adapter. Never present a weight as a percentage or a nominal MTTH as a deadline.
 
 If a required probability tool or source is unavailable, record the precise blocker and preserve unverified status. Do not claim its results based on the supplied arithmetic model.
 
@@ -110,7 +110,7 @@ Build additive, idempotent fixtures using the current project's testing conventi
 Live-game validation belongs to the user; use the debug-playtest skill only if explicitly invoked.
 Static parsing and Python arithmetic do not replace engine evidence.
 
-Before claiming the goal is near complete, spawn `chaosx_improvement_loop_planner` using `fork_turns="none"` with all inputs explicitly listed. Resolve its addendum or closure handoff. Route bounded systems and decision reviews to the supplied specialists and obtain a completion audit.
+Before claiming the goal is near complete, spawn `chaosx_improvement_loop_planner` with all inputs explicitly listed. Resolve its addendum or closure handoff. Route bounded systems and decision reviews to the supplied specialists and obtain a completion audit.
 
 Keep iterating until the full specification is accomplished to its fullest extent. Avoid undisclosed simplifications, temporary versions, broad fallback paths, and good-enough substitutes. Report unresolved exact engine or source access honestly. Do not claim completion until the implemented files satisfy the specification.
 

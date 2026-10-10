@@ -59,6 +59,7 @@ Record game build, repository revision, actual loaded DLC/mod set, fixture, obse
 | C11 | Voluntary extreme entry at war, support 80%, immediate predecessor | Ordinary one-step price, same law effects as forced entry |
 | C12 | Forced demobilization, annexation, or inheritance | No hidden manual exit charge |
 | C13 | Price provider cannot prove native current price | Explicit implementation blocker, not hardcoded substitute |
+| C14 | Totalen Menschen!!! held by a country with one vulnerable food state and one healthy state | Only the vulnerable state receives the famine production input; the healthy state is never registered; leaving the law ends the input; no deaths are written by Event 82 |
 | S01 | Country created after start-of-firing snapshot | No retroactive grant, included at next firing |
 | S02 | Annexed dormant tag | No new country or artificial law installation |
 | S03 | Existing subject or government in exile | Participates through actual available categories |

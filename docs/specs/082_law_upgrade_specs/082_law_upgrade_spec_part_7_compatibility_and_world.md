@@ -70,6 +70,11 @@ Extreme construction, output, repair, growth, and research penalties should natu
 
 The event does not independently start a famine or mass migration merely because an extreme law is active. A participating crisis owner may observe the resulting conditions through its own established mechanics.
 
+One such observation is accepted and queued: Totalen Menschen!!! draws farm labor into the army.
+While a country holds it, the [famine owner](../../systems/famine_system.md) receives a production-pressure input for that country's states that already have a food-security record or a vulnerable historical profile, through the famine system's ordinary owner-proven adapter.
+The input never registers a healthy state, never creates deaths by itself, and ends when the law is left; a vulnerable country can therefore tip into shortage, which is the felt agricultural cost of recruiting almost everyone.
+Basis: 10 Oct 2026 spec audit under the user's planning-package brief.
+
 A separate economic collapse remains a separate event. Its effects must not be duplicated as an invisible extra “Law Upgrade collapse” penalty.
 
 The absence of automatic population deaths is deliberate. Any later mortality must have a real cause and use the owning project's death accounting.
@@ -84,7 +89,9 @@ An active [Peace Movement service agreement](../084_the_peace_movement_specs/084
 
 A future demobilization event can expose the predecessor direction through the same owning law systems. It can return either extreme law to its normal maximum through an explicit forced change. It does not silently become a manual purchase.
 
-The supplied catalog still calls Event 61 “Half mils into civs”. This package therefore does not claim that a fully implemented “Return to Peacetime” law-reversal owner already exists. Any such connection is future integration until its actual owner is inspected.
+[Event 61, Return to Peacetime](../061_return_to_peacetime_specs/specs/061_return_to_peacetime_spec_part_4_ai_integration.md#event-82-law-upgrade), is the planned inverse pressure: it moves economy and conscription laws one step toward civilian life through the same law-rank helpers.
+When it moves a country out of an extreme law, that is an explicit forced change with no Event 82 reversal fee, and a later Event 82 firing can advance the country again.
+Neither package is implemented, so this remains a design contract between the two owners.
 
 ## Chaos accounting
 

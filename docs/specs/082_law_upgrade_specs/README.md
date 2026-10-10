@@ -5,16 +5,13 @@
 
 This package preserves the user's worldwide one-step law progression, War Support grants, evolution thresholds, two 99% extreme laws, and doubled manual reversal costs. It expands them into complete authored design, balance proposals, compatibility and AI contracts, presentation, achievements, and implementation handoffs.
 
-**Original delivery status:** specification authored, without completed gameplay, native validation, final assets, workbook changes, or independent specialist reviews.
-This status describes the planning delivery; current implementation requires source and matching read-only MCP inspection.
+**Status:** proposed design, not implemented; the legacy `events/082_law_upgrade.txt` remains in place.
 
 ## Repository entry point
 
 This package is installed at `docs/specs/082_law_upgrade_specs/`.
-The original delivery referenced `docs/plans/082_law_upgrade_plans/` for source coverage, same-author review, an arithmetic suite, and six isolated-review prompts.
-That companion directory is absent from this checkout; its tests and handoffs are blocked dependencies, not accessible implementation evidence.
-
-Start the implementation agent with [the goal prompt](082_law_upgrade_goal_prompt.md). It points to the detailed specification and companion prompts. Use the current prompt text rather than an archive-era character count.
+The original delivery's companion folder `docs/plans/082_law_upgrade_plans/` was never installed; implementation records belong there when work starts.
+Start the implementation agent with [the goal prompt](082_law_upgrade_goal_prompt.md).
 
 ## Specification parts
 
@@ -39,7 +36,7 @@ The numbered parts explain the mechanic. Engine implementation instructions are 
 
 [Probability scenarios](082_law_upgrade_probability_scenarios.md) defines inspector-first MTTH and AI evidence, without inventing probabilities.
 
-[Acceptance matrix](082_law_upgrade_acceptance_matrix.md) contains 80 planned integration cases.
+[Acceptance matrix](082_law_upgrade_acceptance_matrix.md) contains 81 planned integration cases.
 
 [Research and sources](082_law_upgrade_research_and_sources.md) distinguishes user requirements, observed legacy source, research, and incomplete external source closure.
 
@@ -67,15 +64,14 @@ The 99% recruitment law is not an instant manpower grant. The economy's legal al
 
 ## Original planning-session evidence
 
-The following reading and test counts are retained as historical delivery claims.
-They do not establish current source closure, service health, implementation status, or the availability of the missing companion suite.
+The 22 September delivery read its 42 supplied files, ran no subagents or HOI4 tools, and passed 18 abstract arithmetic checks that test none of the 80 integration cases.
+Its proposed balance and engine-sensitive mappings are not validated.
 
-All 42 supplied text files were read end to end before drafting, including every supplied skill and all 20 agent definitions. Four additional repository documents or source files were fully read. Some other external references were only partially inspected or were unavailable.
+## Revision log
 
-Not every transitive must-read source was completed. In particular, the current installed-game documentation, full vanilla/DLC law source closure, exact native price provider, and all core offline wiki pages were not fully read. The detailed supplemental source audit lists each disposition.
+### 2026-10-10 spec audit
 
-No supplied subagent was actually spawned, and no HOI4 probability or live-game tool ran. The independent improvement-loop and probability reviews remain open.
-
-The original delivery reported 18 passing methods in the abstract companion suite. It checks arithmetic and ordinal rules only. It does not pass any of the 80 HOI4 integration cases.
-
-No supplied text was intentionally abbreviated for speed. The complete authored specification does not claim that its proposed balance or engine-sensitive mappings have already been validated.
+- Added an accepted and queued famine connection: Totalen Menschen!!! feeds a farm-labor production pressure into already vulnerable states through the famine owner, so the extreme recruitment law has a felt agricultural cost without starting famine in healthy states (Parts 5 and 7).
+- Replaced the stale Event 61 placeholder note with the actual Return to Peacetime inverse-pressure contract (Part 7).
+- Condensed the README status and planning-session narrative, and removed Codex-specific `fork_turns` instructions from the goal and coding prompts.
+- Pass 2 review otherwise retained the design: War Support is the only support value, the two extreme laws have asymmetric exits, and every number drives a reversal decision.
