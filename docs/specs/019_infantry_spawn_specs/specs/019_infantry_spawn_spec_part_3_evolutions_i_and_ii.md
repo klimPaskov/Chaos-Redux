@@ -12,6 +12,9 @@ An evolution records one global evolution milestone for Event 19. Country-level 
 
 Evolution pacing should use the project evolution pipeline with mean time to happen. The normal design anchor is around 90 days once its world-state conditions are eligible, modified by chaos, event history, total event divisions, war pressure, and prior management outcomes. It should not unlock instantly unless a triggerable scenario explicitly forces an evolved setup.
 
+Live implementation (spec audit 2026-10-10): the timing is a multi-signal score per evolution (`infantry_spawn_score_evolution_i` to `_iv` in `common/scripted_effects/019_infantry_spawn_evolution_effects.txt`), built from the Chaos Meter tier range, generation and formation history, request history, congestion and control counts, and war share, with thresholds in `common/script_constants/019_infantry_spawn_constants.txt`.
+No calendar date gates the evolutions; conditions decide and history only weights.
+
 ## Evolution I: Organized Muster
 
 ### Identity change
@@ -404,6 +407,9 @@ Working modes:
 - unrestricted draw
 
 Each mode changes weights and costs. Unrestricted draw has the widest quality and absurdity range.
+
+Live implementation (spec audit 2026-10-10): Evolution II exposes four modes split into a peace lane (field reinforcement, territorial defense) and a war lane (mobile reserve, specialist request) so that a player sees two request decisions at a time.
+The unrestricted draw and the four Part 4 request philosophies arrive with Evolution III; see the request lanes in Part 7, Group E.
 
 The player cannot request a tank specifically and guarantee a tank. The mechanic remains a lottery.
 

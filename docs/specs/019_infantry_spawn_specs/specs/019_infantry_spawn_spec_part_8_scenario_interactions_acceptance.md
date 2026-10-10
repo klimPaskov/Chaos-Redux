@@ -185,7 +185,7 @@ Reason:
 
 - no existing catalog cluster has a clear thematic and mechanical fit
 - a one-member cluster would add no meaningful interaction
-- Event 56 Navy, Event 96 Division Lock, Event 127 Warlords, Event 131 Widespread Mutiny, and related military events are not yet all confirmed reworked and compatible
+- Event 56 Navy, Event 127 Warlords, Event 131 Widespread Mutiny, and related military events are not yet all confirmed reworked and compatible (Event 96 Division Lock has a live marker contract, below)
 
 A future working cluster concept could be a sudden mobilization or command-collapse cluster, but it should be created only after at least two or three member events have complete behavior, ordered roles, and safe shared runtime context.
 
@@ -228,9 +228,11 @@ Required integration:
 - no parent stage, super-event, or world-end flags are set
 - material and quarry mechanics use reusable helpers only where they do not advance the parent event
 
-Current public-repository inspection did not establish the final parent golem identifiers, so this integration is an explicit implementation verification item.
+The installed golem body is `coal_golem`; it is registered as spawn-only provider 503 (Part 5) and stays isolated from the parent golem package.
 
 ## Event 56: Navy Spawn
+
+The Event 56 package is `docs/specs/056_the_navy_specs/`.
 
 Interaction direction:
 
@@ -239,6 +241,8 @@ Interaction direction:
 - a future cluster can connect simultaneous land and naval manifestation only after Event 56 is reworked
 
 ## Event 67: Generalissimo
+
+Live implementation: the Event 67 bridge exists (two extra demand codes, subordinate commission and parallel command); see `docs/events/019_infantry_spawn/overview.md`.
 
 Interaction direction:
 
@@ -249,6 +253,8 @@ Interaction direction:
 
 ## Event 96: Division Lock
 
+Live implementation: Event 96 owns the shared `division_template_lock_event_active` marker, and Event 19 pauses management and conversion transactions while it is set.
+
 Interaction direction:
 
 - event-owned audit locks must remain distinguishable from Event 96’s division lock mechanics
@@ -256,6 +262,8 @@ Interaction direction:
 - Event 96 should not remove Event 19 accounting or enable equipment farming
 
 ## Event 127: Warlords
+
+No specification package exists for Event 127 yet, so these rows stay design direction until its owner package defines a bridge.
 
 Interaction direction:
 
@@ -265,6 +273,9 @@ Interaction direction:
 - Event 19 derivative countries keep distinct family identity
 
 ## Event 131: Widespread Mutiny
+
+No specification package exists for Event 131 yet.
+The Famine and Migration package records that Event 131 needs an actual military ration conflict, so civilian famine alone never forces a mutiny; Event 19 formations add no ration conflict of their own.
 
 Interaction direction:
 
@@ -294,7 +305,12 @@ Wars and deaths still reach their shared owners once; the connection adds no sep
 
 Event 19 contributes chaos only through meaningful event outcomes that are not already counted by shared systems.
 
-Possible direct event contributions:
+Live state (spec audit 2026-10-10): Event 19 adds no direct Chaos Meter amount.
+Its wars reach the meter through the native `on_war_relation_added` hook, and a claimant takeover that changes the ruling party reaches it through `on_ruling_party_change` and `chaos_meter_on_ideology_change`, both in `common/on_actions/chaosx_on_actions_chaos_meter.txt`.
+The Chaos Meter tier range also feeds the evolution score (Part 3), so the event reads the meter more than it writes to it.
+A claimant takeover is applied with `set_politics` and fires no native coup hook, so the shared `chaos_meter_on_coup_succeeded` helper is not called; whether a military takeover should also count as a coup is listed under Open questions in the package README.
+
+Outcomes that no shared hook counts, and therefore the only candidates for a direct contribution:
 
 - major claimant revolt
 - derivative nonhuman revolt
@@ -319,6 +335,12 @@ Deaths can arise from:
 - claimant repression or revolt where designed
 
 All real population reduction uses the shared death pipeline and is not double-counted.
+
+## Famine and Migration
+
+Event 19 adds no famine, displacement, or refugee amount of its own.
+The Famine and Migration package already lists Event 019 custom forces among sources that can create displacement through actual battles, control change, and occupation, and states that custom-force identity alone supplies no danger or civilian amount.
+Derivative wars and revolt territory therefore reach those systems only through the shared state-level owners, with no Event 19 adapter.
 
 ## World threat framework
 
@@ -359,9 +381,7 @@ Text direction should explain how the event’s pattern changes without exposing
 
 ## Default enable state
 
-Event 19 remains disabled by default while implementation is incomplete.
-
-When the full rework, assets, AI, documentation, and catalog row are ready, implementation should add ID 19 to the reworked-event default enable allowlist in the same change.
+Event 19 is in the reworked-event default-enabled allowlist (`event_log_event_is_reworked_default_enabled` in `common/scripted_triggers/chaosx_settings_triggers.txt`, through `constant:infantry_spawn_event.id`).
 
 ## Player-facing text direction
 

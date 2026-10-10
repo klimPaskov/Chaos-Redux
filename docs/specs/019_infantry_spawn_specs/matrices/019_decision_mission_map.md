@@ -2,25 +2,30 @@
 
 The live package contains 68 decisions and 14 timed missions. The tables below group those objects by gameplay purpose; the exact source inventory at the end is the count authority.
 
+The first table uses design labels.
+Rows marked unresolved have no live decision, and rows marked as an outcome or timeout are implemented without a button.
+The label-to-identifier mapping is in Part 7 of the specification ("Live decision mapping"), and the retire-or-build proposal for the unresolved rows is in the package README under Open questions.
+The Evolution II request rows are live as a peace lane and a war lane, and Evolution III replaces them with Ask for Numbers, Discipline, Firepower, and Mobility plus Request Anything.
+
 ## Decision families
 
 | Decision | Phase | Owner | Main cost palette | Main result | Failure or risk |
 | --- | --- | --- | --- | --- | --- |
 | Audit the New Formations | Baseline onward | ordinary country | army experience, command capacity, support equipment | reveals and registers lots | informal loyalty and congestion |
 | Conduct a Formation Census | Evolution II onward | ordinary country | staff time and logistics burden | repairs and refreshes records | no free control gain |
-| Trace the Equipment Ledgers | Evolution I onward | ordinary country | factory or reinforcement burden | identifies debt and salvage | delayed deployment |
+| Trace the Equipment Ledgers (unresolved) | Evolution I onward | ordinary country | factory or reinforcement burden | identifies debt and salvage | delayed deployment |
 | Assign Territorial Roles | Baseline onward | ordinary country | local support and role restriction | lowers congestion | reduced offensive flexibility |
 | Open a Standardization Cycle | Baseline onward | ordinary country | equipment, training capacity, time | fewer templates and higher control | loss and disorganization |
-| Recombine Random Battalions | Evolution III onward | ordinary country | army experience, equipment loss, time | attempts coherent recomposition | can worsen result |
+| Recombine Random Battalions (unresolved) | Evolution III onward | ordinary country | army experience, equipment loss, time | attempts coherent recomposition | can worsen result |
 | Preserve Specialist Cadres | Evolution I onward | ordinary country | time and support-equipment handling | saves useful support | sacrifices combat core |
 | Emergency Field Integration | Baseline onward during crisis | ordinary country | supply, organization, command burden | rapid readiness | long-term control loss |
 | Reserve Rail Corridors | Evolution II onward | ordinary country | trains, supply opportunity cost | moves formations | weakens other corridors |
-| Establish Muster Depots | Evolution I onward | ordinary country | construction, trains, support equipment | integration capacity | claimant seizure target |
-| Relocate an Impossible Lot | Conditional | ordinary country | trains, convoys, fuel | safe placement | partial loss or stranding |
+| Establish Muster Depots (live as muster districts) | Evolution I onward | ordinary country | construction, trains, support equipment | integration capacity | claimant seizure target |
+| Relocate an Impossible Lot (unresolved) | Conditional | ordinary country | trains, convoys, fuel | safe placement | partial loss or stranding |
 | Supervised Demobilization | Baseline onward | ordinary country | time, local political cost | partial delayed salvage | claimant resistance or wartime anger |
 | Preserve the Prototype Formation | Evolution II onward | ordinary country | army experience, support equipment, trains, fuel, time | exact advanced lot survives with improved training and finite research insight | material decay or identity-proof failure |
 | Cannibalize the Advanced Lot | Evolution II onward | ordinary country | permanent loss of exact prototype cohort | settled unit-backed salvage, congestion relief, possible small research insight | unpaid obligations are forfeited and no demobilization credit is earned |
-| Disarm a Claimant District | Evolution III onward | ordinary country | loyal forces, equipment handling | weakens revolt | can trigger immediate revolt |
+| Disarm a Claimant District (unresolved) | Evolution III onward | ordinary country | loyal forces, equipment handling | weakens revolt | can trigger immediate revolt |
 | Request Field Reinforcement | Evolution II onward | ordinary country | dynamic military and equipment cost | random balanced lot | congestion and bad result |
 | Request Mobile Reserve | Evolution II onward | ordinary country | fuel, transport, army experience | random mobile lot | terrain or equipment mismatch |
 | Request Territorial Defenders | Evolution II onward | ordinary country | manpower, local support, rifles | supply-light lot | weak offensive value |
@@ -28,11 +33,11 @@ The live package contains 68 decisions and 14 timed missions. The tables below g
 | Request Anything | Evolution III onward | ordinary country | highest dynamic cost | full random pool | widest tails and claimant risk |
 | Request Anomalous Formation | Evolution IV onward | ordinary country | containment, family cost, saturation | registry family lot | derivative risk |
 | Grant Formal Command | Evolution III onward | ordinary country | political and military authority | improves claimant lots | influence rises |
-| Reassign Loyal Formations | Evolution III onward | ordinary country | replacement officers, supply | lowers claimant force | can fail or provoke |
+| Reassign Loyal Formations (unresolved) | Evolution III onward | ordinary country | replacement officers, supply | lowers claimant force | can fail or provoke |
 | Build a Counter-Command | Evolution III onward | ordinary country | army experience and command power | lowers claimant influence, raises Muster Control, and starts the shared response lock | expensive and slow; the decision and AI use the same lock |
-| Negotiate Retirement | Evolution III onward | ordinary country | status, protection, political concession | peaceful claimant removal | claimant can reject |
+| Negotiate Retirement (unresolved) | Evolution III onward | ordinary country | status, protection, political concession | peaceful claimant removal | claimant can reject |
 | Arrest the Claimant | Evolution III onward | ordinary country | loyal units and preparation | ends claimant on success | coup or revolt on failure |
-| Accept Military Takeover | Evolution III onward | ordinary country | country political identity | avoids civil war | claimant regime takes power |
+| Accept Military Takeover (crisis outcome, no decision) | Evolution III onward | ordinary country | country political identity | avoids civil war | claimant regime takes power |
 | Open Sealed Cantonment | Evolution IV onward | ordinary country | state capacity, guards, supply | containment | local burden |
 | Appoint Family Liaison | Evolution IV onward | ordinary country | command and political recognition | improves family control | institutional permanence |
 | Restricted Deployment Order | Evolution IV onward | ordinary country | strategic flexibility | lowers incidents | less military use |

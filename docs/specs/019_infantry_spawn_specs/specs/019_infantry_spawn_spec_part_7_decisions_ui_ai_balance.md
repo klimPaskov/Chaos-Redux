@@ -29,7 +29,7 @@ The category appears when the country has an unresolved generation, live or unac
 
 After all lots are resolved and no active claimant, opening, deferred transaction, running operation, or relevant cooldown remains, the decision category closes peacefully. The shared relevance trigger also hides the Formation Management and claimant categories after a completed takeover or achievement-marked claimant or derivative revolt, even if another claimant row remains.
 
-The parent-side derivative revolt marker and Board close are written only after the exact transfer or one-state takeover reaches its final ownership, ledger, control, core, and diplomacy proof; pre-commit recovery and post-commit quarantine do not record a successful revolt.
+The parent-side derivative revolt marker and the category close are written only after the exact transfer or one-state takeover reaches its final ownership, ledger, control, core, and diplomacy proof; pre-commit recovery and post-commit quarantine do not record a successful revolt.
 
 ### Persistent evolved state
 
@@ -49,6 +49,62 @@ The category and all active missions close when:
 - a direct-scenario actor or isolated breakaway owns the scenario package
 
 Relevant generation, target, and lot data must be migrated or cleared deliberately.
+
+## Live decision mapping (spec audit 2026-10-10)
+
+The groups below use design labels.
+This table maps each label to its live identifier so that a reader does not mistake an implemented action for a missing one or re-implement it under its planning name.
+Rows marked `unresolved` have no live decision; neither their implementation nor their retirement has been accepted, and the proposal for them is under "Open questions" in `../README.md`.
+The exact live inventory and counts are in `../matrices/019_decision_mission_map.md`.
+Derivative-country decisions are mapped in Part 6 and the same matrix.
+
+| Design label | Live identifier | Disposition |
+| --- | --- | --- |
+| Audit the New Formations | `infantry_spawn_audit_selected_lot` with `infantry_spawn_formation_roll_call_mission` | implemented |
+| Conduct a Formation Census | `infantry_spawn_survey_formation_lots` and the cache refresh `infantry_spawn_review_formation_ledger` | implemented |
+| Trace the Equipment Ledgers | none; exact obligation rows are always recorded and settled through `infantry_spawn_settle_selected_lot_obligations` and `infantry_spawn_select_next_unaccounted_lot` | unresolved |
+| Find the Officers / Appoint Integration Staff | `infantry_spawn_appoint_integration_staff` with `infantry_spawn_officer_search_mission` | implemented |
+| Recognize the Emergency Reserve | `infantry_spawn_recognize_emergency_reserve` | implemented |
+| Open a Training Cycle | `infantry_spawn_open_training_cycle` with `infantry_spawn_training_cycle_mission` | implemented |
+| Preserve the Prototype Formation | `infantry_spawn_preserve_prototype_formation` with `infantry_spawn_prototype_maintenance_trial_mission` | implemented |
+| Assign Territorial Roles | `infantry_spawn_assign_territorial_roles` | implemented |
+| Open a Standardization Cycle | `infantry_spawn_open_standardization_cycle`, `infantry_spawn_advance_standardization_requisition`, `infantry_spawn_issue_common_tables`, `infantry_spawn_standardization_cycle_mission` | implemented |
+| Recombine Random Battalions | none | unresolved |
+| Preserve Specialist Cadres | `infantry_spawn_preserve_specialist_companies` with `infantry_spawn_specialist_preservation_mission` | implemented |
+| Emergency Field Integration | `infantry_spawn_emergency_field_integration` | implemented |
+| Reserve Rail Corridors | `infantry_spawn_reserve_rail_corridors` with `infantry_spawn_rail_corridor_mission` | implemented |
+| Establish Muster Depots | `infantry_spawn_establish_muster_districts` with `infantry_spawn_muster_districts_mission` (districts rather than depots) | implemented |
+| Relocate an Impossible Lot | none | unresolved |
+| Clear the Training Grounds | none; `infantry_spawn_open_training_cycle` with `infantry_spawn_training_cycle_mission` raises training instead | unresolved |
+| Supervised Demobilization | `infantry_spawn_supervised_demobilization` with `infantry_spawn_supervised_demobilization_mission` | implemented |
+| Break Up the Formation | `infantry_spawn_cannibalize_advanced_lot` for advanced lots only | implemented for advanced lots; unresolved for ordinary lots |
+| Disarm a Claimant District | none | unresolved |
+| Disperse an Anomalous Lot | `infantry_spawn_disperse_selected_anomalous_lot_decision` | implemented |
+| Request modes | Evolution II: `infantry_spawn_request_field_reinforcement`, `infantry_spawn_request_territorial_defenders` (peace lane), `infantry_spawn_request_mobile_reserve`, `infantry_spawn_request_specialist_firepower` (war lane); Evolution III: `infantry_spawn_request_numbers`, `infantry_spawn_request_discipline` (peace lane), `infantry_spawn_request_firepower`, `infantry_spawn_request_mobility` (war lane), `infantry_spawn_request_anything` (both lanes); the escalating timer is `infantry_spawn_request_cooldown_mission` | implemented |
+| Request an Anomalous Formation | `infantry_spawn_request_selected_anomalous_family` | implemented |
+| Grant Formal Command | `infantry_spawn_recognize_claimant` | implemented |
+| Limit the Command | none as a decision; the Event 67 subordinate-commission demand covers the Generalissimo case | unresolved |
+| Reassign Loyal Formations | none as a separate decision; `infantry_spawn_counter_command_claimant` lowers influence | unresolved |
+| Build a Counter-Command | `infantry_spawn_counter_command_claimant` | implemented |
+| Public Discrediting (Part 4) | `infantry_spawn_discredit_claimant` | implemented |
+| Meet or Refuse the Demand | `infantry_spawn_accept_claimant_demand` and `infantry_spawn_refuse_claimant_demand`; an unanswered demand times out as a refusal | implemented |
+| Negotiate Retirement | none | unresolved |
+| Arrest the Claimant | `infantry_spawn_arrest_claimant` | implemented |
+| Accept a Military Takeover | none as a decision; takeover resolves as a crisis outcome (`chaosx.nr19.203`) | implemented as an outcome |
+| Claimant file selection | `infantry_spawn_cycle_claimant_file` | implemented |
+| Lot selection cursors | `infantry_spawn_select_next_ordinary_lot`, `infantry_spawn_select_next_unaccounted_lot` | implemented |
+| Controlled formation trials (achievement proofs) | `infantry_spawn_achievement_one_battalion_combat_trial`, `infantry_spawn_achievement_combined_arms_combat_trial`, `infantry_spawn_achievement_borrowed_future_combat_trial`, `infantry_spawn_achievement_barracks_of_babel_combat_trial` with `infantry_spawn_achievement_combat_trial_mission` | implemented |
+| Open a Sealed Cantonment | `infantry_spawn_open_selected_family_cantonment_decision` | implemented |
+| Appoint a Family Liaison | `infantry_spawn_appoint_selected_family_liaison_decision` | implemented |
+| Issue Restricted Deployment Orders | `infantry_spawn_restrict_selected_family_deployment_decision` | implemented |
+| Sustain the Family | `infantry_spawn_sustain_selected_family_decision` | implemented |
+| Authorize Base Zombie Training | ordinary countries train through `infantry_spawn_request_selected_anomalous_family` when the selected row passes `chaos_unit_family_current_row_can_train`; zombie derivatives use `infantry_spawn_derivative_authorize_base_zombie_training_decision` | implemented |
+| Manifest Ghost and Bind Golem Reinforcements | selected-family request for ordinary countries; `infantry_spawn_derivative_manifest_ghost_host_decision` and `infantry_spawn_derivative_bind_golem_host_decision` for derivatives | implemented |
+| Seal a Breach | `infantry_spawn_seal_selected_family_breach_decision` | implemented |
+| Family selection | `infantry_spawn_cycle_anomalous_family_decision` | implemented |
+| Meet the Claimant's Deadline (mission) | the demand timeout above; no separate mission | implemented as a timeout |
+| Break the Claimant Network (mission) | none | unresolved |
+| Contain Anomalous Saturation (mission) | none; containment runs through the family decisions | unresolved |
 
 ## Decision groups
 
@@ -91,6 +147,8 @@ Purpose:
 This is a maintenance action, not a free control boost.
 
 ### Trace the Equipment Ledgers
+
+Live status: unresolved; no live decision, see the mapping table. Exact obligation rows are recorded and settled by the settlement decisions.
 
 Phase:
 
@@ -150,6 +208,8 @@ Failure:
 - higher congestion
 
 ### Recombine Random Battalions
+
+Live status: unresolved; no live decision, see the mapping table.
 
 Phase:
 
@@ -228,6 +288,8 @@ Costs:
 
 ### Relocate an Impossible Lot
 
+Live status: unresolved; no live decision, see the mapping table.
+
 Phase:
 
 - all phases when a lot is locally unsustainable
@@ -240,6 +302,8 @@ Purpose:
 Failure can strand or partially dissolve the lot.
 
 ### Clear the Training Grounds
+
+Live status: unresolved; no live decision, see the mapping table.
 
 Phase:
 
@@ -272,6 +336,8 @@ Restrictions:
 
 ### Break Up the Formation
 
+Live status: implemented for advanced lots only (`infantry_spawn_cannibalize_advanced_lot`); unresolved for ordinary lots.
+
 Phase:
 
 - Evolution II onward
@@ -281,6 +347,8 @@ Purpose:
 - converts a large or advanced lot into smaller cadres, a limited salvage package, and training value
 
 ### Disarm a Claimant District
+
+Live status: unresolved; no live decision, see the mapping table.
 
 Phase:
 
@@ -306,6 +374,12 @@ Purpose:
 - spawn-only families cannot be converted into trainable stock
 
 ## Group E: Formation requests
+
+The implemented request surface splits the modes into a peace lane and a war lane so that a human player sees only two or three request decisions at once.
+At Evolution II, a country at peace sees Request a Field Reinforcement and Request Territorial Defenders, and a country at war sees Request a Mobile Reserve and Request Specialist Firepower (`infantry_spawn_event19_evolution_ii_peacetime_request_lane` and `infantry_spawn_event19_evolution_ii_frontline_request_lane`).
+At Evolution III these four are replaced by the Part 4 request philosophies: Ask for Numbers and Ask for Discipline in peace, Ask for Firepower and Ask for Mobility in war, and Ask for Anything in both lanes.
+AI countries pass both lanes and choose through their `ai_will_do` weights.
+The unrestricted draw is therefore an Evolution III feature; Evolution II has no unrestricted request.
 
 ### Request a Field Reinforcement
 
@@ -417,12 +491,16 @@ Effect direction:
 
 ### Limit the Command
 
+Live status: unresolved; the Event 67 subordinate-commission demand covers the Generalissimo case only.
+
 Effect direction:
 
 - grants a bounded district or unit count
 - creates a measurable boundary whose violation can trigger incidents
 
 ### Reassign Loyal Formations
+
+Live status: unresolved; `infantry_spawn_counter_command_claimant` lowers influence but has no per-lot reassignment.
 
 Effect direction:
 
@@ -451,6 +529,8 @@ The visible requirement and cost match the actual demand.
 The tooltip must explain broad visible risk without revealing the exact hidden revolt roll.
 
 ### Negotiate Retirement
+
+Live status: unresolved; no live decision, and this is the one design-only claimant exit the audit proposes to build (see the package README, Open questions).
 
 Available when:
 
@@ -569,6 +649,8 @@ Success creates future efficiency and future claimant stakes.
 
 ## Meet the Claimant’s Deadline
 
+Live status: implemented as the demand timeout (an unanswered demand resolves as a refusal); no separate mission.
+
 Objective:
 
 - provide the requested command, equipment, district, or political act before time expires
@@ -576,6 +658,8 @@ Objective:
 Failure triggers a claimant response based on influence rather than one universal revolt.
 
 ## Break the Claimant Network
+
+Live status: unresolved; no live mission.
 
 Objective:
 
@@ -587,6 +671,8 @@ Possible partial success:
 - troops reassigned but claimant keeps political influence
 
 ## Contain Anomalous Saturation
+
+Live status: unresolved; no live mission, containment runs through the family decisions.
 
 Objective:
 
@@ -602,190 +688,20 @@ Evolution IV countries with more than one eligible registry family expose `infan
 
 The category lifecycle, scenario isolation, civil-war safety, lot accounting, and cleanup contracts are unchanged. The historical `muster_gui` variable names are retained only for save compatibility and shared selection-cache code.
 
+### Surface budget (proposed, spec audit 2026-10-10)
+
+The 10 October 2026 brief rejects tooltips and panels that list dozens of values, and the decision-only surface has no window in which to hide them.
+The persistent player-facing values stay at the four meters of Part 1: Muster Control, Army Congestion, Claimant Influence (only while a claimant exists), and Anomalous Saturation (Evolution IV only).
+A decision tooltip names its cost, the one or two meters it moves, and its timer; lot quality and coherence appear as one band word each, and supply burden, equipment debt, and manpower liability appear only as the single outstanding amount the settlement decision will pay.
+No new Event 19 decision, idea, or tooltip should add a value that no rule or decision reads.
+
 ## Archived scripted-GUI design (superseded)
 
-The following design notes document the former GUI proposal for provenance. They are not runtime requirements after the accepted decision-only conversion.
-
-## Entry point
-
-A button in the Event 19 decision category opens a movable scripted GUI window after Evolution III. Before Evolution III, normal decisions and category text are sufficient.
-
-The interface should not open automatically every time a lot changes.
-
-## Tab 1: Overview
-
-Displays:
-
-- current generation
-- unresolved lot count
-- event division count
-- Muster Control
-- Army Congestion
-- request cooldown
-- current dominant burden
-- active mission summaries
-
-Controls:
-
-- open audit
-- begin standardization
-- close generation when eligible
-
-## Tab 2: Formation Lots
-
-Displays a compact list of active lots.
-
-Each lot card shows:
-
-- working lot identifier
-- origin state or region
-- division count
-- composition summary
-- material quality
-- coherence band
-- supply burden
-- equipment debt
-- command owner
-- integration state
-
-The player selects one lot at a time. Only decisions relevant to that lot are shown.
-
-This selected-lot design prevents a wall of per-lot decisions.
-
-## Tab 3: Command
-
-Visible only when a claimant exists.
-
-Displays:
-
-- primary claimant army/muster identity scene in the fixed portrait-slot widget
-- personal name
-- archetype summary
-- influence
-- assigned lots
-- controlled district
-- current demand
-- revolt risk band
-- rival claimant indicators
-
-Controls call the same scripted effects and cost logic as decisions.
-
-## Tab 4: Anomalous Registry
-
-Visible only at Evolution IV.
-
-Displays each locally available family:
-
-- family icon
-- source identity direction without parent-event spoilers
-- trainable or spawn-only mode
-- allowed base variant
-- local unit count
-- sustainment status
-- family pressure
-- derivative risk state
-
-Controls:
-
-- family-specific training or spawning action
-- cantonment
-- restricted deployment
-- sustainment
-- purge or containment
-
-## Tab 5: Generation History
-
-Optional compact local history showing recent generation outcomes. It should not duplicate the global Event Log window.
-
-Useful fields:
-
-- generation number
-- date
-- lots created
-- lots integrated
-- lots demobilized
-- revolt or takeover result
-- anomalous families involved
-
-This tab can be omitted if it creates excessive implementation or performance burden. The global Event Log and a category summary are sufficient. The decision should be made during implementation after inspecting UI space.
-
-## Archived GUI cost and tooltip rules
-
-Every button must show:
-
-- icon-first cost summary
-- availability state
-- blocked requirement summary
-- detailed tooltip with named shortages or targets
-- visible consequence direction
-- cooldown or mission duration
-
-When more than four costs apply, the button shows a short requirements status and the full list in a tooltip.
-
-No button bypasses decision balance. The GUI and decisions call shared effects and triggers.
-
-## Archived GUI animation plan
-
-Animation should communicate state, not decorate every element.
-
-### Muster Seal Pulse
-
-Use:
-
-- unprocessed lots exist
-
-Target:
-
-- decision category seal or Overview tab emblem
-
-Plan:
-
-- 8 real source frames
-- subtle light and paper or metal response
-- 6 to 8 frames per second
-- looping
-- static fallback
-
-### Critical Command Border
-
-Use:
-
-- claimant revolt risk reaches critical band
-
-Target:
-
-- Command tab army/muster identity-scene panel border
-
-Plan:
-
-- 8 real source frames
-- restrained pulse and wrong-direction shadow behavior
-- 5 to 7 frames per second
-- looping while critical
-- static fallback
-
-### Anomalous Registry Emblem
-
-Use:
-
-- anomalous family is active or saturation is rising
-
-Target:
-
-- Registry tab emblem
-
-Plan:
-
-- 10 real source frames
-- family-neutral impossible movement or light
-- slow loop
-- static fallback
-
-### Static-only decisions
-
-The 20 claimant army/muster identity scenes remain static in their fixed portrait slots. Individual lot icons remain static. Animating all of them would add visual noise and a disproportionate asset burden.
-
-Every final animation must follow the frame-sheet skill with separate source frames, processed frames, horizontal sheet, DDS, static fallback, contact sheet, and GIF review preview. A transformed still is not acceptable final animation.
+The former Muster Board proposal (a five-tab movable window with Overview, Formation Lots, Command, Anomalous Registry, and Generation History tabs, icon-first button cost rules, and three frame-sheet animations: Muster Seal Pulse, Critical Command Border, and Anomalous Registry Emblem) is superseded by the accepted 2026-08-05 decisions-only surface.
+Its disposition is recorded in `../review/decision_only_surface_addendum_2026-08-05.md`, and its produced art, frame sheets, and static fallbacks remain archival provenance under `docs/assets/019_infantry_spawn/`.
+The still-valid intent is carried by the decision-only surface above: one selected lot at a time instead of a wall of per-lot actions, claimant and family controls only when relevant, and every control calling the same effects, costs, and AI gates as the decisions.
+The 20 claimant army/muster identity scenes stay static; no Event 19 animation is a runtime requirement.
+The full archived tab, tooltip, and animation text is available in git history before the 2026-10-10 spec audit.
 
 ## AI architecture
 
@@ -882,7 +798,8 @@ Required categories:
 - AI policy weights
 - AI safety blockers
 
-Do not scatter these values across event, decision, GUI, and country files.
+Do not scatter these values across event, decision, and country files.
+The live tuning surfaces are listed under "Tuning surfaces" in `docs/events/019_infantry_spawn/overview.md`.
 
 ## Balance principles
 
@@ -960,9 +877,9 @@ Design direction:
 - use country-level pulse logic only while a country has an active generation, claimant, or saturation state
 - avoid daily all-country on-actions
 - use targeted timed events, decisions, or weekly country-specific pulses only when verified and permitted
-- cap visible active claimants and lot cards without capping total useful divisions
+- cap visible active claimants and selectable lots without capping total useful divisions
 - clean stale targets, templates, and variables after closeout
-- rebuild GUI lists only when opened or when relevant data changes
+- rebuild the shared selection caches only on review, selection, or relevant data changes
 
 Any whole-world recurring iteration requires explicit user permission under project rules. The event firing itself is the requested global operation. Persistent management should be country-scoped.
 
@@ -1063,10 +980,10 @@ The decisions, UI, AI, and balance design are satisfied when:
 - obsolete decisions hide or replace themselves
 - costs use military, equipment, supply, industrial, and political burdens that fit the action
 - missions require real action and have success, failure, and partial success where useful
-- selected-lot UI prevents decision clutter
-- claimant and registry tabs appear only when relevant
-- GUI buttons use the same effects and triggers as decisions
-- only state-communicating assets are animated
+- the shared selected-lot cursor prevents decision clutter
+- claimant and anomalous-family decisions appear only when relevant
+- every decision and AI path uses the same effects, costs, and triggers
+- no Event 19 scripted GUI or runtime animation is required
 - AI has national, lot, and request logic
 - all important values are centralized
 - performance avoids permanent daily all-country loops

@@ -1,7 +1,7 @@
 # Event 19 Infantry Spawn
 ## Part 4: Evolution III, random divisions, and claimant generals
 
-> **Current UI boundary (2026-08-22):** This part preserves the accepted Evolution III design. References below to the Muster Board, interface, or scripted GUI are historical design terminology after the accepted decision-only conversion. The live player surface is ordinary decisions and decision categories only; see `../review/decision_only_surface_addendum_2026-08-05.md`.
+> **Current UI boundary (2026-08-22, reconciled 2026-10-10):** This part preserves the accepted Evolution III design. The live player surface is ordinary decisions and decision categories only, with no Event 19 scripted GUI; see `../review/decision_only_surface_addendum_2026-08-05.md`. Planning labels for decisions are mapped to live identifiers in Part 7.
 
 ## Evolution III: Command Fracture
 
@@ -287,6 +287,11 @@ Each request consumes resources before revealing the outcome.
 
 ## Lot disposition under full randomness
 
+Live mapping (spec audit 2026-10-10): Accept the Formation and Supervised Dissolution are implemented through the ordinary integration, standardization, and supervised demobilization decisions.
+Isolate the Lot exists only for anomalous families as Sealed Cantonment.
+Break It Into Cadres, Recombine the Battalions, and Hand It to a Claimant have no live decision and remain unresolved; claimant loyalty is instead assigned by generation, incidents, and the Another Formation demand.
+See the live decision mapping in Part 7 and the open questions in `../README.md`.
+
 ### Accept the Formation
 
 Keeps the result and begins normal integration.
@@ -363,7 +368,7 @@ Variation can include:
 - smoke, dust, storm light, snow, monsoon rain, spectral vapor, or mineral glow
 - old equipment organized with uncanny precision
 
-The package should not animate the 20 army/muster scenes. Static scenes provide better variety and keep the asset scope practical. The claimant crisis is communicated through animated UI warning assets instead.
+The package should not animate the 20 army/muster scenes. Static scenes provide better variety and keep the asset scope practical. The claimant crisis is communicated through the claimant decision category, its reports, and Event Log history; the former animated warning assets are archival provenance only.
 
 ## Claimant archetypes
 
@@ -462,7 +467,7 @@ A claimant can appear through:
 - a random formation arriving with an unknown commander
 - an existing event officer gaining prominence
 - a command district being left unmanaged
-- repeated use of Hand It to a Claimant
+- claimant-attached lots created by the Another Formation demand
 - high congestion and low control
 - wartime emergency integration
 - a claimant-specific flavor incident
@@ -474,6 +479,7 @@ Unused region-compatible profiles and their fixed army/muster identity scenes ca
 ## Claimant demands
 
 Claimant demands are timed choices with real consequences.
+The implementation records the six demands below plus the two Event 67 Generalissimo variants (subordinate commission and parallel command) as eight demand codes; a demand left unanswered times out as a refusal.
 
 ### Formal Appointment
 
@@ -587,14 +593,14 @@ This is slower but can end the crisis peacefully.
 The state builds loyal command networks, reassigns units, and isolates depots.
 
 This costs army experience, equipment, and time. Failure can accelerate revolt.
-The shared response effect starts a dedicated officer-search lock consumed by the decision, Muster Board, and AI paths alike.
+The shared response effect starts a dedicated officer-search lock consumed by the decision and AI paths alike.
 
 ### Public Discrediting
 
 The state uses military failure, exposed fraud, or political opposition to lower influence.
 
 It is more effective against Field Prophets and Hollow Marshals than a claimant whose troops are winning battles.
-Its shared response effect starts an independent political-staff lock consumed by the decision, Muster Board, and AI paths alike.
+Its shared response effect starts an independent political-staff lock consumed by the decision and AI paths alike.
 
 ### Arrest or Removal
 

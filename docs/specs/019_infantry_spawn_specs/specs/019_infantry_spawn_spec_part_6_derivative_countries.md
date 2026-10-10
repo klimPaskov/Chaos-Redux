@@ -243,6 +243,8 @@ The derivative country tree should contain roughly 25 to 35 focuses or equivalen
 
 It uses a common architecture with family-specific modules and localisation. A shared tree is acceptable only when the families do not read and play identically.
 
+Live implementation (spec audit 2026-10-10): the installed tree has 45 focus nodes, 30 shared plus five per family, so one derivative sees 35 focuses; the exact route map is `focus_graphs/019_derivative_country_route_map.md`.
+
 Major lanes:
 
 1. survival and assembly

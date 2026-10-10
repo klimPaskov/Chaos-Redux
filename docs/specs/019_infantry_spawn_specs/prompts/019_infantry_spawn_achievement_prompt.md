@@ -1,6 +1,6 @@
 # Achievement Implementation Prompt for Event 19 Infantry Spawn
 
-> **Archival implementation prompt (2026-08-22):** This prompt preserves the original achievement work order and must not be treated as a current completion claim. Use `docs/achievements/019_infantry_spawn/achievements.md`, `docs/assets/019_infantry_spawn/manifest.md`, and `docs/plans/019_infantry_spawn_plans/source_of_truth_map.md` for the current proof, asset, and provider-extension status.
+> **Archival implementation prompt (2026-08-22):** This prompt is a historical build contract whose eleven achievements are installed, so it must not be executed again. It preserves the original achievement work order and must not be treated as a current completion claim. Use `docs/achievements/019_infantry_spawn/achievements.md`, `docs/assets/019_infantry_spawn/manifest.md`, and `docs/plans/019_infantry_spawn_plans/source_of_truth_map.md` for the current proof, asset, and provider-extension status.
 
 ## Task
 

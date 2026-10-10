@@ -1,6 +1,6 @@
 # Asset Production Prompt for Event 19 Infantry Spawn
 
-> **Archival asset prompt (2026-08-22):** This prompt preserves the original asset-production request and must not create or wire a new Event 19 scripted GUI. The accepted runtime surface is decisions-only. Former Muster Board backgrounds, animation sheets, static fallbacks, and GUI-specific source packages remain archival provenance under `docs/assets/019_infantry_spawn/`; use the top-level manifest, GFX handoff, source-of-truth map, and current provider handoffs for active status.
+> **Archival asset prompt (2026-08-22):** This prompt is a historical build contract whose asset families are installed, so it must not be executed again. It preserves the original asset-production request and must not create or wire a new Event 19 scripted GUI. The accepted runtime surface is decisions-only. Former Muster Board backgrounds, animation sheets, static fallbacks, and GUI-specific source packages remain archival provenance under `docs/assets/019_infantry_spawn/`; use the top-level manifest, GFX handoff, source-of-truth map, and current provider handoffs for active status.
 
 ## Task
 

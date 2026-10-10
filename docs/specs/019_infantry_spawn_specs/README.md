@@ -28,7 +28,7 @@ The design keeps the event repeatable, prevents free equipment farming, separate
 - `specs/` contains the sequential source specification.
 - `matrices/` contains implementation-facing design maps for templates, decisions, generals, AI, countries, assets, and cleanup.
 - `focus_graphs/` contains the route architecture for derivative nonhuman countries.
-- `prompts/` contains bounded handoffs for asset production, achievements, decisions and missions, implementation, and the final implementation goal.
+- `prompts/` contains the historical build contracts for asset production, achievements, decisions and missions, implementation, and the final implementation goal; the work they request is installed and they must not be executed again.
 - `research/` records repository findings and historical design anchors.
 - `review/` records full source reading, anti-bloat review, manual role-equivalent subagent reviews, uncertainty, and completion auditing.
 
@@ -60,6 +60,7 @@ The asset manifest and historical remediation handoff retain the 7/18 regional e
 8. `specs/019_infantry_spawn_spec_part_8_scenario_interactions_acceptance.md`
 
 The matrices and prompts should be read after the sequential specification.
+Part 7 holds the live decision mapping from each design label to its installed identifier and disposition.
 
 ## Deliberate boundaries
 
@@ -77,3 +78,35 @@ The planning environment initially lacked the custom project-agent runtime, so i
 Implementation subsequently used project agents with no inherited parent context. A later required near-completion planner pass produced the routed addendum named above; its findings were implemented. Dated specialist handoffs live under `docs/plans/019_infantry_spawn_plans/`.
 
 Implementation also inspected the full local repository, required offline Paradox wiki snapshot, installed vanilla documentation and source precedents, and approved reference mods where needed. Current engine limitations, transaction invariants, and remaining audit gates are recorded in `review/blockers_and_uncertainty.md`.
+
+## Open questions
+
+All entries are proposed (spec audit 2026-10-10) and need a user or parent decision before any implementation.
+
+- Design-only decision rows with no live decision.
+  - Part 7 maps every design label to its live identifier; ten rows have none: Trace the Equipment Ledgers, Recombine Random Battalions (with Break It Into Cadres for ordinary lots), Relocate an Impossible Lot, Clear the Training Grounds, Disarm a Claimant District, Reassign Loyal Formations, Limit the Command, Break the Claimant Network, Contain Anomalous Saturation, and Negotiate Retirement.
+  - Proposal: retire the first nine as design rows, because settlement, training-cycle, rail, counter-command, discrediting, arrest, the Event 67 demands, and the family decisions already carry their purpose, and a recomposition decision sits too close to the no-reroll rule in Part 1.
+  - Proposal: build Negotiate Retirement as the one new decision, because arrest, discrediting, counter-command, takeover, and revolt are today the only ways a claimant crisis ends, and Part 4 promises a peaceful co-option path.
+  - Sketch: visible while a claimant exists below the revolt band, paid in political power plus a status concession, success absorbs the claimant's loyal lots into ordinary command and closes the file, and failure raises influence by the shared failure rule; it needs a Black Friday price key and an AI weight beside the other claimant responses.
+  - Retiring rows is a reduction of requested functionality, so it stays unresolved until the user approves it.
+- Lot and family cursors.
+  - Four cursor decisions (`infantry_spawn_select_next_ordinary_lot`, `infantry_spawn_select_next_unaccounted_lot`, `infantry_spawn_cycle_anomalous_family_decision`, `infantry_spawn_cycle_claimant_file`) plus the review decision exist only to move a selection.
+  - Proposal: advance the cursor to the next unresolved lot automatically after a lot decision completes, and merge the ordinary and unaccounted lot cursors, so a player rarely spends a click on selection.
+  - The current selection rule must be read in `common/scripted_effects/019_infantry_spawn_management_effects.txt` before this is specified further.
+- Claimant takeover and the Chaos Meter.
+  - A takeover applied with `set_politics` reaches the meter only if the ruling party actually changes; it never calls `chaos_meter_on_coup_succeeded`.
+  - Proposal: leave it as is, because a second contribution would duplicate the ideology-change amount; add a direct amount only for a takeover that keeps the ruling party.
+- Anomalous Saturation display: Part 5 now asks for the band and the main contributor instead of a component list; confirm that this matches the intended decision-only surface.
+- Event document drift (owner outside this package): `docs/events/019_infantry_spawn/overview.md` says Evolution II offers an unrestricted draw and still describes a Muster Board refresh and six board markers in its Black Friday and asset sections, while the installed decisions give Evolution II four lane-split requests and Evolution III the unrestricted draw, and the board has no runtime consumer.
+
+## Changelog
+
+- 2026-10-10 specification audit.
+  - Adopted the earlier same-day audit pass that was left uncommitted in Parts 4 and 7: the live decision mapping table, the Group E request-lane note, the Part 4 lot-disposition mapping, and the condensed archived scripted-GUI section; each identifier in the table was checked against `common/decisions/019_infantry_spawn_*.txt`.
+  - Added the mapping rows for integration staff, the emergency reserve, the training cycle, the prototype trial, lot cursors, request modes, the request-cooldown mission, and the four combat trials, and stated the live status under each design-only decision and mission heading.
+  - Part 3 records that the evolutions are timed by a multi-signal score with no calendar date gate, and that Evolution II requests are lane-split while the unrestricted draw is an Evolution III feature.
+  - Part 5 replaces the saturation component breakdown with a band plus main contributor, and Part 7 adds a proposed surface budget so no Event 19 tooltip lists many values.
+  - Part 8 now reflects the installed state: Event 19 is in the default-enabled allowlist, the golem body is `coal_golem`, the Event 67 and Event 96 bridges are live, Events 127 and 131 have no package yet, Event 19 writes no Chaos Meter amount of its own, and Famine and Migration receive nothing from Event 19 except through shared state-level owners.
+  - The decision and asset matrices mark unresolved rows and condense the archived scripted-GUI tables; the three non-GUI prompts are marked as historical build contracts that must not be executed again.
+  - `review/blockers_and_uncertainty.md` condenses its two superseded gate step lists into one disposition line.
+  - No gameplay source, localisation, plan, event document, or spreadsheet was edited; the Open questions above hold every unresolved proposal.

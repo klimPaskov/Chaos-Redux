@@ -88,23 +88,12 @@ It is historical evidence, not a completion verdict for the current project.
 
 The final completion audit `docs/plans/019_infantry_spawn_plans/subagent_handoffs/019_final_completion_audit_2026_07_18.md` is PASS with P0/P1/P2 = 0 and authorized the historical `Fully Functional` promotion. Parent package inventory was complete at 33/33 files for that tranche. Event 19 and SCN-013 are not currently certified by that historical status, and the current provider-extension and documentation closure gates remain open.
 
-## Historical pre-inventory-completion gate wording (superseded)
+## Superseded gate wording
 
-1. Reconcile the remaining parent package inventory after the PASS regional-flag
-   remediation handoff. Parent workbook/catalog export and reconciliation are complete, with Event 19 and SCN-013 intentionally remaining `In progress`.
-2. Run the final completion audit only after the package inventory
-   reconciliation is complete. Regenerate `review/package_contents.md` last, after every hash-affecting edit.
-
-## Historical pre-PASS gate wording (superseded)
-
-1. Run the independent remediation re-audit against the unchanged 7/18 raw,
-   spot-master, native PNG, and runtime TGA rows after the documentation corrections. The visual and runtime row review already passes, and no raw row or runtime file is to be regenerated for this gate.
-2. Reconcile parent documentation, workbook status, generated catalogs, and
-   package inventory. Event 19 and SCN-013 remain `In progress` unless that evidence justifies promotion. The workbook export remains parent-owned and the CSV files remain export-only.
-3. Run the final completion audit only after the parent reconciliation is
-   complete. Regenerate `review/package_contents.md` last, after every hash-affecting edit.
-
-The clean specialist surfaces, regional asset review, and final completion audit are closed without a concrete regression. No unapproved fallback was used to clear a gate.
+The two earlier step lists that sequenced the regional-flag remediation re-audit, the catalog and package-inventory reconciliation, and the final completion audit are superseded: all three steps completed in the 2026-07-18 tranche (disposition: superseded by the PASS handoffs named above).
+The original step text is available in git history before the 2026-10-10 spec audit.
+The clean specialist surfaces, regional asset review, and final completion audit are closed without a concrete regression.
+No unapproved fallback was used to clear a gate.
 
 ## Simplification statement
 

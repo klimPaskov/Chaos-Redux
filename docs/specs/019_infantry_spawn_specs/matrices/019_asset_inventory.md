@@ -1,5 +1,7 @@
 # Event 19 Asset Inventory
 
+> **Historical planning inventory (spec audit 2026-10-10):** The assets below are installed. The live per-consumer inventory is the "Visual assets and wiring" table in `docs/events/019_infantry_spawn/overview.md` and the asset manifest under `docs/assets/019_infantry_spawn/`; the identifiers here are the original proposed working names.
+
 All filenames and sprite names below are proposed working identifiers. The asset producer must preserve any final identifiers registered by implementation.
 
 ## Event and report images
@@ -33,29 +35,11 @@ Every report image receives the project report-card processing and sepia treatme
 
 Decision, idea, and focus icons require separate source artwork designed for their target size. They cannot be resized versions of one another.
 
-## Archived former-GUI assets
+## Archived former-GUI and animation assets
 
-| Asset | State variants | Target | Animation |
-| --- | --- | --- | --- |
-| Former Muster Board background | static | archival GUI dimensions | no |
-| Overview header | inactive, active, critical | layout-specific | critical can use seal pulse overlay |
-| Formation lot card | normal, selected, locked, resolved, dangerous | layout-specific | no |
-| Quality and coherence markers | four bands each | small UI | no |
-| Command identity-scene frame | normal, demand, critical, revolt | fixed portrait-slot 156 by 210 frame-compatible | critical border animated |
-| Registry family card | unavailable, available, active, contained, breach | layout-specific | active emblem can animate |
-| Cost and warning markers | met, missing, cooldown, invalid target | small UI | no |
-
-## Archived animated packages
-
-| Package | Frames | Frame target | FPS | Loop | Required deliverables |
-| --- | ---: | --- | ---: | --- | --- |
-| Muster seal pulse | 8 | determined by category or GUI layout | 6 to 8 | yes | source frames, processed frames, sheet PNG and DDS, static fallback, GIF preview, contact sheet |
-| Critical command border | 8 | fixed identity-scene panel dimensions | 5 to 7 | yes while critical | same full package |
-| Anomalous registry emblem | 10 | determined by registry tab | 4 to 6 | yes | same full package |
-
-Every frame must be a real generated or edited source frame. Local transform-only motion is forbidden.
-
-These former-GUI assets remain production provenance only. The accepted 2026-08-05 surface uses ordinary Event 019 decisions and does not register a scripted GUI, background, frame-sheet animation, or static fallback at runtime.
+The former Muster Board background, panel and state variants (overview header, lot card, quality and coherence markers, command identity-scene frame, registry family card, cost and warning markers) and the three frame-sheet animations (Muster seal pulse, 8 frames; critical command border, 8 frames; anomalous registry emblem, 10 frames) remain production provenance under `docs/assets/019_infantry_spawn/`.
+The accepted 2026-08-05 surface uses ordinary Event 019 decisions and registers no scripted GUI, background, frame-sheet animation, or static fallback at runtime.
+The full variant and frame tables are available in git history before the 2026-10-10 spec audit.
 
 ## Claimant army/muster identity scenes
 

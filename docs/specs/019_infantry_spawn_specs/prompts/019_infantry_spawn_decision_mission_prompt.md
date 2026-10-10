@@ -1,6 +1,6 @@
 # Decision and Mission Implementation Prompt for Event 19 Infantry Spawn
 
-> **Superseded UI prompt (2026-08-22):** This prompt preserves the former scripted-GUI design and must not route a GUI implementation. The accepted Event 19 runtime surface is ordinary decisions and decision categories only, with no Event 19 scripted GUI. Use `docs/specs/019_infantry_spawn_specs/review/decision_only_surface_addendum_2026-08-05.md`, `docs/events/019_infantry_spawn/overview.md`, and `docs/plans/019_infantry_spawn_plans/source_of_truth_map.md` for the current UI contract.
+> **Superseded UI prompt (2026-08-22):** This prompt is a historical build contract whose decisions, missions, and AI are installed, so it must not be executed again. It preserves the former scripted-GUI design and must not route a GUI implementation. The accepted Event 19 runtime surface is ordinary decisions and decision categories only, with no Event 19 scripted GUI. Use `docs/specs/019_infantry_spawn_specs/review/decision_only_surface_addendum_2026-08-05.md`, `docs/events/019_infantry_spawn/overview.md`, and `docs/plans/019_infantry_spawn_plans/source_of_truth_map.md` for the current UI contract.
 
 ## Task
 

@@ -336,7 +336,8 @@ Possible components:
 - family-specific incidents
 - containment and cantonment capacity
 
-The UI should show a readable breakdown.
+The components are internal inputs.
+The decision-only surface shows the current band and, where it matters, the one family or contributor that most drives the value; a component-by-component list is not a requirement (proposed, spec audit 2026-10-10, because the 10 October 2026 brief rejects tooltips that list many values).
 
 ### Saturation bands
 
