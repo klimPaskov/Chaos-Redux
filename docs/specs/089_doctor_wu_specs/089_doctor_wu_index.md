@@ -1,16 +1,12 @@
-# Doctor Wu final specification index
+# Doctor Wu specification index
 
-Package: **DW-089-FINAL**. Date: 3 October 2026. Cumulative baseline: **DW-089-S8**.
+Twenty specification parts, six prompts and two manifests.
+Event 089 is not implemented; the legacy `events/089_tech_sharing_group.txt` is still in place, and new tuning and owner extensions are proposals.
 
-The original 3 October delivery contains **161,168 words** across twenty specification parts.
-The gameplay design of Parts 1–12 is preserved, with identifier-only reservation notes in Parts 1 and 11.
-Parts 13–20 add 30,912 words of proposed design and close the remaining writing scope, with the D02 identifier reservation updated in Part 18.
-Six final prompts and both machine-readable manifests accompany the specification.
-Scientific Research reserves cluster ID `21`, shared with Event 054, under the [central identifier ledger](../shared_identifier_registry.md).
-This user-authorized identity allocation does not itself approve cluster design or membership, or implement registration.
-Word counts below describe the original delivery before these reservation notes.
+User decisions to keep intact: Scientific Research reserves cluster ID `21`, shared with Event 054, under the [central identifier ledger](../shared_identifier_registry.md) (identity only, not cluster design or membership); D03 finite cohorts and N-D11 skipped-stage chronology remain unapproved; and the user authorized completing the package without a fresh exhaustive reread.
 
-This is the complete planning deliverable, not an implemented mod or produced asset package. New tuning and owner extensions remain proposals. D03 finite cohorts and N-D11 skipped-stage chronology remain explicitly unapproved. The user authorized proceeding without a fresh exhaustive reread, as recorded in the final reading report.
+The package is very long: the design parts hold about 161,000 words, and seven of them exceed 95 KB each.
+The 10 Oct 2026 audit could not consolidate them (see the revision log), so read a part only when you implement its surface, and treat the index table as the map.
 
 ## Specification parts
 
@@ -41,7 +37,7 @@ This is the complete planning deliverable, not an implemented mod or produced as
 
 | Prompt | Purpose |
 | --- | --- |
-| [Goal](089_doctor_wu_goal_prompt.md) | Compact task goal, 3,962 characters including the heading and final newline. |
+| [Goal](089_doctor_wu_goal_prompt.md) | Compact task goal, 3994 characters, within the 4,000-character limit. |
 | [Coding](089_doctor_wu_coding_prompt.md) | Whole-event implementation order, preservation, ownership, acceptance and release gates. |
 | [Decisions and missions](089_doctor_wu_decision_mission_prompt.md) | Complete action families, costs, objectives, AI, visibility and cleanup. |
 | [Assets](089_doctor_wu_asset_prompt.md) | Full portrait, icon, flag, animation, model, counter and sourced unit-audio production contract. |
@@ -70,3 +66,11 @@ Use current repository sources for implementation and do not restore a bundled s
 ## Starting implementation
 
 Read the coding prompt and final source register first, resolve required owner acceptance, then execute the staged implementation using the mapped specialists. There is no mandatory unwritten continuation chapter. Actual coding, assets, final wording, native verification and user game testing remain separate from this completed planning delivery.
+
+## Revision log
+
+### 2026-10-10 spec audit
+
+- Rewrote the index header: it now states the implementation status and the user decisions to keep, and drops the delivery-stage and word-count narration (`DW-089-FINAL`, `DW-089-S8`, per-part "Unchanged Stage 8 source" labels remain in the table for provenance).
+- Corrected the goal prompt's stated length, which disagreed with the file and with the 7 Oct audit handoff.
+- **Not done:** the planned consolidation of the repeated per-item contracts in Parts 6 to 12 into one shared-rules section. The reviewing agent stopped inside Part 9 because restating that material at length was not possible for it, and a partial rewrite would have dropped mechanics. The repeated contracts it identified are the four-cost rule, "research completion grants no stock, people or unit", strongest-contribution replacement, owner-applies-the-result, capture yields only what was present, formation renaming does not renew entitlements, the three-to-five action and six-action ceiling, the proposed-values disclaimer, zero Chaos for activation and logging, and the Part 7 finite-cohort identity. Each appears dozens of times and is the main reduction opportunity for a later pass.
