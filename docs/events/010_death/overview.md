@@ -105,6 +105,7 @@ The forbidden route decisions display in red.
 Stability is consumed as a consequence instead of blocking the action when the country is below the stability spend.
 The human player can hide or show the state list for port-watch decisions, while AI countries still evaluate those decisions directly.
 Keeping a port lit costs a major fuel stockpile and command resources, applies Coastal Watch for 120 days, and blocks normal hidden coastal jumps from selecting that state.
+Wasteland Entry Gear, Share Wasteland Entry Gear and Last Shores Response give a country 180 days of gear protection through `death_country_has_entry_gear`: its divisions take half the usual daily damage in wasteland states and the states that border them, using the `geared_*` values in `death_wither_damage`.
 A strong global watch network can stop one normal low-pressure coastal jump before it lands, then spends part of the network strength.
 The No Ferry Returns focus, high spread pressure, and world-end coastal pressure bypass that interception.
 Strengthening a quarantine line also starts a timed hold-line mission.
