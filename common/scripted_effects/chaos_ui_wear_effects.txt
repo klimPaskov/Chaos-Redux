@@ -1,0 +1,44 @@
+# ============================================================================
+# CHAOS REDUX - CHAOS UI WEAR EFFECTS
+# ============================================================================
+# Keeps global.chaos_ui_wear_frame equal to the current Chaos tier so the crack
+# overlays in common/scripted_guis/chaos_ui_wear_scripted_gui.txt show the
+# matching sheet frame (frame N = tier N, 0 = hidden). Called at the end of
+# update_chaos_meter_tier, which owns the chaos_tier global flag.
+# toggle_chaos_ui_wear flips the player setting that hides every overlay.
+# See docs/systems/chaos_ui_wear.md.
+# ============================================================================
+
+update_chaos_ui_wear = {
+	if = {
+		limit = { has_global_flag = { flag = chaos_tier value = constant:chaos_meter_tier_id.tier_final } }
+		set_variable = { global.chaos_ui_wear_frame = constant:chaos_meter_tier_id.tier_final }
+	}
+	else_if = {
+		limit = { has_global_flag = { flag = chaos_tier value = constant:chaos_meter_tier_id.tier_4 } }
+		set_variable = { global.chaos_ui_wear_frame = constant:chaos_meter_tier_id.tier_4 }
+	}
+	else_if = {
+		limit = { has_global_flag = { flag = chaos_tier value = constant:chaos_meter_tier_id.tier_3 } }
+		set_variable = { global.chaos_ui_wear_frame = constant:chaos_meter_tier_id.tier_3 }
+	}
+	else_if = {
+		limit = { has_global_flag = { flag = chaos_tier value = constant:chaos_meter_tier_id.tier_2 } }
+		set_variable = { global.chaos_ui_wear_frame = constant:chaos_meter_tier_id.tier_2 }
+	}
+	else_if = {
+		limit = { has_global_flag = { flag = chaos_tier value = constant:chaos_meter_tier_id.tier_1 } }
+		set_variable = { global.chaos_ui_wear_frame = constant:chaos_meter_tier_id.tier_1 }
+	}
+	else = {
+		set_variable = { global.chaos_ui_wear_frame = constant:chaos_meter_tier_id.tier_0 }
+	}
+}
+
+toggle_chaos_ui_wear = {
+	if = {
+		limit = { has_global_flag = chaos_ui_wear_disabled }
+		clr_global_flag = chaos_ui_wear_disabled
+	}
+	else = { set_global_flag = chaos_ui_wear_disabled }
+}

@@ -23,7 +23,8 @@ The update covers:
 - `2.5x`
 - `3.0x`
 3. `Static Winter Map` hides the animated Air Winter weather while keeping each phase on the map.
-4. The default audio volume is `1.5x`.
+4. `Chaos Cracks` turns the Chaos-tier interface cracks on or off; see [../chaos_ui_wear.md](../chaos_ui_wear.md).
+5. The default audio volume is `1.5x`.
 
 The Fallout consequence toggle lives in the Air Cleanliness tab of the Chaos Meter window and in the All Settings window; see [settings_all_settings_window.md](settings_all_settings_window.md).
 
