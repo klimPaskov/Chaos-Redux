@@ -5,7 +5,7 @@
 This is a proposed event specification package, not an implemented mod update.
 The requirement to read every required source fully and use the named project subagents was not met.
 In the original 2026-09-19 planning run, several supporting files remained partly read or unread, installed vanilla and Workshop sources were unavailable, and no named subagent or HOI4 MCP validation ran.
-Discover current tools and local sources through [AGENTS.md](../../../AGENTS.md) and [the current subagent skill](../../../.agents/skills/chaos-redux-subagents/SKILL.md).
+Discover current tools and local sources through [AGENTS.md](../../../AGENTS.md) and [the current subagent skill](../../../.claude/skills/chaos-redux-subagents/SKILL.md).
 The exact reading and execution record is in [Source review](research/source_review.md).
 
 The full planning skill and several major project sources were read through the end.
@@ -16,7 +16,7 @@ Read the authoritative workbook during implementation before asserting current s
 
 ## Package contents
 
-The package contains 16 specification parts, 46 action families, 18 missions, 9 focus branch families, 3 political routes, all 3 requested evolutions, 12 achievement designs, 4 scenario types with 4 intensity profiles each, and 40 implementation acceptance fixtures.
+The package contains 16 specification parts, 42 action families, 18 missions, 9 focus branch families, 3 political routes, all 3 requested evolutions, 12 achievement designs, 4 scenario types with 4 intensity profiles each, and 40 implementation acceptance fixtures.
 It also contains 6 implementation or production prompts and one prepared specialist-handoff document.
 The prompts are instructions for future work, not evidence that their tools or workers ran.
 
@@ -82,12 +82,7 @@ Use the source package as the authority for the proposed content and preserve it
 | [Package checks](review/package_checks.md) | Checks actually performed on these files, distinct from future game tests |
 | [Manifest](package_manifest.json) | File inventory and SHA-256 hashes |
 
-## Placement and use
 
-The ZIP contains one top-level folder named `069_boxer_rebellion_specs`.
-Place that folder under `docs/specs/` in the intended working copy.
-Its resulting location is `docs/specs/069_boxer_rebellion_specs/`.
-Do not overwrite a pre-existing spec folder without reconciling its accepted decisions and later changes.
 Use `docs/plans/069_boxer_rebellion_plans/` for implementation handoffs and audit notes.
 
 The runtime entry remains `chaosx.nr69.1`, while filenames use `069`.
@@ -107,3 +102,11 @@ Reconcile a newer checkout with this package before implementation.
 The [shared identifier registry](../shared_identifier_registry.md) reserves one Boxer challenge entry as `SCN-029`, raw integer `29`.
 Its four types and sixteen intensity profiles share that entry.
 The reservation does not approve broader design or implement content.
+
+## Changelog
+
+### 2026-10-10 spec audit
+
+- Action families fall from 46 to 42. Suppress, Tolerate, and Support became three stances of one D01 policy decision; narrowing and expanding a mandate became one D32 Revise the mandate decision; and reparation installments pay automatically on their due date instead of through a D40 button, with D41 moratorium kept for a payer who cannot pay. Each merged pair was the same choice split across several buttons, and a scheduled payment held no decision.
+- The Boxer country records its origin with an event-owned flag instead of the shared special-country classification, because every special Chaos country is excluded from Famine and Migration by `humanitarian_country_is_valid`; the old instruction would have contradicted the package's own rule that the Boxer government keeps civilian consequences.
+- The obsolete ZIP placement section is removed. Subagent instructions use the Claude-first wording.

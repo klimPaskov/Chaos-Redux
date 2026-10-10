@@ -29,13 +29,13 @@ Exact repository paths, blob identities when returned, and source URLs are in [s
 | Source | Coverage note |
 | --- | --- |
 | `AGENTS.md` | Read through the end in bounded ranges after repairing the initial truncated response. |
-| `.agents/skills/chaos-redux-event-planning/SKILL.md` | Read through the end. The truncated 411–630 range was repaired with 411–510 and 511–610, overlapping the later 611 onward coverage. |
+| `.claude/skills/chaos-redux-event-planning/SKILL.md` | Read through the end. The truncated 411–630 range was repaired with 411–510 and 511–610, overlapping the later 611 onward coverage. |
 | `CHAOS_REDUX_MECHANICS.md` | Read through the end in four ranges. |
-| `.agents/skills/chaos-redux-decisions-missions/SKILL.md` | Read through the end in five ranges. |
-| `.agents/skills/chaos-redux-focus-trees/SKILL.md` | Read through the end in eight ranges. |
-| `.agents/skills/chaos-redux-improvement-loop/SKILL.md` | Read through the end in two ranges. |
-| `.agents/skills/chaos-redux-mtth/SKILL.md` | The complete skill was read. Its required implementation example was not read. |
-| `.agents/skills/chaos-redux-super-events/SKILL.md` | Read through the end in four ranges. |
+| `.claude/skills/chaos-redux-decisions-missions/SKILL.md` | Read through the end in five ranges. |
+| `.claude/skills/chaos-redux-focus-trees/SKILL.md` | Read through the end in eight ranges. |
+| `.claude/skills/chaos-redux-improvement-loop/SKILL.md` | Read through the end in two ranges. |
+| `.claude/skills/chaos-redux-mtth/SKILL.md` | The complete skill was read. Its required implementation example was not read. |
+| `.claude/skills/chaos-redux-super-events/SKILL.md` | Read through the end in four ranges. |
 | `events/069_boxer_rebellion.txt` | Complete legacy event read. It contains the fixed CHI response, five-million manpower removal, and fixed fascist civil-war branch that this proposal replaces. |
 | `common/collections/chaosx_country_collections.txt` | Read through the end in two ranges. Active collections are not dormant carrier reservations. |
 | `docs/events/006_independence_wave/systems/country_registry.md` | Read through the end in two ranges. Referenced matrices and current installed collision inputs were not fully read. |
@@ -44,10 +44,10 @@ Exact repository paths, blob identities when returned, and source URLs are in [s
 
 | Source | Actual limitation |
 | --- | --- |
-| `.agents/skills/chaos-redux-event-assets/SKILL.md` | Substantial segmented reading through the end, with overlaps to repair long responses. Complete coverage of the truncated middle responses was not independently certified. The reference library and native consumers were not inspected. |
-| `.agents/skills/chaos-redux-events/SKILL.md` | Initial range to 200 and later ranges 181–330 and 331–510 were requested. Some responses were truncated, and the rest was not read. Evolution, scenario, logging, and country contracts were available in substantial excerpts. |
-| `.agents/skills/chaos-redux-subagents/SKILL.md` | Only a truncated opening range was read. Named role routing was inspected, but the complete skill and canonical role definitions were not read. |
-| `.agents/skills/chaos-redux-scripted-gui/SKILL.md` | Only a truncated opening range was read. Presentation budgets and native-render requirements were inspected. This package does not introduce a dedicated custom GUI. |
+| `.claude/skills/chaos-redux-event-assets/SKILL.md` | Substantial segmented reading through the end, with overlaps to repair long responses. Complete coverage of the truncated middle responses was not independently certified. The reference library and native consumers were not inspected. |
+| `.claude/skills/chaos-redux-events/SKILL.md` | Initial range to 200 and later ranges 181–330 and 331–510 were requested. Some responses were truncated, and the rest was not read. Evolution, scenario, logging, and country contracts were available in substantial excerpts. |
+| `.claude/skills/chaos-redux-subagents/SKILL.md` | Only a truncated opening range was read. Named role routing was inspected, but the complete skill and canonical role definitions were not read. |
+| `.claude/skills/chaos-redux-scripted-gui/SKILL.md` | Only a truncated opening range was read. Presentation budgets and native-render requirements were inspected. This package does not introduce a dedicated custom GUI. |
 | `paradox_wiki/Data structures - Hearts of Iron 4 Wiki.md` | Only lines 1–60 were read. This is not complete data-structure or scope verification. |
 | `paradox_wiki/Triggers - Hearts of Iron 4 Wiki.md` | Only lines 1–50 were read, largely the contents list. Trigger definitions were not verified. |
 
@@ -72,7 +72,7 @@ They were not fully read and do not establish current behavior of the complete s
 
 - Required offline wiki pages for Effects, Modifiers, Localisation, Scopes, On actions, Event modding, Decision modding, Idea modding, and AI modding.
 - Applicable offline country, character, national focus, unit/division, equipment, faction, interface, and scripted GUI references beyond the limited opening excerpts listed above.
-- .agents/skills/chaos-redux-event-assets/references/portrait-production.md and the complete portrait support workflow.
+- .claude/skills/chaos-redux-event-assets/references/portrait-production.md and the complete portrait support workflow.
 - Canonical named subagent definitions and applicable runtime configuration.
 - common/mtth/chaosx_mtth_variables.txt, required as an example by the MTTH skill.
 - Complete current source bodies for the six named connected event systems and the shared integration helpers they expose.

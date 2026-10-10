@@ -98,9 +98,9 @@ No decision icon is a resized focus, idea, or achievement icon.
 
 | Icon requirement | Consumers | Main visual subject |
 | --- | --- | --- |
-| DI01 | D01 | A restrained security order and local authority symbol |
-| DI02 | D02 | A guarded local accommodation |
-| DI03 | D03 | Public recognition of an organized society |
+| DI01 | D01 Suppress stance | A restrained security order and local authority symbol |
+| DI02 | D01 Tolerate stance | A guarded local accommodation |
+| DI03 | D01 Support stance | Public recognition of an organized society |
 | DI04 | D04, D12, D17, D38, D39 | Protection of a civilian district |
 | DI05 | D05, D21 | A command or network under control |
 | DI06 | D06, D19 | A local compact with surrendered or regulated arms |
@@ -113,7 +113,7 @@ No decision icon is a resized focus, idea, or achievement icon.
 | DI13 | D14 | A locally raised rifle formation |
 | DI14 | D15 | A contested finite depot |
 | DI15 | D16 | Training and regularization |
-| DI16 | D18, D29, D32, D33 | A council or conference deciding a mandate |
+| DI16 | D18, D29, D32 | A council or conference deciding a mandate |
 | DI17 | D20 | A specific regulated ritual practice |
 | DI18 | D22 | A controlled workshop or arsenal |
 | DI19 | D23, D30 | A limited military compact |
@@ -122,7 +122,7 @@ No decision icon is a resized focus, idea, or achievement icon.
 | DI22 | D26, D28, D35 | A real expeditionary commitment |
 | DI23 | D27 | A formal, specific ultimatum |
 | DI24 | D36 | A documented compensation claim |
-| DI25 | D40 | A scheduled treaty payment |
+| DI25 | Automatic reparation installment report | A scheduled treaty payment |
 | DI26 | D41 | A negotiated payment pause |
 | DI27 | D43 | Reconstruction of a damaged district |
 | DI28 | D44 | Revision of an imposed protocol |

@@ -19,7 +19,7 @@ Material ownership, unrelated wars, existing country content, and shared civilia
 All current source-reading, asset, evidence, and approval rules apply.
 
 The parent copies that context into every actual brief, adds the exact assigned files and inputs, and states exclusions and acceptance evidence.
-In a Codex runtime that supports it, use the project's required isolated context setting such as `fork_turns="none"` according to the discovered schema.
+Give each subagent a self-contained prompt with no inherited parent context.
 Do not assume the worker can read the conversation history.
 Do not invent a model route or missing tool argument.
 
@@ -29,7 +29,7 @@ Do not invent a model route or missing tool argument.
 | --- | --- | --- | --- |
 | `chaosx_repo_explorer` | Finish the dependency, current-map, registry, legacy event, and connected-event source map | Exact paths, revisions, full-reading status, engine questions, and relevant precedents | Gameplay patches and claims of executed game behavior |
 | `chaosx_scripted_system_architect` | Design the actual actor, site, allocation, commitment, scheduler, and settlement contracts from Parts 1 to 4 and 10 to 12 | Concrete supported implementation plan and lifecycle risks | Unapproved shared-framework rewrites |
-| `chaosx_decision_mission_auditor` | Audit and make permitted narrow corrections to D01 to D46 and M01 to M18 | Coverage, costs, target validity, clutter, objective integrity, AI paths, and cleanup evidence | Unrelated events and shared GUI redesign |
+| `chaosx_decision_mission_auditor` | Audit and make permitted narrow corrections to the 42 active actions in D01 to D46 and M01 to M18 | Coverage, costs, target validity, clutter, objective integrity, AI paths, and cleanup evidence | Unrelated events and shared GUI redesign |
 | `chaosx_focus_tree_auditor` | Audit B01 to B09, political routes, layout, prerequisites, idea lifecycle, and route AI | Matched focus evidence and explicit missing or weakened paths | New broad design unrelated to the adopted routes |
 | `chaosx_country_package_auditor` | Review carrier collision, origin, land, capital, technology, forces, people, portraits, flags, focus ownership, and human classification | Complete country-package coverage and blockers | Invented tag availability or character identities |
 | `chaosx_ai_probability_auditor` | Inspect actual option, decision, MTTH, focus, and random-pool surfaces, then evaluate Part 11 fixtures | Exact source pools, scenario inputs, correct model semantics, comparisons, and unresolved results | Source patches or ungrounded balance claims |

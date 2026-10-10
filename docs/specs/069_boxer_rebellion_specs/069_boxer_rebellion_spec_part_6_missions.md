@@ -146,7 +146,7 @@ Terms are evaluated individually.
 A failed payment is not automatically equivalent to a renewed attack on civilians.
 Partial compliance can lead to a moratorium, amendment, narrowed guarantee, or dispute.
 The mission closes only the event-owned obligations that have actually ended.
-D39, D40, D41, D42, and D44 interact with this mission.
+D39, D41, D42, and D44 and the automatic installments interact with this mission.
 
 ### M12 Keep an intervention mandate limited
 

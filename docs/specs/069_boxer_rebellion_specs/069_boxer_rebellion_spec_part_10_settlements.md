@@ -67,7 +67,7 @@ They do not silently continue forever.
 
 The player sees current due resources, the next deadline, and the remaining term as ordinary contract information.
 There is no separate Reparation Pressure or Debt meter.
-D40 and D41 use one receipt per installment.
+Automatic installments and D41 use one receipt per installment.
 
 ### Temporary occupation
 

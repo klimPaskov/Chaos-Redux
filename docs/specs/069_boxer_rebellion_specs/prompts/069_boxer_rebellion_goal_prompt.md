@@ -17,7 +17,7 @@ Do not invent foreign interests, duplicate units or equipment, overwrite living 
 Support containment, negotiated compacts, limited rescue, intervention defeat, Boxer survival, tailored protocols, withdrawal, reconstruction, and bounded resurgence.
 
 Expose only Boxer Strength and Intervention Pressure as event-specific values.
-Implement all 46 action families and 18 missions with real targets, shared affordability and payment, meaningful outcomes, AI equivalents, partial success, and cleanup.
+Implement all 42 action families and 18 missions with real targets, shared affordability and payment, meaningful outcomes, AI equivalents, partial success, and cleanup.
 Use at most four cost types per action, Command Power no higher than 60, three to five primary actions with a hard maximum of six, and one to three active missions.
 Use the simple native decision surface and its eligible category art.
 

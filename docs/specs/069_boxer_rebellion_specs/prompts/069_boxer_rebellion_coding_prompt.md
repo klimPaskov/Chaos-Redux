@@ -41,7 +41,7 @@ Implement achievements through persistent historical evidence and the root regis
 Use the separate asset, super-event, achievement, and decision-mission prompts for their bounded work.
 Give workers exact files, inputs, exclusions, and evidence outputs.
 Keep shared event-log, settings, registries, and integrated runtime placement parent-owned unless an explicit coordinated grant says otherwise.
-Use [the current subagent skill](../../../../.agents/skills/chaos-redux-subagents/SKILL.md) for shared-workspace and optional worktree coordination, respecting the user's recorded policy.
+Use [the current subagent skill](../../../../.claude/skills/chaos-redux-subagents/SKILL.md) for shared-workspace and optional worktree coordination, respecting the user's recorded policy.
 
 Use actual event, focus, GUI, technology, map, and probability inspections where relevant.
 Inspect rendered artifacts at their intended size and retain matched source and scenario identities.

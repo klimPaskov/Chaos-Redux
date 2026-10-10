@@ -148,7 +148,8 @@ The dedicated tree in Part 9 belongs to the actual Event 069-created Boxer gover
 
 A surviving Boxer government continues to use ordinary civilian systems.
 Its population is human, including when it follows a supernatural ritual route.
-Register its event origin in the shared special-country classification where required, but do not classify it as nonhuman or exempt it from famine, migration, disease, or ordinary civilian consequences.
+Record its event origin with an event-owned country flag, not through the shared special-country classification: `is_special_chaos_country` makes `humanitarian_country_is_valid` false, which would silently remove the Boxer government's states from famine and migration.
+Do not classify it as nonhuman or exempt it from famine, migration, disease, or ordinary civilian consequences.
 
 Defeat can dissolve its government, integrate its formations, or leave a legal regional institution under the settlement.
 Every path preserves the ownership accounting and actual political result.
