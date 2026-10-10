@@ -280,7 +280,6 @@ Event 46 is complete only when:
 - evolution toggles work
 - Evolution V is reachable under the live World Collapse order
 - Randomizations cannot duplicate a one-member firing
-- Domestic Unrest and accepted cluster changes are aligned without destroying multi-membership
 - achievements, assets, localisation, docs, Event Details, and workbook agree
 - probability comparison and completion audits pass
 - no unapproved fallback, simplification, placeholder, missing asset, or stale catalog identity is hidden

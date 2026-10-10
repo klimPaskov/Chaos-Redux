@@ -2,7 +2,7 @@
 
 Implement every Event 046 achievement described in `specs/046_the_great_shuffle_spec_part_7_achievements_assets_localisation_and_acceptance.md`.
 
-Read `AGENTS.md`, `chaos-redux-events`, `chaos-redux-event-assets`, and the current achievement registry before editing.
+Read `CLAUDE.md`, `chaos-redux-events`, `chaos-redux-event-assets`, and the current achievement registry before editing.
 
 Keep all achievement tracking protected from The Great Shuffle.
 

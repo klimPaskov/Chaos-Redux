@@ -32,9 +32,9 @@ The report contains four possible layers.
 
 ### Global summary
 
-The summary identifies the highest active evolution capability, number of committed families, number of rejected selected families, valid country count, valid state count, valid unit or commander count when relevant, and owner-adapter count.
+The summary is one sentence naming the domains that changed in this firing, such as "Governments, fuel reserves, and the population of the map have been rewritten."
 
-It does not list every scope.
+It shows no counts of families, rejected families, countries, states, units, or adapters; those numbers drive no decision and stay in debug evidence.
 
 ### National changes
 

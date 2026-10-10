@@ -60,8 +60,6 @@ Otherwise the result is reported as bounded, sampled, score-only, or unresolved.
 | --- | --- | --- | --- | --- |
 | `P46-C01` | Randomizations with one valid member | Event 46 is the only valid enabled member | inspect, evaluate, simulate | Cluster logic cannot apply Event 46 twice and automatic expansion follows the accepted one-member rule |
 | `P46-C02` | Randomizations with two valid members | Event 46 and one future member valid | inspect, evaluate, sweep | Cluster roll and member participation follow shared rules with no duplicate Event 46 transaction |
-| `P46-C03` | Event 21 multiple memberships | Wars and Domestic Unrest both eligible from Event 21 | inspect, evaluate, simulate | Membership selection uses the intended cluster rules and does not erase either relationship |
-| `P46-C04` | Member severity relation | One event has different accepted severity by cluster | inspect, evaluate | Severity lookup reads the cluster-member relationship and avoids one overwritten global field |
 
 ## Chaos-compression scenarios
 

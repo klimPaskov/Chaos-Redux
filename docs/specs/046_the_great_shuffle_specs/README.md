@@ -4,11 +4,7 @@ This is the source design package for Chaos Redux Event 046, **The Great Shuffle
 
 The event replaces **Seismic Archive** and remains a Chaos level 1 Minor Repeatable event.
 
-Its accepted cluster relationship is Medium severity in the new **Randomizations** cluster.
-
-Extract the final ZIP at the Chaos Redux repository root.
-
-The archive already contains the `docs/specs/046_the_great_shuffle_specs/` and `docs/plans/046_the_great_shuffle_plans/` paths.
+It is the Medium member of the **Randomizations** cluster (ID 14), which the workbook and live registry already carry; the workbook row itself still names Seismic Archive until implementation.
 
 ## Source specifications
 
@@ -79,7 +75,7 @@ Evolution V remains reachable despite the possible World Collapse event freeze.
 
 Every successful firing creates one bounded direct Chaos entry, one Event Log entry, and one personalized report per human player.
 
-The package also defines six achievements, one report image, achievement icon packages, Randomizations, Domestic Unrest, multi-cluster handling, catalog reconciliation, probability scenarios, and 71 acceptance scenarios.
+The package also defines six achievements, one report image, achievement icon packages, the Randomizations membership, catalog reconciliation, probability scenarios, and 70 acceptance scenarios.
 
 ## Evidence status
 
@@ -93,8 +89,28 @@ Every supplied Markdown source, catalog CSV, configuration file, and all 20 supp
 
 The complete list, line counts, and checksums are in `matrices/046_source_review_manifest.md`.
 
-The actual mod repository, offline Paradox wiki snapshot, installed vanilla files, authoritative XLSX workbook, HOI4 MCP server, and Codex subagent runtime were unavailable in this environment.
+The original planning session had no access to the mod repository, offline wiki, vanilla files, workbook, or MCP.
 
 The package defines those required downstream inspections and does not claim implementation, workbook edits, final localisation, asset production, MCP evidence, subagent execution, or in-game testing.
 
 No requested design domain was shortened for speed.
+
+The runtime slot `events/046_placeholder.txt` holds only a placeholder; no part of this package is implemented.
+
+## Open questions
+
+- Whether Evolution V should keep its "near-universal" family coverage: at that tier a single firing rewrites almost every proven family for every country, which can erase the player's whole campaign in one popup.
+  The audit kept it because World Collapse is the end state the event is built toward, but the user may prefer a ceiling below full coverage.
+
+## Changelog
+
+### 2026-10-10 spec audit
+
+Pass 1, consistency and cleanup:
+- Recorded that Randomizations is already cluster 14 with Event 46 as its Medium member, replacing the "do not infer a cluster ID" instructions.
+- Removed the Domestic Unrest, Event 21 dual membership, Event 2, and Alien Invasions requirements from this package: those clusters and memberships exist and belong to their owners (Part 6, the coding, catalog, and localisation prompts, and the acceptance and probability matrices).
+- Replaced `AGENTS.md` and Codex `fork_turns` wording and removed the obsolete ZIP extraction instructions.
+
+Pass 2, design improvement:
+- Rescaled the direct Chaos bands from up to `+35` per firing to up to `+10`, so a repeatable event no longer outpaces a first nuclear use (`10`) or a major war declaration (`5`) on every firing.
+- Cut the report's global summary from seven counts (families, rejected families, countries, states, units, adapters, capability) to one sentence naming the domains that changed; the counts drive no decision.

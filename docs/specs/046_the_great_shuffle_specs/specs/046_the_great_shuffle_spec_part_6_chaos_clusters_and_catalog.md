@@ -38,12 +38,15 @@ The target direct-gain bands are:
 
 | Highest committed domain | Target Chaos gain | Meaning |
 | --- | ---: | --- |
-| Baseline basic national values | `+2` to `+5` | Governments wake to new political and military reserves |
-| Evolution I national stores | `+4` to `+8` | Material balance across the world is visibly overturned |
-| Evolution II population, industry, buildings, or resources | `+7` to `+13` | The physical and human map no longer matches remembered reality |
-| Evolution III politics, research, production, units, or commanders | `+10` to `+18` | Countries and armed forces function through unfamiliar institutions |
-| Evolution IV owner-registered mechanics | `+14` to `+24` | Active crises and power systems lose their established state |
-| Evolution V proven structural families | `+20` to `+35` | The playable structure of the world is broadly rewritten |
+| Baseline basic national values | `+1` to `+2` | Governments wake to new political and military reserves |
+| Evolution I national stores | `+2` to `+3` | Material balance across the world is visibly overturned |
+| Evolution II population, industry, buildings, or resources | `+3` to `+5` | The physical and human map no longer matches remembered reality |
+| Evolution III politics, research, production, units, or commanders | `+4` to `+6` | Countries and armed forces function through unfamiliar institutions |
+| Evolution IV owner-registered mechanics | `+5` to `+8` | Active crises and power systems lose their established state |
+| Evolution V proven structural families | `+6` to `+10` | The playable structure of the world is broadly rewritten |
+
+The bands sit on the shared Chaos scale, where a major war declaration is worth `5` and the first nuclear use `10`.
+A repeatable event that rewrites the world each time must not outpace those milestones per firing; the repeatable weight and cap already limit how often it returns.
 
 The lower end applies when only a small legal subset commits.
 
@@ -151,83 +154,16 @@ Manual cluster forcing can record the cluster with Event 46 as its single fired 
 
 Future Randomizations members can make the ordinary wider-cluster roll meaningful without changing Event 46.
 
-### Numeric cluster ID
+### Registry identity
 
-The specification does not assign a numeric cluster ID.
+Randomizations is registered as cluster 14 in the workbook and the live registry, with Event 46 as its Medium member.
+Implementation enables that existing row and adds no second membership.
 
-The current export has cluster IDs `1` through `8` and `10`, but the missing value cannot be assumed free.
+## Other cluster relationships
 
-The implementation must inspect the authoritative registry, workbook, source files, and any unpublished cluster identity before allocation.
-
-## Domestic Unrest cluster
-
-**Domestic Unrest** is a new cluster for crises where organized internal violence, breakaway authority, insurgency, and terror fracture ordinary state control.
-
-Its accepted membership is:
-
-- Event 1, Communist Insurgency, Medium severity
-- Event 21, Random Civil War, Low severity
-- Event 31, Random Terror, Medium severity
-
-The cluster is Minor Repeatable and begins at Chaos level 1 unless the live cluster registry has an accepted contrary rule.
-
-The cluster should favor connected internal instability without forcing every member to use the same country or stage.
-
-Event 1 remains a Fire-Once member under its own event contract.
-
-Events 21 and 31 retain their own repeatable behavior.
-
-Cluster firing still counts as one pacing event.
-
-## Multiple cluster membership
-
-Event 21 remains a member of **Wars** as well as **Domestic Unrest**.
-
-Cluster membership is a relationship between one event and one cluster.
-
-Severity can also belong to that relationship.
-
-The catalog and runtime registry must support more than one relationship for an event.
-
-A single global `Cluster ID` or `Member Severity` field cannot silently overwrite one membership with another.
-
-The implementation must use the existing multi-membership representation when one exists.
-
-If the workbook and exporter still assume one cluster per event, they need a deliberate structure update that preserves filters, display, export, and in-game detail behavior.
-
-A comma-separated display is acceptable only when the runtime and exporter can parse it without ambiguity.
-
-The preferred source of truth is the cluster-member registry, not duplicated free text.
-
-## Diseases alignment
-
-Event 2, Zombie Outbreak, is a Severe member of **Diseases**.
-
-The supplied event and cluster exports already show this assignment.
-
-Implementation should verify the authoritative workbook and live registry and avoid adding a duplicate member row.
-
-No design change is needed when those sources agree.
-
-## Alien Invasions alignment
-
-The supplied Event 046 direction proposes **Alien Invasions** and Severe membership for Event 43, **Monsters from the Deep**.
-
-Event 043's package instead specifies no cluster.
-This cross-package conflict remains unresolved until an explicit user or parent acceptance basis settles membership.
-
-The supplied cluster export does not show Alien Invasions.
-
-The supplied event export still names Event 43 **Massive flood**.
-
-This is a source conflict, not permission to invent a new cluster ID or overwrite a live event blindly.
-
-Before catalog editing, implementation must inspect Event 43's accepted spec, current event localisation, runtime registration, and authoritative workbook.
-
-A matching Monsters from the Deep identity alone does not prove cluster membership.
-The parent must record the resolved membership decision and its acceptance basis before aligning the workbook or registry.
-
-When implementation still contains the old flood event, the conflict remains blocked and must be reported instead of presenting stale and new identities as the same completed event.
+Event 46 owns only its Randomizations membership.
+Domestic Unrest (cluster 16), multi-cluster membership (for example Event 42 in clusters 11, 15, and 18), Event 2 in Diseases, and Event 43's cluster belong to the cluster registry and those events' own packages, and they are already represented in the workbook.
+This package makes no requirement on them.
 
 ## Event 46 workbook target
 
@@ -263,8 +199,6 @@ The text should not imply that an evolution is an ordinary escalation stage alre
 
 The Randomizations cluster field should describe deliberate reordering of existing state.
 
-The Domestic Unrest cluster field should describe internal armed and political fracture.
-
 The final player-facing wording is written during implementation and matched across Event Details, Event Log, localisation, and the workbook.
 
 ## Workbook and export rule
@@ -277,4 +211,4 @@ The three CSV files are export-only snapshots.
 
 They must not be edited directly.
 
-The exported Events, Clusters, and Scenarios files must all remain structurally valid after any multi-cluster representation change.
+The exported Events, Clusters, and Scenarios files must remain structurally valid.

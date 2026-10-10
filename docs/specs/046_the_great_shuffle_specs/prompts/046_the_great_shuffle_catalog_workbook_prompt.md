@@ -30,49 +30,11 @@ Never assign Playable without explicit user approval.
 
 ## Randomizations cluster
 
-Add or update the Randomizations cluster as Minor Repeatable, Chaos level 1.
+Randomizations is already cluster 14 in the workbook with Event 46 as its Medium member; keep that row and update its details only if the final wording changes.
 
-Describe deliberate permanent randomization of existing gameplay state.
+## Other rows
 
-Add Event 46 as a Medium member.
-
-Do not assume a numeric cluster ID from the missing value in the current export.
-
-Use the authoritative runtime and workbook allocation supplied by the parent.
-
-## Domestic Unrest cluster
-
-Add or update Domestic Unrest as Minor Repeatable, Chaos level 1.
-
-Add:
-
-- Event 1, Communist Insurgency, Medium
-- Event 21, Random Civil War, Low
-- Event 31, Random Terror, Medium
-
-Keep Event 21 in Wars as well.
-
-Do not overwrite one membership with another.
-
-When the workbook still has one Cluster ID and one Member Severity field per event, use the parent-approved multi-membership representation and preserve formatting, validation, filters, exporter compatibility, and in-game mapping.
-
-Record any structural workbook change explicitly.
-
-## Existing assignments
-
-Verify Event 2 remains a Severe Diseases member without creating a duplicate.
-
-For Alien Invasions and Event 43, use only the parent-provided resolved runtime facts.
-
-The supplied export conflict names Event 43 Massive flood while the accepted assignment names Monsters from the Deep.
-
-Do not guess.
-
-A matching event name does not resolve cluster membership.
-Event 043's package specifies no cluster, while this package proposes Severe Alien Invasions membership.
-Require the parent's explicit resolved membership decision and acceptance basis before editing that relationship.
-
-Otherwise report the conflict and leave the unresolved row unchanged.
+Leave Domestic Unrest, multi-cluster rows, Event 2, and Event 43 to their owners; this package changes none of them.
 
 ## Save and export
 

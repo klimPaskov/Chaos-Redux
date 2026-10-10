@@ -2,7 +2,7 @@
 
 Use `chaosx_localisation_auditor` after the Event 46 gameplay and report surfaces exist.
 
-Read `AGENTS.md`, `chaos-redux-events`, the Event 046 specifications, the report priority matrix, achievement prompt, final cluster registry, and current Event Log and Event Details localisation patterns.
+Read `CLAUDE.md`, `chaos-redux-events`, the Event 046 specifications, the report priority matrix, achievement prompt, final cluster registry, and current Event Log and Event Details localisation patterns.
 
 Inspect existing English keys before creating or renaming anything.
 
@@ -24,7 +24,6 @@ Write and audit final English text for:
 - Event Details type, Chaos level, Randomizations membership, Medium severity, and status integration
 - five evolution names, descriptions, enabled state, and stage display where applicable
 - Randomizations cluster name, details, member row, and severity
-- Domestic Unrest cluster name, details, and accepted members
 - Event 21 multiple-cluster display
 - final Event 43 and Alien Invasions text only after the parent resolves the source conflict
 - six achievement titles, descriptions, requirement tooltips, and hidden-state text

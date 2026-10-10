@@ -4,7 +4,7 @@ Use `chaosx_scripted_system_architect` with a context-complete prompt and no inh
 
 Read:
 
-- `AGENTS.md`
+- `CLAUDE.md`
 - `chaos-redux-events`
 - `chaos-redux-subagents`
 - `chaosx_dynamic_effects.md`

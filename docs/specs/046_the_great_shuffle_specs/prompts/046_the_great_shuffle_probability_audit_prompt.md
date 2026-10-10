@@ -4,7 +4,7 @@ Use `chaosx_ai_probability_auditor` as a read-only subagent with no inherited co
 
 Audit every weighted or probabilistic Event 046 surface against `matrices/046_probability_scenario_matrix.md`.
 
-Read `AGENTS.md`, `chaos-redux-events`, `chaos-redux-subagents`, the Event 046 specifications, the live Event 46 family registry, evolution pacing, cluster membership, repeatable event configuration, direct Chaos compression, and achievement ranking logic.
+Read `CLAUDE.md`, `chaos-redux-events`, `chaos-redux-subagents`, the Event 046 specifications, the live Event 46 family registry, evolution pacing, cluster membership, repeatable event configuration, direct Chaos compression, and achievement ranking logic.
 
 ## Mandatory workflow
 

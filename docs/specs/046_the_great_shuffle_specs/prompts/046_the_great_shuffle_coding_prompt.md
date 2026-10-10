@@ -10,7 +10,7 @@ Do not claim completion while a core family, report surface, evolution, cluster 
 
 ## Read before editing
 
-Read `AGENTS.md`, the complete Event 046 spec pack, `chaos-redux-events`, `chaos-redux-subagents`, `chaos-redux-improvement-loop`, `chaos-redux-event-assets`, `chaos-redux-decisions-missions` for report and clarity rules, `chaosx_dynamic_effects.md`, `chaosx_dynamic_triggers.md`, the mechanics guide, and the current catalog workbook contract.
+Read `CLAUDE.md`, the complete Event 046 spec pack, `chaos-redux-events`, `chaos-redux-subagents`, `chaos-redux-improvement-loop`, `chaos-redux-event-assets`, `chaos-redux-decisions-missions` for report and clarity rules, `chaosx_dynamic_effects.md`, `chaosx_dynamic_triggers.md`, the mechanics guide, and the current catalog workbook contract.
 
 Read the required offline Paradox wiki pages and current installed vanilla documentation before opening or editing engine-facing source.
 
@@ -18,7 +18,7 @@ At minimum cover Data structures, Triggers, Effects, Modifiers, Localisation, Sc
 
 Inspect matching vanilla and Chaos Redux precedents.
 
-Use `chaosx_repo_explorer` with `fork_turns="none"` only when file locations, existing patterns, dependencies, vanilla precedents, or edit order remain unclear.
+Use `chaosx_repo_explorer` only when file locations, existing patterns, dependencies, vanilla precedents, or edit order remain unclear.
 Provide the known registration, evolution, log, Chaos, population, stockpile, map-state, production, unit, achievement, cluster, asset, documentation, and workbook context so the explorer investigates the remaining uncertainty.
 
 The explorer must map exact files, current Event 46 remnants, Event 43 and cluster conflicts, relevant helpers, vanilla precedents, and edit order.
@@ -45,7 +45,7 @@ Do not add a periodic whole-world on-action.
 
 ## Registry and transaction
 
-Use `chaosx_scripted_system_architect` with `fork_turns="none"` and the dedicated architecture prompt.
+Use `chaosx_scripted_system_architect` and the dedicated architecture prompt.
 
 Create an Event 46-owned allowlist registry with stable family identity, owner, version, capability, scope source, validity, range, distribution, compatibility, dependency, plan, commit, reconciliation, report, Chaos, AI refresh, recovery, cleanup, and tests.
 
@@ -165,19 +165,8 @@ Multiplayer clients do not reroll locally.
 
 ## Clusters and catalog
 
-Create the Randomizations cluster relationship with Event 46 as Medium and prevent one-member duplicate firing.
-
-Create Domestic Unrest with Event 1 Medium, Event 21 Low, and Event 31 Medium.
-
-Keep Event 21 in Wars.
-
-Support multiple cluster relationships without overwriting relationship-specific severity.
-
-Verify Event 2 remains Severe in Diseases.
-
-Resolve Alien Invasions and Event 43 against the authoritative repo before changing them.
-
-Do not infer a cluster ID from the missing numeric value in the export.
+Enable the existing Randomizations row (cluster 14, Event 46 Medium) and prevent one-member duplicate firing.
+Other cluster rows belong to their owners (Part 6).
 
 Update only `docs/spreadsheets/chaos_redux_events_catalog.xlsx` through the spreadsheet worker, then run the exporter.
 
@@ -203,7 +192,7 @@ Create or update `docs/events/046_the_great_shuffle.md` and clearly distinguish 
 
 After a meaningful implementation tranche, use the improvement loop only when a real depth gap remains.
 
-Near completion, spawn `chaosx_improvement_loop_planner` with `fork_turns="none"` and the full current status.
+Near completion, spawn `chaosx_improvement_loop_planner` and the full current status.
 
 Implement, promote, queue with a reason, or reject its output before another pass.
 

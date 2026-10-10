@@ -2,7 +2,7 @@
 
 Create the complete authorized visual asset package for Chaos Redux Event 046, **The Great Shuffle**.
 
-Read `AGENTS.md`, `chaos-redux-event-assets`, `chaos-redux-subagents`, and the Event 046 specification pack before producing files.
+Read `CLAUDE.md`, `chaos-redux-event-assets`, `chaos-redux-subagents`, and the Event 046 specification pack before producing files.
 
 Use the narrow asset subagents with context-complete prompts and no inherited conversation context.
 

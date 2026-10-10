@@ -102,8 +102,7 @@ This package does not claim that any scenario was executed in game.
 | --- | --- | --- | --- |
 | `A46-053` | One-member Randomizations cluster | Event 46 is the only valid member | One Great Shuffle transaction and no duplicate member effect |
 | `A46-054` | Multi-member Randomizations cluster | Add a valid second member | Shared cluster pacing and member history work without changing Event 46 result count |
-| `A46-055` | Event 21 dual membership | Wars and Domestic Unrest both registered | Both relationships remain visible and usable, with relation-specific severity when supported |
-| `A46-056` | Catalog export | Workbook updated and exporter run | Event 46, Randomizations, Domestic Unrest, Event 2, Event 21, and resolved Event 43 rows agree with runtime and no CSV was edited by hand |
+| `A46-056` | Catalog export | Workbook updated and exporter run | Event 46 and Randomizations rows agree with runtime and no CSV was edited by hand |
 
 ## Reports, multiplayer, and persistence scenarios
 
