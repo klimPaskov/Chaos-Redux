@@ -152,7 +152,7 @@ class AnimationDelivery(unittest.TestCase):
                              for row in result["single_frame_limits"]["violations"]))
 
     def test_strike_window_exempts_only_declared_transition(self):
-        tree = animation_tree([(0., 0., 0.), (0., 0., 0.), (0.3, 0., 0.)],
+        tree = animation_tree([(0., 0., 0.), (0., 0., 0.), (0.5, 0., 0.)],
                               [quaternion_z(0), quaternion_z(40), quaternion_z(40)])
         result = delivery.inspect_animation_delivery(tree, role="attack", action_name="attack", looped=False,
                                                      root_bone="Hips", strike_windows=[(2, 2)])
@@ -210,6 +210,12 @@ class AnimationDelivery(unittest.TestCase):
                                                                     "right": {"certain": 1, "possible": 1, "uncertain": 0}})
         self.assertEqual(result["status"], "pass")
 
+    def test_role_limits_are_calibrated_on_vanilla_infantry(self):
+        self.assertEqual(delivery.role_motion_limits("idle"), (10.0, 0.10))
+        self.assertEqual(delivery.role_motion_limits("retreat"), (25.0, 0.36))
+        self.assertEqual(delivery.role_motion_limits("support_attack"), (30.0, 0.41))
+        self.assertGreater(delivery.role_motion_limits("move")[1], 0.3136)
+
     def test_world_joint_motion_catches_parent_rotation_with_static_local_translation(self):
         tree = parent_rotation_tree()
         result = delivery.inspect_animation_delivery(tree, role="move", action_name="move", looped=False,
@@ -218,7 +224,7 @@ class AnimationDelivery(unittest.TestCase):
         rows = [row for row in result["world_motion"]["violations"]
                 if row["bone"] == "Hand" and row["kind"] == "world_joint_translation_exceeds_limit"]
         self.assertEqual(len(rows), 1)
-        self.assertGreater(rows[0]["translation_step"], 0.25)
+        self.assertGreater(rows[0]["translation_step"], delivery.role_motion_limits("move")[1])
         self.assertEqual(result["world_motion"]["measurement_space"], "PDX Y-up local TRS composed through decoded mesh parent indices")
 
 

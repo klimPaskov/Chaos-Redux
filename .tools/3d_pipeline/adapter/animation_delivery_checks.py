@@ -269,6 +269,26 @@ def _scale3(values):
     return tuple(values)
 
 
+# Role motion limits, calibrated on 10 Oct 2026 from the installed vanilla GER_infantry set measured in source-mesh
+# units (the unit the mod meshes share, entity scale not applied): moving_rifle/moving_mg peak at 0.314 u/frame
+# (RightToeBase) and 21.9 deg/frame; idle_rifle/idle_mg/idle_training/idle_wep01 peak at 0.052 u/frame and 6.0 deg;
+# attack_stand_rifle 0.295 and attack_crouch_rifle 0.353 u/frame at 21.3 deg. Limits are about 1.15x the vanilla
+# maximum of the role family, so a custom clip is held to what the vanilla walk, idle and strike clips already do.
+ROLE_MOTION_LIMITS = {
+    # role family: (angular deg per frame, world joint translation u per frame)
+    "idle": (10.0, 0.10),
+    "locomotion": (25.0, 0.36),
+    "action": (30.0, 0.41),
+}
+LOCOMOTION_ROLES = {"move", "retreat"}
+
+
+def role_motion_limits(role_key):
+    """Return (angular_deg, world_units_per_frame) for a casefolded semantic role."""
+    family = "idle" if role_key == "idle" else "locomotion" if role_key in LOCOMOTION_ROLES else "action"
+    return ROLE_MOTION_LIMITS[family]
+
+
 def _world_motion_report(decoded, skeleton_tree, frame_start, fps, strike_windows,
                          angular_limit, translation_limit, entity_scale):
     if skeleton_tree is None:
@@ -527,7 +547,7 @@ def inspect_animation_delivery(tree, *, skeleton_tree=None, action_name="", role
     frame_end = frame_start + decoded["frame_count"] - 1
     windows = _validate_windows(strike_windows, frame_start, frame_end)
     role_key = role.casefold()
-    angular_limit = 15.0 if role_key in {"idle", "move"} else 30.0
+    angular_limit, translation_limit = role_motion_limits(role_key)
 
     transitions = []
     q_sign_discontinuities = []
@@ -564,8 +584,8 @@ def inspect_animation_delivery(tree, *, skeleton_tree=None, action_name="", role
         if not _inside_window(row["frame"], windows):
             if row["angular_deg"] > angular_limit:
                 local_rotation_violations.append({**row, "kind": "local_joint_rotation_exceeds_limit", "limit": angular_limit})
-            if row["translation_step"] > 0.25:
-                local_translation_exceedances.append({**row, "kind": "local_channel_translation_exceeds_world_speed_limit", "limit": 0.25})
+            if row["translation_step"] > translation_limit:
+                local_translation_exceedances.append({**row, "kind": "local_channel_translation_exceeds_world_speed_limit", "limit": translation_limit})
 
     peak_table = []
     by_bone = defaultdict(list)
@@ -601,7 +621,7 @@ def inspect_animation_delivery(tree, *, skeleton_tree=None, action_name="", role
     if skeleton_tree is None and any(node.tag == "skeleton" for node in tree.iter()):
         skeleton_tree = tree
     world_motion = _world_motion_report(decoded, skeleton_tree, frame_start, decoded["fps"], windows,
-                                        angular_limit, 0.25, entity_scale)
+                                        angular_limit, translation_limit, entity_scale)
     world_violations = world_motion.get("violations", [])
     violations = local_rotation_violations + world_violations
     root_report = _root_report(decoded, root_bone, role, root_policy, frame_start, root_drift_ceiling, entity_scale)
@@ -628,7 +648,7 @@ def inspect_animation_delivery(tree, *, skeleton_tree=None, action_name="", role
             "quaternion_order": "xyzw", "quaternion_sign_continuity": {"status": q_status,
                 "negative_dot_count": len(q_sign_discontinuities), "discontinuities": q_sign_discontinuities,
                 "operation_policy": "q/-q sign only; rotation is equivalent; no key/bone/weight synthesis"},
-            "single_frame_limits": {"angular_degrees_exclusive": angular_limit, "world_translation_units_per_frame_exclusive": 0.25,
+            "single_frame_limits": {"angular_degrees_exclusive": angular_limit, "world_translation_units_per_frame_exclusive": translation_limit,
                                     "explicit_strike_windows": [list(row) for row in windows], "status": threshold_status,
                                     "violations": violations,
                                     "local_channel_translation_exceedances_review_only": local_translation_exceedances,
