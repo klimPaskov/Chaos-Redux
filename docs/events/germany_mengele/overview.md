@@ -14,7 +14,7 @@ These layers share variables, flags, condemnation, chaos-meter history, deaths-s
 
 ## Core Flow
 
-`germany_mengele.1` can fire for fascist Germany as soon as the operational Auschwitz institution is controlled, which the camp rework opens through a war of conquest rather than a date. Auschwitz is the shared Kielce-state node used elsewhere in the mod: state `88`, province `9412`. Germany can authorize the Auschwitz Experiments, restrict the file to camp administration, or shut it down.
+`germany_mengele.1` can fire for fascist Germany as soon as the operational Auschwitz institution is controlled and holds detainees, which the camp rework opens through a war of conquest rather than a date. Auschwitz is the shared Kielce-state node used elsewhere in the mod: state `88`, province `9412`. Germany can authorize the Auschwitz Experiments, restrict the file to camp administration, or shut it down.
 
 Full authorization gives the timed `germany_auschwitz_experiments` national spirit for two years, sets `mengele_permission_level` to full authority, increases hidden `mengele_autonomy`, marks Auschwitz as an experiment-linked atrocity site, records condemnation memory, raises chaos slightly, schedules the report chain, and schedules `germany_mengele.23`, the cloning-project proposal. After the spirit expires, the program keeps a short `germany_mengele_program_recently_expired` window for coup eligibility, then closes through `germany_mengele_expire_program` if no coup has fired. Restriction gives a smaller timed spirit, marks Auschwitz as restricted experiment evidence, and sets permission to restricted. Rejection, closure, or expiry set permission back to rejected.
 
