@@ -208,7 +208,7 @@ Implementation needs finished player-facing text for:
 - acceptance, patronage, penetration, delay, and rejection options
 - first member report
 - decision category and status header
-- Market Credit, Exposure, and Network Reach labels and tooltips
+- Market Credit and Exposure labels and tooltips, and the network stage labels
 - reach stages
 - government postures
 - offer classes

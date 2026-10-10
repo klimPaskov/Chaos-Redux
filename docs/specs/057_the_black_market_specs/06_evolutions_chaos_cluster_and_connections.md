@@ -347,11 +347,13 @@ A public seizure of forbidden goods can add condemnation only through the owning
 
 ## Famine and migration
 
-A future approved adapter could allow humanitarian contraband such as food, medicine, transport, or evacuation capacity.
+The proposed first humanitarian package is a smuggled food lot (`unresolved` until the famine owner accepts the contract).
+It appears only for a member that owns a state in acute shortage or worse where Famine's own Import Food is unavailable, for example under blockade or embargo.
+Buying it costs Market Credit and raises Exposure like any other lot; on delivery it calls the famine owner's ordinary relief-delivery completion for that state, so the food counts exactly as an import and nothing more.
+This gives the network a real wartime purpose beyond weapons: a blockaded member can feed a starving island at the price of being noticed.
 
-The adapter must remain versioned and proof-carrying. Event 57 must not read or modify famine reserves, migration cohorts, or humanitarian ledgers directly.
-
-This connection should be implemented only when the owning systems define a valid package and consequence contract.
+Event 57 must not read or modify famine reserves, migration cohorts, or humanitarian ledgers directly.
+Medicine, transport, and evacuation contraband stay out of scope until a similar owner contract exists.
 
 ## Future provider standard
 

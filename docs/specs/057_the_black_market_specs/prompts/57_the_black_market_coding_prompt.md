@@ -7,7 +7,7 @@ Implement Chaos Redux Event 57, The Black Market, to the complete source specifi
 Read every file in that folder before editing. Also read the current repository versions of `AGENTS.md`, `chaos-redux-events`, `chaos-redux-decisions-missions`, `chaos-redux-event-assets`, `chaos-redux-improvement-loop`, `chaos-redux-subagents`, all required offline Paradox wiki pages, current vanilla documentation, and relevant Chaos Redux precedents.
 
 
-Spawn every project subagent with a complete self-contained prompt and `fork_turns="none"` in Codex.
+Spawn every project subagent with a complete self-contained prompt and no inherited parent context.
 
 ## Core event
 

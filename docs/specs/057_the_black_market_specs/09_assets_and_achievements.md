@@ -191,7 +191,7 @@ All decision icons are independent `32x32` assets. They can share motifs and pal
 | `black_market_sell_surplus` | list member surplus | outbound crate and inventory tag without text |
 | `black_market_commission` | request offer class | sealed request case and broker key |
 | `black_market_open_route` | create or repair route | rail, road, or port route symbol |
-| `black_market_safer_route` | reroute delivery | split route with guarded branch |
+| `black_market_safer_route` | Shift Traffic between routes | split route with guarded branch |
 | `black_market_intelligence` | buy or sell intelligence | closed dossier and lens motif |
 | `black_market_compartmentalize` | reduce Exposure | separated ledger pages or locked compartments |
 | `black_market_burn_route` | destroy compromised route | broken rail or burned manifest motif without flames dominating |

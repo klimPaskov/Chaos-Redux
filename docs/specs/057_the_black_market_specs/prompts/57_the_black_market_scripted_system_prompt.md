@@ -13,7 +13,7 @@ Follow the current repository versions of `AGENTS.md`, `chaos-redux-events`, `ch
 Use `chaosx_scripted_system_architect` for the bounded architecture work. The parent retains final event, decision, localisation, asset, workbook, and completion ownership.
 
 
-Spawn every project subagent with a complete self-contained prompt and `fork_turns="none"` in Codex.
+Spawn every project subagent with a complete self-contained prompt and no inherited parent context.
 
 ## Required registries
 

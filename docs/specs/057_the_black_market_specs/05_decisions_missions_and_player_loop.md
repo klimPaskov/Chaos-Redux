@@ -16,12 +16,13 @@ The category header shows:
 
 - Market Credit
 - Exposure
-- Network Reach
+- the network stage label (for example Linked Regions), without the underlying Reach number
 - current government posture
 - primary route status
 - next offer-rotation date or current delivery mission
 
-Market Credit, Exposure, and Network Reach are the only persistent custom values the member must actively track.
+Market Credit and Exposure are the only numbers the member must actively track.
+Network Reach is a shared world value that no single member steers directly, so the header shows only its stage, and the stage tooltip names what the next stage unlocks.
 
 ## Clarity budget
 
@@ -125,13 +126,11 @@ Evolution I unlocks a request for one broad offer family in the next rotation.
 
 The action has a long cooldown, Market Credit cost, and partial refund when no supplier appears.
 
-### Arrange a Safer Route
+### Route choice on purchase
 
-When two paths are valid, the member can commit extra logistics or credit to use the safer path. This changes time, cost, and risk. It does not guarantee success.
-
-### Accept the Dangerous Route
-
-A member can choose the high-risk path when the cargo is urgent. The tooltip must state the risk class and likely Exposure consequence plainly.
+When two delivery paths are valid, Acquire Current Lot asks once which path to use instead of offering two separate decisions.
+The safer path costs extra logistics or credit and takes longer; the dangerous path is faster and the option tooltip states its risk class and likely Exposure plainly.
+Neither path guarantees success.
 
 ## Sale flow
 
@@ -188,13 +187,12 @@ A member can permanently destroy one compromised route to reduce Exposure. The a
 
 ### Compartmentalize the Cell
 
-The member spends Market Credit and temporary administrative or intelligence capacity to remove compromised contacts.
+The member spends Market Credit and temporary administrative or intelligence capacity to remove compromised contacts and re-cover the cargo on the pressured route.
 
-It lowers Exposure, reduces route capacity for a period, and can delay the next offer rotation.
+It lowers Exposure and that route's investigation pressure, reduces route capacity for a period, and can delay the next offer rotation.
+Its investigation-pressure part works once per investigation episode.
 
-### Replace the Manifests
-
-A route-specific action lowers investigation pressure and changes the cargo cover. It is effective only once per investigation episode.
+At most three Exposure actions are visible at once: Compartmentalize the Cell, Sacrifice an Intermediary, and the one posture response that fits the government (Cooperate with an Inquiry or Deny State Involvement).
 
 ### Sacrifice an Intermediary
 

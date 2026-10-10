@@ -9,7 +9,7 @@ The event is a `Minor Fire-Once` event at Chaos level `1`. Its first firing crea
 The package attributes its premise to the supplied user brief.
 The original user message and claim-level acceptance record are not reproduced here, so approval of expanded mechanics remains unresolved until the implementation owner records the supporting user decision or parent acceptance.
 Historical planning reviews, catalog snapshots, and package status labels do not establish approval or current implementation.
-Use current [AGENTS.md](../../../AGENTS.md), [event guidance](../../../.agents/skills/chaos-redux-events/SKILL.md), [asset guidance](../../../.agents/skills/chaos-redux-event-assets/SKILL.md), and [subagent guidance](../../../.agents/skills/chaos-redux-subagents/SKILL.md) for execution.
+Use current [AGENTS.md](../../../AGENTS.md), [event guidance](../../../.claude/skills/chaos-redux-events/SKILL.md), [asset guidance](../../../.claude/skills/chaos-redux-event-assets/SKILL.md), and [subagent guidance](../../../.claude/skills/chaos-redux-subagents/SKILL.md) for execution.
 The source design remains in the files listed below.
 
 ## Accepted catalog identity
@@ -54,11 +54,11 @@ The supplied event catalog export still assigns Event 57 to an older Radar entry
 
 The Black Market is a hidden logistics network, not a universal shop. Its offers exist only when there is a proven source, a valid buyer, and a working route. Equipment sold by a member is removed from that member before the lot can be bought. Captured, collapsed-state, naval, intelligence, technology, chemical, biological, and special-project offers require an explicit provider receipt from their owning system.
 
-Members manage three public values:
+Members track two public numbers and one stage label:
 
 1. **Market Credit**, which pays for offers and is earned through verified sales, brokerage, and limited underwriting.
 2. **Exposure**, which measures the risk that routes, governments, and transactions become known.
-3. **Network Reach**, which controls membership, route capacity, offer classes, and evolution readiness.
+3. The **Network Reach** stage, a shared world value that controls membership, route capacity, offer classes, and evolution readiness. Members see its stage label, not its number, because no single member steers it directly.
 
 The system uses one hidden member-only decision category with a static picture that changes by evolution. Each phase exposes three to five primary actions, with six as the absolute maximum and one to three active missions. Outsiders receive temporary targeted counter-smuggling actions only after they gain evidence against a specific route or cell.
 
@@ -66,6 +66,17 @@ The event has three paced evolutions at `200+`, `400+`, and `600+` Chaos. Evolut
 
 ## Original planning source status
 
-Every top-level source file supplied for this task was read in full. The three CSV catalogs were read in full. The subagent ZIP was extracted, and all twenty subagent TOML definitions supplied to that planning pass were read in full. No source file was knowingly truncated during the final design pass.
+The original reading record and subagent execution status are in `00_source_and_research_record.md` and `12_specialist_review_record.md`.
 
-The supplied Codex subagent runtime could not be invoked because its MCP tunnel returned an HTTP `404`. The package therefore records internal role-based passes that apply the provided subagent contracts. It does not claim that project subagents were successfully spawned.
+## Open questions
+
+- `unresolved`: the smuggled food lot in `06_evolutions_chaos_cluster_and_connections.md` needs the famine owner to expose its relief-delivery completion as a callable seam for a Black Market delivery.
+
+## Changelog
+
+### 2026-10-10 spec audit
+
+- Network Reach is shown as a stage label instead of a third tracked number; members actively track only Market Credit and Exposure. Reach is a shared world value no single member steers, so its number did not drive decisions.
+- The separate Arrange a Safer Route and Accept the Dangerous Route decisions became one path question on Acquire Current Lot, and Replace the Manifests merged into Compartmentalize the Cell; at most three Exposure actions are visible at once. This removes near-duplicate buttons from a category with a six-action budget.
+- The vague famine and migration note became a concrete proposed package: a smuggled food lot that only appears when Import Food is blocked and delivers through the famine owner's relief completion.
+- The README no longer repeats the original planning environment's runtime failure; that record stays in `00_source_and_research_record.md`. Subagent instructions use the Claude-first wording.

@@ -132,7 +132,7 @@ A bounded global pulse can process registered members and routes at an event-own
 
 ## Public mechanic values
 
-Members manage three public values.
+Members manage two public numbers, Market Credit and Exposure, and see the shared Network Reach as a stage label.
 
 ### Market Credit
 
@@ -166,7 +166,7 @@ Its range is `0` to `100`. It grows through real transactions, members, regional
 
 Network Reach never replaces the three formal evolutions. It provides the world-state proof that an evolution has earned its next capability set.
 
-A member sees the current value, current reach stage, and the next public threshold. The contributor ledger stays hidden. The tooltip summarizes the largest actionable causes, such as successful deliveries, a lost route, or a recent breach.
+A member sees the current reach stage, not the number. The stage tooltip says what the next stage unlocks and summarizes the largest recent causes, such as successful deliveries, a lost route, or a recent breach. The contributor ledger stays hidden.
 
 ## Reach stages
 

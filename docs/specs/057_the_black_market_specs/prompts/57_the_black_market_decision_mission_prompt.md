@@ -10,17 +10,14 @@ Implement the member and outsider decision systems from:
 Follow the current repository versions of `AGENTS.md`, `chaos-redux-decisions-missions`, `chaos-redux-events`, and the current vanilla decision documentation and precedents.
 
 
-Spawn every project subagent with a complete self-contained prompt and `fork_turns="none"` in Codex.
+Spawn every project subagent with a complete self-contained prompt and no inherited parent context.
 
 ## Presentation
 
 Use one hidden member-only decision category with an evolution-dependent static category picture.
 
-Show exactly three persistent custom values:
-
-- Market Credit
-- Exposure
-- Network Reach
+Show exactly two persistent custom numbers, Market Credit and Exposure, plus the Network Reach stage label without its number.
+Merge the safer and dangerous route choices into one path question on Acquire Current Lot, merge Replace the Manifests into Compartmentalize the Cell, and show at most three Exposure actions at once.
 
 Show current posture and route status as qualitative state, not additional meters.
 
