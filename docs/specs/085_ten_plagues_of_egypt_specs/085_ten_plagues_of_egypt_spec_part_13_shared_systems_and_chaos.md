@@ -1,174 +1,101 @@
 # 13. Shared Systems and the Chaos Impact Map
 
-## Event ownership
+## What Event 085 owns
 
-Event 085 owns the global sequence, plague forecasts, Divine Wrath, its conduct decisions, Passover preparation, firstborn vulnerability records, event-specific manifestations, and recurrence eligibility.
-It owns neither the world's generic disease simulation nor a replacement famine or migration framework.
+Event 085 owns the global sequence and calendar, warnings, Divine Wrath and its conduct actions, Passover status, remaining firstborn shares, plague-specific effects, Exodus requests and recurrence.
+It owns no famine, migration, disease or disaster framework of its own; it sends causes to those owners and reads their results.
 
-A connection must state which owner accepts the cause, which owner changes the world, and which receipt proves the result.
-A shared system's implementation ledger is not evidence that every desired Event 085 adapter already exists.
+## Deaths and population
 
-## Population and Deaths
-
-Use `apply_exact_state_civilian_population_loss` for a direct event-owned civilian loss.
-The documented helper is state-scoped, accepts an exact requested amount and protected remaining population, can log the actual result to Deaths, reconciles unintended recruitable-manpower credit, and clears its public inputs.
-
-The caller supplies all contract fields, including a valid logging country, reason, and explicit supplied-proof flag.
-It reads `state_civilian_population_loss_applied` and `state_civilian_population_loss_result`.
-A helper call that already logs the actual loss must not be followed by a second `chaos_meter_register_deaths` call for the same people.
-
-Population cannot increase recruitable manpower as a side effect of civilian death.
-No temporary manpower subtraction may be mistaken for actual civilian mortality.
-A missing or invalid transaction remains a failed operation, not a narrated success.
-
-The shared Deaths ledger is the sole public casualty total.
-Add one localized Ten Plagues reason for direct anomaly deaths if the current reason registry and UI permit the required extension.
-Do not invent a numeric reason constant before inspecting that registry.
-Natural-disaster, outbreak, famine, route, and military causes retain their owners' reason classes.
-
-Event episode, cycle, phase, and source correlation identify relevant receipts across these reasons.
-An event summary can aggregate that filtered view without debiting population or maintaining an independently authoritative total.
-
-| Cause | Population-changing owner | Deaths treatment |
+| Cause | Owner that changes population | Deaths reason |
 | --- | --- | --- |
-| Direct event-owned unsafe-water or Darkness accident loss | Exact population helper called by 085 | Actual applied amount, direct plague reason |
-| Infectious consequences of early infestations and Boils | Existing disease/outbreak owner | Owner's actual outbreak cause |
-| Hunger after livestock, crop, or transport loss | Famine | Existing famine cause |
-| Hail, causal fire, and physical disaster aftermath | Natural Disasters | Existing disaster cause |
-| Route deaths during Exodus or evacuation | Exact transfer under Migration | Route/forced-displacement cause as applicable |
-| Death of the Firstborn | Exact population helper called by 085 | Direct plague reason, tenth-phase correlation |
-| Actual formation casualties | Military casualty owner | No duplicate civilian transaction |
+| Direct Blood and Darkness losses, Death of the Firstborn | Event 085 through `apply_exact_state_civilian_population_loss` | A new Ten Plagues reason, added to the Deaths reason registry |
+| Outbreak deaths from Frogs, Lice, Flies and Boils | Biological outbreak owner | Owner's outbreak reason |
+| Hunger after Blood, Flies, Livestock, Hail and Locusts | Famine | `From famine` |
+| Hail and Fire impact | Natural Disasters | Disaster reason |
+| Exodus and evacuation route deaths | Migration's exact transfer | Migration's route reason |
+| Soldier deaths | Military casualty owner | No civilian transaction |
+
+The exact helper is state-scoped, takes the requested amount and a protected floor, logs the applied loss to Deaths once and prevents civilian deaths from creating manpower.
+Never call `chaos_meter_register_deaths` again for people the helper already logged.
+The shared Deaths ledger is the only public casualty total; Event 085 reports filter it by episode and phase.
 
 ## Famine
 
-Famine owns Food Security, Food Reserves, Relief Access, severe-stage exposure, relief, and mortality.
-Those remain Famine's values and decisions; they do not become additional Event 085 meters.
+Famine owns Food Security, Food Reserves, Relief Access, stages and famine mortality.
+Event 085 sends each affected state a food shock and a production or transport context through Famine's adapter, following the Hunger Lines scenario adapter precedent (`famine_hunger_lines_scenario`):
 
-Livestock and locust phases send proven loss of productive food capacity or remaining crops.
-Blood and Flies can send proven damage to safe food or water-dependent services.
-Hail sends actual crop and transport destruction.
-Darkness sends a relevant service interruption only when its facts meet the receiving contract.
+| Phase | Famine input |
+| --- | --- |
+| Blood | Small food shock (contaminated water and kitchens) |
+| Flies | Moderate food shock, larger where earlier sanitation failed |
+| Livestock | Strong production context |
+| Hail and Fire | Food shock for destroyed harvest, transport context for rail damage |
+| Locusts | Food shock for the remaining harvest only |
 
-The event must not set a private famine stage or subtract an invented percentage of Food Security.
-The owner receives the defined state, actor, source, component or amount, generation, revision, and proof.
-An unsupported connection remains an explicit adapter requirement.
-
-The current owner uses sustained exposure and separate recovery confirmation.
-Its documented severe-stage windows make the interval from livestock loss through locust devastation important.
-Do not shorten the sequence so far that genuine famine never develops and then compensate with a duplicate flat famine death effect.
-
-Ending a plague clears only its live pressure contribution.
-Destroyed productive capacity and valid famine aftermath do not disappear.
-A state that has not been evaluated is not automatically safe for reception or food imports.
+Each input is reduced by the state's completed protective objective and scaled by Wrath.
+Contexts last for the phase plus a recovery tail so a real famine can develop; destroyed capacity does not vanish when the phase ends.
+Event 085 never sets a famine stage or deaths directly, and Famine's stage timing is why Livestock sits at day 75 and Locusts at day 140.
 
 ## Migration
 
-Migration owns exact movements, cohorts, custody, routes, trapped populations, reception, and return.
-Its positive safety and availability contracts must be used instead of reading private flags.
-
-Firstborn survivors and Passover coverage need a narrow population-metadata extension.
-That extension must conserve the metadata when people depart, die en route, arrive, split, settle, or return.
-The reviewed material does not prove that this extension currently exists.
-
-Famine-driven flight uses its existing source request and Migration acceptance path.
-Event-specific Exodus pressure uses the appropriate event adapter only after the people and cause are proven.
-Neither path invents a revived Event 149 Immigrations event, a new flat population drain, or a second pacing pulse.
-
-A receiving population can strain food and services.
-Migration supplies the actual receiving or trapped population through its typed projection; Famine computes food consequences.
-Event 085 does not turn a generic refugee flag into a guessed famine pulse.
+Migration owns movement, cohorts, routes, trapped people, reception and return.
+Event 085 sends Exodus flight requests through Migration's incident adapter (Part 10) and links to Migration's own actions.
+It reads only state population and location for Passover; no metadata travels with people.
+Event 149 Immigrations is retired and is not revived.
 
 ## Disease
 
-Use the existing non-weapon disease/outbreak owner for infectious consequences and Boils.
-Event 085 supplies a fictional syndrome context, actual exposure, impaired services, preparedness, and its bounded episode allowance.
-The owner retains outbreak state, progression, treatment, containment, and mortality.
+The biological outbreak owner in the CBRN lifecycle owns outbreak state, spread, treatment, containment and mortality, and Event 020's exposure adapter is the closest precedent for an external caller.
+Event 085 supplies a fictional, non-weapon syndrome context, the exposed states, impaired services, completed care and its mortality allowance (Part 15).
+The syndrome creates no weapon, research, stockpile, doctrine or Condemnation.
 
-This package specifies no real pathogen, engineering procedure, delivery method, or biological weapon capability.
-Boils does not grant biological weapons, research, stockpiles, or a doctrine unlock.
-An epidemic is not automatically a weapons attack.
-
-An exact peaceful Event 085 disease adapter was not verified.
-It must be identified or added with the owner before implementation can be called complete.
-Starting an arbitrary named outbreak through private flags, or replacing it with a flat national penalty, fails the specification.
+A non-weapon outbreak entry has not been verified and is an implementation gate.
+If the owner cannot accept it, the alternative needs the user's decision (README open question 2); a flat national penalty or an outbreak started through private flags fails this specification.
 
 ## Natural Disasters
 
-Only the public `call_natural_disaster` gateway is an external interface.
-It accepts documented family, target, severity, presentation, and caller-proof inputs.
-It owns accepted impact scheduling, physical damage, disaster mortality, reports, and aftermath.
+Only the public `call_natural_disaster` gateway is used, with selected-state targets, supplied proof and no Event 013 history row.
+Natural Disasters owns impact scheduling, physical damage, disaster mortality, reports and aftermath.
+The composite Hail and Fire contract is described in [Part 6](085_ten_plagues_of_egypt_spec_part_06_hail_fire_and_locusts.md).
+No volcanic, tsunami or other origin is invented to obtain a damage effect.
 
-Event 085 calls with no separate Event 013 history ownership for the same plague episode.
-Its own global stage owns narrative progression, while the disaster call owns the physical impact receipt.
-Reports may be distributed without inserting another independently paced random event.
+## Other systems
 
-An explicit selected state needs the documented saved target and supplied proof.
-A stale saved target without the proof is not accepted.
-The caller checks acceptance and valid output-target proofs.
+| System | Connection |
+| --- | --- |
+| Condemnation | A recorded incident of violence against civilians during the episode raises Wrath (Part 2); Event 085 never creates Condemnation itself |
+| Camps and repression | Camp abuse reaches Wrath only through its Condemnation record; reception camps follow the camp system |
+| World threat | `world_threat_source_ten_plagues` while The Plagues Without End is active (Part 9) |
+| Doctor Wu | Clinical care during Boils (Part 5) |
+| War | Competes for the same trucks, fuel and output used for protection; war itself never adds Wrath |
+| Air Cleanliness, Winter, Fallout | Not touched; darkness and insects do not imply atmospheric contamination |
 
-A composite Hail and Fire episode with one combined mortality budget and coherent preparation remains a required owner-level contract to verify or extend.
-Two unrelated full-strength disaster calls are not an adequate substitute.
-No volcanic, tsunami, or other origin is invented to obtain a convenient damage effect.
+Other crop- or transport-damaging events worsen an existing food problem only through what remains.
+No technology, doctrine, country, formable, focus tree or 3D unit is added.
 
-## Other systems and events
+## Chaos impact map
 
-War can compete for the same trucks, fuel, trains, convoys, equipment, and labor used for protection.
-War itself does not automatically add Wrath.
-A maximum-production policy becomes relevant when the government knowingly rejects or diverts a concrete civilian obligation.
+These are non-death contributions; real deaths add Chaos through the Deaths system.
 
-Condemnation can receive an actual deliberate abuse incident through its existing owner.
-It does not increase simply because a government adopts a different explanation of the plagues.
-Deaths and diplomatic blame must not be duplicated across these systems.
-
-Other crop-destroying or transport-damaging events can worsen an already proven food problem.
-Only remaining physical resources are available to be damaged again.
-An overlapping disaster cannot erase completed protection without a new actual loss.
-
-Darkness does not call Winter, nuclear winter, or Air Cleanliness merely because their visuals are dark.
-Insects and red water likewise do not imply a global atmospheric contamination event.
-Existing contamination matters only where a proven owner fact affects the exposed population.
-
-No technology, doctrine, country tag, formable, focus tree, or 3D unit system is added by this specification.
-An implementation discovery that genuinely requires one must be proposed and routed through its skill rather than quietly expanding scope.
-
-## Explicit Chaos impact map
-
-The following values are proposed non-death anomaly contributions.
-They are separate from the shared Deaths contribution and do not multiply with the number of countries, states, reports, or acknowledgements.
-
-| Proven event | Direct Chaos change | Guard |
+| Event | Chaos | Guard |
 | --- | ---: | --- |
-| First global Blood manifestation in a new accepted episode | +20 | Once per episode, only after manifestation is accepted |
-| First actual Hail and Fire impact of the episode | +10 | Once per episode, regardless of the number of state impacts |
-| First global Darkness onset of the episode | +20 | Once per episode |
-| Ordinary intermediate phase report or recognition of the pattern | 0 | Presentation is not another manifestation source |
-| A country's Harden or Heed choice | 0 directly | Changes Wrath; later actual consequences retain their owners |
-| Evolution activation alone | 0 | Activation is not a concrete consequence |
-| First entry into The Plagues Without End | +20 | Once, after all terminal gates pass |
-| A newly stronger renewed-cycle manifestation | +5 | Once per new recurrence rung; at most +20 across the episode |
-| Verified full-cycle escape from the endless branch | −20 | Once; does not erase earlier Deaths-derived Chaos |
-| Successful migration or delivery alone | 0 directly | No generic movement reward or penalty added |
-| Cleanup, report acknowledgement, save/load, or country transfer | 0 | Never treated as a new event |
+| First global Blood of an episode | +20 | Once per episode |
+| First Hail and Fire impact of an episode | +10 | Once per episode |
+| First Darkness onset of an episode | +20 | Once per episode |
+| Entry into The Plagues Without End | +20 | Once, after all terminal gates pass |
+| Each renewed cycle's first Blood at a new recurrence step | +5 | At most +20 across the episode |
+| Verified escape from the endless branch | −20 | Once; earlier death-derived Chaos stays |
+| Phase reports, recognition, Harden or Heed choices, Evolution activation, migration, relief, cleanup, save/load | 0 | Never a new manifestation |
 
-Real deaths contribute through the shared Deaths system's established scale.
-Event 085 does not add the same casualty contribution itself.
-Likewise, concrete shared-system Chaos already attributed to the same physical incident must suppress a duplicate anomaly entry where their contracts overlap.
-
-The first-cycle anomaly contributions total at most +50 before deaths.
-World-end entry and stronger recurrence can add at most another +40 before the once-only escape reduction.
-These bounds describe this map, not the world's total Chaos from unrelated events.
-
-Failed preparation raises Wrath or leaves exposure unprotected.
-It does not add a second arbitrary failure Chaos charge on top of every consequent death.
-The shared Chaos impact record must make every source, zero-source, reversal, and guard auditable.
+A first cycle adds at most +50 before deaths; world-end entry and recurrence add at most +40 more.
+Where a shared owner already records Chaos for the same physical incident, the Event 085 entry is suppressed.
+Failed preparation adds Wrath or exposure, never a separate Chaos charge.
 
 ## Sparse progression
 
-One global coordinator owns the episode and fixed phase deadlines.
-Registered state and country work queues own only their due impacts, preparations, and result callbacks.
-A bounded global onset or phase census is permitted by the explicitly global event.
-A new permanent whole-world daily, weekly, or monthly scan is not.
-
-Control changes, population transfers, and owner receipts update affected records through exact callbacks.
-Save/load preserves episode and cycle identity.
-Cleanup removes only this event's registered work and never sweeps away another owner's active crisis.
+One global coordinator owns the episode and phase deadlines.
+State and country work queues hold only due impacts, objectives and callbacks.
+A bounded onset census at each phase opening is permitted because the event is global; no new permanent daily, weekly or monthly world scan is added.
+Control changes and owner results update affected records through callbacks.
+Cleanup removes only Event 085's own records and never another owner's active crisis.

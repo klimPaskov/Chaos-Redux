@@ -1,150 +1,78 @@
-# 14. Decisions, Commitments, and Urgent Objectives
+# 14. Decisions, Costs, and Urgent Objectives
 
 ## One readable category
 
-The Ten Plagues category presents Divine Wrath, the current phase, the next known deadline, the current preparation result, and the most useful action choices.
-Only Divine Wrath is an event-specific mechanic value.
-The player normally sees three to five primary actions and never more than six.
+The Ten Plagues category header shows Divine Wrath, the current plague, the next deadline and, during Darkness, the Passover line (Part 7).
+Divine Wrath is the only event-specific value.
 
-At most three Event 085 urgent missions are active at once.
-A shared-system mission remains in its owner's category and is not copied into an Event 085 slot.
-During Darkness, Passover receives priority over a newly opened optional service objective.
+- Three to five actions are visible at a time, never more than six.
+- At most three Event 085 urgent missions run at once; Famine, Migration and Natural Disasters missions stay in their own categories.
+- During Darkness, Passover takes priority over any new optional objective.
+- Completed actions leave a one-line result and retire; past plagues do not leave permanent rows.
+- No custom command GUI is needed; a phase picture (Part 16) is enough.
 
-The phase picture and short explanation change with the crisis.
-No ten-tab command center or persistent row for every past plague is required.
-Older unresolved work is accessible through the appropriate owner.
+Unavailable actions name the exact missing target, resource, route or time.
 
-## Common payment contract
+## Cost model
 
-Every action has one defined commitment, one affordability check, one payment, one result, and one cleanup path.
-A gameplay-changing GUI action uses the same contract as its decision equivalent.
+Every action has one cost check, one payment, one objective, one result and one cleanup path.
+An action shows at most three cost values with texticons; requirements such as a route are shown separately.
 
-An action may use at most four distinct spendable cost types; the preferred designs below use one to three.
-Its inline cost string shows at most three values with proper texticons.
-Missing access, an invalid target, or insufficient time is a requirement failure, not an undisclosed fifth cost.
+Material actions scale with the target state's population in **relief units** of 250,000 people, rounded up, minimum one.
+The action offers only the variants that are physically valid for the state, and never combines them.
 
-For scalable material actions, one relief unit serves up to 250,000 people in a verified target footprint.
-Round the number of required relief units upward, with a minimum of one.
-This is a balance unit for costs, not an inventory or a guarantee that a shipment physically reaches that population.
+| Variant | Cost per relief unit | Notes |
+| --- | --- | --- |
+| Road | 10 trucks, 10 support equipment, 500 fuel | Needs a land route from a controlled supply source |
+| Sea | 2 convoys, 500 fuel | Needs a port; island and coastal states |
+| Rail | 2 trains, 10 support equipment | Needs working railway |
+| Local organization | A timed −50% factory output penalty in the target state for the service window, plus 10 Political Power + 5 per relief unit | Always available where the state has people; no factory minimum |
 
-Initial transport-and-support packages per relief unit use 25 trucks, 25 support equipment, and 500 fuel where a road route is actually appropriate.
-A maritime version uses 5 convoys and 500 fuel plus the required existing relief cargo.
-A rail version uses 5 trains plus that cargo.
-These are alternative packages, not five or more costs combined into one action.
+Equipment is consumed: it wears out or is lost in relief work, so there is no reservation or return.
+Holding exactly the shown amount is enough; nothing is debited if the action cannot start.
+The local route gives a smaller country a real way to act through its own people's labor; it never kills or removes population and never creates manpower.
+These amounts are tuning anchors in script constants.
 
-Cargo is paid through its real owner and counts as a cost type.
-Where a vehicle is committed and returned rather than consumed, the tooltip states that distinction, the reservation prevents concurrent use, and only actual losses are removed permanently.
-An action never removes borrowed equipment a second time on completion.
+## Action families
 
-The exact supported commitment primitive and cargo unit must be verified during implementation.
-A quantity is not silently translated into a different resource because an API is missing.
+| # | Action | Phase and window | Target and objective | Variants | Result |
+| ---: | --- | --- | --- | --- | --- |
+| 1 | Harden Our Hearts | Any phase, once per phase | National policy | — | Part 2 policy effects, +15 Wrath |
+| 2 | Heed: Safe Water | Blood, 10 days | Keep one affected state supplied with safe water | Road, sea, rail, local; industry shutdown variant (deeper local penalty, no equipment) | Removes most of the state's direct deaths and Famine shock; halves Frogs cleanup cost there |
+| 3 | Heed: Frog Clearance | Frogs, 10 days, before the die-off | Clear one affected state's civilian services | Road, local; strategic-site variant (partial credit) | Prevents the state's sanitation aftermath |
+| 4 | Heed: Infestation Control | Lice and Gnats, 10 days | Restore one affected state's services and shelters | Road, local | Cuts the state's disease exposure |
+| 5 | Military Stand-Down | Lice and Gnats or Boils, 10 days | Pull exposed divisions back for treatment | National: −25% division attack for 10 days | Halves the phase's recovery and training penalty for the rest of the phase; partial credit only |
+| 6 | Heed: Food and Sanitation | Flies, 10 days | Protect one affected state's food storage and sanitation | Road, sea, rail, local; half cost after completed water or frog work in the state | Cancels the state's Flies food shock and most disease exposure |
+| 7 | Protect Rural Continuity | Livestock, 15 days | Protect one agricultural state | Road, local | Halves the state's Livestock shock; marks a surviving agricultural base |
+| 8 | Heed: Civilian Care | Boils, 15 days | Sustain care in one affected state | Road, rail, local; half cost after completed infestation work in the state | Cuts the state's outbreak exposure; Doctor Wu care can join (Part 5) |
+| 9 | Shelter Before the Storm | Hail warning, until impact | Shelter a warned state's population | Road, local; half cost in a state with completed care; site variant protects equipment or an air base (partial credit) | Shelter result passed to Natural Disasters |
+| 10 | Preserve the Remaining Harvest | Locusts, until the front arrives | Move or protect food in the next threatened state | Road, sea, rail, local | Cancels most of the state's locust shock |
+| 11 | Maintain Essential Service | Darkness, 72 hours | Keep one state's hospital, water and shelter network running | Road, local | Cancels most of the state's Darkness deaths |
+| 12 | Observe the Passover | Darkness | National program or local preparation (Part 7) | National: 50 Political Power, 10 support equipment per relief unit of controlled population, +10% consumer goods for 7 days; local: local organization for one state | Passover status |
+| 13 | Foreign Relief Pledge | Any phase | Pay the material cost of another country's active objective (Part 10) | Donor's stockpile pays the recipient's road, sea or rail variant | −5 donor Wrath on the recipient's completion, two per phase |
+| 14 | Reconstruction Coordination | After the tenth plague | Restore one damaged state (Part 11) | Civilian factories for 90 to 180 days scaled by damage, plus Political Power | Completes on actual repair and food recovery |
 
-## Local organization without a major-power gate
+Migration's **Evacuate Civilians** covers storm evacuation; Famine's **Release Food Stores** and **Import Food** cover reserves and imports.
+Event 085 links to them and never copies them.
 
-Every essential protective phase has a local route for a country with civilians and an acting authority but little transport or industry.
-It organizes people already in the affected district and reaches a smaller proven footprint.
+## Outcomes and credit
 
-Its basic commitment reserves 5% of available local working capacity for the stated service period.
-That capacity is unavailable for competing military or productive work during the commitment.
-The visible economic effect is projected from the actual affected share rather than applying an identical national penalty in every country.
+- **Full success**: the objective's state is still controlled and the full window elapsed (or the work finished before the impact or front).
+It applies the protection and the full Wrath credit (−10), once per country per phase.
+- **Partial success**: a site variant, Military Stand-Down, or work interrupted after at least half its window by capture or a destroyed route.
+It applies half the protection and −5 Wrath; a later full completion in the same phase grants only the remaining −5.
+- **Failure**: no protection and no credit; spent equipment stays spent.
+Failure from capture, a destroyed route or lost access carries no blame; abandoning an achievable objective or diverting its equipment raises Wrath (Part 2).
 
-No minimum number of civilian factories is required.
-No new labor currency or public workforce meter is created.
-The population is not killed, permanently removed, or converted into a free military manpower grant.
+A full credit requires the target to be a footprint state of the current plague, so small fragments cannot farm Wrath.
+More objectives in the same phase still protect their states; they earn no further Wrath credit.
+A renewed cycle has new phase credits and reuses nothing from the previous cycle except surviving physical work.
 
-A district without usable people or essential local material cannot claim success solely by waiting.
-Foreign support can provide a missing material component.
-The local service commitment remains real.
-The supported capacity reservation and projection are required implementation contracts, not permission to fake a resource debit.
+A late completion can still help an ongoing owner crisis but cannot protect people who already died.
 
-## Action and mission families
+## Transfer and cleanup
 
-Working labels below identify purpose, not finished localization.
-Shared-owner actions retain their own final costs and availability; the table does not overwrite them.
-
-| Family | Target and real objective | Main commitment | Deadline or service window | Result ownership |
-| --- | --- | --- | --- | --- |
-| Harden Our Hearts | Preserve the active war commitment despite the named warning | The stated Wrath increase and real foregone civilian work | Current phase | 085 policy; no imaginary restoration of damaged industry |
-| Heed: safe water | Serve exposed districts with a verified safe-water arrangement | Road package or local working capacity | 10 days within Blood | 085 coverage; infectious aftermath remains disease-owned |
-| Heed: frog clearance | Clear a real service or depot footprint and remove its sanitation burden | Support package or local working capacity | 10 days within Frogs | 085 cleanup; shared disease only on proven exposure |
-| Heed: infestation control | Restore an actual civilian service or exposed formation's recovery access | Support equipment and local service commitment | 10 days within Lice and Gnats | 085 protection, outbreak owner where relevant |
-| Heed: food and sanitation | Protect a real food or service footprint during Flies | Local work, or one suitable transport-and-cargo package | 10 days within Flies | Food and disease owners retain their ledgers |
-| Protect rural continuity | Preserve surviving agricultural service, transport, or shelter capacity | Local working capacity and optional support equipment | 15 days within Livestock | 085 protection; Famine owns food result |
-| Civilian care | Deliver continuing care to a proven exposed civilian footprint | Support equipment and local working capacity, or road support | 15 days within Boils | Existing disease owner confirms outcome |
-| Military stand-down | Protect an actually exposed formation or depot | Temporary loss of its training/readiness opportunity | Bounded current disease episode | Military and disease owners; no fake civilian completion |
-| Shelter before the storm | Place actual exposed people in a valid shelter footprint | Local capacity and support equipment | Five-day warning, before the named impact | 085 proof passed to Natural Disasters |
-| Evacuate before the storm | Move actual threatened people to a safe destination | Migration-owned transport and access package | Before the accepted impact deadline | Migration transfer; no second 085 movement |
-| Preserve remaining harvest | Move or protect actual surviving food before the locust front | Food-owner cargo reservation and suitable transport | Before the named front arrives | Famine confirms remaining protected food |
-| Maintain essential service | Keep a proven hospital, shelter, or water route operating in Darkness | Local work or vehicles and fuel | Within the 72-hour Darkness | 085 exposure protection and relevant owner receipt |
-| Observe the Passover | Reach actual households or reception districts before the final night | Civilian working capacity plus real supply/food support; optional transport | 48 hours normally, 36 with the working network | 085 protection cohorts and one completion credit |
-| Emergency local Passover | Reach one smaller valid district before the deadline | Local working capacity and real local support | 24 hours | Only that reached population; no national full-completion flag |
-| Foreign relief pledge | Fulfil a registered recipient need through a safe route | Appropriate owner-approved cargo and transport | Recipient need and valid route window | Receiving owner confirms delivered benefit |
-| Reconstruction coordination | Restore a named combination of essential services | Actual owner commitments, not a universal repair purchase | Normally 90–180 days | Owner results and 085 coordination completion |
-
-No action requires both road, rail, and maritime packages.
-The variant is selected from physical validity before its cost is displayed.
-
-## Mission outcomes
-
-A full success requires the stated objective to be physically satisfied by its deadline.
-Paying the cost is insufficient.
-A full outcome applies the matching protection and once-only conduct credit.
-
-A meaningful partial success requires a proven result covering at least half of the committed target people or material.
-It protects only that achieved share and receives at most partial credit.
-An action cannot intentionally declare half the target, collect partial credit, and then restart the same target for another full reward.
-
-A failure without a delivered protective result receives no protection credit.
-Real consumed material and lost work remain consumed.
-Unused reservations are released according to their owner; committed people are not deleted.
-
-If work becomes impossible through a destroyed route, an invalid destination, or an uncontrollable state transfer, the result distinguishes that from deliberate abandonment.
-The physical exposure can worsen without automatically adding the moral penalty for a voluntary refusal.
-
-A late delivery can still help reconstruction or an ongoing owner crisis.
-It cannot retroactively protect people who died before it arrived.
-
-## Meaningful scale and anti-farming
-
-The first accepted substantial phase commitment defines its actual target footprint.
-It must cover at least half of a selected exposed state's relevant people or service need, or an equivalent owner-proven essential service.
-Small fragments of a large state cannot each generate a full national Wrath reduction.
-
-A country receives at most one full protective-completion credit per phase.
-Partial-to-full upgrades give only the remaining difference.
-Foreign effective-delivery credit is separately limited to two distinct operations per phase.
-
-This reward ceiling does not prevent further useful work.
-Additional districts still receive real protection.
-They simply do not create unlimited conduct rewards.
-
-A repeated cycle has new phase obligations and can earn new bounded credits.
-It does not reuse the previous cycle's delivery receipts.
-Physical networks that persist help fulfil the new obligation but do not make its current work automatically complete.
-
-## Availability and display
-
-Unavailable options identify the exact missing target, resource, access, remaining time, or incompatible commitment.
-The player does not need to guess why a seemingly valid relief action is disabled.
-
-A completed phase action leaves a compact result summary and then retires from the active list.
-A new Evolution does not reveal every possible target as a permanent decision row.
-Priority targets are scored for urgency, while a supported target selection mechanism preserves access to other valid work.
-
-The category uses ordinary decisions and contextual presentation.
-A simple phase picture is justified.
-A separate custom command GUI is not justified by a long internal target registry.
-
-## AI, transfer, and cleanup
-
-AI uses exactly the same validity, commitments, deadlines, and outcome receipts.
-It cannot complete Passover instantly or pay negative stockpile amounts.
-It can choose local work when transport is absent.
-
-When a state changes responsibility, valid local work and its remaining deadline move with the people and service.
-Former-country pointers and obsolete mission slots close.
-No completion reward is granted solely because the old mission was removed.
-
-At phase end, unfinished acute work either closes with a result or transfers to the explicitly relevant aftermath owner.
-At episode end, only Event 085's own actions, policy effects, and work records close.
-Famine, Migration, disease, and disaster cleanup remain intact.
+When a target state changes controller, its objective closes as a partial or failed result for the old controller, without false completion.
+At phase end, unfinished objectives close with a result.
+At episode end only Event 085's own actions, spirits and records close; Famine, Migration, outbreak and disaster aftermath remain.
+The AI uses the same costs, windows and requirements as the player (Part 15).

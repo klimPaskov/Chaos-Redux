@@ -2,139 +2,95 @@
 
 ## IX. Darkness
 
-Darkness begins everywhere at the same global phase transition.
-It lasts 72 hours.
-Its disappearance does not depend on a country acknowledging a report, choosing an option, or allowing an event window to close.
+Darkness begins everywhere at the same moment and lasts 72 hours.
+It ends on schedule regardless of popups, options or acknowledgements.
 
-The map must communicate that daylight itself has failed.
-Military planning remains usable: country borders, counters, selected routes, warnings, and essential interface text remain legible.
-An ordinary night setting, a dark event photograph, or a national modifier alone does not satisfy the global visual requirement.
+### The global visual
 
-The anomaly does not extinguish every manufactured lamp.
-Emergency lighting and protected services remain useful, although the world outside them stays dark.
-It does not automatically create winter, change the climate, lower Air Cleanliness, or invoke a nuclear-winter owner.
+The map must show that daylight itself has failed while borders, counters, routes, warnings and interface text stay readable.
+Ordinary night, a dark event picture or a national modifier alone does not meet the brief's requirement for a strong global visual treatment.
+No existing provider has been verified; finding or building one is required work.
+Candidate approaches are a noninteractive full-screen dark overlay layer that ignores input, or a dedicated map treatment active during the phase; the implementation must prove one against the actual renderer.
+An accessibility setting may lower its intensity without changing gameplay, deadlines or warnings.
 
-The visual implementation must be proven against the actual game renderer and interface.
-No suitable global presentation provider has been verified in the reviewed material.
-Finding or implementing a supported event-owned treatment is required work, not permission to substitute ordinary night.
-An accessibility setting may reduce presentation intensity while preserving the same gameplay, countdown, and warnings.
+Manufactured light still works: emergency lighting and protected services stay useful.
+Darkness does not create winter, change the climate, lower Air Cleanliness or call the nuclear-winter owner.
 
-## Keeping essential services alive
+### Effects
 
-Darkness punishes unattended infrastructure and already weakened services.
-Working shelters, water distribution, medical access, and functioning transport from earlier phases reduce the population actually exposed to these failures.
+National penalties for every country, entering the crisis spirit within its ceilings (Part 15):
 
-Initial national-operation anchors are a 75% reduction in air mission effectiveness, 50% reductions in relevant air and naval detection, 30% reductions in output and construction, and 25% reductions in movement and planning.
-These are proposed penalties in the corresponding supported modifier units, not assumed script identifiers.
-They enter the consolidated crisis modifier and its ceilings.
-They do not each add another unrestricted copy of penalties already present from overlapping plagues.
+| Effect | Anchor |
+| --- | ---: |
+| Air mission efficiency | −75% |
+| Air and naval detection | −50% |
+| Factory output and construction speed | −30% |
+| Division speed and planning speed | −25% |
 
-Military and civilian responses differ.
-Grounding nonessential operations protects exposed crews and transport.
-Keeping every sortie and night movement running may preserve an immediate military opportunity at the cost of fuel, accidents, and civilian capacity.
-The player sees that tradeoff before committing.
+Direct mortality budget: 10 basis points of exposed population over the whole phase, for accidents and service failures only, excluding deaths already settled by outbreak, famine, fire or migration.
 
-The proposed direct civilian mortality allowance is 10 basis points of the actually exposed live population over the entire three-day phase, before Wrath, intensity, and effective protection.
-It covers event-owned accidents and service failures.
-Deaths already settled by an outbreak, famine, fire, or route transaction are excluded from this allowance.
-Darkness cannot turn every unresolved humanitarian incident into a second casualty claim.
+**Maintain Essential Service** (Part 14) protects one selected state's hospital, water and shelter network for the 72 hours, cancelling most of its Darkness mortality.
+Grounding non-essential air operations is a player choice, not a separate action: keeping every sortie running simply means fighting at −75% efficiency.
 
-One urgent service action may protect a proven hospital, water-distribution area, shelter network, or relief route.
-A transport-supported variant uses fuel and appropriate vehicles.
-A local variant uses labor and an actual civilian production commitment.
-The action covers a named service footprint rather than granting every state immunity from Darkness.
+## The final warning
 
-## The warning everyone understands
-
-At Darkness onset, every affected government receives the final warning, the common deadline, its current protection state, and the opportunity to Observe the Passover.
-The deadline is also available outside the event popup.
-A player returning from another screen can still see what must be completed and when.
-
-Earlier phases may establish transport, household registers, shelters, and community distribution.
-Those are useful preparations.
-They do not count as having already observed the final Passover before its warning or permit completion to be backdated.
+At Darkness onset every government receives the final warning, the common deadline and Observe the Passover.
+The deadline also appears in the category, so a player returning from another screen can still see what remains and when.
+Earlier work (water routes, shelters, care) helps Passover through the response network below; it does not count as Passover itself.
 
 ## Observe the Passover
 
-The action organizes an emergency observance inspired by the biblical household preparation.
-Its public name remains Observe the Passover.
-Religious governments may describe obedience to a warning; secular governments may present an unexplained procedure that seems to work.
-Neither interpretation changes eligibility or efficacy.
+The action organizes an emergency household observance inspired by the biblical Passover.
+Its name stays Observe the Passover for every country.
+Religious governments may present it as obedience to a warning and secular ones as an unexplained procedure that seems to work; eligibility and effect are identical.
+No religion, ideology, ethnicity, tag or alignment is required.
 
-Preparation must reach people.
-It combines civilian organization with a meaningful supply or food-distribution commitment to actual households or reception districts.
-Neighboring households and communities can pool support.
-No national religion, ideology, ethnicity, historical tag, or diplomatic alignment is a prerequisite.
+Preparation must reach places where people live, so protection is recorded **per state**.
 
-A country with sufficient transport can organize broad delivery.
-A low-capacity country can organize a smaller local district with labor and existing supplies.
-Neither option conjures food or ignores an existing Famine reserve obligation.
-Where a food commitment crosses a Famine-owned ledger, that owner must accept the reservation and report the delivered amount.
+| Variant | Reach | Time to complete | Cost (Part 14) |
+| --- | --- | --- | --- |
+| National program | Every state the country controls when it is started | 48 hours, or 36 hours with a working response network | Political Power, support equipment scaled by population and a week of higher consumer goods for household distribution |
+| Local preparation | One selected state | 24 hours | Local organization: a timed output penalty in that state plus Political Power |
 
-The normal preparation takes 48 hours after a valid commitment.
-A previously established working civilian response network reduces this to 36 hours.
-A late emergency local operation takes 24 hours and covers only its verified district.
-It does not complete the entire country's normal program in half the time.
+A local preparation that cannot finish before the deadline is unavailable and says why.
+Completion exactly at the deadline counts; starting or paying at the deadline cannot.
+The same state cannot be funded by both variants.
 
-The same district cannot be funded twice by normal and emergency variants.
-A late operation that cannot finish before the common deadline remains unavailable, with the reason displayed.
-A preparation whose recorded completion time is exactly the common deadline counts if its work and owner receipts are valid.
-The coordinator settles those due completion receipts before freezing the tenth-plague outcome.
-Starting or paying for a new action at the deadline cannot create such a receipt.
-There is no instantaneous pay-at-midnight completion.
+### Passover status
 
-At most three cost types appear on a preparation variant.
-The preferred broad version uses a civilian production commitment and supply or food support, adding transport only where actually required.
-The local route replaces unavailable transport capacity with slower, smaller-scale organization; it is not a cost-free national substitute.
+At the deadline each state has one status:
 
-## What counts as preparation
+| Status | How it is reached | Firstborn hazard |
+| --- | --- | ---: |
+| Prepared | Completed national program or local preparation | −95% |
+| Partly prepared | Completed national program in a state that is in Famine's famine or catastrophic famine stage, was struck by Hail and Fire without a completed shelter, or whose population grew by more than 10% after its preparation completed | −50% |
+| Unprepared | No completed preparation | None |
 
-Completion distinguishes people fully reached, people partly reached, and people not reached.
-These are internal coverage records and contextual results, not another headline meter.
+The partial cases are where earlier failures come back: broken services and crowded arrivals make the final preparation less effective.
+A capital alone does not make a country prepared, and a government cannot protect only its leadership.
 
-For the tenth-plague calculation, full protection reduces the hazard affecting the reached firstborn cohort by 95%.
-Partial preparation reduces that cohort's hazard by 50%.
-Unreached people receive neither reduction.
-The country card summarizes the situation without presenting a national flag as proof that every household is covered.
+### Working response network
 
-A functioning civilian response network requires completed substantial protective objectives in at least three distinct earlier plague phases and a still-operational network serving at least half of the country's current resident civilian population when Darkness begins.
-Completed work that has been physically destroyed cannot establish current reach.
-The network is a completed-status condition, not an additional player-managed score.
+A country has a working response network when it fully completed protective objectives in at least three distinct earlier phases of the current cycle.
+The network lets the national program finish in 36 hours, and every state where one of those objectives was completed gets a further −10% firstborn hazard.
+It is a completed-status condition, not a meter.
 
-Besides faster organization, the working network reduces residual tenth-plague hazard by 10% for people actually served by it.
-Coverage outside the working network receives no network modifier.
-Earlier water, transport, shelter, and care work can therefore matter at the final deadline without becoming an invisible stack of unlimited national bonuses.
+### What the player sees
 
-Preparation credit follows the ordinary Wrath rules.
-A substantial completed program gives the full protective credit once.
-Partial work can receive partial credit and later only the remaining difference.
-Repeated district clicks cannot lower Wrath indefinitely during the same phase.
+During Darkness the category shows one Passover line: the share of the country's population living in Prepared and Partly prepared states.
+The state tooltip and map show each state's status.
 
-## Borders, refugees, and the final night
+### Credit and refusal
 
-A household does not lose completed preparation because its state changes controller.
-An arriving refugee cohort does not acquire complete preparation merely because the destination country has a Passover flag.
-Its protection depends on continuity of a completed protected household arrangement or actual placement in a reached reception district.
+Completing the national program, or local preparations covering at least half the country's population, earns the phase's full Wrath credit (−10) once; smaller coverage earns partial credit (−5).
+The country may refuse or choose Harden Our Hearts; the Wrath cost and the tenth-plague warning are shown before selection.
+A funded program interrupted by capture keeps the status of states it completed and explains whether time, route loss, shortage or diversion caused the gap.
 
-Migration owns the movement, arrival, and surviving people.
-The Passover owner supplies or receives only the protection facts needed for those people.
-Where that extension is not yet supported, it is an implementation blocker; skipping these cases would create an immunity exploit.
+## Borders and refugees
 
-Evacuation after the deadline cannot change a frozen tenth-plague outcome.
-Movement completed before it uses the actual destination, protection coverage, and living cohort.
-A paused popup cannot allow one country's night to happen after the rest of the world has finished.
+A state keeps its Passover status when its controller changes.
+Refugees take the status of the state they are in at the deadline; a convoy still in transit at the deadline is exposed in its origin state.
+The 10% growth rule prevents last-hour mass transfers into prepared states from creating protection.
+Migration owns all movement; Event 085 reads only population and location.
 
-## Refusal and partial failure
-
-The country may refuse the preparation or choose Harden Our Hearts.
-The short-term military and political benefits remain real, and the Wrath increase is shown before selection.
-Refusal does not automatically imply a change of religion or an invented statement about the government's beliefs.
-
-A funded but damaged program can produce partial protection.
-Its survivors retain the benefit that was genuinely delivered.
-The result explains whether time, route loss, unavailable supplies, or deliberate diversion prevented full completion.
-
-The state cannot be marked fully prepared because the capital completed its own arrangements.
-Nor can a government protect only its leadership and claim a successful national civilian response.
-
-At the end of the 72 hours, preparation closes and the tenth plague resolves from one common world deadline.
+At the end of the 72 hours, preparation closes and the tenth plague resolves from the one world deadline (Part 8).

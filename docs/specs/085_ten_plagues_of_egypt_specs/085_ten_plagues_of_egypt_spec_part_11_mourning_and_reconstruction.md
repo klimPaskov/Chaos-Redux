@@ -3,114 +3,68 @@
 ## The morning after
 
 Every affected country enters mourning after the tenth plague.
-The immediate presentation distinguishes a country that protected most of its population from one that suffered catastrophic losses.
-Both have witnessed the same world event; their material and political conditions are not identical.
+The report distinguishes a country that protected most of its people from one that suffered catastrophic losses, and states actual applied deaths from the shared Deaths records and the surviving population.
+Named characters appear only when a real character death occurred.
 
-The public result reports actual shared Deaths figures and known surviving population.
-Named-character losses are listed only when valid character transactions occurred.
-Unverified deaths, speculative totals, and unsatisfied casualty requests do not appear as facts.
-
-The main acute mourning period lasts 30 days.
-This is also the minimum intermission before a renewed plague cycle.
-Reconstruction can continue for months and does not end merely because the initial mourning modifier expires.
+Acute mourning lasts 30 days, which is also the minimum intermission before a renewed cycle.
+Reconstruction continues for months afterwards.
 
 ## National disruption
 
-Initial acute mourning anchors use the tenth plague's actual civilian deaths as a percentage of the country's eligible civilian population immediately before that night's settlement.
+The mourning spirit is set from the tenth plague's applied deaths as a share of the country's population just before that night.
 
-| Actual loss in the tenth plague | Stability | War Support | Additional output interruption |
+| Loss in the tenth plague | Stability | War Support | Factory output |
 | --- | ---: | ---: | ---: |
-| Less than 1% | −5 percentage points | −5 percentage points | −5% |
-| At least 1%, below 5% | −10 percentage points | −5 percentage points | −10% |
-| At least 5%, below 10% | −20 percentage points | −10 percentage points | −15% |
-| At least 10% | −30 percentage points | −15 percentage points | −20% |
+| Below 1% | −5 percentage points | −5 percentage points | −5% |
+| 1% to below 5% | −10 percentage points | −5 percentage points | −10% |
+| 5% to below 10% | −20 percentage points | −10 percentage points | −15% |
+| 10% or more | −30 percentage points | −15 percentage points | −20% |
 
-These are temporary modifier anchors, not repeated daily deductions.
-They use one mourning spirit and respect the event's consolidated interruption ceiling.
-A successor country inherits the remaining effect according to its real responsibility and affected population rather than generating a fresh full duration.
+These are one temporary spirit within the crisis ceilings, not daily deductions.
+A successor country inherits the remaining time for the territory it receives instead of a fresh full duration.
+After acute mourning no hidden Stability penalty remains.
 
-Countries with verified earlier mass loss can retain severe reconstruction pressure even when Passover made the tenth plague comparatively survivable.
-That pressure comes from surviving damage and owner systems, not a fabricated higher tenth-plague total.
+## Reconstruction
 
-After acute mourning, any continuing political recovery modifier must reflect an unresolved issue and expire or reassess through its owner.
-Do not leave a permanent hidden Stability penalty simply because the event once occurred.
+Reconstruction restores water services, shelters, food routes, rural capacity, transport and industry.
+Natural Disasters owns storm repairs, Famine owns food recovery, Migration owns return and settlement, and the outbreak owner owns continuing illness.
 
-## What can be rebuilt
-
-Reconstruction prioritizes water services, housing and shelters, food routes, productive rural capacity, transport, and damaged industry.
-Actual losses remain in their proper owners.
-
-Natural Disasters owns its storm aftermath and repairs.
-Famine owns food security, reserve recovery, and famine mortality.
-Migration owns displaced people, return, and settlement.
-The disease owner handles continuing outbreak recovery.
-
-Event 085 owns coordination where several of these require an explicit common commitment.
-It must not sell a single cheap national button that removes every owner's penalties, restores all buildings, or returns population.
-
-A reconstruction objective normally lasts 90 to 180 days.
-Its early completion condition is the actual restoration of the named service or coordinated outcome.
-A paid decision does not automatically pass the objective before the work is complete.
-
-Low-capacity countries can restore one vital district and expand outward.
-They are not required to fund a major-power national reconstruction package.
-Foreign support can complete part of the material commitment when the receiving owner proves delivery.
+**Reconstruction Coordination** (Part 14) is Event 085's single reconstruction action: it targets one damaged state and funds its combined recovery over 90 to 180 days, scaled by the damage.
+It completes when the state's storm damage is repaired and its Famine stage is stable or supply strain, not when the cost is paid.
+A state marked as a surviving agricultural base in Livestock (Part 5) needs half the work.
+Foreign relief can pay part of the material cost.
+There is no single cheap national button that clears every owner's penalties.
 
 ## Three political directions
 
-A government can organize public mourning and practical reconstruction, investigate failures of preparedness, or try to preserve authority through blame and emergency control.
-These are directions for contextual decisions, not mandatory ideology routes.
+The mourning report offers a direction for the following months:
 
-Public mourning can ease immediate political disruption when it accompanies real assistance.
-A ceremony alone does not restore infrastructure or remove Wrath accumulated through deliberate abuse.
+| Direction | Effect | Cost |
+| --- | --- | --- |
+| Public mourning and rebuilding | Shortens the mourning spirit by a third if at least one Reconstruction Coordination is started within 30 days | Political Power |
+| Inquiry into preparedness | Removes the remaining Harden Our Hearts political effects and gives −5 Wrath if the country hardened in two or more phases and has not hardened since | Political Power and a short Stability loss |
+| Emergency control | Halves the mourning Stability loss | War Support loss and +10 Wrath; any violent enforcement that follows still reaches Condemnation through its owner |
 
-An investigation can identify proven diversion, failed warnings, or a genuine leadership vacancy.
-It can cost political capital and interrupt a competing policy.
-It does not invent a guilty named minister or force the same cabinet dismissal in every country.
+These are contextual choices, not ideology routes.
+The inquiry does not invent a guilty minister; emergency control does not by itself count as an atrocity.
+Religious revival, skepticism and scientific inquiry appear in the writing, and no outcome fixes one explanation.
 
-Emergency control can temporarily contain unrest.
-Violent or exploitative measures must have actual owner-proven consequences before they affect Deaths, Condemnation, or Divine Wrath.
-The event cannot declare atrocities from ideology or a generic emergency-law label alone.
+## Succession and continuity
 
-Religious revival, public skepticism, scientific inquiry, and disputes about meaning can appear in contextual writing.
-No outcome establishes one mandatory supernatural explanation or forces conversion.
-The narrative can remain unsettled after the mechanics have worked.
-
-## Succession and state continuity
-
-If a valid leader, heir, commander, or minister died, the existing character and country systems determine the available succession.
-The event may present the resulting vacancy and political tension.
-It does not manufacture a replacement biography, a new country tag, or a civil war merely to add content.
-
-A country that capitulates during mourning still has affected civilians and damaged states.
-Actual responsibility transfers through the existing owner contracts.
-Its history remains visible to the relevant successor or government-in-exile without duplicating population loss.
-
-A released state cannot obtain a clean pre-plague population, restored stockpile, or fully functioning food system because its tag is new.
-Its physical condition comes from the territory and people it actually receives.
+When a leader, heir, commander or minister died, the existing character system decides succession.
+The event can describe the vacancy but invents no biography, tag or civil war.
+A country that capitulates during mourning passes its damaged states and remaining mourning to its successor without repeating population loss.
+A released country inherits the condition of its territory, never a clean pre-plague population.
 
 ## The intermission before recurrence
 
-When a renewed cycle is scheduled, the 30-day intermission is visible.
-It gives a common date for returning Blood while existing humanitarian work continues.
-It does not conceal the restart behind an unpredictable day-to-day roll after the first renewed signs have been confirmed.
+When a renewed cycle is scheduled, the 30-day intermission and the date of returning Blood are shown in the category.
+Surviving shelters, water routes and experienced networks lower later exposure, but each cycle needs a new Passover.
+Ending a Harden Our Hearts policy stops further Wrath from it but refunds nothing.
 
-Preparations that physically survive remain useful.
-Transport fleets, shelters, water routes, and experienced civilian networks can lower later exposure.
-A new Passover observance is still required during each cycle's Darkness.
+## After escape
 
-The player can change policy during the intermission.
-Ending a Harden Our Hearts policy prevents further deliberate persistence credit against the government.
-It does not refund earlier Wrath, casualties, or diverted relief.
-
-## Reconstruction after escape
-
-A world-end escape closes the repeating threat but leaves a difficult reconstruction campaign.
-A country that sacrificed production to protect people has more surviving labor and communities to rebuild.
-A country that preserved output through the early plagues may inherit fewer people and less functioning infrastructure after the later ones.
-
-No bonus should reimburse the victorious world with free population or universal factories.
-A bounded temporary reconstruction coordination benefit can be considered only after it is tied to actual available labor and funded work.
-It is not part of the baseline reward contract.
-
-The lasting reward is survival, an ended sequence, preserved people, completed achievements where eligible, and the ability to rebuild without another guaranteed tenth plague.
+A world-end escape closes the repeating threat and leaves a hard reconstruction.
+A country that sacrificed production to protect people has more people left to rebuild; one that kept its output may have fewer.
+No reward hands out free population or factories.
+The lasting reward is survival, an ended sequence, preserved people and eligible achievements.

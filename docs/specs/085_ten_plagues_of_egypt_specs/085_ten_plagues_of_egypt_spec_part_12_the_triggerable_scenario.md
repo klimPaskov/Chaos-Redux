@@ -1,113 +1,60 @@
 # 12. Triggerable Scenario: The Ten Plagues
 
-## Planning reservation
+## Identity
 
 The Ten Plagues reserves `SCN-032`, raw integer `32`, for Event 085 in the [shared identifier registry](../shared_identifier_registry.md) and its [machine-readable counterpart](../shared_identifier_registry.json).
-The basis is the user's 7 October 2026 identifier-allocation instruction and the parent reservation after the cross-package/runtime/catalog occupancy audit.
-This allocation approves the identity only, not the surrounding proposed design, runtime registration or playability.
+The user's 7 October 2026 allocation instruction approves the identity only; the profiles below are proposed design and runtime registration is not done.
 
 ## Starting the catastrophe
 
-The manual scenario begins Event 085 immediately.
-It uses the same global episode, country participation rules, ten-stage order, warnings, population accounting, and shared owners as a natural firing.
+The manual scenario starts Event 085 at once through the shared scenario interface, using the same episode, participation, order, warnings, population rules and owners as a natural firing.
+It needs no country target; Egypt receives its scenes when the map has Egyptian territory, and their absence does not block launch.
 
-Every intensity starts with Water into Blood at the actual launch time.
-A manual opening marks ordinary fire-once eligibility used if it was unused and preserves that used state if it was already consumed.
-It never rearms natural or cluster eligibility.
-A later manual replay is explicit scenario behavior, not another natural Major roll.
-No profile fabricates completed earlier plagues, already dead population, a previously observed Passover, or a historical full cycle.
-The difference is how dangerous the new sequence is from its beginning.
-
-The scenario does not need a country target selector because the catastrophe is global.
-Egypt receives its contextual presentation when the current map provides a valid Egyptian or Nile context.
-Its absence cannot block the scenario.
+Every profile starts with Water into Blood at launch.
+A manual launch marks natural fire-once eligibility as used if it was unused and never rearms it.
+No profile fabricates earlier plagues, earlier deaths, an observed Passover or a completed cycle; profiles change only how dangerous the new sequence is.
 
 ## Intensity profiles
 
-| Profile | Starting Divine Wrath | Opening capability | Ordinary pre-tenth multiplier | Tenth-plague multiplier | Geographic footprint |
-| --- | ---: | --- | ---: | ---: | --- |
-| Low | 25 | Baseline | 1.00 | 1.00 | About 25% of eligible states per country |
-| Medium | 50 | Evolution I overlap | 1.50 | 1.10 | About 50% of eligible states per country |
-| High | 75 | Evolution II and Exodus | 2.00 | 1.25 | Every physically valid populated state over the phase |
-| Maximum | 90 | Evolution III-capable crisis and Exodus | 2.50 | 1.50 | Every physically valid populated state over the phase |
+| Profile | Starting Wrath | Capability | Pre-tenth intensity | Tenth-plague intensity | Footprint | Schedule |
+| --- | ---: | --- | ---: | ---: | --- | --- |
+| Low | 25 | Baseline | 1.00 | 1.00 | One quarter of eligible states | 168 days |
+| Medium | 50 | Evolution I overlap | 1.50 | 1.10 | One half | 128 days |
+| High | 75 | Evolution II and Exodus | 2.00 | 1.25 | Every valid populated state | 128 days |
+| Maximum | 90 | Evolution III recurrence and Exodus | 2.50 | 1.50 | Every valid populated state | 128 days |
 
-Low uses the 168-day baseline first cycle.
-The other profiles use the 128-day evolved first-cycle schedule.
-Darkness remains 72 hours at every intensity.
-Warnings and accepted protection deadlines are never removed to make Maximum more difficult.
-
-A profile grants event-local capabilities.
-It does not change the global Chaos total, grant unrelated event Evolutions, or pretend that a natural Evolution was earned through normal shared timing.
-
-If a natural Evolution later provides a stronger capability than the scenario profile, use the stronger applicable value.
-Do not multiply two identical sources of the same profile.
-For example, a High profile that later obtains natural Evolution II keeps ordinary intensity 2.00 rather than becoming 4.00.
-
-Recurrence multiplies the chosen episode intensity according to Part 9.
-The tenth-plague hazard ceiling and population conservation still apply.
+Darkness lasts 72 hours and warnings keep their full length at every profile.
+A profile grants event-local capabilities only; it does not change global Chaos or grant other events' Evolutions.
+If a natural Evolution later gives a stronger value, the stronger value applies; identical capabilities never multiply (a High launch that later gains natural Evolution II stays at 2.00).
+Recurrence multiplies the profile intensity as in Part 9.
 
 ## What Maximum means
 
-Maximum begins near world-end conditions through high Wrath, broad coverage, severe overlap, and recurring-cycle capability.
-It does not begin with the world-end already proven.
-
-The event must still complete all ten plagues at least once.
-Global Chaos must still be strictly above 1000.
-Global Wrath must still meet the activation condition.
-World-end branches must still be enabled.
-
-Consequently, Maximum launched at low global Chaos is a severe finite crisis unless the actual world later satisfies the terminal gates.
-This distinction is stated in the scenario description.
-The scenario must not secretly raise Chaos to 1001 simply to satisfy its own branch.
-
-The proposed one-renewal interpretation for non-terminal Evolution III also applies to Maximum.
-That proposal remains subject to acceptance as explained in Part 9 and the planning record.
+Maximum starts near world-end conditions but does not start with the world-end proven.
+The terminal gates in Part 9 still apply: a full sequence, Chaos strictly above 1000, global Wrath at least 75 and branches enabled.
+Launched at low Chaos, Maximum is a severe finite crisis, and the scenario description says so.
+It never raises Chaos to satisfy its own branch.
+Its renewal follows the same proposal as natural Evolution III (README open question 1).
 
 ## Existing crises
 
-Launching a second Ten Plagues episode while one is active is unavailable.
-The existing sequence is not restarted, duplicated, or promoted to a new firstborn initialization.
-A pending mourning intermission before a scheduled renewed cycle still counts as active.
+A second launch while an episode is active, including a mourning intermission before a scheduled renewal, is unavailable.
+An incompatible shared terminal state blocks launch with the conflict named.
+Other crises are not a reason to block launch; Famine, Migration, disease and Natural Disasters activity continue alongside.
 
-An incompatible shared terminal state can block launch under the common scenario rules.
-The availability reason identifies the relevant conflict.
-A blanket prohibition against every other disaster is not acceptable because interaction with existing crises is part of the design.
+Countries created later join the current phase with their territory's records, as in Part 1, and never receive a private preparation window that moves the global deadline.
 
-Ordinary Famine, Migration, disease, and Natural Disasters activity remains active.
-The scenario submits its own facts and effects without erasing existing obligations.
+## Presentation
 
-## Participation and later countries
-
-All valid current countries join at launch.
-A later released, revived, or newly created country joins the current global stage.
-It receives responsibility and protection from its actual people and territory rather than replaying the first plague privately.
-
-A country that joins shortly before the tenth plague inherits an existing population's applicable cohort and preparation facts.
-It cannot receive a fresh arbitrary preparation window that moves the global deadline.
-A genuinely new population source uses its proven origin and entry rules; it is not treated as a release of previously tracked people.
-
-## Scenario presentation
-
-The scenario card communicates the starting Wrath, overlap, reach, expected order, real population consequences, and terminal gating.
-It does not require the player to study internal multipliers to understand the choice.
-
-Maximum clearly warns that the complete sequence must still be survived and that the final night is not the only source of mortality.
-Low clearly warns that careful preparation reduces harm but does not guarantee a bloodless campaign.
-
-The action is available through the existing scenario interface.
-No separate launcher GUI is justified by this event alone.
-Use reserved `SCN-032` / raw `32` for the shared scenario owner's future registration, eligibility, dispatcher, sortable views, localisation and catalog wiring.
+The scenario card states starting Wrath, overlap, reach, the fixed order, real population consequences and terminal gating without internal multipliers.
+Maximum warns that the whole sequence must be survived and that the final night is not the only killer.
+Low warns that careful preparation reduces harm but does not make the campaign bloodless.
+No separate launcher GUI is justified.
 
 ## Achievement and restart integrity
 
-Scenario-compatible achievements are marked individually.
-Natural-only achievements do not become eligible through a manual Low launch.
-A Maximum-specific achievement records the chosen profile at launch and cannot be earned by raising the label after the crisis is nearly over.
-
-Debug resets, forced phase skips, administrative population restoration, and duplicate-launch manipulation invalidate survival achievements for that episode.
-Ordinary save/load does not.
-A new legitimate scenario after a completed and closed episode receives a new episode identity and must satisfy its own eligibility rules.
-It reuses the campaign's surviving firstborn metadata rather than declaring a new quarter of the population firstborn.
-
-The production scenario never exposes a free reset that repairs the world or recreates a firstborn cohort.
-Testing controls belong in the established debug and CXT infrastructure.
+Each achievement states whether a manual launch qualifies (Part 18).
+A Maximum achievement records the profile at launch.
+Debug resets, forced phase skips, administrative population restoration and duplicate-launch manipulation invalidate survival achievements for that episode; ordinary save and load does not.
+A new launch after a closed episode is a new episode and reuses each state's remaining firstborn share (Part 8).
+Testing controls belong to the debug and CXT infrastructure, not the production scenario.

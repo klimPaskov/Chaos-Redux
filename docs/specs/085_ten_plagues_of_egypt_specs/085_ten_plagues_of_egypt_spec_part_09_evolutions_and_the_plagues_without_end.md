@@ -2,152 +2,91 @@
 
 ## The same ten plagues
 
-The ten plagues are ordinary ordered stages within one crisis.
-They are not ten Evolutions.
-An Evolution changes the severity and structure of the ongoing crisis without changing the biblical order.
-
-Event 085 is Chaos level 3.
-Its natural Evolution thresholds are 600, 800, and 1000 Chaos.
-The shared Evolution framework owns eligibility, timing, and activation.
-Crossing a threshold does not authorize this event to invent an independent guaranteed daily unlock roll.
-
-An Evolution changes future eligible manifestations and unresolved work.
-It cannot retroactively damage an already settled state, withdraw a completed preparation, or shorten a warning that the player has already received.
+The ten plagues are ordinary ordered stages; an Evolution changes the severity and structure of the crisis without changing the biblical order.
+As a Chaos level 3 event, Event 085's Evolution thresholds are 600, 800 and 1000 Chaos.
+The shared Evolution framework owns eligibility, MTTH timing and activation; Event 085 adds no guaranteed unlock roll.
+An activation changes future manifestations and unresolved work only, never a settled state, a completed preparation or a delivered warning.
 
 ## Evolution I: Plagues Upon Plagues — 600+
 
-Earlier physical manifestations remain active as the next arrives.
-Red water can coexist with frogs; sanitation failure can remain through flies and livestock losses; boil outbreaks can outlast the beginning of Hail and Fire.
-Existing famine, disease, and reconstruction continue under their owners rather than being renewed as identical national penalties.
+Earlier plagues stay active while the next arrives: red water during Frogs, sanitation failure through Flies and Livestock, boils outlasting the start of Hail and Fire, locusts reaching burning farmland.
 
-For a sequence beginning under Evolution I, the intervals before the following plague are 15, 10, 15, 15, 20, 20, 10, and 20 days from Blood through Locusts.
+| Change | Baseline | Evolution I |
+| --- | --- | --- |
+| Intervals Blood through Locusts | 20, 15, 20, 20, 25, 25, 15, 25 | 15, 10, 15, 15, 20, 20, 10, 20 |
+| First tenth plague | Day 168 | Day 128 |
+| Footprint | One quarter of eligible states | One half |
+| Pre-tenth intensity | 1.00 | 1.50 |
+| Tenth-plague intensity | 1.00 | 1.10 |
+
 Darkness still lasts three days.
-This places the first tenth plague at day 128 instead of baseline day 168.
-
-The acute manifestations retain their meaningful exposure and cleanup work even when their onset intervals shorten.
-Thus shorter intervals create overlap rather than simply shortening every plague and reducing its total impact.
-Existing warnings and accepted mission deadlines remain valid.
-
-The planned state footprint rises from approximately one quarter to one half of eligible populated states per country.
-The ordinary pre-tenth intensity multiplier rises to 1.50.
-Tenth-plague intensity rises only to 1.10 because its separate hazard model already makes preparation decisive.
-
-Wrath remains the same value.
-Its greater practical danger comes from multiplying several simultaneous unresolved exposures, not from adding an extra hidden Wrath meter.
+Shorter intervals create overlap, not shorter plagues: each phase keeps its full exposure and cleanup.
+Wrath remains one value; its danger grows because several unresolved exposures multiply at once.
 
 ## Evolution II: No Land Is Spared — 800+
 
-The physical footprint becomes near-comprehensive.
-Every valid populated state for a plague can be reached over that phase.
-Physical eligibility still matters: farmland loss requires actual agricultural or food-system facts, and a unit can be damaged only where it exists.
+The footprint becomes near-total: every valid populated state can be reached during a phase.
+Physical eligibility still applies.
+The 128-day schedule continues; pre-tenth intensity becomes 2.00 and tenth-plague intensity 1.25.
+Severe countries can face several warned storms and several locust fronts.
+A repeated strike needs a new warning, surviving people and remaining buildings; it cannot damage a crop or building already destroyed.
 
-The default onset schedule remains the 128-day evolved sequence.
-The ordinary pre-tenth intensity multiplier becomes 2.00 and the tenth-plague multiplier becomes 1.25.
-Severe countries can face multiple warned storm impacts and several bounded locust fronts.
-
-A repeated strike needs a fresh impact identity, newly exposed surviving people, remaining physical capacity, and the appropriate budget.
-It cannot replay a settled casualty request or damage the same destroyed crop as if it had regrown.
-
-The Exodus becomes an explicit international response.
-Large departures, receiving-country strain, and humanitarian corridors make low-Wrath destinations strategically important.
-Migration remains the owner of the people, routes, and outcomes described in Part 10.
+The Exodus becomes an explicit international crisis (Part 10).
 
 ## Evolution III: Wrath Without End — 1000+
 
-The first completed tenth plague may be followed by returning red water.
-The full sequence can begin again at greater severity.
-A restart always begins with Blood and proceeds through all ten plagues.
+After the first completed tenth plague, red water can return and the full sequence can restart from Blood at greater severity.
 
-Each restart has a 30-day intermission for mourning, repairs, preparation, and international relief.
-This is not a reset of damage or preparedness.
-It is the world's limited opportunity to restore useful capacity before new exposures begin.
+- Each restart follows a 30-day intermission for mourning, repairs and relief; damage and preparedness are not reset.
+- The recurrence multiplier is 1.25 for the first renewed cycle and rises by 0.25 per further cycle, capped at 3.00.
+- Modifier ceilings, existing buildings, remaining firstborn shares and population floors still apply.
 
-Each completed additional cycle increases the recurrence multiplier by 0.25, starting with 1.25 for the first renewed cycle and capped at 3.00.
-It applies to appropriate remaining physical and demographic exposure.
-Modifier ceilings, available buildings, actual living cohorts, and population floors still apply.
-The tenth-plague hazard remains capped before Passover protection.
-
-The original brief distinguishes Evolution III recurrence from a separately enabled world-end.
-The following bounded interpretation is proposed to keep that distinction playable: when the endless branch is unavailable, Evolution III may authorize one renewed full sequence after the first cycle if global Wrath is extreme.
-It cannot authorize unlimited additional cycles while world-end branches are disabled.
-This one-renewal limit is a design addition requiring explicit acceptance, not a rule stated in the original brief.
+**When the world-end gates below do not pass** (branches disabled, or Chaos exactly 1000), a restart needs extreme global Wrath at the tenth-plague settlement, and Evolution III authorizes at most one renewed sequence.
+This one-renewal limit is a proposal awaiting the user's decision (README open question 1); until decided it is the implementation default and must be easy to change.
 
 ## Global Divine Wrath
 
-Global Divine Wrath is the same concept aggregated for collective outcomes.
-It is contextual world information, not a second national resource that players spend or manage independently.
+Global Wrath is the population-weighted average of country Wrath, used only for collective outcomes and shown as world context, never spent.
 
-At the first Blood onset, establish responsibility weights from the episode's eligible living population.
-Keep the total weight fixed throughout that episode.
-A government does not reduce the world's Wrath merely by letting its people die.
-
-When responsibility splits or merges, transfer the original weight and its inherited conduct conservatively.
-A tiny low-Wrath tag cannot annex a large high-Wrath population and erase its contribution.
-A refugee's move does not carry moral blame into the receiving government's national Wrath.
-
-An extinguished authority's unresolved responsibility is assigned to a valid successor or an explicit reconstruction steward.
-Its weight is never discarded.
-The steward can lower that responsibility through verified protection and relief for the predecessor's surviving people or reconstruction responsibilities.
-Such credit uses the same bounded conduct rules and cannot be granted by an empty diplomatic click.
-
-Where no successor or living beneficiary exists, the unresolved contribution stays recorded.
-If no viable civilian world remains, the episode ends as terminal failure rather than manufacturing an escape victory.
-The aggregation and succession rules must be inspected as a single conservation contract.
+- Weights are each country's population at the episode's first Blood onset and stay fixed for the episode; a government cannot lower the world's Wrath by letting its people die.
+- When a country is annexed, its weight joins the annexer's and the annexer's Wrath becomes the weighted average of both, so a small low-Wrath country cannot erase a large high-Wrath record.
+- When a country is released, it takes a share of its parent's weight proportional to the population of the states it receives, together with the parent's current Wrath.
+- When a country disappears without one annexer, its weight and Wrath are divided among the countries holding its former states, by population, through the same weighted average.
+- Weight is never discarded.
 
 Extreme global Wrath begins at 75.
-A low endpoint alone does not prove collective recovery.
 
 ## World-end entry: The Plagues Without End
 
-All of the following are required at a completed-cycle settlement:
+All of the following must hold at a tenth-plague settlement:
 
-- Global Chaos is strictly above 1000.
-- Evolution III is active for this episode.
-- All ten plagues have completed at least once.
-- Global Divine Wrath is at least 75.
-- World-end branches are enabled.
+- Global Chaos strictly above 1000 (exactly 1000 allows Evolution III but not the branch).
+- Evolution III active for this episode.
+- All ten plagues completed at least once.
+- Global Wrath at least 75.
+- World-end branches enabled.
 
-Exactly 1000 Chaos can make Evolution III eligible but cannot satisfy the strictly-above-1000 world-end requirement.
-A manual scenario profile does not waive this distinction.
-
-When these gates pass, the event registers its world-end threat through the shared terminal owner.
+When they pass, the event registers its world-end entry with the shared world-end catalog and sets the `world_threat_source_ten_plagues` source flag in the shared world-threat mechanic, so AI cooperation logic treats the plagues as an existential threat.
 The next Blood begins after the intermission.
-The first activation receives the world-end presentation; every later restart does not replay the same milestone.
+Only the first activation receives the world-end presentation.
 
-If the gates fail after the bounded non-terminal renewal, the active plague sequence ends.
-Residual famine, disease, displacement, and reconstruction still continue.
-It must not become an endless world-end under another name.
+If the gates fail after the permitted renewal, the sequence ends; famine, disease, displacement and reconstruction continue under their owners.
 
-## Surviving an entire better cycle
+## Escaping the cycle
 
-Ending the world-end requires a full completed cycle during which global Divine Wrath stays at or below 40 and governments holding at least 80% of the fixed responsibility weight remain at or below 50.
-The requirement must hold from that cycle's Blood onset through its tenth-plague settlement.
-Dropping Wrath just before the final night does not rewrite the earlier months.
+The world escapes after one full cycle, Blood onset through tenth-plague settlement, in which:
 
-The lower escape threshold provides a real gap between entering the catastrophe and escaping it.
-The 80% condition prevents a small symbolic coalition from claiming that the world has changed while allowing a genuinely broad recovery despite a few holdouts.
+- global Wrath stays at or below 40 throughout, and
+- countries holding at least 80% of the fixed weight stay at or below 50 throughout.
 
-Progress comes from actual civilian protection, functioning relief, completed plague preparations, and international cooperation.
-Countries retain the freedom to harden their hearts, but that choice can break the qualifying cycle.
-The interface names the condition that failed without exposing internal weight arrays.
+A drop just before the final night does not count.
+The 80% rule lets a broad recovery succeed despite a few holdouts while denying a small symbolic coalition.
+A failed attempt can be retried in the next cycle.
+The category names the condition that failed without exposing weight arrays.
 
-If the condition is broken, the world can try again.
-Progress does not permanently lock out future escape.
-The remaining infrastructure and people determine how difficult the next attempt becomes.
+On a qualifying settlement, no further Blood is scheduled, the world-threat source flag clears, and Event 085's own recurring work closes.
+Damage, famine, disease, migration, named deaths and population loss remain.
+Clearing this threat does not clear another source's threat or the shared world-end history latch, and does not restart ordinary random events if the shared world-end policy keeps them disabled.
+Changing the branch setting after activation is not an escape; administrative termination uses the shared scenario or debug contract and is not achievement-eligible.
 
-## Ending the cycle
-
-A successful qualifying tenth-plague settlement prevents the next Blood from being scheduled.
-Event-owned future recurrence jobs and acute manifestations close through their normal ownership rules.
-Completed disaster damage, famine, disease, migration, named deaths, and population loss remain.
-
-The shared world-end history is not erased.
-Clearing this event's live threat is different from clearing a global terminal-history latch or ending another event's threat.
-Event 085 cannot independently restart ordinary random events if the shared world-end policy keeps them disabled.
-
-Changing a branch setting before activation prevents a new branch.
-Changing it after activation is not an undocumented escape button.
-Any administrative termination must use the shared scenario or debug contract and is not an achievement-eligible survival outcome.
-
-Civilization can survive the sequence and still be gravely weakened.
-The purpose of escape is to make reconstruction possible, not to award a restored pre-crisis world.
+Escape makes reconstruction possible; it does not restore the pre-crisis world.

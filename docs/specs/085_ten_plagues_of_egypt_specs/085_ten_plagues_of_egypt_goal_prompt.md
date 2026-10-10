@@ -1,30 +1,43 @@
 # Event 085 — /goal
 
-Implement Ten Plagues of Egypt to its fullest extent from `docs/specs/085_ten_plagues_of_egypt_specs/`. Read `README.md`, all eighteen `085_ten_plagues_of_egypt_spec_part_*.md` files, the narrative-source notes, and the companion source/disposition report before editing. Separate explicit user decisions from new proposals.
+Implement Ten Plagues of Egypt to its fullest extent from `docs/specs/085_ten_plagues_of_egypt_specs/`.
+Read `README.md` (authority, canonical homes, implementation gates, open questions), the original brief, all eighteen `085_ten_plagues_of_egypt_spec_part_*.md` files and the narrative source notes before editing.
+The brief is the user's explicit direction; do not settle an open question without the user's decision.
 
-Use these files in that folder:
-`085_ten_plagues_of_egypt_coding_prompt.md`
-`085_ten_plagues_of_egypt_asset_prompt.md`
-`085_ten_plagues_of_egypt_super_event_prompt.md`
-`085_ten_plagues_of_egypt_achievement_prompt.md`
-`085_ten_plagues_of_egypt_decision_mission_prompt.md`
+Use the prompts in that folder: `085_ten_plagues_of_egypt_coding_prompt.md`, `085_ten_plagues_of_egypt_decision_mission_prompt.md`, `085_ten_plagues_of_egypt_asset_prompt.md`, `085_ten_plagues_of_egypt_super_event_prompt.md`, `085_ten_plagues_of_egypt_achievement_prompt.md`.
 
-Follow AGENTS.md and the event, planning, decisions/missions, subagents, assets, super-events, scripted-GUI, MTTH, and improvement-loop skills. Complete the required offline wiki, vanilla, and current owner-source reads; planning excerpts are not engine proof.
+Follow CLAUDE.md and the events, decisions/missions, subagents, event-assets, super-events, MTTH and improvement-loop skills.
+Read the relevant offline wiki, installed documentation and current owner sources; planning text is not engine proof.
 
-Replace the conflicting old XP identity at 085 without renumbering unrelated events. Keep Major fire-once, Chaos level 3, Natural Disasters/Severe only. Implement one global root, the ten ordered plagues, real population loss, local manifestations, preparation, mourning, and reconstruction.
+Replace the legacy XP event at ID 85 without renumbering others.
+Keep Major, Chaos level 3, Natural Disasters Severe only, fire-once entry, Major pacing once, root `chaosx.nr85.1`.
+Implement the ten ordered plagues on the Part 1 calendar with local footprints, warnings that are never shortened, real population loss and lasting consequences.
 
-Keep Divine Wrath as the only event-specific public value, no more than three event-owned national spirits, six primary actions, or three urgent missions. Implement all sixteen action families with real sacrifices, viable local routes, actual objective completion, partial/failure outcomes, and cleanup. No action exceeds four spendable cost types.
+Divine Wrath is the only event-specific value.
+At most three event spirits, six visible actions and three urgent missions.
+Implement the fourteen Part 14 action families with real sacrifices, the local-organization route for small countries, full/partial/failure results and cleanup.
+Harden Our Hearts must tempt and must make later plagues worse.
+Wrath rises only from named conduct (hardening, abandonment or diversion, recorded Condemnation incidents) and falls only for completed work; the AI uses the Part 15 weight anchors.
 
-Darkness is a real global visual state lasting 72 hours. Passover covers reached people, with 48/36/24-hour variants and one fixed final deadline. Do not substitute ordinary night or a national immunity flag. Retain firstborn survivors across movements, borders, cycles, and later episodes; do not reclassify surviving non-firstborn people. Named deaths need valid characters and sourced eligibility.
+Darkness is a real global visual state for 72 hours.
+Passover status is per state (Prepared, Partly prepared, Unprepared) with 48/36/24-hour variants and one fixed deadline.
+The tenth plague settles each state once from its remaining firstborn share, which never regenerates.
+Named deaths need valid characters with sourced birth order.
 
-Deaths, Famine, Migration, disease, and Natural Disasters retain their ownership. Settle actual population once, conserve transfers, and prevent manpower gains. Resolve the peaceful disease adapter, cohort metadata, composite Hail/Fire budget, capacity/cargo commitments, and Darkness consumer; Missing interfaces remain blockers.
+Deaths, Famine, Migration, the biological outbreak owner and Natural Disasters keep ownership: settle each death once, send Famine food shocks, send Exodus requests to Migration, use `call_natural_disaster`.
+Resolve the three implementation gates (non-weapon outbreak entry, composite Hail and Fire, Darkness visual) or stop for the user's decision.
 
-Implement the three Evolutions, Exodus, four reserved SCN-032/raw32 intensities, proposed bounded renewal, and separately gated endless branch. Preserve the strict Chaos >1000 condition, full-cycle escape, fixed responsibility weights, and lasting damage. Ending 085 cannot clear another terminal threat or shared history.
+Implement three Evolutions, the Exodus, fixed-weight global Wrath, recurrence, the world-end branch with its world-threat source and escape, mourning, reconstruction, SCN-032 with four profiles, the Part 13 Chaos map with its guards, twelve achievements with 36 icon states, 91 static assets and four researched super-events.
+Unresearched text and placeholder audio stay blocked.
 
-Implement every Chaos source, zero-source, reversal, scale, and anti-farming guard in Part 13 without duplicating shared deaths or physical consequences. Complete twelve achievements, 36 achievement states, all 93 known static outputs, and any additional proven Darkness assets. Research all four super-events' final text and real music, with text and recording rights. Unresearched copy and placeholder audio remain blocked.
+Delegate through named specialists with self-contained prompts.
+Use MCP checks where they answer a concrete question; record unavailable tools as limits.
+Cover the 50 Part 15 cases and Part 18 negative cases.
+Near completion run the improvement-loop planner, resolve its handoff, then the completion auditor.
+Do not launch HOI4.
+Update the overview, plans and authoritative workbook, then regenerate CSV exports.
 
-Use named specialists with self-contained prompts and `fork_turns="none"`. Require probability and relevant MCP audits; source review is not engine evidence. Cover all 50 acceptance cases. No new tags, trees, formables, or 3D content are mapped; accepted additions require their skills, collision audits, assets, and relevant technology/3D validation.
-
-Near completion, spawn `chaosx_improvement_loop_planner`, resolve its handoff, then obtain completion-auditor coverage. Do not launch HOI4 or claim live gameplay validation. Update the overview, owner contracts, manifests, and authoritative workbook after final localization; regenerate CSV exports.
-
-Keep iterating until the goal is accomplished to its fullest extent. Return changed files, coverage, specialist/MCP evidence, provenance, and explicit blockers. Do not claim completion until implemented files satisfy the full accepted spec. No simplified, temporary, fallback, or good-enough replacement is accepted.
+Keep iterating until the goal is accomplished to its fullest extent.
+Return changed files, coverage, evidence, provenance and explicit blockers.
+Do not claim completion until the implemented files satisfy the accepted spec.
+No simplified, temporary, fallback or good-enough replacement is accepted.

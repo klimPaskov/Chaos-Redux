@@ -2,180 +2,81 @@
 
 ## V. Pestilence of Livestock
 
-Livestock begins dying across the affected world.
-The immediate victims are animals.
-The major human consequences come from lost food, reduced agricultural capacity, disrupted rural transport where that dependence is proved, and the collapse of already weakened household economies.
+Livestock dies across the affected world.
+The victims are animals; the human cost comes from lost food, weaker agriculture and the collapse of already strained rural households.
 
-There is no direct human population debit merely because the livestock plague opens.
-The event records the agricultural loss in each affected state and submits the appropriate food-production, reserve, transport, or vulnerability facts to Famine.
-Famine owns the progression from strain to actual famine and its mortality.
+The phase applies no direct human deaths.
+Each affected state receives a strong production-side food shock through the Famine adapter (Part 13), sized from the state's agricultural character and Wrath.
+Famine owns the progression from supply strain to famine and every famine death.
+The shock is sized so a state already at supply strain reaches acute shortage within the phase and, if unprotected, famine during Hail and Fire or Locusts; Famine's own stage timing (42 days minimum to famine) is why this phase sits at day 75.
 
-A country cannot avoid this phase simply because the game has no explicit livestock unit.
-The effect is represented through the state's agricultural and civilian-food context.
-Where animal-dependent transport or farming cannot be established, do not add a guessed cavalry, supply, or transport penalty.
+Where animal-drawn transport or farming cannot be established from state data, do not add guessed cavalry, supply or transport penalties.
 
-### Preserve what can survive
+### Responses
 
-The government can protect a viable rural refuge or remaining productive stock.
-This is a state-bound preparation with an actual resource commitment and a later recovery benefit.
-The country does not receive a new public livestock meter.
+- **Protect Rural Continuity** (Part 14) protects one selected agricultural state for 15 days.
+Full success halves that state's Livestock food shock and marks it as a surviving agricultural base, which halves the work needed to restore it in reconstruction (Part 11).
+Its reach follows the committed capacity; a fixed Political Power fee cannot save every herd.
+- Famine's **Release Food Stores** and **Import Food** remain the reserve and import actions; the category links to them when the selected state is in a famine stage.
+- **Harden Our Hearts** keeps agricultural requisition and war supply flowing; it creates no food and Famine receives the extra extraction pressure.
 
-A second response protects food reserves and shifts distribution priorities.
-This is exposed through the existing Famine actions where their conditions are met.
-Event 085 can point to the active food emergency and recognize a completed protective result.
-It does not create a cheaper duplicate reserve-release decision.
-
-A third response restores a rural route or requests assistance from a genuinely reachable safer area.
-Local transport commitments must be suitable for the terrain and existing infrastructure.
-An island cannot receive a train route through the sea.
-A landlocked country is not required to own convoys.
-
-Hardening maintains agricultural extraction and war supply where the government has a real choice to continue them.
-Its short-term gain is continuity of the event-owned production and supply interruption.
-It does not conjure food that has been destroyed.
-It increases Wrath and can worsen proved extraction pressure through the Famine owner.
-
-### The rural preservation objective
-
-The principal objective protects one meaningful rural production and distribution area through the acute livestock-loss window.
-The ordinary objective lasts 15 days within the twenty-five-day phase.
-Full success preserves the protected share and establishes a surviving agricultural base for reconstruction.
-Partial success saves a smaller share or restores only the distribution side.
-Failure records the actual unprotected loss.
-
-The action cannot save every animal in every state by paying a fixed Political Power fee.
-Its reach follows the committed local capacity.
-Low-capacity countries can protect a smaller district while maintaining a viable route toward lower Wrath.
-
-This preparation also matters after the catastrophe.
-A surviving rural base reduces the work needed to restore food inputs.
-It never instantly restores food reserves or resurrects lost livestock at phase expiry.
-
-### Food-pressure progression
-
-The starting agricultural shock should be strong enough to move already strained states toward acute shortage and, with sustained exposure, famine.
-Use the existing food-security formula and upward exposure windows.
-Do not force a state immediately into catastrophic famine by setting a private stage variable.
-
-For balance planning, the event should distinguish a modest protected input loss, a severe unprotected loss, and a near-comprehensive high-intensity loss.
-The normalized amount must be calculated from the proven affected agricultural or food-service share.
-The owner validates, clamps, and combines that contribution with other causes.
-
-This phase begins around day 75 in the baseline calendar.
-Its consequences can persist through Boils, Hail and Fire, and Locusts.
-That spacing is deliberate: a real food crisis has time to develop, and a real relief effort has time to change its course.
-
-### The last herds and public promises
-
-A significant rural success should receive a concrete report about what was preserved and whom it can feed.
-A failure should identify the affected region and resulting food-security problem.
-Neither report should pretend that the event has measured a historical animal census.
-
-Religious and scientific interpretations can compete in the narrative.
-The mechanics remain accessible to any government.
-Protecting a rural community is a useful action whether it is described as heeding a warning, emergency veterinary administration, or preserving a food-producing district.
+A successful rural protection gets a concrete report about what was preserved and whom it can feed.
+A failure names the region and its food problem.
+Neither report pretends the game counted animals.
 
 ## VI. Boils
 
-Painful boils affect civilians and soldiers.
-The medical response has to operate amid earlier sanitation failures, depleted food reserves, and exhausted personnel.
-The plague should be substantially more disruptive and deadly than Lice and Gnats.
+Painful boils strike civilians and soldiers, and the medical response must work amid sanitation failure, depleted food and exhausted staff.
+Boils is far more disruptive and deadly than Lice and Gnats.
+The syndrome is fictional; it has no real pathogen and unlocks no biological weapon, research, stockpile or doctrine.
 
-The fictional syndrome is not assigned a real pathogen or a real-world treatment protocol.
-The design concerns the game's existing disease and civilian-service systems.
-It must not unlock biological weapons, disease-engineering research, agent stockpiles, or military dissemination capabilities.
+### Effects
 
-### The medical burden
+| Effect, fully exposed country | Anchor |
+| --- | ---: |
+| Factory output | −20% |
+| Construction speed | −15% |
+| Recovery and training speed | −20% |
 
-The proposed exposed-country anchors are a 20% factory-output interruption, a 15% construction interruption, and a 20% recovery and training slowdown for the relevant exposed share.
-Use distinct supported statistics rather than duplicating one recovery effect under several labels.
+Disease mortality allowance: 125 basis points of exposed population over the outbreak episode, before Wrath, intensity and protection, settled by the outbreak owner (Part 13).
+This is the first phase expected to produce a major toll in badly managed countries.
 
-Severe cases can cause actual civilian deaths.
-The starting whole-episode mortality allowance is 125 basis points of exposed live population before Wrath, intensity, protection, and the disease owner's own valid progression.
-This is the first phase expected to produce a major direct disease toll in badly managed countries.
+### Responses
 
-The owner-managed disease episode retains identity, active-state progression, treatment facts, and mortality receipts.
-Event 085 does not create a second general epidemic framework to carry the same problem.
+- **Heed: Civilian Care** (Part 14) sustains care in one selected state for 15 days.
+A country with support equipment can cover a large state; a country with little industry can use local organization for a smaller one.
+Full success requires the care commitment and a working service base, reduces the state's disease exposure and lowers Wrath.
+- **Military Stand-Down** (Part 14) pulls exposed divisions from the line to recover; it does not also treat the state's civilians.
+- Migration's **Evacuate Civilians** can move people out of an outbreak state when reception exists; refugees are not assumed to carry the outbreak without the outbreak owner's exposure facts.
+- **Harden Our Hearts** keeps production and mobilization going at the cost of weak civilian coverage and a more dangerous Hail and Fire phase.
 
-### Civilian care or continued production
-
-The broad response diverts useful productive capacity into civilian care.
-A country with sufficient support equipment can reinforce a larger network.
-A country with very limited industry can establish a smaller labor-supported local care commitment.
-The latter has slower or narrower reach, but it is never excluded by a requirement to possess several civilian factories.
-
-A military recovery response temporarily removes an actual exposed formation group from its current operational commitment where a valid route and destination exist.
-It reduces the relevant military burden.
-It cannot also claim to treat every civilian in the same state unless the allocated capacity demonstrably covers them.
-
-A targeted civilian response protects a critical district whose water, sanitation, or food system still works.
-This can be the best way to maintain a refuge for later sheltering.
-A functioning service network is valuable because of the people it can support, not because it fills a new national score bar.
-
-Hardening orders production and mobilization to continue.
-The early benefit is real.
-The cost is greater Wrath, weak civilian coverage, and potentially an even more dangerous Hail and Fire phase.
-
-### Keep a care district functioning
-
-The principal objective is sustained care for a named exposed population over 15 days.
-Full success requires both the pledged capacity and a functioning supporting route or local service base.
-It reduces the actual medical exposure and lowers Wrath.
-Partial success recognizes the people actually reached.
-Failure leaves the remaining disease problem with its owner.
-
-An evacuation or foreign reception option can be offered through Migration where a route, receiving capacity, and disease-aware reception arrangement are proved.
-That route moves real people.
-It neither deletes the origin population as deaths nor copies the original outbreak to every receiving state without evidence.
-
-The AI must recognize a medical emergency in a hungry or severely damaged state as a high priority.
-It may still preserve a threatened front when immediate military survival outweighs a particular commitment.
-That tradeoff is evaluated through the same visible costs and requirements used by the player.
+The AI treats a medical emergency in a hungry or damaged state as a high priority, while still able to protect a threatened front (Part 15).
 
 ### Medical help within the plague calendar
 
-When Doctor Wu has an active viable institute and lawful access to an affected district, the government can seek his existing clinical services alongside its ordinary response.
-The disease owner must first identify a treatable biological component, its current version, the living recipients, and the supported outcome.
-[Wu's cure sequence](../089_doctor_wu_specs/medicine/089_doctor_wu_spec_part_3_universal_cures.md) distinguishes emergency support, a matching completed treatment, new research, manufacture, and actual delivery.
+When Doctor Wu has an active institute with lawful access to an affected state, the government can seek his clinical services alongside its own care.
+The outbreak owner must first confirm a treatable component, its current version, the living recipients and the supported outcome.
+[Wu's cure sequence](../089_doctor_wu_specs/medicine/089_doctor_wu_spec_part_3_universal_cures.md) distinguishes emergency support, a matching completed treatment, new research, manufacture and delivery.
 
-The 25-day Boils phase and its 15-day care objective continue on their existing calendar.
-Wu's proposed 45-, 90-, and 150-day research bands do not become instant cures because a plague deadline is close.
-An existing matching treatment can help once available material, qualified staff, and delivery reach the district.
-A new project can provide supported emergency care during development and retain useful research for continuing illness or a renewed cycle, without promising completion during the acute phase.
-Earlier plague research helps only when the disease owner confirms the relevant clinical match.
+The 25-day Boils phase and its 15-day care objective keep their calendar.
+Wu's proposed 45-, 90- and 150-day research bands do not become instant cures because a deadline is near.
+An existing matching treatment helps once material, staff and delivery reach the state.
+A new project gives emergency support during development and keeps its research for continuing illness or a renewed cycle.
 
-The player chooses how much available care and research capacity to commit while maintaining the local service base.
-Event 085 recognizes the people actually reached for its existing care objective and Wrath credit.
-Wu and the disease owner settle their own material and clinical effects once, using the recipient-union rules in [Part 18](../089_doctor_wu_specs/integration/089_doctor_wu_spec_part_18_shared_owners_and_consequences.md).
-Two providers treating the same people cannot earn two full protective credits.
-
-If access or delivery fails, ordinary local care remains available and completed research retains its supported value.
-The AI must distinguish care that can arrive before the objective closes from research that addresses later needs.
-Medical success leaves the sequence running.
-Any surviving care network still needs its own valid shelter and Passover work, and treatment creates no automatic firstborn protection.
+Event 085 counts the people actually reached toward its care objective and Wrath credit.
+Wu and the outbreak owner settle their own effects once, using the recipient rules in [Wu Part 18](../089_doctor_wu_specs/integration/089_doctor_wu_spec_part_18_shared_owners_and_consequences.md); two providers treating the same people earn one protective credit.
+If access or delivery fails, ordinary care remains available.
+The AI distinguishes care that arrives before the objective closes from research that serves later needs.
+Treatment grants no Passover status and no firstborn protection.
 
 ### Before the storm
 
-During the latter part of Boils, the government receives the Hail and Fire warning.
-The ordinary target warning is delivered five days before the first scheduled storm impact.
-Earlier protected care districts become plausible shelter anchors.
-Overcrowded or damaged care districts require reinforcement rather than automatic promotion to safe havens.
+Late in Boils, every country receives the Hail and Fire warning naming the threatened states, five days before the first impact.
+States with completed care become natural shelter anchors and halve the cost of storm shelter there; overcrowded or damaged ones need reinforcement first.
 
-This warning is not an additional Evolution.
-It is the next step in the known sequence.
-The country can prepare without claiming certainty about the cause.
+## After the fifth and sixth plagues
 
-## Shared aftermath of the fifth and sixth plagues
-
-Livestock loss damages the ability to feed people.
-Boils damages the ability to work and organize relief.
-The interaction should make the country choose which functioning districts to preserve, while allowing external help to make a real difference.
-
-Do not generate famine deaths through Boils merely because a hunger flag is present.
-Do not generate disease deaths through Livestock merely because food security is falling.
-Each owner processes its own proven cause and reports the actual applied deaths once.
-
-When the acute boils manifestation recedes, its temporary Event 085 projection can ease.
-The underlying food crisis and any continuing illness remain.
-A protected country enters Hail and Fire with useful shelters and working relief capacity.
-A country that repeatedly hardened its heart enters it with vulnerable people and fewer functioning services.
+Livestock loss weakens the ability to feed people; Boils weakens the ability to work and organize relief.
+The player chooses which states to keep functioning, and outside help can make a real difference.
+When the boils recede, their Event 085 penalties ease; the food crisis and lingering illness remain with their owners.
+A protected country enters Hail and Fire with working shelters; a hardened one enters it with vulnerable people and fewer services.
