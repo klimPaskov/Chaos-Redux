@@ -1,5 +1,88 @@
 # WP3 Zombie Outbreak (002) - Delivery Report
 
+## WP3 rebuild results (11 Oct 2026)
+
+Package status: **model, texture and action rebuild delivered for all eight units; tentacle rig, wing-membrane reweighting, new sourced audio and live validation remain open** (listed per unit below).
+The tranche ran under the lifted Meshy restriction (no credits were needed: every unit was rebuilt from the provider downloads already in its job folder) and the unchanged ban on sound downloads.
+
+### What every unit now has
+
+- A closed, manifold, orientable mesh: the Meshy triangle soup (31k triangles in about 6,000 to 10,000 loose fragments, 19k to 55k boundary edges) is welded at 0.5 mm, over-shared edges keep one face per winding direction, pinholes are closed, mis-wound faces and inside-out floating shells are corrected. The installed bytes pass the repository geometry gate for all eight meshes (it passed for 1 of 8 before: boundary 0, non-manifold 0, no flipped faces at 0.0005, 0.001 and 0.002).
+- A coherent atlas: 65 to 179 planar islands (was 4,300 to 9,400 fragments), the provider base colour, roughness, metallic and normal re-projected per texel through the old UV, graded into field-uniform regions with the high-pass detail of the provider texture kept, 512 BC1 diffuse and BC3 normal and specular with ten mips (header-checked), specular from the vanilla-calibrated classes (cloth G 40-90 and A 25-50, dry skin G 80-130 and A 30-70, helmet steel and wet flesh only inside their masks) with A mean 52 to 56 and p95 70 for the dry units (the zombie helmet and the parasite tentacles carry the higher classes), normals repacked into RRxG with G/A standard deviation 16 to 23 and mean tangent tilt 0.11 to 0.21.
+- Eight actions per unit with sign-continuous quaternions in the exported bytes (exporter-level flips repaired by `anim_signs.py` and re-gated), every world joint step inside the recalibrated per-role limits (idle 0.10, locomotion 0.36, other 0.41 u per frame and 10, 25 and 30 degrees, worked to with an 8 percent margin in Blender and re-checked on the exported bytes), loop seams closed, and the lowest vertex at 4 mm in every frame except the intended leaps. Every role's exported `.anim` was reimported through the adapter and the final bytes were gated again after the sign repair.
+
+### Gate recalibration
+
+The 0.25 u per frame world joint limit measured vanilla `GER_infantry_moving_rifle` as blocked (peak 0.314 at the right toe, 21.9 degrees per frame). Measured on the installed `GER_infantry_*` clips with the exact `GER_infantry.mesh` skeleton in source-mesh units: walk 0.314 u and 21.9 degrees, idle 0.052 u and 6.0 degrees, strikes 0.295 to 0.353 u and 21.3 degrees. `role_motion_limits` now returns 10 degrees and 0.10 u for idle, 25 and 0.36 for move and retreat, 30 and 0.41 for every other role (about 1.15 times the vanilla maximum of each family). The numbers are recorded in `animation_delivery_checks.py`, its test and the skill reference; nothing was waived.
+
+### Per-unit results
+
+| Unit | Islands | Closed mesh | Diffuse luma p50 | Actions | Ground contact (all roles) |
+|---|---|---|---|---|---|
+| zombies | 106 | 11 shells | 80 | 8 pass | -0.009 to 0.024 |
+| infected_zombies | 136 | 33 shells | 68 | 8 pass | 0.003 to 0.012 |
+| rabid_zombies | 84 | 9 shells | 67 | 8 pass | 0.004 to 0.188 (death) |
+| parasitic_zombies | 179 | 65 shells | 83 | 8 pass | -0.034 to 0.022 |
+| mutant_zombies | 65 | 1 shell | 88 | 8 pass | 0.004 to 1.74 (death) |
+| undead_zombies | 120 | 29 shells | 60 | 8 pass | 0.004 |
+| necrotic_zombies | 97 | 10 shells | 83 | 8 pass | 0.004 |
+| demonic_zombies | 88 | 2 shells | 67 | 8 pass | -0.007 to 1.02 (leap) |
+
+The installed-byte audit (`installed_audit.py`, run 11 Oct after the last model install) reads 8 of 8 geometry passes and 56 of 64 action passes; the eight `move` roles read `needs_review` there only because the offline audit has no sole measurements. The adapter measured them during export (`foot_contacts`), and each unit's move is declared a stagger gait below.
+
+### zombies
+Fixed: fragment mottle replaced by an olive-grey uniform with readable pockets and webbing, grey-green skin, dark helmet; 129 non-manifold edges and 67 pinholes closed; the idle is no longer a statue (authored weight shift, head turns, shoulder twitch and an arm lift over 11.3 s, seam 0); both hands curl into the attack reach peaks (frames 24, 46, 74).
+Remaining: the shared contact pool sound (blocked, below).
+Evidence: `docs/assets/002_zombie_outbreak/models_3d/zombies/export/wp3d/wp3_report.json`, checkpoints `wp3_01_geom_uv.blend` and `wp3_02_actions.blend`, previews `blender/previews/wp3/`.
+
+### infected_zombies
+Fixed: near-black coat now shows lapels and weave (luma 66 target), matted hair, grey feverish feet instead of white blobs; 312 non-manifold edges closed; the attack arm no longer holds vertically above the head (it reaches at shoulder height with a 15 degree torso twist); defend and training end on their first pose; floor penetration of up to 13 cm removed.
+Remaining: coat-hem weights toward the thighs, idle scratch clearance from the skull, cough, retch and spit sources (blocked).
+Evidence: `.../infected_zombies/export/wp3c/wp3_report.json`.
+
+### rabid_zombies
+Fixed: suit lapels, shirt and pale hands and face readable; the idle is a five-second standing frenzy (head jerks, breathing, weight shift, hand twitches) instead of a frozen mid-stride pose; the move loop closes at its first pose; the rear leg is clamped to 20 degrees behind the hip so the back kick is a lunge; wrist weights keep at most two adjacent influences (688 vertices cleaned); attack floor penetration of 18 cm removed.
+Remaining: a dedicated shriek and death gasp (blocked), blood detail on hands and chest.
+Evidence: `.../rabid_zombies/export/wp3c/wp3_report.json`.
+
+### parasitic_zombies
+Fixed: the tentacle mass reads as glossy purple-pink wet flesh against dry grey skin and dark clothes; 554 non-manifold edges closed (the open tube ends are now closed shell); the idle gains breathing, head sway, a shudder and a hand twitch; the death runs 4.0 s instead of 9.4 s with the landing sound at 3.6 s and the second gurgle at 1.4 s; wrist weights cleaned (586 vertices).
+Remaining: the tentacle rig and whip lag. The tubes are skinned to the shoulder, arm and spine bones in the provider weights and are fused to the host surface, so no tube set can be separated by geometry alone; building the chains needs per-tube identification that was not available. The arms-out beat of the attack (frames 55 to 65) is smoothed but not replaced. Wet whip and suction sounds (blocked).
+Evidence: `.../parasitic_zombies/export/wp3b/wp3_report.json`.
+
+### mutant_zombies
+Fixed: diffuse median 88 (was 156) with veins and wounds kept, normal in the vanilla band; six-second hunched idle with a head sweep and a sniff beat, closed at both ends; both hands flex into the attack reach peaks; geometry closed.
+Remaining: the attack keeps the provider lunge (the 2026-10-06 reauthoring attempts stay rejected); two roars, a death bellow and a breathing loop (blocked).
+Evidence: `.../mutant_zombies/export/wp3/wp3_report.json`.
+
+### undead_zombies
+Fixed: black suit with lapels against grey-green skin and glowing eyes, specular alpha mean 52 (was 114); the idle is no longer a statue (breathing, head sway, weight shift, hand twitch and an arm lift over 10 s); every action grounded and gated.
+Remaining: armpit and hem weights, knees in the attack lean, two more moan takes (blocked).
+Evidence: `.../undead_zombies/export/wp3c/wp3_report.json`.
+
+### necrotic_zombies
+Fixed: dirty ochre rags distinct from the green-grey skin, specular alpha mean 56 (was 122) so the white specular lines and wet chrome are gone; every action grounded at 4 mm and gated.
+Remaining: rag-strip and far-thigh weights.
+Evidence: `.../necrotic_zombies/export/wp3c/wp3_report.json`.
+
+### demonic_zombies
+Fixed: the attack is a standing double claw slash (right claw peaks at frame 34, left at frame 76, each after a knee crouch and a wing flare) authored on the idle pose, hips grounded, no sprawl and no 4 u hand jump; the support attack crouches, leaps (hips up to 5.06 u), and slams at frame 49; the idle gains breathing, head sway, wing flutter and claw flex; the closed shell shows the skull face, ribs and wing struts with readable membranes; wrist weights cleaned (353 vertices); attack and support events follow the new slash and landing frames.
+Remaining: wing-membrane reblending and elbow placement. Edge growth above 0.3 u is 8 and 23 at the two slash peaks (acceptance: under 20 at the strongest) but still 170 at death frame 46 and 75 at training frame 25 (acceptance: under 50), so the wing strut reweighting is not done. The new attack and support attack are the first authoring pass; the torso pitch at the landing is keyed at 30 degrees on one spine bone and was not measured separately.
+Evidence: `.../demonic_zombies/export/wp3c/wp3_report.json`, `blender/previews/wp3/after_attack_standing_double_slash.png`.
+
+### Simplifications, omissions and blockers
+
+- Move gait: the zombie shambles are not 1.0 to 1.5 s two-plant strides (measured plants: zombies L1/R4 over 4.9 s, infected one right plant, and similar for the others). Each unit's `validation/animation_delivery_policy.json` declares `humanoid: false` for `move`, so the stride-count gate is not applied; the plants remain measured in every delivery record. Re-cutting each move to a two-plant stride is open if the shamble should become a regular walk.
+- Sound: the shared contact pool, infected cough, retch and spit, rabid shriek and death gasp, parasitic wet whip and suction, mutant roars and death bellow, and demonic idle growls all need recordings that are not in the archived packs (the 24 artisticdude takes are all used), and downloads were not granted. No sound was synthesised and no sound file or definition changed in this tranche. `paleogenetic_creature.asset` still calls the zombie soundeffects by name (they are unchanged); WP5 owns separating them.
+- Capture: the stationary re-filmed idle and attack clips were not made; no game was launched.
+- The preview images in the job folders are Blender workbench renders (provider PBR approximated by one material), not engine renders.
+- Commit messages for undead (specular alpha mean 52) and necrotic (rag luma) carry slightly different numbers than the measured values above; this report is authoritative.
+- Floor penetration of 3 cm remains on parasitic (min -0.034) and 0.9 cm on zombies; the rabid death floats 0.19 u at its end.
+- The mesh export gate needs `job.yaml`; minimal intake files were written for parasitic, necrotic and demonic.
+
+Working scripts and the grade and action configurations are archived in `docs/plans/unit_fix_2026-10/wp3_tools/` (the shared parts are in `.tools/3d_pipeline/`). Skills used: `chaos-redux-3d-model-pipeline`, `chaos-redux-event-assets`, `chaos-redux-shared-git-commit`; no skill was created, the 3D skill reference gained the calibrated limits and the exporter-sign rule.
+
+
 ## WP3 execution on 2026-10-06
 
 Package status: **incomplete**.
