@@ -17,6 +17,15 @@ Repository-wide reading and style rules live in `AGENTS.md`. This skill only add
 
 When an event implementation creates broad visible text, spawn `chaosx_localisation_auditor` before completion. When an event needs repeated dynamic logic across events, decisions, focuses, evolutions, logs, or GUI, use `chaosx_scripted_system_architect` before duplicating logic.
 
+## Reference map
+
+Read a reference file only when the work touches its topic. Each root section that points to a reference keeps its mandatory gate and links to the full requirements.
+
+- [references/scripted-systems-and-country-integration.md](references/scripted-systems-and-country-integration.md): owner-side unit-family coverage, supporting gameplay systems, duration fields, world threat, formables, 3D model and entity integration, and loop break isolation.
+- [references/event-text-formatting-and-details.md](references/event-text-formatting-and-details.md): parchment colour rules, Event Details text, integer and `defined_text` formatting, and safe localisation writes.
+- [references/event-log-evolutions-and-clusters.md](references/event-log-evolutions-and-clusters.md): evolution implementation, event-log UI surfaces, event log integration, and event cluster integration.
+- [references/world-end-triggerable-scenarios-and-aftermath.md](references/world-end-triggerable-scenarios-and-aftermath.md): world-end scenario implementation, triggerable scenarios, and major-event defeat aftermath.
+
 ## Working model
 
 Treat every event as a contract across some or all of these implementation surfaces:
@@ -91,7 +100,7 @@ If the spec defines achievements, implement the full achievement surface: tracki
 
 Before completion, check every visible asset named or implied by the spec: flags, ideology flags, cosmetic flags, leaders, portraits, focus icons, decision icons, ideas, achievements, faction emblems, report or news images, super-event images, UI sprites, animated sprites, static fallbacks, and 3D model/entity consumers. Do not claim completion while required visible assets are placeholders unless the completion report says so clearly.
 
-Route every character portrait to `chaosx_portrait_creator`. Do not generate a real historical leader or an invented substitute for a grounded polity. For grounded packages, the portrait worker sources attributed real subjects or authentic institutional material, records provenance and rights status, creates the explicit crop and placeholder, and later installs the user-supplied HOI4-style final. It invokes native ImageGen only when both the polity and leader are wholly fictional and deliberately high-chaos, then processes and wires the result. Every new flag uses imagegen. Historical flags and well-attested real symbols first require cited design research, then a strict flat reconstruction with no fabric scene, painterly flag artwork, fake lettering, or invented heraldry.
+Route every character portrait to `chaosx_portrait_creator`. Do not generate a real historical leader or an invented substitute for a grounded polity. For grounded packages, the portrait worker sources attributed real subjects or authentic institutional material, records provenance and rights status, creates the explicit crop and placeholder, and later installs the user-supplied HOI4-style final. It invokes image generation (see the Image-generation route section of chaos-redux-event-assets) only when both the polity and leader are wholly fictional and deliberately high-chaos, then processes and wires the result. Every new flag uses image generation. Historical flags and well-attested real symbols first require cited design research, then a strict flat reconstruction with no fabric scene, painterly flag artwork, fake lettering, or invented heraldry.
 
 Any new, released, restored, transformed, or event-managed country that is expected to fight needs starting forces and a reinforcement pathway. Implement dynamic starting units, templates, equipment and manpower assumptions, commander or officer handling when relevant, and later unit growth through decisions, focuses, depots, objectives, volunteers, foreign support, mobilisation, or special mechanics. Do not leave a serious fighting country as an empty tag unless the spec says so and explains why.
 
@@ -143,28 +152,8 @@ For super-events, do not invent quotes, cultural remarks, song fragments, title 
 
 ### Detail text, immediate effects, and value formatting
 
-Report and event descriptions drawn on light parchment must use plain text for names and values, without `§` colour formatting, including strings returned by scripted localisation.
-Keep colours only in supported dark option, tooltip, decision, or GUI consumers; use separate plain and coloured localisation variants when a shared helper feeds both.
-Audit the whole owned description family and its dynamic substitutions for contrast in the actual consumer, including at 1080p.
-
-Native PowerShell stdin can replace non-ASCII program text before Python receives it, even when Python writes a UTF-8 BOM correctly.
-For localisation writes through that route, use ASCII program text with Unicode escapes or `chr()` for the `U+00A3` texticon and `U+00A7` formatting glyphs, or read the intended text from an explicitly UTF-8 file.
-Re-read the affected values as UTF-8 and verify their actual glyphs after writing.
-If an existing OneDrive-backed source file repeatedly rejects write-open with `OSError: [Errno 22] Invalid argument`, write the reviewed bytes to a uniquely named sibling file and replace the exact owned target atomically.
-Preserve BOM and line endings, verify both resolved paths stay in the intended directory, and re-read the target immediately before replacement to confirm its bytes still match the edit baseline.
-If another writer changed it, rebuild the narrow edit from that fresh content instead of replacing their work; retain or remove only the task-owned temporary file on failure.
-When normalizing physical line endings, preserve authored `\n` escapes inside localisation values rather than rewriting them as literal `\r\n` escapes.
-
-Event Details text must never display mechanical effects. The Event Details window, spreadsheet `Details` field, and player-facing detail summaries should describe the situation and premise, not list rewards, penalties, modifiers, variable changes, or script effects. If an event is meant to apply gameplay effects immediately regardless of which option the player chooses, place the real effects in the event `immediate` block inside a `hidden_effect`. The option should not reapply those effects. The option may show the immediate result only through a custom tooltip for cosmetic clarity, so the player sees the consequence without turning Event Details into an effects list.
-
-Player-facing event, decision, focus, and Event Details text must describe in-world consequences rather than meta reward routes. Do not advertise that a choice opens, grants, counts toward, or completes an achievement path. Keep achievement conditions in achievement UI and docs, and use ordinary in-world consequence text elsewhere. For ambiguous report-stage incidents, describe what people see, fear, suffer, or fail to explain. Do not directly label the incident as a warning, a non-warning, a danger signal, or the absence of one.
-
-Visible dynamic values often display decimal places unless their localisation formatter says otherwise. If a value is conceptually an integer, show it as an integer with `|0` formatting or an equivalent scripted-localisation helper. Only show decimal places when the value genuinely needs fractional precision, such as ratios, percentages, fractional costs, or progress values where the fraction changes player decisions.
-
-For numeric `defined_text` output, put the formatted variable in a real `.yml` localisation value, such as `numeric_value_display: "[?temp_value|0]"`, and use the key's literal name in the corresponding `text` block: `localization_key = numeric_value_display`.
-An inline formatted variable string such as `localization_key = "[?temp_value|0]"` is tokenized as a dynamic key and may fail with dynamic-token errors.
-Temporary variables assigned in the same `text.trigger` remain visible to the selected localisation key, so calculate the display value there.
-Retain constant-backed temporary getters where the installed documentation supports the assignment, and do not introduce persistent globals solely for formatting.
+Report and event descriptions on light parchment use plain text without colour formatting, and Event Details text never lists mechanical effects because real immediate effects belong in a `hidden_effect`. Visible integers use `|0` formatting, numeric `defined_text` output uses a real `.yml` key, and the section also fixes the safe route for localisation writes.
+Read the complete requirements in [Detail text, immediate effects, and value formatting](references/event-text-formatting-and-details.md#detail-text-immediate-effects-and-value-formatting) before this work.
 
 ## Event anatomy
 
@@ -217,57 +206,13 @@ Before completion, check that mapped event-owned changes fire at the intended ou
 
 ### Evolution implementation
 
-The implementation must preserve the design split between baseline stages and evolutions.
-
-Baseline progression can use whatever state, flags, variables, decisions, or events the mechanic needs. Do not record every normal stage as an evolution unless the spec deliberately treats it as an evolution track.
-
-For actual evolutions, the usual pattern is:
-
-1. the evolution condition becomes available from the current campaign state
-2. the evolved incident, track, or milestone fires through MTTH-based dynamic pacing rather than instantly, and it can take a good amount of time: the base should be around 90 days, but it can be more or less depending on the evolution. Some happen instantly, for example for events that haven't fired yet, which makes the initial firing more intense
-3. set the shared evolution context variables
-4. record the evolution log entry through the shared pipeline
-5. unlock or adjust the new behavior, tag, decision set, focus branch, or rare variant
-6. do not change Chaos for the evolution state itself. Any Chaos change must come from a separate concrete consequence
-
-Event evolutions that gate content must respect the enable and disable UI. If an evolution is disabled, the gated path must have a clean alternate route or must be safely skipped. Do not leave required baseline progression locked behind a disabled evolution.
-
-The shared context is:
-
-- `events_log_evolution_event_id`
-- `events_log_evolution_type`
-- `events_log_evolution_stage`
-- `events_log_evolution_tier`
-- `events_log_evolution_actor` when the milestone belongs to a specific country
-
-Then:
-
-- gate the milestone with `is_current_evolution_enabled = yes`
-- call `record_events_log_evolution_entry = yes`
-- If a helper sets a `*_recorded` flag or unlocks follow-up content, set the shared evolution context before its `limit` and include `is_current_evolution_enabled = yes` in that same limit. Disabled evolutions must not set recorded flags that later stages, decisions, reports, or focus branches read.
-- When a logged evolution has an actor, save the country as `events_log_evolution_actor` and set `events_log_evolution_has_actor = 1` immediately before `record_events_log_evolution_entry = yes`. Regular event targets cannot be manually cleared and can leak through an effect chain, so no-actor records must rely on the shared logger's default `events_log_evolution_has_actor = 0` behavior instead of raw `has_event_target`.
-
-Implementation design rules:
-
-- `event_id` ties the evolution to the parent event.
-- `type` separates parallel mutation tracks inside the same event.
-- `stage` is the milestone inside one mutation track, not the ordinary event stage.
-- `tier` is display-oriented. Do not use it as a substitute for real logic state.
-- When a track uses stage-specific incidents, wire the stage-specific display text across every event-log view that can show it: list/current view, history/detail view, event-detail view, selected-detail title, selected-detail body, and any stage-number or roman-numeral helpers needed by the highest stage.
-- Use dynamic factor models for evolution chance, pacing, intensity, and aftermath.
-- If an evolution creates a persistent country, make the country playable or meaningful enough for its expected lifetime.
+Baseline stages and evolutions stay distinct. An evolution fires through MTTH-based pacing, is gated by `is_current_evolution_enabled`, sets the shared evolution context, records through `record_events_log_evolution_entry`, and never changes Chaos by itself.
+Read the complete requirements in [Evolution implementation](references/event-log-evolutions-and-clusters.md#evolution-implementation) before this work.
 
 ### Event-log UI surfaces
 
-Before changing evolution log display, identify the exact surface and keep the change scoped to that surface. Patch the actual GUI/localisation/scripted data path. Do not record a process note as a substitute for fixing the visible row.
-
-- **Main Evolutions tab** uses `global.events_log_evolution_view_*`, `events_log_evolution_index`, and `events_log_evolution_entry_*` templates. This is a global logged-evolution history surface. Rows should visibly show the log index, date, source event, evolution name, tier, and stage.
-- **History details related evolutions** uses `global.events_log_history_detail_evolution_*`, `events_log_history_detail_evolution_index`, and `events_log_history_detail_evolution_entry`. This is the selected-event filtered logged-evolution history surface. Rows should use the same visible metadata as the main Evolutions tab.
-- **Event details evolution catalog** uses `global.events_log_event_detail_evolution_*`, `events_log_event_detail_evolution_index`, and `events_log_event_detail_evolution_entry`. This is a catalog/preview surface, not a history log. Do not add fake log indexes, fake dates, or history-only metadata here.
-
-When adding evolution row metadata, reuse the arrays for that row surface: main rows read the `global.events_log_evolution_view_*` arrays rebuilt by `rebuild_events_log_evolution_view`, while selected-history rows read the `global.events_log_history_detail_evolution_*` arrays rebuilt by `events_log_rebuild_history_details_view`. The required row metadata is sequence, date, source event, type/name, tier, stage, actor, and enabled state. If the user reports row alignment, patch `interface/chaosx_events_log_popup.gui` row sizes, button bounds, and text widths for the affected surface in the same change.
-
-Event-log defaults must keep unreworked events disabled by default. An event that is still waiting for a rework should stay out of the reworked-event default enable allowlist so startup seeds it into `global.disabled_events` and it appears unchecked. When an event is reworked and ready for normal selection and log use, add its ID back to that allowlist in the same change as the event registration and log wiring.
+Evolution log display changes target the exact surface (main Evolutions tab, History details related evolutions, or Event details evolution catalog) and patch the real GUI, localisation, or scripted data path. Unreworked events stay out of the default enable allowlist until they are ready.
+Read the complete requirements in [Event-log UI surfaces](references/event-log-evolutions-and-clusters.md#event-log-ui-surfaces) before this work.
 
 ## World-end scenarios
 
@@ -275,101 +220,18 @@ A world-end scenario is a terminal branch that changes the campaign into a resol
 
 ### World-end scenario implementation
 
-The normal contract is:
-
-1. guard the branch with `NOT = { has_global_flag = world_end }`
-2. set `world_end`
-3. set a scenario-specific global flag
-4. set the matching `super_event_visible`
-5. update the matching super-event text, image, and audio wiring
-6. stop or gate incompatible future systems and branches
-7. document the end-state in the event doc, and spreadsheet
-
-Classify every terminal branch as public or hidden/easter-egg before wiring Event Details.
-
-For every public terminal branch, complete the Event Details contract in the same implementation pass:
-
-1. Give the branch a stable scenario registry entry and the owning event ID.
-2. Create one row per branch. If one event has several public terminal branches, do not collapse them into one event-level row.
-3. Give each row its own default-enabled persistent toggle state. Rebuilding or reopening Event Details must not reset it, and toggling one branch must not change sibling branches or the parent event.
-4. Add player-facing title and details text that explains the premise and terminal state without listing raw effects, hidden variables, secret conditions, or implementation state.
-5. Wire the row, selection, toggle, and detail-panel clicks through the shared Event Details behavior. Add availability or status text when it helps the player understand why a public branch cannot currently be selected, without exposing hidden logic.
-6. Make automatic world-end selection read the branch toggle. A disabled branch is skipped as a candidate without disabling its owning event, suppressing enabled sibling branches, bypassing the 1000+ Chaos gate, or changing the normal world-state selection rules.
-7. Keep the scenario-specific global flag and matching super-event visibility, text, image, and audio linkage distinct for that branch.
-8. Align the public event doc and spreadsheet-facing world-end fields with the same title, premise, terminal state, and branch count.
-
-Hidden or easter-egg world-end scenarios may retain a stable internal registry identity with hidden visibility, but they must stay out of the projected public Event Details rows, title/detail selectors, toggles, status controls, public docs, and spreadsheet-facing public fields. Their terminal flagging, chaos gate, selection logic, and super-event wiring still follow the normal world-end contract.
+A world-end branch is guarded by `NOT = { has_global_flag = world_end }`, sets `world_end`, a scenario-specific global flag, and the matching `super_event_visible`, and gates incompatible future systems. Every public terminal branch also needs its own Event Details registry row with an independent persistent toggle, and hidden branches stay out of public surfaces.
+Read the complete requirements in [World-end scenario implementation](references/world-end-triggerable-scenarios-and-aftermath.md#world-end-scenario-implementation) before this work.
 
 ## Triggerable scenarios
 
-Triggerable scenarios are manual sandbox or challenge setups launched from the Chaos Redux settings UI. They are separate from the normal random-event timer, chaos-tier eligibility, evolution pacing, and automatic source-event prerequisites.
-
-Core rule: a triggerable scenario is always directly fireable from the scenario UI unless the launch would be impossible or conflict with an active terminal state. It creates instant chaos from setup controls, not from live Chaos Meter progression. After launch, ordinary event behavior resumes.
-
-Use this contract when adding a scenario for an event:
-
-1. Register a stable scenario ID and sort value in `triggerable_scenarios_initialize_registry`.
-2. Add tuning constants in `common/script_constants/chaosx_triggerable_scenarios_constants.txt` for scenario IDs, sort values, intensity stops, scenario type IDs, and scale values.
-3. Add or update launch, registry, sorting, intensity, and type effects in `common/scripted_effects/chaosx_triggerable_scenarios_effects.txt`.
-4. Add launch eligibility in `common/scripted_triggers/chaosx_triggerable_scenarios_triggers.txt`.
-5. Add scripted GUI click handling, dynamic list support, slider stops, and visibility checks in `common/scripted_guis/chaosx_scripted_gui_settings.txt`.
-6. Add scenario name, sort text, detail text, type labels, and intensity impact text in `common/scripted_localisation/chaosx_scripted_localisation_scenarios.txt`.
-7. Add or update player-facing labels, tooltips, confirmation text, and scenario event text in `localisation/english/chaosx_gui_l_english.yml`.
-8. Update `interface/chaosx.gui` only when the existing scenario window cannot present the new controls cleanly.
-9. Document the scenario in the relevant event doc or scenario doc, for example in `C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/docs/systems/event_system/triggerable_scenarios.md`.
-
-The scenario window is data-driven. It should use `global.triggerable_scenario_view_ids` for the sortable list, log-style entries for scenario rows, and a detail panel that updates from the selected entry. Do not hardcode one button per scenario when the registry and dynamic list can handle it.
-
-The scenario button should open a confirmation window. Confirming must read the selected scenario, type, and intensity at launch time. Do not bake these values into the first click.
-
-Intensity uses the existing four-stop scenario slider:
-
-- Low
-- Medium
-- High
-- Maximum
-
-The selected intensity should be stored in `triggerable_scenarios_intensity`. The knob position, impact text, and launch effects must all read the same stored value. If a scenario deliberately ignores intensity, state that in its detail text and keep the slider harmless.
-
-Scenario type controls are scenario-specific. If a scenario has types, define type constants, cycle buttons, labels, detail text, and launch branches.
-
-Launch gates are not normal event prerequisites. They should only block impossible or conflicting launches, such as a required source country not existing, a required target scope being impossible to build. Do not block a triggerable scenario because chaos value, chaos tier, prior event state, evolution unlocks, date gates, route prerequisites, or super-event history flags are missing.
-
-When a triggerable scenario needs to force a path that is normally gated, use an explicit scenario launch flag or variable. Scope the bypass tightly to the launch effect and clear it when the scenario setup is finished so automatic event behavior remains governed by normal event state.
-
-Triggerable scenarios may call source-event helpers, unit-spawn helpers, release helpers, super-event helpers, or world-end helpers, but the scenario wrapper owns manual setup choices, intensity scaling, scenario type routing, confirmation flow, and bypass cleanup. Shared helpers must stay idempotent when the scenario and normal event chain can both call them.
-
-The scenario UI normally reuses existing Chaos Redux and vanilla UI assets. Do not request dedicated scenario art, report images, icons, or animated UI unless the user asks for them or the existing scenario window cannot communicate the mechanic. If the UI requires a sprite entry for technical reasons, register a stable placeholder path and report that it is a placeholder.
-
-Completion for a scenario-backed event requires:
-
-- scenario ID and sort registration
-- launch effect and confirmation flow
-- launch eligibility using the same gate for click enablement and button state
-- intensity and type controls wired
-- scripted localisation and GUI localisation
-- bypass flags scoped and cleaned up
-- no normal chaos, evolution, date, route, or super-event-history prerequisite blocking manual launch
-- documentation updated without listing stale or implementation-only debug details
+Triggerable scenarios are manual sandbox or challenge setups launched from the settings UI. They are always directly fireable unless the launch is impossible, are never blocked by normal event prerequisites, and need registry, constants, effects, triggers, GUI, localisation, documentation, and tightly scoped bypass cleanup.
+Read the complete requirements in [Triggerable scenarios](references/world-end-triggerable-scenarios-and-aftermath.md#triggerable-scenarios) before this work.
 
 ## Major-event defeat aftermath
 
-Some major events should also have a structured aftermath when the threat is beaten.
-
-Use a defeat aftermath package when all of these are true:
-
-- the defeated threat was global or near-global in reach
-- the campaign lasted long enough to feel like a world crisis
-- the cost in casualties, destruction, or political disruption was high enough that the world should not simply snap back to normal
-
-Typical aftermath content:
-
-- a defeat super-event or defeat-stage super-event effect
-- postwar treaties, compacts, or new world orders
-- recurring remembrance, reconstruction, or vigilance events
-- lasting ideas, tech-sharing groups, or diplomatic rules that exist because the world learned from the crisis
-
-Do not add a treaty/new world order after every contained or short-lived disaster. Those only make sense when the event genuinely reshaped the campaign.
+Only a global or near-global, long, costly crisis earns a structured aftermath such as a defeat super-event, postwar treaties, remembrance events, or lasting ideas. Do not add one after a contained or short-lived disaster.
+Read the complete requirements in [Major-event defeat aftermath](references/world-end-triggerable-scenarios-and-aftermath.md#major-event-defeat-aftermath) before this work.
 
 ## Event implementation workflow
 
@@ -462,98 +324,13 @@ Read the complete requirements in [Handle supporting gameplay systems](reference
 
 ### 5. Event log integration
 
-Events must appear in Chaos Redux’s event log, so wire the full log contract in the same change.
-
-Script ownership:
-
-- Put history/evolution recording, actor sanitizing, default actor mapping, Event Details catalog rows, event-detail evolution previews, and History/Evolutions/Events tab rebuild logic in `common/scripted_effects/chaosx_events_log_effects.txt`.
-- Keep random selection, fired-event handlers, timers, and event type accounting in `common/scripted_effects/chaosx_logic_effects.txt`. Those effects should call the shared Event Logs recorders rather than defining log arrays themselves.
-- Keep settings controls and generic event firing helpers in `common/scripted_effects/chaosx_settings_effects.txt`. Do not add new event-log history/evolution display logic there unless the settings window itself is changing.
-- Keep button click routing in `common/scripted_guis/chaosx_scripted_gui_events_log.txt`, and layout changes in `interface/chaosx_events_log_popup.gui`.
-
-Required name plumbing:
-
-- add or update visible event-name loc in `localisation/english/chaosx_event_names_l_english.yml`
-- update event-name selectors in `common/scripted_localisation/chaosx_scripted_localisation_events_log.txt`
-- update debug-name selectors in `common/scripted_localisation/chaosx_scripted_localisation_debug.txt`
-
-Required actor plumbing when a flag should appear:
-
-- update `events_log_set_default_actor_for_current_event` in `common/scripted_effects/chaosx_events_log_effects.txt`
-- use a default actor only when the event should show a meaningful actor before or without a fired history row
-- if fired history should override the default actor, keep the history-context flow intact
-- for random-event history rows, remember that the generic fired-event handler records the row before the target event's `immediate` block runs. If the actor is created or refreshed inside that event, move that preparation into a shared pre-fire helper and call it before `record_events_log_history_entry`
-- for evolution rows with actors and no-actor entries, follow the `events_log_evolution_actor` and `events_log_evolution_has_actor` rule under [Evolution implementation](#evolution-implementation)
-
-Required detail-view plumbing:
-
-- update the event-details text selectors in `common/scripted_localisation/chaosx_scripted_localisation_events_log.txt`
-- update the actual user-facing text in `localisation/english/chaosx_gui_l_english.yml`
-- if new generic event-log behavior is needed, wire it through:
-  - `common/scripted_effects/chaosx_events_log_effects.txt`
-  - `common/scripted_guis/chaosx_scripted_gui_events_log.txt`
-  - `interface/chaosx_events_log_popup.gui`
-
-Do not hardcode one-off GUI behavior if it should be reusable by later events.
-
-Public world-end rows are part of the shared Event Details data path. In `common/scripted_effects/chaosx_events_log_effects.txt`, register them through `initialize_world_end_scenario_registry`, rebuild them with `events_log_rebuild_event_detail_world_end_scenarios`, persist disabled scenario IDs in `global.disabled_world_end_scenarios`, and toggle the selected row through `events_log_toggle_selected_world_end_scenario_disabled`. Keep automatic branch gates in `common/scripted_triggers/chaosx_world_end_scenario_triggers.txt`. Route row, selection, and detail clicks through `common/scripted_guis/chaosx_scripted_gui_events_log.txt`. Keep titles, details, and status selectors in the existing Event Details scripted-localisation and GUI-localisation files. Change `interface/chaosx_events_log_popup.gui` only when the shared row or detail layout itself needs a reusable control.
-
-When it's impossible for an event to fire due to conditions (the actor country doesn't exist, prerequisite not fulfilled, etc), always show `N/A` in the event list in place of a `0` for the weight.
+Every event appears in the event log, and the full contract (script ownership, event-name and debug-name plumbing, actor mapping, detail-view selectors, public world-end rows, and `N/A` weights for events that cannot fire) is wired in the same change.
+Read the complete requirements in [5. Event log integration](references/event-log-evolutions-and-clusters.md#5-event-log-integration) before this work.
 
 ### 6. Event cluster integration
 
-Event clusters are a catalogue layer above normal random events. The Clusters tab must show every registered cluster, while History shows only clusters that actually fired.
-
-Core files:
-
-- `common/script_constants/event_cluster_constants.txt`
-- `common/scripted_effects/chaosx_event_cluster_effects.txt`
-- `common/scripted_effects/chaosx_events_log_effects.txt` when event-log view state changes
-- `common/scripted_effects/chaosx_settings_effects.txt` when settings controls or generic event firing helpers change
-- `common/scripted_guis/chaosx_scripted_gui_events_log.txt` when cluster log UI behavior changes
-- `interface/chaosx_events_log_popup.gui` when cluster list/details layout changes
-- `common/scripted_localisation/chaosx_scripted_localisation_events_log.txt`
-- `common/scripted_localisation/chaosx_scripted_localisation_settings.txt`
-- `localisation/english/chaosx_gui_l_english.yml`
-
-To add a new cluster:
-
-1. Add an ID in `event_cluster_id`.
-2. Add any cluster-specific tuning group, for example `event_cluster_<slug> = { unlock_tier cooldown_days }`.
-3. Register the cluster in `initialize_event_cluster_definitions` by pushing aligned entries into `global.event_clusters`, `global.event_cluster_type_entries`, and `global.event_cluster_unlock_tier_entries`.
-4. Map member events in `event_belongs_to_cluster`, from normal event ID to cluster ID.
-5. Add ordered member rows in `load_event_cluster_members`.
-6. Add or update cluster name/type/description scripted localisation and GUI localisation.
-7. If it needs custom runtime setup, add that branch to `event_cluster_prepare_runtime_context`.
-8. If it needs a custom cooldown or one-time state, update `mark_event_cluster_fired_state` and any availability logic in `can_event_cluster_fire`.
-
-Member attributes are parallel arrays in `load_event_cluster_members`:
-
-- `temp_event_cluster_member_event_id_entries`: normal event ID.
-- `temp_event_cluster_member_role_entries`: `event_cluster_member_role.required` or `event_cluster_member_role.optional`.
-- `temp_event_cluster_member_chance_entries`: participation chance for optional members, usually from `event_cluster_member_participation`.
-- `temp_event_cluster_member_min_tier_entries`: minimum chaos tier for that member.
-- `temp_event_cluster_member_danger_entries`: display severity in cluster details.
-
-To change a member's behavior, edit those attributes together. Do not reorder one array without the others.
-
-Member severity uses four values:
-
-- Low
-- Medium
-- High
-- Severe
-
-Cluster firing rules:
-
-- Automatic cluster firing happens from `try_fire_event_cluster_for_selected_event` after a member event is selected.
-- Automatic firing respects cluster unlock tier, cooldown, one-time state, member eligibility, optional participation rolls, and runtime context.
-- Manual firing from Settings uses `force_fire_event_cluster_by_temp_id`. It bypasses tier, cooldown, disabled-state, and member availability checks. Runtime context can still fail if the event cannot build the required scopes.
-- Cluster history rows are recorded by `record_events_log_cluster_entry`. Cluster catalogue rows are rebuilt by `rebuild_events_log_cluster_view`.
-
-When inlining a multi-condition scripted trigger inside `NOT`, keep the conditions in an explicit `AND` block; sibling conditions in `NOT` use NOR semantics.
-Preserve the original rejection behavior when either a shared precondition or the native legality check fails.
-For temporary diagnostics inside a state-scoped effect, check country flags through the intended country scope, such as `ROOT`, rather than the state scope.
+Event clusters are a catalogue layer above random events: the Clusters tab shows every registered cluster and History shows only those that fired. A new cluster needs aligned registry entries, member arrays, scripted localisation, runtime context, and cooldown or one-time handling.
+Read the complete requirements in [6. Event cluster integration](references/event-log-evolutions-and-clusters.md#6-event-cluster-integration) before this work.
 
 ### 7. Duration fields and constants
 
@@ -635,7 +412,7 @@ Use the `chaos-redux-event-assets` skill whenever an event task requires generat
 
 For every generated asset:
 
-1. Create the base artwork by following the official `$imagegen` skill workflow through `chaos-redux-event-assets`.
+1. Create the base artwork by following the image generation workflow (see the Image-generation route section of chaos-redux-event-assets).
 2. Save the original generated image as a source PNG in the active event-scoped temporary `docs/assets/<event_id>_<event_slug>/` workspace.
 3. Create a processed PNG preview at the correct HOI4 target size in that temporary workspace.
 4. Convert the processed PNG to DDS 32 bit unsigned BGRA 8.8.8.8.
