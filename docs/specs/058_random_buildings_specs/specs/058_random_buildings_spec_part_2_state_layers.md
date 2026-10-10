@@ -130,7 +130,10 @@ The restricted band can contain:
 - concentration camps
 - future owner-approved coercive, penal, secret, or dangerous state buildings that belong at baseline only as rare outcomes
 
-A concentration camp is eligible only through the camp and repression owner's adapter. That adapter determines whether the new site is dormant, operating, discoverable, attributed, hidden, or otherwise initialized under the normal camp rules.
+A concentration camp is eligible only through the camp and repression owner's adapter.
+It always arrives as an empty, dormant site with no prisoners, no responsible actor, and no evidence.
+Responsibility begins only if the controller's government puts the site into use through the camp owner's ordinary decisions, and the controller can instead demolish it through the owner's dismantling path.
+A random construction wave must not make a government responsible for a camp it never chose to run, and the dormant site turns the result into a real choice for regimes that would use it.
 
 Event 58 does not count the camp event as fired, unlock unrelated camp decisions, force an extermination stage, create deaths, or expose evidence unless the camp owner says those are normal consequences of that exact placed instance.
 

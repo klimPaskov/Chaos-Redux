@@ -2,7 +2,7 @@
 
 Use this prompt with `chaosx_scripted_system_architect` after targeted parent inspection or a justified repository exploration pass.
 
-Spawn with `fork_turns="none"` in Codex.
+Spawn with a self-contained prompt and no inherited parent context.
 
 Read `AGENTS.md`, `chaos-redux-events`, `chaos-redux-subagents`, the complete Event 58 specification package, the parent source map or repository explorer handoff when one exists, the offline wiki pages for data structures, triggers, effects, scopes, event targets, and on-actions, installed vanilla documentation, and the exact live Event 58, building, facility, camp, map, and event-log source files named by the parent.
 

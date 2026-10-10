@@ -9,7 +9,7 @@ The installed package is `docs/specs/058_random_buildings_specs/`.
 The package attributes its premise to the supplied user brief.
 The original user message and claim-level acceptance record are not reproduced here, so approval of expanded mechanics remains unresolved until the implementation owner records the supporting user decision or parent acceptance.
 Historical planning reviews, catalog snapshots, and package status labels do not establish approval or current implementation.
-Use current [AGENTS.md](../../../AGENTS.md), [event guidance](../../../.agents/skills/chaos-redux-events/SKILL.md), [asset guidance](../../../.agents/skills/chaos-redux-event-assets/SKILL.md), and [subagent guidance](../../../.agents/skills/chaos-redux-subagents/SKILL.md) for execution.
+Use current [AGENTS.md](../../../AGENTS.md), [event guidance](../../../.claude/skills/chaos-redux-events/SKILL.md), [asset guidance](../../../.claude/skills/chaos-redux-event-assets/SKILL.md), and [subagent guidance](../../../.claude/skills/chaos-redux-subagents/SKILL.md) for execution.
 The source design remains in the files listed below.
 
 ## Package map
@@ -39,3 +39,14 @@ The event owns selection, placement dispatch, transaction reporting, event-log c
 ## Planning status
 
 The specification is complete as a design package. It is not an implementation claim. Exact Clausewitz syntax, live registry identifiers, vanilla building database behavior, railway graph operations, supply-hub placement, facility APIs, and final weights remain implementation evidence gates because those references were unavailable in the original planning environment. Current routes and sources must be discovered again during implementation.
+
+## Open questions
+
+- `unresolved`: remove extermination camps from the Evolution I extreme band. Recommendation: remove them. Camp and genocide paths in Chaos Redux develop from a government's political decisions and camp construction, and a random worldwide construction result cannot respect those conditions even as an empty site. Concentration camps stay in the restricted band as dormant sites only.
+
+## Changelog
+
+### 2026-10-10 spec audit
+
+- A randomly placed concentration camp always arrives as an empty, dormant site with no responsible actor; responsibility begins only if the controller puts it into use through the camp owner's decisions, and the controller can demolish it instead. This prevents the event from assigning atrocity responsibility to a government that never chose it and gives the result a real decision.
+- Subagent instructions use the Claude-first wording.

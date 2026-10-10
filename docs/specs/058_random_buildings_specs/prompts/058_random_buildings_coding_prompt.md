@@ -8,7 +8,7 @@ Read the README authority section and the five source design parts before mappin
 
 Before editing, read `AGENTS.md`, the required offline Paradox wiki pages, relevant installed vanilla documentation, and the current project skills for events, event planning, decisions and missions, assets, subagents, improvement loops, achievements where documented, and any exact engine surface touched. Inspect at least one current Chaos Redux event pattern and one installed vanilla precedent for every nontrivial engine operation.
 
-Use `chaosx_repo_explorer` only if file locations, owner APIs, existing patterns, or implementation order remain uncertain after targeted reads. Follow the [current routing gate](../../../../.agents/skills/chaos-redux-subagents/SKILL.md).
+Use `chaosx_repo_explorer` only if file locations, owner APIs, existing patterns, or implementation order remain uncertain after targeted reads. Follow the [current routing gate](../../../../.claude/skills/chaos-redux-subagents/SKILL.md).
 
 ## Core event contract
 
