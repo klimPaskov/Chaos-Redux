@@ -19,10 +19,12 @@
 # ---------------------------------------------------------------------------
 
 resources_found_is_active_field = {
-	has_state_flag = resources_found_field_active
-	has_variable = resources_found_field_sequence
-	NOT = { has_state_flag = resources_found_field_closed_permanently }
-	NOT = { has_state_flag = resources_found_field_converted_to_cave_origin }
+	hidden_trigger = {
+		has_state_flag = resources_found_field_active
+		has_variable = resources_found_field_sequence
+		NOT = { has_state_flag = resources_found_field_closed_permanently }
+		NOT = { has_state_flag = resources_found_field_converted_to_cave_origin }
+	}
 }
 
 resources_found_has_event_resource_ledger = {
@@ -182,10 +184,12 @@ resources_found_is_eligible_discovery_owner = {
 }
 
 resources_found_country_has_valid_selected_field = {
-	has_variable = resources_found_selected_field
-	var:resources_found_selected_field = {
-		resources_found_is_active_field = yes
-		is_owned_by = PREV
+	hidden_trigger = {
+		has_variable = resources_found_selected_field
+		var:resources_found_selected_field = {
+			resources_found_is_active_field = yes
+			is_owned_by = PREV
+		}
 	}
 }
 
@@ -218,13 +222,18 @@ resources_found_can_suspend_field = {
 }
 
 resources_found_can_resume_field = {
-	resources_found_is_active_field = yes
-	has_state_flag = resources_found_field_suspended
-	is_owned_and_controlled_by = OWNER
-	NOT = { has_state_flag = resources_found_field_closing }
-	NOT = { has_state_flag = resources_found_field_transaction_lock }
-	has_variable = resources_found_suspension_release_date
-	check_variable = { var = resources_found_suspension_release_date value = global.date compare = less_than_or_equals }
+	custom_trigger_tooltip = {
+		tooltip = resources_found_can_resume_field_tt
+		hidden_trigger = {
+			resources_found_is_active_field = yes
+			has_state_flag = resources_found_field_suspended
+			is_owned_and_controlled_by = OWNER
+			NOT = { has_state_flag = resources_found_field_closing }
+			NOT = { has_state_flag = resources_found_field_transaction_lock }
+			has_variable = resources_found_suspension_release_date
+			check_variable = { var = resources_found_suspension_release_date value = global.date compare = less_than_or_equals }
+		}
+	}
 }
 
 resources_found_can_begin_partial_closure = {
@@ -280,24 +289,28 @@ resources_found_field_can_accept_contract = {
 }
 
 resources_found_has_valid_contract_partner = {
-	has_variable = resources_found_contract_partner
-	has_variable = resources_found_recorded_owner
-	check_variable = { var = resources_found_contract_partner value = resources_found_recorded_owner compare = not_equals }
-	var:resources_found_contract_partner = {
-		exists = yes
-		NOT = { is_special_chaos_country = yes }
-		NOT = { is_actual_nonhuman_country = yes }
+	hidden_trigger = {
+		has_variable = resources_found_contract_partner
+		has_variable = resources_found_recorded_owner
+		check_variable = { var = resources_found_contract_partner value = resources_found_recorded_owner compare = not_equals }
+		var:resources_found_contract_partner = {
+			exists = yes
+			NOT = { is_special_chaos_country = yes }
+			NOT = { is_actual_nonhuman_country = yes }
+		}
 	}
 }
 
 resources_found_contract_is_active_and_valid = {
-	has_state_flag = resources_found_field_contract_active
-	check_variable = { resources_found_contract_stage = constant:resources_found_contract_stage.active }
-	resources_found_has_valid_contract_partner = yes
-	resources_found_is_active_field = yes
-	NOT = { has_state_flag = resources_found_field_suspended }
-	NOT = { has_state_flag = resources_found_field_control_disrupted }
-	NOT = { has_state_flag = resources_found_contracts_pending_review }
+	hidden_trigger = {
+		has_state_flag = resources_found_field_contract_active
+		check_variable = { resources_found_contract_stage = constant:resources_found_contract_stage.active }
+		resources_found_has_valid_contract_partner = yes
+		resources_found_is_active_field = yes
+		NOT = { has_state_flag = resources_found_field_suspended }
+		NOT = { has_state_flag = resources_found_field_control_disrupted }
+		NOT = { has_state_flag = resources_found_contracts_pending_review }
+	}
 }
 
 resources_found_contract_requires_review = {
@@ -322,46 +335,61 @@ resources_found_can_propose_commission = {
 }
 
 resources_found_commission_is_stable = {
-	resources_found_is_active_field = yes
-	has_state_flag = resources_found_commission_active
-	check_variable = { resources_found_commission_stage = constant:resources_found_commission_stage.active }
-	NOT = { has_state_flag = resources_found_commission_violation }
-	NOT = { has_state_flag = resources_found_field_closing }
-	is_owned_and_controlled_by = OWNER
+	custom_trigger_tooltip = {
+		tooltip = resources_found_commission_is_stable_tt
+		hidden_trigger = {
+			resources_found_is_active_field = yes
+			has_state_flag = resources_found_commission_active
+			check_variable = { resources_found_commission_stage = constant:resources_found_commission_stage.active }
+			NOT = { has_state_flag = resources_found_commission_violation }
+			NOT = { has_state_flag = resources_found_field_closing }
+			is_owned_and_controlled_by = OWNER
+		}
+	}
 }
 
 resources_found_has_valid_border_claimant = {
-	has_variable = resources_found_border_claimant
-	has_variable = resources_found_recorded_owner
-	check_variable = { var = resources_found_border_claimant value = resources_found_recorded_owner compare = not_equals }
-	var:resources_found_border_claimant = {
-		exists = yes
-		NOT = { is_special_chaos_country = yes }
-		NOT = { is_actual_nonhuman_country = yes }
-	}
-	OR = {
-		is_claimed_by = var:resources_found_border_claimant
-		is_core_of = var:resources_found_border_claimant
-		has_state_flag = resources_found_mapped_border_dispute
-	}
-	any_neighbor_state = {
-		OR = {
-			is_owned_by = var:PREV.resources_found_border_claimant
-			is_controlled_by = var:PREV.resources_found_border_claimant
+	custom_trigger_tooltip = {
+		tooltip = resources_found_has_valid_border_claimant_tt
+		hidden_trigger = {
+			has_variable = resources_found_border_claimant
+			has_variable = resources_found_recorded_owner
+			check_variable = { var = resources_found_border_claimant value = resources_found_recorded_owner compare = not_equals }
+			var:resources_found_border_claimant = {
+				exists = yes
+				NOT = { is_special_chaos_country = yes }
+				NOT = { is_actual_nonhuman_country = yes }
+			}
+			OR = {
+				is_claimed_by = var:resources_found_border_claimant
+				is_core_of = var:resources_found_border_claimant
+				has_state_flag = resources_found_mapped_border_dispute
+			}
+			any_neighbor_state = {
+				OR = {
+					is_owned_by = var:PREV.resources_found_border_claimant
+					is_controlled_by = var:PREV.resources_found_border_claimant
+				}
+			}
 		}
 	}
 }
 
 resources_found_can_enter_border_crisis = {
-	resources_found_is_active_field = yes
-	resources_found_has_valid_border_claimant = yes
-	is_owned_and_controlled_by = OWNER
-	check_variable = { var = resources_found_foreign_pressure value = constant:resources_found_threshold.coercive_pressure compare = greater_than_or_equals }
-	check_variable = { var = resources_found_total_added value = constant:resources_found_threshold.border_minimum_total compare = greater_than_or_equals }
-	check_variable = { var = resources_found_interested_country_count value = constant:resources_found_threshold.border_minimum_interested_countries compare = greater_than_or_equals }
-	NOT = { resources_found_commission_is_stable = yes }
-	NOT = { has_state_flag = resources_found_field_closing }
-	NOT = { has_global_flag = world_end }
+	custom_trigger_tooltip = {
+		tooltip = resources_found_can_enter_border_crisis_tt
+		hidden_trigger = {
+			resources_found_is_active_field = yes
+			resources_found_has_valid_border_claimant = yes
+			is_owned_and_controlled_by = OWNER
+			check_variable = { var = resources_found_foreign_pressure value = constant:resources_found_threshold.coercive_pressure compare = greater_than_or_equals }
+			check_variable = { var = resources_found_total_added value = constant:resources_found_threshold.border_minimum_total compare = greater_than_or_equals }
+			check_variable = { var = resources_found_interested_country_count value = constant:resources_found_threshold.border_minimum_interested_countries compare = greater_than_or_equals }
+			NOT = { resources_found_commission_is_stable = yes }
+			NOT = { has_state_flag = resources_found_field_closing }
+			NOT = { has_global_flag = world_end }
+		}
+	}
 }
 
 resources_found_border_is_at_competing_surveys = {
@@ -427,11 +455,16 @@ resources_found_is_evolution_iii_enabled = {
 }
 
 resources_found_is_evolution_iv_enabled = {
-	NOT = { has_global_flag = events_log_disabled_evolution_18_18_4 }
-	check_variable = {
-		var = global.chaos_meter_value
-		value = constant:chaos_meter_tier_range.tier_4.min
-		compare = greater_than_or_equals
+	custom_trigger_tooltip = {
+		tooltip = resources_found_is_evolution_iv_enabled_tt
+		hidden_trigger = {
+			NOT = { has_global_flag = events_log_disabled_evolution_18_18_4 }
+			check_variable = {
+				var = global.chaos_meter_value
+				value = constant:chaos_meter_tier_range.tier_4.min
+				compare = greater_than_or_equals
+			}
+		}
 	}
 }
 
@@ -517,20 +550,22 @@ resources_found_state_can_contribute_cave_capacity = {
 # ---------------------------------------------------------------------------
 
 resources_found_world_end_exact_continent_inputs_valid = {
-	has_country_flag = resources_found_continent_registry_ready
-	NOT = { has_country_flag = resources_found_continent_scan_mismatch }
-	has_variable = resources_found_continent_eligible_state_count
-	has_variable = resources_found_continent_scanned_state_count
-	has_variable = resources_found_continent_owned_state_count
-	has_variable = resources_found_continent_controlled_state_count
-	has_variable = resources_found_continent_owned_controlled_state_count
-	has_variable = resources_found_continent_remaining_state_count
-	check_variable = { var = resources_found_continent_eligible_state_count value = constant:resources_found_world_end.minimum_eligible_states compare = greater_than_or_equals }
-	check_variable = { var = resources_found_continent_scanned_state_count value = resources_found_continent_eligible_state_count compare = equals }
-	check_variable = { var = resources_found_continent_owned_state_count value = resources_found_continent_eligible_state_count compare = equals }
-	check_variable = { var = resources_found_continent_controlled_state_count value = resources_found_continent_eligible_state_count compare = equals }
-	check_variable = { var = resources_found_continent_owned_controlled_state_count value = resources_found_continent_eligible_state_count compare = equals }
-	check_variable = { resources_found_continent_remaining_state_count = constant:resources_found_value.zero }
+	hidden_trigger = {
+		has_country_flag = resources_found_continent_registry_ready
+		NOT = { has_country_flag = resources_found_continent_scan_mismatch }
+		has_variable = resources_found_continent_eligible_state_count
+		has_variable = resources_found_continent_scanned_state_count
+		has_variable = resources_found_continent_owned_state_count
+		has_variable = resources_found_continent_controlled_state_count
+		has_variable = resources_found_continent_owned_controlled_state_count
+		has_variable = resources_found_continent_remaining_state_count
+		check_variable = { var = resources_found_continent_eligible_state_count value = constant:resources_found_world_end.minimum_eligible_states compare = greater_than_or_equals }
+		check_variable = { var = resources_found_continent_scanned_state_count value = resources_found_continent_eligible_state_count compare = equals }
+		check_variable = { var = resources_found_continent_owned_state_count value = resources_found_continent_eligible_state_count compare = equals }
+		check_variable = { var = resources_found_continent_controlled_state_count value = resources_found_continent_eligible_state_count compare = equals }
+		check_variable = { var = resources_found_continent_owned_controlled_state_count value = resources_found_continent_eligible_state_count compare = equals }
+		check_variable = { resources_found_continent_remaining_state_count = constant:resources_found_value.zero }
+	}
 }
 
 resources_found_world_end_origin_inputs_valid = {

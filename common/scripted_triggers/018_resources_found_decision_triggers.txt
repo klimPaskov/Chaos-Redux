@@ -107,68 +107,70 @@ resources_found_decision_project_queue_available = {
 # calculator. The refresh control remains outside this gate so stale ledgers
 # always have a visible recovery path.
 resources_found_decision_cost_preview_context_current = {
-	has_country_flag = resources_found_decision_cost_preview_ready
-	check_variable = { var = resources_found_decision_preview_sale_ratio value = global.black_friday_price_table_ratio compare = equals }
-	OR = {
-		AND = {
-			num_of_factories < constant:resources_found_country_scale.small_factory_ceiling
-			check_variable = { resources_found_decision_preview_country_factor = constant:resources_found_country_factor.small_cost }
+	hidden_trigger = {
+		has_country_flag = resources_found_decision_cost_preview_ready
+		check_variable = { var = resources_found_decision_preview_sale_ratio value = global.black_friday_price_table_ratio compare = equals }
+		OR = {
+			AND = {
+				num_of_factories < constant:resources_found_country_scale.small_factory_ceiling
+				check_variable = { resources_found_decision_preview_country_factor = constant:resources_found_country_factor.small_cost }
+			}
+			AND = {
+				NOT = { num_of_factories < constant:resources_found_country_scale.small_factory_ceiling }
+				is_major = yes
+				check_variable = { resources_found_decision_preview_country_factor = constant:resources_found_country_factor.major_cost }
+			}
+			AND = {
+				NOT = { num_of_factories < constant:resources_found_country_scale.small_factory_ceiling }
+				NOT = { is_major = yes }
+				num_of_factories > constant:resources_found_country_scale.large_factory_floor
+				check_variable = { resources_found_decision_preview_country_factor = constant:resources_found_country_factor.large_cost }
+			}
+			AND = {
+				NOT = { num_of_factories < constant:resources_found_country_scale.small_factory_ceiling }
+				NOT = { is_major = yes }
+				NOT = { num_of_factories > constant:resources_found_country_scale.large_factory_floor }
+				check_variable = { resources_found_decision_preview_country_factor = constant:resources_found_country_factor.standard_cost }
+			}
 		}
-		AND = {
-			NOT = { num_of_factories < constant:resources_found_country_scale.small_factory_ceiling }
-			is_major = yes
-			check_variable = { resources_found_decision_preview_country_factor = constant:resources_found_country_factor.major_cost }
+		OR = {
+			AND = { has_war = yes has_country_flag = resources_found_decision_preview_war_context }
+			AND = { NOT = { has_war = yes } NOT = { has_country_flag = resources_found_decision_preview_war_context } }
 		}
-		AND = {
-			NOT = { num_of_factories < constant:resources_found_country_scale.small_factory_ceiling }
-			NOT = { is_major = yes }
-			num_of_factories > constant:resources_found_country_scale.large_factory_floor
-			check_variable = { resources_found_decision_preview_country_factor = constant:resources_found_country_factor.large_cost }
-		}
-		AND = {
-			NOT = { num_of_factories < constant:resources_found_country_scale.small_factory_ceiling }
-			NOT = { is_major = yes }
-			NOT = { num_of_factories > constant:resources_found_country_scale.large_factory_floor }
-			check_variable = { resources_found_decision_preview_country_factor = constant:resources_found_country_factor.standard_cost }
-		}
-	}
-	OR = {
-		AND = { has_war = yes has_country_flag = resources_found_decision_preview_war_context }
-		AND = { NOT = { has_war = yes } NOT = { has_country_flag = resources_found_decision_preview_war_context } }
-	}
-	OR = {
-		AND = {
-			NOT = { resources_found_country_has_valid_selected_field = yes }
-			NOT = { has_variable = resources_found_decision_preview_field }
-		}
-		AND = {
-			resources_found_country_has_valid_selected_field = yes
-			has_variable = resources_found_decision_preview_field
-			check_variable = { var = resources_found_selected_field value = resources_found_decision_preview_field compare = equals }
-			var:resources_found_selected_field = {
-				check_variable = { var = resources_found_excavation_depth value = ROOT.resources_found_decision_preview_excavation_depth compare = equals }
-				check_variable = { var = resources_found_breach_pressure value = ROOT.resources_found_decision_preview_breach_pressure compare = equals }
-				check_variable = { var = resources_found_subsurface_disturbance value = ROOT.resources_found_decision_preview_subsurface_disturbance compare = equals }
-				check_variable = { var = resources_found_workforce_safety value = ROOT.resources_found_decision_preview_workforce_safety compare = equals }
-				OR = {
-					AND = { resources_found_contract_is_active_and_valid = yes ROOT = { has_country_flag = resources_found_decision_preview_contract_context } }
-					AND = { NOT = { resources_found_contract_is_active_and_valid = yes } ROOT = { NOT = { has_country_flag = resources_found_decision_preview_contract_context } } }
-				}
-				OR = {
-					AND = {
-						NOT = { infrastructure > constant:resources_found_country_scale.poor_infrastructure_maximum }
-						ROOT = { has_country_flag = resources_found_decision_preview_poor_infrastructure_context }
+		OR = {
+			AND = {
+				NOT = { resources_found_country_has_valid_selected_field = yes }
+				NOT = { has_variable = resources_found_decision_preview_field }
+			}
+			AND = {
+				resources_found_country_has_valid_selected_field = yes
+				has_variable = resources_found_decision_preview_field
+				check_variable = { var = resources_found_selected_field value = resources_found_decision_preview_field compare = equals }
+				var:resources_found_selected_field = {
+					check_variable = { var = resources_found_excavation_depth value = ROOT.resources_found_decision_preview_excavation_depth compare = equals }
+					check_variable = { var = resources_found_breach_pressure value = ROOT.resources_found_decision_preview_breach_pressure compare = equals }
+					check_variable = { var = resources_found_subsurface_disturbance value = ROOT.resources_found_decision_preview_subsurface_disturbance compare = equals }
+					check_variable = { var = resources_found_workforce_safety value = ROOT.resources_found_decision_preview_workforce_safety compare = equals }
+					OR = {
+						AND = { resources_found_contract_is_active_and_valid = yes ROOT = { has_country_flag = resources_found_decision_preview_contract_context } }
+						AND = { NOT = { resources_found_contract_is_active_and_valid = yes } ROOT = { NOT = { has_country_flag = resources_found_decision_preview_contract_context } } }
 					}
-					AND = {
-						NOT = { infrastructure < constant:resources_found_country_scale.strong_infrastructure_minimum }
-						ROOT = { has_country_flag = resources_found_decision_preview_strong_infrastructure_context }
-					}
-					AND = {
-						infrastructure > constant:resources_found_country_scale.poor_infrastructure_maximum
-						infrastructure < constant:resources_found_country_scale.strong_infrastructure_minimum
-						ROOT = {
-							NOT = { has_country_flag = resources_found_decision_preview_poor_infrastructure_context }
-							NOT = { has_country_flag = resources_found_decision_preview_strong_infrastructure_context }
+					OR = {
+						AND = {
+							NOT = { infrastructure > constant:resources_found_country_scale.poor_infrastructure_maximum }
+							ROOT = { has_country_flag = resources_found_decision_preview_poor_infrastructure_context }
+						}
+						AND = {
+							NOT = { infrastructure < constant:resources_found_country_scale.strong_infrastructure_minimum }
+							ROOT = { has_country_flag = resources_found_decision_preview_strong_infrastructure_context }
+						}
+						AND = {
+							infrastructure > constant:resources_found_country_scale.poor_infrastructure_maximum
+							infrastructure < constant:resources_found_country_scale.strong_infrastructure_minimum
+							ROOT = {
+								NOT = { has_country_flag = resources_found_decision_preview_poor_infrastructure_context }
+								NOT = { has_country_flag = resources_found_decision_preview_strong_infrastructure_context }
+							}
 						}
 					}
 				}
@@ -548,29 +550,31 @@ resources_found_decision_selected_field_has_foreign_partner = {
 }
 
 resources_found_decision_border_pair_is_current = {
-	has_variable = resources_found_border_owner_state
-	has_variable = resources_found_border_claimant_state
-	has_variable = resources_found_border_claimant_country
-	var:resources_found_border_claimant_country = {
-		exists = yes
-		NOT = { has_war_with = ROOT }
-		NOT = { is_special_chaos_country = yes }
-		NOT = { is_actual_nonhuman_country = yes }
-	}
-	var:resources_found_border_owner_state = {
-		is_owned_and_controlled_by = ROOT
-		impassable = no
-		NOT = { has_border_war = yes }
-		any_neighbor_state = {
-			state = var:ROOT.resources_found_border_claimant_state
-			is_owned_and_controlled_by = var:ROOT.resources_found_border_claimant_country
+	hidden_trigger = {
+		has_variable = resources_found_border_owner_state
+		has_variable = resources_found_border_claimant_state
+		has_variable = resources_found_border_claimant_country
+		var:resources_found_border_claimant_country = {
+			exists = yes
+			NOT = { has_war_with = ROOT }
+			NOT = { is_special_chaos_country = yes }
+			NOT = { is_actual_nonhuman_country = yes }
 		}
-	}
-	var:resources_found_border_claimant_state = {
-		is_owned_and_controlled_by = var:ROOT.resources_found_border_claimant_country
-		impassable = no
-		NOT = { has_border_war = yes }
-		any_neighbor_state = { state = var:ROOT.resources_found_border_owner_state }
+		var:resources_found_border_owner_state = {
+			is_owned_and_controlled_by = ROOT
+			impassable = no
+			NOT = { has_border_war = yes }
+			any_neighbor_state = {
+				state = var:ROOT.resources_found_border_claimant_state
+				is_owned_and_controlled_by = var:ROOT.resources_found_border_claimant_country
+			}
+		}
+		var:resources_found_border_claimant_state = {
+			is_owned_and_controlled_by = var:ROOT.resources_found_border_claimant_country
+			impassable = no
+			NOT = { has_border_war = yes }
+			any_neighbor_state = { state = var:ROOT.resources_found_border_owner_state }
+		}
 	}
 }
 

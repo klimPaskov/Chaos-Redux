@@ -29,34 +29,36 @@ resources_found_state_is_valid_continent_member = {
 }
 
 resources_found_state_on_cave_origin_continent = {
-	OR = {
-		AND = {
-			DHO = { check_variable = { resources_found_cave_origin_continent = constant:resources_found_continent.europe } }
-			is_on_continent = europe
-		}
-		AND = {
-			DHO = { check_variable = { resources_found_cave_origin_continent = constant:resources_found_continent.north_america } }
-			is_on_continent = north_america
-		}
-		AND = {
-			DHO = { check_variable = { resources_found_cave_origin_continent = constant:resources_found_continent.south_america } }
-			is_on_continent = south_america
-		}
-		AND = {
-			DHO = { check_variable = { resources_found_cave_origin_continent = constant:resources_found_continent.australia } }
-			is_on_continent = australia
-		}
-		AND = {
-			DHO = { check_variable = { resources_found_cave_origin_continent = constant:resources_found_continent.africa } }
-			is_on_continent = africa
-		}
-		AND = {
-			DHO = { check_variable = { resources_found_cave_origin_continent = constant:resources_found_continent.asia } }
-			is_on_continent = asia
-		}
-		AND = {
-			DHO = { check_variable = { resources_found_cave_origin_continent = constant:resources_found_continent.middle_east } }
-			is_on_continent = middle_east
+	hidden_trigger = {
+		OR = {
+			AND = {
+				DHO = { check_variable = { resources_found_cave_origin_continent = constant:resources_found_continent.europe } }
+				is_on_continent = europe
+			}
+			AND = {
+				DHO = { check_variable = { resources_found_cave_origin_continent = constant:resources_found_continent.north_america } }
+				is_on_continent = north_america
+			}
+			AND = {
+				DHO = { check_variable = { resources_found_cave_origin_continent = constant:resources_found_continent.south_america } }
+				is_on_continent = south_america
+			}
+			AND = {
+				DHO = { check_variable = { resources_found_cave_origin_continent = constant:resources_found_continent.australia } }
+				is_on_continent = australia
+			}
+			AND = {
+				DHO = { check_variable = { resources_found_cave_origin_continent = constant:resources_found_continent.africa } }
+				is_on_continent = africa
+			}
+			AND = {
+				DHO = { check_variable = { resources_found_cave_origin_continent = constant:resources_found_continent.asia } }
+				is_on_continent = asia
+			}
+			AND = {
+				DHO = { check_variable = { resources_found_cave_origin_continent = constant:resources_found_continent.middle_east } }
+				is_on_continent = middle_east
+			}
 		}
 	}
 }
@@ -70,7 +72,7 @@ resources_found_state_is_valid_distant_foothold = {
 	OWNER = {
 		NOT = { is_resources_found_cave_country = yes }
 		NOT = { is_actual_nonhuman_country = yes }
-		check_variable = { num_owned_states > constant:resources_found_value.one }
+		hidden_trigger = { check_variable = { num_owned_states > constant:resources_found_value.one } }
 	}
 }
 
@@ -91,15 +93,20 @@ resources_found_cave_has_three_rich_anchors = {
 }
 
 resources_found_cave_has_rich_reachable_state = {
-	is_resources_found_cave_country = yes
-	OR = {
-		has_variable = resources_found_rich_target_state
-		any_neighbor_country = {
-			exists = yes
-			NOT = { is_resources_found_cave_country = yes }
-			any_owned_state = {
-				resources_found_state_has_standard_resource_presence = yes
-				any_neighbor_state = { is_owned_by = DHO }
+	custom_trigger_tooltip = {
+		tooltip = resources_found_cave_has_rich_reachable_state_tt
+		hidden_trigger = {
+			is_resources_found_cave_country = yes
+			OR = {
+				has_variable = resources_found_rich_target_state
+				any_neighbor_country = {
+					exists = yes
+					NOT = { is_resources_found_cave_country = yes }
+					any_owned_state = {
+						resources_found_state_has_standard_resource_presence = yes
+						any_neighbor_state = { is_owned_by = DHO }
+					}
+				}
 			}
 		}
 	}
@@ -248,12 +255,17 @@ resources_found_cave_world_end_verified = {
 }
 
 resources_found_cave_has_capacity_deficit = {
-	has_variable = resources_found_total_brood_capacity
-	has_variable = resources_found_active_brood_divisions
-	check_variable = {
-		var = resources_found_active_brood_divisions
-		value = resources_found_total_brood_capacity
-		compare = less_than
+	custom_trigger_tooltip = {
+		tooltip = resources_found_cave_has_capacity_deficit_tt
+		hidden_trigger = {
+			has_variable = resources_found_total_brood_capacity
+			has_variable = resources_found_active_brood_divisions
+			check_variable = {
+				var = resources_found_active_brood_divisions
+				value = resources_found_total_brood_capacity
+				compare = less_than
+			}
+		}
 	}
 }
 
