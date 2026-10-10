@@ -1,4 +1,5 @@
-# National institution gates. Dates and institutional authority are separate from economic administration.
+# National institution gates. War, conquest, earlier programs and political choices
+# open each stage; calendar dates only steer AI timing in the country helpers.
 camp_admin_country_is_major_kit = {
 	OR = { original_tag = GER original_tag = JAP original_tag = SOV }
 }
@@ -53,6 +54,38 @@ camp_admin_country_nazi_authority = {
 	OR = { has_country_leader_ideology = nazism has_country_leader_ideology = gen_nazism }
 	NOT = { has_country_flag = germany_mengele_faction }
 }
+# COUNTRY. A war of conquest: at war while holding territory outside the national cores.
+camp_admin_ger_war_of_conquest = {
+	has_war = yes
+	any_controlled_state = { NOT = { is_core_of = ROOT } }
+}
+# COUNTRY. Japan is fighting in China or holds Chinese territory through the war.
+camp_admin_jap_china_war = {
+	has_war = yes
+	OR = {
+		any_enemy_country = { OR = { original_tag = CHI original_tag = PRC original_tag = GXC original_tag = YUN original_tag = SHX original_tag = XSM } }
+		any_controlled_state = { camp_occ_state_is_china_region = yes }
+	}
+}
+# COUNTRY. Germany's campaign is older than camp_admin_census_age_days (temp input).
+camp_admin_census_campaign_age_over = {
+	meta_trigger = {
+		text = { has_country_flag = { flag = camp_occ_campaign_opened days > [D] } }
+		D = "[?camp_admin_census_age_days|.0]"
+	}
+}
+# COUNTRY. At war with at least one major power.
+camp_admin_country_major_war = {
+	has_war = yes
+	any_enemy_country = { is_major = yes }
+}
+# COUNTRY. The war that sustained the camps has ended or been lost.
+camp_admin_country_postwar_reckoning = {
+	OR = {
+		has_war = no
+		has_capitulated = yes
+	}
+}
 
 # One explicit site establishment after national administration takes over.
 # A base detention site does not grant a killing role or the separate Mengele program.
@@ -60,8 +93,8 @@ camp_admin_ger_krakow_setup_context = {
 	original_tag = GER
 	has_country_flag = camp_admin_initialized
 	camp_admin_country_nazi_authority = yes
-	has_war = yes
-	date > 1943.5.29
+	camp_admin_ger_war_of_conquest = yes
+	check_variable = { camp_admin_mandate > constant:camp_admin_mandate.custody }
 	NOT = { has_country_flag = camp_admin_country_reformed }
 	NOT = { has_country_flag = camp_admin_ger_krakow_site_established }
 	88 = {
@@ -87,22 +120,24 @@ camp_admin_country_regime_valid = {
 	NOT = { has_country_flag = camp_admin_country_reformed }
 	NOT = { has_country_flag = camp_rework_expansion_frozen }
 }
-# Major-country mandate requires an enacted radical site policy; Nazi Germany can issue the first dated site order after wartime authority is established.
+# Major-country mandate requires an enacted radical site policy; Nazi Germany can
+# issue the first site order once it fights a war of conquest with an operating site.
 camp_admin_country_can_radicalize = {
 	camp_admin_country_regime_valid = yes
 	OR = {
 		any_of_scopes = { array = camp_active_site_states camp_admin_site_is_operational = yes has_state_flag = camp_rework_radicalized_site }
-		AND = { camp_admin_country_nazi_authority = yes date > 1941.6.21 has_war = yes camp_admin_country_has_operational_site = yes }
+		AND = { camp_admin_country_nazi_authority = yes camp_admin_ger_war_of_conquest = yes camp_admin_country_has_operational_site = yes }
 	}
 	OR = {
-		AND = { camp_admin_country_nazi_authority = yes date > 1941.6.21 has_war = yes }
-		AND = { original_tag = JAP date > 1937.7.6 has_war = yes OR = { has_country_flag = unlocked_generic_radicalized_atrocity_escalation has_country_flag = genocide_extreme_doctrine_unlocked } }
-		AND = { original_tag = SOV date > 1937.7.29 sov_camp_extreme_escalation_available = yes }
+		AND = { camp_admin_country_nazi_authority = yes camp_admin_ger_war_of_conquest = yes }
+		AND = { original_tag = JAP camp_admin_jap_china_war = yes OR = { has_country_flag = unlocked_generic_radicalized_atrocity_escalation has_country_flag = genocide_extreme_doctrine_unlocked } }
+		AND = { original_tag = SOV sov_camp_extreme_escalation_available = yes }
 	}
 }
-camp_admin_country_mengele_historical_gate = {
+# COUNTRY. The Auschwitz program needs the operating Auschwitz site under German
+# authority; that site opens only through a war of conquest and a hardened mandate.
+camp_admin_country_mengele_site_gate = {
 	camp_admin_country_nazi_authority = yes
-	date > 1943.5.29
 	88 = { camp_occ_state_has_german_authority = yes camp_admin_site_is_operational = yes }
 }
 camp_admin_country_has_operational_site = {
@@ -136,55 +171,49 @@ camp_admin_country_has_proven_program_site = {
 }
 camp_admin_program_ger_inspectorate_open = {
 	camp_admin_country_nazi_authority = yes
-	date > 1935.12.31
 	NOT = { has_country_flag = camp_admin_done_ger_inspectorate }
 }
 camp_admin_program_ger_wvha_open = {
 	camp_admin_country_nazi_authority = yes
-	date > 1942.2.28
+	has_country_flag = camp_admin_done_ger_inspectorate
 	has_war = yes
 	NOT = { has_country_flag = camp_admin_done_ger_wvha }
 }
 camp_admin_program_ger_auschwitz_open = {
-	camp_admin_country_mengele_historical_gate = yes
+	camp_admin_country_mengele_site_gate = yes
 	88 = { camp_admin_country_program_site_ready = yes }
 	OR = { germany_mengele_program_active = yes germany_mengele_restricted_program_active = yes }
 	NOT = { has_country_flag = camp_admin_done_ger_auschwitz }
 }
 camp_admin_program_jap_transport_open = {
 	original_tag = JAP
-	date > 1937.7.6
-	has_war = yes
+	camp_admin_jap_china_war = yes
 	any_of_scopes = { array = camp_active_site_states camp_admin_country_program_site_ready = yes camp_admin_country_census_jap_industry_host = yes }
 	NOT = { has_country_flag = camp_admin_done_jap_transport }
 }
 camp_admin_program_jap_army_review_open = {
 	original_tag = JAP
-	date > 1938.12.31
 	has_country_flag = camp_admin_country_oversight_authorized
 	NOT = { has_country_flag = camp_admin_done_jap_army_review }
 }
 camp_admin_program_jap_pingfang_open = {
 	original_tag = JAP
-	date > 1938.12.31
 	any_of_scopes = { array = camp_active_site_states state = 328 has_state_flag = camp_rework_pingfang_anchor camp_admin_country_program_site_ready = yes }
 	NOT = { has_country_flag = japan_prisoner_experiments_shutdown }
 	NOT = { has_country_flag = camp_admin_done_jap_pingfang }
 }
 camp_admin_program_sov_design_bureaux_open = {
 	original_tag = SOV
-	date > 1938.12.31
 	NOT = { has_country_flag = camp_admin_done_sov_design_bureaux }
 }
 camp_admin_program_sov_wartime_industry_open = {
 	original_tag = SOV
-	date > 1941.6.21
-	has_war = yes
+	camp_admin_country_major_war = yes
 	NOT = { has_country_flag = camp_admin_done_sov_wartime_industry }
 }
 camp_admin_program_sov_engineer_release_open = {
 	original_tag = SOV
-	date > 1944.1.1
+	has_country_flag = camp_admin_done_sov_design_bureaux
 	has_country_flag = camp_admin_country_oversight_authorized
 	NOT = { has_country_flag = camp_admin_done_sov_engineer_release }
 }
@@ -251,7 +280,6 @@ camp_admin_country_experiment_site_active = {
 			OR = { has_state_flag = genocide_auschwitz_experiment_site has_state_flag = camp_rework_experiment_site }
 			var:camp_admin_responsible_country = {
 				original_tag = GER
-				date > 1943.5.29
 				OR = { germany_mengele_program_active = yes germany_mengele_restricted_program_active = yes }
 			}
 		}
@@ -262,7 +290,6 @@ camp_admin_country_experiment_site_active = {
 			has_state_flag = camp_rework_experiment_site
 			var:camp_admin_responsible_country = {
 				original_tag = JAP
-				date > 1938.12.31
 				has_country_flag = japan_ishii_program_active
 				NOT = { has_country_flag = japan_prisoner_experiments_shutdown }
 			}
@@ -327,11 +354,7 @@ camp_admin_country_archives_available = {
 	NOT = { has_country_flag = camp_admin_institution_slot_active }
 	NOT = { has_country_flag = camp_admin_country_archives_preserved }
 	NOT = { has_country_flag = camp_admin_country_archive_work_active }
-	OR = {
-		AND = { original_tag = GER date > 1944.12.31 }
-		AND = { original_tag = JAP date > 1945.8.14 }
-		AND = { original_tag = SOV date > 1945.12.31 }
-	}
+	camp_admin_country_postwar_reckoning = yes
 	check_variable = { var = political_power value = constant:camp_admin_country.archive_pp compare = greater_than_or_equals }
 	check_variable = { var = num_equipment@support_equipment value = constant:camp_admin_country.archive_support compare = greater_than_or_equals }
 }

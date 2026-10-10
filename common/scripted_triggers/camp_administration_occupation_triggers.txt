@@ -30,12 +30,24 @@ camp_occ_state_accepts_transfer_authority = {
 		AND = { var:camp_occ_transfer_authority = { original_tag = JAP } camp_occ_state_is_china_region = yes camp_occ_state_has_japanese_client_authority = yes }
 	}
 }
+# COUNTRY. War and mandate open the campaign. Once opened it outlasts the war that
+# began it; camp_occ_campaign_opened records the day it began for later pacing.
+camp_occ_campaign_can_open = {
+	OR = {
+		AND = { original_tag = JAP camp_admin_jap_china_war = yes check_variable = { camp_admin_mandate > constant:camp_admin_mandate.custody } }
+		AND = { camp_admin_country_nazi_authority = yes camp_admin_ger_war_of_conquest = yes check_variable = { camp_admin_mandate = constant:camp_admin_mandate.radical } }
+	}
+}
 camp_occ_authority_has_campaign = {
 	camp_admin_country_regime_valid = yes
 	NOT = { has_country_flag = camp_occ_country_closed }
 	OR = {
-		AND = { original_tag = JAP date > 1937.7.6 check_variable = { camp_admin_mandate > 1 } }
-		AND = { camp_admin_country_nazi_authority = yes date > 1941.6.21 check_variable = { camp_admin_mandate = 3 } }
+		AND = { original_tag = JAP check_variable = { camp_admin_mandate > constant:camp_admin_mandate.custody } }
+		AND = { camp_admin_country_nazi_authority = yes check_variable = { camp_admin_mandate = constant:camp_admin_mandate.radical } }
+	}
+	OR = {
+		has_country_flag = camp_occ_campaign_opened
+		camp_occ_campaign_can_open = yes
 	}
 }
 camp_occ_has_foreign_german_campaign_origin = {
@@ -61,36 +73,58 @@ camp_occ_state_can_pulse = {
 	# External receipts retire exposure before each distinct campaign transaction.
 	# A generic occupation law is not a second debit of that transaction.
 }
-# STATE, row origin. Dated policy timing: the German campaign and the manual
-# deportation order reach an origin row only once mass deportation from that
-# country began (USHMM). The campaign rate itself is unchanged.
-# - Denmark: the largely independent Danish government kept Danish Jews out of
-#   German deportation until the order of October 1943.
-# - France: the first deportation train left for Auschwitz on 27 March 1942.
-# - Netherlands: the first train left Westerbork on 15 July 1942.
-# - Belgium: the first train left Mechelen on 4 August 1942.
-# - Norway: Norwegian police began arresting Jewish men on 26 October 1942.
-# - Salonika, state 731: the first train left on 15 March 1943.
-# - Other Greek origins: the roundup began in Athens and other zones on
-#   24 March 1944.
-# - Italy: German deportations began with the Rome roundup on 16 October 1943.
+# STATE, row origin. In western, northern and southern Europe the German campaign
+# reaches an origin only after it has had time to organize deportations and German
+# authority over the state has consolidated (camp_occ_timing). Denmark's
+# cooperating government shields Danish Jews while it still exists unbeaten and
+# at peace with Germany. In the east the campaign strikes as soon as it opens,
+# and home German origins and the China theater are not paced.
+camp_occ_origin_is_paced_deportation_country = {
+	OR = { is_core_of = FRA is_core_of = HOL is_core_of = BEL is_core_of = LUX is_core_of = NOR is_core_of = DEN is_core_of = GRE is_core_of = ITA }
+}
 camp_occ_origin_campaign_deferred = {
+	camp_occ_origin_is_paced_deportation_country = yes
+	NOT = { is_core_of = GER }
 	OR = {
-		AND = { is_core_of = DEN date < 1943.10.1 }
-		AND = { is_core_of = FRA date < 1942.3.27 }
-		AND = { is_core_of = HOL date < 1942.7.15 }
-		AND = { is_core_of = BEL date < 1942.8.4 }
-		AND = { is_core_of = NOR date < 1942.10.26 }
-		AND = { is_core_of = GRE state = 731 date < 1943.3.15 }
-		AND = { is_core_of = GRE NOT = { state = 731 } date < 1944.3.24 }
-		AND = { is_core_of = ITA date < 1943.10.16 }
+		NOT = { GER = { camp_occ_campaign_matured = yes } }
+		NOT = { camp_occ_state_authority_consolidated = yes }
+		camp_occ_danish_government_shields = yes
 	}
 }
-# Any scope. The escape across the Oresund follows the October 1943 order
+# COUNTRY, Germany. The campaign has run long enough to reach foreign origins.
+camp_occ_campaign_matured = {
+	meta_trigger = {
+		text = { has_country_flag = { flag = camp_occ_campaign_opened days > [D] } }
+		D = "[?constant:camp_occ_timing.foreign_origin_campaign_days|.0]"
+	}
+}
+# STATE. German authority has held this state long enough to consolidate.
+camp_occ_state_authority_consolidated = {
+	meta_trigger = {
+		text = { has_state_flag = { flag = camp_occ_german_authority_held days > [D] } }
+		D = "[?constant:camp_occ_timing.foreign_origin_held_days|.0]"
+	}
+}
+# STATE. A Danish state while Denmark's own government stands, unbeaten and at peace with Germany.
+camp_occ_danish_government_shields = {
+	is_core_of = DEN
+	country_exists = DEN
+	DEN = {
+		NOT = { has_capitulated = yes }
+		NOT = { has_war_with = GER }
+	}
+}
+# COUNTRY, Germany. The escape across the Oresund follows the deportation order
 # (USHMM: about 7,200 people reached Sweden in September and October 1943).
-# A Danish cohort first exposed later flees at its first exposed month.
+# The window opens once a registered Danish origin is no longer deferred;
+# a Danish cohort first exposed later flees at its first exposed month.
 camp_occ_danish_rescue_window_open = {
-	NOT = { date < 1943.10.1 }
+	any_of_scopes = {
+		array = camp_occ_states
+		is_core_of = DEN
+		has_state_flag = camp_occ_registered
+		NOT = { camp_occ_origin_campaign_deferred = yes }
+	}
 }
 # Any scope. Sweden exists and remains a refuge: not a German subject or
 # faction member, not at war with Denmark, and either neutral or fighting Germany.
@@ -117,17 +151,31 @@ camp_occ_danish_rescue_source_ready = {
 	camp_occ_state_has_current_authority = yes
 	NOT = { has_state_flag = camp_occ_danish_rescue_done }
 }
-# Any scope. USHMM: deportations from Hungary ran from 15 May 1944 until the last
-# transports of 9 July 1944, after Horthy ordered them halted on 7 July.
+# Any scope. USHMM: deportations from Hungary began eight weeks after the German
+# occupation of March 1944 and ran until the last transports of 9 July, after
+# Horthy ordered them halted. The window follows German domination of Hungary
+# (camp_occ_partner_dominated), not a calendar date.
 camp_occ_partner_deportation_window_open = {
+	country_exists = HUN
+	HUN = {
+		meta_trigger = {
+			text = {
+				has_country_flag = { flag = camp_occ_partner_dominated days > [S] }
+				NOT = { has_country_flag = { flag = camp_occ_partner_dominated days > [E] } }
+			}
+			S = "[?constant:camp_occ_timing.hun_order_delay_days|.0]"
+			E = "[?constant:camp_occ_timing.hun_order_end_days|.0]"
+		}
+	}
+}
+# COUNTRY, Germany. The Lodz clearance order stands for a limited time.
+camp_occ_lodz_window_open = {
 	meta_trigger = {
-		text = { NOT = { date < "[SY].[SM].[SD]" } date < "[EY].[EM].[ED]" }
-		SY = "[?constant:camp_occ_partner_table.hun_start_year|.0]"
-		SM = "[?constant:camp_occ_partner_table.hun_start_month|.0]"
-		SD = "[?constant:camp_occ_partner_table.hun_start_day|.0]"
-		EY = "[?constant:camp_occ_partner_table.hun_end_year|.0]"
-		EM = "[?constant:camp_occ_partner_table.hun_end_month|.0]"
-		ED = "[?constant:camp_occ_partner_table.hun_end_day|.0]"
+		text = {
+			has_country_flag = camp_occ_lodz_liquidation_ordered
+			NOT = { has_country_flag = { flag = camp_occ_lodz_liquidation_ordered days > [D] } }
+		}
+		D = "[?constant:camp_occ_timing.lodz_window_days|.0]"
 	}
 }
 # COUNTRY, the partner. Hungary handed its Jews over only under German
@@ -161,7 +209,7 @@ camp_occ_partner_deportation_candidate = {
 		camp_occ_extended_partner_candidate = yes
 	}
 }
-# STATE. A registered partner-held cohort while the dated order stands. This is
+# STATE. A registered partner-held cohort while the partner order stands. This is
 # never a current authority: campaign violence, generic movement, rescue and the
 # manual order all ignore it, and the monthly pass closes it once the order lapses.
 camp_occ_state_has_partner_authority = {
@@ -176,7 +224,7 @@ camp_occ_state_has_partner_authority = {
 	}
 }
 # STATE. Source authority for the exact custody transfer: the current authority,
-# or a partner-held cohort when the dated partner route staged its temp proof.
+# or a partner-held cohort when the partner route staged its temp proof.
 camp_occ_state_has_route_authority = {
 	OR = {
 		camp_occ_state_has_current_authority = yes
@@ -197,7 +245,6 @@ camp_occ_manual_transfer_country_prerequisites_ready = {
 	original_tag = GER
 	camp_occ_authority_has_campaign = yes
 	has_war = yes
-	date > 1943.5.29
 	NOT = { has_country_flag = camp_rework_expansion_frozen }
 	OR = {
 		germany_mengele_program_active = yes
@@ -268,8 +315,8 @@ camp_occ_manual_transfer_source_ready = {
 	NOT = { has_state_flag = camp_occ_custody_rollback_failed }
 	NOT = { has_state_flag = camp_occ_transfer_rollback_failed }
 	var:camp_occ_responsible_country = { original_tag = GER }
-	# The dated origin deferral (Denmark, France, the Netherlands, Belgium, Norway,
-	# Greece) keeps these people out of deportation orders too.
+	# The origin deferral (campaign maturity, consolidation, Denmark's government)
+	# keeps these people out of deportation orders too.
 	OR = {
 		NOT = { has_variable = camp_occ_cohort_origin_state }
 		var:camp_occ_cohort_origin_state = { NOT = { camp_occ_origin_campaign_deferred = yes } }

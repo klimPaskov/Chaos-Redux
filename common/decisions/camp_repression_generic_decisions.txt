@@ -10,61 +10,6 @@
 # ============================================================================
 
 camp_repression_network_category = {
-	camp_repression_open_ledger = {
-		icon = GFX_decision_open_repression_ledger
-		cost = 0
-		allowed = { always = yes }
-		visible = {
-			is_ai = no
-			has_camp_category_visible_action = yes
-			NOT = { has_country_flag = camp_repression_ledger_open }
-		}
-		available = { always = yes }
-		complete_effect = { camp_rework_open_ledger = yes }
-		ai_will_do = { base = 0 }
-	}
-
-	camp_repression_close_ledger = {
-		icon = GFX_decision_open_repression_ledger
-		cost = 0
-		allowed = { always = yes }
-		visible = {
-			is_ai = no
-			has_country_flag = camp_repression_ledger_open
-		}
-		available = { always = yes }
-		complete_effect = { camp_rework_close_ledger = yes }
-		ai_will_do = { base = 0 }
-	}
-
-	camp_repression_show_actions = {
-		icon = GFX_decision_generic_political_discourse
-		cost = 0
-		allowed = { always = yes }
-		visible = {
-			is_ai = no
-			has_camp_category_visible_action = yes
-			NOT = { has_country_flag = camp_rework_managed_network_visible }
-		}
-		available = { always = yes }
-		complete_effect = { set_country_flag = camp_rework_managed_network_visible }
-		ai_will_do = { base = 0 }
-	}
-
-	camp_repression_hide_actions = {
-		icon = GFX_decision_generic_political_discourse
-		cost = 0
-		allowed = { always = yes }
-		visible = {
-			is_ai = no
-			has_country_flag = camp_rework_managed_network_visible
-			NOT = { has_country_flag = camp_repression_ledger_open }
-		}
-		available = { always = yes }
-		complete_effect = { clr_country_flag = camp_rework_managed_network_visible }
-		ai_will_do = { base = 0 }
-	}
-
 	generic_activate_detention_network = {
 		icon = GFX_decision_generic_expand_labor_network
 		state_target = any
@@ -89,10 +34,6 @@ camp_repression_network_category = {
 						NOT = { has_state_flag = migration_cohort_selection_ambiguous }
 					}
 				}
-			}
-			OR = {
-				is_ai = yes
-				has_country_flag = camp_rework_managed_network_visible
 			}
 			OR = {
 				camp_rework_country_can_activate_generic = yes
@@ -245,7 +186,6 @@ camp_repression_network_category = {
 		visible = {
 			NOT = { has_country_flag = camp_admin_initialized }
 			camp_rework_country_uses_generic_kit = yes
-			OR = { is_ai = yes has_country_flag = camp_rework_managed_network_visible }
 			has_active_camp_network = yes
 		}
 		target_root_trigger = {
@@ -323,7 +263,6 @@ camp_repression_network_category = {
 					}
 				}
 			}
-			OR = { is_ai = yes has_country_flag = camp_rework_managed_network_visible }
 			check_variable = { camp_labor_output > 0 }
 		}
 		target_root_trigger = {
@@ -443,7 +382,6 @@ camp_repression_network_category = {
 					}
 				}
 			}
-			OR = { is_ai = yes has_country_flag = camp_rework_managed_network_visible }
 			check_variable = { camp_labor_output > 0 }
 		}
 		target_root_trigger = {
@@ -551,7 +489,6 @@ camp_repression_network_category = {
 		visible = {
 			NOT = { has_country_flag = camp_admin_initialized }
 			camp_rework_country_uses_generic_kit = yes
-			OR = { is_ai = yes has_country_flag = camp_rework_managed_network_visible }
 			has_active_camp_network = yes
 			OR = {
 				check_variable = { camp_overstretch > constant:camp_rework_threshold.band_medium }
@@ -588,7 +525,6 @@ camp_repression_network_category = {
 		visible = {
 			NOT = { has_country_flag = camp_admin_initialized }
 			camp_rework_country_uses_generic_kit = yes
-			OR = { is_ai = yes has_country_flag = camp_rework_managed_network_visible }
 			has_active_camp_network = yes
 			check_variable = { camp_labor_output > constant:camp_rework_threshold.band_low }
 		}
@@ -627,7 +563,6 @@ camp_repression_network_category = {
 		visible = {
 			NOT = { has_country_flag = camp_admin_initialized }
 			camp_rework_country_uses_generic_kit = yes
-			OR = { is_ai = yes has_country_flag = camp_rework_managed_network_visible }
 			camp_rework_country_can_use_radicalized_route = yes
 		}
 		target_root_trigger = {
@@ -706,7 +641,6 @@ camp_repression_network_category = {
 		allowed = { always = yes }
 		visible = {
 			camp_rework_country_uses_generic_kit = yes
-			OR = { is_ai = yes has_country_flag = camp_rework_managed_network_visible }
 			OR = {
 				camp_rework_country_can_apply_chemical_camp_method = yes
 				AND = {
@@ -792,7 +726,6 @@ camp_repression_network_category = {
 		allowed = { always = yes }
 		visible = {
 			camp_rework_country_uses_generic_kit = yes
-			OR = { is_ai = yes has_country_flag = camp_rework_managed_network_visible }
 			has_active_camp_network = yes
 		}
 		target_root_trigger = { camp_rework_country_can_destroy_retreat_evidence = yes }
@@ -829,7 +762,6 @@ camp_repression_network_category = {
 		allowed = { always = yes }
 		visible = {
 			camp_rework_country_uses_generic_kit = yes
-			OR = { is_ai = yes has_country_flag = camp_rework_managed_network_visible }
 			has_active_camp_network = yes
 			OR = {
 				camp_rework_country_can_reform = yes
@@ -864,7 +796,8 @@ camp_repression_network_category = {
 		cost = 0
 		ai_hint_pp_cost = 60
 		allowed = { always = yes }
-		visible = { camp_admin_generic_reform_visible = yes }
+		# Players close the network from the camp window (Administration, second action).
+		visible = { is_ai = yes camp_admin_generic_reform_visible = yes }
 		available = { custom_trigger_tooltip = { tooltip = camp_admin_generic_reform_requirements_tt camp_admin_generic_reform_available = yes } }
 		custom_cost_trigger = { camp_admin_generic_reform_can_pay = yes }
 		custom_cost_text = camp_admin_generic_reform_cost_tt
@@ -894,10 +827,6 @@ camp_repression_network_category = {
 		days_remove = constant:camp_rework_timing.reform_days
 		allowed = { always = yes }
 		visible = {
-			OR = {
-				is_ai = yes
-				has_country_flag = camp_rework_managed_network_visible
-			}
 			camp_rework_country_can_close_dormant_legacy = yes
 		}
 		target_root_trigger = {

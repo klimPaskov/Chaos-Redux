@@ -1,12 +1,12 @@
 # Civil administration eligibility. ROOT is the administering country in state gates.
+# War, government and the course of the war open each authority; no calendar gate.
 camp_administration_civil_country_supported = {
 	OR = { original_tag = ENG original_tag = RAJ original_tag = USA original_tag = FRA tag = VIC original_tag = ITA original_tag = BEL original_tag = COG }
 }
 
 camp_administration_civil_british_authority = {
 	original_tag = ENG
-	date > 1940.5.15
-	has_war = yes
+	camp_admin_country_major_war = yes
 	OR = { has_government = democratic has_government = neutrality }
 }
 
@@ -14,22 +14,24 @@ camp_administration_civil_raj_authority = {
 	original_tag = RAJ
 	is_subject_of = ENG
 	ENG = { exists = yes OR = { has_government = democratic has_government = neutrality } }
-	date > 1939.9.2
 	has_war = yes
 }
 
 camp_administration_civil_usa_authority = {
 	original_tag = USA
 	has_government = democratic
-	has_war = yes
-	date > 1942.2.18
-	date < 1944.12.18
+	camp_admin_country_major_war = yes
 	NOT = { has_country_flag = camp_rework_usa_authority_terminated }
+}
+# Property claims open once relocation authority has ended and the war is over.
+camp_administration_civil_usa_claims_open = {
+	original_tag = USA
+	has_country_flag = camp_rework_usa_authority_terminated
+	has_war = no
 }
 
 camp_administration_civil_french_collaboration = {
 	OR = { original_tag = FRA tag = VIC }
-	date > 1940.7.9
 	OR = { has_government = fascism AND = { has_government = neutrality OR = { tag = VIC has_cosmetic_tag = FRA_VICHY is_subject_of = GER } } }
 	NOT = { has_cosmetic_tag = FRA_FREE }
 }
@@ -37,8 +39,9 @@ camp_administration_civil_french_collaboration = {
 camp_administration_civil_french_refugee_authority = {
 	original_tag = FRA
 	has_government = democratic
-	date > 1939.1.31
-	date < 1940.7.10
+	# Republican Spain has fallen and its refugees crossed the Pyrenees.
+	has_global_flag = nationalist_victory
+	NOT = { has_capitulated = yes }
 	NOT = { has_cosmetic_tag = FRA_FREE }
 }
 
@@ -46,7 +49,6 @@ camp_administration_civil_italian_authority = {
 	original_tag = ITA
 	has_government = fascism
 	has_war = yes
-	date > 1940.6.9
 }
 
 camp_administration_civil_congo_authority = {
@@ -93,7 +95,7 @@ camp_administration_civil_action_one_visible = {
 	NOT = { has_country_flag = camp_admin_civil_review_active }
 	OR = {
 		camp_administration_civil_custody_authority = yes
-		AND = { OR = { original_tag = FRA tag = VIC } has_government = democratic date > 1939.1.31 }
+		AND = { OR = { original_tag = FRA tag = VIC } has_government = democratic has_global_flag = nationalist_victory }
 	}
 }
 
@@ -108,14 +110,13 @@ camp_administration_civil_action_two_visible = {
 				NOT = { original_tag = USA }
 				AND = {
 					original_tag = USA
-					date > 1942.2.18
 					OR = { has_country_flag = camp_rework_usa_authority_active has_country_flag = camp_admin_civil_policy_authorized check_variable = { camp_admin_civil_admitted_k > 0 } }
 				}
 			}
 			OR = { has_country_flag = camp_admin_civil_policy_authorized has_active_camp_network = yes check_variable = { camp_admin_civil_admitted_k > 0 } }
 		}
-		AND = { original_tag = USA date > 1948.7.1 has_government = democratic has_country_flag = camp_rework_usa_authority_terminated OR = { check_variable = { camp_admin_civil_admitted_k > 0 } check_variable = { redress_pressure > 0 } } NOT = { has_country_flag = camp_admin_civil_claims_complete } }
-		AND = { original_tag = ITA date > 1935.12.31 NOT = { has_country_flag = camp_admin_civil_review_complete } }
+		AND = { camp_administration_civil_usa_claims_open = yes has_government = democratic OR = { check_variable = { camp_admin_civil_admitted_k > 0 } check_variable = { redress_pressure > 0 } } NOT = { has_country_flag = camp_admin_civil_claims_complete } }
+		AND = { original_tag = ITA NOT = { has_country_flag = camp_admin_civil_review_complete } }
 	}
 }
 
@@ -132,7 +133,7 @@ camp_administration_civil_action_two_available = {
 	camp_administration_civil_action_two_visible = yes
 	NOT = { has_country_flag = camp_admin_institution_slot_active }
 	OR = {
-		AND = { original_tag = USA has_country_flag = camp_rework_usa_authority_terminated date > 1948.7.1 }
+		camp_administration_civil_usa_claims_open = yes
 		camp_admin_country_sites_ready_for_reform = yes
 	}
 }

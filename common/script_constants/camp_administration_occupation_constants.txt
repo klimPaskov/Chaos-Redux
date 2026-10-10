@@ -15,7 +15,7 @@ camp_occ_value = {
 	# Deterministic incremental campaign attrition, not random odds or target quotas.
 	japan_campaign_monthly_fraction = 0.001
 	german_campaign_monthly_fraction = 0.025
-	# The dated movement offers the remaining proven living row; site throughput and exact receipts still bound every wave.
+	# The Lodz movement offers the remaining proven living row; site throughput and exact receipts still bound every wave.
 	lodz_auschwitz_living_share = 1.0
 	# A separately ordered movement draws from a proven living occupation row, never whole state population.
 	manual_auschwitz_living_share = 0.05
@@ -31,7 +31,21 @@ camp_occ_arrival = {
 	violence_request_fraction = 0.65
 	max_batches_per_month = 12
 }
-# Dated autumn 1943 Danish rescue. USHMM counts about 7,200 Jews escaping to
+# Campaign pacing in days. The campaign opens through war and policy, never a
+# calendar date; these lags only space its stages. They mirror the historical
+# gaps between the 1941 escalation, the first foreign deportations (about nine
+# months later), consolidation of a newly occupied country (Italy: about six
+# weeks), Hungary's occupation and its deportations (eight weeks), and the
+# liquidation of the Lodz ghetto as the front approached (about eight weeks).
+camp_occ_timing = {
+	schema = { any_key = yes data = int }
+	foreign_origin_campaign_days = 240
+	foreign_origin_held_days = 45
+	hun_order_delay_days = 57
+	hun_order_end_days = 113
+	lodz_window_days = 54
+}
+# Autumn 1943 Danish rescue. USHMM counts about 7,200 Jews escaping to
 # Sweden and about 470 deported to Theresienstadt: 7,200 / 7,670 = 0.94 of the
 # living cohort escaped. Vanilla state 138 Skane faces Copenhagen across the
 # Oresund; the Swedish capital is the fallback refuge.
@@ -40,7 +54,7 @@ camp_occ_rescue = {
 	danish_escape_share = 0.94
 	refuge_anchor_state = 138
 }
-# Dated partner deportation, Hungary 1944. USHMM: about 825,000 Jews lived in
+# Partner deportation, Hungary 1944. USHMM: about 825,000 Jews lived in
 # wartime Hungary and about 437,000 were deported between 15 May and 9 July 1944,
 # so 437 / 825 = 0.53 of each living origin cohort in a partner-held state is
 # placed under deportation orders. A share of a finite cohort, never a death target.

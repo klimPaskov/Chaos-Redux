@@ -38,8 +38,9 @@ camp_admin_country_ai_ger_radical_mandate = {
 			is_ai = yes
 			original_tag = GER
 			camp_admin_country_nazi_authority = yes
-			has_war = yes
-			date > 1941.6.21
+			camp_admin_ger_war_of_conquest = yes
+			# AI timing only: the order follows the war with the Soviet Union or its historical date.
+			OR = { has_war_with = SOV date > 1941.6.21 }
 			check_variable = { camp_admin_mandate < constant:camp_admin_mandate.radical }
 		}
 		set_temp_variable = { camp_admin_control_requested = constant:camp_admin_mandate.radical }
@@ -690,7 +691,8 @@ camp_admin_country_monthly = {
 		camp_admin_country_initialize = yes
 		set_variable = { camp_admin_country_last_month_key = camp_admin_month_key }
 		camp_admin_country_ai_ger_radical_mandate = yes
-		if = { limit = { is_ai = yes } camp_admin_ger_establish_krakow_site = yes }
+		# AI timing only: the Auschwitz site follows the historical spring 1940 order or the war in the east.
+		if = { limit = { is_ai = yes OR = { date > 1940.4.26 has_war_with = SOV } } camp_admin_ger_establish_krakow_site = yes }
 		camp_admin_country_ai_krakow_killing_role = yes
 		if = {
 			limit = { NOT = { camp_admin_country_regime_valid = yes } NOT = { has_country_flag = camp_admin_country_reformed } has_country_flag = camp_admin_country_legacy_active }

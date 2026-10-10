@@ -16,10 +16,12 @@ The parent additionally accepted bounded historical custody envelopes and explic
 | `camp_admin_country_reform` | Country, national reform | No inputs | Stops institutions and occupation campaign, releases finite survivors through foundation, starts paid civilian conversion, preserves evidence |
 | `camp_admin_country_release_registered_prisoners` | Country, retained Soviet release policy | Registry of SOV-responsible operational Gulag states with positive reconciled custody; output `camp_admin_country_last_released_k` | Releases only surviving enrolled people in place and closes intake only after a positive site receipt; the caller preflights every affected site and grants policy relief only after a positive actual total; no army reserve or population creation |
 | `camp_admin_country_start_oversight` | Country, native review decisions or deterministic AI | A free institutional slot and affordability checked by callers | Reserves the one slot for six paid months, then reduces national/legacy security authority |
-| `camp_admin_country_start_archives` | Country, native aftermath decision or AI | `camp_admin_country_archives_available` | Reserves institution slot for six paid months; completion preserves records and contributes existing evidence pressure |
+| `camp_admin_country_start_archives` | Country, native aftermath decision or AI after `camp_admin_country_postwar_reckoning` | `camp_admin_country_archives_available` | Reserves institution slot for six paid months; completion preserves records and contributes existing evidence pressure |
 | `camp_admin_country_apply_institutional_site_mortality` | State, existing guarded `camp_admin_monthly_state` pass | `camp_admin_country_experiment_site_active`, current surviving custody, supported local rate | Requests one measured institutional-cause death receipt through foundation; never modifies research progress or awards |
 | `camp_admin_ger_establish_krakow_site` | GER country; human decision or guarded AI monthly call | `camp_admin_ger_krakow_setup_eligible` and enough political power for `global.black_friday_price_genocide_decision_cost_build_concentration` | Debits that Event 026 sale price (25 PP outside a sale) and credits one Political Power sale purchase, registers a base detention site in state 88 once, records responsible authority and `site_established` history, refreshes the interface |
-| `camp_admin_country_ai_ger_radical_mandate` / `camp_admin_country_ai_krakow_killing_role` | AI GER country in guarded monthly pass | Nazi wartime context; later site flag, radical mandate, state-88 control and operational detention site | Calls the same paid mandate and selected-role commands used by the GUI; killing conversion and extermination registration are separate from detention setup |
+| `camp_admin_country_ai_ger_radical_mandate` / `camp_admin_country_ai_krakow_killing_role` | AI GER country in guarded monthly pass | Nazi authority in a war of conquest; later site flag, radical mandate, state-88 control and operational detention site | Calls the same paid mandate and selected-role commands used by the GUI; killing conversion and extermination registration are separate from detention setup |
+
+AI timing only decides when the AI makes these calls: the radical mandate waits for either a war with the Soviet Union or a date after 1941.6.21, and the Krakow setup waits for either a date after 1940.4.26 or a war with the Soviet Union. Human commands carry no calendar gate.
 
 The GUI uses `GetCampAdminCountryAction1Name`, `GetCampAdminCountryAction2Name`, their tooltip functions, and `GetCampAdminInstitutionSummary`.
 `camp_admin_research_progress` and `camp_admin_research_target` are read-only display copies of actual institutional progress and target.
@@ -29,7 +31,7 @@ There are no routine popup events or new worldwide hooks.
 ## Continuing experiment-site loss
 
 `camp_admin_country_experiment_site_active` is a state trigger requiring the original responsible authority, current direct or explicitly recognized subject control, reconciled live custody rows, a supported operational site, coercive or radical mandate, and at least Development spending.
-The German branch requires state 88, an experiment marker, Nazi Mengele authority, and the 1943-05-30 historical gate. Restricted, limited, full and bypass permission levels select separate centralized monthly fractions.
+The German branch requires state 88, an experiment marker, and an active German Mengele program under German responsibility, with no calendar gate. Restricted, limited, full and bypass permission levels select separate centralized monthly fractions.
 The Japanese branch requires state 328, the completed Pingfang bureau and experiment markers, active Ishii authority, and no prisoner-experiment shutdown; a Japanese subject may control Kirin only through the site's explicit subject-authority flag.
 The site monthly callback first applies custody, labor and any separately authorized killing-center violence causes. It then requests institutional loss from those remaining living detainees, scaled by the paid local support ratio and `camp_admin_institution_mortality` constants.
 The foundation measures the actual physical state-population debit, consumes that same amount from custody rows, records one institutional-cause site and original-authority receipt, and makes one shared Deaths projection; a rejected or floor-limited request records no institutional loss.
@@ -42,35 +44,35 @@ The tuning rates are gameplay fractions and are not historical death estimates. 
 
 ## German state-88 detention setup
 
-`camp_admin_ger_krakow_setup_context` requires initialized national administration, Nazi German authority at war on or after 1943-05-30, no reform or prior setup, direct control of state 88, and no active/closed camp marker, responsible-authority variable, concentration camp or extermination camp there.
+`camp_admin_ger_krakow_setup_context` requires initialized national administration, Nazi German authority in a war of conquest with a mandate above custody, no reform or prior setup, direct control of state 88, and no active/closed camp marker, responsible-authority variable, concentration camp or extermination camp there.
 `camp_admin_ger_krakow_setup_eligible` adds the development-budget requirement; the human `camp_admin_ger_establish_krakow_site` decision shows that requirement and a political-power quote, and the effect checks affordability again before debiting the Event 026 sale price of `genocide_decision_cost.build_concentration` (25 PP outside a sale); the decision's custom cost and its texts read the same `global.black_friday_price_genocide_decision_cost_build_concentration`.
 The effect sets German responsibility in state 88, ensures the standard concentration-camp level, registers `camp_rework_site_type.detention`, sets country and state once-only flags, and writes `camp_admin_history_kind.site_established` with state 88.
 `GetCampAdminHistoryKind` maps that new history kind to `camp_admin_history_site_established`; the player-facing text says “Detention site established.”
 The setup grants neither a killing role nor the optional Mengele experiment marker; the separately paid radical mandate and killing-role conversion remain required for the later Łódź occupation-to-custody route.
 The AI budget helper recognizes this setup context before the development-budget requirement and can raise spending through `camp_admin_set_budget` when its stock, reserve and policy-hold checks permit.
 Within the guarded monthly country callback, AI calls the paid radical-mandate helper, then the detention setup effect, then the paid selected-role helper in that source order; each helper has its own gate, so a failed early mandate attempt can be retried on a later month after the site exists.
-This is source implementation evidence, not proof that a natural 1944 scenario reaches the role, support, capacity, control and occupation-row gates or produces an exact engine transfer receipt.
+This is source implementation evidence, not proof that a natural campaign reaches the role, support, capacity, control and occupation-row gates or produces an exact engine transfer receipt.
 The bounded country callback currently depends on `genocide_monthly_global_pulse` through the monthly Chaos Meter on-action, whose entry guard checks that `settings_chaos_meter_disabled` is absent; this disabled-setting route needs parent resolution before reliable monthly availability can be claimed.
 
 ## Internal program map
 
 `camp_admin_country_start_program` receives the required temporary program input, validates that exact programme's historical and authority gates, selects a proven operational enrolled registered state, and saves its id in `camp_admin_institution_state_id`.
 The country registry loop uses the current country and `PREV`, never the global pulse's `ROOT`.
-Auschwitz is state88 and Pingfang is state328; earlier German institutions do not inherit Mengele's gate.
+Auschwitz is state88 and Pingfang is state328; earlier German institutions do not inherit the Auschwitz site gate.
 Japanese transport work selects a Chinese geographic host; Soviet design work selects a Gulag host.
 `camp_admin_country_select_program` deterministically chooses the first eligible unfinished program.
 
-| Program | Earliest phase and additional gate | Category | One-use bonus |
+| Program | Opening gate and additional requirement | Category | One-use bonus |
 |---|---|---|---|
-| Camp Inspectorate administration | 1936, Nazi regime | industry | 50% |
-| WVHA industrial coordination | March1942, Nazi regime at war | industry | 100% |
-| Auschwitz medical administration | 30May1943, Nazi regime, German-controlled operational Auschwitz, permitted existing program | support_tech | 50% |
-| Japanese occupation transport | 7July1937, war, Chinese geographic operating institution | industry | 75% |
-| Central Army administration | 1939, review authorized | support_tech | 50% |
-| Pingfang records | 1939, operating named institution, no shutdown | support_tech | 50% |
-| Soviet detained design bureaux | 1939, communist authority | engineers_tech | 75% |
-| Soviet wartime industry | 22June1941, war | industry | 100% |
-| Soviet engineer release | After1January1944, review authorized | engineers_tech | 50% |
+| Camp Inspectorate administration | Nazi regime | industry | 50% |
+| WVHA industrial coordination | Nazi regime at war, completed Inspectorate (`camp_admin_done_ger_inspectorate`) | industry | 100% |
+| Auschwitz medical administration | `camp_admin_country_mengele_site_gate` (Nazi regime with an operating state-88 site under German authority), permitted existing program | support_tech | 50% |
+| Japanese occupation transport | `camp_admin_jap_china_war`, Chinese geographic operating institution | industry | 75% |
+| Central Army administration | review authorized | support_tech | 50% |
+| Pingfang records | operating named institution, no shutdown | support_tech | 50% |
+| Soviet detained design bureaux | communist authority | engineers_tech | 75% |
+| Soviet wartime industry | `camp_admin_country_major_war` | industry | 100% |
+| Soviet engineer release | completed design bureaux (`camp_admin_done_sov_design_bureaux`), oversight authorized | engineers_tech | 50% |
 
 Program work requires a coercive mandate, development spending, at least 75% local support, and payment of 12 support equipment plus 5 PP for each advancing month.
 The six-month target takes twelve paid months if contested authority halves progress throughout.
@@ -100,7 +102,9 @@ All quantities ending `_k` are thousands.
 Admission changes membership only, not physical population.
 Only the accepted foundation receipt increments `camp_admin_country_census_<group>_enrolled_k`, aggregate state `camp_admin_country_census_enrolled_k`, national `camp_admin_country_cumulative_<group>_k`, and aggregate `camp_admin_country_cumulative_intake_k`.
 Those cumulative receipts survive death, release and capture, so the same enrollment allowance cannot repeatedly refill losses.
-For the German camp stock snapshots, the dated ceiling is compared with cumulative accepted enrollment before assigning any new share; falling live stock alone never reopens that date's intake.
+For the German camp stock snapshots, the campaign-age ceiling (`camp_admin_census_campaign_days`) is compared with cumulative accepted enrollment before assigning any new share; falling live stock alone never reopens that step's intake.
+The German prewar ceiling applies at war or with threat above 0.25; the 1942 stock step (435 days), the 1943 stock step (800 days), the 1945 stock step (1288 days) and the 1944 civilian-labor step (1135 days) apply at war once the German campaign is older than those ages, mirroring the historical gaps from June 1941.
+The Soviet 1941 ceiling applies at war, the Japanese industrial project step needs `camp_admin_jap_china_war`, the Pingfang step has no calendar gate, and the Burma-Thai labor step needs `camp_admin_country_major_war`.
 Full survivor release closes the affected host's automatic census intake, while the Soviet partial engineer release leaves other registered survivors in custody.
 Protected forced-transfer membership is not used as a census source; the existing verified transfer path remains separate.
 
@@ -116,11 +120,11 @@ Wider occupation membership belongs to `camp_occ_*`, which must exclude actual d
 
 The canonical country tuning is `common/script_constants/camp_administration_country_constants.txt`: progress, quote amounts, support requirement, authority accumulation/review relief, technical-personnel cohort, program enum, and historical/project envelopes.
 Concentrating authority reduces immediate institutional contention by 10, then increases security control by 4 per authorized month; economic sponsorship accumulates contention by 1 during active work.
-Historical gates are explicit dates because they express chronology rather than numerical balance.
+Gates are conditions (war, conquest, mandate, earlier programmes and political choices); historical dates remain only as AI timing or context and never gate a path.
 No persistent global event target is introduced.
 Immutable responsible-country pointers and the registered state array are supplied by foundation/integration.
 Named subject authorization is granted only to the accepted Japanese institution under the current MAN-to-JAP subject relationship; this does not authorize arbitrary subject camp control.
-Capture or invalid authority prevents further work; a saved program may resume only if its full historical and operational gate is valid again.
+Capture or invalid authority prevents further work; a saved program may resume only if its full programme and operational gate is valid again.
 Reform retains death/evidence totals and infrastructure while replacing the economic dependence through foundation's paid civilian slot.
 The former flat Soviet25000 manpower grant is removed because release in place does not create additional military manpower.
 

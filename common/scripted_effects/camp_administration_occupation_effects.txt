@@ -138,7 +138,7 @@ camp_occ_register_cohort = {
 						}
 					}
 				}
-				# Dated partner deportation: the German authority directs it while
+				# Partner deportation: the German authority directs it while
 				# the dominated partner keeps control of the state.
 				AND = {
 					check_variable = { camp_occ_source_partner = constant:camp_occ_value.transfer_valid }
@@ -1101,14 +1101,26 @@ camp_occ_apply_killing_arrival_loss = {
 	}
 }
 
-# Country scope. Reserve one share of a proven living Lodz row during the documented
-# August-September 1944 window. The pending share is a movement ceiling, not a death quota.
+# Country scope. When enemy forces close on Lodz while Auschwitz runs as a killing
+# center, Germany orders the ghetto cleared (historically August 1944). The order
+# lasts camp_occ_timing.lodz_window_days and reserves one share of a proven living
+# Lodz row; the pending share is a movement ceiling, not a death quota.
 # Supported monthly throughput and resident capacity are recalculated for every wave.
 camp_occ_try_lodz_auschwitz_transfer = {
 	set_temp_variable = { camp_occ_custody_result = constant:camp_occ_value.transfer_invalid }
 	if = {
 		limit = {
-			date > 1944.9.30
+			original_tag = GER
+			NOT = { has_country_flag = camp_occ_lodz_liquidation_ordered }
+			camp_occ_authority_has_campaign = yes
+			87 = { camp_occ_state_has_current_authority = yes genocide_state_has_enemy_forces_near_root = yes }
+			88 = { camp_occ_killing_destination_active = yes }
+		}
+		set_country_flag = camp_occ_lodz_liquidation_ordered
+	}
+	if = {
+		limit = {
+			NOT = { camp_occ_lodz_window_open = yes }
 			has_variable = camp_occ_lodz_pending_people
 		}
 		clear_variable = camp_occ_lodz_pending_people
@@ -1117,8 +1129,7 @@ camp_occ_try_lodz_auschwitz_transfer = {
 	if = {
 		limit = {
 			original_tag = GER
-			date > 1944.8.8
-			date < 1944.10.1
+			camp_occ_lodz_window_open = yes
 			camp_occ_authority_has_campaign = yes
 			87 = {
 				camp_occ_state_has_current_authority = yes
@@ -1253,6 +1264,21 @@ camp_occ_monthly_country = {
 	camp_occ_initialize_rows = yes
 	camp_admin_prepare_month_key = yes
 	if = {
+		limit = { NOT = { has_country_flag = camp_occ_campaign_opened } camp_occ_campaign_can_open = yes camp_admin_country_regime_valid = yes }
+		set_country_flag = camp_occ_campaign_opened
+	}
+	# Hungary's order follows German domination, counted from when both the
+	# domination and the German campaign exist.
+	if = {
+		limit = {
+			original_tag = GER
+			has_country_flag = camp_occ_campaign_opened
+			country_exists = HUN
+			HUN = { camp_occ_partner_under_german_influence = yes NOT = { has_country_flag = camp_occ_partner_dominated } }
+		}
+		HUN = { set_country_flag = camp_occ_partner_dominated }
+	}
+	if = {
 		limit = { NOT = { has_country_flag = camp_occ_country_closed } NOT = { check_variable = { camp_occ_last_month = camp_admin_month_key } } }
 		set_variable = { camp_occ_last_month = camp_admin_month_key }
 		camp_occ_reset_month_records = yes
@@ -1301,7 +1327,7 @@ camp_occ_monthly_country = {
 	}
 }
 
-# Country, responsible German authority, from the October 1943 order. Each
+# Country, responsible German authority, once the Danish deportation order stands. Each
 # living Danish-origin row still at its home state sends its escaping share
 # (camp_occ_rescue.danish_escape_share) to Sweden once, through the exact
 # movement receipt in escape mode: one measured debit and one measured credit,
@@ -1386,8 +1412,8 @@ camp_occ_register_partner_state = {
 	camp_occ_register_cohort = yes
 }
 
-# Country, the German authority, while the dated partner order stands (Hungary,
-# 15 May to 9 July 1944). Registers each partner-held foreign-origin cohort placed
+# Country, the German authority, while the Hungarian partner order stands (eight
+# to sixteen weeks after German domination). Registers each partner-held foreign-origin cohort placed
 # under deportation orders, then moves living people from those cohorts to the
 # state-88 killing center in exact waves bounded by supported throughput, resident
 # capacity and source headroom, as the Lodz route does. Each committed wave keeps
@@ -1523,7 +1549,7 @@ camp_occ_try_partner_deportation = {
 }
 
 # Country, Hungary, answering the German demand (camp_occ_partner.1). The
-# transports continue until the dated order lapses.
+# transports continue until the order lapses.
 camp_occ_partner_comply_with_order = {
 	set_country_flag = camp_occ_partner_deportations_complied
 }
@@ -1729,7 +1755,19 @@ camp_occ_track_controlled_state = {
 		camp_occ_try_register_current_state = yes
 	}
 }
+# STATE. Records when German authority took this state, for consolidation pacing.
+camp_occ_refresh_authority_held = {
+	if = {
+		limit = { camp_occ_state_has_german_authority = yes NOT = { has_state_flag = camp_occ_german_authority_held } }
+		set_state_flag = camp_occ_german_authority_held
+	}
+	else_if = {
+		limit = { NOT = { camp_occ_state_has_german_authority = yes } has_state_flag = camp_occ_german_authority_held }
+		clr_state_flag = camp_occ_german_authority_held
+	}
+}
 camp_occ_try_register_current_state = {
+	camp_occ_refresh_authority_held = yes
 	if = {
 		limit = {
 			NOT = { has_state_flag = camp_occ_registered }
@@ -1776,6 +1814,7 @@ camp_occ_stage_german_origin_request = {
 	subtract_from_temp_variable = { camp_occ_source_requested_k = camp_occ_pre_enrollment_decline_k }
 }
 camp_occ_on_state_control_changed = {
+	camp_occ_refresh_authority_held = yes
 	camp_occ_backfill_cohort_origin = yes
 	if = {
 		limit = {

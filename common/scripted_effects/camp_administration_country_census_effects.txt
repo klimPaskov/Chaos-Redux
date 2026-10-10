@@ -12,17 +12,22 @@ camp_admin_country_prepare_census = {
 		if = {
 			limit = { original_tag = GER }
 			set_temp_variable = { camp_admin_census_ceiling_k = constant:camp_admin_country_census.ger_early_k }
-			if = { limit = { date > 1939.8.31 } set_temp_variable = { camp_admin_census_ceiling_k = constant:camp_admin_country_census.ger_prewar_k } }
-			if = { limit = { date > 1942.8.31 has_war = yes } set_temp_variable = { camp_admin_census_ceiling_k = constant:camp_admin_country_census.ger_1942_k } }
-			if = { limit = { date > 1943.8.31 has_war = yes } set_temp_variable = { camp_admin_census_ceiling_k = constant:camp_admin_country_census.ger_1943_k } }
-			if = { limit = { date > 1944.12.31 has_war = yes } set_temp_variable = { camp_admin_census_ceiling_k = constant:camp_admin_country_census.ger_1945_k } }
+			# Expansion and war, then the campaign's age, raise the stock ceiling.
+			if = { limit = { OR = { has_war = yes threat > 0.25 } } set_temp_variable = { camp_admin_census_ceiling_k = constant:camp_admin_country_census.ger_prewar_k } }
+			set_temp_variable = { camp_admin_census_age_days = constant:camp_admin_census_campaign_days.ger_1942 }
+			if = { limit = { has_war = yes camp_admin_census_campaign_age_over = yes } set_temp_variable = { camp_admin_census_ceiling_k = constant:camp_admin_country_census.ger_1942_k } }
+			set_temp_variable = { camp_admin_census_age_days = constant:camp_admin_census_campaign_days.ger_1943 }
+			if = { limit = { has_war = yes camp_admin_census_campaign_age_over = yes } set_temp_variable = { camp_admin_census_ceiling_k = constant:camp_admin_country_census.ger_1943_k } }
+			set_temp_variable = { camp_admin_census_age_days = constant:camp_admin_census_campaign_days.ger_1945 }
+			if = { limit = { has_war = yes camp_admin_census_campaign_age_over = yes } set_temp_variable = { camp_admin_census_ceiling_k = constant:camp_admin_country_census.ger_1945_k } }
 			set_temp_variable = { camp_admin_census_uses_stock = 1 }
 			set_temp_variable = { camp_admin_census_lifetime_k = constant:camp_admin_country_census.ger_registered_lifetime_k }
 			camp_admin_country_apportion_census_ger_camps = yes
 			set_temp_variable = { camp_admin_census_uses_stock = 0 }
 			set_temp_variable = { camp_admin_census_lifetime_k = 0 }
+			set_temp_variable = { camp_admin_census_age_days = constant:camp_admin_census_campaign_days.ger_civilian_labor }
 			if = {
-				limit = { date > 1944.7.31 has_war = yes }
+				limit = { has_war = yes camp_admin_census_campaign_age_over = yes }
 				set_temp_variable = { camp_admin_census_ceiling_k = constant:camp_admin_country_census.ger_civilian_labor_1944_k }
 				camp_admin_country_apportion_census_ger_labor = yes
 			}
@@ -30,7 +35,8 @@ camp_admin_country_prepare_census = {
 		else_if = {
 			limit = { original_tag = SOV }
 			set_temp_variable = { camp_admin_census_ceiling_k = constant:camp_admin_country_census.sov_prewar_k }
-			if = { limit = { date > 1940.12.31 } set_temp_variable = { camp_admin_census_ceiling_k = constant:camp_admin_country_census.sov_1941_k } }
+			# Wartime arrests and deportations from newly held territory raise the ceiling.
+			if = { limit = { has_war = yes } set_temp_variable = { camp_admin_census_ceiling_k = constant:camp_admin_country_census.sov_1941_k } }
 			camp_admin_country_apportion_census_sov_camps = yes
 		}
 		else_if = {
@@ -47,7 +53,7 @@ camp_admin_country_prepare_census = {
 				}
 			}
 			if = {
-				limit = { date > 1937.7.6 }
+				limit = { camp_admin_jap_china_war = yes }
 				# Gameplay project capacity, not a historical prisoner census.
 				# Subsequent growth follows completed paid development at actual eligible hosts.
 				set_temp_variable = { camp_admin_census_ceiling_k = constant:camp_admin_country_census.jap_industrial_project_initial_k }
@@ -63,12 +69,12 @@ camp_admin_country_prepare_census = {
 				camp_admin_country_apportion_census_jap_industry = yes
 			}
 			if = {
-				limit = { date > 1938.12.31 NOT = { has_country_flag = japan_prisoner_experiments_shutdown } }
+				limit = { NOT = { has_country_flag = japan_prisoner_experiments_shutdown } }
 				set_temp_variable = { camp_admin_census_ceiling_k = constant:camp_admin_country_census.jap_pingfang_k }
 				camp_admin_country_apportion_census_jap_pingfang = yes
 			}
 			if = {
-				limit = { date > 1942.12.31 has_war = yes }
+				limit = { camp_admin_country_major_war = yes }
 				set_temp_variable = { camp_admin_census_ceiling_k = constant:camp_admin_country_census.jap_burma_thai_labor_k }
 				camp_admin_country_apportion_census_jap_railway = yes
 			}

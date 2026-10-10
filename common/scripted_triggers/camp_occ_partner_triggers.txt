@@ -1,5 +1,6 @@
 # Partner-controlled origin gates. Germany owns the rows and their responsibility.
 # Window quotes are temporary, read-only, and never alter persistent camp state.
+# Every window is measured from the day Germany's campaign opened, never a calendar date.
 camp_occ_extended_partner_country = {
 	OR = {
 		original_tag = SLO
@@ -21,107 +22,73 @@ camp_occ_extended_partner_influence = {
 		AND = { original_tag = FRA has_cosmetic_tag = FRA_VICHY }
 	}
 }
-# Country. The selected row supplies all date components and the enrollment share.
+# Country. The selected row supplies the window, measured in days since Germany's
+# campaign opened, and the enrollment share.
 camp_occ_extended_partner_quote = {
-	set_temp_variable = { camp_occ_order_sy = 0 }
-	set_temp_variable = { camp_occ_order_sm = 0 }
-	set_temp_variable = { camp_occ_order_sd = 0 }
-	set_temp_variable = { camp_occ_order_ey = 0 }
-	set_temp_variable = { camp_occ_order_em = 0 }
-	set_temp_variable = { camp_occ_order_ed = 0 }
+	set_temp_variable = { camp_occ_order_start_days = 0 }
+	set_temp_variable = { camp_occ_order_end_days = 0 }
 	set_temp_variable = { camp_occ_order_share = 0 }
 	if = {
 		limit = { original_tag = SLO }
-		set_temp_variable = { camp_occ_order_sy = constant:camp_occ_partner_table.slo_start_year }
-		set_temp_variable = { camp_occ_order_sm = constant:camp_occ_partner_table.slo_start_month }
-		set_temp_variable = { camp_occ_order_sd = constant:camp_occ_partner_table.slo_start_day }
-		set_temp_variable = { camp_occ_order_ey = constant:camp_occ_partner_table.slo_end_year }
-		set_temp_variable = { camp_occ_order_em = constant:camp_occ_partner_table.slo_end_month }
-		set_temp_variable = { camp_occ_order_ed = constant:camp_occ_partner_table.slo_end_day }
+		set_temp_variable = { camp_occ_order_start_days = constant:camp_occ_partner_table.slo_start_days }
+		set_temp_variable = { camp_occ_order_end_days = constant:camp_occ_partner_table.slo_end_days }
 		set_temp_variable = { camp_occ_order_share = constant:camp_occ_partner_table.slo_share }
 	}
 	else_if = {
 		limit = { original_tag = CRO }
-		set_temp_variable = { camp_occ_order_sy = constant:camp_occ_partner_table.cro_start_year }
-		set_temp_variable = { camp_occ_order_sm = constant:camp_occ_partner_table.cro_start_month }
-		set_temp_variable = { camp_occ_order_sd = constant:camp_occ_partner_table.cro_start_day }
-		set_temp_variable = { camp_occ_order_ey = constant:camp_occ_partner_table.cro_end_year }
-		set_temp_variable = { camp_occ_order_em = constant:camp_occ_partner_table.cro_end_month }
-		set_temp_variable = { camp_occ_order_ed = constant:camp_occ_partner_table.cro_end_day }
+		set_temp_variable = { camp_occ_order_start_days = constant:camp_occ_partner_table.cro_start_days }
+		set_temp_variable = { camp_occ_order_end_days = constant:camp_occ_partner_table.cro_end_days }
 		set_temp_variable = { camp_occ_order_share = constant:camp_occ_partner_table.cro_share }
 	}
 	else_if = {
 		limit = { original_tag = BUL }
-		set_temp_variable = { camp_occ_order_sy = constant:camp_occ_partner_table.bul_start_year }
-		set_temp_variable = { camp_occ_order_sm = constant:camp_occ_partner_table.bul_start_month }
-		set_temp_variable = { camp_occ_order_sd = constant:camp_occ_partner_table.bul_start_day }
-		set_temp_variable = { camp_occ_order_ey = constant:camp_occ_partner_table.bul_end_year }
-		set_temp_variable = { camp_occ_order_em = constant:camp_occ_partner_table.bul_end_month }
-		set_temp_variable = { camp_occ_order_ed = constant:camp_occ_partner_table.bul_end_day }
+		set_temp_variable = { camp_occ_order_start_days = constant:camp_occ_partner_table.bul_start_days }
+		set_temp_variable = { camp_occ_order_end_days = constant:camp_occ_partner_table.bul_end_days }
 		set_temp_variable = { camp_occ_order_share = constant:camp_occ_partner_table.bul_share }
 	}
 	else_if = {
 		limit = { OR = { original_tag = VIC AND = { original_tag = FRA has_cosmetic_tag = FRA_VICHY } } }
-		set_temp_variable = { camp_occ_order_sy = constant:camp_occ_partner_table.vic_start_year }
-		set_temp_variable = { camp_occ_order_sm = constant:camp_occ_partner_table.vic_start_month }
-		set_temp_variable = { camp_occ_order_sd = constant:camp_occ_partner_table.vic_start_day }
-		set_temp_variable = { camp_occ_order_ey = constant:camp_occ_partner_table.vic_end_year }
-		set_temp_variable = { camp_occ_order_em = constant:camp_occ_partner_table.vic_end_month }
-		set_temp_variable = { camp_occ_order_ed = constant:camp_occ_partner_table.vic_end_day }
+		set_temp_variable = { camp_occ_order_start_days = constant:camp_occ_partner_table.vic_start_days }
+		set_temp_variable = { camp_occ_order_end_days = constant:camp_occ_partner_table.vic_end_days }
 		set_temp_variable = { camp_occ_order_share = constant:camp_occ_partner_table.vic_share }
 	}
 	check_variable = { camp_occ_order_share > 0 }
 }
-camp_occ_extended_partner_window = {
-	set_temp_variable = { camp_occ_order_sy = 0 }
-	set_temp_variable = { camp_occ_order_sm = 0 }
-	set_temp_variable = { camp_occ_order_sd = 0 }
-	set_temp_variable = { camp_occ_order_ey = 0 }
-	set_temp_variable = { camp_occ_order_em = 0 }
-	set_temp_variable = { camp_occ_order_ed = 0 }
-	set_temp_variable = { camp_occ_order_share = 0 }
-	camp_occ_extended_partner_quote = yes
-	meta_trigger = {
-		text = {
-			NOT = { date < "[SY].[SM].[SD]" }
-			date < "[EY].[EM].[ED]"
+# Any scope. Germany's campaign is between two ages, in days.
+camp_occ_german_campaign_age_between = {
+	GER = {
+		meta_trigger = {
+			text = {
+				has_country_flag = { flag = camp_occ_campaign_opened days > [S] }
+				NOT = { has_country_flag = { flag = camp_occ_campaign_opened days > [E] } }
+			}
+			S = "[?camp_occ_order_start_days|.0]"
+			E = "[?camp_occ_order_end_days|.0]"
 		}
-		SY = "[?camp_occ_order_sy|.0]"
-		SM = "[?camp_occ_order_sm|.0]"
-		SD = "[?camp_occ_order_sd|.0]"
-		EY = "[?camp_occ_order_ey|.0]"
-		EM = "[?camp_occ_order_em|.0]"
-		ED = "[?camp_occ_order_ed|.0]"
 	}
 }
+camp_occ_extended_partner_window = {
+	camp_occ_extended_partner_quote = yes
+	camp_occ_german_campaign_age_between = yes
+}
+# Croatia's two operations: no movement between the first wave's end and the second's start.
 camp_occ_extended_partner_wave_window = {
 	camp_occ_extended_partner_window = yes
 	OR = {
 		NOT = { original_tag = CRO }
-		meta_trigger = {
-			text = {
-				OR = {
-					date < "[EY].[EM].[ED]"
-					NOT = { date < "[SY].[SM].[SD]" }
-				}
-			}
-			EY = "[?constant:camp_occ_partner_table.cro_first_end_year|.0]"
-			EM = "[?constant:camp_occ_partner_table.cro_first_end_month|.0]"
-			ED = "[?constant:camp_occ_partner_table.cro_first_end_day|.0]"
-			SY = "[?constant:camp_occ_partner_table.cro_second_start_year|.0]"
-			SM = "[?constant:camp_occ_partner_table.cro_second_start_month|.0]"
-			SD = "[?constant:camp_occ_partner_table.cro_second_start_day|.0]"
+		camp_occ_extended_cro_first_wave = yes
+		AND = {
+			set_temp_variable = { camp_occ_order_start_days = constant:camp_occ_partner_table.cro_second_start_days }
+			set_temp_variable = { camp_occ_order_end_days = constant:camp_occ_partner_table.cro_end_days }
+			camp_occ_german_campaign_age_between = yes
 		}
 	}
 }
 camp_occ_extended_cro_first_wave = {
 	original_tag = CRO
-	meta_trigger = {
-		text = { date < "[EY].[EM].[ED]" }
-		EY = "[?constant:camp_occ_partner_table.cro_first_end_year|.0]"
-		EM = "[?constant:camp_occ_partner_table.cro_first_end_month|.0]"
-		ED = "[?constant:camp_occ_partner_table.cro_first_end_day|.0]"
-	}
+	set_temp_variable = { camp_occ_order_start_days = constant:camp_occ_partner_table.cro_start_days }
+	set_temp_variable = { camp_occ_order_end_days = constant:camp_occ_partner_table.cro_first_end_days }
+	camp_occ_german_campaign_age_between = yes
 }
 camp_occ_extended_partner_order_stands = {
 	GER = { exists = yes camp_occ_authority_has_campaign = yes }

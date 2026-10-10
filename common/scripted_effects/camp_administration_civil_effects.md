@@ -13,7 +13,7 @@ This abstraction records membership among civilians already present at a host, w
 | `camp_administration_civil_prepare_monthly` | Country, before foundation monthly | Once per calendar month: ends invalid authority, closes national occupation contract, releases surviving detainees through foundation reform, opens one qualifying host and admits finite cohorts only if previous monthly policy funding succeeded | `camp_admin_country_prepare_monthly` |
 | `camp_administration_civil_monthly` | Country, after foundation maintenance and economic processing | Once per calendar month: shared quote/payment for administration, review and claims; pressure and idea updates | `camp_admin_country_monthly` |
 | `camp_administration_civil_action_one` | Country, `action_one_available` | Authorizes appropriate national institution, registers bounded recurring country processing; AI selects development budget; no immediate equipment or PP debit | Parent GUI dispatcher and `camp_admin_civil_authorize_policy_ai` |
-| `camp_administration_civil_action_two` | Country, `action_two_available` | Immediate survivor release/reform or dated US property-claims work; superseded USA security-sunset mission is removed before review authority flags change; paid institutional progress; AI selects priority budget | Parent GUI dispatcher and `camp_admin_civil_review_policy_ai` |
+| `camp_administration_civil_action_two` | Country, `action_two_available` | Immediate survivor release/reform or US property-claims work; superseded USA security-sunset mission is removed before review authority flags change; paid institutional progress; AI selects priority budget | Parent GUI dispatcher and `camp_admin_civil_review_policy_ai` |
 | `camp_administration_civil_open_next_host` | Authorized country, previous paid policy flag | At most one unassigned controlled/subject-controlled eligible host; uses existing registration and foundation initialization; transient `camp_admin_civil_next_host_id` is cleared | Prepare callback |
 | `camp_administration_civil_admit_host_cohort` | Eligible operational state with ROOT country | Consumes only `camp_admin_admission_accepted_k` from local remaining membership and national cumulative admission room | Prepare callback's bounded active-state loop |
 | `camp_administration_civil_classify_host` | State with ROOT country | Custody/labor role and persistent geographical responsibility labels; USA has custody role and a two-percent economic scale ceiling | Admission helper |
@@ -36,8 +36,8 @@ No civil helper modifies the shared Deaths core or directly changes civilian pop
 ## Controls and presentation
 
 `camp_administration_civil_country_supported` is the country routing trigger.
-`camp_administration_civil_action_one_visible` and `camp_administration_civil_action_two_visible` hide future dates and invalid governments.
-The USA review command requires a real authorized or admitted commitment after 1942-02-18, so an early generic camp network cannot terminate the later wartime authority.
+`camp_administration_civil_action_one_visible` and `camp_administration_civil_action_two_visible` hide unsupported countries, invalid governments and steps that are already active or complete.
+The USA review command requires a real USA commitment (active USA authority, an authorized policy or an admitted cohort), so an early generic camp network alone cannot terminate the wartime authority.
 Both the player review command and the automatic authority-loss review remove a still-active USA security-sunset timer before ending emergency authority; its timeout cannot then apply a second closure outcome.
 Matching `_available` triggers additionally require an unoccupied institutional slot.
 Authorization is a policy choice rather than an upfront purchase; monthly work proceeds only after the shared payment accepts the quoted costs.
@@ -54,28 +54,28 @@ The module creates no routine events or popups.
 
 ## Country distinctions
 
-British domestic internment requires wartime civilian government from 1940-05-16 and uses directly controlled British core locations.
+British domestic internment requires a major war (`camp_admin_country_major_war`) under a democratic or neutral government and uses directly controlled British core locations.
 It never admits Raj civilians into the British domestic cohort.
 Tribunal review releases surviving internees and uses civilian employment conversion.
-AI tribunal review opens from August 1940, rather than retaining mass internment until the end of the war.
+AI tribunal review weight (AI timing only, in `common/decisions/camp_administration_civil_decisions.txt`) rises after 31 July 1940 for the British cohort, after 17 December 1944 for the US and after 31 May 1945 for the Raj, and it also rises once the war has ended or custody authority is lost, rather than retaining mass internment until the end of the war.
 
-Raj political detention requires British subject status, wartime authority and a British civilian government from September 1939.
+Raj political detention requires British subject status, a war in progress and a democratic or neutral British government.
 Its local works role, accumulating autonomy resistance, actual autonomy movement and negotiated settlement remain separate from British domestic internment.
 Indian independence terminates colonial custody authority.
 
-US incarceration requires democratic wartime government from 1942-02-19 until 1944-12-18.
+US incarceration requires a democratic government and a major war (`camp_admin_country_major_war`) until the USA authority is terminated (`camp_rework_usa_authority_terminated`).
 Custody provides no industrial labor allocation.
 Civil-liberties pressure, court challenges and disrupted livelihoods persist through their respective stages.
-Court review releases survivors; property claims require democratic government from 1948-07-02, prior incarceration or outstanding claims, and six funded months.
-The 1948 claims abstraction is not the 1988 redress program.
+Court review releases survivors; property claims open once the USA authority is terminated and the war has ended (`camp_administration_civil_usa_claims_open`), with a democratic government, prior incarceration or outstanding claims, and six funded months.
+The claims abstraction is not the 1988 redress program.
 
-French refugee internment is a pre-Vichy institution from February 1939, with the Vichy authority branch gated separately from July 1940.
+French refugee internment is a pre-Vichy institution that opens under a democratic French government once the Spanish Republic has fallen (global flag `nationalist_victory`); the Vichy authority branch has no calendar gate.
 North African labor uses a distinct state role and pressure total.
-Vichy collaboration records retain the existing second-responsible-country mechanism and require fascist Germany after July 1942.
+Vichy collaboration records retain the existing second-responsible-country mechanism and require fascist Germany with its campaign open (`camp_occ_campaign_opened`).
 Free France and restored democratic government cannot continue Vichy authority.
 Release and refugee assistance use the foundation's real civilian-employment replacement.
 
-Italy retains an inherited colonial-legacy flag from the 1936 start but does not activate the wartime institution before 1940-06-10.
+Italy retains an inherited colonial-legacy flag set at initialization, and the wartime institution opens with a fascist government at war, without a calendar gate.
 Wartime mainland, Libyan, East African and occupied Balkan hosts remain geographical branches.
 German seizure invalidates current Italian control; the original Italian records are not reassigned to Germany.
 Later German persecution is handled through the parent capture/occupation and German country package, with German responsibility for its own subsequent actions.
@@ -146,7 +146,7 @@ The existing shared dynamic-effect registry was checked; this module uses owner-
 
 Historical anchors are documented in the task handoff.
 The task's `civil_scenarios.py` evaluates actual current source for selected date, government, finite-membership, reserves, payment, cancellation and release scenarios.
-It is a restricted script interpreter with explicit native fixtures, not HOI4 runtime evidence.
+It is a restricted script interpreter with explicit native fixtures, not HOI4 runtime evidence. Its dated authority cases, such as the 1942 USA case, predate the condition gates and need a rerun.
 The initial narrow event MCP inspection timed out after 180 seconds.
 Parent-owned GUI MCP and the probability auditor's final same-scenario compare remain completion requirements.
 The 2026-10-03 joined source scenarios exercise occupation-only uncertainty, rejected stale reform clicks, halted policy independence, exact healthy release and three funded review months; their evidence and MCP gaps are recorded in `docs/plans/system_camp_repression_rework_plans/administration_redesign_2026-09-06/occupation/origin_country_civil_integration_2026-10-03.md`.
