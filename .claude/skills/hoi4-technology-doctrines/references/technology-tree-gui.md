@@ -28,6 +28,13 @@ Folder windows go in `countrytechtreeview.gui`, not `countrytechnologyview.gui` 
 - `ignore_for_layout = yes` on a secondary `path` block prevents the "Found multiple potential grid boxes for tech" error.
 - Vanilla examples: the `infantry_folder` window and its `support_weapons_tree`, `night_vision_tree`, and `infantry_weapons_tree` gridboxes in `countrytechtreeview.gui`.
 
+Slot size is not free. `techtree_line_item` is one global 70x70 template and the line sprites `techtree_line_horisontal.dds` (144x16, 4 frames) and `techtree_line_vertical.dds` (64x36, 4 frames) are 36-pixel segments drawn from the slot centre, so a slot wider or taller than 70 leaves a visible gap in every connector.
+Keep `slotsize = { width = 70 height = 70 }` and space cards by using more slots: a step of 2 is one 140-pixel column, which is the pitch of the vanilla year headers.
+For a row pitch other than a multiple of 70, give each branch its own gridbox at its own pixel `position` and keep every card in that branch at the same `x`, the way the vanilla infantry folder stacks its branches at 100 to 115 pixel intervals.
+A year header reads correctly when it sits ten pixels left of its column at `y = 50`, and a branch label in the left gutter needs the gridbox origin pushed right far enough for the label plus a small gap, because a 72-pixel card starts exactly at the gridbox origin.
+
+A project technology does not have to be hidden. With `is_special_project_tech = yes`, a folder position and `allow = { ROOT = { is_special_project_completed = sp:<project> } }` it shows as a locked card that explains itself and uses the `GFX_technology_<folder>_special_project_*` backgrounds, as vanilla `jet_fighter1` does; keep its research weight at zero when a project effect already grants it.
+
 ```
 containerWindowType = {
 	name = "my_folder"
