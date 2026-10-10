@@ -33,16 +33,13 @@ If there is no leadership adapter, institution alignment still matters through t
 
 Domestic reactions are chosen from the target's actual situation. They create political choices before the finish line, not an additional acceptance vote after a sponsor reaches 100. At most one target reaction can be unresolved at a time. Evaluate on completed action milestones with a minimum 45-day interval. Do not run an unbounded daily country scan.
 
-These reactions are deterministic when their stated conditions first qualify after the interval. If several qualify together, select the oldest qualifying unmet condition. Random weighting can be added later only with an audited probability contract.
+These reactions are deterministic when their stated conditions first qualify after the interval. If several qualify together, select the oldest qualifying unmet condition. Each reaction offers two outcomes the sponsor could reasonably prefer; a reaction whose only alternative is giving something up for nothing is not included.
 
 | Incident | Trigger and political meaning | Sponsor choices | Target response and consequences |
 | --- | --- | --- | --- |
-| Funding disclosure | A sponsor completes a second exposed political operation within 60 days | Publish funding records for 25 political power, or leave the operation exposed | Publication clears that single exposure and raises target opinion +5 for 60 days. Declining retains the exposure for interference. Neither choice grants Influence. |
 | Government procurement demand | The target has an actual equipment shortage and a sponsor-backed officer institution | Redirect the sponsor's next military action to a valid requested equipment category, or keep its current offer | Fulfilling the request establishes the normal advisory relationship for an extra 30 days. Refusal grants no penalty beyond missing the extension. No invented shortage or compulsory payment. |
 | Investment dispute | An unfinished project loses its valid state slot or its state is no longer controlled | Relocate to a named valid state, pause up to 30 days, or terminate future funding | Already funded work remains attached to the contract. No extra Influence, free factory, or double refund. |
 | Coalition confidence vote | Target has a parliamentary adapter, an opposition movement at 50%+, and a sponsor-backed civilian institution | Fund the valid confidence route for 50 political power, or keep organizing | Use the country's own parliamentary resolution. Success grants the existing readiness window for a later realignment operation. It does not immediately puppet or award extra Influence. |
-| Officer objection | A sponsor attempts a civilian leadership change while another sponsor controls the officer institution | Spend 15 command power to preserve the current military chain, or accept a 15-day longer transition | Either valid choice can finish. The objection cannot create a permanent veto over political change. No purge is automatic. |
-| Budget review | An industrial program would add at least 10% of the target's pre-program industry | Continue the agreed program, or publicly renounce institutional preference | Continuing grants the economic institution on delivery. Renouncing still grants the building and Influence but does not align that institution. |
 
 A target AI does not secretly pick its future master. It reacts to the stated domestic conditions. The player sees the choice's effect before committing. A target cannot repeatedly demand free aid from a sponsor after every action.
 

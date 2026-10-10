@@ -59,8 +59,6 @@ The Great Game allocates three campaign slots across target priorities. The AI c
 
 An AI normally selects at most two funded targets at once. A third is allowed only for a near-complete action or a specifically higher-value opportunity. Unfunded registration in the other races remains visible and follows inactivity rules.
 
-## Required AI evidence
+## Scenarios the AI review must cover
 
-Inspect every real decision weight and MTTH provider through `hoi4.probability_inspect`. Evaluate named states for a compatible major, incompatible major, player-sized minor under AI control, poor sponsor, frontline shortage, 85-point leader, exhausted rival-loss budget, and five concurrent targets. Sweep popularity thresholds 25 and 50, finish proximity, available resources, and saturation counts.
-
-Treat the table above as an authored policy specification. It is not a probability distribution and does not establish a win rate. Use `hoi4.probability_evaluate`, `hoi4.probability_sweep`, `hoi4.probability_simulate`, and `hoi4.probability_compare` as appropriate after implementation. The read-only auditor supplies evidence and does not choose a preferred winner.
+The table above is an authored policy, not a probability distribution or a win rate. The implemented weights must behave sensibly for a compatible major, an incompatible major, an AI-controlled small minor, a poor sponsor, a sponsor with a frontline equipment shortage, an 85-point leader, an exhausted rival-loss budget, and five concurrent targets. The review should also vary popularity around 25% and 50%, finish proximity, available resources, and saturation counts.

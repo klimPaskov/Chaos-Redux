@@ -40,16 +40,12 @@ A zero-score rival never grants a benefit. No operation gains Influence merely b
 
 ## Blocking coalitions
 
-A Great Game blocking campaign can invite other contestants to share publicly visible evidence and support a single action. Other sponsors can join by committing 25 political power and their political slot for the remaining action duration. The initiating sponsor's fixed operation still has a maximum loss anchor of 20 and obeys the victim's common loss budget.
+A Great Game blocking campaign invites the other contestants to back one action against the leader. A sponsor joins by paying 25 political power and committing its political slot until the action completes. Joining only speeds the action up: with two funded members it finishes 15 days after it started, with three or more 10 days after it started, and never sooner than 5 days after the latest join. The board shows the revised date to every member.
 
-Coalition participation accelerates the one operation. With two funded members, its scheduled duration becomes 15 days. With three or more, it becomes 10 days. A new member cannot cause an immediate completion. Membership can only shorten an existing deadline. The new due date is the earlier of the existing deadline and the later of five days from that join or the original start date plus the revised duration. The board shows the revised date to every member. No coalition can exceed the normal victim loss budget.
-
-Participation also makes the same operation harder to invalidate through the initiator withdrawing. The oldest still-valid funded member can complete it if the original initiator disappears. It does not increase the maximum score loss, create a second attack, transfer Influence between members, or promise a joint mastership.
-
-After completion the coalition record closes. Members may immediately compete against one another when their normal cooldowns allow. This gives weaker sponsors a way to slow an imminent winner without creating a separate permanent alliance system.
+The loss stays capped at the operation's anchor of 20 and the victim's common loss budget, so a coalition is faster, not stronger. If the initiator drops out, the oldest remaining member completes the action. When it completes the coalition dissolves, and members compete against one another again under their normal cooldowns. Weaker sponsors can slow an imminent winner this way without a permanent alliance system.
 
 ## Defending a lead
 
 A leader can diversify action families to maintain forward progress, complete funded material work while rivals use political slots against it, replace an exposed institutional relationship, or simply conserve resources until its loss budget is exhausted. There is no paid immunity button that makes it impossible to contest the leader.
 
-The budget protects against arbitrary dogpiling, while the action slot and time cost make attacks expensive. Testing must still verify that the combination of saturation, inactivity, and loss limits permits contested races to finish. If normal campaigns remain indefinitely stuck, adjust the published loss cap or gains. Do not add hidden AI mercy or an automatic victory timer.
+The budget protects against arbitrary dogpiling, while the action slot and time cost make attacks expensive. Balance review must confirm that saturation, inactivity, and loss limits still let contested races finish. If normal campaigns stall indefinitely, adjust the published loss cap or gains rather than adding hidden AI mercy or an automatic victory timer.

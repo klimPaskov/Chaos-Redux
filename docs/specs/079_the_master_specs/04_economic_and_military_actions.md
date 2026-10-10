@@ -19,6 +19,8 @@ Investment commits civilian industrial capacity for a specified period and deliv
 
 These are Event 79 grant contracts with deliberately specified output ratios. They are not a claim that their factory-days equal vanilla construction costs. Their balancing cost is the donor's real unavailable industrial capacity, duration, political expenditure, and campaign-slot use. Initial tuning must be tested against ordinary construction opportunities and takeover rewards.
 
+When a target-owned state is at famine stage or worse in the [famine system](../../systems/famine_system.md), Public works can instead be contracted as a relief shipment to that state. It uses the same slot, political cost, factory commitment, duration, and Influence anchor, and is delivered through the famine owner's relief contract with the sponsor recorded as donor. The famine system applies the actual relief, and Influence is awarded only when that relief delivery completes. A hungry client is therefore won with food rather than with a road it cannot use, and a rival that captures or blocks the donor route faces the famine owner's relief-obstruction condemnation, not an Event 79 penalty.
+
 Building counts are discrete quantities. Do not replace the one-factory output with five factories to satisfy the general five-point tuning convention. The country's economy affects the value and placement of an investment, not whether a valid small state can receive a single useful project.
 
 ### Placement and delivery
@@ -70,8 +72,6 @@ A current verified advisory relationship raises the minimum compatibility of lat
 
 Volunteers and attachés already present in the normal game can contribute to seed and military-cooperation evidence. They are optional valid-world relationships, not a requirement to unlock the entire military family.
 
-## Payment and refund interpretation
+## Payment and discounts
 
-The common cost framework handles eligible quoted political, command, experience, and equipment costs. Factory reservation amount and duration are a separate owner adapter. Until that adapter has proven discount behavior, do not apply Black Friday to factory-days by guessing. Display exactly which components receive a supported discount.
-
-The full contracted output is delivered when the final discounted payable receipt and the required industrial commitment are satisfied. Discounts cannot reduce the target's promised weapons while still displaying the undiscounted shipment. The adapter must distinguish a purchase payment discount from a physical transfer quantity. For direct donor-to-target equipment aid, the transfer quantity is the actual physical debit and is not discounted into newly created weapons. Discount eligibility for that transfer component is therefore off by default.
+Discount eligibility for every component, including why physical equipment transfers and factory-days stay undiscounted, is defined once in [Part 15](integration/15_shared_systems_and_catalog.md#universal-discounted-costs). The full contracted output is delivered when the final payable receipt and the required industrial commitment are satisfied.

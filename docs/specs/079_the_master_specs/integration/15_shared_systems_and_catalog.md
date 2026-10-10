@@ -4,9 +4,7 @@
 
 Preserve Event 79 as Minor Repeatable, Chaos level 1, Diplomacy, Medium member, and To Be Reworked. Medium is member severity. It is not a probability and cannot be copied into a numeric participation field.
 
-The authoritative editable catalog is `docs/spreadsheets/chaos_redux_events_catalog.xlsx`. Update its Event 79 row and cluster membership through the project workbook workflow, then regenerate export CSVs with `.tools/export_event_catalog_csv.py`. The CSVs supplied with this package's inputs are snapshots. This planning task does not modify the workbook or its exports.
-
-The supplied cluster snapshot does not yet express this full Event 79 rework. The integration owner must update the existing Diplomacy cluster membership without creating a second cluster with a similar name. Align member IDs, roles, probabilities, minimum tiers, and danger metadata in the corresponding runtime arrays. Do not infer a numeric probability from the word Medium.
+At implementation, update the Event 79 row and the existing Diplomacy cluster membership in the authoritative workbook through the `chaos-redux-xlsx` workflow, then regenerate the CSV exports. Do not create a second cluster with a similar name, and keep the runtime cluster arrays aligned with the workbook.
 
 Event selection reserves target and capacity before recording a successful firing. No valid target or no capacity produces unavailable selection, not a zero-point phantom firing. An accepted root call consumes its normal repeat state once. Preserve the shared scheduler's countdowns, weight recovery, multiplayer mode, and cluster accounting.
 
@@ -27,8 +25,8 @@ Evolution logging uses the established context fields, including `events_log_evo
 | Deliver ordinary investment or aid | Normal development | 0 |
 | Unlock either evolution or expand capacity | Capability only | 0 |
 | Real ruling-ideology change | Existing shared political-change owner | 0 additional |
-| Actual successful puppeting | Existing shared subject-change owner, ordinary minor puppet +1 under supplied mechanics | 0 additional |
-| Target became a major before puppeting | Existing major-subject owner, +3 under supplied mechanics | 0 additional |
+| Actual successful puppeting | Existing shared subject-change owner, ordinary puppet +1 in the shared Chaos table | 0 additional |
+| Target became a major before puppeting | Existing subject-change owner, +3 for a major change | 0 additional |
 | A separate real war or peace occurs | Existing war or peace owner | 0 additional |
 | Race closes because the target becomes human or disappears | Administrative closure | 0 |
 
@@ -38,7 +36,7 @@ The design has no event-owned negative Chaos reward for withdrawing a campaign o
 
 ## Universal discounted costs
 
-Use the existing universal quote, affordability, payment, component receipt, refund, and settlement contract. Recompute a quote immediately before payment. Record actual paid amounts and refund only those amounts once. A tooltip preview is not a locked price or a receipt.
+Use the existing [universal cost modifier](../../../systems/universal_cost_modifier.md) quote, affordability, payment, component receipt, refund, and settlement contract. Recompute a quote immediately before payment. Record actual paid amounts and refund only those amounts once. A tooltip preview is not a locked price or a receipt.
 
 Physical equipment donations conserve equipment. Their material quantity is not eligible for a payment discount that creates extra recipient weapons. Administrative political costs may use their supported cost family. Factory commitments need a separately verified owner adapter and a stated eligibility policy. Until its exact discount path is proven, factory-days remain undiscounted and visibly identified as such.
 

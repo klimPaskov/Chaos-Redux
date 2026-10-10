@@ -14,7 +14,7 @@ The sponsor funds a sustained public campaign for its pledged ideology and polit
 
 | Variant | Stage | Cost | Duration | Influence anchor | Domestic result |
 | --- | --- | --- | --- | --- | --- |
-| Public campaign | Baseline | 25 political power | 25 days | 10 | +5 percentage points to the pledged ideology. Target opinion of sponsor +5 for 60 days unless already hostile. |
+| Public campaign | Baseline | 25 political power | 25 days | 10 | +5 percentage points to the pledged ideology. |
 | National campaign | Influence Campaigns | 50 political power | 20 days | 20 | +10 percentage points. Marks a visible campaign exposure for 60 days. |
 | Coordinated media campaign | The Great Game | 75 political power | 15 days | 25 | +10 percentage points. Opens the campaign to targeted counter-propaganda. |
 
@@ -30,11 +30,11 @@ The sponsor provides diplomatic backing, campaign organization, and support to t
 
 | Variant | Stage | Cost | Duration | Influence anchor | Domestic result |
 | --- | --- | --- | --- | --- | --- |
-| Support the incumbent | Baseline | 30 political power | 25 days | 15 | Ruling ideology +5 percentage points. Target opinion of sponsor +5 for 60 days. |
+| Support the incumbent | Baseline | 30 political power | 25 days | 15 | Ruling ideology +5 percentage points. |
 | Support a governing bloc | Influence Campaigns | 60 political power | 20 days | 25 | Ruling ideology +5. Eligible civilian institution becomes sponsor-backed for 60 days. |
 | Underwrite a governing pact | The Great Game | 100 political power | 20 days | 30 | Ruling ideology +10. Eligible governing institution becomes sponsor-backed for 90 days. |
 
-Support the Government is efficient when the incumbent remains friendly. Its weakness is dependence on that incumbent. If the government changes to an incompatible recipient before completion, the campaign cannot quietly pay the new opponent. Cancel the uncompleted political service with a 50% refund of actual political power paid, rounded down to the allowed quantum. Delivered previous results are untouched.
+Support the Government is efficient when the incumbent remains friendly. Its weakness is dependence on that incumbent. If the government changes to an incompatible recipient before completion, the campaign cannot quietly pay the new opponent. Cancel the uncompleted political service with a 50% refund of actual political power paid, rounded down. Delivered previous results are untouched.
 
 The last two variants produce a temporary institutional relationship, not a freely stackable country-wide modifier. Only one sponsor can hold a particular institutional alignment at a time. Replacing it requires a valid competing domestic action. The institution is defined by the country's actual political form.
 
@@ -48,7 +48,7 @@ The sponsor funds a legal, tolerated, or underground movement associated with th
 | Fund a national opposition movement | Influence Campaigns | 75 political power | 25 days | 20 | Pledged ideology +15. One eligible opposition institution becomes sponsor-backed for 60 days. |
 | Consolidate an alternative government | The Great Game | 100 political power | 20 days | 25 | Pledged ideology +15. Creates a 60-day readiness window for a valid realignment operation. |
 
-This family is the main outsider route. Its popularity change can make later propaganda, government support, or leadership pressure more efficient. It carries an explicit diplomatic cost. Repeating opposition actions cannot create automatic civil wars or erase the country's focus tree.
+This family is the main outsider route. Its popularity change can make later propaganda, government support, or leadership pressure more efficient. Its diplomatic cost is real: the incumbent's opinion penalty can push the sponsor below the 0 opinion that Support the Government requires, so a sponsor that backs the opposition usually gives up the incumbent route for a while. Repeating opposition actions cannot create automatic civil wars or erase the country's focus tree.
 
 If the pledged movement enters government while the action is running, complete the delivered organizational work as opposition-family work, using the new compatibility. Subsequent campaigns can use Support the Government. The movement does not receive a duplicate gain for changing action families after completion.
 

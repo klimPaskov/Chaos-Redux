@@ -25,24 +25,6 @@ A sponsor's factory commitment can use an event-owned dynamic modifier if the in
 
 ## Source and production modes
 
-Generated symbolic art is appropriate for the action icons, category emblem, idea icon, achievement subjects, and non-identifying alternate-history report scenes. Existing native country flags and leader portraits supply country identity. Do not generate a historical person's face to fill a generic diplomatic image.
+Generated symbolic art is appropriate for the action icons, category emblem, idea icon, achievement subjects, and non-identifying alternate-history report scenes. Existing native country flags and leader portraits supply country identity. Do not generate a historical person's face to fill a generic diplomatic image. Report scenes must not contain fake text, slogans, country names, Influence bars, or an HOI4 window, and the black-and-white news crop must remain readable at 397×153.
 
-The event-assets worker must inspect the canonical reference root `.agents/skills/chaos-redux-event-assets/assets/gfx_references/`, its README, catalog, and matching contact sheets before generation. Those visual references were not in the uploaded archive and have not been visually checked for this package.
-
-Report source scenes are generated unframed, then processed to the documented consumer. Do not draw fake text, slogans, country names, numerical Influence bars, or an HOI4 window into a runtime event picture. The black-and-white news crop must remain readable at 397×153.
-
-## Alpha, conversion, and registration
-
-Decision and idea icons need clean subject silhouettes and native ImageGen transparency under [the current asset contract](../../../../.agents/skills/chaos-redux-event-assets/SKILL.md).
-Preserve the native alpha through processing and DDS conversion; background removal is a documented fallback.
-Do not use checkerboard pixels or a flattened white rectangle to simulate alpha. An icon must remain distinct from the other action families at its actual 32-pixel display size.
-
-Use the project's conversion tools and expected BGRA DDS contract. Validate width, height, channel order, alpha, and the 128-byte DDS header before runtime registration. Final filenames and case must match `.gfx` declarations. Placing a file under `gfx/` is not sufficient to register it.
-
-Gameplay assets use event-specific subfolders. Achievement runtime files follow the shared root-path exception. Keep generation prompts, source references, processing receipts, and planned/complete/blocked status in a production manifest. Do not claim generated or approved status from this planning manifest alone.
-
-## Achievement-state derivation
-
-Generate or source one transparent subject per achievement. Derive earned, grey, and not-eligible images from the same subject using the immutable 64×64 templates and the supplied processing script. Use `achievement_template.png`, `achievement_template_grey.png`, and `overlay.png` through the project's achievement processor. Do not generate three unrelated pictures or redraw the frame.
-
-The art worker delivers paths, sizes, alpha proof, conversions, and a contact sheet. The parent owns runtime sprite registration unless that exact file ownership is explicitly delegated.
+Reference inspection, native transparency, processing, DDS conversion, achievement triplet derivation from the immutable templates, and the production manifest all follow [the current asset contract](../../../../.agents/skills/chaos-redux-event-assets/SKILL.md). Each icon must remain distinct from the other action families at its 32-pixel display size. The art worker delivers paths, sizes, conversions, and a contact sheet; the parent owns runtime sprite registration.

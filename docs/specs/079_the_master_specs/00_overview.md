@@ -46,3 +46,15 @@ The ending announces the winner and the political means that mattered most. Losi
 Read Parts 01 through 08 for the full game rules. Part 09 contains worked campaign examples. The specialist folders define AI, interface, assets, achievements, integration, writing direction, and research. Implementation contracts, source coverage, unverified engine requirements, test cases, and ready handoff prompts live in the [implementation working records](../../plans/079_the_master_plans/).
 
 The five action-family names and two evolution names supplied in the user brief are preserved. Other action, incident, achievement, and interface names in these documents are **working labels, not final localisation**. Numeric values introduced here are initial design tuning. They are not claimed to be playtested or separately approved by the user.
+
+## Revision log
+
+### 2026-10-10 spec audit
+
+Basis: 10 Oct 2026 spec audit under the user's planning-package brief.
+
+- Influence is a whole number: gains round down once at completion, replacing quarter-point precision and fractional displays (Parts 02 and 09).
+- Removed fairy-dust opinion bonuses from propaganda and incumbent support; the opposition opinion penalty is kept and explained as the real cost of that route (Part 03).
+- Cut three incidents whose alternatives were empty or cosmetic (funding disclosure, officer objection, budget review), leaving three reactions with genuine choices (Part 06).
+- Added a famine connection: Public works can become a relief shipment delivered through the famine owner when a target state is starving (Parts 04 and 16).
+- Shortened the blocking-coalition timing rules, consolidated discount and Chaos rules into their Part 15 homes, and replaced tool and workflow narration in Parts 10 to 12 with outcome requirements and skill links.

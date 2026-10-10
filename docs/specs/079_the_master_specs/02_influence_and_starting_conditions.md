@@ -6,7 +6,7 @@ The takeover threshold is 100 Influence. The opening score is between 0 and 45. 
 
 Influence represents the sponsor's ability to determine the target's foreign and domestic decisions. It is not identical to opinion, party popularity, intelligence network strength, economic output, or autonomy. Those values affect entry conditions and action outcomes while retaining their normal game meanings.
 
-Use quarter-point output precision for action gains and losses. Show whole numbers when exact and at most two decimal places otherwise. Integer anchors in this specification follow the project's five-point tuning convention. Fractions produced by compatibility and saturation are calculated results, not separately tuned arbitrary values.
+Influence, gains, and losses are whole numbers. Every calculated gain rounds down once at completion, so the board never shows fractional Influence. Integer anchors in this specification follow the project's five-point tuning convention.
 
 ## Initial position
 
@@ -41,7 +41,7 @@ Compatibility is recalculated at positive action completion using the sponsor id
 
 Political actions use C. Economic actions use the greater of C and 0.75. Military actions use the greater of C and 0.75 when the target has an active verified advisory relationship with that sponsor, otherwise C. This makes practical assistance possible across ideology without removing the political advantage of a friendly government.
 
-An entrenched aligned sponsor can receive 2.5 times the political gain of a weak ideological outsider from the same anchor. The outsider can improve this situation through opposition support or propaganda. It can also use material assistance while building political support. It never needs a hidden permission flag to win.
+An entrenched aligned sponsor receives about 2.5 times the political gain of a weak ideological outsider from the same anchor. The outsider can improve this situation through opposition support or propaganda. It can also use material assistance while building political support. It never needs a hidden permission flag to win.
 
 ## Repeated-action returns
 
@@ -51,11 +51,9 @@ Rolling windows include completions on the current day and exclude entries exact
 
 The positive gain is:
 
-`G = floor(4 × anchor × compatibility × saturation) / 4`
+`G = floor(anchor × compatibility × saturation)`
 
-Apply this once at completion. The target's existing Influence is not multiplied. Keep positive scores capped at 100 once takeover is committed. Any overshoot is recorded for diagnostics but is not exportable to another target.
-
-An optional incident-specific adjustment is listed in its incident definition and cannot introduce an undocumented multiplier. Most incidents affect popularity, eligibility, or project delivery directly, leaving the standard gain formula intact.
+Apply this once at completion. The target's existing Influence is not multiplied. Keep positive scores capped at 100 once takeover is committed. Overshoot is discarded and is never exportable to another target. Incidents in Part 06 change popularity, eligibility, or delivery directly and never add a multiplier to this formula.
 
 ## Action capacity and cost disclosure
 

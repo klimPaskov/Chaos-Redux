@@ -45,10 +45,6 @@ Plan the compact board around an approximately 500-pixel usable category width, 
 
 Use flags and text together for participant identity. Use percentage or exact-value text with each bar, so color is not the only way to understand a lead. Allow wrapping or controlled ellipsis for long country names while the tooltip exposes the full name. Avoid narrow click targets and overlapping hover regions.
 
-## Implementation and visual proof
+## Implementation boundary
 
-Before native GUI implementation, the interface worker needs a reviewed reference image showing this category in an actual HOI4-style frame. This planning package provides the layout contract and art directions, not an approved rendered reference or an in-game screenshot.
-
-Inspect the exact owner window and native consumer with `hoi4.gui_inspect`, then use the available GUI renderer and comparison tools on baseline, Great Game, paused investment, long names, and completed-race states. Record exact viewport and scale. Inspect hit regions and text overflow in addition to the visual image.
-
-The GUI worker owns only the Event 79 category board and its event-owned files. Shared Event Log and settings windows remain with the parent integration owner. GUI art can decorate the board, but every live score, tooltip, selection, and payment remains native.
+Native implementation follows a reviewed reference image under the `chaos-redux-scripted-gui` workflow. The review states that matter most are baseline, Great Game, paused investment, long names, and a completed race. The event UI worker owns only the Event 79 category board and its event-owned files; the shared Event Log and settings windows stay with their owners. Art can decorate the board, but every live score, tooltip, selection, and payment remains native.
