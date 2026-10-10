@@ -7,6 +7,28 @@ description: Use when creating, sourcing, processing, converting, organizing, wi
 
 Turn accepted visual requirements into source art, processed PNG previews, engine-ready files, runtime placement, manifests, and a reviewable wiring handoff. Loose generated or downloaded images are not finished assets.
 
+## Reference map
+
+Read the reference that matches the asset family before producing it:
+
+- [references/reference-library.md](references/reference-library.md): the visual-reference library, canonical reference paths for every family, and reference-use rules. Read before generating, sourcing, processing, or wiring any asset.
+- [references/icon-and-ui-families.md](references/icon-and-ui-families.md): icons, achievements, decision-category art, UI panels, visual packs, progression variants, formable and state-puzzle assets, animated sprites, and the 2D unit icon and counter contract.
+- [references/portrait-production.md](references/portrait-production.md): every character portrait, portrait icon, source placeholder, and user-supplied final.
+- [references/event-images-and-flags.md](references/event-images-and-flags.md): report, news, and super-event images and every flag.
+- [references/unit-visuals.md](references/unit-visuals.md): equipment and technology art, counters, division-template emblems, and the 3D model package handoff.
+- [references/manifest-and-lineage.md](references/manifest-and-lineage.md): the asset manifest fields and generated-candidate lineage and review.
+
+Skill-local `assets/` holds the reference and component libraries, and `tools/` holds the bundled converters and processors.
+
+## Image-generation route
+
+This skill owns the image-generation route for the whole repository. Claude Code generates images with the `generate_image` tool of the gptimage MCP server (parameters: `prompt`, `out`, `quality` low|medium|high|auto, `size` WIDTHxHEIGHT, `reference_images`). Codex uses native ImageGen instead. Everywhere else, "image generation" means this route.
+
+- Make one image per call. Existing output paths are auto-versioned, so name the final `out` path explicitly and use the path the tool reports.
+- State each reference image's role in the prompt, for example "Image 1 is the vanilla style reference, Image 2 the subject to keep".
+- For alpha-backed families, request a genuinely transparent background in the prompt. The tool has no explicit alpha parameter, so verify the alpha channel of the saved PNG, and fall back to the documented [background-removal fallback](#native-transparency-and-background-removal-fallback) only when the saved PNG has no usable alpha.
+- When a call fails, check authentication with `image_auth_status` before retrying.
+
 ## Scope and routing
 
 Asset coverage is authorization-bounded. Do not infer a custom asset merely because its gameplay object exists. Create an asset family only when an accepted spec row, asset manifest row, or explicit user instruction requests it. Apply the same rule to optional portraits, route emblems, animation, and other asset families not present in the accepted requirement set.
@@ -18,11 +40,11 @@ Never infer an advisor, high-command, officer-corps, dossier-card, or other smal
 Route file production through narrow project subagents. The main agent provides the bounded brief, reviews the output, and performs final wiring:
 
 - `chaosx_asset_source_researcher` for non-portrait real or archival image sourcing, historical flag-design research, historically attested symbols, user-provided source photos, archival decision category pictures, and report/news/super-event images that must depict real photographed material
-- `chaosx_portrait_creator` for every character portrait, including explicitly authorized fictional advisor masters: grounded source research, durable archival storage, crops and placeholders, fictional native ImageGen production, user-supplied styled-result validation, processing, DDS conversion, portrait-specific wiring, manifests, and handoffs, following [references/portrait-production.md](references/portrait-production.md)
-- `chaosx_generated_event_art` for generated non-icon event art, including fictional or alternate-history report images, news images, super-event images, ImageGen-created flat flag designs, faction emblems, UI panels, generated decision category pictures, and progression-state base art. It does not own character portrait masters or finals.
+- `chaosx_portrait_creator` for every character portrait, including explicitly authorized fictional advisor masters: grounded source research, durable archival storage, crops and placeholders, fictional image-generation production (see [Image-generation route](#image-generation-route)), user-supplied styled-result validation, processing, DDS conversion, portrait-specific wiring, manifests, and handoffs, following [references/portrait-production.md](references/portrait-production.md)
+- `chaosx_generated_event_art` for generated non-icon event art, including fictional or alternate-history report images, news images, super-event images, image-generation-created flat flag designs, faction emblems, UI panels, generated decision category pictures, and progression-state base art. It does not own character portrait masters or finals.
 - `chaosx_icon_artist` for focus, idea, national-spirit, officer-corps, decision, decision-category, mission, achievement, technology, intelligence-agency, intelligence-operation, commander-trait, medal, military-raid, state-modifier, MIO, faction, building, modifier icons, and exact state-piece graphics derived from verified map geometry
 
-Flags are a flat graphic-design pipeline, not event artwork. Historical flag research establishes the documented geometry, colours, and symbols, but ImageGen still produces the final clean flat design under [Flags](#flags).
+Flags are a flat graphic-design pipeline, not event artwork. Historical flag research establishes the documented geometry, colours, and symbols, but image generation still produces the final clean flat design under [Flags](#flags).
 
 For animated work, route by asset type first. Then require the chosen asset subagent to follow `chaos-redux-frame-animation` for frame plans, per-frame source art, normalization, contact sheets, preview GIFs, frame sheets, static fallbacks, and animation handoffs.
 
@@ -114,108 +136,8 @@ Read the complete requirements in [Durable portrait source archive](references/p
 
 ### Reference asset examples
 
-This skill owns its visual-reference library under:
-
-`C:\Users\klimp\OneDrive\Documents\Paradox Interactive\Hearts of Iron IV\mod\chaos_redux\.agents\skills\chaos-redux-event-assets\assets`
-
-`assets/gfx_references/` is the canonical semantic library, with Vanilla HOI4 as the primary source and explicitly marked Chaos Redux examples where needed. Do not route reference work through project-root asset folders or another skill-local copy.
-
-Start with:
-
-- library rules and contact sheets: `assets/gfx_references/README.md`
-- exact source provenance and dimensions: `assets/gfx_references/CATALOG.md`
-
-Unless a path below begins with `assets/`, interpret it relative to `assets/gfx_references/`.
-
-Every semantic reference directory contains its own `contact_sheet.png`; there is no shared `contact_sheets/` directory. Contact sheets are labeled with filenames and native dimensions, and are review aids rather than reference examples themselves. Common icon families (focus, ideas, decisions, decision categories, technologies, and achievement states) have at least 15 references, while other tracked texture and icon families have at least 5. The interface library covers complex vanilla scripted GUIs and other native interfaces, with meaningful functional compositions for each distinct layout family. Crop MCP renders to useful UI bounds; full-window images dominated by empty space are unsuitable reference examples. Retain full-render source, source window/files, original resolution and UI scale, and crop bounds in provenance so each crop can be traced back to its native layout.
-
-#### Canonical portrait paths
-
-- country leaders: `assets/gfx_references/portraits/leaders/`
-- army and navy commanders: `assets/gfx_references/portraits/commanders/`
-- operatives: `assets/gfx_references/portraits/operatives/`
-- advisors and high-command dossier cards: `assets/gfx_references/portraits/advisors/`
-
-The leader reference shelf at `assets/gfx_references/portraits/leaders/` is the direct portrait folder for agents that need one. It holds only byte-aligned copies of the curated leader references from `assets/gfx_references/portraits/`, is never a separate source of truth or a runtime asset folder, and uses `gfx_references/REFERENCE_MANIFEST.md` for the current file list. Do not wire any reference shelf into runtime GFX, and do not infer advisor assets from it. Country leaders, commanders, and operatives are full `156x210` portrait textures. For portrait work, inspect the canonical role-specific contact sheet. Advisor and high-command dossier references are native `65x67` cards and use their own canonical contact sheet; do not substitute full leader, commander, or operative portraits for this family.
-
-#### Canonical flag and event-art paths
-
-- flat flags: `flags/normal/`, `flags/medium/`, and `flags/small/`
-- report-event art: `event_art/report/`
-- news-event art: `event_art/news/`
-- super-event art: `event_art/super_event/`
-
-#### Canonical interface layout paths
-
-- general settings: `scripted_guis/general_settings/`
-- institutional boards: `scripted_guis/institutional_boards/`
-- Chaos Redux settings: `scripted_guis/chaos_redux/settings/`
-- Chaos Redux event log: `scripted_guis/chaos_redux/event_log/`
-- Chaos Redux pressure and deaths: `scripted_guis/chaos_redux/chaos_meter/`
-
-Read `scripted_guis/README.md`, inspect the root and category contact sheets, then inspect the paired installed vanilla or Chaos Redux `.gui`, focus-inlay, and `common/scripted_guis` sources before creating a scripted GUI reference. The in-game captures and source-backed MCP crops have distinct provenance in `REFERENCE_MANIFEST.md`; neither replaces the new or redesigned window's required compositional reference.
-
-Accept only clean interface references rendered under plausible, internally consistent scenarios: no unresolved dynamic localisation tokens, raw localisation keys, placeholder/debug text, contradictory empty/populated messages, simultaneously visible mutually exclusive panes, or meaningless blank fields. When C++-bound text or rows cannot be supplied otherwise, use source fixtures in isolated temporary copies of vanilla layouts, preserving source-equivalent geometry, native hierarchy, fonts, assets, and controls. Record every fixture change and its source/scenario provenance explicitly; never edit installed vanilla or core shared sources, or bake fake labels/buttons into screenshot art. Reject the candidate if clean, faithful output cannot be produced.
-
-#### Canonical gameplay-icon paths
-
-- national focus: `icons/national_focus/`
-- ideas and national spirits: `icons/ideas/`
-- decisions: `icons/decisions/`
-- missions: `icons/missions/`
-- decision category icons: `icons/decision_categories/`
-- decision category pictures: `icons/decision_categories/pictures/`
-- achievement state triplets: `icons/achievements/`
-- officer corps spirits: `icons/officer_corps_spirits/`
-- technologies: `icons/technologies/`
-- special projects: `icons/special_projects/`
-- balance of power: `icons/balance_of_power/`
-- intelligence agencies: `icons/intelligence_agency/`
-- intelligence operations: `icons/intelligence_operations/`
-- commander traits: `icons/commander_traits/`
-- medals: `icons/medals/`
-- military raids: `icons/military_raids/`
-- state modifiers: `icons/state_modifiers/`
-- military industrial organizations: `icons/military_industrial_organizations/`
-- factions: `icons/factions/`
-- buildings: `icons/buildings/`
-- modifiers: `icons/modifiers/`
-
-The canonical decision category picture family is:
-
-`C:\Users\klimp\OneDrive\Documents\Paradox Interactive\Hearts of Iron IV\mod\chaos_redux\.agents\skills\chaos-redux-event-assets\assets\gfx_references\icons\decision_categories\pictures`
-
-This family contains the larger visual pictures used to establish a decision category's theme or territorial context. It is separate from the small category icon family at `icons/decision_categories/`.
-
-The current reference examples use a native `114x101` canvas. Treat that size as the reference-family canvas, not as a universal runtime assumption. Inspect the active vanilla or Chaos Redux sprite and GUI consumer before choosing the final runtime size.
-
-The picture folder must contain its own `contact_sheet.png`. If the contact sheet is missing, create it before new category-picture work. Label every reference with its filename and native dimensions, record each source as Vanilla, Chaos Redux, or user-provided reference material in `CATALOG.md`, and update the reference library README when the family or workflow changes. The reference images and contact sheet are review-only assets. Never wire, recolour, trace, or ship them as runtime art.
-
-After placing a technology or doctrine icon, use the read-only `mcp__hoi4_agent_tools__hoi4_tech_inspect` in `explain` or `lint` mode to verify the sprite and texture references, then use the `assets` or affected folder view in `mcp__hoi4_agent_tools__hoi4_tech_render` for deterministic review. Apply the AGENTS.md retry limit to these checks. Tool exposure does not establish service health or standalone Technology Tree Viewer installation. If the route remains unavailable, inspect the technology, GFX, DDS, and folder placement directly and report the missing visual check; a standalone viewer is required only when the task needs it. Missing or ambiguous assets remain implementation findings. This skill still owns source art, processing, DDS conversion, placement, manifests, and sprite handoff.
-
-#### Canonical unit-visual paths
-
-- equipment and technology art: `units/equipment/technology_art/`
-- large land-unit counters: `units/land/counters_large/`
-- land map counters: `units/land/map_counters/`
-- division-template emblems: `units/land/division_template_emblems/`
-- air map counters: `units/air/map_counters/`
-- naval map counters: `units/naval/map_counters/`
-- land model materials: `units/models_3d/land_materials/`
-- air model materials: `units/models_3d/air_materials/`
-- naval model materials: `units/models_3d/naval_materials/`
-
-The semantic tree is not a bank of interchangeable pictures. Use the folder for the exact owning UI or model surface, then follow the cataloged source, native canvas, frame count, transparency, and owning definition.
-
-The reusable achievement creation inputs live under `icons/achievements/template/`. The actual supplied filenames are `achievement_template.png` (completed background), `achievement_template_grey.png` (grey and not-eligible background), and `overlay.png` (unchanged red-cross not-eligible overlay). They are workflow inputs rather than reference examples, so they are excluded from the achievement contact sheet and coverage count. Preserve these supplied files byte-for-byte and at their exact native alignment.
-
-Do not add new reference images outside the skill-local `assets/` root. Add Vanilla HOI4 and Chaos Redux semantic references under `assets/gfx_references/` with exact provenance, dimensions, and contact-sheet coverage recorded in its catalog. Keep reusable source components under `assets/visual_components/` and record their native canvas and role in its catalog.
-
-Before generating, sourcing, processing, or wiring an asset, read the library rules, inspect the matching category and contact sheet, and follow the cataloged source path to its owning `.gfx`, `.gui`, `.asset`, or `.mesh` definition when engine behavior matters. Canonical GFX reference PNGs are never final assets: do not wire, recolor, trace, or ship them. If no category matches, inspect the closest canonical category plus a direct vanilla or established Chaos Redux precedent before choosing a style.
-
-For matching icon and portrait briefs, inspect `assets/visual_components/CATALOG.md` and the relevant contact sheet after the exact vanilla or Chaos Redux consumer and `assets/gfx_references/` family. The catalog role governs whether a component is only a visual reference or may also be a persistent background layer. Keep every used component source and ImageGen source separate from the processed preview and final DDS; record the local catalog entry, role, and layer path in the output manifest. The exact consumer still governs dimensions, alpha, states, and wiring, and achievement templates and state rules still apply.
-
-When validating inherited GUI or GFX references, check both the mod and installed vanilla roots before declaring a DDS or other resource missing. A missing literal `effectFile` `.lua` path alone does not prove a missing asset. Inspect matching installed-vanilla `.gfx` declarations and the associated shader resource before reporting a missing source. Record the exact declaration, resource path, and lookup evidence without assuming a generic `.lua` to `.shader` mapping. Source linkage evidence does not prove rendered behavior or live-game correctness.
+This skill owns its visual-reference library under `.claude/skills/chaos-redux-event-assets/assets`, with `assets/gfx_references/` as the canonical semantic library and Vanilla HOI4 as the primary source. Before generating, sourcing, processing, or wiring any asset, read the library rules, inspect the matching category and contact sheet, and follow the cataloged source to its owning definition; reference PNGs are never final assets and must not be wired, recolored, traced, or shipped.
+Read the complete requirements in [Reference asset examples](references/reference-library.md#reference-asset-examples) before this work.
 
 ### Asset source rules
 
@@ -227,7 +149,7 @@ Report images, news images, and super-event images may be either internet-source
 
 Use internet-sourced imagery when the asset must show a real photographed person, specific real battle, real place, real object, real newspaper, real poster, real map, real archive item, or other verifiable historical material.
 
-Use `$imagegen` when the event is fictional, alternate-history, symbolic, supernatural, high-chaos, or when a unique scene is more important than matching an existing archive image. Generated event-photo assets should be prompted as period-authentic documentary material, not modern cinematic concept art.
+Use image generation (see [Image-generation route](#image-generation-route)) when the event is fictional, alternate-history, symbolic, supernatural, high-chaos, or when a unique scene is more important than matching an existing archive image. Generated event-photo assets should be prompted as period-authentic documentary material, not modern cinematic concept art.
 
 For generated World War II-era report/news/super-event images:
 
@@ -255,7 +177,7 @@ Read the complete requirements in [Portrait subject ownership gate](references/p
 
 #### Fictional portraits
 
-Fictional or impossible portraits use native ImageGen through the portrait worker, with complete processing and wiring.
+Fictional or impossible portraits use image generation (see [Image-generation route](#image-generation-route)) through the portrait worker, with complete processing and wiring.
 Read the complete requirements in [Fictional portraits](references/portrait-production.md#fictional-portraits) before this work.
 
 #### User-provided assets
@@ -266,14 +188,14 @@ Treat user-provided images as sources, record that provenance, and complete the 
 
 ### Generate and refine source art
 
-Use the official `$imagegen` skill and built-in `image_gen` for generated symbolic or fictional assets, including icons, flat flags, emblems, UI panels, progression art, and permitted event scenes. Choose ChatGPT Images 2.5 by the work being done:
+Use image generation (see [Image-generation route](#image-generation-route)) for generated symbolic or fictional assets, including icons, flat flags, emblems, UI panels, progression art, and permitted event scenes. Choose ChatGPT Images 2.5 by the work being done:
 
 - **Flare:** quick static new generations, including icons, report/news images, thumbnails, and static concept drafts.
 - **Sunburst:** every existing-asset edit, scripted-GUI compositional reference, and every animation seed, draft, source frame, iteration, edit, and final. Never use Flare for an animation draft. Keep canvas, transparent bounds, anchors, silhouette, palette, edges, lighting, proportions, and unchanged regions consistent; model choice does not replace frame validation or drift checks.
 
-The built-in tool exposes no model, quality, size, or destination-path selector: describe the consumer canvas, composition, detail, and background in the prompt, inspect returned dimensions, then process to the exact runtime canvas. When model selection is unavailable, retain the named preference for selectable tools but report only the actual exposed execution path, never an unreported backend or API model name as a built-in control.
+Describe the consumer canvas, composition, detail, and background in the prompt whichever tool runs: the Codex built-in tool exposes no model, quality, size, or destination-path selector, and the gptimage `generate_image` tool exposes `quality`, `size`, and `out` but no model selector. Inspect returned dimensions, then process to the exact runtime canvas. When model selection is unavailable, retain the named preference for selectable tools but report only the actual exposed execution path, never an unreported backend or API model name as a built-in control.
 
-Use CLI/API only when explicitly requested, following the installed official skill and verified parameter contract; do not duplicate its runner or silently switch paths. If ImageGen is unavailable, report the blocker and stop before an alternate route.
+Use CLI/API only when explicitly requested, following the installed official skill and verified parameter contract; do not duplicate its runner or silently switch paths. If image generation is unavailable, report the blocker and stop before an alternate route.
 
 Do not create core artwork from simple shapes, placeholders, contact sheets, layout-only mockups, empty UI boxes, or generated charts. Final art must be real generated, sourced, or user-provided artwork, not circles, rectangles, lines, gradients, geometric diagrams, or other primitive-shape stand-ins.
 
@@ -295,7 +217,7 @@ Label each supplied image by index and filename, with its role and the propertie
 | Geometry or composition anchor | Intended arrangement, silhouette proportions, camera, reserved space | Sketch marks, labels, incidental props, invented map geometry |
 | Insert or compositing input | Explicitly named object or layer with its intended placement | Its backdrop, unrelated content, unintended text |
 
-Inspect local edit targets with `view_image` before editing and attach inputs using the actual built-in schema. When all targets have local paths, use `referenced_image_paths`; otherwise use the smallest `num_last_images_to_include` covering the required recent images, and never supply both. Do not rely on an unseen path, ambiguous “previous image,” or filenames alone to convey visual references.
+Inspect local edit targets with `view_image` (Read in Claude Code) before editing and attach inputs using the active tool's actual schema. With the gptimage tool, pass the local paths in `reference_images` and state each image's role in the prompt. With the Codex built-in tool, when all targets have local paths, use `referenced_image_paths`; otherwise use the smallest `num_last_images_to_include` covering the required recent images, and never supply both. Do not rely on an unseen path, ambiguous “previous image,” or filenames alone to convey visual references.
 
 #### Focused edits
 
@@ -309,21 +231,21 @@ Map every alias of a shared texture to its actual consumer before changing dimen
 
 #### Native transparency and background-removal fallback
 
-Apply native transparency to icons, counters, emblems, overlays, decorative UI pieces, transparent animation frames, and every family whose inspected consumer leaves unused canvas transparent. Full-canvas scenes, flags, portraits, and painted panels retain the background required by their consumer and reference family. Do not generate an alpha-backed asset on an opaque or chroma background as the normal route. Request a real transparent background in the first built-in ImageGen call, retain that native-alpha source PNG, and preserve its alpha through crop, alignment, resizing, frame assembly, and DDS conversion.
+Apply native transparency to icons, counters, emblems, overlays, decorative UI pieces, transparent animation frames, and every family whose inspected consumer leaves unused canvas transparent. Full-canvas scenes, flags, portraits, and painted panels retain the background required by their consumer and reference family. Do not generate an alpha-backed asset on an opaque or chroma background as the normal route. Request a real transparent background in the first image-generation call, retain that native-alpha source PNG, and preserve its alpha through crop, alignment, resizing, frame assembly, and DDS conversion.
 
 Validate native transparency before processing: unused corners and padding must contain real zero-alpha pixels, the painted subject must retain nonzero alpha and complete edges, and the image must contain no fake checkerboard, matte, halo, key colour, or unintended transparent holes.
 
 For transparent icon sources, a nonzero-alpha bounding box touching the canvas is not sufficient evidence of a clipped subject.
 Inspect boundary coverage at more than one alpha threshold (for example, 1, 8, and 16), together with source-resolution and native-size views.
 Isolated alpha-1 residue outside a complete, inset subject may receive bounded exterior-noise cleanup during normalization; preserve the untouched source, all legitimate subject detail, and the chosen threshold/bounds evidence.
-If a visible leaf, frame, or other subject part is actually cut off, use a focused ImageGen edit to restore it; padding or shrinking the clipped painting does not restore the missing detail.
+If a visible leaf, frame, or other subject part is actually cut off, use a focused image-generation edit to restore it; padding or shrinking the clipped painting does not restore the missing detail.
 
 Background removal remains a fallback for either of these cases:
 
-- the built-in ImageGen result ignored the transparency request or failed alpha validation
+- the image-generation result ignored the transparency request or failed alpha validation
 - an inherited, internet-sourced, or user-provided image has an unwanted opaque backdrop and the accepted asset type requires transparency
 
-First use a targeted built-in ImageGen edit that changes only the background to real transparency and preserves the subject, silhouette, colours, internal opacity, framing, and edge detail. If that still fails, use a deterministic local background-removal or chroma-key process only when its tool is actually installed and verified in the current environment. Preserve the untouched source, record the tool and settings, inspect for spill and clipped edges, and compare the repaired candidate with the source. If no verified fallback tool exists or removal damages the subject, mark the asset `blocked` or `needs_user_review`. Do not invent a helper path or silently ship an opaque square.
+First use a targeted image-generation edit that changes only the background to real transparency and preserves the subject, silhouette, colours, internal opacity, framing, and edge detail. If that still fails, use a deterministic local background-removal or chroma-key process only when its tool is actually installed and verified in the current environment. Preserve the untouched source, record the tool and settings, inspect for spill and clipped edges, and compare the repaired candidate with the source. If no verified fallback tool exists or removal damages the subject, mark the asset `blocked` or `needs_user_review`. Do not invent a helper path or silently ship an opaque square.
 
 #### Review each iteration
 
@@ -338,45 +260,18 @@ Read the complete requirements in [Icon creation rules](references/icon-and-ui-f
 
 ### Report event images
 
-Report images are period documentary photographs or field material with clear subjects, natural period framing, no modern UI overlays, and no generated text. Apply Asset source rules for archival versus fictional imagery and era fit. The final image is `210x176`, black and white with sepia; full colour requires an explicit user exception recorded in the manifest.
-
-#### Report-event card treatment
-
-Report-event images use a finished `210x176` RGBA canvas. The source photograph is processed as a slightly tilted documentary card with transparent edge space and a soft drop shadow. The transparent corners are part of the style.
-
-Do not ask `$imagegen` to create the tilted card. Generate or source the documentary photograph first, then apply the card treatment locally. This keeps the tilt, shadow, and margins consistent.
-
-```powershell
-python -B .agents/skills/chaos-redux-event-assets/tools/process_report_event_image.py source.png processed_report_event.png
-python -B .agents/skills/chaos-redux-event-assets/tools/process_report_event_image.py source_folder processed_folder
-```
-
-The script performs cover crop, black-and-white conversion, sepia application, grain, paper border, deterministic tilt, transparent canvas margin, and soft shadow. It writes RGBA PNG output. Convert the processed PNG to DDS through the normal repo workflow.
-
-Validation:
-
-- processed PNG is exactly `210x176`
-- final DDS is exactly `210x176`
-- corner pixels are transparent
-- no hard photo pixels are clipped
-- tilt is visible but subtle
-- shadow is soft and not a thick border
-- edge space is transparent, not black padding
-- source remains readable after crop, tilt, shadow, and DDS conversion
-
-Generated report images must still receive this local report-card treatment.
+Report images are `210x176` period documentary photographs, black and white with sepia (full colour only by a user exception recorded in the manifest), with no modern UI overlays and no generated text. Sourced and generated report images alike receive the local report-card treatment (tilt, transparent edge space, soft shadow) before DDS conversion.
+Read the complete requirements in [Report event images](references/event-images-and-flags.md#report-event-images) before this work.
 
 ### News event images
 
-News images are `397x153` black-and-white documentary photographs or period press illustrations with clear central subjects, strong contrast, period composition, no modern UI overlays, and no generated text. Apply Asset source rules for archival versus fictional imagery and era fit. Convert generated sources to black and white with period press contrast/grain and no modern colour remnants. Record the source link/license or generation prompt and source-mode rationale.
+News images are `397x153` black-and-white documentary photographs or period press illustrations with clear central subjects, no modern UI overlays, and no generated text. Source mode and era fit follow Asset source rules, and the source link or generation prompt is recorded.
+Read the complete requirements in [News event images](references/event-images-and-flags.md#news-event-images) before this work.
 
 ### Super-event images
 
-Super-event images are `457x328` scenes with strong central composition, a dramatic theme, readable subjects, enough contrast for HOI4 UI, and no generated text or small-detail clutter. Apply Asset source rules for archival versus fictional imagery and era fit, and Generate and refine source art for scene-art requirements and documented user exceptions.
-
-If a super-event needs an audio cue, use `chaos-redux-super-events` and research a suitable public domain or clearly licensed recording. Register the final cue as sound from the event-scoped `sound/<event_id>_<event_slug>/` folder. Never create event or super-event audio from generated test tones, primitive waveforms, beeps, noise beds, or local oscillator output, including sine, square, triangle, and sawtooth waveforms.
-
-Document each track's title, composer, performer or recording source where relevant, checked license or public-domain status, source link, thematic fit, suggested in-game use, and editing notes. Do not claim public-domain status without checking; mark an unclear license uncertain or unsuitable.
+Super-event images are `457x328` real scenes, archival images, painted illustrations, or generated documentary-style images with a strong central composition and no generated text. Audio cues use `chaos-redux-super-events` with checked licensing, never generated tones.
+Read the complete requirements in [Super-event images](references/event-images-and-flags.md#super-event-images) before this work.
 
 ### Decision category pictures
 
@@ -385,38 +280,8 @@ Read the complete requirements in [Decision category pictures](references/icon-a
 
 ### Flags
 
-Flags should use clean symbolic designs that look like intentional flag designs, not simple-shape placeholders, palette swaps, ugly filters, or flipped/recolored variants. Treat flags as flat identity assets, not artwork or illustrated scenes.
-
-Inspect the complete flat flag ladders in `flags/normal/`, `flags/medium/`, and `flags/small/` before creating or processing flags. Compare all three sizes together in `flags/contact_sheet.png`.
-
-Keep the design readable across the required normal `82x52`, medium `41x26`, and small `10x7` ladder.
-
-HOI4 flag TGAs must use the same origin/header convention as vanilla flags. Validate with `file`, completed flag TGAs should read as Targa image data at the correct size and must not end with `- top`. If a flag displays upside down in-game while the artwork looks correct in an image viewer, fix the TGA encoding/origin on the flag files themselves. Do not add custom UI sprites, scripted-localisation routing, DDS display copies, or other workarounds for flag orientation.
-
-Use enough heraldic detail to prove that the design is authored rather than a basic-shape placeholder, while keeping the principal emblem readable at `10x7`. Prefer a layered civic, heraldic, industrial, botanical, maritime, or institutional emblem with a clear outer silhouette over an isolated circle, star, arrow, stripe, or geometric blob.
-
-Avoid generated text unless the design absolutely requires it and the final output is manually checked.
-
-Always use `$imagegen` for every new flag, including historically attested and real-world designs. Historical research still comes first: save and cite a reliable design reference, then use it as an image input and strict design constraint for imagegen. The generated result must be a clean, flat flag reconstruction, not an illustration of a flag. Reject waving fabric, folds, flagpoles, skies, lighting, gradients, painterly texture, vignettes, fake lettering, invented seals, perspective, shadows, or any scene around the flag. Manually compare geometry, colour fields, symbol count, symbol orientation, and heraldic details with the cited reference before resizing it. Imagegen is not permission to reinterpret a documented historical design.
-
-For existing countries that already have game-provided or repository-approved base flags, do not replace the no-suffix base flag as part of an ideology pass. Keep the base flag unchanged, or restore it from the approved prior asset if an asset pass damaged it, unless the user explicitly asks for that base flag to be redone or the country receives a deliberate focus/event/cosmetic-tag transformation. Ideology variants should be separate assets for `_communism`, `_democratic`, `_fascism`, and `_neutrality`, not mutations of the base flag with one small shape, a palette swap, a color filter, a vertical flip, or a copied emblem.
-
-For focus-tree or event route flag changes, use explicit cosmetic tags or route-specific flag files and document the trigger/focus that changes the flag. Do not create default flag overrides or new base flags for vanilla-supported or already-existing countries just because they participate in an event.
-
-Historical or historically grounded flags must use sourced motifs, documented heraldry, period symbols, or clearly explained alternate-history synthesis. If no directly attested flag exists, state that in the manifest and produce a historically grounded design from relevant motifs instead of inventing unrelated symbols.
-
-Generated fictional or alternate-history flag variants must come from a separate `$imagegen` result for each visually distinct design and then be processed into final flag sizes. Preserve the generated emblem geometry, internal heraldic construction, and identifying details through export. Do not replace the generated design with local rectangles, circles, stars, arrows, traced silhouettes, or other programmatically drawn geometry. Do not use a solid-fill normalizer, aggressive palette quantizer, vector trace, or edge simplifier that reduces generated detail to primitive shapes. Mechanical cropping, colour management, edge cleanup, orientation correction, resizing, and TGA export are allowed, but they must not become the source of the design.
-
-Keep the full ImageGen source master and create a comparison sheet containing that master plus the normal, medium, and small exports. Reject a flag when its normal export no longer contains the distinctive generated emblem or when its small export reads as an accidental blob. The flat-design restrictions apply to both source and exports.
-
-Before marking any flag complete, verify normal, medium, and small TGA files:
-
-- correct dimensions across the required size ladder
-- correct visual orientation in a contact sheet
-- TGA origin/header convention consistent with vanilla HOI4 flags, `file` output must not show `- top`
-- no byte-identical ideology variants unless the design is intentionally shared and documented
-- no upside-down copies
-- no accidental no-suffix base-flag replacement for countries that were only meant to receive ideology variants
+Flags are flat identity assets on the `82x52`, `41x26`, and `10x7` TGA ladder. Every new flag comes from image generation after cited historical research, is never replaced by locally drawn geometry, and must pass the orientation, TGA-header, and ladder-consistency checks before completion.
+Read the complete requirements in [Flags](references/event-images-and-flags.md#flags) before this work.
 
 ### Country-leader, commander, operative, and named-officeholder portraits
 
@@ -460,16 +325,8 @@ Read the complete requirements in [Animated sprites, scripted GUI assets, and an
 
 ### Unit visual references
 
-Treat every unit visual as a domain-and-surface-specific pipeline. Inspect the matching catalog entries, contact sheet, and owning vanilla definition before deciding what the task needs.
-
-- `units/equipment/technology_art/` contains flat 2D equipment illustrations used by equipment and technology sprites. Native canvases vary; follow the owning `interface/*.gfx` sprite.
-- `units/land/counters_large/` contains large frame-aware land-unit strips. Preserve the cataloged `noOfFrames`, frame order, per-frame footprint, and transparent bounds.
-- `units/land/map_counters/` contains land map-counter art. It is not a large division-designer strip.
-- `units/land/division_template_emblems/` contains division-template identity emblems. It is not equipment art or map-counter art.
-- `units/air/map_counters/` and `units/naval/map_counters/` contain domain-specific map-counter art. Do not substitute land counters or resized equipment art.
-- `units/models_3d/land_materials/`, `units/models_3d/air_materials/`, and `units/models_3d/naval_materials/` contain UV model materials paired with cataloged `.mesh`, `.asset`, and entity definitions. They are not 2D icons, finished renders, or concept sheets.
-
-Classify the requested deliverable before creating art: equipment/technology illustration, large land counter, land/air/naval map counter, division-template emblem, or land/air/naval 3D model package. Give each class its own brief, source art, native canvas or UV layout, frame metadata, final path, and handoff. A 3D task must keep model geometry, materials, entity wiring, and any separately produced concept reference distinct. Do not derive one unit pipeline by resizing, relabeling, or recoloring another.
+Every unit visual is a domain-and-surface-specific pipeline: classify the deliverable (equipment or technology art, large land counter, land, air, or naval map counter, division-template emblem, or 3D model package), inspect the matching catalog entries and owning vanilla definition, and never derive one unit pipeline by resizing, relabeling, or recoloring another.
+Read the complete requirements in [Unit visual references](references/unit-visuals.md#unit-visual-references) before this work.
 
 #### 2D icon and counter generation contract
 
@@ -478,28 +335,21 @@ Read the complete requirements in [2D icon and counter generation contract](refe
 
 #### 3D model package handoff
 
-Route model production to [chaos-redux-3d-model-pipeline](../chaos-redux-3d-model-pipeline/SKILL.md) and `chaosx_3d_model_pipeline`; read its route selection, intake, and evidence/handoff requirements before briefing or accepting a model package. The 3D skill owns provider/dependency gates, source-image preparation, separate body/item generation, supported rig/action attempts, Blender assembly/fallback, geometry, materials, weights, contacts, and export/reimport. Do not duplicate those procedures in a 2D art brief.
-
-The brief and returned package must identify the profile, requested operation, deterministic job root, source/provider lineage, exact vanilla mesh/entity precedent, source height, entity scale and effective runtime height, axes/origin/contact plane, required actions and root-motion policy, PDX channels and dimensions, `.mesh`/`.anim` outputs, reimport evidence, and exact runtime consumer. For humanoids, use measured installed vanilla infantry geometry and apply entity scale once, never an assumed real-world height. Require all components and real articulated motion; unavailable production capabilities prevent the affected output, while unavailable review tools limit the claims made about it.
-
-For every firing state, require the action → discharge frame/time → verified muzzle/weapon locator → particle/beam/muzzle effect and applicable light → licensed weapon-matched soundeffect → source/license → entity consumer → evidence crosswalk. Attack, defend, support_attack, and other firing states are independent consumers. Silent or particleless firing and unrelated weapon-family substitutes are incomplete. A declared non-firing armed action receives no firing effects merely because it carries a weapon.
-
-Model textures follow the 3D skill's shared `.tools/3d_pipeline/textures/` BC1/BC3 full-mip contract, active `.gfx` overrides, and hash-bound UV/material masks, not the uncompressed 2D DDS recipe below. Unit audio uses `.tools/3d_pipeline/audio/master.py` with source/derivative attribution and hashes. Decoded bytes or a geometry-only reimport do not establish rendered materials, deformation, audio playback, or live-game behavior.
-
-The 3D worker owns sources, checkpoints, textures, previews, exports, manifests, model/audio evidence, and the mandatory bounded counter handoff to `chaosx_icon_artist`; this asset skill owns final counter art. Equipment illustrations, division emblems, and frame sheets remain separate surfaces. The parent owns final `.asset`, entity, `.gfx`, particles, sound definitions, unit/building/gameplay wiring, selected-source runtime synchronization, and final evidence review. The user performs live-game validation; do not request or await it to finish the package.
+3D model production routes to `chaos-redux-3d-model-pipeline` and `chaosx_3d_model_pipeline`; the brief and returned package must carry the profile, lineage, scale, action, firing-state, texture, audio, and runtime-consumer evidence the 3D skill requires, and the 3D worker hands counter art to `chaosx_icon_artist`.
+Read the complete requirements in [3D model package handoff](references/unit-visuals.md#3d-model-package-handoff) before this work.
 
 ## Processing and installation
 
 ### DDS conversion
 
-Final 2D PNG assets must be converted to DDS using the repository's standard 2D DDS conversion workflow. Model textures follow the separate compressed full-mip contract in [3D model package handoff](#3d-model-package-handoff). The converter lives only at `.agents/skills/chaos-redux-event-assets/tools/convert_to_dds.py`; `.tools/convert_to_dds.py` is obsolete, and active skills, agents, scripts, and handoffs must not restore or call it.
+Final 2D PNG assets must be converted to DDS using the repository's standard 2D DDS conversion workflow. Model textures follow the separate compressed full-mip contract in [3D model package handoff](#3d-model-package-handoff). The converter lives only at `.claude/skills/chaos-redux-event-assets/tools/convert_to_dds.py`; `.tools/convert_to_dds.py` is obsolete, and active skills, agents, scripts, and handoffs must not restore or call it.
 
 For these 2D assets, the output must be compatible with Chaos Redux's expected 32-bit BGRA or B8G8R8A8-style DDS workflow.
 
 Run the bundled converter from the mod root:
 
 ```powershell
-python -B .agents/skills/chaos-redux-event-assets/tools/convert_to_dds.py --input <processed.png> --output <final.dds> [--width <pixels> --height <pixels>]
+python -B .claude/skills/chaos-redux-event-assets/tools/convert_to_dds.py --input <processed.png> --output <final.dds> [--width <pixels> --height <pixels>]
 ```
 
 If a retained custom 2D mechanical processor must write uncompressed BGRA DDS directly, mirror that converter's `write_bgra_dds` layout exactly instead of inventing another header layout.
@@ -586,47 +436,8 @@ Do not create a new `.gfx` file if an existing one is clearly the right place. I
 
 ### Manifest requirements
 
-Every active event asset workspace must include a markdown manifest.
-
-Recommended path while work is active:
-
-```text
-docs/assets/<event_id>_<event_slug>/manifest.md
-```
-
-The manifest must list every asset. Before deleting the temporary workspace, copy any durable provenance, licensing, attribution, coverage, review, and exception facts needed by the event documentation or audit handoff into a permanent documentation surface.
-
-Each asset entry must identify:
-
-- Asset name/type, event id/slug, intended in-game use, exact target size, related focus/idea/event/decision/UI/super-event id, and localisation key where relevant.
-- Source mode (`$imagegen`, portrait-production output, internet source, or user-provided source); generated prompt and rationale, or source link, available author/archive/collection, date/range, license/public-domain status, era fit, and uncertainty.
-- Background mode (`native_transparent`, `consumer_opaque`, or `fallback_removed`), with the fallback reason, verified edit/tool and settings where applicable.
-- Source and processed PNG paths, final DDS path, sprite name, owning `.gfx`, notes, and status.
-- Generated candidate lineage and review evidence under [Candidate lineage and review](#candidate-lineage-and-review), including input roles, exact edit deltas, immutable source/intermediate paths, verdicts, and explicit final selection.
-- For animation: frame count/timing, loop, anchor, static fallback, sheet or frame-sequence paths, and each frame's source mode and source note.
-- For real-person portraits: durable source path/attribution, exact crop evidence, source-placeholder wiring when selected, provider-backed styled final only when explicitly requested and available, role references, review evidence, and exact runtime DDS basename/path. Record the independent reviewer's identity/date, proof they are not the producer, separate likeness/style/framing/provenance verdicts, and gate state.
-- For portrait ownership: search terms, roots/files/ids checked, matched owner/consumer or explicit no-match evidence, disposition, and guarded transfer/availability contract where applicable.
-- Selected portrait mode/state: `source_placeholder` (accepted unchanged source/crop runtime, explicitly pending HOI4-style replacement), `replacement_pending` (only while an explicit styled-final request remains outstanding), `styled_final` (validated provider-backed output), `not_needed`, or `blocked`.
-
-Use `not_needed`, `planned`, `sourced`, `generated`, `processed`, `converted`, `handed_off`, `wired`, `complete`, `needs_user_review`, or `blocked` as asset statuses.
-
-#### Candidate lineage and review
-
-Before each native ImageGen generation or edit, save the exact request arguments in a repo-contained prompt record: `prompt`, `transparent_background`, and supplied reference paths or recent-image count, with the actual referenced images identified and retained.
-
-While the asset workspace is active, keep the original generated source and every accepted intermediate immutable at distinct versioned paths. Keep source outputs separate from processed previews and runtime files. In the active manifest or linked prompt record, record for each generated candidate:
-
-- candidate id, parent candidate id or new-generation reason, and input paths with their declared roles
-- linked exact saved request, focused edit delta, invariants, and background mode
-- tool-reported output path, retained workspace path, source SHA-256, decoded dimensions, and alpha evidence
-- source-resolution and final-native-size review results, accepted/rejected status, and remaining defects
-- explicit final-selected candidate id, processed PNG path, final runtime path after conversion, and each subject's source-to-layer/frame-to-consumer mapping
-
-Before runtime promotion, review every newly generated or edited subject against its actual source and saved request; a correct-looking preview does not establish ImageGen lineage.
-Deterministic template/frame geometry and processing remain allowed under the applicable family contract, but cannot replace generated subject art.
-If an exact historical request is unavailable, mark it unavailable and preserve known source paths/hashes rather than reconstructing it; fresh generation or editing must remain within existing authorization and portrait/source-mode, provider, and fallback boundaries.
-
-Do not silently overwrite a prior accepted candidate or synchronize an older candidate into runtime. Before normal temporary-workspace cleanup, promote the lineage, prompts, final selection, and review facts into permanent documentation under the existing cleanup contract. Retain active image files until the required package review is complete; this rule does not create a second permanent asset archive.
+Every active event asset workspace carries a `manifest.md` listing every asset with its source mode, background mode, paths, sprite, status, and the portrait, animation, and ownership evidence that applies. Generated candidates keep immutable lineage with saved exact requests, input roles, review results, and an explicit final selection, and durable facts are promoted before the workspace is deleted.
+Read the complete requirements in [Manifest requirements](references/manifest-and-lineage.md#manifest-requirements) before this work.
 
 ### Contact sheets
 
@@ -650,7 +461,7 @@ Do not use contact sheets as final game assets.
 
 Label asset names, types, selected final versions, and rejected alternatives where relevant.
 
-For the small-icon and counter contract, the sheet must also show the native-alpha ImageGen source, processed transparency, enlarged smooth preview, and decoded DDS round-trip with dimensions, frame labels, and visible-bounds notes. If fallback removal was used, include the untouched opaque source and repaired edge comparison.
+For the small-icon and counter contract, the sheet must also show the native-alpha image-generation source, processed transparency, enlarged smooth preview, and decoded DDS round-trip with dimensions, frame labels, and visible-bounds notes. If fallback removal was used, include the untouched opaque source and repaired edge comparison.
 
 ### Requirement-to-runtime coverage audit
 

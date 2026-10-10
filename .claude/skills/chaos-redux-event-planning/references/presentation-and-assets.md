@@ -93,7 +93,7 @@ Functional labels are allowed for spec structure, asset filenames, and prompt ro
 
 ### Major-event defeat aftermath
 
-When planning defeat of a major event, apply the complete [Major-event defeat aftermath](../../chaos-redux-events/SKILL.md#major-event-defeat-aftermath) contract: assess the crisis’s reach, duration and cost, and specify its applicable lasting consequences.
+When planning defeat of a major event, apply the complete [Major-event defeat aftermath](../../chaos-redux-events/references/world-end-triggerable-scenarios-and-aftermath.md#major-event-defeat-aftermath) contract: assess the crisis’s reach, duration and cost, and specify its applicable lasting consequences.
 
 ## Asset planning
 

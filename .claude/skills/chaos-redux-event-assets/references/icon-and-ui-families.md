@@ -4,7 +4,7 @@ Read the complete section for each requested icon, counter, decision picture, UI
 
 ## Icon creation rules
 
-Use a centered silhouette, strong value contrast, and one clear subject readable at native size; avoid interior detail that disappears at 45x45 or 64x64. For variable UI backgrounds, use a slight dark/black outline and subtle drop shadow, with no chroma rim, white outline, glow, sticker border, or oversized medallion fill. Apply the shared transparency and focused-edit rules and inspect on contrasting solid and checker backgrounds. Keep visible ImageGen source evidence, prompt/background mode, processed alpha, and the contact-sheet evidence below; a primitive drawing or resized unrelated icon cannot pass.
+Use a centered silhouette, strong value contrast, and one clear subject readable at native size; avoid interior detail that disappears at 45x45 or 64x64. For variable UI backgrounds, use a slight dark/black outline and subtle drop shadow, with no chroma rim, white outline, glow, sticker border, or oversized medallion fill. Apply the shared transparency and focused-edit rules and inspect on contrasting solid and checker backgrounds. Keep visible image-generation source evidence, prompt/background mode, processed alpha, and the contact-sheet evidence below; a primitive drawing or resized unrelated icon cannot pass.
 
 ### Icon type separation rules
 
@@ -41,19 +41,19 @@ Do not pass `GFX_idea_my_icon` as the picture value; it requests `GFX_idea_GFX_i
 Verify the exact expected alias, any automatic idea-id override, and its texture path across mod and vanilla definitions, and record the resolved consumer-to-alias mapping in the handoff while preserving stable identifiers unless a lookup correction requires a change.
 Check each consumer independently: decision and category `icon` fields accept both suffixes and full `GFX_decision_`/`GFX_decision_category_` names, so never apply blanket `GFX_` stripping.
 
-Inspect `assets/visual_components/national_spirit_backgrounds/contact_sheet.png` for matching background treatment. A catalog `background_template` may sit beneath original ImageGen subject art when the exact idea or national-spirit consumer fits; keep the template source as a separate layer.
+Inspect `assets/visual_components/national_spirit_backgrounds/contact_sheet.png` for matching background treatment. A catalog `background_template` may sit beneath original image-generation subject art when the exact idea or national-spirit consumer fits; keep the template source as a separate layer.
 
 ### Focus icons
 
 Use HOI4 focus art with a strong central symbol, clear silhouette, aged texture, painterly detail, and readable contrast tied to the focus tree story, ideology, or gameplay purpose; avoid generic thumbnails. Use `goal_` and nominal `94x86`, inspecting `icons/national_focus/`, its catalog row, and the owning sprite/current vanilla precedent before selecting the actual canvas.
 
-Inspect `assets/visual_components/focus_pieces/contact_sheet.png` and `assets/visual_components/focus_backgrounds/contact_sheet.png` for optional subject scale, framing, and composition cues in the ImageGen prompt. These components are references; create the icon's subject as original ImageGen art.
+Inspect `assets/visual_components/focus_pieces/contact_sheet.png` and `assets/visual_components/focus_backgrounds/contact_sheet.png` for optional subject scale, framing, and composition cues in the image-generation prompt. These components are references; create the icon's subject as original image-generation art.
 
 ### Decision icons
 
 Compose decision icons for `32x32` readability with simple central symbols, strong contrast, and limited interior detail. Use `decision_` or `decision_category_` for category icons, and inspect `icons/decisions/`, `icons/missions/`, or `icons/decision_categories/` with the owning consumer. Missions use the decision pipeline with mission-specific semantic readability.
 
-For a decision-category icon, inspect `assets/visual_components/national_spirit_backgrounds/decision_category_background_blue_roundel.png` as a cataloged background candidate. Composite it only when the exact category consumer fits, beneath an original ImageGen subject. Do not transfer that background to ordinary decision or mission icons by resizing it.
+For a decision-category icon, inspect `assets/visual_components/national_spirit_backgrounds/decision_category_background_blue_roundel.png` as a cataloged background candidate. Composite it only when the exact category consumer fits, beneath an original image-generation subject. Do not transfer that background to ordinary decision or mission icons by resizing it.
 
 ### Additional gameplay icon families
 
@@ -87,7 +87,7 @@ assets/gfx_references/icons/achievements/template/overlay.png
 
 #### New achievement creation
 
-For each new achievement, use `$imagegen` to design one original subject on a genuinely transparent background with the inspected achievement references guiding framing, density, contrast, and readability. Request no achievement frame, square background, red cross, text, or fake checkerboard. Process the result into one centered 64x64 color subject layer, retain the native ImageGen source PNG, prompt, and processed PNG, and do not independently generate three state artworks or borrow another icon type.
+For each new achievement, use image generation (see [Image-generation route](../SKILL.md#image-generation-route)) to design one original subject on a genuinely transparent background with the inspected achievement references guiding framing, density, contrast, and readability. Request no achievement frame, square background, red cross, text, or fake checkerboard. Process the result into one centered 64x64 color subject layer, retain the native image-generation source PNG, prompt, and processed PNG, and do not independently generate three state artworks or borrow another icon type.
 
 Build the three complete source layers deterministically from the one processed color subject, preserving the 64x64 canvas, exact position, and alpha alignment:
 
@@ -103,7 +103,7 @@ For an existing achievement, provide the complete `<achievement_id>.{png,dds}`, 
 
 #### Shared processing and validation
 
-Use `.agents/skills/chaos-redux-event-assets/tools/process_achievement_icons.py` for both modes. Supply all three complete source layers; directory mode collects the base, `_grey`, and `_not_eligible` triplet, and a single file is never valid input. Each decoded PNG or DDS state must be exactly 64x64. The processor fails closed on a missing state, a wrong canvas, an already-applied outer template border, or an existing output without `--force`.
+Use `.claude/skills/chaos-redux-event-assets/tools/process_achievement_icons.py` for both modes. Supply all three complete source layers; directory mode collects the base, `_grey`, and `_not_eligible` triplet, and a single file is never valid input. Each decoded PNG or DDS state must be exactly 64x64. The processor fails closed on a missing state, a wrong canvas, an already-applied outer template border, or an existing output without `--force`.
 
 Apply `template/achievement_template.png` beneath the completed source and `template/achievement_template_grey.png` beneath both grey and not-eligible sources. Normal alpha compositing is the only pixel interaction. Every final state must pass the strict one-level 64x64 legacy BGRA checks in [DDS conversion](../SKILL.md#dds-conversion), with decoded pixels exactly equal to its supplied background beneath its exact decoded source layer. All three runtime states are required; source-decoding tolerance never weakens final validation.
 
@@ -114,7 +114,7 @@ Keep source triplets separate from processed outputs and never feed generated ou
 Run it from the mod root with an explicit separate output directory:
 
 ```powershell
-python -B .agents/skills/chaos-redux-event-assets/tools/process_achievement_icons.py `
+python -B .claude/skills/chaos-redux-event-assets/tools/process_achievement_icons.py `
     --input <source_triplet_directory> `
     --achievement-id <achievement_id> `
     --output-dir <staging_or_runtime_gfx_achievements> `
@@ -170,7 +170,7 @@ Choose the source route by content:
 
 - use `chaosx_asset_source_researcher` for real propaganda posters, real photographs, archival maps, real documents, and other verifiable historical material
 - use `chaosx_generated_event_art` for fictional or alternate-history posters, symbolic category pictures, generated documentary scenes, and non-icon illustrated panels
-- use deterministic map data and exact state geometry for formable territory pictures and state-puzzle pieces. Do not ask ImageGen to invent state borders
+- use deterministic map data and exact state geometry for formable territory pictures and state-puzzle pieces. Do not ask image generation to invent state borders
 
 Generated category pictures must not contain fake interface controls, fake meters, fake buttons, unreadable generated text, modern UI, or decoration that implies a click action. Sourced posters may retain real source text when it is legible and appropriate, but provenance and cropping must remain documented.
 
@@ -194,7 +194,7 @@ Do not let one asset satisfy several of these surfaces by resizing or relabeling
 
 ## UI panels and custom windows
 
-Use ImageGen for illustrated backgrounds, thematic decorations, symbolic seals, propaganda, and report-board art, with the shared alpha/background rules. Use native UI editing for exact slicing, cropping, button/state variants, meter fills, and final export preparation. Generated art does not decide interactive layout; follow HOI4 UI rules and repository patterns.
+Use image generation for illustrated backgrounds, thematic decorations, symbolic seals, propaganda, and report-board art, with the shared alpha/background rules. Use native UI editing for exact slicing, cropping, button/state variants, meter fills, and final export preparation. Generated art does not decide interactive layout; follow HOI4 UI rules and repository patterns.
 
 After generating the compositional reference, decompose it into individually implementable and independently reviewable elements and layers. Map every panel, frame, tab, button, popup, icon, meter, text field, state, and click region separately to generated art or a native control. A composite reference may show the assembled design, but no functional button, fake popup window, label, hover/selected state, or click target may be baked into a flattened runtime background.
 
@@ -206,7 +206,7 @@ For scripted GUI, plan coordinated families for the actual mechanic states, incl
 
 Do not build a full scripted GUI visual pack for every important category. First follow the presentation hierarchy in `chaos-redux-decisions-missions`. A simple category may need only its small icon and one static or animated category picture, subject to [Decision category pictures](#decision-category-pictures)' eligibility gate. Do not add a category picture alongside the rich GUI assets or other animations listed below.
 
-For new or redesigned scripted GUIs, follow `chaos-redux-scripted-gui` for reference images before native implementation, acceptance evidence, and image-to-element mapping. Produce a compositional reference with ChatGPT Images 2.5 Sunburst through native ImageGen (subject to the generated-art execution-path truthfulness rule) or an applicable supplied image, then separate final decorative art from real controls, live labels, meters, and lists; never deliver a flattened fake interface as functional UI. Include painted bounds, transparent padding, usable interior regions, intended dimensions, frame/state order, native element consumers, and justified engine/style adaptations in the asset handoff. When a full scripted GUI or mechanic window is justified, the asset handoff should cover the interface state set that the actual mechanic uses. Do not create unused tabs, button states, meters, frames, or decorative controls only to fill the background.
+For new or redesigned scripted GUIs, follow `chaos-redux-scripted-gui` for reference images before native implementation, acceptance evidence, and image-to-element mapping. Produce a compositional reference with ChatGPT Images 2.5 Sunburst through image generation (see [Image-generation route](../SKILL.md#image-generation-route)) (subject to the generated-art execution-path truthfulness rule) or an applicable supplied image, then separate final decorative art from real controls, live labels, meters, and lists; never deliver a flattened fake interface as functional UI. Include painted bounds, transparent padding, usable interior regions, intended dimensions, frame/state order, native element consumers, and justified engine/style adaptations in the asset handoff. When a full scripted GUI or mechanic window is justified, the asset handoff should cover the interface state set that the actual mechanic uses. Do not create unused tabs, button states, meters, frames, or decorative controls only to fill the background.
 
 Select only required assets: category icon/header plate, background, tabs, normal/hover/selected/locked/disabled/warning button states, progress bars/fills, meter frames, target cards, status seals, warning overlays, animated glow/particle/float layers with static fallbacks, tooltip icons, open/close buttons, and authorized mechanic-specific leader/council/envoy portraits.
 
@@ -252,7 +252,7 @@ Each puzzle package should include:
 - a static category-picture version when the category only needs a territorial overview and passes [Decision category pictures](#decision-category-pictures)' eligibility gate; do not add it alongside the interactive state-puzzle GUI
 - final runtime paths, `.gfx` ownership, GUI ownership, and manifest coverage
 
-State shapes must be derived from the installed map's state and province geometry. Do not trace a screenshot by hand, generate borders with ImageGen, simplify the pieces into generic tiles, or substitute a modern political map. All pieces must use one projection, scale, origin, edge treatment, and border width.
+State shapes must be derived from the installed map's state and province geometry. Do not trace a screenshot by hand, generate borders with image generation, simplify the pieces into generic tiles, or substitute a modern political map. All pieces must use one projection, scale, origin, edge treatment, and border width.
 
 A generated or sourced background may frame the map, but it must not alter, cover, or replace the exact state shapes. Keep the territorial layer readable at supported resolutions and verify that neighbouring states meet cleanly without unexplained gaps or overlaps.
 
@@ -267,7 +267,7 @@ Do not choose a structure only because it is easier to export. The GUI and dynam
 
 The reusable implementation templates belong under:
 
-`.agents/skills/chaos-redux-decisions-missions/templates/formable_state_puzzle/`
+`.claude/skills/chaos-redux-decisions-missions/templates/formable_state_puzzle/`
 
 The asset handoff must match the template manifest and naming rules. Skill-local template assets are reference scaffolding and must never be runtime consumers.
 
@@ -302,9 +302,9 @@ Apply this contract to every small template, facility, or unit icon, including l
 
 Before generation, inspect the actual installed-vanilla consumer definition and DDS, plus the exact matching reference family and contact sheet under `assets/gfx_references/`. Record the owning `.gfx`, `.gui`, unit, building, or template definition, runtime token or sprite, native canvas, frame count and order, frame or state semantics, alpha and background treatment, border, sampled palette, silhouette footprint, shading, and contrast. If the consumer, DDS, or matching reference family cannot be inspected, mark the asset `blocked` instead of guessing.
 
-Use the built-in ImageGen tool for each distinct final asset and retain its exact prompt and native source PNG in the evidence package. Generate the icon or glyph as real raster source art with a genuine transparent background in the initial call. Pixel art, pixel-grid or nearest-neighbor final scaling, primitive local drawings, SVG-only reconstruction, resized cross-type substitutes, opaque backgrounds, and generic white duplicates are prohibited. Nearest-neighbor is permitted only for enlarged inspection previews.
+Use the image-generation tool (see [Image-generation route](../SKILL.md#image-generation-route)) for each distinct final asset and retain its exact prompt and native source PNG in the evidence package. Generate the icon or glyph as real raster source art with a genuine transparent background in the initial call. Pixel art, pixel-grid or nearest-neighbor final scaling, primitive local drawings, SVG-only reconstruction, resized cross-type substitutes, opaque backgrounds, and generic white duplicates are prohibited. Nearest-neighbor is permitted only for enlarged inspection previews.
 
-Preserve the native ImageGen alpha through processing, then validate transparent corners, no coloured fringe, no fake checkerboard or matte, and no unintended transparent holes. If native transparency fails, follow the fallback route in [Native transparency and background-removal fallback](../SKILL.md#native-transparency-and-background-removal-fallback): first a targeted built-in edit-to-transparency, then an actually installed and verified local removal process only if needed. Downsample smoothly with bicubic or Lanczos to the inspected native runtime canvas, preserve the intended transparent bounds, and record the visible alpha bounding box, centered footprint, frame boundaries, and per-frame footprint against the vanilla reference. Do not promote a candidate whose silhouette is clipped, off-center, too small, too detailed at native size, or damaged by fallback removal.
+Preserve the native image-generation alpha through processing, then validate transparent corners, no coloured fringe, no fake checkerboard or matte, and no unintended transparent holes. If native transparency fails, follow the fallback route in [Native transparency and background-removal fallback](../SKILL.md#native-transparency-and-background-removal-fallback): first a targeted image-generation edit-to-transparency, then an actually installed and verified local removal process only if needed. Downsample smoothly with bicubic or Lanczos to the inspected native runtime canvas, preserve the intended transparent bounds, and record the visible alpha bounding box, centered footprint, frame boundaries, and per-frame footprint against the vanilla reference. Do not promote a candidate whose silhouette is clipped, off-center, too small, too detailed at native size, or damaged by fallback removal.
 
 For a large land division counter, the final file is one transparent `152x42` strip containing two adjacent `76x42` frames with no gap. The left frame is a compact muted vanilla-green silhouette for the normal large-counter state. The right frame is a separate sparse pale or white generic schematic glyph for the alternate or template state and is never a detailed white repaint or duplicate of the left frame. Differentiate each unit by role and silhouette while staying within the same restrained vanilla vocabulary.
 
