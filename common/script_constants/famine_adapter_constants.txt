@@ -28,13 +28,12 @@ famine_adapter_pressure = {
 }
 
 # The Hunger Lines scenario (Event 014, SCN-010). Each live Event 014 node
-# state receives a food shock of food_share of its population, a bounded
-# scenario food context of context_pressure on production, transport,
-# governance and vulnerability for context_days, and flight pressure of
-# flight_share of its population above the protected origin share. Values are
-# indexed by the launch intensity; the lowest reaches supply strain even in a
-# fully built state that starts with half its reserve target, and the maximum
-# reaches famine within the stage windows.
+# state receives a food shock of food_share of its population, a scenario food
+# context of context_pressure on production, transport, governance and
+# vulnerability for context_days, and loses its local stores. Its food stage is
+# committed at start_stage at once (2 acute shortage, 3 famine). With seized
+# stores the context holds that stage for the whole window unless relief
+# arrives: Low scores about 59, Medium 79, High 86 and Maximum 92 on day one.
 famine_hunger_lines_scenario = {
 	schema = {
 		any_key = yes
@@ -42,20 +41,18 @@ famine_hunger_lines_scenario = {
 	}
 
 	low_food_share = 0.07
-	medium_food_share = 0.08
+	medium_food_share = 0.09
 	high_food_share = 0.10
 	maximum_food_share = 0.12
 	low_context_pressure = 14
-	medium_context_pressure = 18
-	high_context_pressure = 22
-	maximum_context_pressure = 26
-	low_flight_share = 0.02
-	medium_flight_share = 0.03
-	high_flight_share = 0.04
-	maximum_flight_share = 0.05
+	medium_context_pressure = 24
+	high_context_pressure = 28
+	maximum_context_pressure = 32
+	low_start_stage = 2
+	medium_start_stage = 3
+	high_start_stage = 3
+	maximum_start_stage = 3
 	context_days = 120
-	protected_origin_share = 0.20
-	minimum_flight_people = 1000
 }
 
 famine_to_migration_food_safety = {

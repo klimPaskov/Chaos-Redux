@@ -1080,13 +1080,16 @@ famine_condemn_relief_contract_interruption = {
 # and the launch intensity Event 014 records in
 # global.cannibalism_scenario_last_intensity; it never scans the map and never
 # writes Event 014 state. Each live node state whose previous scenario food
-# context has expired receives:
-# - a proven famine scenario request of food_share of its population;
-# - a scenario food context (famine_scenario_food_context_pressure until
-#   famine_scenario_food_context_until_date) that the surface collector adds to
-#   production, transport, governance and vulnerability while it lasts;
-# - a migration scenario flight request of flight_share of its population,
-#   capped at the population above the protected origin share.
+# context has expired:
+# - receives a proven famine scenario request of food_share of its population;
+# - receives a scenario food context (famine_scenario_food_context_pressure
+#   until famine_scenario_food_context_until_date) that the surface collector
+#   adds to production, transport, governance and vulnerability while it lasts;
+# - loses its local food stores to the seizure (recorded as depleted stock);
+# - commits the starting food stage for the intensity at once (acute shortage
+#   at Low, famine above), so the famine is visible on the day of the launch.
+#   The ordinary stage transition then submits the famine survivor flight to
+#   migration, so the scenario adds no separate flight request.
 # A state whose context is still running is skipped, so a relaunch cannot
 # stack pressure. Output: temporary famine_hunger_lines_state_count, the number
 # of node states that received pressure, declared by callers that read it.
@@ -1094,24 +1097,24 @@ famine_apply_hunger_lines_scenario_pressure = {
 	set_temp_variable = { famine_hunger_lines_state_count = constant:humanitarian_runtime.zero }
 	set_temp_variable = { famine_hunger_lines_food_share = constant:famine_hunger_lines_scenario.low_food_share }
 	set_temp_variable = { famine_hunger_lines_context_pressure = constant:famine_hunger_lines_scenario.low_context_pressure }
-	set_temp_variable = { famine_hunger_lines_flight_share = constant:famine_hunger_lines_scenario.low_flight_share }
+	set_temp_variable = { famine_hunger_lines_start_stage = constant:famine_hunger_lines_scenario.low_start_stage }
 	if = {
 		limit = { check_variable = { var = global.cannibalism_scenario_last_intensity value = constant:triggerable_scenario_intensity.medium compare = equals } }
 		set_temp_variable = { famine_hunger_lines_food_share = constant:famine_hunger_lines_scenario.medium_food_share }
 		set_temp_variable = { famine_hunger_lines_context_pressure = constant:famine_hunger_lines_scenario.medium_context_pressure }
-		set_temp_variable = { famine_hunger_lines_flight_share = constant:famine_hunger_lines_scenario.medium_flight_share }
+		set_temp_variable = { famine_hunger_lines_start_stage = constant:famine_hunger_lines_scenario.medium_start_stage }
 	}
 	else_if = {
 		limit = { check_variable = { var = global.cannibalism_scenario_last_intensity value = constant:triggerable_scenario_intensity.high compare = equals } }
 		set_temp_variable = { famine_hunger_lines_food_share = constant:famine_hunger_lines_scenario.high_food_share }
 		set_temp_variable = { famine_hunger_lines_context_pressure = constant:famine_hunger_lines_scenario.high_context_pressure }
-		set_temp_variable = { famine_hunger_lines_flight_share = constant:famine_hunger_lines_scenario.high_flight_share }
+		set_temp_variable = { famine_hunger_lines_start_stage = constant:famine_hunger_lines_scenario.high_start_stage }
 	}
 	else_if = {
 		limit = { check_variable = { var = global.cannibalism_scenario_last_intensity value = constant:triggerable_scenario_intensity.maximum compare = equals } }
 		set_temp_variable = { famine_hunger_lines_food_share = constant:famine_hunger_lines_scenario.maximum_food_share }
 		set_temp_variable = { famine_hunger_lines_context_pressure = constant:famine_hunger_lines_scenario.maximum_context_pressure }
-		set_temp_variable = { famine_hunger_lines_flight_share = constant:famine_hunger_lines_scenario.maximum_flight_share }
+		set_temp_variable = { famine_hunger_lines_start_stage = constant:famine_hunger_lines_scenario.maximum_start_stage }
 	}
 	set_temp_variable = { chaosx_date_days = constant:famine_hunger_lines_scenario.context_days }
 	set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
@@ -1134,7 +1137,8 @@ famine_apply_hunger_lines_scenario_pressure = {
 			set_temp_variable = { famine_hunger_lines_population = state_population_k }
 			multiply_temp_variable = { famine_hunger_lines_population = constant:humanitarian_population.people_per_k }
 			round_temp_variable = famine_hunger_lines_population
-			# Food: the shock enters unmet need through the ordinary request.
+			# Food: the shock enters unmet need through the ordinary request,
+			# which also registers the state with the daily food job.
 			set_temp_variable = { famine_pressure_request_result = constant:humanitarian_runtime.zero }
 			set_temp_variable = { famine_pressure_request_amount = famine_hunger_lines_population }
 			multiply_temp_variable = { famine_pressure_request_amount = famine_hunger_lines_food_share }
@@ -1142,30 +1146,31 @@ famine_apply_hunger_lines_scenario_pressure = {
 			set_temp_variable = { famine_pressure_request_proven = constant:humanitarian_runtime.one }
 			set_temp_variable = { famine_pressure_request_actor_proven = constant:humanitarian_runtime.one }
 			famine_request_scenario_pressure = yes
-			# Flight: migration owns the request and every later movement.
-			set_temp_variable = { famine_hunger_lines_movable = famine_hunger_lines_population }
-			set_temp_variable = { famine_hunger_lines_protected = famine_hunger_lines_population }
-			multiply_temp_variable = { famine_hunger_lines_protected = constant:famine_hunger_lines_scenario.protected_origin_share }
-			subtract_from_temp_variable = { famine_hunger_lines_movable = famine_hunger_lines_protected }
-			set_temp_variable = { famine_hunger_lines_flight = famine_hunger_lines_population }
-			multiply_temp_variable = { famine_hunger_lines_flight = famine_hunger_lines_flight_share }
-			clamp_temp_variable = { var = famine_hunger_lines_flight min = constant:humanitarian_population.zero max = famine_hunger_lines_movable }
-			round_temp_variable = famine_hunger_lines_flight
 			if = {
-				limit = { check_variable = { var = famine_hunger_lines_flight value = constant:famine_hunger_lines_scenario.minimum_flight_people compare = greater_than_or_equals } }
-				set_temp_variable = { migration_pressure_request_result = constant:humanitarian_runtime.zero }
-				set_temp_variable = { migration_pressure_request_amount = famine_hunger_lines_flight }
-				set_temp_variable = { migration_pressure_request_proven = constant:humanitarian_runtime.one }
-				set_temp_variable = { migration_pressure_request_actor_proven = constant:humanitarian_runtime.one }
-				migration_request_scenario_pressure = yes
+				limit = { check_variable = { var = famine_pressure_request_result value = constant:humanitarian_runtime.one compare = equals } }
+				# The seizure: local stores are taken. Initialize the ledger first
+				# so the drained amount is recorded as depleted stock.
+				famine_refresh_reserve_capacity = yes
+				if = {
+					limit = { check_variable = { var = famine_food_reserve_amount value = constant:famine_food_reserve.zero compare = greater_than } }
+					set_variable = { famine_food_reserve_last_depleted = famine_food_reserve_amount }
+					add_to_variable = { famine_food_reserve_total_depleted = famine_food_reserve_amount }
+					set_variable = { famine_food_reserve_amount = constant:famine_food_reserve.zero }
+				}
+				set_state_flag = famine_food_reserve_initialized
+				# Commit the starting stage now. The context above keeps the score
+				# at that stage for the context window unless relief arrives.
+				if = {
+					limit = { check_variable = { var = famine_food_stage value = famine_hunger_lines_start_stage compare = less_than } }
+					set_temp_variable = { famine_requested_food_stage = famine_hunger_lines_start_stage }
+					famine_transition_food_stage = yes
+				}
+				add_to_temp_variable = { famine_hunger_lines_state_count = constant:humanitarian_runtime.one }
 			}
-			add_to_temp_variable = { famine_hunger_lines_state_count = constant:humanitarian_runtime.one }
 		}
 	}
 	set_temp_variable = { famine_pressure_request_proven = constant:humanitarian_runtime.zero }
 	set_temp_variable = { famine_pressure_request_actor_proven = constant:humanitarian_runtime.zero }
 	set_temp_variable = { famine_pressure_request_amount = constant:humanitarian_population.zero }
-	set_temp_variable = { migration_pressure_request_proven = constant:humanitarian_runtime.zero }
-	set_temp_variable = { migration_pressure_request_actor_proven = constant:humanitarian_runtime.zero }
-	set_temp_variable = { migration_pressure_request_amount = constant:humanitarian_population.zero }
 }
+

@@ -27,7 +27,8 @@ At the same existing country refresh boundary, it calls the shared cost projecti
 These are display-only cost amounts, not new mechanic values, stockpiles, or authority for availability or payment.
 The preparation owner and cost color selectors read fresh constants instead.
 
-The neutral `humanitarian_refresh_decision_phase_from_country` dispatcher lives in `humanitarian_runtime_effects.txt` so the existing scheduler call remains source-compatible while the two phase owners stay separate.
+`migration_process_registered_country` calls it directly; famine refreshes its own phase from its own country registry.
+The phase flags are presentation: they choose the category header text and mission visibility, but no ordinary migration decision is locked or unlocked by them. Each decision is offered by its own state, cohort, load and policy conditions.
 
 The country phase and active-country registration also call `humanitarian_project_legacy_cost_quote` for the 15 legacy fee display amounts, separately from the three Open Reception quotes.
 Those normal text values never govern cost readiness, payment, refund or paid-action matching and create no registry, periodic world scan, category reveal or additional mechanic value.

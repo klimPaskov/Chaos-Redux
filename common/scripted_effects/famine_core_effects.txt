@@ -520,14 +520,126 @@ famine_register_active_state = {
 	if = {
 		limit = { check_variable = { humanitarian_registry_result = constant:humanitarian_runtime.one } }
 		set_state_flag = famine_food_security_active
-		OWNER = { if = { limit = { humanitarian_country_is_valid = yes } humanitarian_project_legacy_cost_quote = yes } }
+		OWNER = {
+			if = {
+				limit = { humanitarian_country_is_valid = yes }
+				humanitarian_project_legacy_cost_quote = yes
+				famine_register_active_country = yes
+			}
+		}
 		if = {
 			limit = { NOT = { is_owned_and_controlled_by = OWNER } }
-			CONTROLLER = { if = { limit = { humanitarian_country_is_valid = yes } humanitarian_project_legacy_cost_quote = yes } }
+			CONTROLLER = {
+				if = {
+					limit = { humanitarian_country_is_valid = yes }
+					humanitarian_project_legacy_cost_quote = yes
+					famine_register_active_country = yes
+				}
+			}
 		}
 		migration_mark_reception_capacity_dirty_if_candidate = yes
 		set_temp_variable = { humanitarian_registry_result = constant:humanitarian_runtime.one }
 	}
+}
+
+# COUNTRY scope. Sparse famine country registry. A country joins when one of
+# its owned or controlled states enters the food registry and leaves once its
+# famine phase has settled; the daily coordinator refreshes only these
+# countries, so the famine phase and the national crisis never depend on the
+# migration registry.
+famine_register_active_country = {
+	if = {
+		limit = {
+			humanitarian_country_is_valid = yes
+			NOT = { is_in_array = { array = global.famine_active_countries value = THIS } }
+		}
+		add_to_array = { array = global.famine_active_countries value = THIS }
+	}
+}
+
+famine_unregister_active_country = {
+	if = {
+		limit = { is_in_array = { array = global.famine_active_countries value = THIS } }
+		remove_from_array = { array = global.famine_active_countries value = THIS }
+	}
+	famine_clear_national_food_crisis = yes
+}
+
+# COUNTRY scope. Daily registry job: refresh the famine decision phase and the
+# national food crisis, then leave the registry once nothing remains to manage.
+famine_process_registered_country = {
+	if = {
+		limit = { humanitarian_country_is_valid = yes }
+		famine_refresh_decision_phase_from_country = yes
+		famine_refresh_national_food_crisis = yes
+		if = {
+			limit = {
+				NOT = { has_country_flag = famine_decision_emerging }
+				NOT = { has_country_flag = famine_decision_active }
+				NOT = { has_country_flag = famine_decision_resolution }
+				NOT = { has_country_flag = famine_mission_route_active }
+				NOT = { has_country_flag = famine_mission_relief_active }
+				NOT = { any_owned_state = { famine_state_has_visible_food_problem = yes } }
+			}
+			famine_unregister_active_country = yes
+		}
+	}
+	else = { famine_unregister_active_country = yes }
+}
+
+# COUNTRY scope. The public sees every acute, famine, and catastrophic state the
+# country owns unless its crisis is concealed. Their count sets the
+# famine_national_food_crisis stability and war support penalties, capped by
+# famine_national_crisis. Reads only the sparse active food registry.
+famine_refresh_national_food_crisis = {
+	set_temp_variable = { famine_national_stability_total = constant:famine_national_crisis.zero }
+	set_temp_variable = { famine_national_war_support_total = constant:famine_national_crisis.zero }
+	save_event_target_as = famine_national_crisis_country
+	for_each_scope_loop = {
+		array = global.famine_active_states
+		if = {
+			limit = {
+				OWNER = { tag = event_target:famine_national_crisis_country }
+				NOT = { has_state_flag = famine_crisis_concealed }
+			}
+			if = {
+				limit = { has_state_flag = famine_food_stage_acute_shortage }
+				add_to_temp_variable = { famine_national_stability_total = constant:famine_national_crisis.acute_stability }
+			}
+			else_if = {
+				limit = { has_state_flag = famine_food_stage_famine }
+				add_to_temp_variable = { famine_national_stability_total = constant:famine_national_crisis.famine_stability }
+				add_to_temp_variable = { famine_national_war_support_total = constant:famine_national_crisis.famine_war_support }
+			}
+			else_if = {
+				limit = { has_state_flag = famine_food_stage_catastrophic }
+				add_to_temp_variable = { famine_national_stability_total = constant:famine_national_crisis.catastrophic_stability }
+				add_to_temp_variable = { famine_national_war_support_total = constant:famine_national_crisis.catastrophic_war_support }
+			}
+		}
+	}
+	clamp_temp_variable = { var = famine_national_stability_total min = constant:famine_national_crisis.stability_cap max = constant:famine_national_crisis.zero }
+	clamp_temp_variable = { var = famine_national_war_support_total min = constant:famine_national_crisis.war_support_cap max = constant:famine_national_crisis.zero }
+	if = {
+		limit = { check_variable = { var = famine_national_stability_total value = constant:famine_national_crisis.zero compare = less_than } }
+		set_variable = { famine_national_stability_penalty = famine_national_stability_total }
+		set_variable = { famine_national_war_support_penalty = famine_national_war_support_total }
+		if = {
+			limit = { NOT = { has_dynamic_modifier = { modifier = famine_national_food_crisis } } }
+			add_dynamic_modifier = { modifier = famine_national_food_crisis }
+		}
+		force_update_dynamic_modifier = yes
+	}
+	else = { famine_clear_national_food_crisis = yes }
+}
+
+famine_clear_national_food_crisis = {
+	if = {
+		limit = { has_dynamic_modifier = { modifier = famine_national_food_crisis } }
+		remove_dynamic_modifier = { modifier = famine_national_food_crisis }
+	}
+	clear_variable = famine_national_stability_penalty
+	clear_variable = famine_national_war_support_penalty
 }
 
 # STATE scope. Queue one genuine material assessment for ordinary simulation.
@@ -2930,6 +3042,15 @@ famine_process_registered_state = {
 			famine_register_active_state = yes
 		}
 		famine_evaluate_food_security = yes
+		# A state that reaches a visible stage keeps its owner in the country
+		# registry, so the phase and national crisis follow it.
+		if = {
+			limit = {
+				humanitarian_state_is_valid = yes
+				famine_state_has_visible_food_problem = yes
+			}
+			OWNER = { famine_register_active_country = yes }
+		}
 	}
 	else = {
 		famine_relief_unregister_donor_state = yes
@@ -3176,6 +3297,7 @@ famine_cleanup_state_registration = {
 	famine_clear_dynamic_modifiers = yes
 	famine_clear_historical_profile_context = yes
 	famine_unregister_active_state = yes
+	clr_state_flag = famine_crisis_concealed
 	clr_state_flag = famine_control_change_pending
 	clr_state_flag = famine_nuclear_reassessment_pending
 	clr_state_flag = famine_relief_access_active
@@ -3212,6 +3334,7 @@ famine_cleanup_state_registration = {
 
 famine_cleanup_country_registration = {
 	famine_recount_active_mission_slots = yes
+	famine_unregister_active_country = yes
 	if = {
 		limit = { NOT = { humanitarian_country_is_valid = yes } }
 		clr_country_flag = famine_mission_route_active

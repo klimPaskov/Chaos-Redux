@@ -1,5 +1,8 @@
 # Famine and migration takeover status
 
+> **Current-status disposition (2026-10-10): superseded by** [improvement_plan_2026-10-10.md](improvement_plan_2026-10-10.md) for current famine and migration status and design.
+> This dated document remains historical evidence.
+
 Review date: 2026-10-06.
 Verdict: incomplete.
 Source-publication follow-up: complete for the five director-assigned round-3 gameplay drafts and their API documentation.

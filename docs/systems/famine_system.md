@@ -1,6 +1,6 @@
 # Famine System
 
-Status: implemented source ledger pending the remaining probability, adapter, and completion audits. This is not a gameplay-completion claim.
+Status: implemented; current status, balance arithmetic and evidence limits are in [the 10 October improvement plan](../plans/famine_and_migration_system_plans/improvement_plan_2026-10-10.md).
 
 ## Ownership
 
@@ -90,23 +90,31 @@ Local supply is inadequate when the reserve covers fewer than 7 days, or fewer t
 
 ## Decisions and missions
 
-Famine owns its own category and phased actions, including reserve release, emergency imports, route repair, escorted relief convoy, emergency airlift, invited relief, famine evacuation, safer-state requisition, concealment, and extraction policy.
+Famine owns its own category and nine actions: Release Food Stores, Import Food (arranges a foreign land donor and delivers in one paid action), Restore Relief, Escort Relief and Airlift Relief for blockaded islands, Requisition Food from a safe neighbouring state, Evacuate, Conceal Hunger and Continue Requisitions.
+Each is offered only by its own selected-state conditions; no action hides another country-wide.
 
 Reserve release targets any registered state at supply strain or worse, or under a live food shock, that holds stock to release (`famine_state_can_release_reserves`). Released food keeps counting as covered days for reserve exhaustion and decays more slowly than stock drawn by a famine, so releasing early protects a state's food rather than shortening it.
 
-AI urgency for Release Reserves, Escorted Relief Convoy, Emergency Airlift and Invite Relief rises by 1.5, 2.5 and 4 times for acute shortage, famine and catastrophic famine in the selected state, while Conceal Crisis and Maintain Extraction fall to half in famine and to a tenth in catastrophic famine (`famine_decision_ai`).
+AI urgency for Release Food Stores, Import Food, Escort Relief and Airlift Relief rises by 1.5, 2.5 and 4 times for acute shortage, famine and catastrophic famine in the selected state, Release Food Stores rises by half again at war, Import Food doubles for democracies and rises when trapped people add to a state's need, and Conceal Hunger and Continue Requisitions fall to half in famine and to a tenth in catastrophic famine (`famine_decision_ai`).
+
+Conceal Hunger hides one state's crisis from the public for `famine_national_crisis.conceal_days` (90): it stops counting toward the national food crisis, its food shock rises by `conceal_pressure` (10), and the first famine deaths there are condemned as a cover-up. Continue Requisitions adds `extraction_pressure` (15) and war support. Both shocks are clamped to the 0–100 component range.
 
 Famine missions own relief-route security and reserve-failure deadlines. Migration missions are never counted in famine mission slots or presented as famine actions.
 
 Legacy action fees use `humanitarian_legacy_cost_constants.txt` and the exact inclusive country-payer bundle predicates documented in `humanitarian_legacy_cost_triggers.md`.
 The stable cost getters and texticons display country-local quote values refreshed at existing phase and exact active-state registration boundaries; cached display values do not authorize payment or refunds.
 Delayed work requires its own action/state/payer paid receipt, and relief actions additionally bind the exact paid contract generation, mode and donor before continuation.
-Rejected uncharged setup cannot deliver reserves, grant invitation rewards or claim a refund; funded work keeps its existing risks, and famine evacuation refunds only its matching paid tuple when measured origin debit is zero.
+Rejected uncharged setup cannot deliver reserves or claim a refund; funded work keeps its existing risks, and famine evacuation refunds only its matching paid tuple when measured origin debit is zero.
 These are action costs and private ownership evidence, not additional player-facing famine values or a shared decision category.
+
+## National food crisis
+
+A famine is a national problem, not only a local one. Every visible state at acute shortage costs its owner 1% stability, every famine state 2% stability and 1% war support, and every catastrophic state 4% stability and 2% war support, through the `famine_national_food_crisis` country modifier (icon: the vanilla state-of-famine spirit), capped at −15% stability and −10% war support (`famine_national_crisis`).
+Concealed states do not count until their concealment ends. The modifier disappears as soon as no visible state remains in crisis.
 
 ## Sparse runtime
 
-The runtime processes registered historical anchors, candidates, and active famine states through the existing host-only coordinator. State changes and exact owner callbacks register or invalidate only affected scopes. No whole-world daily, weekly, or monthly scan is added.
+The runtime processes registered historical anchors, candidates, active famine states and the countries that own or control them (`global.famine_active_countries`) through the existing host-only coordinator. The country job refreshes the famine decision phase and the national food crisis, independently of migration, and drops the country once its phase has settled. State changes and exact owner callbacks register or invalidate only affected scopes. No whole-world daily, weekly, or monthly scan is added.
 
 Famine retirement is owner-local: a stable, pressure-free, non-blockaded state with no positive famine-owned reception-demand projection and no stored shortage at supply strain leaves only the famine registry and clears only famine state. It neither waits for migration obligations nor reconciles or cleans migration cohorts; any migration registry entry created through the survivor-flight adapter continues under migration ownership.
 
@@ -119,8 +127,8 @@ Famine accepts explicit, owner-proven changes from occupation conduct, extractio
 Famine can create a migration flight request only after the famine state and affected people are proven. That connection does not merge the two mechanics.
 
 A successful Hunger Lines launch (Event 014, scenario SCN-010) calls `famine_apply_hunger_lines_scenario_pressure` once from the shared scenario launcher.
-It reads only Event 014's node registry and launch intensity, and gives each live node state a scenario food shock, a scenario food context on production, transport, governance and vulnerability that lasts 120 days, and scenario flight pressure for migration.
-The lowest intensity reaches supply strain about a week after launch in any state that starts with half its reserve target, even at the highest infrastructure, and acute shortage only after that reserve runs out (about 6 to 10 weeks); a state already holding its full reserve target rides out the lowest intensity. The maximum reaches famine about 44 days after launch; a relaunch inside a state's 120-day window adds nothing to that state.
+It reads only Event 014's node registry and launch intensity. Each live node state receives a scenario food shock and a scenario food context on production, transport, governance and vulnerability that lasts 120 days, loses its local stores to the seizure, and enters its starting stage on the day of the launch: acute shortage at Low, famine at Medium and above. The owner sees the Famine category, the map colours and the famine report at once, and the stage transition sends the ordinary famine survivor flight to migration.
+With the stores gone the context holds that stage for the whole window (day-one scores of about 59, 79, 86 and 92 by intensity); imports, requisition, a restored route or evacuation bring it down through the ordinary recovery windows. A relaunch inside a state's 120-day window adds nothing to that state.
 The values sit in `famine_hunger_lines_scenario` in `famine_adapter_constants.txt`.
 
 A hostile capture of a state queues one food-safety assessment through `famine_enqueue_food_observation_assessment` from the hostile-capture adapter in `common/scripted_effects/humanitarian_capture_effects.txt`.
@@ -169,12 +177,9 @@ The current documentation inventory contains 61 declared final DDS outputs acros
 
 `famine_register_cxt_test_content` registers `chaosx_cxt_extension_famine`. Its idempotent apply effect writes three capital-state inputs at `famine_cxt_fixture.input_pressure` with `input_relief` relief and an empty reserve, which settles in supply strain with no migration route, population transfer, severe famine, or mortality transaction.
 
-## Open evidence gates
+## Validation limits
 
-- Complete the named probability comparison scenarios for famine responses, relief donors, requisition donors, blockade response, extraction, opposition, and cleanup through a callable `chaosx_ai_probability_auditor`; direct MCP inspection remains evidence only.
-- Close only those external adapters whose owners can supply the exact required receipt; retain all other blockers explicitly.
-- Obtain supported runtime visual evidence for the hardcoded mapmode window if the tooling exposes it.
-- Reconcile the remaining specialist audit routes whose current handoffs are frozen snapshots; current direct inspect artifacts, typed-fixture limits, and unavailable custom-pool routes are recorded in `ai_probability_current.md`.
+Source review and bounded script checks cover the current behaviour; live campaign timing, native rendering and AI frequencies are user-run checks. The current record is section 6 of [the 10 October improvement plan](../plans/famine_and_migration_system_plans/improvement_plan_2026-10-10.md).
 
 ## Future extensions
 

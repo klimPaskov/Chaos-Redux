@@ -2,7 +2,7 @@
 
 > **Current design clarification (2026-08-25):** The user clarification and accepted split implementation supersede any shared mechanic, category, or runtime-namespace wording retained below as historical design context.
 > The current implementation uses independent `famine_*` and `migration_*` mechanics, `famine_decision_category` and `migration_decision_category`, and `famine_state_map_mode` and `migration_state_map_mode`.
-> Use [takeover_status_2026-10-06.md](../../plans/famine_and_migration_system_plans/takeover_status_2026-10-06.md) for current status, published corrections, and remaining evidence gates.
+> Use [improvement_plan_2026-10-10.md](../../plans/famine_and_migration_system_plans/improvement_plan_2026-10-10.md) for current status and design; the [6 October takeover status](../../plans/famine_and_migration_system_plans/takeover_status_2026-10-06.md) is historical evidence.
 > The inherited round-3 gameplay drafts are published, and the older checkpoint reports remain explicitly historical evidence.
 
 This folder preserves source design for the separate famine and migration mechanics connected by neutral conservation primitives.
@@ -21,7 +21,7 @@ The central design rule is that famine and migration remain dynamic. Historical 
 
 ## Current authority and continuation
 
-Begin with [takeover status, 6 October](../../plans/famine_and_migration_system_plans/takeover_status_2026-10-06.md) and [the continuation decision log](../../plans/famine_and_migration_system_plans/agent_decisions_2026-10-05.md).
+Begin with [the 10 October improvement plan](../../plans/famine_and_migration_system_plans/improvement_plan_2026-10-10.md); [takeover status, 6 October](../../plans/famine_and_migration_system_plans/takeover_status_2026-10-06.md) and [the continuation decision log](../../plans/famine_and_migration_system_plans/agent_decisions_2026-10-05.md) are historical.
 The takeover status supersedes the older source-of-truth map, completion report and stopped-thread checkpoints for current implementation status.
 The workstream remains incomplete under that record; publication of reviewed source fixes is distinct from native, visual, probability and external-owner acceptance.
 The August 25 split and event-free clarification above is retained recorded design; [the dated source map](../../plans/famine_and_migration_system_plans/source_of_truth_map.md) preserves its earlier acceptance and source evidence.

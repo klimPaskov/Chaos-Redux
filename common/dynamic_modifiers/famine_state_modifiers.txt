@@ -57,3 +57,14 @@ famine_state_catastrophic_famine = {
 	army_speed_factor_for_controller = constant:famine_state_modifier.catastrophic_speed
 }
 
+
+# Country scope. Added and refreshed by famine_refresh_national_food_crisis for
+# countries in the sparse famine country registry. The values are the summed
+# penalties of the country's visible acute, famine, and catastrophic states.
+famine_national_food_crisis = {
+	icon = GFX_idea_RAJ_state_of_famine_country
+	enable = { always = yes }
+	remove_trigger = { NOT = { has_variable = famine_national_stability_penalty } }
+	stability_factor = famine_national_stability_penalty
+	war_support_factor = famine_national_war_support_penalty
+}

@@ -112,7 +112,7 @@ Current source callsites are in `common/decisions/famine_decisions.txt` and `com
 | --- | --- | --- |
 | `migration_negotiate_corridor` | Migration decision source calls `humanitarian_corridor_prepare_contract`, then `humanitarian_corridor_submit_offer` only when preparation reports valid. | Existing route/capacity/cohort requirements remain authoritative; no new negotiation wiring is requested by the historical instructions. |
 | `migration_accept_corridor_offer`, `migration_reject_corridor_offer` | Migration decision source invokes the respective corridor response effect. | Acceptance/rejection changes the exact contract; it does not itself move population. |
-| `famine_evacuation`, `migration_evacuate_vulnerable`, `migration_evacuate_workers` | One famine and two migration decision lanes call `humanitarian_corridor_execute_evacuation` in their accepted corridor branch. | Exact transaction and generation-bound receipt remain the sole movement authority. |
+| `famine_evacuation`, `migration_evacuate_civilians` | One famine and one migration decision lane call `humanitarian_corridor_execute_evacuation` in their accepted corridor branch. | Exact transaction and generation-bound receipt remain the sole movement authority. |
 | `migration_mission_hold_humanitarian_corridor` | Migration mission calls `humanitarian_corridor_finalize` on successful completion and `humanitarian_corridor_expire` on cancellation/timeout. | Existing exact subject/operation guards and mission-owner outcomes remain unchanged. |
 
 This table is current source evidence, not live execution, numeric AI validation, or final completion.

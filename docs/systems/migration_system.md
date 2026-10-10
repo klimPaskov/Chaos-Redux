@@ -1,6 +1,6 @@
 # Migration System
 
-Status: implemented source ledger pending the remaining probability, adapter, and completion audits. This is not a gameplay-completion claim.
+Status: implemented; current status, balance arithmetic and evidence limits are in [the 10 October improvement plan](../plans/famine_and_migration_system_plans/improvement_plan_2026-10-10.md).
 
 ## Ownership
 
@@ -56,7 +56,7 @@ The live cohort alignment check includes the visit-history ledger, so `migration
 In a new campaign the first proven flight therefore records cohort 1, and a state or country whose selection is rebuilt from an aligned registry clears both its ambiguity flag and its misalignment flag.
 See `common/scripted_effects/migration_cohort_history_effects.md`.
 
-A successful Hunger Lines launch (Event 014, scenario SCN-010) submits `migration_request_scenario_pressure` for each live Event 014 node state through the famine-owned `famine_apply_hunger_lines_scenario_pressure`: 2, 3, 4 or 5 percent of the state's population by launch intensity, capped above a 20 percent protected share and skipped below 1,000 people. Migration then owns the flight like any other request, and the map mode labels it as starting emergency conditions.
+A successful Hunger Lines launch (Event 014, scenario SCN-010) commits a famine stage in each live Event 014 node state; the famine stage transition submits the ordinary famine survivor flight through `migration_accept_famine_survivor_request`, so the scenario adds no separate migration request.
 
 Local integration settles one whole hosted cohort without moving anyone.
 `migration_settle_integrated_cohort` proves the cohort, its current host, the integrating owner-controller and both reception ledgers, debits the state and national reception load once, writes the row as completed with zero people, and only then credits national integration and the achievement history.
@@ -94,7 +94,7 @@ The action retains `GFX_migration_decision_open_border`; no new art or sprite co
 
 ## Paid decision work
 
-The 15 legacy migration actions share neutral central fee tuning and pure inclusive cost components/profiles with the famine decision owner, without sharing a category or mechanic lifecycle.
+The 13 legacy migration actions share neutral central fee tuning and pure inclusive cost components/profiles with the famine decision owner, without sharing a category or mechanic lifecycle.
 Availability, the native custom-cost branch, resource colors and final payment use the same exact country-payer bundle; display-only quotes are not payment authority.
 Immediate actions validate their whole activation before writes, while delayed paid work uses independent action/state/payer receipts before its existing continuation.
 Corridor negotiation preserves deferred payment after a successful offer and rechecks its full fee before preparation, submission and debit.
@@ -111,7 +111,10 @@ Violent pushback and unsafe forced return can create route deaths under `constan
 
 ## Decisions and missions
 
-Migration owns its own category and phased actions for departure policy, evacuation preparation and priority, corridor negotiation, reception policy, controlled medical reception, distribution, transit, border closure and enforcement, integration, resettlement, voluntary return, and forced repatriation.
+Migration owns its own category: Open and Restrict Departure, Evacuate Civilians, Request Passage with Accept and Refuse Passage for the receiver, Open Emergency Reception, Screen Incoming Civilians, Distribute Arrivals, Permit Transit, Close the Border, Enforce the Closure, Local Integration, Resettle Abroad, Help Families Return and Force Repatriation.
+
+Evacuate Civilians is one paid action for any state with sustained flight or trapped people; it organizes the departure points itself, so there is no separate preparation step, and it is blocked only while national reception is already over capacity.
+The emerging, active and resolution phases are presentation for the category header and the missions; they lock no ordinary decision. Departure policy can be reversed during a crisis, and every action that relieves a host (closing the border, distribution, transit, integration, return, resettlement) stays available when the host is overloaded, while actions that admit more people need spare capacity.
 
 Migration missions own corridor, evacuation-transport, reception-observation, and safe-return deadlines. Famine missions are never counted in migration mission slots or presented as migration actions.
 
@@ -131,6 +134,7 @@ Ordinary wars create refugees through the hostile-capture adapter in `common/scr
 When an enemy that is not the owner, a faction partner or in a subject relationship with it captures a state, `on_state_control_changed` requests war flight pressure equal to the live population times a bounded share, scaled by the occupier's conduct and ruling ideology within a fixed range and capped above the protected origin floor.
 A minimum state size, a minimum request and a per-state cooldown keep the registry bounded, and liberation by the owner adds no flight.
 This covers wars created by event owners, such as civil wars and collapse wars, without editing their files.
+When a special Chaos Redux power that runs no civilian system (the walking dead, a rat swarm, ZIN, Death, a revolutionary or terror command) takes a state, that state leaves both mechanics, so `humanitarian_handle_special_front_capture` sends 2% (4% for a nonhuman captor) of each neighbouring state the former owner still holds into flight instead: people run from the advancing front.
 
 ## Assets and mapmode
 
@@ -161,12 +165,9 @@ Starting and exercising a real reception case still needs its exact owner inputs
 
 Event 149 `Immigrations` is retired and absorbed into this system. No replacement event ID, event object, event-pool registration, flat population drain, event-log row, or event-pacing pulse is permitted, and state/accounting pulses are not event pacing.
 
-## Open evidence gates
+## Validation limits
 
-- Complete all named probability comparison scenarios for border policy, destination selection, outbreak reception, evacuation, corridor acceptance, return, integration, resettlement, opposition, and cleanup through a callable `chaosx_ai_probability_auditor`; direct MCP inspection remains evidence only.
-- Close only external adapters whose owners provide exact receipts; retain missing owner data as explicit blockers.
-- Obtain supported runtime visual evidence for the hardcoded mapmode window if the tooling exposes it.
-- Reconcile the remaining specialist audit routes whose current handoffs are frozen snapshots; current direct inspect artifacts, typed-fixture limits, and unavailable custom-pool routes are recorded in `ai_probability_current.md`.
+Source review and bounded script checks cover the current behaviour; live campaign timing, native rendering and AI frequencies are user-run checks. The current record is section 6 of [the 10 October improvement plan](../plans/famine_and_migration_system_plans/improvement_plan_2026-10-10.md).
 
 ## Future extensions
 

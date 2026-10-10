@@ -44,7 +44,8 @@ CONSTANT_GROUPS = {
     "famine_relief_threshold", "famine_relief_timing", "famine_relief_weight",
     "famine_surface_context", "humanitarian_legacy_cost", "humanitarian_population",
     "humanitarian_pressure_source", "humanitarian_runtime", "migration_border_policy",
-    "humanitarian_achievement_value",
+    "humanitarian_achievement_value", "famine_national_crisis", "famine_hunger_lines_scenario", "famine_food_shock", "famine_mortality",
+    "triggerable_scenario_intensity",
 }
 CONSTANT_FILES = (
     "chaos_meter_constants.txt", "chaosx_date_units_constants.txt", "civilian_transfer_constants.txt",
@@ -52,6 +53,7 @@ CONSTANT_FILES = (
     "humanitarian_legacy_cost_constants.txt",
     "humanitarian_achievement_constants.txt",
     "humanitarian_runtime_constants.txt", "migration_core_constants.txt",
+    "famine_adapter_constants.txt", "chaosx_triggerable_scenarios_constants.txt",
 )
 SCOPE_NAMES = {"OWNER": "event_target:__famine_owner__", "CONTROLLER": "event_target:__famine_controller__", "FROM": "event_target:__famine_from__"}
 HEADER = re.compile(r"(?m)^([A-Za-z_][A-Za-z0-9_]*)[ \t]*=[ \t]*\{")
@@ -196,7 +198,9 @@ class FamineRuntime(_PARSER.Event35Runtime):
         if key == "occupation_law": return scope.values.get("occupation_law") == value
         if key == "is_core_of": return self._value(value).values.get("tag") in scope.values.get("core_tags", set())
         if key == "is_owned_and_controlled_by": return scope.owner is scope.controller is self._value(value)
-        if key == "has_dynamic_modifier": return value in scope.modifiers
+        if key == "has_dynamic_modifier":
+            name = _PARSER.first(value, "modifier") if isinstance(value, list) else value
+            return name in scope.modifiers
         if key in self.EXTERNAL_FACTS: return bool(scope.values.get(key, False)) == (value == "yes")
         if key == "any_neighbor_state":
             for neighbor in scope.values.get("neighbors", []):
@@ -222,7 +226,13 @@ class FamineRuntime(_PARSER.Event35Runtime):
                 end = i + 1
                 while end < len(nodes) and nodes[end].key in ("else_if", "else"): end += 1
                 super()._effects(nodes[i:end], scope); i = end; continue
-            if node.key in ("divide_variable", "divide_temp_variable", "clamp_variable", "clamp_temp_variable"):
+            if node.key == "force_update_dynamic_modifier":
+                self.native_calls.append((node.key, scope.id))
+            elif node.key in ("add_dynamic_modifier", "remove_dynamic_modifier"):
+                # Modifier names are database tokens, not famine variables.
+                name = _PARSER.first(node.value, "modifier")
+                (scope.modifiers.add if node.key == "add_dynamic_modifier" else scope.modifiers.discard)(name)
+            elif node.key in ("divide_variable", "divide_temp_variable", "clamp_variable", "clamp_temp_variable"):
                 if node.key.startswith("divide"):
                     name, divisor = node.value[0].key, _decimal(self._value(node.value[0].value))
                     value = _decimal(self._variable(name)) / divisor
@@ -657,6 +667,68 @@ class FamineTakeoverRegressions(unittest.TestCase):
             "famine_requested_food_stage": Decimal(0), "famine_food_score_raw": Decimal(0)})
         self.assertEqual(province.values["famine_food_stage"], Decimal(1))
         self.assertEqual(province.values["famine_food_recovery_since_date"], now)
+
+    def test_national_food_crisis_counts_visible_owned_states_and_clears(self):
+        rt = self.runtime
+        c = rt.constants
+        usa, ger = country("USA"), country("GER")
+        famine, acute = state(1, usa), state(2, usa)
+        famine.flags.add("famine_food_stage_famine")
+        acute.flags.add("famine_food_stage_acute_shortage")
+        concealed = state(3, usa)
+        concealed.flags.update({"famine_food_stage_catastrophic", "famine_crisis_concealed"})
+        foreign = state(4, ger)
+        foreign.flags.add("famine_food_stage_catastrophic")
+        rt.global_arrays["famine_active_states"] = [famine, acute, concealed, foreign]
+        rt.run_effect("famine_refresh_national_food_crisis", usa)
+        self.assertEqual(usa.values["famine_national_stability_penalty"],
+                         c["constant:famine_national_crisis.famine_stability"] + c["constant:famine_national_crisis.acute_stability"])
+        self.assertEqual(usa.values["famine_national_war_support_penalty"], c["constant:famine_national_crisis.famine_war_support"])
+        self.assertIn("famine_national_food_crisis", usa.modifiers)
+        self.assertNotIn("famine_national_food_crisis", ger.modifiers)
+
+        # Exposure ends concealment, and enough catastrophic states reach the caps.
+        concealed.flags.discard("famine_crisis_concealed")
+        many = [state(10 + i, usa) for i in range(6)]
+        for province in many:
+            province.flags.add("famine_food_stage_catastrophic")
+        rt.global_arrays["famine_active_states"] = [famine, acute, concealed] + many
+        rt.run_effect("famine_refresh_national_food_crisis", usa)
+        self.assertEqual(usa.values["famine_national_stability_penalty"], c["constant:famine_national_crisis.stability_cap"])
+        self.assertEqual(usa.values["famine_national_war_support_penalty"], c["constant:famine_national_crisis.war_support_cap"])
+
+        rt.global_arrays["famine_active_states"] = []
+        rt.run_effect("famine_refresh_national_food_crisis", usa)
+        self.assertNotIn("famine_national_food_crisis", usa.modifiers)
+        self.assertNotIn("famine_national_stability_penalty", usa.values)
+
+    def test_hunger_lines_seizes_stores_and_commits_the_starting_stage(self):
+        rt = self.runtime
+        c = rt.constants
+        for intensity, expected in (("low", "acute_shortage"), ("medium", "famine"), ("maximum", "famine")):
+            with self.subTest(intensity=intensity):
+                rt.EXTERNAL_EFFECTS = set(rt.EXTERNAL_EFFECTS) | {"famine_register_active_state"}
+                owner = country("USA")
+                node = state(300, owner, population_k=1000)
+                node.values["infrastructure_level"] = Decimal(5)
+                node.flags.add("cannibalism_active_node")
+                rt.global_arrays["cannibalism_node_states"] = [node]
+                rt.globals["cannibalism_scenario_last_intensity"] = c["constant:triggerable_scenario_intensity." + intensity]
+                frame = rt.run_effect("famine_apply_hunger_lines_scenario_pressure", node,
+                                      caller_temps={"famine_hunger_lines_state_count": Decimal(0)})
+                self.assertEqual(frame["famine_hunger_lines_state_count"], Decimal(1))
+                self.assertEqual(node.values["famine_food_reserve_amount"], Decimal(0))
+                self.assertGreater(node.values["famine_food_reserve_total_depleted"], Decimal(0))
+                self.assertIn("famine_food_reserve_initialized", node.flags)
+                self.assertEqual(node.values["famine_food_stage"], c["constant:famine_food_stage." + expected])
+                self.assertIn("famine_food_stage_" + expected, node.flags)
+                self.assertGreater(node.values["famine_food_pressure"], Decimal(0))
+                # A relaunch inside the context window adds nothing.
+                pressure = node.values["famine_food_pressure"]
+                frame = rt.run_effect("famine_apply_hunger_lines_scenario_pressure", node,
+                                      caller_temps={"famine_hunger_lines_state_count": Decimal(0)})
+                self.assertEqual(frame["famine_hunger_lines_state_count"], Decimal(0))
+                self.assertEqual(node.values["famine_food_pressure"], pressure)
 
 
 if __name__ == "__main__":

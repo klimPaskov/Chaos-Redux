@@ -1,6 +1,6 @@
 # Famine and migration: fewer interventions, stronger choices
 
-Disposition: `unresolved` design proposal and future audit package.
+Disposition: `superseded` by [improvement_plan_2026-10-10.md](../improvement_plan_2026-10-10.md), which implements its accepted parts (one evacuation action, no invitation step, no phase locks, burden-relieving actions for overloaded hosts) and records the rest as future depth.
 Date: 2026-10-03.
 Creation is planning authorization only.
 This package is not an implementation task, a scheduled task, or permission for this chat to implement it later.

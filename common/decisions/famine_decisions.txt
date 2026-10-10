@@ -405,6 +405,10 @@ famine_decision_category = {
 			}
 			modifier = { factor = constant:famine_decision_ai.emergency_imports_factor_1 FROM = { has_state_flag = famine_food_security_active } }
 			modifier = { factor = constant:famine_decision_ai.emergency_imports_factor_2 FROM = { check_variable = { var = famine_reception_demand_population value = constant:humanitarian_population.zero compare = greater_than } } }
+			modifier = { factor = constant:famine_decision_ai.emergency_imports_democratic_factor has_government = democratic }
+			modifier = { factor = constant:famine_decision_ai.relief_acute_shortage_factor FROM = { has_state_flag = famine_food_stage_acute_shortage } }
+			modifier = { factor = constant:famine_decision_ai.relief_famine_factor FROM = { has_state_flag = famine_food_stage_famine } }
+			modifier = { factor = constant:famine_decision_ai.relief_catastrophic_factor FROM = { has_state_flag = famine_food_stage_catastrophic } }
 		}
 		complete_effect = {
 			if = {
@@ -930,9 +934,6 @@ famine_decision_category = {
 		visible = {
 			NOT = { has_country_flag = humanitarian_corridor_offer_pending }
 			famine_decision_problem_is_active = yes
-			# Prefer one maritime relief role at a time; airlift remains visible
-			# when no valid sea route exists anywhere in the country.
-			NOT = { famine_decision_has_sea_relief_target = yes }
 			OR = { NOT = { has_country_flag = famine_decision_resolution } famine_decision_problem_is_active = yes }
 			FROM = {
 				humanitarian_state_is_valid = yes
@@ -1174,180 +1175,6 @@ famine_decision_category = {
 					clear_variable = famine_emergency_airlift_cost_payer
 					clear_variable = famine_emergency_airlift_cost_contract_generation
 					clear_variable = famine_emergency_airlift_cost_donor_state
-				}
-			}
-		}
-	}
-	famine_invite_relief = {
-		icon = GFX_famine_decision_relief_convoy
-		state_target = any_controlled_state
-		on_map_mode = map_and_decisions_view
-		visible = {
-			NOT = { has_country_flag = humanitarian_corridor_offer_pending }
-			famine_decision_problem_is_active = yes
-			# Reserve release is the first stockpile role. The diplomatic land
-			# role appears once no reserve response target remains.
-			NOT = { famine_decision_has_reserve_response_target = yes }
-			OR = { NOT = { has_country_flag = famine_decision_resolution } famine_decision_problem_is_active = yes }
-			FROM = {
-				humanitarian_state_is_valid = yes
-				has_state_flag = famine_food_security_active
-				NOT = { has_state_flag = famine_relief_contract_active }
-				famine_relief_has_land_candidate = yes
-			}
-		}
-		available = {
-			custom_trigger_tooltip = {
-				tooltip = famine_invite_relief_target_tt
-				FROM = {
-					humanitarian_state_is_valid = yes
-					NOT = { has_state_flag = famine_relief_contract_active }
-					famine_relief_has_land_candidate = yes
-				}
-			}
-			hidden_trigger = { FROM = { is_controlled_by = ROOT } }
-			hidden_trigger = { humanitarian_cost_pp20_convoy5_fuel500_is_affordable = yes }
-			hidden_trigger = { NOT = { FROM = { has_state_flag = famine_invite_relief_cost_paid } } }
-		}
-		target_trigger = {
-			FROM = {
-				humanitarian_state_is_valid = yes
-				has_state_flag = famine_food_security_active
-				NOT = { has_state_flag = famine_relief_contract_active }
-				famine_relief_has_land_candidate = yes
-			}
-		}
-		custom_cost_text = famine_cost_invite_relief
-		custom_cost_trigger = {
-			humanitarian_cost_pp20_convoy5_fuel500_is_affordable = yes
-		}
-		ai_hint_pp_cost = @FAMINE_PP_STANDARD
-		days_remove = constant:famine_decision_timing.decision_extended
-		days_re_enable = constant:famine_decision_timing.decision_reenable_long
-		fire_only_once = no
-		ai_will_do = {
-			base = constant:famine_decision_ai.invite_relief_base
-			modifier = {
-				factor = constant:famine_relief_weight.minimum
-				FROM = { NOT = { famine_relief_has_land_candidate = yes } }
-			}
-			modifier = { factor = constant:famine_decision_ai.invite_relief_factor_1 FROM = { check_variable = { var = famine_food_pressure value = constant:humanitarian_population.zero compare = greater_than } } }
-			modifier = { factor = constant:famine_decision_ai.invite_relief_factor_2 has_government = democratic }
-			modifier = { factor = constant:famine_decision_ai.relief_acute_shortage_factor FROM = { has_state_flag = famine_food_stage_acute_shortage } }
-			modifier = { factor = constant:famine_decision_ai.relief_famine_factor FROM = { has_state_flag = famine_food_stage_famine } }
-			modifier = { factor = constant:famine_decision_ai.relief_catastrophic_factor FROM = { has_state_flag = famine_food_stage_catastrophic } }
-		}
-		complete_effect = {
-			if = {
-				limit = { famine_invite_relief_can_start = yes }
-				FROM = {
-					set_temp_variable = { famine_invite_relief_attempt_generation = constant:famine_relief_runtime.zero }
-					famine_refresh_reserve_capacity = yes
-					set_variable = { famine_relief_route_mode = constant:famine_relief_route_mode.land }
-					set_variable = { famine_relief_requested_amount = famine_food_reserve_daily_need }
-					multiply_variable = { famine_relief_requested_amount = constant:famine_mission_contract.reserve_import_days }
-					round_variable = famine_relief_requested_amount
-					famine_relief_select_and_create_contract = yes
-					if = {
-						limit = {
-							famine_relief_contract_is_valid = yes
-							check_variable = { var = famine_relief_route_mode value = constant:famine_relief_route_mode.land compare = equals }
-							var:famine_relief_actor = { tag = ROOT }
-						}
-						set_temp_variable = { famine_invite_relief_attempt_generation = famine_relief_contract_generation }
-					}
-				}
-				if = {
-					limit = {
-						humanitarian_cost_pp20_convoy5_fuel500_is_affordable = yes
-						FROM = {
-							famine_relief_contract_is_valid = yes
-							check_variable = { var = famine_relief_route_mode value = constant:famine_relief_route_mode.land compare = equals }
-							var:famine_relief_actor = { tag = ROOT }
-						}
-					}
-					add_political_power = constant:humanitarian_legacy_cost.pp_standard_debit
-					add_equipment_to_stockpile = { type = convoy amount = constant:humanitarian_legacy_cost.convoy_light_debit }
-					add_fuel = constant:humanitarian_legacy_cost.fuel_light_debit
-					FROM = {
-						set_state_flag = famine_invite_relief_cost_paid
-						set_variable = { famine_invite_relief_cost_payer = ROOT }
-						set_variable = { famine_invite_relief_cost_contract_generation = famine_relief_contract_generation }
-						set_variable = { famine_invite_relief_cost_donor_state = famine_relief_donor_state }
-					}
-				}
-				else = {
-					FROM = {
-						if = {
-							limit = {
-								famine_relief_contract_is_valid = yes
-								check_variable = { var = famine_relief_route_mode value = constant:famine_relief_route_mode.land compare = equals }
-								var:famine_relief_actor = { tag = ROOT }
-								check_variable = { var = famine_relief_contract_generation value = famine_invite_relief_attempt_generation compare = equals }
-							}
-							famine_relief_cleanup_contract = yes
-						}
-					}
-				}
-			}
-		}
-		remove_effect = {
-			if = {
-				limit = { famine_invite_relief_cost_receipt_is_valid = yes }
-				set_temp_variable = { famine_invite_relief_cost_work_proven = constant:famine_relief_runtime.zero }
-				if = {
-					limit = { famine_invite_relief_cost_contract_is_current = yes }
-					set_temp_variable = { famine_invite_relief_cost_work_proven = constant:famine_relief_runtime.one }
-				}
-				FROM = {
-					clr_state_flag = famine_invite_relief_cost_paid
-					clear_variable = famine_invite_relief_cost_payer
-					clear_variable = famine_invite_relief_cost_contract_generation
-					clear_variable = famine_invite_relief_cost_donor_state
-				}
-				if = {
-					limit = { check_variable = { var = famine_invite_relief_cost_work_proven value = constant:famine_relief_runtime.one compare = equals } }
-					FROM = {
-						if = {
-							limit = {
-								famine_relief_contract_is_valid = yes
-								check_variable = { var = famine_relief_route_mode value = constant:famine_relief_route_mode.land compare = equals }
-							}
-							ROOT = { add_stability = constant:famine_decision_outcome.decision_minor_stability }
-						}
-					}
-				}
-				else = {
-					# A contract broken by an enemy capture of its donor is relief obstruction.
-					set_temp_variable = { famine_condemnation_result = constant:humanitarian_runtime.zero }
-					FROM = { famine_condemn_relief_contract_interruption = yes }
-				}
-			}
-			else_if = {
-				limit = {
-					FROM = {
-						has_state_flag = famine_invite_relief_cost_paid
-						has_variable = famine_invite_relief_cost_payer
-						var:famine_invite_relief_cost_payer = { tag = ROOT }
-					}
-				}
-				FROM = {
-					clr_state_flag = famine_invite_relief_cost_paid
-					clear_variable = famine_invite_relief_cost_payer
-					clear_variable = famine_invite_relief_cost_contract_generation
-					clear_variable = famine_invite_relief_cost_donor_state
-				}
-			}
-		}
-		cancel_if_not_visible = no
-		cancel_effect = {
-			FROM = {
-				if = {
-					limit = { has_state_flag = famine_invite_relief_cost_paid has_variable = famine_invite_relief_cost_payer var:famine_invite_relief_cost_payer = { tag = ROOT } }
-					clr_state_flag = famine_invite_relief_cost_paid
-					clear_variable = famine_invite_relief_cost_payer
-					clear_variable = famine_invite_relief_cost_contract_generation
-					clear_variable = famine_invite_relief_cost_donor_state
 				}
 			}
 		}
@@ -1603,9 +1430,6 @@ famine_decision_category = {
 		visible = {
 			NOT = { has_country_flag = humanitarian_corridor_offer_pending }
 			famine_decision_problem_is_active = yes
-			# Evacuation owns the movement role while a valid evacuation target
-			# exists; requisition remains the fallback for safer-state transfer.
-			NOT = { famine_decision_has_evacuation_response_target = yes }
 			OR = { NOT = { has_country_flag = famine_decision_resolution } famine_decision_problem_is_active = yes }
 			FROM = {
 				has_state_flag = famine_food_security_active
@@ -1852,9 +1676,13 @@ famine_decision_category = {
 					clear_variable = famine_conceal_crisis_cost_payer
 				}
 				FROM = {
-					set_state_flag = famine_crisis_concealed
+					# The crisis disappears from public view for a while: it stops
+					# counting toward the national food crisis, while hunger rises
+					# and the first deaths in it are condemned as concealment.
+					set_temp_variable = { famine_conceal_days = constant:famine_national_crisis.conceal_days }
+					set_state_flag = { flag = famine_crisis_concealed value = 1 days = famine_conceal_days }
 					add_to_variable = { famine_food_pressure = constant:famine_decision_threshold.conceal_pressure }
-					ROOT = { add_stability = constant:famine_decision_outcome.decision_standard_stability }
+					clamp_variable = { var = famine_food_pressure min = constant:famine_food_component.zero max = constant:famine_food_component.maximum }
 				}
 				# Condemnation is deferred until the proof-owning adapter receives its
 				# exact state, actor, policy, and receipt targets.
@@ -1891,9 +1719,6 @@ famine_decision_category = {
 		visible = {
 			NOT = { has_country_flag = humanitarian_corridor_offer_pending }
 			famine_decision_problem_is_active = yes
-			# Concealment and extraction are mutually exclusive governance roles;
-			# extraction is exposed only when no proven concealment target exists.
-			NOT = { famine_decision_has_concealment_response_target = yes }
 			OR = { NOT = { has_country_flag = famine_decision_resolution } famine_decision_problem_is_active = yes }
 			has_war = yes
 			FROM = {
@@ -1966,6 +1791,7 @@ famine_decision_category = {
 					clr_state_flag = humanitarian_achievement_extraction_shock_recorded
 					set_state_flag = famine_extraction_active
 					add_to_variable = { famine_food_pressure = constant:famine_decision_threshold.extraction_pressure }
+					clamp_variable = { var = famine_food_pressure min = constant:famine_food_component.zero max = constant:famine_food_component.maximum }
 					ROOT = { add_war_support = constant:famine_decision_outcome.decision_maintain_extraction_war_support }
 				}
 			}

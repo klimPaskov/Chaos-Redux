@@ -6,14 +6,15 @@ Reason queued: the workbook and its CSV exports are not edited by this owner, an
 
 ## SCN-010 The Hunger Lines
 
-Source change: `famine_apply_hunger_lines_scenario_pressure` (committed with decision 18) gives every region the scenario seizes a food shock, a 120-day food crisis and refugee flight.
+Updated 2026-10-10 for [the improvement plan](improvement_plan_2026-10-10.md). The in-game scenario impact text (`chaosx.scenarios.cannibalism.impact.*` in `localisation/english/014_cannibalism_l_english.yml`) already carries the wording below; only the workbook row and its CSV export remain.
 
-Requested `Details` addition, after the five type paragraphs:
+Source change: `famine_apply_hunger_lines_scenario_pressure` seizes the food stores of every region the scenario seizes and commits its starting food stage on launch day: acute shortage at Low, famine at Medium and above, for a 120-day food crisis with the ordinary famine flight.
 
-> In every type, the regions the Hunger Lines seize run short of food and their people begin to flee. At the lowest intensity supply is strained at first and turns into acute shortage once local stores run out; at Maximum those regions slide toward famine within weeks unless relief arrives.
+Requested `Intensity Scaling` additions, matching the impact text:
 
-Requested `Intensity Scaling` addition to the Maximum line:
+> Low: The seized regions lose their food stores and fall into acute shortage.
+> Medium: Famine grips the regions they seize.
+> High: Famine grips every region they seize.
+> Maximum: Famine grips every region they seize.
 
-> Seized regions fall into famine within weeks unless relief arrives.
-
-Event 014 owner action: add the same sentence to the SCN-010 scenario description localisation, so the catalog row matches the in-game text, then run `python .tools/export_event_catalog_csv.py` after the workbook update.
+Spreadsheet owner action: update the SCN-010 row in `docs/spreadsheets/chaos_redux_events_catalog.xlsx`, then run `python .tools/export_event_catalog_csv.py`.

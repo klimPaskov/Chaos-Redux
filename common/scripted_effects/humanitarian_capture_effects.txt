@@ -138,3 +138,71 @@ humanitarian_capture_calculate_flight_request = {
 	}
 	round_temp_variable = humanitarian_capture_request_people
 }
+
+# STATE scope: the state whose controller just changed. A special Chaos Redux
+# power that runs no civilian system (the walking dead, a rat swarm, a
+# revolutionary or terror command) takes the captured state out of both
+# mechanics, so nobody there can be registered as fleeing. Civilians run from
+# the advancing front instead: each neighbouring state the former owner still
+# owns and controls receives flight pressure, larger when the captor is not
+# human. Bounded to the captured state's neighbours, with the same population
+# gate and per-state cooldown as an ordinary capture.
+# Input: event target humanitarian_capture_new_controller.
+humanitarian_handle_special_front_capture = {
+	if = {
+		limit = {
+			has_event_target = humanitarian_capture_new_controller
+			event_target:humanitarian_capture_new_controller = {
+				exists = yes
+				NOT = { humanitarian_country_is_valid = yes }
+			}
+			is_controlled_by = event_target:humanitarian_capture_new_controller
+			NOT = { is_owned_by = event_target:humanitarian_capture_new_controller }
+			OWNER = {
+				humanitarian_country_is_valid = yes
+				has_war_with = event_target:humanitarian_capture_new_controller
+			}
+		}
+		OWNER = { save_event_target_as = humanitarian_capture_owner }
+		set_temp_variable = { humanitarian_front_flight_fraction = constant:humanitarian_capture_pressure.special_front_fraction }
+		if = {
+			limit = { event_target:humanitarian_capture_new_controller = { is_actual_nonhuman_country = yes } }
+			set_temp_variable = { humanitarian_front_flight_fraction = constant:humanitarian_capture_pressure.nonhuman_front_fraction }
+		}
+		set_temp_variable = { chaosx_date_days = constant:humanitarian_capture_pressure.cooldown_days }
+		set_temp_variable = { chaosx_date_offset = constant:chaosx_date_units.zero }
+		chaosx_convert_days_to_date_offset = yes
+		set_temp_variable = { humanitarian_front_cooldown_offset = chaosx_date_offset }
+		every_neighbor_state = {
+			limit = {
+				is_owned_and_controlled_by = event_target:humanitarian_capture_owner
+				humanitarian_state_is_valid = yes
+				humanitarian_capture_state_is_eligible = yes
+			}
+			set_variable = { humanitarian_capture_cooldown_until_date = global.date }
+			add_to_variable = { humanitarian_capture_cooldown_until_date = humanitarian_front_cooldown_offset }
+			set_temp_variable = { humanitarian_front_population = state_population_k }
+			multiply_temp_variable = { humanitarian_front_population = constant:humanitarian_population.people_per_k }
+			round_temp_variable = humanitarian_front_population
+			set_temp_variable = { humanitarian_front_movable = humanitarian_front_population }
+			set_temp_variable = { humanitarian_front_floor = humanitarian_front_population }
+			multiply_temp_variable = { humanitarian_front_floor = constant:humanitarian_capture_pressure.protected_origin_share }
+			subtract_from_temp_variable = { humanitarian_front_movable = humanitarian_front_floor }
+			set_temp_variable = { humanitarian_front_request = humanitarian_front_population }
+			multiply_temp_variable = { humanitarian_front_request = humanitarian_front_flight_fraction }
+			clamp_temp_variable = { var = humanitarian_front_request min = constant:humanitarian_population.zero max = humanitarian_front_movable }
+			round_temp_variable = humanitarian_front_request
+			if = {
+				limit = { check_variable = { var = humanitarian_front_request value = constant:humanitarian_capture_pressure.minimum_request_people compare = greater_than_or_equals } }
+				set_temp_variable = { migration_pressure_request_result = constant:humanitarian_runtime.zero }
+				set_temp_variable = { migration_pressure_request_amount = humanitarian_front_request }
+				set_temp_variable = { migration_pressure_request_proven = constant:humanitarian_runtime.one }
+				set_temp_variable = { migration_pressure_request_actor_proven = constant:humanitarian_runtime.one }
+				migration_request_event_pressure = yes
+			}
+		}
+	}
+	set_temp_variable = { migration_pressure_request_proven = constant:humanitarian_runtime.zero }
+	set_temp_variable = { migration_pressure_request_actor_proven = constant:humanitarian_runtime.zero }
+	set_temp_variable = { migration_pressure_request_amount = constant:humanitarian_population.zero }
+}

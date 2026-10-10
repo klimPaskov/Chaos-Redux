@@ -52,7 +52,7 @@ The four decision rows use the same lifecycle.
 5. Relief access and recipient corridor proof are written only when the transfer result is valid, the measured debit equals measured credit, and the credit meets the minimum grant. `famine_mark_relief_access` remains the existing timed access effect; no pressure fraction is subtracted directly.
 6. Failed delivery, stale endpoints, control loss, relation loss, depleted stock, insufficient headroom, or expiry runs idempotent cleanup and leaves relief access unchanged. Successful delivery clears only the active contract while preserving exact donor/mode/date history.
 
-`famine_invite_relief` is intentionally land-only. It creates one exact land contract and leaves delivery to `famine_emergency_imports`; it no longer selects an impossible sea or air mode and no longer creates a cost-paid/no-contract fallback. `famine_emergency_imports` remains exact land donor-backed delivery. `famine_escorted_relief_convoy` and `famine_emergency_airlift` never call local reserve release; local release remains owned by `famine_release_reserves`.
+`famine_emergency_imports` arranges the exact land contract when none exists and delivers it in the same paid action; there is no separate invitation step. `famine_escorted_relief_convoy` and `famine_emergency_airlift` never call local reserve release; local release remains owned by `famine_release_reserves`.
 
 When delivery fails, or a paid relief decision finds its contract no longer current at removal, `famine_condemn_relief_contract_interruption` runs before the contract is cleaned up. It condemns a country at war with the relief actor that now holds the donor state, once per contract generation, when the recipient is at the famine or catastrophic stage.
 
@@ -84,7 +84,7 @@ Parent review should inspect the exact four famine decision rows and retain the 
 
 ## Namespace and external boundary
 
-The relief runtime is famine-owned and uses `famine_relief_*`. Its decision consumers are `famine_emergency_imports`, `famine_escorted_relief_convoy`, `famine_emergency_airlift`, `famine_invite_relief`, and `famine_release_reserves` in `common/decisions/famine_decisions.txt`.
+The relief runtime is famine-owned and uses `famine_relief_*`. Its decision consumers are `famine_emergency_imports`, `famine_escorted_relief_convoy`, `famine_emergency_airlift`, and `famine_release_reserves` in `common/decisions/famine_decisions.txt`.
 
 The only migration input is the bounded, already-valid reception-policy contract used for persecution and admission precedence. Relief does not read migration load, migration routes, or migration lifecycle state.
 

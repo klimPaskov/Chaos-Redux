@@ -31,6 +31,15 @@ Flight pressure is handled afterwards by the existing spontaneous movement, rece
 A liberation, meaning the owner regains control, or a handover to an ally adds no flight; the existing return paths act on their own.
 The only per-callback work is the changed state's own checks and one food-observation registration; there is no world, country or registry scan.
 
+## `humanitarian_handle_special_front_capture`
+
+Scope: the STATE whose controller just changed. Called right after `humanitarian_handle_hostile_capture` from the same callback.
+Input: event target `humanitarian_capture_new_controller`.
+
+A special Chaos Redux power that runs no civilian system (`humanitarian_country_is_valid` fails: the walking dead, a rat swarm, ZIN, Death, a revolutionary or terror command) takes the captured state out of both mechanics, so nobody there can be registered as fleeing.
+When such a captor at war with the owner takes an owned state, each neighbouring state that the former owner still owns and controls, that passes the population gate and that is off its capture cooldown, starts its cooldown and receives flight pressure through `migration_request_event_pressure`: `special_front_fraction` of its population for a human captor, `nonhuman_front_fraction` for a nonhuman one, capped above `protected_origin_share` and skipped below `minimum_request_people`.
+Work is bounded to the captured state's neighbours; it moves nobody and adds no famine stage or deaths.
+
 ## `humanitarian_capture_calculate_flight_request`
 
 Scope: the captured STATE with both capture event targets saved.

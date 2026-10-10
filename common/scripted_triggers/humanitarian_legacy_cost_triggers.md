@@ -63,13 +63,11 @@ Call-site wiring is owned by the decision worker and parent.
 | `pp10_train5_fuel1000` | `pp_light`, `train_light`, `fuel_heavy` | `famine_repair_relief_route` |
 | `pp20_convoy10_support50_fuel1000` | `pp_standard`, `convoy_heavy`, `support_light`, `fuel_heavy` | `famine_escorted_relief_convoy` |
 | `pp20_planes5_fuel1000_airxp10` | `pp_standard`, `transport_planes`, `fuel_heavy`, `air_xp` | `famine_emergency_airlift` |
-| `pp20_convoy5_fuel500` | `pp_standard`, `convoy_light`, `fuel_light` | `famine_invite_relief` |
 | `pp20_train10_fuel1000` | `pp_standard`, `train_heavy`, `fuel_heavy` | `famine_evacuation` |
-| `pp20_train5_fuel500` | `pp_standard`, `train_light`, `fuel_light` | `famine_requisition_safer_state`, `migration_evacuate_vulnerable`, `migration_voluntary_return` |
+| `pp20_train5_fuel500` | `pp_standard`, `train_light`, `fuel_light` | `famine_requisition_safer_state`, `migration_evacuate_civilians`, `migration_voluntary_return` |
 | `pp10_infantry100_fuel500` | `pp_light`, `infantry_light`, `fuel_light` | `famine_conceal_crisis`, `migration_restrict_departure` |
-| `pp10_train5_fuel500` | `pp_light`, `train_light`, `fuel_light` | `famine_maintain_extraction`, `migration_prepare_evacuation`, `migration_open_departure_routes`, `migration_distribute_arrivals` |
+| `pp10_train5_fuel500` | `pp_light`, `train_light`, `fuel_light` | `famine_maintain_extraction`, `migration_open_departure_routes`, `migration_distribute_arrivals` |
 | `pp20_infantry250_fuel1000` | `pp_standard`, `infantry_heavy`, `fuel_heavy` | `migration_close_border`, `migration_enforce_closure` |
-| `pp20_train10_fuel500` | `pp_standard`, `train_heavy`, `fuel_light` | `migration_evacuate_workers` |
 | `pp35_infantry100_fuel500` | `pp_heavy`, `infantry_light`, `fuel_light` | `migration_negotiate_corridor` |
 | `pp20_support100_infantry100` | `pp_standard`, `support_heavy`, `infantry_light` | `migration_controlled_medical_reception` |
 | `pp10_convoy5_fuel500` | `pp_light`, `convoy_light`, `fuel_light` | `migration_transit_only` |

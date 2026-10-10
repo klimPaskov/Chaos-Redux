@@ -54,59 +54,6 @@ famine_state_can_release_reserves = {
 	}
 }
 
-# Country-level response-role selectors keep the category legible without
-# deleting any decision. Each selector mirrors the underlying state-target
-# contract and is used only to hide a lower-priority sibling while the
-# higher-priority response is still actionable.
-famine_decision_has_reserve_response_target = {
-	any_controlled_state = {
-		famine_state_can_release_reserves = yes
-	}
-}
-
-famine_decision_has_sea_relief_target = {
-	any_controlled_state = {
-		humanitarian_state_is_valid = yes
-		has_state_flag = famine_food_security_active
-		check_variable = { var = famine_blockade_island_proven value = constant:humanitarian_runtime.zero compare = greater_than }
-		famine_blockade_proof = yes
-		OR = {
-			AND = {
-				famine_relief_contract_is_valid = yes
-				check_variable = { var = famine_relief_route_mode value = constant:famine_relief_route_mode.sea compare = equals }
-			}
-			AND = {
-				NOT = { has_state_flag = famine_relief_contract_active }
-				famine_relief_has_sea_candidate = yes
-			}
-		}
-	}
-}
-
-famine_decision_has_evacuation_response_target = {
-	migration_decision_famine_evacuation_country_is_available = yes
-	any_controlled_state = {
-		has_state_flag = famine_food_security_active
-		migration_decision_famine_evacuation_state_is_available = yes
-	}
-}
-
-famine_decision_has_concealment_response_target = {
-	OR = {
-		has_government = fascism
-		has_government = communism
-		has_government = neutrality
-	}
-	any_controlled_state = {
-		humanitarian_state_is_valid = yes
-		has_state_flag = famine_food_security_active
-		NOT = { has_state_flag = famine_crisis_concealed }
-		OR = {
-			NOT = { has_variable = famine_profile_extraction }
-			NOT = { check_variable = { var = famine_profile_extraction value = constant:famine_food_component.zero compare = greater_than } }
-		}
-	}
-}
 
 # COUNTRY scope. Revalidate the action's current phase, selected-state start
 # requirements, current controller and complete fee tuple before any effect
@@ -199,7 +146,6 @@ famine_emergency_airlift_can_start = {
 	hidden_trigger = {
 		NOT = { has_country_flag = humanitarian_corridor_offer_pending }
 		famine_decision_problem_is_active = yes
-		NOT = { famine_decision_has_sea_relief_target = yes }
 		OR = { NOT = { has_country_flag = famine_decision_resolution } famine_decision_problem_is_active = yes }
 		FROM = {
 			is_controlled_by = ROOT
@@ -226,23 +172,6 @@ famine_emergency_airlift_can_start = {
 	}
 }
 
-famine_invite_relief_can_start = {
-	hidden_trigger = {
-		NOT = { has_country_flag = humanitarian_corridor_offer_pending }
-		famine_decision_problem_is_active = yes
-		NOT = { famine_decision_has_reserve_response_target = yes }
-		OR = { NOT = { has_country_flag = famine_decision_resolution } famine_decision_problem_is_active = yes }
-		FROM = {
-			is_controlled_by = ROOT
-			humanitarian_state_is_valid = yes
-			has_state_flag = famine_food_security_active
-			NOT = { has_state_flag = famine_relief_contract_active }
-			famine_relief_has_land_candidate = yes
-		}
-		humanitarian_cost_pp20_convoy5_fuel500_is_affordable = yes
-		NOT = { FROM = { has_state_flag = famine_invite_relief_cost_paid } }
-	}
-}
 
 famine_evacuation_can_start = {
 	hidden_trigger = {
@@ -266,7 +195,6 @@ famine_requisition_safer_state_can_start = {
 	hidden_trigger = {
 		NOT = { has_country_flag = humanitarian_corridor_offer_pending }
 		famine_decision_problem_is_active = yes
-		NOT = { famine_decision_has_evacuation_response_target = yes }
 		OR = { NOT = { has_country_flag = famine_decision_resolution } famine_decision_problem_is_active = yes }
 		FROM = {
 			is_controlled_by = ROOT
@@ -315,7 +243,6 @@ famine_maintain_extraction_can_start = {
 	hidden_trigger = {
 		NOT = { has_country_flag = humanitarian_corridor_offer_pending }
 		famine_decision_problem_is_active = yes
-		NOT = { famine_decision_has_concealment_response_target = yes }
 		OR = { NOT = { has_country_flag = famine_decision_resolution } famine_decision_problem_is_active = yes }
 		has_war = yes
 		FROM = {
@@ -437,31 +364,6 @@ famine_emergency_airlift_cost_contract_is_current = {
 	}
 }
 
-famine_invite_relief_cost_receipt_is_valid = {
-	hidden_trigger = {
-		FROM = {
-			humanitarian_state_is_valid = yes
-			is_controlled_by = ROOT
-			has_state_flag = famine_invite_relief_cost_paid
-			has_variable = famine_invite_relief_cost_payer
-			var:famine_invite_relief_cost_payer = { exists = yes tag = ROOT }
-		}
-	}
-}
-
-famine_invite_relief_cost_contract_is_current = {
-	hidden_trigger = {
-		FROM = {
-			famine_relief_contract_is_valid = yes
-			var:famine_relief_actor = { tag = ROOT }
-			check_variable = { var = famine_relief_route_mode value = constant:famine_relief_route_mode.land compare = equals }
-			has_variable = famine_invite_relief_cost_contract_generation
-			check_variable = { var = famine_relief_contract_generation value = famine_invite_relief_cost_contract_generation compare = equals }
-			has_variable = famine_invite_relief_cost_donor_state
-			var:famine_invite_relief_cost_donor_state = { state = var:PREV.famine_relief_donor_state }
-		}
-	}
-}
 
 famine_evacuation_cost_receipt_is_valid = {
 	hidden_trigger = {
