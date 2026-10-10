@@ -6,8 +6,6 @@ This change adds a new `Miscellaneous` category to the Chaos Redux settings menu
 The update covers:
 - A new `Miscellaneous` menu entry below `Advanced Settings`.
 - Super-event audio volume selection with a stepped slider covering the explicit multiplier tiers.
-- A dedicated Fallout system checkbox that is independent from numbered events.
-- A `Harder Crises for Players` checkbox for reusable Non-AI Crisis Pressure.
 - Direct keyboard entry for event IDs after clicking the event ID box.
 - A reset confirmation popup for `Reset All Settings`.
 - Random-event button behavior changed from immediate fire to random ID selection.
@@ -24,14 +22,15 @@ The update covers:
 - `2.0x`
 - `2.5x`
 - `3.0x`
-3. `Disable Fallout` toggles the dedicated Fallout world-end route through the shared disabled-scenario ledger. An active Fallout transition cannot be disabled.
+3. `Static Winter Map` hides the animated Air Winter weather while keeping each phase on the map.
 4. The default audio volume is `1.5x`.
-- Harder Crises for Players: enabled
+
+The Fallout consequence toggle lives in the Air Cleanliness tab of the Chaos Meter window and in the All Settings window; see [settings_all_settings_window.md](settings_all_settings_window.md).
 
 These defaults are applied in both `initialize_miscellaneous_settings` and `reset_miscellaneous_to_defaults`.
 
 ## Non-AI Crisis Pressure
-`Harder Crises for Players` sets `chaosx_setting_non_ai_crisis_pressure_enabled` on the player country. The reusable trigger `chaosx_is_non_ai_crisis_pressure_active` is true only for non-AI countries with that flag.
+The settings defaults set `chaosx_setting_non_ai_crisis_pressure_enabled` on the player country; the menu has no toggle for it. The reusable trigger `chaosx_is_non_ai_crisis_pressure_active` is true only for non-AI countries with that flag.
 
 The shared pressure helpers live in:
 - `common/script_constants/crisis_pressure_constants.txt`

@@ -1,20 +1,34 @@
 guiTypes = {
 
-	@chaosx_menu_panel_width = 1450
-	@chaosx_menu_panel_height = 410
+	# Main menu layout.
+	# The lower panel is anchored to the bottom edge. Its size lets the panel and the logo
+	# fit a 1093x614 virtual screen (1366x768 at UI scale 1.25). The logo is sized in screen
+	# percentages and centred in the free area above the panel, so its centre sits half of
+	# the panel height plus the bottom margin above the screen centre.
+	@chaosx_menu_panel_width = 1070
+	@chaosx_menu_panel_height = 355
 	@chaosx_menu_panel_y = -10
 	@chaosx_menu_panel_start_y = 430
 	@chaosx_menu_panel_anim_time = 1200
 	@chaosx_menu_panel_fade_time = 900
-	@chaosx_menu_logo_y = 10
-	@chaosx_menu_logo_start_y = 250
-	@chaosx_menu_button_x = 570
-	@chaosx_menu_button_y_1 = 58
-	@chaosx_menu_button_y_2 = 113
-	@chaosx_menu_button_y_3 = 168
-	@chaosx_menu_button_y_4 = 223
-	@chaosx_menu_button_y_5 = 278
-	@chaosx_menu_button_y_6 = 333
+	@chaosx_menu_logo_y = -183
+	@chaosx_menu_logo_start_y = -63
+	@chaosx_menu_column_width = 300
+	@chaosx_menu_about_x = 30
+	@chaosx_menu_community_x = 740
+	@chaosx_menu_community_icon_left_x = 803
+	@chaosx_menu_community_icon_right_x = 897
+	@chaosx_menu_button_x = 355
+	@chaosx_menu_button_warn_x = 685
+	@chaosx_menu_button_warn_y = 35
+	@chaosx_menu_career_star_x = -381
+	@chaosx_menu_career_star_y = 152
+	@chaosx_menu_button_y_1 = 30
+	@chaosx_menu_button_y_2 = 80
+	@chaosx_menu_button_y_3 = 130
+	@chaosx_menu_button_y_4 = 180
+	@chaosx_menu_button_y_5 = 230
+	@chaosx_menu_button_y_6 = 280
 	@chaosx_menu_hidden_x = 10000
 	@chaosx_menu_hidden_y = 10000
 	@chaosx_continue_flag_left_x = 10000
@@ -40,27 +54,27 @@ guiTypes = {
 		guiButtonType = {
 			name = "listboxSliderButton"
 			quadTextureSprite = "GFX_scroll_drager"
-			position = { x = -445 y = 0 }
+			position = { x = -315 y = 0 }
 		}
 
 		guiButtonType = {
 			name = "listboxTrackButton"
 			quadTextureSprite = "GFX_scroll_track"
-			position = { x = -433 y = 12 }
+			position = { x = -303 y = 12 }
 		}
 
 		guiButtonType = {
 			parent = "listboxSliderButton"
 			name = "upButton"
 			quadTextureSprite = "GFX_scroll_up"
-			position = { x = -445 y = 0 }
+			position = { x = -315 y = 0 }
 		}
 
 		guiButtonType = {
 			parent = "listboxSliderButton"
 			name = "downButton"
 			quadTextureSprite = "GFX_scroll_down"
-			position = { x = -445 y = 120 }
+			position = { x = -315 y = 120 }
 		}
 	}
 
@@ -136,6 +150,7 @@ guiTypes = {
 		buttonType = {
 			name ="change_background_button"
 			position = { x = -206 y = -24 }
+			hide = yes
 
 			quadTextureSprite = "GFX_button_238x38"
 			buttonText = "CHANGE_BACKGROUND"
@@ -281,17 +296,31 @@ guiTypes = {
 		animation_type = decelerated
 		animation_time = @chaosx_menu_panel_anim_time
 		fade_time = @chaosx_menu_panel_fade_time
-		size = { width = 592 height = 669 }
+		# 19% of the screen width and 38% of its height keep the 592x669 logo at its own
+		# aspect ratio on 16:9 screens; preserve_aspect_ratio protects other aspect ratios.
+		size = {
+			width = 592
+			height = 669
+			min = { width = 19% height = 38% }
+			max = { width = 19% height = 38% }
+			preserve_aspect_ratio = yes
+		}
 		Orientation = center
 		Origo = center
 		clipping = no
 
+		background = {
+			name = "Background"
+			quadTextureSprite = "GFX_chaos_redux_logo_scaled"
+			alwaystransparent = yes
+		}
+
+		# Kept by name for the frontend controller; the scaled background draws the logo.
 		iconType =
 		{
 			name ="frontend_game_logo"
 			spriteType = "GFX_chaos_redux_logo"
-			position = { x = -15 y = -17 }
-			scale = 1.05
+			position = { x = @chaosx_menu_hidden_x y = @chaosx_menu_hidden_y }
 		}
 
 	}
@@ -484,62 +513,62 @@ guiTypes = {
 
 		iconType = {
 			name = "single_player_button_warn"
-			position = { x = 915 y = 65 }
+			position = { x = @chaosx_menu_button_warn_x y = @chaosx_menu_button_warn_y }
 			spriteType = "GFX_missing_dlc_warning_sign"
 		}
 
 		instantTextBoxType = {
 			name ="version_label"
-			position = { x = 35 y = 366 }
+			position = { x = @chaosx_menu_about_x y = 320 }
 			textureFile = ""
 			font = "hoi_18b"
 			borderSize = {x = 0 y = 0}
 			text = "ALPHA"
 			format = centre
-			maxWidth = 430
+			maxWidth = @chaosx_menu_column_width
 			maxHeight = 20
 		}
 
 		positionType = {
 			name = "version_label_subscription_position"
-			position = { x = 35 y = 366 }
+			position = { x = @chaosx_menu_about_x y = 320 }
 		}
 
 		instantTextBoxType = {
 			name ="chaosx_version_label"
-			position = { x = 35 y = 342 }
+			position = { x = @chaosx_menu_about_x y = 296 }
 			textureFile = ""
 			font = "hoi_18b"
 			borderSize = { x = 0 y = 0 }
 			text = "chaosx_main_menu_version"
 			format = centre
-			maxWidth = 430
+			maxWidth = @chaosx_menu_column_width
 			maxHeight = 20
 			pdx_tooltip = chaosx_main_menu_version_tt
 		}
 
 		instantTextBoxType = {
 			name ="chaosx_about_header"
-			position = { x = 35 y = 42 }
+			position = { x = @chaosx_menu_about_x y = 24 }
 			textureFile = ""
 			font = "hoi_24header"
 			borderSize = { x = 0 y = 0 }
 			text = "chaosx_main_menu_about"
 			format = centre
-			maxWidth = 430
+			maxWidth = @chaosx_menu_column_width
 			maxHeight = 28
 		}
 
 		instantTextBoxType = {
 			name ="chaosx_about_text"
-			position = { x = 35 y = 82 }
+			position = { x = @chaosx_menu_about_x y = 60 }
 			textureFile = ""
 			font = "hoi_18mbs"
 			borderSize = { x = 0 y = 0 }
 			text = "chaosx_welcome_intro_loc"
 			format = left
-			maxWidth = 430
-			maxHeight = 220
+			maxWidth = @chaosx_menu_column_width
+			maxHeight = 210
 			multiline = yes
 			scrollbarType = chaosx_left_standardtext_slider
 		}
@@ -568,7 +597,7 @@ guiTypes = {
 
 		iconType = {
 			name = "career_profile_button_star"
-			position = { x = 526 y = 188 }
+			position = { x = @chaosx_menu_career_star_x y = @chaosx_menu_career_star_y }
 			spriteType = "GFX_icon_best_in_career"
 			centerposition = yes
 			orientation = upper_right
@@ -624,76 +653,76 @@ guiTypes = {
 
 		instantTextBoxType = {
 			name = "chaosx_main_menu_community_header"
-			position = { x = 940 y = 42 }
+			position = { x = @chaosx_menu_community_x y = 24 }
 			textureFile = ""
 			font = "hoi_24header"
 			borderSize = { x = 0 y = 0 }
 			text = "chaosx_main_menu_community"
-			maxWidth = 430
+			maxWidth = @chaosx_menu_column_width
 			maxHeight = 28
 			format = centre
 			alwaysTransparent = yes
 		}
 
-			buttonType = {
-				name = "discord_button"
-				quadTextureSprite = "GFX_discord_button"
-				position = { x = 1068 y = 82 }
-				clicksound = click_chat
-				web_link = "https://discord.gg/rAXesGcT2t"
-				pdx_tooltip = chaosx_discord_button_tt
-				scale = 1.25
-			}
+		buttonType = {
+			name = "discord_button"
+			quadTextureSprite = "GFX_discord_button"
+			position = { x = @chaosx_menu_community_icon_left_x y = 60 }
+			clicksound = click_chat
+			web_link = "https://discord.gg/rAXesGcT2t"
+			pdx_tooltip = chaosx_discord_button_tt
+			scale = 1.25
+		}
 
 		buttonType = {
-				name = "donation_button"
-				quadTextureSprite = "GFX_donation_button"
-				position = { x = 1162 y = 82 }
-				clicksound = click_chat
-				web_link = "https://ko-fi.com/klimpaskov"
-				pdx_tooltip = chaosx_donation_button_tt
-				scale = 1.25
-			}
+			name = "donation_button"
+			quadTextureSprite = "GFX_donation_button"
+			position = { x = @chaosx_menu_community_icon_right_x y = 60 }
+			clicksound = click_chat
+			web_link = "https://ko-fi.com/klimpaskov"
+			pdx_tooltip = chaosx_donation_button_tt
+			scale = 1.25
+		}
 
 		buttonType = {
-				name = "chaosx_homepage_button"
-				quadTextureSprite = "GFX_homepage_button"
-				position = { x = 1068 y = 164 }
-				clicksound = click_chat
-				web_link = "https://steamcommunity.com/sharedfiles/filedetails/?id=3199436992"
-				pdx_tooltip = chaosx_homepage_button_tt
-				scale = 1.25
-			}
+			name = "chaosx_homepage_button"
+			quadTextureSprite = "GFX_homepage_button"
+			position = { x = @chaosx_menu_community_icon_left_x y = 142 }
+			clicksound = click_chat
+			web_link = "https://steamcommunity.com/sharedfiles/filedetails/?id=3199436992"
+			pdx_tooltip = chaosx_homepage_button_tt
+			scale = 1.25
+		}
 
 		buttonType = {
-				name = "chaosx_github_button"
-				quadTextureSprite = "GFX_github_button"
-				position = { x = 1162 y = 164 }
-				clicksound = click_chat
-				web_link = "https://github.com/klimPaskov/Chaos-Redux"
-				pdx_tooltip = chaosx_github_button_tt
-				scale = 1.25
-			}
+			name = "chaosx_github_button"
+			quadTextureSprite = "GFX_github_button"
+			position = { x = @chaosx_menu_community_icon_right_x y = 142 }
+			clicksound = click_chat
+			web_link = "https://github.com/klimPaskov/Chaos-Redux"
+			pdx_tooltip = chaosx_github_button_tt
+			scale = 1.25
+		}
 
 		buttonType = {
-				name = "chaosx_documentation_button"
-				quadTextureSprite = "GFX_documentation_button"
-				position = { x = 1068 y = 246 }
-				clicksound = click_chat
-				web_link = "https://docs.google.com/spreadsheets/d/1A-N5TvU9Ed_xDW4YFG75RvzTIhdA5Hc0f5YyO3qi0Ik/edit?usp=sharing"
-				pdx_tooltip = chaosx_documentation_button_tt
-				scale = 1.25
-			}
+			name = "chaosx_documentation_button"
+			quadTextureSprite = "GFX_documentation_button"
+			position = { x = @chaosx_menu_community_icon_left_x y = 224 }
+			clicksound = click_chat
+			web_link = "https://docs.google.com/spreadsheets/d/1A-N5TvU9Ed_xDW4YFG75RvzTIhdA5Hc0f5YyO3qi0Ik/edit?usp=sharing"
+			pdx_tooltip = chaosx_documentation_button_tt
+			scale = 1.25
+		}
 
-			buttonType = {
-				name = "chaosx_youtube_button"
-				quadTextureSprite = "GFX_chaosx_youtube_button"
-				position = { x = 1162 y = 246 }
-				clicksound = click_chat
-				web_link = "https://www.youtube.com/@ChaosRedux"
-				pdx_tooltip = chaosx_youtube_button_tt
-				scale = 1.25
-			}
+		buttonType = {
+			name = "chaosx_youtube_button"
+			quadTextureSprite = "GFX_chaosx_youtube_button"
+			position = { x = @chaosx_menu_community_icon_right_x y = 224 }
+			clicksound = click_chat
+			web_link = "https://www.youtube.com/@ChaosRedux"
+			pdx_tooltip = chaosx_youtube_button_tt
+			scale = 1.25
+		}
 
 		containerWindowType = {
 			name = "subscription_widget"
