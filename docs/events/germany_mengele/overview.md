@@ -2,7 +2,7 @@
 
 ## Overview
 
-The Mengele and Tibet Expedition content is a Germany gameplay chain, not a Chaos Redux random-event pool entry. It is implemented in `events/germany_mengele.txt` with the `germany_mengele.*` namespace and starts from normal HOI4 event triggers no earlier than 1943-05-30, when fascist Germany controls an operational Auschwitz institution.
+The Mengele and Tibet Expedition content is a Germany gameplay chain, not a Chaos Redux random-event pool entry. It is implemented in `events/germany_mengele.txt` with the `germany_mengele.*` namespace and starts from normal HOI4 event triggers once fascist Germany controls an operational Auschwitz institution.
 
 The system has three connected layers:
 
@@ -14,7 +14,7 @@ These layers share variables, flags, condemnation, chaos-meter history, deaths-s
 
 ## Core Flow
 
-`germany_mengele.1` can fire from 1943-05-30 for fascist Germany when the operational Auschwitz institution is controlled. Auschwitz is the shared Kielce-state node used elsewhere in the mod: state `88`, province `9412`. Germany can authorize the Auschwitz Experiments, restrict the file to camp administration, or shut it down.
+`germany_mengele.1` can fire for fascist Germany as soon as the operational Auschwitz institution is controlled, which the camp rework opens through a war of conquest rather than a date. Auschwitz is the shared Kielce-state node used elsewhere in the mod: state `88`, province `9412`. Germany can authorize the Auschwitz Experiments, restrict the file to camp administration, or shut it down.
 
 Full authorization gives the timed `germany_auschwitz_experiments` national spirit for two years, sets `mengele_permission_level` to full authority, increases hidden `mengele_autonomy`, marks Auschwitz as an experiment-linked atrocity site, records condemnation memory, raises chaos slightly, schedules the report chain, and schedules `germany_mengele.23`, the cloning-project proposal. After the spirit expires, the program keeps a short `germany_mengele_program_recently_expired` window for coup eligibility, then closes through `germany_mengele_expire_program` if no coup has fired. Restriction gives a smaller timed spirit, marks Auschwitz as restricted experiment evidence, and sets permission to restricted. Rejection, closure, or expiry set permission back to rejected.
 
@@ -58,7 +58,7 @@ The coup monitor `germany_mengele.20` runs only after the full program is active
 - high chaos tier
 - desperate war state
 
-The coup requires 1943 or later, fascist Germany, war with the Soviet Union, high fascist support, at least three controlled biowarfare facilities, and pressure above the configured threshold.
+The coup requires fascist Germany, war with the Soviet Union, high fascist support, at least three controlled biowarfare facilities, and pressure above the configured threshold.
 
 When the coup fires, `germany_mengele_start_coup` stores loyalist Germany as `germany_mengele_loyalist`, starts a fascist civil war, and stores the breakaway as `germany_mengele_faction`. The breakaway state receives Auschwitz, controlled biowarfare-facility states, Josef Mengele as leader, the `germany_mengele_directorate` cosmetic tag, laboratory-state ideas, shared clone-equipment production, and Experimental Twin Formation units built from the reusable `clone_infantry` battalion. Loyalist Germany receives the response event and decisions to crush the Directorate, reclaim results, or make a temporary truce if the Soviet war is desperate.
 
