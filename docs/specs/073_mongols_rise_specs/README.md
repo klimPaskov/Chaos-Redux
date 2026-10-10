@@ -6,7 +6,7 @@ The package preserves the user’s normal cavalry army, rapid opening, offensive
 
 [Planning, execution, source records, prompts and honest limits](../../plans/073_mongols_rise_plans/README.md) are kept separately. The detailed path-level design is not an implemented focus graph. Its Mermaid route guide is conceptual and is not native layout proof.
 
-Use current [event](../../../.agents/skills/chaos-redux-events/SKILL.md), [planning](../../../.agents/skills/chaos-redux-event-planning/SKILL.md) and [subagent](../../../.agents/skills/chaos-redux-subagents/SKILL.md) guidance when implementing from those prompts.
+Use current [event](../../../.claude/skills/chaos-redux-events/SKILL.md), [planning](../../../.claude/skills/chaos-redux-event-planning/SKILL.md) and [subagent](../../../.claude/skills/chaos-redux-subagents/SKILL.md) guidance when implementing from those prompts.
 Retain the recorded user requirements; separately record acceptance of author-added design before treating it as approved.
 
 ## Campaign
@@ -61,3 +61,10 @@ Retain the recorded user requirements; separately record acceptance of author-ad
 - [Events, news, and super-events](presentation/01_events_and_super_events.md)
 - [Visual and audio asset design](presentation/02_asset_design.md)
 - [Achievement design registry](presentation/03_achievements.md)
+
+## Changelog
+
+### 2026-10-10 spec audit
+
+- The settlement rules now state how the existing Famine and Migration owners weigh on the direct rule, khanate, and tributary choice: conquest causes ordinary war flight, harsh extraction occupation feeds Famine, and a directly ruled hungry region counts toward the empire's own Food Crisis penalty while a khanate carries its own. No new Event 073 mechanic is added; the existing systems give the settlement choice a cost the player can see.
+- The rest of the package was already proportionate: two meters with distinct roles, conditions shown as states rather than more meters, and bounded rewards. It is otherwise unchanged apart from Claude-first subagent wording and skill links.

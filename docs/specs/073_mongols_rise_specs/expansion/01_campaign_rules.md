@@ -28,6 +28,11 @@ A khanate places an actual regional country under an agreed imperial relationshi
 
 A tributary keeps its country and pays the limited obligations it accepted. Access, nonaggression, subject status, and military participation are separate terms. Tributary status does not silently imply all of them.
 
+The shared humanitarian systems make this choice heavier without new Event 073 rules.
+Conquest through a legal war sends civilians fleeing through the ordinary hostile-capture adapter, and harsh extraction occupation during the campaign feeds Famine's occupation profile, which reaches acute shortage.
+Under direct rule the empire owns any resulting hunger: visible acute or famine states count toward its Food Crisis Stability and War Support penalty, and Import Food or Release Food Stores are its problem.
+A khanate or tributary carries its own food crisis, which is why a large, hungry, recently conquered region is often better handed to a khan than ruled from Karakorum.
+
 ## Held achievements
 
 A first-time objective is recorded only after it meets the campaign's hold and settlement conditions. Losing an objective before completion cancels or pauses its progress. Regaining it resumes the same objective, not a new reward transaction.

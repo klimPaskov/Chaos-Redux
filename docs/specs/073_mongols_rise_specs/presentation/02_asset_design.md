@@ -29,7 +29,7 @@ Major presentation assets can have real animated variants where the skill and fi
 ## The mounted model
 
 A dedicated mounted unit needs a coherent horse-and-rider body, separate required weapon geometry, appropriate textures, a functioning rig, and the required game animation states.
-Route production to `chaosx_3d_model_pipeline` under the current [3D pipeline skill](../../../../.agents/skills/chaos-redux-3d-model-pipeline/SKILL.md), which owns provider allowances, component modeling, rigging, animation, fallbacks, and export.
+Route production to `chaosx_3d_model_pipeline` under the current [3D pipeline skill](../../../../.claude/skills/chaos-redux-3d-model-pipeline/SKILL.md), which owns provider allowances, component modeling, rigging, animation, fallbacks, and export.
 
 The source for model geometry is eligible modern professional game or tabletop concept art with usable rights and a period-appropriate identity. Archival photographs, museum images, and historical plates can support research and two-dimensional presentation but are not silently substituted as this model's concept-art input. One image is used per geometry task.
 
