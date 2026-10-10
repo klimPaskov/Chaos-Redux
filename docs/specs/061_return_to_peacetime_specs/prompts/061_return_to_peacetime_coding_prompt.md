@@ -25,7 +25,7 @@ If a required local reference or MCP route is unavailable, record the exact bloc
 
 ## Repository exploration and architecture
 
-Spawn `chaosx_repo_explorer` with `fork_turns="none"` when current Event 61 file locations or cross-file ownership are uncertain.
+Spawn `chaosx_repo_explorer` with no inherited parent context when current Event 61 file locations or cross-file ownership are uncertain.
 
 Spawn `chaosx_scripted_system_architect` before duplicating law-rank, atomic factory conversion, stockpile debit, or safe-disband logic.
 

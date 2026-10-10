@@ -215,7 +215,7 @@ Hard block:
 
 ## Required audit
 
-After implementation, spawn `chaosx_decision_mission_auditor` with `fork_turns="none"`.
+After implementation, spawn `chaosx_decision_mission_auditor` with no inherited parent context.
 
 The audit must review:
 

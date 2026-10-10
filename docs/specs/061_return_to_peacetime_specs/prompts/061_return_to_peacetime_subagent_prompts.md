@@ -2,7 +2,7 @@
 
 ## Use rules
 
-Every subagent invocation uses `fork_turns="none"` and a complete explicit prompt.
+Every subagent invocation uses no inherited parent context and a complete explicit prompt.
 
 The parent agent owns integration, review, validation, and the final completion claim.
 
@@ -60,7 +60,7 @@ Read repository `AGENTS.md`, every Event 61 source spec, all implementation file
 
 The current design uses ordinary decisions and shared Event Logs, Event Details, and cluster views.
 Those surfaces remain parent-owned and are outside `chaosx_event_ui_worker` scope.
-Route that worker only after an accepted amendment introduces a dedicated Event 61 window and the parent supplies the exact ownership, files, entry point, states, resolutions, reference brief, and MCP evidence contract required by the [routing skill](../../../../.agents/skills/chaos-redux-subagents/SKILL.md#event-ui-worker-gate).
+Route that worker only after an accepted amendment introduces a dedicated Event 61 window and the parent supplies the exact ownership, files, entry point, states, resolutions, reference brief, and MCP evidence contract required by the [routing skill](../../../../.claude/skills/chaos-redux-subagents/SKILL.md#event-ui-worker-gate).
 
 ## chaosx_country_package_auditor
 

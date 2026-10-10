@@ -488,6 +488,10 @@ This prevents cycling Event 61 into a Stability and War Support farm.
 
 This project restores one economy-law step toward the highest unresolved Event 61 restoration target.
 
+It exists because the event halves War Support, which usually leaves a country below the ordinary War Support requirement for the law it just lost.
+For ranks Event 61 removed, this project replaces that War Support gate with the Readiness gate below; its political power cost matches the ordinary law change, and the 120-day duration and factory commitment are the price of the bypass.
+A country that already meets the ordinary requirement should simply use the normal law screen, so the AI and tooltips must prefer the normal path in that case.
+
 ### Availability
 
 Available when:
@@ -539,12 +543,15 @@ The decision must verify the current law again at completion so an external chan
 
 This action restores one conscription step toward the highest unresolved Event 61 target.
 
+Like Restore Mobilisation Law, it replaces the ordinary War Support requirement with a Readiness gate for ranks Event 61 removed, at the ordinary political power cost.
+A country that meets the ordinary requirement uses the normal law screen instead.
+
 ### Availability
 
 Available when:
 
 - current conscription rank is below the recorded target
-- the country has sufficient Readiness and War Support
+- the country has sufficient Readiness
 - the general staff or a defence ministry exists for stronger steps
 - the country is not blocked by the initial No Army exit route
 
@@ -571,7 +578,7 @@ Use:
 - army experience for higher obligations
 - temporary civilian factory commitment only when an administrative rebuild is needed
 
-War Support is normally a requirement, not another hidden spendable cost.
+War Support is neither a requirement nor a spendable cost here; Readiness carries the gate.
 
 ### Result
 
