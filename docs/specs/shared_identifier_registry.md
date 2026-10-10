@@ -121,6 +121,26 @@ The matching numbers are an explicit mapping between separate namespaces, not a 
 The 9 October import review checked current literal and constant selectors, source dispatch inputs, sound registrations, canonical workbook entries, and existing planning reservations before these allocations.
 Keep each final recording and sound registration unique, and recheck occupancy before runtime wiring.
 
+## Imported event identity proposals
+
+Event roots use their own namespace, separately from scenario and presentation numbers.
+The user explicitly selected uploaded IDs 104 and 105 on 10 October 2026, establishing Rule 104 and Random Idea 105 as the planning identities.
+Tasks 101 retains its matching catalog identity.
+The import records the older catalog labels without migrating runtime or workbook entries.
+The source review found no event definitions in the 101, 104, 105, 107 or 110 namespaces.
+
+| Planned event ID | Imported package | Current workbook label | Disposition |
+| --- | --- | --- | --- |
+| 101 | [Tasks](101_tasks_specs/README.md) | Tasks | Reserved imported proposal, current catalog Unavailable |
+| 104 | [Rule](104_rule_specs/104_rule_reading_guide.md) | Stability or War support | User-confirmed Rule identity, legacy catalog row 107 stays held |
+| 105 | [Random Idea](105_random_idea_specs/README.md) | Anti-player ideology | User-confirmed Random Idea identity, legacy catalog row 110 stays held |
+
+The current import handoffs record the exact user decision.
+Catalog migration remains queued for its authorized implementation scope, while IDs 107 and 110 remain held legacy identities rather than free slots.
+Do not reuse the held catalog IDs, silently overwrite the displaced concepts, or infer runtime registration from the imported folder names.
+The machine-readable entries preserve the exact catalog labels, proposed roots, evidence and holds.
+Achievement, helper, sprite, scenario and cluster names remain separate identifiers with their own ownership.
+
 ## Event and country identities
 
 `chaosx.nr18.33` is assigned to No Ground for a Survey, separating it from A Quarter of the Continent at `chaosx.nr18.90`.

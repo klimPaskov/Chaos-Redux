@@ -121,6 +121,9 @@ It does not assert acceptance or current implementation status.
 | 098 New Ore | [`098_new_ore_specs/098_new_ore_readme.md`](098_new_ore_specs/098_new_ore_readme.md) |
 | 099 Sandstorm | [`099_sandstorm_specs/README.md`](099_sandstorm_specs/README.md) |
 | 100 Inflation | [`100_inflation_specs/100_inflation_README.md`](100_inflation_specs/100_inflation_README.md) |
+| 101 Tasks | [`101_tasks_specs/README.md`](101_tasks_specs/README.md) |
+| 104 Rule | [`104_rule_specs/104_rule_reading_guide.md`](104_rule_specs/104_rule_reading_guide.md) |
+| 105 Random Idea | [`105_random_idea_specs/README.md`](105_random_idea_specs/README.md) |
 
 Shared and cross-event specification packages are indexed below.
 
