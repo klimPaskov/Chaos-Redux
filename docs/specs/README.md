@@ -122,6 +122,7 @@ It does not assert acceptance or current implementation status.
 | 099 Sandstorm | [`099_sandstorm_specs/README.md`](099_sandstorm_specs/README.md) |
 | 100 Inflation | [`100_inflation_specs/100_inflation_README.md`](100_inflation_specs/100_inflation_README.md) |
 | 101 Tasks | [`101_tasks_specs/README.md`](101_tasks_specs/README.md) |
+| 103 Chaos Directorate | [`103_chaos_directorate_specs/00_package_guide.md`](103_chaos_directorate_specs/00_package_guide.md) |
 | 104 Rule | [`104_rule_specs/104_rule_reading_guide.md`](104_rule_specs/104_rule_reading_guide.md) |
 | 105 Random Idea | [`105_random_idea_specs/README.md`](105_random_idea_specs/README.md) |
 

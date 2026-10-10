@@ -14,7 +14,7 @@ The `SCN-` label corresponds to the raw integer in `triggerable_scenario_id`.
 Public workbook rows, internal registrations, retired compatibility identities, and explicit holds all occupy their slots.
 The absence of a workbook row is not permission to reuse an ID.
 SCN-014 belongs to Fallout; SCN-004 remains a compatibility identity; SCN-017 remains held because its owner has not been established.
-SCN-020 through SCN-032 are reserved for the named proposed designs below; they have not been added to gameplay or the public catalog.
+SCN-020 through SCN-033 are reserved for the named proposed designs below; they have not been added to gameplay or the public catalog.
 
 | ID | Scenario | Owner | Disposition |
 | --- | --- | --- | --- |
@@ -50,11 +50,15 @@ SCN-020 through SCN-032 are reserved for the named proposed designs below; they 
 | SCN-030 | Cookie Monster Uprising | Event 070 | Reserved for proposed design |
 | SCN-031 | War for the Soul | Event 084 | Reserved for proposed design |
 | SCN-032 | The Ten Plagues | Event 085 | Reserved for proposed design |
+| SCN-033 | The Final Boss | Event 103 | Reserved for proposed design |
 
 Event 068 has four independently reserved entries.
 Event 069 has one reserved entry with four types; those types do not consume four scenario IDs.
 The original SCN-015 proposals for Events 030, 038, 043, 044, and 067 are superseded by the allocations above.
 Missile Age retains SCN-015.
+The Final Boss independently reserves name-sort key `the_final_boss_name = 4.375`, after the existing Fallout key and before Global Jihad in the current name-order table.
+Its four intensities share one scenario ID.
+The user confirmed manual relaunch after a defeated episode on 10 October 2026, with one active or provisional Directorate at a time and ordinary terminal-conflict gates retained.
 
 ## Event clusters
 
@@ -94,11 +98,12 @@ Event 043/046 Alien Invasions membership remains a separate design conflict.
 ## World-end scenarios
 
 `world_end_scenario_id` is separate from the `SCN-` triggerable namespace.
-Cthulhu’s Dominion reserves world-end ID 17 and The Red World reserves ID 18 for Event 091.
+Cthulhu’s Dominion reserves world-end ID 17, The Red World reserves ID 18 for Event 091, and Chaos Always Wins reserves ID 19 for Event 103.
 Global Jihad retains 15 and World of Anarchy retains 16.
 The held triggerable ID SCN-017 does not conflict with this world-end reservation.
 Existing world-end keys and occupied numbers are recorded in the machine-readable registry and their runtime constants.
 Lower gaps are not allocated by this audit.
+Chaos Always Wins uses the shared primary sort value 10 within its event, which is a reusable display category rather than another unique scenario ID.
 
 ## Super-event presentations
 
@@ -109,6 +114,7 @@ Lower gaps are not allocated by this audit.
 | 121 | The Great Revolution opening | Event 091 | Reserved for proposed design |
 | 122 | The Red World terminal branch | Event 091 | Reserved for proposed design |
 | 123 | The Great Revolution earned defeat | Event 091 | Reserved for proposed design |
+| 124 | Chaos Always Wins | Event 103 | Reserved for proposed design |
 
 The presentation namespace uses the value of `super_event_visible`, separately from triggerable and world-end scenario IDs.
 Slot 117 belongs to Acid Rain and slot 118 belongs to the Gods of Africa global-credibility presentation; both use constant-based selectors and must be included when checking occupancy.
@@ -119,6 +125,8 @@ Events 098 and 099 have no audio ID allocation in this ledger.
 Event 091 independently reserves playback audio IDs 121, 122, and 123 for its opening, terminal branch, and earned defeat respectively.
 The matching numbers are an explicit mapping between separate namespaces, not a rule for deriving audio IDs from presentation slots.
 The 9 October import review checked current literal and constant selectors, source dispatch inputs, sound registrations, canonical workbook entries, and existing planning reservations before these allocations.
+Event 103 independently reserves presentation 124 and playback audio 124 for Chaos Always Wins after the 10 October current-source and planning-reservation check.
+Sound volume-wrapper names use playback audio ID 124, independently from the presentation mapping.
 Keep each final recording and sound registration unique, and recheck occupancy before runtime wiring.
 
 ## Imported event identity proposals
@@ -127,11 +135,12 @@ Event roots use their own namespace, separately from scenario and presentation n
 The user explicitly selected uploaded IDs 104 and 105 on 10 October 2026, establishing Rule 104 and Random Idea 105 as the planning identities.
 Tasks 101 retains its matching catalog identity.
 The import records the older catalog labels without migrating runtime or workbook entries.
-The source review found no event definitions in the 101, 104, 105, 107 or 110 namespaces.
+The source reviews found no event definitions in the 101, 103, 104, 105, 107 or 110 namespaces.
 
 | Planned event ID | Imported package | Current workbook label | Disposition |
 | --- | --- | --- | --- |
 | 101 | [Tasks](101_tasks_specs/README.md) | Tasks | Reserved imported proposal, current catalog Unavailable |
+| 103 | [Chaos Directorate](103_chaos_directorate_specs/00_package_guide.md) | Conscription | Imported replacement proposal explicitly stated in its source brief |
 | 104 | [Rule](104_rule_specs/104_rule_reading_guide.md) | Stability or War support | User-confirmed Rule identity, legacy catalog row 107 stays held |
 | 105 | [Random Idea](105_random_idea_specs/README.md) | Anti-player ideology | User-confirmed Random Idea identity, legacy catalog row 110 stays held |
 
@@ -146,6 +155,8 @@ Achievement, helper, sprite, scenario and cluster names remain separate identifi
 `chaosx.nr18.33` is assigned to No Ground for a Survey, separating it from A Quarter of the Continent at `chaosx.nr18.90`.
 The repair updates the survey caller and its three text keys together.
 DTH, KRG, and REV are registered country identities for Death, Kruger, and the World Revolution.
+CXT is the registered test-country carrier reused by the proposed Chaos Directorate role, with clean-mode admission and migration required before gameplay.
+Its installed collision scan found this checkout and its matching QA copy only.
 Their owner packages must reuse and inspect them instead of treating those tags as free candidates.
 The REV scan also found the same identity in the installed Random Events Mod (Workshop 3199436992) and the Chaos Redux QA checkout.
 Those external definitions are a compatibility consideration, not a reason to allocate a second Event 091 tag or rename its incumbent identity during documentation import.
