@@ -889,6 +889,113 @@ random_terror_check_capital_retaken = {
 # Incident engine and global pacing
 # -----------------------------------------------------------------------------
 
+# STATE scope.  People for a bridge request: the state's live population times
+# temp random_terror_bridge_share, rounded.  Returns temp
+# random_terror_bridge_people.
+random_terror_bridge_people = {
+	set_temp_variable = { random_terror_bridge_people = state_population_k }
+	multiply_temp_variable = { random_terror_bridge_people = constant:humanitarian_population.people_per_k }
+	multiply_temp_variable = { random_terror_bridge_people = random_terror_bridge_share }
+	round_temp_variable = random_terror_bridge_people
+}
+
+# STATE scope.  A relief strain incident asks migration for a flight request
+# from the struck state.  Migration performs the transfer, reception and Deaths
+# accounting; a rejected request moves nobody and leaves the relief consequence.
+random_terror_request_relief_flight = {
+	set_temp_variable = { random_terror_bridge_share = constant:random_terror_bridge.relief_flight_share }
+	random_terror_bridge_people = yes
+	if = {
+		limit = { check_variable = { random_terror_bridge_people > constant:humanitarian_population.zero } }
+		set_temp_variable = { migration_pressure_request_proven = constant:humanitarian_runtime.one }
+		set_temp_variable = { migration_pressure_request_amount = random_terror_bridge_people }
+		set_temp_variable = { migration_pressure_request_actor_proven = OWNER.id }
+		set_temp_variable = { migration_pressure_request_result = constant:humanitarian_runtime.zero }
+		migration_request_event_pressure = yes
+	}
+}
+
+# STATE scope.  Transport disruption or depot sabotage in a state the famine
+# system already tracks asks famine for event pressure, so an attack on a
+# starving region's rail line worsens its food security.
+random_terror_request_transport_famine = {
+	if = {
+		limit = { has_state_flag = famine_food_security_active }
+		set_temp_variable = { random_terror_bridge_share = constant:random_terror_bridge.transport_famine_share }
+		random_terror_bridge_people = yes
+		if = {
+			limit = { check_variable = { random_terror_bridge_people > constant:humanitarian_population.zero } }
+			set_temp_variable = { famine_pressure_request_proven = constant:humanitarian_runtime.one }
+			set_temp_variable = { famine_pressure_request_amount = random_terror_bridge_people }
+			set_temp_variable = { famine_pressure_request_actor_proven = OWNER.id }
+			set_temp_variable = { famine_pressure_request_result = constant:humanitarian_runtime.zero }
+			famine_request_event_pressure = yes
+		}
+	}
+}
+
+# STATE scope, ROOT = the actor that holds the state.  Force Extraction asks
+# famine for occupation pressure (coerced extraction can produce real
+# shortages) and migration for a deportation request (the expelled people
+# arrive somewhere as real arrivals).
+random_terror_request_extraction_bridge = {
+	set_temp_variable = { random_terror_bridge_share = constant:random_terror_bridge.extraction_famine_share }
+	random_terror_bridge_people = yes
+	if = {
+		limit = { check_variable = { random_terror_bridge_people > constant:humanitarian_population.zero } }
+		set_temp_variable = { famine_pressure_request_proven = constant:humanitarian_runtime.one }
+		set_temp_variable = { famine_pressure_request_amount = random_terror_bridge_people }
+		set_temp_variable = { famine_pressure_request_actor_proven = ROOT.id }
+		set_temp_variable = { famine_pressure_request_result = constant:humanitarian_runtime.zero }
+		famine_request_occupation_pressure = yes
+	}
+	set_temp_variable = { random_terror_bridge_share = constant:random_terror_bridge.extraction_deportation_share }
+	random_terror_bridge_people = yes
+	if = {
+		limit = { check_variable = { random_terror_bridge_people > constant:humanitarian_population.zero } }
+		set_temp_variable = { migration_pressure_request_proven = constant:humanitarian_runtime.one }
+		set_temp_variable = { migration_pressure_request_amount = random_terror_bridge_people }
+		set_temp_variable = { migration_pressure_request_actor_proven = ROOT.id }
+		set_temp_variable = { migration_pressure_request_result = constant:humanitarian_runtime.zero }
+		migration_request_deportation_pressure = yes
+	}
+}
+
+# COUNTRY scope: a government (ROOT).  Reads the camp system's state facts and never
+# creates, staffs or counts camps.  A camp the government runs in a state of its
+# own active crisis is collective punishment: once per camp and crisis the
+# government loses Response Legitimacy, the state's activity gains one
+# retaliatory-recruitment step, and the No Collective Punishment achievement is
+# lost.  Runs inside the event-owned country pulse.
+random_terror_apply_collective_punishment = {
+	set_temp_variable = { random_terror_camp_reprisal_found = constant:random_terror_value.zero }
+	every_owned_state = {
+		limit = {
+			is_controlled_by = PREV
+			random_terror_state_is_active_crisis = yes
+			NOT = { has_state_flag = random_terror_collective_punishment_recorded }
+			is_valid_camp_active_site_state = yes
+			var:genocide_responsible_country = { tag = ROOT }
+		}
+		set_state_flag = random_terror_collective_punishment_recorded
+		random_terror_initialize_state_state = yes
+		set_temp_variable = { random_terror_pending_activity_delta = constant:random_terror_tuning.state_activity_gain }
+		random_terror_add_state_activity = yes
+		PREV = {
+			set_variable = { random_terror_reprisal_state = PREV }
+			set_temp_variable = { random_terror_camp_reprisal_found = constant:random_terror_value.one }
+		}
+	}
+	if = {
+		limit = { check_variable = { random_terror_camp_reprisal_found = constant:random_terror_value.one } }
+		set_temp_variable = { random_terror_pending_legitimacy_delta = constant:random_terror_bridge.collective_punishment_legitimacy_loss }
+		multiply_temp_variable = { random_terror_pending_legitimacy_delta = constant:random_terror_value.negative_one }
+		random_terror_apply_legitimacy = yes
+		set_country_flag = random_terror_achievement_collective_punishment
+		country_event = { id = chaosx.nr31.11 }
+	}
+}
+
 # STATE scope.  Inputs: temp random_terror_civilian_death_request and, for a
 # loss that is not a terror attack, temp random_terror_loss_reason (the
 # counterterror or movement atrocity Deaths reason).  The reason resets to the
@@ -1100,6 +1207,7 @@ random_terror_apply_incident = {
 		damage_state_building_dynamic = yes
 		set_state_flag = random_terror_transport_disrupted
 		add_to_variable = { random_terror_state_disruption_count = constant:random_terror_value.one }
+		random_terror_request_transport_famine = yes
 	}
 	if = {
 		limit = { check_variable = { random_terror_incident_type = constant:random_terror_incident.depot_sabotage } }
@@ -1107,6 +1215,7 @@ random_terror_apply_incident = {
 		set_temp_variable = { dynamic_building_damage_amount = constant:random_terror_tuning.major_building_damage }
 		damage_state_building_dynamic = yes
 		set_state_flag = random_terror_depot_compromised
+		random_terror_request_transport_famine = yes
 	}
 	if = {
 		limit = { check_variable = { random_terror_incident_type = constant:random_terror_incident.port_convoy_attack } }
@@ -1181,6 +1290,7 @@ random_terror_apply_incident = {
 		limit = { check_variable = { random_terror_incident_type = constant:random_terror_incident.relief_strain } }
 		set_state_flag = random_terror_relief_strain_recorded
 		set_temp_variable = { random_terror_incident_pressure_delta = constant:random_terror_tuning.major_pressure_gain }
+		random_terror_request_relief_flight = yes
 	}
 	if = {
 		limit = { check_variable = { random_terror_incident_type = constant:random_terror_incident.capital_infiltration } }
@@ -1410,6 +1520,7 @@ random_terror_run_country_pulse = {
 	if = {
 		limit = { random_terror_country_can_receive_pulse = yes }
 		random_terror_initialize_global_state = yes
+		random_terror_apply_collective_punishment = yes
 		random_owned_controlled_state = {
 			limit = {
 				random_terror_state_is_active_crisis = yes
@@ -6664,6 +6775,7 @@ random_terror_commit_force_extraction = {
 			set_temp_variable = { random_terror_civilian_death_request = constant:random_terror_tuning.civilian_deaths_minor }
 			set_temp_variable = { random_terror_loss_reason = constant:chaos_meter_deaths_reason.random_terror_atrocity }
 			random_terror_apply_exact_state_loss = yes
+			random_terror_request_extraction_bridge = yes
 			random_terror_update_state_stage = yes
 		}
 	}
@@ -8510,6 +8622,7 @@ random_terror_clear_state_commitments = {
 	clr_state_flag = random_terror_militia_subject
 	clr_state_flag = random_terror_network_relocation_subject
 	clr_state_flag = random_terror_raid_target
+	clr_state_flag = random_terror_collective_punishment_recorded
 	clr_state_flag = random_terror_reinforcement_subject
 	clr_state_flag = random_terror_reinforcement_committed
 	clr_state_flag = random_terror_relief_corridor_active
@@ -8692,6 +8805,10 @@ random_terror_reset_crisis_cycle = {
 	every_owned_state = {
 		limit = { has_state_flag = random_terror_uprising_recent }
 		clr_state_flag = random_terror_uprising_recent
+	}
+	every_owned_state = {
+		limit = { has_state_flag = random_terror_collective_punishment_recorded }
+		clr_state_flag = random_terror_collective_punishment_recorded
 	}
 }
 
