@@ -57,7 +57,7 @@ Native bombing detection, global military aggregation, nuclear impacts, contamin
 ## Hunger and flight
 
 A test that damages a populated state reaches the shared humanitarian owners through the same transactions any strike uses.
-Nuclear-scale trials use the shared nuclear strike path, whose famine input already commits acute shortage in the struck state, and heavy bombardment or contamination submits the ordinary bombing, nuclear-damage, or fallout flight request to Migration.
+Nuclear-scale trials use the shared nuclear strike path, whose famine strike input already drives the struck state to acute shortage through the ordinary stage rules, and heavy bombardment or contamination submits the ordinary bombing, nuclear-damage, or fallout flight request to Migration.
 Event 076 adds no food penalty or refugee movement of its own.
 The victim answers with its ordinary Release Food Stores, Import Food, Restore Relief, and Evacuate Civilians decisions, and a relief delivery that another country makes through Famine's relief route counts as the "effectively supplied external relief" that lowers Domestic Hostility in Part 10.
 This gives repeated tests a visible human cost in the victim's map and decision list without a second casualty or hunger counter.
