@@ -342,9 +342,12 @@ The connection can improve foreign estimates or deception value. It should not r
 
 ## Event 097 Collaboration connection
 
-When a stable Collaboration public contract exists, exposed contact chains can endanger collaboration networks or reveal that a foreign government has access inside the target.
+Exposed contact chains can endanger collaboration networks or reveal that a foreign government has access inside the target.
 
 The hook should change an existing collaboration pressure or risk. Event 52 should not create a new collaboration system.
+
+Event 097's [Intel Leaked contract](../../097_collaboration_specs/097_collaboration_spec_part_6_connections_and_strategy.md#intel-leaked) defines the write: a leak exposing country A's contact chains may reduce A's native collaboration inside each named exploiter by at most one baseline layer, never below zero, for at most three exploiters per leak.
+Event 097 owns that write and its Fallout check; Event 52 owns the leak, its targets and its other consequences, and the reduction is not a Chaos source.
 
 ## Future optional connections
 
