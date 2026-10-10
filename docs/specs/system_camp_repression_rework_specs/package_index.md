@@ -9,6 +9,7 @@ Older no-package-commit wording is scoped to its earlier tranche and does not ov
 
 | Document group | Disposition and evidence boundary |
 | --- | --- |
+| User brief, 10 October 2026, section 3.3 | Explicit user decision: rigid historical date gates are removed; dates may influence, but gameplay conditions (political decisions, camp construction, control and war state) decide. It supersedes date gates in the original parts, such as Part 4's "after 1939" and "after 1940" AI expectations and Part 7's Auschwitz acceptance row. The concurrent camp date-gate rework owns the replacement conditions. |
 | Accepted national-administration contract | Accepted and in implementation; records the user's September 6 implementation request and later explicit choices, plus parent-adopted choices with their basis. Its behavior and ownership contract supersedes incompatible original package instructions. |
 | Current takeover and decision log | Current continuation evidence for the October 6 repairs; source publication is separate from missing visual, complete weighted eligibility and live-engine acceptance. |
 | Administration resume packet and completion report | Detailed earlier tranche evidence and unresolved gates; current publication status is taken from the October 6 takeover. |

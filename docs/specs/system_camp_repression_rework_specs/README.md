@@ -37,30 +37,16 @@ Restricted contaminated-site escalation is implemented through abstract capabili
 - `prompts/` contains goal, implementation, decision, GUI, validation, asset, super-event, and achievement prompts.
 - `continuation/continuation_prompt.md` preserves the superseded July handoff; current continuation is linked from the package index.
 
-## Dated implementation baseline, 2026-07-11
+## Dated baseline, 2026-07-11 (historical)
 
-The live system keeps the existing `concentration_camp`, `extermination_camp`, and `gulag_labor_camp_network` buildings. It adds the shared lifecycle in `common/scripted_effects/camp_repression_rework_effects.txt`, the unified player action bus in `common/scripted_effects/camp_repression_action_dispatcher_effects.txt`, and the country packages in the major and colonial decision, effect, and idea files.
+The July reconciliation implemented the shared camp lifecycle, a unified action dispatcher, country packages for Germany, Japan, the Soviet Union, the U.K./Raj, the U.S.A., France/Vichy, Italy, Belgium/Congo and generic users, super-event slots 12 and 74–77, and achievements 60–69.
+Its inventories (84 player actions, 41 missions, a five-tab Ledger), its static scenario trace and its asset package are dated evidence in the [earlier completion report](../../plans/system_camp_repression_rework_plans/completion_report.md) and the [static scenario-contract report](../../plans/system_camp_repression_rework_plans/scenario_contract_validation_report.md); they are not current counts or current UI.
+Presentation and gameplay that conflict with the accepted national-administration contract follow that contract, as mapped in [package_index.md](package_index.md).
 
-The reconciled implementation contains **84 player actions**: 29 major-country actions, 43 colonial-country actions, and 12 generic actions. It also contains **41 missions** and four separate Repression Ledger controls for show, hide, open, and close. France refugee aid is live as `fr_support_refugee_and_rescue_networks`, Belgium strike negotiation as `bel_negotiate_colonial_strike_settlement`, and generic site inspection as `generic_inspect_active_site`. Italy includes both `ita_authorize_homeland_emergency_detention` and `ita_expand_desert_transport_guard`.
+## Revision log
 
-The monthly lifecycle runs through the connected active-country and active-state arrays. Population harm reduces real state population and enters the Chaos Meter Deaths pipeline. Each active site stores the responsible country, and discovery or condemnation follows the stored authority and accumulated evidence rather than blaming the discoverer or current controller. Germany, Japan, the Soviet Union, the U.K./Raj, the U.S.A., France/Vichy, Italy, Belgium/Congo, and generic users have live country packages.
+### 2026-10-10 spec audit (pass 1 only)
 
-Restricted methods remain abstract strategic tiers. Chemical capacity covers chlorine, phosgene, mustard, lewisite, tabun, sarin, and soman; biological capacity covers anthrax, tularemia, plague, and smallpox. These tiers use capability, stockpile, Deaths, contamination or outbreak, evidence, discovery, instability, and tribunal outcomes without operational recipes or protected-class targeting.
-
-The dated runtime baseline recorded five Ledger tabs: Overview, State Pools, Active Sites, Country System, and Discovery & Reform. That dated layout was superseded by the September presentation in Part 6, which is itself superseded where incompatible by the accepted national-administration contract; the shared action dispatcher and normal decision cooldown gates remain gameplay evidence.
-
-The dated baseline also records a static ImageGen-based Ledger asset package and optional frame animation. Those assets and prompts remain historical evidence only; the September replacement contract used native HOI4 tiled panels and buttons and requires no custom replacement panel, card, background, copied-texture, status-sprite, or animation art.
-
-Super-event slots `12`, `74`, `75`, `76`, and `77` have final text, unique images, unique audio IDs `45`, `44`, `46`, `47`, and `48`, and live settings-aware playback. The dated baseline records static UI, icon, report, news, super-event, project, and achievement asset wiring. Current GUI asset decisions follow the accepted administration contract linked from the package index.
-
-Achievements `60` through `69` are live with localisation and their required icon variants. Germany's focus reward lifecycle is consolidated into at most three stable lane spirits before the capstone and exactly one final world-order spirit after convergence. The core final variant preserves the exact science-and-force totals; stage-specific variants preserve the exact additions from reclamation, continental dominance, the command spine, or full world dominance according to the highest completed optional territorial stage. No new command prerequisite was added.
-
-The event catalog workbook remains `docs/spreadsheets/chaos_redux_events_catalog.xlsx`. This is a system rework rather than a new isolated random-event identity. The existing Soviet Collapse `Events!C6` Details cell matches the live Event Details text.
-
-## Dated completion status, 2026-07-11
-
-The dated reconciliation reported the shared runtime, all 84 player actions, 41 missions, four Ledger controls, country packages, presentation assets, achievements, super-events, audio, localisation, and workbook alignment as implemented. Its audit evidence remains historical; the September GUI redesign was reported implemented with evidence and limits in the parent report at `../../plans/system_camp_repression_rework_plans/repression_ui_redesign_2026-09-05.md`.
-
-All 15 Part 7 and cross-cutting static scenario contracts were traced with zero failures. This was code-and-asset readback, not engine-runtime scenario execution. No in-game scenario run occurred in this environment, so runtime timing, rendered GUI behavior, AI choice, and numeric deltas remain an explicit validation gap for the parent completion review. The evidence and limitation are recorded in `docs/plans/system_camp_repression_rework_plans/scenario_contract_validation_report.md`.
-
-The dated report recorded no fallback or unapproved simplification and left Ledger frame animation queued; those statements do not establish current UI acceptance for the redesign.
+- Condensed the July baseline and completion paragraphs into one historical summary with links to the plans reports that hold the full inventories.
+- Recorded in the package index that the user's 10 October 2026 brief supersedes fixed historical date gates: dates may influence AI and pacing, but gameplay conditions decide eligibility. The camp date-gate and UI rework running in another session owns the replacement conditions, so Parts 4 and 7 keep their date-based AI expectations as superseded text until that work lands.
+- No design change was made (pass 2 was out of scope for this package during the concurrent rework).
