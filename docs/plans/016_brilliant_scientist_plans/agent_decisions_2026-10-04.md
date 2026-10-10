@@ -436,3 +436,18 @@ No weighted surface changed.
 
 Evidence: `common/scripted_effects/016_brilliant_scientist_effects.txt`, `common/scripted_effects/016_brilliant_scientist_project_effects.txt`, `common/scripted_effects/016_brilliant_scientist_foreign_effects.txt`, `localisation/english/016_brilliant_scientist_projects_l_english.yml`, `docs/events/016_brilliant_scientist/systems/projects.md`.
 Needs live game: the Profile condition line and the continuity report after an assassination against a Cloning or Temporal Weaponization host.
+
+## D33. Release pass: Mengele entry on gameplay conditions, committed staffing tranche
+
+Disposition: implemented under the 10 October release brief (items 3.3 and 4.5).
+Acceptance basis: the brief's instruction that camp and genocide paths open on gameplay conditions and its authority to fix visible defects.
+
+- The Mengele coup no longer reads `date > 1942.12.31`; it already needs an active program, war with the Soviet Union, fascist support, three biowarfare facilities and pressure above the threshold.
+- `germany_mengele.1` starts once the operating state 88 site holds detainees (`camp_admin_country_program_site_ready`) instead of as soon as the site is operational, so a site opened in a peacetime-style mandate does not produce the program file before it has subjects.
+- `germany_final_solution_category` lost its 1937 date; the genocide flag decides visibility.
+- The private Paleogenetics staffing tranche (decisions, effects, triggers, constants, CXT carrier, localisation, two regressions) and the operations-view row predicate were committed together; before that the category rows pointed at untracked trigger owners.
+- Mengele conventional and clone categories use the conventional technology and clone machine icons.
+- Localisation: 19 files edited for distinct stage descriptions, plain requirement lines and US spelling; the cloning completion tooltip now states the current weekly Clone Equipment mechanic.
+- Left as accepted design: the singularity construction pair keeps its six-part cost (accepted transaction handoff `016_final_singularity_construction_transaction_2026-09-02.md`), temporal and xenobiological stage AI weights stay at the low tier, and file-local `@` cost mirrors stay because the modifier field rejects script constants.
+Needs live game: the new entry gate in a wartime Germany run, the Final Solution category visibility without the date.
+
