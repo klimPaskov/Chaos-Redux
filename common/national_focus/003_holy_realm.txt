@@ -452,8 +452,8 @@ focus_tree = {
 			custom_effect_tooltip = THR_council_of_abbots_effect_tt
 			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.medium_gain }
 			holy_realm_add_spiritual_legitimacy = yes
-			set_temp_variable = { holy_realm_compassion_delta = constant:holy_realm_buddhahood.teaching_compassion_gain }
-			holy_realm_add_compassion = yes
+			set_temp_variable = { holy_realm_delta = constant:holy_realm_buddhahood.teaching_drift_loss }
+			holy_realm_add_compassion_drift = yes
 		}
 		ai_will_do = {
 			factor = @holy_realm_ai_governance_path_factor
@@ -524,8 +524,8 @@ focus_tree = {
 			custom_effect_tooltip = THR_seat_pilgrim_assembly_effect_tt
 			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
 			holy_realm_add_mandala_reach = yes
-			set_temp_variable = { holy_realm_compassion_delta = constant:holy_realm_buddhahood.teaching_compassion_gain }
-			holy_realm_add_compassion = yes
+			set_temp_variable = { holy_realm_delta = constant:holy_realm_buddhahood.teaching_drift_loss }
+			holy_realm_add_compassion_drift = yes
 		}
 		ai_will_do = {
 			factor = @holy_realm_ai_governance_path_factor
@@ -556,8 +556,8 @@ focus_tree = {
 			add_political_power = constant:holy_realm_buddhahood.governance_council_political_gain
 			set_temp_variable = { holy_realm_bodhi_delta = constant:holy_realm_buddhahood.bodhi_teaching_gain }
 			holy_realm_add_bodhi_progress = yes
-			set_temp_variable = { holy_realm_compassion_delta = constant:holy_realm_buddhahood.teaching_compassion_gain }
-			holy_realm_add_compassion = yes
+			set_temp_variable = { holy_realm_delta = constant:holy_realm_buddhahood.teaching_drift_loss }
+			holy_realm_add_compassion_drift = yes
 		}
 		ai_will_do = {
 			factor = @holy_realm_ai_governance_path_factor
@@ -657,8 +657,8 @@ focus_tree = {
 			custom_effect_tooltip = THR_send_first_envoys_effect_tt
 			set_temp_variable = { holy_realm_bodhi_delta = constant:holy_realm_buddhahood.bodhi_focus_gain }
 			holy_realm_add_bodhi_progress = yes
-			set_temp_variable = { holy_realm_compassion_delta = constant:holy_realm_buddhahood.teaching_compassion_gain }
-			holy_realm_add_compassion = yes
+			set_temp_variable = { holy_realm_delta = constant:holy_realm_buddhahood.teaching_drift_loss }
+			holy_realm_add_compassion_drift = yes
 		}
 		ai_will_do = {
 			factor = @holy_realm_ai_teaching_path_factor
@@ -725,8 +725,8 @@ focus_tree = {
 			custom_effect_tooltip = THR_teach_under_bombardment_effect_tt
 			set_temp_variable = { holy_realm_bodhi_delta = constant:holy_realm_buddhahood.bodhi_teaching_gain }
 			holy_realm_add_bodhi_progress = yes
-			set_temp_variable = { holy_realm_compassion_delta = constant:holy_realm_buddhahood.teaching_compassion_gain }
-			holy_realm_add_compassion = yes
+			set_temp_variable = { holy_realm_delta = constant:holy_realm_buddhahood.teaching_drift_loss }
+			holy_realm_add_compassion_drift = yes
 			set_temp_variable = { holy_realm_defilements_delta = constant:holy_realm_buddhahood.teaching_defilement_loss }
 			holy_realm_add_defilements = yes
 		}
@@ -773,8 +773,8 @@ focus_tree = {
 			custom_effect_tooltip = THR_many_lamps_one_flame_effect_tt
 			set_temp_variable = { holy_realm_bodhi_delta = constant:holy_realm_buddhahood.bodhi_focus_gain }
 			holy_realm_add_bodhi_progress = yes
-			set_temp_variable = { holy_realm_compassion_delta = constant:holy_realm_buddhahood.teaching_compassion_gain }
-			holy_realm_add_compassion = yes
+			set_temp_variable = { holy_realm_delta = constant:holy_realm_buddhahood.teaching_drift_loss }
+			holy_realm_add_compassion_drift = yes
 			set_temp_variable = { holy_realm_defilements_delta = constant:holy_realm_buddhahood.teaching_defilement_loss }
 			holy_realm_add_defilements = yes
 		}
@@ -803,8 +803,8 @@ focus_tree = {
 			custom_effect_tooltip = THR_four_teaching_seats_effect_tt
 			set_temp_variable = { holy_realm_bodhi_delta = constant:holy_realm_buddhahood.bodhi_focus_gain }
 			holy_realm_add_bodhi_progress = yes
-			set_temp_variable = { holy_realm_compassion_delta = constant:holy_realm_buddhahood.teaching_compassion_gain }
-			holy_realm_add_compassion = yes
+			set_temp_variable = { holy_realm_delta = constant:holy_realm_buddhahood.teaching_drift_loss }
+			holy_realm_add_compassion_drift = yes
 			add_command_power = constant:holy_realm_focus_reward.teaching_network_command_power
 		}
 		ai_will_do = {
@@ -1284,8 +1284,8 @@ focus_tree = {
 		completion_reward = {
 			set_country_flag = holy_realm_focus_one_becomes_many
 			custom_effect_tooltip = THR_one_becomes_many_focus_effect_tt
-			set_temp_variable = { holy_realm_compassion_delta = constant:holy_realm_buddhahood.teaching_compassion_gain }
-			holy_realm_add_compassion = yes
+			set_temp_variable = { holy_realm_delta = constant:holy_realm_buddhahood.teaching_drift_loss }
+			holy_realm_add_compassion_drift = yes
 			set_temp_variable = { holy_realm_meditation_delta = constant:holy_realm_buddhahood.meditation_step_charge_gain }
 			holy_realm_add_meditation_charge = yes
 		}
@@ -2276,7 +2276,10 @@ focus_tree = {
 			}
 		}
 		bypass = {
-			has_country_flag = holy_realm_final_doctrine_renounced
+			OR = {
+				has_country_flag = holy_realm_final_doctrine_renounced
+				has_country_flag = holy_realm_final_silence_nonterminal_completed
+			}
 		}
 		completion_reward = {
 			set_country_flag = holy_realm_focus_final_silence
@@ -2654,8 +2657,8 @@ focus_tree = {
 				amount = constant:holy_realm_focus_reward.sanctuary_clinic_support_equipment
 			}
 			add_stability = constant:holy_realm_focus_reward.sanctuary_logistics_stability
-			set_temp_variable = { holy_realm_compassion_delta = constant:holy_realm_buddhahood.teaching_compassion_gain }
-			holy_realm_add_compassion = yes
+			set_temp_variable = { holy_realm_delta = constant:holy_realm_buddhahood.teaching_drift_loss }
+			holy_realm_add_compassion_drift = yes
 			set_temp_variable = { holy_realm_chaos_delta = constant:holy_realm_chaos.minor_peace_loss }
 			set_temp_variable = { holy_realm_chaos_reason = constant:chaos_meter_history_reason.special.holy_realm_refuge_relief }
 			holy_realm_add_chaos = yes

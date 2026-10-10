@@ -216,6 +216,7 @@ country_event = {
 		custom_effect_tooltip = chaosx_nr3_4_a_tt
 		hidden_effect = {
 			set_country_flag = holy_realm_memory_open_refuge_roads
+			holy_realm_open_refuge_reception = yes
 			add_manpower = constant:holy_realm_event.open_roads_manpower
 			add_stability = -0.02
 			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.medium_gain }
@@ -234,6 +235,7 @@ country_event = {
 		custom_effect_tooltip = chaosx_nr3_4_b_tt
 		hidden_effect = {
 			set_country_flag = holy_realm_memory_refugee_registry
+			holy_realm_register_refuge_reception = yes
 			add_political_power = constant:holy_realm_event.refugee_registry_political_power
 			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.medium_gain }
 			holy_realm_add_mandala_reach = yes
@@ -249,6 +251,7 @@ country_event = {
 		custom_effect_tooltip = chaosx_nr3_4_c_tt
 		hidden_effect = {
 			set_country_flag = holy_realm_memory_closed_refuge_roads
+			holy_realm_close_refuge_reception = yes
 			add_stability = 0.02
 			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.medium_loss }
 			holy_realm_add_spiritual_legitimacy = yes
@@ -771,40 +774,59 @@ country_event = {
 	picture = GFX_report_event_holy_realm_final_silence
 	is_triggered_only = yes
 
+	trigger = {
+		is_holy_realm_foreign_responder = yes
+	}
+
 	option = {
 		name = chaosx.nr3.76.a
 		custom_effect_tooltip = chaosx_nr3_76_a_tt
-		ai_chance = { base = 55 }
-		hidden_effect = {
-			set_country_flag = holy_realm_foreign_containment_pact
-			every_owned_state = {
-				set_state_flag = holy_realm_foreign_containment_state
+		ai_chance = {
+			base = 55
+			modifier = {
+				factor = 1.5
+				is_major = yes
 			}
-			add_war_support = 0.05
+		}
+		hidden_effect = {
+			holy_realm_foreign_prepare_containment = yes
 		}
 	}
 
 	option = {
 		name = chaosx.nr3.76.b
 		custom_effect_tooltip = chaosx_nr3_76_b_tt
-		ai_chance = { base = 25 }
+		ai_chance = {
+			base = 25
+			modifier = {
+				factor = 0
+				any_enemy_country = { is_holy_realm_country = yes }
+			}
+			modifier = {
+				factor = 2
+				any_country = {
+					is_holy_realm_country = yes
+					holy_realm_final_doctrine_balance_leans_vow = yes
+				}
+			}
+		}
 		hidden_effect = {
-			set_country_flag = holy_realm_foreign_final_negotiation
-			add_stability = -0.01
+			holy_realm_foreign_send_final_envoy = yes
 		}
 	}
 
 	option = {
 		name = chaosx.nr3.76.c
 		custom_effect_tooltip = chaosx_nr3_76_c_tt
+		trigger = {
+			any_owned_state = {
+				holy_realm_foreign_marked_city_state = yes
+				humanitarian_state_is_valid = yes
+			}
+		}
 		ai_chance = { base = 20 }
 		hidden_effect = {
-			set_country_flag = holy_realm_foreign_evacuation
-			every_owned_state = {
-				set_state_flag = holy_realm_evacuation_state
-			}
-			add_stability = -0.03
-			add_war_support = 0.03
+			holy_realm_foreign_evacuate_cities = yes
 		}
 	}
 }

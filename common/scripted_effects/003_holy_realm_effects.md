@@ -65,3 +65,28 @@ Other event ids and automatic requests have no preparation side effects.
 set_temp_variable = { event_single_fire_allowed = 1 }
 holy_realm_prepare_event_fire = yes
 ```
+
+## Refuge reception and refuge credit
+
+`holy_realm_open_refuge_reception`, `holy_realm_register_refuge_reception` and `holy_realm_close_refuge_reception` run in country scope and write the Realm's reception policy through the migration owner's `migration_decision_set_policy` (humanitarian open, controlled and closed).
+The formation event's three refuge choices, `THR_open_refuge_roads` and `THR_close_refuge_roads` call them.
+The Realm never writes a migration ledger, and `humanitarian_country_is_valid` admits the Holy Realm so the migration owner accepts the request.
+`THR_open_refuge_roads` and `THR_close_refuge_roads` read `migration_reception_policy_is_humanitarian_open` instead of a private refuge flag.
+
+`holy_realm_collect_refuge_credit` runs from the daily doctrine pulse and reads the migration-owned `migration_integrated_population`.
+Each full block of `holy_realm_refuge.integration_people_per_credit` people who settled since the last payment eases Compassion Drift and raises Spiritual Legitimacy once, up to `credits_per_pulse_cap` blocks per pulse.
+The Realm keeps its own paid total in `holy_realm_refuge_credited_population`, whose first value is the integrated total on the first pulse, so earlier integrations never pay.
+
+## Condemnation for coercion
+
+`holy_realm_condemn_coercion` runs in the Realm's country scope with `holy_realm_condemnation_gain` and, when there is one, `condemnation_victim_country`.
+It submits an atrocity-bucket public source through `condemnation_add_source`.
+`THR_prepare_forced_integration` (victim named) and `THR_mandate_kneeling_province` call it with the `holy_realm_condemnation` gains.
+
+## Foreign answers to the final warnings
+
+`holy_realm_foreign_prepare_containment`, `holy_realm_foreign_send_final_envoy` and `holy_realm_foreign_evacuate_cities` run in the country scope of a foreign responder and are the three options of `chaosx.nr3.76`.
+Containment is also the effect of `THR_build_mountain_containment` and raises the Realm's Final Silence Pressure and balance toward Final Silence.
+The envoy lowers the Realm's pressure, moves its balance toward the Vow and earns its goodwill.
+Evacuation submits a flight request through `migration_request_flight_pressure` for the capital and the large-city states (`holy_realm_foreign_marked_city_state`), using the share in `holy_realm_event.evacuation_population_share`.
+A disruption of the final network lowers Final Silence Pressure further for a country that prepared containment.

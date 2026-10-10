@@ -268,6 +268,7 @@ holy_realm_can_become_buddha = {
 holy_realm_can_use_buddha_power = {
 	is_holy_realm_country = yes
 	holy_realm_has_buddha_mandate = yes
+	NOT = { has_country_flag = holy_realm_final_silence_nonterminal_completed }
 }
 
 holy_realm_can_use_buddha_power_one_becomes_many = {
@@ -460,6 +461,7 @@ holy_realm_sangha_compact_candidate_valid = {
 	has_offensive_war = no
 	NOT = { is_holy_realm_country = yes }
 	NOT = { is_special_chaos_country = yes }
+	NOT = { genocide_country_has_discovered_sites = yes }
 	NOT = { has_war_with = FROM }
 	NOT = { has_country_flag = holy_realm_peace_letter_blocked }
 	OR = {
@@ -567,6 +569,7 @@ holy_realm_sangha_compact_member_hard_valid = {
 	has_offensive_war = no
 	NOT = { is_holy_realm_country = yes }
 	NOT = { is_special_chaos_country = yes }
+	NOT = { genocide_country_has_discovered_sites = yes }
 }
 
 holy_realm_bhutan_conquest_target_valid = {
@@ -921,25 +924,42 @@ holy_realm_can_extinguish_defilements = {
 	NOT = { has_country_flag = holy_realm_stage_final_silence }
 }
 
-holy_realm_can_begin_final_silence_ritual = {
+# Country scope. The Buddhahood rite both endings share: a Buddha power shown
+# against chaos, the Extinction of Defilements, a secured capital sanctuary and
+# no False Buddha Schism. Neither ending has been completed yet.
+holy_realm_final_rite_ready = {
 	is_holy_realm_country = yes
 	holy_realm_is_sovereign = yes
 	holy_realm_has_buddha_mandate = yes
+	has_country_flag = holy_realm_buddha_power_demonstrated
+	has_country_flag = holy_realm_final_silence_extinction_rite_completed
+	holy_realm_capital_sanctuary_secured = yes
+	NOT = { has_country_flag = holy_realm_false_buddha_schism_pressure }
+	NOT = { has_country_flag = holy_realm_final_silence_nonterminal_completed }
+	NOT = { has_country_flag = holy_realm_final_silence_terminal_completed }
+	NOT = { has_global_flag = world_end }
+}
+
+# Country scope. The doctrinal ending: the armed final doctrine with the Ministry
+# of Silence, a strike capability and Final Silence dominating the balance.
+holy_realm_can_begin_final_silence_ritual = {
+	holy_realm_final_rite_ready = yes
 	holy_realm_final_path_unlocked = yes
 	holy_realm_final_doctrine_is_armed = yes
 	holy_realm_final_doctrine_balance_final_dominant = yes
-	has_country_flag = holy_realm_buddha_power_demonstrated
 	has_country_flag = holy_realm_memory_ministry_of_release
-	has_country_flag = holy_realm_final_silence_extinction_rite_completed
 	custom_trigger_tooltip = {
 		tooltip = THR_final_silence_stockpile_required_tt
 		holy_realm_has_scripted_strike_capability = yes
 	}
-	capital_scope = { is_controlled_by = ROOT }
-	NOT = { has_country_flag = holy_realm_false_buddha_schism_pressure }
-	NOT = { has_country_flag = holy_realm_final_doctrine_renounced }
-	NOT = { has_country_flag = holy_realm_stage_final_silence }
-	NOT = { has_global_flag = world_end }
+}
+
+# Country scope. The spiritual ending: the Buddhahood rite alone, with
+# Defilements still below the Final Silence gate. It stays open after the Vow
+# against Annihilation and never ends the world.
+holy_realm_can_enter_empty_seat = {
+	holy_realm_final_rite_ready = yes
+	check_variable = { defilements < constant:holy_realm_buddhahood.final_silence_defilements_gate }
 }
 
 holy_realm_can_complete_terminal_final_silence = {
@@ -1038,6 +1058,17 @@ is_holy_realm_foreign_responder = {
 	OR = {
 		has_global_flag = holy_realm_global_warning
 		has_global_flag = world_end_final_silence
+	}
+}
+
+# STATE scope. The cities a country evacuates when the Realm aims Final Silence at
+# them: its capital and its largest cities.
+holy_realm_foreign_marked_city_state = {
+	OR = {
+		is_capital = yes
+		has_state_category = large_city
+		has_state_category = metropolis
+		has_state_category = megalopolis
 	}
 }
 

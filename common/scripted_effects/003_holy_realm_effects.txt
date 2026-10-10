@@ -7,6 +7,8 @@
 @HOLY_REALM_MANDALA_PEACEKEEPING_COOLDOWN_DAYS = 365
 @HOLY_REALM_SANGHA_OF_NATIONS_WATCH_DAYS = 180
 @HOLY_REALM_LOTUS_BRIDGE_WATCH_DAYS = 180
+@HOLY_REALM_CONTAINMENT_BALANCE_SHIFT = 0.02
+@HOLY_REALM_ENVOY_BALANCE_SHIFT = -0.03
 
 holy_realm_ensure_counters = {
 	if = {
@@ -38,10 +40,6 @@ holy_realm_ensure_buddhahood_counters = {
 		set_variable = { dhyana_depth = constant:holy_realm_buddhahood.dhyana_start }
 	}
 	if = {
-		limit = { NOT = { has_variable = compassion } }
-		set_variable = { compassion = constant:holy_realm_buddhahood.compassion_start }
-	}
-	if = {
 		limit = { NOT = { has_variable = detachment } }
 		set_variable = { detachment = constant:holy_realm_buddhahood.detachment_start }
 	}
@@ -52,10 +50,6 @@ holy_realm_ensure_buddhahood_counters = {
 	if = {
 		limit = { NOT = { has_variable = meditation_charge } }
 		set_variable = { meditation_charge = constant:holy_realm_buddhahood.meditation_charge_start }
-	}
-	if = {
-		limit = { NOT = { has_variable = world_suffering } }
-		set_variable = { world_suffering = global.chaos_meter_value }
 	}
 	if = {
 		limit = { NOT = { has_variable = sangha_cohesion } }
@@ -75,7 +69,6 @@ holy_realm_ensure_buddhahood_counters = {
 	set_variable = { holy_realm_ui_teaching_successes_required = constant:holy_realm_buddhahood.teaching_successes_required }
 	clamp_variable = { var = bodhi_progress min = 0 max = constant:holy_realm_buddhahood.bodhi_max }
 	clamp_variable = { var = dhyana_depth min = 0 max = constant:holy_realm_buddhahood.dhyana_max }
-	clamp_variable = { var = compassion min = 0 max = 100 }
 	clamp_variable = { var = detachment min = 0 max = 100 }
 	clamp_variable = { var = defilements min = 0 max = 100 }
 	clamp_variable = { var = meditation_charge min = 0 max = constant:holy_realm_buddhahood.meditation_charge_max }
@@ -229,10 +222,137 @@ holy_realm_add_detachment = {
 	clamp_variable = { var = detachment min = 0 max = 100 }
 }
 
-holy_realm_add_compassion = {
-	holy_realm_ensure_buddhahood_counters = yes
-	add_to_variable = { compassion = holy_realm_compassion_delta }
-	clamp_variable = { var = compassion min = 0 max = 100 }
+# COUNTRY scope. The Realm's refuge roads are its reception policy, so each road
+# choice is written through the migration owner and never to a migration ledger.
+holy_realm_open_refuge_reception = {
+	set_temp_variable = { migration_reception_policy_request = constant:migration_border_policy.humanitarian_open }
+	set_temp_variable = { migration_departure_policy_request = constant:humanitarian_runtime.zero }
+	migration_decision_set_policy = yes
+}
+
+holy_realm_register_refuge_reception = {
+	set_temp_variable = { migration_reception_policy_request = constant:migration_border_policy.controlled }
+	set_temp_variable = { migration_departure_policy_request = constant:humanitarian_runtime.zero }
+	migration_decision_set_policy = yes
+}
+
+holy_realm_close_refuge_reception = {
+	set_temp_variable = { migration_reception_policy_request = constant:migration_border_policy.closed }
+	set_temp_variable = { migration_departure_policy_request = constant:humanitarian_runtime.zero }
+	migration_decision_set_policy = yes
+}
+
+# COUNTRY scope, run by the daily doctrine pulse. Refuge credit follows the people
+# the migration owner reports as integrated in this country: every full block of
+# people who settle eases Compassion Drift and raises Spiritual Legitimacy once.
+# The Realm reads migration_integrated_population and keeps its own paid total.
+holy_realm_collect_refuge_credit = {
+	if = {
+		limit = { has_variable = migration_integrated_population }
+		if = {
+			limit = { NOT = { has_variable = holy_realm_refuge_credited_population } }
+			set_variable = { holy_realm_refuge_credited_population = migration_integrated_population }
+		}
+		set_temp_variable = { holy_realm_refuge_unpaid = migration_integrated_population }
+		subtract_from_temp_variable = { holy_realm_refuge_unpaid = holy_realm_refuge_credited_population }
+		set_temp_variable = { holy_realm_refuge_credits = 0 }
+		while_loop_effect = {
+			limit = {
+				check_variable = { var = holy_realm_refuge_credits value = constant:holy_realm_refuge.credits_per_pulse_cap compare = less_than }
+				check_variable = { var = holy_realm_refuge_unpaid value = constant:holy_realm_refuge.integration_people_per_credit compare = greater_than_or_equals }
+			}
+			add_to_temp_variable = { holy_realm_refuge_credits = 1 }
+			subtract_from_temp_variable = { holy_realm_refuge_unpaid = constant:holy_realm_refuge.integration_people_per_credit }
+			add_to_variable = { holy_realm_refuge_credited_population = constant:holy_realm_refuge.integration_people_per_credit }
+			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_loss }
+			holy_realm_add_compassion_drift = yes
+			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
+			holy_realm_add_spiritual_legitimacy = yes
+		}
+	}
+}
+
+# COUNTRY scope, a foreign responder to the Realm's final warnings. Containment
+# hardens the home front, and the Realm reads the ring around its passes as a
+# threat: its balance leans toward Final Silence and its Pressure rises.
+holy_realm_foreign_prepare_containment = {
+	set_country_flag = holy_realm_containment_prepared
+	add_stability = constant:holy_realm_event.containment_stability
+	add_war_support = constant:holy_realm_event.containment_war_support
+	every_country = {
+		limit = {
+			is_holy_realm_country = yes
+			has_power_balance = {
+				id = holy_realm_final_doctrine_balance
+			}
+		}
+		add_power_balance_value = {
+			id = holy_realm_final_doctrine_balance
+			value = @HOLY_REALM_CONTAINMENT_BALANCE_SHIFT
+			tooltip_side = holy_realm_final_silence_side
+		}
+		set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
+		holy_realm_add_final_silence_pressure = yes
+	}
+}
+
+# COUNTRY scope, a foreign responder. The final envoy costs the sender some
+# standing at home and reaches the Realm's council: the balance moves toward the
+# Vow, Final Silence Pressure falls and the Realm's opinion of the sender rises.
+holy_realm_foreign_send_final_envoy = {
+	add_stability = constant:holy_realm_event.envoy_stability
+	every_country = {
+		limit = {
+			is_holy_realm_country = yes
+			has_power_balance = {
+				id = holy_realm_final_doctrine_balance
+			}
+		}
+		add_opinion_modifier = {
+			target = ROOT
+			modifier = holy_realm_quiet_envoys_opinion
+		}
+		add_power_balance_value = {
+			id = holy_realm_final_doctrine_balance
+			value = @HOLY_REALM_ENVOY_BALANCE_SHIFT
+			tooltip_side = holy_realm_vow_against_annihilation_side
+		}
+		set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_loss }
+		holy_realm_add_final_silence_pressure = yes
+	}
+}
+
+# COUNTRY scope, a foreign responder. A share of the people in the capital and the
+# largest cities flees through the migration owner's flight request, which turns
+# the evacuation into Displacement Load the country must then shelter.
+holy_realm_foreign_evacuate_cities = {
+	add_stability = constant:holy_realm_event.evacuation_stability
+	add_war_support = constant:holy_realm_event.evacuation_war_support
+	every_owned_state = {
+		limit = {
+			holy_realm_foreign_marked_city_state = yes
+			humanitarian_state_is_valid = yes
+		}
+		set_temp_variable = { migration_pressure_request_amount = state_population_k }
+		multiply_temp_variable = { migration_pressure_request_amount = constant:humanitarian_population.people_per_k }
+		multiply_temp_variable = { migration_pressure_request_amount = constant:holy_realm_event.evacuation_population_share }
+		round_temp_variable = migration_pressure_request_amount
+		set_temp_variable = { migration_pressure_request_proven = constant:humanitarian_runtime.one }
+		set_temp_variable = { migration_pressure_request_actor_proven = OWNER.id }
+		migration_request_flight_pressure = yes
+	}
+}
+
+# COUNTRY scope, the Realm. Coercion toward another country is public: it joins the
+# shared Condemnation record as an atrocity-bucket source with the victim named.
+# Inputs: temporary holy_realm_condemnation_gain, and the victim country as
+# condemnation_victim_country when the caller has one.
+holy_realm_condemn_coercion = {
+	set_temp_variable = { condemnation_source_type = constant:condemnation_source.atrocity }
+	set_temp_variable = { condemnation_base_gain = holy_realm_condemnation_gain }
+	set_temp_variable = { condemnation_visibility_type = constant:condemnation_visibility.public }
+	set_temp_variable = { condemnation_severity_type = constant:condemnation_severity.combat }
+	condemnation_add_source = yes
 }
 
 holy_realm_trigger_false_buddha_schism = {
@@ -254,8 +374,8 @@ holy_realm_resolve_false_buddha_by_debate = {
 		set_country_flag = holy_realm_false_buddha_schism_resolved
 		set_temp_variable = { holy_realm_defilements_delta = constant:holy_realm_buddhahood.false_buddha_debate_defilement_loss }
 		holy_realm_add_defilements = yes
-		set_temp_variable = { holy_realm_compassion_delta = constant:holy_realm_buddhahood.false_buddha_debate_compassion_gain }
-		holy_realm_add_compassion = yes
+		set_temp_variable = { holy_realm_delta = constant:holy_realm_buddhahood.false_buddha_debate_drift_loss }
+		holy_realm_add_compassion_drift = yes
 		add_stability = 0.03
 	}
 	set_country_flag = holy_realm_false_buddha_schism_resolved
@@ -276,8 +396,8 @@ holy_realm_resolve_false_buddha_by_suppression = {
 		set_country_flag = holy_realm_false_buddha_schism_resolved
 		set_temp_variable = { holy_realm_defilements_delta = constant:holy_realm_buddhahood.false_buddha_suppression_defilement_gain }
 		holy_realm_add_defilements = yes
-		set_temp_variable = { holy_realm_compassion_delta = constant:holy_realm_buddhahood.false_buddha_suppression_compassion_loss }
-		holy_realm_add_compassion = yes
+		set_temp_variable = { holy_realm_delta = constant:holy_realm_buddhahood.false_buddha_suppression_drift_gain }
+		holy_realm_add_compassion_drift = yes
 		add_stability = -0.03
 		add_war_support = 0.04
 	}
@@ -296,8 +416,8 @@ holy_realm_exile_false_buddha_echo = {
 		set_country_flag = holy_realm_false_buddha_schism_resolved
 		set_temp_variable = { holy_realm_defilements_delta = constant:holy_realm_buddhahood.false_buddha_exile_defilement_gain }
 		holy_realm_add_defilements = yes
-		set_temp_variable = { holy_realm_compassion_delta = constant:holy_realm_buddhahood.false_buddha_exile_compassion_loss }
-		holy_realm_add_compassion = yes
+		set_temp_variable = { holy_realm_delta = constant:holy_realm_buddhahood.false_buddha_exile_drift_gain }
+		holy_realm_add_compassion_drift = yes
 		set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
 		holy_realm_add_mandala_reach = yes
 		add_stability = -0.01
@@ -319,8 +439,8 @@ holy_realm_absorb_false_buddha_shadow = {
 		set_country_flag = holy_realm_false_buddha_schism_resolved
 		set_temp_variable = { holy_realm_defilements_delta = constant:holy_realm_buddhahood.false_buddha_absorb_defilement_gain }
 		holy_realm_add_defilements = yes
-		set_temp_variable = { holy_realm_compassion_delta = constant:holy_realm_buddhahood.false_buddha_absorb_compassion_loss }
-		holy_realm_add_compassion = yes
+		set_temp_variable = { holy_realm_delta = constant:holy_realm_buddhahood.false_buddha_absorb_drift_gain }
+		holy_realm_add_compassion_drift = yes
 		set_temp_variable = { holy_realm_delta = constant:holy_realm_buddhahood.false_buddha_absorb_final_pressure_gain }
 		holy_realm_add_final_silence_pressure = yes
 		set_temp_variable = { holy_realm_meditation_delta = constant:holy_realm_buddhahood.false_buddha_absorb_charge_gain }
@@ -390,8 +510,8 @@ holy_realm_record_teaching_success = {
 	add_to_variable = { teaching_successes = 1 }
 	set_temp_variable = { holy_realm_bodhi_delta = constant:holy_realm_buddhahood.bodhi_teaching_gain }
 	holy_realm_add_bodhi_progress = yes
-	set_temp_variable = { holy_realm_compassion_delta = constant:holy_realm_buddhahood.teaching_compassion_gain }
-	holy_realm_add_compassion = yes
+	set_temp_variable = { holy_realm_delta = constant:holy_realm_buddhahood.teaching_drift_loss }
+	holy_realm_add_compassion_drift = yes
 	set_temp_variable = { holy_realm_defilements_delta = constant:holy_realm_buddhahood.teaching_defilement_loss }
 	holy_realm_add_defilements = yes
 	if = {
@@ -870,6 +990,7 @@ holy_realm_initialize_final_doctrine_balance = {
 
 holy_realm_daily_doctrine_balance_pulse = {
 	holy_realm_ensure_counters = yes
+	holy_realm_collect_refuge_credit = yes
 	if = {
 		limit = {
 			has_power_balance = {
