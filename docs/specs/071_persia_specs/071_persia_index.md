@@ -84,5 +84,6 @@ The design, handoff prompts, source records, and planning diagrams are delivered
 ### 2026-10-10 spec audit
 
 - The four PNG renders and the HTML diagram viewer are removed; the DOT sources and SVG renders hold the same diagrams. The PNGs duplicated the SVGs as Git LFS objects, and LFS is reserved for assets visible in game.
+- Event-owned Chaos is rescaled to the Chaos Meter: the root shock is +5, +7, +9, or +12 by tier (was +10 to +25), later milestones +2 to +5, and reversals -3. A restoration with a strong army is a regional shock, while the wars and annexations it leads to already pay through shared sources.
 - The obsolete extraction instruction is removed. Subagent instructions use the Claude-first wording; the historical package-validation record is unchanged.
 - The design itself was already disciplined (one meter plus guard capacity, qualitative satrapy states, a shared completion rule for map, focuses, and achievements) and is otherwise unchanged.

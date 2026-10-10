@@ -38,18 +38,18 @@ The catalog's Chaos level is a classification, not a claim that every concrete e
 
 | Consequence | Event-owned proposal | Guard and overlap rule |
 |---|---:|---|
-| Root restoration with baseline opening mobilization | +10 | Once for the root's institutional and military shock |
-| Root at Evolution I | +15 total root contribution | Replaces the baseline root amount, does not add a separate evolution activation reward |
-| Root at Evolution II | +20 total root contribution | Same single root transaction |
-| Root at Evolution III | +25 total root contribution | Same single root transaction |
-| First durable specialized satrapy network after Evolution I | +5 | Once after three distinct specialized regional charters function for 90 days |
-| Advanced central guard institution after Evolution II | +5 | Once after its paid program and an actually fielded advanced formation |
-| First coercive imperial submission at Evolution III | +5 | Once when a refused or threatened offer leads to an accepted subordinate settlement, beyond ordinary subject change |
-| Imperial guarantee publicly abandoned | +5 | Once per distinct protected war, with a cap of +15 event-owned Chaos across the restoration |
-| Coordinated charter or command fragmentation | +10 | Once for a major actual institutional breakup, separate from generic war declarations |
-| Durable route settlement | -5 | Once after route conclusion and 180 days without active imperial crisis |
-| Negotiated end of a major charter or command crisis | -5 | Once per major crisis family, only after an actual concession or remedy |
-| Recovery of a fragmented center | -5 | Once after the recovery conditions, never for repeatedly toggling a crisis |
+| Root restoration with baseline opening mobilization | +5 | Once for the root's institutional and military shock |
+| Root at Evolution I | +7 total root contribution | Replaces the baseline root amount, does not add a separate evolution activation reward |
+| Root at Evolution II | +9 total root contribution | Same single root transaction |
+| Root at Evolution III | +12 total root contribution | Same single root transaction |
+| First durable specialized satrapy network after Evolution I | +3 | Once after three distinct specialized regional charters function for 90 days |
+| Advanced central guard institution after Evolution II | +3 | Once after its paid program and an actually fielded advanced formation |
+| First coercive imperial submission at Evolution III | +3 | Once when a refused or threatened offer leads to an accepted subordinate settlement, beyond ordinary subject change |
+| Imperial guarantee publicly abandoned | +2 | Once per distinct protected war, with a cap of +6 event-owned Chaos across the restoration |
+| Coordinated charter or command fragmentation | +5 | Once for a major actual institutional breakup, separate from generic war declarations |
+| Durable route settlement | -3 | Once after route conclusion and 180 days without active imperial crisis |
+| Negotiated end of a major charter or command crisis | -3 | Once per major crisis family, only after an actual concession or remedy |
+| Recovery of a fragmented center | -3 | Once after the recovery conditions, never for repeatedly toggling a crisis |
 | Evolution unlock, visibility, or logging | 0 | No concrete consequence yet |
 | Ordinary conquest, puppet creation, war, faction entry, or army growth | No duplicate Event 071 payment | Existing shared source owns its normal contribution |
 
