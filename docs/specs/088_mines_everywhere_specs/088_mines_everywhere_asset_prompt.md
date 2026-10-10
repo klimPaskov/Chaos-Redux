@@ -30,7 +30,7 @@ Produce one original colored transparent subject for each proposed registration 
 No finished achievement titles, text or numbers belong in the icon. Do not copy a historical insignia or add a national flag merely to fill space. Inspect the native achievement family and its contact sheets before choosing silhouette, contrast, material treatment and visual scale.
 
 Each subject needs a coherent 64 × 64 completed, grey and not-eligible triplet.
-Follow the current [achievement creation and processing contract](../../../.agents/skills/chaos-redux-event-assets/SKILL.md#achievement-icons), including its canonical `assets/gfx_references/icons/achievements/template/` inputs, immutable template hashes, complete source triplet and processor.
+Follow the current [achievement creation and processing contract](../../../.claude/skills/chaos-redux-event-assets/references/icon-and-ui-families.md#achievement-icons), including its canonical `assets/gfx_references/icons/achievements/template/` inputs, immutable template hashes, complete source triplet and processor.
 Inspect the actual inputs and references before generation.
 Preserve one accepted subject across deterministic state variants and record any missing dependency as blocked.
 
@@ -38,7 +38,7 @@ Final achievement DDS files must use the verified registered key under the exist
 
 ## Required processing and QA
 
-Use the repository's verified `.agents/skills/chaos-redux-event-assets/tools/convert_to_dds.py` route for final conversion where applicable. Confirm the required legacy BGRA DDS structure, 128-byte header, expected single mip level, dimensions and alpha against the actual skill contract and tool output. A successful converter exit alone is not a visual pass.
+Use the repository's verified `.claude/skills/chaos-redux-event-assets/tools/convert_to_dds.py` route for final conversion where applicable. Confirm the required legacy BGRA DDS structure, 128-byte header, expected single mip level, dimensions and alpha against the actual skill contract and tool output. A successful converter exit alone is not a visual pass.
 
 Decode final DDS bytes and compare the actual consumer-size images against the inspected reference family. Review mine silhouette, craft readability, grayscale contrast, template agreement, edge halos, accidental internal transparency, clipping and state consistency. Keep source PNGs, processed PNGs, final DDS files and decoded previews distinct. A late candidate change invalidates older derivative evidence.
 
