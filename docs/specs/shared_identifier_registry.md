@@ -94,7 +94,8 @@ Event 043/046 Alien Invasions membership remains a separate design conflict.
 ## World-end scenarios
 
 `world_end_scenario_id` is separate from the `SCN-` triggerable namespace.
-Cthulhu’s Dominion reserves world-end ID 17; Global Jihad retains 15 and World of Anarchy retains 16.
+Cthulhu’s Dominion reserves world-end ID 17 and The Red World reserves ID 18 for Event 091.
+Global Jihad retains 15 and World of Anarchy retains 16.
 The held triggerable ID SCN-017 does not conflict with this world-end reservation.
 Existing world-end keys and occupied numbers are recorded in the machine-readable registry and their runtime constants.
 Lower gaps are not allocated by this audit.
@@ -105,19 +106,29 @@ Lower gaps are not allocated by this audit.
 | --- | --- | --- | --- |
 | 119 | Super-Alloy operational breakthrough | Event 098 | Reserved for proposed design |
 | 120 | The World of Dust global disruption (working title) | Event 099 | Reserved for proposed design |
+| 121 | The Great Revolution opening | Event 091 | Reserved for proposed design |
+| 122 | The Red World terminal branch | Event 091 | Reserved for proposed design |
+| 123 | The Great Revolution earned defeat | Event 091 | Reserved for proposed design |
 
 The presentation namespace uses the value of `super_event_visible`, separately from triggerable and world-end scenario IDs.
 Slot 117 belongs to Acid Rain and slot 118 belongs to the Gods of Africa global-credibility presentation; both use constant-based selectors and must be included when checking occupancy.
 Slot 119 was checked against current selectors, constants, localisation keys, and planning reservations before allocation.
 Slot 120 was checked against those same surfaces for Sandstorm on 8 October 2026, including the existing New Ore reservation at 119.
-The reservation does not implement the presentation or approve final text, image, audio, or an audio ID.
-Allocate the final audio ID independently and keep its unique recording and sound-registration requirements.
+The reservations do not implement presentations or approve final text, images, or recordings.
+Events 098 and 099 have no audio ID allocation in this ledger.
+Event 091 independently reserves playback audio IDs 121, 122, and 123 for its opening, terminal branch, and earned defeat respectively.
+The matching numbers are an explicit mapping between separate namespaces, not a rule for deriving audio IDs from presentation slots.
+The 9 October import review checked current literal and constant selectors, source dispatch inputs, sound registrations, canonical workbook entries, and existing planning reservations before these allocations.
+Keep each final recording and sound registration unique, and recheck occupancy before runtime wiring.
 
 ## Event and country identities
 
 `chaosx.nr18.33` is assigned to No Ground for a Survey, separating it from A Quarter of the Continent at `chaosx.nr18.90`.
 The repair updates the survey caller and its three text keys together.
-DTH and KRG are registered country identities for Death and Kruger; their owner packages must reuse and inspect them instead of treating those tags as free candidates.
+DTH, KRG, and REV are registered country identities for Death, Kruger, and the World Revolution.
+Their owner packages must reuse and inspect them instead of treating those tags as free candidates.
+The REV scan also found the same identity in the installed Random Events Mod (Workshop 3199436992) and the Chaos Redux QA checkout.
+Those external definitions are a compatibility consideration, not a reason to allocate a second Event 091 tag or rename its incumbent identity during documentation import.
 The duplicate Event 012 package is historical provenance, and the two Event 097 design variants share the existing `chaosx.nr97.1` root.
 Their presence does not allocate another runtime namespace.
 

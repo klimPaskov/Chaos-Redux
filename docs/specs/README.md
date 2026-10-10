@@ -111,6 +111,7 @@ It does not assert acceptance or current implementation status.
 | 088 Mines Everywhere | [`088_mines_everywhere_specs/README.md`](088_mines_everywhere_specs/README.md) |
 | 089 Doctor Wu | [`089_doctor_wu_specs/089_doctor_wu_index.md`](089_doctor_wu_specs/089_doctor_wu_index.md) |
 | 090 Deal with the Devil | [`090_deal_with_the_devil_specs/README.md`](090_deal_with_the_devil_specs/README.md) |
+| 091 The Great Revolution | [`091_the_great_revolution_specs/README.md`](091_the_great_revolution_specs/README.md) |
 | 092 Greenland Sale | [`092_greenland_sale_specs/092_greenland_sale_spec_index.md`](092_greenland_sale_specs/092_greenland_sale_spec_index.md) |
 | 093 Treaty of Tordesillas Restoration | [`093_treaty_of_tordesillas_restoration_specs/README.md`](093_treaty_of_tordesillas_restoration_specs/README.md) |
 | 094 Half Gone | [`094_half_gone_specs/README.md`](094_half_gone_specs/README.md) |
@@ -120,8 +121,6 @@ It does not assert acceptance or current implementation status.
 | 098 New Ore | [`098_new_ore_specs/098_new_ore_readme.md`](098_new_ore_specs/098_new_ore_readme.md) |
 | 099 Sandstorm | [`099_sandstorm_specs/README.md`](099_sandstorm_specs/README.md) |
 | 100 Inflation | [`100_inflation_specs/100_inflation_README.md`](100_inflation_specs/100_inflation_README.md) |
-
-Event 091 has no specification package in this checkout.
 
 Shared and cross-event specification packages are indexed below.
 

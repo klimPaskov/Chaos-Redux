@@ -704,6 +704,7 @@ After actual entry, the normal major-event system decides whether the eligible R
 
 Evolution 3 retains the existing +200 contribution for each qualifying foreshadowing news incident and its existing cooldown/pacing contract.
 Eligibility, the weight contribution and the eventual Revolution firing are separate consequences.
+Historical entry and accumulated Event 091 weight survive containment, while active spread and the other current eligibility gates remain separate conditions in the [Event 091 selection contract](../091_the_great_revolution_specs/design/091_the_great_revolution_spec_part_2_001_evolutions_and_selection.md).
 Unlocking eligibility does not itself fire a Revolution event or super-event.
 
 ## Major Event Weight Display
@@ -722,7 +723,7 @@ Display rules:
 - If the event is locked by trigger conditions: show red `N/A`
 - If the event is unlocked but its calculated weight is actually 0: show `0`
 - If the event is unlocked and has a positive weight: show the normal weight value
-- Once World Revolution is unlocked by the communism spread event flag, stop showing `N/A` and show its real calculated weight
+- After actual Whispers entry, show World Revolution’s real calculated weight only while all current Event 091 eligibility gates hold. Otherwise retain `N/A` without deleting stored weight
 
 This should make the major event UI clearer and avoid misleading the player.
 
@@ -906,39 +907,31 @@ The log should record:
 
 ## World Revolution State Integration
 
-When the World Revolution major event eventually fires, it should use the communist state-control system as its main territorial basis.
+The user selected the new Event 091 package as the governing shared design on 10 October 2026.
+This agreement is accepted and queued for gameplay implementation, with the [opening and territory contract](../091_the_great_revolution_specs/design/091_the_great_revolution_spec_part_3_opening_and_territory.md) and [integration contract](../091_the_great_revolution_specs/implementation_handoffs/integration_contracts.md) as its detailed owners.
+Event 001 supplies established local history and ongoing organizing, while Event 091 owns the worldwide opening, political disposition and military transactions.
 
-The World Revolution should no longer simply calculate communist party popularity and randomly choose states.
+Before the opening, preserve each state's control level, host and rebel lineage, ritual and whisper history, actual units, commanders, equipment and stock receipts.
+Every established eligible Level 1, Level 2 and Level 3 base and valid associated rebel-held state is guaranteed a place in the inherited opening record.
+Inherited inclusion preserves the state and its history, while final ownership and control follow Event 091's political and native-rights rules.
 
-Instead, it should prioritize the states that are already under communist control from the communism spread system.
+Event 091 freezes each ordinary participant's eligible owned-or-controlled pool and communist popularity, computes its proportional nomination once, and counts inherited states first.
+It fills only the remaining shortfall through its saved weighted selection without replacement, retains inherited excess, and combines all nominations into one physical state union.
+Associated rebels remain in their original host's recorded pool and receive no second popularity roll.
+There is no separate Event 001 nomination, territorial minimum, duplicate state transfer or duplicate muster.
+The origin preference remains Level 3, then Level 2, then Level 1, then a valid rebel base, followed by the qualified fallback defined in Part 3.
 
-This means:
-- Level 1 communist-controlled states can join the World Revolution, but with lower strength
-- Level 2 communist-controlled states are much more likely to join and should spawn stronger forces
-- Level 3 communist-controlled states should almost always join and should provide the strongest revolutionary forces
-- States not under communist control should not be the main basis of the World Revolution
+Existing rebel governments can join independently, accept a subordinate arrangement, voluntarily merge, or refuse Lenin and fight as human communist movements.
+A refusing rebel retains its non-origin base and real army under the specific rebel disposition in Event 091.
+The sovereign origin exception still transfers that selected origin to the World Revolution, including the possibility of actual collapse or legitimate exile for a rebel losing its last state.
+Joining or merging preserves real formations, commanders, equipment and stocks through the appropriate measured transfer or cooperation contract.
+No army is deleted and recreated to simulate that handoff.
 
-If communist rebel states already exist as their own country before World Revolution fires, then the World Revolution should annex or absorb those rebel countries.
+Recorded control level, population, industry and preparation shape force quality and allocation through Event 091's finite manifestation and physically sourced reinforcement rules.
+Deeper preparation remains valuable without creating unlimited people, equipment or repeated free units.
+Unknown legacy state levels remain unknown and use the conservative inheritance treatment in Event 091.
 
-When absorbing an existing communist rebel country:
-- Keep its existing divisions
-- Keep its controlled territory
-- Transfer it cleanly into the World Revolution country
-- Do not delete its army and recreate everything from nothing
-- Do not treat it as a normal random civil war split
-
-If the communist rebels are still only represented through controlled states, then the World Revolution country should spawn from those controlled states.
-
-Division spawning should scale by control level:
-- Level 1 states spawn fewer revolutionary divisions
-- Level 2 states spawn a moderate number of better revolutionary divisions
-- Level 3 states spawn the strongest revolutionary divisions
-- Industrial states should support stronger spawns
-- High-population states should support stronger spawns
-- Weak countries should still receive reasonable rebel strength, not absurd rebel stacks
-
-The World Revolution should feel like it is emerging from the communist-controlled territory that already existed on the map.
-
-When The World Revolution happens, then communist insurgency system is then disabled for every country
-
-The player should understand that ignoring communist state control earlier helped create the World Revolution later.
+After the opening, Event 001 continues as the local cell and organizing provider through the Event 091 adapter.
+The adapter distinguishes ordinary defenders, independent refusers, allied local bases and directly administered revolutionary territory.
+Retire only incompatible local containment effects after their history and assets have been preserved, without globally disabling insurgency or erasing its historical unlock.
+Later organizing, country creation, government changes and state transfers use bounded targeted updates and never rerun the worldwide opening lottery.
