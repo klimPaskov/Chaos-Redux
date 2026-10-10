@@ -1,0 +1,236 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 034 INDUSTRIAL BOOM SCRIPTED LOCALISATION
+# ============================================================================
+# Category header (band, trend, next threshold, leading cause, reserve,
+# landing outlook), region row status and cost fragments. Selectors only;
+# all words and formatting live in 034_industrial_boom_l_english.yml.
+# ============================================================================
+
+defined_text = {
+	name = GetIndustrialBoomBand
+	text = { trigger = { check_variable = { var = industrial_boom_band value = constant:industrial_boom_band.critical compare = equals } } localization_key = industrial_boom_band_critical }
+	text = { trigger = { check_variable = { var = industrial_boom_band value = constant:industrial_boom_band.dangerous compare = equals } } localization_key = industrial_boom_band_dangerous }
+	text = { trigger = { check_variable = { var = industrial_boom_band value = constant:industrial_boom_band.strained compare = equals } } localization_key = industrial_boom_band_strained }
+	text = { localization_key = industrial_boom_band_sustainable }
+}
+
+defined_text = {
+	name = GetIndustrialBoomTrend
+	text = { trigger = { check_variable = { var = industrial_boom_trend value = constant:industrial_boom_event.trend_rising compare = equals } } localization_key = industrial_boom_trend_rising }
+	text = { trigger = { check_variable = { var = industrial_boom_trend value = constant:industrial_boom_event.trend_falling compare = equals } } localization_key = industrial_boom_trend_falling }
+	text = { localization_key = industrial_boom_trend_steady }
+}
+
+defined_text = {
+	name = GetIndustrialBoomNextThreshold
+	text = { trigger = { check_variable = { var = industrial_boom_band value = constant:industrial_boom_band.critical compare = equals } } localization_key = industrial_boom_next_collapse }
+	text = { trigger = { check_variable = { var = industrial_boom_band value = constant:industrial_boom_band.dangerous compare = equals } } localization_key = industrial_boom_next_critical }
+	text = { trigger = { check_variable = { var = industrial_boom_band value = constant:industrial_boom_band.strained compare = equals } } localization_key = industrial_boom_next_dangerous }
+	text = { localization_key = industrial_boom_next_strained }
+}
+
+defined_text = {
+	name = GetIndustrialBoomCause
+	text = {
+		trigger = {
+			check_variable = { var = industrial_boom_cause value = constant:industrial_boom_cause.output compare = equals }
+			has_country_flag = industrial_boom_running_hot
+		}
+		localization_key = industrial_boom_cause_output_hot
+	}
+	text = {
+		trigger = {
+			check_variable = { var = industrial_boom_cause value = constant:industrial_boom_cause.output compare = equals }
+			check_variable = { var = industrial_boom_spread_states^num value = constant:industrial_boom_event.zero compare = greater_than }
+		}
+		localization_key = industrial_boom_cause_output_spread
+	}
+	text = { trigger = { check_variable = { var = industrial_boom_cause value = constant:industrial_boom_cause.output compare = equals } } localization_key = industrial_boom_cause_output }
+	text = {
+		trigger = {
+			check_variable = { var = industrial_boom_cause value = constant:industrial_boom_cause.supply compare = equals }
+			industrial_boom_is_sea_dependent = yes
+			convoy_threat > constant:industrial_boom_drift.convoy_threat_threshold
+		}
+		localization_key = industrial_boom_cause_supply_sea
+	}
+	text = {
+		trigger = {
+			check_variable = { var = industrial_boom_cause value = constant:industrial_boom_cause.supply compare = equals }
+			fuel_ratio < constant:industrial_boom_drift.low_fuel_ratio
+		}
+		localization_key = industrial_boom_cause_supply_fuel
+	}
+	text = { trigger = { check_variable = { var = industrial_boom_cause value = constant:industrial_boom_cause.supply compare = equals } } localization_key = industrial_boom_cause_supply_rail }
+	text = { trigger = { check_variable = { var = industrial_boom_cause value = constant:industrial_boom_cause.regional compare = equals } } localization_key = industrial_boom_cause_regional }
+	text = {
+		trigger = {
+			check_variable = { var = industrial_boom_cause value = constant:industrial_boom_cause.finance compare = equals }
+			industrial_boom_evolution_at_least_1 = yes
+			NOT = { has_country_flag = industrial_boom_cooling }
+		}
+		localization_key = industrial_boom_cause_finance_speculative
+	}
+	text = { trigger = { check_variable = { var = industrial_boom_cause value = constant:industrial_boom_cause.finance compare = equals } } localization_key = industrial_boom_cause_finance }
+	text = { localization_key = industrial_boom_cause_none }
+}
+
+defined_text = {
+	name = GetIndustrialBoomReserve
+	text = { trigger = { has_country_flag = industrial_boom_reserve_held } localization_key = industrial_boom_reserve_held_word }
+	text = { trigger = { has_country_flag = industrial_boom_reserve_building } localization_key = industrial_boom_reserve_building_word }
+	text = { trigger = { has_country_flag = industrial_boom_reserves_depleted } localization_key = industrial_boom_reserve_spent_word }
+	text = { localization_key = industrial_boom_reserve_none_word }
+}
+
+defined_text = {
+	name = GetIndustrialBoomOutlook
+	text = { trigger = { has_country_flag = industrial_boom_opening } localization_key = industrial_boom_outlook_opening }
+	text = {
+		trigger = { check_variable = { var = industrial_boom_overheating value = constant:industrial_boom_band.dangerous_edge compare = greater_than_or_equals } }
+		localization_key = industrial_boom_outlook_crash
+	}
+	text = {
+		trigger = {
+			check_variable = { var = industrial_boom_overheating value = constant:industrial_boom_band.controlled_landing_ceiling compare = less_than }
+			check_variable = { var = industrial_boom_secured_total value = constant:industrial_boom_event.zero compare = greater_than }
+		}
+		localization_key = industrial_boom_outlook_controlled
+	}
+	text = {
+		trigger = {
+			has_country_flag = industrial_boom_supplier_contract_active
+			NOT = { has_country_flag = industrial_boom_contract_upgrade_used }
+		}
+		localization_key = industrial_boom_outlook_contract
+	}
+	text = {
+		trigger = {
+			check_variable = { var = industrial_boom_overheating value = constant:industrial_boom_band.controlled_landing_ceiling compare = less_than }
+			check_variable = { var = industrial_boom_project_total value = constant:industrial_boom_event.zero compare = greater_than }
+		}
+		localization_key = industrial_boom_outlook_secure_project
+	}
+	text = {
+		trigger = { check_variable = { var = industrial_boom_project_total value = constant:industrial_boom_event.zero compare = equals } }
+		localization_key = industrial_boom_outlook_designate
+	}
+	text = { localization_key = industrial_boom_outlook_cool }
+}
+
+# STATE. Region row status.
+defined_text = {
+	name = GetIndustrialBoomProject
+	text = { trigger = { has_state_flag = industrial_boom_project_speculative } localization_key = industrial_boom_project_speculative_name }
+	text = {
+		trigger = {
+			has_state_flag = industrial_boom_project_miracle
+			check_variable = { var = industrial_boom_project_profile value = constant:industrial_boom_project.practices compare = equals }
+		}
+		localization_key = industrial_boom_project_automated_name
+	}
+	text = {
+		trigger = {
+			has_state_flag = industrial_boom_project_miracle
+			check_variable = { var = industrial_boom_project_profile value = constant:industrial_boom_project.rail compare = equals }
+		}
+		localization_key = industrial_boom_project_spine_name
+	}
+	text = {
+		trigger = {
+			has_state_flag = industrial_boom_project_miracle
+			check_variable = { var = industrial_boom_project_profile value = constant:industrial_boom_project.conversion compare = equals }
+		}
+		localization_key = industrial_boom_project_machine_city_name
+	}
+	text = { trigger = { check_variable = { var = industrial_boom_project_profile value = constant:industrial_boom_project.practices compare = equals } } localization_key = industrial_boom_project_practices_name }
+	text = { trigger = { check_variable = { var = industrial_boom_project_profile value = constant:industrial_boom_project.rail compare = equals } } localization_key = industrial_boom_project_rail_name }
+	text = { trigger = { check_variable = { var = industrial_boom_project_profile value = constant:industrial_boom_project.conversion compare = equals } } localization_key = industrial_boom_project_conversion_name }
+	text = { localization_key = industrial_boom_project_none_name }
+}
+
+defined_text = {
+	name = GetIndustrialBoomStage
+	text = { trigger = { check_variable = { var = industrial_boom_project_stage value = constant:industrial_boom_project.stage_secured compare = equals } } localization_key = industrial_boom_stage_secured }
+	text = { trigger = { check_variable = { var = industrial_boom_project_stage value = constant:industrial_boom_project.stage_integrating compare = equals } } localization_key = industrial_boom_stage_integrating }
+	text = { trigger = { check_variable = { var = industrial_boom_project_stage value = constant:industrial_boom_project.stage_building compare = equals } } localization_key = industrial_boom_stage_building }
+	text = { localization_key = industrial_boom_stage_none }
+}
+
+defined_text = {
+	name = GetIndustrialBoomProtection
+	text = { trigger = { has_state_flag = industrial_boom_region_protected } localization_key = industrial_boom_region_protected_word }
+	text = { trigger = { has_state_flag = industrial_boom_protection_spent } localization_key = industrial_boom_region_protection_spent_word }
+	text = { localization_key = industrial_boom_region_unprotected_word }
+}
+
+defined_text = {
+	name = GetIndustrialBoomSlowdown
+	text = { trigger = { NOT = { is_controlled_by = ROOT } } localization_key = industrial_boom_slow_occupied }
+	text = { trigger = { has_state_flag = industrial_boom_region_damaged } localization_key = industrial_boom_slow_damaged }
+	text = { trigger = { famine_food_stage_requires_mortality = yes } localization_key = industrial_boom_slow_famine }
+	text = { trigger = { industrial_boom_state_is_contaminated = yes } localization_key = industrial_boom_slow_contaminated }
+	text = { trigger = { has_state_flag = industrial_boom_region_fragile } localization_key = industrial_boom_slow_fragile }
+	text = { trigger = { ROOT = { industrial_boom_band_is_dangerous_or_worse = yes } } localization_key = industrial_boom_slow_band }
+	text = { trigger = { ROOT = { has_country_flag = industrial_boom_cooling } } localization_key = industrial_boom_slow_cooling }
+	text = { localization_key = industrial_boom_slow_none }
+}
+
+# COUNTRY. Cost fragments coloured by their own affordability.
+defined_text = {
+	name = GetIndustrialBoomCostTrains
+	text = { trigger = { NOT = { has_equipment = { train_equipment < industrial_boom_cost_trains } } } localization_key = industrial_boom_quote_trains_available }
+	text = { localization_key = industrial_boom_quote_trains_blocked }
+}
+
+defined_text = {
+	name = GetIndustrialBoomCostFuel
+	text = { trigger = { NOT = { has_fuel < industrial_boom_cost_fuel } } localization_key = industrial_boom_quote_fuel_available }
+	text = { localization_key = industrial_boom_quote_fuel_blocked }
+}
+
+defined_text = {
+	name = GetIndustrialBoomCostConvoys
+	text = { trigger = { NOT = { industrial_boom_is_sea_dependent = yes } } localization_key = industrial_boom_quote_empty }
+	text = { trigger = { NOT = { has_equipment = { convoy_1 < industrial_boom_cost_convoys } } } localization_key = industrial_boom_quote_convoys_available }
+	text = { localization_key = industrial_boom_quote_convoys_blocked }
+}
+
+defined_text = {
+	name = GetIndustrialBoomCostSupport
+	text = { trigger = { NOT = { has_equipment = { support_equipment < industrial_boom_cost_support } } } localization_key = industrial_boom_quote_support_available }
+	text = { localization_key = industrial_boom_quote_support_blocked }
+}
+
+defined_text = {
+	name = GetIndustrialBoomCostProjectTrains
+	text = { trigger = { NOT = { has_equipment = { train_equipment < industrial_boom_cost_project_trains } } } localization_key = industrial_boom_quote_project_trains_available }
+	text = { localization_key = industrial_boom_quote_project_trains_blocked }
+}
+
+# COUNTRY. Which halt condition currently holds.
+defined_text = {
+	name = GetIndustrialBoomHaltOutlook
+	text = { trigger = { has_country_flag = industrial_boom_reserve_held } localization_key = industrial_boom_halt_reserve }
+	text = { trigger = { industrial_boom_halt_succeeds = yes } localization_key = industrial_boom_halt_protected }
+	text = { localization_key = industrial_boom_halt_fails }
+}
+
+# COUNTRY. Supplier contract state for the order-books rows.
+defined_text = {
+	name = GetIndustrialBoomOrderBooks
+	text = {
+		trigger = { check_variable = { var = industrial_boom_overheating value = constant:industrial_boom_event.supplier_refusal_threshold compare = greater_than_or_equals } }
+		localization_key = industrial_boom_order_books_refusing
+	}
+	text = { trigger = { has_country_flag = industrial_boom_order_books_closed } localization_key = industrial_boom_order_books_closed_word }
+	text = { localization_key = industrial_boom_order_books_open_word }
+}
+
+# COUNTRY. The named Speculative Mania offer.
+defined_text = {
+	name = GetIndustrialBoomOfferName
+	text = { trigger = { check_variable = { var = industrial_boom_speculative_offer_kind value = constant:industrial_boom_offer.port compare = equals } } localization_key = industrial_boom_offer_port }
+	text = { trigger = { check_variable = { var = industrial_boom_speculative_offer_kind value = constant:industrial_boom_offer.rail compare = equals } } localization_key = industrial_boom_offer_rail }
+	text = { localization_key = industrial_boom_offer_district }
+}

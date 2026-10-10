@@ -1,0 +1,136 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 034 INDUSTRIAL BOOM DYNAMIC MODIFIERS
+# ============================================================================
+# Country modifiers read country variables refreshed by
+# industrial_boom_refresh_package, so band erosion, running hot, cooling,
+# evolutions and spread change one package instead of stacking ideas.
+# State modifiers mark Industrial Regions and their project state.
+# ============================================================================
+
+# COUNTRY. The live boom package.
+industrial_boom_package = {
+	icon = GFX_idea_034_industrial_boom_boom
+	industrial_capacity_factory = industrial_boom_mod_output
+	production_factory_efficiency_gain_factor = industrial_boom_mod_efficiency_gain
+	production_factory_max_efficiency_factor = industrial_boom_mod_efficiency_cap
+	production_speed_buildings_factor = industrial_boom_mod_construction
+	industrial_capacity_dockyard = industrial_boom_mod_dockyard
+	line_change_production_efficiency_factor = industrial_boom_mod_line_conversion
+}
+
+# COUNTRY. Civilian factories held by reserves, projects in their Building
+# stage and recent protection works.
+industrial_boom_commitment = {
+	icon = GFX_idea_034_industrial_boom_boom
+	civilian_factory_use = industrial_boom_committed_civilian
+}
+
+# COUNTRY. Machine time left idle while an Industrial Reserve is built.
+industrial_boom_reserve_building = {
+	icon = GFX_idea_034_industrial_boom_reconversion
+	industrial_capacity_factory = constant:industrial_boom_package.reserve_building_output
+}
+
+# COUNTRY. Evolution I flavour carrier; its output growth is inside the package.
+industrial_boom_speculative_mania = {
+	icon = GFX_idea_034_industrial_boom_speculative_mania
+	consumer_goods_factor = 0.03
+}
+
+# COUNTRY. Evolution II carrier.
+industrial_boom_industrial_miracle = {
+	icon = GFX_idea_034_industrial_boom_industrial_miracle
+	production_speed_buildings_factor = 0.10
+}
+
+# COUNTRY. Evolution III carrier.
+industrial_boom_runaway = {
+	icon = GFX_idea_034_industrial_boom_runaway
+	stability_factor = -0.03
+}
+
+# COUNTRY. A supplier contract with a depressed country.
+industrial_boom_export_orders = {
+	icon = GFX_idea_034_industrial_boom_export_orders
+	industrial_capacity_factory = constant:industrial_boom_package.export_orders_output
+}
+
+# COUNTRY. Temporary loss while a strike settlement holds.
+industrial_boom_labor_settlement = {
+	icon = GFX_idea_034_industrial_boom_reconversion
+	industrial_capacity_factory = constant:industrial_boom_cost.concede_output
+}
+
+# COUNTRY. Containment of the Evolution III spread.
+industrial_boom_contained_spread = {
+	icon = GFX_idea_034_industrial_boom_runaway
+	industrial_capacity_factory = constant:industrial_boom_package.contain_output
+}
+
+# COUNTRY. After every landing while production returns to normal.
+industrial_boom_reconversion = {
+	icon = GFX_idea_034_industrial_boom_reconversion
+	industrial_capacity_factory = constant:industrial_boom_package.reconversion_output
+}
+
+# COUNTRY. After a rough or forced landing.
+industrial_boom_exhaustion = {
+	icon = GFX_idea_034_industrial_boom_exhaustion
+	industrial_capacity_factory = constant:industrial_boom_package.exhaustion_output
+	production_speed_buildings_factor = constant:industrial_boom_package.exhaustion_construction
+}
+
+# COUNTRY. Timed legacies. Strength variables accumulate across secured
+# projects of one landing and are capped by the legacy budget.
+industrial_boom_practices_legacy = {
+	icon = GFX_idea_034_industrial_boom_boom
+	production_factory_efficiency_gain_factor = industrial_boom_legacy_efficiency
+	line_change_production_efficiency_factor = industrial_boom_legacy_conversion
+}
+
+industrial_boom_rail_legacy = {
+	icon = GFX_idea_034_industrial_boom_export_orders
+	production_lack_of_resource_penalty_factor = industrial_boom_legacy_resource_penalty
+}
+
+industrial_boom_conversion_legacy = {
+	icon = GFX_idea_034_industrial_boom_reconversion
+	production_speed_buildings_factor = constant:industrial_boom_legacy.spent_budget_construction
+}
+
+# STATE. Industrial Region markers.
+industrial_boom_region_marker = {
+	icon = GFX_modifiers_034_industrial_boom_region
+	state_production_speed_buildings_factor = 0.10
+}
+
+industrial_boom_region_protected = {
+	icon = GFX_modifiers_034_industrial_boom_protected
+	state_production_speed_buildings_factor = 0.05
+}
+
+industrial_boom_region_secured = {
+	icon = GFX_modifiers_034_industrial_boom_secured
+	local_factories = 0.05
+}
+
+industrial_boom_region_fragile = {
+	icon = GFX_modifiers_034_industrial_boom_fragile_miracle
+	local_factories = -0.05
+}
+
+industrial_boom_spread_expanding = {
+	icon = GFX_modifiers_034_industrial_boom_spreading
+	state_production_speed_buildings_factor = 0.25
+}
+
+industrial_boom_spread_integrated = {
+	icon = GFX_modifiers_034_industrial_boom_spreading
+	state_production_speed_buildings_factor = 0.40
+	local_factories = 0.05
+}
+
+industrial_boom_unfinished_works = {
+	icon = GFX_modifiers_034_industrial_boom_unfinished_works
+	state_production_speed_buildings_factor = -0.10
+}

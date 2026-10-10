@@ -1,0 +1,682 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 034 INDUSTRIAL REGIONS AND PROJECTS
+# ============================================================================
+# Ranked Industrial Regions (at most three), their single project, stage
+# progress, protection, control changes, local shocks, Evolution III spread
+# states, Speculative Mania offers and event-owned Chaos.
+#
+# Region state variables: industrial_boom_project_profile (0 none, 1 Production
+# Practices, 2 Rail and Supply Integration, 3 Factory Conversion),
+# industrial_boom_project_stage (0 none, 1 Building, 2 Integrating,
+# 3 Secured), industrial_boom_project_progress (days), commitments and the
+# Event 35 region receipt. Flags mark protection, Miracle, speculative and
+# fragile projects. ROOT is always the boom country.
+# ============================================================================
+
+# ---------------------------------------------------------------------------
+# Selection
+# ---------------------------------------------------------------------------
+
+# COUNTRY. Rank candidates once, then take the best one to three.
+industrial_boom_select_regions = {
+	clear_array = industrial_boom_regions
+	set_temp_variable = { industrial_boom_region_target_count = constant:industrial_boom_event.one }
+	set_temp_variable = { industrial_boom_region_factory_base = num_of_civilian_factories }
+	add_to_temp_variable = { industrial_boom_region_factory_base = num_of_military_factories }
+	if = {
+		limit = { check_variable = { var = industrial_boom_region_factory_base value = constant:industrial_boom_regions.large_factories compare = greater_than_or_equals } }
+		set_temp_variable = { industrial_boom_region_target_count = constant:industrial_boom_regions.maximum }
+	}
+	else_if = {
+		limit = { check_variable = { var = industrial_boom_region_factory_base value = constant:industrial_boom_regions.medium_factories compare = greater_than_or_equals } }
+		set_temp_variable = { industrial_boom_region_target_count = constant:industrial_boom_regions.medium_count }
+	}
+	every_owned_state = {
+		limit = { industrial_boom_state_is_region_candidate = yes }
+		industrial_boom_score_region = yes
+	}
+	for_loop_effect = {
+		start = 0
+		end = industrial_boom_region_target_count
+		value = industrial_boom_region_pick_index
+		clear_variable = industrial_boom_best_region
+		set_temp_variable = { industrial_boom_best_score = constant:industrial_boom_event.zero }
+		every_owned_state = {
+			limit = {
+				industrial_boom_state_is_region_candidate = yes
+				NOT = { has_state_flag = industrial_boom_region }
+			}
+			if = {
+				limit = { check_variable = { var = industrial_boom_region_score value = industrial_boom_best_score compare = greater_than } }
+				set_temp_variable = { industrial_boom_best_score = industrial_boom_region_score }
+				ROOT = { set_variable = { industrial_boom_best_region = PREV } }
+			}
+		}
+		if = {
+			limit = { has_variable = industrial_boom_best_region }
+			var:industrial_boom_best_region = { industrial_boom_add_region = yes }
+		}
+	}
+	clear_variable = industrial_boom_best_region
+}
+
+# STATE. Industrial share, infrastructure, capital, port and resources raise
+# the rank; an active front, a strong earlier legacy and unfinished works
+# lower it, so the strongest state is not always chosen.
+industrial_boom_score_region = {
+	set_variable = { industrial_boom_region_score = building_level@industrial_complex }
+	add_to_variable = { industrial_boom_region_score = building_level@arms_factory }
+	multiply_variable = { industrial_boom_region_score = constant:industrial_boom_regions.score_factory }
+	set_temp_variable = { industrial_boom_score_part = building_level@infrastructure }
+	multiply_temp_variable = { industrial_boom_score_part = constant:industrial_boom_regions.score_infrastructure }
+	add_to_variable = { industrial_boom_region_score = industrial_boom_score_part }
+	if = {
+		limit = { is_capital = yes }
+		add_to_variable = { industrial_boom_region_score = constant:industrial_boom_regions.score_capital }
+	}
+	if = {
+		limit = { naval_base > 0 }
+		add_to_variable = { industrial_boom_region_score = constant:industrial_boom_regions.score_port }
+	}
+	if = {
+		limit = {
+			OR = {
+				has_resources_amount = { resource = steel amount > 0 }
+				has_resources_amount = { resource = oil amount > 0 }
+			}
+		}
+		add_to_variable = { industrial_boom_region_score = constant:industrial_boom_regions.score_resources }
+	}
+	if = {
+		limit = { industrial_boom_state_is_on_front = yes }
+		add_to_variable = { industrial_boom_region_score = constant:industrial_boom_regions.score_front }
+	}
+	if = {
+		limit = { has_state_flag = industrial_boom_strong_legacy }
+		add_to_variable = { industrial_boom_region_score = constant:industrial_boom_regions.score_strong_legacy }
+	}
+	if = {
+		limit = { has_dynamic_modifier = { modifier = industrial_boom_unfinished_works } }
+		add_to_variable = { industrial_boom_region_score = constant:industrial_boom_regions.score_unfinished_works }
+	}
+	clamp_variable = { var = industrial_boom_region_score min = constant:industrial_boom_regions.minimum_score }
+}
+
+# STATE. Registers the state as a region of ROOT with its own receipt.
+industrial_boom_add_region = {
+	ROOT = { add_to_array = { array = industrial_boom_regions value = PREV } }
+	set_state_flag = industrial_boom_region
+	industrial_boom_reset_region_state = yes
+	ROOT = { great_depression_allocate_receipt = yes }
+	set_variable = { industrial_boom_region_receipt_id = ROOT.great_depression_last_receipt_id }
+	add_dynamic_modifier = { modifier = industrial_boom_region_marker }
+}
+
+# STATE. Clears per-boom project state on a region.
+industrial_boom_reset_region_state = {
+	set_variable = { industrial_boom_project_profile = constant:industrial_boom_project.none }
+	set_variable = { industrial_boom_project_stage = constant:industrial_boom_project.stage_none }
+	set_variable = { industrial_boom_project_progress = constant:industrial_boom_event.zero }
+	clear_variable = industrial_boom_project_commit
+	clear_variable = industrial_boom_protect_commit
+	clear_variable = industrial_boom_occupied_day
+	clear_variable = industrial_boom_project_start_day
+	clr_state_flag = industrial_boom_region_protected
+	clr_state_flag = industrial_boom_project_miracle
+	clr_state_flag = industrial_boom_project_speculative
+	clr_state_flag = industrial_boom_region_fragile
+	clr_state_flag = industrial_boom_region_occupied
+	clr_state_flag = industrial_boom_project_abandoned
+	clr_state_flag = industrial_boom_project_liquidated
+	clr_state_flag = industrial_boom_protection_works
+}
+
+# STATE. Removes the state from ROOT's regions and clears its markers.
+industrial_boom_remove_region = {
+	ROOT = { remove_from_array = { array = industrial_boom_regions value = PREV } }
+	clr_state_flag = industrial_boom_region
+	industrial_boom_clear_region_markers = yes
+	industrial_boom_reset_region_state = yes
+	clear_variable = industrial_boom_region_receipt_id
+	clear_variable = industrial_boom_region_score
+}
+
+industrial_boom_clear_region_markers = {
+	if = { limit = { has_dynamic_modifier = { modifier = industrial_boom_region_marker } } remove_dynamic_modifier = { modifier = industrial_boom_region_marker } }
+	if = { limit = { has_dynamic_modifier = { modifier = industrial_boom_region_protected } } remove_dynamic_modifier = { modifier = industrial_boom_region_protected } }
+	if = { limit = { has_dynamic_modifier = { modifier = industrial_boom_region_secured } } remove_dynamic_modifier = { modifier = industrial_boom_region_secured } }
+	if = { limit = { has_dynamic_modifier = { modifier = industrial_boom_region_fragile } } remove_dynamic_modifier = { modifier = industrial_boom_region_fragile } }
+}
+
+# COUNTRY. Keeps the visible state modifiers aligned with region flags.
+industrial_boom_refresh_region_markers = {
+	for_each_scope_loop = {
+		array = industrial_boom_regions
+		if = {
+			limit = {
+				has_state_flag = industrial_boom_region_protected
+				NOT = { has_dynamic_modifier = { modifier = industrial_boom_region_protected } }
+			}
+			add_dynamic_modifier = { modifier = industrial_boom_region_protected }
+		}
+		else_if = {
+			limit = {
+				NOT = { has_state_flag = industrial_boom_region_protected }
+				has_dynamic_modifier = { modifier = industrial_boom_region_protected }
+			}
+			remove_dynamic_modifier = { modifier = industrial_boom_region_protected }
+		}
+		if = {
+			limit = {
+				has_state_flag = industrial_boom_region_fragile
+				NOT = { has_dynamic_modifier = { modifier = industrial_boom_region_fragile } }
+			}
+			add_dynamic_modifier = { modifier = industrial_boom_region_fragile }
+		}
+		else_if = {
+			limit = {
+				NOT = { has_state_flag = industrial_boom_region_fragile }
+				has_dynamic_modifier = { modifier = industrial_boom_region_fragile }
+			}
+			remove_dynamic_modifier = { modifier = industrial_boom_region_fragile }
+		}
+		if = {
+			limit = {
+				industrial_boom_region_is_secured = yes
+				NOT = { has_dynamic_modifier = { modifier = industrial_boom_region_secured } }
+			}
+			add_dynamic_modifier = { modifier = industrial_boom_region_secured }
+		}
+		else_if = {
+			limit = {
+				NOT = { industrial_boom_region_is_secured = yes }
+				has_dynamic_modifier = { modifier = industrial_boom_region_secured }
+			}
+			remove_dynamic_modifier = { modifier = industrial_boom_region_secured }
+		}
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Control changes and local shocks (pulse)
+# ---------------------------------------------------------------------------
+
+# COUNTRY. Expects temp industrial_boom_total_factories.
+industrial_boom_update_regions = {
+	clear_temp_array = industrial_boom_lost_regions
+	for_each_scope_loop = {
+		array = industrial_boom_regions
+		if = {
+			limit = { NOT = { is_owned_by = ROOT } }
+			# Permanent loss, release or annexation: no legacy, the owner takes a shock.
+			set_temp_variable = { industrial_boom_shock_base = constant:industrial_boom_shock.region_base }
+			set_temp_variable = { industrial_boom_shock_scale = constant:industrial_boom_shock.region_share_scale }
+			set_temp_variable = { industrial_boom_shock_absorbable = constant:industrial_boom_event.zero }
+			industrial_boom_region_shock = yes
+			ROOT = { set_country_flag = industrial_boom_region_lost_this_boom }
+			add_to_temp_array = { array = industrial_boom_lost_regions value = THIS }
+		}
+		else_if = {
+			limit = { NOT = { is_controlled_by = ROOT } }
+			if = {
+				limit = { NOT = { has_state_flag = industrial_boom_region_occupied } }
+				set_state_flag = industrial_boom_region_occupied
+				set_variable = { industrial_boom_occupied_day = global.num_days }
+				clr_state_flag = industrial_boom_region_protected
+				set_temp_variable = { industrial_boom_shock_base = constant:industrial_boom_shock.region_base }
+				if = {
+					limit = { industrial_boom_region_is_integrating_or_secured = yes }
+					add_to_temp_variable = { industrial_boom_shock_base = constant:industrial_boom_shock.region_stage_bonus }
+				}
+				set_temp_variable = { industrial_boom_shock_scale = constant:industrial_boom_shock.region_share_scale }
+				set_temp_variable = { industrial_boom_shock_absorbable = constant:industrial_boom_event.zero }
+				industrial_boom_region_shock = yes
+			}
+			else_if = {
+				limit = { industrial_boom_region_has_project = yes }
+				set_temp_variable = { industrial_boom_occupied_for = global.num_days }
+				subtract_from_temp_variable = { industrial_boom_occupied_for = industrial_boom_occupied_day }
+				if = {
+					limit = { check_variable = { var = industrial_boom_occupied_for value = constant:industrial_boom_shock.occupation_resume_days compare = greater_than } }
+					set_temp_variable = { industrial_boom_cancel_relief = constant:industrial_boom_event.zero }
+					industrial_boom_cancel_project = yes
+					ROOT = { set_country_flag = industrial_boom_region_lost_this_boom }
+				}
+			}
+		}
+		else = {
+			if = {
+				limit = { has_state_flag = industrial_boom_region_occupied }
+				clr_state_flag = industrial_boom_region_occupied
+				clear_variable = industrial_boom_occupied_day
+			}
+			# Bombing, disasters or corrosion that damaged the works.
+			set_temp_variable = { industrial_boom_damaged_levels = damaged_building_level@industrial_complex }
+			add_to_temp_variable = { industrial_boom_damaged_levels = damaged_building_level@arms_factory }
+			if = {
+				limit = {
+					NOT = { has_state_flag = industrial_boom_region_damaged }
+					OR = {
+						check_variable = { var = industrial_boom_damaged_levels value = constant:industrial_boom_event.zero compare = greater_than }
+						days_since_last_strategic_bombing < constant:industrial_boom_shock.bombing_recent_days
+					}
+				}
+				set_temp_variable = { industrial_boom_flag_days = constant:industrial_boom_shock.region_damage_cooldown_days }
+				set_state_flag = { flag = industrial_boom_region_damaged days = industrial_boom_flag_days }
+				set_temp_variable = { industrial_boom_shock_base = constant:industrial_boom_shock.bombing_base }
+				set_temp_variable = { industrial_boom_shock_scale = constant:industrial_boom_shock.bombing_share_scale }
+				set_temp_variable = { industrial_boom_shock_absorbable = constant:industrial_boom_event.one }
+				industrial_boom_region_shock = yes
+			}
+		}
+		# Miracle Regions turn fragile at 70 Overheating or after an untested line.
+		if = {
+			limit = {
+				has_state_flag = industrial_boom_project_miracle
+				OR = {
+					has_state_flag = industrial_boom_accepted_fragility
+					ROOT = { check_variable = { var = industrial_boom_overheating value = constant:industrial_boom_band.dangerous_edge compare = greater_than_or_equals } }
+				}
+			}
+			set_state_flag = industrial_boom_region_fragile
+		}
+		else = {
+			clr_state_flag = industrial_boom_region_fragile
+		}
+	}
+	for_each_scope_loop = {
+		array = industrial_boom_lost_regions
+		set_temp_variable = { industrial_boom_cancel_relief = constant:industrial_boom_event.zero }
+		if = {
+			limit = { industrial_boom_region_has_project = yes }
+			industrial_boom_cancel_project = yes
+		}
+		industrial_boom_remove_region = yes
+	}
+	clear_temp_array = industrial_boom_lost_regions
+}
+
+# STATE. Inputs temp industrial_boom_shock_base, industrial_boom_shock_scale,
+# industrial_boom_shock_absorbable and industrial_boom_total_factories.
+# A protected region absorbs most of a local shock and loses protection; an
+# unabsorbed severe shock pushes an Integrating project back a stage, and any
+# unabsorbed shock does so to a fragile Miracle project.
+industrial_boom_region_shock = {
+	industrial_boom_measure_region_share = yes
+	set_temp_variable = { industrial_boom_shock = industrial_boom_region_share }
+	multiply_temp_variable = { industrial_boom_shock = industrial_boom_shock_scale }
+	add_to_temp_variable = { industrial_boom_shock = industrial_boom_shock_base }
+	set_temp_variable = { industrial_boom_shock_absorbed = constant:industrial_boom_event.zero }
+	if = {
+		limit = {
+			check_variable = { var = industrial_boom_shock_absorbable value = constant:industrial_boom_event.zero compare = greater_than }
+			has_state_flag = industrial_boom_region_protected
+		}
+		multiply_temp_variable = { industrial_boom_shock = constant:industrial_boom_shock.protection_absorbed_share }
+		set_temp_variable = { industrial_boom_shock_absorbed = constant:industrial_boom_event.one }
+		industrial_boom_spend_protection = yes
+		set_temp_variable = { industrial_boom_delta = industrial_boom_shock }
+		ROOT = { industrial_boom_add_overheating = yes }
+	}
+	else = {
+		ROOT = { industrial_boom_apply_national_shock = yes }
+		if = {
+			limit = {
+				check_variable = { var = industrial_boom_shock_absorbed value = constant:industrial_boom_event.zero compare = equals }
+				OR = {
+					AND = {
+						check_variable = { var = industrial_boom_shock value = constant:industrial_boom_shock.severe_threshold compare = greater_than_or_equals }
+						check_variable = { var = industrial_boom_project_stage value = constant:industrial_boom_project.stage_integrating compare = equals }
+					}
+					AND = {
+						has_state_flag = industrial_boom_region_fragile
+						industrial_boom_region_has_project = yes
+					}
+				}
+			}
+			industrial_boom_regress_project = yes
+		}
+	}
+}
+
+# STATE. One stage back, progress reset.
+industrial_boom_regress_project = {
+	if = {
+		limit = { check_variable = { var = industrial_boom_project_stage value = constant:industrial_boom_project.stage_building compare = greater_than } }
+		subtract_from_variable = { industrial_boom_project_stage = constant:industrial_boom_event.one }
+		set_variable = { industrial_boom_project_progress = constant:industrial_boom_event.zero }
+	}
+}
+
+# STATE. Protection is spent by the shock it absorbs.
+industrial_boom_spend_protection = {
+	clr_state_flag = industrial_boom_region_protected
+	set_temp_variable = { industrial_boom_flag_days = constant:industrial_boom_action.protect_renew_days }
+	set_state_flag = { flag = industrial_boom_protection_spent days = industrial_boom_flag_days }
+	if = {
+		limit = { has_dynamic_modifier = { modifier = industrial_boom_region_protected } }
+		remove_dynamic_modifier = { modifier = industrial_boom_region_protected }
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Projects
+# ---------------------------------------------------------------------------
+
+# STATE. Inputs temp industrial_boom_new_profile and industrial_boom_new_stage.
+industrial_boom_start_project = {
+	set_variable = { industrial_boom_project_profile = industrial_boom_new_profile }
+	set_variable = { industrial_boom_project_stage = industrial_boom_new_stage }
+	set_variable = { industrial_boom_project_progress = constant:industrial_boom_event.zero }
+	set_variable = { industrial_boom_project_start_day = global.num_days }
+	set_variable = { industrial_boom_project_commit = ROOT.industrial_boom_cost_project_civilian }
+	clr_state_flag = industrial_boom_project_abandoned
+	clr_state_flag = industrial_boom_project_liquidated
+}
+
+# STATE. Input temp industrial_boom_cancel_relief (1 grants abandonment
+# relief for a project past its first weeks).
+industrial_boom_cancel_project = {
+	if = {
+		limit = {
+			check_variable = { var = industrial_boom_cancel_relief value = constant:industrial_boom_event.zero compare = greater_than }
+			has_variable = industrial_boom_project_start_day
+		}
+		set_temp_variable = { industrial_boom_project_age = global.num_days }
+		subtract_from_temp_variable = { industrial_boom_project_age = industrial_boom_project_start_day }
+		if = {
+			limit = { check_variable = { var = industrial_boom_project_age value = constant:industrial_boom_project.abandon_relief_min_age_days compare = greater_than_or_equals } }
+			set_temp_variable = { industrial_boom_delta = constant:industrial_boom_project.abandon_relief }
+			if = {
+				limit = { has_state_flag = industrial_boom_project_speculative }
+				set_temp_variable = { industrial_boom_delta = constant:industrial_boom_project.abandon_speculative_relief }
+			}
+			multiply_temp_variable = { industrial_boom_delta = -1 }
+			ROOT = { industrial_boom_add_overheating = yes }
+		}
+	}
+	if = {
+		limit = { has_state_flag = industrial_boom_project_speculative }
+		set_state_flag = industrial_boom_project_liquidated
+	}
+	else = {
+		set_state_flag = industrial_boom_project_abandoned
+	}
+	set_variable = { industrial_boom_project_profile = constant:industrial_boom_project.none }
+	set_variable = { industrial_boom_project_stage = constant:industrial_boom_project.stage_none }
+	set_variable = { industrial_boom_project_progress = constant:industrial_boom_event.zero }
+	clear_variable = industrial_boom_project_commit
+	clear_variable = industrial_boom_project_start_day
+	clr_state_flag = industrial_boom_project_miracle
+	clr_state_flag = industrial_boom_project_speculative
+	clr_state_flag = industrial_boom_region_fragile
+	set_temp_variable = { industrial_boom_flag_days = constant:industrial_boom_project.unfinished_works_days }
+	add_dynamic_modifier = { modifier = industrial_boom_unfinished_works days = industrial_boom_flag_days }
+}
+
+# COUNTRY. Weekly stage progress.
+industrial_boom_update_projects = {
+	for_each_scope_loop = {
+		array = industrial_boom_regions
+		if = {
+			limit = {
+				industrial_boom_region_has_project = yes
+				NOT = { industrial_boom_region_is_secured = yes }
+				is_controlled_by = ROOT
+				NOT = { industrial_boom_region_is_paused = yes }
+			}
+			set_temp_variable = { industrial_boom_progress = constant:industrial_boom_event.pulse_days }
+			if = {
+				limit = { ROOT = { industrial_boom_band_is_dangerous_or_worse = yes } }
+				set_temp_variable = { industrial_boom_progress = constant:industrial_boom_event.zero }
+			}
+			else_if = {
+				limit = {
+					ROOT = { industrial_boom_band_is_strained = yes }
+					check_variable = { var = industrial_boom_project_stage value = constant:industrial_boom_project.stage_building compare = equals }
+				}
+				multiply_temp_variable = { industrial_boom_progress = constant:industrial_boom_project.strained_building_factor }
+			}
+			if = {
+				limit = { ROOT = { has_country_flag = industrial_boom_running_hot } }
+				if = {
+					limit = { ROOT = { industrial_boom_band_is_strained = yes } }
+					multiply_temp_variable = { industrial_boom_progress = constant:industrial_boom_project.hot_strained_progress_factor }
+				}
+				else = {
+					multiply_temp_variable = { industrial_boom_progress = constant:industrial_boom_project.hot_progress_factor }
+				}
+			}
+			if = {
+				limit = { ROOT = { has_country_flag = industrial_boom_cooling } }
+				multiply_temp_variable = { industrial_boom_progress = constant:industrial_boom_project.cooling_progress_factor }
+			}
+			if = {
+				limit = { has_state_flag = industrial_boom_project_miracle }
+				multiply_temp_variable = { industrial_boom_progress = constant:industrial_boom_project.miracle_progress_factor }
+			}
+			add_to_variable = { industrial_boom_project_progress = industrial_boom_progress }
+			if = {
+				limit = {
+					check_variable = { var = industrial_boom_project_stage value = constant:industrial_boom_project.stage_building compare = equals }
+					check_variable = { var = industrial_boom_project_progress value = constant:industrial_boom_project.building_days compare = greater_than_or_equals }
+				}
+				set_variable = { industrial_boom_project_stage = constant:industrial_boom_project.stage_integrating }
+				set_variable = { industrial_boom_project_progress = constant:industrial_boom_event.zero }
+			}
+			else_if = {
+				limit = {
+					check_variable = { var = industrial_boom_project_stage value = constant:industrial_boom_project.stage_integrating compare = equals }
+					check_variable = { var = industrial_boom_project_progress value = constant:industrial_boom_project.integrating_days compare = greater_than_or_equals }
+				}
+				industrial_boom_secure_project = yes
+			}
+		}
+	}
+}
+
+# STATE. The project earns its legacy; the first Secured Miracle project is
+# the Evolution II abnormal outcome.
+industrial_boom_secure_project = {
+	set_variable = { industrial_boom_project_stage = constant:industrial_boom_project.stage_secured }
+	set_variable = { industrial_boom_project_progress = constant:industrial_boom_event.zero }
+	if = {
+		limit = {
+			has_state_flag = industrial_boom_project_miracle
+			ROOT = { NOT = { has_country_flag = industrial_boom_miracle_chaos_recorded } }
+		}
+		ROOT = {
+			set_country_flag = industrial_boom_miracle_chaos_recorded
+			set_temp_variable = { industrial_boom_chaos_change = constant:industrial_boom_chaos.miracle_secured }
+			industrial_boom_add_event_chaos = yes
+		}
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Evolution III spread
+# ---------------------------------------------------------------------------
+
+# COUNTRY. Applies the chosen spread policy once.
+industrial_boom_start_spread = {
+	for_each_scope_loop = {
+		array = industrial_boom_regions
+		if = {
+			limit = { is_controlled_by = ROOT }
+			if = {
+				limit = { ROOT = { check_variable = { var = industrial_boom_spread_policy value = constant:industrial_boom_evolution.direct_spread compare = equals } } }
+				random_neighbor_state = {
+					limit = {
+						industrial_boom_state_is_spread_candidate = yes
+						NOT = { industrial_boom_state_is_on_front = yes }
+					}
+					industrial_boom_add_spread_state = yes
+				}
+			}
+			else_if = {
+				limit = { ROOT = { check_variable = { var = industrial_boom_spread_policy value = constant:industrial_boom_evolution.unchecked_spread compare = equals } } }
+				set_temp_variable = { industrial_boom_spread_added = constant:industrial_boom_event.zero }
+				every_neighbor_state = {
+					limit = { industrial_boom_state_is_spread_candidate = yes }
+					if = {
+						limit = { check_variable = { var = industrial_boom_spread_added value = constant:industrial_boom_project.spread_cap_per_region compare = less_than } }
+						industrial_boom_add_spread_state = yes
+						add_to_temp_variable = { industrial_boom_spread_added = constant:industrial_boom_event.one }
+					}
+				}
+			}
+		}
+	}
+}
+
+# STATE. A spread state attaches to the neighbouring region; it never becomes
+# a region slot or holds a project of its own.
+industrial_boom_add_spread_state = {
+	ROOT = { add_to_array = { array = industrial_boom_spread_states value = PREV } }
+	set_state_flag = industrial_boom_spread
+	clr_state_flag = industrial_boom_spread_integrated
+	set_variable = { industrial_boom_spread_progress = constant:industrial_boom_event.zero }
+	ROOT = { great_depression_allocate_receipt = yes }
+	set_variable = { industrial_boom_spread_receipt_id = ROOT.great_depression_last_receipt_id }
+	add_dynamic_modifier = { modifier = industrial_boom_spread_expanding }
+}
+
+# STATE. Removes spread status and markers.
+industrial_boom_remove_spread_state = {
+	clr_state_flag = industrial_boom_spread
+	clr_state_flag = industrial_boom_spread_integrated
+	clear_variable = industrial_boom_spread_progress
+	clear_variable = industrial_boom_spread_receipt_id
+	if = { limit = { has_dynamic_modifier = { modifier = industrial_boom_spread_expanding } } remove_dynamic_modifier = { modifier = industrial_boom_spread_expanding } }
+	if = { limit = { has_dynamic_modifier = { modifier = industrial_boom_spread_integrated } } remove_dynamic_modifier = { modifier = industrial_boom_spread_integrated } }
+}
+
+# COUNTRY. Weekly spread integration; the first integration is the
+# Evolution III abnormal outcome.
+industrial_boom_update_spread = {
+	clear_temp_array = industrial_boom_lost_spread
+	for_each_scope_loop = {
+		array = industrial_boom_spread_states
+		if = {
+			limit = { NOT = { is_controlled_by = ROOT } }
+			add_to_temp_array = { array = industrial_boom_lost_spread value = THIS }
+		}
+		else_if = {
+			limit = { NOT = { has_state_flag = industrial_boom_spread_integrated } }
+			add_to_variable = { industrial_boom_spread_progress = constant:industrial_boom_event.pulse_days }
+			if = {
+				limit = { check_variable = { var = industrial_boom_spread_progress value = constant:industrial_boom_action.spread_integrate_days compare = greater_than_or_equals } }
+				set_state_flag = industrial_boom_spread_integrated
+				remove_dynamic_modifier = { modifier = industrial_boom_spread_expanding }
+				add_dynamic_modifier = { modifier = industrial_boom_spread_integrated }
+				if = {
+					limit = { ROOT = { NOT = { has_country_flag = industrial_boom_spread_chaos_recorded } } }
+					ROOT = {
+						set_country_flag = industrial_boom_spread_chaos_recorded
+						set_temp_variable = { industrial_boom_chaos_change = constant:industrial_boom_chaos.spread_integrated }
+						industrial_boom_add_event_chaos = yes
+					}
+				}
+			}
+		}
+	}
+	for_each_scope_loop = {
+		array = industrial_boom_lost_spread
+		ROOT = { remove_from_array = { array = industrial_boom_spread_states value = PREV } }
+		industrial_boom_remove_spread_state = yes
+	}
+	clear_temp_array = industrial_boom_lost_spread
+}
+
+# COUNTRY. Containment ends the spread for this boom.
+industrial_boom_contain_spread = {
+	for_each_scope_loop = {
+		array = industrial_boom_spread_states
+		industrial_boom_remove_spread_state = yes
+	}
+	clear_array = industrial_boom_spread_states
+	set_variable = { industrial_boom_spread_policy = constant:industrial_boom_evolution.contained_spread }
+	set_country_flag = industrial_boom_spread_contained
+	add_stability = constant:industrial_boom_action.contain_stability
+	set_temp_variable = { industrial_boom_flag_days = constant:industrial_boom_action.contain_output_days }
+	add_dynamic_modifier = { modifier = industrial_boom_contained_spread days = industrial_boom_flag_days }
+	industrial_boom_refresh_package = yes
+}
+
+# ---------------------------------------------------------------------------
+# Speculative Mania offers
+# ---------------------------------------------------------------------------
+
+# COUNTRY. One named offer in one region; at most one speculative project and
+# one offer per interval.
+industrial_boom_update_speculative_offer = {
+	if = {
+		limit = { NOT = { has_country_flag = industrial_boom_speculative_offer_open } }
+		clear_variable = industrial_boom_speculative_offer_state
+	}
+	if = {
+		limit = {
+			check_variable = { var = industrial_boom_evolution value = constant:industrial_boom_evolution.stage_1 compare = equals }
+			industrial_boom_is_running = yes
+			industrial_boom_band_below_dangerous = yes
+			NOT = { has_country_flag = industrial_boom_speculative_offer_open }
+			has_variable = industrial_boom_speculative_next_offer_day
+			check_variable = { var = global.num_days value = industrial_boom_speculative_next_offer_day compare = greater_than_or_equals }
+			NOT = {
+				any_of_scopes = {
+					array = industrial_boom_regions
+					has_state_flag = industrial_boom_project_speculative
+				}
+			}
+		}
+		random_scope_in_array = {
+			array = industrial_boom_regions
+			limit = {
+				NOT = { industrial_boom_region_has_project = yes }
+				industrial_boom_region_can_be_designated = yes
+			}
+			ROOT = { set_variable = { industrial_boom_speculative_offer_state = PREV } }
+			if = {
+				limit = {
+					is_coastal = yes
+					naval_base > 0
+				}
+				ROOT = { set_variable = { industrial_boom_speculative_offer_kind = constant:industrial_boom_offer.port } }
+			}
+			else_if = {
+				limit = { ROOT = { industrial_boom_is_landlocked = yes } }
+				ROOT = { set_variable = { industrial_boom_speculative_offer_kind = constant:industrial_boom_offer.rail } }
+			}
+			else = {
+				ROOT = { set_variable = { industrial_boom_speculative_offer_kind = constant:industrial_boom_offer.district } }
+			}
+		}
+		if = {
+			limit = { has_variable = industrial_boom_speculative_offer_state }
+			set_temp_variable = { industrial_boom_flag_days = constant:industrial_boom_action.speculative_offer_open_days }
+			set_country_flag = { flag = industrial_boom_speculative_offer_open days = industrial_boom_flag_days }
+			set_variable = { industrial_boom_speculative_next_offer_day = global.num_days }
+			add_to_variable = { industrial_boom_speculative_next_offer_day = constant:industrial_boom_action.speculative_offer_interval_days }
+		}
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Event-owned Chaos
+# ---------------------------------------------------------------------------
+
+# COUNTRY. Input temp industrial_boom_chaos_change. Records the gain so a
+# controlled landing can close only this boom's own sources.
+industrial_boom_add_event_chaos = {
+	set_temp_variable = { chaos_change = industrial_boom_chaos_change }
+	if = {
+		limit = { check_variable = { var = industrial_boom_chaos_change value = constant:industrial_boom_event.zero compare = greater_than } }
+		set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.generic.increase }
+		add_to_variable = { industrial_boom_chaos_recorded = industrial_boom_chaos_change }
+	}
+	else = {
+		set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.generic.decrease }
+	}
+	set_temp_variable = { chaos_history_reason_custom = constant:industrial_boom_event.one }
+	add_chaos_meter_value = yes
+}

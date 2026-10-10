@@ -1,8 +1,22 @@
 add_namespace = chaosx.nr34
 
-# Event 34 owns the boom, its frozen snapshot, and the delayed landing.
-# Event 35 owns the depression that follows. The landing never lets a boom
-# bonus expire silently and never creates a second crisis beside the first.
+# ============================================================================
+# CHAOS REDUX - EVENT 034 INDUSTRIAL BOOM
+# ============================================================================
+# Event 34 owns the boom: one weighted country, one public value
+# (Overheating), up to three Industrial Regions, a lean decision category,
+# three evolutions and four outcomes. A crash freezes the boom and hands the
+# same country to Event 35 through the frozen snapshot.
+#
+#   .1  hidden entry on the selected country
+#   .2  opening report            .3  crash handoff (hidden)
+#   .4  bounded handoff retry     .5  weekly pulse (hidden)
+#   .6  Strained  .7 Dangerous  .8 Critical band reports
+#   .9  controlled  .10 rough  .11 forced landing reports
+#   .12 foreign orders accepted   .13 to .15 evolution reports
+#   .16 project choice            .17 Miracle Region choice
+#   .18 deferred shock (hidden)   .20 to .33 incidents
+# ============================================================================
 
 country_event = {
 	id = chaosx.nr34.1
@@ -12,136 +26,49 @@ country_event = {
 	is_triggered_only = yes
 
 	immediate = {
-		random_country = {
-			limit = {
-				great_depression_has_viable_economy = yes
-				OR = { is_major = yes is_ai = no }
-				NOT = { has_country_flag = industrial_boom_active }
-				NOT = { has_country_flag = industrial_boom_snapshot_frozen }
-				NOT = { has_country_flag = industrial_boom_collapse_delivery_pending }
-				NOT = { has_country_flag = great_depression_active }
-				NOT = { has_country_flag = great_depression_incompatible_economic_state }
-			}
-			great_depression_allocate_receipt = yes
-			set_variable = { industrial_boom_episode_id = great_depression_last_receipt_id }
-			set_country_flag = industrial_boom_active
-			if = {
-				limit = { has_global_flag = great_depression_worldwide_episode_active }
-				great_depression_event34_supplier_adapter = yes
-			}
-			clear_variable = industrial_boom_inherited_region_state
-			clear_variable = industrial_boom_collapse_receipt_id
-			clr_country_flag = industrial_boom_collapse_retry_exhausted
-			if = {
-				limit = { NOT = { has_variable = industrial_boom_evolution } }
-				set_variable = { industrial_boom_evolution = constant:industrial_boom_event.baseline_evolution }
-			}
-		set_variable = { industrial_boom_snapshot_evolution = industrial_boom_evolution }
-		set_temp_variable = { industrial_boom_civilian_factory_count = num_of_civilian_factories }
-		set_temp_variable = { industrial_boom_military_factory_count = num_of_military_factories }
-		set_variable = { industrial_boom_snapshot_civilian_factories = industrial_boom_civilian_factory_count }
-		set_variable = { industrial_boom_snapshot_military_factories = industrial_boom_military_factory_count }
-		set_variable = { industrial_boom_snapshot_final_overheating = constant:industrial_boom_event.baseline_overheating }
-		set_temp_variable = { industrial_boom_factory_pressure = industrial_boom_civilian_factory_count }
-		multiply_temp_variable = { industrial_boom_factory_pressure = constant:industrial_boom_event.overheating_factory_weight }
-		add_to_variable = { industrial_boom_snapshot_final_overheating = industrial_boom_factory_pressure }
 		if = {
-			limit = {
-				check_variable = { var = industrial_boom_snapshot_final_overheating value = constant:great_depression_event.public_value_maximum compare = greater_than }
-			}
-			set_variable = { industrial_boom_snapshot_final_overheating = constant:great_depression_event.public_value_maximum }
+			limit = { industrial_boom_is_valid_target = yes }
+			industrial_boom_open = yes
 		}
-		set_variable = { industrial_boom_snapshot_peak_overheating = industrial_boom_snapshot_final_overheating }
-		add_to_variable = { industrial_boom_snapshot_peak_overheating = constant:industrial_boom_event.overheating_peak_delta }
-		if = {
-			limit = {
-				check_variable = { var = industrial_boom_snapshot_peak_overheating value = constant:great_depression_event.public_value_maximum compare = greater_than }
-			}
-			set_variable = { industrial_boom_snapshot_peak_overheating = constant:great_depression_event.public_value_maximum }
-		}
-		set_variable = { industrial_boom_overheating = industrial_boom_snapshot_final_overheating }
-		set_variable = { industrial_boom_peak_overheating = industrial_boom_snapshot_peak_overheating }
-		# These are frozen handoff fields, not live Event 35 state. Optional
-		# variables are read only when a future boom extension supplies them;
-		# the current boom still records a deterministic baseline for every field.
-		set_variable = { industrial_boom_snapshot_landing_state = constant:industrial_boom_event.landing_state }
-		if = {
-			limit = { has_country_flag = industrial_boom_landing_failed }
-			set_variable = { industrial_boom_snapshot_landing_state = constant:great_depression_event34_snapshot_state.failed }
-		}
-		set_variable = { industrial_boom_snapshot_reserve_units = constant:industrial_boom_event.reserve_units }
-		if = {
-			limit = { has_variable = industrial_boom_reserve_units }
-			set_variable = { industrial_boom_snapshot_reserve_units = industrial_boom_reserve_units }
-		}
-		if = {
-			limit = { has_country_flag = industrial_boom_reserves_depleted }
-			set_variable = { industrial_boom_snapshot_reserve_units = constant:great_depression_api.zero }
-		}
-		set_variable = { industrial_boom_snapshot_project_units = constant:industrial_boom_event.project_units }
-		if = {
-			limit = { has_variable = industrial_boom_project_units }
-			set_variable = { industrial_boom_snapshot_project_units = industrial_boom_project_units }
-		}
-		set_variable = { industrial_boom_snapshot_region_units = constant:industrial_boom_event.region_units }
-		if = {
-			limit = { has_variable = industrial_boom_inherited_region_count }
-			set_variable = { industrial_boom_snapshot_region_units = industrial_boom_inherited_region_count }
-		}
-		set_variable = { industrial_boom_snapshot_shock_units = constant:great_depression_api.zero }
-		if = {
-			limit = { has_variable = industrial_boom_recent_shock_count }
-			set_variable = { industrial_boom_snapshot_shock_units = industrial_boom_recent_shock_count }
-		}
-		if = {
-			limit = { has_variable = industrial_boom_dangerous_days }
-			set_variable = { industrial_boom_snapshot_dangerous_days = industrial_boom_dangerous_days }
-		}
-		else = {
-			set_variable = { industrial_boom_snapshot_dangerous_days = constant:great_depression_api.zero }
-		}
-		if = {
-			limit = { has_variable = industrial_boom_completed_count }
-			set_variable = { industrial_boom_snapshot_repeat_history_count = industrial_boom_completed_count }
-		}
-		else = {
-			set_variable = { industrial_boom_snapshot_repeat_history_count = constant:industrial_boom_event.repeat_history_units }
-		}
-		random_owned_controlled_state = {
-			limit = {
-				state_population_k > constant:great_depression_api.minimum_viable_state_population_k
-				OR = { industrial_complex > 0 arms_factory > 0 dockyard > 0 }
-			}
-			PREV = {
-				set_variable = { industrial_boom_inherited_region_state = PREV }
-			}
-		}
-		add_ideas = industrial_boom
-		country_event = { id = chaosx.nr34.2 days = 1 }
-		country_event = { id = chaosx.nr34.3 days = constant:industrial_boom_event.active_days }
 	}
-}
 }
 
 country_event = {
 	id = chaosx.nr34.2
 	title = chaosx.nr34.2.t
-	desc = chaosx.nr34.2.d
-	picture = GFX_report_event_airplane_factory
+	desc = {
+		trigger = { check_variable = { var = industrial_boom_evolution value = constant:industrial_boom_evolution.stage_3 compare = equals } }
+		text = chaosx.nr34.2.d_runaway
+	}
+	desc = {
+		trigger = { check_variable = { var = industrial_boom_evolution value = constant:industrial_boom_evolution.stage_2 compare = equals } }
+		text = chaosx.nr34.2.d_miracle
+	}
+	desc = {
+		trigger = { check_variable = { var = industrial_boom_evolution value = constant:industrial_boom_evolution.stage_1 compare = equals } }
+		text = chaosx.nr34.2.d_speculative
+	}
+	desc = {
+		trigger = { check_variable = { var = industrial_boom_evolution value = constant:industrial_boom_event.baseline_evolution compare = equals } }
+		text = chaosx.nr34.2.d
+	}
+	picture = GFX_report_event_034_industrial_boom_opening
 
 	is_triggered_only = yes
+	trigger = { industrial_boom_is_live = yes }
+
+	immediate = {
+		hidden_effect = { news_event = { id = chaosx.news.39 days = 1 } }
+	}
 
 	option = {
-		ai_chance = { base = 100 }
 		name = chaosx.nr34.2.a
-		news_event = { id = chaosx.news.39 days = 2 }
-		show_ideas_tooltip = industrial_boom
+		ai_chance = { base = 1 }
+		custom_effect_tooltip = chaosx.nr34.2.a_tt
 	}
 }
 
-# The delayed landing freezes live owner fields before removing boom bonuses.
-# Rejected requests retain the actor's frozen input for a bounded private retry.
-
+# Crash: freeze live boom fields, end the package, deliver to Event 35.
 country_event = {
 	id = chaosx.nr34.3
 	title = chaosx.nr34.3.t
@@ -155,9 +82,25 @@ country_event = {
 				has_country_flag = industrial_boom_active
 				NOT = { has_country_flag = industrial_boom_snapshot_frozen }
 			}
+			clr_country_flag = industrial_boom_crash_pending
+			set_variable = { industrial_boom_last_outcome = constant:industrial_boom_outcome.crash }
+			if = {
+				limit = { NOT = { has_variable = industrial_boom_completed_count } }
+				set_variable = { industrial_boom_completed_count = constant:industrial_boom_event.zero }
+			}
+			industrial_boom_prepare_collapse_fields = yes
 			industrial_boom_freeze_collapse_snapshot = yes
-			remove_ideas = industrial_boom
-			clr_country_flag = industrial_boom_active
+			if = {
+				limit = { has_variable = industrial_boom_crash_count }
+				add_to_variable = { industrial_boom_crash_count = constant:industrial_boom_event.one }
+			}
+			else = {
+				set_variable = { industrial_boom_crash_count = constant:industrial_boom_event.one }
+			}
+			set_temp_variable = { industrial_boom_flag_days = constant:industrial_boom_event.recent_crash_days }
+			set_country_flag = { flag = industrial_boom_recent_crash days = industrial_boom_flag_days }
+			industrial_boom_break_lasting_chain = yes
+			industrial_boom_end_episode = yes
 		}
 		industrial_boom_deliver_collapse_snapshot = yes
 	}
@@ -176,5 +119,937 @@ country_event = {
 			clr_country_flag = industrial_boom_collapse_delivery_pending
 			industrial_boom_deliver_collapse_snapshot = yes
 		}
+	}
+}
+
+# Weekly pulse of one active boom; it reschedules itself while the boom lives.
+country_event = {
+	id = chaosx.nr34.5
+
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = {
+		industrial_boom_pulse = yes
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Band reports, one per upward entry
+# ---------------------------------------------------------------------------
+
+country_event = {
+	id = chaosx.nr34.6
+	title = chaosx.nr34.6.t
+	desc = chaosx.nr34.6.d
+	picture = GFX_report_event_034_industrial_boom_opening
+	is_triggered_only = yes
+	trigger = { industrial_boom_is_live = yes }
+
+	option = {
+		name = chaosx.nr34.6.a
+		ai_chance = { base = 1 }
+		custom_effect_tooltip = chaosx.nr34.6.a_tt
+	}
+}
+
+country_event = {
+	id = chaosx.nr34.7
+	title = chaosx.nr34.7.t
+	desc = chaosx.nr34.7.d
+	picture = GFX_report_event_034_industrial_boom_opening
+	is_triggered_only = yes
+	trigger = { industrial_boom_is_live = yes }
+
+	option = {
+		name = chaosx.nr34.7.a
+		ai_chance = { base = 1 }
+		custom_effect_tooltip = chaosx.nr34.7.a_tt
+	}
+}
+
+country_event = {
+	id = chaosx.nr34.8
+	title = chaosx.nr34.8.t
+	desc = chaosx.nr34.8.d
+	picture = GFX_report_event_034_industrial_boom_opening
+	is_triggered_only = yes
+	trigger = { industrial_boom_is_live = yes }
+
+	option = {
+		name = chaosx.nr34.8.a
+		ai_chance = { base = 1 }
+		custom_effect_tooltip = chaosx.nr34.8.a_tt
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Landing reports
+# ---------------------------------------------------------------------------
+
+country_event = {
+	id = chaosx.nr34.9
+	title = chaosx.nr34.9.t
+	desc = {
+		trigger = { has_country_flag = industrial_boom_landing_upgraded_by_contract }
+		text = chaosx.nr34.9.d_contract
+	}
+	desc = {
+		trigger = { NOT = { has_country_flag = industrial_boom_landing_upgraded_by_contract } }
+		text = chaosx.nr34.9.d
+	}
+	picture = GFX_report_event_034_industrial_boom_opening
+	is_triggered_only = yes
+
+	immediate = { hidden_effect = { clr_country_flag = industrial_boom_landing_upgraded_by_contract } }
+
+	option = {
+		name = chaosx.nr34.9.a
+		ai_chance = { base = 1 }
+		custom_effect_tooltip = chaosx.nr34.9.a_tt
+	}
+}
+
+country_event = {
+	id = chaosx.nr34.10
+	title = chaosx.nr34.10.t
+	desc = chaosx.nr34.10.d
+	picture = GFX_report_event_034_industrial_boom_opening
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr34.10.a
+		ai_chance = { base = 1 }
+		custom_effect_tooltip = chaosx.nr34.10.a_tt
+	}
+}
+
+country_event = {
+	id = chaosx.nr34.11
+	title = chaosx.nr34.11.t
+	desc = chaosx.nr34.11.d
+	picture = GFX_report_event_034_industrial_boom_opening
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr34.11.a
+		ai_chance = { base = 1 }
+		custom_effect_tooltip = chaosx.nr34.11.a_tt
+	}
+}
+
+# Foreign orders accepted: the supplier sees the pressure and the output.
+country_event = {
+	id = chaosx.nr34.12
+	title = chaosx.nr34.12.t
+	desc = chaosx.nr34.12.d
+	picture = GFX_report_event_034_industrial_boom_opening
+	is_triggered_only = yes
+	trigger = { industrial_boom_is_live = yes }
+
+	option = {
+		name = chaosx.nr34.12.a
+		ai_chance = { base = 1 }
+		custom_effect_tooltip = chaosx.nr34.12.a_tt
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Evolutions
+# ---------------------------------------------------------------------------
+
+country_event = {
+	id = chaosx.nr34.13
+	title = chaosx.nr34.13.t
+	desc = chaosx.nr34.13.d
+	picture = GFX_report_event_034_industrial_boom_opening
+	is_triggered_only = yes
+	trigger = { industrial_boom_is_live = yes }
+
+	option = {
+		name = chaosx.nr34.13.a
+		ai_chance = { base = 1 }
+		custom_effect_tooltip = chaosx.nr34.13.a_tt
+	}
+}
+
+country_event = {
+	id = chaosx.nr34.14
+	title = chaosx.nr34.14.t
+	desc = chaosx.nr34.14.d
+	picture = GFX_report_event_034_industrial_boom_opening
+	is_triggered_only = yes
+	trigger = { industrial_boom_is_live = yes }
+
+	immediate = {
+		hidden_effect = {
+			random_scope_in_array = {
+				array = industrial_boom_regions
+				save_event_target_as = industrial_boom_abnormal_region
+			}
+		}
+	}
+
+	option = {
+		name = chaosx.nr34.14.a
+		ai_chance = { base = 1 }
+		custom_effect_tooltip = chaosx.nr34.14.a_tt
+	}
+}
+
+# Runaway Industrialization asks for the spread policy.
+country_event = {
+	id = chaosx.nr34.15
+	title = chaosx.nr34.15.t
+	desc = chaosx.nr34.15.d
+	picture = GFX_report_event_034_industrial_boom_opening
+	is_triggered_only = yes
+	trigger = {
+		industrial_boom_is_live = yes
+		industrial_boom_evolution_is_3 = yes
+		NOT = { has_variable = industrial_boom_spread_policy }
+	}
+
+	option = {
+		name = chaosx.nr34.15.a
+		custom_effect_tooltip = chaosx.nr34.15.a_tt
+		hidden_effect = {
+			set_temp_variable = { industrial_boom_spread_choice = constant:industrial_boom_evolution.direct_spread }
+			industrial_boom_choose_spread_policy = yes
+		}
+		ai_chance = {
+			base = 10
+			modifier = { factor = 3 check_variable = { var = industrial_boom_ai_profile value = constant:industrial_boom_ai.profile_balanced compare = equals } }
+			modifier = { factor = 3 check_variable = { var = industrial_boom_ai_profile value = constant:industrial_boom_ai.profile_cautious compare = equals } }
+			modifier = { factor = 2 check_variable = { var = industrial_boom_ai_profile value = constant:industrial_boom_ai.profile_wartime compare = equals } }
+			modifier = { factor = 0 check_variable = { var = industrial_boom_ai_profile value = constant:industrial_boom_ai.profile_fragile compare = equals } }
+		}
+	}
+	option = {
+		name = chaosx.nr34.15.b
+		custom_effect_tooltip = chaosx.nr34.15.b_tt
+		hidden_effect = {
+			set_temp_variable = { industrial_boom_spread_choice = constant:industrial_boom_evolution.unchecked_spread }
+			industrial_boom_choose_spread_policy = yes
+		}
+		ai_chance = {
+			base = 0
+			modifier = {
+				add = 30
+				check_variable = { var = industrial_boom_ai_profile value = constant:industrial_boom_ai.profile_desperate compare = equals }
+				industrial_boom_band_below_dangerous = yes
+			}
+			modifier = {
+				add = 10
+				check_variable = { var = industrial_boom_ai_profile value = constant:industrial_boom_ai.profile_wartime compare = equals }
+				check_variable = { var = industrial_boom_band value = constant:industrial_boom_band.sustainable compare = equals }
+			}
+		}
+	}
+	option = {
+		name = chaosx.nr34.15.c
+		custom_effect_tooltip = chaosx.nr34.15.c_tt
+		hidden_effect = {
+			set_temp_variable = { industrial_boom_spread_choice = constant:industrial_boom_evolution.contained_spread }
+			industrial_boom_choose_spread_policy = yes
+		}
+		ai_chance = {
+			base = 5
+			modifier = { add = 40 check_variable = { var = industrial_boom_ai_profile value = constant:industrial_boom_ai.profile_fragile compare = equals } }
+			modifier = { add = 20 industrial_boom_band_is_dangerous_or_worse = yes }
+		}
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Choices opened by decisions
+# ---------------------------------------------------------------------------
+
+# Project profile for the region saved as industrial_boom_designate_target.
+# The first option changes nothing, so a timed-out popup is never a choice.
+country_event = {
+	id = chaosx.nr34.16
+	title = chaosx.nr34.16.t
+	desc = chaosx.nr34.16.d
+	picture = GFX_report_event_034_industrial_boom_opening
+	is_triggered_only = yes
+	trigger = {
+		industrial_boom_is_live = yes
+		has_event_target = industrial_boom_designate_target
+	}
+
+	option = {
+		name = chaosx.nr34.16.cancel
+		ai_chance = { base = 0 }
+	}
+	option = {
+		name = chaosx.nr34.16.a
+		trigger = { NOT = { has_equipment = { support_equipment < industrial_boom_cost_project_support } } }
+		custom_effect_tooltip = chaosx.nr34.16.a_tt
+		hidden_effect = {
+			set_temp_variable = { industrial_boom_new_profile = constant:industrial_boom_project.practices }
+			event_target:industrial_boom_designate_target = { industrial_boom_designate_project = yes }
+		}
+		ai_chance = {
+			base = 10
+			modifier = { add = 20 check_variable = { var = industrial_boom_cause value = constant:industrial_boom_cause.finance compare = equals } }
+			modifier = { add = 10 check_variable = { var = industrial_boom_ai_profile value = constant:industrial_boom_ai.profile_cautious compare = equals } }
+		}
+	}
+	option = {
+		name = chaosx.nr34.16.b
+		trigger = { NOT = { has_equipment = { train_equipment < industrial_boom_cost_project_trains } } }
+		custom_effect_tooltip = chaosx.nr34.16.b_tt
+		hidden_effect = {
+			set_temp_variable = { industrial_boom_new_profile = constant:industrial_boom_project.rail }
+			event_target:industrial_boom_designate_target = { industrial_boom_designate_project = yes }
+		}
+		ai_chance = {
+			base = 10
+			modifier = { add = 25 industrial_boom_supply_leads = yes }
+			modifier = { add = 15 industrial_boom_is_sea_dependent = yes }
+			modifier = { add = 10 check_variable = { var = industrial_boom_ai_profile value = constant:industrial_boom_ai.profile_fragile compare = equals } }
+		}
+	}
+	option = {
+		name = chaosx.nr34.16.c
+		trigger = { NOT = { has_equipment = { support_equipment < industrial_boom_cost_project_support } } }
+		custom_effect_tooltip = chaosx.nr34.16.c_tt
+		hidden_effect = {
+			set_temp_variable = { industrial_boom_new_profile = constant:industrial_boom_project.conversion }
+			event_target:industrial_boom_designate_target = { industrial_boom_designate_project = yes }
+		}
+		ai_chance = {
+			base = 10
+			modifier = { add = 25 has_war = yes }
+			modifier = { add = 15 check_variable = { var = industrial_boom_ai_profile value = constant:industrial_boom_ai.profile_wartime compare = equals } }
+			modifier = { add = 10 check_variable = { var = industrial_boom_cause value = constant:industrial_boom_cause.output compare = equals } }
+		}
+	}
+}
+
+# Declare a Miracle Region: one option per eligible region.
+country_event = {
+	id = chaosx.nr34.17
+	title = chaosx.nr34.17.t
+	desc = chaosx.nr34.17.d
+	picture = GFX_report_event_034_industrial_boom_opening
+	is_triggered_only = yes
+	trigger = { industrial_boom_shows_miracle = yes }
+
+	immediate = {
+		hidden_effect = {
+			if = {
+				limit = { check_variable = { var = industrial_boom_regions^num value = 0 compare = greater_than } }
+				var:industrial_boom_regions^0 = { save_event_target_as = industrial_boom_miracle_choice_1 }
+			}
+			if = {
+				limit = { check_variable = { var = industrial_boom_regions^num value = 1 compare = greater_than } }
+				var:industrial_boom_regions^1 = { save_event_target_as = industrial_boom_miracle_choice_2 }
+			}
+			if = {
+				limit = { check_variable = { var = industrial_boom_regions^num value = 2 compare = greater_than } }
+				var:industrial_boom_regions^2 = { save_event_target_as = industrial_boom_miracle_choice_3 }
+			}
+		}
+	}
+
+	option = {
+		name = chaosx.nr34.17.cancel
+		ai_chance = { base = 0 }
+	}
+	option = {
+		name = chaosx.nr34.17.a
+		trigger = {
+			has_event_target = industrial_boom_miracle_choice_1
+			event_target:industrial_boom_miracle_choice_1 = { industrial_boom_region_can_become_miracle = yes }
+		}
+		custom_effect_tooltip = chaosx.nr34.17.a_tt
+		hidden_effect = { event_target:industrial_boom_miracle_choice_1 = { industrial_boom_declare_miracle = yes } }
+		ai_chance = { base = 10 }
+	}
+	option = {
+		name = chaosx.nr34.17.b
+		trigger = {
+			has_event_target = industrial_boom_miracle_choice_2
+			event_target:industrial_boom_miracle_choice_2 = { industrial_boom_region_can_become_miracle = yes }
+		}
+		custom_effect_tooltip = chaosx.nr34.17.b_tt
+		hidden_effect = { event_target:industrial_boom_miracle_choice_2 = { industrial_boom_declare_miracle = yes } }
+		ai_chance = { base = 10 }
+	}
+	option = {
+		name = chaosx.nr34.17.c
+		trigger = {
+			has_event_target = industrial_boom_miracle_choice_3
+			event_target:industrial_boom_miracle_choice_3 = { industrial_boom_region_can_become_miracle = yes }
+		}
+		custom_effect_tooltip = chaosx.nr34.17.c_tt
+		hidden_effect = { event_target:industrial_boom_miracle_choice_3 = { industrial_boom_declare_miracle = yes } }
+		ai_chance = { base = 10 }
+	}
+}
+
+# Deferred shock from an incident response; a held reserve still absorbs it.
+country_event = {
+	id = chaosx.nr34.18
+
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = {
+		if = {
+			limit = {
+				industrial_boom_is_live = yes
+				has_country_flag = industrial_boom_maintenance_deferred
+			}
+			clr_country_flag = industrial_boom_maintenance_deferred
+			set_temp_variable = { industrial_boom_shock = industrial_boom_deferred_shock }
+			industrial_boom_apply_national_shock = yes
+			clear_variable = industrial_boom_deferred_shock
+		}
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Incidents
+# ---------------------------------------------------------------------------
+
+# Rail Congestion.
+country_event = {
+	id = chaosx.nr34.20
+	title = chaosx.nr34.20.t
+	desc = chaosx.nr34.20.d
+	picture = GFX_report_event_034_industrial_boom_opening
+	is_triggered_only = yes
+	trigger = { industrial_boom_is_live = yes has_variable = industrial_boom_incident_state }
+	immediate = { hidden_effect = { var:industrial_boom_incident_state = { save_event_target_as = industrial_boom_incident_region } } }
+
+	option = {
+		name = chaosx.nr34.20.a
+		trigger = { NOT = { has_equipment = { train_equipment < industrial_boom_cost_incident_trains } } }
+		custom_effect_tooltip = chaosx.nr34.20.a_tt
+		hidden_effect = {
+			set_temp_variable = { industrial_boom_payment_trains = industrial_boom_cost_incident_trains }
+			industrial_boom_pay_trains = yes
+			set_temp_variable = { industrial_boom_relief = constant:industrial_boom_incident.rail_congestion_relief }
+			industrial_boom_relieve = yes
+			industrial_boom_close_incident = yes
+		}
+		ai_chance = { base = 10 modifier = { add = 20 industrial_boom_supply_leads = yes } }
+	}
+	option = {
+		name = chaosx.nr34.20.b
+		custom_effect_tooltip = chaosx.nr34.20.b_tt
+		hidden_effect = {
+			set_temp_variable = { industrial_boom_progress_change = constant:industrial_boom_project.rail_incident_delay_days }
+			multiply_temp_variable = { industrial_boom_progress_change = -1 }
+			event_target:industrial_boom_incident_region = { industrial_boom_shift_progress = yes }
+			industrial_boom_close_incident = yes
+		}
+		ai_chance = { base = 10 }
+	}
+}
+
+# Material Shortfall.
+country_event = {
+	id = chaosx.nr34.21
+	title = chaosx.nr34.21.t
+	desc = chaosx.nr34.21.d
+	picture = GFX_report_event_034_industrial_boom_opening
+	is_triggered_only = yes
+	trigger = { industrial_boom_is_live = yes }
+	immediate = {
+		hidden_effect = {
+			if = {
+				limit = { has_variable = industrial_boom_incident_state }
+				var:industrial_boom_incident_state = { save_event_target_as = industrial_boom_incident_region }
+			}
+		}
+	}
+
+	option = {
+		name = chaosx.nr34.21.a
+		trigger = {
+			industrial_boom_is_sea_dependent = yes
+			NOT = { has_equipment = { convoy_1 < industrial_boom_cost_convoys } }
+		}
+		custom_effect_tooltip = chaosx.nr34.21.a_tt
+		hidden_effect = {
+			set_temp_variable = { industrial_boom_payment = industrial_boom_cost_convoys }
+			multiply_temp_variable = { industrial_boom_payment = -1 }
+			add_equipment_to_stockpile = { type = convoy_1 amount = industrial_boom_payment }
+			set_temp_variable = { industrial_boom_relief = constant:industrial_boom_incident.shortfall_relief }
+			industrial_boom_relieve = yes
+			industrial_boom_close_incident = yes
+		}
+		ai_chance = { base = 15 }
+	}
+	option = {
+		name = chaosx.nr34.21.b
+		trigger = {
+			NOT = { industrial_boom_is_sea_dependent = yes }
+			NOT = { has_fuel < industrial_boom_cost_fuel }
+		}
+		custom_effect_tooltip = chaosx.nr34.21.b_tt
+		hidden_effect = {
+			set_temp_variable = { industrial_boom_payment = industrial_boom_cost_fuel }
+			multiply_temp_variable = { industrial_boom_payment = -1 }
+			add_fuel = industrial_boom_payment
+			set_temp_variable = { industrial_boom_relief = constant:industrial_boom_incident.shortfall_relief }
+			industrial_boom_relieve = yes
+			industrial_boom_close_incident = yes
+		}
+		ai_chance = { base = 15 }
+	}
+	option = {
+		name = chaosx.nr34.21.c
+		custom_effect_tooltip = chaosx.nr34.21.c_tt
+		hidden_effect = {
+			if = {
+				limit = { has_event_target = industrial_boom_incident_region }
+				set_temp_variable = { industrial_boom_progress_change = constant:industrial_boom_project.stall_delay_days }
+				multiply_temp_variable = { industrial_boom_progress_change = -1 }
+				event_target:industrial_boom_incident_region = { industrial_boom_shift_progress = yes }
+			}
+			set_temp_variable = { industrial_boom_pressure = constant:industrial_boom_incident.shortfall_stall_pressure }
+			industrial_boom_press = yes
+			industrial_boom_close_incident = yes
+		}
+		ai_chance = { base = 5 }
+	}
+}
+
+# Plant Accident.
+country_event = {
+	id = chaosx.nr34.22
+	title = chaosx.nr34.22.t
+	desc = chaosx.nr34.22.d
+	picture = GFX_report_event_034_industrial_boom_opening
+	is_triggered_only = yes
+	trigger = { industrial_boom_is_live = yes has_variable = industrial_boom_incident_state }
+	immediate = { hidden_effect = { var:industrial_boom_incident_state = { save_event_target_as = industrial_boom_incident_region } } }
+
+	option = {
+		name = chaosx.nr34.22.a
+		trigger = { NOT = { has_equipment = { support_equipment < industrial_boom_cost_incident_support } } }
+		custom_effect_tooltip = chaosx.nr34.22.a_tt
+		hidden_effect = {
+			set_temp_variable = { industrial_boom_payment_support = industrial_boom_cost_incident_support }
+			industrial_boom_pay_support = yes
+			set_temp_variable = { industrial_boom_relief = constant:industrial_boom_incident.accident_relief }
+			industrial_boom_relieve = yes
+			industrial_boom_close_incident = yes
+		}
+		ai_chance = { base = 15 }
+	}
+	option = {
+		name = chaosx.nr34.22.b
+		custom_effect_tooltip = chaosx.nr34.22.b_tt
+		hidden_effect = {
+			set_temp_variable = { industrial_boom_pressure = constant:industrial_boom_incident.accident_pressure }
+			industrial_boom_press = yes
+			industrial_boom_close_incident = yes
+		}
+		ai_chance = {
+			base = 5
+			modifier = { add = 10 check_variable = { var = industrial_boom_ai_profile value = constant:industrial_boom_ai.profile_desperate compare = equals } }
+		}
+	}
+}
+
+# Labor Dispute.
+country_event = {
+	id = chaosx.nr34.23
+	title = chaosx.nr34.23.t
+	desc = chaosx.nr34.23.d
+	picture = GFX_report_event_034_industrial_boom_opening
+	is_triggered_only = yes
+	trigger = { industrial_boom_is_live = yes }
+
+	option = {
+		name = chaosx.nr34.23.a
+		custom_effect_tooltip = chaosx.nr34.23.a_tt
+		hidden_effect = {
+			set_temp_variable = { industrial_boom_flag_days = constant:industrial_boom_cost.concede_days }
+			add_dynamic_modifier = { modifier = industrial_boom_labor_settlement days = industrial_boom_flag_days }
+			set_temp_variable = { industrial_boom_relief = constant:industrial_boom_incident.dispute_concede_relief }
+			industrial_boom_relieve = yes
+			industrial_boom_close_incident = yes
+		}
+		ai_chance = { base = 15 }
+	}
+	option = {
+		name = chaosx.nr34.23.b
+		trigger = { NOT = { has_political_power < industrial_boom_cost_political_power } }
+		custom_effect_tooltip = chaosx.nr34.23.b_tt
+		hidden_effect = {
+			set_temp_variable = { industrial_boom_payment = industrial_boom_cost_political_power }
+			multiply_temp_variable = { industrial_boom_payment = -1 }
+			add_political_power = industrial_boom_payment
+			add_stability = constant:industrial_boom_cost.labor_stability
+			set_temp_variable = { industrial_boom_pressure = constant:industrial_boom_incident.dispute_force_pressure }
+			industrial_boom_press = yes
+			industrial_boom_close_incident = yes
+		}
+		ai_chance = {
+			base = 5
+			modifier = { add = 15 check_variable = { var = industrial_boom_ai_profile value = constant:industrial_boom_ai.profile_wartime compare = equals } }
+		}
+	}
+}
+
+# Maintenance Failure.
+country_event = {
+	id = chaosx.nr34.24
+	title = chaosx.nr34.24.t
+	desc = chaosx.nr34.24.d
+	picture = GFX_report_event_034_industrial_boom_opening
+	is_triggered_only = yes
+	trigger = { industrial_boom_is_live = yes has_variable = industrial_boom_incident_state }
+	immediate = { hidden_effect = { var:industrial_boom_incident_state = { save_event_target_as = industrial_boom_incident_region } } }
+
+	option = {
+		name = chaosx.nr34.24.a
+		custom_effect_tooltip = chaosx.nr34.24.a_tt
+		hidden_effect = {
+			event_target:industrial_boom_incident_region = { industrial_boom_regress_project = yes }
+			set_temp_variable = { industrial_boom_relief = constant:industrial_boom_incident.maintenance_relief }
+			industrial_boom_relieve = yes
+			industrial_boom_close_incident = yes
+		}
+		ai_chance = { base = 15 }
+	}
+	option = {
+		name = chaosx.nr34.24.b
+		custom_effect_tooltip = chaosx.nr34.24.b_tt
+		hidden_effect = {
+			set_temp_variable = { industrial_boom_deferred = constant:industrial_boom_shock.delayed_maintenance }
+			industrial_boom_defer_shock = yes
+			industrial_boom_close_incident = yes
+		}
+		ai_chance = {
+			base = 3
+			modifier = { add = 10 has_country_flag = industrial_boom_reserve_held }
+			modifier = { add = 10 check_variable = { var = industrial_boom_ai_profile value = constant:industrial_boom_ai.profile_desperate compare = equals } }
+		}
+	}
+}
+
+# Order-Book Frenzy.
+country_event = {
+	id = chaosx.nr34.25
+	title = chaosx.nr34.25.t
+	desc = chaosx.nr34.25.d
+	picture = GFX_report_event_034_industrial_boom_opening
+	is_triggered_only = yes
+	trigger = { industrial_boom_is_live = yes }
+
+	option = {
+		name = chaosx.nr34.25.a
+		custom_effect_tooltip = chaosx.nr34.25.a_tt
+		hidden_effect = {
+			set_temp_variable = { industrial_boom_flag_days = constant:industrial_boom_cost.concede_days }
+			add_dynamic_modifier = { modifier = industrial_boom_labor_settlement days = industrial_boom_flag_days }
+			set_temp_variable = { industrial_boom_relief = constant:industrial_boom_incident.frenzy_force_relief }
+			industrial_boom_relieve = yes
+			industrial_boom_close_incident = yes
+		}
+		ai_chance = { base = 10 modifier = { add = 10 industrial_boom_band_is_strained = yes } }
+	}
+	option = {
+		name = chaosx.nr34.25.b
+		custom_effect_tooltip = chaosx.nr34.25.b_tt
+		hidden_effect = {
+			set_temp_variable = { industrial_boom_pressure = constant:industrial_boom_incident.frenzy_delay_pressure }
+			industrial_boom_press = yes
+			industrial_boom_close_incident = yes
+		}
+		ai_chance = { base = 10 modifier = { factor = 0 NOT = { check_variable = { var = industrial_boom_band value = constant:industrial_boom_band.sustainable compare = equals } } } }
+	}
+}
+
+# The Profitable Shell.
+country_event = {
+	id = chaosx.nr34.26
+	title = chaosx.nr34.26.t
+	desc = chaosx.nr34.26.d
+	picture = GFX_report_event_034_industrial_boom_opening
+	is_triggered_only = yes
+	trigger = { industrial_boom_is_live = yes has_variable = industrial_boom_incident_state }
+	immediate = { hidden_effect = { var:industrial_boom_incident_state = { save_event_target_as = industrial_boom_incident_region } } }
+
+	option = {
+		name = chaosx.nr34.26.a
+		custom_effect_tooltip = chaosx.nr34.26.a_tt
+		hidden_effect = {
+			set_temp_variable = { industrial_boom_cancel_relief = constant:industrial_boom_event.zero }
+			event_target:industrial_boom_incident_region = { industrial_boom_cancel_project = yes }
+			industrial_boom_refresh_commitment = yes
+			industrial_boom_close_incident = yes
+		}
+		ai_chance = { base = 10 modifier = { add = 20 check_variable = { var = industrial_boom_ai_profile value = constant:industrial_boom_ai.profile_cautious compare = equals } } }
+	}
+	option = {
+		name = chaosx.nr34.26.b
+		custom_effect_tooltip = chaosx.nr34.26.b_tt
+		hidden_effect = {
+			set_temp_variable = { industrial_boom_deferred = constant:industrial_boom_incident.shell_back_pressure }
+			industrial_boom_defer_shock = yes
+			industrial_boom_close_incident = yes
+		}
+		ai_chance = { base = 10 }
+	}
+}
+
+# Restraint Backlash.
+country_event = {
+	id = chaosx.nr34.27
+	title = chaosx.nr34.27.t
+	desc = chaosx.nr34.27.d
+	picture = GFX_report_event_034_industrial_boom_opening
+	is_triggered_only = yes
+	trigger = { industrial_boom_is_live = yes }
+
+	option = {
+		name = chaosx.nr34.27.a
+		custom_effect_tooltip = chaosx.nr34.27.a_tt
+		hidden_effect = {
+			add_stability = constant:industrial_boom_cost.labor_stability
+			set_temp_variable = { industrial_boom_relief = constant:industrial_boom_incident.backlash_hold_relief }
+			industrial_boom_relieve = yes
+			industrial_boom_close_incident = yes
+		}
+		ai_chance = { base = 10 modifier = { add = 10 has_stability > 0.5 } }
+	}
+	option = {
+		name = chaosx.nr34.27.b
+		custom_effect_tooltip = chaosx.nr34.27.b_tt
+		hidden_effect = {
+			industrial_boom_end_cooling = yes
+			set_temp_variable = { industrial_boom_pressure = constant:industrial_boom_incident.backlash_weaken_pressure }
+			industrial_boom_press = yes
+			industrial_boom_close_incident = yes
+		}
+		ai_chance = { base = 5 }
+	}
+}
+
+# The Railway Completed Overnight.
+country_event = {
+	id = chaosx.nr34.28
+	title = chaosx.nr34.28.t
+	desc = chaosx.nr34.28.d
+	picture = GFX_report_event_034_industrial_boom_opening
+	is_triggered_only = yes
+	trigger = { industrial_boom_is_live = yes has_variable = industrial_boom_incident_state }
+	immediate = { hidden_effect = { var:industrial_boom_incident_state = { save_event_target_as = industrial_boom_incident_region } } }
+
+	option = {
+		name = chaosx.nr34.28.a
+		custom_effect_tooltip = chaosx.nr34.28.a_tt
+		hidden_effect = {
+			set_temp_variable = { industrial_boom_progress_change = constant:industrial_boom_incident.inspect_delay_days }
+			multiply_temp_variable = { industrial_boom_progress_change = -1 }
+			event_target:industrial_boom_incident_region = { industrial_boom_shift_progress = yes }
+			set_temp_variable = { industrial_boom_relief = constant:industrial_boom_incident.overnight_inspect_relief }
+			industrial_boom_relieve = yes
+			industrial_boom_close_incident = yes
+		}
+		ai_chance = { base = 10 }
+	}
+	option = {
+		name = chaosx.nr34.28.b
+		custom_effect_tooltip = chaosx.nr34.28.b_tt
+		hidden_effect = {
+			set_temp_variable = { industrial_boom_progress_change = constant:industrial_boom_incident.miracle_progress_days }
+			event_target:industrial_boom_incident_region = {
+				industrial_boom_shift_progress = yes
+				set_temp_variable = { industrial_boom_flag_days = constant:industrial_boom_action.protect_renew_days }
+				set_state_flag = { flag = industrial_boom_accepted_fragility days = industrial_boom_flag_days }
+			}
+			industrial_boom_close_incident = yes
+		}
+		ai_chance = { base = 5 modifier = { add = 10 has_country_flag = industrial_boom_reserve_held } }
+	}
+}
+
+# Materials That Should Not Exist.
+country_event = {
+	id = chaosx.nr34.29
+	title = chaosx.nr34.29.t
+	desc = chaosx.nr34.29.d
+	picture = GFX_report_event_034_industrial_boom_opening
+	is_triggered_only = yes
+	trigger = { industrial_boom_is_live = yes has_variable = industrial_boom_incident_state }
+	immediate = { hidden_effect = { var:industrial_boom_incident_state = { save_event_target_as = industrial_boom_incident_region } } }
+
+	option = {
+		name = chaosx.nr34.29.a
+		custom_effect_tooltip = chaosx.nr34.29.a_tt
+		hidden_effect = {
+			set_temp_variable = { industrial_boom_progress_change = constant:industrial_boom_incident.miracle_progress_days }
+			event_target:industrial_boom_incident_region = { industrial_boom_shift_progress = yes }
+			set_temp_variable = { industrial_boom_pressure = constant:industrial_boom_incident.materials_quarantine_relief }
+			industrial_boom_press = yes
+			industrial_boom_close_incident = yes
+		}
+		ai_chance = { base = 10 }
+	}
+	option = {
+		name = chaosx.nr34.29.b
+		custom_effect_tooltip = chaosx.nr34.29.b_tt
+		hidden_effect = {
+			set_temp_variable = { industrial_boom_progress_change = constant:industrial_boom_incident.quarantine_delay_days }
+			multiply_temp_variable = { industrial_boom_progress_change = -1 }
+			event_target:industrial_boom_incident_region = { industrial_boom_shift_progress = yes }
+			set_temp_variable = { industrial_boom_relief = constant:industrial_boom_incident.materials_quarantine_relief }
+			industrial_boom_relieve = yes
+			industrial_boom_close_incident = yes
+		}
+		ai_chance = { base = 10 modifier = { add = 10 check_variable = { var = industrial_boom_ai_profile value = constant:industrial_boom_ai.profile_cautious compare = equals } } }
+	}
+}
+
+# The Impossible Schedule.
+country_event = {
+	id = chaosx.nr34.30
+	title = chaosx.nr34.30.t
+	desc = chaosx.nr34.30.d
+	picture = GFX_report_event_034_industrial_boom_opening
+	is_triggered_only = yes
+	trigger = { industrial_boom_is_live = yes has_variable = industrial_boom_incident_state }
+	immediate = { hidden_effect = { var:industrial_boom_incident_state = { save_event_target_as = industrial_boom_incident_region } } }
+
+	option = {
+		name = chaosx.nr34.30.a
+		custom_effect_tooltip = chaosx.nr34.30.a_tt
+		hidden_effect = {
+			set_temp_variable = { industrial_boom_progress_change = constant:industrial_boom_incident.miracle_progress_days }
+			event_target:industrial_boom_incident_region = { industrial_boom_shift_progress = yes }
+			set_temp_variable = { industrial_boom_pressure = constant:industrial_boom_incident.schedule_exploit_pressure }
+			industrial_boom_press = yes
+			industrial_boom_close_incident = yes
+		}
+		ai_chance = { base = 10 modifier = { factor = 0 industrial_boom_band_is_strained = yes } }
+	}
+	option = {
+		name = chaosx.nr34.30.b
+		custom_effect_tooltip = chaosx.nr34.30.b_tt
+		hidden_effect = {
+			set_temp_variable = { industrial_boom_relief = constant:industrial_boom_incident.schedule_restrict_relief }
+			industrial_boom_relieve = yes
+			industrial_boom_close_incident = yes
+		}
+		ai_chance = { base = 10 }
+	}
+}
+
+# The Unplanned Works.
+country_event = {
+	id = chaosx.nr34.31
+	title = chaosx.nr34.31.t
+	desc = chaosx.nr34.31.d
+	picture = GFX_report_event_034_industrial_boom_opening
+	is_triggered_only = yes
+	trigger = { industrial_boom_is_live = yes has_variable = industrial_boom_incident_state }
+	immediate = { hidden_effect = { var:industrial_boom_incident_state = { save_event_target_as = industrial_boom_incident_region } } }
+
+	option = {
+		name = chaosx.nr34.31.a
+		custom_effect_tooltip = chaosx.nr34.31.a_tt
+		hidden_effect = {
+			event_target:industrial_boom_incident_region = {
+				add_to_variable = { industrial_boom_spread_progress = constant:industrial_boom_incident.recognize_progress_days }
+			}
+			set_temp_variable = { industrial_boom_pressure = constant:industrial_boom_incident.unplanned_recognize_pressure }
+			industrial_boom_press = yes
+			industrial_boom_close_incident = yes
+		}
+		ai_chance = { base = 10 }
+	}
+	option = {
+		name = chaosx.nr34.31.b
+		custom_effect_tooltip = chaosx.nr34.31.b_tt
+		hidden_effect = {
+			event_target:industrial_boom_incident_region = {
+				ROOT = { remove_from_array = { array = industrial_boom_spread_states value = PREV } }
+				industrial_boom_remove_spread_state = yes
+			}
+			set_temp_variable = { industrial_boom_relief = constant:industrial_boom_incident.unplanned_dismantle_relief }
+			industrial_boom_relieve = yes
+			industrial_boom_refresh_package = yes
+			industrial_boom_close_incident = yes
+		}
+		ai_chance = { base = 10 modifier = { add = 10 industrial_boom_band_is_dangerous_or_worse = yes } }
+	}
+}
+
+# The Railway That Keeps Growing.
+country_event = {
+	id = chaosx.nr34.32
+	title = chaosx.nr34.32.t
+	desc = chaosx.nr34.32.d
+	picture = GFX_report_event_034_industrial_boom_opening
+	is_triggered_only = yes
+	trigger = { industrial_boom_is_live = yes has_variable = industrial_boom_incident_state }
+	immediate = { hidden_effect = { var:industrial_boom_incident_state = { save_event_target_as = industrial_boom_incident_region } } }
+
+	option = {
+		name = chaosx.nr34.32.a
+		trigger = { NOT = { has_equipment = { train_equipment < industrial_boom_cost_incident_trains } } }
+		custom_effect_tooltip = chaosx.nr34.32.a_tt
+		hidden_effect = {
+			set_temp_variable = { industrial_boom_payment_trains = industrial_boom_cost_incident_trains }
+			industrial_boom_pay_trains = yes
+			event_target:industrial_boom_incident_region = {
+				set_variable = { industrial_boom_spread_progress = constant:industrial_boom_action.spread_integrate_days }
+			}
+			industrial_boom_update_spread = yes
+			industrial_boom_close_incident = yes
+		}
+		ai_chance = { base = 15 }
+	}
+	option = {
+		name = chaosx.nr34.32.b
+		custom_effect_tooltip = chaosx.nr34.32.b_tt
+		hidden_effect = {
+			set_temp_variable = { industrial_boom_pressure = constant:industrial_boom_incident.growing_line_pressure }
+			industrial_boom_press = yes
+			industrial_boom_close_incident = yes
+		}
+		ai_chance = { base = 5 }
+	}
+}
+
+# Network Cascade.
+country_event = {
+	id = chaosx.nr34.33
+	title = chaosx.nr34.33.t
+	desc = chaosx.nr34.33.d
+	picture = GFX_report_event_034_industrial_boom_opening
+	is_triggered_only = yes
+	trigger = { industrial_boom_is_live = yes }
+
+	option = {
+		name = chaosx.nr34.33.a
+		trigger = { has_country_flag = industrial_boom_reserve_held }
+		custom_effect_tooltip = chaosx.nr34.33.a_tt
+		hidden_effect = {
+			industrial_boom_spend_reserve = yes
+			industrial_boom_close_incident = yes
+		}
+		ai_chance = { base = 20 }
+	}
+	option = {
+		name = chaosx.nr34.33.b
+		custom_effect_tooltip = chaosx.nr34.33.b_tt
+		hidden_effect = {
+			set_temp_variable = { industrial_boom_pressure = constant:industrial_boom_incident.cascade_shock }
+			industrial_boom_press = yes
+			add_to_array = { array = industrial_boom_shock_days value = global.num_days }
+			industrial_boom_close_incident = yes
+		}
+		ai_chance = { base = 5 }
 	}
 }

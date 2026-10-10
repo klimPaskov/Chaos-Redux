@@ -1,0 +1,406 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 034 INDUSTRIAL BOOM TRIGGERS
+# ============================================================================
+# Target gates, lifecycle and band reads, region and project predicates, and
+# decision-row visibility for the Industrial Boom category.
+# Country triggers run on the boom country. State triggers expect ROOT to be
+# the boom country, which holds for the category, its events and the pulse.
+# ============================================================================
+
+# ---------------------------------------------------------------------------
+# Target selection
+# ---------------------------------------------------------------------------
+
+# COUNTRY. A country that can receive a new Industrial Boom.
+industrial_boom_is_valid_target = {
+	OR = {
+		is_major = yes
+		is_ai = no
+	}
+	NOT = { has_country_flag = industrial_boom_active }
+	NOT = { has_country_flag = industrial_boom_snapshot_frozen }
+	NOT = { has_country_flag = industrial_boom_collapse_delivery_pending }
+	NOT = { has_country_flag = great_depression_active }
+	NOT = { has_country_flag = great_depression_transition_pending }
+	NOT = { has_country_flag = great_depression_incompatible_economic_state }
+	great_depression_has_viable_economy = yes
+	any_owned_state = { industrial_boom_state_is_region_candidate = yes }
+}
+
+# ANY scope. Event-pool availability for the random pool and Positive Economy.
+industrial_boom_has_any_target = {
+	any_country = {
+		OR = {
+			is_major = yes
+			is_ai = no
+		}
+		industrial_boom_is_valid_target = yes
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Lifecycle and bands
+# ---------------------------------------------------------------------------
+
+# COUNTRY. The live boom that owns the category, pulse and package.
+industrial_boom_is_live = {
+	has_country_flag = industrial_boom_active
+	NOT = { has_country_flag = industrial_boom_snapshot_frozen }
+}
+
+industrial_boom_is_opening = {
+	industrial_boom_is_live = yes
+	has_country_flag = industrial_boom_opening
+}
+
+industrial_boom_is_landing = {
+	industrial_boom_is_live = yes
+	has_country_flag = industrial_boom_landing
+}
+
+industrial_boom_is_running = {
+	industrial_boom_is_live = yes
+	NOT = { has_country_flag = industrial_boom_opening }
+	NOT = { has_country_flag = industrial_boom_landing }
+}
+
+industrial_boom_band_below_dangerous = {
+	check_variable = { var = industrial_boom_band value = constant:industrial_boom_band.dangerous compare = less_than }
+}
+
+industrial_boom_band_is_strained = {
+	check_variable = { var = industrial_boom_band value = constant:industrial_boom_band.strained compare = equals }
+}
+
+industrial_boom_band_is_dangerous_or_worse = {
+	check_variable = { var = industrial_boom_band value = constant:industrial_boom_band.dangerous compare = greater_than_or_equals }
+}
+
+industrial_boom_band_is_critical = {
+	check_variable = { var = industrial_boom_band value = constant:industrial_boom_band.critical compare = equals }
+}
+
+industrial_boom_evolution_at_least_1 = {
+	check_variable = { var = industrial_boom_evolution value = constant:industrial_boom_evolution.stage_1 compare = greater_than_or_equals }
+}
+
+industrial_boom_evolution_at_least_2 = {
+	check_variable = { var = industrial_boom_evolution value = constant:industrial_boom_evolution.stage_2 compare = greater_than_or_equals }
+}
+
+industrial_boom_evolution_is_3 = {
+	check_variable = { var = industrial_boom_evolution value = constant:industrial_boom_evolution.stage_3 compare = equals }
+}
+
+# ---------------------------------------------------------------------------
+# Logistics profile
+# ---------------------------------------------------------------------------
+
+# COUNTRY. Import-dependent maritime economy: a coastal capital with sea trade.
+industrial_boom_is_sea_dependent = {
+	capital_scope = { is_coastal = yes }
+	OR = {
+		num_of_naval_factories > 0
+		convoy_threat > 0.05
+		any_owned_state = {
+			is_coastal = yes
+			naval_base > 2
+		}
+	}
+}
+
+# COUNTRY. Never pays convoys.
+industrial_boom_is_landlocked = {
+	NOT = { any_owned_state = { is_coastal = yes } }
+}
+
+# COUNTRY. Supply leads the visible cause.
+industrial_boom_supply_leads = {
+	check_variable = { var = industrial_boom_cause value = constant:industrial_boom_cause.supply compare = equals }
+}
+
+# ---------------------------------------------------------------------------
+# States
+# ---------------------------------------------------------------------------
+
+# STATE. Severe contamination or fallout blocks a region or spread state.
+industrial_boom_state_is_contaminated = {
+	OR = {
+		has_dynamic_modifier = { modifier = nuclear_fallout_state }
+		AND = {
+			has_variable = cbrn_chemical_contamination
+			check_variable = { var = cbrn_chemical_contamination value = constant:cbrn_contamination_threshold.severe compare = greater_than_or_equals }
+		}
+	}
+}
+
+# STATE. Owner-relative so the event pool can test any candidate country.
+industrial_boom_state_is_region_candidate = {
+	is_controlled_by = OWNER
+	is_core_of = OWNER
+	impassable = no
+	state_population_k > constant:great_depression_api.minimum_viable_state_population_k
+	OR = {
+		industrial_complex > 0
+		arms_factory > 0
+	}
+	NOT = { industrial_boom_state_is_contaminated = yes }
+}
+
+# STATE. An enemy controls a neighbouring state.
+industrial_boom_state_is_on_front = {
+	any_neighbor_state = {
+		CONTROLLER = { has_war_with = ROOT }
+	}
+}
+
+# STATE. Current Industrial Region of ROOT.
+industrial_boom_state_is_region = {
+	has_state_flag = industrial_boom_region
+	is_in_array = { array = ROOT.industrial_boom_regions value = THIS }
+}
+
+industrial_boom_region_has_project = {
+	check_variable = { var = industrial_boom_project_stage value = constant:industrial_boom_project.stage_building compare = greater_than_or_equals }
+}
+
+industrial_boom_region_is_secured = {
+	check_variable = { var = industrial_boom_project_stage value = constant:industrial_boom_project.stage_secured compare = equals }
+}
+
+industrial_boom_region_is_integrating_or_secured = {
+	check_variable = { var = industrial_boom_project_stage value = constant:industrial_boom_project.stage_integrating compare = greater_than_or_equals }
+}
+
+# STATE. ROOT controls the region and it can carry work.
+industrial_boom_region_is_connected = {
+	is_owned_by = ROOT
+	is_controlled_by = ROOT
+}
+
+# STATE. The project is threatened: occupied, damaged, starving or fragile.
+industrial_boom_region_is_threatened = {
+	OR = {
+		NOT = { is_controlled_by = ROOT }
+		has_state_flag = industrial_boom_region_damaged
+		famine_food_stage_requires_mortality = yes
+		has_state_flag = industrial_boom_region_fragile
+		industrial_boom_state_is_contaminated = yes
+	}
+}
+
+# STATE. Progress pauses here this pulse.
+industrial_boom_region_is_paused = {
+	OR = {
+		NOT = { is_controlled_by = ROOT }
+		has_state_flag = industrial_boom_region_damaged
+		famine_food_stage_requires_mortality = yes
+		industrial_boom_state_is_contaminated = yes
+	}
+}
+
+# STATE. Valid Evolution III spread state next to a region.
+industrial_boom_state_is_spread_candidate = {
+	is_owned_by = ROOT
+	is_controlled_by = ROOT
+	is_core_of = ROOT
+	impassable = no
+	state_population_k > constant:great_depression_api.minimum_viable_state_population_k
+	NOT = { has_state_flag = industrial_boom_region }
+	NOT = { has_state_flag = industrial_boom_spread }
+	NOT = { industrial_boom_state_is_contaminated = yes }
+	NOT = { famine_food_stage_requires_mortality = yes }
+}
+
+# ---------------------------------------------------------------------------
+# Region decision rows. One row per region, in the order Designate, Protect,
+# Abandon.
+# ---------------------------------------------------------------------------
+
+industrial_boom_region_shows_designate = {
+	industrial_boom_state_is_region = yes
+	NOT = { industrial_boom_region_has_project = yes }
+	ROOT = {
+		industrial_boom_band_below_dangerous = yes
+		NOT = { has_country_flag = industrial_boom_landing }
+	}
+}
+
+industrial_boom_region_shows_protect = {
+	industrial_boom_state_is_region = yes
+	industrial_boom_region_has_project = yes
+	NOT = { has_state_flag = industrial_boom_region_protected }
+}
+
+industrial_boom_region_shows_abandon = {
+	industrial_boom_state_is_region = yes
+	industrial_boom_region_has_project = yes
+	has_state_flag = industrial_boom_region_protected
+	OR = {
+		industrial_boom_region_is_threatened = yes
+		ROOT = { industrial_boom_band_is_dangerous_or_worse = yes }
+	}
+}
+
+industrial_boom_region_can_be_designated = {
+	is_controlled_by = ROOT
+	NOT = { has_dynamic_modifier = { modifier = industrial_boom_unfinished_works } }
+	NOT = { industrial_boom_region_is_paused = yes }
+}
+
+# STATE. Declare a Miracle Region eligibility.
+industrial_boom_region_can_become_miracle = {
+	industrial_boom_state_is_region = yes
+	industrial_boom_region_has_project = yes
+	NOT = { has_state_flag = industrial_boom_project_miracle }
+	is_controlled_by = ROOT
+}
+
+# ---------------------------------------------------------------------------
+# National decision rows
+# ---------------------------------------------------------------------------
+
+industrial_boom_shows_run_hot = {
+	industrial_boom_is_live = yes
+	NOT = { has_country_flag = industrial_boom_landing }
+	NOT = { industrial_boom_band_is_critical = yes }
+}
+
+industrial_boom_can_run_hot = {
+	industrial_boom_band_below_dangerous = yes
+	NOT = { has_country_flag = industrial_boom_cooling }
+	NOT = { has_country_flag = industrial_boom_hot_cooldown }
+	NOT = { has_country_flag = industrial_boom_hot_blocked }
+}
+
+industrial_boom_shows_reserve = {
+	industrial_boom_is_live = yes
+	NOT = { has_country_flag = industrial_boom_landing }
+	industrial_boom_band_below_dangerous = yes
+	NOT = { has_country_flag = industrial_boom_reserve_held }
+	NOT = { has_country_flag = industrial_boom_reserve_building }
+}
+
+industrial_boom_shows_cool = {
+	industrial_boom_is_live = yes
+	NOT = { has_country_flag = industrial_boom_landing }
+	OR = {
+		NOT = { has_country_flag = industrial_boom_opening }
+		has_country_flag = industrial_boom_hot_start
+	}
+}
+
+industrial_boom_shows_landing_start = {
+	industrial_boom_is_running = yes
+	industrial_boom_band_below_dangerous = yes
+}
+
+industrial_boom_shows_halt = {
+	industrial_boom_is_live = yes
+	NOT = { has_country_flag = industrial_boom_landing }
+	industrial_boom_band_is_dangerous_or_worse = yes
+}
+
+# COUNTRY. The halt lands the boom instead of crashing it.
+industrial_boom_halt_succeeds = {
+	OR = {
+		has_country_flag = industrial_boom_reserve_held
+		AND = {
+			check_variable = { var = industrial_boom_overheating value = constant:industrial_boom_band.halt_protected_ceiling compare = less_than }
+			any_of_scopes = {
+				array = industrial_boom_regions
+				has_state_flag = industrial_boom_region_protected
+			}
+		}
+	}
+}
+
+industrial_boom_shows_speculative_offer = {
+	industrial_boom_is_live = yes
+	NOT = { has_country_flag = industrial_boom_landing }
+	industrial_boom_band_below_dangerous = yes
+	has_country_flag = industrial_boom_speculative_offer_open
+	has_variable = industrial_boom_speculative_offer_state
+}
+
+industrial_boom_shows_miracle = {
+	industrial_boom_is_live = yes
+	industrial_boom_evolution_at_least_2 = yes
+	NOT = { has_country_flag = industrial_boom_landing }
+	industrial_boom_band_below_dangerous = yes
+	any_of_scopes = {
+		array = industrial_boom_regions
+		industrial_boom_region_can_become_miracle = yes
+	}
+}
+
+industrial_boom_shows_contain = {
+	industrial_boom_is_live = yes
+	industrial_boom_evolution_is_3 = yes
+	NOT = { has_country_flag = industrial_boom_spread_contained }
+	has_variable = industrial_boom_spread_policy
+}
+
+industrial_boom_shows_order_books = {
+	industrial_boom_is_live = yes
+	OR = {
+		has_country_flag = industrial_boom_contract_market_open
+		has_country_flag = industrial_boom_order_books_closed
+	}
+}
+
+# COUNTRY. Achievement-eligible player boom.
+industrial_boom_achievement_tracking = {
+	is_ai = no
+	has_country_flag = industrial_boom_player_episode
+}
+
+# ---------------------------------------------------------------------------
+# AI profiles (internal, recomputed each pulse)
+# ---------------------------------------------------------------------------
+
+industrial_boom_ai_is_balanced = {
+	check_variable = { var = industrial_boom_ai_profile value = constant:industrial_boom_ai.profile_balanced compare = equals }
+}
+
+industrial_boom_ai_is_cautious = {
+	check_variable = { var = industrial_boom_ai_profile value = constant:industrial_boom_ai.profile_cautious compare = equals }
+}
+
+industrial_boom_ai_is_wartime = {
+	check_variable = { var = industrial_boom_ai_profile value = constant:industrial_boom_ai.profile_wartime compare = equals }
+}
+
+industrial_boom_ai_is_desperate = {
+	check_variable = { var = industrial_boom_ai_profile value = constant:industrial_boom_ai.profile_desperate compare = equals }
+}
+
+industrial_boom_ai_is_fragile = {
+	check_variable = { var = industrial_boom_ai_profile value = constant:industrial_boom_ai.profile_fragile compare = equals }
+}
+
+# ---------------------------------------------------------------------------
+# Affordability. One predicate per action feeds available, the cost row and
+# the payment.
+# ---------------------------------------------------------------------------
+
+industrial_boom_can_pay_stabilize = {
+	NOT = { has_equipment = { train_equipment < industrial_boom_cost_trains } }
+	NOT = { has_fuel < industrial_boom_cost_fuel }
+	OR = {
+		NOT = { industrial_boom_is_sea_dependent = yes }
+		NOT = { has_equipment = { convoy_1 < industrial_boom_cost_convoys } }
+	}
+}
+
+industrial_boom_can_pay_protect = {
+	NOT = { has_equipment = { support_equipment < industrial_boom_cost_support } }
+	NOT = { has_equipment = { train_equipment < industrial_boom_cost_project_trains } }
+}
+
+industrial_boom_can_pay_any_project = {
+	OR = {
+		NOT = { has_equipment = { support_equipment < industrial_boom_cost_project_support } }
+		NOT = { has_equipment = { train_equipment < industrial_boom_cost_project_trains } }
+	}
+}

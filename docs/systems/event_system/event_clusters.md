@@ -479,6 +479,13 @@ A country already in Event 35 is never a candidate, so the cluster never duplica
 A cluster pick keeps the cluster's consequence pacing lane through `great_depression_cluster_target_pending`.
 Event 34 collapse, contagion conversion, the Evolution III spread and relapse start depressions directly and never roll the cluster.
 
+### Positive Economy: Resources Found and Industrial Boom
+
+Positive Economy is registered in the live runtime at cluster ID 7 as a repeatable cluster with unlock tier 3.
+Its live rows are Event 018 Resources Found (row 7001, required, Medium, primary trigger) and Event 034 Industrial Boom (row 7002, optional, Low, primary trigger).
+A cluster dispatch of Event 34 uses the same pre-fire weighted target selection as a normal firing (`industrial_boom_prepare_random_event_fire`), so a country with an active boom is never chosen, and Event 34 reads no cluster context and grants nothing extra for being part of a batch.
+An Event 34 crash into Event 35 never rolls Negative Economy.
+
 ### Wars: Random War, Fury, and Random Civil War
 
 The Wars cluster contains four Event 004 Random War rows at Low, Low, Medium, and High severity, followed by two Event 007 Fury rows at Medium and High severity.

@@ -5,6 +5,9 @@
 # submits a bounded depressed-market demand request through this file and only
 # consumes the accepted result. This adapter never opens a Great Depression,
 # changes Event 35 Severity, or creates a second supplier ledger.
+# The supplier's choice is two-sided: open order books accept the contract
+# (more Overheating, export orders and one softer landing); closed books, or
+# Overheating at the refusal threshold, refuse it.
 # ============================================================================
 
 # COUNTRY scope: the active Event 34 supplier. ROOT is the Event 35 country
@@ -61,6 +64,12 @@ industrial_boom_receive_depressed_market_demand = {
 		}
 		set_country_flag = industrial_boom_supplier_demand_accepted
 		set_country_flag = { flag = industrial_boom_supplier_contract days = industrial_boom_supplier_contract_duration }
+		add_dynamic_modifier = { modifier = industrial_boom_export_orders days = industrial_boom_supplier_contract_duration }
+		industrial_boom_update_band = yes
+		if = {
+			limit = { is_ai = no }
+			country_event = { id = chaosx.nr34.12 }
+		}
 		ROOT = { set_country_flag = great_depression_event34_supplier_demand_accepted }
 	}
 }

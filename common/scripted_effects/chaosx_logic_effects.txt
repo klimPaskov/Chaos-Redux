@@ -295,7 +295,7 @@ initialize_event_categories = {
 	add_to_array = { global.repeatable_events = constant:riches_found_event.id }  # RICHES FOUND
 	add_to_array = { global.repeatable_events = 31 }  # TERRORISTS
 	add_to_array = { global.repeatable_events = 32 }  # MISSILES
-	add_to_array = { global.repeatable_events = 34 }  # INDUSTRY BOOM
+	add_to_array = { global.repeatable_events = constant:industrial_boom_event.id }  # INDUSTRIAL BOOM
 	add_to_array = { global.repeatable_events = 35 }  # GREAT DEPRESSION
 	add_to_array = { global.repeatable_events = 36 }  # ALIEN SPACECRAFT
 	add_to_array = { global.repeatable_events = 37 }  # MYSTERIOUS POPULATION
@@ -860,6 +860,13 @@ evaluate_event_pool_candidate_unavailability = {
 			NOT = { great_depression_has_any_independent_target = yes }
 		}
 		set_temp_variable = { event_pool_candidate_unavailability_reason = constant:event_system_event_unavailability_reason.great_depression_target }
+	}
+	else_if = {
+		limit = {
+			check_variable = { event_id = constant:industrial_boom_event.id }
+			NOT = { industrial_boom_has_any_target = yes }
+		}
+		set_temp_variable = { event_pool_candidate_unavailability_reason = constant:event_system_event_unavailability_reason.industrial_boom_target }
 	}
 
 	if = {

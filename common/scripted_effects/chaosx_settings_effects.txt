@@ -4232,6 +4232,26 @@ fire_event_by_temp_id_no_cluster = {
 		}
 	}
 	if = {
+		limit = { check_variable = { event_id = constant:industrial_boom_event.id } }
+		industrial_boom_prepare_random_event_fire = yes
+		if = {
+			limit = {
+				OR = {
+					check_variable = { industrial_boom_prefire_ready < constant:industrial_boom_event.one }
+					NOT = { has_event_target = industrial_boom_prefire_target }
+				}
+			}
+			set_temp_variable = { event_single_fire_allowed = constant:industrial_boom_event.zero }
+			if = {
+				limit = {
+					has_variable = automatic_event_firing_context
+					check_variable = { automatic_event_firing_context > constant:industrial_boom_event.zero }
+				}
+				calculate_next_timer_value = yes
+			}
+		}
+	}
+	if = {
 		limit = { check_variable = { event_id = constant:sov_nuclear_bombs_event.id } }
 		if = {
 			limit = { NOT = { SOV = { sov_nuclear_bombs_event_opening_actor_is_valid = yes } } }
@@ -4508,6 +4528,15 @@ fire_event_by_temp_id_no_cluster = {
 				}
 				event_target:africa_prefire_host = {
 					country_event = { id = chaosx.nr12.1 }
+				}
+			}
+			else_if = {
+				limit = {
+					check_variable = { event_fire_record_id = constant:industrial_boom_event.id }
+					has_event_target = industrial_boom_prefire_target
+				}
+				event_target:industrial_boom_prefire_target = {
+					country_event = { id = chaosx.nr34.1 }
 				}
 			}
 			else_if = {

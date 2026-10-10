@@ -1,0 +1,256 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 034 INDUSTRIAL BOOM MTTH
+# ============================================================================
+# Evolution pacing (days) and AI willingness scores for the national
+# decisions. Scores are weights, not click chances. Each entry is read for
+# the one boom country that is already being evaluated; no world scan.
+# ============================================================================
+
+# Active evolution entry, centred on 90 days.
+industrial_boom_evolution_interval = {
+	base = constant:industrial_boom_evolution.base_days
+	modifier = {
+		factor = constant:industrial_boom_evolution.fast_factor
+		industrial_boom_band_is_dangerous_or_worse = yes
+	}
+	modifier = {
+		factor = constant:industrial_boom_evolution.fast_factor
+		check_variable = { var = industrial_boom_hot_uses value = constant:industrial_boom_drift.repeated_hot_uses compare = greater_than_or_equals }
+	}
+	modifier = {
+		factor = constant:industrial_boom_evolution.fast_factor
+		check_variable = { var = industrial_boom_project_total value = constant:industrial_boom_regions.medium_count compare = greater_than_or_equals }
+	}
+	modifier = {
+		factor = constant:industrial_boom_evolution.fast_factor
+		has_war_with_major = yes
+	}
+	modifier = {
+		factor = constant:industrial_boom_evolution.fast_factor
+		check_variable = { var = global.chaos_meter_value value = constant:chaos_meter_tier_range.tier_4.min compare = greater_than_or_equals }
+	}
+	modifier = {
+		factor = constant:industrial_boom_evolution.slow_factor
+		check_variable = { var = industrial_boom_overheating value = constant:industrial_boom_start.baseline compare = less_than }
+	}
+	modifier = {
+		factor = constant:industrial_boom_evolution.slow_factor
+		has_country_flag = industrial_boom_cooling
+	}
+}
+
+industrial_boom_ai_run_hot_weight = {
+	base = constant:industrial_boom_ai.blocked
+	modifier = {
+		add = constant:industrial_boom_ai.standard
+		industrial_boom_ai_is_balanced = yes
+		check_variable = { var = industrial_boom_band value = constant:industrial_boom_band.sustainable compare = equals }
+		check_variable = { var = industrial_boom_hot_uses value = constant:industrial_boom_event.one compare = less_than }
+	}
+	modifier = {
+		add = constant:industrial_boom_ai.low
+		industrial_boom_ai_is_cautious = yes
+		check_variable = { var = industrial_boom_band value = constant:industrial_boom_band.sustainable compare = equals }
+		check_variable = { var = industrial_boom_hot_uses value = constant:industrial_boom_event.zero compare = equals }
+	}
+	modifier = {
+		add = constant:industrial_boom_ai.strong
+		OR = {
+			industrial_boom_ai_is_wartime = yes
+			industrial_boom_ai_is_desperate = yes
+		}
+	}
+	modifier = {
+		factor = constant:industrial_boom_ai.blocked
+		industrial_boom_band_is_strained = yes
+		NOT = { industrial_boom_ai_is_wartime = yes }
+		NOT = { industrial_boom_ai_is_desperate = yes }
+	}
+	modifier = {
+		factor = constant:industrial_boom_ai.blocked
+		industrial_boom_ai_is_fragile = yes
+	}
+	modifier = {
+		factor = constant:industrial_boom_ai.blocked
+		check_variable = { var = industrial_boom_trend value = constant:industrial_boom_event.trend_rising compare = equals }
+		industrial_boom_band_is_strained = yes
+		NOT = { industrial_boom_ai_is_desperate = yes }
+	}
+}
+
+industrial_boom_ai_stabilize_weight = {
+	base = constant:industrial_boom_ai.low
+	modifier = { add = constant:industrial_boom_ai.strong industrial_boom_supply_leads = yes }
+	modifier = { add = constant:industrial_boom_ai.standard industrial_boom_band_is_strained = yes }
+	modifier = { add = constant:industrial_boom_ai.urgent industrial_boom_band_is_dangerous_or_worse = yes }
+	modifier = { add = constant:industrial_boom_ai.standard industrial_boom_ai_is_fragile = yes }
+	modifier = {
+		factor = constant:industrial_boom_ai.blocked
+		NOT = { industrial_boom_supply_leads = yes }
+		check_variable = { var = industrial_boom_band value = constant:industrial_boom_band.sustainable compare = equals }
+	}
+}
+
+industrial_boom_ai_reserve_weight = {
+	base = constant:industrial_boom_ai.low
+	modifier = { add = constant:industrial_boom_ai.strong industrial_boom_ai_is_cautious = yes }
+	modifier = { add = constant:industrial_boom_ai.strong industrial_boom_ai_is_fragile = yes }
+	modifier = { add = constant:industrial_boom_ai.standard industrial_boom_ai_is_balanced = yes }
+	modifier = { factor = constant:industrial_boom_ai.blocked industrial_boom_ai_is_desperate = yes }
+}
+
+industrial_boom_ai_cool_weight = {
+	base = constant:industrial_boom_ai.blocked
+	modifier = { add = constant:industrial_boom_ai.urgent industrial_boom_band_is_dangerous_or_worse = yes }
+	modifier = {
+		add = constant:industrial_boom_ai.standard
+		industrial_boom_band_is_strained = yes
+		check_variable = { var = industrial_boom_trend value = constant:industrial_boom_event.trend_rising compare = equals }
+		OR = {
+			industrial_boom_ai_is_cautious = yes
+			industrial_boom_ai_is_fragile = yes
+			industrial_boom_ai_is_balanced = yes
+		}
+	}
+	modifier = {
+		factor = constant:industrial_boom_ai.blocked
+		industrial_boom_band_is_strained = yes
+		OR = {
+			industrial_boom_ai_is_wartime = yes
+			industrial_boom_ai_is_desperate = yes
+		}
+	}
+}
+
+industrial_boom_ai_landing_weight = {
+	base = constant:industrial_boom_ai.low
+	modifier = {
+		add = constant:industrial_boom_ai.strong
+		any_of_scopes = {
+			array = industrial_boom_regions
+			industrial_boom_region_is_secured = yes
+		}
+	}
+	modifier = {
+		add = constant:industrial_boom_ai.standard
+		industrial_boom_band_is_strained = yes
+		check_variable = { var = industrial_boom_trend value = constant:industrial_boom_event.trend_rising compare = equals }
+	}
+	modifier = { add = constant:industrial_boom_ai.strong industrial_boom_ai_is_fragile = yes }
+	modifier = { add = constant:industrial_boom_ai.standard has_country_flag = industrial_boom_recent_crash }
+	modifier = { add = constant:industrial_boom_ai.standard industrial_boom_ai_is_cautious = yes }
+	# Keep the boom while the war still needs the output.
+	modifier = {
+		factor = constant:industrial_boom_ai.blocked
+		industrial_boom_ai_is_wartime = yes
+		check_variable = { var = industrial_boom_band value = constant:industrial_boom_band.sustainable compare = equals }
+	}
+	# Wait for a project close to its legacy.
+	modifier = {
+		factor = constant:industrial_boom_ai.blocked
+		check_variable = { var = industrial_boom_band value = constant:industrial_boom_band.sustainable compare = equals }
+		NOT = {
+			any_of_scopes = {
+				array = industrial_boom_regions
+				industrial_boom_region_is_secured = yes
+			}
+		}
+		any_of_scopes = {
+			array = industrial_boom_regions
+			industrial_boom_region_has_project = yes
+		}
+	}
+}
+
+industrial_boom_ai_halt_weight = {
+	base = constant:industrial_boom_ai.blocked
+	modifier = {
+		add = constant:industrial_boom_ai.urgent
+		industrial_boom_halt_succeeds = yes
+		industrial_boom_band_is_critical = yes
+		has_country_flag = industrial_boom_cooling
+	}
+	modifier = {
+		add = constant:industrial_boom_ai.standard
+		industrial_boom_halt_succeeds = yes
+		industrial_boom_band_is_critical = yes
+		industrial_boom_ai_is_desperate = yes
+	}
+	modifier = {
+		factor = constant:industrial_boom_ai.blocked
+		NOT = { industrial_boom_halt_succeeds = yes }
+	}
+}
+
+industrial_boom_ai_speculative_weight = {
+	base = constant:industrial_boom_ai.blocked
+	modifier = {
+		add = constant:industrial_boom_ai.strong
+		industrial_boom_ai_is_balanced = yes
+		check_variable = { var = industrial_boom_overheating value = constant:industrial_boom_band.strained_edge compare = less_than }
+	}
+	modifier = {
+		add = constant:industrial_boom_ai.standard
+		OR = {
+			industrial_boom_ai_is_wartime = yes
+			industrial_boom_ai_is_desperate = yes
+		}
+	}
+	modifier = {
+		add = constant:industrial_boom_ai.low
+		industrial_boom_ai_is_cautious = yes
+		NOT = { industrial_boom_supply_leads = yes }
+	}
+	modifier = { factor = constant:industrial_boom_ai.blocked industrial_boom_ai_is_fragile = yes }
+}
+
+industrial_boom_ai_miracle_weight = {
+	base = constant:industrial_boom_ai.blocked
+	modifier = {
+		add = constant:industrial_boom_ai.strong
+		industrial_boom_ai_is_balanced = yes
+		has_country_flag = industrial_boom_reserve_held
+	}
+	modifier = {
+		add = constant:industrial_boom_ai.low
+		industrial_boom_ai_is_cautious = yes
+		has_country_flag = industrial_boom_reserve_held
+		NOT = { industrial_boom_supply_leads = yes }
+	}
+	modifier = {
+		add = constant:industrial_boom_ai.strong
+		OR = {
+			industrial_boom_ai_is_wartime = yes
+			industrial_boom_ai_is_desperate = yes
+		}
+		check_variable = { var = industrial_boom_band value = constant:industrial_boom_band.sustainable compare = equals }
+	}
+	modifier = { factor = constant:industrial_boom_ai.blocked industrial_boom_ai_is_fragile = yes }
+}
+
+industrial_boom_ai_contain_weight = {
+	base = constant:industrial_boom_ai.blocked
+	modifier = { add = constant:industrial_boom_ai.strong industrial_boom_ai_is_fragile = yes }
+	modifier = { add = constant:industrial_boom_ai.strong industrial_boom_ai_is_cautious = yes }
+	modifier = { add = constant:industrial_boom_ai.low industrial_boom_band_is_dangerous_or_worse = yes }
+	# No AI keeps spreading in the Critical band.
+	modifier = { add = constant:industrial_boom_ai.urgent industrial_boom_band_is_critical = yes }
+}
+
+industrial_boom_ai_close_books_weight = {
+	base = constant:industrial_boom_ai.blocked
+	modifier = {
+		add = constant:industrial_boom_ai.strong
+		check_variable = { var = industrial_boom_overheating value = constant:industrial_boom_ai.close_order_books compare = greater_than_or_equals }
+	}
+	modifier = { add = constant:industrial_boom_ai.strong industrial_boom_ai_is_fragile = yes }
+}
+
+industrial_boom_ai_open_books_weight = {
+	base = constant:industrial_boom_ai.blocked
+	modifier = {
+		add = constant:industrial_boom_ai.strong
+		check_variable = { var = industrial_boom_overheating value = constant:industrial_boom_band.strained_edge compare = less_than }
+		NOT = { industrial_boom_ai_is_fragile = yes }
+	}
+}

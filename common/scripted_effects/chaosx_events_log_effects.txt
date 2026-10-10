@@ -361,6 +361,15 @@ events_log_set_default_actor_for_current_event = {
 	}
 	else_if = {
 		limit = {
+			check_variable = { event_id = constant:industrial_boom_event.id }
+			has_event_target = industrial_boom_prefire_target
+			event_target:industrial_boom_prefire_target = { exists = yes }
+		}
+		event_target:industrial_boom_prefire_target = { ROOT = { set_temp_variable = { events_log_default_actor = PREV } } }
+		set_temp_variable = { events_log_default_has_actor = 1 }
+	}
+	else_if = {
+		limit = {
 			check_variable = { event_id = constant:white_peace_event_log.event_id }
 			has_event_target = white_peace_primary
 		}
@@ -2748,6 +2757,22 @@ events_log_rebuild_open_event_details_view = {
 			set_temp_variable = { events_log_event_detail_preview_type = constant:riches_found_event.evolution_type }
 			set_temp_variable = { events_log_event_detail_preview_tier = constant:riches_found_event.evolution_iii_tier }
 			set_temp_variable = { events_log_event_detail_preview_stage = constant:riches_found_event.evolution_iii_stage }
+			events_log_add_event_detail_evolution_preview = yes
+		}
+
+		if = {
+			limit = { check_variable = { var = event_id value = constant:industrial_boom_event.id compare = equals } }
+			set_temp_variable = { events_log_event_detail_preview_type = constant:industrial_boom_event.evolution_type }
+			set_temp_variable = { events_log_event_detail_preview_tier = constant:industrial_boom_evolution.tier_1 }
+			set_temp_variable = { events_log_event_detail_preview_stage = constant:industrial_boom_evolution.stage_1 }
+			events_log_add_event_detail_evolution_preview = yes
+			set_temp_variable = { events_log_event_detail_preview_type = constant:industrial_boom_event.evolution_type }
+			set_temp_variable = { events_log_event_detail_preview_tier = constant:industrial_boom_evolution.tier_2 }
+			set_temp_variable = { events_log_event_detail_preview_stage = constant:industrial_boom_evolution.stage_2 }
+			events_log_add_event_detail_evolution_preview = yes
+			set_temp_variable = { events_log_event_detail_preview_type = constant:industrial_boom_event.evolution_type }
+			set_temp_variable = { events_log_event_detail_preview_tier = constant:industrial_boom_evolution.tier_3 }
+			set_temp_variable = { events_log_event_detail_preview_stage = constant:industrial_boom_evolution.stage_3 }
 			events_log_add_event_detail_evolution_preview = yes
 		}
 

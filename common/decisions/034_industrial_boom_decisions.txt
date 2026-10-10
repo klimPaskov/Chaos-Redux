@@ -1,0 +1,461 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 034 INDUSTRIAL BOOM DECISIONS
+# ============================================================================
+# Four core actions, three region actions (one row per region at a time),
+# one action per evolution, two missions, the Emergency Production Halt and
+# the order-books choice for foreign supply contracts.
+# Rows invalid for the band or lifecycle state are hidden, except Run the
+# Economy Hot, which stays visible with its lock in the Dangerous band.
+# AI scores live in common/mtth/034_industrial_boom_mtth.txt.
+# ============================================================================
+
+industrial_boom_category = {
+
+	# ------------------------------------------------------------------------
+	# Core actions
+	# ------------------------------------------------------------------------
+
+	industrial_boom_run_hot = {
+		icon = GFX_decision_034_industrial_boom_run_hot
+		priority = 100
+		visible = { industrial_boom_shows_run_hot = yes }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = industrial_boom_run_hot_band_tt
+				industrial_boom_band_below_dangerous = yes
+			}
+			hidden_trigger = { industrial_boom_can_run_hot = yes }
+		}
+		days_remove = constant:industrial_boom_action.hot_days
+		cancel_trigger = {
+			OR = {
+				NOT = { industrial_boom_is_live = yes }
+				has_country_flag = industrial_boom_landing
+			}
+		}
+		complete_effect = {
+			custom_effect_tooltip = industrial_boom_run_hot_tt
+			hidden_effect = { industrial_boom_start_run_hot = yes }
+		}
+		remove_effect = {
+			hidden_effect = { industrial_boom_end_run_hot = yes }
+		}
+		ai_will_do = {
+			factor = 0
+			modifier = {
+				set_temp_variable = { industrial_boom_ai_weight = mtth:industrial_boom_ai_run_hot_weight }
+				add = industrial_boom_ai_weight
+			}
+		}
+	}
+
+	industrial_boom_stabilize_supply = {
+		icon = GFX_decision_034_industrial_boom_stabilize_supply
+		priority = 99
+		visible = { industrial_boom_is_live = yes }
+		available = { hidden_trigger = { industrial_boom_can_pay_stabilize = yes } }
+		custom_cost_trigger = { industrial_boom_can_pay_stabilize = yes }
+		custom_cost_text = industrial_boom_cost_stabilize
+		days_re_enable = constant:industrial_boom_action.stabilize_cooldown_days
+		complete_effect = {
+			custom_effect_tooltip = industrial_boom_stabilize_supply_tt
+			hidden_effect = { industrial_boom_stabilize_supply = yes }
+		}
+		ai_will_do = {
+			factor = 0
+			modifier = {
+				set_temp_variable = { industrial_boom_ai_weight = mtth:industrial_boom_ai_stabilize_weight }
+				add = industrial_boom_ai_weight
+			}
+		}
+	}
+
+	industrial_boom_build_reserve = {
+		icon = GFX_decision_034_industrial_boom_build_reserve
+		priority = 98
+		visible = { industrial_boom_shows_reserve = yes }
+		available = { NOT = { has_country_flag = industrial_boom_reserve_cooldown } }
+		days_remove = constant:industrial_boom_action.reserve_days
+		cancel_trigger = { NOT = { industrial_boom_is_live = yes } }
+		complete_effect = {
+			custom_effect_tooltip = industrial_boom_build_reserve_tt
+			hidden_effect = { industrial_boom_start_reserve = yes }
+		}
+		remove_effect = {
+			custom_effect_tooltip = industrial_boom_build_reserve_done_tt
+			hidden_effect = { industrial_boom_finish_reserve = yes }
+		}
+		ai_will_do = {
+			factor = 0
+			modifier = {
+				set_temp_variable = { industrial_boom_ai_weight = mtth:industrial_boom_ai_reserve_weight }
+				add = industrial_boom_ai_weight
+			}
+		}
+	}
+
+	industrial_boom_cool_expansion = {
+		icon = GFX_decision_034_industrial_boom_cool_expansion
+		priority = 97
+		visible = {
+			industrial_boom_shows_cool = yes
+			NOT = { industrial_boom_evolution_at_least_1 = yes }
+		}
+		available = { NOT = { has_country_flag = industrial_boom_running_hot } }
+		days_remove = constant:industrial_boom_action.cool_days
+		cancel_trigger = { NOT = { industrial_boom_is_live = yes } }
+		complete_effect = {
+			custom_effect_tooltip = industrial_boom_cool_expansion_tt
+			hidden_effect = { industrial_boom_start_cooling = yes }
+		}
+		remove_effect = {
+			hidden_effect = { industrial_boom_end_cooling = yes }
+		}
+		ai_will_do = {
+			factor = 0
+			modifier = {
+				set_temp_variable = { industrial_boom_ai_weight = mtth:industrial_boom_ai_cool_weight }
+				add = industrial_boom_ai_weight
+			}
+		}
+	}
+
+	industrial_boom_credit_restraint = {
+		icon = GFX_decision_034_industrial_boom_cool_expansion
+		priority = 97
+		visible = {
+			industrial_boom_shows_cool = yes
+			industrial_boom_evolution_at_least_1 = yes
+		}
+		available = { NOT = { has_country_flag = industrial_boom_running_hot } }
+		days_remove = constant:industrial_boom_action.cool_days
+		cancel_trigger = { NOT = { industrial_boom_is_live = yes } }
+		complete_effect = {
+			custom_effect_tooltip = industrial_boom_credit_restraint_tt
+			hidden_effect = { industrial_boom_start_cooling = yes }
+		}
+		remove_effect = {
+			hidden_effect = { industrial_boom_end_cooling = yes }
+		}
+		ai_will_do = {
+			factor = 0
+			modifier = {
+				set_temp_variable = { industrial_boom_ai_weight = mtth:industrial_boom_ai_cool_weight }
+				add = industrial_boom_ai_weight
+			}
+		}
+	}
+
+	# ------------------------------------------------------------------------
+	# Landing, emergency and missions
+	# ------------------------------------------------------------------------
+
+	industrial_boom_prepare_landing = {
+		icon = GFX_decision_034_industrial_boom_controlled_landing
+		priority = 96
+		visible = { industrial_boom_shows_landing_start = yes }
+		available = { NOT = { has_country_flag = industrial_boom_landing_cooldown } }
+		complete_effect = {
+			custom_effect_tooltip = industrial_boom_prepare_landing_tt
+			hidden_effect = { industrial_boom_start_landing = yes }
+		}
+		ai_will_do = {
+			factor = 0
+			modifier = {
+				set_temp_variable = { industrial_boom_ai_weight = mtth:industrial_boom_ai_landing_weight }
+				add = industrial_boom_ai_weight
+			}
+		}
+	}
+
+	industrial_boom_controlled_landing_mission = {
+		icon = GFX_decision_034_industrial_boom_controlled_landing
+		priority = 96
+		allowed = { always = yes }
+		activation = { always = no }
+		available = { always = no }
+		days_mission_timeout = constant:industrial_boom_action.landing_days
+		cancel_trigger = {
+			OR = {
+				NOT = { industrial_boom_is_live = yes }
+				check_variable = { var = industrial_boom_overheating value = constant:industrial_boom_band.landing_mission_ceiling compare = greater_than_or_equals }
+				AND = {
+					has_country_flag = industrial_boom_landing_had_projects
+					NOT = {
+						any_of_scopes = {
+							array = industrial_boom_regions
+							industrial_boom_region_has_project = yes
+							is_controlled_by = ROOT
+						}
+					}
+				}
+			}
+		}
+		cancel_effect = {
+			if = {
+				limit = { industrial_boom_is_live = yes }
+				custom_effect_tooltip = industrial_boom_landing_cancelled_tt
+				hidden_effect = { industrial_boom_cancel_landing = yes }
+			}
+		}
+		timeout_effect = {
+			custom_effect_tooltip = industrial_boom_landing_mission_timeout_tt
+			hidden_effect = { industrial_boom_resolve_landing = yes }
+		}
+	}
+
+	industrial_boom_prevent_crash_mission = {
+		icon = GFX_decision_034_industrial_boom_prevent_crash
+		priority = 101
+		allowed = { always = yes }
+		activation = { always = no }
+		available = {
+			check_variable = { var = industrial_boom_overheating value = constant:industrial_boom_band.prevent_crash_target compare = less_than }
+		}
+		days_mission_timeout = constant:industrial_boom_action.prevent_days
+		cancel_trigger = { NOT = { industrial_boom_is_live = yes } }
+		complete_effect = {
+			custom_effect_tooltip = industrial_boom_prevent_crash_success_tt
+			hidden_effect = { industrial_boom_prevent_crash_success = yes }
+		}
+		timeout_effect = {
+			custom_effect_tooltip = industrial_boom_prevent_crash_failure_tt
+			hidden_effect = { industrial_boom_prevent_crash_failure = yes }
+		}
+	}
+
+	industrial_boom_emergency_halt = {
+		icon = GFX_decision_034_industrial_boom_emergency_halt
+		priority = 102
+		visible = { industrial_boom_shows_halt = yes }
+		complete_effect = {
+			if = {
+				limit = { industrial_boom_halt_succeeds = yes }
+				custom_effect_tooltip = industrial_boom_emergency_halt_success_tt
+			}
+			else = {
+				custom_effect_tooltip = industrial_boom_emergency_halt_failure_tt
+			}
+			hidden_effect = { industrial_boom_emergency_halt = yes }
+		}
+		ai_will_do = {
+			factor = 0
+			modifier = {
+				set_temp_variable = { industrial_boom_ai_weight = mtth:industrial_boom_ai_halt_weight }
+				add = industrial_boom_ai_weight
+			}
+		}
+	}
+
+	# ------------------------------------------------------------------------
+	# Evolution actions
+	# ------------------------------------------------------------------------
+
+	industrial_boom_speculative_expansion = {
+		icon = GFX_decision_034_industrial_boom_speculative_expansion
+		priority = 95
+		visible = { industrial_boom_shows_speculative_offer = yes }
+		complete_effect = {
+			custom_effect_tooltip = industrial_boom_speculative_expansion_tt
+			hidden_effect = { industrial_boom_approve_speculative_expansion = yes }
+		}
+		ai_will_do = {
+			factor = 0
+			modifier = {
+				set_temp_variable = { industrial_boom_ai_weight = mtth:industrial_boom_ai_speculative_weight }
+				add = industrial_boom_ai_weight
+			}
+		}
+	}
+
+	industrial_boom_declare_miracle_region = {
+		icon = GFX_decision_034_industrial_boom_miracle_region
+		priority = 95
+		visible = { industrial_boom_shows_miracle = yes }
+		days_re_enable = constant:industrial_boom_event.pulse_days
+		complete_effect = {
+			custom_effect_tooltip = industrial_boom_declare_miracle_region_tt
+			hidden_effect = { country_event = { id = chaosx.nr34.17 } }
+		}
+		ai_will_do = {
+			factor = 0
+			modifier = {
+				set_temp_variable = { industrial_boom_ai_weight = mtth:industrial_boom_ai_miracle_weight }
+				add = industrial_boom_ai_weight
+			}
+		}
+	}
+
+	industrial_boom_contain_spread = {
+		icon = GFX_decision_034_industrial_boom_contain_spread
+		priority = 95
+		visible = { industrial_boom_shows_contain = yes }
+		complete_effect = {
+			custom_effect_tooltip = industrial_boom_contain_spread_tt
+			hidden_effect = { industrial_boom_contain_spread = yes }
+		}
+		ai_will_do = {
+			factor = 0
+			modifier = {
+				set_temp_variable = { industrial_boom_ai_weight = mtth:industrial_boom_ai_contain_weight }
+				add = industrial_boom_ai_weight
+			}
+		}
+	}
+
+	# ------------------------------------------------------------------------
+	# Foreign supply contracts: accept (open books) or refuse (closed books).
+	# From the refusal threshold upward every contract is refused anyway.
+	# ------------------------------------------------------------------------
+
+	industrial_boom_close_order_books = {
+		icon = GFX_decision_034_industrial_boom_cool_expansion
+		priority = 90
+		visible = {
+			industrial_boom_shows_order_books = yes
+			NOT = { has_country_flag = industrial_boom_order_books_closed }
+		}
+		days_re_enable = constant:industrial_boom_action.order_books_cooldown_days
+		complete_effect = {
+			custom_effect_tooltip = industrial_boom_close_order_books_tt
+			hidden_effect = { industrial_boom_close_order_books = yes }
+		}
+		ai_will_do = {
+			factor = 0
+			modifier = {
+				set_temp_variable = { industrial_boom_ai_weight = mtth:industrial_boom_ai_close_books_weight }
+				add = industrial_boom_ai_weight
+			}
+		}
+	}
+
+	industrial_boom_open_order_books = {
+		icon = GFX_decision_034_industrial_boom_run_hot
+		priority = 90
+		visible = {
+			industrial_boom_shows_order_books = yes
+			has_country_flag = industrial_boom_order_books_closed
+		}
+		days_re_enable = constant:industrial_boom_action.order_books_cooldown_days
+		complete_effect = {
+			custom_effect_tooltip = industrial_boom_open_order_books_tt
+			hidden_effect = { industrial_boom_open_order_books = yes }
+		}
+		ai_will_do = {
+			factor = 0
+			modifier = {
+				set_temp_variable = { industrial_boom_ai_weight = mtth:industrial_boom_ai_open_books_weight }
+				add = industrial_boom_ai_weight
+			}
+		}
+	}
+
+	# ------------------------------------------------------------------------
+	# Region actions: one row per Industrial Region.
+	# ------------------------------------------------------------------------
+
+	industrial_boom_designate_project = {
+		icon = GFX_decision_034_industrial_boom_designate_project
+		priority = 93
+		state_target = yes
+		target_array = industrial_boom_regions
+		target_root_trigger = {
+			industrial_boom_is_live = yes
+			industrial_boom_band_below_dangerous = yes
+			NOT = { has_country_flag = industrial_boom_landing }
+		}
+		target_trigger = { FROM = { industrial_boom_region_shows_designate = yes } }
+		on_map_mode = map_and_decisions_view
+		visible = { FROM = { industrial_boom_region_shows_designate = yes } }
+		available = {
+			FROM = {
+				custom_trigger_tooltip = {
+					tooltip = industrial_boom_region_workable_tt
+					industrial_boom_region_can_be_designated = yes
+				}
+			}
+			custom_trigger_tooltip = {
+				tooltip = industrial_boom_project_affordable_tt
+				industrial_boom_can_pay_any_project = yes
+			}
+		}
+		days_re_enable = constant:industrial_boom_event.pulse_days
+		complete_effect = {
+			custom_effect_tooltip = industrial_boom_designate_project_tt
+			hidden_effect = {
+				FROM = { save_event_target_as = industrial_boom_designate_target }
+				country_event = { id = chaosx.nr34.16 }
+			}
+		}
+		ai_will_do = {
+			base = 30
+			modifier = { add = 20 OR = { industrial_boom_ai_is_cautious = yes industrial_boom_ai_is_balanced = yes industrial_boom_ai_is_wartime = yes } }
+			modifier = { factor = 0.5 industrial_boom_band_is_strained = yes }
+			modifier = { factor = 0.5 FROM = { industrial_boom_state_is_on_front = yes } }
+		}
+	}
+
+	industrial_boom_protect_region = {
+		icon = GFX_decision_034_industrial_boom_protect_region
+		priority = 93
+		state_target = yes
+		target_array = industrial_boom_regions
+		target_root_trigger = { industrial_boom_is_live = yes }
+		target_trigger = { FROM = { industrial_boom_region_shows_protect = yes } }
+		on_map_mode = map_and_decisions_view
+		visible = { FROM = { industrial_boom_region_shows_protect = yes } }
+		available = {
+			FROM = {
+				is_controlled_by = ROOT
+				custom_trigger_tooltip = {
+					tooltip = industrial_boom_protection_renewal_tt
+					NOT = { has_state_flag = industrial_boom_protection_spent }
+				}
+			}
+			hidden_trigger = { industrial_boom_can_pay_protect = yes }
+		}
+		custom_cost_trigger = { industrial_boom_can_pay_protect = yes }
+		custom_cost_text = industrial_boom_cost_protect
+		complete_effect = {
+			custom_effect_tooltip = industrial_boom_protect_region_tt
+			hidden_effect = { FROM = { industrial_boom_protect_region = yes } }
+		}
+		ai_will_do = {
+			base = 10
+			modifier = { add = 30 FROM = { OR = { industrial_boom_state_is_on_front = yes is_capital = yes has_state_flag = industrial_boom_region_damaged } } }
+			modifier = { add = 20 OR = { industrial_boom_ai_is_cautious = yes industrial_boom_ai_is_fragile = yes } }
+			modifier = { add = 20 FROM = { has_state_flag = industrial_boom_region_fragile } }
+			modifier = { add = 20 industrial_boom_band_is_dangerous_or_worse = yes }
+		}
+	}
+
+	industrial_boom_abandon_project = {
+		icon = GFX_decision_034_industrial_boom_abandon_project
+		priority = 92
+		state_target = yes
+		target_array = industrial_boom_regions
+		target_root_trigger = { industrial_boom_is_live = yes }
+		target_trigger = { FROM = { industrial_boom_region_shows_abandon = yes } }
+		on_map_mode = map_and_decisions_view
+		visible = { FROM = { industrial_boom_region_shows_abandon = yes } }
+		complete_effect = {
+			FROM = {
+				if = {
+					limit = { has_state_flag = industrial_boom_project_speculative }
+					custom_effect_tooltip = industrial_boom_abandon_speculative_tt
+				}
+				else = {
+					custom_effect_tooltip = industrial_boom_abandon_project_tt
+				}
+			}
+			hidden_effect = { FROM = { industrial_boom_abandon_project = yes } }
+		}
+		ai_will_do = {
+			base = 0
+			modifier = { add = 40 FROM = { has_state_flag = industrial_boom_project_speculative } industrial_boom_band_is_dangerous_or_worse = yes }
+			modifier = { add = 30 industrial_boom_band_is_critical = yes }
+			modifier = { add = 20 FROM = { NOT = { is_controlled_by = ROOT } } }
+			modifier = { factor = 0 FROM = { industrial_boom_region_is_secured = yes } NOT = { industrial_boom_band_is_critical = yes } }
+		}
+	}
+}

@@ -3,7 +3,8 @@
 ## Goal
 
 Replace the interim Event 34 stub with the Industrial Boom design in this package, keeping the implemented Event 35 handoff, supplier adapter and stable identifiers working throughout.
-The [package README](034_industrial_boom_spec_index.md) lists what is implemented, what is interim and what is pending; parts 1 to 10 are the requirements.
+Disposition `implemented` (2026-10-10): the work order below was carried out, and [docs/events/034_industrial_boom.md](../../events/034_industrial_boom.md) describes the result.
+Parts 1 to 10 of the [package README](034_industrial_boom_spec_index.md) are the requirements.
 Do not reduce the event to a popup, one modifier or a political power shop.
 
 ## Read first

@@ -1,31 +1,476 @@
 # ============================================================================
-# CHAOS REDUX - EVENT 034 INDUSTRIAL BOOM SNAPSHOT CONSTANTS
+# CHAOS REDUX - EVENT 034 INDUSTRIAL BOOM TUNING
 # ============================================================================
-# Event 034 owns the boom snapshot and landing handoff. Event 035 consumes the
-# resulting contract but never writes Overheating or boom-only modifiers.
+# Event 034 owns the boom, its single public value (Overheating), the four
+# internal drift drivers, the Industrial Regions and their projects, the four
+# outcomes and the frozen Event 35 snapshot. Event 35 consumes the snapshot and
+# the supplier adapter but never writes Overheating or boom modifiers.
+# Every tuning value of the event lives in this file; durations that reject
+# constants are passed through a temporary variable first.
 # ============================================================================
 
 industrial_boom_event = {
-	schema = {
-		any_key = yes
-		data = fixed_point
-	}
+	schema = { any_key = yes data = fixed_point }
 
 	id = 34
 	evolution_type = 34
-	active_days = 180
 	baseline_evolution = 0
-	baseline_overheating = 35
-	overheating_factory_weight = 2
-	overheating_peak_delta = 15
-	landing_state = 1
-	reserve_units = 1
-	project_units = 1
-	region_units = 1
-	shock_units = 1
+	zero = 0
+	one = 1
+	maximum_overheating = 100
+	pulse_days = 7
+	opening_days = 90
+	opening_days_after_controlled = 60
+	opening_drift_factor = 0.5
 	repeat_history_units = 1
 	overheating_pressure_factor = 0.10
 	supplier_contract_days = 120
 	supplier_demand_overheating = 8
-	supplier_contract_overheat_risk = 80
+	supplier_contract_overheat_risk = 70
+	supplier_refusal_threshold = 70
+	recent_recipient_days = 730
+	recent_crash_days = 730
+	recent_expansion_signal_days = 730
+	band_report_cooldown_days = 30
+	trend_steady = 0
+	trend_rising = 1
+	trend_falling = -1
+	trend_threshold = 0.25
+	trend_falling_threshold = -0.25
+}
+
+# Band edges. Leaving a band downward needs the value to fall the hysteresis
+# below its lower edge, so one-day crossings never churn modifiers or reports.
+industrial_boom_band = {
+	schema = { any_key = yes data = fixed_point }
+
+	sustainable = 0
+	strained = 1
+	dangerous = 2
+	critical = 3
+	strained_edge = 40
+	dangerous_edge = 70
+	critical_edge = 90
+	hysteresis = 5
+	prevent_crash_target = 80
+	controlled_landing_ceiling = 40
+	landing_mission_ceiling = 70
+	halt_protected_ceiling = 90
+}
+
+# Starting Overheating is derived from the target's condition, never rolled.
+industrial_boom_start = {
+	schema = { any_key = yes data = fixed_point }
+
+	baseline = 12
+	evolution_1 = 22
+	evolution_2 = 28
+	evolution_3 = 38
+	concentrated_industry = 4
+	concentration_share = 0.4
+	supply_trouble = 5
+	damaged_infrastructure = 3
+	low_stability = 4
+	low_stability_threshold = 0.4
+	lost_cores = 4
+	per_earlier_crash = 10
+	earlier_crash_cap = 20
+}
+
+# Weekly drift contributions in Overheating points. The largest positive
+# driver becomes the visible leading cause.
+industrial_boom_drift = {
+	schema = { any_key = yes data = fixed_point }
+
+	output_base = 0.5
+	output_running_hot = 1.5
+	output_running_hot_speculative = 2.0
+	output_war_demand = 0.4
+	output_speculative = 0.3
+	output_spread_directed = 0.3
+	output_spread_unchecked = 0.5
+	output_cooling = -2.0
+	output_local_integration = -0.4
+	output_landing = -1.0
+	supply_low_fuel = 0.8
+	low_fuel_ratio = 0.3
+	supply_convoy_threat = 0.8
+	supply_heavy_convoy_threat = 1.2
+	convoy_threat_threshold = 0.3
+	heavy_convoy_threat_threshold = 0.6
+	supply_train_shortage = 0.5
+	train_need_per_factory = 0.1
+	supply_damaged_buildings = 0.3
+	supply_famine_region = 0.5
+	supply_stabilized = -1.0
+	supply_stabilized_emergency = -1.5
+	supply_rail_project = -0.3
+	regional_active_project = 0.2
+	regional_miracle_project = 0.4
+	regional_low_infrastructure = 0.2
+	low_infrastructure_level = 4
+	regional_damaged = 0.4
+	regional_occupied = 0.5
+	regional_fragile_miracle = 0.3
+	regional_protected = -0.2
+	finance_strained = 0.3
+	finance_dangerous = 0.6
+	finance_speculative_project = 0.8
+	finance_speculation = 0.4
+	finance_repeated_hot = 0.3
+	repeated_hot_uses = 2
+	finance_per_crash = 0.2
+	finance_reserve_held = -0.3
+	finance_cooling = -0.5
+	finance_practices_project = -0.2
+	finance_automated_control_legacy = -0.2
+}
+
+# The four outcomes of a boom.
+industrial_boom_outcome = {
+	schema = { any_key = yes data = fixed_point }
+
+	controlled = 1
+	rough = 2
+	forced = 3
+	crash = 4
+}
+
+# Visible leading cause, one per internal driver.
+industrial_boom_cause = {
+	schema = { any_key = yes data = fixed_point }
+
+	output = 1
+	supply = 2
+	regional = 3
+	finance = 4
+}
+
+# Immediate shocks. Region shocks scale with the region's share of national
+# industry; a protected region and a held reserve absorb most of one shock.
+industrial_boom_shock = {
+	schema = { any_key = yes data = fixed_point }
+
+	region_base = 4
+	region_share_scale = 20
+	region_stage_bonus = 4
+	bombing_base = 2
+	bombing_share_scale = 8
+	bombing_recent_days = 8
+	region_damage_cooldown_days = 30
+	fuel_collapse = 5
+	fuel_collapse_ratio = 0.1
+	blockade = 5
+	blockade_threat = 0.6
+	national_shock_cooldown_days = 60
+	severe_threshold = 8
+	protection_absorbed_share = 0.25
+	reserve_absorbed_share = 0.25
+	recent_window_days = 180
+	occupation_resume_days = 180
+	delayed_maintenance_days = 60
+	delayed_maintenance = 12
+}
+
+industrial_boom_regions = {
+	schema = { any_key = yes data = fixed_point }
+
+	maximum = 3
+	medium_count = 2
+	medium_factories = 20
+	large_factories = 60
+	score_factory = 10
+	score_infrastructure = 5
+	score_capital = 15
+	score_port = 5
+	score_resources = 3
+	score_front = -40
+	score_strong_legacy = -30
+	score_unfinished_works = -20
+	minimum_score = 1
+}
+
+# Speculative Mania offer kinds.
+industrial_boom_offer = {
+	schema = { any_key = yes data = fixed_point }
+
+	district = 1
+	port = 2
+	rail = 3
+}
+
+# Project stage durations are progress days; each weekly pulse adds the pulse
+# length scaled by band, running hot, cooling and Miracle status.
+industrial_boom_project = {
+	schema = { any_key = yes data = fixed_point }
+
+	none = 0
+	practices = 1
+	rail = 2
+	conversion = 3
+	stage_none = 0
+	stage_building = 1
+	stage_integrating = 2
+	stage_secured = 3
+	building_days = 90
+	integrating_days = 60
+	hot_progress_factor = 1.5
+	hot_strained_progress_factor = 1.25
+	cooling_progress_factor = 0.5
+	miracle_progress_factor = 2
+	strained_building_factor = 0.75
+	spread_cap_per_region = 2
+	rail_incident_delay_days = 14
+	stall_delay_days = 21
+	abandon_relief = 4
+	abandon_speculative_relief = 12
+	abandon_relief_min_age_days = 30
+	unfinished_works_days = 365
+	designate_regional_strain = 2
+}
+
+# Package values on the country dynamic modifier industrial_boom_package.
+# The output share erodes by band; construction holds until Dangerous.
+industrial_boom_package = {
+	schema = { any_key = yes data = fixed_point }
+
+	output = 0.35
+	efficiency_gain = 0.5
+	efficiency_cap = 0.10
+	construction = 0.35
+	dockyard = 0.15
+	line_conversion = 0.25
+	strained_output_share = 0.67
+	dangerous_output_share = 0.33
+	dangerous_construction_share = 0.5
+	speculative_output_share = 1.25
+	hot_output = 0.20
+	hot_efficiency_gain = 0.25
+	cooling_output_share = 0.25
+	cooling_construction_share = 0.5
+	spread_output_directed = 0.04
+	spread_output_unchecked = 0.06
+	contain_output = -0.10
+	reserve_building_output = -0.10
+	export_orders_output = 0.10
+	reconversion_output = -0.10
+	reconversion_days = 180
+	exhaustion_output = -0.15
+	exhaustion_construction = -0.15
+	rough_exhaustion_days = 365
+	forced_exhaustion_days = 730
+}
+
+# Action tuning. Costs scale with civilian plus military factories.
+industrial_boom_action = {
+	schema = { any_key = yes data = fixed_point }
+
+	hot_days = 60
+	hot_cooldown_days = 30
+	hot_overheating = 8
+	hot_strained_overheating = 12
+	hot_speculative_overheating = 5
+	hot_block_after_prevent_days = 90
+	stabilize_cooldown_days = 45
+	stabilize_relief_days = 60
+	stabilize_relief = 3
+	stabilize_leading_relief = 8
+	stabilize_emergency_factor = 1.5
+	stabilize_shield_days = 30
+	stabilize_blockade_factor = 0.5
+	reserve_days = 90
+	reserve_cooldown_days = 90
+	reserve_relief = 3
+	cool_days = 60
+	cool_relief = 15
+	credit_restraint_stability = -0.05
+	protect_renew_days = 90
+	protect_commitment_days = 60
+	landing_days = 120
+	landing_shorter_days = 30
+	landing_longer_days = 30
+	landing_cancel_cooldown_days = 60
+	prevent_days = 60
+	order_books_cooldown_days = 30
+	contain_stability = -0.05
+	contain_output_days = 90
+	speculative_offer_first_days = 30
+	speculative_offer_interval_days = 120
+	speculative_offer_open_days = 60
+	miracle_reserve_preferred = 1
+	spread_integrate_days = 60
+	spread_per_region_unchecked = 2
+}
+
+industrial_boom_cost = {
+	schema = { any_key = yes data = fixed_point }
+
+	trains_per_factory = 0.08
+	trains_minimum = 2
+	fuel_per_factory = 150
+	fuel_minimum = 1500
+	convoys_per_factory = 0.1
+	convoys_minimum = 3
+	support_per_factory = 8
+	support_minimum = 50
+	project_trains_per_factory = 0.05
+	project_trains_minimum = 1
+	project_support_per_factory = 10
+	project_support_minimum = 60
+	reserve_civilian_share = 0.04
+	project_civilian_share = 0.05
+	protect_civilian_share = 0.03
+	civilian_minimum = 1
+	incident_trains_per_factory = 0.04
+	incident_support_per_factory = 6
+	labor_political_power = 25
+	labor_stability = -0.03
+	concede_output = -0.10
+	concede_days = 30
+}
+
+# Incident pacing: one incident at most per spacing window.
+industrial_boom_incident = {
+	schema = { any_key = yes data = fixed_point }
+
+	spacing_days = 60
+	roll_chance = 0.35
+	repeat_factor = 0.25
+	protected_target_chance = 0.25
+	weight_rail_congestion = 20
+	weight_material_shortfall = 15
+	weight_plant_accident = 15
+	weight_labor_dispute = 15
+	weight_maintenance_failure = 20
+	weight_evolution = 25
+	leading_cause_factor = 1.5
+	inspect_delay_days = 14
+	miracle_progress_days = 30
+	quarantine_delay_days = 21
+	recognize_progress_days = 30
+	rail_congestion_relief = 4
+	shortfall_relief = 5
+	shortfall_stall_pressure = 2
+	accident_relief = 3
+	accident_pressure = 6
+	dispute_concede_relief = 5
+	dispute_force_pressure = 2
+	maintenance_relief = 6
+	frenzy_force_relief = 3
+	frenzy_delay_pressure = 6
+	shell_back_pressure = 8
+	backlash_hold_relief = 4
+	backlash_weaken_pressure = 4
+	overnight_inspect_relief = 2
+	materials_quarantine_relief = 3
+	schedule_exploit_pressure = 7
+	schedule_restrict_relief = 3
+	unplanned_recognize_pressure = 5
+	unplanned_dismantle_relief = 4
+	growing_line_pressure = 4
+	cascade_shock = 10
+}
+
+# Legacy is granted only at a controlled or rough landing and is capped by a
+# campaign budget of factory levels and building slots.
+industrial_boom_legacy = {
+	schema = { any_key = yes data = fixed_point }
+
+	budget_share = 0.10
+	budget_minimum = 2
+	practices_efficiency = 0.10
+	practices_conversion = 0.10
+	rail_resource_penalty = -0.10
+	rail_infrastructure = 1
+	rail_railway = 1
+	conversion_slots = 1
+	conversion_factories = 1
+	machine_city_slots = 2
+	machine_city_factories = 2
+	miracle_strength = 1.5
+	half_strength = 0.5
+	timed_days = 1095
+	automated_days = 1825
+	reserve_bonus_days = 365
+	spent_budget_construction = 0.10
+	spent_budget_days = 730
+}
+
+# Event-owned Chaos from concrete abnormal outcomes only.
+industrial_boom_chaos = {
+	schema = { any_key = yes data = fixed_point }
+
+	miracle_secured = 5
+	spread_integrated = 5
+}
+
+# Evolution pacing (MTTH days) and the evolution log tiers.
+industrial_boom_evolution = {
+	schema = { any_key = yes data = fixed_point }
+
+	stage_1 = 1
+	stage_2 = 2
+	stage_3 = 3
+	tier_1 = 2
+	tier_2 = 3
+	tier_3 = 4
+	base_days = 90
+	fast_factor = 0.75
+	slow_factor = 1.4
+	chaos_margin = 200
+	direct_spread = 1
+	unchecked_spread = 2
+	contained_spread = 3
+}
+
+# Target pool weights (integer copies in the shared random pool).
+industrial_boom_target_weight = {
+	schema = { any_key = yes data = fixed_point }
+
+	base = 10
+	large_industry = 5
+	large_industry_factories = 50
+	stable = 3
+	stable_threshold = 0.6
+	war_demand = 4
+	player = 6
+	recent_recipient_factor = 0.2
+	recent_crash = -4
+	blockade = -2
+	unstable = -3
+	unstable_threshold = 0.3
+	minimum = 1
+}
+
+# AI profiles and decision willingness. Scores are weights, not chances.
+industrial_boom_ai = {
+	schema = { any_key = yes data = fixed_point }
+
+	profile_balanced = 0
+	profile_cautious = 1
+	profile_wartime = 2
+	profile_desperate = 3
+	profile_fragile = 4
+	blocked = 0
+	low = 5
+	standard = 20
+	strong = 40
+	urgent = 80
+	desperate_surrender = 0.15
+	cautious_stability = 0.6
+	fragile_stability = 0.4
+	close_order_books = 55
+}
+
+# Achievement thresholds.
+industrial_boom_achievement = {
+	schema = { any_key = yes data = fixed_point }
+
+	managed_hot_uses = 2
+	managed_secured = 2
+	miracle_regions = 2
+	redline_days = 120
+	redline_critical_days = 30
+	built_to_last_landings = 2
+	built_to_last_profiles = 2
 }

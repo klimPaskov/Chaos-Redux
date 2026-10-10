@@ -149,6 +149,9 @@ industrial_boom_deliver_collapse_snapshot = {
 			if = { limit = { has_country_flag = industrial_boom_supplier_contract } set_country_flag = great_depression_event34_supplier_contract }
 			great_depression_event34_supplier_adapter = yes
 			set_country_flag = { flag = great_depression_recent_industrial_expansion days = @industrial_boom_recent_expansion_memory_days }
+			# Every further Industrial Region and spread state joins the
+			# Event 35 region ledger under its own receipt.
+			industrial_boom_deliver_extra_regions = yes
 			clr_country_flag = industrial_boom_snapshot_frozen
 			clr_country_flag = industrial_boom_snapshot_region_frozen
 			clr_country_flag = industrial_boom_collapse_retry_exhausted
@@ -168,13 +171,17 @@ industrial_boom_deliver_collapse_snapshot = {
 				set_temp_variable = { industrial_boom_collapse_retry_delay = constant:industrial_boom_handoff.retry_days }
 				country_event = { id = chaosx.nr34.4 days = industrial_boom_collapse_retry_delay }
 			}
-			else = { set_country_flag = industrial_boom_collapse_retry_exhausted }
+			else = {
+				set_country_flag = industrial_boom_collapse_retry_exhausted
+				industrial_boom_clear_frozen_region_payloads = yes
+			}
 		}
 	}
 }
 
-# COUNTRY scope. Freeze the one legacy primary state and any supplied regional
-# metadata without inventing per-state projects from aggregate project counts.
+# COUNTRY scope. Freeze the primary Industrial Region with the per-state
+# payload written by industrial_boom_prepare_collapse_fields. Further regions
+# and spread states are delivered after the national call is accepted.
 industrial_boom_freeze_inherited_region = {
 	clr_country_flag = industrial_boom_snapshot_region_frozen
 	clr_country_flag = industrial_boom_snapshot_region_conversion_forbidden

@@ -15,10 +15,9 @@ From the authoritative workbook row (`docs/spreadsheets/chaos_redux_events_catal
 
 ## Acceptance basis
 
-No attributable user or parent acceptance record exists for the design in this package, so its design claims remain `unresolved` under `CLAUDE.md`.
 Catalog identity above is user-maintained source data.
-Implementation status below is evidence of what exists, not design approval.
-The 2026-10-10 audit changes are proposals inside that unresolved design and are listed in the changelog.
+The 2026-10-10 audit cuts, cluster 7 (Positive Economy) membership and automatic refusal of Event 35 supply contracts from 70 Overheating were accepted by the release orchestrator under the user's 2026-10-10 brief section 2.2 authority, recorded in the release ledger.
+Parts 1 to 10 are `implemented` in source; the permanent description of what exists is [docs/events/034_industrial_boom.md](../../events/034_industrial_boom.md).
 
 ## Design in one paragraph
 
@@ -29,37 +28,10 @@ Three evolutions change the source of power and deepen the inherited depression,
 
 ## Implementation status
 
-Checked against the working tree on 2026-10-10.
-
-### Implemented
-
-| Surface | Source | Notes |
-| --- | --- | --- |
-| Hidden entry `chaosx.nr34.1` | `events/034_industrial_boom.txt` | Random major or player country passing `great_depression_has_viable_economy` and the boom and depression exclusion flags; allocates the episode receipt; joins an active worldwide depression as supplier; seeds snapshot fields; freezes one random industrial state; adds the idea; schedules the visible event and the landing |
-| Visible opening `chaosx.nr34.2` and `chaosx.news.39` | same file, `events/_chaosx_news.txt` | Vanilla report picture, interim text |
-| Landing `chaosx.nr34.3` and retry `chaosx.nr34.4` | same file | Freezes the snapshot, removes the idea, delivers to Event 35 with bounded retries |
-| Event 35 collapse request and region freezer | `common/scripted_effects/034_industrial_boom_collapse_handoff_effects.txt` | Full call contract, evolution-to-profile mapping, one primary region (part 6) |
-| Supplier contract adapter | `common/scripted_effects/034_industrial_boom_adapter_effects.txt`, `common/scripted_triggers/034_industrial_boom_adapter_triggers.txt` | Event 35's Offer Boom Supply Contract raises the supplier's Overheating and opens a timed contract (part 7) |
-| Tuning | `common/script_constants/034_industrial_boom_constants.txt`, `034_industrial_boom_handoff_constants.txt` | |
-| Interim idea | `common/ideas/034_industrial_boom_ideas.txt` | Static `industrial_boom` modifier bundle with `allowed_civil_war = { always = no }` |
-| Achievement The Long Fall | `common/achievements/chaos_redux_achievements.txt`, `gfx/achievements/chaos_redux_034_the_long_fall*.dds` | Proof flag set by Event 35 |
-| Localisation | `localisation/english/034_industrial_boom_l_english.yml`, `034_industrial_boom_requirement_flags_l_english.yml` | Includes the Event Details line and requirement-flag keys |
-| Repeatable registration | `common/scripted_effects/chaosx_logic_effects.txt` | `global.repeatable_events` |
-| Event 39 read | `common/scripted_effects/039_murder_mystery_lifecycle_effects.txt` | Reads `industrial_boom_active` |
-
-### Interim behavior that the design replaces
-
-- The boom lasts exactly 180 days (`active_days`) and then always crashes into Event 35; no landing avoids the depression.
-- Starting Overheating is 35 plus two per civilian factory, so large economies start at or near 100.
-- The idea grants static bonuses including research speed and local resources, with no erosion.
-- Evolution is always 0, so every collapse enters Event 35 at baseline and The Long Fall cannot unlock.
-- Target selection is unweighted and the inherited region is a random industrial state.
-- There is no decision category, project, reserve, incident, AI behavior or permanent event document (`docs/events/034_industrial_boom.md` does not exist).
-
-### Pending
-
-Everything in parts 1 to 5 and 8 to 10 that the table above does not list, the producer side of part 6, and the Event 34 side of part 7.
-The [coding prompt](034_industrial_boom_coding_prompt.md) orders the work.
+Implemented in source on 2026-10-10 as described in [docs/events/034_industrial_boom.md](../../events/034_industrial_boom.md).
+The earlier interim behavior (a fixed 180-day boom that always crashed into Event 35, a starting Overheating of 35 plus two per civilian factory, a static idea bundle and an always-zero evolution) is removed.
+Recorded limitations: no shock-request adapter exists because no owner submits one, Stabilize Supply Chains always pays trains, band and trend words carry colour without separate texticons, and the Event 35 consumers of the extra region and corridor rows remain Event 35 work.
+Validation is source review, local reference checks and MCP `script_validate` with no findings; there is no live-game evidence.
 
 ## Files
 
@@ -86,15 +58,9 @@ No plans folder exists for this event; implementation handoffs go to `docs/plans
 
 ## Open questions
 
-Parent acceptance, 2026-10-10 (release orchestrator, under the user's 2026-10-10 brief section 2.2 authority, recorded in the release ledger): every 2026-10-10 audit cut is accepted, cluster 7 (Positive Economy) is confirmed, and automatic refusal of Event 35 supply contracts from 70 Overheating is accepted (items 1, 2 and 4).
-These are `accepted and queued` for the Event 034 implementation owner, who also owns the interim always-crash defect in item 3.
-Item 5 stays open until the famine and migration owners expose the two triggers.
-
-1. **Cluster assignment.** The original planning pass recorded that the user specified no cluster for Event 34. The current catalog places it in Positive Economy as the Low member. The package now follows the catalog (part 7); confirm that the catalog assignment is the current decision.
-2. **Supplier refusal.** The implemented adapter accepts every valid Event 35 supply contract, even in the Dangerous band, where the contract is marked at risk. Proposal: the supplier refuses automatically from 70 Overheating upward, so a contract can never push a boom into Critical. This changes implemented Event 35-facing behavior and needs acceptance.
-3. **Interim always-crash.** Until the rework lands, every Industrial Boom ends in a Great Depression after 180 days, and large economies hand Event 35 an Overheating near 100. Proposal: before the full rework, let the stub land without a depression unless the seeded Overheating is in the Critical band, and cap the seed at the part 2 Fragile range. Not applied, because it changes live gameplay outside this document audit.
-4. **Audit design changes.** The 2026-10-10 audit removed or merged several drafted mechanics (see the changelog). Because the package had no recorded acceptance, these are proposals; confirm or restore specific items.
-5. **Famine and migration seams.** The links in part 7 need a famine-owned state trigger for an active famine stage and a migration-owned trigger for recent local integration in a state. Both owners must expose them before Event 34 can read them.
+None open.
+Cluster assignment (Positive Economy, Low member), supplier refusal from 70 Overheating, the interim always-crash defect and the audit cuts are resolved by the acceptance above.
+The famine and migration seams are `famine_food_stage_requires_mortality` and `migration_state_has_recent_local_integration`.
 
 ## Changelog
 
