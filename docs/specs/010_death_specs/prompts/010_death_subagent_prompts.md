@@ -1,5 +1,9 @@
 # Subagent Prompt Pack — Event 010 Death
 
+> Historical build contract (spec audit 2026-10-10): Event 010 is implemented, so do not rerun this prompt.
+> Current state and remaining work are in the [package README](../README.md); current repository instructions are in `CLAUDE.md`, and skills live under `.claude/skills/`.
+> Planning names used here (Maritime Errata, The Death Country, Black Ledger, `death_ghost_host`) were replaced by the implemented names given in the specs.
+
 All project subagents must be spawned with `fork_turns="none"`. Pass each prompt explicitly with the relevant file paths. These prompts are implementation handoffs; the parent implementation agent remains responsible for final integration and completion claims.
 
 ## Repo explorer prompt
@@ -59,7 +63,7 @@ Follow source-mode, target sizes, manifests, DDS conversion, and gfx handoff rul
 
 ## Portrait creator prompt
 
-Route Zol and any authorized animated Zol portrait to `chaosx_portrait_creator` under [chaos-redux-event-assets](../../../../.agents/skills/chaos-redux-event-assets/SKILL.md).
+Route Zol and any authorized animated Zol portrait to `chaosx_portrait_creator` under [chaos-redux-event-assets](../../../../.claude/skills/chaos-redux-event-assets/SKILL.md).
 Supply classification, exact assets, accepted animation scope, paths, and handoff requirements.
 Portrait-specific wiring belongs to that worker; event art owns non-portrait scenes.
 

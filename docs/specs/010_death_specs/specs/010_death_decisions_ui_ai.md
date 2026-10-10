@@ -9,81 +9,80 @@ Death needs player responses, but those responses should not appear before the w
 3. **Emergency compact**: shared coalition decisions once Death is a major world threat.
 4. **Dark methods**: optional necromancy decisions to fight Death at moral and political cost.
 5. **Black Oath**: alternate path to pledge to Zol and join Death's side, with heavy risks.
-6. **World-end emergency**: last-stage decisions for continental footholds and global evacuation/containment attempts.
-7. **Aftermath**: recaptured wasteland cleanup and memorial/reconstruction work after Death is defeated.
+6. **World-end emergency**: last-stage decisions for continental footholds.
+7. **Aftermath**: recaptured wasteland survey, outposts, and one permanent custodial policy after Death is defeated.
 
-The category should not show every possible decision at once. Visibility must be controlled by reveal state, country proximity, war state, route flags, compact membership, and active stage.
+The category should not show every possible decision at once.
+Visibility is controlled by reveal state, country confirmation, proximity, war state, route flags, compact membership, and active stage.
 
-This spec intentionally avoids a separate Death mission layer. The event should use ordinary decisions, targeted decisions, cooldowns, state modifiers, and normal war/occupation gameplay instead of timed missions or objective cards.
+Death uses ordinary decisions, targeted state decisions, cooldowns, state modifiers, and normal war and occupation gameplay.
+Its only mission is the narrow `death_hold_quarantine_line_mission`, started by Strengthen Quarantine Line, which tests whether the country actually keeps a fortified line bordering Death rather than clicking a permanent buff.
+Do not add broad goal-style mission stacks or auto-completing objective cards unless a later accepted spec asks for them.
+Decision gates use native predicates only when their behaviour is documented; Survey and Outpost therefore require an acting-country-owned division physically present in the selected state, and no Death decision claims a current-supply or supply-connection check.
 
 ## Decision categories
 
-### Local Report: Maritime Errata
+| Category ID | In-game title | Who sees it |
+| --- | --- | --- |
+| `death_missing_island_category` | Missing Island Reports | Countries that received the delayed report pair. Planning name: Maritime Errata. |
+| `death_country_containment_category` | Coastal Precautions before the country confirms the case; The Black Country after confirmation or public reveal; Custody of the Empty Land after defeat | Countries with direct border danger, war contact, Compact membership, a confirmed coastal warning, or (before confirmation) an exposed report recipient with an eligible port. It never becomes global. Planning name: The Death Country. |
+| `death_black_ledger_category` | Death's Muster | Active DTH only. Planning name: Black Ledger. |
 
-Visible only before reveal, usually to:
+Every price below is a `death_decision_cost` constant paid through the sale-aware Event 026 path, with at most four spendable types per action and at most three shown inline; the full bundle is on hover.
 
-- the old owner of a consumed island.
-- countries with naval bases near the sea zone.
-- nearby colonial overlords.
-- players with an intelligence/recon hook.
-- countries that have already received one delayed marine-office packet.
+## Decision inventory
 
-Purpose: let attentive players discover the crisis without telling everyone.
+| Decision ID | In-game name | Gate | Result |
+| --- | --- | --- | --- |
+| `death_send_survey_boat` | Send a Survey Boat | Report recipient with a port. Command power, convoys, fuel. | Large case-file gain, confirms the local case, lowers spread pressure. |
+| `death_check_telegraph_office` | Check the Telegraph Office | Report recipient. Political power, command power. | Case-file gain, lowers spread pressure. |
+| `death_quiet_quarantine_notice` | Issue Harbor Sanitation Notices | Report recipient. Command power, convoys, support equipment, fuel. | Small case-file gain, 90-day quiet quarantine, lowers spread pressure. |
+| `death_file_under_weather` | File It Under Weather | Report recipient. Free. | Removes case-file evidence and raises spread pressure; a later report can reopen the file. |
+| `death_recognize_death_war` | Declare the Death War | Confirmed or revealed, within the response boundary. Command power, war support. | War with Death. |
+| `death_call_living_conference` | Call the Living Conference | Threatened or major country after reveal. Political power, command power. | Forms the Living Compact with this country as leader and invites eligible threatened countries. |
+| `death_join_living_compact` | Join the Living Compact | Invited country. Political power. | Membership; raises member count and cohesion. |
+| `death_compact_war_declaration` | Compact War Declaration | Compact leader. | Every eligible member inside the danger area enters the war; others are skipped. |
+| `death_joint_coastal_patrol_plan` | Joint Coastal Patrol Plan | Compact or coastal responder. Command power, fuel, convoys, support equipment. | Watch network +2, raising forced sea-jump costs; a strong network can intercept one low-pressure coastal jump. Lowers spread pressure. |
+| `death_keep_port_lit` | Keep the Port Lit | Coastal controlled state, before or after reveal. Command power, convoys, a major fuel stockpile. | 120-day Coastal Watch on the state: ordinary hidden coastal jumps cannot select it, watch network +1, and the state counts toward The Last Ferry if Death later consumes it. |
+| `death_strengthen_quarantine_line` | Strengthen Quarantine Line | Controlled state bordering an active wasteland. Command power, infantry equipment, support equipment. | 120-day line that removes the state from wither targets and eases local supply; starts the hold-line mission. |
+| `death_hold_quarantine_line_mission` | Hold the Quarantine Line | Started by the decision above. | Holding to timeout lowers spread pressure; losing every line first raises it. |
+| `death_authorize_wasteland_entry_gear` | Authorize Wasteland Entry Gear | At war with or bordering Death. Army experience, support equipment, trucks, fuel. | Temporary national wasteland-entry modifier. |
+| `death_share_wasteland_entry_gear` | Share Wasteland Entry Gear | Compact member. Command power, support equipment, trucks, fuel. | Gear for Compact members. |
+| `death_last_shores_response` | Last Shores Response | World-end. Command power, army experience, fuel, trucks. | 180-day emergency response; marks the country as a responder for Black Tide Reversed. |
+| `death_open_black_atlas` | Open the Black Atlas | Human player after public reveal while Death is undefeated. Free. | Opens the four-tab dashboard; zero AI weight. |
+| `death_survey_the_wasteland` | Survey the Wasteland | Living-controlled recaptured state with the actor's own division present. Army experience, support equipment, trucks. | Surveyed Dead Zone, 180-day entry gear, custodial capacity once per state. |
+| `death_build_dead_zone_outpost` | Build the Dead-Zone Outpost | Surveyed recaptured state with the actor's own division present. Army experience, support equipment, trucks, trains. | Permanent outpost modifier and custodial capacity once per state; restores nothing. |
+| `death_select_sealed_exclusion`, `death_select_memorial_stewardship`, `death_select_transit_custodianship`, `death_maintain_transit_custodianship` | Custodial policies | After defeat, on an outposted state. Custodial capacity (Transit also support equipment, trucks, fuel). | One permanent policy per state; see the custodial addendum below. |
+| `death_open_black_book`, `death_bind_the_unburied`, `death_interrogate_empty_road`, `death_seal_names_in_iron`, `death_close_black_book`, `death_burn_black_book` | Dark Methods | See the Dark Methods section. | |
+| `death_whisper_to_zol`, `death_take_black_oath`, `death_offer_prison_census`, `death_open_dead_port`, `death_feed_border_to_death`, `death_break_black_oath`, `death_form_black_apostolate` | Black Oath | See the Black Oath section. | |
+| `death_consume_another_island`, `death_press_to_mainland`, `death_raise_passive_hosts`, `death_raise_hollow_hosts`, `death_raise_last_shore_hosts` | Death's Muster | See the Death's Muster section. | |
+| `death_hide_port_lit_decisions`, `death_show_port_lit_decisions` | Port list toggle | Human player. | Hides or shows the per-state Keep the Port Lit list. |
 
-Decisions:
+### Planned concepts that were never built
 
-| Decision | Availability | Cost/requirement | Result direction | AI |
-| --- | --- | --- | --- | --- |
-| `Send a Survey Boat` | First delayed packet. | Convoys, fuel, small command power, nearby port. | Chance to discover Death origin or reduce report delay. Can fail if Death already spread. | Naval/local owners likely. |
-| `Check the Telegraph Office` | Owner or colonial overlord. | Political attention plus civilian factory admin burden for a short duration. | Reveals whether the island's state owner/controller changed and may open quiet investigation. | Bureaucratic powers likely. |
-| `Issue Harbor Sanitation Notices` | Owner of nearby island/coast. | Stability or trade opinion cost, convoys, and supply. | Slows Death targeting that country's nearby islands and raises local concern. | Rare before repeated packets. |
-| `File It Under Weather` | Always for packet recipient. | None. | No immediate cost. Increases ignored-file memory and slightly raises later spread/reveal shock. | Isolationist or distracted AI. |
+These appeared in the original planning tables under several overlapping names.
+They are not part of the implemented scope; each keeps the disposition shown.
 
-These decisions should not use only political power. Survey and quarantine should require concrete naval/logistics capacity.
+| Planned concept (all names used) | Nearest implemented surface | Disposition |
+| --- | --- | --- |
+| Open Coastal Watch Stations, Seal the Empty Port, Fund the Watch Network | Keep the Port Lit and the Joint Coastal Patrol Plan | superseded by those two decisions |
+| Fortify the Quarantine Line, Guard the Dead Road | Strengthen Quarantine Line and its mission | superseded |
+| Issue Wasteland Entry Orders, Send Wasteland Entry Gear | Authorize and Share Wasteland Entry Gear | superseded |
+| Establish a Dead-Zone Outpost | Build the Dead-Zone Outpost | superseded |
+| Flood the Shore Roads, Burn the Approach Roads | none | unresolved; self-sabotage of a country's own logistics duplicates what withering already does and is not recommended |
+| Hold the Census Posts | none (the Counted Every Name achievement uses census participation flags) | unresolved |
+| Open Military Access Corridors, Authorize Compact Access | none | unresolved; belongs to the queued Living Compact obligations tranche |
+| Coordinate Border Relief | Share Wasteland Entry Gear | unresolved; belongs to the queued Living Compact tranche |
+| Mark Low Islands for Evacuation, Emergency Refugee Shipping | none | unresolved; replacement through a Migration-owned evacuation request is an open proposal in the package README |
 
-### The Death Country
+## Living Containment Compact
 
-Visible after public reveal to countries that:
-
-- border Death.
-- are at war with Death.
-- are major powers.
-- control coastal states on a continent with Death.
-- are members of the Living Containment Compact.
-- have received a direct Death event.
-
-Header should show a compact status summary:
-
-- Death consumed-population band, not exact hidden formulas.
-- active stage: `Remote Reports`, `Public Death`, `Black Continent`, `Last Shores`.
-- ghost tier if known.
-- number of Death-controlled states.
-- whether country is in the containment compact.
-- whether coastal jump risk is low, rising, or critical.
-
-Decisions:
-
-| Decision | Availability | Cost/requirement | Result direction | AI |
-| --- | --- | --- | --- | --- |
-| `Recognize the Death War` | Death revealed, not at war, plausible reach. | War support threshold or war support hit, command power, diplomatic cost. | Declares war or joins containment war. | High for neighbors/majors, low for distant minors. |
-| `Request the Living Compact` | Death revealed, enough threatened countries. | Diplomatic credibility, relations, maybe existing faction leader consent. | Creates or joins containment compact without always forcing faction changes. | Majors and threatened states. |
-| `Open Coastal Watch Stations` | Coastal country after reveal. | Convoys, trains, support equipment, fuel, naval base or coastal states. | Reduces coastal jump target chance in owned/coast-adjacent states. | High for coastal majors and nearby minors. |
-| `Mark Low Islands for Evacuation` | Owns small islands and Death hidden/revealed. | Convoys, stability, temporary consumer goods, refugee capacity. | Reduces future civilian death if those islands are consumed. It can create refugee pressure. | Rare before reveal, high after reveal. |
-| `Fortify the Quarantine Line` | Borders Death. | Infantry equipment, support equipment, command power, divisions in target states. | Applies state quarantine line and slows or pauses withering. | High for direct neighbors. |
-| `Flood the Shore Roads` | Owns target coastal/border state. | Infrastructure damage, trains, command power. | Slows Death movement/withering but hurts own logistics. | Desperate AI only. |
-| `Hold the Census Posts` | At war with Death and high consumed-population band. | Administrative burden, stability, divisions present. | Reduces ghost scaling or delays ghost spawn locally by keeping records/names. | High if fighting Death and stable enough. |
-| `Authorize Wasteland Entry Gear` | At war or bordering Death. | Support equipment, trucks, fuel, army XP. | Temporary reduction to attrition/strength loss in Death states. | High before offensives. |
-| `Establish a Dead-Zone Outpost` | Controls a surveyed recaptured wasteland and has an acting-country-owned division stationed there. | Army XP, support equipment, trucks, and trains. | Applies the permanent outpost modifier and grants custodial capacity once per state. No temporary construction burden or tested supply-connection requirement. | Only if state strategically important. |
-
-### Living Containment Compact
-
-This is a coalition/compact layer. It can create a faction if the campaign state allows it, but it should also support countries that remain in existing factions. The system should not break major alliance structures just to force a new faction.
+This is a coalition/compact layer.
+It can coexist with existing factions; the system should not break major alliance structures just to force a new faction.
 
 Compact goals:
 
 - coordinate war entry.
-- share military access against Death.
-- send equipment to border states.
 - reduce coastal jump risk through patrol networks.
 - fund wasteland-entry gear.
 - mark threatened states.
@@ -91,31 +90,16 @@ Compact goals:
 
 Compact values:
 
-| Value | Meaning | What changes it |
+| Value | Meaning | Rules that read it |
 | --- | --- | --- |
-| `compact_cohesion` | Willingness of countries to cooperate against Death. | Success/failure in containment, ideology tension, casualties, Death spread. |
-| `watch_network` | Coastal detection and patrol coverage. Each point raises Death's forced island and mainland jump soul costs. A strong network can delay low-pressure coastal jumps. At maximum strength, sea jumps are blocked unless Death has No Ferry Returns or world end has begun. | Coastal watch decisions, naval bases, convoys, fuel, AI contributions. |
-| `front_readiness` | Ability to occupy Death without withering away. | Wasteland gear, divisions, supply lines, engineer projects. |
-| `public_panic` | Political pressure from Death reports. | Consumed population, reveal events, failed defenses, evacuation failures. |
+| `global.death_compact_members` | Number of members. | The Living Conference achievement. |
+| `global.death_compact_cohesion` | Willingness of members to cooperate. | Only the Living Conference achievement predicate and the Atlas Compact row. |
+| `global.death_watch_network` | Coastal detection and patrol coverage, capped at `death_decision_tuning.watch_network_max_strength`. | Each point raises Death's forced island and mainland sea-jump soul costs; a strong network can intercept one ordinary low-pressure coastal jump by spending strength; at maximum, ordinary sea jumps are blocked unless Death has No Ferry Returns, pressure is high, or world end has begun. |
+| `global.death_front_readiness` | Planned as the ability to occupy Death without withering away. | Only the Black Atlas display; no gameplay rule reads it. |
 
-Compact decisions:
-
-| Decision | Cost/requirement | Result |
-| --- | --- | --- |
-| `Call the Living Conference` | Major/threatened country, Death revealed, at least two eligible invitees. | Creates compact framework or strengthens existing compact. |
-| `Share Wasteland Entry Gear` | Command power, support equipment, trucks, fuel, and compact membership. | Gives target member temporary attrition/strength-loss reduction. |
-| `Open Military Access Corridors` | Relations/compact cohesion. | Members grant access for anti-Death operations where safe. |
-| `Joint Coastal Patrol Plan` | Command power, fuel, convoys, and support equipment. | Raises watch network, increases Death's forced sea-jump costs, and can delay or block coastal jumps at high network strength. |
-| `Compact War Declaration` | Compact cohesion and threat threshold. | Pulls willing members into war against Death. Refuses unwilling members with events. |
-| `Emergency Refugee Shipping` | Convoys, stability, consumer goods burden. | Evacuates population from likely coastal or island targets, causing domestic costs. |
-
-Compact failure states:
-
-- low cohesion causes members to refuse war entry.
-- high public panic increases stability costs.
-- poor watch network leaves Death's sea jumps cheap and harder to delay.
-- failed front readiness makes offensives bleed strength.
-- ideological rivals can accuse each other of using Death for propaganda.
+The planning text also described a `public_panic` value and failure states (low cohesion refusing war entry, panic raising stability costs, poor readiness bleeding offensives, ideological rivals trading accusations).
+None of these is implemented.
+They remain the substance of the queued Living Compact obligations tranche, and the package README records the proposal to give readiness and cohesion real consumers or remove them from view.
 
 ### Dark Methods: Necromancy Against Death
 
@@ -134,19 +118,20 @@ Values:
 
 | Value | Meaning |
 | --- | --- |
-| `black_method_exposure` | How visible the country’s forbidden work has become. |
-| `bound_names` | Resource used to raise or reinforce anti-Death spectral units. |
-| `mourning_debt` | Political/spiritual cost that can trigger backlash. |
+| `death_black_method_exposure` | How visible the country's forbidden work has become. |
+| `death_bound_names` | Resource used to raise or reinforce anti-Death spectral units. |
+| `death_mourning_debt` | Political/spiritual cost that can trigger backlash. |
 
 Decisions:
 
 | Decision | Cost/requirement | Result | Risk |
 | --- | --- | --- | --- |
-| `Open the Black Book` | Stability, political legitimacy, captured wasteland or high casualties. | Unlocks dark methods category. | Raises exposure and panic. |
-| `Bind the Unburied` | Consumed or recaptured wasteland, support equipment, army XP, mourning debt. | Creates weak bound-shade units that resist wasteland attrition better. | Condemnation/public horror, stability loss. |
-| `Interrogate the Empty Road` | Black Book open, enough exposure, and no prior inquiry. | Political power and command power. | Reports currently available coastal or land-withering routes and pressure band; it does not predict a next state. It also raises Watch Network, lowers spread pressure, and increases Black Book exposure. | Can trigger a Zol attention event. |
-| `Seal Names in Iron` | Living-controlled recaptured wasteland bordering active Death land, with a separate 180-day state cooldown. | 35 political power, 150 support equipment, 3 trains. | Blocks Death's border wither in the selected state for 120 days, reduces Black Book exposure by 2 and mourning debt by 1, and raises spread pressure by 2 if Death retakes the state while the seal holds. |
-| `Burn the Book` | Only after using dark methods. | Removes branch and reduces exposure. | Loses bound units and may trigger backlash if debt high. |
+| `Open the Black Book` | Political power, stability; at war with Death or controlling a recaptured wasteland. | Unlocks the forbidden decisions and the Black Book offices spirit. | Raises exposure. |
+| `Bind the Unburied` | Army experience, support equipment, manpower. | Creates one weak, capped Bound Shade division that resists wasteland attrition better. | Raises exposure and mourning debt. |
+| `Interrogate the Empty Road` | Black Book open, enough exposure, and no prior inquiry; political power and command power. | Reports currently available coastal or land-withering routes and the pressure band; it does not predict a next state. It also raises the watch network and lowers spread pressure. | Raises exposure. |
+| `Seal Names in Iron` | Living-controlled recaptured wasteland bordering active Death land, with a separate 180-day state cooldown; 35 political power, 150 support equipment, 3 trains. | Blocks Death's border wither in the selected state for 120 days, reduces Black Book exposure by 2 and mourning debt by 1. | Raises spread pressure by 2 if Death retakes the state while the seal holds. |
+| `Close the Black Book` | Book opened but no forbidden method used. Free. | Closes the route. | None. |
+| `Burn the Black Book` | Only after using dark methods; political power. | Removes the branch and the Black Book spirits. | Burning before high exposure is part of the Book Burner achievement. |
 
 AI should use dark methods only when desperate, authoritarian, high chaos, or on the edge of collapse. Democracies should generally avoid it unless Death is at world-end and no normal route remains.
 
@@ -170,20 +155,21 @@ Black Oath values:
 
 | Value | Meaning |
 | --- | --- |
-| `name_debt` | What the country owes Zol. If it rises too high or goes unpaid, Death can consume Herald states. |
-| `living_disgust` | Diplomatic hostility from non-Herald countries. |
-| `black_favor` | Temporary power gained from serving Death. |
+| `death_name_debt` | What the country owes Zol. If it rises too high or goes unpaid, Death can consume Herald states. |
+| `death_living_disgust` | Diplomatic hostility from non-Herald countries. |
+| `death_black_favor` | Temporary power gained from serving Death. |
 
 Decisions:
 
 | Decision | Cost/requirement | Result | Risk |
 | --- | --- | --- | --- |
-| `Whisper to Zol` | High chaos or near Death border. | Opens oath event chain. | Relations loss if exposed. |
-| `Take the Black Oath` | Player confirmation, stability/war support loss, leaves compact. | Country becomes Herald of Zol. | War with containment members, name debt begins. |
-| `Offer a Prison Census` | Manpower/prisoner abstraction, stability, exposure. | Gains black favor, may spawn weak Herald units. | Raises name debt and condemnation. |
-| `Open a Dead Port` | Coastal state, convoys, high risk. | Helps Death coastal jump or reduces Death hostility toward Herald. | Death may consume the port later. |
-| `Feed the Border` | Sacrifice a low-pop border state or allow withering. | Large black favor. | State becomes wasteland and causes massive domestic backlash. |
-| `Break the Oath` | High compact support or successful anti-Death war. | Rejoins living side and removes Herald status. | Death targets the traitor aggressively. |
+| `Whisper to Zol` | Political power, stability; high chaos or near the Death border. | Opens the oath route and adds black favor. | Living disgust rises. |
+| `Take the Black Oath` | Political power, stability, war support; leaves the Compact. | Country becomes Herald of Zol; super-event `66`. | War with containment members, name debt begins. |
+| `Offer a Prison Census` | Political power, stability, manpower. | Raises one Herald Census Host and adds black favor. | Raises name debt and living disgust. |
+| `Open a Dead Port` | Coastal state; command power, convoys, fuel. | Marks a temporary Dead Port, adds black favor, and may trigger a Death coastal jump. | Raises name debt; Death may consume the port later. |
+| `Feed the Border` | Non-capital controlled state bordering an active wasteland (any coastal state after world-end); command power, political power, stability, manpower. | The state is consumed through the shared consumption effect; large black favor and name-debt relief. | The state becomes a wasteland and its people are erased. |
+| `Break the Oath` | Political power, command power, stability. | Rejoins the living side and removes Herald status. | Death targets the traitor aggressively. |
+| `Proclaim the Black Apostolate` | Hidden thresholds after world-end; player only. | Black Apostolate cosmetic identity and route culmination. | Permanent isolation; no living-state cores. |
 
 AI should almost never take the Black Oath. It may do so if:
 
@@ -195,41 +181,6 @@ AI should almost never take the Black Oath. It may do so if:
 - Death already controls a large part of the continent.
 
 The path should be disabled for AI countries whose survival is essential to another active event unless a valid alternate exists.
-
-## Fighting decisions and narrow missions
-
-The player response is built primarily from decisions that help countries fight, enter, delay, contain, and recapture Death states. A narrow timed mission is allowed for quarantine-line maintenance because it tests whether the player actually keeps a fortified line bordering Death rather than clicking a permanent defensive buff.
-
-The real map work remains normal HOI4 play: move divisions, hold coasts, occupy Death-controlled tiles, and keep supply open. Decision gates should use native predicates only when their behavior is documented and verified. The accepted Survey and Outpost requirements use an acting-country-owned division physically present in the selected recaptured state plus the paid field stores; neither action claims a current-supply check or supply connection. Any other supply-dependent gate needs a verified native predicate and a clear tooltip.
-
-Use decisions with cooldowns, temporary state modifiers, target-state flags, narrow mission checks, and cleanup logic. Do not add broad goal-style mission stacks or auto-completing objective cards for Death unless a later accepted spec explicitly asks for them.
-
-### Border fighting decisions
-
-| Decision | Availability | Cost/requirement | Result direction | AI |
-| --- | --- | --- | --- | --- |
-| `Strengthen the Quarantine Line` | Owns or controls a state bordering Death. | Infantry equipment, support equipment, command power, supplied divisions in the selected state. | Adds a temporary quarantine-line modifier that slows withering and reduces local attrition pressure. | High for direct neighbors. |
-| `Keep the Port Lit` | Coastal state in a Death coastal-jump risk region. | Convoys, fuel, nearby naval base or port, local supply. | Reduces coastal-jump target weight for that state or region for a limited period. | High for coastal countries near Death. |
-| `Guard the Dead Road` | Non-Death state neighboring Death. | Supplied divisions present, trucks or trains, command power. | Temporarily blocks or weakens withering into that state while defenses remain plausible. | High if the state protects a capital, port, or supply line. |
-| `Burn the Approach Roads` | Border or coastal target state. | Infrastructure damage, trains, command power. | Slows Death movement and withering pressure but damages the owner's logistics. | Desperate AI only. |
-
-### Wasteland entry decisions
-
-| Decision | Availability | Cost/requirement | Result direction | AI |
-| --- | --- | --- | --- | --- |
-| `Survey the Wasteland` | Controls a recaptured Death state and has an acting-country-owned division in the selected state. A native supply-status gate was replaced because no documented division-supply predicate could be verified. | Army XP, support equipment, trucks. | Marks the state surveyed, applies Wasteland Entry Gear for 180 days, and grants custodial capacity once per state. | Low. |
-| `Build the Dead-Zone Outpost` | Controls a surveyed recaptured state and has an acting-country-owned division in the selected state. The original supply-connection, engineer, and temporary construction-burden requirements were replaced because no native connection predicate or construction-burden consumer could be verified. | Army XP, support equipment, trucks, trains. | Applies the permanent Dead-Zone Outpost modifier and grants custodial capacity once per state. It does not restore population or industry. | Low. |
-| `Seal the Empty Port` | Controls a recaptured coastal wasteland. | Convoys, trains, support equipment, fuel. | Reduces nearby coastal-jump chance and makes the port safer for anti-Death operations. | High if the coast is still threatened. |
-| `Issue Wasteland Entry Orders` | At war with Death or bordering Death. | Support equipment, trucks, fuel, army XP. | Temporary reduction to attrition and ticking strength loss while operating in Death states. | High before offensives. |
-
-### Compact support decisions
-
-| Decision | Availability | Cost/requirement | Result direction | AI |
-| --- | --- | --- | --- | --- |
-| `Send Wasteland Entry Gear` | Compact member or major supporting a Death-front country. | Support equipment, trucks, fuel, convoys or land route. | Gives a target country a temporary wasteland-entry modifier. | High for majors when an ally borders Death. |
-| `Fund the Watch Network` | Coastal compact member. | Convoys, fuel, naval access, civilian factory burden. | Raises watch-network strength and lowers coastal-jump pressure. | High for naval powers. |
-| `Authorize Compact Access` | Compact member, target member at war with Death. | Relations, compact cohesion, diplomatic cost. | Grants or requests military access for anti-Death operations where possible. | High if access creates a valid front. |
-| `Coordinate Border Relief` | Compact member with equipment and reachable threatened ally. | Infantry equipment, support equipment, trains or convoys. | Helps a threatened country strengthen a border state. | High when the target is losing a front. |
 
 ## Custom UI: The Black Atlas
 
@@ -256,13 +207,15 @@ The current scoped reference, source wiring and blocked production-render proof 
 
 ### Information discipline
 
-The UI should not reveal exact hidden next targets before the player has earned intelligence. It can show target bands and risk levels: `quiet`, `watched`, `thin`, `open`, `critical`.
+The UI does not reveal exact hidden next targets.
+It shows bands instead: the stage (`No public name`, `Death Country`, `Last Shores`), the coast risk (`watch network holding`, `watch network thin`, `recent jump, lower immediate risk`, `sea jumps blocked by watch network`, `all remaining coasts exposed`), and the line and compact bands.
+The planning risk labels `quiet`, `watched`, `thin`, `open`, `critical` and the stage label `Black Continent` were replaced by these implemented bands.
 
 ### Animated presentation pass
 
 The Black Atlas receives an animation pass because it represents a living supernatural map threat.
 
-Planned animated assets:
+Animated assets (implemented; the earlier GUI inspection reported an unresolved static-fallback link for the animated Atlas header, which remains an open verification item):
 
 | Asset | State logic | Direction |
 | --- | --- | --- |
@@ -271,11 +224,21 @@ Planned animated assets:
 
 Animation should clarify state. If a surface becomes too busy, keep only the header and critical warning animation.
 
-## DTH Category: The Black Ledger
+## DTH Category: Death's Muster
 
-The Black Ledger is visible only to active Death. It is not a living-country intelligence tool. It shows Death's own counters and available actions: consumed states, island count, mainland count, consumed population, spread pressure, generated soul power, available soul power, spent soul power, host counts, island-spread status, mainland-route status, and ghost-host status.
+Death's Muster (`death_black_ledger_category`, planning name Black Ledger) is visible only to active Death.
+It is not a living-country intelligence tool.
+Its header shows four values (consumed states, consumed population, spread pressure, available soul power); each decision shows its own availability and current cost.
+Its decisions are `death_consume_another_island`, `death_press_to_mainland`, `death_raise_passive_hosts`, `death_raise_hollow_hosts` and `death_raise_last_shore_hosts`.
 
-Black Ledger decisions do not spend political power. They spend soul power, which is generated from consumed states, consumed population, and last-shore footholds after world end begins. Soul power has no storage cap. The category can offer island consumption after Second Shore and an island-spread focus, mainland pressure after Mainland Smell when normal pressure or the living-war bypass allows it, and one host-raising decision for the current ghost stage. Host and spread decisions use the same soul-power budget so manual expansion competes with army growth. Forced island consumption starts at the base island-spread cost, then each successful Black Ledger island consumption raises the next forced island cost by one soul power. Successful Black Ledger mainland consumption raises the next forced mainland cost by two soul power. Each ghost host raised increases later host costs by 0.25 soul power.
+Death's Muster decisions do not spend political power.
+They spend soul power, which is generated from consumed states, consumed population, and last-shore footholds after world end begins.
+Soul power has no storage cap.
+The category can offer island consumption after Second Shore and an island-spread focus, mainland pressure after Mainland Smell when normal pressure or the living-war bypass allows it, and one host-raising decision for the current ghost stage.
+Host and spread decisions use the same soul-power budget so manual expansion competes with army growth.
+Forced island consumption starts at the base island-spread cost, then each successful Death's Muster island consumption raises the next forced island cost by one soul power.
+Successful Death's Muster mainland consumption raises the next forced mainland cost by two soul power.
+Each ghost host raised increases later host costs by 0.25 soul power.
 
 The same category must be navigable by AI because Death is usually AI-controlled. AI Death should use island spread while it is still cheap, while it is still building the island pattern and pressure, and while valid empty islands remain. It should prioritize the mainland decision once the route is valid and cheap islands are no longer the better pre-reveal spend, then raise the available host tier when it has a valid spawnable wasteland. It should avoid spending pre-reveal souls on hosts only when those souls are needed for a pending mainland press.
 
@@ -286,13 +249,13 @@ The same category must be navigable by AI because Death is usually AI-controlled
 | Situation | Behavior |
 | --- | --- |
 | Hidden origin | Do nothing visible. No wars or units. |
-| Hidden island spread | Consume low-pop empty islands by scripted pulses and cheap Black Ledger island decisions. Living AI does not choose war decisions while Death has consumed only one island. |
+| Hidden island spread | Consume low-pop empty islands by scripted pulses and cheap Death's Muster island decisions. Living AI does not choose war decisions while Death has consumed only one island. |
 | Reports ignored | Slightly increase spread pressure. |
-| Mainland route ready | Spend soul power on the Black Ledger mainland decision before raising hosts unless cheap empty islands are still the better pre-reveal spend. |
-| Revealed mainland | Declare war on direct-threat neighbors, wither unguarded states, use Black Ledger mainland or island actions when valid, and remain passive militarily until ghosts. Wider neighbor wars wait for late-stage strength or world-end. |
-| 600 ghost tier | Raise weak ghosts through the Black Ledger when a valid wasteland can spawn them and Death is not saving for the mainland route or cheap island spread. Hold lines and avoid offensives. |
-| 800 ghost tier | Raise stronger ghosts through the Black Ledger, use pressure-driven coastal jumps after setbacks, and keep normal attacks restrained before world-end. |
-| World-end | Aggressive attacks, foothold expansion, intensified withering, and repeated Last-Shore host spending from the Black Ledger. |
+| Mainland route ready | Spend soul power on the Death's Muster mainland decision before raising hosts unless cheap empty islands are still the better pre-reveal spend. |
+| Revealed mainland | Declare war on the revealed state's owner and on neighbours that border a wasteland or recognized a warning, wither unguarded states, use Death's Muster mainland or island actions when valid, and remain passive militarily until ghosts. Wider neighbor wars wait for late-stage strength or world-end. |
+| 600 ghost tier | Raise weak ghosts through Death's Muster when a valid wasteland can spawn them and Death is not saving for the mainland route or cheap island spread. Hold lines and avoid offensives. |
+| 800 ghost tier | Raise stronger ghosts through Death's Muster, use pressure-driven coastal jumps after setbacks, and keep normal attacks restrained before world-end. |
+| World-end | Aggressive attacks, foothold expansion, intensified withering, and repeated Last-Shore host spending from Death's Muster. |
 | Near defeat | Attempt coastal jump if cooldown and stage allow. No fake capitulation. |
 
 ### Neighbor AI
@@ -300,7 +263,7 @@ The same category must be navigable by AI because Death is usually AI-controlled
 | Country type | Behavior |
 | --- | --- |
 | Direct neighbor | Join or request compact, guard border states, declare war if not already at war, and prioritize quarantine decisions after Death has more than one consumed island or has reached the mainland. |
-| Island owner | Investigate early reports, evacuate low islands if repeated reports or revealed Death. |
+| Island owner | Investigate early reports and keep exposed ports lit after repeated reports or revealed Death. |
 | Coastal nearby country | Build watch network, fortify vulnerable ports, join compact if Death on same continent. |
 | Major power | Coordinate compact, send equipment, declare if Death reaches mainland or world-end. |
 | Minor far away | React only after reveal, world-end, or compact call. |
@@ -347,10 +310,10 @@ World-end text: terminal, spare, no melodramatic filler.
 ## Exploit and cleanup rules
 
 - No decision should allow infinite free units.
-- Bound-shade and Last Watch units need real costs and caps.
+- Bound Shade and Herald Census Host units need real costs and caps.
 - Coastal watch should reduce risk, not permanently block Death everywhere. Strong watch-network coverage can intercept an ordinary low-pressure coastal jump once by spending network strength, while high pressure, No Ferry Returns, and world-end pressure bypass that interception.
-- Evacuation should save some future deaths but create refugee/political costs.
-- Purification projects should not restore population.
+- Any future evacuation (see the package README open questions) must save only people who actually leave and must route flight through the Migration owner.
+- Survey, outpost and custodial projects never restore population.
 - Heralds should not become immune to Death forever.
 - Black Oath should not allow a player to farm Death bonuses without eventual name-debt consequences.
 - Compact membership should clean up when Death is defeated, the country capitulates, or the country becomes Herald.
@@ -359,7 +322,10 @@ World-end text: terminal, spare, no melodramatic filler.
 
 ## Implemented case-file and custodial decision addendum (2026-07-11)
 
-The Maritime Errata category displays the current evidence band and contextual advice. Existing report, telegraph, quarantine, survey, and weather actions write to the same country ledger. AI investigations strengthen as evidence moves from fragmentary through pattern and probable; confirmed countries stop treating weather dismissal as a viable response. Before confirmation, an exposed report recipient sees the containment category as Coastal Precautions and receives only unknown-route port-watch wording; the Black Country title, named exceptions, and Black Atlas remain behind country confirmation or public revelation.
+The Missing Island Reports category displays the current evidence band and contextual advice.
+Existing report, telegraph, quarantine, survey, and weather actions write to the same country ledger.
+AI investigations strengthen as evidence moves from fragmentary through pattern and probable; confirmed countries stop treating weather dismissal as a viable response.
+Before confirmation, an exposed report recipient sees the containment category as Coastal Precautions and receives only unknown-route port-watch wording; the Black Country title and named exceptions remain behind country confirmation or public revelation, and the Black Atlas opens only after public revelation.
 
 After Death's custom defeat, state-targeted survey and outpost decisions establish the required progression. Three mutually exclusive state-targeted policy decisions then spend custodial capacity inside their shared state effects: Sealed Exclusion for exposed coasts and borders, Memorial Stewardship for secure interior dead zones, and Transit Custodianship for surviving supply-node corridors. Memorial remains selectable per eligible state, but its +3% stability and up-to-2 mourning-debt national reconciliation can fire only once per country. Transit maintenance appears only when its timed maintained-corridor modifier has expired. Selection effects revalidate target and cost so map-target scope cannot grant a free policy.
 

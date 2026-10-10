@@ -1,5 +1,9 @@
 # Achievement Prompt - Event 010 Death
 
+> Historical build contract (spec audit 2026-10-10): Event 010 is implemented, so do not rerun this prompt.
+> Current state and remaining work are in the [package README](../README.md); current repository instructions are in `CLAUDE.md`, and skills live under `.claude/skills/`.
+> Planning names used here (Maritime Errata, The Death Country, Black Ledger, `death_ghost_host`) were replaced by the implemented names given in the specs.
+
 Implement and asset-wire the Event 010 Death achievements according to the spec. Follow existing Chaos Redux achievement patterns, localisation conventions, asset manifest rules, and tracking practices. Achievements must not be automatic event-fire rewards.
 
 ## Achievement table

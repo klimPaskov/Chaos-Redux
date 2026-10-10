@@ -83,14 +83,15 @@ The country should not need a normal economy because its power comes from script
 
 Death should have very few ideas. They are not a reward ladder. They represent rules.
 
-| Idea | Start/unlock | Role | Lifecycle |
+| Idea ID | Start/unlock | Role | Lifecycle |
 | --- | --- | --- | --- |
-| `Country Without Breath` | Start | Blocks normal economy, manpower, diplomacy, and politics. | Permanent while Death exists. |
-| `The First Silence` | Start | Keeps early behavior passive and hidden. | Replaced by `Public Death` after reveal. |
-| `Public Death` | Mainland reveal | Enables withering and neighbor wars. World-threat source remains locked until continent consumption. | Replaced by the world-end Death idea at world-end. |
-| `World-End Death` | World-end | Enables aggressive ghosts and continental foothold behavior. | Permanent until Death or the world ends. |
-| `The Black Census` | 600-tier or later | Converts consumed population into ghost scaling. | Upgrades at 800 and world-end tiers. |
+| `death_country_without_breath` | Start | Blocks normal economy, manpower, diplomacy, and politics. | Permanent while Death exists. |
+| `death_first_silence` | Start | Keeps early behavior passive and hidden. | Replaced by `death_public_death` after reveal. |
+| `death_public_death` | Mainland reveal | Enables withering and neighbor wars. World-threat source remains locked until continent consumption. | Replaced by `death_world_end_death` at world-end. |
+| `death_world_end_death` | World-end | Enables aggressive ghosts and continental foothold behavior. | Permanent until Death or the world ends. |
+| `death_black_census` | 600-tier or later | Converts consumed population into ghost scaling. | Upgrades at 800 and world-end tiers. |
 
+The living-country forbidden routes add four more ideas that do not belong to Death itself: `death_black_book_offices`, `death_black_book_scandal`, `death_black_oath`, and `death_black_apostolate_idea`.
 Do not add new ideas for every focus or every spread stage. Use idea replacement or modifiers to the same small idea set.
 
 ## Unit package
@@ -103,7 +104,7 @@ The absence of units is required. Early Death should be possible to stop by a co
 
 The custom unit exists only after evolution unlock.
 
-Suggested unit type: `death_ghost_host`
+Implemented sub-units in `common/units/010_death_ghost_hosts.txt`: `death_weak_ghost_host`, `death_hollow_ghost_host`, and `death_last_shore_ghost_host`, each with locked templates, one dummy manpower and one dummy infantry equipment per battalion, and the skull counter.
 
 Design goals:
 
@@ -150,6 +151,9 @@ If the implementation chooses to represent these paths through scripted progress
 
 ## Focus tree architecture map
 
+The implemented tree in `common/national_focus/010_death_focus_tree.txt` has 26 focuses.
+Each lane opens with its own lane focus, and `Public Death` and `Last Shores` each require all three preceding lane endpoints (separate prerequisite blocks).
+
 ```text
                           [The First Silence]
                                   |
@@ -160,9 +164,10 @@ If the implementation chooses to represent these paths through scripted progress
        SHROUD LANE           HUNGER LANE              CENSUS LANE
    concealment/reports   target selection/spread     deaths -> ghosts
              |                    |                         |
- [No Mail Before Spring]  [Lowest Names First]      [The Black Census]
- [Weather on Paper]       [Ports Without Voices]    [No Graves Needed]
- [The Island Pattern]     [The Mainland Smell]      [First Ghost Muster]
+ [Shroud Whispers]        [Hunger Shore]            [Black Census]
+ [No Mail Before Spring]  [Lowest Names First]      [No Graves Needed]
+ [Weather on Paper]       [Ports Without Voices]    [First Ghost Muster]
+ [The Island Pattern]     [The Mainland Smell]               |
              |                    |                         |
              -----------------[Public Death]-----------------
                                   |
@@ -171,16 +176,22 @@ If the implementation chooses to represent these paths through scripted progress
        COASTAL LANE         WASTELAND LANE            HOST LANE
    jumps and footholds    wither and occupation    ghost strength/AI
              |                    |                         |
- [The Tide Learns Roads]   [Every Road Slows]       [Mourning Host]
- [Another Shoreline]       [The Empty Supply]       [Ruin Host]
- [No Ferry Returns]        [State Without State]    [Orders Without Breath]
+ [The Tide Learns Roads]   [Wasteland Roads]        [Mourning Host]
+ [Another Shoreline]       [Every Road Slows]       [Ruin Host]
+ [No Ferry Returns]        [The Empty Supply]       [Orders Without Breath]
+             |             [State Without State]            |
              |                    |                         |
-             ----------------[World-End Footholds]----------------
+             --------------------[Last Shores]--------------------
                                   |
                            [World Consumed]
 ```
 
-The tree should not be a vertical checklist. The opening trunk establishes the silent country. Three pre-reveal lanes govern concealment, hunger, and population-to-ghost preparation. The reveal node `Public Death` unlocks the post-reveal lanes. The world-end node gates the final focus. Exact focus names can be adjusted by implementation and must not be treated as researched super-event text.
+The tree is not a vertical checklist.
+The opening trunk establishes the silent country.
+Three pre-reveal lanes govern concealment, hunger, and population-to-ghost preparation.
+The reveal node `Public Death` unlocks the post-reveal lanes.
+The world-end node `Last Shores` gates the final focus.
+Focus names are not researched super-event text.
 
 ## Focus path details
 
@@ -210,7 +221,9 @@ Anchor focuses:
 | --- | --- |
 | `No Mail Before Spring` | The first report delay becomes longer unless a player owns nearby assets. |
 | `Weather on Paper` | Report text points to storms, broken radios, and missing cargo manifests. |
-| `The Island Pattern` | Repeated maritime errata begin to rhyme across harbors while no public enemy is named. |
+| `The Island Pattern` | Repeated maritime errata begin to rhyme across harbors while no public enemy is named. It can be taken before Second Shore, but its immediate island consumption fires only when island spread is already active. |
+
+The lane opens with `Shroud Whispers`, is available while Death is hidden and at peace, and closes once a living country has started a survey war; after public reveal its focuses bypass without granting their rewards.
 
 Tradeoff: the Shroud lane delays global response but does not strengthen Death militarily. If the player finds Death anyway, it remains easy to kill.
 
@@ -250,14 +263,17 @@ Anchor focuses:
 | Focus | Role |
 | --- | --- |
 | `The Black Census` | Consumed population becomes the main scaling value. |
-| `No Graves Needed` | Population loss reports become stranger and harder to classify. |
+| `No Graves Needed` | Adds a one-time bonus equal to the current weak-host cost to the shared, fungible soul-power pool (`death_award_no_graves_muster_reserve`, accepted 2026-10-05); it does not earmark a host. |
 | `First Ghost Muster` | Enables 600-tier weak ghosts when evolution permits. |
 
 Tradeoff: this lane does nothing if Death has not consumed enough population. It rewards a long-hidden Death, not a tiny island start.
 
 ### Public Death convergence
 
-`Public Death` unlocks after the mainland reveal trigger. It should not be completed before reveal. It updates ideas, event logs, public pressure, and war behavior. It does not set world-threat state until continent consumption.
+`Public Death` unlocks after the mainland reveal trigger and requires the three separate endpoints `death_island_pattern`, `death_mainland_smell`, and `death_first_ghost_muster`.
+It should not be completed before reveal; a successful Instant Outbreak lets it bypass through `death_instant_outbreak_started`.
+It updates ideas, event logs, public pressure, and war behavior.
+It does not set world-threat state until continent consumption.
 
 ### Coastal lane
 
@@ -295,6 +311,7 @@ Anchor focuses:
 
 | Focus | Role |
 | --- | --- |
+| `Wasteland Roads` | Lane opener; adds one wither-progress point to the valid border state selected by each public wither attempt (accepted 2026-10-05). |
 | `Every Road Slows` | Movement penalties become harsher. |
 | `The Empty Supply` | Supply hubs, ports, and rail in Death states become useless. |
 | `State Without State` | Recaptured wastelands remain permanently empty unless outpost projects succeed. |
@@ -329,7 +346,8 @@ The final branch unlocks only when all eligible states are consumed. It should f
 
 ## Focus filters and categories
 
-Death's focus tree should use custom filter categories if the existing system supports them:
+The implemented tree uses vanilla search filters (annexation, army experience, manpower, political, war support).
+Custom Death filter categories were planned and not built; they remain unresolved and low priority because the tree is mostly AI-driven:
 
 | Filter | Applies to |
 | --- | --- |

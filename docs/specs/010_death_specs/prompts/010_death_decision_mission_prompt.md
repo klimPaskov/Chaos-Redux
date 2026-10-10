@@ -1,5 +1,9 @@
 # Decision and Mission Prompt - Event 010 Death
 
+> Historical build contract (spec audit 2026-10-10): Event 010 is implemented, so do not rerun this prompt.
+> Current state and remaining work are in the [package README](../README.md); current repository instructions are in `CLAUDE.md`, and skills live under `.claude/skills/`.
+> Planning names used here (Maritime Errata, The Death Country, Black Ledger, `death_ghost_host`) were replaced by the implemented names given in the specs.
+
 Implement the Event 010 Death decision and mission systems from [the decision/UI/AI spec](../specs/010_death_decisions_ui_ai.md). Follow `chaos-redux-decisions-missions`, `chaos-redux-events`, and `chaos-redux-subagents`.
 
 Non-negotiables:

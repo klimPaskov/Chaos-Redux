@@ -1,6 +1,8 @@
 # Event 010 Death — Source Processing Notes
 
 This is a planning/source note, not a gameplay spec.
+It records what was read and decided when the package was first written; the provenance lists below are kept unchanged (spec audit 2026-10-10).
+The evolution names in Planning decisions were later replaced by Second Shore, Mainland Hunger, First Hosts, Hollow Hosts and World End, and the DTH tag check is settled by the shared identifier registry.
 
 ## User-provided design constraints processed
 

@@ -2,50 +2,21 @@
 
 ## Core variables and flags
 
-The implementation should centralize tuning in script constants and shared helper effects rather than scattering numbers across events, decisions, focuses, and AI.
+Tuning lives in `common/script_constants/010_death_constants.txt` (`death_population`, `death_spread`, `death_spatial_route`, `death_maritime_evidence`, `death_wither_damage`, `death_ghosts`, `death_soul_power`, `death_world_end`, `death_defeat_aftermath`, `death_decision_cost`, `death_custodial_capacity`, `death_decision_tuning`), and shared logic lives in `common/scripted_effects/010_death_effects.txt` and `common/scripted_triggers/010_death_triggers.txt`.
+The identifiers below are the implemented ones; the original planning names that were never used (`death_reveal_state`, `death_ghost_tier`, `death_containment_pressure`, `death_purification_project`, `death_necromancy_unlocked`, `death_containment_member`) are retired.
 
-Suggested global variables:
-
-| Variable | Purpose |
-| --- | --- |
-| `death_consumed_population` | Total population deleted by Death, used for spread speed and ghost scaling. |
-| `death_consumed_states` | Number of states Death has consumed. |
-| `death_mainland_states` | Number of mainland states consumed. |
-| `death_island_states` | Number of island states consumed before or after reveal. |
-| `death_spread_pressure` | Current spread tempo value. Rises with consumed population, chaos, world-end state, and ignored reports. Falls with containment work. |
-| `death_soul_power_total` | Death's generated soul-power budget from consumed states, consumed population, and last-shore footholds after world end begins. It has no storage cap. |
-| `death_soul_power_available` | Generated soul power not yet spent on spread actions or ghost hosts. |
-| `death_soul_power_spent` | Soul power already bound into spread actions or ghost hosts. |
-| `death_reveal_state` | `0` hidden, `1` delayed rumours, `2` public Death reveal, `3` world-end. |
-| `death_ghost_tier` | `0` no ghosts, `1` weak ghosts, `2` strengthened ghosts, `3` world-end hosts. |
-| `death_coastal_jump_cooldown` | Prevents repeated coastal-jump spam after a failed or pushed-back mainland foothold. |
-| `death_containment_pressure` | Coalition and national containment work that slows spread without trivializing it. |
-| `death_world_end_footholds_created` | Ensures world-end footholds are created once. |
-
-Suggested state flags/variables:
-
-| State flag or variable | Purpose |
-| --- | --- |
-| `death_origin_state` | First island state. |
-| `death_consumed_state` | State was consumed by Death at least once. |
-| `death_active_wasteland` | Death currently controls it and the hostile wasteland effects are active. |
-| `death_recaptured_wasteland` | Non-Death country controls it after Death was pushed out. Population and industry remain gone. |
-| `death_wither_target` | State is being withered from an adjacent Death mainland state. |
-| `death_wither_progress` | Progress toward consumption in a neighboring target state. |
-| `death_quarantine_line` | A country has active containment work in this state. |
-| `death_purification_project` | A recaptured wasteland has an active cleanup/rebuild mission. |
-
-Suggested country flags:
-
-| Country flag | Purpose |
-| --- | --- |
-| `death_country_created` | Set on Death after creation. |
-| `death_publicly_revealed` | Set globally once the reveal super-event fires. |
-| `death_containment_member` | Country participates in the Living Containment Compact. |
-| `death_has_declared_containment_war` | Country has publicly entered the war against Death. |
-| `death_necromancy_unlocked` | Country has opened the dark methods branch. |
-| `death_herald_of_zol` | Country has pledged itself to Zol. |
-| `death_black_oath_broken` | Country betrayed or escaped the Herald path. |
+| Scope | Identifier | Purpose |
+| --- | --- | --- |
+| Global variable | `global.death_consumed_population`, `global.death_consumed_states`, `global.death_consumed_island_states`, `global.death_mainland_consumed_states` and its seven per-continent counters | The one historical census; only first consumption adds to it. |
+| Global variable | `global.death_spread_pressure` | Spread tempo; unlocks the normal mainland route and shortens wither and coastal-jump timing at the high and extreme thresholds. |
+| Global variable | `global.death_soul_power_total`, `global.death_soul_power_available`, `global.death_soul_power_spent`, plus the per-action cost variables | Death's spending budget, derived from the census, Last Shores footholds and the No Graves Needed bonus. |
+| Global variable | `global.death_watch_network`, `global.death_compact_members`, `global.death_compact_cohesion`, `global.death_front_readiness` | Living-side coordination values; see the decisions spec for which of them any rule reads. |
+| Global variable | `global.death_world_end_footholds`, `global.death_world_end_unique_continents`, `global.death_world_end_footholds_recaptured` | Last Shores bookkeeping for soul budget and achievements. |
+| Global flag | `death_active`, `death_publicly_revealed`, `death_world_end_started`, `death_defeated`, `death_coastal_jump_cooldown` (timed), the five `death_evolution_*_recorded` flags | Crisis state. |
+| State flag | `death_consumed_state` (permanent), `death_active_wasteland`, `death_recaptured_wasteland`, `death_wither_target`, `death_quarantine_line`, `death_coastal_watch`, `death_wasteland_surveyed`, `death_dead_zone_outpost`, the custodial policy flags | State lifecycle; the consumed marker survives every later control change. |
+| State variable | `death_consumed_population_k`, `death_consumed_date`, `death_wither_progress` | Frozen first-consumption receipt and wither progress. |
+| Country variable | `death_maritime_evidence`, `death_custodial_capacity`, `death_black_method_exposure`, `death_bound_names`, `death_mourning_debt`, `death_name_debt`, `death_black_favor`, `death_living_disgust` | Per-country case file, custodial throughput, and forbidden-route values. |
+| Country flag | `death_living_compact_member`, `death_living_compact_leader`, `death_herald_of_zol`, `death_black_oath_broken` | Route membership. |
 
 ## The consumption effect
 
@@ -135,33 +106,39 @@ Death does not expand like a normal country at first. It consumes.
 
 ### Spread pressure
 
-`death_spread_pressure` determines when the next spread attempt happens. It rises from:
+`global.death_spread_pressure` sets the spread tempo and the mainland, wither and coastal-jump thresholds (`death_spread.mainland_pressure_threshold`, `pressure_high_threshold`, `pressure_extreme_threshold`, `pressure_coastal_jump_threshold`).
+Pulse timing itself follows the consumed-state bands and the revealed and world-end schedules described below.
 
-- total consumed population.
-- consumed-state count.
-- chaos tier and chaos value.
-- Death's current evolution stage.
-- mainland reveal state.
-- world-end state.
-- failed containment missions.
-- countries ignoring delayed island reports.
-- Heralds of Zol feeding states or names to Death.
+Implemented pressure gains:
 
-It falls from:
+- each island consumption (`death_spread.island_pressure`) and each mainland press (`mainland_pressure`).
+- a living country entering war with Death (`death_decision_tuning.living_war_pressure_gain`), so an early attack is not free.
+- filing a missing-island case under weather (`file_weather_pressure`).
+- a broken quarantine hold-line mission.
+- Death retaking a state sealed by Seal Names in Iron (`seal_names_reconsumption_pressure`).
 
-- active coastal watch networks.
-- quarantine lines with divisions present.
-- successful investigation work before reveal.
-- successful purification projects on recaptured states.
-- Living Containment Compact coordination.
-- naval patrol and convoy-watch decisions.
-- temporary high-cost emergency measures.
+Implemented pressure reductions:
 
-### Black Ledger and soul power
+- survey boat, telegraph office and harbor sanitation work before reveal.
+- the Joint Coastal Patrol Plan and Interrogate the Empty Road.
+- a successful quarantine hold-line mission.
 
-Active DTH has a Black Ledger decision category. It shows consumed states, consumed islands, consumed mainland states, consumed population, spread pressure, generated soul power, available soul power, spent soul power, host counts, and the current availability of island spread, mainland spread, and ghost hosts.
+The coastal watch network does not change pressure; it raises Death's forced sea-jump soul costs and can intercept one low-pressure coastal jump.
 
-Soul power is an uncapped budget derived from consumed states and consumed population, with extra points from last-shore footholds after world end begins. Death spends this budget through DTH decisions. Island spread starts at a small amount, still needs Second Shore plus an island-spread focus, and raises the next forced island cost by one after each successful Black Ledger island consumption. Mainland spread spends more, still needs Mainland Smell plus either the normal pressure route or the living-war bypass after Second Shore, and raises the next forced mainland cost by two after a successful use. Ghost host decisions spend the same budget and are limited by the current host stage and valid spawnable Death wastelands. Each host raised adds 0.25 soul power to later host costs. These Death-side actions do not use political power. Spread pressure unlocks the normal mainland route, increases withering progress at high and extreme pressure, shortens coastal-jump cooldowns at those thresholds, and lets Death keep attempting coastal jumps once pressure is high enough.
+### Death's Muster and soul power
+
+Active DTH has the Death's Muster decision category (`death_black_ledger_category`; the planning name was Black Ledger).
+Its header shows four values: consumed states, consumed population, spread pressure and available soul power; route availability appears on the decisions themselves.
+
+Soul power is an uncapped budget derived from consumed states and consumed population, with extra points from last-shore footholds after world end begins.
+Death spends this budget through DTH decisions.
+Island spread starts at a small amount, still needs Second Shore plus an island-spread focus, and raises the next forced island cost by one after each successful Death's Muster island consumption.
+Mainland spread spends more, still needs Mainland Smell plus either the normal pressure route or the living-war bypass after Second Shore, and raises the next forced mainland cost by two after a successful use.
+Each watch-network point raises both forced sea-jump costs by `death_soul_power.watch_network_cost_step_percent`.
+Ghost host decisions spend the same budget and are limited by the current host stage and valid spawnable Death wastelands.
+Each host raised adds 0.25 soul power to later host costs.
+These Death-side actions do not use political power.
+Spread pressure unlocks the normal mainland route, increases withering progress at high and extreme pressure, shortens coastal-jump cooldowns at those thresholds, and lets Death keep attempting coastal jumps once pressure is high enough.
 
 Spread should accelerate as Death eats more population, but the formula should have floors and caps so it is slow early and terrifying later. The hidden opening must not behave like a weekly expansion loop. A calm-world origin waits several months before the first follow-up island attempt, using a randomized four-to-six-month pulse band, then steps down through slower early bands before reaching the faster revealed and world-end schedules.
 
@@ -220,14 +197,9 @@ If wither progress reaches completion, the target state is consumed by the share
 
 ### Automatic war on neighbors
 
-After reveal, Death automatically declares war on any country that controls a neighboring state. This should happen when:
-
-- Death takes a mainland state.
-- Death's border changes.
-- a non-Death country takes or receives a neighboring state.
-- Death creates a world-end foothold.
-
-Avoid daily world scanning. Hook the check into Death state changes, war/peace changes, event pulses, or targeted periodic refreshes.
+After reveal, `death_declare_war_on_neighbors` declares war on a neighbouring country only when `death_country_can_be_pulled_into_death_war` holds: it directly borders a Death wasteland or has already recognized a coastal warning.
+The pre-transfer owner or controller of a consumed state, and the owner of a world-end foothold, are always pulled in.
+The check runs on Death state changes, reveal, footholds and pulses; there is no daily world scan.
 
 ### Coastal jumps
 
@@ -272,9 +244,9 @@ Death has no starting divisions. Ghost divisions are an evolution mechanic.
 
 ### Unit identity
 
-Suggested custom unit type: `death_ghost_host`
+Implemented sub-units in `common/units/010_death_ghost_hosts.txt`: `death_weak_ghost_host` (First Hosts), `death_hollow_ghost_host` (Hollow Hosts) and `death_last_shore_ghost_host` (World End).
 
-Suggested template families:
+Template families:
 
 | Tier | Template name direction | Role |
 | --- | --- | --- |
@@ -411,19 +383,28 @@ Each foothold is immediately consumed and receives world-end ghost divisions. Th
 
 ## Chaos, deaths, and air cleanliness links
 
-Death records the living population lost through the shared civilian-deaths owner when that system is enabled. Its retained Death-specific Chaos conversion is one tenth of the ordinary deaths conversion, equivalent to the ordinary receipt per ten million Death-sourced deaths. Keep that attribution in the shared accounting path rather than adding a second direct Chaos grant from consumption. Death's own consumed-population census continues when shared death tracking is disabled, without manufacturing an equivalent shared-deaths or Chaos receipt. Manual scenario setup follows its opening rule and does not create an immediate Chaos packet from its preloaded footprint.
+Death records the living population lost through the shared civilian-deaths owner when that system is enabled, through `death_register_consumed_population_deaths` and `chaos_meter_register_deaths` with reason `chaos_meter_deaths_reason.death_consumption`, attributed to the state's owner.
+Its retained Death-specific Chaos conversion is one tenth of the ordinary deaths conversion (`chaos_meter_deaths.death_consumption_chaos_weight` = 0.10), equivalent to the ordinary receipt per ten million Death-sourced deaths.
+Keep that attribution in the shared accounting path rather than adding a second direct Chaos grant from consumption.
+Death's own consumed-population census continues when shared death tracking is disabled, without manufacturing an equivalent shared-deaths or Chaos receipt.
+Manual scenario setup follows its opening rule and does not create an immediate Chaos packet from its preloaded footprint.
 
 Death should not create air contamination by default. A Death wasteland is not a chemical cloud or biological outbreak. It may use dark-storm visuals, but those are supernatural/visual and should not automatically alter Air Cleanliness unless a later accepted feature explicitly links Death with contamination.
 
-Condemnation should not rise just because Death kills people. Condemnation is blame for countries using unconventional weapons. Countries using necromancy or deliberate sacrificial anti-Death methods may gain condemnation or a new public-horror value if the implementation has a suitable system.
+Famine and Migration: a consumed state leaves both civilian mechanics, and the shared hostile-capture adapter `humanitarian_handle_special_front_capture` (called from `on_state_control_changed` in `common/on_actions/humanitarian_runtime_on_actions.txt`) sends a bounded share of each neighbouring state the former owner still holds into flight, so refugee waves run ahead of the Death front.
+Event 010 adds no second flight request of its own; a pre-consumption evacuation request is an open proposal in the package README.
+
+Condemnation should not rise just because Death kills people.
+Condemnation is blame for countries using unconventional weapons.
+Dark Methods and Herald actions currently apply only their own exposure, mourning-debt and living-disgust values; registering Herald sacrifices as an atrocity through `condemnation_add_source` is an open proposal in the package README.
 
 ## World-threat integration
 
 After Death consumes a continent, it should become a world threat source using the shared world-threat framework. Public mainland reveal alone should not set the world-threat source. Death should not create a parallel global threat flag.
 
-Suggested source flag: `world_threat_source_death`
+Implemented source flag: `world_threat_source_death`, refreshed by `death_refresh_world_threat_source`.
 
-The Death threat source should be true while:
+The Death threat source is true while:
 
 - Death exists and
 - Death has consumed at least one continent or is in world-end state and
@@ -433,9 +414,8 @@ It should clear when Death is defeated. The shared `refresh_world_threat_state` 
 
 ## Manual triggerable scenario
 
-Death should have a triggerable scenario after implementation. It is a manual sandbox/challenge setup, not a normal prerequisite-bound event.
-
-Suggested scenario ID: `SCN-006`
+Death has one triggerable scenario, `SCN-006` (implemented, registered in the shared identifier registry).
+It is a manual sandbox/challenge setup, not a normal prerequisite-bound event.
 
 Scenario type:
 
@@ -453,6 +433,7 @@ Intensity stops:
 | Maximum | Origin, the widest instant island pattern, multiple mainland pressure points, and a maximum opening crisis footprint. | Four stronger host attempts. |
 
 Manual launch should only block impossible or conflicting states, such as an already active Death crisis or no valid origin and mainland targets. It must not require live Chaos Meter progression, prior reports, date gates, or natural evolution unlocks. It must not set the Chaos Meter, record natural evolutions by shortcut, or start world-end. Chaos should rise only from Death's later natural kills and shared deaths-system links after the scenario has begun.
+A successful launch sets `death_instant_outbreak_started`, which opens ordinary island spread without fabricating Second Shore or focus completion, and schedules one `.6` success acknowledgement; a failed launch reports through `.5` and changes no territory.
 
 ## Implemented spatial and custodial addendum (2026-07-11)
 

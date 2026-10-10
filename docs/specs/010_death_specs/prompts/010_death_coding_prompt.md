@@ -1,5 +1,9 @@
 # Coding Prompt - Event 010 Death
 
+> Historical build contract (spec audit 2026-10-10): Event 010 is implemented, so do not rerun this prompt.
+> Current state and remaining work are in the [package README](../README.md); current repository instructions are in `CLAUDE.md`, and skills live under `.claude/skills/`.
+> Planning names used here (Maritime Errata, The Death Country, Black Ledger, `death_ghost_host`) were replaced by the implemented names given in the specs.
+
 Implement Event ID 10 as `Death`, fully replacing the obsolete `Spirit of War/Peace` event. Read and follow:
 
 - `AGENTS.md`

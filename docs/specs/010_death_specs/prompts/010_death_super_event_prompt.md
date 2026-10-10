@@ -1,5 +1,9 @@
 # Super-Event Prompt — Event 010 Death
 
+> Historical build contract (spec audit 2026-10-10): Event 010 is implemented, so do not rerun this prompt.
+> Current state and remaining work are in the [package README](../README.md); current repository instructions are in `CLAUDE.md`, and skills live under `.claude/skills/`.
+> Planning names used here (Maritime Errata, The Death Country, Black Ledger, `death_ghost_host`) were replaced by the implemented names given in the specs.
+
 Research and prepare the super-event presentation package for Event 010 `Death`. Follow `chaos-redux-super-events`. Use `chaosx_super_event_text_researcher` for quote, title, button text, and cultural remark research. Use `chaosx_super_event_audio_researcher` for licensed or public-domain audio research and `.ogg` conversion. Coordinate images with the Event 010 asset prompt.
 
 Do not invent titles, button text, cultural remarks, or quotes. Do not treat any planning label or role label as final player-facing text. Verify wording, attribution, source, and copyright or public-domain status where possible. Modern copyrighted references must be very short if used as button text. Every completed super-event needs unique final audio unless exact reuse is explicitly approved.

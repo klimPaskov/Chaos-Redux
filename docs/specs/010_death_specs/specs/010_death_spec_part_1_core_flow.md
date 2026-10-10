@@ -4,7 +4,8 @@
 
 Event ID `10` is **Death**. It completely replaces the obsolete `Spirit of War/Peace` event.
 
-The implementation must remove the old concept from every active surface: event script, event name mapping, debug mapping, event detail text, event catalog row, manual trigger labels, documentation, prompts, localisation, and any old decision or idea references. Nothing in the new event should mention, inherit, or imply the former `Spirit of War/Peace` design.
+The replacement is implemented in source; only the event catalog workbook row still awaits its queued update (see the package README).
+Nothing in the event should mention, inherit, or imply the former `Spirit of War/Peace` design, and player-facing text never mentions the replacement.
 
 ## Event identity
 
@@ -52,7 +53,9 @@ The first state consumption records the population loss internally and adds the 
 
 Death does almost nothing for a long time. It has no army and makes no declarations. It cannot attack by ordinary fronts. Its first spread pulses prefer tiny nearby island states with the lowest population and low strategic value.
 
-A delayed report event may fire 90 to 180 days after the origin. It should not be global unless the player owns the island, controls it, owns nearby coasts, controls a nearby naval base, or has a relevant intelligence/observation hook. The report direction is:
+The delayed report pair `chaosx.nr10.2` and `.3` arrives 120 and 180 days after the consumption that scheduled it (`death_spread.quiet_first_report_days` and `quiet_second_report_days`), at most once per country for the whole campaign.
+It is never global: recipients are the former owner and controller and the owners of coastal or naval-base states within `death_spread.origin_observer_distance` of the consumed island.
+The report direction is:
 
 - a radio silence.
 - a mail ship returning with nobody at the pier.
@@ -60,7 +63,8 @@ A delayed report event may fire 90 to 180 days after the origin. It should not b
 - fishing crews avoiding the place.
 - rumours of a storm even though the weather records do not agree.
 
-The report should offer small reactions such as sending a survey boat, waiting for the next mail ship, or filing it as a local matter. It must not reveal Death or Zol.
+The report opens the Missing Island Reports decisions (survey boat, telegraph office, harbor sanitation notices, file under weather) and the country's maritime case file described at the end of this part.
+It must not reveal Death or Zol.
 
 ### Stage 2 - Island spread
 
@@ -78,8 +82,10 @@ The reveal fires a super-event. The world now recognizes that this is not an ord
 
 After reveal:
 
-- Death automatically declares war on any country that controls a neighboring state.
-- Countries can use public containment decisions.
+- Death declares war on the pre-transfer owner or controller of the revealed state, and on a neighbouring country only when that country directly borders a Death wasteland or has already recognized a coastal warning (`death_country_can_be_pulled_into_death_war`).
+  The reveal does not start a world war by itself, and landlocked countries outside the danger area stay out.
+- Countries with a reason to respond (direct border, war contact, Compact membership, or a confirmed coastal warning) see the public containment decisions; the category never becomes global.
+- One `chaosx.nr10.4` major news item reports the reveal to every country once per campaign with aggregate totals.
 - Death can wither neighboring states if it controls at least one mainland state.
 - The defender can block withering by keeping non-Death divisions present in the target state.
 - Death can attempt a coastal jump if pushed back from the mainland, subject to cooldown and target rules.
@@ -94,7 +100,8 @@ The terminal branch begins only when both conditions are true:
 1. Death has consumed every eligible inhabited state on one continent and
 2. Chaos is above 1000.
 
-If Death consumes a continent before Chaos passes 1000, the crisis enters a severe non-terminal `Black Continent` state, becomes a world threat source, and waits. If Chaos passes 1000 before a continent is fully consumed, the event remains a major crisis but does not become a world threat source or start its world-end branch yet.
+If Death consumes a continent before Chaos passes 1000, the crisis enters a severe non-terminal state (the design name `Black Continent` has no separate player-facing label), sets `world_threat_source_death`, and waits.
+If Chaos passes 1000 before a continent is fully consumed, the event remains a major crisis but does not become a world threat source or start its world-end branch yet.
 
 When both conditions are true, Death becomes a world-end scenario:
 
@@ -124,7 +131,7 @@ A valid preferred origin state:
 
 - is an island state with no land adjacency to another state.
 - is coastal.
-- has low population, normally below 75,000.
+- has low population, below `death_population.origin_preferred_cap_k` (35,000).
 - is not a national capital.
 - is not owned by a major.
 - is not the player capital.
@@ -135,7 +142,9 @@ A valid preferred origin state:
 
 ### Secondary origin tier
 
-If the preferred tier has no candidates, the secondary tier may allow remote island states below 250,000 population, still excluding capitals, majors, player capitals, occupied states, and critical event states. The secondary tier must remain island-only. Do not silently switch to a mainland origin.
+If the preferred tier has no candidates, the secondary tier allows remote island states below `death_population.origin_outer_cap_k` (100,000), still excluding capitals, majors, player capitals, occupied states, and critical event states.
+The secondary tier must remain island-only.
+Do not silently switch to a mainland origin.
 
 ### Target bias
 
@@ -153,19 +162,17 @@ The event should not always choose the same famous island. The point is that a p
 
 ### Hidden creation event
 
-`chaosx.nr10.1` is the canonical entry event. It may be hidden and should create Death without opening a popup. It initializes variables, consumes the origin, registers the event, schedules delayed reports, and marks the old Spirit event as superseded in documentation.
+`chaosx.nr10.1` is the canonical hidden entry event.
+It creates Death without opening a popup, initializes variables, consumes the origin, registers the event, and schedules delayed reports.
+A blocked manual start (missing candidate, prior defeat, any world-end campaign, or an active Death crisis) reports through the owned `chaosx.nr10.5` failure popup, one pending per country; a valid quiet start stays silent.
 
 ### Delayed report events before reveal
 
-Pre-reveal reports should be small report events or local news events, not global super-events. Countries far away from the islands shouldn't even get notified. The events should appear after a long delay, because news move from remote places very slowly.
+Pre-reveal reports are small country report events (`chaosx.nr10.2` `No Answer from [island]` and `.3` `Another Quiet Route`), not global super-events.
+Countries far from the islands are not notified.
+The events arrive after a long delay, because news moves from remote places slowly.
 
-Suggested titles:
-
-- `The Mail Boat Waited Until Dusk`
-- `No Answer from the Island Office`
-- `The Lighthouse Kept Burning`
-
-Suggested option tone:
+Option tone:
 
 - dry official uncertainty.
 - mild annoyance.
@@ -173,70 +180,27 @@ Suggested option tone:
 - colonial bureaucracy pretending nothing serious happened.
 - no direct apocalyptic language.
 
-Example option directions:
+### Super-event packages
 
-- `The mail will arrive tomorrow.`
-- `Blame the weather and file another copy.`
+Super-event text was researched through the super-event text workflow and is implemented; [`docs/super_events/010_death/`](../../../super_events/010_death/README.md) holds the sourced candidates, attribution and audio evidence.
+Do not replace these packages with new invented lines.
+The original research directions for each role were satisfied by that research and remain in git history.
 
-### Mainland reveal super-event
+| ID | Role | Title | Trigger | Implemented follow-up |
+| --- | --- | --- | --- | --- |
+| `62` | Mainland reveal | `Death` | First consumed mainland state above `death_population.mainland_reveal_threshold_k` (100,000). | Names Death and Zol, opens public containment for countries with a reason to respond; the world-threat source waits for a consumed continent. |
+| `63` | World-end | `The Census of Zol` | A whole continent consumed and Chaos above `death_world_end.chaos_threshold` (1000). | Last Shores footholds, world-end hosts, aggressive AI, world-end Zol portrait. |
+| `64` | Defeat aftermath | `The Unfinished Work` | Defeat after public reveal when consumed population reached `death_defeat_aftermath.consumed_population_threshold_k` (10 million), at least `mainland_state_threshold` (3) mainland states were consumed, or world-end began; eligibility is saved before teardown. | Custodial aftermath decisions; consumed states stay empty. |
+| `65` | Whole world consumed | `No Witness Remains` | No populated eligible state remains. | Terminal state and the No Witnesses achievement. |
+| `66` | Herald oath reveal | `A Covenant with Death` | A country takes the Black Oath. | Herald route; see the decisions spec. |
 
-The reveal super-event should be blunt and memorable. It should use the name `Death` only after the trigger has happened.
-
-Do not prewrite the title, button text, cultural remark, or quote in this spec. Those fields must be researched through the super-event text workflow, with documented candidates, source links, attribution confidence, and copyright notes. The implementation agent must treat any unresearched text as blocked, not as final localisation.
-
-Title research direction: find a short reveal title that names or exposes the crisis without making the moment sound like the final apocalypse.
-
-Description direction: A mainland coastal state has emptied, and the black country on the map is now a public crisis. Governments cannot explain the silence through quarantine, diplomacy, or colonial inquiry.
-
-Button or cultural remark research direction: find a short researched line or allusion that reacts to diplomatic helplessness, official disbelief, counting the living, or the failure of ordinary treaty language. Do not use an invented sample line.
-
-Quote research direction: verify a quote about death, silence, discovery, fear, naming, or the inevitable. Prefer public-domain literature, scripture, philosophy, speeches, or historical sources.
-
-### Continental world-end super-event
-
-Do not prewrite the title, button text, cultural remark, or quote in this spec. The super-event text researcher must select them from sourced candidates.
-
-Title research direction: find a short terminal title tied to coasts, final borders, silence, or the spread of Death across continents.
-
-Description direction: A continent has become a black absence, and new black footholds appear on every remaining continent. The crisis has entered its terminal phase.
-
-Button or cultural remark research direction: find a short researched line or allusion about every shore becoming exposed, the sea carrying disaster, or the last safe border failing. Do not use an invented sample line.
-
-Quote research direction: verify a quote about finality, judgment, silence, shores, collapse, or the end of order.
-
-### Defeat aftermath super-event
-
-If Death is defeated after reveal and after consuming a large population threshold, a defeat aftermath super-event should fire. The threshold should be high enough that the world suffered a real crisis, for example more than 10 million consumed population, a mainland foothold, or a world-end attempt.
-
-Do not prewrite the title, button text, cultural remark, or quote in this spec. The text package must be researched and documented before implementation.
-
-Title research direction: find a short aftermath title about survival, empty land, memory, or victory that cannot restore the dead.
-
-Description direction: Death is gone from the map, and the states it consumed remain empty. The victory cannot restore the people, ports, factories, or towns that vanished.
-
-Button or cultural remark research direction: find a researched line or allusion about grief, memorial records, the limits of victory, or the names of the dead. Do not use an invented sample line.
-
-Quote research direction: verify a quote about memory, survival, grief, vigilance, or rebuilding after loss.
-
-### Whole-world consumed super-event
-
-Do not prewrite the title, button text, cultural remark, or quote in this spec. This final package must be researched, sourced, and documented.
-
-Title research direction: find a short final title about witness, silence, last records, or the end of human observation.
-
-Description direction: The last records stop as the radio reports nothing. One country remains on the final map, with no population left to read it.
-
-Button or cultural remark research direction: find a researched line or allusion about silence without witnesses, the end of record keeping, or the absence of an audience. Do not use an invented sample line.
-
-Quote research direction: verify a quote about silence, oblivion, lastness, witness, or the failure of records.
+Description direction remains: the reveal is blunt public recognition rather than the final apocalypse, the world-end is terminal and oceanic, the aftermath is a costly victory that restores nothing, and the final event is silence without witnesses.
 
 ## Event details window wording
 
-The Event Details window should describe the premise, not the mechanics. It should not list attrition, speed penalties, population deletion values, or spawn formulas. A suitable direction:
-
-> A quiet black country appears on a remote island and does not announce itself. Months later, nearby records stop matching reality as islands fall silent and ports empty. The name Death remains a rumour until the first mainland state vanishes.
-
-The details field should mention that the event replaces `Spirit of War/Peace` only in developer documentation, not in player-facing text.
+The Event Details window describes the premise, not the mechanics.
+It does not list attrition, speed penalties, population deletion values, or spawn formulas, and it does not mention `Spirit of War/Peace`.
+The implemented in-game details and evolution wording is mirrored in [`catalog_changes_pending.md`](../../../plans/010_death_plans/catalog_changes_pending.md), which is the text the queued workbook update must copy.
 
 ## Event log and evolution log role
 
