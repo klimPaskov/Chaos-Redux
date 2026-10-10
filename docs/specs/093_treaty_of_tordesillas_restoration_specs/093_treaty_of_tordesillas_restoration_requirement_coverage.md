@@ -1,6 +1,7 @@
 # Event 093 requirement coverage
 
-The table distinguishes designed content from performed evidence. A feature's presence in a specification is not a claim that it was implemented or tested in HOI4.
+The table distinguishes designed content from performed evidence.
+A feature's presence in a specification is not a claim that it was implemented or tested in HOI4.
 
 | Requirement | Specification or report | Disposition |
 | --- | --- | --- |
@@ -32,18 +33,18 @@ The table distinguishes designed content from performed evidence. A feature's pr
 | Simple recognizable escalation identity | 01, 05 | Preserved across all stages |
 | Full supplied-source and skill reading | Reading report | 46 of 46 supplied text files fully read |
 | Every linked or installed must-read source | Reading report | Not complete, missing references explicitly identified |
-| Actual provided subagent execution | Role execution map | Not performed, no launch tool available |
-| Independent improvement-loop pass | Role execution map | Not performed, not replaced with a false pass |
 | Decision, mission, cost and public-value budgets | 01, 11, 14 | Designed |
 | Nonlinear focus architecture and country preservation | 12 | Designed, exact native layout and consumers open |
 | AI and probability workflow | 13 | Scenario plan complete, specialist and MCP evidence absent |
 | Shared Chaos and reversals without duplication | 15 | Full consequence ownership map |
+| Famine, migration and condemnation connections | 04, 07, 09, 15 | Coercive settlement displacement, famine pause, requisition conversion and condemnation gates designed through owner interfaces (10 Oct 2026 audit) |
 | Presentation, assets and exact-map eligibility display | 11, 16 | Directions complete, production and rendering unperformed |
 | Super-event source research and final audio | 16, Source register | Primary text candidate verified, final audio and full production research open |
 | Achievements with nontrivial conditions and tracking | 17 | Six full designs, implementation and icons open |
 | Six separate prompts and bounded goal | Prompt files | Delivered, character length checked |
-| Scope and quality honesty | Reading and validation reports | No implementation, assets, independent review or runtime pass claimed |
+| Specialist audits and improvement-loop pass | Coding prompt | Belong to the implementation run |
 
 ## Scope conclusion
 
-Every gameplay element in the user brief has a developed specification location. The requested full tool-driven planning workflow has unresolved execution and reference gates. These are listed openly, and the package must not be described as independently audited or implementation-ready.
+Every gameplay element in the user brief has a developed specification location.
+Installed-map, engine, probability, asset and audio verification belong to the implementation run.

@@ -1,6 +1,7 @@
 # Event 093 route map
 
-This is a text design map. Arrows express political and gameplay prerequisites, not native focus coordinates or implemented event IDs.
+This is a text design map.
+Arrows express political and gameplay prerequisites, not native focus coordinates or implemented event IDs.
 
 ```text
 Valid Portugal + current Galicia + live Spanish authority
@@ -42,6 +43,10 @@ At each treaty stage:
 
 ## Focus-path relationships
 
-Portugal's diplomatic versus force-preparation opening converges only at an actual settlement. Its maritime versus continental emphasis develops national capacity without moving the sphere boundary. Spain's post-crisis settlement and recovery paths converge at a genuinely accepted treaty, then divide between overseas reach and regional consolidation.
+Portugal's diplomatic versus force-preparation opening converges only at an actual settlement.
+Its maritime versus continental emphasis develops national capacity without moving the sphere boundary.
+Spain's post-crisis settlement and recovery paths converge at a genuinely accepted treaty, then divide between overseas reach and regional consolidation.
 
-Each crown's capacity versus acceleration institution is mutually exclusive. The universal-doctrine branch joins territorial completion with assistance to the other crown. No focus can bypass diplomatic consent, the two world-end gates, or a protected homeland rule.
+Each crown's capacity versus acceleration institution is mutually exclusive.
+The universal-doctrine branch joins territorial completion with assistance to the other crown.
+No focus can bypass diplomatic consent, the two world-end gates, or a protected homeland rule.
