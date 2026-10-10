@@ -783,4 +783,4 @@ Seven paid action families close the previously missing action layer: officer-ch
 
 The Wendigo closure adds four terminal-hunt surfaces, one receipt-backed Pack muster, and one inherited winter-cell operation. The terminal hunt owns one persistent target and a 120-day mission. Launch, pressure, defender counterpressure, success, failure, timeout, route break, actor removal, terminal lock, and global cleanup all use the same bounded lifecycle. A hunt success adds only five transformation progress, a failure removes ten, and only the transformation pulse can apply the final lock.
 
-The read-only achievement tracker is deliberately excluded from the operational decision inventory. Its 18 entries are permanently unavailable and contain no cost, effect, cooldown, completion hook, or AI block.
+The read-only achievement tracker is deliberately excluded from the operational decision inventory. Its single progress entry is permanently unavailable and contains no cost, effect, cooldown, completion hook, or AI block.

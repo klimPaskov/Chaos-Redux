@@ -537,7 +537,7 @@ Commit begins only after every planned count exactly matches its required count.
 
 All 18 real achievements remain in the root Chaos Redux achievement registry. Achievements 01 through 05 are visible there from the baseline. Achievements 06 through 18 remain statically hidden in the Career Profile because the achievement schema provides only a static hidden field.
 
-A dedicated read-only decision category supplies the required campaign-stage discovery surface. It contains 18 permanently unavailable entries, uses the real completed achievement icons, and calls the exact real achievement completion trigger for each status. The tracker has no cost, effect, cooldown, completion hook, disqualifier, or AI behavior and cannot grant an achievement.
+A dedicated read-only decision category supplies the required campaign-stage discovery surface. It contains one permanently unavailable progress entry whose description lists the achievements that have reached their public stage, with the exact real achievement completion trigger behind each status. The tracker has no cost, effect, cooldown, completion hook, disqualifier, or AI behavior and cannot grant an achievement.
 
 Tracker discovery stages are:
 
