@@ -96,3 +96,52 @@ Remaining defects and limits for this model:
 - The polearm is still part of the body mesh (skinned to LeftHand, not a separate rigid prop), so the item-fit requirement of the skill is not met for this model. A separate welded polearm needs the original provider geometry, which is no longer in the job folder.
 - Normal map: the packed G/A maps were kept; baking from a provider high-poly is blocked because the provider downloads were removed after the original export (re-downloading the completed Meshy tasks is free but needs download permission).
 - The showcase re-film with the locked crop is capture work and was not done.
+
+### cannibal_scavenger_warband
+
+Fixed: the headdress shell (57 percent of the mesh, 5.1 x 3.6 x 4.1 u) was cut to a compact crest in Blender from the installed shell (27,541 to 7,258 vertices, 15,164 triangles, Head-dominated vertices 7.9 percent) and cleaned under the repository gate's own clustering at 0.0005, 0.001 and 0.002 (0 boundary, 0 non-manifold, 0 degenerate, 0 duplicate; export gate pass, 14,584 export vertices); the one-frame glitch poses in the attack (frames 12, 28, 32, 36, 48, 56, 64 and 68, 21 outlier keys including the 2.82 u Hips jump at 46-47) are removed and exporter quaternion sign flips normalised in every action (0 negative-dot samples); the death retarget slide was moved from the horizontal axis to the vertical fall (Hips drift now -2.37 u vertical with 0.0 u forward travel; it previously rose 0.88 u and slid 2.37 u); horizontal Hips travel is stripped from attack, support_attack and training (support_attack and training previously glided 3.2 u); the move and retreat loop seams were closed (1.4 and 1.3 degrees); the diffuse hair is regraded to ash grey and the specular recalibrated by the staged texture tranche; the entity gets a training exertion cue twice per loop, strike-timed attack and support_attack events (impacts at 0.83 s, 1.42 s, 0.72 s and 1.25 s) and the death vocal at the start of the collapse.
+
+| action | length | sign flips fixed | worst rotation after windows | violations with/without declared windows | loop | root | declared strike windows |
+|---|---|---|---|---|---|---|---|
+| idle | 1.75 s | 0 | 0 | 0/0 | pass [0.1, 0.0] | pass | - |
+| move | 1.17 s | 0 | 17.1 | 14/14 | pass [1.4, 0.002] | pass | - |
+| attack | 3.08 s | 4 | 0 | 0/137 | not_applicable [1.8, 0.001] | pass | [[6, 42], [47, 64]] |
+| defend | 1.46 s | 16 | 0 | 0/0 | pass [1.3, 0.0] | pass | - |
+| support_attack | 2.92 s | 6 | 0 | 0/214 | not_applicable [9.1, 0.001] | pass | [[4, 52]] |
+| retreat | 1.79 s | 37 | 0 | 0/0 | pass [1.3, 0.0] | pass | - |
+| training | 3.75 s | 0 | 0 | 0/221 | pass [2.3, 0.001] | pass | [[9, 24], [28, 42], [45, 79]] |
+| death | 2.29 s | 72 | 0 | 0/109 | not_applicable [130.5, 2.374] | pass | [[5, 53]] |
+
+Evidence: `docs/assets/014_cannibalism/models_3d/cannibal_scavenger_warband/` (checkpoints `wp2_01_headdress_compact` -> `wp2_02_actions_imported` -> `wp2_03_actions_fixed` -> `wp2_03b_clean` -> `wp2_04_weights` -> `wp2_05_named`; `export/wp2/gate_summary.json`; reimport proofs `validation/wp2_reimport_summary.json` for the eight actions and `wp2_reimport_summary_mesh_named.json` for the final mesh; before and after stills in `blender/previews`).
+
+Remaining defects and limits for this model:
+- The move action has no measured sole plant, so the movement events at 0.0 s and 0.583 s (retreat 0.0 s and 0.896 s) are half-cycle estimates; the attack, support_attack, training and death gates pass only through declared windows that cover most of each action (attack 6-64 of 74 frames, support_attack 4-52 of 70, training 9-79 of 90, death 5-53 of 55), and the move action still reports 14 transitions at up to 0.3 u per frame and 17.1 degrees per frame against the 15 degree locomotion limit.
+- The idle pose measures 5.07 u wide including the polearm held out to the side, against the plan's 3.5 u target; the headdress itself is no longer the cause. Reducing it needs a re-authored idle with the polearm held closer, which was not done.
+- The polearm remains part of the body mesh skinned to RightHand (the fused-weapon limitation of the provider body); a separate item mesh needs the original provider geometry.
+- Normal map is the retained original (G/A std 4); baking one needs the provider high-poly, which is no longer on disk (a free re-download of the completed Meshy tasks needs download permission). The sourced hair texture detail beyond the regrade was not re-authored.
+- The in-game re-film with locked crop was not done (capture work).
+
+### cannibal_feast_cohort
+
+Fixed: the shard soup (26,398 vertices, 21,378 open boundary edges in 273 components) was welded in Blender at 0.02 u, refilled and cleaned under the delivery gate's own transitive clustering (0 boundary, 0 non-manifold, 0 degenerate, 0 duplicate at 0.0005, 0.001 and 0.002; one connected closed shell), then reduced to 20,000 triangles (9,979 vertices, 16,663 export vertices, export gate pass) to clear the 65,535 triangle-index export ceiling; the original skin weights were kept on the surviving vertices and re-limited to four influences; the death slide on the horizontal axis (2.2 u) is stripped; the 6.2 s defend whose loop snapped 109 degrees was cut to a 2.5 s loop section (frames 4-64) with a 2.7 degree seam; the move loop seam is closed; horizontal Hips travel is held in every non-death action; exporter quaternion sign flips are normalised in defend, support_attack, training and death (0 negative-dot samples); the attack, support_attack and training hand swings stay inside declared strike windows; the diffuse and specular come from the staged tranche (black islands inpainted, glossiness lowered to about 100, metalness zero); entity events are re-timed to the measured thrusts (attack 0.62 s and 1.38 s, support_attack 0.80 s and 1.21 s) with two training cues per loop and the death vocal at 0.45 s.
+
+| action | length | sign flips fixed | worst rotation after windows | violations with/without declared windows | loop | root | declared strike windows |
+|---|---|---|---|---|---|---|---|
+| idle | 1.75 s | 0 | 0 | 0/0 | pass [0.1, 0.0] | pass | - |
+| move | 1.17 s | 0 | 17.4 | 20/20 | pass [1.4, 0.001] | pass | - |
+| attack | 2.92 s | 0 | 0 | 0/229 | not_applicable [7.8, 0.0] | pass | [[5, 52]] |
+| defend | 2.5 s | 39 | 0 | 0/0 | pass [2.7, 0.009] | pass | - |
+| support_attack | 3.08 s | 42 | 0 | 0/104 | not_applicable [2.1, 0.002] | pass | [[10, 41], [48, 62]] |
+| retreat | 1.79 s | 0 | 11.8 | 1/1 | pass [2.0, 0.0] | pass | - |
+| training | 3.75 s | 10 | 0 | 0/237 | pass [2.2, 0.0] | pass | [[10, 24], [27, 42], [46, 68]] |
+| death | 2.29 s | 10 | 0 | 0/300 | not_applicable [127.8, 2.474] | pass | [[2, 8], [10, 43], [45, 53]] |
+
+Evidence: `docs/assets/014_cannibalism/models_3d/cannibal_feast_cohort/` (checkpoints `wp2_01_prepped` -> `wp2_01w_clean` -> `wp2_01x_dec` -> `wp2_02_geometry` -> `wp2_03_actions_fixed` -> `wp2_04_weights`; `export/wp2/gate_summary.json`; eight native reimport proofs in `validation/wp2_reimport_summary.json`; before and after stills in `blender/previews`).
+
+Remaining defects and limits for this model:
+- The weld removes about a third of the original triangles and pulls neighbouring shards together by up to 0.02 u, so fine surface detail of the provider body is lost where it was already fragmented; the figure is now one closed shell but is not the provider's original topology, which would need the original provider download (a free re-download of the completed Meshy tasks needs download permission).
+- The spear is still part of the body mesh, not a separate rigid prop.
+- The normal map is the retained original (G/A std 49, noise padding); baking a tangent normal needs the provider high-poly that is no longer on disk.
+- The move and retreat actions have no measured sole plant, so their footstep events are half-cycle estimates, and move still reports 20 transitions up to 0.37 u per frame and 17.4 degrees per frame against the locomotion limits; the declared strike windows cover most of attack (5-52 of 70 frames), training and death.
+- The in-game re-film with locked crop was not done (capture work).
+
