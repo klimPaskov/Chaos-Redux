@@ -15,7 +15,7 @@ It does not use a dedicated scripted GUI.
 
 The category appears after the first manifestation for every country with newcomers and hides when the country has no unsettled newcomers, no running project, and no active mission.
 
-State actions target the country's hotspots through the established selected-state pattern: the category lists up to `8` hotspots, the player selects one, its actions appear, and a clear action returns to the national view.
+State actions target the country's hotspots through the established selected-state pattern: the category lists up to `3` hotspots, the player selects one, its actions appear, and a clear action returns to the national view.
 AI evaluates every hotspot directly without the selector.
 Projects require the state to be owned and controlled by the country.
 

@@ -1,0 +1,48 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 037 MYSTERIOUS PEOPLE ON ACTIONS
+# ============================================================================
+# The state ledger belongs to the state. When a state holding newcomers
+# changes owner, its counts move from the credited owner to the new one.
+# Only states that already carry the ledger do any work. Startup registers
+# the CXT package through one bounded existing country; the tag-scoped daily
+# fallback repairs initialized test saves without scanning the world.
+# ============================================================================
+
+on_actions = {
+	on_state_control_changed = {
+		effect = {
+			if = {
+				limit = {
+					FROM.FROM = {
+						has_variable = mysterious_people_share
+						has_variable = mysterious_people_counted_owner
+					}
+				}
+				FROM.FROM = { mysterious_people_on_state_owner_changed = yes }
+			}
+		}
+	}
+
+	on_startup = {
+		effect = {
+			random_country = {
+				limit = { exists = yes }
+				mysterious_people_register_cxt_test_content = yes
+			}
+		}
+	}
+
+	on_daily_CXT = {
+		effect = {
+			if = {
+				limit = { has_country_flag = chaosx_test_country_initialized }
+				set_temp_variable = { chaosx_test_country_extension_registration_added = 0 }
+				mysterious_people_register_cxt_test_content = yes
+				if = {
+					limit = { check_variable = { var = chaosx_test_country_extension_registration_added value = 0 compare = greater_than } }
+					chaosx_test_country_sync_registered_content = yes
+				}
+			}
+		}
+	}
+}

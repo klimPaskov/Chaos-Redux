@@ -39,10 +39,8 @@ Never edit the CSV exports.
 ## Cluster
 
 The workbook and `docs/systems/event_system/event_clusters.md` list Event 037 as member 4 of Sudden Abundance (cluster `15`, Minor Repeatable, Chaos level `1`) at Medium severity.
-Sudden Abundance is not registered in `common/script_constants/event_cluster_constants.txt`, so it cannot fire yet.
+Sudden Abundance is registered in `common/script_constants/event_cluster_constants.txt` and `common/scripted_effects/chaosx_event_cluster_effects.txt` as runtime cluster `15`, a repeatable cluster at Chaos level 1 with a 120-day cooldown.
 
-Event 037 is not a member of Various Anomalies, which is live at cluster ID `11` with Events 42 and 47.
-
-Until Sudden Abundance is registered, Event 037 fires only through its ordinary Minor Repeatable path.
-Registering the cluster belongs to the shared cluster work, not to Event 037.
-When it is registered, one activation calls Event 037 once with one world transaction, one history entry, one repeatable-weight update, and one set of milestone checks.
+Event 037 is its only runtime member (required, Medium, so the cluster opens from Chaos tier 1).
+The other catalogue members (Events 19, 29, 32, 42, 56 and 64) join when their own packages register member rows.
+One activation calls Event 037 once with one world transaction, one history entry, one repeatable-weight update, and one set of milestone checks.

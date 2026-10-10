@@ -1,52 +1,729 @@
 add_namespace = chaosx.nr37
 
-##############################################################################################################
-#    ##    ## ########      #######  ########
-#    ###   ## ##     ##    ##     ## ##    ##
-#    ####  ## ##     ##           ##     ##
-#    ## ## ## ########      #######     ##
-#    ##  #### ##   ##             ##   ##
-#    ##   ### ##    ##     ##     ##   ##
-#    ##    ## ##     ##     #######    ##
-##############################################################################################################
-#   #     #                                                     ###
-#   ##   ##   ##   #    # #####   ####  #    # ###### #####      #  #    #  ####  #####  ######   ##    ####  ######
-#   # # # #  #  #  ##   # #    # #    # #    # #      #    #     #  ##   # #    # #    # #       #  #  #      #
-#   #  #  # #    # # #  # #    # #    # #    # #####  #    #     #  # #  # #      #    # #####  #    #  ####  #####
-#   #     # ###### #  # # #####  #    # # ## # #      #####      #  #  # # #      #####  #      ######      # #
-#   #     # #    # #   ## #      #    # ##  ## #      #   #      #  #   ## #    # #   #  #      #    # #    # #
-#   #     # #    # #    # #       ####  #    # ###### #    #    ### #    #  ####  #    # ###### #    #  ####  ######
+# ============================================================================
+# CHAOS REDUX - EVENT 037 MYSTERIOUS PEOPLE
+# ============================================================================
+# chaosx.nr37.1   hidden entry; runs the one world manifestation transaction
+# chaosx.nr37.2   manifestation report, one per human country with newcomers
+# chaosx.nr37.3-5 evolution reports
+# chaosx.nr37.6   hidden monthly host pulse (self-rescheduling)
+# chaosx.nr37.7   hidden flavour dispatcher, one roll per country per firing
+# chaosx.nr37.8   hidden Newcomers modifier refresh after a timed boost
+# chaosx.nr37.10-26 flavour pool, one country and one state each
+# chaosx.news.42  world news for the first manifestation (_chaosx_news.txt)
+#
+# Population, pressure and every consequence live in
+# common/scripted_effects/037_mysterious_population_effects.txt. Reports and
+# flavour events never apply a grant, record history, or add Chaos.
+# ============================================================================
 
-##############################################################################################################
+# ---------------------------------------------------------------------------
+# Entry, pulse, and dispatchers
+# ---------------------------------------------------------------------------
 
 country_event = {
 	id = chaosx.nr37.1
 	title = chaosx.nr37.1.t
-
 	hidden = yes
 	is_triggered_only = yes
-
-	immediate = {
-		random_country = {
-			country_event = { id = chaosx.nr37.2 days = 1 }
-		}
-	}
+	immediate = { mysterious_people_run_manifestation = yes }
 }
 
-##############################################################################################################
+country_event = {
+	id = chaosx.nr37.6
+	title = chaosx.nr37.6.t
+	hidden = yes
+	is_triggered_only = yes
+	immediate = { mysterious_people_run_pulse = yes }
+}
+
+country_event = {
+	id = chaosx.nr37.7
+	title = chaosx.nr37.7.t
+	hidden = yes
+	is_triggered_only = yes
+	immediate = { mysterious_people_dispatch_flavour = yes }
+}
+
+country_event = {
+	id = chaosx.nr37.8
+	title = chaosx.nr37.8.t
+	hidden = yes
+	is_triggered_only = yes
+	immediate = { mysterious_people_refresh_modifier = yes }
+}
+
+# ---------------------------------------------------------------------------
+# Manifestation report
+# ---------------------------------------------------------------------------
 
 country_event = {
 	id = chaosx.nr37.2
 	title = chaosx.nr37.2.t
-	desc = chaosx.nr37.2.d
-	picture = GFX_report_event_FIN_petsamo_mine
-
+	desc = {
+		text = chaosx.nr37.2.d.first
+		trigger = { check_variable = { global.mysterious_people_firings = 1 } }
+	}
+	desc = {
+		text = chaosx.nr37.2.d.baseline
+		trigger = {
+			check_variable = { global.mysterious_people_firings > 1 }
+			NOT = { mysterious_people_stage_at_least_i = yes }
+		}
+	}
+	desc = {
+		text = chaosx.nr37.2.d.evolution_i
+		trigger = {
+			check_variable = { global.mysterious_people_firings > 1 }
+			mysterious_people_stage_at_least_i = yes
+			NOT = { mysterious_people_stage_at_least_ii = yes }
+		}
+	}
+	desc = {
+		text = chaosx.nr37.2.d.evolution_ii
+		trigger = {
+			check_variable = { global.mysterious_people_firings > 1 }
+			mysterious_people_stage_at_least_ii = yes
+			NOT = { mysterious_people_stage_at_least_iii = yes }
+		}
+	}
+	desc = {
+		text = chaosx.nr37.2.d.evolution_iii
+		trigger = {
+			check_variable = { global.mysterious_people_firings > 1 }
+			mysterious_people_stage_at_least_iii = yes
+		}
+	}
+	picture = GFX_report_mysterious_people_manifestation
 	is_triggered_only = yes
 
 	option = {
-		ai_chance = { base = 100 }
 		name = chaosx.nr37.2.a
-		add_manpower = 2500000
-		news_event = { id = chaosx.news.42 days = 2 }
+		trigger = { mysterious_people_country_is_strained = yes }
+		custom_effect_tooltip = chaosx.nr37.2.crowded_tt
+	}
+	option = {
+		name = chaosx.nr37.2.b
+		trigger = { NOT = { mysterious_people_country_is_strained = yes } }
+		custom_effect_tooltip = chaosx.nr37.2.calm_tt
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Evolution reports
+# ---------------------------------------------------------------------------
+
+country_event = {
+	id = chaosx.nr37.3
+	title = chaosx.nr37.3.t
+	desc = chaosx.nr37.3.d
+	picture = GFX_report_mysterious_people_manifestation
+	is_triggered_only = yes
+	option = { name = chaosx.nr37.3.a }
+}
+
+country_event = {
+	id = chaosx.nr37.4
+	title = chaosx.nr37.4.t
+	desc = chaosx.nr37.4.d
+	picture = GFX_report_event_american_hunger_march
+	is_triggered_only = yes
+	option = { name = chaosx.nr37.4.a }
+}
+
+country_event = {
+	id = chaosx.nr37.5
+	title = chaosx.nr37.5.t
+	desc = chaosx.nr37.5.d
+	picture = GFX_report_event_crowd_in_prague
+	is_triggered_only = yes
+	option = { name = chaosx.nr37.5.a }
+}
+
+# ---------------------------------------------------------------------------
+# Flavour pool. The dispatcher saves the state in
+# mysterious_people_flavour_state (variable and event target).
+# ---------------------------------------------------------------------------
+
+# The Village with Old Foundations
+country_event = {
+	id = chaosx.nr37.10
+	title = chaosx.nr37.10.t
+	desc = chaosx.nr37.10.d
+	picture = GFX_report_mysterious_people_manifestation
+	is_triggered_only = yes
+	option = {
+		name = chaosx.nr37.10.a
+		trigger = { has_political_power > constant:mysterious_people_flavour.small_pp }
+		ai_chance = { base = 70 }
+		add_political_power = constant:mysterious_people_flavour.small_pp_cost
+		custom_effect_tooltip = chaosx.nr37.10.a.tt
+		hidden_effect = {
+			set_temp_variable = { mysterious_people_settle_share = constant:mysterious_people_flavour.settle_medium }
+			mysterious_people_flavour_settle = yes
+		}
+	}
+	option = {
+		name = chaosx.nr37.10.b
+		ai_chance = { base = 30 }
+		custom_effect_tooltip = chaosx.nr37.10.b.tt
+	}
+}
+
+# The School Nobody Opened
+country_event = {
+	id = chaosx.nr37.11
+	title = chaosx.nr37.11.t
+	desc = chaosx.nr37.11.d
+	picture = GFX_report_event_bul_making_bricks_for_school
+	is_triggered_only = yes
+	option = {
+		name = chaosx.nr37.11.a
+		ai_chance = { base = 70 }
+		custom_effect_tooltip = chaosx.nr37.11.a.tt
+		hidden_effect = {
+			set_temp_variable = { mysterious_people_event_factor_value = constant:mysterious_people_flavour.factor_up }
+			set_temp_variable = { mysterious_people_event_factor_days = constant:mysterious_people_flavour.long_days }
+			mysterious_people_flavour_factor = yes
+		}
+	}
+	option = {
+		name = chaosx.nr37.11.b
+		ai_chance = {
+			base = 30
+			modifier = { factor = 0.3 has_country_flag = mysterious_people_stance_open }
+		}
+		custom_effect_tooltip = chaosx.nr37.11.b.tt
+		if = {
+			limit = { has_country_flag = mysterious_people_stance_open }
+			hidden_effect = {
+				set_temp_variable = { mysterious_people_unrest_add = constant:mysterious_people_flavour.stability_small }
+				multiply_temp_variable = { mysterious_people_unrest_add = constant:mysterious_people_value.negative_one }
+				set_temp_variable = { mysterious_people_unrest_days = constant:mysterious_people_flavour.short_days }
+				mysterious_people_apply_unrest = yes
+			}
+		}
+	}
+}
+
+# The Unknown Relative
+country_event = {
+	id = chaosx.nr37.12
+	title = chaosx.nr37.12.t
+	desc = chaosx.nr37.12.d
+	picture = GFX_report_event_SWI_von_trapp_family
+	is_triggered_only = yes
+	option = {
+		name = chaosx.nr37.12.a
+		ai_chance = {
+			base = 60
+			modifier = { factor = 0.5 has_country_flag = mysterious_people_stance_restricted }
+		}
+		custom_effect_tooltip = chaosx.nr37.12.a.tt
+		hidden_effect = {
+			set_temp_variable = { mysterious_people_settle_share = constant:mysterious_people_flavour.settle_small }
+			mysterious_people_flavour_settle = yes
+		}
+	}
+	option = {
+		name = chaosx.nr37.12.b
+		ai_chance = {
+			base = 40
+			modifier = { factor = 2 has_country_flag = mysterious_people_stance_restricted }
+		}
+		custom_effect_tooltip = chaosx.nr37.12.b.tt
+		hidden_effect = {
+			if = {
+				limit = { has_country_flag = mysterious_people_stance_restricted }
+				set_temp_variable = { mysterious_people_calm_add = constant:mysterious_people_flavour.stability_small }
+				set_temp_variable = { mysterious_people_calm_days = constant:mysterious_people_flavour.medium_days }
+				mysterious_people_apply_calm = yes
+			}
+			set_temp_variable = { mysterious_people_event_factor_value = constant:mysterious_people_flavour.factor_down }
+			set_temp_variable = { mysterious_people_event_factor_days = constant:mysterious_people_flavour.medium_days }
+			mysterious_people_flavour_factor = yes
+		}
+	}
+}
+
+# The Road Everyone Uses
+country_event = {
+	id = chaosx.nr37.13
+	title = chaosx.nr37.13.t
+	desc = chaosx.nr37.13.d
+	picture = GFX_report_event_burma_road
+	is_triggered_only = yes
+	option = {
+		name = chaosx.nr37.13.a
+		ai_chance = { base = 75 }
+		custom_effect_tooltip = chaosx.nr37.13.a.tt
+		hidden_effect = {
+			if = {
+				limit = { has_variable = mysterious_people_flavour_state }
+				var:mysterious_people_flavour_state = {
+					set_state_flag = mysterious_people_roads_discount
+					mysterious_people_refresh_state_quotes = yes
+				}
+			}
+		}
+	}
+	option = {
+		name = chaosx.nr37.13.b
+		ai_chance = { base = 25 }
+		custom_effect_tooltip = chaosx.nr37.13.b.tt
+	}
+}
+
+# The Factory Shift
+country_event = {
+	id = chaosx.nr37.14
+	title = chaosx.nr37.14.t
+	desc = chaosx.nr37.14.d
+	picture = GFX_report_event_generic_factory
+	is_triggered_only = yes
+	option = {
+		name = chaosx.nr37.14.a
+		ai_chance = {
+			base = 50
+			modifier = { factor = 2 has_war = yes }
+		}
+		custom_effect_tooltip = chaosx.nr37.14.a.tt
+		hidden_effect = {
+			set_temp_variable = { mysterious_people_shift_add = constant:mysterious_people_flavour.output_gain }
+			set_temp_variable = { mysterious_people_shift_days = constant:mysterious_people_flavour.medium_days }
+			mysterious_people_apply_shift = yes
+			set_temp_variable = { mysterious_people_event_factor_value = constant:mysterious_people_flavour.factor_down }
+			set_temp_variable = { mysterious_people_event_factor_days = constant:mysterious_people_flavour.medium_days }
+			mysterious_people_flavour_factor = yes
+		}
+	}
+	option = {
+		name = chaosx.nr37.14.b
+		ai_chance = { base = 50 }
+		custom_effect_tooltip = chaosx.nr37.14.b.tt
+	}
+}
+
+# Graves for Living Families
+country_event = {
+	id = chaosx.nr37.15
+	title = chaosx.nr37.15.t
+	desc = chaosx.nr37.15.d
+	picture = GFX_report_event_generic_funeral
+	is_triggered_only = yes
+	option = {
+		name = chaosx.nr37.15.a
+		ai_chance = { base = 80 }
+		custom_effect_tooltip = chaosx.nr37.15.a.tt
+		hidden_effect = {
+			set_temp_variable = { mysterious_people_settle_share = constant:mysterious_people_flavour.settle_small }
+			mysterious_people_flavour_settle = yes
+		}
+	}
+	option = {
+		name = chaosx.nr37.15.b
+		ai_chance = {
+			base = 20
+			modifier = { factor = 2 has_country_flag = mysterious_people_stance_restricted }
+		}
+		custom_effect_tooltip = chaosx.nr37.15.b.tt
+		hidden_effect = {
+			set_temp_variable = { mysterious_people_unrest_add = constant:mysterious_people_flavour.stability_medium }
+			multiply_temp_variable = { mysterious_people_unrest_add = constant:mysterious_people_value.negative_one }
+			set_temp_variable = { mysterious_people_unrest_days = constant:mysterious_people_flavour.medium_days }
+			mysterious_people_apply_unrest = yes
+		}
+	}
+}
+
+# Two Families, One House
+country_event = {
+	id = chaosx.nr37.16
+	title = chaosx.nr37.16.t
+	desc = chaosx.nr37.16.d
+	picture = GFX_report_event_generic_construction_site
+	is_triggered_only = yes
+	option = {
+		name = chaosx.nr37.16.a
+		trigger = { has_political_power > constant:mysterious_people_flavour.medium_pp }
+		ai_chance = { base = 60 }
+		add_political_power = constant:mysterious_people_flavour.medium_pp_cost
+		custom_effect_tooltip = chaosx.nr37.16.a.tt
+		hidden_effect = {
+			if = {
+				limit = { has_variable = mysterious_people_flavour_state }
+				var:mysterious_people_flavour_state = {
+					set_state_flag = mysterious_people_housing_discount
+					mysterious_people_refresh_state_quotes = yes
+				}
+			}
+		}
+	}
+	option = {
+		name = chaosx.nr37.16.b
+		ai_chance = { base = 40 }
+		custom_effect_tooltip = chaosx.nr37.16.b.tt
+		hidden_effect = {
+			set_temp_variable = { mysterious_people_unrest_add = constant:mysterious_people_flavour.stability_small }
+			multiply_temp_variable = { mysterious_people_unrest_add = constant:mysterious_people_value.negative_one }
+			set_temp_variable = { mysterious_people_unrest_days = constant:mysterious_people_flavour.short_days }
+			mysterious_people_apply_unrest = yes
+		}
+	}
+}
+
+# The Wedding Guests from Abroad
+country_event = {
+	id = chaosx.nr37.17
+	title = chaosx.nr37.17.t
+	desc = chaosx.nr37.17.d
+	picture = GFX_report_event_DEN_celebration
+	is_triggered_only = yes
+	option = {
+		name = chaosx.nr37.17.a
+		ai_chance = {
+			base = 70
+			modifier = { factor = 0.3 has_country_flag = mysterious_people_stance_restricted }
+		}
+		if = {
+			limit = { has_variable = mysterious_people_flavour_country }
+			var:mysterious_people_flavour_country = {
+				add_opinion_modifier = { target = ROOT modifier = mysterious_people_shared_families }
+				reverse_add_opinion_modifier = { target = ROOT modifier = mysterious_people_shared_families }
+			}
+		}
+	}
+	option = {
+		name = chaosx.nr37.17.b
+		ai_chance = { base = 30 }
+		custom_effect_tooltip = chaosx.nr37.17.b.tt
+	}
+}
+
+# New Districts by Morning
+country_event = {
+	id = chaosx.nr37.18
+	title = chaosx.nr37.18.t
+	desc = chaosx.nr37.18.d
+	picture = GFX_report_event_generic_construction_site
+	is_triggered_only = yes
+	option = {
+		name = chaosx.nr37.18.a
+		trigger = { has_political_power > constant:mysterious_people_flavour.tram_pp }
+		ai_chance = { base = 70 }
+		add_political_power = constant:mysterious_people_flavour.tram_pp_cost
+		custom_effect_tooltip = chaosx.nr37.18.a.tt
+		hidden_effect = {
+			set_temp_variable = { mysterious_people_event_factor_value = constant:mysterious_people_flavour.factor_up }
+			set_temp_variable = { mysterious_people_event_factor_days = constant:mysterious_people_flavour.long_days }
+			mysterious_people_flavour_factor = yes
+		}
+	}
+	option = {
+		name = chaosx.nr37.18.b
+		ai_chance = { base = 30 }
+		custom_effect_tooltip = chaosx.nr37.18.b.tt
+	}
+}
+
+# Work Without Homes
+country_event = {
+	id = chaosx.nr37.19
+	title = chaosx.nr37.19.t
+	desc = chaosx.nr37.19.d
+	picture = GFX_report_event_worker_protests
+	is_triggered_only = yes
+	option = {
+		name = chaosx.nr37.19.a
+		ai_chance = {
+			base = 40
+			modifier = { factor = 2 has_war = yes }
+		}
+		custom_effect_tooltip = chaosx.nr37.19.a.tt
+		hidden_effect = {
+			set_temp_variable = { mysterious_people_shift_add = constant:mysterious_people_flavour.output_gain }
+			set_temp_variable = { mysterious_people_shift_days = constant:mysterious_people_flavour.medium_days }
+			mysterious_people_apply_shift = yes
+			set_temp_variable = { mysterious_people_unrest_add = constant:mysterious_people_flavour.stability_small }
+			multiply_temp_variable = { mysterious_people_unrest_add = constant:mysterious_people_value.negative_one }
+			set_temp_variable = { mysterious_people_unrest_days = constant:mysterious_people_flavour.medium_days }
+			mysterious_people_apply_unrest = yes
+		}
+	}
+	option = {
+		name = chaosx.nr37.19.b
+		ai_chance = { base = 60 }
+		custom_effect_tooltip = chaosx.nr37.19.b.tt
+		hidden_effect = {
+			set_temp_variable = { mysterious_people_settle_share = constant:mysterious_people_flavour.settle_medium }
+			mysterious_people_flavour_settle = yes
+			set_temp_variable = { mysterious_people_shift_add = constant:mysterious_people_flavour.output_loss }
+			set_temp_variable = { mysterious_people_shift_days = constant:mysterious_people_flavour.short_days }
+			mysterious_people_apply_shift = yes
+		}
+	}
+}
+
+# Grain for People Who Were Not Here
+country_event = {
+	id = chaosx.nr37.20
+	title = chaosx.nr37.20.t
+	desc = chaosx.nr37.20.d
+	picture = GFX_report_event_american_hunger_march
+	is_triggered_only = yes
+	option = {
+		name = chaosx.nr37.20.a
+		ai_chance = { base = 60 }
+		custom_effect_tooltip = chaosx.nr37.20.a.tt
+		hidden_effect = {
+			set_temp_variable = { mysterious_people_unrest_add = constant:mysterious_people_flavour.stability_medium }
+			multiply_temp_variable = { mysterious_people_unrest_add = constant:mysterious_people_value.negative_one }
+			set_temp_variable = { mysterious_people_unrest_days = constant:mysterious_people_flavour.medium_days }
+			mysterious_people_apply_unrest = yes
+		}
+	}
+	option = {
+		name = chaosx.nr37.20.b
+		trigger = { has_country_flag = mysterious_people_stance_restricted }
+		ai_chance = { base = 40 }
+		custom_effect_tooltip = chaosx.nr37.20.b.tt
+		hidden_effect = {
+			set_temp_variable = { mysterious_people_calm_add = constant:mysterious_people_flavour.stability_small }
+			set_temp_variable = { mysterious_people_calm_days = constant:mysterious_people_flavour.medium_days }
+			mysterious_people_apply_calm = yes
+			set_temp_variable = { mysterious_people_event_factor_value = constant:mysterious_people_flavour.factor_half }
+			set_temp_variable = { mysterious_people_event_factor_days = constant:mysterious_people_flavour.long_days }
+			mysterious_people_flavour_factor = yes
+		}
+	}
+}
+
+# The Station Never Empties
+country_event = {
+	id = chaosx.nr37.21
+	title = chaosx.nr37.21.t
+	desc = chaosx.nr37.21.d
+	picture = GFX_report_event_generic_train
+	is_triggered_only = yes
+	option = {
+		name = chaosx.nr37.21.a
+		trigger = { has_political_power > constant:mysterious_people_flavour.tram_pp }
+		ai_chance = { base = 50 }
+		add_political_power = constant:mysterious_people_flavour.tram_pp_cost
+		custom_effect_tooltip = chaosx.nr37.21.a.tt
+		hidden_effect = {
+			if = {
+				limit = { has_variable = mysterious_people_flavour_state }
+				var:mysterious_people_flavour_state = {
+					set_temp_variable = { mysterious_people_flag_days = constant:mysterious_people_flavour.station_days }
+					set_state_flag = { flag = mysterious_people_station_extra days = mysterious_people_flag_days value = 1 }
+				}
+			}
+		}
+	}
+	option = {
+		name = chaosx.nr37.21.b
+		ai_chance = {
+			base = 50
+			modifier = {
+				factor = 3
+				any_neighbor_country = { has_war = yes }
+			}
+		}
+		custom_effect_tooltip = chaosx.nr37.21.b.tt
+		hidden_effect = {
+			if = {
+				limit = { has_variable = mysterious_people_flavour_state }
+				var:mysterious_people_flavour_state = {
+					set_temp_variable = { mysterious_people_flag_days = constant:mysterious_people_flavour.short_days }
+					set_state_flag = { flag = mysterious_people_station_closed days = mysterious_people_flag_days value = 1 }
+				}
+			}
+		}
+	}
+}
+
+# A City Asks for Entry Limits
+country_event = {
+	id = chaosx.nr37.22
+	title = chaosx.nr37.22.t
+	desc = chaosx.nr37.22.d
+	picture = GFX_report_event_crowd_in_prague
+	is_triggered_only = yes
+	option = {
+		name = chaosx.nr37.22.a
+		ai_chance = {
+			base = 35
+			modifier = { factor = 2 has_country_flag = mysterious_people_stance_restricted }
+		}
+		custom_effect_tooltip = chaosx.nr37.22.a.tt
+		hidden_effect = {
+			set_temp_variable = { mysterious_people_calm_add = constant:mysterious_people_flavour.stability_medium }
+			set_temp_variable = { mysterious_people_calm_days = constant:mysterious_people_flavour.long_days }
+			mysterious_people_apply_calm = yes
+			set_temp_variable = { mysterious_people_event_factor_value = constant:mysterious_people_flavour.factor_half }
+			set_temp_variable = { mysterious_people_event_factor_days = constant:mysterious_people_flavour.long_days }
+			mysterious_people_flavour_factor = yes
+		}
+	}
+	option = {
+		name = chaosx.nr37.22.b
+		trigger = { has_political_power > constant:mysterious_people_flavour.large_pp }
+		ai_chance = { base = 45 }
+		add_political_power = constant:mysterious_people_flavour.large_pp_cost
+		custom_effect_tooltip = chaosx.nr37.22.b.tt
+		hidden_effect = {
+			set_temp_variable = { mysterious_people_settle_share = constant:mysterious_people_flavour.settle_large }
+			mysterious_people_flavour_settle = yes
+		}
+	}
+	option = {
+		name = chaosx.nr37.22.c
+		ai_chance = { base = 20 }
+		custom_effect_tooltip = chaosx.nr37.22.c.tt
+		hidden_effect = {
+			set_temp_variable = { mysterious_people_unrest_add = constant:mysterious_people_flavour.stability_medium }
+			multiply_temp_variable = { mysterious_people_unrest_add = constant:mysterious_people_value.negative_one }
+			set_temp_variable = { mysterious_people_unrest_days = constant:mysterious_people_flavour.short_days }
+			mysterious_people_apply_unrest = yes
+		}
+	}
+}
+
+# The Majority Nobody Remembers Meeting
+country_event = {
+	id = chaosx.nr37.23
+	title = chaosx.nr37.23.t
+	desc = chaosx.nr37.23.d
+	picture = GFX_report_event_election_vote
+	is_triggered_only = yes
+	option = {
+		name = chaosx.nr37.23.a
+		ai_chance = {
+			base = 50
+			modifier = { factor = 2 has_government = democratic }
+			modifier = { factor = 0.3 has_country_flag = mysterious_people_stance_restricted }
+		}
+		custom_effect_tooltip = chaosx.nr37.23.a.tt
+		hidden_effect = {
+			set_temp_variable = { mysterious_people_event_factor_value = constant:mysterious_people_flavour.factor_up_large }
+			set_temp_variable = { mysterious_people_event_factor_days = constant:mysterious_people_flavour.long_days }
+			mysterious_people_flavour_factor = yes
+			set_temp_variable = { mysterious_people_unrest_add = constant:mysterious_people_flavour.stability_small }
+			multiply_temp_variable = { mysterious_people_unrest_add = constant:mysterious_people_value.negative_one }
+			set_temp_variable = { mysterious_people_unrest_days = constant:mysterious_people_flavour.short_days }
+			mysterious_people_apply_unrest = yes
+		}
+	}
+	option = {
+		name = chaosx.nr37.23.b
+		ai_chance = {
+			base = 50
+			modifier = { factor = 2 NOT = { has_government = democratic } }
+		}
+		custom_effect_tooltip = chaosx.nr37.23.b.tt
+		hidden_effect = {
+			set_temp_variable = { mysterious_people_calm_add = constant:mysterious_people_flavour.stability_small }
+			set_temp_variable = { mysterious_people_calm_days = constant:mysterious_people_flavour.short_days }
+			mysterious_people_apply_calm = yes
+			set_temp_variable = { mysterious_people_event_factor_value = constant:mysterious_people_flavour.factor_half }
+			set_temp_variable = { mysterious_people_event_factor_days = constant:mysterious_people_flavour.long_days }
+			mysterious_people_flavour_factor = yes
+		}
+	}
+}
+
+# A Government Counts Origins
+country_event = {
+	id = chaosx.nr37.24
+	title = chaosx.nr37.24.t
+	desc = chaosx.nr37.24.d
+	picture = GFX_report_event_generic_parliament
+	is_triggered_only = yes
+	immediate = { hidden_effect = { set_country_flag = mysterious_people_origin_register_decided } }
+	option = {
+		name = chaosx.nr37.24.a
+		ai_chance = {
+			base = 40
+			modifier = { factor = 2 has_stability > constant:mysterious_people_ai.open_stability }
+			modifier = { factor = 0.5 has_government = fascism }
+		}
+		custom_effect_tooltip = chaosx.nr37.24.a.tt
+		hidden_effect = {
+			set_temp_variable = { mysterious_people_unrest_add = constant:mysterious_people_flavour.stability_large }
+			multiply_temp_variable = { mysterious_people_unrest_add = constant:mysterious_people_value.negative_one }
+			set_temp_variable = { mysterious_people_unrest_days = constant:mysterious_people_flavour.medium_days }
+			mysterious_people_apply_unrest = yes
+		}
+	}
+	option = {
+		name = chaosx.nr37.24.b
+		ai_chance = {
+			base = 60
+			modifier = { factor = 1.5 has_government = fascism }
+			modifier = { factor = 0.5 has_stability > constant:mysterious_people_ai.open_stability }
+		}
+		custom_effect_tooltip = chaosx.nr37.24.b.tt
+		add_named_threat = { threat = constant:mysterious_people_flavour.world_tension name = chaosx.nr37.24.threat }
+		hidden_effect = {
+			mysterious_people_adopt_origin_register = yes
+			set_temp_variable = { mysterious_people_calm_add = constant:mysterious_people_flavour.stability_large }
+			set_temp_variable = { mysterious_people_calm_days = constant:mysterious_people_flavour.medium_days }
+			mysterious_people_apply_calm = yes
+		}
+	}
+}
+
+# The Second Capital
+country_event = {
+	id = chaosx.nr37.25
+	title = chaosx.nr37.25.t
+	desc = chaosx.nr37.25.d
+	picture = GFX_report_event_ast_parliament_house
+	is_triggered_only = yes
+	option = {
+		name = chaosx.nr37.25.a
+		trigger = { has_political_power > constant:mysterious_people_flavour.large_pp }
+		ai_chance = { base = 70 }
+		add_political_power = constant:mysterious_people_flavour.large_pp_cost
+		custom_effect_tooltip = chaosx.nr37.25.a.tt
+		hidden_effect = {
+			set_temp_variable = { mysterious_people_settle_share = constant:mysterious_people_flavour.settle_capital }
+			mysterious_people_flavour_settle = yes
+		}
+	}
+	option = {
+		name = chaosx.nr37.25.b
+		ai_chance = { base = 30 }
+		custom_effect_tooltip = chaosx.nr37.25.b.tt
+		hidden_effect = {
+			set_temp_variable = { mysterious_people_unrest_add = constant:mysterious_people_flavour.stability_large }
+			multiply_temp_variable = { mysterious_people_unrest_add = constant:mysterious_people_value.negative_one }
+			set_temp_variable = { mysterious_people_unrest_days = constant:mysterious_people_flavour.medium_days }
+			mysterious_people_apply_unrest = yes
+		}
+	}
+}
+
+# The Country That Managed
+country_event = {
+	id = chaosx.nr37.26
+	title = chaosx.nr37.26.t
+	desc = chaosx.nr37.26.d
+	picture = GFX_report_event_JAP_workers_celebrating
+	is_triggered_only = yes
+	immediate = { hidden_effect = { set_country_flag = mysterious_people_managed_done } }
+	option = {
+		name = chaosx.nr37.26.a
+		custom_effect_tooltip = chaosx.nr37.26.a.tt
+		hidden_effect = {
+			set_temp_variable = { mysterious_people_calm_add = constant:mysterious_people_flavour.stability_acknowledged }
+			set_temp_variable = { mysterious_people_calm_days = constant:mysterious_people_flavour.year_days }
+			mysterious_people_apply_calm = yes
+			set_temp_variable = { mysterious_people_boost_days = constant:mysterious_people_flavour.year_days }
+			set_country_flag = { flag = mysterious_people_managed_boost days = mysterious_people_boost_days value = 1 }
+			mysterious_people_schedule_modifier_refresh = yes
+			mysterious_people_refresh_modifier = yes
+		}
 	}
 }

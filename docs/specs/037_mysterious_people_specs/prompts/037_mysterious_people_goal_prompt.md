@@ -2,13 +2,13 @@
 
 Implement Event 037 from `docs/specs/037_mysterious_people_specs/`, starting with its README and the coding prompt, under `CLAUDE.md`.
 
-Event 037 is Minor Repeatable, Chaos level `1`, a Medium member of the unregistered Sudden Abundance cluster, with entry `chaosx.nr37.1`.
+Event 037 is Minor Repeatable, Chaos level `1`, a Medium member of the Sudden Abundance cluster (runtime ID 15), with entry `chaosx.nr37.1`.
 Retire the legacy stub, which gives one country recruits and hints at aliens.
 
 Each firing runs one world pass: every inhabited state with ordinary civilian owners gains real population, scaled by stage, through a neutral gain helper that removes the instant recruitable gain.
 Each state stores a newcomer share, an unsettled backlog, and a settlement rate.
 Ordinary losses need no callbacks because the share is proportional, and one hook in the civilian transfer primitive handles moves.
-A monthly host pulse touches only countries with unsettled newcomers and at most eight hotspots each.
+A monthly host pulse touches only countries with unsettled newcomers and at most three hotspots each.
 
 The player sees newcomers in the country, Overpopulation Pressure from `0` to `100` in five stages, and a stance.
 One Newcomers modifier gives a workforce bonus at low pressure and costs stability and construction at high pressure.

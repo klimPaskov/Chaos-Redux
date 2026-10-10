@@ -1,0 +1,394 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 037 MYSTERIOUS PEOPLE SCRIPT CONSTANTS
+# ============================================================================
+# Every tuning value of the newcomer ledger, the world grant, settlement,
+# Overpopulation Pressure, the Newcomers modifier, evolutions, decisions,
+# the mission, flavour options, achievements, and the Chaos milestones.
+# Population values are in thousands of people (k) unless a key says people.
+# Shares are fixed-point fractions between 0 and 1.
+# ============================================================================
+
+mysterious_people_event = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	id = 37
+	evolution_type = 37
+	evolution_i_stage = 1
+	evolution_ii_stage = 2
+	evolution_iii_stage = 3
+	evolution_i_tier = 1
+	evolution_ii_tier = 2
+	evolution_iii_tier = 3
+	evolution_i_chaos = 200
+	evolution_ii_chaos = 400
+	evolution_iii_chaos = 600
+	stage_baseline = 0
+	stage_evolution_i = 1
+	stage_evolution_ii = 2
+	stage_evolution_iii = 3
+	max_hotspots = 3
+	max_state_projects = 3
+	flavour_memory = 4
+	flavour_first_id = 10
+	flavour_last_id = 26
+}
+
+mysterious_people_value = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	zero = 0
+	one = 1
+	hundred = 100
+	people_per_k = 1000
+	negative_one = -1
+}
+
+# Inhabited-state threshold and the stage grant table. A state receives
+# min(cap, max(P x ratio, min(floor, P x small ceiling))).
+mysterious_people_grant = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	inhabited_threshold_k = 5
+	baseline_ratio = 0.025
+	baseline_floor_k = 1
+	baseline_cap_k = 1500
+	baseline_small_ceiling = 0.05
+	evolution_i_ratio = 0.06
+	evolution_i_floor_k = 2.5
+	evolution_i_cap_k = 3000
+	evolution_i_small_ceiling = 0.10
+	evolution_ii_ratio = 0.12
+	evolution_ii_floor_k = 5
+	evolution_ii_cap_k = 7500
+	evolution_ii_small_ceiling = 0.20
+	evolution_iii_ratio = 0.25
+	evolution_iii_floor_k = 10
+	evolution_iii_cap_k = 20000
+	evolution_iii_small_ceiling = 0.40
+}
+
+# Monthly settlement. The base rate is a share of the state population per
+# month, adjusted by infrastructure, stance, drive, projects, hunger and
+# occupation. Event-option factors replace each other per state.
+mysterious_people_settlement = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	base_rate = 0.01
+	infrastructure_base = 0.6
+	infrastructure_step = 0.08
+	open_factor = 1.25
+	restricted_factor = 0.75
+	drive_factor = 1.5
+	register_factor = 0.667
+	housing_bonus = 0.25
+	roads_bonus = 0.25
+	city_bonus = 0.5
+	hunger_factor = 0.5
+	occupied_factor = 0.5
+	days_per_month = 30
+	poor_infrastructure_level = 4
+}
+
+# Overpopulation Pressure scale, stages, famine additions and the national
+# worst-hotspot weight.
+mysterious_people_pressure = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	backlog_scale = 0.25
+	maximum = 100
+	strained = 20
+	overcrowded = 40
+	emergency = 60
+	breakdown = 80
+	famine_acute_add = 10
+	famine_famine_add = 20
+	famine_catastrophic_add = 30
+	worst_hotspot_weight = 0.25
+	rank_pressure_scale = 100000
+	rank_unsettled_cap_k = 99999
+}
+
+mysterious_people_stage_id = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	absorbing = 0
+	strained = 1
+	overcrowded = 2
+	emergency = 3
+	breakdown = 4
+}
+
+# Newcomers country modifier.
+mysterious_people_modifier = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	construction_per_settled_share = 0.4
+	construction_bonus_cap = 0.10
+	output_per_settled_share = 0.2
+	output_bonus_cap = 0.05
+	strained_bonus_factor = 0.5
+	bonus_boost_factor = 2
+	stability_per_point = -0.0025
+	stability_floor = -0.15
+	stability_start = 40
+	restricted_stability_factor = 0.5
+	construction_penalty_per_point = -0.005
+	construction_penalty_floor = -0.20
+	construction_penalty_start = 60
+}
+
+# Famine and Migration adapters run from the monthly pulse for hotspots only.
+mysterious_people_adapter = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	famine_threshold = 60
+	famine_component_offset = 40
+	migration_threshold = 80
+	migration_backlog_share = 0.02
+	migration_station_factor = 2
+}
+
+mysterious_people_chaos = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	first_manifestation = 2
+	share_5 = 3
+	share_10 = 5
+	share_25 = 10
+	share_5_threshold = 0.05
+	share_10_threshold = 0.10
+	share_25_threshold = 0.25
+}
+
+# Evolution pacing. The MTTH entries hold the base days and factors; these
+# keys bound the random spread around the computed mean.
+mysterious_people_evolution_pacing = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	spread_factor_min = 0.75
+	spread_factor_max = 1.25
+	minimum_days = 30
+	evolution_ii_share = 0.05
+	evolution_iii_share = 0.10
+	pulse_days = 30
+	pulse_stale_days = 45
+}
+
+# Stance, actions, and costs.
+mysterious_people_decision = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	stance_pp = 50
+	stance_lock_days = 180
+	drive_pp_min = 30
+	drive_pp_max = 90
+	drive_pp_per_unsettled_k = 0.03
+	drive_days = 60
+	drive_cooldown_days = 180
+	requisition_share = 0.20
+	requisition_stability = -0.02
+	requisition_unrest_days = 90
+	requisition_cooldown_days = 365
+	housing_share = 0.30
+	housing_pp = 25
+	housing_days = 90
+	housing_factories_min = 2
+	housing_factories_max = 6
+	housing_factories_per_unsettled_k = 0.01
+	roads_pp = 25
+	roads_days = 150
+	roads_factories_min = 3
+	roads_factories_max = 8
+	roads_factories_per_unsettled_k = 0.012
+	roads_infrastructure = 1
+	city_share = 0.50
+	city_pp = 100
+	city_days = 300
+	city_factories_min = 8
+	city_factories_max = 15
+	city_factories_per_unsettled_k = 0.02
+	city_min_population_k = 1000
+	city_infrastructure = 1
+	city_civilian_factory = 1
+	city_building_slot = 1
+	category_priority = 120
+}
+
+mysterious_people_mission = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	duration_days = 180
+	success_boost_days = 180
+	failure_stability = -0.05
+	failure_days = 90
+	censuses_required = 3
+}
+
+# Flavour timing and option magnitudes.
+mysterious_people_flavour = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	delay_min_days = 20
+	delay_random_days = 40
+	rural_max_population_k = 1500
+	urban_min_population_k = 1000
+	school_min_population_k = 100
+	industrial_min_factories = 2
+	road_min_infrastructure = 3
+	graves_share = 0.30
+	majority_share = 0.50
+	managed_share = 0.25
+	managed_days = 180
+	small_pp = 10
+	medium_pp = 15
+	tram_pp = 25
+	large_pp = 50
+	small_pp_cost = -10
+	medium_pp_cost = -15
+	tram_pp_cost = -25
+	large_pp_cost = -50
+	settle_small = 0.10
+	settle_medium = 0.15
+	settle_large = 0.20
+	settle_capital = 0.25
+	factor_up = 1.25
+	factor_up_large = 1.5
+	factor_down = 0.75
+	factor_half = 0.5
+	short_days = 60
+	medium_days = 90
+	long_days = 180
+	year_days = 365
+	stability_small = 0.01
+	stability_medium = 0.02
+	stability_large = 0.03
+	stability_acknowledged = 0.05
+	output_gain = 0.03
+	output_loss = -0.02
+	opinion = 15
+	world_tension = 5
+	half_cost = 0.5
+	station_days = 30
+}
+
+mysterious_people_achievement = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	room_share = 0.25
+	room_pressure = 40
+	room_days = 365
+	billion_world_k = 1000000
+	billion_country_k = 10000
+	billion_pressure = 40
+	censuses = 3
+}
+
+mysterious_people_ai = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	open_stability = 0.60
+	restricted_stability = 0.40
+	requisition_avoid_stability = 0.50
+	war_free_factories = 10
+	city_min_factories = 25
+	roads_infrastructure_below = 5
+}
+
+mysterious_people_cxt = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	grant_share = 0.12
+}
+
+# MTTH bases and factors for evolution timing and stance AI.
+mysterious_people_mtth = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	evolution_i_days = 90
+	evolution_ii_days = 120
+	evolution_iii_days = 150
+	emergency_factor = 0.75
+	share_factor = 0.75
+	calm_factor = 1.5
+	open_base = 10
+	restricted_base = 8
+	ideology_favoured = 3
+	ideology_opposed = 0.2
+	stable_open = 2
+	stable_restricted = 0.5
+	unstable_open = 0.3
+	unstable_restricted = 2.5
+	switch_factor = 0.1
+}
+
+# Stored codes for settlement causes and project kinds.
+mysterious_people_code = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	cause_none = 0
+	cause_occupied = 1
+	cause_hungry = 2
+	cause_roads = 3
+	loss_hunger = 1
+	loss_flight = 2
+	project_housing = 1
+	project_roads = 2
+	project_city = 3
+	flavour_wedding = 17
+	flavour_end = 27
+	evolution_end = 4
+}

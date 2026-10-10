@@ -53,7 +53,7 @@ The implementation entry point is [the coding prompt](prompts/037_mysterious_peo
 - Unsettled newcomers are the only pressure input Event 037 owns, settled at a monthly rate the player raises through stance and projects.
 - One national value (Overpopulation Pressure) and one modifier (Newcomers) carry every national effect.
 - Famine and Migration receive requests through their public entry points only, at fixed hotspot pressure thresholds.
-- Recurring work touches only countries with unsettled newcomers and at most eight hotspots each, and the only world-wide pass happens once per firing.
+- Recurring work touches only countries with unsettled newcomers and at most three hotspots each (the three most crowded eligible states), and the only world-wide pass happens once per firing.
 
 ## Scope boundaries
 
@@ -116,3 +116,11 @@ Pass 2, design improvement:
 - Trimmed the flavour pool from thirty-four outlines to seventeen events with concrete options, merged the national report into the manifestation report, and moved scenes away from records and archives toward people and places.
 - Reduced direct Chaos to four milestones by dropping the `1%` and single-firing milestones, which fired alongside others, and the guarded recovery, which cost a crisis-cycle tracker for `-2` Chaos.
 - Rewrote the achievements around the remaining values and cut the asset inventory to the icons that have a consumer.
+
+## Implementation status (2026-10-10)
+
+The orchestrator accepted the audited design as the event premise on 2026-10-10, with origin-targeted actions kept out and the `population_surge` source left as a proposal.
+The design is implemented under the `037_mysterious_population` file stem, and `docs/events/037_mysterious_people/overview.md` is the implementation record.
+Recruitable manpower: installed documentation does not prove gradual recovery after the instant gain is removed, so the Newcomers modifier carries a `conscription_factor` that keeps unsettled newcomers out of the recruitable target until they settle (the Part 2 fallback, recorded in the overview).
+Sudden Abundance is registered in the runtime as cluster 15 with Event 037 as its Medium member; the other catalogue members join when their packages register member rows.
+Live campaign validation is user-owned.

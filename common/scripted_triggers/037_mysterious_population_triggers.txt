@@ -1,0 +1,389 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 037 MYSTERIOUS PEOPLE SCRIPTED TRIGGERS
+# ============================================================================
+# State, country and global predicates for the newcomer ledger, the pressure
+# stages, the decision category, the flavour pool, and the evolutions.
+# Scope is noted per trigger. Ledger values are documented in
+# common/scripted_effects/037_mysterious_population_effects.txt.
+# ============================================================================
+
+# GLOBAL (any scope). The event is not disabled in Event Logs.
+mysterious_people_event_is_enabled = {
+	NOT = {
+		is_in_array = {
+			array = global.disabled_events
+			value = constant:mysterious_people_event.id
+		}
+	}
+}
+
+# ANY scope. Manifestation stage gates.
+mysterious_people_stage_at_least_i = {
+	check_variable = { var = global.mysterious_people_stage value = constant:mysterious_people_event.stage_evolution_i compare = greater_than_or_equals }
+}
+mysterious_people_stage_at_least_ii = {
+	check_variable = { var = global.mysterious_people_stage value = constant:mysterious_people_event.stage_evolution_ii compare = greater_than_or_equals }
+}
+mysterious_people_stage_at_least_iii = {
+	check_variable = { var = global.mysterious_people_stage value = constant:mysterious_people_event.stage_evolution_iii compare = greater_than_or_equals }
+}
+
+# STATE scope. A state that receives people at a manifestation.
+mysterious_people_state_can_receive = {
+	humanitarian_state_is_valid = yes
+	check_variable = { var = state_population_k value = constant:mysterious_people_grant.inhabited_threshold_k compare = greater_than_or_equals }
+}
+
+# STATE scope.
+mysterious_people_state_has_newcomers = {
+	has_variable = mysterious_people_share
+	check_variable = { mysterious_people_share > 0 }
+}
+
+mysterious_people_state_has_unsettled = {
+	has_variable = mysterious_people_unsettled_k
+	check_variable = { mysterious_people_unsettled_k > 0 }
+}
+
+mysterious_people_state_received_latest_wave = {
+	has_variable = mysterious_people_last_grant_firing
+	check_variable = { var = mysterious_people_last_grant_firing value = global.mysterious_people_firings compare = equals }
+}
+
+mysterious_people_state_is_hungry = {
+	OR = {
+		has_state_flag = famine_food_stage_acute_shortage
+		has_state_flag = famine_food_stage_famine
+		has_state_flag = famine_food_stage_catastrophic
+	}
+}
+
+mysterious_people_state_is_strained = {
+	check_variable = { var = mysterious_people_pressure value = constant:mysterious_people_pressure.strained compare = greater_than_or_equals }
+}
+mysterious_people_state_is_overcrowded = {
+	check_variable = { var = mysterious_people_pressure value = constant:mysterious_people_pressure.overcrowded compare = greater_than_or_equals }
+}
+mysterious_people_state_is_emergency = {
+	check_variable = { var = mysterious_people_pressure value = constant:mysterious_people_pressure.emergency compare = greater_than_or_equals }
+}
+mysterious_people_state_is_breakdown = {
+	check_variable = { var = mysterious_people_pressure value = constant:mysterious_people_pressure.breakdown compare = greater_than_or_equals }
+}
+
+mysterious_people_state_is_urban = {
+	check_variable = { var = state_population_k value = constant:mysterious_people_flavour.urban_min_population_k compare = greater_than_or_equals }
+}
+
+mysterious_people_state_is_rural = {
+	check_variable = { var = state_population_k value = constant:mysterious_people_flavour.rural_max_population_k compare = less_than }
+	NOT = { is_capital = yes }
+}
+
+mysterious_people_state_is_industrial = {
+	OR = {
+		check_variable = { var = building_level@industrial_complex value = constant:mysterious_people_flavour.industrial_min_factories compare = greater_than_or_equals }
+		check_variable = { var = building_level@arms_factory value = constant:mysterious_people_flavour.industrial_min_factories compare = greater_than_or_equals }
+	}
+}
+
+mysterious_people_state_has_factory = {
+	OR = {
+		check_variable = { building_level@industrial_complex > 0 }
+		check_variable = { building_level@arms_factory > 0 }
+	}
+}
+
+# STATE scope. A hotspot is one of its owner's three most crowded states.
+mysterious_people_state_is_hotspot = {
+	has_state_flag = mysterious_people_hotspot
+}
+
+# STATE scope. Any project currently running in this state.
+mysterious_people_state_has_running_project = {
+	OR = {
+		has_state_flag = mysterious_people_housing_running
+		has_state_flag = mysterious_people_roads_running
+		has_state_flag = mysterious_people_city_running
+	}
+}
+
+# COUNTRY scope.
+mysterious_people_country_has_newcomers = {
+	has_variable = mysterious_people_newcomers_k
+	check_variable = { mysterious_people_newcomers_k > 0 }
+}
+
+mysterious_people_country_has_unsettled = {
+	has_variable = mysterious_people_unsettled_k
+	check_variable = { mysterious_people_unsettled_k > 0 }
+}
+
+mysterious_people_country_is_strained = {
+	check_variable = { var = mysterious_people_pressure value = constant:mysterious_people_pressure.strained compare = greater_than_or_equals }
+}
+mysterious_people_country_is_overcrowded = {
+	check_variable = { var = mysterious_people_pressure value = constant:mysterious_people_pressure.overcrowded compare = greater_than_or_equals }
+}
+mysterious_people_country_is_emergency = {
+	check_variable = { var = mysterious_people_pressure value = constant:mysterious_people_pressure.emergency compare = greater_than_or_equals }
+}
+mysterious_people_country_is_breakdown = {
+	check_variable = { var = mysterious_people_pressure value = constant:mysterious_people_pressure.breakdown compare = greater_than_or_equals }
+}
+
+mysterious_people_country_has_stance = {
+	OR = {
+		has_country_flag = mysterious_people_stance_open
+		has_country_flag = mysterious_people_stance_restricted
+	}
+}
+
+mysterious_people_country_can_use_mechanic = {
+	uses_normal_civilian_systems = yes
+	NOT = { is_special_chaos_country = yes }
+}
+
+# COUNTRY scope. The decision category stays open while there is anything to
+# manage: unsettled people, a running project, or the mission.
+mysterious_people_category_is_relevant = {
+	mysterious_people_country_can_use_mechanic = yes
+	mysterious_people_country_has_newcomers = yes
+	OR = {
+		mysterious_people_country_has_unsettled = yes
+		check_variable = { mysterious_people_running_projects > 0 }
+		has_country_flag = mysterious_people_mission_pending
+	}
+}
+
+mysterious_people_country_has_project_slot = {
+	check_variable = { var = mysterious_people_running_projects value = constant:mysterious_people_event.max_state_projects compare = less_than }
+}
+
+# COUNTRY scope (ROOT), FROM is the hotspot state. A human sees the actions of
+# the hotspot it selected, AI evaluates every hotspot directly.
+mysterious_people_hotspot_actions_are_shown = {
+	OR = {
+		is_ai = yes
+		FROM = { has_state_flag = mysterious_people_selected_@ROOT }
+	}
+}
+
+# STATE scope (FROM in decisions). Shared gate for every state action.
+mysterious_people_hotspot_is_actionable = {
+	mysterious_people_state_is_hotspot = yes
+	is_owned_and_controlled_by = ROOT
+}
+
+# COUNTRY scope. Famine stage at famine or worse in any owned state.
+mysterious_people_country_has_famine_state = {
+	any_owned_state = {
+		OR = {
+			has_state_flag = famine_food_stage_famine
+			has_state_flag = famine_food_stage_catastrophic
+		}
+	}
+}
+
+# COUNTRY scope. Flavour event memory: the event in temp
+# mysterious_people_flavour_candidate fired within the last four.
+mysterious_people_flavour_is_recent = {
+	is_in_array = {
+		array = mysterious_people_flavour_recent
+		value = mysterious_people_flavour_candidate
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Flavour pool. STATE scope, ROOT is the country that rolls the flavour event.
+# One trigger per flavour event; chaosx.nr37.17 uses a second country instead.
+# ---------------------------------------------------------------------------
+
+mysterious_people_flavour_state_10 = {
+	mysterious_people_state_has_newcomers = yes
+	is_owned_and_controlled_by = ROOT
+	mysterious_people_state_is_rural = yes
+	mysterious_people_state_received_latest_wave = yes
+	mysterious_people_state_has_unsettled = yes
+	NOT = { mysterious_people_state_is_overcrowded = yes }
+}
+
+mysterious_people_flavour_state_11 = {
+	mysterious_people_state_has_newcomers = yes
+	is_owned_and_controlled_by = ROOT
+	check_variable = { var = state_population_k value = constant:mysterious_people_flavour.school_min_population_k compare = greater_than_or_equals }
+	mysterious_people_state_has_unsettled = yes
+}
+
+mysterious_people_flavour_state_12 = {
+	mysterious_people_state_has_newcomers = yes
+	is_owned_and_controlled_by = ROOT
+	mysterious_people_state_has_unsettled = yes
+	NOT = { mysterious_people_state_is_overcrowded = yes }
+}
+
+mysterious_people_flavour_state_13 = {
+	mysterious_people_state_has_newcomers = yes
+	is_owned_and_controlled_by = ROOT
+	check_variable = { var = infrastructure_level value = constant:mysterious_people_flavour.road_min_infrastructure compare = greater_than_or_equals }
+	mysterious_people_state_received_latest_wave = yes
+	mysterious_people_state_has_unsettled = yes
+	NOT = { has_state_flag = mysterious_people_roads_done }
+}
+
+mysterious_people_flavour_state_14 = {
+	mysterious_people_state_has_newcomers = yes
+	is_owned_and_controlled_by = ROOT
+	mysterious_people_state_has_factory = yes
+	mysterious_people_state_has_unsettled = yes
+	NOT = { mysterious_people_state_is_overcrowded = yes }
+}
+
+mysterious_people_flavour_state_15 = {
+	mysterious_people_state_has_newcomers = yes
+	is_owned_and_controlled_by = ROOT
+	check_variable = { var = mysterious_people_share value = constant:mysterious_people_flavour.graves_share compare = greater_than_or_equals }
+}
+
+mysterious_people_flavour_state_16 = {
+	mysterious_people_state_has_newcomers = yes
+	is_owned_and_controlled_by = ROOT
+	mysterious_people_state_is_urban = yes
+	mysterious_people_state_is_strained = yes
+	mysterious_people_state_has_unsettled = yes
+	NOT = { has_state_flag = mysterious_people_housing_done }
+}
+
+mysterious_people_flavour_state_18 = {
+	mysterious_people_state_has_newcomers = yes
+	is_owned_and_controlled_by = ROOT
+	mysterious_people_stage_at_least_i = yes
+	mysterious_people_state_is_urban = yes
+	mysterious_people_state_is_hotspot = yes
+	mysterious_people_state_received_latest_wave = yes
+}
+
+mysterious_people_flavour_state_19 = {
+	mysterious_people_state_has_newcomers = yes
+	is_owned_and_controlled_by = ROOT
+	mysterious_people_stage_at_least_i = yes
+	mysterious_people_state_is_industrial = yes
+	mysterious_people_state_is_hotspot = yes
+	mysterious_people_state_is_strained = yes
+}
+
+mysterious_people_flavour_state_20 = {
+	mysterious_people_state_has_newcomers = yes
+	is_owned_and_controlled_by = ROOT
+	mysterious_people_stage_at_least_ii = yes
+	mysterious_people_state_is_hotspot = yes
+	mysterious_people_state_is_emergency = yes
+	OR = { has_state_flag = famine_food_stage_supply_strain mysterious_people_state_is_hungry = yes }
+}
+
+mysterious_people_flavour_state_21 = {
+	mysterious_people_state_has_newcomers = yes
+	is_owned_and_controlled_by = ROOT
+	mysterious_people_stage_at_least_ii = yes
+	mysterious_people_state_is_hotspot = yes
+	mysterious_people_state_is_breakdown = yes
+	has_state_flag = mysterious_people_flight_requested
+}
+
+mysterious_people_flavour_state_22 = {
+	mysterious_people_state_has_newcomers = yes
+	is_owned_and_controlled_by = ROOT
+	mysterious_people_stage_at_least_ii = yes
+	mysterious_people_state_is_urban = yes
+	mysterious_people_state_is_hotspot = yes
+	mysterious_people_state_is_emergency = yes
+}
+
+mysterious_people_flavour_state_23 = {
+	mysterious_people_state_has_newcomers = yes
+	is_owned_and_controlled_by = ROOT
+	mysterious_people_stage_at_least_iii = yes
+	check_variable = { var = mysterious_people_share value = constant:mysterious_people_flavour.majority_share compare = greater_than }
+}
+
+mysterious_people_flavour_state_24 = {
+	mysterious_people_state_has_newcomers = yes
+	is_owned_and_controlled_by = ROOT
+	mysterious_people_stage_at_least_iii = yes
+	is_capital = yes
+	ROOT = { mysterious_people_country_is_overcrowded = yes NOT = { has_government = democratic } NOT = { has_country_flag = mysterious_people_origin_register_decided } }
+}
+
+mysterious_people_flavour_state_25 = {
+	mysterious_people_state_has_newcomers = yes
+	is_owned_and_controlled_by = ROOT
+	mysterious_people_stage_at_least_iii = yes
+	is_capital = yes
+	mysterious_people_state_is_hotspot = yes
+	mysterious_people_state_is_emergency = yes
+}
+
+mysterious_people_flavour_state_26 = {
+	mysterious_people_state_has_newcomers = yes
+	is_owned_and_controlled_by = ROOT
+	mysterious_people_stage_at_least_iii = yes
+	is_capital = yes
+	ROOT = { mysterious_people_country_managed = yes }
+}
+
+# COUNTRY scope. Another country with newcomers that is not at war with ROOT.
+mysterious_people_flavour_country_17 = {
+	any_of_scopes = {
+		array = global.mysterious_people_newcomer_countries
+		NOT = { tag = ROOT }
+		exists = yes
+		NOT = { has_war_with = ROOT }
+	}
+}
+
+# COUNTRY scope. Evolution III, newcomers at least a quarter of the country,
+# and national pressure below Strained for half a year. Once per country.
+mysterious_people_country_managed = {
+	NOT = { has_country_flag = mysterious_people_managed_done }
+	has_variable = mysterious_people_absorbing_since
+	check_variable = { mysterious_people_population_k > 0 }
+	check_variable = { var = mysterious_people_managed_share value = constant:mysterious_people_flavour.managed_share compare = greater_than_or_equals }
+	check_variable = { var = mysterious_people_absorbing_days value = constant:mysterious_people_flavour.managed_days compare = greater_than_or_equals }
+}
+
+# COUNTRY scope. Input temp mysterious_people_flavour_candidate.
+mysterious_people_flavour_candidate_is_valid = {
+	OR = {
+		AND = { check_variable = { mysterious_people_flavour_candidate = 10 } any_owned_state = { mysterious_people_flavour_state_10 = yes } }
+		AND = { check_variable = { mysterious_people_flavour_candidate = 11 } any_owned_state = { mysterious_people_flavour_state_11 = yes } }
+		AND = { check_variable = { mysterious_people_flavour_candidate = 12 } any_owned_state = { mysterious_people_flavour_state_12 = yes } }
+		AND = { check_variable = { mysterious_people_flavour_candidate = 13 } any_owned_state = { mysterious_people_flavour_state_13 = yes } }
+		AND = { check_variable = { mysterious_people_flavour_candidate = 14 } any_owned_state = { mysterious_people_flavour_state_14 = yes } }
+		AND = { check_variable = { mysterious_people_flavour_candidate = 15 } any_owned_state = { mysterious_people_flavour_state_15 = yes } }
+		AND = { check_variable = { mysterious_people_flavour_candidate = 16 } any_owned_state = { mysterious_people_flavour_state_16 = yes } }
+		AND = { check_variable = { mysterious_people_flavour_candidate = constant:mysterious_people_code.flavour_wedding } mysterious_people_flavour_country_17 = yes }
+		AND = { check_variable = { mysterious_people_flavour_candidate = 18 } any_owned_state = { mysterious_people_flavour_state_18 = yes } }
+		AND = { check_variable = { mysterious_people_flavour_candidate = 19 } any_owned_state = { mysterious_people_flavour_state_19 = yes } }
+		AND = { check_variable = { mysterious_people_flavour_candidate = 20 } any_owned_state = { mysterious_people_flavour_state_20 = yes } }
+		AND = { check_variable = { mysterious_people_flavour_candidate = 21 } any_owned_state = { mysterious_people_flavour_state_21 = yes } }
+		AND = { check_variable = { mysterious_people_flavour_candidate = 22 } any_owned_state = { mysterious_people_flavour_state_22 = yes } }
+		AND = { check_variable = { mysterious_people_flavour_candidate = 23 } any_owned_state = { mysterious_people_flavour_state_23 = yes } }
+		AND = { check_variable = { mysterious_people_flavour_candidate = 24 } any_owned_state = { mysterious_people_flavour_state_24 = yes } }
+		AND = { check_variable = { mysterious_people_flavour_candidate = 25 } any_owned_state = { mysterious_people_flavour_state_25 = yes } }
+		AND = { check_variable = { mysterious_people_flavour_candidate = 26 } any_owned_state = { mysterious_people_flavour_state_26 = yes } }
+	}
+}
+
+# COUNTRY scope. Inclusive affordability of the Registration Drive quote
+# mysterious_people_drive_quote, shared by its availability and cost row.
+mysterious_people_can_afford_drive = {
+	has_variable = mysterious_people_drive_quote
+	check_variable = { var = political_power value = mysterious_people_drive_quote compare = greater_than_or_equals }
+}
+
+# COUNTRY scope. Inclusive affordability of a project quote. Inputs temps
+# mysterious_people_need_pp and mysterious_people_need_factories.
+mysterious_people_can_afford_project = {
+	check_variable = { var = political_power value = mysterious_people_need_pp compare = greater_than_or_equals }
+	check_variable = { var = num_of_available_civilian_factories value = mysterious_people_need_factories compare = greater_than_or_equals }
+}

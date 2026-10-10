@@ -1,0 +1,65 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 037 MYSTERIOUS PEOPLE MTTH VARIABLES
+# ============================================================================
+# Evolution delays (days, any scope) and stance AI willingness (country
+# scope). Consume with mtth:mysterious_people_*.
+# Evolution timing is faster while any country is at Emergency or worse and
+# while living newcomers are a large share of the world, and slower while no
+# country is above Strained. Global flags come from
+# mysterious_people_refresh_world_flags.
+# ============================================================================
+
+mysterious_people_evolution_i_days = {
+	base = constant:mysterious_people_mtth.evolution_i_days
+	modifier = { factor = constant:mysterious_people_mtth.emergency_factor has_global_flag = mysterious_people_world_emergency }
+	modifier = { factor = constant:mysterious_people_mtth.calm_factor NOT = { has_global_flag = mysterious_people_world_crowded } }
+}
+
+mysterious_people_evolution_ii_days = {
+	base = constant:mysterious_people_mtth.evolution_ii_days
+	modifier = { factor = constant:mysterious_people_mtth.emergency_factor has_global_flag = mysterious_people_world_emergency }
+	modifier = {
+		factor = constant:mysterious_people_mtth.share_factor
+		check_variable = { var = global.mysterious_people_world_share value = constant:mysterious_people_evolution_pacing.evolution_ii_share compare = greater_than }
+	}
+	modifier = { factor = constant:mysterious_people_mtth.calm_factor NOT = { has_global_flag = mysterious_people_world_crowded } }
+}
+
+mysterious_people_evolution_iii_days = {
+	base = constant:mysterious_people_mtth.evolution_iii_days
+	modifier = { factor = constant:mysterious_people_mtth.emergency_factor has_global_flag = mysterious_people_world_emergency }
+	modifier = {
+		factor = constant:mysterious_people_mtth.share_factor
+		check_variable = { var = global.mysterious_people_world_share value = constant:mysterious_people_evolution_pacing.evolution_iii_share compare = greater_than }
+	}
+	modifier = { factor = constant:mysterious_people_mtth.calm_factor NOT = { has_global_flag = mysterious_people_world_crowded } }
+}
+
+# COUNTRY scope. Democracies and stable countries prefer Open Integration.
+mysterious_people_ai_open_stance = {
+	base = constant:mysterious_people_mtth.open_base
+	modifier = { factor = constant:mysterious_people_mtth.ideology_favoured has_government = democratic }
+	modifier = { factor = constant:mysterious_people_mtth.ideology_opposed has_government = fascism }
+	modifier = { factor = constant:mysterious_people_mtth.stable_open has_stability > constant:mysterious_people_ai.open_stability }
+	modifier = {
+		factor = constant:mysterious_people_mtth.unstable_open
+		has_stability < constant:mysterious_people_ai.restricted_stability
+		mysterious_people_country_is_overcrowded = yes
+	}
+	modifier = { factor = constant:mysterious_people_mtth.switch_factor has_country_flag = mysterious_people_stance_restricted }
+}
+
+# COUNTRY scope. Fascist and unstable crowded countries prefer Restricted
+# Registration.
+mysterious_people_ai_restricted_stance = {
+	base = constant:mysterious_people_mtth.restricted_base
+	modifier = { factor = constant:mysterious_people_mtth.ideology_favoured has_government = fascism }
+	modifier = { factor = constant:mysterious_people_mtth.ideology_opposed has_government = democratic }
+	modifier = { factor = constant:mysterious_people_mtth.stable_restricted has_stability > constant:mysterious_people_ai.open_stability }
+	modifier = {
+		factor = constant:mysterious_people_mtth.unstable_restricted
+		has_stability < constant:mysterious_people_ai.restricted_stability
+		mysterious_people_country_is_overcrowded = yes
+	}
+	modifier = { factor = constant:mysterious_people_mtth.switch_factor has_country_flag = mysterious_people_stance_open }
+}

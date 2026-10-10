@@ -1,0 +1,1417 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 037 MYSTERIOUS PEOPLE SCRIPTED EFFECTS
+# ============================================================================
+# Newcomer ledger, world manifestation transaction, monthly host pulse,
+# Overpopulation Pressure, the Newcomers modifier, Famine and Migration
+# adapters, the civilian-transfer hook, ownership changes, evolutions, Chaos
+# milestones, and Event Logs history.
+#
+# Units: every population value is in thousands of people (_k). Shares are
+# fixed-point fractions of the living state population.
+#
+# State ledger (persistent, state scope):
+# - mysterious_people_share          newcomers / living state population
+# - mysterious_people_unsettled_k    newcomers without settled homes and work
+# - mysterious_people_rate_k         monthly settlement before national factors
+# - mysterious_people_settled_day    global.num_days of the last settlement
+# - mysterious_people_pressure       state Overpopulation Pressure, 0 to 100
+# - mysterious_people_newcomers_k    newcomers at the latest count
+# - mysterious_people_counted_owner  owner credited with this state's counts
+# - mysterious_people_cause          what slows settlement (see *_cause keys)
+# - mysterious_people_loss_cause     1 hunger or 2 flight lowered the backlog
+# - flag mysterious_people_hotspot   one of the owner's three hotspots
+#
+# Country ledger: mysterious_people_newcomers_k, _unsettled_k, _population_k,
+# _rest_unsettled_k, _rest_rate_k, _pressure, _pressure_stage, arrays
+# mysterious_people_hotspots and mysterious_people_hotspot_ranks.
+#
+# Global: global.mysterious_people_firings, _stage, _world_newcomers_k,
+# _world_population_k, _world_share, arrays global.mysterious_people_countries
+# (unsettled newcomers, processed by the pulse) and
+# global.mysterious_people_newcomer_countries (any newcomers).
+#
+# The only world-wide iteration is the single pass in
+# mysterious_people_run_manifestation. The monthly pulse touches only
+# registered countries and at most three hotspot states each.
+# ============================================================================
+
+# ---------------------------------------------------------------------------
+# Small helpers
+# ---------------------------------------------------------------------------
+
+# COUNTRY scope. Output temp mysterious_people_national_factor.
+mysterious_people_compute_national_factor = {
+	set_temp_variable = { mysterious_people_national_factor = constant:mysterious_people_value.one }
+	if = {
+		limit = { has_country_flag = mysterious_people_stance_open }
+		multiply_temp_variable = { mysterious_people_national_factor = constant:mysterious_people_settlement.open_factor }
+	}
+	else_if = {
+		limit = { has_country_flag = mysterious_people_stance_restricted }
+		multiply_temp_variable = { mysterious_people_national_factor = constant:mysterious_people_settlement.restricted_factor }
+	}
+	if = {
+		limit = { has_country_flag = mysterious_people_drive_active }
+		multiply_temp_variable = { mysterious_people_national_factor = constant:mysterious_people_settlement.drive_factor }
+	}
+	if = {
+		limit = { has_country_flag = mysterious_people_origin_register }
+		multiply_temp_variable = { mysterious_people_national_factor = constant:mysterious_people_settlement.register_factor }
+	}
+}
+
+# STATE scope. Recomputes the state's monthly settlement before national
+# factors and records the main thing slowing it.
+mysterious_people_refresh_state_rate = {
+	set_temp_variable = { mysterious_people_rate_work = state_population_k }
+	multiply_temp_variable = { mysterious_people_rate_work = constant:mysterious_people_settlement.base_rate }
+	set_temp_variable = { mysterious_people_infra_factor = infrastructure_level }
+	multiply_temp_variable = { mysterious_people_infra_factor = constant:mysterious_people_settlement.infrastructure_step }
+	add_to_temp_variable = { mysterious_people_infra_factor = constant:mysterious_people_settlement.infrastructure_base }
+	multiply_temp_variable = { mysterious_people_rate_work = mysterious_people_infra_factor }
+	set_temp_variable = { mysterious_people_project_factor = constant:mysterious_people_value.one }
+	if = {
+		limit = { has_state_flag = mysterious_people_housing_done }
+		add_to_temp_variable = { mysterious_people_project_factor = constant:mysterious_people_settlement.housing_bonus }
+	}
+	if = {
+		limit = { has_state_flag = mysterious_people_roads_done }
+		add_to_temp_variable = { mysterious_people_project_factor = constant:mysterious_people_settlement.roads_bonus }
+	}
+	if = {
+		limit = { has_state_flag = mysterious_people_city_done }
+		add_to_temp_variable = { mysterious_people_project_factor = constant:mysterious_people_settlement.city_bonus }
+	}
+	multiply_temp_variable = { mysterious_people_rate_work = mysterious_people_project_factor }
+	set_variable = { mysterious_people_cause = constant:mysterious_people_code.cause_none }
+	if = {
+		limit = { check_variable = { infrastructure_level < constant:mysterious_people_settlement.poor_infrastructure_level } }
+		set_variable = { mysterious_people_cause = constant:mysterious_people_code.cause_roads }
+	}
+	if = {
+		limit = { mysterious_people_state_is_hungry = yes }
+		multiply_temp_variable = { mysterious_people_rate_work = constant:mysterious_people_settlement.hunger_factor }
+		set_variable = { mysterious_people_cause = constant:mysterious_people_code.cause_hungry }
+	}
+	if = {
+		limit = { NOT = { is_owned_and_controlled_by = OWNER } }
+		multiply_temp_variable = { mysterious_people_rate_work = constant:mysterious_people_settlement.occupied_factor }
+		set_variable = { mysterious_people_cause = constant:mysterious_people_code.cause_occupied }
+	}
+	if = {
+		limit = {
+			has_variable = mysterious_people_event_factor_until
+			check_variable = { var = mysterious_people_event_factor_until value = global.num_days compare = greater_than }
+		}
+		multiply_temp_variable = { mysterious_people_rate_work = mysterious_people_event_factor }
+	}
+	set_variable = { mysterious_people_rate_k = mysterious_people_rate_work }
+	mysterious_people_refresh_state_quotes = yes
+}
+
+# STATE scope. Stores the political power and civilian factory quotes of the
+# three projects, scaled by the backlog and halved by a flavour discount.
+mysterious_people_refresh_state_quotes = {
+	set_temp_variable = { mysterious_people_project_kind = constant:mysterious_people_code.project_housing }
+	mysterious_people_compute_project_factories = yes
+	set_variable = { mysterious_people_quote_housing = mysterious_people_project_cost }
+	set_variable = { mysterious_people_quote_housing_pp = constant:mysterious_people_decision.housing_pp }
+	if = {
+		limit = { has_state_flag = mysterious_people_housing_discount }
+		multiply_variable = { mysterious_people_quote_housing = constant:mysterious_people_flavour.half_cost }
+		multiply_variable = { mysterious_people_quote_housing_pp = constant:mysterious_people_flavour.half_cost }
+		round_variable = mysterious_people_quote_housing
+		round_variable = mysterious_people_quote_housing_pp
+	}
+	set_temp_variable = { mysterious_people_project_kind = constant:mysterious_people_code.project_roads }
+	mysterious_people_compute_project_factories = yes
+	set_variable = { mysterious_people_quote_roads = mysterious_people_project_cost }
+	set_variable = { mysterious_people_quote_roads_pp = constant:mysterious_people_decision.roads_pp }
+	if = {
+		limit = { has_state_flag = mysterious_people_roads_discount }
+		multiply_variable = { mysterious_people_quote_roads = constant:mysterious_people_flavour.half_cost }
+		multiply_variable = { mysterious_people_quote_roads_pp = constant:mysterious_people_flavour.half_cost }
+		round_variable = mysterious_people_quote_roads
+		round_variable = mysterious_people_quote_roads_pp
+	}
+	set_temp_variable = { mysterious_people_project_kind = constant:mysterious_people_code.project_city }
+	mysterious_people_compute_project_factories = yes
+	set_variable = { mysterious_people_quote_city = mysterious_people_project_cost }
+	set_variable = { mysterious_people_quote_city_pp = constant:mysterious_people_decision.city_pp }
+}
+
+# STATE scope. Applies settlement for the days since the last settlement at
+# the owner's current national factor. Input temp
+# mysterious_people_national_factor (caller computes it in the owner scope).
+mysterious_people_settle_state_lazy = {
+	if = {
+		limit = {
+			mysterious_people_state_has_unsettled = yes
+			has_variable = mysterious_people_settled_day
+			has_variable = mysterious_people_rate_k
+		}
+		set_temp_variable = { mysterious_people_settle_amount = global.num_days }
+		subtract_from_temp_variable = { mysterious_people_settle_amount = mysterious_people_settled_day }
+		clamp_temp_variable = { var = mysterious_people_settle_amount min = 0 }
+		divide_temp_variable = { mysterious_people_settle_amount = constant:mysterious_people_settlement.days_per_month }
+		multiply_temp_variable = { mysterious_people_settle_amount = mysterious_people_rate_k }
+		multiply_temp_variable = { mysterious_people_settle_amount = mysterious_people_national_factor }
+		subtract_from_variable = { mysterious_people_unsettled_k = mysterious_people_settle_amount }
+		clamp_variable = { var = mysterious_people_unsettled_k min = 0 }
+	}
+	set_variable = { mysterious_people_settled_day = global.num_days }
+	mysterious_people_clamp_state_ledger = yes
+}
+
+# STATE scope. Keeps the backlog inside the living newcomers and refreshes
+# the newcomer count from the share.
+mysterious_people_clamp_state_ledger = {
+	if = {
+		limit = { has_variable = mysterious_people_share }
+		set_variable = { mysterious_people_newcomers_k = state_population_k }
+		multiply_variable = { mysterious_people_newcomers_k = mysterious_people_share }
+		if = {
+			limit = { has_variable = mysterious_people_unsettled_k }
+			clamp_variable = { var = mysterious_people_unsettled_k min = 0 max = mysterious_people_newcomers_k }
+		}
+	}
+}
+
+# STATE scope. State Overpopulation Pressure.
+mysterious_people_refresh_state_pressure = {
+	set_temp_variable = { mysterious_people_pressure_work = 0 }
+	if = {
+		limit = {
+			mysterious_people_state_has_unsettled = yes
+			check_variable = { state_population_k > 0 }
+		}
+		set_temp_variable = { mysterious_people_pressure_base = state_population_k }
+		multiply_temp_variable = { mysterious_people_pressure_base = constant:mysterious_people_pressure.backlog_scale }
+		set_temp_variable = { mysterious_people_pressure_work = mysterious_people_unsettled_k }
+		multiply_temp_variable = { mysterious_people_pressure_work = constant:mysterious_people_pressure.maximum }
+		divide_temp_variable = { mysterious_people_pressure_work = mysterious_people_pressure_base }
+		clamp_temp_variable = { var = mysterious_people_pressure_work min = 0 max = constant:mysterious_people_pressure.maximum }
+		if = {
+			limit = { has_state_flag = famine_food_stage_catastrophic }
+			add_to_temp_variable = { mysterious_people_pressure_work = constant:mysterious_people_pressure.famine_catastrophic_add }
+		}
+		else_if = {
+			limit = { has_state_flag = famine_food_stage_famine }
+			add_to_temp_variable = { mysterious_people_pressure_work = constant:mysterious_people_pressure.famine_famine_add }
+		}
+		else_if = {
+			limit = { has_state_flag = famine_food_stage_acute_shortage }
+			add_to_temp_variable = { mysterious_people_pressure_work = constant:mysterious_people_pressure.famine_acute_add }
+		}
+		clamp_temp_variable = { var = mysterious_people_pressure_work min = 0 max = constant:mysterious_people_pressure.maximum }
+	}
+	set_variable = { mysterious_people_pressure = mysterious_people_pressure_work }
+}
+
+# STATE scope. Output temp mysterious_people_rank, used to order hotspots by
+# pressure, then by unsettled people.
+mysterious_people_compute_state_rank = {
+	set_temp_variable = { mysterious_people_rank = mysterious_people_pressure }
+	round_temp_variable = mysterious_people_rank
+	multiply_temp_variable = { mysterious_people_rank = constant:mysterious_people_pressure.rank_pressure_scale }
+	set_temp_variable = { mysterious_people_rank_unsettled = mysterious_people_unsettled_k }
+	round_temp_variable = mysterious_people_rank_unsettled
+	clamp_temp_variable = { var = mysterious_people_rank_unsettled min = 0 max = constant:mysterious_people_pressure.rank_unsettled_cap_k }
+	add_to_temp_variable = { mysterious_people_rank = mysterious_people_rank_unsettled }
+}
+
+# STATE scope. Offers this state to its owner's hotspot list, which keeps the
+# three highest ranks. Input temp mysterious_people_rank.
+mysterious_people_offer_hotspot = {
+	if = {
+		limit = { mysterious_people_state_has_unsettled = yes }
+		OWNER = {
+			if = {
+				limit = { check_variable = { mysterious_people_hotspots^num < constant:mysterious_people_event.max_hotspots } }
+				add_to_array = { array = mysterious_people_hotspots value = PREV }
+				add_to_array = { array = mysterious_people_hotspot_ranks value = mysterious_people_rank }
+			}
+			else = {
+				set_temp_variable = { mysterious_people_min_index = 0 }
+				set_temp_variable = { mysterious_people_min_rank = mysterious_people_hotspot_ranks^0 }
+				for_loop_effect = {
+					start = 1
+					end = mysterious_people_hotspot_ranks^num
+					value = mysterious_people_scan
+					if = {
+						limit = { check_variable = { mysterious_people_hotspot_ranks^mysterious_people_scan < mysterious_people_min_rank } }
+						set_temp_variable = { mysterious_people_min_index = mysterious_people_scan }
+						set_temp_variable = { mysterious_people_min_rank = mysterious_people_hotspot_ranks^mysterious_people_scan }
+					}
+				}
+				if = {
+					limit = { check_variable = { mysterious_people_rank > mysterious_people_min_rank } }
+					set_variable = { mysterious_people_hotspots^mysterious_people_min_index = PREV }
+					set_variable = { mysterious_people_hotspot_ranks^mysterious_people_min_index = mysterious_people_rank }
+				}
+			}
+		}
+	}
+}
+
+# COUNTRY scope. Sorts the hotspot arrays by rank, highest first.
+mysterious_people_sort_hotspots = {
+	set_temp_variable = { mysterious_people_sort_end = mysterious_people_hotspot_ranks^num }
+	for_loop_effect = {
+		start = 0
+		end = mysterious_people_sort_end
+		value = mysterious_people_sort_i
+		set_temp_variable = { mysterious_people_sort_best = mysterious_people_sort_i }
+		set_temp_variable = { mysterious_people_sort_from = mysterious_people_sort_i }
+		add_to_temp_variable = { mysterious_people_sort_from = 1 }
+		for_loop_effect = {
+			start = mysterious_people_sort_from
+			end = mysterious_people_sort_end
+			value = mysterious_people_sort_j
+			if = {
+				limit = {
+					check_variable = {
+						var = mysterious_people_hotspot_ranks^mysterious_people_sort_j
+						value = mysterious_people_hotspot_ranks^mysterious_people_sort_best
+						compare = greater_than
+					}
+				}
+				set_temp_variable = { mysterious_people_sort_best = mysterious_people_sort_j }
+			}
+		}
+		if = {
+			limit = { NOT = { check_variable = { mysterious_people_sort_best = mysterious_people_sort_i } } }
+			set_temp_variable = { mysterious_people_swap_rank = mysterious_people_hotspot_ranks^mysterious_people_sort_i }
+			set_temp_variable = { mysterious_people_swap_state = mysterious_people_hotspots^mysterious_people_sort_i }
+			set_variable = { mysterious_people_hotspot_ranks^mysterious_people_sort_i = mysterious_people_hotspot_ranks^mysterious_people_sort_best }
+			set_variable = { mysterious_people_hotspots^mysterious_people_sort_i = mysterious_people_hotspots^mysterious_people_sort_best }
+			set_variable = { mysterious_people_hotspot_ranks^mysterious_people_sort_best = mysterious_people_swap_rank }
+			set_variable = { mysterious_people_hotspots^mysterious_people_sort_best = mysterious_people_swap_state }
+		}
+	}
+}
+
+# COUNTRY scope. Clears hotspot flags and the selection, then the arrays.
+mysterious_people_clear_hotspots = {
+	for_each_scope_loop = {
+		array = mysterious_people_hotspots
+		clr_state_flag = mysterious_people_hotspot
+	}
+	clear_array = mysterious_people_hotspots
+	clear_array = mysterious_people_hotspot_ranks
+	mysterious_people_clear_selection = yes
+}
+
+# COUNTRY scope. Clears the human hotspot selection.
+mysterious_people_clear_selection = {
+	if = {
+		limit = { has_variable = mysterious_people_selected_state }
+		var:mysterious_people_selected_state = { clr_state_flag = mysterious_people_selected_@PREV }
+		clear_variable = mysterious_people_selected_state
+	}
+}
+
+# ---------------------------------------------------------------------------
+# National pressure and the Newcomers modifier
+# ---------------------------------------------------------------------------
+
+# COUNTRY scope. National pressure from the backlog and the worst hotspot,
+# then the stage id. Reads mysterious_people_hotspots.
+mysterious_people_refresh_national_pressure = {
+	set_temp_variable = { mysterious_people_national_base = 0 }
+	if = {
+		limit = {
+			mysterious_people_country_has_unsettled = yes
+			check_variable = { mysterious_people_population_k > 0 }
+		}
+		set_temp_variable = { mysterious_people_national_scale = mysterious_people_population_k }
+		multiply_temp_variable = { mysterious_people_national_scale = constant:mysterious_people_pressure.backlog_scale }
+		set_temp_variable = { mysterious_people_national_base = mysterious_people_unsettled_k }
+		multiply_temp_variable = { mysterious_people_national_base = constant:mysterious_people_pressure.maximum }
+		divide_temp_variable = { mysterious_people_national_base = mysterious_people_national_scale }
+		clamp_temp_variable = { var = mysterious_people_national_base min = 0 max = constant:mysterious_people_pressure.maximum }
+	}
+	set_temp_variable = { mysterious_people_worst = 0 }
+	clear_variable = mysterious_people_top_hotspot
+	for_each_scope_loop = {
+		array = mysterious_people_hotspots
+		if = {
+			limit = { check_variable = { mysterious_people_pressure > mysterious_people_worst } }
+			set_temp_variable = { mysterious_people_worst = mysterious_people_pressure }
+			PREV = { set_variable = { mysterious_people_top_hotspot = PREV } }
+		}
+	}
+	set_variable = { mysterious_people_worst_pressure = mysterious_people_worst }
+	set_temp_variable = { mysterious_people_gap = mysterious_people_worst }
+	subtract_from_temp_variable = { mysterious_people_gap = mysterious_people_national_base }
+	clamp_temp_variable = { var = mysterious_people_gap min = 0 }
+	multiply_temp_variable = { mysterious_people_gap = constant:mysterious_people_pressure.worst_hotspot_weight }
+	set_variable = { mysterious_people_pressure = mysterious_people_national_base }
+	add_to_variable = { mysterious_people_pressure = mysterious_people_gap }
+	clamp_variable = { var = mysterious_people_pressure min = 0 max = constant:mysterious_people_pressure.maximum }
+	set_variable = { mysterious_people_pressure_stage = constant:mysterious_people_stage_id.absorbing }
+	if = {
+		limit = { mysterious_people_country_is_breakdown = yes }
+		set_variable = { mysterious_people_pressure_stage = constant:mysterious_people_stage_id.breakdown }
+	}
+	else_if = {
+		limit = { mysterious_people_country_is_emergency = yes }
+		set_variable = { mysterious_people_pressure_stage = constant:mysterious_people_stage_id.emergency }
+	}
+	else_if = {
+		limit = { mysterious_people_country_is_overcrowded = yes }
+		set_variable = { mysterious_people_pressure_stage = constant:mysterious_people_stage_id.overcrowded }
+	}
+	else_if = {
+		limit = { mysterious_people_country_is_strained = yes }
+		set_variable = { mysterious_people_pressure_stage = constant:mysterious_people_stage_id.strained }
+	}
+	if = {
+		limit = { mysterious_people_country_is_emergency = yes }
+		set_country_flag = mysterious_people_reached_emergency
+	}
+}
+
+# COUNTRY scope. Writes the Newcomers modifier values from the ledger.
+mysterious_people_refresh_modifier = {
+	set_temp_variable = { mysterious_people_settled_share = 0 }
+	if = {
+		limit = { check_variable = { mysterious_people_population_k > 0 } }
+		set_temp_variable = { mysterious_people_settled_share = mysterious_people_newcomers_k }
+		subtract_from_temp_variable = { mysterious_people_settled_share = mysterious_people_unsettled_k }
+		clamp_temp_variable = { var = mysterious_people_settled_share min = 0 }
+		divide_temp_variable = { mysterious_people_settled_share = mysterious_people_population_k }
+	}
+	set_temp_variable = { mysterious_people_bonus_factor = 0 }
+	if = {
+		limit = { NOT = { mysterious_people_country_is_strained = yes } }
+		set_temp_variable = { mysterious_people_bonus_factor = constant:mysterious_people_value.one }
+	}
+	else_if = {
+		limit = { NOT = { mysterious_people_country_is_overcrowded = yes } }
+		set_temp_variable = { mysterious_people_bonus_factor = constant:mysterious_people_modifier.strained_bonus_factor }
+	}
+	if = {
+		limit = {
+			OR = {
+				has_country_flag = mysterious_people_workforce_boost
+				has_country_flag = mysterious_people_managed_boost
+			}
+		}
+		multiply_temp_variable = { mysterious_people_bonus_factor = constant:mysterious_people_modifier.bonus_boost_factor }
+	}
+	set_temp_variable = { mysterious_people_mod_work = mysterious_people_settled_share }
+	multiply_temp_variable = { mysterious_people_mod_work = constant:mysterious_people_modifier.construction_per_settled_share }
+	clamp_temp_variable = { var = mysterious_people_mod_work max = constant:mysterious_people_modifier.construction_bonus_cap }
+	multiply_temp_variable = { mysterious_people_mod_work = mysterious_people_bonus_factor }
+	set_variable = { mysterious_people_mod_construction = mysterious_people_mod_work }
+	set_temp_variable = { mysterious_people_mod_work = mysterious_people_settled_share }
+	multiply_temp_variable = { mysterious_people_mod_work = constant:mysterious_people_modifier.output_per_settled_share }
+	clamp_temp_variable = { var = mysterious_people_mod_work max = constant:mysterious_people_modifier.output_bonus_cap }
+	multiply_temp_variable = { mysterious_people_mod_work = mysterious_people_bonus_factor }
+	set_variable = { mysterious_people_mod_output = mysterious_people_mod_work }
+	# Unrest above Overcrowded.
+	set_temp_variable = { mysterious_people_mod_work = mysterious_people_pressure }
+	subtract_from_temp_variable = { mysterious_people_mod_work = constant:mysterious_people_modifier.stability_start }
+	clamp_temp_variable = { var = mysterious_people_mod_work min = 0 }
+	multiply_temp_variable = { mysterious_people_mod_work = constant:mysterious_people_modifier.stability_per_point }
+	clamp_temp_variable = { var = mysterious_people_mod_work min = constant:mysterious_people_modifier.stability_floor }
+	if = {
+		limit = { has_country_flag = mysterious_people_stance_restricted }
+		multiply_temp_variable = { mysterious_people_mod_work = constant:mysterious_people_modifier.restricted_stability_factor }
+	}
+	set_variable = { mysterious_people_mod_stability = mysterious_people_mod_work }
+	# Overloaded building trades above Emergency.
+	set_temp_variable = { mysterious_people_mod_work = mysterious_people_pressure }
+	subtract_from_temp_variable = { mysterious_people_mod_work = constant:mysterious_people_modifier.construction_penalty_start }
+	clamp_temp_variable = { var = mysterious_people_mod_work min = 0 }
+	multiply_temp_variable = { mysterious_people_mod_work = constant:mysterious_people_modifier.construction_penalty_per_point }
+	clamp_temp_variable = { var = mysterious_people_mod_work min = constant:mysterious_people_modifier.construction_penalty_floor }
+	add_to_variable = { mysterious_people_mod_construction = mysterious_people_mod_work }
+	# Unsettled newcomers stay out of the recruitable population until they
+	# settle; the engine mobilizes them as this share falls.
+	set_variable = { mysterious_people_mod_recruit = 0 }
+	if = {
+		limit = { check_variable = { mysterious_people_population_k > 0 } }
+		set_variable = { mysterious_people_mod_recruit = mysterious_people_unsettled_k }
+		divide_variable = { mysterious_people_mod_recruit = mysterious_people_population_k }
+		clamp_variable = { var = mysterious_people_mod_recruit min = 0 max = constant:mysterious_people_value.one }
+		multiply_variable = { mysterious_people_mod_recruit = constant:mysterious_people_value.negative_one }
+	}
+	mysterious_people_compute_drive_cost = yes
+	if = {
+		limit = {
+			mysterious_people_country_has_newcomers = yes
+			mysterious_people_country_can_use_mechanic = yes
+		}
+		if = {
+			limit = { NOT = { has_dynamic_modifier = { modifier = mysterious_people_newcomers } } }
+			add_dynamic_modifier = { modifier = mysterious_people_newcomers }
+		}
+		force_update_dynamic_modifier = yes
+	}
+	else_if = {
+		limit = { has_dynamic_modifier = { modifier = mysterious_people_newcomers } }
+		remove_dynamic_modifier = { modifier = mysterious_people_newcomers }
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Registry
+# ---------------------------------------------------------------------------
+
+# COUNTRY scope.
+mysterious_people_register_country = {
+	if = {
+		limit = { NOT = { is_in_array = { array = global.mysterious_people_countries value = THIS } } }
+		add_to_array = { array = global.mysterious_people_countries value = THIS }
+	}
+}
+
+mysterious_people_unregister_country = {
+	if = {
+		limit = { is_in_array = { array = global.mysterious_people_countries value = THIS } }
+		remove_from_array = { array = global.mysterious_people_countries value = THIS }
+	}
+	mysterious_people_clear_hotspots = yes
+	set_variable = { mysterious_people_rest_unsettled_k = 0 }
+	set_variable = { mysterious_people_rest_rate_k = 0 }
+}
+
+# ---------------------------------------------------------------------------
+# World manifestation transaction
+# ---------------------------------------------------------------------------
+
+# Called once from the hidden root event chaosx.nr37.1. One grant per valid
+# state, measured through the neutral gain helper, then exact recounts.
+mysterious_people_run_manifestation = {
+	if = { limit = { NOT = { has_variable = global.mysterious_people_firings } } set_variable = { global.mysterious_people_firings = 0 } }
+	if = { limit = { NOT = { has_variable = global.mysterious_people_stage } } set_variable = { global.mysterious_people_stage = constant:mysterious_people_event.stage_baseline } }
+	if = { limit = { NOT = { has_variable = global.mysterious_people_total_created_k } } set_variable = { global.mysterious_people_total_created_k = 0 } }
+	if = {
+		limit = { check_variable = { global.mysterious_people_firings = 0 } }
+		mysterious_people_record_first_firing_evolutions = yes
+	}
+	add_to_variable = { global.mysterious_people_firings = 1 }
+	if = {
+		limit = { has_variable = global.mysterious_people_last_created_k }
+		set_variable = { global.mysterious_people_previous_created_k = global.mysterious_people_last_created_k }
+	}
+	set_variable = { global.mysterious_people_last_created_k = 0 }
+	set_variable = { global.mysterious_people_last_states = 0 }
+	set_variable = { global.mysterious_people_world_newcomers_k = 0 }
+	set_variable = { global.mysterious_people_world_population_k = 0 }
+	mysterious_people_load_stage_grant = yes
+
+	# Reset every country count before the exact recount.
+	for_each_scope_loop = {
+		array = global.mysterious_people_newcomer_countries
+		mysterious_people_reset_country_counts = yes
+	}
+	clear_array = global.mysterious_people_newcomer_countries
+	clear_temp_array = mysterious_people_counted_countries
+
+	every_state = {
+		limit = {
+			OR = {
+				mysterious_people_state_has_newcomers = yes
+				mysterious_people_state_can_receive = yes
+			}
+			humanitarian_state_is_valid = yes
+		}
+		OWNER = {
+			if = {
+				limit = { NOT = { has_country_flag = mysterious_people_counted } }
+				mysterious_people_reset_country_counts = yes
+				set_country_flag = mysterious_people_counted
+				add_to_temp_array = { mysterious_people_counted_countries = THIS }
+			}
+			mysterious_people_compute_national_factor = yes
+		}
+		mysterious_people_settle_state_lazy = yes
+		if = {
+			limit = { mysterious_people_state_can_receive = yes }
+			mysterious_people_apply_state_grant = yes
+		}
+		mysterious_people_refresh_state_rate = yes
+		mysterious_people_refresh_state_pressure = yes
+		mysterious_people_count_state = yes
+	}
+
+	for_each_scope_loop = {
+		array = mysterious_people_counted_countries
+		clr_country_flag = mysterious_people_counted
+	}
+	for_each_scope_loop = {
+		array = global.mysterious_people_newcomer_countries
+		mysterious_people_finalize_country = yes
+	}
+
+	add_to_variable = { global.mysterious_people_total_created_k = global.mysterious_people_last_created_k }
+	set_variable = { global.mysterious_people_world_share = 0 }
+	if = {
+		limit = { check_variable = { global.mysterious_people_world_population_k > 0 } }
+		set_variable = { global.mysterious_people_world_share = global.mysterious_people_world_newcomers_k }
+		divide_variable = { global.mysterious_people_world_share = global.mysterious_people_world_population_k }
+	}
+	mysterious_people_refresh_world_flags = yes
+	mysterious_people_apply_chaos_milestones = yes
+	mysterious_people_record_history = yes
+	mysterious_people_ensure_pulse = yes
+	mysterious_people_dispatch_reports = yes
+}
+
+# Global temps for the active stage grant table.
+mysterious_people_load_stage_grant = {
+	set_temp_variable = { mysterious_people_grant_ratio = constant:mysterious_people_grant.baseline_ratio }
+	set_temp_variable = { mysterious_people_grant_floor_k = constant:mysterious_people_grant.baseline_floor_k }
+	set_temp_variable = { mysterious_people_grant_cap_k = constant:mysterious_people_grant.baseline_cap_k }
+	set_temp_variable = { mysterious_people_grant_small = constant:mysterious_people_grant.baseline_small_ceiling }
+	if = {
+		limit = { mysterious_people_stage_at_least_iii = yes }
+		set_temp_variable = { mysterious_people_grant_ratio = constant:mysterious_people_grant.evolution_iii_ratio }
+		set_temp_variable = { mysterious_people_grant_floor_k = constant:mysterious_people_grant.evolution_iii_floor_k }
+		set_temp_variable = { mysterious_people_grant_cap_k = constant:mysterious_people_grant.evolution_iii_cap_k }
+		set_temp_variable = { mysterious_people_grant_small = constant:mysterious_people_grant.evolution_iii_small_ceiling }
+	}
+	else_if = {
+		limit = { mysterious_people_stage_at_least_ii = yes }
+		set_temp_variable = { mysterious_people_grant_ratio = constant:mysterious_people_grant.evolution_ii_ratio }
+		set_temp_variable = { mysterious_people_grant_floor_k = constant:mysterious_people_grant.evolution_ii_floor_k }
+		set_temp_variable = { mysterious_people_grant_cap_k = constant:mysterious_people_grant.evolution_ii_cap_k }
+		set_temp_variable = { mysterious_people_grant_small = constant:mysterious_people_grant.evolution_ii_small_ceiling }
+	}
+	else_if = {
+		limit = { mysterious_people_stage_at_least_i = yes }
+		set_temp_variable = { mysterious_people_grant_ratio = constant:mysterious_people_grant.evolution_i_ratio }
+		set_temp_variable = { mysterious_people_grant_floor_k = constant:mysterious_people_grant.evolution_i_floor_k }
+		set_temp_variable = { mysterious_people_grant_cap_k = constant:mysterious_people_grant.evolution_i_cap_k }
+		set_temp_variable = { mysterious_people_grant_small = constant:mysterious_people_grant.evolution_i_small_ceiling }
+	}
+}
+
+# COUNTRY scope. Zeroes the counts that the world pass rebuilds.
+mysterious_people_reset_country_counts = {
+	set_variable = { mysterious_people_newcomers_k = 0 }
+	set_variable = { mysterious_people_unsettled_k = 0 }
+	set_variable = { mysterious_people_population_k = 0 }
+	set_variable = { mysterious_people_total_rate_k = 0 }
+	set_variable = { mysterious_people_created_k = 0 }
+	set_variable = { mysterious_people_rest_unsettled_k = 0 }
+	set_variable = { mysterious_people_rest_rate_k = 0 }
+	mysterious_people_clear_hotspots = yes
+}
+
+# STATE scope. One measured grant. Inputs: stage grant temps.
+mysterious_people_apply_state_grant = {
+	set_temp_variable = { mysterious_people_pre_k = state_population_k }
+	set_temp_variable = { mysterious_people_floor_work = mysterious_people_pre_k }
+	multiply_temp_variable = { mysterious_people_floor_work = mysterious_people_grant_small }
+	clamp_temp_variable = { var = mysterious_people_floor_work max = mysterious_people_grant_floor_k }
+	set_temp_variable = { mysterious_people_grant_k = mysterious_people_pre_k }
+	multiply_temp_variable = { mysterious_people_grant_k = mysterious_people_grant_ratio }
+	clamp_temp_variable = { var = mysterious_people_grant_k min = mysterious_people_floor_work max = mysterious_people_grant_cap_k }
+	set_temp_variable = { state_population_gain_request = mysterious_people_grant_k }
+	multiply_temp_variable = { state_population_gain_request = constant:mysterious_people_value.people_per_k }
+	set_temp_variable = { state_population_gain_applied = 0 }
+	set_temp_variable = { state_population_gain_reconciled = 0 }
+	apply_state_population_gain_without_recruitable_manpower_gain = yes
+	if = {
+		limit = { check_variable = { state_population_gain_applied > 0 } }
+		set_temp_variable = { mysterious_people_applied_k = state_population_gain_applied }
+		divide_temp_variable = { mysterious_people_applied_k = constant:mysterious_people_value.people_per_k }
+		# share' = (share x P + G) / (P + G), using the measured population.
+		set_temp_variable = { mysterious_people_share_work = 0 }
+		if = {
+			limit = { has_variable = mysterious_people_share }
+			set_temp_variable = { mysterious_people_share_work = mysterious_people_share }
+		}
+		multiply_temp_variable = { mysterious_people_share_work = mysterious_people_pre_k }
+		add_to_temp_variable = { mysterious_people_share_work = mysterious_people_applied_k }
+		if = {
+			limit = { check_variable = { state_population_k > 0 } }
+			divide_temp_variable = { mysterious_people_share_work = state_population_k }
+		}
+		clamp_temp_variable = { var = mysterious_people_share_work min = 0 max = constant:mysterious_people_value.one }
+		set_variable = { mysterious_people_share = mysterious_people_share_work }
+		if = { limit = { NOT = { has_variable = mysterious_people_unsettled_k } } set_variable = { mysterious_people_unsettled_k = 0 } }
+		add_to_variable = { mysterious_people_unsettled_k = mysterious_people_applied_k }
+		set_variable = { mysterious_people_last_grant_k = mysterious_people_applied_k }
+		set_variable = { mysterious_people_last_grant_firing = global.mysterious_people_firings }
+		clear_variable = mysterious_people_loss_cause
+		add_to_variable = { global.mysterious_people_last_created_k = mysterious_people_applied_k }
+		add_to_variable = { global.mysterious_people_last_states = 1 }
+		OWNER = { add_to_variable = { mysterious_people_created_k = mysterious_people_applied_k } }
+	}
+}
+
+# STATE scope. Adds this state to its owner's counts, the world count and the
+# hotspot candidates.
+mysterious_people_count_state = {
+	mysterious_people_clamp_state_ledger = yes
+	set_variable = { mysterious_people_last_pop_k = state_population_k }
+	add_to_variable = { global.mysterious_people_world_population_k = state_population_k }
+	set_temp_variable = { mysterious_people_rate_cap = 0 }
+	if = {
+		limit = { mysterious_people_state_has_newcomers = yes }
+		add_to_variable = { global.mysterious_people_world_newcomers_k = mysterious_people_newcomers_k }
+		set_variable = { mysterious_people_counted_owner = OWNER }
+		set_temp_variable = { mysterious_people_rate_cap = mysterious_people_rate_k }
+		clamp_temp_variable = { var = mysterious_people_rate_cap max = mysterious_people_unsettled_k }
+	}
+	set_temp_variable = { mysterious_people_count_pop = state_population_k }
+	set_temp_variable = { mysterious_people_count_new = 0 }
+	set_temp_variable = { mysterious_people_count_unsettled = 0 }
+	if = {
+		limit = { mysterious_people_state_has_newcomers = yes }
+		set_temp_variable = { mysterious_people_count_new = mysterious_people_newcomers_k }
+		if = {
+			limit = { has_variable = mysterious_people_unsettled_k }
+			set_temp_variable = { mysterious_people_count_unsettled = mysterious_people_unsettled_k }
+		}
+	}
+	OWNER = {
+		add_to_variable = { mysterious_people_population_k = mysterious_people_count_pop }
+		if = {
+			limit = { check_variable = { mysterious_people_count_new > 0 } }
+			add_to_variable = { mysterious_people_newcomers_k = mysterious_people_count_new }
+			add_to_variable = { mysterious_people_unsettled_k = mysterious_people_count_unsettled }
+			add_to_variable = { mysterious_people_total_rate_k = mysterious_people_rate_cap }
+			if = {
+				limit = { NOT = { is_in_array = { array = global.mysterious_people_newcomer_countries value = THIS } } }
+				add_to_array = { array = global.mysterious_people_newcomer_countries value = THIS }
+			}
+		}
+	}
+	if = {
+		limit = { mysterious_people_state_has_unsettled = yes }
+		mysterious_people_compute_state_rank = yes
+		mysterious_people_offer_hotspot = yes
+	}
+}
+
+# COUNTRY scope. Hotspots, rest-of-country backlog, pressure, modifier,
+# registry and mission after the world pass.
+mysterious_people_finalize_country = {
+	mysterious_people_sort_hotspots = yes
+	set_temp_variable = { mysterious_people_hot_unsettled = 0 }
+	set_temp_variable = { mysterious_people_hot_rate = 0 }
+	for_each_scope_loop = {
+		array = mysterious_people_hotspots
+		set_state_flag = mysterious_people_hotspot
+		add_to_temp_variable = { mysterious_people_hot_unsettled = mysterious_people_unsettled_k }
+		set_temp_variable = { mysterious_people_rate_cap = mysterious_people_rate_k }
+		clamp_temp_variable = { var = mysterious_people_rate_cap max = mysterious_people_unsettled_k }
+		add_to_temp_variable = { mysterious_people_hot_rate = mysterious_people_rate_cap }
+	}
+	set_variable = { mysterious_people_rest_unsettled_k = mysterious_people_unsettled_k }
+	subtract_from_variable = { mysterious_people_rest_unsettled_k = mysterious_people_hot_unsettled }
+	clamp_variable = { var = mysterious_people_rest_unsettled_k min = 0 }
+	set_variable = { mysterious_people_rest_rate_k = mysterious_people_total_rate_k }
+	subtract_from_variable = { mysterious_people_rest_rate_k = mysterious_people_hot_rate }
+	clamp_variable = { var = mysterious_people_rest_rate_k min = 0 }
+	set_variable = { mysterious_people_created_firing = global.mysterious_people_firings }
+	mysterious_people_refresh_national_pressure = yes
+	mysterious_people_refresh_modifier = yes
+	if = {
+		limit = { mysterious_people_country_has_unsettled = yes }
+		mysterious_people_register_country = yes
+	}
+	else = {
+		mysterious_people_unregister_country = yes
+	}
+	if = { limit = { NOT = { has_variable = mysterious_people_running_projects } } set_variable = { mysterious_people_running_projects = 0 } }
+	mysterious_people_track_censuses = yes
+	mysterious_people_track_absorbing = yes
+	mysterious_people_try_start_mission = yes
+	mysterious_people_check_billion_achievement = yes
+	country_event = {
+		id = chaosx.nr37.7
+		days = constant:mysterious_people_flavour.delay_min_days
+		random_days = constant:mysterious_people_flavour.delay_random_days
+	}
+}
+
+# Global flags read by the evolution MTTH entries.
+mysterious_people_refresh_world_flags = {
+	clr_global_flag = mysterious_people_world_emergency
+	clr_global_flag = mysterious_people_world_crowded
+	for_each_scope_loop = {
+		array = global.mysterious_people_countries
+		if = {
+			limit = { mysterious_people_country_is_emergency = yes }
+			set_global_flag = mysterious_people_world_emergency
+		}
+		if = {
+			limit = { mysterious_people_country_is_overcrowded = yes }
+			set_global_flag = mysterious_people_world_crowded
+		}
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Monthly host pulse
+# ---------------------------------------------------------------------------
+
+# Starts or repairs the self-rescheduling pulse chain. A chain whose due day
+# lies far in the past is treated as lost and restarted.
+mysterious_people_ensure_pulse = {
+	set_temp_variable = { mysterious_people_pulse_limit = global.num_days }
+	subtract_from_temp_variable = { mysterious_people_pulse_limit = constant:mysterious_people_evolution_pacing.pulse_stale_days }
+	if = {
+		limit = {
+			OR = {
+				NOT = { has_variable = global.mysterious_people_pulse_due }
+				check_variable = { global.mysterious_people_pulse_due < mysterious_people_pulse_limit }
+			}
+		}
+		mysterious_people_schedule_pulse = yes
+	}
+}
+
+mysterious_people_schedule_pulse = {
+	set_variable = { global.mysterious_people_pulse_due = global.num_days }
+	add_to_variable = { global.mysterious_people_pulse_due = constant:mysterious_people_evolution_pacing.pulse_days }
+	if = {
+		limit = { any_country = { has_country_flag = is_global_host } }
+		random_country = {
+			limit = { has_country_flag = is_global_host }
+			country_event = { id = chaosx.nr37.6 days = constant:mysterious_people_evolution_pacing.pulse_days }
+		}
+	}
+	else = {
+		country_event = { id = chaosx.nr37.6 days = constant:mysterious_people_evolution_pacing.pulse_days }
+	}
+}
+
+# Body of chaosx.nr37.6. A duplicate chain (due day not reached) exits
+# without rescheduling.
+mysterious_people_run_pulse = {
+	set_temp_variable = { mysterious_people_pulse_early = global.mysterious_people_pulse_due }
+	subtract_from_temp_variable = { mysterious_people_pulse_early = 1 }
+	if = {
+		limit = { check_variable = { global.num_days > mysterious_people_pulse_early } }
+		clear_temp_array = mysterious_people_drop_countries
+		for_each_scope_loop = {
+			array = global.mysterious_people_countries
+			mysterious_people_pulse_country = yes
+		}
+		# Registry removals wait until the loop over the registry has ended.
+		for_each_scope_loop = {
+			array = mysterious_people_drop_countries
+			mysterious_people_unregister_country = yes
+		}
+		for_each_scope_loop = {
+			array = global.mysterious_people_newcomer_countries
+			if = {
+				limit = { is_ai = no }
+				mysterious_people_track_room_achievement = yes
+			}
+		}
+		mysterious_people_refresh_world_flags = yes
+		mysterious_people_evolution_pulse = yes
+		mysterious_people_schedule_pulse = yes
+	}
+}
+
+# COUNTRY scope. Settles the hotspots exactly and the rest of the backlog at
+# its stored rate, then refreshes pressure, adapters and the modifier.
+mysterious_people_pulse_country = {
+	if = {
+		limit = {
+			exists = yes
+			mysterious_people_country_can_use_mechanic = yes
+		}
+		mysterious_people_compute_national_factor = yes
+		set_temp_variable = { mysterious_people_hot_unsettled = 0 }
+		clear_temp_array = mysterious_people_keep_states
+		clear_temp_array = mysterious_people_keep_ranks
+		for_each_scope_loop = {
+			array = mysterious_people_hotspots
+			if = {
+				limit = {
+					is_owned_by = PREV
+					humanitarian_state_is_valid = yes
+				}
+				mysterious_people_note_population_loss = yes
+				PREV = { mysterious_people_compute_national_factor = yes }
+				mysterious_people_settle_state_lazy = yes
+				mysterious_people_refresh_state_rate = yes
+				mysterious_people_refresh_state_pressure = yes
+				mysterious_people_run_adapters = yes
+				if = {
+					limit = {
+						OR = {
+							mysterious_people_state_has_unsettled = yes
+							mysterious_people_state_has_running_project = yes
+						}
+					}
+					add_to_temp_variable = { mysterious_people_hot_unsettled = mysterious_people_unsettled_k }
+					mysterious_people_compute_state_rank = yes
+					add_to_temp_array = { mysterious_people_keep_states = THIS }
+					add_to_temp_array = { mysterious_people_keep_ranks = mysterious_people_rank }
+				}
+				else = {
+					clr_state_flag = mysterious_people_hotspot
+				}
+			}
+			else = {
+				clr_state_flag = mysterious_people_hotspot
+				mysterious_people_on_state_owner_changed = yes
+			}
+		}
+		mysterious_people_compute_national_factor = yes
+		mysterious_people_clear_selection_if_dropped = yes
+		clear_array = mysterious_people_hotspots
+		clear_array = mysterious_people_hotspot_ranks
+		for_loop_effect = {
+			start = 0
+			end = mysterious_people_keep_states^num
+			value = mysterious_people_keep_i
+			add_to_array = { array = mysterious_people_hotspots value = mysterious_people_keep_states^mysterious_people_keep_i }
+			add_to_array = { array = mysterious_people_hotspot_ranks value = mysterious_people_keep_ranks^mysterious_people_keep_i }
+		}
+		mysterious_people_sort_hotspots = yes
+		set_temp_variable = { mysterious_people_rest_settle = mysterious_people_rest_rate_k }
+		multiply_temp_variable = { mysterious_people_rest_settle = mysterious_people_national_factor }
+		subtract_from_variable = { mysterious_people_rest_unsettled_k = mysterious_people_rest_settle }
+		clamp_variable = { var = mysterious_people_rest_unsettled_k min = 0 }
+		set_variable = { mysterious_people_unsettled_k = mysterious_people_rest_unsettled_k }
+		add_to_variable = { mysterious_people_unsettled_k = mysterious_people_hot_unsettled }
+		clamp_variable = { var = mysterious_people_unsettled_k min = 0 max = mysterious_people_newcomers_k }
+		mysterious_people_refresh_national_pressure = yes
+		mysterious_people_refresh_modifier = yes
+		mysterious_people_track_censuses = yes
+		mysterious_people_track_absorbing = yes
+		if = {
+			limit = { NOT = { mysterious_people_country_has_unsettled = yes } }
+			add_to_temp_array = { mysterious_people_drop_countries = THIS }
+		}
+	}
+	else = {
+		add_to_temp_array = { mysterious_people_drop_countries = THIS }
+		if = {
+			limit = { has_dynamic_modifier = { modifier = mysterious_people_newcomers } }
+			remove_dynamic_modifier = { modifier = mysterious_people_newcomers }
+		}
+	}
+}
+
+# COUNTRY scope. Drops the selection when its state is no longer a hotspot.
+mysterious_people_clear_selection_if_dropped = {
+	if = {
+		limit = {
+			has_variable = mysterious_people_selected_state
+			var:mysterious_people_selected_state = { NOT = { has_state_flag = mysterious_people_hotspot } }
+		}
+		mysterious_people_clear_selection = yes
+	}
+}
+
+# STATE scope. Records whether hunger shrank the state since the last pulse,
+# so a lower backlog caused by deaths is not read as settlement.
+mysterious_people_note_population_loss = {
+	if = {
+		limit = {
+			has_variable = mysterious_people_last_pop_k
+			check_variable = { state_population_k < mysterious_people_last_pop_k }
+			mysterious_people_state_is_hungry = yes
+		}
+		set_variable = { mysterious_people_loss_cause = constant:mysterious_people_code.loss_hunger }
+	}
+	set_variable = { mysterious_people_last_pop_k = state_population_k }
+}
+
+# STATE scope. Famine and Migration requests for a hotspot. Event 037 writes
+# no Famine or Migration ledger; both owners validate and apply requests.
+mysterious_people_run_adapters = {
+	if = {
+		limit = { check_variable = { var = mysterious_people_pressure value = constant:mysterious_people_adapter.famine_threshold compare = greater_than_or_equals } }
+		# Need component = state pressure - 40, topped up to that level
+		# through the public request, which Famine converts back to points.
+		set_temp_variable = { mysterious_people_need_target = mysterious_people_pressure }
+		subtract_from_temp_variable = { mysterious_people_need_target = constant:mysterious_people_adapter.famine_component_offset }
+		set_temp_variable = { mysterious_people_need_current = 0 }
+		if = {
+			limit = { has_variable = famine_food_pressure }
+			set_temp_variable = { mysterious_people_need_current = famine_food_pressure }
+		}
+		subtract_from_temp_variable = { mysterious_people_need_target = mysterious_people_need_current }
+		if = {
+			limit = { check_variable = { mysterious_people_need_target > 0 } }
+			set_temp_variable = { mysterious_people_need_people = mysterious_people_need_target }
+			multiply_temp_variable = { mysterious_people_need_people = state_population_k }
+			multiply_temp_variable = { mysterious_people_need_people = constant:famine_food_shock.population_share_for_maximum }
+			multiply_temp_variable = { mysterious_people_need_people = constant:mysterious_people_value.people_per_k }
+			divide_temp_variable = { mysterious_people_need_people = constant:famine_food_component.maximum }
+			round_temp_variable = mysterious_people_need_people
+			if = {
+				limit = { check_variable = { mysterious_people_need_people > 0 } }
+				set_temp_variable = { famine_pressure_request_proven = constant:humanitarian_runtime.one }
+				set_temp_variable = { famine_pressure_request_amount = mysterious_people_need_people }
+				set_temp_variable = { famine_pressure_request_actor_proven = OWNER.id }
+				set_temp_variable = { famine_pressure_request_result = constant:humanitarian_runtime.zero }
+				famine_request_event_pressure = yes
+			}
+		}
+	}
+	if = {
+		limit = {
+			check_variable = { var = mysterious_people_pressure value = constant:mysterious_people_adapter.migration_threshold compare = greater_than_or_equals }
+			NOT = { has_state_flag = mysterious_people_station_closed }
+		}
+		set_temp_variable = { mysterious_people_flight_people = mysterious_people_unsettled_k }
+		multiply_temp_variable = { mysterious_people_flight_people = constant:mysterious_people_adapter.migration_backlog_share }
+		if = {
+			limit = { has_state_flag = mysterious_people_station_extra }
+			multiply_temp_variable = { mysterious_people_flight_people = constant:mysterious_people_adapter.migration_station_factor }
+		}
+		multiply_temp_variable = { mysterious_people_flight_people = constant:mysterious_people_value.people_per_k }
+		round_temp_variable = mysterious_people_flight_people
+		if = {
+			limit = { check_variable = { mysterious_people_flight_people > 0 } }
+			set_temp_variable = { migration_pressure_request_proven = constant:humanitarian_runtime.one }
+			set_temp_variable = { migration_pressure_request_amount = mysterious_people_flight_people }
+			set_temp_variable = { migration_pressure_request_actor_proven = OWNER.id }
+			set_temp_variable = { migration_pressure_request_result = constant:humanitarian_runtime.zero }
+			migration_request_flight_pressure = yes
+			if = {
+				limit = { check_variable = { var = migration_pressure_request_result value = constant:humanitarian_runtime.one compare = equals } }
+				set_temp_variable = { mysterious_people_flag_days = constant:mysterious_people_evolution_pacing.pulse_stale_days }
+				set_state_flag = { flag = mysterious_people_flight_requested days = mysterious_people_flag_days value = 1 }
+			}
+		}
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Shared-system hooks
+# ---------------------------------------------------------------------------
+
+# STATE scope at the exact transfer origin, called once from
+# civilian_transfer_finalize after a valid projection. Departures leave the
+# origin backlog and arrivals carry the origin share into the destination.
+mysterious_people_on_civilian_transfer = {
+	set_temp_variable = { mysterious_people_origin_share = 0 }
+	if = {
+		limit = { has_variable = mysterious_people_share }
+		set_temp_variable = { mysterious_people_origin_share = mysterious_people_share }
+	}
+	if = {
+		limit = {
+			mysterious_people_state_has_unsettled = yes
+			check_variable = { civilian_transfer_actual_origin_debit > 0 }
+		}
+		set_temp_variable = { mysterious_people_departed_k = civilian_transfer_actual_origin_debit }
+		divide_temp_variable = { mysterious_people_departed_k = constant:mysterious_people_value.people_per_k }
+		subtract_from_variable = { mysterious_people_unsettled_k = mysterious_people_departed_k }
+		clamp_variable = { var = mysterious_people_unsettled_k min = 0 }
+		set_variable = { mysterious_people_loss_cause = constant:mysterious_people_code.loss_flight }
+		mysterious_people_refresh_after_state_action = yes
+	}
+	if = {
+		limit = {
+			has_event_target = civilian_transfer_route_destination
+			check_variable = { civilian_transfer_survivor_credit > 0 }
+			check_variable = { civilian_transfer_destination_population_after > 0 }
+		}
+		event_target:civilian_transfer_route_destination = {
+			if = {
+				limit = {
+					OR = {
+						check_variable = { mysterious_people_origin_share > 0 }
+						mysterious_people_state_has_newcomers = yes
+					}
+				}
+				set_temp_variable = { mysterious_people_after_k = civilian_transfer_destination_population_after }
+				divide_temp_variable = { mysterious_people_after_k = constant:mysterious_people_value.people_per_k }
+				set_temp_variable = { mysterious_people_arrived_k = civilian_transfer_survivor_credit }
+				divide_temp_variable = { mysterious_people_arrived_k = constant:mysterious_people_value.people_per_k }
+				set_temp_variable = { mysterious_people_before_k = mysterious_people_after_k }
+				subtract_from_temp_variable = { mysterious_people_before_k = mysterious_people_arrived_k }
+				clamp_temp_variable = { var = mysterious_people_before_k min = 0 }
+				set_temp_variable = { mysterious_people_blend = 0 }
+				if = {
+					limit = { has_variable = mysterious_people_share }
+					set_temp_variable = { mysterious_people_blend = mysterious_people_share }
+				}
+				multiply_temp_variable = { mysterious_people_blend = mysterious_people_before_k }
+				set_temp_variable = { mysterious_people_blend_arrivals = mysterious_people_arrived_k }
+				multiply_temp_variable = { mysterious_people_blend_arrivals = mysterious_people_origin_share }
+				add_to_temp_variable = { mysterious_people_blend = mysterious_people_blend_arrivals }
+				divide_temp_variable = { mysterious_people_blend = mysterious_people_after_k }
+				clamp_temp_variable = { var = mysterious_people_blend min = 0 max = constant:mysterious_people_value.one }
+				set_variable = { mysterious_people_share = mysterious_people_blend }
+				mysterious_people_clamp_state_ledger = yes
+			}
+		}
+	}
+}
+
+# STATE scope. Moves this state's counts from the owner credited at the last
+# count to the current owner. Called from on_state_control_changed and from
+# the pulse when a hotspot changed hands.
+mysterious_people_on_state_owner_changed = {
+	set_temp_variable = { mysterious_people_current_owner = 0 }
+	OWNER = { set_temp_variable = { mysterious_people_current_owner = THIS } }
+	if = {
+		limit = {
+			mysterious_people_state_has_newcomers = yes
+			has_variable = mysterious_people_counted_owner
+			NOT = { check_variable = { mysterious_people_counted_owner = mysterious_people_current_owner } }
+		}
+		clr_state_flag = mysterious_people_hotspot
+		mysterious_people_clamp_state_ledger = yes
+		set_temp_variable = { mysterious_people_move_pop = state_population_k }
+		set_temp_variable = { mysterious_people_move_new = mysterious_people_newcomers_k }
+		set_temp_variable = { mysterious_people_move_unsettled = 0 }
+		if = {
+			limit = { has_variable = mysterious_people_unsettled_k }
+			set_temp_variable = { mysterious_people_move_unsettled = mysterious_people_unsettled_k }
+		}
+		var:mysterious_people_counted_owner = {
+			if = {
+				limit = { exists = yes }
+				subtract_from_variable = { mysterious_people_newcomers_k = mysterious_people_move_new }
+				clamp_variable = { var = mysterious_people_newcomers_k min = 0 }
+				subtract_from_variable = { mysterious_people_population_k = mysterious_people_move_pop }
+				clamp_variable = { var = mysterious_people_population_k min = 0 }
+				if = {
+					limit = { NOT = { is_in_array = { array = mysterious_people_hotspots value = PREV } } }
+					subtract_from_variable = { mysterious_people_rest_unsettled_k = mysterious_people_move_unsettled }
+					clamp_variable = { var = mysterious_people_rest_unsettled_k min = 0 }
+				}
+				subtract_from_variable = { mysterious_people_unsettled_k = mysterious_people_move_unsettled }
+				clamp_variable = { var = mysterious_people_unsettled_k min = 0 }
+			}
+		}
+		if = {
+			limit = { humanitarian_state_is_valid = yes }
+			OWNER = {
+				if = { limit = { NOT = { has_variable = mysterious_people_newcomers_k } } mysterious_people_reset_country_counts = yes }
+				add_to_variable = { mysterious_people_newcomers_k = mysterious_people_move_new }
+				add_to_variable = { mysterious_people_population_k = mysterious_people_move_pop }
+				add_to_variable = { mysterious_people_unsettled_k = mysterious_people_move_unsettled }
+				if = { limit = { NOT = { has_variable = mysterious_people_running_projects } } set_variable = { mysterious_people_running_projects = 0 } }
+				if = {
+					limit = { NOT = { is_in_array = { array = global.mysterious_people_newcomer_countries value = THIS } } }
+					add_to_array = { array = global.mysterious_people_newcomer_countries value = THIS }
+				}
+			}
+			set_variable = { mysterious_people_counted_owner = OWNER }
+			if = {
+				limit = { mysterious_people_state_has_unsettled = yes }
+				OWNER = { mysterious_people_compute_national_factor = yes }
+				mysterious_people_settle_state_lazy = yes
+				mysterious_people_refresh_state_rate = yes
+				mysterious_people_refresh_state_pressure = yes
+				mysterious_people_compute_state_rank = yes
+				mysterious_people_offer_hotspot = yes
+				OWNER = {
+					mysterious_people_sort_hotspots = yes
+					for_each_scope_loop = {
+						array = mysterious_people_hotspots
+						set_state_flag = mysterious_people_hotspot
+					}
+					mysterious_people_register_country = yes
+					mysterious_people_refresh_national_pressure = yes
+					mysterious_people_refresh_modifier = yes
+				}
+			}
+		}
+		else = {
+			clear_variable = mysterious_people_counted_owner
+		}
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Chaos milestones and history
+# ---------------------------------------------------------------------------
+
+mysterious_people_apply_chaos_milestones = {
+	if = {
+		limit = { NOT = { has_global_flag = mysterious_people_chaos_first } }
+		set_global_flag = mysterious_people_chaos_first
+		set_temp_variable = { chaos_change = constant:mysterious_people_chaos.first_manifestation }
+		set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.special.mysterious_people_first }
+		set_temp_variable = { chaos_history_reason_custom = 1 }
+		add_chaos_meter_value = yes
+	}
+	if = {
+		limit = {
+			NOT = { has_global_flag = mysterious_people_chaos_share_5 }
+			check_variable = { var = global.mysterious_people_world_share value = constant:mysterious_people_chaos.share_5_threshold compare = greater_than_or_equals }
+		}
+		set_global_flag = mysterious_people_chaos_share_5
+		set_temp_variable = { chaos_change = constant:mysterious_people_chaos.share_5 }
+		set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.special.mysterious_people_share }
+		set_temp_variable = { chaos_history_reason_custom = 1 }
+		add_chaos_meter_value = yes
+	}
+	if = {
+		limit = {
+			NOT = { has_global_flag = mysterious_people_chaos_share_10 }
+			check_variable = { var = global.mysterious_people_world_share value = constant:mysterious_people_chaos.share_10_threshold compare = greater_than_or_equals }
+		}
+		set_global_flag = mysterious_people_chaos_share_10
+		set_temp_variable = { chaos_change = constant:mysterious_people_chaos.share_10 }
+		set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.special.mysterious_people_share }
+		set_temp_variable = { chaos_history_reason_custom = 1 }
+		add_chaos_meter_value = yes
+	}
+	if = {
+		limit = {
+			NOT = { has_global_flag = mysterious_people_chaos_share_25 }
+			check_variable = { var = global.mysterious_people_world_share value = constant:mysterious_people_chaos.share_25_threshold compare = greater_than_or_equals }
+		}
+		set_global_flag = mysterious_people_chaos_share_25
+		set_temp_variable = { chaos_change = constant:mysterious_people_chaos.share_25 }
+		set_temp_variable = { chaos_history_reason = constant:chaos_meter_history_reason.special.mysterious_people_share }
+		set_temp_variable = { chaos_history_reason_custom = 1 }
+		add_chaos_meter_value = yes
+	}
+}
+
+# Called by the shared history recorder for Event 037 so the firing can bind
+# its totals to the exact Event Log row.
+mysterious_people_bind_history_sequence = {
+	if = {
+		limit = { has_variable = global.events_log_history_sequence }
+		set_variable = { global.mysterious_people_pending_history_sequence = global.events_log_history_sequence }
+	}
+}
+
+mysterious_people_record_history = {
+	set_temp_variable = { mysterious_people_history_sequence = 0 }
+	if = {
+		limit = { has_variable = global.mysterious_people_pending_history_sequence }
+		set_temp_variable = { mysterious_people_history_sequence = global.mysterious_people_pending_history_sequence }
+	}
+	add_to_array = { array = global.mysterious_people_history_sequence_entries value = mysterious_people_history_sequence }
+	add_to_array = { array = global.mysterious_people_history_firing_entries value = global.mysterious_people_firings }
+	add_to_array = { array = global.mysterious_people_history_created_entries value = global.mysterious_people_last_created_k }
+	add_to_array = { array = global.mysterious_people_history_states_entries value = global.mysterious_people_last_states }
+	add_to_array = { array = global.mysterious_people_history_stage_entries value = global.mysterious_people_stage }
+	add_to_array = { array = global.mysterious_people_history_world_entries value = global.mysterious_people_world_newcomers_k }
+	clear_variable = global.mysterious_people_pending_history_sequence
+}
+
+# COUNTRY scope (Event Details viewer). Resolves the selected history row.
+mysterious_people_load_open_history_payload = {
+	clr_country_flag = mysterious_people_history_payload_loaded
+	if = {
+		limit = {
+			check_variable = { var = events_log_history_selected_event_id value = constant:mysterious_people_event.id compare = equals }
+			check_variable = { events_log_history_selected_sequence > 0 }
+		}
+		for_loop_effect = {
+			start = 0
+			end = global.mysterious_people_history_sequence_entries^num
+			value = mysterious_people_history_scan
+			if = {
+				limit = {
+					NOT = { has_country_flag = mysterious_people_history_payload_loaded }
+					check_variable = {
+						var = global.mysterious_people_history_sequence_entries^mysterious_people_history_scan
+						value = events_log_history_selected_sequence
+						compare = equals
+					}
+				}
+				set_variable = { mysterious_people_history_detail_firing = global.mysterious_people_history_firing_entries^mysterious_people_history_scan }
+				set_variable = { mysterious_people_history_detail_created_k = global.mysterious_people_history_created_entries^mysterious_people_history_scan }
+				set_variable = { mysterious_people_history_detail_states = global.mysterious_people_history_states_entries^mysterious_people_history_scan }
+				set_variable = { mysterious_people_history_detail_stage = global.mysterious_people_history_stage_entries^mysterious_people_history_scan }
+				set_variable = { mysterious_people_history_detail_world_k = global.mysterious_people_history_world_entries^mysterious_people_history_scan }
+				set_country_flag = mysterious_people_history_payload_loaded
+			}
+		}
+	}
+}
+
+# Sends the manifestation report to every human country with newcomers and
+# the world news once.
+mysterious_people_dispatch_reports = {
+	every_country = {
+		limit = {
+			is_ai = no
+			mysterious_people_country_has_newcomers = yes
+		}
+		country_event = { id = chaosx.nr37.2 }
+	}
+	if = {
+		limit = { NOT = { has_global_flag = mysterious_people_news_published } }
+		set_global_flag = mysterious_people_news_published
+		news_event = { id = chaosx.news.42 hours = 6 }
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Evolutions
+# ---------------------------------------------------------------------------
+
+# Temp inputs: mysterious_people_evo_stage. Sets the shared evolution context.
+mysterious_people_set_evolution_context = {
+	set_temp_variable = { events_log_evolution_event_id = constant:mysterious_people_event.id }
+	set_temp_variable = { events_log_evolution_type = constant:mysterious_people_event.evolution_type }
+	set_temp_variable = { events_log_evolution_stage = mysterious_people_evo_stage }
+	set_temp_variable = { events_log_evolution_tier = mysterious_people_evo_stage }
+}
+
+# Output temp mysterious_people_evo_threshold for mysterious_people_evo_stage.
+mysterious_people_load_evolution_threshold = {
+	set_temp_variable = { mysterious_people_evo_threshold = constant:mysterious_people_event.evolution_i_chaos }
+	if = {
+		limit = { check_variable = { mysterious_people_evo_stage = constant:mysterious_people_event.evolution_ii_stage } }
+		set_temp_variable = { mysterious_people_evo_threshold = constant:mysterious_people_event.evolution_ii_chaos }
+	}
+	else_if = {
+		limit = { check_variable = { mysterious_people_evo_stage = constant:mysterious_people_event.evolution_iii_stage } }
+		set_temp_variable = { mysterious_people_evo_threshold = constant:mysterious_people_event.evolution_iii_chaos }
+	}
+}
+
+# First firing above evolution thresholds: enabled stages record in order
+# before the manifestation, disabled stages stay unrecorded.
+mysterious_people_record_first_firing_evolutions = {
+	for_loop_effect = {
+		start = constant:mysterious_people_event.evolution_i_stage
+		end = constant:mysterious_people_code.evolution_end
+		value = mysterious_people_evo_stage
+		mysterious_people_load_evolution_threshold = yes
+		if = {
+			limit = {
+				check_variable = { var = global.chaos_meter_value value = mysterious_people_evo_threshold compare = greater_than_or_equals }
+				check_variable = { mysterious_people_evo_stage > global.mysterious_people_stage }
+			}
+			mysterious_people_set_evolution_context = yes
+			if = {
+				limit = { is_current_evolution_enabled = yes }
+				mysterious_people_record_evolution = yes
+			}
+		}
+	}
+}
+
+# Paces the next enabled evolution whose Chaos threshold is met.
+mysterious_people_evolution_pulse = {
+	if = {
+		limit = {
+			mysterious_people_event_is_enabled = yes
+			check_variable = { global.mysterious_people_firings > 0 }
+		}
+		set_temp_variable = { mysterious_people_evo_candidate = 0 }
+		for_loop_effect = {
+			start = constant:mysterious_people_event.evolution_i_stage
+			end = constant:mysterious_people_code.evolution_end
+			value = mysterious_people_evo_stage
+			if = {
+				limit = {
+					check_variable = { mysterious_people_evo_candidate = 0 }
+					check_variable = { mysterious_people_evo_stage > global.mysterious_people_stage }
+				}
+				mysterious_people_load_evolution_threshold = yes
+				if = {
+					limit = { check_variable = { var = global.chaos_meter_value value = mysterious_people_evo_threshold compare = greater_than_or_equals } }
+					mysterious_people_set_evolution_context = yes
+					if = {
+						limit = { is_current_evolution_enabled = yes }
+						set_temp_variable = { mysterious_people_evo_candidate = mysterious_people_evo_stage }
+					}
+				}
+			}
+		}
+		if = {
+			limit = { check_variable = { mysterious_people_evo_candidate > 0 } }
+			set_temp_variable = { mysterious_people_evo_stage = mysterious_people_evo_candidate }
+			if = {
+				limit = {
+					OR = {
+						NOT = { has_variable = global.mysterious_people_evolution_pending_stage }
+						NOT = { check_variable = { global.mysterious_people_evolution_pending_stage = mysterious_people_evo_candidate } }
+					}
+				}
+				mysterious_people_compute_evolution_delay = yes
+				set_variable = { global.mysterious_people_evolution_pending_stage = mysterious_people_evo_candidate }
+				set_variable = { global.mysterious_people_evolution_due = global.num_days }
+				add_to_variable = { global.mysterious_people_evolution_due = mysterious_people_evo_delay }
+			}
+			else_if = {
+				limit = { check_variable = { var = global.num_days value = global.mysterious_people_evolution_due compare = greater_than_or_equals } }
+				mysterious_people_set_evolution_context = yes
+				if = {
+					limit = { is_current_evolution_enabled = yes }
+					mysterious_people_record_evolution = yes
+					mysterious_people_send_evolution_report = yes
+				}
+			}
+		}
+		else = {
+			clear_variable = global.mysterious_people_evolution_pending_stage
+			clear_variable = global.mysterious_people_evolution_due
+		}
+	}
+}
+
+# Output temp mysterious_people_evo_delay (days) for mysterious_people_evo_stage.
+mysterious_people_compute_evolution_delay = {
+	set_temp_variable = { mysterious_people_evo_delay = mtth:mysterious_people_evolution_i_days }
+	if = {
+		limit = { check_variable = { mysterious_people_evo_stage = constant:mysterious_people_event.evolution_ii_stage } }
+		set_temp_variable = { mysterious_people_evo_delay = mtth:mysterious_people_evolution_ii_days }
+	}
+	else_if = {
+		limit = { check_variable = { mysterious_people_evo_stage = constant:mysterious_people_event.evolution_iii_stage } }
+		set_temp_variable = { mysterious_people_evo_delay = mtth:mysterious_people_evolution_iii_days }
+	}
+	set_temp_variable_to_random = {
+		var = mysterious_people_evo_spread
+		min = constant:mysterious_people_evolution_pacing.spread_factor_min
+		max = constant:mysterious_people_evolution_pacing.spread_factor_max
+	}
+	multiply_temp_variable = { mysterious_people_evo_delay = mysterious_people_evo_spread }
+	clamp_temp_variable = { var = mysterious_people_evo_delay min = constant:mysterious_people_evolution_pacing.minimum_days }
+	round_temp_variable = mysterious_people_evo_delay
+}
+
+# Records one actorless evolution entry; zero Chaos. Input temp
+# mysterious_people_evo_stage with the context already set.
+mysterious_people_record_evolution = {
+	if = {
+		limit = { check_variable = { mysterious_people_evo_stage = constant:mysterious_people_event.evolution_i_stage } }
+		set_global_flag = mysterious_people_evolution_i_recorded
+	}
+	else_if = {
+		limit = { check_variable = { mysterious_people_evo_stage = constant:mysterious_people_event.evolution_ii_stage } }
+		set_global_flag = mysterious_people_evolution_ii_recorded
+	}
+	else_if = {
+		limit = { check_variable = { mysterious_people_evo_stage = constant:mysterious_people_event.evolution_iii_stage } }
+		set_global_flag = mysterious_people_evolution_iii_recorded
+	}
+	if = {
+		limit = { check_variable = { mysterious_people_evo_stage > global.mysterious_people_stage } }
+		set_variable = { global.mysterious_people_stage = mysterious_people_evo_stage }
+	}
+	record_events_log_evolution_entry = yes
+	clear_variable = global.mysterious_people_evolution_pending_stage
+	clear_variable = global.mysterious_people_evolution_due
+}
+
+mysterious_people_send_evolution_report = {
+	set_variable = { global.mysterious_people_report_evolution = mysterious_people_evo_stage }
+	every_country = {
+		limit = { is_ai = no }
+		if = {
+			limit = { check_variable = { global.mysterious_people_report_evolution = constant:mysterious_people_event.evolution_i_stage } }
+			country_event = { id = chaosx.nr37.3 }
+		}
+		else_if = {
+			limit = { check_variable = { global.mysterious_people_report_evolution = constant:mysterious_people_event.evolution_ii_stage } }
+			country_event = { id = chaosx.nr37.4 }
+		}
+		else = {
+			country_event = { id = chaosx.nr37.5 }
+		}
+	}
+}

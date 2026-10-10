@@ -139,8 +139,8 @@ Pressure stages and state crises are runtime status and never become evolution e
 ## Cluster role
 
 The workbook lists Event 037 as a Medium member of Sudden Abundance, catalog cluster `15`.
-That cluster is not registered in the runtime cluster constants yet, so Event 037 fires only through its ordinary Minor Repeatable path until it is.
-When the cluster becomes live, one cluster activation calls Event 037 once and produces one world transaction, one history entry, one repeatable-weight update, and one set of milestone checks.
+The cluster is registered in the runtime as cluster `15`, and Event 037 is its only runtime member until the other catalogue members register theirs.
+One cluster activation calls Event 037 once and produces one world transaction, one history entry, one repeatable-weight update, and one set of milestone checks.
 
 ## Direct Chaos
 

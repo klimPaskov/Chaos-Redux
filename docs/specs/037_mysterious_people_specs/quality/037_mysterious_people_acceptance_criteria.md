@@ -26,7 +26,7 @@ Reference reading, MCP use and retry limits, completion reporting, and live test
 - The newcomer count never exceeds real population and never falls below zero, including after famine, bombing, and disaster losses in a newcomer-majority state.
 - The civilian transfer hook blends destination share and reduces origin backlog by measured departures only.
 - Ownership change moves the state's newcomers and backlog between country counts without changing the state.
-- The monthly host pulse touches only registered countries and at most `8` hotspots each.
+- The monthly host pulse touches only registered countries and at most `3` hotspots each.
 - Everything persists across save and reload, and no grant or milestone repeats.
 
 ## 4. Pressure and consequences (Part 3)

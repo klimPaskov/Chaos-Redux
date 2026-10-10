@@ -1,0 +1,489 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 037 MYSTERIOUS PEOPLE DECISIONS
+# ============================================================================
+# Two stances, the Registration Drive, a hotspot selector, four hotspot
+# actions (Requisition Empty Property, Emergency Housing, Roads and Water,
+# a New City) and the Absorb the Newcomers mission. Every action changes the
+# settlement of real people. Humans select one hotspot at a time; AI reads
+# every hotspot directly. Projects fail closed without refunds when their
+# state changes owner or controller.
+# ============================================================================
+
+@MYSTERIOUS_PEOPLE_STANCE_PP = 50
+@MYSTERIOUS_PEOPLE_AI_HINT_DRIVE_PP = 60
+
+mysterious_people_category = {
+
+	mysterious_people_stance_open = {
+		icon = GFX_mysterious_people_stance_open
+		cost = @MYSTERIOUS_PEOPLE_STANCE_PP
+		visible = {
+			mysterious_people_category_is_relevant = yes
+			NOT = { has_country_flag = mysterious_people_stance_open }
+			NOT = { has_country_flag = mysterious_people_stance_locked }
+		}
+		available = {
+			mysterious_people_country_can_use_mechanic = yes
+		}
+		fire_only_once = no
+		complete_effect = {
+			custom_effect_tooltip = mysterious_people_stance_open_tt
+			hidden_effect = { mysterious_people_choose_stance_open = yes }
+		}
+		ai_will_do = {
+			factor = 0
+			modifier = {
+				set_temp_variable = { mysterious_people_ai_weight = mtth:mysterious_people_ai_open_stance }
+				add = mysterious_people_ai_weight
+			}
+		}
+	}
+
+	mysterious_people_stance_restricted = {
+		icon = GFX_mysterious_people_stance_restricted
+		cost = @MYSTERIOUS_PEOPLE_STANCE_PP
+		visible = {
+			mysterious_people_category_is_relevant = yes
+			NOT = { has_country_flag = mysterious_people_stance_restricted }
+			NOT = { has_country_flag = mysterious_people_stance_locked }
+		}
+		available = {
+			mysterious_people_country_can_use_mechanic = yes
+		}
+		fire_only_once = no
+		complete_effect = {
+			custom_effect_tooltip = mysterious_people_stance_restricted_tt
+			hidden_effect = { mysterious_people_choose_stance_restricted = yes }
+		}
+		ai_will_do = {
+			factor = 0
+			modifier = {
+				set_temp_variable = { mysterious_people_ai_weight = mtth:mysterious_people_ai_restricted_stance }
+				add = mysterious_people_ai_weight
+			}
+		}
+	}
+
+	mysterious_people_registration_drive = {
+		icon = GFX_mysterious_people_registration_drive
+		visible = {
+			mysterious_people_category_is_relevant = yes
+			mysterious_people_country_has_unsettled = yes
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = mysterious_people_tt_strained
+				mysterious_people_country_is_strained = yes
+			}
+			hidden_trigger = { mysterious_people_can_afford_drive = yes }
+		}
+		custom_cost_trigger = { mysterious_people_can_afford_drive = yes }
+		custom_cost_text = mysterious_people_drive_cost
+		ai_hint_pp_cost = @MYSTERIOUS_PEOPLE_AI_HINT_DRIVE_PP
+		days_re_enable = constant:mysterious_people_decision.drive_cooldown_days
+		fire_only_once = no
+		complete_effect = {
+			custom_effect_tooltip = mysterious_people_drive_tt
+			hidden_effect = {
+				mysterious_people_start_drive = yes
+				mysterious_people_refresh_modifier = yes
+			}
+		}
+		ai_will_do = {
+			base = 10
+			modifier = { factor = 2 mysterious_people_country_is_emergency = yes }
+			modifier = {
+				factor = 3
+				has_war = yes
+				check_variable = { var = num_of_available_civilian_factories value = constant:mysterious_people_ai.war_free_factories compare = less_than }
+			}
+			modifier = { factor = 0.5 NOT = { mysterious_people_country_is_overcrowded = yes } }
+		}
+	}
+
+	# Human hotspot list. Each row opens the actions for one hotspot.
+	mysterious_people_select_hotspot = {
+		icon = GFX_mysterious_people_category
+		state_target = yes
+		target_array = mysterious_people_hotspots
+		target_root_trigger = {
+			is_ai = no
+			mysterious_people_category_is_relevant = yes
+		}
+		target_trigger = {
+			FROM = { mysterious_people_state_is_hotspot = yes }
+		}
+		visible = {
+			NOT = { has_variable = mysterious_people_selected_state }
+		}
+		available = {
+			FROM = { is_owned_by = ROOT }
+		}
+		fire_only_once = no
+		complete_effect = {
+			hidden_effect = { mysterious_people_select_hotspot = yes }
+		}
+		ai_will_do = { factor = 0 }
+	}
+
+	mysterious_people_close_hotspot = {
+		icon = GFX_mysterious_people_category
+		state_target = yes
+		target_array = mysterious_people_hotspots
+		target_root_trigger = {
+			is_ai = no
+		}
+		target_trigger = {
+			FROM = { mysterious_people_state_is_hotspot = yes }
+		}
+		visible = {
+			mysterious_people_category_is_relevant = yes
+			FROM = { has_state_flag = mysterious_people_selected_@ROOT }
+		}
+		fire_only_once = no
+		complete_effect = {
+			hidden_effect = { mysterious_people_clear_selection = yes }
+		}
+		ai_will_do = { factor = 0 }
+	}
+
+	mysterious_people_requisition = {
+		icon = GFX_mysterious_people_requisition
+		state_target = yes
+		target_array = mysterious_people_hotspots
+		target_root_trigger = { mysterious_people_category_is_relevant = yes }
+		target_trigger = {
+			FROM = { mysterious_people_state_is_hotspot = yes }
+		}
+		visible = {
+			mysterious_people_hotspot_actions_are_shown = yes
+			FROM = {
+				mysterious_people_state_has_unsettled = yes
+				NOT = { has_state_flag = mysterious_people_requisitioned }
+			}
+		}
+		available = {
+			FROM = {
+				is_owned_and_controlled_by = ROOT
+				custom_trigger_tooltip = {
+					tooltip = mysterious_people_tt_state_overcrowded
+					mysterious_people_state_is_overcrowded = yes
+				}
+			}
+		}
+		fire_only_once = no
+		complete_effect = {
+			custom_effect_tooltip = mysterious_people_requisition_tt
+			hidden_effect = { FROM = { mysterious_people_requisition_state = yes } }
+		}
+		ai_will_do = {
+			base = 5
+			modifier = { factor = 0.1 has_stability > constant:mysterious_people_ai.requisition_avoid_stability }
+			modifier = { factor = 3 FROM = { mysterious_people_state_is_emergency = yes } }
+			modifier = {
+				factor = 3
+				has_war = yes
+				check_variable = { var = num_of_available_civilian_factories value = constant:mysterious_people_ai.war_free_factories compare = less_than }
+			}
+			modifier = { factor = 2 FROM = { is_capital = yes } }
+		}
+	}
+
+	mysterious_people_emergency_housing = {
+		icon = GFX_mysterious_people_emergency_housing
+		state_target = yes
+		target_array = mysterious_people_hotspots
+		target_root_trigger = { mysterious_people_category_is_relevant = yes }
+		target_trigger = {
+			FROM = { mysterious_people_state_is_hotspot = yes }
+		}
+		visible = {
+			mysterious_people_hotspot_actions_are_shown = yes
+			FROM = {
+				NOT = { has_state_flag = mysterious_people_housing_done }
+				OR = {
+					has_state_flag = mysterious_people_housing_running
+					AND = {
+						mysterious_people_state_has_unsettled = yes
+						NOT = { mysterious_people_state_has_running_project = yes }
+					}
+				}
+			}
+		}
+		available = {
+			FROM = {
+				is_owned_and_controlled_by = ROOT
+				custom_trigger_tooltip = {
+					tooltip = mysterious_people_tt_state_strained
+					mysterious_people_state_is_strained = yes
+				}
+			}
+			custom_trigger_tooltip = {
+				tooltip = mysterious_people_tt_project_slot
+				mysterious_people_country_has_project_slot = yes
+			}
+			hidden_trigger = {
+				set_temp_variable = { mysterious_people_need_pp = FROM.mysterious_people_quote_housing_pp }
+				set_temp_variable = { mysterious_people_need_factories = FROM.mysterious_people_quote_housing }
+				mysterious_people_can_afford_project = yes
+			}
+		}
+		custom_cost_trigger = {
+			set_temp_variable = { mysterious_people_need_pp = FROM.mysterious_people_quote_housing_pp }
+			set_temp_variable = { mysterious_people_need_factories = FROM.mysterious_people_quote_housing }
+			mysterious_people_can_afford_project = yes
+		}
+		custom_cost_text = mysterious_people_housing_cost
+		days_remove = constant:mysterious_people_decision.housing_days
+		fire_only_once = no
+		complete_effect = {
+			custom_effect_tooltip = mysterious_people_housing_start_tt
+			hidden_effect = {
+				set_temp_variable = { mysterious_people_need_pp = FROM.mysterious_people_quote_housing_pp }
+				multiply_temp_variable = { mysterious_people_need_pp = constant:mysterious_people_value.negative_one }
+				add_political_power = mysterious_people_need_pp
+				set_temp_variable = { mysterious_people_project_kind = constant:mysterious_people_code.project_housing }
+				FROM = { mysterious_people_start_project = yes }
+			}
+		}
+		remove_effect = {
+			custom_effect_tooltip = mysterious_people_housing_done_tt
+			hidden_effect = { FROM = { mysterious_people_complete_housing = yes } }
+		}
+		cancel_trigger = {
+			OR = {
+				FROM = { NOT = { is_owned_and_controlled_by = ROOT } }
+				NOT = { mysterious_people_country_can_use_mechanic = yes }
+			}
+		}
+		cancel_effect = {
+			set_temp_variable = { mysterious_people_project_kind = constant:mysterious_people_code.project_housing }
+			FROM = { mysterious_people_end_project = yes }
+		}
+		ai_will_do = {
+			base = 10
+			modifier = { factor = 2 FROM = { mysterious_people_state_is_emergency = yes } }
+			modifier = { factor = 3 FROM = { is_capital = yes } }
+			modifier = { factor = 2 FROM = { mysterious_people_state_is_urban = yes } }
+			modifier = { factor = 1.5 FROM = { mysterious_people_state_is_industrial = yes } }
+			modifier = {
+				factor = 0.3
+				FROM = { check_variable = { var = infrastructure_level value = constant:mysterious_people_ai.roads_infrastructure_below compare = less_than } }
+				FROM = { NOT = { has_state_flag = mysterious_people_roads_done } }
+			}
+			modifier = {
+				factor = 0
+				has_war = yes
+				check_variable = { var = num_of_available_civilian_factories value = constant:mysterious_people_ai.war_free_factories compare = less_than }
+			}
+		}
+	}
+
+	mysterious_people_roads_water = {
+		icon = GFX_mysterious_people_roads_water
+		state_target = yes
+		target_array = mysterious_people_hotspots
+		target_root_trigger = { mysterious_people_category_is_relevant = yes }
+		target_trigger = {
+			FROM = { mysterious_people_state_is_hotspot = yes }
+		}
+		visible = {
+			mysterious_people_hotspot_actions_are_shown = yes
+			FROM = {
+				NOT = { has_state_flag = mysterious_people_roads_done }
+				OR = {
+					has_state_flag = mysterious_people_roads_running
+					AND = {
+						mysterious_people_state_has_unsettled = yes
+						NOT = { mysterious_people_state_has_running_project = yes }
+					}
+				}
+			}
+		}
+		available = {
+			FROM = {
+				is_owned_and_controlled_by = ROOT
+				custom_trigger_tooltip = {
+					tooltip = mysterious_people_tt_state_strained
+					mysterious_people_state_is_strained = yes
+				}
+			}
+			custom_trigger_tooltip = {
+				tooltip = mysterious_people_tt_project_slot
+				mysterious_people_country_has_project_slot = yes
+			}
+			hidden_trigger = {
+				set_temp_variable = { mysterious_people_need_pp = FROM.mysterious_people_quote_roads_pp }
+				set_temp_variable = { mysterious_people_need_factories = FROM.mysterious_people_quote_roads }
+				mysterious_people_can_afford_project = yes
+			}
+		}
+		custom_cost_trigger = {
+			set_temp_variable = { mysterious_people_need_pp = FROM.mysterious_people_quote_roads_pp }
+			set_temp_variable = { mysterious_people_need_factories = FROM.mysterious_people_quote_roads }
+			mysterious_people_can_afford_project = yes
+		}
+		custom_cost_text = mysterious_people_roads_cost
+		days_remove = constant:mysterious_people_decision.roads_days
+		fire_only_once = no
+		complete_effect = {
+			custom_effect_tooltip = mysterious_people_roads_start_tt
+			hidden_effect = {
+				set_temp_variable = { mysterious_people_need_pp = FROM.mysterious_people_quote_roads_pp }
+				multiply_temp_variable = { mysterious_people_need_pp = constant:mysterious_people_value.negative_one }
+				add_political_power = mysterious_people_need_pp
+				set_temp_variable = { mysterious_people_project_kind = constant:mysterious_people_code.project_roads }
+				FROM = { mysterious_people_start_project = yes }
+			}
+		}
+		remove_effect = {
+			custom_effect_tooltip = mysterious_people_roads_done_tt
+			hidden_effect = { FROM = { mysterious_people_complete_roads = yes } }
+		}
+		cancel_trigger = {
+			OR = {
+				FROM = { NOT = { is_owned_and_controlled_by = ROOT } }
+				NOT = { mysterious_people_country_can_use_mechanic = yes }
+			}
+		}
+		cancel_effect = {
+			set_temp_variable = { mysterious_people_project_kind = constant:mysterious_people_code.project_roads }
+			FROM = { mysterious_people_end_project = yes }
+		}
+		ai_will_do = {
+			base = 10
+			modifier = { factor = 2 FROM = { mysterious_people_state_is_emergency = yes } }
+			modifier = { factor = 3 FROM = { is_capital = yes } }
+			modifier = { factor = 2 FROM = { mysterious_people_state_is_urban = yes } }
+			modifier = { factor = 1.5 FROM = { mysterious_people_state_is_industrial = yes } }
+			modifier = {
+				factor = 2
+				FROM = { check_variable = { var = infrastructure_level value = constant:mysterious_people_ai.roads_infrastructure_below compare = less_than } }
+			}
+			modifier = {
+				factor = 0.3
+				FROM = { check_variable = { var = infrastructure_level value = constant:mysterious_people_ai.roads_infrastructure_below compare = greater_than_or_equals } }
+			}
+			modifier = {
+				factor = 0
+				has_war = yes
+				check_variable = { var = num_of_available_civilian_factories value = constant:mysterious_people_ai.war_free_factories compare = less_than }
+			}
+		}
+	}
+
+	mysterious_people_new_city = {
+		icon = GFX_mysterious_people_new_city
+		state_target = yes
+		target_array = mysterious_people_hotspots
+		target_root_trigger = {
+			mysterious_people_category_is_relevant = yes
+			mysterious_people_stage_at_least_iii = yes
+		}
+		target_trigger = {
+			FROM = { mysterious_people_state_is_hotspot = yes }
+		}
+		visible = {
+			mysterious_people_hotspot_actions_are_shown = yes
+			FROM = {
+				NOT = { has_state_flag = mysterious_people_city_done }
+				check_variable = { var = state_population_k value = constant:mysterious_people_decision.city_min_population_k compare = greater_than_or_equals }
+				OR = {
+					has_state_flag = mysterious_people_city_running
+					AND = {
+						mysterious_people_state_has_unsettled = yes
+						NOT = { mysterious_people_state_has_running_project = yes }
+					}
+				}
+			}
+		}
+		available = {
+			FROM = { is_owned_and_controlled_by = ROOT }
+			custom_trigger_tooltip = {
+				tooltip = mysterious_people_tt_project_slot
+				mysterious_people_country_has_project_slot = yes
+			}
+			hidden_trigger = {
+				set_temp_variable = { mysterious_people_need_pp = FROM.mysterious_people_quote_city_pp }
+				set_temp_variable = { mysterious_people_need_factories = FROM.mysterious_people_quote_city }
+				mysterious_people_can_afford_project = yes
+			}
+		}
+		custom_cost_trigger = {
+			set_temp_variable = { mysterious_people_need_pp = FROM.mysterious_people_quote_city_pp }
+			set_temp_variable = { mysterious_people_need_factories = FROM.mysterious_people_quote_city }
+			mysterious_people_can_afford_project = yes
+		}
+		custom_cost_text = mysterious_people_city_cost
+		days_remove = constant:mysterious_people_decision.city_days
+		fire_only_once = no
+		complete_effect = {
+			custom_effect_tooltip = mysterious_people_city_start_tt
+			hidden_effect = {
+				set_temp_variable = { mysterious_people_need_pp = FROM.mysterious_people_quote_city_pp }
+				multiply_temp_variable = { mysterious_people_need_pp = constant:mysterious_people_value.negative_one }
+				add_political_power = mysterious_people_need_pp
+				set_temp_variable = { mysterious_people_project_kind = constant:mysterious_people_code.project_city }
+				FROM = { mysterious_people_start_project = yes }
+			}
+		}
+		remove_effect = {
+			custom_effect_tooltip = mysterious_people_city_done_tt
+			hidden_effect = { FROM = { mysterious_people_complete_city = yes } }
+		}
+		cancel_trigger = {
+			OR = {
+				FROM = { NOT = { is_owned_and_controlled_by = ROOT } }
+				NOT = { mysterious_people_country_can_use_mechanic = yes }
+			}
+		}
+		cancel_effect = {
+			set_temp_variable = { mysterious_people_project_kind = constant:mysterious_people_code.project_city }
+			FROM = { mysterious_people_end_project = yes }
+		}
+		ai_will_do = {
+			base = 8
+			modifier = { factor = 2 FROM = { mysterious_people_state_is_emergency = yes } }
+			modifier = { factor = 3 FROM = { is_capital = yes } }
+			modifier = {
+				factor = 0
+				check_variable = { var = num_of_civilian_factories value = constant:mysterious_people_ai.city_min_factories compare = less_than }
+			}
+			modifier = {
+				factor = 0
+				has_war = yes
+				check_variable = { var = num_of_available_civilian_factories value = constant:mysterious_people_ai.war_free_factories compare = less_than }
+			}
+		}
+	}
+
+	mysterious_people_absorb_mission = {
+		icon = GFX_mysterious_people_mission_absorb
+		allowed = { always = yes }
+		activation = { always = no }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = mysterious_people_tt_mission_goal
+				check_variable = { var = mysterious_people_pressure value = mysterious_people_mission_goal compare = less_than }
+			}
+		}
+		cancel_trigger = {
+			NOT = { mysterious_people_country_can_use_mechanic = yes }
+		}
+		cancel_effect = {
+			clr_country_flag = mysterious_people_mission_pending
+		}
+		days_mission_timeout = constant:mysterious_people_mission.duration_days
+		selectable_mission = no
+		fire_only_once = no
+		complete_effect = {
+			custom_effect_tooltip = mysterious_people_mission_success_tt
+			hidden_effect = { mysterious_people_mission_success = yes }
+		}
+		timeout_effect = {
+			custom_effect_tooltip = mysterious_people_mission_failure_tt
+			hidden_effect = { mysterious_people_mission_failure = yes }
+		}
+		ai_will_do = { factor = 1 }
+	}
+}

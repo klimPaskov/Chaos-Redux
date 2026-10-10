@@ -105,7 +105,7 @@ Options: hold local elections on the new rolls (settlement in the state `x 1.5` 
 
 **`.24` A Government Counts Origins.** National pressure at Overcrowded or higher, and the country is not a democracy.
 Ministers propose marking every household by whether it arrived through the manifestations.
-Options: reject the register (`-3%` stability for `90` days), or adopt it (switches the stance to Restricted Registration at once without the political power cost, `+3%` stability for `90` days, `+5` world tension, and settlement in every state `x 0.75` for `365` days).
+Options: reject the register (`-3%` stability for `90` days), or adopt it (switches the stance to Restricted Registration at once without the political power cost, `+3%` stability for `90` days, `+5` world tension, and settlement in every state `x 0.667` for `365` days, which together with Restricted Registration halves it).
 
 **`.25` The Second Capital.** The capital is a hotspot at Emergency or worse.
 A complete government quarter has appeared beside the capital, staffed by clerks who insist the ministries have always worked from there.

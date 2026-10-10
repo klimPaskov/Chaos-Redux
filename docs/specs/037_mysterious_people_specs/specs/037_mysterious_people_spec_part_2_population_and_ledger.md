@@ -88,6 +88,7 @@ Each month a state settles unsettled newcomers equal to its population times the
 | Open Integration stance | `x 1.25` |
 | Restricted Registration stance | `x 0.75` |
 | Registration Drive active | `x 1.5` |
+| Origin register adopted (Event Option 24.b) | `x 0.667` for a year |
 | Completed Emergency Housing | `+25%` of the base, once per state |
 | Completed Roads and Water | `+25%` of the base, once per state |
 | Completed New City | `+50%` of the base, once per state |
@@ -128,7 +129,7 @@ A self-rescheduling hidden host event runs every 30 days.
 It processes only countries with unsettled newcomers.
 For each, it settles its hotspot states exactly, reduces the rest of the country's unsettled backlog by its stored national settlement rate, recomputes pressure, and calls the Famine and Migration adapters for qualifying hotspots (Part 3).
 
-A **hotspot** is one of a country's states with the highest state pressure, up to `8` per country.
+A **hotspot** is one of a country's states with the highest state pressure, up to `3` per country.
 Hotspots are the only states the monthly pulse reads one by one, and the only targets for state decisions.
 Unsettled newcomers can only grow at a firing, so the hotspot list changes only at firings, ownership changes, and when a hotspot falls to zero.
 

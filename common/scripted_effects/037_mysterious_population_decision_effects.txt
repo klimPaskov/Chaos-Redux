@@ -1,0 +1,618 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 037 MYSTERIOUS PEOPLE ACTION, MISSION AND FLAVOUR EFFECTS
+# ============================================================================
+# Stance, Registration Drive, Requisition, the three state projects, the
+# hotspot selection, the Absorb the Newcomers mission, achievement tracking,
+# timed consequence modifiers, and the flavour dispatcher with its option
+# helpers. Every action changes the settlement of real people through the
+# ledger in 037_mysterious_population_effects.txt.
+# Scope: COUNTRY unless a comment says STATE. In targeted decisions ROOT is
+# the acting country and FROM the hotspot state.
+# ============================================================================
+
+# Building amounts mirror mysterious_people_decision because building effects
+# reject script constants.
+@MYSTERIOUS_PEOPLE_ROADS_INFRASTRUCTURE = 1
+@MYSTERIOUS_PEOPLE_CITY_INFRASTRUCTURE = 1
+@MYSTERIOUS_PEOPLE_CITY_CIVILIAN_FACTORY = 1
+@MYSTERIOUS_PEOPLE_CITY_BUILDING_SLOT = 1
+
+# ---------------------------------------------------------------------------
+# Refresh after an action
+# ---------------------------------------------------------------------------
+
+# STATE scope. Re-reads one state after an action changed it and refreshes
+# its owner's national values.
+mysterious_people_refresh_after_state_action = {
+	mysterious_people_clamp_state_ledger = yes
+	mysterious_people_refresh_state_rate = yes
+	mysterious_people_refresh_state_pressure = yes
+	OWNER = { mysterious_people_recount_from_hotspots = yes }
+}
+
+# COUNTRY scope. Recomputes the national backlog from the hotspots and the
+# rest of the country, then pressure and the modifier.
+mysterious_people_recount_from_hotspots = {
+	set_temp_variable = { mysterious_people_hot_unsettled = 0 }
+	for_each_scope_loop = {
+		array = mysterious_people_hotspots
+		if = {
+			limit = { has_variable = mysterious_people_unsettled_k }
+			add_to_temp_variable = { mysterious_people_hot_unsettled = mysterious_people_unsettled_k }
+		}
+	}
+	set_variable = { mysterious_people_unsettled_k = mysterious_people_rest_unsettled_k }
+	add_to_variable = { mysterious_people_unsettled_k = mysterious_people_hot_unsettled }
+	clamp_variable = { var = mysterious_people_unsettled_k min = 0 }
+	mysterious_people_refresh_national_pressure = yes
+	mysterious_people_refresh_modifier = yes
+}
+
+# STATE scope. Settles a share of this state's backlog at once.
+# Input temp mysterious_people_settle_share.
+mysterious_people_settle_state_share = {
+	if = {
+		limit = { mysterious_people_state_has_unsettled = yes }
+		OWNER = { mysterious_people_compute_national_factor = yes }
+		mysterious_people_settle_state_lazy = yes
+		set_temp_variable = { mysterious_people_settle_now = mysterious_people_unsettled_k }
+		multiply_temp_variable = { mysterious_people_settle_now = mysterious_people_settle_share }
+		subtract_from_variable = { mysterious_people_unsettled_k = mysterious_people_settle_now }
+		clamp_variable = { var = mysterious_people_unsettled_k min = 0 }
+		clear_variable = mysterious_people_loss_cause
+		mysterious_people_refresh_after_state_action = yes
+	}
+}
+
+# STATE scope. Sets a timed settlement factor for this state, replacing any
+# earlier one. Inputs temps mysterious_people_event_factor_value and
+# mysterious_people_event_factor_days.
+mysterious_people_set_state_event_factor = {
+	set_variable = { mysterious_people_event_factor = mysterious_people_event_factor_value }
+	set_variable = { mysterious_people_event_factor_until = global.num_days }
+	add_to_variable = { mysterious_people_event_factor_until = mysterious_people_event_factor_days }
+	mysterious_people_refresh_after_state_action = yes
+}
+
+# ---------------------------------------------------------------------------
+# Timed consequence modifiers
+# ---------------------------------------------------------------------------
+
+# Inputs temps mysterious_people_unrest_add (negative) and
+# mysterious_people_unrest_days. A new unrest adds to one still running.
+mysterious_people_apply_unrest = {
+	if = {
+		limit = { has_dynamic_modifier = { modifier = mysterious_people_unrest } }
+		add_to_variable = { mysterious_people_unrest_value = mysterious_people_unrest_add }
+		remove_dynamic_modifier = { modifier = mysterious_people_unrest }
+	}
+	else = {
+		set_variable = { mysterious_people_unrest_value = mysterious_people_unrest_add }
+	}
+	clamp_variable = { var = mysterious_people_unrest_value min = constant:mysterious_people_modifier.stability_floor max = 0 }
+	add_dynamic_modifier = { modifier = mysterious_people_unrest days = mysterious_people_unrest_days }
+}
+
+# Inputs temps mysterious_people_calm_add (positive) and mysterious_people_calm_days.
+mysterious_people_apply_calm = {
+	if = {
+		limit = { has_dynamic_modifier = { modifier = mysterious_people_calm } }
+		add_to_variable = { mysterious_people_calm_value = mysterious_people_calm_add }
+		remove_dynamic_modifier = { modifier = mysterious_people_calm }
+	}
+	else = {
+		set_variable = { mysterious_people_calm_value = mysterious_people_calm_add }
+	}
+	clamp_variable = { var = mysterious_people_calm_value min = 0 max = constant:mysterious_people_flavour.stability_acknowledged }
+	add_dynamic_modifier = { modifier = mysterious_people_calm days = mysterious_people_calm_days }
+}
+
+# Inputs temps mysterious_people_shift_add and mysterious_people_shift_days.
+mysterious_people_apply_shift = {
+	set_variable = { mysterious_people_shift_value = mysterious_people_shift_add }
+	if = {
+		limit = { has_dynamic_modifier = { modifier = mysterious_people_shift } }
+		remove_dynamic_modifier = { modifier = mysterious_people_shift }
+	}
+	add_dynamic_modifier = { modifier = mysterious_people_shift days = mysterious_people_shift_days }
+}
+
+# Schedules a modifier refresh when a timed workforce boost ends, so a
+# country that left the pulse registry loses the doubled bonus on time.
+# Input temp mysterious_people_boost_days.
+mysterious_people_schedule_modifier_refresh = {
+	country_event = { id = chaosx.nr37.8 days = mysterious_people_boost_days }
+}
+
+# ---------------------------------------------------------------------------
+# Stance
+# ---------------------------------------------------------------------------
+
+mysterious_people_choose_stance_open = {
+	clr_country_flag = mysterious_people_stance_restricted
+	set_country_flag = mysterious_people_stance_open
+	mysterious_people_lock_stance = yes
+}
+
+mysterious_people_choose_stance_restricted = {
+	clr_country_flag = mysterious_people_stance_open
+	set_country_flag = mysterious_people_stance_restricted
+	mysterious_people_lock_stance = yes
+}
+
+mysterious_people_lock_stance = {
+	set_temp_variable = { mysterious_people_flag_days = constant:mysterious_people_decision.stance_lock_days }
+	set_country_flag = { flag = mysterious_people_stance_locked days = mysterious_people_flag_days value = 1 }
+	mysterious_people_refresh_modifier = yes
+}
+
+# ---------------------------------------------------------------------------
+# Registration Drive
+# ---------------------------------------------------------------------------
+
+# Stores mysterious_people_drive_quote (political power), scaled by the
+# unsettled newcomers. Refreshed with the Newcomers modifier.
+mysterious_people_compute_drive_cost = {
+	set_variable = { mysterious_people_drive_quote = mysterious_people_unsettled_k }
+	multiply_variable = { mysterious_people_drive_quote = constant:mysterious_people_decision.drive_pp_per_unsettled_k }
+	clamp_variable = {
+		var = mysterious_people_drive_quote
+		min = constant:mysterious_people_decision.drive_pp_min
+		max = constant:mysterious_people_decision.drive_pp_max
+	}
+	round_variable = mysterious_people_drive_quote
+}
+
+mysterious_people_start_drive = {
+	set_temp_variable = { mysterious_people_drive_debit = mysterious_people_drive_quote }
+	multiply_temp_variable = { mysterious_people_drive_debit = constant:mysterious_people_value.negative_one }
+	add_political_power = mysterious_people_drive_debit
+	set_temp_variable = { mysterious_people_flag_days = constant:mysterious_people_decision.drive_days }
+	set_country_flag = { flag = mysterious_people_drive_active days = mysterious_people_flag_days value = 1 }
+}
+
+# ---------------------------------------------------------------------------
+# State actions (STATE scope through FROM, ROOT acting country)
+# ---------------------------------------------------------------------------
+
+# STATE scope. Requisition Empty Property.
+mysterious_people_requisition_state = {
+	set_temp_variable = { mysterious_people_settle_share = constant:mysterious_people_decision.requisition_share }
+	mysterious_people_settle_state_share = yes
+	set_temp_variable = { mysterious_people_flag_days = constant:mysterious_people_decision.requisition_cooldown_days }
+	set_state_flag = { flag = mysterious_people_requisitioned days = mysterious_people_flag_days value = 1 }
+	ROOT = {
+		set_temp_variable = { mysterious_people_unrest_add = constant:mysterious_people_decision.requisition_stability }
+		set_temp_variable = { mysterious_people_unrest_days = constant:mysterious_people_decision.requisition_unrest_days }
+		mysterious_people_apply_unrest = yes
+	}
+}
+
+# STATE scope. Output temp mysterious_people_project_cost (civilian factories)
+# for the project in temp mysterious_people_project_kind (1 housing, 2 roads,
+# 3 new city), scaled by the state's unsettled people.
+mysterious_people_compute_project_factories = {
+	set_temp_variable = { mysterious_people_project_cost = 0 }
+	if = {
+		limit = { has_variable = mysterious_people_unsettled_k }
+		set_temp_variable = { mysterious_people_project_cost = mysterious_people_unsettled_k }
+	}
+	if = {
+		limit = { check_variable = { mysterious_people_project_kind = constant:mysterious_people_code.project_housing } }
+		multiply_temp_variable = { mysterious_people_project_cost = constant:mysterious_people_decision.housing_factories_per_unsettled_k }
+		clamp_temp_variable = { var = mysterious_people_project_cost min = constant:mysterious_people_decision.housing_factories_min max = constant:mysterious_people_decision.housing_factories_max }
+	}
+	else_if = {
+		limit = { check_variable = { mysterious_people_project_kind = constant:mysterious_people_code.project_roads } }
+		multiply_temp_variable = { mysterious_people_project_cost = constant:mysterious_people_decision.roads_factories_per_unsettled_k }
+		clamp_temp_variable = { var = mysterious_people_project_cost min = constant:mysterious_people_decision.roads_factories_min max = constant:mysterious_people_decision.roads_factories_max }
+	}
+	else = {
+		multiply_temp_variable = { mysterious_people_project_cost = constant:mysterious_people_decision.city_factories_per_unsettled_k }
+		clamp_temp_variable = { var = mysterious_people_project_cost min = constant:mysterious_people_decision.city_factories_min max = constant:mysterious_people_decision.city_factories_max }
+	}
+	round_temp_variable = mysterious_people_project_cost
+}
+
+# STATE scope. Starts a project: stores its factories on the state and adds
+# them to the country commitment. Input temp mysterious_people_project_kind.
+mysterious_people_start_project = {
+	mysterious_people_compute_project_factories = yes
+	set_variable = { mysterious_people_project_factories = mysterious_people_project_cost }
+	if = {
+		limit = { check_variable = { mysterious_people_project_kind = constant:mysterious_people_code.project_housing } }
+		set_state_flag = mysterious_people_housing_running
+		clr_state_flag = mysterious_people_housing_discount
+	}
+	else_if = {
+		limit = { check_variable = { mysterious_people_project_kind = constant:mysterious_people_code.project_roads } }
+		set_state_flag = mysterious_people_roads_running
+		clr_state_flag = mysterious_people_roads_discount
+	}
+	else = {
+		set_state_flag = mysterious_people_city_running
+	}
+	ROOT = {
+		add_to_variable = { mysterious_people_running_projects = 1 }
+		mysterious_people_refresh_project_commitment = yes
+	}
+}
+
+# STATE scope. Ends a project (completion or failure) and releases its
+# factories. Input temp mysterious_people_project_kind.
+mysterious_people_end_project = {
+	if = {
+		limit = { check_variable = { mysterious_people_project_kind = constant:mysterious_people_code.project_housing } }
+		clr_state_flag = mysterious_people_housing_running
+	}
+	else_if = {
+		limit = { check_variable = { mysterious_people_project_kind = constant:mysterious_people_code.project_roads } }
+		clr_state_flag = mysterious_people_roads_running
+	}
+	else = {
+		clr_state_flag = mysterious_people_city_running
+	}
+	clear_variable = mysterious_people_project_factories
+	ROOT = {
+		subtract_from_variable = { mysterious_people_running_projects = 1 }
+		clamp_variable = { var = mysterious_people_running_projects min = 0 }
+		mysterious_people_refresh_project_commitment = yes
+	}
+}
+
+# COUNTRY scope. Sums the factories of running projects on owned states.
+mysterious_people_refresh_project_commitment = {
+	set_variable = { mysterious_people_project_factories = 0 }
+	every_owned_state = {
+		limit = { has_variable = mysterious_people_project_factories }
+		PREV = { add_to_variable = { mysterious_people_project_factories = PREV.mysterious_people_project_factories } }
+	}
+	if = {
+		limit = { check_variable = { mysterious_people_project_factories > 0 } }
+		if = {
+			limit = { NOT = { has_dynamic_modifier = { modifier = mysterious_people_projects } } }
+			add_dynamic_modifier = { modifier = mysterious_people_projects }
+		}
+		force_update_dynamic_modifier = yes
+	}
+	else_if = {
+		limit = { has_dynamic_modifier = { modifier = mysterious_people_projects } }
+		remove_dynamic_modifier = { modifier = mysterious_people_projects }
+	}
+}
+
+# STATE scope. Completion of each project.
+mysterious_people_complete_housing = {
+	set_temp_variable = { mysterious_people_project_kind = constant:mysterious_people_code.project_housing }
+	mysterious_people_end_project = yes
+	set_state_flag = mysterious_people_housing_done
+	set_temp_variable = { mysterious_people_settle_share = constant:mysterious_people_decision.housing_share }
+	mysterious_people_settle_state_share = yes
+	mysterious_people_refresh_after_state_action = yes
+}
+
+mysterious_people_complete_roads = {
+	set_temp_variable = { mysterious_people_project_kind = constant:mysterious_people_code.project_roads }
+	mysterious_people_end_project = yes
+	set_state_flag = mysterious_people_roads_done
+	add_building_construction = {
+		type = infrastructure
+		level = @MYSTERIOUS_PEOPLE_ROADS_INFRASTRUCTURE
+		instant_build = yes
+	}
+	mysterious_people_refresh_after_state_action = yes
+}
+
+mysterious_people_complete_city = {
+	set_temp_variable = { mysterious_people_project_kind = constant:mysterious_people_code.project_city }
+	mysterious_people_end_project = yes
+	set_state_flag = mysterious_people_city_done
+	add_extra_state_shared_building_slots = @MYSTERIOUS_PEOPLE_CITY_BUILDING_SLOT
+	add_building_construction = {
+		type = infrastructure
+		level = @MYSTERIOUS_PEOPLE_CITY_INFRASTRUCTURE
+		instant_build = yes
+	}
+	add_building_construction = {
+		type = industrial_complex
+		level = @MYSTERIOUS_PEOPLE_CITY_CIVILIAN_FACTORY
+		instant_build = yes
+	}
+	set_temp_variable = { mysterious_people_settle_share = constant:mysterious_people_decision.city_share }
+	mysterious_people_settle_state_share = yes
+	mysterious_people_refresh_after_state_action = yes
+}
+
+# ---------------------------------------------------------------------------
+# Hotspot selection (human only)
+# ---------------------------------------------------------------------------
+
+# COUNTRY scope (ROOT), FROM the hotspot.
+mysterious_people_select_hotspot = {
+	mysterious_people_clear_selection = yes
+	set_variable = { mysterious_people_selected_state = FROM }
+	FROM = { set_state_flag = mysterious_people_selected_@ROOT }
+}
+
+# ---------------------------------------------------------------------------
+# Mission: Absorb the Newcomers
+# ---------------------------------------------------------------------------
+
+# COUNTRY scope. Starts the mission after a manifestation that left national
+# pressure at Strained or higher. The goal is the lower bound of that stage.
+mysterious_people_try_start_mission = {
+	if = {
+		limit = {
+			mysterious_people_country_can_use_mechanic = yes
+			mysterious_people_country_is_strained = yes
+			NOT = { has_country_flag = mysterious_people_mission_pending }
+		}
+		set_variable = { mysterious_people_mission_goal = constant:mysterious_people_pressure.strained }
+		if = {
+			limit = { mysterious_people_country_is_breakdown = yes }
+			set_variable = { mysterious_people_mission_goal = constant:mysterious_people_pressure.breakdown }
+		}
+		else_if = {
+			limit = { mysterious_people_country_is_emergency = yes }
+			set_variable = { mysterious_people_mission_goal = constant:mysterious_people_pressure.emergency }
+		}
+		else_if = {
+			limit = { mysterious_people_country_is_overcrowded = yes }
+			set_variable = { mysterious_people_mission_goal = constant:mysterious_people_pressure.overcrowded }
+		}
+		set_variable = { mysterious_people_mission_firing = global.mysterious_people_firings }
+		set_country_flag = mysterious_people_mission_pending
+		activate_mission = mysterious_people_absorb_mission
+	}
+}
+
+mysterious_people_mission_success = {
+	clr_country_flag = mysterious_people_mission_pending
+	set_temp_variable = { mysterious_people_boost_days = constant:mysterious_people_mission.success_boost_days }
+	set_country_flag = { flag = mysterious_people_workforce_boost days = mysterious_people_boost_days value = 1 }
+	mysterious_people_schedule_modifier_refresh = yes
+	# Three Censuses: one success per manifestation, reset by Emergency.
+	if = {
+		limit = {
+			OR = {
+				NOT = { has_variable = mysterious_people_census_last_firing }
+				NOT = { check_variable = { mysterious_people_census_last_firing = mysterious_people_mission_firing } }
+			}
+		}
+		set_variable = { mysterious_people_census_last_firing = mysterious_people_mission_firing }
+		add_to_variable = { mysterious_people_census_count = 1 }
+		if = {
+			limit = {
+				is_ai = no
+				check_variable = { var = mysterious_people_census_count value = constant:mysterious_people_achievement.censuses compare = greater_than_or_equals }
+			}
+			set_country_flag = mysterious_people_ach_three_censuses
+		}
+	}
+	mysterious_people_refresh_modifier = yes
+}
+
+mysterious_people_mission_failure = {
+	clr_country_flag = mysterious_people_mission_pending
+	set_temp_variable = { mysterious_people_unrest_add = constant:mysterious_people_mission.failure_stability }
+	set_temp_variable = { mysterious_people_unrest_days = constant:mysterious_people_mission.failure_days }
+	mysterious_people_apply_unrest = yes
+}
+
+# ---------------------------------------------------------------------------
+# Achievement tracking (human countries)
+# ---------------------------------------------------------------------------
+
+# COUNTRY scope. Emergency between counted censuses resets the streak.
+mysterious_people_track_censuses = {
+	if = {
+		limit = { mysterious_people_country_is_emergency = yes }
+		set_variable = { mysterious_people_census_count = 0 }
+	}
+}
+
+# COUNTRY scope, monthly for human countries with newcomers. Room for
+# Everyone: newcomers at least a quarter of the country, pressure below
+# Overcrowded and no famine in any owned state for a year.
+mysterious_people_track_room_achievement = {
+	if = {
+		limit = {
+			check_variable = { mysterious_people_population_k > 0 }
+			check_variable = { var = mysterious_people_pressure value = constant:mysterious_people_achievement.room_pressure compare = less_than }
+			NOT = { mysterious_people_country_has_famine_state = yes }
+		}
+		set_temp_variable = { mysterious_people_room_share = mysterious_people_newcomers_k }
+		divide_temp_variable = { mysterious_people_room_share = mysterious_people_population_k }
+		if = {
+			limit = { check_variable = { var = mysterious_people_room_share value = constant:mysterious_people_achievement.room_share compare = greater_than_or_equals } }
+			if = {
+				limit = { NOT = { has_variable = mysterious_people_room_since } }
+				set_variable = { mysterious_people_room_since = global.num_days }
+			}
+			set_temp_variable = { mysterious_people_room_days = global.num_days }
+			subtract_from_temp_variable = { mysterious_people_room_days = mysterious_people_room_since }
+			if = {
+				limit = { check_variable = { var = mysterious_people_room_days value = constant:mysterious_people_achievement.room_days compare = greater_than_or_equals } }
+				set_country_flag = mysterious_people_ach_room_for_everyone
+			}
+		}
+		else = {
+			clear_variable = mysterious_people_room_since
+		}
+	}
+	else = {
+		clear_variable = mysterious_people_room_since
+	}
+}
+
+# COUNTRY scope. Start of the current stretch below Strained at Evolution III,
+# read by The Country That Managed.
+mysterious_people_track_absorbing = {
+	if = {
+		limit = {
+			mysterious_people_stage_at_least_iii = yes
+			NOT = { mysterious_people_country_is_strained = yes }
+			check_variable = { mysterious_people_population_k > 0 }
+		}
+		if = {
+			limit = { NOT = { has_variable = mysterious_people_absorbing_since } }
+			set_variable = { mysterious_people_absorbing_since = global.num_days }
+		}
+	}
+	else = {
+		clear_variable = mysterious_people_absorbing_since
+	}
+}
+
+# COUNTRY scope at the end of a firing. A Billion More.
+mysterious_people_check_billion_achievement = {
+	if = {
+		limit = {
+			is_ai = no
+			mysterious_people_stage_at_least_iii = yes
+			has_global_flag = mysterious_people_evolution_iii_recorded
+			check_variable = { var = global.mysterious_people_world_newcomers_k value = constant:mysterious_people_achievement.billion_world_k compare = greater_than_or_equals }
+			check_variable = { var = mysterious_people_newcomers_k value = constant:mysterious_people_achievement.billion_country_k compare = greater_than_or_equals }
+			check_variable = { var = mysterious_people_pressure value = constant:mysterious_people_achievement.billion_pressure compare = less_than }
+		}
+		set_country_flag = mysterious_people_ach_a_billion_more
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Flavour dispatcher (body of chaosx.nr37.7)
+# ---------------------------------------------------------------------------
+
+# COUNTRY scope. Picks one flavour event whose conditions hold for one of the
+# country's states and which did not fire in its last four flavour events.
+mysterious_people_dispatch_flavour = {
+	if = {
+		limit = {
+			exists = yes
+			mysterious_people_country_can_use_mechanic = yes
+			mysterious_people_country_has_newcomers = yes
+		}
+		set_variable = { mysterious_people_managed_share = 0 }
+		set_variable = { mysterious_people_absorbing_days = 0 }
+		if = {
+			limit = { check_variable = { mysterious_people_population_k > 0 } }
+			set_variable = { mysterious_people_managed_share = mysterious_people_newcomers_k }
+			divide_variable = { mysterious_people_managed_share = mysterious_people_population_k }
+		}
+		if = {
+			limit = { has_variable = mysterious_people_absorbing_since }
+			set_variable = { mysterious_people_absorbing_days = global.num_days }
+			subtract_from_variable = { mysterious_people_absorbing_days = mysterious_people_absorbing_since }
+		}
+		clear_temp_array = mysterious_people_flavour_pool
+		for_loop_effect = {
+			start = constant:mysterious_people_event.flavour_first_id
+			end = constant:mysterious_people_code.flavour_end
+			value = mysterious_people_flavour_candidate
+			if = {
+				limit = {
+					NOT = { mysterious_people_flavour_is_recent = yes }
+					mysterious_people_flavour_candidate_is_valid = yes
+				}
+				add_to_temp_array = { mysterious_people_flavour_pool = mysterious_people_flavour_candidate }
+			}
+		}
+		if = {
+			limit = { check_variable = { mysterious_people_flavour_pool^num > 0 } }
+			set_temp_variable_to_random = {
+				var = mysterious_people_flavour_pick
+				min = 0
+				max = mysterious_people_flavour_pool^num
+				integer = yes
+			}
+			set_temp_variable = { mysterious_people_flavour_candidate = mysterious_people_flavour_pool^mysterious_people_flavour_pick }
+			mysterious_people_bind_flavour_target = yes
+			add_to_array = { array = mysterious_people_flavour_recent value = mysterious_people_flavour_candidate }
+			if = {
+				limit = { check_variable = { var = mysterious_people_flavour_recent^num value = constant:mysterious_people_event.flavour_memory compare = greater_than } }
+				remove_from_array = { array = mysterious_people_flavour_recent index = 0 }
+			}
+			meta_effect = {
+				text = { country_event = { id = chaosx.nr37.[FLAVOUR_ID] } }
+				FLAVOUR_ID = "[?mysterious_people_flavour_candidate|0]"
+			}
+		}
+	}
+}
+
+# COUNTRY scope. Saves the state (and for chaosx.nr37.17 the other country)
+# the chosen flavour event is about. Input temp mysterious_people_flavour_candidate.
+mysterious_people_bind_flavour_target = {
+	clear_variable = mysterious_people_flavour_state
+	clear_variable = mysterious_people_flavour_country
+	if = {
+		limit = { check_variable = { mysterious_people_flavour_candidate = constant:mysterious_people_code.flavour_wedding } }
+		random_scope_in_array = {
+			array = global.mysterious_people_newcomer_countries
+			limit = {
+				NOT = { tag = ROOT }
+				exists = yes
+				NOT = { has_war_with = ROOT }
+			}
+			save_event_target_as = mysterious_people_flavour_country
+			ROOT = { set_variable = { mysterious_people_flavour_country = PREV } }
+		}
+		capital_scope = {
+			save_event_target_as = mysterious_people_flavour_state
+			ROOT = { set_variable = { mysterious_people_flavour_state = PREV } }
+		}
+	}
+	else = {
+		meta_effect = {
+			text = {
+				random_owned_state = {
+					limit = { mysterious_people_flavour_state_[FLAVOUR_ID] = yes }
+					save_event_target_as = mysterious_people_flavour_state
+					ROOT = { set_variable = { mysterious_people_flavour_state = PREV } }
+				}
+			}
+			FLAVOUR_ID = "[?mysterious_people_flavour_candidate|0]"
+		}
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Flavour option helpers (COUNTRY scope, the state in
+# mysterious_people_flavour_state)
+# ---------------------------------------------------------------------------
+
+# Input temp mysterious_people_settle_share.
+mysterious_people_flavour_settle = {
+	if = {
+		limit = { has_variable = mysterious_people_flavour_state }
+		var:mysterious_people_flavour_state = {
+			if = {
+				limit = { is_owned_by = ROOT }
+				mysterious_people_settle_state_share = yes
+			}
+		}
+	}
+}
+
+# Inputs temps mysterious_people_event_factor_value and
+# mysterious_people_event_factor_days.
+mysterious_people_flavour_factor = {
+	if = {
+		limit = { has_variable = mysterious_people_flavour_state }
+		var:mysterious_people_flavour_state = {
+			if = {
+				limit = { is_owned_by = ROOT }
+				mysterious_people_set_state_event_factor = yes
+			}
+		}
+	}
+}
+
+# Adopting the origin register: Restricted Registration at once without the
+# political power cost, and slower settlement everywhere for a year.
+mysterious_people_adopt_origin_register = {
+	mysterious_people_choose_stance_restricted = yes
+	set_temp_variable = { mysterious_people_flag_days = constant:mysterious_people_flavour.year_days }
+	set_country_flag = { flag = mysterious_people_origin_register days = mysterious_people_flag_days value = 1 }
+	mysterious_people_refresh_modifier = yes
+}

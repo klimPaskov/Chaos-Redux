@@ -1,0 +1,48 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 037 CXT REGISTRATION AND FIXTURE
+# ============================================================================
+# Registers Mysterious People with the shared CXT extension bus. The fixture
+# gives the test country's capital one measured newcomer grant so the
+# category, hotspot actions, pressure and the Newcomers modifier can be
+# inspected. It never fires Event 37, records history, adds Chaos, or
+# records an evolution.
+# ============================================================================
+
+# COUNTRY scope. The token is the hidden carrier id.
+mysterious_people_register_cxt_test_content = {
+	set_temp_variable = {
+		var = chaosx_test_country_registration_extension_effect
+		value = token:chaosx_cxt_extension_event037_mysterious_people
+	}
+	chaosx_test_country_register_extension_effect = yes
+}
+
+# COUNTRY scope. Idempotent CXT fixture.
+chaosx_cxt_extension_event037_mysterious_people_apply = {
+	if = {
+		limit = {
+			has_country_flag = chaosx_test_country_initialized
+			NOT = { has_country_flag = mysterious_people_cxt_fixture_initialized }
+		}
+		set_country_flag = mysterious_people_cxt_fixture_initialized
+		capital_scope = {
+			if = {
+				limit = { humanitarian_state_is_valid = yes }
+				set_temp_variable = { mysterious_people_grant_ratio = constant:mysterious_people_cxt.grant_share }
+				set_temp_variable = { mysterious_people_grant_floor_k = constant:mysterious_people_grant.evolution_ii_floor_k }
+				set_temp_variable = { mysterious_people_grant_cap_k = constant:mysterious_people_grant.evolution_ii_cap_k }
+				set_temp_variable = { mysterious_people_grant_small = constant:mysterious_people_grant.evolution_ii_small_ceiling }
+				OWNER = {
+					mysterious_people_reset_country_counts = yes
+					mysterious_people_compute_national_factor = yes
+				}
+				mysterious_people_settle_state_lazy = yes
+				mysterious_people_apply_state_grant = yes
+				mysterious_people_refresh_state_rate = yes
+				mysterious_people_refresh_state_pressure = yes
+				mysterious_people_count_state = yes
+				OWNER = { mysterious_people_finalize_country = yes }
+			}
+		}
+	}
+}
