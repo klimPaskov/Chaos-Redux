@@ -7948,17 +7948,31 @@ cannibalism_protect_detention_sites_from_current_policy = {
 		}
 	}
 	clr_country_flag = cannibalism_detention_exploitation_active
+	clr_country_flag = cannibalism_feeding_program_condemned
 	add_to_variable = { cannibalism_command_integrity = constant:cannibalism_integration.camp_protection_integrity_gain }
 }
 
+# COUNTRY scope. A discovered prisoner-feeding program adds evidence, closes the
+# clean route and draws one atrocity Condemnation source per program. The guard
+# flag clears when the program ends (cannibalism_protect_detention_sites_from_current_policy).
 cannibalism_expose_detention_exploitation_in_current_country = {
 	if = {
 		limit = { cannibalism_country_has_active_detention_exploitation_link = yes }
 		add_to_variable = { cannibalism_evidence = constant:cannibalism_integration.camp_exposure_evidence_gain }
-		set_country_flag = cannibalism_feeding_program_exposed
 		set_country_flag = cannibalism_clean_route_disqualified
-		set_global_flag = cannibalism_feeding_program_exposed_abroad
 		cannibalism_clamp_current_country_evidence = yes
+		if = {
+			limit = { NOT = { has_country_flag = cannibalism_feeding_program_condemned } }
+			set_country_flag = cannibalism_feeding_program_condemned
+			set_temp_variable = { condemnation_source_type = constant:condemnation_source.atrocity }
+			set_temp_variable = { condemnation_base_gain = constant:cannibalism_integration.camp_exposure_condemnation_gain }
+			set_temp_variable = { condemnation_visibility_type = constant:condemnation_visibility.discovered }
+			set_temp_variable = { condemnation_severity_type = constant:condemnation_severity.major }
+			set_temp_variable = { condemnation_civilian_deaths = 0 }
+			set_temp_variable = { condemnation_contamination_value = 0 }
+			set_temp_variable = { condemnation_context_type = constant:condemnation_context.forensic_disclosure }
+			condemnation_add_source = yes
+		}
 	}
 }
 

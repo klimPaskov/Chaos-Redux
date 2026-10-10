@@ -923,12 +923,35 @@ cannibalism_is_ineligible_special_country = {
 	NOT = { has_country_flag = fury_actor }
 }
 
-cannibalism_state_has_famine_pressure = {
+# STATE. Shortage evidence from the Event 013 and Soviet camp famines.
+cannibalism_state_has_disaster_famine_flag = {
 	OR = {
 		has_state_flag = natural_disaster_famine_pressure
 		has_state_flag = genocide_soviet_famine_pressure_site
 		has_state_flag = camp_rework_soviet_famine_pressure
 		has_dynamic_modifier = { modifier = sov_famine_pressure_state }
+	}
+}
+
+# STATE. The shared famine system holds this state at acute shortage or worse.
+# Relief decisions lower the stage, which removes the pressure.
+cannibalism_state_has_shared_famine_shortage = {
+	famine_food_stage_requires_mortality = yes
+}
+
+# STATE. Open famine, or a concealed famine, in the shared famine system.
+cannibalism_state_has_shared_famine_severe = {
+	famine_food_stage_is_active = yes
+	OR = {
+		check_variable = { var = famine_food_stage value = constant:famine_food_stage.famine compare = greater_than_or_equals }
+		has_state_flag = famine_crisis_concealed
+	}
+}
+
+cannibalism_state_has_famine_pressure = {
+	OR = {
+		cannibalism_state_has_disaster_famine_flag = yes
+		cannibalism_state_has_shared_famine_shortage = yes
 	}
 }
 
@@ -967,7 +990,8 @@ cannibalism_state_has_external_hunger_pressure = {
 
 cannibalism_state_has_severe_external_hunger_pressure = {
 	OR = {
-		cannibalism_state_has_famine_pressure = yes
+		cannibalism_state_has_disaster_famine_flag = yes
+		cannibalism_state_has_shared_famine_severe = yes
 		cannibalism_state_has_locust_pressure = yes
 		has_state_flag = natural_disaster_supply_collapse
 		cannibalism_state_has_severe_bioweapon_contamination = yes
