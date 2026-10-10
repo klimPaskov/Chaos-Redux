@@ -18,7 +18,7 @@ A file belongs in ignored `.tmp/<task>/` instead when it is a one-time migration
 Do not create `.tools/tmp/` or a permanent `.tools/archive/` for that work.
 A maintained regression test can cover one event when it protects a current, nontrivial contract; its name or date alone does not make it disposable.
 
-Before retiring a tool, search its filename, module name, output signatures, and generated-file headers across `AGENTS.md`, `.agents/skills/`, `.codex/`, docs, configuration, runtime source, and Git history. An old audit mention alone does not make a helper maintained; check whether a current command, import, test, or workflow still needs it. Preserve a genuinely active dependency until its callers have been updated.
+Before retiring a tool, search its filename, module name, output signatures, and generated-file headers across `AGENTS.md`, `CLAUDE.md`, `.claude/`, docs, configuration, runtime source, and Git history. An old audit mention alone does not make a helper maintained; check whether a current command, import, test, or workflow still needs it. Preserve a genuinely active dependency until its callers have been updated.
 
 ## Supported tools
 

@@ -42,7 +42,7 @@ def collect_sources(root: Path) -> dict[str, Path]:
 	"""Return destination names mapped to their authoritative source files."""
 	files = {name: root / relative for name, relative in STATIC_FILES.items()}
 
-	skills_dir = root / ".agents" / "skills"
+	skills_dir = root / ".claude" / "skills"
 	for skill_dir in sorted(skills_dir.glob("chaos-redux-*")):
 		source = skill_dir / "SKILL.md"
 		if source.is_file():
@@ -56,9 +56,9 @@ def collect_sources(root: Path) -> dict[str, Path]:
 
 
 def collect_subagents(root: Path) -> list[Path]:
-	sources = sorted((root / ".codex" / "agents").glob("*.toml"))
+	sources = sorted((root / ".claude" / "agents").glob("*.md"))
 	if not sources:
-		raise FileNotFoundError("No Codex subagent TOML files were found in .codex/agents")
+		raise FileNotFoundError("No subagent definition files were found in .claude/agents")
 	return sources
 
 
@@ -148,7 +148,7 @@ def build_package(output: Path, root: Path, *, make_zip: bool, dry_run: bool) ->
 		print(f"  {output}")
 		for destination, source in files.items():
 			print(f"  {destination} <- {source.relative_to(root)}")
-		print(f"  subagents.zip <- {len(subagents)} files from .codex/agents")
+		print(f"  subagents.zip <- {len(subagents)} files from .claude/agents")
 		print(f"  {ALL_SOURCES_ARCHIVE} <- all {len(loose_names)} loose bundle files")
 		return source_count, total_bytes
 

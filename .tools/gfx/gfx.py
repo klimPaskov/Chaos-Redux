@@ -18,7 +18,7 @@ from PIL import Image, ImageDraw, ImageFilter
 from scipy.ndimage import distance_transform_edt, binary_erosion, label
 
 ROOT = Path(__file__).resolve().parents[2]
-CONVERTER = ROOT / '.agents/skills/chaos-redux-event-assets/tools/convert_to_dds.py'
+CONVERTER = ROOT / '.claude/skills/chaos-redux-event-assets/tools/convert_to_dds.py'
 PROFILES = {
     'focus': (94, 86, 2), 'decision': (34, 34, 2),
     'category': (52, 40, 3), 'idea': (64, 64, 2),

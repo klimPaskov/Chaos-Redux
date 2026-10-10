@@ -107,7 +107,7 @@ Do not apply this counter rule to unrelated 18x18 inline texticons or division-t
 
 ## DDS contract and shared-tree installation
 
-The 2D writer imports `.agents/skills/chaos-redux-event-assets/tools/convert_to_dds.py` and calls its canonical `write_bgra_dds` function.
+The 2D writer imports `.claude/skills/chaos-redux-event-assets/tools/convert_to_dds.py` and calls its canonical `write_bgra_dds` function.
 It writes a legacy 128-byte DDS header, one uncompressed straight-alpha BGRA level, pixel-format block at byte 76 with `RGB | ALPHAPIXELS`, correct BGRA masks and `DDSCAPS_TEXTURE`.
 It then validates every header field, exact `128 + width * height * 4` file length, and pixel equality through both strict parsing and Pillow decoding before atomically replacing the reviewed output file.
 This writer is for mechanical 2D alpha processing, under the asset skill's explicit exception; general source-art conversion still uses the canonical converter's CLI.

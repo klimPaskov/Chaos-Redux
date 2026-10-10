@@ -23,7 +23,7 @@ Document location, catalog status, timestamps, and old completion reports do not
 ## Source-of-truth rules
 
 - Explicit user decisions establish task scope and acceptance. Record their basis separately from proposals and implementation findings.
-- [`AGENTS.md`](../AGENTS.md) owns project rules. The relevant [repository skill](../.agents/skills/) owns its reusable workflow, and [canonical Codex role definitions](../.codex/agents/) own specialist instructions.
+- [`CLAUDE.md`](../CLAUDE.md) and [`AGENTS.md`](../AGENTS.md) own project rules. The relevant [repository skill](../.claude/skills/) owns its reusable workflow, and [canonical Claude Code role definitions](../.claude/agents/) own specialist instructions.
 - Event implementation summaries belong in `events/<event_id>_<slug>/overview.md`.
 - Event-owned supporting mechanics belong inside the same event folder, usually under `systems/`.
 - Accepted event design belongs in `specs/<event_id>_<slug>_specs/`.

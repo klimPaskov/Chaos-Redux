@@ -65,6 +65,7 @@ If vanilla examples are insufficient or unclear, you are allowed to inspect well
 ### Repo Skills
 
 Use repo skills as required implementation guidance.
+Skills are authored in `.claude/skills/<name>/SKILL.md`, which is canonical. `.agents/skills/<name>` is the generated mirror this runtime reads, refreshed by `python .tools/sync/sync_agents.py`; never author a skill there.
 
 - Use `chaos-redux-events` for Chaos Redux event implementation, event logs, evolutions, event details, documentation, and spreadsheet alignment.
 - Use `chaos-redux-event-assets` when an event needs visual assets, icons, flags, portraits, UI art, report images, news images, achievement icons, final DDS files, asset manifests, or sprite handoff notes.
@@ -83,6 +84,15 @@ Use repo skills as required implementation guidance.
 - Use `chaos-redux-xlsx` for Chaos Redux spreadsheet work, including the event catalog, doctrine workbook, formatting, formulas, and catalog exports.
 - Use `chaos-redux-improvement-loop` when an implemented or planned mechanic needs recursive depth expansion, spec addenda, improvement handoffs, or checks for shallow, duplicated, generic, disconnected, or low-impact content.
 - Use `chaos-redux-save-inspection` whenever the user supplies a save, and when runtime state would settle a question that source reading cannot: why a decision or focus is unavailable, what an action changed, whether state survives save and reload, what the AI did, whether script state leaks, or how an engine rule behaves.
+- Use the generic HOI4 system skills when a task touches that engine system. Each is written from the installed documentation, the offline wiki, and vanilla files, and holds syntax skeletons, decision procedures, pitfalls, and validation guidance:
+  - `hoi4-equipment` for equipment archetypes and variants, stockpiles and production, equipment modules and designers, and equipment bonuses.
+  - `hoi4-technology-doctrines` for technologies, doctrines, research bonuses, tech unlocks, and technology AI weights.
+  - `hoi4-ai-strategies` for country AI strategies, AI areas, templates and equipment AI, `ai_will_do` and `ai_chance` weighting, and AI debugging.
+  - `hoi4-diplomacy-war` for diplomacy, factions, subjects and autonomy, wargoals, and war and peace.
+  - `hoi4-units-divisions` for sub-units, division templates, orders of battle, and unit effects and triggers.
+  - `hoi4-characters-leaders` for characters, country leaders, advisors, and unit leader traits.
+  - `hoi4-map-states` for map and state data, victory points, supply and railways, and state-scope iteration.
+  - `hoi4-ideas-modifiers` for ideas, national spirits, dynamic modifiers, and the modifier system.
 
 ### HOI4 MCP
 
@@ -125,6 +135,8 @@ Source review and local checks can support completion when a tool is unavailable
 ### Subagents
 
 Use project custom subagents when a task needs bounded research, asset production, audit, recursive expansion, or documentation work that can be separated from main implementation.
+
+Subagent definitions are authored in `.claude/agents/<name>.md`, which is canonical, with the model tier (`haiku`, `sonnet`, or `opus`) in the frontmatter. `python .tools/sync/sync_agents.py` generates the other runtimes' definitions from them and `python .tools/sync/sync_agents.py --verify` reads the models back against the routing table in `.tools/sync/agent_profiles.json`.
 
 `chaos-redux-subagents` is the detailed source of truth for subagent routing, ownership boundaries, handoff quality, audit cadence, asset routing, super-event routing, and the recursive mechanic expansion loop.
 
@@ -483,6 +495,9 @@ Rules:
    If a file exceeds the 20,000-token ceiling, bring it just below that ceiling with only a small margin by relocating complete topics or removing genuine duplication, preserving every requirement and updating references.
    Leave files that already fit at their current size; do not pad or unnecessarily shorten them.
    Verify a full-file read at the 20,000-token budget without truncation.
+   The Claude Code Read tool was measured at about 3.0 bytes per token on skill prose and returns up to 30,000 tokens (about 90,000 bytes) in one call, so the 20,000-token ceiling is about 60,000 bytes and a root `SKILL.md` stays under 58,000 bytes.
+   `python .tools/sync/sync_read_limits.py --check` lists guidance files over their byte ceilings.
+   An oversized skill keeps its mandatory gates in the root, moves coherent advanced sections verbatim into linked `references/` files or owned specialist skills, and carries a reference map that says when to read each one.
 9. During large multi-event runs, review skill gaps after each completed event or shared system. Update or create skills before starting the next event if something reusable was learned.
 10. Report which skills were used, created, or updated at the end of each task.
 

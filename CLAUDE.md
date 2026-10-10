@@ -65,10 +65,11 @@ If vanilla examples are insufficient or unclear, you are allowed to inspect well
 ### Repo Skills
 
 Use repo skills as required implementation guidance.
+Skills are authored in `.claude/skills/<name>/SKILL.md`, which is canonical. `.agents/skills/<name>` is a generated mirror for the other runtimes, refreshed by `python .tools/sync/sync_agents.py`; never author a skill there.
 
 - Use `chaos-redux-events` for Chaos Redux event implementation, event logs, evolutions, event details, documentation, and spreadsheet alignment.
 - Use `chaos-redux-event-assets` when an event needs visual assets, icons, flags, portraits, UI art, report images, news images, achievement icons, final DDS files, asset manifests, or sprite handoff notes.
-- Use `chaos-redux-event-assets` and `chaosx_portrait_creator` for every character portrait. The portrait worker researches and archives grounded sources, creates placeholders, generates fictional or impossible portraits with native ImageGen, processes PNG/DDS variants, installs portrait wiring, and writes manifests and handoffs. The user alone runs RunPod for grounded HOI4-style finals; the agent never operates it.
+- Use `chaos-redux-event-assets` and `chaosx_portrait_creator` for every character portrait. The portrait worker researches and archives grounded sources, creates placeholders, generates fictional or impossible portraits through the image-generation MCP workflow, processes PNG/DDS variants, installs portrait wiring, and writes manifests and handoffs. The user alone runs RunPod for grounded HOI4-style finals; the agent never operates it.
 - Use `chaos-redux-event-planning` to expand an event idea into a full specification before implementation: mechanics and escalation, decision and branch mapping, focus-tree paths, country packages, achievements, costs, AI behavior, presentation, asset coverage, narrative tone, and the coding-agent prompts. 3D unit and building profiles, exact-one-image Meshy inputs, vanilla scale calibration, action roles, entity consumers, map placement, and runtime acceptance evidence belong to it only when a feature needs a model. It designs and does not implement.
 - Use `chaos-redux-3d-model-pipeline` for every custom 3D model and its required sound and counter handoffs, and route it to `chaosx_3d_model_pipeline`. Its attempt allowances and Blender fallbacks are already fixed by the skill, so do not repeat paid rig or animation attempts. Everything else about planning and producing a model is defined there.
 - Use `chaos-redux-frame-animation` when a task needs animated sprites, frame sequences, sprite sheets, GIF previews, animated UI pieces, animated portraits, hover loops, pulse loops, route emblems, or frame-by-frame visual packages. This skill forbids final animation made only by moving, scaling, rotating, warping, blurring, recoloring, or filtering one still image.
@@ -83,6 +84,15 @@ Use repo skills as required implementation guidance.
 - Use `chaos-redux-xlsx` for Chaos Redux spreadsheet work, including the event catalog, doctrine workbook, formatting, formulas, and catalog exports.
 - Use `chaos-redux-improvement-loop` when an implemented or planned mechanic needs recursive depth expansion, spec addenda, improvement handoffs, or checks for shallow, duplicated, generic, disconnected, or low-impact content.
 - Use `chaos-redux-save-inspection` whenever the user supplies a save, and when runtime state would settle a question that source reading cannot: why a decision or focus is unavailable, what an action changed, whether state survives save and reload, what the AI did, whether script state leaks, or how an engine rule behaves.
+- Use the generic HOI4 system skills when a task touches that engine system. Each is written from the installed documentation, the offline wiki, and vanilla files, and holds syntax skeletons, decision procedures, pitfalls, and validation guidance:
+  - `hoi4-equipment` for equipment archetypes and variants, stockpiles and production, equipment modules and designers, and equipment bonuses.
+  - `hoi4-technology-doctrines` for technologies, doctrines, research bonuses, tech unlocks, and technology AI weights.
+  - `hoi4-ai-strategies` for country AI strategies, AI areas, templates and equipment AI, `ai_will_do` and `ai_chance` weighting, and AI debugging.
+  - `hoi4-diplomacy-war` for diplomacy, factions, subjects and autonomy, wargoals, and war and peace.
+  - `hoi4-units-divisions` for sub-units, division templates, orders of battle, and unit effects and triggers.
+  - `hoi4-characters-leaders` for characters, country leaders, advisors, and unit leader traits.
+  - `hoi4-map-states` for map and state data, victory points, supply and railways, and state-scope iteration.
+  - `hoi4-ideas-modifiers` for ideas, national spirits, dynamic modifiers, and the modifier system.
 
 ### HOI4 MCP
 
@@ -126,6 +136,8 @@ Source review and local checks can support completion when a tool is unavailable
 
 Use project custom subagents when a task needs bounded research, asset production, audit, recursive expansion, or documentation work that can be separated from main implementation.
 
+Subagent definitions are authored in `.claude/agents/<name>.md`, which is canonical, with the model tier (`haiku`, `sonnet`, or `opus`) in the frontmatter. `python .tools/sync/sync_agents.py` generates the other runtimes' definitions from them and `python .tools/sync/sync_agents.py --verify` reads the models back against the routing table in `.tools/sync/agent_profiles.json`.
+
 `chaos-redux-subagents` is the detailed source of truth for subagent routing, ownership boundaries, handoff quality, audit cadence, asset routing, super-event routing, and the recursive mechanic expansion loop.
 
 The main agent owns final implementation, wiring, source review, proportionate checks, and completion claims.
@@ -141,7 +153,7 @@ Use these high-level routing rules:
 - Use `chaosx_repo_explorer` only when file locations, existing patterns, vanilla references, likely touchpoints, missing-file recovery, or implementation order are unclear. Do not use it for small known-file edits, provided-file edits, direct skill or prompt updates, localisation-only cleanup, asset-only production, or tasks already bounded to exact files. The parent should inspect the known files directly for those cases.
 - Use asset subagents for non-portrait visual production: `chaosx_asset_source_researcher`, `chaosx_generated_event_art`, and `chaosx_icon_artist`. All character portrait work belongs to `chaosx_portrait_creator`.
 - Use `chaosx_event_ui_worker` only for a dedicated scripted GUI introduced and owned by one named event or event-owned mechanic. The parent prompt must prove event ownership and name exact GUI identifiers, files, entry point, states, resolutions, assets, and handoff path. The worker owns bounded layout implementation and available visual checks; the parent and decision owner retain gameplay, costs, effects, AI, balance, and final integration. It must not audit the shared event log, event details, settings, super-events, shared registries, or unrelated existing UIs.
-- Use `chaosx_portrait_creator` for complete portrait production: grounded source research and placeholders, fictional native ImageGen portraits, user-supplied final validation, processing, DDS conversion, portrait-specific wiring, manifests, and handoffs. It never operates RunPod.
+- Use `chaosx_portrait_creator` for complete portrait production: grounded source research and placeholders, fictional generated portraits, user-supplied final validation, processing, DDS conversion, portrait-specific wiring, manifests, and handoffs. It never operates RunPod.
 - For asset animation, route 2D frame sheets to `chaos-redux-frame-animation` and skeletal `.anim` actions to `chaos-redux-3d-model-pipeline`. Each skill owns its own production route, asset requirements, and fallbacks, so do not repeat paid rig or animation attempts, and do not pass a static pose or transform-only mockup as a requested animation.
 - Use super-event subagents for specialised research: `chaosx_super_event_text_researcher` and `chaosx_super_event_audio_researcher`.
 - Use audit subagents before completion claims: `chaosx_focus_tree_auditor`, `chaosx_decision_mission_auditor`, `chaosx_country_package_auditor`, `chaosx_localisation_auditor`, `chaosx_event_completion_auditor`, and `chaosx_ai_probability_auditor` for every weighted AI or probability surface.
@@ -449,9 +461,9 @@ Before claiming focus-tree completion, use the appropriate audit route from `cha
 
 For final visual assets, use `chaos-redux-event-assets`. That skill is the detailed source of truth for image generation rules, 2D asset classification, and the handoff boundary for 3D model packages.
 
-Native ImageGen transparency is the default for every asset family whose unused canvas is transparent in the inspected HOI4 consumer, including icons, counters, emblems, overlays, decorative UI pieces, and transparent animation frames. Request a real transparent background in the initial ImageGen call and preserve the alpha channel through processing, frame assembly, resizing, and DDS conversion. Background removal is a fallback only for failed native-alpha output or an inherited, sourced, or user-provided image with an unwanted opaque backdrop; record the fallback and validate the repaired edges. Full-canvas scene art, flags, portraits, and painted panels keep the background treatment required by their actual consumer and reference family.
+Image generation runs through the `gptimage` MCP server: `mcp__gptimage__generate_image` with its `reference_images` parameter (one image per call, each reference's role stated in the prompt, an explicit `out` path because existing files are auto-versioned) and `mcp__gptimage__image_auth_status` when a call fails authentication. The `gptimage` skill and the Image-generation route section of `chaos-redux-event-assets` hold the workflow. Transparent output is the default for every asset family whose unused canvas is transparent in the inspected HOI4 consumer, including icons, counters, emblems, overlays, decorative UI pieces, and transparent animation frames. Request a real transparent background in the initial prompt, verify the alpha channel of the saved PNG because the tool has no alpha parameter, and preserve it through processing, frame assembly, resizing, and DDS conversion. Background removal is a fallback only for output without usable alpha or an inherited, sourced, or user-provided image with an unwanted opaque backdrop; record the fallback and validate the repaired edges. Full-canvas scene art, flags, portraits, and painted panels keep the background treatment required by their actual consumer and reference family.
 
-Route every character portrait to `chaosx_portrait_creator`. It finds and archives attributed sources for grounded subjects, creates and wires source placeholders, and validates and installs the HOI4-style final supplied by the user; agents never operate RunPod. For fictional or impossible subjects, it invokes native ImageGen and completes processing, DDS conversion, portrait-specific wiring, manifest evidence, and handoff itself.
+Route every character portrait to `chaosx_portrait_creator`. It finds and archives attributed sources for grounded subjects, creates and wires source placeholders, and validates and installs the HOI4-style final supplied by the user; agents never operate RunPod. For fictional or impossible subjects, it generates the portrait through the image-generation MCP workflow and completes processing, DDS conversion, portrait-specific wiring, manifest evidence, and handoff itself.
 
 For animated visual assets, use `chaos-redux-frame-animation` in addition to `chaos-redux-event-assets` for frame-sheet animation. Use `chaos-redux-3d-model-pipeline` for skeletal unit or entity actions. Final animation assets must be built from real planned frames or real exported skeletal actions and must not be transform-only mockups.
 
@@ -483,6 +495,9 @@ Rules:
    If a file exceeds the 20,000-token ceiling, bring it just below that ceiling with only a small margin by relocating complete topics or removing genuine duplication, preserving every requirement and updating references.
    Leave files that already fit at their current size; do not pad or unnecessarily shorten them.
    Verify a full-file read at the 20,000-token budget without truncation.
+   The Claude Code Read tool was measured at about 3.0 bytes per token on skill prose and returns up to 30,000 tokens (about 90,000 bytes) in one call, so the 20,000-token ceiling is about 60,000 bytes and a root `SKILL.md` stays under 58,000 bytes.
+   `python .tools/sync/sync_read_limits.py --check` lists guidance files over their byte ceilings.
+   An oversized skill keeps its mandatory gates in the root, moves coherent advanced sections verbatim into linked `references/` files or owned specialist skills, and carries a reference map that says when to read each one.
 9. During large multi-event runs, review skill gaps after each completed event or shared system. Update or create skills before starting the next event if something reusable was learned.
 10. Report which skills were used, created, or updated at the end of each task.
 
