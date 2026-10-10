@@ -1,16 +1,3 @@
-@CBRN_BRANCH_LABEL_X = 8
-@CBRN_BRANCH_LABEL_WIDTH = 98
-@CBRN_BRANCH_LABEL_HEIGHT = 24
-@CBRN_BRANCH_ROW_0 = 180
-@CBRN_BRANCH_ROW_2 = 280
-@CBRN_BRANCH_ROW_4 = 380
-@CBRN_BRANCH_ROW_6 = 480
-@CBRN_BRANCH_ROW_8 = 580
-@CBRN_BRANCH_ROW_10 = 680
-@CBRN_BRANCH_ROW_12 = 780
-@CBRN_BIO_FOLDER_CONTENT_HEIGHT = 800
-@CBRN_CHEMICAL_FOLDER_CONTENT_HEIGHT = 1000
-
 guiTypes = {
 	positionType = {
 		name = "special_project_tech_icon_offset"
@@ -3805,19 +3792,21 @@ guiTypes = {
 				name = "size_filler"
 				position = { x=0 y=0 }
 				size = {
-					width = 1300 height = @CBRN_BIO_FOLDER_CONTENT_HEIGHT
-					min = { width= 100%% height = 100%% }
+					width = 960 height = 715
+					min = { width = 100%% height = 100%% }
 				}
+				clipping = no
 
 				iconType = {
-					name ="biowarfare_techtree_bg"
+					name ="biowarfare_folder_bg"
 					spriteType = "GFX_biowarfare_techtree_bg"
 					position = { x=0 y=0 }
+					alwaystransparent = yes
 				}
 
 				instantTextBoxType = {
-					name = "biowarfare_title"
-					position = { x = 50 y = 90 }
+					name = "biowarfare_folder_title"
+					position = { x = 40 y = 86 }
 					textureFile = ""
 					font = "hoi_33"
 					borderSize = { x = 0 y = 0}
@@ -3830,9 +3819,14 @@ guiTypes = {
 
 			}
 
+			# CBRN research grid: branch gridboxes start at x = 170, the first row at
+			# y = 190, and each later branch row sits 100 pixels lower. Slots are the
+			# vanilla 70x70, so a year column is two slots (140 pixels) apart and the
+			# engine's connector segments join without gaps.
+			# Year headers mark the column each research card sits in.
 			instantTextBoxType = {
 				name = "biowarfare_year1936"
-				position = { x = 290 y = 50 }
+				position = { x = 160 y = 50 }
 				font = "hoi_36header"
 				text = "CBRN_TECH_YEAR_1936"
 				maxWidth = 120
@@ -3843,7 +3837,7 @@ guiTypes = {
 
 			instantTextBoxType = {
 				name = "biowarfare_year1938"
-				position = { x = 470 y = 50 }
+				position = { x = 300 y = 50 }
 				font = "hoi_36header"
 				text = "CBRN_TECH_YEAR_1938"
 				maxWidth = 120
@@ -3854,7 +3848,7 @@ guiTypes = {
 
 			instantTextBoxType = {
 				name = "biowarfare_year1940"
-				position = { x = 650 y = 50 }
+				position = { x = 440 y = 50 }
 				font = "hoi_36header"
 				text = "CBRN_TECH_YEAR_1940"
 				maxWidth = 120
@@ -3865,7 +3859,7 @@ guiTypes = {
 
 			instantTextBoxType = {
 				name = "biowarfare_year1941"
-				position = { x = 740 y = 50 }
+				position = { x = 580 y = 50 }
 				font = "hoi_36header"
 				text = "CBRN_TECH_YEAR_1941"
 				maxWidth = 120
@@ -3874,61 +3868,99 @@ guiTypes = {
 				Orientation = "UPPER_LEFT"
 			}
 
-			# Labels occupy the gutter to the left of the research grid.
+			# Branch names sit in the gutter left of the first research column.
+			instantTextBoxType = {
+				name = "biowarfare_munitions_branch"
+				position = { x = 10 y = 214 }
+				font = "hoi_16mbs"
+				text = "CBRN_TECH_BRANCH_MUNITIONS"
+				maxWidth = 150
+				maxHeight = 24
+				format = right
+				Orientation = "UPPER_LEFT"
+			}
+
 			instantTextBoxType = {
 				name = "biowarfare_containment_branch"
-				position = { x = @CBRN_BRANCH_LABEL_X y = @CBRN_BRANCH_ROW_2 }
+				position = { x = 10 y = 314 }
 				font = "hoi_16mbs"
 				text = "CBRN_TECH_BRANCH_CONTAINMENT"
-				maxWidth = @CBRN_BRANCH_LABEL_WIDTH
-				maxHeight = @CBRN_BRANCH_LABEL_HEIGHT
+				maxWidth = 150
+				maxHeight = 24
 				format = right
 				Orientation = "UPPER_LEFT"
 			}
 
 			instantTextBoxType = {
 				name = "biowarfare_surveillance_branch"
-				position = { x = @CBRN_BRANCH_LABEL_X y = @CBRN_BRANCH_ROW_4 }
+				position = { x = 10 y = 414 }
 				font = "hoi_16mbs"
 				text = "CBRN_TECH_BRANCH_SURVEILLANCE"
-				maxWidth = @CBRN_BRANCH_LABEL_WIDTH
-				maxHeight = @CBRN_BRANCH_LABEL_HEIGHT
+				maxWidth = 150
+				maxHeight = 24
 				format = right
 				Orientation = "UPPER_LEFT"
 			}
 
 			instantTextBoxType = {
 				name = "biowarfare_medical_branch"
-				position = { x = @CBRN_BRANCH_LABEL_X y = @CBRN_BRANCH_ROW_6 }
+				position = { x = 10 y = 514 }
 				font = "hoi_16mbs"
 				text = "CBRN_TECH_BRANCH_MEDICAL"
-				maxWidth = @CBRN_BRANCH_LABEL_WIDTH
-				maxHeight = @CBRN_BRANCH_LABEL_HEIGHT
+				maxWidth = 150
+				maxHeight = 24
 				format = right
 				Orientation = "UPPER_LEFT"
 			}
 
 			gridboxtype = {
-				name = "pathogen_handling_protocols_tree"
-				position = { x = 110 y = 160 }
-				slotsize = { width = 90 height = 50 }
-				format = "UP"
+				name = "anthrax_bomb_delivery_systems_tree"
+				position = { x = 170 y = 190 }
+				slotsize = { width = 70 height = 70 }
+				format = "LEFT"
 			}
 
 			gridboxtype = {
-				name = "field_epidemiology_teams_tree"
-				position = { x = 110 y = 160 }
-				slotsize = { width = 90 height = 50 }
-				format = "UP"
+				name = "plague_bomb_delivery_systems_tree"
+				position = { x = 170 y = 190 }
+				slotsize = { width = 70 height = 70 }
+				format = "LEFT"
+			}
+
+			gridboxtype = {
+				name = "tularemia_bomb_delivery_systems_tree"
+				position = { x = 170 y = 190 }
+				slotsize = { width = 70 height = 70 }
+				format = "LEFT"
+			}
+
+			gridboxtype = {
+				name = "smallpox_bomb_delivery_systems_tree"
+				position = { x = 170 y = 190 }
+				slotsize = { width = 70 height = 70 }
+				format = "LEFT"
+			}
+
+			gridboxtype = {
+				name = "pathogen_handling_protocols_tree"
+				position = { x = 170 y = 290 }
+				slotsize = { width = 70 height = 70 }
+				format = "LEFT"
 			}
 
 			gridboxtype = {
 				name = "bio_surveillance_networks_tree"
-				position = { x = 110 y = 160 }
-				slotsize = { width = 90 height = 50 }
-				format = "UP"
+				position = { x = 170 y = 390 }
+				slotsize = { width = 70 height = 70 }
+				format = "LEFT"
 			}
 
+			gridboxtype = {
+				name = "field_epidemiology_teams_tree"
+				position = { x = 170 y = 490 }
+				slotsize = { width = 70 height = 70 }
+				format = "LEFT"
+			}
 
 		}
 
@@ -3951,33 +3983,41 @@ guiTypes = {
 				name = "size_filler"
 				position = { x=0 y=0 }
 				size = {
-					width = 1050 height = @CBRN_CHEMICAL_FOLDER_CONTENT_HEIGHT
+					width = 1140 height = 920
 					min = { width = 100%% height = 100%% }
 				}
+				clipping = no
+
+				iconType = {
+					name ="chemical_warfare_folder_bg"
+					spriteType = "GFX_chemical_warfare_techtree_bg"
+					position = { x=0 y=0 }
+					alwaystransparent = yes
+				}
+
+				instantTextBoxType = {
+					name = "chemical_warfare_folder_title"
+					position = { x = 40 y = 86 }
+					textureFile = ""
+					font = "hoi_33"
+					borderSize = { x = 0 y = 0}
+					text = "CHEMICAL_WARFARE_TITLE"
+					maxWidth = 600
+					maxHeight = 62
+					format = left
+					Orientation = "UPPER_LEFT"
+				}
+
 			}
 
-			iconType = {
-				name ="chemical_warfare_techtree_bg"
-				spriteType = "GFX_chemical_warfare_techtree_bg"
-				position = { x=0 y=0 }
-			}
-
-			instantTextBoxType = {
-				name = "chemical_warfare_title"
-				position = { x = 50 y = 90 }
-				textureFile = ""
-				font = "hoi_33"
-				borderSize = { x = 0 y = 0}
-				text = "CHEMICAL_WARFARE_TITLE"
-				maxWidth = 600
-				maxHeight = 62
-				format = left
-				Orientation = "UPPER_LEFT"
-			}
-
+			# CBRN research grid: branch gridboxes start at x = 170, the first row at
+			# y = 190, and each later branch row sits 100 pixels lower. Slots are the
+			# vanilla 70x70, so a year column is two slots (140 pixels) apart and the
+			# engine's connector segments join without gaps.
+			# Year headers mark the column each research card sits in.
 			instantTextBoxType = {
 				name = "chemical_warfare_year1918"
-				position = { x = 110 y = 50 }
+				position = { x = 160 y = 50 }
 				font = "hoi_36header"
 				text = "CBRN_TECH_YEAR_1918"
 				maxWidth = 120
@@ -3988,7 +4028,7 @@ guiTypes = {
 
 			instantTextBoxType = {
 				name = "chemical_warfare_year1936"
-				position = { x = 290 y = 50 }
+				position = { x = 300 y = 50 }
 				font = "hoi_36header"
 				text = "CBRN_TECH_YEAR_1936"
 				maxWidth = 120
@@ -3998,10 +4038,21 @@ guiTypes = {
 			}
 
 			instantTextBoxType = {
-				name = "chemical_warfare_year1938"
-				position = { x = 470 y = 50 }
+				name = "chemical_warfare_year1937"
+				position = { x = 440 y = 50 }
 				font = "hoi_36header"
-				text = "CBRN_TECH_YEAR_1938"
+				text = "CBRN_TECH_YEAR_1937"
+				maxWidth = 120
+				maxHeight = 32
+				format = left
+				Orientation = "UPPER_LEFT"
+			}
+
+			instantTextBoxType = {
+				name = "chemical_warfare_year1939"
+				position = { x = 580 y = 50 }
+				font = "hoi_36header"
+				text = "CBRN_TECH_YEAR_1939"
 				maxWidth = 120
 				maxHeight = 32
 				format = left
@@ -4010,7 +4061,7 @@ guiTypes = {
 
 			instantTextBoxType = {
 				name = "chemical_warfare_year1940"
-				position = { x = 650 y = 50 }
+				position = { x = 720 y = 50 }
 				font = "hoi_36header"
 				text = "CBRN_TECH_YEAR_1940"
 				maxWidth = 120
@@ -4020,8 +4071,19 @@ guiTypes = {
 			}
 
 			instantTextBoxType = {
+				name = "chemical_warfare_year1941"
+				position = { x = 860 y = 50 }
+				font = "hoi_36header"
+				text = "CBRN_TECH_YEAR_1941"
+				maxWidth = 120
+				maxHeight = 32
+				format = left
+				Orientation = "UPPER_LEFT"
+			}
+
+			instantTextBoxType = {
 				name = "chemical_warfare_year1942"
-				position = { x = 830 y = 50 }
+				position = { x = 1000 y = 50 }
 				font = "hoi_36header"
 				text = "CBRN_TECH_YEAR_1942"
 				maxWidth = 120
@@ -4030,131 +4092,131 @@ guiTypes = {
 				Orientation = "UPPER_LEFT"
 			}
 
-			# Each line names the separate technical branch at its first research row.
+			# Branch names sit in the gutter left of the first research column.
 			instantTextBoxType = {
 				name = "chemical_choking_branch"
-				position = { x = @CBRN_BRANCH_LABEL_X y = @CBRN_BRANCH_ROW_0 }
+				position = { x = 10 y = 214 }
 				font = "hoi_16mbs"
 				text = "CBRN_TECH_BRANCH_CHOKING"
-				maxWidth = @CBRN_BRANCH_LABEL_WIDTH
-				maxHeight = @CBRN_BRANCH_LABEL_HEIGHT
-				format = right
-				Orientation = "UPPER_LEFT"
-			}
-
-			instantTextBoxType = {
-				name = "chemical_nerve_branch"
-				position = { x = @CBRN_BRANCH_LABEL_X y = @CBRN_BRANCH_ROW_2 }
-				font = "hoi_16mbs"
-				text = "CBRN_TECH_BRANCH_NERVE"
-				maxWidth = @CBRN_BRANCH_LABEL_WIDTH
-				maxHeight = @CBRN_BRANCH_LABEL_HEIGHT
+				maxWidth = 150
+				maxHeight = 24
 				format = right
 				Orientation = "UPPER_LEFT"
 			}
 
 			instantTextBoxType = {
 				name = "chemical_blister_branch"
-				position = { x = @CBRN_BRANCH_LABEL_X y = @CBRN_BRANCH_ROW_4 }
+				position = { x = 10 y = 314 }
 				font = "hoi_16mbs"
 				text = "CBRN_TECH_BRANCH_BLISTER"
-				maxWidth = @CBRN_BRANCH_LABEL_WIDTH
-				maxHeight = @CBRN_BRANCH_LABEL_HEIGHT
+				maxWidth = 150
+				maxHeight = 24
+				format = right
+				Orientation = "UPPER_LEFT"
+			}
+
+			instantTextBoxType = {
+				name = "chemical_nerve_branch"
+				position = { x = 10 y = 414 }
+				font = "hoi_16mbs"
+				text = "CBRN_TECH_BRANCH_NERVE"
+				maxWidth = 150
+				maxHeight = 24
 				format = right
 				Orientation = "UPPER_LEFT"
 			}
 
 			instantTextBoxType = {
 				name = "chemical_projectors_branch"
-				position = { x = @CBRN_BRANCH_LABEL_X y = @CBRN_BRANCH_ROW_6 }
+				position = { x = 10 y = 514 }
 				font = "hoi_16mbs"
 				text = "CBRN_TECH_BRANCH_PROJECTORS"
-				maxWidth = @CBRN_BRANCH_LABEL_WIDTH
-				maxHeight = @CBRN_BRANCH_LABEL_HEIGHT
+				maxWidth = 150
+				maxHeight = 24
 				format = right
 				Orientation = "UPPER_LEFT"
 			}
 
 			instantTextBoxType = {
 				name = "chemical_protection_branch"
-				position = { x = @CBRN_BRANCH_LABEL_X y = @CBRN_BRANCH_ROW_8 }
+				position = { x = 10 y = 614 }
 				font = "hoi_16mbs"
 				text = "CBRN_TECH_BRANCH_PROTECTION"
-				maxWidth = @CBRN_BRANCH_LABEL_WIDTH
-				maxHeight = @CBRN_BRANCH_LABEL_HEIGHT
+				maxWidth = 150
+				maxHeight = 24
 				format = right
 				Orientation = "UPPER_LEFT"
 			}
 
 			instantTextBoxType = {
 				name = "chemical_detection_branch"
-				position = { x = @CBRN_BRANCH_LABEL_X y = @CBRN_BRANCH_ROW_10 }
+				position = { x = 10 y = 714 }
 				font = "hoi_16mbs"
 				text = "CBRN_TECH_BRANCH_DETECTION"
-				maxWidth = @CBRN_BRANCH_LABEL_WIDTH
-				maxHeight = @CBRN_BRANCH_LABEL_HEIGHT
+				maxWidth = 150
+				maxHeight = 24
 				format = right
 				Orientation = "UPPER_LEFT"
 			}
 
 			instantTextBoxType = {
 				name = "chemical_cleanup_branch"
-				position = { x = @CBRN_BRANCH_LABEL_X y = @CBRN_BRANCH_ROW_12 }
+				position = { x = 10 y = 814 }
 				font = "hoi_16mbs"
 				text = "CBRN_TECH_BRANCH_CLEANUP"
-				maxWidth = @CBRN_BRANCH_LABEL_WIDTH
-				maxHeight = @CBRN_BRANCH_LABEL_HEIGHT
+				maxWidth = 150
+				maxHeight = 24
 				format = right
 				Orientation = "UPPER_LEFT"
 			}
 
 			gridboxtype = {
 				name = "chlorine_gas_tree"
-				position = { x = 110 y = 160 }
-				slotsize = { width = 90 height = 50 }
-				format = "UP"
-			}
-
-			gridboxtype = {
-				name = "tabun_tree"
-				position = { x = 110 y = 160 }
-				slotsize = { width = 90 height = 50 }
-				format = "UP"
+				position = { x = 170 y = 190 }
+				slotsize = { width = 70 height = 70 }
+				format = "LEFT"
 			}
 
 			gridboxtype = {
 				name = "mustard_gas_tree"
-				position = { x = 110 y = 160 }
-				slotsize = { width = 90 height = 50 }
-				format = "UP"
+				position = { x = 170 y = 290 }
+				slotsize = { width = 70 height = 70 }
+				format = "LEFT"
+			}
+
+			gridboxtype = {
+				name = "tabun_tree"
+				position = { x = 170 y = 390 }
+				slotsize = { width = 70 height = 70 }
+				format = "LEFT"
 			}
 
 			gridboxtype = {
 				name = "livens_projector_tech_tree"
-				position = { x = 110 y = 160 }
-				slotsize = { width = 90 height = 50 }
-				format = "UP"
+				position = { x = 170 y = 490 }
+				slotsize = { width = 70 height = 70 }
+				format = "LEFT"
 			}
 
 			gridboxtype = {
 				name = "basic_gas_masks_tree"
-				position = { x = 110 y = 160 }
-				slotsize = { width = 90 height = 50 }
-				format = "UP"
+				position = { x = 170 y = 590 }
+				slotsize = { width = 70 height = 70 }
+				format = "LEFT"
 			}
 
 			gridboxtype = {
 				name = "chemical_detection_paper_tree"
-				position = { x = 110 y = 160 }
-				slotsize = { width = 90 height = 50 }
-				format = "UP"
+				position = { x = 170 y = 690 }
+				slotsize = { width = 70 height = 70 }
+				format = "LEFT"
 			}
 
 			gridboxtype = {
 				name = "field_decontamination_kits_tree"
-				position = { x = 110 y = 160 }
-				slotsize = { width = 90 height = 50 }
-				format = "UP"
+				position = { x = 170 y = 790 }
+				slotsize = { width = 70 height = 70 }
+				format = "LEFT"
 			}
 
 		}
@@ -6843,8 +6905,8 @@ guiTypes = {
 
 	containerWindowType = {
 		name = "techtree_biowarfare_folder_item"
-		# Center full-size cards in the CBRN folder's 90px grid slots.
-		position = { x=-46 y=-7 }
+		# Centres a full-size card in the folder's 70x70 grid slot, as vanilla does.
+		position = { x=-56 y=-7 }
 		size = { width = 183 height = 84 }
 		clipping = no
 
@@ -6956,8 +7018,8 @@ guiTypes = {
 
 	containerWindowType = {
 		name = "techtree_chemical_warfare_folder_item"
-		# Center full-size cards in the CBRN folder's 90px grid slots.
-		position = { x=-46 y=-7 }
+		# Centres a full-size card in the folder's 70x70 grid slot, as vanilla does.
+		position = { x=-56 y=-7 }
 		size = { width = 183 height = 84 }
 		clipping = no
 

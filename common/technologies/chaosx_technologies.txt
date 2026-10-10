@@ -2,22 +2,26 @@
 # Retired administrative IDs remain hidden so older consumers resolve after
 # their corresponding equipment research grants the alias.
 technologies = {
-	@1936BW = 2
-	@1938BW = 4
-	@1940BW = 6
-
-	@1918CW = 0
-	@1918CW_LATE = 1
-	@1918CW_WIND_GASMASK = 0
-	@1936CW = 2
-	@1936CW_LIVENS = 2
-	@1937CW = 3
-	@1938CW = 4
-	@1939CW = 5
-	@1940CW = 6
-	@1940CW_LIVENS = 6
-	@1941CW = 7
-	@1942CW = 8
+	# Both folders use the vanilla horizontal grid: gridbox format LEFT with
+	# 70x70 slots, one gridbox per branch. Each branch gridbox already sits on
+	# its own screen row in interface/countrytechtreeview.gui, so every card in
+	# a branch keeps x = 0 and only the year column changes. A year column is
+	# two slots (140 pixels) wide, which is the spacing the engine's connector
+	# line segments are drawn for.
+	@ROW = 0
+	# Year columns, chemical folder.
+	@CW_1918 = 0
+	@CW_1936 = 2
+	@CW_1937 = 4
+	@CW_1939 = 6
+	@CW_1940 = 8
+	@CW_1941 = 10
+	@CW_1942 = 12
+	# Year columns, biowarfare folder.
+	@BW_1936 = 0
+	@BW_1938 = 2
+	@BW_1940 = 4
+	@BW_1941 = 6
 
 	# Technology ai_will_do values do not document script-constant support in the
 	# installed engine documentation. Keep this file-local mirror aligned with the
@@ -49,9 +53,6 @@ technologies = {
 	@CBRN_PROTECTION_YEAR_1940 = 1940
 	@CBRN_PROTECTION_YEAR_1941 = 1941
 	@CBRN_PROTECTION_YEAR_1942 = 1942
-	@CBRN_GAS_MASK_ROW = 8
-	@CBRN_DECONTAMINATION_ROW = 12
-	@CBRN_INSTRUMENT_ROW = 10
 	# Sub-unit combat stats are fractional bonuses; both projector tiers stack.
 	@CBRN_PROJECTOR_TECH_SOFT_ATTACK = 0.025
 	@CBRN_PROJECTOR_TECH_HARD_ATTACK = 0.13
@@ -92,17 +93,24 @@ technologies = {
 	anthrax_bomb_delivery_systems = {
 		force_use_small_tech_layout = yes
 		research_cost = 1
-		start_year = 1918
+		start_year = 1936
 
 		enable_equipments = {
 			anthrax_bomb_1
 		}
 
-		allow = { always = no }
+		allow = {
+			ROOT = { is_special_project_completed = sp:anthrax_bomb }
+		}
 		is_special_project_tech = yes
 
 		categories = {
 			biowarfare_tech
+		}
+
+		folder = {
+			name = biowarfare_folder
+			position = { x = @ROW y = @BW_1936 }
 		}
 
 		ai_will_do = {
@@ -114,17 +122,24 @@ technologies = {
 	plague_bomb_delivery_systems = {
 		force_use_small_tech_layout = yes
 		research_cost = 1
-		start_year = 1936
+		start_year = 1938
 
 		enable_equipments = {
 			plague_bomb_1
 		}
 
-		allow = { always = no }
+		allow = {
+			ROOT = { is_special_project_completed = sp:plague_bomb }
+		}
 		is_special_project_tech = yes
 
 		categories = {
 			biowarfare_tech
+		}
+
+		folder = {
+			name = biowarfare_folder
+			position = { x = @ROW y = @BW_1938 }
 		}
 
 		ai_will_do = {
@@ -136,17 +151,24 @@ technologies = {
 	tularemia_bomb_delivery_systems = {
 		force_use_small_tech_layout = yes
 		research_cost = 1
-		start_year = 1938
+		start_year = 1940
 
 		enable_equipments = {
 			tularemia_bomb_1
 		}
 
-		allow = { always = no }
+		allow = {
+			ROOT = { is_special_project_completed = sp:tularemia_bomb }
+		}
 		is_special_project_tech = yes
 
 		categories = {
 			biowarfare_tech
+		}
+
+		folder = {
+			name = biowarfare_folder
+			position = { x = @ROW y = @BW_1940 }
 		}
 
 		ai_will_do = {
@@ -158,17 +180,24 @@ technologies = {
 	smallpox_bomb_delivery_systems = {
 		force_use_small_tech_layout = yes
 		research_cost = 1
-		start_year = 1940
+		start_year = 1941
 
 		enable_equipments = {
 			smallpox_bomb_1
 		}
 
-		allow = { always = no }
+		allow = {
+			ROOT = { is_special_project_completed = sp:smallpox_bomb }
+		}
 		is_special_project_tech = yes
 
 		categories = {
 			biowarfare_tech
+		}
+
+		folder = {
+			name = biowarfare_folder
+			position = { x = @ROW y = @BW_1941 }
 		}
 
 		ai_will_do = {
@@ -256,7 +285,7 @@ technologies = {
 
 		folder = {
 			name = biowarfare_folder
-			position = { x = @1936BW y = 2 }
+			position = { x = @ROW y = @BW_1936 }
 		}
 
 		ai_will_do = {
@@ -289,7 +318,7 @@ technologies = {
 
 		folder = {
 			name = biowarfare_folder
-			position = { x = @1938BW y = 2 }
+			position = { x = @ROW y = @BW_1938 }
 		}
 
 		ai_will_do = {
@@ -317,7 +346,7 @@ technologies = {
 
 		folder = {
 			name = biowarfare_folder
-			position = { x = @1940BW y = 2 }
+			position = { x = @ROW y = @BW_1940 }
 		}
 
 		ai_will_do = {
@@ -347,7 +376,7 @@ technologies = {
 
 		folder = {
 			name = biowarfare_folder
-			position = { x = @1936BW y = 4 }
+			position = { x = @ROW y = @BW_1936 }
 		}
 
 		ai_will_do = {
@@ -380,7 +409,7 @@ technologies = {
 
 		folder = {
 			name = biowarfare_folder
-			position = { x = @1938BW y = 4 }
+			position = { x = @ROW y = @BW_1938 }
 		}
 
 		ai_will_do = {
@@ -408,7 +437,7 @@ technologies = {
 
 		folder = {
 			name = biowarfare_folder
-			position = { x = @1940BW y = 4 }
+			position = { x = @ROW y = @BW_1940 }
 		}
 
 		ai_will_do = {
@@ -456,7 +485,7 @@ technologies = {
 
 		folder = {
 			name = chemical_warfare_folder
-			position = { x = @1918CW y = 6 }
+			position = { x = @ROW y = @CW_1918 }
 		}
 
 		ai_will_do = {
@@ -500,7 +529,7 @@ technologies = {
 
 		folder = {
 			name = chemical_warfare_folder
-			position = { x = @1918CW y = 0 }
+			position = { x = @ROW y = @CW_1918 }
 		}
 
 		ai_will_do = {
@@ -513,7 +542,7 @@ technologies = {
 	phosgene = {
 		force_use_small_tech_layout = yes
 		research_cost = @CBRN_PROTECTION_TECH_COST_STANDARD
-		start_year = 1918
+		start_year = 1936
 		on_research_complete = {
 			unlock_tactic = tactic_chemical_shelling
 			chem_sync_chemical_tactic_preferred_weight_ideas = yes
@@ -540,7 +569,7 @@ technologies = {
 
 		folder = {
 			name = chemical_warfare_folder
-			position = { x = @1918CW_LATE y = 0 }
+			position = { x = @ROW y = @CW_1936 }
 		}
 
 		ai_will_do = {
@@ -582,7 +611,7 @@ technologies = {
 
 		folder = {
 			name = chemical_warfare_folder
-			position = { x = @1918CW y = 4 }
+			position = { x = @ROW y = @CW_1918 }
 		}
 
 		ai_will_do = {
@@ -626,7 +655,7 @@ technologies = {
 
 		folder = {
 			name = chemical_warfare_folder
-			position = { x = @1937CW y = 4 }
+			position = { x = @ROW y = @CW_1937 }
 		}
 
 		ai_will_do = {
@@ -652,7 +681,7 @@ technologies = {
 
 		folder = {
 			name = chemical_warfare_folder
-			position = { x = @1939CW y = 4 }
+			position = { x = @ROW y = @CW_1939 }
 		}
 
 		ai_will_do = {
@@ -680,6 +709,11 @@ technologies = {
 			nerve_chemical_air_payload_lot_1
 		}
 
+		path = {
+			leads_to_tech = sarin
+			research_cost_coeff = 1
+		}
+
 		categories = {
 			chemical_warfare_tech
 			nerve_agents_tech
@@ -687,7 +721,7 @@ technologies = {
 
 		folder = {
 			name = chemical_warfare_folder
-			position = { x = @1937CW y = 2 }
+			position = { x = @ROW y = @CW_1937 }
 		}
 
 		ai_will_do = {
@@ -719,12 +753,24 @@ technologies = {
 			tabun = 1
 		}
 
-		allow = { always = no }
+		path = {
+			leads_to_tech = soman
+			research_cost_coeff = 1
+		}
+
+		allow = {
+			ROOT = { is_special_project_completed = sp:sp_cw_sarin_program }
+		}
 		is_special_project_tech = yes
 
 		categories = {
 			chemical_warfare_tech
 			nerve_agents_tech
+		}
+
+		folder = {
+			name = chemical_warfare_folder
+			position = { x = @ROW y = @CW_1939 }
 		}
 
 		ai_will_do = {
@@ -756,12 +802,19 @@ technologies = {
 			sarin = 1
 		}
 
-		allow = { always = no }
+		allow = {
+			ROOT = { is_special_project_completed = sp:sp_cw_soman_program }
+		}
 		is_special_project_tech = yes
 
 		categories = {
 			chemical_warfare_tech
 			nerve_agents_tech
+		}
+
+		folder = {
+			name = chemical_warfare_folder
+			position = { x = @ROW y = @CW_1941 }
 		}
 
 		ai_will_do = {
@@ -802,7 +855,7 @@ technologies = {
 
 		folder = {
 			name = chemical_warfare_folder
-			position = { x = @1936CW_LIVENS y = 6 }
+			position = { x = @ROW y = @CW_1936 }
 		}
 
 		ai_will_do = {
@@ -838,7 +891,7 @@ technologies = {
 
 		folder = {
 			name = chemical_warfare_folder
-			position = { x = @1940CW_LIVENS y = 6 }
+			position = { x = @ROW y = @CW_1940 }
 		}
 
 		ai_will_do = {
@@ -882,7 +935,7 @@ technologies = {
 
 		folder = {
 			name = chemical_warfare_folder
-			position = { x = @1940CW y = @CBRN_GAS_MASK_ROW }
+			position = { x = @ROW y = @CW_1940 }
 		}
 
 		ai_will_do = {
@@ -929,7 +982,7 @@ technologies = {
 
 		folder = {
 			name = chemical_warfare_folder
-			position = { x = @1942CW y = @CBRN_GAS_MASK_ROW }
+			position = { x = @ROW y = @CW_1942 }
 		}
 
 		ai_will_do = {
@@ -971,7 +1024,7 @@ technologies = {
 
 		folder = {
 			name = chemical_warfare_folder
-			position = { x = @1936CW y = @CBRN_GAS_MASK_ROW }
+			position = { x = @ROW y = @CW_1936 }
 		}
 
 		ai_will_do = {
@@ -1012,7 +1065,7 @@ technologies = {
 
 		folder = {
 			name = chemical_warfare_folder
-			position = { x = @1918CW_WIND_GASMASK y = @CBRN_GAS_MASK_ROW }
+			position = { x = @ROW y = @CW_1918 }
 		}
 
 		ai_will_do = {
@@ -1108,7 +1161,7 @@ technologies = {
 
 		folder = {
 			name = chemical_warfare_folder
-			position = { x = @1936CW y = @CBRN_DECONTAMINATION_ROW }
+			position = { x = @ROW y = @CW_1936 }
 		}
 
 		ai_will_do = {
@@ -1149,7 +1202,7 @@ technologies = {
 
 		folder = {
 			name = chemical_warfare_folder
-			position = { x = @1939CW y = @CBRN_DECONTAMINATION_ROW }
+			position = { x = @ROW y = @CW_1939 }
 		}
 
 		ai_will_do = {
@@ -1181,7 +1234,7 @@ technologies = {
 
 		folder = {
 			name = chemical_warfare_folder
-			position = { x = @1942CW y = @CBRN_DECONTAMINATION_ROW }
+			position = { x = @ROW y = @CW_1942 }
 		}
 
 		ai_will_do = {
@@ -1224,7 +1277,7 @@ technologies = {
 
 		folder = {
 			name = chemical_warfare_folder
-			position = { x = @1936CW y = @CBRN_INSTRUMENT_ROW }
+			position = { x = @ROW y = @CW_1936 }
 		}
 
 		ai_will_do = {
@@ -1264,7 +1317,7 @@ technologies = {
 
 		folder = {
 			name = chemical_warfare_folder
-			position = { x = @1939CW y = @CBRN_INSTRUMENT_ROW }
+			position = { x = @ROW y = @CW_1939 }
 		}
 
 		ai_will_do = {
@@ -1300,7 +1353,7 @@ technologies = {
 
 		folder = {
 			name = chemical_warfare_folder
-			position = { x = @1941CW y = @CBRN_INSTRUMENT_ROW }
+			position = { x = @ROW y = @CW_1941 }
 		}
 
 		ai_will_do = {
