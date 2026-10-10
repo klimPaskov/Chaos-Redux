@@ -4564,6 +4564,62 @@ cannibalism_unified_state_can_support_battlefield_consumption = {
 	check_variable = { var = state_population_k value = constant:cannibalism_unified_decision_cost.battlefield_minimum_population_k compare = greater_than_or_equals }
 }
 
+# Host country scope. The four Larder methods are ranked, so exactly one route
+# is current once any method flag is set; the single consumption decision
+# follows it.
+cannibalism_unified_larder_consumption_route_is_current = {
+	OR = {
+		cannibalism_unified_larder_rapid_route_is_current = yes
+		cannibalism_unified_larder_managed_route_is_current = yes
+		cannibalism_unified_larder_mobile_route_is_current = yes
+		cannibalism_unified_larder_battlefield_route_is_current = yes
+	}
+}
+
+cannibalism_unified_can_pay_current_consumption = {
+	OR = {
+		AND = {
+			cannibalism_unified_larder_battlefield_route_is_current = yes
+			cannibalism_unified_can_pay_battlefield_consumption = yes
+		}
+		AND = {
+			cannibalism_unified_larder_mobile_route_is_current = yes
+			cannibalism_unified_can_pay_mobile_consumption = yes
+		}
+		AND = {
+			cannibalism_unified_larder_managed_route_is_current = yes
+			cannibalism_unified_can_pay_managed_consumption = yes
+		}
+		AND = {
+			cannibalism_unified_larder_rapid_route_is_current = yes
+			cannibalism_unified_can_pay_rapid_consumption = yes
+		}
+	}
+}
+
+# State scope, ROOT = the Host. The state meets the population floor of the
+# current route.
+cannibalism_unified_state_can_support_current_consumption = {
+	OR = {
+		AND = {
+			ROOT = { cannibalism_unified_larder_battlefield_route_is_current = yes }
+			cannibalism_unified_state_can_support_battlefield_consumption = yes
+		}
+		AND = {
+			ROOT = { cannibalism_unified_larder_mobile_route_is_current = yes }
+			cannibalism_unified_state_can_support_mobile_consumption = yes
+		}
+		AND = {
+			ROOT = { cannibalism_unified_larder_managed_route_is_current = yes }
+			cannibalism_unified_state_can_support_managed_consumption = yes
+		}
+		AND = {
+			ROOT = { cannibalism_unified_larder_rapid_route_is_current = yes }
+			cannibalism_unified_state_can_support_rapid_consumption = yes
+		}
+	}
+}
+
 # ---------------------------------------------------------------------------
 # Army, navy, and air costs
 # ---------------------------------------------------------------------------
@@ -4576,12 +4632,6 @@ cannibalism_unified_can_pay_legion_recruitment = {
 	check_variable = { var = cannibalism_larder value = cannibalism_unified_legion_larder_cost compare = greater_than_or_equals }
 	NOT = { has_equipment = { infantry_equipment < cannibalism_unified_legion_infantry_reserve } }
 	NOT = { has_equipment = { support_equipment_1 < cannibalism_unified_legion_support_reserve } }
-}
-
-cannibalism_unified_can_pay_legion_surge = {
-	cannibalism_unified_can_pay_legion_recruitment = yes
-	has_country_flag = cannibalism_unified_legion_surge_decisions_open
-	has_country_flag = cannibalism_unified_rapid_recruitment_cost_scaling_open
 }
 
 cannibalism_unified_can_pay_bone_guard_recruitment = {
@@ -4628,6 +4678,31 @@ cannibalism_unified_can_pay_march_specialist_recruitment = {
 	has_country_flag = cannibalism_unified_origin_march_knowledge
 	check_variable = { var = cannibalism_unified_march_specialists_raised value = cannibalism_unified_origin_specialist_cap compare = less_than }
 	NOT = { has_equipment = { motorized_equipment_1 < cannibalism_unified_origin_specialist_motorized_reserve } }
+}
+
+# Host country scope. One origin command opens per click: Island Reavers first,
+# then Siege Eaters, then the March Predation Column.
+cannibalism_unified_origin_specialist_is_island = {
+	cannibalism_unified_can_pay_island_specialist_recruitment = yes
+}
+
+cannibalism_unified_origin_specialist_is_siege = {
+	NOT = { cannibalism_unified_origin_specialist_is_island = yes }
+	cannibalism_unified_can_pay_siege_specialist_recruitment = yes
+}
+
+cannibalism_unified_origin_specialist_is_march = {
+	NOT = { cannibalism_unified_origin_specialist_is_island = yes }
+	NOT = { cannibalism_unified_origin_specialist_is_siege = yes }
+	cannibalism_unified_can_pay_march_specialist_recruitment = yes
+}
+
+cannibalism_unified_can_pay_any_origin_specialist_recruitment = {
+	OR = {
+		cannibalism_unified_origin_specialist_is_island = yes
+		cannibalism_unified_origin_specialist_is_siege = yes
+		cannibalism_unified_origin_specialist_is_march = yes
+	}
 }
 
 cannibalism_unified_state_can_recruit_legion = {
@@ -5042,6 +5117,22 @@ cannibalism_state_can_feed_current_warlord = {
 	cannibalism_can_consume_current_state = yes
 }
 
+# Host country scope, FROM = the selected state. The one predicate behind the
+# Consume a Controlled State decision: `available` and the cost row both read
+# it, so a refused click cannot start the re-enable timer.
+cannibalism_warlord_can_feed_selected_state = {
+	cannibalism_warlord_command_is_open = yes
+	has_country_flag = cannibalism_warlord_state_consumption_open
+	FROM = {
+		cannibalism_state_can_feed_current_warlord = yes
+		check_variable = {
+			var = state_population_k
+			value = constant:cannibalism_state_threshold.minimum_consumable_population_k
+			compare = greater_than_or_equals
+		}
+	}
+}
+
 cannibalism_state_can_recruit_scavenger_warband = {
 	cannibalism_state_is_warlord_consumption_territory = yes
 	cannibalism_can_recruit_from_current_state = yes
@@ -5265,6 +5356,154 @@ cannibalism_warlord_can_pay_emergency_reinforcement_cost = {
 	NOT = { has_equipment = { support_equipment_1 < constant:cannibalism_unit_cost.emergency_reinforcement_support } }
 }
 
+# Phase gates for the two formation decisions. A basic formation is a Feast
+# Cohort, a Scavenger Warband or an emergency draft; a specialist formation is a
+# Bone Guard, an origin specialist or a Network Cadre.
+cannibalism_warlord_basic_formation_decisions_are_visible = {
+	cannibalism_warlord_command_is_open = yes
+	OR = {
+		AND = {
+			cannibalism_warlord_command_baseline_phase_is_open = yes
+			OR = {
+				has_country_flag = cannibalism_warlord_basic_recruitment_open
+				has_country_flag = cannibalism_warlord_feast_cohort_open
+			}
+		}
+		has_country_flag = cannibalism_warlord_emergency_reinforcement_open
+	}
+}
+
+cannibalism_warlord_specialist_formation_decisions_are_visible = {
+	OR = {
+		AND = {
+			cannibalism_warlord_command_baseline_phase_is_open = yes
+			OR = {
+				has_country_flag = cannibalism_warlord_origin_specialist_open
+				has_country_flag = cannibalism_warlord_bone_guard_open
+			}
+		}
+		AND = {
+			cannibalism_warlord_command_network_phase_is_open = yes
+			has_country_flag = cannibalism_warlord_network_cadre_open
+		}
+	}
+}
+
+# State scope, ROOT = the Host. The basic ladder takes the strongest formation
+# the Host can field and pay for in the state.
+cannibalism_state_basic_template_is_feast = {
+	ROOT = {
+		cannibalism_warlord_command_baseline_phase_is_open = yes
+		cannibalism_warlord_can_pay_feast_cost = yes
+	}
+	cannibalism_state_can_recruit_feast_cohort = yes
+}
+
+cannibalism_state_basic_template_is_scavenger = {
+	NOT = { cannibalism_state_basic_template_is_feast = yes }
+	ROOT = {
+		cannibalism_warlord_command_baseline_phase_is_open = yes
+		cannibalism_warlord_can_pay_scavenger_cost = yes
+	}
+	cannibalism_state_can_recruit_scavenger_warband = yes
+}
+
+cannibalism_state_basic_template_is_emergency = {
+	NOT = { cannibalism_state_basic_template_is_feast = yes }
+	NOT = { cannibalism_state_basic_template_is_scavenger = yes }
+	ROOT = { cannibalism_warlord_can_pay_emergency_reinforcement_cost = yes }
+	cannibalism_state_can_supply_emergency_reinforcement = yes
+}
+
+cannibalism_state_can_host_basic_formation = {
+	OR = {
+		cannibalism_state_basic_template_is_feast = yes
+		cannibalism_state_basic_template_is_scavenger = yes
+		cannibalism_state_basic_template_is_emergency = yes
+	}
+}
+
+# State scope. Population and territory only, for the daily target list.
+cannibalism_state_can_be_basic_formation_target = {
+	OR = {
+		cannibalism_state_can_recruit_feast_cohort = yes
+		cannibalism_state_can_recruit_scavenger_warband = yes
+		cannibalism_state_can_supply_emergency_reinforcement = yes
+	}
+}
+
+cannibalism_warlord_can_pay_any_basic_formation = {
+	OR = {
+		AND = {
+			cannibalism_warlord_command_baseline_phase_is_open = yes
+			OR = {
+				cannibalism_warlord_can_pay_feast_cost = yes
+				cannibalism_warlord_can_pay_scavenger_cost = yes
+			}
+		}
+		cannibalism_warlord_can_pay_emergency_reinforcement_cost = yes
+	}
+}
+
+cannibalism_state_specialist_template_is_bone_guard = {
+	ROOT = {
+		cannibalism_warlord_command_baseline_phase_is_open = yes
+		cannibalism_warlord_can_pay_bone_guard_cost = yes
+	}
+	cannibalism_state_can_recruit_bone_guard = yes
+}
+
+cannibalism_state_specialist_template_is_origin = {
+	NOT = { cannibalism_state_specialist_template_is_bone_guard = yes }
+	ROOT = {
+		cannibalism_warlord_command_baseline_phase_is_open = yes
+		cannibalism_warlord_can_pay_origin_specialist_cost = yes
+	}
+	cannibalism_state_can_recruit_origin_specialist = yes
+}
+
+cannibalism_state_specialist_template_is_cadre = {
+	NOT = { cannibalism_state_specialist_template_is_bone_guard = yes }
+	NOT = { cannibalism_state_specialist_template_is_origin = yes }
+	ROOT = {
+		cannibalism_warlord_command_network_phase_is_open = yes
+		cannibalism_warlord_can_pay_network_cadre_cost = yes
+	}
+	cannibalism_state_can_recruit_network_cadre = yes
+}
+
+cannibalism_state_can_host_specialist_formation = {
+	OR = {
+		cannibalism_state_specialist_template_is_bone_guard = yes
+		cannibalism_state_specialist_template_is_origin = yes
+		cannibalism_state_specialist_template_is_cadre = yes
+	}
+}
+
+cannibalism_state_can_be_specialist_formation_target = {
+	OR = {
+		cannibalism_state_can_recruit_bone_guard = yes
+		cannibalism_state_can_recruit_origin_specialist = yes
+		cannibalism_state_can_recruit_network_cadre = yes
+	}
+}
+
+cannibalism_warlord_can_pay_any_specialist_formation = {
+	OR = {
+		AND = {
+			cannibalism_warlord_command_baseline_phase_is_open = yes
+			OR = {
+				cannibalism_warlord_can_pay_bone_guard_cost = yes
+				cannibalism_warlord_can_pay_origin_specialist_cost = yes
+			}
+		}
+		AND = {
+			cannibalism_warlord_command_network_phase_is_open = yes
+			cannibalism_warlord_can_pay_network_cadre_cost = yes
+		}
+	}
+}
+
 cannibalism_state_can_be_intensified_by_current_warlord = {
 	cannibalism_state_is_warlord_consumption_territory = yes
 	cannibalism_can_consume_current_state = yes
@@ -5368,6 +5607,32 @@ cannibalism_warlord_can_pay_siege_operation_cost = {
 		compare = greater_than_or_equals
 	}
 	check_variable = { var = command_power value = constant:cannibalism_warlord_decision.siege_operation_command compare = greater_than_or_equals }
+}
+
+# Host country scope. A Host has one origin, so the island and siege ambushes
+# never compete; one decision serves whichever origin the Host carries.
+cannibalism_warlord_origin_ambush_is_visible = {
+	OR = {
+		cannibalism_warlord_command_network_phase_is_open = yes
+		cannibalism_warlord_command_endgame_phase_is_open = yes
+	}
+	OR = {
+		AND = {
+			has_country_flag = cannibalism_origin_island_host
+			has_country_flag = cannibalism_warlord_island_actions_open
+		}
+		AND = {
+			has_country_flag = cannibalism_origin_siege_commune
+			has_country_flag = cannibalism_warlord_siege_actions_open
+		}
+	}
+}
+
+cannibalism_warlord_can_pay_origin_ambush_operation = {
+	OR = {
+		cannibalism_warlord_can_pay_island_operation_cost = yes
+		cannibalism_warlord_can_pay_siege_operation_cost = yes
+	}
 }
 
 cannibalism_warlord_can_pay_march_operation_cost = {
@@ -5584,6 +5849,13 @@ cannibalism_state_can_feed_wendigo_anchor = {
 		value = constant:cannibalism_wendigo_decision.feed_anchor_minimum_population_k
 		compare = greater_than_or_equals
 	}
+}
+
+# Winter command country scope, FROM = the selected anchor state. Shared by
+# `available` and the cost row of the anchor-feeding decision.
+cannibalism_wendigo_can_feed_selected_anchor = {
+	cannibalism_wendigo_command_is_open = yes
+	FROM = { cannibalism_state_can_feed_wendigo_anchor = yes }
 }
 
 cannibalism_state_can_train_wendigo_pack = {

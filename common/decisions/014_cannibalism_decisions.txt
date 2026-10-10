@@ -749,8 +749,13 @@ cannibalism_international_response_category = {
 		}
 		target_trigger = { FROM = { cannibalism_is_valid_island_host_target = yes } }
 		visible = { FROM = { cannibalism_is_valid_island_host_target = yes } }
-		available = { cannibalism_can_pay_island_blockade_cost = yes }
-		custom_cost_trigger = { cannibalism_can_pay_island_blockade_cost = yes }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = cannibalism_island_blockade_requirements_tt
+				hidden_trigger = { cannibalism_can_pay_island_blockade_cost = yes }
+			}
+		}
+		custom_cost_trigger = { hidden_trigger = { cannibalism_can_pay_island_blockade_cost = yes } }
 		custom_cost_text = cannibalism_island_blockade_cost_text
 		complete_effect = {
 			custom_effect_tooltip = cannibalism_island_blockade_effect_tt
@@ -800,8 +805,13 @@ cannibalism_international_response_category = {
 		}
 		target_trigger = { FROM = { cannibalism_state_is_valid_island_rescue_target = yes } }
 		visible = { FROM = { cannibalism_state_is_valid_island_rescue_target = yes } }
-		available = { cannibalism_can_pay_island_rescue_cost = yes }
-		custom_cost_trigger = { cannibalism_can_pay_island_rescue_cost = yes }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = cannibalism_island_rescue_requirements_tt
+				hidden_trigger = { cannibalism_can_pay_island_rescue_cost = yes FROM = { cannibalism_state_is_valid_island_rescue_target = yes } }
+			}
+		}
+		custom_cost_trigger = { hidden_trigger = { cannibalism_can_pay_island_rescue_cost = yes FROM = { cannibalism_state_is_valid_island_rescue_target = yes } } }
 		custom_cost_text = cannibalism_island_rescue_cost_text
 		complete_effect = {
 			custom_effect_tooltip = cannibalism_island_rescue_effect_tt
@@ -1039,8 +1049,13 @@ cannibalism_reconstruction_category = {
 		}
 		target_trigger = { FROM = { cannibalism_state_can_begin_aftermath_identification = yes } }
 		visible = { FROM = { cannibalism_state_can_begin_aftermath_identification = yes } }
-		available = { cannibalism_can_pay_aftermath_identification_cost = yes }
-		custom_cost_trigger = { cannibalism_can_pay_aftermath_identification_cost = yes }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = cannibalism_aftermath_identification_requirements_tt
+				hidden_trigger = { cannibalism_can_pay_aftermath_identification_cost = yes FROM = { cannibalism_state_can_begin_aftermath_identification = yes } }
+			}
+		}
+		custom_cost_trigger = { hidden_trigger = { cannibalism_can_pay_aftermath_identification_cost = yes FROM = { cannibalism_state_can_begin_aftermath_identification = yes } } }
 		custom_cost_text = cannibalism_aftermath_identification_cost_text
 		complete_effect = {
 			custom_effect_tooltip = cannibalism_aftermath_identification_effect_tt
@@ -1090,8 +1105,13 @@ cannibalism_reconstruction_category = {
 		}
 		target_trigger = { FROM = { cannibalism_state_can_complete_aftermath_memorial = yes } }
 		visible = { FROM = { cannibalism_state_can_complete_aftermath_memorial = yes } }
-		available = { cannibalism_can_pay_aftermath_memorial_cost = yes }
-		custom_cost_trigger = { cannibalism_can_pay_aftermath_memorial_cost = yes }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = cannibalism_aftermath_memorial_requirements_tt
+				hidden_trigger = { cannibalism_can_pay_aftermath_memorial_cost = yes FROM = { cannibalism_state_can_complete_aftermath_memorial = yes } }
+			}
+		}
+		custom_cost_trigger = { hidden_trigger = { cannibalism_can_pay_aftermath_memorial_cost = yes FROM = { cannibalism_state_can_complete_aftermath_memorial = yes } } }
 		custom_cost_text = cannibalism_aftermath_memorial_cost_text
 		complete_effect = {
 			custom_effect_tooltip = cannibalism_aftermath_memorial_effect_tt
@@ -1130,7 +1150,12 @@ cannibalism_reconstruction_category = {
 		is_good = yes
 		fire_only_once = yes
 		activation = { has_country_flag = cannibalism_compact_vigilance_mission_active }
-		available = { always = no }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = cannibalism_compact_vigilance_objective_tt
+				always = no
+			}
+		}
 		cancel_trigger = {
 			OR = {
 				NOT = { exists = yes }
@@ -1229,8 +1254,13 @@ cannibalism_warlord_command_category = {
 			has_country_flag = cannibalism_warlord_state_consumption_open
 		}
 		target_trigger = { FROM = { cannibalism_state_can_feed_current_warlord = yes } }
-		available = { cannibalism_warlord_command_is_open = yes }
-		custom_cost_trigger = { hidden_trigger = { cannibalism_warlord_command_is_open = yes } }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = cannibalism_consume_controlled_state_requirements_tt
+				hidden_trigger = { cannibalism_warlord_can_feed_selected_state = yes }
+			}
+		}
+		custom_cost_trigger = { hidden_trigger = { cannibalism_warlord_can_feed_selected_state = yes } }
 		custom_cost_text = cannibalism_consume_controlled_state_cost_text
 		days_re_enable = constant:cannibalism_warlord_decision.short_reenable_days
 		complete_effect = {
@@ -1248,185 +1278,70 @@ cannibalism_warlord_command_category = {
 		}
 	}
 
-	cannibalism_raise_scavenger_warband = {
+	cannibalism_raise_warband = {
 		icon = GFX_decision_cannibalism_raise_scavenger_warband
 		state_target = yes
 		on_map_mode = map_and_decisions_view
-		visible = {
-			cannibalism_warlord_command_baseline_phase_is_open = yes
-			has_country_flag = cannibalism_warlord_basic_recruitment_open
+		visible = { cannibalism_warlord_basic_formation_decisions_are_visible = yes }
+		target_root_trigger = { cannibalism_warlord_can_pay_any_basic_formation = yes }
+		target_trigger = { FROM = { cannibalism_state_can_be_basic_formation_target = yes } }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = cannibalism_raise_warband_requirements_tt
+				hidden_trigger = { FROM = { cannibalism_state_can_host_basic_formation = yes } }
+			}
 		}
-		target_root_trigger = { cannibalism_warlord_can_pay_scavenger_cost = yes }
-		target_trigger = { FROM = { cannibalism_state_can_recruit_scavenger_warband = yes } }
-		available = { cannibalism_warlord_can_pay_scavenger_cost = yes }
-		custom_cost_trigger = { hidden_trigger = { cannibalism_warlord_can_pay_scavenger_cost = yes } }
-		custom_cost_text = cannibalism_raise_scavenger_warband_cost_text
-		days_re_enable = constant:cannibalism_warlord_decision.short_reenable_days
+		custom_cost_trigger = { hidden_trigger = { FROM = { cannibalism_state_can_host_basic_formation = yes } } }
+		custom_cost_text = cannibalism_raise_warband_cost_text
+		days_re_enable = constant:cannibalism_warlord_decision.standard_reenable_days
 		complete_effect = {
-			custom_effect_tooltip = cannibalism_raise_scavenger_warband_effect_tt
+			custom_effect_tooltip = cannibalism_raise_warband_effect_tt
 			hidden_effect = {
 				FROM = { save_event_target_as = cannibalism_warlord_recruitment_state }
-				set_temp_variable = { cannibalism_warlord_recruitment_template = constant:cannibalism_recruitment_template.scavenger_warband }
-				set_temp_variable = { cannibalism_warlord_recruitment_population_k = constant:cannibalism_unit_cost.scavenger_population_k }
-				set_temp_variable = { cannibalism_warlord_larder_cost = constant:cannibalism_unit_cost.scavenger_larder }
-				cannibalism_execute_warlord_recruitment_transaction = yes
+				cannibalism_raise_basic_formation = yes
 			}
 		}
 		ai_will_do = {
-			base = constant:cannibalism_decision_ai.high
-			modifier = { factor = constant:cannibalism_decision_ai.cautious_factor check_variable = { cannibalism_larder < constant:cannibalism_consumption.larder_stable } }
+			base = constant:cannibalism_decision_ai.blocked
+			modifier = { add = constant:cannibalism_decision_ai.high FROM = { cannibalism_state_basic_template_is_scavenger = yes } }
+			modifier = { factor = constant:cannibalism_decision_ai.cautious_factor FROM = { cannibalism_state_basic_template_is_scavenger = yes } check_variable = { cannibalism_larder < constant:cannibalism_consumption.larder_stable } }
+			modifier = { add = constant:cannibalism_decision_ai.medium FROM = { cannibalism_state_basic_template_is_feast = yes } }
+			modifier = { add = constant:cannibalism_decision_ai.high FROM = { cannibalism_state_basic_template_is_emergency = yes } }
+			modifier = { factor = constant:cannibalism_decision_ai.urgent_factor FROM = { cannibalism_state_basic_template_is_emergency = yes } has_war = yes }
 		}
 	}
 
-	cannibalism_raise_feast_cohort = {
-		icon = GFX_decision_cannibalism_raise_feast_cohort
-		state_target = yes
-		on_map_mode = map_and_decisions_view
-		visible = {
-			cannibalism_warlord_command_baseline_phase_is_open = yes
-			has_country_flag = cannibalism_warlord_feast_cohort_open
-		}
-		target_root_trigger = { cannibalism_warlord_can_pay_feast_cost = yes }
-		target_trigger = { FROM = { cannibalism_state_can_recruit_feast_cohort = yes } }
-		available = { cannibalism_warlord_can_pay_feast_cost = yes }
-		custom_cost_trigger = { hidden_trigger = { cannibalism_warlord_can_pay_feast_cost = yes } }
-		custom_cost_text = cannibalism_raise_feast_cohort_cost_text
-		days_re_enable = constant:cannibalism_warlord_decision.standard_reenable_days
-		complete_effect = {
-			custom_effect_tooltip = cannibalism_raise_feast_cohort_effect_tt
-			hidden_effect = {
-				FROM = { save_event_target_as = cannibalism_warlord_recruitment_state }
-				set_temp_variable = { cannibalism_warlord_recruitment_template = constant:cannibalism_recruitment_template.feast_cohort }
-				set_temp_variable = { cannibalism_warlord_recruitment_population_k = constant:cannibalism_unit_cost.feast_population_k }
-				set_temp_variable = { cannibalism_warlord_larder_cost = constant:cannibalism_unit_cost.feast_larder }
-				cannibalism_execute_warlord_recruitment_transaction = yes
-			}
-		}
-		ai_will_do = { base = constant:cannibalism_decision_ai.medium }
-	}
-
-	cannibalism_raise_origin_specialist = {
-		icon = GFX_decision_cannibalism_raise_origin_specialist
-		state_target = yes
-		on_map_mode = map_and_decisions_view
-		visible = {
-			cannibalism_warlord_command_baseline_phase_is_open = yes
-			has_country_flag = cannibalism_warlord_origin_specialist_open
-		}
-		target_root_trigger = { cannibalism_warlord_can_pay_origin_specialist_cost = yes }
-		target_trigger = { FROM = { cannibalism_state_can_recruit_origin_specialist = yes } }
-		available = { cannibalism_warlord_can_pay_origin_specialist_cost = yes }
-		custom_cost_trigger = { hidden_trigger = { cannibalism_warlord_can_pay_origin_specialist_cost = yes } }
-		custom_cost_text = cannibalism_raise_origin_specialist_cost_text
-		days_re_enable = constant:cannibalism_warlord_decision.standard_reenable_days
-		complete_effect = {
-			custom_effect_tooltip = cannibalism_raise_origin_specialist_effect_tt
-			hidden_effect = {
-				FROM = { save_event_target_as = cannibalism_warlord_recruitment_state }
-				set_temp_variable = { cannibalism_warlord_recruitment_template = constant:cannibalism_recruitment_template.origin_specialist }
-				set_temp_variable = { cannibalism_warlord_recruitment_population_k = constant:cannibalism_unit_cost.origin_specialist_population_k }
-				set_temp_variable = { cannibalism_warlord_larder_cost = constant:cannibalism_unit_cost.origin_specialist_larder }
-				cannibalism_execute_warlord_recruitment_transaction = yes
-			}
-		}
-		ai_will_do = {
-			base = constant:cannibalism_decision_ai.medium
-			modifier = { factor = constant:cannibalism_ai.warlord_origin_factor always = yes }
-		}
-	}
-
-	cannibalism_raise_bone_guard = {
+	cannibalism_raise_specialist = {
 		icon = GFX_decision_cannibalism_raise_bone_guard
 		state_target = yes
 		on_map_mode = map_and_decisions_view
-		visible = {
-			cannibalism_warlord_command_baseline_phase_is_open = yes
-			has_country_flag = cannibalism_warlord_bone_guard_open
-		}
-		target_root_trigger = { cannibalism_warlord_can_pay_bone_guard_cost = yes }
-		target_trigger = { FROM = { cannibalism_state_can_recruit_bone_guard = yes } }
-		available = { cannibalism_warlord_can_pay_bone_guard_cost = yes }
-		custom_cost_trigger = { hidden_trigger = { cannibalism_warlord_can_pay_bone_guard_cost = yes } }
-		custom_cost_text = cannibalism_raise_bone_guard_cost_text
-		days_re_enable = constant:cannibalism_warlord_decision.long_reenable_days
-		complete_effect = {
-			custom_effect_tooltip = cannibalism_raise_bone_guard_effect_tt
-			hidden_effect = {
-				FROM = { save_event_target_as = cannibalism_warlord_recruitment_state }
-				set_temp_variable = { cannibalism_warlord_recruitment_template = constant:cannibalism_recruitment_template.bone_guard }
-				set_temp_variable = { cannibalism_warlord_recruitment_population_k = constant:cannibalism_unit_cost.bone_guard_population_k }
-				set_temp_variable = { cannibalism_warlord_larder_cost = constant:cannibalism_unit_cost.bone_guard_larder }
-				cannibalism_execute_warlord_recruitment_transaction = yes
-			}
-		}
-		ai_will_do = {
-			base = constant:cannibalism_decision_ai.low
-			modifier = { factor = constant:cannibalism_decision_ai.preferred_factor has_country_flag = cannibalism_hierarchy_personal_tyranny }
-		}
-	}
-
-	cannibalism_raise_network_cadre = {
-		icon = GFX_decision_cannibalism_raise_network_cadre
-		state_target = yes
-		on_map_mode = map_and_decisions_view
-		visible = {
-			cannibalism_warlord_command_network_phase_is_open = yes
-			has_country_flag = cannibalism_warlord_network_cadre_open
-		}
-		target_root_trigger = { cannibalism_warlord_can_pay_network_cadre_cost = yes }
-		target_trigger = { FROM = { cannibalism_state_can_recruit_network_cadre = yes } }
-		available = { cannibalism_warlord_can_pay_network_cadre_cost = yes }
-		custom_cost_trigger = { hidden_trigger = { cannibalism_warlord_can_pay_network_cadre_cost = yes } }
-		custom_cost_text = cannibalism_raise_network_cadre_cost_text
-		days_re_enable = constant:cannibalism_warlord_decision.standard_reenable_days
-		complete_effect = {
-			custom_effect_tooltip = cannibalism_raise_network_cadre_effect_tt
-			hidden_effect = {
-				FROM = { save_event_target_as = cannibalism_warlord_recruitment_state }
-				set_temp_variable = { cannibalism_warlord_recruitment_template = constant:cannibalism_recruitment_template.network_cadre }
-				set_temp_variable = { cannibalism_warlord_recruitment_population_k = constant:cannibalism_unit_cost.network_cadre_population_k }
-				set_temp_variable = { cannibalism_warlord_larder_cost = constant:cannibalism_unit_cost.network_cadre_larder }
-				cannibalism_execute_warlord_recruitment_transaction = yes
-			}
-		}
-		ai_will_do = {
-			base = constant:cannibalism_decision_ai.medium
-			modifier = { factor = constant:cannibalism_decision_ai.preferred_factor has_country_flag = cannibalism_network_route_alignment }
-		}
-	}
-
-	cannibalism_emergency_reinforcement = {
-		icon = GFX_decision_cannibalism_emergency_reinforcement
-		state_target = yes
-		on_map_mode = map_and_decisions_view
-		visible = {
-			cannibalism_warlord_command_is_open = yes
-			has_country_flag = cannibalism_warlord_emergency_reinforcement_open
-		}
-		target_root_trigger = { cannibalism_warlord_can_pay_emergency_reinforcement_cost = yes }
-		target_trigger = { FROM = { cannibalism_state_can_supply_emergency_reinforcement = yes } }
+		visible = { cannibalism_warlord_specialist_formation_decisions_are_visible = yes }
+		target_root_trigger = { cannibalism_warlord_can_pay_any_specialist_formation = yes }
+		target_trigger = { FROM = { cannibalism_state_can_be_specialist_formation_target = yes } }
 		available = {
 			custom_trigger_tooltip = {
-				tooltip = cannibalism_emergency_reinforcement_requirements_tt
-				hidden_trigger = { cannibalism_warlord_can_pay_emergency_reinforcement_cost = yes }
+				tooltip = cannibalism_raise_specialist_requirements_tt
+				hidden_trigger = { FROM = { cannibalism_state_can_host_specialist_formation = yes } }
 			}
 		}
-		custom_cost_trigger = { hidden_trigger = { cannibalism_warlord_can_pay_emergency_reinforcement_cost = yes } }
-		custom_cost_text = cannibalism_emergency_reinforcement_cost_text
-		days_re_enable = constant:cannibalism_warlord_decision.long_reenable_days
+		custom_cost_trigger = { hidden_trigger = { FROM = { cannibalism_state_can_host_specialist_formation = yes } } }
+		custom_cost_text = cannibalism_raise_specialist_cost_text
+		days_re_enable = constant:cannibalism_warlord_decision.standard_reenable_days
 		complete_effect = {
-			custom_effect_tooltip = cannibalism_emergency_reinforcement_effect_tt
+			custom_effect_tooltip = cannibalism_raise_specialist_effect_tt
 			hidden_effect = {
 				FROM = { save_event_target_as = cannibalism_warlord_recruitment_state }
-				set_temp_variable = { cannibalism_warlord_recruitment_template = constant:cannibalism_recruitment_template.emergency_reinforcement }
-				set_temp_variable = { cannibalism_warlord_recruitment_population_k = constant:cannibalism_unit_cost.emergency_reinforcement_population_k }
-				set_temp_variable = { cannibalism_warlord_larder_cost = constant:cannibalism_unit_cost.emergency_reinforcement_larder }
-				cannibalism_execute_warlord_recruitment_transaction = yes
+				cannibalism_raise_specialist_formation = yes
 			}
 		}
 		ai_will_do = {
-			base = constant:cannibalism_decision_ai.high
-			modifier = { factor = constant:cannibalism_decision_ai.urgent_factor has_war = yes }
+			base = constant:cannibalism_decision_ai.blocked
+			modifier = { add = constant:cannibalism_decision_ai.low FROM = { cannibalism_state_specialist_template_is_bone_guard = yes } }
+			modifier = { factor = constant:cannibalism_decision_ai.preferred_factor FROM = { cannibalism_state_specialist_template_is_bone_guard = yes } has_country_flag = cannibalism_hierarchy_personal_tyranny }
+			modifier = { add = constant:cannibalism_decision_ai.medium FROM = { cannibalism_state_specialist_template_is_origin = yes } }
+			modifier = { factor = constant:cannibalism_ai.warlord_origin_factor FROM = { cannibalism_state_specialist_template_is_origin = yes } }
+			modifier = { add = constant:cannibalism_decision_ai.medium FROM = { cannibalism_state_specialist_template_is_cadre = yes } }
+			modifier = { factor = constant:cannibalism_decision_ai.preferred_factor FROM = { cannibalism_state_specialist_template_is_cadre = yes } has_country_flag = cannibalism_network_route_alignment }
 		}
 	}
 
@@ -1441,8 +1356,13 @@ cannibalism_warlord_command_category = {
 		}
 		target_root_trigger = { cannibalism_warlord_can_pay_deliberate_seed_cost = yes }
 		target_trigger = { FROM = { cannibalism_state_has_deliberate_seed_route_from_root = yes } }
-		available = { cannibalism_warlord_can_pay_deliberate_seed_cost = yes }
-		custom_cost_trigger = { hidden_trigger = { cannibalism_warlord_can_pay_deliberate_seed_cost = yes } }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = cannibalism_seed_foreign_formation_requirements_tt
+				hidden_trigger = { cannibalism_warlord_can_pay_deliberate_seed_cost = yes FROM = { cannibalism_state_has_deliberate_seed_route_from_root = yes } }
+			}
+		}
+		custom_cost_trigger = { hidden_trigger = { cannibalism_warlord_can_pay_deliberate_seed_cost = yes FROM = { cannibalism_state_has_deliberate_seed_route_from_root = yes } } }
 		custom_cost_text = cannibalism_seed_foreign_formation_cost_text
 		days_re_enable = constant:cannibalism_spread.seed_reenable_days
 		complete_effect = {
@@ -1471,8 +1391,13 @@ cannibalism_warlord_command_category = {
 		}
 		target_root_trigger = { cannibalism_warlord_can_pay_intensification_cost = yes }
 		target_trigger = { FROM = { cannibalism_state_can_be_intensified_by_current_warlord = yes } }
-		available = { cannibalism_warlord_can_pay_intensification_cost = yes }
-		custom_cost_trigger = { hidden_trigger = { cannibalism_warlord_can_pay_intensification_cost = yes } }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = cannibalism_intensify_feeding_district_requirements_tt
+				hidden_trigger = { cannibalism_warlord_can_pay_intensification_cost = yes FROM = { cannibalism_state_can_be_intensified_by_current_warlord = yes } }
+			}
+		}
+		custom_cost_trigger = { hidden_trigger = { cannibalism_warlord_can_pay_intensification_cost = yes FROM = { cannibalism_state_can_be_intensified_by_current_warlord = yes } } }
 		custom_cost_text = cannibalism_intensify_feeding_district_cost_text
 		days_re_enable = constant:cannibalism_warlord_decision.standard_reenable_days
 		complete_effect = {
@@ -1499,8 +1424,13 @@ cannibalism_warlord_command_category = {
 		}
 		target_root_trigger = { cannibalism_warlord_can_pay_abandon_cost = yes }
 		target_trigger = { FROM = { cannibalism_state_can_be_abandoned_by_current_warlord = yes } }
-		available = { cannibalism_warlord_can_pay_abandon_cost = yes }
-		custom_cost_trigger = { hidden_trigger = { cannibalism_warlord_can_pay_abandon_cost = yes } }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = cannibalism_abandon_exhausted_state_requirements_tt
+				hidden_trigger = { cannibalism_warlord_can_pay_abandon_cost = yes FROM = { cannibalism_state_can_be_abandoned_by_current_warlord = yes } }
+			}
+		}
+		custom_cost_trigger = { hidden_trigger = { cannibalism_warlord_can_pay_abandon_cost = yes FROM = { cannibalism_state_can_be_abandoned_by_current_warlord = yes } } }
 		custom_cost_text = cannibalism_abandon_exhausted_state_cost_text
 		days_re_enable = constant:cannibalism_warlord_decision.long_reenable_days
 		complete_effect = {
@@ -1524,7 +1454,12 @@ cannibalism_warlord_command_category = {
 			has_global_flag = cannibalism_evolution_ii_active
 			has_country_flag = cannibalism_warlord_alignment_endgame_open
 		}
-		available = { cannibalism_warlord_can_pay_align_cost = yes }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = cannibalism_align_local_ranks_requirements_tt
+				hidden_trigger = { cannibalism_warlord_can_pay_align_cost = yes }
+			}
+		}
 		custom_cost_trigger = { hidden_trigger = { cannibalism_warlord_can_pay_align_cost = yes } }
 		custom_cost_text = cannibalism_align_local_ranks_cost_text
 		days_re_enable = constant:cannibalism_warlord_decision.standard_reenable_days
@@ -1549,7 +1484,12 @@ cannibalism_warlord_command_category = {
 		}
 		target_root_trigger = { cannibalism_warlord_can_pay_synchronized_attack_cost = yes }
 		target_trigger = { FROM = { cannibalism_is_valid_synchronized_warlord_partner = yes } }
-		available = { cannibalism_warlord_can_pay_synchronized_attack_cost = yes }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = cannibalism_synchronize_warlord_attack_requirements_tt
+				hidden_trigger = { cannibalism_warlord_can_pay_synchronized_attack_cost = yes }
+			}
+		}
 		custom_cost_trigger = { hidden_trigger = { cannibalism_warlord_can_pay_synchronized_attack_cost = yes } }
 		custom_cost_text = cannibalism_synchronize_warlord_attack_cost_text
 		days_re_enable = constant:cannibalism_warlord_decision.long_reenable_days
@@ -1567,44 +1507,21 @@ cannibalism_warlord_command_category = {
 		}
 	}
 
-	cannibalism_island_ambush_convoys = {
+	cannibalism_origin_ambush_operation = {
 		icon = GFX_decision_cannibalism_island_ambush_convoys
-		visible = {
-			OR = {
-				cannibalism_warlord_command_network_phase_is_open = yes
-				cannibalism_warlord_command_endgame_phase_is_open = yes
+		visible = { cannibalism_warlord_origin_ambush_is_visible = yes }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = cannibalism_origin_ambush_operation_requirements_tt
+				hidden_trigger = { cannibalism_warlord_can_pay_origin_ambush_operation = yes }
 			}
-			has_country_flag = cannibalism_origin_island_host
-			has_country_flag = cannibalism_warlord_island_actions_open
 		}
-		available = { cannibalism_warlord_can_pay_island_operation_cost = yes }
-		custom_cost_trigger = { hidden_trigger = { cannibalism_warlord_can_pay_island_operation_cost = yes } }
-		custom_cost_text = cannibalism_island_ambush_convoys_cost_text
+		custom_cost_trigger = { hidden_trigger = { cannibalism_warlord_can_pay_origin_ambush_operation = yes } }
+		custom_cost_text = cannibalism_origin_ambush_operation_cost_text
 		days_re_enable = constant:cannibalism_warlord_decision.long_reenable_days
 		complete_effect = {
-			custom_effect_tooltip = cannibalism_island_ambush_convoys_effect_tt
-			hidden_effect = { cannibalism_begin_island_convoy_ambush_operation = yes }
-		}
-		ai_will_do = { base = constant:cannibalism_decision_ai.high modifier = { factor = constant:cannibalism_decision_ai.urgent_factor has_war = yes } }
-	}
-
-	cannibalism_siege_ambush_relief_column = {
-		icon = GFX_decision_cannibalism_siege_ambush_relief_column
-		visible = {
-			OR = {
-				cannibalism_warlord_command_network_phase_is_open = yes
-				cannibalism_warlord_command_endgame_phase_is_open = yes
-			}
-			has_country_flag = cannibalism_origin_siege_commune
-			has_country_flag = cannibalism_warlord_siege_actions_open
-		}
-		available = { cannibalism_warlord_can_pay_siege_operation_cost = yes }
-		custom_cost_trigger = { hidden_trigger = { cannibalism_warlord_can_pay_siege_operation_cost = yes } }
-		custom_cost_text = cannibalism_siege_ambush_relief_column_cost_text
-		days_re_enable = constant:cannibalism_warlord_decision.long_reenable_days
-		complete_effect = {
-			custom_effect_tooltip = cannibalism_siege_ambush_relief_column_effect_tt
-			hidden_effect = { cannibalism_begin_siege_relief_ambush_operation = yes }
+			custom_effect_tooltip = cannibalism_origin_ambush_operation_effect_tt
+			hidden_effect = { cannibalism_begin_origin_ambush_operation = yes }
 		}
 		ai_will_do = { base = constant:cannibalism_decision_ai.high modifier = { factor = constant:cannibalism_decision_ai.urgent_factor has_war = yes } }
 	}
@@ -1629,8 +1546,13 @@ cannibalism_warlord_command_category = {
 			NOT = { has_country_flag = cannibalism_march_raid_cooldown }
 		}
 		target_trigger = { FROM = { cannibalism_warlord_march_raid_target_is_valid = yes } }
-		available = { cannibalism_warlord_can_pay_march_operation_cost = yes }
-		custom_cost_trigger = { hidden_trigger = { cannibalism_warlord_can_pay_march_operation_cost = yes } }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = cannibalism_march_raid_supply_depot_requirements_tt
+				hidden_trigger = { cannibalism_warlord_can_pay_march_operation_cost = yes FROM = { cannibalism_warlord_march_raid_target_is_valid = yes } }
+			}
+		}
+		custom_cost_trigger = { hidden_trigger = { cannibalism_warlord_can_pay_march_operation_cost = yes FROM = { cannibalism_warlord_march_raid_target_is_valid = yes } } }
 		custom_cost_text = cannibalism_march_raid_supply_depot_cost_text
 		days_re_enable = constant:cannibalism_warlord_decision.long_reenable_days
 		complete_effect = {
@@ -1698,7 +1620,12 @@ cannibalism_wendigo_counterwar_category = {
 	cannibalism_identify_transformation_anchor = {
 		icon = GFX_decision_cannibalism_identify_transformation_anchor
 		visible = { cannibalism_wendigo_counterwar_is_open = yes }
-		available = { cannibalism_can_identify_any_wendigo_anchor = yes }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = cannibalism_identify_transformation_anchor_requirements_tt
+				hidden_trigger = { cannibalism_can_identify_any_wendigo_anchor = yes }
+			}
+		}
 		custom_cost_trigger = { hidden_trigger = { cannibalism_can_identify_any_wendigo_anchor = yes } }
 		custom_cost_text = cannibalism_identify_transformation_anchor_cost_text
 		complete_effect = {
@@ -1711,7 +1638,12 @@ cannibalism_wendigo_counterwar_category = {
 	cannibalism_assault_transformation_anchor = {
 		icon = GFX_decision_cannibalism_assault_transformation_anchor
 		visible = { cannibalism_wendigo_counterwar_is_open = yes }
-		available = { cannibalism_can_pay_wendigo_anchor_assault_cost = yes }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = cannibalism_assault_transformation_anchor_requirements_tt
+				hidden_trigger = { cannibalism_can_pay_wendigo_anchor_assault_cost = yes }
+			}
+		}
 		custom_cost_trigger = { hidden_trigger = { cannibalism_can_pay_wendigo_anchor_assault_cost = yes } }
 		custom_cost_text = cannibalism_assault_transformation_anchor_cost_text
 		complete_effect = {
@@ -1727,7 +1659,12 @@ cannibalism_wendigo_counterwar_category = {
 	cannibalism_disrupt_transformation_logistics = {
 		icon = GFX_decision_cannibalism_disrupt_transformation_logistics
 		visible = { cannibalism_wendigo_counterwar_is_open = yes }
-		available = { cannibalism_can_pay_wendigo_logistics_disruption_cost = yes }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = cannibalism_disrupt_transformation_logistics_requirements_tt
+				hidden_trigger = { cannibalism_can_pay_wendigo_logistics_disruption_cost = yes }
+			}
+		}
 		custom_cost_trigger = { hidden_trigger = { cannibalism_can_pay_wendigo_logistics_disruption_cost = yes } }
 		custom_cost_text = cannibalism_disrupt_transformation_logistics_cost_text
 		complete_effect = {
@@ -1740,7 +1677,12 @@ cannibalism_wendigo_counterwar_category = {
 	cannibalism_break_wendigo_recruitment_site = {
 		icon = GFX_decision_cannibalism_break_wendigo_recruitment_site
 		visible = { cannibalism_wendigo_counterwar_is_open = yes }
-		available = { cannibalism_can_pay_wendigo_recruitment_site_break_cost = yes }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = cannibalism_break_wendigo_recruitment_site_requirements_tt
+				hidden_trigger = { cannibalism_can_pay_wendigo_recruitment_site_break_cost = yes }
+			}
+		}
 		custom_cost_trigger = { hidden_trigger = { cannibalism_can_pay_wendigo_recruitment_site_break_cost = yes } }
 		custom_cost_text = cannibalism_break_wendigo_recruitment_site_cost_text
 		complete_effect = {
@@ -1753,7 +1695,12 @@ cannibalism_wendigo_counterwar_category = {
 	cannibalism_break_wendigo_terminal_hunt = {
 		icon = GFX_decision_cannibalism_break_wendigo_terminal_hunt
 		visible = { cannibalism_wendigo_terminal_hunt_defender_is_open = yes }
-		available = { cannibalism_can_pay_wendigo_terminal_hunt_break_cost = yes }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = cannibalism_break_wendigo_terminal_hunt_requirements_tt
+				hidden_trigger = { cannibalism_can_pay_wendigo_terminal_hunt_break_cost = yes }
+			}
+		}
 		custom_cost_trigger = { hidden_trigger = { cannibalism_can_pay_wendigo_terminal_hunt_break_cost = yes } }
 		custom_cost_text = cannibalism_break_wendigo_terminal_hunt_cost_text
 		days_re_enable = constant:cannibalism_wendigo_terminal_hunt.press_cooldown_days
@@ -1779,8 +1726,13 @@ cannibalism_network_alerts_category = {
 		visible = { cannibalism_inbound_route_response_is_visible = yes }
 		target_root_trigger = { cannibalism_inbound_route_response_is_visible = yes }
 		target_trigger = { FROM = { cannibalism_inbound_state_can_be_screened = yes } }
-		available = { cannibalism_can_pay_humane_route_screening_cost = yes }
-		custom_cost_trigger = { hidden_trigger = { cannibalism_can_pay_humane_route_screening_cost = yes } }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = cannibalism_humane_route_screening_requirements_tt
+				hidden_trigger = { cannibalism_can_pay_humane_route_screening_cost = yes FROM = { cannibalism_inbound_state_can_be_screened = yes } }
+			}
+		}
+		custom_cost_trigger = { hidden_trigger = { cannibalism_can_pay_humane_route_screening_cost = yes FROM = { cannibalism_inbound_state_can_be_screened = yes } } }
 		custom_cost_text = cannibalism_humane_route_screening_cost_text
 		complete_effect = {
 			custom_effect_tooltip = cannibalism_humane_route_screening_effect_tt
@@ -1807,8 +1759,13 @@ cannibalism_network_alerts_category = {
 		visible = { cannibalism_inbound_route_response_is_visible = yes }
 		target_root_trigger = { cannibalism_inbound_route_response_is_visible = yes }
 		target_trigger = { FROM = { cannibalism_inbound_state_can_be_screened = yes } }
-		available = { cannibalism_can_pay_hard_route_screening_cost = yes }
-		custom_cost_trigger = { hidden_trigger = { cannibalism_can_pay_hard_route_screening_cost = yes } }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = cannibalism_seal_inbound_route_requirements_tt
+				hidden_trigger = { cannibalism_can_pay_hard_route_screening_cost = yes FROM = { cannibalism_inbound_state_can_be_screened = yes } }
+			}
+		}
+		custom_cost_trigger = { hidden_trigger = { cannibalism_can_pay_hard_route_screening_cost = yes FROM = { cannibalism_inbound_state_can_be_screened = yes } } }
 		custom_cost_text = cannibalism_seal_inbound_route_cost_text
 		complete_effect = {
 			custom_effect_tooltip = cannibalism_seal_inbound_route_effect_tt
@@ -2111,72 +2068,31 @@ cannibalism_unified_larder_category = {
 		ai_will_do = { base = constant:cannibalism_unified_decision_ai.high modifier = { factor = constant:cannibalism_unified_decision_ai.preferred_factor FROM = { is_capital = yes } } }
 	}
 
-	cannibalism_unified_rapid_consumption = {
+	cannibalism_unified_consume_state = {
 		icon = GFX_decision_cannibalism_unified_rapid_consumption
 		state_target = yes
 		on_map_mode = map_and_decisions_view
-		target_root_trigger = { cannibalism_unified_can_pay_rapid_consumption = yes }
-		target_trigger = { FROM = { cannibalism_unified_state_can_support_rapid_consumption = yes } }
-		visible = { cannibalism_unified_larder_rapid_route_is_current = yes FROM = { cannibalism_unified_state_can_support_rapid_consumption = yes } }
+		target_root_trigger = { cannibalism_unified_can_pay_current_consumption = yes }
+		target_trigger = { FROM = { cannibalism_unified_state_can_support_current_consumption = yes } }
+		visible = { cannibalism_unified_larder_consumption_route_is_current = yes FROM = { cannibalism_unified_state_can_support_current_consumption = yes } }
 		available = {
-			custom_trigger_tooltip = { tooltip = cannibalism_unified_rapid_consumption_requirements_tt hidden_trigger = { cannibalism_unified_can_pay_rapid_consumption = yes } }
+			custom_trigger_tooltip = { tooltip = cannibalism_unified_consume_state_requirements_tt hidden_trigger = { cannibalism_unified_can_pay_current_consumption = yes } }
 			custom_trigger_tooltip = { tooltip = cannibalism_unified_player_mission_slots_tt hidden_trigger = { cannibalism_unified_larder_operation_slot_available = yes } }
 		}
-		custom_cost_trigger = { hidden_trigger = { cannibalism_unified_can_pay_rapid_consumption = yes } }
-		custom_cost_text = cannibalism_unified_rapid_consumption_cost_text
-		complete_effect = { custom_effect_tooltip = cannibalism_unified_rapid_consumption_effect_tt hidden_effect = { FROM = { save_event_target_as = cannibalism_unified_decision_state } cannibalism_unified_execute_rapid_consumption = yes } }
-		ai_will_do = { base = constant:cannibalism_unified_decision_ai.urgent modifier = { factor = constant:cannibalism_unified_decision_ai.urgent_factor check_variable = { cannibalism_larder < constant:cannibalism_consumption.larder_low } } }
-	}
-
-	cannibalism_unified_managed_consumption = {
-		icon = GFX_decision_cannibalism_unified_managed_consumption
-		state_target = yes
-		on_map_mode = map_and_decisions_view
-		target_root_trigger = { cannibalism_unified_can_pay_managed_consumption = yes }
-		target_trigger = { FROM = { cannibalism_unified_state_can_support_managed_consumption = yes } }
-		visible = { cannibalism_unified_larder_managed_route_is_current = yes FROM = { cannibalism_unified_state_can_support_managed_consumption = yes } }
-		available = {
-			custom_trigger_tooltip = { tooltip = cannibalism_unified_managed_consumption_requirements_tt hidden_trigger = { cannibalism_unified_can_pay_managed_consumption = yes } }
-			custom_trigger_tooltip = { tooltip = cannibalism_unified_player_mission_slots_tt hidden_trigger = { cannibalism_unified_larder_operation_slot_available = yes } }
+		custom_cost_trigger = { hidden_trigger = { cannibalism_unified_can_pay_current_consumption = yes } }
+		custom_cost_text = cannibalism_unified_consume_state_cost_text
+		complete_effect = { custom_effect_tooltip = cannibalism_unified_consume_state_effect_tt hidden_effect = { FROM = { save_event_target_as = cannibalism_unified_decision_state } cannibalism_unified_execute_current_consumption = yes } }
+		ai_will_do = {
+			base = constant:cannibalism_unified_decision_ai.none
+			modifier = { add = constant:cannibalism_unified_decision_ai.urgent cannibalism_unified_larder_rapid_route_is_current = yes }
+			modifier = { factor = constant:cannibalism_unified_decision_ai.urgent_factor cannibalism_unified_larder_rapid_route_is_current = yes check_variable = { cannibalism_larder < constant:cannibalism_consumption.larder_low } }
+			modifier = { add = constant:cannibalism_unified_decision_ai.standard cannibalism_unified_larder_managed_route_is_current = yes }
+			modifier = { factor = constant:cannibalism_unified_decision_ai.cautious_factor cannibalism_unified_larder_managed_route_is_current = yes has_war = yes }
+			modifier = { add = constant:cannibalism_unified_decision_ai.high cannibalism_unified_larder_mobile_route_is_current = yes }
+			modifier = { factor = constant:cannibalism_unified_decision_ai.urgent_factor cannibalism_unified_larder_mobile_route_is_current = yes has_war = yes }
+			modifier = { add = constant:cannibalism_unified_decision_ai.high cannibalism_unified_larder_battlefield_route_is_current = yes }
+			modifier = { factor = constant:cannibalism_unified_decision_ai.urgent_factor cannibalism_unified_larder_battlefield_route_is_current = yes has_war = yes }
 		}
-		custom_cost_trigger = { hidden_trigger = { cannibalism_unified_can_pay_managed_consumption = yes } }
-		custom_cost_text = cannibalism_unified_managed_consumption_cost_text
-		complete_effect = { custom_effect_tooltip = cannibalism_unified_managed_consumption_effect_tt hidden_effect = { FROM = { save_event_target_as = cannibalism_unified_decision_state } cannibalism_unified_execute_managed_consumption = yes } }
-		ai_will_do = { base = constant:cannibalism_unified_decision_ai.standard modifier = { factor = constant:cannibalism_unified_decision_ai.cautious_factor has_war = yes } }
-	}
-
-	cannibalism_unified_mobile_consumption = {
-		icon = GFX_decision_cannibalism_unified_mobile_consumption
-		state_target = yes
-		on_map_mode = map_and_decisions_view
-		target_root_trigger = { cannibalism_unified_can_pay_mobile_consumption = yes }
-		target_trigger = { FROM = { cannibalism_unified_state_can_support_mobile_consumption = yes } }
-		visible = { cannibalism_unified_larder_mobile_route_is_current = yes FROM = { cannibalism_unified_state_can_support_mobile_consumption = yes } }
-		available = {
-			custom_trigger_tooltip = { tooltip = cannibalism_unified_mobile_consumption_requirements_tt hidden_trigger = { cannibalism_unified_can_pay_mobile_consumption = yes } }
-			custom_trigger_tooltip = { tooltip = cannibalism_unified_player_mission_slots_tt hidden_trigger = { cannibalism_unified_larder_operation_slot_available = yes } }
-		}
-		custom_cost_trigger = { hidden_trigger = { cannibalism_unified_can_pay_mobile_consumption = yes } }
-		custom_cost_text = cannibalism_unified_mobile_consumption_cost_text
-		complete_effect = { custom_effect_tooltip = cannibalism_unified_mobile_consumption_effect_tt hidden_effect = { FROM = { save_event_target_as = cannibalism_unified_decision_state } cannibalism_unified_execute_mobile_consumption = yes } }
-		ai_will_do = { base = constant:cannibalism_unified_decision_ai.high modifier = { factor = constant:cannibalism_unified_decision_ai.urgent_factor has_war = yes } }
-	}
-
-	cannibalism_unified_battlefield_consumption = {
-		icon = GFX_decision_cannibalism_unified_battlefield_consumption
-		state_target = yes
-		on_map_mode = map_and_decisions_view
-		target_root_trigger = { cannibalism_unified_can_pay_battlefield_consumption = yes }
-		target_trigger = { FROM = { cannibalism_unified_state_can_support_battlefield_consumption = yes } }
-		visible = { cannibalism_unified_larder_battlefield_route_is_current = yes FROM = { cannibalism_unified_state_can_support_battlefield_consumption = yes } }
-		available = {
-			custom_trigger_tooltip = { tooltip = cannibalism_unified_battlefield_consumption_requirements_tt hidden_trigger = { cannibalism_unified_can_pay_battlefield_consumption = yes } }
-			custom_trigger_tooltip = { tooltip = cannibalism_unified_player_mission_slots_tt hidden_trigger = { cannibalism_unified_larder_operation_slot_available = yes } }
-		}
-		custom_cost_trigger = { hidden_trigger = { cannibalism_unified_can_pay_battlefield_consumption = yes } }
-		custom_cost_text = cannibalism_unified_battlefield_consumption_cost_text
-		complete_effect = { custom_effect_tooltip = cannibalism_unified_battlefield_consumption_effect_tt hidden_effect = { FROM = { save_event_target_as = cannibalism_unified_decision_state } cannibalism_unified_execute_battlefield_consumption = yes } }
-		ai_will_do = { base = constant:cannibalism_unified_decision_ai.high modifier = { factor = constant:cannibalism_unified_decision_ai.urgent_factor has_war = yes } }
 	}
 
 	cannibalism_unified_larder_mission = {
@@ -2228,75 +2144,36 @@ cannibalism_unified_war_machine_category = {
 		custom_cost_trigger = { hidden_trigger = { cannibalism_unified_can_pay_legion_recruitment = yes } }
 		custom_cost_text = cannibalism_unified_legion_cost_text
 		complete_effect = { custom_effect_tooltip = cannibalism_unified_legion_effect_tt hidden_effect = { FROM = { save_event_target_as = cannibalism_unified_decision_state } cannibalism_unified_execute_legion_recruitment = yes } }
-		ai_will_do = { base = constant:cannibalism_unified_decision_ai.high modifier = { factor = constant:cannibalism_unified_decision_ai.urgent_factor has_war = yes } }
-	}
-
-	cannibalism_unified_surge_cannibal_legion = {
-		icon = GFX_decision_cannibalism_unified_surge_cannibal_legion
-		state_target = yes
-		on_map_mode = map_and_decisions_view
-		target_root_trigger = { cannibalism_unified_can_pay_legion_surge = yes }
-		target_trigger = { FROM = { cannibalism_unified_state_can_recruit_legion = yes } }
-		visible = { cannibalism_unified_war_machine_recruitment_phase_is_open = yes has_country_flag = cannibalism_unified_legion_surge_decisions_open has_country_flag = cannibalism_unified_cannibal_legion_recruitment_open FROM = { cannibalism_unified_state_can_recruit_legion = yes } }
-		available = {
-			custom_trigger_tooltip = { tooltip = cannibalism_unified_legion_surge_requirements_tt hidden_trigger = { cannibalism_unified_can_pay_legion_surge = yes } }
-			custom_trigger_tooltip = { tooltip = cannibalism_unified_player_mission_slots_tt hidden_trigger = { cannibalism_unified_war_machine_operation_slot_available = yes } }
+		ai_will_do = {
+			base = constant:cannibalism_unified_decision_ai.high
+			modifier = { add = constant:cannibalism_unified_decision_ai.high has_country_flag = cannibalism_unified_legion_surge_decisions_open }
+			modifier = { factor = constant:cannibalism_unified_decision_ai.urgent_factor has_war = yes }
 		}
-		custom_cost_trigger = { hidden_trigger = { cannibalism_unified_can_pay_legion_surge = yes } }
-		custom_cost_text = cannibalism_unified_legion_cost_text
-		complete_effect = { custom_effect_tooltip = cannibalism_unified_legion_surge_effect_tt hidden_effect = { FROM = { save_event_target_as = cannibalism_unified_decision_state } cannibalism_unified_execute_legion_recruitment = yes } }
-		ai_will_do = { base = constant:cannibalism_unified_decision_ai.urgent modifier = { factor = constant:cannibalism_unified_decision_ai.urgent_factor has_war = yes } }
 	}
 
-	cannibalism_unified_recruit_island_reavers = {
+	cannibalism_unified_recruit_origin_specialist = {
 		icon = GFX_decision_cannibalism_unified_recruit_island_reavers
 		state_target = yes
 		on_map_mode = map_and_decisions_view
-		target_root_trigger = { cannibalism_unified_can_pay_island_specialist_recruitment = yes }
+		target_root_trigger = { cannibalism_unified_can_pay_any_origin_specialist_recruitment = yes }
 		target_trigger = { FROM = { cannibalism_unified_state_can_recruit_origin_specialist = yes } }
-		visible = { cannibalism_unified_war_machine_recruitment_phase_is_open = yes has_country_flag = cannibalism_unified_origin_specialist_recruitment_open has_country_flag = cannibalism_unified_origin_island_knowledge FROM = { cannibalism_unified_state_can_recruit_origin_specialist = yes } }
+		visible = { cannibalism_unified_war_machine_recruitment_phase_is_open = yes has_country_flag = cannibalism_unified_origin_specialist_recruitment_open FROM = { cannibalism_unified_state_can_recruit_origin_specialist = yes } }
 		available = {
-			custom_trigger_tooltip = { tooltip = cannibalism_unified_island_specialist_requirements_tt hidden_trigger = { cannibalism_unified_can_pay_island_specialist_recruitment = yes } }
+			custom_trigger_tooltip = { tooltip = cannibalism_unified_origin_specialist_requirements_tt hidden_trigger = { cannibalism_unified_can_pay_any_origin_specialist_recruitment = yes } }
 			custom_trigger_tooltip = { tooltip = cannibalism_unified_player_mission_slots_tt hidden_trigger = { cannibalism_unified_war_machine_operation_slot_available = yes } }
 		}
-		custom_cost_trigger = { hidden_trigger = { cannibalism_unified_can_pay_island_specialist_recruitment = yes } }
+		custom_cost_trigger = { hidden_trigger = { cannibalism_unified_can_pay_any_origin_specialist_recruitment = yes } }
 		custom_cost_text = cannibalism_unified_origin_specialist_cost_text
-		complete_effect = { custom_effect_tooltip = cannibalism_unified_island_specialist_effect_tt hidden_effect = { FROM = { save_event_target_as = cannibalism_unified_decision_state } cannibalism_unified_execute_island_specialist_recruitment = yes } }
-		ai_will_do = { base = constant:cannibalism_unified_decision_ai.high modifier = { factor = constant:cannibalism_unified_decision_ai.preferred_factor has_country_flag = cannibalism_unified_origin_specialists_preserved } }
-	}
-
-	cannibalism_unified_recruit_siege_eaters = {
-		icon = GFX_decision_cannibalism_unified_recruit_siege_eaters
-		state_target = yes
-		on_map_mode = map_and_decisions_view
-		target_root_trigger = { cannibalism_unified_can_pay_siege_specialist_recruitment = yes }
-		target_trigger = { FROM = { cannibalism_unified_state_can_recruit_origin_specialist = yes } }
-		visible = { cannibalism_unified_war_machine_recruitment_phase_is_open = yes has_country_flag = cannibalism_unified_origin_specialist_recruitment_open has_country_flag = cannibalism_unified_origin_siege_knowledge FROM = { cannibalism_unified_state_can_recruit_origin_specialist = yes } }
-		available = {
-			custom_trigger_tooltip = { tooltip = cannibalism_unified_siege_specialist_requirements_tt hidden_trigger = { cannibalism_unified_can_pay_siege_specialist_recruitment = yes } }
-			custom_trigger_tooltip = { tooltip = cannibalism_unified_player_mission_slots_tt hidden_trigger = { cannibalism_unified_war_machine_operation_slot_available = yes } }
+		complete_effect = { custom_effect_tooltip = cannibalism_unified_origin_specialist_effect_tt hidden_effect = { FROM = { save_event_target_as = cannibalism_unified_decision_state } cannibalism_unified_execute_current_origin_specialist_recruitment = yes } }
+		ai_will_do = {
+			base = constant:cannibalism_unified_decision_ai.none
+			modifier = { add = constant:cannibalism_unified_decision_ai.high cannibalism_unified_origin_specialist_is_island = yes }
+			modifier = { factor = constant:cannibalism_unified_decision_ai.preferred_factor cannibalism_unified_origin_specialist_is_island = yes has_country_flag = cannibalism_unified_origin_specialists_preserved }
+			modifier = { add = constant:cannibalism_unified_decision_ai.high cannibalism_unified_origin_specialist_is_siege = yes }
+			modifier = { factor = constant:cannibalism_unified_decision_ai.urgent_factor cannibalism_unified_origin_specialist_is_siege = yes has_war = yes }
+			modifier = { add = constant:cannibalism_unified_decision_ai.urgent cannibalism_unified_origin_specialist_is_march = yes }
+			modifier = { factor = constant:cannibalism_unified_decision_ai.preferred_factor cannibalism_unified_origin_specialist_is_march = yes has_war = yes }
 		}
-		custom_cost_trigger = { hidden_trigger = { cannibalism_unified_can_pay_siege_specialist_recruitment = yes } }
-		custom_cost_text = cannibalism_unified_origin_specialist_cost_text
-		complete_effect = { custom_effect_tooltip = cannibalism_unified_siege_specialist_effect_tt hidden_effect = { FROM = { save_event_target_as = cannibalism_unified_decision_state } cannibalism_unified_execute_siege_specialist_recruitment = yes } }
-		ai_will_do = { base = constant:cannibalism_unified_decision_ai.high modifier = { factor = constant:cannibalism_unified_decision_ai.urgent_factor has_war = yes } }
-	}
-
-	cannibalism_unified_recruit_march_predation_column = {
-		icon = GFX_decision_cannibalism_unified_recruit_march_predation_column
-		state_target = yes
-		on_map_mode = map_and_decisions_view
-		target_root_trigger = { cannibalism_unified_can_pay_march_specialist_recruitment = yes }
-		target_trigger = { FROM = { cannibalism_unified_state_can_recruit_origin_specialist = yes } }
-		visible = { cannibalism_unified_war_machine_recruitment_phase_is_open = yes has_country_flag = cannibalism_unified_origin_specialist_recruitment_open has_country_flag = cannibalism_unified_origin_march_knowledge FROM = { cannibalism_unified_state_can_recruit_origin_specialist = yes } }
-		available = {
-			custom_trigger_tooltip = { tooltip = cannibalism_unified_march_specialist_requirements_tt hidden_trigger = { cannibalism_unified_can_pay_march_specialist_recruitment = yes } }
-			custom_trigger_tooltip = { tooltip = cannibalism_unified_player_mission_slots_tt hidden_trigger = { cannibalism_unified_war_machine_operation_slot_available = yes } }
-		}
-		custom_cost_trigger = { hidden_trigger = { cannibalism_unified_can_pay_march_specialist_recruitment = yes } }
-		custom_cost_text = cannibalism_unified_origin_specialist_cost_text
-		complete_effect = { custom_effect_tooltip = cannibalism_unified_march_specialist_effect_tt hidden_effect = { FROM = { save_event_target_as = cannibalism_unified_decision_state } cannibalism_unified_execute_march_specialist_recruitment = yes } }
-		ai_will_do = { base = constant:cannibalism_unified_decision_ai.urgent modifier = { factor = constant:cannibalism_unified_decision_ai.preferred_factor has_war = yes } }
 	}
 
 	cannibalism_unified_raise_bone_guard = {
@@ -2631,8 +2508,13 @@ cannibalism_wendigo_command_category = {
 		}
 		target_root_trigger = { cannibalism_wendigo_can_pay_designate_anchor_cost = yes }
 		target_trigger = { FROM = { cannibalism_state_can_become_wendigo_anchor = yes } }
-		available = { cannibalism_wendigo_can_pay_designate_anchor_cost = yes }
-		custom_cost_trigger = { hidden_trigger = { cannibalism_wendigo_can_pay_designate_anchor_cost = yes } }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = cannibalism_designate_transformation_anchor_requirements_tt
+				hidden_trigger = { cannibalism_wendigo_can_pay_designate_anchor_cost = yes FROM = { cannibalism_state_can_become_wendigo_anchor = yes } }
+			}
+		}
+		custom_cost_trigger = { hidden_trigger = { cannibalism_wendigo_can_pay_designate_anchor_cost = yes FROM = { cannibalism_state_can_become_wendigo_anchor = yes } } }
 		custom_cost_text = cannibalism_designate_transformation_anchor_cost_text
 		complete_effect = {
 			custom_effect_tooltip = cannibalism_designate_transformation_anchor_effect_tt
@@ -2666,8 +2548,13 @@ cannibalism_wendigo_command_category = {
 		}
 		target_root_trigger = { cannibalism_wendigo_can_pay_fortify_anchor_cost = yes }
 		target_trigger = { FROM = { cannibalism_state_can_fortify_wendigo_anchor = yes } }
-		available = { cannibalism_wendigo_can_pay_fortify_anchor_cost = yes }
-		custom_cost_trigger = { hidden_trigger = { cannibalism_wendigo_can_pay_fortify_anchor_cost = yes } }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = cannibalism_fortify_transformation_anchor_requirements_tt
+				hidden_trigger = { cannibalism_wendigo_can_pay_fortify_anchor_cost = yes FROM = { cannibalism_state_can_fortify_wendigo_anchor = yes } }
+			}
+		}
+		custom_cost_trigger = { hidden_trigger = { cannibalism_wendigo_can_pay_fortify_anchor_cost = yes FROM = { cannibalism_state_can_fortify_wendigo_anchor = yes } } }
 		custom_cost_text = cannibalism_fortify_transformation_anchor_cost_text
 		complete_effect = {
 			custom_effect_tooltip = cannibalism_fortify_transformation_anchor_effect_tt
@@ -2691,9 +2578,15 @@ cannibalism_wendigo_command_category = {
 		}
 		target_root_trigger = { cannibalism_wendigo_command_is_open = yes }
 		target_trigger = { FROM = { cannibalism_state_can_feed_wendigo_anchor = yes } }
-		available = { cannibalism_wendigo_command_is_open = yes }
-		custom_cost_trigger = { hidden_trigger = { cannibalism_wendigo_command_is_open = yes } }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = cannibalism_consume_transformation_anchor_population_requirements_tt
+				hidden_trigger = { cannibalism_wendigo_can_feed_selected_anchor = yes }
+			}
+		}
+		custom_cost_trigger = { hidden_trigger = { cannibalism_wendigo_can_feed_selected_anchor = yes } }
 		custom_cost_text = cannibalism_consume_transformation_anchor_population_cost_text
+		days_re_enable = constant:cannibalism_timing.consumption_cooldown_days
 		complete_effect = {
 			custom_effect_tooltip = cannibalism_consume_transformation_anchor_population_effect_tt
 			hidden_effect = {
@@ -2720,8 +2613,13 @@ cannibalism_wendigo_command_category = {
 		}
 		target_root_trigger = { cannibalism_wendigo_can_pay_train_pack_cost = yes }
 		target_trigger = { FROM = { cannibalism_state_can_train_wendigo_pack = yes } }
-		available = { cannibalism_wendigo_can_pay_train_pack_cost = yes }
-		custom_cost_trigger = { hidden_trigger = { cannibalism_wendigo_can_pay_train_pack_cost = yes } }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = cannibalism_train_additional_wendigo_packs_requirements_tt
+				hidden_trigger = { cannibalism_wendigo_can_pay_train_pack_cost = yes FROM = { cannibalism_state_can_train_wendigo_pack = yes } }
+			}
+		}
+		custom_cost_trigger = { hidden_trigger = { cannibalism_wendigo_can_pay_train_pack_cost = yes FROM = { cannibalism_state_can_train_wendigo_pack = yes } } }
 		custom_cost_text = cannibalism_train_additional_wendigo_packs_cost_text
 		complete_effect = {
 			custom_effect_tooltip = cannibalism_train_additional_wendigo_packs_effect_tt
@@ -2749,8 +2647,13 @@ cannibalism_wendigo_command_category = {
 		}
 		target_root_trigger = { cannibalism_wendigo_can_pay_frozen_corridor_cost = yes }
 		target_trigger = { FROM = { cannibalism_state_can_freeze_wendigo_supply_corridor = yes } }
-		available = { cannibalism_wendigo_can_pay_frozen_corridor_cost = yes }
-		custom_cost_trigger = { hidden_trigger = { cannibalism_wendigo_can_pay_frozen_corridor_cost = yes } }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = cannibalism_freeze_supply_corridor_requirements_tt
+				hidden_trigger = { cannibalism_wendigo_can_pay_frozen_corridor_cost = yes FROM = { cannibalism_state_can_freeze_wendigo_supply_corridor = yes } }
+			}
+		}
+		custom_cost_trigger = { hidden_trigger = { cannibalism_wendigo_can_pay_frozen_corridor_cost = yes FROM = { cannibalism_state_can_freeze_wendigo_supply_corridor = yes } } }
 		custom_cost_text = cannibalism_freeze_supply_corridor_cost_text
 		complete_effect = {
 			custom_effect_tooltip = cannibalism_freeze_supply_corridor_effect_tt
@@ -2773,8 +2676,13 @@ cannibalism_wendigo_command_category = {
 		}
 		target_root_trigger = { cannibalism_wendigo_can_pay_acceleration_cost = yes }
 		target_trigger = { FROM = { cannibalism_state_can_accelerate_wendigo_countdown = yes } }
-		available = { cannibalism_wendigo_can_pay_acceleration_cost = yes }
-		custom_cost_trigger = { hidden_trigger = { cannibalism_wendigo_can_pay_acceleration_cost = yes } }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = cannibalism_accelerate_transformation_countdown_requirements_tt
+				hidden_trigger = { cannibalism_wendigo_can_pay_acceleration_cost = yes FROM = { cannibalism_state_can_accelerate_wendigo_countdown = yes } }
+			}
+		}
+		custom_cost_trigger = { hidden_trigger = { cannibalism_wendigo_can_pay_acceleration_cost = yes FROM = { cannibalism_state_can_accelerate_wendigo_countdown = yes } } }
 		custom_cost_text = cannibalism_accelerate_transformation_countdown_cost_text
 		complete_effect = {
 			custom_effect_tooltip = cannibalism_accelerate_transformation_countdown_effect_tt
@@ -2797,8 +2705,13 @@ cannibalism_wendigo_command_category = {
 		}
 		target_root_trigger = { cannibalism_wendigo_can_pay_stabilization_cost = yes }
 		target_trigger = { FROM = { cannibalism_state_can_stabilize_wendigo_countdown = yes } }
-		available = { cannibalism_wendigo_can_pay_stabilization_cost = yes }
-		custom_cost_trigger = { hidden_trigger = { cannibalism_wendigo_can_pay_stabilization_cost = yes } }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = cannibalism_stabilize_transformation_countdown_requirements_tt
+				hidden_trigger = { cannibalism_wendigo_can_pay_stabilization_cost = yes FROM = { cannibalism_state_can_stabilize_wendigo_countdown = yes } }
+			}
+		}
+		custom_cost_trigger = { hidden_trigger = { cannibalism_wendigo_can_pay_stabilization_cost = yes FROM = { cannibalism_state_can_stabilize_wendigo_countdown = yes } } }
 		custom_cost_text = cannibalism_stabilize_transformation_countdown_cost_text
 		complete_effect = {
 			custom_effect_tooltip = cannibalism_stabilize_transformation_countdown_effect_tt
@@ -2826,7 +2739,12 @@ cannibalism_wendigo_command_category = {
 			cannibalism_wendigo_scored_target_is_valid_from_decision = yes
 			FROM = { cannibalism_wendigo_is_valid_terminal_hunt_target = yes }
 		}
-		available = { cannibalism_wendigo_can_pay_terminal_hunt_launch_cost = yes }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = cannibalism_wendigo_launch_terminal_hunt_requirements_tt
+				hidden_trigger = { cannibalism_wendigo_can_pay_terminal_hunt_launch_cost = yes }
+			}
+		}
 		custom_cost_trigger = { hidden_trigger = { cannibalism_wendigo_can_pay_terminal_hunt_launch_cost = yes } }
 		custom_cost_text = cannibalism_wendigo_launch_terminal_hunt_cost_text
 		complete_effect = {
@@ -2954,7 +2872,12 @@ cannibalism_wendigo_command_category = {
 			cannibalism_wendigo_scored_target_is_valid_from_decision = yes
 			FROM = { cannibalism_wendigo_is_valid_inherited_cell_target = yes }
 		}
-		available = { cannibalism_wendigo_can_pay_inherited_cell_cost = yes }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = cannibalism_activate_inherited_winter_cell_requirements_tt
+				hidden_trigger = { cannibalism_wendigo_can_pay_inherited_cell_cost = yes }
+			}
+		}
 		custom_cost_trigger = { hidden_trigger = { cannibalism_wendigo_can_pay_inherited_cell_cost = yes } }
 		custom_cost_text = cannibalism_activate_inherited_winter_cell_cost_text
 		complete_effect = {
