@@ -1,6 +1,7 @@
 # Achievement prompt for Event 013 Natural Disasters
 
-> Implementation disposition: executed for the ten accepted achievements. Reuse this prompt only for a bounded repair or audited extension; the live registry, localisation, icons, and sequence-bound hooks are authoritative.
+> Historical build contract, executed for the ten accepted achievements listed in the event overview.
+> Reuse this prompt only for a bounded repair or audited extension; the live registry, localisation, icons, and sequence-bound hooks are authoritative, and the live ids carry a `013_natural_disasters_` prefix in place of the `013_` working prefix below (for example `013_natural_disasters_after_the_sirens`).
 
 Use the Event 013 specification package as source design. Do not write final achievement localisation without review. Working labels below are not final titles.
 

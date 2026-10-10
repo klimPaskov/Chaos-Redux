@@ -1,6 +1,7 @@
 # Event 013 Natural Disasters planning package manifest
 
-Expanded closure-ready package for Event 013 Natural Disasters.
+Accepted source design and historical build material for the implemented Event 013 Natural Disasters engine.
+The README is the entry point and records file roles, shared-system hooks, open questions and the changelog.
 
 ## Package contents
 
@@ -11,10 +12,6 @@ Expanded closure-ready package for Event 013 Natural Disasters.
 - `docs_alignment/013_catalog_and_docs_alignment.md`
 - `docs_alignment/013_source_of_truth_and_disposition_map.md`
 - `implementation_readiness/013_acceptance_gate_matrix.md`
-- `implementation_readiness/013_closure_resume_packet.md`
-- `implementation_readiness/013_dependency_order_and_subagent_sequence.md`
-- `implementation_readiness/013_final_prompt_for_next_agent.md`
-- `implementation_readiness/013_simplification_blocklist.md`
 - `implementation_readiness/013_source_to_file_surface_map.md`
 - `implementation_readiness/013_validation_scenario_matrix.md`
 - `manifest.md`
@@ -25,11 +22,8 @@ Expanded closure-ready package for Event 013 Natural Disasters.
 - `matrices/013_super_event_research_handoff_matrix.md`
 - `prompts/natural_disasters_achievement_prompt.md`
 - `prompts/natural_disasters_asset_prompt.md`
-- `prompts/natural_disasters_coding_prompt.md`
 - `prompts/natural_disasters_decision_mission_prompt.md`
-- `prompts/natural_disasters_goal_prompt.md`
 - `prompts/natural_disasters_implementation_resume_prompt.md`
-- `prompts/natural_disasters_subagent_routing_prompt.md`
 - `prompts/natural_disasters_super_event_prompt.md`
 - `research/000_source_reading_log.md`
 - `research/001_catalog_notes.md`
@@ -53,17 +47,12 @@ Expanded closure-ready package for Event 013 Natural Disasters.
 - `specs/013_natural_disasters_spec_part_8_deep_family_minispecs.md`
 - `specs/013_natural_disasters_spec_part_9_abnormal_scripted_gui_map.md`
 
-## Second-pass completion note
+## Removed files
 
-The continuation prompt work is complete inside this package. Files cover deep per-family mini-specs, abnormal scripted GUI planning, staged recovery decisions and missions, super-event research handoff, catalog and documentation alignment, and a final improvement-loop style anti-bloat closure handoff.
-
-## Closure-ready third-pass note
-
-The third pass did not add new disaster mechanics. It added a source-of-truth and disposition map, implementation readiness ledger, implementation resume prompt, final readiness note, and package validation note. The closure recommendation remains active: broad planning should stop unless the user asks for a specific extra design surface or implementation finds a concrete blocker.
+- `prompts/natural_disasters_continuation_prompt.md`, superseded before the 2026-10-10 audit.
+- On 2026-10-10: `implementation_readiness/013_closure_resume_packet.md`, `implementation_readiness/013_dependency_order_and_subagent_sequence.md`, `implementation_readiness/013_final_prompt_for_next_agent.md`, `implementation_readiness/013_simplification_blocklist.md`, `prompts/natural_disasters_coding_prompt.md`, `prompts/natural_disasters_goal_prompt.md` and `prompts/natural_disasters_subagent_routing_prompt.md`, merged into `prompts/natural_disasters_implementation_resume_prompt.md`.
 
 ## Historical planning-run limitations
 
-- This is a planning package, not a gameplay implementation patch.
-- Project subagents were represented through the provided TOML instructions and prompt routing, but were not actually executed in this environment.
-- The live checkout, offline wiki, vanilla files, and game validation were unavailable in the original planning run.
-- Current continuation and evidence boundaries are indexed by `docs_alignment/013_source_of_truth_and_disposition_map.md` and `prompts/natural_disasters_implementation_resume_prompt.md`.
+- The original planning run produced documentation only and had no live checkout, offline wiki, vanilla files, game validation or executable subagents.
+- Those limits apply to the `research/` logs, which remain unchanged provenance; implementation evidence lives in `docs/events/013_natural_disasters/overview.md` and `docs/plans/013_natural_disasters_plans/`.

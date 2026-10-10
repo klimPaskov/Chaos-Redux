@@ -1,6 +1,7 @@
 # Event 013 disaster call contract matrix
 
 This matrix describes the reusable call surface that other systems should use. It is design guidance, not code.
+The live gateway is `call_natural_disaster` in `common/scripted_effects/chaosx_dynamic_effects.txt`; its exact input variables, proof flags and example are documented under that name in `common/scripted_effects/chaosx_dynamic_effects.md`, which wins over the working field names below.
 
 | Call field | Required | Accepted direction | Default behavior |
 | --- | --- | --- | --- |
@@ -13,7 +14,7 @@ This matrix describes the reusable call surface that other systems should use. I
 | severity | No | local, severe, regional, catastrophic, abnormal | local or sequence-scaled |
 | sequence_count | No | single, local season, regional system, global pulse, moving corridor, barrage | stage default |
 | news_policy | No | always, meaningful, first family, major only, none | meaningful with throttle |
-| report_policy | No | affected country, caller, global, silent | affected country delayed report |
+| report_policy | No | affected country, caller, global, silent, delayed batch | one aggregate affected-country report per recipient and sequence |
 | aftermath_policy | No | none, light, normal, full, emergency | normal for serious impact |
 | chain_policy | No | none, family, famine, disease, refugee, aftershock, tsunami, abnormal | family if severity allows |
 | death_scale | No | multiplier or caller pressure | severity and vulnerability default |

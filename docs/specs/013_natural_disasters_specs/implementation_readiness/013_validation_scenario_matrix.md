@@ -1,12 +1,15 @@
 # Event 013 Natural Disasters, validation scenario matrix
 
-This matrix defines meaningful checks for the implementation pass. It is not a request for the user to validate the mod. It is a handoff for the coding agent and audit agents.
+This matrix lists the live acceptance scenarios for the implemented Event 013 engine.
+It is not a request for the user to validate the mod and not a build queue.
+Report expectations follow the accepted 2026-10-05 rule in Part 2: one aggregate report per recipient and sequence after that sequence's scheduled physical jobs drain, plus at most one world-news event per sequence.
+The executed and still unverified scenarios are tracked in `docs/plans/013_natural_disasters_plans/2026-10-05_report_news_implementation_handoff.md` and the 2026-10-06 final audits.
 
 ## Baseline sequence checks
 
 | Scenario | Setup | Expected result | Failure to catch |
 | --- | --- | --- | --- |
-| Single baseline disaster | Force one baseline Event 013 firing against a valid country and state. | One history row appears, one impact resolves after the designed delay, report follows, aftermath notification appears. | Extra history rows, missing report, silent category, invalid target loss. |
+| Single baseline disaster | Force one baseline Event 013 firing against a valid country and state. | One history row appears, one impact resolves after the designed delay, one aggregate report follows once the sequence's jobs drain, aftermath notification appears. | Extra history rows, missing report, silent category, invalid target loss. |
 | Direct family call | Call a specific ordinary family with a chosen target country and state. | The requested family, target, severity, and policy package are honored. | Random family override, copied logic path, missing caller policy. |
 | Random family call | Call random valid family under baseline rules. | Family pool is baseline-eligible and target scoring selects a meaningful state. | Evolution-only family appears too early or target is irrelevant. |
 | Delay compression | Fire a sequence with several disasters. | Disasters remain delayed, with compression only as sequence pressure rises. | Same-day burst or no pacing change. |
@@ -26,7 +29,7 @@ This matrix defines meaningful checks for the implementation pass. It is not a r
 
 | Scenario | Setup | Expected result | Failure to catch |
 | --- | --- | --- | --- |
-| Affected player country | Player country is hit. | Report arrives after the expected delay and category notification is visible. | Player must notice map damage manually. |
+| Affected player country | Player country is hit several times in one sequence. | One aggregate report lists every affected state and family after the sequence's jobs drain, and the category notification is visible from the forecast onward. | Player must notice map damage manually, or receives one popup per impact. |
 | Affected AI country | AI country is hit. | AI receives recovery route and can clear or reduce aftermath through AI equivalents. | AI never recovers or category logic is human-only. |
 | Direct caller aftermath | Another event calls a disaster with aftermath enabled. | Same report and category notification reliability applies. | Direct calls bypass aftermath notification. |
 | Aftermath expiry | Let aftermath duration expire without recovery. | Chain or degradation checks run, then stale data is cleaned as designed. | Permanent stale card or no consequence. |

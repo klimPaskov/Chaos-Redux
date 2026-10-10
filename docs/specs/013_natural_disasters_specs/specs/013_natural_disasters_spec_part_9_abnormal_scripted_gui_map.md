@@ -1,6 +1,8 @@
 # Event 013 Natural Disasters, Part 9, abnormal disaster scripted GUI map
 
 This file plans the custom scripted GUI surface for Evolution III abnormal disasters. It is a design handoff, not final GUI code. Working sprite names are stable handoff names, not final localisation.
+The built window (`natural_disaster_abnormal_path_gui` in `common/scripted_guis/013_natural_disasters_scripted_gui.txt`, layout in `interface/013_natural_disasters.gui`), its geometry and its live sprite names are documented in the event overview; the layout reference and 2026-10-03 rebuild are in `docs/plans/013_natural_disasters_plans/2026-10-03_path_window_live_qa_handoff.md`.
+The selected-record panel currently shows an eleven-line summary; open question 1 in the package README proposes a smaller value budget (spec audit 2026-10-10).
 
 The normal aftermath category should stay readable without this map. The abnormal map appears only when the player needs to understand moving, multi-state, delayed, or global-path disasters. The GUI must never become a generic disaster announcer. It shows the physical path, current danger, recent impact cards, and recovery priorities.
 

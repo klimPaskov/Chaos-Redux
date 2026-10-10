@@ -1,25 +1,36 @@
-# Event 013 Natural Disasters implementation resume prompt
+# Event 013 Natural Disasters resume brief
 
-> Resume disposition: resume from `docs/events/013_natural_disasters/overview.md`, the live Event 013 files, and `docs/plans/013_natural_disasters_plans/`. Do not restart from the planning package or recreate completed asset/research tranches.
+This is the single resume brief for Event 013.
+It replaces the former coding, goal, subagent-routing and implementation-resume prompts, the closure resume packet, the final next-agent prompt, the dependency-order plan and the simplification blocklist (git history keeps them).
 
-Continue from the closure-ready Event 013 package, not from the superseded continuation prompt. Treat `docs/specs/013_natural_disasters_specs/` as the source-spec folder. Read `README.md`, `manifest.md`, `research/004_final_improvement_loop_anti_bloat_closure.md`, `research/008_closure_followup_final_readiness_pass.md`, `docs_alignment/013_source_of_truth_and_disposition_map.md`, and `matrices/013_implementation_readiness_ledger.md` first.
+## Status
 
-Continue the live fresh-source Event 013 design. Do not reintroduce or patch old Natural Disasters logic, and do not reuse old Earth Earthquake logic. Event 046 must remain an inactive unknown placeholder. Event 099 Sandstorm must remain a placeholder or narrow bridge into the Event 013 dust and sandstorm family. Event 051 Heat Wave remains separate, and Event 013 heat calls must skip, bridge, or otherwise prevent stacking with active Event 051 heat logic.
+Event 013 is implemented in source.
+Resume from `docs/events/013_natural_disasters/overview.md`, the live Event 013 files listed there, and `docs/plans/013_natural_disasters_plans/` (start with `agent_decisions_2026-10-05.md`).
+Do not restart from this planning package, rebuild the engine, or recreate completed asset, super-event, achievement or audit tranches.
+Pick work only from a concrete defect, an accepted plan item, or an open question in the package README that the owner has accepted.
 
-Begin with the reusable dynamic disaster system inside Event 013. Other events must be able to call a specific disaster family, a random family, a selected country, selected state, selected region, random valid target, severity band, news setting, report setting, aftermath setting, chain setting, death scaling override, and damage scaling override without copying family logic. One Event 013 firing may contain many delayed warning, impact, report, aftermath, and chain subevents, but it creates one Event 013 history row.
+## Binding design rules
 
-Affected countries must reliably receive delayed reports and visible aftermath category notifications even when the disaster comes from an external reusable call. Reports should identify the specific disaster and affected place direction. The aftermath category must show active disaster cards, affected states, damage type, disruption, recovery needs, cleanup phase, and chain risks. Do not frame Event 013 as an official disaster office, bureau, emergency authority, or global warning agency. The player should see specific disasters in specific places.
+These rules come from the accepted source design and the accepted negative boundaries in `docs_alignment/013_source_of_truth_and_disposition_map.md`.
 
-Baseline disasters must matter. They should damage buildings and reduce population enough to feed the Deaths system visibly. Evolution I widens the family pool and increases sequence activity without turning every impact into a major catastrophe. Evolution II must scale deaths, neighboring-state damage, supply disruption, famine, disease, refugee pressure, and recovery strain much harder. Evolution III unlocks abnormal disasters such as meteor showers, whole-earth rupture, massive eruption, delayed tsunami chains, moving storm corridors, tornado pathing, and other large sequences. Event 013 has no terminal world-end branch.
+- Event 013 is a fresh, Minor Repeatable, non-terminal engine; old Natural Disasters and Earth Earthquake logic stay deleted.
+- Event 046 stays an inactive placeholder, Event 099 stays a narrow bridge through `call_natural_disaster`, and Event 051 Heat Wave stays separate with no heat stacking.
+- One accepted call owns one sequence and at most one Event 013 history row; warnings, impacts, follow-ups and reports never add rows, and evolution rows mark only the three evolutions.
+- External callers use only `call_natural_disaster` and never copy damage, Deaths, report, aftermath or follow-up logic; hostile or divine callers prove their own cost, cooldown and target legitimacy.
+- Physical family geography is a hard gate; exposure only ranks candidates that already passed it.
+- Each recipient gets at most one aggregate report per sequence and each sequence at most one world-news event (accepted 2026-10-05); later recovery outcomes update cards, map and history without a second popup.
+- Recovery and relief fees follow the accepted 2026-10-06 bill in Part 2; no Political Power store, no duplicate Stability fees, at most three inline amounts and four spent types.
+- Deaths reduce real state population through the shared Deaths system; baseline losses matter, Evolution II scales with vulnerability, Evolution III can devastate regions.
+- Normal disasters use the aftermath category; only Evolution III and Maximum Disaster Barrage use the abnormal path map, with frame-sheet animation and static fallbacks.
+- Player text is final localisation written from in-game facts; planning labels, formulas and implementation history never appear in it.
+- No new countries, focus trees, family-level super-events, normal-disaster GUIs or world-end branch.
 
-Use `specs/013_natural_disasters_spec_part_3_disaster_family_playbooks.md` and `specs/013_natural_disasters_spec_part_8_deep_family_minispecs.md` together. The deep family mini-spec is the stronger source when both files discuss the same family. Implement warning decisions, aftermath card fields, AI priorities, report and news direction, state modifier direction, and follow-up chain routes for each family. Do not collapse families into one generic damage event.
+## Working rules for a continuation
 
-Use `specs/013_natural_disasters_spec_part_10_recovery_decision_mission_map.md` for recovery decisions and missions. Recovery must include early rescue, middle stabilization, late reconstruction, chain prevention, active mission caps, partial success, failure outcomes, cleanup, and foreign relief variants. Costs should use equipment, manpower, trucks, trains, convoys, fuel, civilian capacity, stability, war support, XP, supply, ports, rail, and route access where they fit, not mostly political power.
-
-Use `specs/013_natural_disasters_spec_part_9_abnormal_scripted_gui_map.md` only for Evolution III abnormal or manual barrage variants. The abnormal map needs state-driven cards, path preview, next-hit list, impact markers, warning states, player interaction flow, frame-sheet animations, and static fallbacks. GIFs are review previews only. Final animation must use real source frames and horizontal frame-sheet DDS assets through the frame-animation workflow.
-
-Keep localisation direction-only until implementation writes final text. Do not paste working labels or spec notes into player-facing localisation. Do not invent super-event final titles, quotes, remarks, slogans, lyric fragments, cultural references, or audio choices. Use the super-event text and audio research workflows first, then wire final researched assets, quotes, remarks, audio, image, docs, and spreadsheet entries.
-
-Use project subagents where the package routes them: `chaosx_scripted_system_architect` for reusable helpers, `chaosx_decision_mission_auditor` for decisions and missions, `chaosx_localisation_auditor` for text and scripted localisation, asset subagents by source mode, `chaosx_super_event_text_researcher` and `chaosx_super_event_audio_researcher` for super-event research, `chaosx_spreadsheet_doc_worker` after final wording exists, and `chaosx_event_completion_auditor` before any completion claim. If subagents are unavailable, report that honestly.
-
-Before claiming completion, compare the implementation against `matrices/013_implementation_readiness_ledger.md`. Report any simplification, missing family, missing AI behavior, missing report, missing aftermath notification, missing Deaths-system integration, missing asset, missing frame-sheet fallback, missing super-event research package, placeholder, or unvalidated surface.
+- Follow CLAUDE.md, `chaos-redux-events`, `chaos-redux-decisions-missions` and the skill for the touched surface; route specialists through `.claude/skills/chaos-redux-subagents/SKILL.md`.
+- Change tuning in `common/script_constants/013_natural_disasters_constants.txt`, not in prose or script literals.
+- A change to a shared hook (Deaths, Famine, Migration, Air Cleanliness, Events 012, 014, 018, 020, 026) needs both owners named and the same idempotency key on both sides (the sequence id and impact index).
+- Record each change and its validation limits in `docs/plans/013_natural_disasters_plans/` and keep the overview current.
+- A change to an Event Details, evolution, cluster or scenario field edits `docs/spreadsheets/chaos_redux_events_catalog.xlsx` and then runs `python .tools/export_event_catalog_csv.py`.
+- Report every simplification, unverified engine behaviour and unavailable check plainly; do not request user game tests as a completion step.

@@ -1,6 +1,6 @@
 # Super-event research prompt for Event 013 Natural Disasters
 
-> Implementation disposition: executed for slots 67-72. The researched text and audio documentation under `docs/super_events/`, together with the registered live image/audio assets, is authoritative. The retained source and provenance archive under `docs/assets/013_natural_disasters/` is present and is supporting evidence only. These six presentations use the shared, general super-event system; they are not direct Event 013 disaster-window UI and must not be wired into the Event 013 scripted GUI.
+> Historical build contract, executed for slots 67-72. The researched text and audio documentation under `docs/super_events/013_natural_disasters/`, together with the registered live image/audio assets, is authoritative. The former source and provenance archive under `docs/assets/013_natural_disasters/` is absent from the worktree, and its restoration remains unresolved as recorded in the event overview. These six presentations use the shared, general super-event system; they are not direct Event 013 disaster-window UI and must not be wired into the Event 013 scripted GUI.
 
 Use `chaos-redux-super-events`. Use text and audio research subagents where available. Do not edit localisation, event files, GFX, GUI, sound definitions, or spreadsheets.
 

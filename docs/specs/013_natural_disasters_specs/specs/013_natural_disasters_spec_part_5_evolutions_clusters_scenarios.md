@@ -62,6 +62,9 @@ Abnormal families include:
 - abnormal blizzard or cold collapse chain
 - skyfire hail linked to meteor showers
 
+The implemented abnormal families are meteor shower, whole-earth rupture, massive eruption and moving storm corridor, together with multi-coast tsunami chains and the Skyfall skyfire and ocean-impact chains.
+The massive wildfire storm and abnormal cold collapse ideas have no family of their own and appear only as ordinary severe wildfire, cold-wave and blizzard impacts or their chains.
+
 Evolution III should use super-event treatment for the first abnormal era reveal and for major rare abnormal disasters. It should also use the scripted GUI dynamic map for moving or path-based systems.
 
 Evolution III deaths and destruction must be much higher than earlier stages. These disasters can devastate regions, destroy large amounts of industry and infrastructure, and cause very large population losses when the family fits.
@@ -90,9 +93,11 @@ Player-facing evolution titles use only the names above. Event Details summarize
 
 ## Cluster behavior
 
-The Natural Disasters cluster should contain Event 013 only at this stage. Do not add flood, sandstorm, heat wave, Earth Earthquake, or volcano entries as separate cluster members.
+The cluster should make Event 013 fire repeatedly or in stronger internal seasons rather than treating many old disaster events as separate members.
+Do not add flood (043), sandstorm (099), Earth Earthquake (046), or massive volcano (120) entries as cluster members.
 
-The cluster should make Event 013 fire repeatedly or in stronger internal seasons rather than treating many old events as separate members.
+Current membership is owned by the shared cluster system (`docs/systems/event_system/event_clusters.md`): Natural Disasters is cluster 5 with five Event 013 slots at Low, Low, Low, Low and Medium, followed by Event 033 Acid Rain as an optional Severe member and Event 051 Heat Wave as an optional High member.
+The original "Event 013 only" rule from this package was superseded when the cluster owner added those two separate environmental events; Event 051 still never stacks with Event 013 heat.
 
 Suggested cluster behavior:
 
@@ -138,6 +143,6 @@ Disaster Barrage should never create a terminal world-end branch. It can be camp
 | --- | --- |
 | Event 046 Earth Earthquake | Inactive unknown placeholder. Remove independent gameplay. The whole-world rupture wave lives in Event 013 Evolution III. |
 | Event 099 Sandstorm | Narrow hidden compatibility bridge into Event 013 dust-and-sandstorm family after Wider Disaster Seasons is available. No separate dust logic. |
-| Event 051 Heat Wave | Keep as separate event unless later accepted. Event 013 heat family must block stacking. |
+| Event 051 Heat Wave | Keep as separate event. Event 013 heat cannot target a country carrying the Event 051 heat-wave idea, and Event 051 clears Event 013 heat aftermath through `natural_disaster_clear_heat_overlap_for_country` before applying its own effect. |
 | Event 043 Massive Flood | Do not absorb by default. Event 013 has flood family, but separate Event 043 needs its own later decision. |
 | Event 120 Massive Volcano Eruption | Event 013 Evolution III can express massive eruption crisis. Separate Event 120 stays unimplemented unless later accepted. |

@@ -1,8 +1,13 @@
 # Event 013 Natural Disasters, Part 10, recovery decision and mission map
 
-This file deepens the aftermath decision and mission system. It is direction-only design. Working decision and mission keys are not final localisation.
+This file deepens the aftermath decision and mission system. Working decision and mission keys are not final localisation.
 
-The recovery system should feel like a country dealing with a specific physical disaster in named places. It should not feel like a political power store. Costs should use manpower, equipment, trucks, trains, convoys, fuel, XP, construction capacity, temporary output loss, stability strain, local support, and time pressure when those fit the action.
+Implementation map: every `013_rescue_*`, `013_stabilize_*`, `013_reconstruct_*` and `013_chain_prevent_*` working key below is live as the same name with a `natural_disaster_` prefix in `common/decisions/013_natural_disasters_decisions.txt`.
+The live reconstruction set adds `natural_disaster_reconstruct_weather_shelter_network` and `natural_disaster_reconstruct_slope_stabilization`.
+Each chain objective also has a timed `natural_disaster_chain_prevent_<chain>_mission`, the phase slots are `natural_disaster_rescue_mission_1` to `_4`, `natural_disaster_stabilization_mission_1` to `_3` and `natural_disaster_reconstruction_mission_1` to `_3`, and the relief variants are `natural_disaster_offer_neighbor_convoy_relief`, `natural_disaster_offer_port_lifeline_relief`, `natural_disaster_offer_engineer_relief`, `natural_disaster_offer_medical_relief`, `natural_disaster_route_inbound_relief` and `natural_disaster_refuse_inbound_relief`.
+
+The recovery system should feel like a country dealing with a specific physical disaster in named places. It should not feel like a political power store. Costs should use manpower, equipment, trucks, trains, convoys, fuel, temporary output loss, stability strain, local support, and time pressure when those fit the action.
+The cost palettes in the tables below are design direction; actual fees follow the accepted 2026-10-06 recovery bill in Part 2, and the XP and steel ideas were not adopted.
 
 ## Category lifecycle
 
@@ -55,7 +60,7 @@ Chain prevention should be presented as timed objectives, not extra flavor popup
 
 | Chain mission | Opens from | Objective direction | Duration band | Success | Partial success | Failure |
 | --- | --- | --- | --- | --- | --- | --- |
-| `013_chain_prevent_tsunami` | offshore quake, ocean meteor, volcanic collapse | Evacuate coast and close quays before arrival. | hours to 4 days by origin distance | Tsunami deaths and port damage reduced. | Deaths reduced, port damage remains high. | Tsunami hits at full or increased panic strength. |
+| `013_chain_prevent_tsunami` | offshore quake, ocean meteor, volcanic collapse | Evacuate coast and close quays before arrival. | 2 to 4 days by origin distance | Tsunami deaths and port damage reduced. | Deaths reduced, port damage remains high. | Tsunami hits at full or increased panic strength. |
 | `013_chain_prevent_disease` | flood, tsunami, surge, lahar, shelter crowding | Secure clean water and medical route. | 30 to 90 days | Disease chain blocked. | Disease appears as smaller modifier. | Disease death tick and stability strain. |
 | `013_chain_prevent_famine` | drought, ash, hail, flood, coastal closure | Bring food corridors online. | 60 to 180 days | Famine pressure lowered or blocked. | Famine pressure delayed with foreign aid risk. | Famine event chain and deaths. |
 | `013_chain_prevent_wildfire_spread` | heat, drought, wind, thunderstorm, meteor | Build firebreaks and patrol lines. | 20 to 70 days | Spread blocked. | Spread limited to one neighbor. | Fire spreads to adjacent state. |
@@ -63,9 +68,13 @@ Chain prevention should be presented as timed objectives, not extra flavor popup
 | `013_chain_prevent_lahar` | volcanic eruption, ashfall, massive eruption | Clear channels and evacuate valleys. | 10 to 60 days | Lahar blocked or weakened. | Lahar damages infrastructure but deaths reduced. | Full lahar impact. |
 | `013_chain_prevent_aftershock` | earthquake, rupture | Inspect priority buildings and bridges. | 15 to 45 days | Aftershock damage reduced. | Aftershock still damages rail or factories. | Aftershock hits at dangerous strength. |
 
+The famine chain overlaps the shared Famine system: its deaths are recorded by Event 013 and then resubmitted to Famine as food pressure.
+Open questions 2 and 3 in the package README propose a single hunger owner and relief access through `famine_mark_relief_access` after a delivered corridor (spec audit 2026-10-10).
+
 ## Foreign relief variants
 
 Foreign relief should add useful help without becoming free recovery. It should create route access, delay, influence, and dependency choices.
+The donor cost column is direction; every implemented outbound package costs two physical stockpiles and 1% Stability, requires minimum War Support, and locks the donor's dispatch for 45 days, while the recipient carries the 365-day dependency described in Part 4.
 
 | Variant | Who can offer | Aid shape | Cost to donor | Risk to affected country | AI use |
 | --- | --- | --- | --- | --- | --- |

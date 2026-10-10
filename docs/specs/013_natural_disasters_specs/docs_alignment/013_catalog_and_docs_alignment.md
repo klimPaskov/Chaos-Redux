@@ -1,6 +1,7 @@
 # Event 013 Natural Disasters, catalog and documentation alignment handoff
 
 This file gives player-facing direction for documentation, catalog rows, Event Details, scenario details, cluster details, and spreadsheet fields. It does not write final localisation. Implementation must write final text later from the accepted design and then use `chaosx_spreadsheet_doc_worker` to align the workbook with final in-game wording.
+The final wording exists in game; the latest catalog disposition is `docs/plans/013_natural_disasters_plans/catalog_changes_pending.md`, and any workbook edit is followed by `python .tools/export_event_catalog_csv.py`.
 
 ## Source alignment
 
@@ -19,8 +20,8 @@ The Event Details entry should describe what the player sees in play. It should 
 
 | Detail field | Direction |
 | --- | --- |
-| Main premise | Natural disasters can now arrive as delayed local, regional, and abnormal sequences. The player should understand that affected places receive reports and aftermath decisions. |
-| Visible behavior | Mention specific disasters hitting specific states, delayed reports, recovery categories, and later chains. |
+| Main premise | Natural disasters arrive as delayed local, regional, and abnormal sequences. The player should understand that affected places receive reports and aftermath decisions. |
+| Visible behavior | Mention specific disasters hitting specific states, one report per sequence for each affected country, recovery categories, and later chains. |
 | Deaths and damage | State that disasters can cause serious deaths and infrastructure damage in broad player-facing terms. Do not list calculation details. |
 | Reusable calls | Do not explain caller API in player-facing Event Details. Keep that in implementation docs. |
 | Evolutions | Describe broader variety, regional scale, chained aftermath, and abnormal disaster systems by direction. Do not spoil hidden rare chains beyond visible evolution detail. |
@@ -62,8 +63,8 @@ The Natural Disasters cluster is unusual because the same repeatable event can o
 | --- | --- |
 | Cluster name | Natural Disasters. If there are several internal cluster entries, keep public naming clear and avoid numbered names unless the UI requires them. |
 | Details | Describe a period of repeated or stronger disasters rather than a collection of unrelated event ids. |
-| Members | Event 013 appears in eleven logical rows, followed by Event 033 Acid Rain and Event 051 Heat Wave. Event 046 and Event 099 remain outside this cluster. |
-| Severity | Event 013 uses Low, Low, Low, Low, Medium, Medium, Medium, High, High, Severe, and Severe. Acid Rain is Severe and Heat Wave is High. |
+| Members | Event 013 appears in five logical rows, followed by Event 033 Acid Rain and Event 051 Heat Wave as optional members. Events 043, 046, 099 and 120 remain outside this cluster. The shared cluster system (`docs/systems/event_system/event_clusters.md`) owns this list. |
+| Severity | Event 013 uses Low, Low, Low, Low, and Medium. Acid Rain is Severe and Heat Wave is High. |
 | Cooldown | Bigger abnormal disasters should not repeat too frequently through clusters. |
 | News behavior | Cluster details should note that news is throttled for smaller hits in later stages. |
 

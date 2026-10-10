@@ -88,16 +88,20 @@ Warning odds should vary by:
 
 Warnings can open short-lived preparation decisions. These should use concrete costs and not become political power purchases.
 
-| Preparation action | Suitable costs | Families |
-| --- | --- | --- |
-| Evacuate exposed districts | trains, trucks, fuel, manpower, stability risk | flood, tsunami, cyclone, volcano, wildfire, meteor warning |
-| Close ports and move ships | navy XP, fuel, convoys, dockyard disruption | cyclone, tsunami, storm surge, volcanic ash, wind |
-| Disperse aircraft and crews | air XP, fuel, support equipment, temporary mission penalty | hail, cyclone, ash, meteor, thunderstorm |
-| Reinforce rail embankments | trains, support equipment, civilian capacity | flood, earthquake, landslide, blizzard |
-| Open shelters and field kitchens | infantry equipment, support equipment, manpower | heat, cold, blizzard, wildfire, dust, flood |
-| Pre-position medical teams | support equipment, manpower, stability or war support burden | all high-casualty families |
-| Firebreak and reservoir work | trucks, fuel, local support, civilian capacity | wildfire, drought, heat |
-| Observatory watch | air XP, radar presence, command attention | volcano, meteor, cyclone, tsunami |
+| Preparation concept | Families |
+| --- | --- |
+| Evacuate exposed districts | flood, tsunami, cyclone, volcano, wildfire, meteor warning |
+| Close ports and move ships | cyclone, tsunami, storm surge, volcanic ash, wind |
+| Disperse aircraft and crews | hail, cyclone, ash, meteor, thunderstorm |
+| Reinforce rail embankments | flood, earthquake, landslide, blizzard |
+| Open shelters and field kitchens | heat, cold, blizzard, wildfire, dust, flood |
+| Pre-position medical teams | all high-casualty families |
+| Firebreak and reservoir work | wildfire, drought, heat |
+| Observatory watch | volcano, meteor, cyclone, tsunami |
+
+The implementation gives every one of the 25 families three mutually exclusive preparations (75 decisions named `natural_disaster_warn_<family>_<action>`), shown only on a matching warning card.
+Their prices follow the accepted fee rules above: manpower, support equipment, trucks, trains or convoys, fuel, Stability and, on the few profiles that keep it such as field research, Command Power, with free civilian-factory capacity as a requirement rather than a spend.
+The earlier XP, War Support and consumer-goods cost ideas for preparations were not adopted.
 
 A warning window can be too short for all actions. The player should choose what kind of loss to reduce. AI countries should pick actions based on family, capacity, and war state.
 
@@ -163,6 +167,9 @@ A card should show:
 
 The card should close when recovery is complete, the target is no longer valid, or the disaster is superseded by a larger unresolved regional aftermath.
 
+The implemented card prints every item above on its own line, which reaches about seventeen values.
+A four-line value budget for the card is proposed (spec audit 2026-10-10) as open question 1 in the package README; the list above stays the accepted content until that proposal is decided.
+
 ## Recovery category families
 
 Recovery should use family-specific objectives. Do not make every aftermath the same button.
@@ -179,6 +186,8 @@ Recovery should use family-specific objectives. Do not make every aftermath the 
 | Winter relief | Move fuel, equipment, and supplies into cold-hit states before exposure rises. |
 | Drought relief | Manage water, livestock, food, rail shipments, and crop failure risk. |
 | Reconstruction | Expensive longer task that restores buildings and closes the aftermath card. |
+
+Part 10 maps these recovery families onto the implemented rescue, stabilization, reconstruction, chain-prevention and foreign-relief decisions.
 
 AI should not ignore recovery. Strong AI should protect dense states, capitals, ports, rail hubs, and major industry first. Weak AI should still attempt at least the cheapest useful relief actions.
 
@@ -199,6 +208,14 @@ A chain is not a second event log row. It is a delayed continuation inside the s
 
 Chains should be visible in the aftermath card. A player should be able to see that an unresolved flood can turn into disease pressure, or an offshore quake can create a delayed tsunami risk.
 
+Shared-system ownership of chain outcomes, as implemented:
+
+- Every chain that kills (aftershock, tsunami, lahar, wildfire spread, famine, disease, refugee) runs `natural_disaster_apply_population_loss`, which records natural-disaster deaths in the Deaths system and submits the same death count to Famine through `famine_adapt_natural_disaster_state`.
+- The famine, disease and refugee chains set `natural_disaster_famine_pressure`, `natural_disaster_disease_pressure` and `natural_disaster_refugee_pressure`, which Events 014 and 020 read as state pressure.
+- No chain reaches Migration.
+
+Open questions 2 to 4 in the package README propose one famine owner per hunger death, relief access after a delivered food corridor, and real Migration flows for refugee chains (spec audit 2026-10-10).
+
 ## News throttle policy
 
 Early Natural Disasters should feel newsworthy because the world has not adapted to repeated incidents. Later evolutions should avoid noise.
@@ -215,7 +232,8 @@ News policy should consider:
 - super-event eligibility
 - active player country affected
 
-Minor repeated hits in Evolution II should usually not create global news. They should still create local reports and aftermath cards.
+Minor repeated hits in Evolution II should usually not create global news. They should still appear in the recipient's aggregate sequence report and create aftermath cards.
+The accepted 2026-10-05 rule caps world news at one event per sequence, chosen from the highest-severity family still eligible after its 180-day family cooldown when the sequence flushes.
 
 ## External caller examples
 

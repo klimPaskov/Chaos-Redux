@@ -19,7 +19,8 @@ The loop has four visible moments.
 1. The disaster sequence begins quietly through the random event, cluster, manual scenario, or external caller.
 2. A warning may appear before impact, depending on family, target capacity, preparation, severity, and chaos.
 3. The impact hits a named place with visible building damage, local population loss, and family-specific state disruption.
-4. The affected country receives a report 1 to 2 days later and a reliable aftermath category notification that shows active disaster cards, affected states, recovery needs, cleanup state, and available response work.
+4. The affected country sees the aftermath category from the first forecast onward, with active disaster cards, affected states, recovery needs, cleanup state, and available response work.
+   Once the sequence's scheduled warnings, impacts, and follow-ups have resolved, each recipient receives one aggregate report covering every affected state and family in that sequence (accepted 2026-10-05, Part 2).
 
 The player should not need to notice a hidden flag or manually search the decision list. Serious impacts open or refresh the aftermath category and trigger a visible notification or popup path for the affected country.
 
@@ -29,13 +30,14 @@ A disaster sequence is a short season of delayed hits. It should not fire every 
 
 | Stage | Sequence size direction | Delay direction | News direction | Report direction |
 | --- | ---: | --- | --- | --- |
-| Baseline | 1 to 3 local hits | 5 to 10 days between impacts | Most meaningful early disasters can use news | Every affected country receives a delayed report |
-| Evolution I | 3 to 6 local or small regional hits | 4 to 8 days | News for selected meaningful disasters | Every affected country receives a delayed report |
-| Evolution II | 8 to 18 world and regional hits | 2 to 5 days | Throttled to serious, strange, cascading, or global hits | Reports and recovery categories for serious hits |
-| Evolution III | One or more abnormal chains plus ordinary hits | Family-specific movement or cascade timing | Super-events and rare large news only | Reports, GUI map updates, and recovery ledgers |
-| Disaster Barrage scenario | Intensity sets sequence size and abnormal access | Compressed by intensity | Throttled by type and severity | Always reliable for affected countries |
+| Baseline | 1 to 3 local hits | 5 to 10 days between impacts | Most meaningful early disasters can use news | One aggregate report per affected recipient |
+| Evolution I | 3 to 6 local or small regional hits | 4 to 8 days | News for selected meaningful disasters | One aggregate report per affected recipient |
+| Evolution II | 8 to 18 world and regional hits | 2 to 5 days | Throttled to serious, strange, cascading, or global hits | One aggregate report per recipient plus recovery categories |
+| Evolution III | 5 to 12 hits including abnormal path segments | 1 to 4 days, with family-specific movement or cascade timing | Super-events and rare large news only | One aggregate report per recipient, GUI map updates, and recovery ledgers |
+| Disaster Barrage scenario | 4, 8, 14, or 20 hits by intensity, with abnormal access only at Maximum | Compressed by intensity | Throttled by type and severity | Always reliable for affected countries |
 
-These sizes are design ranges. Implementation can tune exact values in script constants, but it must preserve the feeling of a season and the rule that impacts are delayed.
+These ranges match `natural_disaster_sequence` in `common/script_constants/013_natural_disasters_constants.txt`, which is the tuning source.
+Every sequence emits at most one world-news event, and every impact stays at least one day after the call.
 
 ## Disaster families
 
@@ -133,6 +135,6 @@ Player-facing text should name the disaster and place clearly. It should use phy
 
 ## Event-log and event-detail direction
 
-The Event Details entry should explain the premise and player-facing situation without listing mechanical effects. It can say that disasters now arrive as delayed local and regional sequences, affected countries receive reports and recovery categories, and later stages bring larger, chained, and abnormal events. It should not display death percentages, building formulas, or hidden weights.
+The Event Details entry should explain the premise and player-facing situation without listing mechanical effects. It can say that disasters arrive as delayed local and regional sequences, affected countries receive reports and recovery categories, and later stages bring larger, chained, and abnormal events. It should not display death percentages, building formulas, or hidden weights.
 
 The History row should show Event 013 once per sequence. If the visible actor is meaningful, use the affected country or the sequence anchor country. If a global abnormal chain has no fair single actor, use the default Event 013 actor display or a neutral global context.

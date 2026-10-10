@@ -8,6 +8,10 @@ Every disaster family must keep its own warning logic, aftermath card, AI priori
 
 Every active disaster card should use the same player-readable field set so the UI remains predictable. The field values differ by family.
 
+The fields below are the accepted, implemented card data.
+Showing all of them at once is the value-dump pattern the 10 October brief rejects; a four-line display budget that keeps every field in the data and in abnormal history is proposed (spec audit 2026-10-10) as open question 1 in the package README.
+The working decision keys in the family sections below map to live decisions by replacing the `013_` prefix with `natural_disaster_` (for example `013_warn_earthquake_rail_crews` is `natural_disaster_warn_earthquake_rail_crews`).
+
 | Card field | Purpose |
 | --- | --- |
 | `family_key` | Internal family key used by scripted localisation, icons, reports, and chain logic. |
@@ -159,7 +163,7 @@ Reduce supply, construction speed, local resources, and movement. Disease-risk v
 | Working decision key | Status | Family-specific purpose and cost direction |
 | --- | --- | --- |
 | `013_warn_tropical_cyclone_close_ports` | working label, not final localisation | convoys, fuel, naval access, protects ports, dockyards, ships |
-| `013_warn_tropical_cyclone_dispersed_aircraft` | working label, not final localisation | fuel, trucks, air XP direction, protects airbases |
+| `013_warn_tropical_cyclone_disperse_aircraft` | working label, not final localisation | fuel, trucks, air XP direction, protects airbases |
 | `013_warn_tropical_cyclone_coastal_evacuation` | working label, not final localisation | manpower, trucks, stability strain, reduces surge and wind deaths |
 
 #### Exact aftermath card fields
@@ -220,7 +224,7 @@ Reduce port throughput, dockyard output, airbase efficiency, and supply. Storm s
 | --- | --- | --- |
 | `013_warn_extreme_wind_anchor_aircraft` | working label, not final localisation | fuel, air XP, trucks, protects airfields |
 | `013_warn_extreme_wind_secure_roofs` | working label, not final localisation | support equipment and civilian capacity, protects factories and infrastructure |
-| `013_warn_extreme_wind_pause_exposed_trains` | working label, not final localisation | trains and temporary supply disruption, reduces rail damage |
+| `013_warn_extreme_wind_pause_trains` | working label, not final localisation | trains and temporary supply disruption, reduces rail damage |
 
 #### Exact aftermath card fields
 
@@ -513,9 +517,9 @@ Reduce supply, movement, repair speed, port throughput, and local factory output
 
 | Working decision key | Status | Family-specific purpose and cost direction |
 | --- | --- | --- |
-| `013_warn_extreme_cold_wave_heat_shelters` | working label, not final localisation | fuel, support equipment, civilian capacity, reduces deaths |
-| `013_warn_extreme_cold_wave_protect_water_lines` | working label, not final localisation | manpower and infrastructure repair capacity, reduces local disruption |
-| `013_warn_extreme_cold_wave_frontline_rotation` | working label, not final localisation | command direction, army XP, supply, reduces exposure near fronts |
+| `013_warn_cold_wave_heat_shelters` | working label, not final localisation | fuel, support equipment, civilian capacity, reduces deaths |
+| `013_warn_cold_wave_protect_water_lines` | working label, not final localisation | manpower and infrastructure repair capacity, reduces local disruption |
+| `013_warn_cold_wave_frontline_rotation` | working label, not final localisation | command direction, army XP, supply, reduces exposure near fronts |
 
 #### Exact aftermath card fields
 
@@ -572,9 +576,9 @@ Reduce local supply, factory output, repair speed, and population recovery. Can 
 
 | Working decision key | Status | Family-specific purpose and cost direction |
 | --- | --- | --- |
-| `013_warn_extreme_heat_wave_water_points` | working label, not final localisation | trucks, convoys or trains, civilian capacity, reduces deaths and drought risk |
-| `013_warn_extreme_heat_wave_shift_work_hours` | working label, not final localisation | temporary factory output loss, reduces death and stability pressure |
-| `013_warn_extreme_heat_wave_fire_watch` | working label, not final localisation | manpower and support equipment, reduces wildfire chain |
+| `013_warn_heat_wave_water_points` | working label, not final localisation | trucks, convoys or trains, civilian capacity, reduces deaths and drought risk |
+| `013_warn_heat_wave_shift_work_hours` | working label, not final localisation | temporary factory output loss, reduces death and stability pressure |
+| `013_warn_heat_wave_fire_watch` | working label, not final localisation | manpower and support equipment, reduces wildfire chain |
 
 #### Exact aftermath card fields
 
@@ -690,9 +694,9 @@ Long duration output loss, resource loss, supply strain, and stability pressure.
 
 | Working decision key | Status | Family-specific purpose and cost direction |
 | --- | --- | --- |
-| `013_warn_sandstorm_dust_convoy_spacing` | working label, not final localisation | trucks, fuel, command direction, reduces supply and movement disruption |
-| `013_warn_sandstorm_dust_seal_airfields` | working label, not final localisation | support equipment and air XP, protects airfields and aircraft |
-| `013_warn_sandstorm_dust_cover_water_stores` | working label, not final localisation | manpower and support equipment, reduces disease and water pressure |
+| `013_warn_dust_and_sandstorm_convoy_spacing` | working label, not final localisation | trucks, fuel, command direction, reduces supply and movement disruption |
+| `013_warn_dust_and_sandstorm_seal_airfields` | working label, not final localisation | support equipment and air XP, protects airfields and aircraft |
+| `013_warn_dust_and_sandstorm_cover_water_stores` | working label, not final localisation | manpower and support equipment, reduces disease and water pressure |
 
 #### Exact aftermath card fields
 
@@ -988,7 +992,7 @@ Reduce airbase efficiency, local output, infrastructure, supply, and resources. 
 | --- | --- | --- |
 | `013_warn_ashfall_ground_air_traffic` | working label, not final localisation | air XP, fuel, temporary airbase shutdown, protects aircraft |
 | `013_warn_ashfall_cover_machinery` | working label, not final localisation | support equipment and civilian capacity, protects factories and resources |
-| `013_warn_ashfall_food_and_water_cover` | working label, not final localisation | manpower, trucks, convoys or trains, reduces food and disease pressure |
+| `013_warn_ashfall_cover_food_and_water` | working label, not final localisation | manpower, trucks, convoys or trains, reduces food and disease pressure |
 
 #### Exact aftermath card fields
 
@@ -1342,7 +1346,7 @@ Medium to severe scattered modifier, careful stacking with fire and transport co
 
 | Working decision key | Status | Family-specific purpose and cost direction |
 | --- | --- | --- |
-| `013_warn_whole_earth_rupture_global_rail_standdown` | working label, not final localisation | trains, fuel, major temporary supply penalty, reduces rail damage |
+| `013_warn_whole_earth_rupture_rail_standdown` | working label, not final localisation | trains, fuel, major temporary supply penalty, reduces rail damage |
 | `013_warn_whole_earth_rupture_coastal_tide_watch` | working label, not final localisation | convoys and coast watch direction, reduces delayed tsunami deaths |
 | `013_warn_whole_earth_rupture_regional_triage` | working label, not final localisation | civilian capacity, trucks, manpower, stability strain, reduces deaths in priority regions |
 

@@ -1,5 +1,8 @@
 # Event 013 Natural Disasters, source-to-file surface map
 
+> Historical build contract.
+> The exact live files are listed in `docs/events/013_natural_disasters/overview.md` under "Gameplay and presentation files"; use that list rather than the "likely owner" guesses below.
+
 This map is a handoff for live repository work. It names the surfaces the implementation must inspect and keep aligned. Exact file paths may differ in the live repository, so the coding agent must verify them before editing.
 
 ## Primary gameplay surfaces

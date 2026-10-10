@@ -2,6 +2,8 @@
 
 This matrix is a research handoff for `chaos-redux-super-events` and the narrow super-event research subagents. It does not provide final titles, final quotes, final button text, slogans, lyric fragments, cultural remarks, or audio choices. Every source-dependent text and every track remains blocked until researched, verified, licensed, and documented.
 
+> Historical build contract: all six roles were researched and implemented as shared super-event slots 67 to 72; the selected text and audio sources are in `docs/super_events/013_natural_disasters/` and the event overview lists the final titles.
+
 ## Research roles
 
 | Role | Subagent or skill | Output expected |

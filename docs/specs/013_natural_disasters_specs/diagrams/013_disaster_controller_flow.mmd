@@ -2,14 +2,15 @@ flowchart TD
     A[Event 013 season starts] --> B[Resolve caller contract]
     B --> C[Build eligible family pool]
     C --> D[Score targets]
-    D --> E[Build delayed disaster queue]
+    D --> E[Build delayed disaster queue and forecast card]
     E --> F[Schedule warning if family allows]
     F --> G[Impact event resolves]
     G --> H[Apply deaths and building damage]
-    H --> I[Schedule affected country report]
+    H --> I[Record consequence receipt and shared Deaths, Famine and air hooks]
     I --> J[Open aftermath card and notification]
     J --> K[Roll chain risks]
-    K --> L{Queue has more impacts}
+    K --> L{Queue has more warning, impact or follow-up jobs}
     L -->|yes| M[Wait family delay]
     M --> F
-    L -->|no| N[Season cleanup after aftermath closes]
+    L -->|no| N[Send one aggregate report per recipient and at most one news event]
+    N --> O[Season cleanup after aftermath closes]

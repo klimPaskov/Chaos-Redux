@@ -8,9 +8,9 @@ Baseline starts with a limited but meaningful pool. Evolution I widens variety. 
 
 | Stage | Family access direction |
 | --- | --- |
-| Baseline | Earthquake, flood, thunderstorm, hailstorm, wildfire, local extreme wind, local cold, local heat, small landslide. |
-| Evolution I | Adds tropical cyclone, blizzard, drought, sandstorm, wet and dry mass movement, rare volcanic signals, stronger heat and cold, storm surge. |
-| Evolution II | All normal families can hit regionally, chain aftermath, and affect neighboring states with supply and recovery modifiers. Tsunami, ashfall, lahar, regional flood, and serious cyclone behavior become routine enough to need recovery categories. |
+| Baseline | Earthquake, flood, thunderstorm, hailstorm, wildfire, local extreme wind, local cold, local heat, small landslide (dry mass movement). |
+| Evolution I | Adds tropical cyclone, blizzard, drought, sandstorm, wet mass movement, volcanic eruption, storm surge. |
+| Evolution II | Adds tornado outbreak, ashfall, lahar and tsunami to the random pool. All normal families can hit regionally, chain aftermath, and affect neighboring states with supply and recovery modifiers. |
 | Evolution III | Meteor shower, major meteor impact, whole-earth rupture wave, massive eruption crisis, delayed global tsunami chains, moving tornado or storm corridor, and other abnormal disaster chains. |
 
 ## Playbooks
@@ -519,7 +519,7 @@ Design notes:
 
 | First disaster | Follow-up risk | Player prevention direction |
 | --- | --- | --- |
-| Offshore earthquake | Tsunami after 1 to 4 days | Coastal evacuation, port closure, ship dispersal. |
+| Offshore earthquake | Tsunami after 2 to 4 days | Coastal evacuation, port closure, ship dispersal. |
 | Drought | Wildfire and famine | Water trains, firebreaks, food imports. |
 | Cyclone | Storm surge, flood, disease | Port closure, evacuation, medical corridor. |
 | Volcano | Ashfall, lahar, famine, tsunami | Observatory warning, ash cleanup, valley evacuation, food relief. |

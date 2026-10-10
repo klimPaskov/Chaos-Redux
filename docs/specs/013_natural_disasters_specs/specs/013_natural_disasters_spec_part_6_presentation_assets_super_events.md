@@ -8,7 +8,9 @@ Final localisation must be written during implementation. This spec does not pro
 
 ## Report event direction
 
-Every affected country should receive a delayed report after a serious impact.
+Every affected recipient receives one aggregate report per sequence after that sequence's scheduled physical jobs drain (accepted 2026-10-05, Part 2).
+It is the supplemental `chaosx.nr13.100` report on the shared `GFX_report_event_nd_regional_aftermath` picture; the 25 older per-family report events are no longer used by normal dispatch.
+Its body names up to four affected states plus a remaining count, describes only measured damage, and omits internal ids, exact death totals, severity assessments and empty status lines.
 
 A report should include:
 
@@ -53,11 +55,13 @@ Event 013 should have super-events for abnormal milestone moments. Each requires
 
 Super-event text and audio are blockers until researched through the super-event workflow. Do not invent quotes, lyrics, slogans, or final titles in the spec or implementation prompt.
 
+All six roles are researched and implemented as shared super-event slots 67 to 72 (`NO FIRM GROUND`, `ASH AT NOON`, `THE BURNING FIRMAMENT`, `THE FRETFUL ELEMENTS`, `OLD STORIES CEASE TO BE INCREDIBLE`, `BELOW THE STONE`), with sources and audio provenance in `docs/super_events/013_natural_disasters/`.
+
 ## Visual asset families
 
 | Asset type | Needed assets |
 | --- | --- |
-| Report images | Family-specific report images for earthquake, flood, cyclone, wildfire, blizzard, heat, drought, dust, volcano, tsunami, meteor, and regional aftermath. Generated period-documentary scenes are appropriate unless a sourced period photograph is selected for a specific ordinary disaster. |
+| Report images | Family-specific report images for earthquake, flood, cyclone, wildfire, blizzard, heat, drought, dust, volcano, tsunami, meteor, and regional aftermath. Generated period-documentary scenes are appropriate unless a sourced period photograph is selected for a specific ordinary disaster. The aggregate report uses only the regional-aftermath picture; the family pictures remain registered for the per-family report events that normal dispatch no longer uses. |
 | News images | Black-and-white news images for first major family news and abnormal disaster news. Generated news images are acceptable for fictional or impossible disasters. |
 | Super-event images | Generated super-event images for abnormal disaster roles. |
 | Decision category icon | Natural disaster aftermath category icon. |
@@ -88,6 +92,7 @@ Every final animation requires source frames, processed frames, horizontal sheet
 ## Achievement design
 
 Achievement titles below are working labels, not final localisation.
+The ten live ids use the `013_natural_disasters_` prefix in place of `013_` (for example `013_natural_disasters_after_the_sirens`), and their final names and conditions are listed in the event overview.
 
 | Working id | Route or challenge | Unlock direction | Disqualifier direction | Icon direction |
 | --- | --- | --- | --- | --- |
@@ -95,7 +100,7 @@ Achievement titles below are working labels, not final localisation.
 | `013_no_second_wave` | Tsunami prevention | Stop a delayed tsunami chain from becoming a second major death spike after an offshore quake, volcanic collapse, or ocean impact. | Wave follow-up hits populated coast. | Coast marker and broken wave. |
 | `013_every_bridge_counts` | Transport recovery | Clear all transport aftermath missions after a regional flood, cyclone, earthquake, or blizzard without losing the capital supply route. | Capital supply route fails. | Rail bridge under repair. |
 | `013_ashes_without_famine` | Volcanic recovery | Survive major ashfall and prevent famine chain in every affected state. | Any ash famine chain matures. | Mask, ash, and grain sack. |
-| `013_no_global_announcer` | Anti-institutional framing joke direction | Experience several distinct family reports without any global institutional framing. Tracking should verify family variety, not text. | None beyond route failure. | Torn report card and storm symbol. |
+| `013_no_global_announcer` | Field reports without an announcer | Receive affected-country reports from four normal family groups without any sequence using the global report policy. | Any Event 013 sequence uses the global report policy. | Field reports and four disaster marks without a broadcast tower. |
 | `013_under_the_falling_sky` | Meteor survival | During a meteor shower, keep the selected country capital, primary supply hub, and airfield network functional until the chain ends. | Capital state hit without recovery or airfield network fails. | Meteor over searchlight. |
 | `013_shake_the_world_back` | Whole-earth rupture recovery | After a rupture wave, close regional recovery cards across several affected regions before the delayed tsunami or aftershock chain matures. | Any major follow-up chain matures. | Cracked globe with repair brace. |
 | `013_disaster_barrage_maximum` | Manual scenario challenge | Launch Maximum Disaster Barrage and survive the season as the selected country with at least one capital route, one port or rail corridor, and the aftermath recovery category fully closed later. | Terminal country collapse or unresolved aftermath at check date. | Multiple disaster symbols around a shield. |

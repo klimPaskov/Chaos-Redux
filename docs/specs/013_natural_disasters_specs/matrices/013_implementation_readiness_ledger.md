@@ -1,6 +1,8 @@
 # Event 013 Natural Disasters, implementation readiness ledger
 
-> Implementation disposition, 2026-07-10: this ledger remains the acceptance checklist. The live implementation and final audit evidence are recorded outside the source specification in `docs/events/013_natural_disasters/overview.md` and `docs/plans/013_natural_disasters_plans/013_implementation_validation_notes.md`.
+> Historical build contract.
+> This ledger was the completion checklist for the original build, which is implemented; its live evidence is recorded in `docs/events/013_natural_disasters/overview.md` and `docs/plans/013_natural_disasters_plans/013_implementation_validation_notes.md`.
+> Its "delayed report after 1 to 2 days" expectations are superseded by the accepted 2026-10-05 one-aggregate-report rule in Part 2, and its cost expectations by the accepted 2026-10-06 recovery bill.
 
 This ledger turns the expanded planning package into a practical completion gate. It does not add new mechanics. It names what the coding pass must implement, which source files anchor the requirement, what simplification is forbidden, and what evidence should exist before completion is claimed.
 

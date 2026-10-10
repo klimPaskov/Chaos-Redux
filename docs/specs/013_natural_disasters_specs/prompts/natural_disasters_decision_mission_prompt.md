@@ -1,6 +1,8 @@
 # Decision and mission prompt for Event 013 Natural Disasters
 
-> Implementation disposition: executed for staged warnings, rescue, stabilization, reconstruction, chain prevention, foreign relief, caps, partial outcomes, AI, and cleanup. Future changes must start from the live decision file and its audit handoff.
+> Historical build contract, executed for staged warnings, rescue, stabilization, reconstruction, chain prevention, foreign relief, caps, partial outcomes, AI, and cleanup.
+> Future changes start from the live decision file and its audit handoff.
+> The XP and civilian-capacity cost ideas below were not adopted; current fees follow the accepted 2026-10-06 recovery bill in Part 2.
 
 Use `chaos-redux-decisions-missions` and the Event 013 spec package. Design and implement decisions as family-specific recovery work, not political power stores.
 

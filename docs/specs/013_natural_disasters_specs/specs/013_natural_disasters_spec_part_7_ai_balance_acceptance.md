@@ -90,7 +90,7 @@ The spreadsheet should later be updated from final in-game Event Details wording
 
 ## Acceptance criteria
 
-A future implementation should not be marked complete until these criteria are true.
+The implementation is in source; these criteria remain the acceptance bar for any change to it, and their open engine-level evidence is tracked in `docs/plans/013_natural_disasters_plans/`.
 
 | Surface | Acceptance criteria |
 | --- | --- |
@@ -99,9 +99,10 @@ A future implementation should not be marked complete until these criteria are t
 | Family playbooks | Every implemented family has unique target scoring, warning behavior, damage pattern, death drivers, recovery tasks, and report direction. |
 | Deaths system | Disaster deaths reduce real local population and feed the shared Deaths system with visible records. |
 | Damage | Building and state damage is strong enough to matter and family-specific. |
-| Reports | Affected countries reliably receive delayed reports 1 to 2 days after serious impact. |
+| Reports | Each recipient reliably receives one aggregate report per sequence after that sequence's scheduled physical jobs drain, covering every measured consequence once; later recovery outcomes never send a second popup (accepted 2026-10-05). |
 | Aftermath UI | Serious impacts reliably open or refresh the aftermath category notification and active disaster card. |
-| News | Early news is specific and varied. Later news is throttled to serious or unusual disasters. |
+| News | Early news is specific and varied. Each sequence sends at most one world-news event, and later news is throttled to serious or unusual disasters. |
+| Shared systems | Deaths, Famine and Air Cleanliness receive each physical impact at most once, keyed to the sequence and impact; the hooks are listed in the package README. |
 | Evolutions | Evolution I, II, and III are logged as evolutions and change behavior without logging ordinary stages. |
 | Abnormal GUI | Evolution III moving disasters have dynamic map presentation and static fallback assets. |
 | Super-events | Major abnormal moments have complete researched super-event packages before being called complete. |
@@ -124,7 +125,7 @@ The implementation agent should perform task-specific checks such as:
 - verify Event 046 does not fire old logic
 - verify Event 099 either stays placeholder or calls Event 013 dust family only
 - verify Event 051 heat stacking is blocked when active
-- verify no small repeated Evolution II impacts spam global news
+- verify no small repeated Evolution II impacts spam global news, and that a multi-impact sequence yields one report per recipient
 - verify recovery decisions disappear after cleanup
 - verify AI can take at least one preparation and recovery path without human-only GUI dependence
 

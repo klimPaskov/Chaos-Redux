@@ -10,7 +10,7 @@ The category should show current active disaster cards. Each card should name th
 
 A serious impact should do three things for the affected country.
 
-1. Deliver a delayed report event 1 to 2 days after impact.
+1. Record its measured deaths and damage for the recipient's single aggregate sequence report, which is sent once the sequence's scheduled jobs drain (accepted 2026-10-05, Part 2).
 2. Show or refresh the decision category notification.
 3. Activate the relevant aftermath card and first recovery decisions.
 
@@ -33,21 +33,26 @@ The category can be separated into these groups.
 
 ## Decision design standards
 
-Disaster decisions should use resources that match the action. Political power can appear when the action is administrative, but it must not be the default cost.
+Disaster decisions should use resources that match the action. Political power must not be the default cost.
 
-| Decision family | Cost palette | Result direction |
-| --- | --- | --- |
-| Search and rescue | manpower, support equipment, trucks, fuel, command power | lowers delayed deaths and rescue failure risk. |
-| Rail clearance | trains, support equipment, civilian capacity, army XP for engineers | restores rail and supply, reduces famine and supply collapse. |
-| Port closure | navy XP, fuel, convoys, dockyard disruption | lowers cyclone, tsunami, ash, and storm surge losses. |
-| Evacuation | trains, convoys, trucks, fuel, manpower, stability | lowers direct deaths but creates refugee pressure and temporary economic disruption. |
-| Medical corridor | support equipment, manpower, trucks, convoys | lowers disease and exposure chains. |
-| Food corridor | trains, convoys, civilian capacity, stability | lowers famine and refugee death chains. |
-| Firebreaks | fuel, trucks, manpower, local support | lowers wildfire spread and industry loss. |
-| Ash cleanup | support equipment, manpower, air mission disruption | restores airfields and lowers respiratory and famine chains. |
-| Winter fuel line | fuel, trains, trucks, support equipment | lowers cold deaths and factory disruption. |
-| Water trains | trains, fuel, support equipment, civilian capacity | lowers drought, heat, and dust death chains. |
-| Observatory watch | air XP, radar or airfield presence, command attention | improves warning odds and lowers volcanic, meteor, or tsunami surprise. |
+| Decision family | Result direction |
+| --- | --- |
+| Search and rescue | lowers delayed deaths and rescue failure risk. |
+| Rail clearance | restores rail and supply, reduces famine and supply collapse. |
+| Port closure | lowers cyclone, tsunami, ash, and storm surge losses. |
+| Evacuation | lowers direct deaths but creates refugee pressure and temporary economic disruption. |
+| Medical corridor | lowers disease and exposure chains. |
+| Food corridor | lowers famine and refugee death chains. |
+| Firebreaks | lowers wildfire spread and industry loss. |
+| Ash cleanup | restores airfields and lowers respiratory and famine chains. |
+| Winter fuel line | lowers cold deaths and factory disruption. |
+| Water trains | lowers drought, heat, and dust death chains. |
+| Observatory watch | improves warning odds and lowers volcanic, meteor, or tsunami surprise. |
+
+Prices follow the accepted 2026-10-06 recovery bill in Part 2.
+Rescue, stabilization and reconstruction spend three material or route fees and commit civilian production while active (5% consumer goods for rescue and stabilization, 10% for reconstruction), with no separate Stability fee.
+Chain prevention keeps its own Stability fee.
+The earlier army, navy and air XP cost ideas were not adopted.
 
 ## Timed missions
 
@@ -64,6 +69,8 @@ Timed missions should ask the player to do real work, not passively wait.
 | Inspect unstable structures | Spend engineers and time in earthquake zones | earthquake, rupture | lowers aftershock deaths | aftershock chain becomes harsher |
 
 Missions need varied duration. Urgent follow-up windows can be short when a tsunami or aftershock is imminent. Recovery missions should usually last long enough for player and AI action.
+
+The implementation expresses these objectives as the staged recovery missions and the seven chain-prevention missions mapped in Part 10 (tsunami, disease, famine, wildfire spread, supply collapse, lahar, aftershock).
 
 ## Partial success
 
@@ -97,6 +104,10 @@ Relief options can include:
 
 Costs and risks should include convoys, trains, fuel, support equipment, relations, stability, war support, intelligence exposure, faction cohesion, or temporary consumer burden. Aid can improve relations and lower deaths, but it can create dependency, foreign influence, or political backlash when overused.
 
+The implemented relief uses four donor variants (neighbor convoy, port lifeline, engineer column, medical column), each paying two physical stockpiles and 1% Stability with War Support as an eligibility threshold, then locking the donor's dispatch for 45 days.
+The recipient routes or refuses aid, and delivered aid adds the 365-day dependency at +2% consumer goods and -0.10 daily Political Power plus one extra rescue and stabilization slot for 90 days.
+Refugee intake, fuel and airlift relief remain unbuilt directions.
+
 ## Refugee pressure
 
 Serious disasters should sometimes create refugee pressure in neighboring states or countries. This is especially important after floods, volcanic eruptions, tsunamis, wildfires, droughts, and abnormal disasters.
@@ -112,6 +123,9 @@ Refugee pressure can:
 - feed the Deaths system if camps fail
 
 The player should be able to mitigate refugee deaths through shelters, transport, food, and medical support.
+
+In the current implementation refugee pressure is an Event 013 chain: it sets `natural_disaster_refugee_pressure`, applies local deaths, can spawn a timed disease mission, and is read by Events 014 and 020, but nobody actually moves.
+Routing surviving displaced people into Migration through `migration_request_disaster_pressure` is proposed (spec audit 2026-10-10) as open question 4 in the package README.
 
 ## Scripted GUI for abnormal systems
 

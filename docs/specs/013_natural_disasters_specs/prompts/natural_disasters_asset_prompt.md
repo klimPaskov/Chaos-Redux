@@ -1,6 +1,9 @@
 # Asset prompt for Event 013 Natural Disasters
 
-> Implementation disposition: executed for the Event 013 report, news, decision, idea, super-event, achievement, and abnormal-GUI packages. The asset manifest and GFX handoff are authoritative for delivered files and any documented provenance limit.
+> Historical build contract, executed for the Event 013 report, news, decision, idea, super-event, achievement, and abnormal-GUI packages.
+> The live registrations in `interface/013_natural_disasters.gfx`, `interface/chaosx_super_events.gfx` and `interface/chaosx_achievements.gfx` are authoritative; the former `docs/assets/013_natural_disasters/` source package and manifest are absent from the worktree, and their restoration remains unresolved as recorded in the event overview.
+> Later graphics repairs are recorded in `docs/plans/gfx_fix_2026-10/013_report.md` and `013_panel_handoff.md`.
+> The 580x410 panel and lane sizes below are planning anchors; the built abnormal window geometry is listed in the event overview.
 
 Use `chaos-redux-event-assets` and `chaos-redux-frame-animation` for every animated asset. Inspect the relevant reference folders before creating source art or processing files.
 
@@ -44,12 +47,12 @@ Record asset name, event id, asset type, source mode, prompt or source link, lic
 
 ## Reference folders to inspect
 
-- `.agents/skills/chaos-redux-event-assets/assets/gfx_references/event_art/report`
-- `.agents/skills/chaos-redux-event-assets/assets/gfx_references/event_art/news`
-- `.agents/skills/chaos-redux-event-assets/assets/gfx_references/event_art/super_event`
-- `.agents/skills/chaos-redux-event-assets/assets/gfx_references/icons/decisions`
-- `.agents/skills/chaos-redux-event-assets/assets/gfx_references/icons/ideas`
-- `.agents/skills/chaos-redux-event-assets/assets/gfx_references/icons/achievements`
+- `.claude/skills/chaos-redux-event-assets/assets/gfx_references/event_art/report`
+- `.claude/skills/chaos-redux-event-assets/assets/gfx_references/event_art/news`
+- `.claude/skills/chaos-redux-event-assets/assets/gfx_references/event_art/super_event`
+- `.claude/skills/chaos-redux-event-assets/assets/gfx_references/icons/decisions`
+- `.claude/skills/chaos-redux-event-assets/assets/gfx_references/icons/ideas`
+- `.claude/skills/chaos-redux-event-assets/assets/gfx_references/icons/achievements`
 
 ## Second-pass GUI and recovery asset additions
 

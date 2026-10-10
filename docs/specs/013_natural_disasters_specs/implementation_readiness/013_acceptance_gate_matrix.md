@@ -1,5 +1,9 @@
 # Event 013 Natural Disasters, acceptance gate matrix
 
+> Historical build contract.
+> These gates governed the original build, which is implemented; current acceptance criteria are Part 7 and the live scenarios in `013_validation_scenario_matrix.md`.
+> Where a gate says reports arrive "after the specified delay", read the accepted 2026-10-05 one-aggregate-report rule in Part 2.
+
 This matrix turns the expanded specs into implementation gates. A coding agent should not claim completion while any required gate is missing, simplified, or replaced by a placeholder.
 
 ## Core system gates
