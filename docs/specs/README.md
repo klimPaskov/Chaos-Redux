@@ -142,7 +142,7 @@ Shared and cross-event specification packages are indexed below.
 
 Use the direct specification packages and the normal `docs/plans/` folders for current navigation.
 The previously documented nested `docs/specs/docs/` mirror is absent from this checkout.
-The empty `chaos_redux_3d_model_workflow_planning_package/` directory contains no specification package; the current workflow is maintained in the [3D model pipeline skill](../../.agents/skills/chaos-redux-3d-model-pipeline/SKILL.md).
+The 3D model workflow has no specification package; it is maintained in the [3D model pipeline skill](../../.agents/skills/chaos-redux-3d-model-pipeline/SKILL.md).
 
 - Event packages use `docs/specs/<event_id>_<slug>_specs/`.
 - System packages use a descriptive `<slug>_specs/` directory.
