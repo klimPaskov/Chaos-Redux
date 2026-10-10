@@ -35,7 +35,7 @@ The user's stage thresholds, Compliance values, catalog identity and universal f
 
 Use [coding](086_world_claims_coding_prompt.md), [assets](086_world_claims_asset_prompt.md), [decisions and missions](086_world_claims_decision_mission_prompt.md), [achievements](086_world_claims_achievement_prompt.md), and the [copy-paste `/goal`](086_world_claims_goal_prompt.md). The goal is checked against the required 3,500–4,000-character range.
 
-Actual specialist assignments are supplied in [bounded subagent handoffs](086_world_claims_subagent_handoffs.md). They were not executed in this planning chat.
+Specialist assignments are in the [bounded subagent handoffs](086_world_claims_subagent_handoffs.md).
 
 ## Review and validation status
 
@@ -51,8 +51,15 @@ The most important engine gates are claimant-specific Compliance, exact uninterr
 
 ## Source-reading disclosure
 
-All **42 supplied plaintext files**, including the full planning skill and all **20 subagent profiles**, were fully read before authoring. Six further repository files were fully read, including the missing MTTH skill and state-puzzle guidance. The [source audit](source_review/source_reading_audit.md) and [hash/range manifest](source_review/source_manifest.json) record the basis.
+The 22 September draft read its 42 supplied files and six repository files; installed game files, the full offline wiki, the workbook and provider implementations were only partly inspected, and no specialist or HOI4 tool ran.
+The [source audit](source_review/source_reading_audit.md) and [hash manifest](source_review/source_manifest.json) keep that provenance.
 
-**Not every referenced required file outside the upload was fully read.** Installed game files, the complete offline wiki, all linked asset references, the authoritative workbook and all provider implementations were unavailable or only partially inspected. No actual specialist was spawned and no HOI4 MCP/playtest was run. This draft does not claim the complete external-reading and independent-review procedure was fulfilled.
+Names, flags and map pieces are prepared engine-compatible resources selected from dynamic territorial results, not images or GUI nodes created during play.
 
-Dynamic territorial recognition is retained. Names, flags and map pieces are prepared engine-compatible resources selected from those dynamic results, not images or arbitrary new GUI nodes created during play. This technical interpretation and other parent additions are explicit in the review rather than hidden simplifications.
+## Revision log
+
+### 2026-10-10 spec audit
+
+- Removed the obsolete planning-package structure check (`validation/package_check_report.json`) and refreshed `package_manifest.json` for the current files.
+- Replaced Codex-specific `collaboration.spawn_agent` and `fork_turns` wording in the coding prompt with the repository's subagent routing, and condensed the source-reading disclosure.
+- Pass 2 review retained the design: claims follow owned frontiers, integration uses native Compliance, and each Evolution changes reach, starting Compliance or core timing rather than adding a new meter.
