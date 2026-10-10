@@ -1,7 +1,8 @@
 # Event 004: sudden declarations, one response per participant, and failed launches.
 add_namespace = chaosx.nr4
 
-@RANDOM_WAR_STAFF_BLAMED_DAYS = 180
+# Cooldown lengths come from script_constants (random_war_cooldown). Timed idea
+# durations stay here: add_timed_idea takes a literal day count.
 @RANDOM_WAR_HOLD_LINE_DAYS = 45
 @RANDOM_WAR_RESERVE_MOBILIZATION_DAYS = 45
 
@@ -62,9 +63,13 @@ country_event = {
 	option = {
 		name = chaosx.nr4.2.b
 		add_stability = constant:random_war_option_effect.aggressor_staff_stability_cost
-		set_country_flag = {
-			flag = random_war_staff_blamed
-			days = @RANDOM_WAR_STAFF_BLAMED_DAYS
+		set_temp_variable = { random_war_staff_blamed_days = constant:random_war_cooldown.staff_blamed_days }
+		custom_effect_tooltip = chaosx.nr4.2.b.tt
+		hidden_effect = {
+			set_country_flag = {
+				flag = random_war_staff_blamed
+				days = random_war_staff_blamed_days
+			}
 		}
 		ai_chance = { base = 20 }
 	}

@@ -6,10 +6,6 @@
 # War Contagion stage declaration web from the hidden root event.
 # ============================================================================
 
-@RANDOM_WAR_AGGRESSOR_COOLDOWN_DAYS = 90
-@RANDOM_WAR_TARGET_COOLDOWN_DAYS = 90
-@RANDOM_WAR_CHAIN_MEMBER_COOLDOWN_DAYS = 1
-
 random_war_determine_stage = {
 	set_temp_variable = { random_war_stage = constant:random_war_stage.baseline }
 	set_temp_variable = { current_chaos_tier_value = constant:chaos_meter_tier_id.tier_0 }
@@ -240,16 +236,16 @@ random_war_try_select_major_pair = {
 		}
 		random_country = {
 			limit = {
-				random_war_country_can_be_aggressor = yes
+				random_war_ordinary_country_can_be_aggressor = yes
 				OR = {
 					is_major = yes
 					is_in_faction = yes
 				}
-				any_other_country = { random_war_target_valid_for_prev_aggressor = yes }
+				any_other_country = { random_war_ordinary_target_valid_for_prev_aggressor = yes }
 			}
 			save_event_target_as = random_war_aggressor
 			random_other_country = {
-				limit = { random_war_target_valid_for_prev_aggressor = yes }
+				limit = { random_war_ordinary_target_valid_for_prev_aggressor = yes }
 				random_war_save_pair_from_current_target = yes
 			}
 		}
@@ -267,17 +263,17 @@ random_war_try_select_neighbor_pair = {
 		}
 		random_country = {
 			limit = {
-				random_war_country_can_be_aggressor = yes
+				random_war_ordinary_country_can_be_aggressor = yes
 				any_other_country = {
 					is_neighbor_of = PREV
-					random_war_target_valid_for_prev_aggressor = yes
+					random_war_ordinary_target_valid_for_prev_aggressor = yes
 				}
 			}
 			save_event_target_as = random_war_aggressor
 			random_other_country = {
 				limit = {
 					is_neighbor_of = PREV
-					random_war_target_valid_for_prev_aggressor = yes
+					random_war_ordinary_target_valid_for_prev_aggressor = yes
 				}
 				random_war_save_pair_from_current_target = yes
 			}
@@ -296,12 +292,12 @@ random_war_try_select_global_pair = {
 		}
 		random_country = {
 			limit = {
-				random_war_country_can_be_aggressor = yes
-				any_other_country = { random_war_target_valid_for_prev_aggressor = yes }
+				random_war_ordinary_country_can_be_aggressor = yes
+				any_other_country = { random_war_ordinary_target_valid_for_prev_aggressor = yes }
 			}
 			save_event_target_as = random_war_aggressor
 			random_other_country = {
-				limit = { random_war_target_valid_for_prev_aggressor = yes }
+				limit = { random_war_ordinary_target_valid_for_prev_aggressor = yes }
 				random_war_save_pair_from_current_target = yes
 			}
 		}
@@ -350,6 +346,7 @@ random_war_select_pair = {
 
 random_war_prepare_chain_context = {
 	set_temp_variable = { random_war_chain_active = 0 }
+	set_temp_variable = { random_war_chain_member_days = constant:random_war_cooldown.chain_member_days }
 	if = {
 		limit = {
 			check_variable = {
@@ -369,14 +366,14 @@ random_war_prepare_chain_context = {
 			save_event_target_as = random_war_chain_origin
 			set_country_flag = {
 				flag = random_war_chain_member
-				days = @RANDOM_WAR_CHAIN_MEMBER_COOLDOWN_DAYS
+				days = random_war_chain_member_days
 			}
 		}
 		event_target:random_war_target = {
 			save_event_target_as = random_war_chain_next_aggressor
 			set_country_flag = {
 				flag = random_war_chain_member
-				days = @RANDOM_WAR_CHAIN_MEMBER_COOLDOWN_DAYS
+				days = random_war_chain_member_days
 			}
 		}
 		set_temp_variable = { random_war_chain_active = 1 }
@@ -438,7 +435,7 @@ random_war_select_chain_next_pair = {
 			save_event_target_as = random_war_aggressor
 			random_other_country = {
 				limit = {
-					random_war_target_valid_for_prev_aggressor = yes
+					random_war_ordinary_target_valid_for_prev_aggressor = yes
 					NOT = { has_country_flag = random_war_chain_member }
 					OR = {
 						is_major = yes
@@ -463,7 +460,7 @@ random_war_select_chain_next_pair = {
 			save_event_target_as = random_war_aggressor
 			random_other_country = {
 				limit = {
-					random_war_target_valid_for_prev_aggressor = yes
+					random_war_ordinary_target_valid_for_prev_aggressor = yes
 					NOT = { has_country_flag = random_war_chain_member }
 				}
 				random_war_save_pair_from_current_target = yes
@@ -677,6 +674,9 @@ random_war_setup_context = {
 
 random_war_apply_current_pair = {
 	set_temp_variable = { random_war_pair_applied = 0 }
+	set_temp_variable = { random_war_aggressor_days = constant:random_war_cooldown.aggressor_days }
+	set_temp_variable = { random_war_target_days = constant:random_war_cooldown.target_days }
+	set_temp_variable = { random_war_chain_member_days = constant:random_war_cooldown.chain_member_days }
 	if = {
 		limit = {
 			check_variable = {
@@ -710,7 +710,7 @@ random_war_apply_current_pair = {
 			set_variable = { global.random_war_news_last_aggressor = THIS.id }
 			set_country_flag = {
 				flag = random_war_recent_aggressor
-				days = @RANDOM_WAR_AGGRESSOR_COOLDOWN_DAYS
+				days = random_war_aggressor_days
 			}
 			set_variable = { global.random_war_last_aggressor = THIS.id }
 			declare_war_on = {
@@ -754,7 +754,7 @@ random_war_apply_current_pair = {
 			set_variable = { global.random_war_news_last_target = THIS.id }
 			set_country_flag = {
 				flag = random_war_recent_target
-				days = @RANDOM_WAR_TARGET_COOLDOWN_DAYS
+				days = random_war_target_days
 			}
 			set_variable = { global.random_war_last_target = THIS.id }
 			if = {
@@ -777,7 +777,7 @@ random_war_apply_current_pair = {
 			event_target:random_war_target = {
 				set_country_flag = {
 					flag = random_war_chain_member
-					days = @RANDOM_WAR_CHAIN_MEMBER_COOLDOWN_DAYS
+					days = random_war_chain_member_days
 				}
 				save_event_target_as = random_war_chain_next_aggressor
 			}

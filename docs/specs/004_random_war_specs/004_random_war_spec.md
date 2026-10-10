@@ -127,10 +127,9 @@ Hard exclusions always apply, in every rung and at every stage.
 
 ### Known spec-to-source mismatches
 
-These are recorded for the implementation owner; this audit changes documents only.
+The first item was resolved in the 2026-10-10 release pass.
 
-- The ordinary bordering and global rungs do not exclude compatible special Chaos Redux countries, so a special actor can be drawn as an ordinary participant below its stage gate.
-  The intended gate is the stage's special chance, and `uses_normal_civilian_systems` is the existing trigger for an ordinary civilian participant.
+- Resolved: the ordinary major, bordering and worldwide rungs, and the ordinary rungs of a chain, now exclude special Chaos Redux countries as aggressor and target, so the stage's special chance is the only way in.
 - Protected scripted actors are not excluded beyond the sovereignty, capitulation and declaration checks, so a country held inside another event's scripted crisis can be pulled into an unrelated war.
 - Aggressor and target cooldowns are single flat values, so the stated loosening of cooldown limits at higher evolutions does not happen.
   A per-stage cooldown entry in the existing constants group would deliver it without new runtime state.

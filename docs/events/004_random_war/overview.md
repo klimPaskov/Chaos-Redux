@@ -41,6 +41,8 @@ Pairs are checked with:
 
 Compatible special countries use the shared `is_special_chaos_country` trigger. It includes existing Chaos Redux special-country markers, Holy Realm compatibility, and Germany Mengele civil-war or post-coup state markers.
 
+Special countries enter a dispute only through the stage's special-country chance. The major, bordering and worldwide rungs, and the ordinary rungs of a chain, use `random_war_ordinary_country_can_be_aggressor` and `random_war_ordinary_target_valid_for_prev_aggressor`, which exclude them.
+
 ## War Contagion
 
 War Contagion is logged as an event-log evolution type:
@@ -84,7 +86,7 @@ Alternatively, calling up reserves costs 2 percentage points of stability and gi
 Reserve mobilization draws manpower from the country's population and recruitment rules.
 It grants no flat manpower, weekly manpower, or additional conscription percentage.
 All response modifiers are tuned once through file-local constants in the event's ideas file, because static idea modifiers reject `constant:` tokens.
-Costs and durations retain their existing global script constant groups.
+Costs and the cooldown lengths (aggressor 90 days, target 90 days, dismissal 180 days, chain membership 1 day) live in the global script constant groups `random_war_option_effect` and `random_war_cooldown`, which the flag setters read through temporary variables. The two 45-day idea durations are file constants in `events/004_random_war.txt`, because `add_timed_idea` takes a literal day count.
 
 ## Variables, Flags, And Constants
 

@@ -1,6 +1,9 @@
 # Overview:
 # - Random War eligibility gates for sovereign participants, shared special chaos
 #   countries, legal declaration pairs, and declaration pairs selected by Event 4.
+# - Special chaos countries only enter a dispute through the stage's special
+#   chance, so the ordinary rungs (major, bordering, worldwide) use the
+#   *_ordinary_* variants below.
 
 random_war_country_can_be_aggressor = {
 	exists = yes
@@ -44,4 +47,14 @@ random_war_calm_world_pair_scale_valid_for_prev_aggressor = {
 			PREV = { is_major = no }
 		}
 	}
+}
+
+random_war_ordinary_country_can_be_aggressor = {
+	random_war_country_can_be_aggressor = yes
+	NOT = { is_special_chaos_country = yes }
+}
+
+random_war_ordinary_target_valid_for_prev_aggressor = {
+	random_war_target_valid_for_prev_aggressor = yes
+	NOT = { is_special_chaos_country = yes }
 }
