@@ -341,6 +341,25 @@ holy_realm_can_use_buddha_power_touching_sun_moon = {
 	}
 }
 
+# Realm scope with FROM as the target. A special actor is a lawful target for a harmful
+# power only while it is fighting a war it did not start against the Realm or a living
+# Sangha Compact member; the Realm declaring the war never qualifies. Decision, GUI and
+# AI target paths share this proof, so no Meditation Charge is spent on a stale target.
+holy_realm_buddha_power_hostile_front = {
+	OR = {
+		has_defensive_war_with = FROM
+		AND = {
+			is_in_faction = yes
+			any_other_country = {
+				is_in_faction_with = PREV
+				NOT = { is_holy_realm_country = yes }
+				holy_realm_sangha_compact_member_valid = yes
+				has_defensive_war_with = FROM
+			}
+		}
+	}
+}
+
 holy_realm_buddha_power_target_valid = {
 	is_holy_realm_country = yes
 	FROM = {
@@ -348,6 +367,7 @@ holy_realm_buddha_power_target_valid = {
 		NOT = { is_holy_realm_country = yes }
 		is_special_chaos_country = yes
 	}
+	holy_realm_buddha_power_hostile_front = yes
 }
 
 holy_realm_buddha_power_ai_reserve_charge = {

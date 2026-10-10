@@ -17,6 +17,9 @@
 @HOLY_REALM_POST_FORMATION_STABILIZATION_COOLDOWN_DAYS = 120
 @HOLY_REALM_MANDALA_JOINT_DEFENSE_FACTION_INITIATIVE = 1
 @HOLY_REALM_MANDALA_JOINT_DEFENSE_POWER_PROJECTION = 85
+@HOLY_REALM_MANDALA_REFUGE_CORRIDORS_POWER_PROJECTION = 40
+@HOLY_REALM_MANDALA_WHITE_FLAG_CONGRESS_POWER_PROJECTION = 60
+@HOLY_REALM_MANDALA_OPEN_GRANARIES_POWER_PROJECTION = 50
 @HOLY_REALM_PILGRIMAGE_ESCORT_DIVISION_FLOOR = 1
 @HOLY_REALM_PILGRIMAGE_ROUTE_GUARDED_DAYS = 365
 @HOLY_REALM_FALSE_BUDDHA_ECHO_AI_FACTOR = 0.7
@@ -161,7 +164,7 @@ holy_realm_mandala_category = {
 				add_building_construction = { type = infrastructure level = 1 instant_build = yes }
 				if = {
 					limit = { NOT = { is_core_of = ROOT } }
-					set_resistance = 5
+					set_resistance = constant:holy_realm_reward.white_scarf_relief_caravans_resistance
 				}
 			}
 			add_stability = 0.01
@@ -220,7 +223,7 @@ holy_realm_mandala_category = {
 		}
 		complete_effect = {
 			hidden_effect = { black_friday_credit_political_power_purchase = yes }
-			add_command_power = 35
+			add_command_power = constant:holy_realm_reward.snow_line_signal_posts_command_power
 			random_owned_state = {
 				limit = { is_controlled_by = ROOT }
 				add_building_construction = { type = anti_air_building level = 1 instant_build = yes }
@@ -378,7 +381,7 @@ holy_realm_mandala_category = {
 				hidden_effect = { black_friday_credit_political_power_purchase = yes }
 				set_country_flag = holy_realm_mandala_kindness_refuge_completed
 				add_stability = 0.04
-				add_faction_power_projection = 40
+				add_faction_power_projection = @HOLY_REALM_MANDALA_REFUGE_CORRIDORS_POWER_PROJECTION
 				set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.medium_gain }
 				holy_realm_add_spiritual_legitimacy = yes
 				set_temp_variable = { holy_realm_sangha_delta = constant:holy_realm_buddhahood.sangha_refuge_cohesion_gain }
@@ -412,8 +415,8 @@ holy_realm_mandala_category = {
 				hidden_effect = { black_friday_credit_political_power_purchase = yes }
 				set_country_flag = holy_realm_mandala_kindness_congress_completed
 				add_stability = 0.05
-				add_political_power = 50
-				add_faction_power_projection = 60
+				add_political_power = constant:holy_realm_reward.mandala_white_flag_congress_political_power
+				add_faction_power_projection = @HOLY_REALM_MANDALA_WHITE_FLAG_CONGRESS_POWER_PROJECTION
 				set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.medium_loss }
 				holy_realm_add_compassion_drift = yes
 				set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.medium_gain }
@@ -511,13 +514,13 @@ holy_realm_mandala_category = {
 						}
 						if = {
 							limit = { NOT = { is_core_of = PREV } }
-							set_resistance = 5
-							set_compliance = 35
+							set_resistance = constant:holy_realm_reward.mandala_open_granaries_resistance
+							set_compliance = constant:holy_realm_reward.mandala_open_granaries_compliance
 						}
 					}
 					add_stability = 0.01
 				}
-				add_faction_power_projection = 50
+				add_faction_power_projection = @HOLY_REALM_MANDALA_OPEN_GRANARIES_POWER_PROJECTION
 				set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.medium_gain }
 				holy_realm_add_mandala_reach = yes
 				set_temp_variable = { holy_realm_sangha_delta = constant:holy_realm_buddhahood.sangha_granary_cohesion_gain }
@@ -875,7 +878,7 @@ holy_realm_mandala_category = {
 						modifier = holy_realm_quiet_envoys_opinion
 					}
 				}
-				add_command_power = 15
+				add_command_power = constant:holy_realm_reward.mandala_observer_mission_command_power
 				set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
 				holy_realm_add_mandala_reach = yes
 			}
@@ -956,8 +959,8 @@ holy_realm_mandala_category = {
 						}
 						if = {
 							limit = { NOT = { is_core_of = PREV } }
-							set_resistance = 5
-							set_compliance = 35
+							set_resistance = constant:holy_realm_reward.mandala_development_mission_resistance
+							set_compliance = constant:holy_realm_reward.mandala_development_mission_compliance
 						}
 					}
 					add_stability = 0.01
@@ -1111,14 +1114,14 @@ holy_realm_mandala_category = {
 		complete_effect = {
 			hidden_effect = { black_friday_credit_political_power_purchase = yes }
 			add_stability = 0.05
-			add_command_power = 40
+			add_command_power = constant:holy_realm_reward.assign_arhat_overseers_command_power
 			every_owned_state = {
 				limit = {
 					is_controlled_by = ROOT
 					NOT = { is_core_of = ROOT }
 				}
-				set_compliance = 55
-				set_resistance = 5
+				set_compliance = constant:holy_realm_reward.assign_arhat_overseers_compliance
+				set_resistance = constant:holy_realm_reward.assign_arhat_overseers_resistance
 				set_state_flag = holy_realm_arhat_registered_state
 			}
 			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.medium_gain }
@@ -1157,8 +1160,8 @@ holy_realm_mandala_category = {
 				add_building_construction = { type = industrial_complex level = 1 instant_build = yes }
 				if = {
 					limit = { NOT = { is_core_of = ROOT } }
-					set_compliance = 60
-					set_resistance = 3
+					set_compliance = constant:holy_realm_reward.assign_arhat_to_province_compliance
+					set_resistance = constant:holy_realm_reward.assign_arhat_to_province_resistance
 					set_state_flag = holy_realm_arhat_registered_state
 				}
 			}
@@ -1187,8 +1190,8 @@ holy_realm_mandala_category = {
 		complete_effect = {
 			hidden_effect = { black_friday_credit_political_power_purchase = yes }
 			set_country_flag = holy_realm_memory_arhat_army_commissars
-			army_experience = 150
-			add_command_power = 75
+			army_experience = constant:holy_realm_reward.assign_arhat_to_army_army_experience
+			add_command_power = constant:holy_realm_reward.assign_arhat_to_army_command_power
 			add_war_support = 0.05
 			holy_realm_spawn_vow_keeper_mountaineers = yes
 			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
@@ -1273,10 +1276,10 @@ holy_realm_mandala_category = {
 					is_controlled_by = ROOT
 					NOT = { is_core_of = ROOT }
 				}
-				set_compliance = 50
-				set_resistance = 8
+				set_compliance = constant:holy_realm_reward.arhat_road_audit_compliance
+				set_resistance = constant:holy_realm_reward.arhat_road_audit_resistance
 			}
-			add_command_power = 20
+			add_command_power = constant:holy_realm_reward.arhat_road_audit_command_power
 			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
 			holy_realm_add_mandala_reach = yes
 			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
@@ -1457,7 +1460,7 @@ holy_realm_mandala_category = {
 			FROM = {
 				holy_realm_spawn_mandala_peacekeeping_brigade = yes
 			}
-			add_command_power = 25
+			add_command_power = constant:holy_realm_reward.stand_between_armies_command_power
 			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.medium_gain }
 			holy_realm_add_mandala_reach = yes
 			if = {
@@ -1536,7 +1539,7 @@ holy_realm_mandala_category = {
 				value = 0.03
 				tooltip_side = holy_realm_final_silence_side
 			}
-			add_political_power = 30
+			add_political_power = constant:holy_realm_reward.audit_foreign_target_ledgers_political_power
 		}
 		ai_will_do = { factor = 0.8 }
 	}
@@ -1687,11 +1690,11 @@ holy_realm_mandala_category = {
 					is_controlled_by = ROOT
 					NOT = { is_core_of = ROOT }
 				}
-				set_compliance = 45
-				set_resistance = 5
+				set_compliance = constant:holy_realm_reward.register_outer_valleys_compliance
+				set_resistance = constant:holy_realm_reward.register_outer_valleys_resistance
 				set_state_flag = holy_realm_arhat_registered_state
 			}
-			add_political_power = 25
+			add_political_power = constant:holy_realm_reward.register_outer_valleys_political_power
 			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.medium_gain }
 			holy_realm_add_mandala_reach = yes
 			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
@@ -2258,8 +2261,8 @@ holy_realm_bodhisattva_category = {
 		complete_effect = {
 			hidden_effect = { black_friday_credit_political_power_purchase = yes }
 			holy_realm_start_teaching_mission_slot = yes
-			army_experience = 50
-			add_command_power = 35
+			army_experience = constant:holy_realm_reward.bodhisattva_teach_foreign_officers_army_experience
+			add_command_power = constant:holy_realm_reward.bodhisattva_teach_foreign_officers_command_power
 			holy_realm_advance_bodhisattva_bhumi = yes
 			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
 			holy_realm_add_mandala_reach = yes
@@ -3435,7 +3438,7 @@ holy_realm_doctrine_balance_category = {
 			}
 			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
 			holy_realm_add_final_silence_pressure = yes
-			add_command_power = 10
+			add_command_power = constant:holy_realm_reward.bop_last_resort_register_command_power
 		}
 		ai_will_do = {
 			factor = 0.4
@@ -3474,7 +3477,7 @@ holy_realm_doctrine_balance_category = {
 			}
 			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
 			holy_realm_add_compassion_drift = yes
-			add_command_power = 20
+			add_command_power = constant:holy_realm_reward.bop_arhat_case_files_command_power
 		}
 		ai_will_do = {
 			factor = 0.8
@@ -3660,7 +3663,7 @@ holy_realm_doctrine_balance_category = {
 			}
 			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.medium_gain }
 			holy_realm_add_final_silence_pressure = yes
-			add_command_power = 50
+			add_command_power = constant:holy_realm_reward.bop_expand_silence_cells_command_power
 		}
 		ai_will_do = {
 			factor = 0.4
@@ -3891,7 +3894,7 @@ holy_realm_doctrine_balance_category = {
 			}
 			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_gain }
 			holy_realm_add_final_silence_pressure = yes
-			add_command_power = 25
+			add_command_power = constant:holy_realm_reward.bop_black_ledger_drills_command_power
 		}
 		ai_will_do = { factor = 0.7 }
 	}
@@ -3953,7 +3956,7 @@ holy_realm_doctrine_balance_category = {
 			}
 			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.medium_gain }
 			holy_realm_add_final_silence_pressure = yes
-			add_command_power = 35
+			add_command_power = constant:holy_realm_reward.bop_nuclear_sutra_committee_command_power
 			set_temp_variable = { holy_realm_chaos_delta = constant:holy_realm_chaos.mild_control_gain }
 			set_temp_variable = { holy_realm_chaos_reason = constant:chaos_meter_history_reason.special.holy_realm_doctrinal_control }
 			holy_realm_add_chaos = yes
@@ -3990,7 +3993,7 @@ holy_realm_doctrine_balance_category = {
 			}
 			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.small_loss }
 			holy_realm_add_final_silence_pressure = yes
-			add_command_power = 20
+			add_command_power = constant:holy_realm_reward.bop_last_pass_watch_command_power
 			add_stability = 0.01
 		}
 		ai_will_do = { factor = 1.2 }
@@ -4168,8 +4171,8 @@ holy_realm_expansion_category = {
 						has_state_flag = holy_realm_arhat_registered_state
 					}
 				}
-				set_compliance = 55
-				set_resistance = 3
+				set_compliance = constant:holy_realm_reward.administer_submitted_territory_compliance
+				set_resistance = constant:holy_realm_reward.administer_submitted_territory_resistance
 				set_state_flag = holy_realm_arhat_registered_state
 			}
 			set_temp_variable = { holy_realm_delta = constant:holy_realm_counter.medium_gain }
@@ -4254,8 +4257,8 @@ holy_realm_expansion_category = {
 			hidden_effect = { black_friday_credit_political_power_purchase = yes }
 			FROM = {
 				add_core_of = ROOT
-				set_resistance = 10
-				set_compliance = 35
+				set_resistance = constant:holy_realm_reward.mandate_kneeling_province_resistance
+				set_compliance = constant:holy_realm_reward.mandate_kneeling_province_compliance
 				set_state_flag = holy_realm_kneeling_province_mandated
 			}
 			set_country_flag = holy_realm_memory_kneeling_province_mandated
